@@ -1,0 +1,79 @@
+#host system
+host := $(shell gcc -dumpmachine)
+
+# Where Asis library should be installed
+# Default is into current GNAT directory
+INSTALL_DIR = $(dir $(shell which gnatls))..
+prefix=$(INSTALL_DIR)
+
+# Asis specific directories
+GNAT_DIR=../gnat
+ASIS_DIR=../asis
+
+# GCC backend specific flags
+CFLAGS= -O2 -g
+CC=gcc
+
+# System commands
+CHMOD = chmod
+LN = ln -s
+ATTRIB =
+CP = cp -p
+INSTALL_FILES = cp -p
+MKDIR = mkdir -p
+exe_ext =
+arext = .a
+soext = .so
+# object extension
+objext = .o
+RM = rm -f
+RMDIR = rm -rf
+AR = ar
+AR_FLAGS = rc
+RANLIB = ranlib
+RANLIB_TEST = [ -f /usr/bin/ranlib -o -f /bin/ranlib ]
+GNATMAKE = gnatmake
+GNATMAKE_FLAGS =
+
+# External Variable to pass to project file
+OPSYS=default_Unix
+
+ifeq "$(findstring mingw32, $(host))" "mingw32"
+   CP = cp -lf
+   MKDIR = mkdir -p
+   exe_ext= .exe
+   ATTRIB = attrib
+endif
+
+ifeq "$(findstring openvms, $(host))" "openvms"
+   prefix=/gnu
+   exe_ext = .exe
+   objext = .obj
+   arext = .olb
+   soext = .exe
+   objext = .obj
+   AR = lib
+   AR_FLAGS = /create
+   GNATMAKE_FLAGS = -nognatlib
+endif
+
+ifeq "$(findstring powerpc-ibm-aix, $(host))" "powerpc-ibm-aix"
+   CFLAGS = -O2 -g -mminimal-toc
+   OPSYS=powerpc_aix
+endif
+
+ifeq "$(findstring hppa1.1-hp-hpux, $(host))" "hppa1.1-hp-hpux"
+   CFLAGS = -O2 -g -mdisable-indexing
+   OPSYS=pa_hpux
+endif
+
+ifeq "$(findstring i386-elf-lynxos, $(host))" "i386-elf-lynxos"
+   MKDIR = mkdir -p -f
+endif
+
+#  GNAT specific flags
+ADA_FLAGS_FOR_TOOLS= -gnaty -gnatwu -gnatwe
+ADA_FLAGS_FOR_ASISLIB= -gnatg -gnatwu -gnatwe
+
+# GNATMAKE specific flags
+GMFLAGS=

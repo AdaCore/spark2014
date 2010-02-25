@@ -1,0 +1,38 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            SPARKIFY COMPONENTS                           --
+--                                                                          --
+--                              S P A R K I F Y                             --
+--                                                                          --
+--                                 S p e c                                  --
+--                                                                          --
+--                     Copyright (C) 2009-2010, AdaCore                     --
+--                                                                          --
+-- Sparkify is  free  software;  you can redistribute it  and/or  modify it --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software Foundation;  either version  2,  or  (at your option) any later --
+-- version. Sparkify is distributed in the hope that it will be useful, but --
+-- WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHANTABI- --
+-- LITY or  FITNESS  FOR A  PARTICULAR  PURPOSE. See the GNU General Public --
+-- License  for more details. You  should  have  received a copy of the GNU --
+-- General Public License  distributed with GNAT; see file COPYING. If not, --
+-- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
+-- Boston,                                                                  --
+--                                                                          --
+-- Sparkify is maintained by AdaCore (http://www.adacore.com)               --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with "asis_bld";
+with "common";
+
+project Sparkify extends "tools/tool_utils/tool_utils" is
+   for Main use ("asis_ul-several_files_driver.adb");
+   package Builder is
+      for Default_Switches ("ada") use Common.Builder'Default_Switches ("ada");
+      for Executable ("asis_ul-several_files_driver.adb") use "sparkify";
+   end Builder;
+
+   package Binder renames Common.Binder;
+   package Ide renames Common.Ide;
+end Sparkify;

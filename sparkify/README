@@ -1,0 +1,191 @@
+Contents
+--------
+
+1. What is sparkify
+2. How to build
+3. How to test
+4. Sparkify parameters
+5. Formatting rules
+6. Related information
+7. Submitting bug reports
+
+
+1. What is sparkify
+   ----------------
+
+Sparkify is an Ada to SPARK translator based on GNAT. It takes a compilable Ada
+source as input and generates the transformed version of the source as output.
+
+The final goal for this tool is to translate Ada programs complying
+to a certain set of restrictions (a 'Spark' profile) into SPARK, and reject
+other programs.
+
+Currently, Sparkify translates very few Ada programs into correct SPARK
+programs, and it does not attempt to detect when the output is correct SPARK or
+not.
+
+Sparkify has a command-line interface. By default the output is sent to a file
+with the same name in sub-directory 'sparkified'. The Sparkify output can be
+directed to a specific file or to Stdout. All diagnostic information is sent to
+Stderr.
+
+Sparkify is an ASIS-based tool. It compiles the given source to create the
+corresponding tree file. If the tree for the specified source already exists,
+Sparkify tries to reuse it; it recreates the tree if the previous tree is
+unusable, either because it was created by an older version of the compiler, or
+because its own source is obsolete.  If Sparkify creates a tree file as a part
+of its processing, then it deletes this tree file, as well as the corresponding
+ALI file, after completion. If it has successfully reused an existing tree
+file, it does not delete it. The ALI file is deleted by Sparkify only if this
+file has been created as a part of this Sparkify run.
+
+If the specified source file is not a legal Ada program, Sparkify cannot
+process it. If the specified source depends on Ada units located in other
+directories, the user has to provide the corresponding source search path,
+according to the general GNAT rules, (s)he may use the '-I' Sparkify option to
+set this search path explicitly.
+
+
+2. How to build
+   ------------
+
+You need a source distribution of ASIS-for-GNAT, which can be retrieved from
+    http://libre.adacore.com/download/
+
+Set the variable GPR_PROJECT_PATH to point to where your ASIS-for-GNAT source
+distribution is unpacked.
+
+You also need a version of the GNAT compiler compatible with your ASIS-for-GNAT
+distribution.
+
+Then call 'make' which will call 'gnatmake' (part of the GNAT distribution)
+with appropriate settings and project files.
+
+
+3. How to test
+   -----------
+
+You need a distribution of SPARK, which can be retrieved from
+    http://libre.adacore.com/download/
+
+Then go to the directory tests at the same level as sparkify
+     cd ../tests
+To run all tests, type
+     ./run-tests
+To run a specific test, e.g. 'search' type
+     ./run-tests search
+
+
+4. Sparkify parameters
+   -------------------
+
+Sparkify has the following command-line interface:
+
+    sparkify [options] filenames
+
+Sparkify options (in alphabetic order):
+
+ -gnatec<path> - the same as GNAT -gnatec option
+ -I<dir>       - the same as gcc -I option
+ -I-           - the same as gcc -I- option
+ --RTS         - the same as gcc --RTS option
+ -gnat05       - Ada 05 input
+
+ -q            - quiet mode
+ -v            - verbose mode
+ -w            - warnings on
+
+Output file control:
+ -pipe           - send the output into Stdout
+ -o output_file  - write the output into output_file. Give up if output_file
+                   already exists
+ -of output_file - write the output into output_file, overriding the existing
+     		   file
+ -r    		 - replace the argument source with the printed source and copy
+ 		   the argument source into filename.npp. Give up if 
+		   filename.npp already exists
+ -rnb  		 - replace the argument source with the printed source. Do not
+ 		   copy the argument source.
+ -rf  		 - replace the argument source with the printed source and copy
+ 		   the argument source into filename.npp, overriding the 
+		   existing file
+ -eol            - sets the format of the sparkify output (unix/lf/dos/crlf)
+ -W  		 - wide character encoding method for the output (h/u/s/e/8/b)
+
+ filenames - the name of the Ada source files to be transformed. The files
+             should contain the compilable Ada source (with the given set of -I
+             options). Filenames does not have to follow GNAT file name rules.
+
+
+5. Transformations
+   ---------------
+
+The general architecture of Sparkify consists in a depth-first traversal of
+the AST. During this traversal, we maintain a cursor pointing to the first 
+point in the source that was not treated previously (Echo_Cursor).
+
+Some code is simply echoed on the output, while some constructs 
+undergo a special printing. E.g., this is the case for subprogram 
+declarations and definitions, as well as pragmas.
+
+When reaching such a particular element:
+
+       - we echo all the text of the source file on the output, from cursor 
+         Echo_Cursor to the current cursor;
+       - we do some special printing on the output;
+       - we may set cursor Echo_Cursor to skip some text in the source file 
+         when doing the next echo
+
+This can be done either during the pre-operations, when a node is treated 
+before its childen nodes are visited, or during the post-operations, when a 
+node is treated after its childen nodes have been visited.
+
+As an example of transformation in Sparkify, pragmas Precondition,
+Postcondition and Assert are transformed into special comments that respect the
+way SPARK preconditions, postcondition, assertions and checks are formatted.
+Attributes 'Old and 'Result are printed as expected by SPARK.
+
+For example, the precondition 
+
+   pragma Precondition (X >= 0);
+
+is printed
+
+   --# pre              X >= 0;
+
+In order to make it possible to report issues back to the original source,
+correspondance to the original source file is maintained by printing special
+comments that give line directives, similar to what is done in C preprocessing.
+
+For example, the following output indicates that the precondition comes from
+line 4 in the original source, and that the output proceeds with line 3 in the
+following.
+
+--@ line 4
+   --# pre              X >= 0;
+--@ line 3
+
+In general, we try to keep the same columns in the output as in the input.
+
+You can find the code that corresponds to this specific treatment in procedure
+PP_SPARK_Annotation, which performs a traversal of the sub-tree of interest
+during the main traversal, in order to print a SPARK annotation.
+
+
+6. Related information
+   -------------------
+
+See GNAT User's Guide for more details about GNAT options.
+
+See ASIS-for-GNAT User's Guide for more details concerning tree files.
+
+
+7. Submitting bug reports
+   ----------------------
+All bug reports, as well as any comments concerning the Sparkify functionality
+and options, are very welcomed. They should be sent to report@adacore.com.
+
+Usually, as a part of a problem report we need a complete set of sources to
+reproduce the problem. In the case of Sparkify, it may be possible in some
+cases to send only the code fragment that caused a failure or resulted in
+incorrect output, together with the faulty transformed output.
