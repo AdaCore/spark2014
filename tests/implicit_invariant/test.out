@@ -1,0 +1,69 @@
+s.adb:13:45: sparkify: implicit loop invariant
+------------------------------------------------------------------------
+package S is
+
+   type Array_Range is range 1 .. 10;
+
+   type IntArray is array (Array_Range) of Integer;
+
+   procedure Linear_Search
+     (Table : in IntArray;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out Array_Range);
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : IntArray;
+      Value : Integer;
+      Index : Array_Range) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+
+end S;
+package body S is
+
+  procedure Linear_Search
+    (Table : in IntArray;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Array_Range)
+  is
+  begin
+     Found := False;
+     Index := 1;
+
+     for I in Array_Range range Table'Range loop
+        --# assert True;
+--@ line 14
+        if Table(I) = Value then
+           Found := True;
+           Index := I;
+           --# check      Found and then Index = I;
+           exit;
+        end if;
+     end loop;
+  end Linear_Search;
+
+  function Check_Index
+    (Table : IntArray;
+     Value : Integer;
+     Index : Array_Range) return Boolean
+  is
+  begin
+     return Table(Index) = Value;
+  end Check_Index;
+
+end S;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          5      0      4              0      0      0       1
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         1      0      1              0      0      0       0
+Runtime check:           5      0      5              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 11      0     10              0      0      0       1  <<<
+% Totals:                       0%    91%             0%     0%     0%      9% <<<
+===================== End of Semantic Analysis Summary ========================
