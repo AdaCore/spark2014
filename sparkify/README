@@ -52,11 +52,13 @@ set this search path explicitly.
 You need a source distribution of ASIS-for-GNAT, which can be retrieved from
     http://libre.adacore.com/download/
 
-Set the variable GPR_PROJECT_PATH to point to where your ASIS-for-GNAT source
-distribution is unpacked.
-
 You also need a version of the GNAT compiler compatible with your ASIS-for-GNAT
 distribution.
+
+Build ASIS-for-GNAT from sources, following the instructions in README.
+
+Set the variable GPR_PROJECT_PATH to point to where your ASIS-for-GNAT source
+distribution is unpacked.
 
 Then call 'make' which will call 'gnatmake' (part of the GNAT distribution)
 with appropriate settings and project files.
