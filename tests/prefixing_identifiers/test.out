@@ -1,0 +1,80 @@
+------------------------------------------------------------------------
+with Integer_Types;
+--# inherit integer_types;
+package S is
+
+   type IntArray is array (Integer_Types.Array_Range
+--@ line 5
+                                      ) of Integer;
+
+   procedure Linear_Search
+     (Table : in IntArray;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out Integer_Types.Array_Range);
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : IntArray;
+      Value : Integer;
+      Index : Integer_Types.Array_Range) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+
+end S;
+package body S is
+
+  procedure Linear_Search
+    (Table : in IntArray;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Integer_Types.Array_Range
+--@ line 7
+                            )
+  is
+  begin
+     Found := False;
+     Index := 1;
+
+     for I in Integer_Types.Array_Range
+--@ line 13
+                          range Table'Range loop
+        --# assert     Found = False;
+        if Table(I) = Value then
+           Found := True;
+           Index := I;
+           --# check      Found and then Index = I;
+           exit;
+        end if;
+     end loop;
+  end Linear_Search;
+
+  function Check_Index
+    (Table : IntArray;
+     Value : Integer;
+     Index : Integer_Types.Array_Range
+--@ line 27
+                        ) return Boolean
+  is
+  begin
+     return Table(Index) = Value;
+  end Check_Index;
+
+end S;
+package Integer_Types is
+
+   type Array_Range is range 1 .. 10;
+
+end Integer_Types;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          5      0      5              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         1      0      1              0      0      0       0
+Runtime check:           5      0      5              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 11      0     11              0      0      0       0
+% Totals:                       0%   100%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================

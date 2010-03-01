@@ -1,0 +1,2 @@
+ALL XFAIL identifiers in procedure declarations are not prefixed
+
