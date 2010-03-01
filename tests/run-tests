@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TEST_SUPPORT=`pwd`/../test-support; export TEST_SUPPORT
+
 PATH=`pwd`/../sparkify:$PATH
 
 if [ "`type sparkify 2>/dev/null`" = "" ]; then
