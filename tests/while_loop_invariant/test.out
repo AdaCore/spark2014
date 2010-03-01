@@ -1,0 +1,72 @@
+------------------------------------------------------------------------
+package S is
+
+   type Array_Range is range 1 .. 10;
+
+   type IntArray is array (Array_Range) of Integer;
+
+   procedure Linear_Search
+     (Table : in IntArray;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out Array_Range);
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : IntArray;
+      Value : Integer;
+      Index : Array_Range) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+
+end S;
+package body S is
+
+  procedure Linear_Search
+    (Table : in IntArray;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Array_Range)
+  is
+  begin
+     Found := False;
+
+     Index := Table'First;
+     while Index <= Array_Range'(Table'Last) loop
+        --# assert     Found = False;
+        if Table(Index) = Value then
+           Found := True;
+           exit;
+        end if;
+
+        if Index = Table'Last then
+           Found := False;
+        else
+           Index := Index + 1;
+        end if;
+     end loop;
+
+  end Linear_Search;
+
+  function Check_Index
+    (Table : IntArray;
+     Value : Integer;
+     Index : Array_Range) return Boolean
+  is
+  begin
+     return Table(Index) = Value;
+  end Check_Index;
+
+end S;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          8      0      8              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           7      0      7              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 15      0     15              0      0      0       0
+% Totals:                       0%   100%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
