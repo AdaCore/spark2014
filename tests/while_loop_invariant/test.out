@@ -40,10 +40,10 @@ package body S is
         end if;
 
         if Index = Table'Last then
-           Found := False;
-        else
-           Index := Index + 1;
+           exit;
         end if;
+
+        Index := Index + 1;
      end loop;
 
   end Linear_Search;
@@ -60,13 +60,13 @@ package body S is
 end S;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          8      0      8              0      0      0       0
+Assert or Post:          7      0      7              0      0      0       0
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           7      0      7              0      0      0       0
+Runtime check:           6      0      6              0      0      0       0
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 15      0     15              0      0      0       0
+Totals:                 13      0     13              0      0      0       0
 % Totals:                       0%   100%             0%     0%     0%      0%
 ===================== End of Semantic Analysis Summary ========================

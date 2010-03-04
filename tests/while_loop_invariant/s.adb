@@ -18,10 +18,10 @@ package body S is
         end if;
 
         if Index = Table'Last then
-           Found := False;
-        else
-           Index := Index + 1;
+           exit;
         end if;
+
+        Index := Index + 1;
      end loop;
 
   end Linear_Search;
