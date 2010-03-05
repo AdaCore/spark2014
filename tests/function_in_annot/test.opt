@@ -1,0 +1,1 @@
+ALL XFAIL problem with function return substitution in SPARK 9.0 (J305-012)
