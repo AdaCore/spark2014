@@ -364,7 +364,6 @@ package body Sparkify.Pre_Operations is
       Pragmas : constant Pragma_Element_List :=
         Corresponding_Pragmas (Element);
    begin
-
       if Element_Kind (Encl_Element) = A_Declaration and then
         (Declaration_Kind (Encl_Element) = A_Function_Body_Declaration or else
            Declaration_Kind (Encl_Element) = A_Procedure_Body_Declaration)
@@ -421,9 +420,19 @@ package body Sparkify.Pre_Operations is
 
       if Has_SPARK_Contract (Pragmas) then
 
-         if Is_Nil (Encl_Element) then
-            --  Only translate contracts on library-level subprograms (which
-            --  are those subprograms with no enclosing element)
+         if Is_Nil (Encl_Element)
+           or else (Acts_As_Spec (Element)
+                    and then (Declaration_Kind (Encl_Element)
+                              = A_Package_Body_Declaration))
+         then
+            --  Only translate contracts on library-level subprograms. Two
+            --  cases:
+            --  * Subprograms with no enclosing element: these are declarations
+            --    in package spec;
+            --  * Subprograms in package body that acts as specs: these are
+            --    definitions of subprograms in package body, with no previous
+            --    declarations (as declarations of subprograms in package body
+            --    are not allowed in SPARK).
 
             Column_Start := Element_Span (Element).First_Column;
 
@@ -530,17 +539,24 @@ package body Sparkify.Pre_Operations is
         (Element : Asis.Element) return Boolean
       is
          Decl_Element : constant Asis.Element :=
-           Corresponding_Name_Declaration (Element);
-         Element_Unit : constant Asis.Compilation_Unit :=
-           Enclosing_Compilation_Unit (Decl_Element);
-         Body_Unit : constant Asis.Compilation_Unit :=
-           Corresponding_Body (Element_Unit);
-         --  Body_Unit might be null or the body unit corresponding to
-         --  specification unit Element_Unit
+                          Corresponding_Name_Declaration (Element);
       begin
-         return (Is_Standard (Element_Unit) or else
-                 Is_Equal (Element_Unit, The_Unit) or else
-                 Is_Equal (Body_Unit, The_Unit));
+         if Is_Nil (Decl_Element) then
+            return False;
+         end if;
+
+         declare
+            Element_Unit : constant Asis.Compilation_Unit :=
+                             Enclosing_Compilation_Unit (Decl_Element);
+            Body_Unit    : constant Asis.Compilation_Unit :=
+                             Corresponding_Body (Element_Unit);
+            --  Body_Unit might be null or the body unit corresponding to
+            --  specification unit Element_Unit
+         begin
+            return (Is_Standard (Element_Unit) or else
+                    Is_Equal (Element_Unit, The_Unit) or else
+                    Is_Equal (Body_Unit, The_Unit));
+         end;
       end Is_Defined_In_Standard_Or_Current_Compilation_Unit;
 
       function Prepend_Package_Name
