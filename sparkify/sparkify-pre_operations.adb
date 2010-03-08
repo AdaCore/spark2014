@@ -409,17 +409,16 @@ package body Sparkify.Pre_Operations is
 
       Encl_Element : constant Asis.Element := Enclosing_Element (Element);
 
-      Is_Function : constant Boolean :=
-        Declaration_Kind (Element) = A_Function_Body_Declaration;
+      Is_Function  : constant Boolean :=
+                       Declaration_Kind (Element)
+                         = A_Function_Body_Declaration;
 
-      Pragmas : constant Pragma_Element_List :=
-        Corresponding_Pragmas (Element);
+      Pragmas      : constant Pragma_Element_List :=
+                       Corresponding_Pragmas (Element);
 
       Current_Cursor : Cursor;
    begin
-
       if Has_SPARK_Contract (Pragmas) then
-
          if Is_Nil (Encl_Element)
            or else (Acts_As_Spec (Element)
                     and then (Declaration_Kind (Encl_Element)
@@ -440,12 +439,12 @@ package body Sparkify.Pre_Operations is
             when A_Procedure_Body_Declaration =>
                declare
                   Params : constant Parameter_Specification_List :=
-                    Parameter_Profile (Element);
+                             Parameter_Profile (Element);
                begin
                   if Params'Length = 0 then
                      declare
                         Names : constant Defining_Name_List :=
-                          Asis.Declarations.Names (Element);
+                                  Asis.Declarations.Names (Element);
                      begin
                         pragma Assert (Names'Length = 1);
                         Current_Cursor := Cursor_After (Names (Names'First));
@@ -479,7 +478,6 @@ package body Sparkify.Pre_Operations is
                           Build_GNAT_Location (Element));
          end if;
       end if;
-
    end A_Subprogram_Unit_Pre_Op;
 
    ------------------------------------------------
