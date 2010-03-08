@@ -383,6 +383,31 @@ package body Sparkify.Pre_Operations is
 
       elsif Has_SPARK_Contract (Pragmas) then
          Column_Start := Element_Span (Element).First_Column;
+
+         --  The parameter lists contains identifiers; they
+         --  should be prefixed if needed. To do so, we should call
+         --  Traverse_Source on each of them.
+
+         declare
+            Parameters       : constant Asis.Parameter_Specification_List :=
+                                 Parameter_Profile (Element);
+            Source_Control   : Asis.Traverse_Control  := Asis.Continue;
+            Source_State     : Source_Traversal_State := Initial_State;
+         begin
+            for J in Parameters'Range loop
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Parameters (J)));
+               Source_State.Echo_Cursor := Cursor_At (Parameters (J));
+               Traverse_Source (Parameters (J),
+                                Source_Control,
+                                Source_State);
+               PP_Echo_Cursor_Range
+                 (Source_State.Echo_Cursor,
+                  Cursor_At_End_Of (Parameters (J)));
+               State.Echo_Cursor := Cursor_After (Parameters (J));
+            end loop;
+         end;
+
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_At_End_Of (Element));
          SPARK_Contract (Pragmas     => Pragmas,
                          Is_Function => Is_Function,
