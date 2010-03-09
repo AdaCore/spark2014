@@ -404,6 +404,10 @@ package body Sparkify.Pre_Operations is
             Reach_Element_And_Traverse (Parameters (J), State);
          end loop;
 
+         if Is_Function then
+            Reach_Element_And_Traverse (Result_Profile (Element), State);
+         end if;
+
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_At_End_Of (Element));
          SPARK_Contract (Pragmas     => Pragmas,
                          Is_Function => Is_Function,
@@ -436,6 +440,9 @@ package body Sparkify.Pre_Operations is
       Pragmas      : constant Pragma_Element_List :=
                        Corresponding_Pragmas (Element);
 
+      Params       : constant Parameter_Specification_List :=
+                       Parameter_Profile (Element);
+
       Current_Cursor : Cursor;
    begin
       if Has_SPARK_Contract (Pragmas) then
@@ -452,12 +459,12 @@ package body Sparkify.Pre_Operations is
 
             Column_Start := Element_Span (Element).First_Column;
 
+            for J in Params'Range loop
+               Reach_Element_And_Traverse (Params (J), State);
+            end loop;
+
             case Declaration_Kind (Element) is
-            when A_Procedure_Body_Declaration =>
-               declare
-                  Params : constant Parameter_Specification_List :=
-                             Parameter_Profile (Element);
-               begin
+               when A_Procedure_Body_Declaration =>
                   if Params'Length = 0 then
                      declare
                         Names : constant Defining_Name_List :=
@@ -467,15 +474,17 @@ package body Sparkify.Pre_Operations is
                         Current_Cursor := Cursor_After (Names (Names'First));
                      end;
                   else
-                     Current_Cursor := Cursor_After (Params (Params'Last));
+                     Current_Cursor := State.Echo_Cursor;
                      Skip_Delimiter (Current_Cursor, Right_Parenthesis_Dlm);
                   end if;
-               end;
-            when A_Function_Body_Declaration =>
-               Current_Cursor := Cursor_After (Result_Profile (Element));
-            when others =>
-               pragma Assert (False);
-               null;
+
+               when A_Function_Body_Declaration =>
+                  Reach_Element_And_Traverse (Result_Profile (Element), State);
+                  Current_Cursor := State.Echo_Cursor;
+
+               when others =>
+                  pragma Assert (False);
+                  null;
             end case;
 
             PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
