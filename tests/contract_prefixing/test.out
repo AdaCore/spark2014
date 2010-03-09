@@ -77,13 +77,13 @@ package T is
 end T;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          4      0      3              0      0      0       1
-Precondition check:      4      0      3              0      0      0       1
+Assert or Post:          4      0      4              0      0      0       0
+Precondition check:      4      0      4              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
 Runtime check:           4      0      4              0      0      0       0
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 12      0     10              0      0      0       2  <<<
-% Totals:                       0%    83%             0%     0%     0%     17% <<<
+Totals:                 12      0     12              0      0      0       0
+% Totals:                       0%   100%             0%     0%     0%      0%
 ===================== End of Semantic Analysis Summary ========================
