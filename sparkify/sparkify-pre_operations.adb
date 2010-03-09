@@ -67,6 +67,32 @@ package body Sparkify.Pre_Operations is
       Column      : Character_Position_Positive);
    --  Print preconditions and postconditions in pseudo-SPARK syntax
 
+   procedure Reach_Element_And_Traverse
+     (Element : Asis.Element;
+      State   : in out Source_Traversal_State);
+   --  Echo everything before Element; then, traverse it in Printing_Code
+   --  mode (prefixing identifiers et cetera). At the end of procedure,
+   --  the cursor is set after Element.
+
+   --------------------------------
+   -- Reach_Element_And_Traverse --
+   --------------------------------
+
+   procedure Reach_Element_And_Traverse
+     (Element : Asis.Element;
+      State   : in out Source_Traversal_State)
+   is
+      Source_Control : Asis.Traverse_Control  := Asis.Continue;
+      Source_State   : Source_Traversal_State := Initial_State;
+   begin
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+      Source_State.Echo_Cursor := Cursor_At (Element);
+      Traverse_Source (Element, Source_Control, Source_State);
+      PP_Echo_Cursor_Range (Source_State.Echo_Cursor,
+                            Cursor_At_End_Of (Element));
+      State.Echo_Cursor := Cursor_After (Element);
+   end Reach_Element_And_Traverse;
+
    -----------------------------------
    -- Argument_By_Name_And_Position --
    -----------------------------------
@@ -236,21 +262,7 @@ package body Sparkify.Pre_Operations is
          --  The iteration scheme can contain identifiers; they
          --  should be prefixed if needed. To do so, we should do
          --  Traverse_Source on what's before the first statement.
-
-         declare
-            Iteration_Scheme : constant Asis.Expression :=
-                                 Get_Iteration_Scheme (Element);
-            Source_Control   : Asis.Traverse_Control  := Asis.Continue;
-            Source_State     : Source_Traversal_State := Initial_State;
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor, Cursor_Before (Iteration_Scheme));
-            Source_State.Echo_Cursor := Cursor_At (Iteration_Scheme);
-            Traverse_Source (Iteration_Scheme, Source_Control, Source_State);
-            PP_Echo_Cursor_Range
-              (Source_State.Echo_Cursor, Cursor_At_End_Of (Iteration_Scheme));
-            State.Echo_Cursor := Cursor_After (Iteration_Scheme);
-         end;
+         Reach_Element_And_Traverse (Get_Iteration_Scheme (Element), State);
       end if;
 
       if Statements'First <= Last_Pragma_Index then
@@ -389,22 +401,11 @@ package body Sparkify.Pre_Operations is
          --  Traverse_Source on each of them.
 
          declare
-            Parameters       : constant Asis.Parameter_Specification_List :=
-                                 Parameter_Profile (Element);
-            Source_Control   : Asis.Traverse_Control  := Asis.Continue;
-            Source_State     : Source_Traversal_State := Initial_State;
+            Parameters : constant Asis.Parameter_Specification_List :=
+                           Parameter_Profile (Element);
          begin
             for J in Parameters'Range loop
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Parameters (J)));
-               Source_State.Echo_Cursor := Cursor_At (Parameters (J));
-               Traverse_Source (Parameters (J),
-                                Source_Control,
-                                Source_State);
-               PP_Echo_Cursor_Range
-                 (Source_State.Echo_Cursor,
-                  Cursor_At_End_Of (Parameters (J)));
-               State.Echo_Cursor := Cursor_After (Parameters (J));
+               Reach_Element_And_Traverse (Parameters (J), State);
             end loop;
          end;
 
