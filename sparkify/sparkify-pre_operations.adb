@@ -444,14 +444,11 @@ package body Sparkify.Pre_Operations is
                     and then (Declaration_Kind (Encl_Element)
                               = A_Package_Body_Declaration))
          then
-            --  Only translate contracts on library-level subprograms. Two
-            --  cases:
-            --  * Subprograms with no enclosing element: these are declarations
-            --    in package spec;
-            --  * Subprograms in package body that acts as specs: these are
-            --    definitions of subprograms in package body, with no previous
-            --    declarations (as declarations of subprograms in package body
-            --    are not allowed in SPARK).
+            --  Only translate contracts on library-level
+            --  subprograms. These are definitions of subprograms in
+            --  package body, with no previous declarations (as
+            --  declarations of subprograms in package body are not
+            --  allowed in SPARK).
 
             Column_Start := Element_Span (Element).First_Column;
 
