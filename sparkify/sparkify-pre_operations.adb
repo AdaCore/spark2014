@@ -369,12 +369,12 @@ package body Sparkify.Pre_Operations is
       --  to align the SPARK contract
 
       Encl_Element : constant Asis.Element := Enclosing_Element (Element);
-
-      Is_Function : constant Boolean :=
-        Declaration_Kind (Element) = A_Function_Declaration;
-
-      Pragmas : constant Pragma_Element_List :=
-        Corresponding_Pragmas (Element);
+      Is_Function  : constant Boolean :=
+                       Declaration_Kind (Element) = A_Function_Declaration;
+      Pragmas      : constant Pragma_Element_List :=
+                       Corresponding_Pragmas (Element);
+      Parameters   : constant Asis.Parameter_Specification_List :=
+                       Parameter_Profile (Element);
    begin
       if Element_Kind (Encl_Element) = A_Declaration and then
         (Declaration_Kind (Encl_Element) = A_Function_Body_Declaration or else
@@ -400,14 +400,9 @@ package body Sparkify.Pre_Operations is
          --  should be prefixed if needed. To do so, we should call
          --  Traverse_Source on each of them.
 
-         declare
-            Parameters : constant Asis.Parameter_Specification_List :=
-                           Parameter_Profile (Element);
-         begin
-            for J in Parameters'Range loop
-               Reach_Element_And_Traverse (Parameters (J), State);
-            end loop;
-         end;
+         for J in Parameters'Range loop
+            Reach_Element_And_Traverse (Parameters (J), State);
+         end loop;
 
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_At_End_Of (Element));
          SPARK_Contract (Pragmas     => Pragmas,
@@ -415,7 +410,6 @@ package body Sparkify.Pre_Operations is
                          Column      => Column_Start);
          State.Echo_Cursor := Cursor_After (Element);
       end if;
-
    end A_Subprogram_Unit_Declaration_Pre_Op;
 
    ------------------------------
