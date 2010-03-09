@@ -1,0 +1,89 @@
+------------------------------------------------------------------------
+with T; 
+--# inherit t;
+package S is
+
+   procedure Plus_Two  (N : in out T.Signed
+--@ line 5
+                                         );
+   --# pre              N > 0 and N < T.Signed'Last - 1;
+   --# post              N = N~    + 2;
+
+   function Plus_Two_F (N : T.Signed
+--@ line 9
+                                  ) return T.Signed
+--@ line 9
+                                                 ;
+   --# pre              N > 0 and N < T.Signed'Last - 1;
+   --# return Result =>  Result            = N + 2;
+
+end S;
+package body S is
+
+   procedure Inc_Positive (N : in out T.Signed
+--@ line 3
+                                            )
+
+   --# pre                 N > 0 and N < T.Signed'Last;
+   --# post                 N = N~    + 1;
+--@ line 4
+   is
+
+
+   begin
+      N := T.Signed
+--@ line 8
+                  (Integer (N) + 1);
+   end Inc_Positive;
+
+   function Inc_Positive_F (N : T.Signed
+--@ line 11
+                                      ) return T.Signed
+
+   --# pre                 N > 0 and N < T.Signed'Last;
+   --# return Result =>     Result                = N + 1;
+--@ line 12
+   is
+
+
+   begin
+      return T.Signed
+--@ line 16
+                    (Integer (N) + 1);
+   end Inc_Positive_F;
+
+   procedure Plus_Two  (N : in out T.Signed
+--@ line 19
+                                         ) is
+   begin
+      Inc_Positive (N);
+      Inc_Positive (N);
+   end Plus_Two;
+
+   function Plus_Two_F (N : T.Signed
+--@ line 25
+                                  ) return T.Signed
+--@ line 25
+                                                  is
+   begin
+      return Inc_Positive_F (Inc_Positive_F (N));
+   end Plus_Two_F;
+
+end S;
+package T is
+
+   type Signed is range -10 .. 10;
+
+end T;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          4      0      3              0      0      0       1
+Precondition check:      4      0      3              0      0      0       1
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           4      0      4              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 12      0     10              0      0      0       2  <<<
+% Totals:                       0%    83%             0%     0%     0%     17% <<<
+===================== End of Semantic Analysis Summary ========================
