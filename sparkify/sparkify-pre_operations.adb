@@ -67,6 +67,13 @@ package body Sparkify.Pre_Operations is
       Column      : Character_Position_Positive);
    --  Print preconditions and postconditions in pseudo-SPARK syntax
 
+   procedure Reach_Element_And_Traverse
+     (Element : Asis.Element;
+      State   : in out Source_Traversal_State);
+   --  Echo everything before Element; then, traverse it in Printing_Code
+   --  mode (prefixing identifiers et cetera). At the end of procedure,
+   --  the cursor is set after Element.
+
    -----------------------------------
    -- Argument_By_Name_And_Position --
    -----------------------------------
@@ -110,13 +117,12 @@ package body Sparkify.Pre_Operations is
    function Has_SPARK_Contract (Pragmas : Pragma_Element_List) return Boolean
    is
    begin
-
       for Pragma_Idx in Pragmas'Range loop
          declare
             Pragma_Elt : constant Pragma_Element := Pragmas (Pragma_Idx);
-            Name      : constant Wide_String := Pragma_Name_Image (Pragma_Elt);
+            Name       : constant Wide_String :=
+                           Pragma_Name_Image (Pragma_Elt);
          begin
-
             if Name = Precondition_Name or else Name = Postcondition_Name then
                return True;
             end if;
@@ -140,11 +146,11 @@ package body Sparkify.Pre_Operations is
       for Pragma_Idx in Pragmas'Range loop
          declare
             Pragma_Elt : constant Pragma_Element := Pragmas (Pragma_Idx);
-            Name      : constant Wide_String := Pragma_Name_Image (Pragma_Elt);
+            Name       : constant Wide_String :=
+                           Pragma_Name_Image (Pragma_Elt);
          begin
 
             if Name = Precondition_Name or else Name = Postcondition_Name then
-
                declare
                   Args : constant Association_List :=
                     Pragma_Argument_Associations (Pragma_Elt);
@@ -208,7 +214,6 @@ package body Sparkify.Pre_Operations is
         (Loop_Element : Asis.Element)
         return Asis.Element is
       begin
-
          if Flat_Element_Kind (Loop_Element) = A_For_Loop_Statement then
             return For_Loop_Parameter_Specification (Loop_Element);
          else
@@ -236,27 +241,13 @@ package body Sparkify.Pre_Operations is
          --  The iteration scheme can contain identifiers; they
          --  should be prefixed if needed. To do so, we should do
          --  Traverse_Source on what's before the first statement.
-
-         declare
-            Iteration_Scheme : constant Asis.Expression :=
-                                 Get_Iteration_Scheme (Element);
-            Source_Control   : Asis.Traverse_Control  := Asis.Continue;
-            Source_State     : Source_Traversal_State := Initial_State;
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor, Cursor_Before (Iteration_Scheme));
-            Source_State.Echo_Cursor := Cursor_At (Iteration_Scheme);
-            Traverse_Source (Iteration_Scheme, Source_Control, Source_State);
-            PP_Echo_Cursor_Range
-              (Source_State.Echo_Cursor, Cursor_At_End_Of (Iteration_Scheme));
-            State.Echo_Cursor := Cursor_After (Iteration_Scheme);
-         end;
+         Reach_Element_And_Traverse (Get_Iteration_Scheme (Element), State);
       end if;
 
       if Statements'First <= Last_Pragma_Index then
          declare
             Pragmas : constant Pragma_Element_List :=
-              Statements (Statements'First .. Last_Pragma_Index);
+                        Statements (Statements'First .. Last_Pragma_Index);
          begin
             PP_Echo_Cursor_Range
               (State.Echo_Cursor, Cursor_Before (Pragmas (Pragmas'First)));
@@ -264,15 +255,18 @@ package body Sparkify.Pre_Operations is
             for Index in Pragmas'Range loop
                if Pragma_Kind (Pragmas (Index)) = An_Assert_Pragma then
                   declare
-                     Element : constant Pragma_Element := Pragmas (Index);
-                     Args : constant Association_List :=
-                       Pragma_Argument_Associations (Element);
-                     Arg : constant Association :=
-                        Argument_By_Name_And_Position
-                         (Args, Nil_Name, Check_Position_In_Assert);
-                     Expr : constant Asis.Expression := Actual_Parameter (Arg);
+                     Element      : constant Pragma_Element := Pragmas (Index);
+                     Args         : constant Association_List :=
+                                      Pragma_Argument_Associations (Element);
+                     Arg          : constant Association :=
+                                      Argument_By_Name_And_Position
+                                        (Args,
+                                         Nil_Name,
+                                         Check_Position_In_Assert);
+                     Expr         : constant Asis.Expression :=
+                                      Actual_Parameter (Arg);
                      Column_Start : constant Character_Position_Positive :=
-                       Element_Span (Element).First_Column;
+                                      Element_Span (Element).First_Column;
                   begin
                      PP_Assert (Column_Start, Expr);
                   end;
@@ -311,7 +305,7 @@ package body Sparkify.Pre_Operations is
       pragma Unreferenced (Control);
 
       Name : constant Wide_String :=
-        Pragma_Name_Image (Pragma_Element'(Element));
+               Pragma_Name_Image (Pragma_Element'(Element));
    begin
 
       if Cursor_At (Element) < State.Echo_Cursor then
@@ -357,14 +351,13 @@ package body Sparkify.Pre_Operations is
       --  to align the SPARK contract
 
       Encl_Element : constant Asis.Element := Enclosing_Element (Element);
-
-      Is_Function : constant Boolean :=
-        Declaration_Kind (Element) = A_Function_Declaration;
-
-      Pragmas : constant Pragma_Element_List :=
-        Corresponding_Pragmas (Element);
+      Is_Function  : constant Boolean :=
+                       Declaration_Kind (Element) = A_Function_Declaration;
+      Pragmas      : constant Pragma_Element_List :=
+                       Corresponding_Pragmas (Element);
+      Parameters   : constant Asis.Parameter_Specification_List :=
+                       Parameter_Profile (Element);
    begin
-
       if Element_Kind (Encl_Element) = A_Declaration and then
         (Declaration_Kind (Encl_Element) = A_Function_Body_Declaration or else
            Declaration_Kind (Encl_Element) = A_Procedure_Body_Declaration)
@@ -384,13 +377,25 @@ package body Sparkify.Pre_Operations is
 
       elsif Has_SPARK_Contract (Pragmas) then
          Column_Start := Element_Span (Element).First_Column;
+
+         --  The parameter lists contains identifiers; they
+         --  should be prefixed if needed. To do so, we should call
+         --  Traverse_Source on each of them.
+
+         for J in Parameters'Range loop
+            Reach_Element_And_Traverse (Parameters (J), State);
+         end loop;
+
+         if Is_Function then
+            Reach_Element_And_Traverse (Result_Profile (Element), State);
+         end if;
+
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_At_End_Of (Element));
          SPARK_Contract (Pragmas     => Pragmas,
                          Is_Function => Is_Function,
                          Column      => Column_Start);
          State.Echo_Cursor := Cursor_After (Element);
       end if;
-
    end A_Subprogram_Unit_Declaration_Pre_Op;
 
    ------------------------------
@@ -410,47 +415,58 @@ package body Sparkify.Pre_Operations is
 
       Encl_Element : constant Asis.Element := Enclosing_Element (Element);
 
-      Is_Function : constant Boolean :=
-        Declaration_Kind (Element) = A_Function_Body_Declaration;
+      Is_Function  : constant Boolean :=
+                       Declaration_Kind (Element)
+                         = A_Function_Body_Declaration;
 
-      Pragmas : constant Pragma_Element_List :=
-        Corresponding_Pragmas (Element);
+      Pragmas      : constant Pragma_Element_List :=
+                       Corresponding_Pragmas (Element);
+
+      Params       : constant Parameter_Specification_List :=
+                       Parameter_Profile (Element);
 
       Current_Cursor : Cursor;
    begin
-
       if Has_SPARK_Contract (Pragmas) then
-
-         if Is_Nil (Encl_Element) then
-            --  Only translate contracts on library-level subprograms (which
-            --  are those subprograms with no enclosing element)
+         if Is_Nil (Encl_Element)
+           or else (Acts_As_Spec (Element)
+                    and then (Declaration_Kind (Encl_Element)
+                              = A_Package_Body_Declaration))
+         then
+            --  Only translate contracts on library-level
+            --  subprograms. These are definitions of subprograms in
+            --  package body, with no previous declarations (as
+            --  declarations of subprograms in package body are not
+            --  allowed in SPARK).
 
             Column_Start := Element_Span (Element).First_Column;
 
+            for J in Params'Range loop
+               Reach_Element_And_Traverse (Params (J), State);
+            end loop;
+
             case Declaration_Kind (Element) is
-            when A_Procedure_Body_Declaration =>
-               declare
-                  Params : constant Parameter_Specification_List :=
-                    Parameter_Profile (Element);
-               begin
+               when A_Procedure_Body_Declaration =>
                   if Params'Length = 0 then
                      declare
                         Names : constant Defining_Name_List :=
-                          Asis.Declarations.Names (Element);
+                                  Asis.Declarations.Names (Element);
                      begin
                         pragma Assert (Names'Length = 1);
                         Current_Cursor := Cursor_After (Names (Names'First));
                      end;
                   else
-                     Current_Cursor := Cursor_After (Params (Params'Last));
+                     Current_Cursor := State.Echo_Cursor;
                      Skip_Delimiter (Current_Cursor, Right_Parenthesis_Dlm);
                   end if;
-               end;
-            when A_Function_Body_Declaration =>
-               Current_Cursor := Cursor_After (Result_Profile (Element));
-            when others =>
-               pragma Assert (False);
-               null;
+
+               when A_Function_Body_Declaration =>
+                  Reach_Element_And_Traverse (Result_Profile (Element), State);
+                  Current_Cursor := State.Echo_Cursor;
+
+               when others =>
+                  pragma Assert (False);
+                  null;
             end case;
 
             PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
@@ -470,7 +486,6 @@ package body Sparkify.Pre_Operations is
                           Build_GNAT_Location (Element));
          end if;
       end if;
-
    end A_Subprogram_Unit_Pre_Op;
 
    ------------------------------------------------
@@ -484,14 +499,12 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
 
-      Name : constant Wide_String :=
-        Name_Image (Attribute_Designator_Identifier (Element));
-
+      Name     : constant Wide_String :=
+                   Name_Image (Attribute_Designator_Identifier (Element));
       Prefix_S : constant Wide_String :=
-        State.Prefix (1 .. Integer (State.Prefix_Len));
+                   State.Prefix (1 .. Integer (State.Prefix_Len));
    begin
       if State.Phase = Printing_Logic then
-
          if Name = Old_Name then
             PP_Echo_Cursor_Range (State.Echo_Cursor,
                                   Cursor_At_End_Of (Prefix (Element)),
@@ -508,7 +521,6 @@ package body Sparkify.Pre_Operations is
                         Prefix => Prefix_S);
             State.Echo_Cursor := Cursor_After (Element);
          end if;
-
       end if;
    end An_Implementation_Defined_Attribute_Pre_Op;
 
@@ -530,17 +542,24 @@ package body Sparkify.Pre_Operations is
         (Element : Asis.Element) return Boolean
       is
          Decl_Element : constant Asis.Element :=
-           Corresponding_Name_Declaration (Element);
-         Element_Unit : constant Asis.Compilation_Unit :=
-           Enclosing_Compilation_Unit (Decl_Element);
-         Body_Unit : constant Asis.Compilation_Unit :=
-           Corresponding_Body (Element_Unit);
-         --  Body_Unit might be null or the body unit corresponding to
-         --  specification unit Element_Unit
+                          Corresponding_Name_Declaration (Element);
       begin
-         return (Is_Standard (Element_Unit) or else
-                 Is_Equal (Element_Unit, The_Unit) or else
-                 Is_Equal (Body_Unit, The_Unit));
+         if Is_Nil (Decl_Element) then
+            return False;
+         end if;
+
+         declare
+            Element_Unit : constant Asis.Compilation_Unit :=
+                             Enclosing_Compilation_Unit (Decl_Element);
+            Body_Unit    : constant Asis.Compilation_Unit :=
+                             Corresponding_Body (Element_Unit);
+            --  Body_Unit might be null or the body unit corresponding to
+            --  specification unit Element_Unit
+         begin
+            return (Is_Standard (Element_Unit) or else
+                    Is_Equal (Element_Unit, The_Unit) or else
+                    Is_Equal (Body_Unit, The_Unit));
+         end;
       end Is_Defined_In_Standard_Or_Current_Compilation_Unit;
 
       function Prepend_Package_Name
@@ -586,14 +605,12 @@ package body Sparkify.Pre_Operations is
         not Is_Defined_In_Standard_Or_Current_Compilation_Unit (Element) then
          --  Identifier should be prefixed by its package name
          declare
-            Decl_Element : constant Asis.Element :=
-              Corresponding_Name_Declaration (Element);
-
-            Base_Name : constant Wide_String :=
-              Trim (Element_Image (Element), Ada.Strings.Left);
-
+            Decl_Element  : constant Asis.Element :=
+                              Corresponding_Name_Declaration (Element);
+            Base_Name     : constant Wide_String :=
+                              Trim (Element_Image (Element), Ada.Strings.Left);
             Complete_Name : constant Wide_String :=
-              Prepend_Package_Name (Decl_Element, Base_Name);
+                              Prepend_Package_Name (Decl_Element, Base_Name);
          begin
             PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
             PP_Text_At (Line   => First_Line_Number (Element),
@@ -621,5 +638,24 @@ package body Sparkify.Pre_Operations is
       State.Echo_Cursor := Cursor_After (Element);
       Control := Abandon_Children;
    end A_Use_Package_Clause_Pre_Op;
+
+   --------------------------------
+   -- Reach_Element_And_Traverse --
+   --------------------------------
+
+   procedure Reach_Element_And_Traverse
+     (Element : Asis.Element;
+      State   : in out Source_Traversal_State)
+   is
+      Source_Control : Asis.Traverse_Control  := Asis.Continue;
+      Source_State   : Source_Traversal_State := Initial_State;
+   begin
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+      Source_State.Echo_Cursor := Cursor_At (Element);
+      Traverse_Source (Element, Source_Control, Source_State);
+      PP_Echo_Cursor_Range (Source_State.Echo_Cursor,
+                            Cursor_At_End_Of (Element));
+      State.Echo_Cursor := Cursor_After (Element);
+   end Reach_Element_And_Traverse;
 
 end Sparkify.Pre_Operations;

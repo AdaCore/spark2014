@@ -232,13 +232,23 @@ package body Sparkify.PP_Output is
 
       if Line < Output_Line or else
         Line > Output_Line + Threshold then
-         PP_Line_Indication (Line);
+         --  Line indication shall not be intermixed with SPARK annotations.
+         --  ??? At this point, we do not know what we are printing
+         --  (Code or Logic) anymore, as the state has not been passed.
+         --  To workaround this problem, we assume that an empty prefix
+         --  means printing code; although it is not quite clean, it should
+         --  be a safe assumption.
+         if Prefix = "" then
+            PP_Line_Indication (Line);
+         end if;
       elsif Line > Output_Line then
          for J in Integer range Output_Line .. Line - 1 loop
             PP_Close_Line;
          end loop;
       elsif Column < Output_Column then
-         PP_Line_Indication (Line);
+         if Prefix = "" then
+            PP_Line_Indication (Line);
+         end if;
       end if;
 
       if Prefix /= "" and then Output_Column = 1 then

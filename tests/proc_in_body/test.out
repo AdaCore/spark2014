@@ -1,0 +1,41 @@
+------------------------------------------------------------------------
+package S is
+
+   procedure Plus_Two  (N : in out Integer);
+   --# pre              N > 0 and N < Integer'Last - 1;
+   --# post              N = N~    + 2;
+
+end S;
+package body S is
+
+   procedure Inc_Positive (N : in out Integer)
+
+   --# pre                 N > 0 and N < Integer'Last;
+   --# post                 N = N~    + 1;
+--@ line 4
+   is
+
+
+   begin
+      N := N + 1;
+   end Inc_Positive;
+
+   procedure Plus_Two  (N : in out Integer) is
+   begin
+      Inc_Positive (N);
+      Inc_Positive (N);
+   end Plus_Two;
+
+end S;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          2      0      2              0      0      0       0
+Precondition check:      2      0      2              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           3      0      3              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  7      0      7              0      0      0       0
+% Totals:                       0%   100%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
