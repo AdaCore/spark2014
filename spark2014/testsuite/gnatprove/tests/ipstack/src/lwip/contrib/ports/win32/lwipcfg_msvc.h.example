@@ -1,0 +1,8 @@
+
+/* configuration for this port */
+
+#define PACKET_LIB_ADAPTER_NR         3
+
+#define LWIP_PORT_INIT_IPADDR(addr)   IP4_ADDR((addr), 192,168,1,200)
+#define LWIP_PORT_INIT_GW(addr)       IP4_ADDR((addr), 192,168,1,1)
+#define LWIP_PORT_INIT_NETMASK(addr)  IP4_ADDR((addr), 255,255,255,0)
