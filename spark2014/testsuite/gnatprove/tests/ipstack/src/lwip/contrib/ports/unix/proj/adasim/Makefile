@@ -36,7 +36,7 @@ CC=gcc
 #To compile for cygwin: make ARCH=cygwin
 ARCH=unix
 CFLAGS=-g -Wall -D$(ARCH) -DIPv4 -DLWIP_DEBUG -pedantic
-LDFLAGS=-lpcap -lutil
+LDFLAGS=-lutil # -lpcap ? not always there and requirement unclear
 CONTRIBDIR=../../../..
 LWIPARCH=$(CONTRIBDIR)/ports/unix
 ARFLAGS=rs
@@ -121,6 +121,10 @@ $(LWIPLIB): $(LWIPOBJS)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
 simhost: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
+	gnatmake -f -g adaservices.adb -Iapps \
+	-largs -pthread simhost.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
+
+simhost0: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -pthread -o simhost simhost.o $(APPLIB) $(LWIPLIB)
 
 simrouter: .depend $(LWIPLIB) $(APPLIB) simrouter.o

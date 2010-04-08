@@ -390,16 +390,6 @@ inet_chksum.o: ../../../../../lwip/src/core/ipv4/inet_chksum.c \
   ../../../../../lwip/src/include/lwip/err.h \
   ../../../../../lwip/src/include/ipv4/lwip/ip_addr.h \
   ../../../../../lwip/src/include/ipv4/lwip/inet.h
-ip_addr.o: ../../../../../lwip/src/core/ipv4/ip_addr.c \
-  ../../../../../lwip/src/include/lwip/opt.h lwipopts.h \
-  ../../../../../lwip/src/include/lwip/debug.h \
-  ../../../../../lwip/src/include/lwip/arch.h \
-  ../../../../ports/unix/include/arch/cc.h \
-  ../../../../../lwip/src/include/ipv4/lwip/ip_addr.h \
-  ../../../../../lwip/src/include/ipv4/lwip/inet.h \
-  ../../../../../lwip/src/include/lwip/netif.h \
-  ../../../../../lwip/src/include/lwip/err.h \
-  ../../../../../lwip/src/include/lwip/pbuf.h
 ip.o: ../../../../../lwip/src/core/ipv4/ip.c \
   ../../../../../lwip/src/include/lwip/opt.h lwipopts.h \
   ../../../../../lwip/src/include/lwip/debug.h \
@@ -428,6 +418,16 @@ ip.o: ../../../../../lwip/src/core/ipv4/ip.c \
   ../../../../../lwip/src/include/lwip/memp.h \
   ../../../../../lwip/src/include/lwip/memp_std.h \
   ../../../../ports/unix/include/arch/perf.h
+ip_addr.o: ../../../../../lwip/src/core/ipv4/ip_addr.c \
+  ../../../../../lwip/src/include/lwip/opt.h lwipopts.h \
+  ../../../../../lwip/src/include/lwip/debug.h \
+  ../../../../../lwip/src/include/lwip/arch.h \
+  ../../../../ports/unix/include/arch/cc.h \
+  ../../../../../lwip/src/include/ipv4/lwip/ip_addr.h \
+  ../../../../../lwip/src/include/ipv4/lwip/inet.h \
+  ../../../../../lwip/src/include/lwip/netif.h \
+  ../../../../../lwip/src/include/lwip/err.h \
+  ../../../../../lwip/src/include/lwip/pbuf.h
 ip_frag.o: ../../../../../lwip/src/core/ipv4/ip_frag.c \
   ../../../../../lwip/src/include/lwip/opt.h lwipopts.h \
   ../../../../../lwip/src/include/lwip/debug.h \

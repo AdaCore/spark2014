@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
- * All rights reserved. 
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -11,22 +11,25 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission. 
+ *    derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED 
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
- * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
  * This file is part of the lwIP TCP/IP stack.
- * 
+ *
  * Author: Adam Dunkels <adam@sics.se>
+ *
+ * Copyright (C) 2010, AdaCore
+ * Rename main into simhost_main, to be called by the Ada entry point.
  *
  */
 
@@ -111,7 +114,7 @@ static struct option longopts[] = {
 void usage(void)
 {
   unsigned char i;
-   
+
   printf("options:\n");
   for (i = 0; i < NUM_OPTS; i++) {
     printf("-%c --%s\n",longopts[i].val, longopts[i].name);
@@ -136,7 +139,7 @@ tcpip_init_done(void *arg)
 }
 
 #if PPP_SUPPORT
-void 
+void
 pppLinkStatusCallback(void *ctx, int errCode, void *arg)
 {
     switch(errCode) {
@@ -346,7 +349,7 @@ main_thread(void *arg)
 
   pppOpen(ppp_sio, pppLinkStatusCallback, NULL);
 #endif /* PPP_SUPPORT */
-  
+
 #if LWIP_DHCP
   {
     IP4_ADDR(&gw, 0,0,0,0);
@@ -359,7 +362,7 @@ main_thread(void *arg)
     dhcp_start(&netif);
   }
 #else
-  
+
   netif_set_default(netif_add(&netif,&ipaddr, &netmask, &gw, NULL, tapif_init,
                   tcpip_input));
   netif_set_up(&netif);
@@ -371,23 +374,23 @@ main_thread(void *arg)
   netif_add(&ipaddr, &netmask, &gw, NULL, pcapif_init, tcpip_input);
 #endif
 
-#if LWIP_HAVE_LOOPIF  
+#if LWIP_HAVE_LOOPIF
   IP4_ADDR(&gw, 127,0,0,1);
   IP4_ADDR(&ipaddr, 127,0,0,1);
   IP4_ADDR(&netmask, 255,0,0,0);
-  
+
   netif_set_default(netif_add(&loopif, &ipaddr, &netmask, &gw, NULL, loopif_init,
         tcpip_input));
 #endif
-  
-#if LWIP_TCP  
+
+#if LWIP_TCP
   tcpecho_init();
   shell_init();
   httpd_init();
 #endif
-#if LWIP_UDP  
+#if LWIP_UDP
   udpecho_init();
-#endif  
+#endif
 
 #if LWIP_RAW
   /** @todo remove dependency on RAW PCB support */
@@ -412,7 +415,7 @@ main_thread(void *arg)
 }
 /*-----------------------------------------------------------------------------------*/
 int
-main(int argc, char **argv)
+simhost_main(int argc, char **argv)
 {
   struct in_addr inaddr;
   int ch;
@@ -422,11 +425,11 @@ main(int argc, char **argv)
   IP4_ADDR(&gw, 192,168,0,1);
   IP4_ADDR(&netmask, 255,255,255,0);
   IP4_ADDR(&ipaddr, 192,168,0,2);
-  
+
   ping_flag = 0;
   /* use debug flags defined by debug.h */
   debug_flags = LWIP_DBG_OFF;
-  
+
   while ((ch = getopt_long(argc, argv, "dhg:i:m:p:", longopts, NULL)) != -1) {
     switch (ch) {
       case 'd':
@@ -452,7 +455,7 @@ main(int argc, char **argv)
         ping_flag = !0;
         inet_aton(optarg, &inaddr);
         /* lwip inet.h oddity workaround */
-        ping_addr.addr = inaddr.s_addr; 
+        ping_addr.addr = inaddr.s_addr;
         strncpy(ip_str,inet_ntoa(inaddr),sizeof(ip_str));
         printf("Using %s to ping\n", ip_str);
         break;
@@ -477,9 +480,9 @@ main(int argc, char **argv)
 #endif /* PERF */
 
   lwip_init();
-  
+
   printf("System initialized.\n");
-    
+
   sys_thread_new("main_thread", main_thread, NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
   pause();
   return 0;
