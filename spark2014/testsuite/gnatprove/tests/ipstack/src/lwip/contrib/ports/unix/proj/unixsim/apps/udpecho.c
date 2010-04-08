@@ -53,6 +53,7 @@ udpecho_thread(void *arg)
     netconn_connect(conn, addr, port);
     netbuf_copy(buf, buffer, buf->p->tot_len);
     buffer[buf->p->tot_len] = '\0';
+    buf->addr = NULL;
     netconn_send(conn, buf);
     printf("got %s\n", buffer);
     netbuf_delete(buf);
