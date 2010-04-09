@@ -3,16 +3,13 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package body AIP_Netbufs is
+--# inherit AIP;
 
-   function Netbuf_Fromaddr (NB : Netbuf_Id) return AIP_IPaddrs.IPaddr_Id is
-   begin
-      return NB.Addr;
-   end Netbuf_Fromaddr;
+package AIP.IPaddrs is
 
-   function Netbuf_Fromport (NB : Netbuf_Id) return AIP_Ctypes.U16_T is
-   begin
-      return NB.Port;
-   end Netbuf_Fromport;
+   type IPaddr is mod 2 ** 32;
+   subtype IPaddr_Id is AIP.IPTR_T;
 
-end AIP_Netbufs;
+   IP_ADDR_ANY : constant IPaddr_Id := AIP.NULID;
+
+end AIP.IPaddrs;

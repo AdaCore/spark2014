@@ -3,6 +3,13 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package AIP_Config is
-   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
-end AIP_Config;
+package body AIP.Pbufs is
+
+   procedure Pbuf_Blind_Free (Pb : Pbuf_Id) is
+      N : AIP.U8_T;
+      pragma Warnings (Off, N);
+   begin
+      N := Pbuf_Free (Pb);
+   end Pbuf_Blind_Free;
+
+end AIP.Pbufs;

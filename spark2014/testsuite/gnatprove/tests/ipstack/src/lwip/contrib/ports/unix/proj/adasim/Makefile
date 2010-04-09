@@ -101,11 +101,11 @@ APPOBJS=$(notdir $(APPFILES:.c=.o))
 %.o:
 	$(CC) $(CFLAGS) -c $(<:.o=.c)
 
-all ipv4 compile: adaservices 
+all ipv4 compile: adaservices spark
 .PHONY: all
 
 clean:
-	rm -f *.o $(LWIPLIB) $(APPLIB) simhost simnode simrouter *.s .depend* *.core core
+	rm -f *.o $(LWIPLIB) $(APPLIB) simhost simnode simrouter *.s .depend* *.core core *.sli *.lst *.smf *.rep *.ali 
 
 depend dep: .depend
 
@@ -121,8 +121,12 @@ $(LWIPLIB): $(LWIPOBJS)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
 adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip_wrappers.o $(APPFILES)
-	gnatmake -f -gnatg -g adaservices.adb -Iapps \
-	-largs -pthread simhost.o aip_wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
+	gnatmake -f  -g adaservices.adb -Iapps -largs -pthread \
+	simhost.o aip_wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
+
+spark:
+	-sparkmake -e='*b~*'
+	-spark -flow=data  @spark > spark.log
 
 simhost: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -pthread -o simhost simhost.o $(APPLIB) $(LWIPLIB)

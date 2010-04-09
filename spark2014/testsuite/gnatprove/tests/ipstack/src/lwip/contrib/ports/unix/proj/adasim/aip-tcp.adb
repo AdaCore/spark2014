@@ -3,11 +3,13 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package body AIP_Support is
-   procedure Assert (T : Boolean) is
+with AIP.Config;
+
+package body AIP.TCP is
+
+   function Tcp_Listen (Pcb : TCB_Id) return TCB_Id is
    begin
-      if not T then
-         raise Program_Error;
-      end if;
-   end Assert;
-end AIP_Support;
+      return Tcp_Listen_BL (Pcb, AIP.Config.TCP_DEFAULT_LISTEN_BACKLOG);
+   end Tcp_Listen;
+
+end AIP.TCP;

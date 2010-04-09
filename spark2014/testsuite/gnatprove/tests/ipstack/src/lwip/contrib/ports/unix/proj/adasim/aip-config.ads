@@ -3,13 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP_Config;
+--# inherit AIP;
 
-package body AIP_TCP is
-
-   function Tcp_Listen (Pcb : TCB_Id) return TCB_Id is
-   begin
-      return Tcp_Listen_BL (Pcb, AIP_Config.TCP_DEFAULT_LISTEN_BACKLOG);
-   end Tcp_Listen;
-
-end AIP_TCP;
+package AIP.Config is
+   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
+end AIP.Config;

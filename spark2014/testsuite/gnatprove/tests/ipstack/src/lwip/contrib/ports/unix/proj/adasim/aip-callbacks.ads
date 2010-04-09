@@ -5,7 +5,9 @@
 
 with System;
 
-package AIP_Callbacks is
+--# inherit AIP;
+
+package AIP.Callbacks is
 
    --  Eventually, callbacks will be identified by integer values and the user
    --  data argument will be an integer index as well, designating a state
@@ -22,6 +24,6 @@ package AIP_Callbacks is
    --  the end.
 
    subtype Callback_Id is System.Address;
-   NOCB : Callback_Id := System.Null_Address;
+   NOCB : constant Callback_Id := System.Null_Address;
 
-end AIP_Callbacks;
+end AIP.Callbacks;

@@ -3,9 +3,9 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP_Config;
+with AIP.Config;
 
-package body AIP_Netconns is
+package body AIP.Netconns is
 
    function Netconn_New (Ctype : Netconn_Kind) return Netconn_Id is
    begin
@@ -14,7 +14,7 @@ package body AIP_Netconns is
 
    procedure Netconn_Listen (NC : Netconn_Id) is
    begin
-      Netconn_Listen_BL (NC, AIP_Config.TCP_DEFAULT_LISTEN_BACKLOG);
+      Netconn_Listen_BL (NC, AIP.Config.TCP_DEFAULT_LISTEN_BACKLOG);
    end Netconn_Listen;
 
-end AIP_Netconns;
+end AIP.Netconns;
