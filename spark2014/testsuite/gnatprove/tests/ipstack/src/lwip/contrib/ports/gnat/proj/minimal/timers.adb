@@ -1,3 +1,8 @@
+------------------------------------------------------------------------------
+--                            IPSTACK COMPONENTS                            --
+--             Copyright (C) 2010, Free Software Foundation, Inc.           --
+------------------------------------------------------------------------------
+
 package body Timers is
 
    use type Time_Types.Time;
@@ -44,7 +49,7 @@ package body Timers is
       for J in My_Timers'Range loop
          declare
             My_Timer    : Timer renames My_Timers (J);
-            My_Deadline : Time_Types.Time := Deadline (My_Timer);
+            My_Deadline : constant Time_Types.Time := Deadline (My_Timer);
          begin
             if My_Deadline < Result then
                Result := My_Deadline;

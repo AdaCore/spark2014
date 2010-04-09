@@ -37,6 +37,7 @@ CC=$(GCC_PREFIX)gcc
 #To compile for openbsd: make ARCH=openbsd
 ARCH=openbsd
 CFLAGS=-g -Wall -pedantic -D$(ARCH) -DIPv4 -Os -fpack-struct -DLWIP_DEBUG -I$(LWIPARCH)/include
+ADAFLAGS=-gnatwa
 ARFLAGS=rs
 
 CONTRIBDIR=../../../..
@@ -62,9 +63,9 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 	$(LWIPDIR)/core/ipv4/ip_frag.c $(LWIPDIR)/core/ipv4/inet_chksum.c 
 
 # SNMPFILES: Extra SNMPv1 agent
-SNMPFILES=$(LWIPDIR)/core/snmp/asn1_dec.c $(LWIPDIR)/core/snmp/asn1_enc.c \
-	$(LWIPDIR)/core/snmp/mib2.c $(LWIPDIR)/core/snmp/mib_structs.c \
-	$(LWIPDIR)/core/snmp/msg_in.c $(LWIPDIR)/core/snmp/msg_out.c lwip_prvmib.c
+#SNMPFILES=$(LWIPDIR)/core/snmp/asn1_dec.c $(LWIPDIR)/core/snmp/asn1_enc.c \
+#	$(LWIPDIR)/core/snmp/mib2.c $(LWIPDIR)/core/snmp/mib_structs.c \
+#	$(LWIPDIR)/core/snmp/msg_in.c $(LWIPDIR)/core/snmp/msg_out.c lwip_prvmib.c
 
 # NETIFFILES: Files implementing various generic network interface functions.'
 #NETIFFILES=$(LWIPDIR)/netif/etharp.c mintapif.c
@@ -74,18 +75,32 @@ LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES)
 LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 
+all ipv4 compile: echop
+.PHONY: all
+
+define LWIPF_template
+_src=$(1)
+$$(notdir $$(_src:.c=.o)): $$(_src)
+	$$(CC) $$(CFLAGS) -c $$<
+endef
+
+$(foreach lwipf,$(LWIPFILESW),$(eval $(call LWIPF_template,$(lwipf))))
+
 # APPFILES
-APPFILES=echo.c timer.c
+APPFILES=echo.c
+
+# ADAFILES
+ADAFILES= mainloop.adb ppc_clock.adb timers.adb time_types.adb
 
 LWIPLIB=liblwip4.a
 APPLIB=liblwipapps.a
-APPOBJS=$(notdir $(APPFILES:.c=.o))
+APPOBJS=$(notdir $(APPFILES:.c=.o)) $(notdir $(ADAFILES:.adb=.o))
 
-%.o:
-	$(CC) $(CFLAGS) -c $(<:.o=.c)
+%.o: %.adb
+	$(CC) $(CFLAGS) $(ADAFLAGS) -c $<
 
-all ipv4 compile: echop
-.PHONY: all
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f *.ali *.o $(LWIPLIB) $(APPLIB) echop .depend* *.core core

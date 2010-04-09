@@ -9,6 +9,6 @@
 
 void timer_init(void);
 void timer_set_interval(unsigned char tmr, unsigned int interval);
-unsigned char timer_testclr_evt(unsigned char tmr);
+/* unsigned char timer_testclr_evt(unsigned char tmr); */
 
 #endif

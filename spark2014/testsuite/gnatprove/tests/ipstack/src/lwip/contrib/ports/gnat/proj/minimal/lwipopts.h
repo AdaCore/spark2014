@@ -283,8 +283,10 @@
  * LWIP_SNMP==1: Turn on SNMP module. UDP must be available for SNMP
  * transport.
  */
+#if 0
 #define LWIP_SNMP                       1
 #define SNMP_PRIVATE_MIB                1
+#endif
 
 /*
    ----------------------------------

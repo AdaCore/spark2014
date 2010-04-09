@@ -30,8 +30,10 @@
  * RT timer modifications by Christiaan Simons
  */
 
+#if 0
 #include <unistd.h>
 #include <getopt.h>
+#endif
 
 #include "lwip/init.h"
 
@@ -46,13 +48,17 @@
 #include "lwip/ip.h"
 #include "lwip/ip_frag.h"
 #include "lwip/udp.h"
+#if 0
 #include "lwip/snmp_msg.h"
+#endif
 #include "lwip/tcp.h"
 #include "mintapif.h"
 #include "netif/etharp.h"
 
 #include "timer.h"
+#if 0
 #include <signal.h>
+#endif
 
 #include "echo.h"
 #include "private_mib.h"
@@ -76,6 +82,7 @@ u8_t syslocation_len = 0;
 /* enable == 1, disable == 2 */
 u8_t snmpauthentraps_set = 2;
 
+#if 0
 static struct option longopts[] = {
   /* turn on debugging output (if build with LWIP_DEBUG) */
   {"debug", no_argument,        NULL, 'd'},
@@ -93,7 +100,11 @@ static struct option longopts[] = {
   {NULL,   0,                 NULL,  0}
 };
 #define NUM_OPTS ((sizeof(longopts) / sizeof(struct option)) - 1)
+#endif
 
+extern void AIP_mainloop (void);
+
+#if 0
 void usage(void)
 {
   unsigned char i;
@@ -103,12 +114,15 @@ void usage(void)
     printf("-%c --%s\n",longopts[i].val, longopts[i].name);
   }
 }
+#endif
 
 int
 main(int argc, char **argv)
 {
   struct netif netif;
+#if 0
   sigset_t mask, oldmask, empty;
+#endif
   struct in_addr inaddr;
   int ch;
   char ip_str[16] = {0}, nm_str[16] = {0}, gw_str[16] = {0};
@@ -122,6 +136,7 @@ main(int argc, char **argv)
   /* use debug flags defined by debug.h */
   debug_flags = LWIP_DBG_OFF;
 
+#if 0
   while ((ch = getopt_long(argc, argv, "dhg:i:m:t:", longopts, NULL)) != -1) {
     switch (ch) {
       case 'd':
@@ -161,6 +176,7 @@ main(int argc, char **argv)
   }
   argc -= optind;
   argv += optind;
+#endif
   
   inaddr.s_addr = ipaddr.addr;
   strncpy(ip_str,inet_ntoa(inaddr),sizeof(ip_str));
@@ -206,7 +222,8 @@ main(int argc, char **argv)
 #endif
   
   printf("Applications started.\n");
-    
+
+#if 0
 
   while (1) {
     
@@ -253,6 +270,9 @@ main(int argc, char **argv)
       }
       
   }
+#else
+  AIP_mainloop ();
+#endif
   
   return 0;
 }
