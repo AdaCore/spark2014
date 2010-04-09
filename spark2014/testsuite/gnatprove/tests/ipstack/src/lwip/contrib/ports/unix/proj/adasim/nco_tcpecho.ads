@@ -3,6 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package AIP_Udpecho is
+--  Echo server implementation using the Netconn sequential interface
+
+package NCO_Tcpecho is
    procedure Run;
-end AIP_Udpecho;
+end NCO_Tcpecho;

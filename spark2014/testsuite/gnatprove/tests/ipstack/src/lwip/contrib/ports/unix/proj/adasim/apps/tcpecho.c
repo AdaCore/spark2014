@@ -83,13 +83,16 @@ tcpecho_thread(void *arg)
   }
 }
 
-extern void aip_tcpecho__run (void);
+extern void raw_tcpecho__init (void);
+extern void nco_tcpecho__run (void);
 
 /*-----------------------------------------------------------------------------------*/
 void
 tcpecho_init(void)
 {
-  sys_thread_new("tcpecho_thread", aip_tcpecho__run,
+  sys_thread_new("raw_tcpecho_thread", raw_tcpecho__init,
+		 NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
+  sys_thread_new("nco_tcpecho_thread", nco_tcpecho__run,
 		 NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
 }
 /*-----------------------------------------------------------------------------------*/

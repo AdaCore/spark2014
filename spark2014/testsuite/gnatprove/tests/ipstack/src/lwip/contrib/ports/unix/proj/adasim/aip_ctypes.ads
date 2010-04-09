@@ -13,5 +13,14 @@ package AIP_Ctypes is
 
    subtype Err_T is S8_T;
    NOERR : constant Err_T := 0;
+   ERR_MEM : constant Err_T := -1;
+   ERR_ABRT : constant Err_T := -4;
+
+   type SI_T is mod 2 ** 64;
+   --  State Index type, to be used to access application state pools and as
+   --  user data id across callbacks. This needs to be machine address size as
+   --  long as we rely on the original LWIP implementation.
+
+   NOSID : constant SI_T := 0;
 
 end AIP_Ctypes;

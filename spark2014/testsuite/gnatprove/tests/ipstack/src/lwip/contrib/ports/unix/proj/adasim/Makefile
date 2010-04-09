@@ -101,7 +101,7 @@ APPOBJS=$(notdir $(APPFILES:.c=.o))
 %.o:
 	$(CC) $(CFLAGS) -c $(<:.o=.c)
 
-all ipv4 compile: simhost 
+all ipv4 compile: adaservices 
 .PHONY: all
 
 clean:
@@ -117,14 +117,14 @@ $(APPLIB): $(APPOBJS)
 $(LWIPLIB): $(LWIPOBJS)
 	$(AR) $(ARFLAGS) $(LWIPLIB) $?
 
-.depend: simhost.c simnode.c simrouter.c $(LWIPFILES) $(APPFILES)
+.depend: simhost.c simnode.c simrouter.c aip_wrappers.c $(LWIPFILES) $(APPFILES)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
-simhost: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
-	gnatmake -f -g adaservices.adb -Iapps \
-	-largs -pthread simhost.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
+adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip_wrappers.o $(APPFILES)
+	gnatmake -f -gnatg -g adaservices.adb -Iapps \
+	-largs -pthread simhost.o aip_wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
 
-simhost0: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
+simhost: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) -pthread -o simhost simhost.o $(APPLIB) $(LWIPLIB)
 
 simrouter: .depend $(LWIPLIB) $(APPLIB) simrouter.o

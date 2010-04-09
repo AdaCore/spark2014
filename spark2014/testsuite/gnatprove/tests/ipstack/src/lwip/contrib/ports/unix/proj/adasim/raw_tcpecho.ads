@@ -3,13 +3,11 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP_Config;
+--  TCP echo server implementation using the RAW callback API
 
-package body AIP_TCP is
+package RAW_Tcpecho is
 
-   function Tcp_Listen (Pcb : TCB_Id) return TCB_Id is
-   begin
-      return Tcp_Listen_BL (Pcb, AIP_Config.TCP_DEFAULT_LISTEN_BACKLOG);
-   end Tcp_Listen;
+   procedure Init;
+   --  Setup server to wait for and process connections
 
-end AIP_TCP;
+end RAW_Tcpecho;

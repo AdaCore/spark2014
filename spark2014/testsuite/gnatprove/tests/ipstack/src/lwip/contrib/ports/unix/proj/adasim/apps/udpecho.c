@@ -62,12 +62,12 @@ udpecho_thread(void *arg)
   }
 }
 
-extern void aip_udpecho__run (void);
+extern void nco_udpecho__run (void);
 
 /*-----------------------------------------------------------------------------------*/
 void
 udpecho_init(void)
 {
-  sys_thread_new("udpecho_thread", aip_udpecho__run, NULL,
+  sys_thread_new("udpecho_thread", nco_udpecho__run, NULL,
 		 DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
 }
