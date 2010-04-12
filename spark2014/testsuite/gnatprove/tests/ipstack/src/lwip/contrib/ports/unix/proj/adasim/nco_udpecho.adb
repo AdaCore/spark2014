@@ -9,6 +9,11 @@ use type AIP.S8_T;
 
 package body NCO_Udpecho is
 
+   function Stop return Boolean is
+   begin
+      return False;
+   end Stop;
+
    procedure Run is
       NC : AIP.Netconns.Netconn_Id;
       NB : AIP.Netbufs.Netbuf_Id;
@@ -20,7 +25,7 @@ package body NCO_Udpecho is
       ER := AIP.Netconns.Netconn_Bind (NC, AIP.IPaddrs.IP_ADDR_ANY, 7);
       AIP.Support.Verify (ER = AIP.NOERR);
 
-      while True loop
+      while not Stop loop
          NB := AIP.Netconns.Netconn_Recv (NC);
          IP := AIP.Netbufs.Netbuf_Fromaddr (NB);
          PT := AIP.Netbufs.Netbuf_Fromport (NB);

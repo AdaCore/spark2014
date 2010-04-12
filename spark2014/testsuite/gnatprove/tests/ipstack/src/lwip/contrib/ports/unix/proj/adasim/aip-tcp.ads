@@ -73,7 +73,7 @@ package AIP.TCP is
       Len : AIP.U16_T);
    pragma Import (C, Tcp_Recved, "tcp_recved");
 
-   subtype Poll_Cb_Id is AIP.Callbacks.Callback_Id;
+   subtype Poll_Cb_Id is Callbacks.Callback_Id;
    procedure Tcp_Poll
      (Pcb : TCB_Id;
       Cb  : Poll_Cb_Id;
@@ -86,7 +86,7 @@ package AIP.TCP is
    procedure Tcp_Abort (Pcb : TCB_Id);
    pragma Import (C, Tcp_Abort, "tcp_abort");
 
-   subtype Err_Cb_Id is AIP.Callbacks.Callback_Id;
+   subtype Err_Cb_Id is Callbacks.Callback_Id;
    procedure Tcp_Err (Pcb : TCB_Id; Cb : Err_Cb_Id);
    pragma Import (C, Tcp_Err, "tcp_err");
 

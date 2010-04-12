@@ -3,8 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with System;
-
 --# inherit AIP;
 
 package AIP.Callbacks is
@@ -23,7 +21,7 @@ package AIP.Callbacks is
    --  pointer through LWIP and allows array indexing the way we'll need it in
    --  the end.
 
-   subtype Callback_Id is System.Address;
-   NOCB : constant Callback_Id := System.Null_Address;
+   subtype Callback_Id is AIP.IPTR_T;
+   NOCB : constant Callback_Id := AIP.NULIPTR;
 
 end AIP.Callbacks;
