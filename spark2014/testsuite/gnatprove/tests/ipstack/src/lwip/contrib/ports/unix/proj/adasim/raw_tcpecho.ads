@@ -5,8 +5,7 @@
 
 --  TCP echo server implementation using the RAW callback API
 
---# inherit AIP.Support, AIP. AIP.IPaddrs, AIP.Pbufs, AIP.Callbacks;
---# inherit AIP.TCP;
+--# inherit AIP.Support, AIP.IPaddrs, AIP.Pbufs, AIP.Callbacks, AIP.TCP;
 
 package RAW_Tcpecho is
 

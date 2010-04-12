@@ -121,7 +121,7 @@ $(LWIPLIB): $(LWIPOBJS)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
 adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip_wrappers.o $(APPFILES)
-	gnatmake -f  -g adaservices.adb -Iapps -largs -pthread \
+	gnatmake  -g adaservices.adb -Iapps -largs -pthread \
 	simhost.o aip_wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
 
 spark:

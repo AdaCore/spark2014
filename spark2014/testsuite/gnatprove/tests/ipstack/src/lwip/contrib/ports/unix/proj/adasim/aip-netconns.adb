@@ -14,7 +14,7 @@ package body AIP.Netconns is
 
    procedure Netconn_Listen (NC : Netconn_Id) is
    begin
-      Netconn_Listen_BL (NC, AIP.Config.TCP_DEFAULT_LISTEN_BACKLOG);
+      Netconn_Listen_BL (NC, Config.TCP_DEFAULT_LISTEN_BACKLOG);
    end Netconn_Listen;
 
 end AIP.Netconns;
