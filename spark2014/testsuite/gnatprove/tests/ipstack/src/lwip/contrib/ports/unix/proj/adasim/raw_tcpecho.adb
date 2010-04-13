@@ -26,7 +26,7 @@ package body RAW_Tcpecho is
    --  To be able to go SPARK, we will use array indices as "pointers"
    --  in a static pool.
 
-   subtype ES_Id is AIP.IPTR_T range 0 .. 1;
+   subtype ES_Id is AIP.IPTR_T range 0 .. 2;
    subtype Valid_ES_Id is ES_Id range ES_Id'First + 1 .. ES_Id'Last;
    type Echo_State_Array is array (Valid_ES_Id) of Echo_State;
 
@@ -280,7 +280,6 @@ package body RAW_Tcpecho is
             --  read some more data
             if ESP (Sid).Pbu = AIP.Pbufs.NOPBUF then
                ESP (Sid).Pbu := Pbu;
-               AIP.TCP.Tcp_Sent (Tcb, Echo_Sent_Cb_Id);
                Echo_Send (Tcb, Sid);
             else
                AIP.Pbufs.Pbuf_Chain (ESP (Sid).Pbu, Pbu);
@@ -337,6 +336,8 @@ package body RAW_Tcpecho is
       AIP.TCP.Tcp_Recv (Tcb, Echo_Recv_Cb_Id);
       AIP.TCP.Tcp_Err  (Tcb, Echo_Err_Cb_Id);
       AIP.TCP.Tcp_Poll (Tcb, Echo_Poll_Cb_Id, 0);
+
+      AIP.TCP.Tcp_Accepted (Tcb);
       return AIP.NOERR;
    end Echo_Accept_Cb;
 

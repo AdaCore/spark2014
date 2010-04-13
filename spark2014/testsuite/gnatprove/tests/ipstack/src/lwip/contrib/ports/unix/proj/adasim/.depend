@@ -90,7 +90,7 @@ simrouter.o: simrouter.c ../../../../../lwip/src/include/lwip/debug.h \
   ../../../../ports/unix/include/netif/tcpdump.h \
   ../../../../ports/unix/include/arch/perf.h apps/httpd.h apps/udpecho.h \
   apps/tcpecho.h apps/shell.h
-aip_wrappers.o: aip_wrappers.c \
+aip-wrappers.o: aip-wrappers.c \
   ../../../../../lwip/src/include/lwip/netbuf.h \
   ../../../../../lwip/src/include/lwip/opt.h lwipopts.h \
   ../../../../../lwip/src/include/lwip/debug.h \

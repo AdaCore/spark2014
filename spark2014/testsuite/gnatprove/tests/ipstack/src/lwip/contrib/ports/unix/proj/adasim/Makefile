@@ -117,12 +117,12 @@ $(APPLIB): $(APPOBJS)
 $(LWIPLIB): $(LWIPOBJS)
 	$(AR) $(ARFLAGS) $(LWIPLIB) $?
 
-.depend: simhost.c simnode.c simrouter.c aip_wrappers.c $(LWIPFILES) $(APPFILES)
+.depend: simhost.c simnode.c simrouter.c aip-wrappers.c $(LWIPFILES) $(APPFILES)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
-adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip_wrappers.o $(APPFILES)
+adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip-wrappers.o $(APPFILES)
 	gnatmake  -g adaservices.adb -Iapps -largs -pthread \
-	simhost.o aip_wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
+	simhost.o aip-wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
 
 spark:
 	-sparkmake -e='*b~*'
