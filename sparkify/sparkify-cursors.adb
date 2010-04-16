@@ -502,6 +502,19 @@ package body Sparkify.Cursors is
                             Column => Column);
    end Cursor_After;
 
+   ----------------
+   -- Max_Cursor --
+   ----------------
+
+   function Max_Cursor (C1, C2 : Cursor) return Cursor is
+   begin
+      if C1 < C2 then
+         return C2;
+      else
+         return C1;
+      end if;
+   end Max_Cursor;
+
    ----------------------
    -- Cursor_Next_Line --
    ----------------------

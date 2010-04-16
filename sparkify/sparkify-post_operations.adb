@@ -93,14 +93,22 @@ package body Sparkify.Post_Operations is
          end;
       end if;
 
-      PP_Echo_Cursor_Range
-        (State.Echo_Cursor, Cursor_At_End_Of (Last_Element));
-      PP_Text_At (Line   => Last_Line_Number (Element),
-                  Column => Element_Span (Element).First_Column,
-                  Text   => "end " & Name & ";");
-      --  Notice that all comments between last element and end of package
-      --  unit will be skipped
-      State.Echo_Cursor := Cursor_After (Element);
+      declare
+         Last_Line_Cursor : constant Cursor :=
+           Line_Cursor (Before_Line, Last_Line_Number (Element));
+         --  In order to get both the last package item and the last comment,
+         --  the last cursor should be positioned as the maximum of the cursor
+         --  at the end of the last item and the cursor at the beginning of
+         --  the last line.
+         Last_Cursor : constant Cursor :=
+           Max_Cursor (Cursor_At_End_Of (Last_Element), Last_Line_Cursor);
+      begin
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Last_Cursor);
+         PP_Text_At (Line   => Last_Line_Number (Element),
+                     Column => Element_Span (Element).First_Column,
+                     Text   => "end " & Name & ";");
+         State.Echo_Cursor := Cursor_After (Element);
+      end;
    end A_Package_Declaration_Post_Op;
 
    -------------------------------
@@ -119,16 +127,22 @@ package body Sparkify.Post_Operations is
                           Include_Pragmas => True);
       pragma Assert (Statements'Length > 0);
       Last_Statement : constant Statement := Statements (Statements'Last);
+      Last_Line_Cursor : constant Cursor :=
+        Line_Cursor (Before_Line, Last_Line_Number (Element));
+      --  In order to get both the last statement and the last comment,
+      --  the last cursor should be positioned as the maximum of the cursor at
+      --  the end of the last statement and the cursor at the beginning of
+      --  the last line.
+      Last_Cursor : constant Cursor :=
+         Max_Cursor (Cursor_At_End_Of (Last_Statement), Last_Line_Cursor);
+
       Name : constant Wide_String :=
         Defining_Name_Image (Declaration_Unique_Name (Element));
    begin
-      PP_Echo_Cursor_Range
-        (State.Echo_Cursor, Cursor_At_End_Of (Last_Statement));
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Last_Cursor);
       PP_Text_At (Line   => Last_Line_Number (Element),
                   Column => Element_Span (Element).First_Column,
                   Text   => "end " & Name & ";");
-      --  Notice that all comments between last statement and end of subprogram
-      --  unit will be skipped
       State.Echo_Cursor := Cursor_After (Element);
    end A_Subprogram_Unit_Post_Op;
 

@@ -153,6 +153,9 @@ package Sparkify.Cursors is
    function Cursor_After (Element : Asis.Element) return Cursor;
    --  Returns a cursor pointing just after Element
 
+   function Max_Cursor (C1, C2 : Cursor) return Cursor;
+   --  Returns the maximum of two cursors
+
    ---------------
    -- Modifiers --
    ---------------
