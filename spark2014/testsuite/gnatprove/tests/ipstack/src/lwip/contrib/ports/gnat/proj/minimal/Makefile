@@ -90,11 +90,13 @@ $(foreach lwipf,$(LWIPFILESW),$(eval $(call LWIPF_template,$(lwipf))))
 APPFILES=echo.c
 
 # ADAFILES
-ADAFILES= mainloop.adb ppc_clock.adb timers.adb time_types.adb
+ADAFILES= mainloop.adb ppc_clock.adb timers.adb time_types.adb assert.adb \
+  memory_compare.adb memory_copy.adb memory_set.adb \
+  echop.adb
 
 LWIPLIB=liblwip4.a
 APPLIB=liblwipapps.a
-APPOBJS=$(notdir $(APPFILES:.c=.o)) $(notdir $(ADAFILES:.adb=.o))
+APPOBJS=$(notdir $(APPFILES:.c=.o))
 
 %.o: %.adb
 	$(CC) $(CFLAGS) $(ADAFLAGS) -c $<
@@ -103,6 +105,7 @@ APPOBJS=$(notdir $(APPFILES:.c=.o)) $(notdir $(ADAFILES:.adb=.o))
 	$(CC) $(CFLAGS) -c $<
 
 clean:
+	gnatbind all
 	rm -f *.ali *.o $(LWIPLIB) $(APPLIB) echop .depend* *.core core
 
 depend dep: .depend
@@ -118,7 +121,6 @@ $(LWIPLIB): $(LWIPOBJS)
 .depend: main.c $(LWIPFILES) $(APPFILES)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
-echop: .depend $(LWIPLIB) $(APPLIB) main.o $(APPFILES)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o echop main.o $(APPLIB) $(LWIPLIB)
-
+echop: .depend $(LWIPLIB) $(APPLIB) main.o $(APPFILES) $(ADAFILES)
+	$(GCC_PREFIX)gnatmake echop $(CFLAGS) -largs main.o $(APPLIB) $(LWIPLIB)
 
