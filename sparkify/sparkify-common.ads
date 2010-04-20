@@ -43,7 +43,13 @@ package Sparkify.Common is
    -- Resources needed for source traversing --
    --------------------------------------------
 
-   type Printing_Phase is (Printing_Code, Printing_Logic);
+   type Pass is (Effects, Printing);
+
+   Current_Pass : Pass;
+
+   type Phase is (Global_Effects, Printing_Code, Printing_Logic);
+   subtype Effects_Phase is Phase range Global_Effects .. Global_Effects;
+   subtype Printing_Phase is Phase range Printing_Code .. Printing_Logic;
 
    type Prefix_Length is range 0 .. 100;
 
@@ -55,11 +61,7 @@ package Sparkify.Common is
       Echo_Cursor : Cursor;         --  The mark set for a future echo
    end record;
 
-   Initial_State : constant Source_Traversal_State :=
-     (Phase       => Printing_Code,
-      Prefix_Len  => 0,
-      Prefix      => (others => ' '),
-      Echo_Cursor => File_Cursor (Kind => Before_File));
+   function Initial_State return Source_Traversal_State;
 
    type Op_Access is access
       procedure

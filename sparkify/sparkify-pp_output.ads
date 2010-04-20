@@ -94,6 +94,13 @@ package Sparkify.PP_Output is
       Expr   : Asis.Expression);
    --  Send Expr into output stream as an assert in SPARK syntax
 
+   procedure PP_Data_Flow
+     (Column        : Character_Position_Positive;
+      Global_In     : Wide_String;
+      Global_Out    : Wide_String;
+      Global_In_Out : Wide_String);
+   --  Send globals into output stream as a data flow contract in SPARK syntax
+
    procedure PP_Precondition
      (Column : Character_Position_Positive;
       Expr   : Asis.Expression);

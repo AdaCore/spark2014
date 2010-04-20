@@ -54,7 +54,7 @@ begin
 
       case
          GNAT.Command_Line.Getopt
-           ("I: gnatec! -RTS= v w q "            &
+           ("d dd I: gnatec! -RTS= v w q "       &
             "gnat05 "                            & --  Ada 2005 mode
             --  output file control
             "-eol= files= pipe o= of= r rf rnb " &
@@ -63,6 +63,15 @@ begin
       is
          when ASCII.NUL =>
             exit;
+
+         when 'd' =>
+
+            if Full_Switch = "d" then
+               Debug_Mode := True;
+               Compute_Timing := True;
+            elsif Full_Switch = "dd" then
+               Progress_Indicator_Mode := True;
+            end if;
 
          when 'q' =>
             Quiet_Mode := True;

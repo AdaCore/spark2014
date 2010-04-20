@@ -2,12 +2,9 @@
 --                                                                          --
 --                            SPARKIFY COMPONENTS                           --
 --                                                                          --
---     A S I S _ U L . S O U R C E _ T A B L E . P R O C E S S I N G .      --
---                      A S I S _ P R O C E S S I N G                       --
+--     A S I S _ U L . G L O B A L _ S T A T E . C G . S P A R K I F Y      --
 --                                                                          --
---             (adapted for sparkify from ASIS Utility Library)             --
---                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                       Copyright (C) 2010, AdaCore                        --
 --                                                                          --
@@ -26,28 +23,29 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Asis.Elements;
+--  This package defines sparkify-specific call graph routines
 
-with ASIS_UL.Global_State.CG;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
-with Sparkify.Output;
-with Sparkify.Processing;
-with Sparkify.Common;                  use Sparkify.Common;
+package ASIS_UL.Global_State.CG.Sparkify is
 
-separate (ASIS_UL.Source_Table.Processing)
-procedure ASIS_Processing (CU : Asis.Compilation_Unit; SF : SF_Id) is
-   Unit : constant Asis.Element := Asis.Elements.Unit_Declaration (CU);
-   Success : Boolean;
-begin
+   procedure Global_Effects
+     (El              : Asis.Element;
+      Sep             : Wide_String;
+      Reads_Str       : out Unbounded_Wide_String;
+      Writes_Str      : out Unbounded_Wide_String;
+      Read_Writes_Str : out Unbounded_Wide_String);
 
-   case Current_Pass is
-      when Effects =>
-         ASIS_UL.Global_State.CG.Collect_CG_Info_From_Construct (Unit);
-         Set_Source_Status (SF, Processed);
-      when Printing =>
-         Set_Current_SF (SF);
-         Sparkify.Output.Set_Output (SF, Success);
-         Sparkify.Processing.Special_Print (CU, SF);
-   end case;
+   function Global_Reads
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String;
 
-end ASIS_Processing;
+   function Global_Writes
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String;
+
+   function Global_Read_Writes
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String;
+
+end ASIS_UL.Global_State.CG.Sparkify;

@@ -241,14 +241,20 @@ package body Sparkify.PP_Output is
          if Prefix = "" then
             PP_Line_Indication (Line);
          end if;
-      elsif Line > Output_Line then
+      elsif Column < Output_Column then
+         if Line = Output_Line then
+            if Prefix = "" then
+               PP_Line_Indication (Line);
+            end if;
+         else
+            PP_Close_Line;
+         end if;
+      end if;
+
+      if Line > Output_Line then
          for J in Integer range Output_Line .. Line - 1 loop
             PP_Close_Line;
          end loop;
-      elsif Column < Output_Column then
-         if Prefix = "" then
-            PP_Line_Indication (Line);
-         end if;
       end if;
 
       if Prefix /= "" and then Output_Column = 1 then
@@ -417,6 +423,32 @@ package body Sparkify.PP_Output is
          PP_SPARK_Annotation (Column, Expr, "post");
       end if;
    end PP_Postcondition;
+
+   ------------------
+   -- PP_Data_Flow --
+   ------------------
+
+   procedure PP_Data_Flow
+     (Column        : Character_Position_Positive;
+      Global_In     : Wide_String;
+      Global_Out    : Wide_String;
+      Global_In_Out : Wide_String)
+   is
+      procedure PP_Global_Annotation (Intro, Str : Wide_String);
+
+      procedure PP_Global_Annotation (Intro, Str : Wide_String) is
+         Line : constant Line_Number_Positive := Output_Line;
+      begin
+         if Str /= "" then
+            PP_Text_At (Line, Column, "--# " & Intro & " " & Str & ";");
+            PP_Close_Line;
+         end if;
+      end PP_Global_Annotation;
+   begin
+      PP_Global_Annotation ("global in", Global_In);
+      PP_Global_Annotation ("global out", Global_Out);
+      PP_Global_Annotation ("global in out", Global_In_Out);
+   end PP_Data_Flow;
 
    ------------------------
    -- PP_Line_Indication --

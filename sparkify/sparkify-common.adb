@@ -55,6 +55,25 @@ package body Sparkify.Common is
       raise ASIS_UL.Common.Fatal_Error;
    end Non_Implemented_ASIS_2005_Feature;
 
+   -------------------
+   -- Initial_State --
+   -------------------
+
+   function Initial_State return Source_Traversal_State is
+      Initial_Phase : Phase;
+   begin
+      case Current_Pass is
+         when Effects => Initial_Phase := Global_Effects;
+         when Printing => Initial_Phase := Printing_Code;
+      end case;
+
+      return
+        (Phase       => Initial_Phase,
+         Prefix_Len  => 0,
+         Prefix      => (others => ' '),
+         Echo_Cursor => File_Cursor (Kind => Before_File));
+   end Initial_State;
+
    ---------------
    -- No_Action --
    ---------------

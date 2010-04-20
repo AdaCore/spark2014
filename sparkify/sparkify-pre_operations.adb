@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 with Asis.Compilation_Units;           use Asis.Compilation_Units;
 with Asis.Extensions;                  use Asis.Extensions;
@@ -35,6 +36,8 @@ with Asis.Statements;                  use Asis.Statements;
 with ASIS_UL.Output;                   use ASIS_UL.Output;
 with ASIS_UL.Strings;                  use ASIS_UL.Strings;
 with Asis.Set_Get;                     use Asis.Set_Get;
+
+with ASIS_UL.Global_State.CG.Sparkify;
 
 with Sparkify.PP_Output;               use Sparkify.PP_Output;
 with Sparkify.Names;                   use Sparkify.Names;
@@ -65,7 +68,13 @@ package body Sparkify.Pre_Operations is
      (Pragmas     : Pragma_Element_List;
       Is_Function : Boolean;
       Column      : Character_Position_Positive);
-   --  Print preconditions and postconditions in pseudo-SPARK syntax
+   --  Print preconditions and postconditions in SPARK syntax
+
+   procedure SPARK_Data_Flow
+     (Element     : Asis.Element;
+      Is_Function : Boolean;
+      Column      : Character_Position_Positive);
+   --  Print data flow contracts in SPARK syntax
 
    procedure Reach_Element_And_Traverse
      (Element : Asis.Element;
@@ -170,6 +179,35 @@ package body Sparkify.Pre_Operations is
       end loop;
 
    end SPARK_Contract;
+
+   ---------------------
+   -- SPARK_Data_Flow --
+   ---------------------
+
+   procedure SPARK_Data_Flow
+     (Element     : Asis.Element;
+      Is_Function : Boolean;
+      Column      : Character_Position_Positive)
+   is
+      Reads_Str, Writes_Str, Read_Writes_Str : Unbounded_Wide_String;
+   begin
+      ASIS_UL.Global_State.CG.Sparkify.Global_Effects
+        (El              => Element,
+         Sep             => ", ",
+         Reads_Str       => Reads_Str,
+         Writes_Str      => Writes_Str,
+         Read_Writes_Str => Read_Writes_Str);
+
+      if Is_Function then
+         pragma Assert (Writes_Str = "" and Read_Writes_Str = "");
+         null;
+      end if;
+
+      PP_Data_Flow (Column        => Column,
+                    Global_In     => To_Wide_String (Reads_Str),
+                    Global_Out    => To_Wide_String (Writes_Str),
+                    Global_In_Out => To_Wide_String (Read_Writes_Str));
+   end SPARK_Data_Flow;
 
    -----------------------------
    -- A_Loop_Statement_Pre_Op --
@@ -375,7 +413,8 @@ package body Sparkify.Pre_Operations is
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
          State.Echo_Cursor := Cursor_After (Element);
 
-      elsif Has_SPARK_Contract (Pragmas) then
+      else
+
          Column_Start := Element_Span (Element).First_Column;
 
          --  The parameter lists contains identifiers; they
@@ -391,10 +430,19 @@ package body Sparkify.Pre_Operations is
          end if;
 
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_At_End_Of (Element));
-         SPARK_Contract (Pragmas     => Pragmas,
-                         Is_Function => Is_Function,
-                         Column      => Column_Start);
+
+         SPARK_Data_Flow (Element     => Element,
+                          Is_Function => Is_Function,
+                          Column      => Column_Start);
+
+         if Has_SPARK_Contract (Pragmas) then
+            SPARK_Contract (Pragmas     => Pragmas,
+                            Is_Function => Is_Function,
+                            Column      => Column_Start);
+         end if;
+
          State.Echo_Cursor := Cursor_After (Element);
+
       end if;
    end A_Subprogram_Unit_Declaration_Pre_Op;
 
@@ -427,56 +475,63 @@ package body Sparkify.Pre_Operations is
 
       Current_Cursor : Cursor;
    begin
-      if Has_SPARK_Contract (Pragmas) then
-         if Is_Nil (Encl_Element)
-           or else (Acts_As_Spec (Element)
-                    and then (Declaration_Kind (Encl_Element)
-                              = A_Package_Body_Declaration))
-         then
-            --  Only translate contracts on library-level
-            --  subprograms. These are definitions of subprograms in
-            --  package body, with no previous declarations (as
-            --  declarations of subprograms in package body are not
-            --  allowed in SPARK).
+      if Is_Nil (Encl_Element)
+        or else Acts_As_Spec (Element)
+      then
+         --  Only translate contracts on library-level subprograms with no
+         --  previous declarations and local subprograms (which do not have
+         --  corresponding declarations in SPARK).
 
-            Column_Start := Element_Span (Element).First_Column;
+         Column_Start := Element_Span (Element).First_Column;
 
-            for J in Params'Range loop
-               Reach_Element_And_Traverse (Params (J), State);
-            end loop;
+         for J in Params'Range loop
+            Reach_Element_And_Traverse (Params (J), State);
+         end loop;
 
-            case Declaration_Kind (Element) is
-               when A_Procedure_Body_Declaration =>
-                  if Params'Length = 0 then
-                     declare
-                        Names : constant Defining_Name_List :=
-                                  Asis.Declarations.Names (Element);
-                     begin
-                        pragma Assert (Names'Length = 1);
-                        Current_Cursor := Cursor_After (Names (Names'First));
-                     end;
-                  else
-                     Current_Cursor := State.Echo_Cursor;
-                     Skip_Delimiter (Current_Cursor, Right_Parenthesis_Dlm);
-                  end if;
-
-               when A_Function_Body_Declaration =>
-                  Reach_Element_And_Traverse (Result_Profile (Element), State);
+         case Declaration_Kind (Element) is
+            when A_Procedure_Body_Declaration =>
+               if Params'Length = 0 then
+                  declare
+                     Names : constant Defining_Name_List :=
+                       Asis.Declarations.Names (Element);
+                  begin
+                     pragma Assert (Names'Length = 1);
+                     Current_Cursor := Cursor_After (Names (Names'First));
+                  end;
+               else
                   Current_Cursor := State.Echo_Cursor;
+                  Skip_Delimiter (Current_Cursor, Right_Parenthesis_Dlm);
+               end if;
 
-               when others =>
-                  pragma Assert (False);
-                  null;
-            end case;
+            when A_Function_Body_Declaration =>
+               Reach_Element_And_Traverse (Result_Profile (Element), State);
+               Current_Cursor := State.Echo_Cursor;
 
-            PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
+            when others =>
+               pragma Assert (False);
+               null;
+         end case;
+
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
+
+         SPARK_Data_Flow (Element     => Element,
+                          Is_Function => Is_Function,
+                          Column      => Column_Start);
+
+         if Has_SPARK_Contract (Pragmas) then
+
             SPARK_Contract (Pragmas     => Pragmas,
                             Is_Function => Is_Function,
                             Column      => Column_Start);
-            Cursor_Next_Column (Current_Cursor);
-            Skip_Blanks (Current_Cursor);
-            State.Echo_Cursor := Current_Cursor;
-         else
+         end if;
+
+         Cursor_Next_Column (Current_Cursor);
+         Skip_Blanks (Current_Cursor);
+         State.Echo_Cursor := Current_Cursor;
+
+      else
+
+         if Has_SPARK_Contract (Pragmas) then
             --  Discard contracts on definitions of subprograms, as SPARK
             --  does not allow them
 
@@ -485,6 +540,7 @@ package body Sparkify.Pre_Operations is
             SLOC_Warning ("discard contract on definition of subprogram",
                           Build_GNAT_Location (Element));
          end if;
+
       end if;
    end A_Subprogram_Unit_Pre_Op;
 

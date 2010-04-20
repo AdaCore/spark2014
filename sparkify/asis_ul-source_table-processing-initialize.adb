@@ -30,11 +30,13 @@ with Ada.Wide_Text_IO;
 
 with ASIS_UL.Environment;              use ASIS_UL.Environment;
 with ASIS_UL.Options;
+with ASIS_UL.Global_State.CG;
 
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Options;                 use Sparkify.Options;
 with Sparkify.Output;                  use Sparkify.Output;
 with Sparkify.State;                   use Sparkify.State;
+with Sparkify.Common;                  use Sparkify.Common;
 
 separate (ASIS_UL.Source_Table.Processing)
 procedure Initialize is
@@ -54,6 +56,25 @@ begin
       Ada.Wide_Text_IO.Close (File => Result_Out_File);
 
       Out_File_Exists := True;
-
    end if;
+
+   --  HACK: perform a first pass over the AST in the initialization for the
+   --  second pass. This should be removed as soon as a multi-pass API is
+   --  available.
+
+   Current_Pass := Effects;
+   ASIS_UL.Global_State.Initialize;
+   ASIS_UL.Global_State.Do_Compute_Global_Objects_Accessed;
+   ASIS_UL.Source_Table.Processing.Process_Sources;
+   ASIS_UL.Global_State.CG.Transitive_Closure;
+   --  Globally reset all status flags to Waiting
+   for SF in First_SF_Id .. SF_Id (Natural (First_SF_Id) + Total_Sources) loop
+      if Present (SF) then
+         Set_Source_Status (SF, Waiting);
+      end if;
+   end loop;
+   --  Reinitialize Sources_Left
+   Sources_Left := Total_Sources;
+   Current_Pass := Printing;
+
 end Initialize;
