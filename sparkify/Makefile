@@ -1,5 +1,5 @@
 include Makefile.stub
-BLD=prod
+BLD=debug
 
 default:
 	gnat make -Psparkify -XBLD=$(BLD)
