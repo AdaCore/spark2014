@@ -52,6 +52,7 @@ package AIP is
    --  we might as well reuse them for our own internal needs.
 
    type S8_T is range -2 ** 7 .. 2 ** 7 - 1;
+   type S16_T is range -2 ** 15 .. 2 ** 15 - 1;
 
    type U8_T is mod 2 ** 8;
    type U16_T is mod 2 ** 16;

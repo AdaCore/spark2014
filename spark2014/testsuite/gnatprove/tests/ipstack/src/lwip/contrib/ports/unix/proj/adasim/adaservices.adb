@@ -3,15 +3,15 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+--# hide Adaservices;
+
 with System;
 
-with NCO_Udpecho, NCO_Tcpecho, RAW_Tcpecho;
+with NCO_Udpecho, NCO_Tcpecho, RAW_Tcpecho, RAW_Udpsyslog;
 pragma Unreferenced (NCO_Udpecho);
 pragma Unreferenced (NCO_Tcpecho);
 pragma Unreferenced (RAW_Tcpecho);
-
---# inherit NCO_udpecho, NCP_Tcpecho, RAW_Tcpecho;
---# main_program;
+pragma Unreferenced (RAW_Udpsyslog);
 
 procedure Adaservices is
    Opt : String := "-d" & ASCII.NUL;

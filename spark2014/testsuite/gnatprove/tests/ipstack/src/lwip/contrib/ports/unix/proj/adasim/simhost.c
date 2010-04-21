@@ -384,13 +384,19 @@ main_thread(void *arg)
 #endif
 
 #if LWIP_TCP
-  tcpecho_init();
   shell_init();
   httpd_init();
 #endif
 #if LWIP_UDP
-  udpecho_init();
 #endif
+
+  {
+    extern void raw_tcpecho__init (void);
+    extern void raw_udpsyslog__init (void);
+
+    raw_tcpecho__init ();
+    raw_udpsyslog__init ();    
+  }
 
 #if LWIP_RAW
   /** @todo remove dependency on RAW PCB support */

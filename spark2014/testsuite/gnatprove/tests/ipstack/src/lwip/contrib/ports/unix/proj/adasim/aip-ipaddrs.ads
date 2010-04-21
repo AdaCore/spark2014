@@ -3,13 +3,17 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---# inherit AIP;
+--  IP address definition and related operations
+
+--# inherit AIP.Inet;
 
 package AIP.IPaddrs is
 
-   type IPaddr is mod 2 ** 32;
+   subtype IPaddr is AIP.U32_T;
    subtype IPaddr_Id is AIP.IPTR_T;
 
    IP_ADDR_ANY : constant IPaddr_Id := AIP.NULID;
+
+   function IP4 (A, B, C, D : AIP.U8_T) return IPaddr;
 
 end AIP.IPaddrs;

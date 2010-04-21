@@ -3,8 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Low level access to the TCP services. At this point, this is a binding to
---  the C implementation of LWIP services.
+--  Callback oriented low level access to the TCP services. At this point,
+--  this is a binding to the C implementation of LWIP.
 
 with AIP.Callbacks, AIP.IPaddrs;
 --# inherit AIP.Callbacks, AIP.IPaddrs, AIP.Config;
@@ -158,7 +158,7 @@ package AIP.TCP is
    --  Request that CB is called when new data or a close-connection request
    --  arrives on PCB. CB's profile is expected to be;
    --
-   --    function Echo_Recv_Cb
+   --    function Tcp_Recv_Cb
    --      (Arg : AIP.IPTR_T;
    --       Tcb : AIP.TCP.TCB_Id;
    --       Pbu : AIP.Pbufs.Pbuf_Id;
