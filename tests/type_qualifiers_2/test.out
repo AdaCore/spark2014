@@ -1,0 +1,60 @@
+------------------------------------------------------------------------
+package tq is
+
+   type Complex is record
+      mReal : Float;
+      mImaginary : Float;
+   end record;
+
+   function plus (Left, Right: in Complex) return Complex;
+   --# pre              Left.mReal > -1000.0 and Left.mReal < 1000.0 and
+   --#                  Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0;
+
+   function eval return Complex;
+
+end tq;
+
+package body tq is
+
+   function plus (Left, Right: in Complex) return Complex
+   is
+   begin
+      return Complex'
+--@ line 7
+             (
+                mReal => Left.mReal + Right.mReal,
+                mImaginary => Left.mImaginary + Right.mImaginary
+
+              );
+   end plus;
+
+   function eval return Complex
+   is
+      mCplex1 : constant Complex := Complex'
+--@ line 16
+                                    (mReal => 2.0,
+                                    mImaginary => 3.0);
+      mCplex2 : constant Complex := Complex'
+--@ line 18
+                                    (mReal => 4.0,
+                                    mImaginary => 4.0);
+      sumCplex : Complex;
+   begin
+      sumCplex := plus(mCplex1, mCplex2);
+
+      return sumCplex;
+   end eval;
+
+end tq;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          2      2      0              0      0      0       0
+Precondition check:      1      0      0              0      0      0       1
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           1      0      0              0      0      0       1
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  4      2      0              0      0      0       2  <<<
+% Totals:                      50%     0%             0%     0%     0%     50% <<<
+===================== End of Semantic Analysis Summary ========================

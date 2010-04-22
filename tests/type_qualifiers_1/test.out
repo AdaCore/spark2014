@@ -1,0 +1,37 @@
+------------------------------------------------------------------------
+package tq is
+
+   type Complex is record
+      mReal : Integer;
+      mImaginary : Integer;
+   end record;
+
+   procedure Affectation (P, Q : out Complex);
+
+end tq;
+package body tq is
+
+   procedure Affectation (P, Q : out Complex)
+   is
+   begin
+      P := Complex'
+--@ line 6
+           (mReal => 0, mImaginary => 1);
+      Q := Complex'
+--@ line 7
+           (mReal => 0, mImaginary => 1);
+   end Affectation;
+
+end tq;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      1      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           2      0      2              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  3      1      2              0      0      0       0
+% Totals:                      33%    67%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
