@@ -17,12 +17,11 @@ package body Globals is
 
    function Indirect_Read return Integer is
       X : Integer;
-      
+
       procedure Local (Proxy : in Integer)
-	--# global out X;
       is
       begin
-	 X := Proxy;
+         X := Proxy;
       end Local;
    begin
       Local (G);
@@ -32,7 +31,7 @@ package body Globals is
    procedure Indirect_Write is
       procedure Local (Proxy : out Integer) is
       begin
-	 Proxy := 0;
+         Proxy := 0;
       end Local;
    begin
       Local (G);
@@ -40,8 +39,9 @@ package body Globals is
 
    procedure Indirect_Read_Write is
       procedure Local (Proxy : in out Integer) is
+         pragma Precondition (Proxy < Integer'Last);
       begin
-	 Proxy := Proxy + 1;
+         Proxy := Proxy + 1;
       end Local;
    begin
       Local (G);

@@ -1,0 +1,101 @@
+------------------------------------------------------------------------
+package Globals
+--# own G;
+is
+
+   G : Integer;
+
+   function Direct_Read return Integer;
+--@ line 7
+   --# global in G;
+
+   procedure Direct_Write;
+--@ line 9
+   --# global out G;
+
+   procedure Direct_Read_Write;
+--@ line 11
+   --# global in out G;
+   --# pre              G < Integer'Last;
+
+   function Indirect_Read return Integer;
+--@ line 14
+   --# global in G;
+
+   procedure Indirect_Write;
+--@ line 16
+   --# global out G;
+
+   procedure Indirect_Read_Write;
+--@ line 18
+   --# global in out G;
+   --# pre              G < Integer'Last;
+
+end Globals;
+package body Globals is
+
+   function Direct_Read return Integer is
+   begin
+      return G;
+   end Direct_Read;
+
+   procedure Direct_Write is
+   begin
+      G := 0;
+   end Direct_Write;
+
+   procedure Direct_Read_Write is
+   begin
+      G := G + 1;
+   end Direct_Read_Write;
+
+   function Indirect_Read return Integer is
+      X : Integer;
+
+      procedure Local (Proxy : in Integer)
+--@ line 21
+      --# global out X;
+      is
+      begin
+         X := Proxy;
+      end Local;
+   begin
+      Local (G);
+      return X;
+   end Indirect_Read;
+
+   procedure Indirect_Write is
+      procedure Local (Proxy : out Integer) is
+      begin
+         Proxy := 0;
+      end Local;
+   begin
+      Local (G);
+   end Indirect_Write;
+
+   procedure Indirect_Read_Write is
+      procedure Local (Proxy : in out Integer) 
+      --# pre                 Proxy < Integer'Last;
+--@ line 41
+                                               is
+
+      begin
+         Proxy := Proxy + 1;
+      end Local;
+   begin
+      Local (G);
+   end Indirect_Read_Write;
+
+end Globals;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          9      7      2              0      0      0       0
+Precondition check:      1      0      1              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           8      0      8              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 18      7     11              0      0      0       0
+% Totals:                      39%    61%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================

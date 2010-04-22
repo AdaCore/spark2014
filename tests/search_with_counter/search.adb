@@ -10,7 +10,9 @@ package body Search is
      Index := 0;
 
      for I in Integer range Table'Range loop
-        pragma Assert (Found = False);
+        pragma Assert (Found = False and
+                       Counter < Integer'Last and
+                       Counter = Counter'Old);
         if Table(I) = Value then
            Counter := Counter + 1;
            Found := True;
