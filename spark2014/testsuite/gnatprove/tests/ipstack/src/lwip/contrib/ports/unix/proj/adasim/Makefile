@@ -120,7 +120,12 @@ $(LWIPLIB): $(LWIPOBJS)
 .depend: simhost.c simnode.c simrouter.c aip-wrappers.c $(LWIPFILES) $(APPFILES)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
-adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip-wrappers.o $(APPFILES)
+
+.force:
+
+.PHONY : .force
+
+adaservices: .force .depend $(LWIPLIB) $(APPLIB) simhost.o aip-wrappers.o $(APPFILES)
 	gnatmake  -g adaservices.adb -Iapps -largs -pthread \
 	simhost.o aip-wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
 
