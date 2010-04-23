@@ -3,10 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  UDP echo server implementation using the Netconn sequential API
+--# inherit AIP;
 
---# inherit AIP.Support, AIP.IPaddrs, AIP.Netbufs, AIP.Netconns;
-
-package NCO_Udpecho is
-   procedure Run;
-end NCO_Udpecho;
+package AIP.Support is
+   procedure Verify (T : Boolean);
+end AIP.Support;

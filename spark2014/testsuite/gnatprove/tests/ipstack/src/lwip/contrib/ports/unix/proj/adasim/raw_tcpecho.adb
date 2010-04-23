@@ -4,22 +4,31 @@
 ------------------------------------------------------------------------------
 
 with AIP.Conversions;
-with AIP.Support, AIP.IPaddrs, AIP.TCP, AIP.Pbufs, AIP.Callbacks;
+with AIP.Pools, AIP.Support, AIP.IPaddrs, AIP.TCP, AIP.Pbufs, AIP.Callbacks;
 
 use type AIP.IPTR_T, AIP.S8_T, AIP.U8_T, AIP.U16_T;
 
-package body RAW_Tcpecho is
+package body RAW_Tcpecho
+  --# own CB_IDENTIFIERS is
+  --#     Echo_Sent_Cb_Id,
+  --#     Echo_Err_Cb_Id,
+  --#     Echo_Poll_Cb_Id,
+  --#     Echo_Recv_Cb_Id,
+  --#     Echo_Accept_Cb_Id
+
+  --#   & ECHO_STATE_POOL is ESP;
+is
 
    --  We will be using the raw callback API, passing application
    --  state information across calls for each connection.
 
-   type State_Id is
+   type State_Kind is
      (ES_FREE, ES_NONE, ES_ACCEPTED, ES_RECEIVED, ES_CLOSING, ES_ERROR);
    type Echo_State is record
-      Id : State_Id;
-      Retries : AIP.U8_T;
-      Tcb : AIP.TCP.TCB_Id;
-      Pbu : AIP.Pbufs.Pbuf_Id;
+      Kind : State_Kind;
+      Tcb  : AIP.TCP.TCB_Id;
+      Pbu  : AIP.Pbufs.Pbuf_Id;
+      Err  : AIP.Err_T;
    end record;
    pragma Suppress_Initialization (Echo_State);
 
@@ -34,9 +43,14 @@ package body RAW_Tcpecho is
 
    ESP : Echo_State_Array; -- Echo_State Pool
 
-   --  Callback identifiers.  Straight pointers that the C implementation
-   --  of LWIP can call at this point.  Will turn into mere identifiers for
-   --  static case dispatching later on.
+   --  Callback identifiers. Such declarations have to come ahead of
+   --  ~anything else for SPARK.
+
+   Echo_Sent_Cb_Id,
+   Echo_Err_Cb_Id,
+   Echo_Poll_Cb_Id,
+   Echo_Recv_Cb_Id,
+   Echo_Accept_Cb_Id : AIP.Callbacks.Callback_Id;
 
    ------------------
    -- Init_ES_Pool --
@@ -44,10 +58,12 @@ package body RAW_Tcpecho is
 
    --  Initialize the Echo_State pool, required before any other op
 
-   procedure Init_ES_Pool is
+   procedure Init_ES_Pool
+     --# global in out ESP;
+   is
    begin
       for Id in Valid_ES_Id loop
-         ESP (Id).Id := ES_FREE;
+         ESP (Id).Kind := ES_FREE;
       end loop;
    end Init_ES_Pool;
 
@@ -58,15 +74,18 @@ package body RAW_Tcpecho is
    --  Search a free for use entry in the pool. If found, move to ES_NONE
    --  and return Id. Return NOES otherwise.
 
-   function ES_Alloc return ES_Id is
+   procedure ES_Alloc (Sid : out ES_Id)
+     --# global in out ESP;
+   is
    begin
-      for Sid in Valid_ES_Id loop
-         if ESP (Sid).Id = ES_FREE then
-            ESP (Sid).Id := ES_NONE;
-            return Sid;
+      Sid := NOES;
+      for Id in Valid_ES_Id loop
+         if ESP (Id).Kind = ES_FREE then
+            ESP (Id).Kind := ES_NONE;
+            Sid := Id;
+            exit;
          end if;
       end loop;
-      return NOES;
    end ES_Alloc;
 
    ----------------
@@ -75,9 +94,11 @@ package body RAW_Tcpecho is
 
    --  Arrange for the Echo_State entry with SID id to be free for re-use
 
-   procedure ES_Release (Sid : ES_Id) is
+   procedure ES_Release (Sid : ES_Id)
+     --# global in out ESP;
+   is
    begin
-      ESP (Sid).Id := ES_FREE;
+      ESP (Sid).Kind := ES_FREE;
    end ES_Release;
 
    ----------------
@@ -86,6 +107,7 @@ package body RAW_Tcpecho is
 
    procedure Echo_Close
      (Tcb : AIP.TCP.TCB_Id; Sid : ES_Id)
+     --# global in out ESP;
    is
       Err : AIP.Err_T;
    begin
@@ -106,6 +128,7 @@ package body RAW_Tcpecho is
 
    procedure Echo_Send
      (Tcb : AIP.TCP.TCB_Id; Sid : ES_Id)
+     --# global in out ESP; in out AIP.Pools.PBUF_POOL;
    is
       Pbu : AIP.Pbufs.Pbuf_Id;
       Plen : AIP.U16_T;
@@ -130,6 +153,8 @@ package body RAW_Tcpecho is
 
          if Err = AIP.NOERR then
 
+            --  Grab reference to the following pbuf, if any. Release
+            --  the one we just processed and inform tell the other end
             ESP (Sid).Pbu := AIP.Pbufs.Pbuf_Next (Pbu);
             if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
                AIP.Pbufs.Pbuf_Ref (ESP (Sid).Pbu);
@@ -138,10 +163,7 @@ package body RAW_Tcpecho is
             --  chop first pbuf from chain
 
             Plen := AIP.Pbufs.Pbuf_Len (Pbu);
-
-            while AIP.Pbufs.Pbuf_Free (Pbu) = 0 loop
-               null;
-            end loop;
+            AIP.Pbufs.Pbuf_Release (Pbu);
 
             --  we can read more data now
             AIP.TCP.Tcp_Recved (Tcb, Plen);
@@ -158,30 +180,29 @@ package body RAW_Tcpecho is
 
    end Echo_Send;
 
-
    ------------------
    -- Echo_Sent_Cb --
    ------------------
 
-   function Echo_Sent_Cb
+   procedure Echo_Sent_Cb
      (Sid : AIP.IPTR_T;
       Tcb : AIP.TCP.TCB_Id;
-      Len : AIP.U16_T) return AIP.Err_T
+      Len : AIP.U16_T;
+      Err : out AIP.Err_T)
+     --# global in out ESP, AIP.Pools.PBUF_POOL;
    is
-      pragma Unreferenced (Len);
    begin
 
       if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
          Echo_Send (Tcb, Sid);
-      elsif ESP (Sid).Id = ES_CLOSING then
+      elsif ESP (Sid).Kind = ES_CLOSING then
          Echo_Close (Tcb, Sid);
       end if;
 
-      return AIP.NOERR;
-   end Echo_Sent_Cb;
+      Err := AIP.NOERR;
 
-   Echo_Sent_Cb_Id   : constant AIP.Callbacks.Callback_Id
-     := AIP.Conversions.To_IPTR (Echo_Sent_Cb'Address);
+      --# accept Flow, 30, Len, "unused generic callback arg";
+   end Echo_Sent_Cb;
 
    -----------------
    -- Echo_Err_Cb --
@@ -190,52 +211,51 @@ package body RAW_Tcpecho is
    procedure Echo_Err_Cb
      (Sid : AIP.IPTR_T;
       Err : AIP.Err_T)
+     --# global in out ESP;
    is
-      pragma Unreferenced (Err);
    begin
-      ESP (Sid).Id := ES_ERROR;
+      ESP (Sid).Kind := ES_ERROR;
+      ESP (Sid).Err  := Err;
    end Echo_Err_Cb;
-
-   Echo_Err_Cb_Id    : constant AIP.Callbacks.Callback_Id
-     := AIP.Conversions.To_IPTR (Echo_Err_Cb'Address);
 
    ------------------
    -- Echo_Poll_Cb --
    ------------------
 
-   function Echo_Poll_Cb
+   procedure Echo_Poll_Cb
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.TCB_Id) return AIP.Err_T
+      Tcb : AIP.TCP.TCB_Id;
+      Err : out AIP.Err_T)
+     --# global in out ESP, AIP.Pools.PBUF_POOL;
    is
    begin
 
       if Sid = AIP.NULID then
          AIP.TCP.Tcp_Abort (Tcb);
-         return AIP.ERR_ABRT;
+         Err := AIP.ERR_ABRT;
+      else
+         if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
+            Echo_Send (Tcb, Sid);
+
+         elsif ESP (Sid).Kind = ES_CLOSING then
+            Echo_Close (Tcb, Sid);
+         end if;
+
+         Err := AIP.NOERR;
       end if;
-
-      if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
-         Echo_Send (Tcb, Sid);
-
-      elsif ESP (Sid).Id = ES_CLOSING then
-         Echo_Close (Tcb, Sid);
-      end if;
-
-      return AIP.NOERR;
    end Echo_Poll_Cb;
-
-   Echo_Poll_Cb_Id   : constant AIP.Callbacks.Callback_Id
-     := AIP.Conversions.To_IPTR (Echo_Poll_Cb'Address);
 
    ------------------
    -- Echo_Recv_Cb --
    ------------------
 
-   function Echo_Recv_Cb
-     (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.TCB_Id;
-      Pbu : AIP.Pbufs.Pbuf_Id;
-      Err : AIP.Err_T) return AIP.Err_T
+   procedure Echo_Recv_Cb
+     (Sid   : AIP.IPTR_T;
+      Tcb   : AIP.TCP.TCB_Id;
+      Pbu   : AIP.Pbufs.Pbuf_Id;
+      Errin : AIP.Err_T;
+      Err   : out AIP.Err_T)
+     --# global in out ESP, AIP.Pools.PBUF_POOL;
    is
    begin
 
@@ -244,7 +264,7 @@ package body RAW_Tcpecho is
          --  Remote host closed connection. Process what is left to be
          --  sent or close on our side.
 
-         ESP (Sid).Id := ES_CLOSING;
+         ESP (Sid).Kind := ES_CLOSING;
 
          if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
             Echo_Send (Tcb, Sid);
@@ -252,11 +272,9 @@ package body RAW_Tcpecho is
             Echo_Close (Tcb, Sid);
          end if;
 
-         return AIP.NOERR;
+         Err := AIP.NOERR;
 
-      end if;
-
-      if Err /= AIP.NOERR then
+      elsif Errin /= AIP.NOERR then
 
          --  cleanup request, unkown reason
 
@@ -265,107 +283,138 @@ package body RAW_Tcpecho is
             AIP.Pbufs.Pbuf_Blind_Free (Pbu);
          end if;
 
-         return Err;
-      end if;
+         Err := Errin;
 
-      case ESP (Sid).Id is
-         when ES_ACCEPTED =>
+      else
 
-            ESP (Sid).Id := ES_RECEIVED;
-            ESP (Sid).Pbu := Pbu;
-            Echo_Send (Tcb, Sid);
+         case ESP (Sid).Kind is
+            when ES_ACCEPTED =>
 
-         when ES_RECEIVED =>
-
-            --  read some more data
-            if ESP (Sid).Pbu = AIP.Pbufs.NOPBUF then
+               ESP (Sid).Kind := ES_RECEIVED;
                ESP (Sid).Pbu := Pbu;
                Echo_Send (Tcb, Sid);
-            else
-               AIP.Pbufs.Pbuf_Chain (ESP (Sid).Pbu, Pbu);
-            end if;
 
-         when ES_CLOSING =>
+            when ES_RECEIVED =>
 
-            --  odd case, remote side closing twice, trash data
-            AIP.TCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
-            ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
+               --  read some more data
+               if ESP (Sid).Pbu = AIP.Pbufs.NOPBUF then
+                  ESP (Sid).Pbu := Pbu;
+                  Echo_Send (Tcb, Sid);
+               else
+                  AIP.Pbufs.Pbuf_Chain (ESP (Sid).Pbu, Pbu);
+               end if;
 
-            AIP.Pbufs.Pbuf_Blind_Free (Pbu);
+            when ES_CLOSING =>
 
-         when others =>
+               --  odd case, remote side closing twice, trash data
+               AIP.TCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
+               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
 
-            AIP.TCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
-            ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
-            AIP.Pbufs.Pbuf_Blind_Free (Pbu);
+               AIP.Pbufs.Pbuf_Blind_Free (Pbu);
 
-      end case;
+            when others =>
 
-      return AIP.NOERR;
+               AIP.TCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
+               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
+               AIP.Pbufs.Pbuf_Blind_Free (Pbu);
+
+         end case;
+
+         Err := AIP.NOERR;
+
+      end if;
 
    end Echo_Recv_Cb;
-
-   Echo_Recv_Cb_Id   : constant AIP.Callbacks.Callback_Id
-     := AIP.Conversions.To_IPTR (Echo_Recv_Cb'Address);
 
    --------------------
    -- Echo_Accept_Cb --
    --------------------
 
-   function Echo_Accept_Cb
-     (Arg : AIP.IPTR_T;
-      Tcb : AIP.TCP.TCB_Id;
-      Err : AIP.Err_T) return AIP.Err_T
+   procedure Echo_Accept_Cb
+     (Arg   : AIP.IPTR_T;
+      Tcb   : AIP.TCP.TCB_Id;
+      Errin : AIP.Err_T;
+      Err   : out AIP.Err_T)
+     --# global in Echo_Sent_Cb_Id, Echo_Recv_Cb_Id,
+     --#           Echo_Err_Cb_Id, Echo_Poll_Cb_Id;
+     --#    in out ESP;
    is
-      pragma Unreferenced (Arg);
-      pragma Unreferenced (Err);
-
-      Sid : constant ES_Id := ES_Alloc;
+      Sid : ES_Id;
    begin
+      ES_Alloc (Sid);
       if Sid = NOES then
-         return AIP.ERR_MEM;
+         Err := AIP.ERR_MEM;
+      else
+
+         ESP (Sid).Kind := ES_ACCEPTED;
+         ESP (Sid).Tcb  := Tcb;
+         ESP (Sid).Pbu  := AIP.Pbufs.NOPBUF;
+
+         AIP.TCP.Tcp_Arg  (Tcb, Sid);
+         AIP.TCP.Tcp_Sent (Tcb, Echo_Sent_Cb_Id);
+         AIP.TCP.Tcp_Recv (Tcb, Echo_Recv_Cb_Id);
+         AIP.TCP.Tcp_Err  (Tcb, Echo_Err_Cb_Id);
+         AIP.TCP.Tcp_Poll (Tcb, Echo_Poll_Cb_Id, 0);
+
+         AIP.TCP.Tcp_Accepted (Tcb);
+
+         Err := AIP.NOERR;
       end if;
 
-      ESP (Sid).Id := ES_ACCEPTED;
-      ESP (Sid).Tcb := Tcb;
-      ESP (Sid).Retries := 0;
-      ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
-
-      AIP.TCP.Tcp_Arg (Tcb, Sid);
-      AIP.TCP.Tcp_Sent (Tcb, Echo_Sent_Cb_Id);
-      AIP.TCP.Tcp_Recv (Tcb, Echo_Recv_Cb_Id);
-      AIP.TCP.Tcp_Err  (Tcb, Echo_Err_Cb_Id);
-      AIP.TCP.Tcp_Poll (Tcb, Echo_Poll_Cb_Id, 0);
-
-      AIP.TCP.Tcp_Accepted (Tcb);
-      return AIP.NOERR;
+      --# accept Flow, 30, Arg, "unused generic callback arg";
+      --# accept Flow, 30, Errin, "unused generic callback arg";
    end Echo_Accept_Cb;
-
-   Echo_Accept_Cb_Id : constant AIP.Callbacks.Callback_Id
-     := AIP.Conversions.To_IPTR (Echo_Accept_Cb'Address);
 
    ----------
    -- Init --
    ----------
 
-   procedure Init is
+   procedure Init
+     --# global out Echo_Accept_Cb_Id, Echo_Sent_Cb_Id, Echo_Recv_Cb_Id,
+     --#            Echo_Err_Cb_Id, Echo_Poll_Cb_Id;
+     --#     in out ESP;
+   is
       Tcb : AIP.TCP.TCB_Id;
       Err : AIP.Err_T;
+
+      procedure Init_CB_IDENTIFIERS
+        --# global out Echo_Accept_Cb_Id, Echo_Sent_Cb_Id, Echo_Recv_Cb_Id,
+        --#            Echo_Err_Cb_Id, Echo_Poll_Cb_Id;
+        --  See AIP.Callbacks for the rationale
+      is
+         --# hide Init_CB_IDENTIFIERS
+      begin
+         Echo_Sent_Cb_Id :=
+           AIP.Conversions.To_IPTR (Echo_Sent_Cb_W'Address);
+         Echo_Poll_Cb_Id :=
+           AIP.Conversions.To_IPTR (Echo_Poll_Cb_W'Address);
+         Echo_Recv_Cb_Id :=
+           AIP.Conversions.To_IPTR (Echo_Recv_Cb_W'Address);
+         Echo_Accept_Cb_Id :=
+           AIP.Conversions.To_IPTR (Echo_Accept_Cb_W'Address);
+         Echo_Err_Cb_Id :=
+           AIP.Conversions.To_IPTR (Echo_Err_Cb'Address);
+      end Init_CB_IDENTIFIERS;
+
    begin
+
+      --  Initialize callback identifiers + app state pool, then setup to
+      --  accept TCP connections on the well known echo port 7.
+
+      Init_CB_IDENTIFIERS;
       Init_ES_Pool;
 
       Tcb := AIP.TCP.Tcp_New;
       if Tcb = AIP.TCP.NOTCB then
-         null;
+         Err := AIP.ERR_MEM;
       else
          Err := AIP.TCP.Tcp_Bind (Tcb, AIP.IPaddrs.IP_ADDR_ANY, 7);
-         if Err /= AIP.NOERR then
-            null;
-         else
+         if Err = AIP.NOERR then
             Tcb := AIP.TCP.Tcp_Listen (Tcb);
             AIP.TCP.Tcp_Accept (Tcb, Echo_Accept_Cb_Id);
          end if;
       end if;
+
    end Init;
 
 end RAW_Tcpecho;

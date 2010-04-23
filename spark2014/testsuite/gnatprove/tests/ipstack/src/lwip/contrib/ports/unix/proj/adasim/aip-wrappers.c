@@ -52,3 +52,67 @@ pbuf_next_w (struct pbuf * buf)
 {
   return buf->next;
 }
+
+/* C void wrappers to non-void functions, placing return value in passed mem
+   location.  Useful to allow binding by Ada procedures instead of functions,
+   hence description of global side effects in SPARK.  */
+
+void pbuf_alloc_w (pbuf_layer l, u16_t size, pbuf_type type,
+		   struct pbuf ** retval)
+{
+  *retval = pbuf_alloc (l, size, type);
+}
+
+void pbuf_free_w (struct pbuf * pbuf, u8_t * retval)
+{
+  *retval = pbuf_free (pbuf);
+}
+
+/* Vice-Versa, for callback purposes.  */
+
+
+extern void
+echo_sent_cb (void * sid, void * tcb, u16_t len, err_t * err);
+
+err_t
+echo_sent_cb_w (void * sid, void * tcb, u16_t len)
+{
+  err_t err;
+  echo_sent_cb (sid, tcb, len, &err);
+  return err;
+}
+
+extern void
+echo_poll_cb (void * sid, void * tcb, err_t * err);
+
+err_t echo_poll_cb_w (void * sid, void * tcb)
+{
+  err_t err;
+  echo_poll_cb (sid, tcb, &err);
+  return err;
+}
+
+extern void
+echo_recv_cb (void * sid, void * tcb, void * pbu, err_t errin, err_t * err);
+
+err_t
+echo_recv_cb_w (void * sid, void * tcb, void * pbu, err_t errin)
+{
+  err_t err;
+  echo_recv_cb (sid, tcb, pbu, errin, &err);
+  return err;
+}
+
+extern void
+echo_accept_cb (void * arg, void * tcb, err_t errin, err_t * err);
+
+err_t
+echo_accept_cb_w (void * arg, void * tcb, err_t errin)
+{
+  err_t err;
+  echo_accept_cb (arg, tcb, errin, &err);
+  return err;
+}
+
+
+   

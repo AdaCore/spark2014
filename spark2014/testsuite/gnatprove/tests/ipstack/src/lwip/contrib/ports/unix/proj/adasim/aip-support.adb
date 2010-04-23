@@ -3,10 +3,15 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Echo server implementation using the Netconn sequential interface
+package body AIP.Support is
 
---# inherit AIP.Support, AIP.IPaddrs, AIP.Netbufs, AIP.Netconns;
+   --# hide AIP.Support;
 
-package NCO_Tcpecho is
-   procedure Run;
-end NCO_Tcpecho;
+   procedure Verify (T : Boolean) is
+   begin
+      if not T then
+         raise Program_Error;
+      end if;
+   end Verify;
+
+end AIP.Support;

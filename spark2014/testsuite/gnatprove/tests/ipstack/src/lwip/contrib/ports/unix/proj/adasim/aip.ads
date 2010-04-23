@@ -24,7 +24,7 @@
 
 --  Configuration
 --  -------------
---  AIP.Config          Configuration parameters (default backlogs, ...)
+--  AIP.Config          Configuration parameters (default backlog sizes, ...)
 
 --  Internals
 --  ---------
@@ -34,12 +34,10 @@
 
 --  AIP.Ipaddrs         IP addresses, netmasks, ...
 --  AIP.Pbufs           Packet buffers
---  AIP.Netbufs         Network buffers (pbuf/connection associations)
 
 --  User level
 --  ----------
 --  AIP.Tcp             Base TCP services, raw callback API
---  AIP.Netconns        Netconn abstraction, sequential API
 
 
 package AIP is

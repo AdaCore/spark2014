@@ -3,9 +3,10 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
--- Packet Buffer (network packet data containers) services.
+-- Packet Buffers (network packet data containers) management.
 
---# inherit AIP;
+with AIP.Pools;
+--# inherit AIP.Pools;
 
 package AIP.Pbufs is
 
@@ -61,48 +62,55 @@ package AIP.Pbufs is
      );
    pragma Convention (C, Pbuf_Kind);
 
-   function Pbuf_Alloc
+   procedure Pbuf_Alloc
      (Layer : Pbuf_Layer;
       Size  : AIP.U16_T;
-      Kind  : Pbuf_Kind) return Pbuf_Id;
-   pragma Import (C, Pbuf_Alloc, "pbuf_alloc");
+      Kind  : Pbuf_Kind;
+      Pbuf  : out Pbuf_Id);
+   --# global in out Pools.PBUF_POOL;
    --  Allocate and return a new pbuf of kind KIND, aimed at holding or
    --  referencing SIZE bytes of data plus protocol headers required for
    --  LAYER.
+   pragma Import (C, Pbuf_Alloc, "pbuf_alloc_w");
 
    ---------------------------
    -- Pbuf struct accessors --
    ---------------------------
 
    function Pbuf_Len (Pb : Pbuf_Id) return AIP.U16_T;
+   --# global in Pools.PBUF_POOL;
+   --  Amount of packet data held in pbuf PB alone
    pragma Import (C, Pbuf_Len, "pbuf_len_w");
-   --  Amount of data held in pbuf PB alone
 
    function Pbuf_Tlen (Pb : Pbuf_Id) return AIP.U16_T;
-   pragma Import (C, Pbuf_Tlen, "pbuf_tot_len_w");
+   --# global in Pools.PBUF_POOL;
    --  Amount of packet data held from pbuf PB to the end of the chain for
    --  this packet. Tlen = Len means PB is the last buffer in the chain for a
    --  packet.
+   pragma Import (C, Pbuf_Tlen, "pbuf_tot_len_w");
 
    function Pbuf_Next (Pb : Pbuf_Id) return Pbuf_Id;
-   pragma Import (C, Pbuf_Next, "pbuf_next_w");
+   --# global in Pools.PBUF_POOL;
    --  Pbuf following PB in a chain, either next pbuf for the same packet
    --  or first pbuf of another one.
+   pragma Import (C, Pbuf_Next, "pbuf_next_w");
 
    function Pbuf_Payload (Pb : Pbuf_Id) return AIP.IPTR_T;
-   pragma Import (C, Pbuf_Payload, "pbuf_payload_w");
+   --# global in Pools.PBUF_POOL;
    --  Pointer to Data held or referenced by pbuf PB.
+   pragma Import (C, Pbuf_Payload, "pbuf_payload_w");
 
    --------------------------------
    -- Pbuf reference and release --
    --------------------------------
 
    procedure Pbuf_Ref (Pb : Pbuf_Id);
-   pragma Import (C, Pbuf_Ref, "pbuf_ref");
+   --# global in out Pools.PBUF_POOL;
    --  Increase reference count of pbuf PB, with influence on Pbuf_Free
+   pragma Import (C, Pbuf_Ref, "pbuf_ref");
 
-   function Pbuf_Free (Pb : Pbuf_Id) return AIP.U8_T;
-   pragma Import (C, Pbuf_Free, "pbuf_free");
+   procedure Pbuf_Free (Pb : Pbuf_Id; N_Deallocs : out AIP.U8_T);
+   --# global in out Pools.PBUF_POOL;
    --  Decrement PB's reference count, and deallocate if the count reaches
    --  zero. In the latter case, repeat for the following pbufs in a chain for
    --  the same packet. Return the number of pbufs that were de-allocated.
@@ -112,29 +120,38 @@ package AIP.Pbufs is
    --  1->1->2 yields ......1
    --  2->1->1 yields 1->1->1
    --  1->1->1 yields .......
+   pragma Import (C, Pbuf_Free, "pbuf_free_w");
 
    procedure Pbuf_Blind_Free (Pb : Pbuf_Id);
-   pragma Import (C, Pbuf_Blind_Free, "pbuf_free");
+   --# global in out Pools.PBUF_POOL;
    --  Same as Pbuf_Free, ignoring return value
+   pragma Import (C, Pbuf_Blind_Free, "pbuf_free");
+
+   procedure Pbuf_Release (Pb : Pbuf_Id);
+   --# global in out Pools.PBUF_POOL;
+   --  Pbuf_Free on PB until it deallocates.
 
    ---------------------
    -- Pbuf operations --
    ---------------------
 
    procedure Pbuf_Cat (Head : Pbuf_Id; Tail : Pbuf_Id);
-   pragma Import (C, Pbuf_Cat, "pbuf_cat");
+   --# global in out Pools.PBUF_POOL;
    --  Append TAIL at the end of the chain starting at HEAD, taking over
    --  the caller's reference to TAIL.
+   pragma Import (C, Pbuf_Cat, "pbuf_cat");
 
    procedure Pbuf_Chain (Head : Pbuf_Id; Tail : Pbuf_Id);
-   pragma Import (C, Pbuf_Chain, "pbuf_chain");
+   --# global in out Pools.PBUF_POOL;
    --  Append TAIL at the end of the chain starting at HEAD, and bump TAIL's
    --  reference count. The caller remains responsible of it's own reference,
    --  in particular wrt release duties.
+   pragma Import (C, Pbuf_Chain, "pbuf_chain");
 
    procedure Pbuf_Header (Pb : Pbuf_Id; Bump : AIP.S16_T);
-   pragma Import (C, Pbuf_Header, "pbuf_header");
-   --  Move the payload pointer of PB by BUMP bytes. Typically used to
+   --# global in out Pools.PBUF_POOL;
+   --  Move the payload pointer of PB by BUMP bytes, signed. Typically used to
    --  reveal or hide protocol headers.
+   pragma Import (C, Pbuf_Header, "pbuf_header");
 
 end AIP.Pbufs;

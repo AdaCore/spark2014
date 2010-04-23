@@ -125,7 +125,7 @@ adaservices: .depend $(LWIPLIB) $(APPLIB) simhost.o aip-wrappers.o $(APPFILES)
 	simhost.o aip-wrappers.o $(APPLIB) $(LWIPLIB) $(LDFLAGS)
 
 spark:
-	-sparkmake -e='*b~*'
+	-sparkmake -e='*b~*' -e="*netconns*"
 	-spark -flow=data  @spark > spark.log
 
 simhost: .depend $(LWIPLIB) $(APPLIB) simhost.o $(APPFILES)
