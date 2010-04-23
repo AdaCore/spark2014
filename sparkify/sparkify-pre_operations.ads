@@ -81,6 +81,14 @@ package Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State);
    --  A_Use_Package_Clause
 
+   procedure An_Aggregate_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+   --  This extension consists in translating aggregates without a type
+   --  qualifier in Ada into aggregates prefixed by the appropriate type
+   --  qualifier in SPARK
+
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
 
@@ -670,7 +678,7 @@ package Sparkify.Pre_Operations is
       A_Record_Aggregate ..
       --  An_Extension_Aggregate,                    -- 4.3
       --  A_Positional_Array_Aggregate,              -- 4.3
-      A_Named_Array_Aggregate => No_Action'Access,
+      A_Named_Array_Aggregate => An_Aggregate_Pre_Op'Access,
 
       An_And_Then_Short_Circuit ..
       An_Or_Else_Short_Circuit => No_Action'Access,

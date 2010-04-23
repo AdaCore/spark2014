@@ -714,4 +714,47 @@ package body Sparkify.Pre_Operations is
       State.Echo_Cursor := Cursor_After (Element);
    end Reach_Element_And_Traverse;
 
+   -------------------------
+   -- An_Aggregate_Pre_Op --
+   -------------------------
+
+   procedure An_Aggregate_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+   begin
+
+      if Cursor_At (Element) < State.Echo_Cursor then
+         --  Handling of this Element was already taken care of
+         return;
+      end if;
+
+      declare
+         Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+      begin
+         if Flat_Element_Kind (Encl_Element) = A_Qualified_Expression then
+            --  Do nothing because the aggregate is already qualified
+            return;
+         else
+            declare
+               Decl_Type : constant Asis.Declaration :=
+                 Corresponding_Expression_Type (Element);
+               Decl_Name : constant Defining_Name_List :=
+                 Asis.Declarations.Names (Decl_Type);
+               pragma Assert (Decl_Name'Length = 1);
+               Type_Str  : constant Wide_String :=
+                 Defining_Name_Image (Decl_Name (Decl_Name'First)) & "'";
+            begin
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+               PP_Word (Type_Str);
+               State.Echo_Cursor := Cursor_At (Element);
+            end;
+         end if;
+      end;
+
+   end An_Aggregate_Pre_Op;
+
 end Sparkify.Pre_Operations;
