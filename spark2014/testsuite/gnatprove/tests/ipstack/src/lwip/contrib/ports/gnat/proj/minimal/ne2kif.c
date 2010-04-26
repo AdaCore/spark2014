@@ -46,6 +46,8 @@ err_t ne2k_init(struct netif *netif)
 {
   struct ne2k_if *ne2k_if;
 
+  printf ("Initializing ne2k if %c%c...", IFNAME0, IFNAME1);
+
   ne2k_if = mem_malloc(sizeof(struct ne2k_if));
   
   if (ne2k_if == NULL)
@@ -67,6 +69,7 @@ err_t ne2k_init(struct netif *netif)
   
   sys_timeout(ARP_TMR_INTERVAL, arp_timer, NULL);
   
+  printf (" done.\n");
   return ERR_OK;
 }
 

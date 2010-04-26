@@ -77,7 +77,7 @@ LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 
 all ipv4 compile: echop.bin
-.PHONY: all
+.PHONY: all run
 
 define LWIPF_template
 _src=$(1)
@@ -124,3 +124,6 @@ echop: .depend $(LWIPLIB) $(APPLIB) main.o $(APPFILES) $(ADAFILES)
 
 echop.bin: echop
 	powerpc-elf-objcopy -O binary echop echop.bin
+
+run:	echop.bin
+	qemu-system-ppc -nographic -M prep -L . -bios echop.bin

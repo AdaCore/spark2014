@@ -6,6 +6,8 @@
 with Time_Types;
 with Timers;
 
+with Ada.Text_IO; use Ada.Text_IO;
+
 procedure Mainloop is
    use type Time_Types.Time;
 
@@ -32,6 +34,7 @@ procedure Mainloop is
    end Process_Interface_Events;
 
 begin
+   Put_Line ("Mainloop: enter");
    loop
       Events := Process_Interface_Events;
 

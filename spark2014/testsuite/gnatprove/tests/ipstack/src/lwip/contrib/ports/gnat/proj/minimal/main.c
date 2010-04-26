@@ -186,8 +186,8 @@ C_main (void)
   strncpy(nm_str,inet_ntoa(inaddr),sizeof(nm_str));
   inaddr.s_addr = gw.addr;
   strncpy(gw_str,inet_ntoa(inaddr),sizeof(gw_str));
-  printf("Host at %s mask %s gateway %s\n", ip_str, nm_str, gw_str);
 
+  printf("Host at %s mask %s gateway %s\n", ip_str, nm_str, gw_str);
         
 #ifdef PERF
   perf_init("/tmp/minimal.perf");

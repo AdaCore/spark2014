@@ -44,6 +44,7 @@ package body Strings is
 
          while Index < N loop
             dest_p (Index) := Interfaces.C.NUL;
+            Index := Index + 1;
          end loop;
       end if;
       return dest;
