@@ -52,7 +52,7 @@
 #include "lwip/snmp_msg.h"
 #endif
 #include "lwip/tcp.h"
-#include "mintapif.h"
+#include "ne2kif.h"
 #include "netif/etharp.h"
 
 #include "timer.h"
@@ -116,8 +116,8 @@ void usage(void)
 }
 #endif
 
-int
-main(int argc, char **argv)
+void
+C_main (void)
 {
   struct netif netif;
 #if 0
@@ -158,6 +158,7 @@ main(int argc, char **argv)
         inet_aton(optarg, &inaddr);
         netmask.addr = inaddr.s_addr;
         break;
+#if 0
       case 't':
         trap_flag = !0;
         /* @todo: remove this authentraps tweak 
@@ -169,6 +170,7 @@ main(int argc, char **argv)
         strncpy(ip_str,inet_ntoa(inaddr),sizeof(ip_str));
         printf("SNMP trap destination %s\n", ip_str);
         break;
+#endif
       default:
         usage();
         break;
@@ -195,7 +197,7 @@ main(int argc, char **argv)
 
   printf("TCP/IP initialized.\n");
   
-  netif_add(&netif, &ipaddr, &netmask, &gw, NULL, mintapif_init, ip_input);  
+  netif_add(&netif, &ipaddr, &netmask, &gw, NULL, ne2k_init, ip_input);  
   netif_set_default(&netif);
   netif_set_up(&netif);
 
@@ -204,12 +206,14 @@ main(int argc, char **argv)
   /* initialize our private example MIB */
   lwip_privmib_init();
 #endif
+#if 0
   snmp_trap_dst_ip_set(0,&trap_addr);
   snmp_trap_dst_enable(0,trap_flag);
   snmp_set_syscontact(syscontact_str,&syscontact_len);
   snmp_set_syslocation(syslocation_str,&syslocation_len);
   snmp_set_snmpenableauthentraps(&snmpauthentraps_set);
   snmp_init();
+#endif
 
   echo_init();
   

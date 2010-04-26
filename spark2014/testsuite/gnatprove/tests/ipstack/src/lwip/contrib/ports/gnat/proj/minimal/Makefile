@@ -49,7 +49,7 @@ LWIPDIR=$(CONTRIBDIR)/../lwip/src
 
 CFLAGS:=$(CFLAGS) \
 	-I$(LWIPDIR)/include -I$(LWIPARCH)/include -I$(LWIPDIR)/include/ipv4 \
-	-Iapps -I.
+	-Iapps -I. -ffreestanding
 
 # COREFILES, CORE4FILES: The minimum set of files needed for lwIP.
 COREFILES=$(LWIPDIR)/core/mem.c $(LWIPDIR)/core/memp.c $(LWIPDIR)/core/netif.c \
@@ -69,13 +69,14 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 
 # NETIFFILES: Files implementing various generic network interface functions.'
 #NETIFFILES=$(LWIPDIR)/netif/etharp.c mintapif.c
+NETIFFILES=$(LWIPDIR)/netif/etharp.c ne2kif.c
 
 # LWIPFILES: All the above.
-LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES)
+LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) printf.c
 LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 
-all ipv4 compile: echop
+all ipv4 compile: echop.bin
 .PHONY: all
 
 define LWIPF_template
@@ -90,9 +91,7 @@ $(foreach lwipf,$(LWIPFILESW),$(eval $(call LWIPF_template,$(lwipf))))
 APPFILES=echo.c
 
 # ADAFILES
-ADAFILES= mainloop.adb ppc_clock.adb timers.adb time_types.adb assert.adb \
-  memory_compare.adb memory_copy.adb memory_set.adb \
-  echop.adb
+ADAFILES= mainloop.adb ppc_clock.adb timers.adb time_types.adb echop.adb
 
 LWIPLIB=liblwip4.a
 APPLIB=liblwipapps.a
@@ -105,8 +104,7 @@ APPOBJS=$(notdir $(APPFILES:.c=.o))
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	gnatbind all
-	rm -f *.ali *.o $(LWIPLIB) $(APPLIB) echop .depend* *.core core
+	rm -f *.ali *.o $(LWIPLIB) $(APPLIB) echop echop.bin .depend* *.core core
 
 depend dep: .depend
 
@@ -122,5 +120,7 @@ $(LWIPLIB): $(LWIPOBJS)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
 echop: .depend $(LWIPLIB) $(APPLIB) main.o $(APPFILES) $(ADAFILES)
-	$(GCC_PREFIX)gnatmake echop $(CFLAGS) -largs main.o $(APPLIB) $(LWIPLIB)
+	$(GCC_PREFIX)gnatmake -Pipstack -XVARIANT="powerpc-elf-qemu" echop $(CFLAGS) -largs main.o $(APPLIB) $(LWIPLIB)
 
+echop.bin: echop
+	powerpc-elf-objcopy -O binary echop echop.bin
