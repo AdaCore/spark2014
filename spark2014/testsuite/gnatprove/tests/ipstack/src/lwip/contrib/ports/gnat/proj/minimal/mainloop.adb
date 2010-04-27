@@ -26,11 +26,12 @@ procedure Mainloop is
    procedure etharp_tmr;
    pragma Import (C, etharp_tmr, "etharp_tmr");
 
+   function Ne2k_Isr return Integer;
+   pragma Import (C, Ne2k_Isr);
+
    function Process_Interface_Events return Integer is
    begin
-      --  No interface defined yet
-
-      return 0;
+      return Ne2k_Isr;
    end Process_Interface_Events;
 
 begin
