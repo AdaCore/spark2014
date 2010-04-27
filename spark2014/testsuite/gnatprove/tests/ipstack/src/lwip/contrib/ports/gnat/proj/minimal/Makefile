@@ -28,10 +28,11 @@
 # 
 # Author: Adam Dunkels <adam@sics.se>
 #
- 
+
 GCC_PREFIX=powerpc-elf-
 CCDEP=$(GCC_PREFIX)gcc
 CC=$(GCC_PREFIX)gcc
+AR=$(GCC_PREFIX)ar
 #To compile for linux: make ARCH=linux
 #To compile for cygwin: make ARCH=cygwin
 #To compile for openbsd: make ARCH=openbsd
@@ -120,7 +121,7 @@ $(LWIPLIB): $(LWIPOBJS)
 	$(CCDEP) $(CFLAGS) -MM $^ > .depend || rm -f .depend
 
 echop: .depend $(LWIPLIB) $(APPLIB) main.o $(APPFILES) $(ADAFILES)
-	$(GCC_PREFIX)gnatmake -Pipstack -XVARIANT="powerpc-elf-qemu" echop $(CFLAGS) -largs main.o $(APPLIB) $(LWIPLIB)
+	$(GCC_PREFIX)gnatmake --RTS=zfp -Pipstack -XVARIANT="powerpc-elf-qemu" echop $(CFLAGS) -largs main.o $(APPLIB) $(LWIPLIB)
 
 echop.bin: echop
 	powerpc-elf-objcopy -O binary echop echop.bin
