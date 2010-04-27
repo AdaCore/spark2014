@@ -1,0 +1,43 @@
+------------------------------------------------------------------------
+package Globals
+--@ line 1
+--# own G1, G2, G3;
+--# initializes G2;
+--@ line 1
+                is
+
+   G1 : Integer;
+
+   G2 : Integer := 0;
+
+   G3 : Integer;
+
+   procedure Init;
+--@ line 9
+   --# global out G1;
+
+end Globals;
+package body Globals is
+
+   procedure Init is
+   begin
+      G1 := 0;
+   end Init;
+
+begin
+
+   G3 := 0;
+
+end Globals;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      1      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           1      0      1              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  2      1      1              0      0      0       0
+% Totals:                      50%    50%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
