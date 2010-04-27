@@ -1,8 +1,9 @@
 /*
  * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
- * All rights reserved. 
- * 
- * Redistribution and use in source and binary forms, with or without modification, 
+ * Copyright (C) 2010, AdaCore
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -11,17 +12,17 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission. 
+ *    derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED 
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
- * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
  * This file is part of and a contribution to the lwIP TCP/IP stack.
@@ -86,7 +87,7 @@ echo_init(void)
       echo_pcb = tcp_listen(echo_pcb);
       tcp_accept(echo_pcb, echo_accept);
     }
-    else 
+    else
     {
       /* abort? output diagnostic? */
     }
@@ -125,7 +126,7 @@ echo_accept(void *arg, struct tcp_pcb *newpcb, err_t err)
   {
     ret_err = ERR_MEM;
   }
-  return ret_err;  
+  return ret_err;
 }
 
 err_t
@@ -241,7 +242,7 @@ echo_poll(void *arg, struct tcp_pcb *tpcb)
     }
     else
     {
-      /* no remaining pbuf (chain)  */      
+      /* no remaining pbuf (chain)  */
       if(es->state == ES_CLOSING)
       {
         echo_close(tpcb, es);
@@ -265,7 +266,7 @@ echo_sent(void *arg, struct tcp_pcb *tpcb, u16_t len)
 
   es = arg;
   es->retries = 0;
-  
+
   if(es->p != NULL)
   {
     /* still got pbufs to send */
@@ -288,14 +289,24 @@ echo_send(struct tcp_pcb *tpcb, struct echo_state *es)
 {
   struct pbuf *ptr;
   err_t wr_err = ERR_OK;
- 
+  char buf[1024];
+  int len;
+
   while ((wr_err == ERR_OK) &&
-         (es->p != NULL) && 
+         (es->p != NULL) &&
          (es->p->len <= tcp_sndbuf(tpcb)))
   {
   ptr = es->p;
 
   /* enqueue data for transmission */
+
+  len = sizeof buf - 1;
+  if (ptr->len < len)
+    len = ptr->len;
+  strncpy (buf, ptr->payload, len);
+  buf[len] = '\0';
+  printf ("Got data: %s\n", buf);
+
   wr_err = tcp_write(tpcb, ptr->payload, ptr->len, 1);
   if (wr_err == ERR_OK)
   {
@@ -340,10 +351,10 @@ echo_close(struct tcp_pcb *tpcb, struct echo_state *es)
   tcp_recv(tpcb, NULL);
   tcp_err(tpcb, NULL);
   tcp_poll(tpcb, NULL, 0);
-  
+
   if (es != NULL)
   {
     mem_free(es);
-  }  
+  }
   tcp_close(tpcb);
 }
