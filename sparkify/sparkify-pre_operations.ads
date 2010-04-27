@@ -43,6 +43,12 @@ package Sparkify.Pre_Operations is
    --  * Precondition
    --  * Postcondition
 
+   procedure A_Package_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+   --  A_Package_Declaration
+
    procedure A_Subprogram_Unit_Declaration_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -258,7 +264,7 @@ package Sparkify.Pre_Operations is
       A_Return_Object_Declaration  => No_Action'Access,
       A_Null_Procedure_Declaration => No_Action'Access,
 
-      A_Package_Declaration ..
+      A_Package_Declaration => A_Package_Declaration_Pre_Op'Access,
       A_Package_Body_Declaration => No_Action'Access,
 
       --

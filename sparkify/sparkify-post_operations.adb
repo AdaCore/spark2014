@@ -33,11 +33,11 @@ with Sparkify.Cursors;                 use Sparkify.Cursors;
 
 package body Sparkify.Post_Operations is
 
-   -----------------------------------
-   -- A_Package_Declaration_Post_Op --
-   -----------------------------------
+   -------------------------------------------
+   -- A_Package_Declaration_Or_Body_Post_Op --
+   -------------------------------------------
 
-   procedure A_Package_Declaration_Post_Op
+   procedure A_Package_Declaration_Or_Body_Post_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State)
@@ -109,7 +109,7 @@ package body Sparkify.Post_Operations is
                      Text   => "end " & Name & ";");
          State.Echo_Cursor := Cursor_After (Element);
       end;
-   end A_Package_Declaration_Post_Op;
+   end A_Package_Declaration_Or_Body_Post_Op;
 
    -------------------------------
    -- A_Subprogram_Unit_Post_Op --

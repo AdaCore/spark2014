@@ -101,6 +101,12 @@ package Sparkify.PP_Output is
       Global_In_Out : Wide_String);
    --  Send globals into output stream as a data flow contract in SPARK syntax
 
+   procedure PP_Package_State
+     (Column      : Character_Position_Positive;
+      Own         : Wide_String;
+      Initializes : Wide_String);
+   --  Send globals into output stream as a package state in SPARK syntax
+
    procedure PP_Precondition
      (Column : Character_Position_Positive;
       Expr   : Asis.Expression);

@@ -25,6 +25,7 @@
 
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
+with Ada.Containers.Vectors;           use Ada.Containers;
 
 with Asis.Compilation_Units;           use Asis.Compilation_Units;
 with Asis.Extensions;                  use Asis.Extensions;
@@ -330,6 +331,159 @@ package body Sparkify.Pre_Operations is
       end if;
 
    end A_Loop_Statement_Pre_Op;
+
+   ----------------------------------
+   -- A_Package_Declaration_Pre_Op --
+   ----------------------------------
+
+   procedure A_Package_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+
+      package Element_Container is new
+        Vectors (Positive, Asis.Element, Is_Equal);
+
+      --  Concatenate the names of declarations Decl separated by Sep
+      function Names_Of_Declarations
+        (Decls : Element_Container.Vector;
+         Sep   : Wide_String) return Unbounded_Wide_String;
+
+      function Names_Of_Declarations
+        (Decls : Element_Container.Vector;
+         Sep   : Wide_String) return Unbounded_Wide_String
+      is
+         Names : Unbounded_Wide_String;
+         Decl  : Element_Container.Cursor := Element_Container.First (Decls);
+      begin
+
+         --  First take into account the first global variable
+         if Element_Container.Has_Element (Decl) then
+            declare
+               Decl_Names : constant Defining_Name_List :=
+                 Asis.Declarations.Names (Element_Container.Element (Decl));
+            begin
+               pragma Assert (Decl_Names'Length > 0);
+               Names := To_Unbounded_Wide_String
+                 (Defining_Name_Image (Decl_Names (1)));
+               for K in 2 .. Decl_Names'Length loop
+                  Names := Names & Sep & Defining_Name_Image (Decl_Names (K));
+               end loop;
+               Element_Container.Next (Decl);
+            end;
+         end if;
+
+         --  Then concatenate all remaining global variables
+         while Element_Container.Has_Element (Decl) loop
+            declare
+               Decl_Names : constant Defining_Name_List :=
+                 Asis.Declarations.Names (Element_Container.Element (Decl));
+            begin
+               for K in 1 .. Decl_Names'Length loop
+                  Names := Names & Sep & Defining_Name_Image (Decl_Names (K));
+               end loop;
+            end;
+            Element_Container.Next (Decl);
+         end loop;
+
+         return Names;
+
+      end Names_Of_Declarations;
+
+      Private_Items : constant Declarative_Item_List :=
+        Private_Part_Declarative_Items (Declaration     => Element,
+                                        Include_Pragmas => False);
+      Visible_Items : constant Declarative_Item_List :=
+        Visible_Part_Declarative_Items (Declaration     => Element,
+                                        Include_Pragmas => False);
+      Decl_Items : constant Declarative_Item_List :=
+        Private_Items & Visible_Items;
+
+      Items : Element_Container.Vector;
+
+      Body_Decl : constant Asis.Declaration := Corresponding_Body (Element);
+
+      Column_Start : constant Character_Position_Positive :=
+        Element_Span (Element).First_Column;
+   begin
+
+      --  First collect all declarations in both the package declaration and
+      --  the package body in Items
+
+      for J in Decl_Items'Range loop
+         Element_Container.Append (Items, Decl_Items (J));
+      end loop;
+
+      if not Is_Nil (Body_Decl) then
+         declare
+            Body_Items : constant Declarative_Item_List :=
+              Body_Declarative_Items (Declaration     => Body_Decl,
+                                      Include_Pragmas => False);
+         begin
+            for J in Body_Items'Range loop
+               Element_Container.Append (Items, Body_Items (J));
+            end loop;
+         end;
+      end if;
+
+      --  Then filter those declarations which correspond to global variables
+      --  and print them as own (and initializes when appropriate) variables
+      --  in SPARK
+
+      declare
+         Item : Element_Container.Cursor := Element_Container.First (Items);
+         Own_Items, Init_Items : Element_Container.Vector;
+         Own_Str, Init_Str     : Unbounded_Wide_String;
+
+         Current_Cursor : Cursor;
+         Pack_Names  : constant Defining_Name_List :=
+           Asis.Declarations.Names (Element);
+      begin
+         while Element_Container.Has_Element (Item) loop
+            declare
+               El : constant Asis.Element := Element_Container.Element (Item);
+            begin
+
+               --  Add all global variable declarations as "own" variables
+               if Flat_Element_Kind (El) = A_Variable_Declaration then
+                  Element_Container.Append (Own_Items, El);
+
+                  --  If the global variable is initialized at declaration,
+                  --  add it as an "initializes" variable
+                  --  TODO: detect if package body initializes the variable,
+                  --  in which case it should be counted as an "initializes"
+                  --  variable too
+                  if not Is_Nil (Initialization_Expression (El)) then
+                     Element_Container.Append (Init_Items, El);
+                  end if;
+               end if;
+
+            end;
+            Element_Container.Next (Item);
+         end loop;
+
+         --  Get strings corresponding to lists of names of global variables
+         Own_Str  := Names_Of_Declarations (Own_Items, ", ");
+         Init_Str := Names_Of_Declarations (Init_Items, ", ");
+
+         pragma Assert (Pack_Names'Length = 1);
+         Current_Cursor := Cursor_At_End_Of (Pack_Names (Pack_Names'First));
+
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
+
+         --  Print the package state annotations
+         PP_Package_State (Column      => Column_Start,
+                           Own         => To_Wide_String (Own_Str),
+                           Initializes => To_Wide_String (Init_Str));
+
+         Cursor_Next_Column (Current_Cursor);
+         Skip_Blanks (Current_Cursor);
+         State.Echo_Cursor := Current_Cursor;
+      end;
+
+   end A_Package_Declaration_Pre_Op;
 
    ---------------------
    -- A_Pragma_Pre_Op --

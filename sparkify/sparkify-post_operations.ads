@@ -42,7 +42,7 @@ package Sparkify.Post_Operations is
    --  A_Procedure_Body_Declaration
    --  A_Function_Body_Declaration
 
-   procedure A_Package_Declaration_Post_Op
+   procedure A_Package_Declaration_Or_Body_Post_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
@@ -205,7 +205,8 @@ package Sparkify.Post_Operations is
       A_Null_Procedure_Declaration => No_Action'Access,
 
       A_Package_Declaration ..
-      A_Package_Body_Declaration  => A_Package_Declaration_Post_Op'Access,
+      A_Package_Body_Declaration =>
+          A_Package_Declaration_Or_Body_Post_Op'Access,
 
       An_Object_Renaming_Declaration ..
       --  An_Exception_Renaming_Declaration,
