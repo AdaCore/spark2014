@@ -29,6 +29,11 @@ struct ne2k_if {
 
 struct netif *ne2k_if_netif;   
 
+static void low_level_init(struct netif * netif);
+static void arp_timer(void *arg);
+static err_t low_level_output(struct netif * netif,struct pbuf *p);
+static void ne2k_input(struct netif *netif);
+static struct pbuf * low_level_input(struct netif *netif);
 
 /*----------------------------------------------------------------------------------------
   ****************************************************************************************
@@ -125,25 +130,32 @@ static void low_level_init(struct netif * netif)
   
   EN0_ISR = (u8_t) 0xff; /* clear the all flag bits in EN0_ISR */
   EN0_IMR = (u8_t) 0x00; /* Disable all Interrupt */
-  
+
+  /* Read ethernet address.  */
+  EN_CMD = (u8_t) (EN_PAGE0 + EN_RREAD + EN_STOP);
+  EN0_RSARLO = 0;
+  EN0_RSARHI = 0;
+  EN0_RCNTLO = 6;
+  EN0_RCNTHI = 0;
+
+  for (i = 0; i < 6; i++)
+    ne2k_if->ethaddr->addr[i] = EN_DATA;
+
   EN_CMD = (u8_t) (EN_PAGE1 + EN_NODMA + EN_STOP);
   EN1_CURR = (u8_t) 0x47; /* keep curr=boundary+1 means no new packet */
            
-  EN1_PAR0 = (u8_t)0x12;/* MAC_addr.addr[0]; */
-  EN1_PAR1 = (u8_t)0x34;/* MAC_addr.addr[1];*/
-  EN1_PAR2 = (u8_t)0x56;/* MAC_addr.addr[2];*/
-  EN1_PAR3 = (u8_t)0x78;/* MAC_addr.addr[3];*/
-  EN1_PAR4 = (u8_t)0x9a;/* MAC_addr.addr[4];*/
-  EN1_PAR5 = (u8_t)0xe0;/* MAC_addr.addr[5];*/
-    
-  /* make up an address. */
-  ne2k_if->ethaddr->addr[0] = (u8_t) 0x12;/*MAC_addr.addr[0];*/
-  ne2k_if->ethaddr->addr[1] = (u8_t) 0x34;/*MAC_addr.addr[1];*/
-  ne2k_if->ethaddr->addr[2] = (u8_t) 0x56;/*MAC_addr.addr[2];*/
-  ne2k_if->ethaddr->addr[3] = (u8_t) 0x78;/*MAC_addr.addr[3];*/
-  ne2k_if->ethaddr->addr[4] = (u8_t) 0x9a;/*MAC_addr.addr[4];*/
-  ne2k_if->ethaddr->addr[5] = (u8_t) 0xe0;/*MAC_addr.addr[5];*/
-    
+  EN1_PAR0 = ne2k_if->ethaddr->addr[0];
+  EN1_PAR1 = ne2k_if->ethaddr->addr[1];
+  EN1_PAR2 = ne2k_if->ethaddr->addr[2];
+  EN1_PAR3 = ne2k_if->ethaddr->addr[3];
+  EN1_PAR4 = ne2k_if->ethaddr->addr[4];
+  EN1_PAR5 = ne2k_if->ethaddr->addr[5];
+
+  printf ("Eth addr:");
+  for (i = 0; i < 6; i++)
+    printf ("%c%02x", i == 0 ? ' ' : ':', ne2k_if->ethaddr->addr[i]);
+  printf ("\n");
+
   /* Initialize the multicast list to reject-all.  
      If we enable multicast the higher levels can do the filtering. 
      <multicast filter mask array (8 bytes)> */

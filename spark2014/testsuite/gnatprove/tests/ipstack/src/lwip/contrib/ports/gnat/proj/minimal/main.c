@@ -68,7 +68,9 @@ static struct ip_addr ipaddr, netmask, gw;
 
 /* SNMP trap destination cmd option */
 static unsigned char trap_flag;
+#if 0
 static struct ip_addr trap_addr;
+#endif
 
 /* nonstatic debug cmd option, exported in lwipopts.h */
 unsigned char debug_flags;
@@ -122,9 +124,9 @@ C_main (void)
   struct netif netif;
 #if 0
   sigset_t mask, oldmask, empty;
+  int ch;
 #endif
   struct in_addr inaddr;
-  int ch;
   char ip_str[16] = {0}, nm_str[16] = {0}, gw_str[16] = {0};
 
   /* startup defaults (may be overridden by one or more opts) */
@@ -278,5 +280,5 @@ C_main (void)
   AIP_mainloop ();
 #endif
   
-  return 0;
+  return;
 }

@@ -26,14 +26,8 @@
  *  Driver functions.
  */
 err_t ne2k_init(struct netif *netif);
-static void low_level_init(struct netif * netif);
-static void arp_timer(void *arg);
-
-static err_t low_level_output(struct netif * netif,struct pbuf *p);
 u16_t write_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
 
-static void ne2k_input(struct netif *netif);
-static struct pbuf * low_level_input(struct netif *netif);
 u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
 
 
@@ -43,50 +37,50 @@ u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
 #define Base_ADDR           (0x80000000 + 0x300) /* and ethernet chip is at 0x300 by default */
 
 /* actual address on DSK */
-#define     EN_CMD          *(unsigned char *)(Base_ADDR+0x00)  /*	The command register (for all pages) */
-#define     EN_DATA		    *(unsigned short *)(Base_ADDR+0x10)	/*by ming (change to 16bit)  Remote DMA Port10~17h (for all pages)*/
-#define     EN_RESET	    *(unsigned char *)(Base_ADDR+0x1F)	/*  Reset Port 1fh(for all pages)     */
+#define     EN_CMD          *(volatile unsigned char *)(Base_ADDR+0x00)  /*	The command register (for all pages) */
+#define     EN_DATA	    *(volatile unsigned short *)(Base_ADDR+0x10)	/*by ming (change to 16bit)  Remote DMA Port10~17h (for all pages)*/
+#define     EN_RESET	    *(volatile unsigned char *)(Base_ADDR+0x1F)	/*  Reset Port 1fh(for all pages)     */
 
 /* Page 0 register offsets   */
-#define     EN0_STARTPG     *(unsigned char *)(Base_ADDR+0x01)	/*  WR Starting page of ring buffer      */
-#define     EN0_STOPPG  	*(unsigned char *)(Base_ADDR+0x02)	/*  WR Ending page +1 of ring buffer     */
-#define     EN0_BOUNDARY	*(unsigned char *)(Base_ADDR+0x03)	/*  RD/WR Boundary page of ring buffer   */
+#define     EN0_STARTPG     *(volatile unsigned char *)(Base_ADDR+0x01)	/*  WR Starting page of ring buffer      */
+#define     EN0_STOPPG  	*(volatile unsigned char *)(Base_ADDR+0x02)	/*  WR Ending page +1 of ring buffer     */
+#define     EN0_BOUNDARY	*(volatile unsigned char *)(Base_ADDR+0x03)	/*  RD/WR Boundary page of ring buffer   */
 #define     EN0_TSR		*(unsigned char *)(Base_ADDR+0x04)	/*  RD Transmit status reg               */
-#define     EN0_TPSR		*(unsigned char *)(Base_ADDR+0x04)	/*  WR Transmit starting page            */
-#define     EN0_NCR		*(unsigned char *)(Base_ADDR+0x05)	/*  RD Number of collision reg           */
-#define     EN0_TCNTLO  	*(unsigned char *)(Base_ADDR+0x05)	/*  WR Low  byte of tx byte count        */
-#define     EN0_CRP		*(unsigned char *)(Base_ADDR+0x06)	/*  Current Page Register                              */
-#define     EN0_TCNTHI		*(unsigned char *)(Base_ADDR+0x06)	/*  WR High byte of tx byte count        */
-#define     EN0_ISR		*(unsigned char *)(Base_ADDR+0x07)	/*  RD/WR Interrupt status reg           */
-#define     EN0_CRDALO  	*(unsigned char *)(Base_ADDR+0x08)	/*  RD low byte of current remote dma add*/
-#define     EN0_RSARLO		*(unsigned char *)(Base_ADDR+0x08)	/*  WR Remote start address reg 0        */
-#define     EN0_CRDAHI		*(unsigned char *)(Base_ADDR+0x09)	/*  RD high byte, current remote dma add.*/
-#define     EN0_RSARHI		*(unsigned char *)(Base_ADDR+0x09)	/*  WR Remote start address reg 1        */
-#define     EN0_RCNTLO	    	*(unsigned char *)(Base_ADDR+0x0A)	/*  WR Remote byte count reg 0           */
-#define     EN0_RCNTHI		*(unsigned char *)(Base_ADDR+0x0B)	/*  WR Remote byte count reg 1           */
-#define     EN0_RSR		*(unsigned char *)(Base_ADDR+0x0C)	/*  RD RX status reg                     */
-#define     EN0_RXCR		*(unsigned char *)(Base_ADDR+0x0C)	/*  WR RX configuration reg              */
-#define     EN0_TXCR		*(unsigned char *)(Base_ADDR+0x0D)	/*  WR TX configuration reg              */
-#define     EN0_DCFG		*(unsigned char *)(Base_ADDR+0x0E)	/*  WR Data configuration reg            */
-#define     EN0_IMR		*(unsigned char *)(Base_ADDR+0x0F)	/*  WR Interrupt mask reg                */
+#define     EN0_TPSR		*(volatile unsigned char *)(Base_ADDR+0x04)	/*  WR Transmit starting page            */
+#define     EN0_NCR		*(volatile unsigned char *)(Base_ADDR+0x05)	/*  RD Number of collision reg           */
+#define     EN0_TCNTLO  	*(volatile unsigned char *)(Base_ADDR+0x05)	/*  WR Low  byte of tx byte count        */
+#define     EN0_CRP		*(volatile unsigned char *)(Base_ADDR+0x06)	/*  Current Page Register                              */
+#define     EN0_TCNTHI		*(volatile unsigned char *)(Base_ADDR+0x06)	/*  WR High byte of tx byte count        */
+#define     EN0_ISR		*(volatile unsigned char *)(Base_ADDR+0x07)	/*  RD/WR Interrupt status reg           */
+#define     EN0_CRDALO  	*(volatile unsigned char *)(Base_ADDR+0x08)	/*  RD low byte of current remote dma add*/
+#define     EN0_RSARLO		*(volatile unsigned char *)(Base_ADDR+0x08)	/*  WR Remote start address reg 0        */
+#define     EN0_CRDAHI		*(volatile unsigned char *)(Base_ADDR+0x09)	/*  RD high byte, current remote dma add.*/
+#define     EN0_RSARHI		*(volatile unsigned char *)(Base_ADDR+0x09)	/*  WR Remote start address reg 1        */
+#define     EN0_RCNTLO	    	*(volatile unsigned char *)(Base_ADDR+0x0A)	/*  WR Remote byte count reg 0           */
+#define     EN0_RCNTHI		*(volatile unsigned char *)(Base_ADDR+0x0B)	/*  WR Remote byte count reg 1           */
+#define     EN0_RSR		*(volatile unsigned char *)(Base_ADDR+0x0C)	/*  RD RX status reg                     */
+#define     EN0_RXCR		*(volatile unsigned char *)(Base_ADDR+0x0C)	/*  WR RX configuration reg              */
+#define     EN0_TXCR		*(volatile unsigned char *)(Base_ADDR+0x0D)	/*  WR TX configuration reg              */
+#define     EN0_DCFG		*(volatile unsigned char *)(Base_ADDR+0x0E)	/*  WR Data configuration reg            */
+#define     EN0_IMR		*(volatile unsigned char *)(Base_ADDR+0x0F)	/*  WR Interrupt mask reg                */
 
 /* Page 1 register offsets    */
-#define     EN1_PAR0	    *(unsigned char *)(Base_ADDR+0x01)	/* RD/WR This board's physical ethernet addr */
-#define     EN1_PAR1	    *(unsigned char *)(Base_ADDR+0x02)
-#define     EN1_PAR2	    *(unsigned char *)(Base_ADDR+0x03)
-#define     EN1_PAR3	    *(unsigned char *)(Base_ADDR+0x04)
-#define     EN1_PAR4	    *(unsigned char *)(Base_ADDR+0x05)
-#define     EN1_PAR5	    *(unsigned char *)(Base_ADDR+0x06)
-#define     EN1_CURR	    *(unsigned char *)(Base_ADDR+0x07)   /* RD/WR current page reg */
+#define     EN1_PAR0	    *(volatile unsigned char *)(Base_ADDR+0x01)	/* RD/WR This board's physical ethernet addr */
+#define     EN1_PAR1	    *(volatile unsigned char *)(Base_ADDR+0x02)
+#define     EN1_PAR2	    *(volatile unsigned char *)(Base_ADDR+0x03)
+#define     EN1_PAR3	    *(volatile unsigned char *)(Base_ADDR+0x04)
+#define     EN1_PAR4	    *(volatile unsigned char *)(Base_ADDR+0x05)
+#define     EN1_PAR5	    *(volatile unsigned char *)(Base_ADDR+0x06)
+#define     EN1_CURR	    *(volatile unsigned char *)(Base_ADDR+0x07)   /* RD/WR current page reg */
 #define		EN1_CURPAG		EN1_CURR
-#define     EN1_MAR0        *(unsigned char *)(Base_ADDR+0x08)   /* RD/WR Multicast filter mask array (8 bytes) */
-#define     EN1_MAR1		*(unsigned char *)(Base_ADDR+0x09)
-#define     EN1_MAR2        *(unsigned char *)(Base_ADDR+0x0A)
-#define     EN1_MAR3        *(unsigned char *)(Base_ADDR+0x0B)
-#define     EN1_MAR4        *(unsigned char *)(Base_ADDR+0x0C)
-#define     EN1_MAR5        *(unsigned char *)(Base_ADDR+0x0D)
-#define     EN1_MAR6        *(unsigned char *)(Base_ADDR+0x0E)
-#define     EN1_MAR7        *(unsigned char *)(Base_ADDR+0x0F)
+#define     EN1_MAR0        *(volatile unsigned char *)(Base_ADDR+0x08)   /* RD/WR Multicast filter mask array (8 bytes) */
+#define     EN1_MAR1	    *(volatile unsigned char *)(Base_ADDR+0x09)
+#define     EN1_MAR2        *(volatile unsigned char *)(Base_ADDR+0x0A)
+#define     EN1_MAR3        *(volatile unsigned char *)(Base_ADDR+0x0B)
+#define     EN1_MAR4        *(volatile unsigned char *)(Base_ADDR+0x0C)
+#define     EN1_MAR5        *(volatile unsigned char *)(Base_ADDR+0x0D)
+#define     EN1_MAR6        *(volatile unsigned char *)(Base_ADDR+0x0E)
+#define     EN1_MAR7        *(volatile unsigned char *)(Base_ADDR+0x0F)
 
 /* Command Values at EN_CMD */
 #define     EN_STOP	    0x01	/*  Stop and reset the chip */
