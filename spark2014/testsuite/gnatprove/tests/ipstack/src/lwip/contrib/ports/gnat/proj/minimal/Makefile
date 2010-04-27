@@ -127,4 +127,4 @@ echop.bin: echop
 	powerpc-elf-objcopy -O binary echop echop.bin
 
 run:	echop.bin
-	qemu-system-ppc -nographic -M prep -L . -bios echop.bin
+	qemu-system-ppc -nographic -M prep -L . -bios echop.bin -net nic -net tap,script=qemu-ifup
