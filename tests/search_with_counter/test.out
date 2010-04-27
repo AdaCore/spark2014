@@ -1,7 +1,9 @@
 ------------------------------------------------------------------------
 package Search
+--@ line 1
 --# own Counter;
 --# initializes Counter;
+--@ line 2
 is
 
   type IntArray is array (Integer range <>) of Integer;
@@ -13,7 +15,7 @@ is
      Value : in Integer;
      Found : out Boolean;
      Index : out Integer);
---@ line 14
+--@ line 12
   --# global in out Counter;
   --# pre              Counter < Integer'Last;
   --# post              not Found or else

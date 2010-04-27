@@ -1,6 +1,4 @@
 package Search
---# own Counter;
---# initializes Counter;
 is
 
   type IntArray is array (Integer range <>) of Integer;

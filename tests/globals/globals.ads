@@ -1,5 +1,5 @@
 package Globals
---# own G;
+
 is
 
    G : Integer;
