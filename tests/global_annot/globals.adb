@@ -7,6 +7,7 @@ package body Globals is
    procedure Proc (Cond : Boolean) is
       R2, W2, RW2 : Integer;
 
+      --  Local procedure used to show global annotations
       procedure S is
       begin
          if Cond then
@@ -15,17 +16,17 @@ package body Globals is
             W2 := RW2;
          end if;
          RW2 := RW1;
-         W1  := W2;
+         W1  := R1;
       end S;
+
    begin
-      if Cond then
-         R2  := 0;
-         RW2 := RW1;
-      else
-         R2  := R1;
-         RW2 := 0;
-      end if;
+      R2  := R1;
+      RW2 := RW1;
       S;
+      if Cond then
+         RW1 := RW2;
+      end if;
+      B1 := W2;
    end Proc;
 
 begin

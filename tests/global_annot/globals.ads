@@ -8,6 +8,7 @@ package Globals is
    W1      : Integer;
    R1, RW1 : Integer := 0;
 
+   --  Package-level procedure used to show global annotations
    procedure Proc (Cond : Boolean);
 
 end Globals;
