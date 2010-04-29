@@ -37,16 +37,23 @@ AR=$(GCC_PREFIX)ar
 #To compile for cygwin: make ARCH=cygwin
 #To compile for openbsd: make ARCH=openbsd
 ARCH=openbsd
-CFLAGS=-g -Wall -pedantic -D$(ARCH) -DIPv4 -Os -fpack-struct -DLWIP_DEBUG -I$(LWIPARCH)/include
+CFLAGS=-g -Wall -pedantic -D$(ARCH) -DIPv4 -Os -fpack-struct -DLWIP_DEBUG
 ADAFLAGS=-gnatwa
 ARFLAGS=rs
 
-CONTRIBDIR=.
-LWIPARCH=$(CONTRIBDIR)
+CONTRIBDIR=../lwip/contrib
+
+# PPC
+LWIPARCH=.
+ARCHFILES=ne2kif.c printf.c c_init.c aip-wrappers.c
+
+# Native
+#LWIPARCH=$(CONTRIBDIR)/ports/unix
+#ARCHFILES=$(wildcard $(LWIPARCH)/*.c $(LWIPARCH)/netif/tapif.c $(LWIPARCH)/netif/tunif.c $(LWIPARCH)/netif/unixif.c $(LWIPARCH)/netif/list.c $(LWIPARCH)/netif/tcpdump.c) c_init__NATIVE.c
 
 #Set this to where you have the lwip core module checked out from CVS
 #default assumes it's a dir named lwip at the same level as the contrib module
-LWIPDIR=$(CONTRIBDIR)/../lwip/lwip/src
+LWIPDIR=../lwip/lwip/src
 
 CFLAGS:=$(CFLAGS) \
 	-I$(LWIPDIR)/include -I$(LWIPARCH)/include -I$(LWIPDIR)/include/ipv4 \
@@ -70,10 +77,10 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 
 # NETIFFILES: Files implementing various generic network interface functions.'
 #NETIFFILES=$(LWIPDIR)/netif/etharp.c mintapif.c
-NETIFFILES=$(LWIPDIR)/netif/etharp.c $(NETIF)if.c
+NETIFFILES=$(LWIPDIR)/netif/etharp.c
 
 # LWIPFILES: All the above.
-LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) printf.c c_init.c aip-wrappers.c
+LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) $(ARCHFILES)
 LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 

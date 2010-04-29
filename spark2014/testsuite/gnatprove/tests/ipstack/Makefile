@@ -2,14 +2,12 @@
 
 RTS=zfp
 GCC_PREFIX=powerpc-elf-
-NETIF=ne2k
 GNATPRJ_FLAGS=-XVARIANT="$(ZFP_VARIANT)"
 ZFP_VARIANT=powerpc-elf-qemu
 
 # Settings for native target
 #RTS=native
 #GCC_PREFIX=
-#NETIF=mintap
 #GNATPRJ_FLAGS=
 
 # Common settings
@@ -36,7 +34,7 @@ ipstack: force
 	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P projects/ipstack_services
 
 clean:
-	cd $(dir $(LWIPLIB)) && make clean GCC_PREFIX="$(GCC_PREFIX)" NETIF="$(NETIF)"
+	cd $(dir $(LWIPLIB)) && make clean GCC_PREFIX="$(GCC_PREFIX)"
 	$(GCC_PREFIX)gnatclean $(GNATPRJ_FLAGS) -q -r -P projects/ipstack
 	rm -f projects/ipstack_support.gpr
 
@@ -49,6 +47,6 @@ run: $(APP_IMAGE).bin
 # LWIP
 
 $(LWIPLIB): force
-	cd $(LWIPDIR) && make liblwip4.a GCC_PREFIX="$(GCC_PREFIX)" NETIF="$(NETIF)"
+	cd $(LWIPDIR) && make liblwip4.a GCC_PREFIX="$(GCC_PREFIX)"
 
 force:
