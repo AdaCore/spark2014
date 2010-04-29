@@ -452,11 +452,31 @@ package body Sparkify.PP_Output is
      (Column        : Character_Position_Positive;
       Global_In     : Wide_String;
       Global_Out    : Wide_String;
-      Global_In_Out : Wide_String) is
+      Global_In_Out : Wide_String)
+   is
+      Global_Keyword_Printed : Boolean := False;
+
+      function Global return Wide_String;
+
+      function Global return Wide_String is
+      begin
+         if Global_Keyword_Printed then
+            return "       ";
+         else
+            Global_Keyword_Printed := True;
+            return "global ";
+         end if;
+      end Global;
    begin
-      PP_Global_Annotation (Column, "global in", Global_In);
-      PP_Global_Annotation (Column, "global out", Global_Out);
-      PP_Global_Annotation (Column, "global in out", Global_In_Out);
+      if Global_In /= "" then
+         PP_Global_Annotation (Column, Global & "in    ", Global_In);
+      end if;
+      if Global_Out /= "" then
+         PP_Global_Annotation (Column, Global & "   out", Global_Out);
+      end if;
+      if Global_In_Out /= "" then
+         PP_Global_Annotation (Column, Global & "in out", Global_In_Out);
+      end if;
    end PP_Data_Flow;
 
    ----------------------

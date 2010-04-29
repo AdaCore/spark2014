@@ -111,6 +111,17 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       return List_Of_Globals (Reads, Sep);
    end Global_Reads;
 
+   function All_Global_Reads
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String
+   is
+      Reads, Writes, Read_Writes : Node_Lists.Set;
+   begin
+      Set_Global_Sets (El, Reads, Writes, Read_Writes);
+      Node_Lists.Union (Reads, Read_Writes);
+      return List_Of_Globals (Reads, Sep);
+   end All_Global_Reads;
+
    function Global_Writes
      (El  : Asis.Element;
       Sep : Wide_String) return Unbounded_Wide_String
@@ -120,6 +131,17 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       Set_Global_Sets (El, Reads, Writes, Read_Writes);
       return List_Of_Globals (Writes, Sep);
    end Global_Writes;
+
+   function All_Global_Writes
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String
+   is
+      Reads, Writes, Read_Writes : Node_Lists.Set;
+   begin
+      Set_Global_Sets (El, Reads, Writes, Read_Writes);
+      Node_Lists.Union (Writes, Read_Writes);
+      return List_Of_Globals (Writes, Sep);
+   end All_Global_Writes;
 
    function Global_Read_Writes
      (El  : Asis.Element;

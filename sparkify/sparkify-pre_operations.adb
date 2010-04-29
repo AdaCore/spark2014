@@ -434,8 +434,8 @@ package body Sparkify.Pre_Operations is
 
       declare
          Item : Element_Container.Cursor := Element_Container.First (Items);
-         Own_Items, Init_Items : Element_Container.Vector;
-         Own_Str, Init_Str     : Unbounded_Wide_String;
+         Own_Items         : Element_Container.Vector;
+         Own_Str, Init_Str : Unbounded_Wide_String;
 
          Current_Cursor : Cursor;
          Pack_Names  : constant Defining_Name_List :=
@@ -449,15 +449,6 @@ package body Sparkify.Pre_Operations is
                --  Add all global variable declarations as "own" variables
                if Flat_Element_Kind (El) = A_Variable_Declaration then
                   Element_Container.Append (Own_Items, El);
-
-                  --  If the global variable is initialized at declaration,
-                  --  add it as an "initializes" variable
-                  --  TODO: detect if package body initializes the variable,
-                  --  in which case it should be counted as an "initializes"
-                  --  variable too
-                  if not Is_Nil (Initialization_Expression (El)) then
-                     Element_Container.Append (Init_Items, El);
-                  end if;
                end if;
 
             end;
@@ -466,7 +457,14 @@ package body Sparkify.Pre_Operations is
 
          --  Get strings corresponding to lists of names of global variables
          Own_Str  := Names_Of_Declarations (Own_Items, ", ");
-         Init_Str := Names_Of_Declarations (Init_Items, ", ");
+
+         --  If the global variable is initialized at declaration, or if the
+         --  package body statement writes (initializes) it, it will be counted
+         --  in the writes effects of this package.
+         --  TODO: do something special for global variables not from this
+         --  package which are written in the package body statement
+         Init_Str :=
+           ASIS_UL.Global_State.CG.Sparkify.All_Global_Writes (Element, ", ");
 
          pragma Assert (Pack_Names'Length = 1);
          Current_Cursor := Cursor_At_End_Of (Pack_Names (Pack_Names'First));

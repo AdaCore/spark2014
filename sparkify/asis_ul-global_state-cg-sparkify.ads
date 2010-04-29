@@ -40,7 +40,15 @@ package ASIS_UL.Global_State.CG.Sparkify is
      (El  : Asis.Element;
       Sep : Wide_String) return Unbounded_Wide_String;
 
+   function All_Global_Reads
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String;
+
    function Global_Writes
+     (El  : Asis.Element;
+      Sep : Wide_String) return Unbounded_Wide_String;
+
+   function All_Global_Writes
      (El  : Asis.Element;
       Sep : Wide_String) return Unbounded_Wide_String;
 
