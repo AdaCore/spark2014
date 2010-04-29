@@ -73,7 +73,7 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 NETIFFILES=$(LWIPDIR)/netif/etharp.c ne2kif.c
 
 # LWIPFILES: All the above.
-LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) printf.c
+LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) printf.c c_init.c aip-wrappers.c
 LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 

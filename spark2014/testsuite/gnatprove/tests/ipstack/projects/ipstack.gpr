@@ -1,0 +1,6 @@
+with "ipstack_core";
+with "ipstack_services";
+with "ipstack_support";
+project IPStack is
+   for Source_Dirs use ();
+end IPStack;

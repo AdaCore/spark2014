@@ -3,17 +3,13 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  AIP configuration parameters
+with AIP.Config;
 
---# inherit AIP;
+package body AIP.TCP is
 
-with System;
+   function Tcp_Listen (Pcb : TCB_Id) return TCB_Id is
+   begin
+      return Tcp_Listen_BL (Pcb, Config.TCP_DEFAULT_LISTEN_BACKLOG);
+   end Tcp_Listen;
 
-package AIP.Config is
-   use type System.Bit_Order;
-
-   HOST_BIG_ENDIAN : constant Boolean :=
-                       (System.Default_Bit_Order = System.High_Order_First);
-
-   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
-end AIP.Config;
+end AIP.TCP;

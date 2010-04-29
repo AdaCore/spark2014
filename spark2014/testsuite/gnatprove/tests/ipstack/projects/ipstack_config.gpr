@@ -1,0 +1,12 @@
+project IPStack_Config is
+   Obj_Prefix := "../build/obj/";
+   Lib_Prefix := "../build/lib/";
+   ALI_Prefix := "../build/ali/";
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat05", "-gnatwa", "-gnatyg");
+   end Compiler;
+
+   for Source_Dirs use ();
+end IPStack_Config;
+

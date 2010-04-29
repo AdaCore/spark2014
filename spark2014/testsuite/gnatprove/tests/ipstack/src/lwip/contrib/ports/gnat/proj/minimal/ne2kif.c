@@ -151,10 +151,9 @@ static void low_level_init(struct netif * netif)
   EN1_PAR4 = ne2k_if->ethaddr->addr[4];
   EN1_PAR5 = ne2k_if->ethaddr->addr[5];
 
-  printf ("Eth addr:");
+  printf ("MAC addr:");
   for (i = 0; i < 6; i++)
     printf ("%c%02x", i == 0 ? ' ' : ':', ne2k_if->ethaddr->addr[i]);
-  printf ("\n");
 
   /* Initialize the multicast list to reject-all.  
      If we enable multicast the higher levels can do the filtering. 

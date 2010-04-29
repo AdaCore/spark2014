@@ -359,6 +359,7 @@ tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog)
   if (lpcb == NULL) {
     return NULL;
   }
+  printf ("Listening on port %d\n", pcb->local_port);
   lpcb->callback_arg = pcb->callback_arg;
   lpcb->local_port = pcb->local_port;
   lpcb->state = LISTEN;

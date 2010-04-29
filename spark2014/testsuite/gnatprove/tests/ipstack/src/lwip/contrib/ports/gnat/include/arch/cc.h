@@ -55,9 +55,15 @@ typedef signed     int     s32_t;
 typedef u32_t mem_ptr_t;
 
 /* Define (sn)printf formatters for these lwIP types */
+#if 0
 #define U16_F "hu"
 #define S16_F "hd"
 #define X16_F "hx"
+#else
+#define U16_F "u"
+#define S16_F "d"
+#define X16_F "x"
+#endif
 #define U32_F "lu"
 #define S32_F "d"
 #define X32_F "x"
