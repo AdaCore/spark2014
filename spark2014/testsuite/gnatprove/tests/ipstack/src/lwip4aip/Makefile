@@ -70,7 +70,7 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 
 # NETIFFILES: Files implementing various generic network interface functions.'
 #NETIFFILES=$(LWIPDIR)/netif/etharp.c mintapif.c
-NETIFFILES=$(LWIPDIR)/netif/etharp.c ne2kif.c
+NETIFFILES=$(LWIPDIR)/netif/etharp.c $(NETIF)if.c
 
 # LWIPFILES: All the above.
 LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) printf.c c_init.c aip-wrappers.c
