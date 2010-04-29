@@ -6,8 +6,11 @@ package tq is
    end record;
 
    function plus (Left, Right: in Complex) return Complex;
-   pragma Precondition (Left.mReal > -1000.0 and Left.mReal < 1000.0 and
-                        Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0);
+   pragma Precondition
+     (Left.mReal > -1000.0 and Left.mReal < 1000.0 and
+      Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0 and
+      Right.mReal > -1000.0 and Right.mReal < 1000.0 and
+      Right.mImaginary > -1000.0 and Right.mImaginary < 1000.0);
 
    function eval return Complex;
 

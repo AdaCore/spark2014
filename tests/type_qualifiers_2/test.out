@@ -7,8 +7,11 @@ package tq is
    end record;
 
    function plus (Left, Right: in Complex) return Complex;
-   --# pre              Left.mReal > -1000.0 and Left.mReal < 1000.0 and
-   --#                  Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0;
+
+   --# pre Left.mReal > -1000.0 and Left.mReal < 1000.0 and
+   --# Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0 and
+   --# Right.mReal > -1000.0 and Right.mReal < 1000.0 and
+   --# Right.mImaginary > -1000.0 and Right.mImaginary < 1000.0;
 
    function eval return Complex;
 
@@ -51,10 +54,10 @@ end tq;
 Assert or Post:          2      2      0              0      0      0       0
 Precondition check:      1      0      0              0      0      0       1
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           1      0      0              0      0      0       1
+Runtime check:           1      0      1              0      0      0       0
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                  4      2      0              0      0      0       2  <<<
-% Totals:                      50%     0%             0%     0%     0%     50% <<<
+Totals:                  4      2      1              0      0      0       1  <<<
+% Totals:                      50%    25%             0%     0%     0%     25% <<<
 ===================== End of Semantic Analysis Summary ========================
