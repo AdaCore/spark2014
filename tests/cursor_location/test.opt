@@ -1,1 +1,1 @@
-ALL XFAIL treatment of globals / if-expression not yet implemented
+ALL XFAIL if-expression not yet implemented

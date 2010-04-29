@@ -2,7 +2,7 @@
 package Globals
 --@ line 1
 --# own G1, G2, G3;
---# initializes G2;
+--# initializes G3, G2;
 --@ line 1
                 is
 
@@ -14,7 +14,7 @@ package Globals
 
    procedure Init;
 --@ line 9
-   --# global out G1;
+   --# global    out G1;
 
 end Globals;
 package body Globals is
@@ -29,6 +29,8 @@ begin
    G3 := 0;
 
 end Globals;
+------------------------------------------------------------------------
+   No errors or warnings
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0

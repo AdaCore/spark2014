@@ -9,11 +9,11 @@ is
 
    function Direct_Read return Integer;
 --@ line 7
-   --# global in G;
+   --# global in     G;
 
    procedure Direct_Write;
 --@ line 9
-   --# global out G;
+   --# global    out G;
 
    procedure Direct_Read_Write;
 --@ line 11
@@ -22,11 +22,11 @@ is
 
    function Indirect_Read return Integer;
 --@ line 14
-   --# global in G;
+   --# global in     G;
 
    procedure Indirect_Write;
 --@ line 16
-   --# global out G;
+   --# global    out G;
 
    procedure Indirect_Read_Write;
 --@ line 18
@@ -56,7 +56,7 @@ package body Globals is
 
       procedure Local (Proxy : in Integer)
 --@ line 21
-      --# global out X;
+      --# global    out X;
       is
       begin
          X := Proxy;

@@ -4,7 +4,9 @@ echo "------------------------------------------------------------------------"
 cat globals.ads globals.adb
 echo "------------------------------------------------------------------------"
 sparkmake > dummy.log
-spark -noecho -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
+spark -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark \
+| grep "errors or warnings"
+echo "------------------------------------------------------------------------"
 sparksimp > dummy.log
 pogs -o=globals.sum > dummy.log
 tail -11 globals.sum

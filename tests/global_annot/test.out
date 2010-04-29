@@ -1,0 +1,81 @@
+------------------------------------------------------------------------
+package Globals
+--@ line 1
+--# own D2, D1, D3, W1, R1, RW1, B2, B1, B3;
+--# initializes B2, RW1, R1, D3, B3, D2;
+--@ line 1
+                is
+
+   --  Global variables used to show state annotations
+   D2     : Integer := 41;
+   D1, D3 : Integer;
+
+   --  Global variables used to show global annotations
+   W1      : Integer;
+   R1, RW1 : Integer := 0;
+
+   --  Package-level procedure used to show global annotations
+   procedure Proc (Cond : Boolean);
+--@ line 12
+   --# global in     R1;
+   --#           out W1, B1;
+   --#        in out RW1;
+--@ line 14
+end Globals;
+package body Globals is
+
+   --  Global variables used to show state annotations
+   B2     : Integer := 41;
+   B1, B3 : Integer;
+
+   procedure Proc (Cond : Boolean) is
+      R2, W2, RW2 : Integer;
+
+      --  Local procedure used to show global annotations
+      procedure S 
+--@ line 11
+      --# global in     Cond, R2, RW1, R1;
+      --#           out W2, W1;
+      --#        in out RW2;
+--@ line 11
+                  is
+      begin
+         if Cond then
+            W2 := R2;
+         else
+            W2 := RW2;
+         end if;
+         RW2 := RW1;
+         W1  := R1;
+      end S;
+
+   begin
+      R2  := R1;
+      RW2 := RW1;
+      S;
+      if Cond then
+         RW1 := RW2;
+      end if;
+      B1 := W2;
+   end Proc;
+
+begin
+
+   D3 := 0;
+   B3 := 314;
+
+end Globals;
+------------------------------------------------------------------------
+   No errors or warnings
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          4      4      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:          11      0     11              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 15      4     11              0      0      0       0
+% Totals:                      27%    73%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
