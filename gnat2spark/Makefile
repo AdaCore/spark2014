@@ -1,0 +1,47 @@
+# number of processors
+PROCS=1
+
+# for debugging/development
+CFLAGS=-O0 -gnata
+
+# for production
+# CFLAGS=-O2 -gnatpn
+
+LOCAL_OBJ=obj
+RM=rm -rf
+MV=mv -f
+adainclude:=$(strip $(shell gnatls -v | grep adainclude))
+uname:=$(shell uname)
+
+.PHONY: setup force clean
+
+all: setup build
+
+setup:
+	mkdir -p $(LOCAL_OBJ) install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
+	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
+	do \
+		cp -p gnat_src/$$f $(LOCAL_OBJ); \
+	done
+	cd $(LOCAL_OBJ) && gnatmake -q xtreeprs xnmake xsnamest
+	cd $(LOCAL_OBJ) && ./xtreeprs && ./xnmake && ./xsnamest
+	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
+	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
+
+INCLUDES=-I..
+
+build: obj/smissing.o force
+	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
+	  -I$(adainclude) -I../gnat_src gnat1drv \
+	  -o ../install/bin/gnat2spark -largs smissing.o
+
+obj/smissing.o: smissing.c
+	gcc -c smissing.c -o obj/smissing.o
+
+force:
+
+clean:
+	-rm *~
+	-rm -rf ./obj
+	-rm -rf ./install
