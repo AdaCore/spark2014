@@ -21,6 +21,9 @@ GNATPRJ_FLAGS+=-aPprojects:projects.$(TARGET)
 GNATMAKE_FLAGS=-g -j4 $(RTSFLAG) $(GNATPRJ_FLAGS)
 GNATCLEAN_FLAGS=$(GNATPRJ_FLAGS)
 
+#BUILDER=$(GCC_PREFIX)gnatmake
+BUILDER=gprbuild $(if $(filter $(TARGET), native),,--target=$(TARGET))
+
 .PHONY: app ipstack clean force
 
 LWIPDIR=src/lwip4aip
@@ -32,12 +35,12 @@ APP_IMAGE=build/app/$(APP)
 app: $(APP_IMAGE)
 
 $(APP_IMAGE): $(LWIPLIB) ipstack force
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P app
+	$(BUILDER) $(GNATMAKE_FLAGS) -p -P app
 
 ipstack: force
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_core
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_support
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_services
+	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_core
+	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
+	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
 
 clean:
 	cd $(dir $(LWIPLIB)) && make clean TARGET="$(TARGET)"
