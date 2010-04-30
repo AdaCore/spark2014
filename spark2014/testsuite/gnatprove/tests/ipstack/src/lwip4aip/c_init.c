@@ -44,8 +44,15 @@
 #include "lwip/ip_frag.h"
 #include "lwip/udp.h"
 #include "lwip/tcp.h"
-#include "ne2kif.h"
 #include "netif/etharp.h"
+
+#ifdef NETIF_NE2K
+#include "ne2kif.h"
+#define NETIF_INIT ne2k_init
+#else
+#include "netif/tapif.h"
+#define NETIF_INIT tapif_init
+#endif
 
 #include "timer.h"
 
@@ -94,8 +101,8 @@ C_init (void)
   lwip_init();
 
   printf("TCP/IP initialized.\n");
-  
-  netif_add(&netif, &ipaddr, &netmask, &gw, NULL, ne2k_init, ip_input);  
+
+  netif_add(&netif, &ipaddr, &netmask, &gw, NULL, NETIF_INIT, ip_input);  
   netif_set_default(&netif);
   netif_set_up(&netif);
 

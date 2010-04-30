@@ -29,6 +29,19 @@
 # Author: Adam Dunkels <adam@sics.se>
 #
 
+ifeq ($(TARGET),native)
+LWIPARCH=$(CONTRIBDIR)/ports/unix
+ARCHFILES=$(wildcard $(LWIPARCH)/*.c $(LWIPARCH)/netif/tapif.c)
+# $(LWIPARCH)/netif/tunif.c $(LWIPARCH)/netif/unixif.c $(LWIPARCH)/netif/list.c $(LWIPARCH)/netif/tcpdump.c)
+
+else
+# PPC
+GCC_PREFIX=$(TARGET)-
+LWIPARCH=.
+ARCHFILES=ne2kif.c printf.c
+TARGET_CFLAGS=-DNO_SYS -DNETIF_NE2K
+endif
+
 CCDEP=$(GCC_PREFIX)gcc
 CC=$(GCC_PREFIX)gcc
 AR=$(GCC_PREFIX)ar
@@ -37,19 +50,11 @@ AR=$(GCC_PREFIX)ar
 #To compile for cygwin: make ARCH=cygwin
 #To compile for openbsd: make ARCH=openbsd
 ARCH=openbsd
-CFLAGS=-g -Wall -pedantic -D$(ARCH) -DIPv4 -Os -fpack-struct -DLWIP_DEBUG
+CFLAGS=-g -Wall -pedantic -D$(ARCH) -DIPv4 -Os -fpack-struct -DLWIP_DEBUG $(TARGET_CFLAGS)
 ADAFLAGS=-gnatwa
 ARFLAGS=rs
 
 CONTRIBDIR=../lwip/contrib
-
-# PPC
-LWIPARCH=.
-ARCHFILES=ne2kif.c printf.c c_init.c aip-wrappers.c
-
-# Native
-#LWIPARCH=$(CONTRIBDIR)/ports/unix
-#ARCHFILES=$(wildcard $(LWIPARCH)/*.c $(LWIPARCH)/netif/tapif.c $(LWIPARCH)/netif/tunif.c $(LWIPARCH)/netif/unixif.c $(LWIPARCH)/netif/list.c $(LWIPARCH)/netif/tcpdump.c) c_init__NATIVE.c
 
 #Set this to where you have the lwip core module checked out from CVS
 #default assumes it's a dir named lwip at the same level as the contrib module
@@ -80,7 +85,7 @@ CORE4FILES=$(LWIPDIR)/core/ipv4/icmp.c $(LWIPDIR)/core/ipv4/ip.c \
 NETIFFILES=$(LWIPDIR)/netif/etharp.c
 
 # LWIPFILES: All the above.
-LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) $(ARCHFILES)
+LWIPFILES=$(COREFILES) $(CORE4FILES) $(NETIFFILES) $(ARCHFILES) c_init.c aip-wrappers.c
 LWIPFILESW=$(wildcard $(LWIPFILES))
 LWIPOBJS=$(notdir $(LWIPFILESW:.c=.o))
 

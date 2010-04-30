@@ -39,19 +39,6 @@
 #define __LWIPOPTS_H__
 
 /*
-   -----------------------------------------------
-   ---------- Platform specific locking ----------
-   -----------------------------------------------
-*/
-
-/** 
- * NO_SYS==1: Provides VERY minimal functionality. Otherwise,
- * use lwIP facilities.
- */
-#define NO_SYS                          1
-
-
-/*
    ------------------------------------
    ---------- Memory options ----------
    ------------------------------------
@@ -125,7 +112,7 @@
  * MEMP_NUM_SYS_TIMEOUT: the number of simulateously active timeouts.
  * (requires NO_SYS==0)
  */
-#define MEMP_NUM_SYS_TIMEOUT            0
+#define MEMP_NUM_SYS_TIMEOUT            8
 
 /**
  * MEMP_NUM_NETBUF: the number of struct netbufs.
@@ -396,5 +383,7 @@
 /* Misc */
 
 #define LWIP_TIMEVAL_PRIVATE 0
+
+#define TAPIF_DEBUG LWIP_DBG_OFF
 
 #endif /* __LWIPOPTS_H__ */

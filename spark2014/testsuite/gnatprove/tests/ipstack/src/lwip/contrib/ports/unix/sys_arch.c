@@ -581,7 +581,7 @@ sys_arch_unprotect(sys_prot_t pval)
 #define HZ 100
 #endif
 
-unsigned long
+u32_t
 sys_jiffies(void)
 {
     struct timeval tv;
