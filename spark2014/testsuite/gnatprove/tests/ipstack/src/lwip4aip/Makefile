@@ -31,7 +31,7 @@
 
 ifeq ($(TARGET),native)
 LWIPARCH=$(CONTRIBDIR)/ports/unix
-ARCHFILES=$(wildcard $(LWIPARCH)/*.c $(LWIPARCH)/netif/tapif.c)
+ARCHFILES=$(wildcard $(LWIPARCH)/*.c mintapif.c timer.c) $(LWIPDIR)/api/tcpip.c
 # $(LWIPARCH)/netif/tunif.c $(LWIPARCH)/netif/unixif.c $(LWIPARCH)/netif/list.c $(LWIPARCH)/netif/tcpdump.c)
 
 else
@@ -39,7 +39,7 @@ else
 GCC_PREFIX=$(TARGET)-
 LWIPARCH=.
 ARCHFILES=ne2kif.c printf.c
-TARGET_CFLAGS=-DNO_SYS -DNETIF_NE2K
+TARGET_CFLAGS=-DNETIF_NE2K -DNO_SYS
 endif
 
 CCDEP=$(GCC_PREFIX)gcc

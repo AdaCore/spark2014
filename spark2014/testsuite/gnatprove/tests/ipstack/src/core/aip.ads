@@ -41,6 +41,7 @@
 
 
 package AIP is
+   pragma Pure;
 
    --------------------------
    --  Original LWIP types --

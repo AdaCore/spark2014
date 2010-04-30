@@ -8,6 +8,9 @@ with Timers;
 
 with Ada.Text_IO; use Ada.Text_IO;
 
+with AIP.Platform;
+with AIP.Platform.Deps;
+
 procedure Mainloop is
    use type Time_Types.Time;
 
@@ -26,12 +29,12 @@ procedure Mainloop is
    procedure etharp_tmr;
    pragma Import (C, etharp_tmr, "etharp_tmr");
 
-   function Ne2k_Isr return Integer;
-   pragma Import (C, Ne2k_Isr);
+   function Netif_Isr return Integer;
+   pragma Import (C, Netif_Isr, AIP.Platform.If_Isr_Linkname);
 
    function Process_Interface_Events return Integer is
    begin
-      return Ne2k_Isr;
+      return Netif_Isr;
    end Process_Interface_Events;
 
 begin

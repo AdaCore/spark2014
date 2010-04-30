@@ -46,15 +46,40 @@
 #include "lwip/tcp.h"
 #include "netif/etharp.h"
 
+#include "timer.h"
+
+static struct netif netif;
+
 #ifdef NETIF_NE2K
 #include "ne2kif.h"
 #define NETIF_INIT ne2k_init
 #else
-#include "netif/tapif.h"
-#define NETIF_INIT tapif_init
-#endif
+#include <signal.h>
+#include "mintapif.h"
+#define NETIF_INIT mintapif_init
 
-#include "timer.h"
+extern int
+mintapif_isr (void) {
+      sigset_t oldmask, empty;
+
+      /* start of critical section,
+         poll netif, pass packet to lwIP */
+      if (mintapif_select(&netif) > 0)
+      {
+        /* work, immediatly end critical section
+           hoping lwIP ended quickly ... */
+        sigprocmask(SIG_SETMASK, &oldmask, NULL);
+      }
+      else
+      {
+        /* no work, wait a little (10 msec) for SIGALRM */
+          sigemptyset(&empty);
+          sigsuspend(&empty);
+        /* ... end critical section */
+          sigprocmask(SIG_SETMASK, &oldmask, NULL);
+      }
+}
+#endif
 
 /* (manual) host IP configuration */
 static struct ip_addr ipaddr, netmask, gw;
@@ -71,8 +96,6 @@ u8_t syscontact_str[255];
 u8_t syscontact_len = 0;
 u8_t syslocation_str[255];
 u8_t syslocation_len = 0;
-
-static struct netif netif;
 
 void
 C_init (void)
@@ -106,7 +129,7 @@ C_init (void)
   netif_set_default(&netif);
   netif_set_up(&netif);
 
-  timer_init();
+  timer_init ();
   timer_set_interval(TIMER_EVT_ETHARPTMR,2000);
   timer_set_interval(TIMER_EVT_TCPFASTTMR, TCP_FAST_INTERVAL / 10);
   timer_set_interval(TIMER_EVT_TCPSLOWTMR, TCP_SLOW_INTERVAL / 10);

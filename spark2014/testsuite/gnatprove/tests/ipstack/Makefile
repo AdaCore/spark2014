@@ -1,14 +1,13 @@
-#TARGET=native
-TARGET=powerpc-elf
+TARGET=native
+#TARGET=powerpc-elf
 
 ifeq ($(TARGET),native)
-RTS=native
 GCC_PREFIX=
 GNATPRJ_FLAGS=
 
 else
 # powerpc-elf
-RTS=zfp
+RTSFLAG=--RTS=zfp
 GCC_PREFIX=$(TARGET)-
 GNATPRJ_FLAGS=-XVARIANT="$(ZFP_VARIANT)"
 ZFP_VARIANT=powerpc-elf-qemu
@@ -18,7 +17,8 @@ endif
 
 # Common settings
 
-GNATMAKE_FLAGS=--RTS=$(RTS) $(GNATPRJ_FLAGS)
+GNATPRJ_FLAGS+=-aPprojects:projects.$(TARGET)
+GNATMAKE_FLAGS=-g -j4 $(RTSFLAG) $(GNATPRJ_FLAGS)
 GNATCLEAN_FLAGS=$(GNATPRJ_FLAGS)
 
 .PHONY: app ipstack clean force
@@ -32,16 +32,16 @@ APP_IMAGE=build/app/$(APP)
 app: $(APP_IMAGE)
 
 $(APP_IMAGE): $(LWIPLIB) ipstack force
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P projects/app
+	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P app
 
 ipstack: force
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P projects/ipstack_core
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P projects/ipstack_support
-	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P projects/ipstack_services
+	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_core
+	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_support
+	$(GCC_PREFIX)gnatmake $(GNATMAKE_FLAGS) -p -P ipstack_services
 
 clean:
 	cd $(dir $(LWIPLIB)) && make clean TARGET="$(TARGET)"
-	$(GCC_PREFIX)gnatclean $(GNATPRJ_FLAGS) -q -r -P projects/ipstack
+	$(GCC_PREFIX)gnatclean $(GNATPRJ_FLAGS) -q -r -P ipstack
 
 $(APP_IMAGE).bin: $(APP_IMAGE)
 	powerpc-elf-objcopy -O binary $< $@

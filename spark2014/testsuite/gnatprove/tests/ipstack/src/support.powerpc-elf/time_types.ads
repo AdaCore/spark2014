@@ -3,17 +3,11 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with Raw_TCPEcho;
+package Time_Types is
+   type Time is mod 2 ** 32;
+   subtype Interval is Time;
 
-with Ada.Text_IO;
-with Mainloop;
+   function Now return Time;
+   --  Elapsed time since unspecified epoch, in ms
 
-procedure Echop is
-   procedure LWIP_init;
-   pragma Import (C, LWIP_init, "C_init");
-begin
-   Ada.Text_IO.Put_Line ("*** IPStack starting ***");
-   LWIP_Init;
-   Raw_TCPEcho.Init;
-   Mainloop;
-end Echop;
+end Time_Types;

@@ -3,17 +3,12 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with Raw_TCPEcho;
+--  AIP platform parameters
 
-with Ada.Text_IO;
-with Mainloop;
+--# inherit AIP;
 
-procedure Echop is
-   procedure LWIP_init;
-   pragma Import (C, LWIP_init, "C_init");
-begin
-   Ada.Text_IO.Put_Line ("*** IPStack starting ***");
-   LWIP_Init;
-   Raw_TCPEcho.Init;
-   Mainloop;
-end Echop;
+package AIP.Platform is
+   pragma Pure;
+
+   If_ISR_Linkname : constant String := "mintapif_isr";
+end AIP.Platform;

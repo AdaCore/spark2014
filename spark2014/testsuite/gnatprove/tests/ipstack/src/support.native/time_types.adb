@@ -3,17 +3,15 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with Raw_TCPEcho;
+with Ada.Real_Time;
 
-with Ada.Text_IO;
-with Mainloop;
+package body Time_Types is
+   Start : constant Ada.Real_Time.Time := Ada.Real_Time.Clock;
 
-procedure Echop is
-   procedure LWIP_init;
-   pragma Import (C, LWIP_init, "C_init");
-begin
-   Ada.Text_IO.Put_Line ("*** IPStack starting ***");
-   LWIP_Init;
-   Raw_TCPEcho.Init;
-   Mainloop;
-end Echop;
+   function Now return Time is
+      use type Ada.Real_Time.Time;
+   begin
+      return Time
+        (Ada.Real_Time.To_Duration (Ada.Real_Time.Clock - Start) * 1000);
+   end Now;
+end Time_Types;

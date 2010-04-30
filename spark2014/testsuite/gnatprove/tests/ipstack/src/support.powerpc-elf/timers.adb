@@ -3,6 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Timers is
 
    use type Time_Types.Time;
@@ -75,7 +77,7 @@ package body Timers is
    function Timer_Fired (Now : Time_Types.Time; TID : Timer_Id) return Boolean is
       My_Timer : Timer renames My_Timers (TID);
    begin
-      if My_Timer.Last_Event + My_Timer.Interval >= Now then
+      if My_Timer.Last_Event + My_Timer.Interval <= Now then
          My_Timer.Last_Event := Now;
          return True;
       else
