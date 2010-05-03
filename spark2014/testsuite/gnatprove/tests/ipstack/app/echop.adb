@@ -3,10 +3,10 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with Raw_TCPEcho;
-
 with Ada.Text_IO;
-with Mainloop;
+
+with Raw_TCPEcho;
+with AIP.Mainloop;
 
 procedure Echop is
    procedure LWIP_init;
@@ -15,5 +15,5 @@ begin
    Ada.Text_IO.Put_Line ("*** IPStack starting ***");
    LWIP_Init;
    Raw_TCPEcho.Init;
-   Mainloop;
+   AIP.Mainloop;
 end Echop;

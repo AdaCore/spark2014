@@ -3,7 +3,10 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+--# inherit AIP;
+
 package AIP.Time_Types is
+
    type Time is mod 2 ** 32;
    subtype Interval is Time;
 

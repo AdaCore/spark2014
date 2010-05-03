@@ -57,4 +57,8 @@ run: $(APP_IMAGE).bin
 $(LWIPLIB): force
 	cd $(LWIPDIR) && make liblwip4.a TARGET="$(TARGET)"
 
+sparkmake:
+	mkdir -p spark
+	cd spark && sparkmake -directory=../src/core/ -directory=../src/lwip4aip/ -directory=../src/services/ -directory=../src/support/ -directory=../src/support.$(TARGET)/
+
 force:

@@ -3,14 +3,16 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+--# inherit AIP.Platform, AIP.Time_Types, AIP.Timers;
+
+with AIP.Platform;
 with AIP.Time_Types;
 with AIP.Timers;
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-with AIP.Platform;
-
-procedure Mainloop is
+--# main_program;
+procedure AIP.Mainloop is
    use type AIP.Time_Types.Time;
 
    Events : Integer;
@@ -70,4 +72,4 @@ begin
          etharp_tmr;
       end if;
    end loop;
-end Mainloop;
+end AIP.Mainloop;
