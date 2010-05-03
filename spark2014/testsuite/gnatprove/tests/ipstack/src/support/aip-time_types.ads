@@ -3,7 +3,11 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  AIP platform-specific dependencies
+package AIP.Time_Types is
+   type Time is mod 2 ** 32;
+   subtype Interval is Time;
 
-package AIP.Platform.Deps is
-end AIP.Platform.Deps;
+   function Now return Time;
+   --  Elapsed time since unspecified epoch, in ms
+
+end AIP.Time_Types;

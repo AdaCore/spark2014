@@ -38,7 +38,7 @@ else
 # PPC
 GCC_PREFIX=$(TARGET)-
 LWIPARCH=.
-ARCHFILES=ne2kif.c printf.c
+ARCHFILES=ne2kif.c printf.c string.c
 TARGET_CFLAGS=-DNETIF_NE2K -DNO_SYS
 endif
 

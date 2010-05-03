@@ -3,19 +3,18 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with Time_Types;
-with Timers;
+with AIP.Time_Types;
+with AIP.Timers;
 
 with Ada.Text_IO; use Ada.Text_IO;
 
 with AIP.Platform;
-with AIP.Platform.Deps;
 
 procedure Mainloop is
-   use type Time_Types.Time;
+   use type AIP.Time_Types.Time;
 
    Events : Integer;
-   Prev_Clock, Clock  : Time_Types.Time := Time_Types.Time'First;
+   Prev_Clock, Clock  : AIP.Time_Types.Time := AIP.Time_Types.Time'First;
 
    Poll_Freq : constant := 100;
    --  100 ms
@@ -30,12 +29,22 @@ procedure Mainloop is
    pragma Import (C, etharp_tmr, "etharp_tmr");
 
    function Netif_Isr return Integer;
-   pragma Import (C, Netif_Isr, AIP.Platform.If_Isr_Linkname);
+   pragma Import (C, Netif_Isr, AIP.Platform.If_ISR_Linkname);
+
+   function Process_Interface_Events return Integer;
+   --  Process any events on network interfaces, and return count of processed
+   --  events.
+
+   ------------------------------
+   -- Process_Interface_Events --
+   ------------------------------
 
    function Process_Interface_Events return Integer is
    begin
       return Netif_Isr;
    end Process_Interface_Events;
+
+--  Start of processing for Mainloop
 
 begin
    Put_Line ("Mainloop: enter");
@@ -43,21 +52,21 @@ begin
       Events := Process_Interface_Events;
 
       loop
-         Clock := Time_Types.Now;
+         Clock := AIP.Time_Types.Now;
          exit when Events > 0 or else Clock >= Prev_Clock + Poll_Freq;
       end loop;
 
       Prev_Clock := Clock;
 
-      if Timers.Timer_Fired (Clock, Timers.TIMER_EVT_TCPFASTTMR) then
+      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPFASTTMR) then
          tcp_fasttmr;
       end if;
 
-      if Timers.Timer_Fired (Clock, Timers.TIMER_EVT_TCPSLOWTMR) then
+      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPSLOWTMR) then
          tcp_slowtmr;
       end if;
 
-      if Timers.Timer_Fired (Clock, Timers.TIMER_EVT_ETHARPTMR) then
+      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_ETHARPTMR) then
          etharp_tmr;
       end if;
    end loop;

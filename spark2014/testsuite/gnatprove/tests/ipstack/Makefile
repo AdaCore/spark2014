@@ -1,5 +1,5 @@
-TARGET=native
-#TARGET=powerpc-elf
+#TARGET=native
+TARGET=powerpc-elf
 
 ifeq ($(TARGET),native)
 GCC_PREFIX=
@@ -21,8 +21,8 @@ GNATPRJ_FLAGS+=-aPprojects:projects.$(TARGET)
 GNATMAKE_FLAGS=-g -j4 $(RTSFLAG) $(GNATPRJ_FLAGS)
 GNATCLEAN_FLAGS=$(GNATPRJ_FLAGS)
 
-#BUILDER=$(GCC_PREFIX)gnatmake
-BUILDER=gprbuild $(if $(filter $(TARGET), native),,--target=$(TARGET))
+BUILDER=$(GCC_PREFIX)gnatmake
+#BUILDER=gprbuild $(if $(filter $(TARGET), native),,--target=$(TARGET))
 
 .PHONY: app ipstack clean force
 
