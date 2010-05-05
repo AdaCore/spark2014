@@ -1,4 +1,5 @@
 project IPStack_Config is
+   Gen_Prefix := "../build/gen/";
    Obj_Prefix := "../build/obj/";
    Lib_Prefix := "../build/lib/";
    ALI_Prefix := "../build/ali/";

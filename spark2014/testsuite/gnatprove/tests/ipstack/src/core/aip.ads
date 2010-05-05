@@ -39,6 +39,8 @@
 --  ----------
 --  AIP.Tcp             Base TCP services, raw callback API
 
+with AIP_Constants;
+--# inherit AIP_Constants;
 
 package AIP is
    pragma Pure;
@@ -72,9 +74,16 @@ package AIP is
    --  as we use them as machine pointers to interface with the original LWIP
    --  implementation.
 
-   IPTR_BITS : constant := Standard'Address_Size;
+   IPTR_BITS : constant := AIP_Constants.Address_Size;
    type IPTR_T is mod 2 ** IPTR_BITS;
 
    NULIPTR, NULID : constant IPTR_T := 0;
+
+   ---------------------
+   -- Host endianness --
+   ---------------------
+
+   HOST_BIG_ENDIAN : constant Boolean :=
+                       (AIP_Constants.Default_Bit_Order = 0);
 
 end AIP;

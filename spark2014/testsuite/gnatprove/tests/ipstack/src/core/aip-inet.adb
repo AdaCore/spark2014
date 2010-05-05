@@ -3,8 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Config;
-
 package body AIP.Inet is
 
    -----------
@@ -16,7 +14,7 @@ package body AIP.Inet is
    begin
       --  Network byte ordering is big endian.  Swap value as needed.
 
-      if Config.HOST_BIG_ENDIAN then
+      if AIP.HOST_BIG_ENDIAN then
          NetV := V;
       else
          NetV :=
