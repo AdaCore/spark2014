@@ -163,7 +163,9 @@ code and 'gcc -c -Wall' on the C code.
 
 The Ada compiler gives them the answer:
 
+<pre>
 warning: "Total" may be referenced before it has a value
+</pre>
 
 Indeed, variable Total is only assigned based on its previous value in function
 Price_Of_Basket, and it is not initialized! So the first value read from Total
@@ -214,7 +216,9 @@ pragma Postcondition (Mult'Result = X * Y or else Mult'Result = 10_000);
 When compiling the Ada code with "gcc -c -gnata", assertions are kept in the
 generated excutable, and running it on their example yields a run-time error:
 
+<pre>
 raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Postcondition failed at sat.ads:7
+</pre>
 
 So there is for sure a problem in function Mult. By reviewing it carefully, 
 they discover that the function
