@@ -21,7 +21,9 @@ The PowerPC version can be run on a QEmu virtual system.
 BUILD REQUIREMENTS
 ------------------
 
-Building the TCP/IP Stack requires the GNAT Pro tool chain.
+Building the TCP/IP Stack requires:
+  GNAT Pro >= 6.3.1
+  GNU Make >= 3.81
 
 Building for PowerPC also requires the ZFP-Support package to be
 installed and available to your cross build chain.
