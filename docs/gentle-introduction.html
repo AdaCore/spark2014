@@ -52,26 +52,18 @@ the job in both languages.
 <p>
 Here is the Ada code for the interface:
 <pre>
-
 <b>type</b> My_Int <b>is</b> <b>range</b> 0 .. 10_000;
 
 <b>function</b> Add (X , Y : My_Int) <b>return</b> My_Int;
 <b>function</b> Mult (X , Y : My_Int) <b>return</b> My_Int;
 </pre>
 
-<p>
-
-<p>
 and the C code for the same interface:
 <pre>
-
 <b>int</b> add (<b>int</b> x, <b>int</b> y);
 <b>int</b> mult (<b>int</b> x, <b>int</b> y);
 </pre>
 
-<p>
-
-<p>
 Alice and Bob work separately for a few days and meet again when they are done.
 They put their code together and start testing it. Alas, none of the tests
 works! For example, for a basket with a single gossip which costs 10 Euro, they
@@ -80,7 +72,6 @@ compute a price of 6,418 Euro in Ada and 10,000 Euro in C!
 <p>
 Here is Alice's code in Ada:
 <pre>
-
 <b>function</b> Add (X , Y : My_Int) <b>return</b> My_Int <b>is</b>
 <b>begin</b>
    <b>if</b> X + Y &lt; 10_000 <b>then</b> 
@@ -100,12 +91,8 @@ Here is Alice's code in Ada:
 <b>end</b> Mult;
 </pre>
 
-<p>
-
-<p>
 and in C:
 <pre>
-
 <b>int</b> add (<b>int</b> x, <b>int</b> y) {
    <b>if</b> (x + y &lt; 10000)
       <b>return</b> x + y;
@@ -121,12 +108,8 @@ and in C:
 }
 </pre>
 
-<p>
-
-<p>
 Here is Bob's code in Ada:
 <pre>
-
 <b>type</b> Item <b>is</b> <b>record</b>
    Price  : My_Int;
    Number : My_Int;
@@ -142,19 +125,15 @@ Here is Bob's code in Ada:
 <b>function</b> Price_Of_Basket (Bk : Basket) <b>return</b> My_Int <b>is</b>
    Total : My_Int;
 <b>begin</b>
-   <b>for</b> It <b>in</b> Bk'<b>Range</b> <b>loop</b>
+   <b>for</b> It <b>in</b> Bk'Range <b>loop</b>
       Total := Add (Total, Price_Of_Item (Bk (It)));
    <b>end</b> <b>loop</b>;
    <b>return</b> Total;
 <b>end</b> Price_Of_Basket;
 </pre>
 
-<p>
-
-<p>
 and in C:
 <pre>
-
 <b>typedef</b> <b>struct</b> _Item {
    <b>int</b> price;
    <b>int</b> number;
@@ -176,9 +155,6 @@ and in C:
 }
 </pre>
 
-<p>
-
-<p>
 Moreover, by repeating the test in Ada, they get different results: 10,000
 Euro, 9,257 Euro and even a run-time error because a range check failed. All
 these results strongly suggest that their program must be unintentionally
@@ -244,14 +220,10 @@ The result of the multiplication is either 10_000 in case it saturates, or
 To check this on their test, Bob proposes to add a postcondition to the Mult
 function in Ada, using the appropriate GNAT pragma:
 <pre>
-
 <b>function</b> Mult (X , Y : My_Int) <b>return</b> My_Int;
 <b>pragma</b> Postcondition (Mult'Result = X * Y <b>or</b> <b>else</b> Mult'Result = 10_000);
 </pre>
 
-<p>
-
-<p>
 When compiling the Ada code with "gcc -c -gnata", assertions are kept in the
 generated excutable, and running it on their example yields a run-time error:
 
@@ -313,7 +285,6 @@ contracts. This seems impressive so Bob accepts to give it a try.
 Here are the contracts in SPARK, a subset of Ada with additional logical
 constructs in stylized Ada comments:
 <pre>
-
 <b>function</b> Add (X , Y : My_Int) <b>return</b> My_Int;
 <EM><FONT color="blue">&#45;&#45;&#35; <b>return</b> Sum =&gt; (X + Y &lt; 10_000 <b>and</b> Sum = X + Y) <b>or</b></FONT></EM>
 <EM><FONT color="blue">&#45;&#45;&#35;               (X + Y &gt;= 10_000 <b>and</b> Sum = 10_000);</FONT></EM>
@@ -326,54 +297,47 @@ constructs in stylized Ada comments:
 <EM><FONT color="blue">&#45;&#45;&#35; <b>return</b> Sat.Mult (It.Price, It.Number);</FONT></EM>
 
 <b>function</b> Price_Of_Basket (Bk : Basket) <b>return</b> Sat.My_Int;
-<EM><FONT color="blue">&#45;&#45;&#35; <b>return</b> Price =&gt; <b>for</b> <b>all</b> It <b>in</b> Positive <b>range</b> Bk'<b>Range</b> =&gt;</FONT></EM>
+<EM><FONT color="blue">&#45;&#45;&#35; <b>return</b> Price =&gt; <b>for</b> <b>all</b> It <b>in</b> Positive <b>range</b> Bk'Range =&gt;</FONT></EM>
 <EM><FONT color="blue">&#45;&#45;&#35;                   (Price &gt;= Price_Of_Item (Bk (It)));</FONT></EM>
 </pre>
 
-<p>
-
-<p>
 Here are the contracts in ACSL, a logical language for C code, also in stylized
 C comments:
 <pre>
-
 <EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x + y &lt; 10000 &amp;&amp; \result == x + y) ||</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;         (x + y &gt;= 10000 &amp;&amp; \result == 10000); </FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x + y &lt; 10000 &amp;&amp; <b>\result</b> == x + y) ||</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64;         (x + y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); </FONT></EM>
 <b>int</b> add (<b>int</b> x, <b>int</b> y);
 
 <EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x * y &lt; 10000 &amp;&amp; \result == x * y) ||</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;         (x * y &gt;= 10000 &amp;&amp; \result == 10000); </FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x * y &lt; 10000 &amp;&amp; <b>\result</b> == x * y) ||</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64;         (x * y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); </FONT></EM>
 <b>int</b> mult (<b>int</b> x, <b>int</b> y);
 
 <EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_item{S} (Item* it) =</FONT></EM>
 <EM><FONT color="blue">&#47;&#47;&#64;    0 &lt;= it-&gt;price &lt;= 10000 &amp;&amp; 0 &lt;= it-&gt;number &lt;= 10000;</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> integer mult (integer x, integer y) = </FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> <b>integer</b> mult (<b>integer</b> x, <b>integer</b> y) = </FONT></EM>
 <EM><FONT color="blue">&#47;&#47;&#64;    x * y &lt;= 10000 ? x * y : 10000;</FONT></EM>
 
 <EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> type_item (&amp;it);</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> \result == mult (it.price, it.number);</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> <b>\result</b> == mult (it.price, it.number);</FONT></EM>
 <b>int</b> price_of_item (Item it);
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> integer price_of_item{S} (Item* it) = </FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> <b>integer</b> price_of_item{S} (Item* it) = </FONT></EM>
 <EM><FONT color="blue">&#47;&#47;&#64;    mult (it-&gt;price, it-&gt;number);</FONT></EM>
 
 <b>typedef</b> Item* Basket;
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_basket{S} (Basket bk, integer len) =</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;    \forall <b>int</b> it; 0 &lt;= it &lt; len ==&gt; type_item (&amp;bk[it]);</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_basket{S} (Basket bk, <b>integer</b> len) =</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64;    <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; type_item (&amp;bk[it]);</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> \valid_range(bk, 0, len - 1) &amp;&amp; type_basket (bk, len);</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> \forall <b>int</b> it; 0 &lt;= it &lt; len ==&gt; </FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;                            \result &gt;= price_of_item (&amp;bk[it]);</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> <b>\valid_range</b>(bk, 0, len - 1) &amp;&amp; type_basket (bk, len);</FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; </FONT></EM>
+<EM><FONT color="blue">&#47;&#47;&#64;                            <b>\result</b> &gt;= price_of_item (&amp;bk[it]);</FONT></EM>
 <b>int</b> price_of_basket (Basket bk, <b>int</b> len);
 </pre>
 
-<p>
-
-<p>
 The contracts in SPARK are slightly simpler because the stronger typing rules
 of Ada and SPARK give more guarantees than the typing rules in C. So that SPARK
 contracts consist here of only postconditions, while ACSL contracts also need
@@ -434,37 +398,33 @@ of it, Alice and Bob return to their old code and rewrite an Ada interface
 with proper contracts and tests in the annotation language ALFA defined by
 Hi-Lite:
 <pre>
-
 <b>function</b> Add (X , Y : My_Int) <b>return</b> My_Int
-   <b>with</b> <b>Post</b> =&gt; (<b>if</b> X + Y &lt; 10_000 <b>then</b> Add'Result = X + Y
+   <b>with</b> Post =&gt; (<b>if</b> X + Y &lt; 10_000 <b>then</b> Add'Result = X + Y
                                    <b>else</b> Add'Result = 10_000),
         Test_1 =&gt; (<b>if</b> X = 10 <b>and</b> Y &lt; 9_990 <b>then</b> Add'Result = X + Y),
         Test_2 =&gt; (<b>if</b> X = 11 <b>and</b> Y = 9_990 <b>then</b> Add'Result = 10_000);
 
 <b>function</b> Mult (X , Y : My_Int) <b>return</b> My_Int
-   <b>with</b> <b>Post</b> =&gt; (<b>if</b> X * Y &lt; 10_000 <b>then</b> Mult'Result = X * Y
+   <b>with</b> Post =&gt; (<b>if</b> X * Y &lt; 10_000 <b>then</b> Mult'Result = X * Y
                                    <b>else</b> Mult'Result = 10_000),
         Test_1 =&gt; (<b>if</b> X = 10 <b>and</b> Y &lt; 1_000 <b>then</b> Add'Result = X * Y),
         Test_2 =&gt; (<b>if</b> X = 11 <b>and</b> Y = 1_000 <b>then</b> Add'Result = 10_000);
 
 <b>function</b> Price_Of_Item (It : Item) <b>return</b> My_Int
-   <b>with</b> <b>Post</b> =&gt; Price_Of_Item'Result = Mult (It.Price, It.Number),
+   <b>with</b> Post =&gt; Price_Of_Item'Result = Mult (It.Price, It.Number),
         Test_1 =&gt; (<b>if</b> It.Price = 10 <b>and</b> It.Number &lt; 1_000 <b>then</b> 
                       Price_Of_Item'Result = 10 * It.Number),
         Test_2 =&gt; (<b>if</b> It.Price = 11 <b>and</b> It.Number = 1_000 <b>then</b> 
                       Price_Of_Item'Result = 10_000);
 
 <b>function</b> Price_Of_Basket (Bk : Basket) <b>return</b> My_Int
-   <b>with</b> <b>Post</b> =&gt; <b>for</b> <b>all</b> It <b>in</b> Bk'<b>Range</b> : (Price &gt;= Price_Of_Item (Bk (It))),
+   <b>with</b> Post =&gt; <b>for</b> <b>all</b> It <b>in</b> Bk'Range : (Price &gt;= Price_Of_Item (Bk (It))),
         Test_1 =&gt; (<b>if</b> Bk(1).Price = 10 <b>and</b> Bk(1).Number &lt; 1_000 <b>then</b> 
                       Price_Of_Basket'Result &gt;= 10 * It.Number),
         Test_2 =&gt; (<b>if</b> Bk(1).Price = 11 <b>and</b> Bk(1).Number = 1_000 <b>then</b> 
                       Price_Of_Basket'Result = 10_000);
 </pre>
 
-<p>
-
-<p>
 Alice then implements her part in C, starting from the interfaces
 automatically generated from the ones she has wrote with Bob in Ada, with
 annotations in ALFA translated in E-ACSL. She can formally verify that her
