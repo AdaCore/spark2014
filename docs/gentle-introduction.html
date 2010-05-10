@@ -143,7 +143,7 @@ and in C:
    <b>return</b> mult (it.price, it.number);
 }
 
-<b>typedef</b> Item Basket[];
+<b>typedef</b> Item* Basket;
 
 <b>int</b> price_of_basket (Basket bk, <b>int</b> len) {
    <b>int</b> total;
@@ -326,8 +326,6 @@ C comments:
 
 <EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> <b>integer</b> price_of_item{S} (Item* it) = </FONT></EM>
 <EM><FONT color="blue">&#47;&#47;&#64;    mult (it-&gt;price, it-&gt;number);</FONT></EM>
-
-<b>typedef</b> Item* Basket;
 
 <EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_basket{S} (Basket bk, <b>integer</b> len) =</FONT></EM>
 <EM><FONT color="blue">&#47;&#47;&#64;    <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; type_item (&amp;bk[it]);</FONT></EM>

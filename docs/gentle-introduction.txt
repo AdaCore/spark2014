@@ -139,7 +139,7 @@ int price_of_item (Item it) {
    return mult (it.price, it.number);
 }
 
-typedef Item Basket[];
+typedef Item* Basket;
 
 int price_of_basket (Basket bk, int len) {
    int total;
@@ -308,8 +308,6 @@ int price_of_item (Item it);
 
 //@ logic integer price_of_item{S} (Item* it) = 
 //@    mult (it->price, it->number);
-
-typedef Item* Basket;
 
 //@ predicate type_basket{S} (Basket bk, integer len) =
 //@    \forall int it; 0 <= it < len ==> type_item (&bk[it]);
