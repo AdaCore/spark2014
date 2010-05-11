@@ -304,35 +304,43 @@ constructs in stylized Ada comments:
 Here are the contracts in ACSL, a logical language for C code, also in stylized
 C comments:
 <pre>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x + y &lt; 10000 &amp;&amp; <b>\result</b> == x + y) ||</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;         (x + y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); </FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;
+    <b>ensures</b> (x + y &lt; 10000 &amp;&amp; <b>\result</b> == x + y) ||
+            (x + y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); 
+ &#42;&#47;</FONT></EM>
 <b>int</b> add (<b>int</b> x, <b>int</b> y);
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> (x * y &lt; 10000 &amp;&amp; <b>\result</b> == x * y) ||</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;         (x * y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); </FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>requires</b> 0 &lt;= x &lt;= 10000 &amp;&amp; 0 &lt;= y &lt;= 10000;
+    <b>ensures</b> (x * y &lt; 10000 &amp;&amp; <b>\result</b> == x * y) ||
+            (x * y &gt;= 10000 &amp;&amp; <b>\result</b> == 10000); 
+ &#42;&#47;</FONT></EM>
 <b>int</b> mult (<b>int</b> x, <b>int</b> y);
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_item{S} (Item* it) =</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;    0 &lt;= it-&gt;price &lt;= 10000 &amp;&amp; 0 &lt;= it-&gt;number &lt;= 10000;</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>predicate</b> type_item{S} (Item* it) =
+       0 &lt;= it-&gt;price &lt;= 10000 &amp;&amp; 0 &lt;= it-&gt;number &lt;= 10000;
+ &#42;&#47;</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> <b>integer</b> mult (<b>integer</b> x, <b>integer</b> y) = </FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;    x * y &lt;= 10000 ? x * y : 10000;</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>logic</b> <b>integer</b> mult (<b>integer</b> x, <b>integer</b> y) = 
+       x * y &lt;= 10000 ? x * y : 10000;
+ &#42;&#47;</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> type_item (&amp;it);</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> <b>\result</b> == mult (it.price, it.number);</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>requires</b> type_item (&amp;it);
+    <b>ensures</b> <b>\result</b> == mult (it.price, it.number);
+ &#42;&#47;</FONT></EM>
 <b>int</b> price_of_item (Item it);
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>logic</b> <b>integer</b> price_of_item{S} (Item* it) = </FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;    mult (it-&gt;price, it-&gt;number);</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>logic</b> <b>integer</b> price_of_item{S} (Item* it) = 
+       mult (it-&gt;price, it-&gt;number);
+ &#42;&#47;</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>predicate</b> type_basket{S} (Basket bk, <b>integer</b> len) =</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;    <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; type_item (&amp;bk[it]);</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>predicate</b> type_basket{S} (Basket bk, <b>integer</b> len) =
+       <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; type_item (&amp;bk[it]);
+ &#42;&#47;</FONT></EM>
 
-<EM><FONT color="blue">&#47;&#47;&#64; <b>requires</b> <b>\valid_range</b>(bk, 0, len - 1) &amp;&amp; type_basket (bk, len);</FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64; <b>ensures</b> <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; </FONT></EM>
-<EM><FONT color="blue">&#47;&#47;&#64;                            <b>\result</b> &gt;= price_of_item (&amp;bk[it]);</FONT></EM>
+<EM><FONT color="blue">&#47;&#42;&#64; <b>requires</b> <b>\valid_range</b>(bk, 0, len - 1) &amp;&amp; type_basket (bk, len);
+    <b>ensures</b> <b>\forall</b> <b>int</b> it; 0 &lt;= it &lt; len ==&gt; 
+                               <b>\result</b> &gt;= price_of_item (&amp;bk[it]);
+ &#42;&#47;</FONT></EM>
 <b>int</b> price_of_basket (Basket bk, <b>int</b> len);
 </pre>
 
