@@ -311,7 +311,7 @@ package body Sparkify.Pre_Operations is
          declare
             Base_Name     : constant Wide_String :=
                               Trim (Element_Image (Discrete_Subtype),
-                                Ada.Strings.Left);
+                                Ada.Strings.Both);
             Complete_Name : constant Wide_String :=
                               Prepend_Package_Name
                                 (Discrete_Subtype, Base_Name);
@@ -398,10 +398,47 @@ package body Sparkify.Pre_Operations is
       end loop;
 
       if Has_Iteration_Scheme (Element) then
-         --  The iteration scheme can contain identifiers; they
-         --  should be prefixed if needed. To do so, we should do
-         --  Traverse_Source on what's before the first statement.
-         Reach_Element_And_Traverse (Get_Iteration_Scheme (Element), State);
+         declare
+            Iter_Scheme : constant Asis.Element :=
+              Get_Iteration_Scheme (Element);
+         begin
+            if Flat_Element_Kind (Iter_Scheme) =
+              A_Loop_Parameter_Specification then
+               declare
+                  Discrete_Subtype_Def : constant
+                    Asis.Discrete_Subtype_Definition :=
+                      Specification_Subtype_Definition (Iter_Scheme);
+               begin
+                  if Flat_Element_Kind (Discrete_Subtype_Def) =
+                    A_Discrete_Simple_Expression_Range_As_Subtype_Definition
+                  then
+                     declare
+                        Lower_Expr : constant Asis.Expression :=
+                          Lower_Bound (Discrete_Subtype_Def);
+                     begin
+                           PP_Echo_Cursor_Range (State.Echo_Cursor,
+                                                 Cursor_Before
+                                                   (Discrete_Subtype_Def));
+                        State.Echo_Cursor := Cursor_After
+                          (Discrete_Subtype_Def);
+                        if Flat_Element_Kind (Lower_Expr) =
+                          An_Integer_Literal then
+                           PP_Word (" Integer range ");
+                        end if;
+                        Reach_Element_And_Traverse
+                          (Discrete_Subtype_Def, State);
+
+                     end;
+                  else
+                     --  The iteration scheme can contain identifiers;
+                     --  they should be prefixed if needed. To do so,
+                     --  we should doTraverse_Source on what's before
+                     --  the first statement.
+                     Reach_Element_And_Traverse (Iter_Scheme, State);
+                  end if;
+               end;
+            end if;
+         end;
       end if;
 
       if Statements'First <= Last_Pragma_Index then
@@ -948,7 +985,6 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
    begin
-
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this Element was already taken care of
          return;
@@ -968,11 +1004,11 @@ package body Sparkify.Pre_Operations is
                              Asis.Declarations.Names (Decl_Type);
                pragma Assert (Decl_Name'Length = 1);
                Type_Str  : constant Wide_String :=
-                             Defining_Name_Image (Decl_Name
-                               (Decl_Name'First)) & "'";
+                             Defining_Name_Image
+                             (Decl_Name (Decl_Name'First)) & "'";
             begin
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Element));
+               PP_Echo_Cursor_Range (State.Echo_Cursor,
+                                    Cursor_Before (Element));
                PP_Word (Type_Str);
                State.Echo_Cursor := Cursor_At (Element);
             end;
@@ -996,6 +1032,7 @@ package body Sparkify.Pre_Operations is
          --  Handling of this Element was already taken care of
          return;
       end if;
+
       declare
          Object_Def : constant Asis.Definition :=
                         Object_Declaration_View (Element);
@@ -1003,20 +1040,21 @@ package body Sparkify.Pre_Operations is
          if Flat_Element_Kind (Object_Def) = A_Subtype_Indication then
             declare
                New_Subtype_Name  : constant Wide_String :=
-                                Transform_Subtype_Indication
-                                  (Object_Def);
-               Print_Str1   : constant Wide_String :=
-                                "subtype " & New_Subtype_Name & " is ";
-               Decl_Name    : constant Defining_Name_List :=
-                                Asis.Declarations.Names (Element);
-               Print_Str2 : Unbounded_Wide_String;
-               Line         : constant Line_Number_Positive :=
-                                First_Line_Number (Element);
-               Column_Start : constant Character_Position_Positive :=
-                                Element_Span (Element).First_Column;
+                                     Transform_Subtype_Indication
+                                       (Object_Def);
+               Print_Str1        : constant Wide_String :=
+                                     "subtype " & New_Subtype_Name & " is ";
+               Decl_Name         : constant Defining_Name_List :=
+                                     Asis.Declarations.Names (Element);
+               Line              : constant Line_Number_Positive :=
+                                     First_Line_Number (Element);
+               Column_Start      : constant Character_Position_Positive :=
+                                     Element_Span (Element).First_Column;
+               Print_Str2        : Unbounded_Wide_String;
             begin
                PP_Echo_Cursor_Range
                  (State.Echo_Cursor, Cursor_Before (Element));
+
                if Decl_Name'Length = 1 then
                   Print_Str2 := Print_Str2 & Defining_Name_Image
                     (Decl_Name (Decl_Name'First)) & " : " &
@@ -1031,14 +1069,17 @@ package body Sparkify.Pre_Operations is
                   Print_Str2 := Print_Str2 & " : " &
                   (Trim (New_Subtype_Name, Ada.Strings.Both));
                end if;
+
                if not (Is_Nil (Subtype_Constraint (Object_Def))) then
                   PP_Text_At (Line, Column_Start, Print_Str1);
                   Traverse_Element_And_Print (Object_Def);
                   PP_Word (";");
                end if;
+
                PP_Text_At (Line, Column_Start, To_Wide_String (
                  Trim ((Print_Str2), Ada.Strings.Both)));
                State.Echo_Cursor := Cursor_After (Object_Def);
+
             end;
          end if;
       end;
@@ -1075,13 +1116,14 @@ package body Sparkify.Pre_Operations is
                Array_Comp_Sub : constant Asis.Definition :=
                                   Component_Definition_View (Array_Comp_Def);
                Print_Str3     : Unbounded_Wide_String  :=
-                                  To_Unbounded_Wide_String ("type " &
-                                     Defining_Name_Image
-                                       (Decl_Name (Decl_Name'First))
-                                          & " is array (");
+                                  To_Unbounded_Wide_String
+                                     ("type " & Defining_Name_Image
+                                              (Decl_Name (Decl_Name'First))
+                                               & " is array (");
             begin
                PP_Echo_Cursor_Range
                  (State.Echo_Cursor, Cursor_Before (Element));
+
                if List_Def'Length = 1 then
                   declare
                      New_Subtype_Name1 : constant Wide_String :=
@@ -1143,8 +1185,8 @@ package body Sparkify.Pre_Operations is
                   end;
                end if;
             end;
-
          end if;
+
          --  Record Definition kinds
          if Flat_Element_Kind (Type_Def) = A_Record_Type_Definition then
             declare
@@ -1242,29 +1284,31 @@ package body Sparkify.Pre_Operations is
 
    end A_Type_Declaration_Pre_Op;
 
-   procedure A_Discrete_Subtype_Definition_Pre_Op
-     (Element :        Asis.Element;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State)
-   is
-      pragma Unreferenced (Control);
-   begin
-      declare
-         Encl_Element : constant Asis.Element := Enclosing_Element (Element);
-      begin
-         if Flat_Element_Kind (Encl_Element) =
-           A_Loop_Parameter_Specification then
-            PP_Echo_Cursor_Range (State.Echo_Cursor,
-                                  Cursor_Before
-                                    (Element));
-            declare
-               Subtype_Const : constant Asis.Constraint :=
-                 Subtype_Constraint (Element);
-            begin
-               PP_Word (Element_Image (Subtype_Const));
-            end;
-         end if;
-      end;
-   end A_Discrete_Subtype_Definition_Pre_Op;
+--     procedure A_Discrete_Subtype_Definition_Pre_Op
+--       (Element :        Asis.Element;
+--        Control : in out Traverse_Control;
+--        State   : in out Source_Traversal_State)
+--     is
+--        pragma Unreferenced (Control);
+--     begin
+--        declare
+--           Encl_Element : constant Asis.Element := Enclosing_Element
+--  (Element);
+--        begin
+--           if Flat_Element_Kind (Encl_Element) =
+--             A_Loop_Parameter_Specification then
+--              PP_Echo_Cursor_Range (State.Echo_Cursor,
+--                                    Cursor_Before
+--                                      (Element));
+--              declare
+--                 Subtype_Const : constant Asis.Constraint :=
+--                   Subtype_Constraint (Element);
+--              begin
+--                 --
+--                 PP_Word (Element_Image (Subtype_Const));
+--              end;
+--           end if;
+--        end;
+--     end A_Discrete_Subtype_Definition_Pre_Op;
 
 end Sparkify.Pre_Operations;

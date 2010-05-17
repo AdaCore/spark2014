@@ -106,10 +106,10 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
-   procedure A_Discrete_Subtype_Definition_Pre_Op
-     (Element :        Asis.Element;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State);
+--     procedure A_Discrete_Subtype_Definition_Pre_Op
+--       (Element :        Asis.Element;
+--        Control : in out Traverse_Control;
+--        State   : in out Source_Traversal_State);
 
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
@@ -437,7 +437,7 @@ package Sparkify.Pre_Operations is
       --  A_Discrete_Range_Attribute_Reference_As_Subtype_Definition,
       --                                                          -- 3.6.1, 3.5
       A_Discrete_Simple_Expression_Range_As_Subtype_Definition
-         => A_Discrete_Subtype_Definition_Pre_Op'Access,
+         => No_Action'Access,
 
       --  There is no syntactical difference between
       --  A_Discrete_Subtype_Definition kinds and A_Discrete_Range kinds, the
@@ -456,7 +456,7 @@ package Sparkify.Pre_Operations is
       A_Discrete_Subtype_Indication ..
       --  A_Discrete_Range_Attribute_Reference => No_Action'Access,
         A_Discrete_Simple_Expression_Range =>
-          A_Discrete_Subtype_Definition_Pre_Op'Access,
+          No_Action'Access,
 
       An_Unknown_Discriminant_Part => No_Action'Access,
 
