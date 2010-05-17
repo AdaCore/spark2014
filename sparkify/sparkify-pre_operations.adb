@@ -46,8 +46,14 @@ with Sparkify.Source_Line_Buffer;      use Sparkify.Source_Line_Buffer;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
+with Asis.Definitions;                 use Asis.Definitions;
+--  with Ada.Containers.Vectors;           use Ada.Containers;
 
 package body Sparkify.Pre_Operations is
+
+      Count_Name    : Integer := 0;
+--     package Strings_Container is new Vectors(Positive, Wide_String);
+--     use Strings_Container;
 
    -----------------------
    -- Local subprograms --
@@ -77,12 +83,31 @@ package body Sparkify.Pre_Operations is
       Column      : Character_Position_Positive);
    --  Print data flow contracts in SPARK syntax
 
+   procedure Traverse_Element_And_Print (Element : Asis.Element);
+   --  Traverse it in Printing_Code mode (prefixing identifiers et cetera)
+
    procedure Reach_Element_And_Traverse
      (Element : Asis.Element;
       State   : in out Source_Traversal_State);
-   --  Echo everything before Element; then, traverse it in Printing_Code
-   --  mode (prefixing identifiers et cetera). At the end of procedure,
+   --  Echo everything before Element; then, call Traverse_Element_And_Print
+   --  to set prefixing identifiers mode At the end of procedure,
    --  the cursor is set after Element.
+
+   function Is_Defined_In_Standard_Or_Current_Compilation_Unit
+     (Element : Asis.Element) return Boolean;
+
+   function Prepend_Package_Name
+     (Element : Asis.Element;
+      Name    : Wide_String) return Wide_String;
+   --  Functions would be call by an An_Identifier_Pre_Op or others
+   --  Methodes where an Identifier should be prefixed by its package name
+
+   function Transform_Subtype_Indication
+     (Discrete_Subtype : Asis.Subtype_Indication)
+      return Wide_String;
+   --  Return the subtype indication identifier or a new identifier created
+
+   function Fresh_Name (My_Counter : Integer) return Wide_String;
 
    -----------------------------------
    -- Argument_By_Name_And_Position --
@@ -163,9 +188,9 @@ package body Sparkify.Pre_Operations is
             if Name = Precondition_Name or else Name = Postcondition_Name then
                declare
                   Args : constant Association_List :=
-                    Pragma_Argument_Associations (Pragma_Elt);
+                           Pragma_Argument_Associations (Pragma_Elt);
                   Arg  : constant Association := Argument_By_Name_And_Position
-                    (Args, Check_Name, Check_Position_In_Prepost);
+                           (Args, Check_Name, Check_Position_In_Prepost);
                   Expr : constant Asis.Expression := Actual_Parameter (Arg);
                begin
                   if Name = Precondition_Name then
@@ -209,6 +234,102 @@ package body Sparkify.Pre_Operations is
                     Global_Out    => To_Wide_String (Writes_Str),
                     Global_In_Out => To_Wide_String (Read_Writes_Str));
    end SPARK_Data_Flow;
+
+   --------------------------------------------------------
+   -- Is_Defined_In_Standard_Or_Current_Compilation_Unit --
+   --------------------------------------------------------
+
+   function Is_Defined_In_Standard_Or_Current_Compilation_Unit
+     (Element : Asis.Element) return Boolean
+   is
+      Decl_Element : constant Asis.Element :=
+        Corresponding_Name_Declaration (Element);
+   begin
+      if Is_Nil (Decl_Element) then
+         return False;
+      end if;
+
+      declare
+            Element_Unit : constant Asis.Compilation_Unit :=
+                             Enclosing_Compilation_Unit (Decl_Element);
+            Body_Unit    : constant Asis.Compilation_Unit :=
+                             Corresponding_Body (Element_Unit);
+            --  Body_Unit might be null or the body unit corresponding to
+            --  specification unit Element_Unit
+      begin
+            return (Is_Standard (Element_Unit) or else
+                    Is_Equal (Element_Unit, The_Unit) or else
+                    Is_Equal (Body_Unit, The_Unit));
+      end;
+   end Is_Defined_In_Standard_Or_Current_Compilation_Unit;
+
+   --------------------------
+   -- Prepend_Package_Name --
+   --------------------------
+
+   function Prepend_Package_Name
+     (Element : Asis.Element;
+      Name    : Wide_String) return Wide_String
+   is
+      Encl_Element : Asis.Element;
+   begin
+      if Is_Nil (Element) then
+         return Name;
+      end if;
+
+      Encl_Element := Enclosing_Element (Element);
+
+      if Element_Kind (Encl_Element) = A_Declaration and then
+        (Declaration_Kind (Encl_Element) = A_Package_Declaration or else
+           Declaration_Kind (Encl_Element) = A_Package_Body_Declaration)
+      then
+         declare
+            Names         : constant Defining_Name_List :=
+                              Asis.Declarations.Names (Encl_Element);
+            pragma Assert (Names'Length = 1);
+            Expanded_Name : constant Wide_String :=
+                              Defining_Name_Image (Names (Names'First))
+                                & "." & Name;
+         begin
+            return Prepend_Package_Name (Encl_Element, Expanded_Name);
+         end;
+      else
+         return Name;
+      end if;
+   end Prepend_Package_Name;
+
+   ----------------------------------
+   -- Transform_Subtype_Indication --
+   ----------------------------------
+
+   function Transform_Subtype_Indication
+     (Discrete_Subtype : Asis.Subtype_Indication)
+      return Wide_String
+   is
+   begin
+      if Is_Nil (Subtype_Constraint (Discrete_Subtype)) then
+         declare
+            Base_Name     : constant Wide_String :=
+                              Trim (Element_Image (Discrete_Subtype),
+                                Ada.Strings.Left);
+            Complete_Name : constant Wide_String :=
+                              Prepend_Package_Name
+                                (Discrete_Subtype, Base_Name);
+         begin
+            return Complete_Name;
+         end;
+      else
+         Count_Name   := Count_Name + 1;
+         return Fresh_Name (Count_Name);
+      end if;
+   end Transform_Subtype_Indication;
+
+   function Fresh_Name (My_Counter : Integer) return Wide_String
+   is
+   begin
+      return "New_Name" & "_" & Trim
+        (Integer'Wide_Image (My_Counter), Ada.Strings.Both);
+   end Fresh_Name;
 
    -----------------------------
    -- A_Loop_Statement_Pre_Op --
@@ -505,13 +626,14 @@ package body Sparkify.Pre_Operations is
 
       if Pragma_Kind (Element) = An_Assert_Pragma then
          declare
-            Args : constant Association_List :=
-              Pragma_Argument_Associations (Element);
-            Arg  : constant Association := Argument_By_Name_And_Position
-              (Args, Nil_Name, Check_Position_In_Assert);
-            Expr : constant Asis.Expression := Actual_Parameter (Arg);
+            Args         : constant Association_List :=
+                             Pragma_Argument_Associations (Element);
+            Arg          : constant Association :=
+                             Argument_By_Name_And_Position
+                               (Args, Nil_Name, Check_Position_In_Assert);
+            Expr         : constant Asis.Expression := Actual_Parameter (Arg);
             Column_Start : constant Character_Position_Positive :=
-              Element_Span (Element).First_Column;
+                             Element_Span (Element).First_Column;
          begin
             PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
             PP_Check (Column_Start, Expr);
@@ -742,67 +864,6 @@ package body Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State)
    is
       pragma Unreferenced (Control);
-
-      function Is_Defined_In_Standard_Or_Current_Compilation_Unit
-        (Element : Asis.Element) return Boolean;
-
-      function Is_Defined_In_Standard_Or_Current_Compilation_Unit
-        (Element : Asis.Element) return Boolean
-      is
-         Decl_Element : constant Asis.Element :=
-                          Corresponding_Name_Declaration (Element);
-      begin
-         if Is_Nil (Decl_Element) then
-            return False;
-         end if;
-
-         declare
-            Element_Unit : constant Asis.Compilation_Unit :=
-                             Enclosing_Compilation_Unit (Decl_Element);
-            Body_Unit    : constant Asis.Compilation_Unit :=
-                             Corresponding_Body (Element_Unit);
-            --  Body_Unit might be null or the body unit corresponding to
-            --  specification unit Element_Unit
-         begin
-            return (Is_Standard (Element_Unit) or else
-                    Is_Equal (Element_Unit, The_Unit) or else
-                    Is_Equal (Body_Unit, The_Unit));
-         end;
-      end Is_Defined_In_Standard_Or_Current_Compilation_Unit;
-
-      function Prepend_Package_Name
-        (Element : Asis.Element;
-         Name    : Wide_String) return Wide_String;
-
-      function Prepend_Package_Name
-        (Element : Asis.Element;
-         Name    : Wide_String) return Wide_String
-      is
-         Encl_Element : Asis.Element;
-      begin
-         if Is_Nil (Element) then
-            return Name;
-         end if;
-
-         Encl_Element := Enclosing_Element (Element);
-
-         if Element_Kind (Encl_Element) = A_Declaration and then
-           (Declaration_Kind (Encl_Element) = A_Package_Declaration or else
-              Declaration_Kind (Encl_Element) = A_Package_Body_Declaration)
-         then
-            declare
-               Names : constant Defining_Name_List :=
-                 Asis.Declarations.Names (Encl_Element);
-               pragma Assert (Names'Length = 1);
-               Expanded_Name : constant Wide_String :=
-                 Defining_Name_Image (Names (Names'First)) & "." & Name;
-            begin
-               return Prepend_Package_Name (Encl_Element, Expanded_Name);
-            end;
-         else
-            return Name;
-         end if;
-      end Prepend_Package_Name;
    begin
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this identifier was already taken care of
@@ -848,6 +909,21 @@ package body Sparkify.Pre_Operations is
    end A_Use_Package_Clause_Pre_Op;
 
    --------------------------------
+   -- Traverse_Element --
+   --------------------------------
+
+   procedure Traverse_Element_And_Print (Element : Asis.Element)
+   is
+      Source_Control : Asis.Traverse_Control  := Asis.Continue;
+      Source_State   : Source_Traversal_State := Initial_State;
+   begin
+      Source_State.Echo_Cursor := Cursor_At (Element);
+      Traverse_Source (Element, Source_Control, Source_State);
+      PP_Echo_Cursor_Range (Source_State.Echo_Cursor,
+                            Cursor_At_End_Of (Element));
+   end Traverse_Element_And_Print;
+
+   --------------------------------
    -- Reach_Element_And_Traverse --
    --------------------------------
 
@@ -855,14 +931,9 @@ package body Sparkify.Pre_Operations is
      (Element : Asis.Element;
       State   : in out Source_Traversal_State)
    is
-      Source_Control : Asis.Traverse_Control  := Asis.Continue;
-      Source_State   : Source_Traversal_State := Initial_State;
    begin
       PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
-      Source_State.Echo_Cursor := Cursor_At (Element);
-      Traverse_Source (Element, Source_Control, Source_State);
-      PP_Echo_Cursor_Range (Source_State.Echo_Cursor,
-                            Cursor_At_End_Of (Element));
+      Traverse_Element_And_Print (Element);
       State.Echo_Cursor := Cursor_After (Element);
    end Reach_Element_And_Traverse;
 
@@ -892,12 +963,13 @@ package body Sparkify.Pre_Operations is
          else
             declare
                Decl_Type : constant Asis.Declaration :=
-                 Corresponding_Expression_Type (Element);
+                             Corresponding_Expression_Type (Element);
                Decl_Name : constant Defining_Name_List :=
-                 Asis.Declarations.Names (Decl_Type);
+                             Asis.Declarations.Names (Decl_Type);
                pragma Assert (Decl_Name'Length = 1);
                Type_Str  : constant Wide_String :=
-                 Defining_Name_Image (Decl_Name (Decl_Name'First)) & "'";
+                             Defining_Name_Image (Decl_Name
+                               (Decl_Name'First)) & "'";
             begin
                PP_Echo_Cursor_Range
                  (State.Echo_Cursor, Cursor_Before (Element));
@@ -908,5 +980,291 @@ package body Sparkify.Pre_Operations is
       end;
 
    end An_Aggregate_Pre_Op;
+
+   ---------------------------------
+   -- A_Object_Declaration_Pre_Op --
+   ---------------------------------
+
+   procedure A_Object_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+   begin
+      if Cursor_At (Element) < State.Echo_Cursor then
+         --  Handling of this Element was already taken care of
+         return;
+      end if;
+      declare
+         Object_Def : constant Asis.Definition :=
+                        Object_Declaration_View (Element);
+      begin
+         if Flat_Element_Kind (Object_Def) = A_Subtype_Indication then
+            declare
+               New_Subtype_Name  : constant Wide_String :=
+                                Transform_Subtype_Indication
+                                  (Object_Def);
+               Print_Str1   : constant Wide_String :=
+                                "subtype " & New_Subtype_Name & " is ";
+               Decl_Name    : constant Defining_Name_List :=
+                                Asis.Declarations.Names (Element);
+               Print_Str2 : Unbounded_Wide_String;
+               Line         : constant Line_Number_Positive :=
+                                First_Line_Number (Element);
+               Column_Start : constant Character_Position_Positive :=
+                                Element_Span (Element).First_Column;
+            begin
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+               if Decl_Name'Length = 1 then
+                  Print_Str2 := Print_Str2 & Defining_Name_Image
+                    (Decl_Name (Decl_Name'First)) & " : " &
+                  (Trim (New_Subtype_Name, Ada.Strings.Both));
+               else
+                  Print_Str2 := Print_Str2 & Defining_Name_Image
+                    (Decl_Name (Decl_Name'First));
+                  for J in Decl_Name'First + 1 .. Decl_Name'Last loop
+                     Print_Str2 := Print_Str2 & " , " & Defining_Name_Image
+                       (Decl_Name (J));
+                  end loop;
+                  Print_Str2 := Print_Str2 & " : " &
+                  (Trim (New_Subtype_Name, Ada.Strings.Both));
+               end if;
+               if not (Is_Nil (Subtype_Constraint (Object_Def))) then
+                  PP_Text_At (Line, Column_Start, Print_Str1);
+                  Traverse_Element_And_Print (Object_Def);
+                  PP_Word (";");
+               end if;
+               PP_Text_At (Line, Column_Start, To_Wide_String (
+                 Trim ((Print_Str2), Ada.Strings.Both)));
+               State.Echo_Cursor := Cursor_After (Object_Def);
+            end;
+         end if;
+      end;
+   end A_Object_Declaration_Pre_Op;
+
+   -------------------------------
+   -- A_Type_Declaration_Pre_Op --
+   -------------------------------
+   procedure A_Type_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+   begin
+      declare
+         Type_Def : constant Asis.Definition :=
+                      Type_Declaration_View (Element);
+      begin
+         --  Array Definition kinds
+         if Flat_Element_Kind (Type_Def) = A_Constrained_Array_Definition then
+            declare
+               List_Def       : constant Asis.Definition_List  :=
+                                  Discrete_Subtype_Definitions (Type_Def);
+               Decl_Name      : constant Defining_Name_List :=
+                                  Asis.Declarations.Names (Element);
+               pragma Assert (Decl_Name'Length = 1);
+               Line           : constant Line_Number_Positive :=
+                                  First_Line_Number (Element);
+               Column_Start   : constant Character_Position_Positive :=
+                                  Element_Span (Element).First_Column;
+               Array_Comp_Def : constant Asis.Component_Definition :=
+                                  Array_Component_Definition (Type_Def);
+               Array_Comp_Sub : constant Asis.Definition :=
+                                  Component_Definition_View (Array_Comp_Def);
+               Print_Str3     : Unbounded_Wide_String  :=
+                                  To_Unbounded_Wide_String ("type " &
+                                     Defining_Name_Image
+                                       (Decl_Name (Decl_Name'First))
+                                          & " is array (");
+            begin
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+               if List_Def'Length = 1 then
+                  declare
+                     New_Subtype_Name1 : constant Wide_String :=
+                                      Transform_Subtype_Indication
+                                        (List_Def (1));
+                     Print_Str1   : constant Wide_String := "subtype " &
+                     New_Subtype_Name1 & " is ";
+                  begin
+                     Print_Str3 := Print_Str3 & New_Subtype_Name1;
+                     if not (Is_Nil (Subtype_Constraint
+                                     (List_Def (1)))) then
+                        PP_Text_At (Line, Column_Start, Print_Str1);
+                        Traverse_Element_And_Print (List_Def (1));
+                        PP_Word (";");
+                     end if;
+                  end;
+               else
+                  declare
+                     New_Subtype_Name1 : constant Wide_String :=
+                       Transform_Subtype_Indication
+                                        (List_Def (1));
+                     Print_Str1   : constant Wide_String := "subtype " &
+                     New_Subtype_Name1 & " is ";
+                  begin
+                     Print_Str3 := Print_Str3 & New_Subtype_Name1;
+                     for Subtype_Ind in List_Def'First + 1 ..
+                       List_Def'Last loop
+                        if not (Is_Nil (Subtype_Constraint
+                                     (List_Def (Subtype_Ind)))) then
+                           PP_Text_At (Line, Column_Start, Print_Str1);
+                           Traverse_Element_And_Print (List_Def (Subtype_Ind));
+                           PP_Word (";");
+                        end if;
+                        Print_Str3 := Print_Str3  &  "," & New_Subtype_Name1;
+                     end loop;
+                  end;
+               end if;
+
+               if Flat_Element_Kind (Array_Comp_Sub) =
+                 A_Subtype_Indication then
+                  declare
+                     New_Subtype_Name2   : constant Wide_String :=
+                                         Transform_Subtype_Indication (
+                                           Array_Comp_Sub);
+                     Print_Str2     : constant Wide_String := "subtype " &
+                                        New_Subtype_Name2 & " is ";
+                  begin
+                     PP_Close_Line;
+                     if not (Is_Nil (Subtype_Constraint (Array_Comp_Sub))) then
+                        PP_Text_At (Line, Column_Start, Print_Str2);
+                        Traverse_Element_And_Print (Array_Comp_Sub);
+                        PP_Word (";");
+                     end if;
+                     Print_Str3 := Print_Str3 & ") of " &
+                     New_Subtype_Name2 & ";";
+                     PP_Text_At (Line, Column_Start,
+                                 To_Wide_String (Print_Str3));
+                     State.Echo_Cursor := Cursor_After (Element);
+                  end;
+               end if;
+            end;
+
+         end if;
+         --  Record Definition kinds
+         if Flat_Element_Kind (Type_Def) = A_Record_Type_Definition then
+            declare
+               Record_Def        : constant Asis.Definition :=
+                                     Asis.Definitions.Record_Definition
+                                       (Type_Def);
+               Record_Comp_List  : constant Asis.Record_Component_List :=
+                                     Record_Components (Record_Def);
+               Decl_Name         : constant Defining_Name_List :=
+                                     Asis.Declarations.Names (Element);
+               pragma Assert (Decl_Name'Length = 1);
+               Line              : constant Line_Number_Positive :=
+                                     First_Line_Number (Element);
+               Column_Start      : constant Character_Position_Positive :=
+                                     Element_Span (Element).First_Column;
+               Tab_Of_Fresh_Name : array (1 .. Record_Comp_List'Length)
+                                     of Unbounded_Wide_String;
+
+            begin
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+               for Record_Comp in Record_Comp_List'Range loop
+                  declare
+                     Component_Decl : constant Asis.Declaration :=
+                                        Component_Declaration
+                                          (Record_Comp_List (Record_Comp));
+                     Object_Def     : constant Asis.Definition :=
+                                        Object_Declaration_View
+                                         (Component_Decl);
+                     Component_View : constant Asis.Component_Definition :=
+                                        Component_Definition_View
+                                          (Object_Def);
+                     New_Subtype_Name1   : constant Wide_String :=
+                                        Transform_Subtype_Indication
+                                          (Component_View);
+                     Print_Str1     : constant Wide_String :=
+                       "subtype " & New_Subtype_Name1 & " is " &
+                                           Trim (Element_Image
+                                                 (Component_View),
+                                                  Ada.Strings.Left) & ";";
+                  begin
+                     if Flat_Element_Kind (Component_View)
+                       = A_Subtype_Indication then
+                        Tab_Of_Fresh_Name (Record_Comp) :=
+                          To_Unbounded_Wide_String (New_Subtype_Name1);
+                        if not
+                          (Is_Nil (Subtype_Constraint (Component_View))) then
+                           PP_Text_At (Line, Column_Start, Print_Str1);
+                        end if;
+                     end if;
+                  end;
+               end loop;
+
+               PP_Text_At (Line, Column_Start, "type " & Defining_Name_Image
+                           (Decl_Name (Decl_Name'First))
+                           & " is record ");
+
+               for J in Tab_Of_Fresh_Name'Range loop
+                  declare
+                     Component_Decl : constant Asis.Declaration :=
+                                        Component_Declaration
+                                          (Record_Comp_List (J));
+                     Object_Def     : constant Asis.Definition :=
+                                        Object_Declaration_View
+                                          (Component_Decl);
+                     Component_View : constant Asis.Component_Definition :=
+                                        Component_Definition_View (Object_Def);
+                     Decl_Name      : constant Defining_Name_List :=
+                                        Asis.Declarations.Names
+                                           (Component_Decl);
+                     pragma Assert (Decl_Name'Length = 1);
+                     Print_Str2     : constant Wide_String :=
+                                        Defining_Name_Image
+                                        (Decl_Name (Decl_Name'First)) & " : "
+                                        & (To_Wide_String (
+                                        Tab_Of_Fresh_Name (J))) & ";";
+                     pragma Assert (Decl_Name'Length = 1);
+                     Line            : constant Line_Number_Positive :=
+                                         First_Line_Number (Object_Def);
+                     Column_Start    : constant Character_Position_Positive :=
+                       Element_Span (Object_Def).First_Column;
+                  begin
+                     if Flat_Element_Kind (Component_View)
+                       = A_Subtype_Indication then
+                           PP_Text_At (Line, Column_Start, Print_Str2);
+                           State.Echo_Cursor := Cursor_After (Element);
+                     end if;
+                  end;
+               end loop;
+               PP_Text_At (Line, Column_Start, "end record;");
+            end;
+         end if;
+
+      end;
+
+   end A_Type_Declaration_Pre_Op;
+
+   procedure A_Discrete_Subtype_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+   begin
+      declare
+         Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+      begin
+         if Flat_Element_Kind (Encl_Element) =
+           A_Loop_Parameter_Specification then
+            PP_Echo_Cursor_Range (State.Echo_Cursor,
+                                  Cursor_Before
+                                    (Element));
+            declare
+               Subtype_Const : constant Asis.Constraint :=
+                 Subtype_Constraint (Element);
+            begin
+               PP_Word (Element_Image (Subtype_Const));
+            end;
+         end if;
+      end;
+   end A_Discrete_Subtype_Definition_Pre_Op;
 
 end Sparkify.Pre_Operations;

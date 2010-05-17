@@ -95,6 +95,22 @@ package Sparkify.Pre_Operations is
    --  qualifier in Ada into aggregates prefixed by the appropriate type
    --  qualifier in SPARK
 
+   procedure A_Object_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+   --  SPARK all subtypes(types with constraints) should be named
+
+   procedure A_Type_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Discrete_Subtype_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
 
@@ -221,7 +237,7 @@ package Sparkify.Pre_Operations is
       ------------------------------------------------------------
 
       An_Ordinary_Type_Declaration =>
-         No_Action'Access,
+         A_Type_Declaration_Pre_Op'Access,
 
       A_Task_Type_Declaration ..
       A_Protected_Type_Declaration => No_Action'Access,
@@ -236,7 +252,7 @@ package Sparkify.Pre_Operations is
 
       A_Variable_Declaration ..
       --  A_Constant_Declaration,                    -- 3.3.1 -> Trait_Kinds
-      A_Deferred_Constant_Declaration => No_Action'Access,
+      A_Deferred_Constant_Declaration => A_Object_Declaration_Pre_Op'Access,
 
       A_Single_Task_Declaration ..
       A_Single_Protected_Declaration => No_Action'Access,
@@ -421,7 +437,7 @@ package Sparkify.Pre_Operations is
       --  A_Discrete_Range_Attribute_Reference_As_Subtype_Definition,
       --                                                          -- 3.6.1, 3.5
       A_Discrete_Simple_Expression_Range_As_Subtype_Definition
-         => No_Action'Access,
+         => A_Discrete_Subtype_Definition_Pre_Op'Access,
 
       --  There is no syntactical difference between
       --  A_Discrete_Subtype_Definition kinds and A_Discrete_Range kinds, the
@@ -439,7 +455,8 @@ package Sparkify.Pre_Operations is
 
       A_Discrete_Subtype_Indication ..
       --  A_Discrete_Range_Attribute_Reference => No_Action'Access,
-      A_Discrete_Simple_Expression_Range => No_Action'Access,
+        A_Discrete_Simple_Expression_Range =>
+          A_Discrete_Subtype_Definition_Pre_Op'Access,
 
       An_Unknown_Discriminant_Part => No_Action'Access,
 
