@@ -4,7 +4,7 @@
 --                                                                          --
 --                    G N A T 2 S P A R K - D R I V E R                     --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                       Copyright (C) 2010, AdaCore                        --
 --                                                                          --
@@ -23,9 +23,19 @@
 -- gnat2spark is maintained by AdaCore (http://www.adacore.com)             --
 --                                                                          --
 ------------------------------------------------------------------------------
+-- This package is the main driver for the Gnat2SPARK translation. It is
+-- invoked by the gnat1 driver.
 
---  This subsystem is for transforming a GNAT tree into SPARK.
+with Types;  use Types;
 
-package Gnat2SPARK is
-   pragma Pure;
-end Gnat2SPARK;
+package Gnat2SPARK.Driver is
+
+    procedure GNAT_To_SPARK (GNAT_Root : Node_Id);
+    --  Translates an entire GNAT tree for a compilation unit into
+    --  a set of SPARK sources. This is the main driver for the
+    --  Ada-to-SPARK back end and is invoked by Gnat1drv.
+
+    function Is_Back_End_Switch (Switch : String) return Boolean;
+    --  Returns True if and only if Switch denotes a back-end switch
+
+end Gnat2SPARK.Driver;

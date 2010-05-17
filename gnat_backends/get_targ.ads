@@ -21,8 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is the gnat2spark version of package Get_Targ. This
---  package provides generic/dummy values related to types for gnat2spark.
+--  This is the Hi-Lite version of package Get_Targ. This
+--  package provides generic/dummy values related to types for Hi-Lite
+--  backends.
 
 with Types; use Types;
 
