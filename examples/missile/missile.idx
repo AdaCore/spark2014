@@ -1,0 +1,130 @@
+-- Missile index file
+--
+-- $Log: missile.idx,v $
+-- Revision 1.1.1.1  2004/01/12 19:29:12  adi
+-- Added from tarfile
+--
+--
+-- Revision 1.1  2003/08/17 13:35:12  adi
+-- Initial revision
+--
+--
+systemtypes specification is in systemtypes.ads
+fpga specification is in fpga.ads
+systemtypes.maths specification is in systemtypes-maths.ads
+state_types specification is in state_types.ads
+measuretypes specification is in measuretypes.ads
+measuretypes.encode specification is in measuretypes-encode.ads
+measuretypes.decode specification is in measuretypes-decode.ads
+constants specification is in constants.ads
+random specification is in random.ads
+measuretypes.angle_ops specification is in measuretypes-angle_ops.ads
+measuretypes.angle_ops.trig specification is in measuretypes-angle_ops-trig.ads
+cartesian specification is in cartesian.ads
+flying_object specification is in flying_object.ads
+environment specification is in environment.ads
+drag specification is in drag.ads
+drag body is in drag.adb
+-- Bus
+bus specification is in bus.ads
+bus body is in bus.adb
+bus_decode specification is in bus_decode.ads
+bus_decode body is in bus_decode.adb
+bus_encode specification is in bus_encode.ads
+bus_encode body is in bus_encode.adb
+bc1553 specification is in bc1553.ads
+bc1553 body is in bc1553.adb
+rt1553 specification is in rt1553.ads
+rt1553 body is in rt1553.adb
+-- BIT
+ibit specification is in ibit.ads
+ibit body is in ibit.adb
+bit_machine specification is in bit_machine.ads
+bit_machine body is in bit_machine.adb
+-- Clock
+clock specification is in clock.ads
+clock body is in clock.adb
+clock_utils specification is in clock_utils.ads
+clock_utils body is in clock_utils.adb
+-- Watchdog
+watchdog specification is in watchdog.ads
+watchdog body is in watchdog.adb
+-- Barometer
+barometer specification is in barometer.ads
+barometer body is in barometer.adb
+if_barometer specification is in if_barometer.ads
+if_barometer body is in if_barometer.adb
+-- Compass
+compass specification is in compass.ads
+compass body is in compass.adb
+if_compass specification is in if_compass.ads
+if_compass body is in if_compass.adb
+-- Airspeed
+airspeed specification is in airspeed.ads
+airspeed body is in airspeed.adb
+if_airspeed specification is in if_airspeed.ads
+if_airspeed body is in if_airspeed.adb
+-- Ins
+ins specification is in ins.ads
+ins body is in ins.adb
+if_ins specification is in if_ins.ads
+if_ins body is in if_ins.adb
+-- Fuel tank
+fuel specification is in fuel.ads
+fuel body is in fuel.adb
+if_fuel specification is in if_fuel.ads
+if_fuel body is in if_fuel.adb
+-- Fuze
+fuze specification is in fuze.ads
+fuze body is in fuze.adb
+if_fuze specification is in if_fuze.ads
+if_fuze body is in if_fuze.adb
+-- Radar
+radar_cfg specification is in radar_cfg.ads
+radar specification is in radar.ads
+radar body is in radar.adb
+if_radar specification is in if_radar.ads
+if_radar body is in if_radar.adb
+-- Infrared
+ir_cfg specification is in ir_cfg.ads
+ir specification is in ir.ads
+ir body is in ir.adb
+if_ir specification is in if_ir.ads
+if_ir body is in if_ir.adb
+-- Steer
+steer_cfg specification is in steer_cfg.ads
+steer_cfg.encode specification is in steer_cfg-encode.ads
+steer_cfg.decode specification is in steer_cfg-decode.ads
+steer specification is in steer.ads
+steer body is in steer.adb
+if_steer specification is in if_steer.ads
+if_steer body is in if_steer.adb
+-- Motor
+motor_cfg specification is in motor_cfg.ads
+motor specification is in motor.ads
+motor body is in motor.adb
+if_motor specification is in if_motor.ads
+if_motor body is in if_motor.adb
+-- Warhead
+warhead_cfg specification is in warhead_cfg.ads
+warhead specification is in warhead.ads
+warhead body is in warhead.adb
+if_warhead specification is in if_warhead.ads
+if_warhead body is in if_warhead.adb
+-- Self destruct
+destruct_cfg specification is in destruct_cfg.ads
+destruct specification is in destruct.ads
+destruct body is in destruct.adb
+if_destruct specification is in if_destruct.ads
+if_destruct body is in if_destruct.adb
+-- Testing
+test specification is in test.ads
+test.check specification is in test-check.ads
+-- Working below here
+sensor_history specification is in sensor_history.ads
+sensor_history body is in sensor_history.adb
+nav specification is in nav.ads
+nav body is in nav.adb
+missile specification is in missile.ads
+missile body is in missile.adb
+

@@ -1,0 +1,67 @@
+-- Metafile for SPARK within boundary of missile
+-- 
+-- $Log: missile.smf,v $
+-- Revision 1.1.1.1  2004/01/12 19:29:12  adi
+-- Added from tarfile
+--
+--
+-- Revision 1.1  2003/08/25 20:42:55  adi
+-- Initial revision
+--
+--
+-- Basic types
+systemtypes.ads
+state_types.ads
+state_types.adb
+measuretypes.ads
+measuretypes-angle_ops.ads
+measuretypes-angle_ops.adb
+measuretypes-angle_ops-trig.ads
+-- not measuretypes-angle_ops-trig.adb
+cartesian.ads
+random.ads
+random.adb
+@clock
+-- Auxiliaries
+@environment
+drag.ads
+drag.adb
+-- Bus
+@bus
+measuretypes-encode.ads
+measuretypes-decode.ads
+measuretypes-encode.adb
+measuretypes-decode.adb
+steer_cfg-encode.ads
+steer_cfg-encode.adb
+steer_cfg-decode.ads
+steer_cfg-decode.adb
+-- IBIT
+ibit.ads
+ibit.adb
+bit_machine.ads
+bit_machine.adb
+-- Watchdog
+watchdog.ads
+watchdog.adb
+-- System components
+@barometer
+@compass
+@airspeed
+@ins
+@fuel
+@fuze
+@radar
+@ir
+@steer
+@motor
+@warhead
+@destruct
+-- Working below here
+sensor_history.ads
+sensor_history.adb
+nav.ads
+nav.adb
+missile.ads
+missile.adb
+-- missile.adb

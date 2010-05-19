@@ -1,0 +1,43 @@
+project Harness is
+
+   type Mode_Type is
+      ("Prove", "Compile");
+   Mode : Mode_Type := external ("Mode", "Compile");
+
+   case Mode is
+
+      when "Prove" =>
+         for Languages use ("Ada", "Metafile");
+
+      when "Compile" =>
+         for Source_Files use ("if_airspeed.adb", "environment.ads", "state_types-check.adb", "state_types-check.ads", "constants.ads", "steer_cfg-decode.adb", "if_steer.adb", "ins.adb", "rt1553.adb", "watchdog.adb", "fuel.adb", 
+"barometer-command.adb", "airspeed.ads", "ir.adb", "bus_encode.ads", "fuel.ads", "cartesian-io.ads", "radar_cfg.ads", "if_ins.adb", "cartesian-check.ads", "bc1553.ads", "airspeed-log.adb", "if_fuel.ads", "bus.adb", "fuze.ads", "warhead.ads", 
+"compass.adb", "bus_encode.adb", "steer_cfg-encode.ads", "missile.ads", "motor.ads", "measuretypes-encode.ads", "clock_utils.adb", "logging_cfg.ads", "radar.adb", "if_ir.adb", "test_keywords.ads", "clock_utils.ads", "if_warhead.ads", 
+"warhead_cfg.ads", "radar.ads", "watchdog.ads", "systemtypes.ads", "random.ads", "destruct.ads", "if_ins-command.adb", "drag.ads", "nav.adb", "motor_cfg.ads", "measuretypes-checks.adb", "ibit-io.ads", "flying_object.ads", "fpga.ads", 
+"cartesian-io.adb", "measuretypes-angle_ops-trig.ads", "compass-command.adb", "ibit-checks.adb", "if_motor.ads", "steer_cfg.ads", "fuze.adb", "ins-command.adb", "ir_cfg.ads", "sensor_history.adb", "nav.ads", "test.ads", "if_warhead.adb", 
+"warhead_cfg.adb", "barometer.ads", "radar_cfg.adb", "motor.adb", "warhead-command.adb", "environment.adb", "if_steer.ads", "ir-command.adb", "ir_cfg.adb", "bit_machine.adb", "motor-command.adb", "test-checking.ads", "state_types.adb", 
+"measuretypes-io.ads", "measuretypes-checks.ads", "if_fuel.adb", "if_compass.adb", "ibit-checks.ads", "sensor_history.ads", "clock.ads", "steer.ads", "logging.adb", "compass.ads", "measuretypes-decode.adb", "if_motor-command.adb", "ibit.ads", 
+"systemtypes-maths.ads", "systemtypes-maths.adb", "test_harness-test_aux.adb", "steer_cfg-encode.adb", "bc1553.adb", "if_destruct.adb", "if_compass.ads", "ir.ads", "measuretypes-angle_ops.ads", "fuze-command.adb", "logging.ads", 
+"if_compass-command.adb", "cartesian-check.adb", "measuretypes-io.adb", "if_barometer.adb", "test_harness.adb", "bus.ads", "bus_decode.adb", "if_destruct.ads", "warhead_cfg-check.ads", "measuretypes-encode.adb", 
+"test_harness-test_aux-rand_test.adb", "if_barometer-command.adb", "steer-command.adb", "airspeed-command.adb", "test-checking.adb", "state_types.ads", "ins.ads", "if_fuze.ads", "steer.adb", "measuretypes.ads", "if_fuze.adb", 
+"drag-testpoint.adb", "bit_machine.ads", "if_airspeed-command.adb", "if_radar.adb", "if_ir-command.adb", "radar-command.adb", "if_airspeed.ads", "airspeed.adb", "destruct_cfg-check.ads", "bus-dump.adb", "test.adb", "bus_decode.ads", 
+"missile-command.adb", "state_types-io.ads", "destruct_cfg.adb", "fuel-command.adb", "destruct.adb", "barometer.adb", "if_radar.ads", "clock-command.adb", "warhead_cfg-check.adb", "nav-command.adb", 
+"measuretypes-angle_ops-trig.adb", "if_fuel-command.adb", "clock.adb", "if_ins.ads", "measuretypes-angle_ops.adb", "airspeed-log.ads", "environment-command.adb", "drag.adb", "if_ir.ads", "if_steer-command.adb", "destruct-command.adb", 
+"if_destruct-command.adb", "rt1553.ads", "if_fuze-command.adb", "random.adb", "if_radar-command.adb", "destruct_cfg-check.adb", "missile.adb", "if_motor.adb", "cartesian.ads", "if_warhead-command.adb", "steer_cfg-decode.ads", "warhead.adb", 
+"flying_object.adb", "if_barometer.ads", "measuretypes-decode.ads", "destruct_cfg.ads", "ibit.adb");
+   end case;
+
+   package Ide is
+
+      case Mode is
+
+         when "Prove" =>
+            for Default_Switches ("examiner") use ("-config=gnat.cfg", "-index_file=missile.idx", "-vcg");
+
+         when "Compile" =>
+
+      end case;
+   end Ide;
+
+end Harness;
+
