@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+   "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<link href="adi.css" rel="stylesheet" type="text/css"/>
+<title>
+Missile Guidance Simulator
+</title>
+</head>
+
+<body>
+<div class="nav">
+<a href="../index.html">Adrian</a> &rarr;
+Harness
+</div>
+
+<h1>Missile Guidance Simulator</h1>
+
+<ul>
+ <li><a href="#disclaim"><strong>Disclaimer</strong></a></li>
+ <li><a href="#intro">Introduction</a></li>
+ <li><a href="#tech">Technical details of implementation</a></li>
+ <li><a href="#download">Download</a></li>
+ <li><a href="sys_desc.html">System description</a></li>
+ <li><a href="Manual/index.html">Simulator manual for developers</a></li>
+</ul>
+
+<h2><a name="disclaimer">
+Disclaimer</a></h2>
+
+<p>This project has no connection with my employer, or with anyone
+else except where explicitly stated to the contrary in this documentation.
+This software was developed on <em>my</em> time, on <em>my</em> PC, 
+in <em>my</em> house, with
+<em>my</em> purchased operating system and tools, and is provided on a website
+which <em>I</em> pay to have hosted, under a domain which <em>I</em> own.  
+</p>
+
+<p>Read the <a href="gpl.txt">license</a> for details, but the general
+theme is that if you use this software in any way at all that causes
+your aircraft to catch fire, your missile to explode on the launch pad,
+or your nuclear warhead to detonate in the silo, then my responsibility
+ends with "Bummer."
+</p>
+
+<p>Clear? :-)</p>
+
+<h2><a name="intro">
+Introduction</a></h2>
+
+<p>This is the home page for the Missile Guidance System simulator,
+developed in SPARK Ada 95 as a demonstrator software system for
+SPARK-related technologies.  All this software is released under
+the <a href="gpl.txt">GNU General Public License;</a> you are
+encouraged to read this license if you are not already familiar
+with it so that you understand the terms under which this software
+is distributed.
+</p>
+
+<p>The design and code for this simulator were developed by Adrian
+Hilton as part of the work for his Ph.D. thesis.  They have been
+made publically available to provide a common base of Ada code
+for analysis, compilation and development of high-integrity systems.
+The author welcomes <a href="mailto:sim@suslik.org">feedback</a> on
+the software, including any patches or suggested improvements.
+At some point in the future, I may put the whole thing up on
+SourceForge, but I haven't done so yet.  
+</p>
+
+<h2><a name="tech">
+Technical Details</a></h2>
+
+<p>This software is written in the SPARK[<a href="#spark">1</a>] subset
+of Ada.  It should compile and run with <em>any</em> valid Ada 95
+compiler, although the compiler used by the author is GNAT from
+<a href="http://www.gnat.com/">Ada Core Technologies</a> (on 
+x86 Linux and Windows 2000).  
+</p>
+
+<p>The software has been analysed using the 
+<a href="http://www.sparkada.com/">SPARK Examiner</a> version 7.0
+and SPADE Simplifier from 
+<a href="http://www.praxis-his.com/">Praxis High Integrity Systems.</a>
+You don't need these tools to compile or run the system; however,
+I recommend that if you're interested in developing or analysing
+the system that you look getting them.  Size-limited versions of these
+tools are available with the book
+<a href="http://www.sparkada.com/book.html">High Integrity Software: The
+SPARK Approach to Safety and Security</a> from Praxis High Integrity Systems,
+and are adequate for analysing the simulator software.
+For information on obtaining full versions of the tools, contact 
+<a href="mailto:sparkinfo@praxis-his.com">Praxis HIS.</a>
+</p>
+
+<p>The software build, test and analysis process is controlled by
+the file <kbd>Makefile</kbd> for the <kbd>make</kbd> program.
+You can do it manually, but I like using <kbd>make.</kbd>
+</p>
+
+<p>The actual guidance software is embedded into a script-driven
+test harness that allows you to feed control commands and test
+checks via standard input, and displays check output on standard
+output.  Some test scripts are included in the package, demonstrating
+control and testing of system components.
+</p>
+
+<p>For more information on the system, see the
+<a href="sys_desc.html">system description.</a>
+</p>
+
+<h2><a name="download">
+Download</a></h2>
+
+<p>Download the gzipped tar file
+<a href="harness.tgz">here.</a>
+</p>
+
+<p>Once downloaded, type
+<br/><kbd>tar xzf harness.tgz</kbd> to extract the files, or
+<br/><kbd>mv harness.tgz harness.tar.gz</kbd>
+<br/><kbd>gunzip harness.tar.gz</kbd>
+<br/><kbd>tar xf harness.tar</kbd> if you have an old version of <kbd>tar</kbd> 
+</p>
+
+<p>Once extracted, type
+<br/><kbd>make harness</kbd>
+<br/>to build the harness, or
+<br/><kbd>cd Code; gnatmake test_harness</kbd> if you don't have a working <kbd>make.</kbd>
+</p>
+
+<hr/>
+
+<ol>
+ <li><a name="spark"></a>Note: the SPARK language is not related to or derived from the
+SPARC trademark of Sun Microsystems.</li>
+</ol>
+
+<hr>
+<address>
+Web pages maintained by 
+<a href="mailto:sim@suslik.org">Adrian Hilton</a>
+</address>
+</body>
+</html>
