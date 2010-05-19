@@ -1,0 +1,23 @@
+project Autopilot is
+
+   type Mode_Type is
+      ("Prove", "Compile");
+   Mode : Mode_Type := external ("Mode", "Compile");
+
+   package Ide is
+      for Default_Switches ("examiner") use ("-config=autopilot.cfg", "-index_file=spark.idx", "-vcg");
+   end Ide;
+
+   case Mode is
+
+      when "Prove" =>
+         for Languages use ("Ada", "Metafile");
+
+      when "Compile" =>
+         for Languages use ("Ada");
+         for Source_Files use ("ap-altitude.ads", "scale.ads", "ap-heading-roll.ads", "ap-heading.ads", "ap.adb", "ap-heading.adb", "ap-altitude-pitch-rate.ads", "ap-altitude.adb", "ap-heading-yaw.ads", "main.adb", 
+"ap-altitude-pitch.adb", "ap.ads", "ap-heading-yaw.adb", "scale.adb", "ap-altitude-pitch.ads", "ap-altitude-pitch-rate.adb", "degrees.ads", "ap-heading-roll.adb");
+   end case;
+
+end Autopilot;
+

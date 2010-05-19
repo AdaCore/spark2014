@@ -1,0 +1,5 @@
+Output_Dir:= "test.output";
+Database_Dir:= "test.db";
+Source(Directory=>"SCIL",
+       Files => ("*.scil"),
+       Language => SCIL);
