@@ -1,8 +1,0 @@
-To build gnat2spark from sources, you need to create a link gnat2spark/gnat_src
-which points to the GNAT source directory, and then run "make".
-This will create a directory structure under gnat2spark/install.
-
-You can then gnat2spark with the following command:
-
-gnat2spark -I`gnatls -v | grep adainclude` <source file>
-
