@@ -30,6 +30,7 @@ with Asis;                             use Asis;
 with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with Sparkify.Common;                  use Sparkify.Common;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 package Sparkify.Pre_Operations is
 
@@ -99,17 +100,38 @@ package Sparkify.Pre_Operations is
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
-   --  SPARK all subtypes(types with constraints) should be named
+   --  This extension consists to nominate in Spark the subtype
+   --  by giving a subtype mark at the object declaration in ADA
+   --  may include the definition of the (anonymous) type of the object.
 
    procedure A_Type_Declaration_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
---     procedure A_Discrete_Subtype_Definition_Pre_Op
---       (Element :        Asis.Element;
---        Control : in out Traverse_Control;
---        State   : in out Source_Traversal_State);
+   procedure A_Discrete_Subtype_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   -------------------------------------------
+   -- Transform_Constained_Array_Definition --
+   -------------------------------------------
+   procedure Transform_Constained_Array_Definition
+     (Element :        Asis.Element;
+      Und_String :     Unbounded_Wide_String;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   -----------------------------------
+   -- Transform_An_Index_Constraint --
+   -----------------------------------
+      procedure Transform_An_Index_Constraint
+     (Element :        Asis.Element;
+      Und_String :     Unbounded_Wide_String;
+      New_Subtype_Name : Wide_String;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
 
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
