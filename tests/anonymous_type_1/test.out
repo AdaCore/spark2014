@@ -1,0 +1,77 @@
+------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+--  Examples for fix the anonymous type in object declarations or definitions
+--# inherit ada;
+package Anon_Type is
+   type Matrix     is array(Integer  range <>, Integer range <>) of Integer;
+    Function Increment (Var_In : in Integer) return Integer;
+end Anon_Type;
+--  3.3.1 Object Declarations
+--  3.3.1:
+--  object_declaration ::=
+--     defining_identifier_list : [aliased] [constant] subtype_indication [:= expression];
+--   | defining_identifier_list : [aliased] [constant] access_definition [:= expression];
+--   | defining_identifier_list : [aliased] [constant] array_type_definition [:= expression];
+--   | single_task_declaration
+--   | single_protected_declaration
+--  3.3.1:
+--  defining_identifier_list ::=
+--   defining_identifier {, defining_identifier}
+
+with Ada;
+
+package body Anon_Type is
+   function Increment(Var_In :  in Integer) return Integer
+   is
+      --  Examples of constant declarations:
+      Limit     : constant Integer := 10_000;
+      --  Examples of subtype_indication:
+      subtype New_Name_1 is 
+--@ line 21
+                Integer range 0 .. 10;
+--@ line 21
+      Var_Out : New_Name_1;
+      --  Example of a range attribute reference
+      --  Examples of subtype_indication with multiple definition:
+      subtype New_Name_2 is 
+--@ line 24
+                Integer range -Limit .. +Limit;
+--@ line 24
+      A , B : New_Name_2;
+      --  Examples of subtype_indication with An_Index_Constraint:
+                       subtype New_Name_3 is Integer range 
+--@ line 26
+                              1 .. 10;
+--@ line 26
+                       Ten_Characters : New_Name_3;
+                  subtype New_Name_4 is Integer range 
+--@ line 27
+                         1 .. 8;
+--@ line 27
+                  subtype New_Name_5 is Integer range 
+--@ line 27
+                                  1 .. 9;
+--@ line 27
+                  subtype New_Name_6 is Matrix (New_Name_4, New_Name_5);
+--@ line 27
+                  Board : New_Name_6;
+      --  Examples of array_type_definition
+--        My_Array1   : Array (1.. 10) of Integer;
+--        My_Array2   : Array (1.. 20) of Integer;
+   begin
+      Var_Out  := Var_In + 1;
+      return Var_Out;
+   end Increment;
+end Anon_Type;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      0      1              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           1      0      0              0      0      0       1
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  2      0      1              0      0      0       1  <<<
+% Totals:                       0%    50%             0%     0%     0%     50% <<<
+===================== End of Semantic Analysis Summary ========================

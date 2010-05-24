@@ -1,0 +1,82 @@
+anon_type.adb:11:23: sparkify: implicit loop invariant
+anon_type.adb:14:29: sparkify: implicit loop invariant
+------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--  Test the anonymous type in constrained_array_definition,
+--  discrete_subtype_definition and component_definition
+
+package Anon_Type
+is
+   subtype Index is Integer range 0 .. 4;
+   subtype Value is Integer range 0 .. 9;
+   type Array1 is array (Index) of Value;
+   subtype New_Name_1 is Integer range 5 .. 9;
+--@ line 10
+   subtype New_Name_2 is Integer range 0 .. 9;
+--@ line 10
+   type Array2 is array (New_Name_1) of New_Name_2                    ;
+   Size : constant Integer :=10;
+   subtype New_Name_3 is Integer range 
+--@ line 12
+                        1 .. Size;
+--@ line 12
+   type Array3 is array (New_Name_3) of Value
+--@ line 12
+                                           ;
+   subtype New_Name_4 is Integer range 
+--@ line 13
+                         1 .. 10;
+--@ line 13
+   type Array4 is array (New_Name_4) of Value
+--@ line 13
+                                          ;
+
+   procedure exchange(A1 : out Array1; A2 : out Array2;
+                     A3 : out Array3; A4 : out Array4);
+end Anon_Type;
+package body Anon_Type
+is
+   procedure exchange(A1 : out Array1; A2 : out Array2;
+                     A3 : out Array3; A4 : out Array4)
+   is
+   begin
+        A1 := Array1'
+--@ line 7
+              (0,0,0,0,0);
+        A2 := Array2'
+--@ line 8
+              (1,1,1,1,1);
+        A3 := Array3'
+--@ line 9
+              (0,1,2,3,4,5,6,7,8,9);
+        A4 := Array4'
+--@ line 10
+              (9,8,7,6,5,4,3,2,1,0);
+      for I in  Integer range 
+--@ line 11
+               1 .. 9 loop
+         --# assert True;
+--@ line 12
+         A2(I) := A1(I);
+      end loop;
+      for I in  Integer range 
+--@ line 14
+               Array3'Range loop
+         --# assert True;
+--@ line 15
+         A4(I) := A3(I);
+      end loop;
+   end exchange;
+end Anon_Type;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          6      1      5              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:          10      0      9              0      0      0       1
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 16      1     14              0      0      0       1  <<<
+% Totals:                       6%    88%             0%     0%     0%      6% <<<
+===================== End of Semantic Analysis Summary ========================

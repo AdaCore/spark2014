@@ -1,0 +1,57 @@
+------------------------------------------------------------------------
+------------------------------------------------------------------------------
+--  Test the anonymous type as component_list in the record type
+--
+
+package Anon_Type
+is
+   type Months is (Jan, Feb, Mar, Apr, May, June,
+                   July, Aug, Sept, Oct, Nov, Dec);
+
+   subtype New_Name_1 is Integer range 1 .. 31;
+--@ line 10
+   subtype New_Name_2 is Integer range 1 .. 4000;
+--@ line 10
+   type Date is record 
+                   Day : New_Name_1;
+                   Month : Months;
+                   Year : New_Name_2;
+--@ line 10
+   end record;
+--@ line 19
+   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);
+
+end Anon_Type;
+package body Anon_Type
+is
+   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date)
+   is
+   begin
+      -- Positional aggregate
+      ToDay1     := Date'
+--@ line 7
+                    (26, July, 2010);
+      -- Named aggregate
+      --Day_String => "Friday"
+      ToDay2     := Date'
+--@ line 10
+                    (Day => 26, Month => July,
+                     Year => 2010);
+      ToDay3     := Date'
+--@ line 12
+                    (Month => July, Day => 26,
+                     Year => 2010);
+   end Date_Format;
+end Anon_Type;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      1      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           3      0      3              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  4      1      3              0      0      0       0
+% Totals:                      25%    75%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
