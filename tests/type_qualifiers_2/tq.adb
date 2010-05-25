@@ -5,7 +5,7 @@ package body tq is
    is
    begin
       return (
-                mReal => Left.mReal + Right.mReal,
+             	mReal => Left.mReal + Right.mReal,
                 mImaginary => Left.mImaginary + Right.mImaginary
 
               );

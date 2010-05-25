@@ -1,10 +1,14 @@
 ------------------------------------------------------------------------
 package tq is
 
-   type Complex is record
-      mReal : Integer;
-      mImaginary : Integer;
+   type Complex is record 
+              mReal : Integer;
+                   mImaginary : Integer;
+--@ line 3
    end record;
+
+
+
 
    procedure Affectation (P, Q : out Complex);
 

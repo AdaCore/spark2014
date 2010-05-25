@@ -15,6 +15,5 @@ package tq is
 
         procedure Array_Of_Array (Initial_Board : out Boards11);
         --procedure Multi_Dim_Array (P, Q : out Complex);
-
 end tq;
 
