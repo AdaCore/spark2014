@@ -154,4 +154,18 @@ package body Sparkify.Names is
       end;
    end Concat_Names;
 
+   ----------------
+   -- Fresh_Name --
+   ----------------
+
+   --  Global variable for counting the new names created
+   Count_Name : Natural := 0;
+
+   function Fresh_Name return Wide_String is
+   begin
+      Count_Name := Count_Name + 1;
+      return "New_Name_" &
+      Trim (Natural'Wide_Image (Count_Name), Ada.Strings.Left);
+   end Fresh_Name;
+
 end Sparkify.Names;

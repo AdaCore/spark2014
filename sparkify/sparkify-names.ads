@@ -81,4 +81,7 @@ package Sparkify.Names is
    function Concat_Names (Container : Nameset.Set;
                           Separator : Wide_String) return Wide_String;
 
+   function Fresh_Name return Wide_String;
+   --  Return a fresh name
+
 end Sparkify.Names;

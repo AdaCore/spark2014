@@ -24,8 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Vectors;           use Ada.Containers;
+with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 
 with Asis.Compilation_Units;           use Asis.Compilation_Units;
+with Asis.Definitions;                 use Asis.Definitions;
 with Asis.Extensions;                  use Asis.Extensions;
 with Asis.Text;                        use Asis.Text;
 with Asis.Elements;                    use Asis.Elements;
@@ -44,17 +46,8 @@ with Sparkify.Source_Line_Buffer;      use Sparkify.Source_Line_Buffer;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
-with Asis.Definitions;                 use Asis.Definitions;
-with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
---  with Ada.Containers.Vectors;           use Ada.Containers;
 
 package body Sparkify.Pre_Operations is
-
---     Global variable for counting the new subtype name created
-   Count_Name    : Integer := 0;
-
---     package Strings_Container is new Vectors(Positive, Wide_String);
---     use Strings_Container;
 
    -----------------------
    -- Local subprograms --
@@ -107,8 +100,6 @@ package body Sparkify.Pre_Operations is
      (Discrete_Subtype : Asis.Element)
       return Wide_String;
    --  Return the subtype indication's identifier or create new subtype name
-
-   function Fresh_Name (My_Counter : Integer) return Wide_String;
 
    -----------------------------------
    -- Argument_By_Name_And_Position --
@@ -299,18 +290,6 @@ package body Sparkify.Pre_Operations is
       end if;
    end Prepend_Package_Name;
 
-   ----------------
-   -- Fresh_Name --
-   ----------------
-
-   function Fresh_Name (My_Counter : Integer) return Wide_String
-   is
-   begin
-      return "New_Name" & "_" & Trim
-        (Integer'Wide_Image (My_Counter), Ada.Strings.Both);
-      --  Count_Name   := Count_Name + 1;
-   end Fresh_Name;
-
    ----------------------------------
    -- Transform_Subtype_Indication --
    ----------------------------------
@@ -337,12 +316,10 @@ package body Sparkify.Pre_Operations is
               Subtype_Constraint (Discrete_Subtype);
          begin
             if Flat_Element_Kind (Constraint) = A_Simple_Expression_Range then
-               Count_Name   := Count_Name + 1;
-               return Fresh_Name (Count_Name);
+               return Fresh_Name;
 
             elsif Flat_Element_Kind (Constraint) = An_Index_Constraint then
-               Count_Name   := Count_Name + 1;
-               return Fresh_Name (Count_Name);
+               return Fresh_Name;
 
             elsif Flat_Element_Kind (Constraint)
               = A_Range_Attribute_Reference then
@@ -360,8 +337,7 @@ package body Sparkify.Pre_Operations is
 
       elsif Flat_Element_Kind (Discrete_Subtype) =
         A_Discrete_Simple_Expression_Range_As_Subtype_Definition then
-         Count_Name   := Count_Name + 1;
-         return Fresh_Name (Count_Name);
+         return Fresh_Name;
 
       else
             return Complete_Name;
@@ -1238,15 +1214,14 @@ package body Sparkify.Pre_Operations is
 
          begin
             if Discrete_Range'Length = 1 then
+               Last_Fresh_Name := To_Unbounded_Wide_String (Fresh_Name);
                PP_Text_At (Line, Column_Start, "subtype " &
-                           Fresh_Name (Count_Name) &
+                           To_Wide_String (Last_Fresh_Name) &
                            " is Integer range ");
 
                Traverse_Element_And_Print (Discrete_Range (1));
 
                PP_Word (";");
-
-               Last_Fresh_Name := Last_Fresh_Name & Fresh_Name (Count_Name);
 
                Print_Str3      := Print_Str3 & "subtype " & Last_Fresh_Name &
                " is " & (Trim (Element_Image (The_Subtype_Name),
@@ -1260,7 +1235,7 @@ package body Sparkify.Pre_Operations is
 
             else
                Tab_Of_Fresh_Name (1)  := To_Unbounded_Wide_String
-                                         (Fresh_Name (Count_Name));
+                                         (Fresh_Name);
 
                PP_Text_At (Line, Column_Start, "subtype " &
                            To_Wide_String (Tab_Of_Fresh_Name (1)) &
@@ -1274,11 +1249,9 @@ package body Sparkify.Pre_Operations is
                  Discrete_Range'Last
                loop
 
-                  Count_Name := Count_Name + 1;
-
                   Tab_Of_Fresh_Name (J)  :=
                     To_Unbounded_Wide_String
-                      (Fresh_Name (Count_Name));
+                      (Fresh_Name);
 
                   PP_Text_At (Line, Column_Start, "subtype " &
                               To_Wide_String
@@ -1289,11 +1262,8 @@ package body Sparkify.Pre_Operations is
 
                   PP_Word (";");
 
-                  Count_Name := Count_Name + 1;
-
-                  Last_Fresh_Name := Last_Fresh_Name &
-
-                  Fresh_Name (Count_Name);
+                  Last_Fresh_Name := To_Unbounded_Wide_String
+                                         (Fresh_Name);
                end loop;
 
                Print_Str3 := Print_Str3 &
@@ -1406,7 +1376,7 @@ package body Sparkify.Pre_Operations is
                           An_Integer_Literal then
 
                            PP_Text_At (Line, Column_Start, "subtype " &
-                                       Fresh_Name (Count_Name)
+                                       Fresh_Name
                                        & " is Integer range ");
 
                            Traverse_Element_And_Print (List_Def (1));
@@ -1462,7 +1432,7 @@ package body Sparkify.Pre_Operations is
                            if Flat_Element_Kind (Lower_Expr) =
                              An_Integer_Literal then
                               PP_Text_At (Line, Column_Start, "subtype " &
-                                          Fresh_Name (Count_Name)
+                                          Fresh_Name
                                           & " is Integer range ");
 
                               Traverse_Element_And_Print
@@ -1612,8 +1582,6 @@ package body Sparkify.Pre_Operations is
                                                             (Print_Str1),
                                                          New_Subtype_Name1,
                                                           Control, State);
-                           Count_Name := Count_Name + 1;
-
                         end if;
                      end if;
                   end;
@@ -1699,7 +1667,7 @@ package body Sparkify.Pre_Operations is
             declare
                Lower_Expr : constant Asis.Expression :=
                  Lower_Bound (Element);
-               Var_Name : constant Wide_String := Fresh_Name (Count_Name);
+               Var_Name : constant Wide_String := Fresh_Name;
             begin
                if Flat_Element_Kind (Lower_Expr) =
                  An_Integer_Literal then
@@ -1708,7 +1676,6 @@ package body Sparkify.Pre_Operations is
                   PP_Word (To_Wide_String (Print_Str1));
                   State.Echo_Cursor := Cursor_At (Element);
                end if;
-               Count_Name   := Count_Name + 1;
                Reach_Element_And_Traverse
                  (Element, State);
             end;
