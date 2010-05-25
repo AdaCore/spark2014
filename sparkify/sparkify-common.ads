@@ -39,6 +39,8 @@ package Sparkify.Common is
    function Declaration_Unique_Name
      (Element : Asis.Element) return Defining_Name;
 
+   function Element_Name (Element : Asis.Element) return Wide_String;
+
    --------------------------------------------
    -- Resources needed for source traversing --
    --------------------------------------------

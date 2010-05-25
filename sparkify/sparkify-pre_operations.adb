@@ -34,10 +34,10 @@ with Asis.Elements;                    use Asis.Elements;
 with Asis.Expressions;                 use Asis.Expressions;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Statements;                  use Asis.Statements;
-with ASIS_UL.Output;                   use ASIS_UL.Output;
-with ASIS_UL.Strings;                  use ASIS_UL.Strings;
 with Asis.Set_Get;                     use Asis.Set_Get;
 
+with ASIS_UL.Output;                   use ASIS_UL.Output;
+with ASIS_UL.Strings;                  use ASIS_UL.Strings;
 with ASIS_UL.Global_State.CG.Sparkify;
 
 with Sparkify.PP_Output;               use Sparkify.PP_Output;
@@ -97,8 +97,7 @@ package body Sparkify.Pre_Operations is
    --  Methodes where an Identifier should be prefixed by its package name
 
    function Transform_Subtype_Indication
-     (Discrete_Subtype : Asis.Element)
-      return Wide_String;
+     (Element : Asis.Element) return Wide_String;
    --  Return the subtype indication's identifier or create new subtype name
 
    -----------------------------------
@@ -295,52 +294,18 @@ package body Sparkify.Pre_Operations is
    ----------------------------------
 
    function Transform_Subtype_Indication
-     (Discrete_Subtype : Asis.Discrete_Subtype_Definition)
-      return Wide_String
-   is
-      Base_Name     : constant Wide_String :=
-        Trim (Element_Image (Discrete_Subtype),
-              Ada.Strings.Both);
-      Complete_Name : constant Wide_String :=
-        Prepend_Package_Name
-          (Discrete_Subtype, Base_Name);
+     (Element : Subtype_Indication) return Wide_String is
    begin
-      if Flat_Element_Kind (Discrete_Subtype) =
-        A_Subtype_Indication
-        or
-        Flat_Element_Kind (Discrete_Subtype) =
-        A_Discrete_Subtype_Indication_As_Subtype_Definition
-      then
-         declare
-            Constraint : constant Asis.Constraint :=
-              Subtype_Constraint (Discrete_Subtype);
-         begin
-            if Flat_Element_Kind (Constraint) = A_Simple_Expression_Range then
-               return Fresh_Name;
+      --  Reject code with a "non null" trait on a subtype indication
+      if Trait_Kind (Element) = A_Null_Exclusion_Trait then
+         SLOC_Error ("null exclusion trait",
+                     Build_GNAT_Location (Element));
+      end if;
 
-            elsif Flat_Element_Kind (Constraint) = An_Index_Constraint then
-               return Fresh_Name;
-
-            elsif Flat_Element_Kind (Constraint)
-              = A_Range_Attribute_Reference then
-               return "No treat A_Range_Attribute_Reference";
-
-            elsif Flat_Element_Kind (Constraint) = A_Digits_Constraint then
-               return "No treat A_Digits_Constraint";
-
-               --  See others cases
-            else
-
-               return Complete_Name;
-            end if;
-         end;
-
-      elsif Flat_Element_Kind (Discrete_Subtype) =
-        A_Discrete_Simple_Expression_Range_As_Subtype_Definition then
-         return Fresh_Name;
-
+      if Is_Nil (Subtype_Constraint (Element)) then
+         return Element_Name (Asis.Definitions.Subtype_Mark (Element));
       else
-            return Complete_Name;
+         return Fresh_Name;
       end if;
 
    end Transform_Subtype_Indication;

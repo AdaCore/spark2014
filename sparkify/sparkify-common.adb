@@ -23,7 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
+with Ada.Strings;                      use Ada.Strings;
+
 with Asis.Declarations;                use Asis.Declarations;
+with Asis.Text;                        use Asis.Text;
 
 with ASIS_UL.Common;
 
@@ -41,6 +45,15 @@ package body Sparkify.Common is
       pragma Assert (Names'Length = 1);
       return Names (Names'First);
    end Declaration_Unique_Name;
+
+   ------------------
+   -- Element_Name --
+   ------------------
+
+   function Element_Name (Element : Asis.Element) return Wide_String is
+   begin
+      return Trim (Element_Image (Element), Left);
+   end Element_Name;
 
    ---------------------------------------
    -- Non_Implemented_ASIS_2005_Feature --
