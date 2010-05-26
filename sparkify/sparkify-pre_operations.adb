@@ -101,7 +101,7 @@ package body Sparkify.Pre_Operations is
    --  Return True if the subtype indication is a simple subtype mark
 
    function Transform_Subtype_Indication
-     (Element : Asis.Element) return Wide_String;
+     (Element : Subtype_Indication) return Wide_String;
    --  Return the subtype indication's identifier or create new subtype name
 
    -----------------------------------
@@ -318,7 +318,8 @@ package body Sparkify.Pre_Operations is
       end if;
 
       if Is_Nil (Subtype_Constraint (Element)) then
-         return Element_Name (Asis.Definitions.Subtype_Mark (Element));
+         return Prepend_Package_Name
+           (Element, Element_Name (Asis.Definitions.Subtype_Mark (Element)));
       else
          return Fresh_Name;
       end if;
@@ -1150,16 +1151,6 @@ package body Sparkify.Pre_Operations is
                         Build_GNAT_Location (Element));
       end case;
 
-      if Flat_Element_Kind (Element) = A_Constant_Declaration then
-         declare
-            Init_Expr : constant Asis.Expression :=
-                                   Initialization_Expression (Element);
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor, Cursor_After (Init_Expr));
-            State.Echo_Cursor := Cursor_After (Element);
-         end;
-      end if;
    end A_Object_Declaration_Pre_Op;
 
    -----------------------------------
