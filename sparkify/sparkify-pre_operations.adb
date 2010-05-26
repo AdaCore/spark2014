@@ -96,6 +96,10 @@ package body Sparkify.Pre_Operations is
    --  Functions would be call by an An_Identifier_Pre_Op or others
    --  Methodes where an Identifier should be prefixed by its package name
 
+   function Simple_Subtype_Indication
+     (Element : Subtype_Indication) return Boolean;
+   --  Return True if the subtype indication is a simple subtype mark
+
    function Transform_Subtype_Indication
      (Element : Asis.Element) return Wide_String;
    --  Return the subtype indication's identifier or create new subtype name
@@ -288,6 +292,17 @@ package body Sparkify.Pre_Operations is
          return Name;
       end if;
    end Prepend_Package_Name;
+
+   -------------------------------
+   -- Simple_Subtype_Indication --
+   -------------------------------
+
+   function Simple_Subtype_Indication
+     (Element : Subtype_Indication) return Boolean is
+   begin
+      return Trait_Kind (Element) = An_Ordinary_Trait
+        and then Is_Nil (Subtype_Constraint (Element));
+   end Simple_Subtype_Indication;
 
    ----------------------------------
    -- Transform_Subtype_Indication --
@@ -1032,98 +1047,85 @@ package body Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State)
    is
+      Object_Def : constant Asis.Definition :=
+                     Object_Declaration_View (Element);
    begin
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this Element was already taken care of
          return;
       end if;
 
-      if Flat_Element_Kind (Element) = A_Constant_Declaration then
-         declare
-            Init_Expr : constant Asis.Expression :=
-                                   Initialization_Expression (Element);
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor, Cursor_After (Init_Expr));
-            State.Echo_Cursor := Cursor_After (Element);
-         end;
-      end if;
+      case Definition_Kind (Object_Def) is
+         when A_Subtype_Indication =>
 
-      declare
-         Object_Def : constant Asis.Definition :=
-                        Object_Declaration_View (Element);
-      begin
-         --  If it has a subtype_indication
-         if Flat_Element_Kind (Object_Def) = A_Subtype_Indication then
-            declare
-               Constraint        : constant Asis.Constraint :=
-                                     Subtype_Constraint (Object_Def);
-               New_Subtype_Name  : constant Wide_String :=
-                                     Transform_Subtype_Indication (Object_Def);
-               Print_Str1        : constant Wide_String :=
-                                     "subtype " & New_Subtype_Name & " is ";
-               Decl_Name         : constant Defining_Name_List :=
-                                     Asis.Declarations.Names (Element);
-               Line              : constant Line_Number_Positive :=
-                                     First_Line_Number (Element);
-               Column_Start      : constant Character_Position_Positive :=
-                                     Element_Span (Element).First_Column;
-               Print_Str2        : Unbounded_Wide_String;
-            begin
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Element));
+            if not Simple_Subtype_Indication (Object_Def) then
+               declare
+                  Constraint   : constant Asis.Constraint :=
+                                   Subtype_Constraint (Object_Def);
+                  Subtype_Name : constant Wide_String :=
+                                   Transform_Subtype_Indication (Object_Def);
+                  Subtype_Str  : constant Wide_String :=
+                                   "subtype " & Subtype_Name & " is ";
+                  Line         : constant Line_Number_Positive :=
+                                   First_Line_Number (Element);
+                  Column_Start : constant Character_Position_Positive :=
+                                   Element_Span (Element).First_Column;
+                  Print_Str2   : Unbounded_Wide_String;
+               begin
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Element));
 
-               --  Process multiple definitions : A, B :Integer;
-               if Decl_Name'Length = 1 then
-                  Print_Str2 := Print_Str2 & Defining_Name_Image
-                    (Decl_Name (Decl_Name'First)) & " : ";
-               else
-                  Print_Str2 := Print_Str2 & Defining_Name_Image
-                    (Decl_Name (Decl_Name'First));
+                  case Constraint_Kind (Constraint) is
+                     when A_Range_Attribute_Reference |
+                          A_Simple_Expression_Range =>
 
-                  for J in Decl_Name'First + 1 .. Decl_Name'Last loop
-                     Print_Str2 := Print_Str2 & " , " & Defining_Name_Image
-                       (Decl_Name (J));
-                  end loop;
+                        --  Print the newly defined subtype
+                        PP_Text_At (Line, Column_Start, Subtype_Str);
+                        Traverse_Element_And_Print (Object_Def);
+                        PP_Word (";");
 
-                  Print_Str2 := Print_Str2 & " : ";
-               end if;
+                     when An_Index_Constraint =>
 
-               --  Case of an A_Simple_Expression_Range
-               if Flat_Element_Kind (Constraint)
-                 = A_Simple_Expression_Range
-               then
-                  PP_Text_At (Line, Column_Start, Print_Str1);
+                        Transform_An_Index_Constraint (Constraint,
+                                                       Print_Str2,
+                                                       Subtype_Name,
+                                                       Control, State);
+                     when A_Digits_Constraint |
+                          A_Delta_Constraint =>
 
-                  Traverse_Element_And_Print (Object_Def);
+                        raise Not_Implemented_Yet;
 
+                     when A_Discriminant_Constraint =>
+
+                        SLOC_Error ("discriminant constraint",
+                                    Build_GNAT_Location (Element));
+
+                     when Not_A_Constraint =>
+
+                        pragma Assert (False);
+                        null;
+                  end case;
+
+                  --  Print the identifier(s) being defined
+                  PP_Echo_Cursor_Range
+                    (Cursor_At (Element), Cursor_Before (Object_Def));
+
+                  --  Use the new subtype name
+                  if Flat_Element_Kind (Element) = A_Constant_Declaration then
+                     PP_Text_At (Line, Column_Start,
+                                 "constant " & Subtype_Name);
+                  else
+                     PP_Text_At (Line, Column_Start, Subtype_Name);
+                  end if;
                   PP_Word (";");
 
-                  Print_Str2 := Print_Str2 &
-                  (Trim (New_Subtype_Name, Ada.Strings.Both)) & ";";
-
-                  PP_Text_At (Line, Column_Start, To_Wide_String (
-                    Trim ((Print_Str2), Ada.Strings.Both)));
-
-                  --  Case of an An_Index_Constraint
-               elsif Flat_Element_Kind (Constraint) = An_Index_Constraint then
-
                   State.Echo_Cursor := Cursor_After (Element);
+               end;
+            end if;
 
-                  Transform_An_Index_Constraint (Constraint,
-                                                 Print_Str2,
-                                                 New_Subtype_Name,
-                                                 Control, State);
-               end if;
-
-               State.Echo_Cursor := Cursor_After (Element);
-            end;
-         end if;
-
-         --  If it has an array_type_definition
-         if Flat_Element_Kind (Object_Def) =
-           A_Constrained_Array_Definition
-         then
+         when A_Type_Definition =>
+            pragma Assert
+              (Type_Kind (Object_Def) = A_Constrained_Array_Definition);
             declare
                Decl_Name         : constant Defining_Name_List :=
                                      Asis.Declarations.Names (Element);
@@ -1142,13 +1144,28 @@ package body Sparkify.Pre_Operations is
                                                       Print_Str3,
                                                       Control, State);
             end;
-         end if;
-      end;
+
+         when others =>
+            SLOC_Error ("unexpected element",
+                        Build_GNAT_Location (Element));
+      end case;
+
+      if Flat_Element_Kind (Element) = A_Constant_Declaration then
+         declare
+            Init_Expr : constant Asis.Expression :=
+                                   Initialization_Expression (Element);
+         begin
+            PP_Echo_Cursor_Range
+              (State.Echo_Cursor, Cursor_After (Init_Expr));
+            State.Echo_Cursor := Cursor_After (Element);
+         end;
+      end if;
    end A_Object_Declaration_Pre_Op;
 
-   -------------------------------------------
+   -----------------------------------
    -- Transform_An_Index_Constraint --
-   -------------------------------------------
+   -----------------------------------
+
    procedure Transform_An_Index_Constraint
      (Element :        Asis.Element;
       Und_String :     Ada.Strings.Wide_Unbounded.Unbounded_Wide_String;
