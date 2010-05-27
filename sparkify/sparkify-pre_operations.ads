@@ -114,22 +114,9 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
-   -------------------------------------------
-   -- Transform_Constained_Array_Definition --
-   -------------------------------------------
    procedure Transform_Constained_Array_Definition
      (Element :        Asis.Element;
       Und_String :     Unbounded_Wide_String;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State);
-
-   -----------------------------------
-   -- Transform_An_Index_Constraint --
-   -----------------------------------
-      procedure Transform_An_Index_Constraint
-     (Element :        Asis.Element;
-      Und_String :     Unbounded_Wide_String;
-      New_Subtype_Name : Wide_String;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 

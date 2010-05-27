@@ -101,8 +101,17 @@ package body Sparkify.Pre_Operations is
    --  Return True if the subtype indication is a simple subtype mark
 
    function Transform_Subtype_Indication
-     (Element : Subtype_Indication) return Wide_String;
+     (Element      : Subtype_Indication;
+      Column_Start : Character_Position_Positive) return Wide_String;
    --  Return the subtype indication's identifier or create new subtype name
+
+   function Transform_A_Discrete_Range
+     (Element      : Asis.Discrete_Range;
+      Column_Start : Character_Position_Positive) return Wide_String;
+
+   function Transform_An_Index_Constraint
+     (Element      : Asis.Constraint;
+      Column_Start : Character_Position_Positive) return Wide_String;
 
    -----------------------------------
    -- Argument_By_Name_And_Position --
@@ -309,7 +318,8 @@ package body Sparkify.Pre_Operations is
    ----------------------------------
 
    function Transform_Subtype_Indication
-     (Element : Subtype_Indication) return Wide_String is
+     (Element      : Subtype_Indication;
+      Column_Start : Character_Position_Positive) return Wide_String is
    begin
       --  Reject code with a "non null" trait on a subtype indication
       if Trait_Kind (Element) = A_Null_Exclusion_Trait then
@@ -321,9 +331,55 @@ package body Sparkify.Pre_Operations is
          return Prepend_Package_Name
            (Element, Element_Name (Asis.Definitions.Subtype_Mark (Element)));
       else
-         return Fresh_Name;
-      end if;
+         declare
+            Constraint   : constant Asis.Constraint :=
+                             Subtype_Constraint (Element);
+            Subtype_Name : constant Wide_String := Fresh_Name;
+            Subtype_Str  : constant Wide_String :=
+                             "subtype " & Subtype_Name & " is ";
+            Line         : constant Line_Number_Positive :=
+                             First_Line_Number (Element);
+         begin
+            case Constraint_Kind (Constraint) is
+               when A_Range_Attribute_Reference |
+                    A_Simple_Expression_Range =>
 
+                  --  Print the newly defined subtype
+                  PP_Text_At (Line, Column_Start, Subtype_Str);
+                  Traverse_Element_And_Print (Element);
+                  PP_Word (";");
+
+               when An_Index_Constraint =>
+
+                  declare
+                     Constraint_Str : constant Wide_String :=
+                                        Transform_An_Index_Constraint
+                                          (Constraint, Column_Start);
+                  begin
+                     --  Print the newly defined subtype
+                     PP_Text_At (Line, Column_Start, Subtype_Str);
+                     PP_Word (Constraint_Str & ";");
+                  end;
+
+               when A_Digits_Constraint |
+                    A_Delta_Constraint =>
+
+                  raise Not_Implemented_Yet;
+
+               when A_Discriminant_Constraint =>
+
+                  SLOC_Error ("discriminant constraint",
+                              Build_GNAT_Location (Element));
+
+               when Not_A_Constraint =>
+
+                  pragma Assert (False);
+                  null;
+            end case;
+
+            return Subtype_Name;
+         end;
+      end if;
    end Transform_Subtype_Indication;
 
    -----------------------------
@@ -1060,53 +1116,19 @@ package body Sparkify.Pre_Operations is
          when A_Subtype_Indication =>
 
             if not Simple_Subtype_Indication (Object_Def) then
+
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+
                declare
-                  Constraint   : constant Asis.Constraint :=
-                                   Subtype_Constraint (Object_Def);
-                  Subtype_Name : constant Wide_String :=
-                                   Transform_Subtype_Indication (Object_Def);
-                  Subtype_Str  : constant Wide_String :=
-                                   "subtype " & Subtype_Name & " is ";
                   Line         : constant Line_Number_Positive :=
                                    First_Line_Number (Element);
                   Column_Start : constant Character_Position_Positive :=
                                    Element_Span (Element).First_Column;
-                  Print_Str2   : Unbounded_Wide_String;
+                  Subtype_Name : constant Wide_String :=
+                                   Transform_Subtype_Indication (Object_Def,
+                                                                 Column_Start);
                begin
-                  PP_Echo_Cursor_Range
-                    (State.Echo_Cursor, Cursor_Before (Element));
-
-                  case Constraint_Kind (Constraint) is
-                     when A_Range_Attribute_Reference |
-                          A_Simple_Expression_Range =>
-
-                        --  Print the newly defined subtype
-                        PP_Text_At (Line, Column_Start, Subtype_Str);
-                        Traverse_Element_And_Print (Object_Def);
-                        PP_Word (";");
-
-                     when An_Index_Constraint =>
-
-                        Transform_An_Index_Constraint (Constraint,
-                                                       Print_Str2,
-                                                       Subtype_Name,
-                                                       Control, State);
-                     when A_Digits_Constraint |
-                          A_Delta_Constraint =>
-
-                        raise Not_Implemented_Yet;
-
-                     when A_Discriminant_Constraint =>
-
-                        SLOC_Error ("discriminant constraint",
-                                    Build_GNAT_Location (Element));
-
-                     when Not_A_Constraint =>
-
-                        pragma Assert (False);
-                        null;
-                  end case;
-
                   --  Print the identifier(s) being defined
                   PP_Echo_Cursor_Range
                     (Cursor_At (Element), Cursor_Before (Object_Def));
@@ -1153,122 +1175,52 @@ package body Sparkify.Pre_Operations is
 
    end A_Object_Declaration_Pre_Op;
 
+   --------------------------------
+   -- Transform_A_Discrete_Range --
+   --------------------------------
+
+   function Transform_A_Discrete_Range
+     (Element      : Asis.Discrete_Range;
+      Column_Start : Character_Position_Positive) return Wide_String
+   is
+   begin
+      case Discrete_Range_Kind (Element) is
+         when A_Discrete_Subtype_Indication =>
+            return Transform_Subtype_Indication (Element, Column_Start);
+         when A_Discrete_Range_Attribute_Reference =>
+            raise Not_Implemented_Yet;
+         when A_Discrete_Simple_Expression_Range =>
+            raise Not_Implemented_Yet;
+         when Not_A_Discrete_Range =>
+            pragma Assert (False);
+            return "";
+      end case;
+   end Transform_A_Discrete_Range;
+
    -----------------------------------
    -- Transform_An_Index_Constraint --
    -----------------------------------
 
-   procedure Transform_An_Index_Constraint
-     (Element :        Asis.Element;
-      Und_String :     Ada.Strings.Wide_Unbounded.Unbounded_Wide_String;
-      New_Subtype_Name : Wide_String;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State)
+   function Transform_An_Index_Constraint
+     (Element      : Asis.Constraint;
+      Column_Start : Character_Position_Positive) return Wide_String
    is
-      pragma Unreferenced (Control);
+      Discrete_Range : constant Asis.Discrete_Range_List :=
+                            Discrete_Ranges (Element);
+      Constraint_Str : Unbounded_Wide_String := To_Unbounded_Wide_String ("(");
    begin
-      if Flat_Element_Kind (Element) = An_Index_Constraint then
-         declare
-            Encl_Element      : constant Asis.Element :=
-                                  Enclosing_Element (Element);
-            The_Subtype_Name  : constant Asis.Expression :=
-                                  Asis.Definitions.Subtype_Mark
-                                  (Encl_Element);
-            Discrete_Range    : constant Asis.Discrete_Range_List :=
-                                  Discrete_Ranges (Element);
-            Line              : constant Line_Number_Positive :=
-                                  First_Line_Number (Encl_Element);
-            Column_Start      : constant Character_Position_Positive :=
-                                  Element_Span (Encl_Element).First_Column;
-            Tab_Of_Fresh_Name : array (1 .. Discrete_Range'Length) of
-                                  Unbounded_Wide_String;
-            Last_Fresh_Name   : Unbounded_Wide_String;
-            Print_Str3        : Unbounded_Wide_String;
-            Print_Str2        : Unbounded_Wide_String  := Und_String;
+      Constraint_Str := Constraint_Str
+        & Transform_A_Discrete_Range (Discrete_Range (Discrete_Range'First),
+                                      Column_Start);
 
-         begin
-            if Discrete_Range'Length = 1 then
-               Last_Fresh_Name := To_Unbounded_Wide_String (Fresh_Name);
-               PP_Text_At (Line, Column_Start, "subtype " &
-                           To_Wide_String (Last_Fresh_Name) &
-                           " is Integer range ");
+      for J in Discrete_Range'First + 1 .. Discrete_Range'Last loop
+         Constraint_Str := Constraint_Str & ", "
+           & Transform_A_Discrete_Range (Discrete_Range (J),
+                                         Column_Start);
+      end loop;
 
-               Traverse_Element_And_Print (Discrete_Range (1));
-
-               PP_Word (";");
-
-               Print_Str3      := Print_Str3 & "subtype " & Last_Fresh_Name &
-               " is " & (Trim (Element_Image (The_Subtype_Name),
-                 Ada.Strings.Both)) & " (" &
-               Trim (New_Subtype_Name, Ada.Strings.Both) & ");";
-
-               PP_Close_Line;
-
-               Print_Str2 := Print_Str2 &
-               (Trim (Last_Fresh_Name, Ada.Strings.Both)) & ";";
-
-            else
-               Tab_Of_Fresh_Name (1)  := To_Unbounded_Wide_String
-                                         (Fresh_Name);
-
-               PP_Text_At (Line, Column_Start, "subtype " &
-                           To_Wide_String (Tab_Of_Fresh_Name (1)) &
-                           " is Integer range ");
-
-               Traverse_Element_And_Print (Discrete_Range (1));
-
-               PP_Word (";");
-
-               for J in Discrete_Range'First + 1 ..
-                 Discrete_Range'Last
-               loop
-
-                  Tab_Of_Fresh_Name (J)  :=
-                    To_Unbounded_Wide_String
-                      (Fresh_Name);
-
-                  PP_Text_At (Line, Column_Start, "subtype " &
-                              To_Wide_String
-                                (Tab_Of_Fresh_Name (J)) &
-                              " is Integer range ");
-
-                  Traverse_Element_And_Print (Discrete_Range (J));
-
-                  PP_Word (";");
-
-                  Last_Fresh_Name := To_Unbounded_Wide_String
-                                         (Fresh_Name);
-               end loop;
-
-               Print_Str3 := Print_Str3 &
-               "subtype " & Last_Fresh_Name & " is " &
-               (Trim (Element_Image (The_Subtype_Name),
-                  Ada.Strings.Both)) & " (" &
-               (Trim (Tab_Of_Fresh_Name (1), Ada.Strings.Both));
-
-               for J in Tab_Of_Fresh_Name'First + 1 ..
-                 Tab_Of_Fresh_Name'Last loop
-
-                  Print_Str3 := Print_Str3 & ", " &
-                  (Trim (Tab_Of_Fresh_Name (J), Ada.Strings.Both))  &
-                  ");";
-
-               end loop;
-
-               PP_Text_At (Line, Column_Start,
-                           Trim (To_Wide_String (Print_Str3),
-                   Ada.Strings.Both));
-
-               Print_Str2 := Print_Str2 & Last_Fresh_Name & ";";
-            end if;
-
-            PP_Text_At (Line, Column_Start, To_Wide_String (
-              Trim ((Print_Str2), Ada.Strings.Both)));
-         end;
-
-         State.Echo_Cursor := Cursor_After (Element);
-
-      end if;
-
+      Constraint_Str := Constraint_Str & ")";
+      return To_Wide_String (Constraint_Str);
    end Transform_An_Index_Constraint;
 
    -------------------------------------------
@@ -1308,7 +1260,7 @@ package body Sparkify.Pre_Operations is
                declare
                   New_Subtype_Name1 : constant Wide_String :=
                                         Transform_Subtype_Indication
-                      (List_Def (1));
+                      (List_Def (1), Column_Start);
 
                   Print_Str1   : constant Wide_String := "subtype " &
                   New_Subtype_Name1 & " is ";
@@ -1366,7 +1318,7 @@ package body Sparkify.Pre_Operations is
                declare
                   New_Subtype_Name1 : constant Wide_String :=
                                         Transform_Subtype_Indication
-                                        (List_Def (1));
+                                        (List_Def (1), Column_Start);
                   Print_Str1        : constant Wide_String := "subtype " &
                                         New_Subtype_Name1 & " is ";
                begin
@@ -1428,7 +1380,7 @@ package body Sparkify.Pre_Operations is
                declare
                   New_Subtype_Name2 : constant Wide_String :=
                                           Transform_Subtype_Indication (
-                                          Array_Comp_Sub);
+                                          Array_Comp_Sub, Column_Start);
                   Print_Str2        : constant Wide_String := "subtype " &
                                         New_Subtype_Name2 & " is " &
                                         Trim (Element_Image (Array_Comp_Sub),
@@ -1528,7 +1480,7 @@ package body Sparkify.Pre_Operations is
                                         Subtype_Constraint (Component_View);
                      New_Subtype_Name1   : constant Wide_String :=
                                         Transform_Subtype_Indication
-                                          (Component_View);
+                                          (Component_View, Column_Start);
                      Print_Str1     : constant Wide_String :=
                        "subtype " & New_Subtype_Name1 & " is " &
                                            Trim (Element_Image
@@ -1550,11 +1502,8 @@ package body Sparkify.Pre_Operations is
                         elsif Flat_Element_Kind (Constraint)
                           = An_Index_Constraint then
 
-                           Transform_An_Index_Constraint (Constraint,
-                                                   To_Unbounded_Wide_String
-                                                            (Print_Str1),
-                                                         New_Subtype_Name1,
-                                                          Control, State);
+                           PP_Word (Transform_An_Index_Constraint (Constraint,
+                                                          Column_Start));
                         end if;
                      end if;
                   end;
