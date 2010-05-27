@@ -46,8 +46,7 @@ package body Sparkify.Post_Operations is
 
       Last_Element : Asis.Element;
 
-      Name : constant Wide_String :=
-        Defining_Name_Image (Declaration_Unique_Name (Element));
+      Name : constant Wide_String := Declaration_Unique_Name (Element);
    begin
       if Declaration_Kind (Element) = A_Package_Declaration then
          declare
@@ -136,8 +135,7 @@ package body Sparkify.Post_Operations is
       Last_Cursor : constant Cursor :=
          Max_Cursor (Cursor_At_End_Of (Last_Statement), Last_Line_Cursor);
 
-      Name : constant Wide_String :=
-        Defining_Name_Image (Declaration_Unique_Name (Element));
+      Name : constant Wide_String := Declaration_Unique_Name (Element);
    begin
       PP_Echo_Cursor_Range (State.Echo_Cursor, Last_Cursor);
       PP_Text_At (Line   => Last_Line_Number (Element),

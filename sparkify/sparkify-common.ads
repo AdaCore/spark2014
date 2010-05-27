@@ -37,7 +37,7 @@ package Sparkify.Common is
    ----------------------------------
 
    function Declaration_Unique_Name
-     (Element : Asis.Element) return Defining_Name;
+     (Element : Asis.Declaration) return Wide_String;
 
    function Element_Name (Element : Asis.Element) return Wide_String;
 

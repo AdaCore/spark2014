@@ -1183,14 +1183,101 @@ package body Sparkify.Pre_Operations is
      (Element      : Asis.Discrete_Range;
       Column_Start : Character_Position_Positive) return Wide_String
    is
+      function Expr_Has_Universal_Type
+        (Expr : Asis.Expression) return Boolean;
+
+      function Expr_Has_Universal_Type
+        (Expr : Asis.Expression) return Boolean
+      is
+         Type_Decl : constant Asis.Declaration :=
+                       Corresponding_Expression_Type (Expr);
+      begin
+         return Is_Root_Num_Type (Type_Decl)
+           and then
+           Root_Type_Kind (Asis.Set_Get.Root_Type_Definition (Type_Decl))
+           = A_Universal_Integer_Definition;
+      end Expr_Has_Universal_Type;
    begin
       case Discrete_Range_Kind (Element) is
          when A_Discrete_Subtype_Indication =>
             return Transform_Subtype_Indication (Element, Column_Start);
-         when A_Discrete_Range_Attribute_Reference =>
-            raise Not_Implemented_Yet;
-         when A_Discrete_Simple_Expression_Range =>
-            raise Not_Implemented_Yet;
+
+         when A_Discrete_Range_Attribute_Reference |
+              A_Discrete_Simple_Expression_Range =>
+            declare
+               Subtype_Name : constant Wide_String := Fresh_Name;
+               Line         : constant Line_Number_Positive :=
+                                First_Line_Number (Element);
+               Name         : Unbounded_Wide_String;
+               Type_Decl    : Asis.Declaration;
+            begin
+               case Discrete_Range_Kind (Element) is
+                  when A_Discrete_Range_Attribute_Reference =>
+                     declare
+                        Expr         : constant Asis.Expression :=
+                                         Prefix (Range_Attribute (Element));
+                     begin
+                        --  Retrieve type from prefix of range expression
+                        Type_Decl := Corresponding_Expression_Type (Expr);
+                        if Is_Nil (Type_Decl) then
+                           Type_Decl := Corresponding_Name_Declaration (Expr);
+                        end if;
+                        pragma Assert (not Is_Nil (Type_Decl));
+                     end;
+
+                  when A_Discrete_Simple_Expression_Range =>
+                     declare
+                        LBound_Expr : constant Asis.Expression :=
+                                        Lower_Bound (Element);
+                        UBound_Expr : constant Asis.Expression :=
+                                        Upper_Bound (Element);
+                        LUniversal  : constant Boolean :=
+                                        Expr_Has_Universal_Type (LBound_Expr);
+                        UUniversal  : constant Boolean :=
+                                        Expr_Has_Universal_Type (UBound_Expr);
+                     begin
+                        --  Retrieve type from prefix of range expression
+                        if LUniversal then
+                           if UUniversal then
+                              --  Set Type_Decl to Nil to flag that Name is
+                              --  already set
+                              Type_Decl := Nil_Element;
+                              Name := To_Unbounded_Wide_String ("Integer");
+                           else
+                              Type_Decl :=
+                                Corresponding_Expression_Type (UBound_Expr);
+                              pragma Assert (not Is_Nil (Type_Decl));
+                           end if;
+                        else
+                           Type_Decl :=
+                             Corresponding_Expression_Type (LBound_Expr);
+                           pragma Assert (not Is_Nil (Type_Decl));
+                        end if;
+                     end;
+
+                  when others =>
+                     pragma Assert (False);
+                     null;
+               end case;
+
+               --  If not in the special case where Type_Decl is Nil, then
+               --  retrieve the name of the corresponding type
+               if not Is_Nil (Type_Decl) then
+                  Name := To_Unbounded_Wide_String
+                    (Prepend_Package_Name
+                       (Type_Decl, Declaration_Unique_Name (Type_Decl)));
+               end if;
+
+               --  Print the newly defined subtype
+               PP_Text_At (Line, Column_Start,
+                           "subtype " & Subtype_Name & " is "
+                           & To_Wide_String (Name) & " range ");
+               Traverse_Element_And_Print (Element);
+               PP_Word (";");
+
+               return Subtype_Name;
+            end;
+
          when Not_A_Discrete_Range =>
             pragma Assert (False);
             return "";

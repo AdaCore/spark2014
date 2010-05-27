@@ -38,12 +38,12 @@ package body Sparkify.Common is
    -----------------------------
 
    function Declaration_Unique_Name
-     (Element : Asis.Element) return Defining_Name
+     (Element : Asis.Declaration) return Wide_String
    is
       Names : constant Defining_Name_List := Asis.Declarations.Names (Element);
    begin
       pragma Assert (Names'Length = 1);
-      return Names (Names'First);
+      return Defining_Name_Image (Names (Names'First));
    end Declaration_Unique_Name;
 
    ------------------
