@@ -114,11 +114,6 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
-   procedure Transform_Constained_Array_Definition
-     (Element :        Asis.Element;
-      Und_String :     Unbounded_Wide_String;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State);
 
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
