@@ -3,7 +3,7 @@
 --  Examples for fix the anonymous type in object declarations or definitions
 --# inherit ada;
 package Anon_Type is
-   type Matrix     is array(Integer  range <>, Integer range <>) of Integer;
+   type Matrix is array(Integer  range <>, Integer range <>) of Integer;
     Function Increment (Var_In : in Integer) return Integer;
 end Anon_Type;
 --  3.3.1 Object Declarations
@@ -30,31 +30,41 @@ package body Anon_Type is
 --@ line 21
                 Integer range 0 .. 10;
 --@ line 21
-      Var_Out : New_Name_1;
+      Var_Out : 
+--@ line 21
+      New_Name_1;
       --  Example of a range attribute reference
       --  Examples of subtype_indication with multiple definition:
       subtype New_Name_2 is 
 --@ line 24
                 Integer range -Limit .. +Limit;
 --@ line 24
-      A , B : New_Name_2;
+      A, B    : 
+--@ line 24
+      New_Name_2;
       --  Examples of subtype_indication with An_Index_Constraint:
-                       subtype New_Name_3 is Integer range 
+      subtype New_Name_4 is Integer range 
 --@ line 26
                               1 .. 10;
 --@ line 26
-                       Ten_Characters : New_Name_3;
-                  subtype New_Name_4 is Integer range 
+      subtype New_Name_3 is String (New_Name_4);
+--@ line 26
+      Ten_Characters : 
+--@ line 26
+      New_Name_3;
+      subtype New_Name_6 is Integer range 
 --@ line 27
                          1 .. 8;
 --@ line 27
-                  subtype New_Name_5 is Integer range 
+      subtype New_Name_7 is Integer range 
 --@ line 27
                                   1 .. 9;
 --@ line 27
-                  subtype New_Name_6 is Matrix (New_Name_4, New_Name_5);
+      subtype New_Name_5 is Matrix (New_Name_6, New_Name_7);
 --@ line 27
-                  Board : New_Name_6;
+      Board     : 
+--@ line 27
+      New_Name_5;
       --  Examples of array_type_definition
 --        My_Array1   : Array (1.. 10) of Integer;
 --        My_Array2   : Array (1.. 20) of Integer;

@@ -30,7 +30,6 @@ with Asis;                             use Asis;
 with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with Sparkify.Common;                  use Sparkify.Common;
-with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 package Sparkify.Pre_Operations is
 
@@ -108,12 +107,6 @@ package Sparkify.Pre_Operations is
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
-
-   procedure A_Discrete_Subtype_Definition_Pre_Op
-     (Element :        Asis.Element;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State);
-
 
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
