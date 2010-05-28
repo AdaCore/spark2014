@@ -26,7 +26,7 @@ is
          Sum := Sum + Integer(H(I));
       end loop;
       -- Get the average pitch over this range
-      Gap := (2 + History_Range'Last) - History_Range'First;
+      Gap := (1 + History_Range'Last) - History_Range'First;
       Average := Instruments.Pitchangle(Sum / Gap);
      return Average;
    end History_Average;
@@ -58,8 +58,8 @@ is
         -- Consistent with increasing pitch
         Present_Pitchrate := Degrees.Degreespersec(
           ( Integer(Pitch - Early_Pitch) *
-          Integer((1 + History_Range'Last) - History_Range'First) )
-          / SAMPLE_RATE );
+          SAMPLE_RATE
+          / Integer((1 + History_Range'Last) - History_Range'First) ) );
      elsif (Early_Pitch >= Average and Pitch <= Average) then
         -- Consistent with decreasing pitch
         Present_Pitchrate := Degrees.Degreespersec(
