@@ -80,7 +80,7 @@ package Sparkify.PP_Output is
 
    procedure PP_Check
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression);
+      Exprs  : Asis.Expression_List);
    --  Send Expr into output stream as a check in SPARK syntax
 
    procedure PP_Assert
@@ -91,7 +91,7 @@ package Sparkify.PP_Output is
 
    procedure PP_Assert
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression);
+      Exprs  : Asis.Expression_List);
    --  Send Expr into output stream as an assert in SPARK syntax
 
    procedure PP_Data_Flow
@@ -109,13 +109,13 @@ package Sparkify.PP_Output is
 
    procedure PP_Precondition
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression);
+      Exprs  : Asis.Expression_List);
    --  Send Expr into output stream as a precondition in SPARK syntax
 
    procedure PP_Postcondition
      (Is_Function : Boolean;
       Column      : Character_Position_Positive;
-      Expr        : Asis.Expression);
+      Exprs       : Asis.Expression_List);
    --  Send Expr into output stream as a postcondition in SPARK syntax
 
    procedure PP_Line_Indication (Line : Line_Number);

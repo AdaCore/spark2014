@@ -184,35 +184,47 @@ package body Sparkify.Pre_Operations is
    procedure SPARK_Contract
      (Pragmas     : Pragma_Element_List;
       Is_Function : Boolean;
-      Column      : Character_Position_Positive) is
+      Column      : Character_Position_Positive)
+   is
+      Pre_Exprs  : Expression_List (1 .. Pragmas'Length);
+      Post_Exprs : Expression_List (1 .. Pragmas'Length);
+      Pre_Count  : Natural := 0;
+      Post_Count : Natural := 0;
    begin
-
       for Pragma_Idx in Pragmas'Range loop
          declare
             Pragma_Elt : constant Pragma_Element := Pragmas (Pragma_Idx);
             Name       : constant Wide_String :=
                            Pragma_Name_Image (Pragma_Elt);
          begin
-
-            if Name = Precondition_Name or else Name = Postcondition_Name then
+            if Name = Precondition_Name or else
+              Name = Postcondition_Name then
                declare
                   Args : constant Association_List :=
                            Pragma_Argument_Associations (Pragma_Elt);
-                  Arg  : constant Association := Argument_By_Name_And_Position
-                           (Args, Check_Name, Check_Position_In_Prepost);
+                  Arg  : constant Association :=
+                           Argument_By_Name_And_Position
+                             (Args, Check_Name, Check_Position_In_Prepost);
                   Expr : constant Asis.Expression := Actual_Parameter (Arg);
                begin
                   if Name = Precondition_Name then
-                     PP_Precondition (Column, Expr);
+                     Pre_Count := Pre_Count + 1;
+                     Pre_Exprs (Pre_Count) := Expr;
                   else
-                     PP_Postcondition (Is_Function, Column, Expr);
+                     Post_Count := Post_Count + 1;
+                     Post_Exprs (Post_Count) := Expr;
                   end if;
                end;
-
             end if;
          end;
       end loop;
 
+      if Pre_Count /= 0 then
+         PP_Precondition (Column, Pre_Exprs (1 .. Pre_Count));
+      end if;
+      if Post_Count /= 0 then
+         PP_Postcondition (Is_Function, Column, Post_Exprs (1 .. Post_Count));
+      end if;
    end SPARK_Contract;
 
    ---------------------
@@ -536,8 +548,12 @@ package body Sparkify.Pre_Operations is
 
       if Statements'First <= Last_Pragma_Index then
          declare
-            Pragmas : constant Pragma_Element_List :=
-                        Statements (Statements'First .. Last_Pragma_Index);
+            Pragmas      : constant Pragma_Element_List :=
+                            Statements (Statements'First .. Last_Pragma_Index);
+            Inv_Exprs    : Expression_List (1 .. Pragmas'Length);
+            Inv_Count    : Natural := 0;
+            Column_Start : constant Character_Position_Positive :=
+                             Element_Span (Element).First_Column;
          begin
             PP_Echo_Cursor_Range
               (State.Echo_Cursor, Cursor_Before (Pragmas (Pragmas'First)));
@@ -545,23 +561,26 @@ package body Sparkify.Pre_Operations is
             for Index in Pragmas'Range loop
                if Pragma_Kind (Pragmas (Index)) = An_Assert_Pragma then
                   declare
-                     Element      : constant Pragma_Element := Pragmas (Index);
-                     Args         : constant Association_List :=
-                                      Pragma_Argument_Associations (Element);
-                     Arg          : constant Association :=
-                                      Argument_By_Name_And_Position
-                                        (Args,
-                                         Nil_Name,
-                                         Check_Position_In_Assert);
-                     Expr         : constant Asis.Expression :=
-                                      Actual_Parameter (Arg);
-                     Column_Start : constant Character_Position_Positive :=
-                                      Element_Span (Element).First_Column;
+                     Element : constant Pragma_Element := Pragmas (Index);
+                     Args    : constant Association_List :=
+                                 Pragma_Argument_Associations (Element);
+                     Arg     : constant Association :=
+                                 Argument_By_Name_And_Position
+                                   (Args,
+                                    Nil_Name,
+                                    Check_Position_In_Assert);
+                     Expr    : constant Asis.Expression :=
+                                Actual_Parameter (Arg);
                   begin
-                     PP_Assert (Column_Start, Expr);
+                     Inv_Count := Inv_Count + 1;
+                     Inv_Exprs (Inv_Count) := Expr;
                   end;
                end if;
             end loop;
+
+            if Inv_Count /= 0 then
+               PP_Assert (Column_Start, Inv_Exprs (1 .. Inv_Count));
+            end if;
 
             State.Echo_Cursor := Cursor_After (Pragmas (Pragmas'Last));
          end;
@@ -766,7 +785,7 @@ package body Sparkify.Pre_Operations is
                              Element_Span (Element).First_Column;
          begin
             PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
-            PP_Check (Column_Start, Expr);
+            PP_Check (Column_Start, Expression_List'(1 => Expr));
             State.Echo_Cursor := Cursor_After (Element);
          end;
 

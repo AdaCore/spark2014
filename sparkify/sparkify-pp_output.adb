@@ -347,30 +347,44 @@ package body Sparkify.PP_Output is
 
    procedure PP_SPARK_Annotation
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression;
+      Exprs  : Asis.Expression_List;
       Intro  : Wide_String);
    --  Send Expr into output stream as a SPARK annotation started with Intro
 
    procedure PP_SPARK_Annotation
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression;
+      Exprs  : Asis.Expression_List;
       Intro  : Wide_String)
-   is
-      Line : constant Line_Number_Positive := First_Line_Number (Expr);
+    is
+      pragma Assert (Exprs'Length /= 0);
       Source_Control : Asis.Traverse_Control  := Asis.Continue;
-      Padding : constant Wide_String (1 .. Column - 1) := (others => ' ');
-      Prefix : constant Wide_String := Padding & "--# ";
-      Source_State      : Source_Traversal_State :=
-        (Phase       => Printing_Logic,
-         Prefix_Len  => Prefix'Length,
-         Prefix      => Head (Prefix, Natural (Prefix_Length'Last)),
-         Echo_Cursor => Cursor_At (Expr));
+      Padding        : constant Wide_String (1 .. Column - 1) :=
+                         (others => ' ');
+      Prefix         : constant Wide_String := Padding & "--# ";
    begin
-      PP_Text_At (Line, Column, "--# " & Intro & " ");
-      Traverse_Source (Expr, Source_Control, Source_State);
-      PP_Echo_Cursor_Range (Source_State.Echo_Cursor, Cursor_At_End_Of (Expr),
-                            Prefix);
-      PP_Word (";");
+      for J in Exprs'Range loop
+         declare
+            Expr         : constant Asis.Expression := Exprs (J);
+            Line         : constant Line_Number_Positive :=
+                             First_Line_Number (Expr);
+            Source_State : Source_Traversal_State :=
+                             (Phase       => Printing_Logic,
+                              Prefix_Len  => Prefix'Length,
+                              Prefix      =>
+                                Head (Prefix, Natural (Prefix_Length'Last)),
+                              Echo_Cursor => Cursor_At (Expr));
+         begin
+            if J = Exprs'First then
+               PP_Text_At (Line, Column, "--# " & Intro & " ( ");
+            else
+               PP_Text_At (Line, Column, "--#   ) and ( ");
+            end if;
+            Traverse_Source (Expr, Source_Control, Source_State);
+            PP_Echo_Cursor_Range
+              (Source_State.Echo_Cursor, Cursor_At_End_Of (Expr), Prefix);
+         end;
+      end loop;
+      PP_Word (");");
       PP_Close_Line;
    end PP_SPARK_Annotation;
 
@@ -380,9 +394,9 @@ package body Sparkify.PP_Output is
 
    procedure PP_Check
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression) is
+      Exprs  : Asis.Expression_List) is
    begin
-      PP_SPARK_Annotation (Column, Expr, "check");
+      PP_SPARK_Annotation (Column, Exprs, "check");
    end PP_Check;
 
    ---------------
@@ -391,9 +405,9 @@ package body Sparkify.PP_Output is
 
    procedure PP_Assert
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression) is
+      Exprs  : Asis.Expression_List) is
    begin
-      PP_SPARK_Annotation (Column, Expr, "assert");
+      PP_SPARK_Annotation (Column, Exprs, "assert");
    end PP_Assert;
 
    ---------------------
@@ -402,9 +416,9 @@ package body Sparkify.PP_Output is
 
    procedure PP_Precondition
      (Column : Character_Position_Positive;
-      Expr   : Asis.Expression) is
+      Exprs  : Asis.Expression_List) is
    begin
-      PP_SPARK_Annotation (Column, Expr, "pre");
+      PP_SPARK_Annotation (Column, Exprs, "pre");
    end PP_Precondition;
 
    ----------------------
@@ -414,13 +428,13 @@ package body Sparkify.PP_Output is
    procedure PP_Postcondition
      (Is_Function : Boolean;
       Column      : Character_Position_Positive;
-      Expr        : Asis.Expression) is
+      Exprs       : Asis.Expression_List) is
    begin
       if Is_Function then
-         PP_SPARK_Annotation (Column, Expr,
+         PP_SPARK_Annotation (Column, Exprs,
                               "return " & Result_Name_In_Output & " =>");
       else
-         PP_SPARK_Annotation (Column, Expr, "post");
+         PP_SPARK_Annotation (Column, Exprs, "post");
       end if;
    end PP_Postcondition;
 
