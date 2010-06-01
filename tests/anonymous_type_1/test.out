@@ -4,7 +4,7 @@
 --# inherit ada;
 package Anon_Type is
    type Matrix is array(Integer  range <>, Integer range <>) of Integer;
-    Function Increment (Var_In : in Integer) return Integer;
+   function Increment (Var_In : in Integer) return Integer;
 end Anon_Type;
 --  3.3.1 Object Declarations
 --  3.3.1:
@@ -24,24 +24,24 @@ package body Anon_Type is
    function Increment(Var_In :  in Integer) return Integer
    is
       --  Examples of constant declarations:
-      Limit     : constant Integer := 10_000;
+      Limit          : constant Integer := 10_000;
       --  Examples of subtype_indication:
       subtype New_Name_1 is 
 --@ line 21
-                Integer range 0 .. 10;
+                       Integer range 0 .. 10;
 --@ line 21
-      Var_Out : 
+      Var_Out        : 
 --@ line 21
-      New_Name_1;
+      New_Name_1                             := 0;
       --  Example of a range attribute reference
       --  Examples of subtype_indication with multiple definition:
       subtype New_Name_2 is 
 --@ line 24
-                Integer range -Limit .. +Limit;
+                       Integer range -Limit .. +Limit;
 --@ line 24
-      A, B    : 
+      A, B           : 
 --@ line 24
-      New_Name_2;
+      New_Name_2                                     ;
       --  Examples of subtype_indication with An_Index_Constraint:
       subtype New_Name_4 is Integer range 
 --@ line 26
@@ -51,23 +51,33 @@ package body Anon_Type is
 --@ line 26
       Ten_Characters : 
 --@ line 26
-      New_Name_3;
+      New_Name_3                      ;
       subtype New_Name_6 is Integer range 
 --@ line 27
-                         1 .. 8;
+                              1 .. 8;
 --@ line 27
       subtype New_Name_7 is Integer range 
 --@ line 27
-                                  1 .. 9;
+                                      1 .. 9;
 --@ line 27
       subtype New_Name_5 is Matrix (New_Name_6, New_Name_7);
 --@ line 27
-      Board     : 
+      Board          : 
 --@ line 27
-      New_Name_5;
-      --  Examples of array_type_definition
---        My_Array1   : Array (1.. 10) of Integer;
---        My_Array2   : Array (1.. 20) of Integer;
+      New_Name_5                             ;
+
+      subtype New_Name_8 is Integer range 
+--@ line 29
+                              1.. 10;
+type New_Name_9 is array (New_Name_8) of Integer;
+--@ line 29
+      My_Array1      : New_Name_9;
+      subtype New_Name_10 is Integer range 
+--@ line 30
+                              1.. 20;
+type New_Name_11 is array (New_Name_10) of Integer;
+--@ line 30
+      My_Array2      : New_Name_11;
    begin
       Var_Out  := Var_In + 1;
       return Var_Out;

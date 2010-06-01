@@ -11,7 +11,7 @@ is
       Day        : Integer range 1 .. 31;
       Month      : Months;
       Year       : Integer range 1 .. 4000;
---        Day_String : String(1 .. 6);
+      Day_String : String(1 .. 6);
    end record;
 
    ToDay1, ToDay2, ToDay3 : Date;

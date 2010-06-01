@@ -8,12 +8,15 @@ anon_type.adb:12:29: sparkify: implicit loop invariant
 package Anon_Type is
 
    -- type Matrix_Index is range 0 .. 9;
-   subtype New_Name_1 is                      Integer range 0 .. 9;
+   subtype New_Name_1 is Integer range 0 .. 9;
 --@ line 7
-   subtype New_Name_2 is 	   Integer range 0 .. 999;
+   subtype New_Name_2 is                      Integer range 0 .. 9;
+   subtype New_Name_3 is 
+--@ line 8
+       Integer range 0 .. 999;
 --@ line 7
-   type Matrix is array (New_Name_1,New_Name_1) of New_Name_2
-                             ;
+   type Matrix is array (New_Name_1, New_Name_2) of New_Name_3;
+
 
    procedure Multiply (X,Y : in Matrix; Z : out Matrix);
 

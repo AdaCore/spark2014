@@ -1,6 +1,5 @@
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,
---  discrete_subtype_definition and component_definition
 
 package Anon_Type
 is
@@ -11,8 +10,9 @@ is
    Size : constant Integer :=10;
    type Array3 is array(1 .. Size) of Value;
    type Array4 is array (1 .. 10) of Value;
+   type Array5 is array (1 .. 10, 1 .. 10) of Value;
 
-   procedure exchange(A1 : out Array1; A2 : out Array2;
-                     A3 : out Array3; A4 : out Array4);
+   procedure Exchange(A1 : out Array1; A2 : out Array2;
+                      A3 : out Array3; A4 : out Array4);
 end Anon_Type;
 

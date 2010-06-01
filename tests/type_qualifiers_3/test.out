@@ -1,21 +1,26 @@
-Pre_Operation failed for
-
-Element Debug_Image: 
-A_PACKAGE_DECLARATION
-located in tq (spec, Unit_Id = 4, Context_Id = 1)
-text position : 1 : 1 - 18 : 7
-   Nodes:
-      Node            : 1947 - N_PACKAGE_DECLARATION
-      R_Node          : 1947 - N_PACKAGE_DECLARATION
-      Node_Field_1    : 0 - N_EMPTY
-      Node_Field_2    : 0 - N_EMPTY
-   Rel_Sloc           :-8
-   obtained from the tree /home/sango/hi-lite-forge/tests/type_qualifiers_3/GNAT-KhiRlf/tq.adt (Tree_Id = 1)
-sparkify: Exception name: SYSTEM.ASSERTIONS.ASSERT_FAILURE
-Message: asis_ul-global_state.adb:643
-
 ------------------------------------------------------------------------
+package tq is
 
+        Board_Size : constant Integer :=8;
+        type Board_Index is range 1 .. Board_Size;
+        type Colours is (No_colour, Black, White);
+        type Pieces is (No_Piece, Pawn, Knight, Rook, Bishop, Queen, King);
+        type Contents is record
+              Colour : Colours;
+              Piece : Pieces;
+end record;
+        type Row is array (Board_Index) of Contents;
+        type Boards11 is array (Board_Index) of Row;
+        Empty : constant Contents := Contents'
+--@ line 13
+                                     (No_Colour, No_Piece);
+        Empty_Row : Constant Row := Row'
+--@ line 14
+                                    (Board_Index => Empty);
+
+        procedure Array_Of_Array (Initial_Board : out Boards11);
+        --procedure Multi_Dim_Array (P, Q : out Complex);
+end tq;
 package body tq is
 
    procedure Array_Of_Array (Initial_Board : out Boards11)
@@ -64,14 +69,14 @@ package body tq is
 
 end tq;
 ------------------------------------------------------------------------
-                            -----------Proved By Or Using------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          0      0      0              0      0      0       0
+Assert or Post:          1      1      0              0      0      0       0
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           0      0      0              0      0      0       0
+Runtime check:           1      0      1              0      0      0       0
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                  0      0      0              0      0      0       0
+Totals:                  2      1      1              0      0      0       0
+% Totals:                      50%    50%             0%     0%     0%      0%
 ===================== End of Semantic Analysis Summary ========================

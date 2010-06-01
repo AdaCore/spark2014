@@ -3,7 +3,6 @@ anon_type.adb:14:29: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,
---  discrete_subtype_definition and component_definition
 
 package Anon_Type
 is
@@ -11,28 +10,33 @@ is
    subtype Value is Integer range 0 .. 9;
    type Array1 is array (Index) of Value;
    subtype New_Name_1 is Integer range 5 .. 9;
---@ line 10
-   subtype New_Name_2 is Integer range 0 .. 9;
---@ line 10
-   type Array2 is array (New_Name_1) of New_Name_2                    ;
+--@ line 9
+   subtype New_Name_2 is                          Integer range 0 .. 9;
+--@ line 9
+   type Array2 is array (New_Name_1) of New_Name_2;
    Size : constant Integer :=10;
    subtype New_Name_3 is Integer range 
---@ line 12
+--@ line 11
                         1 .. Size;
---@ line 12
-   type Array3 is array (New_Name_3) of Value
---@ line 12
-                                           ;
+--@ line 11
+   type Array3 is array (New_Name_3) of Value;
    subtype New_Name_4 is Integer range 
+--@ line 12
+                         1 .. 10;
+--@ line 12
+   type Array4 is array (New_Name_4) of Value;
+   subtype New_Name_5 is Integer range 
 --@ line 13
                          1 .. 10;
 --@ line 13
-   type Array4 is array (New_Name_4) of Value
+   subtype New_Name_6 is Integer range 
 --@ line 13
-                                          ;
+                                  1 .. 10;
+--@ line 13
+   type Array5 is array (New_Name_5, New_Name_6) of Value;
 
-   procedure exchange(A1 : out Array1; A2 : out Array2;
-                     A3 : out Array3; A4 : out Array4);
+   procedure Exchange(A1 : out Array1; A2 : out Array2;
+                      A3 : out Array3; A4 : out Array4);
 end Anon_Type;
 package body Anon_Type
 is

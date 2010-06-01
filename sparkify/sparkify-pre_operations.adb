@@ -1179,7 +1179,8 @@ package body Sparkify.Pre_Operations is
                   else
                      PP_Text_At (Line, Column_Start, Subtype_Name);
                   end if;
-                  PP_Word (";");
+                  PP_Echo_Cursor_Range
+                    (Cursor_After (Object_Def), Cursor_After (Element));
                   State.Echo_Cursor := Cursor_After (Element);
                end;
             end if;
@@ -1187,9 +1188,23 @@ package body Sparkify.Pre_Operations is
          when A_Type_Definition =>
             pragma Assert
               (Type_Kind (Object_Def) = A_Constrained_Array_Definition);
+            declare
+               Tmp_Subtype_Str : constant Wide_String :=
+                                   Transform_Constained_Array_Definition
+                                     (Object_Def, Column_Start);
+               My_Fresh_Name     : constant Wide_String := Fresh_Name;
 
-               PP_Word (Transform_Constained_Array_Definition (Object_Def,
-                                                     Column_Start));
+            begin
+
+               PP_Close_Line;
+               PP_Word ("type " & My_Fresh_Name & " is "
+                        & Tmp_Subtype_Str & ";");
+               --  Print the identifier(s) being defined
+               PP_Echo_Cursor_Range
+                 (Cursor_At (Element), Cursor_Before (Object_Def));
+               PP_Word (My_Fresh_Name & ";");
+               State.Echo_Cursor := Cursor_After (Element);
+            end;
 
          when others =>
             SLOC_Error ("unexpected element",
@@ -1412,12 +1427,14 @@ package body Sparkify.Pre_Operations is
          Column_Start : constant Character_Position_Positive :=
                           Element_Span (Element).First_Column;
       begin
-         --  Print every caracters befors a type declarartion
+
          PP_Echo_Cursor_Range
            (State.Echo_Cursor, Cursor_Before (Element));
+         State.Echo_Cursor := Cursor_At (Element);
 
          --  Array Definition kinds
          case Definition_Kind (Type_Def) is
+
             when A_Type_Definition =>
                case Type_Kind (Type_Def) is
                   when A_Constrained_Array_Definition =>
@@ -1426,22 +1443,17 @@ package body Sparkify.Pre_Operations is
                                      Transform_Constained_Array_Definition
                                        (Type_Def, Column_Start);
                      begin
-                        --  Print the identifier(s) being defined
                         PP_Echo_Cursor_Range
-                          (Cursor_At (Type_Def), Cursor_Before (Type_Def));
+                          (State.Echo_Cursor, Cursor_Before (Type_Def));
 
                         PP_Word (Comp_Def);
                         PP_Word (";");
-                        State.Echo_Cursor := Cursor_After (Type_Def);
+                        State.Echo_Cursor := Cursor_After (Element);
                      end;
-
-                  when An_Unconstrained_Array_Definition =>
-                     PP_Echo_Cursor_Range
-                       (Cursor_At (Element), Cursor_After (Element));
 
                   when A_Record_Type_Definition  =>
                      declare
-                        Record_Def        : constant
+                        Record_Def                 : constant
                           Asis.Definition :=
                             Asis.Definitions.Record_Definition
                               (Type_Def);
@@ -1453,6 +1465,10 @@ package body Sparkify.Pre_Operations is
                         of Unbounded_Wide_String;
 
                      begin
+
+                        --  Print every caracters befors a type declarartion
+                        PP_Echo_Cursor_Range
+                          (State.Echo_Cursor, Cursor_Before (Element));
 
                         for J in Record_Comp_List'Range loop
                            declare
@@ -1472,7 +1488,7 @@ package body Sparkify.Pre_Operations is
                            end;
                         end loop;
 
-                        --  Pint type Type_Name is record
+                        --  Print type Type_Name is record
                         PP_Echo_Cursor_Range
                           (Cursor_At (Element),
                            Cursor_Before (Record_Comp_List (1)));
@@ -1498,22 +1514,22 @@ package body Sparkify.Pre_Operations is
                         end loop;
                         PP_Close_Line;
                         PP_Word ("end record;");
+                        State.Echo_Cursor := Cursor_After (Element);
                      end;
-                  when An_Enumeration_Type_Definition =>
-                     PP_Echo_Cursor_Range
-                       (Cursor_At (Element), Cursor_After (Element));
+
                   when Not_A_Type_Definition =>
                      pragma Assert (True);
                      null;
 
                   when others =>
-                     State.Echo_Cursor := Cursor_At (Type_Def);
+                     null;
                end case;
+
             when others =>
                SLOC_Error ("unexpected element",
                            Build_GNAT_Location (Element));
          end case;
-         State.Echo_Cursor := Cursor_After (Element);
+
       end;
    end A_Type_Declaration_Pre_Op;
 

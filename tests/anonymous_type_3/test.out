@@ -10,17 +10,29 @@ is
    type Months is (Jan, Feb, Mar, Apr, May, June,
                    July, Aug, Sept, Oct, Nov, Dec);
 
-   subtype New_Name_1 is Integer range 1 .. 31;
+
+   subtype New_Name_1 is 
+--@ line 11
+                   Integer range 1 .. 31;
+
+   subtype New_Name_2 is 
+--@ line 13
+                   Integer range 1 .. 4000;
+   subtype New_Name_4 is Integer range 
+--@ line 14
+                          1 .. 6;
+--@ line 14
+   subtype New_Name_3 is String (New_Name_4);
 --@ line 10
-   subtype New_Name_2 is Integer range 1 .. 4000;
---@ line 10
-   type Date is record 
-                   Day : New_Name_1;
-                   Month : Months;
-                   Year : New_Name_2;
---@ line 10
-   end record;
---@ line 19
+   type Date is record
+      Day        : New_Name_1;
+      Month      : Months;
+      Year       : New_Name_2;
+      Day_String : New_Name_3;
+end record;
+
+   ToDay1, ToDay2, ToDay3 : Date;
+
    procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);
 
 end Anon_Type;
@@ -32,17 +44,17 @@ is
       -- Positional aggregate
       ToDay1     := Date'
 --@ line 7
-                    (26, July, 2010);
+                    (26, July, 2010, "Friday");
       -- Named aggregate
       --Day_String => "Friday"
       ToDay2     := Date'
 --@ line 10
                     (Day => 26, Month => July,
-                     Year => 2010);
+                     Year => 2010, Day_String => "Friday");
       ToDay3     := Date'
 --@ line 12
                     (Month => July, Day => 26,
-                     Year => 2010);
+                     Year => 2010, Day_String => "Friday");
    end Date_Format;
 end Anon_Type;
 ------------------------------------------------------------------------
