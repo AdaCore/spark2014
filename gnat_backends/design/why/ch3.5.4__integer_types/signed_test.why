@@ -1,0 +1,33 @@
+
+(* Several simple tests that illustrate how signed__int8 could be used
+   in why. *)
+
+(*************)
+(* succ_int8 *)
+(*************)
+
+(* Given a signed__int8, returns its successor *)
+
+let succ_signed__int8 =
+ fun (x : signed__int8) ->
+  {le_int ((integer_of_signed__int8 (x)), 126)}
+   (signed__int8_of_integer_ ((integer_of_signed__int8 (x)) + 1))
+  {eq_int ((integer_of_signed__int8 (x) + 1),
+   (integer_of_signed__int8 (result)))}
+
+(**************)
+(* succ2_int8 *)
+(**************)
+
+(* Same as succ_int8, but save the result into an intermediate variable *)
+
+let succ2_int8 =
+ fun (x : signed__int8) ->
+  {le_int ((integer_of_signed__int8 (x)), 126)} (
+   let retval = ref (any_signed__int8 void) in (
+    retval := signed__int8_of_integer_ ((integer_of_signed__int8 (x)) + 1)
+   ); !retval
+  )
+  {eq_int ((integer_of_signed__int8 (x) + 1),
+   (integer_of_signed__int8 (result)))}
+

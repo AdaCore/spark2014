@@ -1,0 +1,30 @@
+
+type signed__int8
+
+logic integer_of_signed__int8: signed__int8 -> int
+
+predicate eq_signed__int8(x:signed__int8, y:signed__int8) =
+ eq_int(integer_of_signed__int8(x), integer_of_signed__int8(y))
+
+logic signed__int8_of_integer: int -> signed__int8
+
+axiom signed__int8_coerce :
+ (forall x:int.
+  ((le_int((-128), x) and le_int(x, (127))) ->
+   eq_int(integer_of_signed__int8(signed__int8_of_integer(x)), x)))
+
+axiom signed__int8_range :
+ (forall x:signed__int8.
+  (le_int((-128), integer_of_signed__int8(x)) and le_int(integer_of_signed__int8(x), (127))))
+
+parameter any_signed__int8 : unit -> { } signed__int8 { true }
+
+parameter signed__int8_of_integer_ :
+ x:int ->
+  { (le_int((-128), x) and le_int(x, (127)))} signed__int8
+  { eq_int(integer_of_signed__int8(result), x) }
+
+parameter safe_signed__int8_of_integer_ :
+ x:int -> { } signed__int8 { eq_int(integer_of_signed__int8(result), x) }
+
+
