@@ -359,8 +359,14 @@ package body Sparkify.Pre_Operations is
       end if;
 
       if Is_Nil (Subtype_Constraint (Element)) then
-         return Prepend_Package_Name
-           (Element, Element_Name (Asis.Definitions.Subtype_Mark (Element)));
+         declare
+            Subtype_Expr : constant Asis.Expression :=
+                             Asis.Definitions.Subtype_Mark (Element);
+         begin
+            return Prepend_Package_Name
+              (Corresponding_Name_Declaration (Subtype_Expr),
+               Element_Name (Subtype_Expr));
+         end;
       else
          declare
             Constraint   : constant Asis.Constraint :=
@@ -1163,6 +1169,7 @@ package body Sparkify.Pre_Operations is
 
             PP_Echo_Cursor_Range
               (State.Echo_Cursor, Cursor_Before (Element));
+            State.Echo_Cursor := Cursor_At (Element);
 
             case Definition_Kind (Object_Def) is
                when A_Subtype_Indication =>
@@ -1185,10 +1192,9 @@ package body Sparkify.Pre_Operations is
                                        (Object_Def, Column_Start);
                   begin
                      Subtype_Name := To_Unbounded_Wide_String (Fresh_Name);
-
-                     PP_Close_Line;
-                     PP_Word ("type " & To_Wide_String (Subtype_Name) & " is "
-                              & Subtype_Str & ";");
+                     PP_Text_At (Line, Column_Start,
+                                 "type " & To_Wide_String (Subtype_Name)
+                                 & " is " & Subtype_Str & ";");
                   end;
 
                when others =>
@@ -1202,10 +1208,9 @@ package body Sparkify.Pre_Operations is
 
             --  Use the new subtype name
             if Flat_Element_Kind (Element) = A_Constant_Declaration then
-               PP_Text_At (Line, Column_Start,
-                           "constant " & To_Wide_String (Subtype_Name));
+               PP_Word ("constant " & To_Wide_String (Subtype_Name));
             else
-               PP_Text_At (Line, Column_Start, To_Wide_String (Subtype_Name));
+               PP_Word (To_Wide_String (Subtype_Name));
             end if;
 
             --  Finish printing the declaration
