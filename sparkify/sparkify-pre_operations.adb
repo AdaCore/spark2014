@@ -553,7 +553,8 @@ package body Sparkify.Pre_Operations is
             Inv_Exprs    : Expression_List (1 .. Pragmas'Length);
             Inv_Count    : Natural := 0;
             Column_Start : constant Character_Position_Positive :=
-                             Element_Span (Element).First_Column;
+                             Element_Span
+                               (Pragmas (Pragmas'First)).First_Column;
          begin
             PP_Echo_Cursor_Range
               (State.Echo_Cursor, Cursor_Before (Pragmas (Pragmas'First)));

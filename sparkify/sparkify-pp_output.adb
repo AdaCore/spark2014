@@ -374,7 +374,9 @@ package body Sparkify.PP_Output is
                                 Head (Prefix, Natural (Prefix_Length'Last)),
                               Echo_Cursor => Cursor_At (Expr));
          begin
-            if J = Exprs'First then
+            if Exprs'Length = 1 then
+               PP_Text_At (Line, Column, "--# " & Intro & " ");
+            elsif J = Exprs'First then
                PP_Text_At (Line, Column, "--# " & Intro & " ( ");
             else
                PP_Text_At (Line, Column, "--#   ) and ( ");
@@ -384,7 +386,12 @@ package body Sparkify.PP_Output is
               (Source_State.Echo_Cursor, Cursor_At_End_Of (Expr), Prefix);
          end;
       end loop;
-      PP_Word (");");
+
+      if Exprs'Length = 1 then
+         PP_Word (";");
+      else
+         PP_Word (");");
+      end if;
       PP_Close_Line;
    end PP_SPARK_Annotation;
 
