@@ -3,9 +3,7 @@ with Integer_Types;
 --# inherit integer_types;
 package S is
 
-   type IntArray is array (Integer_Types.Array_Range
---@ line 5
-                                      ) of Integer;
+   type IntArray is array (Integer_Types.Array_Range) of Integer;
 
    procedure Linear_Search
      (Table : in IntArray;
