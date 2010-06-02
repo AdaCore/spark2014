@@ -95,7 +95,7 @@ package Sparkify.Pre_Operations is
    --  qualifier in Ada into aggregates prefixed by the appropriate type
    --  qualifier in SPARK
 
-   procedure A_Object_Declaration_Pre_Op
+   procedure An_Object_Declaration_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
@@ -249,7 +249,7 @@ package Sparkify.Pre_Operations is
 
       A_Variable_Declaration ..
       --  A_Constant_Declaration,                    -- 3.3.1 -> Trait_Kinds
-      A_Deferred_Constant_Declaration => A_Object_Declaration_Pre_Op'Access,
+      A_Deferred_Constant_Declaration => An_Object_Declaration_Pre_Op'Access,
 
       A_Single_Task_Declaration ..
       A_Single_Protected_Declaration => No_Action'Access,
