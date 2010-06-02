@@ -114,8 +114,8 @@ package body Sparkify.Pre_Operations is
      (Element      : Asis.Constraint;
       Column_Start : Character_Position_Positive) return Wide_String;
 
-   function Transform_Constained_Array_Definition
-     (Element :        Asis.Type_Definition;
+   function Transform_Constrained_Array_Definition
+     (Element      :        Asis.Type_Definition;
       Column_Start : Character_Position_Positive) return Wide_String;
 
    -----------------------------------
@@ -1147,6 +1147,9 @@ package body Sparkify.Pre_Operations is
                        Object_Declaration_View (Element);
       Column_Start : constant Character_Position_Positive :=
                        Element_Span (Element).First_Column;
+      Line         : constant Line_Number_Positive :=
+                       First_Line_Number (Element);
+      Subtype_Name : Unbounded_Wide_String;
    begin
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this Element was already taken care of
@@ -1154,57 +1157,60 @@ package body Sparkify.Pre_Operations is
       end if;
 
       case Definition_Kind (Object_Def) is
-         when A_Subtype_Indication =>
+         when A_Subtype_Indication |
+              A_Type_Definition =>
 
-            if not Simple_Subtype_Indication (Object_Def) then
+            PP_Echo_Cursor_Range
+              (State.Echo_Cursor, Cursor_Before (Element));
 
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Element));
+            case Definition_Kind (Object_Def) is
+               when A_Subtype_Indication =>
 
-               declare
-                  Line         : constant Line_Number_Positive :=
-                                   First_Line_Number (Element);
-                  Subtype_Name : constant Wide_String :=
-                                   Transform_Subtype_Indication (Object_Def,
-                                                                 Column_Start);
-               begin
-                  --  Print the identifier(s) being defined
-                  PP_Echo_Cursor_Range
-                    (Cursor_At (Element), Cursor_Before (Object_Def));
-
-                  --  Use the new subtype name
-                  if Flat_Element_Kind (Element) = A_Constant_Declaration then
-                     PP_Text_At (Line, Column_Start,
-                                 "constant " & Subtype_Name);
-                  else
-                     PP_Text_At (Line, Column_Start, Subtype_Name);
+                  if Simple_Subtype_Indication (Object_Def) then
+                     return;
                   end if;
-                  PP_Echo_Cursor_Range
-                    (Cursor_After (Object_Def), Cursor_After (Element));
-                  State.Echo_Cursor := Cursor_After (Element);
-               end;
+
+                  Subtype_Name :=
+                    To_Unbounded_Wide_String
+                      (Transform_Subtype_Indication
+                           (Object_Def, Column_Start));
+
+               when A_Type_Definition =>
+                  pragma Assert
+                    (Type_Kind (Object_Def) = A_Constrained_Array_Definition);
+                  declare
+                     Subtype_Str : constant Wide_String :=
+                                     Transform_Constrained_Array_Definition
+                                       (Object_Def, Column_Start);
+                  begin
+                     Subtype_Name := To_Unbounded_Wide_String (Fresh_Name);
+
+                     PP_Close_Line;
+                     PP_Word ("type " & To_Wide_String (Subtype_Name) & " is "
+                              & Subtype_Str & ";");
+                  end;
+
+               when others =>
+                  pragma Assert (False);
+                  null;
+            end case;
+
+            --  Print the identifier(s) being defined
+            PP_Echo_Cursor_Range
+              (Cursor_At (Element), Cursor_Before (Object_Def));
+
+            --  Use the new subtype name
+            if Flat_Element_Kind (Element) = A_Constant_Declaration then
+               PP_Text_At (Line, Column_Start,
+                           "constant " & To_Wide_String (Subtype_Name));
+            else
+               PP_Text_At (Line, Column_Start, To_Wide_String (Subtype_Name));
             end if;
 
-         when A_Type_Definition =>
-            pragma Assert
-              (Type_Kind (Object_Def) = A_Constrained_Array_Definition);
-            declare
-               Tmp_Subtype_Str : constant Wide_String :=
-                                   Transform_Constained_Array_Definition
-                                     (Object_Def, Column_Start);
-               My_Fresh_Name     : constant Wide_String := Fresh_Name;
-
-            begin
-
-               PP_Close_Line;
-               PP_Word ("type " & My_Fresh_Name & " is "
-                        & Tmp_Subtype_Str & ";");
-               --  Print the identifier(s) being defined
-               PP_Echo_Cursor_Range
-                 (Cursor_At (Element), Cursor_Before (Object_Def));
-               PP_Word (My_Fresh_Name & ";");
-               State.Echo_Cursor := Cursor_After (Element);
-            end;
+            --  Finish printing the declaration
+            PP_Echo_Cursor_Range
+              (Cursor_After (Object_Def), Cursor_After (Element));
+            State.Echo_Cursor := Cursor_After (Element);
 
          when others =>
             SLOC_Error ("unexpected element",
@@ -1359,178 +1365,137 @@ package body Sparkify.Pre_Operations is
    -------------------------------------------
    -- Transform_Constained_Array_Definition --
    -------------------------------------------
-   function Transform_Constained_Array_Definition
-     (Element :        Asis.Type_Definition;
+
+   function Transform_Constrained_Array_Definition
+     (Element      :        Asis.Type_Definition;
       Column_Start : Character_Position_Positive) return Wide_String
    is
-      Print_Str : Unbounded_Wide_String := To_Unbounded_Wide_String
-        ("array (");
-      Tmp_Print_Str : Unbounded_Wide_String := To_Unbounded_Wide_String ("");
+      List_Def       : constant Asis.Definition_List :=
+                         Discrete_Subtype_Definitions (Element);
+      Array_Comp_Def : constant Asis.Component_Definition :=
+                         Array_Component_Definition (Element);
+      Array_Comp_Sub : constant Asis.Definition :=
+                         Component_Definition_View (Array_Comp_Def);
+      Array_Type_Str : Unbounded_Wide_String;
    begin
+      pragma Assert (List_Def'Length /= 0);
 
-         declare
-            List_Def       : constant Asis.Definition_List  :=
-                               Discrete_Subtype_Definitions (Element);
-            Array_Comp_Def : constant Asis.Component_Definition :=
-                               Array_Component_Definition (Element);
-            Array_Comp_Sub : constant Asis.Definition :=
-                               Component_Definition_View (Array_Comp_Def);
-         begin
+      --  Treat the types of array indices
+      Array_Type_Str := To_Unbounded_Wide_String ("array (")
+        & Transform_A_Discrete_Range (List_Def (1), Column_Start);
 
-            Print_Str := Print_Str
-              & Transform_A_Discrete_Range (List_Def (1), Column_Start);
+      for J in List_Def'First + 1 .. List_Def'Last loop
+         Array_Type_Str := Array_Type_Str & ", "
+           & Transform_A_Discrete_Range (List_Def (J), Column_Start);
+      end loop;
 
-            for J in List_Def'First + 1 .. List_Def'Last loop
-               Print_Str := Print_Str & ", "
-                 & Transform_A_Discrete_Range (List_Def (J), Column_Start);
-            end loop;
+      Array_Type_Str := Array_Type_Str & ")";
 
-            Print_Str := Print_Str & ")";
+      --  Treat the type of array components
+      case Definition_Kind (Array_Comp_Sub) is
+         when A_Subtype_Indication =>
+            Array_Type_Str := Array_Type_Str & " of "
+              & Transform_Subtype_Indication (Array_Comp_Sub, Column_Start);
+         when others =>
+            SLOC_Error ("unexpected element",
+                        Build_GNAT_Location (Element));
+      end case;
 
-            --  Process the array component
-            case Definition_Kind (Array_Comp_Sub) is
-               when A_Subtype_Indication =>
-                  Tmp_Print_Str := Tmp_Print_Str
-                 & Transform_Subtype_Indication (Array_Comp_Sub,
-                                               Column_Start);
-               Print_Str := Print_Str & " of " & Tmp_Print_Str;
-
-               when others =>
-                  SLOC_Error ("unexpected element",
-                              Build_GNAT_Location (Element));
-            end case;
-
-         end;
-
-      return To_Wide_String (Print_Str);
-
-   end Transform_Constained_Array_Definition;
+      return To_Wide_String (Array_Type_Str);
+   end Transform_Constrained_Array_Definition;
 
    -------------------------------
    -- A_Type_Declaration_Pre_Op --
    -------------------------------
+
    procedure A_Type_Declaration_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State)
    is
       pragma Unreferenced (Control);
+      Type_Def     : constant Asis.Definition :=
+                       Type_Declaration_View (Element);
+      Column_Start : constant Character_Position_Positive :=
+                       Element_Span (Element).First_Column;
    begin
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this Element was already taken care of
          return;
       end if;
 
-      declare
-         Type_Def     : constant Asis.Definition :=
-                          Type_Declaration_View (Element);
-         Column_Start : constant Character_Position_Positive :=
-                          Element_Span (Element).First_Column;
-      begin
+      PP_Echo_Cursor_Range
+        (State.Echo_Cursor, Cursor_Before (Element));
+      State.Echo_Cursor := Cursor_At (Element);
 
-         PP_Echo_Cursor_Range
-           (State.Echo_Cursor, Cursor_Before (Element));
-         State.Echo_Cursor := Cursor_At (Element);
+      case Type_Kind (Type_Def) is
+         when A_Constrained_Array_Definition =>
+            declare
+               Array_Type_Str : constant Wide_String :=
+                                  Transform_Constrained_Array_Definition
+                                    (Type_Def, Column_Start);
+            begin
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Type_Def));
+               PP_Word (Array_Type_Str & ";");
+               State.Echo_Cursor := Cursor_After (Element);
+            end;
 
-         --  Array Definition kinds
-         case Definition_Kind (Type_Def) is
+         when A_Record_Type_Definition  =>
+            declare
+               Record_Def    : constant Asis.Definition :=
+                                Asis.Definitions.Record_Definition (Type_Def);
+               Record_Comps  : constant Asis.Record_Component_List :=
+                                     Record_Components (Record_Def);
+               Subtype_Names :
+                 array (1 .. Record_Comps'Length) of Unbounded_Wide_String;
 
-            when A_Type_Definition =>
-               case Type_Kind (Type_Def) is
-                  when A_Constrained_Array_Definition =>
-                     declare
-                        Comp_Def : constant Wide_String :=
-                                     Transform_Constained_Array_Definition
-                                       (Type_Def, Column_Start);
-                     begin
-                        PP_Echo_Cursor_Range
-                          (State.Echo_Cursor, Cursor_Before (Type_Def));
+            begin
+               for J in Record_Comps'Range loop
+                  declare
+                     Comp_Decl  : constant Asis.Declaration :=
+                                    Component_Declaration (Record_Comps (J));
+                     Object_Def : constant Asis.Definition :=
+                                    Object_Declaration_View (Comp_Decl);
+                     Comp_View  : constant Asis.Component_Definition :=
+                                    Component_Definition_View (Object_Def);
+                  begin
+                     Subtype_Names (J) := To_Unbounded_Wide_String
+                       (Transform_Subtype_Indication
+                          (Comp_View, Column_Start));
+                  end;
+               end loop;
 
-                        PP_Word (Comp_Def);
-                        PP_Word (";");
-                        State.Echo_Cursor := Cursor_After (Element);
-                     end;
+               --  Print up to first record component (IF ANY!!!! Marc, please
+               --  check what happens for records with no components)
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
 
-                  when A_Record_Type_Definition  =>
-                     declare
-                        Record_Def                 : constant
-                          Asis.Definition :=
-                            Asis.Definitions.Record_Definition
-                              (Type_Def);
-                        Record_Comp_List           : constant
-                          Asis.Record_Component_List :=
-                            Record_Components (Record_Def);
-                        Tab_Of_Fresh_Name          : array
-                          (1 .. Record_Comp_List'Length)
-                        of Unbounded_Wide_String;
+               for J in Record_Comps'Range loop
+                  declare
+                     Comp_Decl  : constant Asis.Declaration :=
+                                    Component_Declaration (Record_Comps (J));
+                     Object_Def : constant Asis.Definition :=
+                                    Object_Declaration_View (Comp_Decl);
+                     Comp_View  : constant Asis.Component_Definition :=
+                                    Component_Definition_View (Object_Def);
+                  begin
+                     PP_Echo_Cursor_Range
+                       (Cursor_At (Record_Comps (J)),
+                        Cursor_Before (Comp_View));
+                     PP_Word (To_Wide_String (Subtype_Names (J)));
+                     PP_Word (";");
+                  end;
+               end loop;
 
-                     begin
+               PP_Close_Line;
+               PP_Word ("end record;");
+               State.Echo_Cursor := Cursor_After (Element);
+            end;
 
-                        --  Print every caracters befors a type declarartion
-                        PP_Echo_Cursor_Range
-                          (State.Echo_Cursor, Cursor_Before (Element));
-
-                        for J in Record_Comp_List'Range loop
-                           declare
-                              Component_Decl : constant Asis.Declaration :=
-                                                 Component_Declaration
-                                                   (Record_Comp_List (J));
-                              Object_Def     : constant Asis.Definition :=
-                                                 Object_Declaration_View
-                                                   (Component_Decl);
-                              Component_View : constant
-                                Asis.Component_Definition
-                                :=  Component_Definition_View (Object_Def);
-                           begin
-                              Tab_Of_Fresh_Name (J) := To_Unbounded_Wide_String
-                                (Transform_Subtype_Indication
-                                   (Component_View, Column_Start));
-                           end;
-                        end loop;
-
-                        --  Print type Type_Name is record
-                        PP_Echo_Cursor_Range
-                          (Cursor_At (Element),
-                           Cursor_Before (Record_Comp_List (1)));
-
-                        for J in Record_Comp_List'Range loop
-                           declare
-                              Component_Decl : constant Asis.Declaration :=
-                                                 Component_Declaration
-                                                   (Record_Comp_List (J));
-                              Object_Def     : constant Asis.Definition :=
-                                                 Object_Declaration_View
-                                                   (Component_Decl);
-                              Component_View : constant
-                                Asis.Component_Definition :=
-                                  Component_Definition_View (Object_Def);
-                           begin
-                              PP_Echo_Cursor_Range
-                                (Cursor_At (Record_Comp_List (J)),
-                                 Cursor_Before (Component_View));
-                              PP_Word (To_Wide_String (Tab_Of_Fresh_Name (J)));
-                              PP_Word (";");
-                           end;
-                        end loop;
-                        PP_Close_Line;
-                        PP_Word ("end record;");
-                        State.Echo_Cursor := Cursor_After (Element);
-                     end;
-
-                  when Not_A_Type_Definition =>
-                     pragma Assert (True);
-                     null;
-
-                  when others =>
-                     null;
-               end case;
-
-            when others =>
-               SLOC_Error ("unexpected element",
-                           Build_GNAT_Location (Element));
-         end case;
-
-      end;
+         when others =>
+            null;
+      end case;
    end A_Type_Declaration_Pre_Op;
 
 end Sparkify.Pre_Operations;
