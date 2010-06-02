@@ -1362,9 +1362,9 @@ package body Sparkify.Pre_Operations is
       return To_Wide_String (Constraint_Str);
    end Transform_An_Index_Constraint;
 
-   -------------------------------------------
-   -- Transform_Constained_Array_Definition --
-   -------------------------------------------
+   --------------------------------------------
+   -- Transform_Constrained_Array_Definition --
+   --------------------------------------------
 
    function Transform_Constrained_Array_Definition
      (Element      :        Asis.Type_Definition;
