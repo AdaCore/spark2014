@@ -710,6 +710,29 @@ package body Sparkify.Pre_Operations is
                State.Echo_Cursor := Cursor_After (Element);
             end;
 
+         when An_Unconstrained_Array_Definition =>
+            declare
+               Array_Comp_Def : constant Asis.Component_Definition :=
+                                  Array_Component_Definition (Type_Def);
+               Array_Comp_Sub : constant Asis.Definition :=
+                                  Component_Definition_View (Array_Comp_Def);
+               Array_Type_Str : constant Wide_String :=
+                                  Transform_Subtype_Indication
+                                    (Array_Comp_Sub, Column_Start);
+            begin
+               --  Treat the type of array components
+               case Definition_Kind (Array_Comp_Sub) is
+               when A_Subtype_Indication =>
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Array_Comp_Sub));
+                  PP_Word (Array_Type_Str & ";");
+                  State.Echo_Cursor := Cursor_After (Element);
+               when others =>
+                  SLOC_Error ("unexpected element",
+                              Build_GNAT_Location (Element));
+               end case;
+            end;
+
          when A_Record_Type_Definition  =>
             declare
                Record_Def    : constant Asis.Definition :=
