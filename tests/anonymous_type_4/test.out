@@ -30,17 +30,17 @@ package body Anon_Type is
    is
    begin
       -- Z := Matrix'(1 .. 9 => (1 .. 9 =>0));
-      for I in  Integer range 
+      for I in Integer range 
 --@ line 10
                1 .. 9 loop
          --# assert True;
 --@ line 11
-         for J in  Integer range 
+         for J in Integer range 
 --@ line 11
                   1 .. 9 loop
             --# assert True;
 --@ line 12
-            for K in  Integer range 
+            for K in Integer range 
 --@ line 12
                      1 .. 9 loop
                --Z(I,J) := Z(I,J) + X(I,K) * Y(K,J);
