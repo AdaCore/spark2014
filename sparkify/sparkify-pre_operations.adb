@@ -107,8 +107,9 @@ package body Sparkify.Pre_Operations is
    --  Return the subtype indication's identifier or create new subtype name
 
    function Transform_A_Discrete_Range
-     (Element      : Asis.Discrete_Range;
-      Column_Start : Character_Position_Positive) return Wide_String;
+     (Element       : Asis.Discrete_Range;
+      Column_Start  : Character_Position_Positive;
+      For_Loop_Mode : Boolean := False) return Wide_String;
 
    function Transform_An_Index_Constraint
      (Element      : Asis.Constraint;
@@ -186,67 +187,37 @@ package body Sparkify.Pre_Operations is
 
       if Has_Iteration_Scheme (Element) then
          declare
-            Iter_Scheme : constant Asis.Element :=
-              Get_Iteration_Scheme (Element);
+            Iter_Scheme  : constant Asis.Element :=
+                             Get_Iteration_Scheme (Element);
+            Column_Start : constant Character_Position_Positive :=
+                             Element_Span (Element).First_Column;
          begin
-            --  Update this kinds to insert the type in for loop
-            if Flat_Element_Kind (Iter_Scheme) =
-              A_Loop_Parameter_Specification then
+            PP_Echo_Cursor_Range
+              (State.Echo_Cursor, Cursor_Before (Element));
+            State.Echo_Cursor := Cursor_At (Element);
+
+            if Flat_Element_Kind (Element) = A_For_Loop_Statement then
                declare
-                  Discrete_Subtype_Def : constant
-                    Asis.Discrete_Subtype_Definition :=
-                      Specification_Subtype_Definition (Iter_Scheme);
+                  Discrete_Range : constant Asis.Discrete_Range :=
+                                     Specification_Subtype_Definition
+                                       (Iter_Scheme);
+                  Subtype_Str    : constant Wide_String :=
+                                     Transform_A_Discrete_Range
+                                       (Discrete_Range, Column_Start,
+                                        For_Loop_Mode => True);
                begin
-                  if Flat_Element_Kind (Discrete_Subtype_Def) =
-                    A_Discrete_Simple_Expression_Range_As_Subtype_Definition
-                  then
-                     declare
-                        Lower_Expr : constant Asis.Expression :=
-                          Lower_Bound (Discrete_Subtype_Def);
-                     begin
-                           PP_Echo_Cursor_Range (State.Echo_Cursor,
-                                                 Cursor_Before
-                                                   (Discrete_Subtype_Def));
-                        State.Echo_Cursor := Cursor_After
-                          (Discrete_Subtype_Def);
-                        --  Just a test, see a others cases
-                        if Flat_Element_Kind (Lower_Expr) =
-                          An_Integer_Literal then
-                           PP_Word (" Integer range ");
-                        end if;
-                        Reach_Element_And_Traverse
-                          (Discrete_Subtype_Def, State);
-                     end;
-                  elsif Flat_Element_Kind (Discrete_Subtype_Def) =
-                    A_Discrete_Range_Attribute_Reference_As_Subtype_Definition
-                  then
-                     declare
-                        Att_Range : constant Asis.Expression :=
-                          Range_Attribute (Discrete_Subtype_Def);
---                          Att_Prefix : constant Asis.Expression :=
---                            Prefix (Att_Range);
-                     begin
-                        PP_Echo_Cursor_Range (State.Echo_Cursor,
-                                              Cursor_Before
-                                                (Discrete_Subtype_Def));
-                        State.Echo_Cursor := Cursor_After
-                          (Discrete_Subtype_Def);
-                        --  Just an test see others cases
-                        if Flat_Element_Kind (Att_Range) =
-                          A_Range_Attribute then
-                           PP_Word (" Integer range ");
-                        end if;
-                        Reach_Element_And_Traverse
-                          (Discrete_Subtype_Def, State);
-                     end;
-                  else
-                     --  The iteration scheme can contain identifiers;
-                     --  they should be prefixed if needed. To do so,
-                     --  we should doTraverse_Source on what's before
-                     --  the first statement.
-                     Reach_Element_And_Traverse (Iter_Scheme, State);
-                  end if;
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Discrete_Range));
+                  State.Echo_Cursor := Cursor_At (Discrete_Range);
+                  PP_Word (Subtype_Str);
+                  Reach_Element_And_Traverse (Discrete_Range, State);
                end;
+            else
+               --  The iteration scheme can contain identifiers;
+               --  they should be prefixed if needed. To do so,
+               --  we should doTraverse_Source on what's before
+               --  the first statement.
+               Reach_Element_And_Traverse (Iter_Scheme, State);
             end if;
          end;
       end if;
@@ -1257,8 +1228,9 @@ package body Sparkify.Pre_Operations is
    --------------------------------
 
    function Transform_A_Discrete_Range
-     (Element      : Asis.Discrete_Range;
-      Column_Start : Character_Position_Positive) return Wide_String
+     (Element       : Asis.Discrete_Range;
+      Column_Start  : Character_Position_Positive;
+      For_Loop_Mode : Boolean := False) return Wide_String
    is
       function Expr_Has_Universal_Type
         (Expr : Asis.Expression) return Boolean;
@@ -1277,28 +1249,48 @@ package body Sparkify.Pre_Operations is
    begin
       case Discrete_Range_Kind (Element) is
          when A_Discrete_Subtype_Indication =>
-            return Transform_Subtype_Indication (Element, Column_Start);
+            if For_Loop_Mode then
+               return "";
+            else
+               return Transform_Subtype_Indication (Element, Column_Start);
+            end if;
 
          when A_Discrete_Range_Attribute_Reference |
               A_Discrete_Simple_Expression_Range =>
             declare
-               Subtype_Name : constant Wide_String := Fresh_Name;
-               Line         : constant Line_Number_Positive :=
-                                First_Line_Number (Element);
-               Name         : Unbounded_Wide_String;
-               Type_Decl    : Asis.Declaration;
+               Line      : constant Line_Number_Positive :=
+                             First_Line_Number (Element);
+               Name      : Unbounded_Wide_String;
+               Type_Decl : Asis.Declaration;
             begin
                case Discrete_Range_Kind (Element) is
                   when A_Discrete_Range_Attribute_Reference =>
                      declare
-                        Expr         : constant Asis.Expression :=
-                                         Prefix (Range_Attribute (Element));
+                        Expr : constant Asis.Expression :=
+                                 Prefix (Range_Attribute (Element));
                      begin
                         --  Retrieve type from prefix of range expression
                         Type_Decl := Corresponding_Expression_Type (Expr);
                         if Is_Nil (Type_Decl) then
                            Type_Decl := Corresponding_Name_Declaration (Expr);
                         end if;
+
+                        declare
+                           Type_Def : constant Asis.Definition :=
+                                        Type_Declaration_View (Type_Decl);
+                        begin
+                           case Type_Kind (Type_Def) is
+                           when A_Constrained_Array_Definition |
+                                An_Unconstrained_Array_Definition =>
+                              --  Type_Decl is currently an array type, from
+                              --  which we should retrieve the appropriate
+                              --  index type, depending on the range being
+                              --  accessed
+                              raise Not_Implemented_Yet;
+                           when others =>
+                              null;
+                           end case;
+                        end;
                         pragma Assert (not Is_Nil (Type_Decl));
                      end;
 
@@ -1345,14 +1337,22 @@ package body Sparkify.Pre_Operations is
                        (Type_Decl, Declaration_Unique_Name (Type_Decl)));
                end if;
 
-               --  Print the newly defined subtype
-               PP_Text_At (Line, Column_Start,
-                           "subtype " & Subtype_Name & " is "
-                           & To_Wide_String (Name) & " range ");
-               Traverse_Element_And_Print (Element);
-               PP_Word (";");
+               if For_Loop_Mode then
+                  return To_Wide_String (Name) & " range ";
+               else
+                  declare
+                     Subtype_Name : constant Wide_String := Fresh_Name;
+                  begin
+                     --  Print the newly defined subtype
+                     PP_Text_At (Line, Column_Start,
+                                 "subtype " & Subtype_Name & " is "
+                                 & To_Wide_String (Name) & " range ");
+                     Traverse_Element_And_Print (Element);
+                     PP_Word (";");
 
-               return Subtype_Name;
+                     return Subtype_Name;
+                  end;
+               end if;
             end;
 
          when Not_A_Discrete_Range =>
