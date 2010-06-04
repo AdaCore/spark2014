@@ -56,14 +56,14 @@ is
         A4 := Array4'
 --@ line 10
               (9,8,7,6,5,4,3,2,1,0);
-      for I in  Integer range 
+      for I in Integer range 
 --@ line 11
                1 .. 9 loop
          --# assert True;
 --@ line 12
          A2(I) := A1(I);
       end loop;
-      for I in  Integer range 
+      for I in Integer range 
 --@ line 14
                Array3'Range loop
          --# assert True;
