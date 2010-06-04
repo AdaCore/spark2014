@@ -79,7 +79,7 @@ package body Anon_Type is
 --@ line 30
       My_Array2      : New_Name_11              ;
    begin
-      Var_Out  := Var_In + 1;
+      Var_Out  := Var_In + (Var_Out + 1);
       return Var_Out;
    end Increment;
 end Anon_Type;

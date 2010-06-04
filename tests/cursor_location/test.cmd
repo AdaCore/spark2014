@@ -1,10 +1,13 @@
-sparkify -w -q cursor_location.ads cursor_location.adb
+sparkify -w -q *.ads *.adb
 cd sparkified
 echo "------------------------------------------------------------------------"
-cat cursor_location.ads cursor_location.adb
+cat *.ads *.adb
 echo "------------------------------------------------------------------------"
 sparkmake > dummy.log
 spark -noecho -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
+if [ $? -ge 2 ]; then
+  exit
+fi
 sparksimp > dummy.log
-pogs -o=cursor_location.sum > dummy.log
-tail -11 cursor_location.sum
+pogs > dummy.log
+tail -11 *.sum

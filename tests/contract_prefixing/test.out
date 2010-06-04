@@ -18,6 +18,11 @@ package S is
    --# return Result =>  Result            = N + 2;
 
 end S;
+package T is
+
+   type Signed is range -10 .. 10;
+
+end T;
 package body S is
 
    procedure Inc_Positive (N : in out T.Signed
@@ -70,11 +75,6 @@ package body S is
    end Plus_Two_F;
 
 end S;
-package T is
-
-   type Signed is range -10 .. 10;
-
-end T;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          4      0      4              0      0      0       0

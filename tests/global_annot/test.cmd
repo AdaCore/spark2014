@@ -1,12 +1,13 @@
-sparkify -w -q globals.ads globals.adb
+sparkify -w -q *.ads *.adb
 cd sparkified
 echo "------------------------------------------------------------------------"
-cat globals.ads globals.adb
+cat *.ads *.adb
 echo "------------------------------------------------------------------------"
 sparkmake > dummy.log
-spark -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark \
-| grep "errors or warnings"
-echo "------------------------------------------------------------------------"
+spark -noecho -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
+if [ $? -ge 2 ]; then
+  exit
+fi
 sparksimp > dummy.log
-pogs -o=globals.sum > dummy.log
-tail -11 globals.sum
+pogs > dummy.log
+tail -11 *.sum

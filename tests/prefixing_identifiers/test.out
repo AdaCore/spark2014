@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------
+package Integer_Types is
+
+   type Array_Range is range 1 .. 10;
+
+end Integer_Types;
 with Integer_Types; 
 --# inherit integer_types;
 package S is
@@ -63,11 +68,6 @@ package body S is
   end Check_Index;
 
 end S;
-package Integer_Types is
-
-   type Array_Range is range 1 .. 10;
-
-end Integer_Types;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          5      0      5              0      0      0       0

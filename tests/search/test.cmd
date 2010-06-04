@@ -1,10 +1,13 @@
-sparkify -w -q search.ads search.adb
+sparkify -w -q *.ads *.adb
 cd sparkified
 echo "------------------------------------------------------------------------"
-cat search.ads search.adb
+cat *.ads *.adb
 echo "------------------------------------------------------------------------"
 sparkmake > dummy.log
 spark -noecho -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
+if [ $? -ge 2 ]; then
+  exit
+fi
 sparksimp > dummy.log
-pogs -o=search.sum > dummy.log
-tail -11 search.sum
+pogs > dummy.log
+tail -11 *.sum

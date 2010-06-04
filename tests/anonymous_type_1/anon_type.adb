@@ -29,7 +29,7 @@ package body Anon_Type is
       My_Array1      : array (1.. 10) of Integer;
       My_Array2      : array (1.. 20) of Integer;
    begin
-      Var_Out  := Var_In + 1;
+      Var_Out  := Var_In + (Var_Out + 1);
       return Var_Out;
    end Increment;
 end Anon_Type;

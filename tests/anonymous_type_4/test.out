@@ -13,12 +13,12 @@ package Anon_Type is
    subtype New_Name_2 is                      Integer range 0 .. 9;
    subtype New_Name_3 is 
 --@ line 8
-       Integer range 0 .. 999;
+           Integer range 0 .. 999;
 --@ line 7
    type Matrix is array (New_Name_1, New_Name_2) of New_Name_3;
 
 
-   procedure Multiply (X,Y : in Matrix; Z : out Matrix);
+   procedure Multiply (X,Y : in Matrix; Z : in out Matrix);
 
 end Anon_Type;
 ------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ end Anon_Type;
 --
 package body Anon_Type is
 
-   procedure Multiply (X,Y : in Matrix; Z : out Matrix)
+   procedure Multiply (X,Y : in Matrix; Z : in out Matrix)
    is
    begin
       -- Z := Matrix'(1 .. 9 => (1 .. 9 =>0));
@@ -43,10 +43,9 @@ package body Anon_Type is
             for K in Integer range 
 --@ line 12
                      1 .. 9 loop
-               --Z(I,J) := Z(I,J) + X(I,K) * Y(K,J);
                --# assert True;
---@ line 14
-               null;
+--@ line 13
+               Z(I,J) := X(I,K) * Y(K,J);
             end loop;
          end loop;
       end loop;
@@ -55,13 +54,13 @@ package body Anon_Type is
 end Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:         13      4      9              0      0      0       0
+Assert or Post:         13      4      6              0      0      0       3
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           6      0      6              0      0      0       0
+Runtime check:           7      0      6              0      0      0       1
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 19      4     15              0      0      0       0
-% Totals:                      21%    79%             0%     0%     0%      0%
+Totals:                 20      4     12              0      0      0       4  <<<
+% Totals:                      20%    60%             0%     0%     0%     20% <<<
 ===================== End of Semantic Analysis Summary ========================

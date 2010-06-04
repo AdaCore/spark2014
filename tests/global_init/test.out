@@ -30,8 +30,6 @@ begin
 
 end Globals;
 ------------------------------------------------------------------------
-   No errors or warnings
-------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0
 Precondition check:      0      0      0              0      0      0       0
