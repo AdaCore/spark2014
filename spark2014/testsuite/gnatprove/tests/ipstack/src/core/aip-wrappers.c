@@ -1,4 +1,7 @@
-
+/*****************************************************************************
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+ ****************************************************************************/
 /* C function wrappers to macros or direct access to structure
    components, for Ada binding purposes.  */
 
@@ -38,7 +41,7 @@ pbuf_len_w (struct pbuf * buf)
 u16_t
 pbuf_tot_len_w (struct pbuf * buf)
 {
-  return buf->len;
+  return buf->tot_len;
 }
 
 void *
@@ -113,6 +116,3 @@ echo_accept_cb_w (void * arg, void * tcb, err_t errin)
   echo_accept_cb (arg, tcb, errin, &err);
   return err;
 }
-
-
-   
