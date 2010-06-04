@@ -1232,6 +1232,7 @@ package body Sparkify.Pre_Operations is
       Column_Start  : Character_Position_Positive;
       For_Loop_Mode : Boolean := False) return Wide_String
    is
+
       function Expr_Has_Universal_Type
         (Expr : Asis.Expression) return Boolean;
 
@@ -1246,6 +1247,36 @@ package body Sparkify.Pre_Operations is
            Root_Type_Kind (Asis.Set_Get.Root_Type_Definition (Type_Decl))
            = A_Universal_Integer_Definition;
       end Expr_Has_Universal_Type;
+
+      function Corresponding_Type_Of_Range
+        (Element : Asis.Discrete_Range) return Asis.Declaration;
+
+      function Corresponding_Type_Of_Range
+        (Element : Asis.Discrete_Range) return Asis.Declaration
+      is
+         LBound_Expr : constant Asis.Expression :=
+                         Lower_Bound (Element);
+         UBound_Expr : constant Asis.Expression :=
+                         Upper_Bound (Element);
+         LUniversal  : constant Boolean :=
+                         Expr_Has_Universal_Type (LBound_Expr);
+         UUniversal  : constant Boolean :=
+                         Expr_Has_Universal_Type (UBound_Expr);
+      begin
+         --  Retrieve type from prefix of range expression
+         if LUniversal then
+            if UUniversal then
+               --  Set Type_Decl to Nil to flag that Name is
+               --  already set
+               return Nil_Element;
+            else
+               return Corresponding_Expression_Type (UBound_Expr);
+            end if;
+         else
+            return Corresponding_Expression_Type (LBound_Expr);
+         end if;
+      end Corresponding_Type_Of_Range;
+
    begin
       case Discrete_Range_Kind (Element) is
          when A_Discrete_Subtype_Indication =>
@@ -1260,8 +1291,8 @@ package body Sparkify.Pre_Operations is
             declare
                Line      : constant Line_Number_Positive :=
                              First_Line_Number (Element);
-               Name      : Unbounded_Wide_String;
                Type_Decl : Asis.Declaration;
+               Name        : Unbounded_Wide_String;
             begin
                case Discrete_Range_Kind (Element) is
                   when A_Discrete_Range_Attribute_Reference =>
@@ -1280,8 +1311,64 @@ package body Sparkify.Pre_Operations is
                                         Type_Declaration_View (Type_Decl);
                         begin
                            case Type_Kind (Type_Def) is
-                           when A_Constrained_Array_Definition |
-                                An_Unconstrained_Array_Definition =>
+                           when A_Constrained_Array_Definition =>
+                              --  Type_Decl is currently an array type, from
+                              --  which we should retrieve the appropriate
+                              --  index type, depending on the range being
+                              --  accessed
+                              declare
+                                 Index_Def : constant Asis.Definition_List :=
+                                     Discrete_Subtype_Definitions (Type_Def);
+                              begin
+                                 pragma Assert (Index_Def'Length /= 0);
+
+                                 case Discrete_Range_Kind (Index_Def (1)) is
+                                    when A_Discrete_Simple_Expression_Range =>
+                                       Type_Decl := Corresponding_Type_Of_Range
+                                         (Index_Def (1));
+
+                                    when A_Discrete_Subtype_Indication =>
+                                       if Is_Nil (Subtype_Constraint
+                                                  (Index_Def (1))) then
+                                          Type_Decl :=
+                                            Corresponding_Expression_Type
+                                              (Asis.Definitions.Subtype_Mark
+                                                   (Index_Def (1)));
+                                             pragma Assert (not Is_Nil (
+                                            Type_Decl));
+                                       else
+                                          declare
+                                             Constraint      : constant
+                                               Asis.Constraint :=
+                                                 Subtype_Constraint
+                                                   (Index_Def (1));
+                                          begin
+                                             case Constraint_Kind
+                                               (Constraint) is
+                                             when A_Simple_Expression_Range =>
+                                                Type_Decl :=
+                                                  Corresponding_Type_Of_Range
+                                                  (Constraint);
+                                             when A_Range_Attribute_Reference
+                                                =>
+                                                raise Not_Implemented_Yet;
+                                             when others =>
+                                                pragma Assert (False);
+                                                null;
+                                             end case;
+
+                                          end;
+                                       end if;
+                                    when A_Discrete_Range_Attribute_Reference
+                                       =>
+                                       SLOC_Error ("unexpected element",
+                                                   Build_GNAT_Location
+                                                     (Element));
+                                    when others =>
+                                       null;
+                                 end case;
+                              end;
+                           when An_Unconstrained_Array_Definition =>
                               --  Type_Decl is currently an array type, from
                               --  which we should retrieve the appropriate
                               --  index type, depending on the range being
@@ -1295,35 +1382,7 @@ package body Sparkify.Pre_Operations is
                      end;
 
                   when A_Discrete_Simple_Expression_Range =>
-                     declare
-                        LBound_Expr : constant Asis.Expression :=
-                                        Lower_Bound (Element);
-                        UBound_Expr : constant Asis.Expression :=
-                                        Upper_Bound (Element);
-                        LUniversal  : constant Boolean :=
-                                        Expr_Has_Universal_Type (LBound_Expr);
-                        UUniversal  : constant Boolean :=
-                                        Expr_Has_Universal_Type (UBound_Expr);
-                     begin
-                        --  Retrieve type from prefix of range expression
-                        if LUniversal then
-                           if UUniversal then
-                              --  Set Type_Decl to Nil to flag that Name is
-                              --  already set
-                              Type_Decl := Nil_Element;
-                              Name := To_Unbounded_Wide_String ("Integer");
-                           else
-                              Type_Decl :=
-                                Corresponding_Expression_Type (UBound_Expr);
-                              pragma Assert (not Is_Nil (Type_Decl));
-                           end if;
-                        else
-                           Type_Decl :=
-                             Corresponding_Expression_Type (LBound_Expr);
-                           pragma Assert (not Is_Nil (Type_Decl));
-                        end if;
-                     end;
-
+                     Type_Decl := Corresponding_Type_Of_Range (Element);
                   when others =>
                      pragma Assert (False);
                      null;
@@ -1335,6 +1394,8 @@ package body Sparkify.Pre_Operations is
                   Name := To_Unbounded_Wide_String
                     (Prepend_Package_Name
                        (Type_Decl, Declaration_Unique_Name (Type_Decl)));
+               else
+                  Name := To_Unbounded_Wide_String ("Integer");
                end if;
 
                if For_Loop_Mode then
