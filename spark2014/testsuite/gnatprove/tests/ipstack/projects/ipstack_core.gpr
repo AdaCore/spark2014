@@ -11,8 +11,23 @@ project IPStack_Core is
    for Library_Dir     use IPStack_Config.Lib_Prefix & Subdir;
    for Library_ALI_Dir use IPStack_Config.ALI_Prefix & Subdir;
 
+   type Mode_Type is ("Prove", "Compile");
+   Mode : Mode_Type := external ("Mode", "Compile");
+
+   case Mode is
+      when "Prove" =>
+         for Languages use ("Ada", "Metafile");
+      when "Compile" =>
+         for Languages use ("Ada");
+   end case;
+
    package Compiler is
       for Default_Switches ("Ada")
         use IPStack_Config.Compiler'Default_Switches ("Ada");
    end Compiler;
+
+   package Ide is
+      for Default_Switches ("examiner") use 
+      	  ("-index_file=../src/core/aip.idx", "-flow=data");
+   end Ide;
 end IPStack_Core;

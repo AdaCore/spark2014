@@ -1,0 +1,17 @@
+AIP_Constants   specification is in ../../build/gen/aip_constants.ads
+AIP             specification is in aip.ads
+AIP.Callbacks   specification is in aip-callbacks.ads
+AIP.Config      specification is in aip-config.ads
+AIP.Conversions specification is in aip-conversions.ads
+AIP.IPaddrs     specification is in aip-ipaddrs.ads
+AIP.IPaddrs     body          is in aip-ipaddrs.adb
+AIP.Inet        specification is in aip-inet.ads
+AIP.Inet        body          is in aip-inet.adb
+AIP.Pbufs       specification is in aip-pbufs.ads
+AIP.Pbufs       body          is in aip-pbufs.adb
+AIP.Pools       specification is in aip-pools.ads
+AIP.Support     specification is in aip-support.ads
+AIP.Support     body          is in aip-support.adb
+AIP.TCP         specification is in aip-tcp.ads
+AIP.TCP         body          is in aip-tcp.adb
+AIP.UDP         specification is in aip-udp.ads

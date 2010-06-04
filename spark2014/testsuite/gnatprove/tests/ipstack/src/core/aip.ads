@@ -45,9 +45,9 @@ with AIP_Constants;
 package AIP is
    pragma Pure;
 
-   --------------------------
-   --  Original LWIP types --
-   --------------------------
+   -------------------------
+   -- Original LWIP types --
+   -------------------------
 
    --  We need these for straight LWIP binding purposes, as a first step, and
    --  we might as well reuse them for our own internal needs.
