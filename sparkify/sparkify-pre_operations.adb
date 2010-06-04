@@ -1277,6 +1277,59 @@ package body Sparkify.Pre_Operations is
          end if;
       end Corresponding_Type_Of_Range;
 
+      function Index_Type_Of_Array_Type_Declaration
+        (Type_Def : Asis.Definition) return Asis.Declaration;
+
+      function Index_Type_Of_Array_Type_Declaration
+        (Type_Def : Asis.Definition) return Asis.Declaration
+      is
+         Index_Ref : Positive;
+         Type_Decl : Asis.Declaration;
+      begin
+         --  Marc, you should call Attribute_Designator_Expressions
+         --  and check its result to compute the actual Index_Ref
+         Index_Ref := 1;
+
+         case Type_Kind (Type_Def) is
+            when A_Constrained_Array_Definition =>
+               declare
+                  Index_Def : constant Asis.Definition :=
+                                Discrete_Subtype_Definitions
+                                  (Type_Def) (Index_Ref);
+               begin
+                  case Discrete_Range_Kind (Index_Def) is
+                  when A_Discrete_Simple_Expression_Range =>
+                     Type_Decl := Corresponding_Type_Of_Range (Index_Def);
+
+                  when A_Discrete_Subtype_Indication =>
+                     Type_Decl :=
+                       Corresponding_Expression_Type
+                         (Asis.Definitions.Subtype_Mark (Index_Def));
+                     pragma Assert (not Is_Nil (Type_Decl));
+
+                  when others =>
+                     SLOC_Error ("unexpected element",
+                                 Build_GNAT_Location (Element));
+                  end case;
+               end;
+
+            when An_Unconstrained_Array_Definition =>
+               declare
+                  Index_Def : constant Asis.Expression :=
+                                Index_Subtype_Definitions
+                                  (Type_Def) (Index_Ref);
+               begin
+                  Type_Decl := Corresponding_Name_Declaration (Index_Def);
+                  pragma Assert (not Is_Nil (Type_Decl));
+               end;
+
+            when others =>
+               pragma Assert (False);
+               null;
+         end case;
+
+         return Type_Decl;
+      end Index_Type_Of_Array_Type_Declaration;
    begin
       case Discrete_Range_Kind (Element) is
          when A_Discrete_Subtype_Indication =>
@@ -1289,9 +1342,9 @@ package body Sparkify.Pre_Operations is
          when A_Discrete_Range_Attribute_Reference |
               A_Discrete_Simple_Expression_Range =>
             declare
-               Line      : constant Line_Number_Positive :=
-                             First_Line_Number (Element);
-               Type_Decl : Asis.Declaration;
+               Line        : constant Line_Number_Positive :=
+                               First_Line_Number (Element);
+               Type_Decl   : Asis.Declaration;
                Name        : Unbounded_Wide_String;
             begin
                case Discrete_Range_Kind (Element) is
@@ -1311,69 +1364,15 @@ package body Sparkify.Pre_Operations is
                                         Type_Declaration_View (Type_Decl);
                         begin
                            case Type_Kind (Type_Def) is
-                           when A_Constrained_Array_Definition =>
+                           when A_Constrained_Array_Definition |
+                                An_Unconstrained_Array_Definition =>
                               --  Type_Decl is currently an array type, from
                               --  which we should retrieve the appropriate
                               --  index type, depending on the range being
                               --  accessed
-                              declare
-                                 Index_Def : constant Asis.Definition_List :=
-                                     Discrete_Subtype_Definitions (Type_Def);
-                              begin
-                                 pragma Assert (Index_Def'Length /= 0);
-
-                                 case Discrete_Range_Kind (Index_Def (1)) is
-                                    when A_Discrete_Simple_Expression_Range =>
-                                       Type_Decl := Corresponding_Type_Of_Range
-                                         (Index_Def (1));
-
-                                    when A_Discrete_Subtype_Indication =>
-                                       if Is_Nil (Subtype_Constraint
-                                                  (Index_Def (1))) then
-                                          Type_Decl :=
-                                            Corresponding_Expression_Type
-                                              (Asis.Definitions.Subtype_Mark
-                                                   (Index_Def (1)));
-                                             pragma Assert (not Is_Nil (
-                                            Type_Decl));
-                                       else
-                                          declare
-                                             Constraint      : constant
-                                               Asis.Constraint :=
-                                                 Subtype_Constraint
-                                                   (Index_Def (1));
-                                          begin
-                                             case Constraint_Kind
-                                               (Constraint) is
-                                             when A_Simple_Expression_Range =>
-                                                Type_Decl :=
-                                                  Corresponding_Type_Of_Range
-                                                  (Constraint);
-                                             when A_Range_Attribute_Reference
-                                                =>
-                                                raise Not_Implemented_Yet;
-                                             when others =>
-                                                pragma Assert (False);
-                                                null;
-                                             end case;
-
-                                          end;
-                                       end if;
-                                    when A_Discrete_Range_Attribute_Reference
-                                       =>
-                                       SLOC_Error ("unexpected element",
-                                                   Build_GNAT_Location
-                                                     (Element));
-                                    when others =>
-                                       null;
-                                 end case;
-                              end;
-                           when An_Unconstrained_Array_Definition =>
-                              --  Type_Decl is currently an array type, from
-                              --  which we should retrieve the appropriate
-                              --  index type, depending on the range being
-                              --  accessed
-                              raise Not_Implemented_Yet;
+                              Type_Decl :=
+                                Index_Type_Of_Array_Type_Declaration
+                                  (Type_Def);
                            when others =>
                               null;
                            end case;
