@@ -7,7 +7,7 @@ with AIP.Buffers.Data;
 with AIP.Buffers.No_Data;
 
 package body AIP.Buffers
---# own State is Data, Buffers, Free_List;
+--# own State is Data.State, No_Data.State;
 is
    ---------------
    -- Adjust_Id --

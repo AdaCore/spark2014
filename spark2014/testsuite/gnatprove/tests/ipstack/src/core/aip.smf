@@ -1,4 +1,10 @@
 aip.ads
+aip-buffers.ads
+aip-buffers-no_data.ads
+aip-buffers-no_data.adb
+aip-buffers.adb
+aip-buffers-data.ads
+aip-buffers-data.adb
 aip-callbacks.ads
 aip-config.ads
 aip-inet.adb

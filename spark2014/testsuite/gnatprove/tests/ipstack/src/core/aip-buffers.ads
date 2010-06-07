@@ -5,17 +5,20 @@
 
 --  Generic Packet Buffers (network packet data containers) management.
 
+--# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
+--#         AIP.Support;  -- Same reason to inherit AIP.Support
+
 package AIP.Buffers
 --# own State;
 is
-   Chunk_Size : Positive := 256;
+   Chunk_Size : constant Positive := 256;
    --  Size of an individual chunk
-   Chunk_Num  : Positive := 10;
+   Chunk_Num  : constant Positive := 10;
    --  Total number of chunks statically allocated
-   Ref_Num    : Positive := 64;
+   Ref_Num    : constant Positive := 64;
    --  Number of 'ref' buffers statically allocated
 
-   subtype Element is Character;
+   subtype Elem is Character;
 
    --  There should be at least one buffer per chunk, plus additional buffers
    --  for the case where no data is stored

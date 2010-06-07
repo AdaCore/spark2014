@@ -6,12 +6,12 @@
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding a reference to some external data
 
+--# inherit AIP.Buffers, AIP.Support;
+
 private package AIP.Buffers.No_Data
 --# own State;
 is
-   subtype Data_Buffer_Kind is Buffer_Kind range MONO_BUF .. LINK_BUF;
-
-   Buffer_Num : constant Positive := Ref_Num;
+   Buffer_Num : constant Positive := Buffers.Ref_Num;
 
    subtype Buffer_Id is Natural range 0 .. Buffer_Num;
 
@@ -20,7 +20,7 @@ is
    -----------------------
 
    procedure Buffer_Alloc
-     (Size   :     Data_Length;
+     (Size   :     Buffers.Data_Length;
       Buf    : out Buffer_Id);
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at referending Size

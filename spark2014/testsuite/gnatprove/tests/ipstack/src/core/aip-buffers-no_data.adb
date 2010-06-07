@@ -6,7 +6,7 @@
 with AIP.Support;
 
 package body AIP.Buffers.No_Data
---# own State is Buffers, Free_List;
+--# own State is Buf_List, Free_List;
 is
    subtype Buffer_Index is Positive range 1 .. Buffer_Num;
 
@@ -18,7 +18,7 @@ is
       Payload_Ref : AIP.IPTR_T;
 
       --  Total length of the data referenced by this buffer
-      Tot_Len     : Data_Length;
+      Tot_Len     : Buffers.Data_Length;
 
       --  The reference count always equals the number of pointers
       --  that refer to this buffer. This can be pointers from an application
@@ -28,29 +28,30 @@ is
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
 
-   Buffers : Buffer_Array;
-   Free_List : Buffer_Id := 1;  --  Head of the free-list
+   Buf_List  : Buffer_Array;
+   Free_List : Buffer_Id;  --  Head of the free-list
 
    ------------------
    -- Buffer_Alloc --
    ------------------
 
    procedure Buffer_Alloc
-     (Size   :     Data_Length;
+     (Size   :     Buffers.Data_Length;
       Buf    : out Buffer_Id)
+   --# global in out Buf_List, Free_List;
    is
    begin
-      AIP.Support.Verify (Free_List /= NOBUF);
+      Support.Verify (Free_List /= Buffers.NOBUF);
 
       Buf                       := Free_List;
-      Free_List                 := Buffers (Free_List).Next;
+      Free_List                 := Buf_List (Free_List).Next;
 
-      Buffers (Buf).Next        := NOBUF;
+      Buf_List (Buf).Next        := Buffers.NOBUF;
       --  Caller must set this field properly, afterwards
-      Buffers (Buf).Payload_Ref := AIP.NULIPTR;
-      Buffers (Buf).Tot_Len     := Size;
+      Buf_List (Buf).Payload_Ref := AIP.NULIPTR;
+      Buf_List (Buf).Tot_Len     := Size;
       --  Set reference count
-      Buffers (Buf).Ref         := 1;
+      Buf_List (Buf).Ref         := 1;
    end Buffer_Alloc;
 
 end AIP.Buffers.No_Data;
