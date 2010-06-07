@@ -27,4 +27,12 @@ has already been proved.
 
 signed_test.why is an example in why of the use of this signed integer types.
 
+Modular types:
+--------------
 
+In modular.ads, proposal in modular.why. For a modular type Byte, the generated
+entities are roughly the same as for a signed type; the main difference being
+the "coerce" axiom, which states that results of a convertion from int to
+a mod type, then back to int is equivalent to a modulus operation.
+
+modular_test.why is an example in why of the use of these modular types.

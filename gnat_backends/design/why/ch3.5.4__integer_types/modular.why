@@ -1,0 +1,41 @@
+
+type modular__byte
+
+logic integer_of_modular__byte: modular__byte -> int
+
+predicate eq_modular__byte(x:modular__byte, y:modular__byte) =
+ eq_int(integer_of_modular__byte(x), integer_of_modular__byte(y))
+
+predicate modular__byte_in_range(x:int) =
+ le_int(0, x) and le_int(x, 255)
+
+logic modular__byte_of_integer: int -> modular__byte
+
+axiom modular__byte_coerce :
+ (forall x:int. (
+  eq_int(integer_of_modular__byte(modular__byte_of_integer (x)),
+         mod_int (x, 256))
+ ))
+
+axiom modular__byte_coerce_in_range :
+ (forall x:int. (
+  (modular__byte_in_range(x)) ->
+   eq_int(integer_of_modular__byte(modular__byte_of_integer (x)), x)
+ ))
+
+axiom modular__byte_range :
+ (forall x:modular__byte.
+  (modular__byte_in_range (integer_of_modular__byte (x))))
+
+parameter any_modular__byte : unit -> { } modular__byte { true }
+
+parameter modular__byte_of_integer_ :
+ x:int ->
+ {modular__byte_in_range (x)}
+  modular__byte
+ { eq_int(integer_of_modular__byte(result), x) }
+
+parameter safe_modular__byte_of_integer_ :
+ x:int -> { } modular__byte { eq_int(integer_of_modular__byte(result), x) }
+
+
