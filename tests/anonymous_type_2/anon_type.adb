@@ -14,5 +14,8 @@ is
       for I in Array3'Range loop
          A4(I) := A3(I);
       end loop;
+      for I in Array5'Range (2) loop
+         null;
+      end loop;
    end exchange;
 end Anon_Type;

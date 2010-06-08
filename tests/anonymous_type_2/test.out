@@ -17,7 +17,7 @@ is
    Size : constant Integer :=10;
    subtype New_Name_3 is Integer range 
 --@ line 11
-                        1 .. Size;
+                         1 .. Size;
 --@ line 11
    type Array3 is array (New_Name_3) of Value;
    subtype New_Name_4 is Integer range 

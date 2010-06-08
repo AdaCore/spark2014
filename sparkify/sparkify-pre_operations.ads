@@ -108,6 +108,11 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
+   procedure A_Derived_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
 
@@ -346,7 +351,7 @@ package Sparkify.Pre_Operations is
       --  Detailed classification for Asis.Definition_Kinds (A_Type_Definition)
       --  literal, corresponds to subtype Internal_Type_Kinds
 
-      A_Derived_Type_Definition => No_Action'Access,
+      A_Derived_Type_Definition => A_Derived_Type_Definition_Pre_Op'Access,
 
       A_Derived_Record_Extension_Definition => No_Action'Access,
 

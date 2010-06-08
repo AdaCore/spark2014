@@ -47,6 +47,7 @@ with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
 with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
+with Ada.Integer_Wide_Text_IO;         use Ada.Integer_Wide_Text_IO;
 
 package body Sparkify.Pre_Operations is
 
@@ -118,6 +119,78 @@ package body Sparkify.Pre_Operations is
    function Transform_Constrained_Array_Definition
      (Element      :        Asis.Type_Definition;
       Column_Start : Character_Position_Positive) return Wide_String;
+
+   --------------------------------------
+   -- A_Derived_Type_Definition_Pre_Op --
+   --------------------------------------
+
+   procedure A_Derived_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+      --  get the parent subtype indication by calling
+      Parent_Subtype_Ind : constant Asis.Subtype_Indication :=
+                             Parent_Subtype_Indication (Element);
+--        Parent_Decl       : constant   Asis.Declaration :=
+--                               Corresponding_Parent_Subtype (Element);
+   begin
+      if Cursor_At (Element) < State.Echo_Cursor then
+         --  Handling of this Element was already taken care of
+         return;
+      end if;
+
+      PP_Echo_Cursor_Range
+        (State.Echo_Cursor, Cursor_Before (Element));
+      State.Echo_Cursor := Cursor_At (Element);
+
+      if Simple_Subtype_Indication (Parent_Subtype_Ind) then
+         return;
+      else
+         declare
+            Constraint   : constant Asis.Constraint :=
+                             Subtype_Constraint (Parent_Subtype_Ind);
+--              Subtype_Name : constant  Asis.Declaration :=
+--                               Corresponding_Parent_Subtype (Element);
+            Subtype_Str  : constant Wide_String :=
+                             "--#assert Key'Base is Integer ";
+         begin
+            case Constraint_Kind (Constraint) is
+               when A_Simple_Expression_Range =>
+                  PP_Word (" range ");
+                  Traverse_Element_And_Print (Constraint);
+                  PP_Word (";");
+                  PP_Close_Line;
+                  PP_Word (Subtype_Str);
+                  State.Echo_Cursor := Cursor_After
+                    (Enclosing_Element (Element));
+               when A_Range_Attribute_Reference =>
+                  raise Not_Implemented_Yet;
+
+               when An_Index_Constraint =>
+                  raise Not_Implemented_Yet;
+
+               when A_Digits_Constraint |
+                    A_Delta_Constraint =>
+
+                  raise Not_Implemented_Yet;
+
+               when A_Discriminant_Constraint =>
+
+                  SLOC_Error ("discriminant constraint",
+                              Build_GNAT_Location (Element));
+
+               when Not_A_Constraint =>
+
+                  pragma Assert (False);
+                  null;
+            end case;
+         end;
+
+      end if;
+
+   end A_Derived_Type_Definition_Pre_Op;
 
    -----------------------------
    -- A_Loop_Statement_Pre_Op --
@@ -729,31 +802,43 @@ package body Sparkify.Pre_Operations is
                   end;
                end loop;
 
-               --  Print up to first record component (IF ANY!!!! Marc, please
-               --  check what happens for records with no components)
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
+               if Is_Nil (Record_Comps) then
+                  --  a record definition cannot be null record
+                  --  unless it is tagged
+                  if Definition_Kind (Record_Def) /=
+                    A_Tagged_Private_Type_Definition and then
+                     Definition_Kind (Record_Def) =
+                    A_Null_Record_Definition then
+                     pragma Assert (False);
+                     null;
+                  end if;
+               else
 
-               for J in Record_Comps'Range loop
-                  declare
-                     Comp_Decl  : constant Asis.Declaration :=
-                                    Component_Declaration (Record_Comps (J));
-                     Object_Def : constant Asis.Definition :=
-                                    Object_Declaration_View (Comp_Decl);
-                     Comp_View  : constant Asis.Component_Definition :=
-                                    Component_Definition_View (Object_Def);
-                  begin
-                     PP_Echo_Cursor_Range
-                       (Cursor_At (Record_Comps (J)),
-                        Cursor_Before (Comp_View));
-                     PP_Word (To_Wide_String (Subtype_Names (J)));
-                     PP_Word (";");
-                  end;
-               end loop;
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
 
-               PP_Close_Line;
-               PP_Word ("end record;");
-               State.Echo_Cursor := Cursor_After (Element);
+                  for J in Record_Comps'Range loop
+                     declare
+                        Comp_Decl  : constant Asis.Declaration :=
+                                       Component_Declaration
+                                         (Record_Comps (J));
+                        Object_Def : constant Asis.Definition :=
+                                       Object_Declaration_View (Comp_Decl);
+                        Comp_View  : constant Asis.Component_Definition :=
+                                       Component_Definition_View (Object_Def);
+                     begin
+                        PP_Echo_Cursor_Range
+                          (Cursor_At (Record_Comps (J)),
+                           Cursor_Before (Comp_View));
+                        PP_Word (To_Wide_String (Subtype_Names (J)));
+                        PP_Word (";");
+                     end;
+                  end loop;
+
+                  PP_Close_Line;
+                  PP_Word ("end record;");
+                  State.Echo_Cursor := Cursor_After (Element);
+               end if;
             end;
 
          when others =>
@@ -1278,17 +1363,15 @@ package body Sparkify.Pre_Operations is
       end Corresponding_Type_Of_Range;
 
       function Index_Type_Of_Array_Type_Declaration
-        (Type_Def : Asis.Definition) return Asis.Declaration;
+        (Type_Def : Asis.Definition; Index_Ref : Positive)
+         return Asis.Declaration;
 
       function Index_Type_Of_Array_Type_Declaration
-        (Type_Def : Asis.Definition) return Asis.Declaration
+        (Type_Def : Asis.Definition; Index_Ref : Positive)
+         return Asis.Declaration
       is
-         Index_Ref : Positive;
          Type_Decl : Asis.Declaration;
       begin
-         --  Marc, you should call Attribute_Designator_Expressions
-         --  and check its result to compute the actual Index_Ref
-         Index_Ref := 1;
 
          case Type_Kind (Type_Def) is
             when A_Constrained_Array_Definition =>
@@ -1330,6 +1413,7 @@ package body Sparkify.Pre_Operations is
 
          return Type_Decl;
       end Index_Type_Of_Array_Type_Declaration;
+
    begin
       case Discrete_Range_Kind (Element) is
          when A_Discrete_Subtype_Indication =>
@@ -1350,13 +1434,36 @@ package body Sparkify.Pre_Operations is
                case Discrete_Range_Kind (Element) is
                   when A_Discrete_Range_Attribute_Reference =>
                      declare
-                        Expr : constant Asis.Expression :=
-                                 Prefix (Range_Attribute (Element));
+                        Expr_Att  : constant Asis.Expression :=
+                                      Range_Attribute (Element);
+                        Expr      : constant Asis.Expression :=
+                                      Prefix (Expr_Att);
+                        Att       : constant Asis.Expression_List :=
+                                      Attribute_Designator_Expressions
+                                        (Expr_Att);
+                        Index_Ref : Positive;
                      begin
                         --  Retrieve type from prefix of range expression
                         Type_Decl := Corresponding_Expression_Type (Expr);
                         if Is_Nil (Type_Decl) then
                            Type_Decl := Corresponding_Name_Declaration (Expr);
+                        end if;
+
+                        if Att = Nil_Element_List then
+                           Index_Ref := 1;
+                        else
+                           declare
+                              Att_Value : constant Wide_String :=
+                                            Trim
+                                              (Static_Expression_Value_Image
+                                                 (Att (1)), Ada.Strings.Both);
+                              Last      : Positive;
+                           begin
+                              pragma Assert (Att_Value /= "");
+                              Ada.Integer_Wide_Text_IO.Get
+                                (Att_Value, Index_Ref, Last);
+                              pragma Assert (Last = Att_Value'Length);
+                           end;
                         end if;
 
                         declare
@@ -1372,12 +1479,11 @@ package body Sparkify.Pre_Operations is
                               --  accessed
                               Type_Decl :=
                                 Index_Type_Of_Array_Type_Declaration
-                                  (Type_Def);
+                                     (Type_Def, Index_Ref);
                            when others =>
                               null;
                            end case;
                         end;
-                        pragma Assert (not Is_Nil (Type_Decl));
                      end;
 
                   when A_Discrete_Simple_Expression_Range =>
