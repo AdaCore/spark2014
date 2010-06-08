@@ -21,8 +21,8 @@ is
 
    Data_Array : Data_Array_Type;
 
-   subtype Chunk_Position is Positive range 1 .. Buffers.Chunk_Size;
-   subtype Buffer_Index is Positive range 1 .. Buffer_Num;
+   subtype Chunk_Position is AIP.U16_T range 1 .. Buffers.Chunk_Size;
+   subtype Buffer_Index is AIP.U16_T range 1 .. Buffer_Num;
    subtype Buffer_Count is Buffer_Index;
 
    type Buffer is record
@@ -73,10 +73,11 @@ is
       Buf    : out Buffer_Id)
    --# global in out Buf_List, Free_List;
    is
-      Requested_Size    : Natural;
-      Requested_Chunks  : Natural;
+      Requested_Size    : AIP.U16_T;
+      Requested_Chunks  : AIP.U16_T;
       Cur_Buf, Next_Buf : Buffer_Id;
-      Remaining_Size    : Buffers.Data_Length;  --  Remaining size to be allocated
+      Remaining_Size    : Buffers.Data_Length;
+      --  Remaining size to be allocated
    begin
       Requested_Size := Offset + Size;
       if Requested_Size = 0 then
@@ -103,7 +104,7 @@ is
       Remaining_Size := Requested_Size;
 
       --  Allocate the remaining chunks
-      for Remaining in reverse Positive range 1 .. Requested_Chunks loop
+      for Remaining in reverse AIP.U16_T range 1 .. Requested_Chunks loop
          Buf_List (Cur_Buf).Num            := Remaining;
          Buf_List (Cur_Buf).Num_No_Jump    :=
            Buffer_Count'Min (Buf_List (Cur_Buf).Num_No_Jump, Remaining);
@@ -121,7 +122,7 @@ is
          Buf_List (Cur_Buf).Tot_Len        := Remaining_Size;
 
          Buf_List (Cur_Buf).Len            :=
-           Natural'Min (Buffers.Chunk_Size, Remaining_Size);
+           AIP.U16_T'Min (Buffers.Chunk_Size, Remaining_Size);
          Remaining_Size                   :=
            Remaining_Size - Buf_List (Cur_Buf).Len;
 
@@ -134,6 +135,17 @@ is
       Buf_List (Cur_Buf).Next := Buffers.NOBUF;
       Free_List := Next_Buf;
    end Buffer_Alloc;
+
+   ----------------
+   -- Buffer_Len --
+   ----------------
+
+   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Buf_List;
+   is
+   begin
+      return Buf_List (Buf).Len;
+   end Buffer_Len;
 
 end AIP.Buffers.Data;
 

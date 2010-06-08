@@ -9,30 +9,32 @@ with AIP.Buffers.No_Data;
 package body AIP.Buffers
 --# own State is AIP.Buffers.Data.State, AIP.Buffers.No_Data.State;
 is
-   ---------------
-   -- Adjust_Id --
-   ---------------
+   --------------------
+   -- Is_Data_Buffer --
+   --------------------
 
-   function Adjust_Id (Buf : Buffer_Id) return Buffer_Id is
-      Adjusted_Buf : Buffer_Id;
+   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
    begin
-      if Buf > Chunk_Num then
-         --  Buffer without data: Kind = REF_BUF
-         Adjusted_Buf := Buf - Chunk_Num;
-      else
-         --  Buffer with data: Kind = MONO_BUF or Kind = LINK_BUF
-         Adjusted_Buf := Buf;
-      end if;
-      return Adjusted_Buf;
-   end Adjust_Id;
+      return Buf <= Chunk_Num;
+   end Is_Data_Buffer;
+
+   -----------------------
+   -- Adjust_No_Data_Id --
+   -----------------------
+
+   function Adjust_No_Data_Id (Buf : Buffer_Id) return No_Data.Buffer_Id is
+   begin
+      return No_Data.U16_T (Buf - Chunk_Num);
+   end Adjust_No_Data_Id;
 
    ----------------------------
    -- Adjust_Back_No_Data_Id --
    ----------------------------
 
-   function Adjust_Back_No_Data_Id (Buf : Buffer_Id) return Buffer_Id is
+   function Adjust_Back_No_Data_Id (Buf : No_Data.Buffer_Id) return Buffer_Id
+   is
    begin
-      return Buf + Chunk_Num;
+      return AIP.U16_T (Buf) + Chunk_Num;
    end Adjust_Back_No_Data_Id;
 
    ------------------
@@ -46,6 +48,7 @@ is
       Buf    : out Buffer_Id)
    --# global in out Data.State, No_Data.State;
    is
+      No_Data_Buf : No_Data.Buffer_Id;
    begin
       if Kind in Data_Buffer_Kind then
          Data.Buffer_Alloc (Offset => Offset,
@@ -54,9 +57,26 @@ is
                             Buf    => Buf);
       else
          No_Data.Buffer_Alloc (Size => Size,
-                               Buf  => Buf);
-         Buf := Adjust_Back_No_Data_Id (Buf);
+                               Buf  => No_Data_Buf);
+         Buf := Adjust_Back_No_Data_Id (No_Data_Buf);
       end if;
    end Buffer_Alloc;
+
+   ----------------
+   -- Buffer_Len --
+   ----------------
+
+   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Data.State, No_Data.State;
+   is
+      Result : AIP.U16_T;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Result := Data.Buffer_Len (Buf);
+      else
+         Result := No_Data.Buffer_Len (Adjust_No_Data_Id (Buf));
+      end if;
+      return Result;
+   end Buffer_Len;
 
 end AIP.Buffers;

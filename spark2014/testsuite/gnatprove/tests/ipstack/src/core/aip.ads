@@ -57,8 +57,12 @@ package AIP is
    type S8_T is range -2 ** 7 .. 2 ** 7 - 1;
    type S16_T is range -2 ** 15 .. 2 ** 15 - 1;
 
-   type U8_T is mod 2 ** 8;
-   type U16_T is mod 2 ** 16;
+   --  Types used for sizes should not be implemented as modulo
+   type U8_T is range 0 .. 2 ** 8 - 1;
+   type U16_T is range 0 .. 2 ** 16 - 1;
+
+   --  U32_T is only used for bitvector manipulations, hence should be
+   --  implemented as modulo
    type U32_T is mod 2 ** 32;
 
    subtype Err_T is S8_T;

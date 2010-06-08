@@ -8,7 +8,7 @@ with AIP.Support;
 package body AIP.Buffers.No_Data
 --# own State is Buf_List, Free_List;
 is
-   subtype Buffer_Index is Positive range 1 .. Buffer_Num;
+   subtype Buffer_Index is U16_T range 1 .. Buffer_Num;
 
    type Buffer is record
       --  Next buffer in singly linked chain
@@ -41,17 +41,28 @@ is
    --# global in out Buf_List, Free_List;
    is
    begin
-      Support.Verify (Free_List /= Buffers.NOBUF);
+      Support.Verify (Free_List /= NOBUF);
 
       Buf                       := Free_List;
       Free_List                 := Buf_List (Free_List).Next;
 
-      Buf_List (Buf).Next        := Buffers.NOBUF;
+      Buf_List (Buf).Next        := NOBUF;
       --  Caller must set this field properly, afterwards
       Buf_List (Buf).Payload_Ref := AIP.NULIPTR;
       Buf_List (Buf).Tot_Len     := Size;
       --  Set reference count
       Buf_List (Buf).Ref         := 1;
    end Buffer_Alloc;
+
+   ----------------
+   -- Buffer_Len --
+   ----------------
+
+   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Buf_List;
+   is
+   begin
+      return Buf_List (Buf).Tot_Len;
+   end Buffer_Len;
 
 end AIP.Buffers.No_Data;

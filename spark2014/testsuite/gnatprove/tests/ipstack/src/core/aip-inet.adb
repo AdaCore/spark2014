@@ -20,10 +20,10 @@ package body AIP.Inet is
          NetV := V;
       else
          NetV :=
-           ((v and 16#FF#) * (2 ** 24))
-           or ((v and 16#FF00#) * (2 ** 8))
-           or ((v and 16#FF0000#) / (2 ** 8))
-           or ((v and 16#FF000000#) / (2 ** 24));
+           ((V and 16#FF#) * (2 ** 24))
+           or ((V and 16#FF00#) * (2 ** 8))
+           or ((V and 16#FF0000#) / (2 ** 8))
+           or ((V and 16#FF000000#) / (2 ** 24));
       end if;
 
       return NetV;
