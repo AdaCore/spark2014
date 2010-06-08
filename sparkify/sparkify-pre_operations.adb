@@ -787,6 +787,20 @@ package body Sparkify.Pre_Operations is
                  array (1 .. Record_Comps'Length) of Unbounded_Wide_String;
 
             begin
+               --  In SPARK, a record definition cannot be a null record
+               --  unless it is tagged
+               if Definition_Kind (Record_Def) = A_Null_Record_Definition then
+                  if Flat_Element_Kind (Record_Def) =
+                    A_Tagged_Record_Type_Definition then
+                     return;
+                  else
+                     SLOC_Error ("null record definition",
+                                 Build_GNAT_Location (Element));
+                  end if;
+               end if;
+
+               pragma Assert (not Is_Nil (Record_Comps));
+
                for J in Record_Comps'Range loop
                   declare
                      Comp_Decl  : constant Asis.Declaration :=
@@ -802,43 +816,30 @@ package body Sparkify.Pre_Operations is
                   end;
                end loop;
 
-               if Is_Nil (Record_Comps) then
-                  --  a record definition cannot be null record
-                  --  unless it is tagged
-                  if Definition_Kind (Record_Def) /=
-                    A_Tagged_Private_Type_Definition and then
-                     Definition_Kind (Record_Def) =
-                    A_Null_Record_Definition then
-                     pragma Assert (False);
-                     null;
-                  end if;
-               else
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
 
-                  PP_Echo_Cursor_Range
-                    (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
+               for J in Record_Comps'Range loop
+                  declare
+                     Comp_Decl  : constant Asis.Declaration :=
+                                    Component_Declaration
+                                      (Record_Comps (J));
+                     Object_Def : constant Asis.Definition :=
+                                    Object_Declaration_View (Comp_Decl);
+                     Comp_View  : constant Asis.Component_Definition :=
+                                    Component_Definition_View (Object_Def);
+                  begin
+                     PP_Echo_Cursor_Range
+                       (Cursor_At (Record_Comps (J)),
+                        Cursor_Before (Comp_View));
+                     PP_Word (To_Wide_String (Subtype_Names (J)));
+                     PP_Word (";");
+                  end;
+               end loop;
 
-                  for J in Record_Comps'Range loop
-                     declare
-                        Comp_Decl  : constant Asis.Declaration :=
-                                       Component_Declaration
-                                         (Record_Comps (J));
-                        Object_Def : constant Asis.Definition :=
-                                       Object_Declaration_View (Comp_Decl);
-                        Comp_View  : constant Asis.Component_Definition :=
-                                       Component_Definition_View (Object_Def);
-                     begin
-                        PP_Echo_Cursor_Range
-                          (Cursor_At (Record_Comps (J)),
-                           Cursor_Before (Comp_View));
-                        PP_Word (To_Wide_String (Subtype_Names (J)));
-                        PP_Word (";");
-                     end;
-                  end loop;
-
-                  PP_Close_Line;
-                  PP_Word ("end record;");
-                  State.Echo_Cursor := Cursor_After (Element);
-               end if;
+               PP_Close_Line;
+               PP_Word ("end record;");
+               State.Echo_Cursor := Cursor_After (Element);
             end;
 
          when others =>
@@ -1453,10 +1454,11 @@ package body Sparkify.Pre_Operations is
                            Index_Ref := 1;
                         else
                            declare
+                              pragma Assert (Att'Length = 1);
                               Att_Value : constant Wide_String :=
                                             Trim
                                               (Static_Expression_Value_Image
-                                                 (Att (1)), Ada.Strings.Both);
+                                                 (Att (1)), Ada.Strings.Left);
                               Last      : Positive;
                            begin
                               pragma Assert (Att_Value /= "");
