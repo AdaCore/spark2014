@@ -43,7 +43,9 @@ with AIP_Constants;
 --# inherit AIP_Constants;
 
 package AIP is
+   --# accept W, 3, "Pragma - ignored by the SPARK Examiner";
    pragma Pure;
+   --# end accept;
 
    -------------------------
    -- Original LWIP types --

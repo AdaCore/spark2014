@@ -7,7 +7,7 @@ with AIP.Buffers.Data;
 with AIP.Buffers.No_Data;
 
 package body AIP.Buffers
---# own State is Data.State, No_Data.State;
+--# own State is AIP.Buffers.Data.State, AIP.Buffers.No_Data.State;
 is
    ---------------
    -- Adjust_Id --
@@ -44,6 +44,7 @@ is
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id)
+   --# global in out Data.State, No_Data.State;
    is
    begin
       if Kind in Data_Buffer_Kind then

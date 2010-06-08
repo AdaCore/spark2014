@@ -40,7 +40,9 @@ package AIP.Pbufs is
       IP_PBUF,
       LINK_PBUF,
       RAW_PBUF);
+   --# accept W, 3, "Pragma - ignored by the SPARK Examiner";
    pragma Convention (C, Pbuf_Layer);
+   --# end accept;
 
    --  Pbufs always materialize as a least control structure and can be used
    --  to hold or designate different kinds of data locations.
@@ -60,7 +62,9 @@ package AIP.Pbufs is
       --  is constructed if a single pbuf is not big enough for the intended
       --  packet size.
      );
+   --# accept W, 3, "Pragma - ignored by the SPARK Examiner";
    pragma Convention (C, Pbuf_Kind);
+   --# end accept;
 
    procedure Pbuf_Alloc
      (Layer : Pbuf_Layer;

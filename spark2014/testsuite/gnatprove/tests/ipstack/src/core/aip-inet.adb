@@ -14,7 +14,9 @@ package body AIP.Inet is
    begin
       --  Network byte ordering is big endian.  Swap value as needed.
 
+      --# accept F, 22, "Value of expression is invariant";
       if AIP.HOST_BIG_ENDIAN then
+      --# end accept;
          NetV := V;
       else
          NetV :=
