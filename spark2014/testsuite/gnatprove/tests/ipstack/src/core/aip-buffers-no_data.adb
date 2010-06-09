@@ -20,9 +20,9 @@ is
       --  Total length of the data referenced by this buffer
       Tot_Len     : Buffers.Data_Length;
 
-      --  The reference count always equals the number of pointers
-      --  that refer to this buffer. This can be pointers from an application
-      --  or the stack itself.
+      --  The reference count always equals the number of pointers that refer
+      --  to this buffer. This can be pointers from an application or the stack
+      --  itself.
       Ref         : AIP.U16_T;
    end record;
 
@@ -41,10 +41,12 @@ is
    --# global in out Buf_List, Free_List;
    is
    begin
+      --  Check that the free-list is not empty
       Support.Verify (Free_List /= NOBUF);
 
-      Buf                       := Free_List;
-      Free_List                 := Buf_List (Free_List).Next;
+      --  Pop the head of the free-list
+      Buf                        := Free_List;
+      Free_List                  := Buf_List (Free_List).Next;
 
       Buf_List (Buf).Next        := NOBUF;
       --  Caller must set this field properly, afterwards
@@ -54,15 +56,26 @@ is
       Buf_List (Buf).Ref         := 1;
    end Buffer_Alloc;
 
-   ----------------
-   -- Buffer_Len --
-   ----------------
+   -----------------
+   -- Buffer_Tlen --
+   -----------------
 
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
    --# global in Buf_List;
    is
    begin
       return Buf_List (Buf).Tot_Len;
-   end Buffer_Len;
+   end Buffer_Tlen;
+
+   --------------------
+   -- Buffer_Payload --
+   --------------------
+
+   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T
+   --# global in Buf_List;
+   is
+   begin
+      return Buf_List (Buf).Payload_Ref;
+   end Buffer_Payload;
 
 end AIP.Buffers.No_Data;

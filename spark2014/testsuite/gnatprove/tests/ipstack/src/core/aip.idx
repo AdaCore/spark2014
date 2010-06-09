@@ -10,7 +10,7 @@ AIP.Buffers.No_Data specification is in aip-buffers-no_data.ads
 AIP.Buffers.No_Data body          is in aip-buffers-no_data.adb
 AIP.Callbacks       specification is in aip-callbacks.ads
 AIP.Config          specification is in aip-config.ads
-AIP.Conversions     specification is in aip-conversions.ads
+AIP.Conversions     specification is in aip-conversions.shs
 AIP.IPaddrs         specification is in aip-ipaddrs.ads
 AIP.IPaddrs         body          is in aip-ipaddrs.adb
 AIP.Inet            specification is in aip-inet.ads

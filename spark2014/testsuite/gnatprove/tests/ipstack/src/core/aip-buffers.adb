@@ -74,9 +74,60 @@ is
       if Is_Data_Buffer (Buf) then
          Result := Data.Buffer_Len (Buf);
       else
-         Result := No_Data.Buffer_Len (Adjust_No_Data_Id (Buf));
+         Result := No_Data.Buffer_Tlen (Adjust_No_Data_Id (Buf));
       end if;
       return Result;
    end Buffer_Len;
+
+   -----------------
+   -- Buffer_Tlen --
+   -----------------
+
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Data.State, No_Data.State;
+   is
+      Result : AIP.U16_T;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Result := Data.Buffer_Tlen (Buf);
+      else
+         Result := No_Data.Buffer_Tlen (Adjust_No_Data_Id (Buf));
+      end if;
+      return Result;
+   end Buffer_Tlen;
+
+   -----------------
+   -- Buffer_Next --
+   -----------------
+
+   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id
+   --# global in Data.State;
+   is
+      Result : Buffer_Id;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Result := Data.Buffer_Next (Buf);
+      else
+         Result := NOBUF;
+      end if;
+      return Result;
+   end Buffer_Next;
+
+   --------------------
+   -- Buffer_Payload --
+   --------------------
+
+   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T
+   --# global in Data.State, No_Data.State;
+   is
+      Result : AIP.IPTR_T;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Result := Data.Buffer_Payload (Buf);
+      else
+         Result := No_Data.Buffer_Payload (Adjust_No_Data_Id (Buf));
+      end if;
+      return Result;
+   end Buffer_Payload;
 
 end AIP.Buffers;

@@ -6,7 +6,8 @@
 --  Generic Packet Buffers (network packet data containers) management.
 
 --# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
---#         AIP.Support;  -- Same reason to inherit AIP.Support
+--#         AIP.Support,  -- Same reason to inherit AIP.Support
+--#         AIP.Conversions;
 
 package AIP.Buffers
 --# own State;
@@ -82,25 +83,33 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
+   --  Note: Buffer_Len and Buffer_Tlen names are too close. We should rename
+   --        them after reimplementing the rest of the TCP/IP stack.
+
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Amount of packet data held in the first chunk of buffer Buf
+   --  Amount of packet data
+   --  - held in the first chunk of buffer Buf for Kind = LINK_BUF
+   --  - held in all chunks of buffer Buf for Kind = MONO_BUF
+   --  - referenced by buffer Buf for Kind = REF_BUF
 
---     function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
---     --# global in State;
---     --  Amount of packet data held in all chunks of buffer Buf through the chain
---     --  for this packet. Tlen = Len means PB is the last buffer in the chain for
---     --  a packet.
---
---     function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
---     --# global in State;
---     --  Buffer following PB in a chain, either next Buffer for the same packet
---     --  or first Buffer of another one.
---
---     function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
---     --# global in State;
---     --  Pointer to Data held or referenced by Buffer PB.
---
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
+   --# global in State;
+   --  Amount of packet data
+   --  - held in all chunks of buffer Buf through the chain for Kind /= REF_BUF
+   --    Tlen = Len means Buf is the last buffer in the chain for a packet.
+   --  - referenced by buffer Buf for Kind = REF_BUF
+   --    Tlen = Len is an invariant in this case.
+
+   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
+   --# global in State;
+   --  Buffer following Buf in a chain, either next buffer for the same packet
+   --  or NOBUF
+
+   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   --# global in State;
+   --  Pointer to data held or referenced by buffer Buf
+
 --     ----------------------------------
 --     -- Buffer reference and release --
 --     ----------------------------------

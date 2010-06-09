@@ -38,8 +38,12 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
+   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Amount of packet data held in the first chunk of buffer Buf
+   --  Amount of packet data referenced by buffer Buf
+
+   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   --# global in State;
+   --  Pointer to data referenced by buffer Buf
 
 end AIP.Buffers.No_Data;
