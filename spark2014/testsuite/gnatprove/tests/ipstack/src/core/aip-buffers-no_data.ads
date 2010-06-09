@@ -46,4 +46,17 @@ is
    --# global in State;
    --  Pointer to data referenced by buffer Buf
 
+   ----------------------------------
+   -- Buffer reference and release --
+   ----------------------------------
+
+   procedure Buffer_Ref (Buf : Buffer_Id);
+   --# global in out State;
+   --  Increase reference count of Buffer Buf, with influence on Buffer_Free
+
+   procedure Buffer_Free (Buf : Buffer_Id; Dealloc : out Boolean);
+   --# global in out State;
+   --  Decrement Buf's reference count, and deallocate if the count reaches
+   --  zero. Return whether the buffer was de-allocated.
+
 end AIP.Buffers.No_Data;

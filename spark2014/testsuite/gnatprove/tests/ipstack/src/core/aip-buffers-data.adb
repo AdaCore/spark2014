@@ -207,5 +207,57 @@ is
         + AIP.IPTR_T (Buf_List (Buf).Left_Offset);
    end Buffer_Payload;
 
-end AIP.Buffers.Data;
+   ----------------
+   -- Buffer_Ref --
+   ----------------
 
+   procedure Buffer_Ref (Buf : Buffer_Id)
+   --# global in out Buf_List;
+   is
+   begin
+      Buf_List (Buf).Ref := Buf_List (Buf).Ref + 1;
+   end Buffer_Ref;
+
+   -----------------
+   -- Buffer_Free --
+   -----------------
+
+   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
+   --# global in out Buf_List, Free_List;
+   is
+      Cur_Buf, Next_Buf : Buffer_Id;
+   begin
+      Next_Buf   := Buf;
+      N_Deallocs := 0;
+
+      while Next_Buf /= Buffers.NOBUF loop
+         --  Update iterators
+         Cur_Buf  := Next_Buf;
+         Next_Buf := Buf_List (Cur_Buf).Next;
+
+         --  Decrease reference count
+         Buf_List (Cur_Buf).Ref := Buf_List (Cur_Buf).Ref - 1;
+
+         --  If reference count reaches zero, deallocate buffer
+         if Buf_List (Cur_Buf).Ref = 0 then
+            N_Deallocs := N_Deallocs + 1;
+            --  Link to the head of the free-list
+            Buf_List (Cur_Buf).Next           := Free_List;
+            --  Update Num and Num_No_Jump fields only
+            Buf_List (Cur_Buf).Num            := Buf_List (Free_List).Num + 1;
+            if Free_List = Cur_Buf + 1 then
+               Buf_List (Cur_Buf).Num_No_Jump :=
+                 Buf_List (Free_List).Num_No_Jump + 1;
+            else
+               Buf_List (Cur_Buf).Num_No_Jump := 1;
+            end if;
+            --  Push to the head of the free-list
+            Free_List                         := Cur_Buf;
+         else
+            --  Stop the iteration
+            Next_Buf                          := Buffers.NOBUF;
+         end if;
+      end loop;
+   end Buffer_Free;
+
+end AIP.Buffers.Data;

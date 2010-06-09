@@ -110,43 +110,43 @@ is
    --# global in State;
    --  Pointer to data held or referenced by buffer Buf
 
---     ----------------------------------
---     -- Buffer reference and release --
---     ----------------------------------
---
---     procedure Buffer_Ref (Buf : Buffer_Id);
---     --# global in out State;
---     --  Increase reference count of Buffer PB, with influence on Buffer_Free
---
---     procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T);
---     --# global in out State;
---     --  Decrement PB's reference count, and deallocate if the count reaches
---     --  zero. In the latter case, repeat for the following Buffers in a chain for
---     --  the same packet. Return the number of Buffers that were de-allocated.
---     --
---     --  1->2->3 yields ...1->3
---     --  3->3->3 yields 2->3->3
---     --  1->1->2 yields ......1
---     --  2->1->1 yields 1->1->1
---     --  1->1->1 yields .......
---
---     procedure Buffer_Blind_Free (Buf : Buffer_Id);
---     --# global in out State;
---     --  Same as Buffer_Free, ignoring return value
---
---     procedure Buffer_Release (Buf : Buffer_Id);
---     --# global in out State;
---     --  Buffer_Free on PB until it deallocates.
---
+   ----------------------------------
+   -- Buffer reference and release --
+   ----------------------------------
+
+   procedure Buffer_Ref (Buf : Buffer_Id);
+   --# global in out State;
+   --  Increase reference count of Buffer Buf, with influence on Buffer_Free
+
+   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T);
+   --# global in out State;
+   --  Decrement Buf's reference count, and deallocate if the count reaches
+   --  zero. In the latter case, repeat for the following buffers in a chain
+   --  for the same packet. Return the number of buffers that were de-allocated
+   --
+   --  1->2->3 yields ...1->3
+   --  3->3->3 yields 2->3->3
+   --  1->1->2 yields ......1
+   --  2->1->1 yields 1->1->1
+   --  1->1->1 yields .......
+
+   procedure Buffer_Blind_Free (Buf : Buffer_Id);
+   --# global in out State;
+   --  Same as Buffer_Free, ignoring return value
+
+   procedure Buffer_Release (Buf : Buffer_Id);
+   --# global in out State;
+   --  Buffer_Free on Buf until it deallocates
+
 --     -----------------------
 --     -- Buffer operations --
 --     -----------------------
 --
 --     procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
 --     --# global in out State;
---     --  Append TAIL at the end of the chain starting at HEAD, taking over
---     --  the caller's reference to TAIL.
---
+--     --  Append Tail at the end of the chain starting at Head, taking over
+--     --  the caller's reference to Tail
+
 --     procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
 --     --# global in out State;
 --     --  Append TAIL at the end of the chain starting at HEAD, and bump TAIL's

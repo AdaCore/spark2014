@@ -78,4 +78,37 @@ is
       return Buf_List (Buf).Payload_Ref;
    end Buffer_Payload;
 
+   ----------------
+   -- Buffer_Ref --
+   ----------------
+
+   procedure Buffer_Ref (Buf : Buffer_Id)
+   --# global in out Buf_List;
+   is
+   begin
+      Buf_List (Buf).Ref := Buf_List (Buf).Ref + 1;
+   end Buffer_Ref;
+
+   -----------------
+   -- Buffer_Free --
+   -----------------
+
+   procedure Buffer_Free (Buf : Buffer_Id; Dealloc : out Boolean)
+   --# global in out Buf_List, Free_List;
+   is
+   begin
+      --  Decrease reference count
+      Buf_List (Buf).Ref := Buf_List (Buf).Ref - 1;
+
+      --  If reference count reaches zero, deallocate buffer
+      if Buf_List (Buf).Ref = 0 then
+         Dealloc             := True;
+         --  Push to the head of the free-list
+         Buf_List (Buf).Next := Free_List;
+         Free_List           := Buf;
+      else
+         Dealloc             := False;
+      end if;
+   end Buffer_Free;
+
 end AIP.Buffers.No_Data;

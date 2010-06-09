@@ -130,4 +130,71 @@ is
       return Result;
    end Buffer_Payload;
 
+   ----------------
+   -- Buffer_Ref --
+   ----------------
+
+   procedure Buffer_Ref (Buf : Buffer_Id)
+   --# global in out Data.State, No_Data.State;
+   is
+   begin
+      if Is_Data_Buffer (Buf) then
+         Data.Buffer_Ref (Buf);
+      else
+         No_Data.Buffer_Ref (Adjust_No_Data_Id (Buf));
+      end if;
+   end Buffer_Ref;
+
+   -----------------
+   -- Buffer_Free --
+   -----------------
+
+   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
+   --# global in out Data.State, No_Data.State;
+   is
+      Dealloc : Boolean;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Data.Buffer_Free (Buf, N_Deallocs);
+      else
+         No_Data.Buffer_Free (Adjust_No_Data_Id (Buf), Dealloc);
+         if Dealloc then
+            N_Deallocs := 1;
+         else
+            N_Deallocs := 0;
+         end if;
+      end if;
+   end Buffer_Free;
+
+   -----------------------
+   -- Buffer_Blind_Free --
+   -----------------------
+
+   procedure Buffer_Blind_Free (Buf : Buffer_Id)
+   --# global in out Data.State, No_Data.State;
+   is
+      N_Deallocs : AIP.U8_T;
+   begin
+      --# accept F, 10, N_Deallocs, "Assignment is ineffective";
+      Buffer_Free (Buf, N_Deallocs);
+      --# end accept;
+      --# accept F, 33, N_Deallocs,
+      --#               "The variable is neither referenced nor exported";
+   end Buffer_Blind_Free;
+
+   --------------------
+   -- Buffer_Release --
+   --------------------
+
+   procedure Buffer_Release (Buf : Buffer_Id)
+   --# global in out Data.State, No_Data.State;
+   is
+      N_Deallocs : AIP.U8_T := 0;
+   begin
+      --  Keep calling Buffer_Free until it deallocates
+      while N_Deallocs = 0 loop
+         Buffer_Free (Buf, N_Deallocs);
+      end loop;
+   end Buffer_Release;
+
 end AIP.Buffers;
