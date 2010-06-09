@@ -6,15 +6,17 @@
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding internally some data
 
---# inherit AIP.Buffers, AIP.Support, AIP.Conversions;
+--# inherit AIP.Buffers, AIP.Buffers.Common, AIP.Support, AIP.Conversions;
 
 private package AIP.Buffers.Data
---# own State;
+--# own State, Free_List;
 is
    --  There is one data buffer per chunk
    Buffer_Num : constant AIP.U16_T := Buffers.Chunk_Num;
 
    subtype Buffer_Id is AIP.U16_T range 0 .. Buffer_Num;
+
+   Free_List : Buffer_Id;  --  Head of the free-list for data buffers
 
    -----------------------
    -- Buffer allocation --
@@ -25,28 +27,13 @@ is
       Size   :     Buffers.Data_Length;
       Kind   :     Buffers.Data_Buffer_Kind;
       Buf    : out Buffer_Id);
-   --# global in out State;
+   --# global in out Common.Buf_List, State, Free_List;
    --  Allocate and return a new Buf of kind Kind, aimed at holding Size
    --  elements of data starting at offset Offset
 
    -----------------------------
    -- Buffer struct accessors --
    -----------------------------
-
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
-   --  Amount of packet data held
-   --  - in the first chunk of buffer Buf for Kind = LINK_BUF
-   --  - in all chunks of buffer Buf for Kind = MONO_BUF
-
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
-   --  Amount of packet data held in all chunks of buffer Buf
-
-   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
-   --# global in State;
-   --  Buffer following Buf in a chain, either next buffer for the same packet
-   --  or NOBUF
 
    function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
    --# global in State;
@@ -56,14 +43,8 @@ is
    -- Buffer reference and release --
    ----------------------------------
 
-   procedure Buffer_Ref (Buf : Buffer_Id);
+   procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id);
    --# global in out State;
-   --  Increase reference count of Buffer Buf, with influence on Buffer_Free
-
-   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T);
-   --# global in out State;
-   --  Decrement Buf's reference count, and deallocate if the count reaches
-   --  zero. In the latter case, repeat for the following buffers in a chain
-   --  for the same packet. Return the number of buffers that were de-allocated
+   --  Link buffer Buf to buffer Next
 
 end AIP.Buffers.Data;

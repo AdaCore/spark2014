@@ -25,10 +25,11 @@ is
    --  for the case where no data is stored
    Buffer_Num : constant AIP.U16_T := Chunk_Num + Ref_Num;
 
-   subtype Buffer_Id is AIP.U16_T range 0 .. Buffer_Num;
-   subtype Chunk_Length is AIP.U16_T range 0 .. Chunk_Size;
+   subtype Buffer_Id     is AIP.U16_T range 0 .. Buffer_Num;
+   subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
+   subtype Chunk_Length  is AIP.U16_T range 0 .. Chunk_Size;
    subtype Offset_Length is AIP.U16_T range 0 .. Chunk_Size - 1;
-   subtype Data_Length is AIP.U16_T range 1 .. Chunk_Size * Chunk_Num;
+   subtype Data_Length   is AIP.U16_T range 1 .. Chunk_Size * Chunk_Num;
 
    NOBUF : constant Buffer_Id := 0;
 
@@ -104,7 +105,7 @@ is
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
    --# global in State;
    --  Buffer following Buf in a chain, either next buffer for the same packet
-   --  or NOBUF
+   --  or first buffer of another one, or NOBUF
 
    function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
    --# global in State;

@@ -6,10 +6,10 @@
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding a reference to some external data
 
---# inherit AIP.Buffers, AIP.Support;
+--# inherit AIP.Support, AIP.Buffers, AIP.Buffers.Common;
 
 private package AIP.Buffers.No_Data
---# own State;
+--# own State, Free_List;
 is
    --  Redefine type U16_T locally so that No_Data.Buffer_Id is of a different
    --  type from Buffers.Buffer_Id. This ensures that the proper conversion is
@@ -23,6 +23,16 @@ is
 
    NOBUF : constant Buffer_Id := 0;
 
+   Free_List : Buffer_Id;  --  Head of the free-list for no-data buffers
+
+   -----------------------
+   -- Buffer adjustment --
+   -----------------------
+
+   function Adjust_Id (Buf : Buffers.Buffer_Id) return Buffer_Id;
+
+   function Adjust_Back_Id (Buf : Buffer_Id) return Buffers.Buffer_Id;
+
    -----------------------
    -- Buffer allocation --
    -----------------------
@@ -30,7 +40,7 @@ is
    procedure Buffer_Alloc
      (Size   :     Buffers.Data_Length;
       Buf    : out Buffer_Id);
-   --# global in out State;
+   --# global in out Common.Buf_List, State, Free_List;
    --  Allocate and return a new Buf of kind Kind, aimed at referending Size
    --  elements of data
 
@@ -38,25 +48,8 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
-   --  Amount of packet data referenced by buffer Buf
-
    function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
    --# global in State;
    --  Pointer to data referenced by buffer Buf
-
-   ----------------------------------
-   -- Buffer reference and release --
-   ----------------------------------
-
-   procedure Buffer_Ref (Buf : Buffer_Id);
-   --# global in out State;
-   --  Increase reference count of Buffer Buf, with influence on Buffer_Free
-
-   procedure Buffer_Free (Buf : Buffer_Id; Dealloc : out Boolean);
-   --# global in out State;
-   --  Decrement Buf's reference count, and deallocate if the count reaches
-   --  zero. Return whether the buffer was de-allocated.
 
 end AIP.Buffers.No_Data;

@@ -3,11 +3,14 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.Buffers.Common;
 with AIP.Buffers.Data;
 with AIP.Buffers.No_Data;
 
 package body AIP.Buffers
---# own State is AIP.Buffers.Data.State, AIP.Buffers.No_Data.State;
+--# own State is AIP.Buffers.Common.Buf_List,
+--#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
+--#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
    --------------------
    -- Is_Data_Buffer --
@@ -18,25 +21,6 @@ is
       return Buf <= Chunk_Num;
    end Is_Data_Buffer;
 
-   -----------------------
-   -- Adjust_No_Data_Id --
-   -----------------------
-
-   function Adjust_No_Data_Id (Buf : Buffer_Id) return No_Data.Buffer_Id is
-   begin
-      return No_Data.U16_T (Buf - Chunk_Num);
-   end Adjust_No_Data_Id;
-
-   ----------------------------
-   -- Adjust_Back_No_Data_Id --
-   ----------------------------
-
-   function Adjust_Back_No_Data_Id (Buf : No_Data.Buffer_Id) return Buffer_Id
-   is
-   begin
-      return AIP.U16_T (Buf) + Chunk_Num;
-   end Adjust_Back_No_Data_Id;
-
    ------------------
    -- Buffer_Alloc --
    ------------------
@@ -46,7 +30,9 @@ is
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List,
+   --#               Data.State, Data.Free_List,
+   --#               No_Data.State, No_Data.Free_List;
    is
       No_Data_Buf : No_Data.Buffer_Id;
    begin
@@ -58,7 +44,7 @@ is
       else
          No_Data.Buffer_Alloc (Size => Size,
                                Buf  => No_Data_Buf);
-         Buf := Adjust_Back_No_Data_Id (No_Data_Buf);
+         Buf := No_Data.Adjust_Back_Id (No_Data_Buf);
       end if;
    end Buffer_Alloc;
 
@@ -67,16 +53,10 @@ is
    ----------------
 
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Data.State, No_Data.State;
+   --# global in Common.Buf_List;
    is
-      Result : AIP.U16_T;
    begin
-      if Is_Data_Buffer (Buf) then
-         Result := Data.Buffer_Len (Buf);
-      else
-         Result := No_Data.Buffer_Tlen (Adjust_No_Data_Id (Buf));
-      end if;
-      return Result;
+      return Common.Buf_List (Buf).Len;
    end Buffer_Len;
 
    -----------------
@@ -84,16 +64,10 @@ is
    -----------------
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Data.State, No_Data.State;
+   --# global in Common.Buf_List;
    is
-      Result : AIP.U16_T;
    begin
-      if Is_Data_Buffer (Buf) then
-         Result := Data.Buffer_Tlen (Buf);
-      else
-         Result := No_Data.Buffer_Tlen (Adjust_No_Data_Id (Buf));
-      end if;
-      return Result;
+      return Common.Buf_List (Buf).Tot_Len;
    end Buffer_Tlen;
 
    -----------------
@@ -101,16 +75,10 @@ is
    -----------------
 
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id
-   --# global in Data.State;
+   --# global in Common.Buf_List;
    is
-      Result : Buffer_Id;
    begin
-      if Is_Data_Buffer (Buf) then
-         Result := Data.Buffer_Next (Buf);
-      else
-         Result := NOBUF;
-      end if;
-      return Result;
+      return Common.Buf_List (Buf).Next;
    end Buffer_Next;
 
    --------------------
@@ -125,7 +93,7 @@ is
       if Is_Data_Buffer (Buf) then
          Result := Data.Buffer_Payload (Buf);
       else
-         Result := No_Data.Buffer_Payload (Adjust_No_Data_Id (Buf));
+         Result := No_Data.Buffer_Payload (No_Data.Adjust_Id (Buf));
       end if;
       return Result;
    end Buffer_Payload;
@@ -135,14 +103,10 @@ is
    ----------------
 
    procedure Buffer_Ref (Buf : Buffer_Id)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List;
    is
    begin
-      if Is_Data_Buffer (Buf) then
-         Data.Buffer_Ref (Buf);
-      else
-         No_Data.Buffer_Ref (Adjust_No_Data_Id (Buf));
-      end if;
+      Common.Buf_List (Buf).Ref := Common.Buf_List (Buf).Ref + 1;
    end Buffer_Ref;
 
    -----------------
@@ -150,20 +114,53 @@ is
    -----------------
 
    procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List, Data.State,
+   --#               Data.Free_List, No_Data.Free_List;
    is
-      Dealloc : Boolean;
+      Cur_Buf, Next_Buf : Buffer_Id;
+      Free_List         : Buffer_Index;
    begin
-      if Is_Data_Buffer (Buf) then
-         Data.Buffer_Free (Buf, N_Deallocs);
-      else
-         No_Data.Buffer_Free (Adjust_No_Data_Id (Buf), Dealloc);
-         if Dealloc then
-            N_Deallocs := 1;
+      Next_Buf   := Buf;
+      N_Deallocs := 0;
+
+      while Next_Buf /= NOBUF loop
+         --  Update iterators
+         Cur_Buf  := Next_Buf;
+         Next_Buf := Common.Buf_List (Cur_Buf).Next;
+
+         --  Store head of appropriate free-list in Free_List
+         if Is_Data_Buffer (Cur_Buf) then
+            Free_List := Data.Free_List;
          else
-            N_Deallocs := 0;
+            Free_List := No_Data.Adjust_Back_Id (No_Data.Free_List);
          end if;
-      end if;
+
+         --  Decrease reference count
+         Common.Buf_List (Cur_Buf).Ref := Common.Buf_List (Cur_Buf).Ref - 1;
+
+         --  If reference count reaches zero, deallocate buffer
+         if Common.Buf_List (Cur_Buf).Ref = 0 then
+            N_Deallocs                     := N_Deallocs + 1;
+
+            --  Link to the head of the free-list
+            Common.Buf_List (Cur_Buf).Next := Free_List;
+
+            --  Perform link actions specific to data buffers
+            if Is_Data_Buffer (Cur_Buf) then
+               Data.Buffer_Link (Cur_Buf, Free_List);
+            end if;
+
+            --  Push to the head of the appropriate free-list
+            if Is_Data_Buffer (Cur_Buf) then
+               Data.Free_List              := Cur_Buf;
+            else
+               No_Data.Free_List           := No_Data.Adjust_Id (Cur_Buf);
+            end if;
+         else
+            --  Stop the iteration
+            Next_Buf                       := NOBUF;
+         end if;
+      end loop;
    end Buffer_Free;
 
    -----------------------
@@ -171,7 +168,8 @@ is
    -----------------------
 
    procedure Buffer_Blind_Free (Buf : Buffer_Id)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List, Data.State,
+   --#               Data.Free_List, No_Data.Free_List;
    is
       N_Deallocs : AIP.U8_T;
    begin
@@ -187,7 +185,8 @@ is
    --------------------
 
    procedure Buffer_Release (Buf : Buffer_Id)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List, Data.State,
+   --#               Data.Free_List, No_Data.Free_List;
    is
       N_Deallocs : AIP.U8_T := 0;
    begin

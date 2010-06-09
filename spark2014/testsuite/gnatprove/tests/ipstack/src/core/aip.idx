@@ -1,9 +1,11 @@
 AIP_Constants	    specification is in ../../build/gen/aip_constants.ads
 AIP                 specification is in aip.ads
 AIP.Buffers         specification is in aip-buffers.ads
-AIP.Buffers         components    are   AIP.Buffers.Data,
+AIP.Buffers         components    are   AIP.Buffers.Common,
+                                        AIP.Buffers.Data,
                                         AIP.Buffers.No_Data
 AIP.Buffers         body          is in aip-buffers.adb
+AIP.Buffers.Common  specification is in aip-buffers-common.ads
 AIP.Buffers.Data    specification is in aip-buffers-data.ads
 AIP.Buffers.Data    body          is in aip-buffers-data.adb
 AIP.Buffers.No_Data specification is in aip-buffers-no_data.ads

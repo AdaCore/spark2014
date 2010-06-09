@@ -4,32 +4,53 @@
 ------------------------------------------------------------------------------
 
 with AIP.Support;
+with AIP.Buffers.Common;
 
 package body AIP.Buffers.No_Data
---# own State is Buf_List, Free_List;
+--# own State is Buf_List;
 is
    subtype Buffer_Index is U16_T range 1 .. Buffer_Num;
 
    type Buffer is record
-      --  Next buffer in singly linked chain
-      Next        : Buffer_Id;
-
       --  Reference to the actual data
       Payload_Ref : AIP.IPTR_T;
-
-      --  Total length of the data referenced by this buffer
-      Tot_Len     : Buffers.Data_Length;
-
-      --  The reference count always equals the number of pointers that refer
-      --  to this buffer. This can be pointers from an application or the stack
-      --  itself.
-      Ref         : AIP.U16_T;
    end record;
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
 
-   Buf_List  : Buffer_Array;
-   Free_List : Buffer_Id;  --  Head of the free-list
+   Buf_List : Buffer_Array;
+
+   ---------------
+   -- Adjust_Id --
+   ---------------
+
+   function Adjust_Id (Buf : Buffers.Buffer_Id) return Buffer_Id
+   is
+      Result : Buffer_Id;
+   begin
+      if Buf = Buffers.NOBUF then
+         Result := NOBUF;
+      else
+         Result := U16_T (Buf - Buffers.Chunk_Num);
+      end if;
+      return Result;
+   end Adjust_Id;
+
+   --------------------
+   -- Adjust_Back_Id --
+   --------------------
+
+   function Adjust_Back_Id (Buf : Buffer_Id) return Buffers.Buffer_Id
+   is
+      Result : Buffers.Buffer_Id;
+   begin
+      if Buf = NOBUF then
+         Result := Buffers.NOBUF;
+      else
+         Result := AIP.U16_T (Buf) + Buffers.Chunk_Num;
+      end if;
+      return Result;
+   end Adjust_Back_Id;
 
    ------------------
    -- Buffer_Alloc --
@@ -38,34 +59,35 @@ is
    procedure Buffer_Alloc
      (Size   :     Buffers.Data_Length;
       Buf    : out Buffer_Id)
-   --# global in out Buf_List, Free_List;
+   --# global in out Common.Buf_List, Buf_List, Free_List;
    is
+      Adjusted_Buf : Buffers.Buffer_Id;
    begin
       --  Check that the free-list is not empty
       Support.Verify (Free_List /= NOBUF);
 
       --  Pop the head of the free-list
-      Buf                        := Free_List;
-      Free_List                  := Buf_List (Free_List).Next;
+      Buf                                    := Free_List;
+      Adjusted_Buf                           := Adjust_Back_Id (Buf);
+      Free_List                              :=
+        Adjust_Id (Common.Buf_List (Adjusted_Buf).Next);
 
-      Buf_List (Buf).Next        := NOBUF;
-      --  Caller must set this field properly, afterwards
-      Buf_List (Buf).Payload_Ref := AIP.NULIPTR;
-      Buf_List (Buf).Tot_Len     := Size;
+      --  Set common fields
+
+      -- accept W, 169, AIP.Buffers.Common.Buf_List,
+      --           "Direct update of own variable of a non-enclosing package";
+      Common.Buf_List (Adjusted_Buf).Next    := Buffers.NOBUF;
+      -- end accept;
+      Common.Buf_List (Adjusted_Buf).Len     := Size;
+      Common.Buf_List (Adjusted_Buf).Tot_Len := Size;
       --  Set reference count
-      Buf_List (Buf).Ref         := 1;
+      Common.Buf_List (Adjusted_Buf).Ref     := 1;
+
+      --  Set specific fields
+
+      --  Caller must set this field properly, afterwards
+      Buf_List (Buf).Payload_Ref             := AIP.NULIPTR;
    end Buffer_Alloc;
-
-   -----------------
-   -- Buffer_Tlen --
-   -----------------
-
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Buf_List;
-   is
-   begin
-      return Buf_List (Buf).Tot_Len;
-   end Buffer_Tlen;
 
    --------------------
    -- Buffer_Payload --
@@ -77,38 +99,5 @@ is
    begin
       return Buf_List (Buf).Payload_Ref;
    end Buffer_Payload;
-
-   ----------------
-   -- Buffer_Ref --
-   ----------------
-
-   procedure Buffer_Ref (Buf : Buffer_Id)
-   --# global in out Buf_List;
-   is
-   begin
-      Buf_List (Buf).Ref := Buf_List (Buf).Ref + 1;
-   end Buffer_Ref;
-
-   -----------------
-   -- Buffer_Free --
-   -----------------
-
-   procedure Buffer_Free (Buf : Buffer_Id; Dealloc : out Boolean)
-   --# global in out Buf_List, Free_List;
-   is
-   begin
-      --  Decrease reference count
-      Buf_List (Buf).Ref := Buf_List (Buf).Ref - 1;
-
-      --  If reference count reaches zero, deallocate buffer
-      if Buf_List (Buf).Ref = 0 then
-         Dealloc             := True;
-         --  Push to the head of the free-list
-         Buf_List (Buf).Next := Free_List;
-         Free_List           := Buf;
-      else
-         Dealloc             := False;
-      end if;
-   end Buffer_Free;
 
 end AIP.Buffers.No_Data;

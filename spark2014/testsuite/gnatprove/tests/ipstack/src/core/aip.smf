@@ -2,6 +2,7 @@ aip.ads
 aip-support.ads
 aip-support.adb
 aip-buffers.ads
+aip-buffers-common.ads
 aip-buffers-no_data.ads
 aip-buffers-no_data.adb
 aip-buffers-data.ads

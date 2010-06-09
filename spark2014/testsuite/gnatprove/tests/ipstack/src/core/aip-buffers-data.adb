@@ -5,9 +5,10 @@
 
 with AIP.Support;
 with AIP.Conversions;
+with AIP.Buffers.Common;
 
 package body AIP.Buffers.Data
---# own State is Data_Array, Buf_List, Free_List;
+--# own State is Data_Array, Buf_List;
 is
    --  All data is stored in a statically allocated array Data_Array, while
    --  data structures to manage the allocation of pieces of this array to
@@ -22,13 +23,9 @@ is
 
    Data_Array : Data_Array_Type;
 
-   subtype Buffer_Index is AIP.U16_T range 1 .. Buffer_Num;
-   subtype Buffer_Count is Buffer_Index;
+   subtype Buffer_Count is Buffers.Buffer_Index;
 
    type Buffer is record
-      --  Next chunk in singly linked chain
-      Next         : Buffer_Id;
-
       --  Number of chunks in singly linked chain
       Num          : Buffer_Count;
 
@@ -38,30 +35,13 @@ is
       --  Offset to get to the position of the actual data in the chunk
       Left_Offset  : Buffers.Chunk_Length;
 
-      --  Offset from the right to the end of the actual data in the chunk
-      Right_Offset : Buffers.Chunk_Length;
-
-      --  Total length of this buffer, from the first to the last chunk in
-      --  singly linked chain
-      --
-      --  The following invariant should hold:
-      --  Tot_Len = Chunk_Length - Left_Offset - Right_Offset +
-      --              (if Next /= 0 then Buffers (Next).Tot_Len else 0)
-      Tot_Len      : Buffers.Data_Length;
-
       --  Kind of buffer
       Kind         : Buffers.Data_Buffer_Kind;
-
-      --  The reference count always equals the number of pointers that refer
-      --  to this buffer. This can be pointers from an application, the stack
-      --  itself, or Next pointers from a chain.
-      Ref          : AIP.U16_T;
    end record;
 
-   type Buffer_Array is array (Buffer_Index) of Buffer;
+   type Buffer_Array is array (Buffers.Buffer_Index) of Buffer;
 
-   Buf_List  : Buffer_Array;
-   Free_List : Buffer_Id;  --  Head of the free-list
+   Buf_List : Buffer_Array;
 
    ------------------
    -- Buffer_Alloc --
@@ -72,7 +52,7 @@ is
       Size   :     Buffers.Data_Length;
       Kind   :     Buffers.Data_Buffer_Kind;
       Buf    : out Buffer_Id)
-   --# global in out Buf_List, Free_List;
+   --# global in out Common.Buf_List, Buf_List, Free_List;
    is
       Requested_Size    : AIP.U16_T;
       Requested_Chunks  : AIP.U16_T;
@@ -111,88 +91,55 @@ is
       --  Allocate chunks in singly linked chain
       for Remaining in reverse AIP.U16_T range 1 .. Requested_Chunks loop
          --  Update iterators
-         Cur_Buf                            := Next_Buf;
-         Next_Buf                           := Buf_List (Cur_Buf).Next;
+         Cur_Buf                             := Next_Buf;
+         Next_Buf                            := Common.Buf_List (Cur_Buf).Next;
 
          --  Num and Num_No_Jump are as currently defined
-         Buf_List (Cur_Buf).Num             := Remaining;
-         Buf_List (Cur_Buf).Num_No_Jump     :=
+         Buf_List (Cur_Buf).Num              := Remaining;
+         Buf_List (Cur_Buf).Num_No_Jump      :=
            Buffer_Count'Min (Buf_List (Cur_Buf).Num_No_Jump, Remaining);
 
          --  Left offset is zero for all chunks but the first one
          if Remaining = Requested_Chunks then
-            Buf_List (Cur_Buf).Left_Offset  := Offset;
+            Buf_List (Cur_Buf).Left_Offset   := Offset;
          else
-            Buf_List (Cur_Buf).Left_Offset  := 0;
+            Buf_List (Cur_Buf).Left_Offset   := 0;
          end if;
 
-         --  Right offset is zero for all chunks but the last one
-         if Remaining = 1 then
-            Buf_List (Cur_Buf).Right_Offset :=
-              Buffers.Chunk_Size - Remaining_Size;
-         else
-            Buf_List (Cur_Buf).Right_Offset := 0;
-         end if;
-
-         Buf_List (Cur_Buf).Tot_Len         :=
+         Common.Buf_List (Cur_Buf).Tot_Len   :=
            Remaining_Size - Buf_List (Cur_Buf).Left_Offset;
+
+         --# accept F, 41, "Expression is stable";
+         case Kind is
+            when Buffers.LINK_BUF =>
+               --  Length completes offset to chunk size unless not enough data
+               --  remaining
+               Common.Buf_List (Cur_Buf).Len :=
+                 AIP.U16_T'Min (Buffers.Chunk_Size
+                                - Buf_List (Cur_Buf).Left_Offset,
+                                Common.Buf_List (Cur_Buf).Tot_Len);
+            when Buffers.MONO_BUF =>
+               --  Length is same as total length
+               Common.Buf_List (Cur_Buf).Len :=
+                 Common.Buf_List (Cur_Buf).Tot_Len;
+         end case;
+         --# end accept;
 
          --  Remaining size decreases by Chunk_Size until last chunk
          if Remaining /= 1 then
-            Remaining_Size                  :=
+            Remaining_Size                   :=
               Remaining_Size - Buffers.Chunk_Size;
          end if;
 
-         Buf_List (Cur_Buf).Kind            := Kind;
+         Buf_List (Cur_Buf).Kind             := Kind;
          --  Set reference count
-         Buf_List (Cur_Buf).Ref             := 1;
+         Common.Buf_List (Cur_Buf).Ref       := 1;
       end loop;
 
       --  Remove the allocate chunks from the free-list
-      Buf_List (Cur_Buf).Next := Buffers.NOBUF;
-      Free_List := Next_Buf;
+      Common.Buf_List (Cur_Buf).Next := Buffers.NOBUF;
+      Free_List                      := Next_Buf;
    end Buffer_Alloc;
-
-   ----------------
-   -- Buffer_Len --
-   ----------------
-
-   function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Buf_List;
-   is
-      Result : AIP.U16_T;
-   begin
-      case Buf_List (Buf).Kind is
-         when Buffers.LINK_BUF =>
-            Result := (Buffers.Chunk_Size - Buf_List (Buf).Left_Offset)
-              - Buf_List (Buf).Right_Offset;
-         when Buffers.MONO_BUF =>
-            Result := Buf_List (Buf).Tot_Len;
-      end case;
-      return Result;
-   end Buffer_Len;
-
-   -----------------
-   -- Buffer_Tlen --
-   -----------------
-
-   function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Buf_List;
-   is
-   begin
-      return Buf_List (Buf).Tot_Len;
-   end Buffer_Tlen;
-
-   -----------------
-   -- Buffer_Next --
-   -----------------
-
-   function Buffer_Next (Buf : Buffer_Id) return Buffer_Id
-   --# global in Buf_List;
-   is
-   begin
-      return Buf_List (Buf).Next;
-   end Buffer_Next;
 
    --------------------
    -- Buffer_Payload --
@@ -207,57 +154,21 @@ is
         + AIP.IPTR_T (Buf_List (Buf).Left_Offset);
    end Buffer_Payload;
 
-   ----------------
-   -- Buffer_Ref --
-   ----------------
+   -----------------
+   -- Buffer_Link --
+   -----------------
 
-   procedure Buffer_Ref (Buf : Buffer_Id)
+   procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id)
    --# global in out Buf_List;
    is
    begin
-      Buf_List (Buf).Ref := Buf_List (Buf).Ref + 1;
-   end Buffer_Ref;
-
-   -----------------
-   -- Buffer_Free --
-   -----------------
-
-   procedure Buffer_Free (Buf : Buffer_Id; N_Deallocs : out AIP.U8_T)
-   --# global in out Buf_List, Free_List;
-   is
-      Cur_Buf, Next_Buf : Buffer_Id;
-   begin
-      Next_Buf   := Buf;
-      N_Deallocs := 0;
-
-      while Next_Buf /= Buffers.NOBUF loop
-         --  Update iterators
-         Cur_Buf  := Next_Buf;
-         Next_Buf := Buf_List (Cur_Buf).Next;
-
-         --  Decrease reference count
-         Buf_List (Cur_Buf).Ref := Buf_List (Cur_Buf).Ref - 1;
-
-         --  If reference count reaches zero, deallocate buffer
-         if Buf_List (Cur_Buf).Ref = 0 then
-            N_Deallocs := N_Deallocs + 1;
-            --  Link to the head of the free-list
-            Buf_List (Cur_Buf).Next           := Free_List;
-            --  Update Num and Num_No_Jump fields only
-            Buf_List (Cur_Buf).Num            := Buf_List (Free_List).Num + 1;
-            if Free_List = Cur_Buf + 1 then
-               Buf_List (Cur_Buf).Num_No_Jump :=
-                 Buf_List (Free_List).Num_No_Jump + 1;
-            else
-               Buf_List (Cur_Buf).Num_No_Jump := 1;
-            end if;
-            --  Push to the head of the free-list
-            Free_List                         := Cur_Buf;
-         else
-            --  Stop the iteration
-            Next_Buf                          := Buffers.NOBUF;
-         end if;
-      end loop;
-   end Buffer_Free;
+      --  Update Num and Num_No_Jump fields only
+      Buf_List (Buf).Num            := Buf_List (Next).Num + 1;
+      if Next = Buf + 1 then
+         Buf_List (Buf).Num_No_Jump := Buf_List (Next).Num_No_Jump + 1;
+      else
+         Buf_List (Buf).Num_No_Jump := 1;
+      end if;
+   end Buffer_Link;
 
 end AIP.Buffers.Data;
