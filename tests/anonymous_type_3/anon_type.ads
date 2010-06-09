@@ -14,6 +14,10 @@ is
       Day_String : String(1 .. 6);
    end record;
 
+   type Nothing is record
+      null;
+   end record;
+
    ToDay1, ToDay2, ToDay3 : Date;
 
    procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);

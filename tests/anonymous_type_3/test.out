@@ -31,6 +31,10 @@ is
       Day_String : New_Name_3;
 end record;
 
+   type Nothing is tagged record
+null;
+end record;
+
    ToDay1, ToDay2, ToDay3 : Date;
 
    procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);

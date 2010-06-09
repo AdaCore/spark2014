@@ -798,44 +798,54 @@ package body Sparkify.Pre_Operations is
                                  Build_GNAT_Location (Element));
                   end if;
                end if;
-
                pragma Assert (not Is_Nil (Record_Comps));
 
-               for J in Record_Comps'Range loop
-                  declare
-                     Comp_Decl  : constant Asis.Declaration :=
-                                    Component_Declaration (Record_Comps (J));
-                     Object_Def : constant Asis.Definition :=
-                                    Object_Declaration_View (Comp_Decl);
-                     Comp_View  : constant Asis.Component_Definition :=
-                                    Component_Definition_View (Object_Def);
-                  begin
-                     Subtype_Names (J) := To_Unbounded_Wide_String
-                       (Transform_Subtype_Indication
-                          (Comp_View, Column_Start));
-                  end;
-               end loop;
+               if Flat_Element_Kind (Component_Declaration (Record_Comps (1)))
+                 = A_Null_Component then
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Record_Def));
+                  PP_Word ("tagged record");
+                  PP_Close_Line;
+                  PP_Word ("null;");
+               else
 
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
+                  for J in Record_Comps'Range loop
+                     declare
+                        Comp_Decl  : constant Asis.Declaration :=
+                                       Component_Declaration
+                                         (Record_Comps (J));
+                        Object_Def : constant Asis.Definition :=
+                                       Object_Declaration_View (Comp_Decl);
+                        Comp_View  : constant Asis.Component_Definition :=
+                                       Component_Definition_View (Object_Def);
+                     begin
+                        Subtype_Names (J) := To_Unbounded_Wide_String
+                          (Transform_Subtype_Indication
+                             (Comp_View, Column_Start));
+                     end;
+                  end loop;
 
-               for J in Record_Comps'Range loop
-                  declare
-                     Comp_Decl  : constant Asis.Declaration :=
-                                    Component_Declaration
-                                      (Record_Comps (J));
-                     Object_Def : constant Asis.Definition :=
-                                    Object_Declaration_View (Comp_Decl);
-                     Comp_View  : constant Asis.Component_Definition :=
-                                    Component_Definition_View (Object_Def);
-                  begin
-                     PP_Echo_Cursor_Range
-                       (Cursor_At (Record_Comps (J)),
-                        Cursor_Before (Comp_View));
-                     PP_Word (To_Wide_String (Subtype_Names (J)));
-                     PP_Word (";");
-                  end;
-               end loop;
+                  PP_Echo_Cursor_Range
+                    (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
+
+                  for J in Record_Comps'Range loop
+                     declare
+                        Comp_Decl  : constant Asis.Declaration :=
+                                       Component_Declaration
+                                         (Record_Comps (J));
+                        Object_Def : constant Asis.Definition :=
+                                       Object_Declaration_View (Comp_Decl);
+                        Comp_View  : constant Asis.Component_Definition :=
+                                       Component_Definition_View (Object_Def);
+                     begin
+                        PP_Echo_Cursor_Range
+                          (Cursor_At (Record_Comps (J)),
+                           Cursor_Before (Comp_View));
+                        PP_Word (To_Wide_String (Subtype_Names (J)));
+                        PP_Word (";");
+                     end;
+                  end loop;
+               end if;
 
                PP_Close_Line;
                PP_Word ("end record;");
