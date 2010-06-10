@@ -139,31 +139,22 @@ is
             Buf_List (Cur_Buf).Left_Offset   := 0;
          end if;
 
-         --# accept W, 169, Common.Buf_List,
-         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Tot_Len   :=
            Remaining_Size - Buf_List (Cur_Buf).Left_Offset;
-         --# end accept;
 
          --# accept F, 41, "Expression is stable";
          case Kind is
             when Buffers.LINK_BUF =>
                --  Length completes offset to buffer size unless not enough
                --  data remaining
-               --# accept W, 169, Common.Buf_List,
-               --#  "Direct update of own variable of a non-enclosing package";
                Common.Buf_List (Cur_Buf).Len :=
                  AIP.U16_T'Min (Buffers.Data_Buffer_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
-               --# end accept;
             when Buffers.MONO_BUF =>
                --  Length is same as total length
-               --# accept W, 169, Common.Buf_List,
-               --#  "Direct update of own variable of a non-enclosing package";
                Common.Buf_List (Cur_Buf).Len :=
                  Common.Buf_List (Cur_Buf).Tot_Len;
-               --# end accept;
          end case;
          --# end accept;
 
@@ -175,17 +166,11 @@ is
 
          Buf_List (Cur_Buf).Kind             := Kind;
          --  Set reference count
-         --# accept W, 169, Common.Buf_List,
-         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Ref       := 1;
-         --# end accept;
       end loop;
 
       --  Remove the allocate buffers from the free-list
-      --# accept W, 169, Common.Buf_List,
-      --#        "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Cur_Buf).Next := Buffers.NOBUF;
-      --# end accept;
       Free_List                      := Next_Buf;
    end Buffer_Alloc;
 

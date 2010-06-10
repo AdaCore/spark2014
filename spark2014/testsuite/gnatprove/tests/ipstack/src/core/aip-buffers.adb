@@ -38,8 +38,6 @@ is
    begin
       --  First initialize all the memory for common buffers data structure
       --  to zero
-      --# accept W, 169, Common.Buf_List,
-      --#           "Direct update of own variable of a non-enclosing package";
       Common.Buf_List :=
         Common.Buffer_Array'
           (others =>
@@ -49,7 +47,6 @@ is
       for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
          Common.Buf_List (Buf).Next := Buf + 1;
       end loop;
-      --# end accept;
 
       No_Data.Buffer_Init;  --  Data structures for no-data buffers
       Data.Buffer_Init;  --  Data structures for data buffers
@@ -144,10 +141,7 @@ is
    --# global in out Common.Buf_List;
    is
    begin
-      --# accept W, 169, Common.Buf_List,
-      --#           "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Buf).Ref := Common.Buf_List (Buf).Ref + 1;
-      --# end accept;
    end Buffer_Ref;
 
    -----------------
@@ -177,20 +171,14 @@ is
          end if;
 
          --  Decrease reference count
-         --# accept W, 169, Common.Buf_List,
-         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Ref := Common.Buf_List (Cur_Buf).Ref - 1;
-         --# end accept;
 
          --  If reference count reaches zero, deallocate buffer
          if Common.Buf_List (Cur_Buf).Ref = 0 then
             N_Deallocs                     := N_Deallocs + 1;
 
             --  Link to the head of the free-list
-            --# accept W, 169, Common.Buf_List,
-            --#     "Direct update of own variable of a non-enclosing package";
             Common.Buf_List (Cur_Buf).Next := Free_List;
-            --# end accept;
 
             --  Perform link actions specific to data buffers
             if Is_Data_Buffer (Cur_Buf) then
@@ -199,15 +187,9 @@ is
 
             --  Push to the head of the appropriate free-list
             if Is_Data_Buffer (Cur_Buf) then
-               --# accept W, 169, Data.Free_List,
-               --#  "Direct update of own variable of a non-enclosing package";
                Data.Free_List              := Cur_Buf;
-               --# end accept;
             else
-               --# accept W, 169, No_Data.Free_List,
-               --#  "Direct update of own variable of a non-enclosing package";
                No_Data.Free_List           := No_Data.Adjust_Id (Cur_Buf);
-               --# end accept;
             end if;
          else
             --  Stop the iteration
@@ -225,9 +207,7 @@ is
    --#               Data.Free_List, No_Data.Free_List;
    is
       N_Deallocs : AIP.U8_T;
-      --# accept W, 3, "Pragma - ignored by the SPARK Examiner";
       pragma Unreferenced (N_Deallocs);
-      --# end accept;
    begin
       --# accept F, 10, N_Deallocs, "Assignment is ineffective";
       Buffer_Free (Buf, N_Deallocs);
@@ -275,20 +255,14 @@ is
          Next_Buf := Common.Buf_List (Cur_Buf).Next;
 
          --  Add total length of second chain to all totals of first chain
-         --# accept W, 169, Common.Buf_List,
-         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Tot_Len :=
            Common.Buf_List (Cur_Buf).Tot_Len + Tail_Len;
-         --# end accept;
       end loop;
 
       --  Chain last buffer of Head with first of Tail. Note that no specific
       --  action is done for data buffers, as Head and Tail represent here
       --  two different buffers in the packet chain.
-      --# accept W, 169, Common.Buf_List,
-      --#           "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Cur_Buf).Next := Tail;
-      --# end accept;
 
       --  Head now points to Tail, but the caller will drop its reference to
       --  Tail, so netto there is no difference to the reference count of Tail.
@@ -330,8 +304,6 @@ is
       end if;
 
       --  Modify length fields
-      --# accept W, 169, Common.Buf_List,
-      --#           "Direct update of own variable of a non-enclosing package";
       if Bump >= 0 then
          Common.Buf_List (Buf).Len     :=
            Common.Buf_List (Buf).Len + Offset;
@@ -343,7 +315,6 @@ is
          Common.Buf_List (Buf).Tot_Len :=
            Common.Buf_List (Buf).Tot_Len - Offset;
       end if;
-      --# end accept;
    end Buffer_Header;
 
 end AIP.Buffers;

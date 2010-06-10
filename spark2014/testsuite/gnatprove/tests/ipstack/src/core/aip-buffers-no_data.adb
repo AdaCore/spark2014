@@ -89,14 +89,11 @@ is
 
       --  Set common fields
 
-      --# accept W, 169, Common.Buf_List,
-      --#           "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Adjusted_Buf).Next    := Buffers.NOBUF;
       Common.Buf_List (Adjusted_Buf).Len     := Size;
       Common.Buf_List (Adjusted_Buf).Tot_Len := Size;
       --  Set reference count
       Common.Buf_List (Adjusted_Buf).Ref     := 1;
-      --# end accept;
 
       --  Set specific fields
 

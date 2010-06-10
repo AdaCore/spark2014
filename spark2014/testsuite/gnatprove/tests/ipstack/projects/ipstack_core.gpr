@@ -29,6 +29,7 @@ project IPStack_Core is
    package Ide is
       for Default_Switches ("examiner") use 
           ("-flow=data", "-index_file=../src/core/aip.idx", 
-           "-config_file=../src/core/config.shs");
+           "-config_file=../src/core/config.shs",
+           "-warning_file=../src/core/aip.wrn");
    end Ide;
 end IPStack_Core;
