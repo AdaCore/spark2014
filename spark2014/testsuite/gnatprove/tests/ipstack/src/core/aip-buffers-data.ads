@@ -18,6 +18,15 @@ is
 
    Free_List : Buffer_Id;  --  Head of the free-list for data buffers
 
+   ---------------------------
+   -- Global initialization --
+   ---------------------------
+
+   procedure Buffer_Init;
+   --# global out State, Free_List;
+   --  Initialize the array of buffers to zero except special fields properly
+   --  given an initial value, and set the head of the free-list
+
    -----------------------
    -- Buffer allocation --
    -----------------------
@@ -46,5 +55,14 @@ is
    procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id);
    --# global in out State;
    --  Link buffer Buf to buffer Next
+
+   -----------------------
+   -- Buffer operations --
+   -----------------------
+
+   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T);
+   --# global in out State;
+   --  Move the payload pointer of Buf by Bump elements, signed.
+   --  Typically used to reveal or hide protocol headers.
 
 end AIP.Buffers.Data;

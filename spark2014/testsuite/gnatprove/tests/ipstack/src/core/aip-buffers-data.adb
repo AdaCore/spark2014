@@ -23,7 +23,8 @@ is
 
    Data_Array : Data_Array_Type;
 
-   subtype Buffer_Count is Buffers.Buffer_Index;
+   subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Chunk_Num;
+   subtype Buffer_Count is Buffer_Index;
 
    type Buffer is record
       --  Number of chunks in singly linked chain
@@ -39,9 +40,39 @@ is
       Kind         : Buffers.Data_Buffer_Kind;
    end record;
 
-   type Buffer_Array is array (Buffers.Buffer_Index) of Buffer;
+   type Buffer_Array is array (Buffer_Index) of Buffer;
 
    Buf_List : Buffer_Array;
+
+   -----------------
+   -- Buffer_Init --
+   -----------------
+
+   procedure Buffer_Init
+   --# global out Data_Array, Buf_List, Free_List;
+   is
+   begin
+      --  First initialize all the memory for buffers to zero, except for
+      --  special number fields initialized to one
+      Buf_List := Buffer_Array'
+        (others => Buffer'(Num  => 1, Num_No_Jump => 1, Left_Offset => 0,
+                           Kind => Buffers.LINK_BUF));
+
+
+      --  Set special fields to adapt to a singly linked chain of buffers
+      for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
+         Buf_List (Buf).Num         := (Buffer_Index'Last - Buf) + 1;
+         Buf_List (Buf).Num_No_Jump := Buf_List (Buf).Num;
+      end loop;
+
+      --  Make the head of the free-list point to the first buffer
+      Free_List := 1;
+
+      --# accept F, 32, Data_Array,
+      --#               "The variable is neither imported nor defined";
+      --# accept F, 31, Data_Array,
+      --#           "The variable is exported but not (internally) defined";
+   end Buffer_Init;
 
    ------------------
    -- Buffer_Alloc --
@@ -106,22 +137,31 @@ is
             Buf_List (Cur_Buf).Left_Offset   := 0;
          end if;
 
+         --# accept W, 169, Common.Buf_List,
+         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Tot_Len   :=
            Remaining_Size - Buf_List (Cur_Buf).Left_Offset;
+         --# end accept;
 
          --# accept F, 41, "Expression is stable";
          case Kind is
             when Buffers.LINK_BUF =>
                --  Length completes offset to chunk size unless not enough data
                --  remaining
+               --# accept W, 169, Common.Buf_List,
+               --#  "Direct update of own variable of a non-enclosing package";
                Common.Buf_List (Cur_Buf).Len :=
                  AIP.U16_T'Min (Buffers.Chunk_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
+               --# end accept;
             when Buffers.MONO_BUF =>
                --  Length is same as total length
+               --# accept W, 169, Common.Buf_List,
+               --#  "Direct update of own variable of a non-enclosing package";
                Common.Buf_List (Cur_Buf).Len :=
                  Common.Buf_List (Cur_Buf).Tot_Len;
+               --# end accept;
          end case;
          --# end accept;
 
@@ -133,11 +173,17 @@ is
 
          Buf_List (Cur_Buf).Kind             := Kind;
          --  Set reference count
+         --# accept W, 169, Common.Buf_List,
+         --#        "Direct update of own variable of a non-enclosing package";
          Common.Buf_List (Cur_Buf).Ref       := 1;
+         --# end accept;
       end loop;
 
       --  Remove the allocate chunks from the free-list
+      --# accept W, 169, Common.Buf_List,
+      --#        "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Cur_Buf).Next := Buffers.NOBUF;
+      --# end accept;
       Free_List                      := Next_Buf;
    end Buffer_Alloc;
 
@@ -170,5 +216,28 @@ is
          Buf_List (Buf).Num_No_Jump := 1;
       end if;
    end Buffer_Link;
+
+   -------------------
+   -- Buffer_Header --
+   -------------------
+
+   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
+   --# global in out Buf_List;
+   is
+      Offset : AIP.U16_T;
+   begin
+      Offset := AIP.U16_T (abs (Bump));
+
+      --  Check that we are not going to move off the beginning of the buffer
+      if Bump >= 0 then
+         Support.Verify (Buf_List (Buf).Left_Offset - Offset >= 0);
+      end if;
+
+      if Bump >= 0 then
+         Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset - Offset;
+      else
+         Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset + Offset;
+      end if;
+   end Buffer_Header;
 
 end AIP.Buffers.Data;

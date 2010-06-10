@@ -29,7 +29,7 @@ is
    subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
    subtype Chunk_Length  is AIP.U16_T range 0 .. Chunk_Size;
    subtype Offset_Length is AIP.U16_T range 0 .. Chunk_Size - 1;
-   subtype Data_Length   is AIP.U16_T range 1 .. Chunk_Size * Chunk_Num;
+   subtype Data_Length   is AIP.U16_T range 0 .. Chunk_Size * Chunk_Num;
 
    NOBUF : constant Buffer_Id := 0;
 
@@ -46,6 +46,15 @@ is
 
    --  Buffers feature reference counters to facilitate sharing and allow
    --  control over deallocation responsibilities.
+
+   ---------------------------
+   -- Global initialization --
+   ---------------------------
+
+   procedure Buffer_Init;
+   --# global out State;
+   --  Initialize all arrays of buffers to form initial singly linked
+   --  free-lists and set the head of the free-lists
 
    -----------------------
    -- Buffer allocation --
@@ -139,24 +148,24 @@ is
    --# global in out State;
    --  Buffer_Free on Buf until it deallocates
 
---     -----------------------
---     -- Buffer operations --
---     -----------------------
---
---     procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
---     --# global in out State;
---     --  Append Tail at the end of the chain starting at Head, taking over
---     --  the caller's reference to Tail
+   -----------------------
+   -- Buffer operations --
+   -----------------------
 
---     procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
---     --# global in out State;
---     --  Append TAIL at the end of the chain starting at HEAD, and bump TAIL's
---     --  reference count. The caller remains responsible of it's own reference,
---     --  in particular wrt release duties.
---
---     procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T);
---     --# global in out State;
---     --  Move the payload pointer of PB by BUMP bytes, signed. Typically used to
---     --  reveal or hide protocol headers.
+   procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
+   --# global in out State;
+   --  Append Tail at the end of the chain starting at Head, taking over
+   --  the caller's reference to Tail
+
+   procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
+   --# global in out State;
+   --  Append Tail at the end of the chain starting at Head, and bump Tail's
+   --  reference count. The caller remains responsible of its own reference,
+   --  in particular wrt release duties.
+
+   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T);
+   --# global in out State;
+   --  Move the payload pointer of Buf by Bump elements, signed.
+   --  Typically used to reveal or hide protocol headers.
 
 end AIP.Buffers;

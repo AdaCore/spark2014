@@ -52,6 +52,21 @@ is
       return Result;
    end Adjust_Back_Id;
 
+   -----------------
+   -- Buffer_Init --
+   -----------------
+
+   procedure Buffer_Init
+   --# global out Buf_List, Free_List;
+   is
+   begin
+      --  Initialize all the memory for buffers to zero
+      Buf_List := Buffer_Array'(others => Buffer'(Payload_Ref => 0));
+
+      --  Make the head of the free-list point to the first buffer
+      Free_List := 1;
+   end Buffer_Init;
+
    ------------------
    -- Buffer_Alloc --
    ------------------
@@ -74,14 +89,14 @@ is
 
       --  Set common fields
 
-      -- accept W, 169, AIP.Buffers.Common.Buf_List,
-      --           "Direct update of own variable of a non-enclosing package";
+      --# accept W, 169, Common.Buf_List,
+      --#           "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Adjusted_Buf).Next    := Buffers.NOBUF;
-      -- end accept;
       Common.Buf_List (Adjusted_Buf).Len     := Size;
       Common.Buf_List (Adjusted_Buf).Tot_Len := Size;
       --  Set reference count
       Common.Buf_List (Adjusted_Buf).Ref     := 1;
+      --# end accept;
 
       --  Set specific fields
 
@@ -99,5 +114,21 @@ is
    begin
       return Buf_List (Buf).Payload_Ref;
    end Buffer_Payload;
+
+   -------------------
+   -- Buffer_Header --
+   -------------------
+
+   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
+   --# global in out Buf_List;
+   is
+      Offset : AIP.IPTR_T;
+   begin
+      --  Check that we are not going to move off the beginning of the buffer
+      Support.Verify (Bump <= 0);
+
+      Offset                     := AIP.IPTR_T (- Bump);
+      Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;
+   end Buffer_Header;
 
 end AIP.Buffers.No_Data;

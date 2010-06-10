@@ -33,6 +33,15 @@ is
 
    function Adjust_Back_Id (Buf : Buffer_Id) return Buffers.Buffer_Id;
 
+   ---------------------------
+   -- Global initialization --
+   ---------------------------
+
+   procedure Buffer_Init;
+   --# global out State, Free_List;
+   --  Initialize the array of buffers to zero and set the head of
+   --  the free-list
+
    -----------------------
    -- Buffer allocation --
    -----------------------
@@ -51,5 +60,14 @@ is
    function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
    --# global in State;
    --  Pointer to data referenced by buffer Buf
+
+   -----------------------
+   -- Buffer operations --
+   -----------------------
+
+   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T);
+   --# global in out State;
+   --  Move the payload pointer of Buf by Bump elements, signed.
+   --  Typically used to reveal or hide protocol headers.
 
 end AIP.Buffers.No_Data;
