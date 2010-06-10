@@ -11,8 +11,12 @@
 private package AIP.Buffers.Data
 --# own State, Free_List;
 is
-   --  There is one data buffer per chunk
-   Buffer_Num : constant AIP.U16_T := Buffers.Chunk_Num;
+   --  Data buffers directly use the same type as Buffers.Buffer_Id since
+   --  the same value is used to index in buffer arrays on both sides, contrary
+   --  to what occurs for no-data buffers for which there is a necessary
+   --  adjustment.
+
+   Buffer_Num : constant AIP.U16_T := Buffers.Data_Buffer_Num;
 
    subtype Buffer_Id is AIP.U16_T range 0 .. Buffer_Num;
 
@@ -32,7 +36,7 @@ is
    -----------------------
 
    procedure Buffer_Alloc
-     (Offset :     Buffers.Offset_Length;
+     (Offset :     Buffers.Buffer_Length;
       Size   :     Buffers.Data_Length;
       Kind   :     Buffers.Data_Buffer_Kind;
       Buf    : out Buffer_Id);

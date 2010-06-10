@@ -17,7 +17,7 @@ is
    --  vice-versa.
    type U16_T is range AIP.U16_T'First .. AIP.U16_T'Last;
 
-   Buffer_Num : constant U16_T := U16_T (Buffers.Ref_Num);
+   Buffer_Num : constant U16_T := U16_T (Buffers.No_Data_Buffer_Num);
 
    subtype Buffer_Id is U16_T range 0 .. Buffer_Num;
 

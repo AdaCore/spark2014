@@ -3,36 +3,14 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Generic Packet Buffers (network packet data containers) management.
+--  Generic Packet Buffers (network packet data containers) management
 
 --# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
---#         AIP.Support,  -- Same reason to inherit AIP.Support
---#         AIP.Conversions;
+--#         AIP.Support, AIP.Conversions;  --  Needed by child packages
 
 package AIP.Buffers
 --# own State;
 is
-   Chunk_Size : constant AIP.U16_T := 256;
-   --  Size of an individual chunk
-   Chunk_Num  : constant AIP.U16_T := 10;
-   --  Total number of chunks statically allocated
-   Ref_Num    : constant AIP.U16_T := 64;
-   --  Number of 'ref' buffers statically allocated
-
-   subtype Elem is Character;
-
-   --  There should be at least one buffer per chunk, plus additional buffers
-   --  for the case where no data is stored
-   Buffer_Num : constant AIP.U16_T := Chunk_Num + Ref_Num;
-
-   subtype Buffer_Id     is AIP.U16_T range 0 .. Buffer_Num;
-   subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
-   subtype Chunk_Length  is AIP.U16_T range 0 .. Chunk_Size;
-   subtype Offset_Length is AIP.U16_T range 0 .. Chunk_Size - 1;
-   subtype Data_Length   is AIP.U16_T range 0 .. Chunk_Size * Chunk_Num;
-
-   NOBUF : constant Buffer_Id := 0;
-
    --  Network packet data is held in buffers, chained as required when
    --  several buffers are needed for a single packet. Such chaining
    --  capabilities are very useful to allow storage of large data blocks in
@@ -46,6 +24,38 @@ is
 
    --  Buffers feature reference counters to facilitate sharing and allow
    --  control over deallocation responsibilities.
+
+   --  'Data' buffers are those buffers holding data.
+   --  'No-data' buffers are those buffers referencing external data.
+
+   --  Data_Buffer_Size, Data_Buffer_Num, No_Data_Buffer_Num and Elem can be
+   --  changed according to specific project needs. None of these positive
+   --  constants should be zero.
+
+   --  Size of an individual data buffer
+   Data_Buffer_Size   : constant AIP.U16_T := 256;
+   --  Total number of data buffers statically allocated
+   Data_Buffer_Num    : constant AIP.U16_T := 10;
+   --  Total number of no-data buffers statically allocated
+   No_Data_Buffer_Num : constant AIP.U16_T := 64;
+
+   --  Type of data element
+   subtype Elem is Character;
+
+   subtype Buffer_Length is AIP.U16_T range 0 .. Data_Buffer_Size;
+
+   --  Type Data_Length is used for total length of buffers, both for data
+   --  buffers and no-data buffers. Hence it is not necessarily bounded by
+   --  the maximal size for data buffers: Data_Buffer_Size * Data_Buffer_Num.
+   subtype Data_Length   is AIP.U16_T;
+
+   --  Total number of buffers statically allocated
+   Buffer_Num : constant AIP.U16_T := Data_Buffer_Num + No_Data_Buffer_Num;
+
+   subtype Buffer_Id     is AIP.U16_T range 0 .. Buffer_Num;
+   subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
+
+   NOBUF : constant Buffer_Id := 0;
 
    ---------------------------
    -- Global initialization --
@@ -65,7 +75,9 @@ is
 
    type Buffer_Kind is
      (MONO_BUF,
-      --  Buffer data is allocated as contiguous chunks
+      --  Buffer data is allocated as contiguous chunks. If more than one
+      --  buffer is needed, a chain is constructed with contiguous buffers,
+      --  so that the data can be moved as if from a single buffer.
 
       LINK_BUF,
       --  Buffer data is allocated from available chunks. A chain is
@@ -81,13 +93,13 @@ is
    subtype Data_Buffer_Kind is Buffer_Kind range MONO_BUF .. LINK_BUF;
 
    procedure Buffer_Alloc
-     (Offset :     Offset_Length;
+     (Offset :     Buffer_Length;
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at holding or
-   --  referencing Size elements of data
+   --  referencing Size elements of data starting at offset Offset
 
    -----------------------------
    -- Buffer struct accessors --
@@ -167,5 +179,18 @@ is
    --# global in out State;
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.
+
+   --  Note: if this procedure is called on a buffer not in front of a chain,
+   --        then if will result in a violation of the invariant for the total
+   --        length of buffers that precede it in the chain.
+   --        This means that we should probably change this functionality in
+   --        our implementation of LWIP in SPARK.
+
+private
+
+   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
+   --  Return whether buffer Buf is a data buffer or a no-data buffer.
+   --  Declared in the private part as SPARK forbids declarations in body and
+   --  style checks require a declaration.
 
 end AIP.Buffers;

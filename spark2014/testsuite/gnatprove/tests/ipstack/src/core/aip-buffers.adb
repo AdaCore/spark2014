@@ -19,7 +19,11 @@ is
 
    function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
    begin
-      return Buf <= Chunk_Num;
+      --  Decision between data buffer and no-data buffer should not apply to
+      --  null buffer, which is both
+      Support.Verify (Buf /= NOBUF);
+
+      return Buf <= Data_Buffer_Num;
    end Is_Data_Buffer;
 
    -----------------
@@ -56,7 +60,7 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Offset :     Offset_Length;
+     (Offset :     Buffer_Length;
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id)
@@ -72,6 +76,10 @@ is
                             Kind   => Kind,
                             Buf    => Buf);
       else
+         --  Check that the argument offset is zero, as it is not used for
+         --  allocating a no-data buffer
+         Support.Verify (Offset = 0);
+
          No_Data.Buffer_Alloc (Size => Size,
                                Buf  => No_Data_Buf);
          Buf := No_Data.Adjust_Back_Id (No_Data_Buf);
@@ -255,8 +263,8 @@ is
       Tail_Len          : Data_Length;
    begin
       Cur_Buf  := Head;
-      --  Not useful as Head should not be NOBUF.
-      --  Cur_Buf initialized anyway to avoid flow error.
+      --  Not useful as Head should not be NOBUF and thus the loop always
+      --  executed. Cur_Buf initialized anyway to avoid Examiner flow error.
 
       Next_Buf := Head;
       Tail_Len := Common.Buf_List (Tail).Tot_Len;
@@ -302,12 +310,6 @@ is
    -------------------
    -- Buffer_Header --
    -------------------
-
-   --  Note: if this procedure is called on a buffer not in front of a chain,
-   --        then if will result in a violation of the invariant for the total
-   --        length of buffers that precede it in the chain.
-   --        This means that we should probably change this functionality in
-   --        our implementation of LWIP in SPARK.
 
    procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
    --# global in out Common.Buf_List, Data.State, No_Data.State;

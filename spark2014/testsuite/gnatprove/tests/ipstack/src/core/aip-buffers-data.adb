@@ -18,23 +18,24 @@ is
    --  Data_Array array to a single buffer, so as to simulate the allocation
    --  of a single chunk of memory, which is required for MONO_BUF buffers.
 
-   subtype Data_Index is Buffers.Data_Length;
+   subtype Data_Index is Buffers.Data_Length range
+     1 .. Buffers.Data_Buffer_Size * Buffers.Data_Buffer_Num;
    type Data_Array_Type is array (Data_Index) of Buffers.Elem;
 
    Data_Array : Data_Array_Type;
 
-   subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Chunk_Num;
+   subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Data_Buffer_Num;
    subtype Buffer_Count is Buffer_Index;
 
    type Buffer is record
-      --  Number of chunks in singly linked chain
+      --  Number of buffers in singly linked chain
       Num          : Buffer_Count;
 
-      --  Number of contiguous chunks in singly linked chain from this chunk
+      --  Number of contiguous buffers in singly linked chain from this buffer
       Num_No_Jump  : Buffer_Count;
 
-      --  Offset to get to the position of the actual data in the chunk
-      Left_Offset  : Buffers.Chunk_Length;
+      --  Offset to get to the position of the actual data in the buffer
+      Left_Offset  : Buffers.Buffer_Length;
 
       --  Kind of buffer
       Kind         : Buffers.Data_Buffer_Kind;
@@ -67,6 +68,7 @@ is
       --  Make the head of the free-list point to the first buffer
       Free_List := 1;
 
+      --  Intentionally leave Data_Array not initialized
       --# accept F, 32, Data_Array,
       --#               "The variable is neither imported nor defined";
       --# accept F, 31, Data_Array,
@@ -78,14 +80,14 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Offset :     Buffers.Offset_Length;
+     (Offset :     Buffers.Buffer_Length;
       Size   :     Buffers.Data_Length;
       Kind   :     Buffers.Data_Buffer_Kind;
       Buf    : out Buffer_Id)
    --# global in out Common.Buf_List, Buf_List, Free_List;
    is
       Requested_Size    : AIP.U16_T;
-      Requested_Chunks  : AIP.U16_T;
+      Requested_Buffers : AIP.U16_T;
       Cur_Buf, Next_Buf : Buffer_Id;
       Remaining_Size    : Buffers.Data_Length;
       --  Remaining size to be allocated
@@ -95,20 +97,21 @@ is
 
       Requested_Size := Offset + Size;
       if Requested_Size = 0 then
-         Requested_Chunks := 1;
+         Requested_Buffers := 1;
       else
-         Requested_Chunks :=
-           (Requested_Size + (Buffers.Chunk_Size - 1)) / Buffers.Chunk_Size;
+         Requested_Buffers :=
+           (Requested_Size + (Buffers.Data_Buffer_Size - 1))
+           / Buffers.Data_Buffer_Size;
       end if;
 
-      --  Check that the requested number of chunks are available, and that
-      --  they form a contiguous chain of chunks for Kind = MONO_BUF
+      --  Check that the requested number of buffers are available, and that
+      --  they form a contiguous chain of buffers for Kind = MONO_BUF
       case Kind is
          when Buffers.LINK_BUF =>
-            Support.Verify (Requested_Chunks <= Buf_List (Free_List).Num);
+            Support.Verify (Requested_Buffers <= Buf_List (Free_List).Num);
          when Buffers.MONO_BUF =>
             Support.Verify
-              (Requested_Chunks <= Buf_List (Free_List).Num_No_Jump);
+              (Requested_Buffers <= Buf_List (Free_List).Num_No_Jump);
       end case;
 
       --  Pop the head of the free-list
@@ -118,8 +121,8 @@ is
       Next_Buf       := Buf;
       Remaining_Size := Requested_Size;
 
-      --  Allocate chunks in singly linked chain
-      for Remaining in reverse AIP.U16_T range 1 .. Requested_Chunks loop
+      --  Allocate buffers in singly linked chain
+      for Remaining in reverse AIP.U16_T range 1 .. Requested_Buffers loop
          --  Update iterators
          Cur_Buf                             := Next_Buf;
          Next_Buf                            := Common.Buf_List (Cur_Buf).Next;
@@ -129,8 +132,8 @@ is
          Buf_List (Cur_Buf).Num_No_Jump      :=
            Buffer_Count'Min (Buf_List (Cur_Buf).Num_No_Jump, Remaining);
 
-         --  Left offset is zero for all chunks but the first one
-         if Remaining = Requested_Chunks then
+         --  Left offset is zero for all buffers but the first one
+         if Remaining = Requested_Buffers then
             Buf_List (Cur_Buf).Left_Offset   := Offset;
          else
             Buf_List (Cur_Buf).Left_Offset   := 0;
@@ -145,12 +148,12 @@ is
          --# accept F, 41, "Expression is stable";
          case Kind is
             when Buffers.LINK_BUF =>
-               --  Length completes offset to chunk size unless not enough data
-               --  remaining
+               --  Length completes offset to buffer size unless not enough
+               --  data remaining
                --# accept W, 169, Common.Buf_List,
                --#  "Direct update of own variable of a non-enclosing package";
                Common.Buf_List (Cur_Buf).Len :=
-                 AIP.U16_T'Min (Buffers.Chunk_Size
+                 AIP.U16_T'Min (Buffers.Data_Buffer_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
                --# end accept;
@@ -164,10 +167,10 @@ is
          end case;
          --# end accept;
 
-         --  Remaining size decreases by Chunk_Size until last chunk
+         --  Remaining size decreases by buffer size until last buffer
          if Remaining /= 1 then
             Remaining_Size                   :=
-              Remaining_Size - Buffers.Chunk_Size;
+              Remaining_Size - Buffers.Data_Buffer_Size;
          end if;
 
          Buf_List (Cur_Buf).Kind             := Kind;
@@ -178,7 +181,7 @@ is
          --# end accept;
       end loop;
 
-      --  Remove the allocate chunks from the free-list
+      --  Remove the allocate buffers from the free-list
       --# accept W, 169, Common.Buf_List,
       --#        "Direct update of own variable of a non-enclosing package";
       Common.Buf_List (Cur_Buf).Next := Buffers.NOBUF;
