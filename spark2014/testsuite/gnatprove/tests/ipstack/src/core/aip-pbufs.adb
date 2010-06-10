@@ -16,9 +16,8 @@ package body AIP.Pbufs is
       --  Keep calling Pbuf_Free until it deallocates
 
       while N_Deallocs = 0 loop
-         Pbuf_Free (PB, N_Deallocs);
+         Pbuf_Free (Pb, N_Deallocs);
       end loop;
    end Pbuf_Release;
 
 end AIP.Pbufs;
-

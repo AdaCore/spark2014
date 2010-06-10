@@ -16,4 +16,3 @@ package AIP.Conversions is
       new Ada.Unchecked_Conversion (System.Address, AIP.IPTR_T);
 
 end AIP.Conversions;
-

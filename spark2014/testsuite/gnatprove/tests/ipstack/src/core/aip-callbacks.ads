@@ -23,7 +23,6 @@ package AIP.Callbacks is
    subtype Callback_Id is AIP.IPTR_T;
    NOCB : constant Callback_Id := AIP.NULIPTR;
 
-
    --  LWIP callbacks are often expected to be functions returning values.
    --  They however most often modify pieces of global state (e.g. adjusting a
    --  pbuf), which requires procedures in SPARK.

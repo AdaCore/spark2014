@@ -3,7 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
--- Packet Buffers (network packet data containers) management.
+--  Packet Buffers (network packet data containers) management.
 
 with AIP.Pools;
 --# inherit AIP.Pools;

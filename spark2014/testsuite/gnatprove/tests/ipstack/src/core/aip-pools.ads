@@ -8,8 +8,8 @@
 --# inherit AIP;
 
 package AIP.Pools
-  --# own PBUF_POOL;
-  --# initializes PBUF_POOL;
+--# own PBUF_POOL;
+--# initializes PBUF_POOL;
 is
    PBUF_POOL : Integer := 0;
 end AIP.Pools;

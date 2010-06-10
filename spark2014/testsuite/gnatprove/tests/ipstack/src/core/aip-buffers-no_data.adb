@@ -127,7 +127,7 @@ is
       --  Check that we are not going to move off the beginning of the buffer
       Support.Verify (Bump <= 0);
 
-      Offset                     := AIP.IPTR_T (- Bump);
+      Offset                     := AIP.IPTR_T (-Bump);
       Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;
    end Buffer_Header;
 

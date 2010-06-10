@@ -217,6 +217,9 @@ is
    --#               Data.Free_List, No_Data.Free_List;
    is
       N_Deallocs : AIP.U8_T;
+      --# accept W, 3, "Pragma - ignored by the SPARK Examiner";
+      pragma Unreferenced (N_Deallocs);
+      --# end accept;
    begin
       --# accept F, 10, N_Deallocs, "Assignment is ineffective";
       Buffer_Free (Buf, N_Deallocs);
@@ -251,8 +254,10 @@ is
       Cur_Buf, Next_Buf : Buffer_Id;
       Tail_Len          : Data_Length;
    begin
-      Cur_Buf  := Head;  --  Not useful as Head should not be NOBUF.
-                         --  Cur_Buf initialized anyway to avoid flow error.
+      Cur_Buf  := Head;
+      --  Not useful as Head should not be NOBUF.
+      --  Cur_Buf initialized anyway to avoid flow error.
+
       Next_Buf := Head;
       Tail_Len := Common.Buf_List (Tail).Tot_Len;
 

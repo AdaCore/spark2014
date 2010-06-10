@@ -58,7 +58,6 @@ is
         (others => Buffer'(Num  => 1, Num_No_Jump => 1, Left_Offset => 0,
                            Kind => Buffers.LINK_BUF));
 
-
       --  Set special fields to adapt to a singly linked chain of buffers
       for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
          Buf_List (Buf).Num         := (Buffer_Index'Last - Buf) + 1;
