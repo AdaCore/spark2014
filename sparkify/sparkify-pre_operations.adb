@@ -780,67 +780,79 @@ package body Sparkify.Pre_Operations is
          when A_Record_Type_Definition  =>
             declare
                Record_Def    : constant Asis.Definition :=
-                                Asis.Definitions.Record_Definition (Type_Def);
-               Record_Comps  : constant Asis.Record_Component_List :=
-                                     Record_Components (Record_Def);
-               Subtype_Names :
-                 array (1 .. Record_Comps'Length) of Unbounded_Wide_String;
-
+                                 Asis.Definitions.Record_Definition (Type_Def);
             begin
                --  In SPARK, a record definition cannot be a null record
                --  unless it is tagged
-               if Definition_Kind (Record_Def) = A_Null_Record_Definition
-                 or else
-                   (Record_Comps'Length = 1 and then
-                    Flat_Element_Kind (Record_Comps (1)) = A_Null_Component)
-               then
+               if Definition_Kind (Record_Def) = A_Null_Record_Definition then
                   if Flat_Element_Kind (Record_Def) =
                     A_Tagged_Record_Type_Definition then
                      return;
                   else
-                     SLOC_Error ("null record definition",
+                     SLOC_Error ("!!!null record definition",
                                  Build_GNAT_Location (Element));
                   end if;
+               else
+                  declare
+                     Record_Comps  : constant Asis.Record_Component_List :=
+                                       Record_Components (Record_Def);
+                     Subtype_Names :
+                       array (1 .. Record_Comps'Length) of
+                       Unbounded_Wide_String;
+                  begin
+                     --  a component list cannot be the reserved word null
+                     --  unless the record is tagged
+                     if (Record_Comps'Length = 1) and then
+                       Flat_Element_Kind
+                         (Component_Declaration (Record_Comps (1)))
+                       = A_Null_Component
+                     then
+                        if Flat_Element_Kind (Record_Def) =
+                          A_Tagged_Record_Type_Definition then
+                           return;
+                        else
+                           SLOC_Error ("!!!null component in record",
+                                       Build_GNAT_Location (Element));
+                        end if;
+                     else
+                        for J in Record_Comps'Range loop
+                           declare
+                              Comp_Decl  : constant Asis.Declaration
+                                := Component_Declaration (Record_Comps (J));
+                              Object_Def : constant Asis.Definition
+                                := Object_Declaration_View (Comp_Decl);
+                              Comp_View  : constant Asis.Component_Definition
+                                := Component_Definition_View (Object_Def);
+                           begin
+                              Subtype_Names (J) := To_Unbounded_Wide_String
+                                (Transform_Subtype_Indication
+                                   (Comp_View, Column_Start));
+                           end;
+                        end loop;
+
+                        PP_Echo_Cursor_Range
+                          (State.Echo_Cursor, Cursor_Before
+                             (Record_Comps (1)));
+
+                        for J in Record_Comps'Range loop
+                           declare
+                              Comp_Decl  : constant Asis.Declaration
+                                := Component_Declaration (Record_Comps (J));
+                              Object_Def : constant Asis.Definition
+                                := Object_Declaration_View (Comp_Decl);
+                              Comp_View  : constant Asis.Component_Definition
+                                := Component_Definition_View (Object_Def);
+                           begin
+                              PP_Echo_Cursor_Range
+                                (Cursor_At (Record_Comps (J)),
+                                 Cursor_Before (Comp_View));
+                              PP_Word (To_Wide_String (Subtype_Names (J)));
+                              PP_Word (";");
+                           end;
+                        end loop;
+                     end if;
+                  end;
                end if;
-               pragma Assert (not Is_Nil (Record_Comps));
-
-               for J in Record_Comps'Range loop
-                  declare
-                     Comp_Decl  : constant Asis.Declaration :=
-                                    Component_Declaration
-                                      (Record_Comps (J));
-                     Object_Def : constant Asis.Definition :=
-                                    Object_Declaration_View (Comp_Decl);
-                     Comp_View  : constant Asis.Component_Definition :=
-                                    Component_Definition_View (Object_Def);
-                  begin
-                     Subtype_Names (J) := To_Unbounded_Wide_String
-                       (Transform_Subtype_Indication
-                          (Comp_View, Column_Start));
-                  end;
-               end loop;
-
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor, Cursor_Before (Record_Comps (1)));
-
-               for J in Record_Comps'Range loop
-                  declare
-                     Comp_Decl  : constant Asis.Declaration :=
-                                    Component_Declaration
-                                      (Record_Comps (J));
-                     Object_Def : constant Asis.Definition :=
-                                    Object_Declaration_View (Comp_Decl);
-                     Comp_View  : constant Asis.Component_Definition :=
-                                    Component_Definition_View (Object_Def);
-                  begin
-                     PP_Echo_Cursor_Range
-                       (Cursor_At (Record_Comps (J)),
-                        Cursor_Before (Comp_View));
-                     PP_Word (To_Wide_String (Subtype_Names (J)));
-                     PP_Word (";");
-                  end;
-               end loop;
-
                PP_Close_Line;
                PP_Word ("end record;");
                State.Echo_Cursor := Cursor_After (Element);
