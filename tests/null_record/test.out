@@ -1,4 +1,2 @@
 null_record.adb:3:4: sparkify: !!!null record definition
-null_record.adb:4:4: sparkify: !!!null component in record
-------------------------------------------------------------------------
-
+Sparkify terminates in error

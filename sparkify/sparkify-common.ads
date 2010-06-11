@@ -41,6 +41,14 @@ package Sparkify.Common is
 
    function Element_Name (Element : Asis.Element) return Wide_String;
 
+   --------------------------------
+   -- Errors processing and exit --
+   --------------------------------
+
+   procedure SLOC_Error_And_Exit
+     (Message : String;
+      SLOC    : String);
+
    --------------------------------------------
    -- Resources needed for source traversing --
    --------------------------------------------

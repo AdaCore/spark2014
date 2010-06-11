@@ -1,4 +1,8 @@
 sparkify -w -q *.ads *.adb
+if [ $? -ne 0 ]; then
+  echo "Sparkify terminates in error"
+  exit
+fi
 cd sparkified
 echo "------------------------------------------------------------------------"
 cat *.ads *.adb

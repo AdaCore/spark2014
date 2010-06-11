@@ -26,10 +26,13 @@
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 with Ada.Strings;                      use Ada.Strings;
 
+with GNAT.OS_Lib;
+
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Text;                        use Asis.Text;
 
 with ASIS_UL.Common;
+with ASIS_UL.Output;                   use ASIS_UL.Output;
 
 package body Sparkify.Common is
 
@@ -54,6 +57,18 @@ package body Sparkify.Common is
    begin
       return Trim (Element_Image (Element), Left);
    end Element_Name;
+
+   -------------------------
+   -- SLOC_Error_And_Exit --
+   -------------------------
+
+   procedure SLOC_Error_And_Exit
+     (Message : String;
+      SLOC    : String) is
+   begin
+      SLOC_Error (Message, SLOC);
+      GNAT.OS_Lib.OS_Exit (1);
+   end SLOC_Error_And_Exit;
 
    ---------------------------------------
    -- Non_Implemented_ASIS_2005_Feature --

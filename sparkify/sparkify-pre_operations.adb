@@ -35,6 +35,8 @@ with Asis.Expressions;                 use Asis.Expressions;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Statements;                  use Asis.Statements;
 with Asis.Set_Get;                     use Asis.Set_Get;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
+with Ada.Integer_Wide_Text_IO;         use Ada.Integer_Wide_Text_IO;
 
 with ASIS_UL.Output;                   use ASIS_UL.Output;
 with ASIS_UL.Strings;                  use ASIS_UL.Strings;
@@ -46,8 +48,6 @@ with Sparkify.Source_Line_Buffer;      use Sparkify.Source_Line_Buffer;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
-with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
-with Ada.Integer_Wide_Text_IO;         use Ada.Integer_Wide_Text_IO;
 
 package body Sparkify.Pre_Operations is
 
@@ -178,8 +178,8 @@ package body Sparkify.Pre_Operations is
 
                when A_Discriminant_Constraint =>
 
-                  SLOC_Error ("discriminant constraint",
-                              Build_GNAT_Location (Element));
+                  SLOC_Error_And_Exit ("discriminant constraint",
+                                       Build_GNAT_Location (Element));
 
                when Not_A_Constraint =>
 
@@ -772,8 +772,8 @@ package body Sparkify.Pre_Operations is
                   PP_Word (Array_Type_Str & ";");
                   State.Echo_Cursor := Cursor_After (Element);
                when others =>
-                  SLOC_Error ("unexpected element",
-                              Build_GNAT_Location (Element));
+                  SLOC_Error_And_Exit ("unexpected element",
+                                       Build_GNAT_Location (Element));
                end case;
             end;
 
@@ -789,8 +789,8 @@ package body Sparkify.Pre_Operations is
                     A_Tagged_Record_Type_Definition then
                      return;
                   else
-                     SLOC_Error ("!!!null record definition",
-                                 Build_GNAT_Location (Element));
+                     SLOC_Error_And_Exit ("!!!null record definition",
+                                          Build_GNAT_Location (Element));
                   end if;
                end if;
 
@@ -811,8 +811,8 @@ package body Sparkify.Pre_Operations is
                        A_Tagged_Record_Type_Definition then
                         return;
                      else
-                        SLOC_Error ("!!!null component in record",
-                                    Build_GNAT_Location (Element));
+                        SLOC_Error_And_Exit ("!!!null component in record",
+                                             Build_GNAT_Location (Element));
                      end if;
                   end if;
 
@@ -1078,8 +1078,8 @@ package body Sparkify.Pre_Operations is
             State.Echo_Cursor := Cursor_After (Element);
 
          when others =>
-            SLOC_Error ("unexpected element",
-                        Build_GNAT_Location (Element));
+            SLOC_Error_And_Exit ("unexpected element",
+                                 Build_GNAT_Location (Element));
       end case;
 
    end An_Object_Declaration_Pre_Op;
@@ -1407,8 +1407,8 @@ package body Sparkify.Pre_Operations is
                      pragma Assert (not Is_Nil (Type_Decl));
 
                   when others =>
-                     SLOC_Error ("unexpected element",
-                                 Build_GNAT_Location (Element));
+                     SLOC_Error_And_Exit ("unexpected element",
+                                          Build_GNAT_Location (Element));
                   end case;
                end;
 
@@ -1613,8 +1613,8 @@ package body Sparkify.Pre_Operations is
             Array_Type_Str := Array_Type_Str & " of "
               & Transform_Subtype_Indication (Array_Comp_Sub, Column_Start);
          when others =>
-            SLOC_Error ("unexpected element",
-                        Build_GNAT_Location (Element));
+            SLOC_Error_And_Exit ("unexpected element",
+                                 Build_GNAT_Location (Element));
       end case;
 
       return To_Wide_String (Array_Type_Str);
@@ -1630,8 +1630,8 @@ package body Sparkify.Pre_Operations is
    begin
       --  Reject code with a "non null" trait on a subtype indication
       if Trait_Kind (Element) = A_Null_Exclusion_Trait then
-         SLOC_Error ("null exclusion trait",
-                     Build_GNAT_Location (Element));
+         SLOC_Error_And_Exit ("null exclusion trait",
+                              Build_GNAT_Location (Element));
       end if;
 
       if Is_Nil (Subtype_Constraint (Element)) then
@@ -1681,8 +1681,8 @@ package body Sparkify.Pre_Operations is
 
                when A_Discriminant_Constraint =>
 
-                  SLOC_Error ("discriminant constraint",
-                              Build_GNAT_Location (Element));
+                  SLOC_Error_And_Exit ("discriminant constraint",
+                                       Build_GNAT_Location (Element));
 
                when Not_A_Constraint =>
 
