@@ -1,5 +1,6 @@
 anon_type.adb:11:23: sparkify: implicit loop invariant
 anon_type.adb:14:29: sparkify: implicit loop invariant
+anon_type.adb:17:33: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,
@@ -27,21 +28,21 @@ is
    type Array4 is array (New_Name_4) of Value;
    subtype New_Name_5 is Integer range 
 --@ line 13
-                         1 .. 10;
+                         1 .. 2;
 --@ line 13
    subtype New_Name_6 is Integer range 
 --@ line 13
-                                  1 .. 10;
+                                 1 .. 3;
 --@ line 13
    type Array5 is array (New_Name_5, New_Name_6) of Value;
 
    procedure Exchange(A1 : out Array1; A2 : out Array2;
-                      A3 : out Array3; A4 : out Array4);
+                      A3 : out Array3; A4 : out Array4; A5 : in out Array5);
 end Anon_Type;
 package body Anon_Type
 is
    procedure exchange(A1 : out Array1; A2 : out Array2;
-                     A3 : out Array3; A4 : out Array4)
+                     A3 : out Array3; A4 : out Array4; A5 : in out Array5)
    is
    begin
         A1 := Array1'
@@ -70,17 +71,24 @@ is
 --@ line 15
          A4(I) := A3(I);
       end loop;
+      for I in Integer range 
+--@ line 17
+               Array5'Range (2) loop
+         --# assert True;
+--@ line 18
+         A5(1,I) := A4(I/2);
+      end loop;
    end exchange;
 end Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          6      1      5              0      0      0       0
+Assert or Post:          8      1      6              0      0      0       1
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:          10      0      9              0      0      0       1
+Runtime check:          12      0     10              0      0      0       2
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 16      1     14              0      0      0       1  <<<
-% Totals:                       6%    88%             0%     0%     0%      6% <<<
+Totals:                 20      1     16              0      0      0       3  <<<
+% Totals:                       5%    80%             0%     0%     0%     15% <<<
 ===================== End of Semantic Analysis Summary ========================

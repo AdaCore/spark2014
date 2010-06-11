@@ -10,9 +10,9 @@ is
    Size : constant Integer :=10;
    type Array3 is array (1 .. Size) of Value;
    type Array4 is array (1 .. 10) of Value;
-   type Array5 is array (1 .. 10, 1 .. 20) of Value;
+   type Array5 is array (1 .. 2, 1 .. 3) of Value;
 
    procedure Exchange(A1 : out Array1; A2 : out Array2;
-                      A3 : out Array3; A4 : out Array4);
+                      A3 : out Array3; A4 : out Array4; A5 : in out Array5);
 end Anon_Type;
 

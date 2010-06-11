@@ -1,7 +1,7 @@
 package body Anon_Type
 is
    procedure exchange(A1 : out Array1; A2 : out Array2;
-                     A3 : out Array3; A4 : out Array4)
+                     A3 : out Array3; A4 : out Array4; A5 : in out Array5)
    is
    begin
         A1 := (0,0,0,0,0);
@@ -15,7 +15,7 @@ is
          A4(I) := A3(I);
       end loop;
       for I in Array5'Range (2) loop
-         null;
+         A5(1,I) := A4(I/2);
       end loop;
    end exchange;
 end Anon_Type;
