@@ -32,8 +32,8 @@ is
 end record;
 
    type Nothing is tagged record
-null;
-end record;
+      null;
+   end record;
 
    ToDay1, ToDay2, ToDay3 : Date;
 

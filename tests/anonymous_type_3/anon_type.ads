@@ -14,7 +14,7 @@ is
       Day_String : String(1 .. 6);
    end record;
 
-   type Nothing is record
+   type Nothing is tagged record
       null;
    end record;
 
