@@ -37,9 +37,3 @@ parameter modular__byte___of_integer_ :
 
 parameter safe___modular__byte___of_integer_ :
  x:int -> { } modular__byte { eq_int(integer_of___modular__byte(result), x) }
-
-parameter modular__byte___mod :
- x: int -> { }
- modular__byte
-{ eq_int (integer_of___modular__byte (result), mod_int (x, 256)) }
-

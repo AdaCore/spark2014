@@ -54,7 +54,9 @@ System.Max_Nonbinary_Modulus), so we won't duplicate this check at the
 Why level.
 
 3.5.4 (16): Attribute 'Modulus should have been expanded already; no
-need to do anything on the Why side (a priori).
+need to do anything on the Why side (a priori). As for S'Mod (Arg), it
+is expanded to a call to "Arg mod S'Modulus". Two tests illustrates
+that fact in test.cmd.
 
 3.5.4 (19) refers to 4.5 for predefined operators. This will be dealt with
 in the corresponding directory (ch4.5__operators_and_expression_evaluation).

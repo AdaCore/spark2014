@@ -80,11 +80,3 @@ let succ___modular__byte255 =
    (succ___modular__byte (x))
   {(eq_int (integer_of___modular__byte (result), 0))}
 
-(* OK *)
-
-let succ___modular__byte258 =
- fun (x : int) ->
-  {(eq_int (x, 258)) }
-   (succ___modular__byte (modular__byte___mod (x)))
-  {(eq_int (integer_of___modular__byte (result), 3))}
-
