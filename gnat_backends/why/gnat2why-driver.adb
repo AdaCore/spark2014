@@ -71,11 +71,11 @@ package body Gnat2Why.Driver is
       New_Line;
       Put_Line ("*** GNAT2WHY STUB ***");
       Put_Line ("NOTHING IMPLEMENTED SO FAR; this stub dumps:");
-      Put_Line (" * the root note;");
+      Put_Line (" * the syntax tree;");
       Put_Line (" * a source-view of the syntax tree.");
       New_Line;
 
-      Treepr.Print_Tree_Node (GNAT_Root);
+      Treepr.Print_Node_Subtree (GNAT_Root);
       Sprint_Node (GNAT_Root);
    end GNAT_To_Why;
 
