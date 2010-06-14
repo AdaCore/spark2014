@@ -36,5 +36,8 @@ entities are roughly the same as for a signed type; the main difference being
 the "coerce" axiom, which states that results of a convertion from int to
 a mod type, then back to int is equivalent to a modulus operation.
 
+In addition, a function is defined in the program space to represent
+the attribute 'Mod (3.5.4 (16)).
+
 modular_test.why is an example in why of the use of these modular types.
 For a consistancy check, a model in Alloy can be found in modular.als.
