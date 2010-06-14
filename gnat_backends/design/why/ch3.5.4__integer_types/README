@@ -8,22 +8,22 @@ In signed.ads, proposal in signed.why. For a signed integer int8, the
 following logical entity are generated:
 
 * the declaration of a type signed__int8;
-* the declaration of two logic functions integer_of_signed__int8
+* the declaration of two logic functions integer_of___signed__int8
 and signed__int8_of_integer, that are meant to convert signed__int8 to int
 and vice versa;
-* a predicate eq_signed__int8 that defines equality using int equality;
+* a predicate eq___signed__int8 that defines equality using int equality;
 * an axiom that states that the conversion from int to signed__int8 and
 then back to int is the identity;
 * a second axiom stating that any signed__int8 that is converted to an int
 falls into this type's range (e.g. -128 .. 127).
 
 In the program space, the following function are defined:
-* any_signed__int8, that returns an initialized signed__int8, and may be used
+* any___signed__int8, that returns an initialized signed__int8, and may be used
 to allocated/initialize refs to signed__int8
-* signed__int8_of_integer_, counterpart of signed__int8_of_integer in the
+* signed__int8___of_integer_, counterpart of signed__int8___of_integer in the
 program space;
-* safe_signed__int8_of_integer_, same one assuming that absence of overflows
-has already been proved.
+* safe___signed__int8___of_integer_, same one assuming that absence of
+overflows has already been proved.
 
 signed_test.why is an example in why of the use of this signed integer types.
 For a consistancy check, a model in Alloy can be found in signed.als.
