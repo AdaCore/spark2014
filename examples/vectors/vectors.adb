@@ -1,11 +1,14 @@
+with Counter;
+
 package body Vectors is
 
-   function Get_Id (Container : Vector) return System.Address
+   procedure Set_Id (Container : in out Vector)
+   --# derives Container from Container;
    is
-      --# hide Get_Id;  --  Use of the attribute 'Address
+      --# hide Set_Id;  --  Hide side-effect on global Counter
    begin
-      return Container'Address;
-   end Get_Id;
+      Container.Id := Counter.Bump_Counter;
+   end Set_Id;
 
    procedure Bump_Sig (Container : in out Vector)
    --# derives Container from Container;
@@ -13,6 +16,12 @@ package body Vectors is
    begin
       Container.Sig := Container.Sig + 1;
    end Bump_Sig;
+
+   procedure Init_Vector (Container : out Vector) is
+   begin
+      Container := Vector'(0, 1, Elements_Array'(others => 0), 0);
+      Set_Id (Container);
+   end Init_Vector;
 
    function Length (Container : Vector) return Count_Type is
    begin
@@ -23,7 +32,7 @@ package body Vectors is
       Position : Cursor;
    begin
       if Length (Container) > 0 then
-         Position := Cursor'(Container_Id  => Get_Id (Container),
+         Position := Cursor'(Container_Id  => Container.Id,
                              Container_Sig => Container.Sig,
                              Last_Index    => Container.Last_Index,
                              Index         => Index_Type'First);
@@ -37,7 +46,7 @@ package body Vectors is
       Position : Cursor;
    begin
       if Length (Container) > 0 then
-         Position := Cursor'(Container_Id  => Get_Id (Container),
+         Position := Cursor'(Container_Id  => Container.Id,
                              Container_Sig => Container.Sig,
                              Last_Index    => Container.Last_Index,
                              Index         => Container.Last_Index);
@@ -50,11 +59,14 @@ package body Vectors is
    function Associated
      (Container : Vector;
       Position  : Cursor) return Boolean
+   --# return Container.Id = Position.Container_Id
+   --#        and then Container.Sig = Position.Container_Sig
+   --#        and then Length (Container) > 0
+   --#        and then Position.Last_Index = Container.Last_Index
+   --#        and then Position.Index <= Position.Last_Index;
    is
-      --# hide Associated;  --  Use of equality between addresses
-      use System;
    begin
-      return Get_Id (Container) = Position.Container_Id
+      return Container.Id = Position.Container_Id
         and then Container.Sig = Position.Container_Sig;
    end Associated;
 

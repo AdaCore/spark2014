@@ -1,6 +1,3 @@
-with System;
---# inherit System;
-
 package Vectors is
 
    type Extended_Index is range 0 .. 10_000;
@@ -14,9 +11,10 @@ package Vectors is
    type Vector is private;
    type Cursor is private;
 
-   Empty_Vector : constant Vector;
-
    No_Element : constant Cursor;
+
+   procedure Init_Vector (Container : out Vector);
+   --# derives Container from;
 
    function Length (Container : Vector) return Count_Type;
 
@@ -62,21 +60,19 @@ private
    type Elements_Array is array (Index_Type) of Element_Type;
 
    type Vector is record
+      Id         : Natural;
       Sig        : Positive;
       Elements   : Elements_Array;
       Last_Index : Extended_Index;
    end record;
 
    type Cursor is record
-      Container_Id  : System.Address;
+      Container_Id  : Natural;
       Container_Sig : Natural;
       Last_Index    : Index_Type;
       Index         : Index_Type;
    end record;
 
-   Empty_Vector : constant Vector :=
-                    Vector'(1, Elements_Array'(others => 0), 0);
-
-   No_Element : constant Cursor := Cursor'(System.Null_Address, 0, 1, 1);
+   No_Element : constant Cursor := Cursor'(0, 0, 1, 1);
 
 end Vectors;
