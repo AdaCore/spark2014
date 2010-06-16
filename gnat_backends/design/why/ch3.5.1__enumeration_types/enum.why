@@ -1,0 +1,95 @@
+
+type enum__day =
+  | enum__mon
+  | enum__tue
+  | enum__wed
+  | enum__thu
+  | enum__fri
+  | enum__sat
+  | enum__sun
+
+logic integer_of___enum__day : enum__day -> int
+
+predicate eq___enum__day (left : enum__day, right : enum__day) =
+ eq_int (integer_of___enum__day (left), integer_of___enum__day (right))
+
+predicate le___enum__day (left : enum__day, right : enum__day) =
+ le_int (integer_of___enum__day (left), integer_of___enum__day (right))
+
+predicate enum__day___in_range (x : int) =
+ le_int (0, x) and le_int (x, 6)
+
+logic enum__day___of_integer: int -> enum__day
+
+axiom enum__day___coerce :
+ (forall x : int.
+  (enum__day___in_range (x)) ->
+   eq_int (integer_of___enum__day (enum__day___of_integer (x)), x))
+
+axiom enum__day___ordering :
+ (forall x : enum__day.
+  (match x with
+    | enum__mon -> eq_int (integer_of___enum__day (x), 0)
+    | enum__tue -> eq_int (integer_of___enum__day (x), 1)
+    | enum__wed -> eq_int (integer_of___enum__day (x), 2)
+    | enum__thu -> eq_int (integer_of___enum__day (x), 3)
+    | enum__fri -> eq_int (integer_of___enum__day (x), 4)
+    | enum__sat -> eq_int (integer_of___enum__day (x), 5)
+    | enum__sun -> eq_int (integer_of___enum__day (x), 6)
+   end))
+
+parameter any___enum__day : unit -> { } enum__day { true }
+
+parameter enum__day___of_integer_:
+ x : int ->
+  { enum__day___in_range (x) }
+   enum__day
+  { eq_int (integer_of___enum__day (result), x) }
+
+parameter safe___enum__day___of_integer_:
+ x : int ->
+  { }
+   enum__day
+  { eq_int (integer_of___enum__day (result), x) }
+
+
+type enum__some_a =
+  | enum__QU41
+  | enum__a
+
+(* ... snip axioms, predicates, parameters: similar to enum__day... *)
+
+type enum__name_clash =
+  | enum__mon__2
+  | enum__a__2
+
+(* ... snip axioms, predicates, parameters, for the same reason... *)
+
+type enum__weekday
+
+logic enum__day___of___enum__weekday: enum__weekday -> enum__day
+
+predicate eq___enum__weekday (left : enum__weekday, right : enum__weekday) =
+ eq___enum__day (enum__day___of___enum__weekday (left),
+                 enum__day___of___enum__weekday (right))
+
+predicate le___enum__weekday (left : enum__weekday, right : enum__weekday) =
+ le___enum__day (enum__day___of___enum__weekday (left),
+                 enum__day___of___enum__weekday (right))
+
+predicate enum__weekday___in_range (s : enum__day) =
+ (le___enum__day (enum__mon, s) and le___enum__day (s, enum__fri))
+
+logic enum__weekday___of___enum__day: enum__day -> enum__weekday
+
+axiom enum__weekday___coerce :
+ (forall x : enum__day.
+  (enum__weekday___in_range (x)) ->
+   eq___enum__day (enum__day___of___enum__weekday
+                   (enum__weekday___of___enum__day (x)), x))
+
+axiom enum__weekday___range :
+ (forall x : enum__weekday.
+  enum__weekday___in_range (enum__day___of___enum__weekday (x)))
+
+(* ...snip parameters, similar to enum__day... *)

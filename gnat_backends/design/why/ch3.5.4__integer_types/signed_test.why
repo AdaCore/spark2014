@@ -10,26 +10,26 @@
 
 (* OK *)
 
-let succ_signed__int8 =
+let succ___signed__int8 =
  fun (x : signed__int8) ->
-  {le_int ((integer_of_signed__int8 (x)), 126)}
-   (signed__int8_of_integer_ ((integer_of_signed__int8 (x)) + 1))
-  {eq_int ((integer_of_signed__int8 (x) + 1),
-   (integer_of_signed__int8 (result)))}
+  {le_int ((integer_of___signed__int8 (x)), 126)}
+   (signed__int8___of_integer_ ((integer_of___signed__int8 (x)) + 1))
+  {eq_int ((integer_of___signed__int8 (x) + 1),
+   (integer_of___signed__int8 (result)))}
 
 (* Same as succ_int8, but save the result into an intermediate variable *)
 
 (* OK *)
 
-let succ2_int8 =
+let succ2___signed__int8 =
  fun (x : signed__int8) ->
-  {le_int ((integer_of_signed__int8 (x)), 126)} (
-   let retval = ref (any_signed__int8 void) in (
-    retval := signed__int8_of_integer_ ((integer_of_signed__int8 (x)) + 1)
+  {le_int ((integer_of___signed__int8 (x)), 126)} (
+   let retval = ref (any___signed__int8 void) in (
+    retval := signed__int8___of_integer_ ((integer_of___signed__int8 (x)) + 1)
    ); !retval
   )
-  {eq_int ((integer_of_signed__int8 (x) + 1),
-   (integer_of_signed__int8 (result)))}
+  {eq_int ((integer_of___signed__int8 (x) + 1),
+   (integer_of___signed__int8 (result)))}
 
 
 (**************)
@@ -38,26 +38,26 @@ let succ2_int8 =
 
 (* OK *)
 
-let succ_signed__int8__test0 =
+let succ___signed__int8___test0 =
  fun (x : signed__int8) ->
-  {(eq_int (integer_of_signed__int8 (x), 0)) }
-   (succ_signed__int8 (x))
-  {(eq_int (integer_of_signed__int8 (result), 1))}
+  {(eq_int (integer_of___signed__int8 (x), 0)) }
+   (succ___signed__int8 (x))
+  {(eq_int (integer_of___signed__int8 (result), 1))}
 
 (* OK *)
 
-let succ_signed__int8__test15 =
+let succ___signed__int8___test15 =
  fun (x : signed__int8) ->
-  {(eq_int (integer_of_signed__int8 (x), 15)) }
-   (succ_signed__int8 (x))
-  {(eq_int (integer_of_signed__int8 (result), 16))}
+  {(eq_int (integer_of___signed__int8 (x), 15)) }
+   (succ___signed__int8 (x))
+  {(eq_int (integer_of___signed__int8 (result), 16))}
 
 
 (* Invalid *) (* Range check fails *)
 
-let succ_signed__int8__test127 =
+let succ___signed__int8___test127 =
  fun (x : signed__int8) ->
-  {(eq_int (integer_of_signed__int8 (x), 127)) }
-   (succ_signed__int8 (x))
-  {(eq_int (integer_of_signed__int8 (result), 128))}
+  {(eq_int (integer_of___signed__int8 (x), 127)) }
+   (succ___signed__int8 (x))
+  {(eq_int (integer_of___signed__int8 (result), 128))}
 

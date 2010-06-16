@@ -36,5 +36,10 @@ choices of Jessie have been kept, namely:
 
 Appart from that, we will the same naming convention as the one used in the
 expanded code. Say, procedure p is packaged pack will be named p__pack.
+Logic encodings are separated from Ada identifiers using "___" to avoid
+name clashes. These conventions are subject to modifications, depending on
+what the expander actually generates.
+
+
 
 

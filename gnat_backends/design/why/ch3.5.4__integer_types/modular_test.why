@@ -13,16 +13,16 @@
 let byte_mod1 =
  fun (x : int) ->
   { }
-  (modular__byte_of_integer_ (x))
-  {eq_int (integer_of_modular__byte (result), mod_int (x, 260))}
+  (modular__byte___of_integer_ (x))
+  {eq_int (integer_of___modular__byte (result), mod_int (x, 260))}
 
 (* OK *)
 
 let byte_mod2 =
  fun (x : int) ->
-  {modular__byte_in_range (x)}
-  (modular__byte_of_integer_ (x))
-  {eq_int (integer_of_modular__byte (result), mod_int (x, 260))}
+  {modular__byte___in_range (x)}
+  (modular__byte___of_integer_ (x))
+  {eq_int (integer_of___modular__byte (result), mod_int (x, 260))}
 
 (*************)
 (* succ_byte *)
@@ -32,15 +32,15 @@ let byte_mod2 =
 
 (* OK *)
 
-let succ_modular__byte =
+let succ___modular__byte =
  fun (x : modular__byte) ->
   { }
-   (modular__byte_of_integer (integer_of_modular__byte (x) + 1))
-  {(eq_int ((integer_of_modular__byte (x)), 255)
-    and eq_int(integer_of_modular__byte(result), 0))
-   or (lt_int ((integer_of_modular__byte (x)), 255)
-       and eq_int (integer_of_modular__byte(result),
-                   integer_of_modular__byte(x) + 1))}
+   (modular__byte___of_integer (integer_of___modular__byte (x) + 1))
+  {(eq_int ((integer_of___modular__byte (x)), 255)
+    and eq_int(integer_of___modular__byte(result), 0))
+   or (lt_int ((integer_of___modular__byte (x)), 255)
+       and eq_int (integer_of___modular__byte(result),
+                   integer_of___modular__byte(x) + 1))}
 
 (**************)
 (* unit tests *)
@@ -50,33 +50,33 @@ let succ_modular__byte =
 
 (* OK *)
 
-let succ_modular__byte0 =
+let succ___modular__byte0 =
  fun (x : modular__byte) ->
-  {(eq_int (integer_of_modular__byte (x), 0)) }
-   (succ_modular__byte (x))
-  {(eq_int (integer_of_modular__byte (result), 1))}
+  {(eq_int (integer_of___modular__byte (x), 0)) }
+   (succ___modular__byte (x))
+  {(eq_int (integer_of___modular__byte (result), 1))}
 
 (* OK *)
 
-let succ_modular__byte5 =
+let succ___modular__byte5 =
  fun (x : modular__byte) ->
-  {(eq_int (integer_of_modular__byte (x), 5)) }
-   (succ_modular__byte (x))
-  {(eq_int (integer_of_modular__byte (result), 6))}
+  {(eq_int (integer_of___modular__byte (x), 5)) }
+   (succ___modular__byte (x))
+  {(eq_int (integer_of___modular__byte (result), 6))}
 
 (* OK *)
 
-let succ_modular__byte254 =
+let succ___modular__byte254 =
  fun (x : modular__byte) ->
-  {(eq_int (integer_of_modular__byte (x), 254)) }
-   (succ_modular__byte (x))
-  {(eq_int (integer_of_modular__byte (result), 255))}
+  {(eq_int (integer_of___modular__byte (x), 254)) }
+   (succ___modular__byte (x))
+  {(eq_int (integer_of___modular__byte (result), 255))}
 
 (* OK *)
 
-let succ_modular__byte255 =
+let succ___modular__byte255 =
  fun (x : modular__byte) ->
-  {(eq_int (integer_of_modular__byte (x), 255)) }
-   (succ_modular__byte (x))
-  {(eq_int (integer_of_modular__byte (result), 0))}
+  {(eq_int (integer_of___modular__byte (x), 255)) }
+   (succ___modular__byte (x))
+  {(eq_int (integer_of___modular__byte (result), 0))}
 
