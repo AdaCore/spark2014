@@ -9,11 +9,13 @@ package Doubly_Linked_Lists is
 
    No_Index : constant Extended_Index := Extended_Index'First;
 
-   type List is private;
+   type List is tagged private;
 
    --  Cursor is currently defined as a public subtype, as this is required
    --  with the current version of SPARK to be able to quantify over cursors
    subtype Cursor is Extended_Index;
+
+   Empty_List : constant List;
 
    No_Element : constant Cursor;
 
@@ -21,9 +23,6 @@ package Doubly_Linked_Lists is
 
    function Is_Empty (Container : List) return Boolean;
    --# return Length (Container) = 0;
-
-   function Empty_List return List;
-   --# return Container => Is_Empty (Container);
 
    --  To_Index gives the index of the cursor Position in the container List.
    --  If Position is not in List, it returns zero.
@@ -34,13 +33,13 @@ package Doubly_Linked_Lists is
       Position  : Cursor) return Extended_Index;
    --# return Idx => Idx <= Length (Container);
 
-   function First_Cursor (Container : List) return Cursor;
+   function First (Container : List) return Cursor;
    --# return Pos =>
    --#   (Is_Empty (Container) -> To_Index (Container, Pos) = 0)
    --#   and then
    --#   (not Is_Empty (Container) -> To_Index (Container, Pos) = 1);
 
-   function Last_Cursor (Container : List) return Cursor;
+   function Last (Container : List) return Cursor;
    --# return Pos =>
    --#   (Is_Empty (Container) -> To_Index (Container, Pos) = 0)
    --#   and then
@@ -57,17 +56,17 @@ package Doubly_Linked_Lists is
       Position  : Cursor) return Element_Type;
    --# pre Has_Element (Container, Position);
 
-   procedure Next
+   function Next
      (Container : List;
-      Position  : in out Cursor);
-   --# derives Position from Container, Position;
+      Position  : Cursor) return Cursor;
    --# pre  Has_Element (Container, Position);
-   --# post (Position~ /= Last_Cursor (Container)
-   --#       -> To_Index (Container, Position)
-   --#         = To_Index (Container, Position~) + 1)
-   --#      and then
-   --#      (Position~ = Last_Cursor (Container)
-   --#       -> To_Index (Container, Position) = 0);
+   --# return Next_Position =>
+   --#   (Position /= Last (Container)
+   --#    -> To_Index (Container, Next_Position)
+   --#      = To_Index (Container, Position) + 1)
+   --#   and then
+   --#   (Position = Last (Container)
+   --#    -> To_Index (Container, Next_Position) = 0);
 
    --  Used in checks, to indicate that Container2 is Container1 with value
    --  New_Item at position Position
@@ -145,23 +144,32 @@ package Doubly_Linked_Lists is
 
    procedure Delete
      (Container : in out List;
-      Position  : Cursor);
-   --# derives Container from Container, Position;
+      Position  : in out Cursor);
+   --# derives Container from Container, Position &
+   --#         Position from ;
    --# pre  Has_Element (Container, Position);
    --# post Plus_Any_At_Equal (Container,
-   --#        To_Index (Container~, Position), Container~);
+   --#        To_Index (Container~, Position~), Container~)
+   --#      and then
+   --#      not Has_Element (Container, Position);
 
 private
 
    type Node_Array is array (Index_Type) of Element_Type;
 
-   type List is record
+   type List is tagged record
       Nodes  : Node_Array;
       Free   : Symmetric_Index;
       First  : Count_Type;
       Last   : Count_Type;
       Length : Count_Type;
    end record;
+
+   Empty_List : constant List := List'(Nodes  => Node_Array'(others => 0),
+                                       Free   => 0,
+                                       First  => 0,
+                                       Last   => 0,
+                                       Length => 0);
 
    No_Element : constant Cursor := Cursor'(0);
 
