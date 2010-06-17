@@ -293,8 +293,8 @@ let test4 (li : list) =
   !n
   { result = length (li) }
 
-(* unrolling of the loop in test7 *)
-let test5 (li : list ref) (e : elem) =
+(* unrolling of the loop in test5 *)
+let test5_unroll (li : list ref) (e : elem) =
   { length (li) >= 3 }
   let c = ref first !li in
   insert_ li !c e;
@@ -309,9 +309,10 @@ let test5 (li : list ref) (e : elem) =
     and plus_num_between_equal 
       (li@, to_index (li@, result), 1, to_index (li@, result), li) }
 
-(* body of the loop in test7 *)
-let test6 (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
+(* body of the loop in test5 *)
+let test5_loop (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
   { has_element (li_init, c) and
+    to_index (li, c) = 2 * to_index (li_init, c) - 1 and
     plus_num_between_equal 
       (li_init, to_index (li, c) - to_index (li_init, c), 
        1, to_index (li_init, c), li) }
@@ -324,13 +325,27 @@ let test6 (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
      void)
   { has_element (li, c) ->
       (has_element (li_init, c) and
+       to_index (li, c) = 2 * to_index (li_init, c) - 1 and
        plus_num_between_equal
          (li_init, to_index (li, c) - to_index (li_init, c), 
           1, to_index (li_init, c), li)) }
 
+(* exit of the loop in test5 *)
+let test5_exit (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
+  { has_element (li_init, c) and
+    to_index (li, c) = 2 * to_index (li_init, c) - 1 and
+    plus_num_between_equal 
+      (li_init, to_index (li, c) - to_index (li_init, c), 
+       1, to_index (li_init, c), li) }
+  init:
+  if has_element_ !li !c then
+    (insert_ li !c e;
+     c := next_ !li !c)
+  { not has_element (li, c) -> length (li) = 2 * length (li_init) }
+
 (* iterate through the list by adding element e at every position. This doubles
    the size of the list *)
-let test7 (li : list ref) (e : elem) =
+let test5 (li : list ref) (e : elem) =
   { not is_empty (li) }
   let c = ref first !li in
   init:
@@ -338,13 +353,13 @@ let test7 (li : list ref) (e : elem) =
     { invariant 
         (has_element (li, c) -> 
            (has_element (li@init, c) and
+	    to_index (li, c) = 2 * to_index (li@init, c) - 1 and
             plus_num_between_equal
               (li@init, to_index (li, c) - to_index (li@init, c), 
                1, to_index (li@init, c), li)))
-(*        and (not has_element (li, c) -> not has_element (li@init, c)) *)
-(*        and (not has_element (li, c) -> length (li) = 2 * length (li@init)) *)
+        and (not has_element (li, c) -> length (li) = 2 * length (li@init))
     }
     insert_ li !c e;
     c := next_ !li !c
   done
-  { true (* length (li) = 2 * length (li@) *) } 
+  { length (li) = 2 * length (li@) }
