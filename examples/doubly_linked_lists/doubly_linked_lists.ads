@@ -142,6 +142,21 @@ package Doubly_Linked_Lists is
    --# post Plus_At_Equal (Container~,
    --#        To_Index (Container~, Before), New_Item, Container);
 
+   procedure Append
+     (Container : in out List;
+      New_Item  : Element_Type);
+   --# derives Container from Container, New_Item;
+   --# pre  Length (Container) < Index_Type'Last;
+   --# post Plus_At_Equal (Container~,
+   --#        Length (Container~) + 1, New_Item, Container);
+
+   procedure Prepend
+     (Container : in out List;
+      New_Item  : Element_Type);
+   --# derives Container from Container, New_Item;
+   --# pre  Length (Container) < Index_Type'Last;
+   --# post Plus_At_Equal (Container~, 1, New_Item, Container);
+
    procedure Delete
      (Container : in out List;
       Position  : in out Cursor);
