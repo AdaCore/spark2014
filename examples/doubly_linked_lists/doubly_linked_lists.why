@@ -39,25 +39,25 @@ axiom empty_list_is_empty :
   is_empty (empty_list)
 
 (************)
-(* to_index *)
+(* position *)
 (************)
 
-logic to_index : list, cursor -> int
+logic position : list, cursor -> int
 
 (* following axiom is not in SPARK annotations *)
-axiom to_index_injective :
+axiom position_injective :
   (forall li : list. forall c1,c2 : cursor. 
-     (to_index (li, c1) <> 0 and to_index (li, c1) = to_index (li, c2))
+     (position (li, c1) <> 0 and position (li, c1) = position (li, c2))
      -> c1 = c2)
 
-axiom to_index_is_non_negative :
-  (forall li : list. forall c : cursor. to_index (li, c) >= 0)
+axiom position_is_non_negative :
+  (forall li : list. forall c : cursor. position (li, c) >= 0)
 
-axiom to_index_is_less_than_length :
-  (forall li : list. forall c : cursor. to_index (li, c) <= length (li))
+axiom position_is_less_than_length :
+  (forall li : list. forall c : cursor. position (li, c) <= length (li))
 
-axiom to_index_of_no_element_is_zero :
-  (forall li : list. to_index (li, no_element) = 0)
+axiom position_of_no_element_is_zero :
+  (forall li : list. position (li, no_element) = 0)
 
 (*********)
 (* first *)
@@ -69,7 +69,7 @@ axiom first_of_empty_is_no_element :
   (forall li : list. is_empty (li) -> first (li) = no_element)
 
 axiom index_of_first_of_non_empty_is_one :
-  (forall li : list. not is_empty (li) -> to_index (li, first (li)) = 1)
+  (forall li : list. not is_empty (li) -> position (li, first (li)) = 1)
 
 (********)
 (* last *)
@@ -82,14 +82,14 @@ axiom last_of_empty_is_no_element :
 
 axiom index_of_last_of_non_empty_is_length :
   (forall li : list. not is_empty (li) -> 
-                       to_index (li, last (li)) = length (li))
+                       position (li, last (li)) = length (li))
 
 (***************)
 (* has_element *)
 (***************)
 
 predicate has_element (li : list, c : cursor) =
-  to_index (li, c) <> 0
+  position (li, c) <> 0
 
 parameter has_element_ : li : list -> c : cursor ->
   {} bool { result = true <-> has_element (li, c) }
@@ -110,8 +110,8 @@ parameter element_ : li : list -> c : cursor ->
 parameter next_ : li : list -> c : cursor -> 
   { has_element (li, c) } 
   cursor 
-  { (c = last (li) -> to_index (li, result) = 0)
-    and (c <> last (li) -> to_index (li, result) = to_index (li, c) + 1) }
+  { (c = last (li) -> position (li, result) = 0)
+    and (c <> last (li) -> position (li, result) = position (li, c) + 1) }
 
 (*****************)
 (* with_at_equal *)
@@ -120,7 +120,7 @@ parameter next_ : li : list -> c : cursor ->
 predicate with_at_equal (li1 : list, c : cursor, e : elem, li2 : list) =
   length (li2) = length (li1)
   and (forall k : cursor.
-         has_element (li1, k) -> to_index (li2, k) = to_index (li1, k))
+         has_element (li1, k) -> position (li2, k) = position (li1, k))
   and (forall k : cursor.
          has_element (li1, k) and k <> c -> element (li2, k) = element (li1, k))
   and element (li2, c) = e
@@ -143,15 +143,15 @@ parameter replace_element_ : li : list ref -> c : cursor -> e : elem ->
 predicate plus_any_at_equal (li1 : list, i : int, li2 : list) =
   length (li2) = length (li1) + 1
   and (forall k : cursor.
-         has_element (li1, k) and to_index (li1, k) < i 
-         -> to_index (li2, k) = to_index (li1, k))
+         has_element (li1, k) and position (li1, k) < i 
+         -> position (li2, k) = position (li1, k))
   and (forall k : cursor.
-         has_element (li1, k) and to_index (li1, k) >= i 
-         -> to_index (li2, k) = to_index (li1, k) + 1)
+         has_element (li1, k) and position (li1, k) >= i 
+         -> position (li2, k) = position (li1, k) + 1)
   and (forall k : cursor.
          has_element (li1, k) -> element (li2, k) = element (li1, k))
   and (forall k : cursor.
-         has_element (li2, k) and to_index (li2, k) <> i
+         has_element (li2, k) and position (li2, k) <> i
          -> has_element (li1, k))
 
 (*****************)
@@ -161,7 +161,7 @@ predicate plus_any_at_equal (li1 : list, i : int, li2 : list) =
 predicate plus_at_equal (li1 : list, i : int, e : elem, li2 : list) =
   plus_any_at_equal (li1, i, li2)
   and (forall k : cursor.
-         to_index (li2, k) = i -> element (li2, k) = e)
+         position (li2, k) = i -> element (li2, k) = e)
 
 (**************************)
 (* plus_num_between_equal *)
@@ -172,20 +172,20 @@ predicate plus_num_between_equal
   length (li2) = length (li1) + n
   and (i <= j ->
     ((forall k : cursor.
-         has_element (li1, k) and to_index (li1, k) < i 
-         -> to_index (li2, k) = to_index (li1, k))
+         has_element (li1, k) and position (li1, k) < i 
+         -> position (li2, k) = position (li1, k))
      and (forall k : cursor.
-            has_element (li1, k) and to_index (li1, k) >= j
-            -> to_index (li2, k) = to_index (li1, k) + n)
+            has_element (li1, k) and position (li1, k) >= j
+            -> position (li2, k) = position (li1, k) + n)
 (*     and (forall k : cursor.
             has_element (li1, k) -> element (li2, k) = element (li1, k))
 *)
      and (forall k : cursor.
-            has_element (li2, k) and to_index (li2, k) < i
-            -> to_index (li2, k) = to_index (li1, k))
+            has_element (li2, k) and position (li2, k) < i
+            -> position (li2, k) = position (li1, k))
      and (forall k : cursor.
-            has_element (li2, k) and to_index (li2, k) >= j + n
-            -> to_index (li2, k) = to_index (li1, k) + n)))
+            has_element (li2, k) and position (li2, k) >= j + n
+            -> position (li2, k) = position (li1, k) + n)))
 
 (**********)
 (* insert *)
@@ -196,7 +196,7 @@ parameter insert_ : li : list ref -> c : cursor -> e : elem ->
   unit
   reads li
   writes li
-  { plus_at_equal (li@, to_index (li@, c), e, li) }
+  { plus_at_equal (li@, position (li@, c), e, li) }
 
 (**********)
 (* append *)
@@ -229,7 +229,7 @@ parameter delete_ : li : list ref -> c : cursor ref ->
   unit
   reads li, c
   writes li, c
-  { plus_any_at_equal (li, to_index (li@, c@), li@) 
+  { plus_any_at_equal (li, position (li@, c@), li@) 
     and not has_element (li, c) }
 
 (*********)
@@ -264,7 +264,7 @@ let test2 (li : list ref) (e : elem) =
 
 (* adding elements to a list does not invalidate an existing cursor *)
 let test3 (li : list ref) (c,d,f,g,h : cursor) (e : elem) =
-  { to_index (li, c) = 4 and has_element (li, f) and to_index (li, h) <> 0 }
+  { position (li, c) = 4 and has_element (li, f) and position (li, h) <> 0 }
   insert_ li c e;
   append_ li e;
   if has_element_ !li d then
@@ -284,7 +284,7 @@ let test4 (li : list) =
   let n = ref 0 in
   let c = ref first li in
   while has_element_ li !c do
-    { invariant (has_element (li, c) -> n = to_index (li, c) - 1)
+    { invariant (has_element (li, c) -> n = position (li, c) - 1)
                 and (not has_element (li, c) -> n = length (li))
     }
     n := !n + 1;
@@ -304,39 +304,39 @@ let test5_unroll (li : list ref) (e : elem) =
   insert_ li !c e;
   !c
   { length (li) = length (li@) + 3 
-    and to_index (li@, result) = 3
-    and to_index (li, result) = 6
+    and position (li@, result) = 3
+    and position (li, result) = 6
     and plus_num_between_equal 
-      (li@, to_index (li@, result), 1, to_index (li@, result), li) }
+      (li@, position (li@, result), 1, position (li@, result), li) }
 
 (* body of the loop in test5 *)
 let test5_loop (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
   { has_element (li_init, c) and
-    to_index (li, c) = 2 * to_index (li_init, c) - 1 and
+    position (li, c) = 2 * position (li_init, c) - 1 and
     plus_num_between_equal 
-      (li_init, to_index (li, c) - to_index (li_init, c), 
-       1, to_index (li_init, c), li) }
+      (li_init, position (li, c) - position (li_init, c), 
+       1, position (li_init, c), li) }
   init:
   if has_element_ !li !c then
     (insert_ li !c e;
      c := next_ !li !c;
      assert { has_element (li, c) -> 
-                to_index (li, c) = to_index (li, c@init) + 1 };
+                position (li, c) = position (li, c@init) + 1 };
      void)
   { has_element (li, c) ->
       (has_element (li_init, c) and
-       to_index (li, c) = 2 * to_index (li_init, c) - 1 and
+       position (li, c) = 2 * position (li_init, c) - 1 and
        plus_num_between_equal
-         (li_init, to_index (li, c) - to_index (li_init, c), 
-          1, to_index (li_init, c), li)) }
+         (li_init, position (li, c) - position (li_init, c), 
+          1, position (li_init, c), li)) }
 
 (* exit of the loop in test5 *)
 let test5_exit (li_init : list) (li : list ref) (c : cursor ref) (e : elem) =
   { has_element (li_init, c) and
-    to_index (li, c) = 2 * to_index (li_init, c) - 1 and
+    position (li, c) = 2 * position (li_init, c) - 1 and
     plus_num_between_equal 
-      (li_init, to_index (li, c) - to_index (li_init, c), 
-       1, to_index (li_init, c), li) }
+      (li_init, position (li, c) - position (li_init, c), 
+       1, position (li_init, c), li) }
   init:
   if has_element_ !li !c then
     (insert_ li !c e;
@@ -353,10 +353,10 @@ let test5 (li : list ref) (e : elem) =
     { invariant 
         (has_element (li, c) -> 
            (has_element (li@init, c) and
-	    to_index (li, c) = 2 * to_index (li@init, c) - 1 and
+	    position (li, c) = 2 * position (li@init, c) - 1 and
             plus_num_between_equal
-              (li@init, to_index (li, c) - to_index (li@init, c), 
-               1, to_index (li@init, c), li)))
+              (li@init, position (li, c) - position (li@init, c), 
+               1, position (li@init, c), li)))
         and (not has_element (li, c) -> length (li) = 2 * length (li@init))
     }
     insert_ li !c e;
