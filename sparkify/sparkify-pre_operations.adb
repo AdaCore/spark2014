@@ -891,6 +891,9 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
 
+      --  It may occur that the name does not exist in the original source code
+      --  but we created it instead during the translation. Try to retrieve it
+      --  from the map which was created by the translation.
       function Get_Type_Name_From_Context
         (Element : Asis.Element) return Wide_String;
 
