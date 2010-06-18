@@ -890,6 +890,50 @@ package body Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State)
    is
       pragma Unreferenced (Control);
+
+      function Get_Type_Name_From_Context
+        (Element : Asis.Element) return Wide_String;
+
+      function Get_Type_Name_From_Context
+        (Element : Asis.Element) return Wide_String
+      is
+         Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+         Var_Decl     : Asis.Declaration;
+      begin
+         case Element_Kind (Encl_Element) is
+            when A_Declaration =>
+               Var_Decl := Encl_Element;
+
+            when A_Statement =>
+               case Statement_Kind (Encl_Element) is
+                  when An_Assignment_Statement =>
+                     declare
+                        Var_Expr : constant Asis.Expression :=
+                                     Assignment_Variable_Name (Encl_Element);
+                     begin
+                        Var_Decl := Corresponding_Name_Declaration (Var_Expr);
+                     end;
+                  when others =>
+                     raise Not_Implemented_Yet;
+               end case;
+
+            when others =>
+               raise Not_Implemented_Yet;
+         end case;
+
+         declare
+            Name : constant Wide_String :=
+                     To_Wide_String (Get_New_Name (Var_Decl));
+         begin
+            if Name /= "" then
+               --  We defined a new name for the type corresponding to
+               --  this declaration, so use it here.
+               return Name;
+            else
+               raise Not_Implemented_Yet;
+            end if;
+         end;
+      end Get_Type_Name_From_Context;
    begin
       if Cursor_At (Element) < State.Echo_Cursor then
          --  Handling of this Element was already taken care of
@@ -898,29 +942,33 @@ package body Sparkify.Pre_Operations is
 
       declare
          Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+         Type_Decl    : constant Asis.Declaration :=
+                          Corresponding_Expression_Type (Element);
+         Type_Str     : Unbounded_Wide_String;
       begin
          if Flat_Element_Kind (Encl_Element) = A_Qualified_Expression then
             --  Do nothing because the aggregate is already qualified
             return;
+         elsif Is_Nil (Type_Decl) or else
+           Type_Kind (Type_Declaration_View (Type_Decl))
+           = An_Unconstrained_Array_Definition
+         then
+            Type_Str :=
+              To_Unbounded_Wide_String (Get_Type_Name_From_Context (Element));
          else
             declare
-               Decl_Type : constant Asis.Declaration :=
-                             Corresponding_Expression_Type (Element);
                Decl_Name : constant Defining_Name_List :=
-                             Asis.Declarations.Names (Decl_Type);
+                             Asis.Declarations.Names (Type_Decl);
                pragma Assert (Decl_Name'Length = 1);
-               Type_Str  : constant Wide_String :=
-                             Defining_Name_Image
-                             (Decl_Name (Decl_Name'First)) & "'";
             begin
-               PP_Echo_Cursor_Range (State.Echo_Cursor,
-                                    Cursor_Before (Element));
-               PP_Word (Type_Str);
-
-               State.Echo_Cursor := Cursor_At (Element);
-
+               Type_Str := To_Unbounded_Wide_String
+                 (Defining_Name_Image (Decl_Name (Decl_Name'First)));
             end;
          end if;
+
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+         PP_Word (To_Wide_String (Type_Str) & "'");
+         State.Echo_Cursor := Cursor_At (Element);
       end;
 
    end An_Aggregate_Pre_Op;
@@ -1037,10 +1085,8 @@ package body Sparkify.Pre_Operations is
                      return;
                   end if;
 
-                  Subtype_Name :=
-                    To_Unbounded_Wide_String
-                      (Transform_Subtype_Indication
-                           (Object_Def, Column_Start));
+                  Subtype_Name := To_Unbounded_Wide_String
+                    (Transform_Subtype_Indication (Object_Def, Column_Start));
 
                when A_Type_Definition =>
                   pragma Assert
@@ -1074,6 +1120,11 @@ package body Sparkify.Pre_Operations is
 
             --  Finish printing the object
             State.Echo_Cursor := Cursor_After (Object_Def);
+
+            --  Record that a new name was (possibly) created for
+            --  the declaration. If this was not the case, store the existing
+            --  name anyway.
+            Store_New_Name (Element, Subtype_Name);
 
          when others =>
             SLOC_Error_And_Exit ("unexpected element",

@@ -26,6 +26,10 @@
 with Ada.Characters.Handling;          use Ada.Characters.Handling;
 with Ada.Strings.Wide_Hash;
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
+with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
+with Ada.Containers.Ordered_Maps;
+
+with ASIS_UL.Strings;                  use ASIS_UL.Strings;
 
 package body Sparkify.Names is
 
@@ -167,5 +171,47 @@ package body Sparkify.Names is
       return "New_Name_" &
       Trim (Natural'Wide_Image (Count_Name), Ada.Strings.Left);
    end Fresh_Name;
+
+   ------------------
+   -- Loc_To_Names --
+   ------------------
+
+   package Loc_To_Name_Map is new Ada.Containers.Ordered_Maps
+      (Key_Type     => Unbounded_String,
+       Element_Type => Unbounded_Wide_String);
+
+   use Loc_To_Name_Map;
+
+   Loc_To_Names : Map;
+
+   --------------------
+   -- Store_New_Name --
+   --------------------
+
+   procedure Store_New_Name
+     (El   : Asis.Element;
+      Name : Unbounded_Wide_String)
+   is
+      Loc : constant Unbounded_String :=
+              To_Unbounded_String (Build_GNAT_Location (El));
+   begin
+      Insert (Loc_To_Names, Loc, Name);
+   end Store_New_Name;
+
+   ------------------
+   -- Get_New_Name --
+   ------------------
+
+   function Get_New_Name (El : Asis.Element) return Unbounded_Wide_String is
+      Loc : constant Unbounded_String :=
+              To_Unbounded_String (Build_GNAT_Location (El));
+      C   : constant Cursor := Find (Loc_To_Names, Loc);
+   begin
+      if C /= No_Element then
+         return Loc_To_Name_Map.Element (C);
+      else
+         return To_Unbounded_Wide_String ("");
+      end if;
+   end Get_New_Name;
 
 end Sparkify.Names;

@@ -30,6 +30,8 @@ with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;                   use Ada.Containers;
 
+with Asis;                             use Asis;
+
 package Sparkify.Names is
 
    type Name_String is new Unbounded_Wide_String;
@@ -83,5 +85,11 @@ package Sparkify.Names is
 
    function Fresh_Name return Wide_String;
    --  Return a fresh name
+
+   procedure Store_New_Name
+     (El   : Asis.Element;
+      Name : Unbounded_Wide_String);
+
+   function Get_New_Name (El : Asis.Element) return Unbounded_Wide_String;
 
 end Sparkify.Names;
