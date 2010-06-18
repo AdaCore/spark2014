@@ -41,7 +41,7 @@ package body ASIS_UL.Global_State.CG.Sparkify is
      (El                         :     Asis.Element;
       Reads, Writes, Read_Writes : out Node_Lists.Set)
    is
-      N      : constant GS_Node_Id := Corresponding_Node (El);
+      N : constant GS_Node_Id := Corresponding_Node (El);
    begin
       Reads  := Indirect_Reads (N).all;
       Writes := Indirect_Writes (N).all;
