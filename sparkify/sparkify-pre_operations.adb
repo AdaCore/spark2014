@@ -1072,10 +1072,8 @@ package body Sparkify.Pre_Operations is
                PP_Word (To_Wide_String (Subtype_Name));
             end if;
 
-            --  Finish printing the declaration
-            PP_Echo_Cursor_Range
-              (Cursor_After (Object_Def), Cursor_After (Element));
-            State.Echo_Cursor := Cursor_After (Element);
+            --  Finish printing the object
+            State.Echo_Cursor := Cursor_After (Object_Def);
 
          when others =>
             SLOC_Error_And_Exit ("unexpected element",
