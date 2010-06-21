@@ -1,39 +1,42 @@
 
 type modular__byte
 
-logic integer_of___modular__byte: modular__byte -> int
+logic integer_of___modular__byte : modular__byte -> int
 
-predicate eq___modular__byte(x:modular__byte, y:modular__byte) =
- eq_int(integer_of___modular__byte(x), integer_of___modular__byte(y))
+predicate eq___modular__byte (x : modular__byte, y : modular__byte) =
+ eq_int (integer_of___modular__byte (x), integer_of___modular__byte (y))
 
-predicate modular__byte___in_range(x:int) =
- le_int(0, x) and le_int(x, 255)
+predicate modular__byte___in_range (x : int) =
+ le_int (0, x) and le_int (x, 255)
 
-logic modular__byte___of_integer: int -> modular__byte
+logic modular__byte___of_integer : int -> modular__byte
 
 axiom modular__byte___coerce :
- (forall x:int. (
-  eq_int(integer_of___modular__byte(modular__byte___of_integer (x)),
-         mod_int (x, 256))
+ (forall x : int. (
+  eq_int (integer_of___modular__byte (modular__byte___of_integer (x)),
+          mod_int (x, 256))
  ))
 
 axiom modular__byte_coerce___in_range :
- (forall x:int. (
-  (modular__byte___in_range(x)) ->
-   eq_int(integer_of___modular__byte(modular__byte___of_integer (x)), x)
+ (forall x : int. (
+  (modular__byte___in_range (x)) ->
+   eq_int (integer_of___modular__byte (modular__byte___of_integer (x)), x)
  ))
 
 axiom modular__byte___range :
- (forall x:modular__byte.
+ (forall x : modular__byte.
   (modular__byte___in_range (integer_of___modular__byte (x))))
 
 parameter any___modular__byte : unit -> { } modular__byte { true }
 
 parameter modular__byte___of_integer_ :
- x:int ->
- {modular__byte___in_range (x)}
+ x : int ->
+ { modular__byte___in_range (x) }
   modular__byte
  { eq_int(integer_of___modular__byte(result), x) }
 
 parameter safe___modular__byte___of_integer_ :
- x:int -> { } modular__byte { eq_int(integer_of___modular__byte(result), x) }
+ x : int ->
+ { }
+  modular__byte
+ { eq_int (integer_of___modular__byte (result), x) }

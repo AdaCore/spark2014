@@ -19,7 +19,7 @@ predicate le___enum__day (left : enum__day, right : enum__day) =
 predicate enum__day___in_range (x : int) =
  le_int (0, x) and le_int (x, 6)
 
-logic enum__day___of_integer: int -> enum__day
+logic enum__day___of_integer : int -> enum__day
 
 axiom enum__day___coerce :
  (forall x : int.
@@ -40,13 +40,13 @@ axiom enum__day___ordering :
 
 parameter any___enum__day : unit -> { } enum__day { true }
 
-parameter enum__day___of_integer_:
+parameter enum__day___of_integer_ :
  x : int ->
   { enum__day___in_range (x) }
    enum__day
   { eq_int (integer_of___enum__day (result), x) }
 
-parameter safe___enum__day___of_integer_:
+parameter safe___enum__day___of_integer_ :
  x : int ->
   { }
    enum__day
@@ -67,7 +67,7 @@ type enum__name_clash =
 
 type enum__weekday
 
-logic enum__day___of___enum__weekday: enum__weekday -> enum__day
+logic enum__day___of___enum__weekday : enum__weekday -> enum__day
 
 predicate eq___enum__weekday (left : enum__weekday, right : enum__weekday) =
  eq___enum__day (enum__day___of___enum__weekday (left),
@@ -80,7 +80,7 @@ predicate le___enum__weekday (left : enum__weekday, right : enum__weekday) =
 predicate enum__weekday___in_range (s : enum__day) =
  (le___enum__day (enum__mon, s) and le___enum__day (s, enum__fri))
 
-logic enum__weekday___of___enum__day: enum__day -> enum__weekday
+logic enum__weekday___of___enum__day : enum__day -> enum__weekday
 
 axiom enum__weekday___coerce :
  (forall x : enum__day.

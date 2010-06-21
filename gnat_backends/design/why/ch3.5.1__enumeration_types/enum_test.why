@@ -10,7 +10,7 @@
 let succ___enum_day =
  fun (x : enum__day) ->
   { le___enum__day (x, enum__sat) }
-  enum__day___of_integer_ (integer_of___enum__day (x) + 1)
+   enum__day___of_integer_ (integer_of___enum__day (x) + 1)
   { eq_int ((integer_of___enum__day (x) + 1),
             integer_of___enum__day (result)) }
 
