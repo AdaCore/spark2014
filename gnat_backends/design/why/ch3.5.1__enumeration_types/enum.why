@@ -11,32 +11,32 @@ type enum__day =
 logic integer_of___enum__day : enum__day -> int
 
 predicate eq___enum__day (left : enum__day, right : enum__day) =
- eq_int (integer_of___enum__day (left), integer_of___enum__day (right))
+ integer_of___enum__day (left) = integer_of___enum__day (right)
 
 predicate le___enum__day (left : enum__day, right : enum__day) =
- le_int (integer_of___enum__day (left), integer_of___enum__day (right))
+ integer_of___enum__day (left) <= integer_of___enum__day (right)
 
 predicate enum__day___in_range (x : int) =
- le_int (0, x) and le_int (x, 6)
+ 0 <= x and x <= 6
 
 logic enum__day___of_integer : int -> enum__day
 
 axiom enum__day___coerce :
  (forall x : int.
-  (enum__day___in_range (x)) ->
-   eq_int (integer_of___enum__day (enum__day___of_integer (x)), x))
+   enum__day___in_range (x) ->
+    integer_of___enum__day (enum__day___of_integer (x)) = x)
 
 axiom enum__day___ordering :
  (forall x : enum__day.
-  (match x with
-    | enum__mon -> eq_int (integer_of___enum__day (x), 0)
-    | enum__tue -> eq_int (integer_of___enum__day (x), 1)
-    | enum__wed -> eq_int (integer_of___enum__day (x), 2)
-    | enum__thu -> eq_int (integer_of___enum__day (x), 3)
-    | enum__fri -> eq_int (integer_of___enum__day (x), 4)
-    | enum__sat -> eq_int (integer_of___enum__day (x), 5)
-    | enum__sun -> eq_int (integer_of___enum__day (x), 6)
-   end))
+   match x with
+    | enum__mon -> integer_of___enum__day (x) = 0
+    | enum__tue -> integer_of___enum__day (x) = 1
+    | enum__wed -> integer_of___enum__day (x) = 2
+    | enum__thu -> integer_of___enum__day (x) = 3
+    | enum__fri -> integer_of___enum__day (x) = 4
+    | enum__sat -> integer_of___enum__day (x) = 5
+    | enum__sun -> integer_of___enum__day (x) = 6
+   end)
 
 parameter any___enum__day : unit -> { } enum__day { true }
 
@@ -44,13 +44,13 @@ parameter enum__day___of_integer_ :
  x : int ->
   { enum__day___in_range (x) }
    enum__day
-  { eq_int (integer_of___enum__day (result), x) }
+  { integer_of___enum__day (result) = x }
 
 parameter safe___enum__day___of_integer_ :
  x : int ->
   { }
    enum__day
-  { eq_int (integer_of___enum__day (result), x) }
+  { integer_of___enum__day (result) = x }
 
 
 type enum__some_a =
@@ -91,5 +91,9 @@ axiom enum__weekday___coerce :
 axiom enum__weekday___range :
  (forall x : enum__weekday.
   enum__weekday___in_range (enum__day___of___enum__weekday (x)))
+
+axiom enum__weekday___unicity :
+ (forall x, y : enum__weekday.
+  (eq___enum__weekday (x, y) <-> x = y))
 
 (* ...snip parameters, similar to enum__day... *)

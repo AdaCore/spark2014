@@ -11,8 +11,7 @@ let succ___enum_day =
  fun (x : enum__day) ->
   { le___enum__day (x, enum__sat) }
    enum__day___of_integer_ (integer_of___enum__day (x) + 1)
-  { eq_int ((integer_of___enum__day (x) + 1),
-            integer_of___enum__day (result)) }
+  { integer_of___enum__day (x) + 1 = integer_of___enum__day (result) }
 
 (**************)
 (* Unit tests *)
@@ -22,22 +21,22 @@ let succ___enum_day =
 
 let succ__enum_day___test_mon =
  fun (x : enum__day) ->
-  { eq___enum__day (x, enum__mon) }
+  { x = enum__mon }
    (succ___enum_day (x))
-  { eq___enum__day (result, enum__tue) }
+  { result = enum__tue }
 
 (* OK *)
 
 let succ__enum_day___test_thu =
  fun (x : enum__day) ->
-  { eq___enum__day (x, enum__thu) }
+  { x = enum__thu }
    (succ___enum_day (x))
-  { eq___enum__day (result, enum__fri) }
+  { result = enum__fri }
 
 (* Invalid *) (* Range check fails *)
 
 let succ__enum_day___test_sun =
  fun (x : enum__day) ->
-  { eq___enum__day (x, enum__sun) }
+  { x = enum__sun }
    (succ___enum_day (x))
-  { eq___enum__day (result, enum__mon) }
+  { result = enum__mon }

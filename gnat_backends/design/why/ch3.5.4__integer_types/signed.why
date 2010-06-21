@@ -4,21 +4,24 @@ type signed__int8
 logic integer_of___signed__int8 : signed__int8 -> int
 
 predicate eq___signed__int8 (x : signed__int8, y : signed__int8) =
- eq_int (integer_of___signed__int8 (x), integer_of___signed__int8 (y))
+ integer_of___signed__int8 (x) = integer_of___signed__int8 (y)
 
 predicate signed__int8___in_range (x : int) =
- le_int (-128, x) and le_int (x, 127)
+ -128 <= x and x <= 127
 
 logic signed__int8___of_integer : int -> signed__int8
 
 axiom signed__int8___coerce :
  (forall x : int.
-  (signed__int8___in_range (x)) ->
-   eq_int (integer_of___signed__int8 (signed__int8___of_integer (x)), x))
+  signed__int8___in_range (x) ->
+   integer_of___signed__int8 (signed__int8___of_integer (x)) = x)
 
 axiom signed__int8___range :
  (forall x : signed__int8.
   signed__int8___in_range (integer_of___signed__int8 (x)))
+
+axiom signed__int8___unicity :
+ (forall x, y : signed__int8. eq___signed__int8 (x, y) <-> x = y)
 
 parameter any___signed__int8 : unit -> { } signed__int8 { true }
 
@@ -26,12 +29,12 @@ parameter signed__int8___of_integer_ :
  x : int ->
   { signed__int8___in_range (x) }
    signed__int8
-  { eq_int(integer_of___signed__int8 (result), x) }
+  { integer_of___signed__int8 (result) = x }
 
 parameter safe___signed__int8___of_integer_ :
  x : int ->
   { }
    signed__int8
-  { eq_int (integer_of___signed__int8 (result), x) }
+  { integer_of___signed__int8 (result) = x }
 
 
