@@ -190,6 +190,18 @@ package body Sparkify.Processing is
                end;
             end loop;
 
+            --  Always inherit the parent package in a child package
+            declare
+               Encl_Element : constant Asis.Element :=
+                                Enclosing_Element (Program_Unit);
+            begin
+               if not Is_Nil (Encl_Element) then
+                  Nameset.Include
+                    (Packages,
+                     Normalized_Name (Declaration_Unique_Name (Encl_Element)));
+               end if;
+            end;
+
             declare
                Packages_Text : constant Wide_String :=
                  Concat_Names (Packages, ", ");
