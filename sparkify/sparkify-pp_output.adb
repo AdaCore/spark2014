@@ -25,6 +25,7 @@
 
 with Ada.Wide_Text_IO;                 use Ada.Wide_Text_IO;
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
+with Ada.Characters.Conversions;       use Ada.Characters.Conversions;
 with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 with Sparkify.State;                   use Sparkify.State;
@@ -522,5 +523,20 @@ package body Sparkify.PP_Output is
                & "--@ line" & Integer'Wide_Image (Line));
       PP_Close_Line (Increase_Count => False);
    end PP_Line_Indication;
+
+   ------------------------
+   -- PP_File_Indication --
+   ------------------------
+
+   procedure PP_File_Indication (File : String) is
+   begin
+      if Output_Column /= 1 then
+         PP_Close_Line;
+      end if;
+      Output_Line := 1;
+      PP_Word (To_Wide_String (Output_Prefix)
+               & "--@ file" & To_Wide_String (File));
+      PP_Close_Line (Increase_Count => False);
+   end PP_File_Indication;
 
 end Sparkify.PP_Output;

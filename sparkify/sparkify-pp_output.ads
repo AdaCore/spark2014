@@ -121,4 +121,7 @@ package Sparkify.PP_Output is
    procedure PP_Line_Indication (Line : Line_Number);
    --  Outputs a special comment indicating a line number in the source file
 
+   procedure PP_File_Indication (File : String);
+   --  Outputs a special comment indicating a file name in the source file
+
 end Sparkify.PP_Output;
