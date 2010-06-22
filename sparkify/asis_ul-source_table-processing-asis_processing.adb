@@ -26,17 +26,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Asis.Elements;
+with Ada.Characters.Handling;          use Ada.Characters.Handling;
+
+with Asis.Elements;                    use Asis.Elements;
 
 with ASIS_UL.Global_State.CG;
 
 with Sparkify.Output;
 with Sparkify.Processing;
 with Sparkify.Common;                  use Sparkify.Common;
+with Sparkify.Names;                   use Sparkify.Names;
+with Sparkify.Basic;                   use Sparkify.Basic;
 
 separate (ASIS_UL.Source_Table.Processing)
 procedure ASIS_Processing (CU : Asis.Compilation_Unit; SF : SF_Id) is
-   Unit : constant Asis.Element := Asis.Elements.Unit_Declaration (CU);
+   Unit : constant Asis.Element := Unit_Declaration (CU);
    Success : Boolean;
 begin
 
@@ -44,9 +48,25 @@ begin
       when Effects =>
          ASIS_UL.Global_State.CG.Collect_CG_Info_From_Construct (Unit);
          Set_Source_Status (SF, Processed);
-      when Printing =>
+      when Printing_External =>
+         case Declaration_Kind (Unit) is
+            when A_Package_Declaration =>
+               Set_Current_SF (SF);
+               Sparkify.Output.Set_Output (SF, "", Success);
+               Sparkify.Processing.Special_Print (CU, SF);
+            when A_Package_Body_Declaration |
+                 A_Procedure_Body_Declaration |
+                 A_Procedure_Declaration |
+                 A_Function_Body_Declaration |
+                 A_Function_Declaration =>
+               --  Do not print the body of the external package
+               Set_Source_Status (SF, Processed);
+            when others =>
+               raise Not_Implemented_Yet;
+         end case;
+      when Printing_Internal =>
          Set_Current_SF (SF);
-         Sparkify.Output.Set_Output (SF, Success);
+         Sparkify.Output.Set_Output (SF, To_Lower (Internal_Prefix), Success);
          Sparkify.Processing.Special_Print (CU, SF);
    end case;
 

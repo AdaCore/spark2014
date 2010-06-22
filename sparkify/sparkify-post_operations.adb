@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Conversions;       use Ada.Characters.Conversions;
+
 with Asis.Extensions;                  use Asis.Extensions;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Text;                        use Asis.Text;
@@ -30,6 +32,7 @@ with Asis.Elements;                    use Asis.Elements;
 
 with Sparkify.PP_Output;               use Sparkify.PP_Output;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
+with Sparkify.Names;                   use Sparkify.Names;
 
 package body Sparkify.Post_Operations is
 
@@ -105,7 +108,14 @@ package body Sparkify.Post_Operations is
          PP_Echo_Cursor_Range (State.Echo_Cursor, Last_Cursor);
          PP_Text_At (Line   => Last_Line_Number (Element),
                      Column => Element_Span (Element).First_Column,
-                     Text   => "end " & Name & ";");
+                     Text   => "end ");
+
+         if Current_Pass = Printing_Internal then
+            --  Prefix the name of the package to differentiate it
+            PP_Word (To_Wide_String (Internal_Prefix));
+         end if;
+
+         PP_Word (Name & ";");
          State.Echo_Cursor := Cursor_After (Element);
       end;
    end A_Package_Declaration_Or_Body_Post_Op;

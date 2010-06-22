@@ -345,7 +345,9 @@ package body Sparkify.Output is
    -- Set_Output --
    ----------------
 
-   procedure Set_Output (SF : SF_Id; Success : out Boolean) is
+   procedure Set_Output (SF      : SF_Id;
+                         Prefix  : String;
+                         Success : out Boolean) is
    begin
 
       Success := True;
@@ -416,7 +418,7 @@ package body Sparkify.Output is
                Dir_Name : constant String :=
                  Compose (Source_Dir_Name, Out_Dirname);
                File_Name : constant String :=
-                 Compose (Dir_Name, Short_Source_Name (SF));
+                 Compose (Dir_Name, Prefix & Short_Source_Name (SF));
             begin
                if not Ada.Directories.Exists (Dir_Name) then
                   --  Create directory for output

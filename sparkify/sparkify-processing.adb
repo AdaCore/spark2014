@@ -49,6 +49,7 @@ with Sparkify.PP_Output;               use Sparkify.PP_Output;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
 with Sparkify.State;                   use Sparkify.State;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
+with Sparkify.Pre_Operations;
 
 package body Sparkify.Processing is
 
@@ -57,7 +58,7 @@ package body Sparkify.Processing is
    ------------------
 
    procedure Special_Print (Unit : Asis.Compilation_Unit; SF : SF_Id) is
-      Program_Unit : constant Asis.Element := Unit_Declaration (Unit);
+      Program_Unit : constant Asis.Declaration := Unit_Declaration (Unit);
 
       Context_Clause : constant Asis.Element_List :=
          Context_Clause_Elements (Unit, True);
@@ -69,8 +70,8 @@ package body Sparkify.Processing is
       Full_Span : constant Asis.Text.Span := Compilation_Span (Program_Unit);
       Unit_Span : constant Asis.Text.Span := Element_Span (Program_Unit);
 
-      Source_Control    : Asis.Traverse_Control  := Asis.Continue;
-      Source_State      : Source_Traversal_State := Initial_State;
+      Source_Control    : Asis.Traverse_Control := Asis.Continue;
+      Source_State      : Source_Traversal_State;
 
       Success : Boolean := False;
 
@@ -123,8 +124,11 @@ package body Sparkify.Processing is
                    First_Line => Full_Span.First_Line,
                    Last_Line  => Full_Span.Last_Line));
 
-      The_Unit := Unit;
       --  To keep the reference to the current unit in a global variable
+      The_Unit := Unit;
+
+      --  Set after The_Unit has been set
+      Source_State := Initial_State;
 
       The_Last_Line   := Full_Span.Last_Line;
       The_Last_Column := Full_Span.Last_Column;
@@ -170,6 +174,15 @@ package body Sparkify.Processing is
               Context_Clause & Body_Context_Clause;
             Packages : Nameset.Set := Nameset.Empty_Set;
          begin
+            if Current_Pass = Printing_Internal then
+               --  The internal package has a with-clause on the external one
+               PP_Word
+                 ("with " & Declaration_Unique_Name (Program_Unit) & ";");
+               --  Add all possible use-type clauses in SPARK code, to make for
+               --  the absence of a use-package clauses.
+               Sparkify.Pre_Operations.Print_All_Use_Type (Program_Unit);
+            end if;
+
             for J in Both_Context_Clause'Range loop
                declare
                   Clause : constant Asis.Element := Both_Context_Clause (J);
@@ -201,6 +214,13 @@ package body Sparkify.Processing is
                      Normalized_Name (Declaration_Unique_Name (Encl_Element)));
                end if;
             end;
+
+            --  Always inherit the external package in an internal package
+            if Current_Pass = Printing_Internal then
+               Nameset.Include
+                 (Packages,
+                  Normalized_Name (Declaration_Unique_Name (Program_Unit)));
+            end if;
 
             declare
                Packages_Text : constant Wide_String :=

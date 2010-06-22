@@ -25,6 +25,7 @@
 
 with Ada.Wide_Text_IO;                 use Ada.Wide_Text_IO;
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 with Sparkify.State;                   use Sparkify.State;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
@@ -232,20 +233,10 @@ package body Sparkify.PP_Output is
 
       if Line < Output_Line or else
         Line > Output_Line + Threshold then
-         --  Line indication shall not be intermixed with SPARK annotations.
-         --  ??? At this point, we do not know what we are printing
-         --  (Code or Logic) anymore, as the state has not been passed.
-         --  To workaround this problem, we assume that an empty prefix
-         --  means printing code; although it is not quite clean, it should
-         --  be a safe assumption.
-         if Prefix = "" then
-            PP_Line_Indication (Line);
-         end if;
+         PP_Line_Indication (Line);
       elsif Column < Output_Column then
          if Line = Output_Line then
-            if Prefix = "" then
-               PP_Line_Indication (Line);
-            end if;
+            PP_Line_Indication (Line);
          else
             PP_Close_Line;
          end if;
@@ -257,8 +248,8 @@ package body Sparkify.PP_Output is
          end loop;
       end if;
 
-      if Prefix /= "" and then Output_Column = 1 then
-         PP_Word (Prefix);
+      if Output_Prefix /= "" and then Output_Column = 1 then
+         PP_Word (To_Wide_String (Output_Prefix));
       end if;
 
       if Column + Offset > Output_Column then
@@ -362,6 +353,8 @@ package body Sparkify.PP_Output is
                          (others => ' ');
       Prefix         : constant Wide_String := Padding & "--# ";
    begin
+      Output_Prefix := To_Unbounded_Wide_String (Prefix);
+
       for J in Exprs'Range loop
          declare
             Expr         : constant Asis.Expression := Exprs (J);
@@ -375,15 +368,15 @@ package body Sparkify.PP_Output is
                               Echo_Cursor => Cursor_At (Expr));
          begin
             if Exprs'Length = 1 then
-               PP_Text_At (Line, Column, "--# " & Intro & " ");
+               PP_Text_At (Line, Column, Intro & " ");
             elsif J = Exprs'First then
-               PP_Text_At (Line, Column, "--# " & Intro & " ( ");
+               PP_Text_At (Line, Column, Intro & " ( ");
             else
-               PP_Text_At (Line, Column, "--#   ) and ( ");
+               PP_Text_At (Line, Column, "  ) and ( ");
             end if;
             Traverse_Source (Expr, Source_Control, Source_State);
             PP_Echo_Cursor_Range
-              (Source_State.Echo_Cursor, Cursor_At_End_Of (Expr), Prefix);
+              (Source_State.Echo_Cursor, Cursor_At_End_Of (Expr));
          end;
       end loop;
 
@@ -393,6 +386,8 @@ package body Sparkify.PP_Output is
          PP_Word (");");
       end if;
       PP_Close_Line;
+
+      Output_Prefix := To_Unbounded_Wide_String ("");
    end PP_SPARK_Annotation;
 
    --------------
@@ -523,7 +518,8 @@ package body Sparkify.PP_Output is
          PP_Close_Line;
       end if;
       Output_Line := Line;
-      PP_Word ("--@ line" & Integer'Wide_Image (Line));
+      PP_Word (To_Wide_String (Output_Prefix)
+               & "--@ line" & Integer'Wide_Image (Line));
       PP_Close_Line (Increase_Count => False);
    end PP_Line_Indication;
 

@@ -30,9 +30,12 @@ with GNAT.OS_Lib;
 
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Text;                        use Asis.Text;
+with Asis.Elements;                    use Asis.Elements;
 
 with ASIS_UL.Common;
 with ASIS_UL.Output;                   use ASIS_UL.Output;
+
+with Sparkify.Basic;                   use Sparkify.Basic;
 
 package body Sparkify.Common is
 
@@ -92,7 +95,17 @@ package body Sparkify.Common is
    begin
       case Current_Pass is
          when Effects => Initial_Phase := Global_Effects;
-         when Printing => Initial_Phase := Printing_Code;
+         when Printing =>
+            declare
+               Unit_Decl : constant Asis.Declaration :=
+                             Unit_Declaration (The_Unit);
+            begin
+               if Declaration_Kind (Unit_Decl) = A_Package_Declaration then
+                  Initial_Phase := Printing_Spec;
+               else
+                  Initial_Phase := Printing_Body;
+               end if;
+            end;
       end case;
 
       return

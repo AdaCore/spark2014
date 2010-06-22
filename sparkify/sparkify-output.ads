@@ -29,7 +29,9 @@ with ASIS_UL.Source_Table;             use ASIS_UL.Source_Table;
 
 package Sparkify.Output is
 
-   procedure Set_Output (SF : SF_Id; Success : out Boolean);
+   procedure Set_Output (SF      : SF_Id;
+                         Prefix  : String;
+                         Success : out Boolean);
    --  Creates or opens, if needed, and sets the output file for SF, depending
    --  on sparkify options. Success is set ON if the output file has been
    --  successfully opened, and OFF otherwise

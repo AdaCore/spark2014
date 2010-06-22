@@ -53,13 +53,16 @@ package Sparkify.Common is
    -- Resources needed for source traversing --
    --------------------------------------------
 
-   type Pass is (Effects, Printing);
+   type Pass is (Effects, Printing_External, Printing_Internal);
+   subtype Printing is Pass range Printing_External .. Printing_Internal;
 
    Current_Pass : Pass;
 
-   type Phase is (Global_Effects, Printing_Code, Printing_Logic);
+   type Phase is
+     (Global_Effects, Printing_Spec, Printing_Body, Printing_Logic);
    subtype Effects_Phase is Phase range Global_Effects .. Global_Effects;
-   subtype Printing_Phase is Phase range Printing_Code .. Printing_Logic;
+   subtype Printing_Code is Phase range Printing_Spec .. Printing_Body;
+   subtype Printing_Phase is Phase range Printing_Spec .. Printing_Logic;
 
    type Prefix_Length is range 0 .. 100;
 

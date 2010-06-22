@@ -33,6 +33,8 @@ with Sparkify.Common;                  use Sparkify.Common;
 
 package Sparkify.Pre_Operations is
 
+   procedure Print_All_Use_Type (Element : Asis.Declaration);
+
    procedure A_Pragma_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -42,6 +44,12 @@ package Sparkify.Pre_Operations is
    --  * Assert
    --  * Precondition
    --  * Postcondition
+
+   procedure A_Package_Body_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+   --  A_Package_Body_Declaration
 
    procedure A_Package_Declaration_Pre_Op
      (Element :        Asis.Element;
@@ -86,6 +94,11 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
    --  A_Use_Package_Clause
+
+   procedure A_With_Package_Clause_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
 
    procedure An_Aggregate_Pre_Op
      (Element :        Asis.Element;
@@ -283,7 +296,7 @@ package Sparkify.Pre_Operations is
       A_Null_Procedure_Declaration => No_Action'Access,
 
       A_Package_Declaration => A_Package_Declaration_Pre_Op'Access,
-      A_Package_Body_Declaration => No_Action'Access,
+      A_Package_Body_Declaration => A_Package_Body_Pre_Op'Access,
 
       --
       An_Object_Renaming_Declaration ..
@@ -591,8 +604,8 @@ package Sparkify.Pre_Operations is
       A_Not_Operator => No_Action'Access,
       --
 
-      A_Character_Literal ..
-      An_Enumeration_Literal => No_Action'Access,
+      A_Character_Literal => No_Action'Access,
+      An_Enumeration_Literal => An_Identifier_Pre_Op'Access,
 
       An_Explicit_Dereference => No_Action'Access,
 
@@ -837,7 +850,7 @@ package Sparkify.Pre_Operations is
 
       A_Use_Type_Clause => No_Action'Access,
 
-      A_With_Clause => No_Action'Access,
+      A_With_Clause => A_With_Package_Clause_Pre_Op'Access,
 
       --  A_Representation_Clause,  -- 13.1     -> Representation_Clause_Kinds
 

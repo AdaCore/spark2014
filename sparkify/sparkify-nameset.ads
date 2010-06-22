@@ -28,5 +28,6 @@
 
 with Ada.Containers;                   use Ada.Containers;
 with Ada.Containers.Ordered_Sets;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
-package Sparkify.Nameset is new Ordered_Sets (Wide_String);
+package Sparkify.Nameset is new Ordered_Sets (Unbounded_Wide_String);

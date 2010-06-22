@@ -29,6 +29,8 @@
 --  complicated, so we use global parameters to avoid passing complicated
 --  structures as parameters of pre- and post-operations.
 
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
+
 with GNAT.OS_Lib;                      use GNAT.OS_Lib;
 
 package Sparkify.State is
@@ -52,6 +54,9 @@ package Sparkify.State is
 
    Output_Column     : Positive := 1;
    --  The number of the column in the output source
+
+   Output_Prefix     : Unbounded_Wide_String;
+   --  The prefix of the current line in the output source
 
    -----------------------------
    -- File Processing Control --
