@@ -1,12 +1,19 @@
 ------------------------------------------------------------------------
-with T; 
---# inherit t;
-package S is
+
+with 
+--@ line 1
+     T;use type T.Signed; with S;
+--# inherit s, t;
+package Internal_S
+--@ line 3
+          is
 
    procedure Plus_Two  (N : in out T.Signed
 --@ line 5
                                          );
-   --# pre              N > 0 and N < T.Signed'Last - 1;
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 6
+   --#                                      'Last - 1;
    --# post              N = N~    + 2;
 
    function Plus_Two_F (N : T.Signed
@@ -14,7 +21,42 @@ package S is
                                   ) return T.Signed
 --@ line 9
                                                  ;
-   --# pre              N > 0 and N < T.Signed'Last - 1;
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 10
+   --#                                      'Last - 1;
+   --# return Result =>  Result            = N + 2;
+
+end Internal_S;
+package Internal_T
+--@ line 1
+          is
+
+
+
+end Internal_T;
+
+with 
+--@ line 1
+     T;use type T.Signed; 
+--# inherit t;
+package S is
+
+   procedure Plus_Two  (N : in out T.Signed
+--@ line 5
+                                         );
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 6
+   --#                                      'Last - 1;
+   --# post              N = N~    + 2;
+
+   function Plus_Two_F (N : T.Signed
+--@ line 9
+                                  ) return T.Signed
+--@ line 9
+                                                 ;
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 10
+   --#                                      'Last - 1;
    --# return Result =>  Result            = N + 2;
 
 end S;
@@ -23,13 +65,17 @@ package T is
    type Signed is range -10 .. 10;
 
 end T;
-package body S is
+package body Internal_S
+--@ line 1
+               is
 
    procedure Inc_Positive (N : in out T.Signed
 --@ line 3
                                             )
 
-   --# pre                 N > 0 and N < T.Signed'Last;
+   --# pre                 N > 0 and N < T.Signed
+   --# --@ line 5
+   --#                                         'Last;
    --# post                 N = N~    + 1;
 --@ line 4
    is
@@ -45,7 +91,9 @@ package body S is
 --@ line 11
                                       ) return T.Signed
 
-   --# pre                 N > 0 and N < T.Signed'Last;
+   --# pre                 N > 0 and N < T.Signed
+   --# --@ line 13
+   --#                                         'Last;
    --# return Result =>     Result                = N + 1;
 --@ line 12
    is
@@ -74,7 +122,7 @@ package body S is
       return Inc_Positive_F (Inc_Positive_F (N));
    end Plus_Two_F;
 
-end S;
+end Internal_S;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          4      0      4              0      0      0       0

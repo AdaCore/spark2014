@@ -1,4 +1,17 @@
 ------------------------------------------------------------------------
+with tq;use type tq.Complex; 
+--@ line 1
+--# inherit tq;
+--@ line 1
+package Internal_tq
+--@ line 1
+           is
+--@ line 8
+   procedure Affectation (P, Q : out tq.Complex
+--@ line 8
+                                            );
+
+end Internal_tq;
 package tq is
 
    type Complex is record
@@ -9,20 +22,24 @@ end record;
    procedure Affectation (P, Q : out Complex);
 
 end tq;
-package body tq is
+package body Internal_tq
+--@ line 1
+                is
 
-   procedure Affectation (P, Q : out Complex)
+   procedure Affectation (P, Q : out tq.Complex
+--@ line 3
+                                            )
    is
    begin
-      P := Complex'
+      P := tq.Complex'
 --@ line 6
            (mReal => 0, mImaginary => 1);
-      Q := Complex'
+      Q := tq.Complex'
 --@ line 7
            (mReal => 0, mImaginary => 1);
    end Affectation;
 
-end tq;
+end Internal_tq;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0

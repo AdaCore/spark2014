@@ -40,27 +40,49 @@ end record;
    procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);
 
 end Anon_Type;
-package body Anon_Type
+with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; 
+--@ line 1
+------------------------------------------------------------------------------
+--  Test the anonymous type as component_list in the record type
+--
+--# inherit anon_type;
+package Internal_Anon_Type
 is
-   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date)
+--@ line 23
+   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Anon_Type.Date
+--@ line 23
+                                                            );
+
+end Internal_Anon_Type;
+package body Internal_Anon_Type
+is
+   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Anon_Type.Date
+--@ line 3
+                                                            )
    is
    begin
       -- Positional aggregate
-      ToDay1     := Date'
+      ToDay1     := Anon_Type.Date'
 --@ line 7
-                    (26, July, 2010, "Friday");
+                    (26, Anon_Type.July
+--@ line 7
+                             , 2010, "Friday");
       -- Named aggregate
       --Day_String => "Friday"
-      ToDay2     := Date'
+      ToDay2     := Anon_Type.Date'
 --@ line 10
-                    (Day => 26, Month => July,
+                    (Day => 26, Month => Anon_Type.July
+--@ line 10
+                                             ,
                      Year => 2010, Day_String => "Friday");
-      ToDay3     := Date'
+      ToDay3     := Anon_Type.Date'
 --@ line 12
-                    (Month => July, Day => 26,
+                    (Month => Anon_Type.July
+--@ line 12
+                                  , Day => 26,
                      Year => 2010, Day_String => "Friday");
    end Date_Format;
-end Anon_Type;
+end Internal_Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0

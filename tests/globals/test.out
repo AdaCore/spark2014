@@ -34,21 +34,72 @@ is
    --# pre              G < Integer'Last;
 
 end Globals;
-package body Globals is
+with Globals;
+--@ line 1
+--# inherit globals;
+--@ line 1
+package Internal_Globals
+
+is
+
+
+
+   function Direct_Read return Integer;
+--@ line 7
+   --# global in     Globals.G;
+
+   procedure Direct_Write;
+--@ line 9
+   --# global    out Globals.G;
+
+   procedure Direct_Read_Write;
+--@ line 11
+   --# global in out Globals.G;
+   --# pre              Globals.G
+   --# --@ line 12
+   --#                    < Integer'Last;
+
+   function Indirect_Read return Integer;
+--@ line 14
+   --# global in     Globals.G;
+
+   procedure Indirect_Write;
+--@ line 16
+   --# global    out Globals.G;
+
+   procedure Indirect_Read_Write;
+--@ line 18
+   --# global in out Globals.G;
+   --# pre              Globals.G
+   --# --@ line 19
+   --#                    < Integer'Last;
+
+end Internal_Globals;
+package body Internal_Globals
+--@ line 1
+                     is
 
    function Direct_Read return Integer is
    begin
-      return G;
+      return Globals.G
+--@ line 5
+              ;
    end Direct_Read;
 
    procedure Direct_Write is
    begin
-      G := 0;
+      Globals.G
+--@ line 10
+        := 0;
    end Direct_Write;
 
    procedure Direct_Read_Write is
    begin
-      G := G + 1;
+      Globals.G
+--@ line 15
+        := Globals.G
+--@ line 15
+             + 1;
    end Direct_Read_Write;
 
    function Indirect_Read return Integer is
@@ -62,7 +113,9 @@ package body Globals is
          X := Proxy;
       end Local;
    begin
-      Local (G);
+      Local (Globals.G
+--@ line 27
+              );
       return X;
    end Indirect_Read;
 
@@ -72,7 +125,9 @@ package body Globals is
          Proxy := 0;
       end Local;
    begin
-      Local (G);
+      Local (Globals.G
+--@ line 37
+              );
    end Indirect_Write;
 
    procedure Indirect_Read_Write is
@@ -85,10 +140,12 @@ package body Globals is
          Proxy := Proxy + 1;
       end Local;
    begin
-      Local (G);
+      Local (Globals.G
+--@ line 47
+              );
    end Indirect_Read_Write;
 
-end Globals;
+end Internal_Globals;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          9      7      2              0      0      0       0

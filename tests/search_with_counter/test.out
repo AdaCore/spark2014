@@ -1,4 +1,41 @@
 ------------------------------------------------------------------------
+with Search;use type Search.IntArray; 
+--@ line 1
+--# inherit search;
+--@ line 1
+package Internal_Search
+is
+--@ line 8
+  procedure Linear_Search
+    (Table : in Search.IntArray
+--@ line 9
+                        ;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Integer);
+--@ line 12
+  --# global in out Search.Counter;
+  --# pre              Search.Counter
+  --# --@ line 13
+  --#                          < Integer'Last;
+  --# post              not Found or else
+  --#                     ((Table(Index) = Value) and then
+  --#                      Search.Counter
+  --# --@ line 16
+  --#                              = Search.Counter~
+  --# --@ line 16
+  --#                                            + 1);
+
+  function Check_Index
+    (Table : Search.IntArray
+--@ line 19
+                     ;
+     Value : Integer;
+     Index : Integer) return Boolean;
+  --# pre              Table'First <= Index and then Index <= Table'Last;
+  --# return Result =>  Result             = (Table(Index) = Value);
+
+end Internal_Search;
 package Search
 --@ line 1
 --# own Counter;
@@ -30,10 +67,14 @@ is
   --# return Result =>  Result             = (Table(Index) = Value);
 
 end Search;
-package body Search is
+package body Internal_Search
+--@ line 1
+                    is
 
   procedure Linear_Search
-    (Table : in IntArray;
+    (Table : in Search.IntArray
+--@ line 4
+                        ;
      Value : in Integer;
      Found : out Boolean;
      Index : out Integer) is
@@ -43,10 +84,18 @@ package body Search is
 
      for I in Integer range Table'Range loop
         --# assert     Found = False and
-        --#            Counter < Integer'Last and
-        --#            Counter = Counter~;
+        --#            Search.Counter
+        --# --@ line 14
+        --#                    < Integer'Last and
+        --#            Search.Counter
+        --# --@ line 15
+        --#                    = Search.Counter~;
         if Table(I) = Value then
-           Counter := Counter + 1;
+           Search.Counter
+--@ line 17
+                   := Search.Counter
+--@ line 17
+                              + 1;
            Found := True;
            Index := I;
            --# check      Found and then Index = I;
@@ -56,14 +105,16 @@ package body Search is
   end Linear_Search;
 
   function Check_Index
-    (Table : IntArray;
+    (Table : Search.IntArray
+--@ line 27
+                     ;
      Value : Integer;
      Index : Integer) return Boolean is
   begin
      return Table(Index) = Value;
   end Check_Index;
 
-end Search;
+end Internal_Search;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          5      0      5              0      0      0       0

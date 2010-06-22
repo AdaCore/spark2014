@@ -4,7 +4,51 @@ package Integer_Types is
    type Array_Range is range 1 .. 10;
 
 end Integer_Types;
-with Integer_Types; 
+package Internal_Integer_Types
+--@ line 1
+                      is
+
+
+
+end Internal_Integer_Types;
+
+with 
+--@ line 1
+     Integer_Types;use type Integer_Types.Array_Range; with S;use type S.IntArray; 
+--# inherit s, integer_types;
+package Internal_S
+--@ line 3
+          is
+
+
+
+   procedure Linear_Search
+     (Table : in S.IntArray
+--@ line 8
+                         ;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out Integer_Types.Array_Range
+--@ line 11
+                             );
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : S.IntArray
+--@ line 15
+                      ;
+      Value : Integer;
+      Index : Integer_Types.Array_Range
+--@ line 17
+                         ) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+
+end Internal_S;
+
+with 
+--@ line 1
+     Integer_Types;use type Integer_Types.Array_Range; 
 --# inherit integer_types;
 package S is
 
@@ -29,10 +73,14 @@ package S is
    --# return Result =>  Result             = (Table(Index) = Value);
 
 end S;
-package body S is
+package body Internal_S
+--@ line 1
+               is
 
   procedure Linear_Search
-    (Table : in IntArray;
+    (Table : in S.IntArray
+--@ line 4
+                        ;
      Value : in Integer;
      Found : out Boolean;
      Index : out Integer_Types.Array_Range
@@ -57,7 +105,9 @@ package body S is
   end Linear_Search;
 
   function Check_Index
-    (Table : IntArray;
+    (Table : S.IntArray
+--@ line 25
+                     ;
      Value : Integer;
      Index : Integer_Types.Array_Range
 --@ line 27
@@ -67,7 +117,7 @@ package body S is
      return Table(Index) = Value;
   end Check_Index;
 
-end S;
+end Internal_S;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          5      0      5              0      0      0       0

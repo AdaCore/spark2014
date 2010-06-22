@@ -1,6 +1,35 @@
 search.adb:3:3: sparkify: discard contract on definition of subprogram
 search.adb:25:3: sparkify: discard contract on definition of subprogram
 ------------------------------------------------------------------------
+with Search;use type Search.IntArray; 
+--@ line 1
+--# inherit search;
+--@ line 1
+package Internal_Search
+--@ line 1
+               is
+
+
+
+  procedure Linear_Search
+    (Table : in Search.IntArray
+--@ line 6
+                        ;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Integer);
+  --# post              not Found or else Table(Index) = Value;
+
+  function Check_Index
+    (Table : Search.IntArray
+--@ line 13
+                     ;
+     Value : Integer;
+     Index : Integer) return Boolean;
+  --# pre              Table'First <= Index and then Index <= Table'Last;
+  --# return Result =>  Result             = (Table(Index) = Value);
+
+end Internal_Search;
 package Search is
 
   type IntArray is array (Integer range <>) of Integer;
@@ -20,10 +49,14 @@ package Search is
   --# return Result =>  Result             = (Table(Index) = Value);
 
 end Search;
-package body Search is
+package body Internal_Search
+--@ line 1
+                    is
 
   procedure Linear_Search
-    (Table : in IntArray;
+    (Table : in Search.IntArray
+--@ line 4
+                        ;
      Value : in Integer;
      Found : out Boolean;
      Index : out Integer)
@@ -45,7 +78,9 @@ package body Search is
   end Linear_Search;
 
   function Check_Index
-    (Table : IntArray;
+    (Table : Search.IntArray
+--@ line 26
+                     ;
      Value : Integer;
      Index : Integer) return Boolean
   is
@@ -54,7 +89,7 @@ package body Search is
      return Table(Index) = Value;
   end Check_Index;
 
-end Search;
+end Internal_Search;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          5      0      5              0      0      0       0

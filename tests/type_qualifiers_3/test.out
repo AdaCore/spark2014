@@ -1,4 +1,17 @@
 ------------------------------------------------------------------------
+with tq;use type tq.Board_Index; use type tq.Colours; use type tq.Pieces; use type tq.Contents; use type tq.Row; use type tq.Boards11; 
+--@ line 1
+--# inherit tq;
+--@ line 1
+package Internal_tq
+--@ line 1
+           is
+--@ line 16
+        procedure Array_Of_Array (Initial_Board : out tq.Boards11
+--@ line 16
+                                                              );
+        --procedure Multi_Dim_Array (P, Q : out Complex);
+end Internal_tq;
 package tq is
 
         Board_Size : constant Integer :=8;
@@ -21,53 +34,135 @@ end record;
         procedure Array_Of_Array (Initial_Board : out Boards11);
         --procedure Multi_Dim_Array (P, Q : out Complex);
 end tq;
-package body tq is
+package body Internal_tq
+--@ line 1
+                is
 
-   procedure Array_Of_Array (Initial_Board : out Boards11)
+   procedure Array_Of_Array (Initial_Board : out tq.Boards11
+--@ line 3
+                                                         )
    is
    begin
-      Initial_Board :=Boards11'
-        (1 => Row'
+      Initial_Board :=tq.Boards11'
+        (1 => tq.Row'
 --@ line 7
-              (Contents'
+              (tq.Contents'
 --@ line 7
-               (White,Rook),Contents'
-               (White,Knight),Contents'
-               (White,Bishop),Contents'
-               (White,Queen),Contents'
-               (White,King),Contents'
-               (White,Bishop),Contents'
-               (White,Knight),Contents'
-               (White,Rook)
+               (tq.White
+--@ line 7
+                     ,tq.Rook
+--@ line 7
+                          ),tq.Contents'
+               (tq.White
+--@ line 8
+                     ,tq.Knight
+--@ line 8
+                            ),tq.Contents'
+               (tq.White
+--@ line 9
+                     ,tq.Bishop
+--@ line 9
+                            ),tq.Contents'
+               (tq.White
+--@ line 10
+                     ,tq.Queen
+--@ line 10
+                           ),tq.Contents'
+               (tq.White
+--@ line 11
+                     ,tq.King
+--@ line 11
+                          ),tq.Contents'
+               (tq.White
+--@ line 12
+                     ,tq.Bishop
+--@ line 12
+                            ),tq.Contents'
+               (tq.White
+--@ line 13
+                     ,tq.Knight
+--@ line 13
+                            ),tq.Contents'
+               (tq.White
+--@ line 14
+                     ,tq.Rook
+--@ line 14
+                          )
               ),
-         2 => Row'
+         2 => tq.Row'
 --@ line 16
-              (Board_Index =>Contents'
+              (tq.Board_Index
 --@ line 16
-                             (White,Pawn)),
-         3 .. 6 => Empty_Row,
-         7 => Row'
+                           =>tq.Contents'
+--@ line 16
+                             (tq.White
+--@ line 16
+                                   ,tq.Pawn
+--@ line 16
+                                        )),
+         3 .. 6 => tq.Empty_Row
+--@ line 17
+                            ,
+         7 => tq.Row'
 --@ line 18
-              (Board_Index =>Contents'
+              (tq.Board_Index
 --@ line 18
-                             (White,Pawn)),
-         8 => Row'
+                           =>tq.Contents'
+--@ line 18
+                             (tq.White
+--@ line 18
+                                   ,tq.Pawn
+--@ line 18
+                                        )),
+         8 => tq.Row'
 --@ line 19
-              (Contents'
+              (tq.Contents'
 --@ line 19
-               (Black,Rook),Contents'
-               (Black,Knight),Contents'
-               (Black,Bishop),Contents'
-               (Black,Queen),Contents'
-               (Black,King),Contents'
-               (Black,Bishop),Contents'
-               (Black,Knight),Contents'
-               (Black,Rook)
+               (tq.Black
+--@ line 19
+                     ,tq.Rook
+--@ line 19
+                          ),tq.Contents'
+               (tq.Black
+--@ line 20
+                     ,tq.Knight
+--@ line 20
+                            ),tq.Contents'
+               (tq.Black
+--@ line 21
+                     ,tq.Bishop
+--@ line 21
+                            ),tq.Contents'
+               (tq.Black
+--@ line 22
+                     ,tq.Queen
+--@ line 22
+                           ),tq.Contents'
+               (tq.Black
+--@ line 23
+                     ,tq.King
+--@ line 23
+                          ),tq.Contents'
+               (tq.Black
+--@ line 24
+                     ,tq.Bishop
+--@ line 24
+                            ),tq.Contents'
+               (tq.Black
+--@ line 25
+                     ,tq.Knight
+--@ line 25
+                            ),tq.Contents'
+               (tq.Black
+--@ line 26
+                     ,tq.Rook
+--@ line 26
+                          )
               )
         );
    end Array_Of_Array;
 
-end tq;
+end Internal_tq;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0

@@ -1,40 +1,53 @@
 ------------------------------------------------------------------------
 package Anon_Type is
 
-   subtype New_Name_5 is 
+   subtype New_Name_1 is 
 --@ line 3
       Integer range 0 .. 10;
 --@ line 2
    type Tab is array(Integer  range <>)
-   of New_Name_5;
+   of New_Name_1;
    procedure To_Fix (Y : out Integer);
 end Anon_Type;
-package body Anon_Type is
+with Anon_Type;use type Anon_Type.Tab; 
+--@ line 1
+--# inherit anon_type;
+--@ line 1
+package Internal_Anon_Type
+--@ line 1
+                  is
+
+
+   procedure To_Fix (Y : out Integer);
+end Internal_Anon_Type;
+package body Internal_Anon_Type
+--@ line 1
+                       is
    procedure To_Fix (Y : out Integer)
    is
-      subtype New_Name_2 is Integer range 
+      subtype New_Name_3 is Integer range 
 --@ line 4
                0 .. 9;
 --@ line 4
-      subtype New_Name_1 is Tab (New_Name_2);
+      subtype New_Name_2 is Anon_Type.Tab (New_Name_3);
 --@ line 4
-      T : New_Name_1  ;
-      subtype New_Name_3 is 
+      T : New_Name_2  ;
+      subtype New_Name_4 is 
 --@ line 5
                  Integer range 0 .. 10;
 --@ line 5
-      type New_Name_4 is array (New_Name_3) of Integer;
+      type New_Name_5 is array (New_Name_4) of Integer;
 --@ line 5
-      X : New_Name_4                               := New_Name_4'
+      X : New_Name_5                               := New_Name_5'
 --@ line 5
                                                       (others => 0);
    begin
-      T  := New_Name_1'
+      T  := New_Name_2'
 --@ line 7
             (others => 0);
       Y := T (1) + X (1);
    end To_Fix;
-end Anon_Type;
+end Internal_Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          1      1      0              0      0      0       0

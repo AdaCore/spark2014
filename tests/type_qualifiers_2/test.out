@@ -1,4 +1,36 @@
 ------------------------------------------------------------------------
+with tq;use type tq.Complex; 
+--@ line 1
+--# inherit tq;
+--@ line 1
+package Internal_tq
+--@ line 1
+           is
+--@ line 8
+   function plus (Left, Right: in tq.Complex
+--@ line 8
+                                         ) return tq.Complex
+--@ line 8
+                                                         ;
+
+   --# pre              Left.mReal > -1000.0 and Left.mReal < 1000.0 and
+   --# 	                
+   --# --@ line 11
+   --#             	                Left
+   --# --@ line 11
+   --#                 .	                     mImaginary
+   --# --@ line 11
+   --#                             > -1000.0 and 	                                              Left
+   --# --@ line 11
+   --#                                               .	                                                   mImaginary
+   --# --@ line 11
+   --#                                                           < 1000.0;
+
+   function eval return tq.Complex
+--@ line 13
+                               ;
+
+end Internal_tq;
 package tq is
 
    type Complex is record
@@ -15,38 +47,60 @@ end record;
 
 end tq;
 
-package body tq is
+package body Internal_tq
+--@ line 2
+                is
 
-   function plus (Left, Right: in Complex) return Complex
+   function plus (Left, Right: in tq.Complex
+--@ line 4
+                                         ) return tq.Complex
    is
    begin
-      return Complex'
+      return tq.Complex'
 --@ line 7
              (
-             	mReal => Left.mReal + Right.mReal,
+             		mReal
+--@ line 8
+                    => 	         Left
+--@ line 8
+                           .	              mReal
+--@ line 8
+                                  + 	                      Right
+--@ line 8
+                                         .	                            mReal
+--@ line 8
+                                               ,
                 mImaginary => Left.mImaginary + Right.mImaginary
 
               );
    end plus;
 
-   function eval return Complex
+   function eval return tq.Complex
    is
-      mCplex1 : constant Complex := Complex'
+      mCplex1 : constant tq.Complex
+--@ line 16
+                                 := tq.Complex'
 --@ line 16
                                     (mReal => 2.0,
                                     mImaginary => 3.0);
-      mCplex2 : constant Complex := Complex'
+      mCplex2 : constant tq.Complex
+--@ line 18
+                                 := tq.Complex'
 --@ line 18
                                     (mReal => 4.0,
                                     mImaginary => 4.0);
-      sumCplex : Complex;
+      sumCplex : tq.Complex
+--@ line 20
+                        ;
    begin
-      sumCplex := plus(mCplex1, mCplex2);
+      sumCplex := tq.plus
+--@ line 22
+                      (mCplex1, mCplex2);
 
       return sumCplex;
    end eval;
 
-end tq;
+end Internal_tq;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          2      2      0              0      0      0       0

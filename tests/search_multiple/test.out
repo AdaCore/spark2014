@@ -1,4 +1,41 @@
 ------------------------------------------------------------------------
+with Search;use type Search.IntArray; 
+--@ line 1
+--# inherit search;
+--@ line 1
+package Internal_Search
+--@ line 1
+               is
+
+
+
+  procedure Linear_Search
+    (Table  : in Search.IntArray
+--@ line 6
+                         ;
+     Value1 : in Integer;
+     Value2 : in Integer;
+     Found1 : out Boolean;
+     Found2 : out Boolean;
+     Index1 : out Integer;
+     Index2 : out Integer);
+  --# post (            not Found1 or else Table(Index1) = Value1
+  --# ) and (           not Found2 or else Table(Index2) = Value2);
+
+  function Check_Index
+    (Table  : Search.IntArray
+--@ line 17
+                      ;
+     Value1 : Integer;
+     Value2 : Integer;
+     Index1 : Integer;
+     Index2 : Integer) return Boolean;
+  --# pre (            Table'First <= Index1 and then Index1 <= Table'Last
+  --# ) and (          Table'First <= Index2 and then Index2 <= Table'Last);
+  --# return Result =>  Result             = (Table(Index1) = Value1 and then
+  --#                                           Table(Index2) = Value2);
+
+end Internal_Search;
 package Search is
 
   type IntArray is array (Integer range <>) of Integer;
@@ -12,7 +49,7 @@ package Search is
      Index1 : out Integer;
      Index2 : out Integer);
   --# post (            not Found1 or else Table(Index1) = Value1
-  --#   ) and (         not Found2 or else Table(Index2) = Value2);
+  --# ) and (           not Found2 or else Table(Index2) = Value2);
 
   function Check_Index
     (Table  : IntArray;
@@ -21,15 +58,19 @@ package Search is
      Index1 : Integer;
      Index2 : Integer) return Boolean;
   --# pre (            Table'First <= Index1 and then Index1 <= Table'Last
-  --#   ) and (        Table'First <= Index2 and then Index2 <= Table'Last);
+  --# ) and (          Table'First <= Index2 and then Index2 <= Table'Last);
   --# return Result =>  Result             = (Table(Index1) = Value1 and then
   --#                                           Table(Index2) = Value2);
 
 end Search;
-package body Search is
+package body Internal_Search
+--@ line 1
+                    is
 
   procedure Linear_Search
-    (Table  : in IntArray;
+    (Table  : in Search.IntArray
+--@ line 4
+                         ;
      Value1 : in Integer;
      Value2 : in Integer;
      Found1 : out Boolean;
@@ -48,10 +89,10 @@ package body Search is
         --# assert (   (Found = 0 and not Found1 and not Found2) or else
         --#            (Found = 1 and (Found1 or Found2)) or else
         --#            (Found = 2 and Found1 and Found2)
-        --#   ) and (  Found1 = False or else Found2 = False
-        --#   ) and (  not Found1 or else Table(Index1) = Value1
-        --#   ) and (  not Found2 or else Table(Index2) = Value2
-        --#   ) and (  Found < 2);
+        --# ) and (    Found1 = False or else Found2 = False
+        --# ) and (    not Found1 or else Table(Index1) = Value1
+        --# ) and (    not Found2 or else Table(Index2) = Value2
+        --# ) and (    Found < 2);
         if not Found1 and then Table(I) = Value1 then
            Found1 := True;
            Index1 := I;
@@ -71,7 +112,9 @@ package body Search is
   end Linear_Search;
 
   function Check_Index
-    (Table  : IntArray;
+    (Table  : Search.IntArray
+--@ line 46
+                      ;
      Value1 : Integer;
      Value2 : Integer;
      Index1 : Integer;
@@ -81,7 +124,7 @@ package body Search is
      return Table(Index1) = Value1 and then Table(Index2) = Value2;
   end Check_Index;
 
-end Search;
+end Internal_Search;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:         14      0     14              0      0      0       0

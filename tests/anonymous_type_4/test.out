@@ -21,12 +21,40 @@ package Anon_Type is
    procedure Multiply (X,Y : in Matrix; Z : in out Matrix);
 
 end Anon_Type;
+with Anon_Type;use type Anon_Type.Matrix; 
+--@ line 1
+------------------------------------------------------------------------------
+--  Test the anonymous type in for statement see .adb
+--
+--@ line 3
+--# inherit anon_type;
+package Internal_Anon_Type
+--@ line 4
+                  is
+
+   -- type Matrix_Index is range 0 .. 9;
+
+
+
+   procedure Multiply (X,Y : in Anon_Type.Matrix
+--@ line 10
+                                      ; Z : in out Anon_Type.Matrix
+--@ line 10
+                                                         );
+
+end Internal_Anon_Type;
 ------------------------------------------------------------------------------
 --  Test the anonymous type in for statement
 --
-package body Anon_Type is
+package body Internal_Anon_Type
+--@ line 4
+                       is
 
-   procedure Multiply (X,Y : in Matrix; Z : in out Matrix)
+   procedure Multiply (X,Y : in Anon_Type.Matrix
+--@ line 6
+                                      ; Z : in out Anon_Type.Matrix
+--@ line 6
+                                                         )
    is
    begin
       -- Z := Matrix'(1 .. 9 => (1 .. 9 =>0));
@@ -51,7 +79,7 @@ package body Anon_Type is
       end loop;
    end Multiply;
 
-end Anon_Type;
+end Internal_Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:         13      4      6              0      0      0       3

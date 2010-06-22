@@ -1,4 +1,17 @@
 ------------------------------------------------------------------------
+with S;
+--@ line 1
+--# inherit s;
+--@ line 1
+package Internal_S
+--@ line 1
+          is
+
+   procedure Plus_Two  (N : in out Integer);
+   --# pre              N > 0 and N < Integer'Last - 1;
+   --# post              N = N~    + 2;
+
+end Internal_S;
 package S is
 
    procedure Plus_Two  (N : in out Integer);
@@ -6,7 +19,9 @@ package S is
    --# post              N = N~    + 2;
 
 end S;
-package body S is
+package body Internal_S
+--@ line 1
+               is
 
    procedure Inc_Positive (N : in out Integer)
 
@@ -26,7 +41,7 @@ package body S is
       Inc_Positive (N);
    end Plus_Two;
 
-end S;
+end Internal_S;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          2      0      2              0      0      0       0

@@ -1,5 +1,36 @@
 s.adb:13:45: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
+with S;use type S.Array_Range; use type S.IntArray; 
+--@ line 1
+--# inherit s;
+--@ line 1
+package Internal_S
+--@ line 1
+          is
+--@ line 7
+   procedure Linear_Search
+     (Table : in S.IntArray
+--@ line 8
+                         ;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out S.Array_Range
+--@ line 11
+                             );
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : S.IntArray
+--@ line 15
+                      ;
+      Value : Integer;
+      Index : S.Array_Range
+--@ line 17
+                         ) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+
+end Internal_S;
 package S is
 
    type Array_Range is range 1 .. 10;
@@ -21,19 +52,27 @@ package S is
    --# return Result =>  Result             = (Table(Index) = Value);
 
 end S;
-package body S is
+package body Internal_S
+--@ line 1
+               is
 
   procedure Linear_Search
-    (Table : in IntArray;
+    (Table : in S.IntArray
+--@ line 4
+                        ;
      Value : in Integer;
      Found : out Boolean;
-     Index : out Array_Range)
+     Index : out S.Array_Range
+--@ line 7
+                            )
   is
   begin
      Found := False;
      Index := 1;
 
-     for I in Array_Range range Table'Range loop
+     for I in S.Array_Range
+--@ line 13
+                          range Table'Range loop
         --# assert True;
 --@ line 14
         if Table(I) = Value then
@@ -46,15 +85,19 @@ package body S is
   end Linear_Search;
 
   function Check_Index
-    (Table : IntArray;
+    (Table : S.IntArray
+--@ line 24
+                     ;
      Value : Integer;
-     Index : Array_Range) return Boolean
+     Index : S.Array_Range
+--@ line 26
+                        ) return Boolean
   is
   begin
      return Table(Index) = Value;
   end Check_Index;
 
-end S;
+end Internal_S;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
 Assert or Post:          5      0      4              0      0      0       1
