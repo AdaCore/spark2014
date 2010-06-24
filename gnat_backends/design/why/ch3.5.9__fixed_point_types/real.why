@@ -1,0 +1,23 @@
+(* These definitions are imported from real.why from the jessie installation.
+   Just adding them here to have a standalone test.  *)
+
+logic abs_real : real -> real
+
+axiom abs_real_pos: forall x:real [abs_real(x)]. x >= 0.0 -> abs_real(x) = x
+axiom abs_real_neg: forall x:real [abs_real(x)]. x <= 0.0 -> abs_real(x) = -x
+
+(* conversion from integers *)
+
+logic real_of_int : int -> real
+
+axiom real_of_int_zero: real_of_int(0) = 0.0
+axiom real_of_int_one: real_of_int(1) = 1.0
+
+axiom real_of_int_add: 
+  forall x,y:int.
+    real_of_int(x+y) = real_of_int(x) + real_of_int(y)
+
+axiom real_of_int_sub: 
+  forall x,y:int.
+    real_of_int(x-y) = real_of_int(x) - real_of_int(y)
+

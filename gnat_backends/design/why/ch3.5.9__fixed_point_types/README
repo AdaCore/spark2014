@@ -1,0 +1,11 @@
+
+This details how fixed points would be represented in Why.
+
+For these types, the best representation would probably be an integer
+representation; still, conversion functions to/from mathematical reals
+could be provided. This is showed in fixed.why.
+
+This example does not show the case of decimal fixed point types; the
+computation of the bounds is different, but the generated code ends up
+being quite similar.
+

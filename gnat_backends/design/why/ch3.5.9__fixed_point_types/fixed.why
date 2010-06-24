@@ -1,0 +1,64 @@
+
+type fixed__volt
+
+logic integer_of___fixed__volt : fixed__volt -> int
+
+predicate eq___fixed__volt (x : fixed__volt, y : fixed__volt) =
+ integer_of___fixed__volt (x) = integer_of___fixed__volt (y)
+
+predicate fixed__volt___in_range (x : int) =
+ 0 <= x and x <= 2040
+
+logic fixed__volt___of_integer : int -> fixed__volt
+
+axiom fixed__volt___coerce :
+ (forall x : int.
+  fixed__volt___in_range (x) ->
+   integer_of___fixed__volt (fixed__volt___of_integer (x)) = x)
+
+axiom fixed__volt___range :
+ (forall x : fixed__volt.
+  fixed__volt___in_range (integer_of___fixed__volt (x)))
+
+axiom fixed__volt___unicity :
+ (forall x, y : fixed__volt. eq___fixed__volt (x, y) <-> x = y)
+
+parameter any___fixed__volt : unit -> { } fixed__volt { true }
+
+parameter fixed__volt___of_integer_ :
+ x : int ->
+  { fixed__volt___in_range (x) }
+   fixed__volt
+  { integer_of___fixed__volt (result) = x }
+
+parameter safe___fixed__volt___of_integer_ :
+ x : int ->
+  { }
+   fixed__volt
+  { integer_of___fixed__volt (result) = x }
+
+
+(* Conversions to/from reals *)
+
+logic real_of___fixed__volt : fixed__volt -> real
+
+predicate fixed__volt___in_range_real (x : real) =
+ 0.0 <= x and x <= 255.0
+
+logic fixed__volt___of_real : real -> fixed__volt
+
+axiom fixed__volt___coerce_real :
+ (forall x : real.
+  fixed__volt___in_range_real (x) ->
+   (abs_real (real_of___fixed__volt (fixed__volt___of_real (x)))
+    - abs_real (x)) < 0.125)
+
+axiom fixed__volt___range_real :
+ (forall x : fixed__volt.
+  fixed__volt___in_range_real (real_of___fixed__volt (x)))
+
+axiom fixed__volt___values_real :
+ (forall x : fixed__volt.
+  real_of___fixed__volt (x) = real_of_int (integer_of___fixed__volt (x)) * 0.125)
+
+ 
