@@ -1,0 +1,8 @@
+
+Chapter 3.5.3 defines Standard.Boolean as an enumeration type;
+however, it is more natural to map it to type bool in Why. Still, in
+some cases, it may be needed to have an "enum" view of this type in
+order to use predefined operations on discrete types
+(e.g. 'Range). For these cases, we can provide a special enum type
+standard__boolean that we could convert into bool or int.
+

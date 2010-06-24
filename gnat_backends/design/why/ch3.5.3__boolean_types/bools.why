@@ -1,0 +1,65 @@
+
+type standard__boolean =
+  | standard__true
+  | standard__false
+
+logic bool_of___standard__boolean : standard__boolean -> bool
+
+logic standard__boolean___of_bool : bool -> standard__boolean
+
+axiom standard__boolean___coerce_bool :
+ (forall x : bool.
+   bool_of___standard__boolean (standard__boolean___of_bool (x)) = x)
+
+axiom standard__boolean___ordering_bool :
+ (forall x : standard__boolean.
+   match x with
+    | standard__true  -> bool_of___standard__boolean (x) = true
+    | standard__false -> bool_of___standard__boolean (x) = false
+   end)
+
+logic integer_of___standard__boolean : standard__boolean -> int
+
+predicate le___standard__boolean
+(left : standard__boolean,
+ right : standard__boolean) =
+ integer_of___standard__boolean (left)
+  <= integer_of___standard__boolean (right)
+
+predicate standard__boolean___in_range (x : int) =
+ 0 <= x and x <= 1
+
+logic standard__boolean___of_integer : int -> standard__boolean
+
+axiom standard__boolean___coerce :
+ (forall x : int.
+   standard__boolean___in_range (x) ->
+    integer_of___standard__boolean (standard__boolean___of_integer (x)) = x)
+
+axiom standard__boolean___ordering :
+ (forall x : standard__boolean.
+   match x with
+    | standard__true  -> integer_of___standard__boolean (x) = 0
+    | standard__false -> integer_of___standard__boolean (x) = 1
+   end)
+
+parameter any___standard__boolean : unit -> { } standard__boolean { true }
+
+parameter standard__boolean___of_integer_ :
+ x : int ->
+  { standard__boolean___in_range (x) }
+   standard__boolean
+  { integer_of___standard__boolean (result) = x }
+
+parameter safe___standard__boolean___of_integer_ :
+ x : int ->
+  { }
+   standard__boolean
+  { integer_of___standard__boolean (result) = x }
+
+parameter standard__boolean___of_bool_ :
+ x : bool ->
+  {  }
+   standard__boolean
+  { bool_of___standard__boolean (result) = x }
+
