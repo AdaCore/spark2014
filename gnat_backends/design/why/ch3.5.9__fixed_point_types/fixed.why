@@ -38,27 +38,37 @@ parameter safe___fixed__volt___of_integer_ :
   { integer_of___fixed__volt (result) = x }
 
 
-(* Conversions to/from reals *)
+(* Conversions to reals, as needed when working on the expanded tree *)
 
 logic real_of___fixed__volt : fixed__volt -> real
 
 predicate fixed__volt___in_range_real (x : real) =
- 0.0 <= x and x <= 255.0
+ 0.0 <= x and x <= 2040.0
 
 logic fixed__volt___of_real : real -> fixed__volt
 
-axiom fixed__volt___coerce_real :
+axiom fixed__volt___round_real :
  (forall x : real.
   fixed__volt___in_range_real (x) ->
-   (abs_real (real_of___fixed__volt (fixed__volt___of_real (x)))
-    - abs_real (x)) < 0.125)
+   round_real (x) = integer_of___fixed__volt (fixed__volt___of_real (x)))
 
 axiom fixed__volt___range_real :
  (forall x : fixed__volt.
   fixed__volt___in_range_real (real_of___fixed__volt (x)))
 
-axiom fixed__volt___values_real :
+axiom fixed__volt___coerce_real :
  (forall x : fixed__volt.
-  real_of___fixed__volt (x) = real_of_int (integer_of___fixed__volt (x)) * 0.125)
+  real_of___fixed__volt (x) = real_of_int (integer_of___fixed__volt (x)))
 
- 
+parameter fixed__volt___of_real_ :
+ x : real ->
+  { fixed__volt___in_range_real (x) }
+   fixed__volt
+  { real_of___fixed__volt (result) = x }
+
+parameter safe_fixed__volt___of_real_ :
+ x : real ->
+  { }
+   fixed__volt
+  { real_of___fixed__volt (result) = x }
+
