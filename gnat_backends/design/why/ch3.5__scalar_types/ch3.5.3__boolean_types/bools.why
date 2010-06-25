@@ -27,7 +27,9 @@ predicate le___standard__boolean
   <= integer_of___standard__boolean (right)
 
 predicate standard__boolean___in_range (x : int) =
- 0 <= x and x <= 1
+ let first = 0 in
+ let last = 1 in
+  first <= x <= last
 
 logic standard__boolean___of_integer : int -> standard__boolean
 

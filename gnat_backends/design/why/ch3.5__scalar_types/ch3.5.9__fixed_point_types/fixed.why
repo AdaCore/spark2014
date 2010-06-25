@@ -7,7 +7,9 @@ predicate eq___fixed__volt (x : fixed__volt, y : fixed__volt) =
  integer_of___fixed__volt (x) = integer_of___fixed__volt (y)
 
 predicate fixed__volt___in_range (x : int) =
- 0 <= x and x <= 2040
+ let first = 0 in
+ let last = 2040 in
+  first <= x <= last
 
 logic fixed__volt___of_integer : int -> fixed__volt
 
@@ -43,7 +45,9 @@ parameter safe___fixed__volt___of_integer_ :
 logic real_of___fixed__volt : fixed__volt -> real
 
 predicate fixed__volt___in_range_real (x : real) =
- 0.0 <= x and x <= 2040.0
+ let first = 0.0 in
+ let last = 2040.0 in
+  first <= x <= last
 
 logic fixed__volt___of_real : real -> fixed__volt
 

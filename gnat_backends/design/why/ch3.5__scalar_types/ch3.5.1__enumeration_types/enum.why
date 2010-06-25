@@ -17,7 +17,9 @@ predicate le___enum__day (left : enum__day, right : enum__day) =
  integer_of___enum__day (left) <= integer_of___enum__day (right)
 
 predicate enum__day___in_range (x : int) =
- 0 <= x and x <= 6
+ let first = 0 in
+ let last = 6 in
+  first <= x <= last
 
 logic enum__day___of_integer : int -> enum__day
 

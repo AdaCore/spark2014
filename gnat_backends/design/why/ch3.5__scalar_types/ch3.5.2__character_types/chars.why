@@ -8,7 +8,9 @@ predicate eq___standard__character
  integer_of___standard__character (x) = integer_of___standard__character (y)
 
 predicate standard__character___in_range (x : int) =
- 0 <= x and x <= 255
+ let first = 0 in
+ let last = 255 in
+  first <= x <= last
 
 logic standard__character___of_integer : int -> standard__character
 

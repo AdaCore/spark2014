@@ -7,7 +7,9 @@ predicate eq___floats__fp (x : floats__fp, y : floats__fp) =
  real_of___floats__fp (x) = real_of___floats__fp (y)
 
 predicate floats__fp___in_range (x : real) =
- -1.0 <= x and x <= 1.0
+ let first = -1.0 in
+ let last = 1.0 in
+  first <= x <= last
 
 logic floats__fp___of_real : real -> floats__fp
 

@@ -7,7 +7,9 @@ predicate eq___signed__int8 (x : signed__int8, y : signed__int8) =
  integer_of___signed__int8 (x) = integer_of___signed__int8 (y)
 
 predicate signed__int8___in_range (x : int) =
- -128 <= x and x <= 127
+ let first = -128 in
+ let last = 127 in
+  first <= x <= last
 
 logic signed__int8___of_integer : int -> signed__int8
 
