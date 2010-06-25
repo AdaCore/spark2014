@@ -6,14 +6,22 @@
 with Ada.Text_IO;
 
 with Raw_TCPEcho;
+with AIP.Init;
 with AIP.Mainloop;
 
 procedure Echop is
-   procedure LWIP_init;
-   pragma Import (C, LWIP_init, "C_init");
 begin
    Ada.Text_IO.Put_Line ("*** IPStack starting ***");
-   LWIP_Init;
+
+   --  Initialize IP stack
+
+   AIP.Init.Initialize;
+
+   --  Initialize application services
+
    Raw_TCPEcho.Init;
+
+   --  Run application main loop (??? should not be part of AIP)
+
    AIP.Mainloop;
 end Echop;
