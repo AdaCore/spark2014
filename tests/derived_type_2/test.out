@@ -1,0 +1,2 @@
+derived_type.ads:3:21: sparkify: !!! An_Enumeration_Literal
+Sparkify terminates in error
