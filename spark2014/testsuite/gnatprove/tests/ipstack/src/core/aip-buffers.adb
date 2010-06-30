@@ -285,22 +285,27 @@ is
    -- Buffer_Header --
    -------------------
 
-   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
+   procedure Buffer_Header
+     (Buf  : Buffer_Id;
+      Bump : AIP.S16_T;
+      Err  : out AIP.Err_T)
    --# global in out Common.Buf_List, Data.State, No_Data.State;
    is
       Offset : AIP.U16_T;
    begin
       Offset := AIP.U16_T (abs (Bump));
+      Err    := AIP.NOERR;
 
       --  Check that we are not going to move off the end of the buffer
       if Bump <= 0 then
-         Support.Verify (Common.Buf_List (Buf).Len >= Offset);
+         Support.Verify_Or_Err
+           (Common.Buf_List (Buf).Len >= Offset, Err, AIP.ERR_MEM);
       end if;
 
       if Is_Data_Buffer (Buf) then
-         Data.Buffer_Header (Buf, Bump);
+         Data.Buffer_Header (Buf, Bump, Err);
       else
-         No_Data.Buffer_Header (No_Data.Adjust_Id (Buf), Bump);
+         No_Data.Buffer_Header (No_Data.Adjust_Id (Buf), Bump, Err);
       end if;
 
       --  Modify length fields

@@ -175,7 +175,10 @@ is
    --  reference count. The caller remains responsible of its own reference,
    --  in particular wrt release duties.
 
-   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T);
+   procedure Buffer_Header
+     (Buf  : Buffer_Id;
+      Bump : AIP.S16_T;
+      Err  : out AIP.Err_T);
    --# global in out State;
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.

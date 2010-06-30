@@ -116,13 +116,16 @@ is
    -- Buffer_Header --
    -------------------
 
-   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
+   procedure Buffer_Header
+     (Buf  : Buffer_Id;
+      Bump : AIP.S16_T;
+      Err  : in out AIP.Err_T)
    --# global in out Buf_List;
    is
       Offset : AIP.IPTR_T;
    begin
       --  Check that we are not going to move off the beginning of the buffer
-      Support.Verify (Bump <= 0);
+      Support.Verify_Or_Err (Bump <= 0, Err, AIP.ERR_MEM);
 
       Offset                     := AIP.IPTR_T (-Bump);
       Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;

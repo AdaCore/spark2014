@@ -208,7 +208,10 @@ is
    -- Buffer_Header --
    -------------------
 
-   procedure Buffer_Header (Buf : Buffer_Id; Bump : AIP.S16_T)
+   procedure Buffer_Header
+     (Buf  : Buffer_Id;
+      Bump : AIP.S16_T;
+      Err  : in out AIP.Err_T)
    --# global in out Buf_List;
    is
       Offset : AIP.U16_T;
@@ -217,7 +220,8 @@ is
 
       --  Check that we are not going to move off the beginning of the buffer
       if Bump >= 0 then
-         Support.Verify (Buf_List (Buf).Left_Offset - Offset >= 0);
+         Support.Verify_Or_Err
+           (Buf_List (Buf).Left_Offset - Offset >= 0, Err, AIP.ERR_MEM);
       end if;
 
       if Bump >= 0 then
