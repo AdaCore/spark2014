@@ -302,23 +302,27 @@ is
            (Common.Buf_List (Buf).Len >= Offset, Err, AIP.ERR_MEM);
       end if;
 
-      if Is_Data_Buffer (Buf) then
-         Data.Buffer_Header (Buf, Bump, Err);
-      else
-         No_Data.Buffer_Header (No_Data.Adjust_Id (Buf), Bump, Err);
+      if Err = AIP.NOERR then
+         if Is_Data_Buffer (Buf) then
+            Data.Buffer_Header (Buf, Bump, Err);
+         else
+            No_Data.Buffer_Header (No_Data.Adjust_Id (Buf), Bump, Err);
+         end if;
       end if;
 
-      --  Modify length fields
-      if Bump >= 0 then
-         Common.Buf_List (Buf).Len     :=
-           Common.Buf_List (Buf).Len + Offset;
-         Common.Buf_List (Buf).Tot_Len :=
-           Common.Buf_List (Buf).Tot_Len + Offset;
-      else
-         Common.Buf_List (Buf).Len     :=
-           Common.Buf_List (Buf).Len - Offset;
-         Common.Buf_List (Buf).Tot_Len :=
-           Common.Buf_List (Buf).Tot_Len - Offset;
+      if Err = AIP.NOERR then
+         --  Modify length fields
+         if Bump >= 0 then
+            Common.Buf_List (Buf).Len     :=
+              Common.Buf_List (Buf).Len + Offset;
+            Common.Buf_List (Buf).Tot_Len :=
+              Common.Buf_List (Buf).Tot_Len + Offset;
+         else
+            Common.Buf_List (Buf).Len     :=
+              Common.Buf_List (Buf).Len - Offset;
+            Common.Buf_List (Buf).Tot_Len :=
+              Common.Buf_List (Buf).Tot_Len - Offset;
+         end if;
       end if;
    end Buffer_Header;
 

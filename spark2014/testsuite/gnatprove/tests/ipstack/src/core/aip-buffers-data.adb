@@ -224,10 +224,12 @@ is
            (Buf_List (Buf).Left_Offset - Offset >= 0, Err, AIP.ERR_MEM);
       end if;
 
-      if Bump >= 0 then
-         Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset - Offset;
-      else
-         Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset + Offset;
+      if Err = AIP.NOERR then
+         if Bump >= 0 then
+            Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset - Offset;
+         else
+            Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset + Offset;
+         end if;
       end if;
    end Buffer_Header;
 

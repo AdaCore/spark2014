@@ -127,8 +127,10 @@ is
       --  Check that we are not going to move off the beginning of the buffer
       Support.Verify_Or_Err (Bump <= 0, Err, AIP.ERR_MEM);
 
-      Offset                     := AIP.IPTR_T (-Bump);
-      Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;
+      if Err = AIP.NOERR then
+         Offset                     := AIP.IPTR_T (-Bump);
+         Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;
+      end if;
    end Buffer_Header;
 
 end AIP.Buffers.No_Data;
