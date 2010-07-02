@@ -1,3 +1,5 @@
 parent.ads
 parent-child.ads
-parent-child.adb
+internal_parent.ads
+internal_parent-child.ads
+internal_parent-child.adb
