@@ -57,7 +57,11 @@ if [ $# -ne 0 ]; then
     valid=true
   fi
   if [ $# -eq 1 ]; then
-    tests=`ls * | grep ':' | sed 's/://g'`
+    if [ "$1" = "-valid" ]; then
+      tests=`ls * | grep ':' | sed 's/://g'`
+    else
+      tests="$1"
+    fi
   elif [ $# -eq 2 ]; then
     tests="$2"
   else

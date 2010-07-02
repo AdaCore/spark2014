@@ -27,6 +27,10 @@ package Internal_S
    --# return Result =>  Result            = N + 2;
 
 end Internal_S;
+with T;use type T.Signed; 
+--@ line 1
+--# inherit t;
+--@ line 1
 package Internal_T
 --@ line 1
           is
@@ -80,10 +84,9 @@ is
    --#                                         'Last;
    --# return Result =>     Result                = N + 1;
 end S;
-package T is
-
+package T
+is
    type Signed is range -10 .. 10;
-
 end T;
 package body Internal_S
 --@ line 1

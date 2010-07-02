@@ -1,9 +1,12 @@
 ------------------------------------------------------------------------
-package Integer_Types is
-
+package Integer_Types
+is
    type Array_Range is range 1 .. 10;
-
 end Integer_Types;
+with Integer_Types;use type Integer_Types.Array_Range; 
+--@ line 1
+--# inherit integer_types;
+--@ line 1
 package Internal_Integer_Types
 --@ line 1
                       is
