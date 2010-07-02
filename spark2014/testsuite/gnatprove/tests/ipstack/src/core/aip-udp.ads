@@ -12,16 +12,18 @@ with AIP.Callbacks, AIP.IP, AIP.IPaddrs, AIP.Buffers, AIP.NIF;
 
 package AIP.UDP is
 
-   --  UDP connections materialize through "UDP Protocol Control Block"
-   --  entities:
+   --  UDP connections materialize through "UDP Protocol Control Blocks"
 
    MAX_UDP_PCB : constant := 20;
+   --  ??? should be set in global configuration package
+
    subtype PCB_Id is AIP.EID range 1 .. MAX_UDP_PCB;
 
    subtype Port_T is M16_T;
    NOPORT : constant Port_T := 0;
 
    UDP_FLAGS_CONNECTED : constant := 16#04#;
+   --  ??? What is this?
 
    --------------------
    -- User interface --
@@ -31,24 +33,25 @@ package AIP.UDP is
    --  Allocate and return Id of a new UDP PCB
 
    procedure UDP_Bind
-     (Pcb : PCB_Id;
+     (Pcb        : PCB_Id;
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T;
-      Err  : out AIP.Err_T);
+      Err        : out AIP.Err_T);
    --  Bind PCB to a Local_IP address and Local_Port. Datagrams received for
    --  this endpoint trigger an UDP_RECV event, hence a call to the associated
-   --  callback is any. If Local_IP is IP_ADDR_ANY, the endpoint serves the
-   --  port on all the active interfaces.
+   --  callback if any. If Local_IP is IP_ADDR_ANY, the endpoint serves the
+   --  port on all active interfaces.
 
    procedure UDP_Connect
-     (Pcb  : PCB_Id;
+     (Pcb         : PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
-      Err  : out AIP.Err_T);
+      Err         : out AIP.Err_T);
    --  Connect PCB to the Remote_IP/Remote_Port destination endpoint for
    --  datagrams sent later with Udp_Send. Until disconnected, packets from
    --  this endpoint only are processed by PCB. This subprogram doesn't
-   --  generate any network trafic.
+   --  generate any network trafic, since UDP actually has no notion of
+   --  connection.
 
    procedure UDP_Send
      (Pcb : PCB_Id;
@@ -126,9 +129,9 @@ private
       Flags  : AIP.M8_T;
       Remote_Port, Local_Port : Port_T;
       Udata  : AIP.IPTR_T;
-      --
+
       RECV_Cb : Callbacks.Callback_Id;
-      --
+
       Link : AIP.EID;
    end record;
 
