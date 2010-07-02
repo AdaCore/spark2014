@@ -15,13 +15,14 @@ package AIP.Callbacks is
 
    --  The general scheme is as follows (PROTO = UDP|TCP):
    --
-   --  App calls  PROTO_Callback (Evkind, PCB, Cbid);  to mean
+   --  Application calls:
+   --    <PROTO>_Callback (Evkind, PCB, Cbid);
+   --  to request that whenever an event with kind EvKind is triggered for
+   --  PCB, the <PROTO>_Event handler be called with an event descriptor
+   --  including Cbid as the callback identifier.
    --
-   --  "When a event of kind Evkind triggers for PCB, call the PROTO_Event
-   --  handler with an event descriptor and pass back Cbid".
-   --
-   --  PROTO_Event (Ev; PCB; Cbid) is to be defined by the applicative layer.
-   --  Ev is to be typed as PROTO_Event_T, the contents of which varies
+   --  <PROTO>_Event (Ev, PCB, Cbid) is to be defined by the application.
+   --  Ev is to be typed as <PROTO>_Event_T, the contents of which varies
    --  with the protocol.
 
 end AIP.Callbacks;
