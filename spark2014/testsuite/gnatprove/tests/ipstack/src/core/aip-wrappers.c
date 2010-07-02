@@ -2,8 +2,9 @@
                               IPSTACK COMPONENTS
                Copyright (C) 2010, Free Software Foundation, Inc.
  ****************************************************************************/
-/* C function wrappers to macros or direct access to structure
-   components, for Ada binding purposes.  */
+
+/* C function wrappers to macros or direct access to structure components,
+   for Ada binding purposes.  */
 
 #include "lwip/netbuf.h"
 #include "lwip/tcp.h"
