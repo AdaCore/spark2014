@@ -466,12 +466,14 @@ package body Sparkify.Pre_Operations is
       Parameters   : constant Asis.Parameter_Specification_List :=
                        Parameter_Profile (Element);
    begin
-      if Element_Kind (Encl_Element) = A_Declaration and then
-        (Declaration_Kind (Encl_Element) = A_Function_Body_Declaration or else
-           Declaration_Kind (Encl_Element) = A_Procedure_Body_Declaration)
+      if Current_Pass = Printing_Internal and then
+        Element_Kind (Encl_Element) = A_Declaration and then
+        (Declaration_Kind (Encl_Element) = A_Function_Body_Declaration
+         or else Declaration_Kind (Encl_Element) = A_Procedure_Body_Declaration
+         or else Declaration_Kind (Encl_Element) = A_Package_Body_Declaration)
       then
-         --  Discard declarations of subprograms in a subprogram body, as SPARK
-         --  does not allow them
+         --  Discard declarations of subprograms in a subprogram body or in
+         --  a package body, as SPARK does not allow them
 
          if Has_SPARK_Contract (Pragmas) then
             --  Output a warning that the corresponding contract is lost in
