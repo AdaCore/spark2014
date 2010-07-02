@@ -32,7 +32,7 @@ with Asis.Elements;                    use Asis.Elements;
 with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with Sparkify.Common;                  use Sparkify.Common;
-with Sparkify.Nameset;                 use Sparkify.Nameset;
+with Sparkify.Stringset;               use Sparkify.Stringset;
 
 package body ASIS_UL.Global_State.CG.Sparkify is
 
@@ -45,7 +45,8 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       S      : Node_Lists.Set;
       Sep    : Wide_String;
       Filter : Boolean := False;
-      Set    : Nameset.Set := Nameset.Empty_Set) return Unbounded_Wide_String;
+      Set    : Stringset.Set := Stringset.Empty_Set)
+      return Unbounded_Wide_String;
 
    procedure Set_Global_Sets
      (El                         :     Asis.Element;
@@ -69,14 +70,15 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       S      : Node_Lists.Set;
       Sep    : Wide_String;
       Filter : Boolean := False;
-      Set    : Nameset.Set := Nameset.Empty_Set) return Unbounded_Wide_String
+      Set    : Stringset.Set := Stringset.Empty_Set)
+      return Unbounded_Wide_String
    is
       Result        : Unbounded_Wide_String;
       Next          : Node_Lists.Cursor;
       Encl_El       : Asis.Element;
       Encl_Name     : Unbounded_Wide_String;
-      Allowed_Names : Nameset.Set;
-      Name          : Nameset.Cursor;
+      Allowed_Names : Stringset.Set;
+      Name          : Stringset.Cursor;
 
       --  Return the package enclosing element El, if any
       function Enclosing_Package (El : Asis.Element) return Asis.Element;
@@ -111,7 +113,7 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       function Name_Allowed_In_Set (Name : Wide_String) return Boolean is
       begin
          if Filter then
-            return Nameset.Contains (Set, To_Unbounded_Wide_String (Name));
+            return Stringset.Contains (Set, To_Unbounded_Wide_String (Name));
          else
             return True;
          end if;
@@ -142,13 +144,13 @@ package body ASIS_UL.Global_State.CG.Sparkify is
                                (To_Wide_String (GS_Node_Name (S)));
             begin
                if Pack_Name /= Encl_Name then
-                  Nameset.Include (Allowed_Names, Pack_Name & "." & Tmp);
+                  Stringset.Include (Allowed_Names, Pack_Name & "." & Tmp);
                   return;
                end if;
             end;
          end if;
 
-         Nameset.Include (Allowed_Names, To_Unbounded_Wide_String (Tmp));
+         Stringset.Include (Allowed_Names, To_Unbounded_Wide_String (Tmp));
       end Include_Name_Of_Next_Element;
    begin
       Encl_El := Enclosing_Package (El);
@@ -167,16 +169,16 @@ package body ASIS_UL.Global_State.CG.Sparkify is
       end loop;
 
       --  First take into account the first name
-      Name := Nameset.First (Allowed_Names);
-      if Nameset.Has_Element (Name) then
-         Result := Nameset.Element (Name);
-         Nameset.Next (Name);
+      Name := Stringset.First (Allowed_Names);
+      if Stringset.Has_Element (Name) then
+         Result := Stringset.Element (Name);
+         Stringset.Next (Name);
       end if;
 
       --  Then concatenate all remaining names
-      while Nameset.Has_Element (Name) loop
-         Result := Result & Sep & Nameset.Element (Name);
-         Nameset.Next (Name);
+      while Stringset.Has_Element (Name) loop
+         Result := Result & Sep & Stringset.Element (Name);
+         Stringset.Next (Name);
       end loop;
 
       return Result;
@@ -231,7 +233,7 @@ package body ASIS_UL.Global_State.CG.Sparkify is
    function All_Global_Writes
      (El  : Asis.Element;
       Sep : Wide_String;
-      Set : Nameset.Set) return Unbounded_Wide_String
+      Set : Stringset.Set) return Unbounded_Wide_String
    is
       Reads, Writes, Read_Writes : Node_Lists.Set;
    begin

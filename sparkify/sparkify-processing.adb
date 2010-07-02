@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;           use Ada.Containers;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 with Ada.Text_IO;                      use Ada.Text_IO;
 with Ada.Wide_Text_IO;
 
@@ -31,14 +33,15 @@ with Hostparm;
 
 with Asis;                             use Asis;
 with Asis.Compilation_Units;           use Asis.Compilation_Units;
---  with Asis.Compilation_Units.Relations;
---  use Asis.Compilation_Units.Relations;
 with Asis.Elements;                    use Asis.Elements;
 with Asis.Exceptions;
 with Asis.Text;                        use Asis.Text;
 with Asis.Clauses;                     use Asis.Clauses;
+with Asis.Declarations;                use Asis.Declarations;
+with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with ASIS_UL.Output;                   use ASIS_UL.Output;
+with ASIS_UL.Global_State.CG.Sparkify;
 
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Common;                  use Sparkify.Common;
@@ -50,66 +53,104 @@ with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
 with Sparkify.State;                   use Sparkify.State;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Pre_Operations;
+with Sparkify.Stringset;
 
 package body Sparkify.Processing is
 
-   ------------------
-   -- Pretty_Print --
-   ------------------
+   ----------------
+   -- Print_Decl --
+   ----------------
+
+   procedure Print_Decl (Element : Asis.Declaration);
+
+   procedure Print_Decl (Element : Asis.Declaration) is
+      Full_Span      : constant Asis.Text.Span := Compilation_Span (Element);
+
+      procedure Print_Decl_List (Decl_Items : Asis.Declarative_Item_List);
+
+      procedure Print_Decl_List (Decl_Items : Asis.Declarative_Item_List) is
+      begin
+         --  Traverse library item (or subunit) itself
+         for J in Decl_Items'Range loop
+            Pre_Operations.Traverse_Element_And_Print (Decl_Items (J));
+         end loop;
+      end Print_Decl_List;
+   begin
+      --  Feeding the line table
+      Lines_Table.Set_Last (Full_Span.Last_Line);
+      Lines_Table.Table (1 .. Full_Span.Last_Line) :=
+         Lines_Table.Table_Type
+           (Lines (Element    => Element,
+                   First_Line => Full_Span.First_Line,
+                   Last_Line  => Full_Span.Last_Line));
+
+      The_Last_Line   := Full_Span.Last_Line;
+      The_Last_Column := Full_Span.Last_Column;
+
+      case Declaration_Kind (Element) is
+         when A_Package_Declaration =>
+            declare
+               Private_Items : constant Declarative_Item_List :=
+                                 Private_Part_Declarative_Items
+                                   (Declaration     => Element,
+                                    Include_Pragmas => False);
+               Visible_Items : constant Declarative_Item_List :=
+                                 Visible_Part_Declarative_Items
+                                   (Declaration     => Element,
+                                    Include_Pragmas => False);
+               Decl_Items    : constant Declarative_Item_List :=
+                                 Private_Items & Visible_Items;
+            begin
+               Print_Decl_List (Decl_Items);
+            end;
+         when A_Package_Body_Declaration =>
+            declare
+               Decl_Items : constant Declarative_Item_List :=
+                              Body_Declarative_Items
+                                (Declaration     => Element,
+                                 Include_Pragmas => False);
+            begin
+               Print_Decl_List (Decl_Items);
+            end;
+         when others =>
+            Print_Decl_List ((1 => Element));
+      end case;
+   end Print_Decl;
+
+   -------------------
+   -- Special_Print --
+   -------------------
 
    procedure Special_Print (Unit : Asis.Compilation_Unit; SF : SF_Id) is
-      Program_Unit : constant Asis.Declaration := Unit_Declaration (Unit);
+      Unit_Decl          : constant Asis.Declaration :=
+                             Unit_Declaration (Unit);
+      Match_Unit         : constant Asis.Compilation_Unit :=
+                             Corresponding_Body (Unit);
+      Unit_Body          : constant Asis.Declaration :=
+                             (if Is_Nil (Match_Unit) then Nil_Element
+                              else Unit_Declaration (Match_Unit));
+      Is_Decl_With_Body  : constant Boolean :=
+                             not Is_Nil (Match_Unit)
+                               and then not Is_Equal (Match_Unit, Unit);
 
-      Context_Clause : constant Asis.Element_List :=
-         Context_Clause_Elements (Unit, True);
-
-      Comp_Pragmas : constant Asis.Element_List := Compilation_Pragmas (Unit);
-
+      Context_Clause     : constant Asis.Context_Clause_List :=
+                             Context_Clause_Elements (Unit, True);
+      Comp_Pragmas       : constant Asis.Element_List :=
+                             Compilation_Pragmas (Unit);
       First_Pragma_After : Asis.List_Index := Comp_Pragmas'Last + 1;
 
-      Full_Span : constant Asis.Text.Span := Compilation_Span (Program_Unit);
-      Unit_Span : constant Asis.Text.Span := Element_Span (Program_Unit);
+      Full_Span          : constant Asis.Text.Span :=
+                             Compilation_Span (Unit_Decl);
+      Unit_Span          : constant Asis.Text.Span :=
+                             Element_Span (Unit_Decl);
 
-      Source_Control    : Asis.Traverse_Control := Asis.Continue;
-      Source_State      : Source_Traversal_State;
+      Source_Control     : Asis.Traverse_Control := Asis.Continue;
+      Source_State       : Source_Traversal_State;
 
-      Success : Boolean := False;
+      Unit_Name          : constant Wide_String :=
+                             Declaration_Unique_Name (Unit_Decl);
 
---        function Body_Unit_From_Declaration
---          (Decl_Unit : Asis.Compilation_Unit) return Asis.Compilation_Unit;
---
---        function Body_Unit_From_Declaration
---          (Decl_Unit : Asis.Compilation_Unit) return Asis.Compilation_Unit
---        is
---           Decl_Unit_List : constant Asis.Compilation_Unit_List :=
---             (1 => Decl_Unit);
---           Body_Unit : constant Asis.Compilation_Unit :=
---             Corresponding_Body (Decl_Unit);
---
---           R : constant Relationship :=
---             Semantic_Dependence_Order
---               (Compilation_Units => Decl_Unit_List,
---                Dependent_Units   => Asis.Nil_Compilation_Unit_List,
---                The_Context       => Enclosing_Context (Decl_Unit),
---                Relation          => Asis.Dependents);
---        begin
---           for Unit_Index in R.Consistent'Range loop
---              declare
---                 Unit : constant Asis.Compilation_Unit :=
---                   R.Consistent (Unit_Index);
---              begin
---                 --  PP_Word (Debug_Image (Unit));
---                 if Is_Equal (Body_Unit, Unit) then
---                    return Unit;
---                 end if;
---              end;
---           end loop;
---           return Asis.Nil_Compilation_Unit;
---        end Body_Unit_From_Declaration;
-
-      Body_Unit : constant Asis.Compilation_Unit := Corresponding_Body (Unit);
-      --  Body_Unit_From_Declaration (Unit);
-
+      Success            : Boolean := False;
    begin
       Sparkify.State.Initialize;
       Sparkify.Names.Initialize;
@@ -120,7 +161,7 @@ package body Sparkify.Processing is
 
       Lines_Table.Table (1 .. Full_Span.Last_Line) :=
          Lines_Table.Table_Type
-           (Lines (Element    => Program_Unit,
+           (Lines (Element    => Unit_Decl,
                    First_Line => Full_Span.First_Line,
                    Last_Line  => Full_Span.Last_Line));
 
@@ -162,25 +203,23 @@ package body Sparkify.Processing is
          Traverse_Source (Context_Clause (J), Source_Control, Source_State);
       end loop;
 
-      if not Is_Nil (Body_Unit) and then
-        not Is_Equal (Body_Unit, Unit) then
+      if Is_Decl_With_Body then
          --  Currently processing a package declaration. Get the packages
          --  with'ed in its declaration and its body to generate
          --  a corresponding SPARK inherit clause.
          declare
             Body_Context_Clause : constant Asis.Context_Clause_List :=
-              Context_Clause_Elements (Body_Unit, True);
+                                    Context_Clause_Elements (Match_Unit, True);
             Both_Context_Clause : constant Asis.Context_Clause_List :=
-              Context_Clause & Body_Context_Clause;
-            Packages : Nameset.Set := Nameset.Empty_Set;
+                                    Context_Clause & Body_Context_Clause;
+            Packages            : Nameset.Set := Nameset.Empty_Set;
          begin
             if Current_Pass = Printing_Internal then
                --  The internal package has a with-clause on the external one
-               PP_Word
-                 ("with " & Declaration_Unique_Name (Program_Unit) & ";");
+               PP_Word ("with " & Unit_Name & ";");
                --  Add all possible use-type clauses in SPARK code, to make for
                --  the absence of a use-package clauses.
-               Sparkify.Pre_Operations.Print_All_Use_Type (Program_Unit);
+               Sparkify.Pre_Operations.Print_All_Use_Type (Unit_Decl);
             end if;
 
             for J in Both_Context_Clause'Range loop
@@ -206,7 +245,7 @@ package body Sparkify.Processing is
             --  Always inherit the parent package in a child package
             declare
                Encl_Element : constant Asis.Element :=
-                                Enclosing_Element (Program_Unit);
+                                Enclosing_Element (Unit_Decl);
             begin
                if not Is_Nil (Encl_Element) then
                   Nameset.Include
@@ -217,25 +256,23 @@ package body Sparkify.Processing is
 
             --  Always inherit the external package in an internal package
             if Current_Pass = Printing_Internal then
-               Nameset.Include
-                 (Packages,
-                  Normalized_Name (Declaration_Unique_Name (Program_Unit)));
+               Nameset.Include (Packages, Normalized_Name (Unit_Name));
             end if;
 
             declare
                Packages_Text : constant Wide_String :=
                  Concat_Names (Packages, ", ");
                Line : constant Line_Number_Positive :=
-                 Line_Number_Positive'Max (First_Line_Number (Program_Unit), 2)
+                 Line_Number_Positive'Max (First_Line_Number (Unit_Decl), 2)
                  - 1;
             begin
                if Packages_Text /= "" then
                   PP_Echo_Cursor_Range (Source_State.Echo_Cursor,
-                                        Cursor_Before (Program_Unit));
+                                        Cursor_Before (Unit_Decl));
                   PP_Inherit (Line,
-                              Element_Span (Program_Unit).First_Column,
+                              Element_Span (Unit_Decl).First_Column,
                               Packages_Text);
-                  Source_State.Echo_Cursor := Cursor_At (Program_Unit);
+                  Source_State.Echo_Cursor := Cursor_At (Unit_Decl);
                end if;
             end;
          end;
@@ -246,42 +283,211 @@ package body Sparkify.Processing is
       In_Context_Clause := False;
       In_Unit           := True;
 
-      Traverse_Source (Program_Unit, Source_Control, Source_State);
+      if Is_Decl_With_Body and then Current_Pass = Printing_External then
+         declare
+            package Element_Container is new
+              Vectors (Positive, Asis.Element, Is_Equal);
 
-      --  Step # 4: Lines after the end of the end of the Library item
-      --  (or subunit)
+            --  Collect the names of declarations Decl
+            function Names_Of_Declarations
+              (Decls : Element_Container.Vector) return Stringset.Set;
 
-      In_Unit     := False;
-      Behind_Unit := True;
+            function Names_Of_Declarations
+              (Decls : Element_Container.Vector) return Stringset.Set
+            is
+               Names : Stringset.Set;
+               Decl  : Element_Container.Cursor :=
+                         Element_Container.First (Decls);
+            begin
+               while Element_Container.Has_Element (Decl) loop
+                  declare
+                     Decl_Names : constant Defining_Name_List :=
+                                    Asis.Declarations.Names
+                                      (Element_Container.Element (Decl));
+                  begin
+                     for K in 1 .. Decl_Names'Length loop
+                        declare
+                           Name_Str : constant Unbounded_Wide_String :=
+                                        To_Unbounded_Wide_String
+                                          (Defining_Name_Image
+                                             (Decl_Names (K)));
+                        begin
+                           Stringset.Insert
+                             (Container => Names, New_Item  => Name_Str);
+                        end;
+                     end loop;
+                  end;
+                  Element_Container.Next (Decl);
+               end loop;
 
-      for J in Comp_Pragmas'Range loop
+               return Names;
+            end Names_Of_Declarations;
 
-         if Unit_Span.Last_Line <=
-            Element_Span (Comp_Pragmas (J)).First_Line
-         then
-            First_Pragma_After := J;
-            exit;
-         end if;
+            --  Concatenate the names of Names separated by Sep
+            function Concat_Names
+              (Names : Stringset.Set;
+               Sep   : Wide_String) return Unbounded_Wide_String;
 
-      end loop;
+            function Concat_Names
+              (Names : Stringset.Set;
+               Sep   : Wide_String) return Unbounded_Wide_String
+            is
+               Name   : Stringset.Cursor := Stringset.First (Names);
+               Concat : Unbounded_Wide_String;
+            begin
+               --  First take into account the first name
+               if Stringset.Has_Element (Name) then
+                  Concat := Stringset.Element (Name);
+                  Stringset.Next (Name);
+               end if;
 
-      for J in First_Pragma_After .. Comp_Pragmas'Last loop
+               --  Then concatenate all remaining names
+               while Stringset.Has_Element (Name) loop
+                  Concat := Concat & Sep & Stringset.Element (Name);
+                  Stringset.Next (Name);
+               end loop;
 
-         if Is_Equal (Enclosing_Compilation_Unit (Comp_Pragmas (J)), Unit) then
-            --  We may have configuration pragmas in the list
-            Traverse_Source (Comp_Pragmas (J), Source_Control, Source_State);
-         end if;
+               return Concat;
+            end Concat_Names;
 
-      end loop;
+            Private_Items : constant Declarative_Item_List :=
+                              Private_Part_Declarative_Items
+                                (Declaration     => Unit_Decl,
+                                 Include_Pragmas => False);
+            Visible_Items : constant Declarative_Item_List :=
+                              Visible_Part_Declarative_Items
+                                (Declaration     => Unit_Decl,
+                                 Include_Pragmas => False);
+            Decl_Items    : constant Declarative_Item_List :=
+                              Private_Items & Visible_Items;
 
-      Behind_Unit := False;
+            Items         : Element_Container.Vector;
 
-      --  Echo remaining lines
-      declare
-         End_Of_File : constant Cursor := File_Cursor (Kind => After_File);
-      begin
-         PP_Echo_Cursor_Range (Source_State.Echo_Cursor, End_Of_File);
-      end;
+            Body_Decl     : constant Asis.Declaration :=
+                              Corresponding_Body (Unit_Decl);
+
+            Column_Start  : constant Character_Position_Positive :=
+                              Element_Span (Unit_Decl).First_Column;
+
+            Pack_Names    : constant Defining_Name_List :=
+                              Asis.Declarations.Names (Unit_Decl);
+
+            Item          : Element_Container.Cursor;
+            Own_Items     : Element_Container.Vector;
+            Own_Str       : Unbounded_Wide_String;
+            Init_Str      : Unbounded_Wide_String;
+            Own_Set       : Stringset.Set;
+         begin
+            --  First collect all declarations in both the package declaration
+            --  and the package body in Items
+
+            for J in Decl_Items'Range loop
+               Element_Container.Append (Items, Decl_Items (J));
+            end loop;
+
+            if not Is_Nil (Body_Decl) then
+               declare
+                  Body_Items : constant Declarative_Item_List :=
+                                 Body_Declarative_Items
+                                   (Declaration     => Body_Decl,
+                                    Include_Pragmas => False);
+               begin
+                  for J in Body_Items'Range loop
+                     Element_Container.Append (Items, Body_Items (J));
+                  end loop;
+               end;
+            end if;
+
+            --  Then filter those declarations which correspond to global
+            --  variables and print them as own (and initializes when
+            --  appropriate) variables in SPARK
+
+            Item := Element_Container.First (Items);
+
+            while Element_Container.Has_Element (Item) loop
+               declare
+                  El : constant Asis.Element :=
+                         Element_Container.Element (Item);
+               begin
+
+                  --  Add all global variable declarations as "own" variables
+                  if Flat_Element_Kind (El) = A_Variable_Declaration then
+                     Element_Container.Append (Own_Items, El);
+                  end if;
+
+               end;
+               Element_Container.Next (Item);
+            end loop;
+
+            --  Get strings corresponding to lists of names of global variables
+            Own_Set := Names_Of_Declarations (Own_Items);
+            Own_Str := Concat_Names (Own_Set, ", ");
+
+            --  If the global variable is initialized at declaration, or if the
+            --  package body statement writes (initializes) it, it will be
+            --  counted in the writes effects of this package.
+            --  TODO: do something special for global variables not from this
+            --  package which are written in the package body statement
+            Init_Str :=
+              ASIS_UL.Global_State.CG.Sparkify.All_Global_Writes
+                (Unit_Decl, ", ", Own_Set);
+
+            pragma Assert (Pack_Names'Length = 1);
+
+            PP_Echo_Cursor_Range
+              (Source_State.Echo_Cursor,
+               Cursor_At_End_Of (Pack_Names (Pack_Names'First)));
+
+            --  Print the package state annotations
+            PP_Package_State (Column      => Column_Start,
+                              Own         => To_Wide_String (Own_Str),
+                              Initializes => To_Wide_String (Init_Str));
+
+            PP_Word_Alone_On_Line ("is");
+            Print_Decl (Unit_Decl);
+            Print_Decl (Unit_Body);
+            PP_Word_Alone_On_Line ("end " & Unit_Name & ";");
+         end;
+      else
+         Traverse_Source (Unit_Decl, Source_Control, Source_State);
+
+         --  Step # 4: Lines after the end of the end of the Library item
+         --  (or subunit)
+
+         In_Unit     := False;
+         Behind_Unit := True;
+
+         for J in Comp_Pragmas'Range loop
+
+            if Unit_Span.Last_Line <=
+              Element_Span (Comp_Pragmas (J)).First_Line
+            then
+               First_Pragma_After := J;
+               exit;
+            end if;
+
+         end loop;
+
+         for J in First_Pragma_After .. Comp_Pragmas'Last loop
+
+            if Is_Equal
+                 (Enclosing_Compilation_Unit (Comp_Pragmas (J)), Unit) then
+               --  We may have configuration pragmas in the list
+               Traverse_Source
+                 (Comp_Pragmas (J), Source_Control, Source_State);
+            end if;
+
+         end loop;
+
+         Behind_Unit := False;
+
+         --  Echo remaining lines
+         declare
+            End_Of_File : constant Cursor := File_Cursor (Kind => After_File);
+         begin
+            PP_Echo_Cursor_Range (Source_State.Echo_Cursor, End_Of_File);
+         end;
+      end if;
 
       if Output_Mode /= Pipe and then
          Ada.Wide_Text_IO.Is_Open (Result_Out_File)

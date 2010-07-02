@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Vectors;           use Ada.Containers;
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 with Ada.Characters.Conversions;       use Ada.Characters.Conversions;
 with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
@@ -50,7 +49,6 @@ with Sparkify.Source_Line_Buffer;      use Sparkify.Source_Line_Buffer;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
-with Sparkify.Nameset;
 
 package body Sparkify.Pre_Operations is
 
@@ -82,9 +80,6 @@ package body Sparkify.Pre_Operations is
       Column      : Character_Position_Positive);
    --  Print data flow contracts in SPARK syntax
 
-   procedure Traverse_Element_And_Print (Element : Asis.Element);
-   --  Traverse Element in Printing_Code mode (prefixing identifiers et cetera)
-
    procedure Reach_Element_And_Traverse
      (Element : Asis.Element;
       State   : in out Source_Traversal_State);
@@ -94,6 +89,8 @@ package body Sparkify.Pre_Operations is
 
    function Is_Defined_In_Standard_Or_Current_Compilation_Unit
      (Element : Asis.Element) return Boolean;
+
+   function Is_Package_Level_Element (Element : Asis.Element) return Boolean;
 
    function Prepend_Package_Name
      (Element : Asis.Element;
@@ -140,11 +137,6 @@ package body Sparkify.Pre_Operations is
 --        Parent_Decl       : constant   Asis.Declaration :=
 --                               Corresponding_Parent_Subtype (Element);
    begin
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this Element was already taken care of
-         return;
-      end if;
-
       PP_Echo_Cursor_Range
         (State.Echo_Cursor, Cursor_Before (Element));
       State.Echo_Cursor := Cursor_At (Element);
@@ -367,177 +359,24 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
 
-      package Element_Container is new
-        Vectors (Positive, Asis.Element, Is_Equal);
-
-      --  Collect the names of declarations Decl
-      function Names_Of_Declarations
-        (Decls : Element_Container.Vector) return Nameset.Set;
-
-      function Names_Of_Declarations
-        (Decls : Element_Container.Vector) return Nameset.Set
-      is
-         Names : Nameset.Set;
-         Decl  : Element_Container.Cursor := Element_Container.First (Decls);
-      begin
-         while Element_Container.Has_Element (Decl) loop
-            declare
-               Decl_Names : constant Defining_Name_List :=
-                              Asis.Declarations.Names
-                                (Element_Container.Element (Decl));
-            begin
-               for K in 1 .. Decl_Names'Length loop
-                  declare
-                     Name_Str : constant Unbounded_Wide_String :=
-                                  To_Unbounded_Wide_String
-                                    (Defining_Name_Image (Decl_Names (K)));
-                  begin
-                     Nameset.Insert
-                       (Container => Names, New_Item  => Name_Str);
-                  end;
-               end loop;
-            end;
-            Element_Container.Next (Decl);
-         end loop;
-
-         return Names;
-      end Names_Of_Declarations;
-
-      --  Concatenate the names of Names separated by Sep
-      function Concat_Names
-        (Names : Nameset.Set;
-         Sep   : Wide_String) return Unbounded_Wide_String;
-
-      function Concat_Names
-        (Names : Nameset.Set;
-         Sep   : Wide_String) return Unbounded_Wide_String
-      is
-         Name   : Nameset.Cursor := Nameset.First (Names);
-         Concat : Unbounded_Wide_String;
-      begin
-         --  First take into account the first name
-         if Nameset.Has_Element (Name) then
-            Concat := Nameset.Element (Name);
-            Nameset.Next (Name);
-         end if;
-
-         --  Then concatenate all remaining names
-         while Nameset.Has_Element (Name) loop
-            Concat := Concat & Sep & Nameset.Element (Name);
-            Nameset.Next (Name);
-         end loop;
-
-         return Concat;
-      end Concat_Names;
-
-      Private_Items : constant Declarative_Item_List :=
-                        Private_Part_Declarative_Items
-                          (Declaration => Element, Include_Pragmas => False);
-      Visible_Items : constant Declarative_Item_List :=
-                        Visible_Part_Declarative_Items
-                          (Declaration => Element, Include_Pragmas => False);
-      Decl_Items    : constant Declarative_Item_List :=
-                        Private_Items & Visible_Items;
-
-      Items         : Element_Container.Vector;
-
-      Body_Decl     : constant Asis.Declaration :=
-                        Corresponding_Body (Element);
-
-      Column_Start  : constant Character_Position_Positive :=
-                        Element_Span (Element).First_Column;
-
       Pack_Names    : constant Defining_Name_List :=
                         Asis.Declarations.Names (Element);
    begin
-      --  First collect all declarations in both the package declaration and
-      --  the package body in Items
-
-      if Current_Pass = Printing_External then
-         --  Only consider declarations in specification for external package
-         for J in Decl_Items'Range loop
-            Element_Container.Append (Items, Decl_Items (J));
-         end loop;
-      end if;
-
-      if not Is_Nil (Body_Decl) then
+      if Current_Pass = Printing_Internal then
          declare
-            Body_Items : constant Declarative_Item_List :=
-              Body_Declarative_Items (Declaration     => Body_Decl,
-                                      Include_Pragmas => False);
+            Pack_Name : constant Wide_String :=
+                          Element_Name (Pack_Names (Pack_Names'First));
          begin
-            for J in Body_Items'Range loop
-               Element_Container.Append (Items, Body_Items (J));
-            end loop;
-         end;
-      end if;
-
-      --  Then filter those declarations which correspond to global variables
-      --  and print them as own (and initializes when appropriate) variables
-      --  in SPARK
-
-      declare
-         Item              : Element_Container.Cursor :=
-                               Element_Container.First (Items);
-         Own_Items         : Element_Container.Vector;
-         Own_Str, Init_Str : Unbounded_Wide_String;
-         Own_Set           : Nameset.Set;
-      begin
-         while Element_Container.Has_Element (Item) loop
-            declare
-               El : constant Asis.Element := Element_Container.Element (Item);
-            begin
-
-               --  Add all global variable declarations as "own" variables
-               if Flat_Element_Kind (El) = A_Variable_Declaration then
-                  Element_Container.Append (Own_Items, El);
-               end if;
-
-            end;
-            Element_Container.Next (Item);
-         end loop;
-
-         --  Get strings corresponding to lists of names of global variables
-         Own_Set  := Names_Of_Declarations (Own_Items);
-         Own_Str  := Concat_Names (Own_Set, ", ");
-
-         --  If the global variable is initialized at declaration, or if the
-         --  package body statement writes (initializes) it, it will be counted
-         --  in the writes effects of this package.
-         --  TODO: do something special for global variables not from this
-         --  package which are written in the package body statement
-         Init_Str :=
-           ASIS_UL.Global_State.CG.Sparkify.All_Global_Writes
-             (Element, ", ", Own_Set);
-
-         pragma Assert (Pack_Names'Length = 1);
-
-         if Current_Pass = Printing_Internal then
-            declare
-               Pack_Name : constant Wide_String :=
-                             Element_Name (Pack_Names (Pack_Names'First));
-            begin
-               PP_Echo_Cursor_Range
-                 (State.Echo_Cursor,
-                  Cursor_Before (Pack_Names (Pack_Names'First)));
-
-               --  Prefix the name of the internal package to differentiate it
-               PP_Word (To_Wide_String (Internal_Prefix) & Pack_Name);
-            end;
-         else
             PP_Echo_Cursor_Range
               (State.Echo_Cursor,
-               Cursor_At_End_Of (Pack_Names (Pack_Names'First)));
-         end if;
+               Cursor_Before (Pack_Names (Pack_Names'First)));
 
-         State.Echo_Cursor := Cursor_After (Pack_Names (Pack_Names'First));
+            --  Prefix the name of the internal package to differentiate it
+            PP_Word (To_Wide_String (Internal_Prefix) & Pack_Name);
 
-         --  Print the package state annotations
-         PP_Package_State (Column      => Column_Start,
-                           Own         => To_Wide_String (Own_Str),
-                           Initializes => To_Wide_String (Init_Str));
-      end;
-
+            State.Echo_Cursor := Cursor_After (Pack_Names (Pack_Names'First));
+         end;
+      end if;
    end A_Package_Declaration_Pre_Op;
 
    ---------------------------
@@ -581,12 +420,6 @@ package body Sparkify.Pre_Operations is
       Name : constant Wide_String :=
                Pragma_Name_Image (Pragma_Element'(Element));
    begin
-
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this pragma was already taken care of
-         return;
-      end if;
-
       if Pragma_Kind (Element) = An_Assert_Pragma then
          declare
             Args         : constant Association_List :=
@@ -694,33 +527,33 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
 
-      Column_Start : Character_Position_Positive;
+      Column_Start   : constant Character_Position_Positive :=
+                         Element_Span (Element).First_Column;
       --  The start position of the "procedure" or "function" keyword,
       --  to align the SPARK contract and the "is" keyword that follows
 
-      Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+      Encl_Element   : constant Asis.Element := Enclosing_Element (Element);
 
-      Is_Function  : constant Boolean :=
-                       Declaration_Kind (Element)
+      Is_Function    : constant Boolean :=
+                         Declaration_Kind (Element)
                          = A_Function_Body_Declaration;
 
-      Pragmas      : constant Pragma_Element_List :=
-                       Corresponding_Pragmas (Element);
+      Pragmas        : constant Pragma_Element_List :=
+                         Corresponding_Pragmas (Element);
 
-      Params       : constant Parameter_Specification_List :=
-                       Parameter_Profile (Element);
+      Params         : constant Parameter_Specification_List :=
+                         Parameter_Profile (Element);
 
       Current_Cursor : Cursor;
-   begin
-      if Is_Nil (Encl_Element)
-        or else Acts_As_Spec (Element)
-      then
-         --  Only translate contracts on library-level subprograms with no
-         --  previous declarations and local subprograms (which do not have
-         --  corresponding declarations in SPARK).
 
-         Column_Start := Element_Span (Element).First_Column;
+      ------------------------
+      -- Set_Current_Cursor --
+      ------------------------
 
+      procedure Set_Current_Cursor;
+
+      procedure Set_Current_Cursor is
+      begin
          for J in Params'Range loop
             Reach_Element_And_Traverse (Params (J), State);
          end loop;
@@ -730,7 +563,7 @@ package body Sparkify.Pre_Operations is
                if Params'Length = 0 then
                   declare
                      Names : constant Defining_Name_List :=
-                       Asis.Declarations.Names (Element);
+                               Asis.Declarations.Names (Element);
                   begin
                      pragma Assert (Names'Length = 1);
                      Current_Cursor := Cursor_After (Names (Names'First));
@@ -750,7 +583,16 @@ package body Sparkify.Pre_Operations is
          end case;
 
          PP_Echo_Cursor_Range (State.Echo_Cursor, Current_Cursor);
+      end Set_Current_Cursor;
 
+      --------------------------
+      -- Print_SPARK_Contract --
+      --------------------------
+
+      procedure Print_SPARK_Contract;
+
+      procedure Print_SPARK_Contract is
+      begin
          SPARK_Data_Flow (Element     => Element,
                           Is_Function => Is_Function,
                           Column      => Column_Start);
@@ -761,6 +603,36 @@ package body Sparkify.Pre_Operations is
                             Is_Function => Is_Function,
                             Column      => Column_Start);
          end if;
+      end Print_SPARK_Contract;
+   begin
+      if Current_Pass = Printing_External
+        and then Is_Package_Level_Element (Element) then
+         --  When printing the external package, ignore subprograms bodies that
+         --  are only defined in the internal package, but print a declaration
+         --  for those bodies without a corresponding declaration.
+
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+
+         if Acts_As_Spec (Element) then
+            Set_Current_Cursor;
+            PP_Word (";");
+            Print_SPARK_Contract;
+         end if;
+
+         State.Echo_Cursor := Cursor_After (Element);
+
+         return;
+      end if;
+
+      if Is_Nil (Encl_Element)
+        or else Acts_As_Spec (Element)
+      then
+         --  Only translate contracts on library-level subprograms with no
+         --  previous declarations and local subprograms (which do not have
+         --  corresponding declarations in SPARK).
+
+         Set_Current_Cursor;
+         Print_SPARK_Contract;
 
          Cursor_Next_Column (Current_Cursor);
          Skip_Blanks (Current_Cursor);
@@ -797,15 +669,11 @@ package body Sparkify.Pre_Operations is
                        Element_Span (Element).First_Column;
    begin
       if Current_Pass = Printing_Internal
-        and then State.Phase = Printing_Spec then
-         --  When printing the specification of the internal package, ignore
-         --  types that are already defined in the external package
+        and then Is_Package_Level_Element (Element) then
+         --  When printing the internal package, ignore types that are
+         --  already defined in the external package
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
          State.Echo_Cursor := Cursor_After (Element);
-      end if;
-
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this Element was already taken care of
          return;
       end if;
 
@@ -1040,45 +908,39 @@ package body Sparkify.Pre_Operations is
             end if;
          end;
       end Get_Type_Name_From_Context;
+
+      Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+      Type_Decl    : constant Asis.Declaration :=
+                       Corresponding_Expression_Type (Element);
+      Type_Str     : Unbounded_Wide_String;
    begin
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this Element was already taken care of
+
+      if Flat_Element_Kind (Encl_Element) = A_Qualified_Expression then
+         --  Do nothing because the aggregate is already qualified
          return;
+      elsif Is_Nil (Type_Decl) or else
+        Type_Kind (Type_Declaration_View (Type_Decl))
+        = An_Unconstrained_Array_Definition
+      then
+         Type_Str :=
+           To_Unbounded_Wide_String (Get_Type_Name_From_Context (Element));
+      else
+         declare
+            Decl_Name : constant Defining_Name_List :=
+                          Asis.Declarations.Names (Type_Decl);
+            pragma Assert (Decl_Name'Length = 1);
+            Base_Name : constant Wide_String :=
+                          Defining_Name_Image (Decl_Name (Decl_Name'First));
+            Full_Name : constant Wide_String :=
+                          Prepend_Package_Name (Type_Decl, Base_Name);
+         begin
+            Type_Str := To_Unbounded_Wide_String (Full_Name);
+         end;
       end if;
 
-      declare
-         Encl_Element : constant Asis.Element := Enclosing_Element (Element);
-         Type_Decl    : constant Asis.Declaration :=
-                          Corresponding_Expression_Type (Element);
-         Type_Str     : Unbounded_Wide_String;
-      begin
-         if Flat_Element_Kind (Encl_Element) = A_Qualified_Expression then
-            --  Do nothing because the aggregate is already qualified
-            return;
-         elsif Is_Nil (Type_Decl) or else
-           Type_Kind (Type_Declaration_View (Type_Decl))
-           = An_Unconstrained_Array_Definition
-         then
-            Type_Str :=
-              To_Unbounded_Wide_String (Get_Type_Name_From_Context (Element));
-         else
-            declare
-               Decl_Name : constant Defining_Name_List :=
-                             Asis.Declarations.Names (Type_Decl);
-               pragma Assert (Decl_Name'Length = 1);
-               Base_Name : constant Wide_String :=
-                             Defining_Name_Image (Decl_Name (Decl_Name'First));
-               Full_Name : constant Wide_String :=
-                             Prepend_Package_Name (Type_Decl, Base_Name);
-            begin
-               Type_Str := To_Unbounded_Wide_String (Full_Name);
-            end;
-         end if;
-
-         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
-         PP_Word (To_Wide_String (Type_Str) & "'");
-         State.Echo_Cursor := Cursor_At (Element);
-      end;
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+      PP_Word (To_Wide_String (Type_Str) & "'");
+      State.Echo_Cursor := Cursor_At (Element);
 
    end An_Aggregate_Pre_Op;
 
@@ -1093,11 +955,6 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
    begin
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this identifier was already taken care of
-         return;
-      end if;
-
       if Asis.Extensions.Is_Uniquely_Defined (Element) and then
         not Is_Defined_In_Standard_Or_Current_Compilation_Unit (Element) then
          --  Identifier should be prefixed by its package name
@@ -1175,15 +1032,11 @@ package body Sparkify.Pre_Operations is
       Subtype_Name : Unbounded_Wide_String;
    begin
       if Current_Pass = Printing_Internal
-        and then State.Phase = Printing_Spec then
-         --  When printing the specification of the internal package, ignore
-         --  objects that are already defined in the external package
+        and then Is_Package_Level_Element (Element) then
+         --  When printing the internal package, ignore objects that are
+         --  already defined in the external package
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
          State.Echo_Cursor := Cursor_After (Element);
-      end if;
-
-      if Cursor_At (Element) < State.Echo_Cursor then
-         --  Handling of this Element was already taken care of
          return;
       end if;
 
@@ -1365,18 +1218,17 @@ package body Sparkify.Pre_Operations is
 
          if Current_Pass = Printing_Internal then
             --  When printing bodies, a new package is created, which only
-            --  calls and references the original body in its expressions,
-            --  except for global objects defined in the body
+            --  calls and references the original body in its expressions
             case Element_Kind (Element) is
                when An_Expression =>
-                  return Def_In_Standard or else Def_In_Cur_Body;
+                  return Def_In_Standard;
                when A_Declaration =>
                   case Declaration_Kind (Element) is
                      when A_Function_Declaration |
                           A_Procedure_Declaration =>
                         return Def_In_Standard or else Def_In_Current;
                      when others =>
-                        return Def_In_Standard or else Def_In_Cur_Body;
+                        return Def_In_Standard;
                   end case;
                when others =>
                   pragma Assert (False);
@@ -1387,6 +1239,17 @@ package body Sparkify.Pre_Operations is
          end if;
       end;
    end Is_Defined_In_Standard_Or_Current_Compilation_Unit;
+
+   ------------------------------
+   -- Is_Package_Level_Element --
+   ------------------------------
+
+   function Is_Package_Level_Element (Element : Asis.Element) return Boolean is
+      Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+   begin
+      return Flat_Element_Kind (Encl_Element) = A_Package_Body_Declaration
+        or else Flat_Element_Kind (Encl_Element) = A_Package_Declaration;
+   end Is_Package_Level_Element;
 
    --------------------------
    -- Prepend_Package_Name --

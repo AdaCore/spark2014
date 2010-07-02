@@ -79,6 +79,19 @@ package body Sparkify.PP_Output is
       Output_Column := Output_Column + S'Length;
    end PP_Word;
 
+   ---------------------------
+   -- PP_Word_Alone_On_Line --
+   ---------------------------
+
+   procedure PP_Word_Alone_On_Line (S : Program_Text) is
+   begin
+      if Output_Column /= 1 then
+         PP_Close_Line;
+      end if;
+      PP_Word (S);
+      PP_Close_Line;
+   end PP_Word_Alone_On_Line;
+
    ------------------
    -- PP_Delimiter --
    ------------------
@@ -265,8 +278,9 @@ package body Sparkify.PP_Output is
    --------------------------
 
    procedure PP_Echo_Cursor_Range
-     (From, To : Cursor;
-      Prefix   : Wide_String := "")
+     (From   : Cursor;
+      To     : Cursor;
+      Prefix : Wide_String := "")
    is
       Current : Cursor := From;
    begin
@@ -304,6 +318,20 @@ package body Sparkify.PP_Output is
          end;
       end loop;
    end PP_Echo_Cursor_Range;
+
+   -----------------------------------
+   -- PP_Echo_And_Move_Cursor_Range --
+   -----------------------------------
+
+   procedure PP_Echo_And_Move_Cursor_Range
+     (From   : in out Cursor;
+      To     : Cursor;
+      Prefix : Wide_String := "") is
+   begin
+      PP_Echo_Cursor_Range (From, To, Prefix);
+      From := To;
+      Cursor_Next_Column (From);
+   end PP_Echo_And_Move_Cursor_Range;
 
    ----------------
    -- PP_Inherit --

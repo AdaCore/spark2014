@@ -31,6 +31,7 @@ with ASIS_UL.Common;                   use ASIS_UL.Common;
 
 with Sparkify.Pre_Operations;          use Sparkify.Pre_Operations;
 with Sparkify.Post_Operations;         use Sparkify.Post_Operations;
+with Sparkify.Cursors;                 use Sparkify.Cursors;
 
 package body Sparkify.Source_Traversal is
 
@@ -45,6 +46,11 @@ package body Sparkify.Source_Traversal is
    is
       Arg_Kind : constant Flat_Element_Kinds := Flat_Element_Kind (Element);
    begin
+
+      if Cursor_At (Element) < State.Echo_Cursor then
+         --  Handling of this element was already taken care of
+         return;
+      end if;
 
       --  Element_Kind-specific processing
       Specific_Pre_Operation (Arg_Kind) (Element, Control, State);
@@ -70,6 +76,11 @@ package body Sparkify.Source_Traversal is
    is
       Arg_Kind : constant Flat_Element_Kinds := Flat_Element_Kind (Element);
    begin
+
+      if Cursor_At_End_Of (Element) < State.Echo_Cursor then
+         --  Handling of this element was already taken care of
+         return;
+      end if;
 
       --  Element_Kind-specific processing
       Specific_Post_Operation (Arg_Kind) (Element, Control, State);

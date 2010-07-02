@@ -48,6 +48,8 @@ package Sparkify.PP_Output is
    procedure PP_Word (S : Program_Text);
    --  Send S into output stream.
 
+   procedure PP_Word_Alone_On_Line (S : Program_Text);
+
    procedure PP_Keyword (KW : Keyword_Kinds);
    --  Sends the argument keyword in proper case into the output stream.
    --  Changes Line_Pos accordingly
@@ -68,9 +70,16 @@ package Sparkify.PP_Output is
    --  and pad the output with white space to reach the appropriate column.
 
    procedure PP_Echo_Cursor_Range
-     (From, To : Cursor;
-      Prefix   : Wide_String := "");
+     (From   : Cursor;
+      To     : Cursor;
+      Prefix : Wide_String := "");
    --  Echoes the input between cursors From and To
+
+   procedure PP_Echo_And_Move_Cursor_Range
+     (From   : in out Cursor;
+      To     : Cursor;
+      Prefix : Wide_String := "");
+   --  Echoes the input between cursors From and To, and moves From after To
 
    procedure PP_Inherit
      (Line   : Line_Number_Positive;

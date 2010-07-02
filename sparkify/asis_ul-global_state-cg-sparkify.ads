@@ -27,7 +27,7 @@
 
 with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
-with Sparkify.Nameset;                 use Sparkify;
+with Sparkify.Stringset;               use Sparkify;
 
 package ASIS_UL.Global_State.CG.Sparkify is
 
@@ -53,7 +53,7 @@ package ASIS_UL.Global_State.CG.Sparkify is
    function All_Global_Writes
      (El  : Asis.Element;
       Sep : Wide_String;
-      Set : Nameset.Set) return Unbounded_Wide_String;
+      Set : Stringset.Set) return Unbounded_Wide_String;
 
    function Global_Read_Writes
      (El  : Asis.Element;

@@ -35,6 +35,9 @@ package Sparkify.Pre_Operations is
 
    procedure Print_All_Use_Type (Element : Asis.Declaration);
 
+   procedure Traverse_Element_And_Print (Element : Asis.Element);
+   --  Traverse Element in Printing_Code mode (prefixing identifiers et cetera)
+
    procedure A_Pragma_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
