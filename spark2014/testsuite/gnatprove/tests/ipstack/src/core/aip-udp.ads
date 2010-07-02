@@ -6,59 +6,69 @@
 --  Callback oriented low level access to the UDP services. At this point,
 --  this is a binding to the C implementation of LWIP.
 
-with AIP.Callbacks, AIP.IP, AIP.IPaddrs, AIP.Buffers, AIP.NIF;
---# inherit AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.NIF,
+with  AIP.Config, AIP.Callbacks, AIP.IP, AIP.IPaddrs, AIP.Buffers, AIP.NIF;
+--# inherit AIP.Config, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.NIF,
 --#         AIP.IPH, AIP.UDPH;
 
 package AIP.UDP is
 
-   --  UDP connections materialize through "UDP Protocol Control Blocks"
+   --  UDP connections materialize as "UDP Protocol Control Blocks"
 
-   MAX_UDP_PCB : constant := 20;
-   --  ??? should be set in global configuration package
+   subtype PCB_Id is AIP.EID range 1 .. Config.MAX_UDP_PCB;
 
-   subtype PCB_Id is AIP.EID range 1 .. MAX_UDP_PCB;
+   PCB_NOID : constant AIP.EID := -1;
+   --  Invalid PCB_Id, for UDP_New to indicate allocation failure
 
    subtype Port_T is M16_T;
    NOPORT : constant Port_T := 0;
-
-   UDP_FLAGS_CONNECTED : constant := 16#04#;
-   --  ??? What is this?
 
    --------------------
    -- User interface --
    --------------------
 
-   procedure UDP_New (Id : out PCB_Id);
-   --  Allocate and return Id of a new UDP PCB
+   procedure UDP_New (Id : out AIP.EID);
+   --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 
    procedure UDP_Bind
      (Pcb        : PCB_Id;
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T;
       Err        : out AIP.Err_T);
-   --  Bind PCB to a Local_IP address and Local_Port. Datagrams received for
-   --  this endpoint trigger an UDP_RECV event, hence a call to the associated
-   --  callback if any. If Local_IP is IP_ADDR_ANY, the endpoint serves the
-   --  port on all active interfaces.
+   --  Bind PCB to a Local_IP address and Local_Port, after which datagrams
+   --  received for this endpoint might be delivered to PCB and trigger an
+   --  UDP_RECV event/callback. If Local_IP is IP_ADDR_ANY, the endpoint
+   --  serves the port on all the active network interfaces. Local_Port might
+   --  be NOPORT, in which case an arbitrary available one is picked.
+   --
+   --  ERR_USE if another PCB is already bound to this local endpoint and
+   --  we are configured not to accept that.
+   --
+   --  ERR_USE if Local_Port is NOPORT and no available port could be found.
 
    procedure UDP_Connect
      (Pcb         : PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
       Err         : out AIP.Err_T);
-   --  Connect PCB to the Remote_IP/Remote_Port destination endpoint for
-   --  datagrams sent later with Udp_Send. Until disconnected, packets from
-   --  this endpoint only are processed by PCB. This subprogram doesn't
-   --  generate any network trafic, since UDP actually has no notion of
-   --  connection.
+   --  Register Remote_IP/Remote_Port as the destination endpoint for
+   --  datagrams sent later with Udp_Send on this PCB. Until disconnected,
+   --  packets from this endpoint only are processed by PCB. A forced local
+   --  binding is attempted if none was established beforehand. No network
+   --  trafic gets generated.
+   --
+   --  ERR_USE if a forced binding is attempted and no port is available.
 
    procedure UDP_Send
      (Pcb : PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
-   --  Send data in BUF to the current destination endpoint of PCB, as
+   --  Send BUF data to the current destination endpoint of PCB, as
    --  established by UDP_Connect. BUF is not deallocated.
+   --
+   --  ERR_USE if PCB isn't connected
+   --  ERR_RTE if no route to remote IP could be found
+   --  ERR_MEM e.g.if the UDP header couldn't be allocated
+   --  Possibly other errors from lower layers.
 
    procedure UDP_Disconnect (Pcb : PCB_Id);
    --  Disconnect PCB from its current destination endpoint, which leaves
@@ -90,10 +100,10 @@ package AIP.UDP is
    --  to the datagram origin endpoint gets preference.
    --
    --  .Buf is the datagram packet buffer
-   --  IP/Port is the datagram origin endpoint
+   --  .IP/.Port is the datagram origin endpoint (remote source)
 
    procedure UDP_Callback
-     (Evk : UDP_Event_Kind; Pcb : PCB_Id; Cbid : Callbacks.Callback_Id);
+     (Evk : UDP_Event_Kind; Pcb : PCB_Id; Cbid : Callbacks.CBK_Id);
    --  Register that ID should be passed back to the user defined
    --  UDP_Event hook when an event of kind EVK triggers for PCB.
 
@@ -102,10 +112,10 @@ package AIP.UDP is
    --  on UDP_Event calls.
 
    function UDP_Udata (Pcb : PCB_Id) return AIP.IPTR_T;
-   --  Retrieve UDATA from PCB
+   --  Retrieve Udata previously attached to PCB, NULIPTR if none.
 
    procedure UDP_Event
-     (Ev : UDP_Event_T; Pcb : PCB_Id; Cbid : Callbacks.Callback_Id);
+     (Ev : UDP_Event_T; Pcb : PCB_Id; Cbid : Callbacks.CBK_Id);
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was
    --  registered. Expected to be provided by the applicative code.
 
@@ -118,32 +128,39 @@ package AIP.UDP is
    procedure UDP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
    --  Hook for IP.  Dispatches a UDP datagram in BUF to the user callback
    --  registered for the destination port, if any. Discards the datagram
-   --  otherwise.
+   --  (free BUF) otherwise.
 
    UDP_HLEN : constant := 8;
 
 private
 
    type UDP_PCB is record
-      IPCB : IP.IP_PCB;
-      Flags  : AIP.M8_T;
-      Remote_Port, Local_Port : Port_T;
-      Udata  : AIP.IPTR_T;
+      IPCB : IP.IP_PCB;           -- IP control block
+      Flags  : AIP.M8_T;          -- Internal PCB status flags
 
-      RECV_Cb : Callbacks.Callback_Id;
+      Local_Port : Port_T;        --  Local UDP port PCB is bound to
+      Remote_Port : Port_T;       --  Remote UDP port PCB is connected to
 
-      Link : AIP.EID;
+      Udata  : AIP.IPTR_T;        --  User/Application data pointer
+      RECV_Cb : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
+
+      Link : AIP.EID;             --  Chaining link
    end record;
 
-   PCB_NOID : constant AIP.EID := -1;
-   --  Invalid value for PCB_Id, typically used used to indicate
-   --  absence of match in PCB searches. This is also used in PCB.Link
-   --  to indicate end-of-list for a PCB chained in a list, or mere use
-   --  of the PCB otherwise (in-use though currently not in a list).
-
-   PCB_NOUSE : constant AIP.EID := -1;
+   PCB_UNUSED : constant AIP.EID := -2;
    --  Invalid value for PCB_Id, used in PCB.Link to indicate that the
    --  PCB is currently unused, IOW free for UDP_New.
+
+   --  PCB.Link may also be PCB_NOID to indicate end-of-list for a PCB
+   --  chained in a list, or mere use of the PCB anyway (in-use though
+   --  currently not in a list).
+
+   PCB_FLAGS_CONNECTED : constant := 16#04#;
+   --  PCB flag bit to indicate that the PCB is UDP_Connected.
+   --
+   --  Used to detect proper remote endpoint definition on UDP_Send, and to
+   --  prevent selection of PCB to handle an incoming datagram if it is not
+   --  connected to its remote origin (UDP_Input).
 
    --------------------------
    -- Internal subprograms --
@@ -157,6 +174,9 @@ private
 
    procedure PCB_Allocate (Id : out AIP.EID);
    --  Find one PCB free for use from the static pool and mark it in-use
+
+   procedure PCB_Clear (Pcb : PCB_Id);
+   --  Reset/Initialize PCB fields for fresh (re)use
 
    procedure PCB_Unlink (Pcb : PCB_Id);
    --  Unlink PCB from the list of bound PCBs if it is there

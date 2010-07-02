@@ -43,7 +43,7 @@ package AIP.TCP is
    end record;
 
    procedure TCP_Callback
-     (Evk : TCP_Event_Kind; Pcb : PCB_Id; Id : Callbacks.Callback_Id);
+     (Evk : TCP_Event_Kind; Pcb : PCB_Id; Id : Callbacks.CBK_Id);
 
    --------------------------------
    -- Setting up TCP connections --
@@ -77,7 +77,7 @@ package AIP.TCP is
    pragma Import (C, Tcp_Listen_BL, "tcp_listen_with_backlog");
    --  Same as Tcp_Listen for a user specified backlog size.
 
-   subtype Accept_Cb_Id is Callbacks.Callback_Id;
+   subtype Accept_Cb_Id is Callbacks.CBK_Id;
    procedure Tcp_Accept
      (Pcb : PCB_Id;
       Cb  : Accept_Cb_Id);
@@ -103,7 +103,7 @@ package AIP.TCP is
    --  To be called by the acceptation callback for proper management of the
    --  listening backlog.
 
-   subtype Connect_Cb_Id is Callbacks.Callback_Id;
+   subtype Connect_Cb_Id is Callbacks.CBK_Id;
    function Tcp_Connect
      (Pcb : PCB_Id;
       Addr : IPaddrs.IPaddr;
@@ -148,7 +148,7 @@ package AIP.TCP is
    pragma Import (C, Tcp_Sndbuf, "tcp_sndbuf_w");
    --  Room available for output data queuing.
 
-   subtype Sent_Cb_Id is Callbacks.Callback_Id;
+   subtype Sent_Cb_Id is Callbacks.CBK_Id;
    procedure Tcp_Sent
      (Pcb : PCB_Id;
       Cb  : Sent_Cb_Id);
@@ -171,7 +171,7 @@ package AIP.TCP is
 
    --  Data reception is callback based, as everything else.
 
-   subtype Recv_Cb_Id is Callbacks.Callback_Id;
+   subtype Recv_Cb_Id is Callbacks.CBK_Id;
    procedure Tcp_Recv
      (Pcb : PCB_Id;
       Cb  : Recv_Cb_Id);
@@ -209,7 +209,7 @@ package AIP.TCP is
    --  for this purpose. This can be used to timeout idle connections or as an
    --  opportunity to retry failed Tcp_Write attempts.
 
-   subtype Poll_Cb_Id is Callbacks.Callback_Id;
+   subtype Poll_Cb_Id is Callbacks.CBK_Id;
    procedure Tcp_Poll
      (Pcb : PCB_Id;
       Cb  : Poll_Cb_Id;
@@ -240,7 +240,7 @@ package AIP.TCP is
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
 
-   subtype Err_Cb_Id is Callbacks.Callback_Id;
+   subtype Err_Cb_Id is Callbacks.CBK_Id;
    procedure Tcp_Err (Pcb : PCB_Id; Cb : Err_Cb_Id);
    pragma Import (C, Tcp_Err, "tcp_err");
    --  Request CB to be called when a connection gets aborted because

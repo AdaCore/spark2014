@@ -6,9 +6,9 @@
 package body AIP.IP is
 
    procedure IP_Route
-     (Dst_IP : IPaddrs.IPaddr; Netif : out NIF.Netif_Id) is
+     (Dst_IP : IPaddrs.IPaddr; Netif : out AIP.EID) is
    begin
-      Netif := NIF.Netif_Id'First;
+      Netif := AIP.NULID;
    end IP_Route;
 
    procedure IP_Output_If

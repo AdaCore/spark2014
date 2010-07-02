@@ -13,7 +13,7 @@ package body AIP.TCP is
    end Tcp_Listen;
 
    procedure TCP_Callback
-     (Evk : TCP_Event_Kind; Pcb : PCB_Id; Id : Callbacks.Callback_Id)
+     (Evk : TCP_Event_Kind; Pcb : PCB_Id; Id : Callbacks.CBK_Id)
    is
    begin
       null;

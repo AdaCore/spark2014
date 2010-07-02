@@ -3,22 +3,18 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Config, AIP.Inet, AIP.IPH, AIP.UDPH;
+with AIP.Inet, AIP.IPH, AIP.UDPH;
 
 package body AIP.UDP is
-
-   UDP_SHARED_ENDPOINTS : constant Boolean := False;
-
-   UDP_LOCAL_PORT_FIRST : constant Port_T := 1;
-   UDP_LOCAL_PORT_LAST  : constant Port_T := 255;
 
    --------------------
    -- Datastructures --
    --------------------
 
-   --  We maintain a static array of PCBs, together with a list of those
-   --  bound to a local addr/port endpoint. This list is used to determine
-   --  which PCB gets to process an incoming datagram (UDP_Input).
+   --  PCB_IDs are indexes into a static array of PCBs, maintained together
+   --  with a list of those bound to a local addr/port endpoint. This list is
+   --  used to determine which PCB gets to process an incoming datagram (see
+   --  UDP_Input).
 
    type UDP_PCB_Array is array (PCB_Id) of UDP_PCB;
 
@@ -31,8 +27,10 @@ package body AIP.UDP is
 
    procedure Init_PCBs is
    begin
+      --  Mark all the PCBs as unused and the list of bound PCBs as empty
+
       for I in PCB_Id'First .. PCB_Id'Last loop
-         PCBs (I).Link := PCB_NOUSE;
+         PCBs (I).Link := PCB_UNUSED;
       end loop;
       Bound_PCBs := PCB_NOID;
    end Init_PCBs;
@@ -44,10 +42,12 @@ package body AIP.UDP is
    procedure PCB_Allocate (Id : out AIP.EID) is
       Cid : PCB_Id;  -- Candidate Id
    begin
+      --  Scan the PCBs array and pick the first UNUSED entry
+
       Id := PCB_NOID;
       Cid := PCB_Id'First;
       loop
-         if PCBs (Cid).Link = PCB_NOUSE then
+         if PCBs (Cid).Link = PCB_UNUSED then
             Id := Cid;
             PCBs (Id).Link := PCB_NOID;
          end if;
@@ -56,29 +56,34 @@ package body AIP.UDP is
       end loop;
    end PCB_Allocate;
 
+   ---------------
+   -- PCB_Clear --
+   ---------------
+
+   procedure PCB_Clear (Pcb : PCB_Id) is
+   begin
+      PCBs (Pcb).IPCB.Local_IP := IPaddrs.IP_ADDR_ANY;
+      PCBs (Pcb).Local_Port := NOPORT;
+
+      PCBs (Pcb).IPCB.Remote_IP := IPaddrs.IP_ADDR_ANY;
+      PCBs (Pcb).Remote_Port := NOPORT;
+
+      PCBs (Pcb).Flags := 0;
+      PCBs (Pcb).Udata := AIP.NULIPTR;
+      PCBs (Pcb).RECV_Cb := Callbacks.NOCB;
+      PCBs (Pcb).Link := PCB_NOID;
+   end PCB_Clear;
+
    -------------
    -- UDP_New --
    -------------
 
-   procedure UDP_New (Id : out PCB_Id) is
+   procedure UDP_New (Id : out AIP.EID) is
    begin
       PCB_Allocate (Id);
+      PCB_Clear (Id);
       PCBs (Id).IPCB.TTL := Config.UDP_TTL;
    end UDP_New;
-
-   ---------------
-   -- UDP_Udata --
-   ---------------
-
-   procedure UDP_Set_Udata (Pcb : PCB_Id; Udata : AIP.IPTR_T) is
-   begin
-      PCBs (Pcb).Udata := Udata;
-   end UDP_Set_Udata;
-
-   function UDP_Udata (Pcb : PCB_Id) return AIP.IPTR_T is
-   begin
-      return PCBs (Pcb).Udata;
-   end UDP_Udata;
 
    -------------------------
    -- UDP_Input internals --
@@ -93,11 +98,21 @@ package body AIP.UDP is
       IPhlen : constant U16_T := U16_T (IPH.IPH_HLEN (Ihdr)) * 4;
    begin
       Err := AIP.NOERR;
+
+      --  ERR_MEM if the buffer length is such that this couldn't
+      --  possibly be a UDP dgram, when there's not even room for the
+      --  UDP & IP headers. Otherwise, move payload to the UDP header
+      --  by hiding the IP one.
+
       if Buffers.Buffer_Tlen (Buf) < IPhlen + UDP_HLEN then
          Err := AIP.ERR_MEM;
       else
          Buffers.Buffer_Header (Buf, -S16_T (IPhlen), Err);
       end if;
+
+      --  If the length check and the payload move went fine, we have
+      --  the UDP header at hand.
+
       if Err = AIP.NOERR then
          Uhdr := Buffers.Buffer_Payload (Buf);
       end if;
@@ -118,6 +133,11 @@ package body AIP.UDP is
       Dst_Port : constant Port_T := UDPH.UDPH_DST (Uhdr);
 
    begin
+
+      --  Scan the list of bound PCBs in search of one at least locally bound
+      --  to the datagram destination endpoint, and even better also connected
+      --  to the remote source.
+
       Cid := Bound_PCBs;
 
       loop
@@ -146,7 +166,7 @@ package body AIP.UDP is
             if Remote_Match then
                Ideal_Pcb := Cid;
             elsif Good_Pcb = PCB_NOID
-              and then (PCBs (Cid).Flags and UDP_FLAGS_CONNECTED) /= 0
+              and then (PCBs (Cid).Flags and PCB_FLAGS_CONNECTED) /= 0
             then
                Good_Pcb := Cid;
             end if;
@@ -175,13 +195,9 @@ package body AIP.UDP is
       Ihdr : constant AIP.IPTR_T := Buffers.Buffer_Payload (Buf);
       Uhdr : AIP.IPTR_T;
 
-      Err : AIP.Err_T;
+      Err : AIP.Err_T := AIP.NOERR;  --  Until we know otherwise
       Pcb : AIP.EID;
    begin
-
-      --  Until we know otherwise ...
-
-      Err := AIP.NOERR;
 
       --  Perform a couple of checks and retrieve an UDP view
       --  of the incoming datagram.
@@ -236,6 +252,14 @@ package body AIP.UDP is
    -- UDP_Bind Internals --
    ------------------------
 
+   UDP_SHARED_ENDPOINTS : constant Boolean := False;
+   --  Whether we should accept binding to an already used local endpoint
+
+   UDP_LOCAL_PORT_FIRST : constant Port_T := 1;
+   UDP_LOCAL_PORT_LAST  : constant Port_T := 255;
+   --  Range of local port numbers examined when an arbitrary choice needs
+   --  to be made (Available_Port)
+
    function PCB_Binding_Matches
      (Pcb  : UDP_PCB;
       IP   : AIP.IPaddrs.IPaddr;
@@ -249,26 +273,27 @@ package body AIP.UDP is
       Pid : AIP.EID;
    begin
       Pid := Bound_PCBs;
-      while Pid /= PCB_NOID loop
-         if PCBs (Pid).Local_Port = Port then
-            return Pid;
-         end if;
+      loop
+         exit when Pid = PCB_NOID or else PCBs (Pid).Local_Port = Port;
          Pid := PCBs (Pid).Link;
       end loop;
-      return PCB_NOID;
+      return Pid;
    end PCB_Bound_To;
 
    function Available_Port return Port_T is
-      Port : Port_T := UDP_LOCAL_PORT_FIRST;
+      Aport : Port_T := NOPORT;  --  Port found to be available
+      Cport : Port_T;            --  Candidate port to examine
    begin
-      while Port <= UDP_LOCAL_PORT_LAST loop
-         if PCB_Bound_To (Port) = PCB_NOID then
-            return Port;
+      Cport := UDP_LOCAL_PORT_FIRST;
+      loop
+         exit when Aport /= NOPORT or else Cport > UDP_LOCAL_PORT_LAST;
+         if PCB_Bound_To (Cport) = PCB_NOID then
+            Aport := Cport;
          else
-            Port := Port + 1;
+            Cport := Cport + 1;
          end if;
       end loop;
-      return NOPORT;
+      return Aport;
    end Available_Port;
 
    ----------------
@@ -382,19 +407,20 @@ package body AIP.UDP is
       Remote_Port : Port_T;
       Err : out AIP.Err_T) is
    begin
-      --  Make sure we have a local binding in place
+      --  Make sure we have a local binding in place, so that the (dummy)
+      --  connection has two well identified endpoints.
 
       PCB_Force_Bind (Pcb, Err);
 
       --  If all went fine, assign the remote endpoint components and flag
       --  the PCB as connected. Either Pcb had a local_port set on entry,
-      --  meaning bound already, or we nound it ourselves.  In both cases,
+      --  meaning bound already, or we bound it ourselves.  In both cases,
       --  it should already be present in the list of active PCBs.
 
       if Err = AIP.NOERR then
          PCBs (Pcb).IPCB.Remote_IP := Remote_IP;
          PCBs (Pcb).Remote_Port := Remote_Port;
-         PCBs (Pcb).Flags := PCBs (Pcb).Flags or UDP_FLAGS_CONNECTED;
+         PCBs (Pcb).Flags := PCBs (Pcb).Flags or PCB_FLAGS_CONNECTED;
       end if;
    end UDP_Connect;
 
@@ -499,11 +525,22 @@ package body AIP.UDP is
 
       Netif : AIP.EID;
    begin
-      AIP.IP.IP_Route (Dst_IP, Netif);
-      if Netif = AIP.NIF.IF_NOID then
-         Err := ERR_RTE;
+
+      --  ERR_USE on if not Connected, since we have no identified destination
+      --  endpoint. Otherwise, route to find the proper network interface for
+      --  Dst_IP and send. ERR_RTE if no route could be found.
+
+      if (PCBs (Pcb).Flags and PCB_FLAGS_CONNECTED) = 0 then
+         Err := ERR_USE;
       else
-         UDP_Send_To_If (Pcb, Buf, Dst_IP, Dst_Port, Netif, Err);
+         pragma Assert (not (IPaddrs.Any (Dst_IP) or else Dst_Port = NOPORT));
+
+         AIP.IP.IP_Route (Dst_IP, Netif);
+         if Netif = AIP.NIF.IF_NOID then
+            Err := ERR_RTE;
+         else
+            UDP_Send_To_If (Pcb, Buf, Dst_IP, Dst_Port, Netif, Err);
+         end if;
       end if;
    end UDP_Send;
 
@@ -517,7 +554,7 @@ package body AIP.UDP is
 
       PCBs (Pcb).IPCB.Remote_IP := IPaddrs.IP_ADDR_ANY;
       PCBs (Pcb).Remote_Port := 0;
-      PCBs (Pcb).Flags := PCBs (Pcb).Flags and not UDP_FLAGS_CONNECTED;
+      PCBs (Pcb).Flags := PCBs (Pcb).Flags and not PCB_FLAGS_CONNECTED;
    end UDP_Disconnect;
 
    -------------------
@@ -527,7 +564,7 @@ package body AIP.UDP is
    procedure UDP_Release (Pcb : PCB_Id) is
    begin
       PCB_Unlink (Pcb);
-      PCBs (Pcb).Link := PCB_NOUSE;
+      PCBs (Pcb).Link := PCB_UNUSED;
    end UDP_Release;
 
    --------------------
@@ -537,13 +574,27 @@ package body AIP.UDP is
    procedure UDP_Callback
      (Evk  : UDP_Event_Kind;
       Pcb  : PCB_Id;
-      Cbid : Callbacks.Callback_Id)
+      Cbid : Callbacks.CBK_Id)
    is
    begin
       case Evk is
          when UDP_RECV => PCBs (Pcb).RECV_Cb := Cbid;
       end case;
    end UDP_Callback;
+
+   ---------------
+   -- UDP_Udata --
+   ---------------
+
+   procedure UDP_Set_Udata (Pcb : PCB_Id; Udata : AIP.IPTR_T) is
+   begin
+      PCBs (Pcb).Udata := Udata;
+   end UDP_Set_Udata;
+
+   function UDP_Udata (Pcb : PCB_Id) return AIP.IPTR_T is
+   begin
+      return PCBs (Pcb).Udata;
+   end UDP_Udata;
 
 begin
    Init_PCBs;
