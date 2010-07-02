@@ -3,12 +3,16 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  AIP configuration parameters
+package body AIP is
 
---# inherit AIP;
+   function No (Err : Err_T) return Boolean is
+   begin
+      return Err = AIP.NOERR;
+   end No;
 
-package AIP.Config is
-   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
+   function Some (Err : Err_T) return Boolean is
+   begin
+      return not No (Err);
+   end Some;
 
-   UDP_TTL : constant := 255;
-end AIP.Config;
+end AIP;

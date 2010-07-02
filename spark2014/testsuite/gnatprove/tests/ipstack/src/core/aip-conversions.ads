@@ -15,4 +15,7 @@ package AIP.Conversions is
    function To_IPTR is
       new Ada.Unchecked_Conversion (System.Address, AIP.IPTR_T);
 
+   function To_ADDR is
+      new Ada.Unchecked_Conversion (AIP.IPTR_T, System.Address);
+
 end AIP.Conversions;

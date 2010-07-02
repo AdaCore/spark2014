@@ -11,7 +11,7 @@ with AIP.Pools;
 package AIP.Pbufs is
 
    subtype Pbuf_Id is AIP.IPTR_T;
-   NOPBUF : constant Pbuf_Id := AIP.NULID;
+   NOPBUF : constant Pbuf_Id := AIP.NULIPTR;
 
    --  Network packet data is held in buffers, chained as required when
    --  several buffers are needed for a single packet. Such chaining
