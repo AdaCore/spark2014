@@ -1,0 +1,16 @@
+
+This directory describes how array types would represented in
+Why. These are defined as abstract types that can be converted to
+logic (infinite) arrays along with range constraint. The definition
+of these conversions are roughly similar to the way discrete types
+are defined using math ints (see ch3.5__scalar_types/README).
+
+arr.ads, arr.why and arr_test.why focus on constrained array. This
+example uses a subtype indication to specify the range of the array,
+but the case of a "raw" range is not very different as the expander
+would generate a subtype for it anyway. arr_test.why illustrates how
+the representation could be used in an implementation of the basic
+"search" example, whose implementation is a translation of the SPARK
+version in the testsuite (<hi-lite root>/tests/search).
+
+

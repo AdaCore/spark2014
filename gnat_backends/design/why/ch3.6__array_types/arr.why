@@ -1,0 +1,118 @@
+include "arrays.why"
+include "standard.why"
+
+(*************)
+(* Arr.Index *)
+(*************)
+
+(* How such a scalar type is encoded in detailed in chapter 3.5.4. Here
+   we just gives the necessary axioms for Arr.Index in order to use this
+   abstract in the definition of the array type (Arr.Table) afterwards. *)
+
+type arr__index
+
+logic integer_of___arr__index : arr__index -> int
+
+predicate eq___arr__index
+(x : arr__index,
+ y : arr__index) =
+ integer_of___arr__index (x) = integer_of___arr__index (y)
+
+predicate arr__index___in_range (x : int) =
+ let first = 1 in
+ let last = 10 in
+  first <= x <= last
+
+logic arr__index___of_integer : int -> arr__index
+
+axiom arr__index___coerce :
+ (forall x : int.
+  arr__index___in_range (x) ->
+   integer_of___arr__index (arr__index___of_integer (x)) = x)
+
+axiom arr__index___range :
+ (forall x : arr__index.
+  arr__index___in_range (integer_of___arr__index (x)))
+
+axiom arr__index___unicity :
+ (forall x, y : arr__index. eq___arr__index (x, y) <-> x = y)
+
+parameter arr__index___of_integer_ :
+ x : int ->
+  { arr__index___in_range (x) }
+   arr__index
+  { integer_of___arr__index (result) = x }
+
+
+(*************)
+(* Arr.Table *)
+(*************)
+
+type arr__table
+
+logic array_of___arr__table : arr__table -> standard__integer farray
+
+logic arr__table___of_array : standard__integer farray -> arr__table
+
+predicate arr__table___in_range (x : standard__integer farray) =
+ array_length (x) = 10
+
+axiom arr__table___coerce :
+ forall x : standard__integer farray.
+  arr__table___in_range (x) ->
+   array_of___arr__table (arr__table___of_array (x)) = x
+
+axiom arr__table___range :
+ forall x : arr__table.
+  arr__table___in_range (array_of___arr__table (x))
+
+logic arr__table___first : arr__table -> arr__index
+
+logic arr__table___last : arr__table -> arr__index
+
+predicate arr__table___index_check (a : arr__table, i : arr__index) =
+ integer_of___arr__index (arr__table___first (a))
+  <= integer_of___arr__index (i) <=
+ integer_of___arr__index (arr__table___last (a))
+
+axiom arr__table___first_value :
+ forall x : arr__table.
+  arr__table___first (x) = arr__index___of_integer (1)
+
+axiom arr__table___last_value :
+ forall x : arr__table.
+  arr__table___last (x) = arr__index___of_integer (10)
+
+(* This last axiom is not needed, but will be useful in the case of
+   unconstrained array types.  *)
+axiom arr__table___bounds :
+ forall x : arr__table.
+  (integer_of___arr__index (arr__table___last (x))
+   - integer_of___arr__index (arr__table___first (x)) + 1
+   = array_length (array_of___arr__table (x)))
+
+parameter arr__table___get_ :
+ a : arr__table -> i : arr__index ->
+  { arr__table___index_check (a, i) }
+   standard__integer
+  { result = access (array_of___arr__table (a), integer_of___arr__index (i)) }
+
+parameter arr__table___set_ : 
+ a : arr__table ref -> i : arr__index -> v : standard__integer -> 
+  { arr__table___index_check (a, i) }
+   unit writes a
+  { array_of___arr__table (a) = update (array_of___arr__table (a@),
+                                        integer_of___arr__index (i),
+                                        v) }
+
+parameter arr__table___first_ :
+ a : arr__table ->
+  { }
+   arr__index
+  { result = arr__table___first (a) }
+
+parameter arr__table___last_ :
+ a : arr__table ->
+  { }
+   arr__index
+  { result = arr__table___last (a) }
