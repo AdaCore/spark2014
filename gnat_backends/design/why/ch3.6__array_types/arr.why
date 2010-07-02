@@ -83,14 +83,6 @@ axiom arr__table___last_value :
  forall x : arr__table.
   arr__table___last (x) = arr__index___of_integer (10)
 
-(* This last axiom is not needed, but will be useful in the case of
-   unconstrained array types.  *)
-axiom arr__table___bounds :
- forall x : arr__table.
-  (integer_of___arr__index (arr__table___last (x))
-   - integer_of___arr__index (arr__table___first (x)) + 1
-   = array_length (array_of___arr__table (x)))
-
 parameter arr__table___get_ :
  a : arr__table -> i : arr__index ->
   { arr__table___index_check (a, i) }

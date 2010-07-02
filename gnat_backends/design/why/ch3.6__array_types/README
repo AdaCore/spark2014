@@ -13,4 +13,10 @@ the representation could be used in an implementation of the basic
 "search" example, whose implementation is a translation of the SPARK
 version in the testsuite (<hi-lite root>/tests/search).
 
+unc.ads, unc.why and unc_test.why show how things are done for
+unconstrained arrays. The representation is quite similar to the
+similar case, except for range axioms; they become:
+* Vector'First - Vector'Last + 1 = Vector'Length (___bounds);
+* Vector'First <= Vector'Last for non-empty arrays (___non_empty);
+* Vector'First .. Vector'Last can hold in the index subtype (___in_range).
 
