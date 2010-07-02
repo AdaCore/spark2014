@@ -3,6 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+--  Definition of external (application-level) callbacks
+
 --# inherit AIP;
 
 package AIP.Callbacks is
