@@ -3,9 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Initialization
-
-package body AIP.Init is
+package body AIP.OSAL is
 
    procedure LWIP_init;
    pragma Import (C, LWIP_init, "C_init");
@@ -19,4 +17,4 @@ package body AIP.Init is
       LWIP_Init;
    end Initialize;
 
-end AIP.Init;
+end AIP.OSAL;
