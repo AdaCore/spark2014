@@ -10,9 +10,9 @@ let check_index
  { }
   (integer_of___standard__integer (arr__table___get_ table index)
    = integer_of___standard__integer (value))
- { result = true <-> (eq___standard__integer
-                      (access (array_of___arr__table (table),
-                               integer_of___arr__index (index)), value)) }
+ { result = true <-> eq___standard__integer (value,
+                                             arr__table___get (table,
+                                                               index)) }
 
 exception Return
 

@@ -15,9 +15,21 @@ logic unc__vector___first : unc__vector -> standard__integer
 
 logic unc__vector___last : unc__vector -> standard__integer
 
+predicate unc__vector___range_eq
+(x : unc__vector,
+ y : unc__vector) =
+ (integer_of___standard__integer (unc__vector___first (x))
+  = integer_of___standard__integer (unc__vector___first (y)))
+ and (integer_of___standard__integer (unc__vector___last (x))
+      = integer_of___standard__integer (unc__vector___last (y)))
+
+predicate eq___unc__vector___strict (x : unc__vector, y : unc__vector) =
+ array_of___unc__vector (x) = array_of___unc__vector (y)
+ and unc__vector___range_eq (x, y)
+
 predicate unc__vector___non_empty (x : unc__vector) =
-  integer_of___standard__integer (unc__vector___first (x))
-   <= integer_of___standard__integer (unc__vector___last (x))
+ integer_of___standard__integer (unc__vector___first (x))
+  <= integer_of___standard__integer (unc__vector___last (x))
 
 axiom unc__vector___coerce :
  forall x : standard__integer farray.
@@ -39,20 +51,41 @@ axiom unc__vector___bounds :
    - integer_of___standard__integer (unc__vector___first (x)) + 1
    = array_length (array_of___unc__vector (x)))
 
+logic unc__vector___get :
+ unc__vector, standard__integer -> standard__integer
+
+logic unc__vector___set :
+ unc__vector, standard__integer, standard__integer -> unc__vector
+
+axiom unc__vector___get_definition :
+ forall x : unc__vector.
+  forall y : standard__integer.
+   unc__vector___get (x, y) = access (array_of___unc__vector (x),
+                                     integer_of___standard__integer (y))
+
+axiom unc__vector___set_definition :
+ forall x : unc__vector.
+  forall y : standard__integer.
+   forall z : standard__integer.
+    let result = unc__vector___set (x, y, z) in
+     array_of___unc__vector (result) =
+      update (array_of___unc__vector (x),
+              integer_of___standard__integer (y),
+              z)
+     and unc__vector___range_eq (x, result)
+
 parameter unc__vector___get_ :
  a : unc__vector -> i : standard__integer ->
   { unc__vector___index_check (a, i) }
    standard__integer
-  { result = access (array_of___unc__vector (a),
-                     integer_of___standard__integer (i)) }
+  { eq___standard__integer (result,
+                            unc__vector___get (a, i)) }
 
 parameter unc__vector___set_ : 
  a : unc__vector ref -> i : standard__integer -> v : standard__integer -> 
   { unc__vector___index_check (a, i) }
    unit writes a
-  { array_of___unc__vector (a) = update (array_of___unc__vector (a@),
-                                        integer_of___standard__integer (i),
-                                        v) }
+  { eq___unc__vector___strict (a, unc__vector___set (a@, i, v)) }
 
 parameter unc__vector___first_ :
  a : unc__vector ->

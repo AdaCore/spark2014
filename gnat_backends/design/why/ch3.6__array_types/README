@@ -5,6 +5,12 @@ logic (infinite) arrays along with range constraint. The definition
 of these conversions are roughly similar to the way discrete types
 are defined using math ints (see ch3.5__scalar_types/README).
 
+An important thing to note is that converting from an Ada array to
+an logic array, and then back to an Ada array, may not give an
+identical result; All logic arrays have their bounds between 0 and
+length - 1, so the unicity axiom does not hold. We have two different
+equalities, one that checks range equality and one that doesn't.
+
 arr.ads, arr.why and arr_test.why focus on constrained array. This
 example uses a subtype indication to specify the range of the array,
 but the case of a "raw" range is not very different as the expander

@@ -34,9 +34,6 @@ axiom arr__index___range :
  (forall x : arr__index.
   arr__index___in_range (integer_of___arr__index (x)))
 
-axiom arr__index___unicity :
- (forall x, y : arr__index. eq___arr__index (x, y) <-> x = y)
-
 parameter arr__index___of_integer_ :
  x : int ->
   { arr__index___in_range (x) }
@@ -57,6 +54,9 @@ logic arr__table___of_array : standard__integer farray -> arr__table
 predicate arr__table___in_range (x : standard__integer farray) =
  array_length (x) = 10
 
+predicate eq___arr__table (x : arr__table, y : arr__table) =
+ array_of___arr__table (x) = array_of___arr__table (y)
+
 axiom arr__table___coerce :
  forall x : standard__integer farray.
   arr__table___in_range (x) ->
@@ -69,6 +69,16 @@ axiom arr__table___range :
 logic arr__table___first : arr__table -> arr__index
 
 logic arr__table___last : arr__table -> arr__index
+
+predicate arr__table___range_eq (x : arr__table, y : arr__table) =
+ (integer_of___arr__index (arr__table___first (x))
+  = integer_of___arr__index (arr__table___first (y)))
+ and (integer_of___arr__index (arr__table___last (x))
+      = integer_of___arr__index (arr__table___last (y)))
+
+predicate eq___arr__table___strict (x : arr__table, y : arr__table) =
+ array_of___arr__table (x) = array_of___arr__table (y)
+ and arr__table___range_eq (x, y)
 
 predicate arr__table___index_check (a : arr__table, i : arr__index) =
  integer_of___arr__index (arr__table___first (a))
@@ -83,19 +93,40 @@ axiom arr__table___last_value :
  forall x : arr__table.
   arr__table___last (x) = arr__index___of_integer (10)
 
+logic arr__table___get :
+ arr__table, arr__index -> standard__integer
+
+logic arr__table___set :
+ arr__table, arr__index, standard__integer -> arr__table
+
+axiom arr__table___get_definition :
+ forall x : arr__table.
+  forall y : arr__index.
+   arr__table___get (x, y) = access (array_of___arr__table (x),
+                                     integer_of___arr__index (y))
+
+axiom arr__table___set_definition :
+ forall x : arr__table.
+  forall y : arr__index.
+   forall z : standard__integer.
+    let result = arr__table___set (x, y, z) in
+     array_of___arr__table (result) = update (array_of___arr__table (x),
+                                              integer_of___arr__index (y),
+                                              z)
+     and arr__table___range_eq (x, result)
+
 parameter arr__table___get_ :
  a : arr__table -> i : arr__index ->
   { arr__table___index_check (a, i) }
    standard__integer
-  { result = access (array_of___arr__table (a), integer_of___arr__index (i)) }
+  { eq___standard__integer (result,
+                            arr__table___get (a, i)) }
 
 parameter arr__table___set_ : 
  a : arr__table ref -> i : arr__index -> v : standard__integer -> 
   { arr__table___index_check (a, i) }
    unit writes a
-  { array_of___arr__table (a) = update (array_of___arr__table (a@),
-                                        integer_of___arr__index (i),
-                                        v) }
+  { eq___arr__table___strict (a, arr__table___set (a@, i, v)) }
 
 parameter arr__table___first_ :
  a : arr__table ->
