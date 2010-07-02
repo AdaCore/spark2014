@@ -12,14 +12,15 @@ package body AIP.IP is
    end IP_Route;
 
    procedure IP_Output_If
-     (Buf : Buffers.Buffer_Id;
+     (Buf    : Buffers.Buffer_Id;
       Src_IP : IPaddrs.IPaddr;
       Dst_IP : IPaddrs.IPaddr;
-      TTL : AIP.U8_T;
-      TOS : AIP.U8_T;
-      Proto : AIP.U8_T;
-      Netif : NIF.Netif_Id;
-      Err : out AIP.Err_T) is
+      TTL    : AIP.U8_T;
+      TOS    : AIP.U8_T;
+      Proto  : AIP.U8_T;
+      Netif  : NIF.Netif_Id;
+      Err    : out AIP.Err_T)
+   is
    begin
       Err := AIP.ERR_USE;
    end IP_Output_If;

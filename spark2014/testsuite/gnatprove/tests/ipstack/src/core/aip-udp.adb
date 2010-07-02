@@ -133,7 +133,7 @@ package body AIP.UDP is
             IPaddrs.Bcast (Dst_IP, NIF.NIF_IP (Netif), NIF.NIF_MASK (Netif)));
 
          --  If it does, see if the PCB remote addr+port pair matches the
-         --  UDP source, in which case we have an ideal taker.  Otherwise,
+         --  UDP source, in which case we have an ideal taker. Otherwise,
          --  remember that PCB as a fallback possible destination if it is
          --  unconnected.
 
