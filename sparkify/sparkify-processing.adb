@@ -203,16 +203,40 @@ package body Sparkify.Processing is
          Traverse_Source (Context_Clause (J), Source_Control, Source_State);
       end loop;
 
-      if Is_Decl_With_Body then
+      if Source_State.Phase = Printing_Spec then
          --  Currently processing a package declaration. Get the packages
          --  with'ed in its declaration and its body to generate
          --  a corresponding SPARK inherit clause.
          declare
-            Body_Context_Clause : constant Asis.Context_Clause_List :=
-                                    Context_Clause_Elements (Match_Unit, True);
-            Both_Context_Clause : constant Asis.Context_Clause_List :=
-                                    Context_Clause & Body_Context_Clause;
-            Packages            : Nameset.Set := Nameset.Empty_Set;
+            Packages : Nameset.Set := Nameset.Empty_Set;
+
+            procedure Print_Inherited_Packages
+              (Clauses : Asis.Context_Clause_List);
+
+            procedure Print_Inherited_Packages
+              (Clauses : Asis.Context_Clause_List) is
+            begin
+               for J in Clauses'Range loop
+                  declare
+                     Clause : constant Asis.Element := Clauses (J);
+                  begin
+                     if Clause_Kind (Clause) = A_With_Clause then
+                        declare
+                           Names : constant Asis.Name_List :=
+                                     Clause_Names (Clause);
+                        begin
+                           for Name_Idx in Names'Range loop
+                              Nameset.Include
+                                (Packages,
+                                 Normalized_Name
+                                   (Element_Image (Names (Name_Idx))));
+                           end loop;
+                        end;
+                     end if;
+                  end;
+               end loop;
+            end Print_Inherited_Packages;
+
          begin
             if Current_Pass = Printing_Internal then
                --  The internal package has a with-clause on the external one
@@ -222,25 +246,16 @@ package body Sparkify.Processing is
                Sparkify.Pre_Operations.Print_All_Use_Type (Unit_Decl);
             end if;
 
-            for J in Both_Context_Clause'Range loop
+            if Is_Decl_With_Body then
                declare
-                  Clause : constant Asis.Element := Both_Context_Clause (J);
+                  Body_Clauses : constant Asis.Context_Clause_List :=
+                                   Context_Clause_Elements (Match_Unit, True);
                begin
-                  if Clause_Kind (Clause) = A_With_Clause then
-                     declare
-                        Names : constant Asis.Name_List :=
-                          Clause_Names (Clause);
-                     begin
-                        for Name_Idx in Names'Range loop
-                           Nameset.Include
-                             (Packages,
-                              Normalized_Name
-                                (Element_Image (Names (Name_Idx))));
-                        end loop;
-                     end;
-                  end if;
+                  Print_Inherited_Packages (Context_Clause & Body_Clauses);
                end;
-            end loop;
+            else
+               Print_Inherited_Packages (Context_Clause);
+            end if;
 
             --  Always inherit the parent package in a child package
             declare
@@ -283,7 +298,8 @@ package body Sparkify.Processing is
       In_Context_Clause := False;
       In_Unit           := True;
 
-      if Is_Decl_With_Body and then Current_Pass = Printing_External then
+      if Current_Pass = Printing_External
+        and then Source_State.Phase = Printing_Spec then
          declare
             package Element_Container is new
               Vectors (Positive, Asis.Element, Is_Equal);
@@ -445,7 +461,9 @@ package body Sparkify.Processing is
 
             PP_Word_Alone_On_Line ("is");
             Print_Decl (Unit_Decl);
-            Print_Decl (Unit_Body);
+            if Is_Decl_With_Body then
+               Print_Decl (Unit_Body);
+            end if;
             PP_Word_Alone_On_Line ("end " & Unit_Name & ";");
          end;
       else
