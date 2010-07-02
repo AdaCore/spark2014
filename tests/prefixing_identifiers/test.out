@@ -50,8 +50,8 @@ with
 --@ line 1
      Integer_Types;use type Integer_Types.Array_Range; 
 --# inherit integer_types;
-package S is
-
+package S
+is
    type IntArray is array (Integer_Types.Array_Range) of Integer;
 
    procedure Linear_Search
@@ -71,7 +71,6 @@ package S is
                          ) return Boolean;
    --# pre              Table'First <= Index and then Index <= Table'Last;
    --# return Result =>  Result             = (Table(Index) = Value);
-
 end S;
 package body Internal_S
 --@ line 1

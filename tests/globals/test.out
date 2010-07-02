@@ -2,8 +2,8 @@
 package Globals
 --@ line 1
 --# own G;
-
 is
+
 
    G : Integer;
 
@@ -32,7 +32,6 @@ is
 --@ line 18
    --# global in out G;
    --# pre              G < Integer'Last;
-
 end Globals;
 with Globals;
 --@ line 1

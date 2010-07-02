@@ -12,12 +12,16 @@ package Internal_S
    --# post              N = N~    + 2;
 
 end Internal_S;
-package S is
-
+package S
+is
    procedure Plus_Two  (N : in out Integer);
    --# pre              N > 0 and N < Integer'Last - 1;
    --# post              N = N~    + 2;
+--@ line 3
+   procedure Inc_Positive (N : in out Integer);
 
+   --# pre                 N > 0 and N < Integer'Last;
+   --# post                 N = N~    + 1;
 end S;
 package body Internal_S
 --@ line 1
@@ -37,8 +41,12 @@ package body Internal_S
 
    procedure Plus_Two  (N : in out Integer) is
    begin
-      Inc_Positive (N);
-      Inc_Positive (N);
+      S.Inc_Positive
+--@ line 13
+                   (N);
+      S.Inc_Positive
+--@ line 14
+                   (N);
    end Plus_Two;
 
 end Internal_S;

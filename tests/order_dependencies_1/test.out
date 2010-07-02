@@ -19,9 +19,7 @@ end Internal_P;
 package P
 --@ line 1
 --# own X;
---@ line 1
-          is
-
+is
    X : Boolean;
 
    procedure Q;
@@ -29,7 +27,6 @@ package P
    --# global    out X;
 
    function F return Boolean;
-
 end P;
 package body Internal_P
 --@ line 1

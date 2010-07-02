@@ -31,8 +31,8 @@ package Internal_tq
                                ;
 
 end Internal_tq;
-package tq is
-
+package tq
+is
    type Complex is record
       mReal : Float;
       mImaginary : Float;
@@ -44,7 +44,6 @@ end record;
    --# 	                Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0;
 
    function eval return Complex;
-
 end tq;
 
 package body Internal_tq

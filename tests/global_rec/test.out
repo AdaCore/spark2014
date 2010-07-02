@@ -1,0 +1,95 @@
+------------------------------------------------------------------------
+package Globals
+--@ line 1
+--# own G;
+
+is
+--@ line 3
+   function Get return Integer;
+--@ line 3
+   --# global in     G;
+
+   function Get_It return Integer;
+--@ line 5
+   --# global in     G;
+
+   procedure Set (X : Integer; Y : out Integer);
+--@ line 7
+   --# global in out G;
+
+   procedure Set_It (X : Integer; Y : out Integer);
+--@ line 9
+   --# global in out G;
+--@ line 3
+   G : Integer;
+end Globals;
+with Globals;
+--@ line 1
+--# inherit globals;
+--@ line 1
+package Internal_Globals
+--@ line 1
+                is
+
+   function Get return Integer;
+--@ line 3
+   --# global in     Globals.G;
+
+   function Get_It return Integer;
+--@ line 5
+   --# global in     Globals.G;
+
+   procedure Set (X : Integer; Y : out Integer);
+--@ line 7
+   --# global in out Globals.G;
+
+   procedure Set_It (X : Integer; Y : out Integer);
+--@ line 9
+   --# global in out Globals.G;
+
+end Internal_Globals;
+package body Internal_Globals
+--@ line 1
+                     is
+
+
+
+   function Get return Integer is begin return Globals.G
+--@ line 5
+                                                ;
+--@ line 5
+   end Get;
+
+   function Get_It return Integer is begin return Globals.Get
+--@ line 7
+                                                     ;
+--@ line 7
+   end Get_It;
+
+   procedure Set (X : Integer; Y : out Integer) is begin Y := Globals.G
+--@ line 9
+                                                               ; Globals.G
+--@ line 9
+                                                                   := X;
+--@ line 9
+   end Set;
+
+   procedure Set_It (X : Integer; Y : out Integer) is begin Globals.Set
+--@ line 11
+                                                                (X, Y);
+--@ line 11
+   end Set_It;
+
+end Internal_Globals;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          4      2      2              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           4      0      4              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  8      2      6              0      0      0       0
+% Totals:                      25%    75%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================

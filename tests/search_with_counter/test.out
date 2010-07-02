@@ -40,9 +40,7 @@ package Search
 --@ line 1
 --# own Counter;
 --# initializes Counter;
---@ line 2
 is
-
   type IntArray is array (Integer range <>) of Integer;
 
   Counter : Natural := 0;
@@ -65,7 +63,6 @@ is
      Index : Integer) return Boolean;
   --# pre              Table'First <= Index and then Index <= Table'Last;
   --# return Result =>  Result             = (Table(Index) = Value);
-
 end Search;
 package body Internal_Search
 --@ line 1

@@ -31,8 +31,8 @@ package Internal_S
    --# return Result =>  Result             = (Table(Index) = Value);
 
 end Internal_S;
-package S is
-
+package S
+is
    type Array_Range is range 1 .. 10;
 
    type IntArray is array (Array_Range) of Integer;
@@ -50,7 +50,6 @@ package S is
       Index : Array_Range) return Boolean;
    --# pre              Table'First <= Index and then Index <= Table'Last;
    --# return Result =>  Result             = (Table(Index) = Value);
-
 end S;
 package body Internal_S
 --@ line 1

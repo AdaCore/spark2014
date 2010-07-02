@@ -2,8 +2,8 @@
 -----------------------------------------------------------------------------
 --  Examples for fix the anonymous type in object declarations or definitions
 --# inherit ada;
-package Anon_Type is
-
+package Anon_Type
+is
    subtype New_Name_1 is 
 --@ line 6
       Integer range 0 .. 10;

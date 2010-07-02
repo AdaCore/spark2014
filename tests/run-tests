@@ -50,8 +50,20 @@ my_echo ()
 log=`pwd`/log
 rm -f $log
 
+valid=false
+
 if [ $# -ne 0 ]; then
-  tests="$@"
+  if [ "$1" = "-valid" ]; then
+    valid=true
+  fi
+  if [ $# -eq 1 ]; then
+    tests=`ls * | grep ':' | sed 's/://g'`
+  elif [ $# -eq 2 ]; then
+    tests="$2"
+  else
+    echo "usage: You can only call $0 with one test or none"
+    exit 1
+  fi
 else
   tests=`ls * | grep ':' | sed 's/://g'`
 fi
@@ -75,6 +87,9 @@ for d in $tests; do
         my_printf "XFAIL: "
         my_echo `grep XFAIL test.opt | cut -d' ' -f3-`
       else
+        if [ "$valid" = "true" ]; then
+          cp test.out.tmp test.out
+        fi
         my_echo "FAILED, diff in output:"
         my_echo "$out"
       fi

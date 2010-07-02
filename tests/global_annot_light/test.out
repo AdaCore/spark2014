@@ -1,0 +1,117 @@
+------------------------------------------------------------------------
+package Globals
+--@ line 1
+--# own B1, B2, B3, D1, D2, D3, R1, RW1, W1;
+--# initializes B2, B3, D2, D3, R1, RW1;
+is
+   D2 : Integer := 41;
+   D1 : Integer;
+   D3 : Integer := 0;
+
+
+   W1      : Integer;
+   R1, RW1 : Integer := 0;
+
+
+   procedure Proc (Cond : Boolean);
+--@ line 13
+   --# global in     R1;
+   --#           out B1, W1;
+   --#        in out RW1;
+--@ line 4
+   B2 : Integer := 41;
+   B1 : Integer;
+   B3 : Integer := 314;
+end Globals;
+with Globals;
+--@ line 1
+--# inherit globals;
+--@ line 1
+package Internal_Globals
+--@ line 1
+                is
+
+   --  Global variables used to show state annotations
+
+
+
+
+   --  Global variables used to show global annotations
+
+
+
+   --  Package-level procedure used to show global annotations
+   procedure Proc (Cond : Boolean);
+--@ line 13
+   --# global in     Globals.R1;
+   --#           out Globals.B1, Globals.W1;
+   --#        in out Globals.RW1;
+--@ line 15
+end Internal_Globals;
+package body Internal_Globals
+--@ line 1
+                     is
+
+   --  Global variables used to show state annotations
+
+
+
+
+   procedure Proc (Cond : Boolean) is
+      R2, W2, RW2 : Integer;
+
+      --  Local procedure used to show global annotations
+      procedure S 
+--@ line 12
+      --# global in     Cond, Globals.R1, Globals.RW1, R2;
+      --#           out Globals.W1, W2;
+      --#        in out RW2;
+--@ line 12
+                  is
+      begin
+         if Cond then
+            W2 := R2;
+         else
+            W2 := RW2;
+         end if;
+         RW2 := Globals.RW1
+--@ line 19
+                   ;
+         Globals.W1
+--@ line 20
+             := Globals.R1
+--@ line 20
+                  ;
+      end S;
+
+   begin
+      R2  := Globals.R1
+--@ line 24
+               ;
+      RW2 := Globals.RW1
+--@ line 25
+                ;
+      S;
+      if Cond then
+         Globals.RW1
+--@ line 28
+             := RW2;
+      end if;
+      Globals.B1
+--@ line 30
+         := W2;
+   end Proc;
+
+end Internal_Globals;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          4      4      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:          11      0     11              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 15      4     11              0      0      0       0
+% Totals:                      27%    73%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================

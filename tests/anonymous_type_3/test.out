@@ -38,7 +38,6 @@ end record;
    ToDay1, ToDay2, ToDay3 : Date;
 
    procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);
-
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; 
 --@ line 1

@@ -8,7 +8,7 @@ echo "------------------------------------------------------------------------"
 cat *.ads *.adb
 echo "------------------------------------------------------------------------"
 sparkmake > dummy.log
-spark -noecho -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
+spark -noecho -fdl=_fdl_ -flow=data -config=$TEST_SUPPORT/standard.ads -vcg @spark
 if [ $? -ge 2 ]; then
   echo "Examiner terminates in error"
   exit

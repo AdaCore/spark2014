@@ -12,8 +12,8 @@ package Internal_tq
                                                               );
         --procedure Multi_Dim_Array (P, Q : out Complex);
 end Internal_tq;
-package tq is
-
+package tq
+is
         Board_Size : constant Integer :=8;
         type Board_Index is range 1 .. Board_Size;
         type Colours is (No_colour, Black, White);
@@ -32,7 +32,6 @@ end record;
                                     (Board_Index => Empty);
 
         procedure Array_Of_Array (Initial_Board : out Boards11);
-        --procedure Multi_Dim_Array (P, Q : out Complex);
 end tq;
 package body Internal_tq
 --@ line 1

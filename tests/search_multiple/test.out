@@ -36,8 +36,8 @@ package Internal_Search
   --#                                           Table(Index2) = Value2);
 
 end Internal_Search;
-package Search is
-
+package Search
+is
   type IntArray is array (Integer range <>) of Integer;
 
   procedure Linear_Search
@@ -61,7 +61,6 @@ package Search is
   --# ) and (          Table'First <= Index2 and then Index2 <= Table'Last);
   --# return Result =>  Result             = (Table(Index1) = Value1 and then
   --#                                           Table(Index2) = Value2);
-
 end Search;
 package body Internal_Search
 --@ line 1

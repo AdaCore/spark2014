@@ -5,9 +5,9 @@ anon_type.adb:12:29: sparkify: implicit loop invariant
 ------------------------------------------------------------------------------
 --  Test the anonymous type in for statement see .adb
 --
-package Anon_Type is
+package Anon_Type
+is
 
-   -- type Matrix_Index is range 0 .. 9;
    subtype New_Name_1 is Integer range 0 .. 9;
 --@ line 7
    subtype New_Name_2 is                      Integer range 0 .. 9;
@@ -19,7 +19,6 @@ package Anon_Type is
 
 
    procedure Multiply (X,Y : in Matrix; Z : in out Matrix);
-
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Matrix; 
 --@ line 1
