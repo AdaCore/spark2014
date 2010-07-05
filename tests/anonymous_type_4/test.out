@@ -2,11 +2,11 @@ anon_type.adb:10:23: sparkify: implicit loop invariant
 anon_type.adb:11:26: sparkify: implicit loop invariant
 anon_type.adb:12:29: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
-------------------------------------------------------------------------------
---  Test the anonymous type in for statement see .adb
---
 package Anon_Type
 is
+
+
+
 
    subtype New_Name_1 is Integer range 0 .. 9;
 --@ line 7

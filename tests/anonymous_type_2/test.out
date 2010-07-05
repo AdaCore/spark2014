@@ -2,11 +2,11 @@ anon_type.adb:11:23: sparkify: implicit loop invariant
 anon_type.adb:14:29: sparkify: implicit loop invariant
 anon_type.adb:17:33: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
-------------------------------------------------------------------------------
---  Test the anonymous type in constrained_array_definition,
-
 package Anon_Type
 is
+
+
+
    subtype Index is Integer range 0 .. 4;
    subtype Value is Integer range 0 .. 9;
    type Array1 is array (Index) of Value;

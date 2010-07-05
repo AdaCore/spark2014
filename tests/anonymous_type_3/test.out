@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
-------------------------------------------------------------------------------
---  Test the anonymous type as component_list in the record type
---
-
 package Anon_Type
---@ line 5
+--@ line 1
 --# own ToDay1, ToDay2, ToDay3;
 is
+
+
+
+
    type Months is (Jan, Feb, Mar, Apr, May, June,
                    July, Aug, Sept, Oct, Nov, Dec);
 
