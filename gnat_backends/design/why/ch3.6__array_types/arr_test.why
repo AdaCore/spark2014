@@ -10,9 +10,7 @@ let check_index
  { }
   (integer_of___standard__integer (arr__table___get_ table index)
    = integer_of___standard__integer (value))
- { result = true <-> eq___standard__integer (value,
-                                             arr__table___get (table,
-                                                               index)) }
+ { result = true <-> value = arr__table___get (table, index) }
 
 exception Return
 
@@ -54,13 +52,10 @@ let linear_search
   with Return ->
    assert {
     found = true
-     and eq___standard__integer (value,
-                                 access (array_of___arr__table (table),
-                                 integer_of___standard__integer (index)))
+     and value = access (array_of___arr__table (table),
+                         integer_of___standard__integer (index))
     };
    2
   end
- { (found = true) -> eq___standard__integer
-                    (value,
-                     access (array_of___arr__table (table),
-                             integer_of___standard__integer (index))) }
+ { found = true -> value = access (array_of___arr__table (table),
+                                   integer_of___standard__integer (index)) }

@@ -3,13 +3,20 @@ type modular__byte
 
 logic integer_of___modular__byte : modular__byte -> int
 
-predicate eq___modular__byte (x : modular__byte, y : modular__byte) =
- integer_of___modular__byte (x) = integer_of___modular__byte (y)
+logic eq___modular__byte : modular__byte, modular__byte -> bool
 
-predicate modular__byte___in_range (x : int) =
+axiom eq___modular__byte___def :
+ forall x, y : modular__byte.
+  eq___modular__byte (x, y) = true <->
+   integer_of___modular__byte (x) = integer_of___modular__byte (y)
+
+logic modular__byte___in_range : int -> bool
+
+axiom modular__byte___in_range___def :
  let first = 0 in
  let last = 255 in
-  first <= x <= last
+  forall x : int.
+   modular__byte___in_range (x) = true <-> first <= x <= last
 
 logic modular__byte___of_integer : int -> modular__byte
 
@@ -21,24 +28,24 @@ axiom modular__byte___coerce :
 
 axiom modular__byte_coerce___in_range :
  (forall x : int.
-   modular__byte___in_range (x) ->
+   modular__byte___in_range (x) = true ->
     integer_of___modular__byte (modular__byte___of_integer (x)) = x
  )
 
 axiom modular__byte___range :
  (forall x : modular__byte.
-   modular__byte___in_range (integer_of___modular__byte (x)))
+   modular__byte___in_range (integer_of___modular__byte (x)) = true)
 
 axiom modular__byte___unicity :
- (forall x, y : modular__byte. eq___modular__byte (x, y) <-> x = y)
+ (forall x, y : modular__byte. eq___modular__byte (x, y) = true <-> x = y)
 
 parameter any___modular__byte : unit -> { } modular__byte { true }
 
 parameter modular__byte___of_integer_ :
  x : int ->
- { modular__byte___in_range (x) }
+ { modular__byte___in_range (x) = true }
   modular__byte
- { eq_int(integer_of___modular__byte(result), x) }
+ { integer_of___modular__byte(result) = x }
 
 parameter safe___modular__byte___of_integer_ :
  x : int ->

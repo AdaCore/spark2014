@@ -20,7 +20,7 @@ let byte_mod1 =
 
 let byte_mod2 =
  fun (x : int) ->
-  { modular__byte___in_range (x) }
+  { modular__byte___in_range (x) = true }
    modular__byte___of_integer_ (x)
   { integer_of___modular__byte (result) = x % 260 }
 

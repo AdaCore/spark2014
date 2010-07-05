@@ -10,22 +10,33 @@ type enum__day =
 
 logic integer_of___enum__day : enum__day -> int
 
-predicate eq___enum__day (left : enum__day, right : enum__day) =
- integer_of___enum__day (left) = integer_of___enum__day (right)
+logic eq___enum__day : enum__day, enum__day -> bool
 
-predicate le___enum__day (left : enum__day, right : enum__day) =
- integer_of___enum__day (left) <= integer_of___enum__day (right)
+axiom eq___enum__day___def :
+ forall left, right : enum__day.
+  eq___enum__day (left, right) = true <->
+   integer_of___enum__day (left) = integer_of___enum__day (right)
 
-predicate enum__day___in_range (x : int) =
+logic le___enum__day : enum__day, enum__day -> bool
+
+axiom le___enum__day___def :
+ forall left, right : enum__day.
+  le___enum__day (left, right) = true <->
+   integer_of___enum__day (left) <= integer_of___enum__day (right)
+
+logic enum__day___in_range : int -> bool
+
+axiom enum__day___in_range___def :
  let first = 0 in
  let last = 6 in
-  first <= x <= last
+  forall x : int.
+   enum__day___in_range (x) = true <-> first <= x <= last
 
 logic enum__day___of_integer : int -> enum__day
 
 axiom enum__day___coerce :
  (forall x : int.
-   enum__day___in_range (x) ->
+   enum__day___in_range (x) = true ->
     integer_of___enum__day (enum__day___of_integer (x)) = x)
 
 axiom enum__day___ordering :
@@ -44,7 +55,7 @@ parameter any___enum__day : unit -> { } enum__day { true }
 
 parameter enum__day___of_integer_ :
  x : int ->
-  { enum__day___in_range (x) }
+  { enum__day___in_range (x) = true }
    enum__day
   { integer_of___enum__day (result) = x }
 
@@ -71,31 +82,44 @@ type enum__weekday
 
 logic enum__day___of___enum__weekday : enum__weekday -> enum__day
 
-predicate eq___enum__weekday (left : enum__weekday, right : enum__weekday) =
- eq___enum__day (enum__day___of___enum__weekday (left),
-                 enum__day___of___enum__weekday (right))
+logic eq___enum__weekday : enum__weekday, enum__weekday -> bool
 
-predicate le___enum__weekday (left : enum__weekday, right : enum__weekday) =
- le___enum__day (enum__day___of___enum__weekday (left),
-                 enum__day___of___enum__weekday (right))
+axiom eq___enum__weekday___def :
+ forall left, right : enum__weekday.
+  eq___enum__weekday (left, right) = true <->
+   eq___enum__day (enum__day___of___enum__weekday (left),
+                   enum__day___of___enum__weekday (right)) = true
 
-predicate enum__weekday___in_range (s : enum__day) =
- (le___enum__day (enum__mon, s) and le___enum__day (s, enum__fri))
+logic le___enum__weekday : enum__weekday, enum__weekday -> bool
+
+axiom le___enum__weekday___def :
+ forall left, right : enum__weekday.
+  le___enum__weekday (left, right) = true <->
+   le___enum__day (enum__day___of___enum__weekday (left),
+                   enum__day___of___enum__weekday (right)) = true
+
+logic enum__weekday___in_range : enum__day -> bool
+
+axiom enum__weekday___in_range___def :
+ forall s : enum__day.
+  enum__weekday___in_range (s) = true <->
+   (le___enum__day (enum__mon, s) = true
+    and le___enum__day (s, enum__fri) = true)
 
 logic enum__weekday___of___enum__day : enum__day -> enum__weekday
 
 axiom enum__weekday___coerce :
- (forall x : enum__day.
-  (enum__weekday___in_range (x)) ->
+ forall x : enum__day.
+  (enum__weekday___in_range (x) = true) ->
    eq___enum__day (enum__day___of___enum__weekday
-                   (enum__weekday___of___enum__day (x)), x))
+                   (enum__weekday___of___enum__day (x)), x) = true
 
 axiom enum__weekday___range :
  (forall x : enum__weekday.
-  enum__weekday___in_range (enum__day___of___enum__weekday (x)))
+  enum__weekday___in_range (enum__day___of___enum__weekday (x)) = true)
 
 axiom enum__weekday___unicity :
  (forall x, y : enum__weekday.
-  (eq___enum__weekday (x, y) <-> x = y))
+  (eq___enum__weekday (x, y) = true <-> x = y))
 
 (* ...snip parameters, similar to enum__day... *)
