@@ -33,6 +33,7 @@ with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with Sparkify.Common;                  use Sparkify.Common;
 with Sparkify.Stringset;               use Sparkify.Stringset;
+with Sparkify.Names; use Sparkify.Names;
 
 package body ASIS_UL.Global_State.CG.Sparkify is
 
@@ -141,7 +142,8 @@ package body ASIS_UL.Global_State.CG.Sparkify is
             declare
                Pack_Name : constant Unbounded_Wide_String :=
                              To_Unbounded_Wide_String
-                               (To_Wide_String (GS_Node_Name (S)));
+                               (Flat_Package_Name
+                                  (To_Wide_String (GS_Node_Name (S))));
             begin
                if Pack_Name /= Encl_Name then
                   Stringset.Include (Allowed_Names, Pack_Name & "." & Tmp);

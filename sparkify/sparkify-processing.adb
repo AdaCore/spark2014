@@ -39,6 +39,7 @@ with Asis.Text;                        use Asis.Text;
 with Asis.Clauses;                     use Asis.Clauses;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
+with Asis.Set_Get;                     use Asis.Set_Get;
 
 with ASIS_UL.Output;                   use ASIS_UL.Output;
 with ASIS_UL.Global_State.CG.Sparkify;
@@ -148,7 +149,8 @@ package body Sparkify.Processing is
       Source_State       : Source_Traversal_State;
 
       Unit_Name          : constant Wide_String :=
-                             Declaration_Unique_Name (Unit_Decl);
+                             Flat_Package_Name
+                               (Declaration_Unique_Name (Unit_Decl));
 
       Success            : Boolean := False;
    begin
@@ -229,7 +231,8 @@ package body Sparkify.Processing is
                               Nameset.Include
                                 (Packages,
                                  Normalized_Name
-                                   (Element_Image (Names (Name_Idx))));
+                                   (Flat_Package_Name
+                                      (Element_Image (Names (Name_Idx)))));
                            end loop;
                         end;
                      end if;
@@ -259,13 +262,19 @@ package body Sparkify.Processing is
 
             --  Always inherit the parent package in a child package
             declare
-               Encl_Element : constant Asis.Element :=
-                                Enclosing_Element (Unit_Decl);
+               Encl_Unit : constant Asis.Compilation_Unit :=
+                                Corresponding_Parent_Declaration (Unit);
             begin
-               if not Is_Nil (Encl_Element) then
-                  Nameset.Include
-                    (Packages,
-                     Normalized_Name (Declaration_Unique_Name (Encl_Element)));
+               if not (Is_Nil (Encl_Unit) or Is_Standard (Encl_Unit)) then
+                  declare
+                     Encl_Element : constant Asis.Declaration :=
+                                      Unit_Declaration (Encl_Unit);
+                  begin
+                     Nameset.Include
+                       (Packages,
+                        Normalized_Name
+                          (Declaration_Unique_Name (Encl_Element)));
+                  end;
                end if;
             end;
 
@@ -450,9 +459,7 @@ package body Sparkify.Processing is
 
             pragma Assert (Pack_Names'Length = 1);
 
-            PP_Echo_Cursor_Range
-              (Source_State.Echo_Cursor,
-               Cursor_At_End_Of (Pack_Names (Pack_Names'First)));
+            PP_Word ("package " & Unit_Name);
 
             --  Print the package state annotations
             PP_Package_State (Column      => Column_Start,

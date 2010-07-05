@@ -27,6 +27,7 @@ with Ada.Characters.Handling;          use Ada.Characters.Handling;
 with Ada.Strings.Wide_Hash;
 with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
+with Ada.Strings.Wide_Maps;
 with Ada.Containers.Ordered_Maps;
 
 with ASIS_UL.Strings;                  use ASIS_UL.Strings;
@@ -49,6 +50,18 @@ package body Sparkify.Names is
       Old_Length         := Length (Old_Name);
       Result_Length      := Length (Result_Name);
    end Initialize;
+
+   -----------------------
+   -- Flat_Package_Name --
+   -----------------------
+
+   function Flat_Package_Name (Str : Wide_String) return Wide_String is
+      use Ada.Strings.Wide_Maps;
+      Dot   : constant Wide_Character_Sequence := To_Sequence (To_Set ('.'));
+      Under : constant Wide_Character_Sequence := To_Sequence (To_Set ('_'));
+   begin
+      return Translate (Str, To_Mapping (Dot, Under));
+   end Flat_Package_Name;
 
    ---------------------
    -- Normalized_Name --

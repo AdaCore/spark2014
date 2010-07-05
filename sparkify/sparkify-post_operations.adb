@@ -49,7 +49,8 @@ package body Sparkify.Post_Operations is
 
       Last_Element : Asis.Element;
 
-      Name : constant Wide_String := Declaration_Unique_Name (Element);
+      Name : constant Wide_String :=
+               Flat_Package_Name (Declaration_Unique_Name (Element));
    begin
       if Declaration_Kind (Element) = A_Package_Declaration then
          declare

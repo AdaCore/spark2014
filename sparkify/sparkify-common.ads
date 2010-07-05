@@ -48,6 +48,7 @@ package Sparkify.Common is
    procedure SLOC_Error_And_Exit
      (Message : String;
       SLOC    : String);
+   pragma No_Return (SLOC_Error_And_Exit);
 
    --------------------------------------------
    -- Resources needed for source traversing --

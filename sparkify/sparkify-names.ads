@@ -43,6 +43,8 @@ package Sparkify.Names is
 
    procedure Initialize;
 
+   function Flat_Package_Name (Str : Wide_String) return Wide_String;
+
    function Normalized_Name (Str : Wide_String) return Name_String;
    --  If the argument string Str consists only of characters which
    --  belong to the first 256 positions of Wide_Character type, it returns

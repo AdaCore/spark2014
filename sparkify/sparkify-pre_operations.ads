@@ -38,6 +38,13 @@ package Sparkify.Pre_Operations is
    procedure Traverse_Element_And_Print (Element : Asis.Element);
    --  Traverse Element in Printing_Code mode (prefixing identifiers et cetera)
 
+   procedure Reach_Element_And_Traverse
+     (Element : Asis.Element;
+      State   : in out Source_Traversal_State);
+   --  Echo everything before Element; then, call Traverse_Element_And_Print
+   --  to set prefixing identifiers mode At the end of procedure,
+   --  the cursor is set after Element.
+
    procedure A_Pragma_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -125,6 +132,11 @@ package Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State);
 
    procedure A_Derived_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Selected_Component_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
@@ -617,7 +629,7 @@ package Sparkify.Pre_Operations is
       An_Indexed_Component ..
       A_Slice => No_Action'Access,
 
-      A_Selected_Component => No_Action'Access,
+      A_Selected_Component => A_Selected_Component_Pre_Op'Access,
 
       --
       --  An_Attribute_Reference,                    -- 4.1.4
