@@ -1,49 +1,9 @@
 ------------------------------------------------------------------------
 
-with 
---@ line 1
-     T;use type T.Signed; with S;
+with T;use type T.Signed; with S;
+--@ line 2
 --# inherit s, t;
-package Internal_S
---@ line 3
-          is
-
-   procedure Plus_Two  (N : in out T.Signed
---@ line 5
-                                         );
-   --# pre              N > 0 and N < T.Signed
-   --# --@ line 6
-   --#                                      'Last - 1;
-   --# post              N = N~    + 2;
-
-   function Plus_Two_F (N : T.Signed
---@ line 9
-                                  ) return T.Signed
---@ line 9
-                                                 ;
-   --# pre              N > 0 and N < T.Signed
-   --# --@ line 10
-   --#                                      'Last - 1;
-   --# return Result =>  Result            = N + 2;
-
-end Internal_S;
-with T;use type T.Signed; 
---@ line 1
---# inherit t;
---@ line 1
-package Internal_T
---@ line 1
-          is
-
-
-
-end Internal_T;
-
-with 
---@ line 1
-     T;use type T.Signed; 
---# inherit t;
-package S
+package External_S
 is
    procedure Plus_Two  (N : in out T.Signed
 --@ line 5
@@ -83,6 +43,59 @@ is
    --# --@ line 13
    --#                                         'Last;
    --# return Result =>     Result                = N + 1;
+end External_S;
+with T;use type T.Signed; 
+--@ line 1
+--# inherit t;
+package External_T
+is
+end External_T;
+
+with T;use type T.Signed; 
+with External_T;
+with S;with External_S;
+--@ line 2
+--# inherit s, t, external_s, external_t;
+package Internal_S
+--@ line 3
+          is
+
+   procedure Plus_Two  (N : in out T.Signed
+--@ line 5
+                                         );
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 6
+   --#                                      'Last - 1;
+   --# post              N = N~    + 2;
+
+   function Plus_Two_F (N : T.Signed
+--@ line 9
+                                  ) return T.Signed
+--@ line 9
+                                                 ;
+   --# pre              N > 0 and N < T.Signed
+   --# --@ line 10
+   --#                                      'Last - 1;
+   --# return Result =>  Result            = N + 2;
+
+end Internal_S;
+with T;use type T.Signed; with External_T;
+--@ line 1
+--# inherit t, external_t;
+--@ line 1
+package Internal_T
+--@ line 1
+          is
+
+
+
+end Internal_T;
+
+with T;use type T.Signed; 
+--@ line 2
+--# inherit t;
+package S
+is
 end S;
 package T
 is
@@ -132,10 +145,10 @@ package body Internal_S
 --@ line 19
                                          ) is
    begin
-      S.Inc_Positive
+      External_S.Inc_Positive
 --@ line 21
                    (N);
-      S.Inc_Positive
+      External_S.Inc_Positive
 --@ line 22
                    (N);
    end Plus_Two;
@@ -146,9 +159,9 @@ package body Internal_S
 --@ line 25
                                                   is
    begin
-      return S.Inc_Positive_F
+      return External_S.Inc_Positive_F
 --@ line 27
-                            (S.Inc_Positive_F
+                            (External_S.Inc_Positive_F
 --@ line 27
                                             (N));
    end Plus_Two_F;

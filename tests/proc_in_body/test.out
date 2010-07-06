@@ -2,6 +2,21 @@
 with S;
 --@ line 1
 --# inherit s;
+package External_S
+is
+--@ line 3
+   procedure Plus_Two  (N : in out Integer);
+   --# pre              N > 0 and N < Integer'Last - 1;
+   --# post              N = N~    + 2;
+--@ line 3
+   procedure Inc_Positive (N : in out Integer);
+
+   --# pre                 N > 0 and N < Integer'Last;
+   --# post                 N = N~    + 1;
+end External_S;
+with S;with External_S;
+--@ line 1
+--# inherit s, external_s;
 --@ line 1
 package Internal_S
 --@ line 1
@@ -14,14 +29,6 @@ package Internal_S
 end Internal_S;
 package S
 is
-   procedure Plus_Two  (N : in out Integer);
-   --# pre              N > 0 and N < Integer'Last - 1;
-   --# post              N = N~    + 2;
---@ line 3
-   procedure Inc_Positive (N : in out Integer);
-
-   --# pre                 N > 0 and N < Integer'Last;
-   --# post                 N = N~    + 1;
 end S;
 package body Internal_S
 --@ line 1
@@ -41,10 +48,10 @@ package body Internal_S
 
    procedure Plus_Two  (N : in out Integer) is
    begin
-      S.Inc_Positive
+      External_S.Inc_Positive
 --@ line 13
                    (N);
-      S.Inc_Positive
+      External_S.Inc_Positive
 --@ line 14
                    (N);
    end Plus_Two;

@@ -3,6 +3,36 @@ s.adb:13:45: sparkify: implicit loop invariant
 with S;use type S.Array_Range; use type S.IntArray; 
 --@ line 1
 --# inherit s;
+package External_S
+is
+
+
+
+   procedure Linear_Search
+     (Table : in S.IntArray
+--@ line 8
+                         ;
+      Value : in Integer;
+      Found : out Boolean;
+      Index : out S.Array_Range
+--@ line 11
+                             );
+   --# post              not Found or else Table(Index) = Value;
+
+   function Check_Index
+     (Table : S.IntArray
+--@ line 15
+                      ;
+      Value : Integer;
+      Index : S.Array_Range
+--@ line 17
+                         ) return Boolean;
+   --# pre              Table'First <= Index and then Index <= Table'Last;
+   --# return Result =>  Result             = (Table(Index) = Value);
+end External_S;
+with S;use type S.Array_Range; use type S.IntArray; with External_S;
+--@ line 1
+--# inherit s, external_s;
 --@ line 1
 package Internal_S
 --@ line 1
@@ -36,20 +66,6 @@ is
    type Array_Range is range 1 .. 10;
 
    type IntArray is array (Array_Range) of Integer;
-
-   procedure Linear_Search
-     (Table : in IntArray;
-      Value : in Integer;
-      Found : out Boolean;
-      Index : out Array_Range);
-   --# post              not Found or else Table(Index) = Value;
-
-   function Check_Index
-     (Table : IntArray;
-      Value : Integer;
-      Index : Array_Range) return Boolean;
-   --# pre              Table'First <= Index and then Index <= Table'Last;
-   --# return Result =>  Result             = (Table(Index) = Value);
 end S;
 package body Internal_S
 --@ line 1

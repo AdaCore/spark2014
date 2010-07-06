@@ -10,7 +10,7 @@
 --  defining_identifier_list ::=
 --   defining_identifier {, defining_identifier}
 
-with Ada;
+-- with Ada;
 
 package body Anon_Type is
    function Increment(Var_In :  in Integer) return Integer

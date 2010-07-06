@@ -1,4 +1,42 @@
 ------------------------------------------------------------------------
+with Globals;
+--@ line 1
+--# inherit globals;
+package External_Globals
+is
+
+
+
+   function Direct_Read return Integer;
+--@ line 7
+   --# global in     Globals.G;
+
+   procedure Direct_Write;
+--@ line 9
+   --# global    out Globals.G;
+
+   procedure Direct_Read_Write;
+--@ line 11
+   --# global in out Globals.G;
+   --# pre              Globals.G
+   --# --@ line 12
+   --#                    < Integer'Last;
+
+   function Indirect_Read return Integer;
+--@ line 14
+   --# global in     Globals.G;
+
+   procedure Indirect_Write;
+--@ line 16
+   --# global    out Globals.G;
+
+   procedure Indirect_Read_Write;
+--@ line 18
+   --# global in out Globals.G;
+   --# pre              Globals.G
+   --# --@ line 19
+   --#                    < Integer'Last;
+end External_Globals;
 package Globals
 --@ line 1
 --# own G;
@@ -6,36 +44,10 @@ is
 
 
    G : Integer;
-
-   function Direct_Read return Integer;
---@ line 7
-   --# global in     G;
-
-   procedure Direct_Write;
---@ line 9
-   --# global    out G;
-
-   procedure Direct_Read_Write;
---@ line 11
-   --# global in out G;
-   --# pre              G < Integer'Last;
-
-   function Indirect_Read return Integer;
---@ line 14
-   --# global in     G;
-
-   procedure Indirect_Write;
---@ line 16
-   --# global    out G;
-
-   procedure Indirect_Read_Write;
---@ line 18
-   --# global in out G;
-   --# pre              G < Integer'Last;
 end Globals;
-with Globals;
+with Globals;with External_Globals;
 --@ line 1
---# inherit globals;
+--# inherit external_globals, globals;
 --@ line 1
 package Internal_Globals
 

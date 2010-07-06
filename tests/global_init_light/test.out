@@ -1,4 +1,18 @@
 ------------------------------------------------------------------------
+with Globals;
+--@ line 1
+--# inherit globals;
+package External_Globals
+is
+
+
+
+
+
+   procedure Init;
+--@ line 9
+   --# global    out Globals.G1;
+end External_Globals;
 package Globals
 --@ line 1
 --# own G1, G2;
@@ -10,14 +24,10 @@ is
    G2 : Integer := 0;
 
    G3 : constant Integer := 0;
-
-   procedure Init;
---@ line 9
-   --# global    out G1;
 end Globals;
-with Globals;
+with Globals;with External_Globals;
 --@ line 1
---# inherit globals;
+--# inherit external_globals, globals;
 --@ line 1
 package Internal_Globals
 --@ line 1

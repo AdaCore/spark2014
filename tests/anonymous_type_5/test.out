@@ -7,11 +7,17 @@ is
 --@ line 2
    type Tab is array(Integer  range <>)
    of New_Name_1;
-   procedure To_Fix (Y : out Integer);
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Tab; 
 --@ line 1
 --# inherit anon_type;
+package External_Anon_Type
+is
+   procedure To_Fix (Y : out Integer);
+end External_Anon_Type;
+with Anon_Type;use type Anon_Type.Tab; with External_Anon_Type;
+--@ line 1
+--# inherit external_anon_type, anon_type;
 --@ line 1
 package Internal_Anon_Type
 --@ line 1

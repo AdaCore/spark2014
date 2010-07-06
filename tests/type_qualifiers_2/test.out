@@ -2,6 +2,38 @@
 with tq;use type tq.Complex; 
 --@ line 1
 --# inherit tq;
+package External_tq
+is
+
+
+
+
+   function plus (Left, Right: in tq.Complex
+--@ line 8
+                                         ) return tq.Complex
+--@ line 8
+                                                         ;
+
+   --# pre              Left.mReal > -1000.0 and Left.mReal < 1000.0 and
+   --# 	                
+   --# --@ line 11
+   --#             	                Left
+   --# --@ line 11
+   --#                 .	                     mImaginary
+   --# --@ line 11
+   --#                             > -1000.0 and 	                                              Left
+   --# --@ line 11
+   --#                                               .	                                                   mImaginary
+   --# --@ line 11
+   --#                                                           < 1000.0;
+
+   function eval return tq.Complex
+--@ line 13
+                               ;
+end External_tq;
+with tq;use type tq.Complex; with External_tq;
+--@ line 1
+--# inherit tq, external_tq;
 --@ line 1
 package Internal_tq
 --@ line 1
@@ -37,13 +69,6 @@ is
       mReal : Float;
       mImaginary : Float;
 end record;
-
-   function plus (Left, Right: in Complex) return Complex;
-
-   --# pre              Left.mReal > -1000.0 and Left.mReal < 1000.0 and
-   --# 	                Left.mImaginary > -1000.0 and Left.mImaginary < 1000.0;
-
-   function eval return Complex;
 end tq;
 
 package body Internal_tq
@@ -92,7 +117,7 @@ package body Internal_tq
 --@ line 20
                         ;
    begin
-      sumCplex := tq.plus
+      sumCplex := External_tq.plus
 --@ line 22
                       (mCplex1, mCplex2);
 

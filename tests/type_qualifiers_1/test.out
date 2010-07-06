@@ -2,6 +2,19 @@
 with tq;use type tq.Complex; 
 --@ line 1
 --# inherit tq;
+package External_tq
+is
+
+
+
+
+   procedure Affectation (P, Q : out tq.Complex
+--@ line 8
+                                            );
+end External_tq;
+with tq;use type tq.Complex; with External_tq;
+--@ line 1
+--# inherit tq, external_tq;
 --@ line 1
 package Internal_tq
 --@ line 1
@@ -18,8 +31,6 @@ is
       mReal : Integer;
       mImaginary : Integer;
 end record;
-
-   procedure Affectation (P, Q : out Complex);
 end tq;
 package body Internal_tq
 --@ line 1

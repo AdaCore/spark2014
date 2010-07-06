@@ -2,6 +2,18 @@
 with P;
 --@ line 1
 --# inherit p;
+package External_P
+is
+
+   procedure Q;
+--@ line 5
+   --# global    out P.X;
+
+   function F return Boolean;
+end External_P;
+with P;with External_P;
+--@ line 1
+--# inherit p, external_p;
 --@ line 1
 package Internal_P
 --@ line 1
@@ -21,12 +33,6 @@ package P
 --# own X;
 is
    X : Boolean;
-
-   procedure Q;
---@ line 5
-   --# global    out X;
-
-   function F return Boolean;
 end P;
 package body Internal_P
 --@ line 1
@@ -36,7 +42,7 @@ package body Internal_P
    begin
       P.X
 --@ line 5
-        := P.F
+        := External_P.F
 --@ line 5
             ;
    end Q;

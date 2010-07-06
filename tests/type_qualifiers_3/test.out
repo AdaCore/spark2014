@@ -2,6 +2,16 @@
 with tq;use type tq.Board_Index; use type tq.Colours; use type tq.Pieces; use type tq.Contents; use type tq.Row; use type tq.Boards11; 
 --@ line 1
 --# inherit tq;
+package External_tq
+is
+--@ line 16
+        procedure Array_Of_Array (Initial_Board : out tq.Boards11
+--@ line 16
+                                                              );
+end External_tq;
+with tq;use type tq.Board_Index; use type tq.Colours; use type tq.Pieces; use type tq.Contents; use type tq.Row; use type tq.Boards11; with External_tq;
+--@ line 1
+--# inherit tq, external_tq;
 --@ line 1
 package Internal_tq
 --@ line 1
@@ -30,8 +40,6 @@ end record;
         Empty_Row : Constant Row := Row'
 --@ line 14
                                     (Board_Index => Empty);
-
-        procedure Array_Of_Array (Initial_Board : out Boards11);
 end tq;
 package body Internal_tq
 --@ line 1

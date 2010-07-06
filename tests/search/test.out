@@ -4,6 +4,30 @@ search.adb:25:3: sparkify: discard contract on definition of subprogram
 with Search;use type Search.IntArray; 
 --@ line 1
 --# inherit search;
+package External_Search
+is
+
+  procedure Linear_Search
+    (Table : in Search.IntArray
+--@ line 6
+                        ;
+     Value : in Integer;
+     Found : out Boolean;
+     Index : out Integer);
+  --# post              not Found or else Table(Index) = Value;
+
+  function Check_Index
+    (Table : Search.IntArray
+--@ line 13
+                     ;
+     Value : Integer;
+     Index : Integer) return Boolean;
+  --# pre              Table'First <= Index and then Index <= Table'Last;
+  --# return Result =>  Result             = (Table(Index) = Value);
+end External_Search;
+with Search;use type Search.IntArray; with External_Search;
+--@ line 1
+--# inherit external_search, search;
 --@ line 1
 package Internal_Search
 --@ line 1
@@ -33,20 +57,6 @@ end Internal_Search;
 package Search
 is
   type IntArray is array (Integer range <>) of Integer;
-
-  procedure Linear_Search
-    (Table : in IntArray;
-     Value : in Integer;
-     Found : out Boolean;
-     Index : out Integer);
-  --# post              not Found or else Table(Index) = Value;
-
-  function Check_Index
-    (Table : IntArray;
-     Value : Integer;
-     Index : Integer) return Boolean;
-  --# pre              Table'First <= Index and then Index <= Table'Last;
-  --# return Result =>  Result             = (Table(Index) = Value);
 end Search;
 package body Internal_Search
 --@ line 1

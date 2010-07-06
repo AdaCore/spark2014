@@ -36,8 +36,6 @@ end record;
    end record;
 
    ToDay1, ToDay2, ToDay3 : Date;
-
-   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Date);
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; 
 --@ line 1
@@ -45,6 +43,19 @@ with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon
 --  Test the anonymous type as component_list in the record type
 --
 --# inherit anon_type;
+package External_Anon_Type
+is
+--@ line 23
+   procedure Date_Format(ToDay1 , ToDay2 , ToDay3 : out Anon_Type.Date
+--@ line 23
+                                                            );
+end External_Anon_Type;
+with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; with External_Anon_Type;
+--@ line 1
+------------------------------------------------------------------------------
+--  Test the anonymous type as component_list in the record type
+--
+--# inherit external_anon_type, anon_type;
 package Internal_Anon_Type
 is
 --@ line 23

@@ -1,4 +1,16 @@
 ------------------------------------------------------------------------
+with Globals;
+--@ line 1
+--# inherit globals;
+package External_Globals
+is
+--@ line 13
+   procedure Proc (Cond : Boolean);
+--@ line 13
+   --# global in     Globals.R1;
+   --#           out Globals.B1, Globals.W1;
+   --#        in out Globals.RW1;
+end External_Globals;
 package Globals
 --@ line 1
 --# own B1, B2, B3, D1, D2, D3, R1, RW1, W1;
@@ -11,21 +23,14 @@ is
 
    W1      : Integer;
    R1, RW1 : Integer := 0;
-
-
-   procedure Proc (Cond : Boolean);
---@ line 13
-   --# global in     R1;
-   --#           out B1, W1;
-   --#        in out RW1;
 --@ line 4
    B2 : Integer := 41;
    B1 : Integer;
    B3 : Integer := 314;
 end Globals;
-with Globals;
+with Globals;with External_Globals;
 --@ line 1
---# inherit globals;
+--# inherit external_globals, globals;
 --@ line 1
 package Internal_Globals
 --@ line 1

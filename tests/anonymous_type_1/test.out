@@ -1,22 +1,31 @@
 ------------------------------------------------------------------------
------------------------------------------------------------------------------
---  Examples for fix the anonymous type in object declarations or definitions
---# inherit ada;
 package Anon_Type
 is
+
+
+
    subtype New_Name_1 is 
 --@ line 6
       Integer range 0 .. 10;
 --@ line 5
    type Matrix is array(Integer  range <>, Integer range <>)
    of New_Name_1;
-   function Increment (Var_In : in Integer) return Integer;
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Matrix; 
 --@ line 1
 -----------------------------------------------------------------------------
 --  Examples for fix the anonymous type in object declarations or definitions
---# inherit ada, anon_type;
+--# inherit anon_type;
+package External_Anon_Type
+is
+
+   function Increment (Var_In : in Integer) return Integer;
+end External_Anon_Type;
+with Anon_Type;use type Anon_Type.Matrix; with External_Anon_Type;
+--@ line 1
+-----------------------------------------------------------------------------
+--  Examples for fix the anonymous type in object declarations or definitions
+--# inherit external_anon_type, anon_type;
 package Internal_Anon_Type
 --@ line 4
                   is
@@ -35,8 +44,8 @@ end Internal_Anon_Type;
 --  3.3.1:
 --  defining_identifier_list ::=
 --   defining_identifier {, defining_identifier}
-with 
-     Ada;
+
+-- with Ada;
 
 package body Internal_Anon_Type
 --@ line 15

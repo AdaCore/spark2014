@@ -16,9 +16,6 @@ is
            Integer range 0 .. 999;
 --@ line 7
    type Matrix is array (New_Name_1, New_Name_2) of New_Name_3;
-
-
-   procedure Multiply (X,Y : in Matrix; Z : in out Matrix);
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Matrix; 
 --@ line 1
@@ -27,6 +24,25 @@ with Anon_Type;use type Anon_Type.Matrix;
 --
 --@ line 3
 --# inherit anon_type;
+package External_Anon_Type
+is
+
+
+
+
+   procedure Multiply (X,Y : in Anon_Type.Matrix
+--@ line 10
+                                      ; Z : in out Anon_Type.Matrix
+--@ line 10
+                                                         );
+end External_Anon_Type;
+with Anon_Type;use type Anon_Type.Matrix; with External_Anon_Type;
+--@ line 1
+------------------------------------------------------------------------------
+--  Test the anonymous type in for statement see .adb
+--
+--@ line 3
+--# inherit external_anon_type, anon_type;
 package Internal_Anon_Type
 --@ line 4
                   is

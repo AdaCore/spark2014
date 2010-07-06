@@ -35,15 +35,35 @@ is
                                  1 .. 3;
 --@ line 13
    type Array5 is array (New_Name_5, New_Name_6) of Value;
-
-   procedure Exchange(A1 : out Array1; A2 : out Array2;
-                      A3 : out Array3; A4 : out Array4; A5 : in out Array5);
 end Anon_Type;
 with Anon_Type;use type Anon_Type.Array1; use type Anon_Type.Array2; use type Anon_Type.Array3; use type Anon_Type.Array4; use type Anon_Type.Array5; 
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,
 --# inherit anon_type;
+package External_Anon_Type
+is
+   subtype Index is Integer range 0 .. 4;
+   subtype Value is Integer range 0 .. 9;
+--@ line 15
+   procedure Exchange(A1 : out Anon_Type.Array1
+--@ line 15
+                                     ; A2 : out Anon_Type.Array2
+--@ line 15
+                                                      ;
+                      A3 : out Anon_Type.Array3
+--@ line 16
+                                     ; A4 : out Anon_Type.Array4
+--@ line 16
+                                                      ; A5 : in out Anon_Type.Array5
+--@ line 16
+                                                                          );
+end External_Anon_Type;
+with Anon_Type;use type Anon_Type.Array1; use type Anon_Type.Array2; use type Anon_Type.Array3; use type Anon_Type.Array4; use type Anon_Type.Array5; with External_Anon_Type;
+--@ line 1
+------------------------------------------------------------------------------
+--  Test the anonymous type in constrained_array_definition,
+--# inherit external_anon_type, anon_type;
 package Internal_Anon_Type
 is
    subtype Index is Integer range 0 .. 4;
