@@ -14,3 +14,5 @@
 *.idx
 *.smf
 *.rep
+sparkified
+GNAT-*

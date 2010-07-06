@@ -47,7 +47,7 @@ my_echo ()
   echo "$@" >> $log
 }
 
-log=`pwd`/log
+log=`pwd`/tests.log
 rm -f $log
 
 valid=false
