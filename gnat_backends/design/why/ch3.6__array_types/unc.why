@@ -7,43 +7,61 @@ logic array_of___unc__vector : unc__vector -> standard__integer farray
 
 logic unc__vector___of_array : standard__integer farray -> unc__vector
 
-predicate unc__vector___in_range (x : standard__integer farray) =
+logic unc__vector___in_range : standard__integer farray -> bool
+
+axiom unc__vector___in_range___def :
  let max_length = 4294967295 in
- array_length (x) <= max_length
+  forall x : standard__integer farray.
+   unc__vector___in_range (x) = true <-> array_length (x) <= max_length
 
 logic unc__vector___first : unc__vector -> standard__integer
 
 logic unc__vector___last : unc__vector -> standard__integer
 
-predicate unc__vector___range_eq
-(x : unc__vector,
- y : unc__vector) =
- (integer_of___standard__integer (unc__vector___first (x))
-  = integer_of___standard__integer (unc__vector___first (y)))
- and (integer_of___standard__integer (unc__vector___last (x))
-      = integer_of___standard__integer (unc__vector___last (y)))
+logic unc__vector___range_eq : unc__vector, unc__vector -> bool
 
-predicate eq___unc__vector___strict (x : unc__vector, y : unc__vector) =
- array_of___unc__vector (x) = array_of___unc__vector (y)
- and unc__vector___range_eq (x, y)
+axiom unc__vector___range_eq___def :
+ forall x, y : unc__vector.
+  unc__vector___range_eq (x, y) = true <->
+  ((integer_of___standard__integer (unc__vector___first (x))
+    = integer_of___standard__integer (unc__vector___first (y)))
+   and (integer_of___standard__integer (unc__vector___last (x))
+        = integer_of___standard__integer (unc__vector___last (y))))
 
-predicate unc__vector___non_empty (x : unc__vector) =
- integer_of___standard__integer (unc__vector___first (x))
-  <= integer_of___standard__integer (unc__vector___last (x))
+logic eq___unc__vector___strict : unc__vector, unc__vector -> bool
+
+axiom eq___unc__vector___strict___def :
+ forall x, y : unc__vector.
+  eq___unc__vector___strict (x, y) = true <->
+   (array_of___unc__vector (x) = array_of___unc__vector (y)
+    and unc__vector___range_eq (x, y) = true)
+
+logic unc__vector___non_empty : unc__vector -> bool
+
+axiom unc__vector___non_empty___def :
+ forall x : unc__vector.
+  unc__vector___non_empty (x) = true <->
+   integer_of___standard__integer (unc__vector___first (x))
+    <= integer_of___standard__integer (unc__vector___last (x))
 
 axiom unc__vector___coerce :
  forall x : standard__integer farray.
-  unc__vector___in_range (x) ->
+  unc__vector___in_range (x) = true ->
    array_of___unc__vector (unc__vector___of_array (x)) = x
 
 axiom unc__vector___range :
  forall x : unc__vector.
-  unc__vector___in_range (array_of___unc__vector (x))
+  unc__vector___in_range (array_of___unc__vector (x)) = true
 
-predicate unc__vector___index_check (a : unc__vector, i : standard__integer) =
- integer_of___standard__integer (unc__vector___first (a))
-  <= integer_of___standard__integer (i) <=
- integer_of___standard__integer (unc__vector___last (a))
+logic unc__vector___index_check : unc__vector, standard__integer -> bool
+
+axiom unc__vector___index_check___def :
+ forall a : unc__vector.
+ forall i : standard__integer.
+  unc__vector___index_check (a, i) = true <->
+   integer_of___standard__integer (unc__vector___first (a))
+    <= integer_of___standard__integer (i) <=
+   integer_of___standard__integer (unc__vector___last (a))
 
 axiom unc__vector___bounds :
  forall x : unc__vector.
@@ -59,33 +77,32 @@ logic unc__vector___set :
 
 axiom unc__vector___get_definition :
  forall x : unc__vector.
-  forall y : standard__integer.
-   unc__vector___get (x, y) = access (array_of___unc__vector (x),
-                                     integer_of___standard__integer (y))
+ forall y : standard__integer.
+  unc__vector___get (x, y) = access (array_of___unc__vector (x),
+                                    integer_of___standard__integer (y))
 
 axiom unc__vector___set_definition :
  forall x : unc__vector.
-  forall y : standard__integer.
-   forall z : standard__integer.
-    let result = unc__vector___set (x, y, z) in
-     array_of___unc__vector (result) =
-      update (array_of___unc__vector (x),
-              integer_of___standard__integer (y),
-              z)
-     and unc__vector___range_eq (x, result)
+ forall y : standard__integer.
+ forall z : standard__integer.
+  let result = unc__vector___set (x, y, z) in
+   array_of___unc__vector (result) =
+    update (array_of___unc__vector (x),
+            integer_of___standard__integer (y),
+            z)
+   and unc__vector___range_eq (x, result) = true
 
 parameter unc__vector___get_ :
  a : unc__vector -> i : standard__integer ->
-  { unc__vector___index_check (a, i) }
+  { unc__vector___index_check (a, i) = true }
    standard__integer
-  { eq___standard__integer (result,
-                            unc__vector___get (a, i)) }
+  { result = unc__vector___get (a, i) }
 
 parameter unc__vector___set_ : 
  a : unc__vector ref -> i : standard__integer -> v : standard__integer -> 
-  { unc__vector___index_check (a, i) }
+  { unc__vector___index_check (a, i) = true }
    unit writes a
-  { eq___unc__vector___strict (a, unc__vector___set (a@, i, v)) }
+  { a = unc__vector___set (a@, i, v) }
 
 parameter unc__vector___first_ :
  a : unc__vector ->

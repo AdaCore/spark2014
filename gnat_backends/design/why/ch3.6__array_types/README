@@ -26,3 +26,7 @@ similar case, except for range axioms; they become:
 * Vector'First <= Vector'Last for non-empty arrays (___non_empty);
 * Vector'First .. Vector'Last can hold in the index subtype (___in_range).
 
+two.ads, two.why and two_test.why show how multi-dimensional arrays
+would be represented. Not very different from a one-dimensional array;
+only the fact that it maps to array of arrays (of arrays of arrays ...)
+and that first, last, index_check et cetera have one version per dimension.

@@ -20,22 +20,27 @@ axiom standard__boolean___ordering_bool :
 
 logic integer_of___standard__boolean : standard__boolean -> int
 
-predicate le___standard__boolean
-(left : standard__boolean,
- right : standard__boolean) =
- integer_of___standard__boolean (left)
-  <= integer_of___standard__boolean (right)
+logic le___standard__boolean : standard__boolean, standard__boolean -> bool
 
-predicate standard__boolean___in_range (x : int) =
+axiom le___standard__boolean___def :
+ forall left, right : standard__boolean.
+  le___standard__boolean (left, right) = true <->
+   integer_of___standard__boolean (left)
+    <= integer_of___standard__boolean (right)
+
+logic standard__boolean___in_range : int -> bool
+
+axiom standard__boolean___in_range___def :
  let first = 0 in
  let last = 1 in
-  first <= x <= last
+  forall x : int.
+   standard__boolean___in_range (x) = true <-> first <= x <= last
 
 logic standard__boolean___of_integer : int -> standard__boolean
 
 axiom standard__boolean___coerce :
  (forall x : int.
-   standard__boolean___in_range (x) ->
+   standard__boolean___in_range (x) = true ->
     integer_of___standard__boolean (standard__boolean___of_integer (x)) = x)
 
 axiom standard__boolean___ordering :
@@ -49,7 +54,7 @@ parameter any___standard__boolean : unit -> { } standard__boolean { true }
 
 parameter standard__boolean___of_integer_ :
  x : int ->
-  { standard__boolean___in_range (x) }
+  { standard__boolean___in_range (x) = true }
    standard__boolean
   { integer_of___standard__boolean (result) = x }
 

@@ -2,6 +2,13 @@
 (* Several simple tests that illustrate how signed__int8 could be used
    in why. *)
 
+let check_eq_integer
+(a : signed__int8)
+(b : signed__int8) =
+ { }
+  integer_of___signed__int8 (a) = integer_of___signed__int8 (b)
+ { result = true <-> a = b }
+
 (*************)
 (* succ_int8 *)
 (*************)
