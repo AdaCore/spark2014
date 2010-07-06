@@ -1,0 +1,46 @@
+type standard__integer
+
+logic integer_of___standard__integer : standard__integer -> int
+
+predicate eq___standard__integer
+(x : standard__integer,
+ y : standard__integer) =
+ integer_of___standard__integer (x) = integer_of___standard__integer (y)
+
+predicate standard__integer___in_range (x : int) =
+ let first = -2147483648 in
+ let last = 2147483647 in
+  first <= x <= last
+
+logic standard__integer___of_integer : int -> standard__integer
+
+axiom standard__integer___coerce :
+ (forall x : int.
+  standard__integer___in_range (x) ->
+   integer_of___standard__integer (standard__integer___of_integer (x)) = x)
+
+axiom standard__integer___range :
+ forall x : standard__integer.
+  standard__integer___in_range (integer_of___standard__integer (x))
+
+axiom standard__integer___unicity :
+ forall x, y : standard__integer.
+  integer_of___standard__integer (x) = integer_of___standard__integer (y)
+   <-> x = y
+
+parameter any___standard__integer : unit -> { } standard__integer { true }
+
+parameter standard__integer___of_integer_ :
+ x : int ->
+  { standard__integer___in_range (x) }
+   standard__integer
+  { integer_of___standard__integer (result) = x }
+
+parameter safe___standard__integer___of_integer_ :
+ x : int ->
+  { }
+   standard__integer
+  { integer_of___standard__integer (result) = x }
+
+
+

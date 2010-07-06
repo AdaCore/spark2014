@@ -1,0 +1,21 @@
+
+This describes the representations of record types in Why.
+
+Each field of an record type is represented by an array which is
+meant to contain all the values of the field for any instance of
+the record. A sort of memory pool for this field, if you like.
+Then, an instance of a record is an index in these tables.
+
+The advantage of the peculiar slicing is that it allows to change only
+field of a record without invalidating the whole record. Say, if you
+have A : array (1 .. 2) of Rec_Type, changing A(1).Field will not
+force you to update the whole A(1), which would significantly
+complicate the proof.
+
+Of course, this complicates slightly the signatures of functions that
+uses these records in the program space; there is no such thing as
+a global scope in Why, so field arrays should be passed as parameter
+in any function that have a record amongst in its parameters.
+
+rec.ads, rec.why and rec_test.why show how this works in the case of
+"regular" records.
