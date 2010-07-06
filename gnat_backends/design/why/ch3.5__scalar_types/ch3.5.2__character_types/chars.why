@@ -2,42 +2,35 @@ type standard__character
 
 logic integer_of___standard__character : standard__character -> int
 
-logic eq___standard__character :
- standard__character, standard__character -> bool
+predicate eq___standard__character
+(x : standard__character,
+ y : standard__character) =
+ integer_of___standard__character (x) = integer_of___standard__character (y)
 
-axiom eq___standard__character___def :
- forall x, y : standard__character.
-  eq___standard__character (x, y) = true <->
-   integer_of___standard__character (x) = integer_of___standard__character (y)
-
-logic standard__character___in_range : int -> bool
-
-axiom standard__character___in_range___def :
- forall x : int.
+predicate standard__character___in_range (x : int) =
  let first = 0 in
  let last = 255 in
-  standard__character___in_range (x) = true <-> first <= x <= last
+  first <= x <= last
 
 logic standard__character___of_integer : int -> standard__character
 
 axiom standard__character___coerce :
  (forall x : int.
-  standard__character___in_range (x) = true ->
+  standard__character___in_range (x) ->
    integer_of___standard__character (standard__character___of_integer (x)) = x)
 
 axiom standard__character___range :
  (forall x : standard__character.
-  standard__character___in_range (integer_of___standard__character (x)) = true)
+  standard__character___in_range (integer_of___standard__character (x)))
 
 axiom standard__character___unicity :
- (forall x, y : standard__character.
-   eq___standard__character (x, y) = true <-> x = y)
+ (forall x, y : standard__character. eq___standard__character (x, y) <-> x = y)
 
 parameter any___standard__character : unit -> { } standard__character { true }
 
 parameter standard__character___of_integer_ :
  x : int ->
-  { standard__character___in_range (x) = true }
+  { standard__character___in_range (x) }
    standard__character
   { integer_of___standard__character (result) = x }
 

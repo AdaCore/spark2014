@@ -9,35 +9,32 @@ type two__index
 
 logic integer_of___two__index : two__index -> int
 
-logic eq___two__index : two__index, two__index -> bool
+predicate eq___two__index (x : two__index, y : two__index) =
+ integer_of___two__index (x) = integer_of___two__index (y)
 
-axiom eq___two__index___def :
+axiom two__index___unicity :
  forall x, y : two__index.
-  eq___two__index (x, y) = true <->
-   integer_of___two__index (x) = integer_of___two__index (y)
+  integer_of___two__index (x) = integer_of___two__index (y) <-> x = y
 
-logic two__index___in_range : int -> bool
-
-axiom two__index___in_range___def :
+predicate two__index___in_range (x : int) =
  let first = 1 in
  let last = 10 in
-  forall x : int.
-   two__index___in_range (x) = true <-> first <= x <= last
+  first <= x <= last
 
 logic two__index___of_integer : int -> two__index
 
 axiom two__index___coerce :
  forall x : int.
-  two__index___in_range (x) = true ->
+  two__index___in_range (x) ->
    integer_of___two__index (two__index___of_integer (x)) = x
 
 axiom two__index___range :
  forall x : two__index.
-  two__index___in_range (integer_of___two__index (x)) = true
+  two__index___in_range (integer_of___two__index (x))
 
 parameter two__index___of_integer_ :
  x : int ->
-  { two__index___in_range (x) = true }
+  { two__index___in_range (x) }
    two__index
   { integer_of___two__index (result) = x }
 
@@ -52,32 +49,28 @@ logic array_of___two__table : two__table -> standard__integer farray farray
 
 logic two__table___of_array : standard__integer farray farray -> two__table
 
-logic two__table___in_range : standard__integer farray farray -> bool
-
-axiom two__table___in_range___def :
+predicate two__table___in_range (x : standard__integer farray farray) =
  let length_1 = 10 in
  let length_2 = 10 in
-  forall x : standard__integer farray farray.
-   two__table___in_range (x) = true <->
-    (array_length (x) = length_1
-     and forall j2 : int.
-          0 <= j2 < length_1 -> array_length (x [j2]) = length_2)
+  array_length (x) = length_1
+  and forall j2 : int.
+       0 <= j2 < length_1 -> array_length (x [j2]) = length_2
 
-logic eq___two__table : two__table, two__table -> bool
+predicate eq___two__table (x : two__table, y : two__table) =
+ array_of___two__table (x) = array_of___two__table (y)
 
-axiom eq___two__table___def :
+axiom two__table___unicity :
  forall x, y : two__table.
-  eq___two__table (x, y) = true <->
-   array_of___two__table (x) = array_of___two__table (y)
+  array_of___two__table (x) = array_of___two__table (y) <-> x = y
 
 axiom two__table___coerce :
  forall x : standard__integer farray farray.
-  two__table___in_range (x) = true ->
+  two__table___in_range (x) ->
    array_of___two__table (two__table___of_array (x)) = x
 
 axiom two__table___range :
  forall x : two__table.
-  two__table___in_range (array_of___two__table (x)) = true
+  two__table___in_range (array_of___two__table (x))
 
 logic two__table___first1 : two__table -> two__index
 logic two__table___first2 : two__table -> two__index
@@ -85,46 +78,29 @@ logic two__table___first2 : two__table -> two__index
 logic two__table___last1 : two__table -> two__index
 logic two__table___last2 : two__table -> two__index
 
-logic two__table___range_eq : two__table, two__table -> bool
+predicate two__table___range_eq (x : two__table, y : two__table) =
+ (integer_of___two__index (two__table___first1 (x))
+   = integer_of___two__index (two__table___first1 (y)))
+ and (integer_of___two__index (two__table___first2 (x))
+   = integer_of___two__index (two__table___first2 (y)))
+ and (integer_of___two__index (two__table___last1 (x))
+      = integer_of___two__index (two__table___last1 (y)))
+ and (integer_of___two__index (two__table___last2 (x))
+      = integer_of___two__index (two__table___last2 (y)))
 
-axiom two__table___range_eq :
- forall x, y : two__table.
-  two__table___range_eq (x, y) = true <->
-  (integer_of___two__index (two__table___first1 (x))
-    = integer_of___two__index (two__table___first1 (y)))
-  and (integer_of___two__index (two__table___first2 (x))
-    = integer_of___two__index (two__table___first2 (y)))
-  and (integer_of___two__index (two__table___last1 (x))
-       = integer_of___two__index (two__table___last1 (y)))
-  and (integer_of___two__index (two__table___last2 (x))
-       = integer_of___two__index (two__table___last2 (y)))
+predicate eq___two__table___strict (x : two__table, y : two__table) =
+ array_of___two__table (x) = array_of___two__table (y)
+ and two__table___range_eq (x, y)
 
-logic eq___two__table___strict : two__table, two__table -> bool
+predicate two__table___index_check1 (a : two__table, i : two__index) =
+ integer_of___two__index (two__table___first1 (a))
+  <= integer_of___two__index (i) <=
+ integer_of___two__index (two__table___last1 (a))
 
-axiom eq___two__table___strict___def :
- forall x, y : two__table.
-  eq___two__table___strict (x, y) = true <->
-   (array_of___two__table (x) = array_of___two__table (y)
-    and two__table___range_eq (x, y) = true)
-
-logic two__table___index_check1 : two__table, two__index -> bool
-logic two__table___index_check2 : two__table, two__index -> bool
-
-axiom two__table___index_check1___def :
- forall a : two__table.
- forall i : two__index.
-  two__table___index_check1 (a, i) = true <->
-   (integer_of___two__index (two__table___first1 (a))
-     <= integer_of___two__index (i) <=
-    integer_of___two__index (two__table___last1 (a)))
-
-axiom two__table___index_check2___def :
- forall a : two__table.
- forall i : two__index.
-  two__table___index_check2 (a, i) = true <->
-   (integer_of___two__index (two__table___first2 (a))
-     <= integer_of___two__index (i) <=
-    integer_of___two__index (two__table___last2 (a)))
+predicate two__table___index_check2 (a : two__table, i : two__index) =
+ integer_of___two__index (two__table___first2 (a))
+  <= integer_of___two__index (i) <=
+ integer_of___two__index (two__table___last2 (a))
 
 axiom two__table___first_value1 :
  forall x : two__table.
@@ -174,8 +150,8 @@ axiom two__table___set_definition :
 
 parameter two__table___get_ :
  a : two__table -> i1 : two__index -> i2 : two__index ->
-  { two__table___index_check1 (a, i1) = true
-    and two__table___index_check2 (a, i2) = true }
+  { two__table___index_check1 (a, i1)
+    and two__table___index_check2 (a, i2) }
    standard__integer
   { result = two__table___get (a, i1, i2) }
 
@@ -184,8 +160,8 @@ parameter two__table___set_ :
  i1 : two__index ->
  i2 : two__index ->
  v  : standard__integer -> 
-  { two__table___index_check1 (a, i1) = true
-    and two__table___index_check2 (a, i2) = true }
+  { two__table___index_check1 (a, i1)
+    and two__table___index_check2 (a, i2) }
    unit writes a
   { a = two__table___set (a@, i1, i2, v) }
 
