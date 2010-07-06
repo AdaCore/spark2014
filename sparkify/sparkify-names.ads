@@ -68,7 +68,8 @@ package Sparkify.Names is
    Check_Position_In_Assert  : Natural     := 0;
    Check_Position_In_Prepost : Natural     := 0;
 
-   Internal_Prefix           : constant String := "Internal_";
+   Internal_Prefix           : constant Wide_String := "Internal_";
+   External_Prefix           : constant Wide_String := "External_";
 
    function "=" (Str : Wide_String; Name : Name_String) return Boolean;
    --  Tests the equality between a string extracted from the program text and

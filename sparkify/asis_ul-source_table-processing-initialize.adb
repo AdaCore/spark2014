@@ -80,6 +80,21 @@ begin
    --  third pass. This should be removed as soon as a multi-pass API is
    --  available.
 
+   Current_Pass := Printing_Data;
+   ASIS_UL.Source_Table.Processing.Process_Sources;
+   --  Globally reset all status flags to Waiting
+   for SF in First_SF_Id .. SF_Id (Natural (First_SF_Id) + Total_Sources) loop
+      if Present (SF) then
+         Set_Source_Status (SF, Waiting);
+      end if;
+   end loop;
+   --  Reinitialize Sources_Left
+   Sources_Left := Total_Sources;
+
+   --  HACK: perform a third pass over the AST in the initialization for the
+   --  fourth pass. This should be removed as soon as a multi-pass API is
+   --  available.
+
    Current_Pass := Printing_External;
    ASIS_UL.Source_Table.Processing.Process_Sources;
    --  Globally reset all status flags to Waiting
@@ -91,7 +106,7 @@ begin
    --  Reinitialize Sources_Left
    Sources_Left := Total_Sources;
 
-   --  Set the mode for the third pass
+   --  Set the mode for the fourth pass
 
    Current_Pass := Printing_Internal;
 

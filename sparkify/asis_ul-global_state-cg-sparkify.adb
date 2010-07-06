@@ -28,12 +28,10 @@ pragma Ada_2005;
 with Ada.Characters.Conversions;       use Ada.Characters.Conversions;
 
 with Asis;                             use Asis;
-with Asis.Elements;                    use Asis.Elements;
-with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
-with Sparkify.Common;                  use Sparkify.Common;
 with Sparkify.Stringset;               use Sparkify.Stringset;
-with Sparkify.Names; use Sparkify.Names;
+with Sparkify.Names;                   use Sparkify.Names;
+with Sparkify.Common;                  use Sparkify.Common;
 
 package body ASIS_UL.Global_State.CG.Sparkify is
 
@@ -76,37 +74,8 @@ package body ASIS_UL.Global_State.CG.Sparkify is
    is
       Result        : Unbounded_Wide_String;
       Next          : Node_Lists.Cursor;
-      Encl_El       : Asis.Element;
-      Encl_Name     : Unbounded_Wide_String;
       Allowed_Names : Stringset.Set;
       Name          : Stringset.Cursor;
-
-      --  Return the package enclosing element El, if any
-      function Enclosing_Package (El : Asis.Element) return Asis.Element;
-
-      function Enclosing_Package (El : Asis.Element) return Asis.Element is
-      begin
-         if Flat_Element_Kind (El) = A_Package_Declaration
-           or else Flat_Element_Kind (El) = A_Package_Body_Declaration then
-            return El;
-         else
-            if Current_Pass = Printing_Internal then
-               --  When printing the internal package, the enclosing package is
-               --  a newly created one
-               return Nil_Element;
-            else
-               declare
-                  Encl_El : constant Asis.Element := Enclosing_Element (El);
-               begin
-                  if Is_Nil (Encl_El) then
-                     return Encl_El;
-                  else
-                     return Enclosing_Package (Encl_El);
-                  end if;
-               end;
-            end if;
-         end if;
-      end Enclosing_Package;
 
       --  Return if name Name is in set Set, if Set not empty
       function Name_Allowed_In_Set (Name : Wide_String) return Boolean;
@@ -138,31 +107,23 @@ package body ASIS_UL.Global_State.CG.Sparkify is
             return;
          end if;
 
-         if Present (S) and then GS_Node_Kind (S) = A_Package then
+         --  Do not prefix own variables for packages
+         if not Is_Package_Declaration (El)
+           and then Present (S) and then GS_Node_Kind (S) = A_Package then
             declare
                Pack_Name : constant Unbounded_Wide_String :=
                              To_Unbounded_Wide_String
                                (Flat_Package_Name
                                   (To_Wide_String (GS_Node_Name (S))));
             begin
-               if Pack_Name /= Encl_Name then
-                  Stringset.Include (Allowed_Names, Pack_Name & "." & Tmp);
-                  return;
-               end if;
+               Stringset.Include (Allowed_Names, Pack_Name & "." & Tmp);
+               return;
             end;
          end if;
 
          Stringset.Include (Allowed_Names, To_Unbounded_Wide_String (Tmp));
       end Include_Name_Of_Next_Element;
    begin
-      Encl_El := Enclosing_Package (El);
-
-      if not Is_Nil (Encl_El) then
-         Encl_Name :=
-           To_Unbounded_Wide_String
-             (To_Wide_String (GS_Node_Name (Corresponding_Node (Encl_El))));
-      end if;
-
       --  Populate the set of allowed names
       Next := S.First;
       while Node_Lists.Has_Element (Next) loop

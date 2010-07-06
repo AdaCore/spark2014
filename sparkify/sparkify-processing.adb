@@ -228,11 +228,19 @@ package body Sparkify.Processing is
                                      Clause_Names (Clause);
                         begin
                            for Name_Idx in Names'Range loop
-                              Nameset.Include
-                                (Packages,
-                                 Normalized_Name
-                                   (Flat_Package_Name
-                                      (Element_Image (Names (Name_Idx)))));
+                              declare
+                                 Pack_Name : constant Wide_String :=
+                                    Flat_Package_Name
+                                      (Element_Name (Names (Name_Idx)));
+                              begin
+                                 Nameset.Include
+                                   (Packages, Normalized_Name (Pack_Name));
+                                 if Current_Pass = Printing_Internal then
+                                    Nameset.Include
+                                      (Packages, Normalized_Name
+                                         (External_Prefix & Pack_Name));
+                                 end if;
+                              end;
                            end loop;
                         end;
                      end if;
@@ -241,15 +249,29 @@ package body Sparkify.Processing is
             end Print_Inherited_Packages;
 
          begin
-            if Current_Pass = Printing_Internal then
-               --  The internal package has a with-clause on the external one
+            if Current_Pass = Printing_External
+              or else Current_Pass = Printing_Internal then
+               --  The external and internal packages have a with-clause on
+               --  the data one
                PP_Word ("with " & Unit_Name & ";");
                --  Add all possible use-type clauses in SPARK code, to make for
                --  the absence of a use-package clauses.
                Sparkify.Pre_Operations.Print_All_Use_Type (Unit_Decl);
+               --  Always inherit the data package in an external or internal
+               --  package
+               Nameset.Include (Packages, Normalized_Name (Unit_Name));
             end if;
 
-            if Is_Decl_With_Body then
+            if Current_Pass = Printing_Internal then
+               --  The internal package has a with-clause on the external one
+               PP_Word ("with " & External_Prefix & Unit_Name & ";");
+               --  Always inherit the external package in an internal package
+               Nameset.Include (Packages,
+                                Normalized_Name (External_Prefix & Unit_Name));
+            end if;
+
+            if Is_Decl_With_Body and then
+              Current_Pass in Printing_Subprograms then
                declare
                   Body_Clauses : constant Asis.Context_Clause_List :=
                                    Context_Clause_Elements (Match_Unit, True);
@@ -260,7 +282,7 @@ package body Sparkify.Processing is
                Print_Inherited_Packages (Context_Clause);
             end if;
 
-            --  Always inherit the parent package in a child package
+            --  Always with and inherit the parent package in a child package
             declare
                Encl_Unit : constant Asis.Compilation_Unit :=
                                 Corresponding_Parent_Declaration (Unit);
@@ -269,19 +291,14 @@ package body Sparkify.Processing is
                   declare
                      Encl_Element : constant Asis.Declaration :=
                                       Unit_Declaration (Encl_Unit);
+                     Parent_Name  : constant Wide_String :=
+                                      Declaration_Unique_Name (Encl_Element);
                   begin
-                     Nameset.Include
-                       (Packages,
-                        Normalized_Name
-                          (Declaration_Unique_Name (Encl_Element)));
+                     PP_Word ("with " & Parent_Name & ";");
+                     Nameset.Include (Packages, Normalized_Name (Parent_Name));
                   end;
                end if;
             end;
-
-            --  Always inherit the external package in an internal package
-            if Current_Pass = Printing_Internal then
-               Nameset.Include (Packages, Normalized_Name (Unit_Name));
-            end if;
 
             declare
                Packages_Text : constant Wide_String :=
@@ -307,7 +324,8 @@ package body Sparkify.Processing is
       In_Context_Clause := False;
       In_Unit           := True;
 
-      if Current_Pass = Printing_External
+      if (Current_Pass = Printing_Data
+          or else Current_Pass = Printing_External)
         and then Source_State.Phase = Printing_Spec then
          declare
             package Element_Container is new
@@ -375,34 +393,44 @@ package body Sparkify.Processing is
                return Concat;
             end Concat_Names;
 
-            Private_Items : constant Declarative_Item_List :=
+            Private_Items  : constant Declarative_Item_List :=
                               Private_Part_Declarative_Items
                                 (Declaration     => Unit_Decl,
                                  Include_Pragmas => False);
-            Visible_Items : constant Declarative_Item_List :=
+            Visible_Items  : constant Declarative_Item_List :=
                               Visible_Part_Declarative_Items
                                 (Declaration     => Unit_Decl,
                                  Include_Pragmas => False);
-            Decl_Items    : constant Declarative_Item_List :=
+            Decl_Items     : constant Declarative_Item_List :=
                               Private_Items & Visible_Items;
 
-            Items         : Element_Container.Vector;
+            Items          : Element_Container.Vector;
 
-            Body_Decl     : constant Asis.Declaration :=
+            Body_Decl      : constant Asis.Declaration :=
                               Corresponding_Body (Unit_Decl);
 
-            Column_Start  : constant Character_Position_Positive :=
+            Column_Start   : constant Character_Position_Positive :=
                               Element_Span (Unit_Decl).First_Column;
 
-            Pack_Names    : constant Defining_Name_List :=
+            Pack_Names     : constant Defining_Name_List :=
                               Asis.Declarations.Names (Unit_Decl);
 
-            Item          : Element_Container.Cursor;
-            Own_Items     : Element_Container.Vector;
-            Own_Str       : Unbounded_Wide_String;
-            Init_Str      : Unbounded_Wide_String;
-            Own_Set       : Stringset.Set;
+            Item           : Element_Container.Cursor;
+            Own_Items      : Element_Container.Vector;
+            Own_Str        : Unbounded_Wide_String;
+            Init_Str       : Unbounded_Wide_String;
+            Own_Set        : Stringset.Set;
+
+            This_Unit_Name : Unbounded_Wide_String;
          begin
+            if Current_Pass = Printing_Data then
+               This_Unit_Name := To_Unbounded_Wide_String (Unit_Name);
+            else
+               pragma Assert (Current_Pass = Printing_External);
+               This_Unit_Name :=
+                 To_Unbounded_Wide_String (External_Prefix & Unit_Name);
+            end if;
+
             --  First collect all declarations in both the package declaration
             --  and the package body in Items
 
@@ -459,19 +487,22 @@ package body Sparkify.Processing is
 
             pragma Assert (Pack_Names'Length = 1);
 
-            PP_Word ("package " & Unit_Name);
+            PP_Word ("package " & To_Wide_String (This_Unit_Name));
 
-            --  Print the package state annotations
-            PP_Package_State (Column      => Column_Start,
-                              Own         => To_Wide_String (Own_Str),
-                              Initializes => To_Wide_String (Init_Str));
+            if Current_Pass = Printing_Data then
+               --  Print the package state annotations
+               PP_Package_State (Column      => Column_Start,
+                                 Own         => To_Wide_String (Own_Str),
+                                 Initializes => To_Wide_String (Init_Str));
+            end if;
 
             PP_Word_Alone_On_Line ("is");
             Print_Decl (Unit_Decl);
             if Is_Decl_With_Body then
                Print_Decl (Unit_Body);
             end if;
-            PP_Word_Alone_On_Line ("end " & Unit_Name & ";");
+            PP_Word_Alone_On_Line ("end " &
+                                   To_Wide_String (This_Unit_Name) & ";");
          end;
       else
          Traverse_Source (Unit_Decl, Source_Control, Source_State);

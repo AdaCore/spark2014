@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Conversions;       use Ada.Characters.Conversions;
-
 with Asis.Extensions;                  use Asis.Extensions;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Text;                        use Asis.Text;
@@ -113,7 +111,7 @@ package body Sparkify.Post_Operations is
 
          if Current_Pass = Printing_Internal then
             --  Prefix the name of the package to differentiate it
-            PP_Word (To_Wide_String (Internal_Prefix));
+            PP_Word (Internal_Prefix);
          end if;
 
          PP_Word (Name & ";");

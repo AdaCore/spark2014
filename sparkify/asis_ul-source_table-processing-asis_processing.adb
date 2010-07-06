@@ -42,17 +42,41 @@ separate (ASIS_UL.Source_Table.Processing)
 procedure ASIS_Processing (CU : Asis.Compilation_Unit; SF : SF_Id) is
    Unit : constant Asis.Element := Unit_Declaration (CU);
    Success : Boolean;
-begin
 
+   function To_Lower (S : Wide_String) return String;
+
+   function To_Lower (S : Wide_String) return String is
+   begin
+      return To_Lower (Ada.Characters.Conversions.To_String (S));
+   end To_Lower;
+
+begin
    case Current_Pass is
       when Effects =>
          ASIS_UL.Global_State.CG.Collect_CG_Info_From_Construct (Unit);
          Set_Source_Status (SF, Processed);
-      when Printing_External =>
+      when Printing_Data =>
          case Declaration_Kind (Unit) is
             when A_Package_Declaration =>
                Set_Current_SF (SF);
                Sparkify.Output.Set_Output (SF, "", Success);
+               Sparkify.Processing.Special_Print (CU, SF);
+            when A_Package_Body_Declaration |
+                 A_Procedure_Body_Declaration |
+                 A_Procedure_Declaration |
+                 A_Function_Body_Declaration |
+                 A_Function_Declaration =>
+               --  Do not print the body of the external package
+               Set_Source_Status (SF, Processed);
+            when others =>
+               raise Not_Implemented_Yet;
+         end case;
+      when Printing_External =>
+         case Declaration_Kind (Unit) is
+            when A_Package_Declaration =>
+               Set_Current_SF (SF);
+               Sparkify.Output.Set_Output
+                 (SF, To_Lower (External_Prefix), Success);
                Sparkify.Processing.Special_Print (CU, SF);
             when A_Package_Body_Declaration |
                  A_Procedure_Body_Declaration |

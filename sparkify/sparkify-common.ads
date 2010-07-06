@@ -41,6 +41,16 @@ package Sparkify.Common is
 
    function Element_Name (Element : Asis.Element) return Wide_String;
 
+   function Get_Package_Name (Element : Asis.Element) return Wide_String;
+
+   function Is_Subprogram_Declaration (Element : Asis.Element) return Boolean;
+
+   function Is_Package_Declaration (Element : Asis.Element) return Boolean;
+
+   function Is_Package_Name (Expr : Asis.Expression) return Boolean;
+
+   function Is_Package_Level_Element (Element : Asis.Element) return Boolean;
+
    --------------------------------
    -- Errors processing and exit --
    --------------------------------
@@ -54,8 +64,10 @@ package Sparkify.Common is
    -- Resources needed for source traversing --
    --------------------------------------------
 
-   type Pass is (Effects, Printing_External, Printing_Internal);
-   subtype Printing is Pass range Printing_External .. Printing_Internal;
+   type Pass is (Effects, Printing_Data, Printing_External, Printing_Internal);
+   subtype Printing is Pass range Printing_Data .. Printing_Internal;
+   subtype Printing_Subprograms is
+     Pass range Printing_External .. Printing_Internal;
 
    Current_Pass : Pass;
 

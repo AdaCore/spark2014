@@ -31,11 +31,14 @@ with GNAT.OS_Lib;
 with Asis.Declarations;                use Asis.Declarations;
 with Asis.Text;                        use Asis.Text;
 with Asis.Elements;                    use Asis.Elements;
+with Asis.Expressions;                 use Asis.Expressions;
+with Asis.Extensions.Flat_Kinds;       use Asis.Extensions.Flat_Kinds;
 
 with ASIS_UL.Common;
 with ASIS_UL.Output;                   use ASIS_UL.Output;
 
 with Sparkify.Basic;                   use Sparkify.Basic;
+with Sparkify.Names;                   use Sparkify.Names;
 
 package body Sparkify.Common is
 
@@ -60,6 +63,75 @@ package body Sparkify.Common is
    begin
       return Trim (Element_Image (Element), Left);
    end Element_Name;
+
+   ----------------------
+   -- Get_Package_Name --
+   ----------------------
+
+   function Get_Package_Name (Element : Asis.Element) return Wide_String is
+      pragma Assert (Is_Package_Name (Element));
+      Decl      : constant Asis.Declaration :=
+                    Corresponding_Name_Declaration (Element);
+      Names     : constant Defining_Name_List :=
+                    Asis.Declarations.Names (Decl);
+      pragma Assert (Names'Length = 1);
+   begin
+      return Flat_Package_Name (Defining_Name_Image (Names (Names'First)));
+   end Get_Package_Name;
+
+   -------------------------------
+   -- Is_Subprogram_Declaration --
+   -------------------------------
+
+   function Is_Subprogram_Declaration (Element : Asis.Element) return Boolean
+   is
+   begin
+      return Element_Kind (Element) = A_Declaration and then
+        (Declaration_Kind (Element) = A_Function_Declaration or else
+           Declaration_Kind (Element) = A_Function_Body_Declaration or else
+           Declaration_Kind (Element) = A_Procedure_Declaration or else
+           Declaration_Kind (Element) = A_Procedure_Body_Declaration);
+   end Is_Subprogram_Declaration;
+
+   ----------------------------
+   -- Is_Package_Declaration --
+   ----------------------------
+
+   function Is_Package_Declaration (Element : Asis.Element) return Boolean is
+   begin
+      return Element_Kind (Element) = A_Declaration and then
+        (Declaration_Kind (Element) = A_Package_Declaration or else
+           Declaration_Kind (Element) = A_Package_Body_Declaration);
+   end Is_Package_Declaration;
+
+   ---------------------
+   -- Is_Package_Name --
+   ---------------------
+
+   function Is_Package_Name (Expr : Asis.Expression) return Boolean is
+   begin
+      if Asis.Extensions.Is_Uniquely_Defined (Expr) then
+         declare
+            Decl : constant Asis.Declaration :=
+                     Corresponding_Name_Declaration (Expr);
+         begin
+            return Is_Package_Declaration (Decl);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Package_Name;
+
+   ------------------------------
+   -- Is_Package_Level_Element --
+   ------------------------------
+
+   function Is_Package_Level_Element (Element : Asis.Element) return Boolean is
+      Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+   begin
+      return Flat_Element_Kind (Encl_Element) = A_Package_Body_Declaration
+        or else Flat_Element_Kind (Encl_Element) = A_Package_Declaration;
+   end Is_Package_Level_Element;
 
    -------------------------
    -- SLOC_Error_And_Exit --
