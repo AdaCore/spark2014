@@ -19,3 +19,7 @@ in any function that have a record amongst in its parameters.
 
 rec.ads, rec.why and rec_test.why show how this works in the case of
 "regular" records.
+
+var.ads, var.why and var_test.why shows how this works in the case of
+variant records; this is roughtly the same thing; some fields are just
+not valid for some indices. Discrimants are treated just like fields.
