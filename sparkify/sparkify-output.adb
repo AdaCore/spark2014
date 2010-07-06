@@ -100,6 +100,9 @@ package body Sparkify.Output is
       Put (" -q  - quiet mode");
       New_Line;
 
+      Put (" -noloc  - mode with no locations being printed");
+      New_Line;
+
       Put (" -v  - verbose mode");
       New_Line;
 

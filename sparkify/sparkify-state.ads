@@ -58,6 +58,9 @@ package Sparkify.State is
    Output_Prefix     : Unbounded_Wide_String;
    --  The prefix of the current line in the output source
 
+   Loc_Mode          : Boolean := True;
+   --  Controls whether locations are printed
+
    -----------------------------
    -- File Processing Control --
    -----------------------------

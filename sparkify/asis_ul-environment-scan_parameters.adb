@@ -56,6 +56,7 @@ begin
          GNAT.Command_Line.Getopt
            ("d dd I: gnatec! -RTS= v w q "       &
             "gnat05 "                            & --  Ada 2005 mode
+            "noloc "                             &
             --  output file control
             "-eol= files= pipe o= of= r rf rnb " &
             --  encoding of the result file(s)
@@ -101,6 +102,14 @@ begin
                Out_File_Format := Get_Out_File_Format (Parameter);
             elsif Full_Switch = "gnat05" then
                ASIS_UL.Options.ASIS_2005_Mode := True;
+            else
+               Brief_Help;
+               raise Parameter_Error;
+            end if;
+
+         when 'n' =>
+            if Full_Switch = "noloc" then
+               Loc_Mode := False;
             else
                Brief_Help;
                raise Parameter_Error;

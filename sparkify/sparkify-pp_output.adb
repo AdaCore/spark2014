@@ -257,9 +257,14 @@ package body Sparkify.PP_Output is
       end if;
 
       if Line > Output_Line then
-         for J in Integer range Output_Line .. Line - 1 loop
+         if Loc_Mode then
+            for J in Integer range Output_Line .. Line - 1 loop
+               PP_Close_Line;
+            end loop;
+         else
+            --  Do not add extra lines in noloc mode
             PP_Close_Line;
-         end loop;
+         end if;
       end if;
 
       if Output_Prefix /= "" and then Output_Column = 1 then
@@ -547,9 +552,11 @@ package body Sparkify.PP_Output is
          PP_Close_Line;
       end if;
       Output_Line := Line;
-      PP_Word (To_Wide_String (Output_Prefix)
-               & "--@ line" & Integer'Wide_Image (Line));
-      PP_Close_Line (Increase_Count => False);
+      if Loc_Mode then
+         PP_Word (To_Wide_String (Output_Prefix)
+                  & "--@ line" & Integer'Wide_Image (Line));
+         PP_Close_Line (Increase_Count => False);
+      end if;
    end PP_Line_Indication;
 
    ------------------------
