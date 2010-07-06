@@ -188,3 +188,9 @@ parameter two__table___last2_ :
   { }
    two__index
   { result = two__table___last2 (a) }
+
+parameter eq___two__table_ :
+ left : two__table -> right : two__table ->
+{ }
+ bool
+{ result = true <-> eq___two__table (left, right) }

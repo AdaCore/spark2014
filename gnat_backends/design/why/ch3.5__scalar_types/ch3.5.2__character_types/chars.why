@@ -24,7 +24,9 @@ axiom standard__character___range :
   standard__character___in_range (integer_of___standard__character (x)))
 
 axiom standard__character___unicity :
- (forall x, y : standard__character. eq___standard__character (x, y) <-> x = y)
+ forall x, y : standard__character.
+  integer_of___standard__character (x) = integer_of___standard__character (y)
+   <-> x = y
 
 parameter any___standard__character : unit -> { } standard__character { true }
 
@@ -40,4 +42,8 @@ parameter safe___standard__character___of_integer_ :
    standard__character
   { integer_of___standard__character (result) = x }
 
-
+parameter eq___standard__character_ :
+ left : standard__character -> right : standard__character ->
+{ }
+ bool
+{ result = true <-> eq___standard__character (left, right) }

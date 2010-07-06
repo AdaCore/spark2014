@@ -54,6 +54,12 @@ parameter safe___enum__day___of_integer_ :
    enum__day
   { integer_of___enum__day (result) = x }
 
+parameter eq___enum__day_ :
+ left : enum__day -> right : enum__day ->
+{ }
+ bool
+{ result = true <-> eq___enum__day (left, right) }
+
 
 type enum__some_a =
   | enum__QU41
@@ -95,7 +101,8 @@ axiom enum__weekday___range :
   enum__weekday___in_range (enum__day___of___enum__weekday (x)))
 
 axiom enum__weekday___unicity :
- (forall x, y : enum__weekday.
-  (eq___enum__weekday (x, y) <-> x = y))
+ forall x, y : enum__weekday.
+  enum__day___of___enum__weekday (x) = enum__day___of___enum__weekday (y)
+   <-> x = y
 
 (* ...snip parameters, similar to enum__day... *)

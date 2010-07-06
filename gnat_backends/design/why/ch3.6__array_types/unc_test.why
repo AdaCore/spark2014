@@ -10,9 +10,7 @@ let check_index
  { unc__vector___index_check (table, index) }
   (integer_of___standard__integer (unc__vector___get_ table index)
    = integer_of___standard__integer (value))
- { result = true <-> eq___standard__integer (value,
-                                             unc__vector___get (table,
-                                                                index)) }
+ { result = true <-> value = unc__vector___get (table, index) }
 
 exception Return
 
@@ -58,13 +56,10 @@ let linear_search
   with Return ->
    assert {
     found = true
-     and eq___standard__integer (value,
-                                 access (array_of___unc__vector (table),
-                                 integer_of___standard__integer (index)))
+     and value = access (array_of___unc__vector (table),
+                         integer_of___standard__integer (index))
     };
    2
   end
- { (found = true) -> eq___standard__integer
-                    (value,
-                     access (array_of___unc__vector (table),
-                             integer_of___standard__integer (index))) }
+ { found = true -> value = access (array_of___unc__vector (table),
+                                   integer_of___standard__integer (index)) }

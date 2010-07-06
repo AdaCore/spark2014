@@ -23,7 +23,8 @@ axiom fixed__volt___range :
   fixed__volt___in_range (integer_of___fixed__volt (x)))
 
 axiom fixed__volt___unicity :
- (forall x, y : fixed__volt. eq___fixed__volt (x, y) <-> x = y)
+ forall x, y : fixed__volt.
+  integer_of___fixed__volt (x) = integer_of___fixed__volt (y) <-> x = y
 
 parameter any___fixed__volt : unit -> { } fixed__volt { true }
 
@@ -76,3 +77,8 @@ parameter safe_fixed__volt___of_real_ :
    fixed__volt
   { real_of___fixed__volt (result) = x }
 
+parameter eq___fixed__volt_ :
+ left : fixed__volt -> right : fixed__volt ->
+{ }
+ bool
+{ result = true <-> eq___fixed__volt (left, right) }

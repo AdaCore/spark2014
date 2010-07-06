@@ -45,3 +45,10 @@ parameter safe___modular__byte___of_integer_ :
  { }
   modular__byte
  { integer_of___modular__byte (result) = x }
+
+parameter eq___modular__byte_ :
+ x : modular__byte -> y : modular__byte ->
+{ }
+ bool
+{ result = true <-> eq___modular__byte (x, y) }
+

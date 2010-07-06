@@ -18,6 +18,10 @@ predicate eq___arr__index
  y : arr__index) =
  integer_of___arr__index (x) = integer_of___arr__index (y)
 
+axiom arr__index___unicity :
+ forall x, y : arr__index.
+  integer_of___arr__index (x) = integer_of___arr__index (y) <-> x = y
+
 predicate arr__index___in_range (x : int) =
  let first = 1 in
  let last = 10 in
@@ -56,6 +60,10 @@ predicate arr__table___in_range (x : standard__integer farray) =
 
 predicate eq___arr__table (x : arr__table, y : arr__table) =
  array_of___arr__table (x) = array_of___arr__table (y)
+
+axiom arr__table___unicity :
+ forall x, y : arr__table.
+  array_of___arr__table (x) = array_of___arr__table (y) <-> x = y
 
 axiom arr__table___coerce :
  forall x : standard__integer farray.
@@ -139,3 +147,9 @@ parameter arr__table___last_ :
   { }
    arr__index
   { result = arr__table___last (a) }
+
+parameter eq___arr__table_ :
+ left : arr__table -> right : arr__table ->
+{ }
+ bool
+{ result = true <-> eq___arr__table (left, right) }

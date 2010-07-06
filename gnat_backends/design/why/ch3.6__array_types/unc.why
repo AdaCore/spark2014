@@ -27,6 +27,10 @@ predicate eq___unc__vector___strict (x : unc__vector, y : unc__vector) =
  array_of___unc__vector (x) = array_of___unc__vector (y)
  and unc__vector___range_eq (x, y)
 
+axiom unc__vector___unicity :
+ forall x, y : unc__vector.
+  array_of___unc__vector (x) = array_of___unc__vector (y) <-> x = y
+
 predicate unc__vector___non_empty (x : unc__vector) =
  integer_of___standard__integer (unc__vector___first (x))
   <= integer_of___standard__integer (unc__vector___last (x))
@@ -98,3 +102,9 @@ parameter unc__vector___last_ :
   { }
    standard__integer
   { result = unc__vector___last (a) }
+
+parameter eq___unc__vector_ :
+ left : unc__vector -> right : unc__vector ->
+{ }
+ bool
+{ result = true <-> eq___unc__vector___strict (left, right) }

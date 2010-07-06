@@ -23,7 +23,8 @@ axiom signed__int8___range :
   signed__int8___in_range (integer_of___signed__int8 (x)))
 
 axiom signed__int8___unicity :
- (forall x, y : signed__int8. eq___signed__int8 (x, y) <-> x = y)
+ forall x, y : signed__int8.
+  integer_of___signed__int8 (x) = integer_of___signed__int8 (y) <-> x = y
 
 parameter any___signed__int8 : unit -> { } signed__int8 { true }
 
@@ -39,4 +40,9 @@ parameter safe___signed__int8___of_integer_ :
    signed__int8
   { integer_of___signed__int8 (result) = x }
 
+parameter eq___signed__int8_ :
+ x : signed__int8 -> y : signed__int8 ->
+{ }
+ bool
+{ result = true <-> eq___signed__int8 (x, y) }
 
