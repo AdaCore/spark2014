@@ -50,6 +50,10 @@ package Sparkify.PP_Output is
 
    procedure PP_Word_Alone_On_Line (S : Program_Text);
 
+   procedure PP_Word_Alone_On_Line_At
+     (Column : Character_Position_Positive;
+      S      : Program_Text);
+
    procedure PP_Keyword (KW : Keyword_Kinds);
    --  Sends the argument keyword in proper case into the output stream.
    --  Changes Line_Pos accordingly

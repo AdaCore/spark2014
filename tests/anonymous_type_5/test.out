@@ -30,7 +30,7 @@ package body Internal_Anon_Type
 --@ line 1
                        is
    procedure To_Fix (Y : out Integer)
-is
+   is
       subtype New_Name_3 is Integer range 
 --@ line 4
                0 .. 9;

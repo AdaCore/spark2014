@@ -79,17 +79,29 @@ package body Sparkify.PP_Output is
       Output_Column := Output_Column + S'Length;
    end PP_Word;
 
+   ------------------------------
+   -- PP_Word_Alone_On_Line_At --
+   ------------------------------
+
+   procedure PP_Word_Alone_On_Line_At
+     (Column : Character_Position_Positive;
+      S      : Program_Text) is
+   begin
+      if Output_Column /= 1 then
+         PP_Close_Line;
+      end if;
+      PP_Pad (Column - 1);
+      PP_Word (S);
+      PP_Close_Line;
+   end PP_Word_Alone_On_Line_At;
+
    ---------------------------
    -- PP_Word_Alone_On_Line --
    ---------------------------
 
    procedure PP_Word_Alone_On_Line (S : Program_Text) is
    begin
-      if Output_Column /= 1 then
-         PP_Close_Line;
-      end if;
-      PP_Word (S);
-      PP_Close_Line;
+      PP_Word_Alone_On_Line_At (1, S);
    end PP_Word_Alone_On_Line;
 
    ------------------

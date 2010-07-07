@@ -63,7 +63,7 @@ package body Internal_Globals
 
 
    procedure Proc (Cond : Boolean) 
-is
+   is
 --@ line 9
       R2, W2, RW2 : Integer;
 

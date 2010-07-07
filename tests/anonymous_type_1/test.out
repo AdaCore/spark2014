@@ -51,7 +51,7 @@ package body Internal_Anon_Type
 --@ line 15
                        is
    function Increment(Var_In :  in Integer) return Integer
-is
+   is
 
       Limit          : constant Integer := 10_000;
 

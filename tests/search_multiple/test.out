@@ -86,7 +86,7 @@ package body Internal_Search
      Found2 : out Boolean;
      Index1 : out Integer;
      Index2 : out Integer)
-is
+  is
      Found : Natural := 0;
   begin
      Found1 := False;

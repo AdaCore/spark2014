@@ -728,7 +728,7 @@ package body Sparkify.Pre_Operations is
       begin
          if Decl_Items'Length /= 0 then
             Set_Current_Cursor;
-            PP_Word_Alone_On_Line ("is");
+            PP_Word_Alone_On_Line_At (Column_Start, "is");
 
             Print_Decl_List (Decl_Items, Print_Subprograms => False);
             Print_Decl_List (Decl_Items, Print_Subprograms => True);
