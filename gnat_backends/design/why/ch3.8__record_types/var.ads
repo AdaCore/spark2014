@@ -8,7 +8,7 @@ package Var is
 
    type Node_Id is range 1 .. 1000;
 
-   type Decision (Kind : Decision_Kind) is record
+   type Decision (Kind : Decision_Kind := Condition_Kind) is record
       Id : Node_Id;
 
       case Kind is

@@ -23,3 +23,6 @@ rec.ads, rec.why and rec_test.why show how this works in the case of
 var.ads, var.why and var_test.why shows how this works in the case of
 variant records; this is roughtly the same thing; some fields are just
 not valid for some indices. Discrimants are treated just like fields.
+
+var_test.ad? and tristate.ad? give an (informal) Ada equivalent for
+var_test.why, in the hope that it would help in understanding this test.
