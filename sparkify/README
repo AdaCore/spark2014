@@ -60,6 +60,9 @@ Build ASIS-for-GNAT from sources, following the instructions in README.
 Set the variable GPR_PROJECT_PATH to point to where your ASIS-for-GNAT source
 distribution is unpacked.
 
+Set the variable OPSYS to "default_Unix", "powerpc_aix" or "pa_hpux" and
+set the variable BLD to "debug" or "prod".
+
 Then call 'make' which will call 'gnatmake' (part of the GNAT distribution)
 with appropriate settings and project files.
 
