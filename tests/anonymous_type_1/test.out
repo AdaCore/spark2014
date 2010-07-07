@@ -51,23 +51,23 @@ package body Internal_Anon_Type
 --@ line 15
                        is
    function Increment(Var_In :  in Integer) return Integer
-   is
-      --  Examples of constant declarations:
+is
+
       Limit          : constant Integer := 10_000;
-      --  Examples of subtype_indication:
+
       subtype New_Name_2 is 
 --@ line 21
                        Integer range 0 .. 10;
 --@ line 21
       Var_Out        : New_Name_2            := 0;
-      --  Example of a range attribute reference
-      --  Examples of subtype_indication with multiple definition:
+
+
       subtype New_Name_3 is 
 --@ line 24
                        Integer range -Limit .. +Limit;
 --@ line 24
       A, B           : New_Name_3                    ;
-      --  Examples of subtype_indication with An_Index_Constraint:
+
       subtype New_Name_5 is Integer range 
 --@ line 26
                               1 .. 10;
@@ -86,7 +86,7 @@ package body Internal_Anon_Type
       subtype New_Name_6 is Anon_Type.Matrix (New_Name_7, New_Name_8);
 --@ line 27
       Board          : New_Name_6            ;
-      --  Examples of array_type_definition
+
       subtype New_Name_9 is Integer range 
 --@ line 29
                               1.. 10;

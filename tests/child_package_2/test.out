@@ -69,7 +69,9 @@ package body Internal_Parent_Child
 --@ line 1
                           is
 
-   procedure Swap is
+   procedure Swap 
+is
+--@ line 4
       Tmp : Integer;
    begin
       Tmp := Parent.X

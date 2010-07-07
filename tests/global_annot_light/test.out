@@ -62,10 +62,12 @@ package body Internal_Globals
 
 
 
-   procedure Proc (Cond : Boolean) is
+   procedure Proc (Cond : Boolean) 
+is
+--@ line 9
       R2, W2, RW2 : Integer;
 
-      --  Local procedure used to show global annotations
+
       procedure S 
 --@ line 12
       --# global in     Cond, Globals.R1, Globals.RW1, R2;

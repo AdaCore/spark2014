@@ -113,7 +113,9 @@ package body Internal_Globals
              + 1;
    end Direct_Read_Write;
 
-   function Indirect_Read return Integer is
+   function Indirect_Read return Integer
+is
+--@ line 19
       X : Integer;
 
       procedure Local (Proxy : in Integer)
@@ -130,7 +132,9 @@ package body Internal_Globals
       return X;
    end Indirect_Read;
 
-   procedure Indirect_Write is
+   procedure Indirect_Write 
+is
+--@ line 32
       procedure Local (Proxy : out Integer) is
       begin
          Proxy := 0;
@@ -141,7 +145,9 @@ package body Internal_Globals
               );
    end Indirect_Write;
 
-   procedure Indirect_Read_Write is
+   procedure Indirect_Read_Write 
+is
+--@ line 41
       procedure Local (Proxy : in out Integer) 
       --# pre                 Proxy < Integer'Last;
 --@ line 41
