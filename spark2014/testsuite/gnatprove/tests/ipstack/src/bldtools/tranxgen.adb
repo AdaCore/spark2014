@@ -200,6 +200,10 @@ procedure Tranxgen is
    Bodies : Unbounded_String;
    Prefix : Unbounded_String;
 
+   ---------
+   -- Box --
+   ---------
+
    procedure Box (U : in out Unit; S : String) is
       Hyphens : constant String := (1 .. S'Length + 6 => '-');
    begin
