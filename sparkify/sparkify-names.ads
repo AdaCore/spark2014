@@ -89,6 +89,7 @@ package Sparkify.Names is
                           Separator : Wide_String) return Wide_String;
 
    function Fresh_Name return Wide_String;
+   function Fresh_Name (New_Name : Wide_String) return Wide_String;
    --  Return a fresh name
 
    procedure Store_New_Name
@@ -96,5 +97,9 @@ package Sparkify.Names is
       Name : Unbounded_Wide_String);
 
    function Get_New_Name (El : Asis.Element) return Unbounded_Wide_String;
+
+   function Return_Overloaded_Name
+     (Decl : Asis.Declaration) return Unbounded_Wide_String;
+   --  To detect the subprograms name overloaded
 
 end Sparkify.Names;

@@ -45,6 +45,8 @@ package Sparkify.Common is
 
    function Is_Subprogram_Declaration (Element : Asis.Element) return Boolean;
 
+   function Is_Subprogram_Name (Expr : Asis.Expression) return Boolean;
+
    function Is_Package_Declaration (Element : Asis.Element) return Boolean;
 
    function Is_Package_Name (Expr : Asis.Expression) return Boolean;

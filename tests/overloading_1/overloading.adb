@@ -23,14 +23,19 @@ is
       begin
          T := X; X:= Y; Y:= T;
       end Swap;
+      E, F : Long_Integer;
 
    begin
       A := 10;
       B := 20;
       C := 10.0;
       D := 20.0;
+      E := 100000;
+      F := 200000;
+
       Swap (A,B);
       Swap (C,D);
+      Swap (E,F);
    end Echange;
 
 end Overloading;

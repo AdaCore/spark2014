@@ -29,8 +29,10 @@ with Ada.Strings.Wide_Fixed;           use Ada.Strings.Wide_Fixed;
 with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
 with Ada.Strings.Wide_Maps;
 with Ada.Containers.Ordered_Maps;
+with Sparkify.Stringset;               use Sparkify.Stringset;
 
 with ASIS_UL.Strings;                  use ASIS_UL.Strings;
+with Asis.Declarations;                use Asis.Declarations;
 
 package body Sparkify.Names is
 
@@ -185,6 +187,13 @@ package body Sparkify.Names is
       Trim (Natural'Wide_Image (Count_Name), Ada.Strings.Left);
    end Fresh_Name;
 
+   function Fresh_Name (New_Name : Wide_String) return Wide_String is
+   begin
+      Count_Name := Count_Name + 1;
+      return New_Name &
+      Trim (Natural'Wide_Image (Count_Name), Ada.Strings.Left);
+   end Fresh_Name;
+
    ------------------
    -- Loc_To_Names --
    ------------------
@@ -218,13 +227,55 @@ package body Sparkify.Names is
    function Get_New_Name (El : Asis.Element) return Unbounded_Wide_String is
       Loc : constant Unbounded_String :=
               To_Unbounded_String (Build_GNAT_Location (El));
-      C   : constant Cursor := Find (Loc_To_Names, Loc);
+      C   : constant Loc_To_Name_Map.Cursor := Find (Loc_To_Names, Loc);
    begin
-      if C /= No_Element then
+      if C /= Loc_To_Name_Map.No_Element then
          return Loc_To_Name_Map.Element (C);
       else
          return To_Unbounded_Wide_String ("");
       end if;
    end Get_New_Name;
+
+   ----------------------------
+   -- Return_Overloaded_Name --
+   ----------------------------
+
+   --  To store the names of subprograms no overload
+   Names : Stringset.Set;
+
+   function Return_Overloaded_Name
+     (Decl : Asis.Declaration) return Unbounded_Wide_String
+   is
+      Proc_Names    : constant Defining_Name_List :=
+                        Asis.Declarations.Names (Decl);
+      Defining_Name : Unbounded_Wide_String :=
+                        To_Unbounded_Wide_String
+                          (Defining_Name_Image
+                             (Proc_Names (Proc_Names'First)));
+      New_Name      : constant Unbounded_Wide_String := Get_New_Name (Decl);
+   begin
+      pragma Assert (Proc_Names'Length = 1);
+
+      if New_Name /= "" then
+         return New_Name;
+      else
+         if Contains (Names, Defining_Name) then
+            Defining_Name := To_Unbounded_Wide_String (Fresh_Name (
+              (Defining_Name_Image (Proc_Names (Proc_Names'First)))));
+
+            Store_New_Name (Decl, Defining_Name);
+
+            return Defining_Name;
+         else
+            Stringset.Insert (Container => Names,
+                              New_Item  => Defining_Name);
+
+            Store_New_Name (Decl, Defining_Name);
+
+            return Defining_Name;
+         end if;
+      end if;
+
+   end Return_Overloaded_Name;
 
 end Sparkify.Names;

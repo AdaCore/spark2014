@@ -112,6 +112,43 @@ package body Sparkify.Pre_Operations is
      (Element      :        Asis.Type_Definition;
       Column_Start : Character_Position_Positive) return Wide_String;
 
+   ----------------------------------
+   -- A_Defining_Identifier_Pre_Op --
+   ----------------------------------
+
+   procedure A_Defining_Identifier_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+      Encl_Element : Asis.Element := Enclosing_Element (Element);
+   begin
+      if Flat_Element_Kind (Encl_Element) = A_Defining_Expanded_Name then
+         Encl_Element := Enclosing_Element (Encl_Element);
+      end if;
+
+      if Is_Subprogram_Declaration (Encl_Element) then
+         declare
+            Corres_Decl : constant Asis.Declaration :=
+                            Corresponding_Declaration (Encl_Element);
+            Base_Name    : constant Unbounded_Wide_String :=
+                             Return_Overloaded_Name (Corres_Decl);
+         begin
+            PP_Echo_Cursor_Range (State.Echo_Cursor,
+                                  Cursor_Before (Element));
+
+            PP_Text_At (Line   => First_Line_Number (Element),
+                        Column => Element_Span (Element).First_Column,
+                        Text   => To_Wide_String (Base_Name));
+
+            State.Echo_Cursor := Cursor_After (Element);
+
+            return;
+         end;
+      end if;
+   end A_Defining_Identifier_Pre_Op;
+
    --------------------------------------
    -- A_Derived_Type_Definition_Pre_Op --
    --------------------------------------
@@ -123,60 +160,27 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
       --  get the parent subtype indication by calling
-      Parent_Subtype_Ind : constant Asis.Subtype_Indication :=
-                             Parent_Subtype_Indication (Element);
---        Parent_Decl       : constant   Asis.Declaration :=
---                               Corresponding_Parent_Subtype (Element);
+      Subtype_Ind    : constant Asis.Subtype_Indication :=
+                         Parent_Subtype_Indication (Element);
+      Encl_Element      : constant Asis.Element := Enclosing_Element (Element);
+      Encl_Decl_Name : constant Asis.Defining_Name_List :=
+                         Asis.Declarations.Names (Encl_Element);
+      Subtype_Str    : constant Wide_String := "subtype " & Defining_Name_Image
+        (Encl_Decl_Name (Encl_Decl_Name'First)) & " is ";
+
    begin
-      PP_Echo_Cursor_Range
-        (State.Echo_Cursor, Cursor_Before (Element));
-      State.Echo_Cursor := Cursor_At (Element);
-
-      if Simple_Subtype_Indication (Parent_Subtype_Ind) then
+      pragma Assert (Encl_Decl_Name'Length = 1);
+      if Cursor_At (Element) < State.Echo_Cursor then
+         --  Handling of this Element was already taken care of
          return;
-      else
-         declare
-            Constraint   : constant Asis.Constraint :=
-                             Subtype_Constraint (Parent_Subtype_Ind);
---              Subtype_Name : constant  Asis.Declaration :=
---                               Corresponding_Parent_Subtype (Element);
-            Subtype_Str  : constant Wide_String :=
-                             "--#assert Key'Base is Integer ";
-         begin
-            case Constraint_Kind (Constraint) is
-               when A_Simple_Expression_Range =>
-                  PP_Word (" range ");
-                  Traverse_Element_And_Print (Constraint);
-                  PP_Word (";");
-                  PP_Close_Line;
-                  PP_Word (Subtype_Str);
-                  State.Echo_Cursor := Cursor_After
-                    (Enclosing_Element (Element));
-               when A_Range_Attribute_Reference =>
-                  raise Not_Implemented_Yet;
-
-               when An_Index_Constraint =>
-                  raise Not_Implemented_Yet;
-
-               when A_Digits_Constraint |
-                    A_Delta_Constraint =>
-
-                  raise Not_Implemented_Yet;
-
-               when A_Discriminant_Constraint =>
-
-                  SLOC_Error_And_Exit ("discriminant constraint",
-                                       Build_GNAT_Location (Element));
-
-               when Not_A_Constraint =>
-
-                  pragma Assert (False);
-                  null;
-            end case;
-         end;
-
       end if;
 
+      PP_Echo_Cursor_Range
+        (State.Echo_Cursor, Cursor_Before (Encl_Element));
+      PP_Text_At (Line   => First_Line_Number (Encl_Element),
+                 Column => Element_Span (Encl_Element).First_Column,
+                 Text   => Subtype_Str);
+      State.Echo_Cursor := Cursor_At (Subtype_Ind);
    end A_Derived_Type_Definition_Pre_Op;
 
    -----------------------------
@@ -500,6 +504,11 @@ package body Sparkify.Pre_Operations is
                        Corresponding_Pragmas (Element);
       Parameters   : constant Asis.Parameter_Specification_List :=
                        Parameter_Profile (Element);
+      Proc_Names   : constant Defining_Name_List :=
+                       Asis.Declarations.Names (Element);
+      pragma Assert (Proc_Names'Length = 1);
+      Proc_Name    : constant Defining_Name :=
+                       Proc_Names (Proc_Names'First);
    begin
       if Current_Pass = Printing_Data then
          --  Discard subprograms during data printing
@@ -530,10 +539,13 @@ package body Sparkify.Pre_Operations is
 
          Column_Start := Element_Span (Element).First_Column;
 
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Proc_Name));
+         PP_Word (To_Wide_String (Return_Overloaded_Name (Element)));
+         State.Echo_Cursor := Cursor_After (Proc_Name);
+
          --  The parameter lists contains identifiers; they
          --  should be prefixed if needed. To do so, we should call
          --  Traverse_Source on each of them.
-
          for J in Parameters'Range loop
             Reach_Element_And_Traverse (Parameters (J), State);
          end loop;
@@ -569,9 +581,9 @@ package body Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State)
    is
       pragma Unreferenced (Control);
-
       Column_Start   : constant Character_Position_Positive :=
                          Element_Span (Element).First_Column;
+
       --  The start position of the "procedure" or "function" keyword,
       --  to align the SPARK contract and the "is" keyword that follows
 
@@ -586,8 +598,13 @@ package body Sparkify.Pre_Operations is
 
       Params         : constant Parameter_Specification_List :=
                          Parameter_Profile (Element);
+      Current_Cursor : Sparkify.Cursors.Cursor;
 
-      Current_Cursor : Cursor;
+      Proc_Names     : constant Defining_Name_List :=
+                         Asis.Declarations.Names (Element);
+      pragma Assert (Proc_Names'Length = 1);
+      Proc_Name      : constant Defining_Name :=
+                         Proc_Names (Proc_Names'First);
 
       ------------------------
       -- Set_Current_Cursor --
@@ -660,12 +677,18 @@ package body Sparkify.Pre_Operations is
          --  are only defined in the internal package, but print a declaration
          --  for those bodies without a corresponding declaration.
 
-         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
-
          if Acts_As_Spec (Element) then
+            --  Subprogram defintion serves as declaration
+            PP_Echo_Cursor_Range
+              (State.Echo_Cursor, Cursor_Before (Proc_Name));
+            PP_Word (To_Wide_String (Return_Overloaded_Name (Element)));
+            State.Echo_Cursor := Cursor_After (Proc_Name);
+
             Set_Current_Cursor;
             PP_Word (";");
             Print_SPARK_Contract;
+         else
+            PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
          end if;
 
          State.Echo_Cursor := Cursor_After (Element);
@@ -680,13 +703,16 @@ package body Sparkify.Pre_Operations is
          --  previous declarations and local subprograms (which do not have
          --  corresponding declarations in SPARK).
 
+         --  Subprogram defintion serves as declaration
+         PP_Echo_Cursor_Range  (State.Echo_Cursor, Cursor_Before (Proc_Name));
+         PP_Word (To_Wide_String (Return_Overloaded_Name (Element)));
+         State.Echo_Cursor := Cursor_After (Proc_Name);
+
          Set_Current_Cursor;
          Print_SPARK_Contract;
-
          Cursor_Next_Column (Current_Cursor);
          Skip_Blanks (Current_Cursor);
          State.Echo_Cursor := Current_Cursor;
-
       else
 
          if Has_SPARK_Contract (Pragmas) then
@@ -1066,16 +1092,26 @@ package body Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State)
    is
       pragma Unreferenced (Control);
+
+      Base_Name : Unbounded_Wide_String :=
+                    To_Unbounded_Wide_String (Element_Name (Element));
    begin
       if Asis.Extensions.Is_Uniquely_Defined (Element) then
-         if Is_Package_Name (Element) then
+
+         if Is_Subprogram_Name (Element) then
+            declare
+               Corresp_Decl : constant Asis.Declaration :=
+                                Corresponding_Name_Declaration (Element);
+            begin
+               Base_Name := Return_Overloaded_Name (Corresp_Decl);
+            end;
+         elsif Is_Package_Name (Element) then
             --  Full name of the package should be used
             declare
                Pack_Name : constant Wide_String := Get_Package_Name (Element);
             begin
                PP_Echo_Cursor_Range
                  (State.Echo_Cursor, Cursor_Before (Element));
-
                PP_Text_At (Line   => First_Line_Number (Element),
                            Column => Element_Span (Element).First_Column,
                            Text   => Pack_Name);
@@ -1087,14 +1123,29 @@ package body Sparkify.Pre_Operations is
          end if;
 
          if Is_Defined_In_Standard_Or_Current_Compilation_Unit (Element) then
-            return;
+            if Base_Name =
+              To_Unbounded_Wide_String (Element_Name (Element))
+            then
+               return;
+            else
+               PP_Echo_Cursor_Range
+                 (State.Echo_Cursor, Cursor_Before (Element));
+
+               PP_Text_At (Line   => First_Line_Number (Element),
+                           Column => Element_Span (Element).First_Column,
+                           Text   => To_Wide_String (Base_Name));
+
+               State.Echo_Cursor := Cursor_After (Element);
+
+               return;
+            end if;
          end if;
 
          --  Identifier should be prefixed by its package name
          declare
-            Base_Name     : constant Wide_String := Element_Name (Element);
             Complete_Name : constant Wide_String :=
-                              Prepend_Package_Name (Element, Base_Name);
+                              Prepend_Package_Name
+                                (Element, To_Wide_String (Base_Name));
             Prefix_S      : constant Wide_String :=
                               State.Prefix (1 .. Integer (State.Prefix_Len));
          begin

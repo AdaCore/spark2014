@@ -86,6 +86,11 @@ package Sparkify.Pre_Operations is
       State   : in out Source_Traversal_State);
    --  An_Implementation_Defined_Attribute,  -- Vendor Annex M
 
+   procedure A_Defining_Identifier_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    procedure An_Identifier_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -122,14 +127,17 @@ package Sparkify.Pre_Operations is
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
-   --  This extension consists to nominate in Spark the subtype
-   --  by giving a subtype mark at the object declaration in ADA
-   --  may include the definition of the (anonymous) type of the object.
+   --  This extension consists in translating uses of anonymous types in Ada
+   --  object declarartion in uses of named types in SPARK, with a preceding
+   --  definition for the new named types created.
 
    procedure A_Type_Declaration_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
+   --  This extension consists in translating uses of anonymous types in Ada
+   --  type declarartion in uses of named types in SPARK, with a preceding
+   --  definition for the new named types created.
 
    procedure A_Derived_Type_Definition_Pre_Op
      (Element :        Asis.Element;
@@ -218,7 +226,7 @@ package Sparkify.Pre_Operations is
    --  literal, corresponds to subtype Internal_Defining_Name_Kinds
    ------------------------------------------------------------
 
-      A_Defining_Identifier => No_Action'Access,
+      A_Defining_Identifier => A_Defining_Identifier_Pre_Op'Access,
 
       A_Defining_Character_Literal ..
       A_Defining_Enumeration_Literal =>

@@ -31,6 +31,7 @@ with Asis.Elements;                    use Asis.Elements;
 with Sparkify.PP_Output;               use Sparkify.PP_Output;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Names;                   use Sparkify.Names;
+with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 package body Sparkify.Post_Operations is
 
@@ -144,12 +145,20 @@ package body Sparkify.Post_Operations is
       Last_Cursor : constant Cursor :=
          Max_Cursor (Cursor_At_End_Of (Last_Statement), Last_Line_Cursor);
 
-      Name : constant Wide_String := Declaration_Unique_Name (Element);
+--        Name : constant Wide_String := Declaration_Unique_Name (Element);
+      Corres_Decl      :  Asis.Declaration;
+      Name             :  Unbounded_Wide_String;
    begin
+      if Acts_As_Spec (Element) then
+         Corres_Decl := Element;
+      else
+         Corres_Decl := Corresponding_Declaration (Element);
+      end if;
+      Name := Return_Overloaded_Name (Corres_Decl);
       PP_Echo_Cursor_Range (State.Echo_Cursor, Last_Cursor);
       PP_Text_At (Line   => Last_Line_Number (Element),
                   Column => Element_Span (Element).First_Column,
-                  Text   => "end " & Name & ";");
+                  Text   => "end " & To_Wide_String (Name) & ";");
       State.Echo_Cursor := Cursor_After (Element);
    end A_Subprogram_Unit_Post_Op;
 

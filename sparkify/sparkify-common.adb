@@ -88,10 +88,30 @@ package body Sparkify.Common is
    begin
       return Element_Kind (Element) = A_Declaration and then
         (Declaration_Kind (Element) = A_Function_Declaration or else
-           Declaration_Kind (Element) = A_Function_Body_Declaration or else
-           Declaration_Kind (Element) = A_Procedure_Declaration or else
-           Declaration_Kind (Element) = A_Procedure_Body_Declaration);
+         Declaration_Kind (Element) = A_Function_Body_Declaration or else
+         Declaration_Kind (Element) = A_Function_Body_Stub or else
+         Declaration_Kind (Element) = A_Procedure_Declaration or else
+         Declaration_Kind (Element) = A_Procedure_Body_Declaration or else
+         Declaration_Kind (Element) = A_Procedure_Body_Stub);
    end Is_Subprogram_Declaration;
+
+   ------------------------
+   -- Is_Subprogram_Name --
+   ------------------------
+
+   function Is_Subprogram_Name (Expr : Asis.Expression) return Boolean is
+   begin
+      if Asis.Extensions.Is_Uniquely_Defined (Expr) then
+         declare
+            Decl : constant Asis.Declaration :=
+                     Corresponding_Name_Declaration (Expr);
+         begin
+            return Is_Subprogram_Declaration (Decl);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Subprogram_Name;
 
    ----------------------------
    -- Is_Package_Declaration --
