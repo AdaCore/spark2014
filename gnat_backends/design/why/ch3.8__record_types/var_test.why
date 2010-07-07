@@ -72,7 +72,8 @@ parameter decision_eval :
  left___values    : var__node_id array ->
  right___values   : var__node_id array ->
 { forall x : int. condition_values[x] <> T_Unknown
-  and array_length (decision_table) > 1000 }
+  and 1000 < array_length (decision_table)
+  and 1000 < array_length (condition_values) }
  tristate
   reads decision_table,
         condition_values,
