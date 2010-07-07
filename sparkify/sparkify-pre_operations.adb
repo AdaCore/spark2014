@@ -700,6 +700,43 @@ package body Sparkify.Pre_Operations is
          end if;
 
       end if;
+
+      --  First print local non-subprograms, then print local subprograms,
+      --  to comply with SPARK division between declarations
+
+      declare
+         procedure Print_Decl_List
+           (Decl_Items        : Asis.Declarative_Item_List;
+            Print_Subprograms : Boolean);
+
+         procedure Print_Decl_List
+           (Decl_Items        : Asis.Declarative_Item_List;
+            Print_Subprograms : Boolean) is
+         begin
+            for J in Decl_Items'Range loop
+               if Print_Subprograms =
+                 Is_Subprogram_Declaration (Decl_Items (J))
+               then
+                  Pre_Operations.Traverse_Element_And_Print (Decl_Items (J));
+               end if;
+            end loop;
+         end Print_Decl_List;
+
+         Decl_Items : constant Declarative_Item_List :=
+                        Body_Declarative_Items
+                          (Declaration => Element, Include_Pragmas => False);
+      begin
+         if Decl_Items'Length /= 0 then
+            Set_Current_Cursor;
+            PP_Word_Alone_On_Line ("is");
+
+            Print_Decl_List (Decl_Items, Print_Subprograms => False);
+            Print_Decl_List (Decl_Items, Print_Subprograms => True);
+
+            State.Echo_Cursor := Cursor_After (Decl_Items (Decl_Items'Last));
+         end if;
+      end;
+
    end A_Subprogram_Unit_Pre_Op;
 
    -------------------------------
