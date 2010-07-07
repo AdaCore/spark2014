@@ -130,10 +130,10 @@ package body Sparkify.Pre_Operations is
 
       if Is_Subprogram_Declaration (Encl_Element) then
          declare
-            Corres_Decl : constant Asis.Declaration :=
+            Corresp_Decl : constant Asis.Declaration :=
                             Corresponding_Declaration (Encl_Element);
             Base_Name    : constant Unbounded_Wide_String :=
-                             Return_Overloaded_Name (Corres_Decl);
+                             Return_Overloaded_Name (Corresp_Decl);
          begin
             PP_Echo_Cursor_Range (State.Echo_Cursor,
                                   Cursor_Before (Element));
@@ -1712,7 +1712,7 @@ package body Sparkify.Pre_Operations is
 
                   when A_Discrete_Subtype_Indication =>
                      Type_Decl :=
-                       Corresponding_Expression_Type
+                       Corresponding_Name_Declaration
                          (Asis.Definitions.Subtype_Mark (Index_Def));
                      pragma Assert (not Is_Nil (Type_Decl));
 
