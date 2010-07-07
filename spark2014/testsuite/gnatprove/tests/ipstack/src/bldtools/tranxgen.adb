@@ -19,11 +19,20 @@ with Input_Sources.File;     use Input_Sources.File;
 
 procedure Tranxgen is
 
+   --  Each field in a protocol message is split in a number of subfields that
+   --  never cross byte boundaries.
+
    type Subfield is record
       Name      : Unbounded_String;
+      --  Subfield name
+
       Shift     : Natural;
+      --  Bit count the subfield must be shifted left when constructing the
+      --  field's value.
+
       First_Bit : Natural;
       Last_Bit  : Natural;
+      --  Firs and last bit offsets of subfield in message
    end record;
 
    package Subfield_Vectors is new Ada.Containers.Vectors
@@ -31,22 +40,52 @@ procedure Tranxgen is
 
    type Field is record
       Name      : Unbounded_String;
+      --  Field name
+
       Length    : Natural;
+      --  Total field length in bits
+
       Subfields : Subfield_Vectors.Vector;
+      --  Subfields (always at least one). The First_Bit .. Last_Bit ranges
+      --  of successive subfields are contiguous within the message, and the
+      --  sum of the lengths of these ranges is Length.
    end record;
 
    package Field_Vectors is new Ada.Containers.Vectors
      (Element_Type => Field, Index_Type => Natural);
 
-   function Img (N : Integer) return String is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
-   begin
-      return Trim (N'Img, Both);
-   end Img;
+   function Img (N : Integer) return String;
+   --  Trimmed image of N
 
    function First_Element_Child (N : Node) return Node;
+   --  Return the first child of N that is an Element_Node
+
    function Next_Element_Sibling (N : Node) return Node;
+   --  Return the next sibling of N that is an Element_Node
+
+   procedure Walk_Siblings
+     (N : Node;
+      P : access procedure (N : Node));
+   --  Apply P to N and each of its (element) siblings
+
+   function Get_Attribute_With_Default
+     (N        : Node;
+      Att_Name : String;
+      Default  : String) return String;
+   --  Return the value of attribute Att_Name of node N, or Default if empty
+   --  or missing.
+
+   procedure Process_Message (N : Node);
+   --  Process a <message> element
+
+   procedure Process_Package (N : Node);
+   --  Process a <package> element, generate Ada package spec and body
+
+   Bodies : Unbounded_String;
+
+   -------------------------
+   -- First_Element_Child --
+   -------------------------
 
    function First_Element_Child (N : Node) return Node is
       CN : Node := First_Child (N);
@@ -57,6 +96,39 @@ procedure Tranxgen is
       return CN;
    end First_Element_Child;
 
+   --------------------------------
+   -- Get_Attribute_With_Default --
+   --------------------------------
+
+   function Get_Attribute_With_Default
+     (N        : Node;
+      Att_Name : String;
+      Default  : String) return String
+   is
+      Val : constant String := Get_Attribute (N, Att_Name);
+   begin
+      if Val = "" then
+         return Default;
+      else
+         return Val;
+      end if;
+   end Get_Attribute_With_Default;
+
+   ---------
+   -- Img --
+   ---------
+
+   function Img (N : Integer) return String is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+   begin
+      return Trim (N'Img, Both);
+   end Img;
+
+   --------------------------
+   -- Next_Element_Sibling --
+   --------------------------
+
    function Next_Element_Sibling (N : Node) return Node is
       SN : Node := Next_Sibling (N);
    begin
@@ -66,83 +138,77 @@ procedure Tranxgen is
       return SN;
    end Next_Element_Sibling;
 
-   procedure Debug_Node (Msg : String; N : Node);
-   procedure Debug_Node (Msg : String; N : Node) is
-   begin
-      Put_Line (Msg);
-      Put_Line ("  Name: " & Node_Name (N));
-      Put_Line ("  Type: " & Node_Type (N)'Img);
-   end Debug_Node;
+   ---------------------
+   -- Process_Message --
+   ---------------------
 
-   procedure Walk_Siblings
-     (N : Node;
-      P : access procedure (N : Node));
-   --  Apply P to N and each of its siblings
-
-   procedure Walk_Siblings
-     (N : Node;
-      P : access procedure (N : Node))
-   is
-      NN : Node := N;
-   begin
-      while NN /= null loop
-         P (NN);
-         NN := Next_Element_Sibling (NN);
-      end loop;
-   end Walk_Siblings;
-
-   procedure Gen_Message_Decl (N : Node);
-   --  Generate type declaration for <message> element
-
-   procedure Gen (N : Node);
-   --  Process a <package> element, generate Ada package spec and body
-
-   Bodies : Unbounded_String;
-
-   procedure Gen_Message_Decl (N : Node) is
+   procedure Process_Message (N : Node) is
       use Ada.Strings;
       use Ada.Strings.Fixed;
 
       Message_Name : constant String := Get_Attribute (N, "name");
 
-      function Get_Ptr_Type return String is
-         Ptrtype_Attr : constant String := Get_Attribute (N, "ptrtype");
-      begin
-         if Ptrtype_Attr = "" then
-            return "System.Address";
-         else
-            return Ptrtype_Attr;
-         end if;
-      end Get_Ptr_Type;
-
-      Ptr_Type : constant String := Get_Ptr_Type;
+      Ptr_Type : constant String := Get_Attribute_With_Default (N,
+                                      Att_Name => "ptrtype",
+                                      Default  => "System.Address");
 
       Max_Field_Name_Length    : Natural := 0;
+      --  Length of longest field name
+
       Max_Subfield_Name_Length : Natural := 0;
+      --  Length of longest subfield name
 
       Current_Bit_Offset : Natural := 0;
 
       Fields : Field_Vectors.Vector;
 
+      function Field_Type (F : Field) return String;
+      --  Return type name for field F (used in accessors)
+
+      function Subfield_Type (SF : Subfield) return String;
+      --  Return type name for subfield SF (used in component declaration)
+
+      procedure Process_Field (N : Node);
+      --  Process <field> element
+
+      -------------------
+      -- Process_Field --
+      -------------------
+
       procedure Process_Field (N : Node) is
          Field_Name      : constant String := Get_Attribute (N, "name");
          Field_Length    : constant Natural :=
                              Integer'Value (Get_Attribute (N, "length"));
+
          Remain_Length   : Natural := Field_Length;
+         --  Count of bits to be assigned to further subfields
 
          Subfields       : Subfield_Vectors.Vector;
 
          Subfield        : Natural := 0;
+         --  Index of current subfield
+
          Subfield_Length : Natural;
+         --  Length of current subfield
+
          Subfield_Name   : Unbounded_String;
+         --  Name of current subfield
 
       --  Start of processing for Process_Field
 
       begin
          while Remain_Length > 0 loop
+            --  Length of next subfield is remaining length, but not going
+            --  further than the end of the current byte.
+
             Subfield_Length :=
               Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
+
             Subfield_Name := To_Unbounded_String (Field_Name);
+
+            --  For the case of a field that has multiple subfields, suffix
+            --  field name with subfield index.
+
             if Subfield > 0 or else Subfield_Length < Remain_Length then
                Append (Subfield_Name, "_" & Img (Subfield));
             end if;
@@ -157,22 +223,32 @@ procedure Tranxgen is
                 Shift     => Remain_Length - Subfield_Length));
 
             Current_Bit_Offset := Current_Bit_Offset + Subfield_Length;
-            Remain_Length := Remain_Length - Subfield_Length;
+            Remain_Length      := Remain_Length - Subfield_Length;
+
             Subfield := Subfield + 1;
          end loop;
 
          Max_Field_Name_Length :=
            Natural'Max (Field_Name'Length, Max_Field_Name_Length);
+
          Fields.Append
            ((Name      => To_Unbounded_String (Field_Name),
              Length    => Field_Length,
              Subfields => Subfields));
       end Process_Field;
 
+      ----------------
+      -- Field_Type --
+      ----------------
+
       function Field_Type (F : Field) return String is
       begin
          return "U" & Img (F.Length) & "_T";
       end Field_Type;
+
+      -------------------
+      -- Subfield_Type --
+      -------------------
 
       function Subfield_Type (SF : Subfield) return String is
       begin
@@ -180,6 +256,8 @@ procedure Tranxgen is
       end Subfield_Type;
 
       First_Field : constant Node := First_Element_Child (N);
+
+   --  Start of processing for Process_Message
 
    begin
       if Node_Name (N) /= "message" then
@@ -191,7 +269,27 @@ procedure Tranxgen is
       --  Generate record declaration
 
       Put_Line ("type " & Message_Name & " is record");
-      declare
+      Field_Declarations : declare
+         procedure Field_Decl (FC : Field_Vectors.Cursor);
+         --  Generate component declarations for all subfields of field
+
+         procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor);
+         --  Generate component declaration for subfield
+
+         ----------------
+         -- Field_Decl --
+         ----------------
+
+         procedure Field_Decl (FC : Field_Vectors.Cursor) is
+            F : Field renames Field_Vectors.Element (FC);
+         begin
+            F.Subfields.Iterate (Subfield_Decl'Access);
+         end Field_Decl;
+
+         -------------------
+         -- Subfield_Decl --
+         -------------------
+
          procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor) is
             SF : Subfield renames Subfield_Vectors.Element (SFC);
          begin
@@ -205,14 +303,11 @@ procedure Tranxgen is
             New_Line;
          end Subfield_Decl;
 
-         procedure Field_Decl (FC : Field_Vectors.Cursor) is
-            F : Field renames Field_Vectors.Element (FC);
-         begin
-            F.Subfields.Iterate (Subfield_Decl'Access);
-         end Field_Decl;
+      --  Start of processing for Field_Declarations
+
       begin
          Fields.Iterate (Field_Decl'Access);
-      end;
+      end Field_Declarations;
       Put_Line ("end record;");
       New_Line;
 
@@ -221,7 +316,28 @@ procedure Tranxgen is
       Put_Line ("for " & Message_Name & "'Bit_Order"
                 & " use System.High_Order_First;");
       Put_Line ("for " & Message_Name & " use record");
-      declare
+
+      Representation_Clauses : declare
+         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor);
+         --  Generate representation clauses for all subfields of field
+
+         procedure Subfield_Rep_Clause (SFC : Subfield_Vectors.Cursor);
+         --  Generate representation clause for subfield
+
+         ----------------------
+         -- Field_Rep_Clause --
+         ----------------------
+
+         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor) is
+            F : Field renames Field_Vectors.Element (FC);
+         begin
+            F.Subfields.Iterate (Subfield_Rep_Clause'Access);
+         end Field_Rep_Clause;
+
+         -------------------------
+         -- Subfield_Rep_Clause --
+         -------------------------
+
          procedure Subfield_Rep_Clause (SFC : Subfield_Vectors.Cursor) is
             SF : Subfield renames Subfield_Vectors.Element (SFC);
          begin
@@ -232,21 +348,18 @@ procedure Tranxgen is
                       & " .. "    & Img (SF.Last_Bit mod 8) & ";");
          end Subfield_Rep_Clause;
 
-         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor) is
-            F : Field renames Field_Vectors.Element (FC);
-         begin
-            F.Subfields.Iterate (Subfield_Rep_Clause'Access);
-         end Field_Rep_Clause;
+      --  Start of processing for Representation_Clauses
+
       begin
          Fields.Iterate (Field_Rep_Clause'Access);
-      end;
+      end Representation_Clauses;
 
       Put_Line ("end record;");
       New_Line;
 
       --  Generate accessor declarations and bodies
 
-      declare
+      Accessors : declare
          procedure Field_Accessors (FC : Field_Vectors.Cursor) is
             F           : Field renames Field_Vectors.Element (FC);
             FT          : constant String := Field_Type (F);
@@ -259,21 +372,39 @@ procedure Tranxgen is
                             "function  " & Padded_Name
                             & "     (MP : " & Ptr_Type & ") return "
                             & Field_Type (F);
+
             Set_Profile : constant String :=
                             "procedure Set_"
                             & Padded_Name
                             & " (MP : " & Ptr_Type & "; V : "
                             & Field_Type (F) & ")";
 
+            procedure BP (S : String);
+            --  Append S to body
+
+            procedure BPL (S : String);
+            --  Append S and new line to body
+
+            --------
+            -- BP --
+            --------
+
             procedure BP (S : String) is
             begin
                Append (Bodies, S);
             end BP;
 
+            ---------
+            -- BPL --
+            ---------
+
             procedure BPL (S : String) is
             begin
                BP (S & ASCII.LF);
             end BPL;
+
+         --  Start of processing for Field_Accessors
+
          begin
             Put_Line (Get_Profile & ";");
             Put_Line (Set_Profile & ";");
@@ -285,8 +416,13 @@ procedure Tranxgen is
             BPL ("   pragma Import (Ada, M);");
             BPL ("begin");
             BP  ("   return ");
-            declare
+
+            Get_Subfields : declare
                First_Subfield : Boolean := True;
+               --  Set True for the first subfield only
+
+               procedure Get_Subfield (SFC : Subfield_Vectors.Cursor);
+               --  Generate subexpression for subfield
 
                procedure Get_Subfield (SFC : Subfield_Vectors.Cursor) is
                   SF      : Subfield renames Subfield_Vectors.Element (SFC);
@@ -295,7 +431,7 @@ procedure Tranxgen is
                begin
                   if not First_Subfield then
                      BPL ("");
-                     BP ("      + ");
+                     BP ("         + ");
                   end if;
 
                   if Convert then
@@ -312,20 +448,36 @@ procedure Tranxgen is
 
                   First_Subfield := False;
                end Get_Subfield;
+
+            --  Start of processing for Get_Subfields
+
             begin
                F.Subfields.Iterate (Get_Subfield'Access);
                BPL (";");
-            end;
+            end Get_Subfields;
+
             BPL ("end " & Field_Name & ";");
             BPL ("");
+
+            --  Setter
 
             BPL (Set_Profile & " is");
             BPL ("   M : " & Message_Name & ";");
             BPL ("   for M'Address use MP;");
             BPL ("   pragma Import (Ada, M);");
             BPL ("begin");
-            declare
+
+            Set_Subfields : declare
                Prev_Shift : Natural := 0;
+               --  Shift amount of previous subfield
+
+               procedure Set_Subfield (SFC : Subfield_Vectors.Cursor);
+               --  Generate assignment to subfield
+
+               ------------------
+               -- Set_Subfield --
+               ------------------
+
                procedure Set_Subfield (SFC : Subfield_Vectors.Cursor) is
                   SF      : Subfield renames Subfield_Vectors.Element (SFC);
                   SFT     : constant String := Subfield_Type (SF);
@@ -358,27 +510,38 @@ procedure Tranxgen is
                   end if;
                   BPL (";");
                end Set_Subfield;
+
+            --  Start of processing for Set_Subfields
+
             begin
                F.Subfields.Iterate (Set_Subfield'Access);
-            end;
+            end Set_Subfields;
+
             BPL ("end Set_" & Field_Name & ";");
             BPL ("");
          end Field_Accessors;
+
+      --  Start of processing for Accessors
+
       begin
          Fields.Iterate (Field_Accessors'Access);
-      end;
-   end Gen_Message_Decl;
+      end Accessors;
+   end Process_Message;
 
-   procedure Gen (N : Node) is
+   ---------------------
+   -- Process_Package --
+   ---------------------
+
+   procedure Process_Package (N : Node) is
       Package_Name : constant String := Get_Attribute (N, "name");
    begin
       if Node_Name (N) /= "package" then
-         Debug_Node ("Unexpected element in Gen", N);
          raise Program_Error with "unexpected element: " & Node_Name (N);
       end if;
 
       Put_Line ("pragma Ada_2005;");
       Put_Line ("with System;");
+
       declare
          Imports : Node_List :=
                      Elements.Get_Elements_By_Tag_Name (N, "import");
@@ -402,14 +565,30 @@ procedure Tranxgen is
       end;
 
       Put_Line ("package " & Package_Name & " is");
-      Walk_Siblings (First_Element_Child (N), Gen_Message_Decl'Access);
+      Walk_Siblings (First_Element_Child (N), Process_Message'Access);
       Put_Line ("end " & Package_Name & ";");
       New_Line;
 
       Put_Line ("package body " & Package_Name & " is");
       Put_Line (To_String (Bodies));
       Put_Line ("end " & Package_Name & ";");
-   end Gen;
+   end Process_Package;
+
+   -------------------
+   -- Walk_Siblings --
+   -------------------
+
+   procedure Walk_Siblings
+     (N : Node;
+      P : access procedure (N : Node))
+   is
+      NN : Node := N;
+   begin
+      while NN /= null loop
+         P (NN);
+         NN := Next_Element_Sibling (NN);
+      end loop;
+   end Walk_Siblings;
 
    Input : File_Input;
    Read  : DOM.Readers.Tree_Reader;
@@ -425,7 +604,7 @@ begin
    Doc  := Get_Tree (Read);
    Root := Get_Element (Doc);
 
-   Gen (Root);
+   Process_Package (Root);
 
    Free (Read);
    Close (Input);
