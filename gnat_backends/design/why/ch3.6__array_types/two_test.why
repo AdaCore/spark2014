@@ -72,7 +72,7 @@ let linear_search
     assert { found = false
              and j1 = integer_of___two__index (two__table___last1 (table))
                       + 1 };
-    1
+    void
   end
   with Return ->
    assert {
@@ -83,7 +83,7 @@ let linear_search
                                    two__index___of_integer
                                     (integer_of___standard__integer (i2)))
     };
-   2
+    void
   end
  { found = true ->
     value = two__table___get (table,
