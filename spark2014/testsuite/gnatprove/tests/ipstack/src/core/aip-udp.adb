@@ -7,9 +7,9 @@ with AIP.Inet, AIP.IPH, AIP.UDPH;
 
 package body AIP.UDP is
 
-   --------------------
-   -- Datastructures --
-   --------------------
+   ---------------------
+   -- Data structures --
+   ---------------------
 
    --  PCB_IDs are indexes into a static array of PCBs, maintained together
    --  with a list of those bound to a local addr/port endpoint. This list is
@@ -89,6 +89,10 @@ package body AIP.UDP is
    -- UDP_Input internals --
    -------------------------
 
+   ---------------
+   -- IP_To_UDP --
+   ---------------
+
    procedure IP_To_UDP
      (Buf  : Buffers.Buffer_Id;
       Uhdr : out AIP.IPTR_T;
@@ -117,6 +121,10 @@ package body AIP.UDP is
          Uhdr := Buffers.Buffer_Payload (Buf);
       end if;
    end IP_To_UDP;
+
+   -----------------
+   -- UDP_PCB_For --
+   -----------------
 
    function UDP_PCB_For
      (Ihdr, Uhdr : AIP.IPTR_T; Netif : NIF.Netif_Id) return AIP.EID
