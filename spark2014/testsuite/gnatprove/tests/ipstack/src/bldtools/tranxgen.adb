@@ -82,6 +82,7 @@ procedure Tranxgen is
    --  Process a <package> element, generate Ada package spec and body
 
    Bodies : Unbounded_String;
+   Prefix : Unbounded_String;
 
    -------------------------
    -- First_Element_Child --
@@ -264,6 +265,8 @@ procedure Tranxgen is
          return;
       end if;
 
+      Prefix := To_Unbounded_String (Get_Attribute (N, "prefix"));
+
       Walk_Siblings (First_Field, Process_Field'Access);
 
       --  Generate record declaration
@@ -363,20 +366,21 @@ procedure Tranxgen is
          procedure Field_Accessors (FC : Field_Vectors.Cursor) is
             F           : Field renames Field_Vectors.Element (FC);
             FT          : constant String := Field_Type (F);
-            Field_Name  : constant String := To_String (F.Name);
+            Field_Name  : constant String := To_String (Prefix & F.Name);
 
             Padded_Name : constant String :=
-                            Head (Field_Name, Max_Field_Name_Length);
+                            Head (Field_Name,
+                                  Length (Prefix) + Max_Field_Name_Length);
 
             Get_Profile : constant String :=
                             "function  " & Padded_Name
-                            & "     (MP : " & Ptr_Type & ") return "
+                            & "     (M : " & Message_Name & ") return "
                             & Field_Type (F);
 
             Set_Profile : constant String :=
                             "procedure Set_"
                             & Padded_Name
-                            & " (MP : " & Ptr_Type & "; V : "
+                            & " (M : in out " & Message_Name & "; V : "
                             & Field_Type (F) & ")";
 
             procedure BP (S : String);
@@ -411,9 +415,6 @@ procedure Tranxgen is
             New_Line;
 
             BPL (Get_Profile & " is");
-            BPL ("   M : " & Message_Name & ";");
-            BPL ("   for M'Address use MP;");
-            BPL ("   pragma Import (Ada, M);");
             BPL ("begin");
             BP  ("   return ");
 
@@ -431,7 +432,7 @@ procedure Tranxgen is
                begin
                   if not First_Subfield then
                      BPL ("");
-                     BP ("         + ");
+                     BP ("        + ");
                   end if;
 
                   if Convert then
@@ -462,9 +463,6 @@ procedure Tranxgen is
             --  Setter
 
             BPL (Set_Profile & " is");
-            BPL ("   M : " & Message_Name & ";");
-            BPL ("   for M'Address use MP;");
-            BPL ("   pragma Import (Ada, M);");
             BPL ("begin");
 
             Set_Subfields : declare
@@ -570,7 +568,7 @@ procedure Tranxgen is
       New_Line;
 
       Put_Line ("package body " & Package_Name & " is");
-      Put_Line (To_String (Bodies));
+      Put      (To_String (Bodies));
       Put_Line ("end " & Package_Name & ";");
    end Process_Package;
 
