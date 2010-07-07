@@ -6,6 +6,7 @@
 pragma Ada_2005;
 
 with Ada.Command_Line;       use Ada.Command_Line;
+with Ada.Containers.Vectors;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;            use Ada.Text_IO;
@@ -17,6 +18,25 @@ with DOM.Readers;            use DOM.Readers;
 with Input_Sources.File;     use Input_Sources.File;
 
 procedure Tranxgen is
+
+   type Subfield is record
+      Name      : Unbounded_String;
+      Shift     : Natural;
+      First_Bit : Natural;
+      Last_Bit  : Natural;
+   end record;
+
+   package Subfield_Vectors is new Ada.Containers.Vectors
+     (Element_Type => Subfield, Index_Type => Natural);
+
+   type Field is record
+      Name      : Unbounded_String;
+      Length    : Natural;
+      Subfields : Subfield_Vectors.Vector;
+   end record;
+
+   package Field_Vectors is new Ada.Containers.Vectors
+     (Element_Type => Field, Index_Type => Natural);
 
    function Img (N : Integer) return String is
       use Ada.Strings;
@@ -77,84 +97,87 @@ procedure Tranxgen is
    procedure Gen (N : Node);
    --  Process a <package> element, generate Ada package spec and body
 
+   Bodies : Unbounded_String;
+
    procedure Gen_Message_Decl (N : Node) is
       use Ada.Strings;
       use Ada.Strings.Fixed;
 
       Message_Name : constant String := Get_Attribute (N, "name");
-      Max_Field_Name_Length : Natural := 0;
 
-      function Get_Word_Size return Natural is
-         WS : constant String := Get_Attribute (N, "wordsize");
+      function Get_Ptr_Type return String is
+         Ptrtype_Attr : constant String := Get_Attribute (N, "ptrtype");
       begin
-         if WS = "" then
-            return 8;
+         if Ptrtype_Attr = "" then
+            return "System.Address";
          else
-            return Natural'Value (WS);
+            return Ptrtype_Attr;
          end if;
-      end Get_Word_Size;
+      end Get_Ptr_Type;
 
-      Word_Size : constant Natural := Get_Word_Size;
-      Word_Units : constant Natural := Word_Size / 8;
+      Ptr_Type : constant String := Get_Ptr_Type;
+
+      Max_Field_Name_Length    : Natural := 0;
+      Max_Subfield_Name_Length : Natural := 0;
+
       Current_Bit_Offset : Natural := 0;
 
-      procedure Update_Max_Field_Name_Length (N : Node) is
-         Name : constant String  := Get_Attribute (N, "name");
-         L    : constant Natural := Name'Length;
+      Fields : Field_Vectors.Vector;
+
+      procedure Process_Field (N : Node) is
+         Field_Name      : constant String := Get_Attribute (N, "name");
+         Field_Length    : constant Natural :=
+                             Integer'Value (Get_Attribute (N, "length"));
+         Remain_Length   : Natural := Field_Length;
+
+         Subfields       : Subfield_Vectors.Vector;
+
+         Subfield        : Natural := 0;
+         Subfield_Length : Natural;
+         Subfield_Name   : Unbounded_String;
+
+      --  Start of processing for Process_Field
+
       begin
-         if L > Max_Field_Name_Length then
-            Max_Field_Name_Length := L;
-         end if;
-      end Update_Max_Field_Name_Length;
-
-      procedure Gen_Field_Decl (N : Node) is
-         Field_Name   : constant String := Get_Attribute (N, "name");
-         Field_Length : constant Integer :=
-                          Integer'Value (Get_Attribute (N, "length"));
-         Field_Type   : constant String :=
-                          "U" & Img (Field_Length) & "_T";
-      begin
-         Put_Line ("   " & Head (Field_Name, Max_Field_Name_Length) & " : "
-                         & Field_Type & ";");
-      end Gen_Field_Decl;
-
-      procedure Gen_Field_Rep_Clause (N : Node) is
-         use Ada.Strings.Fixed;
-         Field_Name   : constant String := Get_Attribute (N, "name");
-         Field_Length : constant Integer :=
-                           Integer'Value (Get_Attribute (N, "length"));
-
-         Word_Offset  : constant Natural := Current_Bit_Offset / Word_Size;
-
-         Bit_Range_Lo : constant Natural := Current_Bit_Offset mod Word_Size;
-         Bit_Range_Hi : constant Natural := Bit_Range_Lo + Field_Length - 1;
-         pragma Assert (Bit_Range_Hi < Word_Size);
-         Bit_Range    : constant array (Boolean) of Natural :=
-                          (False => Bit_Range_Hi, True => Bit_Range_Lo);
-
-         Field_Position : constant String :=
-                            Img (Word_Offset) & "*" & Img (Word_Units);
-
-         function Bit_Bound (Low : Boolean) return String is
-         begin
-            if True then
-               return "BE*" & Img (Bit_Range (Low)) &
-                   " + LE*" & Img (Word_Size - 1 - Bit_Range (not Low));
-            else
-               return Img (Bit_Range (Low));
+         while Remain_Length > 0 loop
+            Subfield_Length :=
+              Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
+            Subfield_Name := To_Unbounded_String (Field_Name);
+            if Subfield > 0 or else Subfield_Length < Remain_Length then
+               Append (Subfield_Name, "_" & Img (Subfield));
             end if;
-         end Bit_Bound;
 
-         Field_Range  : constant String :=
-                          Bit_Bound (Low => True)
-                            & " .. " &
-                          Bit_Bound (Low => False);
+            Max_Subfield_Name_Length :=
+              Natural'Max (Length (Subfield_Name), Max_Subfield_Name_Length);
+
+            Subfields.Append
+              ((Name      => Subfield_Name,
+                First_Bit => Current_Bit_Offset,
+                Last_Bit  => Current_Bit_Offset + Subfield_Length - 1,
+                Shift     => Remain_Length - Subfield_Length));
+
+            Current_Bit_Offset := Current_Bit_Offset + Subfield_Length;
+            Remain_Length := Remain_Length - Subfield_Length;
+            Subfield := Subfield + 1;
+         end loop;
+
+         Max_Field_Name_Length :=
+           Natural'Max (Field_Name'Length, Max_Field_Name_Length);
+         Fields.Append
+           ((Name      => To_Unbounded_String (Field_Name),
+             Length    => Field_Length,
+             Subfields => Subfields));
+      end Process_Field;
+
+      function Field_Type (F : Field) return String is
       begin
-         Put_Line ("   " & Head (Field_Name, Max_Field_Name_Length)
-                   & " at " & Field_Position
-                   & " range " & Field_Range & ";");
-         Current_Bit_Offset := Current_Bit_Offset + Field_Length;
-      end Gen_Field_Rep_Clause;
+         return "U" & Img (F.Length) & "_T";
+      end Field_Type;
+
+      function Subfield_Type (SF : Subfield) return String is
+      begin
+         return "U" & Img (SF.Last_Bit - SF.First_Bit + 1) & "_T";
+      end Subfield_Type;
 
       First_Field : constant Node := First_Element_Child (N);
 
@@ -163,18 +186,187 @@ procedure Tranxgen is
          return;
       end if;
 
-      Walk_Siblings (First_Field, Update_Max_Field_Name_Length'Access);
-      Put_Line ("type " & Message_Name & " is record");
-      Walk_Siblings (First_Field, Gen_Field_Decl'Access);
-      Put_Line ("end record;");
+      Walk_Siblings (First_Field, Process_Field'Access);
 
+      --  Generate record declaration
+
+      Put_Line ("type " & Message_Name & " is record");
+      declare
+         procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor) is
+            SF : Subfield renames Subfield_Vectors.Element (SFC);
+         begin
+            Put ("   "
+                 & Head (To_String (SF.Name), Max_Subfield_Name_Length)
+                 & " : " & Subfield_Type (SF)
+                 & ";");
+            if SF.Shift > 0 then
+               Put (" --  Shift=" & Img (SF.Shift));
+            end if;
+            New_Line;
+         end Subfield_Decl;
+
+         procedure Field_Decl (FC : Field_Vectors.Cursor) is
+            F : Field renames Field_Vectors.Element (FC);
+         begin
+            F.Subfields.Iterate (Subfield_Decl'Access);
+         end Field_Decl;
+      begin
+         Fields.Iterate (Field_Decl'Access);
+      end;
+      Put_Line ("end record;");
       New_Line;
+
+      --  Generate rep clause
 
       Put_Line ("for " & Message_Name & "'Bit_Order"
                 & " use System.High_Order_First;");
       Put_Line ("for " & Message_Name & " use record");
-      Walk_Siblings (First_Field, Gen_Field_Rep_Clause'Access);
+      declare
+         procedure Subfield_Rep_Clause (SFC : Subfield_Vectors.Cursor) is
+            SF : Subfield renames Subfield_Vectors.Element (SFC);
+         begin
+            Put_Line ("   "
+                      & Head (To_String (SF.Name), Max_Subfield_Name_Length)
+                      & " at "    & Img (SF.First_Bit / 8)
+                      & " range " & Img (SF.First_Bit mod 8)
+                      & " .. "    & Img (SF.Last_Bit mod 8) & ";");
+         end Subfield_Rep_Clause;
+
+         procedure Field_Rep_Clause (FC : Field_Vectors.Cursor) is
+            F : Field renames Field_Vectors.Element (FC);
+         begin
+            F.Subfields.Iterate (Subfield_Rep_Clause'Access);
+         end Field_Rep_Clause;
+      begin
+         Fields.Iterate (Field_Rep_Clause'Access);
+      end;
+
       Put_Line ("end record;");
+      New_Line;
+
+      --  Generate accessor declarations and bodies
+
+      declare
+         procedure Field_Accessors (FC : Field_Vectors.Cursor) is
+            F           : Field renames Field_Vectors.Element (FC);
+            FT          : constant String := Field_Type (F);
+            Field_Name  : constant String := To_String (F.Name);
+
+            Padded_Name : constant String :=
+                            Head (Field_Name, Max_Field_Name_Length);
+
+            Get_Profile : constant String :=
+                            "function  " & Padded_Name
+                            & "     (MP : " & Ptr_Type & ") return "
+                            & Field_Type (F);
+            Set_Profile : constant String :=
+                            "procedure Set_"
+                            & Padded_Name
+                            & " (MP : " & Ptr_Type & "; V : "
+                            & Field_Type (F) & ")";
+
+            procedure BP (S : String) is
+            begin
+               Append (Bodies, S);
+            end BP;
+
+            procedure BPL (S : String) is
+            begin
+               BP (S & ASCII.LF);
+            end BPL;
+         begin
+            Put_Line (Get_Profile & ";");
+            Put_Line (Set_Profile & ";");
+            New_Line;
+
+            BPL (Get_Profile & " is");
+            BPL ("   M : " & Message_Name & ";");
+            BPL ("   for M'Address use MP;");
+            BPL ("   pragma Import (Ada, M);");
+            BPL ("begin");
+            BP  ("   return ");
+            declare
+               First_Subfield : Boolean := True;
+
+               procedure Get_Subfield (SFC : Subfield_Vectors.Cursor) is
+                  SF      : Subfield renames Subfield_Vectors.Element (SFC);
+                  SFT     : constant String := Subfield_Type (SF);
+                  Convert : constant Boolean := FT /= SFT;
+               begin
+                  if not First_Subfield then
+                     BPL ("");
+                     BP ("      + ");
+                  end if;
+
+                  if Convert then
+                     BP (FT & " (");
+                  end if;
+                  BP ("M." & To_String (SF.Name));
+                  if Convert then
+                     BP (")");
+                  end if;
+
+                  if SF.Shift > 0 then
+                     BP (" * 2**" & Img (SF.Shift));
+                  end if;
+
+                  First_Subfield := False;
+               end Get_Subfield;
+            begin
+               F.Subfields.Iterate (Get_Subfield'Access);
+               BPL (";");
+            end;
+            BPL ("end " & Field_Name & ";");
+            BPL ("");
+
+            BPL (Set_Profile & " is");
+            BPL ("   M : " & Message_Name & ";");
+            BPL ("   for M'Address use MP;");
+            BPL ("   pragma Import (Ada, M);");
+            BPL ("begin");
+            declare
+               Prev_Shift : Natural := 0;
+               procedure Set_Subfield (SFC : Subfield_Vectors.Cursor) is
+                  SF      : Subfield renames Subfield_Vectors.Element (SFC);
+                  SFT     : constant String := Subfield_Type (SF);
+                  Convert : constant Boolean := FT /= SFT;
+
+                  SF_Expr : Unbounded_String;
+
+               begin
+                  BP ("   M." & To_String (SF.Name) & " := ");
+                  if Convert then
+                     BP (SFT & " (");
+                  end if;
+
+                  SF_Expr := To_Unbounded_String ("V");
+                  if SF.Shift > 0 then
+                     Append (SF_Expr, " / 2**" & Img (SF.Shift));
+                  end if;
+                  if Prev_Shift > 0 then
+                     if SF.Shift > 0 then
+                        SF_Expr := "(" & SF_Expr & ")";
+                     end if;
+                     SF_Expr := SF_Expr & " mod 2**"
+                                  & Img (Prev_Shift - SF.Shift);
+                  end if;
+                  Prev_Shift := SF.Shift;
+                  BP (To_String (SF_Expr));
+
+                  if Convert then
+                     BP (")");
+                  end if;
+                  BPL (";");
+               end Set_Subfield;
+            begin
+               F.Subfields.Iterate (Set_Subfield'Access);
+            end;
+            BPL ("end Set_" & Field_Name & ";");
+            BPL ("");
+         end Field_Accessors;
+      begin
+         Fields.Iterate (Field_Accessors'Access);
+      end;
    end Gen_Message_Decl;
 
    procedure Gen (N : Node) is
@@ -210,12 +402,12 @@ procedure Tranxgen is
       end;
 
       Put_Line ("package " & Package_Name & " is");
-      Put_Line ("use type System.Bit_Order;");
-      Put_Line ("LE : constant := Boolean'Pos (System.Default_Bit_Order"
-                                         & " = System.Low_Order_First);");
-      Put_Line ("BE : constant := 1 - LE;");
-
       Walk_Siblings (First_Element_Child (N), Gen_Message_Decl'Access);
+      Put_Line ("end " & Package_Name & ";");
+      New_Line;
+
+      Put_Line ("package body " & Package_Name & " is");
+      Put_Line (To_String (Bodies));
       Put_Line ("end " & Package_Name & ";");
    end Gen;
 
