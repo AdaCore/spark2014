@@ -84,7 +84,7 @@ is
 end Internal_Anon_Type;
 package body Internal_Anon_Type
 is
-   procedure exchange(A1 : out Anon_Type.Array1
+   procedure Exchange(A1 : out Anon_Type.Array1
 --@ line 3
                                      ; A2 : out Anon_Type.Array2
 --@ line 3
@@ -135,7 +135,7 @@ is
 --@ line 18
          A5(1,I) := A4(I/2);
       end loop;
-   end exchange;
+   end Exchange;
 end Internal_Anon_Type;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd

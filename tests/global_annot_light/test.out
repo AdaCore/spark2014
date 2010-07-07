@@ -68,7 +68,7 @@ package body Internal_Globals
       R2, W2, RW2 : Integer;
 
 
-      procedure S 
+      procedure S
 --@ line 12
       --# global in     Cond, Globals.R1, Globals.RW1, R2;
       --#           out Globals.W1, W2;

@@ -17,13 +17,16 @@ package body Two_Test is
         pragma Assert (Found = False);
         for J2 in T'Range (2) loop
            pragma Assert (Found = False);
-           if T (I1, I2) = Value then
+           if T (J1, J2) = Value then
               Found := True;
               I1 := J1;
               I2 := J2;
-              return;
+              exit;
            end if;
         end loop;
+        if Found then
+           exit;
+        end if;
      end loop;
   end Linear_Search;
 

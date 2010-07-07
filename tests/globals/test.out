@@ -135,12 +135,16 @@ package body Internal_Globals
    procedure Indirect_Write 
    is
 --@ line 32
-      procedure Local (Proxy : out Integer) is
+      procedure Local1
+--@ line 32
+                      (Proxy : out Integer) is
       begin
          Proxy := 0;
-      end Local;
+      end Local1;
    begin
-      Local (Globals.G
+      Local1
+--@ line 37
+            (Globals.G
 --@ line 37
               );
    end Indirect_Write;
@@ -148,16 +152,20 @@ package body Internal_Globals
    procedure Indirect_Read_Write 
    is
 --@ line 41
-      procedure Local (Proxy : in out Integer) 
+      procedure Local2
+--@ line 41
+                      (Proxy : in out Integer) 
       --# pre                 Proxy < Integer'Last;
 --@ line 41
                                                is
 
       begin
          Proxy := Proxy + 1;
-      end Local;
+      end Local2;
    begin
-      Local (Globals.G
+      Local2
+--@ line 47
+            (Globals.G
 --@ line 47
               );
    end Indirect_Read_Write;

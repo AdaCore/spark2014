@@ -1,0 +1,153 @@
+arr_test.adb:3:3: sparkify: discard contract on definition of subprogram
+arr_test.adb:25:3: sparkify: discard contract on definition of subprogram
+------------------------------------------------------------------------
+package Arr
+is
+   type Index is range 1 .. 10;
+
+   type Table is array (Index) of Integer;
+end Arr;
+
+with Arr;use type Arr.Index; use type Arr.Table; 
+--@ line 2
+--# inherit arr;
+package Arr_Test
+is
+end Arr_Test;
+with Arr;use type Arr.Index; use type Arr.Table; 
+--@ line 1
+--# inherit arr;
+package External_Arr
+is
+end External_Arr;
+
+with Arr;use type Arr.Index; use type Arr.Table; with Arr_Test;
+--@ line 2
+--# inherit arr_test, arr;
+package External_Arr_Test
+is
+  procedure Linear_Search
+    (T     :     Arr.Table
+--@ line 6
+                      ;
+     Value : Integer;
+     Found : out Boolean;
+     N     : out     Arr.Index
+--@ line 9
+                          );
+  --# post              not Found or else T (N) = Value;
+
+  function Check_Index
+    (T     :     Arr.Table
+--@ line 13
+                      ;
+     Value : Integer;
+     N     :     Arr.Index
+--@ line 15
+                      ) return Boolean;
+  --# pre              T'First <= N and then N <= T'Last;
+  --# return Result =>  Result             = (T (N) = Value);
+end External_Arr_Test;
+with Arr;use type Arr.Index; use type Arr.Table; with External_Arr;
+--@ line 1
+--# inherit external_arr, arr;
+--@ line 1
+package Internal_Arr
+--@ line 1
+            is
+--@ line 7
+end Internal_Arr;
+
+with Arr;use type Arr.Index; use type Arr.Table; 
+with External_Arr;
+with Arr_Test;with External_Arr_Test;
+--@ line 2
+--# inherit arr_test, external_arr, external_arr_test, arr;
+package Internal_Arr_Test
+--@ line 3
+                 is
+
+  procedure Linear_Search
+    (T     :     Arr.Table
+--@ line 6
+                      ;
+     Value : Integer;
+     Found : out Boolean;
+     N     : out     Arr.Index
+--@ line 9
+                          );
+  --# post              not Found or else T (N) = Value;
+
+  function Check_Index
+    (T     :     Arr.Table
+--@ line 13
+                      ;
+     Value : Integer;
+     N     :     Arr.Index
+--@ line 15
+                      ) return Boolean;
+  --# pre              T'First <= N and then N <= T'Last;
+  --# return Result =>  Result             = (T (N) = Value);
+
+end Internal_Arr_Test;
+package body Internal_Arr_Test
+--@ line 1
+                      is
+
+  procedure Linear_Search
+    (T     :     Arr.Table
+--@ line 4
+                      ;
+     Value : Integer;
+     Found : out Boolean;
+     N     : out     Arr.Index
+--@ line 7
+                          )
+  is
+
+  begin
+     Found := False;
+     N :=     Arr.Index
+--@ line 12
+                   'First;
+
+     for I in Arr.Index range 
+--@ line 14
+              T'Range loop
+        --# assert     Found = False;
+        if T (I) = Value then
+           Found := True;
+           N := I;
+           --# check      Found and then Integer (N) = Integer (I);
+           exit;
+        end if;
+     end loop;
+  end Linear_Search;
+
+  function Check_Index
+    (T     :     Arr.Table
+--@ line 26
+                      ;
+     Value : Integer;
+     N     :     Arr.Index
+--@ line 28
+                      ) return Boolean
+  is
+
+  begin
+     return T (N) = Value;
+  end Check_Index;
+
+end Internal_Arr_Test;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          5      0      5              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         1      0      1              0      0      0       0
+Runtime check:           5      0      5              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 11      0     11              0      0      0       0
+% Totals:                       0%   100%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
