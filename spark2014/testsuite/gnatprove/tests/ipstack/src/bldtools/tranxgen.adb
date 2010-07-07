@@ -9,7 +9,8 @@ with Ada.Command_Line;       use Ada.Command_Line;
 with Ada.Containers.Vectors;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-with Ada.Text_IO;
+
+with GNAT.IO;
 
 with DOM.Core.Documents;     use DOM.Core, DOM.Core.Documents;
 with DOM.Core.Elements;      use DOM.Core.Elements;
@@ -107,13 +108,11 @@ procedure Tranxgen is
       ----------
 
       procedure Dump (U : Unit) is
-         use Ada.Text_IO;
       begin
-         Put (To_String (U.Text));
+         GNAT.IO.Put (To_String (U.Text));
          if not U.At_BOL then
-            New_Line;
+            GNAT.IO.New_Line;
          end if;
-         New_Line;
       end Dump;
 
       --------
@@ -167,6 +166,9 @@ procedure Tranxgen is
    function Img (N : Integer) return String;
    --  Trimmed image of N
 
+   procedure Box (U : in out Unit; S : String);
+   --  Add box comment with text S to U
+
    function First_Element_Child (N : Node) return Node;
    --  Return the first child of N that is an Element_Node
 
@@ -189,11 +191,22 @@ procedure Tranxgen is
    procedure Process_Message (Ctx : in out Package_Context; N : Node);
    --  Process a <message> element
 
+   procedure Process_Enum (Ctx : in out Package_Context; N : Node);
+   --  Process an <enum> element
+
    procedure Process_Package (N : Node);
    --  Process a <package> element, generate Ada package spec and body
 
    Bodies : Unbounded_String;
    Prefix : Unbounded_String;
+
+   procedure Box (U : in out Unit; S : String) is
+      Hyphens : constant String := (1 .. S'Length + 6 => '-');
+   begin
+      PL (U, Hyphens);
+      PL (U, "-- " & S & " --");
+      PL (U, Hyphens);
+   end Box;
 
    -------------------------
    -- First_Element_Child --
@@ -231,6 +244,67 @@ procedure Tranxgen is
       end loop;
       return SN;
    end Next_Element_Sibling;
+
+   procedure Process_Enum (Ctx : in out Package_Context; N : Node) is
+      Enum_Name : constant String := Get_Attribute (N, "name");
+      Prefix    : constant String := Enum_Name & "_";
+
+      Max_Literal_Name_Length : Natural := 0;
+
+      type Literal is record
+         Name  : Unbounded_String;
+         Value : Natural;
+      end record;
+
+      package Literal_Vectors is new Ada.Containers.Vectors
+        (Element_Type => Literal, Index_Type => Natural);
+
+      Literals : Literal_Vectors.Vector;
+
+      procedure Process_Literal (N : Node);
+      --  Process a <literal> element
+
+      procedure Output_Literal (LC : Literal_Vectors.Cursor);
+      --  Generate declaration for literal
+
+      --------------------
+      -- Output_Literal --
+      --------------------
+
+      procedure Output_Literal (LC : Literal_Vectors.Cursor) is
+         use Ada.Strings.Fixed;
+         L : Literal renames Literal_Vectors.Element (LC);
+      begin
+         PL (Ctx.P_Spec, Prefix
+                           & Head (To_String (L.Name), Max_Literal_Name_Length)
+                           & " : constant := " & Img (L.Value) & ";");
+      end Output_Literal;
+
+      ---------------------
+      -- Process_Literal --
+      ---------------------
+
+      procedure Process_Literal (N : Node) is
+         Name  : constant String := Get_Attribute (N, "name");
+         Value : constant Natural :=
+                   Natural'Value (Get_Attribute (N, "value"));
+      begin
+         Max_Literal_Name_Length :=
+           Natural'Max (Name'Length, Max_Literal_Name_Length);
+         Literals.Append ((To_Unbounded_String (Name), Value));
+      end Process_Literal;
+
+   --  Start of processing for Process_Enum
+
+   begin
+      Walk_Siblings (First_Element_Child (N), Process_Literal'Access);
+
+      NL (Ctx.P_Spec);
+      Box (Ctx.P_Spec, Enum_Name);
+      NL (Ctx.P_Spec);
+
+      Literals.Iterate (Output_Literal'Access);
+   end Process_Enum;
 
    ---------------------
    -- Process_Message --
@@ -361,13 +435,8 @@ procedure Tranxgen is
       --  Generate private type declaration
 
       NL (Ctx.P_Spec);
-      declare
-         Hyphens : constant String := (1 .. Message_Name'Length + 6 => '-');
-      begin
-         PL (Ctx.P_Spec, Hyphens);
-         PL (Ctx.P_Spec, "-- " & Message_Name & " --");
-         PL (Ctx.P_Spec, Hyphens);
-      end;
+      Box (Ctx.P_Spec, Message_Name);
+
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "type " & Message_Name & " is private;");
 
@@ -619,17 +688,25 @@ procedure Tranxgen is
       Package_Name : constant String := Get_Attribute (N, "name");
       Ctx : Package_Context;
 
-      procedure Process_Message_In_Package (N : Node);
-      --  Call Process_Message for a <message> element in this package
+      procedure Process_Child (N : Node);
+      --  Call Process_<element>
 
-      --------------------------------
-      -- Process_Message_In_Package --
-      --------------------------------
+      -------------------
+      -- Process_Child --
+      -------------------
 
-      procedure Process_Message_In_Package (N : Node) is
+      procedure Process_Child (N : Node) is
       begin
-         Process_Message (Ctx, N);
-      end Process_Message_In_Package;
+         if Node_Name (N) = "message" then
+            Process_Message (Ctx, N);
+
+         elsif Node_Name (N) = "enum" then
+            Process_Enum (Ctx, N);
+
+         else
+            return;
+         end if;
+      end Process_Child;
 
    --  Start of processing for Process_Package
 
@@ -638,6 +715,7 @@ procedure Tranxgen is
          raise Program_Error with "unexpected element: " & Node_Name (N);
       end if;
 
+      PL (Ctx.P_Spec, "pragma Warnings (Off);");
       PL (Ctx.P_Spec, "pragma Ada_2005;");
       PL (Ctx.P_Spec, "with System;");
 
@@ -674,7 +752,7 @@ procedure Tranxgen is
       II (Ctx.P_Body);
 
       Walk_Siblings
-        (First_Element_Child (N), Process_Message_In_Package'Access);
+        (First_Element_Child (N), Process_Child'Access);
 
       DI (Ctx.P_Private);
       PL (Ctx.P_Private, "end " & Package_Name & ";");

@@ -7,6 +7,11 @@
 -->
 
 <package name="AIP.IPH">
+ <enum name="IP_Proto">
+  <literal name="UDP"  value="17" />
+  <literal name="TCP"  value= "6" />
+  <literal name="ICMP" value= "1" />
+ </enum>
  <message name="IP_Header" prefix="IPH_">
   <field name="Version"     length= "4" />
   <field name="IHL"         length= "4" />
