@@ -519,6 +519,7 @@ procedure Tranxgen is
 
       --  Generate record declaration
 
+      NL (Ctx.P_Private);
       PL (Ctx.P_Private, "type " & Message_Name & " is record");
       II (Ctx.P_Private);
       Field_Declarations : declare
@@ -559,10 +560,10 @@ procedure Tranxgen is
 
       DI (Ctx.P_Private);
       PL (Ctx.P_Private, "end record;");
-      NL (Ctx.P_Private);
 
       --  Generate rep clause
 
+      NL (Ctx.P_Private);
       PL (Ctx.P_Private, "for " & Message_Name & "'Bit_Order"
                     & " use System.High_Order_First;");
       PL (Ctx.P_Private, "for " & Message_Name & " use record");
@@ -607,7 +608,6 @@ procedure Tranxgen is
 
       DI (Ctx.P_Private);
       PL (Ctx.P_Private, "end record;");
-      NL (Ctx.P_Private);
 
    end Process_Message;
 

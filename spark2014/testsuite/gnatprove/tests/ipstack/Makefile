@@ -42,6 +42,15 @@ ipstack: build/gen/aip_constants.ads force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
 
+build/bldtools/tranxgen: src/bldtools/tranxgen.adb
+	mkdir -p build/bldtools
+	gnatmake -D build/bldtools -o $@ $< `xmlada-config`
+
+build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
+	mkdir -p build/gen
+	build/bldtools/tranxgen $< > $(<:.xml=.ada)
+	gnatchop -w $(<:.xml=.ada) build/gen
+
 build/gen/aip_constants.ads:
 	mkdir -p build/gen
 	$(GCC_PREFIX)gcc -S -o build/gen/constants.s src/bldtools/constants.adb
