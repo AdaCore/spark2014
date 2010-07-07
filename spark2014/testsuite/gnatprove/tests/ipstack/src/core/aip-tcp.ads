@@ -72,7 +72,7 @@ package AIP.TCP is
    --  one. If allocation is not possible, just return NULID.
 
    function Tcp_Listen_BL
-     (Pcb : PCB_Id;
+     (Pcb  : PCB_Id;
       Blog : AIP.U8_T) return PCB_Id;
    pragma Import (C, Tcp_Listen_BL, "tcp_listen_with_backlog");
    --  Same as Tcp_Listen for a user specified backlog size.
@@ -105,10 +105,10 @@ package AIP.TCP is
 
    subtype Connect_Cb_Id is Callbacks.CBK_Id;
    function Tcp_Connect
-     (Pcb : PCB_Id;
+     (Pcb  : PCB_Id;
       Addr : IPaddrs.IPaddr;
       Port : AIP.U16_T;
-      Cb : Connect_Cb_Id) return AIP.Err_T;
+      Cb   : Connect_Cb_Id) return AIP.Err_T;
    pragma Import (C, Tcp_Connect, "tcp_connect");
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
@@ -126,9 +126,9 @@ package AIP.TCP is
    --  host. Care must be taken to respect transmission capacities.
 
    function Tcp_Write
-     (Pcb : PCB_Id;
-      Data : AIP.IPTR_T;
-      Len : AIP.U16_T;
+     (Pcb   : PCB_Id;
+      Data  : AIP.IPTR_T;
+      Len   : AIP.U16_T;
       Flags : AIP.U8_T) return AIP.Err_T;
    pragma Import (C, Tcp_Write, "tcp_write");
    --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
@@ -141,8 +141,8 @@ package AIP.TCP is
    --  the other host and try again.
 
    TCP_WRITE_NOFLAG : constant := 16#00#;
-   TCP_WRITE_COPY : constant := 16#01#;  --  Copy data into ipstack memory
-   TCP_WRITE_MORE : constant := 16#02#;  --  Set PSH on last segment sent
+   TCP_WRITE_COPY   : constant := 16#01#;  --  Copy data into ipstack memory
+   TCP_WRITE_MORE   : constant := 16#02#;  --  Set PSH on last segment sent
 
    function Tcp_Sndbuf (Pcb : PCB_Id) return AIP.U16_T;
    pragma Import (C, Tcp_Sndbuf, "tcp_sndbuf_w");
