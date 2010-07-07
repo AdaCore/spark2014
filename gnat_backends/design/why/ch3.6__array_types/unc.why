@@ -91,6 +91,19 @@ parameter unc__vector___set_ :
    unit writes a
   { eq___unc__vector___strict (a, unc__vector___set (a@, i, v)) }
 
+parameter safe___unc__vector___get_ :
+ a : unc__vector -> i : standard__integer ->
+  { }
+   standard__integer
+  { eq___standard__integer (result,
+                            unc__vector___get (a, i)) }
+
+parameter safe___unc__vector___set_ : 
+ a : unc__vector ref -> i : standard__integer -> v : standard__integer -> 
+  { }
+   unit writes a
+  { eq___unc__vector___strict (a, unc__vector___set (a@, i, v)) }
+
 parameter unc__vector___first_ :
  a : unc__vector ->
   { }

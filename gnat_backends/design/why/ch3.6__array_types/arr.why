@@ -136,6 +136,19 @@ parameter arr__table___set_ :
    unit writes a
   { eq___arr__table___strict (a, arr__table___set (a@, i, v)) }
 
+parameter safe___arr__table___get_ :
+ a : arr__table -> i : arr__index ->
+  { }
+   standard__integer
+  { eq___standard__integer (result,
+                            arr__table___get (a, i)) }
+
+parameter safe___arr__table___set_ : 
+ a : arr__table ref -> i : arr__index -> v : standard__integer -> 
+  { }
+   unit writes a
+  { eq___arr__table___strict (a, arr__table___set (a@, i, v)) }
+
 parameter arr__table___first_ :
  a : arr__table ->
   { }

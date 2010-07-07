@@ -165,6 +165,21 @@ parameter two__table___set_ :
    unit writes a
   { a = two__table___set (a@, i1, i2, v) }
 
+parameter safe___two__table___get_ :
+ a : two__table -> i1 : two__index -> i2 : two__index ->
+  { }
+   standard__integer
+  { result = two__table___get (a, i1, i2) }
+
+parameter safe___two__table___set_ : 
+ a  : two__table ref ->
+ i1 : two__index ->
+ i2 : two__index ->
+ v  : standard__integer -> 
+  { }
+   unit writes a
+  { a = two__table___set (a@, i1, i2, v) }
+
 parameter two__table___first1_ :
  a : two__table ->
   { }
