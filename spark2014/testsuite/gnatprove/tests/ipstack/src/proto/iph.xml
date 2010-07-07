@@ -1,0 +1,24 @@
+<!--
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                          RFC791 - Internet Protocol
+
+-->
+
+<package name="AIP.IPH">
+ <message name="IP_Header" prefix="IPH_">
+  <field name="Version"     length= "4" />
+  <field name="IHL"         length= "4" />
+  <field name="TOS"         length= "8" />
+  <field name="Length"      length="16" />
+  <field name="Ident"       length="16" />
+  <field name="Flags"       length= "3" />
+  <field name="Frag_Offset" length="13" />
+  <field name="TTL"         length= "8" />
+  <field name="Protocol"    length= "8" />
+  <field name="Checksum"    length="16" />
+  <field name="Src_Address" length="32" />
+  <field name="Dst_Address" length="32" />
+ </message>
+</package>

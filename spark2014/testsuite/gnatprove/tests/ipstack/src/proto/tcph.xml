@@ -1,0 +1,37 @@
+<!--
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                    RFC793 - Transmission Control Protocol
+
+-->
+
+<package name="AIP.TCPH">
+
+ <message name="TCP_Header" prefix="TCPH_">
+  <field name="Src_Port"    length="16" />
+  <field name="Dst_Port"    length="16" />
+  <field name="Seq_Num"     length="32" />
+  <field name="Ack_Num"     length="32" />
+  <field name="Data_Offset" length= "4" />
+  <field name="Reserved"    length= "6" />
+  <field name="Urg"         length= "1" />
+  <field name="Ack"         length= "1" />
+  <field name="Psh"         length= "1" />
+  <field name="Rst"         length= "1" />
+  <field name="Syn"         length= "1" />
+  <field name="Fin"         length= "1" />
+  <field name="Window"      length="16" />
+  <field name="Checksum"    length="16" />
+  <field name="Urgent_Ptr"  length="16" />
+ </message>
+
+ <message name="TCP_Pseudo_Header" prefix="TCPP_">
+  <field name="Src_Address" length="32" />
+  <field name="Dst_Address" length="32" />
+  <field name="Zero"        length= "8" />
+  <field name="Protocol"    length= "8" />
+  <field name="Length"      length="16" />
+ </message>
+
+</package>

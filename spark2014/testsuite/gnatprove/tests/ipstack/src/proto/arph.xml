@@ -1,0 +1,17 @@
+<!--
+                              IPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                   RFC826 - Address Resolution Protocol
+
+-->
+
+<package name="AIP.ARPH">
+  <message name="ARP_Header" prefix="ARPH_">
+    <field name="Hardware_Type" length="16" />
+    <field name="Protocol"      length="16" />
+    <field name="Hw_Len"        length= "8" />
+    <field name="Pr_Len"        length= "8" />
+    <field name="Operation"     length="16" />
+  </message>
+</package>
