@@ -37,7 +37,10 @@ app: $(APP_IMAGE)
 $(APP_IMAGE): $(LWIPLIB) ipstack force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P app
 
-ipstack: build/gen/aip_constants.ads force
+ipstack: build/gen/aip_constants.ads \
+         $(foreach proto,            \
+           arp ip udp tcp,           \
+           build/gen/aip-$(proto)h.ads build/gen/aip-$(proto)h.adb)
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_core
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
