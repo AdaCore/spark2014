@@ -141,16 +141,16 @@ package AIP.UDP is
 private
 
    type UDP_PCB is record
-      IPCB : IP.IP_PCB;           -- IP control block
-      Flags  : AIP.M8_T;          -- Internal PCB status flags
+      IPCB        : IP.IP_PCB;        -- IP control block
+      Flags       : AIP.M8_T;         -- Internal PCB status flags
 
-      Local_Port : Port_T;        --  Local UDP port PCB is bound to
-      Remote_Port : Port_T;       --  Remote UDP port PCB is connected to
+      Local_Port  : Port_T;           --  Local UDP port PCB is bound to
+      Remote_Port : Port_T;           --  Remote UDP port PCB is connected to
 
-      Udata  : AIP.IPTR_T;        --  User/Application data pointer
-      RECV_Cb : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
+      Udata       : AIP.IPTR_T;       --  User/Application data pointer
+      RECV_Cb     : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
 
-      Link : AIP.EID;             --  Chaining link
+      Link : AIP.EID;                 --  Chaining link
    end record;
 
    PCB_NOID : constant AIP.EID := -1;
@@ -168,7 +168,7 @@ private
    --  currently not in a list).
 
    PCB_FLAGS_CONNECTED : constant := 16#04#;
-   --  PCB flag bit to indicate that the PCB is UDP_Connected.
+   --  PCB flag bit to indicate that the PCB is UDP_Connected
    --
    --  Used to detect proper remote endpoint definition on UDP_Send, and to
    --  prevent selection of PCB to handle an incoming datagram if it is not
@@ -178,8 +178,8 @@ private
    -- Internal subprograms --
    --------------------------
 
-   --  All declared here because SPARK forbids forward declarations
-   --  in package bodies.
+   --  All declared here because SPARK forbids forward declarations in package
+   --  bodies.
 
    procedure Init_PCBs;
    --  Initialize static pool of UDP PCBs
@@ -223,16 +223,16 @@ private
      (Buf  : Buffers.Buffer_Id;
       Uhdr : out AIP.IPTR_T;
       Err  : out Err_T);
-   --  Get Uhdr to designate the UDP header of a datagram received
-   --  from IP in BUF, and adjust BUF's payload accordingly.
+   --  Get Uhdr to designate the UDP header of a datagram received from IP in
+   --  BUF, and adjust BUF's payload accordingly.
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
 
    function UDP_PCB_For
      (Ihdr  : IPH.IP_Header;
       Uhdr  : UDPH.UDP_Header;
       Netif : NIF.Netif_Id) return AIP.EID;
-   --  Search bound PCBs for one taker of a datagram with IP header
-   --  IHDR and UDP header Uhdr arrived on NETIF.
+   --  Search bound PCBs for one taker of a datagram with IP header Ihdr and
+   --  UDP header Uhdr arrived on NETIF.
 
    ------------------------
    -- UDP_Send internals --
@@ -242,8 +242,8 @@ private
      (Buf  : Buffers.Buffer_Id;
       Ubuf : out Buffers.Buffer_Id;
       Err  : out AIP.Err_T);
-   --  Setup space for a UDP header before the data in BUF. See if there
-   --  is enough room preallocated for this purpose, and adjust the payload
+   --  Setup space for a UDP header before the data in Buf. See if there is
+   --  enough room preallocated for this purpose, and adjust the payload
    --  pointer in this case. Prepend a separate buffer otherwise.
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
