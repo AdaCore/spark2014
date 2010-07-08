@@ -36,7 +36,7 @@ package AIP.UDP is
    --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 
    procedure UDP_Bind
-     (Pcb        : PCB_Id;
+     (PCB        : PCB_Id;
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T;
       Err        : out AIP.Err_T);
@@ -52,12 +52,12 @@ package AIP.UDP is
    --  ERR_USE if Local_Port is NOPORT and no available port could be found.
 
    procedure UDP_Connect
-     (Pcb         : PCB_Id;
+     (PCB         : PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
       Err         : out AIP.Err_T);
    --  Register Remote_IP/Remote_Port as the destination endpoint for
-   --  datagrams sent later with Udp_Send on this PCB. Until disconnected,
+   --  datagrams sent later with UDP_Send on this PCB. Until disconnected,
    --  packets from this endpoint only are processed by PCB. A forced local
    --  binding is attempted if none was established beforehand. No network
    --  trafic gets generated.
@@ -65,7 +65,7 @@ package AIP.UDP is
    --  ERR_USE if a forced binding is attempted and no port is available.
 
    procedure UDP_Send
-     (Pcb : PCB_Id;
+     (PCB : PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
    --  Send BUF data to the current destination endpoint of PCB, as
@@ -76,11 +76,11 @@ package AIP.UDP is
    --  ERR_MEM e.g.if the UDP header couldn't be allocated
    --  Possibly other errors from lower layers.
 
-   procedure UDP_Disconnect (Pcb : PCB_Id);
+   procedure UDP_Disconnect (PCB : PCB_Id);
    --  Disconnect PCB from its current destination endpoint, which leaves
    --  it open to its initial binding again.
 
-   procedure UDP_Release (Pcb : PCB_Id);
+   procedure UDP_Release (PCB : PCB_Id);
    --  Release PCB, to become available for Udb_New again
 
    ------------------------------
@@ -109,19 +109,19 @@ package AIP.UDP is
    --  .IP/.Port is the datagram origin endpoint (remote source)
 
    procedure UDP_Callback
-     (Evk : UDP_Event_Kind; Pcb : PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Evk : UDP_Event_Kind; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
    --  Register that ID should be passed back to the user defined
    --  UDP_Event hook when an event of kind EVK triggers for PCB.
 
-   procedure UDP_Set_Udata (Pcb : PCB_Id; Udata : AIP.IPTR_T);
+   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : AIP.IPTR_T);
    --  Attach application level UDATA to PCB for later retrieval
    --  on UDP_Event calls.
 
-   function UDP_Udata (Pcb : PCB_Id) return AIP.IPTR_T;
+   function UDP_Udata (PCB : PCB_Id) return AIP.IPTR_T;
    --  Retrieve Udata previously attached to PCB, NULIPTR if none.
 
    procedure UDP_Event
-     (Ev : UDP_Event_T; Pcb : PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Ev : UDP_Event_T; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was
    --  registered. Expected to be provided by the applicative code.
 
@@ -187,13 +187,13 @@ private
    procedure PCB_Allocate (Id : out AIP.EID);
    --  Find one PCB free for use from the static pool and mark it in-use
 
-   procedure PCB_Clear (Pcb : PCB_Id);
+   procedure PCB_Clear (PCB : PCB_Id);
    --  Reset/Initialize PCB fields for fresh (re)use
 
-   procedure PCB_Unlink (Pcb : PCB_Id);
+   procedure PCB_Unlink (PCB : PCB_Id);
    --  Unlink PCB from the list of bound PCBs if it is there
 
-   procedure PCB_Force_Bind (Pcb : PCB_Id; Err : out Err_T);
+   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out Err_T);
    --  Force a local binding on PCB if it isn't bound already
 
    ------------------------
@@ -201,7 +201,7 @@ private
    ------------------------
 
    function PCB_Binding_Matches
-     (Pcb  : UDP_PCB;
+     (PCB  : UDP_PCB;
       IP   : AIP.IPaddrs.IPaddr;
       Port : Port_T) return Boolean;
    --  Whether PCB's local IP/port binding matches the provided
@@ -248,7 +248,7 @@ private
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
    procedure UDP_Send_To_If
-     (Pcb   : PCB_Id;
+     (PCB   : PCB_Id;
       Buf   : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
       Dst_Port : Port_T;

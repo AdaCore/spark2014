@@ -13,21 +13,21 @@ package body AIP.TCP is
 
    procedure TCP_Callback
      (Evk : TCP_Event_Kind;
-      Pcb : PCB_Id;
+      PCB : PCB_Id;
       Id  : Callbacks.CBK_Id)
    is
-      pragma Unreferenced (Evk, Pcb, Id);
+      pragma Unreferenced (Evk, PCB, Id);
    begin
       null;
    end TCP_Callback;
 
    ----------------
-   -- Tcp_Listen --
+   -- TCP_Listen --
    ----------------
 
-   function Tcp_Listen (Pcb : PCB_Id) return PCB_Id is
+   function TCP_Listen (PCB : PCB_Id) return PCB_Id is
    begin
-      return Tcp_Listen_BL (Pcb, Config.TCP_DEFAULT_LISTEN_BACKLOG);
-   end Tcp_Listen;
+      return TCP_Listen_BL (PCB, Config.TCP_DEFAULT_LISTEN_BACKLOG);
+   end TCP_Listen;
 
 end AIP.TCP;
