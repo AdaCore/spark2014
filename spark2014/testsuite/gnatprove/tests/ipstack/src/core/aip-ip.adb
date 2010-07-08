@@ -39,27 +39,27 @@ package body AIP.IP is
 
       --  Verify IP version
 
-      if Err = AIP.NOERR then
+      if No (Err) then
          --  TBD???
          null;
       end if;
       --  Verify IP checksum
 
-      if Err = AIP.NOERR then
+      if No (Err) then
          --  TBD???
          null;
       end if;
 
       --  Check TTL
 
-      if Err = AIP.NOERR then
+      if No (Err) then
          --  TBD???
          null;
       end if;
 
       --  Check destination address
 
-      if Err = AIP.NOERR then
+      if No (Err) then
          if NIF.Is_Local_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
               or else
             NIF.Is_Broadcast_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
@@ -80,7 +80,7 @@ package body AIP.IP is
 
       --  Dispatch to upper layer or forward to next hop
 
-      if Err = AIP.NOERR then
+      if No (Err) then
          if Local then
             case IPH.IPH_Protocol (Ihdr) is
                when IPH.IP_Proto_UDP =>
