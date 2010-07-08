@@ -6,7 +6,16 @@
 --  Callback oriented low level access to the UDP services. At this point,
 --  this is a binding to the C implementation of LWIP.
 
-with  AIP.Config, AIP.Callbacks, AIP.IP, AIP.IPaddrs, AIP.Buffers, AIP.NIF;
+with AIP.Buffers;
+with AIP.Callbacks;
+with AIP.Config;
+with AIP.IP;
+with AIP.IPaddrs;
+with AIP.NIF;
+
+with AIP.IPH;
+with AIP.UDPH;
+
 --# inherit AIP.Config, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.NIF,
 --#         AIP.IPH, AIP.UDPH;
 
@@ -16,17 +25,14 @@ package AIP.UDP is
 
    subtype PCB_Id is AIP.EID range 1 .. Config.MAX_UDP_PCB;
 
-   PCB_NOID : constant AIP.EID := -1;
-   --  Invalid PCB_Id, for UDP_New to indicate allocation failure
-
-   subtype Port_T is M16_T;
+   subtype Port_T is U16_T;
    NOPORT : constant Port_T := 0;
 
    --------------------
    -- User interface --
    --------------------
 
-   procedure UDP_New (Id : out AIP.EID);
+   procedure UDP_New (Id : out PCB_Id);
    --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 
    procedure UDP_Bind
@@ -147,6 +153,12 @@ private
       Link : AIP.EID;             --  Chaining link
    end record;
 
+   PCB_NOID : constant AIP.EID := -1;
+   --  Invalid value for PCB_Id, typically used used to indicate
+   --  absence of match in PCB searches. This is also used in PCB.Link
+   --  to indicate end-of-list for a PCB chained in a list, or mere use
+   --  of the PCB otherwise (in-use though currently not in a list).
+
    PCB_UNUSED : constant AIP.EID := -2;
    --  Invalid value for PCB_Id, used in PCB.Link to indicate that the
    --  PCB is currently unused, IOW free for UDP_New.
@@ -216,7 +228,9 @@ private
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
 
    function UDP_PCB_For
-     (Ihdr, Uhdr : AIP.IPTR_T; Netif : NIF.Netif_Id) return AIP.EID;
+     (Ihdr  : IPH.IP_Header;
+      Uhdr  : UDPH.UDP_Header;
+      Netif : NIF.Netif_Id) return AIP.EID;
    --  Search bound PCBs for one taker of a datagram with IP header
    --  IHDR and UDP header Uhdr arrived on NETIF.
 

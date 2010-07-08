@@ -9,7 +9,35 @@ package body AIP.NIF is
 
    NIFs : NIF_Array;
 
-   ------------
+   ----------------------
+   -- Is_Local_Address --
+   ----------------------
+
+   function Is_Local_Address
+     (Nid  : Netif_Id;
+      Addr : IPaddrs.IPaddr) return Boolean
+   is
+   begin
+      --  Not implemented???
+      raise Program_Error;
+      return False;
+   end Is_Local_Address;
+
+   --------------------------
+   -- Is_Broadcast_Address --
+   --------------------------
+
+   function Is_Broadcast_Address
+     (Nid  : Netif_Id;
+      Addr : IPaddrs.IPaddr) return Boolean
+   is
+   begin
+      --  Not implemented???
+      raise Program_Error;
+      return False;
+   end Is_Broadcast_Address;
+
+------------
    -- NIF_IP --
    ------------
 

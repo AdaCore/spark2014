@@ -9,6 +9,8 @@ with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
 package AIP.IP is
 
+   --  IP_PCB is the common part of the PCB for all IP-based protocols
+
    type IP_PCB is record
       Local_IP  : IPaddrs.IPaddr;
       Remote_IP : IPaddrs.IPaddr;
@@ -19,7 +21,9 @@ package AIP.IP is
    end record;
 
    procedure IP_Route
-     (Dst_IP : IPaddrs.IPaddr; Netif : out AIP.EID);
+     (Dst_IP : IPaddrs.IPaddr; Netif : out NIF.Netif_Id);
+
+   procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
 
    procedure IP_Output_If
      (Buf    : Buffers.Buffer_Id;

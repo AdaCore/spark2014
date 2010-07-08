@@ -23,7 +23,7 @@
   <field name="TTL"         length= "8" />
   <field name="Protocol"    length= "8" />
   <field name="Checksum"    length="16" />
-  <field name="Src_Address" length="32" />
-  <field name="Dst_Address" length="32" />
+  <field name="Src_Address" length="32" class="modular" />
+  <field name="Dst_Address" length="32" class="modular" />
  </message>
 </package>

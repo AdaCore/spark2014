@@ -6,11 +6,14 @@
 pragma Ada_2005;
 
 with Ada.Command_Line;       use Ada.Command_Line;
+with Ada.containers.Ordered_Sets;
 with Ada.Containers.Vectors;
+with ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 
 with GNAT.IO;
+with GNAT.OS_Lib;
 
 with DOM.Core.Documents;     use DOM.Core, DOM.Core.Documents;
 with DOM.Core.Elements;      use DOM.Core.Elements;
@@ -20,8 +23,12 @@ with Input_Sources.File;     use Input_Sources.File;
 
 procedure Tranxgen is
 
-   --  Each field in a protocol message is split in a number of subfields that
-   --  never cross byte boundaries.
+   ------------------------------------
+   -- Messages, fields and subfields --
+   ------------------------------------
+
+   --  Each numeric field in a protocol message is split in a number of
+   --  subfields that never cross byte boundaries.
 
    type Subfield is record
       Name      : Unbounded_String;
@@ -32,30 +39,41 @@ procedure Tranxgen is
       --  field's value.
 
       First_Bit : Natural;
-      Last_Bit  : Natural;
-      --  Firs and last bit offsets of subfield in message
+      Length    : Natural;
+      --  First bit offset and length of subfield in message
    end record;
 
    package Subfield_Vectors is new Ada.Containers.Vectors
      (Element_Type => Subfield, Index_Type => Natural);
 
+   type Field_Class_T is (F_Integer, F_Modular, F_Private);
+   Default_Field_Class : constant Field_Class_T := F_Integer;
+
    type Field is record
       Name      : Unbounded_String;
       --  Field name
+
+      Class     : Field_Class_T;
+      --  Field type class
+
+      F_Type    : Unbounded_String;
+      --  Field type, if specified in source file
 
       Length    : Natural;
       --  Total field length in bits
 
       Subfields : Subfield_Vectors.Vector;
-      --  Subfields (always at least one). The First_Bit .. Last_Bit ranges
-      --  of successive subfields are contiguous within the message, and the
-      --  sum of the lengths of these ranges is Length.
+      --  Subfields (always at least one). The ranges First_Bit ..
+      --  First_Bit + Length- 1 of successive subfields are contiguous within
+      --  the message, and the sum of the lengths of these ranges is Length.
    end record;
 
    package Field_Vectors is new Ada.Containers.Vectors
      (Element_Type => Field, Index_Type => Natural);
 
-   --  Output context
+   --------------------
+   -- Output streams --
+   --------------------
 
    package Output is
       type Unit is limited private;
@@ -161,7 +179,9 @@ procedure Tranxgen is
 
    use Output;
 
-   --  Utility subprograms
+   -------------------------
+   -- Utility subprograms --
+   -------------------------
 
    function Img (N : Integer) return String;
    --  Trimmed image of N
@@ -180,12 +200,28 @@ procedure Tranxgen is
       P : access procedure (N : Node));
    --  Apply P to N and each of its (element) siblings
 
-   --  Processing of messages
+   function Subfield_Type_Name (Subfield_Size : Natural) return String;
+   --  Return the name of a power-of-two modular type of the given size
+
+   function Get_Attribute
+     (N       : Node;
+      Name    : String;
+      Default : String) return String;
+   --  Same as Get_Attribute, but return Default if attribute is missing or
+   --  empty.
+
+   -----------------------------------------------------
+   -- Processing of XML message format specifications --
+   -----------------------------------------------------
+
+   package Natural_Sets is new Ada.Containers.Ordered_Sets (Natural);
 
    type Package_Context is record
       P_Spec    : Output.Unit;
       P_Private : Output.Unit;
       P_Body    : Output.Unit;
+
+      Subfield_Sizes : Natural_Sets.Set;
    end record;
 
    procedure Process_Message (Ctx : in out Package_Context; N : Node);
@@ -225,6 +261,24 @@ procedure Tranxgen is
       return CN;
    end First_Element_Child;
 
+   -------------------
+   -- Get_Attribute --
+   -------------------
+
+   function Get_Attribute
+     (N       : Node;
+      Name    : String;
+      Default : String) return String
+   is
+      Attr : constant String := Get_Attribute (N, Name);
+   begin
+      if Attr = "" then
+         return Default;
+      else
+         return Attr;
+      end if;
+   end Get_Attribute;
+
    ---------
    -- Img --
    ---------
@@ -248,6 +302,10 @@ procedure Tranxgen is
       end loop;
       return SN;
    end Next_Element_Sibling;
+
+   ------------------
+   -- Process_Enum --
+   ------------------
 
    procedure Process_Enum (Ctx : in out Package_Context; N : Node) is
       Enum_Name : constant String := Get_Attribute (N, "name");
@@ -333,8 +391,8 @@ procedure Tranxgen is
       function Field_Type (F : Field) return String;
       --  Return type name for field F (used in accessors)
 
-      function Subfield_Type (SF : Subfield) return String;
-      --  Return type name for subfield SF (used in component declaration)
+      function Subfield_Type (F : Field; SF : Subfield) return String;
+      --  Return type name for subfield SF in F (used in component declaration)
 
       procedure Process_Field (N : Node);
       --  Process <field> element
@@ -344,9 +402,11 @@ procedure Tranxgen is
       -------------------
 
       procedure Process_Field (N : Node) is
-         Field_Name      : constant String := Get_Attribute (N, "name");
-         Field_Length    : constant Natural :=
-                             Integer'Value (Get_Attribute (N, "length"));
+         Field_Name       : constant String := Get_Attribute (N, "name");
+         Field_Class_Attr : constant String := Get_Attribute (N, "class");
+         Field_Class      : Field_Class_T;
+         Field_Length     : constant Natural :=
+                              Integer'Value (Get_Attribute (N, "length"));
 
          Remain_Length   : Natural := Field_Length;
          --  Count of bits to be assigned to further subfields
@@ -365,20 +425,34 @@ procedure Tranxgen is
       --  Start of processing for Process_Field
 
       begin
-         while Remain_Length > 0 loop
-            --  Length of next subfield is remaining length, but not going
-            --  further than the end of the current byte.
+         if Field_Class_Attr = "" then
+            Field_Class := Default_Field_Class;
+         else
+            Field_Class := Field_Class_T'Value ("F_" & Field_Class_Attr);
+         end if;
 
-            Subfield_Length :=
-              Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
+         while Remain_Length > 0 loop
+            --  For numeric (integer or modular) fields, length of next
+            --  subfield is remaining length, but not going further than the
+            --  end of the current byte. For private fields, map as a whole.
+
+            if Field_Class = F_Private then
+               Subfield_Length := Field_Length;
+
+            else
+               Subfield_Length :=
+                 Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
+            end if;
 
             Subfield_Name := To_Unbounded_String (Field_Name);
 
             --  For the case of a field that has multiple subfields, suffix
-            --  field name with subfield index.
+            --  field name with subfield index, and ensure we generate an
+            --  appropriate internal subfield type.
 
             if Subfield > 0 or else Subfield_Length < Remain_Length then
                Append (Subfield_Name, "_" & Img (Subfield));
+               Ctx.Subfield_Sizes.Include (Subfield_Length);
             end if;
 
             Max_Subfield_Name_Length :=
@@ -387,7 +461,7 @@ procedure Tranxgen is
             Subfields.Append
               ((Name      => Subfield_Name,
                 First_Bit => Current_Bit_Offset,
-                Last_Bit  => Current_Bit_Offset + Subfield_Length - 1,
+                Length    => Subfield_Length,
                 Shift     => Remain_Length - Subfield_Length));
 
             Current_Bit_Offset := Current_Bit_Offset + Subfield_Length;
@@ -401,6 +475,8 @@ procedure Tranxgen is
 
          Fields.Append
            ((Name      => To_Unbounded_String (Field_Name),
+             Class     => Field_Class,
+             F_Type    => To_Unbounded_String (Get_Attribute (N, "type")),
              Length    => Field_Length,
              Subfields => Subfields));
       end Process_Field;
@@ -411,16 +487,32 @@ procedure Tranxgen is
 
       function Field_Type (F : Field) return String is
       begin
-         return "U" & Img (F.Length) & "_T";
+         case F.Class is
+            when F_Integer =>
+               return "U" & Img (F.Length) & "_T";
+
+            when F_Modular =>
+               return "M" & Img (F.Length) & "_T";
+
+            when F_Private =>
+               return To_String (F.F_Type);
+         end case;
       end Field_Type;
 
       -------------------
       -- Subfield_Type --
       -------------------
 
-      function Subfield_Type (SF : Subfield) return String is
+      function Subfield_Type (F : Field; SF : Subfield) return String is
+         use type Ada.Containers.Count_Type;
       begin
-         return "U" & Img (SF.Last_Bit - SF.First_Bit + 1) & "_T";
+         if F.Subfields.Length = 1 then
+            return Field_Type (F);
+
+         else
+            pragma Assert (F.Class /= F_Private);
+            return Subfield_Type_Name (SF.Length);
+         end if;
       end Subfield_Type;
 
       First_Field : constant Node := First_Element_Child (N);
@@ -489,7 +581,7 @@ procedure Tranxgen is
 
                procedure Get_Subfield (SFC : Subfield_Vectors.Cursor) is
                   SF      : Subfield renames Subfield_Vectors.Element (SFC);
-                  SFT     : constant String := Subfield_Type (SF);
+                  SFT     : constant String := Subfield_Type (F, SF);
                   Convert : constant Boolean := FT /= SFT;
                begin
                   if not First_Subfield then
@@ -542,7 +634,7 @@ procedure Tranxgen is
 
                procedure Set_Subfield (SFC : Subfield_Vectors.Cursor) is
                   SF      : Subfield renames Subfield_Vectors.Element (SFC);
-                  SFT     : constant String := Subfield_Type (SF);
+                  SFT     : constant String := Subfield_Type (F, SF);
                   Convert : constant Boolean := FT /= SFT;
 
                   SF_Expr : Unbounded_String;
@@ -599,31 +691,34 @@ procedure Tranxgen is
          procedure Field_Decl (FC : Field_Vectors.Cursor);
          --  Generate component declarations for all subfields of field
 
-         procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor);
-         --  Generate component declaration for subfield
-
          ----------------
          -- Field_Decl --
          ----------------
 
          procedure Field_Decl (FC : Field_Vectors.Cursor) is
             F : Field renames Field_Vectors.Element (FC);
+
+            procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor);
+            --  Generate component declaration for subfield
+
+            -------------------
+            -- Subfield_Decl --
+            -------------------
+
+            procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor) is
+               SF : Subfield renames Subfield_Vectors.Element (SFC);
+            begin
+               PL (Ctx.P_Private,
+                   Head (To_String (SF.Name), Max_Subfield_Name_Length)
+                   & " : " & Subfield_Type (F, SF)
+                   & ";");
+            end Subfield_Decl;
+
+         --  Start of processing for Field_Decl
+
          begin
             F.Subfields.Iterate (Subfield_Decl'Access);
          end Field_Decl;
-
-         -------------------
-         -- Subfield_Decl --
-         -------------------
-
-         procedure Subfield_Decl (SFC : Subfield_Vectors.Cursor) is
-            SF : Subfield renames Subfield_Vectors.Element (SFC);
-         begin
-            PL (Ctx.P_Private,
-                 Head (To_String (SF.Name), Max_Subfield_Name_Length)
-                 & " : " & Subfield_Type (SF)
-                 & ";");
-         end Subfield_Decl;
 
       --  Start of processing for Field_Declarations
 
@@ -670,7 +765,8 @@ procedure Tranxgen is
                       Head (To_String (SF.Name), Max_Subfield_Name_Length)
                       & " at "    & Img (SF.First_Bit / 8)
                       & " range " & Img (SF.First_Bit mod 8)
-                      & " .. "    & Img (SF.Last_Bit mod 8) & ";");
+                      & " .. "    & Img (SF.First_Bit mod 8 + SF.Length - 1)
+                      & ";");
          end Subfield_Rep_Clause;
 
       --  Start of processing for Representation_Clauses
@@ -694,6 +790,25 @@ procedure Tranxgen is
 
       procedure Process_Child (N : Node);
       --  Call Process_<element>
+
+      procedure Prelude (U : in out Unit);
+      --  Output standard text at the top of evert unit
+
+      -------------
+      -- Prelude --
+      -------------
+
+      procedure Prelude (U : in out Unit) is
+      begin
+         PL (U, "--  This file has been automatically generated from "
+             & Argument (1));
+         PL (U, "--  DO NOT EDIT!!!");
+         NL (U);
+         PL (U, "pragma Warnings (Off);");
+         PL (U, "pragma Style_Checks (""NM32766"");");
+         PL (U, "pragma Ada_2005;");
+         NL (U);
+      end Prelude;
 
       -------------------
       -- Process_Child --
@@ -719,8 +834,9 @@ procedure Tranxgen is
          raise Program_Error with "unexpected element: " & Node_Name (N);
       end if;
 
-      PL (Ctx.P_Spec, "pragma Warnings (Off);");
-      PL (Ctx.P_Spec, "pragma Ada_2005;");
+      Prelude (Ctx.P_Spec);
+      Prelude (Ctx.P_Body);
+
       PL (Ctx.P_Spec, "with System;");
 
       declare
@@ -734,7 +850,9 @@ procedure Tranxgen is
                                Get_Attribute (Import_Node, "name");
                Import_Use  : constant Boolean :=
                                Boolean'Value
-                                 (Get_Attribute (Import_Node, "use"));
+                                 (Get_Attribute (Import_Node,
+                                    Name    => "use",
+                                    Default => "FALSE"));
             begin
                PL (Ctx.P_Spec, "with " & Import_Name & ";");
                if Import_Use then
@@ -749,7 +867,6 @@ procedure Tranxgen is
       PL (Ctx.P_Spec, "package " & Package_Name & " is");
       II (Ctx.P_Spec);
 
-      PL (Ctx.P_Private, "private");
       II (Ctx.P_Private);
 
       PL (Ctx.P_Body, "package body " & Package_Name & " is");
@@ -764,10 +881,45 @@ procedure Tranxgen is
       DI (Ctx.P_Body);
       PL (Ctx.P_Body, "end " & Package_Name & ";");
 
+      --  Generate declarations for subfield types
+
+      NL (Ctx.P_Spec);
+      DI (Ctx.P_Spec);
+      PL (Ctx.P_Spec, "private");
+      II (Ctx.P_Spec);
+
+      Subfield_Types : declare
+         procedure Declare_Subfield_Type (SFTC : Natural_Sets.Cursor);
+         --  Declare modular type for subfield size denoted by SFTC
+
+         ---------------------------
+         -- Declare_Subfield_Type --
+         ---------------------------
+
+         procedure Declare_Subfield_Type (SFTC : Natural_Sets.Cursor)  is
+            Subfield_Size : Natural renames Natural_Sets.Element (SFTC);
+         begin
+            PL (Ctx.P_Spec, "type " & Subfield_Type_Name (Subfield_Size)
+                & " is mod 2**"  & Img (Subfield_Size) & ";");
+         end Declare_Subfield_Type;
+
+      begin
+         Ctx.Subfield_Sizes.Iterate (Declare_Subfield_Type'Access);
+      end Subfield_Types;
+
       Dump (Ctx.P_Spec);
       Dump (Ctx.P_Private);
       Dump (Ctx.P_Body);
    end Process_Package;
+
+   ------------------------
+   -- Subfield_Type_Name --
+   ------------------------
+
+   function Subfield_Type_Name (Subfield_Size : Natural) return String is
+   begin
+      return "Bits_" & Img (Subfield_Size);
+   end Subfield_Type_Name;
 
    -------------------
    -- Walk_Siblings --
@@ -803,4 +955,11 @@ begin
 
    Free (Read);
    Close (Input);
+
+exception
+
+   when E : others =>
+      GNAT.IO.Put_Line
+        ("Exception raised: " & Ada.Exceptions.Exception_Information (E));
+      GNAT.OS_Lib.OS_Exit (1);
 end Tranxgen;

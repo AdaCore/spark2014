@@ -18,12 +18,14 @@ package AIP.Config is
    --  [N (UDP_New) - N(UDP_Release)]
 
    UDP_TTL : constant := 255;
-   -- IP TTL for UDP datagrams
+   --  IP TTL for UDP datagrams
 
    -----------------------
    -- TCP configuration --
    -----------------------
 
    TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
+
+   Enable_Forwarding : constant Boolean := False;
 
 end AIP.Config;

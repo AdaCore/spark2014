@@ -1,0 +1,73 @@
+<!--
+                              ICMPSTACK COMPONENTS
+               Copyright (C) 2010, Free Software Foundation, Inc.
+
+                  RFC777 - Internet Control Message Protocol
+
+-->
+
+<package name="AIP.ICMPH">
+ <import name="AIP.IPH" />
+ <enum name="ICMP_Type">
+  <literal name="Echo_Reply"        value= "0" />
+  <literal name="Dest_Unreachable"  value= "3" />
+  <literal name="Source_Quench"     value= "4" />
+  <literal name="Redirect"          value= "5" />
+  <literal name="Echo"              value= "8" />
+  <literal name="Time_Exceeded"     value="11" />
+  <literal name="Parameter_Problem" value="12" />
+  <literal name="Timestamp"         value="13" />
+  <literal name="Timestamp_Reply"   value="14" />
+ </enum>
+
+ <message name="ICMP_Header" prefix="ICMPH_">
+  <field name="I_Type"    length= "8" />
+  <field name="Code"      length= "8" />
+  <field name="Parameter" length= "8" />
+  <field name="Unused"    length= "8" />
+ </message>
+
+ <message name="ICMP_Timestamp_Header" prefix="ICMP_TSH">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"     length="32" />
+  <field name="Originate" length="32" />
+  <field name="Receive"   length="32" />
+  <field name="Transmit"  length="32" />
+ </message>
+
+ <message name="ICMP_Redirect_Header" prefix="ICMP_RH">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"           length="32" />
+  <field name="Gateway_Address" length="32" />
+<!--
+  <field name="IP_Header" class="nested" type="IPH.IP_Header" />
+  -->
+  <field name="IP_Header"       length="160"
+     class="private" type="IPH.IP_Header" />
+  <field name="Data"            length="64"
+     class="private" type="Opaque64_T" />
+ </message>
+
+ <!--
+   ICMP_Generic_Header is used for Destination Unreachable,
+   Source_Quench, Time_Exceeded and Parameter_Problem.
+   -->
+
+ <message name="ICMP_Generic_Header" prefix="ICMP_Generic_H">
+<!--
+  <field name="ICMPH"     class="nested" type="ICMP_Header" />
+  -->
+  <field name="ICMPH"           length="32" />
+<!--
+  <field name="IP_Header" class="nested" type="IPH.IP_Header" />
+  -->
+  <field name="IP_Header"       length="160"
+     class="private" type="IPH.IP_Header" />
+  <field name="Data"            length="64"
+     class="private" type="Opaque64_T" />
+ </message>
+</package>

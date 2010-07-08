@@ -5,6 +5,7 @@
 
 --  Network Interface abstraction
 
+with AIP.Callbacks;
 with AIP.IPaddrs;
 
 package AIP.NIF is
@@ -20,11 +21,24 @@ package AIP.NIF is
    function NIF_MASK      (Nid : Netif_Id) return IPaddrs.IPaddr;
    --  function NIF_BCAST (Nid : Netif_Id) return IPaddrs.IPaddr; ???
 
+   function Is_Local_Address
+     (Nid  : Netif_Id;
+      Addr : IPaddrs.IPaddr) return Boolean;
+   --  True if Addr is a local address for Nid
+
+   function Is_Broadcast_Address
+     (Nid  : Netif_Id;
+      Addr : IPaddrs.IPaddr) return Boolean;
+   --  True if Addr is a broadcast address for Nid
+
 private
 
    type Netif is record
       IPaddr  : IPaddrs.IPaddr;
       Netmask : IPaddrs.IPaddr;
+
+      Input_CB  : Callbacks.CBK_Id;
+      Output_CB : Callbacks.CBK_Id;
    end record;
 
 end AIP.NIF;

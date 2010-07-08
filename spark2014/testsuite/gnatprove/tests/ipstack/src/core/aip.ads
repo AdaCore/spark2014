@@ -61,7 +61,11 @@ package AIP is
    type S16_T is range -2 ** 15 .. 2 ** 15 - 1;
    type S32_T is range -2 ** 31 .. 2 ** 31 - 1;
 
+   type U1_T is range 0 .. 2 ** 1 - 1;
+   type U2_T is range 0 .. 2 ** 2 - 1;
+   type U3_T is range 0 .. 2 ** 3 - 1;
    type U4_T is range 0 .. 2 ** 4 - 1;
+   type U6_T is range 0 .. 2 ** 6 - 1;
    type U8_T is range 0 .. 2 ** 8 - 1;
    type U13_T is range 0 .. 2 ** 13 - 1;
    type U16_T is range 0 .. 2 ** 16 - 1;
@@ -71,6 +75,12 @@ package AIP is
    type M8_T is mod 2 ** 8;
    type M16_T is mod 2 ** 16;
    type M32_T is mod 2 ** 32;
+
+   -----------------
+   -- Opaque data --
+   -----------------
+
+   type Opaque64_T is new String (1 .. 8);
 
    ----------------------------
    -- Error characterization --

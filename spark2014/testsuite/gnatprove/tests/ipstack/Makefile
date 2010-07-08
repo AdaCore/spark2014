@@ -39,7 +39,7 @@ $(APP_IMAGE): $(LWIPLIB) ipstack force
 
 ipstack: build/gen/aip_constants.ads \
          $(foreach proto,            \
-           arp ip udp tcp,           \
+           arp ip icmp udp tcp,      \
            build/gen/aip-$(proto)h.ads build/gen/aip-$(proto)h.adb)
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_core
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
@@ -47,12 +47,13 @@ ipstack: build/gen/aip_constants.ads \
 
 build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 	mkdir -p build/bldtools
-	gnatmake -D build/bldtools -o $@ $< `xmlada-config`
+	gnatmake -g -D build/bldtools -o $@ $< `xmlada-config`
 
 build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
 	mkdir -p build/gen
-	build/bldtools/tranxgen $< > $(<:.xml=.ada)
-	gnatchop -w $(<:.xml=.ada) build/gen
+	adaf=build/gen/$(notdir $<).ada; \
+	build/bldtools/tranxgen $< > $$adaf; \
+	gnatchop -w $$adaf build/gen
 
 build/gen/aip_constants.ads:
 	mkdir -p build/gen

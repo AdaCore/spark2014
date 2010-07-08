@@ -5,8 +5,8 @@
 
 package body AIP.OSAL is
 
-   procedure LWIP_init;
-   pragma Import (C, LWIP_init, "C_init");
+   procedure LWIP_Init;
+   pragma Import (C, LWIP_Init, "C_init");
 
    ----------------
    -- Initialize --
