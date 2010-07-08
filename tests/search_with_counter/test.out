@@ -37,7 +37,8 @@ is
   --# pre              Table'First <= Index and then Index <= Table'Last;
   --# return Result =>  Result             = (Table(Index) = Value);
 end External_Search;
-with Search;use type Search.IntArray; with External_Search;
+with Search;use type Search.IntArray; 
+with External_Search;
 --@ line 1
 --# inherit external_search, search;
 --@ line 1

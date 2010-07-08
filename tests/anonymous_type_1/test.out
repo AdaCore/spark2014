@@ -21,7 +21,8 @@ is
 
    function Increment (Var_In : in Integer) return Integer;
 end External_Anon_Type;
-with Anon_Type;use type Anon_Type.Matrix; with External_Anon_Type;
+with Anon_Type;use type Anon_Type.Matrix; 
+with External_Anon_Type;
 --@ line 1
 -----------------------------------------------------------------------------
 --  Examples for fix the anonymous type in object declarations or definitions

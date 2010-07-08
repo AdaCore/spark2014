@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------
 
-with T;use type T.Signed; with S;
+with T;use type T.Signed; 
+with S;
 --@ line 2
 --# inherit s, t;
 package External_S
@@ -79,7 +80,8 @@ package Internal_S
    --# return Result =>  Result            = N + 2;
 
 end Internal_S;
-with T;use type T.Signed; with External_T;
+with T;use type T.Signed; 
+with External_T;
 --@ line 1
 --# inherit t, external_t;
 --@ line 1

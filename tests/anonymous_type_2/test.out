@@ -36,7 +36,11 @@ is
 --@ line 13
    type Array5 is array (New_Name_5, New_Name_6) of Value;
 end Anon_Type;
-with Anon_Type;use type Anon_Type.Array1; use type Anon_Type.Array2; use type Anon_Type.Array3; use type Anon_Type.Array4; use type Anon_Type.Array5; 
+with Anon_Type;use type Anon_Type.Array1; 
+use type Anon_Type.Array2; 
+use type Anon_Type.Array3; 
+use type Anon_Type.Array4; 
+use type Anon_Type.Array5; 
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,
@@ -59,7 +63,12 @@ is
 --@ line 16
                                                                           );
 end External_Anon_Type;
-with Anon_Type;use type Anon_Type.Array1; use type Anon_Type.Array2; use type Anon_Type.Array3; use type Anon_Type.Array4; use type Anon_Type.Array5; with External_Anon_Type;
+with Anon_Type;use type Anon_Type.Array1; 
+use type Anon_Type.Array2; 
+use type Anon_Type.Array3; 
+use type Anon_Type.Array4; 
+use type Anon_Type.Array5; 
+with External_Anon_Type;
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type in constrained_array_definition,

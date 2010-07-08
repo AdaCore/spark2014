@@ -12,7 +12,8 @@ is
 --@ line 8
                                             );
 end External_tq;
-with tq;use type tq.Complex; with External_tq;
+with tq;use type tq.Complex; 
+with External_tq;
 --@ line 1
 --# inherit tq, external_tq;
 --@ line 1

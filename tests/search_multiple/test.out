@@ -31,7 +31,8 @@ is
   --# return Result =>  Result             = (Table(Index1) = Value1 and then
   --#                                           Table(Index2) = Value2);
 end External_Search;
-with Search;use type Search.IntArray; with External_Search;
+with Search;use type Search.IntArray; 
+with External_Search;
 --@ line 1
 --# inherit external_search, search;
 --@ line 1

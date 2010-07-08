@@ -6,7 +6,8 @@ package External_Integer_Types
 is
 end External_Integer_Types;
 
-with Integer_Types;use type Integer_Types.Array_Range; with S;use type S.IntArray; 
+with Integer_Types;use type Integer_Types.Array_Range; 
+with S;use type S.IntArray; 
 --@ line 2
 --# inherit s, integer_types;
 package External_S
@@ -39,7 +40,8 @@ package Integer_Types
 is
    type Array_Range is range 1 .. 10;
 end Integer_Types;
-with Integer_Types;use type Integer_Types.Array_Range; with External_Integer_Types;
+with Integer_Types;use type Integer_Types.Array_Range; 
+with External_Integer_Types;
 --@ line 1
 --# inherit external_integer_types, integer_types;
 --@ line 1
@@ -53,7 +55,8 @@ end Internal_Integer_Types;
 
 with Integer_Types;use type Integer_Types.Array_Range; 
 with External_Integer_Types;
-with S;use type S.IntArray; with External_S;
+with S;use type S.IntArray; 
+with External_S;
 --@ line 2
 --# inherit s, external_integer_types, external_s, integer_types;
 package Internal_S

@@ -36,7 +36,8 @@ is
 --@ line 10
                                                          );
 end External_Anon_Type;
-with Anon_Type;use type Anon_Type.Matrix; with External_Anon_Type;
+with Anon_Type;use type Anon_Type.Matrix; 
+with External_Anon_Type;
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type in for statement see .adb

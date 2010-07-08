@@ -1,14 +1,17 @@
 two_test.adb:3:3: sparkify: discard contract on definition of subprogram
 two_test.adb:33:3: sparkify: discard contract on definition of subprogram
 ------------------------------------------------------------------------
-with Two;use type Two.Index; use type Two.Table; 
+with Two;use type Two.Index; 
+use type Two.Table; 
 --@ line 1
 --# inherit two;
 package External_Two
 is
 end External_Two;
 
-with Two;use type Two.Index; use type Two.Table; with Two_Test;
+with Two;use type Two.Index; 
+use type Two.Table; 
+with Two_Test;
 --@ line 2
 --# inherit two_test, two;
 package External_Two_Test
@@ -60,7 +63,9 @@ is
   --#                    'Last (2);
   --# return Result =>  Result             = (T (I1, I2) = Value);
 end External_Two_Test;
-with Two;use type Two.Index; use type Two.Table; with External_Two;
+with Two;use type Two.Index; 
+use type Two.Table; 
+with External_Two;
 --@ line 1
 --# inherit external_two, two;
 --@ line 1
@@ -70,7 +75,8 @@ package Internal_Two
 --@ line 7
 end Internal_Two;
 
-with Two;use type Two.Index; use type Two.Table; 
+with Two;use type Two.Index; 
+use type Two.Table; 
 with External_Two;
 with Two_Test;with External_Two_Test;
 --@ line 2
@@ -134,7 +140,8 @@ is
    type Table is array (Index, Index) of Integer;
 end Two;
 
-with Two;use type Two.Index; use type Two.Table; 
+with Two;use type Two.Index; 
+use type Two.Table; 
 --@ line 2
 --# inherit two;
 package Two_Test

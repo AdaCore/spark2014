@@ -1,34 +1,70 @@
 ------------------------------------------------------------------------
-package Derived_Type is
-
-   type Counter is range 
---@ line 3
-                       Positive'First .. 
---@ line 3
-                       Positive'Last;
-   type Index_Int is  range            1 .. 10;
---@ line 4
-                     --# assert Index_Int'Base is Integer;
-   type Index_Real is  range          1.0 .. 10.0;
---@ line 5
-                      --# assert Index_Real'Base is Float;
-
-   procedure Affect1
-     (Index_In : out Index_Int;
-      Index_Re : out Index_Real);
-
+package Derived_Type
+is
+   subtype Counter is  Positive;
+   subtype Index_Int is  Integer range 1 .. 10;
+   subtype Index_Real is  Float range 1.0 .. 10.0;
 end Derived_Type;
-package body Derived_Type is
+with Derived_Type;
+--@ line 1
+--# inherit derived_type;
+package External_Derived_Type
+is
+
+
 
    procedure Affect
-     (Index_In : out Index_Int;
-      Index_Re : out Index_Real)
+     (Index_In : out Derived_Type.Index_Int
+--@ line 8
+                              ;
+      Index_Re : out Derived_Type.Index_Real
+--@ line 9
+                               );
+end External_Derived_Type;
+with Derived_Type;with External_Derived_Type;
+--@ line 1
+--# inherit derived_type, external_derived_type;
+--@ line 1
+package Internal_Derived_Type
+--@ line 1
+                     is
+--@ line 7
+   procedure Affect
+     (Index_In : out Derived_Type.Index_Int
+--@ line 8
+                              ;
+      Index_Re : out Derived_Type.Index_Real
+--@ line 9
+                               );
+
+end Internal_Derived_Type;
+package body Internal_Derived_Type
+--@ line 1
+                          is
+
+   procedure Affect
+     (Index_In : out Derived_Type.Index_Int
+--@ line 4
+                              ;
+      Index_Re : out Derived_Type.Index_Real
+--@ line 5
+                               )
    is
    begin
       Index_In := 5;
       Index_Re := 5.0;
    end Affect;
 
-end Derived_Type;
+end Internal_Derived_Type;
 ------------------------------------------------------------------------
-Examiner terminates in error
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      1      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           2      0      2              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  3      1      2              0      0      0       0
+% Totals:                      33%    67%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================

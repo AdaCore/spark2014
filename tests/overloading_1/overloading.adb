@@ -14,7 +14,9 @@ is
    end Swap;
 
 
-   procedure Echange (A, B : out Integer; C, D : out Float) is
+   procedure Echange (A, B : out Integer;
+                      C, D : out Float;
+                      E, F : out Long_Integer) is
 
       procedure Swap (X, Y : in out Long_Integer);
 
@@ -23,8 +25,7 @@ is
       begin
          T := X; X:= Y; Y:= T;
       end Swap;
-      E, F : Long_Integer;
-
+      --  E, F : Long_Integer;
    begin
       A := 10;
       B := 20;

@@ -37,7 +37,9 @@ end record;
 
    ToDay1, ToDay2, ToDay3 : Date;
 end Anon_Type;
-with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; 
+with Anon_Type;use type Anon_Type.Months; 
+use type Anon_Type.Date; 
+use type Anon_Type.Nothing; 
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type as component_list in the record type
@@ -50,7 +52,10 @@ is
 --@ line 23
                                                             );
 end External_Anon_Type;
-with Anon_Type;use type Anon_Type.Months; use type Anon_Type.Date; use type Anon_Type.Nothing; with External_Anon_Type;
+with Anon_Type;use type Anon_Type.Months; 
+use type Anon_Type.Date; 
+use type Anon_Type.Nothing; 
+with External_Anon_Type;
 --@ line 1
 ------------------------------------------------------------------------------
 --  Test the anonymous type as component_list in the record type

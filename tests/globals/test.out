@@ -132,7 +132,7 @@ package body Internal_Globals
       return X;
    end Indirect_Read;
 
-   procedure Indirect_Write 
+   procedure Indirect_Write
    is
 --@ line 32
       procedure Local1
@@ -149,7 +149,7 @@ package body Internal_Globals
               );
    end Indirect_Write;
 
-   procedure Indirect_Read_Write 
+   procedure Indirect_Read_Write
    is
 --@ line 41
       procedure Local2

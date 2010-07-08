@@ -8,20 +8,24 @@ is
    type Table is array (Index) of Integer;
 end Arr;
 
-with Arr;use type Arr.Index; use type Arr.Table; 
+with Arr;use type Arr.Index; 
+use type Arr.Table; 
 --@ line 2
 --# inherit arr;
 package Arr_Test
 is
 end Arr_Test;
-with Arr;use type Arr.Index; use type Arr.Table; 
+with Arr;use type Arr.Index; 
+use type Arr.Table; 
 --@ line 1
 --# inherit arr;
 package External_Arr
 is
 end External_Arr;
 
-with Arr;use type Arr.Index; use type Arr.Table; with Arr_Test;
+with Arr;use type Arr.Index; 
+use type Arr.Table; 
+with Arr_Test;
 --@ line 2
 --# inherit arr_test, arr;
 package External_Arr_Test
@@ -48,7 +52,9 @@ is
   --# pre              T'First <= N and then N <= T'Last;
   --# return Result =>  Result             = (T (N) = Value);
 end External_Arr_Test;
-with Arr;use type Arr.Index; use type Arr.Table; with External_Arr;
+with Arr;use type Arr.Index; 
+use type Arr.Table; 
+with External_Arr;
 --@ line 1
 --# inherit external_arr, arr;
 --@ line 1
@@ -58,7 +64,8 @@ package Internal_Arr
 --@ line 7
 end Internal_Arr;
 
-with Arr;use type Arr.Index; use type Arr.Table; 
+with Arr;use type Arr.Index; 
+use type Arr.Table; 
 with External_Arr;
 with Arr_Test;with External_Arr_Test;
 --@ line 2

@@ -1,6 +1,7 @@
 s.adb:13:45: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
-with S;use type S.Array_Range; use type S.IntArray; 
+with S;use type S.Array_Range; 
+use type S.IntArray; 
 --@ line 1
 --# inherit s;
 package External_S
@@ -30,7 +31,9 @@ is
    --# pre              Table'First <= Index and then Index <= Table'Last;
    --# return Result =>  Result             = (Table(Index) = Value);
 end External_S;
-with S;use type S.Array_Range; use type S.IntArray; with External_S;
+with S;use type S.Array_Range; 
+use type S.IntArray; 
+with External_S;
 --@ line 1
 --# inherit s, external_s;
 --@ line 1
