@@ -610,10 +610,17 @@ package body Sparkify.Pre_Operations is
       -- Set_Current_Cursor --
       ------------------------
 
+      Set_Current_Cursor_Called : Boolean := False;
+
       procedure Set_Current_Cursor;
 
       procedure Set_Current_Cursor is
       begin
+         if Set_Current_Cursor_Called then
+            return;
+         end if;
+         Set_Current_Cursor_Called := True;
+
          for J in Params'Range loop
             Reach_Element_And_Traverse (Params (J), State);
          end loop;
@@ -714,6 +721,9 @@ package body Sparkify.Pre_Operations is
          Skip_Blanks (Current_Cursor);
          State.Echo_Cursor := Current_Cursor;
       else
+         PP_Echo_Cursor_Range  (State.Echo_Cursor, Cursor_Before (Proc_Name));
+         Traverse_Element_And_Print (Proc_Name);
+         State.Echo_Cursor := Cursor_After (Proc_Name);
 
          if Has_SPARK_Contract (Pragmas) then
             --  Discard contracts on definitions of subprograms, as SPARK
@@ -1512,21 +1522,24 @@ package body Sparkify.Pre_Operations is
                         Private_Items & Visible_Items;
    begin
       for J in Decl_Items'Range loop
-         case Declaration_Kind (Decl_Items (J)) is
-            when A_Type_Declaration =>
-               declare
-                  Type_Decl : constant Asis.Declaration :=
-                                Decl_Items (J);
-               begin
-                  PP_Word ("use type "
-                           & Prepend_Package_Name
-                             (Type_Decl, Declaration_Unique_Name (Type_Decl),
-                              Force => True)
-                           & "; ");
-               end;
-            when others =>
-               null;
-         end case;
+         declare
+            Type_Decl : constant Asis.Declaration := Decl_Items (J);
+         begin
+            case Declaration_Kind (Type_Decl) is
+               when A_Type_Declaration =>
+                  if Type_Kind (Type_Declaration_View (Type_Decl))
+                    /= A_Derived_Type_Definition then
+                     PP_Word ("use type "
+                       & Prepend_Package_Name
+                         (Type_Decl, Declaration_Unique_Name (Type_Decl),
+                          Force => True)
+                       & "; ");
+                     PP_Close_Line;
+                  end if;
+               when others =>
+                  null;
+            end case;
+         end;
       end loop;
    end Print_All_Use_Type;
 
