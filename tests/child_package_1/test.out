@@ -61,7 +61,7 @@ package body Internal_Parent_Child
 --@ line 1
                           is
 
-   procedure Swap 
+   procedure Swap
    is
 --@ line 4
       Tmp : Integer;

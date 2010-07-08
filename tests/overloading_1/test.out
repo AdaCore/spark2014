@@ -1,0 +1,103 @@
+------------------------------------------------------------------------
+with Overloading;
+--@ line 1
+--# inherit overloading;
+package External_Overloading
+is
+
+   procedure Swap (X, Y : in out Integer);
+   procedure Swap1
+--@ line 6
+                  (X, Y : in out Float);
+--@ line 17
+   procedure Echange (A, B : out Integer;
+                      C, D : out Float;
+                      E, F : out Long_Integer) ;
+end External_Overloading;
+with Overloading;with External_Overloading;
+--@ line 1
+--# inherit overloading, external_overloading;
+--@ line 1
+package Internal_Overloading
+is
+   --  Default for generic some time it must be good
+   --  to overload some opeartion. but SPARK disallow this
+   procedure Swap (X, Y : in out Integer);
+   procedure Swap1
+--@ line 6
+                  (X, Y : in out Float);
+
+end Internal_Overloading;
+package Overloading
+is
+end Overloading;
+package body Internal_Overloading
+is
+
+   procedure Swap (X, Y : in out Integer) 
+   is
+--@ line 5
+      T:Integer;
+   begin
+      T := X; X:= Y; Y:= T;
+   end Swap;
+
+   procedure Swap1
+--@ line 10
+                  (X, Y : in out Float) 
+   is
+--@ line 11
+      T:Float;
+   begin
+      T := X; X:= Y; Y:= T;
+   end Swap1;
+
+
+   procedure Echange (A, B : out Integer;
+                      C, D : out Float;
+                      E, F : out Long_Integer) 
+   is
+
+
+      procedure Swap2
+--@ line 23
+                     (X, Y : in out Long_Integer) 
+      is
+--@ line 24
+         T:Long_Integer;
+      begin
+         T := X; X:= Y; Y:= T;
+      end Swap2;
+      --  E, F : Long_Integer;
+   begin
+      A := 10;
+      B := 20;
+      C := 10.0;
+      D := 20.0;
+      E := 100000;
+      F := 200000;
+
+      External_Overloading.Swap
+--@ line 37
+           (A,B);
+      External_Overloading.Swap1
+--@ line 38
+           (C,D);
+      Swap2
+--@ line 39
+           (E,F);
+   end Echange;
+
+end Internal_Overloading;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          4      4      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:          21      0     21              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 25      4     21              0      0      0       0
+% Totals:                      16%    84%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
