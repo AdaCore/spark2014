@@ -23,7 +23,8 @@ package AIP.UDP is
 
    --  UDP connections materialize as "UDP Protocol Control Blocks"
 
-   subtype PCB_Id is AIP.EID range 1 .. Config.MAX_UDP_PCB;
+   subtype PCB_Id is AIP.EID range AIP.NULID .. Config.MAX_UDP_PCB;
+   NOPCB : constant AIP.EID := AIP.NULID;
 
    subtype Port_T is U16_T;
    NOPORT : constant Port_T := 0;
@@ -137,6 +138,9 @@ package AIP.UDP is
    --  (free BUF) otherwise.
 
    UDP_HLEN : constant := 8;
+
+   UDP_Payload_Offset : constant := IP.IP_HLEN + UDP.UDP_HLEN;
+   --  What if there are IP options???
 
 private
 

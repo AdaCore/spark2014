@@ -12,11 +12,9 @@
 --  to a full fledged syslog server.
 
 package RAW_Udpsyslog
-  --# own CB_IDENTIFIERS;
+   --# own CB_IDENTIFIERS;
 is
-   
    procedure Init;
    --# global out CB_IDENTIFIERS;
    --  Initialize the simplified syslog service
-   
 end RAW_Udpsyslog;

@@ -18,8 +18,8 @@ package AIP.NIF is
    --  ??? What about 0?
 
    function NIF_IP        (Nid : Netif_Id) return IPaddrs.IPaddr;
-   function NIF_MASK      (Nid : Netif_Id) return IPaddrs.IPaddr;
-   --  function NIF_BCAST (Nid : Netif_Id) return IPaddrs.IPaddr; ???
+   function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
+   function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr;
 
    function Is_Local_Address
      (Nid  : Netif_Id;
@@ -34,8 +34,9 @@ package AIP.NIF is
 private
 
    type Netif is record
-      IPaddr  : IPaddrs.IPaddr;
-      Netmask : IPaddrs.IPaddr;
+      IP        : IPaddrs.IPaddr;
+      Mask      : IPaddrs.IPaddr;
+      Broadcast : IPaddrs.IPaddr;
 
       Input_CB  : Callbacks.CBK_Id;
       Output_CB : Callbacks.CBK_Id;

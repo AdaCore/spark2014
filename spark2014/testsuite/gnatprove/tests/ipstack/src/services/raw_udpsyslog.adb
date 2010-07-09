@@ -3,18 +3,22 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with System, AIP.Conversions;
-with AIP.Pools, AIP.IPaddrs, AIP.Inet, AIP.Pbufs, AIP.Callbacks, AIP.UDP;
+with AIP.Buffers;
+with AIP.Callbacks;
+with AIP.Conversions;
+with AIP.IPaddrs;
+with AIP.UDP;
 
-use type AIP.IPTR_T;
+use type AIP.EID;
+--  use type AIP.IPTR_T;
 
 package body RAW_Udpsyslog
-  --# own CB_IDENTIFIERS is Syslog_Recv_Cb_Id;
+   --# own CB_IDENTIFIERS is Syslog_Recv_Cb_Id;
 is
 
    --  Callback identifiers
 
-   Syslog_Recv_Cb_Id : AIP.UDP.Recv_Cb_Id;
+   Syslog_Recv_Cb_Id : AIP.Callbacks.CBK_Id;
 
    procedure Memcpy (Dst : AIP.IPTR_T; Src : String; Len : Integer);
    pragma Import (C, Memcpy, "memcpy");
@@ -25,21 +29,22 @@ is
 
    procedure Syslog_Recv_Cb
      (Arg : AIP.IPTR_T;
-      Ucb : AIP.UDP.UCB_Id;
-      Pbu : AIP.Pbufs.Pbuf_Id;
-      Ipa : AIP.IPaddrs.IPaddr_Id;
+      Ucb : AIP.UDP.PCB_Id;
+      Pbu : AIP.Buffers.Buffer_Id;
+      Ipa : AIP.IPaddrs.IPaddr;
       Pno : AIP.U16_T)
-     --# global in out AIP.Pools.PBUF_POOL;
+      --# global in out AIP.Pools.Buffer_POOL;
    is
+      pragma Unreferenced (Arg, Ipa, Pno);
       --  Process datagram received on our syslog port.  We build a packet
       --  buffer with a valid user.debug syslog header + the start of an
-      --  unstructured data block, catenate the incoming pbuf (expected to
+      --  unstructured data block, catenate the incoming Buffer (expected to
       --  contain some applicative log message), and send that over udp to
       --  the syslog port of a well known peer where we have setup a syslogd
       --  to listen.
 
       --  Preliminary data (syslog header + start of data), to which
-      --  we'll catenate the incoming pbuf:
+      --  we'll catenate the incoming Buffer:
 
       Logheader : constant String
         := "<15>1 2010-04-20T12:30:00.00Z 192.168.0.2 msglogger - 666";
@@ -55,9 +60,9 @@ is
       Logmsgstart : constant String := Logheader & " " & Logdata;
 
       --  Packet buffer to hold the message start and to which we'll chain the
-      --  incoming pbuf:
+      --  incoming Buffer:
 
-      Logbuf : AIP.Pbufs.Pbuf_Id;
+      Logbuf : AIP.Buffers.Buffer_Id;
 
       --  IP of real syslog server to which we'll forward
 
@@ -69,36 +74,38 @@ is
 
       --  Allocate the packet buffer for the message start. We will copy data
       --  straight from the payload start and need to make sure that enough
-      --  contiguous room is available from there. Request a RAM_PBUF for this
-      --  purpose. This will all be sent over UDP, so declare TRANSPORT layer
-      --  to get room for the necessary headers as well.
+      --  contiguous room is available from there. Request a RAM_Buffer for
+      --  this purpose. This will all be sent over UDP, so declare TRANSPORT
+      --  layer to get room for the necessary headers as well.
 
-      AIP.Pbufs.Pbuf_Alloc
-        (AIP.Pbufs.TRANSPORT_PBUF,
-         Logmsgstart'Length,
-         AIP.Pbufs.RAM_PBUF, Logbuf);
+      AIP.Buffers.Buffer_Alloc
+        (Offset => AIP.UDP.UDP_Payload_Offset,
+         Size   => Logmsgstart'Length,
+         Kind   => AIP.Buffers.MONO_BUF,
+         Buf    => Logbuf);
 
       --  Fill the buffer and catenate the incoming one. We won't free the
       --  latter on its own so use 'cat' and not 'chain' here.
 
-      Memcpy (AIP.Pbufs.Pbuf_Payload (Logbuf),
+      Memcpy (AIP.Buffers.Buffer_Payload (Logbuf),
               Logmsgstart, Logmsgstart'Length);
 
-      AIP.Pbufs.Pbuf_Cat (Logbuf, Pbu);
+      AIP.Buffers.Buffer_Cat (Logbuf, Pbu);
 
       --  Connect our PCB to the intended destination and send
 
       Syslogd_IP := AIP.IPaddrs.IP4 (192, 168, 0, 1);
-      Err := AIP.UDP.Udp_Connect
-        (Ucb, AIP.Conversions.To_IPTR (Syslogd_IP'Address), 514);
-      Err := AIP.UDP.Udp_Send (Ucb, Logbuf);
+      AIP.UDP.Udp_Connect (Ucb, Syslogd_IP, 514, Err);
+      if AIP.No (Err) then
+         AIP.UDP.Udp_Send    (Ucb, Logbuf, Err);
+      end if;
 
-      --  Release the pbuf chain we have processed and disconnect our PCB so
+      --  Release the Buffer chain we have processed and disconnect our PCB so
       --  that it accepts further incoming messages from other endpoints. This
       --  also makes sure that the local IP address object we have used isn't
       --  referenced later on.
 
-      AIP.Pbufs.Pbuf_Blind_Free (Logbuf);
+      AIP.Buffers.Buffer_Blind_Free (Logbuf);
       AIP.UDP.UDP_Disconnect (Ucb);
 
    end Syslog_Recv_Cb;
@@ -108,13 +115,14 @@ is
    ----------
 
    procedure Init
-     --# global out Syslog_Recv_Cb_Id;
+      --# global out Syslog_Recv_Cb_Id;
    is
-      Ucb : AIP.UDP.UCB_Id;
+      Ucb : AIP.UDP.PCB_Id;
+      Err : AIP.Err_T;
 
       procedure Init_CB_IDENTIFIERS
-        --# global out Syslog_Recv_Cb_Id;
-        --  See AIP.Callbacks for the rationale
+         --# global out Syslog_Recv_Cb_Id;
+         --  See AIP.Callbacks for the rationale
       is
          --# hide Init_CB_IDENTIFIERS
       begin
@@ -129,12 +137,14 @@ is
 
       Init_CB_IDENTIFIERS;
 
-      Ucb := AIP.UDP.Udp_New;
-      if Ucb = AIP.UDP.NOUCB then
+      AIP.UDP.Udp_New (Ucb);
+      if Ucb = AIP.UDP.NOPCB then
          null;
+
       else
-         AIP.UDP.Udp_Recv (Ucb, Syslog_Recv_Cb_Id, AIP.NULIPTR);
-         AIP.UDP.Udp_Bind (Ucb, AIP.IPaddrs.IP_ADDR_ANY, 514);
+         AIP.UDP.UDP_Set_Udata (Ucb, AIP.NULIPTR);
+         AIP.UDP.UDP_Callback (AIP.UDP.UDP_RECV, Ucb, Syslog_Recv_Cb_Id);
+         AIP.UDP.Udp_Bind (Ucb, AIP.IPaddrs.IP_ADDR_ANY, 514, Err);
       end if;
    end Init;
 

@@ -35,4 +35,7 @@ package AIP.IP is
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T);
 
+   IP_HLEN : constant := 20;
+   --  What if there are options???
+
 end AIP.IP;

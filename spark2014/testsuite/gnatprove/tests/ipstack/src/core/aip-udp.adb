@@ -17,7 +17,8 @@ package body AIP.UDP is
    --  used to determine which PCB gets to process an incoming datagram (see
    --  UDP_Input).
 
-   type UDP_PCB_Array is array (PCB_Id) of UDP_PCB;
+   type UDP_PCB_Array is
+     array (PCB_Id range NOPCB + 1 .. PCB_Id'Last) of UDP_PCB;
 
    PCBs : UDP_PCB_Array;
    Bound_PCBs : AIP.EID;

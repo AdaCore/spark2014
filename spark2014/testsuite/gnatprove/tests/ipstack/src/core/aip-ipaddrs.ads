@@ -14,7 +14,9 @@ package AIP.IPaddrs is
 
    subtype IPaddr is AIP.M32_T;
 
-   IP_ADDR_ANY : constant IPaddr := 0;
+   IP_ADDR_ANY      : constant IPaddr   := 0;
+   IP_ADDR_LOOPBACK : constant IPaddr := 16#7f000001#;
+   IP_ADDR_BCAST    : constant IPaddr := 16#ffffffff#;
 
    function IP4 (A, B, C, D : AIP.U8_T) return IPaddr;
    --  Return the network ordered IP address value corresponding to A.B.C.D in

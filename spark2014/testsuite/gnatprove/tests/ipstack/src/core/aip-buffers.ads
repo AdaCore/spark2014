@@ -99,7 +99,7 @@ is
       Buf    : out Buffer_Id);
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at holding or
-   --  referencing Size elements of data starting at offset Offset
+   --  referencing Size elements of data starting at offset Offset.
 
    -----------------------------
    -- Buffer struct accessors --

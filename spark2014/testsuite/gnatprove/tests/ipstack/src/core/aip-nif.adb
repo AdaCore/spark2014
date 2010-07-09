@@ -18,9 +18,7 @@ package body AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean
    is
    begin
-      --  Not implemented???
-      raise Program_Error;
-      return False;
+      return Addr = NIF_IP (Nid);
    end Is_Local_Address;
 
    --------------------------
@@ -32,27 +30,35 @@ package body AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean
    is
    begin
-      --  Not implemented???
-      raise Program_Error;
-      return False;
+      return Addr = IPaddrs.IP_ADDR_BCAST
+               or else Addr = NIF_Broadcast (Nid);
    end Is_Broadcast_Address;
 
-------------
+   -------------------
+   -- NIF_Broadcast --
+   -------------------
+
+   function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr is
+   begin
+      return NIFs (Nid).Broadcast;
+   end NIF_Broadcast;
+
+   ------------
    -- NIF_IP --
    ------------
 
    function NIF_IP (Nid : Netif_Id) return IPaddrs.IPaddr is
    begin
-      return NIFs (Nid).IPaddr;
+      return NIFs (Nid).IP;
    end NIF_IP;
 
    --------------
-   -- NIF_MASK --
+   -- NIF_Mask --
    --------------
 
-   function NIF_MASK (Nid : Netif_Id) return IPaddrs.IPaddr is
+   function NIF_Mask (Nid : Netif_Id) return IPaddrs.IPaddr is
    begin
-      return NIFs (Nid).Netmask;
-   end NIF_MASK;
+      return NIFs (Nid).Mask;
+   end NIF_Mask;
 
 end AIP.NIF;
