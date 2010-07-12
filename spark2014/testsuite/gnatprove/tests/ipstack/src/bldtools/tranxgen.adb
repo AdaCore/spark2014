@@ -378,6 +378,10 @@ procedure Tranxgen is
 
       Message_Name : constant String := Get_Attribute (N, "name");
 
+      Alignment : Natural := 0;
+      --  Alignment is by default the size of the largest field that itself
+      --  is so aligned.
+
       Max_Field_Name_Length    : Natural := 0;
       --  Length of longest field name
 
@@ -479,6 +483,10 @@ procedure Tranxgen is
              F_Type    => To_Unbounded_String (Get_Attribute (N, "type")),
              Length    => Field_Length,
              Subfields => Subfields));
+
+         if Current_Bit_Offset mod Field_Length = 0 then
+            Alignment := Natural'Max (Field_Length, Alignment);
+         end if;
       end Process_Field;
 
       ----------------
@@ -732,6 +740,8 @@ procedure Tranxgen is
       --  Generate rep clause
 
       NL (Ctx.P_Private);
+      PL (Ctx.P_Private, "for " & Message_Name & "'Alignment use "
+                           & Img (Alignment / 8) & ";");
       PL (Ctx.P_Private, "for " & Message_Name & "'Bit_Order"
                     & " use System.High_Order_First;");
       PL (Ctx.P_Private, "for " & Message_Name & " use record");
