@@ -33,7 +33,6 @@ project Sparkify extends "tools/tool_utils/tool_utils" is
    type Os_Type is
       ("default_Unix", "powerpc_aix", "pa_hpux");
    for Main use ("asis_ul-several_files_driver.adb");
-   OPSYS : Os_Type := external ("OPSYS");
    BLD : Bld_Type := external ("BLD");
 
    package Builder is
@@ -46,10 +45,6 @@ project Sparkify extends "tools/tool_utils/tool_utils" is
    package Ide renames Common.Ide;
 
    package Compiler is
-
-      case OPSYS is
-
-         when "default_Unix" =>
 
             case BLD is
 
@@ -64,11 +59,6 @@ project Sparkify extends "tools/tool_utils/tool_utils" is
 
             end case;
 
-         when "powerpc_aix" =>
-
-         when "pa_hpux" =>
-
-      end case;
    end Compiler;
 
 end Sparkify;
