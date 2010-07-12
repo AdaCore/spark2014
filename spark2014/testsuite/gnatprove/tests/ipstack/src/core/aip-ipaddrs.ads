@@ -31,8 +31,4 @@ package AIP.IPaddrs is
    function Match (IP1, IP2 : IPaddr) return Boolean;
    --  If IP1 encompasses IP2 or the other way around (Same or one is Any)
 
-   function Bcast (IP : IPaddr; If_IP, If_Mask : IPaddr) return Boolean;
-   --  If IP is a broadcast address over an interface with IP IF_IP and
-   --  netmask IF_MASK.
-
 end AIP.IPaddrs;

@@ -47,13 +47,4 @@ package body AIP.IPaddrs is
       return Any (IP1) or else Any (IP2) or else Same (IP1, IP2);
    end Match;
 
-   -----------
-   -- Bcast --
-   -----------
-
-   function Bcast (IP : IPaddr; If_IP, If_Mask : IPaddr) return Boolean is
-   begin
-      return False; -- ??? implement me
-   end Bcast;
-
 end AIP.IPaddrs;

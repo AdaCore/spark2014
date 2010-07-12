@@ -3,6 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.Checksum;
 with AIP.Conversions;
 with AIP.Inet;
 
@@ -70,10 +71,11 @@ package body AIP.UDP is
       PCBs (PCB).IPCB.Remote_IP := IPaddrs.IP_ADDR_ANY;
       PCBs (PCB).Remote_Port := NOPORT;
 
-      PCBs (PCB).Flags := 0;
-      PCBs (PCB).Udata := AIP.NULIPTR;
-      PCBs (PCB).RECV_Cb := Callbacks.NOCB;
-      PCBs (PCB).Link := PCB_NOID;
+      PCBs (PCB).Connected := False;
+
+      PCBs (PCB).Udata     := AIP.NULIPTR;
+      PCBs (PCB).RECV_Cb   := Callbacks.NOCB;
+      PCBs (PCB).Link      := PCB_NOID;
    end PCB_Clear;
 
    -------------
@@ -165,7 +167,10 @@ package body AIP.UDP is
            and then
            (IPaddrs.Match (PCBs (Cid).IPCB.Local_IP, Dst_IP)
             or else
-            IPaddrs.Bcast (Dst_IP, NIF.NIF_IP (Netif), NIF.NIF_MASK (Netif)));
+            IPaddrs.Match (NIF.NIF_Broadcast (Netif), Dst_IP));
+         --  ??? case of a datagram for the broadcast address arriving on
+         --  one interface, and destined to the broadcast address of another,
+         --  when we are bound on the specific address of the other interface?
 
          --  If it does, see if the PCB remote addr+port pair matches the
          --  UDP source, in which case we have an ideal taker. Otherwise,
@@ -180,9 +185,8 @@ package body AIP.UDP is
 
             if Remote_Match then
                Ideal_PCB := Cid;
-            elsif Good_PCB = PCB_NOID
-              and then (PCBs (Cid).Flags and PCB_FLAGS_CONNECTED) /= 0
-            then
+
+            elsif Good_PCB = PCB_NOID and then PCBs (Cid).Connected then
                Good_PCB := Cid;
             end if;
          end if;
@@ -364,7 +368,7 @@ package body AIP.UDP is
       end if;
 
       --  Assign the local IP/port, and insert into the list of bound PCBs
-      --  unless it was already there
+      --  unless it was already there.
 
       if Err = NOERR then
          PCBs (PCB).Local_Port := Port_To_Bind;
@@ -424,10 +428,10 @@ package body AIP.UDP is
    -------------------
 
    procedure UDP_Connect
-     (PCB : PCB_Id;
+     (PCB         : PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
-      Err : out AIP.Err_T) is
+      Err         : out AIP.Err_T) is
    begin
       --  Make sure we have a local binding in place, so that the (dummy)
       --  connection has two well identified endpoints.
@@ -441,8 +445,8 @@ package body AIP.UDP is
 
       if Err = AIP.NOERR then
          PCBs (PCB).IPCB.Remote_IP := Remote_IP;
-         PCBs (PCB).Remote_Port := Remote_Port;
-         PCBs (PCB).Flags := PCBs (PCB).Flags or PCB_FLAGS_CONNECTED;
+         PCBs (PCB).Remote_Port    := Remote_Port;
+         PCBs (PCB).Connected      := True;
       end if;
    end UDP_Connect;
 
@@ -450,13 +454,16 @@ package body AIP.UDP is
    --  UDP_Send internals --
    -------------------------
 
+   ------------------------
+   -- Prepend_UDP_Header --
+   ------------------------
+
    procedure Prepend_UDP_Header
      (Buf  : Buffers.Buffer_Id;
       Ubuf : out Buffers.Buffer_Id;
       Err  : out AIP.Err_T)
    is
    begin
-
       Buffers.Buffer_Header (Buf, UDP_HLEN, Err);
       if Err = NOERR then
          Ubuf := Buf;
@@ -471,27 +478,32 @@ package body AIP.UDP is
       end if;
    end Prepend_UDP_Header;
 
+   --------------------
+   -- UDP_Send_To_If --
+   --------------------
+
    procedure UDP_Send_To_If
-     (PCB   : PCB_Id;
-      Buf   : Buffers.Buffer_Id;
+     (PCB      : PCB_Id;
+      Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
       Dst_Port : Port_T;
-      Netif : AIP.NIF.Netif_Id;
-      Err   : out AIP.Err_T)
+      Netif    : AIP.NIF.Netif_Id;
+      Err      : out AIP.Err_T)
    is
-      Ubuf : Buffers.Buffer_Id := Buffers.NOBUF;
+      Ubuf   : Buffers.Buffer_Id := Buffers.NOBUF;
       Src_IP : AIP.IPaddrs.IPaddr;
    begin
-      --  Setup a local binding if we don't have one already, then
-      --  make room for a UDP header in front.
+      --  Setup a local binding if we don't have one already
 
       PCB_Force_Bind (PCB, Err);
+
+      --  Make room for a UDP header in front of Buf
 
       if Err = AIP.NOERR then
          Prepend_UDP_Header (Buf, Ubuf, Err);
       end if;
 
-      --  Fetch source IP to use from the interface. This is normally the same
+      --  Get source IP to use from the interface. This is normally the same
       --  as the PCB local address, unless the latter is IP_ADDR_ANY, or the
       --  interface IP has changed since the routing request was issued. Bets
       --  are off in the latter case, so drop the packet.
@@ -512,14 +524,33 @@ package body AIP.UDP is
 
       if Err = AIP.NOERR then
          declare
+            PUhdr : aliased UDPH.UDP_Pseudo_Header;
             Uhdr : UDPH.UDP_Header;
             for Uhdr'Address use Conversions.To_ADDR
-                                   (Buffers.Buffer_Payload (Ubuf));
+              (Buffers.Buffer_Payload (Ubuf));
+
+            Csum : M16_T;
          begin
+            UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
+            UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
+            UDPH.Set_UDPP_Zero        (PUhdr, 0);
+            UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
+            UDPH.Set_UDPP_Length      (PUhdr, Buffers.Buffer_Tlen (Ubuf));
+
             UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
             UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
             UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
             UDPH.Set_UDPH_Checksum (Uhdr, 16#0000#);
+
+            Csum := Checksum.Checksum
+              (Packet => Conversions.To_IPTR (PUhdr'Address),
+               Length => PUhdr'Size / 8);
+            Csum := Checksum.Checksum
+              (Packet    => Conversions.To_IPTR (Uhdr'Address),
+               Length    => Uhdr'Size / 8,
+               Initial   => Csum);
+
+            UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
          end;
 
          IP.IP_Output_If
@@ -553,12 +584,13 @@ package body AIP.UDP is
       Netif : AIP.EID;
    begin
 
-      --  ERR_USE on if not Connected, since we have no identified destination
+      --  ERR_USE if not Connected, since we have no identified destination
       --  endpoint. Otherwise, route to find the proper network interface for
       --  Dst_IP and send. ERR_RTE if no route could be found.
 
-      if (PCBs (PCB).Flags and PCB_FLAGS_CONNECTED) = 0 then
+      if not PCBs (PCB).Connected then
          Err := ERR_USE;
+
       else
          pragma Assert (not (IPaddrs.Any (Dst_IP) or else Dst_Port = NOPORT));
 
@@ -580,8 +612,8 @@ package body AIP.UDP is
       --  Reset the remote address association and flag PCB as unconnected
 
       PCBs (PCB).IPCB.Remote_IP := IPaddrs.IP_ADDR_ANY;
-      PCBs (PCB).Remote_Port := 0;
-      PCBs (PCB).Flags := PCBs (PCB).Flags and not PCB_FLAGS_CONNECTED;
+      PCBs (PCB).Remote_Port    := 0;
+      PCBs (PCB).Connected      := False;
    end UDP_Disconnect;
 
    -------------------

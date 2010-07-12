@@ -38,4 +38,9 @@ package AIP.IP is
    IP_HLEN : constant := 20;
    --  What if there are options???
 
+private
+
+   procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   --  Decrement TTL and forward packet to next hop
+
 end AIP.IP;

@@ -22,7 +22,7 @@
   <field name="Frag_Offset" length="13" />
   <field name="TTL"         length= "8" />
   <field name="Protocol"    length= "8" />
-  <field name="Checksum"    length="16" />
+  <field name="Checksum"    length="16" class="modular" />
   <field name="Src_Address" length="32" class="modular" />
   <field name="Dst_Address" length="32" class="modular" />
  </message>

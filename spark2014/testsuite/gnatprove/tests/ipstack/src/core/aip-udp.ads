@@ -146,10 +146,11 @@ private
 
    type UDP_PCB is record
       IPCB        : IP.IP_PCB;        -- IP control block
-      Flags       : AIP.M8_T;         -- Internal PCB status flags
 
       Local_Port  : Port_T;           --  Local UDP port PCB is bound to
       Remote_Port : Port_T;           --  Remote UDP port PCB is connected to
+
+      Connected   : Boolean;          --  True if Remote_IP/Remote_Port are set
 
       Udata       : AIP.IPTR_T;       --  User/Application data pointer
       RECV_Cb     : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
@@ -171,12 +172,9 @@ private
    --  chained in a list, or mere use of the PCB anyway (in-use though
    --  currently not in a list).
 
-   PCB_FLAGS_CONNECTED : constant := 16#04#;
-   --  PCB flag bit to indicate that the PCB is UDP_Connected
-   --
-   --  Used to detect proper remote endpoint definition on UDP_Send, and to
-   --  prevent selection of PCB to handle an incoming datagram if it is not
-   --  connected to its remote origin (UDP_Input).
+   --  PCB.Connected is used to detect proper remote endpoint definition on
+   --  UDP_Send, and to prevent selection of PCB to handle an incoming datagram
+   --  if it is not connected to its remote origin (UDP_Input).
 
    --------------------------
    -- Internal subprograms --

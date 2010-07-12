@@ -11,12 +11,12 @@
   <field name="Src_Port" length="16" />
   <field name="Dst_Port" length="16" />
   <field name="Length"   length="16" />
-  <field name="Checksum" length="16" />
+  <field name="Checksum" length="16" class="modular" />
  </message>
 
  <message name="UDP_Pseudo_Header" prefix="UDPP_">
-  <field name="Src_Address" length="32" />
-  <field name="Dst_Address" length="32" />
+  <field name="Src_Address" length="32" class="modular" />
+  <field name="Dst_Address" length="32" class="modular" />
   <field name="Zero"        length= "8" />
   <field name="Protocol"    length= "8" />
   <field name="Length"      length="16" />

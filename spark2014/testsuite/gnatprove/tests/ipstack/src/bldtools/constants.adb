@@ -17,4 +17,7 @@ package body Constants is
      ("Address_Size", Standard'Address_Size);
    procedure C01 is new CND
      ("Default_Bit_Order", System.Bit_Order'Pos (System.Default_Bit_Order));
+   procedure C02 is new CND
+     ("Network_Bit_Order", System.Bit_Order'Pos (System.High_Order_First));
+
 end Constants;

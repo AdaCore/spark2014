@@ -3,6 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.Checksum;
 with AIP.Config;
 with AIP.Conversions;
 
@@ -11,7 +12,9 @@ with AIP.UDP;
 
 package body AIP.IP is
 
-   procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   ----------------
+   -- IP_Forward --
+   ----------------
 
    procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
    begin
@@ -19,42 +22,47 @@ package body AIP.IP is
       raise Program_Error;
    end IP_Forward;
 
+   --------------
+   -- IP_Input --
+   --------------
+
    procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
-      Err : Err_T := AIP.NOERR;
+      Err  : Err_T := AIP.NOERR;
+
+      Ihdr_Ptr : constant IPTR_T := Buffers.Buffer_Payload (Buf);
+
       Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Conversions.To_ADDR (Buffers.Buffer_Payload (Buf));
+      for Ihdr'Address use Conversions.To_ADDR (Ihdr_Ptr);
       pragma Import (Ada, Ihdr);
 
       Local : Boolean;
       --  Set True for a packet bound for the local node
 
    begin
-      --  Discard short packet
+      --  Perform various sanity checks prior to accepting the packet:
+      --    short packets
+      --    IP version
+      --    checksum
 
-      if Buffers.Buffer_Tlen (Buf) < 20 then
-         --  Discard short packet
-
+      if True
+           or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
+           or else Buffers.Buffer_Tlen (Buf) < U16_T (IPH.IPH_IHL (Ihdr) * 4)
+           or else IPH.IPH_Version (Ihdr) /= 4
+           or else (IPH.IPH_Checksum (Ihdr) /= 0
+                     and then Checksum.Checksum
+                                (Packet => Ihdr_Ptr,
+                                 Length => Natural (IPH.IPH_IHL (Ihdr)) * 4)
+                                /= 16#ffff#)
+      then
          Err := AIP.ERR_USE;
-      end if;
-
-      --  Verify IP version
-
-      if No (Err) then
-         --  TBD???
-         null;
-      end if;
-      --  Verify IP checksum
-
-      if No (Err) then
-         --  TBD???
-         null;
       end if;
 
       --  Check TTL
 
-      if No (Err) then
-         --  TBD???
-         null;
+      if No (Err) and then IPH.IPH_TTL (Ihdr) = 0 then
+         --  Generate ICMP TTL exceeded???
+
+         Err := AIP.ERR_USE;
       end if;
 
       --  Check destination address
@@ -63,7 +71,9 @@ package body AIP.IP is
          if NIF.Is_Local_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
               or else
             NIF.Is_Broadcast_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
---  ??? multicast
+         --  ??? multicast
+         --  ??? case of a packet for one of my IP addresses but arriving
+         --  on another interface?
          then
             Local := True;
 

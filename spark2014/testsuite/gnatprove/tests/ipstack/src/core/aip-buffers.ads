@@ -32,25 +32,29 @@ is
    --  changed according to specific project needs. None of these positive
    --  constants should be zero.
 
-   --  Size of an individual data buffer
+   --  These should be defined in AIP.Config???
+
    Data_Buffer_Size   : constant AIP.U16_T := 256;
-   --  Total number of data buffers statically allocated
+   --  Size of an individual data buffer
+
    Data_Buffer_Num    : constant AIP.U16_T := 10;
-   --  Total number of no-data buffers statically allocated
+   --  Total number of data buffers statically allocated
+
    No_Data_Buffer_Num : constant AIP.U16_T := 64;
+   --  Total number of no-data buffers statically allocated
 
    --  Type of data element
    subtype Elem is Character;
 
    subtype Buffer_Length is AIP.U16_T range 0 .. Data_Buffer_Size;
 
+   subtype Data_Length   is AIP.U16_T;
    --  Type Data_Length is used for total length of buffers, both for data
    --  buffers and no-data buffers. Hence it is not necessarily bounded by
    --  the maximal size for data buffers: Data_Buffer_Size * Data_Buffer_Num.
-   subtype Data_Length   is AIP.U16_T;
 
-   --  Total number of buffers statically allocated
    Buffer_Num : constant AIP.U16_T := Data_Buffer_Num + No_Data_Buffer_Num;
+   --  Total number of buffers statically allocated
 
    subtype Buffer_Id     is AIP.U16_T range 0 .. Buffer_Num;
    subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
