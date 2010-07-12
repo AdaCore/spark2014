@@ -7,7 +7,10 @@ package body AIP.NIF is
 
    type NIF_Array is array (Netif_Id) of Netif;
 
+   pragma Warnings (Off);
+   --  NIFs never assigned???
    NIFs : NIF_Array;
+   pragma Warnings (On);
 
    ----------------------
    -- Is_Local_Address --
