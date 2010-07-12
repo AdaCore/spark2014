@@ -118,9 +118,11 @@ package body Internal_tq
 --@ line 20
                         ;
    begin
-      sumCplex := External_tq.plus
+      sumCplex := External_tq.plus(Left => 
 --@ line 22
-                      (mCplex1, mCplex2);
+                       mCplex1, Right => 
+--@ line 22
+                                mCplex2);
 
       return sumCplex;
    end eval;

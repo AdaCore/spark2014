@@ -126,9 +126,9 @@ package body Internal_Globals
          X := Proxy;
       end Local;
    begin
-      Local (Globals.G
+      Local(Proxy => 
 --@ line 27
-              );
+             Globals.G);
       return X;
    end Indirect_Read;
 
@@ -142,11 +142,9 @@ package body Internal_Globals
          Proxy := 0;
       end Local1;
    begin
-      Local1
+      Local1(Proxy => 
 --@ line 37
-            (Globals.G
---@ line 37
-              );
+             Globals.G);
    end Indirect_Write;
 
    procedure Indirect_Read_Write
@@ -163,11 +161,9 @@ package body Internal_Globals
          Proxy := Proxy + 1;
       end Local2;
    begin
-      Local2
+      Local2(Proxy => 
 --@ line 47
-            (Globals.G
---@ line 47
-              );
+             Globals.G);
    end Indirect_Read_Write;
 
 end Internal_Globals;

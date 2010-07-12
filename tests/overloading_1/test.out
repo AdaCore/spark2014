@@ -77,15 +77,21 @@ is
       E := 100000;
       F := 200000;
 
-      External_Overloading.Swap
+      External_Overloading.Swap(X => 
 --@ line 37
-           (A,B);
-      External_Overloading.Swap1
+            A, Y => 
+--@ line 37
+              B);
+      External_Overloading.Swap1(X => 
 --@ line 38
-           (C,D);
-      Swap2
+            C, Y => 
+--@ line 38
+              D);
+      Swap2(X => 
 --@ line 39
-           (E,F);
+            E, Y => 
+--@ line 39
+              F);
    end Echange;
 
 end Internal_Overloading;

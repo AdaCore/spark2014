@@ -79,9 +79,7 @@ package body Internal_P
            := Q.Y
 --@ line 8
                 - 1;
-         External_Q.Assign_X_To_Y
---@ line 9
-                      ;
+         External_Q.Assign_X_To_Y;
       end if;
    end Assign_Y_To_X;
 
@@ -104,9 +102,7 @@ package body Internal_Q
            := P.X
 --@ line 8
                 - 1;
-         External_P.Assign_Y_To_X
---@ line 9
-                      ;
+         External_P.Assign_Y_To_X;
       end if;
    end Assign_X_To_Y;
 

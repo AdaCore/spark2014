@@ -48,12 +48,12 @@ package body Internal_S
 
    procedure Plus_Two  (N : in out Integer) is
    begin
-      External_S.Inc_Positive
+      External_S.Inc_Positive(N => 
 --@ line 13
-                   (N);
-      External_S.Inc_Positive
+                    N);
+      External_S.Inc_Positive(N => 
 --@ line 14
-                   (N);
+                    N);
    end Plus_Two;
 
 end Internal_S;

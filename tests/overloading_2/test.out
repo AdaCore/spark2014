@@ -83,23 +83,23 @@ is
    is
       V : Integer;
    begin
-      if (External_Overloading.Sign
+      if (External_Overloading.Sign(X => 
 --@ line 36
-               (A) = 1) and (External_Overloading.Sign
+                A) = 1) and (External_Overloading.Sign(X => 
 --@ line 36
-                                  (B) = 1) then
+                                   B) = 1) then
          V := A + B;
-      elsif (External_Overloading.Sign
+      elsif (External_Overloading.Sign(X => 
 --@ line 38
-                  (A) = 1) and (External_Overloading.Sign
+                   A) = 1) and (External_Overloading.Sign(X => 
 --@ line 38
-                                     (B) = 2) then
+                                      B) = 2) then
          V := A - B;
-      elsif (External_Overloading.Sign
+      elsif (External_Overloading.Sign(X => 
 --@ line 40
-                  (A) = 2) and (External_Overloading.Sign
+                   A) = 2) and (External_Overloading.Sign(X => 
 --@ line 40
-                                     (B) = 1) then
+                                      B) = 1) then
          V := B - A;
       else
          V := 0;
@@ -113,23 +113,23 @@ is
    is
       V : Float;
    begin
-      if (External_Overloading.Sign1
+      if (External_Overloading.Sign1(X => 
 --@ line 52
-               (A) = 1) and (External_Overloading.Sign1
+                A) = 1) and (External_Overloading.Sign1(X => 
 --@ line 52
-                                  (B) = 1) then
+                                   B) = 1) then
          V := A + B;
-      elsif (External_Overloading.Sign1
+      elsif (External_Overloading.Sign1(X => 
 --@ line 54
-                  (A) = 1) and (External_Overloading.Sign1
+                   A) = 1) and (External_Overloading.Sign1(X => 
 --@ line 54
-                                     (B) = 2) then
+                                      B) = 2) then
          V := A - B;
-      elsif (External_Overloading.Sign1
+      elsif (External_Overloading.Sign1(X => 
 --@ line 56
-                  (A) = 2) and (External_Overloading.Sign1
+                   A) = 2) and (External_Overloading.Sign1(X => 
 --@ line 56
-                                     (B) = 1) then
+                                      B) = 1) then
          V := B - A;
       else
          V := 0.0;
@@ -158,16 +158,24 @@ is
          Var_Int_2 := -20;
          Var_Re_1  := 10.0;
          Var_Re_2  := -20.0;
-         Var_Out_1 := External_Overloading.Abs_Add
+         Var_Out_1 := External_Overloading.Abs_Add(A => 
 --@ line 85
-                              (Var_Int_1, Var_Int_2);
-         Var_Out_2 := External_Overloading.Abs_Add2
+                               Var_Int_1, B => 
+--@ line 85
+                                          Var_Int_2);
+         Var_Out_2 := External_Overloading.Abs_Add2(A => 
 --@ line 86
-                              (Var_Re_1, Var_Re_2);
+                               Var_Re_1, B => 
+--@ line 86
+                                         Var_Re_2);
       else
-         Abs_Add3
+         Abs_Add3(A => 
 --@ line 88
-                 (Var_Int_1, Var_Int_2, Var_Out_1);
+                  Var_Int_1, B => 
+--@ line 88
+                             Var_Int_2, C => 
+--@ line 88
+                                        Var_Out_1);
          Var_Out_2 := 0.0;
       end if;
    end Abs_Eval;

@@ -147,12 +147,12 @@ package body Internal_S
 --@ line 19
                                          ) is
    begin
-      External_S.Inc_Positive
+      External_S.Inc_Positive(N => 
 --@ line 21
-                   (N);
-      External_S.Inc_Positive
+                    N);
+      External_S.Inc_Positive(N => 
 --@ line 22
-                   (N);
+                    N);
    end Plus_Two;
 
    function Plus_Two_F (N : T.Signed
@@ -161,11 +161,11 @@ package body Internal_S
 --@ line 25
                                                   is
    begin
-      return External_S.Inc_Positive_F
+      return External_S.Inc_Positive_F(N => 
 --@ line 27
-                            (External_S.Inc_Positive_F
+                             External_S.Inc_Positive_F(N => 
 --@ line 27
-                                            (N));
+                                             N));
    end Plus_Two_F;
 
 end Internal_S;

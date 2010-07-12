@@ -98,9 +98,7 @@ package body Internal_Parent
 
    procedure Do_It is
    begin
-            External_Parent_Child.Swap
---@ line 7
-                ;
+      External_Parent_Child.Swap;
    end Do_It;
 
 end Internal_Parent;
