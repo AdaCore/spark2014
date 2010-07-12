@@ -91,6 +91,16 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
+   procedure A_Function_Call_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Call_Statement_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    procedure An_Identifier_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -109,6 +119,11 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
    --  A_Use_Package_Clause
+
+   procedure A_Use_Type_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
 
    procedure A_With_Package_Clause_Pre_Op
      (Element :        Asis.Element;
@@ -632,7 +647,7 @@ package Sparkify.Pre_Operations is
 
       An_Explicit_Dereference => No_Action'Access,
 
-      A_Function_Call => No_Action'Access,
+      A_Function_Call => A_Function_Call_Pre_Op'Access,
 
       An_Indexed_Component ..
       A_Slice => No_Action'Access,
@@ -799,7 +814,7 @@ package Sparkify.Pre_Operations is
 
       An_Exit_Statement              => No_Action'Access,
       A_Goto_Statement               => No_Action'Access,
-      A_Procedure_Call_Statement     => No_Action'Access,
+      A_Procedure_Call_Statement     => A_Call_Statement_Pre_Op'Access,
       A_Return_Statement             => No_Action'Access,
       An_Extended_Return_Statement   => No_Action'Access,
       An_Accept_Statement            => No_Action'Access,
@@ -871,7 +886,7 @@ package Sparkify.Pre_Operations is
 
       A_Use_Package_Clause => A_Use_Package_Clause_Pre_Op'Access,
 
-      A_Use_Type_Clause => No_Action'Access,
+      A_Use_Type_Clause => A_Use_Type_Pre_Op'Access,
 
       A_With_Clause => A_With_Package_Clause_Pre_Op'Access,
 

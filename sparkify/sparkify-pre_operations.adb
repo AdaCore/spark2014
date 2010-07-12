@@ -64,6 +64,9 @@ package body Sparkify.Pre_Operations is
    --  Return the argument with name Name and position Position from the list
    --  of arguments Args
 
+   function Declaration_Complete_Name
+     (Element : Asis.Declaration) return Wide_String;
+
    function Has_SPARK_Contract (Pragmas : Pragma_Element_List) return Boolean;
    --  Detects whether the list of pragmas Pragmas defines a SPARK contract
 
@@ -80,7 +83,8 @@ package body Sparkify.Pre_Operations is
    --  Print data flow contracts in SPARK syntax
 
    function Is_Defined_In_Standard_Or_Current_Compilation_Unit
-     (Element : Asis.Element) return Boolean;
+     (Element       : Asis.Element;
+      Standard_Only : Boolean := False) return Boolean;
 
    function Prepend_Package_Name
      (Element    : Asis.Element;
@@ -89,6 +93,8 @@ package body Sparkify.Pre_Operations is
       Subprogram : Boolean := False) return Wide_String;
    --  Functions would be call by an An_Identifier_Pre_Op or others
    --  Methodes where an Identifier should be prefixed by its package name
+
+   procedure Print_An_Association_List (Params : Asis.Association_List);
 
    function Simple_Subtype_Indication
      (Element : Subtype_Indication) return Boolean;
@@ -111,6 +117,35 @@ package body Sparkify.Pre_Operations is
    function Transform_Constrained_Array_Definition
      (Element      :        Asis.Type_Definition;
       Column_Start : Character_Position_Positive) return Wide_String;
+
+   -----------------------------
+   -- A_Call_Statement_Pre_Op --
+   -----------------------------
+
+   procedure A_Call_Statement_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+
+      Caller : constant Asis.Declaration :=
+                 Corresponding_Called_Entity (Element);
+      Params : constant Asis.Association_List :=
+                 Call_Statement_Parameters (Statement  => Element,
+                                            Normalized => True);
+   begin
+      --  Do nothing for a dereference or dispatching call
+      if not Is_Nil (Caller) then
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+         PP_Text_At (Line            => First_Line_Number (Element),
+                     Column          => Element_Span (Element).First_Column,
+                     Text            => Declaration_Complete_Name (Caller));
+         Print_An_Association_List (Params);
+         PP_Word (";");
+         State.Echo_Cursor := Cursor_After (Element);
+      end if;
+   end A_Call_Statement_Pre_Op;
 
    ----------------------------------
    -- A_Defining_Identifier_Pre_Op --
@@ -182,6 +217,34 @@ package body Sparkify.Pre_Operations is
                  Text   => Subtype_Str);
       State.Echo_Cursor := Cursor_At (Subtype_Ind);
    end A_Derived_Type_Definition_Pre_Op;
+
+   ----------------------------
+   -- A_Function_Call_Pre_Op --
+   ----------------------------
+
+   procedure A_Function_Call_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+
+      Caller : constant Asis.Declaration :=
+                 Corresponding_Called_Function (Element);
+      Params : constant Asis.Association_List :=
+                 Function_Call_Parameters (Expression => Element,
+                                           Normalized => True);
+   begin
+      --  Do nothing for a predefined operator
+      if not Is_Nil (Caller) then
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+         PP_Text_At (Line            => First_Line_Number (Element),
+                     Column          => Element_Span (Element).First_Column,
+                     Text            => Declaration_Complete_Name (Caller));
+         Print_An_Association_List (Params);
+         State.Echo_Cursor := Cursor_After (Element);
+      end if;
+   end A_Function_Call_Pre_Op;
 
    -----------------------------
    -- A_Loop_Statement_Pre_Op --
@@ -942,6 +1005,22 @@ package body Sparkify.Pre_Operations is
       Control := Abandon_Children;
    end A_Use_Package_Clause_Pre_Op;
 
+   -----------------------
+   -- A_Use_Type_Pre_Op --
+   -----------------------
+
+   procedure A_Use_Type_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State) is
+   begin
+      --  Ignore use types in SPARK code. Instead, they are automatically
+      --  added when with'ing the corresponding package.
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+      State.Echo_Cursor := Cursor_After (Element);
+      Control := Abandon_Children;
+   end A_Use_Type_Pre_Op;
+
    ----------------------------------
    -- A_With_Package_Clause_Pre_Op --
    ----------------------------------
@@ -1332,6 +1411,33 @@ package body Sparkify.Pre_Operations is
 
    end Argument_By_Name_And_Position;
 
+   -------------------------------
+   -- Declaration_Complete_Name --
+   -------------------------------
+
+   function Declaration_Complete_Name
+     (Element : Asis.Declaration) return Wide_String
+   is
+      Names : constant Defining_Name_List := Asis.Declarations.Names (Element);
+      pragma Assert (Names'Length = 1);
+      Base_Name : Unbounded_Wide_String :=
+                    To_Unbounded_Wide_String
+                      (Defining_Name_Image (Names (Names'First)));
+   begin
+      if Is_Subprogram_Declaration (Element) then
+         Base_Name := Return_Overloaded_Name (Element);
+      end if;
+
+      if Is_Defined_In_Standard_Or_Current_Compilation_Unit
+        (Element, Standard_Only => True) then
+         return To_Wide_String (Base_Name);
+      else
+         --  Identifier should be prefixed by its package name
+         return Prepend_Package_Name
+           (Element, To_Wide_String (Base_Name), Force => True);
+      end if;
+   end Declaration_Complete_Name;
+
    ------------------------
    -- Has_SPARK_Contract --
    ------------------------
@@ -1360,7 +1466,8 @@ package body Sparkify.Pre_Operations is
    --------------------------------------------------------
 
    function Is_Defined_In_Standard_Or_Current_Compilation_Unit
-     (Element : Asis.Element) return Boolean
+     (Element       : Asis.Element;
+      Standard_Only : Boolean := False) return Boolean
    is
       Decl_Element : Asis.Declaration;
    begin
@@ -1407,7 +1514,9 @@ package body Sparkify.Pre_Operations is
            Declaration_Kind (Pack_Element) = A_Package_Body_Declaration
            and then Is_Equal (Element_Unit, The_Unit);
 
-         Def_In_Current := Def_In_Cur_Spec or else Def_In_Cur_Body;
+         Def_In_Current :=
+           not Standard_Only and then
+           (Def_In_Cur_Spec or else Def_In_Cur_Body);
 
          if Current_Pass in Printing_Subprograms then
             --  When printing subprograms, new packages are created, which only
@@ -1542,6 +1651,33 @@ package body Sparkify.Pre_Operations is
          end;
       end loop;
    end Print_All_Use_Type;
+
+   -------------------------------
+   -- Print_An_Association_List --
+   -------------------------------
+
+   procedure Print_An_Association_List (Params : Asis.Association_List) is
+   begin
+      if not Is_Nil (Params) then
+         declare
+            First_Param : constant Asis.Association := Params (Params'First);
+         begin
+            PP_Word ("(");
+            PP_Word (Element_Name (Formal_Parameter (First_Param)));
+            PP_Word (" => ");
+            Traverse_Element_And_Print (Actual_Parameter (First_Param));
+
+            for J in Params'First + 1 .. Params'Last loop
+               PP_Word (", ");
+               PP_Word (Element_Name (Formal_Parameter (Params (J))));
+               PP_Word (" => ");
+               Traverse_Element_And_Print (Actual_Parameter (Params (J)));
+            end loop;
+
+            PP_Word (")");
+         end;
+      end if;
+   end Print_An_Association_List;
 
    --------------------------------
    -- Reach_Element_And_Traverse --
@@ -1964,7 +2100,8 @@ package body Sparkify.Pre_Operations is
       if Is_Nil (Subtype_Constraint (Element)) then
          declare
             Subtype_Expr : constant Asis.Expression :=
-                             Asis.Definitions.Subtype_Mark (Element);
+                             Skip_Package_Names
+                               (Asis.Definitions.Subtype_Mark (Element));
          begin
             return Prepend_Package_Name
               (Corresponding_Name_Declaration (Subtype_Expr),

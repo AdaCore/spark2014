@@ -55,6 +55,39 @@ package body Sparkify.Common is
       return Defining_Name_Image (Names (Names'First));
    end Declaration_Unique_Name;
 
+   ------------------------
+   -- Skip_Package_Names --
+   ------------------------
+
+   function Skip_Package_Names
+     (Element : Asis.Expression) return Asis.Expression is
+   begin
+      --  Skip package names in prefix position in a selected component
+      case Expression_Kind (Element) is
+         when A_Selected_Component =>
+            declare
+               Prefix_Expr : constant Asis.Expression := Prefix (Element);
+               Select_Expr : constant Asis.Expression := Selector (Element);
+            begin
+               case Expression_Kind (Prefix_Expr) is
+               when An_Identifier =>
+                  if Is_Package_Name (Prefix_Expr) then
+                     return Skip_Package_Names (Select_Expr);
+                  else
+                     return Element;
+                  end if;
+               when A_Selected_Component =>
+                  pragma Assert (False);
+                  return Element;
+               when others =>
+                  return Element;
+               end case;
+            end;
+         when others =>
+            return Element;
+      end case;
+   end Skip_Package_Names;
+
    ------------------
    -- Element_Name --
    ------------------
