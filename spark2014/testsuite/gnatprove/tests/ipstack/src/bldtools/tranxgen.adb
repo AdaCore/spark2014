@@ -460,6 +460,16 @@ procedure Tranxgen is
             Subfield_Length :=
               Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
 
+            if Field_Class = F_Private
+                 and then
+               Current_Bit_Offset mod 8 /= 0
+                 and then
+               Remain_Length /= Subfield_Length
+            then
+               raise Constraint_Error with
+                 "private field spanning multiple bytes must be byte aligned";
+            end if; 
+
             Subfield_Name := To_Unbounded_String (Field_Name);
 
             --  For the case of a field that has multiple subfields, suffix
@@ -1019,6 +1029,7 @@ begin
 exception
 
    when E : others =>
+      GNAT.IO.Set_Output (GNAT.IO.Standard_Error);
       GNAT.IO.Put_Line
         ("Exception raised: " & Ada.Exceptions.Exception_Information (E));
       GNAT.OS_Lib.OS_Exit (1);

@@ -54,8 +54,8 @@ build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 
 build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
 	mkdir -p build/gen
-	adaf=build/gen/$(notdir $<).ada; \
-	build/bldtools/tranxgen $< > $$adaf; \
+	adaf=build/gen/$(notdir $<).ada && \
+	build/bldtools/tranxgen $< > $$adaf && \
 	gnatchop -w $$adaf build/gen
 
 build/gen/aip_constants.ads:
