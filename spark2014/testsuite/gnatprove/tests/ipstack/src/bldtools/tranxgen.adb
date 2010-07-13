@@ -23,6 +23,8 @@ with Input_Sources.File;     use Input_Sources.File;
 
 procedure Tranxgen is
 
+   use type Ada.Containers.Count_Type;
+
    ------------------------------------
    -- Messages, fields and subfields --
    ------------------------------------
@@ -401,6 +403,22 @@ procedure Tranxgen is
       procedure Process_Field (N : Node);
       --  Process <field> element
 
+      function Is_Power_Of_2 (N : Natural) return Boolean;
+      --  True if N is a power of 2
+
+      -------------------
+      -- Is_Power_Of_2 --
+      -------------------
+
+      function Is_Power_Of_2 (N : Natural) return Boolean is
+         NN : Natural := N;
+      begin
+         while NN > 2 loop
+            NN := NN / 2;
+         end loop;
+         return NN = 2;
+      end Is_Power_Of_2;
+
       -------------------
       -- Process_Field --
       -------------------
@@ -436,17 +454,11 @@ procedure Tranxgen is
          end if;
 
          while Remain_Length > 0 loop
-            --  For numeric (integer or modular) fields, length of next
-            --  subfield is remaining length, but not going further than the
-            --  end of the current byte. For private fields, map as a whole.
+            --  Length of next subfield is remaining length, but not going
+            --  further than the end of the current byte.
 
-            if Field_Class = F_Private then
-               Subfield_Length := Field_Length;
-
-            else
-               Subfield_Length :=
-                 Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
-            end if;
+            Subfield_Length :=
+              Natural'Min (Remain_Length, 8 - Current_Bit_Offset mod 8);
 
             Subfield_Name := To_Unbounded_String (Field_Name);
 
@@ -484,7 +496,10 @@ procedure Tranxgen is
              Length    => Field_Length,
              Subfields => Subfields));
 
-         if Current_Bit_Offset mod Field_Length = 0 then
+         if Is_Power_Of_2 (Field_Length)
+              and then
+            Current_Bit_Offset mod Field_Length = 0
+         then
             Alignment := Natural'Max (Field_Length, Alignment);
          end if;
       end Process_Field;
@@ -512,7 +527,6 @@ procedure Tranxgen is
       -------------------
 
       function Subfield_Type (F : Field; SF : Subfield) return String is
-         use type Ada.Containers.Count_Type;
       begin
          if F.Subfields.Length = 1 then
             return Field_Type (F);
@@ -550,6 +564,8 @@ procedure Tranxgen is
          procedure Field_Accessors (FC : Field_Vectors.Cursor) is
             F           : Field renames Field_Vectors.Element (FC);
             FT          : constant String := Field_Type (F);
+            Convert     : constant Boolean := F.Subfields.Length /= 1;
+
             Field_Name  : constant String := To_String (Prefix & F.Name);
 
             Padded_Name : constant String :=
@@ -567,6 +583,26 @@ procedure Tranxgen is
                             & " (M : in out " & Message_Name & "; V : "
                             & Field_Type (F) & ")";
 
+            procedure Generate_Private_Prologue;
+            --  Generate an object declaration for an FT object at the correct
+            --  location within M.
+
+            procedure Generate_Private_Prologue is
+            begin
+               II (Ctx.P_Body);
+               PL (Ctx.P_Body,
+                   Field_Name & "_Storage : " & FT & ";");
+               PL (Ctx.P_Body,
+                   "for " & Field_Name & "_Storage'Address use M."
+                   & To_String (F.Subfields.Element (0).Name) & "'Address;");
+               PL (Ctx.P_Body,
+                   "pragma Import (Ada, " & Field_Name & "_Storage);");
+               DI (Ctx.P_Body);
+               PL (Ctx.P_Body, "begin");
+               II (Ctx.P_Body);
+            end Generate_Private_Prologue;
+
+
          --  Start of processing for Field_Accessors
 
          begin
@@ -576,6 +612,13 @@ procedure Tranxgen is
 
             NL (Ctx.P_Body);
             PL (Ctx.P_Body, Get_Profile & " is");
+
+            if Convert and then F.Class = F_Private then
+               Generate_Private_Prologue;
+               PL (Ctx.P_Body, "return " & Field_Name & "_Storage;");
+               goto End_Getter;
+            end if;
+
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
             P  (Ctx.P_Body, "return ");
@@ -590,7 +633,6 @@ procedure Tranxgen is
                procedure Get_Subfield (SFC : Subfield_Vectors.Cursor) is
                   SF      : Subfield renames Subfield_Vectors.Element (SFC);
                   SFT     : constant String := Subfield_Type (F, SF);
-                  Convert : constant Boolean := FT /= SFT;
                begin
                   if not First_Subfield then
                      NL (Ctx.P_Body);
@@ -619,6 +661,7 @@ procedure Tranxgen is
                PL (Ctx.P_Body, ";");
             end Get_Subfields;
 
+            <<End_Getter>>
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "end " & Field_Name & ";");
 
@@ -626,6 +669,12 @@ procedure Tranxgen is
 
             NL (Ctx.P_Body);
             PL (Ctx.P_Body, Set_Profile & " is");
+            if Convert and then F.Class = F_Private then
+               Generate_Private_Prologue;
+               PL (Ctx.P_Body, Field_Name & "_Storage := V;");
+               goto End_Setter;
+            end if;
+
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
 
@@ -679,6 +728,7 @@ procedure Tranxgen is
                F.Subfields.Iterate (Set_Subfield'Access);
             end Set_Subfields;
 
+            <<End_Setter>>
             DI (Ctx.P_Body);
             PL (Ctx.P_Body, "end Set_" & Field_Name & ";");
 

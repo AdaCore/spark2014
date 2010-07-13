@@ -30,7 +30,9 @@ typedef unsigned char   Err_T;
 typedef enum { MONO_BUF, LINK_BUF, REF_BUF } Buffer_Kind;
 typedef U16_T Buffer_Length;
 typedef U16_T Data_Length;
+
 typedef U16_T Buffer_Id;
+#define NOBUF 0
 
 extern void
 AIP_buffer_alloc

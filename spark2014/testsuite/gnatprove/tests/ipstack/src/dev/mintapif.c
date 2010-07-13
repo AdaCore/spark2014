@@ -201,7 +201,6 @@ low_level_input(struct netif *netif)
   /* Obtain the size of the packet and put it into the "len"
      variable. */
   len = read(mintapif->fd, buf, sizeof(buf));
-  snmp_add_ifinoctets(netif,len);
 
   /*  if (((double)rand()/(double)RAND_MAX) < 0.1) {
     printf("drop\n");
@@ -209,24 +208,23 @@ low_level_input(struct netif *netif)
     }*/
 
   /* We allocate a pbuf chain of pbufs from the pool. */
-  p = pbuf_alloc(PBUF_LINK, len, PBUF_POOL);
-
-  if (p != NULL) {
+  AIP_buffer_alloc (0, len, LINK_BUF, &p);
+  if (p != NOBUF) {
     /* We iterate over the pbuf chain until we have read the entire
        packet into the pbuf. */
     bufptr = &buf[0];
-    for(q = p; q != NULL; q = q->next) {
+    for(q = p; q != NOBUF; q = AIP_buffer_next (q)) {
+      U16_T len = AIP_buffer_len (q);
       /* Read enough bytes to fill this pbuf in the chain. The
          available data in the pbuf is given by the q->len
          variable. */
       /* read data into(q->payload, q->len); */
-      memcpy(q->payload, bufptr, q->len);
-      bufptr += q->len;
+      memcpy(AIP_buffer_payload (q), bufptr, len);
+      bufptr += len;
     }
     /* acknowledge that packet has been read(); */
   } else {
     /* drop packet(); */
-    snmp_inc_ifindiscards(netif);
     printf("Could not allocate pbufs\n");
   }
 
@@ -256,10 +254,6 @@ mintapif_input(struct netif *netif)
   p = low_level_input(netif);
 
   if (p != NULL) {
-
-#if LINK_STATS
-    lwip_stats.link.recv++;
-#endif /* LINK_STATS */
 
     ethhdr = p->payload;
 

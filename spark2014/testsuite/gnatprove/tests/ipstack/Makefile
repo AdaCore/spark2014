@@ -40,9 +40,9 @@ $(APP_IMAGE): $(LWIPLIB) ipstack force
 test: ipstack force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P test
 
-ipstack: build/gen/aip_constants.ads \
-         $(foreach proto,            \
-           arp ip icmp udp tcp,      \
+ipstack: build/gen/aip_constants.ads  \
+         $(foreach proto,             \
+           ether arp ip icmp udp tcp, \
            build/gen/aip-$(proto)h.ads build/gen/aip-$(proto)h.adb)
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_core
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support

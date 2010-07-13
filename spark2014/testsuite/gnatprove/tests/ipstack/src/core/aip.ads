@@ -95,7 +95,11 @@ package AIP is
    -- Opaque data --
    -----------------
 
+   type Ethernet_Address is new String (1 .. 6);
+   --  48 bit Ethernet address
+
    type Opaque64_T is new String (1 .. 8);
+   --  64 bit opaque data (used for copy of original datagram in ICMP messages)
 
    ----------------------------
    -- Error characterization --
