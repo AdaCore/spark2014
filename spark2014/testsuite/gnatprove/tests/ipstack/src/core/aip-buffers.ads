@@ -93,6 +93,7 @@ is
       --  (payload) through a reference that needs to be attached explicitely
       --  before use.
      );
+   pragma Convention (C, Buffer_Kind);
 
    subtype Data_Buffer_Kind is Buffer_Kind range MONO_BUF .. LINK_BUF;
 
@@ -101,6 +102,7 @@ is
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id);
+   pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at holding or
    --  referencing Size elements of data starting at offset Offset.
@@ -113,6 +115,7 @@ is
    --        them after reimplementing the rest of the TCP/IP stack.
 
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
+   pragma Export (C, Buffer_Len, "AIP_buffer_len");
    --# global in State;
    --  Amount of packet data
    --  - held in the first chunk of buffer Buf for Kind = LINK_BUF
@@ -120,6 +123,7 @@ is
    --  - referenced by buffer Buf for Kind = REF_BUF
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
+   pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
    --# global in State;
    --  Amount of packet data
    --  - held in all chunks of buffer Buf through the chain for Kind /= REF_BUF
@@ -128,11 +132,13 @@ is
    --    Tlen = Len is an invariant in this case.
 
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
+   pragma Export (C, Buffer_Next, "AIP_buffer_next");
    --# global in State;
    --  Buffer following Buf in a chain, either next buffer for the same packet
    --  or first buffer of another one, or NOBUF
 
    function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
    --# global in State;
    --  Pointer to data held or referenced by buffer Buf
 

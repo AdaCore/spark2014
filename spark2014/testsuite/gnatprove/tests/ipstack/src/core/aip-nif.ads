@@ -35,11 +35,23 @@ private
 
    type Netif is record
       IP        : IPaddrs.IPaddr;
+      --  IP address of interface
+
       Mask      : IPaddrs.IPaddr;
+      --  Netmask of interface
+
       Broadcast : IPaddrs.IPaddr;
+      --  Broadcast address of interface: (IP and mask) or (not mask)
 
       Input_CB  : Callbacks.CBK_Id;
+      --  Packet input callback
+
       Output_CB : Callbacks.CBK_Id;
+      --  Packet output callback
+
+      Dev       : IPTR_T;
+      --  Driver private information
    end record;
+   pragma Convention (C, Netif);
 
 end AIP.NIF;
