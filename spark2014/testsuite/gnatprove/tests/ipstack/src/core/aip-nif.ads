@@ -54,4 +54,8 @@ private
    end record;
    pragma Convention (C, Netif);
 
+   function Get_Netif (Nid : Netif_Id) return IPTR_T;
+   pragma Export (C, Get_Netif, "AIP_get_netif");
+   --  Return pointer to Netif record for the given netif
+
 end AIP.NIF;

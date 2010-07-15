@@ -3,14 +3,25 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.Conversions;
+
 package body AIP.NIF is
 
-   type NIF_Array is array (Netif_Id) of Netif;
+   type NIF_Array is array (Netif_Id) of aliased Netif;
 
    pragma Warnings (Off);
    --  NIFs never assigned???
    NIFs : NIF_Array;
    pragma Warnings (On);
+
+   ---------------
+   -- Get_Netif --
+   ---------------
+
+   function Get_Netif (Nid : Netif_Id) return IPTR_T is
+   begin
+      return Conversions.To_IPTR (NIFs (Nid)'Address);
+   end Get_Netif;
 
    ----------------------
    -- Is_Local_Address --

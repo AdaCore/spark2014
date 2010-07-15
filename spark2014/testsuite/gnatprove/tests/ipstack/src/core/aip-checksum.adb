@@ -52,9 +52,13 @@ package body AIP.Checksum is
          Result := (Result and 16#ffff#) + (Result / 2**16);
       end loop;
 
+      pragma Warnings (Off);
+      --  Condition is constant for a given platform
       if AIP_Constants.Default_Bit_Order
            /= AIP_Constants.Network_Bit_Order
       then
+         pragma Warnings (On);
+
          --  All computations above have been made in host order
 
          Result := (Result and 16#ff00#) / 2**8 + (Result and 16#ff#) * 2**8;

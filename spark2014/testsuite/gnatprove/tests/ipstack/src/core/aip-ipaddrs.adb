@@ -3,8 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Inet;
-
 package body AIP.IPaddrs is
 
    ---------

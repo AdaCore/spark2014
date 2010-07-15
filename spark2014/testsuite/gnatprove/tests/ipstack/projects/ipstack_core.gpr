@@ -6,7 +6,11 @@ project IPStack_Core is
    for Library_Name use "aip-core";
    for Library_Kind use "static";
 
-   for Source_Dirs use ("../" & Subdir, IPStack_Config.Gen_Prefix);
+   for Source_Dirs use
+     ("../" & Subdir,
+      "../src/include",
+      IPStack_Config.Gen_Prefix);
+
    for Object_Dir      use IPStack_Config.Obj_Prefix & Subdir;
    for Library_Dir     use IPStack_Config.Lib_Prefix & Subdir;
    for Library_ALI_Dir use IPStack_Config.ALI_Prefix & Subdir;
@@ -16,9 +20,9 @@ project IPStack_Core is
 
    case Mode is
       when "Prove" =>
-         for Languages use ("Ada", "Metafile");
+         for Languages use ("C", "Ada", "Metafile");
       when "Compile" =>
-         for Languages use ("Ada");
+         for Languages use ("C", "Ada");
    end case;
 
    package Compiler is
@@ -27,8 +31,8 @@ project IPStack_Core is
    end Compiler;
 
    package Ide is
-      for Default_Switches ("examiner") use 
-          ("-flow=data", "-index_file=../src/core/aip.idx", 
+      for Default_Switches ("examiner") use
+          ("-flow=data", "-index_file=../src/core/aip.idx",
            "-config_file=../src/core/config.shs",
            "-warning_file=../src/core/aip.wrn");
    end Ide;

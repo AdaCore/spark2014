@@ -27,7 +27,7 @@
   <field name="Unused"    length= "8" />
  </message>
 
- <message name="ICMP_Timestamp_Header" prefix="ICMP_TSH">
+ <message name="ICMP_Timestamp_Header" prefix="ICMP_TSH_">
 <!--
   <field name="ICMPH"     class="nested" type="ICMP_Header" />
   -->
@@ -37,7 +37,7 @@
   <field name="Transmit"  length="32" />
  </message>
 
- <message name="ICMP_Redirect_Header" prefix="ICMP_RH">
+ <message name="ICMP_Redirect_Header" prefix="ICMP_RH_">
 <!--
   <field name="ICMPH"     class="nested" type="ICMP_Header" />
   -->
@@ -57,7 +57,7 @@
    Source_Quench, Time_Exceeded and Parameter_Problem.
    -->
 
- <message name="ICMP_Generic_Header" prefix="ICMP_Generic_H">
+ <message name="ICMP_Generic_Header" prefix="ICMP_Generic_H_">
 <!--
   <field name="ICMPH"     class="nested" type="ICMP_Header" />
   -->

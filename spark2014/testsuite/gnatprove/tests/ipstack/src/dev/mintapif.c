@@ -59,15 +59,7 @@
 #define IFCONFIG_ARGS "tap0 inet %d.%d.%d.%d"
 #endif
 
-#ifdef AIP
 #include "aip.h"
-#else
-#include "lwip/stats.h"
-#include "lwip/snmp.h"
-#include "lwip/mem.h"
-#include "netif/etharp.h"
-#endif
-
 #include "mintapif.h"
 
 /* Define those to better describe your network interface. */
@@ -75,14 +67,14 @@
 #define IFNAME1 't'
 
 struct mintapif {
-  struct eth_addr *ethaddr;
+  Ethernet_Address ethaddr;
   /* Add whatever per-interface state that is needed here. */
-  u32_t lasttime;
+  unsigned long lasttime;
   int fd;
 };
 
 /* Forward declarations. */
-static void  mintapif_input(struct netif *netif);
+static void  mintapif_input(Netif_Id nid);
 
 /*-----------------------------------------------------------------------------------*/
 static void
@@ -94,12 +86,12 @@ low_level_init(struct netif *netif)
   mintapif = netif->state;
 
   /* Obtain MAC address from network interface. */
-  mintapif->ethaddr->addr[0] = 1;
-  mintapif->ethaddr->addr[1] = 2;
-  mintapif->ethaddr->addr[2] = 3;
-  mintapif->ethaddr->addr[3] = 4;
-  mintapif->ethaddr->addr[4] = 5;
-  mintapif->ethaddr->addr[5] = 6;
+  mintapif->ethaddr[0] = 1;
+  mintapif->ethaddr[1] = 2;
+  mintapif->ethaddr[2] = 3;
+  mintapif->ethaddr[3] = 4;
+  mintapif->ethaddr[4] = 5;
+  mintapif->ethaddr[5] = 6;
 
   /* Do whatever else is needed to initialize interface. */
 
@@ -144,10 +136,10 @@ low_level_init(struct netif *netif)
 /*-----------------------------------------------------------------------------------*/
 
 static err_t
-low_level_output(struct netif *netif, struct pbuf *p)
+low_level_output(struct netif *netif, Buffer_Id p)
 {
   struct mintapif *mintapif;
-  struct pbuf *q;
+  Buffer_Id q;
   char buf[1514];
   char *bufptr;
   int written;
@@ -158,25 +150,24 @@ low_level_output(struct netif *netif, struct pbuf *p)
 
   bufptr = &buf[0];
 
-  for(q = p; q != NULL; q = q->next) {
+  for(q = p; q != NOBUF; q = AIP_buffer_next (q)) {
+    U16_T len = AIP_buffer_len (q);
     /* Send the data from the pbuf to the interface, one pbuf at a
        time. The size of the data in each pbuf is kept in the ->len
        variable. */
     /* send data from(q->payload, q->len); */
-    memcpy(bufptr, q->payload, q->len);
-    bufptr += q->len;
+    memcpy(bufptr, AIP_buffer_payload (q), len);
+    bufptr += len;
+    /* Check that bufptr does not overflow??? */
   }
 
   /* signal that packet should be sent(); */
-  written = write(mintapif->fd, buf, p->tot_len);
+  written = write(mintapif->fd, buf, AIP_buffer_tlen (p));
   if (written == -1) {
-    snmp_inc_ifoutdiscards(netif);
     perror("tapif: write");
+    /* return ERR_xxx; ??? */
   }
-  else {
-    snmp_add_ifoutoctets(netif, written);
-  }
-  return ERR_OK;
+  return NOERR;
 }
 /*-----------------------------------------------------------------------------------*/
 /*
@@ -187,11 +178,11 @@ low_level_output(struct netif *netif, struct pbuf *p)
  *
  */
 /*-----------------------------------------------------------------------------------*/
-static struct pbuf *
+static Buffer_Id
 low_level_input(struct netif *netif)
 {
-  struct pbuf *p, *q;
-  u16_t len;
+  Buffer_Id p, q;
+  U16_T len;
   char buf[1514];
   char *bufptr;
   struct mintapif *mintapif;
@@ -242,41 +233,43 @@ low_level_input(struct netif *netif)
  */
 /*-----------------------------------------------------------------------------------*/
 static void
-mintapif_input(struct netif *netif)
+mintapif_input (Netif_Id nid)
 {
+  struct netif *netif = AIP_get_netif (nid);
   struct mintapif *mintapif;
   struct eth_hdr *ethhdr;
-  struct pbuf *p;
-
+  Buffer_Id p;
 
   mintapif = netif->state;
 
-  p = low_level_input(netif);
+  p = low_level_input (netif);
 
-  if (p != NULL) {
+  if (p != NOBUF) {
 
-    ethhdr = p->payload;
+    ethhdr = AIP_buffer_payload (p);
 
     switch (htons(ethhdr->type)) {
-    case ETHTYPE_IP:
+    case Ether_Type_IP:
 #if 0
 /* CSi disabled ARP table update on ingress IP packets.
    This seems to work but needs thorough testing. */
-      etharp_ip_input(netif, p);
+      AIP_arpip_input(netif, p);
 #endif
       pbuf_header(p, -14);
       netif->input(p, netif);
       break;
-    case ETHTYPE_ARP:
-      etharp_arp_input(netif, mintapif->ethaddr, p);
+    case Ether_Type_ARP:
+      AIP_arp_input (nid, mintapif->ethaddr, p);
       break;
+
     default:
-      LWIP_ASSERT("p != NULL", p != NULL);
+      LWIP_ASSERT("p != NOBUF", p != NOBUF);
       pbuf_free(p);
       break;
     }
   }
 }
+
 /*-----------------------------------------------------------------------------------*/
 /*
  * mintapif_init():
@@ -295,7 +288,6 @@ mintapif_init(struct netif *netif)
   mintapif = mem_malloc(sizeof(struct mintapif));
   if (mintapif == NULL)
   {
-    LWIP_DEBUGF(NETIF_DEBUG, ("cs8900_init: out of memory for mintapif\n"));
     return ERR_MEM;
   }
   netif->state = mintapif;
@@ -319,7 +311,7 @@ mintapif_init(struct netif *netif)
   netif->hwaddr_len = 6;
   netif->name[0] = IFNAME0;
   netif->name[1] = IFNAME1;
-  netif->output = etharp_output;
+  netif->output = AIP_arp_output;
   netif->linkoutput = low_level_output;
   netif->mtu = 1500;
 
@@ -327,12 +319,13 @@ mintapif_init(struct netif *netif)
 
   low_level_init(netif);
 
-  return ERR_OK;
+  return NOERR;
 }
 /*-----------------------------------------------------------------------------------*/
 enum mintapif_signal
-mintapif_wait(struct netif *netif, u16_t time)
+mintapif_wait(Netif_Id nid, U16_T time)
 {
+  struct netif *netif = AIP_get_netif (nid);
   fd_set fdset;
   struct timeval tv, now;
   struct timezone tz;
@@ -343,13 +336,13 @@ mintapif_wait(struct netif *netif, u16_t time)
 
   while (1) {
 
-    if (mintapif->lasttime >= (u32_t)time * 1000) {
+    if (mintapif->lasttime >= (U32_T) time * 1000) {
       mintapif->lasttime = 0;
       return MINTAPIF_TIMEOUT;
     }
 
     tv.tv_sec = 0;
-    tv.tv_usec = (u32_t)time * 1000 - mintapif->lasttime;
+    tv.tv_usec = (U32_T) time * 1000 - mintapif->lasttime;
 
 
     FD_ZERO(&fdset);
@@ -364,15 +357,16 @@ mintapif_wait(struct netif *netif, u16_t time)
     gettimeofday(&tv, &tz);
     mintapif->lasttime += (tv.tv_sec - now.tv_sec) * 1000000 + (tv.tv_usec - now.tv_usec);
 
-    mintapif_input(netif);
+    mintapif_input (nid);
   }
 
   return MINTAPIF_PACKET;
 }
 
 int
-mintapif_select(struct netif *netif)
+mintapif_select(Netif_Id nid)
 {
+  struct netif *netif = AIP_get_netif (nid);
   fd_set fdset;
   int ret;
   struct timeval tv;
@@ -388,7 +382,7 @@ mintapif_select(struct netif *netif)
 
   ret = select(mintapif->fd + 1, &fdset, NULL, NULL, &tv);
   if (ret > 0) {
-    mintapif_input(netif);
+    mintapif_input (nid);
   }
   return ret;
 }

@@ -23,6 +23,9 @@ with Input_Sources.File;     use Input_Sources.File;
 
 procedure Tranxgen is
 
+   use Ada.Strings;
+   use Ada.Strings.Fixed;
+
    use type Ada.Containers.Count_Type;
 
    ------------------------------------
@@ -185,7 +188,7 @@ procedure Tranxgen is
    -- Utility subprograms --
    -------------------------
 
-   function Img (N : Integer) return String;
+   function Img (N : Integer; Base : Integer := 10) return String;
    --  Trimmed image of N
 
    procedure Box (U : in out Unit; S : String);
@@ -285,11 +288,24 @@ procedure Tranxgen is
    -- Img --
    ---------
 
-   function Img (N : Integer) return String is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
+   function Img (N : Integer; Base : Integer := 10) return String is
+      NN : Integer := N;
+      Digit  : constant array (0 .. 15) of Character := "0123456789abcdef";
+      Result : Unbounded_String;
    begin
-      return Trim (N'Img, Both);
+      if Base < 2 or else Base > 16 then
+         raise Constraint_Error;
+      end if;
+
+      loop
+         Result := Digit (NN mod base) & Result;
+         NN := NN / Base;
+         exit when NN = 0;
+      end loop;
+      if Base /= 10 then
+         Result := Trim (Integer'Image (Base), Both) & "#" & Result & "#";
+      end if;
+      return To_String (Result);
    end Img;
 
    --------------------------
@@ -317,7 +333,8 @@ procedure Tranxgen is
 
       type Literal is record
          Name  : Unbounded_String;
-         Value : Natural;
+         Value : Integer;
+         Base  : Natural;
       end record;
 
       package Literal_Vectors is new Ada.Containers.Vectors
@@ -336,12 +353,12 @@ procedure Tranxgen is
       --------------------
 
       procedure Output_Literal (LC : Literal_Vectors.Cursor) is
-         use Ada.Strings.Fixed;
          L : Literal renames Literal_Vectors.Element (LC);
       begin
          PL (Ctx.P_Spec, Prefix
                            & Head (To_String (L.Name), Max_Literal_Name_Length)
-                           & " : constant := " & Img (L.Value) & ";");
+                           & " : constant := "
+                           & Img (L.Value, Base => L.Base) & ";");
       end Output_Literal;
 
       ---------------------
@@ -350,12 +367,26 @@ procedure Tranxgen is
 
       procedure Process_Literal (N : Node) is
          Name  : constant String := Get_Attribute (N, "name");
-         Value : constant Natural :=
-                   Natural'Value (Get_Attribute (N, "value"));
+         Image : constant String := Trim (Get_Attribute (N, "value"), Both);
+         Value : constant Integer := Integer'Value (Image);
+         Base  : Natural;
       begin
          Max_Literal_Name_Length :=
            Natural'Max (Name'Length, Max_Literal_Name_Length);
-         Literals.Append ((To_Unbounded_String (Name), Value));
+
+         Base := 10;
+
+         Find_Base : for J in Image'Range loop
+            if Image (J) = '#' then
+               Base := Integer'Value (Image (Image'First .. J - 1));
+               exit Find_Base;
+            end if;
+         end loop Find_Base;
+
+         Literals.Append
+           ((Name  => To_Unbounded_String (Name),
+             Value => Value,
+             Base  => Base));
       end Process_Literal;
 
    --  Start of processing for Process_Enum
@@ -375,9 +406,6 @@ procedure Tranxgen is
    ---------------------
 
    procedure Process_Message (Ctx : in out Package_Context; N : Node) is
-      use Ada.Strings;
-      use Ada.Strings.Fixed;
-
       Message_Name : constant String := Get_Attribute (N, "name");
 
       Alignment : Natural := 0;
@@ -468,7 +496,7 @@ procedure Tranxgen is
             then
                raise Constraint_Error with
                  "private field spanning multiple bytes must be byte aligned";
-            end if; 
+            end if;
 
             Subfield_Name := To_Unbounded_String (Field_Name);
 

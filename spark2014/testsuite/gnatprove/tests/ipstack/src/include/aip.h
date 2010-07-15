@@ -16,12 +16,15 @@
 
 typedef unsigned char   U8_T;
 typedef unsigned short  U16_T;
-
+typedef unsigned int    U32_T;
 typedef unsigned long   M32_T;
-
 typedef void           *IPTR_T;
+typedef signed int      EID;
+typedef char            Ethernet_Address[6];
 
 typedef unsigned char   Err_T;
+#define NOERR    0
+#define ERR_MEM -1
 
 /***************
  * AIP.Buffers *
@@ -69,6 +72,8 @@ typedef M32_T IPaddr;
  * AIP.NIF *
  ***********/
 
+typedef EID Netif_Id;
+
 typedef struct netif {
   IPaddr IP;
   IPaddr Mask;
@@ -79,6 +84,29 @@ typedef struct netif {
 
   IPTR_T Dev;
 } Netif;
+
+extern struct netif *
+AIP_get_netif (Netif_Id Nid);
+
+/***********
+ * AIP.ARP *
+ ***********/
+
+extern void
+AIP_arp_input (Netif_Id Nid, IPTR_T Netif_Address, Buffer_Id Buf);
+
+extern void
+AIP_arpip_input (Netif_Id Nid, Buffer_Id Buf);
+
+extern void
+AIP_arp_output (Netif_Id Nid, Buffer_Id Buf, IPaddr Dst_Address);
+
+/**************
+ * AIP.EtherH *
+ **************/
+
+#define Ether_Type_ARP 0x0806
+#define Ether_Type_IP  0x0800
 
 /***********************
  * Compatibility shims *

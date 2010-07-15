@@ -1,6 +1,8 @@
 with "ipstack_core";
 with "ipstack_services";
 with "ipstack_support";
+with "ipstack_dev";
+
 project IPStack is
    for Source_Dirs use ();
 end IPStack;
