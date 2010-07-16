@@ -4,7 +4,8 @@ package body P is
       Result : R;
       Tmp : Integer;
    begin
-      Tmp := X + F1 (Y) + Z + T;
+      Tmp := X;
+      Tmp := Tmp + F1 (Y) + Z + T;
       P1 (Tmp);
       Result := (A, B, C, Tmp);
       return Result;

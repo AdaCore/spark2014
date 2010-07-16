@@ -29,7 +29,7 @@ is
       Month      : Months;
       Year       : New_Name_2;
       Day_String : New_Name_3;
-end record;
+   end record;
 
    type Nothing is tagged record
       null;

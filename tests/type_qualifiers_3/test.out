@@ -42,7 +42,7 @@ is
         type Contents is record
               Colour : Colours;
               Piece : Pieces;
-end record;
+        end record;
         type Row is array (Board_Index) of Contents;
         type Boards11 is array (Board_Index) of Row;
         Empty : constant Contents := Contents'

@@ -31,7 +31,7 @@ is
    type Complex is record
       mReal : Integer;
       mImaginary : Integer;
-end record;
+   end record;
 end tq;
 package body Internal_tq
 --@ line 1

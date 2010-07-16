@@ -1,0 +1,126 @@
+sparkify: body is not analyzed for p.ads:11:18
+sparkify: body is not analyzed for p.ads:12:19
+------------------------------------------------------------------------
+with P;use type P.R; 
+--@ line 1
+--# inherit p;
+package External_P
+is
+--@ line 11
+   function F1      (J : Integer) return Integer;
+   procedure P1      (J : in out Integer);
+--@ line 23
+   function Pack (A : P.T1
+--@ line 23
+                        ; B : P.T2
+--@ line 23
+                                ; C : P.T3
+--@ line 23
+                                        ) return P.R
+--@ line 23
+                                                  ;
+--@ line 23
+   --# global in     P.T, P.X, P.Y, P.Z;
+end External_P;
+with P;use type P.R; 
+with External_P;
+--@ line 1
+--# inherit p, external_p;
+--@ line 1
+package Internal_P
+--@ line 14
+          is
+--@ line 23
+   function Pack (A : P.T1
+--@ line 23
+                        ; B : P.T2
+--@ line 23
+                                ; C : P.T3
+--@ line 23
+                                        ) return P.R
+--@ line 23
+                                                  ;
+--@ line 23
+   --# global in     P.T, P.X, P.Y, P.Z;
+
+end Internal_P;
+package P
+--@ line 1
+--# own T, X, Y, Z;
+--# initializes T, Z;
+is
+--@ line 2
+   X:  Integer;
+   Y:     Integer;
+   Z:  Integer := 1;
+   T:     Integer := 2;
+
+   type T1 is  record J : Integer; end record
+--@ line 7
+                     ;
+   type T2 is  record J : Integer; end record
+--@ line 8
+                     ;
+   type T3 is  record J : Integer; end record
+--@ line 9
+                     ;
+--@ line 16
+   type R is record
+      A : T1;
+      B : T2;
+      C : T3;
+      D : Integer;
+   end record;
+end P;
+package body Internal_P
+--@ line 1
+               is
+
+   function Pack (A : P.T1
+--@ line 3
+                        ; B : P.T2
+--@ line 3
+                                ; C : P.T3
+--@ line 3
+                                        ) return P.R
+   is
+--@ line 4
+      Result : P.R
+--@ line 4
+                ;
+      Tmp : Integer;
+   begin
+      Tmp := P.X
+--@ line 7
+              ;
+      Tmp := Tmp + External_P.F1(J => 
+--@ line 8
+                       P.Y)
+--@ line 8
+                          + P.Z
+--@ line 8
+                              + P.T
+--@ line 8
+                                 ;
+      External_P.P1(J => 
+--@ line 9
+          Tmp);
+      Result := P.R'
+--@ line 10
+                (A, B, C, Tmp);
+      return Result;
+   end Pack;
+
+end Internal_P;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          1      1      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           6      0      5              0      0      0       1
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  7      1      5              0      0      0       1  <<<
+% Totals:                      14%    71%             0%     0%     0%     14% <<<
+===================== End of Semantic Analysis Summary ========================

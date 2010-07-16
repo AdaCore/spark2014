@@ -69,7 +69,7 @@ is
    type Complex is record
       mReal : Float;
       mImaginary : Float;
-end record;
+   end record;
 end tq;
 
 package body Internal_tq
