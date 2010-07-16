@@ -74,16 +74,30 @@ typedef M32_T IPaddr;
 
 typedef EID Netif_Id;
 
+#define MAX_LL_ADDRESS_LENGTH 6
+
 typedef struct netif {
+  char   Name[2];
+
+  char   LL_Address[MAX_LL_ADDRESS_LENGTH];
+  U8_T   LL_Address_Length;
+
+  U16_T  MTU;
+
   IPaddr IP;
   IPaddr Mask;
   IPaddr Broadcast;
 
   CBK_Id Input_CB;
   CBK_Id Output_CB;
+  CBK_Id Link_Output_CB;
 
   IPTR_T Dev;
 } Netif;
+
+typedef void (*Input_CB_T)       (Buffer_Id Buf, Netif_Id Nid);
+typedef void (*Output_CB_T)      (Buffer_Id Buf, Netif_Id Nid, IPaddr Dst_Address);
+typedef void (*Link_Output_CB_T) (Buffer_Id Buf, Netif_Id Nid);
 
 extern struct netif *
 AIP_get_netif (Netif_Id Nid);
@@ -108,13 +122,16 @@ AIP_arp_output (Netif_Id Nid, Buffer_Id Buf, IPaddr Dst_Address);
 #define Ether_Type_ARP 0x0806
 #define Ether_Type_IP  0x0800
 
+typedef struct {} Ether_Header;
+U16_T
+aip__etherh__frame_type (Ether_Header M);
+
+#define AIP_etherh_frame_type aip__etherh__frame_type
+
 /***********************
  * Compatibility shims *
  ***********************/
 
 #define err_t Err_T
-
-#define state Dev
-/* Driver-private component of struct netif */
 
 #endif /* __AIP_H__ */

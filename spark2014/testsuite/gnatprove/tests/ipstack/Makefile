@@ -47,6 +47,7 @@ ipstack: build/gen/aip_constants.ads  \
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_core
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
+	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_dev
 
 build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 	mkdir -p build/bldtools

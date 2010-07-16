@@ -67,7 +67,7 @@
 #define IFNAME1 't'
 
 struct mintapif {
-  Ethernet_Address ethaddr;
+  Ethernet_Address *ethaddr;
   /* Add whatever per-interface state that is needed here. */
   unsigned long lasttime;
   int fd;
@@ -77,21 +77,33 @@ struct mintapif {
 static void  mintapif_input(Netif_Id nid);
 
 /*-----------------------------------------------------------------------------------*/
+
+/*
+ * The following are hardcoded and should instead be made configurable:
+ *   MAC address
+ *   host IP address
+*/
+
+#define HOST_IP_ADDRESS_1 192
+#define HOST_IP_ADDRESS_2 168
+#define HOST_IP_ADDRESS_3 100
+#define HOST_IP_ADDRESS_4 1
+
 static void
 low_level_init(struct netif *netif)
 {
   struct mintapif *mintapif;
   char buf[1024];
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   /* Obtain MAC address from network interface. */
-  mintapif->ethaddr[0] = 1;
-  mintapif->ethaddr[1] = 2;
-  mintapif->ethaddr[2] = 3;
-  mintapif->ethaddr[3] = 4;
-  mintapif->ethaddr[4] = 5;
-  mintapif->ethaddr[5] = 6;
+  (*mintapif->ethaddr)[0] = 1;
+  (*mintapif->ethaddr)[1] = 2;
+  (*mintapif->ethaddr)[2] = 3;
+  (*mintapif->ethaddr)[3] = 4;
+  (*mintapif->ethaddr)[4] = 5;
+  (*mintapif->ethaddr)[5] = 6;
 
   /* Do whatever else is needed to initialize interface. */
 
@@ -114,10 +126,10 @@ low_level_init(struct netif *netif)
 #endif /* Linux */
 
   snprintf(buf, sizeof(buf), "/sbin/ifconfig " IFCONFIG_ARGS,
-           ip4_addr1(&(netif->gw)),
-           ip4_addr2(&(netif->gw)),
-           ip4_addr3(&(netif->gw)),
-           ip4_addr4(&(netif->gw)));
+           HOST_IP_ADDRESS_1,
+           HOST_IP_ADDRESS_2,
+           HOST_IP_ADDRESS_3,
+           HOST_IP_ADDRESS_4);
 
   system(buf);
 
@@ -144,7 +156,7 @@ low_level_output(struct netif *netif, Buffer_Id p)
   char *bufptr;
   int written;
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   /* initiate transfer(); */
 
@@ -187,7 +199,7 @@ low_level_input(struct netif *netif)
   char *bufptr;
   struct mintapif *mintapif;
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   /* Obtain the size of the packet and put it into the "len"
      variable. */
@@ -237,18 +249,18 @@ mintapif_input (Netif_Id nid)
 {
   struct netif *netif = AIP_get_netif (nid);
   struct mintapif *mintapif;
-  struct eth_hdr *ethhdr;
+  Ether_Header *ethhdr;
   Buffer_Id p;
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   p = low_level_input (netif);
 
   if (p != NOBUF) {
 
-    ethhdr = AIP_buffer_payload (p);
+    ethhdr = (Ether_Header *) AIP_buffer_payload (p);
 
-    switch (htons(ethhdr->type)) {
+    switch (AIP_etherh_frame_type (*ethhdr)) {
     case Ether_Type_IP:
 #if 0
 /* CSi disabled ARP table update on ingress IP packets.
@@ -256,7 +268,7 @@ mintapif_input (Netif_Id nid)
       AIP_arpip_input(netif, p);
 #endif
       pbuf_header(p, -14);
-      netif->input(p, netif);
+      ((Input_CB_T)netif->Input_CB) (p, nid);
       break;
     case Ether_Type_ARP:
       AIP_arp_input (nid, mintapif->ethaddr, p);
@@ -280,17 +292,25 @@ mintapif_input (Netif_Id nid)
  *
  */
 /*-----------------------------------------------------------------------------------*/
+
+static int initialized = 0;
+static struct mintapif mintapif_dev;
+
 err_t
 mintapif_init(struct netif *netif)
 {
   struct mintapif *mintapif;
-
+/* Support multiple mintapif instances???
   mintapif = mem_malloc(sizeof(struct mintapif));
   if (mintapif == NULL)
   {
     return ERR_MEM;
   }
-  netif->state = mintapif;
+*/
+  if (initialized)
+    return ERR_MEM;
+  mintapif = &mintapif_dev;
+  netif->Dev = mintapif;
 #if LWIP_SNMP
   /* ifType is other(1), there doesn't seem
      to be a proper type for the tunnel if */
@@ -308,14 +328,14 @@ mintapif_init(struct netif *netif)
   netif->ifoutdiscards = 0;
 #endif
 
-  netif->hwaddr_len = 6;
-  netif->name[0] = IFNAME0;
-  netif->name[1] = IFNAME1;
-  netif->output = AIP_arp_output;
-  netif->linkoutput = low_level_output;
-  netif->mtu = 1500;
+  netif->Name[0] = IFNAME0;
+  netif->Name[1] = IFNAME1;
+  netif->Output_CB      = (CBK_Id) AIP_arp_output;
+  netif->Link_Output_CB = (CBK_Id) low_level_output;
+  netif->MTU = 1500;
 
-  mintapif->ethaddr = (struct eth_addr *)&(netif->hwaddr[0]);
+  netif->LL_Address_Length = 6;
+  mintapif->ethaddr = (Ethernet_Address*)&(netif->LL_Address[0]);
 
   low_level_init(netif);
 
@@ -332,7 +352,7 @@ mintapif_wait(Netif_Id nid, U16_T time)
   int ret;
   struct mintapif *mintapif;
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   while (1) {
 
@@ -372,7 +392,7 @@ mintapif_select(Netif_Id nid)
   struct timeval tv;
   struct mintapif *mintapif;
 
-  mintapif = netif->state;
+  mintapif = netif->Dev;
 
   tv.tv_sec = 0;
   tv.tv_usec = 0; /* usec_to; */

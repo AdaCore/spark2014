@@ -33,23 +33,48 @@ package AIP.NIF is
 
 private
 
+   Max_LL_Address_Length : constant := 6;
+   --  Make this configurable???
+   --  6 is enough for Ethernet
+
+   type Netif_Name is new String (1 .. 2);
+   type Netif_LL_Address is new String (1 .. Max_LL_Address_Length);
+
    type Netif is record
-      IP        : IPaddrs.IPaddr;
-      --  IP address of interface
+      Name              : Netif_Name;
+      --  Unique name of interface
 
-      Mask      : IPaddrs.IPaddr;
-      --  Netmask of interface
+      LL_Address        : Netif_LL_Address;
+      --  Link-level address
 
-      Broadcast : IPaddrs.IPaddr;
-      --  Broadcast address of interface: (IP and mask) or (not mask)
+      LL_Address_Length : U8_T;
+      --  Actual length of link level address
 
-      Input_CB  : Callbacks.CBK_Id;
+      MTU               : U16_T;
+      --  Maximum Transmission Unit
+
+      IP                : IPaddrs.IPaddr;
+      --  IP address
+
+      Mask              : IPaddrs.IPaddr;
+      --  Netmask
+
+      Broadcast         : IPaddrs.IPaddr;
+      --  Broadcast address: (IP and mask) or (not mask)
+
+      Input_CB          : Callbacks.CBK_Id;
       --  Packet input callback
+      --  procedure I (Buf : Buffer_Id; Nid : Netif_Id);
 
-      Output_CB : Callbacks.CBK_Id;
-      --  Packet output callback
+      Output_CB         : Callbacks.CBK_Id;
+      --  Packet output callback (called by network layer)
+      --  procedure O (Buf : Buffer_Id; Nid : Netif_Id; Dst_Address : IPaddr);
 
-      Dev       : IPTR_T;
+      Link_Output_CB   : Callbacks.CBK_Id;
+      --  Link level packet output callback (called by ARP layer)
+      --  procedure LO (Buf : Buffer_Id; Nid : Netif_Id);
+
+      Dev               : IPTR_T;
       --  Driver private information
    end record;
    pragma Convention (C, Netif);
