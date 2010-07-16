@@ -72,25 +72,29 @@ typedef M32_T IPaddr;
  * AIP.NIF *
  ***********/
 
+typedef enum { Invalid, Down, Up } Netif_State;
+
 typedef EID Netif_Id;
+#define IF_NOID (-1)
 
 #define MAX_LL_ADDRESS_LENGTH 6
 
 typedef struct netif {
-  char   Name[2];
+  Netif_State State;
+  char        Name[2];
 
-  char   LL_Address[MAX_LL_ADDRESS_LENGTH];
-  U8_T   LL_Address_Length;
+  char        LL_Address[MAX_LL_ADDRESS_LENGTH];
+  U8_T        LL_Address_Length;
 
-  U16_T  MTU;
+  U16_T       MTU;
 
-  IPaddr IP;
-  IPaddr Mask;
-  IPaddr Broadcast;
+  IPaddr      IP;
+  IPaddr      Mask;
+  IPaddr      Broadcast;
 
-  CBK_Id Input_CB;
-  CBK_Id Output_CB;
-  CBK_Id Link_Output_CB;
+  CBK_Id      Input_CB;
+  CBK_Id      Output_CB;
+  CBK_Id      Link_Output_CB;
 
   IPTR_T Dev;
 } Netif;
@@ -100,7 +104,7 @@ typedef void (*Output_CB_T)      (Buffer_Id Buf, Netif_Id Nid, IPaddr Dst_Addres
 typedef void (*Link_Output_CB_T) (Buffer_Id Buf, Netif_Id Nid);
 
 extern struct netif *
-AIP_get_netif (Netif_Id Nid);
+AIP_get_netif (EID Nid);
 
 /***********
  * AIP.ARP *

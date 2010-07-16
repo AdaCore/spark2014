@@ -13,6 +13,14 @@ package AIP.NIF is
    MAX_NETIF : constant := 20;
    --  ??? Should be defined in a central configuration/dimensioning package
 
+   type Netif_State is (Invalid, Down, Up);
+   pragma Convention (C, Netif_State);
+   --  State of a network interface
+
+   --  Invalid: no associated link-level driver
+   --  Down:    driver present but interface inactive
+   --  Up:      active interface
+
    subtype Netif_Id is AIP.EID range 1 .. MAX_NETIF;
    IF_NOID : constant AIP.EID := -1;
    --  ??? What about 0?
@@ -41,6 +49,9 @@ private
    type Netif_LL_Address is new String (1 .. Max_LL_Address_Length);
 
    type Netif is record
+      State             : Netif_State := Invalid;
+      --  Interface state
+
       Name              : Netif_Name;
       --  Unique name of interface
 
@@ -79,8 +90,10 @@ private
    end record;
    pragma Convention (C, Netif);
 
-   function Get_Netif (Nid : Netif_Id) return IPTR_T;
+   function Get_Netif (Nid : EID) return IPTR_T;
    pragma Export (C, Get_Netif, "AIP_get_netif");
-   --  Return pointer to Netif record for the given netif
+   --  Return pointer to Netif record for the given netif. If Nid is IF_NOID,
+   --  return an unused netif record, or NULIPTR if none is available (used
+   --  for device initialization).
 
 end AIP.NIF;

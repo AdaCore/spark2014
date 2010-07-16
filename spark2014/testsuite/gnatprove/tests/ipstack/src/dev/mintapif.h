@@ -40,7 +40,7 @@ enum mintapif_signal {
   MINTAPIF_PACKET
 };
 
-err_t mintapif_init(struct netif *netif);
+err_t mintapif_init ();
 int mintapif_select(Netif_Id nid);
 
 #endif /* __MINTAPIF_H__ */

@@ -10,5 +10,7 @@
 package AIP.Platform is
    pragma Pure;
 
-   If_ISR_Linkname : constant String := "mintapif_isr";
+   If_Init_Linkname : constant String := "mintapif_init";
+   If_ISR_Linkname  : constant String := "mintapif_isr";
+
 end AIP.Platform;

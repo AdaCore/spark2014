@@ -297,9 +297,16 @@ static int initialized = 0;
 static struct mintapif mintapif_dev;
 
 err_t
-mintapif_init(struct netif *netif)
+mintapif_init ()
 {
+  Netif_Id nid;
+  struct netif *netif;
   struct mintapif *mintapif;
+
+  netif = AIP_get_netif (IF_NOID);
+  if (nid == IF_NOID)
+    return ERR_MEM;
+
 /* Support multiple mintapif instances???
   mintapif = mem_malloc(sizeof(struct mintapif));
   if (mintapif == NULL)
@@ -339,6 +346,7 @@ mintapif_init(struct netif *netif)
 
   low_level_init(netif);
 
+  netif->State = Up;
   return NOERR;
 }
 /*-----------------------------------------------------------------------------------*/

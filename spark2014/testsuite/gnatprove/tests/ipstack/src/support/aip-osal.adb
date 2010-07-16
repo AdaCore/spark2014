@@ -3,10 +3,13 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.Platform;
+
 package body AIP.OSAL is
 
-   procedure LWIP_Init;
-   pragma Import (C, LWIP_Init, "C_init");
+   function If_Init return Err_T;
+   pragma Import (C, If_Init, Platform.If_Init_Linkname);
+   --  Initialize network interface
 
    ----------------
    -- Initialize --
@@ -14,7 +17,9 @@ package body AIP.OSAL is
 
    procedure Initialize is
    begin
-      LWIP_Init;
+      if If_Init /= NOERR then
+         raise Constraint_Error;
+      end if;
    end Initialize;
 
 end AIP.OSAL;
