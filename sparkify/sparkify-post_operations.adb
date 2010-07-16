@@ -35,11 +35,11 @@ with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 package body Sparkify.Post_Operations is
 
-   -------------------------------------------
-   -- A_Package_Declaration_Or_Body_Post_Op --
-   -------------------------------------------
+   -----------------------------------
+   -- A_Package_Declaration_Post_Op --
+   -----------------------------------
 
-   procedure A_Package_Declaration_Or_Body_Post_Op
+   procedure A_Package_Declaration_Post_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State)
@@ -51,7 +51,9 @@ package body Sparkify.Post_Operations is
       Name : constant Wide_String :=
                Flat_Package_Name (Declaration_Unique_Name (Element));
    begin
-      if Declaration_Kind (Element) = A_Package_Declaration then
+      if Declaration_Kind (Element) = A_Package_Declaration or else
+        Declaration_Kind (Element) = A_Generic_Package_Declaration
+      then
          declare
             Items : constant Declarative_Item_List :=
               Private_Part_Declarative_Items (Declaration     => Element,
@@ -118,7 +120,7 @@ package body Sparkify.Post_Operations is
          PP_Word (Name & ";");
          State.Echo_Cursor := Cursor_After (Element);
       end;
-   end A_Package_Declaration_Or_Body_Post_Op;
+   end A_Package_Declaration_Post_Op;
 
    -------------------------------
    -- A_Subprogram_Unit_Post_Op --

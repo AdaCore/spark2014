@@ -45,6 +45,26 @@ package Sparkify.Pre_Operations is
    --  to set prefixing identifiers mode At the end of procedure,
    --  the cursor is set after Element.
 
+   procedure A_Formal_Object_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Formal_Private_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Formal_Type_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
+   procedure A_Formal_Subprogram_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    procedure A_Pragma_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;
@@ -54,12 +74,6 @@ package Sparkify.Pre_Operations is
    --  * Assert
    --  * Precondition
    --  * Postcondition
-
-   procedure A_Package_Body_Pre_Op
-     (Element :        Asis.Element;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State);
-   --  A_Package_Body_Declaration
 
    procedure A_Package_Declaration_Pre_Op
      (Element :        Asis.Element;
@@ -333,8 +347,8 @@ package Sparkify.Pre_Operations is
       A_Return_Object_Declaration  => No_Action'Access,
       A_Null_Procedure_Declaration => No_Action'Access,
 
-      A_Package_Declaration => A_Package_Declaration_Pre_Op'Access,
-      A_Package_Body_Declaration => A_Package_Body_Pre_Op'Access,
+      A_Package_Declaration ..
+      A_Package_Body_Declaration => A_Package_Declaration_Pre_Op'Access,
 
       --
       An_Object_Renaming_Declaration ..
@@ -367,21 +381,24 @@ package Sparkify.Pre_Operations is
       A_Choice_Parameter_Specification => No_Action'Access,
 
       A_Generic_Procedure_Declaration ..
-      --  A_Generic_Function_Declaration,            -- 12.1
-      A_Generic_Package_Declaration => No_Action'Access,
+      A_Generic_Function_Declaration          => No_Action'Access,
+
+      A_Generic_Package_Declaration => A_Package_Declaration_Pre_Op'Access,
 
       A_Package_Instantiation ..
       --  A_Procedure_Instantiation,                 -- 12.3
       A_Function_Instantiation => No_Action'Access,
       --
 
-      A_Formal_Object_Declaration => No_Action'Access,
+      A_Formal_Object_Declaration             =>
+        A_Formal_Object_Declaration_Pre_Op'Access,
 
-      A_Formal_Type_Declaration => No_Action'Access,
+      A_Formal_Type_Declaration               =>
+        A_Formal_Type_Declaration_Pre_Op'Access,
 
       A_Formal_Procedure_Declaration ..
       A_Formal_Function_Declaration =>
-         No_Action'Access,
+         A_Formal_Subprogram_Declaration_Pre_Op'Access,
 
       A_Formal_Package_Declaration => No_Action'Access,
 
@@ -554,8 +571,10 @@ package Sparkify.Pre_Operations is
       --  Asis.Definition_Kinds (A_Formal_Type_Definition) literal,
       --  corresponds to subtype Internal_Formal_Type_Kinds
 
-       A_Formal_Private_Type_Definition ..
-       A_Formal_Tagged_Private_Type_Definition =>
+      A_Formal_Private_Type_Definition =>
+        A_Formal_Private_Type_Definition_Pre_Op'Access,
+
+      A_Formal_Tagged_Private_Type_Definition   =>
           No_Action'Access,
 
       A_Formal_Derived_Type_Definition =>

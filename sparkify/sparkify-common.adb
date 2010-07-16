@@ -121,11 +121,13 @@ package body Sparkify.Common is
    begin
       return Element_Kind (Element) = A_Declaration and then
         (Declaration_Kind (Element) = A_Function_Declaration or else
-         Declaration_Kind (Element) = A_Function_Body_Declaration or else
-         Declaration_Kind (Element) = A_Function_Body_Stub or else
-         Declaration_Kind (Element) = A_Procedure_Declaration or else
-         Declaration_Kind (Element) = A_Procedure_Body_Declaration or else
-         Declaration_Kind (Element) = A_Procedure_Body_Stub);
+           Declaration_Kind (Element) = A_Function_Body_Declaration or else
+           Declaration_Kind (Element) = A_Function_Body_Stub or else
+           Declaration_Kind (Element) = A_Procedure_Declaration or else
+           Declaration_Kind (Element) = A_Procedure_Body_Declaration or else
+           Declaration_Kind (Element) = A_Procedure_Body_Stub or else
+           Declaration_Kind (Element) = A_Formal_Function_Declaration or else
+           Declaration_Kind (Element) = A_Formal_Procedure_Declaration);
    end Is_Subprogram_Declaration;
 
    ------------------------
@@ -154,6 +156,7 @@ package body Sparkify.Common is
    begin
       return Element_Kind (Element) = A_Declaration and then
         (Declaration_Kind (Element) = A_Package_Declaration or else
+           Declaration_Kind (Element) = A_Generic_Package_Declaration or else
            Declaration_Kind (Element) = A_Package_Body_Declaration);
    end Is_Package_Declaration;
 
@@ -183,7 +186,9 @@ package body Sparkify.Common is
       Encl_Element : constant Asis.Element := Enclosing_Element (Element);
    begin
       return Flat_Element_Kind (Encl_Element) = A_Package_Body_Declaration
-        or else Flat_Element_Kind (Encl_Element) = A_Package_Declaration;
+        or else Flat_Element_Kind (Encl_Element) = A_Package_Declaration
+        or else Flat_Element_Kind (Encl_Element)
+        = A_Generic_Package_Declaration;
    end Is_Package_Level_Element;
 
    -------------------------
@@ -225,7 +230,9 @@ package body Sparkify.Common is
                Unit_Decl : constant Asis.Declaration :=
                              Unit_Declaration (The_Unit);
             begin
-               if Declaration_Kind (Unit_Decl) = A_Package_Declaration then
+               if Declaration_Kind (Unit_Decl) = A_Package_Declaration or else
+                 Declaration_Kind (Unit_Decl) = A_Generic_Package_Declaration
+               then
                   Initial_Phase := Printing_Spec;
                else
                   Initial_Phase := Printing_Body;

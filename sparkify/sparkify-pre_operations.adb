@@ -218,6 +218,110 @@ package body Sparkify.Pre_Operations is
       State.Echo_Cursor := Cursor_At (Subtype_Ind);
    end A_Derived_Type_Definition_Pre_Op;
 
+   ----------------------------------------
+   -- A_Formal_Object_Declaration_Pre_Op --
+   ----------------------------------------
+
+   procedure A_Formal_Object_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+      Names        : constant Defining_Name_List :=
+                       Asis.Declarations.Names (Element);
+      pragma Assert (Names'Length /= 0);
+      Subtype_Name : constant Asis.Identifier :=
+                       Declaration_Subtype_Mark (Element);
+      Init_Expr    : constant Asis.Expression :=
+                       Initialization_Expression (Element);
+   begin
+      if Current_Pass in Printing_Subprograms
+        and then Is_Package_Level_Element (Element) then
+         --  When printing subprograms, ignore objects that are already defined
+         --  in the data package
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+         State.Echo_Cursor := Cursor_After (Element);
+         return;
+      end if;
+
+      Reach_Element_And_Traverse (Names (Names'Last), State);
+      PP_Word (":");
+      --  Skip mode if present
+      Traverse_Element_And_Print (Subtype_Name);
+      State.Echo_Cursor := Cursor_After (Subtype_Name);
+      if not Is_Nil (Init_Expr) then
+         Reach_Element_And_Traverse (Init_Expr, State);
+      end if;
+   end A_Formal_Object_Declaration_Pre_Op;
+
+   ---------------------------------------------
+   -- A_Formal_Private_Type_Definition_Pre_Op --
+   ---------------------------------------------
+
+   procedure A_Formal_Private_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+   begin
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+      PP_Text_At (Line   => First_Line_Number (Element),
+                  Column => Element_Span (Element).First_Column,
+                  Text   => " record J : Integer; end record");
+      State.Echo_Cursor := Cursor_After (Element);
+   end A_Formal_Private_Type_Definition_Pre_Op;
+
+   --------------------------------------
+   -- A_Formal_Type_Declaration_Pre_Op --
+   --------------------------------------
+
+   procedure A_Formal_Type_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State) is
+   begin
+      A_Type_Declaration_Pre_Op (Element, Control, State);
+   end A_Formal_Type_Declaration_Pre_Op;
+
+   --------------------------------------------
+   -- A_Formal_Subprogram_Declaration_Pre_Op --
+   --------------------------------------------
+
+   procedure A_Formal_Subprogram_Declaration_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      Names : constant Defining_Name_List :=
+                   Asis.Declarations.Names (Element);
+      pragma Assert (Names'Length = 1);
+
+   begin
+      if Current_Pass = Printing_Data then
+         --  Discard subprograms during data printing
+         State.Echo_Cursor := Cursor_After (Element);
+         return;
+      end if;
+
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
+
+      if Declaration_Kind (Element) = A_Formal_Function_Declaration then
+         PP_Text_At (Line            => First_Line_Number (Element),
+                     Column          => Element_Span (Element).First_Column,
+                     Text            => "function ");
+      else
+         PP_Text_At (Line            => First_Line_Number (Element),
+                     Column          => Element_Span (Element).First_Column,
+                     Text            => "procedure ");
+      end if;
+
+      State.Echo_Cursor := Cursor_At (Names (Names'First));
+
+      A_Subprogram_Unit_Declaration_Pre_Op (Element, Control, State);
+   end A_Formal_Subprogram_Declaration_Pre_Op;
+
    ----------------------------
    -- A_Function_Call_Pre_Op --
    ----------------------------
@@ -419,57 +523,29 @@ package body Sparkify.Pre_Operations is
 
       Pack_Names : constant Defining_Name_List :=
                      Asis.Declarations.Names (Element);
+      Pack_Name  : constant Wide_String :=
+                     Flat_Package_Name (Declaration_Unique_Name (Element));
    begin
       if Current_Pass = Printing_Internal then
-         declare
-            Pack_Name : constant Wide_String :=
-                          Flat_Package_Name
-                            (Element_Name (Pack_Names (Pack_Names'First)));
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor,
-               Cursor_Before (Pack_Names (Pack_Names'First)));
+         PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
 
-            --  Prefix the name of the internal package to differentiate it
-            PP_Word (Internal_Prefix & Pack_Name);
+         --  Skip generic parameters if any
+         if Declaration_Kind (Element) = A_Package_Body_Declaration then
+            PP_Text_At (Line            => First_Line_Number (Element),
+                        Column          => Element_Span (Element).First_Column,
+                        Text            => "package body ");
+         else
+            PP_Text_At (Line            => First_Line_Number (Element),
+                        Column          => Element_Span (Element).First_Column,
+                        Text            => "package ");
+         end if;
 
-            State.Echo_Cursor := Cursor_After (Pack_Names (Pack_Names'First));
-         end;
+         --  Prefix the name of the internal package to differentiate it
+         PP_Word (Internal_Prefix & Pack_Name);
+
+         State.Echo_Cursor := Cursor_After (Pack_Names (Pack_Names'First));
       end if;
    end A_Package_Declaration_Pre_Op;
-
-   ---------------------------
-   -- A_Package_Body_Pre_Op --
-   ---------------------------
-
-   procedure A_Package_Body_Pre_Op
-     (Element :        Asis.Element;
-      Control : in out Traverse_Control;
-      State   : in out Source_Traversal_State)
-   is
-      pragma Unreferenced (Control);
-
-      Pack_Names : constant Defining_Name_List :=
-                     Asis.Declarations.Names (Element);
-      pragma Assert (Pack_Names'Length = 1);
-   begin
-      if Current_Pass = Printing_Internal then
-         declare
-            Pack_Name : constant Wide_String :=
-                          Flat_Package_Name
-                            (Element_Name (Pack_Names (Pack_Names'First)));
-         begin
-            PP_Echo_Cursor_Range
-              (State.Echo_Cursor,
-               Cursor_Before (Pack_Names (Pack_Names'First)));
-
-            --  Prefix the name of the package to differentiate it
-            PP_Word (Internal_Prefix & Pack_Name);
-
-            State.Echo_Cursor := Cursor_After (Pack_Names (Pack_Names'First));
-         end;
-      end if;
-   end A_Package_Body_Pre_Op;
 
    ---------------------
    -- A_Pragma_Pre_Op --
@@ -978,7 +1054,9 @@ package body Sparkify.Pre_Operations is
                end;
 
                PP_Close_Line;
-               PP_Word ("end record;");
+               PP_Text_At (Line   => Last_Line_Number (Element),
+                           Column => Column_Start,
+                           Text   => "end record;");
                State.Echo_Cursor := Cursor_After (Element);
             end;
 
@@ -1501,7 +1579,9 @@ package body Sparkify.Pre_Operations is
          Def_In_Current  : Boolean;
       begin
          Def_In_Cur_Spec :=
-           (Declaration_Kind (Pack_Element) = A_Package_Declaration
+           ((Declaration_Kind (Pack_Element) = A_Package_Declaration
+            or else Declaration_Kind (Pack_Element) =
+              A_Generic_Package_Declaration)
             and then Is_Equal (Element_Unit, The_Unit))
            or else
            (not Is_Nil (Body_Unit)

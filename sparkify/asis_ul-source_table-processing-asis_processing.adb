@@ -57,7 +57,8 @@ begin
          Set_Source_Status (SF, Processed);
       when Printing_Data =>
          case Declaration_Kind (Unit) is
-            when A_Package_Declaration =>
+            when A_Package_Declaration |
+                 A_Generic_Package_Declaration =>
                Set_Current_SF (SF);
                Sparkify.Output.Set_Output (SF, "", Success);
                Sparkify.Processing.Special_Print (CU, SF);
@@ -73,7 +74,8 @@ begin
          end case;
       when Printing_External =>
          case Declaration_Kind (Unit) is
-            when A_Package_Declaration =>
+            when A_Package_Declaration |
+                 A_Generic_Package_Declaration =>
                Set_Current_SF (SF);
                Sparkify.Output.Set_Output
                  (SF, To_Lower (External_Prefix), Success);

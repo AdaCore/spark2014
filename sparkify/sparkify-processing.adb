@@ -89,7 +89,8 @@ package body Sparkify.Processing is
       The_Last_Column := Full_Span.Last_Column;
 
       case Declaration_Kind (Element) is
-         when A_Package_Declaration =>
+         when A_Package_Declaration |
+              A_Generic_Package_Declaration =>
             declare
                Private_Items : constant Declarative_Item_List :=
                                  Private_Part_Declarative_Items
@@ -100,9 +101,20 @@ package body Sparkify.Processing is
                                    (Declaration     => Element,
                                     Include_Pragmas => False);
                Decl_Items    : constant Declarative_Item_List :=
-                                 Private_Items & Visible_Items;
+                                 Visible_Items & Private_Items;
             begin
-               Print_Decl_List (Decl_Items);
+               if Declaration_Kind (Element) = A_Package_Declaration then
+                  Print_Decl_List (Decl_Items);
+               else
+                  declare
+                     Formal_Items : constant Element_List :=
+                                      Generic_Formal_Part
+                                        (Declaration     => Element,
+                                         Include_Pragmas => False);
+                  begin
+                     Print_Decl_List (Formal_Items & Decl_Items);
+                  end;
+               end if;
             end;
          when A_Package_Body_Declaration =>
             declare
@@ -438,6 +450,21 @@ package body Sparkify.Processing is
                Element_Container.Append (Items, Decl_Items (J));
             end loop;
 
+            if Declaration_Kind (Unit_Decl) =
+              A_Generic_Package_Declaration
+            then
+               declare
+                  Formal_Items : constant Element_List :=
+                                   Generic_Formal_Part
+                                     (Declaration     => Unit_Decl,
+                                      Include_Pragmas => False);
+               begin
+                  for J in Formal_Items'Range loop
+                     Element_Container.Append (Items, Formal_Items (J));
+                  end loop;
+               end;
+            end if;
+
             if not Is_Nil (Body_Decl) then
                declare
                   Body_Items : constant Declarative_Item_List :=
@@ -464,7 +491,9 @@ package body Sparkify.Processing is
                begin
 
                   --  Add all global variable declarations as "own" variables
-                  if Flat_Element_Kind (El) = A_Variable_Declaration then
+                  if Flat_Element_Kind (El) = A_Variable_Declaration or else
+                    Flat_Element_Kind (El) = A_Formal_Object_Declaration
+                  then
                      Element_Container.Append (Own_Items, El);
                   end if;
 
