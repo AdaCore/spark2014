@@ -28,6 +28,13 @@ with Switch;  use Switch;
 with Sprint;  use Sprint;
 with Treepr;
 
+with Types; use Types;
+with Namet; use Namet;
+
+with Why.Types; use Why.Types;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Sprint; use Why.Atree.Sprint;
+
 package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why Back_End
@@ -73,10 +80,27 @@ package body Gnat2Why.Driver is
       Put_Line ("NOTHING IMPLEMENTED SO FAR; this stub dumps:");
       Put_Line (" * the syntax tree;");
       Put_Line (" * a source-view of the syntax tree.");
+      Put_Line (" * a dummy test of the Why generator.");
       New_Line;
 
       Treepr.Print_Node_Subtree (GNAT_Root);
       Sprint_Node (GNAT_Root);
+
+      declare
+         I, T : Why_Node_Id;
+      begin
+         Name_Len := 0;
+         Add_Str_To_Name_Buffer ("standard__integer");
+         I := New_Identifier (Empty,
+                              Why_Empty,
+                              Name_Find);
+         T := New_Type (Empty,
+                        Why_Empty,
+                        Why_Empty,
+                        Why_Empty_List,
+                        I);
+         Sprint_Why_Node (T);
+      end;
    end GNAT_To_Why;
 
 end Gnat2Why.Driver;

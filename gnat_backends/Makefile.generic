@@ -5,7 +5,7 @@
 PROCS=1
 
 # for debugging/development
-CFLAGS=-O0 -gnata
+CFLAGS=-O0 -gnata -gnat12
 
 # for production
 # CFLAGS=-O2 -gnatpn
