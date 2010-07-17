@@ -1,0 +1,26 @@
+with "asis_bld";
+with "common";
+
+project Helpers is
+
+   for Source_Dirs use (".");
+
+   for Main use ("xkinds");
+
+   for Object_Dir use ".";
+
+   for Exec_Dir use ".";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnat2012", "-g");
+   end Compiler;
+
+   package Builder is
+      for Default_Switches ("ada") use Common.Builder'Default_Switches ("ada");
+   end Builder;
+
+   package Binder renames Common.Binder;
+
+   package Ide renames Common.Ide;
+
+end Helpers;

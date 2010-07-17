@@ -34,6 +34,7 @@ with Urealp; use Urealp;
 
 with Why.Sinfo; use Why.Sinfo;
 with Why.Types; use Why.Types;
+with Why.Ids;   use Why.Ids;
 
 package Why.Atree is
    --  This package defines the format of the abstract syntax tree to
