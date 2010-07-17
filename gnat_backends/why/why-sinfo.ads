@@ -58,32 +58,32 @@ package Why.Sinfo is
       --  0.1. Purely logic, return type only:
       ----------------------------------------
 
-      WT_Type_Prop,
+      W_Type_Prop,
       --  <type_prop> ::= 'prop'
 
 
       --  0.2. Primitive types, both valid in logic/program space:
       ------------------------------------------------------------
 
-      WT_Type_Int,
+      W_Type_Int,
       --  <type_int> ::= 'int'
 
-      WT_Type_Bool,
+      W_Type_Bool,
       --  <type_bool> ::= 'bool'
 
-      WT_Type_Real,
+      W_Type_Real,
       --  <type_real> ::= 'real'
 
-      WT_Type_Unit,
+      W_Type_Unit,
       --  <type_unit> ::= 'unit'
 
-      WT_Abstract_Type,
+      W_Abstract_Type,
       --  <abstract_type> ::= <identifier>
 
-      WT_Generic_Formal_Type,
+      W_Generic_Formal_Type,
       --  <generic_formal_type> ::= "'" <identifier>
 
-      WT_Generic_Actual_Type_Chain,
+      W_Generic_Actual_Type_Chain,
       --  <generic_actual_type_chain> ::=
       --     <primitive_type> (<primitive_type>, )* <identifier>
 
@@ -91,23 +91,23 @@ package Why.Sinfo is
       --  0.3. Only valid in program space:
       -------------------------------------
 
-      WT_Array_Type,
+      W_Array_Type,
       --  <array_type> ::= <primitive_type> array
 
-      WT_Ref_Type,
+      W_Ref_Type,
       --  <ref_type> ::= <primitive_type> 'ref'
 
-      WT_Protected_Value_Type,
+      W_Protected_Value_Type,
       --  <protected_value_type> ::= '(' <value_type> ')'
 
-      WT_Anonymous_Arrow_Type,
+      W_Anonymous_Arrow_Type,
       --  <anonymous_arrow> ::= <simple_value_type> '->' <computation_type>
 
-      WT_Named_Arrow_Type,
+      W_Named_Arrow_Type,
       --  <named_arrow_type> ::= <identifier> ':' <simple_value_type>
       --                          '->' <computation_type>
 
-      WT_Computation_Spec,
+      W_Computation_Spec,
       --  <computation_spec> ::=
       --       '{' [ <precondition> ] '}'
       --       [ 'returns' <identifier> ':' ] <value_type> <effects>
@@ -137,41 +137,41 @@ package Why.Sinfo is
       --                 | <false_litteral>
       --                 | <void_litteral>
 
-      WLT_Integer_Constant,
+      W_Integer_Constant,
 
-      WLT_Real_Constant,
+      W_Real_Constant,
 
-      WLT_True_Litteral,
+      W_True_Litteral,
       --  <true_litteral> ::= 'true'
 
-      WLT_False_Litteral,
+      W_False_Litteral,
       --  <false_litteral> ::= 'false'
 
-      WLT_Void_Litteral,
+      W_Void_Litteral,
       --  <void_litteral> ::= 'void'
 
-      WLT_Arith_Operation,
+      W_Arith_Operation,
       --  <operation> ::= <term> <arith_op> <term>
 
-      WLT_Negative_Term,
+      W_Negative_Term,
       --  <negative_term> ::= '-' <term>
 
-      WLT_Label_Identifier,
+      W_Label_Identifier,
       --  <label_identifier> ::= <identifier> [ @ [ <identifier> ] ]
 
-      WLT_Operation,
+      W_Operation,
       --  <operation> ::= <identifier> '(' <term>+ ')'
 
-      WLT_Named_Term,
+      W_Named_Term,
       --  <named_term> ::= <label_identifier> '[' <term> ']'
 
-      WLT_Conditional_Term,
+      W_Conditional_Term,
       --  <logic_conditional_term> ::= 'if' <term> 'then' <term> 'else' <term>
 
-      WLT_Binding_Term,
+      W_Binding_Term,
       --  <logic_binding> ::= 'let' <identifier> '=' <term> 'in' <term>
 
-      WLT_Protected_Term,
+      W_Protected_Term,
       --  <protected_term> ::= '(' <term> ')'
 
       --  <arith_op> ::= <op_add>
@@ -180,19 +180,19 @@ package Why.Sinfo is
       --                 | <op_divide>
       --                 | <op_modulo>
 
-      WLT_Op_Add,
+      W_Op_Add,
       --  <op_add> ::= '+'
 
-      WLT_Op_Substract,
+      W_Op_Substract,
       --  <op_substract> ::= '-'
 
-      WLT_Op_Multiply,
+      W_Op_Multiply,
       --  <op_multiply> ::= '*'
 
-      WLT_Op_Divide,
+      W_Op_Divide,
       --  <op_divide> ::= '/'
 
-      WLT_Op_Modulo,
+      W_Op_Modulo,
       --  <op_modulo> ::= '%'
 
       --  1.2. Predicates:
@@ -215,61 +215,61 @@ package Why.Sinfo is
       --                 | <named_predicate>
       --                 | <protected_predicate>
 
-      WLP_True_Litteral,
+      W_True_Litteral_Pred,
       --  <true_litteral> ::= 'true'
 
-      WLP_False_Litteral,
+      W_False_Litteral_Pred,
       --  <false_litteral> ::= 'false'
 
-      WLP_Predicate_Identifier,
+      W_Predicate_Identifier,
       --  <predicate_identifier> ::= <identifier>
 
-      WLP_Predicate_Instance,
+      W_Predicate_Instance,
       --  <predicate_instance> ::= <identifier> '(' <term>+ ')'
 
-      WLP_Related_Terms,
+      W_Related_Terms,
       --  <relation_site> ::= <term> <relation> <term> [ <relation> <term> ]
 
-      WLP_Implication,
+      W_Implication,
       --  <implication> ::= <predicate> '->' <predicate>
 
-      WLP_Equivalence,
+      W_Equivalence,
       --  <predicate> '<->' <predicate>
 
-      WLP_Disjonction,
+      W_Disjonction,
       --  <disjonction> ::= <predicate> 'or' <predicate>
 
-      WLP_Conjonction,
+      W_Conjonction,
       --  <conjonction> ::= <predicate> 'and' <predicate>
 
-      WLP_Negation,
+      W_Negation,
       --  <negation> ::= 'not' <predicate>
 
-      WLP_Conditional_Pred,
+      W_Conditional_Pred,
       --  <conditional_pred> ::= if <term> then <predicate> else <predicate>
 
-      WLP_Binding_Pred,
+      W_Binding_Pred,
       --  <binding_pred> ::= let <identifier> = <term> in <predicate>
 
-      WLP_Universal_Quantif,
+      W_Universal_Quantif,
       -- <universal_quantif> ::=
       --    'forall' <identifier> + ':' <primitive_type>
       --       [ <triggers> ] '.' <predicate>
 
-      WLP_Existencial_Quantif,
+      W_Existencial_Quantif,
       --  <existencial_quantif> ::=
       --     'exists' <identifier>+ ':' <primitive_type> '.' <predicate>
 
-      WLP_Named_Predicate,
+      W_Named_Predicate,
       --  ( <identifier> | <string> ) ':' <predicate>
 
-      WLP_Protected_Predicate,
+      W_Protected_Predicate,
       --  <protected_predicate> ::= '(' <predicate> ')'
 
-      WLP_Triggers,
+      W_Triggers,
       --  <triggers> ::= '[' <trigger> ('|' <trigger>) * ']'
 
-      WLP_Trigger,
+      W_Trigger,
       --  <trigger> ::= <term> (',' <term>) *
 
       --  <primitive_type> ::= <type_int>
@@ -287,71 +287,71 @@ package Why.Sinfo is
       --                 | <rel_gt>
       --                 | <rel_ge>
 
-      WLP_Rel_Eq,
+      W_Rel_Eq,
       --  <rel_eq> ::= '='
 
-      WLP_Rel_Ne,
+      W_Rel_Ne,
       --  <rel_ne> ::= '<>'
 
-      WLP_Rel_Lt,
+      W_Rel_Lt,
       --  <rel_lt> ::= '<'
 
-      WLP_Rel_Le,
+      W_Rel_Le,
       --  <rel_le> ::= '<='
 
-      WLP_Rel_Gt,
+      W_Rel_Gt,
       --  <rel_gt> ::= '>'
 
-      WLP_Rel_Ge,
+      W_Rel_Ge,
       -- <rel_ge> ::= '>='
 
       --  1.3. Logic declarations:
       ----------------------------
 
-      --  <logic_declaration> ::= <type>
-      --                          | <logic>
-      --                          | <function>
-      --                          | <predicate_definition>
-      --                          | <inductive_definition>
-      --                          | <axiom>
-      --                          | <goal>
+      --  <logic_declaration_class> ::= <type>
+      --                                | <logic>
+      --                                | <function>
+      --                                | <predicate_definition>
+      --                                | <inductive_definition>
+      --                                | <axiom>
+      --                                | <goal>
 
-      WLD_Type,
+      W_Type,
       --  <type> ::= [ <external> ] 'type' [ <type_parameters> ] <identifier>
 
       --  <type_parameters> ::=
       --  "'" <identifier> | '(' "'" <identifier> (',' "'" <identifier>)+ ')'
 
-      WLD_Logic,
+      W_Logic,
       --  <logic> ::=
       --  [ <external> ] 'logic' <identifier> [',' <identifier>]*
       --               ':' <logic_type>
 
-      WLD_Function,
+      W_Function,
       --  <function> ::=
       --  'function' <identifier> '(' <logic_binder> [',' <logic_binder>]* ')'
       --                          ':' <primitive_type>
       --  '=' <term>
 
-      WLD_Predicate,
-      --  <predicate> ::=
+      W_Predicate_Definition,
+      --  <predicate_Definition> ::=
       --  'predicate' <identifier> '(' <logic_binder> [',' <logic_binder>]* ')'
       --  '=' <predicate>
 
-      WLD_Inductive,
+      W_Inductive,
       --  <inductive> ::= 'inductive' <identifier> ':' <logic_type> '='
       --        ('|' <identifier> : <predicate>) +
 
-      WLD_Axiom,
+      W_Axiom,
       --  <axiom> ::= 'axiom' <identifier> ':' <predicate>
 
-      WLD_Goal,
+      W_Goal,
       --  <goal> ::= 'goal' <identifier> ':' <predicate>
 
-      WLD_External,
+      W_External,
       --  <external> ::= 'external'
 
-      WLD_Logic_Type,
+      W_Logic_Type,
       --  <logic_type> ::=
       --  <logic_arg_type> (',' logic_arg_type)* '->' <logic_return_type>
 
@@ -359,7 +359,7 @@ package Why.Sinfo is
 
       --  <logic_return_type> ::= <type_prop> | <primitive_type>
 
-      WLD_Logic_Binder,
+      W_Logic_Binder,
       --  <logic_binder> ::= <identifier> ':' <primitive_type>
 
 
@@ -381,21 +381,21 @@ package Why.Sinfo is
 
       --  <computation_type> ::= <computation_spec> | <value_type>
 
-      WPT_Effects,
+      W_Effects,
       --  <effects> ::= [ 'reads' <identifier> (',' <identifier>)* ]
       --                [ 'writes' <identifier> (',' <identifier>)* ]
       --                [ 'raises' <identifier> (',' <identifier>)* ]
 
-      WPT_Precondition,
+      W_Precondition,
       --  <precondition> ::= <assertion>
 
-      WPT_Postcondition,
+      W_Postcondition,
       --  <postcondition> ::= <assertion> <exn_condition>*
 
-      WPT_Exn_Condition,
+      W_Exn_Condition,
       --  <exn_condition> ::= '|' <identifier> '=>' <assertion>
 
-      WPT_Assertion,
+      W_Assertion,
       --  <assertion> ::= <predicate> [ 'as' <identifier> ]
 
       --  2.2. Annotated programs:
@@ -429,86 +429,86 @@ package Why.Sinfo is
       --            | <begin_block>
       --            | <protected_prog>
 
-      WPP_Prog_Constant,
+      W_Prog_Constant,
       --  <prog_constant> ::= <constant>
 
-      WPP_Prog_Identifier,
+      W_Prog_Identifier,
       --  <prog_identifier> ::= <identifier>
 
-      WPP_Deref,
+      W_Deref,
       --  <deref> ::= '!' <identifier>
 
-      WPP_Assignment,
+      W_Assignment,
       --  <assignment> ::= <identifier> ':=' <prog>
 
-      WPP_Array_Access,
+      W_Array_Access,
       --  <array_access> ::= <identifier> '[' <prog> ']'
 
-      WPP_Array_Update,
+      W_Array_Update,
       --  <array_update> ::= <identifier> '[' <prog> ']' ':=' <prog>
 
-      WPP_Infix_Call,
+      W_Infix_Call,
       --  <infix_call> ::= <prog> <infix> <prog>
 
-      WPP_Prefix_Call,
+      W_Prefix_Call,
       --  <prefix_call> ::= <prefix> <prog>
 
-      WPP_Binding_Prog,
+      W_Binding_Prog,
       --  <binding_prog> ::= 'let' <identifier> '=' <prog> in <prog>
 
-      WPP_Binding_Ref,
+      W_Binding_Ref,
       --  <binding_ref> ::= 'let' <identifier> '=' ref <prog> in <prog>
 
-      WPP_Conditional_Prog,
+      W_Conditional_Prog,
       --  <conditional_prog> ::= 'if' <prog> 'then' <prog> [ 'else' <prog>]
 
-      WPP_While_Loop,
+      W_While_Loop,
       --  <while_loop> ::= 'while' <prog> 'do' [ <loop_annot> ] <prog> 'done'
 
-      WPP_Statement_Sequence,
+      W_Statement_Sequence,
       --  <statement_sequence> ::= <prog> (';' <prog>)+
 
-      WPP_Label,
+      W_Label,
       --  <label> ::= <identifier> : <prog>
 
-      WPP_Assert,
+      W_Assert,
       --  <assert> ::= 'assert' ('{' <assertion> '}')+ ';' <prog>
 
-      WPP_Post_Assertion,
+      W_Post_Assertion,
       --  <post_assertion> ::= <prog> '{' <postcondition> '}'
 
-      WPP_Opaque_Assertion,
+      W_Opaque_Assertion,
       --  <opaque_assertion> ::= <prog> '{{' <postcondition> '}}'
 
-      WPP_Fun_Def,
+      W_Fun_Def,
       --  <fun_def> ::= 'fun' <binders> '->' <prog>
 
-      WPP_Binding_Fun,
+      W_Binding_Fun,
       --  <binding_fun> ::= 'let' <identifier> <binders> '=' <prog> 'in' <prog>
 
-      WPP_Binding_Rec,
+      W_Binding_Rec,
       --  <binding_rec> ::= 'let' 'rec' <recfun> [ 'in' <prog> ]
 
-      WPP_Prog_Sequence,
+      W_Prog_Sequence,
       --  <prog> <prog>+
 
-      WPP_Raise_Statement,
+      W_Raise_Statement,
       --  <raise_statement> ::= 'raise' <identifier> [ ':' <value_type> ]
 
-      WPP_Raise_Statement_With_Parameters,
+      W_Raise_Statement_With_Parameters,
       --  <raise_statement_with_parameters> ::=
       --     'raise' '(' <identifier> <prog> ')' [ ':' <value_type> ]
 
-      WPP_Try_Block,
+      W_Try_Block,
       --  <try_block> ::= 'try' <prog> 'with' <handler> (',' <handler>)* 'end'
 
-      WPP_Unreachable_Code,
+      W_Unreachable_Code,
       --  <unreachable_code> ::= 'absurd' [ ':' <value_type> ]
 
-      WPP_Begin_Block,
+      W_Begin_Block,
       --  <begin_block> ::= begin <prog> end
 
-      WPP_Protected_Prog,
+      W_Protected_Prog,
       --  <protected_prog> ::= '(' <prog> ')'
 
       --  <infix> ::= <op_add>
@@ -525,78 +525,78 @@ package Why.Sinfo is
       --              | <op_or_else>
       --              | <op_and_then>
 
-      WPP_Op_Add,
+      W_Op_Add_Prog,
       --  <op_add> ::= '+'
 
-      WPP_Op_Substract,
+      W_Op_Substract_Prog,
       --  <op_substract> ::= '-'
 
-      WPP_Op_Multiply,
+      W_Op_Multiply_Prog,
       --  <op_multiply> ::= '*'
 
-      WPP_Op_Divide,
+      W_Op_Divide_Prog,
       --  <op_divide> ::= '/'
 
-      WPP_Op_Mod,
+      W_Op_Mod_Prog,
       --  <op_mod> ::= '%'
 
-      WPP_Op_Eq,
+      W_Op_Eq_Prog,
       --  <op_eq> ::= '='
 
-      WPP_Op_Ne,
+      W_Op_Ne_Prog,
       --  <op_divide> ::= '<>'
 
-      WPP_Op_Lt,
+      W_Op_Lt_Prog,
       -- <op_lt> ::= '<'
 
-      WPP_Op_Le,
+      W_Op_Le_Prog,
       -- <op_le> ::= '<='
 
-      WPP_Op_Gt,
+      W_Op_Gt_Prog,
       --  <op_gt> ::= '>'
 
-      WPP_Op_Ge,
+      W_Op_Ge_Prog,
       --  <op_ge> ::= '>='
 
-      WPP_Op_Or_Else,
+      W_Op_Or_Else_Prog,
       --  <op_or_else> ::= '||'
 
-      WPP_Op_And_Then,
+      W_Op_And_Then_Prog,
       --  <op_and_then> ::= '&&'
 
       --  <prefix> ::= <op_minus> | <op_not>
 
-      WPP_Op_Minus,
+      W_Op_Minus_Prog,
       --  <op_minus> ::= '-'
 
-      WPP_Op_Not,
+      W_Op_Not_Prog,
       -- <op_not> ::= 'not'
 
-      WPP_Binders,
+      W_Binders,
       --  <binders> ::= <binder>+
 
-      WPP_Binder,
+      W_Binder,
       --  <binder> ::=
       --     ('(' <identifier> [',' <identifier>]+ ':' <value_type> ')')
 
-      WPP_Recfun,
+      W_Recfun,
       --  <recfun> ::= <identifier> <binders> ':' <value_type>
       --     '{' 'variant' <wf_arg> '}' = <prog>
 
-      WPP_Loop_Annot,
+      W_Loop_Annot,
       --  <loop_annot> ::= '{' [ 'invariant' <assertion> ]
       --                       [ 'variant' <wf_arg> ] '}'
 
-      WPP_Wf_Arg,
+      W_Wf_Arg,
       --  <wf_arg> ::= <term> [ 'for' <identifier> ]
 
-      WPP_Handler,
+      W_Handler,
       --  <handler> ::= <identifier> [<identifier>] '->' <prog>
 
       --  2.3. Input files:
       ---------------------
 
-      WPF_File,
+      W_File,
       --  <file> ::= <declaration>*
 
       --  <declaration> ::= <global_binding>
@@ -605,89 +605,89 @@ package Why.Sinfo is
       --                    | <exception_declaration>
       --                    | <logic_declaration>
 
-      WPF_Global_Binding,
+      W_Global_Binding,
       --  <global_binding> ::= 'let' <identifier> [ <binders> ] '=' <prog>
 
-      WPF_Global_Rec_Binding,
+      W_Global_Rec_Binding,
       --  <global_rec_binding> ::= 'let' 'rec' <recfun>
 
-      WPF_Parameter_Declaration,
+      W_Parameter_Declaration,
       --  <parameter_declaration> ::=
       --     [ <external> ] parameter <identifier>,+ ':' <value_type>
 
-      WPF_Exception_Declaration,
+      W_Exception_Declaration,
       --  <exception_declaration> ::=
       --     'exception' <identifier> [ 'of' <primitive_type> ]
 
-      WPF_Logic_Declaration
+      W_Logic_Declaration
       );
 
    ----------------------------
    -- Node Class Definitions --
    ----------------------------
 
-   subtype WLT_Term is Why_Node_Kind range
-     WLT_Integer_Constant ..
-     WLT_Protected_Term;
+   subtype W_Term is Why_Node_Kind range
+     W_Integer_Constant ..
+     W_Protected_Term;
 
-   subtype WLT_Constant is Why_Node_Kind range
-     WLT_Integer_Constant ..
-     WLT_Void_Litteral;
+   subtype W_Constant is Why_Node_Kind range
+     W_Integer_Constant ..
+     W_Void_Litteral;
 
-   subtype WLT_Arith_Op is Why_Node_Kind range
-     WLT_Op_Add ..
-     WLT_Op_Modulo;
+   subtype W_Arith_Op is Why_Node_Kind range
+     W_Op_Add ..
+     W_Op_Modulo;
 
-   subtype WLP_Predicate is Why_Node_Kind range
-     WLP_True_Litteral ..
-     WLP_Protected_Predicate;
+   subtype W_Predicate is Why_Node_Kind range
+     W_True_Litteral ..
+     W_Protected_Predicate;
 
-   subtype WLP_Primitive_Type is Why_Node_Kind range
-     WT_Type_Int ..
-     WT_Generic_Actual_Type_Chain;
+   subtype W_Primitive_Type is Why_Node_Kind range
+     W_Type_Int ..
+     W_Generic_Actual_Type_Chain;
 
-   subtype WLP_Relation is Why_Node_Kind range
-     WLP_Rel_Eq ..
-     WLP_Rel_Ge;
+   subtype W_Relation is Why_Node_Kind range
+     W_Rel_Eq ..
+     W_Rel_Ge;
 
-   subtype WLD_Logic_Declaration is Why_Node_Kind range
-     WLD_Type ..
-     WLD_Goal;
+   subtype W_Logic_Declaration_Class is Why_Node_Kind range
+     W_Type ..
+     W_Goal;
 
-   subtype WLD_Logic_Return_Type is Why_Node_Kind range
-     WT_Type_Prop ..
-     WT_Generic_Actual_Type_Chain;
+   subtype W_Logic_Return_Type is Why_Node_Kind range
+     W_Type_Prop ..
+     W_Generic_Actual_Type_Chain;
 
-   subtype WLD_Logic_Arg_Type is Why_Node_Kind range
-     WT_Type_Int ..
-     WT_Array_Type;
+   subtype W_Logic_Arg_Type is Why_Node_Kind range
+     W_Type_Int ..
+     W_Array_Type;
 
-   subtype WPT_Simple_Value_Type is Why_Node_Kind range
-     WT_Type_Int ..
-     WT_Protected_Value_Type;
+   subtype W_Simple_Value_Type is Why_Node_Kind range
+     W_Type_Int ..
+     W_Protected_Value_Type;
 
-   subtype WPT_Value_Type is Why_Node_Kind range
-     WT_Type_Int ..
-     WT_Named_Arrow_Type;
+   subtype W_Value_Type is Why_Node_Kind range
+     W_Type_Int ..
+     W_Named_Arrow_Type;
 
-   subtype WPT_Computation_Type is Why_Node_Kind range
-     WT_Type_Int ..
-     WT_Computation_Spec;
+   subtype W_Computation_Type is Why_Node_Kind range
+     W_Type_Int ..
+     W_Computation_Spec;
 
-   subtype WPP_Prog is Why_Node_Kind range
-     WPP_Prog_Constant ..
-     WPP_Protected_Prog;
+   subtype W_Prog is Why_Node_Kind range
+     W_Prog_Constant ..
+     W_Protected_Prog;
 
-   subtype WPP_Infix is Why_Node_Kind range
-     WPP_Op_Add ..
-     WPP_Op_And_Then;
+   subtype W_Infix is Why_Node_Kind range
+     W_Op_Add_Prog ..
+     W_Op_And_Then_Prog;
 
-   subtype WPP_Prefix is Why_Node_Kind range
-     WPP_Op_Minus ..
-     WPP_Op_Not;
+   subtype W_Prefix is Why_Node_Kind range
+     W_Op_Minus_Prog ..
+     W_Op_Not_Prog;
 
-   subtype WPF_Declaration is Why_Node_Kind range
-     WPF_Global_Binding ..
-     WPF_Logic_Declaration;
+   subtype W_Declaration is Why_Node_Kind range
+     W_Global_Binding ..
+     W_Logic_Declaration;
 
 end Why.Sinfo;
