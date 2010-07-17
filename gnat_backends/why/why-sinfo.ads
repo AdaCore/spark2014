@@ -340,7 +340,7 @@ package Why.Sinfo is
 
       W_Inductive,
       --  <inductive> ::= 'inductive' <identifier> ':' <logic_type> '='
-      --        ('|' <identifier> : <predicate>) +
+      --        <inductive_case>+
 
       W_Axiom,
       --  <axiom> ::= 'axiom' <identifier> ':' <predicate>
@@ -362,6 +362,8 @@ package Why.Sinfo is
       W_Logic_Binder,
       --  <logic_binder> ::= <identifier> ':' <primitive_type>
 
+      W_Inductive_Case,
+      --  <inductive_case> ::= '|' <identifier> : <predicate>)
 
       -------------------
       -- Program space --

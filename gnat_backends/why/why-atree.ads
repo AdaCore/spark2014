@@ -69,6 +69,12 @@ package Why.Atree is
    --  Def. For these, general setters/getters will be generated. Among
    --  overriden fields, we have Return_Type, Binders, Left, Right, Op,
    --  Then, Else, Parameters...
+   --
+   --  * Each field of type Why_Node_Id shall be followed by a comment
+   --  that contains the kind or class of the corresponding node.
+   --  Each field of type Why_Node_List shall have the same kind of comment
+   --  with the kind or node class of each of its elements. This should be
+   --  the only comment before the next entity.
 
    --  Although none should be needed to generate Why code, this tree
    --  will also contain some minimal semantic information; this would
@@ -93,46 +99,46 @@ package Why.Atree is
             null;
 
          when W_Identifier =>
-            Name   : Name_Id;
-            Entity : Why_Node_Id := Why_Empty;
+            Symbol : Name_Id;
+            Entity : Why_Node_Id := Why_Empty; --  Why_Node_Id
 
          when W_Type_Prop .. W_Type_Unit =>
             null;
 
          when W_Abstract_Type =>
-            AT_Name : Why_Node_Id;
+            AT_Name : Why_Node_Id; --  W_Identifier
 
          when W_Generic_Formal_Type =>
-            GFT_Name : Why_Node_Id;
+            GFT_Name : Why_Node_Id; --  W_Identifier
 
          when W_Generic_Actual_Type_Chain =>
-            GATC_Type_Chain : Why_Node_List;
-            GATC_Name       : Why_Node_Id;
+            GATC_Type_Chain : Why_Node_List; --  W_Primitive_Type
+            GATC_Name       : Why_Node_Id;   --  W_Identifier
 
          when W_Array_Type =>
-            AT_Component_Type : Why_Node_Id;
+            AT_Component_Type : Why_Node_Id; --  W_Primitive_Type
 
          when W_Ref_Type =>
-            RT_Aliased_Type : Why_Node_Id;
+            RT_Aliased_Type : Why_Node_Id; --  W_Primitive_Type
 
          when W_Protected_Value_Type =>
-            PVT_Value_Type : Why_Node_Id;
+            PVT_Value_Type : Why_Node_Id; --  W_Value_Type
 
          when W_Anonymous_Arrow_Type =>
-            AAT_Left  : Why_Node_Id;
-            AAT_Right : Why_Node_Id;
+            AAT_Left  : Why_Node_Id; --  W_Simple_Value_Type
+            AAT_Right : Why_Node_Id; --  W_Computation_Type
 
          when W_Named_Arrow_Type =>
-            NA_Name  : Why_Node_Id;
-            NA_Left  : Why_Node_Id;
-            NA_Right : Why_Node_Id;
+            NA_Name  : Why_Node_Id; --  W_Identifier
+            NA_Left  : Why_Node_Id; --  W_Simple_Value_Type
+            NA_Right : Why_Node_Id; --  W_Computation_Type
 
          when W_Computation_Spec =>
-            CS_Precondition  : Why_Node_Id := Why_Empty;
-            CS_Result_Name   : Why_Node_Id := Why_Empty;
-            CS_Return_Type   : Why_Node_Id;
-            CS_Effects       : Why_Node_Id;
-            CS_Postcondition : Why_Node_Id := Why_Empty;
+            CS_Precondition  : Why_Node_Id := Why_Empty; --  W_Precondition
+            CS_Result_Name   : Why_Node_Id := Why_Empty; --  W_Identifier
+            CS_Return_Type   : Why_Node_Id;              --  W_Value_Type
+            CS_Effects       : Why_Node_Id;              --  W_Effects
+            CS_Postcondition : Why_Node_Id := Why_Empty; --  W_Postcondition
 
          when W_Integer_Constant =>
             IC_Uint : Uint;
@@ -144,37 +150,37 @@ package Why.Atree is
             null;
 
          when W_Arith_Operation =>
-            AO_Left  : Why_Node_Id;
-            AO_Op    : Why_Node_Id;
-            AO_Right : Why_Node_Id;
+            AO_Left  : Why_Node_Id; --  W_Term
+            AO_Op    : Why_Node_Id; --  W_Arith_Op
+            AO_Right : Why_Node_Id; --  W_Term
 
          when W_Negative_Term =>
-            NT_Operand : Why_Node_Id;
+            NT_Operand : Why_Node_Id; --  W_Term
 
          when W_Label_Identifier =>
-            TI_Name  : Why_Node_Id;
-            TI_Label : Why_Node_Id := Why_Empty;
+            TI_Name  : Why_Node_Id;              --  W_Identifier
+            TI_Label : Why_Node_Id := Why_Empty; --  W_Identifier
 
          when W_Operation =>
-            O_Name       : Why_Node_Id;
-            O_Parameters : Why_Node_List;
+            O_Name       : Why_Node_Id;   --  W_Identifier
+            O_Parameters : Why_Node_List; --  W_Term
 
          when W_Named_Term =>
-            NT_Name : Why_Node_Id;
-            NT_Term : Why_Node_Id;
+            NT_Name : Why_Node_Id; --  W_Label_Identifier
+            NT_Term : Why_Node_Id; --  W_Term
 
          when W_Conditional_Term =>
-            CT_Condition : Why_Node_Id;
-            CT_Then      : Why_Node_Id;
-            CT_Else      : Why_Node_Id;
+            CT_Condition : Why_Node_Id; --  W_Term
+            CT_Then      : Why_Node_Id; --  W_Term
+            CT_Else      : Why_Node_Id; --  W_Term
 
          when W_Binding_Term =>
-            BT_Name    : Why_Node_Id;
-            BT_Def     : Why_Node_Id;
-            BT_Context : Why_Node_Id;
+            BT_Name    : Why_Node_Id; --  W_Identifier
+            BT_Def     : Why_Node_Id; --  W_Term
+            BT_Context : Why_Node_Id; --  W_Term
 
          when W_Protected_Term =>
-            BT_Term : Why_Node_Id;
+            BT_Term : Why_Node_Id; --  W_Term
 
          when W_Op_Add .. W_Op_Modulo =>
             null;
@@ -183,277 +189,283 @@ package Why.Atree is
             null;
 
          when W_Predicate_Identifier =>
-            PID_Name : Why_Node_Id;
+            PID_Name : Why_Node_Id; --  W_Identifier
 
          when W_Predicate_Instance =>
-            PIN_Name       : Why_Node_Id;
-            PIN_Parameters : Why_Node_List;
+            PIN_Name       : Why_Node_Id;   --  W_Identifier
+            PIN_Parameters : Why_Node_List; --  W_Term
 
          when W_Related_Terms =>
-            RT_Left   : Why_Node_Id;
-            RT_Op     : Why_Node_Id;
-            RT_Right  : Why_Node_Id;
-            RT_Op2    : Why_Node_Id := Why_Empty;
-            RT_Right2 : Why_Node_Id := Why_Empty;
+            RT_Left   : Why_Node_Id;               --  W_Term
+            RT_Op     : Why_Node_Id;               --  W_Relation
+            RT_Right  : Why_Node_Id;               --  W_Term
+            RT_Op2    : Why_Node_Id := Why_Empty;  --  W_Relation
+            RT_Right2 : Why_Node_Id := Why_Empty;  --  W_Term
 
          when W_Implication .. W_Conjonction =>
-            ITOC_Left  : Why_Node_Id;
-            ITOC_Right : Why_Node_Id;
+            ITOC_Left  : Why_Node_Id; --  W_Predicate
+            ITOC_Right : Why_Node_Id; --  W_Predicate
 
          when W_Negation =>
-            N_Operand : Why_Node_Id;
+            N_Operand : Why_Node_Id; --  W_Predicate
 
          when W_Conditional_Pred =>
-            CPD_Condition : Why_Node_Id;
-            CPD_Then      : Why_Node_Id;
-            CPD_Else      : Why_Node_Id;
+            CPD_Condition : Why_Node_Id; --  W_Term
+            CPD_Then      : Why_Node_Id; --  W_Predicate
+            CPD_Else      : Why_Node_Id; --  W_Predicate
 
          when W_Binding_Pred =>
-            BPD_Name    : Why_Node_Id;
-            BPD_Def     : Why_Node_Id;
-            BPD_Context : Why_Node_Id;
+            BPD_Name    : Why_Node_Id; --  W_Identifier
+            BPD_Def     : Why_Node_Id; --  W_Term
+            BPD_Context : Why_Node_Id; --  W_Predicate
 
          when W_Universal_Quantif =>
-            UQ_Variables : Why_Node_Id;
-            UQ_Var_Type  : Why_Node_Id;
-            UQ_Triggers  : Why_Node_List := Why_Empty_List;
-            UQ_Pred      : Why_Node_List;
+            UQ_Variables : Why_Node_List; --  W_Identifier
+            UQ_Var_Type  : Why_Node_Id;   --  W_Primitive_Type
+            UQ_Triggers  : Why_Node_List := Why_Empty_List; --  W_Triggers
+            UQ_Pred      : Why_Node_Id;   --  W_Predicate
 
          when W_Existencial_Quantif =>
-            EQ_Variables : Why_Node_Id;
-            EQ_Var_Type  : Why_Node_Id;
-            EQ_Pred      : Why_Node_List;
+            EQ_Variables : Why_Node_List; --  W_Identifier
+            EQ_Var_Type  : Why_Node_Id;   --  W_Primitive_Type
+            EQ_Pred      : Why_Node_Id;   --  W_Predicate
 
          when W_Named_Predicate =>
-            NP_Name : Why_Node_Id;
-            NP_Pred : Why_Node_Id;
+            NP_Name : Why_Node_Id; --  W_Identifier
+            NP_Pred : Why_Node_Id; --  W_Predicate
 
          when W_Protected_Predicate =>
-            PP_Pred : Why_Node_Id;
+            PP_Pred : Why_Node_Id; --  W_Predicate
 
          when W_Triggers =>
-            TRS_Triggers : Why_Node_List;
+            TRS_Triggers : Why_Node_List; --  W_Trigger
 
          when W_Trigger =>
-            TRI_Terms : Why_Node_List;
+            TRI_Terms : Why_Node_List; -- W_Term
 
          when W_Rel_Eq .. W_Rel_Ge =>
             null;
 
          when W_Type =>
-            T_External        : Why_Node_Id := Why_Empty;
-            T_Type_Parameters : Why_Node_List := Why_Empty_List;
-            T_Name            : Why_Node_Id;
+            T_External        : Why_Node_Id := Why_Empty; --  W_External
+            T_Type_Parameters : Why_Node_List
+              := Why_Empty_List;                          --  W_Identifier
+            T_Name            : Why_Node_Id;              --  W_Identifier
 
          when W_Logic =>
-            L_External : Why_Node_Id := Why_Empty;
-            L_Names    : Why_Node_List;
-            L_Type     : Why_Node_Id;
+            L_External : Why_Node_Id := Why_Empty; --  W_External
+            L_Names    : Why_Node_List;            --  W_Identifier
+            L_Type     : Why_Node_Id;              --  W_Logic_Type
 
          when W_Function =>
-            F_Name        : Why_Node_Id;
-            F_Binders     : Why_Node_List;
-            F_Return_Type : Why_Node_Id;
-            F_Def         : Why_Node_Id;
+            F_Name        : Why_Node_Id;   --  W_Identifier
+            F_Binders     : Why_Node_List; --  W_Logic_Binder
+            F_Return_Type : Why_Node_Id;   --  W_Primitive_Type
+            F_Def         : Why_Node_Id;   --  W_Term
 
          when W_Predicate_Definition =>
-            P_Name    : Why_Node_Id;
-            P_Binders : Why_Node_List;
-            P_Def     : Why_Node_Id;
+            P_Name    : Why_Node_Id;   --  W_Identifier
+            P_Binders : Why_Node_List; --  W_Logic_Binder
+            P_Def     : Why_Node_Id;   --  W_Predicate
 
          when W_Inductive =>
-            I_Name : Why_Node_Id;
-            I_Type : Why_Node_Id;
-            I_Def  : Why_Node_List;
+            I_Name : Why_Node_Id;   --  W_Identifier
+            I_Type : Why_Node_Id;   --  W_Logic_Type
+            I_Def  : Why_Node_List; --  W_Inductive_Case
 
          when W_Axiom =>
-            AX_Name : Why_Node_Id;
-            AX_Def  : Why_Node_Id;
+            AX_Name : Why_Node_Id; --  W_Identifier
+            AX_Def  : Why_Node_Id; --  W_Predicate
 
          when W_Goal =>
-            G_Name : Why_Node_Id;
-            G_Def  : Why_Node_Id;
+            G_Name : Why_Node_Id; --  W_Identifier
+            G_Def  : Why_Node_Id; --  W_Predicate
 
          when W_External =>
             null;
 
          when W_Logic_Type =>
-            LT_Arg_Types   : Why_Node_List;
-            LT_Return_Type : Why_Node_List;
+            LT_Arg_Types   : Why_Node_List; --  W_Logic_Arg_Type
+            LT_Return_Type : Why_Node_List; --  W_Logic_Return_Type
 
          when W_Logic_Binder =>
-            LB_Name : Why_Node_Id;
-            LB_Type : Why_Node_Id;
+            LB_Name : Why_Node_Id; --  W_Identifier
+            LB_Type : Why_Node_Id; --  W_Primitive_Type
+
+         when W_Inductive_Case =>
+            IC_Name : Why_Node_Id; --  W_Identifier
+            IC_Pred : Why_Node_Id; --  W_Predicate
 
          when W_Effects =>
-            E_Reads  : Why_Node_List := Why_Empty_List;
-            E_Writes : Why_Node_List := Why_Empty_List;
-            E_Raises : Why_Node_List := Why_Empty_List;
+            E_Reads  : Why_Node_List := Why_Empty_List; --  W_Identifier
+            E_Writes : Why_Node_List := Why_Empty_List; --  W_Identifier
+            E_Raises : Why_Node_List := Why_Empty_List; --  W_Identifier
 
          when W_Precondition =>
-            PRE_Assertion : Why_Node_Id;
+            PRE_Assertion : Why_Node_Id; --  W_Assertion
 
          when W_Postcondition =>
-            POST_Assertion : Why_Node_Id;
-            POST_Handlers  : Why_Node_List := Why_Empty_List;
+            POST_Assertion : Why_Node_Id; -- W_Assertion
+            POST_Handlers  : Why_Node_List
+              := Why_Empty_List;          -- W_Exn_Condition
 
          when W_Exn_Condition =>
-            EC_Exception : Why_Node_Id;
-            EC_Assertion : Why_Node_Id;
+            EC_Exception : Why_Node_Id; --  W_Identifier
+            EC_Assertion : Why_Node_Id; --  W_Assertion
 
          when W_Assertion =>
-            A_Pred : Why_Node_Id;
-            A_As   : Why_Node_Id := Why_Empty;
+            A_Pred : Why_Node_Id;              --  W_Predicate
+            A_As   : Why_Node_Id := Why_Empty; --  W_Identifier
 
          when W_Prog_Constant =>
-            PC_Def : Why_Node_Id;
+            PC_Def : Why_Node_Id; --  W_Constant
 
          when W_Prog_Identifier =>
-            PI_Def : Why_Node_Id;
+            PI_Def : Why_Node_Id; --  W_Identifier
 
          when W_Deref =>
-            D_Ref : Why_Node_Id;
+            D_Ref : Why_Node_Id; --  W_Identifier
 
          when W_Assignment =>
-            A_Name  : Why_Node_Id;
-            A_Value : Why_Node_Id;
+            A_Name  : Why_Node_Id; --  W_Identifier
+            A_Value : Why_Node_Id; --  W_Prog
 
          when W_Array_Access =>
-            AA_Name  : Why_Node_Id;
-            AA_Index : Why_Node_Id;
+            AA_Name  : Why_Node_Id; --  W_Identifier
+            AA_Index : Why_Node_Id; --  W_Prog
 
          when W_Array_Update =>
-            AU_Name  : Why_Node_Id;
-            AU_Index : Why_Node_Id;
-            AU_Value : Why_Node_Id;
+            AU_Name  : Why_Node_Id; --  W_Identifier
+            AU_Index : Why_Node_Id; --  W_Prog
+            AU_Value : Why_Node_Id; --  W_Prog
 
          when W_Infix_Call =>
-            IC_Left  : Why_Node_Id;
-            IC_Infix : Why_Node_Id;
-            IC_Right : Why_Node_Id;
+            IC_Left  : Why_Node_Id; --  W_Prog
+            IC_Infix : Why_Node_Id; --  W_Infix
+            IC_Right : Why_Node_Id; --  W_Prog
 
          when W_Prefix_Call =>
-            PC_Prefix   : Why_Node_Id;
-            PC_Operand  : Why_Node_Id;
+            PC_Prefix   : Why_Node_Id; --  W_Prefix
+            PC_Operand  : Why_Node_Id; --  W_Prog
 
          when W_Binding_Prog .. W_Binding_Ref =>
-            BPG_Name    : Why_Node_Id;
-            BPG_Def     : Why_Node_Id;
-            BPG_Context : Why_Node_Id;
+            BPG_Name    : Why_Node_Id; --  W_Identifier
+            BPG_Def     : Why_Node_Id; --  W_Prog
+            BPG_Context : Why_Node_Id; --  W_Prog
 
          when W_Conditional_Prog =>
-            CPG_Condition : Why_Node_Id;
-            CPG_Then      : Why_Node_Id;
-            CPG_Else      : Why_Node_Id := Why_Empty;
+            CPG_Condition : Why_Node_Id;              --  W_Prog
+            CPG_Then      : Why_Node_Id;              --  W_Prog
+            CPG_Else      : Why_Node_Id := Why_Empty; --  W_Prog
 
          when W_While_Loop =>
-            WL_Condition  : Why_Node_Id;
-            WL_Annotation : Why_Node_Id;
-            WL_Loop       : Why_Node_Id;
+            WL_Condition  : Why_Node_Id; --  W_Prog
+            WL_Annotation : Why_Node_Id; --  W_Loop_Annot
+            WL_Loop       : Why_Node_Id; --  W_Prog
 
          when W_Statement_Sequence =>
-            SS_Statements : Why_Node_List;
+            SS_Statements : Why_Node_List; -- W_Prog
 
          when W_Label =>
-            L_Name : Why_Node_Id;
-            L_Def  : Why_Node_Id;
+            L_Name : Why_Node_Id; --  W_Identifier
+            L_Def  : Why_Node_Id; --  W_Prog
 
          when W_Assert =>
-            AS_Assertions : Why_Node_List;
-            AS_Prog       : Why_Node_Id;
+            AS_Assertions : Why_Node_List; --  W_Assertion
+            AS_Prog       : Why_Node_Id;   --  W_Prog
 
          when W_Post_Assertion .. W_Opaque_Assertion =>
-            PA_Prog : Why_Node_Id;
-            PA_Post : Why_Node_Id;
+            PA_Prog : Why_Node_Id; --  W_Prog
+            PA_Post : Why_Node_Id; --  W_Postcondition
 
          when W_Fun_Def =>
-            FD_Binders : Why_Node_Id;
-            FD_Return  : Why_Node_Id;
+            FD_Binders : Why_Node_Id; --  W_Binders
+            FD_Return  : Why_Node_Id; --  W_Prog
 
          when W_Binding_Fun =>
-            BF_Name    : Why_Node_Id;
-            BF_Binders : Why_Node_Id;
-            BF_Def     : Why_Node_Id;
-            BF_Context : Why_Node_Id;
+            BF_Name    : Why_Node_Id; --  W_Identifier
+            BF_Binders : Why_Node_Id; --  W_Binders
+            BF_Def     : Why_Node_Id; --  W_Prog
+            BF_Context : Why_Node_Id; --  W_Prog
 
          when W_Binding_Rec =>
-            BR_Recfun  : Why_Node_Id;
-            BR_Context : Why_Node_Id;
+            BR_Recfun  : Why_Node_Id; --  W_Recfun
+            BR_Context : Why_Node_Id; --  W_Prog
 
          when W_Prog_Sequence =>
-            PS_Progs : Why_Node_List;
+            PS_Progs : Why_Node_List; --  W_Prog
 
          when W_Raise_Statement =>
-            RS_Name : Why_Node_Id;
-            RS_Type : Why_Node_Id := Why_Empty;
+            RS_Name : Why_Node_Id;              --  W_Identifier
+            RS_Type : Why_Node_Id := Why_Empty; --  W_Value_Type
 
          when W_Raise_Statement_With_Parameters =>
-            RSWP_Name      : Why_Node_Id;
-            RSWP_Parameter : Why_Node_Id;
-            RSWP_Type      : Why_Node_Id := Why_Empty;
+            RSWP_Name      : Why_Node_Id;              --  W_Identifier
+            RSWP_Parameter : Why_Node_Id;              --  W_Term
+            RSWP_Type      : Why_Node_Id := Why_Empty; --  W_Value_Type
 
          when W_Try_Block =>
-            TB_Prog    : Why_Node_Id;
-            TB_Handler : Why_Node_Id;
+            TB_Prog    : Why_Node_Id;   --  W_Prog
+            TB_Handler : Why_Node_List; --  W_Handler
 
          when W_Unreachable_Code =>
-            UC_Type : Why_Node_Id := Why_Empty;
+            UC_Type : Why_Node_Id := Why_Empty; --  W_Value_Type
 
          when W_Begin_Block .. W_Protected_Prog =>
-            BB_Prog : Why_Node_Id;
+            BB_Prog : Why_Node_Id; --  W_Prog
 
          when W_Op_Add_Prog .. W_Op_Not_Prog =>
             null;
 
          when W_Binders =>
-            BS_Binders : Why_Node_List;
+            BS_Binders : Why_Node_List; --  W_Binders
 
          when W_Binder =>
-            B_Names : Why_Node_List;
-            B_Type  : Why_Node_Id;
+            B_Names : Why_Node_List; --  W_Identifier
+            B_Type  : Why_Node_Id;   --  W_Value_Type
 
          when W_Recfun =>
-            RF_Name        : Why_Node_Id;
-            RF_Binders     : Why_Node_Id;
-            RF_Return_Type : Why_Node_Id;
-            RF_Variant     : Why_Node_Id;
-            RF_Def         : Why_Node_Id;
+            RF_Name        : Why_Node_Id; --  W_Identifier
+            RF_Binders     : Why_Node_Id; --  W_Binders
+            RF_Return_Type : Why_Node_Id; --  W_Prog
+            RF_Variant     : Why_Node_Id; --  W_Wf_Arg
+            RF_Def         : Why_Node_Id; --  W_Prog
 
          when W_Loop_Annot =>
-            LA_Invariant : Why_Node_Id := Why_Empty;
-            LA_Variant   : Why_Node_Id := Why_Empty;
+            LA_Invariant : Why_Node_Id := Why_Empty; --  W_Assertion
+            LA_Variant   : Why_Node_Id := Why_Empty; --  W_Wf_Arg
 
          when W_Wf_Arg =>
-            WA_Def : Why_Node_Id;
-            WA_For : Why_Node_Id := Why_Empty;
+            WA_Def : Why_Node_Id;              --  W_Term
+            WA_For : Why_Node_Id := Why_Empty; --  W_Identifier
 
          when W_Handler =>
-            H_Name      : Why_Node_Id;
-            H_Parameter : Why_Node_Id := Why_Empty;
-            H_Def       : Why_Node_Id;
+            H_Name      : Why_Node_Id;              --  W_Identifier
+            H_Parameter : Why_Node_Id := Why_Empty; --  W_Prog
+            H_Def       : Why_Node_Id;              --  W_Prog
 
          when W_File =>
-            F_Declarations : Why_Node_List := Why_Empty_List;
+            F_Declarations : Why_Node_List := Why_Empty_List; --  W_Declaration
 
          when W_Global_Binding =>
-            GB_Name    : Why_Node_Id;
-            GB_Binders : Why_Node_Id := Why_Empty;
-            GB_Def     : Why_Node_Id;
+            GB_Name    : Why_Node_Id;              --  W_Identifier
+            GB_Binders : Why_Node_Id := Why_Empty; --  W_Binders
+            GB_Def     : Why_Node_Id;              --  W_Prog
 
          when W_Global_Rec_Binding =>
-            GRB_Name : Why_Node_Id;
+            GRB_Name : Why_Node_Id; -- W_Recfun
 
          when W_Parameter_Declaration =>
-            PD_External : Why_Node_Id;
-            PD_Names    : Why_Node_List;
-            PD_Type     : Why_Node_List;
+            PD_External : Why_Node_Id;   --  W_External
+            PD_Names    : Why_Node_List; --  W_Identifier
+            PD_Type     : Why_Node_List; --  W_Value_Type
 
          when W_Exception_Declaration =>
-            ED_Name      : Why_Node_Id;
-            ED_Parameter : Why_Node_Id := Why_Empty;
+            ED_Name      : Why_Node_Id;              --  W_Identifier
+            ED_Parameter : Why_Node_Id := Why_Empty; --  W_Primitive_Type
 
          when W_Logic_Declaration =>
-            LD_Decl : Why_Node_Id;
+            LD_Decl : Why_Node_Id; -- W_Logic
 
       end case;
    end record;

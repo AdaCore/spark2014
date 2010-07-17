@@ -39,7 +39,7 @@ package body Why.Atree.Sprint is
    begin
       case Get_Kind (Node) is
 	 when W_Identifier =>
-	    Put (Get_Name_String (Get_Node (Node).Name));
+	    Put (Get_Name_String (Get_Node (Node).Symbol));
 	    
 	 when W_Type =>
 	    if Get_External (Node) /= Why_Empty then 

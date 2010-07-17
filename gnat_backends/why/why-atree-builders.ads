@@ -37,14 +37,14 @@ package Why.Atree.Builders is
    function New_Identifier
      (Ada_Node        : Node_Id;
       Link            : Why_Node_Id;
-      Name            : Name_Id;
+      Symbol          : Name_Id;
       Entity          : Why_Node_Id := Why_Empty)
      return Why_Node_Id;
    pragma Postcondition (Get_Node (New_Identifier'Result)
                          = Why_Node'(Kind => W_Identifier,
                                      Ada_Node => Ada_Node,
                                      Link => Link,
-                                     Name => Name,
+                                     Symbol => Symbol,
                                      Entity => Entity));
    pragma Inline (New_Identifier);
 
