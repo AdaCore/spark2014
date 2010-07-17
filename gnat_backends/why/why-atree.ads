@@ -146,7 +146,7 @@ package Why.Atree is
          when W_Real_Constant =>
             IC_Ureal : Ureal;
 
-         when W_True_Litteral .. W_Void_Litteral =>
+         when W_True_Literal .. W_Void_Literal =>
             null;
 
          when W_Arith_Operation =>
@@ -185,7 +185,7 @@ package Why.Atree is
          when W_Op_Add .. W_Op_Modulo =>
             null;
 
-         when W_True_Litteral_Pred .. W_False_Litteral_Pred =>
+         when W_True_Literal_Pred .. W_False_Literal_Pred =>
             null;
 
          when W_Predicate_Identifier =>

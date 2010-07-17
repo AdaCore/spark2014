@@ -141,13 +141,13 @@ package Why.Sinfo is
 
       W_Real_Constant,
 
-      W_True_Litteral,
+      W_True_Literal,
       --  <true_litteral> ::= 'true'
 
-      W_False_Litteral,
+      W_False_Literal,
       --  <false_litteral> ::= 'false'
 
-      W_Void_Litteral,
+      W_Void_Literal,
       --  <void_litteral> ::= 'void'
 
       W_Arith_Operation,
@@ -215,10 +215,10 @@ package Why.Sinfo is
       --                 | <named_predicate>
       --                 | <protected_predicate>
 
-      W_True_Litteral_Pred,
+      W_True_Literal_Pred,
       --  <true_litteral> ::= 'true'
 
-      W_False_Litteral_Pred,
+      W_False_Literal_Pred,
       --  <false_litteral> ::= 'false'
 
       W_Predicate_Identifier,
@@ -634,14 +634,14 @@ package Why.Sinfo is
 
    subtype W_Constant is Why_Node_Kind range
      W_Integer_Constant ..
-     W_Void_Litteral;
+     W_Void_Literal;
 
    subtype W_Arith_Op is Why_Node_Kind range
      W_Op_Add ..
      W_Op_Modulo;
 
    subtype W_Predicate is Why_Node_Kind range
-     W_True_Litteral ..
+     W_True_Literal ..
      W_Protected_Predicate;
 
    subtype W_Primitive_Type is Why_Node_Kind range

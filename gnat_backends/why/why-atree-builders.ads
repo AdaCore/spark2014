@@ -31,8 +31,8 @@ package Why.Atree.Builders is
    --  with the exception of preconditions, which should be added by
    --  hand.
 
-   --  ??? This is just a sample of what this would look like... to give some
-   --  food for thought in designing this backend.
+   --  ??? This is just a rudimentary sample of what this would look like...
+   --  to give some food for thought in designing this backend.
 
    function New_Identifier
      (Ada_Node        : Node_Id;
