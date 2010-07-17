@@ -75,10 +75,6 @@ package Why.Atree is
    --  be enclosed in the field Entity of kind Identifier. It is not
    --  clear yet if this information will have any utility.
 
-   type Why_Node is private;
-
-private
-
    type Why_Node (Kind : Why_Node_Kind := W_Unused_At_Start) is record
       --  Basic type for nodes in the abstract syntax tree. Each non-documented
       --  field of this structure should be explicited in the syntax given
@@ -466,28 +462,57 @@ private
    -- Tables --
    ------------
 
-   --  These tables are used as storage pools for nodes and lists.
-   --  They could ultimately be implemented using the containers
-   --  that will be defined in the context of Hi-Lite; for now,
-   --  use Standard Ada 05 containers, in the hope that Hi-Lite
-   --  containers will be similar enough.
+   package Tables is
 
-   package Node_Tables is
-      new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
+      --  These tables are used as storage pools for nodes and lists.
+      --  They could ultimately be implemented using the containers
+      --  that will be defined in the context of Hi-Lite; for now,
+      --  use Standard Ada 05 containers, in the hope that Hi-Lite
+      --  containers will be similar enough.
+
+      package Node_Tables is
+         new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
                                   Element_Type => Why_Node,
                                   "=" => "=");
 
-   Node_Table : Node_Tables.Vector;
+      Node_Table : Node_Tables.Vector;
 
-   package Node_Lists is
-      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
-                                              "=" => "=");
+      package Node_Lists is
+         new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
+                                                 "=" => "=");
 
-   function "=" (Left, Right : Node_Lists.List) return Boolean;
-   --  Return True if Left and Right have the same extension
+      function "=" (Left, Right : Node_Lists.List) return Boolean;
+      --  Return True if Left and Right have the same extension
 
-   package Node_List_Tables is
-      new Ada.Containers.Vectors (Index_Type => Why_Node_List,
-                                  Element_Type => Node_Lists.List,
-                                  "=" => "=");
+      package Node_List_Tables is
+         new Ada.Containers.Vectors (Index_Type => Why_Node_List,
+                                     Element_Type => Node_Lists.List,
+                                     "=" => "=");
+
+      function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
+         (Node_Tables.Element (Node_Table, Node_Id));
+
+      function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
+         (Get_Node (Node_Id).Kind);
+
+      function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id;
+      pragma Precondition (Node.Kind /= W_Unused_At_Start);
+      pragma Postcondition (Get_Node (New_Why_Node_Id'Result) = Node);
+      pragma Inline (New_Why_Node_Id);
+      --  Allocate a new Why node in table, and return its Id
+
+   end Tables;
+
+   function Get_Node (Node_Id : Why_Node_Id) return Why_Node
+     renames Tables.Get_Node;
+
+   function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind
+     renames Tables.Get_Kind;
+
+   function Option
+      (Node : Why_Node_Id;
+       Value : Why_Node_Kind)
+      return Boolean is
+      (Node = Why_Empty or else Get_Kind (Node) = Value);
+
 end Why.Atree;
