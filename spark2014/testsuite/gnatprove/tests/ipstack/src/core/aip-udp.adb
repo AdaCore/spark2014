@@ -530,6 +530,7 @@ package body AIP.UDP is
               (Buffers.Buffer_Payload (Ubuf));
 
             Csum : M16_T;
+            Check_Buf : Buffers.Buffer_Id;
          begin
             UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
             UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
@@ -542,13 +543,22 @@ package body AIP.UDP is
             UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
             UDPH.Set_UDPH_Checksum (Uhdr, 16#0000#);
 
-            Csum := Checksum.Checksum
-              (Packet => Conversions.To_IPTR (PUhdr'Address),
-               Length => PUhdr'Size / 8);
-            Csum := Checksum.Checksum
-              (Packet    => Conversions.To_IPTR (Uhdr'Address),
-               Length    => Uhdr'Size / 8,
-               Initial   => Csum);
+            --  Start checksum computation with pseudo IP header
+
+            Csum :=  Checksum.Checksum
+                 (Packet  => Conversions.To_IPTR (PUhdr'Address),
+                  Length  => PUhdr'Size / 8);
+
+            --  Then include complete UDP header and payload in computation
+
+            Check_Buf := Ubuf;
+            while Check_Buf /= Buffers.NOBUF loop
+               Csum := Checksum.Checksum
+                 (Packet  => Buffers.Buffer_Payload (Check_Buf),
+                  Length  => Natural (Buffers.Buffer_Len (Check_Buf)),
+                  Initial => Csum);
+               Check_Buf := Buffers.Buffer_Next (Check_Buf);
+            end loop;
 
             UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
          end;
