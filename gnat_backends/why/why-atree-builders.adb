@@ -43,11 +43,11 @@ package body Why.Atree.Builders is
      return Why_Node_Id
    is
       Node : constant Why_Node (W_Identifier) :=
-        Why_Node'(Kind => W_Identifier,
-                  Ada_Node => Ada_Node,
-                  Link => Link,
-                  Symbol => Symbol,
-                  Entity => Entity);
+               Why_Node'(Kind => W_Identifier,
+                         Ada_Node => Ada_Node,
+                         Link => Link,
+                         Symbol => Symbol,
+                         Entity => Entity);
    begin
       return Tables.New_Why_Node_Id (Node);
    end New_Identifier;
@@ -65,12 +65,12 @@ package body Why.Atree.Builders is
      return Why_Node_Id
    is
       Node : constant Why_Node (W_Type) :=
-        Why_Node'(Kind => W_Type,
-                  Ada_Node => Ada_Node,
-                  Link => Link,
-                  T_External => External,
-                  T_Type_Parameters => Type_Parameters,
-                  T_Name => Name);
+               Why_Node'(Kind => W_Type,
+                         Ada_Node => Ada_Node,
+                         Link => Link,
+                         T_External => External,
+                         T_Type_Parameters => Type_Parameters,
+                         T_Name => Name);
    begin
       return Tables.New_Why_Node_Id (Node);
    end New_Type;
