@@ -6,7 +6,7 @@
 --  Callback oriented low level access to the TCP services. At this point,
 --  this is a binding to the C implementation of LWIP.
 
-with AIP.Callbacks, AIP.IPaddrs, AIP.Pbufs;
+with AIP.Callbacks, AIP.IPaddrs, AIP.Buffers;
 --# inherit AIP.Callbacks, AIP.IPaddrs, AIP.Config;
 
 package AIP.TCP is
@@ -36,10 +36,10 @@ package AIP.TCP is
 
    type TCP_Event is record
       Kind : TCP_Event_Kind;
-      Pbuf : Pbufs.Pbuf_Id;
+      Buf  : Buffers.Buffer_Id;
       Addr : IPaddrs.IPaddr;
       Port : Port_T;
-      Err  : AIP.Err_T;
+      Err  : Err_T;
    end record;
 
    procedure TCP_Callback
