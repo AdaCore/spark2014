@@ -3,14 +3,14 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  AIP platform parameters
-
 --# inherit AIP;
 
-package AIP.Platform is
-   pragma Pure;
+package AIP_Support.Time_Types is
 
-   If_Init_Linkname : constant String := "mintapif_init";
-   If_ISR_Linkname  : constant String := "mintapif_isr";
+   type Time is mod 2 ** 32;
+   subtype Interval is Time;
 
-end AIP.Platform;
+   function Now return Time;
+   --  Elapsed time since unspecified epoch, in ms
+
+end AIP_Support.Time_Types;

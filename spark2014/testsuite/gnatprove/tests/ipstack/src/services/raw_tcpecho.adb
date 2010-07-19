@@ -29,7 +29,7 @@ is
    type Echo_State is record
       Kind : State_Kind;
       Tcb  : AIP.TCP.PCB_Id;
-      Pbu  : AIP.Pbufs.Pbuf_Id;
+      Buf  : AIP.Buffers.Buffer_Id;
       Err  : AIP.Err_T;
    end record;
    pragma Suppress_Initialization (Echo_State);
@@ -122,9 +122,9 @@ is
 
    procedure Echo_Send
      (Tcb : AIP.TCP.PCB_Id; Sid : ES_Id)
-      --# global in out ESP; in out AIP.Pools.PBUF_POOL;
+      --# global in out ESP; in out AIP.Pools.BufF_POOL;
    is
-      Pbu : AIP.Pbufs.Pbuf_Id;
+      Buf : AIP.Buffers.Buffer_Id;
       Plen : AIP.U16_T;
       Err : AIP.Err_T := AIP.NOERR;
    begin
@@ -133,38 +133,43 @@ is
       --  for it in the curent output buffer. Punt if something wrong happens.
 
       while Err = AIP.NOERR
-        and then ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF
-        and then AIP.Pbufs.Pbuf_Len (ESP (Sid).Pbu) <= AIP.TCP.TCP_Sndbuf (Tcb)
+        and then ESP (Sid).Buf /= AIP.Buffers.NOBUF
+        and then AIP.Buffers.Buffer_Len (ESP (Sid).Buf)
+                   <= AIP.TCP.TCP_Sndbuf (Tcb)
       loop
 
-         --  Enqueue the current pbuf for transmission
+         --  Enqueue the current Buff for transmission
 
-         Pbu := ESP (Sid).Pbu;
+         Buf := ESP (Sid).Buf;
          Err := AIP.TCP.TCP_Write
-           (Tcb, AIP.Pbufs.Pbuf_Payload (Pbu), AIP.Pbufs.Pbuf_Len (Pbu), 1);
+                  (Tcb,
+                   AIP.Buffers.Buffer_Payload (Buf),
+                   AIP.Buffers.Buffer_Len (Buf),
+                   1);
 
-         --  If all went well, move to next pbuf in chain
+         --  If all went well, move to next Buff in chain
 
          if Err = AIP.NOERR then
 
-            --  Grab reference to the following pbuf, if any. Release
-            --  the one we just processed and inform tell the other end
-            ESP (Sid).Pbu := AIP.Pbufs.Pbuf_Next (Pbu);
-            if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
-               AIP.Pbufs.Pbuf_Ref (ESP (Sid).Pbu);
+            --  Grab reference to the following Buff, if any. Release
+            --  the one we just processed and inform tell the other end.
+
+            ESP (Sid).Buf := AIP.Buffers.Buffer_Next (Buf);
+            if ESP (Sid).Buf /= AIP.Buffers.NOBUF then
+               AIP.Buffers.Buffer_Ref (ESP (Sid).Buf);
             end if;
 
-            --  chop first pbuf from chain
+            --  chop first Buff from chain
 
-            Plen := AIP.Pbufs.Pbuf_Len (Pbu);
-            AIP.Pbufs.Pbuf_Release (Pbu);
+            Plen := AIP.Buffers.Buffer_Len (Buf);
+            AIP.Buffers.Buffer_Release (Buf);
 
             --  we can read more data now
             AIP.TCP.TCP_Recved (Tcb, Plen);
 
          elsif Err = AIP.ERR_MEM then
             --  we are low on memory, try harder later, defer to poll
-            ESP (Sid).Pbu := Pbu;
+            ESP (Sid).Buf := Buf;
          else
             --  other problem ??
             null;
@@ -183,12 +188,12 @@ is
       Tcb : AIP.TCP.PCB_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T)
-      --# global in out ESP, AIP.Pools.PBUF_POOL;
+      --# global in out ESP, AIP.Pools.BufF_POOL;
    is
       pragma Unreferenced (Len);
    begin
 
-      if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
+      if ESP (Sid).Buf /= AIP.Buffers.NOBUF then
          Echo_Send (Tcb, Sid);
       elsif ESP (Sid).Kind = ES_CLOSING then
          Echo_Close (Tcb, Sid);
@@ -221,7 +226,7 @@ is
      (Sid : AIP.IPTR_T;
       Tcb : AIP.TCP.PCB_Id;
       Err : out AIP.Err_T)
-      --# global in out ESP, AIP.Pools.PBUF_POOL;
+      --# global in out ESP, AIP.Pools.BufF_POOL;
    is
    begin
 
@@ -230,7 +235,7 @@ is
          Err := AIP.ERR_ABRT;
 
       else
-         if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
+         if ESP (Sid).Buf /= AIP.Buffers.NOBUF then
             Echo_Send (Tcb, Sid);
 
          elsif ESP (Sid).Kind = ES_CLOSING then
@@ -248,21 +253,21 @@ is
    procedure Echo_Recv_Cb
      (Sid   : AIP.IPTR_T;
       Tcb   : AIP.TCP.PCB_Id;
-      Pbu   : AIP.Pbufs.Pbuf_Id;
+      Buf   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T)
-      --# global in out ESP, AIP.Pools.PBUF_POOL;
+      --# global in out ESP, AIP.Pools.BufF_POOL;
    is
    begin
 
-      if Pbu = AIP.Pbufs.NOPBUF then
+      if Buf = AIP.Buffers.NOBUF then
 
          --  Remote host closed connection. Process what is left to be
          --  sent or close on our side.
 
          ESP (Sid).Kind := ES_CLOSING;
 
-         if ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF then
+         if ESP (Sid).Buf /= AIP.Buffers.NOBUF then
             Echo_Send (Tcb, Sid);
          else
             Echo_Close (Tcb, Sid);
@@ -272,13 +277,10 @@ is
 
       elsif Errin /= AIP.NOERR then
 
-         --  cleanup request, unkown reason
+         --  Cleanup request, unkown reason
 
-         if Pbu /= AIP.Pbufs.NOPBUF then
-            ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
-            AIP.Pbufs.Pbuf_Blind_Free (Pbu);
-         end if;
-
+         ESP (Sid).Buf := AIP.Buffers.NOBUF;
+         AIP.Buffers.Buffer_Blind_Free (Buf);
          Err := Errin;
 
       else
@@ -287,32 +289,32 @@ is
             when ES_ACCEPTED =>
 
                ESP (Sid).Kind := ES_RECEIVED;
-               ESP (Sid).Pbu := Pbu;
+               ESP (Sid).Buf := Buf;
                Echo_Send (Tcb, Sid);
 
             when ES_RECEIVED =>
 
                --  read some more data
-               if ESP (Sid).Pbu = AIP.Pbufs.NOPBUF then
-                  ESP (Sid).Pbu := Pbu;
+               if ESP (Sid).Buf = AIP.Buffers.NOBUF then
+                  ESP (Sid).Buf := Buf;
                   Echo_Send (Tcb, Sid);
                else
-                  AIP.Pbufs.Pbuf_Chain (ESP (Sid).Pbu, Pbu);
+                  AIP.Buffers.Buffer_Chain (ESP (Sid).Buf, Buf);
                end if;
 
             when ES_CLOSING =>
 
                --  odd case, remote side closing twice, trash data
-               AIP.TCP.TCP_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
-               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
+               AIP.TCP.TCP_Recved (Tcb, AIP.Buffers.Buffer_Tlen (Buf));
+               ESP (Sid).Buf := AIP.Buffers.NOBUF;
 
-               AIP.Pbufs.Pbuf_Blind_Free (Pbu);
+               AIP.Buffers.Buffer_Blind_Free (Buf);
 
             when others =>
 
-               AIP.TCP.TCP_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
-               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
-               AIP.Pbufs.Pbuf_Blind_Free (Pbu);
+               AIP.TCP.TCP_Recved (Tcb, AIP.Buffers.Buffer_Tlen (Buf));
+               ESP (Sid).Buf := AIP.Buffers.NOBUF;
+               AIP.Buffers.Buffer_Blind_Free (Buf);
 
          end case;
 
@@ -345,7 +347,7 @@ is
 
          ESP (Sid).Kind := ES_ACCEPTED;
          ESP (Sid).Tcb  := Tcb;
-         ESP (Sid).Pbu  := AIP.Pbufs.NOPBUF;
+         ESP (Sid).Buf  := AIP.Buffers.NOBUF;
 
          AIP.TCP.TCP_Arg  (Tcb, Sid);
          AIP.TCP.TCP_Sent (Tcb, Echo_Sent_Cb_Id);

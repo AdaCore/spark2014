@@ -9,6 +9,13 @@
 
 package AIP.Config is
 
+   ------------------------
+   -- ARP confirguration --
+   ------------------------
+
+   Max_ARP_Entries : constant := 20;
+   --  ARP table size
+
    -----------------------
    -- UDP configuration --
    -----------------------

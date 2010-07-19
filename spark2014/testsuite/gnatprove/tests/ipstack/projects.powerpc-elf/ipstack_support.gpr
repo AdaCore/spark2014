@@ -1,6 +1,5 @@
 with "zfp_support";
 with "ipstack_config";
-with "ipstack_core";
 
 project IPStack_Support is
    Subdir := "src/support";

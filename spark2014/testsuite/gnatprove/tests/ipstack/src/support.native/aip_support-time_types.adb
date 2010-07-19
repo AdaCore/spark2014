@@ -5,7 +5,7 @@
 
 with Ada.Real_Time;
 
-package body AIP.Time_Types is
+package body AIP_Support.Time_Types is
    Start : constant Ada.Real_Time.Time := Ada.Real_Time.Clock;
 
    ---------
@@ -19,4 +19,4 @@ package body AIP.Time_Types is
         (Ada.Real_Time.To_Duration (Ada.Real_Time.Clock - Start) * 1000);
    end Now;
 
-end AIP.Time_Types;
+end AIP_Support.Time_Types;

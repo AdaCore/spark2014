@@ -3,12 +3,12 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Platform;
+with AIP_Support.Platform;
 
 package body AIP.OSAL is
 
    function If_Init return Err_T;
-   pragma Import (C, If_Init, Platform.If_Init_Linkname);
+   pragma Import (C, If_Init, AIP_Support.Platform.If_Init_Linkname);
    --  Initialize network interface
 
    ----------------

@@ -5,13 +5,39 @@
 
 --  RFC826 - Address Resolution Protocol
 
+with AIP_Support.Time_Types;
+
 with AIP.Buffers;
 with AIP.IPaddrs;
 with AIP.NIF;
 
 package AIP.ARP is
 
+   procedure ARP_Initialize;
+   --  Initialize ARP subsystem and empty ARP table
+
 private
+
+   Max_ARP_Entries : constant := 20;
+   subtype Any_ARP_Entry_Id is EID range 0 .. Max_ARP_Entries;
+   --  Make upper bound configurable???
+   No_ARP_Entry : constant Any_ARP_Entry_Id := Any_ARP_Entry_Id'First;
+   subtype ARP_Entry_Id is Any_ARP_Entry_Id range 1 .. Any_ARP_Entry_Id'Last;
+
+   type ARP_Entry_State is (Unused, Incomplete, Active);
+   pragma Unreferenced (Active);
+
+   type ARP_Entry is record
+      State           : ARP_Entry_State := Unused;
+      Permanent       : Boolean         := False;
+      --  Publish         : Boolean         := False;
+      Timestamp       : AIP_Support.Time_Types.Time;
+
+      Dst_IP_Address  : IPaddrs.IPaddr;
+      Dst_MAC_Address : Ethernet_Address;
+
+      Prev, Next      : Any_ARP_Entry_Id;
+   end record;
 
    procedure ARP_Input
      (Nid           : NIF.Netif_Id;
@@ -33,5 +59,30 @@ private
       Dst_Address : IPaddrs.IPaddr);
    pragma Export (C, ARP_Output, "AIP_arp_output");
    --  Send packet in Buf to Dst_Address through Nid
+
+   ------------------------------------
+   -- Low-level ARP table management --
+   ------------------------------------
+
+   procedure ARP_Reset (AE : in out ARP_Entry);
+   --  Clear all information in AE and reset it to Incomplete state
+
+   procedure ARP_Find
+     (Addr : IPaddrs.IPaddr;
+      Id   : out Any_ARP_Entry_Id);
+   --  Find existing entry for Addr, or allocate a new one if not found.
+   --  Note: May recycle old non-permanent entries.
+   --  Id is No_ARP_Entry on return if no storage is available for the
+   --  requested allocation.
+
+   procedure ARP_Prepend
+     (List : in out Any_ARP_Entry_Id;
+      AEID : ARP_Entry_Id);
+   --  Prepend AEID to List
+
+   procedure ARP_Unlink
+     (List : in out Any_ARP_Entry_Id;
+      AEID : ARP_Entry_Id);
+   --  Remove AEID from list
 
 end AIP.ARP;

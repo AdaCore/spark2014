@@ -3,20 +3,20 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---# inherit AIP.Platform, AIP.Time_Types, AIP.Timers;
+--# inherit AIP_Support.Platform, AIP_Support.Time_Types, AIP_Support.Timers;
 
-with AIP.Platform;
-with AIP.Time_Types;
-with AIP.Timers;
+with AIP_Support.Platform;
+with AIP_Support.Time_Types;
+with AIP_Support.Timers;
 
 with Ada.Text_IO; use Ada.Text_IO;
 
 --# main_program;
-procedure AIP.Mainloop is
-   use type AIP.Time_Types.Time;
+procedure AIP_Support.Mainloop is
+   use type AIP_Support.Time_Types.Time;
 
    Events : Integer;
-   Prev_Clock, Clock  : AIP.Time_Types.Time := AIP.Time_Types.Time'First;
+   Prev_Clock, Clock  : AIP_Support.Time_Types.Time := AIP_Support.Time_Types.Time'First;
 
    Poll_Freq : constant := 100;
    --  100 ms
@@ -31,7 +31,7 @@ procedure AIP.Mainloop is
    pragma Import (C, etharp_tmr, "etharp_tmr");
 
    function Netif_Isr return Integer;
-   pragma Import (C, Netif_Isr, AIP.Platform.If_ISR_Linkname);
+   pragma Import (C, Netif_Isr, AIP_Support.Platform.If_ISR_Linkname);
 
    function Process_Interface_Events return Integer;
    --  Process any events on network interfaces, and return count of processed
@@ -54,22 +54,22 @@ begin
       Events := Process_Interface_Events;
 
       loop
-         Clock := AIP.Time_Types.Now;
+         Clock := AIP_Support.Time_Types.Now;
          exit when Events > 0 or else Clock >= Prev_Clock + Poll_Freq;
       end loop;
 
       Prev_Clock := Clock;
 
-      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPFASTTMR) then
+      if AIP_Support.Timers.Timer_Fired (Clock, AIP_Support.Timers.TIMER_EVT_TCPFASTTMR) then
          tcp_fasttmr;
       end if;
 
-      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPSLOWTMR) then
+      if AIP_Support.Timers.Timer_Fired (Clock, AIP_Support.Timers.TIMER_EVT_TCPSLOWTMR) then
          tcp_slowtmr;
       end if;
 
-      if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_ETHARPTMR) then
+      if AIP_Support.Timers.Timer_Fired (Clock, AIP_Support.Timers.TIMER_EVT_ETHARPTMR) then
          etharp_tmr;
       end if;
    end loop;
-end AIP.Mainloop;
+end AIP_Support.Mainloop;

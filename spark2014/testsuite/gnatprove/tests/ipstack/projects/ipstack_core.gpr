@@ -1,5 +1,5 @@
 with "ipstack_config";
-with "ipstack_lwip";
+with "ipstack_support";
 
 project IPStack_Core is
    Subdir := "src/core";

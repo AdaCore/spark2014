@@ -26,15 +26,12 @@ BUILDER=gprbuild $(if $(filter $(TARGET), native),,--target=$(TARGET))
 
 .PHONY: app ipstack clean force spark
 
-LWIPDIR=src/lwip4aip
-LWIPLIB=$(LWIPDIR)/liblwip4.a
-
 APP=echop
 APP_IMAGE=build/app/$(APP)
 
 app: $(APP_IMAGE)
 
-$(APP_IMAGE): $(LWIPLIB) ipstack force
+$(APP_IMAGE): ipstack force
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P app
 
 test: ipstack force
@@ -73,7 +70,6 @@ build/gen/aip_constants.ads:
 	echo "end AIP_Constants;") > build/gen/aip_constants.ads
 
 clean:
-	cd $(dir $(LWIPLIB)) && make clean TARGET="$(TARGET)"
 	$(GCC_PREFIX)gnatclean $(GNATPRJ_FLAGS) -q -r -P ipstack
 	rm -fr spark build
 
@@ -83,11 +79,6 @@ $(APP_IMAGE).bin: $(APP_IMAGE)
 run: $(APP_IMAGE).bin
 	qemu-system-ppc -nographic -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=scripts/qemu-ifup
 	
-# LWIP
-
-$(LWIPLIB): force
-	cd $(LWIPDIR) && make liblwip4.a TARGET="$(TARGET)"
-
 spark/spark.idx:
 	mkdir -p spark
 	cd spark && sparkmake -directory=../build/gen -directory=../src/core/ -directory=../src/lwip4aip/ -directory=../src/services/ -directory=../src/support/ -directory=../src/support.$(TARGET)/

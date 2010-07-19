@@ -5,10 +5,10 @@
 
 --  TCP echo server implementation using the RAW callback API
 
-with AIP.Pbufs;
+with AIP.Buffers;
 with AIP.TCP;
 --# inherit AIP.Pools, AIP.Support,
---#         AIP.IPaddrs, AIP.Pbufs, AIP.Callbacks, AIP.TCP;
+--#         AIP.IPaddrs, AIP.Buffers, AIP.Callbacks, AIP.TCP;
 
 use type AIP.IPTR_T;
 
@@ -82,7 +82,7 @@ private
    procedure Echo_Recv_Cb
      (Sid   : AIP.IPTR_T;
       Tcb   : AIP.TCP.PCB_Id;
-      Pbu   : AIP.Pbufs.Pbuf_Id;
+      Buf   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T);
    --# global in out ECHO_STATE_POOL, AIP.Pools.PBUF_POOL;
@@ -91,7 +91,7 @@ private
    function Echo_Recv_Cb_W
      (Sid   : AIP.IPTR_T;
       Tcb   : AIP.TCP.PCB_Id;
-      Pbu   : AIP.Pbufs.Pbuf_Id;
+      Pbu   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T) return AIP.Err_T;
    pragma Import (C, Echo_Recv_Cb_W);
 
