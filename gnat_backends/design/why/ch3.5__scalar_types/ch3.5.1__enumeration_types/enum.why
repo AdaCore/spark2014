@@ -9,12 +9,18 @@ type enum__day =
   | enum__sun
 
 logic integer_of___enum__day : enum__day -> int
+(* YM: could be simply a "function", i.e. a defined logic function, defined
+   with a match like axiom enum__day___ordering below, which would make 
+   this axiom useless *)
 
 predicate eq___enum__day (left : enum__day, right : enum__day) =
  integer_of___enum__day (left) = integer_of___enum__day (right)
 
 predicate le___enum__day (left : enum__day, right : enum__day) =
  integer_of___enum__day (left) <= integer_of___enum__day (right)
+
+(* YM: why have a special eq___enum__day and le___enum__day instead of 
+   doing directly the operations on integers? *)
 
 predicate enum__day___in_range (x : int) =
  let first = 0 in
@@ -89,6 +95,13 @@ predicate enum__weekday___in_range (s : enum__day) =
  (le___enum__day (enum__mon, s) and le___enum__day (s, enum__fri))
 
 logic enum__weekday___of___enum__day : enum__day -> enum__weekday
+
+(* YM: beware of possible inconsistencies here in the model. 
+       Why only deals with total logic functions, so that 
+       enum__weekday___of___enum__day should be defined for any day, so
+       refrain from using this function directly. It should only be used
+       in axiom enum__weekday___coerce below.
+ *)
 
 axiom enum__weekday___coerce :
  (forall x : enum__day.

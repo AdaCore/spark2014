@@ -1,8 +1,8 @@
 include "arrays.why"
 
-(**********************)
-(* Var. Decision_Kind *)
-(**********************)
+(*********************)
+(* Var.Decision_Kind *)
+(*********************)
 
 type var__decision_kind =
  | var__condition_kind

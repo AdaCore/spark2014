@@ -1,11 +1,11 @@
 
 This describes how Ada integer types can be represented in Why.
 
-signed integer types:
+Signed integer types:
 ---------------------
 
 In signed.ads, proposal in signed.why. signed_test.why is an example
-in why of the use of this signed integer types.  For a consistancy
+in why of the use of this signed integer type.  For a consistency
 check, a model in Alloy can be found in signed.als.
 
 Modular types:

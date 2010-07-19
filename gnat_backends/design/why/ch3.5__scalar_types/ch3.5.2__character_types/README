@@ -1,6 +1,6 @@
 
 According to 3.5.2 (1), character types are enumeration types with at
-least one of their enumeration literals being a character litteral. The
+least one of their enumeration literals being a character literal. The
 description of their generation is (therefore) given in
 ch3.5.1__enumeration_types.
 

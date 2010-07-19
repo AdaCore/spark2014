@@ -112,6 +112,7 @@ axiom arr__table___get_definition :
   forall y : arr__index.
    arr__table___get (x, y) = access (array_of___arr__table (x),
                                      integer_of___arr__index (y))
+(* YM: replace by "function" which is same as logic + definition? *)
 
 axiom arr__table___set_definition :
  forall x : arr__table.

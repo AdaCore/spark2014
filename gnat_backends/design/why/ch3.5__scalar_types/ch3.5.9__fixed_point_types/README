@@ -23,6 +23,6 @@ conversion (away from zero). This is defined in real.why.
 
 fixed.why does not show the case of decimal fixed point types; the
 computation of the bounds is different, but the generated code ends up
-being quite similar, so there is no substancial difference for gnat2why.
+being quite similar, so there is no substantial difference for gnat2why.
 
 

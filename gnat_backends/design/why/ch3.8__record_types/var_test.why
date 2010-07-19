@@ -30,11 +30,11 @@ axiom tristate_or_def3 :
   
 axiom tristate_and_def1 :
  forall x : tristate.
-  tristate_and (T_True, x) = T_True
+  tristate_and (T_True, x) = x
 
 axiom tristate_and_def2 :
  forall x : tristate.
-  tristate_and (T_False, x) = x
+  tristate_and (T_False, x) = T_False
 
 axiom tristate_and_def3 :
  forall x : tristate.

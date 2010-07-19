@@ -1,18 +1,18 @@
 
-This directory describes how array types would represented in Why;
-some example of usage of these types are provided in files named
+This directory describes how array types would be represented in Why;
+some examples of usage of these types are provided in files named
 *_test.why. Files named *_test.ad? contains an "informal" equivalent
 of the why code in Ada (with no assumption on what we would *really*
 generate for these test packages).
 
 Ada array types are defined as abstract types that can be converted to
-logic (infinite) arrays along with range constraint. The definition of
+logic (infinite) arrays along with range constraints. The definition of
 these conversions are roughly similar to the way discrete types are
 defined using math ints (see ch3.5__scalar_types/README).
 
 An important thing to note is that converting from an Ada array to
-an logic array, and then back to an Ada array, may not give an
-identical result; All logic arrays have their bounds between 0 and
+a logic array, and then back to an Ada array, may not give an
+identical result; all logic arrays have their bounds between 0 and
 length - 1, so the unicity axiom does not hold. We have two different
 equalities, one that checks range equality and one that doesn't.
 
