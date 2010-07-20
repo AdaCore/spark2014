@@ -51,28 +51,28 @@ package Why.Atree is
    --  the exception of real/int constants and identifier names);
    --
    --  * a field which may have no value should be initialized to
-   --  Empty/Empty_List by default; at the contrary, a field which
+   --  Empty/Empty_List by default; on the contrary, a field which
    --  should always be present (or a list which shall not be empty)
    --  shall not have any default initialization;
    --
    --  * singleton nodes are exactly the ones that have a null variant part;
    --
-   --  * each field name in the variant part consist in two parts:
+   --  * each field name in the variant part consists in two parts:
    --  a header in uppercase, related to the kind of this node;
-   --  a general field name, that tells what this field actually represent;
+   --  a general field name, which tells what this field actually represents;
    --
    --  * the field name header is arbitrary; it may just be the first letters
    --  of the node kind; we shall just make sure to avoid name clashes;
    --
-   --  * the general field name shall be thought with overidding in mind;
+   --  * the general field name shall be thought with overriding in mind;
    --  e.g. named entities should have a field whose general field name is
    --  Name; defining entities should have a field whose general field name is
    --  Def. For these, general setters/getters will be generated. Among
-   --  overriden fields, we have Return_Type, Binders, Left, Right, Op,
+   --  overridden fields, we have Return_Type, Binders, Left, Right, Op,
    --  Then, Else, Parameters...
    --
    --  * Each field of type Why_Node_Id shall be followed by a comment
-   --  that contains the kind or class of the corresponding node.
+   --  which contains the kind or class of the corresponding node.
    --  Each field of type Why_Node_List shall have the same kind of comment
    --  with the kind or node class of each of its elements. This should be
    --  the only comment before the next entity.
@@ -484,23 +484,23 @@ package Why.Atree is
       --  containers will be similar enough.
 
       package Node_Tables is
-         new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
-                                  Element_Type => Why_Node,
-                                  "=" => "=");
+        new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
+                                    Element_Type => Why_Node,
+                                    "="          => "=");
 
       Node_Table : Node_Tables.Vector;
 
       package Node_Lists is
-         new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
-                                                 "=" => "=");
+        new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
+                                                "="          => "=");
 
       function "=" (Left, Right : Node_Lists.List) return Boolean;
       --  Return True if Left and Right have the same extension
 
       package Node_List_Tables is
-         new Ada.Containers.Vectors (Index_Type => Why_Node_List,
-                                     Element_Type => Node_Lists.List,
-                                     "=" => "=");
+        new Ada.Containers.Vectors (Index_Type   => Why_Node_List,
+                                    Element_Type => Node_Lists.List,
+                                    "="          => "=");
 
       function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
          (Node_Tables.Element (Node_Table, Node_Id));
@@ -523,7 +523,7 @@ package Why.Atree is
      renames Tables.Get_Kind;
 
    function Option
-      (Node : Why_Node_Id;
+      (Node  : Why_Node_Id;
        Value : Why_Node_Kind)
       return Boolean is
       (Node = Why_Empty or else Get_Kind (Node) = Value);

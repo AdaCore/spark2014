@@ -51,7 +51,7 @@ package Why.Sinfo is
       ---------------------------------------------
 
       --  Some of these nodes are used both in the program space and
-      --  in the logic space; so they declared here to allow proper
+      --  in the logic space; so they are declared here to allow proper
       --  definition of subtypes for the corresponding node classes.
 
 
@@ -133,22 +133,22 @@ package Why.Sinfo is
 
       --  <constant> ::= <integer_constant>
       --                 | <real_constant>
-      --                 | <true_litteral>
-      --                 | <false_litteral>
-      --                 | <void_litteral>
+      --                 | <true_literal>
+      --                 | <false_literal>
+      --                 | <void_literal>
 
       W_Integer_Constant,
 
       W_Real_Constant,
 
       W_True_Literal,
-      --  <true_litteral> ::= 'true'
+      --  <true_literal> ::= 'true'
 
       W_False_Literal,
-      --  <false_litteral> ::= 'false'
+      --  <false_literal> ::= 'false'
 
       W_Void_Literal,
-      --  <void_litteral> ::= 'void'
+      --  <void_literal> ::= 'void'
 
       W_Arith_Operation,
       --  <operation> ::= <term> <arith_op> <term>
@@ -198,8 +198,8 @@ package Why.Sinfo is
       --  1.2. Predicates:
       --------------------
 
-      -- <predicate> ::= <true_litteral>
-      --                 | <false_litteral>
+      -- <predicate> ::= <true_literal>
+      --                 | <false_literal>
       --                 | <predicate_identifier>
       --                 | <predicate_instance>
       --                 | <related_terms>
@@ -211,15 +211,15 @@ package Why.Sinfo is
       --                 | <conditional_pred>
       --                 | <binding_pred>
       --                 | <universal_quantif>
-      --                 | <existencial_quantif>
+      --                 | <existential_quantif>
       --                 | <named_predicate>
       --                 | <protected_predicate>
 
       W_True_Literal_Pred,
-      --  <true_litteral> ::= 'true'
+      --  <true_literal> ::= 'true'
 
       W_False_Literal_Pred,
-      --  <false_litteral> ::= 'false'
+      --  <false_literal> ::= 'false'
 
       W_Predicate_Identifier,
       --  <predicate_identifier> ::= <identifier>
@@ -256,8 +256,8 @@ package Why.Sinfo is
       --    'forall' <identifier> + ':' <primitive_type>
       --       [ <triggers> ] '.' <predicate>
 
-      W_Existencial_Quantif,
-      --  <existencial_quantif> ::=
+      W_Existential_Quantif,
+      --  <existential_quantif> ::=
       --     'exists' <identifier>+ ':' <primitive_type> '.' <predicate>
 
       W_Named_Predicate,

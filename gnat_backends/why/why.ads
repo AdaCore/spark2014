@@ -26,7 +26,7 @@
 package Why is
    pragma Pure;
 
-   --  This package hierarchy provides a way to manipulate a syntax
+   --  This package hierarchy provides a way to manipulate the syntax
    --  tree of a Why program and to generate some Why code out of it.
 
    Not_Implemented : exception;

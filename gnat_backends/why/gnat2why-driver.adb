@@ -37,7 +37,7 @@ with Why.Atree.Sprint; use Why.Atree.Sprint;
 
 package body Gnat2Why.Driver is
 
-   --   This is the main driver for the Ada-to-Why Back_End
+   --   This is the main driver for the Ada-to-Why back-end
 
    ------------------------
    -- Is_Back_End_Switch --
@@ -69,9 +69,9 @@ package body Gnat2Why.Driver is
       end case;
    end Is_Back_End_Switch;
 
-   ------------------
+   -----------------
    -- GNAT_To_Why --
-   ------------------
+   -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
    begin
@@ -79,7 +79,7 @@ package body Gnat2Why.Driver is
       Put_Line ("*** GNAT2WHY STUB ***");
       Put_Line ("NOTHING IMPLEMENTED SO FAR; this stub dumps:");
       Put_Line (" * the syntax tree;");
-      Put_Line (" * a source-view of the syntax tree.");
+      Put_Line (" * a source-view of the syntax tree;");
       Put_Line (" * a dummy test of the Why generator.");
       New_Line;
 

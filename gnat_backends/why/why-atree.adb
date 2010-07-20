@@ -38,9 +38,9 @@ package body Why.Atree is
       function "=" (Left, Right : Node_Lists.List) return Boolean is
          use Node_Lists;
 
-         In_Left  : Cursor := First (Left);
-         In_Right : Cursor := First (Left);
-         Result   : Boolean;
+         In_Left  : Cursor  := First (Left);
+         In_Right : Cursor  := First (Left);
+         Result   : Boolean := True;
       begin
          loop
             if In_Left = No_Element or In_Right = No_Element then
