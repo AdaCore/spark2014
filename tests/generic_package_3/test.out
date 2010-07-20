@@ -1,0 +1,133 @@
+------------------------------------------------------------------------
+with P;
+--@ line 1
+--# inherit p, q;
+package External_P
+is
+
+
+   procedure Proc;
+--@ line 6
+   --# global    out P.Y, Q.A, Q.B;
+   --#        in out P.X;
+   --# --@ line 7
+   --# post              P.Y
+   --# --@ line 7
+   --#                     = P.X~;
+end External_P;
+with Q;
+--@ line 1
+--# inherit q;
+package External_Q
+is
+
+
+   procedure Zero;
+--@ line 6
+   --# global    out Q.A, Q.B;
+end External_Q;
+with P;with External_P;
+--@ line 1
+--# inherit p, q, external_p, external_q;
+--@ line 1
+package Internal_P
+
+
+          is
+
+   procedure Proc;
+--@ line 6
+   --# global    out P.Y, Q.A, Q.B;
+   --#        in out P.X;
+   --# --@ line 7
+   --# post              P.Y
+   --# --@ line 7
+   --#                     = P.X~;
+
+end Internal_P;
+with Q;with External_Q;
+--@ line 1
+--# inherit q, external_q;
+--@ line 1
+package Internal_Q
+--@ line 1
+          is
+
+
+
+
+   procedure Zero;
+--@ line 6
+   --# global    out Q.A, Q.B;
+
+end Internal_Q;
+package P
+--@ line 1
+--# own X, Y;
+is
+--@ line 2
+   X:         Integer;
+   Y:         Integer;
+end P;
+package Q
+--@ line 1
+--# own A, B;
+is
+   A : Integer;
+   B : Integer;
+end Q;
+
+with Q;
+with External_Q;
+--@ line 3
+package body Internal_P
+--@ line 3
+               is
+
+   procedure Proc is
+   begin
+      P.Y
+--@ line 7
+        := P.X
+--@ line 7
+            ;
+      External_Q.Zero;
+      if P.X
+--@ line 9
+           < 10 then
+	 P.	 X
+--@ line 10
+    := P.	      X
+--@ line 10
+         + 1;
+      end if;
+   end Proc;
+
+end Internal_P;
+package body Internal_Q
+--@ line 1
+               is
+
+   procedure Zero is
+   begin
+      Q.A
+--@ line 5
+        := 0;
+      Q.B
+--@ line 6
+        := 0;
+   end Zero;
+
+end Internal_Q;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          3      1      2              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           4      0      4              0      0      0       0
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                  7      1      6              0      0      0       0
+% Totals:                      14%    86%             0%     0%     0%      0%
+===================== End of Semantic Analysis Summary ========================
