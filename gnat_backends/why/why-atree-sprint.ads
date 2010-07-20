@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Atree.Tables; use Why.Atree.Tables;
+
 package Why.Atree.Sprint is
 
    --  This package provides ways to print source code from the abstract

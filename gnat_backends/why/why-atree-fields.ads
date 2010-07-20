@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Atree.Tables; use Why.Atree.Tables;
+
 package Why.Atree.Fields is
 
    --  This package provides a way to access the content of nodes in the

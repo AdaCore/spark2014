@@ -30,7 +30,7 @@ with Namet; use Namet;
 with Why.Atree.Fields; use Why.Atree.Fields;
 
 package body Why.Atree.Sprint is
-   
+
    -----------------
    -- Sprint_Node --
    -----------------
@@ -38,19 +38,19 @@ package body Why.Atree.Sprint is
    procedure Sprint_Why_Node (Node : Why_Node_Id) is
    begin
       case Get_Kind (Node) is
-	 when W_Identifier =>
-	    Put (Get_Name_String (Get_Node (Node).Symbol));
-	    
-	 when W_Type =>
-	    if Get_External (Node) /= Why_Empty then 
-	       Put ("external ");
-	    end if;
-	    
-	    Put ("type ");
-	    Sprint_Why_Node (Get_Name (Node));
-	 
-	 when others =>
-	    raise Not_Implemented;
+         when W_Identifier =>
+            Put (Get_Name_String (Get_Node (Node).Symbol));
+
+         when W_Type =>
+            if Get_External (Node) /= Why_Empty then
+               Put ("external ");
+            end if;
+
+            Put ("type ");
+            Sprint_Why_Node (Get_Name (Node));
+
+         when others =>
+            raise Not_Implemented;
       end case;
    end Sprint_Why_Node;
 

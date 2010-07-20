@@ -23,10 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Unchecked_Conversion;
-with Ada.Containers.Vectors;
-with Ada.Containers.Doubly_Linked_Lists;
-
 with Types;  use Types;
 with Namet;  use Namet;
 with Uintp;  use Uintp;
@@ -226,7 +222,7 @@ package Why.Atree is
             UQ_Triggers  : Why_Node_List := Why_Empty_List; --  W_Triggers
             UQ_Pred      : Why_Node_Id;   --  W_Predicate
 
-         when W_Existencial_Quantif =>
+         when W_Existential_Quantif =>
             EQ_Variables : Why_Node_List; --  W_Identifier
             EQ_Var_Type  : Why_Node_Id;   --  W_Primitive_Type
             EQ_Pred      : Why_Node_Id;   --  W_Predicate
@@ -470,62 +466,5 @@ package Why.Atree is
 
       end case;
    end record;
-
-   ------------
-   -- Tables --
-   ------------
-
-   package Tables is
-
-      --  These tables are used as storage pools for nodes and lists.
-      --  They could ultimately be implemented using the containers
-      --  that will be defined in the context of Hi-Lite; for now,
-      --  use Standard Ada 05 containers, in the hope that Hi-Lite
-      --  containers will be similar enough.
-
-      package Node_Tables is
-        new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
-                                    Element_Type => Why_Node,
-                                    "="          => "=");
-
-      Node_Table : Node_Tables.Vector;
-
-      package Node_Lists is
-        new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
-                                                "="          => "=");
-
-      function "=" (Left, Right : Node_Lists.List) return Boolean;
-      --  Return True if Left and Right have the same extension
-
-      package Node_List_Tables is
-        new Ada.Containers.Vectors (Index_Type   => Why_Node_List,
-                                    Element_Type => Node_Lists.List,
-                                    "="          => "=");
-
-      function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
-         (Node_Tables.Element (Node_Table, Node_Id));
-
-      function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
-         (Get_Node (Node_Id).Kind);
-
-      function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id;
-      pragma Precondition (Node.Kind /= W_Unused_At_Start);
-      pragma Postcondition (Get_Node (New_Why_Node_Id'Result) = Node);
-      pragma Inline (New_Why_Node_Id);
-      --  Allocate a new Why node in table, and return its Id
-
-   end Tables;
-
-   function Get_Node (Node_Id : Why_Node_Id) return Why_Node
-     renames Tables.Get_Node;
-
-   function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind
-     renames Tables.Get_Kind;
-
-   function Option
-      (Node  : Why_Node_Id;
-       Value : Why_Node_Kind)
-      return Boolean is
-      (Node = Why_Empty or else Get_Kind (Node) = Value);
 
 end Why.Atree;

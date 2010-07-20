@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Why.Atree.Builders is
-   use Why.Atree.Tables.Node_Tables;
+with Why.Atree.Tables; use Why.Atree.Tables;
 
+package Why.Atree.Builders is
    --  This package provides a set of unchecked builders, generated
    --  automatically from Why.Atree.Why_Node using an ASIS tool...
    --  with the exception of preconditions, which should be added by
@@ -56,7 +56,7 @@ package Why.Atree.Builders is
       Name            : Why_Node_Id)
      return Why_Node_Id;
    pragma Precondition (Option (External, W_External)
-			and then Get_Kind (Name) = W_Identifier);
+                        and then Get_Kind (Name) = W_Identifier);
    pragma Postcondition (Get_Node (New_Type'Result)
                          = Why_Node'(Kind => W_Type,
                                      Ada_Node => Ada_Node,

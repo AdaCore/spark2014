@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                            W H Y - A T R E E                             --
+--                     W H Y - A T R E E - T A B L E S                      --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,58 +23,51 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body Why.Atree is
+package body Why.Atree.Tables is
 
-   ------------
-   -- Tables --
-   ------------
+   ---------
+   -- "=" --
+   ---------
 
-   package body Tables is
+   function "=" (Left, Right : Node_Lists.List) return Boolean is
+      use Node_Lists;
 
-      ---------
-      -- "=" --
-      ---------
+      In_Left  : Cursor  := First (Left);
+      In_Right : Cursor  := First (Left);
+      Result   : Boolean := True;
+   begin
+      loop
+         if In_Left = No_Element or In_Right = No_Element then
+            Result := In_Left = No_Element and In_Right = No_Element;
+            exit;
+         end if;
 
-      function "=" (Left, Right : Node_Lists.List) return Boolean is
-         use Node_Lists;
-
-         In_Left  : Cursor  := First (Left);
-         In_Right : Cursor  := First (Left);
-         Result   : Boolean := True;
-      begin
-         loop
-            if In_Left = No_Element or In_Right = No_Element then
-               Result := In_Left = No_Element and In_Right = No_Element;
+         declare
+            Left_Element  : constant Why_Node_Id := Element (In_Left);
+            Right_Element : constant Why_Node_Id := Element (In_Right);
+         begin
+            if Left_Element /= Right_Element then
+               Result := False;
                exit;
             end if;
+         end;
 
-            declare
-               Left_Element  : constant Why_Node_Id := Element (In_Left);
-               Right_Element : constant Why_Node_Id := Element (In_Right);
-            begin
-               if Left_Element /= Right_Element then
-                  Result := False;
-                  exit;
-               end if;
-            end;
+         Next (In_Left);
+         Next (In_Right);
+      end loop;
 
-            Next (In_Left);
-            Next (In_Right);
-         end loop;
+      return Result;
+   end "=";
 
-         return Result;
-      end "=";
+   ------------------
+   -- New_Why_Node --
+   ------------------
 
-      ------------------
-      -- New_Why_Node --
-      ------------------
+   function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id is
+      use Node_Tables;
+   begin
+      Append (Node_Table, Node);
+      return To_Index (Last (Node_Table));
+   end New_Why_Node_Id;
 
-      function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id is
-         use Node_Tables;
-      begin
-         Append (Node_Table, Node);
-         return To_Index (Last (Node_Table));
-      end New_Why_Node_Id;
-   end Tables;
-
-end Why.Atree;
+end Why.Atree.Tables;

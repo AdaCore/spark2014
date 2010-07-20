@@ -36,7 +36,6 @@ package Why.Sinfo is
    --  define subtypes (node classes) on them to discriminate between
    --  those that are accepted in each context.
 
-
    type Why_Node_Kind is
      (
       W_Unused_At_Start,
@@ -54,13 +53,11 @@ package Why.Sinfo is
       --  in the logic space; so they are declared here to allow proper
       --  definition of subtypes for the corresponding node classes.
 
-
       --  0.1. Purely logic, return type only:
       ----------------------------------------
 
       W_Type_Prop,
       --  <type_prop> ::= 'prop'
-
 
       --  0.2. Primitive types, both valid in logic/program space:
       ------------------------------------------------------------
@@ -87,7 +84,6 @@ package Why.Sinfo is
       --  <generic_actual_type_chain> ::=
       --     <primitive_type> (<primitive_type>, )* <identifier>
 
-
       --  0.3. Only valid in program space:
       -------------------------------------
 
@@ -112,7 +108,6 @@ package Why.Sinfo is
       --       '{' [ <precondition> ] '}'
       --       [ 'returns' <identifier> ':' ] <value_type> <effects>
       --       '{' [ <postcondition> ] '}'
-
 
       ------------------
       --  Logic space --
@@ -198,22 +193,22 @@ package Why.Sinfo is
       --  1.2. Predicates:
       --------------------
 
-      -- <predicate> ::= <true_literal>
-      --                 | <false_literal>
-      --                 | <predicate_identifier>
-      --                 | <predicate_instance>
-      --                 | <related_terms>
-      --                 | <implication>
-      --                 | <equivalence>
-      --                 | <disjunction>
-      --                 | <conjonction>
-      --                 | <negation>
-      --                 | <conditional_pred>
-      --                 | <binding_pred>
-      --                 | <universal_quantif>
-      --                 | <existential_quantif>
-      --                 | <named_predicate>
-      --                 | <protected_predicate>
+      --  <predicate> ::= <true_literal>
+      --                  | <false_literal>
+      --                  | <predicate_identifier>
+      --                  | <predicate_instance>
+      --                  | <related_terms>
+      --                  | <implication>
+      --                  | <equivalence>
+      --                  | <disjunction>
+      --                  | <conjonction>
+      --                  | <negation>
+      --                  | <conditional_pred>
+      --                  | <binding_pred>
+      --                  | <universal_quantif>
+      --                  | <existential_quantif>
+      --                  | <named_predicate>
+      --                  | <protected_predicate>
 
       W_True_Literal_Pred,
       --  <true_literal> ::= 'true'
@@ -252,9 +247,9 @@ package Why.Sinfo is
       --  <binding_pred> ::= let <identifier> = <term> in <predicate>
 
       W_Universal_Quantif,
-      -- <universal_quantif> ::=
-      --    'forall' <identifier> + ':' <primitive_type>
-      --       [ <triggers> ] '.' <predicate>
+      --  <universal_quantif> ::=
+      --     'forall' <identifier> + ':' <primitive_type>
+      --        [ <triggers> ] '.' <predicate>
 
       W_Existential_Quantif,
       --  <existential_quantif> ::=
@@ -303,7 +298,7 @@ package Why.Sinfo is
       --  <rel_gt> ::= '>'
 
       W_Rel_Ge,
-      -- <rel_ge> ::= '>='
+      --  <rel_ge> ::= '>='
 
       --  1.3. Logic declarations:
       ----------------------------
@@ -403,33 +398,33 @@ package Why.Sinfo is
       --  2.2. Annotated programs:
       ----------------------------
 
-      -- <prog> ::= <prog_constant>
-      --            | <prog_identifier>
-      --            | <deref>
-      --            | <assignment>
-      --            | <array_access>
-      --            | <array_update>
-      --            | <infix_call>
-      --            | <prefix_call>
-      --            | <binding_prog>
-      --            | <binding_ref>
-      --            | <conditional_prog>
-      --            | <while_loop>
-      --            | <statement_sequence>
-      --            | <label>
-      --            | <assertion>
-      --            | <post_assertion>
-      --            | <opaque_assertion>
-      --            | <fun_def>
-      --            | <binding_fun>
-      --            | <binding_rec>
-      --            | <prog_sequence>
-      --            | <raise_statement>
-      --            | <raise_statement_with_parameters>
-      --            | <try_block>
-      --            | <unreachable_code>
-      --            | <begin_block>
-      --            | <protected_prog>
+      --  <prog> ::= <prog_constant>
+      --             | <prog_identifier>
+      --             | <deref>
+      --             | <assignment>
+      --             | <array_access>
+      --             | <array_update>
+      --             | <infix_call>
+      --             | <prefix_call>
+      --             | <binding_prog>
+      --             | <binding_ref>
+      --             | <conditional_prog>
+      --             | <while_loop>
+      --             | <statement_sequence>
+      --             | <label>
+      --             | <assertion>
+      --             | <post_assertion>
+      --             | <opaque_assertion>
+      --             | <fun_def>
+      --             | <binding_fun>
+      --             | <binding_rec>
+      --             | <prog_sequence>
+      --             | <raise_statement>
+      --             | <raise_statement_with_parameters>
+      --             | <try_block>
+      --             | <unreachable_code>
+      --             | <begin_block>
+      --             | <protected_prog>
 
       W_Prog_Constant,
       --  <prog_constant> ::= <constant>
@@ -549,10 +544,10 @@ package Why.Sinfo is
       --  <op_divide> ::= '<>'
 
       W_Op_Lt_Prog,
-      -- <op_lt> ::= '<'
+      --  <op_lt> ::= '<'
 
       W_Op_Le_Prog,
-      -- <op_le> ::= '<='
+      --  <op_le> ::= '<='
 
       W_Op_Gt_Prog,
       --  <op_gt> ::= '>'
@@ -572,7 +567,7 @@ package Why.Sinfo is
       --  <op_minus> ::= '-'
 
       W_Op_Not_Prog,
-      -- <op_not> ::= 'not'
+      --  <op_not> ::= 'not'
 
       W_Binders,
       --  <binders> ::= <binder>+
