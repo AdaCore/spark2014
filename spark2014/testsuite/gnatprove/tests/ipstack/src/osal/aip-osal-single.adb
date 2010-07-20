@@ -3,12 +3,12 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP_Support.Platform;
+with AIP.Platform;
 
 package body AIP.OSAL.Single is
 
    function Netif_Isr return Integer;
-   pragma Import (C, Netif_Isr, AIP_Support.Platform.If_ISR_Linkname);
+   pragma Import (C, Netif_Isr, Platform.If_ISR_Linkname);
 
    ------------------------------
    -- Process_Interface_Events --

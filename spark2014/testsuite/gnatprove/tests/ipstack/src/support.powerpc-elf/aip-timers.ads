@@ -3,9 +3,9 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP_Support.Time_Types;
+with AIP.Time_Types;
 
-package AIP_Support.Timers is
+package AIP.Timers is
 
    type Timer_Id is (TIMER_EVT_ETHARPTMR,
                      TIMER_EVT_TCPFASTTMR,
@@ -15,13 +15,13 @@ package AIP_Support.Timers is
    procedure Initialize;
    pragma Export (C, Initialize, "timer_init");
 
-   procedure Set_Interval (TID : Timer_Id; Interval : AIP_Support.Time_Types.Interval);
+   procedure Set_Interval (TID : Timer_Id; Interval : Time_Types.Interval);
    pragma Export (C, Set_Interval, "timer_set_interval");
 
    function Timer_Fired
-     (Now : AIP_Support.Time_Types.Time;
+     (Now : Time_Types.Time;
       TID : Timer_Id) return Boolean;
 
-   function Next_Deadline return AIP_Support.Time_Types.Time;
+   function Next_Deadline return Time_Types.Time;
 
-end AIP_Support.Timers;
+end AIP.Timers;

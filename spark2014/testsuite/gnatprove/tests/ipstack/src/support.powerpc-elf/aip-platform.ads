@@ -3,8 +3,11 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  This is the root of the Ada IP stack support units package hierarchy.
+--  AIP platform parameters
 
-package AIP_Support is
+--# inherit AIP;
+
+package AIP.Platform is
    pragma Pure;
-end AIP_Support;
+   If_ISR_Linkname : constant String := "ne2k_isr";
+end AIP.Platform;

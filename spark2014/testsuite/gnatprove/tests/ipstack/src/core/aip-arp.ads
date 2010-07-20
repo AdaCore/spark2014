@@ -5,7 +5,7 @@
 
 --  RFC826 - Address Resolution Protocol
 
-with AIP_Support.Time_Types;
+with AIP.Time_Types;
 
 with AIP.Buffers;
 with AIP.IPaddrs;
@@ -25,13 +25,12 @@ private
    subtype ARP_Entry_Id is Any_ARP_Entry_Id range 1 .. Any_ARP_Entry_Id'Last;
 
    type ARP_Entry_State is (Unused, Incomplete, Active);
-   pragma Unreferenced (Active);
 
    type ARP_Entry is record
       State           : ARP_Entry_State := Unused;
       Permanent       : Boolean         := False;
       --  Publish         : Boolean         := False;
-      Timestamp       : AIP_Support.Time_Types.Time;
+      Timestamp       : Time_Types.Time;
 
       Dst_IP_Address  : IPaddrs.IPaddr;
       Dst_MAC_Address : Ethernet_Address;

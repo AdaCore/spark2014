@@ -3,29 +3,29 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package body AIP_Support.Timers is
+package body AIP.Timers is
 
-   use type AIP_Support.Time_Types.Time;
+   use type Time_Types.Time;
 
    type Timer is record
-      Interval   : AIP_Support.Time_Types.Interval := 0;
-      Last_Event : AIP_Support.Time_Types.Time     := AIP_Support.Time_Types.Time'First;
+      Interval   : Time_Types.Interval := 0;
+      Last_Event : Time_Types.Time     := Time_Types.Time'First;
    end record;
 
    type Timer_Array is array (Timer_Id) of Timer;
    My_Timers : Timer_Array;
 
-   function Deadline (T : Timer) return AIP_Support.Time_Types.Time;
+   function Deadline (T : Timer) return Time_Types.Time;
    --  Return the next deadline for the given timer
 
    --------------
    -- Deadline --
    --------------
 
-   function Deadline (T : Timer) return AIP_Support.Time_Types.Time is
+   function Deadline (T : Timer) return Time_Types.Time is
    begin
       if T.Interval = 0 then
-         return AIP_Support.Time_Types.Time'Last;
+         return Time_Types.Time'Last;
       else
          return T.Last_Event + T.Interval;
       end if;
@@ -44,13 +44,13 @@ package body AIP_Support.Timers is
    -- Next_Deadline --
    -------------------
 
-   function Next_Deadline return AIP_Support.Time_Types.Time is
-      Result : AIP_Support.Time_Types.Time := AIP_Support.Time_Types.Time'Last;
+   function Next_Deadline return Time_Types.Time is
+      Result : Time_Types.Time := Time_Types.Time'Last;
    begin
       for J in My_Timers'Range loop
          declare
             My_Timer    : Timer renames My_Timers (J);
-            My_Deadline : constant AIP_Support.Time_Types.Time := Deadline (My_Timer);
+            My_Deadline : constant Time_Types.Time := Deadline (My_Timer);
          begin
             if My_Deadline < Result then
                Result := My_Deadline;
@@ -66,7 +66,7 @@ package body AIP_Support.Timers is
 
    procedure Set_Interval
      (TID      : Timer_Id;
-      Interval : AIP_Support.Time_Types.Interval)
+      Interval : Time_Types.Interval)
    is
    begin
       My_Timers (TID).Interval := Interval;
@@ -77,7 +77,7 @@ package body AIP_Support.Timers is
    -----------------
 
    function Timer_Fired
-     (Now : AIP_Support.Time_Types.Time;
+     (Now : Time_Types.Time;
       TID : Timer_Id) return Boolean
    is
       My_Timer : Timer renames My_Timers (TID);
@@ -91,4 +91,4 @@ package body AIP_Support.Timers is
 
    end Timer_Fired;
 
-end AIP_Support.Timers;
+end AIP.Timers;

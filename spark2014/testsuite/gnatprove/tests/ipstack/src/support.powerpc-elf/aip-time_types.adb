@@ -5,7 +5,7 @@
 
 with System.Machine_Code; use System.Machine_Code;
 
-package body AIP_Support.Time_Types is
+package body AIP.Time_Types is
 
    package PPC_Clock is
 
@@ -86,4 +86,4 @@ package body AIP_Support.Time_Types is
       --  Approximation: the PPC clock runs at 66 MHz, not 65.536
    end Now;
 
-end AIP_Support.Time_Types;
+end AIP.Time_Types;

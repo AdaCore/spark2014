@@ -76,7 +76,7 @@ package body AIP.ARP is
 
       if Id /= No_ARP_Entry then
          ARP_Prepend (ARP_Active_List, Id);
-         ARP_Table (Id).Timestamp := AIP_Support.Time_Types.Now;
+         ARP_Table (Id).Timestamp := Time_Types.Now;
       end if;
    end ARP_Find;
 
@@ -116,8 +116,11 @@ package body AIP.ARP is
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
    is
-      AEID : constant ARP_Entry_Id := ARP_Find (Dst_Address);
+      pragma Unreferenced (Nid, Buf);
+
+      AEID : Any_ARP_Entry_Id;
    begin
+      ARP_Find (Dst_Address, AEID);
       if AEID /= No_ARP_Entry then
          declare
             AE : ARP_Entry renames ARP_Table (AEID);
@@ -191,7 +194,7 @@ package body AIP.ARP is
    begin
       AE.State     := Incomplete;
       AE.Permanent := False;
-      AE.Timestamp := AIP_Support.Time_Types.Time'First;
+      AE.Timestamp := Time_Types.Time'First;
    end ARP_Reset;
 
    --------------

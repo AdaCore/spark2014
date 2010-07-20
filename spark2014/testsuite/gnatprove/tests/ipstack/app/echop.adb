@@ -6,18 +6,17 @@
 with Ada.Text_IO;
 
 with Raw_TCPEcho;
-with AIP_Support.Mainloop;
+with AIP.Mainloop;
 with AIP.OSAL;
 with AIP.OSAL.Single;
-with AIP_Support.Time_Types;
-with AIP_Support.Timers;
+with AIP.Time_Types;
+with AIP.Timers;
 
 procedure Echop is
-   use type AIP_Support.Time_Types.Time;
+   use type AIP.Time_Types.Time;
 
    Events : Integer;
-   Prev_Clock, Clock  : AIP_Support.Time_Types.Time :=
-                          AIP_Support.Time_Types.Time'First;
+   Prev_Clock, Clock  : AIP.Time_Types.Time := AIP.Time_Types.Time'First;
 
    Poll_Freq : constant := 100;
    --  100 ms
@@ -54,23 +53,23 @@ begin
       --  Block for a while or do some stuff
 
       loop
-         Clock := AIP_Support.Time_Types.Now;
+         Clock := AIP.Time_Types.Now;
          exit when Events > 0 or else Clock >= Prev_Clock + Poll_Freq;
       end loop;
       Prev_Clock := Clock;
 
       --  Fire timers as appropriate
 
---        if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPFASTTMR) then
---           tcp_fasttmr;
---        end if;
+--    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPFASTTMR) then
+--       tcp_fasttmr;
+--    end if;
 --
---        if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPSLOWTMR) then
---           tcp_slowtmr;
---        end if;
+--    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPSLOWTMR) then
+--       tcp_slowtmr;
+--    end if;
 --
---        if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_ETHARPTMR) then
---           etharp_tmr;
---        end if;
+--    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_ETHARPTMR) then
+--       etharp_tmr;
+--    end if;
    end loop;
 end Echop;

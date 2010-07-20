@@ -3,7 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-package body AIP_Support.Timers is
+package body AIP.Timers is
 
    function Timer_Fired
      (Now : Time_Types.Time;
@@ -16,4 +16,4 @@ package body AIP_Support.Timers is
       return C_Timer_Fired (TID);
    end Timer_Fired;
 
-end AIP_Support.Timers;
+end AIP.Timers;

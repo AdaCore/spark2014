@@ -8,8 +8,7 @@ project IPStack_Core is
 
    for Source_Dirs use
      ("../" & Subdir,
-      "../src/include",
-      IPStack_Config.Gen_Prefix);
+      "../src/include");
 
    for Object_Dir      use IPStack_Config.Obj_Prefix & Subdir;
    for Library_Dir     use IPStack_Config.Lib_Prefix & Subdir;
