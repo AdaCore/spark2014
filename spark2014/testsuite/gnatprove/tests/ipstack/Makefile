@@ -56,7 +56,7 @@ build/gen/aip-%.ads build/gen/aip-%.adb: src/proto/%.xml build/bldtools/tranxgen
 	build/bldtools/tranxgen $< > $$adaf && \
 	gnatchop -w $$adaf build/gen
 
-build/gen/aip_constants.ads:
+build/gen/aip_constants.ads: src/bldtools/constants.adb
 	mkdir -p build/gen
 	$(GCC_PREFIX)gcc -S -o build/gen/constants.s src/bldtools/constants.adb
 	( \
