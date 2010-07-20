@@ -3,8 +3,7 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Callback oriented low level access to the UDP services. At this point,
---  this is a binding to the C implementation of LWIP.
+--  Callback oriented low level access to the UDP services.
 
 with AIP.Buffers;
 with AIP.Callbacks;
@@ -158,19 +157,12 @@ private
       Link : AIP.EID;                 --  Chaining link
    end record;
 
-   PCB_NOID : constant AIP.EID := -1;
-   --  Invalid value for PCB_Id, typically used used to indicate
-   --  absence of match in PCB searches. This is also used in PCB.Link
-   --  to indicate end-of-list for a PCB chained in a list, or mere use
-   --  of the PCB otherwise (in-use though currently not in a list).
-
    PCB_UNUSED : constant AIP.EID := -2;
-   --  Invalid value for PCB_Id, used in PCB.Link to indicate that the
-   --  PCB is currently unused, IOW free for UDP_New.
+   --  Invalid PCB EID used in PCB.Link to indicate that the PCB is currently
+   --  unused, IOW free for UDP_New.
 
-   --  PCB.Link may also be PCB_NOID to indicate end-of-list for a PCB
-   --  chained in a list, or mere use of the PCB anyway (in-use though
-   --  currently not in a list).
+   --  PCB.Link may also be NOPCB to indicate end-of-list for a PCB chained in
+   --  a list, or mere use of the PCB (in-use though currently not in a list).
 
    --  PCB.Connected is used to detect proper remote endpoint definition on
    --  UDP_Send, and to prevent selection of PCB to handle an incoming datagram
@@ -211,11 +203,11 @@ private
 
    function PCB_Bound_To (Port : Port_T) return AIP.EID;
    --  From the list of bound PCBs, first one bound to local PORT
-   --  PCB_NOID if none is found.
+   --  NOPCB if none is found.
 
    function Available_Port return Port_T;
    --  Arbitrary local Port number to which no PCB is currently bound.
-   --  PCB_NOID if no such port is available.
+   --  NOPORT if no such port is available.
 
    -------------------------
    -- UDP_Input internals --
