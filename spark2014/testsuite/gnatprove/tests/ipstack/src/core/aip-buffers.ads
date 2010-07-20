@@ -163,6 +163,7 @@ is
    --  1->1->1 yields .......
 
    procedure Buffer_Blind_Free (Buf : Buffer_Id);
+   pragma Export (C, Buffer_Blind_Free, "AIP_buffer_blind_free");
    --# global in out State;
    --  Same as Buffer_Free, ignoring return value
 
@@ -189,6 +190,7 @@ is
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
       Err  : out AIP.Err_T);
+   pragma Export (C, Buffer_Header, "AIP_buffer_header");
    --# global in out State;
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.

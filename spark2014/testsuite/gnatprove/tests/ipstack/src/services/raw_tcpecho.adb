@@ -386,13 +386,13 @@ is
          --# hide Init_CB_IDENTIFIERS
       begin
          Echo_Sent_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Sent_Cb_W'Address);
+           AIP.Conversions.To_IPTR (Echo_Sent_Cb'Address);
          Echo_Poll_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Poll_Cb_W'Address);
+           AIP.Conversions.To_IPTR (Echo_Poll_Cb'Address);
          Echo_Recv_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Recv_Cb_W'Address);
+           AIP.Conversions.To_IPTR (Echo_Recv_Cb'Address);
          Echo_Accept_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Accept_Cb_W'Address);
+           AIP.Conversions.To_IPTR (Echo_Accept_Cb'Address);
          Echo_Err_Cb_Id :=
            AIP.Conversions.To_IPTR (Echo_Err_Cb'Address);
       end Init_CB_IDENTIFIERS;

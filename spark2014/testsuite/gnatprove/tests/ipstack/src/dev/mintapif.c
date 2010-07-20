@@ -248,6 +248,7 @@ low_level_input(struct netif *netif)
 static void
 mintapif_input (Netif_Id nid)
 {
+  Err_T err;
   struct netif *netif = AIP_get_netif (nid);
   struct mintapif *mintapif;
   Ether_Header *ethhdr;
@@ -268,7 +269,7 @@ mintapif_input (Netif_Id nid)
    This seems to work but needs thorough testing. */
       AIP_arpip_input(netif, p);
 #endif
-      pbuf_header(p, -14);
+      AIP_buffer_header (p, -14, &err);
       ((Input_CB_T)netif->Input_CB) (p, nid);
       break;
     case Ether_Type_ARP:
@@ -276,8 +277,8 @@ mintapif_input (Netif_Id nid)
       break;
 
     default:
-      LWIP_ASSERT("p != NOBUF", p != NOBUF);
-      pbuf_free(p);
+      /* LWIP_ASSERT("p != NOBUF", p != NOBUF); */
+      AIP_buffer_blind_free (p);
       break;
     }
   }

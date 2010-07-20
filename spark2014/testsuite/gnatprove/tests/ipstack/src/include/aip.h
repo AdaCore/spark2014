@@ -15,6 +15,7 @@
  *******/
 
 typedef unsigned char   U8_T;
+typedef signed short    S16_T;
 typedef unsigned short  U16_T;
 typedef unsigned int    U32_T;
 typedef unsigned long   M32_T;
@@ -55,6 +56,9 @@ AIP_buffer_next (Buffer_Id Buf);
 
 extern IPTR_T
 AIP_buffer_payload (Buffer_Id Buf);
+
+extern void
+AIP_buffer_header (Buffer_Id Buf, S16_T Bump, Err_T *Err);
 
 /*****************
  * AIP.Callbacks *
