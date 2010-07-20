@@ -6,7 +6,6 @@
 with Ada.Text_IO;
 
 with Raw_TCPEcho;
-with AIP.Mainloop;
 with AIP.OSAL;
 with AIP.OSAL.Single;
 with AIP.Time_Types;
@@ -58,18 +57,6 @@ begin
       end loop;
       Prev_Clock := Clock;
 
-      --  Fire timers as appropriate
-
---    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPFASTTMR) then
---       tcp_fasttmr;
---    end if;
---
---    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_TCPSLOWTMR) then
---       tcp_slowtmr;
---    end if;
---
---    if AIP.Timers.Timer_Fired (Clock, AIP.Timers.TIMER_EVT_ETHARPTMR) then
---       etharp_tmr;
---    end if;
+      AIP.OSAL.Single.Process_Timers (Clock);
    end loop;
 end Echop;

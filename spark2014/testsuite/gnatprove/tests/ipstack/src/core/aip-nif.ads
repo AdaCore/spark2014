@@ -9,6 +9,7 @@ with AIP.Callbacks;
 with AIP.IPaddrs;
 
 package AIP.NIF is
+   pragma Preelaborate;
 
    MAX_NETIF : constant := 20;
    --  ??? Should be defined in a central configuration/dimensioning package
@@ -90,10 +91,12 @@ private
    end record;
    pragma Convention (C, Netif);
 
-   function Get_Netif (Nid : EID) return IPTR_T;
+   procedure Allocate_Netif (Nid : out EID);
+   pragma Export (C, Allocate_Netif, "AIP_allocate_netif");
+   --  Allocate a new netif Id. Return IF_NOID if none is available
+
+   function Get_Netif (Nid : Netif_Id) return IPTR_T;
    pragma Export (C, Get_Netif, "AIP_get_netif");
-   --  Return pointer to Netif record for the given netif. If Nid is IF_NOID,
-   --  return an unused netif record, or NULIPTR if none is available (used
-   --  for device initialization).
+   --  Return pointer to Netif record for the given netif
 
 end AIP.NIF;

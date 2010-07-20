@@ -130,7 +130,7 @@ typedef struct {} Ether_Header;
 U16_T
 aip__etherh__frame_type (Ether_Header M);
 
-#define AIP_etherh_frame_type aip__etherh__frame_type
+#define AIP_etherh_frame_type aip__etherh__etherh_frame_type
 
 /***********************
  * Compatibility shims *

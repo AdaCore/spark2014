@@ -11,35 +11,32 @@ package body AIP.NIF is
 
    NIFs : NIF_Array;
 
+   --------------------
+   -- Allocate_Netif --
+   --------------------
+
+   procedure Allocate_Netif (Nid : out EID) is
+   begin
+      Nid := IF_NOID;
+      for J in NIFs'Range loop
+         if NIFs (J).State = Invalid then
+            Nid := J;
+
+            --  Mark NIF as allocated
+
+            NIFs (J).State := Down;
+            exit;
+         end if;
+      end loop;
+   end Allocate_Netif;
+
    ---------------
    -- Get_Netif --
    ---------------
 
-   function Get_Netif (Nid : EID) return IPTR_T is
-      Result_Nid : EID := Nid;
-      Result     : IPTR_T := NULIPTR;
+   function Get_Netif (Nid : Netif_Id) return IPTR_T is
    begin
-      if Nid = IF_NOID then
-         --  Try to allocate an unused Netif_Id
-         --  Mutual exclusion on access to NIFs???
-
-         for J in NIFs'Range loop
-            if NIFs (J).State = Invalid then
-               Result_Nid := J;
-
-               --  Mark NIF as allocated
-
-               NIFs (J).State := Down;
-               exit;
-            end if;
-         end loop;
-      end if;
-
-      if Result_Nid /= IF_NOID then
-         Result := Conversions.To_IPTR (NIFs (Nid)'Address);
-      end if;
-
-      return Result;
+      return Conversions.To_IPTR (NIFs (Nid)'Address);
    end Get_Netif;
 
    ----------------------

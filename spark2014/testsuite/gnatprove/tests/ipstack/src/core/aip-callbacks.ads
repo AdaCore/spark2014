@@ -9,6 +9,8 @@
 
 package AIP.Callbacks is
 
+   pragma Pure;
+
    --  Since we can't use access to subprograms in SPARK, callbacks are
    --  identified by IPTR values and the applicative data argument as well.
 

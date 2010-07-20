@@ -1,6 +1,7 @@
 with "ipstack_config";
 with "ipstack_support";
 with "ipstack_core";
+with "ipstack_dev";
 
 project IPStack_OSAL is
    Subdir := "src/osal";

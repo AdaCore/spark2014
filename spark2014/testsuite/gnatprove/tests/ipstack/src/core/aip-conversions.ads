@@ -9,6 +9,8 @@ with System, Ada.Unchecked_Conversion;
 
 package AIP.Conversions is
 
+   pragma Preelaborate;
+
    --  System.Address / IPTR conversions are required for LWIP binding
    --  purposes, in particular callback subprogram addresses.
 

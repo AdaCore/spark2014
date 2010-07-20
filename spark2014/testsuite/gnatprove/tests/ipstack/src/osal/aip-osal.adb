@@ -7,7 +7,7 @@ with AIP.Platform;
 
 package body AIP.OSAL is
 
-   function If_Init return Err_T;
+   procedure If_Init (Err : out Err_T; If_Id : out NIF.Netif_Id);
    pragma Import (C, If_Init, Platform.If_Init_Linkname);
    --  Initialize network interface
 
@@ -16,8 +16,10 @@ package body AIP.OSAL is
    ----------------
 
    procedure Initialize is
+      Err : Err_T;
    begin
-      if If_Init /= NOERR then
+      If_Init (Err, If_Id);
+      if Err /= NOERR then
          raise Constraint_Error;
       end if;
    end Initialize;

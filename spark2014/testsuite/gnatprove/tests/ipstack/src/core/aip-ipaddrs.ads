@@ -9,6 +9,8 @@
 
 package AIP.IPaddrs is
 
+   pragma Pure;
+
    --  We only support IPV4, so represent IP addresses as 32bit modular types,
    --  which is efficient and allows easy bit shifting and masking operations.
 

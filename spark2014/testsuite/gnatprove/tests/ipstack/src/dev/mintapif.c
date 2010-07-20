@@ -36,6 +36,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -296,16 +297,24 @@ mintapif_input (Netif_Id nid)
 static int initialized = 0;
 static struct mintapif mintapif_dev;
 
-err_t
-mintapif_init ()
+void
+mintapif_init (Err_T *Err, Netif_Id *Nid)
 {
-  Netif_Id nid;
   struct netif *netif;
   struct mintapif *mintapif;
 
-  netif = AIP_get_netif (IF_NOID);
-  if (nid == IF_NOID)
-    return ERR_MEM;
+  if (initialized) {
+    *Err = ERR_MEM;
+    return;
+  }
+
+  AIP_allocate_netif (Nid);
+  if (*Nid == IF_NOID) {
+    *Err = ERR_MEM;
+    return;
+  }
+
+  netif = AIP_get_netif (*Nid);
 
 /* Support multiple mintapif instances???
   mintapif = mem_malloc(sizeof(struct mintapif));
@@ -314,8 +323,6 @@ mintapif_init ()
     return ERR_MEM;
   }
 */
-  if (initialized)
-    return ERR_MEM;
   mintapif = &mintapif_dev;
   netif->Dev = mintapif;
 #if LWIP_SNMP
@@ -347,7 +354,7 @@ mintapif_init ()
   low_level_init(netif);
 
   netif->State = Up;
-  return NOERR;
+  *Err = NOERR;
 }
 /*-----------------------------------------------------------------------------------*/
 enum mintapif_signal
@@ -391,7 +398,7 @@ mintapif_wait(Netif_Id nid, U16_T time)
   return MINTAPIF_PACKET;
 }
 
-int
+static int
 mintapif_select(Netif_Id nid)
 {
   struct netif *netif = AIP_get_netif (nid);
@@ -413,4 +420,26 @@ mintapif_select(Netif_Id nid)
     mintapif_input (nid);
   }
   return ret;
+}
+
+extern int
+mintapif_isr (Netif_Id nid) {
+  sigset_t oldmask, empty;
+
+  /* start of critical section,
+     poll netif, pass packet to lwIP */
+  if (mintapif_select(nid) > 0)
+  {
+    /* work, immediatly end critical section
+       hoping lwIP ended quickly ... */
+    sigprocmask(SIG_SETMASK, &oldmask, NULL);
+  }
+  else
+  {
+    /* no work, wait a little (10 msec) for SIGALRM */
+      sigemptyset(&empty);
+      sigsuspend(&empty);
+    /* ... end critical section */
+      sigprocmask(SIG_SETMASK, &oldmask, NULL);
+  }
 }

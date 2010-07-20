@@ -13,15 +13,13 @@ package AIP.Timers is
                      TIMER_EVT_IPREASSTMR);
 
    procedure Initialize;
-   pragma Import (C, Initialize, "timer_init");
 
-   procedure Set_Interval
-     (TID      : Timer_Id;
-      Interval : Time_Types.Interval);
-   pragma Import (C, Set_Interval, "timer_set_interval");
+   procedure Set_Interval (TID : Timer_Id; Interval : Time_Types.Interval);
 
    function Timer_Fired
      (Now : Time_Types.Time;
       TID : Timer_Id) return Boolean;
+
+   function Next_Deadline return Time_Types.Time;
 
 end AIP.Timers;

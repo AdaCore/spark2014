@@ -23,7 +23,6 @@ package AIP.TCP is
    ------------------------------
 
    procedure TCP_Arg (PCB : PCB_Id; Arg : AIP.IPTR_T);
-   pragma Import (C, TCP_Arg, "tcp_arg");
    --  Setup to pass ARG on every callback call for PCB.
 
    type TCP_Event_Kind is
@@ -50,7 +49,6 @@ package AIP.TCP is
    --------------------------------
 
    function TCP_New return PCB_Id;
-   pragma Import (C, TCP_New, "tcp_new");
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
 
@@ -58,7 +56,6 @@ package AIP.TCP is
      (PCB  : PCB_Id;
       Addr : IPaddrs.IPaddr;
       Port : AIP.U16_T) return AIP.Err_T;
-   pragma Import (C, TCP_Bind, "tcp_bind");
    --  Bind PCB to the provided IP ADDRess (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
@@ -74,14 +71,12 @@ package AIP.TCP is
    function TCP_Listen_BL
      (PCB  : PCB_Id;
       Blog : AIP.U8_T) return PCB_Id;
-   pragma Import (C, TCP_Listen_BL, "tcp_listen_with_backlog");
    --  Same as TCP_Listen for a user specified backlog size.
 
    subtype Accept_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Accept
      (PCB : PCB_Id;
       Cb  : Accept_Cb_Id);
-   pragma Import (C, TCP_Accept, "tcp_accept");
    --  Request CB to be called when a connection request comes in on PCB.
    --  CB's signature is expected to be:
    --
@@ -98,7 +93,6 @@ package AIP.TCP is
    --  the connection.
 
    procedure TCP_Accepted (PCB : PCB_Id);
-   pragma Import (C, TCP_Accepted, "tcp_accepted_w");
    --  Inform the AIP stack that a connection has just been accepted on PCB.
    --  To be called by the acceptation callback for proper management of the
    --  listening backlog.
@@ -109,7 +103,6 @@ package AIP.TCP is
       Addr : IPaddrs.IPaddr;
       Port : AIP.U16_T;
       Cb   : Connect_Cb_Id) return AIP.Err_T;
-   pragma Import (C, TCP_Connect, "tcp_connect");
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -130,7 +123,6 @@ package AIP.TCP is
       Data  : AIP.IPTR_T;
       Len   : AIP.U16_T;
       Flags : AIP.U8_T) return AIP.Err_T;
-   pragma Import (C, TCP_Write, "tcp_write");
    --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
    --  TCP_WRITE constants below. If all goes well, this function returns
    --  NOERR. This function will fail and return ERR_MEM if the length of the
@@ -145,14 +137,12 @@ package AIP.TCP is
    TCP_WRITE_MORE   : constant := 16#02#;  --  Set PSH on last segment sent
 
    function TCP_Sndbuf (PCB : PCB_Id) return AIP.U16_T;
-   pragma Import (C, TCP_Sndbuf, "tcp_sndbuf_w");
    --  Room available for output data queuing.
 
    subtype Sent_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Sent
      (PCB : PCB_Id;
       Cb  : Sent_Cb_Id);
-   pragma Import (C, TCP_Sent, "tcp_sent");
    --  Request that CB is called when sent data has been acknowledged by
    --  the remote host on PCB. CB's signature is expected to be:
    --
@@ -175,7 +165,6 @@ package AIP.TCP is
    procedure TCP_Recv
      (PCB : PCB_Id;
       Cb  : Recv_Cb_Id);
-   pragma Import (C, TCP_Recv, "tcp_recv");
    --  Request that CB is called when new data or a close-connection request
    --  arrives on PCB. CB's profile is expected to be;
    --
@@ -197,7 +186,6 @@ package AIP.TCP is
    procedure TCP_Recved
      (PCB : PCB_Id;
       Len : AIP.U16_T);
-   pragma Import (C, TCP_Recved, "tcp_recved");
    --  Inform AIP that LEN bytes of data have been processed and can be
    --  acknowledged.
 
@@ -214,7 +202,6 @@ package AIP.TCP is
      (PCB : PCB_Id;
       Cb  : Poll_Cb_Id;
       Ivl : AIP.U8_T);
-   pragma Import (C, TCP_Poll, "tcp_poll");
    --  Request CB to be called for polling purposes on PCB, every IVL ticks
    --  (where "tick" is a coarse grain TCP timer click, normally triggering
    --  about twice per second). CB's profile is expected to be:
@@ -230,19 +217,16 @@ package AIP.TCP is
    ------------------------------
 
    function TCP_Close (PCB : PCB_Id) return AIP.Err_T;
-   pragma Import (C, TCP_Close, "tcp_close");
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
 
    procedure TCP_Abort (PCB : PCB_Id);
-   pragma Import (C, TCP_Abort, "tcp_abort");
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
 
    subtype Err_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Err (PCB : PCB_Id; Cb : Err_Cb_Id);
-   pragma Import (C, TCP_Err, "tcp_err");
    --  Request CB to be called when a connection gets aborted because
    --  of some error. CB's profile is expected to be:
    --
@@ -251,5 +235,13 @@ package AIP.TCP is
    --       Err : AIP.Err_T)
    --
    --  ARG is the usual user/app argument. ERR is the aborting error code.
+
+   ------------
+   -- Timers --
+   ------------
+
+   procedure TCP_Fast_Timer;
+   procedure TCP_Slow_Timer;
+   --  Document???
 
 end AIP.TCP;

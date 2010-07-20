@@ -8,10 +8,17 @@
 --  This unit and its children provide the required facilities to integrate
 --  the IP stack within its operating environment.
 
+with AIP.NIF;
+
 package AIP.OSAL is
-   pragma Pure;
+   pragma Preelaborate;
 
    procedure Initialize;
    --  Initialize the IP stack
+
+private
+
+   If_Id : EID := NIF.IF_NOID;
+   --  The OSAL assumes a single interface exists, whose Id is If_Id
 
 end AIP.OSAL;

@@ -166,6 +166,16 @@ package body AIP.ARP is
       List := AEID;
    end ARP_Prepend;
 
+   ---------------
+   -- ARP_Timer --
+   ---------------
+
+   procedure ARP_Timer is
+   begin
+      null;
+      --  TBD???
+   end ARP_Timer;
+
    ----------------
    -- ARP_Unlink --
    ----------------

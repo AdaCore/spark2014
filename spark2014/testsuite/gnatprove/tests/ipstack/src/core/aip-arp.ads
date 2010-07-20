@@ -16,6 +16,9 @@ package AIP.ARP is
    procedure ARP_Initialize;
    --  Initialize ARP subsystem and empty ARP table
 
+   procedure ARP_Timer;
+   --  Called periodically to expire old, unused entries
+
 private
 
    Max_ARP_Entries : constant := 20;
