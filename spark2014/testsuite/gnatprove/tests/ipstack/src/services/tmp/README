@@ -1,0 +1,6 @@
+Temporary directory to host versions of the sample services written on top of
+the straight binding to lwip, to be rewritten when the AIP reimplementation is
+available.
+
+This allows us to get them out of gprbuild's sight as needed, when they do
+nothing but interfere with the development of other AIP services.

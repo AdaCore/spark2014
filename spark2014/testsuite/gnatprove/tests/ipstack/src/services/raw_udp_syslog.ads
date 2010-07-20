@@ -3,6 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.UDP;
+
 --# inherit AIP.Pools, AIP.IPaddrs, AIP.Pbufs, AIP.Inet,
 --#         AIP.Callbacks, AIP.UDP, AIP.Conversions;
 
@@ -11,10 +13,13 @@
 --  known syslog port (514) and forwards them as real user.debug syslog data
 --  to a full fledged syslog server.
 
-package RAW_Udpsyslog
-   --# own CB_IDENTIFIERS;
-is
+package RAW_UDP_Syslog is
+
+   procedure SYSLOG_Process_Recv
+     (Ev : AIP.UDP.UDP_Event_T; Pcb : AIP.UDP.PCB_Id);
+   --  Process UDP_RECV event EV for a syslog service bound to PCB
+
    procedure Init;
-   --# global out CB_IDENTIFIERS;
    --  Initialize the simplified syslog service
-end RAW_Udpsyslog;
+
+end RAW_UDP_Syslog;

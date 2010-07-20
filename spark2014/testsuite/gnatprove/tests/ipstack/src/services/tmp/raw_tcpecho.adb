@@ -5,8 +5,7 @@
 
 with AIP.Callbacks;
 with AIP.Conversions;
-with AIP.IPaddrs;
-with AIP.Support;
+with AIP.Pools, AIP.Support, AIP.IPaddrs, AIP.LWTCP, AIP.Pbufs, AIP.Callbacks;
 
 use type AIP.S8_T, AIP.U8_T, AIP.U16_T;
 
@@ -28,7 +27,7 @@ is
      (ES_FREE, ES_NONE, ES_ACCEPTED, ES_RECEIVED, ES_CLOSING, ES_ERROR);
    type Echo_State is record
       Kind : State_Kind;
-      Tcb  : AIP.TCP.PCB_Id;
+      Tcb  : AIP.LWTCP.TCB_Id;
       Buf  : AIP.Buffers.Buffer_Id;
       Err  : AIP.Err_T;
    end record;
@@ -100,19 +99,20 @@ is
    -- Echo_Close --
    ----------------
 
-   procedure Echo_Close (Tcb : AIP.TCP.PCB_Id; Sid : ES_Id)
-      --# global in out ESP;
+   procedure Echo_Close
+     (Tcb : AIP.LWTCP.TCB_Id; Sid : ES_Id)
+     --# global in out ESP;
    is
       Err : AIP.Err_T;
    begin
-      AIP.TCP.TCP_Arg  (Tcb, AIP.NULIPTR);
-      AIP.TCP.TCP_Sent (Tcb, AIP.Callbacks.NOCB);
-      AIP.TCP.TCP_Recv (Tcb, AIP.Callbacks.NOCB);
-      AIP.TCP.TCP_Err  (Tcb, AIP.Callbacks.NOCB);
-      AIP.TCP.TCP_Poll (Tcb, AIP.Callbacks.NOCB, 0);
+      AIP.LWTCP.Tcp_Arg  (Tcb, AIP.NULID);
+      AIP.LWTCP.Tcp_Sent (Tcb, AIP.Callbacks.NOCB);
+      AIP.LWTCP.Tcp_Recv (Tcb, AIP.Callbacks.NOCB);
+      AIP.LWTCP.Tcp_Err  (Tcb, AIP.Callbacks.NOCB);
+      AIP.LWTCP.Tcp_Poll (Tcb, AIP.Callbacks.NOCB, 0);
 
       ES_Release (Sid);
-      Err := AIP.TCP.TCP_Close (Tcb);
+      Err := AIP.LWTCP.Tcp_Close (Tcb);
       AIP.Support.Verify (Err = AIP.NOERR);
    end Echo_Close;
 
@@ -121,8 +121,8 @@ is
    ---------------
 
    procedure Echo_Send
-     (Tcb : AIP.TCP.PCB_Id; Sid : ES_Id)
-      --# global in out ESP; in out AIP.Pools.BufF_POOL;
+     (Tcb : AIP.LWTCP.TCB_Id; Sid : ES_Id)
+     --# global in out ESP; in out AIP.Pools.PBUF_POOL;
    is
       Buf : AIP.Buffers.Buffer_Id;
       Plen : AIP.U16_T;
@@ -133,15 +133,14 @@ is
       --  for it in the curent output buffer. Punt if something wrong happens.
 
       while Err = AIP.NOERR
-        and then ESP (Sid).Buf /= AIP.Buffers.NOBUF
-        and then AIP.Buffers.Buffer_Len (ESP (Sid).Buf)
-                   <= AIP.TCP.TCP_Sndbuf (Tcb)
+        and then ESP (Sid).Pbu /= AIP.Pbufs.NOPBUF
+        and then AIP.Pbufs.Pbuf_Len (ESP (Sid).Pbu) <= AIP.LWTCP.Tcp_Sndbuf (Tcb)
       loop
 
          --  Enqueue the current Buff for transmission
 
          Buf := ESP (Sid).Buf;
-         Err := AIP.TCP.TCP_Write
+         Err := AIP.LWTCP.Tcp_Write
                   (Tcb,
                    AIP.Buffers.Buffer_Payload (Buf),
                    AIP.Buffers.Buffer_Len (Buf),
@@ -165,7 +164,7 @@ is
             AIP.Buffers.Buffer_Release (Buf);
 
             --  we can read more data now
-            AIP.TCP.TCP_Recved (Tcb, Plen);
+            AIP.LWTCP.Tcp_Recved (Tcb, Plen);
 
          elsif Err = AIP.ERR_MEM then
             --  we are low on memory, try harder later, defer to poll
@@ -185,7 +184,7 @@ is
 
    procedure Echo_Sent_Cb
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T)
       --# global in out ESP, AIP.Pools.BufF_POOL;
@@ -224,14 +223,14 @@ is
 
    procedure Echo_Poll_Cb
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Err : out AIP.Err_T)
       --# global in out ESP, AIP.Pools.BufF_POOL;
    is
    begin
 
-      if Sid = AIP.NULIPTR then
-         AIP.TCP.TCP_Abort (Tcb);
+      if Sid = AIP.NULID then
+         AIP.LWTCP.Tcp_Abort (Tcb);
          Err := AIP.ERR_ABRT;
 
       else
@@ -252,7 +251,7 @@ is
 
    procedure Echo_Recv_Cb
      (Sid   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Buf   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T)
@@ -305,16 +304,16 @@ is
             when ES_CLOSING =>
 
                --  odd case, remote side closing twice, trash data
-               AIP.TCP.TCP_Recved (Tcb, AIP.Buffers.Buffer_Tlen (Buf));
-               ESP (Sid).Buf := AIP.Buffers.NOBUF;
+               AIP.LWTCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
+               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
 
                AIP.Buffers.Buffer_Blind_Free (Buf);
 
             when others =>
 
-               AIP.TCP.TCP_Recved (Tcb, AIP.Buffers.Buffer_Tlen (Buf));
-               ESP (Sid).Buf := AIP.Buffers.NOBUF;
-               AIP.Buffers.Buffer_Blind_Free (Buf);
+               AIP.LWTCP.Tcp_Recved (Tcb, AIP.Pbufs.Pbuf_Tlen (Pbu));
+               ESP (Sid).Pbu := AIP.Pbufs.NOPBUF;
+               AIP.Pbufs.Pbuf_Blind_Free (Pbu);
 
          end case;
 
@@ -330,7 +329,7 @@ is
 
    procedure Echo_Accept_Cb
      (Arg   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T)
       --# global in Echo_Sent_Cb_Id, Echo_Recv_Cb_Id,
@@ -349,13 +348,13 @@ is
          ESP (Sid).Tcb  := Tcb;
          ESP (Sid).Buf  := AIP.Buffers.NOBUF;
 
-         AIP.TCP.TCP_Arg  (Tcb, Sid);
-         AIP.TCP.TCP_Sent (Tcb, Echo_Sent_Cb_Id);
-         AIP.TCP.TCP_Recv (Tcb, Echo_Recv_Cb_Id);
-         AIP.TCP.TCP_Err  (Tcb, Echo_Err_Cb_Id);
-         AIP.TCP.TCP_Poll (Tcb, Echo_Poll_Cb_Id, 0);
+         AIP.LWTCP.Tcp_Arg  (Tcb, Sid);
+         AIP.LWTCP.Tcp_Sent (Tcb, Echo_Sent_Cb_Id);
+         AIP.LWTCP.Tcp_Recv (Tcb, Echo_Recv_Cb_Id);
+         AIP.LWTCP.Tcp_Err  (Tcb, Echo_Err_Cb_Id);
+         AIP.LWTCP.Tcp_Poll (Tcb, Echo_Poll_Cb_Id, 0);
 
-         AIP.TCP.TCP_Accepted (Tcb);
+         AIP.LWTCP.Tcp_Accepted (Tcb);
 
          Err := AIP.NOERR;
       end if;
@@ -373,7 +372,7 @@ is
       --#            Echo_Err_Cb_Id, Echo_Poll_Cb_Id;
       --#     in out ESP;
    is
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Err : AIP.Err_T;
 
       procedure Init_CB_IDENTIFIERS;
@@ -386,13 +385,13 @@ is
          --# hide Init_CB_IDENTIFIERS
       begin
          Echo_Sent_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Sent_Cb'Address);
+           AIP.Conversions.To_IPTR (Echo_Sent_Cb_W'Address);
          Echo_Poll_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Poll_Cb'Address);
+           AIP.Conversions.To_IPTR (Echo_Poll_Cb_W'Address);
          Echo_Recv_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Recv_Cb'Address);
+           AIP.Conversions.To_IPTR (Echo_Recv_Cb_W'Address);
          Echo_Accept_Cb_Id :=
-           AIP.Conversions.To_IPTR (Echo_Accept_Cb'Address);
+           AIP.Conversions.To_IPTR (Echo_Accept_Cb_W'Address);
          Echo_Err_Cb_Id :=
            AIP.Conversions.To_IPTR (Echo_Err_Cb'Address);
       end Init_CB_IDENTIFIERS;
@@ -404,14 +403,14 @@ is
       Init_CB_IDENTIFIERS;
       Init_ES_Pool;
 
-      Tcb := AIP.TCP.TCP_New;
-      if Tcb = AIP.TCP.NOPCB then
+      Tcb := AIP.LWTCP.Tcp_New;
+      if Tcb = AIP.LWTCP.NOTCB then
          Err := AIP.ERR_MEM;
       else
-         Err := AIP.TCP.TCP_Bind (Tcb, AIP.IPaddrs.IP_ADDR_ANY, 7);
+         Err := AIP.LWTCP.Tcp_Bind (Tcb, AIP.IPaddrs.IP_ADDR_ANY, 7);
          if Err = AIP.NOERR then
-            Tcb := AIP.TCP.TCP_Listen (Tcb);
-            AIP.TCP.TCP_Accept (Tcb, Echo_Accept_Cb_Id);
+            Tcb := AIP.LWTCP.Tcp_Listen (Tcb);
+            AIP.LWTCP.Tcp_Accept (Tcb, Echo_Accept_Cb_Id);
          end if;
       end if;
 

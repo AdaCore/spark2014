@@ -5,10 +5,9 @@
 
 --  TCP echo server implementation using the RAW callback API
 
-with AIP.Buffers;
-with AIP.TCP;
+with AIP.LWTCP, AIP.Pbufs;
 --# inherit AIP.Pools, AIP.Support,
---#         AIP.IPaddrs, AIP.Buffers, AIP.Callbacks, AIP.TCP;
+--#         AIP.IPaddrs, AIP.Pbufs, AIP.Callbacks, AIP.LWTCP;
 
 use type AIP.IPTR_T;
 
@@ -47,7 +46,7 @@ private
 
    procedure Echo_Sent_Cb
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T);
    --# global in out ECHO_STATE_POOL, AIP.Pools.PBUF_POOL;
@@ -55,7 +54,7 @@ private
 
    function Echo_Sent_Cb_W
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Len : AIP.U16_T) return AIP.Err_T;
    pragma Import (C, Echo_Sent_Cb_W);
 
@@ -65,14 +64,14 @@ private
 
    procedure Echo_Poll_Cb
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id;
+      Tcb : AIP.LWTCP.TCB_Id;
       Err : out AIP.Err_T);
    --# global in out ECHO_STATE_POOL, AIP.Pools.PBUF_POOL;
    pragma Export (C, Echo_Poll_Cb);
 
    function Echo_Poll_Cb_W
      (Sid : AIP.IPTR_T;
-      Tcb : AIP.TCP.PCB_Id) return AIP.Err_T;
+      Tcb : AIP.LWTCP.TCB_Id) return AIP.Err_T;
    pragma Import (C, Echo_Poll_Cb_W);
 
    ----------
@@ -81,7 +80,7 @@ private
 
    procedure Echo_Recv_Cb
      (Sid   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Buf   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T);
@@ -90,7 +89,7 @@ private
 
    function Echo_Recv_Cb_W
      (Sid   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Pbu   : AIP.Buffers.Buffer_Id;
       Errin : AIP.Err_T) return AIP.Err_T;
    pragma Import (C, Echo_Recv_Cb_W);
@@ -101,7 +100,7 @@ private
 
    procedure Echo_Accept_Cb
      (Arg   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Errin : AIP.Err_T;
       Err   : out AIP.Err_T);
    --# global in out ECHO_STATE_POOL; in CB_IDENTIFIERS;
@@ -109,7 +108,7 @@ private
 
    function Echo_Accept_Cb_W
      (Arg   : AIP.IPTR_T;
-      Tcb   : AIP.TCP.PCB_Id;
+      Tcb   : AIP.LWTCP.TCB_Id;
       Errin : AIP.Err_T) return AIP.Err_T;
    pragma Import (C, Echo_Accept_Cb_W);
 
