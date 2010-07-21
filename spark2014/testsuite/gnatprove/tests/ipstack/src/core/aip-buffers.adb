@@ -159,11 +159,14 @@ is
       N_Deallocs := 0;
 
       while Next_Buf /= NOBUF loop
+
          --  Update iterators
+
          Cur_Buf  := Next_Buf;
          Next_Buf := Common.Buf_List (Cur_Buf).Next;
 
          --  Store head of appropriate free-list in Free_List
+
          if Is_Data_Buffer (Cur_Buf) then
             Free_List := Data.Free_List;
          else
@@ -171,21 +174,26 @@ is
          end if;
 
          --  Decrease reference count
+
          Common.Buf_List (Cur_Buf).Ref := Common.Buf_List (Cur_Buf).Ref - 1;
 
          --  If reference count reaches zero, deallocate buffer
+
          if Common.Buf_List (Cur_Buf).Ref = 0 then
-            N_Deallocs                     := N_Deallocs + 1;
+            N_Deallocs := N_Deallocs + 1;
 
             --  Link to the head of the free-list
+
             Common.Buf_List (Cur_Buf).Next := Free_List;
 
             --  Perform link actions specific to data buffers
+
             if Is_Data_Buffer (Cur_Buf) then
                Data.Buffer_Link (Cur_Buf, Free_List);
             end if;
 
             --  Push to the head of the appropriate free-list
+
             if Is_Data_Buffer (Cur_Buf) then
                Data.Free_List              := Cur_Buf;
             else
@@ -193,6 +201,7 @@ is
             end if;
          else
             --  Stop the iteration
+
             Next_Buf                       := NOBUF;
          end if;
       end loop;
