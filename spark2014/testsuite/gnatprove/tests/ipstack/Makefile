@@ -2,7 +2,9 @@ ifeq ($(TARGET),native)
 GCC_PREFIX=
 GNATPRJ_FLAGS=
 
-else ifeq ($(TARGET),powerpc-elf)
+else
+
+ifeq ($(TARGET),powerpc-elf)
 RTSFLAG=--RTS=zfp
 GCC_PREFIX=$(TARGET)-
 GNATPRJ_FLAGS=-XVARIANT="$(ZFP_VARIANT)"
@@ -11,13 +13,15 @@ ZFP_VARIANT=powerpc-elf-qemu
 else
 $(error Please define TARGET)
 endif
+endif
 
 # Settings for native target
 
 # Common settings
 
+PROCESSORS=4
 GNATPRJ_FLAGS+=-aPprojects:projects.$(TARGET)
-GNATMAKE_FLAGS=-g -j4 $(RTSFLAG) $(GNATPRJ_FLAGS)
+GNATMAKE_FLAGS=-g -j$(PROCESSORS) $(RTSFLAG) $(GNATPRJ_FLAGS)
 GNATCLEAN_FLAGS=$(GNATPRJ_FLAGS)
 
 #BUILDER=$(GCC_PREFIX)gnatmake
@@ -45,6 +49,16 @@ ipstack: build/gen/aip_constants.ads  \
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_support
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_dev
+
+codepeer: force
+	$(MAKE) TARGET=$(TARGET) \
+	   GNATMAKE_FLAGS="$(GNATMAKE_FLAGS) -c --subdirs=codepeer -gnatcC" \
+	   ipstack
+	codepeer -all -lib ipstack.lib -global -background -quiet
+	@echo ""
+	@echo "codepeer completed successfully."
+	@echo "to view messages, run: codepeer_msg_reader build/ipstack.output"
+	@echo "or: firefox build/ipstack.output/html/index.html"
 
 build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 	mkdir -p build/bldtools
