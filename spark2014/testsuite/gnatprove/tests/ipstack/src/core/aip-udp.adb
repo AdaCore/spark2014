@@ -32,7 +32,7 @@ package body AIP.UDP is
    begin
       --  Mark all the PCBs as unused and the list of bound PCBs as empty
 
-      for I in PCB_Id'First .. PCB_Id'Last loop
+      for I in Valid_PCB_Ids loop
          PCBs (I).Link := PCB_UNUSED;
       end loop;
       Bound_PCBs := NOPCB;
@@ -54,7 +54,7 @@ package body AIP.UDP is
             Id := Cid;
             PCBs (Id).Link := NOPCB;
          end if;
-         exit when Id /= NOPCB or else Cid = PCB_Id'Last;
+         exit when Id /= NOPCB or else Cid = Valid_PCB_Ids'Last;
          Cid := Cid + 1;
       end loop;
    end PCB_Allocate;
