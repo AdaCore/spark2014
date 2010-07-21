@@ -190,7 +190,7 @@ package body AIP.UDP is
             if Remote_Match then
                Ideal_PCB := Cid;
 
-            elsif Good_PCB = NOPCB and then PCBs (Cid).Connected then
+            elsif Good_PCB = NOPCB and then not PCBs (Cid).Connected then
                Good_PCB := Cid;
             end if;
          end if;
