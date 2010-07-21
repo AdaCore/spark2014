@@ -612,22 +612,40 @@ procedure Tranxgen is
 
             Get_Profile : constant String :=
                             "function  " & Padded_Name
-                            & "     (M : " & Message_Name & ") return "
+                            & "     (P : System.Address) return "
                             & Field_Type (F);
 
             Set_Profile : constant String :=
                             "procedure Set_"
                             & Padded_Name
-                            & " (M : in out " & Message_Name & "; V : "
+                            & " (P : System.Address; V : "
                             & Field_Type (F) & ")";
+
+            procedure Generate_M_Decl;
+            --  Generate declaration of object M and its address clause
 
             procedure Generate_Private_Prologue;
             --  Generate an object declaration for an FT object at the correct
             --  location within M.
 
-            procedure Generate_Private_Prologue is
+            ---------------------
+            -- Generate_M_Decl --
+            ---------------------
+
+            procedure Generate_M_Decl is
             begin
                II (Ctx.P_Body);
+               PL (Ctx.P_Body, "M : " & Message_Name & ";");
+               PL (Ctx.P_Body, "for M'Address use P;");
+               PL (Ctx.P_Body, "pragma Import (Ada, M);");
+            end Generate_M_Decl;
+
+            -------------------------------
+            -- Generate_Private_Prologue --
+            -------------------------------
+
+            procedure Generate_Private_Prologue is
+            begin
                PL (Ctx.P_Body,
                    Field_Name & "_Storage : " & FT & ";");
                PL (Ctx.P_Body,
@@ -640,7 +658,6 @@ procedure Tranxgen is
                II (Ctx.P_Body);
             end Generate_Private_Prologue;
 
-
          --  Start of processing for Field_Accessors
 
          begin
@@ -650,6 +667,7 @@ procedure Tranxgen is
 
             NL (Ctx.P_Body);
             PL (Ctx.P_Body, Get_Profile & " is");
+            Generate_M_Decl;
 
             if Convert and then F.Class = F_Private then
                Generate_Private_Prologue;
@@ -657,6 +675,7 @@ procedure Tranxgen is
                goto End_Getter;
             end if;
 
+            DI (Ctx.P_Body);
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
             P  (Ctx.P_Body, "return ");
@@ -707,12 +726,15 @@ procedure Tranxgen is
 
             NL (Ctx.P_Body);
             PL (Ctx.P_Body, Set_Profile & " is");
+            Generate_M_Decl;
+
             if Convert and then F.Class = F_Private then
                Generate_Private_Prologue;
                PL (Ctx.P_Body, Field_Name & "_Storage := V;");
                goto End_Setter;
             end if;
 
+            DI (Ctx.P_Body);
             PL (Ctx.P_Body, "begin");
             II (Ctx.P_Body);
 

@@ -6,6 +6,9 @@
 with AIP.Checksum;
 with AIP.Inet;
 
+with AIP.IPH;
+with AIP.UDPH;
+
 package body AIP.UDP is
 
    ---------------------
@@ -105,10 +108,7 @@ package body AIP.UDP is
       Uhdr : out System.Address;
       Err  : out Err_T)
    is
-      Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Buffers.Buffer_Payload (Buf);
-      pragma Import (Ada, Ihdr);
-
+      Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);
       IPhlen : constant U16_T := U16_T (IPH.IPH_IHL (Ihdr)) * 4;
    begin
       Err := AIP.NOERR;
@@ -137,8 +137,8 @@ package body AIP.UDP is
    -----------------
 
    function UDP_PCB_For
-     (Ihdr  : IPH.IP_Header;
-      Uhdr  : UDPH.UDP_Header;
+     (Ihdr  : System.Address;
+      Uhdr  : System.Address;
       Netif : NIF.Netif_Id) return AIP.EID
    is
       Cid, PCB : AIP.EID;
@@ -216,10 +216,8 @@ package body AIP.UDP is
    is
       use type Callbacks.CBK_Id;
 
-      Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Buffers.Buffer_Payload (Buf);
-
-      Uhdr_Ptr : System.Address;
+      Ihdr : constant system.Address := Buffers.Buffer_Payload (Buf);
+      Uhdr : System.Address;
 
       Err : AIP.Err_T := AIP.NOERR;  --  Until we know otherwise
       PCB : AIP.EID;
@@ -227,57 +225,50 @@ package body AIP.UDP is
       --  Perform a couple of checks and retrieve an UDP view
       --  of the incoming datagram.
 
-      IP_To_UDP (Buf, Uhdr_Ptr, Err);
+      IP_To_UDP (Buf, Uhdr, Err);
 
       --  Find the best UDP PCB to take it, verify the checksum and
       --  adjust the payload offset before passing up to the applicative
       --  callback.
 
-      declare
-         Uhdr : UDPH.UDP_Header;
-         for Uhdr'Address use Uhdr_Ptr;
-         pragma Import (Ada, Uhdr);
-      begin
-         if No (Err) then
+      if No (Err) then
+         PCB := UDP_PCB_For (Ihdr, Uhdr, Netif);
 
-            PCB := UDP_PCB_For (Ihdr, Uhdr, Netif);
-
-            if PCB /= NOPCB
-              or else
-                IPaddrs.Same (NIF.NIF_Addr (Netif), IPH.IPH_Dst_Address (Ihdr))
-            then
-               null;  --  ??? cksum check here
-            end if;
-
-            Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
-
-            if PCB = NOPCB then
-               --  icmp dest unreachable
-               null;
-            end if;
-         end if;
-
-         --  If we have a taker, trigger an UDP_RECV event if a callback was
-         --  registered for it. Buffer release is the application's
-         --  responsibility in this case.
-
-         if No (Err)
-           and then PCB /= NOPCB
-           and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
+         if PCB /= NOPCB
+           or else
+             IPaddrs.Same (NIF.NIF_Addr (Netif), IPH.IPH_Dst_Address (Ihdr))
          then
-            declare
-               RECV_Event : constant UDP_Event_T :=
-                 (Kind => UDP_RECV,
-                  Buf  => Buf,
-                  IP   => IPH.IPH_Src_Address (Ihdr),
-                  Port => UDPH.UDPH_Src_Port (Uhdr));
-            begin
-               UDP_Event (RECV_Event, PCB, PCBs (PCB).RECV_Cb);
-            end;
-         else
-            Buffers.Buffer_Blind_Free (Buf);
+            null;  --  ??? cksum check here
          end if;
-      end;
+
+         Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
+
+         if PCB = NOPCB then
+            --  icmp dest unreachable
+            null;
+         end if;
+      end if;
+
+      --  If we have a taker, trigger an UDP_RECV event if a callback was
+      --  registered for it. Buffer release is the application's
+      --  responsibility in this case.
+
+      if No (Err)
+        and then PCB /= NOPCB
+        and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
+      then
+         declare
+            RECV_Event : constant UDP_Event_T :=
+              (Kind => UDP_RECV,
+               Buf  => Buf,
+               IP   => IPH.IPH_Src_Address (Ihdr),
+               Port => UDPH.UDPH_Src_Port (Uhdr));
+         begin
+            UDP_Event (RECV_Event, PCB, PCBs (PCB).RECV_Cb);
+         end;
+      else
+         Buffers.Buffer_Blind_Free (Buf);
+      end if;
    end UDP_Input;
 
    ------------------------
@@ -534,17 +525,17 @@ package body AIP.UDP is
       if Err = AIP.NOERR then
          declare
             PUhdr : aliased UDPH.UDP_Pseudo_Header;
-            Uhdr : UDPH.UDP_Header;
-            for Uhdr'Address use Buffers.Buffer_Payload (Ubuf);
+            Uhdr  : constant system.Address := Buffers.Buffer_Payload (Ubuf);
 
             Csum : M16_T;
             Check_Buf : Buffers.Buffer_Id;
          begin
-            UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
-            UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
-            UDPH.Set_UDPP_Zero        (PUhdr, 0);
-            UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
-            UDPH.Set_UDPP_Length      (PUhdr, Buffers.Buffer_Tlen (Ubuf));
+            UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
+            UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
+            UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
+            UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
+            UDPH.Set_UDPP_Length      (PUhdr'Address,
+                                       Buffers.Buffer_Tlen (Ubuf));
 
             UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
             UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);

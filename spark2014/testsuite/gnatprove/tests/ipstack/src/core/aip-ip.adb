@@ -30,11 +30,7 @@ package body AIP.IP is
    procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
       Err  : Err_T := AIP.NOERR;
 
-      Ihdr_Ptr : constant System.Address := Buffers.Buffer_Payload (Buf);
-
-      Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Ihdr_Ptr;
-      pragma Import (Ada, Ihdr);
+      Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);
 
       Local : Boolean;
       --  Set True for a packet bound for the local node
@@ -51,7 +47,7 @@ package body AIP.IP is
            or else IPH.IPH_Version (Ihdr) /= 4
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Checksum
-                                (Packet => Ihdr_Ptr,
+                                (Packet => Ihdr,
                                  Length => Natural (IPH.IPH_IHL (Ihdr)) * 4)
                                 /= 16#ffff#)
       then

@@ -109,14 +109,8 @@ package body AIP.ARP is
    is
       Err  : Err_T := NOERR;
 
-      Ehdr : EtherH.Ether_Header;
-      for Ehdr'Address use Buffers.Buffer_Payload (Buf);
-      pragma Import (Ada, Ehdr);
-
-      Ahdr : ARPH.ARP_Header;
-      for Ahdr'Address use
-        Conversions.Ofs (Buffers.Buffer_Payload (Buf), Ehdr'Size / 8);
-      pragma Import (Ada, Ahdr);
+      Ehdr : constant System.Address := Buffers.Buffer_Payload (Buf);
+      Ahdr : constant System.Address := Conversions.Ofs (Ehdr, Ehdr'Size / 8);
 
       Ifa : constant IPaddrs.IPaddr := NIF.NIF_Addr (Nid);
 

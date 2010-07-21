@@ -14,9 +14,6 @@ with AIP.IP;
 with AIP.IPaddrs;
 with AIP.NIF;
 
-with AIP.IPH;
-with AIP.UDPH;
-
 --# inherit AIP.Config, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.NIF,
 --#         AIP.IPH, AIP.UDPH;
 
@@ -224,8 +221,8 @@ private
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
 
    function UDP_PCB_For
-     (Ihdr  : IPH.IP_Header;
-      Uhdr  : UDPH.UDP_Header;
+     (Ihdr  : System.Address;
+      Uhdr  : System.Address;
       Netif : NIF.Netif_Id) return AIP.EID;
    --  Search bound PCBs for one taker of a datagram with IP header Ihdr and
    --  UDP header Uhdr arrived on NETIF.
