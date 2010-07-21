@@ -31,290 +31,578 @@ package Why.Ids is
 
    subtype W_Unused_At_Start_Id is Why_Node_Id;
 
+   subtype W_Unused_At_Start_List is Why_Node_List;
+
    subtype W_Identifier_Id is Why_Node_Id;
+
+   subtype W_Identifier_List is Why_Node_List;
 
    subtype W_Type_Prop_Id is Why_Node_Id;
 
+   subtype W_Type_Prop_List is Why_Node_List;
+
    subtype W_Type_Int_Id is Why_Node_Id;
+
+   subtype W_Type_Int_List is Why_Node_List;
 
    subtype W_Type_Bool_Id is Why_Node_Id;
 
+   subtype W_Type_Bool_List is Why_Node_List;
+
    subtype W_Type_Real_Id is Why_Node_Id;
+
+   subtype W_Type_Real_List is Why_Node_List;
 
    subtype W_Type_Unit_Id is Why_Node_Id;
 
+   subtype W_Type_Unit_List is Why_Node_List;
+
    subtype W_Abstract_Type_Id is Why_Node_Id;
+
+   subtype W_Abstract_Type_List is Why_Node_List;
 
    subtype W_Generic_Formal_Type_Id is Why_Node_Id;
 
+   subtype W_Generic_Formal_Type_List is Why_Node_List;
+
    subtype W_Generic_Actual_Type_Chain_Id is Why_Node_Id;
+
+   subtype W_Generic_Actual_Type_Chain_List is Why_Node_List;
 
    subtype W_Array_Type_Id is Why_Node_Id;
 
+   subtype W_Array_Type_List is Why_Node_List;
+
    subtype W_Ref_Type_Id is Why_Node_Id;
+
+   subtype W_Ref_Type_List is Why_Node_List;
 
    subtype W_Protected_Value_Type_Id is Why_Node_Id;
 
+   subtype W_Protected_Value_Type_List is Why_Node_List;
+
    subtype W_Anonymous_Arrow_Type_Id is Why_Node_Id;
+
+   subtype W_Anonymous_Arrow_Type_List is Why_Node_List;
 
    subtype W_Named_Arrow_Type_Id is Why_Node_Id;
 
+   subtype W_Named_Arrow_Type_List is Why_Node_List;
+
    subtype W_Computation_Spec_Id is Why_Node_Id;
+
+   subtype W_Computation_Spec_List is Why_Node_List;
 
    subtype W_Integer_Constant_Id is Why_Node_Id;
 
+   subtype W_Integer_Constant_List is Why_Node_List;
+
    subtype W_Real_Constant_Id is Why_Node_Id;
+
+   subtype W_Real_Constant_List is Why_Node_List;
 
    subtype W_True_Literal_Id is Why_Node_Id;
 
+   subtype W_True_Literal_List is Why_Node_List;
+
    subtype W_False_Literal_Id is Why_Node_Id;
+
+   subtype W_False_Literal_List is Why_Node_List;
 
    subtype W_Void_Literal_Id is Why_Node_Id;
 
+   subtype W_Void_Literal_List is Why_Node_List;
+
    subtype W_Arith_Operation_Id is Why_Node_Id;
+
+   subtype W_Arith_Operation_List is Why_Node_List;
 
    subtype W_Negative_Term_Id is Why_Node_Id;
 
+   subtype W_Negative_Term_List is Why_Node_List;
+
    subtype W_Label_Identifier_Id is Why_Node_Id;
+
+   subtype W_Label_Identifier_List is Why_Node_List;
 
    subtype W_Operation_Id is Why_Node_Id;
 
+   subtype W_Operation_List is Why_Node_List;
+
    subtype W_Named_Term_Id is Why_Node_Id;
+
+   subtype W_Named_Term_List is Why_Node_List;
 
    subtype W_Conditional_Term_Id is Why_Node_Id;
 
+   subtype W_Conditional_Term_List is Why_Node_List;
+
    subtype W_Binding_Term_Id is Why_Node_Id;
+
+   subtype W_Binding_Term_List is Why_Node_List;
 
    subtype W_Protected_Term_Id is Why_Node_Id;
 
+   subtype W_Protected_Term_List is Why_Node_List;
+
    subtype W_Op_Add_Id is Why_Node_Id;
+
+   subtype W_Op_Add_List is Why_Node_List;
 
    subtype W_Op_Substract_Id is Why_Node_Id;
 
+   subtype W_Op_Substract_List is Why_Node_List;
+
    subtype W_Op_Multiply_Id is Why_Node_Id;
+
+   subtype W_Op_Multiply_List is Why_Node_List;
 
    subtype W_Op_Divide_Id is Why_Node_Id;
 
+   subtype W_Op_Divide_List is Why_Node_List;
+
    subtype W_Op_Modulo_Id is Why_Node_Id;
+
+   subtype W_Op_Modulo_List is Why_Node_List;
 
    subtype W_True_Literal_Pred_Id is Why_Node_Id;
 
+   subtype W_True_Literal_Pred_List is Why_Node_List;
+
    subtype W_False_Literal_Pred_Id is Why_Node_Id;
+
+   subtype W_False_Literal_Pred_List is Why_Node_List;
 
    subtype W_Predicate_Identifier_Id is Why_Node_Id;
 
+   subtype W_Predicate_Identifier_List is Why_Node_List;
+
    subtype W_Predicate_Instance_Id is Why_Node_Id;
+
+   subtype W_Predicate_Instance_List is Why_Node_List;
 
    subtype W_Related_Terms_Id is Why_Node_Id;
 
+   subtype W_Related_Terms_List is Why_Node_List;
+
    subtype W_Implication_Id is Why_Node_Id;
+
+   subtype W_Implication_List is Why_Node_List;
 
    subtype W_Equivalence_Id is Why_Node_Id;
 
+   subtype W_Equivalence_List is Why_Node_List;
+
    subtype W_Disjonction_Id is Why_Node_Id;
+
+   subtype W_Disjonction_List is Why_Node_List;
 
    subtype W_Conjonction_Id is Why_Node_Id;
 
+   subtype W_Conjonction_List is Why_Node_List;
+
    subtype W_Negation_Id is Why_Node_Id;
+
+   subtype W_Negation_List is Why_Node_List;
 
    subtype W_Conditional_Pred_Id is Why_Node_Id;
 
+   subtype W_Conditional_Pred_List is Why_Node_List;
+
    subtype W_Binding_Pred_Id is Why_Node_Id;
+
+   subtype W_Binding_Pred_List is Why_Node_List;
 
    subtype W_Universal_Quantif_Id is Why_Node_Id;
 
-   subtype W_Existencial_Quantif_Id is Why_Node_Id;
+   subtype W_Universal_Quantif_List is Why_Node_List;
+
+   subtype W_Existential_Quantif_Id is Why_Node_Id;
+
+   subtype W_Existential_Quantif_List is Why_Node_List;
 
    subtype W_Named_Predicate_Id is Why_Node_Id;
 
+   subtype W_Named_Predicate_List is Why_Node_List;
+
    subtype W_Protected_Predicate_Id is Why_Node_Id;
+
+   subtype W_Protected_Predicate_List is Why_Node_List;
 
    subtype W_Triggers_Id is Why_Node_Id;
 
+   subtype W_Triggers_List is Why_Node_List;
+
    subtype W_Trigger_Id is Why_Node_Id;
+
+   subtype W_Trigger_List is Why_Node_List;
 
    subtype W_Rel_Eq_Id is Why_Node_Id;
 
+   subtype W_Rel_Eq_List is Why_Node_List;
+
    subtype W_Rel_Ne_Id is Why_Node_Id;
+
+   subtype W_Rel_Ne_List is Why_Node_List;
 
    subtype W_Rel_Lt_Id is Why_Node_Id;
 
+   subtype W_Rel_Lt_List is Why_Node_List;
+
    subtype W_Rel_Le_Id is Why_Node_Id;
+
+   subtype W_Rel_Le_List is Why_Node_List;
 
    subtype W_Rel_Gt_Id is Why_Node_Id;
 
+   subtype W_Rel_Gt_List is Why_Node_List;
+
    subtype W_Rel_Ge_Id is Why_Node_Id;
+
+   subtype W_Rel_Ge_List is Why_Node_List;
 
    subtype W_Type_Id is Why_Node_Id;
 
+   subtype W_Type_List is Why_Node_List;
+
    subtype W_Logic_Id is Why_Node_Id;
+
+   subtype W_Logic_List is Why_Node_List;
 
    subtype W_Function_Id is Why_Node_Id;
 
+   subtype W_Function_List is Why_Node_List;
+
    subtype W_Predicate_Definition_Id is Why_Node_Id;
+
+   subtype W_Predicate_Definition_List is Why_Node_List;
 
    subtype W_Inductive_Id is Why_Node_Id;
 
+   subtype W_Inductive_List is Why_Node_List;
+
    subtype W_Axiom_Id is Why_Node_Id;
+
+   subtype W_Axiom_List is Why_Node_List;
 
    subtype W_Goal_Id is Why_Node_Id;
 
+   subtype W_Goal_List is Why_Node_List;
+
    subtype W_External_Id is Why_Node_Id;
+
+   subtype W_External_List is Why_Node_List;
 
    subtype W_Logic_Type_Id is Why_Node_Id;
 
+   subtype W_Logic_Type_List is Why_Node_List;
+
    subtype W_Logic_Binder_Id is Why_Node_Id;
+
+   subtype W_Logic_Binder_List is Why_Node_List;
 
    subtype W_Inductive_Case_Id is Why_Node_Id;
 
+   subtype W_Inductive_Case_List is Why_Node_List;
+
    subtype W_Effects_Id is Why_Node_Id;
+
+   subtype W_Effects_List is Why_Node_List;
 
    subtype W_Precondition_Id is Why_Node_Id;
 
+   subtype W_Precondition_List is Why_Node_List;
+
    subtype W_Postcondition_Id is Why_Node_Id;
+
+   subtype W_Postcondition_List is Why_Node_List;
 
    subtype W_Exn_Condition_Id is Why_Node_Id;
 
+   subtype W_Exn_Condition_List is Why_Node_List;
+
    subtype W_Assertion_Id is Why_Node_Id;
+
+   subtype W_Assertion_List is Why_Node_List;
 
    subtype W_Prog_Constant_Id is Why_Node_Id;
 
+   subtype W_Prog_Constant_List is Why_Node_List;
+
    subtype W_Prog_Identifier_Id is Why_Node_Id;
+
+   subtype W_Prog_Identifier_List is Why_Node_List;
 
    subtype W_Deref_Id is Why_Node_Id;
 
+   subtype W_Deref_List is Why_Node_List;
+
    subtype W_Assignment_Id is Why_Node_Id;
+
+   subtype W_Assignment_List is Why_Node_List;
 
    subtype W_Array_Access_Id is Why_Node_Id;
 
+   subtype W_Array_Access_List is Why_Node_List;
+
    subtype W_Array_Update_Id is Why_Node_Id;
+
+   subtype W_Array_Update_List is Why_Node_List;
 
    subtype W_Infix_Call_Id is Why_Node_Id;
 
+   subtype W_Infix_Call_List is Why_Node_List;
+
    subtype W_Prefix_Call_Id is Why_Node_Id;
+
+   subtype W_Prefix_Call_List is Why_Node_List;
 
    subtype W_Binding_Prog_Id is Why_Node_Id;
 
+   subtype W_Binding_Prog_List is Why_Node_List;
+
    subtype W_Binding_Ref_Id is Why_Node_Id;
+
+   subtype W_Binding_Ref_List is Why_Node_List;
 
    subtype W_Conditional_Prog_Id is Why_Node_Id;
 
+   subtype W_Conditional_Prog_List is Why_Node_List;
+
    subtype W_While_Loop_Id is Why_Node_Id;
+
+   subtype W_While_Loop_List is Why_Node_List;
 
    subtype W_Statement_Sequence_Id is Why_Node_Id;
 
+   subtype W_Statement_Sequence_List is Why_Node_List;
+
    subtype W_Label_Id is Why_Node_Id;
+
+   subtype W_Label_List is Why_Node_List;
 
    subtype W_Assert_Id is Why_Node_Id;
 
+   subtype W_Assert_List is Why_Node_List;
+
    subtype W_Post_Assertion_Id is Why_Node_Id;
+
+   subtype W_Post_Assertion_List is Why_Node_List;
 
    subtype W_Opaque_Assertion_Id is Why_Node_Id;
 
+   subtype W_Opaque_Assertion_List is Why_Node_List;
+
    subtype W_Fun_Def_Id is Why_Node_Id;
+
+   subtype W_Fun_Def_List is Why_Node_List;
 
    subtype W_Binding_Fun_Id is Why_Node_Id;
 
+   subtype W_Binding_Fun_List is Why_Node_List;
+
    subtype W_Binding_Rec_Id is Why_Node_Id;
+
+   subtype W_Binding_Rec_List is Why_Node_List;
 
    subtype W_Prog_Sequence_Id is Why_Node_Id;
 
+   subtype W_Prog_Sequence_List is Why_Node_List;
+
    subtype W_Raise_Statement_Id is Why_Node_Id;
+
+   subtype W_Raise_Statement_List is Why_Node_List;
 
    subtype W_Raise_Statement_With_Parameters_Id is Why_Node_Id;
 
+   subtype W_Raise_Statement_With_Parameters_List is Why_Node_List;
+
    subtype W_Try_Block_Id is Why_Node_Id;
+
+   subtype W_Try_Block_List is Why_Node_List;
 
    subtype W_Unreachable_Code_Id is Why_Node_Id;
 
+   subtype W_Unreachable_Code_List is Why_Node_List;
+
    subtype W_Begin_Block_Id is Why_Node_Id;
+
+   subtype W_Begin_Block_List is Why_Node_List;
 
    subtype W_Protected_Prog_Id is Why_Node_Id;
 
+   subtype W_Protected_Prog_List is Why_Node_List;
+
    subtype W_Op_Add_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Add_Prog_List is Why_Node_List;
 
    subtype W_Op_Substract_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Substract_Prog_List is Why_Node_List;
+
    subtype W_Op_Multiply_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Multiply_Prog_List is Why_Node_List;
 
    subtype W_Op_Divide_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Divide_Prog_List is Why_Node_List;
+
    subtype W_Op_Mod_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Mod_Prog_List is Why_Node_List;
 
    subtype W_Op_Eq_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Eq_Prog_List is Why_Node_List;
+
    subtype W_Op_Ne_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Ne_Prog_List is Why_Node_List;
 
    subtype W_Op_Lt_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Lt_Prog_List is Why_Node_List;
+
    subtype W_Op_Le_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Le_Prog_List is Why_Node_List;
 
    subtype W_Op_Gt_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Gt_Prog_List is Why_Node_List;
+
    subtype W_Op_Ge_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Ge_Prog_List is Why_Node_List;
 
    subtype W_Op_Or_Else_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Or_Else_Prog_List is Why_Node_List;
+
    subtype W_Op_And_Then_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_And_Then_Prog_List is Why_Node_List;
 
    subtype W_Op_Minus_Prog_Id is Why_Node_Id;
 
+   subtype W_Op_Minus_Prog_List is Why_Node_List;
+
    subtype W_Op_Not_Prog_Id is Why_Node_Id;
+
+   subtype W_Op_Not_Prog_List is Why_Node_List;
 
    subtype W_Binders_Id is Why_Node_Id;
 
+   subtype W_Binders_List is Why_Node_List;
+
    subtype W_Binder_Id is Why_Node_Id;
+
+   subtype W_Binder_List is Why_Node_List;
 
    subtype W_Recfun_Id is Why_Node_Id;
 
+   subtype W_Recfun_List is Why_Node_List;
+
    subtype W_Loop_Annot_Id is Why_Node_Id;
+
+   subtype W_Loop_Annot_List is Why_Node_List;
 
    subtype W_Wf_Arg_Id is Why_Node_Id;
 
+   subtype W_Wf_Arg_List is Why_Node_List;
+
    subtype W_Handler_Id is Why_Node_Id;
+
+   subtype W_Handler_List is Why_Node_List;
 
    subtype W_File_Id is Why_Node_Id;
 
+   subtype W_File_List is Why_Node_List;
+
    subtype W_Global_Binding_Id is Why_Node_Id;
+
+   subtype W_Global_Binding_List is Why_Node_List;
 
    subtype W_Global_Rec_Binding_Id is Why_Node_Id;
 
+   subtype W_Global_Rec_Binding_List is Why_Node_List;
+
    subtype W_Parameter_Declaration_Id is Why_Node_Id;
+
+   subtype W_Parameter_Declaration_List is Why_Node_List;
 
    subtype W_Exception_Declaration_Id is Why_Node_Id;
 
+   subtype W_Exception_Declaration_List is Why_Node_List;
+
    subtype W_Logic_Declaration_Id is Why_Node_Id;
+
+   subtype W_Logic_Declaration_List is Why_Node_List;
 
    subtype W_Term_Id is Why_Node_Id;
 
+   subtype W_Term_List is Why_Node_List;
+
    subtype W_Constant_Id is Why_Node_Id;
+
+   subtype W_Constant_List is Why_Node_List;
 
    subtype W_Arith_Op_Id is Why_Node_Id;
 
+   subtype W_Arith_Op_List is Why_Node_List;
+
    subtype W_Predicate_Id is Why_Node_Id;
+
+   subtype W_Predicate_List is Why_Node_List;
 
    subtype W_Primitive_Type_Id is Why_Node_Id;
 
+   subtype W_Primitive_Type_List is Why_Node_List;
+
    subtype W_Relation_Id is Why_Node_Id;
+
+   subtype W_Relation_List is Why_Node_List;
 
    subtype W_Logic_Declaration_Class_Id is Why_Node_Id;
 
+   subtype W_Logic_Declaration_Class_List is Why_Node_List;
+
    subtype W_Logic_Return_Type_Id is Why_Node_Id;
+
+   subtype W_Logic_Return_Type_List is Why_Node_List;
 
    subtype W_Logic_Arg_Type_Id is Why_Node_Id;
 
+   subtype W_Logic_Arg_Type_List is Why_Node_List;
+
    subtype W_Simple_Value_Type_Id is Why_Node_Id;
+
+   subtype W_Simple_Value_Type_List is Why_Node_List;
 
    subtype W_Value_Type_Id is Why_Node_Id;
 
+   subtype W_Value_Type_List is Why_Node_List;
+
    subtype W_Computation_Type_Id is Why_Node_Id;
+
+   subtype W_Computation_Type_List is Why_Node_List;
 
    subtype W_Prog_Id is Why_Node_Id;
 
+   subtype W_Prog_List is Why_Node_List;
+
    subtype W_Infix_Id is Why_Node_Id;
+
+   subtype W_Infix_List is Why_Node_List;
 
    subtype W_Prefix_Id is Why_Node_Id;
 
+   subtype W_Prefix_List is Why_Node_List;
+
    subtype W_Declaration_Id is Why_Node_Id;
+
+   subtype W_Declaration_List is Why_Node_List;
 
 end Why.Ids;

@@ -63,7 +63,7 @@ procedure Xkinds is
    procedure Traverse_Source is new Asis.Iterator.Traverse_Element
      (State_Information => Traversal_State);
 
-   procedure Print_Subtype (S : Wide_String);
+   procedure Print_Subtypes (S : Wide_String);
 
    -------------------
    -- Pre_Operation --
@@ -97,7 +97,7 @@ procedure Xkinds is
                   Text : constant Asis.Program_Text :=
                            Trim (Asis.Text.Element_Image (Element), Both);
                begin
-                  Print_Subtype (Text);
+                  Print_Subtypes (Text);
                   New_Line;
                end;
             end if;
@@ -108,7 +108,7 @@ procedure Xkinds is
                   Text : constant Asis.Program_Text :=
                            Trim (Asis.Text.Element_Image (Element), Both);
                begin
-                  Print_Subtype (Text);
+                  Print_Subtypes (Text);
                   New_Line;
                end;
             end if;
@@ -153,14 +153,16 @@ procedure Xkinds is
       end case;
    end Post_Operation;
 
-   -------------------
-   -- Print_Subtype --
-   -------------------
+   --------------------
+   -- Print_Subtypes --
+   --------------------
 
-   procedure Print_Subtype (S : Wide_String) is
+   procedure Print_Subtypes (S : Wide_String) is
    begin
       Put_Line ("   subtype " & S & "_Id is Why_Node_Id;");
-   end Print_Subtype;
+      New_Line;
+      Put_Line ("   subtype " & S & "_List is Why_Node_List;");
+   end Print_Subtypes;
 
    Control : Traverse_Control := Continue;
    State   : Traversal_State := Before_Why_Node_Kind;
