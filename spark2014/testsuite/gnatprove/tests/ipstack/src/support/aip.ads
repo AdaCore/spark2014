@@ -132,16 +132,6 @@ package AIP is
 
    NULID : constant EID := 0;
 
-   -------------------
-   -- Address types --
-   -------------------
-
-   IPTR_BITS : constant := AIP_Constants.Address_Size;
-   type IPTR_T is mod 2 ** IPTR_BITS;
-   --  Integer type with the same size as an address
-
-   NULIPTR : constant IPTR_T := 0;
-
    ---------------------
    -- Host endianness --
    ---------------------

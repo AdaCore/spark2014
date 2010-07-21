@@ -11,11 +11,12 @@ package AIP.Callbacks is
 
    pragma Pure;
 
-   --  Since we can't use access to subprograms in SPARK, callbacks are
-   --  identified by IPTR values and the applicative data argument as well.
+   --  Since we can't use access to subprograms in SPARK, callbacks and the
+   --  associated application level data are identified by arbitrary opaque
+   --  identifiers.
 
-   subtype CBK_Id is AIP.IPTR_T;
-   NOCB : constant CBK_Id := AIP.NULIPTR;
+   subtype CBK_Id is AIP.EID;
+   NOCB : CBK_Id renames AIP.NULID;
 
    --  The general scheme is as follows (PROTO = UDP|TCP):
    --

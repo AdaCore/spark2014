@@ -6,15 +6,20 @@
 --  Callback oriented low level access to the TCP services. At this point,
 --  this is a binding to the C implementation of LWIP.
 
-with AIP.Callbacks, AIP.IPaddrs, AIP.Buffers;
+with System;
+
+with AIP.Callbacks;
+with AIP.IPaddrs;
+with AIP.Buffers;
+
 --# inherit AIP.Callbacks, AIP.IPaddrs, AIP.Config;
 
 package AIP.TCP is
 
    --  TCP connections materialize through "TCP Control Block" entities:
 
-   subtype PCB_Id is AIP.IPTR_T;
-   NOPCB : constant PCB_Id := AIP.NULIPTR;
+   subtype PCB_Id is System.Address;
+   NOPCB : constant PCB_Id := System.Null_Address;
 
    subtype Port_T is AIP.M16_T;
 
@@ -22,7 +27,7 @@ package AIP.TCP is
    -- Preparing callback calls --
    ------------------------------
 
-   procedure TCP_Arg (PCB : PCB_Id; Arg : AIP.IPTR_T);
+   procedure TCP_Arg (PCB : PCB_Id; Arg : System.Address);
    --  Setup to pass ARG on every callback call for PCB.
 
    type TCP_Event_Kind is
@@ -81,7 +86,7 @@ package AIP.TCP is
    --  CB's signature is expected to be:
    --
    --    function TCP_Accept_Cb
-   --      (Arg : AIP.IPTR_T; Tcb : AIP.TCP.PCB_Id; Err : AIP.Err_T)
+   --      (Arg : System.Address; Tcb : AIP.TCP.PCB_Id; Err : AIP.Err_T)
    --    return AIP.Err_T
    --
    --  PCB is the new pcb allocated for the established connection and ERR is
@@ -120,7 +125,7 @@ package AIP.TCP is
 
    function TCP_Write
      (PCB   : PCB_Id;
-      Data  : AIP.IPTR_T;
+      Data  : System.Address;
       Len   : AIP.U16_T;
       Flags : AIP.U8_T) return AIP.Err_T;
    --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
@@ -147,7 +152,7 @@ package AIP.TCP is
    --  the remote host on PCB. CB's signature is expected to be:
    --
    --    function TCP_Sent_Cb
-   --      (Arg : AIP.IPTR_T;
+   --      (Arg : System.Address;
    --       Tcb : AIP.TCP.PCB_Id;
    --       Len : AIP.U16_T) return AIP.Err_T
    --
@@ -169,7 +174,7 @@ package AIP.TCP is
    --  arrives on PCB. CB's profile is expected to be;
    --
    --    function TCP_Recv_Cb
-   --      (Arg : AIP.IPTR_T;
+   --      (Arg : System.Address;
    --       Tcb : AIP.TCP.PCB_Id;
    --       Pbu : AIP.Pbufs.Pbuf_Id;
    --       Err : AIP.Err_T) return AIP.Err_T;
@@ -207,7 +212,7 @@ package AIP.TCP is
    --  about twice per second). CB's profile is expected to be:
    --
    --    function TCP_Poll_Cb
-   --      (Arg : AIP.IPTR_T;
+   --      (Arg : System.Address;
    --       Tcb : AIP.TCP.PCB_Id) return AIP.Err_T
    --
    --  ARG and PCB are the usual app/user arg and connection control block.
@@ -231,7 +236,7 @@ package AIP.TCP is
    --  of some error. CB's profile is expected to be:
    --
    --    procedure Echo_Err_Cb
-   --      (Arg : AIP.IPTR_T;
+   --      (Arg : System.Address;
    --       Err : AIP.Err_T)
    --
    --  ARG is the usual user/app argument. ERR is the aborting error code.

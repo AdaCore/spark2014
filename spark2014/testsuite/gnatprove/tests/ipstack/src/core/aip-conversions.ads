@@ -5,19 +5,13 @@
 
 --  Internal conversion services for AIP
 
-with System, Ada.Unchecked_Conversion;
+with System;
 
 package AIP.Conversions is
 
    pragma Preelaborate;
 
-   --  System.Address / IPTR conversions are required for LWIP binding
-   --  purposes, in particular callback subprogram addresses.
-
-   function To_IPTR is
-      new Ada.Unchecked_Conversion (System.Address, AIP.IPTR_T);
-
-   function To_ADDR is
-      new Ada.Unchecked_Conversion (AIP.IPTR_T, System.Address);
+   function Ofs (A : System.Address; Offset : Integer) return System.Address;
+   --  Return A + Offset
 
 end AIP.Conversions;

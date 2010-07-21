@@ -11,6 +11,8 @@
 private package AIP.Buffers.No_Data
 --# own State, Free_List;
 is
+   pragma Preelaborate;
+
    --  Redefine type U16_T locally so that No_Data.Buffer_Id is of a different
    --  type from Buffers.Buffer_Id. This ensures that the proper conversion is
    --  always performed from a No_Data.Buffer_Id to a Buffers.Buffer_Id and
@@ -57,7 +59,7 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
    --  Pointer to data referenced by buffer Buf
 

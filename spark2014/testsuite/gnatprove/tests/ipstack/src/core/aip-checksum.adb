@@ -14,12 +14,12 @@ package body AIP.Checksum is
    --------------
 
    function Checksum
-     (Packet  : IPTR_T;
+     (Packet  : System.Address;
       Length  : Natural;
       Initial : M16_T := 0) return M16_T
    is
       Data   : M16_T_Array (1 .. Length / 2);
-      for Data'Address use Conversions.To_ADDR (Packet);
+      for Data'Address use Packet;
       pragma Import (Ada, Data);
 
       Result : M32_T := M32_T (Initial);
@@ -38,8 +38,7 @@ package body AIP.Checksum is
       if Length mod 2 /= 0 then
          declare
             Remain : M8_T;
-            for Remain'Address use Conversions.To_ADDR
-                                     (Packet + IPTR_T (Length) - 1);
+            for Remain'Address use Conversions.Ofs (Packet, Length - 1);
             pragma Import (Ada, Remain);
          begin
             Result := Result + M32_T (Remain) * 2 ** 8;

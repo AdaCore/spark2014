@@ -11,6 +11,8 @@
 private package AIP.Buffers.Data
 --# own State, Free_List;
 is
+   pragma Preelaborate;
+
    --  Data buffers directly use the same type as Buffers.Buffer_Id since
    --  the same value is used to index in buffer arrays on both sides, contrary
    --  to what occurs for no-data buffers for which there is a necessary
@@ -48,7 +50,7 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
    --  Pointer to data held by buffer Buf
 

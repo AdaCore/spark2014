@@ -3,9 +3,10 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with System;
+
 with AIP.Checksum;
 with AIP.Config;
-with AIP.Conversions;
 
 with AIP.IPH;
 with AIP.UDP;
@@ -29,10 +30,10 @@ package body AIP.IP is
    procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
       Err  : Err_T := AIP.NOERR;
 
-      Ihdr_Ptr : constant IPTR_T := Buffers.Buffer_Payload (Buf);
+      Ihdr_Ptr : constant System.Address := Buffers.Buffer_Payload (Buf);
 
       Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Conversions.To_ADDR (Ihdr_Ptr);
+      for Ihdr'Address use Ihdr_Ptr;
       pragma Import (Ada, Ihdr);
 
       Local : Boolean;

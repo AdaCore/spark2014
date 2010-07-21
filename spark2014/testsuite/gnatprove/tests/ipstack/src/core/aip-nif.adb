@@ -3,8 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Conversions;
-
 package body AIP.NIF is
 
    type NIF_Array is array (Netif_Id) of aliased Netif;
@@ -34,9 +32,9 @@ package body AIP.NIF is
    -- Get_Netif --
    ---------------
 
-   function Get_Netif (Nid : Netif_Id) return IPTR_T is
+   function Get_Netif (Nid : Netif_Id) return System.Address is
    begin
-      return Conversions.To_IPTR (NIFs (Nid)'Address);
+      return NIFs (Nid)'Address;
    end Get_Netif;
 
    ----------------------
@@ -48,7 +46,7 @@ package body AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean
    is
    begin
-      return Addr = NIF_IP (Nid);
+      return Addr = NIF_Addr (Nid);
    end Is_Local_Address;
 
    --------------------------
@@ -64,6 +62,19 @@ package body AIP.NIF is
                or else Addr = NIF_Broadcast (Nid);
    end Is_Broadcast_Address;
 
+   ----------------------
+   -- Low_Level_Output --
+   ----------------------
+
+   procedure Low_Level_Output
+     (Nid : Netif_Id;
+      Buf : Buffers.Buffer_Id)
+   is
+   begin
+      --  Call Nid's LL_output callback???
+      null;
+   end Low_Level_Output;
+
    -------------------
    -- NIF_Broadcast --
    -------------------
@@ -74,13 +85,13 @@ package body AIP.NIF is
    end NIF_Broadcast;
 
    ------------
-   -- NIF_IP --
+   -- NIF_Addr --
    ------------
 
-   function NIF_IP (Nid : Netif_Id) return IPaddrs.IPaddr is
+   function NIF_Addr (Nid : Netif_Id) return IPaddrs.IPaddr is
    begin
       return NIFs (Nid).IP;
-   end NIF_IP;
+   end NIF_Addr;
 
    --------------
    -- NIF_Mask --

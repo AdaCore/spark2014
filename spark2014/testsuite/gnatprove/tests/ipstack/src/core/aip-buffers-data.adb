@@ -28,17 +28,17 @@ is
    subtype Buffer_Count is Buffer_Index;
 
    type Buffer is record
-      --  Number of buffers in singly linked chain
       Num          : Buffer_Count;
+      --  Number of buffers in singly linked chain
 
-      --  Number of contiguous buffers in singly linked chain from this buffer
       Num_No_Jump  : Buffer_Count;
+      --  Number of contiguous buffers in singly linked chain from this buffer
 
-      --  Offset to get to the position of the actual data in the buffer
       Left_Offset  : Buffers.Buffer_Length;
+      --  Offset to get to the position of the actual data in the buffer
 
-      --  Kind of buffer
       Kind         : Buffers.Data_Buffer_Kind;
+      --  Kind of buffer
    end record;
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
@@ -54,18 +54,21 @@ is
    is
    begin
       --  First initialize all the memory for buffers to zero, except for
-      --  special number fields initialized to one
+      --  special number fields initialized to one.
+
       Buf_List := Buffer_Array'
         (others => Buffer'(Num  => 1, Num_No_Jump => 1, Left_Offset => 0,
                            Kind => Buffers.LINK_BUF));
 
       --  Set special fields to adapt to a singly linked chain of buffers
+
       for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
          Buf_List (Buf).Num         := (Buffer_Index'Last - Buf) + 1;
          Buf_List (Buf).Num_No_Jump := Buf_List (Buf).Num;
       end loop;
 
       --  Make the head of the free-list point to the first buffer
+
       Free_List := 1;
 
       --  Intentionally leave Data_Array not initialized
@@ -89,10 +92,12 @@ is
       Requested_Size    : AIP.U16_T;
       Requested_Buffers : AIP.U16_T;
       Cur_Buf, Next_Buf : Buffer_Id;
+
       Remaining_Size    : Buffers.Data_Length;
       --  Remaining size to be allocated
    begin
       --  Check that the free-list is not empty
+
       Support.Verify (Free_List /= Buffers.NOBUF);
 
       Requested_Size := Offset + Size;
@@ -105,7 +110,8 @@ is
       end if;
 
       --  Check that the requested number of buffers are available, and that
-      --  they form a contiguous chain of buffers for Kind = MONO_BUF
+      --  they form a contiguous chain of buffers for Kind = MONO_BUF.
+
       case Kind is
          when Buffers.LINK_BUF =>
             Support.Verify (Requested_Buffers <= Buf_List (Free_List).Num);
@@ -115,24 +121,34 @@ is
       end case;
 
       --  Pop the head of the free-list
+
       Buf            := Free_List;
-      Cur_Buf        := Buf;  --  Useless because loop always executes
-                              --  Added to ensure Cur_Buf is initialized anyway
+
+      --  The following assignment is useless because loop always executes,
+      --  but is added to ensure Cur_Buf is initialized anyway.
+      --  Does this mean SPARK doesn't notice that the loop always runs???
+
+      Cur_Buf        := Buf;
+
       Next_Buf       := Buf;
       Remaining_Size := Requested_Size;
 
       --  Allocate buffers in singly linked chain
+
       for Remaining in reverse AIP.U16_T range 1 .. Requested_Buffers loop
          --  Update iterators
+
          Cur_Buf                             := Next_Buf;
          Next_Buf                            := Common.Buf_List (Cur_Buf).Next;
 
          --  Num and Num_No_Jump are as currently defined
+
          Buf_List (Cur_Buf).Num              := Remaining;
          Buf_List (Cur_Buf).Num_No_Jump      :=
            Buffer_Count'Min (Buf_List (Cur_Buf).Num_No_Jump, Remaining);
 
          --  Left offset is zero for all buffers but the first one
+
          if Remaining = Requested_Buffers then
             Buf_List (Cur_Buf).Left_Offset   := Offset;
          else
@@ -146,30 +162,35 @@ is
          case Kind is
             when Buffers.LINK_BUF =>
                --  Length completes offset to buffer size unless not enough
-               --  data remaining
+               --  data remaining.
+
                Common.Buf_List (Cur_Buf).Len :=
                  AIP.U16_T'Min (Buffers.Data_Buffer_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
             when Buffers.MONO_BUF =>
                --  Length is same as total length
+
                Common.Buf_List (Cur_Buf).Len :=
                  Common.Buf_List (Cur_Buf).Tot_Len;
          end case;
          --# end accept;
 
          --  Remaining size decreases by buffer size until last buffer
+
          if Remaining /= 1 then
-            Remaining_Size                   :=
-              Remaining_Size - Buffers.Data_Buffer_Size;
+            Remaining_Size := Remaining_Size - Buffers.Data_Buffer_Size;
          end if;
 
-         Buf_List (Cur_Buf).Kind             := Kind;
+         Buf_List (Cur_Buf).Kind := Kind;
+
          --  Set reference count
-         Common.Buf_List (Cur_Buf).Ref       := 1;
+
+         Common.Buf_List (Cur_Buf).Ref := 1;
       end loop;
 
-      --  Remove the allocate buffers from the free-list
+      --  Remove the allocated buffers from the free list
+
       Common.Buf_List (Cur_Buf).Next := Buffers.NOBUF;
       Free_List                      := Next_Buf;
    end Buffer_Alloc;
@@ -178,13 +199,14 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address
    --# global in Data_Array, Buf_List;
    is
       --# hide Buffer_Payload;  --  Hidden because of 'Address attribute
    begin
-      return Conversions.To_IPTR (Data_Array (Buf)'Address)
-        + AIP.IPTR_T (Buf_List (Buf).Left_Offset);
+      return Conversions.Ofs
+        (Data_Array (Buf)'Address,
+         Integer (Buf_List (Buf).Left_Offset));
    end Buffer_Payload;
 
    -----------------
@@ -196,6 +218,7 @@ is
    is
    begin
       --  Update Num and Num_No_Jump fields only
+
       Buf_List (Buf).Num            := Buf_List (Next).Num + 1;
       if Next = Buf + 1 then
          Buf_List (Buf).Num_No_Jump := Buf_List (Next).Num_No_Jump + 1;
@@ -219,6 +242,7 @@ is
       Offset := AIP.U16_T (abs (Bump));
 
       --  Check that we are not going to move off the beginning of the buffer
+
       if Bump >= 0 then
          Support.Verify_Or_Err
            (Buf_List (Buf).Left_Offset - Offset >= 0, Err, AIP.ERR_MEM);

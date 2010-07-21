@@ -11,7 +11,7 @@ package body AIP.TCP is
    -- TCP_Arg --
    -------------
 
-   procedure TCP_Arg (PCB : PCB_Id; Arg : AIP.IPTR_T) is
+   procedure TCP_Arg (PCB : PCB_Id; Arg : System.Address) is
    begin
       --  Generated stub: replace with real body!
       raise Program_Error;
@@ -131,7 +131,7 @@ package body AIP.TCP is
 
    function TCP_Write
      (PCB   : PCB_Id;
-      Data  : AIP.IPTR_T;
+      Data  : System.Address;
       Len   : AIP.U16_T;
       Flags : AIP.U8_T)
       return AIP.Err_T

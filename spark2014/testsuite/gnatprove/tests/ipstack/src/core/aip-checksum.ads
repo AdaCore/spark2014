@@ -6,10 +6,12 @@
 --  IP checksum
 --  http://www.ietf.org/rfc/rfc1071.txt
 
+with System;
+
 package AIP.Checksum is
 
    function Checksum
-     (Packet  : IPTR_T;
+     (Packet  : System.Address;
       Length  : Natural;
       Initial : M16_T := 0) return M16_T;
    --  Compute IP checksum (1's complement sum of all items in Packet).

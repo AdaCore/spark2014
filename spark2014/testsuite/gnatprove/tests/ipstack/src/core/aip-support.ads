@@ -6,6 +6,7 @@
 --# inherit AIP;
 
 package AIP.Support is
+   pragma Pure;
 
    procedure Verify (T : Boolean);
 

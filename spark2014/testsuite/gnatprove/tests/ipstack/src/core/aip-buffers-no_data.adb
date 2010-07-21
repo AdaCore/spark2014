@@ -3,8 +3,9 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with AIP.Support;
 with AIP.Buffers.Common;
+with AIP.Conversions;
+with AIP.Support;
 
 package body AIP.Buffers.No_Data
 --# own State is Buf_List;
@@ -13,7 +14,7 @@ is
 
    type Buffer is record
       --  Reference to the actual data
-      Payload_Ref : AIP.IPTR_T;
+      Payload_Ref : System.Address;
    end record;
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
@@ -61,7 +62,7 @@ is
    is
    begin
       --  Initialize all the memory for buffers to zero
-      Buf_List := Buffer_Array'(others => Buffer'(Payload_Ref => 0));
+      Buf_List := Buffer_Array'(others => Buffer'(Payload_Ref => System.Null_Address));
 
       --  Make the head of the free-list point to the first buffer
       Free_List := 1;
@@ -98,14 +99,14 @@ is
       --  Set specific fields
 
       --  Caller must set this field properly, afterwards
-      Buf_List (Buf).Payload_Ref             := AIP.NULIPTR;
+      Buf_List (Buf).Payload_Ref             := System.Null_Address;
    end Buffer_Alloc;
 
    --------------------
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address
    --# global in Buf_List;
    is
    begin
@@ -122,14 +123,13 @@ is
       Err  : in out AIP.Err_T)
    --# global in out Buf_List;
    is
-      Offset : AIP.IPTR_T;
    begin
       --  Check that we are not going to move off the beginning of the buffer
       Support.Verify_Or_Err (Bump <= 0, Err, AIP.ERR_MEM);
 
       if Err = AIP.NOERR then
-         Offset                     := AIP.IPTR_T (-Bump);
-         Buf_List (Buf).Payload_Ref := Buf_List (Buf).Payload_Ref + Offset;
+         Buf_List (Buf).Payload_Ref :=
+           Conversions.Ofs (Buf_List (Buf).Payload_Ref, Integer (-Bump));
       end if;
    end Buffer_Header;
 

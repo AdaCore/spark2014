@@ -130,10 +130,10 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address
    --# global in Data.State, No_Data.State;
    is
-      Result : AIP.IPTR_T;
+      Result : System.Address;
    begin
       if Is_Data_Buffer (Buf) then
          Result := Data.Buffer_Payload (Buf);

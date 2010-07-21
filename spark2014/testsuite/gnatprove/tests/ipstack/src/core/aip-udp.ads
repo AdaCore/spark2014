@@ -5,6 +5,8 @@
 
 --  Callback oriented low level access to the UDP services.
 
+with System;
+
 with AIP.Buffers;
 with AIP.Callbacks;
 with AIP.Config;
@@ -113,12 +115,12 @@ package AIP.UDP is
    --  Register that ID should be passed back to the user defined
    --  UDP_Event hook when an event of kind EVK triggers for PCB.
 
-   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : AIP.IPTR_T);
+   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address);
    --  Attach application level UDATA to PCB for later retrieval
    --  on UDP_Event calls.
 
-   function UDP_Udata (PCB : PCB_Id) return AIP.IPTR_T;
-   --  Retrieve Udata previously attached to PCB, NULIPTR if none.
+   function UDP_Udata (PCB : PCB_Id) return System.Address;
+   --  Retrieve Udata previously attached to PCB, System.Null_Address if none.
 
    procedure UDP_Event
      (Ev : UDP_Event_T; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
@@ -151,7 +153,7 @@ private
 
       Connected   : Boolean;          --  True if Remote_IP/Remote_Port are set
 
-      Udata       : AIP.IPTR_T;       --  User/Application data pointer
+      Udata       : System.Address;       --  User/Application data pointer
       RECV_Cb     : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
 
       Link : AIP.EID;                 --  Chaining link
@@ -215,7 +217,7 @@ private
 
    procedure IP_To_UDP
      (Buf  : Buffers.Buffer_Id;
-      Uhdr : out AIP.IPTR_T;
+      Uhdr : out System.Address;
       Err  : out Err_T);
    --  Get Uhdr to designate the UDP header of a datagram received from IP in
    --  BUF, and adjust BUF's payload accordingly.

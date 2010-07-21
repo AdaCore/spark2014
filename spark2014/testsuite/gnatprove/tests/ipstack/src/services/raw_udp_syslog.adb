@@ -3,15 +3,14 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with System;
+
 with RAW_UDP_Callbacks, AIP.IPaddrs, AIP.Inet, AIP.Buffers;
 
-use type AIP.EID;
---  use type AIP.IPTR_T;
+package body RAW_UDP_Syslog is
+   use type AIP.EID;
 
-package body RAW_UDP_Syslog
-is
-
-   procedure Memcpy (Dst : AIP.IPTR_T; Src : String; Len : Integer);
+   procedure Memcpy (Dst : System.Address; Src : String; Len : Integer);
    pragma Import (C, Memcpy, "memcpy");
 
    procedure SYSLOG_Process_Recv

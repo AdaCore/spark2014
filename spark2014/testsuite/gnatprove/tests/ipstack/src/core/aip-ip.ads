@@ -15,9 +15,15 @@ package AIP.IP is
       Local_IP  : IPaddrs.IPaddr;
       Remote_IP : IPaddrs.IPaddr;
 
-      SOO : AIP.U16_T;  -- Socket Options
-      TOS : AIP.U8_T;   -- Type Of Service
-      TTL : AIP.U8_T;   -- Time To Live
+      SOO : AIP.U16_T;
+      --  Socket options
+      --  Should use boolean components instead???
+
+      TOS : AIP.U8_T;
+      --  Type Of Service
+
+      TTL : AIP.U8_T;
+      --  Time To Live
    end record;
 
    procedure IP_Route
@@ -34,6 +40,8 @@ package AIP.IP is
       Proto  : AIP.U8_T;
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T);
+   --  Output IP datagram
+   --  ... and deallocate Buf???
 
    IP_HLEN : constant := 20;
    --  What if there are options???

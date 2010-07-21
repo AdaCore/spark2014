@@ -4,7 +4,6 @@
 ------------------------------------------------------------------------------
 
 with AIP.Checksum;
-with AIP.Conversions;
 with AIP.Inet;
 
 package body AIP.UDP is
@@ -75,7 +74,7 @@ package body AIP.UDP is
 
       PCBs (PCB).Connected := False;
 
-      PCBs (PCB).Udata     := AIP.NULIPTR;
+      PCBs (PCB).Udata     := System.Null_Address;
       PCBs (PCB).RECV_Cb   := Callbacks.NOCB;
       PCBs (PCB).Link      := NOPCB;
    end PCB_Clear;
@@ -103,11 +102,11 @@ package body AIP.UDP is
 
    procedure IP_To_UDP
      (Buf  : Buffers.Buffer_Id;
-      Uhdr : out AIP.IPTR_T;
+      Uhdr : out System.Address;
       Err  : out Err_T)
    is
       Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Conversions.To_ADDR (Buffers.Buffer_Payload (Buf));
+      for Ihdr'Address use Buffers.Buffer_Payload (Buf);
       pragma Import (Ada, Ihdr);
 
       IPhlen : constant U16_T := U16_T (IPH.IPH_IHL (Ihdr)) * 4;
@@ -215,10 +214,12 @@ package body AIP.UDP is
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
    is
-      Ihdr : IPH.IP_Header;
-      for Ihdr'Address use Conversions.To_ADDR (Buffers.Buffer_Payload (Buf));
+      use type Callbacks.CBK_Id;
 
-      Uhdr_Ptr : AIP.IPTR_T;
+      Ihdr : IPH.IP_Header;
+      for Ihdr'Address use Buffers.Buffer_Payload (Buf);
+
+      Uhdr_Ptr : System.Address;
 
       Err : AIP.Err_T := AIP.NOERR;  --  Until we know otherwise
       PCB : AIP.EID;
@@ -234,7 +235,7 @@ package body AIP.UDP is
 
       declare
          Uhdr : UDPH.UDP_Header;
-         for Uhdr'Address use Conversions.To_ADDR (Uhdr_Ptr);
+         for Uhdr'Address use Uhdr_Ptr;
          pragma Import (Ada, Uhdr);
       begin
          if No (Err) then
@@ -243,7 +244,7 @@ package body AIP.UDP is
 
             if PCB /= NOPCB
               or else
-                IPaddrs.Same (NIF.NIF_IP (Netif), IPH.IPH_Dst_Address (Ihdr))
+                IPaddrs.Same (NIF.NIF_Addr (Netif), IPH.IPH_Dst_Address (Ihdr))
             then
                null;  --  ??? cksum check here
             end if;
@@ -256,11 +257,12 @@ package body AIP.UDP is
             end if;
          end if;
 
-         --  If we have a taker, trigger an UDP_RECV event if a callback
-         --  was registered for it. Buffer release is the application's
+         --  If we have a taker, trigger an UDP_RECV event if a callback was
+         --  registered for it. Buffer release is the application's
          --  responsibility in this case.
 
-         if No (Err) and then PCB /= NOPCB
+         if No (Err)
+           and then PCB /= NOPCB
            and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
          then
             declare
@@ -517,7 +519,7 @@ package body AIP.UDP is
 
       if Err = AIP.NOERR then
 
-         Src_IP := NIF.NIF_IP (Netif);
+         Src_IP := NIF.NIF_Addr (Netif);
 
          if not IPaddrs.Any (PCBs (PCB).IPCB.Local_IP)
            and then not IPaddrs.Same (PCBs (PCB).IPCB.Local_IP, Src_IP)
@@ -533,8 +535,7 @@ package body AIP.UDP is
          declare
             PUhdr : aliased UDPH.UDP_Pseudo_Header;
             Uhdr : UDPH.UDP_Header;
-            for Uhdr'Address use Conversions.To_ADDR
-              (Buffers.Buffer_Payload (Ubuf));
+            for Uhdr'Address use Buffers.Buffer_Payload (Ubuf);
 
             Csum : M16_T;
             Check_Buf : Buffers.Buffer_Id;
@@ -553,7 +554,7 @@ package body AIP.UDP is
             --  Start checksum computation with pseudo IP header
 
             Csum :=  Checksum.Checksum
-                 (Packet  => Conversions.To_IPTR (PUhdr'Address),
+                 (Packet  => PUhdr'Address,
                   Length  => PUhdr'Size / 8);
 
             --  Then include complete UDP header and payload in computation
@@ -667,14 +668,14 @@ package body AIP.UDP is
    -- UDP_Udata --
    ---------------
 
-   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : AIP.IPTR_T) is
+   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address) is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
       PCBs (PCB).Udata := Udata;
    end UDP_Set_Udata;
 
-   function UDP_Udata (PCB : PCB_Id) return AIP.IPTR_T is
+   function UDP_Udata (PCB : PCB_Id) return System.Address is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 

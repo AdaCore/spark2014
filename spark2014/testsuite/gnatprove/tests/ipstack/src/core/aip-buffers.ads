@@ -8,6 +8,8 @@
 --# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
 --#         AIP.Support, AIP.Conversions;  --  Needed by child packages
 
+with System;
+
 package AIP.Buffers
 --# own State;
 is
@@ -139,7 +141,7 @@ is
    --  Buffer following Buf in a chain, either next buffer for the same packet
    --  or first buffer of another one, or NOBUF
 
-   function Buffer_Payload (Buf : Buffer_Id) return AIP.IPTR_T;
+   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
    --# global in State;
    --  Pointer to data held or referenced by buffer Buf
