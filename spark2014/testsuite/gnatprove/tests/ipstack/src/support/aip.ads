@@ -95,10 +95,12 @@ package AIP is
    -- Opaque data --
    -----------------
 
-   type Ethernet_Address is new String (1 .. 6);
+   subtype Ethernet_Address_Range is Integer range 1 .. 6;
+   type Ethernet_Address is array (Ethernet_Address_Range) of U8_T;
    --  48 bit Ethernet address
 
-   type Opaque64_T is new String (1 .. 8);
+   subtype Opaque64_Range is Integer range 1 .. 8;
+   type Opaque64 is array (Opaque64_Range) of U8_T;
    --  64 bit opaque data (used for copy of original datagram in ICMP messages)
 
    ----------------------------
