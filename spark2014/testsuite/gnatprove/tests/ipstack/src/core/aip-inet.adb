@@ -5,6 +5,31 @@
 
 package body AIP.Inet is
 
+   --  Amount of room to allocate in a buffer for headers of each broad
+   --  protocol layer, each to be accumulated on top of the lower ones.
+
+   TRANSPORT_BUF_HLEN : constant AIP.U16_T := 20;
+   IP_BUF_HLEN        : constant AIP.U16_T := 20;
+   LINK_BUF_HLEN      : constant AIP.U16_T := 16;
+
+   -------------
+   -- HLEN_To --
+   -------------
+
+   function HLEN_To (L : Inet_Layer) return AIP.U16_T is
+      Room : AIP.U16_T := 0;
+   begin
+      if L >= TRANSPORT_LAYER then
+         Room := Room + TRANSPORT_BUF_HLEN;
+      end if;
+      if L >= IP_LAYER then
+         Room := Room + IP_BUF_HLEN;
+      end if;
+      Room := Room + LINK_BUF_HLEN;
+
+      return Room;
+   end HLEN_To;
+
    --  Network byte ordering is big endian.  Swap value as needed.
 
    --------------
@@ -31,7 +56,7 @@ package body AIP.Inet is
 
    function htonlu (V : AIP.U32_T) return AIP.U32_T is
    begin
-      return U32_T (htonlm (AIP.M32_T (V)));
+      return AIP.U32_T (htonlm (AIP.M32_T (V)));
    end htonlu;
 
    --------------
@@ -55,7 +80,7 @@ package body AIP.Inet is
 
    function htonsu (V : AIP.U16_T) return AIP.U16_T is
    begin
-      return U16_T (htonsm (AIP.M16_T (V)));
+      return AIP.U16_T (htonsm (AIP.M16_T (V)));
    end htonsu;
 
    --------------
@@ -85,27 +110,5 @@ package body AIP.Inet is
    begin
       return htonsu (V);
    end ntohsu;
-
-   -------------
-   -- HLEN_To --
-   -------------
-
-   TRANSPORT_BUF_HLEN : constant := 20;
-   IP_BUF_HLEN : constant := 20;
-   LINK_BUF_HLEN : constant := 16;
-
-   function HLEN_To (L : Inet_Layer) return U16_T is
-      Room : U16_T := 0;
-   begin
-      if L >= TRANSPORT_LAYER then
-         Room := Room + TRANSPORT_BUF_HLEN;
-      end if;
-      if L >= IP_LAYER then
-         Room := Room + IP_BUF_HLEN;
-      end if;
-      Room := Room + LINK_BUF_HLEN;
-
-      return Room;
-   end HLEN_To;
 
 end AIP.Inet;

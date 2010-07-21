@@ -60,10 +60,9 @@
 --  AIP.Callbacks       User callback identifiers
 --  AIP.Inet            Internetting facilities (hton/ntoh etc)
 
-with System;
 with AIP_Constants;
 
---# inherit System, AIP_Constants;
+--# inherit AIP_Constants;
 
 package AIP is
    pragma Pure;
@@ -118,7 +117,7 @@ package AIP is
    function No (Err : Err_T) return Boolean;
    --  True when Err is NOERR
 
-   function Some (Err : Err_T) return Boolean;
+   function Any (Err : Err_T) return Boolean;
    --  True when Err is not NOERR
 
    ------------------------
@@ -137,9 +136,6 @@ package AIP is
    -- Address types --
    -------------------
 
-   subtype ADDR_T is System.Address;
-   --  Bare machine address
-
    IPTR_BITS : constant := AIP_Constants.Address_Size;
    type IPTR_T is mod 2 ** IPTR_BITS;
    --  Integer type with the same size as an address
@@ -155,5 +151,5 @@ package AIP is
 
 private
    pragma Inline (No);
-   pragma Inline (Some);
+   pragma Inline (Any);
 end AIP;
