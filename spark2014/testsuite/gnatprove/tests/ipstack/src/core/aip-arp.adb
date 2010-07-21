@@ -326,9 +326,10 @@ package body AIP.ARP is
 
    procedure ARP_Reset (AE : in out ARP_Entry) is
    begin
-      AE.State     := Incomplete;
-      AE.Permanent := False;
-      AE.Timestamp := Time_Types.Time'First;
+      AE.State        := Incomplete;
+      AE.Permanent    := False;
+      AE.Timestamp    := Time_Types.Time'First;
+      AE.Packet_Queue := Buffers.Empty_Packet_List;
    end ARP_Reset;
 
    --------------

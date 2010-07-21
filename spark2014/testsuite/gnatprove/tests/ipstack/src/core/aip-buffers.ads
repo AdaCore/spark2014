@@ -213,6 +213,7 @@ is
    --  themselves can be attached to chained lists.
 
    type Packet_List is private;
+   Empty_Packet_List : constant Packet_List;
 
    procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id);
    --  Append Buf to list L
@@ -228,7 +229,9 @@ private
    --  style checks require a declaration.
 
    type Packet_List is record
-      Head, Tail : Buffer_Id := NOBUF;
+      Head, Tail : Buffer_Id;
    end record;
+
+   Empty_packet_list : constant packet_list := (Head => NOBUF, Tail => NOBUF);
 
 end AIP.Buffers;
