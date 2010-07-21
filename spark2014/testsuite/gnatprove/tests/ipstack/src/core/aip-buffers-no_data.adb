@@ -18,7 +18,6 @@ is
    end record;
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
-
    Buf_List : Buffer_Array;
 
    ---------------
@@ -62,10 +61,13 @@ is
    is
    begin
       --  Initialize all the memory for buffers to zero
-      Buf_List := Buffer_Array'(others => Buffer'(Payload_Ref => System.Null_Address));
+
+      Buf_List := Buffer_Array'
+                    (others => Buffer'(Payload_Ref => System.Null_Address));
 
       --  Make the head of the free-list point to the first buffer
-      Free_List := 1;
+
+      Free_List := Buf_List'First;
    end Buffer_Init;
 
    ------------------
