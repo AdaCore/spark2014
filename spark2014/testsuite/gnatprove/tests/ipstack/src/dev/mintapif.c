@@ -1,6 +1,7 @@
 /*-----------------------------------------------------------------------------------*/
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
+ * Copyright (C) 2010, AdaCore
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -269,7 +270,10 @@ mintapif_input (Netif_Id nid)
    This seems to work but needs thorough testing. */
       AIP_arpip_input(netif, p);
 #endif
+
+      /* Suspicious hard-coded constant -14??? */
       AIP_buffer_header (p, -14, &err);
+
       ((Input_CB_T)netif->Input_CB) (p, nid);
       break;
     case Ether_Type_ARP:
