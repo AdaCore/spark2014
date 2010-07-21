@@ -5,11 +5,12 @@
 
 --  RFC826 - Address Resolution Protocol
 
-with AIP.Time_Types;
+with System;
 
 with AIP.Buffers;
 with AIP.IPaddrs;
 with AIP.NIF;
+with AIP.Time_Types;
 
 package AIP.ARP is
 
@@ -38,16 +39,20 @@ private
       Dst_IP_Address  : IPaddrs.IPaddr;
       Dst_MAC_Address : Ethernet_Address;
 
+      Packet_Queue    : Buffers.Packet_List;
+      --  For incomplete entries, chained list of pending packets to be sent
+      --  once ARP lookup is completed.
+
       Prev, Next      : Any_ARP_Entry_Id;
    end record;
 
    procedure ARP_Input
-     (Nid           : NIF.Netif_Id;
-      Netif_Address : IPTR_T;
-      Buf           : Buffers.Buffer_Id);
+     (Nid                : NIF.Netif_Id;
+      Netif_MAC_Addr_Ptr : System.Address;
+      Buf                : Buffers.Buffer_Id);
    pragma Export (C, ARP_Input, "AIP_arp_input");
-   --  Process ARP packet in Buf received on interface Nid. Netif_Address is
-   --  Nid's hardware address.
+   --  Process ARP packet in Buf received on interface Nid. Netif_MAC_Address
+   --  designates Nid's hardware address.
 
    procedure IP_Input
      (Nid   : NIF.Netif_Id;
@@ -70,12 +75,23 @@ private
    --  Clear all information in AE and reset it to Incomplete state
 
    procedure ARP_Find
-     (Addr : IPaddrs.IPaddr;
-      Id   : out Any_ARP_Entry_Id);
-   --  Find existing entry for Addr, or allocate a new one if not found.
+     (Addr     : IPaddrs.IPaddr;
+      Id       : out Any_ARP_Entry_Id;
+      Allocate : Boolean);
+   --  Find existing entry for Addr, or allocate a new one if not found and
+   --  Allocate is True.
    --  Note: May recycle old non-permanent entries.
    --  Id is No_ARP_Entry on return if no storage is available for the
    --  requested allocation.
+
+   procedure ARP_Update
+     (Nid         : NIF.Netif_Id;
+      Eth_Address : Ethernet_Address;
+      IP_Address  : IPaddrs.IPaddr;
+      Allocate    : Boolean;
+      Err         : out Err_T);
+   --  Update entry for the given (Eth_Address, IP_Address) couple seen on Nid.
+   --  If Allocate is True, create new entry if none exists.
 
    procedure ARP_Prepend
      (List : in out Any_ARP_Entry_Id;
