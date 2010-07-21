@@ -53,8 +53,11 @@ private
    --  Make this configurable???
    --  6 is enough for Ethernet
 
-   type Netif_Name is new String (1 .. 2);
-   type Netif_LL_Address is new String (1 .. Max_LL_Address_Length);
+   subtype Netif_Name_Range is Integer range 1 .. 2;
+   type Netif_Name is array (Netif_Name_Range) of Character;
+
+   subtype Netif_LL_Address_Range is Integer range 1 .. Max_LL_Address_Length;
+   type Netif_LL_Address is array (Netif_LL_Address_Range) of U8_T;
 
    type Netif is record
       State             : Netif_State := Invalid;

@@ -103,4 +103,17 @@ private
       AEID : ARP_Entry_Id);
    --  Remove AEID from list
 
+   procedure Send_Request
+     (Nid            : NIF.Netif_Id;
+      Dst_IP_Address : IPaddrs.IPaddr);
+   --  Send ARP request for Dst_IP_Address on Nid
+
+   procedure Send_Packet
+     (Nid             : NIF.Netif_Id;
+      Frame_Type      : U16_T;
+      Buf             : Buffers.Buffer_Id;
+      Dst_MAC_Address : Ethernet_Address);
+   --  Send payload Buf to Dst_MAC_Address on Nid, as the payload of a frame
+   --  with the given Frame_Type.
+
 end AIP.ARP;

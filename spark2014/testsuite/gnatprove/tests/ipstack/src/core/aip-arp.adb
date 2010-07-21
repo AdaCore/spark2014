@@ -29,6 +29,7 @@ package body AIP.ARP is
       Id := ARP_Active_List;
       Scan_ARP_Entries : while Id /= No_ARP_Entry loop
          if ARP_Table (Id).Dst_IP_Address = Addr then
+
             --  Entry found
 
             ARP_Unlink (ARP_Active_List, Id);
@@ -201,7 +202,6 @@ package body AIP.ARP is
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
    is
-      pragma Unreferenced (Nid);
       AEID : Any_ARP_Entry_Id;
    begin
       ARP_Find (Dst_Address, AEID, Allocate => True);
@@ -211,18 +211,26 @@ package body AIP.ARP is
          begin
             case AE.State is
                when Unused     =>
-                  --  Cannot happend
+                  --  Cannot happen
+
                   raise Program_Error;
 
                when Active     =>
-                  --  Call netif low level output callback
-                  --  TBD
-                  raise Program_Error;
+                  Send_Packet
+                    (Nid, EtherH.Ether_Type_IP, Buf, AE.Dst_MAC_Address);
 
                when Incomplete =>
                   --  Park packet on entry's pending list
 
                   Buffers.Append_Packet (AE.Packet_Queue, Buf);
+
+                  --  If last attempt is old enough (also case of a newly
+                  --  created incomplete entry), send out ARP request.
+                  --  Condition to be refined???
+
+                  if True then
+                     Send_Request (Nid, Dst_Address);
+                  end if;
             end case;
          end;
       else
@@ -256,8 +264,13 @@ package body AIP.ARP is
 
    procedure ARP_Timer is
    begin
-      null;
       --  TBD???
+
+      --  Expire unused entries???
+
+      --  Retry pending entries??? (only if parked packets???)
+
+      null;
    end ARP_Timer;
 
    ----------------
@@ -291,7 +304,6 @@ package body AIP.ARP is
       Allocate    : Boolean;
       Err         : out Err_T)
    is
-      pragma Unreferenced (Nid);
       AEID : Any_ARP_Entry_Id;
 
       Packet_Buf : Buffers.Buffer_Id;
@@ -314,7 +326,8 @@ package body AIP.ARP is
                Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
                exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
 
-               --  Send out Packet_Buf???
+               Send_Packet
+                 (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
             end loop Flush_Queue;
          end;
       end if;
@@ -341,8 +354,59 @@ package body AIP.ARP is
       Buf   : Buffers.Buffer_Id)
    is
    begin
-      --  TBD
+      --  TBD???
       raise Program_Error;
    end IP_Input;
+
+   -----------------
+   -- Send_Packet --
+   -----------------
+
+   procedure Send_Packet
+     (Nid             : NIF.Netif_Id;
+      Frame_Type      : U16_T;
+      Buf             : Buffers.Buffer_Id;
+      Dst_MAC_Address : Ethernet_Address)
+   is
+   begin
+      --  TBD???
+
+      --  Prepend Ethernet header
+
+      --  Call low-level output callback from Nid
+
+      null;
+   end Send_Packet;
+
+   ------------------
+   -- Send_Request --
+   ------------------
+
+   procedure Send_Request
+     (Nid            : NIF.Netif_Id;
+      Dst_IP_Address : IPaddrs.IPaddr)
+   is
+      Nid_LL_Address : Ethernet_Address;
+      --  Get LL address from Nid???
+      Ethernet_Broadcast : constant Ethernet_Address := (others => 16#ff#);
+
+      Buf : Buffers.Buffer_Id;
+
+      Ahdr : System.Address;
+      --  Allocate buffer and set Ahdr ???
+   begin
+      ARPH.Set_ARPH_Hardware_Type (Ahdr, ARPH.ARP_Hw_Ethernet);
+      ARPH.Set_ARPH_Protocol      (Ahdr, EtherH.Ether_Type_IP);
+      ARPH.Set_ARPH_Hw_Len        (Ahdr, Ethernet_Address'Size / 8);
+      ARPH.Set_ARPH_Pr_Len        (Ahdr, IPaddrs.IPaddr'Size);
+      ARPH.Set_ARPH_Operation     (Ahdr, ARPH.ARP_Op_Request);
+      ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Nid_LL_Address);
+      ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
+      ARPH.Set_ARPH_Dst_Eth_Address (Ahdr, Ethernet_Broadcast);
+      ARPH.Set_ARPH_Dst_IP_Address  (Ahdr, Dst_IP_Address);
+
+      Send_Packet (Nid, EtherH.Ether_Type_ARP, Buf, Ethernet_Broadcast);
+      Buffers.Buffer_Blind_Free (Buf);
+   end Send_Request;
 
 end AIP.ARP;
