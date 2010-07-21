@@ -11,23 +11,28 @@
 private package AIP.Buffers.Common
 --# own Buf_List;
 is
+   pragma Preelaborate;
+
    type Buffer is record
-      --  Next buffer in singly linked chain
       Next    : Buffers.Buffer_Id;
+      --  Next buffer in this buffer chain
 
-      --  Length of the data held or referenced by this buffer
+      Next_Packet : Buffers.Buffer_Id;
+      --  Next packet in queue
+
       Len     : Buffers.Data_Length;
+      --  Length of the data held or referenced by this buffer
 
+      Tot_Len : Buffers.Data_Length;
       --  Total length of the data referenced by this chain of buffers
-      --
+
       --  The following invariant should hold:
       --  Tot_Len = Len + (if Next /= 0 then Buffers (Next).Tot_Len else 0)
-      Tot_Len : Buffers.Data_Length;
 
+      Ref     : AIP.U16_T;
       --  The reference count always equals the number of pointers that refer
       --  to this buffer. This can be pointers from an application or the stack
       --  itself.
-      Ref     : AIP.U16_T;
    end record;
 
    type Buffer_Array is array (Buffers.Buffer_Index) of Buffer;
