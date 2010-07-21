@@ -1,0 +1,6 @@
+direct_updates
+pragma pure
+pragma unreferenced
+pragma inline
+pragma assert
+pragma preelaborate

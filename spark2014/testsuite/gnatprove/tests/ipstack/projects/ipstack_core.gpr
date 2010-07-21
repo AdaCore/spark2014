@@ -3,11 +3,13 @@ with "ipstack_support";
 
 project IPStack_Core is
    Subdir := "src/core";
+   SPARK_Subdir := "src/spark";
    for Library_Name use "aip-core";
    for Library_Kind use "static";
 
    for Source_Dirs use
      ("../" & Subdir,
+      "../" & SPARK_Subdir,
       "../src/include");
 
    for Object_Dir      use IPStack_Config.Obj_Prefix & Subdir;
@@ -31,8 +33,9 @@ project IPStack_Core is
 
    package Ide is
       for Default_Switches ("examiner") use
-          ("-flow=data", "-index_file=../src/core/aip.idx",
-           "-config_file=../src/core/config.shs",
-           "-warning_file=../src/core/aip.wrn");
+          ("-flow=data", 
+           "-index_file=../" & SPARK_Subdir & "/aip.idx",
+           "-config_file=../" & SPARK_Subdir & "/config.shs",
+           "-warning_file=../" & SPARK_Subdir & "/aip.wrn");
    end Ide;
 end IPStack_Core;
