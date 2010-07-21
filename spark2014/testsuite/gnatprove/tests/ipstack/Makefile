@@ -50,16 +50,6 @@ ipstack: build/gen/aip_constants.ads  \
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_services
 	$(BUILDER) $(GNATMAKE_FLAGS) -p -P ipstack_dev
 
-codepeer: force
-	$(MAKE) TARGET=$(TARGET) \
-	   GNATMAKE_FLAGS="$(GNATMAKE_FLAGS) -c --subdirs=codepeer -gnatcC" \
-	   ipstack
-	codepeer -all -lib ipstack.lib -global -background -quiet
-	@echo ""
-	@echo "codepeer completed successfully."
-	@echo "to view messages, run: codepeer_msg_reader build/ipstack.output"
-	@echo "or: firefox build/ipstack.output/html/index.html"
-
 build/bldtools/tranxgen: src/bldtools/tranxgen.adb
 	mkdir -p build/bldtools
 	gnatmake -g -D build/bldtools -o $@ $< `xmlada-config`
@@ -99,5 +89,15 @@ spark/spark.idx:
 
 spark: spark/spark.idx
 	cd spark && spark -flow=data @spark
+
+codepeer: force
+	$(MAKE) TARGET=$(TARGET) \
+	   GNATMAKE_FLAGS="$(GNATMAKE_FLAGS) -c --subdirs=codepeer -gnatcC" \
+	   ipstack
+	codepeer -all -lib ipstack.lib -global -background -quiet
+	@echo ""
+	@echo "codepeer completed successfully."
+	@echo "to view messages, run: codepeer_msg_reader build/ipstack.output"
+	@echo "or: firefox build/ipstack.output/html/index.html"
 
 force:
