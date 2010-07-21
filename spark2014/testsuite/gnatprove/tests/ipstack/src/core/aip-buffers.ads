@@ -11,6 +11,8 @@
 package AIP.Buffers
 --# own State;
 is
+   pragma Preelaborate;
+
    --  Network packet data is held in buffers, chained as required when
    --  several buffers are needed for a single packet. Such chaining
    --  capabilities are very useful to allow storage of large data blocks in
@@ -201,11 +203,30 @@ is
    --        This means that we should probably change this functionality in
    --        our implementation of LWIP in SPARK.
 
+   ----------------------------
+   -- Packet queue structure --
+   ----------------------------
+
+   --  A network packet is represented as a chain of buffers. Packets
+   --  themselves can be attached to chained lists.
+
+   type Packet_List is private;
+
+   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id);
+   --  Append Buf to list L
+
+   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id);
+   --  Detach head packet from L and return its id in Buf
+
 private
 
    function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
    --  Return whether buffer Buf is a data buffer or a no-data buffer.
    --  Declared in the private part as SPARK forbids declarations in body and
    --  style checks require a declaration.
+
+   type Packet_List is record
+      Head, Tail : Buffer_Id := NOBUF;
+   end record;
 
 end AIP.Buffers;

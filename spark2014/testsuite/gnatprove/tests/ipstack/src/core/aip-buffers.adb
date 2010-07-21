@@ -13,18 +13,21 @@ package body AIP.Buffers
 --#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
 --#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
-   --------------------
-   -- Is_Data_Buffer --
-   --------------------
 
-   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
+   -------------------
+   -- Append_Packet --
+   -------------------
+
+   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id) is
    begin
-      --  Decision between data buffer and no-data buffer should not apply to
-      --  null buffer, which is both
-      Support.Verify (Buf /= NOBUF);
-
-      return Buf <= Data_Buffer_Num;
-   end Is_Data_Buffer;
+      if L.Tail /= NOBUF then
+         Common.Buf_List (L.Tail).Next_Packet := Buf;
+         L.Tail := Buf;
+      else
+         L.Head := Buf;
+         L.Tail := Buf;
+      end if;
+   end Append_Packet;
 
    -----------------
    -- Buffer_Init --
@@ -36,20 +39,27 @@ is
    --#            No_Data.State, No_Data.Free_List;
    is
    begin
-      --  First initialize all the memory for common buffers data structure
-      --  to zero
+      --  Zero out all the memory for common buffers data structure to zero
+
       Common.Buf_List :=
         Common.Buffer_Array'
           (others =>
-               Common.Buffer'(Next => 0, Len => 0, Tot_Len => 0, Ref => 0));
+               Common.Buffer'(Next => NOBUF, Next_Packet => NOBUF,
+                              Len  => 0, Tot_Len => 0, Ref => 0));
 
       --  Construct a singly linked chain of buffers
+
       for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
          Common.Buf_List (Buf).Next := Buf + 1;
       end loop;
 
-      No_Data.Buffer_Init;  --  Data structures for no-data buffers
-      Data.Buffer_Init;  --  Data structures for data buffers
+      --  Initialize structures for no-data buffers
+
+      No_Data.Buffer_Init;
+
+      --  Initialize structures for data buffers
+
+      Data.Buffer_Init;
    end Buffer_Init;
 
    ------------------
@@ -334,5 +344,33 @@ is
          end if;
       end if;
    end Buffer_Header;
+
+   --------------------
+   -- Is_Data_Buffer --
+   --------------------
+
+   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
+   begin
+      --  Decision between data buffer and no-data buffer should not apply to
+      --  null buffer, which is both
+      Support.Verify (Buf /= NOBUF);
+
+      return Buf <= Data_Buffer_Num;
+   end Is_Data_Buffer;
+
+   -------------------
+   -- Remove_Packet --
+   -------------------
+
+   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id) is
+   begin
+      Buf := L.Head;
+      if L.Head /= NOBUF then
+         L.Head := Common.Buf_List (Buf).Next_Packet;
+      end if;
+      if L.Head = NOBUF then
+         L.Tail := NOBUF;
+      end if;
+   end Remove_Packet;
 
 end AIP.Buffers;
