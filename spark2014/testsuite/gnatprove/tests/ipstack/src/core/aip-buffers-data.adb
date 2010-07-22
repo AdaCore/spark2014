@@ -16,7 +16,7 @@ is
 
    --  This division allows the allocation of contiguous pieces of the
    --  Data_Array array to a single buffer, so as to simulate the allocation
-   --  of a single chunk of memory, which is required for MONO_BUF buffers.
+   --  of a single chunk of memory, which is required for SPLIT_BUF buffers.
 
    subtype Data_Index is Buffers.Data_Length range
      1 .. Config.Data_Buffer_Size * Config.Data_Buffer_Num;
@@ -110,12 +110,12 @@ is
       end if;
 
       --  Check that the requested number of buffers are available, and that
-      --  they form a contiguous chain of buffers for Kind = MONO_BUF.
+      --  they form a contiguous chain of buffers for Kind = SPLIT_BUF.
 
       case Kind is
          when Buffers.LINK_BUF =>
             Support.Verify (Requested_Buffers <= Buf_List (Free_List).Num);
-         when Buffers.MONO_BUF =>
+         when Buffers.SPLIT_BUF =>
             Support.Verify
               (Requested_Buffers <= Buf_List (Free_List).Num_No_Jump);
       end case;
@@ -168,7 +168,7 @@ is
                  AIP.U16_T'Min (Config.Data_Buffer_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
-            when Buffers.MONO_BUF =>
+            when Buffers.SPLIT_BUF =>
                --  Length is same as total length
 
                Common.Buf_List (Cur_Buf).Len :=

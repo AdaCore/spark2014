@@ -55,14 +55,14 @@ package body RAW_UDP_Syslog is
 
       --  Allocate the packet buffer for the message start. We will copy data
       --  straight from the payload start and need to make sure that enough
-      --  contiguous room is available from there. Request a MONO_BUF for
+      --  contiguous room is available from there. Request a SPLIT_BUF for
       --  this purpose. This will all be sent over UDP, so declare TRANSPORT
       --  layer to get room for the necessary headers as well.
 
       AIP.Buffers.Buffer_Alloc
         (Offset => AIP.Inet.HLEN_To (AIP.Inet.TRANSPORT_LAYER),
          Size   => Logmsgstart'Length,
-         Kind   => AIP.Buffers.MONO_BUF,
+         Kind   => AIP.Buffers.SPLIT_BUF,
          Buf    => Logbuf);
 
       --  Fill the buffer and catenate the incoming one. We won't free the

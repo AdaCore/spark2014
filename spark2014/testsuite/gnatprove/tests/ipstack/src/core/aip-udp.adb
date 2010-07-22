@@ -468,7 +468,7 @@ package body AIP.UDP is
          Ubuf := Buf;
       else
          Buffers.Buffer_Alloc
-           (Inet.HLEN_To (Inet.IP_LAYER), UDP_HLEN, Buffers.MONO_BUF, Ubuf);
+           (Inet.HLEN_To (Inet.IP_LAYER), UDP_HLEN, Buffers.SPLIT_BUF, Ubuf);
          if Ubuf = Buffers.NOBUF then
             Err := ERR_MEM;
          else

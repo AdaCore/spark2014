@@ -445,7 +445,7 @@ package body AIP.ARP is
       Buffers.Buffer_Alloc
         (Inet.HLEN_To (Inet.LINK_LAYER),
          ARPH.ARP_Header'Size / 8,
-         Buffers.Mono_Buf,
+         Buffers.SPLIT_BUF,
          Buf);
 
       if Buf /= Buffers.NOBUF then

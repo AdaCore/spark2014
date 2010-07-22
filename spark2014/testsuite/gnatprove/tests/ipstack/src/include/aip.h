@@ -31,7 +31,7 @@ typedef unsigned char   Err_T;
  * AIP.Buffers *
  ***************/
 
-typedef enum { MONO_BUF, LINK_BUF, REF_BUF } Buffer_Kind;
+typedef enum { SPLIT_BUF, LINK_BUF, REF_BUF } Buffer_Kind;
 typedef U16_T Buffer_Length;
 typedef U16_T Data_Length;
 

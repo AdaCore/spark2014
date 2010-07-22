@@ -67,14 +67,16 @@ is
    --  to hold or designate different kinds of data locations.
 
    type Buffer_Kind is
-     (MONO_BUF,
-      --  Buffer data is allocated as contiguous chunks. If more than one
-      --  buffer is needed, a chain is constructed with contiguous buffers,
-      --  so that the data can be moved as if from a single buffer.
+     (SPLIT_BUF,
+      --  Buffer data is possibly allocated in more than one buffer, which
+      --  form together a contiguous block of memory. The data can be moved
+      --  as if from a single buffer, and the Len field of a split buffer
+      --  reflects this by storing the length of the complete chain in the
+      --  split buffer.
 
       LINK_BUF,
-      --  Buffer data is allocated from available chunks. A chain is
-      --  constructed if a single chunk is not big enough for the intended
+      --  Buffer data is allocated from available buffers. A chain is
+      --  constructed if a single buffer is not big enough for the intended
       --  buffer size.
 
       REF_BUF
@@ -84,7 +86,7 @@ is
      );
    pragma Convention (C, Buffer_Kind);
 
-   subtype Data_Buffer_Kind is Buffer_Kind range MONO_BUF .. LINK_BUF;
+   subtype Data_Buffer_Kind is Buffer_Kind range SPLIT_BUF .. LINK_BUF;
 
    procedure Buffer_Alloc
      (Offset :     Buffer_Length;
@@ -107,15 +109,15 @@ is
    --# global in State;
    pragma Export (C, Buffer_Len, "AIP_buffer_len");
    --  Amount of packet data
-   --  - held in the first chunk of buffer Buf for Kind = LINK_BUF
-   --  - held in all chunks of buffer Buf for Kind = MONO_BUF
+   --  - held in buffer Buf for Kind = LINK_BUF
+   --  - held in all buffers of the split buffer Buf for Kind = SPLIT_BUF
    --  - referenced by buffer Buf for Kind = REF_BUF
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
    pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
    --  Amount of packet data
-   --  - held in all chunks of buffer Buf through the chain for Kind /= REF_BUF
+   --  - held in all buffers from Buf through the chain for Kind /= REF_BUF
    --    Tlen = Len means Buf is the last buffer in the chain for a packet.
    --  - referenced by buffer Buf for Kind = REF_BUF
    --    Tlen = Len is an invariant in this case.

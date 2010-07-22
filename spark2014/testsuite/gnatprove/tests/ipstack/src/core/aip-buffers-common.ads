@@ -14,22 +14,28 @@ is
    pragma Preelaborate;
 
    type Buffer is record
-      Next    : Buffers.Buffer_Id;
+      Next        : Buffers.Buffer_Id;
       --  Next buffer in this buffer chain
 
       Next_Packet : Buffers.Buffer_Id;
       --  Next packet in queue
 
-      Len     : Buffers.Data_Length;
-      --  Length of the data held or referenced by this buffer
+      Len         : Buffers.Data_Length;
+      --  Length of the data held or referenced by this buffer, which comprises
+      --  the data in some buffers which follow this one for a split buffer
 
-      Tot_Len : Buffers.Data_Length;
+      Tot_Len     : Buffers.Data_Length;
       --  Total length of the data referenced by this chain of buffers
 
-      --  The following invariant should hold:
+      --  For non-split buffers, the following invariant should hold:
       --  Tot_Len = Len + (if Next /= 0 then Buffers (Next).Tot_Len else 0)
 
-      Ref     : AIP.U16_T;
+      --  For split buffers, calling Last the last buffer in the split buffer,
+      --  the following invariant should hold:
+      --  Tot_Len = Len + (if Buffers (Last).Next /= 0 then
+      --                      Buffers (Buffers (Last).Next).Tot_Len else 0)
+
+      Ref         : AIP.U16_T;
       --  The reference count always equals the number of pointers that refer
       --  to this buffer. This can be pointers from an application or the stack
       --  itself.
