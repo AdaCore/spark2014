@@ -16,7 +16,7 @@ package AIP.Callbacks is
    --  identifiers.
 
    subtype CBK_Id is AIP.EID;
-   NOCB : CBK_Id renames AIP.NULID;
+   NOCB : constant CBK_Id := AIP.NULID;
 
    --  The general scheme is as follows (PROTO = UDP|TCP):
    --

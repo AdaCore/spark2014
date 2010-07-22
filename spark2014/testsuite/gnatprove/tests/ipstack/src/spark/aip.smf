@@ -15,8 +15,6 @@
 ../core/aip-ipaddrs.ads
 ../core/aip-ipaddrs.adb
 ../core/aip-pools.ads
-../core/aip-pbufs.ads
-../core/aip-pbufs.adb
 ../core/aip-tcp.ads
 ../core/aip-tcp.adb
 ../core/aip-udp.ads

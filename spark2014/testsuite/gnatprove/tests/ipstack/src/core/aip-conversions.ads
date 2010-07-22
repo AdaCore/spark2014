@@ -6,6 +6,7 @@
 --  Internal conversion services for AIP
 
 with System;
+--# inherit System;
 
 package AIP.Conversions is
 

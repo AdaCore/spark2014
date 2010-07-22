@@ -13,12 +13,29 @@ package body AIP.Buffers
 --#              AIP.Buffers.Data.State, AIP.Buffers.Data.Free_List,
 --#              AIP.Buffers.No_Data.State, AIP.Buffers.No_Data.Free_List;
 is
+   --------------------
+   -- Is_Data_Buffer --
+   --------------------
+
+   --  Early definition of Is_Data_Buffer out of alphabetical order, because
+   --  function is called in other subprograms
+
+   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
+   begin
+      --  Decision between data buffer and no-data buffer should not apply to
+      --  null buffer, which is both
+      Support.Verify (Buf /= NOBUF);
+
+      return Buf <= Data_Buffer_Num;
+   end Is_Data_Buffer;
 
    -------------------
    -- Append_Packet --
    -------------------
 
-   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id) is
+   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id)
+   --# global in out Common.Buf_List;
+   is
    begin
       if L.Tail /= NOBUF then
          Common.Buf_List (L.Tail).Next_Packet := Buf;
@@ -345,24 +362,13 @@ is
       end if;
    end Buffer_Header;
 
-   --------------------
-   -- Is_Data_Buffer --
-   --------------------
-
-   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean is
-   begin
-      --  Decision between data buffer and no-data buffer should not apply to
-      --  null buffer, which is both
-      Support.Verify (Buf /= NOBUF);
-
-      return Buf <= Data_Buffer_Num;
-   end Is_Data_Buffer;
-
    -------------------
    -- Remove_Packet --
    -------------------
 
-   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id) is
+   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id)
+   --# global in Common.Buf_List;
+   is
    begin
       Buf := L.Head;
       if L.Head /= NOBUF then

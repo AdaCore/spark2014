@@ -12,7 +12,7 @@ with AIP.Callbacks;
 with AIP.IPaddrs;
 with AIP.Buffers;
 
---# inherit AIP.Callbacks, AIP.IPaddrs, AIP.Config;
+--# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.Config;
 
 package AIP.TCP is
 
@@ -43,7 +43,7 @@ package AIP.TCP is
       Buf  : Buffers.Buffer_Id;
       Addr : IPaddrs.IPaddr;
       Port : Port_T;
-      Err  : Err_T;
+      Err  : AIP.Err_T;
    end record;
 
    procedure TCP_Callback

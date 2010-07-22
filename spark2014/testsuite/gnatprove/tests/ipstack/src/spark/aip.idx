@@ -1,5 +1,5 @@
 AIP_Constants	    specification is in ../../build/gen/aip_constants.ads
-AIP                 specification is in ../core/aip.ads
+AIP                 specification is in ../support/aip.ads
 AIP.Buffers         specification is in ../core/aip-buffers.ads
 AIP.Buffers         components    are   AIP.Buffers.Common,
                                         AIP.Buffers.Data,
@@ -12,7 +12,7 @@ AIP.Buffers.No_Data specification is in ../core/aip-buffers-no_data.ads
 AIP.Buffers.No_Data body          is in ../core/aip-buffers-no_data.adb
 AIP.Callbacks       specification is in ../core/aip-callbacks.ads
 AIP.Config          specification is in ../core/aip-config.ads
-AIP.Conversions     specification is in aip-conversions.shs
+AIP.Conversions     specification is in ../core/aip-conversions.ads
 AIP.IPaddrs         specification is in ../core/aip-ipaddrs.ads
 AIP.IPaddrs         body          is in ../core/aip-ipaddrs.adb
 AIP.Inet            specification is in ../core/aip-inet.ads

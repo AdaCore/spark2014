@@ -5,10 +5,11 @@
 
 --  Generic Packet Buffers (network packet data containers) management
 
---# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
---#         AIP.Support, AIP.Conversions;  --  Needed by child packages
-
 with System;
+
+--# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
+--#         AIP.Support, AIP.Conversions,  --  Needed by child packages
+--#         System;
 
 package AIP.Buffers
 --# own State;
@@ -106,8 +107,8 @@ is
       Size   :     Data_Length;
       Kind   :     Buffer_Kind;
       Buf    : out Buffer_Id);
-   pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
    --# global in out State;
+   pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
    --  Allocate and return a new Buf of kind Kind, aimed at holding or
    --  referencing Size elements of data starting at offset Offset.
 
@@ -119,16 +120,16 @@ is
    --        them after reimplementing the rest of the TCP/IP stack.
 
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
-   pragma Export (C, Buffer_Len, "AIP_buffer_len");
    --# global in State;
+   pragma Export (C, Buffer_Len, "AIP_buffer_len");
    --  Amount of packet data
    --  - held in the first chunk of buffer Buf for Kind = LINK_BUF
    --  - held in all chunks of buffer Buf for Kind = MONO_BUF
    --  - referenced by buffer Buf for Kind = REF_BUF
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
-   pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
    --# global in State;
+   pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
    --  Amount of packet data
    --  - held in all chunks of buffer Buf through the chain for Kind /= REF_BUF
    --    Tlen = Len means Buf is the last buffer in the chain for a packet.
@@ -136,14 +137,14 @@ is
    --    Tlen = Len is an invariant in this case.
 
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
-   pragma Export (C, Buffer_Next, "AIP_buffer_next");
    --# global in State;
+   pragma Export (C, Buffer_Next, "AIP_buffer_next");
    --  Buffer following Buf in a chain, either next buffer for the same packet
    --  or first buffer of another one, or NOBUF
 
    function Buffer_Payload (Buf : Buffer_Id) return System.Address;
-   pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
    --# global in State;
+   pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
    --  Pointer to data held or referenced by buffer Buf
 
    ----------------------------------
@@ -167,8 +168,8 @@ is
    --  1->1->1 yields .......
 
    procedure Buffer_Blind_Free (Buf : Buffer_Id);
-   pragma Export (C, Buffer_Blind_Free, "AIP_buffer_blind_free");
    --# global in out State;
+   pragma Export (C, Buffer_Blind_Free, "AIP_buffer_blind_free");
    --  Same as Buffer_Free, ignoring return value
 
    procedure Buffer_Release (Buf : Buffer_Id);
@@ -194,8 +195,8 @@ is
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
       Err  : out AIP.Err_T);
-   pragma Export (C, Buffer_Header, "AIP_buffer_header");
    --# global in out State;
+   pragma Export (C, Buffer_Header, "AIP_buffer_header");
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.
 
@@ -216,22 +217,25 @@ is
    Empty_Packet_List : constant Packet_List;
 
    procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id);
+   --# global in out State;
    --  Append Buf to list L
 
    procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id);
+   --# global in State;
    --  Detach head packet from L and return its id in Buf
 
 private
-
-   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
-   --  Return whether buffer Buf is a data buffer or a no-data buffer.
-   --  Declared in the private part as SPARK forbids declarations in body and
-   --  style checks require a declaration.
 
    type Packet_List is record
       Head, Tail : Buffer_Id;
    end record;
 
-   Empty_packet_list : constant packet_list := (Head => NOBUF, Tail => NOBUF);
+   Empty_Packet_List : constant Packet_List :=
+                         Packet_List'(Head => NOBUF, Tail => NOBUF);
+
+   function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
+   --  Return whether buffer Buf is a data buffer or a no-data buffer.
+   --  Declared in the private part as SPARK forbids declarations in body and
+   --  style checks require a declaration.
 
 end AIP.Buffers;

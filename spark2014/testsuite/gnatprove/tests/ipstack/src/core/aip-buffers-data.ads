@@ -6,7 +6,8 @@
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding internally some data
 
---# inherit AIP.Buffers, AIP.Buffers.Common, AIP.Support, AIP.Conversions;
+--# inherit System, AIP.Buffers, AIP.Buffers.Common, AIP.Support,
+--#         AIP.Conversions;
 
 private package AIP.Buffers.Data
 --# own State, Free_List;
