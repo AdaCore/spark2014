@@ -192,7 +192,7 @@ private
 
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
-      IPA  : AIP.IPaddrs.IPaddr;
+      IPA  : IPaddrs.IPaddr;
       Port : Port_T) return Boolean;
    --  Whether PCB's local IP/port binding matches the provided
    --  IP/PORT pair.
@@ -242,7 +242,7 @@ private
       Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
       Dst_Port : Port_T;
-      Netif    : AIP.NIF.Netif_Id;
+      Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
    --  Send BUF to DST_IP/DST_PORT through NETIF, acting for PCB.
    --  ERR_VAL if PCB has a specific local IP set which differs from
