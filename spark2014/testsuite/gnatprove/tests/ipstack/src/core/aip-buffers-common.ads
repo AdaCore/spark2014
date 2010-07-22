@@ -22,7 +22,7 @@ is
 
       Len         : Buffers.Data_Length;
       --  Length of the data held or referenced by this buffer, which comprises
-      --  the data in some buffers which follow this one for a split buffer
+      --  the data in some buffers which follow this one for a split buffer.
 
       Tot_Len     : Buffers.Data_Length;
       --  Total length of the data referenced by this chain of buffers
