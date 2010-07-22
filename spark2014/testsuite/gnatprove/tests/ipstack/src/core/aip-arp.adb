@@ -78,12 +78,10 @@ package body AIP.ARP is
          end if;
       end if;
 
-      --  If entry found or allocated, mark it as active now and insert it at
-      --  the head of the active list.
+      --  If entry found or allocated, insert it at head of the active list
 
       if Id /= No_ARP_Entry then
          ARP_Prepend (ARP_Active_List, Id);
-         ARP_Table (Id).Timestamp := Time_Types.Now;
       end if;
    end ARP_Find;
 
@@ -174,7 +172,7 @@ package body AIP.ARP is
                   ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
                   ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
-                  NIF.Link_Output (Nid, Buf);
+                  NIF.Link_Output (Nid, Buf, Err);
                end if;
 
             when ARPH.ARP_Op_Reply =>
@@ -264,14 +262,38 @@ package body AIP.ARP is
    ---------------
 
    procedure ARP_Timer is
+      use type Time_Types.Time;
+      Now : constant Time_Types.Time := Time_Types.Now;
+      AEID : Any_ARP_Entry_Id := ARP_Active_List;
    begin
-      --  TBD???
+      while AEID /= No_ARP_Entry loop
+         declare
+            AE         : ARP_Entry renames ARP_Table (AEID);
+            Next_AEID  : constant Any_ARP_Entry_Id := AE.Next;
+            AE_Age     : constant Time_Types.Interval := Now - AE.Timestamp;
+            Packet_Buf : Buffers.Buffer_Id;
+         begin
 
-      --  Expire unused entries???
+            if not AE.Permanent
+                 and then
+               ((AE.State = Active
+                   and then AE_Age > Max_ARP_Age_Active * Time_Types.Hz
+                   and then Buffers.Empty (AE.Packet_Queue))
+                  or else
+                (AE.State = Incomplete
+                   and then AE_Age > Max_ARP_Age_Incomplete * Time_Types.Hz))
+            then
+               loop
+                  Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
+                  exit when Packet_Buf = Buffers.NOBUF;
+                  Buffers.Buffer_Blind_Free (Packet_Buf);
+               end loop;
+               ARP_Unlink (ARP_Active_List, AEID);
+            end if;
 
-      --  Retry pending entries??? (only if parked packets???)
-
-      null;
+            AEID := Next_AEID;
+         end;
+      end loop;
    end ARP_Timer;
 
    ----------------
@@ -290,6 +312,7 @@ package body AIP.ARP is
          pragma Assert (AE.Prev /= No_ARP_Entry);
          ARP_Table (AE.Prev).Next := AE.Next;
       end if;
+
       AE.Prev := No_ARP_Entry;
       AE.Next := No_ARP_Entry;
    end ARP_Unlink;
@@ -321,6 +344,7 @@ package body AIP.ARP is
             AE : ARP_Entry renames ARP_Table (AEID);
          begin
             AE.State := Active;
+            AE.Timestamp := Time_Types.Now;
             AE.Dst_MAC_Address := Eth_Address;
 
             Flush_Queue : loop

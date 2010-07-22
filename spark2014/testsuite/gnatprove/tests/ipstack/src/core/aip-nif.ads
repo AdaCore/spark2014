@@ -8,7 +8,6 @@
 with System;
 
 with AIP.Buffers;
-with AIP.Callbacks;
 with AIP.IPaddrs;
 
 --# inherit System, AIP.Buffers, AIP.Callbacks, AIP.IPaddrs;
@@ -64,7 +63,8 @@ package AIP.NIF is
 
    procedure Link_Output
      (Nid : Netif_Id;
-      Buf : Buffers.Buffer_Id);
+      Buf : Buffers.Buffer_Id;
+      Err : out Err_T);
    --  Call Nid's Link_Output_CB callback with Buf
 
 private

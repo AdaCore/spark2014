@@ -30,6 +30,11 @@ private
 
    type ARP_Entry_State is (Unused, Incomplete, Active);
 
+   Max_ARP_Age_Active     : constant := 600;
+   Max_ARP_Age_Incomplete : constant := 10;
+   --  Maximum age or ARP entries, in seconds
+   --  Make these configurable???
+
    type ARP_Entry is record
       State           : ARP_Entry_State := Unused;
       Permanent       : Boolean         := False;

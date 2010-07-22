@@ -60,12 +60,6 @@ AIP_buffer_payload (Buffer_Id Buf);
 extern void
 AIP_buffer_header (Buffer_Id Buf, S16_T Bump, Err_T *Err);
 
-/*****************
- * AIP.Callbacks *
- *****************/
-
-typedef void *CBK_Id;
-
 /***************
  * AIP.IPaddrs *
  ***************/
@@ -96,16 +90,12 @@ typedef struct netif {
   IPaddr      Mask;
   IPaddr      Broadcast;
 
-  CBK_Id      Input_CB;
-  CBK_Id      Output_CB;
-  CBK_Id      Link_Output_CB;
+  void      (*Input_CB) (Netif_Id, Buffer_Id);
+  void      (*Output_CB) (Netif_Id, Buffer_Id, IPaddr);
+  void      (*Link_Output_CB) (Netif_Id, Buffer_Id, Err_T *);
 
   IPTR_T Dev;
 } Netif;
-
-typedef void (*Input_CB_T)       (Buffer_Id Buf, Netif_Id Nid);
-typedef void (*Output_CB_T)      (Buffer_Id Buf, Netif_Id Nid, IPaddr Dst_Address);
-typedef void (*Link_Output_CB_T) (Buffer_Id Buf, Netif_Id Nid);
 
 extern struct netif *
 AIP_get_netif (EID Nid);

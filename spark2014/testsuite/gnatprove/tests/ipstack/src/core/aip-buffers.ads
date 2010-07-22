@@ -224,6 +224,9 @@ is
    --# global in State;
    --  Detach head packet from L and return its id in Buf
 
+   function Empty (L : Packet_List) return Boolean;
+   --  True if L contains no packets
+
 private
 
    type Packet_List is record

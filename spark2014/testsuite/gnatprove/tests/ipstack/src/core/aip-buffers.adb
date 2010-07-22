@@ -362,6 +362,15 @@ is
       end if;
    end Buffer_Header;
 
+   -----------
+   -- Empty --
+   -----------
+
+   function Empty (L : Packet_List) return Boolean is
+   begin
+      return L.Head = NOBUF;
+   end Empty;
+
    -------------------
    -- Remove_Packet --
    -------------------

@@ -32,15 +32,15 @@ package body AIP.NIF is
       Broadcast         : IPaddrs.IPaddr;
       --  Broadcast address: (IP and mask) or (not mask)
 
-      Input_CB          : Callbacks.CBK_Id;
+      Input_CB          : System.Address;
       --  Packet input callback
       --  procedure I (Nid : Netif_Id; Buf : Buffer_Id);
 
-      Output_CB         : Callbacks.CBK_Id;
+      Output_CB         : System.Address;
       --  Packet output callback (called by network layer)
       --  procedure O (Nid : Netif_Id; Buf : Buffer_Id; Dst_Address : IPaddr);
 
-      Link_Output_CB   : Callbacks.CBK_Id;
+      Link_Output_CB    : System.Address;
       --  Link level packet output callback (called by ARP layer)
       --  procedure LO (Nid : Netif_Id; Buf : Buffer_Id);
 
@@ -111,9 +111,9 @@ package body AIP.NIF is
          begin
             NIF.State := Invalid;
 
-            NIF.Input_CB       := Callbacks.NOCB;
-            NIF.Output_CB      := Callbacks.NOCB;
-            NIF.Link_Output_CB := Callbacks.NOCB;
+            NIF.Input_CB       := System.Null_Address;
+            NIF.Output_CB      := System.Null_Address;
+            NIF.Link_Output_CB := System.Null_Address;
          end;
       end loop;
    end Initialize;
@@ -149,16 +149,19 @@ package body AIP.NIF is
 
    procedure Link_Output
      (Nid : Netif_Id;
-      Buf : Buffers.Buffer_Id)
+      Buf : Buffers.Buffer_Id;
+      Err : out Err_T)
    is
       --# hide Link_Output;
 
-      type Link_Output_CB_Ptr is
-        access procedure (Nid : Netif_Id; Buf : Buffers.Buffer_Id);
+      type Link_Output_CB_Ptr is access
+        procedure (Nid : Netif_Id;
+                   Buf : Buffers.Buffer_Id;
+                   Err : out Err_T);
       function To_Ptr is new Ada.Unchecked_Conversion
-        (Callbacks.CBK_Id, Link_Output_CB_Ptr);
+        (System.Address, Link_Output_CB_Ptr);
    begin
-      To_Ptr (NIFs (Nid).Link_Output_CB) (Nid, Buf);
+      To_Ptr (NIFs (Nid).Link_Output_CB) (Nid, Buf, Err);
    end Link_Output;
 
    -------------------
@@ -204,7 +207,7 @@ package body AIP.NIF is
          Buf         : Buffers.Buffer_Id;
          Dst_Address : IPaddrs.IPaddr);
       function To_Ptr is new Ada.Unchecked_Conversion
-        (Callbacks.CBK_Id, Output_CB_Ptr);
+        (System.Address, Output_CB_Ptr);
    begin
       To_Ptr (NIFs (Nid).Output_CB) (Nid, Buf, Dst_Address);
    end Output;
