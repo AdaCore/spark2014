@@ -47,7 +47,7 @@ package AIP.NIF is
    procedure Get_Netif_By_Address
      (Addr : IPaddrs.IPaddr;
       Mask : Boolean;
-      Nid  : out EID);
+      Nid  : out AIP.EID);
    --  Find a netif whose address or broadcast address is Addr. If Mask is
    --  True, only the network part of addresses is considered.
 

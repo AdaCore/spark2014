@@ -34,7 +34,7 @@ package AIP.IP is
    procedure IP_Route
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;
-      Netif    : out EID);
+      Netif    : out AIP.EID);
    --  Find next hop IP address and outbound interface for Dst_IP
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id);

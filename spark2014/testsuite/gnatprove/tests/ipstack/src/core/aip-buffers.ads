@@ -31,10 +31,6 @@ is
    --  'Data' buffers are those buffers holding data.
    --  'No-data' buffers are those buffers referencing external data.
 
-   --  Data_Buffer_Size, Data_Buffer_Num, No_Data_Buffer_Num and Elem can be
-   --  changed according to specific project needs. None of these positive
-   --  constants should be zero.
-
    --  Type of data element
    subtype Elem is Character;
 

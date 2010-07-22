@@ -15,6 +15,10 @@ package AIP.Config is
    -- Buffers configuration --
    ---------------------------
 
+   --  Data_Buffer_Size, Data_Buffer_Num and No_Data_Buffer_Num can be
+   --  changed according to specific project needs. None of these positive
+   --  constants should be zero.
+
    Data_Buffer_Size : constant := 256;
    --  Size of an individual data buffer
 
