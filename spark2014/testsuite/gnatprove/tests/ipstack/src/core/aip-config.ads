@@ -9,6 +9,15 @@
 
 package AIP.Config is
 
+   pragma Pure;
+
+   ------------------------
+   -- NIF confirguration --
+   ------------------------
+
+   MAX_NETIF : constant := 20;
+   --  Maximum number of Network Interfaces in use at a time (up or down)
+
    ------------------------
    -- ARP confirguration --
    ------------------------
@@ -21,7 +30,7 @@ package AIP.Config is
    -----------------------
 
    MAX_UDP_PCB : constant := 20;
-   --  Maximum number of UDP PCBs in use at one point
+   --  Maximum number of UDP PCBs in use at a time
    --  [N (UDP_New) - N(UDP_Release)]
 
    UDP_TTL : constant := 255;

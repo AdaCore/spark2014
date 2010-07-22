@@ -7,19 +7,17 @@
 
 with System;
 
+with AIP.Config;
 with AIP.Buffers;
 with AIP.IPaddrs;
 
---# inherit System, AIP.Buffers, AIP.Callbacks, AIP.IPaddrs;
+--# inherit System, AIP, AIP.Config, AIP.Buffers, AIP.Callbacks, AIP.IPaddrs;
 
 package AIP.NIF is
    pragma Preelaborate;
 
    procedure Initialize;
    --  Initialize NIF subsystem
-
-   MAX_NETIF : constant := 20;
-   --  ??? Should be defined in a central configuration/dimensioning package
 
    type Netif_State is (Invalid, Down, Up);
    pragma Convention (C, Netif_State);
@@ -29,9 +27,8 @@ package AIP.NIF is
    --  Down:    driver present but interface inactive
    --  Up:      active interface
 
-   subtype Netif_Id is AIP.EID range 1 .. MAX_NETIF;
-   IF_NOID : constant AIP.EID := -1;
-   --  ??? What about 0?
+   subtype Netif_Id is AIP.EID range 1 .. Config.MAX_NETIF;
+   IF_NOID : constant AIP.EID := 0;
 
    function NIF_Addr      (Nid : Netif_Id) return IPaddrs.IPaddr;
    function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
@@ -64,7 +61,7 @@ package AIP.NIF is
    procedure Link_Output
      (Nid : Netif_Id;
       Buf : Buffers.Buffer_Id;
-      Err : out Err_T);
+      Err : out AIP.Err_T);
    --  Call Nid's Link_Output_CB callback with Buf
 
 private
