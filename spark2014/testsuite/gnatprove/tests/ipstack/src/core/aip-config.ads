@@ -28,12 +28,12 @@ package AIP.Config is
    No_Data_Buffer_Num : constant := 64;
    --  Total number of no-data buffers statically allocated
 
-   -----------------------
-   -- NIF configuration --
-   -----------------------
+   ----------------------
+   -- NIF configuation --
+   ----------------------
 
    MAX_NETIF : constant := 20;
-   --  Maximum number of Network Interfaces in use at a time (up or down)
+   --  Maximum number of Network Interfaces in use at a time (including down)
 
    -----------------------
    -- ARP configuration --

@@ -188,9 +188,9 @@ package body AIP.IP is
    -- Set_Default_Router --
    ------------------------
 
-   procedure Set_Default_Router (IP : IPaddrs.IPaddr) is
+   procedure Set_Default_Router (IPA : IPaddrs.IPaddr) is
    begin
-      Default_Router := IP;
+      Default_Router := IPA;
    end Set_Default_Router;
 
 end AIP.IP;

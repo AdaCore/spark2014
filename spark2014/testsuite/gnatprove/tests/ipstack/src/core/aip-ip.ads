@@ -11,7 +11,7 @@ with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
 package AIP.IP is
 
-   procedure Set_Default_Router (IP : IPaddrs.IPaddr);
+   procedure Set_Default_Router (IPA : IPaddrs.IPaddr);
    --  Set the default route to the given value
 
    --  IP_PCB is the common part of the PCB for all IP-based protocols
