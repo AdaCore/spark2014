@@ -15,7 +15,8 @@ with AIP.IP;
 with AIP.IPaddrs;
 
 --# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers,
---#         AIP.NIF, AIP.IP, AIP.IPaddrs;
+--#         AIP.NIF, AIP.IP, AIP.IPaddrs,
+--#         AIP.Checksum, AIP.Inet, AIP.IPH, AIP.UDPH;
 
 package AIP.UDP is
 

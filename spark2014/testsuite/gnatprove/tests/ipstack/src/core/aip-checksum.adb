@@ -9,14 +9,14 @@ package body AIP.Checksum is
 
    type M16_T_Array is array (Natural range <>) of M16_T;
 
-   --------------
-   -- Checksum --
-   --------------
+   ---------
+   -- Sum --
+   ---------
 
-   function Checksum
+   function Sum
      (Packet  : System.Address;
       Length  : Natural;
-      Initial : M16_T := 0) return M16_T
+      Initial : AIP.M16_T) return AIP.M16_T
    is
       Data   : M16_T_Array (1 .. Length / 2);
       for Data'Address use Packet;
@@ -76,6 +76,6 @@ package body AIP.Checksum is
       end if;
 
       return M16_T (Result);
-   end Checksum;
+   end Sum;
 
 end AIP.Checksum;

@@ -8,14 +8,16 @@
 
 with System;
 
+--# inherit System, AIP;
+
 package AIP.Checksum is
 
-   function Checksum
+   function Sum
      (Packet  : System.Address;
       Length  : Natural;
-      Initial : M16_T := 0) return M16_T;
+      Initial : AIP.M16_T) return AIP.M16_T;
    --  Compute IP checksum (1's complement sum of all items in Packet).
    --  Initial is previous checksum, for the case of computing checksum of a
-   --  packet split in multiple chunks.
+   --  packet split in multiple chunks. Should be set to 0 on the first call.
 
 end AIP.Checksum;

@@ -535,15 +535,16 @@ package body AIP.UDP is
 
          --  Start checksum computation with pseudo IP header
 
-         Csum :=  Checksum.Checksum
+         Csum :=  Checksum.Sum
            (Packet  => PUhdr'Address,
-            Length  => PUhdr'Size / 8);
+            Length  => PUhdr'Size / 8,
+            Initial => 0);
 
          --  Then include complete UDP header and payload in computation
 
          Check_Buf := Ubuf;
          while Check_Buf /= Buffers.NOBUF loop
-            Csum := Checksum.Checksum
+            Csum := Checksum.Sum
               (Packet  => Buffers.Buffer_Payload (Check_Buf),
                Length  => Natural (Buffers.Buffer_Len (Check_Buf)),
                Initial => Csum);
