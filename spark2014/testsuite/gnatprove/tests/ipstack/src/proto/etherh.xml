@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.EtherH">
+<package name="AIP.EtherH" types_unit="AIP">
  <enum name="Ether_Type">
   <literal name="ARP"        value="16#0806#" />
   <literal name="IP"         value="16#0800#" />

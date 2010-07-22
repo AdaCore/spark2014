@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.ARPH">
+<package name="AIP.ARPH" types_unit="AIP">
   <enum name="ARP_Hw">
     <literal name="Ethernet" value="1" />
   </enum>

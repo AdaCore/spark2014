@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.TCPH">
+<package name="AIP.TCPH" types_unit="AIP">
 
  <message name="TCP_Header" prefix="TCPH_">
   <field name="Src_Port"    length="16" />

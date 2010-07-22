@@ -227,6 +227,7 @@ procedure Tranxgen is
       P_Body    : Output.Unit;
 
       Subfield_Sizes : Natural_Sets.Set;
+      Types_Unit : Unbounded_String;
    end record;
 
    procedure Process_Message (Ctx : in out Package_Context; N : Node);
@@ -547,13 +548,17 @@ procedure Tranxgen is
       ----------------
 
       function Field_Type (F : Field) return String is
+         Prefix : Unbounded_String := Ctx.Types_Unit;
       begin
+         if Length (Prefix) > 0 then
+            Append (Prefix, ".");
+         end if;
          case F.Class is
             when F_Integer =>
-               return "U" & Img (F.Length) & "_T";
+               return To_String (Prefix) & "U" & Img (F.Length) & "_T";
 
             when F_Modular =>
-               return "M" & Img (F.Length) & "_T";
+               return To_String (Prefix) & "M" & Img (F.Length) & "_T";
 
             when F_Private =>
                return To_String (F.F_Type);
@@ -954,6 +959,8 @@ procedure Tranxgen is
          raise Program_Error with "unexpected element: " & Node_Name (N);
       end if;
 
+      Ctx.Types_Unit := To_Unbounded_String (Get_Attribute (N, "types_unit"));
+
       Prelude (Ctx.P_Spec);
       Prelude (Ctx.P_Body);
 
@@ -983,6 +990,16 @@ procedure Tranxgen is
          Free (Imports);
       end;
 
+      NL (Ctx.P_Spec);
+      P  (Ctx.P_Spec, "--# inherit System");
+      declare
+         Types_Unit : constant String := To_String (Ctx.Types_Unit);
+      begin
+         if Types_Unit /= "" then
+            P (Ctx.P_Spec, ", " & Types_Unit);
+         end if;
+      end;
+      PL (Ctx.P_Spec, ";");
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "package " & Package_Name & " is");
       II (Ctx.P_Spec);

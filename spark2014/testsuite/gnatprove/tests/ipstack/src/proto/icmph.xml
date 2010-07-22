@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.ICMPH">
+<package name="AIP.ICMPH" types_unit="AIP">
  <import name="AIP.IPH" />
  <enum name="ICMP_Type">
   <literal name="Echo_Reply"        value= "0" />

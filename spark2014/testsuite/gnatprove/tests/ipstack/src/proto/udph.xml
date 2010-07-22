@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.UDPH">
+<package name="AIP.UDPH" types_unit="AIP">
  <message name="UDP_Header" prefix="UDPH_">
   <field name="Src_Port" length="16" />
   <field name="Dst_Port" length="16" />

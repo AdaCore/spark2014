@@ -6,7 +6,7 @@
 
 -->
 
-<package name="AIP.IPH">
+<package name="AIP.IPH" types_unit="AIP">
  <enum name="IP_Proto">
   <literal name="UDP"  value="17" />
   <literal name="TCP"  value= "6" />
