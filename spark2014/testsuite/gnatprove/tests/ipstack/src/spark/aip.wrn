@@ -1,4 +1,7 @@
 direct_updates
+representation_clauses
+hidden
+notes
 pragma pure
 pragma unreferenced
 pragma inline
@@ -6,3 +9,6 @@ pragma assert
 pragma preelaborate
 pragma export
 pragma convention
+pragma warnings
+pragma style_checks
+pragma Ada_2005
