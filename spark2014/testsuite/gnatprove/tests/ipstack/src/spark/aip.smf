@@ -6,6 +6,7 @@
 ../../build/gen/aip-icmph.ads
 ../../build/gen/aip-tcph.ads
 ../../build/gen/aip-udph.ads
+../core/aip-config.ads
 ../core/aip-support.ads
 ../core/aip-support.adb
 ../core/aip-buffers.ads
@@ -16,7 +17,6 @@
 ../core/aip-buffers-data.adb
 ../core/aip-buffers.adb
 ../core/aip-callbacks.ads
-../core/aip-config.ads
 ../core/aip-inet.ads
 ../core/aip-inet.adb
 ../core/aip-ipaddrs.ads

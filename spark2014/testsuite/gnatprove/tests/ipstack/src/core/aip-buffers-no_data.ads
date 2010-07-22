@@ -6,7 +6,9 @@
 --  Generic Packet Buffers (network packet data containers) management, for
 --  buffers holding a reference to some external data
 
---# inherit System, AIP.Support, AIP.Buffers, AIP.Buffers.Common,
+with AIP.Config;
+
+--# inherit System, AIP.Config, AIP.Support, AIP.Buffers, AIP.Buffers.Common,
 --#         AIP.Conversions;
 
 private package AIP.Buffers.No_Data
@@ -20,7 +22,7 @@ is
    --  vice-versa.
    type U16_T is range AIP.U16_T'First .. AIP.U16_T'Last;
 
-   Buffer_Num : constant U16_T := U16_T (Buffers.No_Data_Buffer_Num);
+   Buffer_Num : constant U16_T := U16_T (Config.No_Data_Buffer_Num);
 
    subtype Buffer_Id is U16_T range 0 .. Buffer_Num;
 

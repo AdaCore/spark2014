@@ -11,16 +11,29 @@ package AIP.Config is
 
    pragma Pure;
 
-   ------------------------
-   -- NIF confirguration --
-   ------------------------
+   ---------------------------
+   -- Buffers configuration --
+   ---------------------------
+
+   Data_Buffer_Size : constant := 256;
+   --  Size of an individual data buffer
+
+   Data_Buffer_Num : constant := 10;
+   --  Total number of data buffers statically allocated
+
+   No_Data_Buffer_Num : constant := 64;
+   --  Total number of no-data buffers statically allocated
+
+   -----------------------
+   -- NIF configuration --
+   -----------------------
 
    MAX_NETIF : constant := 20;
    --  Maximum number of Network Interfaces in use at a time (up or down)
 
-   ------------------------
-   -- ARP confirguration --
-   ------------------------
+   -----------------------
+   -- ARP configuration --
+   -----------------------
 
    Max_ARP_Entries : constant := 20;
    --  ARP table size

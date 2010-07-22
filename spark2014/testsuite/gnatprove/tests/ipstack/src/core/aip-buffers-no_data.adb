@@ -31,7 +31,7 @@ is
       if Buf = Buffers.NOBUF then
          Result := NOBUF;
       else
-         Result := U16_T (Buf - Buffers.Data_Buffer_Num);
+         Result := U16_T (Buf - Config.Data_Buffer_Num);
       end if;
       return Result;
    end Adjust_Id;
@@ -47,7 +47,7 @@ is
       if Buf = NOBUF then
          Result := Buffers.NOBUF;
       else
-         Result := AIP.U16_T (Buf) + Buffers.Data_Buffer_Num;
+         Result := AIP.U16_T (Buf) + Config.Data_Buffer_Num;
       end if;
       return Result;
    end Adjust_Back_Id;

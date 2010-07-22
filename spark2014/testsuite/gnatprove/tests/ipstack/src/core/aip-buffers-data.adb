@@ -19,12 +19,12 @@ is
    --  of a single chunk of memory, which is required for MONO_BUF buffers.
 
    subtype Data_Index is Buffers.Data_Length range
-     1 .. Buffers.Data_Buffer_Size * Buffers.Data_Buffer_Num;
+     1 .. Config.Data_Buffer_Size * Config.Data_Buffer_Num;
    type Data_Array_Type is array (Data_Index) of Buffers.Elem;
 
    Data_Array : Data_Array_Type;
 
-   subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Data_Buffer_Num;
+   subtype Buffer_Index is AIP.U16_T range 1 .. Config.Data_Buffer_Num;
    subtype Buffer_Count is Buffer_Index;
 
    type Buffer is record
@@ -105,8 +105,8 @@ is
          Requested_Buffers := 1;
       else
          Requested_Buffers :=
-           (Requested_Size + (Buffers.Data_Buffer_Size - 1))
-           / Buffers.Data_Buffer_Size;
+           (Requested_Size + (Config.Data_Buffer_Size - 1))
+           / Config.Data_Buffer_Size;
       end if;
 
       --  Check that the requested number of buffers are available, and that
@@ -165,7 +165,7 @@ is
                --  data remaining.
 
                Common.Buf_List (Cur_Buf).Len :=
-                 AIP.U16_T'Min (Buffers.Data_Buffer_Size
+                 AIP.U16_T'Min (Config.Data_Buffer_Size
                                 - Buf_List (Cur_Buf).Left_Offset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
             when Buffers.MONO_BUF =>
@@ -179,7 +179,7 @@ is
          --  Remaining size decreases by buffer size until last buffer
 
          if Remaining /= 1 then
-            Remaining_Size := Remaining_Size - Buffers.Data_Buffer_Size;
+            Remaining_Size := Remaining_Size - Config.Data_Buffer_Size;
          end if;
 
          Buf_List (Cur_Buf).Kind := Kind;

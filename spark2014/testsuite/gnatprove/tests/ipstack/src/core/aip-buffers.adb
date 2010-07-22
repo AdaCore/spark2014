@@ -26,7 +26,7 @@ is
       --  null buffer, which is both
       Support.Verify (Buf /= NOBUF);
 
-      return Buf <= Data_Buffer_Num;
+      return Buf <= Config.Data_Buffer_Num;
    end Is_Data_Buffer;
 
    -------------------
