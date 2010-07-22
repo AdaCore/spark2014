@@ -69,12 +69,8 @@ package body AIP.ARP is
 
             --  Initialize newly-allocated entry
 
-            declare
-               New_Entry : ARP_Entry renames ARP_Table (Id);
-            begin
-               ARP_Reset (New_Entry);
-               New_Entry.Dst_IP_Address := Addr;
-            end;
+            ARP_Reset (ARP_Table (Id));
+            ARP_Table (Id).Dst_IP_Address := Addr;
          end if;
       end if;
 
@@ -205,33 +201,32 @@ package body AIP.ARP is
    begin
       ARP_Find (Dst_Address, AEID, Allocate => True);
       if AEID /= No_ARP_Entry then
-         declare
-            AE : ARP_Entry renames ARP_Table (AEID);
-         begin
-            case AE.State is
-               when Unused     =>
-                  --  Cannot happen
+         case ARP_Table (AEID).State is
+            when Unused     =>
+               --  Cannot happen
 
-                  raise Program_Error;
+               raise Program_Error;
 
-               when Active     =>
-                  Send_Packet
-                    (Nid, EtherH.Ether_Type_IP, Buf, AE.Dst_MAC_Address);
+            when Active     =>
+               Send_Packet
+                 (Nid,
+                  EtherH.Ether_Type_IP,
+                  Buf,
+                  ARP_Table (AEID).Dst_MAC_Address);
 
-               when Incomplete =>
-                  --  Park packet on entry's pending list
+            when Incomplete =>
+               --  Park packet on entry's pending list
 
-                  Buffers.Append_Packet (AE.Packet_Queue, Buf);
+               Buffers.Append_Packet (ARP_Table (AEID).Packet_Queue, Buf);
 
-                  --  If last attempt is old enough (also case of a newly
-                  --  created incomplete entry), send out ARP request.
-                  --  Condition to be refined???
+               --  If last attempt is old enough (also case of a newly
+               --  created incomplete entry), send out ARP request.
+               --  Condition to be refined???
 
-                  if True then
-                     Send_Request (Nid, Dst_Address);
-                  end if;
-            end case;
-         end;
+               if True then
+                  Send_Request (Nid, Dst_Address);
+               end if;
+         end case;
       else
          --  Unable to find or allocate ARP entry, discard packet
 
@@ -265,16 +260,21 @@ package body AIP.ARP is
       use type Time_Types.Time;
       Now : constant Time_Types.Time := Time_Types.Now;
       AEID : Any_ARP_Entry_Id := ARP_Active_List;
-   begin
-      while AEID /= No_ARP_Entry loop
-         declare
-            AE         : ARP_Entry renames ARP_Table (AEID);
-            Next_AEID  : constant Any_ARP_Entry_Id := AE.Next;
-            AE_Age     : constant Time_Types.Interval := Now - AE.Timestamp;
-            Packet_Buf : Buffers.Buffer_Id;
-         begin
+      Next_AEID : Any_ARP_Entry_Id;
 
-            if not AE.Permanent
+      procedure Check_Entry (AEID : ARP_Entry_Id);
+      --  Check one entry from the active list (which is Active or Incomplete)
+
+      -----------------
+      -- Check_Entry --
+      -----------------
+
+      procedure Check_Entry (AEID : ARP_Entry_Id) is
+         AE         : ARP_Entry renames ARP_Table (AEID);
+         AE_Age     : constant Time_Types.Interval := Now - AE.Timestamp;
+         Packet_Buf : Buffers.Buffer_Id;
+      begin
+         if not AE.Permanent
                  and then
                ((AE.State = Active
                    and then AE_Age > Max_ARP_Age_Active * Time_Types.Hz
@@ -282,17 +282,23 @@ package body AIP.ARP is
                   or else
                 (AE.State = Incomplete
                    and then AE_Age > Max_ARP_Age_Incomplete * Time_Types.Hz))
-            then
-               loop
-                  Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
-                  exit when Packet_Buf = Buffers.NOBUF;
-                  Buffers.Buffer_Blind_Free (Packet_Buf);
-               end loop;
-               ARP_Unlink (ARP_Active_List, AEID);
-            end if;
+         then
+            loop
+               Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
+               exit when Packet_Buf = Buffers.NOBUF;
+               Buffers.Buffer_Blind_Free (Packet_Buf);
+            end loop;
+            ARP_Unlink (ARP_Active_List, AEID);
+         end if;
+      end Check_Entry;
 
-            AEID := Next_AEID;
-         end;
+   --  Start of processing for ARP_Timer
+
+   begin
+      while AEID /= No_ARP_Entry loop
+         Next_AEID := ARP_Table (AEID).Next;
+         Check_Entry (AEID);
+         AEID := Next_AEID;
       end loop;
    end ARP_Timer;
 
@@ -340,21 +346,17 @@ package body AIP.ARP is
       end if;
 
       if No (Err) then
-         declare
-            AE : ARP_Entry renames ARP_Table (AEID);
-         begin
-            AE.State := Active;
-            AE.Timestamp := Time_Types.Now;
-            AE.Dst_MAC_Address := Eth_Address;
+         ARP_Table (AEID).State := Active;
+         ARP_Table (AEID).Timestamp := Time_Types.Now;
+         ARP_Table (AEID).Dst_MAC_Address := Eth_Address;
 
-            Flush_Queue : loop
-               Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
-               exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
+         Flush_Queue : loop
+            Buffers.Remove_Packet (ARP_Table (AEID).Packet_Queue, Packet_Buf);
+            exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
 
-               Send_Packet
-                 (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
-            end loop Flush_Queue;
-         end;
+            Send_Packet
+              (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
+         end loop Flush_Queue;
       end if;
    end ARP_Update;
 

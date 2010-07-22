@@ -132,15 +132,11 @@ package body AIP.NIF is
    procedure Initialize is
    begin
       for J in NIFs'Range loop
-         declare
-            NIF : Netif renames NIFs (J);
-         begin
-            NIF.State := Invalid;
+         NIFs (J).State := Invalid;
 
-            NIF.Input_CB       := System.Null_Address;
-            NIF.Output_CB      := System.Null_Address;
-            NIF.Link_Output_CB := System.Null_Address;
-         end;
+         NIFs (J).Input_CB       := System.Null_Address;
+         NIFs (J).Output_CB      := System.Null_Address;
+         NIFs (J).Link_Output_CB := System.Null_Address;
       end loop;
    end Initialize;
 

@@ -46,16 +46,13 @@ package body AIP.Timers is
 
    function Next_Deadline return Time_Types.Time is
       Result : Time_Types.Time := Time_Types.Time'Last;
+      My_Deadline : Time_Types.Time;
    begin
       for J in My_Timers'Range loop
-         declare
-            My_Timer    : Timer renames My_Timers (J);
-            My_Deadline : constant Time_Types.Time := Deadline (My_Timer);
-         begin
-            if My_Deadline < Result then
-               Result := My_Deadline;
-            end if;
-         end;
+         My_Deadline := Deadline (My_Timers (J));
+         if My_Deadline < Result then
+            Result := My_Deadline;
+         end if;
       end loop;
       return Result;
    end Next_Deadline;

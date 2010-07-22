@@ -257,15 +257,13 @@ package body AIP.UDP is
         and then PCB /= NOPCB
         and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
       then
-         declare
-            RECV_Event : constant UDP_Event_T :=
-              (Kind => UDP_RECV,
-               Buf  => Buf,
-               IP   => IPH.IPH_Src_Address (Ihdr),
-               Port => UDPH.UDPH_Src_Port (Uhdr));
-         begin
-            UDP_Event (RECV_Event, PCB, PCBs (PCB).RECV_Cb);
-         end;
+         UDP_Event
+           (UDP_Event_T'(Kind => UDP_RECV,
+                         Buf  => Buf,
+                         IP   => IPH.IPH_Src_Address (Ihdr),
+                         Port => UDPH.UDPH_Src_Port (Uhdr)),
+            PCB,
+            PCBs (PCB).RECV_Cb);
       else
          Buffers.Buffer_Blind_Free (Buf);
       end if;
@@ -494,6 +492,13 @@ package body AIP.UDP is
    is
       Ubuf   : Buffers.Buffer_Id := Buffers.NOBUF;
       Src_IP : AIP.IPaddrs.IPaddr;
+
+      PUhdr : aliased UDPH.UDP_Pseudo_Header;
+      Uhdr  : System.Address;
+
+      Csum : M16_T;
+      Check_Buf : Buffers.Buffer_Id;
+
    begin
       --  Setup a local binding if we don't have one already
 
@@ -525,44 +530,38 @@ package body AIP.UDP is
       --  release the dedicated buffer we allocated for the header, if any.
 
       if Err = AIP.NOERR then
-         declare
-            PUhdr : aliased UDPH.UDP_Pseudo_Header;
-            Uhdr  : constant system.Address := Buffers.Buffer_Payload (Ubuf);
+         Uhdr := Buffers.Buffer_Payload (Ubuf);
 
-            Csum : M16_T;
-            Check_Buf : Buffers.Buffer_Id;
-         begin
-            UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
-            UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
-            UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
-            UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
-            UDPH.Set_UDPP_Length      (PUhdr'Address,
-                                       Buffers.Buffer_Tlen (Ubuf));
+         UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
+         UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
+         UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
+         UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
+         UDPH.Set_UDPP_Length      (PUhdr'Address,
+                                    Buffers.Buffer_Tlen (Ubuf));
 
-            UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
-            UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
-            UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
-            UDPH.Set_UDPH_Checksum (Uhdr, 16#0000#);
+         UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
+         UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
+         UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
+         UDPH.Set_UDPH_Checksum (Uhdr, 16#0000#);
 
-            --  Start checksum computation with pseudo IP header
+         --  Start checksum computation with pseudo IP header
 
-            Csum :=  Checksum.Checksum
-                 (Packet  => PUhdr'Address,
-                  Length  => PUhdr'Size / 8);
+         Csum :=  Checksum.Checksum
+           (Packet  => PUhdr'Address,
+            Length  => PUhdr'Size / 8);
 
-            --  Then include complete UDP header and payload in computation
+         --  Then include complete UDP header and payload in computation
 
-            Check_Buf := Ubuf;
-            while Check_Buf /= Buffers.NOBUF loop
-               Csum := Checksum.Checksum
-                 (Packet  => Buffers.Buffer_Payload (Check_Buf),
-                  Length  => Natural (Buffers.Buffer_Len (Check_Buf)),
-                  Initial => Csum);
-               Check_Buf := Buffers.Buffer_Next (Check_Buf);
-            end loop;
+         Check_Buf := Ubuf;
+         while Check_Buf /= Buffers.NOBUF loop
+            Csum := Checksum.Checksum
+              (Packet  => Buffers.Buffer_Payload (Check_Buf),
+               Length  => Natural (Buffers.Buffer_Len (Check_Buf)),
+               Initial => Csum);
+            Check_Buf := Buffers.Buffer_Next (Check_Buf);
+         end loop;
 
-            UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
-         end;
+         UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
 
          IP.IP_Output_If
            (Ubuf,

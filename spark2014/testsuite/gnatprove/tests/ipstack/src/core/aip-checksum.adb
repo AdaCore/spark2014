@@ -22,9 +22,26 @@ package body AIP.Checksum is
       for Data'Address use Packet;
       pragma Import (Ada, Data);
 
+      --  Assumption: Packet is aligned on a 16 bit boundary
+
       Result : M32_T := M32_T (Initial);
 
-      --  Assumption: Packet is aligned on a 16 bit boundary
+      function Get_Byte (A : System.Address) return M8_T;
+      --  Return byte at address A
+
+      --------------
+      -- Get_Byte --
+      --------------
+
+      function Get_Byte (A : System.Address) return M8_T is
+         B : M8_T;
+         for B'Address use A;
+         pragma Import (Ada, B);
+      begin
+         return B;
+      end Get_Byte;
+
+   --  Start of processing for Checksum
 
    begin
       --  Sum over even bytes
@@ -36,13 +53,8 @@ package body AIP.Checksum is
       --  Account for remaining byte
 
       if Length mod 2 /= 0 then
-         declare
-            Remain : M8_T;
-            for Remain'Address use Conversions.Ofs (Packet, Length - 1);
-            pragma Import (Ada, Remain);
-         begin
-            Result := Result + M32_T (Remain) * 2 ** 8;
-         end;
+         Result := Result +
+           M32_T (Get_Byte (Conversions.Ofs (Packet, Length - 1))) * 2 ** 8;
       end if;
 
       --  Wrap 1's complement 16-bit sum
