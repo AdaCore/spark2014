@@ -214,21 +214,18 @@ package body AIP.UDP is
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
    is
-      use type Callbacks.CBK_Id;
-
       Ihdr : constant system.Address := Buffers.Buffer_Payload (Buf);
       Uhdr : System.Address;
 
       Err : AIP.Err_T := AIP.NOERR;  --  Until we know otherwise
       PCB : AIP.EID;
    begin
-      --  Perform a couple of checks and retrieve an UDP view
-      --  of the incoming datagram.
+      --  Retrieve an UDP view of the incoming datagram.
 
       IP_To_UDP (Buf, Uhdr, Err);
 
-      --  Find the best UDP PCB to take it, verify the checksum and
-      --  adjust the payload offset before passing up to the applicative
+      --  Find the best UDP PCB to take the datagram, verify the checksum
+      --  and adjust the payload offset before passing up to the applicative
       --  callback.
 
       if No (Err) then
@@ -273,14 +270,6 @@ package body AIP.UDP is
    -- UDP_Bind Internals --
    ------------------------
 
-   UDP_SHARED_ENDPOINTS : constant Boolean := False;
-   --  Whether we should accept binding to an already used local endpoint
-
-   UDP_LOCAL_PORT_FIRST : constant Port_T := 1;
-   UDP_LOCAL_PORT_LAST  : constant Port_T := 255;
-   --  Range of local port numbers examined when an arbitrary choice needs
-   --  to be made (Available_Port)
-
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
       IPA  : AIP.IPaddrs.IPaddr;
@@ -306,9 +295,9 @@ package body AIP.UDP is
       Aport : Port_T := NOPORT;  --  Port found to be available
       Cport : Port_T;            --  Candidate port to examine
    begin
-      Cport := UDP_LOCAL_PORT_FIRST;
+      Cport := Config.UDP_LOCAL_PORT_FIRST;
       loop
-         exit when Aport /= NOPORT or else Cport > UDP_LOCAL_PORT_LAST;
+         exit when Aport /= NOPORT or else Cport > Config.UDP_LOCAL_PORT_LAST;
          if PCB_Bound_To (Cport) = NOPCB then
             Aport := Cport;
          else
@@ -343,7 +332,7 @@ package body AIP.UDP is
       while Pid /= NOPCB and then Err = NOERR loop
          if Pid = PCB then
             Rebind := True;
-         elsif not UDP_SHARED_ENDPOINTS
+         elsif not Config.UDP_SHARED_ENDPOINTS
            and then PCB_Binding_Matches (PCBs (Pid), Local_IP, Local_Port)
          then
             Err := AIP.ERR_USE;
@@ -600,16 +589,17 @@ package body AIP.UDP is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
-      --  ERR_USE if not Connected, since we have no identified destination
-      --  endpoint. Otherwise, route to find the proper network interface for
-      --  Dst_IP and send. ERR_RTE if no route could be found.
+      --  ERR_USE if we have no clear destination endpoint. Otherwise, route
+      --  to find the proper network interface for Dst_IP and send. ERR_RTE if
+      --  no route could be found.
 
-      if not PCBs (PCB).Connected then
+      if not PCBs (PCB).Connected
+        or else IPaddrs.Any (Dst_IP)
+        or else Dst_Port = NOPORT
+      then
          Err := ERR_USE;
 
       else
-         pragma Assert (not (IPaddrs.Any (Dst_IP) or else Dst_Port = NOPORT));
-
          AIP.IP.IP_Route (Dst_IP, NH_IP, Netif);
          if Netif = AIP.NIF.IF_NOID then
             Err := ERR_RTE;

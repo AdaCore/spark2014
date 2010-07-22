@@ -53,6 +53,14 @@ package AIP.Config is
    UDP_TTL : constant := 255;
    --  IP TTL for UDP datagrams
 
+   UDP_SHARED_ENDPOINTS : constant Boolean := False;
+   --  Whether we should accept binding to an already used local endpoint
+
+   UDP_LOCAL_PORT_FIRST : constant := 1;
+   UDP_LOCAL_PORT_LAST  : constant := 255;
+   --  Range of local port numbers examined when an arbitrary choice needs
+   --  to be made
+
    -----------------------
    -- TCP configuration --
    -----------------------

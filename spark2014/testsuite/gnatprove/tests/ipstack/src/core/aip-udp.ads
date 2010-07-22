@@ -70,7 +70,7 @@ package AIP.UDP is
    --  Send BUF data to the current destination endpoint of PCB, as
    --  established by UDP_Connect. BUF is not deallocated.
    --
-   --  ERR_USE if PCB isn't connected
+   --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
    --  ERR_MEM e.g.if the UDP header couldn't be allocated
    --  Possibly other errors from lower layers.
