@@ -952,6 +952,9 @@ procedure Tranxgen is
          end if;
       end Process_Child;
 
+      Imports_Inherits : Unbounded_String;
+      Inherit_Sep : constant String := "," & ASCII.LF & "--#   ";
+
    --  Start of processing for Process_Package
 
    begin
@@ -985,6 +988,7 @@ procedure Tranxgen is
                if Import_Use then
                   PL (Ctx.P_Spec, "use " & Import_Name & ";");
                end if;
+               Append (Imports_Inherits, Inherit_Sep & Import_Name);
             end;
          end loop;
          Free (Imports);
@@ -996,24 +1000,10 @@ procedure Tranxgen is
          Types_Unit : constant String := To_String (Ctx.Types_Unit);
       begin
          if Types_Unit /= "" then
-            P (Ctx.P_Spec, ", " & Types_Unit);
+            P (Ctx.P_Spec, Inherit_Sep & Types_Unit);
          end if;
       end;
-      declare
-         Imports : Node_List :=
-                     Elements.Get_Elements_By_Tag_Name (N, "import");
-      begin
-         for J in 0 .. Length (Imports) - 1 loop
-            declare
-               Import_Node : constant Node := Item (Imports, J);
-               Import_Name : constant String :=
-                               Get_Attribute (Import_Node, "name");
-            begin
-               P (Ctx.P_Spec, ", " & Import_Name);
-            end;
-         end loop;
-         Free (Imports);
-      end;
+      P  (Ctx.P_Spec, To_String (Imports_Inherits));
       PL (Ctx.P_Spec, ";");
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "package " & Package_Name & " is");
