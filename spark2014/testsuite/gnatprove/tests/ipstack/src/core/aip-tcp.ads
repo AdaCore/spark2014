@@ -31,12 +31,12 @@ package AIP.TCP is
    --  Setup to pass ARG on every callback call for PCB.
 
    type TCP_Event_Kind is
-     (TCP_ACCEPT,
-      TCP_CONNECT,
-      TCP_SENT,
-      TCP_RECV,
-      TCP_POLL,
-      TCP_ABORT);
+     (TCP_EVENT_ACCEPT,
+      TCP_EVENT_CONNECT,
+      TCP_EVENT_SENT,
+      TCP_EVENT_RECV,
+      TCP_EVENT_POLL,
+      TCP_EVENT_ABORT);
 
    type TCP_Event is record
       Kind : TCP_Event_Kind;
