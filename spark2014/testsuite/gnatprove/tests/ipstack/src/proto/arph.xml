@@ -24,10 +24,10 @@
     <!-- Note: following fields are valid only for Ethernet / IP   -->
     <!-- Should be: name="Src_Hw_Address" length="Hw_Len" & so on. -->
     <field name="Src_Eth_Address" length="48"
-                                  class="private" type="Ethernet_Address" />
+                                  class="private" type="AIP.Ethernet_Address" />
     <field name="Src_IP_Address" length="32" class="modular" />
     <field name="Dst_Eth_Address" length="48"
-                                  class="private" type="Ethernet_Address" />
+                                  class="private" type="AIP.Ethernet_Address" />
     <field name="Dst_IP_Address" length="32" class="modular" />
   </message>
 </package>

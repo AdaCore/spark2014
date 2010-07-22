@@ -49,7 +49,7 @@
   <field name="IP_Header"       length="160"
      class="private" type="IPH.IP_Header" />
   <field name="Data"            length="64"
-     class="private" type="Opaque64" />
+     class="private" type="AIP.Opaque64" />
  </message>
 
  <!--
@@ -68,6 +68,6 @@
   <field name="IP_Header"       length="160"
      class="private" type="IPH.IP_Header" />
   <field name="Data"            length="64"
-     class="private" type="Opaque64" />
+     class="private" type="AIP.Opaque64" />
  </message>
 </package>

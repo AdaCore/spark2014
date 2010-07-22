@@ -21,6 +21,8 @@ AIP.Config          specification is in ../core/aip-config.ads
 AIP.Conversions     specification is in ../core/aip-conversions.ads
 AIP.IPaddrs         specification is in ../core/aip-ipaddrs.ads
 AIP.IPaddrs         body          is in ../core/aip-ipaddrs.adb
+AIP.NIF             specification is in ../core/aip-nif.ads
+AIP.NIF             body          is in ../core/aip-nif.adb
 AIP.Inet            specification is in ../core/aip-inet.ads
 AIP.Inet            body          is in ../core/aip-inet.adb
 AIP.Pbufs           specification is in ../core/aip-pbufs.ads

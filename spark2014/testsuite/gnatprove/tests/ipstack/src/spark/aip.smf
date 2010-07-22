@@ -2,8 +2,8 @@
 ../support/aip.ads
 ../../build/gen/aip-arph.ads
 ../../build/gen/aip-etherh.ads
-../../build/gen/aip-icmph.ads
 ../../build/gen/aip-iph.ads
+../../build/gen/aip-icmph.ads
 ../../build/gen/aip-tcph.ads
 ../../build/gen/aip-udph.ads
 ../core/aip-support.ads

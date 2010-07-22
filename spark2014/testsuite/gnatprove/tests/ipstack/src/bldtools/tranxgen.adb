@@ -999,6 +999,21 @@ procedure Tranxgen is
             P (Ctx.P_Spec, ", " & Types_Unit);
          end if;
       end;
+      declare
+         Imports : Node_List :=
+                     Elements.Get_Elements_By_Tag_Name (N, "import");
+      begin
+         for J in 0 .. Length (Imports) - 1 loop
+            declare
+               Import_Node : constant Node := Item (Imports, J);
+               Import_Name : constant String :=
+                               Get_Attribute (Import_Node, "name");
+            begin
+               P (Ctx.P_Spec, ", " & Import_Name);
+            end;
+         end loop;
+         Free (Imports);
+      end;
       PL (Ctx.P_Spec, ";");
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "package " & Package_Name & " is");

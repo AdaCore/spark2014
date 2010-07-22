@@ -1,5 +1,6 @@
 direct_updates
 representation_clauses
+private_types
 hidden
 notes
 pragma pure
