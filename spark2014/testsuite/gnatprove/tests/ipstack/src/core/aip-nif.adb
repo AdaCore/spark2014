@@ -5,6 +5,48 @@
 
 package body AIP.NIF is
 
+   type Netif is record
+      State             : Netif_State := Invalid;
+      --  Interface state
+
+      Name              : Netif_Name;
+      --  Unique name of interface
+
+      LL_Address        : Netif_LL_Address;
+      --  Link-level address
+
+      LL_Address_Length : U8_T;
+      --  Actual length of link level address
+
+      MTU               : U16_T;
+      --  Maximum Transmission Unit
+
+      IP                : IPaddrs.IPaddr;
+      --  IP address
+
+      Mask              : IPaddrs.IPaddr;
+      --  Netmask
+
+      Broadcast         : IPaddrs.IPaddr;
+      --  Broadcast address: (IP and mask) or (not mask)
+
+      Input_CB          : Callbacks.CBK_Id;
+      --  Packet input callback
+      --  procedure I (Buf : Buffer_Id; Nid : Netif_Id);
+
+      Output_CB         : Callbacks.CBK_Id;
+      --  Packet output callback (called by network layer)
+      --  procedure O (Buf : Buffer_Id; Nid : Netif_Id; Dst_Address : IPaddr);
+
+      Link_Output_CB   : Callbacks.CBK_Id;
+      --  Link level packet output callback (called by ARP layer)
+      --  procedure LO (Buf : Buffer_Id; Nid : Netif_Id);
+
+      Dev               : System.Address;
+      --  Driver private information
+   end record;
+   pragma Convention (C, Netif);
+
    type NIF_Array is array (Netif_Id) of aliased Netif;
 
    NIFs : NIF_Array;
