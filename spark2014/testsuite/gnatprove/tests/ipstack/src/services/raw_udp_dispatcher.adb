@@ -9,7 +9,7 @@ package body RAW_UDP_Dispatcher is
 
    procedure UDP_Event
      (Ev   : AIP.UDP.UDP_Event_T;
-      Pcb  : AIP.UDP.PCB_Id;
+      PCB  : AIP.UDP.PCB_Id;
       Cbid : AIP.Callbacks.CBK_Id) is
    begin
       --  Note: in this example dispatcher, callback ids are arbitrary
@@ -21,7 +21,7 @@ package body RAW_UDP_Dispatcher is
 
       case Cbid is
          when RAW_UDP_Callbacks.SYSLOG_RECV =>
-            RAW_UDP_Syslog.SYSLOG_Process_Recv (Ev, Pcb);
+            RAW_UDP_Syslog.SYSLOG_Process_Recv (Ev, PCB);
          when others =>
             null;
       end case;

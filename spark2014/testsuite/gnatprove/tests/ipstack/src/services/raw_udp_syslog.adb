@@ -104,7 +104,7 @@ package body RAW_UDP_Syslog is
       --  Allocate a UDP Protocol Control Block, hook the data reception
       --  callback and bind to syslog port for any possible source IP.
 
-      AIP.UDP.Udp_New (Pcb);
+      AIP.UDP.UDP_New (Pcb);
       pragma Assert (Pcb /= AIP.UDP.NOPCB);
 
       AIP.UDP.UDP_Callback
