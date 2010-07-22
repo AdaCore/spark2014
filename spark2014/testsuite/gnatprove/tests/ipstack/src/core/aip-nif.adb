@@ -99,6 +99,32 @@ package body AIP.NIF is
       return NIFs (Nid)'Address;
    end Get_Netif;
 
+   --------------------------
+   -- Get_Netif_By_Address --
+   --------------------------
+
+   procedure Get_Netif_By_Address
+     (Addr : IPaddrs.IPaddr;
+      Mask : Boolean;
+      Nid  : out EID)
+   is
+   begin
+      Nid := IF_NOID;
+      Scan_Netifs : for J in NIFs'Range loop
+         if NIFs (J).State = Up
+           and then
+             (NIFs (J).IP = Addr
+              or else NIFs (J).Broadcast = Addr
+              or else
+                (Mask and then
+                        (((NIFs (J).IP xor Addr) and NIFs (J).Mask) = 0)))
+         then
+            Nid := J;
+            exit Scan_Netifs;
+         end if;
+      end loop Scan_Netifs;
+   end Get_Netif_By_Address;
+
    ----------------
    -- Initialize --
    ----------------

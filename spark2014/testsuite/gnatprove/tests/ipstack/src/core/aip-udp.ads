@@ -241,6 +241,7 @@ private
      (PCB      : PCB_Id;
       Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
+      NH_IP    : IPaddrs.IPaddr;
       Dst_Port : Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);

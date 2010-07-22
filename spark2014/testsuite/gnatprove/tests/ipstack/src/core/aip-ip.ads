@@ -11,6 +11,9 @@ with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
 package AIP.IP is
 
+   procedure Set_Default_Router (IP : IPaddrs.IPaddr);
+   --  Set the default route to the given value
+
    --  IP_PCB is the common part of the PCB for all IP-based protocols
 
    type IP_PCB is record
@@ -29,7 +32,10 @@ package AIP.IP is
    end record;
 
    procedure IP_Route
-     (Dst_IP : IPaddrs.IPaddr; Netif : out NIF.Netif_Id);
+     (Dst_IP   : IPaddrs.IPaddr;
+      Next_Hop : out IPaddrs.IPaddr;
+      Netif    : out EID);
+   --  Find next hop IP address and outbound interface for Dst_IP
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id);
    pragma Export (C, IP_Input, "AIP_ip_input");
@@ -38,6 +44,7 @@ package AIP.IP is
      (Buf    : Buffers.Buffer_Id;
       Src_IP : IPaddrs.IPaddr;
       Dst_IP : IPaddrs.IPaddr;
+      NH_IP  : IPaddrs.IPaddr;
       TTL    : AIP.U8_T;
       TOS    : AIP.U8_T;
       Proto  : AIP.U8_T;

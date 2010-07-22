@@ -17,7 +17,7 @@
   <field name="IHL"         length= "4" />
   <field name="TOS"         length= "8" />
   <field name="Length"      length="16" />
-  <field name="Ident"       length="16" />
+  <field name="Ident"       length="16" class="modular" />
   <field name="Flags"       length= "3" />
   <field name="Frag_Offset" length="13" />
   <field name="TTL"         length= "8" />

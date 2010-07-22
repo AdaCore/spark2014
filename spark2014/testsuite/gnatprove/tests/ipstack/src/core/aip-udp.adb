@@ -286,7 +286,8 @@ package body AIP.UDP is
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
       IPA  : AIP.IPaddrs.IPaddr;
-      Port : Port_T) return Boolean is
+      Port : Port_T) return Boolean
+   is
    begin
       return PCB.Local_Port = Port
         and then AIP.IPaddrs.Match (PCB.IPCB.Local_IP, IPA);
@@ -486,6 +487,7 @@ package body AIP.UDP is
      (PCB      : PCB_Id;
       Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
+      NH_IP    : IPaddrs.IPaddr;
       Dst_Port : Port_T;
       Netif    : AIP.NIF.Netif_Id;
       Err      : out AIP.Err_T)
@@ -566,6 +568,7 @@ package body AIP.UDP is
            (Ubuf,
             Src_IP,
             Dst_IP,
+            NH_IP,
             PCBs (PCB).IPCB.TTL,
             PCBs (PCB).IPCB.TOS,
             IPH.IP_Proto_UDP,
@@ -590,7 +593,11 @@ package body AIP.UDP is
       Dst_IP : constant IPaddrs.IPaddr := PCBs (PCB).IPCB.Remote_IP;
       Dst_Port : constant Port_T := PCBs (PCB).Remote_Port;
 
-      Netif : AIP.EID;
+      Netif    : AIP.EID;
+      --  Outbound interface
+
+      NH_IP : IPaddrs.IPaddr;
+      --  Next hop
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
@@ -604,11 +611,11 @@ package body AIP.UDP is
       else
          pragma Assert (not (IPaddrs.Any (Dst_IP) or else Dst_Port = NOPORT));
 
-         AIP.IP.IP_Route (Dst_IP, Netif);
+         AIP.IP.IP_Route (Dst_IP, NH_IP, Netif);
          if Netif = AIP.NIF.IF_NOID then
             Err := ERR_RTE;
          else
-            UDP_Send_To_If (PCB, Buf, Dst_IP, Dst_Port, Netif, Err);
+            UDP_Send_To_If (PCB, Buf, Dst_IP, NH_IP, Dst_Port, Netif, Err);
          end if;
       end if;
    end UDP_Send;

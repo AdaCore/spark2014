@@ -44,6 +44,13 @@ package AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean;
    --  True if Addr is a broadcast address for Nid
 
+   procedure Get_Netif_By_Address
+     (Addr : IPaddrs.IPaddr;
+      Mask : Boolean;
+      Nid  : out EID);
+   --  Find a netif whose address or broadcast address is Addr. If Mask is
+   --  True, only the network part of addresses is considered.
+
    procedure Get_LL_Address
      (Nid               : Netif_Id;
       LL_Address        : out AIP.LL_Address;

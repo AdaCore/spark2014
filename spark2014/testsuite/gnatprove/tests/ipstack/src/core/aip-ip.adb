@@ -13,6 +13,10 @@ with AIP.UDP;
 
 package body AIP.IP is
 
+   Default_Router : IPaddrs.IPaddr := IPaddrs.IP_ADDR_ANY;
+
+   IP_Serial : M16_T := 0;
+
    ----------------
    -- IP_Forward --
    ----------------
@@ -31,6 +35,9 @@ package body AIP.IP is
       Err  : Err_T := AIP.NOERR;
 
       Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);
+
+      Dst_Netif : EID;
+      --  Local netif whose address is the destination address of the datagram
 
       Local : Boolean;
       --  Set True for a packet bound for the local node
@@ -65,13 +72,11 @@ package body AIP.IP is
       --  Check destination address
 
       if No (Err) then
-         if NIF.Is_Local_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
-              or else
-            NIF.Is_Broadcast_Address (Netif, IPH.IPH_Dst_Address (Ihdr))
-         --  ??? multicast
-         --  ??? case of a packet for one of my IP addresses but arriving
-         --  on another interface?
-         then
+         NIF.Get_Netif_By_Address
+           (IPH.IPH_Dst_Address (Ihdr), Mask => False, Nid => Dst_Netif);
+
+         if Dst_Netif /= NIF.IF_NOID then
+         --  case of multicast???
             Local := True;
 
          elsif Config.Enable_Forwarding then
@@ -118,23 +123,74 @@ package body AIP.IP is
      (Buf    : Buffers.Buffer_Id;
       Src_IP : IPaddrs.IPaddr;
       Dst_IP : IPaddrs.IPaddr;
+      NH_IP  : IPaddrs.IPaddr;
       TTL    : AIP.U8_T;
       TOS    : AIP.U8_T;
       Proto  : AIP.U8_T;
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T)
    is
-      pragma Unreferenced (Buf, Src_IP, Dst_IP, TTL, TOS, Proto, Netif);
+      Ihdr : System.Address;
    begin
-      Err := AIP.ERR_USE;
+      Buffers.Buffer_Header (Buf, IPH.IP_Header'Size / 8, Err);
+      if No (Err) then
+         IP_Serial := IP_Serial + 1;
+
+         Ihdr := Buffers.Buffer_Payload (Buf);
+         IPH.Set_IPH_Version     (Ihdr, 4);
+         IPH.Set_IPH_IHL         (Ihdr, 5);
+         IPH.Set_IPH_TOS         (Ihdr, TOS);
+         IPH.Set_IPH_Length      (Ihdr, Buffers.Buffer_Tlen (Buf));
+         IPH.Set_IPH_Ident       (Ihdr, IP_Serial);
+         IPH.Set_IPH_Flags       (Ihdr, 0);
+         IPH.Set_IPH_Frag_Offset (Ihdr, 0);
+         IPH.Set_IPH_TTL         (Ihdr, TTL);
+         IPH.Set_IPH_Protocol    (Ihdr, Proto);
+         IPH.Set_IPH_Checksum    (Ihdr, 0);
+         if Src_IP /= IPaddrs.IP_ADDR_ANY then
+            IPH.Set_IPH_Src_Address (Ihdr, Src_IP);
+         else
+            IPH.Set_IPH_Src_Address (Ihdr, NIF.NIF_Addr (Netif));
+         end if;
+         IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
+
+         IPH.Set_IPH_Checksum    (Ihdr,
+           not Checksum.Checksum (Ihdr, 4 * Natural (IPH.IPH_IHL (Ihdr))));
+
+         NIF.Output (Netif, Buf, NH_IP);
+      end if;
    end IP_Output_If;
 
-   procedure IP_Route (Dst_IP : IPaddrs.IPaddr; Netif : out NIF.Netif_Id) is
-      pragma Unreferenced (Dst_IP);
+   --------------
+   -- IP_Route --
+   --------------
+
+   procedure IP_Route
+     (Dst_IP   : IPaddrs.IPaddr;
+      Next_Hop : out IPaddrs.IPaddr;
+      Netif    : out EID)
+   is
    begin
-      --  ??? Only one route known: the default interface
-      --  ??? Next hop should be a couple (next-hop-if, next-hop-addr)
-      Netif := NIF.Netif_Id'First;
+      --  Currently we support only direct interface routes and the default
+      --  route???
+
+      NIF.Get_Netif_By_Address (Dst_IP, Mask => True, Nid => Netif);
+      if Netif /= NIF.IF_NOID then
+         Next_Hop := Dst_IP;
+
+      elsif Default_Router /= IPaddrs.IP_ADDR_ANY then
+         NIF.Get_Netif_By_Address (Default_Router, Mask => True, Nid => Netif);
+         Next_Hop := Default_Router;
+      end if;
    end IP_Route;
+
+   ------------------------
+   -- Set_Default_Router --
+   ------------------------
+
+   procedure Set_Default_Router (IP : IPaddrs.IPaddr) is
+   begin
+      Default_Router := IP;
+   end Set_Default_Router;
 
 end AIP.IP;

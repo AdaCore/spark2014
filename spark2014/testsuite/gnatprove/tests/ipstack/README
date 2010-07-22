@@ -3,10 +3,11 @@ AdaCore TCP/IP stack for high-integrity systems
 
 Copyright (C) 2010, AdaCore
 
-The intermediate delivery incoroporates code from external contributors:
+Licensed under the GMGPL.
+
+Example driver code is adapted from original LWIP code:
  Copyright (C) 2001, 2002 Swedish Institute of Computer Science.
  Copyright (C) 2001, 2002 Georges Menie
-
 and is licensed under the GNU General Public License.
 
 SUPPORTED TARGETS
@@ -51,3 +52,10 @@ SPARK
 
 To run SPARK examiner on the stack, use:
    make spark
+
+ACKNOWLEDGEMENTS
+----------------
+
+Design ideas have been borrowed from the LWIP stack by Pr. Adam Dunkels
+of the Swedish Institute of Computer Science, and are gratefully
+acknowledged.
