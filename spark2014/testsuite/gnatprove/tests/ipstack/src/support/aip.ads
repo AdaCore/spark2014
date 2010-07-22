@@ -124,7 +124,7 @@ package AIP is
    ERR_MEM  : constant Err_T := -1;  -- Out of memory
    ERR_ABRT : constant Err_T := -4;  -- ???
    ERR_VAL  : constant Err_T := -8;  -- Illegal Value
-   ERR_USE  : constant Err_T := -10; -- ???
+   ERR_USE  : constant Err_T := -10; -- API use error
    ERR_RTE  : constant Err_T := -3;  -- Routing Error
 
    function No (Err : Err_T) return Boolean;

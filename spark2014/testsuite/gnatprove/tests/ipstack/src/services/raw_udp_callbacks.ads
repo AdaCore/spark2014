@@ -3,11 +3,12 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Callback identifiers for UDP services. In a separate unit to allow
+--  Callback identifiers for UDP services. In a standalone unit to allow
 --  easy sharing without circularities between the callback registrations
 --  in service implementations and the events dispatcher.
 
 with AIP.Callbacks;
+--# inherit AIP.Callbacks;
 
 package RAW_UDP_Callbacks is
 

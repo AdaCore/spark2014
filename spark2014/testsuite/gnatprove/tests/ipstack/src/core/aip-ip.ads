@@ -7,6 +7,8 @@
 
 with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
+--# inherit AIP.IPaddrs, AIP.NIF, AIP.Buffers;
+
 package AIP.IP is
 
    --  IP_PCB is the common part of the PCB for all IP-based protocols

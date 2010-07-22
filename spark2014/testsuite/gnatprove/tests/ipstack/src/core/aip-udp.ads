@@ -7,15 +7,15 @@
 
 with System;
 
-with AIP.Buffers;
-with AIP.Callbacks;
 with AIP.Config;
+with AIP.Callbacks;
+with AIP.Buffers;
+with AIP.NIF;
 with AIP.IP;
 with AIP.IPaddrs;
-with AIP.NIF;
 
---# inherit AIP.Config, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.NIF,
---#         AIP.IPH, AIP.UDPH;
+--# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers,
+--#         AIP.NIF, AIP.IP, AIP.IPaddrs;
 
 package AIP.UDP is
 
@@ -24,7 +24,7 @@ package AIP.UDP is
    subtype PCB_Id is AIP.EID range AIP.NULID .. Config.MAX_UDP_PCB;
    NOPCB : constant AIP.EID := AIP.NULID;
 
-   subtype Port_T is U16_T;
+   subtype Port_T is AIP.U16_T;
    NOPORT : constant Port_T := 0;
 
    --------------------
@@ -137,9 +137,6 @@ package AIP.UDP is
 
    UDP_HLEN : constant := 8;
 
-   UDP_Payload_Offset : constant := IP.IP_HLEN + UDP.UDP_HLEN;
-   --  What if there are IP options???
-
 private
 
    type UDP_PCB is record
@@ -186,7 +183,7 @@ private
    procedure PCB_Unlink (PCB : PCB_Id);
    --  Unlink PCB from the list of bound PCBs if it is there
 
-   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out Err_T);
+   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T);
    --  Force a local binding on PCB if it isn't bound already
 
    ------------------------
@@ -195,7 +192,7 @@ private
 
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
-      IP   : AIP.IPaddrs.IPaddr;
+      IPA  : AIP.IPaddrs.IPaddr;
       Port : Port_T) return Boolean;
    --  Whether PCB's local IP/port binding matches the provided
    --  IP/PORT pair.
@@ -215,7 +212,7 @@ private
    procedure IP_To_UDP
      (Buf  : Buffers.Buffer_Id;
       Uhdr : out System.Address;
-      Err  : out Err_T);
+      Err  : out AIP.Err_T);
    --  Get Uhdr to designate the UDP header of a datagram received from IP in
    --  BUF, and adjust BUF's payload accordingly.
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
@@ -241,12 +238,12 @@ private
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
    procedure UDP_Send_To_If
-     (PCB   : PCB_Id;
-      Buf   : Buffers.Buffer_Id;
+     (PCB      : PCB_Id;
+      Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
       Dst_Port : Port_T;
-      Netif : AIP.NIF.Netif_Id;
-      Err   : out AIP.Err_T);
+      Netif    : AIP.NIF.Netif_Id;
+      Err      : out AIP.Err_T);
    --  Send BUF to DST_IP/DST_PORT through NETIF, acting for PCB.
    --  ERR_VAL if PCB has a specific local IP set which differs from
    --  NETIF's IP.

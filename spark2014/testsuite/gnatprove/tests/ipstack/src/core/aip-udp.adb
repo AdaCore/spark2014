@@ -285,11 +285,11 @@ package body AIP.UDP is
 
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
-      IP   : AIP.IPaddrs.IPaddr;
+      IPA  : AIP.IPaddrs.IPaddr;
       Port : Port_T) return Boolean is
    begin
       return PCB.Local_Port = Port
-        and then AIP.IPaddrs.Match (PCB.IPCB.Local_IP, IP);
+        and then AIP.IPaddrs.Match (PCB.IPCB.Local_IP, IPA);
    end PCB_Binding_Matches;
 
    function PCB_Bound_To (Port : Port_T) return AIP.EID is
