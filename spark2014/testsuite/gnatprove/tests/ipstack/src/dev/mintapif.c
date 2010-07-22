@@ -150,8 +150,9 @@ low_level_init(struct netif *netif)
 /*-----------------------------------------------------------------------------------*/
 
 static err_t
-low_level_output(struct netif *netif, Buffer_Id p)
+low_level_output(Netif_Id Nid, Buffer_Id p)
 {
+  struct netif *netif = AIP_get_netif (Nid);
   struct mintapif *mintapif;
   Buffer_Id q;
   char buf[1514];
@@ -274,7 +275,7 @@ mintapif_input (Netif_Id nid)
       /* Suspicious hard-coded constant -14??? */
       AIP_buffer_header (p, -14, &err);
 
-      ((Input_CB_T)netif->Input_CB) (p, nid);
+      ((Input_CB_T)netif->Input_CB) (nid, p);
       break;
     case Ether_Type_ARP:
       AIP_arp_input (nid, mintapif->ethaddr, p);
@@ -349,6 +350,7 @@ mintapif_init (Err_T *Err, Netif_Id *Nid)
 
   netif->Name[0] = IFNAME0;
   netif->Name[1] = IFNAME1;
+  netif->Input_CB       = (CBK_Id) AIP_ip_input;
   netif->Output_CB      = (CBK_Id) AIP_arp_output;
   netif->Link_Output_CB = (CBK_Id) low_level_output;
   netif->MTU = 1500;

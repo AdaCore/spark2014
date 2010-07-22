@@ -29,7 +29,8 @@ package AIP.IP is
    procedure IP_Route
      (Dst_IP : IPaddrs.IPaddr; Netif : out NIF.Netif_Id);
 
-   procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id);
+   pragma Export (C, IP_Input, "AIP_ip_input");
 
    procedure IP_Output_If
      (Buf    : Buffers.Buffer_Id;

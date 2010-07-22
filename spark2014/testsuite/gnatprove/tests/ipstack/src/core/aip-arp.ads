@@ -116,4 +116,11 @@ private
    --  Send payload Buf to Dst_MAC_Address on Nid, as the payload of a frame
    --  with the given Frame_Type.
 
+   -----------------------
+   -- Utility functions --
+   -----------------------
+
+   function Get_MAC_Address (Nid : NIF.Netif_Id) return Ethernet_Address;
+   --  Return Nid's MAC address, assuming it is an Ethernet address
+
 end AIP.ARP;

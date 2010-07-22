@@ -16,6 +16,9 @@ with AIP.IPaddrs;
 package AIP.NIF is
    pragma Preelaborate;
 
+   procedure Initialize;
+   --  Initialize NIF subsystem
+
    MAX_NETIF : constant := 20;
    --  ??? Should be defined in a central configuration/dimensioning package
 
@@ -45,23 +48,32 @@ package AIP.NIF is
       Addr : IPaddrs.IPaddr) return Boolean;
    --  True if Addr is a broadcast address for Nid
 
-   procedure Low_Level_Output
+   procedure Get_LL_Address
+     (Nid               : Netif_Id;
+      LL_Address        : out AIP.LL_Address;
+      LL_Address_Length : out AIP.LL_Address_Range);
+   --  Copy Nid's link level address into LL_Address, and set LL_Address_Length
+   --  to the amount of data copied.
+   --  LL_Address'First is expected to be 1.
+
+   procedure Output
+     (Nid         : Netif_Id;
+      Buf         : Buffers.Buffer_Id;
+      Dst_Address : IPaddrs.IPaddr);
+   --  Call Nid's Ouptut_CB callback with Buf
+
+   procedure Link_Output
      (Nid : Netif_Id;
       Buf : Buffers.Buffer_Id);
+   --  Call Nid's Link_Output_CB callback with Buf
 
 private
-
-   Max_LL_Address_Length : constant := 6;
-   --  Make this configurable???
-   --  6 is enough for Ethernet
 
    subtype Netif_Name_Range is Integer range 1 .. 2;
    type Netif_Name is array (Netif_Name_Range) of Character;
 
-   subtype Netif_LL_Address_Range is Integer range 1 .. Max_LL_Address_Length;
-   type Netif_LL_Address is array (Netif_LL_Address_Range) of AIP.U8_T;
-
    procedure Allocate_Netif (Nid : out AIP.EID);
+
    pragma Export (C, Allocate_Netif, "AIP_allocate_netif");
    --  Allocate a new netif Id. Return IF_NOID if none is available
 

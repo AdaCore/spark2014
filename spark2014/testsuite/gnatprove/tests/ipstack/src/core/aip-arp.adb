@@ -6,6 +6,7 @@
 with AIP.ARPH;
 with AIP.Conversions;
 with AIP.EtherH;
+with AIP.Inet;
 
 package body AIP.ARP is
 
@@ -173,7 +174,7 @@ package body AIP.ARP is
                   ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
                   ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
-                  NIF.Low_Level_Output (Nid, Buf);
+                  NIF.Link_Output (Nid, Buf);
                end if;
 
             when ARPH.ARP_Op_Reply =>
@@ -345,6 +346,19 @@ package body AIP.ARP is
       AE.Packet_Queue := Buffers.Empty_Packet_List;
    end ARP_Reset;
 
+   ---------------------
+   -- Get_MAC_Address --
+   ---------------------
+
+   function Get_MAC_Address (Nid : NIF.Netif_Id) return Ethernet_Address is
+      Nid_LL_Address        : Ethernet_Address;
+      Nid_LL_Address_Length : LL_Address_Range;
+   begin
+      NIF.Get_LL_Address (Nid, Nid_LL_Address, Nid_LL_Address_Length);
+      pragma Assert (Nid_LL_Address_Length = Nid_LL_Address'Last);
+      return Nid_LL_Address;
+   end Get_MAC_Address;
+
    --------------
    -- IP_Input --
    --------------
@@ -368,14 +382,24 @@ package body AIP.ARP is
       Buf             : Buffers.Buffer_Id;
       Dst_MAC_Address : Ethernet_Address)
    is
+      Err  : Err_T;
+      Ehdr : System.Address;
    begin
-      --  TBD???
 
       --  Prepend Ethernet header
 
-      --  Call low-level output callback from Nid
+      Buffers.Buffer_Header (Buf, EtherH.Ether_Header'Size / 8, Err);
 
-      null;
+      if No (Err) then
+         Ehdr := Buffers.Buffer_Payload (Buf);
+         EtherH.Set_EtherH_Dst_MAC_Address (Ehdr, Dst_MAC_Address);
+         EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
+         EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
+
+         --  Call low-level output callback from Nid
+
+         null;
+      end if;
    end Send_Packet;
 
    ------------------
@@ -386,27 +410,34 @@ package body AIP.ARP is
      (Nid            : NIF.Netif_Id;
       Dst_IP_Address : IPaddrs.IPaddr)
    is
-      Nid_LL_Address : Ethernet_Address;
-      --  Get LL address from Nid???
       Ethernet_Broadcast : constant Ethernet_Address := (others => 16#ff#);
 
       Buf : Buffers.Buffer_Id;
 
       Ahdr : System.Address;
-      --  Allocate buffer and set Ahdr ???
    begin
-      ARPH.Set_ARPH_Hardware_Type (Ahdr, ARPH.ARP_Hw_Ethernet);
-      ARPH.Set_ARPH_Protocol      (Ahdr, EtherH.Ether_Type_IP);
-      ARPH.Set_ARPH_Hw_Len        (Ahdr, Ethernet_Address'Size / 8);
-      ARPH.Set_ARPH_Pr_Len        (Ahdr, IPaddrs.IPaddr'Size);
-      ARPH.Set_ARPH_Operation     (Ahdr, ARPH.ARP_Op_Request);
-      ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Nid_LL_Address);
-      ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
-      ARPH.Set_ARPH_Dst_Eth_Address (Ahdr, Ethernet_Broadcast);
-      ARPH.Set_ARPH_Dst_IP_Address  (Ahdr, Dst_IP_Address);
+      Buffers.Buffer_Alloc
+        (Inet.HLEN_To (Inet.LINK_LAYER),
+         ARPH.ARP_Header'Size / 8,
+         Buffers.Mono_Buf,
+         Buf);
 
-      Send_Packet (Nid, EtherH.Ether_Type_ARP, Buf, Ethernet_Broadcast);
-      Buffers.Buffer_Blind_Free (Buf);
+      if Buf /= Buffers.NOBUF then
+         Ahdr := Buffers.Buffer_Payload (Buf);
+
+         ARPH.Set_ARPH_Hardware_Type   (Ahdr, ARPH.ARP_Hw_Ethernet);
+         ARPH.Set_ARPH_Protocol        (Ahdr, EtherH.Ether_Type_IP);
+         ARPH.Set_ARPH_Hw_Len          (Ahdr, Ethernet_Address'Size / 8);
+         ARPH.Set_ARPH_Pr_Len          (Ahdr, IPaddrs.IPaddr'Size);
+         ARPH.Set_ARPH_Operation       (Ahdr, ARPH.ARP_Op_Request);
+         ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Get_MAC_Address (Nid));
+         ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
+         ARPH.Set_ARPH_Dst_Eth_Address (Ahdr, Ethernet_Broadcast);
+         ARPH.Set_ARPH_Dst_IP_Address  (Ahdr, Dst_IP_Address);
+
+         Send_Packet (Nid, EtherH.Ether_Type_ARP, Buf, Ethernet_Broadcast);
+         Buffers.Buffer_Blind_Free (Buf);
+      end if;
    end Send_Request;
 
 end AIP.ARP;

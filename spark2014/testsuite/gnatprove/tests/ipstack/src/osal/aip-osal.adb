@@ -18,6 +18,7 @@ package body AIP.OSAL is
    procedure Initialize is
       Err : Err_T;
    begin
+      AIP.NIF.Initialize;
       If_Init (Err, If_Id);
       if Err /= NOERR then
          raise Constraint_Error;

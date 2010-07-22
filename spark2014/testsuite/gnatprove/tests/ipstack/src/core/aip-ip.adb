@@ -27,7 +27,7 @@ package body AIP.IP is
    -- IP_Input --
    --------------
 
-   procedure IP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
+   procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) is
       Err  : Err_T := AIP.NOERR;
 
       Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);

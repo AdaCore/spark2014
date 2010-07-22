@@ -123,6 +123,13 @@ AIP_arpip_input (Netif_Id Nid, Buffer_Id Buf);
 extern void
 AIP_arp_output (Netif_Id Nid, Buffer_Id Buf, IPaddr Dst_Address);
 
+/**********
+ * AIP.IP *
+ **********/
+
+extern void
+AIP_ip_input (Netif_Id Nid, Buffer_Id Buf);
+
 /**************
  * AIP.EtherH *
  **************/

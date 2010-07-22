@@ -94,13 +94,26 @@ package AIP is
    -- Opaque data --
    -----------------
 
-   subtype Ethernet_Address_Range is Integer range 1 .. 6;
-   type Ethernet_Address is array (Ethernet_Address_Range) of U8_T;
-   --  48 bit Ethernet address
-
    subtype Opaque64_Range is Integer range 1 .. 8;
    type Opaque64 is array (Opaque64_Range) of U8_T;
    --  64 bit opaque data (used for copy of original datagram in ICMP messages)
+
+   --------------------------
+   -- Link layer addresses --
+   --------------------------
+
+   Max_LL_Address_Length : constant := 6;
+   --  Make this configurable???
+   --  6 is enough for Ethernet
+
+   subtype LL_Address_Range is Integer range 1 .. Max_LL_Address_Length;
+   type LL_Address is array (LL_Address_Range range <>) of U8_T;
+   subtype LL_Address_Storage is LL_Address (LL_Address_Range);
+   --  Storage for LL address of arbitrary length
+
+   subtype Ethernet_Address_Range is LL_Address_Range range 1 .. 6;
+   subtype Ethernet_Address is LL_Address (Ethernet_Address_Range);
+   --  48 bit Ethernet address
 
    ----------------------------
    -- Error characterization --

@@ -9,32 +9,6 @@
 
 package AIP.Inet is
 
-   -----------------
-   -- hton family --
-   -----------------
-
-   --  These all return host value V converted as needed to the network byte
-   --  ordering ordering scheme.
-
-   function htonlm (V : AIP.M32_T) return AIP.M32_T;
-   function htonlu (V : AIP.U32_T) return AIP.U32_T;
-
-   function htonsm (V : AIP.M16_T) return AIP.M16_T;
-   function htonsu (V : AIP.U16_T) return AIP.U16_T;
-
-   -----------------
-   -- ntoh family --
-   -----------------
-
-   --  These all return network ordered value V converted as needed to
-   --  host byte ordering scheme.
-
-   function ntohlm (V : AIP.M32_T) return AIP.M32_T;
-   function ntohlu (V : AIP.U32_T) return AIP.U32_T;
-
-   function ntohsm (V : AIP.M16_T) return AIP.M16_T;
-   function ntohsu (V : AIP.U16_T) return AIP.U16_T;
-
    -------------------------------------
    -- Basic network layer abstraction --
    -------------------------------------
