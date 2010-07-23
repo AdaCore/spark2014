@@ -409,10 +409,6 @@ procedure Tranxgen is
    procedure Process_Message (Ctx : in out Package_Context; N : Node) is
       Message_Name : constant String := Get_Attribute (N, "name");
 
-      Alignment : Natural := 0;
-      --  Alignment is by default the size of the largest field that itself
-      --  is so aligned.
-
       Max_Field_Name_Length    : Natural := 0;
       --  Length of longest field name
 
@@ -431,22 +427,6 @@ procedure Tranxgen is
 
       procedure Process_Field (N : Node);
       --  Process <field> element
-
-      function Is_Power_Of_2 (N : Natural) return Boolean;
-      --  True if N is a power of 2
-
-      -------------------
-      -- Is_Power_Of_2 --
-      -------------------
-
-      function Is_Power_Of_2 (N : Natural) return Boolean is
-         NN : Natural := N;
-      begin
-         while NN > 2 loop
-            NN := NN / 2;
-         end loop;
-         return NN = 2;
-      end Is_Power_Of_2;
 
       -------------------
       -- Process_Field --
@@ -534,13 +514,6 @@ procedure Tranxgen is
              F_Type    => To_Unbounded_String (Get_Attribute (N, "type")),
              Length    => Field_Length,
              Subfields => Subfields));
-
-         if Is_Power_Of_2 (Field_Length)
-              and then
-            Current_Bit_Offset mod Field_Length = 0
-         then
-            Alignment := Natural'Max (Field_Length, Alignment);
-         end if;
       end Process_Field;
 
       ----------------
@@ -855,8 +828,6 @@ procedure Tranxgen is
       --  Generate rep clause
 
       NL (Ctx.P_Private);
-      PL (Ctx.P_Private, "for " & Message_Name & "'Alignment use "
-                           & Img (Alignment / 8) & ";");
       PL (Ctx.P_Private, "for " & Message_Name & "'Bit_Order"
                     & " use System.High_Order_First;");
       PL (Ctx.P_Private, "for " & Message_Name & " use record");
@@ -1008,6 +979,8 @@ procedure Tranxgen is
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "package " & Package_Name & " is");
       II (Ctx.P_Spec);
+      NL (Ctx.P_Spec);
+      PL (Ctx.P_Spec, "pragma Pure;");
 
       II (Ctx.P_Private);
 
