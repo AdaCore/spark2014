@@ -31,6 +31,13 @@ package AIP.IP is
       --  Time To Live
    end record;
 
+   IP_PCB_Initializer : constant IP_PCB
+     := IP_PCB'(Local_IP  => IPaddrs.IP_ADDR_ANY,
+                Remote_IP => IPaddrs.IP_ADDR_ANY,
+                SOO       => 0,
+                TOS       => 0,
+                TTL       => 0);
+
    procedure IP_Route
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;

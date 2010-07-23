@@ -18,7 +18,9 @@ with AIP.IPaddrs;
 --#         AIP.NIF, AIP.IP, AIP.IPaddrs,
 --#         AIP.Checksum, AIP.Inet, AIP.IPH, AIP.UDPH;
 
-package AIP.UDP is
+package AIP.UDP
+   --# own State;
+is
 
    --  UDP connections materialize as "UDP Protocol Control Blocks"
 
@@ -32,7 +34,13 @@ package AIP.UDP is
    -- User interface --
    --------------------
 
+   procedure UDP_Init;
+   --# global out State;
+   --  Initialize internal datastructures. To be called once, before any of
+   --  the other subprograms.
+
    procedure UDP_New (Id : out PCB_Id);
+   --# global in out State;
    --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 
    procedure UDP_Bind
@@ -40,6 +48,7 @@ package AIP.UDP is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T;
       Err        : out AIP.Err_T);
+   --# global in out State;
    --  Bind PCB to a Local_IP address and Local_Port, after which datagrams
    --  received for this endpoint might be delivered to PCB and trigger an
    --  UDP_RECV event/callback. If Local_IP is IP_ADDR_ANY, the endpoint
@@ -56,6 +65,7 @@ package AIP.UDP is
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
       Err         : out AIP.Err_T);
+   --# global in out State;
    --  Register Remote_IP/Remote_Port as the destination endpoint for
    --  datagrams sent later with UDP_Send on this PCB. Until disconnected,
    --  packets from this endpoint only are processed by PCB. A forced local
@@ -68,8 +78,10 @@ package AIP.UDP is
      (PCB : PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
+   --# global in out State;
    --  Send BUF data to the current destination endpoint of PCB, as
-   --  established by UDP_Connect. BUF is not deallocated.
+   --  established by UDP_Connect. Force a local binding on PCB if none
+   --  is established already. BUF is not deallocated.
    --
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
@@ -77,10 +89,12 @@ package AIP.UDP is
    --  Possibly other errors from lower layers.
 
    procedure UDP_Disconnect (PCB : PCB_Id);
+   --# global in out State;
    --  Disconnect PCB from its current destination endpoint, which leaves
    --  it open to its initial binding again.
 
    procedure UDP_Release (PCB : PCB_Id);
+   --# global in out State;
    --  Release PCB, to become available for Udb_New again
 
    ------------------------------
@@ -110,18 +124,22 @@ package AIP.UDP is
 
    procedure UDP_Callback
      (Evk : UDP_Event_Kind; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
+   --# global in out State;
    --  Register that ID should be passed back to the user defined
    --  UDP_Event hook when an event of kind EVK triggers for PCB.
 
    procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address);
+   --# global in out State;
    --  Attach application level UDATA to PCB for later retrieval
    --  on UDP_Event calls.
 
    function UDP_Udata (PCB : PCB_Id) return System.Address;
+   --# global in State;
    --  Retrieve Udata previously attached to PCB, System.Null_Address if none.
 
    procedure UDP_Event
      (Ev : UDP_Event_T; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
+   --# global in out Buffers.State; in out State;
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was
    --  registered. Expected to be provided by the applicative code.
 
@@ -132,6 +150,7 @@ package AIP.UDP is
    -----------------------
 
    procedure UDP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   --# global in out Buffers.State; in out State;
    --  Hook for IP.  Dispatches a UDP datagram in BUF to the user callback
    --  registered for the destination port, if any. Discards the datagram
    --  (free BUF) otherwise.
@@ -165,6 +184,15 @@ private
    --  UDP_Send, and to prevent selection of PCB to handle an incoming datagram
    --  if it is not connected to its remote origin (UDP_Input).
 
+   UDP_PCB_Initializer : constant UDP_PCB
+     := UDP_PCB'(IPCB        => IP.IP_PCB_Initializer,
+                 Local_Port  => NOPORT,
+                 Remote_Port => NOPORT,
+                 Connected   => False,
+                 Udata       => System.Null_Address,
+                 RECV_Cb     => Callbacks.NOCB,
+                 Link        => PCB_UNUSED);
+
    --------------------------
    -- Internal subprograms --
    --------------------------
@@ -172,19 +200,20 @@ private
    --  All declared here because SPARK forbids forward declarations in package
    --  bodies.
 
-   procedure Init_PCBs;
-   --  Initialize static pool of UDP PCBs
-
    procedure PCB_Allocate (Id : out AIP.EID);
+   --# global in out State;
    --  Find one PCB free for use from the static pool and mark it in-use
 
    procedure PCB_Clear (PCB : PCB_Id);
+   --# global in out State;
    --  Reset/Initialize PCB fields for fresh (re)use
 
    procedure PCB_Unlink (PCB : PCB_Id);
+   --# global in out State;
    --  Unlink PCB from the list of bound PCBs if it is there
 
    procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T);
+   --# global in out State;
    --  Force a local binding on PCB if it isn't bound already
 
    ------------------------
@@ -199,10 +228,12 @@ private
    --  IP/PORT pair.
 
    function PCB_Bound_To (Port : Port_T) return AIP.EID;
+   --# global in State;
    --  From the list of bound PCBs, first one bound to local PORT
    --  NOPCB if none is found.
 
    function Available_Port return Port_T;
+   --# global in State;
    --  Arbitrary local Port number to which no PCB is currently bound.
    --  NOPORT if no such port is available.
 
@@ -214,6 +245,7 @@ private
      (Buf  : Buffers.Buffer_Id;
       Uhdr : out System.Address;
       Err  : out AIP.Err_T);
+   --# global in out Buffers.State;
    --  Get Uhdr to designate the UDP header of a datagram received from IP in
    --  BUF, and adjust BUF's payload accordingly.
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
@@ -222,6 +254,7 @@ private
      (Ihdr  : System.Address;
       Uhdr  : System.Address;
       Netif : NIF.Netif_Id) return AIP.EID;
+   --# global in State;
    --  Search bound PCBs for one taker of a datagram with IP header Ihdr and
    --  UDP header Uhdr arrived on NETIF.
 
@@ -233,6 +266,7 @@ private
      (Buf  : Buffers.Buffer_Id;
       Ubuf : out Buffers.Buffer_Id;
       Err  : out AIP.Err_T);
+   --# global in out Buffers.State;
    --  Setup space for a UDP header before the data in Buf. See if there is
    --  enough room preallocated for this purpose, and adjust the payload
    --  pointer in this case. Prepend a separate buffer otherwise.
@@ -246,6 +280,7 @@ private
       Dst_Port : Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
+   --# global in State;
    --  Send BUF to DST_IP/DST_PORT through NETIF, acting for PCB.
    --  ERR_VAL if PCB has a specific local IP set which differs from
    --  NETIF's IP.

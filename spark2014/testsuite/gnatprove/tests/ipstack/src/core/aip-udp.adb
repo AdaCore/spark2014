@@ -9,7 +9,9 @@ with AIP.Inet;
 with AIP.IPH;
 with AIP.UDPH;
 
-package body AIP.UDP is
+package body AIP.UDP
+   --# own State is PCBs, Bound_PCBs;
+is
 
    ---------------------
    -- Data structures --
@@ -26,25 +28,28 @@ package body AIP.UDP is
    PCBs : UDP_PCB_Array;
    Bound_PCBs : AIP.EID;
 
-   -----------------
-   --  Init_PCBs  --
-   -----------------
+   ----------------
+   --  UDP_Init  --
+   ----------------
 
-   procedure Init_PCBs is
+   procedure UDP_Init
+      --# global out PCBs, Bound_PCBs;
+   is
    begin
-      --  Mark all the PCBs as unused and the list of bound PCBs as empty
+      --  Initialize all the PCBs, which marks them unused, and initialize
+      --  the list of bound PCBs as empty.
 
-      for I in Valid_PCB_Ids loop
-         PCBs (I).Link := PCB_UNUSED;
-      end loop;
+      PCBs := UDP_PCB_Array'(others => UDP_PCB_Initializer);
       Bound_PCBs := NOPCB;
-   end Init_PCBs;
+   end UDP_Init;
 
    --------------------
    --  PCB_Allocate  --
    --------------------
 
-   procedure PCB_Allocate (Id : out AIP.EID) is
+   procedure PCB_Allocate (Id : out AIP.EID)
+      --# global in out PCBs;
+   is
       Cid : PCB_Id;  -- Candidate Id
    begin
       --  Scan the PCBs array and pick the first UNUSED entry
@@ -65,28 +70,23 @@ package body AIP.UDP is
    -- PCB_Clear --
    ---------------
 
-   procedure PCB_Clear (PCB : PCB_Id) is
+   procedure PCB_Clear (PCB : PCB_Id)
+      --# global in out PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
-      PCBs (PCB).IPCB.Local_IP := IPaddrs.IP_ADDR_ANY;
-      PCBs (PCB).Local_Port := NOPORT;
-
-      PCBs (PCB).IPCB.Remote_IP := IPaddrs.IP_ADDR_ANY;
-      PCBs (PCB).Remote_Port := NOPORT;
-
-      PCBs (PCB).Connected := False;
-
-      PCBs (PCB).Udata     := System.Null_Address;
-      PCBs (PCB).RECV_Cb   := Callbacks.NOCB;
-      PCBs (PCB).Link      := NOPCB;
+      PCBs (PCB) := UDP_PCB_Initializer;
+      PCBs (PCB).Link := NOPCB;
    end PCB_Clear;
 
    -------------
    -- UDP_New --
    -------------
 
-   procedure UDP_New (Id : out PCB_Id) is
+   procedure UDP_New (Id : out PCB_Id)
+      --# global in out PCBs;
+   is
    begin
       PCB_Allocate (Id);
       if Id /= NOPCB then
@@ -106,12 +106,18 @@ package body AIP.UDP is
    procedure IP_To_UDP
      (Buf  : Buffers.Buffer_Id;
       Uhdr : out System.Address;
-      Err  : out Err_T)
+      Err  : out AIP.Err_T)
    is
-      Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);
-      IPhlen : constant U16_T := U16_T (IPH.IPH_IHL (Ihdr)) * 4;
+      Ihdr : System.Address;
+      --  Address of the IP header in BUF
+
+      IPhlen : AIP.U16_T;
+      --  Length of this header
    begin
-      Err := AIP.NOERR;
+      --  We expect BUF to have just been provided by the IP layer
+
+      Ihdr := Buffers.Buffer_Payload (Buf);
+      IPhlen := AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4;
 
       --  ERR_MEM if the buffer length is such that this couldn't
       --  possibly be a UDP dgram, when there's not even room for the
@@ -121,7 +127,7 @@ package body AIP.UDP is
       if Buffers.Buffer_Tlen (Buf) < IPhlen + UDP_HLEN then
          Err := AIP.ERR_MEM;
       else
-         Buffers.Buffer_Header (Buf, -S16_T (IPhlen), Err);
+         Buffers.Buffer_Header (Buf, -AIP.S16_T (IPhlen), Err);
       end if;
 
       --  If the length check and the payload move went fine, we have
@@ -129,6 +135,8 @@ package body AIP.UDP is
 
       if Err = AIP.NOERR then
          Uhdr := Buffers.Buffer_Payload (Buf);
+      else
+         Uhdr := System.Null_Address;
       end if;
    end IP_To_UDP;
 
@@ -140,19 +148,23 @@ package body AIP.UDP is
      (Ihdr  : System.Address;
       Uhdr  : System.Address;
       Netif : NIF.Netif_Id) return AIP.EID
+      --# global in PCBs, Bound_PCBs;
    is
       Cid, PCB : AIP.EID;
       Ideal_PCB, Good_PCB : AIP.EID := NOPCB;
 
       Local_Match, Remote_Match : Boolean;
 
-      Src_IP   : constant IPaddrs.IPaddr := IPH.IPH_Src_Address (Ihdr);
-      Src_Port : constant Port_T         := UDPH.UDPH_Src_Port (Uhdr);
-
-      Dst_IP   : constant IPaddrs.IPaddr := IPH.IPH_Dst_Address (Ihdr);
-      Dst_Port : constant Port_T         := UDPH.UDPH_Dst_Port (Uhdr);
+      Src_IP, Dst_IP : IPaddrs.IPaddr;
+      Src_Port, Dst_Port : Port_T;
 
    begin
+
+      Src_IP   := IPH.IPH_Src_Address (Ihdr);
+      Src_Port := UDPH.UDPH_Src_Port (Uhdr);
+
+      Dst_IP   := IPH.IPH_Dst_Address (Ihdr);
+      Dst_Port := UDPH.UDPH_Dst_Port (Uhdr);
 
       --  Scan the list of bound PCBs in search of one at least locally bound
       --  to the datagram destination endpoint, and even better also connected
@@ -213,22 +225,25 @@ package body AIP.UDP is
    procedure UDP_Input
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
+      --# global in out Buffers.State, Bound_PCBs, PCBs;
+
    is
-      Ihdr : constant system.Address := Buffers.Buffer_Payload (Buf);
-      Uhdr : System.Address;
+      Ihdr, Uhdr : System.Address;
 
-      Err : AIP.Err_T := AIP.NOERR;  --  Until we know otherwise
-      PCB : AIP.EID;
+      Err : AIP.Err_T;
+      PCB : AIP.EID := NOPCB;
    begin
-      --  Retrieve an UDP view of the incoming datagram.
+      --  Latch address of IP header and retrieve a UDP view of the incoming
+      --  datagram.
 
+      Ihdr := Buffers.Buffer_Payload (Buf);
       IP_To_UDP (Buf, Uhdr, Err);
 
       --  Find the best UDP PCB to take the datagram, verify the checksum
       --  and adjust the payload offset before passing up to the applicative
       --  callback.
 
-      if No (Err) then
+      if AIP.No (Err) then
          PCB := UDP_PCB_For (Ihdr, Uhdr, Netif);
 
          if PCB /= NOPCB
@@ -250,7 +265,7 @@ package body AIP.UDP is
       --  registered for it. Buffer release is the application's
       --  responsibility in this case.
 
-      if No (Err)
+      if AIP.No (Err)
         and then PCB /= NOPCB
         and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
       then
@@ -272,15 +287,17 @@ package body AIP.UDP is
 
    function PCB_Binding_Matches
      (PCB  : UDP_PCB;
-      IPA  : AIP.IPaddrs.IPaddr;
+      IPA  : IPaddrs.IPaddr;
       Port : Port_T) return Boolean
    is
    begin
       return PCB.Local_Port = Port
-        and then AIP.IPaddrs.Match (PCB.IPCB.Local_IP, IPA);
+        and then IPaddrs.Match (PCB.IPCB.Local_IP, IPA);
    end PCB_Binding_Matches;
 
-   function PCB_Bound_To (Port : Port_T) return AIP.EID is
+   function PCB_Bound_To (Port : Port_T) return AIP.EID
+      --# global in PCBs, Bound_PCBs;
+   is
       Pid : AIP.EID;
    begin
       Pid := Bound_PCBs;
@@ -291,7 +308,9 @@ package body AIP.UDP is
       return Pid;
    end PCB_Bound_To;
 
-   function Available_Port return Port_T is
+   function Available_Port return Port_T
+      --# global in PCBs, Bound_PCBs;
+   is
       Aport : Port_T := NOPORT;  --  Port found to be available
       Cport : Port_T;            --  Candidate port to examine
    begin
@@ -316,6 +335,7 @@ package body AIP.UDP is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T;
       Err  : out AIP.Err_T)
+      --# global in out PCBs, Bound_PCBs;
    is
       Rebind : Boolean;
       Pid : AIP.EID;
@@ -323,13 +343,15 @@ package body AIP.UDP is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
-      Err := NOERR;
+      Err := AIP.NOERR;
 
       --  See if we're rebinding an already bound PCB, and/or if
       --  we're binding to the same addr/port as another bound PCB.
 
+      Rebind := False;
+
       Pid := Bound_PCBs;
-      while Pid /= NOPCB and then Err = NOERR loop
+      while Pid /= NOPCB and then AIP.No (Err) loop
          if Pid = PCB then
             Rebind := True;
          elsif not Config.UDP_SHARED_ENDPOINTS
@@ -340,9 +362,10 @@ package body AIP.UDP is
          Pid := PCBs (Pid).Link;
       end loop;
 
-      --  Pick an available port if none was specified
+      if AIP.No (Err) then
 
-      if Err = NOERR then
+         --  Pick an available port if none was specified
+
          if Local_Port = NOPORT then
             Port_To_Bind := Available_Port;
             if Port_To_Bind = NOPORT then
@@ -351,12 +374,10 @@ package body AIP.UDP is
          else
             Port_To_Bind := Local_Port;
          end if;
-      end if;
 
-      --  Assign the local IP/port, and insert into the list of bound PCBs
-      --  unless it was already there.
+         --  Assign the local IP/port, and insert into the list of bound PCBs
+         --  unless it was already there.
 
-      if Err = NOERR then
          PCBs (PCB).Local_Port := Port_To_Bind;
          PCBs (PCB).IPCB.Local_IP := Local_IP;
 
@@ -372,7 +393,9 @@ package body AIP.UDP is
    --  PCB_Force_Bind  --
    ----------------------
 
-   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out Err_T) is
+   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T)
+      --# global in out PCBs, Bound_PCBs;
+   is
    begin
       if PCBs (PCB).Local_Port = NOPORT then
          UDP_Bind (PCB, PCBs (PCB).IPCB.Local_IP, NOPORT, Err);
@@ -385,7 +408,9 @@ package body AIP.UDP is
    -- PCB_Unlink --
    ----------------
 
-   procedure PCB_Unlink (PCB : PCB_Id) is
+   procedure PCB_Unlink (PCB : PCB_Id)
+      --# global in out PCBs, Bound_PCBs;
+   is
       Cur, Prev : AIP.EID;
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
@@ -417,7 +442,9 @@ package body AIP.UDP is
      (PCB         : PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
-      Err         : out AIP.Err_T) is
+      Err         : out AIP.Err_T)
+      --# global in out PCBs, Bound_PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
@@ -431,7 +458,7 @@ package body AIP.UDP is
       --  meaning bound already, or we bound it ourselves.  In both cases,
       --  it should already be present in the list of active PCBs.
 
-      if Err = AIP.NOERR then
+      if AIP.No (Err) then
          PCBs (PCB).IPCB.Remote_IP := Remote_IP;
          PCBs (PCB).Remote_Port    := Remote_Port;
          PCBs (PCB).Connected      := True;
@@ -453,13 +480,13 @@ package body AIP.UDP is
    is
    begin
       Buffers.Buffer_Header (Buf, UDP_HLEN, Err);
-      if Err = NOERR then
+      if AIP.No (Err) then
          Ubuf := Buf;
       else
          Buffers.Buffer_Alloc
            (Inet.HLEN_To (Inet.IP_LAYER), UDP_HLEN, Buffers.SPLIT_BUF, Ubuf);
          if Ubuf = Buffers.NOBUF then
-            Err := ERR_MEM;
+            Err := AIP.ERR_MEM;
          else
             Buffers.Buffer_Chain (Ubuf, Buf);
          end if;
@@ -476,16 +503,16 @@ package body AIP.UDP is
       Dst_IP   : IPaddrs.IPaddr;
       NH_IP    : IPaddrs.IPaddr;
       Dst_Port : Port_T;
-      Netif    : AIP.NIF.Netif_Id;
+      Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T)
    is
       Ubuf   : Buffers.Buffer_Id := Buffers.NOBUF;
-      Src_IP : AIP.IPaddrs.IPaddr;
+      Src_IP : IPaddrs.IPaddr;
 
       PUhdr : aliased UDPH.UDP_Pseudo_Header;
       Uhdr  : System.Address;
 
-      Csum : M16_T;
+      Csum : AIP.M16_T;
       Check_Buf : Buffers.Buffer_Id;
 
    begin
@@ -601,7 +628,7 @@ package body AIP.UDP is
          Err := ERR_USE;
 
       else
-         AIP.IP.IP_Route (Dst_IP, NH_IP, Netif);
+         IP.IP_Route (Dst_IP, NH_IP, Netif);
          if Netif = AIP.NIF.IF_NOID then
             Err := ERR_RTE;
          else
@@ -670,6 +697,4 @@ package body AIP.UDP is
       return PCBs (PCB).Udata;
    end UDP_Udata;
 
-begin
-   Init_PCBs;
 end AIP.UDP;
