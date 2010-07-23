@@ -84,11 +84,13 @@ static void  mintapif_input(Netif_Id nid);
  * The following are hardcoded and should instead be made configurable:
  *   MAC address
  *   host IP address
-*/
+ *   target IP address
+ *   netmask
+ */
 
 #define HOST_IP_ADDRESS_1 192
 #define HOST_IP_ADDRESS_2 168
-#define HOST_IP_ADDRESS_3 100
+#define HOST_IP_ADDRESS_3 0
 #define HOST_IP_ADDRESS_4 1
 
 static void
@@ -131,7 +133,14 @@ low_level_init(struct netif *netif)
            HOST_IP_ADDRESS_1,
            HOST_IP_ADDRESS_2,
            HOST_IP_ADDRESS_3,
-           HOST_IP_ADDRESS_4);
+	   HOST_IP_ADDRESS_4);
+
+  netif->IP = (HOST_IP_ADDRESS_1 << 24)
+            + (HOST_IP_ADDRESS_2 << 16)
+            + (HOST_IP_ADDRESS_3 << 8)
+            + HOST_IP_ADDRESS_4 + 1;
+  netif->Mask = 0xffffff00;
+  netif->Broadcast = (netif->IP & netif->Mask) + ~netif->Mask;
 
   system(buf);
 
@@ -193,6 +202,10 @@ low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
  *
  */
 /*-----------------------------------------------------------------------------------*/
+/*
+ * Pad Ethernet frames by 2 bytes so that the IP payload ends up aligned
+ * on a 4-byte boundary.
+ */
 static Buffer_Id
 low_level_input(struct netif *netif)
 {
@@ -201,6 +214,7 @@ low_level_input(struct netif *netif)
   char buf[1514];
   char *bufptr;
   struct mintapif *mintapif;
+  Err_T Err;
 
   mintapif = netif->Dev;
 
@@ -215,6 +229,8 @@ low_level_input(struct netif *netif)
 
   /* We allocate a pbuf chain of pbufs from the pool. */
   AIP_buffer_alloc (0, len, LINK_BUF, &p);
+  /* Check Err ??? */
+
   if (p != NOBUF) {
     /* We iterate over the pbuf chain until we have read the entire
        packet into the pbuf. */
@@ -266,13 +282,9 @@ mintapif_input (Netif_Id nid)
 
     switch (AIP_etherh_frame_type (ethhdr)) {
     case Ether_Type_IP:
-#if 0
-/* CSi disabled ARP table update on ingress IP packets.
-   This seems to work but needs thorough testing. */
-      AIP_arpip_input(netif, p);
-#endif
+      /* AIP_arpip_input(Nid, p); */
 
-      /* Suspicious hard-coded constant -14??? */
+      /* Skip Ethernet header */
       AIP_buffer_header (p, -14, &err);
 
       netif->Input_CB (nid, p);
@@ -440,13 +452,18 @@ mintapif_isr (Netif_Id nid) {
     /* work, immediatly end critical section
        hoping lwIP ended quickly ... */
     sigprocmask(SIG_SETMASK, &oldmask, NULL);
+    return 1;
   }
   else
   {
+#if 0
     /* no work, wait a little (10 msec) for SIGALRM */
       sigemptyset(&empty);
       sigsuspend(&empty);
     /* ... end critical section */
       sigprocmask(SIG_SETMASK, &oldmask, NULL);
+#else
+    return 0;
+#endif
   }
 }

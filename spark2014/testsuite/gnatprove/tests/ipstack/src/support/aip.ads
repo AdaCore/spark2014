@@ -122,7 +122,8 @@ package AIP is
    --  Make this configurable???
    --  6 is enough for Ethernet
 
-   subtype LL_Address_Range is Integer range 1 .. Max_LL_Address_Length;
+   subtype LL_Address_Range is U8_T range 1 .. Max_LL_Address_Length;
+
    type LL_Address is array (LL_Address_Range range <>) of U8_T;
    subtype LL_Address_Storage is LL_Address (LL_Address_Range);
    --  Storage for LL address of arbitrary length

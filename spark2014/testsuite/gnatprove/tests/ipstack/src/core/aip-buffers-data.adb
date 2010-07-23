@@ -26,6 +26,7 @@ is
 
    subtype Buffer_Index is AIP.U16_T range 1 .. Config.Data_Buffer_Num;
    subtype Buffer_Count is Buffer_Index;
+   --  What is the relationship between Buffer_Index and Buffer_Id???
 
    type Buffer is record
       Num          : Buffer_Count;
@@ -203,9 +204,12 @@ is
    --# global in Data_Array, Buf_List;
    is
       --# hide Buffer_Payload;  --  Hidden because of 'Address attribute
+      Buf_Start_Offset : constant Data_Length :=
+                           (Buf - Buffer_Index'First)
+                             * Config.Data_Buffer_Size;
    begin
       return Conversions.Ofs
-        (Data_Array (Buf)'Address,
+        (Data_Array (Data_Array'First + Buf_Start_Offset)'Address,
          Integer (Buf_List (Buf).Left_Offset));
    end Buffer_Payload;
 

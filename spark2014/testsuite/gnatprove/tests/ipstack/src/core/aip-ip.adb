@@ -22,9 +22,11 @@ package body AIP.IP is
    ----------------
 
    procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
+      pragma Unreferenced (Netif);
    begin
       --  ??? TBD
-      raise Program_Error;
+
+      Buffers.Buffer_Blind_Free (Buf);
    end IP_Forward;
 
    --------------
@@ -50,7 +52,7 @@ package body AIP.IP is
 
       if True
            or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
-           or else Buffers.Buffer_Tlen (Buf) < U16_T (IPH.IPH_IHL (Ihdr) * 4)
+           or else Buffers.Buffer_Tlen (Buf) < U16_T (IPH.IPH_IHL (Ihdr)) * 4
            or else IPH.IPH_Version (Ihdr) /= 4
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Sum
@@ -113,6 +115,8 @@ package body AIP.IP is
             IP_Forward (Buf, Netif);
          end if;
       end if;
+
+      Buffers.Buffer_Blind_Free (Buf);
    end IP_Input;
 
    ------------------

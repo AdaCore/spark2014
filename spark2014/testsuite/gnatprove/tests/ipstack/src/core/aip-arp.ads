@@ -14,7 +14,7 @@ with AIP.Time_Types;
 
 package AIP.ARP is
 
-   procedure ARP_Initialize;
+   procedure Initialize;
    --  Initialize ARP subsystem and empty ARP table
 
    procedure ARP_Timer;

@@ -3,6 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with AIP.ARP;
+with AIP.Buffers;
 with AIP.Platform;
 
 package body AIP.OSAL is
@@ -18,8 +20,16 @@ package body AIP.OSAL is
    procedure Initialize is
       Err : Err_T;
    begin
-      AIP.NIF.Initialize;
+      --  Initialize subsystems
+
+      Buffers.Buffer_Init;
+      ARP.Initialize;
+      NIF.Initialize;
+
+      --  Set up interfaces
+
       If_Init (Err, If_Id);
+
       if Err /= NOERR then
          raise Constraint_Error;
       end if;

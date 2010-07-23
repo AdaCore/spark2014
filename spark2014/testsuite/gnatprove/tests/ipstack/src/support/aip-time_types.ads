@@ -6,7 +6,6 @@
 --# inherit AIP;
 
 package AIP.Time_Types is
-
    type Time is mod 2 ** 32;
    subtype Interval is Time;
 

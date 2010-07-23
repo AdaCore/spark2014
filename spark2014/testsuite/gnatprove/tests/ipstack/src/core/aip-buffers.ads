@@ -167,6 +167,7 @@ is
    -----------------------
 
    procedure Buffer_Cat (Head : Buffer_Id; Tail : Buffer_Id);
+   pragma Export (C, Buffer_Cat, "AIP_buffer_cat");
    --# global in out State;
    --  Append Tail at the end of the chain starting at Head, taking over
    --  the caller's reference to Tail

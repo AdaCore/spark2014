@@ -244,7 +244,7 @@ package body AIP.TCP is
    procedure TCP_Fast_Timer is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null;
    end TCP_Fast_Timer;
 
    --------------------
@@ -254,7 +254,7 @@ package body AIP.TCP is
    procedure TCP_Slow_Timer is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null;
    end TCP_Slow_Timer;
 
 end AIP.TCP;

@@ -4,13 +4,14 @@
 ------------------------------------------------------------------------------
 
 with AIP.ARP;
+with AIP.NIF;
 with AIP.Platform;
 with AIP.TCP;
 with AIP.Timers;
 
 package body AIP.OSAL.Single is
 
-   function Netif_Isr return Integer;
+   function Netif_Isr (Nid : NIF.Netif_Id) return Integer;
    pragma Import (C, Netif_Isr, Platform.If_ISR_Linkname);
 
    ------------------------------
@@ -19,7 +20,7 @@ package body AIP.OSAL.Single is
 
    function Process_Interface_Events return Integer is
    begin
-      return Netif_Isr;
+      return Netif_Isr (If_Id);
    end Process_Interface_Events;
 
    --------------------

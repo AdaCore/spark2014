@@ -18,5 +18,7 @@ project IPStack_Dev is
    package Compiler is
       for Default_Switches ("Ada")
         use IPStack_Config.Compiler'Default_Switches ("Ada");
+      for Default_Switches ("C")
+        use IPStack_Config.Compiler'Default_Switches ("C");
    end Compiler;
 end IPStack_Dev;

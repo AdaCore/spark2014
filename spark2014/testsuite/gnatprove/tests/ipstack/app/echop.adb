@@ -5,7 +5,13 @@
 
 with Ada.Text_IO;
 
-with Raw_TCPEcho;
+--  with Raw_TCPEcho;
+--  TCP service temporarily deactivated???
+
+with Raw_UDP_Syslog;
+with Raw_UDP_Dispatcher;
+pragma Warnings (Off, Raw_UDP_Dispatcher);
+
 with AIP.OSAL;
 with AIP.OSAL.Single;
 with AIP.Time_Types;
@@ -20,17 +26,6 @@ procedure Echop is
    Poll_Freq : constant := 100;
    --  100 ms
 
-   --  Commented out until ARP and TCP are reimplemented
-
---     procedure tcp_fasttmr;
---     pragma Import (C, tcp_fasttmr, "tcp_fasttmr");
---
---     procedure tcp_slowtmr;
---     pragma Import (C, tcp_slowtmr, "tcp_slowtmr");
---
---     procedure etharp_tmr;
---     pragma Import (C, Etharp_Tmr, "etharp_tmr");
-
 begin
    Ada.Text_IO.Put_Line ("*** IPStack starting ***");
 
@@ -40,7 +35,8 @@ begin
 
    --  Initialize application services
 
-   Raw_TCPEcho.Init;
+   --  Raw_TCPEcho.Init;
+   Raw_UDP_Syslog.Init;
 
    --  Run application main loop
 

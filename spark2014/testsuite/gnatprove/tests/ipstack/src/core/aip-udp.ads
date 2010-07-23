@@ -125,7 +125,7 @@ package AIP.UDP is
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was
    --  registered. Expected to be provided by the applicative code.
 
-   pragma Import (Ada, UDP_Event, "aip_udp_event");
+   pragma Import (Ada, UDP_Event, "AIP_udp_event");
 
    -----------------------
    -- IPstack interface --

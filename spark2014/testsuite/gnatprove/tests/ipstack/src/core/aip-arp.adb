@@ -81,18 +81,18 @@ package body AIP.ARP is
       end if;
    end ARP_Find;
 
-   --------------------
-   -- ARP_Initialize --
-   --------------------
+   ----------------
+   -- Initialize --
+   ----------------
 
-   procedure ARP_Initialize is
+   procedure Initialize is
    begin
       for J in ARP_Table'Range loop
          ARP_Table (J).State := Unused;
          ARP_Table (J).Next := J - 1;
       end loop;
       ARP_Free_List := ARP_Table'Last;
-   end ARP_Initialize;
+   end Initialize;
 
    ---------------
    -- ARP_Input --
@@ -106,7 +106,8 @@ package body AIP.ARP is
       Err  : Err_T := NOERR;
 
       Ehdr : constant System.Address := Buffers.Buffer_Payload (Buf);
-      Ahdr : constant System.Address := Conversions.Ofs (Ehdr, Ehdr'Size / 8);
+      Ahdr : constant System.Address :=
+               Conversions.Ofs (Ehdr, EtherH.Ether_Header'Size / 8);
 
       Ifa : constant IPaddrs.IPaddr := NIF.NIF_Addr (Nid);
 
@@ -395,7 +396,7 @@ package body AIP.ARP is
    is
    begin
       --  TBD???
-      raise Program_Error;
+      null;
    end IP_Input;
 
    -----------------

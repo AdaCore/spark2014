@@ -18,7 +18,6 @@ typedef unsigned char   U8_T;
 typedef signed short    S16_T;
 typedef unsigned short  U16_T;
 typedef unsigned int    U32_T;
-typedef unsigned long   M32_T;
 typedef void           *IPTR_T;
 typedef signed int      EID;
 typedef char            Ethernet_Address[6];
@@ -60,11 +59,17 @@ AIP_buffer_payload (Buffer_Id Buf);
 extern void
 AIP_buffer_header (Buffer_Id Buf, S16_T Bump, Err_T *Err);
 
+extern void
+AIP_buffer_cat (Buffer_Id Head, Buffer_Id Tail);
+
+extern void
+AIP_buffer_blind_free (Buffer_Id Buf);
+
 /***************
  * AIP.IPaddrs *
  ***************/
 
-typedef M32_T IPaddr;
+typedef U32_T IPaddr;
 
 /***********
  * AIP.NIF *

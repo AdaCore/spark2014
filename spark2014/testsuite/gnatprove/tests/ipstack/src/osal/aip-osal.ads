@@ -11,7 +11,6 @@
 with AIP.NIF;
 
 package AIP.OSAL is
-   pragma Preelaborate;
 
    procedure Initialize;
    --  Initialize the IP stack

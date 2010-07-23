@@ -42,7 +42,7 @@ package body AIP.NIF is
 
       Link_Output_CB    : System.Address;
       --  Link level packet output callback (called by ARP layer)
-      --  procedure LO (Nid : Netif_Id; Buf : Buffer_Id);
+      --  procedure LO (Nid : Netif_Id; Buf : Buffer_Id; Err : out Err_T);
 
       Dev               : System.Address;
       --  Driver private information
@@ -180,6 +180,7 @@ package body AIP.NIF is
         procedure (Nid : Netif_Id;
                    Buf : Buffers.Buffer_Id;
                    Err : out Err_T);
+      pragma Convention (C, Link_Output_CB_Ptr);
       function To_Ptr is new Ada.Unchecked_Conversion
         (System.Address, Link_Output_CB_Ptr);
    begin
@@ -228,6 +229,7 @@ package body AIP.NIF is
         (Nid         : Netif_Id;
          Buf         : Buffers.Buffer_Id;
          Dst_Address : IPaddrs.IPaddr);
+      pragma Convention (C, Output_CB_Ptr);
       function To_Ptr is new Ada.Unchecked_Conversion
         (System.Address, Output_CB_Ptr);
    begin

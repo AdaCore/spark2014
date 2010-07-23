@@ -5,7 +5,11 @@ project IPStack_Config is
    ALI_Prefix := "../build/ali/";
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnat05", "-gnatwa", "-gnatyg");
+      Common_Switches := ("-g");
+      for Default_Switches ("Ada")
+        use Common_Switches & ("-gnat05", "-gnatwa", "-gnatyg");
+      for Default_Switches ("C")
+        use Common_Switches;
    end Compiler;
 
    for Source_Dirs use ();

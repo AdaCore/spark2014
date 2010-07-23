@@ -45,7 +45,7 @@ static Buffer_Id low_level_input(struct netif *netif);
  *
  */
 static int initialized = 0;
-void ne2k_init (Err_T *Err, Netif_Id *Nid)
+void ne2kif_init (Err_T *Err, Netif_Id *Nid)
 {
   struct netif *netif;
 
@@ -324,7 +324,7 @@ ne2k_input (Netif_Id Nid)
   case Ether_Type_IP:
       /* update ARP table */
 
-      etharp_ip_input(netif, p);
+      AIP_arpip_input (Nid, p);
 
       /* skip Ethernet header */
 
@@ -343,7 +343,7 @@ ne2k_input (Netif_Id Nid)
       break;
 
   default:
-    AIP_buffer_free(p);
+    AIP_buffer_blind_free (p);
     p = NOBUF;
     break;
   }
@@ -444,7 +444,7 @@ low_level_input(struct netif *netif)
           remote_Addr = read_AX88796(buf, remote_Addr, Count);
         }
         /* link pbuf p & r */
-        pbuf_cat(p, r);
+        AIP_buffer_cat (p, r);
       }
       else
         {
@@ -555,10 +555,10 @@ void ne2k_rx(Netif_Id Nid)
 }
 
 /*---*---*---*---*---*---*---*
- *     void ne2k_isr(void)
+ *     void ne2kif_isr(void)
  *    can be int 4 5 6 or 7
  *---*---*---*---*---*---*---*/
-int ne2k_isr(Netif_Id Nid)
+int ne2kif_isr(Netif_Id Nid)
 {
   if (EN0_ISR == 0)
     return 0;

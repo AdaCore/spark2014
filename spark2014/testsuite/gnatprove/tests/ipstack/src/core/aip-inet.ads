@@ -9,6 +9,8 @@
 
 package AIP.Inet is
 
+   pragma Pure;
+
    -------------------------------------
    -- Basic network layer abstraction --
    -------------------------------------
