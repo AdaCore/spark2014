@@ -6,6 +6,7 @@
 with AIP.ARP;
 with AIP.Buffers;
 with AIP.Platform;
+with AIP.UDP;
 
 package body AIP.OSAL is
 
@@ -23,6 +24,7 @@ package body AIP.OSAL is
       --  Initialize subsystems
 
       Buffers.Buffer_Init;
+      UDP.UDP_Init;
       ARP.Initialize;
       NIF.Initialize;
 

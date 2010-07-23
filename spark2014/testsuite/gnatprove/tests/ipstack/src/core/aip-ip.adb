@@ -50,7 +50,7 @@ package body AIP.IP is
       --    IP version
       --    checksum
 
-      if True
+      if False
            or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
            or else Buffers.Buffer_Tlen (Buf) < U16_T (IPH.IPH_IHL (Ihdr)) * 4
            or else IPH.IPH_Version (Ihdr) /= 4
@@ -116,7 +116,9 @@ package body AIP.IP is
          end if;
       end if;
 
-      Buffers.Buffer_Blind_Free (Buf);
+      if Any (Err) then
+         Buffers.Buffer_Blind_Free (Buf);
+      end if;
    end IP_Input;
 
    ------------------

@@ -256,7 +256,7 @@ is
          Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
 
          if PCB = NOPCB then
-            --  icmp dest unreachable
+            --  ICMP dest unreachable
             null;
          end if;
       end if;
@@ -564,7 +564,7 @@ is
 
          Csum :=  Checksum.Sum
            (Packet  => PUhdr'Address,
-            Length  => PUhdr'Size / 8,
+            Length  => UDPH.UDP_Pseudo_Header'Size / 8,
             Initial => 0);
 
          --  Then include complete UDP header and payload in computation
@@ -577,6 +577,8 @@ is
                Initial => Csum);
             Check_Buf := Buffers.Buffer_Next (Check_Buf);
          end loop;
+
+         --  Checksum computation is wrong???
 
          UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
 

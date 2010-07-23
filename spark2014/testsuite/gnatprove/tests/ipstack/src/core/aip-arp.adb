@@ -423,9 +423,7 @@ package body AIP.ARP is
          EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
          EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
 
-         --  Call low-level output callback from Nid
-
-         null;
+         NIF.Link_Output (Nid, Buf, Err);
       end if;
    end Send_Packet;
 
