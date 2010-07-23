@@ -127,9 +127,8 @@ AIP_ip_input (Netif_Id Nid, Buffer_Id Buf);
 #define Ether_Type_ARP 0x0806
 #define Ether_Type_IP  0x0800
 
-typedef struct {} Ether_Header;
 U16_T
-aip__etherh__frame_type (Ether_Header M);
+aip__etherh__frame_type (void *);
 
 #define AIP_etherh_frame_type aip__etherh__etherh_frame_type
 

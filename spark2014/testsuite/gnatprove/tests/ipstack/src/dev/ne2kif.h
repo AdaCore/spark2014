@@ -6,13 +6,17 @@
 * File : tcp_ip.c
 * By   : ZengMing @ DEP,Tsinghua University,Beijing,China
 * Reference: YangYe's source code for SkyEye project
+*
+* Port for AIP
+* Copyright (C) 2010, AdaCore
+*
 *********************************************************************************************************
 */
 
 #ifndef _NE2K_H_
 #define _NE2K_H_
 
-#include "lwip/netif.h"
+#include "aip.h"
 
 #define     MIN_PACKET_SIZE 60    /* smallest legal size packet, no fcs    */
 #define     MAX_PACKET_SIZE 1514  /* largest legal size packet, no fcs     */
@@ -25,10 +29,12 @@
 /**
  *  Driver functions.
  */
-err_t ne2k_init(struct netif *netif);
-u16_t write_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
+void ne2k_init (Err_T *Err, Netif_Id *Nid);
+int ne2k_isr (Netif_Id Nid);
 
-u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
+U16_T write_AX88796(U8_T * buf, U16_T remote_Addr, U16_T Count);
+
+U16_T read_AX88796(U8_T * buf, U16_T remote_Addr, U16_T Count);
 
 
 /*----------------------------------------
@@ -98,9 +104,9 @@ u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
   --------------------------------- */
 
 #define     NE_START_PG	    0x40     	/* First page of TX buffer */
-#define     NE_STOP_PG	    0x80	/* Last page + 1 of RX Ring */ 
+#define     NE_STOP_PG	    0x80	/* Last page + 1 of RX Ring */
 
-#define     TX_PAGES	    6       
+#define     TX_PAGES	    6
 #define	    TX_START_PG	    NE_START_PG	/*0x40*/
 
 #define     RX_START_PG	    (NE_START_PG + TX_PAGES) /*0x46*/
@@ -114,8 +120,8 @@ u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
 #define     ENISR_RX_ERR    0x04	/*  Receiver, with error */
 #define     ENISR_TX_ERR    0x08	/*  Transmitter, with error */
 #define     ENISR_OVER	    0x10	/*  Receiver overwrote the ring */
-                       			/*  Gap area of receiver ring buffer was disappeared  */ 
- 
+                       			/*  Gap area of receiver ring buffer was disappeared  */
+
 #define     ENISR_COUNTERS	0x20	/*  Counters need emptying */
                                     /*  MSB of network tally counter became 1 */
 #define     ENISR_RDC	    0x40	/*  remote dma complete */
@@ -141,7 +147,7 @@ u16_t read_AX88796(u8_t * buf, u16_t remote_Addr, u16_t Count);
 #define     ENTXCR_LOOP	    0x02    /*  set internal loopback mode     ?     */
 #define     ENTXCR_LB01	    0x06    /*  encoded loopback control       ?     */
 #define     ENTXCR_ATD	    0x08    /*  auto tx disable                      */
-/* when 1, if specified multicast packet was received, disable transmit      */ 
+/* when 1, if specified multicast packet was received, disable transmit      */
 #define     ENTXCR_OFST	    0x10	/*  collision offset enable */
 /* selection of collision algorithm. When 0, gererally back-off algorithm select */
 

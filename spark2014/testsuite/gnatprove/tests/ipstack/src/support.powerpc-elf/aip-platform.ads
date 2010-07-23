@@ -9,5 +9,8 @@
 
 package AIP.Platform is
    pragma Pure;
-   If_ISR_Linkname : constant String := "ne2k_isr";
+
+   If_Init_Linkname : constant String := "ne2kif_init";
+   If_ISR_Linkname  : constant String := "ne2kif_isr";
+
 end AIP.Platform;

@@ -253,7 +253,7 @@ mintapif_input (Netif_Id nid)
   Err_T err;
   struct netif *netif = AIP_get_netif (nid);
   struct mintapif *mintapif;
-  Ether_Header *ethhdr;
+  void *ethhdr;
   Buffer_Id p;
 
   mintapif = netif->Dev;
@@ -262,9 +262,9 @@ mintapif_input (Netif_Id nid)
 
   if (p != NOBUF) {
 
-    ethhdr = (Ether_Header *) AIP_buffer_payload (p);
+    ethhdr = AIP_buffer_payload (p);
 
-    switch (AIP_etherh_frame_type (*ethhdr)) {
+    switch (AIP_etherh_frame_type (ethhdr)) {
     case Ether_Type_IP:
 #if 0
 /* CSi disabled ARP table update on ingress IP packets.

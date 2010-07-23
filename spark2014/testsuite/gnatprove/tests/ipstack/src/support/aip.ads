@@ -74,6 +74,9 @@ package AIP is
    type S8_T  is range -2 ** 7  .. 2 ** 7 - 1;
    type S16_T is range -2 ** 15 .. 2 ** 15 - 1;
    type S32_T is range -2 ** 31 .. 2 ** 31 - 1;
+   for S8_T'Size  use 8;
+   for S16_T'Size use 16;
+   for S32_T'Size use 32;
 
    type U1_T  is range 0 .. 2 ** 1 - 1;
    type U2_T  is range 0 .. 2 ** 2 - 1;
@@ -84,11 +87,24 @@ package AIP is
    type U13_T is range 0 .. 2 ** 13 - 1;
    type U16_T is range 0 .. 2 ** 16 - 1;
    type U32_T is range 0 .. 2 ** 32 - 1;
+   for U1_T'Size  use 1;
+   for U2_T'Size  use 2;
+   for U3_T'Size  use 3;
+   for U4_T'Size  use 4;
+   for U6_T'Size  use 6;
+   for U8_T'Size  use 8;
+   for U13_T'Size use 13;
+   for U16_T'Size use 16;
+   for U32_T'Size use 32;
 
    type M3_T  is mod 2 ** 3;
    type M8_T  is mod 2 ** 8;
    type M16_T is mod 2 ** 16;
    type M32_T is mod 2 ** 32;
+   for M3_T'Size  use 3;
+   for M8_T'Size  use 8;
+   for M16_T'Size use 16;
+   for M32_T'Size use 32;
 
    -----------------
    -- Opaque data --
