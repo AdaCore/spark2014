@@ -17,10 +17,10 @@ is
    -- Data structures --
    ---------------------
 
-   --  PCB_Ids are indices into a static array of PCBs, maintained together
-   --  with a list of those bound to a local addr/port endpoint. This list is
-   --  used to determine which PCB gets to process an incoming datagram (see
-   --  UDP_Input).
+   --  Valid PCB_Ids are indices into a static array of PCBs, maintained
+   --  together with a list of those bound to a local addr/port endpoint.
+   --  This list is used to determine which PCB gets to process an incoming
+   --  datagram (see UDP_Input).
 
    subtype Valid_PCB_Ids is PCB_Id range NOPCB + 1 .. PCB_Id'Last;
    type UDP_PCB_Array is array (Valid_PCB_IDs) of UDP_PCB;
@@ -36,7 +36,7 @@ is
       --# global out PCBs, Bound_PCBs;
    is
    begin
-      --  Initialize all the PCBs, which marks them unused, and initialize
+      --  Initialize all the PCBs, marking them unused, and initialize
       --  the list of bound PCBs as empty.
 
       PCBs := UDP_PCB_Array'(others => UDP_PCB_Initializer);
@@ -493,6 +493,54 @@ is
       end if;
    end Prepend_UDP_Header;
 
+   -------------
+   -- UDP_Sum --
+   -------------
+
+   function UDP_Sum
+     (Ubuf   : Buffers.Buffer_Id;
+      Src_IP : IPaddrs.IPaddr;
+      Dst_IP : IPaddrs.IPaddr) return AIP.M16_T
+   is
+      --# hide UDP_Sum;  Taking 'Address of local pseudo_header
+
+      Usum : AIP.M16_T;
+      Cbuf : Buffers.Buffer_Id;
+   begin
+
+      --  Start checksum computation with pseudo IP header
+
+      declare
+         PUhdr : aliased UDPH.UDP_Pseudo_Header;
+      begin
+         UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
+         UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
+         UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
+         UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
+         UDPH.Set_UDPP_Length      (PUhdr'Address,
+                                    Buffers.Buffer_Tlen (Ubuf));
+
+         Usum :=  Checksum.Sum
+           (Packet  => PUhdr'Address,
+            Length  => UDPH.UDP_Pseudo_Header'Size / 8,
+            Initial => 0);
+      end;
+
+      --  Then include complete UDP header and payload in computation
+
+      Cbuf := Ubuf;
+      while Cbuf /= Buffers.NOBUF loop
+         Usum := Checksum.Sum
+           (Packet  => Buffers.Buffer_Payload (Cbuf),
+            Length  => Natural (Buffers.Buffer_Len (Cbuf)),
+            Initial => Usum);
+         Cbuf := Buffers.Buffer_Next (Cbuf);
+      end loop;
+
+      Usum := not Usum;
+      return Usum;
+   end UDP_Sum;
+
    --------------------
    -- UDP_Send_To_If --
    --------------------
@@ -505,24 +553,22 @@ is
       Dst_Port : Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T)
+      --# global in out Buffers.State, PCBs, Bound_PCBs;
    is
-      Ubuf   : Buffers.Buffer_Id := Buffers.NOBUF;
+      Ubuf : Buffers.Buffer_Id;
+      Uhdr : System.Address;
+
       Src_IP : IPaddrs.IPaddr;
-
-      PUhdr : aliased UDPH.UDP_Pseudo_Header;
-      Uhdr  : System.Address;
-
-      Csum : AIP.M16_T;
-      Check_Buf : Buffers.Buffer_Id;
 
    begin
       --  Setup a local binding if we don't have one already
 
       PCB_Force_Bind (PCB, Err);
 
-      --  Make room for a UDP header in front of Buf
+      --  Make room for a UDP header in front of BUF
 
-      if Err = AIP.NOERR then
+      Ubuf := Buffers.NOBUF;
+      if AIP.No (Err) then
          Prepend_UDP_Header (Buf, Ubuf, Err);
       end if;
 
@@ -531,56 +577,27 @@ is
       --  interface IP has changed since the routing request was issued. Bets
       --  are off in the latter case, so drop the packet.
 
-      if Err = AIP.NOERR then
+      if AIP.No (Err) then
 
          Src_IP := NIF.NIF_Addr (Netif);
 
          if not IPaddrs.Any (PCBs (PCB).IPCB.Local_IP)
            and then not IPaddrs.Same (PCBs (PCB).IPCB.Local_IP, Src_IP)
          then
-            Err := ERR_VAL;
+            Err := AIP.ERR_VAL;
          end if;
       end if;
 
       --  Compute/Assign the UDP header fields, pass the whole thing to IP and
       --  release the dedicated buffer we allocated for the header, if any.
 
-      if Err = AIP.NOERR then
+      if AIP.No (Err) then
          Uhdr := Buffers.Buffer_Payload (Ubuf);
-
-         UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
-         UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
-         UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
-         UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
-         UDPH.Set_UDPP_Length      (PUhdr'Address,
-                                    Buffers.Buffer_Tlen (Ubuf));
 
          UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
          UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
          UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
-         UDPH.Set_UDPH_Checksum (Uhdr, 16#0000#);
-
-         --  Start checksum computation with pseudo IP header
-
-         Csum :=  Checksum.Sum
-           (Packet  => PUhdr'Address,
-            Length  => UDPH.UDP_Pseudo_Header'Size / 8,
-            Initial => 0);
-
-         --  Then include complete UDP header and payload in computation
-
-         Check_Buf := Ubuf;
-         while Check_Buf /= Buffers.NOBUF loop
-            Csum := Checksum.Sum
-              (Packet  => Buffers.Buffer_Payload (Check_Buf),
-               Length  => Natural (Buffers.Buffer_Len (Check_Buf)),
-               Initial => Csum);
-            Check_Buf := Buffers.Buffer_Next (Check_Buf);
-         end loop;
-
-         --  Checksum computation is wrong???
-
-         UDPH.Set_UDPH_Checksum (Uhdr, not Csum);
+         UDPH.Set_UDPH_Checksum (Uhdr, UDP_Sum (Ubuf, Src_IP, Dst_IP));
 
          IP.IP_Output_If
            (Ubuf,

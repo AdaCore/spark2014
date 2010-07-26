@@ -272,6 +272,13 @@ private
    --  pointer in this case. Prepend a separate buffer otherwise.
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
+   function UDP_Sum
+     (Ubuf   : Buffers.Buffer_Id;
+      Src_IP : IPaddrs.IPaddr;
+      Dst_IP : IPaddrs.IPaddr) return AIP.M16_T;
+   --#  global in Buffers.State;
+   --  Compute UDP checksum of UDP datagram held in UBUF
+
    procedure UDP_Send_To_If
      (PCB      : PCB_Id;
       Buf      : Buffers.Buffer_Id;
@@ -280,7 +287,7 @@ private
       Dst_Port : Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
-   --# global in State;
+   --# global in out Buffers.State; in out State;
    --  Send BUF to DST_IP/DST_PORT through NETIF, acting for PCB.
    --  ERR_VAL if PCB has a specific local IP set which differs from
    --  NETIF's IP.
