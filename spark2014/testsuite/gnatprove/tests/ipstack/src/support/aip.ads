@@ -86,6 +86,7 @@ package AIP is
    type U8_T  is range 0 .. 2 ** 8 - 1;
    type U13_T is range 0 .. 2 ** 13 - 1;
    type U16_T is range 0 .. 2 ** 16 - 1;
+   type U24_T is range 0 .. 2 ** 24 - 1;
    type U32_T is range 0 .. 2 ** 32 - 1;
    for U1_T'Size  use 1;
    for U2_T'Size  use 2;
@@ -95,6 +96,7 @@ package AIP is
    for U8_T'Size  use 8;
    for U13_T'Size use 13;
    for U16_T'Size use 16;
+   for U24_T'Size use 24;
    for U32_T'Size use 32;
 
    type M3_T  is mod 2 ** 3;

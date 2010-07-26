@@ -8,6 +8,7 @@ with System;
 with AIP.Checksum;
 with AIP.Config;
 
+with AIP.ICMP;
 with AIP.IPH;
 with AIP.UDP;
 
@@ -103,8 +104,8 @@ package body AIP.IP is
 --             when IPH.IP_Proto_TCP =>
 --                TCP.TCP_Input (Buf, Netif);
 
---             when IPH.IP_Proto_ICMP =>
---                ICMP.ICMP_Input (Buf, Netif);
+               when IPH.IP_Proto_ICMP =>
+                  ICMP.ICMP_Input (Buf, Netif);
 
                when others =>
                   --  Discard IP packet with unknown protocol

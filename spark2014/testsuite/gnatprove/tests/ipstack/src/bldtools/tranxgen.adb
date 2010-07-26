@@ -828,6 +828,7 @@ procedure Tranxgen is
       --  Generate rep clause
 
       NL (Ctx.P_Private);
+      PL (Ctx.P_Private, "for " & Message_Name & "'Alignment use 1;");
       PL (Ctx.P_Private, "for " & Message_Name & "'Bit_Order"
                     & " use System.High_Order_First;");
       PL (Ctx.P_Private, "for " & Message_Name & " use record");

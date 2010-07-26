@@ -493,54 +493,6 @@ is
       end if;
    end Prepend_UDP_Header;
 
-   -------------
-   -- UDP_Sum --
-   -------------
-
-   function UDP_Sum
-     (Ubuf   : Buffers.Buffer_Id;
-      Src_IP : IPaddrs.IPaddr;
-      Dst_IP : IPaddrs.IPaddr) return AIP.M16_T
-   is
-      --# hide UDP_Sum;  Taking 'Address of local pseudo_header
-
-      Usum : AIP.M16_T;
-      Cbuf : Buffers.Buffer_Id;
-   begin
-
-      --  Start checksum computation with pseudo IP header
-
-      declare
-         PUhdr : aliased UDPH.UDP_Pseudo_Header;
-      begin
-         UDPH.Set_UDPP_Src_Address (PUhdr'Address, Src_IP);
-         UDPH.Set_UDPP_Dst_Address (PUhdr'Address, Dst_IP);
-         UDPH.Set_UDPP_Zero        (PUhdr'Address, 0);
-         UDPH.Set_UDPP_Protocol    (PUhdr'Address, IPH.IP_Proto_UDP);
-         UDPH.Set_UDPP_Length      (PUhdr'Address,
-                                    Buffers.Buffer_Tlen (Ubuf));
-
-         Usum :=  Checksum.Sum
-           (Packet  => PUhdr'Address,
-            Length  => UDPH.UDP_Pseudo_Header'Size / 8,
-            Initial => 0);
-      end;
-
-      --  Then include complete UDP header and payload in computation
-
-      Cbuf := Ubuf;
-      while Cbuf /= Buffers.NOBUF loop
-         Usum := Checksum.Sum
-           (Packet  => Buffers.Buffer_Payload (Cbuf),
-            Length  => Natural (Buffers.Buffer_Len (Cbuf)),
-            Initial => Usum);
-         Cbuf := Buffers.Buffer_Next (Cbuf);
-      end loop;
-
-      Usum := not Usum;
-      return Usum;
-   end UDP_Sum;
-
    --------------------
    -- UDP_Send_To_If --
    --------------------
@@ -556,7 +508,6 @@ is
       --# global in out Buffers.State, PCBs, Bound_PCBs;
    is
       Ubuf : Buffers.Buffer_Id;
-      Uhdr : System.Address;
 
       Src_IP : IPaddrs.IPaddr;
 
@@ -617,9 +568,9 @@ is
          UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
          UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
          UDPH.Set_UDPH_Length   (Uhdr, Ulen);
-         UDPH.Set_UDPH_Checksum (Uhdr, UDP_Sum (Ubuf, Src_IP, Dst_IP));
+         UDPH.Set_UDPH_Checksum (Uhdr, 0);
 
-         --  Compute hecksum
+         --  Compute checksum
 
          UDPH.Set_UDPH_Checksum (Uhdr,
            not Checksum.Sum (Ubuf, Natural (Buffers.Buffer_Tlen (Ubuf))));

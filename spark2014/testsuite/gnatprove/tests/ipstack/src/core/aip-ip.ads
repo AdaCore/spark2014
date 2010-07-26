@@ -58,7 +58,6 @@ package AIP.IP is
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T);
    --  Output IP datagram
-   --  ... and deallocate Buf???
 
    IP_HLEN : constant := 20;
    --  What if there are options???

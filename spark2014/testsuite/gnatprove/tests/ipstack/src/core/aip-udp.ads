@@ -272,13 +272,6 @@ private
    --  pointer in this case. Prepend a separate buffer otherwise.
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
-   function UDP_Sum
-     (Ubuf   : Buffers.Buffer_Id;
-      Src_IP : IPaddrs.IPaddr;
-      Dst_IP : IPaddrs.IPaddr) return AIP.M16_T;
-   --#  global in Buffers.State;
-   --  Compute UDP checksum of UDP datagram held in UBUF
-
    procedure UDP_Send_To_If
      (PCB      : PCB_Id;
       Buf      : Buffers.Buffer_Id;
