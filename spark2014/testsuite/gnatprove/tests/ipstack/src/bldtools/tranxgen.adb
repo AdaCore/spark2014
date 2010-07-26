@@ -573,6 +573,8 @@ procedure Tranxgen is
 
       NL (Ctx.P_Spec);
       PL (Ctx.P_Spec, "type " & Message_Name & " is private;");
+      PL (Ctx.P_Spec, Message_Name & "_Size : constant := "
+          & Img (Current_Bit_Offset) & ";");
 
       --  Generate accessor declarations and bodies
 
