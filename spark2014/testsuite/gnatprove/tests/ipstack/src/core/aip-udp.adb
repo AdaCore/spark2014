@@ -264,7 +264,7 @@ is
 
             if No (Err) then
                ICMP.ICMP_Reject
-                 (Buf,
+                 (Buf    => Buf,
                   I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
                   Code   => ICMPH.ICMP_Unreach_Code_Port_Unreachable);
             end if;
@@ -498,13 +498,23 @@ is
       Ubuf : out Buffers.Buffer_Id;
       Err  : out AIP.Err_T)
    is
+      HLEN_To_IP : AIP.U16_T;
+      Buf_Room : AIP.U16_T;
    begin
-      Buffers.Buffer_Header (Buf, UDP_HLEN, Err);
-      if AIP.No (Err) then
+      --  If we have enough room for a UDP header and everything else
+      --  downstack, simply adjust the current buffer payload. Otherwise,
+      --  allocate a separate buffer for all the headers we'll need.
+
+      Buf_Room := Buffers.Buffer_Poffset (Buf);
+      HLEN_To_IP := Inet.HLEN_To (Inet.IP_LAYER);
+
+      if Buf_Room >= HLEN_To_IP + UDP_HLEN then
+         Buffers.Buffer_Header (Buf, UDP_HLEN, Err);
+         pragma Assert (AIP.No (Err));
          Ubuf := Buf;
       else
          Buffers.Buffer_Alloc
-           (Inet.HLEN_To (Inet.IP_LAYER), UDP_HLEN, Buffers.SPLIT_BUF, Ubuf);
+           (HLEN_To_IP, UDP_HLEN, Buffers.SPLIT_BUF, Ubuf);
          if Ubuf = Buffers.NOBUF then
             Err := AIP.ERR_MEM;
          else
@@ -530,11 +540,13 @@ is
       Ubuf : Buffers.Buffer_Id;
       Ulen : AIP.U16_T;
       Uhdr : System.Address;
-      PUhdr : System.Address;
       --  UDP buffer to send, associated length and UDP header address
 
       Src_IP : IPaddrs.IPaddr;
       --  Source IP we'll advertise in the output datagram
+
+      PUhdr : System.Address;
+      --  Address of pseudo-header for checksum computation
 
    begin
       --  Setup a local binding if we don't have one already
@@ -573,8 +585,10 @@ is
 
             --  Checksum computation and assignment.
 
-            --  Make room for a temporary pseudo-header and fill it in. The
-            --  length we store here is that of the original datagram.
+            --  Expose room for a temporary pseudo-header and fill it in. The
+            --  length we store here is that of the original dgram. We expect
+            --  room to be available already, anticipated for the IP and link
+            --  layers downstack and not yet filled with anything of use.
 
             Buffers.Buffer_Header
               (Ubuf, UDPH.UDP_Pseudo_Header'Size / 8, Err);

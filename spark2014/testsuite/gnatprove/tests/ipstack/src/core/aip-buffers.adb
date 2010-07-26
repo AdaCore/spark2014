@@ -191,6 +191,23 @@ is
       return Result;
    end Buffer_Payload;
 
+   -------------------
+   -- Buffer_Poffset --
+   -------------------
+
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Data.State, No_Data.State;
+   is
+      Result : AIP.U16_T;
+   begin
+      if Is_Data_Buffer (Buf) then
+         Result := Data.Buffer_Poffset (Buf);
+      else
+         Result := No_Data.Buffer_Poffset (No_Data.Adjust_Id (Buf));
+      end if;
+      return Result;
+   end Buffer_Poffset;
+
    ----------------
    -- Buffer_Ref --
    ----------------

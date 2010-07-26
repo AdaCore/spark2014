@@ -57,6 +57,10 @@ is
    --# global in State;
    --  Pointer to data held by buffer Buf
 
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
+   --# global in State;
+   --  Room available in BUF prio to payload, typically for protocol headers
+
    ----------------------------------
    -- Buffer reference and release --
    ----------------------------------

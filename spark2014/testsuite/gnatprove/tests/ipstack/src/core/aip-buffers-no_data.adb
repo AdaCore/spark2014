@@ -115,6 +115,20 @@ is
       return Buf_List (Buf).Payload_Ref;
    end Buffer_Payload;
 
+   --------------------
+   -- Buffer_Poffset --
+   --------------------
+
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
+   is
+      pragma Unreferenced (Buf);
+   begin
+      --  We only have a reference to actual data, which Buffer_Header may
+      --  move, but we never consider to have room for anything before that.
+
+      return 0;
+   end Buffer_Poffset;
+
    -------------------
    -- Buffer_Header --
    -------------------
@@ -133,6 +147,13 @@ is
          Buf_List (Buf).Payload_Ref :=
            Conversions.Ofs (Buf_List (Buf).Payload_Ref, Integer (-Bump));
       end if;
+
+      --  ??? If we consider this to be a valid move one way, we might as well
+      --  allow moving back as much the other way, and why not reflect that
+      --  from Buffer_Poffset. Alternatively, we could also consider that we
+      --  really have nothing more than a reference, leave it to the user
+      --  responsibility entirely, and allow moves in both directions.
+
    end Buffer_Header;
 
 end AIP.Buffers.No_Data;

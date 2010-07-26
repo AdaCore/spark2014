@@ -66,6 +66,10 @@ is
    --# global in State;
    --  Pointer to data referenced by buffer Buf
 
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
+   --  Room available in BUF prio to payload. Always 0 since we only
+   --  maintain a bare reference to external data.
+
    -----------------------
    -- Buffer operations --
    -----------------------

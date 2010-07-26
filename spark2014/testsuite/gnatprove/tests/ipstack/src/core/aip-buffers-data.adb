@@ -213,23 +213,16 @@ is
          Integer (Buf_List (Buf).Left_Offset));
    end Buffer_Payload;
 
-   -----------------
-   -- Buffer_Link --
-   -----------------
+   --------------------
+   -- Buffer_Poffset --
+   --------------------
 
-   procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id)
-   --# global in out Buf_List;
+   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
+   --# global in Buf_List;
    is
    begin
-      --  Update Num and Num_No_Jump fields only
-
-      Buf_List (Buf).Num            := Buf_List (Next).Num + 1;
-      if Next = Buf + 1 then
-         Buf_List (Buf).Num_No_Jump := Buf_List (Next).Num_No_Jump + 1;
-      else
-         Buf_List (Buf).Num_No_Jump := 1;
-      end if;
-   end Buffer_Link;
+      return Buf_List (Buf).Left_Offset;
+   end Buffer_Poffset;
 
    -------------------
    -- Buffer_Header --
@@ -260,5 +253,23 @@ is
          end if;
       end if;
    end Buffer_Header;
+
+   -----------------
+   -- Buffer_Link --
+   -----------------
+
+   procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id)
+   --# global in out Buf_List;
+   is
+   begin
+      --  Update Num and Num_No_Jump fields only
+
+      Buf_List (Buf).Num            := Buf_List (Next).Num + 1;
+      if Next = Buf + 1 then
+         Buf_List (Buf).Num_No_Jump := Buf_List (Next).Num_No_Jump + 1;
+      else
+         Buf_List (Buf).Num_No_Jump := 1;
+      end if;
+   end Buffer_Link;
 
 end AIP.Buffers.Data;
