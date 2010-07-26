@@ -560,6 +560,11 @@ is
 
       Src_IP : IPaddrs.IPaddr;
 
+      PUhdr : System.Address;
+      Uhdr  : System.Address;
+
+      Ulen : AIP.U16_T;
+
    begin
       --  Setup a local binding if we don't have one already
 
@@ -593,11 +598,36 @@ is
 
       if AIP.No (Err) then
          Uhdr := Buffers.Buffer_Payload (Ubuf);
+         Ulen := Buffers.Buffer_Tlen (Ubuf);
+
+         --  Temporarily prepend pseudo-header
+
+         Buffers.Buffer_Header (Ubuf, UDPH.UDP_Pseudo_Header'Size / 8, Err);
+         pragma Assert (No (Err));
+
+         PUhdr := Buffers.Buffer_Payload (Ubuf);
+         UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
+         UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
+         UDPH.Set_UDPP_Zero        (PUhdr, 0);
+         UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
+         UDPH.Set_UDPP_Length      (PUhdr, Ulen);
+
+         --  Fill in UDP header
 
          UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
          UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
-         UDPH.Set_UDPH_Length   (Uhdr, Buffers.Buffer_Tlen (Ubuf));
+         UDPH.Set_UDPH_Length   (Uhdr, Ulen);
          UDPH.Set_UDPH_Checksum (Uhdr, UDP_Sum (Ubuf, Src_IP, Dst_IP));
+
+         --  Compute hecksum
+
+         UDPH.Set_UDPH_Checksum (Uhdr,
+           not Checksum.Sum (Ubuf, Natural (Buffers.Buffer_Tlen (Ubuf))));
+
+         --  Remove pseudo-header
+
+         Buffers.Buffer_Header (Ubuf, -UDPH.UDP_Pseudo_Header'Size / 8, Err);
+         pragma Assert (No (Err));
 
          IP.IP_Output_If
            (Ubuf,

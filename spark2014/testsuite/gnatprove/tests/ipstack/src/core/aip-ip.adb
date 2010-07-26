@@ -56,9 +56,9 @@ package body AIP.IP is
            or else IPH.IPH_Version (Ihdr) /= 4
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Sum
-                                (Packet  => Ihdr,
-                                 Length  => Natural (IPH.IPH_IHL (Ihdr)) * 4,
-                                 Initial => 0) /= 16#ffff#)
+                                (Buf     => Buf,
+                                 Length  => Natural (IPH.IPH_IHL (Ihdr)) * 4)
+                                /= 16#Ffff#)
       then
          Err := AIP.ERR_USE;
       end if;
@@ -161,7 +161,7 @@ package body AIP.IP is
          IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
 
          IPH.Set_IPH_Checksum    (Ihdr,
-           not Checksum.Sum (Ihdr, 4 * Natural (IPH.IPH_IHL (Ihdr)), 0));
+           not Checksum.Sum (Buf, 4 * Natural (IPH.IPH_IHL (Ihdr))));
 
          NIF.Output (Netif, Buf, NH_IP);
       end if;
