@@ -31,6 +31,28 @@ with Why.Sinfo; use Why.Sinfo;
 with Why.Types; use Why.Types;
 
 package Why.Atree.Tables is
+   --  This package allows to allocate new Why nodes and to associate
+   --  then with an node Id.
+
+   function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id;
+   pragma Precondition (Node.Kind /= W_Unused_At_Start);
+   pragma Postcondition (Get_Node (New_Why_Node_Id'Result) = Node);
+   pragma Inline (New_Why_Node_Id);
+   --  Allocate a new Why node in table, and return its Id
+
+   function Get_Node (Node_Id : Why_Node_Id) return Why_Node;
+   --  Get the node whose id is Node_Id
+
+   function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind;
+   --  Get the kind of Node_Id
+
+   function Option
+     (Node  : Why_Node_Id;
+      Value : Why_Node_Kind)
+     return Boolean;
+   --  Return True if Node is Empty or has kind Value
+
+private
    --  These tables are used as storage pools for nodes and lists.
    --  They could ultimately be implemented using the containers
    --  that will be defined in the context of Hi-Lite; for now,
@@ -61,12 +83,6 @@ package Why.Atree.Tables is
 
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
       (Get_Node (Node_Id).Kind);
-
-   function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id;
-   pragma Precondition (Node.Kind /= W_Unused_At_Start);
-   pragma Postcondition (Get_Node (New_Why_Node_Id'Result) = Node);
-   pragma Inline (New_Why_Node_Id);
-   --  Allocate a new Why node in table, and return its Id
 
    function Option
      (Node  : Why_Node_Id;
