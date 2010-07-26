@@ -57,8 +57,7 @@ is
    --
    --  ERR_USE if another PCB is already bound to this local endpoint and
    --  we are configured not to accept that.
-   --
-   --  ERR_USE if Local_Port is NOPORT and no available port could be found.
+   --  ERR_MEM if Local_Port is NOPORT and no available port could be found.
 
    procedure UDP_Connect
      (PCB         : PCB_Id;
@@ -78,10 +77,12 @@ is
      (PCB : PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
-   --# global in out State;
-   --  Send BUF data to the current destination endpoint of PCB, as
-   --  established by UDP_Connect. Force a local binding on PCB if none
-   --  is established already. BUF is not deallocated.
+   --# global in out Buffers.State, State;
+
+   --  Send BUF data to the current destination endpoint of PCB, as established
+   --  by UDP_Connect. This involves prepending a UDP header in front of BUF.
+   --  Force a local binding on PCB if none is established already. BUF is not
+   --  deallocated.
    --
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
@@ -214,7 +215,8 @@ private
 
    procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T);
    --# global in out State;
-   --  Force a local binding on PCB if it isn't bound already
+   --  Force a local binding on PCB if it isn't bound already.
+   --  ERR as UDP_Bind.
 
    ------------------------
    -- UDP_Bind internals --
@@ -280,9 +282,9 @@ private
       Dst_Port : Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
-   --# global in out Buffers.State; in out State;
-   --  Send BUF to DST_IP/DST_PORT through NETIF, acting for PCB.
-   --  ERR_VAL if PCB has a specific local IP set which differs from
-   --  NETIF's IP.
+   --# global in out Buffers.State, State;
+   --  Send BUF to DST_IP/DST_PORT via next hop NH_IP through NETIF, acting
+   --  for PCB. This involves prepending a UDP header in front of BUF.
+   --  ERR_VAL if PCB has a specific local IP set which differs from NETIF's.
 
 end AIP.UDP;

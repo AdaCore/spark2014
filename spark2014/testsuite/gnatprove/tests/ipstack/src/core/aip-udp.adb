@@ -369,7 +369,7 @@ is
          if Local_Port = NOPORT then
             Port_To_Bind := Available_Port;
             if Port_To_Bind = NOPORT then
-               Err := AIP.ERR_USE;
+               Err := AIP.ERR_MEM;
             end if;
          else
             Port_To_Bind := Local_Port;
@@ -389,16 +389,18 @@ is
 
    end UDP_Bind;
 
-   ----------------------
-   --  PCB_Force_Bind  --
-   ----------------------
+   --------------------
+   -- PCB_Force_Bind --
+   --------------------
 
    procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T)
       --# global in out PCBs, Bound_PCBs;
    is
+      Local_IP : IPaddrs.IPaddr;
    begin
       if PCBs (PCB).Local_Port = NOPORT then
-         UDP_Bind (PCB, PCBs (PCB).IPCB.Local_IP, NOPORT, Err);
+         Local_IP := PCBs (PCB).IPCB.Local_IP;
+         UDP_Bind (PCB, Local_IP, NOPORT, Err);
       else
          Err := AIP.NOERR;
       end if;
@@ -508,13 +510,13 @@ is
       --# global in out Buffers.State, PCBs, Bound_PCBs;
    is
       Ubuf : Buffers.Buffer_Id;
+      Ulen : AIP.U16_T;
+      Uhdr : System.Address;
+      PUhdr : System.Address;
+      --  UDP buffer to send, associated length and UDP header address
 
       Src_IP : IPaddrs.IPaddr;
-
-      PUhdr : System.Address;
-      Uhdr  : System.Address;
-
-      Ulen : AIP.U16_T;
+      --  Source IP we'll advertise in the output datagram
 
    begin
       --  Setup a local binding if we don't have one already
@@ -530,8 +532,10 @@ is
 
       --  Get source IP to use from the interface. This is normally the same
       --  as the PCB local address, unless the latter is IP_ADDR_ANY, or the
-      --  interface IP has changed since the routing request was issued. Bets
-      --  are off in the latter case, so drop the packet.
+      --  interface IP has changed since the routing request was issued, and
+      --  bets are off in the latter case, so drop the packet. If all is well
+      --  compute/Assign the UDP header fields, pass the whole thing to IP and
+      --  release the dedicated buffer we allocated for the header, if any.
 
       if AIP.No (Err) then
 
@@ -541,58 +545,57 @@ is
            and then not IPaddrs.Same (PCBs (PCB).IPCB.Local_IP, Src_IP)
          then
             Err := AIP.ERR_VAL;
-         end if;
-      end if;
+         else
+            Uhdr := Buffers.Buffer_Payload (Ubuf);
+            Ulen := Buffers.Buffer_Tlen (Ubuf);
 
-      --  Compute/Assign the UDP header fields, pass the whole thing to IP and
-      --  release the dedicated buffer we allocated for the header, if any.
+            UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
+            UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
+            UDPH.Set_UDPH_Length   (Uhdr, Ulen);
 
-      if AIP.No (Err) then
-         Uhdr := Buffers.Buffer_Payload (Ubuf);
-         Ulen := Buffers.Buffer_Tlen (Ubuf);
+            --  Checksum computation and assignment.
 
-         --  Temporarily prepend pseudo-header
+            --  Make room for a temporary pseudo-header and fill it in. The
+            --  length we store here is that of the original datagram.
 
-         Buffers.Buffer_Header (Ubuf, UDPH.UDP_Pseudo_Header'Size / 8, Err);
-         pragma Assert (No (Err));
+            Buffers.Buffer_Header
+              (Ubuf, UDPH.UDP_Pseudo_Header'Size / 8, Err);
+            pragma Assert (No (Err));
 
-         PUhdr := Buffers.Buffer_Payload (Ubuf);
-         UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
-         UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
-         UDPH.Set_UDPP_Zero        (PUhdr, 0);
-         UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
-         UDPH.Set_UDPP_Length      (PUhdr, Ulen);
+            PUhdr := Buffers.Buffer_Payload (Ubuf);
+            UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
+            UDPH.Set_UDPP_Dst_Address (PUhdr, Dst_IP);
+            UDPH.Set_UDPP_Zero        (PUhdr, 0);
+            UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
+            UDPH.Set_UDPP_Length      (PUhdr, Ulen);
 
-         --  Fill in UDP header
+            --  Compute checksum, pseudo-header included, then remove
+            --  the pseudo-header
 
-         UDPH.Set_UDPH_Src_Port (Uhdr, PCBs (PCB).Local_Port);
-         UDPH.Set_UDPH_Dst_Port (Uhdr, Dst_Port);
-         UDPH.Set_UDPH_Length   (Uhdr, Ulen);
-         UDPH.Set_UDPH_Checksum (Uhdr, 0);
+            UDPH.Set_UDPH_Checksum
+              (Uhdr, not Checksum.Sum (Ubuf,
+                                       Natural (Buffers.Buffer_Tlen (Ubuf))));
 
-         --  Compute checksum
+            Buffers.Buffer_Header
+              (Ubuf, -UDPH.UDP_Pseudo_Header'Size / 8, Err);
+            pragma Assert (No (Err));
 
-         UDPH.Set_UDPH_Checksum (Uhdr,
-           not Checksum.Sum (Ubuf, Natural (Buffers.Buffer_Tlen (Ubuf))));
+            --  Now ready to pass to IP
 
-         --  Remove pseudo-header
+            IP.IP_Output_If
+              (Ubuf,
+               Src_IP,
+               Dst_IP,
+               NH_IP,
+               PCBs (PCB).IPCB.TTL,
+               PCBs (PCB).IPCB.TOS,
+               IPH.IP_Proto_UDP,
+               Netif,
+               Err);
 
-         Buffers.Buffer_Header (Ubuf, -UDPH.UDP_Pseudo_Header'Size / 8, Err);
-         pragma Assert (No (Err));
-
-         IP.IP_Output_If
-           (Ubuf,
-            Src_IP,
-            Dst_IP,
-            NH_IP,
-            PCBs (PCB).IPCB.TTL,
-            PCBs (PCB).IPCB.TOS,
-            IPH.IP_Proto_UDP,
-            Netif,
-            Err);
-
-         if Ubuf /= Buf then
-            Buffers.Buffer_Blind_Free (Ubuf);
+            if Ubuf /= Buf then
+               Buffers.Buffer_Blind_Free (Ubuf);
+            end if;
          end if;
       end if;
    end UDP_Send_To_If;
@@ -605,17 +608,21 @@ is
      (PCB : PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T)
+      --# global in out Buffers.State, PCBs, Bound_PCBs;
    is
-      Dst_IP : constant IPaddrs.IPaddr := PCBs (PCB).IPCB.Remote_IP;
-      Dst_Port : constant Port_T := PCBs (PCB).Remote_Port;
+      Dst_IP : IPaddrs.IPaddr;
+      Dst_Port : Port_T;
 
-      Netif    : AIP.EID;
+      Netif : AIP.EID;
       --  Outbound interface
 
       NH_IP : IPaddrs.IPaddr;
       --  Next hop
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
+
+      Dst_IP   := PCBs (PCB).IPCB.Remote_IP;
+      Dst_Port := PCBs (PCB).Remote_Port;
 
       --  ERR_USE if we have no clear destination endpoint. Otherwise, route
       --  to find the proper network interface for Dst_IP and send. ERR_RTE if
@@ -625,12 +632,12 @@ is
         or else IPaddrs.Any (Dst_IP)
         or else Dst_Port = NOPORT
       then
-         Err := ERR_USE;
+         Err := AIP.ERR_USE;
 
       else
          IP.IP_Route (Dst_IP, NH_IP, Netif);
-         if Netif = AIP.NIF.IF_NOID then
-            Err := ERR_RTE;
+         if Netif = NIF.IF_NOID then
+            Err := AIP.ERR_RTE;
          else
             UDP_Send_To_If (PCB, Buf, Dst_IP, NH_IP, Dst_Port, Netif, Err);
          end if;
@@ -641,7 +648,9 @@ is
    --  UDP_Disconnect  --
    ----------------------
 
-   procedure UDP_Disconnect (PCB : PCB_Id) is
+   procedure UDP_Disconnect (PCB : PCB_Id)
+      --# global in out PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
@@ -656,7 +665,9 @@ is
    --  UDP_Release  --
    -------------------
 
-   procedure UDP_Release (PCB : PCB_Id) is
+   procedure UDP_Release (PCB : PCB_Id)
+      --# global in out PCBs, Bound_PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
@@ -672,8 +683,11 @@ is
      (Evk  : UDP_Event_Kind;
       PCB  : PCB_Id;
       Cbid : Callbacks.CBK_Id)
+      --# global in out PCBs;
    is
    begin
+      pragma Assert (PCB in Valid_PCB_Ids);
+
       case Evk is
          when UDP_RECV => PCBs (PCB).RECV_Cb := Cbid;
       end case;
@@ -683,14 +697,18 @@ is
    -- UDP_Udata --
    ---------------
 
-   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address) is
+   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address)
+      --# global in out PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
       PCBs (PCB).Udata := Udata;
    end UDP_Set_Udata;
 
-   function UDP_Udata (PCB : PCB_Id) return System.Address is
+   function UDP_Udata (PCB : PCB_Id) return System.Address
+      --# global in PCBs;
+   is
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
 
