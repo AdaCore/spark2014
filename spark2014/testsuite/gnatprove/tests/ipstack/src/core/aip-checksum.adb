@@ -9,7 +9,7 @@ package body AIP.Checksum is
 
    function Sum_Chunk
      (Data   : System.Address;
-      Length : Natural) return M32_T;
+      Length : U16_T) return M32_T;
    --  Return the checksum of a single contiguous chunk of data of the given
    --  length, stored at address Data.
    --  Note: result is always in the range of M16_T.
@@ -21,9 +21,13 @@ package body AIP.Checksum is
    --  Wrap carries in high order bits according to one's complement 16-bit
    --  addition rules.
 
+   ---------------
+   -- Sum_Chunk --
+   ---------------
+
    function Sum_Chunk
      (Data   : System.Address;
-      Length : Natural) return M32_T
+      Length : U16_T) return M32_T
    is
       use System;
       use System.Storage_Elements;
@@ -69,7 +73,7 @@ package body AIP.Checksum is
       Odd : Boolean;
       --  True if starting on odd address
 
-      Remain : Natural;
+      Remain : U16_T;
       --  Remaining length
 
    --  Start of processing for Sum_Chunk
@@ -100,7 +104,7 @@ package body AIP.Checksum is
             for Data_32'Address use Data_A;
             pragma Import (Ada, Data_32);
 
-            Data_32_Index : Natural := Data_32'First;
+            Data_32_Index : U16_T := Data_32'First;
          begin
             while Remain > 7 loop
                Tmp := Result + Data_32 (Data_32_Index);
@@ -154,15 +158,15 @@ package body AIP.Checksum is
 
    function Sum
      (Buf    : Buffers.Buffer_Id;
-      Length : Natural) return AIP.M16_T
+      Length : AIP.U16_T) return AIP.M16_T
    is
       use type System.Bit_Order;
 
       Chunk_Buf    : Buffers.Buffer_Id;
-      Chunk_Length : Natural;
+      Chunk_Length : AIP.U16_T;
       Chunk_Data   : System.Address;
 
-      Remain  : Natural;
+      Remain  : AIP.U16_T;
       Swapped : Boolean;
       Result : M32_T;
 
@@ -174,9 +178,8 @@ package body AIP.Checksum is
 
       while Remain /= 0 loop
          pragma Assert (Chunk_Buf /= Buffers.NOBUF);
-         Chunk_Data := Buffers.Buffer_Payload (Chunk_Buf);
-         Chunk_Length :=
-           Natural'Min (Remain, Natural (Buffers.Buffer_Len (Chunk_Buf)));
+         Chunk_Data   := Buffers.Buffer_Payload (Chunk_Buf);
+         Chunk_Length := U16_T'Min (Remain, Buffers.Buffer_Len (Chunk_Buf));
          Result := Result + Sum_Chunk (Chunk_Data, Chunk_Length);
          Remain := Remain - Chunk_Length;
          if Chunk_Length mod 2 /= 0 then

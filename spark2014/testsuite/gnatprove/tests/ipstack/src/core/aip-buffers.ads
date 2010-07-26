@@ -194,6 +194,14 @@ is
    --        This means that we should probably change this functionality in
    --        our implementation of LWIP in SPARK.
 
+   procedure Buffer_Copy
+     (Dst : Buffer_Id;
+      Src : Buffer_Id;
+      Len : U16_T;
+      Err : out AIP.Err_T);
+   --# global in out State;
+   --  Copy Len bytes from Src's payload into Dst's payload
+
    ----------------------------
    -- Packet queue structure --
    ----------------------------

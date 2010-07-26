@@ -14,7 +14,7 @@ package AIP.Checksum is
 
    function Sum
      (Buf    : Buffers.Buffer_Id;
-      Length : Natural) return AIP.M16_T;
+      Length : AIP.U16_T) return AIP.M16_T;
    --  Compute IP checksum (1's complement sum of all 16-bit words in the first
    --  Length bytes of Buf.
 

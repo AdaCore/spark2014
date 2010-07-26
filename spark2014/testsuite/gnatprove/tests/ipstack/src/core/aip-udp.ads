@@ -258,7 +258,7 @@ private
       Netif : NIF.Netif_Id) return AIP.EID;
    --# global in State;
    --  Search bound PCBs for one taker of a datagram with IP header Ihdr and
-   --  UDP header Uhdr arrived on NETIF.
+   --  UDP header Uhdr received on NETIF.
 
    ------------------------
    -- UDP_Send internals --

@@ -65,8 +65,7 @@ package AIP.TCP is
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
 
-   function TCP_Listen
-     (PCB : PCB_Id) return PCB_Id;
+   function TCP_Listen (PCB : PCB_Id) return PCB_Id;
    --  Setup PCB to listen for at most Config.TCP_DEFAULT_LISTEN_BACKLOG
    --  simultaneous connection requests and trigger the acceptation callback
    --  on such events. Unless not enough memory is available, return id of a

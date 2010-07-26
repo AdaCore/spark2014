@@ -47,6 +47,37 @@ is
    end Append_Packet;
 
    -----------------
+   -- Buffer_Copy --
+   -----------------
+
+   procedure Buffer_Copy
+     (Dst : Buffer_Id;
+      Src : Buffer_Id;
+      Len : U16_T;
+      Err : out AIP.Err_T)
+   is
+      --# hide Buffer_Copy;
+
+      type Data is array (1 .. Len) of U8_T;
+
+      Src_Data : Data;
+      for Src_Data'Address use Buffer_Payload (Src);
+      pragma Import (Ada, Src_Data);
+
+      Dst_Data : Data;
+      for Dst_Data'Address use Buffer_Payload (Dst);
+      pragma Import (Ada, Dst_Data);
+
+   begin
+      if Buffer_Len (Dst) < Len or else Buffer_Len (Src) < Len then
+         Err := ERR_MEM;
+      else
+         Dst_Data := Src_Data;
+         Err := NOERR;
+      end if;
+   end Buffer_Copy;
+
+   -----------------
    -- Buffer_Init --
    -----------------
 

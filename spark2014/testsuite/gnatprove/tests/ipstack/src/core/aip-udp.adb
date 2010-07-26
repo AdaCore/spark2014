@@ -6,6 +6,8 @@
 with AIP.Checksum;
 with AIP.Inet;
 
+with AIP.ICMP;
+with AIP.ICMPH;
 with AIP.IPH;
 with AIP.UDPH;
 
@@ -119,10 +121,9 @@ is
       Ihdr := Buffers.Buffer_Payload (Buf);
       IPhlen := AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4;
 
-      --  ERR_MEM if the buffer length is such that this couldn't
-      --  possibly be a UDP dgram, when there's not even room for the
-      --  UDP & IP headers. Otherwise, move payload to the UDP header
-      --  by hiding the IP one.
+      --  ERR_MEM if the buffer length is such that this couldn't possibly be a
+      --  UDP datagram, when there's not even room for the UDP & IP headers.
+      --  Otherwise, move payload to the UDP header by hiding the IP one.
 
       if Buffers.Buffer_Tlen (Buf) < IPhlen + UDP_HLEN then
          Err := AIP.ERR_MEM;
@@ -130,8 +131,8 @@ is
          Buffers.Buffer_Header (Buf, -AIP.S16_T (IPhlen), Err);
       end if;
 
-      --  If the length check and the payload move went fine, we have
-      --  the UDP header at hand.
+      --  If the length check and the payload move went fine, we have the UDP
+      --  header at hand.
 
       if Err = AIP.NOERR then
          Uhdr := Buffers.Buffer_Payload (Buf);
@@ -253,11 +254,22 @@ is
             null;  --  ??? cksum check here
          end if;
 
-         Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
-
          if PCB = NOPCB then
-            --  ICMP dest unreachable
-            null;
+
+            --  Recover IP header
+
+            Buffers.Buffer_Header (Buf, 4 * S16_T (IPH.IPH_IHL (Ihdr)), Err);
+
+            --  Send ICMP destination unreachable
+
+            if No (Err) then
+               ICMP.ICMP_Reject
+                 (Buf,
+                  I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
+                  Code   => ICMPH.ICMP_Unreach_Code_Port_Unreachable);
+            end if;
+
+            Err := ERR_VAL;
          end if;
       end if;
 
@@ -269,6 +281,12 @@ is
         and then PCB /= NOPCB
         and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
       then
+         --  Skip UDP header
+
+         Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
+
+         --  Perform upcall to application
+
          UDP_Event
            (UDP_Event_T'(Kind => UDP_RECV,
                          Buf  => Buf,
@@ -573,8 +591,7 @@ is
             --  the pseudo-header
 
             UDPH.Set_UDPH_Checksum
-              (Uhdr, not Checksum.Sum (Ubuf,
-                                       Natural (Buffers.Buffer_Tlen (Ubuf))));
+              (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
 
             Buffers.Buffer_Header
               (Ubuf, -UDPH.UDP_Pseudo_Header'Size / 8, Err);

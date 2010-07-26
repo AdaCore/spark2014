@@ -62,13 +62,7 @@
   -->
   <field name="ICMPH"           length="32" />
   <field name="Gateway_Address" length="32" />
-<!--
-  <field name="IP_Header" class="nested" type="IPH.IP_Header" />
-  -->
-  <field name="IP_Header"       length="160"
-     class="private" type="IPH.IP_Header" />
-  <field name="Data"            length="64"
-     class="private" type="AIP.Opaque64" />
+  <!-- Followed by IP header (including options) + 64 bits of payload -->
  </message>
 
  <!--
@@ -83,12 +77,6 @@
   <field name="ICMPH"           length="32" />
   <field name="Pointer"         length= "8" />
   <field name="Unused"          length="24" />
-<!--
-  <field name="IP_Header" class="nested" type="IPH.IP_Header" />
-  -->
-  <field name="IP_Header"       length="160"
-     class="private" type="IPH.IP_Header" />
-  <field name="Data"            length="64"
-     class="private" type="AIP.Opaque64" />
+  <!-- Followed by IP header (including options) + 64 bits of payload -->
  </message>
 </package>

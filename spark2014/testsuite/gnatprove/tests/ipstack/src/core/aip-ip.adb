@@ -9,6 +9,7 @@ with AIP.Checksum;
 with AIP.Config;
 
 with AIP.ICMP;
+with AIP.ICMPH;
 with AIP.IPH;
 with AIP.UDP;
 
@@ -58,7 +59,7 @@ package body AIP.IP is
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Sum
                                 (Buf     => Buf,
-                                 Length  => Natural (IPH.IPH_IHL (Ihdr)) * 4)
+                                 Length  => U16_T (IPH.IPH_IHL (Ihdr)) * 4)
                                 /= 16#Ffff#)
       then
          Err := AIP.ERR_USE;
@@ -109,6 +110,11 @@ package body AIP.IP is
 
                when others =>
                   --  Discard IP packet with unknown protocol
+
+                  ICMP.ICMP_Reject
+                    (Buf,
+                     I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
+                     Code   => ICMPH.ICMP_Unreach_Code_Proto_Unreachable);
 
                   Err := AIP.ERR_USE;
             end case;
@@ -162,7 +168,7 @@ package body AIP.IP is
          IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
 
          IPH.Set_IPH_Checksum    (Ihdr,
-           not Checksum.Sum (Buf, 4 * Natural (IPH.IPH_IHL (Ihdr))));
+           not Checksum.Sum (Buf, 4 * U16_T (IPH.IPH_IHL (Ihdr))));
 
          NIF.Output (Netif, Buf, NH_IP);
       end if;
