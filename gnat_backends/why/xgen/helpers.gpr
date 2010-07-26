@@ -3,9 +3,9 @@ with "common";
 
 project Helpers is
 
-   for Source_Dirs use (".");
+   for Source_Dirs use (".", "..");
 
-   for Main use ("xkinds");
+   for Main use ("xkinds", "xtree");
 
    for Object_Dir use ".";
 
