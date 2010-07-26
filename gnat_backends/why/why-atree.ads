@@ -65,7 +65,8 @@ package Why.Atree is
    --  Name; defining entities should have a field whose general field name is
    --  Def. For these, general setters/getters will be generated. Among
    --  overridden fields, we have Return_Type, Binders, Left, Right, Op,
-   --  Then, Else, Parameters...
+   --  Then_Part, Else_Part, Parameters... They should not conflict with
+   --  Ada keywords.
 
    --  Although none should be needed to generate Why code, this tree
    --  will also contain some minimal semantic information; this would
@@ -132,10 +133,10 @@ package Why.Atree is
             CS_Postcondition : W_Postcondition_Id := Why_Empty;
 
          when W_Integer_Constant =>
-            IC_Uint : Uint;
+            IC_Value : Uint;
 
          when W_Real_Constant =>
-            IC_Ureal : Ureal;
+            RC_Value : Ureal;
 
          when W_True_Literal .. W_Void_Literal =>
             null;
@@ -162,8 +163,8 @@ package Why.Atree is
 
          when W_Conditional_Term =>
             CT_Condition : W_Term_Id;
-            CT_Then      : W_Term_Id;
-            CT_Else      : W_Term_Id;
+            CT_Then_Part : W_Term_Id;
+            CT_Else_Part : W_Term_Id;
 
          when W_Binding_Term =>
             BT_Name    : W_Identifier_Id;
@@ -202,8 +203,8 @@ package Why.Atree is
 
          when W_Conditional_Pred =>
             CPD_Condition : W_Term_Id;
-            CPD_Then      : W_Predicate_Id;
-            CPD_Else      : W_Predicate_Id;
+            CPD_Then_Part : W_Predicate_Id;
+            CPD_Else_Part : W_Predicate_Id;
 
          when W_Binding_Pred =>
             BPD_Name    : W_Identifier_Id;
@@ -243,9 +244,9 @@ package Why.Atree is
             T_Name            : W_Identifier_Id;
 
          when W_Logic =>
-            L_External : W_External_Id := Why_Empty;
-            L_Names    : W_Identifier_List;
-            L_Type     : W_Logic_Type_Id;
+            L_External   : W_External_Id := Why_Empty;
+            L_Names      : W_Identifier_List;
+            L_Logic_Type : W_Logic_Type_Id;
 
          when W_Function =>
             F_Name        : W_Identifier_Id;
@@ -259,9 +260,9 @@ package Why.Atree is
             P_Def     : W_Predicate_Id;
 
          when W_Inductive =>
-            I_Name : W_Identifier_Id;
-            I_Type : W_Logic_Type_Id;
-            I_Def  : W_Inductive_Case_List;
+            I_Name       : W_Identifier_Id;
+            I_Logic_Type : W_Logic_Type_Id;
+            I_Def        : W_Inductive_Case_List;
 
          when W_Axiom =>
             AX_Name : W_Identifier_Id;
@@ -279,8 +280,8 @@ package Why.Atree is
             LT_Return_Type : W_Logic_Return_Type_List;
 
          when W_Logic_Binder =>
-            LB_Name : W_Identifier_Id;
-            LB_Type : W_Primitive_Type_Id;
+            LB_Name       : W_Identifier_Id;
+            LB_Param_Type : W_Primitive_Type_Id;
 
          when W_Inductive_Case =>
             IC_Name : W_Identifier_Id;
@@ -299,7 +300,7 @@ package Why.Atree is
             POST_Handlers  : W_Exn_Condition_List := Why_Empty_List;
 
          when W_Exn_Condition =>
-            EC_Exception : W_Identifier_Id;
+            EC_Exn_Case  : W_Identifier_Id;
             EC_Assertion : W_Assertion_Id;
 
          when W_Assertion =>
@@ -344,13 +345,13 @@ package Why.Atree is
 
          when W_Conditional_Prog =>
             CPG_Condition : W_Prog_Id;
-            CPG_Then      : W_Prog_Id;
-            CPG_Else      : W_Prog_Id := Why_Empty;
+            CPG_Then_Part : W_Prog_Id;
+            CPG_Else_Part : W_Prog_Id := Why_Empty;
 
          when W_While_Loop =>
-            WL_Condition  : W_Prog_Id;
-            WL_Annotation : W_Loop_Annot_Id;
-            WL_Loop       : W_Prog_Id;
+            WL_Condition    : W_Prog_Id;
+            WL_Annotation   : W_Loop_Annot_Id;
+            WL_Loop_Content : W_Prog_Id;
 
          when W_Statement_Sequence =>
             SS_Statements : W_Prog_List;
@@ -369,7 +370,7 @@ package Why.Atree is
 
          when W_Fun_Def =>
             FD_Binders : W_Binders_Id;
-            FD_Return  : W_Prog_Id;
+            FD_Def     : W_Prog_Id;
 
          when W_Binding_Fun =>
             BF_Name    : W_Identifier_Id;
@@ -385,20 +386,20 @@ package Why.Atree is
             PS_Progs : W_Prog_List;
 
          when W_Raise_Statement =>
-            RS_Name : W_Identifier_Id;
-            RS_Type : W_Value_Type_Id := Why_Empty;
+            RS_Name     : W_Identifier_Id;
+            RS_Exn_Type : W_Value_Type_Id := Why_Empty;
 
          when W_Raise_Statement_With_Parameters =>
             RSWP_Name      : W_Identifier_Id;
             RSWP_Parameter : W_Term_Id;
-            RSWP_Type      : W_Value_Type_Id := Why_Empty;
+            RSWP_Exn_Type  : W_Value_Type_Id := Why_Empty;
 
          when W_Try_Block =>
             TB_Prog    : W_Prog_Id;
             TB_Handler : W_Handler_List;
 
          when W_Unreachable_Code =>
-            UC_Type : W_Value_Type_Id := Why_Empty;
+            UC_Exn_Type : W_Value_Type_Id := Why_Empty;
 
          when W_Begin_Block .. W_Protected_Prog =>
             BB_Prog : W_Prog_Id;
@@ -410,8 +411,8 @@ package Why.Atree is
             BS_Binders : W_Binders_List;
 
          when W_Binder =>
-            B_Names : W_Identifier_List;
-            B_Type  : W_Value_Type_Id;
+            B_Names     : W_Identifier_List;
+            B_Arg_Type  : W_Value_Type_Id;
 
          when W_Recfun =>
             RF_Name        : W_Identifier_Id;
@@ -425,8 +426,8 @@ package Why.Atree is
             LA_Variant   : W_Wf_Arg_Id := Why_Empty;
 
          when W_Wf_Arg =>
-            WA_Def : W_Term_Id;
-            WA_For : W_Identifier_Id := Why_Empty;
+            WA_Def    : W_Term_Id;
+            WA_For_Id : W_Identifier_Id := Why_Empty;
 
          when W_Handler =>
             H_Name      : W_Identifier_Id;
@@ -445,9 +446,9 @@ package Why.Atree is
             GRB_Name : W_Recfun_Id;
 
          when W_Parameter_Declaration =>
-            PD_External : W_External_Id;
-            PD_Names    : W_Identifier_List;
-            PD_Type     : W_Value_Type_List;
+            PD_External       : W_External_Id;
+            PD_Names          : W_Identifier_List;
+            PD_Parameter_Type : W_Value_Type_List;
 
          when W_Exception_Declaration =>
             ED_Name      : W_Identifier_Id;
