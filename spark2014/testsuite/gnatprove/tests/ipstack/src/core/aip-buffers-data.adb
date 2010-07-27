@@ -213,6 +213,25 @@ is
          Integer (Buf_List (Buf).Left_Offset));
    end Buffer_Payload;
 
+   ------------------------
+   -- Buffer_Set_Payload --
+   ------------------------
+
+   procedure Buffer_Set_Payload
+     (Buf   : Buffer_Id;
+      Pload : System.Address;
+      Err   : out AIP.Err_T)
+   --# global in out Data_Array, Buf_List;
+   is
+      Pload_Shift : AIP.S16_T;
+      --  Amount by which we need to shift the payload pointer. Positive
+      --  for a move forward.
+   begin
+      Pload_Shift
+        := AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
+      Buffer_Header (Buf, -Pload_Shift, Err);
+   end Buffer_Set_Payload;
+
    --------------------
    -- Buffer_Poffset --
    --------------------
@@ -231,7 +250,7 @@ is
    procedure Buffer_Header
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
-      Err  : in out AIP.Err_T)
+      Err  : out AIP.Err_T)
    --# global in out Buf_List;
    is
       Offset : AIP.U16_T;

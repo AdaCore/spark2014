@@ -209,6 +209,24 @@ is
       return Result;
    end Buffer_Poffset;
 
+   ------------------------
+   -- Buffer_Set_Payload --
+   ------------------------
+
+   procedure Buffer_Set_Payload
+     (Buf   : Buffer_Id;
+      Pload : System.Address;
+      Err   : out AIP.Err_T)
+   --# global in out Data.State, No_Data.State;
+   is
+   begin
+      if Is_Data_Buffer (Buf) then
+         Data.Buffer_Set_Payload (Buf, Pload, Err);
+      else
+         No_Data.Buffer_Set_Payload (No_Data.Adjust_Id (Buf), Pload, Err);
+      end if;
+   end Buffer_Set_Payload;
+
    ----------------
    -- Buffer_Ref --
    ----------------

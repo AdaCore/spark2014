@@ -651,8 +651,17 @@ is
 
       NH_IP : IPaddrs.IPaddr;
       --  Next hop
+
+      Buf_Entry_Pload : System.Address;
+      --  Buf's payload on entry, to be restored for callers
+
+      Lerr : AIP.Err_T;
+      --  Local error status
+
    begin
       pragma Assert (PCB in Valid_PCB_Ids);
+
+      Buf_Entry_Pload := Buffers.Buffer_Payload (Buf);
 
       Dst_IP   := PCBs (PCB).IPCB.Remote_IP;
       Dst_Port := PCBs (PCB).Remote_Port;
@@ -674,6 +683,11 @@ is
          else
             UDP_Send_To_If (PCB, Buf, Dst_IP, NH_IP, Dst_Port, Netif, Err);
          end if;
+      end if;
+
+      Buffers.Buffer_Set_Payload (Buf, Buf_Entry_Pload, Lerr);
+      if AIP.No (Err) then
+         Err := Lerr;
       end if;
    end UDP_Send;
 

@@ -53,13 +53,19 @@ is
    -- Buffer struct accessors --
    -----------------------------
 
+   --  See corresponding declarations in parent unit.
+
    function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
-   --  Pointer to data held by buffer Buf
 
    function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Room available in BUF prio to payload, typically for protocol headers
+
+   procedure Buffer_Set_Payload
+     (Buf   : Buffer_Id;
+      Pload : System.Address;
+      Err   : out AIP.Err_T);
+   --# global in out State;
 
    ----------------------------------
    -- Buffer reference and release --
@@ -76,7 +82,7 @@ is
    procedure Buffer_Header
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
-      Err  : in out AIP.Err_T);
+      Err  : out AIP.Err_T);
    --# global in out State;
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.

@@ -115,6 +115,21 @@ is
       return Buf_List (Buf).Payload_Ref;
    end Buffer_Payload;
 
+   ------------------------
+   -- Buffer_Set_Payload --
+   ------------------------
+
+   procedure Buffer_Set_Payload
+     (Buf   : Buffer_Id;
+      Pload : System.Address;
+      Err   : out AIP.Err_T)
+   --# global in out Buf_List;
+   is
+   begin
+      Buf_List (Buf).Payload_Ref := Pload;
+      Err := AIP.NOERR;
+   end Buffer_Set_Payload;
+
    --------------------
    -- Buffer_Poffset --
    --------------------
@@ -136,7 +151,7 @@ is
    procedure Buffer_Header
      (Buf  : Buffer_Id;
       Bump : AIP.S16_T;
-      Err  : in out AIP.Err_T)
+      Err  : out AIP.Err_T)
    --# global in out Buf_List;
    is
    begin

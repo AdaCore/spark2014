@@ -135,7 +135,17 @@ is
 
    function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Room available in BUF prio to payload, typically for protocol headers
+   --  Room available in BUF in front of payload, typically useful for
+   --  protocol headers
+
+   procedure Buffer_Set_Payload
+     (Buf   : Buffer_Id;
+      Pload : System.Address;
+      Err   : out AIP.Err_T);
+   --# global in out State;
+   --  Set payload pointer of BUF to PLOAD.
+   --
+   --  ERR_MEM if PLOAD if off the buffer area.
 
    ----------------------------------
    -- Buffer reference and release --
@@ -191,6 +201,9 @@ is
    pragma Export (C, Buffer_Header, "AIP_buffer_header");
    --  Move the payload pointer of Buf by Bump elements, signed.
    --  Typically used to reveal or hide protocol headers.
+   --
+   --  ERR_MEM if the requested move would get the payload pointer off the
+   --          buffer area.
 
    --  Note: if this procedure is called on a buffer not in front of a chain,
    --        then if will result in a violation of the invariant for the total

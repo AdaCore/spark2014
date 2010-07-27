@@ -19,4 +19,14 @@ package body AIP.Conversions is
       return A + System.Storage_Elements.Storage_Offset (Offset);
    end Ofs;
 
+   ----------
+   -- Diff --
+   ----------
+
+   function Diff (A : System.Address; B : System.address) return Integer is
+      use type System.Storage_Elements.Storage_Offset;
+   begin
+      return Integer (A - B);
+   end Diff;
+
 end AIP.Conversions;

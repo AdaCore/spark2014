@@ -56,7 +56,7 @@ is
    --  be NOPORT, in which case an arbitrary available one is picked.
    --
    --  ERR_USE if another PCB is already bound to this local endpoint and
-   --  we are configured not to accept that.
+   --          we are configured not to accept that.
    --  ERR_MEM if Local_Port is NOPORT and no available port could be found.
 
    procedure UDP_Connect
@@ -79,13 +79,15 @@ is
       Err : out AIP.Err_T);
    --# global in out Buffers.State, State;
    --  Send BUF data to the current destination endpoint of PCB, as
-   --  established by UDP_Connect. Room for protocol headers is allocated as
-   --  needed, by moving BUF's payload if possible. Force a local binding on
-   --  PCB if none is established already. BUF is not deallocated.
-   --
+   --  established by UDP_Connect. Force a local binding on PCB if none is
+   --  setup already. BUF is not deallocated and its payload pointer is
+   --  preserved. However, the room available in front of the payload might
+   --  be clobbered for protocol headers if it is wide enough.
+
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
-   --  ERR_MEM e.g.if the UDP header couldn't be allocated
+   --  ERR_MEM e.g.if the UDP header couldn't be allocated or an error
+   --          occurred while resetting BUF's payload to its value on entry
    --  Possibly other errors from lower layers.
 
    procedure UDP_Disconnect (PCB : PCB_Id);
@@ -215,6 +217,7 @@ private
    procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T);
    --# global in out State;
    --  Force a local binding on PCB if it isn't bound already.
+   --
    --  ERR as UDP_Bind.
 
    ------------------------
@@ -249,6 +252,7 @@ private
    --# global in out Buffers.State;
    --  Get Uhdr to designate the UDP header of a datagram received from IP in
    --  BUF, and adjust BUF's payload accordingly.
+   --
    --  ERR_MEM if BUF is found too short to possibly carry a UDP datagram.
 
    function UDP_PCB_For
@@ -271,6 +275,7 @@ private
    --  Setup space for a UDP header before the data in Buf. See if there is
    --  enough room preallocated for this purpose, and adjust the payload
    --  pointer in this case. Prepend a separate buffer otherwise.
+   --
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
    procedure UDP_Send_To_If
@@ -284,6 +289,7 @@ private
    --# global in out Buffers.State, State;
    --  Send BUF to DST_IP/DST_PORT via next hop NH_IP through NETIF, acting
    --  for PCB. This involves prepending a UDP header in front of BUF.
+   --
    --  ERR_VAL if PCB has a specific local IP set which differs from NETIF's.
 
 end AIP.UDP;

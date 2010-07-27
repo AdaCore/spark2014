@@ -35,6 +35,7 @@ AIP.Support         body          is in ../core/aip-support.adb
 AIP.TCP             specification is in ../core/aip-tcp.ads
 AIP.TCP             body          is in ../core/aip-tcp.adb
 AIP.Checksum        specification is in ../core/aip-checksum.ads
+AIP.ICMP            specification is in ../core/aip-icmp.ads
 AIP.IP              specification is in ../core/aip-ip.ads
 AIP.UDP             specification is in ../core/aip-udp.ads
 

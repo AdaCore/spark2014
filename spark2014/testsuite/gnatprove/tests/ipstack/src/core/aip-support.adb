@@ -15,11 +15,13 @@ package body AIP.Support is
 
    procedure Verify_Or_Err
      (T        : Boolean;
-      Err      : in out AIP.Err_T;
+      Err      : out AIP.Err_T;
       Err_Type : AIP.Err_T) is
    begin
       if not T then
          Err := Err_Type;
+      else
+         Err := AIP.NOERR;
       end if;
    end Verify_Or_Err;
 
