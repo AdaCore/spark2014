@@ -256,36 +256,33 @@ is
 
          if PCB = NOPCB then
 
-            --  Recover IP header
+            --  Recover IP header and send ICMP destination unreachable
 
-            Buffers.Buffer_Header (Buf, 4 * S16_T (IPH.IPH_IHL (Ihdr)), Err);
+            Buffers.Buffer_Header
+              (Buf, 4 * AIP.S16_T (IPH.IPH_IHL (Ihdr)), Err);
 
-            --  Send ICMP destination unreachable
-
-            if No (Err) then
+            if AIP.No (Err) then
                ICMP.ICMP_Reject
-                 (Buf    => Buf,
+                 (IP_Buf => Buf,
                   I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
                   Code   => ICMPH.ICMP_Unreach_Code_Port_Unreachable);
             end if;
 
-            Err := ERR_VAL;
+            Err := AIP.ERR_VAL;
          end if;
       end if;
 
       --  If we have a taker, trigger an UDP_RECV event if a callback was
-      --  registered for it. Buffer release is the application's
+      --  registered for it. Releasing the buffer is the application's
       --  responsibility in this case.
 
       if AIP.No (Err)
         and then PCB /= NOPCB
         and then PCBs (PCB).RECV_Cb /= Callbacks.NOCB
       then
-         --  Skip UDP header
+         --  Skip UDP header and perform upcall to application
 
          Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
-
-         --  Perform upcall to application
 
          UDP_Event
            (UDP_Event_T'(Kind => UDP_RECV,
@@ -519,6 +516,7 @@ is
             Err := AIP.ERR_MEM;
          else
             Buffers.Buffer_Chain (Ubuf, Buf);
+            Err := AIP.NOERR;
          end if;
       end if;
    end Prepend_UDP_Header;
@@ -590,9 +588,11 @@ is
             --  room to be available already, anticipated for the IP and link
             --  layers downstack and not yet filled with anything of use.
 
+            --# accept F, 10, Err, "Assignment is ineffective";
             Buffers.Buffer_Header
-              (Ubuf, UDPH.UDP_Pseudo_Header'Size / 8, Err);
+              (Ubuf, UDPH.UDP_Pseudo_Header_Size / 8, Err);
             pragma Assert (No (Err));
+            --# end accept;
 
             PUhdr := Buffers.Buffer_Payload (Ubuf);
             UDPH.Set_UDPP_Src_Address (PUhdr, Src_IP);
@@ -607,9 +607,11 @@ is
             UDPH.Set_UDPH_Checksum
               (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
 
+            --# accept F, 10, Err, "Assignment is ineffective";
             Buffers.Buffer_Header
-              (Ubuf, -UDPH.UDP_Pseudo_Header'Size / 8, Err);
+              (Ubuf, -UDPH.UDP_Pseudo_Header_Size / 8, Err);
             pragma Assert (No (Err));
+            --# end accept;
 
             --  Now ready to pass to IP
 

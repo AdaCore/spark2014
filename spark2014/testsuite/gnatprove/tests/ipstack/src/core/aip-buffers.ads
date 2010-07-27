@@ -89,9 +89,9 @@ is
    subtype Data_Buffer_Kind is Buffer_Kind range SPLIT_BUF .. LINK_BUF;
 
    procedure Buffer_Alloc
-     (Offset :     Buffer_Length;
-      Size   :     Data_Length;
-      Kind   :     Buffer_Kind;
+     (Offset : Buffer_Length;
+      Size   : Data_Length;
+      Kind   : Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out State;
    pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
@@ -201,7 +201,7 @@ is
    procedure Buffer_Copy
      (Dst : Buffer_Id;
       Src : Buffer_Id;
-      Len : U16_T;
+      Len : AIP.U16_T;
       Err : out AIP.Err_T);
    --# global in out State;
    --  Copy Len bytes from Src's payload into Dst's payload

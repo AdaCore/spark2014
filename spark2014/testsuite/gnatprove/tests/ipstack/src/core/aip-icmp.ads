@@ -23,8 +23,8 @@ package AIP.ICMP is
 
    procedure ICMP_Reject
      (IP_Buf : Buffers.Buffer_Id;
-      I_Type : U8_T;
-      Code   : U8_T);
+      I_Type : AIP.U8_T;
+      Code   : AIP.U8_T);
    --  Build and send an ICMP rejection message with the specified type and
    --  code for the IP packet in Buf.
 

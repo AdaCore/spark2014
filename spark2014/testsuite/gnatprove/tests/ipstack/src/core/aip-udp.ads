@@ -15,7 +15,7 @@ with AIP.IP;
 with AIP.IPaddrs;
 
 --# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers,
---#         AIP.NIF, AIP.IP, AIP.IPaddrs,
+--#         AIP.NIF, AIP.IP, AIP.IPaddrs, AIP.ICMP, AIP.ICMPH,
 --#         AIP.Checksum, AIP.Inet, AIP.IPH, AIP.UDPH;
 
 package AIP.UDP
@@ -78,11 +78,10 @@ is
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
    --# global in out Buffers.State, State;
-
-   --  Send BUF data to the current destination endpoint of PCB, as established
-   --  by UDP_Connect. This involves prepending a UDP header in front of BUF.
-   --  Force a local binding on PCB if none is established already. BUF is not
-   --  deallocated.
+   --  Send BUF data to the current destination endpoint of PCB, as
+   --  established by UDP_Connect. Room for protocol headers is allocated as
+   --  needed, by moving BUF's payload if possible. Force a local binding on
+   --  PCB if none is established already. BUF is not deallocated.
    --
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
