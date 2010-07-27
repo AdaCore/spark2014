@@ -46,6 +46,53 @@ package body AIP.IP is
       Local : Boolean;
       --  Set True for a packet bound for the local node
 
+      procedure Dispatch_Upper
+        (Proto : U8_T;
+         Buf   : Buffers.Buffer_Id;
+         Netif : NIF.Netif_Id;
+         Err   : out Err_T);
+      --  Dispatch packet in Buf received on Netif to upper protocol layer
+      --  according to IP protocol identifier Proto.
+
+      --------------------
+      -- Dispatch_Upper --
+      --------------------
+
+      procedure Dispatch_Upper
+        (Proto : U8_T;
+         Buf   : Buffers.Buffer_Id;
+         Netif : NIF.Netif_Id;
+         Err   : out Err_T)
+      is
+         --# hide Dispatch_Upper;
+         --  Hidden to avoid circular dependency in inherit clauses
+      begin
+         Err := NOERR;
+
+         case Proto is
+            when IPH.IP_Proto_UDP =>
+               UDP.UDP_Input (Buf, Netif);
+
+--             when IPH.IP_Proto_TCP =>
+--                TCP.TCP_Input (Buf, Netif);
+
+            when IPH.IP_Proto_ICMP =>
+               ICMP.ICMP_Input (Buf, Netif);
+
+            when others =>
+               --  Discard IP packet with unknown protocol
+
+               ICMP.ICMP_Reject
+                 (Buf,
+                  I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
+                  Code   => ICMPH.ICMP_Unreach_Code_Proto_Unreachable);
+
+               Err := AIP.ERR_USE;
+         end case;
+      end Dispatch_Upper;
+
+   --  Start of processing for IP_Input
+
    begin
       --  Perform various sanity checks prior to accepting the packet:
       --    short packets
@@ -98,26 +145,7 @@ package body AIP.IP is
 
       if No (Err) then
          if Local then
-            case IPH.IPH_Protocol (Ihdr) is
-               when IPH.IP_Proto_UDP =>
-                  UDP.UDP_Input (Buf, Netif);
-
---             when IPH.IP_Proto_TCP =>
---                TCP.TCP_Input (Buf, Netif);
-
-               when IPH.IP_Proto_ICMP =>
-                  ICMP.ICMP_Input (Buf, Netif);
-
-               when others =>
-                  --  Discard IP packet with unknown protocol
-
-                  ICMP.ICMP_Reject
-                    (Buf,
-                     I_Type => ICMPH.ICMP_Type_Dest_Unreachable,
-                     Code   => ICMPH.ICMP_Unreach_Code_Proto_Unreachable);
-
-                  Err := AIP.ERR_USE;
-            end case;
+            Dispatch_Upper (IPH.IPH_Protocol (Ihdr), Buf, Netif, Err);
          else
             IP_Forward (Buf, Netif);
          end if;
