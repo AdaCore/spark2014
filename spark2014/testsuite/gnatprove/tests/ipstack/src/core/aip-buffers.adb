@@ -53,8 +53,9 @@ is
    procedure Buffer_Copy
      (Dst : Buffer_Id;
       Src : Buffer_Id;
-      Len : U16_T;
+      Len : AIP.U16_T;
       Err : out AIP.Err_T)
+   --# global in Common.Buf_List;
    is
       --# hide Buffer_Copy;
 
