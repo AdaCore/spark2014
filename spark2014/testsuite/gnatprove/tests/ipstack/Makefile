@@ -83,12 +83,8 @@ $(APP_IMAGE).bin: $(APP_IMAGE)
 run: $(APP_IMAGE).bin
 	qemu-system-ppc -nographic -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=scripts/qemu-ifup
 	
-spark/spark.idx:
-	mkdir -p spark
-	cd spark && sparkmake -directory=../build/gen -directory=../src/core/ -directory=../src/lwip4aip/ -directory=../src/services/ -directory=../src/support/ -directory=../src/support.$(TARGET)/
-
-spark: spark/spark.idx
-	cd spark && spark -flow=data @spark
+spark: force
+	mkdir -p spark && cd spark && spark -flow=data -index_file=../src/spark/aip.idx -config_file=../src/spark/config.shs -warning_file=../src/spark/aip.wrn  -brief @../src/spark/aip.smf
 
 codepeer: force
 	$(MAKE) TARGET=$(TARGET) \
