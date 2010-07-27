@@ -124,7 +124,9 @@ package body AIP.IP is
 
       if No (Err) then
          NIF.Get_Netif_By_Address
-           (IPH.IPH_Dst_Address (Ihdr), Mask => False, Nid => Dst_Netif);
+           (Addr => IPH.IPH_Dst_Address (Ihdr),
+            Mask => False,
+            Nid  => Dst_Netif);
 
          if Dst_Netif /= NIF.IF_NOID then
          --  case of multicast???
@@ -215,12 +217,13 @@ package body AIP.IP is
       --  Currently we support only direct interface routes and the default
       --  route???
 
-      NIF.Get_Netif_By_Address (Dst_IP, Mask => True, Nid => Netif);
+      NIF.Get_Netif_By_Address (Addr => Dst_IP, Mask => True, Nid => Netif);
       if Netif /= NIF.IF_NOID then
          Next_Hop := Dst_IP;
 
       elsif Default_Router /= IPaddrs.IP_ADDR_ANY then
-         NIF.Get_Netif_By_Address (Default_Router, Mask => True, Nid => Netif);
+         NIF.Get_Netif_By_Address
+           (Addr => Default_Router, Mask => True, Nid => Netif);
          Next_Hop := Default_Router;
       end if;
    end IP_Route;

@@ -19,6 +19,8 @@ AIP.Buffers.No_Data body          is in ../core/aip-buffers-no_data.adb
 AIP.Callbacks       specification is in ../core/aip-callbacks.ads
 AIP.Config          specification is in ../core/aip-config.ads
 AIP.Conversions     specification is in ../core/aip-conversions.ads
+AIP.ICMP            specification is in ../core/aip-icmp.ads
+AIP.ICMP            body          is in ../core/aip-icmp.adb
 AIP.IPaddrs         specification is in ../core/aip-ipaddrs.ads
 AIP.IPaddrs         body          is in ../core/aip-ipaddrs.adb
 AIP.NIF             specification is in ../core/aip-nif.ads
