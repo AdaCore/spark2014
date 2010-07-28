@@ -23,7 +23,7 @@ package body AIP.Conversions is
    -- Diff --
    ----------
 
-   function Diff (A : System.Address; B : System.address) return Integer is
+   function Diff (A : System.Address; B : System.Address) return Integer is
       use type System.Storage_Elements.Storage_Offset;
    begin
       return Integer (A - B);

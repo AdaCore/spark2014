@@ -15,7 +15,7 @@ package AIP.Conversions is
    function Ofs (A : System.Address; Offset : Integer) return System.Address;
    --  Return A + Offset
 
-   function Diff (A : System.Address; B : System.address) return Integer;
+   function Diff (A : System.Address; B : System.Address) return Integer;
    --  Return A - B
 
 end AIP.Conversions;
