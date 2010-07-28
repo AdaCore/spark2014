@@ -9,7 +9,7 @@ with System;
 with AIP.Config;
 
 --# inherit AIP,  --  Needed in order to inherit AIP.Buffers in child packages
---#         AIP.Support, AIP.Conversions,  --  Needed by child packages
+--#         AIP.Support, AIP.Conversions,
 --#         System, AIP.Config;
 
 package AIP.Buffers
@@ -30,6 +30,37 @@ is
 
    --  'Data' buffers are those buffers holding data.
    --  'No-data' buffers are those buffers referencing external data.
+
+   --  Buffers always materialize as at least a control structure and can be
+   --  used to hold or designate different kinds of data locations.
+
+   type Buffer_Kind is
+     (SPLIT_BUF,
+      --  Buffer data is possibly allocated in more than one buffer, which
+      --  form together a contiguous block of memory. The data can be moved
+      --  as if from a single buffer, and the Len field of a split buffer
+      --  reflects this by storing the length of the complete chain in the
+      --  split buffer.
+
+      LINK_BUF,
+      --  Buffer data is allocated from available buffers. A chain is
+      --  constructed if a single buffer is not big enough for the intended
+      --  buffer size.
+
+      REF_BUF
+      --  No buffer data is allocated. Instead, the buffer references the data
+      --  (payload) through a reference that needs to be attached explicitely
+      --  before use.
+     );
+   pragma Convention (C, Buffer_Kind);
+
+   --  Despite variations on the underlying data storage scheme, all kinds of
+   --  buffer expose a common representation model:
+
+   --  A buffer is a container for data with a start address, a length and
+   --  a "payload" pointer, sort of cursor that can be moved back and forth
+   --  within the data area (typically to reveal/hide protocol headers as
+   --  packet travels within the protocol stack).
 
    --  Type of data element
    subtype Elem is Character;
@@ -63,40 +94,29 @@ is
    -- Buffer allocation --
    -----------------------
 
-   --  Buffers always materialize as a least control structure and can be used
-   --  to hold or designate different kinds of data locations.
-
-   type Buffer_Kind is
-     (SPLIT_BUF,
-      --  Buffer data is possibly allocated in more than one buffer, which
-      --  form together a contiguous block of memory. The data can be moved
-      --  as if from a single buffer, and the Len field of a split buffer
-      --  reflects this by storing the length of the complete chain in the
-      --  split buffer.
-
-      LINK_BUF,
-      --  Buffer data is allocated from available buffers. A chain is
-      --  constructed if a single buffer is not big enough for the intended
-      --  buffer size.
-
-      REF_BUF
-      --  No buffer data is allocated. Instead, the buffer references the data
-      --  (payload) through a reference that needs to be attached explicitely
-      --  before use.
-     );
-   pragma Convention (C, Buffer_Kind);
-
    subtype Data_Buffer_Kind is Buffer_Kind range SPLIT_BUF .. LINK_BUF;
 
    procedure Buffer_Alloc
-     (Offset : Buffer_Length;
+     (Kind   : Data_Buffer_Kind;
+      Offset : Buffer_Length;
       Size   : Data_Length;
-      Kind   : Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out State;
+   --  Allocate and return a new Buf of kind Kind, aimed at holding or Size
+   --  elements of payload data preceded by Offset bytes of room (initial
+   --  payload offset).
    pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
-   --  Allocate and return a new Buf of kind Kind, aimed at holding or
-   --  referencing Size elements of data starting at offset Offset.
+
+   procedure Ref_Buffer_Alloc
+     (Ref    : System.Address;
+      Offset : Buffer_Length;
+      Size   : Data_Length;
+      Buf    : out Buffer_Id);
+   --# global in out State;
+   --  Allocate and return a new Buf of kind Kind, aimed at referencing Size
+   --  elements of payload data located at Ref, preceded by Offset bytes of
+   --  room (initial payload offset).
+   pragma Export (C, Ref_Buffer_Alloc, "AIP_ref_buffer_alloc");
 
    -----------------------------
    -- Buffer struct accessors --
@@ -107,31 +127,31 @@ is
 
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   pragma Export (C, Buffer_Len, "AIP_buffer_len");
    --  Amount of packet data
    --  - held in buffer Buf for Kind = LINK_BUF
    --  - held in all buffers of the split buffer Buf for Kind = SPLIT_BUF
    --  - referenced by buffer Buf for Kind = REF_BUF
+   pragma Export (C, Buffer_Len, "AIP_buffer_len");
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
    --  Amount of packet data
    --  - held in all buffers from Buf through the chain for Kind /= REF_BUF
    --    Tlen = Len means Buf is the last buffer in the chain for a packet.
    --  - referenced by buffer Buf for Kind = REF_BUF
    --    Tlen = Len is an invariant in this case.
+   pragma Export (C, Buffer_Tlen, "AIP_buffer_tlen");
 
    function Buffer_Next (Buf : Buffer_Id) return Buffer_Id;
    --# global in State;
-   pragma Export (C, Buffer_Next, "AIP_buffer_next");
    --  Buffer following Buf in a chain, either next buffer for the same packet
    --  or first buffer of another one, or NOBUF
+   pragma Export (C, Buffer_Next, "AIP_buffer_next");
 
    function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
-   pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
    --  Pointer to data held or referenced by buffer Buf
+   pragma Export (C, Buffer_Payload, "AIP_buffer_payload");
 
    function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
@@ -253,5 +273,30 @@ private
    --  Return whether buffer Buf is a data buffer or a no-data buffer.
    --  Declared in the private part as SPARK forbids declarations in body and
    --  style checks require a declaration.
+
+   --------------------------------------------------------------
+   -- General notes on internal data structures and buffer Ids --
+   --------------------------------------------------------------
+
+   --  Each buffer instanciates as a common record associated with a
+   --  kind-specific record, all allocated in static arrays in their
+   --  respective packages (Buffers.Common, .Data and .No_Data)
+
+   --  Internally, this materializes as two indices for each buffer. Only the
+   --  common array index is exposed to clients. The common indices are
+   --  assigned first to Data buffers, then to Ref ones, so we have something
+   --  like:
+
+   --  .Data                        .No_Data
+   --  data_buf_array [1  ..  D]    ref_buf_array [1 ..  R]
+   --                 ----------                  ---------
+   --                 |buf_data|                  |buf_ref|
+   --
+   --        data entries  ref entries
+   --                |      |
+   --  .Common     vvvvvv  vvvvvvvvv
+   --  buf_array [ 1 .. D  D+1.. D+R]
+   --            --------------------
+   --            |    buf_common    |
 
 end AIP.Buffers;

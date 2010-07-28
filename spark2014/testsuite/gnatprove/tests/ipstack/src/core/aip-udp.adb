@@ -511,7 +511,7 @@ is
          Ubuf := Buf;
       else
          Buffers.Buffer_Alloc
-           (HLEN_To_IP, UDP_HLEN, Buffers.SPLIT_BUF, Ubuf);
+           (Buffers.SPLIT_BUF, HLEN_To_IP, UDP_HLEN, Ubuf);
          if Ubuf = Buffers.NOBUF then
             Err := AIP.ERR_MEM;
          else

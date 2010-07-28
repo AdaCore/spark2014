@@ -29,21 +29,17 @@ is
    --  What is the relationship between Buffer_Index and Buffer_Id???
 
    type Buffer is record
-      Num          : Buffer_Count;
+      Num         : Buffer_Count;
       --  Number of buffers in singly linked chain
 
-      Num_No_Jump  : Buffer_Count;
+      Num_No_Jump : Buffer_Count;
       --  Number of contiguous buffers in singly linked chain from this buffer
 
-      Left_Offset  : Buffers.Buffer_Length;
-      --  Offset to get to the position of the actual data in the buffer
-
-      Kind         : Buffers.Data_Buffer_Kind;
+      Kind        : Buffers.Data_Buffer_Kind;
       --  Kind of buffer
    end record;
 
    type Buffer_Array is array (Buffer_Index) of Buffer;
-
    Buf_List : Buffer_Array;
 
    -----------------
@@ -58,7 +54,7 @@ is
       --  special number fields initialized to one.
 
       Buf_List := Buffer_Array'
-        (others => Buffer'(Num  => 1, Num_No_Jump => 1, Left_Offset => 0,
+        (others => Buffer'(Num  => 1, Num_No_Jump => 1,
                            Kind => Buffers.LINK_BUF));
 
       --  Set special fields to adapt to a singly linked chain of buffers
@@ -84,9 +80,9 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Offset :     Buffers.Buffer_Length;
-      Size   :     Buffers.Data_Length;
-      Kind   :     Buffers.Data_Buffer_Kind;
+     (Kind   : Buffers.Data_Buffer_Kind;
+      Offset : Buffers.Buffer_Length;
+      Size   : Buffers.Data_Length;
       Buf    : out Buffer_Id)
    --# global in out Common.Buf_List, Buf_List, Free_List;
    is
@@ -151,13 +147,13 @@ is
          --  Left offset is zero for all buffers but the first one
 
          if Remaining = Requested_Buffers then
-            Buf_List (Cur_Buf).Left_Offset   := Offset;
+            Common.Buf_List (Cur_Buf).Poffset := Offset;
          else
-            Buf_List (Cur_Buf).Left_Offset   := 0;
+            Common.Buf_List (Cur_Buf).Poffset := 0;
          end if;
 
          Common.Buf_List (Cur_Buf).Tot_Len   :=
-           Remaining_Size - Buf_List (Cur_Buf).Left_Offset;
+           Remaining_Size - Common.Buf_List (Cur_Buf).Poffset;
 
          --# accept F, 41, "Expression is stable";
          case Kind is
@@ -167,7 +163,7 @@ is
 
                Common.Buf_List (Cur_Buf).Len :=
                  AIP.U16_T'Min (Config.Data_Buffer_Size
-                                - Buf_List (Cur_Buf).Left_Offset,
+                                - Common.Buf_List (Cur_Buf).Poffset,
                                 Common.Buf_List (Cur_Buf).Tot_Len);
             when Buffers.SPLIT_BUF =>
                --  Length is same as total length
@@ -210,68 +206,8 @@ is
    begin
       return Conversions.Ofs
         (Data_Array (Data_Array'First + Buf_Start_Offset)'Address,
-         Integer (Buf_List (Buf).Left_Offset));
+         Integer (Common.Buf_List (Buf).Poffset));
    end Buffer_Payload;
-
-   ------------------------
-   -- Buffer_Set_Payload --
-   ------------------------
-
-   procedure Buffer_Set_Payload
-     (Buf   : Buffer_Id;
-      Pload : System.Address;
-      Err   : out AIP.Err_T)
-   --# global in out Data_Array, Buf_List;
-   is
-      Pload_Shift : AIP.S16_T;
-      --  Amount by which we need to shift the payload pointer. Positive
-      --  for a move forward.
-   begin
-      Pload_Shift
-        := AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
-      Buffer_Header (Buf, -Pload_Shift, Err);
-   end Buffer_Set_Payload;
-
-   --------------------
-   -- Buffer_Poffset --
-   --------------------
-
-   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Buf_List;
-   is
-   begin
-      return Buf_List (Buf).Left_Offset;
-   end Buffer_Poffset;
-
-   -------------------
-   -- Buffer_Header --
-   -------------------
-
-   procedure Buffer_Header
-     (Buf  : Buffer_Id;
-      Bump : AIP.S16_T;
-      Err  : out AIP.Err_T)
-   --# global in out Buf_List;
-   is
-      Offset : AIP.U16_T;
-   begin
-      Offset := AIP.U16_T (abs (Bump));
-
-      --  Check that we are not going to move off the beginning of the buffer
-
-      if Bump >= 0 then
-         Support.Verify_Or_Err
-           (Buf_List (Buf).Left_Offset - Offset >= 0, Err, AIP.ERR_MEM);
-      end if;
-
-      if Err = AIP.NOERR then
-         if Bump >= 0 then
-            Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset - Offset;
-         else
-            Buf_List (Buf).Left_Offset := Buf_List (Buf).Left_Offset + Offset;
-         end if;
-      end if;
-   end Buffer_Header;
 
    -----------------
    -- Buffer_Link --

@@ -6,6 +6,7 @@
 with AIP.Buffers.Common;
 with AIP.Buffers.Data;
 with AIP.Buffers.No_Data;
+with AIP.Conversions;
 with AIP.Support;
 
 package body AIP.Buffers
@@ -55,7 +56,7 @@ is
       Src : Buffer_Id;
       Len : AIP.U16_T;
       Err : out AIP.Err_T)
-   --# global in Common.Buf_List;
+   --# global in out Data.State, No_Data.State;
    is
       --# hide Buffer_Copy;
 
@@ -94,20 +95,17 @@ is
         Common.Buffer_Array'
           (others =>
                Common.Buffer'(Next => NOBUF, Next_Packet => NOBUF,
-                              Len  => 0, Tot_Len => 0, Ref => 0));
+                              Len  => 0, Tot_Len => 0, Poffset => 0,
+                              Ref  => 0));
 
-      --  Construct a singly linked chain of buffers
+      --  Construct a singly linked chain of common buffer structures,
+      --  then Initialize data/no-data specific structures
 
       for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
          Common.Buf_List (Buf).Next := Buf + 1;
       end loop;
 
-      --  Initialize structures for no-data buffers
-
       No_Data.Buffer_Init;
-
-      --  Initialize structures for data buffers
-
       Data.Buffer_Init;
    end Buffer_Init;
 
@@ -116,31 +114,40 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Offset :     Buffer_Length;
-      Size   :     Data_Length;
-      Kind   :     Buffer_Kind;
+     (Kind   : Data_Buffer_Kind;
+      Offset : Buffer_Length;
+      Size   : Data_Length;
       Buf    : out Buffer_Id)
-   --# global in out Common.Buf_List,
-   --#               Data.State, Data.Free_List,
-   --#               No_Data.State, No_Data.Free_List;
+   --# global in out Common.Buf_List, Data.State, Data.Free_List;
+   is
+   begin
+      Data.Buffer_Alloc
+        (Kind   => Kind,
+         Offset => Offset,
+         Size   => Size,
+         Buf    => Buf);
+   end Buffer_Alloc;
+
+   ----------------------
+   -- Ref_Buffer_Alloc --
+   ----------------------
+
+   procedure Ref_Buffer_Alloc
+     (Ref    : System.Address;
+      Offset : Buffer_Length;
+      Size   : Data_Length;
+      Buf    : out Buffer_Id)
+   --# global in out Common.Buf_List, No_Data.State, No_Data.Free_List;
    is
       No_Data_Buf : No_Data.Buffer_Id;
    begin
-      if Kind in Data_Buffer_Kind then
-         Data.Buffer_Alloc (Offset => Offset,
-                            Size   => Size,
-                            Kind   => Kind,
-                            Buf    => Buf);
-      else
-         --  Check that the argument offset is zero, as it is not used for
-         --  allocating a no-data buffer
-         Support.Verify (Offset = 0);
-
-         No_Data.Buffer_Alloc (Size => Size,
-                               Buf  => No_Data_Buf);
-         Buf := No_Data.Adjust_Back_Id (No_Data_Buf);
-      end if;
-   end Buffer_Alloc;
+      No_Data.Buffer_Alloc
+        (Ref    => Ref,
+         Offset => Offset,
+         Size   => Size,
+         Buf    => No_Data_Buf);
+      Buf := No_Data.To_Common_Id (No_Data_Buf);
+   end Ref_Buffer_Alloc;
 
    ----------------
    -- Buffer_Len --
@@ -187,27 +194,77 @@ is
       if Is_Data_Buffer (Buf) then
          Result := Data.Buffer_Payload (Buf);
       else
-         Result := No_Data.Buffer_Payload (No_Data.Adjust_Id (Buf));
+         Result := No_Data.Buffer_Payload (No_Data.To_Ref_Id (Buf));
       end if;
       return Result;
    end Buffer_Payload;
 
-   -------------------
+   --------------------
    -- Buffer_Poffset --
-   -------------------
+   --------------------
 
    function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T
-   --# global in Data.State, No_Data.State;
+   --# global in Common.Buf_List;
    is
-      Result : AIP.U16_T;
    begin
-      if Is_Data_Buffer (Buf) then
-         Result := Data.Buffer_Poffset (Buf);
-      else
-         Result := No_Data.Buffer_Poffset (No_Data.Adjust_Id (Buf));
-      end if;
-      return Result;
+      return Common.Buf_List (Buf).Poffset;
    end Buffer_Poffset;
+
+   -------------------
+   -- Buffer_Header --
+   -------------------
+
+   procedure Buffer_Header
+     (Buf  : Buffer_Id;
+      Bump : AIP.S16_T;
+      Err  : out AIP.Err_T)
+   --# global in out Common.Buf_List;
+   is
+      Offset : AIP.U16_T;
+   begin
+      Offset := AIP.U16_T (abs (Bump));
+      Err    := AIP.NOERR;
+
+      --  Check that we are not going to move off the buffer data
+
+      if Bump < 0 then
+
+         --  Moving forward - not beyond end of buffer data
+
+         Support.Verify_Or_Err
+           (Common.Buf_List (Buf).Len >= Offset, Err, AIP.ERR_MEM);
+
+      elsif Bump > 0 then
+
+         --  Moving backward - no before start of buffer data
+
+         Support.Verify_Or_Err
+           (Common.Buf_List (Buf).Poffset - Offset >= 0, Err, AIP.ERR_MEM);
+      end if;
+
+      --  Adjust payload offset and lengths if all went fine
+
+      if AIP.No (Err) then
+
+         if Bump >= 0 then
+            Common.Buf_List (Buf).Poffset :=
+              Common.Buf_List (Buf).Poffset - Offset;
+
+            Common.Buf_List (Buf).Len     :=
+              Common.Buf_List (Buf).Len + Offset;
+            Common.Buf_List (Buf).Tot_Len :=
+              Common.Buf_List (Buf).Tot_Len + Offset;
+         else
+            Common.Buf_List (Buf).Poffset :=
+              Common.Buf_List (Buf).Poffset + Offset;
+
+            Common.Buf_List (Buf).Len :=
+              Common.Buf_List (Buf).Len - Offset;
+            Common.Buf_List (Buf).Tot_Len :=
+              Common.Buf_List (Buf).Tot_Len - Offset;
+         end if;
+      end if;
+   end Buffer_Header;
 
    ------------------------
    -- Buffer_Set_Payload --
@@ -217,14 +274,15 @@ is
      (Buf   : Buffer_Id;
       Pload : System.Address;
       Err   : out AIP.Err_T)
-   --# global in out Data.State, No_Data.State;
+   --# global in out Common.Buf_List; in Data.State, No_Data.State;
    is
+      Pload_Shift : AIP.S16_T;
+      --  Amount by which we need to shift the payload pointer. Positive
+      --  for a move forward.
    begin
-      if Is_Data_Buffer (Buf) then
-         Data.Buffer_Set_Payload (Buf, Pload, Err);
-      else
-         No_Data.Buffer_Set_Payload (No_Data.Adjust_Id (Buf), Pload, Err);
-      end if;
+      Pload_Shift
+        := AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
+      Buffer_Header (Buf, -Pload_Shift, Err);
    end Buffer_Set_Payload;
 
    ----------------
@@ -264,7 +322,7 @@ is
          if Is_Data_Buffer (Cur_Buf) then
             Free_List := Data.Free_List;
          else
-            Free_List := No_Data.Adjust_Back_Id (No_Data.Free_List);
+            Free_List := No_Data.To_Common_Id (No_Data.Free_List);
          end if;
 
          --  Decrease reference count
@@ -289,9 +347,9 @@ is
             --  Push to the head of the appropriate free-list
 
             if Is_Data_Buffer (Cur_Buf) then
-               Data.Free_List              := Cur_Buf;
+               Data.Free_List    := Cur_Buf;
             else
-               No_Data.Free_List           := No_Data.Adjust_Id (Cur_Buf);
+               No_Data.Free_List := No_Data.To_Ref_Id (Cur_Buf);
             end if;
          else
             --  Stop the iteration
@@ -383,51 +441,6 @@ is
       --  Tail is now referenced by Head
       Buffer_Ref (Tail);
    end Buffer_Chain;
-
-   -------------------
-   -- Buffer_Header --
-   -------------------
-
-   procedure Buffer_Header
-     (Buf  : Buffer_Id;
-      Bump : AIP.S16_T;
-      Err  : out AIP.Err_T)
-   --# global in out Common.Buf_List, Data.State, No_Data.State;
-   is
-      Offset : AIP.U16_T;
-   begin
-      Offset := AIP.U16_T (abs (Bump));
-      Err    := AIP.NOERR;
-
-      --  Check that we are not going to move off the end of the buffer
-      if Bump <= 0 then
-         Support.Verify_Or_Err
-           (Common.Buf_List (Buf).Len >= Offset, Err, AIP.ERR_MEM);
-      end if;
-
-      if Err = AIP.NOERR then
-         if Is_Data_Buffer (Buf) then
-            Data.Buffer_Header (Buf, Bump, Err);
-         else
-            No_Data.Buffer_Header (No_Data.Adjust_Id (Buf), Bump, Err);
-         end if;
-      end if;
-
-      if Err = AIP.NOERR then
-         --  Modify length fields
-         if Bump >= 0 then
-            Common.Buf_List (Buf).Len     :=
-              Common.Buf_List (Buf).Len + Offset;
-            Common.Buf_List (Buf).Tot_Len :=
-              Common.Buf_List (Buf).Tot_Len + Offset;
-         else
-            Common.Buf_List (Buf).Len     :=
-              Common.Buf_List (Buf).Len - Offset;
-            Common.Buf_List (Buf).Tot_Len :=
-              Common.Buf_List (Buf).Tot_Len - Offset;
-         end if;
-      end if;
-   end Buffer_Header;
 
    -----------
    -- Empty --

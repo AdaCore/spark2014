@@ -3,8 +3,8 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
---  Generic Packet Buffers (network packet data containers) management, for
---  buffers holding a reference to some external data
+--  Generic Packet Buffers (network packet data containers) management.
+--  Common data structures for both Data and No_Data buffers.
 
 --# inherit AIP.Buffers;
 
@@ -21,11 +21,12 @@ is
       --  Next packet in queue
 
       Len         : Buffers.Data_Length;
-      --  Length of the data held or referenced by this buffer, which comprises
-      --  the data in some buffers which follow this one for a split buffer.
+      --  Length of the payload data held or referenced by this buffer, which
+      --  comprises the data in some buffers which follow this one for a split
+      --  buffer.
 
       Tot_Len     : Buffers.Data_Length;
-      --  Total length of the data referenced by this chain of buffers
+      --  Total length of the payload data referenced by this chain of buffers
 
       --  For non-split buffers, the following invariant should hold:
       --  Tot_Len = Len + (if Next /= 0 then Buffers (Next).Tot_Len else 0)
@@ -35,6 +36,9 @@ is
       --  Tot_Len = Len + (if Buffers (Last).Next /= 0 then
       --                      Buffers (Buffers (Last).Next).Tot_Len else 0)
 
+      Poffset     : Buffers.Buffer_Length;
+      --  Offset to payload from start of data block
+
       Ref         : AIP.U16_T;
       --  The reference count always equals the number of pointers that refer
       --  to this buffer. This can be pointers from an application or the stack
@@ -42,7 +46,6 @@ is
    end record;
 
    type Buffer_Array is array (Buffers.Buffer_Index) of Buffer;
-
    Buf_List : Buffer_Array;
 
 end AIP.Buffers.Common;

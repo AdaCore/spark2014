@@ -112,9 +112,9 @@ package body AIP.ICMP is
                       4 * U16_T (IPH.IPH_IHL (IP_Ihdr)) + 8);
 
          Buffers.Buffer_Alloc
-           (Inet.HLEN_To (Inet.IP_LAYER),
+           (Buffers.SPLIT_BUF,
+            Inet.HLEN_To (Inet.IP_LAYER),
             ICMPH.ICMP_Generic_Header_Size / 8 + Payload_Length,
-            Buffers.SPLIT_BUF,
             Buf);
 
          if Buf /= Buffers.NOBUF then

@@ -30,13 +30,15 @@ is
 
    Free_List : Buffer_Id;  --  Head of the free-list for no-data buffers
 
-   -----------------------
-   -- Buffer adjustment --
-   -----------------------
+   ---------------------------
+   -- Buffer Id adjustments --
+   ---------------------------
 
-   function Adjust_Id (Buf : Buffers.Buffer_Id) return Buffer_Id;
+   --  To map indices in common array to local ones for ref buffer
+   --  specific structures and vice-versa.
 
-   function Adjust_Back_Id (Buf : Buffer_Id) return Buffers.Buffer_Id;
+   function To_Ref_Id (Buf : Buffers.Buffer_Id) return Buffer_Id;
+   function To_Common_Id (Buf : Buffer_Id) return Buffers.Buffer_Id;
 
    ---------------------------
    -- Global initialization --
@@ -52,40 +54,17 @@ is
    -----------------------
 
    procedure Buffer_Alloc
-     (Size   :     Buffers.Data_Length;
+     (Ref    : System.Address;
+      Offset : Buffers.Buffer_Length;
+      Size   : Buffers.Data_Length;
       Buf    : out Buffer_Id);
    --# global in out Common.Buf_List, State, Free_List;
-   --  Allocate and return a new Buf of kind Kind, aimed at referending Size
-   --  elements of data
 
-   -----------------------------
-   -- Buffer struct accessors --
-   -----------------------------
-
-   --  See corresponding declarations in parent unit.
+   --------------------------------------------
+   -- Buffer struct accessors and operations --
+   --------------------------------------------
 
    function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
-
-   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
-
-   procedure Buffer_Set_Payload
-     (Buf   : Buffer_Id;
-      Pload : System.Address;
-      Err   : out AIP.Err_T);
-   --# global in out State;
-
-   -----------------------
-   -- Buffer operations --
-   -----------------------
-
-   procedure Buffer_Header
-     (Buf  : Buffer_Id;
-      Bump : AIP.S16_T;
-      Err  : out AIP.Err_T);
-   --# global in out State;
-   --  Move the payload pointer of Buf by Bump elements, signed.
-   --  Typically used to reveal or hide protocol headers.
 
 end AIP.Buffers.No_Data;

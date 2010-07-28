@@ -83,7 +83,7 @@ is
    --  setup already. BUF is not deallocated and its payload pointer is
    --  preserved. However, the room available in front of the payload might
    --  be clobbered for protocol headers if it is wide enough.
-
+   --
    --  ERR_USE if PCB isn't connected to a well defined dest endpoint
    --  ERR_RTE if no route to remote IP could be found
    --  ERR_MEM e.g.if the UDP header couldn't be allocated or an error

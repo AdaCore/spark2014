@@ -442,9 +442,9 @@ package body AIP.ARP is
       Ahdr : System.Address;
    begin
       Buffers.Buffer_Alloc
-        (Inet.HLEN_To (Inet.LINK_LAYER),
+        (Buffers.SPLIT_BUF,
+         Inet.HLEN_To (Inet.LINK_LAYER),
          ARPH.ARP_Header'Size / 8,
-         Buffers.SPLIT_BUF,
          Buf);
 
       if Buf /= Buffers.NOBUF then

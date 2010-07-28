@@ -41,50 +41,21 @@ is
    -----------------------
 
    procedure Buffer_Alloc
-     (Offset :     Buffers.Buffer_Length;
-      Size   :     Buffers.Data_Length;
-      Kind   :     Buffers.Data_Buffer_Kind;
+     (Kind   : Buffers.Data_Buffer_Kind;
+      Offset : Buffers.Buffer_Length;
+      Size   : Buffers.Data_Length;
       Buf    : out Buffer_Id);
    --# global in out Common.Buf_List, State, Free_List;
-   --  Allocate and return a new Buf of kind Kind, aimed at holding Size
-   --  elements of data starting at offset Offset
 
-   -----------------------------
-   -- Buffer struct accessors --
-   -----------------------------
-
-   --  See corresponding declarations in parent unit.
+   --------------------------------------------
+   -- Buffer struct accessors and operations --
+   --------------------------------------------
 
    function Buffer_Payload (Buf : Buffer_Id) return System.Address;
    --# global in State;
 
-   function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
-   --# global in State;
-
-   procedure Buffer_Set_Payload
-     (Buf   : Buffer_Id;
-      Pload : System.Address;
-      Err   : out AIP.Err_T);
-   --# global in out State;
-
-   ----------------------------------
-   -- Buffer reference and release --
-   ----------------------------------
-
    procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id);
    --# global in out State;
    --  Link buffer Buf to buffer Next
-
-   -----------------------
-   -- Buffer operations --
-   -----------------------
-
-   procedure Buffer_Header
-     (Buf  : Buffer_Id;
-      Bump : AIP.S16_T;
-      Err  : out AIP.Err_T);
-   --# global in out State;
-   --  Move the payload pointer of Buf by Bump elements, signed.
-   --  Typically used to reveal or hide protocol headers.
 
 end AIP.Buffers.Data;
