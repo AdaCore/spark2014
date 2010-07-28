@@ -83,21 +83,12 @@ static void  mintapif_input(Netif_Id nid);
 /*
  * The following are hardcoded and should instead be made configurable:
  *   MAC address
- *   host IP address
- *   target IP address
- *   netmask
  */
-
-#define HOST_IP_ADDRESS_1 192
-#define HOST_IP_ADDRESS_2 168
-#define HOST_IP_ADDRESS_3 0
-#define HOST_IP_ADDRESS_4 1
 
 static void
 low_level_init(struct netif *netif)
 {
   struct mintapif *mintapif;
-  char buf[1024];
 
   mintapif = netif->Dev;
 
@@ -123,26 +114,11 @@ low_level_init(struct netif *netif)
     memset(&ifr, 0, sizeof(ifr));
     ifr.ifr_flags = IFF_TAP|IFF_NO_PI;
     if (ioctl(mintapif->fd, TUNSETIFF, (void *) &ifr) < 0) {
-      perror(buf);
+      perror("ioctl");
       exit(1);
     }
   }
 #endif /* Linux */
-
-  snprintf(buf, sizeof(buf), "/sbin/ifconfig " IFCONFIG_ARGS,
-           HOST_IP_ADDRESS_1,
-           HOST_IP_ADDRESS_2,
-           HOST_IP_ADDRESS_3,
-	   HOST_IP_ADDRESS_4);
-
-  netif->IP = (HOST_IP_ADDRESS_1 << 24)
-            + (HOST_IP_ADDRESS_2 << 16)
-            + (HOST_IP_ADDRESS_3 << 8)
-            + HOST_IP_ADDRESS_4 + 1;
-  netif->Mask = 0xffffff00;
-  netif->Broadcast = (netif->IP & netif->Mask) + ~netif->Mask;
-
-  system(buf);
 
   mintapif->lasttime = 0;
 
@@ -252,6 +228,21 @@ low_level_input(struct netif *netif)
 
   return p;
 }
+
+static void
+mintapif_configured (Netif_Id Nid, Err_T *Err) {
+  char buf[1024];
+  struct netif *netif = AIP_get_netif (Nid);
+
+  snprintf(buf, sizeof(buf), "/sbin/ifconfig " IFCONFIG_ARGS,
+	   netif->Remote >> 24,
+	   (netif->Remote >> 16) & 0xff,
+	   (netif->Remote >> 8) & 0xff,
+	   netif->Remote & 0xff);
+  system(buf);
+  *Err = NOERR;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*
  * mintapif_input():
@@ -362,6 +353,7 @@ mintapif_init (Err_T *Err, Netif_Id *Nid)
 
   netif->Name[0] = IFNAME0;
   netif->Name[1] = IFNAME1;
+  netif->Configured_CB  = mintapif_configured;
   netif->Input_CB       = AIP_ip_input;
   netif->Output_CB      = AIP_arp_output;
   netif->Link_Output_CB = low_level_output;

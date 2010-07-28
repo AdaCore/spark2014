@@ -6,7 +6,7 @@
 --# inherit AIP;
 
 package AIP.Support is
-   pragma Pure;
+   pragma Preelaborate;
 
    procedure Verify (T : Boolean);
 
@@ -14,5 +14,7 @@ package AIP.Support is
      (T        : Boolean;
       Err      : out AIP.Err_T;
       Err_Type : AIP.Err_T);
+
+   procedure Log (Msg : String);
 
 end AIP.Support;

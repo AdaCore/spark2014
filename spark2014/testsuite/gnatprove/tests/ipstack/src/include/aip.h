@@ -94,7 +94,9 @@ typedef struct netif {
   IPaddr      IP;
   IPaddr      Mask;
   IPaddr      Broadcast;
+  IPaddr      Remote;
 
+  void      (*Configured_CB) (Netif_Id, Err_T *);
   void      (*Input_CB) (Netif_Id, Buffer_Id);
   void      (*Output_CB) (Netif_Id, Buffer_Id, IPaddr);
   void      (*Link_Output_CB) (Netif_Id, Buffer_Id, Err_T *);

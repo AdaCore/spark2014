@@ -29,6 +29,7 @@ struct netif *ne2k_if_netif;    /* Assumes single NE2k interface??? */
 static void low_level_init(struct netif * netif);
 static void arp_timer(void *arg);
 static void low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err);
+static void ne2k_configured (Netif_Id Nid, Err_T *Err);
 static void ne2k_input (Netif_Id Nid);
 static Buffer_Id low_level_input(struct netif *netif);
 
@@ -76,7 +77,9 @@ void ne2kif_init (Err_T *Err, Netif_Id *Nid)
   netif->Dev = &ne2k_if;
   netif->Name[0] = IFNAME0;
   netif->Name[1] = IFNAME1;
-  netif->Output_CB = AIP_arp_output;
+  netif->Configured_CB  = ne2k_configured;
+  netif->Input_CB       = AIP_ip_input;
+  netif->Output_CB      = AIP_arp_output;
   netif->Link_Output_CB = low_level_output;
 
   ne2k_if.ethaddr = (Ethernet_Address *)&(netif->LL_Address[0]);
@@ -287,6 +290,11 @@ U16_T write_AX88796(U8_T * buf, U16_T remote_Addr, U16_T Count)
 /*--------------------------------------------------------------------------
   **************************************************************************
   --------------------------------------------------------------------------*/
+
+static void
+ne2k_configured (Netif_Id Nid, Err_T *Err) {
+  *Err = NOERR;
+}
 
 /*
  * ethernetif_input():

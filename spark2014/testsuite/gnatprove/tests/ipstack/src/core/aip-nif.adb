@@ -17,7 +17,7 @@ package body AIP.NIF is
       LL_Address        : LL_Address_Storage;
       --  Link-level address
 
-      LL_Address_Length : LL_Address_Range;
+      LL_Address_Length : U8_T;
       --  Actual length of link level address
 
       MTU               : U16_T;
@@ -31,6 +31,13 @@ package body AIP.NIF is
 
       Broadcast         : IPaddrs.IPaddr;
       --  Broadcast address: (IP and mask) or (not mask)
+
+      Remote            : IPaddrs.IPaddr;
+      --  Remote address (case of a point-to-point interface)
+
+      Configured_CB     : System.Address;
+      --  Low-level configuration callback (called by If_Config)
+      --  procedure C (Nid; Err : out Err_T);
 
       Input_CB          : System.Address;
       --  Packet input callback
@@ -125,19 +132,60 @@ package body AIP.NIF is
       end loop Scan_Netifs;
    end Get_Netif_By_Address;
 
+   ---------------
+   -- If_Config --
+   ---------------
+
+   procedure If_Config
+     (Nid       : Netif_Id;
+      IP        : IPaddrs.IPaddr;
+      Mask      : IPaddrs.IPaddr;
+      Broadcast : IPaddrs.IPaddr;
+      Remote    : IPaddrs.IPaddr;
+      Err       : out Err_T)
+   is
+      --# hide If_Config;
+
+      type Configured_CB_Ptr is access
+        procedure (Nid : Netif_Id; Err : out Err_T);
+      pragma Convention (C, Configured_CB_Ptr);
+      function To_Ptr is new Ada.Unchecked_Conversion
+        (System.Address, Configured_CB_Ptr);
+
+   begin
+      NIFs (Nid).IP        := IP;
+      NIFs (Nid).Mask      := Mask;
+      NIFs (Nid).Broadcast := Broadcast;
+      NIFs (Nid).Remote    := Remote;
+
+      To_Ptr (NIFs (Nid).Configured_CB) (Nid, Err);
+
+      if No (Err) then
+         NIFs (Nid).State := Up;
+      end if;
+   end If_Config;
+
    ----------------
    -- Initialize --
    ----------------
 
    procedure Initialize is
    begin
-      for J in NIFs'Range loop
-         NIFs (J).State := Invalid;
-
-         NIFs (J).Input_CB       := System.Null_Address;
-         NIFs (J).Output_CB      := System.Null_Address;
-         NIFs (J).Link_Output_CB := System.Null_Address;
-      end loop;
+      NIFs :=
+        (others => Netif'(State             => Invalid,
+                          Name              => "  ",
+                          IP                => IPaddrs.IP_ADDR_ANY,
+                          Mask              => IPaddrs.IP_ADDR_ANY,
+                          Broadcast         => IPaddrs.IP_ADDR_ANY,
+                          Remote            => IPaddrs.IP_ADDR_ANY,
+                          Configured_CB     => System.Null_Address,
+                          Input_CB          => System.Null_Address,
+                          Output_CB         => System.Null_Address,
+                          Link_Output_CB    => System.Null_Address,
+                          LL_Address        => (others => 0),
+                          LL_Address_Length => 0,
+                          MTU               => 0,
+                          Dev               => System.Null_Address));
    end Initialize;
 
    ----------------------

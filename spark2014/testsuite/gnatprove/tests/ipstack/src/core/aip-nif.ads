@@ -34,6 +34,16 @@ package AIP.NIF is
    function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
    function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr;
 
+   procedure If_Config
+     (Nid       : Netif_Id;
+      IP        : IPaddrs.IPaddr;
+      Mask      : IPaddrs.IPaddr;
+      Broadcast : IPaddrs.IPaddr;
+      Remote    : IPaddrs.IPaddr;
+      Err       : out Err_T);
+   --  Set up IP address, netmask, broadcast address and remote address for
+   --  Nid, and mark interface as UP.
+
    function Is_Local_Address
      (Nid  : Netif_Id;
       Addr : IPaddrs.IPaddr) return Boolean;
