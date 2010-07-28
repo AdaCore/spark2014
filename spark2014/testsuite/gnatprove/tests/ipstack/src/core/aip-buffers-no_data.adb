@@ -74,10 +74,10 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Ref    : System.Address;
-      Offset : Buffers.Buffer_Length;
-      Size   : Buffers.Data_Length;
-      Buf    : out Buffer_Id)
+     (Offset   : Buffers.Buffer_Length;
+      Size     : Buffers.Data_Length;
+      Data_Ref : System.Address;
+      Buf      : out Buffer_Id)
    --# global in out Common.Buf_List, Buf_List, Free_List;
    is
       Cbuf : Buffers.Buffer_Id;
@@ -98,7 +98,7 @@ is
       Common.Buf_List (Cbuf).Poffset := Offset;
       Common.Buf_List (Cbuf).Ref     := 1;
 
-      Buf_List (Buf).Data_Ref := Ref;
+      Buf_List (Buf).Data_Ref := Data_Ref;
    end Buffer_Alloc;
 
    --------------------

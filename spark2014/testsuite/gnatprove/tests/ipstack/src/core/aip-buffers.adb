@@ -114,17 +114,17 @@ is
    ------------------
 
    procedure Buffer_Alloc
-     (Kind   : Data_Buffer_Kind;
-      Offset : Buffer_Length;
+     (Offset : Buffer_Length;
       Size   : Data_Length;
+      Kind   : Data_Buffer_Kind;
       Buf    : out Buffer_Id)
    --# global in out Common.Buf_List, Data.State, Data.Free_List;
    is
    begin
       Data.Buffer_Alloc
-        (Kind   => Kind,
-         Offset => Offset,
+        (Offset => Offset,
          Size   => Size,
+         Kind   => Kind,
          Buf    => Buf);
    end Buffer_Alloc;
 
@@ -133,19 +133,19 @@ is
    ----------------------
 
    procedure Ref_Buffer_Alloc
-     (Ref    : System.Address;
-      Offset : Buffer_Length;
-      Size   : Data_Length;
-      Buf    : out Buffer_Id)
+     (Offset   : Buffer_Length;
+      Size     : Data_Length;
+      Data_Ref : System.Address;
+      Buf      : out Buffer_Id)
    --# global in out Common.Buf_List, No_Data.State, No_Data.Free_List;
    is
       No_Data_Buf : No_Data.Buffer_Id;
    begin
       No_Data.Buffer_Alloc
-        (Ref    => Ref,
-         Offset => Offset,
-         Size   => Size,
-         Buf    => No_Data_Buf);
+        (Offset   => Offset,
+         Size     => Size,
+         Data_Ref => Data_Ref,
+         Buf      => No_Data_Buf);
       Buf := No_Data.To_Common_Id (No_Data_Buf);
    end Ref_Buffer_Alloc;
 

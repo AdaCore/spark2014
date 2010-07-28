@@ -41,9 +41,9 @@ is
    -----------------------
 
    procedure Buffer_Alloc
-     (Kind   : Buffers.Data_Buffer_Kind;
-      Offset : Buffers.Buffer_Length;
+     (Offset : Buffers.Buffer_Length;
       Size   : Buffers.Data_Length;
+      Kind   : Buffers.Data_Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out Common.Buf_List, State, Free_List;
 

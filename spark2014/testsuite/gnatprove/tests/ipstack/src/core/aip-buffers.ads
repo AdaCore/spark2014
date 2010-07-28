@@ -97,9 +97,9 @@ is
    subtype Data_Buffer_Kind is Buffer_Kind range SPLIT_BUF .. LINK_BUF;
 
    procedure Buffer_Alloc
-     (Kind   : Data_Buffer_Kind;
-      Offset : Buffer_Length;
+     (Offset : Buffer_Length;
       Size   : Data_Length;
+      Kind   : Data_Buffer_Kind;
       Buf    : out Buffer_Id);
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at holding or Size
@@ -108,10 +108,10 @@ is
    pragma Export (C, Buffer_Alloc, "AIP_buffer_alloc");
 
    procedure Ref_Buffer_Alloc
-     (Ref    : System.Address;
-      Offset : Buffer_Length;
-      Size   : Data_Length;
-      Buf    : out Buffer_Id);
+     (Offset   : Buffer_Length;
+      Size     : Data_Length;
+      Data_Ref : System.Address;
+      Buf      : out Buffer_Id);
    --# global in out State;
    --  Allocate and return a new Buf of kind Kind, aimed at referencing Size
    --  elements of payload data located at Ref, preceded by Offset bytes of
