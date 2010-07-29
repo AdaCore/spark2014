@@ -7,28 +7,19 @@
 
 with System;
 
-with AIP.Config;
 with AIP.Callbacks;
 with AIP.Buffers;
 with AIP.NIF;
-with AIP.IP;
 with AIP.IPaddrs;
+with AIP.PCBs;
 
---# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers,
+--# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers, AIP.PCBs,
 --#         AIP.NIF, AIP.IP, AIP.IPaddrs, AIP.ICMP, AIP.ICMPH,
 --#         AIP.Checksum, AIP.Inet, AIP.IPH, AIP.UDPH;
 
 package AIP.UDP
    --# own State;
 is
-
-   --  UDP connections materialize as "UDP Protocol Control Blocks"
-
-   subtype PCB_Id is AIP.EID range AIP.NULID .. Config.MAX_UDP_PCB;
-   NOPCB : constant AIP.EID := AIP.NULID;
-
-   subtype Port_T is AIP.U16_T;
-   NOPORT : constant Port_T := 0;
 
    --------------------
    -- User interface --
@@ -39,14 +30,14 @@ is
    --  Initialize internal datastructures. To be called once, before any of
    --  the other subprograms.
 
-   procedure UDP_New (Id : out PCB_Id);
+   procedure UDP_New (Id : out PCBs.PCB_Id);
    --# global in out State;
    --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 
    procedure UDP_Bind
-     (PCB        : PCB_Id;
+     (PCB        : PCBs.PCB_Id;
       Local_IP   : IPaddrs.IPaddr;
-      Local_Port : Port_T;
+      Local_Port : PCBs.Port_T;
       Err        : out AIP.Err_T);
    --# global in out State;
    --  Bind PCB to a Local_IP address and Local_Port, after which datagrams
@@ -60,9 +51,9 @@ is
    --  ERR_MEM if Local_Port is NOPORT and no available port could be found.
 
    procedure UDP_Connect
-     (PCB         : PCB_Id;
+     (PCB         : PCBs.PCB_Id;
       Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : Port_T;
+      Remote_Port : PCBs.Port_T;
       Err         : out AIP.Err_T);
    --# global in out State;
    --  Register Remote_IP/Remote_Port as the destination endpoint for
@@ -74,7 +65,7 @@ is
    --  ERR_USE if a forced binding is attempted and no port is available.
 
    procedure UDP_Send
-     (PCB : PCB_Id;
+     (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
    --# global in out Buffers.State, State;
@@ -90,12 +81,12 @@ is
    --          occurred while resetting BUF's payload to its value on entry
    --  Possibly other errors from lower layers.
 
-   procedure UDP_Disconnect (PCB : PCB_Id);
+   procedure UDP_Disconnect (PCB : PCBs.PCB_Id);
    --# global in out State;
    --  Disconnect PCB from its current destination endpoint, which leaves
    --  it open to its initial binding again.
 
-   procedure UDP_Release (PCB : PCB_Id);
+   procedure UDP_Release (PCB : PCBs.PCB_Id);
    --# global in out State;
    --  Release PCB, to become available for Udb_New again
 
@@ -114,7 +105,7 @@ is
       Kind : UDP_Event_Kind;
       Buf  : Buffers.Buffer_Id;
       IP   : IPaddrs.IPaddr;
-      Port : Port_T;
+      Port : PCBs.Port_T;
    end record;
 
    --  UDP_RECV triggers when a datagram is received for a destination port
@@ -125,27 +116,26 @@ is
    --  .IP/.Port is the datagram origin endpoint (remote source)
 
    procedure UDP_Callback
-     (Evk : UDP_Event_Kind; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Evk : UDP_Event_Kind; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
    --# global in out State;
    --  Register that ID should be passed back to the user defined
    --  UDP_Event hook when an event of kind EVK triggers for PCB.
 
-   procedure UDP_Set_Udata (PCB : PCB_Id; Udata : System.Address);
+   procedure UDP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address);
    --# global in out State;
    --  Attach application level UDATA to PCB for later retrieval
    --  on UDP_Event calls.
 
-   function UDP_Udata (PCB : PCB_Id) return System.Address;
+   function UDP_Udata (PCB : PCBs.PCB_Id) return System.Address;
    --# global in State;
    --  Retrieve Udata previously attached to PCB, System.Null_Address if none.
 
    procedure UDP_Event
-     (Ev : UDP_Event_T; PCB : PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Ev : UDP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
    --# global in out Buffers.State; in out State;
+   pragma Import (Ada, UDP_Event, "AIP_udp_event");
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was
    --  registered. Expected to be provided by the applicative code.
-
-   pragma Import (Ada, UDP_Event, "AIP_udp_event");
 
    -----------------------
    -- IPstack interface --
@@ -162,38 +152,12 @@ is
 private
 
    type UDP_PCB is record
-      IPCB        : IP.IP_PCB;        -- IP control block
-
-      Local_Port  : Port_T;           --  Local UDP port PCB is bound to
-      Remote_Port : Port_T;           --  Remote UDP port PCB is connected to
-
-      Connected   : Boolean;          --  True if Remote_IP/Remote_Port are set
-
-      Udata       : System.Address;       --  User/Application data pointer
-      RECV_Cb     : Callbacks.CBK_Id; --  Callback id for UDP_RECV events
-
-      Link : AIP.EID;                 --  Chaining link
+      RECV_Cb     : Callbacks.CBK_Id;
+      --  Callback id for UDP_RECV events
    end record;
 
-   PCB_UNUSED : constant AIP.EID := -2;
-   --  Invalid PCB EID used in PCB.Link to indicate that the PCB is currently
-   --  unused, IOW free for UDP_New.
-
-   --  PCB.Link may also be NOPCB to indicate end-of-list for a PCB chained in
-   --  a list, or mere use of the PCB (in-use though currently not in a list).
-
-   --  PCB.Connected is used to detect proper remote endpoint definition on
-   --  UDP_Send, and to prevent selection of PCB to handle an incoming datagram
-   --  if it is not connected to its remote origin (UDP_Input).
-
-   UDP_PCB_Initializer : constant UDP_PCB
-     := UDP_PCB'(IPCB        => IP.IP_PCB_Initializer,
-                 Local_Port  => NOPORT,
-                 Remote_Port => NOPORT,
-                 Connected   => False,
-                 Udata       => System.Null_Address,
-                 RECV_Cb     => Callbacks.NOCB,
-                 Link        => PCB_UNUSED);
+   UDP_PCB_Initializer : constant UDP_PCB :=
+                           UDP_PCB'(RECV_Cb => Callbacks.NOCB);
 
    --------------------------
    -- Internal subprograms --
@@ -202,19 +166,15 @@ private
    --  All declared here because SPARK forbids forward declarations in package
    --  bodies.
 
-   procedure PCB_Allocate (Id : out AIP.EID);
-   --# global in out State;
-   --  Find one PCB free for use from the static pool and mark it in-use
-
-   procedure PCB_Clear (PCB : PCB_Id);
+   procedure PCB_Clear (PCB : PCBs.PCB_Id);
    --# global in out State;
    --  Reset/Initialize PCB fields for fresh (re)use
 
-   procedure PCB_Unlink (PCB : PCB_Id);
+   procedure PCB_Unlink (PCB : PCBs.PCB_Id);
    --# global in out State;
    --  Unlink PCB from the list of bound PCBs if it is there
 
-   procedure PCB_Force_Bind (PCB : PCB_Id; Err : out AIP.Err_T);
+   procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
    --# global in out State;
    --  Force a local binding on PCB if it isn't bound already.
    --
@@ -224,19 +184,13 @@ private
    -- UDP_Bind internals --
    ------------------------
 
-   function PCB_Binding_Matches
-     (PCB  : UDP_PCB;
-      IPA  : IPaddrs.IPaddr;
-      Port : Port_T) return Boolean;
-   --  Whether PCB's local IP/port binding matches the provided
-   --  IP/PORT pair.
-
-   function PCB_Bound_To (Port : Port_T) return AIP.EID;
+   function PCB_Bound_To (Port : PCBs.Port_T) return AIP.EID;
    --# global in State;
-   --  From the list of bound PCBs, first one bound to local PORT
-   --  NOPCB if none is found.
+   --  From the list of bound PCBs, first one bound to the indicated local port
+   --  or NOPCB if none is found.
+   --  Binding IP address ignored???
 
-   function Available_Port return Port_T;
+   function Available_Port return PCBs.Port_T;
    --# global in State;
    --  Arbitrary local Port number to which no PCB is currently bound.
    --  NOPORT if no such port is available.
@@ -257,11 +211,10 @@ private
 
    function UDP_PCB_For
      (Ihdr  : System.Address;
-      Uhdr  : System.Address;
-      Netif : NIF.Netif_Id) return AIP.EID;
+      Uhdr  : System.Address) return AIP.EID;
    --# global in State;
    --  Search bound PCBs for one taker of a datagram with IP header Ihdr and
-   --  UDP header Uhdr received on NETIF.
+   --  UDP header Uhdr.
 
    ------------------------
    -- UDP_Send internals --
@@ -279,11 +232,11 @@ private
    --  ERR_MEM if the operation failed. BUF is unchanged in this case.
 
    procedure UDP_Send_To_If
-     (PCB      : PCB_Id;
+     (PCB      : PCBs.PCB_Id;
       Buf      : Buffers.Buffer_Id;
       Dst_IP   : IPaddrs.IPaddr;
       NH_IP    : IPaddrs.IPaddr;
-      Dst_Port : Port_T;
+      Dst_Port : PCBs.Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
    --# global in out Buffers.State, State;

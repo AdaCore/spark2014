@@ -3,7 +3,22 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with GNAT.IO;
+
 package body AIP.Support is
+
+   ---------
+   -- Log --
+   ---------
+
+   procedure Log (Msg : String) is
+   begin
+      GNAT.IO.Put_Line (Msg);
+   end Log;
+
+   ------------
+   -- Verify --
+   ------------
 
    procedure Verify (T : Boolean) is
       --# hide Verify;
@@ -12,6 +27,10 @@ package body AIP.Support is
          raise Program_Error;
       end if;
    end Verify;
+
+   -------------------
+   -- Verify_Or_Err --
+   -------------------
 
    procedure Verify_Or_Err
      (T        : Boolean;

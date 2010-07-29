@@ -5,7 +5,11 @@
 
 with System;
 
-with RAW_UDP_Callbacks, AIP.IPaddrs, AIP.Inet, AIP.Buffers;
+with AIP.Buffers;
+with AIP.Inet;
+with AIP.IPaddrs;
+
+with RAW_UDP_Callbacks;
 
 package body RAW_UDP_Syslog is
    use type AIP.EID;
@@ -14,7 +18,7 @@ package body RAW_UDP_Syslog is
    pragma Import (C, Memcpy, "memcpy");
 
    procedure SYSLOG_Process_Recv
-     (Ev : AIP.UDP.UDP_Event_T; Pcb : AIP.UDP.PCB_Id)
+     (Ev : AIP.UDP.UDP_Event_T; Pcb : AIP.PCBs.PCB_Id)
       --# global in out AIP.Pools.Buffer_POOL;
    is
       --  Process datagram received on our syslog port.  We build a packet
@@ -97,7 +101,7 @@ package body RAW_UDP_Syslog is
    procedure Init
       --# global out Syslog_Recv_Cb_Id;
    is
-      Pcb : AIP.UDP.PCB_Id;
+      Pcb : AIP.PCBs.PCB_Id;
       Err : AIP.Err_T;
    begin
 
@@ -105,7 +109,7 @@ package body RAW_UDP_Syslog is
       --  callback and bind to syslog port for any possible source IP.
 
       AIP.UDP.UDP_New (Pcb);
-      pragma Assert (Pcb /= AIP.UDP.NOPCB);
+      pragma Assert (Pcb /= AIP.PCBs.NOPCB);
 
       AIP.UDP.UDP_Callback
         (AIP.UDP.UDP_RECV, Pcb, RAW_UDP_Callbacks.SYSLOG_RECV);

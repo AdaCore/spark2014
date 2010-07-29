@@ -3,13 +3,14 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with RAW_UDP_Callbacks, RAW_UDP_Syslog;
+with RAW_UDP_Callbacks;
+with RAW_UDP_Syslog;
 
 package body RAW_UDP_Dispatcher is
 
    procedure UDP_Event
      (Ev   : AIP.UDP.UDP_Event_T;
-      PCB  : AIP.UDP.PCB_Id;
+      PCB  : AIP.PCBs.PCB_Id;
       Cbid : AIP.Callbacks.CBK_Id) is
    begin
       --  Note: in this example dispatcher, callback ids are arbitrary

@@ -50,14 +50,14 @@ package AIP.Config is
    --  Maximum number of UDP PCBs in use at a time
    --  [N (UDP_New) - N(UDP_Release)]
 
-   UDP_TTL : constant := 255;
+   UDP_TTL : constant := 64;
    --  IP TTL for UDP datagrams
 
    UDP_SHARED_ENDPOINTS : constant Boolean := False;
    --  Whether we should accept binding to an already used local endpoint
 
-   UDP_LOCAL_PORT_FIRST : constant := 1;
-   UDP_LOCAL_PORT_LAST  : constant := 255;
+   UDP_LOCAL_PORT_FIRST : constant := 32_768;
+   UDP_LOCAL_PORT_LAST  : constant := 49_151;
    --  Range of local port numbers examined when an arbitrary choice needs
    --  to be made
 
