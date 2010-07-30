@@ -60,20 +60,19 @@ package body AIP.PCBs is
       Local_Match, Remote_Match : Boolean;
 
    begin
-      --  Scan the list of bound PCBs in search of one at least locally bound
-      --  (~listening) to the datagram destination endpoint, and even better
-      --  also connected to the remote source.
+      --  Scan the given PCB list, looking for a PCB associated with the given
+      --  local, and possibly remote, endpoint identifications.
 
       Cid := PCB_List;
 
       loop
          exit when Ideal_PCB /= NOPCB or else Cid = NOPCB;
 
-         --  See if the current PCB listens to the packet transport
-         --  destination. It does when the port numbers are the same and
-         --  either the packet was broadcasted to the interface or the
-         --  specific destination IP matches what PCB is listening to (when
-         --  the latter is that IP or ANY).
+         --  See if the current PCB corresponds to the given local address. It
+         --  does when the port numbers are the same and either the packet was
+         --  broadcasted to the interface or the specific destination IP
+         --  matches what PCB is listening to (when the latter is that IP or
+         --  ANY).
 
          Local_Match :=
            PCB_Pool (Cid).Local_Port = Local_Port
