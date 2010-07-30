@@ -76,10 +76,9 @@ is
                   Config.Data_Buffer_Num + Config.No_Data_Buffer_Num;
    --  Total number of buffers statically allocated
 
-   subtype Buffer_Id     is AIP.U16_T range 0 .. Buffer_Num;
-   subtype Buffer_Index  is AIP.U16_T range 1 .. Buffer_Num;
-
-   NOBUF : constant Buffer_Id := 0;
+   subtype Buffer_Id is AIP.U16_T range 0 .. Buffer_Num;
+   NOBUF : constant := 0;
+   --  User exposed buffer identifier, key to all operations on buffers
 
    ---------------------------
    -- Global initialization --
@@ -282,8 +281,8 @@ private
    --  kind-specific record, all allocated in static arrays in their
    --  respective packages (Buffers.Common, .Data and .No_Data)
 
-   --  Internally, this materializes as two indices for each buffer. Only the
-   --  common array index is exposed to clients. The common indices are
+   --  Internally, this materializes as two indices for each buffer, the
+   --  common array index being exposed to clients. The common indices are
    --  assigned first to Data buffers, then to Ref ones, so we have something
    --  like:
 
@@ -298,5 +297,25 @@ private
    --  buf_array [ 1 .. D  D+1.. D+R]
    --            --------------------
    --            |    buf_common    |
+
+   --  We distinguish buffer "Index" subtypes, used as the array range of
+   --  valid indices, from buffer "Id" subtypes, used as buffer identifiers
+   --  for API purposes. The latter simply feature an extra 0 (NOBUF) in the
+   --  range, possible outcome of an allocation attempt for example.
+
+   --  To make sure we perform the necessary common/specific id translations
+   --  everywhere needed, we use different types (not subtypes) to manage each
+   --  range of indices, so we'll have
+   --
+   --  Buffer_Id / Buffer_Index for the common blocks,
+   --  Rbuf_Id   / Rbuf_Index   for the .No_Data (Reference) specific blocks
+   --  Dbuf_Id   / Dbuf_Index   for the .Data specific blocks
+
+   --  We use functions to abstract the common/specific id mapping both ways.
+
+   --  Both the Data and No_Data management units maintain a free list of the
+   --  corresponding kinds of buffers. The links are local (kind specific) Id
+   --  values stored in the common part of each buffer, using the common
+   --  Buffer_Id type.
 
 end AIP.Buffers;

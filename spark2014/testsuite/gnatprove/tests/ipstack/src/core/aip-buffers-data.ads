@@ -21,11 +21,8 @@ is
    --  to what occurs for no-data buffers for which there is a necessary
    --  adjustment.
 
-   Buffer_Num : constant AIP.U16_T := Config.Data_Buffer_Num;
-
-   subtype Buffer_Id is AIP.U16_T range 0 .. Buffer_Num;
-
-   Free_List : Buffer_Id;  --  Head of the free-list for data buffers
+   type Dbuf_Id is range 0 .. Config.Data_Buffer_Num;
+   Free_List : Dbuf_Id;  --  Head of the free-list for data buffers
 
    ---------------------------
    -- Global initialization --
@@ -44,18 +41,28 @@ is
      (Offset : Buffers.Buffer_Length;
       Size   : Buffers.Data_Length;
       Kind   : Buffers.Data_Buffer_Kind;
-      Buf    : out Buffer_Id);
+      Buf    : out Dbuf_Id);
    --# global in out Common.Buf_List, State, Free_List;
 
    --------------------------------------------
    -- Buffer struct accessors and operations --
    --------------------------------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
+   function Buffer_Payload (Buf : Dbuf_Id) return System.Address;
    --# global in State;
 
-   procedure Buffer_Link (Buf : Buffer_Id; Next : Buffer_Id);
+   procedure Buffer_Link (Buf : Dbuf_Id; Next : Dbuf_Id);
    --# global in out State;
    --  Link buffer Buf to buffer Next
+
+   ----------------------------
+   -- Buffer id translations --
+   ----------------------------
+
+   function To_Dbuf_Id (Buf : Buffers.Buffer_Id) return Dbuf_Id;
+   function To_Common_Id (Buf : Dbuf_Id) return Buffers.Buffer_Id;
+
+   pragma Inline (To_Common_Id);
+   pragma Inline (To_Dbuf_Id);
 
 end AIP.Buffers.Data;

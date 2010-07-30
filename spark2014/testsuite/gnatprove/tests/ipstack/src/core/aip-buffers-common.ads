@@ -45,7 +45,8 @@ is
       --  itself.
    end record;
 
-   type Buffer_Array is array (Buffers.Buffer_Index) of Buffer;
+   subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Buffer_Id'Last;
+   type Buffer_Array is array (Buffer_Index) of Buffer;
    Buf_List : Buffer_Array;
 
 end AIP.Buffers.Common;

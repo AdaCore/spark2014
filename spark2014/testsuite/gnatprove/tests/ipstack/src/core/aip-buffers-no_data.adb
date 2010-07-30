@@ -11,44 +11,45 @@ package body AIP.Buffers.No_Data
 --# own State is Buf_List;
 is
 
-   subtype Buffer_Index is U16_T range 1 .. Buffer_Num;
-
    type Buffer is record
       Data_Ref : System.Address;
       --  Reference to the start of buffer data
    end record;
 
-   type Buffer_Array is array (Buffer_Index) of Buffer;
-   Buf_List : Buffer_Array;
+   subtype Rbuf_Index is Rbuf_Id range 1 .. Rbuf_Id'Last;
+   type Rbuf_Array is array (Rbuf_Index) of Buffer;
+   Buf_List : Rbuf_Array;
 
-   ---------------
-   -- To_Ref_Id --
-   ---------------
+   ----------------
+   -- To_Rbuf_Id --
+   ----------------
 
-   function To_Ref_Id (Buf : Buffers.Buffer_Id) return Buffer_Id
+   function To_Rbuf_Id
+     (Buf : Buffers.Buffer_Id) return Rbuf_Id
    is
-      Result : Buffer_Id;
+      Result : Rbuf_Id;
    begin
       if Buf = Buffers.NOBUF then
-         Result := NOBUF;
+         Result := Buffers.NOBUF;
       else
-         Result := U16_T (Buf - Config.Data_Buffer_Num);
+         Result := Rbuf_Id (Buf - Config.Data_Buffer_Num);
       end if;
       return Result;
-   end To_Ref_Id;
+   end To_Rbuf_Id;
 
    ------------------
    -- To_Common_Id --
    ------------------
 
-   function To_Common_Id (Buf : Buffer_Id) return Buffers.Buffer_Id
+   function To_Common_Id
+     (Buf : Rbuf_Id) return Buffers.Buffer_Id
    is
       Result : Buffers.Buffer_Id;
    begin
-      if Buf = NOBUF then
+      if Buf = Buffers.NOBUF then
          Result := Buffers.NOBUF;
       else
-         Result := AIP.U16_T (Buf) + Config.Data_Buffer_Num;
+         Result := Buffers.Buffer_Id (Buf) + Config.Data_Buffer_Num;
       end if;
       return Result;
    end To_Common_Id;
@@ -64,7 +65,7 @@ is
       --  Initialize all the memory for buffers to zero and point the head
       --  of the free-list to the first buffer
 
-      Buf_List := Buffer_Array'
+      Buf_List := Rbuf_Array'
         (others => Buffer'(Data_Ref => System.Null_Address));
       Free_List := Buf_List'First;
    end Buffer_Init;
@@ -77,7 +78,7 @@ is
      (Offset   : Buffers.Buffer_Length;
       Size     : Buffers.Data_Length;
       Data_Ref : System.Address;
-      Buf      : out Buffer_Id)
+      Buf      : out Rbuf_Id)
    --# global in out Common.Buf_List, Buf_List, Free_List;
    is
       Cbuf : Buffers.Buffer_Id;
@@ -88,7 +89,7 @@ is
 
       Buf       := Free_List;
       Cbuf      := To_Common_Id (Buf);
-      Free_List := To_Ref_Id (Common.Buf_List (Cbuf).Next);
+      Free_List := To_Rbuf_Id (Common.Buf_List (Cbuf).Next);
 
       --  Set common fields and reference count, then specific fields
 
@@ -105,7 +106,7 @@ is
    -- Buffer_Payload --
    --------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return System.Address
+   function Buffer_Payload (Buf : Rbuf_Id) return System.Address
    --# global in Buf_List;
    is
    begin

@@ -16,29 +16,8 @@ private package AIP.Buffers.No_Data
 is
    pragma Preelaborate;
 
-   --  Redefine type U16_T locally so that No_Data.Buffer_Id is of a different
-   --  type from Buffers.Buffer_Id. This ensures that the proper conversion is
-   --  always performed from a No_Data.Buffer_Id to a Buffers.Buffer_Id and
-   --  vice-versa.
-   type U16_T is range AIP.U16_T'First .. AIP.U16_T'Last;
-
-   Buffer_Num : constant U16_T := U16_T (Config.No_Data_Buffer_Num);
-
-   subtype Buffer_Id is U16_T range 0 .. Buffer_Num;
-
-   NOBUF : constant Buffer_Id := 0;
-
-   Free_List : Buffer_Id;  --  Head of the free-list for no-data buffers
-
-   ---------------------------
-   -- Buffer Id adjustments --
-   ---------------------------
-
-   --  To map indices in common array to local ones for ref buffer
-   --  specific structures and vice-versa.
-
-   function To_Ref_Id (Buf : Buffers.Buffer_Id) return Buffer_Id;
-   function To_Common_Id (Buf : Buffer_Id) return Buffers.Buffer_Id;
+   type Rbuf_Id is range 0 .. Config.No_Data_Buffer_Num;
+   Free_List : Rbuf_Id;  --  Head of the free-list for no-data buffers
 
    ---------------------------
    -- Global initialization --
@@ -57,14 +36,21 @@ is
      (Offset   : Buffers.Buffer_Length;
       Size     : Buffers.Data_Length;
       Data_Ref : System.Address;
-      Buf      : out Buffer_Id);
+      Buf      : out Rbuf_Id);
    --# global in out Common.Buf_List, State, Free_List;
 
    --------------------------------------------
    -- Buffer struct accessors and operations --
    --------------------------------------------
 
-   function Buffer_Payload (Buf : Buffer_Id) return System.Address;
+   function Buffer_Payload (Buf : Rbuf_Id) return System.Address;
    --# global in State;
+
+   --------------------------------------------
+   -- Common/specific buffer Id translations --
+   --------------------------------------------
+
+   function To_Rbuf_Id (Buf : Buffers.Buffer_Id) return Rbuf_Id;
+   function To_Common_Id (Buf : Rbuf_Id) return Buffers.Buffer_Id;
 
 end AIP.Buffers.No_Data;

@@ -101,7 +101,8 @@ is
       --  Construct a singly linked chain of common buffer structures,
       --  then Initialize data/no-data specific structures
 
-      for Buf in Buffer_Index range 1 .. Buffer_Index'Last - 1 loop
+      for Buf in Common.Buffer_Index range 1 .. Common.Buffer_Index'Last - 1
+      loop
          Common.Buf_List (Buf).Next := Buf + 1;
       end loop;
 
@@ -120,12 +121,14 @@ is
       Buf    : out Buffer_Id)
    --# global in out Common.Buf_List, Data.State, Data.Free_List;
    is
+      Dbuf : Data.Dbuf_Id;
    begin
       Data.Buffer_Alloc
         (Offset => Offset,
          Size   => Size,
          Kind   => Kind,
-         Buf    => Buf);
+         Buf    => Dbuf);
+      Buf := Data.To_Common_Id (Dbuf);
    end Buffer_Alloc;
 
    ----------------------
@@ -139,14 +142,14 @@ is
       Buf      : out Buffer_Id)
    --# global in out Common.Buf_List, No_Data.State, No_Data.Free_List;
    is
-      No_Data_Buf : No_Data.Buffer_Id;
+      Rbuf : No_Data.Rbuf_Id;
    begin
       No_Data.Buffer_Alloc
         (Offset   => Offset,
          Size     => Size,
          Data_Ref => Data_Ref,
-         Buf      => No_Data_Buf);
-      Buf := No_Data.To_Common_Id (No_Data_Buf);
+         Buf      => Rbuf);
+      Buf := No_Data.To_Common_Id (Rbuf);
    end Ref_Buffer_Alloc;
 
    ----------------
@@ -192,9 +195,9 @@ is
       Result : System.Address;
    begin
       if Is_Data_Buffer (Buf) then
-         Result := Data.Buffer_Payload (Buf);
+         Result := Data.Buffer_Payload (Data.To_Dbuf_Id (Buf));
       else
-         Result := No_Data.Buffer_Payload (No_Data.To_Ref_Id (Buf));
+         Result := No_Data.Buffer_Payload (No_Data.To_Rbuf_Id (Buf));
       end if;
       return Result;
    end Buffer_Payload;
@@ -232,14 +235,14 @@ is
          --  Moving forward - not beyond end of buffer data
 
          Support.Verify_Or_Err
-           (Common.Buf_List (Buf).Len >= Offset, Err, AIP.ERR_MEM);
+           (Offset <= Common.Buf_List (Buf).Len, Err, AIP.ERR_MEM);
 
       elsif Bump > 0 then
 
          --  Moving backward - no before start of buffer data
 
          Support.Verify_Or_Err
-           (Common.Buf_List (Buf).Poffset - Offset >= 0, Err, AIP.ERR_MEM);
+           (Offset <= Common.Buf_List (Buf).Poffset, Err, AIP.ERR_MEM);
       end if;
 
       --  Adjust payload offset and lengths if all went fine
@@ -305,7 +308,7 @@ is
    --#               Data.Free_List, No_Data.Free_List;
    is
       Cur_Buf, Next_Buf : Buffer_Id;
-      Free_List         : Buffer_Index;
+      Free_List         : Common.Buffer_Index;
    begin
       Next_Buf   := Buf;
       N_Deallocs := 0;
@@ -320,7 +323,7 @@ is
          --  Store head of appropriate free-list in Free_List
 
          if Is_Data_Buffer (Cur_Buf) then
-            Free_List := Data.Free_List;
+            Free_List := Data.To_Common_Id (Data.Free_List);
          else
             Free_List := No_Data.To_Common_Id (No_Data.Free_List);
          end if;
@@ -341,15 +344,16 @@ is
             --  Perform link actions specific to data buffers
 
             if Is_Data_Buffer (Cur_Buf) then
-               Data.Buffer_Link (Cur_Buf, Free_List);
+               Data.Buffer_Link
+                 (Data.To_Dbuf_Id (Cur_Buf), Data.To_Dbuf_Id (Free_List));
             end if;
 
             --  Push to the head of the appropriate free-list
 
             if Is_Data_Buffer (Cur_Buf) then
-               Data.Free_List    := Cur_Buf;
+               Data.Free_List    := Data.To_Dbuf_Id (Cur_Buf);
             else
-               No_Data.Free_List := No_Data.To_Ref_Id (Cur_Buf);
+               No_Data.Free_List := No_Data.To_Rbuf_Id (Cur_Buf);
             end if;
          else
             --  Stop the iteration
