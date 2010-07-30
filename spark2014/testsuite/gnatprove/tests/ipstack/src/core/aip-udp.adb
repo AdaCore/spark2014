@@ -29,12 +29,12 @@ is
    UDP_PCB_Initializer : constant UDP_PCB :=
                            UDP_PCB'(RECV_Cb => Callbacks.NOCB);
 
-   subtype Valid_UDP_PCB_Id is PCBs.Valid_PCB_Id
+   subtype UDP_PCB_Index is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
         .. PCBs.Valid_PCB_Id'First + Config.MAX_UDP_PCB - 1;
 
-   subtype UDP_IPCB_Array is PCBs.IP_PCB_Array (Valid_UDP_PCB_Id);
-   type UDP_UPCB_Array is array (Valid_UDP_PCB_ID) of UDP_PCB;
+   subtype UDP_IPCB_Array is PCBs.IP_PCB_Array (UDP_PCB_Index);
+   type UDP_UPCB_Array is array (UDP_PCB_Index) of UDP_PCB;
 
    IPCBs : UDP_IPCB_Array;
    UPCBs : UDP_UPCB_Array;
