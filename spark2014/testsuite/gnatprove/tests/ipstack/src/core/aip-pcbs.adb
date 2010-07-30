@@ -61,15 +61,19 @@ package body AIP.PCBs is
 
    begin
       --  Scan the list of bound PCBs in search of one at least locally bound
-      --  to the datagram destination endpoint, and even better also connected
-      --  to the remote source.
+      --  (~listening) to the datagram destination endpoint, and even better
+      --  also connected to the remote source.
 
       Cid := PCB_List;
 
       loop
          exit when Ideal_PCB /= NOPCB or else Cid = NOPCB;
 
-         --  See if PCB local addr+port match UDP destination addr+port
+         --  See if the current PCB listens to the packet transport
+         --  destination. It does when the port numbers are the same and
+         --  either the packet was broadcasted to the interface or the
+         --  specific destination IP matches what PCB is listening to (when
+         --  the latter is that IP or ANY).
 
          Local_Match :=
            PCB_Pool (Cid).Local_Port = Local_Port
@@ -78,12 +82,11 @@ package body AIP.PCBs is
               or else
             IPaddrs.Match (NIF.NIF_Broadcast (PCB_Pool (Cid).Netif),
                            Local_IP));
-         --  ??? case of a datagram for the broadcast address arriving on
-         --  one interface, and destined to the broadcast address of another,
-         --  when we are bound on the specific address of the other interface?
 
-         --  If it does, see if the PCB remote addr+port pair matches the
-         --  UDP source, in which case we have an ideal taker. Otherwise,
+         --  If we don't have a local match, proceed with the next
+         --  candidate. If we do have a local match, see if the PCB remote
+         --  addr+port pair matches the transport source. If it does, the PCB
+         --  is connected to that source and is an ideal taker. Otherwise,
          --  remember that PCB as a fallback possible destination if it is
          --  unconnected.
 
