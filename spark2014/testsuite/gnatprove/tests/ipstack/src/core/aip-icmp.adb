@@ -136,7 +136,12 @@ package body AIP.ICMP is
             Buffers.Buffer_Header
               (Buf, ICMPH.ICMP_Generic_Header_Size / 8, Err);
 
+            --  Initialize checksum to 0 to compute actual value
+
             ICMPH.Set_ICMPH_Checksum (IChdr, 0);
+
+            --  Compute and set checksum
+
             ICMPH.Set_ICMPH_Checksum (IChdr,
               not Checksum.Sum (Buf, Buffers.Buffer_Tlen (Buf)));
 
