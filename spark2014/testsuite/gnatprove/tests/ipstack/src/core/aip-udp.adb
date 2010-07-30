@@ -531,11 +531,16 @@ is
             UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
             UDPH.Set_UDPP_Length      (PUhdr, Ulen);
 
-            --  Compute checksum, pseudo-header included, then remove
-            --  the pseudo-header
+            --  Initialize checksum field to 0 to compute the actual checksum
+
+            UDPH.Set_UDPH_Checksum (Uhdr, 0);
+
+            --  Compute checksum, including pseudo-header
 
             UDPH.Set_UDPH_Checksum
               (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
+
+            --  Remove pseudo-header
 
             --# accept F, 10, Err, "Assignment is ineffective";
             Buffers.Buffer_Header
