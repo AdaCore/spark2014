@@ -15,11 +15,13 @@ with AIP.ICMP;
 with AIP.UDP;
 with AIP.TCP;
 
-package body AIP.IP is
+package body AIP.IP
+--# own State is Default_Router, IP_Serial;
+is
 
    Default_Router : IPaddrs.IPaddr := IPaddrs.IP_ADDR_ANY;
 
-   IP_Serial : M16_T := 0;
+   IP_Serial : AIP.M16_T := 0;
 
    ----------------
    -- IP_Forward --
@@ -38,33 +40,28 @@ package body AIP.IP is
    --------------
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id) is
-      Err  : Err_T := AIP.NOERR;
+      Err  : AIP.Err_T := AIP.NOERR;
 
-      Ihdr : constant System.Address := Buffers.Buffer_Payload (Buf);
+      Ihdr : System.Address;
 
-      Dst_Netif : EID;
+      Dst_Netif : AIP.EID;
       --  Local netif whose address is the destination address of the datagram
 
       Local : Boolean;
       --  Set True for a packet bound for the local node
 
-      procedure Dispatch_Upper
-        (Proto : U8_T;
-         Buf   : Buffers.Buffer_Id;
-         Netif : NIF.Netif_Id;
-         Err   : out Err_T);
-      --  Dispatch packet in Buf received on Netif to upper protocol layer
-      --  according to IP protocol identifier Proto.
-
       --------------------
       -- Dispatch_Upper --
       --------------------
 
+      --  Dispatch packet in Buf received on Netif to upper protocol layer
+      --  according to IP protocol identifier Proto.
+
       procedure Dispatch_Upper
-        (Proto : U8_T;
+        (Proto : AIP.U8_T;
          Buf   : Buffers.Buffer_Id;
          Netif : NIF.Netif_Id;
-         Err   : out Err_T)
+         Err   : out AIP.Err_T)
       is
          --# hide Dispatch_Upper;
          --  Hidden to avoid circular dependency in inherit clauses
@@ -96,6 +93,8 @@ package body AIP.IP is
    --  Start of processing for IP_Input
 
    begin
+      Ihdr := Buffers.Buffer_Payload (Buf);
+
       --  Perform various sanity checks prior to accepting the packet:
       --    short packets
       --    IP version
@@ -103,12 +102,13 @@ package body AIP.IP is
 
       if False
            or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
-           or else Buffers.Buffer_Tlen (Buf) < U16_T (IPH.IPH_IHL (Ihdr)) * 4
+           or else (Buffers.Buffer_Tlen (Buf)
+                      < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
            or else IPH.IPH_Version (Ihdr) /= 4
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Sum
                                 (Buf     => Buf,
-                                 Length  => U16_T (IPH.IPH_IHL (Ihdr)) * 4)
+                                 Length  => AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
                                 /= 16#Ffff#)
       then
          Err := AIP.ERR_USE;
@@ -116,7 +116,7 @@ package body AIP.IP is
 
       --  Check TTL
 
-      if No (Err) and then IPH.IPH_TTL (Ihdr) = 0 then
+      if AIP.No (Err) and then IPH.IPH_TTL (Ihdr) = 0 then
          --  Generate ICMP TTL exceeded???
 
          Err := AIP.ERR_USE;
@@ -124,7 +124,7 @@ package body AIP.IP is
 
       --  Check destination address
 
-      if No (Err) then
+      if AIP.No (Err) then
          NIF.Get_Netif_By_Address
            (Addr => IPH.IPH_Dst_Address (Ihdr),
             Mask => False,
@@ -147,7 +147,7 @@ package body AIP.IP is
 
       --  Dispatch to upper layer or forward to next hop
 
-      if No (Err) then
+      if AIP.No (Err) then
          if Local then
             Dispatch_Upper (IPH.IPH_Protocol (Ihdr), Buf, Netif, Err);
          else
@@ -155,7 +155,7 @@ package body AIP.IP is
          end if;
       end if;
 
-      if Any (Err) then
+      if AIP.Any (Err) then
          Buffers.Buffer_Blind_Free (Buf);
       end if;
    end IP_Input;
@@ -174,11 +174,12 @@ package body AIP.IP is
       Proto  : AIP.U8_T;
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T)
+   --# global in out IP_Serial, Buffers.State;
    is
       Ihdr : System.Address;
    begin
-      Buffers.Buffer_Header (Buf, IPH.IP_Header'Size / 8, Err);
-      if No (Err) then
+      Buffers.Buffer_Header (Buf, IPH.IP_Header_Size / 8, Err);
+      if AIP.No (Err) then
          IP_Serial := IP_Serial + 1;
 
          Ihdr := Buffers.Buffer_Payload (Buf);
@@ -200,7 +201,7 @@ package body AIP.IP is
          IPH.Set_IPH_Dst_Address (Ihdr, Dst_IP);
 
          IPH.Set_IPH_Checksum    (Ihdr,
-           not Checksum.Sum (Buf, 4 * U16_T (IPH.IPH_IHL (Ihdr))));
+           not Checksum.Sum (Buf, 4 * AIP.U16_T (IPH.IPH_IHL (Ihdr))));
 
          NIF.Output (Netif, Buf, NH_IP);
       end if;
@@ -213,7 +214,8 @@ package body AIP.IP is
    procedure IP_Route
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;
-      Netif    : out EID)
+      Netif    : out AIP.EID)
+   --# global in Default_Router;
    is
    begin
       --  Currently we support only direct interface routes and the default
@@ -234,7 +236,9 @@ package body AIP.IP is
    -- Set_Default_Router --
    ------------------------
 
-   procedure Set_Default_Router (IPA : IPaddrs.IPaddr) is
+   procedure Set_Default_Router (IPA : IPaddrs.IPaddr)
+   --# global out Default_Router;
+   is
    begin
       Default_Router := IPA;
    end Set_Default_Router;

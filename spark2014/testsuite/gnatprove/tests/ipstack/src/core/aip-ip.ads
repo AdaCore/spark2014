@@ -7,11 +7,16 @@
 
 with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
---# inherit AIP.IPaddrs, AIP.NIF, AIP.Buffers;
+--# inherit AIP.IPaddrs, AIP.NIF, AIP.Buffers,
+--#         System, AIP.Checksum, AIP.Config, AIP.IPH, AIP.ICMPH;
 
-package AIP.IP is
+package AIP.IP
+--# own State;
+--# initializes State;
+is
 
    procedure Set_Default_Router (IPA : IPaddrs.IPaddr);
+   --# global in out State;
    --  Set the default route to the given value
 
    --  IP_PCB is the common part of the PCB for all IP-based protocols
@@ -42,9 +47,11 @@ package AIP.IP is
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;
       Netif    : out AIP.EID);
+   --# global in State;
    --  Find next hop IP address and outbound interface for Dst_IP
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id);
+   --# global in out Buffers.State;
    pragma Export (C, IP_Input, "AIP_ip_input");
 
    procedure IP_Output_If
@@ -57,6 +64,7 @@ package AIP.IP is
       Proto  : AIP.U8_T;
       Netif  : NIF.Netif_Id;
       Err    : out AIP.Err_T);
+   --# global in out State, Buffers.State;
    --  Output IP datagram
 
    IP_HLEN : constant := 20;
@@ -65,6 +73,7 @@ package AIP.IP is
 private
 
    procedure IP_Forward (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   --# global in out Buffers.State;
    --  Decrement TTL and forward packet to next hop
 
 end AIP.IP;
