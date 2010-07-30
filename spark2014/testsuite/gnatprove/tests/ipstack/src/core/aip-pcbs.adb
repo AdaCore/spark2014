@@ -10,17 +10,17 @@ package body AIP.PCBs is
    ------------------
 
    procedure Allocate_PCB
-     (PCBs : in out IP_PCB_Array;
-      Id   : out AIP.EID)
+     (PCB_Pool : in out IP_PCB_Array;
+      Id       : out AIP.EID)
    is
    begin
       --  Scan the PCBs array and pick the first unused entry
 
       Id := NOPCB;
-      Scan_PCBs : for J in PCBs'Range loop
-         if PCBs (J).Link = PCB_Unused then
+      Scan_PCBs : for J in PCB_Pool'Range loop
+         if PCB_Pool (J).Link = PCB_Unused then
             Id := J;
-            PCBs (J).Link := NOPCB;
+            PCB_Pool (J).Link := NOPCB;
             exit Scan_PCBs;
          end if;
       end loop Scan_PCBs;
@@ -47,11 +47,11 @@ package body AIP.PCBs is
 
    procedure Find_PCB
      (Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : U16_T;
+      Local_Port  : Port_T;
       Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : U16_T;
+      Remote_Port : Port_T;
       PCB_List    : AIP.EID;
-      PCBs        : IP_PCB_Array;
+      PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id)
    is
       Cid : AIP.EID;
@@ -72,11 +72,12 @@ package body AIP.PCBs is
          --  See if PCB local addr+port match UDP destination addr+port
 
          Local_Match :=
-           PCBs (Cid).Local_Port = Local_Port
+           PCB_Pool (Cid).Local_Port = Local_Port
            and then
-           (IPaddrs.Match (PCBs (Cid).Local_IP, Local_IP)
+           (IPaddrs.Match (PCB_Pool (Cid).Local_IP, Local_IP)
               or else
-            IPaddrs.Match (NIF.NIF_Broadcast (PCBs (Cid).Netif), Local_IP));
+            IPaddrs.Match (NIF.NIF_Broadcast (PCB_Pool (Cid).Netif),
+                           Local_IP));
          --  ??? case of a datagram for the broadcast address arriving on
          --  one interface, and destined to the broadcast address of another,
          --  when we are bound on the specific address of the other interface?
@@ -88,18 +89,18 @@ package body AIP.PCBs is
 
          if Local_Match then
             Remote_Match :=
-              PCBs (Cid).Remote_Port = Remote_Port
-                 and then IPaddrs.Match (PCBs (Cid).Remote_IP, Remote_IP);
+              PCB_Pool (Cid).Remote_Port = Remote_Port
+                 and then IPaddrs.Match (PCB_Pool (Cid).Remote_IP, Remote_IP);
 
             if Remote_Match then
                Ideal_PCB := Cid;
 
-            elsif Good_PCB = NOPCB and then not PCBs (Cid).Connected then
+            elsif Good_PCB = NOPCB and then not PCB_Pool (Cid).Connected then
                Good_PCB := Cid;
             end if;
          end if;
 
-         Cid := PCBs (Cid).Link;
+         Cid := PCB_Pool (Cid).Link;
       end loop;
 
       if Ideal_PCB /= NOPCB then

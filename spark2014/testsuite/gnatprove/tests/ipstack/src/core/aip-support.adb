@@ -12,6 +12,7 @@ package body AIP.Support is
    ---------
 
    procedure Log (Msg : String) is
+      --# hide Log;
    begin
       GNAT.IO.Put_Line (Msg);
    end Log;

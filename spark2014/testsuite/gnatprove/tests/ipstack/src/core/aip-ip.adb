@@ -8,10 +8,12 @@ with System;
 with AIP.Checksum;
 with AIP.Config;
 
-with AIP.ICMP;
-with AIP.ICMPH;
 with AIP.IPH;
+with AIP.ICMPH;
+
+with AIP.ICMP;
 with AIP.UDP;
+with AIP.TCP;
 
 package body AIP.IP is
 
@@ -73,8 +75,8 @@ package body AIP.IP is
             when IPH.IP_Proto_UDP =>
                UDP.UDP_Input (Buf, Netif);
 
---             when IPH.IP_Proto_TCP =>
---                TCP.TCP_Input (Buf, Netif);
+            when IPH.IP_Proto_TCP =>
+               TCP.TCP_Input (Buf, Netif);
 
             when IPH.IP_Proto_ICMP =>
                ICMP.ICMP_Input (Buf, Netif);

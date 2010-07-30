@@ -21,10 +21,13 @@ is
    -- Data structures --
    ---------------------
 
-   --  Valid PCBs.PCB_Ids are indices into a static array of PCBs, maintained
-   --  together with a list of those bound to a local addr/port endpoint.
-   --  This list is used to determine which PCB gets to process an incoming
-   --  datagram (see UDP_Input).
+   type UDP_PCB is record
+      RECV_Cb     : Callbacks.CBK_Id;
+      --  Callback id for UDP_RECV events
+   end record;
+
+   UDP_PCB_Initializer : constant UDP_PCB :=
+                           UDP_PCB'(RECV_Cb => Callbacks.NOCB);
 
    subtype Valid_UDP_PCB_Id is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
@@ -146,7 +149,7 @@ is
          Remote_IP   => IPH.IPH_Src_Address (Ihdr),
          Remote_Port => UDPH.UDPH_Src_Port (Uhdr),
          PCB_List    => Bound_PCBs,
-         PCBs        => IPCBs,
+         PCB_Pool    => IPCBs,
          PCB         => PCB);
       return PCB;
    end UDP_PCB_For;

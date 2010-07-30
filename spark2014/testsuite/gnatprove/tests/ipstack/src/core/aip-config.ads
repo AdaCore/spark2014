@@ -65,6 +65,9 @@ package AIP.Config is
    -- TCP configuration --
    -----------------------
 
+   MAX_TCP_PCB : constant := 20;
+   --  Maximum number for TCP PCBs in use at any time
+
    TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
 
    Enable_Forwarding : constant Boolean := False;

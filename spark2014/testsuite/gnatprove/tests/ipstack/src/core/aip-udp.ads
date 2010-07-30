@@ -7,15 +7,15 @@
 
 with System;
 
-with AIP.Callbacks;
 with AIP.Buffers;
-with AIP.NIF;
+with AIP.Callbacks;
 with AIP.IPaddrs;
+with AIP.NIF;
 with AIP.PCBs;
 
---# inherit System, AIP, AIP.Config, AIP.Callbacks, AIP.Buffers, AIP.PCBs,
---#         AIP.NIF, AIP.IP, AIP.IPaddrs, AIP.ICMP, AIP.ICMPH,
---#         AIP.Checksum, AIP.Inet, AIP.IPH, AIP.UDPH;
+--# inherit System, AIP, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
+--#         AIP.ICMP, AIP.ICMPH, AIP.Inet, AIP.IP, AIP.IPaddrs, AIP.IPH,
+--#         AIP.NIF,  AIP.PCBs, AIP.UDPH;
 
 package AIP.UDP
    --# own State;
@@ -150,14 +150,6 @@ is
    UDP_HLEN : constant := 8;
 
 private
-
-   type UDP_PCB is record
-      RECV_Cb     : Callbacks.CBK_Id;
-      --  Callback id for UDP_RECV events
-   end record;
-
-   UDP_PCB_Initializer : constant UDP_PCB :=
-                           UDP_PCB'(RECV_Cb => Callbacks.NOCB);
 
    --------------------------
    -- Internal subprograms --

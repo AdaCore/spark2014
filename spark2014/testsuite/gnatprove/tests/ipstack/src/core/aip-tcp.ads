@@ -8,26 +8,33 @@
 
 with System;
 
+with AIP.Buffers;
 with AIP.Callbacks;
 with AIP.IPaddrs;
-with AIP.Buffers;
+with AIP.NIF;
+with AIP.PCBs;
 
---# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.Buffers, AIP.Config;
+--# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.PCBs,
+--#         AIP.Buffers, AIP.Config;
 
-package AIP.TCP is
+package AIP.TCP
+   --# own State;
+is
 
-   --  TCP connections materialize through "TCP Control Block" entities:
+   --------------------
+   -- User interface --
+   --------------------
 
-   subtype PCB_Id is System.Address;
-   NOPCB : constant PCB_Id := System.Null_Address;
+   procedure TCP_Init;
+   --# global out State;
+   --  Initialize internal datastructures. To be called once, before any of
+   --  the other subprograms.
 
-   subtype Port_T is AIP.M16_T;
+   ---------------------
+   -- Callbacks setup --
+   ---------------------
 
-   ------------------------------
-   -- Preparing callback calls --
-   ------------------------------
-
-   procedure TCP_Arg (PCB : PCB_Id; Arg : System.Address);
+   procedure TCP_Arg (PCB : PCBs.PCB_Id; Arg : System.Address);
    --  Setup to pass ARG on every callback call for PCB.
 
    type TCP_Event_Kind is
@@ -42,45 +49,41 @@ package AIP.TCP is
       Kind : TCP_Event_Kind;
       Buf  : Buffers.Buffer_Id;
       Addr : IPaddrs.IPaddr;
-      Port : Port_T;
+      Port : PCBs.Port_T;
       Err  : AIP.Err_T;
    end record;
 
    procedure TCP_Callback
-     (Evk : TCP_Event_Kind; PCB : PCB_Id; Id : Callbacks.CBK_Id);
+     (Evk : TCP_Event_Kind; PCB : PCBs.PCB_Id; Id : Callbacks.CBK_Id);
 
    --------------------------------
    -- Setting up TCP connections --
    --------------------------------
 
-   function TCP_New return PCB_Id;
+   function TCP_New return PCBs.PCB_Id;
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
 
    function TCP_Bind
-     (PCB  : PCB_Id;
+     (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
-      Port : AIP.U16_T) return AIP.Err_T;
+      Port : PCBs.Port_T) return AIP.Err_T;
    --  Bind PCB to the provided IP ADDRess (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
 
-   function TCP_Listen (PCB : PCB_Id) return PCB_Id;
+   procedure TCP_Listen (PCB : PCBs.PCB_Id);
    --  Setup PCB to listen for at most Config.TCP_DEFAULT_LISTEN_BACKLOG
    --  simultaneous connection requests and trigger the acceptation callback
-   --  on such events. Unless not enough memory is available, return id of a
-   --  new PCB to be used for further operations and release the provided
-   --  one. If allocation is not possible, just return NULID.
+   --  on such events.
 
-   function TCP_Listen_BL
-     (PCB  : PCB_Id;
-      Blog : AIP.U8_T) return PCB_Id;
-   --  Same as TCP_Listen for a user specified backlog size.
+   procedure TCP_Listen_BL
+     (PCB     : PCBs.PCB_Id;
+      Backlog : AIP.U8_T);
+   --  Same as TCP_Listen but with a user-specified backlog size
 
    subtype Accept_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Accept
-     (PCB : PCB_Id;
-      Cb  : Accept_Cb_Id);
+   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb  : Accept_Cb_Id);
    --  Request CB to be called when a connection request comes in on PCB.
    --  CB's signature is expected to be:
    --
@@ -96,17 +99,18 @@ package AIP.TCP is
    --  wrong, the callback returns the appropriate error code and AIP aborts
    --  the connection.
 
-   procedure TCP_Accepted (PCB : PCB_Id);
+   procedure TCP_Accepted (PCB : PCBs.PCB_Id);
    --  Inform the AIP stack that a connection has just been accepted on PCB.
    --  To be called by the acceptation callback for proper management of the
    --  listening backlog.
 
    subtype Connect_Cb_Id is Callbacks.CBK_Id;
-   function TCP_Connect
-     (PCB  : PCB_Id;
+   procedure TCP_Connect
+     (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
-      Port : AIP.U16_T;
-      Cb   : Connect_Cb_Id) return AIP.Err_T;
+      Port : PCBs.Port_T;
+      Cb   : Connect_Cb_Id;
+      Err  : out Err_T);
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -122,11 +126,12 @@ package AIP.TCP is
    --  callback is called when the data has been acknowledged by the remote
    --  host. Care must be taken to respect transmission capacities.
 
-   function TCP_Write
-     (PCB   : PCB_Id;
+   procedure TCP_Write
+     (PCB   : PCBs.PCB_Id;
       Data  : System.Address;
       Len   : AIP.U16_T;
-      Flags : AIP.U8_T) return AIP.Err_T;
+      Flags : AIP.U8_T;
+      Err   : out Err_T);
    --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
    --  TCP_WRITE constants below. If all goes well, this function returns
    --  NOERR. This function will fail and return ERR_MEM if the length of the
@@ -140,12 +145,12 @@ package AIP.TCP is
    TCP_WRITE_COPY   : constant := 16#01#;  --  Copy data into ipstack memory
    TCP_WRITE_MORE   : constant := 16#02#;  --  Set PSH on last segment sent
 
-   function TCP_Sndbuf (PCB : PCB_Id) return AIP.U16_T;
+   function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
    --  Room available for output data queuing.
 
    subtype Sent_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Sent
-     (PCB : PCB_Id;
+     (PCB : PCBs.PCB_Id;
       Cb  : Sent_Cb_Id);
    --  Request that CB is called when sent data has been acknowledged by
    --  the remote host on PCB. CB's signature is expected to be:
@@ -167,7 +172,7 @@ package AIP.TCP is
 
    subtype Recv_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Recv
-     (PCB : PCB_Id;
+     (PCB : PCBs.PCB_Id;
       Cb  : Recv_Cb_Id);
    --  Request that CB is called when new data or a close-connection request
    --  arrives on PCB. CB's profile is expected to be;
@@ -188,7 +193,7 @@ package AIP.TCP is
    --  descriptive error code.
 
    procedure TCP_Recved
-     (PCB : PCB_Id;
+     (PCB : PCBs.PCB_Id;
       Len : AIP.U16_T);
    --  Inform AIP that LEN bytes of data have been processed and can be
    --  acknowledged.
@@ -203,7 +208,7 @@ package AIP.TCP is
 
    subtype Poll_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Poll
-     (PCB : PCB_Id;
+     (PCB : PCBs.PCB_Id;
       Cb  : Poll_Cb_Id;
       Ivl : AIP.U8_T);
    --  Request CB to be called for polling purposes on PCB, every IVL ticks
@@ -220,17 +225,17 @@ package AIP.TCP is
    --  Closing TCP connections --
    ------------------------------
 
-   function TCP_Close (PCB : PCB_Id) return AIP.Err_T;
+   procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
 
-   procedure TCP_Abort (PCB : PCB_Id);
+   procedure TCP_Abort (PCB : PCBs.PCB_Id);
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
 
    subtype Err_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Err (PCB : PCB_Id; Cb : Err_Cb_Id);
+   procedure TCP_Err (PCB : PCBs.PCB_Id; Cb : Err_Cb_Id);
    --  Request CB to be called when a connection gets aborted because
    --  of some error. CB's profile is expected to be:
    --
@@ -239,6 +244,15 @@ package AIP.TCP is
    --       Err : AIP.Err_T)
    --
    --  ARG is the usual user/app argument. ERR is the aborting error code.
+
+   -----------------------
+   -- IPstack interface --
+   -----------------------
+
+   procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
+   --# global in out Buffers.State; in out State;
+   --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
+   --  to the appropriate user callback. Buf is then free'd.
 
    ------------
    -- Timers --

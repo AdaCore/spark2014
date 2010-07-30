@@ -40,7 +40,7 @@ package AIP.NIF is
       Mask      : IPaddrs.IPaddr;
       Broadcast : IPaddrs.IPaddr;
       Remote    : IPaddrs.IPaddr;
-      Err       : out Err_T);
+      Err       : out AIP.Err_T);
    --  Set up IP address, netmask, broadcast address and remote address for
    --  Nid, and mark interface as UP.
 

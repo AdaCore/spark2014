@@ -11,6 +11,8 @@ with AIP.Config;
 with AIP.IPaddrs;
 with AIP.NIF;
 
+--# inherit System, AIP.Config, AIP.IPaddrs, AIP.NIF;
+
 package AIP.PCBs is
 
    subtype PCB_Id is AIP.EID range AIP.NULID .. Config.MAX_UDP_PCB;
@@ -29,14 +31,14 @@ package AIP.PCBs is
       --  NOPCB for PCBs that are in use but not on a list (or last in list).
 
       Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : U16_T;
+      Local_Port  : Port_T;
 
       Netif       : AIP.EID;
       --  If Local_IP is set to the IP address of a specific interface, Netif
       --  denotes that interface, else it is set to IF_NOID.
 
       Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : U16_T;
+      Remote_Port : Port_T;
 
       Connected   : Boolean;
       --  Set True when Remote_IP and Remote_Port are set.
@@ -75,8 +77,8 @@ package AIP.PCBs is
    type IP_PCB_Array is array (Valid_PCB_Id range <>) of IP_PCB;
 
    procedure Allocate_PCB
-     (PCBs : in out IP_PCB_Array;
-      Id   : out AIP.EID);
+     (PCB_Pool : in out IP_PCB_Array;
+      Id       : out AIP.EID);
 
    function Bound_To
      (PCB        : IP_PCB;
@@ -85,11 +87,11 @@ package AIP.PCBs is
 
    procedure Find_PCB
      (Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : U16_T;
+      Local_Port  : Port_T;
       Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : U16_T;
+      Remote_Port : Port_T;
       PCB_List    : AIP.EID;
-      PCBs        : IP_PCB_Array;
+      PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id);
 
 end AIP.PCBs;
