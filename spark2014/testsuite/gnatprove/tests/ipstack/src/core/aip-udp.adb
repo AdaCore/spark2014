@@ -14,7 +14,7 @@ with AIP.IPH;
 with AIP.UDPH;
 
 package body AIP.UDP
-   --# own State is PCBs, Bound_PCBs;
+   --# own State is IPCBs, UPCBs, Bound_PCBs;
 is
 
    ---------------------
@@ -46,7 +46,7 @@ is
    ----------------
 
    procedure UDP_Init
-      --# global out PCBs, Bound_PCBs;
+      --# global out IPCBs, UPCBs, Bound_PCBs;
    is
    begin
       --  Initialize all the PCBs, marking them unused, and initialize the list
@@ -63,7 +63,7 @@ is
    ---------------
 
    procedure PCB_Clear (PCB : PCBs.PCB_Id)
-      --# global in out PCBs;
+      --# global in out IPCBs, UPCBs;
    is
    begin
       IPCBs (PCB) := PCBs.IP_PCB_Initializer;
@@ -77,7 +77,7 @@ is
    -------------
 
    procedure UDP_New (Id : out PCBs.PCB_Id)
-      --# global in out PCBs;
+      --# global in out IPCBs, UPCBs;
    is
    begin
       PCBs.Allocate_PCB (IPCBs, Id);
@@ -139,7 +139,7 @@ is
    function UDP_PCB_For
      (Ihdr  : System.Address;
       Uhdr  : System.Address) return AIP.EID
-      --# global in PCBs, Bound_PCBs;
+      --# global in IPCBs, Bound_PCBs;
    is
       PCB : AIP.EID;
    begin
@@ -161,7 +161,7 @@ is
    procedure UDP_Input
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
-      --# global in out Buffers.State, Bound_PCBs, PCBs;
+      --# global in out Buffers.State, Bound_PCBs, IPCBs, UPCBs;
 
    is
       Ihdr, Uhdr : System.Address;
@@ -226,6 +226,8 @@ is
                          Port => UDPH.UDPH_Src_Port (Uhdr)),
             PCB,
             UPCBs (PCB).RECV_Cb);
+
+         --  No free if buffer passed to application???
       else
          Buffers.Buffer_Blind_Free (Buf);
       end if;
@@ -236,7 +238,7 @@ is
    ------------------
 
    function PCB_Bound_To (Port : PCBs.Port_T) return AIP.EID
-      --# global in PCBs, Bound_PCBs;
+      --# global in IPCBs, Bound_PCBs;
    is
       Pid : AIP.EID;
    begin
@@ -253,7 +255,7 @@ is
    --------------------
 
    function Available_Port return PCBs.Port_T
-      --# global in PCBs, Bound_PCBs;
+      --# global in IPCBs, Bound_PCBs;
    is
       Aport : PCBs.Port_T := PCBs.NOPORT;  --  Port found to be available
       Cport : PCBs.Port_T;                 --  Candidate port to examine
@@ -280,7 +282,7 @@ is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : PCBs.Port_T;
       Err        : out AIP.Err_T)
-      --# global in out PCBs, Bound_PCBs;
+      --# global in out IPCBs, Bound_PCBs;
    is
       Rebind       : Boolean;
       Pid          : AIP.EID;
@@ -337,7 +339,7 @@ is
    --------------------
 
    procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-      --# global in out PCBs, Bound_PCBs;
+      --# global in out IPCBs, Bound_PCBs;
    is
       Local_IP : IPaddrs.IPaddr;
    begin
@@ -354,7 +356,7 @@ is
    ----------------
 
    procedure PCB_Unlink (PCB : PCBs.PCB_Id)
-      --# global in out PCBs, Bound_PCBs;
+      --# global in out IPCBs, Bound_PCBs;
    is
       Cur, Prev : AIP.EID;
    begin
@@ -386,7 +388,7 @@ is
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T;
       Err         : out AIP.Err_T)
-      --# global in out PCBs, Bound_PCBs;
+      --# global in out IPCBs, Bound_PCBs;
    is
    begin
       --  Make sure we have a local binding in place, so that the (dummy)
@@ -461,7 +463,7 @@ is
       Dst_Port : PCBs.Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T)
-      --# global in out Buffers.State, PCBs, Bound_PCBs;
+      --# global in out Buffers.State, IPCBs, Bound_PCBs;
    is
       Ubuf : Buffers.Buffer_Id;
       Ulen : AIP.U16_T;
@@ -569,7 +571,7 @@ is
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T)
-      --# global in out Buffers.State, PCBs, Bound_PCBs;
+      --# global in out Buffers.State, IPCBs, Bound_PCBs;
    is
       Dst_IP : IPaddrs.IPaddr;
       Dst_Port : PCBs.Port_T;
@@ -622,7 +624,7 @@ is
    ----------------------
 
    procedure UDP_Disconnect (PCB : PCBs.PCB_Id)
-      --# global in out PCBs;
+      --# global in out IPCBs;
    is
    begin
       --  Reset the remote address association and flag PCB as unconnected
@@ -637,7 +639,7 @@ is
    -------------------
 
    procedure UDP_Release (PCB : PCBs.PCB_Id)
-      --# global in out PCBs, Bound_PCBs;
+      --# global in out IPCBs, UPCBs, Bound_PCBs;
    is
    begin
       PCB_Unlink (PCB);
@@ -652,7 +654,7 @@ is
      (Evk  : UDP_Event_Kind;
       PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id)
-      --# global in out PCBs;
+      --# global in out UPCBs;
    is
    begin
       case Evk is
@@ -665,14 +667,14 @@ is
    ---------------
 
    procedure UDP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address)
-      --# global in out PCBs;
+      --# global in out IPCBs;
    is
    begin
       IPCBs (PCB).Udata := Udata;
    end UDP_Set_Udata;
 
    function UDP_Udata (PCB : PCBs.PCB_Id) return System.Address
-      --# global in PCBs;
+      --# global in IPCBs;
    is
    begin
       return IPCBs (PCB).Udata;
