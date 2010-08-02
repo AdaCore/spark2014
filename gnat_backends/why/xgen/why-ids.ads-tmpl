@@ -29,3 +29,6 @@ with Why.Types; use Why.Types;
 package Why.Ids is
    --  Declarations of subtypes of Why_Node_Id; one per node kind.
 
+   _@Declare_Node_Ids@_
+
+end Why.Ids;

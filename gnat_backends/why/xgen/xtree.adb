@@ -37,13 +37,12 @@ with Xtree_Tables;               use Xtree_Tables;
 with Xtree_Builders;             use Xtree_Builders;
 with Why.Sinfo;                  use Why.Sinfo;
 with Utils;                      use Utils;
-with Outputs;                    use Outputs;
+with Templates;                  use Templates;
 
 procedure Xtree is
    --  ASIS helper that takes Why.Atree's syntax tree and generates
    --  builders, accessors/updators, recursive traversal...
 
-   Stdout     : Output_Record := Open_Output;
    My_Context : Asis.Context;
 
    type Traversal_Step is
@@ -252,10 +251,10 @@ begin
       end loop;
    end Processing_Units;
 
-   Library_Level (Stdout);
-   Print_Builders (Stdout);
-
    Close (My_Context);
    Dissociate (My_Context);
    Finalize;
+
+   Add ("Declare_Builders", Print_Builders'Access);
+   Process ("why-atree-builders.ads");
 end Xtree;

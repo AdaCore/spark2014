@@ -23,11 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
-
 package body Outputs is
 
    procedure I  (O : in out Output_Record);
+
+   ------------------
+   -- Close_Output --
+   ------------------
+
+   procedure Close_Output (O : in out Output_Record) is
+   begin
+      Close (O.File);
+      O.Indent := 0;
+      O.New_Line := False;
+   end Close_Output;
 
    -------
    -- I --
@@ -37,21 +46,11 @@ package body Outputs is
    begin
       if O.New_Line then
          for J in 1 .. O.Indent loop
-            Put (" ");
+            Put (O.File, " ");
          end loop;
          O.New_Line := False;
       end if;
    end I;
-
-   -------------------
-   -- Library_Level --
-   -------------------
-
-   procedure Library_Level (O : in out Output_Record) is
-   begin
-      O.Indent := 3;
-      O.New_Line := True;
-   end Library_Level;
 
    --------
    -- NL --
@@ -59,7 +58,7 @@ package body Outputs is
 
    procedure NL (O : in out Output_Record) is
    begin
-      New_Line;
+      New_Line (O.File);
       O.New_Line := True;
    end NL;
 
@@ -67,9 +66,11 @@ package body Outputs is
    -- Open_Output --
    -----------------
 
-   function Open_Output return Output_Record is
+   procedure Open_Output (O : in out Output_Record; Filename : String) is
    begin
-      return Output_Record'(0, False);
+      Create (O.File, Out_File, Filename);
+      O.Indent := 0;
+      O.New_Line := False;
    end Open_Output;
 
    -------
@@ -79,7 +80,7 @@ package body Outputs is
    procedure P  (O : in out Output_Record; S : Wide_String) is
    begin
       I (O);
-      Put (S);
+      Put (O.File, S);
    end P;
 
    --------
@@ -89,7 +90,7 @@ package body Outputs is
    procedure PL (O : in out Output_Record; S : Wide_String) is
    begin
       I (O);
-      Put_Line (S);
+      Put_Line (O.File, S);
       O.New_Line := True;
    end PL;
 
@@ -97,9 +98,22 @@ package body Outputs is
    -- Relative_Indent --
    ---------------------
 
-   procedure Relative_Indent (O : in out Output_Record; Diff : Integer) is
+   procedure Relative_Indent
+     (O    : in out Output_Record;
+      Diff : Integer) is
    begin
       O.Indent := Natural (O.Indent + Diff);
    end Relative_Indent;
+
+   ---------------------
+   -- Absolute_Indent --
+   ---------------------
+
+   procedure Absolute_Indent
+     (O     : in out Output_Record;
+      Level : Natural) is
+   begin
+      O.Indent := Level;
+   end Absolute_Indent;
 
 end Outputs;

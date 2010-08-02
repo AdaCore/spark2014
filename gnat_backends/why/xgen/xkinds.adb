@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Wide_Text_IO;           use Ada.Wide_Text_IO;
+with Ada.Containers.Doubly_Linked_Lists;
 
 with Asis;                       use Asis;
 with Asis.Implementation;        use Asis.Implementation;
@@ -34,6 +34,8 @@ with Asis.Elements;              use Asis.Elements;
 with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 
 with Utils;                      use Utils;
+with Outputs;                    use Outputs;
+with Templates;                  use Templates;
 
 procedure Xkinds is
    --  ASIS helper that takes Why.Sinfo's syntax tree and generates a list
@@ -62,7 +64,14 @@ procedure Xkinds is
    procedure Traverse_Source is new Asis.Iterator.Traverse_Element
      (State_Information => Traversal_State);
 
-   procedure Print_Subtypes (S : Wide_String);
+   type Wide_String_Access is access Wide_String;
+
+   package String_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Wide_String_Access, "=");
+
+   Subtypes : String_Lists.List;
+
+   procedure Print_Subtypes (O : in out Output_Record);
 
    -------------------
    -- Pre_Operation --
@@ -73,6 +82,8 @@ procedure Xkinds is
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State)
    is
+      use String_Lists;
+
       pragma Unreferenced (Control);
 
       Kind : constant Flat_Element_Kinds := Flat_Element_Kind (Element);
@@ -94,8 +105,7 @@ procedure Xkinds is
                declare
                   Text : constant Asis.Program_Text := Img (Element);
                begin
-                  Print_Subtypes (Text);
-                  New_Line;
+                  Subtypes.Append (new Wide_String'(Text));
                end;
             end if;
 
@@ -104,8 +114,7 @@ procedure Xkinds is
                declare
                   Text : constant Asis.Program_Text := Img (Element);
                begin
-                  Print_Subtypes (Text);
-                  New_Line;
+                  Subtypes.Append (new Wide_String'(Text));
                end;
             end if;
 
@@ -153,11 +162,29 @@ procedure Xkinds is
    -- Print_Subtypes --
    --------------------
 
-   procedure Print_Subtypes (S : Wide_String) is
+   procedure Print_Subtypes (O : in out Output_Record) is
+      use String_Lists;
+
+      procedure Process_One_Node_Kind (Position : Cursor);
+
+      ---------------------------
+      -- Process_One_Node_Kind --
+      ---------------------------
+
+      procedure Process_One_Node_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Id is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+
+         if Position /= Subtypes.Last then
+            NL (O);
+         end if;
+      end Process_One_Node_Kind;
+
    begin
-      Put_Line ("   subtype " & S & "_Id is Why_Node_Id;");
-      New_Line;
-      Put_Line ("   subtype " & S & "_List is Why_Node_List;");
+      Subtypes.Iterate (Process_One_Node_Kind'Access);
    end Print_Subtypes;
 
    Control : Traverse_Control := Continue;
@@ -187,4 +214,7 @@ begin
    Close (My_Context);
    Dissociate (My_Context);
    Finalize;
+
+   Add ("Declare_Node_Ids", Print_Subtypes'Access);
+   Process ("why-ids.ads");
 end Xkinds;

@@ -21,6 +21,10 @@ package body Xtree_Builders is
    begin
       for J in Why_Tree_Info'Range loop
          Print_Builder_Declaration (O, J);
+
+         if J /= Why_Tree_Info'Last then
+            NL (O);
+         end if;
       end loop;
    end Print_Builders;
 
@@ -34,7 +38,6 @@ package body Xtree_Builders is
    begin
       Print_Builder_Specification (O, Kind);
       PL (O, ";");
-      NL (O);
    end Print_Builder_Declaration;
 
    ---------------------------------

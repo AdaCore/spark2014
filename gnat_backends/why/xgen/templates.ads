@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                              O U T P U T S                               --
+--                            T E M P L A T E S                             --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,30 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
+with Outputs; use Outputs;
 
-package Outputs is
+package Templates is
 
-   type Output_Record is limited private;
+   procedure Add
+     (Pattern   : String;
+      Generator : not null access procedure (O : in out Output_Record));
 
-   procedure Open_Output
-     (O        : in out Output_Record;
-      Filename : String);
-   procedure Close_Output (O : in out Output_Record);
+   procedure Process (Filename : String);
 
-   procedure Absolute_Indent (O : in out Output_Record; Level : Natural);
-   procedure Relative_Indent (O : in out Output_Record; Diff : Integer);
-
-   procedure P  (O : in out Output_Record; S : Wide_String);
-   procedure PL (O : in out Output_Record; S : Wide_String);
-   procedure NL (O : in out Output_Record);
-
-private
-
-   type Output_Record is limited record
-      File     : File_Type;
-      Indent   : Natural := 0;
-      New_Line : Boolean := False;
-   end record;
-
-end Outputs;
+end Templates;
