@@ -7,7 +7,7 @@ why-sinfo.adt: ../why-sinfo.ads
 why-atree.adt: ../why-atree.ads
 	gcc -c -gnatct ../why-atree.ads -I../../gnat_src
 
-why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl
+why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl why-unchecked_ids.ads-tmpl
 	./xkinds
 
 why-atree-builders.ads: xtree why-atree.adt why-atree-builders.ads-tmpl

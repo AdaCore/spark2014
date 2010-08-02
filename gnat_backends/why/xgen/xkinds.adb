@@ -69,9 +69,11 @@ procedure Xkinds is
    package String_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Wide_String_Access, "=");
 
-   Subtypes : String_Lists.List;
+   Nodes   : String_Lists.List;
+   Classes : String_Lists.List;
 
-   procedure Print_Subtypes (O : in out Output_Record);
+   procedure Print_Id_Subtypes (O : in out Output_Record);
+   procedure Print_Unchecked_Id_Subtypes (O : in out Output_Record);
 
    -------------------
    -- Pre_Operation --
@@ -105,7 +107,7 @@ procedure Xkinds is
                declare
                   Text : constant Asis.Program_Text := Img (Element);
                begin
-                  Subtypes.Append (new Wide_String'(Text));
+                  Nodes.Append (new Wide_String'(Text));
                end;
             end if;
 
@@ -114,7 +116,7 @@ procedure Xkinds is
                declare
                   Text : constant Asis.Program_Text := Img (Element);
                begin
-                  Subtypes.Append (new Wide_String'(Text));
+                  Classes.Append (new Wide_String'(Text));
                end;
             end if;
 
@@ -158,14 +160,35 @@ procedure Xkinds is
       end case;
    end Post_Operation;
 
-   --------------------
-   -- Print_Subtypes --
-   --------------------
+   -----------------------
+   -- Print_Id_Subtypes --
+   -----------------------
 
-   procedure Print_Subtypes (O : in out Output_Record) is
+   procedure Print_Id_Subtypes (O : in out Output_Record) is
       use String_Lists;
 
       procedure Process_One_Node_Kind (Position : Cursor);
+      procedure Process_One_Class_Kind (Position : Cursor);
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Id is Why_Node_Id");
+         PL (O, "  with Predicate =>");
+         PL (O, "  (" & S.all & "_Id = W_Empty");
+         PL (O, "   or else (Get_Kind (" & S.all & "_Id)");
+         PL (O, "            in " & S.all & "'Range));");
+         NL (O);
+         PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
 
       ---------------------------
       -- Process_One_Node_Kind --
@@ -174,18 +197,63 @@ procedure Xkinds is
       procedure Process_One_Node_Kind (Position : Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         PL (O, "subtype " & S.all & "_Id is Why_Node_Id;");
+         PL (O, "subtype " & S.all & "_Id is Why_Node_Id");
+         PL (O, "  with Predicate =>");
+         PL (O, "  (Option (" & S.all & "_Id,");
+         PL (O, "           "& S.all & ")" & ");");
          NL (O);
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
-
-         if Position /= Subtypes.Last then
-            NL (O);
-         end if;
+         NL (O);
       end Process_One_Node_Kind;
 
    begin
-      Subtypes.Iterate (Process_One_Node_Kind'Access);
-   end Print_Subtypes;
+      Nodes.Iterate (Process_One_Node_Kind'Access);
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Id_Subtypes;
+
+   ---------------------------------
+   -- Print_Unchecked_Id_Subtypes --
+   ---------------------------------
+
+   procedure Print_Unchecked_Id_Subtypes (O : in out Output_Record) is
+      use String_Lists;
+
+      procedure Process_One_Node_Kind (Position : Cursor);
+      procedure Process_One_Class_Kind (Position : Cursor);
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+      ---------------------------
+      -- Process_One_Node_Kind --
+      ---------------------------
+
+      procedure Process_One_Node_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+         NL (O);
+      end Process_One_Node_Kind;
+
+   begin
+      Nodes.Iterate (Process_One_Node_Kind'Access);
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Unchecked_Id_Subtypes;
 
    Control : Traverse_Control := Continue;
    State   : Traversal_State := Before_Why_Node_Kind;
@@ -215,6 +283,9 @@ begin
    Dissociate (My_Context);
    Finalize;
 
-   Add ("Declare_Node_Ids", Print_Subtypes'Access);
+   Add ("Declare_Node_Ids", Print_Id_Subtypes'Access);
+   Add ("Declare_Unchecked_Ids", Print_Unchecked_Id_Subtypes'Access);
+
    Process ("why-ids.ads");
+   Process ("why-unchecked_ids.ads");
 end Xkinds;
