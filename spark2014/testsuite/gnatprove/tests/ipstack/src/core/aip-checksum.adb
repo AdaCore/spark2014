@@ -87,7 +87,11 @@ package body AIP.Checksum is
          Odd := False;
       else
          Odd := True;
-         Result := Get_Byte;
+         if System.Default_Bit_Order = System.Low_Order_First then
+            Result := Get_Byte * 256;
+         else
+            Result := Get_Byte;
+         end if;
          Data_I := Data_I + 1;
          Remain := Remain - 1;
       end if;
@@ -181,6 +185,7 @@ package body AIP.Checksum is
          Chunk_Data   := Buffers.Buffer_Payload (Chunk_Buf);
          Chunk_Length := U16_T'Min (Remain, Buffers.Buffer_Len (Chunk_Buf));
          Result := Result + Sum_Chunk (Chunk_Data, Chunk_Length);
+         Wrap (Result);
          Remain := Remain - Chunk_Length;
          if Chunk_Length mod 2 /= 0 then
             Swapped := not Swapped;
