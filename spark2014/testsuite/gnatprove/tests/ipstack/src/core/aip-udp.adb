@@ -40,6 +40,8 @@ is
    UPCBs : UDP_UPCB_Array;
 
    Bound_PCBs : AIP.EID;
+   subtype UDP_PCB_Heads_Range is Natural range 1 .. 1;
+   subtype UDP_PCB_Heads is PCBs.PCB_List (UDP_PCB_Heads_Range);
 
    ----------------
    --  UDP_Init  --
@@ -143,12 +145,12 @@ is
    is
       PCB : AIP.EID;
    begin
-      PCBs.Find_PCB
+      PCBs.Find_PCB_In_List
         (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
          Local_Port  => UDPH.UDPH_Dst_Port (Uhdr),
          Remote_IP   => IPH.IPH_Src_Address (Ihdr),
          Remote_Port => UDPH.UDPH_Src_Port (Uhdr),
-         PCB_List    => Bound_PCBs,
+         PCB_Head    => Bound_PCBs,
          PCB_Pool    => IPCBs,
          PCB         => PCB);
       return PCB;
@@ -161,11 +163,13 @@ is
    procedure UDP_Input
      (Buf   : Buffers.Buffer_Id;
       Netif : NIF.Netif_Id)
-      --# global in out Buffers.State, Bound_PCBs, IPCBs, UPCBs;
+      --# global in out Buffers.State; in Bound_PCBs, IPCBs, UPCBs;
 
    is
-      Ihdr, Uhdr : System.Address;
+      pragma Unreferenced (Netif);
+      Ihdr, Uhdr, PUhdr : System.Address;
 
+      PUH_Buf : Buffers.Buffer_Id;
       Err : AIP.Err_T;
       PCB : AIP.EID := PCBs.NOPCB;
    begin
@@ -175,22 +179,40 @@ is
       Ihdr := Buffers.Buffer_Payload (Buf);
       IP_To_UDP (Buf, Uhdr, Err);
 
+      --  Verify UDP checksum
+
+      Buffers.Buffer_Alloc
+        (0, UDPH.UDP_Pseudo_Header_Size / 8, Buffers.SPLIT_BUF, PUH_Buf);
+
+      if PUH_Buf =  Buffers.NOBUF then
+         Err := AIP.ERR_MEM;
+      else
+         PUhdr := Buffers.Buffer_Payload (PUH_Buf);
+
+         UDPH.Set_UDPP_Src_Address (PUhdr, IPH.IPH_Src_Address (Ihdr));
+         UDPH.Set_UDPP_Dst_Address (PUhdr, IPH.IPH_Dst_Address (Ihdr));
+         UDPH.Set_UDPP_Zero        (PUhdr, 0);
+         UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
+         UDPH.Set_UDPP_Length      (PUhdr, UDPH.UDPH_Length (Uhdr));
+
+         Buffers.Buffer_Chain (PUH_Buf, Buf);
+
+         if Checksum.Sum (PUH_Buf, Buffers.Buffer_Tlen (PUH_Buf))
+              /= 16#ffff#
+         then
+            Err := AIP.ERR_VAL;
+         end if;
+
+         Buffers.Buffer_Blind_Free (PUH_Buf);
+      end if;
+
       --  Find the best UDP PCB to take the datagram, verify the checksum
       --  and adjust the payload offset before passing up to the applicative
       --  callback.
 
       if AIP.No (Err) then
          PCB := UDP_PCB_For (Ihdr, Uhdr);
-
-         if PCB /= PCBs.NOPCB
-           or else
-             IPaddrs.Same (NIF.NIF_Addr (Netif), IPH.IPH_Dst_Address (Ihdr))
-         then
-            null;  --  ??? cksum check here
-         end if;
-
          if PCB = PCBs.NOPCB then
-
             --  Recover IP header and send ICMP destination unreachable
 
             Buffers.Buffer_Header
@@ -219,59 +241,21 @@ is
 
          Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
 
-         UDP_Event
-           (UDP_Event_T'(Kind => UDP_RECV,
-                         Buf  => Buf,
-                         IP   => IPH.IPH_Src_Address (Ihdr),
-                         Port => UDPH.UDPH_Src_Port (Uhdr)),
-            PCB,
-            UPCBs (PCB).RECV_Cb);
+         if AIP.No (Err) then
+            UDP_Event
+              (UDP_Event_T'(Kind => UDP_RECV,
+                            Buf  => Buf,
+                            IP   => IPH.IPH_Src_Address (Ihdr),
+                            Port => UDPH.UDPH_Src_Port (Uhdr)),
+               PCB,
+               UPCBs (PCB).RECV_Cb);
+         end if;
 
          --  No free if buffer passed to application???
       else
          Buffers.Buffer_Blind_Free (Buf);
       end if;
    end UDP_Input;
-
-   ------------------
-   -- PCB_Bound_To --
-   ------------------
-
-   function PCB_Bound_To (Port : PCBs.Port_T) return AIP.EID
-      --# global in IPCBs, Bound_PCBs;
-   is
-      Pid : AIP.EID;
-   begin
-      Pid := Bound_PCBs;
-      loop
-         exit when Pid = PCBs.NOPCB or else IPCBs (Pid).Local_Port = Port;
-         Pid := IPCBs (Pid).Link;
-      end loop;
-      return Pid;
-   end PCB_Bound_To;
-
-   --------------------
-   -- Available_Port --
-   --------------------
-
-   function Available_Port return PCBs.Port_T
-      --# global in IPCBs, Bound_PCBs;
-   is
-      Aport : PCBs.Port_T := PCBs.NOPORT;  --  Port found to be available
-      Cport : PCBs.Port_T;                 --  Candidate port to examine
-   begin
-      Cport := Config.UDP_LOCAL_PORT_FIRST;
-      loop
-         exit when Aport /= PCBs.NOPORT
-                     or else Cport > Config.UDP_LOCAL_PORT_LAST;
-         if PCB_Bound_To (Cport) = PCBs.NOPCB then
-            Aport := Cport;
-         else
-            Cport := Cport + 1;
-         end if;
-      end loop;
-      return Aport;
-   end Available_Port;
 
    ----------------
    --  UDP_Bind  --
@@ -285,41 +269,54 @@ is
       --# global in out IPCBs, Bound_PCBs;
    is
       Rebind       : Boolean;
-      Pid          : AIP.EID;
-      Port_To_Bind : PCBs.Port_T;
+      Pid          : AIP.EID := PCBs.NOPCB;
+      Port_To_Bind : PCBs.Port_T := PCBs.NOPORT;
    begin
+      pragma Assert (PCB /= PCBs.NOPCB);
+
       Err := AIP.NOERR;
 
-      --  See if we're rebinding an already bound PCB, and/or if
-      --  we're binding to the same addr/port as another bound PCB.
+      --  See if we're rebinding an already bound PCB, and/or if we're binding
+      --  to the same addr/port as another bound PCB.
 
       Rebind := False;
 
-      Pid := Bound_PCBs;
-      while Pid /= PCBs.NOPCB and then AIP.No (Err) loop
-         if Pid = PCB then
-            Rebind := True;
-         elsif not Config.UDP_SHARED_ENDPOINTS
-           and then PCBs.Bound_To (IPCBs (Pid), Local_IP, Local_Port)
-         then
-            Err := AIP.ERR_USE;
-         end if;
-         Pid := IPCBs (Pid).Link;
-      end loop;
+      if Local_Port /= 0 then
+         PCBs.Find_PCB_In_List
+           (Local_IP    => Local_IP,
+            Local_Port  => Local_Port,
+            Remote_IP   => IPaddrs.IP_ADDR_ANY,
+            Remote_Port => 0,
+            PCB_Head    => Bound_PCBs,
+            PCB_Pool    => IPCBs,
+            PCB         => Pid);
+      end if;
+
+      if Pid = PCB then
+         Rebind := True;
+      elsif Pid /= PCBs.NOPCB and then not Config.UDP_SHARED_ENDPOINTS then
+         Err := AIP.Err_Use;
+      end if;
 
       if AIP.No (Err) then
 
          --  Pick an available port if none was specified
 
          if Local_Port = PCBs.NOPORT then
-            Port_To_Bind := Available_Port;
+            Port_To_Bind :=
+              PCBs.Available_Port
+                (PCB_Heads  => UDP_PCB_Heads'(1 => Bound_PCBs),
+                 PCB_Pool   => IPCBs,
+                 Privileged => False);
             if Port_To_Bind = PCBs.NOPORT then
                Err := AIP.ERR_MEM;
             end if;
          else
             Port_To_Bind := Local_Port;
          end if;
+      end if;
 
+      if AIP.No (Err) then
          --  Assign the local IP/port, and insert into the list of bound PCBs
          --  unless it was already there.
 
@@ -331,7 +328,6 @@ is
             Bound_PCBs := PCB;
          end if;
       end if;
-
    end UDP_Bind;
 
    --------------------
@@ -463,7 +459,7 @@ is
       Dst_Port : PCBs.Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T)
-      --# global in out Buffers.State, IPCBs, Bound_PCBs;
+      --# global in out Buffers.State, IP.State, IPCBs, Bound_PCBs;
    is
       Ubuf : Buffers.Buffer_Id;
       Ulen : AIP.U16_T;
@@ -576,7 +572,7 @@ is
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T)
-      --# global in out Buffers.State, IPCBs, Bound_PCBs;
+      --# global in out Buffers.State, IP.State, IPCBs, Bound_PCBs; in IP.FIB;
    is
       Dst_IP : IPaddrs.IPaddr;
       Dst_Port : PCBs.Port_T;
@@ -644,7 +640,7 @@ is
    -------------------
 
    procedure UDP_Release (PCB : PCBs.PCB_Id)
-      --# global in out IPCBs, UPCBs, Bound_PCBs;
+      --# global in out IPCBs, Bound_PCBs;
    is
    begin
       PCB_Unlink (PCB);

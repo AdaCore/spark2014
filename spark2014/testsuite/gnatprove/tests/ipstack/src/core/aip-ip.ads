@@ -7,16 +7,16 @@
 
 with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
---# inherit AIP.IPaddrs, AIP.NIF, AIP.Buffers,
---#         System, AIP.Checksum, AIP.Config, AIP.IPH, AIP.ICMPH;
+--# inherit System, AIP.Buffers, AIP.Checksum, AIP.Config, AIP.ICMPH,
+--#         AIP.IPaddrs, AIP.IPH, AIP.NIF;
 
 package AIP.IP
---# own State;
---# initializes State;
+--# own State, FIB;
+--# initializes State, FIB;
 is
 
    procedure Set_Default_Router (IPA : IPaddrs.IPaddr);
-   --# global in out State;
+   --# global out FIB;
    --  Set the default route to the given value
 
    --  IP_PCB is the common part of the PCB for all IP-based protocols
@@ -36,18 +36,18 @@ is
       --  Time To Live
    end record;
 
-   IP_PCB_Initializer : constant IP_PCB
-     := IP_PCB'(Local_IP  => IPaddrs.IP_ADDR_ANY,
-                Remote_IP => IPaddrs.IP_ADDR_ANY,
-                SOO       => 0,
-                TOS       => 0,
-                TTL       => 0);
+   IP_PCB_Initializer : constant IP_PCB :=
+                          IP_PCB'(Local_IP  => IPaddrs.IP_ADDR_ANY,
+                                  Remote_IP => IPaddrs.IP_ADDR_ANY,
+                                  SOO       => 0,
+                                  TOS       => 0,
+                                  TTL       => 0);
 
    procedure IP_Route
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;
       Netif    : out AIP.EID);
-   --# global in State;
+   --# global in FIB;
    --  Find next hop IP address and outbound interface for Dst_IP
 
    procedure IP_Input (Netif : NIF.Netif_Id; Buf : Buffers.Buffer_Id);

@@ -67,8 +67,26 @@ package body AIP.TCP is
    IPCBs : TCP_IPCB_Array;
    TPCBs : TCP_TPCB_Array;
 
-   Bound_PCBs  : PCBs.PCB_Id;
-   Listen_PCBs : PCBs.PCB_Id;
+   Bound_PCBs     : PCBs.PCB_Id;
+   Listen_PCBs    : PCBs.PCB_Id;
+   Active_PCBs    : PCBs.PCB_Id;
+   Time_Wait_PCBs : PCBs.PCB_Id;
+   subtype TCP_PCB_Heads_Range is Natural range 1 .. 4;
+   subtype TCP_PCB_Heads is PCBs.PCB_List (TCP_PCB_Heads_Range);
+
+   ---------------
+   -- PCB_Clear --
+   ---------------
+
+   procedure PCB_Clear (PCB : PCBs.PCB_Id)
+      --# global in out PCBs;
+   is
+   begin
+      IPCBs (PCB) := PCBs.IP_PCB_Initializer;
+      TPCBs (PCB) := TCP_PCB_Initializer;
+
+      IPCBs (PCB).Link := PCBs.NOPCB;
+   end PCB_Clear;
 
    --------------
    -- TCP_Init --
@@ -84,8 +102,10 @@ package body AIP.TCP is
       IPCBs := TCP_IPCB_Array'(others => PCBs.IP_PCB_Initializer);
       TPCBs := TCP_TPCB_Array'(others => TCP_PCB_Initializer);
 
-      Bound_PCBs  := PCBs.NOPCB;
-      Listen_PCBs := PCBs.NOPCB;
+      Bound_PCBs     := PCBs.NOPCB;
+      Listen_PCBs    := PCBs.NOPCB;
+      Active_PCBs    := PCBs.NOPCB;
+      Time_Wait_PCBs := PCBs.NOPCB;
    end TCP_Init;
 
    -------------
@@ -116,27 +136,73 @@ package body AIP.TCP is
    -- TCP_New --
    -------------
 
-   function TCP_New return PCBs.PCB_Id is
+   procedure TCP_New (Id : out PCBs.PCB_Id)
+   --# global in out PCBs;
+   is
    begin
-      --  Generated stub: replace with real body!
-      raise Program_Error;
-      return TCP_New;
+      PCBs.Allocate_PCB (IPCBs, Id);
+
+      if Id /= PCBs.NOPCB then
+         PCB_Clear (Id);
+         IPCBs (Id).TTL := Config.TCP_TTL;
+      end if;
    end TCP_New;
 
    --------------
    -- TCP_Bind --
    --------------
 
-   function TCP_Bind
+   procedure TCP_Bind
      (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
-      Port : AIP.U16_T)
-      return AIP.Err_T
+      Port : AIP.U16_T;
+      Err  : out Err_T)
    is
+      B_Port : PCBs.Port_T;
+      Other_PCB : PCBs.PCB_Id;
    begin
+      pragma Assert (PCB /= PCBs.NOPCB);
+      Err := NOERR;
+
+      if TPCBs (PCB).State /= Closed then
+         Err := ERR_ISCONN;
+      end if;
+
+      if Port = 0 then
+         B_Port :=
+           PCBs.Available_Port
+             (PCB_Heads  =>
+                  TCP_PCB_Heads'(1 => Listen_PCBs,
+                                 2 => Bound_PCBs,
+                                 3 => Active_PCBs,
+                                 4 => Time_Wait_PCBs),
+              PCB_Pool   => IPCBs,
+              Privileged => False);
+         if B_Port = 0 then
+            Err := ERR_MEM;
+         end if;
+      else
+         B_Port := Port;
+
+         PCBs.Find_PCB (Local_IP    => Addr,
+                        Local_Port  => Port,
+                        Remote_IP   => IPaddrs.IP_ADDR_ANY,
+                        Remote_Port => 0,
+                        PCB_Heads   =>
+                          TCP_PCB_Heads'(1 => Listen_PCBs,
+                                         2 => Bound_PCBs,
+                                         3 => Active_PCBs,
+                                         4 => Time_Wait_PCBs),
+                        PCB_Pool    => IPCBs,
+                        PCB         => Other_PCB);
+
+         if Other_PCB /= PCBs.NOPCB then
+            Err := ERR_USE;
+         end if;
+      end if;
+
       --  Generated stub: replace with real body!
       raise Program_Error;
-      return TCP_Bind (PCB, Addr, Port);
    end TCP_Bind;
 
    ----------------

@@ -44,7 +44,7 @@ is
    --------------------------------------------
 
    function Buffer_Payload (Buf : Rbuf_Id) return System.Address;
-   --# global in State;
+   --# global in Common.Buf_List, State;
 
    --------------------------------------------
    -- Common/specific buffer Id translations --

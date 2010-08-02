@@ -42,6 +42,16 @@ package AIP.Config is
    Max_ARP_Entries : constant := 20;
    --  ARP table size
 
+   ----------------------
+   -- IP configuration --
+   ----------------------
+
+   Enable_Forwarding : constant Boolean := False;
+
+   First_Ephemeral_Port : constant := 32_768;
+   Last_Ephemeral_Port  : constant := 49_151;
+   --  Range of ephemeral ports for UDP and TCP
+
    -----------------------
    -- UDP configuration --
    -----------------------
@@ -56,11 +66,6 @@ package AIP.Config is
    UDP_SHARED_ENDPOINTS : constant Boolean := False;
    --  Whether we should accept binding to an already used local endpoint
 
-   UDP_LOCAL_PORT_FIRST : constant := 32_768;
-   UDP_LOCAL_PORT_LAST  : constant := 49_151;
-   --  Range of local port numbers examined when an arbitrary choice needs
-   --  to be made
-
    -----------------------
    -- TCP configuration --
    -----------------------
@@ -68,8 +73,12 @@ package AIP.Config is
    MAX_TCP_PCB : constant := 20;
    --  Maximum number for TCP PCBs in use at any time
 
-   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
+   TCP_TTL : constant := 64;
+   --  IP TTL for TCP segments
 
-   Enable_Forwarding : constant Boolean := False;
+   TCP_MSL : constant := 2 * TCP_TTL;
+   --  Maximum Segment Life: 2 * TTL (in seconds)
+
+   TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
 
 end AIP.Config;

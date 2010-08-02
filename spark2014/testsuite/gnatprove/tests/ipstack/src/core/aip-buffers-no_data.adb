@@ -85,7 +85,7 @@ is
    begin
       --  Check that the free-list is not empty and pop the head
 
-      Support.Verify (Free_List /= NOBUF);
+      Support.Verify (Free_List /= Buffers.NOBUF);
 
       Buf       := Free_List;
       Cbuf      := To_Common_Id (Buf);
@@ -107,7 +107,7 @@ is
    --------------------
 
    function Buffer_Payload (Buf : Rbuf_Id) return System.Address
-   --# global in Buf_List;
+   --# global in Common.Buf_List, Buf_List;
    is
    begin
       return Conversions.Ofs

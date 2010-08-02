@@ -26,6 +26,52 @@ package body AIP.PCBs is
       end loop Scan_PCBs;
    end Allocate_PCB;
 
+   --------------------
+   -- Available_Port --
+   --------------------
+
+   function Available_Port
+     (PCB_Heads  : PCB_List;
+      PCB_Pool   : IP_PCB_Array;
+      Privileged : Boolean) return Port_T
+   is
+      Candidate : Port_T;
+      Last      : Port_T;
+      Pid       : PCB_Id;
+   begin
+      if Privileged then
+         Candidate := 1023;
+         Last      := 1;
+      else
+         Candidate := Config.First_Ephemeral_Port;
+         Last      := Config.Last_Ephemeral_Port;
+      end if;
+
+      Scan_Ports : loop
+         Find_PCB (Local_IP    => IPaddrs.IP_ADDR_ANY,
+                   Local_Port  => Candidate,
+                   Remote_IP   => IPaddrs.IP_ADDR_ANY,
+                   Remote_Port => NOPORT,
+                   PCB_Heads   => PCB_Heads,
+                   PCB_Pool    => PCB_Pool,
+                   PCB         => Pid);
+         exit Scan_Ports when Pid = NOPCB;
+
+         if Candidate = Last then
+            Candidate := NOPORT;
+            exit Scan_Ports;
+         end if;
+
+         if Privileged then
+            Candidate := Candidate - 1;
+         else
+            Candidate := Candidate + 1;
+         end if;
+      end loop Scan_Ports;
+
+      return Candidate;
+   end Available_Port;
+
    --------------
    -- Bound_To --
    --------------
@@ -50,11 +96,38 @@ package body AIP.PCBs is
       Local_Port  : Port_T;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
-      PCB_List    : AIP.EID;
+      PCB_Heads   : PCB_List;
       PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id)
    is
-      Cid : AIP.EID;
+   begin
+      for J in PCB_Heads'Range loop
+         Find_PCB_In_List
+           (Local_IP,
+            Local_Port,
+            Remote_IP,
+            Remote_Port,
+            PCB_Heads (J),
+            PCB_Pool,
+            PCB);
+         exit when PCB /= NOPCB;
+      end loop;
+   end Find_PCB;
+
+   ----------------------
+   -- Find_PCB_In_List --
+   ----------------------
+
+   procedure Find_PCB_In_List
+     (Local_IP    : IPaddrs.IPaddr;
+      Local_Port  : Port_T;
+      Remote_IP   : IPaddrs.IPaddr;
+      Remote_Port : Port_T;
+      PCB_Head    : PCB_Id;
+      PCB_Pool    : IP_PCB_Array;
+      PCB         : out PCB_Id)
+   is
+      Cid : PCB_Id;
       Ideal_PCB, Good_PCB : AIP.EID := NOPCB;
 
       Local_Match, Remote_Match : Boolean;
@@ -63,7 +136,7 @@ package body AIP.PCBs is
       --  Scan the given PCB list, looking for a PCB associated with the given
       --  local, and possibly remote, endpoint identifications.
 
-      Cid := PCB_List;
+      Cid := PCB_Head;
 
       loop
          exit when Ideal_PCB /= NOPCB or else Cid = NOPCB;
@@ -72,15 +145,18 @@ package body AIP.PCBs is
          --  does when the port numbers are the same and either the packet was
          --  broadcasted to the interface or the specific destination IP
          --  matches what PCB is listening to (when the latter is that IP or
-         --  ANY).
+         --  ANY). Note: IPaddrs.Match returns True if both addresses are the
+         --  same or if either is ANY.
 
          Local_Match :=
-           PCB_Pool (Cid).Local_Port = Local_Port
-           and then
+           Match (PCB_Pool (Cid).Local_Port, Local_Port)
+             and then
            (IPaddrs.Match (PCB_Pool (Cid).Local_IP, Local_IP)
               or else
             IPaddrs.Match (NIF.NIF_Broadcast (PCB_Pool (Cid).Netif),
-                           Local_IP));
+                           Local_IP)
+              or else
+            IPaddrs.Match (IPaddrs.IP_ADDR_BCAST, Local_IP));
 
          --  If we don't have a local match, proceed with the next
          --  candidate. If we do have a local match, see if the PCB remote
@@ -91,8 +167,9 @@ package body AIP.PCBs is
 
          if Local_Match then
             Remote_Match :=
-              PCB_Pool (Cid).Remote_Port = Remote_Port
-                 and then IPaddrs.Match (PCB_Pool (Cid).Remote_IP, Remote_IP);
+              Match (PCB_Pool (Cid).Remote_Port, Remote_Port)
+                and then
+              IPaddrs.Match (PCB_Pool (Cid).Remote_IP, Remote_IP);
 
             if Remote_Match then
                Ideal_PCB := Cid;
@@ -111,6 +188,15 @@ package body AIP.PCBs is
          PCB := Good_PCB;
          --  Might be NULID
       end if;
-   end Find_PCB;
+   end Find_PCB_In_List;
+
+   -----------
+   -- Match --
+   -----------
+
+   function Match (P1, P2 : Port_T) return Boolean is
+   begin
+      return P1 = NOPORT or else P2 = NOPORT or else P1 = P2;
+   end Match;
 
 end AIP.PCBs;

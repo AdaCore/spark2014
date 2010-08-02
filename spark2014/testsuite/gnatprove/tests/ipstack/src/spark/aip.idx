@@ -39,4 +39,4 @@ AIP.TCP             body          is in ../core/aip-tcp.adb
 AIP.Checksum        specification is in ../core/aip-checksum.ads
 AIP.IP              specification is in ../core/aip-ip.ads
 AIP.UDP             specification is in ../core/aip-udp.ads
-
+AIP.UDP             body          is in ../core/aip-udp.adb

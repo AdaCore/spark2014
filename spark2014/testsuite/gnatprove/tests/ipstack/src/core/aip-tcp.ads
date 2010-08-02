@@ -14,7 +14,7 @@ with AIP.IPaddrs;
 with AIP.NIF;
 with AIP.PCBs;
 
---# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.PCBs,
+--# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.NIF, AIP.PCBs,
 --#         AIP.Buffers, AIP.Config;
 
 package AIP.TCP
@@ -60,14 +60,15 @@ is
    -- Setting up TCP connections --
    --------------------------------
 
-   function TCP_New return PCBs.PCB_Id;
+   procedure TCP_New (Id : out PCBs.PCB_Id);
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
 
-   function TCP_Bind
+   procedure TCP_Bind
      (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
-      Port : PCBs.Port_T) return AIP.Err_T;
+      Port : PCBs.Port_T;
+      Err  : out AIP.Err_T);
    --  Bind PCB to the provided IP ADDRess (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
@@ -110,7 +111,7 @@ is
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
       Cb   : Connect_Cb_Id;
-      Err  : out Err_T);
+      Err  : out AIP.Err_T);
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -131,7 +132,7 @@ is
       Data  : System.Address;
       Len   : AIP.U16_T;
       Flags : AIP.U8_T;
-      Err   : out Err_T);
+      Err   : out AIP.Err_T);
    --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
    --  TCP_WRITE constants below. If all goes well, this function returns
    --  NOERR. This function will fail and return ERR_MEM if the length of the
@@ -261,5 +262,18 @@ is
    procedure TCP_Fast_Timer;
    procedure TCP_Slow_Timer;
    --  Document???
+
+private
+
+   --------------------------
+   -- Internal subprograms --
+   --------------------------
+
+   --  All declared here because SPARK forbids forward declarations in package
+   --  bodies.
+
+   procedure PCB_Clear (PCB : PCBs.PCB_Id);
+   --# global in out State;
+   --  Reset/Initialize PCB fields for fresh (re)use
 
 end AIP.TCP;

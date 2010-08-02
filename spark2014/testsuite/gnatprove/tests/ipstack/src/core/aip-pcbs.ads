@@ -85,13 +85,37 @@ package AIP.PCBs is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : Port_T) return Boolean;
 
+   type PCB_List is array (Natural range <>) of PCB_Id;
+
    procedure Find_PCB
      (Local_IP    : IPaddrs.IPaddr;
       Local_Port  : Port_T;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : Port_T;
-      PCB_List    : AIP.EID;
+      PCB_Heads   : PCB_List;
       PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id);
+   --  PCB_Heads denotes the heads of each PCB list to be considered
+   --  PCB_Pool is the set of all PCBs, indexed by PCB Id.
+
+   procedure Find_PCB_In_List
+     (Local_IP    : IPaddrs.IPaddr;
+      Local_Port  : Port_T;
+      Remote_IP   : IPaddrs.IPaddr;
+      Remote_Port : Port_T;
+      PCB_Head    : PCB_Id;
+      PCB_Pool    : IP_PCB_Array;
+      PCB         : out PCB_Id);
+   --  Same as above but search a single list whose head is PCB_Head
+
+   function Available_Port
+     (PCB_Heads  : PCB_List;
+      PCB_Pool   : IP_PCB_Array;
+      Privileged : Boolean) return Port_T;
+   --  Return a local port that is not in use for any of the lists whose heads
+   --  are in PCB_Heads. If Privileged, try to find a port number < 1024.
+
+   function Match (P1, P2 : Port_T) return Boolean;
+   --  True if P1 = P2 or either is NOPORT
 
 end AIP.PCBs;

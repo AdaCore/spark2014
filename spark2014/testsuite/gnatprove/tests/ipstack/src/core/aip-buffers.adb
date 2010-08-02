@@ -190,7 +190,7 @@ is
    --------------------
 
    function Buffer_Payload (Buf : Buffer_Id) return System.Address
-   --# global in Data.State, No_Data.State;
+   --# global in Data.State, No_Data.State, Common.Buf_List;
    is
       Result : System.Address;
    begin
@@ -283,8 +283,8 @@ is
       --  Amount by which we need to shift the payload pointer. Positive
       --  for a move forward.
    begin
-      Pload_Shift
-        := AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
+      Pload_Shift :=
+        AIP.S16_T (Conversions.Diff (Pload, Buffer_Payload (Buf)));
       Buffer_Header (Buf, -Pload_Shift, Err);
    end Buffer_Set_Payload;
 

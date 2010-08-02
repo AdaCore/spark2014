@@ -15,7 +15,7 @@ with AIP.PCBs;
 
 --# inherit System, AIP, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
 --#         AIP.ICMP, AIP.ICMPH, AIP.Inet, AIP.IP, AIP.IPaddrs, AIP.IPH,
---#         AIP.NIF,  AIP.PCBs, AIP.UDPH;
+--#         AIP.NIF, AIP.PCBs, AIP.UDPH;
 
 package AIP.UDP
    --# own State;
@@ -68,7 +68,7 @@ is
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id;
       Err : out AIP.Err_T);
-   --# global in out Buffers.State, State;
+   --# global in out Buffers.State, IP.State, State; in IP.FIB;
    --  Send BUF data to the current destination endpoint of PCB, as
    --  established by UDP_Connect. Force a local binding on PCB if none is
    --  setup already. BUF is not deallocated and its payload pointer is
@@ -132,17 +132,17 @@ is
 
    procedure UDP_Event
      (Ev : UDP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
-   --# global in out Buffers.State; in out State;
+   --# global in out Buffers.State;
    pragma Import (Ada, UDP_Event, "AIP_udp_event");
-   --  Process UDP event EV, aimed at bound PCB, for which Cbid was
-   --  registered. Expected to be provided by the applicative code.
+   --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
+   --  Expected to be provided by the applicative code.
 
    -----------------------
    -- IPstack interface --
    -----------------------
 
    procedure UDP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State; in out State;
+   --# global in out Buffers.State; in State;
    --  Hook for IP.  Dispatches a UDP datagram in BUF to the user callback
    --  registered for the destination port, if any. Discards the datagram
    --  (free BUF) otherwise.
@@ -171,21 +171,6 @@ private
    --  Force a local binding on PCB if it isn't bound already.
    --
    --  ERR as UDP_Bind.
-
-   ------------------------
-   -- UDP_Bind internals --
-   ------------------------
-
-   function PCB_Bound_To (Port : PCBs.Port_T) return AIP.EID;
-   --# global in State;
-   --  From the list of bound PCBs, first one bound to the indicated local port
-   --  or NOPCB if none is found.
-   --  Binding IP address ignored???
-
-   function Available_Port return PCBs.Port_T;
-   --# global in State;
-   --  Arbitrary local Port number to which no PCB is currently bound.
-   --  NOPORT if no such port is available.
 
    -------------------------
    -- UDP_Input internals --
@@ -231,7 +216,7 @@ private
       Dst_Port : PCBs.Port_T;
       Netif    : NIF.Netif_Id;
       Err      : out AIP.Err_T);
-   --# global in out Buffers.State, State;
+   --# global in out Buffers.State, IP.State, State;
    --  Send BUF to DST_IP/DST_PORT via next hop NH_IP through NETIF, acting
    --  for PCB. This involves prepending a UDP header in front of BUF.
    --

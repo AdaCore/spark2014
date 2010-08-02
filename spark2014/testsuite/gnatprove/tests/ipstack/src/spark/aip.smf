@@ -23,5 +23,7 @@
 ../core/aip-ipaddrs.adb
 ../core/aip-nif.ads
 ../core/aip-pools.ads
+../core/aip-ip.ads
+../core/aip-ip.adb
 ../core/aip-udp.ads
 ../core/aip-udp.adb

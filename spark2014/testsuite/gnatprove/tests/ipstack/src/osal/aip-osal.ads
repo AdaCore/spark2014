@@ -10,6 +10,9 @@
 
 with AIP.NIF;
 
+--# inherit AIP.ARP, AIP.Buffers, AIP.IPaddrs, AIP.NIF, AIP.Platform,
+--#         AIP.TCP, AIP.UDP;
+
 package AIP.OSAL is
 
    procedure Initialize;

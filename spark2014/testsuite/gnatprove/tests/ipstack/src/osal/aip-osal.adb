@@ -7,6 +7,7 @@ with AIP.ARP;
 with AIP.Buffers;
 with AIP.IPaddrs;
 with AIP.Platform;
+with AIP.TCP;
 with AIP.UDP;
 
 package body AIP.OSAL is
@@ -32,6 +33,7 @@ package body AIP.OSAL is
 
       Buffers.Buffer_Init;
       UDP.UDP_Init;
+      TCP.TCP_Init;
       ARP.Initialize;
       NIF.Initialize;
 

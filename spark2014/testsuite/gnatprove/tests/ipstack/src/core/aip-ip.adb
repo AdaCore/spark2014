@@ -16,7 +16,8 @@ with AIP.UDP;
 with AIP.TCP;
 
 package body AIP.IP
---# own State is Default_Router, IP_Serial;
+   --# own State is IP_Serial
+   --#     & FIB is Default_Router;
 is
 
    Default_Router : IPaddrs.IPaddr := IPaddrs.IP_ADDR_ANY;
@@ -47,8 +48,16 @@ is
       Dst_Netif : AIP.EID;
       --  Local netif whose address is the destination address of the datagram
 
-      Local : Boolean;
+      Local : Boolean := False;
       --  Set True for a packet bound for the local node
+
+--    procedure Dispatch_Upper
+--      (Proto : AIP.U8_T;
+--       Buf   : Buffers.Buffer_Id;
+--       Netif : NIF.Netif_Id;
+--       Err   : out AIP.Err_T);
+      --  Dispatch packet in Buf received on Netif to upper protocol layer
+      --  according to IP protocol identifier Proto.
 
       --------------------
       -- Dispatch_Upper --
@@ -100,10 +109,12 @@ is
       --    IP version
       --    checksum
 
+      Ihdr := Buffers.Buffer_Payload (Buf);
+
       if False
            or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
-           or else (Buffers.Buffer_Tlen (Buf)
-                      < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
+           or else Buffers.Buffer_Tlen (Buf)
+                     < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4
            or else IPH.IPH_Version (Ihdr) /= 4
            or else (IPH.IPH_Checksum (Ihdr) /= 0
                      and then Checksum.Sum
@@ -229,6 +240,11 @@ is
          NIF.Get_Netif_By_Address
            (Addr => Default_Router, Mask => True, Nid => Netif);
          Next_Hop := Default_Router;
+
+      else
+         --  Netif is IF_NOID, no route to destination, so no next hop address
+
+         Next_Hop := IPaddrs.IP_ADDR_ANY;
       end if;
    end IP_Route;
 
