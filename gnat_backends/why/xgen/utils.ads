@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         X T R E E _ T A B L E S                          --
+--                                U T I L S                                 --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,49 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
-with Why.Sinfo; use Why.Sinfo;
+with Asis;
 
-package Xtree_Tables is
+package Utils is
 
-   type String_Access is access Wide_String;
+   function Img (Element : Asis.Element) return Wide_String;
 
-   type Field_Info is record
-      Field_Name     : String_Access;
-      Field_Type     : String_Access;
-      Is_Why_Node_Id : Boolean;
-      Is_List        : Boolean;
-      Maybe_Null     : Boolean;
-   end record;
-
-   package Node_Lists is
-      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Field_Info,
-                                              "=" => "=");
-
-   type Why_Node_Info is record
-      Max_Field_Name_Length : Natural := 0;
-      Variant_Range_First   : Why_Node_Kind;
-      Variant_Range_Last    : Why_Node_Kind;
-      Fields                : Node_Lists.List;
-   end record;
-
-   Common_Fields : Why_Node_Info := (0,
-                                     Why_Node_Kind'First,
-                                     Why_Node_Kind'Last,
-                                     Node_Lists.Empty_List);
-
-   Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
-
-   procedure New_Field (NI : in out Why_Node_Info; FI : Field_Info);
-
-   function Max_Param_Length (Kind : Why_Node_Kind) return Natural;
-
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Id_Type_Name (Kind : Wide_String) return Wide_String;
-   function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function List_Type_Name (Kind : Wide_String) return Wide_String;
-   function Param_Name (Field_Name : Wide_String) return Wide_String;
-
-end Xtree_Tables;
+end Utils;

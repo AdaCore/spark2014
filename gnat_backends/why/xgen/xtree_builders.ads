@@ -1,5 +1,6 @@
 
 with Xtree_Tables; use Xtree_Tables;
+with Outputs;      use Outputs;
 
 package Xtree_Builders is
 

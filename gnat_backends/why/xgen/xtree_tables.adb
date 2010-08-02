@@ -24,13 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Conversions; use Ada.Characters.Conversions;
-with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
 with Ada.Containers;   use Ada.Containers;
 with GNAT.Case_Util; use GNAT.Case_Util;
 
 package body Xtree_Tables is
-
-   procedure I  (O : in out Output_Record);
 
    function Strip_Prefix (Name : Wide_String) return Wide_String;
    function Strip_Suffix (Name : Wide_String) return Wide_String;
@@ -45,20 +42,6 @@ package body Xtree_Tables is
       return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
    end Builder_Name;
 
-   -------
-   -- I --
-   -------
-
-   procedure I (O : in out Output_Record) is
-   begin
-      if O.New_Line then
-         for J in 1 .. O.Indent loop
-            Put (" ");
-         end loop;
-         O.New_Line := False;
-      end if;
-   end I;
-
    ------------------
    -- Id_Type_Name --
    ------------------
@@ -72,16 +55,6 @@ package body Xtree_Tables is
    begin
       return Kind & "_Id";
    end Id_Type_Name;
-
-   -------------------
-   -- Library_Level --
-   -------------------
-
-   procedure Library_Level (O : in out Output_Record) is
-   begin
-      O.Indent := 3;
-      O.New_Line := True;
-   end Library_Level;
 
    --------------------
    -- List_Type_Name --
@@ -109,35 +82,6 @@ package body Xtree_Tables is
                      FI.Field_Name'Length);
    end New_Field;
 
-   --------
-   -- NL --
-   --------
-
-   procedure NL (O : in out Output_Record) is
-   begin
-      New_Line;
-      O.New_Line := True;
-   end NL;
-
-   -----------------
-   -- Open_Output --
-   -----------------
-
-   function Open_Output return Output_Record is
-   begin
-      return Output_Record'(0, False);
-   end Open_Output;
-
-   -------
-   -- P --
-   -------
-
-   procedure P  (O : in out Output_Record; S : Wide_String) is
-   begin
-      I (O);
-      Put (S);
-   end P;
-
    ----------------
    -- Param_Name --
    ----------------
@@ -146,26 +90,6 @@ package body Xtree_Tables is
    begin
       return Strip_Prefix (Field_Name);
    end Param_Name;
-
-   --------
-   -- PL --
-   --------
-
-   procedure PL (O : in out Output_Record; S : Wide_String) is
-   begin
-      I (O);
-      Put_Line (S);
-      O.New_Line := True;
-   end PL;
-
-   ---------------------
-   -- Relative_Indent --
-   ---------------------
-
-   procedure Relative_Indent (O : in out Output_Record; Diff : Integer) is
-   begin
-      O.Indent := Natural (O.Indent + Diff);
-   end Relative_Indent;
 
    ----------------------
    -- Max_Param_Length --

@@ -24,8 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Wide_Text_IO;           use Ada.Wide_Text_IO;
-with Ada.Strings;                use Ada.Strings;
-with Ada.Strings.Wide_Fixed;     use Ada.Strings.Wide_Fixed;
 
 with Asis;                       use Asis;
 with Asis.Implementation;        use Asis.Implementation;
@@ -33,8 +31,9 @@ with Asis.Ada_Environments;      use Asis.Ada_Environments;
 with Asis.Compilation_Units;     use Asis.Compilation_Units;
 with Asis.Iterator;              use Asis.Iterator;
 with Asis.Elements;              use Asis.Elements;
-with Asis.Text;                  use Asis.Text;
 with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
+
+with Utils;                      use Utils;
 
 procedure Xkinds is
    --  ASIS helper that takes Why.Sinfo's syntax tree and generates a list
@@ -82,8 +81,7 @@ procedure Xkinds is
          when Before_Why_Node_Kind =>
             if Kind = A_Defining_Identifier then
                declare
-                  Text : constant Asis.Program_Text :=
-                           Trim (Asis.Text.Element_Image (Element), Both);
+                  Text : constant Asis.Program_Text := Img (Element);
                begin
                   if Text = "Why_Node_Kind" then
                      State := In_Why_Node_Kind;
@@ -94,8 +92,7 @@ procedure Xkinds is
          when In_Why_Node_Kind =>
             if Kind = A_Defining_Enumeration_Literal then
                declare
-                  Text : constant Asis.Program_Text :=
-                           Trim (Asis.Text.Element_Image (Element), Both);
+                  Text : constant Asis.Program_Text := Img (Element);
                begin
                   Print_Subtypes (Text);
                   New_Line;
@@ -105,8 +102,7 @@ procedure Xkinds is
          when In_Why_Node_Class_Declaration =>
             if Kind = A_Defining_Identifier then
                declare
-                  Text : constant Asis.Program_Text :=
-                           Trim (Asis.Text.Element_Image (Element), Both);
+                  Text : constant Asis.Program_Text := Img (Element);
                begin
                   Print_Subtypes (Text);
                   New_Line;

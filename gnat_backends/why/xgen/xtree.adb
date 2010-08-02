@@ -23,9 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                use Ada.Strings;
-with Ada.Strings.Wide_Fixed;     use Ada.Strings.Wide_Fixed;
-
 with Asis;                       use Asis;
 with Asis.Implementation;        use Asis.Implementation;
 with Asis.Declarations;          use Asis.Declarations;
@@ -34,12 +31,13 @@ with Asis.Ada_Environments;      use Asis.Ada_Environments;
 with Asis.Compilation_Units;     use Asis.Compilation_Units;
 with Asis.Iterator;              use Asis.Iterator;
 with Asis.Elements;              use Asis.Elements;
-with Asis.Text;                  use Asis.Text;
 with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 
 with Xtree_Tables;               use Xtree_Tables;
 with Xtree_Builders;             use Xtree_Builders;
 with Why.Sinfo;                  use Why.Sinfo;
+with Utils;                      use Utils;
+with Outputs;                    use Outputs;
 
 procedure Xtree is
    --  ASIS helper that takes Why.Atree's syntax tree and generates
@@ -94,8 +92,7 @@ procedure Xtree is
          when Before_Why_Node =>
             if Kind = A_Defining_Identifier then
                declare
-                  Text : constant Asis.Program_Text :=
-                           Trim (Asis.Text.Element_Image (Element), Both);
+                  Text : constant Asis.Program_Text := Img (Element);
                begin
                   if Text = "Why_Node" then
                      State.Step := In_Why_Node;
@@ -169,8 +166,7 @@ procedure Xtree is
                      Defining_Name_Image (Name);
       C_Def      : constant Asis.Component_Definition :=
                      Object_Declaration_View (Element);
-      Type_Image : constant Program_Text :=
-                     Trim (Element_Image (C_Def), Both);
+      Type_Image : constant Program_Text := Img (C_Def);
       FI         : constant Field_Info :=
                      (Field_Name     => new Wide_String'(Name_Image),
                       Field_Type     => new Wide_String'(Type_Image),
@@ -205,18 +201,15 @@ procedure Xtree is
          declare
             First_E : constant Asis.Expression := Lower_Bound (Choice);
             Last_E  : constant Asis.Expression := Upper_Bound (Choice);
-            First_I : constant Wide_String :=
-                        Trim (Element_Image (First_E), Both);
-            Last_I  : constant Wide_String :=
-                        Trim (Element_Image (Last_E), Both);
+            First_I : constant Wide_String := Img (First_E);
+            Last_I  : constant Wide_String := Img (Last_E);
          begin
             V_First := Why_Node_Kind'Wide_Value (First_I);
             V_Last := Why_Node_Kind'Wide_Value (Last_I);
          end;
       else
          declare
-            Choice_I : constant Wide_String :=
-                         Trim (Element_Image (Choice), Both);
+            Choice_I : constant Wide_String := Img (Choice);
          begin
             V_First := Why_Node_Kind'Wide_Value (Choice_I);
             V_Last := Why_Node_Kind'Wide_Value (Choice_I);

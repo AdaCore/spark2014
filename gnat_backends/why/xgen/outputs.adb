@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         X T R E E _ T A B L E S                          --
+--                              O U T P U T S                               --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,49 +23,83 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
-with Why.Sinfo; use Why.Sinfo;
+with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
 
-package Xtree_Tables is
+package body Outputs is
 
-   type String_Access is access Wide_String;
+   procedure I  (O : in out Output_Record);
 
-   type Field_Info is record
-      Field_Name     : String_Access;
-      Field_Type     : String_Access;
-      Is_Why_Node_Id : Boolean;
-      Is_List        : Boolean;
-      Maybe_Null     : Boolean;
-   end record;
+   -------
+   -- I --
+   -------
 
-   package Node_Lists is
-      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Field_Info,
-                                              "=" => "=");
+   procedure I (O : in out Output_Record) is
+   begin
+      if O.New_Line then
+         for J in 1 .. O.Indent loop
+            Put (" ");
+         end loop;
+         O.New_Line := False;
+      end if;
+   end I;
 
-   type Why_Node_Info is record
-      Max_Field_Name_Length : Natural := 0;
-      Variant_Range_First   : Why_Node_Kind;
-      Variant_Range_Last    : Why_Node_Kind;
-      Fields                : Node_Lists.List;
-   end record;
+   -------------------
+   -- Library_Level --
+   -------------------
 
-   Common_Fields : Why_Node_Info := (0,
-                                     Why_Node_Kind'First,
-                                     Why_Node_Kind'Last,
-                                     Node_Lists.Empty_List);
+   procedure Library_Level (O : in out Output_Record) is
+   begin
+      O.Indent := 3;
+      O.New_Line := True;
+   end Library_Level;
 
-   Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
+   --------
+   -- NL --
+   --------
 
-   procedure New_Field (NI : in out Why_Node_Info; FI : Field_Info);
+   procedure NL (O : in out Output_Record) is
+   begin
+      New_Line;
+      O.New_Line := True;
+   end NL;
 
-   function Max_Param_Length (Kind : Why_Node_Kind) return Natural;
+   -----------------
+   -- Open_Output --
+   -----------------
 
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Id_Type_Name (Kind : Wide_String) return Wide_String;
-   function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function List_Type_Name (Kind : Wide_String) return Wide_String;
-   function Param_Name (Field_Name : Wide_String) return Wide_String;
+   function Open_Output return Output_Record is
+   begin
+      return Output_Record'(0, False);
+   end Open_Output;
 
-end Xtree_Tables;
+   -------
+   -- P --
+   -------
+
+   procedure P  (O : in out Output_Record; S : Wide_String) is
+   begin
+      I (O);
+      Put (S);
+   end P;
+
+   --------
+   -- PL --
+   --------
+
+   procedure PL (O : in out Output_Record; S : Wide_String) is
+   begin
+      I (O);
+      Put_Line (S);
+      O.New_Line := True;
+   end PL;
+
+   ---------------------
+   -- Relative_Indent --
+   ---------------------
+
+   procedure Relative_Indent (O : in out Output_Record; Diff : Integer) is
+   begin
+      O.Indent := Natural (O.Indent + Diff);
+   end Relative_Indent;
+
+end Outputs;
