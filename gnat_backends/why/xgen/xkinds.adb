@@ -50,16 +50,23 @@ procedure Xkinds is
       In_Why_Node_Kind,
       After_Why_Node_Kind,
       In_Why_Node_Class_Declaration);
+   --  The traversal of the syntax tree is implemented as a state machine
+   --  whose states are defined by this enumeration and whose transitions
+   --  are triggered by the detection of some Ada entities. See the
+   --  case statements in Pre_Operation/Post_Operation for more details
+   --  about these states and transitions.
 
    procedure Pre_Operation
      (Element :        Asis.Element;
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State);
+   --  Pre_Operation hook of the ASIS traversal of the syntax tree
 
    procedure Post_Operation
      (Element :        Asis.Element;
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State);
+   --  Post_Operation hook of the ASIS traversal of the syntax tree
 
    procedure Traverse_Source is new Asis.Iterator.Traverse_Element
      (State_Information => Traversal_State);
@@ -69,11 +76,27 @@ procedure Xkinds is
    package String_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Wide_String_Access, "=");
 
-   Nodes   : String_Lists.List;
-   Classes : String_Lists.List;
+   Kinds   : String_Lists.List;
+   --  List of node kinds; extracted from the syntax tree of Why.Sinfo
+   --  by the ASIS traversal.
 
-   procedure Print_Id_Subtypes (O : in out Output_Record);
-   procedure Print_Unchecked_Id_Subtypes (O : in out Output_Record);
+   Classes : String_Lists.List;
+   --  List of node classes; extracted from the syntax tree of Why.Sinfo
+   --  by the ASIS traversal.
+
+   procedure Print_Subtypes (O : in out Output_Record);
+   --  Expand the kind-specific subtype declarations of Why_Node_Id
+   --  and Why_Node_List. To each subtypes a predicate is associated
+   --  that assert that the corresponding element in the node table (or
+   --  node list) is of the given Kind (e.g. a W_Type_Id always point to an
+   --  element of kind W_Type in the node table; and W_Type_List contains only
+   --  elements of kind W_Type).
+   --  Same thing for classes.
+
+   procedure Print_Unchecked_Subtypes (O : in out Output_Record);
+   --  Same as Print_Subtypes, except that the expanded subtype declarations
+   --  will have no subtype predicate; (e.g. W_Type_Unchecked_Id and
+   --  W_Type_Unchecked_List for kind W_Type).
 
    -------------------
    -- Pre_Operation --
@@ -107,7 +130,7 @@ procedure Xkinds is
                declare
                   Text : constant Asis.Program_Text := Img (Element);
                begin
-                  Nodes.Append (new Wide_String'(Text));
+                  Kinds.Append (new Wide_String'(Text));
                end;
             end if;
 
@@ -160,15 +183,20 @@ procedure Xkinds is
       end case;
    end Post_Operation;
 
-   -----------------------
-   -- Print_Id_Subtypes --
-   -----------------------
+   --------------------
+   -- Print_Subtypes --
+   --------------------
 
-   procedure Print_Id_Subtypes (O : in out Output_Record) is
+   procedure Print_Subtypes (O : in out Output_Record) is
       use String_Lists;
 
       procedure Process_One_Node_Kind (Position : Cursor);
+      --  Same as Print_Subtypes, but only for the kind
+      --  pointed by Position.
+
       procedure Process_One_Class_Kind (Position : Cursor);
+      --  Same as Print_Subtypes, but only for the class
+      --  pointed by Position.
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -203,23 +231,34 @@ procedure Xkinds is
          PL (O, "           "& S.all & ")" & ");");
          NL (O);
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
-         NL (O);
+
+         if Position /= Kinds.Last then
+            NL (O);
+         end if;
       end Process_One_Node_Kind;
 
+   --  Start of processing for Print_Subtypes
+
    begin
-      Nodes.Iterate (Process_One_Node_Kind'Access);
+      Kinds.Iterate (Process_One_Node_Kind'Access);
+      NL (O);
       Classes.Iterate (Process_One_Class_Kind'Access);
-   end Print_Id_Subtypes;
+   end Print_Subtypes;
 
-   ---------------------------------
-   -- Print_Unchecked_Id_Subtypes --
-   ---------------------------------
+   ------------------------------
+   -- Print_Unchecked_Subtypes --
+   ------------------------------
 
-   procedure Print_Unchecked_Id_Subtypes (O : in out Output_Record) is
+   procedure Print_Unchecked_Subtypes (O : in out Output_Record) is
       use String_Lists;
 
       procedure Process_One_Node_Kind (Position : Cursor);
+      --  Same as Print_Unchecked_Subtypes, but only for the kind
+      --  pointed by Position
+
       procedure Process_One_Class_Kind (Position : Cursor);
+      --  Same as Print_Unchecked_Subtypes, but only for the class
+      --  pointed by Position
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -247,17 +286,25 @@ procedure Xkinds is
          PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
          NL (O);
          PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
-         NL (O);
+
+         if Position /= Kinds.Last then
+            NL (O);
+         end if;
       end Process_One_Node_Kind;
 
+   --  Start of processing for Print_Unchecked_Subtypes
+
    begin
-      Nodes.Iterate (Process_One_Node_Kind'Access);
+      Kinds.Iterate (Process_One_Node_Kind'Access);
+      NL (O);
       Classes.Iterate (Process_One_Class_Kind'Access);
-   end Print_Unchecked_Id_Subtypes;
+   end Print_Unchecked_Subtypes;
 
    Control : Traverse_Control := Continue;
    State   : Traversal_State := Before_Why_Node_Kind;
 begin
+   --  Traversal of the syntax tree to gather kind/class names
+
    Implementation.Initialize ("-ws");
    Ada_Environments.Associate
     (My_Context, "My Asis Context", "-C1 ./why-sinfo.adt");
@@ -283,8 +330,10 @@ begin
    Dissociate (My_Context);
    Finalize;
 
-   Add ("Declare_Node_Ids", Print_Id_Subtypes'Access);
-   Add ("Declare_Unchecked_Ids", Print_Unchecked_Id_Subtypes'Access);
+   --  Production of packages from the kind/class lists
+
+   Add ("Declare_Node_Ids", Print_Subtypes'Access);
+   Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
 
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");

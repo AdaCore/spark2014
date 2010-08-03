@@ -26,7 +26,9 @@
 with Asis;
 
 package Utils is
+   --  Some utilities used by xkinds/xtree
 
    function Img (Element : Asis.Element) return Wide_String;
+   --  Return the Wide_String image of Element (trimed on both sides)
 
 end Utils;

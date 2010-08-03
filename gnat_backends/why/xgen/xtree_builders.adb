@@ -1,21 +1,48 @@
-with Ada.Containers; use Ada.Containers;
-with Why.Sinfo; use Why.Sinfo;
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNAT2WHY COMPONENTS                           --
+--                                                                          --
+--                       X T R E E _ B U I L D E R S                        --
+--                                                                          --
+--                                 S p e c                                  --
+--                                                                          --
+--                       Copyright (C) 2010, AdaCore                        --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute it and/or modify it   --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software Foundation;  either version  2,  or  (at your option) any later --
+-- version. gnat2why is distributed in the hope that it will  be  useful,   --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-  --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License  for more details. You  should  have  received a copy of the GNU --
+-- General Public License  distributed with GNAT; see file COPYING. If not, --
+-- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
+-- Boston,                                                                  --
+--                                                                          --
+-- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with Why.Sinfo;    use Why.Sinfo;
+with Xtree_Tables; use Xtree_Tables;
 
 package body Xtree_Builders is
 
    procedure Print_Builder_Declaration
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
+   --  Print builder declaration for the given node kind
 
    procedure Print_Builder_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
+   --  Print builder specification for the given node kind
 
-   --------------------
-   -- Print_Builders --
-   --------------------
+   --------------------------------
+   -- Print_Builder_Declarations --
+   --------------------------------
 
-   procedure Print_Builders
+   procedure Print_Builder_Declarations
      (O  : in out Output_Record)
    is
    begin
@@ -26,7 +53,7 @@ package body Xtree_Builders is
             NL (O);
          end if;
       end loop;
-   end Print_Builders;
+   end Print_Builder_Declarations;
 
    -------------------------------
    -- Print_Builder_Declaration --
@@ -97,6 +124,8 @@ package body Xtree_Builders is
          Field_Number := Field_Number + 1;
       end Print_Parameter_Specification;
 
+   --  Start of processing for Print_Builder_Specification
+
    begin
       PL (O, "function " & Builder_Name (Kind));
       Relative_Indent (O, 2);
@@ -108,44 +137,5 @@ package body Xtree_Builders is
       P (O, "return " & Id_Type_Name (Kind));
       Relative_Indent (O, -2);
    end Print_Builder_Specification;
-
-   ------------------
-   -- Print_Fields --
-   ------------------
-
-   procedure Print_Fields
-     (O  : in out Output_Record;
-      NI : Why_Node_Info)
-   is
-      use Node_Lists;
-
-      procedure Print_Field (Position : Cursor);
-
-      -----------------
-      -- Print_Field --
-      -----------------
-
-      procedure Print_Field (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-      begin
-         P (O, FI.Field_Name.all);
-
-         --  Align columns
-
-         for J in FI.Field_Name'Length .. NI.Max_Field_Name_Length loop
-            P (O, " ");
-         end loop;
-         P (O, " : ");
-
-         PL (O, FI.Field_Type.all);
-      end Print_Field;
-
-   begin
-      if NI.Fields.Length = 0 then
-         PL (O, "null;");
-      else
-         NI.Fields.Iterate (Print_Field'Access);
-      end if;
-   end Print_Fields;
 
 end Xtree_Builders;

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                              W H Y - I D S                               --
+--                    W H Y - U N C H E C K E D _ I D S                     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -26,7 +26,7 @@
 
 with Why.Types; use Why.Types;
 
-package Why.Ids is
+package Why.Unchecked_Ids is
    --  Declarations of subtypes of Why_Node_Id; one per node kind.
    --  Same as regular Ids, except that those are unchecked, i.e. they
    --  have no subtype predicate. These should only be needed in
@@ -36,4 +36,4 @@ package Why.Ids is
 
    _@Declare_Unchecked_Ids@_
 
-end Why.Ids;
+end Why.Unchecked_Ids;

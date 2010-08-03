@@ -26,27 +26,54 @@
 with Ada.Wide_Text_IO; use Ada.Wide_Text_IO;
 
 package Outputs is
+   --  This package provides some utilities to output indented text
+   --  into a file.
 
    type Output_Record is limited private;
+   --  An output record is a handle on an output file.
+   --  It maintains an indentation level and offers ways to
+   --  modify it and to write into its output file.
 
    procedure Open_Output
      (O        : in out Output_Record;
       Filename : String);
+   --  Open Filename and set O's output to the corresponding file
+   --  descriptor.
+
    procedure Close_Output (O : in out Output_Record);
+   --  Close output O. After this operation, O shall not be used
+   --  anymore.
 
    procedure Absolute_Indent (O : in out Output_Record; Level : Natural);
+   --  Set the indentation level of O to Level
+
    procedure Relative_Indent (O : in out Output_Record; Diff : Integer);
+   --  Increase the indentation level of O by Level (or decrease it
+   --  if Level is lesser than zero).
 
    procedure P  (O : in out Output_Record; S : Wide_String);
+   --  Put S to output O, indenting it if need be
+
    procedure PL (O : in out Output_Record; S : Wide_String);
+   --  Put_Line S to output O, indenting it if need be
+
    procedure NL (O : in out Output_Record);
+   --  Add a new line to output O; no trailing spaces are added
+   --  even if the identation level is greater than zero.
 
 private
 
    type Output_Record is limited record
       File     : File_Type;
+      --  Underlying file handle
+
       Indent   : Natural := 0;
+      --  Indentation level
+
       New_Line : Boolean := False;
+      --  Whether or not the last write in File created a new line;
+      --  this is used to know if spaces should be written before
+      --  the next P/PL operation (for indentation).
    end record;
 
 end Outputs;

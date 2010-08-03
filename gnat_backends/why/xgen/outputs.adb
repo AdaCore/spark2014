@@ -26,6 +26,8 @@
 package body Outputs is
 
    procedure I  (O : in out Output_Record);
+   --  If a new line has just been created, print as many spaces
+   --  as the indentation level requires.
 
    ------------------
    -- Close_Output --

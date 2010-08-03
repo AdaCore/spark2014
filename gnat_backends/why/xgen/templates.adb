@@ -35,10 +35,13 @@ package body Templates is
 
    type String_Access is access all String;
 
-   type Printer is access procedure (O : in out Output_Record);
+   type Printer is not null access procedure (O : in out Output_Record);
 
    type Substitution_Info is record
+      --  Base type for substitutions
+
       Generator : Printer;
+      --  Procedure to call in order to perform the substitution
    end record;
 
    function Hash (Key : String_Access) return Hash_Type;
@@ -53,6 +56,8 @@ package body Templates is
       "=" => "=");
 
    Substitution_Map : Substitutions.Map;
+   --  Hashtable for substitutions; it records the association between
+   --  patterns and generators.
 
    ---------
    -- Add --

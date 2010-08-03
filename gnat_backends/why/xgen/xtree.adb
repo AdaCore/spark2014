@@ -41,7 +41,7 @@ with Templates;                  use Templates;
 
 procedure Xtree is
    --  ASIS helper that takes Why.Atree's syntax tree and generates
-   --  builders, accessors/updators, recursive traversal...
+   --  builders, accessors/mutators, recursive traversal...
 
    My_Context : Asis.Context;
 
@@ -50,20 +50,27 @@ procedure Xtree is
       In_Why_Node,
       In_Variant,
       After_Why_Node);
+   --  The traversal of the syntax tree is implemented as a state machine
+   --  whose states are defined by this enumeration and whose transitions
+   --  are triggered by the detection of some Ada entities. See the
+   --  case statements in Pre_Operation/Post_Operation for more details
+   --  about these states and transitions.
 
    type Traversal_State is record
-      Step                : Traversal_Step := Before_Why_Node;
+      Step : Traversal_Step := Before_Why_Node;
    end record;
 
    procedure Pre_Operation
      (Element : Asis.Element;
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State);
+   --  Pre_Operation hook of the ASIS traversal of the syntax tree
 
    procedure Post_Operation
      (Element : Asis.Element;
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State);
+   --  Post_Operation hook of the ASIS traversal of the syntax tree
 
    procedure Traverse_Source is new Asis.Iterator.Traverse_Element
      (State_Information => Traversal_State);
@@ -71,8 +78,12 @@ procedure Xtree is
    procedure Record_Field
      (NI      : in out Why_Node_Info;
       Element : Asis.Component_Declaration);
+   --  Extract field informations from the component declaration
+   --  and record it into Xtree_Tables.
 
    procedure Record_Variant (Element : Asis.Variant);
+   --  Extract variant informations from the variant node in the syntax tree
+   --  and record it into Xtree_Tables.
 
    -------------------
    -- Pre_Operation --
@@ -175,6 +186,7 @@ procedure Xtree is
    begin
       pragma Assert (C_Names'Length = 1);
       --  Support only one name only per component declaration
+
       New_Field (NI, FI);
    end Record_Field;
 
@@ -230,6 +242,9 @@ procedure Xtree is
    Control : Traverse_Control := Continue;
    State   : Traversal_State;
 begin
+   --  Traversal of the syntax tree to gather structural infos of
+   --  Why syntax trees
+
    Implementation.Initialize ("-ws");
    Ada_Environments.Associate
     (My_Context, "My Asis Context", "-C1 ./why-atree.adt");
@@ -255,6 +270,8 @@ begin
    Dissociate (My_Context);
    Finalize;
 
-   Add ("Declare_Builders", Print_Builders'Access);
+   --  Production of packages for builders, accessors, mutators
+
+   Add ("Declare_Builders", Print_Builder_Declarations'Access);
    Process ("why-atree-builders.ads");
 end Xtree;

@@ -29,9 +29,19 @@ with GNAT.Case_Util; use GNAT.Case_Util;
 
 package body Xtree_Tables is
 
+   function Id_Type_Name (Kind : Wide_String) return Wide_String;
+   function List_Type_Name (Kind : Wide_String) return Wide_String;
+   --  Helper functions for the corresponding homonyms
+
    function Strip_Prefix (Name : Wide_String) return Wide_String;
+   --  Strip anything that precedes the first underscord in Name
+   --  and return the result.
+
    function Strip_Suffix (Name : Wide_String) return Wide_String;
+   --  Strip anything that follows the last underscord in Name
+   --  and return the result.
    pragma Unreferenced (Strip_Suffix);
+   --  ??? Not used yet. We shall soon see if we really needs it.
 
    -----------------
    -- Buider_Name --
