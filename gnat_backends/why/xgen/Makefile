@@ -1,6 +1,8 @@
 
 all: why-ids.ads why-atree-builders.ads
 
+force:
+
 why-sinfo.adt: ../why-sinfo.ads
 	gcc -c -gnatct ../why-sinfo.ads
 
@@ -13,10 +15,10 @@ why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl why-unchecked_ids.ads-tmpl
 why-atree-builders.ads: xtree why-atree.adt why-atree-builders.ads-tmpl
 	./xtree
 
-xkinds: xkinds.adb
+xkinds: force
 	gnatmake -Phelpers xkinds
 
-xtree: xtree.adb
+xtree: force
 	gnatmake -Phelpers xtree
 
 clean:
@@ -25,7 +27,5 @@ clean:
 	-rm *.ali
 	-rm b~* 
 	-rm *.adt
-	-rm why-ids.ads
-	-rm why-atree-builders.ads
 	-rm xkinds
 	-rm xtree
