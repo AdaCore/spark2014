@@ -89,16 +89,18 @@ static void
 low_level_init(struct netif *netif)
 {
   struct mintapif *mintapif;
+  pid_t pid = getpid ();
 
   mintapif = netif->Dev;
 
   /* Obtain MAC address from network interface. */
-  (*mintapif->ethaddr)[0] = 1;
-  (*mintapif->ethaddr)[1] = 2;
-  (*mintapif->ethaddr)[2] = 3;
-  (*mintapif->ethaddr)[3] = 4;
-  (*mintapif->ethaddr)[4] = 5;
-  (*mintapif->ethaddr)[5] = 6;
+
+  (*mintapif->ethaddr)[0] = 2; /* Local, Unicast */
+  (*mintapif->ethaddr)[1] = 0;
+  (*mintapif->ethaddr)[2] = 0;
+  (*mintapif->ethaddr)[3] = 0;
+  (*mintapif->ethaddr)[4] = (pid >> 8) % 256;
+  (*mintapif->ethaddr)[5] = pid % 256;
 
   /* Do whatever else is needed to initialize interface. */
 
