@@ -38,8 +38,8 @@ package AIP.Config is
    --  Maximum number of Network Interfaces in use at a time (including down)
 
    function Interface_Parameters return System.Address;
-   --  Return the address of a NUL-terminated string containing interface
-   --  parameters.
+   --  Return the address of interface-specific parameters passed to the
+   --  driver's initialization routine.
 
    -----------------------
    -- ARP configuration --
