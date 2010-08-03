@@ -43,6 +43,20 @@ package body Xtree_Tables is
    pragma Unreferenced (Strip_Suffix);
    --  ??? Not used yet. We shall soon see if we really needs it.
 
+   -------------------
+   -- Accessor_Name --
+   -------------------
+
+   function Accessor_Name
+     (Kind : Why_Node_Kind;
+      FI   : Field_Info)
+     return Wide_String is
+   begin
+      return Strip_Prefix (Mixed_Case_Name (Kind))
+        & "_Get_"
+        & Strip_Prefix (FI.Field_Name.all);
+   end Accessor_Name;
+
    -----------------
    -- Buider_Name --
    -----------------
@@ -51,6 +65,36 @@ package body Xtree_Tables is
    begin
       return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
    end Builder_Name;
+
+   --------------------------------
+   -- Common_Field_Accessor_Name --
+   --------------------------------
+
+   function Common_Field_Accessor_Name
+     (FI   : Field_Info)
+     return Wide_String is
+   begin
+      return "Get_" & FI.Field_Name.all;
+   end Common_Field_Accessor_Name;
+
+   ----------------
+   -- Field_Name --
+   ----------------
+
+   function Field_Name (FI : Field_Info) return Wide_String is
+   begin
+      return FI.Field_Name.all;
+   end Field_Name;
+
+   ----------------------
+   -- Has_Variant_Part --
+   ----------------------
+
+   function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean is
+      use Node_Lists;
+   begin
+      return Why_Tree_Info (Kind).Fields.Length > 0;
+   end Has_Variant_Part;
 
    ------------------
    -- Id_Type_Name --
@@ -64,6 +108,11 @@ package body Xtree_Tables is
    function Id_Type_Name (Kind : Wide_String) return Wide_String is
    begin
       return Kind & "_Id";
+   end Id_Type_Name;
+
+   function Id_Type_Name (FI : Field_Info) return Wide_String is
+   begin
+      return FI.Field_Type.all;
    end Id_Type_Name;
 
    --------------------

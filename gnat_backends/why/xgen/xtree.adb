@@ -35,6 +35,7 @@ with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 
 with Xtree_Tables;               use Xtree_Tables;
 with Xtree_Builders;             use Xtree_Builders;
+with Xtree_Accessors;            use Xtree_Accessors;
 with Why.Sinfo;                  use Why.Sinfo;
 with Utils;                      use Utils;
 with Templates;                  use Templates;
@@ -273,5 +274,7 @@ begin
    --  Production of packages for builders, accessors, mutators
 
    Add ("Declare_Builders", Print_Builder_Declarations'Access);
+   Add ("Declare_Accessors", Print_Accessor_Declarations'Access);
    Process ("why-atree-builders.ads");
+   Process ("why-atree-accessors.ads");
 end Xtree;

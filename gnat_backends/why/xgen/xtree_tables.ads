@@ -88,6 +88,11 @@ package Xtree_Tables is
    procedure New_Field (NI : in out Why_Node_Info; FI : Field_Info);
    --  Add new field info to the node info
 
+   function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean;
+   --  True if a node of this kind has a variant part (i.e. is not
+   --  a leaf in the syntax tree; e.g. this returns False for
+   --  W_Type_Unit).
+
    function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Given a Field_Name, return the name to be use for the corresponding
    --  parameter (in, say, a builder or an accessor). This is meant to be
@@ -99,10 +104,26 @@ package Xtree_Tables is
    function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the mixed case name of the given node kind
 
+   function Common_Field_Accessor_Name
+     (FI   : Field_Info)
+     return Wide_String;
+   --  Return the name of the accessor for a field that is shared amongst
+   --  all node kinds.
+
+   function Accessor_Name
+     (Kind : Why_Node_Kind;
+      FI   : Field_Info)
+     return Wide_String;
+   --  Return the accessor name for the given field of the given node kind
+
    function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the builder name for the given node kind
 
+   function Field_Name (FI : Field_Info) return Wide_String;
+   --  Return the name of this field
+
    function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
+   function Id_Type_Name (FI : Field_Info) return Wide_String;
    --  Return the kind-specific id subtype name
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
