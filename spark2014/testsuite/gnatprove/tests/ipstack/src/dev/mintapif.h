@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
+ * Copyright (C) 2010, AdaCore
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -40,7 +41,7 @@ enum mintapif_signal {
   MINTAPIF_PACKET
 };
 
-void mintapif_init (Err_T *Err, Netif_Id *nid);
+void mintapif_init (char *Params, Err_T *Err, Netif_Id *nid);
 int mintapif_isr (Netif_Id nid);
 
 #endif /* __MINTAPIF_H__ */

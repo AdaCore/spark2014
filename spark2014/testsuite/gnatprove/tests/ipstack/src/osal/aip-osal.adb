@@ -3,8 +3,11 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with System;
+
 with AIP.ARP;
 with AIP.Buffers;
+with AIP.Config;
 with AIP.IPaddrs;
 with AIP.Platform;
 with AIP.TCP;
@@ -12,9 +15,14 @@ with AIP.UDP;
 
 package body AIP.OSAL is
 
-   procedure If_Init (Err : out Err_T; If_Id : out NIF.Netif_Id);
+   procedure If_Init
+     (Params : System.Address;
+      Err    : out Err_T;
+      If_Id  : out NIF.Netif_Id);
    pragma Import (C, If_Init, Platform.If_Init_Linkname);
-   --  Initialize network interface
+   --  Initialize network interface. Params is a null-terminated C string.
+   --  The interface's initialization routine is responsible for requesting
+   --  allocation of a Netif_Id from the NIF subsystem.
 
    ----------------
    -- Initialize --
@@ -39,7 +47,7 @@ package body AIP.OSAL is
 
       --  Set up interfaces
 
-      If_Init (Err, If_Id);
+      If_Init (Config.Interface_Parameters, Err, If_Id);
 
       if No (Err) then
          NIF.If_Config

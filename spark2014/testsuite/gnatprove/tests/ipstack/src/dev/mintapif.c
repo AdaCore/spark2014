@@ -44,6 +44,8 @@
 #include <sys/time.h>
 #include <sys/uio.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #if defined(linux)
 #include <sys/ioctl.h>
@@ -68,11 +70,17 @@
 #define IFNAME0 'e'
 #define IFNAME1 't'
 
+typedef enum { MODE_TAP, MODE_MCAST } mode_t;
+
 struct mintapif {
   Ethernet_Address *ethaddr;
   /* Add whatever per-interface state that is needed here. */
   unsigned long lasttime;
   int fd;
+  mode_t mode;
+
+  struct sockaddr_in dst_addr;
+  /* For mode == MODE_MCAST */
 };
 
 /* Forward declarations. */
@@ -86,12 +94,13 @@ static void  mintapif_input(Netif_Id nid);
  */
 
 static void
-low_level_init(struct netif *netif)
+low_level_init(char *Params, struct netif *netif)
 {
   struct mintapif *mintapif;
   pid_t pid = getpid ();
 
   mintapif = netif->Dev;
+  mintapif->fd = -1;
 
   /* Obtain MAC address from network interface. */
 
@@ -104,26 +113,113 @@ low_level_init(struct netif *netif)
 
   /* Do whatever else is needed to initialize interface. */
 
-  mintapif->fd = open(DEVTAP, O_RDWR);
-  if (mintapif->fd == -1) {
-    perror("tapif: tapif_init: open");
-    exit(1);
+  if (!Params) {
+    fprintf (stderr, "mintapif: parameters missing\n");
+    goto bailout;
   }
+
+  if (!strncmp (Params, "tap:", 4)) {
+    mintapif->mode = MODE_TAP;
+    mintapif->fd = open(DEVTAP, O_RDWR);
+    if (mintapif->fd < 0) {
+      perror("tapif: tapif_init: open");
+      goto bailout;
+    }
 
 #ifdef linux
-  {
-    struct ifreq ifr;
-    memset(&ifr, 0, sizeof(ifr));
-    ifr.ifr_flags = IFF_TAP|IFF_NO_PI;
-    if (ioctl(mintapif->fd, TUNSETIFF, (void *) &ifr) < 0) {
-      perror("ioctl");
-      exit(1);
+    {
+      struct ifreq ifr;
+      memset(&ifr, 0, sizeof(ifr));
+      ifr.ifr_flags = IFF_TAP|IFF_NO_PI;
+      if (ioctl(mintapif->fd, TUNSETIFF, (void *) &ifr) < 0) {
+	perror("ioctl");
+	goto bailout;
+      }
     }
-  }
 #endif /* Linux */
 
-  mintapif->lasttime = 0;
+  } else if (!strncmp (Params, "mcast:", 6)) {
+    struct hostent *h = NULL;
+    char *p;
+    int rc, val;
+    struct ip_mreq imr;
 
+    mintapif->mode = MODE_MCAST;
+    Params += 6;
+    p = strchr (Params, ':');
+    if (p) {
+      *(p++) = '\0';
+      rc = inet_aton (Params, &mintapif->dst_addr.sin_addr);
+      if (rc == 0) {
+	perror ("inet_aton");
+	goto bailout;
+      }
+      mintapif->dst_addr.sin_port = htons (atoi (p));
+      printf ("Multicast: %s:%d\n",
+	      inet_ntoa (mintapif->dst_addr.sin_addr),
+	      ntohs (mintapif->dst_addr.sin_port));
+    }
+
+    if (!IN_MULTICAST(ntohl (mintapif->dst_addr.sin_addr.s_addr))
+	|| !mintapif->dst_addr.sin_port) {
+      perror ("mcast params");
+      goto bailout;
+    }
+
+    if ((mintapif->fd = socket (AF_INET, SOCK_DGRAM, 0)) < 0) {
+      perror ("socket");
+      goto bailout;
+    }
+
+    val = 1;
+    rc = setsockopt (mintapif->fd, SOL_SOCKET, SO_REUSEADDR,
+		     (const char *)&val, sizeof val);
+    if (rc < 0) {
+      perror ("setsockopt(SO_REUSEADDR)");
+      goto bailout;
+    }
+
+    mintapif->dst_addr.sin_family = AF_INET;
+    rc = bind (mintapif->fd,
+	       (const struct sockaddr *) &mintapif->dst_addr,
+	       sizeof mintapif->dst_addr);
+    if (rc < 0) {
+      perror ("bind");
+      goto bailout;
+    }
+
+    imr.imr_multiaddr = mintapif->dst_addr.sin_addr;
+    imr.imr_interface.s_addr = htonl (INADDR_ANY);
+
+    rc = setsockopt(mintapif->fd, IPPROTO_IP, IP_ADD_MEMBERSHIP,
+                     (const char *)&imr, sizeof (struct ip_mreq));
+    if (rc < 0) {
+        perror("setsockopt(IP_ADD_MEMBERSHIP)");
+        goto bailout;
+    }
+
+    /* Force mcast msgs to loopback (support for several guests on same host */
+    val = 1;
+    rc = setsockopt (mintapif->fd, IPPROTO_IP, IP_MULTICAST_LOOP,
+		     (const char *)&val, sizeof(val));
+    if (rc < 0) {
+        perror("setsockopt(IP_MULTICAST_LOOP)");
+        goto bailout;
+    }
+
+  } else {
+    fprintf (stderr, "mintapif: bad parameters: %s\n", Params);
+    goto bailout;
+  }
+
+  mintapif->lasttime = 0;
+  return;
+
+  bailout:
+
+  if (mintapif->fd >= 0)
+    close (mintapif->fd);
+  exit (1);
 }
 /*-----------------------------------------------------------------------------------*/
 /*
@@ -164,7 +260,18 @@ low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
   }
 
   /* signal that packet should be sent(); */
-  written = write(mintapif->fd, buf, AIP_buffer_tlen (p));
+
+  switch (mintapif->mode) {
+    case MODE_TAP:
+      written = write (mintapif->fd, buf, AIP_buffer_tlen (p));
+      break;
+    case MODE_MCAST:
+      written = sendto (mintapif->fd, buf, AIP_buffer_tlen (p), 0,
+			(struct sockaddr *) &mintapif->dst_addr,
+			sizeof mintapif->dst_addr);
+      break;
+  }
+
   if (written == -1) {
     perror("tapif: write");
     /* *Err = ERR_xxx; ??? */
@@ -235,13 +342,16 @@ static void
 mintapif_configured (Netif_Id Nid, Err_T *Err) {
   char buf[1024];
   struct netif *netif = AIP_get_netif (Nid);
+  struct mintapif *mintapif = netif->Dev;
 
-  snprintf(buf, sizeof(buf), "/sbin/ifconfig " IFCONFIG_ARGS,
-	   netif->Remote >> 24,
-	   (netif->Remote >> 16) & 0xff,
-	   (netif->Remote >> 8) & 0xff,
-	   netif->Remote & 0xff);
-  system(buf);
+  if (mintapif->mode == MODE_TAP) {
+    snprintf(buf, sizeof(buf), "/sbin/ifconfig " IFCONFIG_ARGS,
+	     netif->Remote >> 24,
+	     (netif->Remote >> 16) & 0xff,
+	     (netif->Remote >> 8) & 0xff,
+	     netif->Remote & 0xff);
+    system(buf);
+  }
   *Err = NOERR;
 }
 
@@ -309,7 +419,7 @@ static int initialized = 0;
 static struct mintapif mintapif_dev;
 
 void
-mintapif_init (Err_T *Err, Netif_Id *Nid)
+mintapif_init (char *Params, Err_T *Err, Netif_Id *Nid)
 {
   struct netif *netif;
   struct mintapif *mintapif;
@@ -364,7 +474,7 @@ mintapif_init (Err_T *Err, Netif_Id *Nid)
   netif->LL_Address_Length = 6;
   mintapif->ethaddr = (Ethernet_Address*)&(netif->LL_Address[0]);
 
-  low_level_init(netif);
+  low_level_init(Params, netif);
 
   netif->State = Up;
   *Err = NOERR;

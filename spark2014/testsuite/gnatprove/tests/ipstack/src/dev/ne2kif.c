@@ -46,7 +46,7 @@ static Buffer_Id low_level_input(struct netif *netif);
  *
  */
 static int initialized = 0;
-void ne2kif_init (Err_T *Err, Netif_Id *Nid)
+void ne2kif_init (char *Params, Err_T *Err, Netif_Id *Nid)
 {
   struct netif *netif;
 

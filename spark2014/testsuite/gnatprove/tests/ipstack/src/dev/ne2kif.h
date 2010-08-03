@@ -29,7 +29,7 @@
 /**
  *  Driver functions.
  */
-void ne2kif_init (Err_T *Err, Netif_Id *Nid);
+void ne2kif_init (char *Params, Err_T *Err, Netif_Id *Nid);
 int ne2kif_isr (Netif_Id Nid);
 
 U16_T write_AX88796(U8_T * buf, U16_T remote_Addr, U16_T Count);

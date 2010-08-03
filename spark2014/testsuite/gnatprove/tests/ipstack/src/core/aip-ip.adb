@@ -109,8 +109,6 @@ is
       --    IP version
       --    checksum
 
-      Ihdr := Buffers.Buffer_Payload (Buf);
-
       if False
            or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
            or else Buffers.Buffer_Tlen (Buf)

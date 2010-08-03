@@ -5,11 +5,13 @@
 
 --  AIP configuration parameters
 
---# inherit AIP;
+--# inherit AIP, System;
+
+with System;
 
 package AIP.Config is
 
-   pragma Pure;
+   pragma Preelaborate;
 
    ---------------------------
    -- Buffers configuration --
@@ -34,6 +36,10 @@ package AIP.Config is
 
    MAX_NETIF : constant := 20;
    --  Maximum number of Network Interfaces in use at a time (including down)
+
+   function Interface_Parameters return System.Address;
+   --  Return the address of a NUL-terminated string containing interface
+   --  parameters.
 
    -----------------------
    -- ARP configuration --
