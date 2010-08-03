@@ -25,6 +25,9 @@ package AIP.PCBs is
    subtype Port_T is AIP.U16_T;
    NOPORT : constant Port_T := 0;
 
+   function Match (P1, P2 : Port_T) return Boolean;
+   --  True if P1 = P2 or either is NOPORT
+
    type IP_PCB is record
       Link        : AIP.EID;
       --  Link to next PCB. Set no PCB_Unused to mark unallocated PCBs, and to
@@ -79,13 +82,23 @@ package AIP.PCBs is
    procedure Allocate_PCB
      (PCB_Pool : in out IP_PCB_Array;
       Id       : out AIP.EID);
+   --  Find an unused PCB in PCB_Pool (denoted by Link = PCB_Unused) and return
+   --  its id, or NOPCB if none is found.
 
-   function Bound_To
-     (PCB        : IP_PCB;
-      Local_IP   : IPaddrs.IPaddr;
-      Local_Port : Port_T) return Boolean;
+   --  In the subprograms below, PCB_Heads denote the heads of the various
+   --  lists of in-use PCBs maintained by each higher level protocol (TCP or
+   --  UDP), and PCB_Pool the array of IP_PCB objecs.
 
    type PCB_List is array (Natural range <>) of PCB_Id;
+
+   procedure Bind_PCB
+     (PCB        : PCB_Id;
+      Local_IP   : IPaddrs.IPaddr;
+      Local_Port : Port_T;
+      PCB_Heads  : PCB_List;
+      PCB_Pool   : in out IP_PCB_Array;
+      Err        : out AIP.Err_T);
+   --  Bind PCB to the given local address and port
 
    procedure Find_PCB
      (Local_IP    : IPaddrs.IPaddr;
@@ -108,6 +121,14 @@ package AIP.PCBs is
       PCB         : out PCB_Id);
    --  Same as above but search a single list whose head is PCB_Head
 
+   procedure Unlink
+     (PCB : PCB_Id;
+      PCB_Head : in out PCB_Id;
+      PCB_Pool : in out IP_PCB_Array);
+   --  Remove PCB from list whose head is PCB_Head
+
+private
+
    function Available_Port
      (PCB_Heads  : PCB_List;
       PCB_Pool   : IP_PCB_Array;
@@ -115,7 +136,9 @@ package AIP.PCBs is
    --  Return a local port that is not in use for any of the lists whose heads
    --  are in PCB_Heads. If Privileged, try to find a port number < 1024.
 
-   function Match (P1, P2 : Port_T) return Boolean;
-   --  True if P1 = P2 or either is NOPORT
+   function Bound_To
+     (PCB        : IP_PCB;
+      Local_IP   : IPaddrs.IPaddr;
+      Local_Port : Port_T) return Boolean;
 
 end AIP.PCBs;

@@ -20,6 +20,7 @@ package body AIP.PCBs is
       Scan_PCBs : for J in PCB_Pool'Range loop
          if PCB_Pool (J).Link = PCB_Unused then
             Id := J;
+            PCB_Pool (J) := IP_PCB_Initializer;
             PCB_Pool (J).Link := NOPCB;
             exit Scan_PCBs;
          end if;
@@ -71,6 +72,62 @@ package body AIP.PCBs is
 
       return Candidate;
    end Available_Port;
+
+   --------------
+   -- Bind_PCB --
+   --------------
+
+   procedure Bind_PCB
+     (PCB        : PCB_Id;
+      Local_IP   : IPaddrs.IPaddr;
+      Local_Port : Port_T;
+      PCB_Heads  : PCB_List;
+      PCB_Pool   : in out IP_PCB_Array;
+      Err        : out Err_T)
+   is
+      B_Port : Port_T := NOPORT;
+      Other_PCB : PCB_Id;
+   begin
+      pragma Assert (PCB /= PCBs.NOPCB);
+      Err := NOERR;
+
+      if PCB_Pool (PCB).Local_Port /= NOPORT then
+         Err := ERR_USE;
+
+      elsif Local_Port = NOPORT then
+         B_Port :=
+           PCBs.Available_Port
+             (PCB_Heads  => PCB_Heads,
+              PCB_Pool   => PCB_Pool,
+              Privileged => False);
+
+         if B_Port = NOPORT then
+            Err := ERR_MEM;
+         end if;
+
+      else
+         B_Port := Local_Port;
+
+         PCBs.Find_PCB (Local_IP    => Local_IP,
+                        Local_Port  => B_Port,
+                        Remote_IP   => IPaddrs.IP_ADDR_ANY,
+                        Remote_Port => NOPORT,
+                        PCB_Heads   => PCB_Heads,
+                        PCB_Pool    => PCB_Pool,
+                        PCB         => Other_PCB);
+
+         if Other_PCB /= PCBs.NOPCB then
+            Err := ERR_USE;
+         end if;
+      end if;
+
+      if No (Err) then
+         pragma Assert (B_Port /= NOPORT);
+
+         PCB_Pool (PCB).Local_IP   := Local_IP;
+         PCB_Pool (PCB).Local_Port := B_Port;
+      end if;
+   end Bind_PCB;
 
    --------------
    -- Bound_To --
@@ -198,5 +255,39 @@ package body AIP.PCBs is
    begin
       return P1 = NOPORT or else P2 = NOPORT or else P1 = P2;
    end Match;
+
+   ------------
+   -- Unlink --
+   ------------
+
+   procedure Unlink
+     (PCB : PCB_Id;
+      PCB_Head : in out PCB_Id;
+      PCB_Pool : in out IP_PCB_Array)
+   is
+      Cur, Prev : AIP.EID;
+   begin
+      pragma Assert (PCB /= NOPCB);
+
+      if PCB = PCB_Head then
+         PCB_Head := PCB_Pool (PCB).Link;
+
+      else
+         Prev := NOPCB;
+         Cur  := PCB_Head;
+
+         while Cur /= NOPCB and then PCB /= Cur loop
+            Prev := Cur;
+            Cur  := PCB_Pool (Cur).Link;
+         end loop;
+
+         if Cur /= PCBs.NOPCB then
+            pragma Assert (Prev /= PCBs.NOPCB);
+            PCB_Pool (Prev).Link := PCB_Pool (Cur).Link;
+            PCB_Pool (Cur).Link  := NOPCB;
+         end if;
+      end if;
+      PCB_Pool (PCB).Link := NOPCB;
+   end Unlink;
 
 end AIP.PCBs;

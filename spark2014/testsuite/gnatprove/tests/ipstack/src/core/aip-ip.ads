@@ -5,6 +5,8 @@
 
 --  IP layer
 
+with System;
+
 with AIP.IPaddrs, AIP.NIF, AIP.Buffers;
 
 --# inherit System, AIP.Buffers, AIP.Checksum, AIP.Config, AIP.ICMPH,
@@ -69,6 +71,17 @@ is
 
    IP_HLEN : constant := 20;
    --  What if there are options???
+
+   procedure Get_Next_Header
+     (Buf  : Buffers.Buffer_Id;
+      Nlen : AIP.U16_T;
+      Nhdr : out System.Address;
+      Err  : out AIP.Err_T);
+   --# global in out Buffers.State;
+   --  Given an IP buffer, verify that at least Nlen bytes of data are present
+   --  in the payload (accomodating data for the next-level protocol header).
+   --  If so, move Buf's payload pointer to the start of the next header, and
+   --  return it in Nhdr, else set Err.
 
 private
 

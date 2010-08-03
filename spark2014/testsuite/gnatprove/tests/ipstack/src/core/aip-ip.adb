@@ -3,8 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with System;
-
 with AIP.Checksum;
 with AIP.Config;
 
@@ -23,6 +21,47 @@ is
    Default_Router : IPaddrs.IPaddr := IPaddrs.IP_ADDR_ANY;
 
    IP_Serial : AIP.M16_T := 0;
+
+   ---------------------
+   -- Get_Next_Header --
+   ---------------------
+
+   procedure Get_Next_Header
+     (Buf  : Buffers.Buffer_Id;
+      Nlen : AIP.U16_T;
+      Nhdr : out System.Address;
+      Err  : out AIP.Err_T)
+   is
+      Ihdr : System.Address;
+      --  Address of the IP header in BUF
+
+      IPhlen : AIP.U16_T;
+      --  Length of this header
+   begin
+      pragma Assert (Buffers.Buffer_Len (Buf) >= IPH.IP_Header_Size / 8);
+
+      Ihdr := Buffers.Buffer_Payload (Buf);
+      IPhlen := AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4;
+
+      --  ERR_MEM if the buffer length is such that this couldn't possibly be a
+      --  UDP datagram, when there's not even room for the UDP & IP headers.
+      --  Otherwise, move payload to the UDP header by hiding the IP one.
+
+      if Buffers.Buffer_Len (Buf) < IPhlen + Nlen then
+         Err := AIP.ERR_MEM;
+      else
+         Buffers.Buffer_Header (Buf, -AIP.S16_T (IPhlen), Err);
+      end if;
+
+      --  If the length check and the payload move went fine, we have the upper
+      --  layer protocol header at hand.
+
+      if AIP.No (Err) then
+         Nhdr := Buffers.Buffer_Payload (Buf);
+      else
+         Nhdr := System.Null_Address;
+      end if;
+   end Get_Next_Header;
 
    ----------------
    -- IP_Forward --

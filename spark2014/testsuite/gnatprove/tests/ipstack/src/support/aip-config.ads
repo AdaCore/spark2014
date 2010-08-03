@@ -5,9 +5,9 @@
 
 --  AIP configuration parameters
 
---# inherit AIP, System;
-
 with System;
+
+--# inherit AIP, System;
 
 package AIP.Config is
 

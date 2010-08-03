@@ -32,12 +32,15 @@ package body AIP.ICMP is
       Remote_IP, NH_IP : IPaddrs.IPaddr;
 
    begin
+      --  Latch address of IP header and retrieve an ICMP view of the incoming
+      --  message.
+
       Ihdr := Buffers.Buffer_Payload (Buf);
-
-      --  Skip IP header
-
-      Buffers.Buffer_Header (Buf, -(4 * S16_T (IPH.IPH_IHL (Ihdr))), Err);
-      IChdr := Buffers.Buffer_Payload (Buf);
+      IP.Get_Next_Header
+        (Buf,
+         ICMPH.ICMP_Header_Size / 8,
+         IChdr,
+         Err);
 
       if No (Err) then
          case ICMPH.ICMPH_I_Type (IChdr) is

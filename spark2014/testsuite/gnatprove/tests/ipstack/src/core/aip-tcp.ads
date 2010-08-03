@@ -14,8 +14,8 @@ with AIP.IPaddrs;
 with AIP.NIF;
 with AIP.PCBs;
 
---# inherit System, AIP.Callbacks, AIP.IPaddrs, AIP.NIF, AIP.PCBs,
---#         AIP.Buffers, AIP.Config;
+--# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
+--#         AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.Time_Types;
 
 package AIP.TCP
    --# own State;
@@ -54,7 +54,7 @@ is
    end record;
 
    procedure TCP_Callback
-     (Evk : TCP_Event_Kind; PCB : PCBs.PCB_Id; Id : Callbacks.CBK_Id);
+     (Evk : TCP_Event_Kind; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
 
    --------------------------------
    -- Setting up TCP connections --
@@ -65,22 +65,23 @@ is
    --  allocation failure.
 
    procedure TCP_Bind
-     (PCB  : PCBs.PCB_Id;
-      Addr : IPaddrs.IPaddr;
-      Port : PCBs.Port_T;
-      Err  : out AIP.Err_T);
-   --  Bind PCB to the provided IP ADDRess (possibly IP_ADDR_ANY) and
+     (PCB        : PCBs.PCB_Id;
+      Local_IP   : IPaddrs.IPaddr;
+      Local_Port : AIP.U16_T;
+      Err        : out AIP.Err_T);
+   --  Bind PCB to the provided IP address (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
 
-   procedure TCP_Listen (PCB : PCBs.PCB_Id);
+   procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
    --  Setup PCB to listen for at most Config.TCP_DEFAULT_LISTEN_BACKLOG
    --  simultaneous connection requests and trigger the acceptation callback
    --  on such events.
 
    procedure TCP_Listen_BL
      (PCB     : PCBs.PCB_Id;
-      Backlog : AIP.U8_T);
+      Backlog : AIP.U8_T;
+      Err     : out AIP.Err_T);
    --  Same as TCP_Listen but with a user-specified backlog size
 
    subtype Accept_Cb_Id is Callbacks.CBK_Id;
@@ -265,15 +266,24 @@ is
 
 private
 
-   --------------------------
-   -- Internal subprograms --
-   --------------------------
+   procedure TCP_Send_Control
+     (Src_IP   : IPaddrs.IPaddr;
+      Src_Port : PCBs.Port_T;
+      Dst_IP   : IPaddrs.IPaddr;
+      Dst_Port : PCBs.Port_T;
+      Syn      : Boolean;
+      Rst      : Boolean;
+      Ack      : Boolean;
+      Seq_Num  : AIP.M32_T;
+      Ack_Num  : AIP.M32_T;
+      Err      : out AIP.Err_T);
+   --  Send a TCP control segment
 
-   --  All declared here because SPARK forbids forward declarations in package
-   --  bodies.
-
-   procedure PCB_Clear (PCB : PCBs.PCB_Id);
-   --# global in out State;
-   --  Reset/Initialize PCB fields for fresh (re)use
+   function Initial_Sequence_Number
+     (Local_IP    : IPaddrs.IPaddr;
+      Local_Port  : PCBs.Port_T;
+      Remote_IP   : IPaddrs.IPaddr;
+      Remote_Port : PCBs.Port_T) return AIP.M32_T;
+   --  Initial sequence number for connection with the given parameters
 
 end AIP.TCP;

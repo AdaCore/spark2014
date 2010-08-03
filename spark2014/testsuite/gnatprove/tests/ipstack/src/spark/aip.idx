@@ -17,7 +17,8 @@ AIP.Buffers.Data    body          is in ../core/aip-buffers-data.adb
 AIP.Buffers.No_Data specification is in ../core/aip-buffers-no_data.ads
 AIP.Buffers.No_Data body          is in ../core/aip-buffers-no_data.adb
 AIP.Callbacks       specification is in ../core/aip-callbacks.ads
-AIP.Config          specification is in ../core/aip-config.ads
+AIP.Checksum        specification is in ../core/aip-checksum.ads
+AIP.Config          specification is in ../support/aip-config.ads
 AIP.Conversions     specification is in ../core/aip-conversions.ads
 AIP.ICMP            specification is in ../core/aip-icmp.ads
 AIP.ICMP            body          is in ../core/aip-icmp.adb
@@ -36,7 +37,7 @@ AIP.Support         specification is in ../core/aip-support.ads
 AIP.Support         body          is in ../core/aip-support.adb
 AIP.TCP             specification is in ../core/aip-tcp.ads
 AIP.TCP             body          is in ../core/aip-tcp.adb
-AIP.Checksum        specification is in ../core/aip-checksum.ads
+AIP.Time_Types      specification is in ../support/aip-time_types.ads
 AIP.IP              specification is in ../core/aip-ip.ads
 AIP.UDP             specification is in ../core/aip-udp.ads
 AIP.UDP             body          is in ../core/aip-udp.adb

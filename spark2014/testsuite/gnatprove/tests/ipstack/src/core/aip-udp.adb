@@ -21,13 +21,16 @@ is
    -- Data structures --
    ---------------------
 
+   type UDP_Callbacks is array (UDP_Event_Kind) of Callbacks.CBK_Id;
+
    type UDP_PCB is record
-      RECV_Cb     : Callbacks.CBK_Id;
-      --  Callback id for UDP_RECV events
+      Callbacks : UDP_Callbacks;
    end record;
 
    UDP_PCB_Initializer : constant UDP_PCB :=
-                           UDP_PCB'(RECV_Cb => Callbacks.NOCB);
+                           UDP_PCB'(Callbacks =>
+                                      UDP_Callbacks'
+                                        (others => Callbacks.NOCB));
 
    subtype UDP_PCB_Index is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
@@ -60,20 +63,6 @@ is
       Bound_PCBs := PCBs.NOPCB;
    end UDP_Init;
 
-   ---------------
-   -- PCB_Clear --
-   ---------------
-
-   procedure PCB_Clear (PCB : PCBs.PCB_Id)
-      --# global in out IPCBs, UPCBs;
-   is
-   begin
-      IPCBs (PCB) := PCBs.IP_PCB_Initializer;
-      UPCBs (PCB) := UDP_PCB_Initializer;
-
-      IPCBs (PCB).Link := PCBs.NOPCB;
-   end PCB_Clear;
-
    -------------
    -- UDP_New --
    -------------
@@ -85,76 +74,10 @@ is
       PCBs.Allocate_PCB (IPCBs, Id);
 
       if Id /= PCBs.NOPCB then
-         PCB_Clear (Id);
          IPCBs (Id).TTL := Config.UDP_TTL;
+         UPCBs (Id) := UDP_PCB_Initializer;
       end if;
    end UDP_New;
-
-   -------------------------
-   -- UDP_Input internals --
-   -------------------------
-
-   ---------------
-   -- IP_To_UDP --
-   ---------------
-
-   procedure IP_To_UDP
-     (Buf  : Buffers.Buffer_Id;
-      Uhdr : out System.Address;
-      Err  : out AIP.Err_T)
-   is
-      Ihdr : System.Address;
-      --  Address of the IP header in BUF
-
-      IPhlen : AIP.U16_T;
-      --  Length of this header
-   begin
-      --  We expect BUF to have just been provided by the IP layer
-
-      Ihdr := Buffers.Buffer_Payload (Buf);
-      IPhlen := AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4;
-
-      --  ERR_MEM if the buffer length is such that this couldn't possibly be a
-      --  UDP datagram, when there's not even room for the UDP & IP headers.
-      --  Otherwise, move payload to the UDP header by hiding the IP one.
-
-      if Buffers.Buffer_Tlen (Buf) < IPhlen + UDP_HLEN then
-         Err := AIP.ERR_MEM;
-      else
-         Buffers.Buffer_Header (Buf, -AIP.S16_T (IPhlen), Err);
-      end if;
-
-      --  If the length check and the payload move went fine, we have the UDP
-      --  header at hand.
-
-      if Err = AIP.NOERR then
-         Uhdr := Buffers.Buffer_Payload (Buf);
-      else
-         Uhdr := System.Null_Address;
-      end if;
-   end IP_To_UDP;
-
-   -----------------
-   -- UDP_PCB_For --
-   -----------------
-
-   function UDP_PCB_For
-     (Ihdr  : System.Address;
-      Uhdr  : System.Address) return AIP.EID
-      --# global in IPCBs, Bound_PCBs;
-   is
-      PCB : AIP.EID;
-   begin
-      PCBs.Find_PCB_In_List
-        (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
-         Local_Port  => UDPH.UDPH_Dst_Port (Uhdr),
-         Remote_IP   => IPH.IPH_Src_Address (Ihdr),
-         Remote_Port => UDPH.UDPH_Src_Port (Uhdr),
-         PCB_Head    => Bound_PCBs,
-         PCB_Pool    => IPCBs,
-         PCB         => PCB);
-      return PCB;
-   end UDP_PCB_For;
 
    ---------------
    -- UDP_Input --
@@ -177,7 +100,11 @@ is
       --  datagram.
 
       Ihdr := Buffers.Buffer_Payload (Buf);
-      IP_To_UDP (Buf, Uhdr, Err);
+      IP.Get_Next_Header
+        (Buf,
+         UDPH.UDP_Header_Size / 8,
+         Uhdr,
+         Err);
 
       --  Verify UDP checksum
 
@@ -211,7 +138,15 @@ is
       --  callback.
 
       if AIP.No (Err) then
-         PCB := UDP_PCB_For (Ihdr, Uhdr);
+         PCBs.Find_PCB_In_List
+           (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
+            Local_Port  => UDPH.UDPH_Dst_Port  (Uhdr),
+            Remote_IP   => IPH.IPH_Src_Address (Ihdr),
+            Remote_Port => UDPH.UDPH_Src_Port  (Uhdr),
+            PCB_Head    => Bound_PCBs,
+            PCB_Pool    => IPCBs,
+            PCB         => PCB);
+
          if PCB = PCBs.NOPCB then
             --  Recover IP header and send ICMP destination unreachable
 
@@ -235,7 +170,7 @@ is
 
       if AIP.No (Err)
         and then PCB /= PCBs.NOPCB
-        and then UPCBs (PCB).RECV_Cb /= Callbacks.NOCB
+        and then UPCBs (PCB).Callbacks (UDP_RECV) /= Callbacks.NOCB
       then
          --  Skip UDP header and perform upcall to application
 
@@ -248,7 +183,7 @@ is
                             IP   => IPH.IPH_Src_Address (Ihdr),
                             Port => UDPH.UDPH_Src_Port (Uhdr)),
                PCB,
-               UPCBs (PCB).RECV_Cb);
+               UPCBs (PCB).Callbacks (UDP_RECV));
          end if;
 
          --  No free if buffer passed to application???
@@ -268,65 +203,18 @@ is
       Err        : out AIP.Err_T)
       --# global in out IPCBs, Bound_PCBs;
    is
-      Rebind       : Boolean;
-      Pid          : AIP.EID := PCBs.NOPCB;
-      Port_To_Bind : PCBs.Port_T := PCBs.NOPORT;
    begin
-      pragma Assert (PCB /= PCBs.NOPCB);
-
-      Err := AIP.NOERR;
-
-      --  See if we're rebinding an already bound PCB, and/or if we're binding
-      --  to the same addr/port as another bound PCB.
-
-      Rebind := False;
-
-      if Local_Port /= 0 then
-         PCBs.Find_PCB_In_List
-           (Local_IP    => Local_IP,
-            Local_Port  => Local_Port,
-            Remote_IP   => IPaddrs.IP_ADDR_ANY,
-            Remote_Port => 0,
-            PCB_Head    => Bound_PCBs,
-            PCB_Pool    => IPCBs,
-            PCB         => Pid);
-      end if;
-
-      if Pid = PCB then
-         Rebind := True;
-      elsif Pid /= PCBs.NOPCB and then not Config.UDP_SHARED_ENDPOINTS then
-         Err := AIP.Err_Use;
-      end if;
+      PCBs.Bind_PCB
+        (PCB        => PCB,
+         Local_IP   => Local_IP,
+         Local_Port => Local_Port,
+         PCB_Heads  => UDP_PCB_Heads'(1 => Bound_PCBs),
+         PCB_Pool   => IPCBs,
+         Err        => Err);
 
       if AIP.No (Err) then
-
-         --  Pick an available port if none was specified
-
-         if Local_Port = PCBs.NOPORT then
-            Port_To_Bind :=
-              PCBs.Available_Port
-                (PCB_Heads  => UDP_PCB_Heads'(1 => Bound_PCBs),
-                 PCB_Pool   => IPCBs,
-                 Privileged => False);
-            if Port_To_Bind = PCBs.NOPORT then
-               Err := AIP.ERR_MEM;
-            end if;
-         else
-            Port_To_Bind := Local_Port;
-         end if;
-      end if;
-
-      if AIP.No (Err) then
-         --  Assign the local IP/port, and insert into the list of bound PCBs
-         --  unless it was already there.
-
-         IPCBs (PCB).Local_Port := Port_To_Bind;
-         IPCBs (PCB).Local_IP := Local_IP;
-
-         if not Rebind then
-            IPCBs (PCB).Link := Bound_PCBs;
-            Bound_PCBs := PCB;
-         end if;
+         IPCBs (PCB).Link := Bound_PCBs;
+         Bound_PCBs := PCB;
       end if;
    end UDP_Bind;
 
@@ -346,34 +234,6 @@ is
          Err := AIP.NOERR;
       end if;
    end PCB_Force_Bind;
-
-   ----------------
-   -- PCB_Unlink --
-   ----------------
-
-   procedure PCB_Unlink (PCB : PCBs.PCB_Id)
-      --# global in out IPCBs, Bound_PCBs;
-   is
-      Cur, Prev : AIP.EID;
-   begin
-      if PCB = Bound_PCBs then
-         Bound_PCBs := IPCBs (PCB).Link;
-      else
-         Prev := PCBs.NOPCB;
-         Cur := Bound_PCBs;
-
-         while Cur /= PCBs.NOPCB and then PCB /= Cur loop
-            Prev := Cur;
-            Cur := IPCBs (Cur).Link;
-         end loop;
-
-         if Cur /= PCBs.NOPCB then
-            pragma Assert (Prev /= PCBs.NOPCB);
-            IPCBs (Prev).Link := IPCBs (Cur).Link;
-            IPCBs (Cur).Link := PCBs.NOPCB;
-         end if;
-      end if;
-   end PCB_Unlink;
 
    -------------------
    --  UDP_Connect  --
@@ -643,7 +503,7 @@ is
       --# global in out IPCBs, Bound_PCBs;
    is
    begin
-      PCB_Unlink (PCB);
+      PCBs.Unlink (PCB, Bound_PCBs, IPCBs);
       IPCBs (PCB).Link := PCBs.PCB_UNUSED;
    end UDP_Release;
 
@@ -655,12 +515,10 @@ is
      (Evk  : UDP_Event_Kind;
       PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id)
-      --# global in out UPCBs;
+   --# global in out UPCBs;
    is
    begin
-      case Evk is
-         when UDP_RECV => UPCBs (PCB).RECV_Cb := Cbid;
-      end case;
+      UPCBs (PCB).Callbacks (Evk) := Cbid;
    end UDP_Callback;
 
    ---------------
