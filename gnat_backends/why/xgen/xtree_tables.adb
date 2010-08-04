@@ -153,6 +153,20 @@ package body Xtree_Tables is
       end if;
    end Param_Name;
 
+   ---------------------------
+   -- Max_Field_Name_Length --
+   ---------------------------
+
+   function Max_Field_Name_Length (Kind : Why_Node_Kind) return Natural is
+      use Node_Lists;
+
+      Variant_Part  : constant Why_Node_Info := Why_Tree_Info (Kind);
+   begin
+      return Natural'Max
+        (Variant_Part.Max_Field_Name_Length,
+         Common_Fields.Max_Field_Name_Length);
+   end Max_Field_Name_Length;
+
    ----------------------
    -- Max_Param_Length --
    ----------------------

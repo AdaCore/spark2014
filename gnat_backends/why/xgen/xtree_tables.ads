@@ -103,6 +103,10 @@ package Xtree_Tables is
    --  Given a field info, return the name to be use for the corresponding
    --  parameter (in, say, a builder or an accessor).
 
+   function Max_Field_Name_Length (Kind : Why_Node_Kind) return Natural;
+   --  Return the maximum field length for the given node kind;
+   --  this is meant to be used to have proper indentation of these parameters.
+
    function Max_Param_Length (Kind : Why_Node_Kind) return Natural;
    --  Return the maximum length of a parameter for the given node kind;
    --  this is meant to be used to have proper indentation of these parameters.

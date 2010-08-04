@@ -278,6 +278,8 @@ begin
 
    Add ("Declare_Builders", Print_Builder_Declarations'Access);
    Add ("Declare_Accessors", Print_Accessor_Declarations'Access);
+   Add ("Implement_Builders", Print_Builder_Bodies'Access);
    Process ("why-atree-builders.ads");
+   Process ("why-atree-builders.adb");
    Process ("why-atree-accessors.ads");
 end Xtree;
