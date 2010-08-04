@@ -93,7 +93,8 @@ package body Gnat2Why.Driver is
          Add_Str_To_Name_Buffer ("standard__integer");
          I := New_Identifier (Empty,
                               Why_Empty,
-                              Name_Find);
+                              Name_Find,
+                              Why_Empty);
          T := New_Type (Empty,
                         Why_Empty,
                         Why_Empty,
