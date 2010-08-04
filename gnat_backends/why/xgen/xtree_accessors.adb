@@ -73,8 +73,10 @@ package body Xtree_Accessors is
             Param_Type  => "Why_Node_Id",
             Return_Type => Id_Type_Name (FI));
          PL (O, " is");
+         Relative_Indent (O, 2);
          Print_Accessor_Expression (O, FI);
          PL (O, ";");
+         Relative_Indent (O, -2);
 
          if Next (Position) /= No_Element then
             NL (O);

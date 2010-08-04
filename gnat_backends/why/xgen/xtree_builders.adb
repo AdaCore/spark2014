@@ -109,7 +109,7 @@ package body Xtree_Builders is
          for J in Name_Len .. Max_Param_Len loop
             P (O, " ");
          end loop;
-         P (O, " : ");
+         P (O, ": ");
 
          P (O, Id_Type_Name (FI));
          Field_Number := Field_Number + 1;
