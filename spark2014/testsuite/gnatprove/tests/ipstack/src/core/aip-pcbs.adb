@@ -256,6 +256,20 @@ package body AIP.PCBs is
       return P1 = NOPORT or else P2 = NOPORT or else P1 = P2;
    end Match;
 
+   -------------
+   -- Prepend --
+   -------------
+
+   procedure Prepend
+     (PCB      : PCB_Id;
+      PCB_Head : in out PCB_Id;
+      PCB_Pool : in out IP_PCB_Array)
+   is
+   begin
+      PCB_Pool (PCB).Link := PCB_Head;
+      PCB_Head := PCB;
+   end Prepend;
+
    ------------
    -- Unlink --
    ------------

@@ -121,6 +121,12 @@ package AIP.PCBs is
       PCB         : out PCB_Id);
    --  Same as above but search a single list whose head is PCB_Head
 
+   procedure Prepend
+     (PCB      : PCB_Id;
+      PCB_Head : in out PCB_Id;
+      PCB_Pool : in out IP_PCB_Array);
+   --  Prepend PCB to list whose head is PCB_Head
+
    procedure Unlink
      (PCB : PCB_Id;
       PCB_Head : in out PCB_Id;

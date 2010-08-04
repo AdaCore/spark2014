@@ -5,13 +5,15 @@
 
 with AIP.Checksum;
 with AIP.Config;
+with AIP.Conversions;
 with AIP.IP;
 with AIP.IPH;
 with AIP.TCPH;
 with AIP.Time_Types;
 
 package body AIP.TCP
-   --# own State is Boot_Time, IPCBs, TPCBs;
+--# own State is Boot_Time, TCP_Ticks, IPCBs, TPCBs, Bound_PCBs,
+--#     Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
 is
 
    ---------------------
@@ -40,22 +42,37 @@ is
    type TCP_PCB is record
       State : TCP_State;
 
+      --  Connection parameters
+
+      Local_MSS  : AIP.U16_T; --  Maximum segment size for receiving
+      Remote_MSS : AIP.U16_T; --  Maximum segment size for sending
+
       --  Send sequence variables
 
-      SND_UNA : M32_T; --  Send unacknowledged
-      SND_NXT : M32_T; --  Send next
-      SND_WND : M32_T; --  Send window
-      SND_UP  : M32_T; --  Send urgent pointer
-      SND_WL1 : M32_T; --  Segment sequence number used for last window update
-      SND_WL2 : M32_T; --  Segment ack number used for last window update
-      ISS     : M32_T; --  Initial send sequence number
+      SND_UNA : AIP.M32_T; --  Send unacknowledged
+      SND_NXT : AIP.M32_T; --  Send next
+      SND_WND : AIP.M32_T; --  Send window
+      SND_UP  : AIP.M32_T; --  Send urgent pointer
+      SND_WL1 : AIP.M32_T; --  Segment sequence number for last window update
+      SND_WL2 : AIP.M32_T; --  Segment ack number for last window update
+      ISS     : AIP.M32_T; --  Initial send sequence number
 
       --  Receive sequence variables
 
-      RCV_NXT : M32_T; --  Receive next
-      RCV_WND : M32_T; --  Receive window
-      RCV_UP  : M32_T; --  Receive urgent pointer
-      IRS     : M32_T; --  Initial receive sequence number
+      RCV_NXT : AIP.M32_T; --  Receive next
+      RCV_WND : AIP.M32_T; --  Receive window
+      RCV_UP  : AIP.M32_T; --  Receive urgent pointer
+      IRS     : AIP.M32_T; --  Initial receive sequence number
+
+      --  Round-trip average and standard deviation estimators for computation
+      --  of retransmit timeout (in TCP 500 ms ticks).
+
+      RTT_Ticks  : AIP.M32_T;
+      --  TCP ticks value when segment used for RTT estimation was sent
+
+      RTT_Average : AIP.S16_T;
+      RTT_Stddev  : AIP.S16_T;
+      RTO         : AIP.S16_T;
 
       --  Send queue
 
@@ -67,11 +84,33 @@ is
    end record;
 
    TCP_PCB_Initializer : constant TCP_PCB :=
-                           TCP_PCB'(State      => Closed,
-                                    Callbacks  =>
-                                      TCP_Callbacks'(others => Callbacks.NOCB),
-                                    Send_Queue => Buffers.Empty_Packet_List,
-                                    others     => 0);
+                           TCP_PCB'(State       => Closed,
+
+                                    Local_MSS   => 0,
+                                    Remote_MSS  => 0,
+
+                                    SND_UNA     => 0,
+                                    SND_NXT     => 0,
+                                    SND_WND     => 0,
+                                    SND_UP      => 0,
+                                    SND_WL1     => 0,
+                                    SND_WL2     => 0,
+                                    ISS         => 0,
+
+                                    RCV_NXT     => 0,
+                                    RCV_WND     => 0,
+                                    RCV_UP      => 0,
+                                    IRS         => 0,
+
+                                    RTT_Ticks   => 0,
+                                    RTT_Average => 0,
+                                    RTT_Stddev  => 0,
+                                    RTO         => 0,
+
+                                    Send_Queue  => Buffers.Empty_Packet_List,
+                                    Callbacks   =>
+                                      TCP_Callbacks'(others =>
+                                                       Callbacks.NOCB));
 
    subtype Valid_TCP_PCB_Id is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
@@ -81,6 +120,7 @@ is
    type TCP_TPCB_Array is array (Valid_TCP_PCB_Id) of TCP_PCB;
 
    Boot_Time : Time_Types.Time;
+   TCP_Ticks : AIP.M32_T;
 
    IPCBs : TCP_IPCB_Array;
    TPCBs : TCP_TPCB_Array;
@@ -101,27 +141,57 @@ is
       Local_Port  : PCBs.Port_T;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T) return AIP.M32_T
+   --# global in Boot_Time;
    is
    begin
       --  Should do much better than that to select a truly random ISN???
-      return M32_T (Time_Types.Now)
-        + (M32_T (Boot_Time)
+      return AIP.M32_T (Time_Types.Now)
+        + (AIP.M32_T (Boot_Time)
              xor (Local_IP * 7
                 + Remote_IP * 13
-                + M32_T (Local_Port) * M32_T (Remote_Port)));
+                + AIP.M32_T (Local_Port) * AIP.M32_T (Remote_Port)));
    end Initial_Sequence_Number;
+
+   ------------
+   -- Seq_Lt --
+   ------------
+
+   function Seq_Lt (L, R : AIP.M32_T) return Boolean is
+   begin
+      return L - R > AIP.M32_T'(2 ** 31);
+   end Seq_Lt;
+
+   ------------
+   -- Seq_Le --
+   ------------
+
+   function Seq_Le (L, R : AIP.M32_T) return Boolean is
+   begin
+      return R - L < AIP.M32_T'(2 ** 31);
+   end Seq_Le;
+
+   ---------------
+   -- Seq_Range --
+   ---------------
+
+   function Seq_Range (L, S, R : AIP.M32_T) return Boolean is
+   begin
+      return Seq_Le (L, S) and then Seq_Lt (S, R);
+   end Seq_Range;
 
    --------------
    -- TCP_Init --
    --------------
 
    procedure TCP_Init
-      --# global out PCBs, Bound_PCBs, Listen_PCBs;
+   --# global out Boot_Time, TCP_Ticks, IPCBs, TPCBs, Bound_PCBs, Listen_PCBs,
+   --#            Active_PCBs, Time_Wait_PCBs;
    is
    begin
       --  Record boot time to serve as local secret for generation of ISN
 
       Boot_Time := Time_Types.Now;
+      TCP_Ticks := 0;
 
       --  Initialize all the PCBs, marking them unused, and initialize the list
       --  of bound PCBs as empty.
@@ -135,6 +205,40 @@ is
       Time_Wait_PCBs := PCBs.NOPCB;
    end TCP_Init;
 
+   ------------------
+   -- TCP_Send_Rst --
+   ------------------
+
+   procedure TCP_Send_Rst
+     (Src_IP   : IPaddrs.IPaddr;
+      Src_Port : PCBs.Port_T;
+      Dst_IP   : IPaddrs.IPaddr;
+      Dst_Port : PCBs.Port_T;
+      Ack      : Boolean;
+      Seq_Num  : AIP.M32_T;
+      Ack_Num  : AIP.M32_T;
+      Err      : out AIP.Err_T)
+   is
+   begin
+      null;
+      --  TBD???
+   end TCP_Send_Rst;
+
+   ----------------------
+   -- TCP_Send_Control --
+   ----------------------
+
+   procedure TCP_Send_Control
+     (PCB : PCBs.PCB_Id;
+      Syn : Boolean;
+      Ack : Boolean;
+      Err : out AIP.Err_T)
+   is
+   begin
+      null;
+      --  TBD???
+   end TCP_Send_Control;
+
    -------------
    -- TCP_Arg --
    -------------
@@ -142,7 +246,7 @@ is
    procedure TCP_Arg (PCB : PCBs.PCB_Id; Arg : System.Address) is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Arg;
 
    --------------
@@ -154,23 +258,31 @@ is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : AIP.U16_T;
       Err        : out AIP.Err_T)
+   --# global in out IPCBs, Bound_PCBs; in TPCBs, Listen_PCBs, Active_PCBs,
+   --#               Time_Wait_PCBs;
    is
    begin
-      PCBs.Bind_PCB
-        (PCB        => PCB,
-         Local_IP   => Local_IP,
-         Local_Port => Local_Port,
-         PCB_Heads  =>
-           TCP_PCB_Heads'(1 => Listen_PCBs,
-                          2 => Bound_PCBs,
-                          3 => Active_PCBs,
-                          4 => Time_Wait_PCBs),
-         PCB_Pool   => IPCBs,
-         Err        => Err);
+      if TPCBs (PCB).State /= Closed then
+         Err := AIP.ERR_USE;
+      else
+         PCBs.Bind_PCB
+           (PCB        => PCB,
+            Local_IP   => Local_IP,
+            Local_Port => Local_Port,
+            PCB_Heads  =>
+              TCP_PCB_Heads'(1 => Listen_PCBs,
+                             2 => Bound_PCBs,
+                             3 => Active_PCBs,
+                             4 => Time_Wait_PCBs),
+            PCB_Pool   => IPCBs,
+            Err        => Err);
 
-      if No (Err) then
-         IPCBs (PCB).Link := Bound_PCBs;
-         Bound_PCBs := PCB;
+         if AIP.No (Err) then
+            PCBs.Prepend
+              (PCB      => PCB,
+               PCB_Head => Bound_PCBs,
+               PCB_Pool => IPCBs);
+         end if;
       end if;
    end TCP_Bind;
 
@@ -182,19 +294,11 @@ is
      (Evk  : TCP_Event_Kind;
       PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id)
+   --# global in out TPCBs;
    is
    begin
       TPCBs (PCB).Callbacks (Evk) := Cbid;
    end TCP_Callback;
-
-   ----------------
-   -- TCP_Listen --
-   ----------------
-
-   procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) is
-   begin
-      TCP_Listen_BL (PCB, Config.TCP_DEFAULT_LISTEN_BACKLOG, Err);
-   end TCP_Listen;
 
    -------------------
    -- TCP_Listen_BL --
@@ -204,35 +308,62 @@ is
      (PCB     : PCBs.PCB_Id;
       Backlog : AIP.U8_T;
       Err     : out AIP.Err_T)
+   --# global in out IPCBs, TPCBs, Bound_PCBs, Listen_PCBs;
+   --#        in Active_PCBs, Time_Wait_PCBs;
    is
       pragma Unreferenced (Backlog);
    begin
       pragma Assert (PCB /= PCBs.NOPCB);
 
-      if IPCBs (PCB).Local_Port = PCBs.NOPORT then
-         --  PCB must first be bound
+      Err := AIP.NOERR;
 
-         Err := ERR_USE;
-      else
+      --  First bind PCB if necessary
+
+      if IPCBs (PCB).Local_Port = PCBs.NOPORT then
+         TCP_Bind (PCB, IPaddrs.IP_ADDR_ANY, PCBs.NOPORT, Err);
+      end if;
+
+      if AIP.No (Err) then
+         pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
+
          case TPCBs (PCB).State is
             when Closed =>
                TPCBs (PCB).State := Listen;
-
+               PCBs.Unlink
+                 (PCB      => PCB,
+                  PCB_Head => Bound_PCBs,
+                  PCB_Pool => IPCBs);
+               PCBs.Prepend
+                 (PCB      => PCB,
+                  PCB_Head => Listen_PCBs,
+                  PCB_Pool => IPCBs);
             when Listen =>
                null;
 
             when others =>
-               Err := ERR_ISCONN;
+               Err := AIP.ERR_ISCONN;
          end case;
       end if;
    end TCP_Listen_BL;
+
+   ----------------
+   -- TCP_Listen --
+   ----------------
+
+   procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
+   --# global in out IPCBs, TPCBs, Bound_PCBs, Listen_PCBs;
+   --#        in Active_PCBs, Time_Wait_PCBs;
+   is
+   begin
+      TCP_Listen_BL (PCB, Config.TCP_DEFAULT_LISTEN_BACKLOG, Err);
+   end TCP_Listen;
 
    -------------
    -- TCP_New --
    -------------
 
    procedure TCP_New (Id : out PCBs.PCB_Id)
-   --# global in out PCBs;
+   --# global in out IPCBs, TPCBs;
    is
    begin
       PCBs.Allocate_PCB (IPCBs, Id);
@@ -253,7 +384,7 @@ is
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Accept;
 
    ------------------
@@ -263,7 +394,7 @@ is
    procedure TCP_Accepted (PCB : PCBs.PCB_Id) is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Accepted;
 
    -----------------
@@ -275,11 +406,11 @@ is
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
       Cb   : Connect_Cb_Id;
-      Err  : out Err_T)
+      Err  : out AIP.Err_T)
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Connect;
 
    ---------------
@@ -291,11 +422,11 @@ is
       Data  : System.Address;
       Len   : AIP.U16_T;
       Flags : AIP.U8_T;
-      Err   : out Err_T)
+      Err   : out AIP.Err_T)
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Write;
 
    ----------------
@@ -303,10 +434,10 @@ is
    ----------------
 
    function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T is
+      pragma Unreferenced (PCB);
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
-      return TCP_Sndbuf (PCB);
+      return 0; --  TBD???
    end TCP_Sndbuf;
 
    --------------
@@ -319,7 +450,7 @@ is
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Sent;
 
    --------------
@@ -332,7 +463,7 @@ is
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Recv;
 
    ----------------
@@ -345,7 +476,7 @@ is
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Recved;
 
    --------------
@@ -359,7 +490,7 @@ is
    is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Poll;
 
    ---------------
@@ -369,7 +500,7 @@ is
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T) is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Close;
 
    ---------------
@@ -379,7 +510,7 @@ is
    procedure TCP_Abort (PCB : PCBs.PCB_Id) is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Abort;
 
    -------------
@@ -389,14 +520,19 @@ is
    procedure TCP_Err (PCB : PCBs.PCB_Id; Cb : Err_Cb_Id) is
    begin
       --  Generated stub: replace with real body!
-      raise Program_Error;
+      null; --  TBD??
    end TCP_Err;
 
    ---------------
    -- TCP_Input --
    ---------------
 
-   procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id) is
+   procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
+   --# global in out Buffers.State, TPCBs, IPCBs;
+   --#        in Boot_Time, Bound_PCBs, Listen_PCBs, Active_PCBs,
+   --#           Time_Wait_PCBs;
+
+   is
       pragma Unreferenced (Netif);
 
       Ihdr, Thdr, PThdr : System.Address;
@@ -410,16 +546,115 @@ is
       New_PCB : PCBs.PCB_Id;
       --  New PCB (used when a new connection is created)
 
-      Tlen : U16_T;
+      Tlen : AIP.U16_T;
       --  TCP payload length (TCP header including options + segment payload)
 
-      Seg_Len : U16_T;
+      Data_Offset : AIP.U16_T;
+      --  Data offset from start of TCP headers, in bytes
+
+      Option_Offset : AIP.U16_T;
+      --  Offset of option information being processed
+
+      Malformed_Options : Boolean := False;
+      --  Set True if malformed options are detected
+
+      Option_Kind, Option_Length, Option_Val : AIP.U8_T;
+      --  Fields of TCP options
+
+      --  Options
+
+      MSS : AIP.U16_T := 0;
+      --  Remote advertised MSS
+
+      Window_Scale : AIP.U8_T := 0;
+      --  Window scaling factor
+
+      Seg_Len : AIP.U16_T;
       --  Segment length (SEG.LEN)
 
       --  Variables used for construction of reply
 
       Ack : Boolean;
-      Seq_Num, Ack_Num : M32_T;
+      Seq_Num, Ack_Num : AIP.M32_T;
+
+      --  procedure Get_Option_Byte (V : out AIP.U8_T);
+      --  Retrieve one byte of TCP options at Option_Offset, and increment
+      --  Option_Offset.
+
+      ---------------------
+      -- Get_Option_Byte --
+      ---------------------
+
+      procedure Get_Option_Byte (V : out AIP.U8_T) is
+         --# hide Get_Option_Byte;
+         pragma Assert (Option_Offset < Data_Offset);
+         Result : AIP.U8_T;
+         for Result'Address use
+           Conversions.Ofs (Thdr, Natural (Option_Offset));
+      begin
+         Option_Offset := Option_Offset + 1;
+         V := Result;
+      end Get_Option_Byte;
+
+      --  procedure Check_Option_Length (Len : AIP.U8_T);
+      --  Check that the option length is equal to Length, and that enough
+      --  option information is available (used for fixed length options).
+      --  Current Option_Offset is right after the option kind. If the found
+      --  length byte does not have the expected value, or insufficient
+      --  option information is present, Malformed_Options is set.
+
+      -------------------------
+      -- Check_Option_Length --
+      -------------------------
+
+      procedure Check_Option_Length (Len : AIP.U8_T) is
+         Actual_Len : AIP.U8_T;
+      begin
+         if Data_Offset - Option_Offset < AIP.U16_T (Len) - 1 then
+            Malformed_Options := True;
+         else
+            Get_Option_Byte (Actual_Len);
+            if Actual_Len /= Len then
+               Malformed_Options := True;
+            end if;
+         end if;
+      end Check_Option_Length;
+
+      --  procedure Update_RTT_Estimator (TPCB : in out TCP_PCB);
+      --  Update the RTT estimator using the given RTT measurement, as per
+      --  Jacobson paper.
+
+      --------------------------
+      -- Update_RTT_Estimator --
+      --------------------------
+
+      procedure Update_RTT_Estimator (TPCB  : in out TCP_PCB) is
+         M : AIP.S16_T;
+         --  Measured round trip time
+      begin
+         if TPCB.RTT_Ticks /= 0 then
+            M := AIP.S16_T (TCP_Ticks - TPCB.RTT_Ticks);
+
+            --  Update average estimator
+
+            M := M - TPCB.RTT_Average / 8;
+            TPCB.RTT_Average := TPCB.RTT_Average + M;
+
+            --  Update standard deviation estimator
+
+            M := (abs M) - TPCB.RTT_Stddev / 4;
+            TPCB.RTT_Stddev := TPCB.RTT_Stddev + M;
+
+            --  Set new retransmit timeout
+
+            TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
+
+            TPCB.RTT_Ticks := 0;
+         end if;
+      end Update_RTT_Estimator;
+
+   --  Start of processing for TCP_Input
+
    begin
       --  Latch address of IP header and retrieve a TCP view of the incoming
       --  segment.
@@ -431,7 +666,7 @@ is
          Thdr,
          Err);
 
-      Tlen := IPH.IPH_Length (Ihdr) - 4 * U16_T (IPH.IPH_IHL (Ihdr));
+      Tlen := IPH.IPH_Length (Ihdr) - 4 * AIP.U16_T (IPH.IPH_IHL (Ihdr));
 
       --  Verify TCP checksum
 
@@ -462,9 +697,67 @@ is
 
       if AIP.No (Err) then
          --  Now we know we have a valid TCP header, compute Seg_Len and
-         --  retrieve PCB.
+         --  retrieve PCB. Seg_Len is the logical TCP segment length, including
+         --  the data payload, as well as the flags field if SYN or FIN is set.
 
-         Seg_Len := Tlen - 4 * U16_T (TCPH.TCPH_Data_Offset (Thdr));
+         Data_Offset := 4 * AIP.U16_T (TCPH.TCPH_Data_Offset (Thdr));
+         Seg_Len := Tlen - Data_Offset
+                      + AIP.U16_T (TCPH.TCPH_Syn (Thdr))
+                      + AIP.U16_T (TCPH.TCPH_Fin (Thdr));
+
+         --  Parse TCP options
+
+         Option_Offset := TCPH.TCP_Header_Size / 8;
+         while Option_Offset < Data_Offset and then not Malformed_Options loop
+            Get_Option_Byte (Option_Kind);
+            case Option_Kind is
+               when 0 | 1 =>
+                  --  End of option list, No operation
+
+                  null;
+
+               when 2 =>
+                  --  Maximum segment size
+
+                  Check_Option_Length (4);
+                  if not Malformed_Options then
+                     Get_Option_Byte (Option_Val);
+                     MSS := AIP.U16_T (Option_Val) * 256;
+                     Get_Option_Byte (Option_Val);
+                     MSS := MSS + AIP.U16_T (Option_Val);
+                  end if;
+
+               when 3 =>
+                  --  Window scale factor
+
+                  Check_Option_Length (3);
+                  if not Malformed_Options then
+                     Get_Option_Byte (Window_Scale);
+                  end if;
+
+               when others =>
+                  if Data_Offset - Option_Offset < 1 then
+                     Malformed_Options := True;
+
+                  else
+                     Get_Option_Byte (Option_Length);
+                     if Option_Length < 2
+                       or else Data_Offset - Option_Offset
+                                 < AIP.U16_T (Option_Length) - 2
+                     then
+                        Malformed_Options := True;
+
+                     else
+                        --  Discard unknown option
+
+                        Option_Offset :=
+                          Option_Offset + AIP.U16_T (Option_Length) - 2;
+                     end if;
+                  end if;
+            end case;
+         end loop;
+
+         --  Find PCB
 
          PCBs.Find_PCB
            (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
@@ -492,7 +785,7 @@ is
             else
                if TCPH.TCPH_Ack (Thdr) = 0 then
                   Seq_Num := 0;
-                  Ack_Num := TCPH.TCPH_Seq_Num (Thdr) + M32_T (Seg_Len);
+                  Ack_Num := TCPH.TCPH_Seq_Num (Thdr) + AIP.M32_T (Seg_Len);
                   Ack := True;
                else
                   Seq_Num := TCPH.TCPH_Ack_Num (Thdr);
@@ -500,13 +793,11 @@ is
                   Ack := False;
                end if;
 
-               TCP_Send_Control
+               TCP_Send_Rst
                  (Src_IP   => IPH.IPH_Dst_Address (Ihdr),
                   Src_Port => TCPH.TCPH_Dst_Port  (Thdr),
                   Dst_IP   => IPH.IPH_Src_Address (Ihdr),
                   Dst_Port => TCPH.TCPH_Src_Port  (Thdr),
-                  Syn      => False,
-                  Rst      => True,
                   Ack      => Ack,
                   Seq_Num  => Seq_Num,
                   Ack_Num  => Ack_Num,
@@ -523,13 +814,11 @@ is
                      null;
 
                   elsif TCPH.TCPH_Ack (Thdr) = 1 then
-                     TCP_Send_Control
+                     TCP_Send_Rst
                        (Src_IP   => IPH.IPH_Dst_Address (Ihdr),
                         Src_Port => TCPH.TCPH_Dst_Port  (Thdr),
                         Dst_IP   => IPH.IPH_Src_Address (Ihdr),
                         Dst_Port => TCPH.TCPH_Src_Port  (Thdr),
-                        Syn      => False,
-                        Rst      => True,
                         Ack      => False,
                         Seq_Num  => TCPH.TCPH_Ack_Num (Thdr),
                         Ack_Num  => 0,
@@ -549,7 +838,11 @@ is
                         null;
 
                      else
+                        --  Copy TCP parameters from Listen PCB
+
                         TPCBs (New_PCB) := TPCBs (PCB);
+
+                        --  Set up PCB for new connection
 
                         TPCBs (New_PCB).State := Syn_Received;
 
@@ -562,6 +855,7 @@ is
                         IPCBs (New_PCB).Remote_Port := TCPH.TCPH_Dst_Port
                                                          (Thdr);
 
+                        TPCBs (New_PCB).Remote_MSS := MSS;
                         TPCBs (New_PCB).ISS :=
                           Initial_Sequence_Number
                             (Local_IP    => IPCBs (New_PCB).Local_IP,
@@ -570,23 +864,17 @@ is
                              Remote_Port => IPCBs (New_PCB).Remote_Port);
 
                         TPCBs (New_PCB).SND_UNA := TPCBs (New_PCB).ISS;
-                        TPCBs (New_PCB).SND_NXT := TPCBs (New_PCB).ISS + 1;
+                        TPCBs (New_PCB).SND_NXT := TPCBs (New_PCB).ISS;
                         TPCBs (New_PCB).IRS     := TCPH.TCPH_Seq_Num (Thdr);
                         TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
-                        TCP_Send_Control
-                          (Src_IP   => IPCBs (New_PCB).Local_IP,
-                           Src_Port => IPCBs (New_PCB).Local_Port,
-                           Dst_IP   => IPCBs (New_PCB).Remote_IP,
-                           Dst_Port => IPCBs (New_PCB).Remote_Port,
-                           Syn      => True,
-                           Rst      => False,
-                           Ack      => True,
-                           Seq_Num  => TPCBs (New_PCB).ISS,
-                           Ack_Num  => TPCBs (New_PCB).RCV_NXT,
-                           Err      => Err);
+                        --  Send SYN|ACK
 
-                        --  Process segment payload???
+                        TCP_Send_Control
+                          (PCB => New_PCB,
+                           Syn => True,
+                           Ack => True,
+                           Err => Err);
                      end if;
 
                   else
@@ -602,9 +890,30 @@ is
             end case;
          end if;
 
+         if AIP.No (ERR) then
+            --  Process segment payload???
+            null;
+         end if;
+
          Buffers.Buffer_Blind_Free (Buf);
       end if;
    end TCP_Input;
+
+   -----------------
+   -- TCP_Enqueue --
+   -----------------
+
+   procedure TCP_Enqueue
+     (PCB : PCBs.PCB_Id;
+      Buf : Buffers.Buffer_Id;
+      Syn : Boolean;
+      Ack : Boolean;
+      Err : out AIP.Err_T)
+   is
+   begin
+      null;
+      --  TBD???
+   end TCP_Enqueue;
 
    --------------------
    -- TCP_Fast_Timer --
@@ -616,35 +925,15 @@ is
       null;
    end TCP_Fast_Timer;
 
-   ----------------------
-   -- TCP_Send_Control --
-   ----------------------
-
-   procedure TCP_Send_Control
-     (Src_IP   : IPaddrs.IPaddr;
-      Src_Port : PCBs.Port_T;
-      Dst_IP   : IPaddrs.IPaddr;
-      Dst_Port : PCBs.Port_T;
-      Syn      : Boolean;
-      Rst      : Boolean;
-      Ack      : Boolean;
-      Seq_Num  : AIP.M32_T;
-      Ack_Num  : AIP.M32_T;
-      Err      : out AIP.Err_T)
-   is
-   begin
-      null;
-      --  TBD???
-   end TCP_Send_Control;
-
    --------------------
    -- TCP_Slow_Timer --
    --------------------
 
-   procedure TCP_Slow_Timer is
+   procedure TCP_Slow_Timer
+   --# global in out TCP_Ticks;
+   is
    begin
-      --  Generated stub: replace with real body!
-      null;
+      TCP_Ticks := TCP_Ticks + 1;
    end TCP_Slow_Timer;
 
 end AIP.TCP;

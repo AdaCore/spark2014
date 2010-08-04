@@ -15,7 +15,8 @@ with AIP.NIF;
 with AIP.PCBs;
 
 --# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
---#         AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.Time_Types;
+--#         AIP.IP, AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.TCPH,
+--#         AIP.Time_Types;
 
 package AIP.TCP
    --# own State;
@@ -54,13 +55,17 @@ is
    end record;
 
    procedure TCP_Callback
-     (Evk : TCP_Event_Kind; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Evk  : TCP_Event_Kind;
+      PCB  : PCBs.PCB_Id;
+      Cbid : Callbacks.CBK_Id);
+   --# global in out State;
 
    --------------------------------
    -- Setting up TCP connections --
    --------------------------------
 
    procedure TCP_New (Id : out PCBs.PCB_Id);
+   --# global in out State;
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
 
@@ -69,11 +74,13 @@ is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : AIP.U16_T;
       Err        : out AIP.Err_T);
+   --# global in out State;
    --  Bind PCB to the provided IP address (possibly IP_ADDR_ANY) and
    --  local PORT number. Return ERR_USE if the requested binding is already
    --  established for another PCB, NOERR otherwise.
 
    procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
+   --# global in out State;
    --  Setup PCB to listen for at most Config.TCP_DEFAULT_LISTEN_BACKLOG
    --  simultaneous connection requests and trigger the acceptation callback
    --  on such events.
@@ -82,6 +89,7 @@ is
      (PCB     : PCBs.PCB_Id;
       Backlog : AIP.U8_T;
       Err     : out AIP.Err_T);
+   --# global in out State;
    --  Same as TCP_Listen but with a user-specified backlog size
 
    subtype Accept_Cb_Id is Callbacks.CBK_Id;
@@ -252,7 +260,7 @@ is
    -----------------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State; in out State;
+   --# global in out Buffers.State, State;
    --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
    --  to the appropriate user callback. Buf is then free'd.
 
@@ -261,29 +269,66 @@ is
    ------------
 
    procedure TCP_Fast_Timer;
+   --  Called every TCP_FAST_INTERVAL (250 ms) and process data previously
+   --  "refused" by upper layer (application) and sends delayed ACKs.
+
    procedure TCP_Slow_Timer;
-   --  Document???
+   --# global in out State;
+   --  Called every 500 ms and implements the retransmission timer and the
+   --  timer that removes PCBs that have been in TIME-WAIT for enough time. It
+   --  also increments various timers such as the inactivity timer in each PCB.
 
 private
 
-   procedure TCP_Send_Control
+   procedure TCP_Enqueue
+     (PCB : PCBs.PCB_Id;
+      Buf : Buffers.Buffer_Id;
+      Syn : Boolean;
+      Ack : Boolean;
+      Err : out AIP.Err_T);
+   --  Main TCP output routine: output one or more segment, whose data are in
+   --  Buf (which may be NOBUF to force the emission of an empty segment
+   --  carrying only control information). Syn and Ack set the respective
+   --  TCP flags.
+
+   procedure TCP_Send_Rst
      (Src_IP   : IPaddrs.IPaddr;
       Src_Port : PCBs.Port_T;
       Dst_IP   : IPaddrs.IPaddr;
       Dst_Port : PCBs.Port_T;
-      Syn      : Boolean;
-      Rst      : Boolean;
       Ack      : Boolean;
       Seq_Num  : AIP.M32_T;
       Ack_Num  : AIP.M32_T;
       Err      : out AIP.Err_T);
-   --  Send a TCP control segment
+   --  Send a TCP RST segment
+
+   procedure TCP_Send_Control
+     (PCB : PCBs.PCB_Id;
+      Syn : Boolean;
+      Ack : Boolean;
+      Err : out AIP.Err_T);
+   --  Send a TCP segment with no payload
 
    function Initial_Sequence_Number
      (Local_IP    : IPaddrs.IPaddr;
       Local_Port  : PCBs.Port_T;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T) return AIP.M32_T;
+   --# global in State;
    --  Initial sequence number for connection with the given parameters
+
+   --  Sequence number comparisons
+
+   function Seq_Lt (L, R : AIP.M32_T) return Boolean;
+   pragma Inline (Seq_Lt);
+   --  L < R
+
+   function Seq_Le (L, R : AIP.M32_T) return Boolean;
+   pragma Inline (Seq_Le);
+   --  L <= R
+
+   function Seq_Range (L, S, R : AIP.M32_T) return Boolean;
+   pragma Inline (Seq_Range);
+   --  L <= S < R
 
 end AIP.TCP;
