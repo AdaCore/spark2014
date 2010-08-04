@@ -41,6 +41,10 @@ package Xtree_Tables is
       Field_Type     : String_Access;
       --  Field type
 
+      In_Variant     : Boolean;
+      --  False if this field is shared amongst all kinds, True if
+      --  it is kind-specific.
+
       Is_Why_Node_Id : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_Id
       --  ??? Not used yet; always set to False for now.
@@ -93,22 +97,18 @@ package Xtree_Tables is
    --  a leaf in the syntax tree; e.g. this returns False for
    --  W_Type_Unit).
 
-   function Param_Name (Field_Name : Wide_String) return Wide_String;
-   --  Given a Field_Name, return the name to be use for the corresponding
-   --  parameter (in, say, a builder or an accessor). This is meant to be
-   --  used to have proper indentation of these parameters.
+   function Param_Name
+     (FI : Field_Info)
+     return Wide_String;
+   --  Given a field info, return the name to be use for the corresponding
+   --  parameter (in, say, a builder or an accessor).
 
    function Max_Param_Length (Kind : Why_Node_Kind) return Natural;
-   --  Return the maximum length of a parameter for the given node kind
+   --  Return the maximum length of a parameter for the given node kind;
+   --  this is meant to be used to have proper indentation of these parameters.
 
    function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the mixed case name of the given node kind
-
-   function Common_Field_Accessor_Name
-     (FI   : Field_Info)
-     return Wide_String;
-   --  Return the name of the accessor for a field that is shared amongst
-   --  all node kinds.
 
    function Accessor_Name
      (Kind : Why_Node_Kind;

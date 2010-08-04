@@ -31,6 +31,7 @@ package body Xtree_Tables is
 
    function Id_Type_Name (Kind : Wide_String) return Wide_String;
    function List_Type_Name (Kind : Wide_String) return Wide_String;
+   function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Helper functions for the corresponding homonyms
 
    function Strip_Prefix (Name : Wide_String) return Wide_String;
@@ -52,9 +53,13 @@ package body Xtree_Tables is
       FI   : Field_Info)
      return Wide_String is
    begin
-      return Strip_Prefix (Mixed_Case_Name (Kind))
-        & "_Get_"
-        & Strip_Prefix (FI.Field_Name.all);
+      if FI.In_Variant then
+         return Strip_Prefix (Mixed_Case_Name (Kind))
+           & "_Get_"
+           & Strip_Prefix (FI.Field_Name.all);
+      else
+         return "Get_" & FI.Field_Name.all;
+      end if;
    end Accessor_Name;
 
    -----------------
@@ -65,17 +70,6 @@ package body Xtree_Tables is
    begin
       return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
    end Builder_Name;
-
-   --------------------------------
-   -- Common_Field_Accessor_Name --
-   --------------------------------
-
-   function Common_Field_Accessor_Name
-     (FI   : Field_Info)
-     return Wide_String is
-   begin
-      return "Get_" & FI.Field_Name.all;
-   end Common_Field_Accessor_Name;
 
    ----------------
    -- Field_Name --
@@ -148,6 +142,15 @@ package body Xtree_Tables is
    function Param_Name (Field_Name : Wide_String) return Wide_String is
    begin
       return Strip_Prefix (Field_Name);
+   end Param_Name;
+
+   function Param_Name (FI : Field_Info) return Wide_String is
+   begin
+      if FI.In_Variant then
+         return Param_Name (FI.Field_Name.all);
+      else
+         return FI.Field_Name.all;
+      end if;
    end Param_Name;
 
    ----------------------

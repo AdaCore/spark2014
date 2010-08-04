@@ -69,7 +69,7 @@ package body Xtree_Accessors is
       begin
          Print_Accessor_Specification
            (O           => O,
-            Name        => Common_Field_Accessor_Name (FI),
+            Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
             Return_Type => Id_Type_Name (FI));
          PL (O, " is");

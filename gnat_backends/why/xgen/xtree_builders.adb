@@ -81,7 +81,6 @@ package body Xtree_Builders is
                         Why_Tree_Info (Kind);
       Max_Param_Len : constant Natural := Max_Param_Length (Kind);
       Field_Number  : Positive := 1;
-      In_Variant    : Boolean := False;
 
       procedure Print_Parameter_Specification (Position : Cursor);
 
@@ -93,6 +92,7 @@ package body Xtree_Builders is
       is
          Name_Len : Natural;
          FI       : constant Field_Info := Element (Position);
+         PN       : constant Wide_String := Param_Name (FI);
       begin
          if Field_Number = 1 then
             P (O, "(");
@@ -101,17 +101,8 @@ package body Xtree_Builders is
             PL (O, ";");
          end if;
 
-         if In_Variant then
-            declare
-               PN : constant Wide_String := Param_Name (FI.Field_Name.all);
-            begin
-               P (O, PN);
-               Name_Len := PN'Length;
-            end;
-         else
-            P (O, FI.Field_Name.all);
-            Name_Len := FI.Field_Name'Length;
-         end if;
+         P (O, PN);
+         Name_Len := PN'Length;
 
          --  Align columns
 
@@ -120,7 +111,7 @@ package body Xtree_Builders is
          end loop;
          P (O, " : ");
 
-         P (O, FI.Field_Type.all);
+         P (O, Id_Type_Name (FI));
          Field_Number := Field_Number + 1;
       end Print_Parameter_Specification;
 
@@ -130,7 +121,6 @@ package body Xtree_Builders is
       PL (O, "function " & Builder_Name (Kind));
       Relative_Indent (O, 2);
       Common_Fields.Fields.Iterate (Print_Parameter_Specification'Access);
-      In_Variant := True;
       Variant_Part.Fields.Iterate (Print_Parameter_Specification'Access);
       PL (O, ")");
       Relative_Indent (O, -1);

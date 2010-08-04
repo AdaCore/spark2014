@@ -77,8 +77,9 @@ procedure Xtree is
      (State_Information => Traversal_State);
 
    procedure Record_Field
-     (NI      : in out Why_Node_Info;
-      Element : Asis.Component_Declaration);
+     (NI         : in out Why_Node_Info;
+      Element    : Asis.Component_Declaration;
+      In_Variant : Boolean);
    --  Extract field informations from the component declaration
    --  and record it into Xtree_Tables.
 
@@ -113,7 +114,7 @@ procedure Xtree is
 
          when In_Why_Node =>
             if Kind = A_Component_Declaration then
-               Record_Field (Common_Fields, Element);
+               Record_Field (Common_Fields, Element, False);
 
             elsif Kind = A_Variant then
                Record_Variant (Element);
@@ -166,8 +167,9 @@ procedure Xtree is
    ------------------
 
    procedure Record_Field
-     (NI      : in out Why_Node_Info;
-      Element : Asis.Component_Declaration)
+     (NI         : in out Why_Node_Info;
+      Element    : Asis.Component_Declaration;
+      In_Variant : Boolean)
    is
       C_Names    : constant Asis.Defining_Name_List :=
                      Names (Element);
@@ -181,6 +183,7 @@ procedure Xtree is
       FI         : constant Field_Info :=
                      (Field_Name     => new Wide_String'(Name_Image),
                       Field_Type     => new Wide_String'(Type_Image),
+                      In_Variant     => In_Variant,
                       Is_Why_Node_Id => False,
                       Is_List        => False,
                       Maybe_Null     => False);
@@ -234,7 +237,7 @@ procedure Xtree is
 
          for J in V_Components'First .. V_Components'Last loop
             if Flat_Element_Kind (V_Components (J)) /= A_Null_Component then
-               Record_Field (Why_Tree_Info (Kind), V_Components (J));
+               Record_Field (Why_Tree_Info (Kind), V_Components (J), True);
             end if;
          end loop;
       end loop;
