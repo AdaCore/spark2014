@@ -38,6 +38,11 @@ package body Xtree_Builders is
       Kind : Why_Node_Kind);
    --  Print builder specification for the given node kind
 
+   procedure Print_Builder_Postcondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind);
+   --  Print builder postcondition for the given node kind
+
    --------------------------------
    -- Print_Builder_Declarations --
    --------------------------------
@@ -65,6 +70,7 @@ package body Xtree_Builders is
    begin
       Print_Builder_Specification (O, Kind);
       PL (O, ";");
+      Print_Builder_Postcondition (O, Kind);
    end Print_Builder_Declaration;
 
    ---------------------------------
@@ -127,5 +133,54 @@ package body Xtree_Builders is
       P (O, "return " & Id_Type_Name (Kind));
       Relative_Indent (O, -2);
    end Print_Builder_Specification;
+
+   ---------------------------------
+   -- Print_Builder_Postcondition --
+   ---------------------------------
+
+   procedure Print_Builder_Postcondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind)
+   is
+      use Node_Lists;
+
+      Variant_Part  : constant Why_Node_Info :=
+                        Why_Tree_Info (Kind);
+
+      procedure Print_Parameter_Postcondition (Position : Cursor);
+
+      -----------------------------------
+      -- Print_Parameter_Postcondition --
+      -----------------------------------
+
+      procedure Print_Parameter_Postcondition (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+         PN : constant Wide_String := Param_Name (FI);
+      begin
+         PL (O, "and then " & Accessor_Name (Kind, FI));
+         P (O, "  (" & Builder_Name (Kind) & "'Result)" & " = " & PN);
+
+         if Next (Position) /= No_Element then
+            NL (O);
+         end if;
+      end Print_Parameter_Postcondition;
+
+   begin
+      PL (O, "pragma Postcondition");
+      Relative_Indent (O, 2);
+      PL (O, "(Get_Kind");
+      PL (O, "  (" & Builder_Name (Kind) & "'Result)"
+          & " = " & Mixed_Case_Name (Kind));
+      Relative_Indent (O, 1);
+      Common_Fields.Fields.Iterate (Print_Parameter_Postcondition'Access);
+
+      if Has_Variant_Part (Kind) then
+         NL (O);
+         Variant_Part.Fields.Iterate (Print_Parameter_Postcondition'Access);
+      end if;
+      Relative_Indent (O, -1);
+      PL (O, ");");
+      Relative_Indent (O, -2);
+   end Print_Builder_Postcondition;
 
 end Xtree_Builders;
