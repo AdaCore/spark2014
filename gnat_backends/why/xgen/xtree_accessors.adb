@@ -29,7 +29,7 @@ with Xtree_Tables;   use Xtree_Tables;
 
 package body Xtree_Accessors is
 
-   Node_Id_Param : constant Wide_String := "Node_Id";
+   Node_Id_Param : constant Wide_String := "Id";
 
    procedure Print_Accessor_Functional_Expressions
      (O    : in out Output_Record;
