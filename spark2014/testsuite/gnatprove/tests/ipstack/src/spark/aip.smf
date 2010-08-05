@@ -29,3 +29,5 @@
 ../core/aip-tcp.adb
 ../core/aip-udp.ads
 ../core/aip-udp.adb
+../core/aip-arp.ads
+../core/aip-arp.adb

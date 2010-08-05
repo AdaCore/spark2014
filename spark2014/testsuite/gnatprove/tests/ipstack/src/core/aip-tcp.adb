@@ -34,7 +34,7 @@ is
       Time_Wait);
 
    pragma Unreferenced
-     (Fin_Wait_1, Fin_Wait_2, Close_Wait, Closing, Last_Ack, Time_Wait);
+     (Fin_Wait_1, Fin_Wait_2, Close_Wait, Closing, Last_Ack);
 
    type TCP_Callbacks is array (TCP_Event_Kind) of Callbacks.CBK_Id;
 
@@ -138,6 +138,12 @@ is
    Time_Wait_PCBs : PCBs.PCB_Id;
    subtype TCP_PCB_Heads_Range is Natural range 1 .. 4;
    subtype TCP_PCB_Heads is PCBs.PCB_List (TCP_PCB_Heads_Range);
+
+   --  procedure Update_RTT_Estimator
+   --    (TPCB : in out TCP_PCB;
+   --     Meas : AIP.S16_T);
+   --  Update the RTT estimator using the given RTT measurement, as per
+   --  Jacobson paper.
 
    ----------------------------
    -- Initial_Sequence_Numer --
@@ -369,17 +375,62 @@ is
    -- TCP_New --
    -------------
 
-   procedure TCP_New (Id : out PCBs.PCB_Id)
+   procedure TCP_New (PCB : out PCBs.PCB_Id)
    --# global in out IPCBs, TPCBs;
    is
    begin
-      PCBs.Allocate_PCB (IPCBs, Id);
+      PCBs.Allocate (IPCBs, PCB);
 
-      if Id /= PCBs.NOPCB then
-         IPCBs (Id).TTL := Config.TCP_TTL;
-         TPCBs (Id) := TCP_PCB_Initializer;
+      if PCB /= PCBs.NOPCB then
+         IPCBs (PCB).TTL := Config.TCP_TTL;
+         TPCBs (PCB) := TCP_PCB_Initializer;
       end if;
    end TCP_New;
+
+   --------------
+   -- TCP_Free --
+   --------------
+
+   procedure TCP_Free (PCB : PCBs.PCB_Id)
+   --# global in out IPCBs, TPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   is
+   begin
+      case TPCBs (PCB).State is
+         when Closed   =>
+            if IPCBs (PCB).Local_Port /= PCBs.NOPORT then
+               PCBs.Unlink (PCB      => PCB,
+                            PCB_Head => Bound_PCBs,
+                            PCB_Pool => IPCBs);
+            end if;
+
+         when Listen   =>
+            PCBs.Unlink (PCB      => PCB,
+                         PCB_Head => Listen_PCBs,
+                         PCB_Pool => IPCBs);
+
+         when Syn_Sent =>
+            PCBs.Unlink (PCB      => PCB,
+                         PCB_Head => Bound_PCBs,
+                         PCB_Pool => IPCBs);
+
+         when Established =>
+            PCBs.Unlink (PCB      => PCB,
+                         PCB_Head => Active_PCBs,
+                         PCB_Pool => IPCBs);
+
+         when Time_Wait =>
+            PCBs.Unlink (PCB      => PCB,
+                         PCB_Head => Time_Wait_PCBs,
+                         PCB_Pool => IPCBs);
+
+         when others =>
+            --  Is this PCB supposed to be on a list???
+            null;
+      end case;
+
+      IPCBs (PCB) := PCBs.IP_PCB_Initializer;
+   end TCP_Free;
 
    ----------------
    -- TCP_Accept --
@@ -634,39 +685,6 @@ is
             end if;
          end if;
       end Check_Option_Length;
-
-      --  procedure Update_RTT_Estimator
-      --    (TPCB : in out TCP_PCB;
-      --     Meas : AIP.S16_T);
-      --  Update the RTT estimator using the given RTT measurement, as per
-      --  Jacobson paper.
-
-      --------------------------
-      -- Update_RTT_Estimator --
-      --------------------------
-
-      procedure Update_RTT_Estimator
-        (TPCB  : in out TCP_PCB;
-         Meas  : AIP.S16_T)
-      is
-         M : AIP.S16_T;
-      begin
-         M := Meas;
-
-         --  Update average estimator
-
-         M := M - TPCB.RTT_Average / 8;
-         TPCB.RTT_Average := TPCB.RTT_Average + M;
-
-         --  Update standard deviation estimator
-
-         M := (abs M) - TPCB.RTT_Stddev / 4;
-         TPCB.RTT_Stddev := TPCB.RTT_Stddev + M;
-
-         --  Set new retransmit timeout
-
-         TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
-      end Update_RTT_Estimator;
 
    --  Start of processing for TCP_Input
 
@@ -937,10 +955,21 @@ is
                      if TCPH.TCPH_Rst (Thdr) = 1 then
                         if TCPH.TCPH_Ack (Thdr) = 1 then
                            --  Connection refused
-                           --  Signal user???
-                           --  Drop (close) PCB
 
-                           null; --  TBD
+                           TPCBs (PCB).State := Closed;
+
+                           TCP_Event
+                             (Ev   => TCP_Event_T'(Kind => TCP_EVENT_ABORT,
+                                                   Buf  => Buffers.NOBUF,
+                                                   Addr => IPaddrs.IP_ADDR_ANY,
+                                                   Port => PCBs.NOPORT,
+                                                   Err  => AIP.ERR_RST),
+                              PCB  => PCB,
+                              Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT));
+
+                           --  Drop PCB
+
+                           TCP_Free (PCB);
                         end if;
 
                         --  Discard segment
@@ -1044,5 +1073,32 @@ is
    begin
       TCP_Ticks := TCP_Ticks + 1;
    end TCP_Slow_Timer;
+
+   --------------------------
+   -- Update_RTT_Estimator --
+   --------------------------
+
+   procedure Update_RTT_Estimator
+     (TPCB  : in out TCP_PCB;
+      Meas  : AIP.S16_T)
+   is
+      M : AIP.S16_T;
+   begin
+      M := Meas;
+
+      --  Update average estimator
+
+      M := M - TPCB.RTT_Average / 8;
+      TPCB.RTT_Average := TPCB.RTT_Average + M;
+
+      --  Update standard deviation estimator
+
+      M := (abs M) - TPCB.RTT_Stddev / 4;
+      TPCB.RTT_Stddev := TPCB.RTT_Stddev + M;
+
+      --  Set new retransmit timeout
+
+      TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
+   end Update_RTT_Estimator;
 
 end AIP.TCP;

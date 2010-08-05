@@ -141,7 +141,9 @@ package AIP is
    subtype Err_T is S8_T;
    NOERR      : constant Err_T := 0;   -- No error
    ERR_MEM    : constant Err_T := -1;  -- Out of memory
-   ERR_ABRT   : constant Err_T := -4;  -- ???
+   ERR_ABRT   : constant Err_T := -4;  -- Connection aborted
+   ERR_RST    : constant Err_T := -5;  -- Connection reset
+   ERR_CLSED  : constant Err_T := -6;  -- Connection closed
    ERR_VAL    : constant Err_T := -8;  -- Illegal Value
    ERR_USE    : constant Err_T := -10; -- API use error
    ERR_RTE    : constant Err_T := -3;  -- Routing Error

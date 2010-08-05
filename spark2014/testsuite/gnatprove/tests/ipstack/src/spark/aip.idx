@@ -6,6 +6,8 @@ AIP.IPH             specification is in ../../build/gen/aip-iph.ads
 AIP.TCPH            specification is in ../../build/gen/aip-tcph.ads
 AIP.UDPH            specification is in ../../build/gen/aip-udph.ads
 AIP                 specification is in ../support/aip.ads
+AIP.ARP             specification is in ../core/aip-arp.ads
+AIP.ARP             body          is in ../core/aip-arp.adb
 AIP.Buffers         specification is in ../core/aip-buffers.ads
 AIP.Buffers         components    are   AIP.Buffers.Common,
                                         AIP.Buffers.Data,

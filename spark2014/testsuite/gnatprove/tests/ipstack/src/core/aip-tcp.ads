@@ -46,12 +46,18 @@ is
       TCP_EVENT_POLL,
       TCP_EVENT_ABORT);
 
-   type TCP_Event is record
+   type TCP_Event_T is record
       Kind : TCP_Event_Kind;
-      Buf  : Buffers.Buffer_Id;
+
+      Buf : Buffers.Buffer_Id;
+      --  Data buffer (for RECV)
+
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
-      Err  : AIP.Err_T;
+      --  Remote socket (for ACCEPT)
+
+      Err : AIP.Err_T;
+      --  Reason of abort (for ABORT)
    end record;
 
    procedure TCP_Callback
@@ -60,11 +66,18 @@ is
       Cbid : Callbacks.CBK_Id);
    --# global in out State;
 
+   procedure TCP_Event
+     (Ev : TCP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+   --# global in out Buffers.State;
+   pragma Import (Ada, TCP_Event, "AIP_tcp_event");
+   --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
+   --  Expected to be provided by the applicative code.
+
    --------------------------------
    -- Setting up TCP connections --
    --------------------------------
 
-   procedure TCP_New (Id : out PCBs.PCB_Id);
+   procedure TCP_New (PCB : out PCBs.PCB_Id);
    --# global in out State;
    --  Allocate a new TCP PCB and return the corresponding id, or NOPCB on
    --  allocation failure.
@@ -283,6 +296,10 @@ is
    --  also increments various timers such as the inactivity timer in each PCB.
 
 private
+
+   procedure TCP_Free (PCB : PCBs.PCB_Id);
+   --# global in out State;
+   --  Destroy PCB and mark it as unallocated
 
    procedure TCP_Enqueue
      (PCB : PCBs.PCB_Id;

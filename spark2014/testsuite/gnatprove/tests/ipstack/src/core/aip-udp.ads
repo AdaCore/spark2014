@@ -30,7 +30,7 @@ is
    --  Initialize internal datastructures. To be called once, before any of
    --  the other subprograms.
 
-   procedure UDP_New (Id : out PCBs.PCB_Id);
+   procedure UDP_New (PCB : out PCBs.PCB_Id);
    --# global in out State;
    --  Allocate and return Id of a new UDP PCB. PCB_NOID on failure.
 

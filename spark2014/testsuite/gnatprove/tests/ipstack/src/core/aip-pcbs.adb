@@ -5,27 +5,27 @@
 
 package body AIP.PCBs is
 
-   ------------------
-   -- Allocate_PCB --
-   ------------------
+   --------------
+   -- Allocate --
+   --------------
 
-   procedure Allocate_PCB
+   procedure Allocate
      (PCB_Pool : in out IP_PCB_Array;
-      Id       : out AIP.EID)
+      PCB      : out PCB_Id)
    is
    begin
       --  Scan the PCBs array and pick the first unused entry
 
-      Id := NOPCB;
+      PCB := NOPCB;
       Scan_PCBs : for J in PCB_Pool'Range loop
          if PCB_Pool (J).Link = PCB_Unused then
-            Id := J;
+            PCB := J;
             PCB_Pool (J) := IP_PCB_Initializer;
             PCB_Pool (J).Link := NOPCB;
             exit Scan_PCBs;
          end if;
       end loop Scan_PCBs;
-   end Allocate_PCB;
+   end Allocate;
 
    --------------------
    -- Available_Port --

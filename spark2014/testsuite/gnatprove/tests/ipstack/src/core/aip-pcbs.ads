@@ -79,11 +79,11 @@ package AIP.PCBs is
    subtype Valid_PCB_Id is PCB_Id range NOPCB + 1 .. PCB_Id'Last;
    type IP_PCB_Array is array (Valid_PCB_Id range <>) of IP_PCB;
 
-   procedure Allocate_PCB
+   procedure Allocate
      (PCB_Pool : in out IP_PCB_Array;
-      Id       : out AIP.EID);
+      PCB      : out PCB_Id);
    --  Find an unused PCB in PCB_Pool (denoted by Link = PCB_Unused) and return
-   --  its id, or NOPCB if none is found.
+   --  its index, or NOPCB if none is found.
 
    --  In the subprograms below, PCB_Heads denote the heads of the various
    --  lists of in-use PCBs maintained by each higher level protocol (TCP or

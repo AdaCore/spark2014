@@ -67,15 +67,15 @@ is
    -- UDP_New --
    -------------
 
-   procedure UDP_New (Id : out PCBs.PCB_Id)
+   procedure UDP_New (PCB : out PCBs.PCB_Id)
       --# global in out IPCBs, UPCBs;
    is
    begin
-      PCBs.Allocate_PCB (IPCBs, Id);
+      PCBs.Allocate (IPCBs, PCB);
 
-      if Id /= PCBs.NOPCB then
-         IPCBs (Id).TTL := Config.UDP_TTL;
-         UPCBs (Id) := UDP_PCB_Initializer;
+      if PCB /= PCBs.NOPCB then
+         IPCBs (PCB).TTL := Config.UDP_TTL;
+         UPCBs (PCB) := UDP_PCB_Initializer;
       end if;
    end UDP_New;
 

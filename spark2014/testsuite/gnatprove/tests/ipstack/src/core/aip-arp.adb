@@ -8,11 +8,148 @@ with AIP.Conversions;
 with AIP.EtherH;
 with AIP.Inet;
 
-package body AIP.ARP is
-
-   ARP_Table : array (ARP_Entry_Id) of ARP_Entry;
+package body AIP.ARP
+--# own State is ARP_Table, ARP_Free_List, ARP_Active_List;
+is
+   type ARP_Table_T is array (ARP_Entry_Id) of ARP_Entry;
+   ARP_Table : ARP_Table_T;
    ARP_Free_List   : Any_ARP_Entry_Id;
    ARP_Active_List : Any_ARP_Entry_Id;
+
+   ---------------------
+   -- Get_MAC_Address --
+   ---------------------
+
+   function Get_MAC_Address (Nid : NIF.Netif_Id) return AIP.Ethernet_Address is
+      Nid_LL_Address        : AIP.Ethernet_Address;
+      Nid_LL_Address_Length : AIP.LL_Address_Range;
+   begin
+      NIF.Get_LL_Address (Nid, Nid_LL_Address, Nid_LL_Address_Length);
+      pragma Assert (Nid_LL_Address_Length = Nid_LL_Address'Last);
+      return Nid_LL_Address;
+   end Get_MAC_Address;
+
+   -----------------
+   -- Send_Packet --
+   -----------------
+
+   procedure Send_Packet
+     (Nid             : NIF.Netif_Id;
+      Frame_Type      : AIP.U16_T;
+      Buf             : Buffers.Buffer_Id;
+      Dst_MAC_Address : AIP.Ethernet_Address)
+   is
+      Err  : AIP.Err_T;
+      Ehdr : System.Address;
+   begin
+
+      --  Prepend Ethernet header
+
+      Buffers.Buffer_Header (Buf, EtherH.Ether_Header_Size / 8, Err);
+
+      if AIP.No (Err) then
+         Ehdr := Buffers.Buffer_Payload (Buf);
+         EtherH.Set_EtherH_Dst_MAC_Address (Ehdr, Dst_MAC_Address);
+         EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
+         EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
+
+         NIF.Link_Output (Nid, Buf, Err);
+      end if;
+   end Send_Packet;
+
+   ------------------
+   -- Send_Request --
+   ------------------
+
+   procedure Send_Request
+     (Nid            : NIF.Netif_Id;
+      Dst_IP_Address : IPaddrs.IPaddr)
+   is
+      Ethernet_Broadcast : constant AIP.Ethernet_Address :=
+                             AIP.Ethernet_Address'(others => 16#ff#);
+
+      Buf : Buffers.Buffer_Id;
+
+      Ahdr : System.Address;
+   begin
+      Buffers.Buffer_Alloc
+        (Offset => Inet.HLEN_To (Inet.LINK_LAYER),
+         Size   => ARPH.ARP_Header_Size / 8,
+         Kind   => Buffers.SPLIT_BUF,
+         Buf    => Buf);
+
+      if Buf /= Buffers.NOBUF then
+         Ahdr := Buffers.Buffer_Payload (Buf);
+
+         ARPH.Set_ARPH_Hardware_Type   (Ahdr, ARPH.ARP_Hw_Ethernet);
+         ARPH.Set_ARPH_Protocol        (Ahdr, EtherH.Ether_Type_IP);
+         ARPH.Set_ARPH_Hw_Len          (Ahdr, AIP.Ethernet_Address'Size / 8);
+         ARPH.Set_ARPH_Pr_Len          (Ahdr, IPaddrs.IPaddr'Size);
+         ARPH.Set_ARPH_Operation       (Ahdr, ARPH.ARP_Op_Request);
+         ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Get_MAC_Address (Nid));
+         ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
+         ARPH.Set_ARPH_Dst_Eth_Address (Ahdr, Ethernet_Broadcast);
+         ARPH.Set_ARPH_Dst_IP_Address  (Ahdr, Dst_IP_Address);
+
+         Send_Packet (Nid, EtherH.Ether_Type_ARP, Buf, Ethernet_Broadcast);
+         Buffers.Buffer_Blind_Free (Buf);
+      end if;
+   end Send_Request;
+
+   -----------------
+   -- ARP_Prepend --
+   -----------------
+
+   procedure ARP_Prepend
+     (List : in out Any_ARP_Entry_Id;
+      AEID : ARP_Entry_Id)
+   --# global in out ARP_Table;
+   is
+   begin
+      ARP_Table (AEID).Next := List;
+      List := AEID;
+   end ARP_Prepend;
+
+   ----------------
+   -- ARP_Unlink --
+   ----------------
+
+   procedure ARP_Unlink
+     (List : in out Any_ARP_Entry_Id;
+      AEID : ARP_Entry_Id)
+   --# global in out ARP_Table;
+   is
+      Prev, Cur : Any_ARP_Entry_Id;
+   begin
+      Prev := No_ARP_Entry;
+      Cur  := List;
+      while Cur /= AEID loop
+         Prev := Cur;
+         Cur := ARP_Table (AEID).Next;
+      end loop;
+
+      if Cur /= No_ARP_Entry then
+         if Prev = No_ARP_Entry then
+            List := ARP_Table (Cur).Next;
+         else
+            ARP_Table (Prev).Next := ARP_Table (Cur).Next;
+         end if;
+      end if;
+
+      ARP_Table (AEID).Next := No_ARP_Entry;
+   end ARP_Unlink;
+
+   ---------------
+   -- ARP_Reset --
+   ---------------
+
+   procedure ARP_Reset (AE : in out ARP_Entry) is
+   begin
+      AE.State        := Incomplete;
+      AE.Permanent    := False;
+      AE.Timestamp    := Time_Types.Time'First;
+      AE.Packet_Queue := Buffers.Empty_Packet_List;
+   end ARP_Reset;
 
    --------------
    -- ARP_Find --
@@ -22,6 +159,7 @@ package body AIP.ARP is
      (Addr     : IPaddrs.IPaddr;
       Id       : out Any_ARP_Entry_Id;
       Allocate : Boolean)
+   --# global in out ARP_Table, ARP_Free_List, ARP_Active_List;
    is
       Last_Active_Id : Any_ARP_Entry_Id;
    begin
@@ -85,14 +223,61 @@ package body AIP.ARP is
    -- Initialize --
    ----------------
 
-   procedure Initialize is
+   procedure Initialize
+   --# global out ARP_Table, ARP_Free_List, ARP_Active_List;
+   is
    begin
-      for J in ARP_Table'Range loop
-         ARP_Table (J).State := Unused;
+      ARP_Table := ARP_Table_T'
+        (others => ARP_Entry'(State           => Unused,
+                              Permanent       => False,
+                              Timestamp       => 0,
+                              Dst_IP_Address  => IPaddrs.IP_ADDR_ANY,
+                              Dst_MAC_Address => AIP.Ethernet_Address'
+                                                   (others => 0),
+                              Packet_Queue    => Buffers.Empty_Packet_List,
+                              Next            => No_ARP_Entry));
+      for J in ARP_Entry_Id loop
          ARP_Table (J).Next := J - 1;
       end loop;
       ARP_Free_List := ARP_Table'Last;
+      ARP_Active_List := No_ARP_Entry;
    end Initialize;
+
+   ----------------
+   -- ARP_Update --
+   ----------------
+
+   procedure ARP_Update
+     (Nid         : NIF.Netif_Id;
+      Eth_Address : AIP.Ethernet_Address;
+      IP_Address  : IPaddrs.IPaddr;
+      Allocate    : Boolean;
+      Err         : out AIP.Err_T)
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   is
+      AEID       : Any_ARP_Entry_Id;
+      Packet_Buf : Buffers.Buffer_Id;
+   begin
+      Err := AIP.NOERR;
+
+      ARP_Find (Addr => IP_Address, Id => AEID, Allocate => Allocate);
+      if AEID = No_ARP_Entry then
+         Err := AIP.ERR_MEM;
+      end if;
+
+      if AIP.No (Err) then
+         ARP_Table (AEID).State := Active;
+         ARP_Table (AEID).Timestamp := Time_Types.Now;
+         ARP_Table (AEID).Dst_MAC_Address := Eth_Address;
+
+         Flush_Queue : loop
+            Buffers.Remove_Packet (ARP_Table (AEID).Packet_Queue, Packet_Buf);
+            exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
+
+            Send_Packet (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
+         end loop Flush_Queue;
+      end if;
+   end ARP_Update;
 
    ---------------
    -- ARP_Input --
@@ -102,39 +287,53 @@ package body AIP.ARP is
      (Nid                : NIF.Netif_Id;
       Netif_MAC_Addr_Ptr : System.Address;
       Buf                : Buffers.Buffer_Id)
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
    is
-      Err  : Err_T := NOERR;
+      Err        : AIP.Err_T;
+      Ehdr, Ahdr : System.Address;
+      Ifa        : IPaddrs.IPaddr;
+      Local      : Boolean;
 
-      Ehdr : constant System.Address := Buffers.Buffer_Payload (Buf);
-      Ahdr : constant System.Address :=
-               Conversions.Ofs (Ehdr, EtherH.Ether_Header'Size / 8);
+      ---------------
+      -- Netif_MAC --
+      ---------------
 
-      Ifa : constant IPaddrs.IPaddr := NIF.NIF_Addr (Nid);
+      function Netif_MAC return AIP.Ethernet_Address is
+         --# hide Netif_MAC;
+         Result : Ethernet_Address;
+         for Result'Address use Netif_MAC_Addr_Ptr;
+         pragma Import (Ada, Result);
+      begin
+         return Result;
+      end Netif_MAC;
 
-      Local : Boolean;
-
-      Netif_MAC : Ethernet_Address;
-      for Netif_MAC'Address use Netif_MAC_Addr_Ptr;
-      pragma Import (Ada, Netif_MAC);
+   --  Start of processing for ARP_Input;
 
    begin
-      if Buffers.Buffer_Len (Buf) < Ahdr'Size / 8
+      Err := AIP.NOERR;
+      Ifa := NIF.NIF_Addr (Nid);
+
+      Ehdr := Buffers.Buffer_Payload (Buf);
+      Ahdr := Conversions.Ofs (Ehdr, EtherH.Ether_Header_Size / 8);
+
+      if Buffers.Buffer_Len (Buf) < (EtherH.Ether_Header_Size
+                                       + ARPH.ARP_Header_Size) / 8
            or else
          ARPH.ARPH_Hardware_Type (Ahdr) /= ARPH.ARP_Hw_Ethernet
            or else
          ARPH.ARPH_Protocol (Ahdr) /= EtherH.Ether_Type_IP
            or else
-         ARPH.ARPH_Hw_Len (Ahdr) /= Ethernet_Address'Size / 8
+         ARPH.ARPH_Hw_Len (Ahdr) /= AIP.Ethernet_Address'Size / 8
            or else
          ARPH.ARPH_Pr_Len (Ahdr) /= IPaddrs.IPaddr'Size / 8
       then
          --  Discard packet if short, or if not a consistent Ethernet/IP ARP
          --  message.
 
-         Err := ERR_USE;
+         Err := AIP.ERR_USE;
       end if;
 
-      if No (ERR) then
+      if AIP.No (ERR) then
          Local := Ifa /= IPaddrs.IP_ADDR_ANY
                     and then Ifa = ARPH.ARPH_Dst_Ip_Address (Ahdr);
 
@@ -142,14 +341,14 @@ package body AIP.ARP is
          --  talk back to them, and allocate a new entry if none exists.
 
          ARP_Update
-           (Nid,
-            ARPH.ARPH_Src_Eth_Address (Ahdr),
-            ARPH.ARPH_Src_IP_Address (Ahdr),
-            Allocate => Local,
-            Err      => Err);
+           (Nid         => Nid,
+            Eth_Address => ARPH.ARPH_Src_Eth_Address (Ahdr),
+            IP_Address  => ARPH.ARPH_Src_IP_Address (Ahdr),
+            Allocate    => Local,
+            Err         => Err);
       end if;
 
-      if No (Err) then
+      if AIP.No (Err) then
          case ARPH.ARPH_Operation (Ahdr) is
             when ARPH.ARP_Op_Request =>
                if Local then
@@ -197,16 +396,17 @@ package body AIP.ARP is
      (Nid         : NIF.Netif_Id;
       Buf         : Buffers.Buffer_Id;
       Dst_Address : IPaddrs.IPaddr)
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
    is
       AEID : Any_ARP_Entry_Id;
    begin
-      ARP_Find (Dst_Address, AEID, Allocate => True);
+      ARP_Find (Addr => Dst_Address, Id => AEID, Allocate => True);
       if AEID /= No_ARP_Entry then
          case ARP_Table (AEID).State is
             when Unused     =>
                --  Cannot happen
 
-               raise Program_Error;
+               null; --  raise Program_Error; ???
 
             when Active     =>
                Send_Packet
@@ -235,156 +435,49 @@ package body AIP.ARP is
       end if;
    end ARP_Output;
 
-   -----------------
-   -- ARP_Prepend --
-   -----------------
-
-   procedure ARP_Prepend
-     (List : in out Any_ARP_Entry_Id;
-      AEID : ARP_Entry_Id)
-   is
-      AE : ARP_Entry renames ARP_Table (AEID);
-   begin
-      pragma Assert (AE.Prev = No_ARP_Entry);
-      AE.Next := List;
-      if List /= No_ARP_Entry then
-         ARP_Table (List).Prev := AEID;
-      end if;
-      List := AEID;
-   end ARP_Prepend;
-
    ---------------
    -- ARP_Timer --
    ---------------
 
-   procedure ARP_Timer is
-      use type Time_Types.Time;
-      Now : constant Time_Types.Time := Time_Types.Now;
-      AEID : Any_ARP_Entry_Id := ARP_Active_List;
-      Next_AEID : Any_ARP_Entry_Id;
+   procedure ARP_Timer
+   --# global in out Buffers.State, ARP_Table, ARP_Free_List, ARP_Active_List;
+   is
+      Now        : Time_Types.Time;
+      AEID       : Any_ARP_Entry_Id;
+      Next_AEID  : Any_ARP_Entry_Id;
+      AE_Age     : Time_Types.Interval;
+      Packet_Buf : Buffers.Buffer_Id;
 
-      procedure Check_Entry (AEID : ARP_Entry_Id);
-      --  Check one entry from the active list (which is Active or Incomplete)
+   begin
+      Now  := Time_Types.Now;
+      AEID := ARP_Active_List;
 
-      -----------------
-      -- Check_Entry --
-      -----------------
+      while AEID /= No_ARP_Entry loop
+         Next_AEID := ARP_Table (AEID).Next;
+         AE_Age := Now - ARP_Table (AEID).Timestamp;
 
-      procedure Check_Entry (AEID : ARP_Entry_Id) is
-         AE         : ARP_Entry renames ARP_Table (AEID);
-         AE_Age     : constant Time_Types.Interval := Now - AE.Timestamp;
-         Packet_Buf : Buffers.Buffer_Id;
-      begin
-         if not AE.Permanent
+         if not ARP_Table (AEID).Permanent
                  and then
-               ((AE.State = Active
+               ((ARP_Table (AEID).State = Active
                    and then AE_Age > Max_ARP_Age_Active * Time_Types.Hz
-                   and then Buffers.Empty (AE.Packet_Queue))
+                   and then Buffers.Empty (ARP_Table (AEID).Packet_Queue))
                   or else
-                (AE.State = Incomplete
+                (ARP_Table (AEID).State = Incomplete
                    and then AE_Age > Max_ARP_Age_Incomplete * Time_Types.Hz))
          then
             loop
-               Buffers.Remove_Packet (AE.Packet_Queue, Packet_Buf);
+               Buffers.Remove_Packet
+                 (ARP_Table (AEID).Packet_Queue, Packet_Buf);
                exit when Packet_Buf = Buffers.NOBUF;
                Buffers.Buffer_Blind_Free (Packet_Buf);
             end loop;
             ARP_Unlink (ARP_Active_List, AEID);
+            ARP_Prepend (ARP_Free_List, AEID);
          end if;
-      end Check_Entry;
 
-   --  Start of processing for ARP_Timer
-
-   begin
-      while AEID /= No_ARP_Entry loop
-         Next_AEID := ARP_Table (AEID).Next;
-         Check_Entry (AEID);
          AEID := Next_AEID;
       end loop;
    end ARP_Timer;
-
-   ----------------
-   -- ARP_Unlink --
-   ----------------
-
-   procedure ARP_Unlink
-     (List : in out Any_ARP_Entry_Id;
-      AEID : ARP_Entry_Id)
-   is
-      AE : ARP_Entry renames ARP_Table (AEID);
-   begin
-      if List = AEID then
-         List := AE.Next;
-      else
-         pragma Assert (AE.Prev /= No_ARP_Entry);
-         ARP_Table (AE.Prev).Next := AE.Next;
-      end if;
-
-      AE.Prev := No_ARP_Entry;
-      AE.Next := No_ARP_Entry;
-   end ARP_Unlink;
-
-   ----------------
-   -- ARP_Update --
-   ----------------
-
-   procedure ARP_Update
-     (Nid         : NIF.Netif_Id;
-      Eth_Address : Ethernet_Address;
-      IP_Address  : IPaddrs.IPaddr;
-      Allocate    : Boolean;
-      Err         : out Err_T)
-   is
-      AEID : Any_ARP_Entry_Id;
-
-      Packet_Buf : Buffers.Buffer_Id;
-   begin
-      Err := NOERR;
-
-      ARP_Find (IP_Address, AEID, Allocate => Allocate);
-      if AEID = No_ARP_Entry then
-         Err := ERR_MEM;
-      end if;
-
-      if No (Err) then
-         ARP_Table (AEID).State := Active;
-         ARP_Table (AEID).Timestamp := Time_Types.Now;
-         ARP_Table (AEID).Dst_MAC_Address := Eth_Address;
-
-         Flush_Queue : loop
-            Buffers.Remove_Packet (ARP_Table (AEID).Packet_Queue, Packet_Buf);
-            exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
-
-            Send_Packet
-              (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
-         end loop Flush_Queue;
-      end if;
-   end ARP_Update;
-
-   ---------------
-   -- ARP_Reset --
-   ---------------
-
-   procedure ARP_Reset (AE : in out ARP_Entry) is
-   begin
-      AE.State        := Incomplete;
-      AE.Permanent    := False;
-      AE.Timestamp    := Time_Types.Time'First;
-      AE.Packet_Queue := Buffers.Empty_Packet_List;
-   end ARP_Reset;
-
-   ---------------------
-   -- Get_MAC_Address --
-   ---------------------
-
-   function Get_MAC_Address (Nid : NIF.Netif_Id) return Ethernet_Address is
-      Nid_LL_Address        : Ethernet_Address;
-      Nid_LL_Address_Length : LL_Address_Range;
-   begin
-      NIF.Get_LL_Address (Nid, Nid_LL_Address, Nid_LL_Address_Length);
-      pragma Assert (Nid_LL_Address_Length = Nid_LL_Address'Last);
-      return Nid_LL_Address;
-   end Get_MAC_Address;
 
    --------------
    -- IP_Input --
@@ -399,71 +492,5 @@ package body AIP.ARP is
       --  TBD???
       null;
    end IP_Input;
-
-   -----------------
-   -- Send_Packet --
-   -----------------
-
-   procedure Send_Packet
-     (Nid             : NIF.Netif_Id;
-      Frame_Type      : U16_T;
-      Buf             : Buffers.Buffer_Id;
-      Dst_MAC_Address : Ethernet_Address)
-   is
-      Err  : Err_T;
-      Ehdr : System.Address;
-   begin
-
-      --  Prepend Ethernet header
-
-      Buffers.Buffer_Header (Buf, EtherH.Ether_Header'Size / 8, Err);
-
-      if No (Err) then
-         Ehdr := Buffers.Buffer_Payload (Buf);
-         EtherH.Set_EtherH_Dst_MAC_Address (Ehdr, Dst_MAC_Address);
-         EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
-         EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
-
-         NIF.Link_Output (Nid, Buf, Err);
-      end if;
-   end Send_Packet;
-
-   ------------------
-   -- Send_Request --
-   ------------------
-
-   procedure Send_Request
-     (Nid            : NIF.Netif_Id;
-      Dst_IP_Address : IPaddrs.IPaddr)
-   is
-      Ethernet_Broadcast : constant Ethernet_Address := (others => 16#ff#);
-
-      Buf : Buffers.Buffer_Id;
-
-      Ahdr : System.Address;
-   begin
-      Buffers.Buffer_Alloc
-        (Offset => Inet.HLEN_To (Inet.LINK_LAYER),
-         Size   => ARPH.ARP_Header'Size / 8,
-         Kind   => Buffers.SPLIT_BUF,
-         Buf    => Buf);
-
-      if Buf /= Buffers.NOBUF then
-         Ahdr := Buffers.Buffer_Payload (Buf);
-
-         ARPH.Set_ARPH_Hardware_Type   (Ahdr, ARPH.ARP_Hw_Ethernet);
-         ARPH.Set_ARPH_Protocol        (Ahdr, EtherH.Ether_Type_IP);
-         ARPH.Set_ARPH_Hw_Len          (Ahdr, Ethernet_Address'Size / 8);
-         ARPH.Set_ARPH_Pr_Len          (Ahdr, IPaddrs.IPaddr'Size);
-         ARPH.Set_ARPH_Operation       (Ahdr, ARPH.ARP_Op_Request);
-         ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Get_MAC_Address (Nid));
-         ARPH.Set_ARPH_Src_IP_Address  (Ahdr, NIF.NIF_Addr (Nid));
-         ARPH.Set_ARPH_Dst_Eth_Address (Ahdr, Ethernet_Broadcast);
-         ARPH.Set_ARPH_Dst_IP_Address  (Ahdr, Dst_IP_Address);
-
-         Send_Packet (Nid, EtherH.Ether_Type_ARP, Buf, Ethernet_Broadcast);
-         Buffers.Buffer_Blind_Free (Buf);
-      end if;
-   end Send_Request;
 
 end AIP.ARP;
