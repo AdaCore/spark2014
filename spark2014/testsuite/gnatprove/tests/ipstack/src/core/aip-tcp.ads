@@ -94,6 +94,7 @@ is
 
    subtype Accept_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb  : Accept_Cb_Id);
+   --# global in out State;
    --  Request CB to be called when a connection request comes in on PCB.
    --  CB's signature is expected to be:
    --
@@ -162,6 +163,7 @@ is
    procedure TCP_Sent
      (PCB : PCBs.PCB_Id;
       Cb  : Sent_Cb_Id);
+   --# global in out State;
    --  Request that CB is called when sent data has been acknowledged by
    --  the remote host on PCB. CB's signature is expected to be:
    --
@@ -184,6 +186,7 @@ is
    procedure TCP_Recv
      (PCB : PCBs.PCB_Id;
       Cb  : Recv_Cb_Id);
+   --# global in out State;
    --  Request that CB is called when new data or a close-connection request
    --  arrives on PCB. CB's profile is expected to be;
    --
@@ -220,10 +223,10 @@ is
    procedure TCP_Poll
      (PCB : PCBs.PCB_Id;
       Cb  : Poll_Cb_Id;
-      Ivl : AIP.U8_T);
+      Ivl : AIP.U16_T);
+   --# global in out State;
    --  Request CB to be called for polling purposes on PCB, every IVL ticks
-   --  (where "tick" is a coarse grain TCP timer click, normally triggering
-   --  about twice per second). CB's profile is expected to be:
+   --  (TCP slow timer ticks, every 500 ms). CB's profile is expected to be:
    --
    --    function TCP_Poll_Cb
    --      (Arg : System.Address;
@@ -239,17 +242,18 @@ is
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
 
-   procedure TCP_Abort (PCB : PCBs.PCB_Id);
+   procedure TCP_Drop (PCB : PCBs.PCB_Id);
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
 
-   subtype Err_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Err (PCB : PCBs.PCB_Id; Cb : Err_Cb_Id);
+   subtype Abort_Cb_Id is Callbacks.CBK_Id;
+   procedure TCP_Abort (PCB : PCBs.PCB_Id; Cb : Abort_Cb_Id);
+   --# global in out State;
    --  Request CB to be called when a connection gets aborted because
    --  of some error. CB's profile is expected to be:
    --
-   --    procedure Echo_Err_Cb
+   --    procedure TCP_Abort_Cb
    --      (Arg : System.Address;
    --       Err : AIP.Err_T)
    --

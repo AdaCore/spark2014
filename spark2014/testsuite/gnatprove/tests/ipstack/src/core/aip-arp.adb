@@ -394,6 +394,7 @@ package body AIP.ARP is
      (Nid   : NIF.Netif_Id;
       Buf   : Buffers.Buffer_Id)
    is
+      pragma Unreferenced (Nid, Buf);
    begin
       --  TBD???
       null;

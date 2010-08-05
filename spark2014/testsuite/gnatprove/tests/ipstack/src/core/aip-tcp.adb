@@ -34,8 +34,7 @@ is
       Time_Wait);
 
    pragma Unreferenced
-     (Syn_Sent, Established,
-      Fin_Wait_1, Fin_Wait_2, Close_Wait, Closing, Last_Ack, Time_Wait);
+     (Fin_Wait_1, Fin_Wait_2, Close_Wait, Closing, Last_Ack, Time_Wait);
 
    type TCP_Callbacks is array (TCP_Event_Kind) of Callbacks.CBK_Id;
 
@@ -66,6 +65,11 @@ is
 
       --  Round-trip average and standard deviation estimators for computation
       --  of retransmit timeout (in TCP 500 ms ticks).
+
+      Poll_Ticks : AIP.M32_T;
+      Poll_Ivl   : AIP.M32_T;
+      --  TCP ticks value when polling callback was last called, and polling
+      --  interval (0 for no polling).
 
       RTT_Ticks  : AIP.M32_T;
       --  TCP ticks value when segment used for RTT estimation was sent
@@ -101,6 +105,9 @@ is
                                     RCV_WND     => 0,
                                     RCV_UP      => 0,
                                     IRS         => 0,
+
+                                    Poll_Ticks  => 0,
+                                    Poll_Ivl    => 0,
 
                                     RTT_Ticks   => 0,
                                     RTT_Average => 0,
@@ -378,13 +385,11 @@ is
    -- TCP_Accept --
    ----------------
 
-   procedure TCP_Accept
-     (PCB : PCBs.PCB_Id;
-      Cb  : Accept_Cb_Id)
+   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb : Accept_Cb_Id)
+   --# global in out TPCBs;
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      TCP_Callback (TCP_EVENT_ACCEPT, PCB, Cb);
    end TCP_Accept;
 
    ------------------
@@ -444,26 +449,22 @@ is
    -- TCP_Sent --
    --------------
 
-   procedure TCP_Sent
-     (PCB : PCBs.PCB_Id;
-      Cb  : Sent_Cb_Id)
+   procedure TCP_Sent (PCB : PCBs.PCB_Id; Cb : Sent_Cb_Id)
+   --# global in out TPCBs;
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      TCP_Callback (TCP_EVENT_SENT, PCB, Cb);
    end TCP_Sent;
 
    --------------
    -- TCP_Recv --
    --------------
 
-   procedure TCP_Recv
-     (PCB : PCBs.PCB_Id;
-      Cb  : Recv_Cb_Id)
+   procedure TCP_Recv (PCB : PCBs.PCB_Id; Cb : Recv_Cb_Id)
+   --# global in out TPCBs;
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      TCP_Callback (TCP_EVENT_RECV, PCB, Cb);
    end TCP_Recv;
 
    ----------------
@@ -486,11 +487,22 @@ is
    procedure TCP_Poll
      (PCB : PCBs.PCB_Id;
       Cb  : Poll_Cb_Id;
-      Ivl : AIP.U8_T)
+      Ivl : AIP.U16_T)
+   --# global in out TPCBs; in TCP_Ticks;
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      --  First disable polling temporarily
+
+      TPCBs (PCB).Poll_Ivl := 0;
+
+      --  Set new callback
+
+      TCP_Callback (TCP_EVENT_POLL, PCB, Cb);
+
+      --  Start timer with initial value so that it triggers immediately
+
+      TPCBs (PCB).Poll_Ticks := TCP_Ticks - AIP.M32_T (Ivl) - 1;
+      TPCBs (PCB).Poll_Ivl   := AIP.M32_T (Ivl);
    end TCP_Poll;
 
    ---------------
@@ -507,21 +519,22 @@ is
    -- TCP_Abort --
    ---------------
 
-   procedure TCP_Abort (PCB : PCBs.PCB_Id) is
+   procedure TCP_Drop (PCB : PCBs.PCB_Id) is
    begin
       --  Generated stub: replace with real body!
       null; --  TBD??
-   end TCP_Abort;
+   end TCP_Drop;
 
    -------------
    -- TCP_Err --
    -------------
 
-   procedure TCP_Err (PCB : PCBs.PCB_Id; Cb : Err_Cb_Id) is
+   procedure TCP_Abort (PCB : PCBs.PCB_Id; Cb : Abort_Cb_Id)
+   --# global in out TPCBs;
+   is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
-   end TCP_Err;
+      TCP_Callback (TCP_EVENT_ABORT, PCB, Cb);
+   end TCP_Abort;
 
    ---------------
    -- TCP_Input --
@@ -607,7 +620,9 @@ is
       -- Check_Option_Length --
       -------------------------
 
-      procedure Check_Option_Length (Len : AIP.U8_T) is
+      procedure Check_Option_Length (Len : AIP.U8_T)
+      --# global in Data_Offset, Option_Offset; in out Malformed_Options;
+      is
          Actual_Len : AIP.U8_T;
       begin
          if Data_Offset - Option_Offset < AIP.U16_T (Len) - 1 then
@@ -620,7 +635,9 @@ is
          end if;
       end Check_Option_Length;
 
-      --  procedure Update_RTT_Estimator (TPCB : in out TCP_PCB);
+      --  procedure Update_RTT_Estimator
+      --    (TPCB : in out TCP_PCB;
+      --     Meas : AIP.S16_T);
       --  Update the RTT estimator using the given RTT measurement, as per
       --  Jacobson paper.
 
@@ -628,29 +645,27 @@ is
       -- Update_RTT_Estimator --
       --------------------------
 
-      procedure Update_RTT_Estimator (TPCB  : in out TCP_PCB) is
+      procedure Update_RTT_Estimator
+        (TPCB  : in out TCP_PCB;
+         Meas  : AIP.S16_T)
+      is
          M : AIP.S16_T;
-         --  Measured round trip time
       begin
-         if TPCB.RTT_Ticks /= 0 then
-            M := AIP.S16_T (TCP_Ticks - TPCB.RTT_Ticks);
+         M := Meas;
 
-            --  Update average estimator
+         --  Update average estimator
 
-            M := M - TPCB.RTT_Average / 8;
-            TPCB.RTT_Average := TPCB.RTT_Average + M;
+         M := M - TPCB.RTT_Average / 8;
+         TPCB.RTT_Average := TPCB.RTT_Average + M;
 
-            --  Update standard deviation estimator
+         --  Update standard deviation estimator
 
-            M := (abs M) - TPCB.RTT_Stddev / 4;
-            TPCB.RTT_Stddev := TPCB.RTT_Stddev + M;
+         M := (abs M) - TPCB.RTT_Stddev / 4;
+         TPCB.RTT_Stddev := TPCB.RTT_Stddev + M;
 
-            --  Set new retransmit timeout
+         --  Set new retransmit timeout
 
-            TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
-
-            TPCB.RTT_Ticks := 0;
-         end if;
+         TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
       end Update_RTT_Estimator;
 
    --  Start of processing for TCP_Input
@@ -868,6 +883,13 @@ is
                         TPCBs (New_PCB).IRS     := TCPH.TCPH_Seq_Num (Thdr);
                         TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
+                        --  Insert new PCB in active list
+
+                        PCBs.Prepend
+                          (PCB      => New_PCB,
+                           PCB_Head => Active_PCBs,
+                           PCB_Pool => IPCBs);
+
                         --  Send SYN|ACK
 
                         TCP_Send_Control
@@ -884,15 +906,102 @@ is
 
                   end if;
 
+               when Syn_Sent =>
+                  if TCPH.TCPH_Ack (Thdr) = 1 then
+                     --  Reject if SEG.ACK <= ISS or SEG.ACK > SND.NXT
+
+                     if not Seq_Range
+                              (TPCBs (PCB).ISS,
+                               TCPH.TCPH_Ack_Num (Thdr) - 1,
+                               TPCBs (PCB).SND_NXT)
+                     then
+                        if TCPH.TCPH_Rst (Thdr) = 0 then
+                           TCP_Send_Rst
+                             (Src_IP   => IPH.IPH_Dst_Address (Ihdr),
+                              Src_Port => TCPH.TCPH_Dst_Port  (Thdr),
+                              Dst_IP   => IPH.IPH_Src_Address (Ihdr),
+                              Dst_Port => TCPH.TCPH_Src_Port  (Thdr),
+                              Ack      => False,
+                              Seq_Num  => TCPH.TCPH_Ack_Num (Thdr),
+                              Ack_Num  => 0,
+                              Err      => Err);
+                        end if;
+
+                        --  Discard segment
+
+                        Err := AIP.ERR_USE;
+                     end if;
+                  end if;
+
+                  if AIP.No (Err) then
+                     if TCPH.TCPH_Rst (Thdr) = 1 then
+                        if TCPH.TCPH_Ack (Thdr) = 1 then
+                           --  Connection refused
+                           --  Signal user???
+                           --  Drop (close) PCB
+
+                           null; --  TBD
+                        end if;
+
+                        --  Discard segment
+
+                        Err := AIP.ERR_USE;
+                     end if;
+                  end if;
+
+                  if AIP.No (Err) then
+                     --  Check security???
+                     --  Check precedence???
+
+                     if TCPH.TCPH_Syn (Thdr) = 1 then
+                        TPCBs (PCB).IRS     := TCPH.TCPH_Seq_Num (Thdr) + 1;
+                        TPCBs (PCB).RCV_NXT := TPCBs (PCB).IRS + 1;
+
+                        if TCPH.TCPH_Ack (Thdr) = 1 then
+                           --  SND.UNA should be advanced to equal SEG.ACK (if
+                           --  there is an ACK), and any segments on the
+                           --  retransmission queue which are thereby
+                           --  acknowledged should be removed. ???
+
+                           --  Process_Ack (PCB, TCPH.TCPH_Ack_Num (Thdr));???
+                           null;
+                        end if;
+
+                        if TPCBs (PCB).SND_UNA > TPCBs (PCB).ISS then
+                           TPCBs (PCB).State := Established;
+                           TCP_Send_Control (PCB => PCB,
+                                             Syn => False,
+                                             Ack => True,
+                                             Err => Err);
+
+                        else
+                           TPCBs (PCB).State := Syn_Received;
+                           TCP_Send_Control (PCB => PCB,
+                                             Syn => True,
+                                             Ack => True,
+                                             Err => Err);
+                        end if;
+                     end if;
+                  end if;
+
                when others =>
+                  --  1. Check sequence number
+                  --  2. Check RST bit
+                  --  3. Check security and precedence???
+                  --  4. Check SYN bit
+                  --  5. Check ACK field
+                  --  6. Check URG bit
                   null;
                   --  TBD???
             end case;
          end if;
 
-         if AIP.No (ERR) then
-            --  Process segment payload???
-            null;
+         if AIP.No (Err) then
+            --  Process segment text
+
+            --  Check FIN bit
+
+            null; --  TBD???
          end if;
 
          Buffers.Buffer_Blind_Free (Buf);

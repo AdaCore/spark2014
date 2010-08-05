@@ -98,8 +98,7 @@ is
    --  applicative handler (UDP_Event).
 
    type UDP_Event_Kind is
-     (UDP_RECV   -- UDP Datagram received
-     );
+     (UDP_RECV);   -- UDP Datagram received
 
    type UDP_Event_T is record
       Kind : UDP_Event_Kind;
