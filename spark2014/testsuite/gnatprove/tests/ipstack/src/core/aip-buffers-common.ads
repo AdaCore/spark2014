@@ -6,7 +6,7 @@
 --  Generic Packet Buffers (network packet data containers) management.
 --  Common data structures for both Data and No_Data buffers.
 
---# inherit AIP.Buffers;
+--# inherit System, AIP.Buffers;
 
 private package AIP.Buffers.Common
 --# own Buf_List;
@@ -19,6 +19,10 @@ is
 
       Next_Packet : Buffers.Buffer_Id;
       --  Next packet in queue
+
+      Packet_Info : System.Address;
+      --  Information associated to this buffer by the layer 3 (transport)
+      --  protocol.
 
       Len         : Buffers.Data_Length;
       --  Length of the payload data held or referenced by this buffer, which
@@ -43,6 +47,7 @@ is
       --  The reference count always equals the number of pointers that refer
       --  to this buffer. This can be pointers from an application or the stack
       --  itself.
+
    end record;
 
    subtype Buffer_Index is AIP.U16_T range 1 .. Buffers.Buffer_Id'Last;

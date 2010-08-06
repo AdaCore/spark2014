@@ -94,9 +94,13 @@ is
       Common.Buf_List :=
         Common.Buffer_Array'
           (others =>
-               Common.Buffer'(Next => NOBUF, Next_Packet => NOBUF,
-                              Len  => 0, Tot_Len => 0, Poffset => 0,
-                              Ref  => 0));
+               Common.Buffer'(Next        => NOBUF,
+                              Next_Packet => NOBUF,
+                              Packet_Info => System.Null_Address,
+                              Len         => 0,
+                              Tot_Len     => 0,
+                              Poffset     => 0,
+                              Ref         => 0));
 
       --  Construct a singly linked chain of common buffer structures,
       --  then Initialize data/no-data specific structures
@@ -455,6 +459,26 @@ is
       return L.Head = NOBUF;
    end Empty;
 
+   -----------------
+   -- Head_Packet --
+   -----------------
+
+   function Head_Packet (L : Packet_List) return Buffer_Id is
+   begin
+      return L.Head;
+   end Head_Packet;
+
+   -----------------
+   -- Packet_Info --
+   -----------------
+
+   function Packet_Info (B : Buffer_Id) return System.Address
+   --# global in Common.Buf_List;
+   is
+   begin
+      return Common.Buf_List (B).Packet_Info;
+   end Packet_Info;
+
    -------------------
    -- Remove_Packet --
    -------------------
@@ -471,5 +495,16 @@ is
          L.Tail := NOBUF;
       end if;
    end Remove_Packet;
+
+   ---------------------
+   -- Set_Packet_Info --
+   ---------------------
+
+   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address)
+   --# global in out Common.Buf_List;
+   is
+   begin
+      Common.Buf_List (B).Packet_Info := PI;
+   end Set_Packet_Info;
 
 end AIP.Buffers;

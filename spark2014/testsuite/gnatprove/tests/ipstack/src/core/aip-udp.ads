@@ -133,6 +133,7 @@ is
      (Ev : UDP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
    --# global in out Buffers.State;
    pragma Import (Ada, UDP_Event, "AIP_udp_event");
+   pragma Weak_External (UDP_Event);
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
 

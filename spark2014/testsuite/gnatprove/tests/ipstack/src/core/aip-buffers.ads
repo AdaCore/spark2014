@@ -203,7 +203,6 @@ is
    --# global in out State;
    --  Append Tail at the end of the chain starting at Head, taking over
    --  the caller's reference to Tail
-
    pragma Export (C, Buffer_Cat, "AIP_buffer_cat");
 
    procedure Buffer_Chain (Head : Buffer_Id; Tail : Buffer_Id);
@@ -248,6 +247,9 @@ is
    type Packet_List is private;
    Empty_Packet_List : constant Packet_List;
 
+   function Head_Packet (L : Packet_List) return Buffer_Id;
+   --  Return head packet of L
+
    procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id);
    --# global in out State;
    --  Append Buf to list L
@@ -258,6 +260,12 @@ is
 
    function Empty (L : Packet_List) return Boolean;
    --  True if L contains no packets
+
+   function Packet_Info (B : Buffer_Id) return System.Address;
+   --# global in State;
+   procedure Set_Packet_Info (B : Buffer_Id; PI : System.Address);
+   --# global in out State;
+   --  Get/set layer 3 packet info associated with B
 
 private
 

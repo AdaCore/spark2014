@@ -26,6 +26,13 @@
   <field name="Urgent_Ptr"  length="16" />
  </message>
 
+ <enum name="TCP_Option">
+  <literal name="End"       value="0" />
+  <literal name="NOP"       value="1" />
+  <literal name="MSS"       value="2" />
+  <literal name="Win_Scale" value="3" />
+ </enum>
+
  <message name="TCP_Pseudo_Header" prefix="TCPP_">
   <field name="Src_Address" length="32" class="modular" />
   <field name="Dst_Address" length="32" class="modular" />

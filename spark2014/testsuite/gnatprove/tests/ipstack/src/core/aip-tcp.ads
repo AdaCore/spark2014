@@ -49,6 +49,9 @@ is
    type TCP_Event_T is record
       Kind : TCP_Event_Kind;
 
+      Len : AIP.M32_T;
+      --  Data length sent and acked (for SENT)
+
       Buf : Buffers.Buffer_Id;
       --  Data buffer (for RECV)
 
@@ -70,6 +73,7 @@ is
      (Ev : TCP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
    --# global in out Buffers.State;
    pragma Import (Ada, TCP_Event, "AIP_tcp_event");
+   pragma Weak_External (TCP_Event);
    --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
 
@@ -252,10 +256,12 @@ is
    ------------------------------
 
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
+   --# global in out State;
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
 
    procedure TCP_Drop (PCB : PCBs.PCB_Id);
+   --# global in out State;
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
