@@ -205,13 +205,26 @@ procedure Xkinds is
       procedure Process_One_Class_Kind (Position : Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         PL (O, "subtype " & S.all & "_Id is Why_Node_Id");
-         PL (O, "  with Predicate =>");
-         PL (O, "  (" & S.all & "_Id = W_Empty");
-         PL (O, "   or else (Get_Kind (" & S.all & "_Id)");
-         PL (O, "            in " & S.all & "'Range));");
-         NL (O);
+         P (O, "subtype " & S.all & "_Id is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (" & S.all & "_Id = W_Empty");
+            PL (O, "   or else (Get_Kind (" & S.all & "_Id)");
+            PL (O, "            in " & S.all & "'Range));");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Classes.Last then
             NL (O);
@@ -225,12 +238,25 @@ procedure Xkinds is
       procedure Process_One_Node_Kind (Position : Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         PL (O, "subtype " & S.all & "_Id is Why_Node_Id");
-         PL (O, "  with Predicate =>");
-         PL (O, "  (Option (" & S.all & "_Id,");
-         PL (O, "           "& S.all & ")" & ");");
-         NL (O);
+         P (O, "subtype " & S.all & "_Id is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (Option (" & S.all & "_Id,");
+            PL (O, "           "& S.all & ")" & ");");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Kinds.Last then
             NL (O);
