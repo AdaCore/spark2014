@@ -41,8 +41,8 @@ package body Xtree_Tables is
    function Strip_Suffix (Name : Wide_String) return Wide_String;
    --  Strip anything that follows the last underscord in Name
    --  and return the result.
-   pragma Unreferenced (Strip_Suffix);
-   --  ??? Not used yet. We shall soon see if we really needs it.
+
+   function Suffix (Name : Wide_String) return Wide_String;
 
    -------------------
    -- Accessor_Name --
@@ -105,8 +105,28 @@ package body Xtree_Tables is
    end Id_Type_Name;
 
    function Id_Type_Name (FI : Field_Info) return Wide_String is
+      Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
    begin
-      return FI.Field_Type.all;
+      if Multiplicity = "Id"
+        or else Multiplicity = "OId"
+        or else Multiplicity = "List"
+        or else Multiplicity = "OList"
+      then
+         declare
+            Node_Kind : constant Wide_String :=
+                          Strip_Suffix (FI.Field_Type.all);
+            Checking  : constant Wide_String := Suffix (Node_Kind);
+         begin
+            if Checking = "Unchecked" then
+               return Strip_Suffix (Node_Kind)
+                 & "_" & Multiplicity;
+            else
+               return FI.Field_Type.all;
+            end if;
+         end;
+      else
+         return FI.Field_Type.all;
+      end if;
    end Id_Type_Name;
 
    --------------------
@@ -240,5 +260,22 @@ package body Xtree_Tables is
 
       return Name (Name'First .. Stop);
    end Strip_Suffix;
+
+   ------------
+   -- Suffix --
+   ------------
+
+   function Suffix (Name : Wide_String) return Wide_String is
+      Stop : Integer := Name'Last;
+   begin
+      for J in reverse Name'Range loop
+         if Name (J) = '_' then
+            Stop := J;
+            exit;
+         end if;
+      end loop;
+
+      return Name (Stop + 1 .. Name'Last);
+   end Suffix;
 
 end Xtree_Tables;

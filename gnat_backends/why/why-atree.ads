@@ -28,9 +28,9 @@ with Namet;  use Namet;
 with Uintp;  use Uintp;
 with Urealp; use Urealp;
 
-with Why.Sinfo; use Why.Sinfo;
-with Why.Types; use Why.Types;
-with Why.Ids;   use Why.Ids;
+with Why.Sinfo;         use Why.Sinfo;
+with Why.Types;         use Why.Types;
+with Why.Unchecked_Ids; use Why.Unchecked_Ids;
 
 package Why.Atree is
    --  This package defines the format of the abstract syntax tree to
@@ -46,10 +46,9 @@ package Why.Atree is
    --  * each field may either be a subtype of Node_Id or of Node_Id_List
    --  (with the exception of real/int constants and identifier names);
    --
-   --  * a field which may have no value should be initialized to
-   --  Empty/Empty_List by default; on the contrary, a field which
-   --  should always be present (or a list which shall not be empty)
-   --  shall not have any default initialization;
+   --  * a field which may have no value should be of an Option Id type;
+   --  on the contrary, a field which should always be present (or a list
+   --  which shall not be empty) shall be of the regular Id type;
    --
    --  * singleton nodes are exactly the ones that have a null variant part;
    --
@@ -98,39 +97,39 @@ package Why.Atree is
             null;
 
          when W_Abstract_Type =>
-            AT_Name : W_Identifier_Id;
+            AT_Name : W_Identifier_Unchecked_Id;
 
          when W_Generic_Formal_Type =>
-            GFT_Name : W_Identifier_Id;
+            GFT_Name : W_Identifier_Unchecked_Id;
 
          when W_Generic_Actual_Type_Chain =>
-            GATC_Type_Chain : W_Primitive_Type_List;
-            GATC_Name       : W_Identifier_Id;
+            GATC_Type_Chain : W_Primitive_Type_Unchecked_List;
+            GATC_Name       : W_Identifier_Unchecked_Id;
 
          when W_Array_Type =>
-            AT_Component_Type : W_Primitive_Type_Id;
+            AT_Component_Type : W_Primitive_Type_Unchecked_Id;
 
          when W_Ref_Type =>
-            RT_Aliased_Type : W_Primitive_Type_Id;
+            RT_Aliased_Type : W_Primitive_Type_Unchecked_Id;
 
          when W_Protected_Value_Type =>
-            PVT_Value_Type : W_Value_Type_Id;
+            PVT_Value_Type : W_Value_Type_Unchecked_Id;
 
          when W_Anonymous_Arrow_Type =>
-            AAT_Left  : W_Simple_Value_Type_Id;
-            AAT_Right : W_Computation_Type_Id;
+            AAT_Left  : W_Simple_Value_Type_Unchecked_Id;
+            AAT_Right : W_Computation_Type_Unchecked_Id;
 
          when W_Named_Arrow_Type =>
-            NA_Name  : W_Identifier_Id;
-            NA_Left  : W_Simple_Value_Type_Id;
-            NA_Right : W_Computation_Type_Id;
+            NA_Name  : W_Identifier_Unchecked_Id;
+            NA_Left  : W_Simple_Value_Type_Unchecked_Id;
+            NA_Right : W_Computation_Type_Unchecked_Id;
 
          when W_Computation_Spec =>
-            CS_Precondition  : W_Precondition_Id := Why_Empty;
-            CS_Result_Name   : W_Identifier_Id := Why_Empty;
-            CS_Return_Type   : W_Value_Type_Id;
-            CS_Effects       : W_Effects_Id;
-            CS_Postcondition : W_Postcondition_Id := Why_Empty;
+            CS_Precondition  : W_Precondition_Unchecked_OId;
+            CS_Result_Name   : W_Identifier_Unchecked_OId;
+            CS_Return_Type   : W_Value_Type_Unchecked_Id;
+            CS_Effects       : W_Effects_Unchecked_Id;
+            CS_Postcondition : W_Postcondition_Unchecked_OId;
 
          when W_Integer_Constant =>
             IC_Value : Uint;
@@ -142,37 +141,37 @@ package Why.Atree is
             null;
 
          when W_Arith_Operation =>
-            AO_Left  : W_Term_Id;
-            AO_Op    : W_Arith_Op_Id;
-            AO_Right : W_Term_Id;
+            AO_Left  : W_Term_Unchecked_Id;
+            AO_Op    : W_Arith_Op_Unchecked_Id;
+            AO_Right : W_Term_Unchecked_Id;
 
          when W_Negative_Term =>
-            NT_Operand : W_Term_Id;
+            NT_Operand : W_Term_Unchecked_Id;
 
          when W_Label_Identifier =>
-            TI_Name  : W_Identifier_Id;
-            TI_Label : W_Identifier_Id := Why_Empty;
+            TI_Name  : W_Identifier_Unchecked_Id;
+            TI_Label : W_Identifier_Unchecked_OId;
 
          when W_Operation =>
-            O_Name       : W_Identifier_Id;
-            O_Parameters : W_Term_List;
+            O_Name       : W_Identifier_Unchecked_Id;
+            O_Parameters : W_Term_Unchecked_List;
 
          when W_Named_Term =>
-            NT_Name : W_Label_Identifier_Id;
-            NT_Term : W_Term_Id;
+            NT_Name : W_Label_Identifier_Unchecked_Id;
+            NT_Term : W_Term_Unchecked_Id;
 
          when W_Conditional_Term =>
-            CT_Condition : W_Term_Id;
-            CT_Then_Part : W_Term_Id;
-            CT_Else_Part : W_Term_Id;
+            CT_Condition : W_Term_Unchecked_Id;
+            CT_Then_Part : W_Term_Unchecked_Id;
+            CT_Else_Part : W_Term_Unchecked_Id;
 
          when W_Binding_Term =>
-            BT_Name    : W_Identifier_Id;
-            BT_Def     : W_Term_Id;
-            BT_Context : W_Term_Id;
+            BT_Name    : W_Identifier_Unchecked_Id;
+            BT_Def     : W_Term_Unchecked_Id;
+            BT_Context : W_Term_Unchecked_Id;
 
          when W_Protected_Term =>
-            BT_Term : W_Term_Id;
+            BT_Term : W_Term_Unchecked_Id;
 
          when W_Op_Add .. W_Op_Modulo =>
             null;
@@ -181,281 +180,281 @@ package Why.Atree is
             null;
 
          when W_Predicate_Identifier =>
-            PID_Name : W_Identifier_Id;
+            PID_Name : W_Identifier_Unchecked_Id;
 
          when W_Predicate_Instance =>
-            PIN_Name       : W_Identifier_Id;
-            PIN_Parameters : W_Term_List;
+            PIN_Name       : W_Identifier_Unchecked_Id;
+            PIN_Parameters : W_Term_Unchecked_List;
 
          when W_Related_Terms =>
-            RT_Left   : W_Term_Id;
-            RT_Op     : W_Relation_Id;
-            RT_Right  : W_Term_Id;
-            RT_Op2    : W_Relation_Id := Why_Empty;
-            RT_Right2 : W_Term_Id := Why_Empty;
+            RT_Left   : W_Term_Unchecked_Id;
+            RT_Op     : W_Relation_Unchecked_Id;
+            RT_Right  : W_Term_Unchecked_Id;
+            RT_Op2    : W_Relation_Unchecked_OId;
+            RT_Right2 : W_Term_Unchecked_OId;
 
          when W_Implication .. W_Conjonction =>
-            ITOC_Left  : W_Predicate_Id;
-            ITOC_Right : W_Predicate_Id;
+            ITOC_Left  : W_Predicate_Unchecked_Id;
+            ITOC_Right : W_Predicate_Unchecked_Id;
 
          when W_Negation =>
-            N_Operand : W_Predicate_Id;
+            N_Operand : W_Predicate_Unchecked_Id;
 
          when W_Conditional_Pred =>
-            CPD_Condition : W_Term_Id;
-            CPD_Then_Part : W_Predicate_Id;
-            CPD_Else_Part : W_Predicate_Id;
+            CPD_Condition : W_Term_Unchecked_Id;
+            CPD_Then_Part : W_Predicate_Unchecked_Id;
+            CPD_Else_Part : W_Predicate_Unchecked_Id;
 
          when W_Binding_Pred =>
-            BPD_Name    : W_Identifier_Id;
-            BPD_Def     : W_Term_Id;
-            BPD_Context : W_Predicate_Id;
+            BPD_Name    : W_Identifier_Unchecked_Id;
+            BPD_Def     : W_Term_Unchecked_Id;
+            BPD_Context : W_Predicate_Unchecked_Id;
 
          when W_Universal_Quantif =>
-            UQ_Variables : W_Identifier_List;
-            UQ_Var_Type  : W_Primitive_Type_Id;
-            UQ_Triggers  : W_Triggers_List := Why_Empty_List;
-            UQ_Pred      : W_Predicate_Id;
+            UQ_Variables : W_Identifier_Unchecked_List;
+            UQ_Var_Type  : W_Primitive_Type_Unchecked_Id;
+            UQ_Triggers  : W_Triggers_Unchecked_OList;
+            UQ_Pred      : W_Predicate_Unchecked_Id;
 
          when W_Existential_Quantif =>
-            EQ_Variables : W_Identifier_List;
-            EQ_Var_Type  : W_Primitive_Type_Id;
-            EQ_Pred      : W_Predicate_Id;
+            EQ_Variables : W_Identifier_Unchecked_List;
+            EQ_Var_Type  : W_Primitive_Type_Unchecked_Id;
+            EQ_Pred      : W_Predicate_Unchecked_Id;
 
          when W_Named_Predicate =>
-            NP_Name : W_Identifier_Id;
-            NP_Pred : W_Predicate_Id;
+            NP_Name : W_Identifier_Unchecked_Id;
+            NP_Pred : W_Predicate_Unchecked_Id;
 
          when W_Protected_Predicate =>
-            PP_Pred : W_Predicate_Id;
+            PP_Pred : W_Predicate_Unchecked_Id;
 
          when W_Triggers =>
-            TRS_Triggers : W_Trigger_List;
+            TRS_Triggers : W_Trigger_Unchecked_List;
 
          when W_Trigger =>
-            TRI_Terms : W_Term_List;
+            TRI_Terms : W_Term_Unchecked_List;
 
          when W_Rel_Eq .. W_Rel_Ge =>
             null;
 
          when W_Type =>
-            T_External        : W_External_Id := Why_Empty;
-            T_Type_Parameters : W_Identifier_List := Why_Empty_List;
-            T_Name            : W_Identifier_Id;
+            T_External        : W_External_Unchecked_OId;
+            T_Type_Parameters : W_Identifier_Unchecked_OList;
+            T_Name            : W_Identifier_Unchecked_Id;
 
          when W_Logic =>
-            L_External   : W_External_Id := Why_Empty;
-            L_Names      : W_Identifier_List;
-            L_Logic_Type : W_Logic_Type_Id;
+            L_External   : W_External_Unchecked_OId;
+            L_Names      : W_Identifier_Unchecked_List;
+            L_Logic_Type : W_Logic_Type_Unchecked_Id;
 
          when W_Function =>
-            F_Name        : W_Identifier_Id;
-            F_Binders     : W_Logic_Binder_List;
-            F_Return_Type : W_Primitive_Type_Id;
-            F_Def         : W_Term_Id;
+            F_Name        : W_Identifier_Unchecked_Id;
+            F_Binders     : W_Logic_Binder_Unchecked_List;
+            F_Return_Type : W_Primitive_Type_Unchecked_Id;
+            F_Def         : W_Term_Unchecked_Id;
 
          when W_Predicate_Definition =>
-            P_Name    : W_Identifier_Id;
-            P_Binders : W_Logic_Binder_List;
-            P_Def     : W_Predicate_Id;
+            P_Name    : W_Identifier_Unchecked_Id;
+            P_Binders : W_Logic_Binder_Unchecked_List;
+            P_Def     : W_Predicate_Unchecked_Id;
 
          when W_Inductive =>
-            I_Name       : W_Identifier_Id;
-            I_Logic_Type : W_Logic_Type_Id;
-            I_Def        : W_Inductive_Case_List;
+            I_Name       : W_Identifier_Unchecked_Id;
+            I_Logic_Type : W_Logic_Type_Unchecked_Id;
+            I_Def        : W_Inductive_Case_Unchecked_List;
 
          when W_Axiom =>
-            AX_Name : W_Identifier_Id;
-            AX_Def  : W_Predicate_Id;
+            AX_Name : W_Identifier_Unchecked_Id;
+            AX_Def  : W_Predicate_Unchecked_Id;
 
          when W_Goal =>
-            G_Name : W_Identifier_Id;
-            G_Def  : W_Predicate_Id;
+            G_Name : W_Identifier_Unchecked_Id;
+            G_Def  : W_Predicate_Unchecked_Id;
 
          when W_External =>
             null;
 
          when W_Logic_Type =>
-            LT_Arg_Types   : W_Logic_Arg_Type_List;
-            LT_Return_Type : W_Logic_Return_Type_List;
+            LT_Arg_Types   : W_Logic_Arg_Type_Unchecked_List;
+            LT_Return_Type : W_Logic_Return_Type_Unchecked_List;
 
          when W_Logic_Binder =>
-            LB_Name       : W_Identifier_Id;
-            LB_Param_Type : W_Primitive_Type_Id;
+            LB_Name       : W_Identifier_Unchecked_Id;
+            LB_Param_Type : W_Primitive_Type_Unchecked_Id;
 
          when W_Inductive_Case =>
-            IC_Name : W_Identifier_Id;
-            IC_Pred : W_Predicate_Id;
+            IC_Name : W_Identifier_Unchecked_Id;
+            IC_Pred : W_Predicate_Unchecked_Id;
 
          when W_Effects =>
-            E_Reads  : W_Identifier_List := Why_Empty_List;
-            E_Writes : W_Identifier_List := Why_Empty_List;
-            E_Raises : W_Identifier_List := Why_Empty_List;
+            E_Reads  : W_Identifier_Unchecked_OList;
+            E_Writes : W_Identifier_Unchecked_OList;
+            E_Raises : W_Identifier_Unchecked_OList;
 
          when W_Precondition =>
-            PRE_Assertion : W_Assertion_Id;
+            PRE_Assertion : W_Assertion_Unchecked_Id;
 
          when W_Postcondition =>
-            POST_Assertion : W_Assertion_Id;
-            POST_Handlers  : W_Exn_Condition_List := Why_Empty_List;
+            POST_Assertion : W_Assertion_Unchecked_Id;
+            POST_Handlers  : W_Exn_Condition_Unchecked_OList;
 
          when W_Exn_Condition =>
-            EC_Exn_Case  : W_Identifier_Id;
-            EC_Assertion : W_Assertion_Id;
+            EC_Exn_Case  : W_Identifier_Unchecked_Id;
+            EC_Assertion : W_Assertion_Unchecked_Id;
 
          when W_Assertion =>
-            A_Pred : W_Predicate_Id;
-            A_As   : W_Identifier_Id := Why_Empty;
+            A_Pred : W_Predicate_Unchecked_Id;
+            A_As   : W_Identifier_Unchecked_OId;
 
          when W_Prog_Constant =>
-            PC_Def : W_Constant_Id;
+            PC_Def : W_Constant_Unchecked_Id;
 
          when W_Prog_Identifier =>
-            PI_Def : W_Identifier_Id;
+            PI_Def : W_Identifier_Unchecked_Id;
 
          when W_Deref =>
-            D_Ref : W_Identifier_Id;
+            D_Ref : W_Identifier_Unchecked_Id;
 
          when W_Assignment =>
-            A_Name  : W_Identifier_Id;
-            A_Value : W_Prog_Id;
+            A_Name  : W_Identifier_Unchecked_Id;
+            A_Value : W_Prog_Unchecked_Id;
 
          when W_Array_Access =>
-            AA_Name  : W_Identifier_Id;
-            AA_Index : W_Prog_Id;
+            AA_Name  : W_Identifier_Unchecked_Id;
+            AA_Index : W_Prog_Unchecked_Id;
 
          when W_Array_Update =>
-            AU_Name  : W_Identifier_Id;
-            AU_Index : W_Prog_Id;
-            AU_Value : W_Prog_Id;
+            AU_Name  : W_Identifier_Unchecked_Id;
+            AU_Index : W_Prog_Unchecked_Id;
+            AU_Value : W_Prog_Unchecked_Id;
 
          when W_Infix_Call =>
-            IC_Left  : W_Prog_Id;
-            IC_Infix : W_Infix_Id;
-            IC_Right : W_Prog_Id;
+            IC_Left  : W_Prog_Unchecked_Id;
+            IC_Infix : W_Infix_Unchecked_Id;
+            IC_Right : W_Prog_Unchecked_Id;
 
          when W_Prefix_Call =>
-            PC_Prefix   : W_Prefix_Id;
-            PC_Operand  : W_Prog_Id;
+            PC_Prefix   : W_Prefix_Unchecked_Id;
+            PC_Operand  : W_Prog_Unchecked_Id;
 
          when W_Binding_Prog .. W_Binding_Ref =>
-            BPG_Name    : W_Identifier_Id;
-            BPG_Def     : W_Prog_Id;
-            BPG_Context : W_Prog_Id;
+            BPG_Name    : W_Identifier_Unchecked_Id;
+            BPG_Def     : W_Prog_Unchecked_Id;
+            BPG_Context : W_Prog_Unchecked_Id;
 
          when W_Conditional_Prog =>
-            CPG_Condition : W_Prog_Id;
-            CPG_Then_Part : W_Prog_Id;
-            CPG_Else_Part : W_Prog_Id := Why_Empty;
+            CPG_Condition : W_Prog_Unchecked_Id;
+            CPG_Then_Part : W_Prog_Unchecked_Id;
+            CPG_Else_Part : W_Prog_Unchecked_OId;
 
          when W_While_Loop =>
-            WL_Condition    : W_Prog_Id;
-            WL_Annotation   : W_Loop_Annot_Id;
-            WL_Loop_Content : W_Prog_Id;
+            WL_Condition    : W_Prog_Unchecked_Id;
+            WL_Annotation   : W_Loop_Annot_Unchecked_Id;
+            WL_Loop_Content : W_Prog_Unchecked_Id;
 
          when W_Statement_Sequence =>
-            SS_Statements : W_Prog_List;
+            SS_Statements : W_Prog_Unchecked_List;
 
          when W_Label =>
-            L_Name : W_Identifier_Id;
-            L_Def  : W_Prog_Id;
+            L_Name : W_Identifier_Unchecked_Id;
+            L_Def  : W_Prog_Unchecked_Id;
 
          when W_Assert =>
-            AS_Assertions : W_Assertion_List;
-            AS_Prog       : W_Prog_Id;
+            AS_Assertions : W_Assertion_Unchecked_List;
+            AS_Prog       : W_Prog_Unchecked_Id;
 
          when W_Post_Assertion .. W_Opaque_Assertion =>
-            PA_Prog : W_Prog_Id;
-            PA_Post : W_Postcondition_Id;
+            PA_Prog : W_Prog_Unchecked_Id;
+            PA_Post : W_Postcondition_Unchecked_Id;
 
          when W_Fun_Def =>
-            FD_Binders : W_Binders_Id;
-            FD_Def     : W_Prog_Id;
+            FD_Binders : W_Binders_Unchecked_Id;
+            FD_Def     : W_Prog_Unchecked_Id;
 
          when W_Binding_Fun =>
-            BF_Name    : W_Identifier_Id;
-            BF_Binders : W_Binders_Id;
-            BF_Def     : W_Prog_Id;
-            BF_Context : W_Prog_Id;
+            BF_Name    : W_Identifier_Unchecked_Id;
+            BF_Binders : W_Binders_Unchecked_Id;
+            BF_Def     : W_Prog_Unchecked_Id;
+            BF_Context : W_Prog_Unchecked_Id;
 
          when W_Binding_Rec =>
-            BR_Recfun  : W_Recfun_Id;
-            BR_Context : W_Prog_Id;
+            BR_Recfun  : W_Recfun_Unchecked_Id;
+            BR_Context : W_Prog_Unchecked_Id;
 
          when W_Prog_Sequence =>
-            PS_Progs : W_Prog_List;
+            PS_Progs : W_Prog_Unchecked_List;
 
          when W_Raise_Statement =>
-            RS_Name     : W_Identifier_Id;
-            RS_Exn_Type : W_Value_Type_Id := Why_Empty;
+            RS_Name     : W_Identifier_Unchecked_Id;
+            RS_Exn_Type : W_Value_Type_Unchecked_OId;
 
          when W_Raise_Statement_With_Parameters =>
-            RSWP_Name      : W_Identifier_Id;
-            RSWP_Parameter : W_Term_Id;
-            RSWP_Exn_Type  : W_Value_Type_Id := Why_Empty;
+            RSWP_Name      : W_Identifier_Unchecked_Id;
+            RSWP_Parameter : W_Term_Unchecked_Id;
+            RSWP_Exn_Type  : W_Value_Type_Unchecked_OId;
 
          when W_Try_Block =>
-            TB_Prog    : W_Prog_Id;
-            TB_Handler : W_Handler_List;
+            TB_Prog    : W_Prog_Unchecked_Id;
+            TB_Handler : W_Handler_Unchecked_List;
 
          when W_Unreachable_Code =>
-            UC_Exn_Type : W_Value_Type_Id := Why_Empty;
+            UC_Exn_Type : W_Value_Type_Unchecked_OId;
 
          when W_Begin_Block .. W_Protected_Prog =>
-            BB_Prog : W_Prog_Id;
+            BB_Prog : W_Prog_Unchecked_Id;
 
          when W_Op_Add_Prog .. W_Op_Not_Prog =>
             null;
 
          when W_Binders =>
-            BS_Binders : W_Binders_List;
+            BS_Binders : W_Binders_Unchecked_List;
 
          when W_Binder =>
-            B_Names     : W_Identifier_List;
-            B_Arg_Type  : W_Value_Type_Id;
+            B_Names     : W_Identifier_Unchecked_List;
+            B_Arg_Type  : W_Value_Type_Unchecked_Id;
 
          when W_Recfun =>
-            RF_Name        : W_Identifier_Id;
-            RF_Binders     : W_Binders_Id;
-            RF_Return_Type : W_Prog_Id;
-            RF_Variant     : W_Wf_Arg_Id;
-            RF_Def         : W_Prog_Id;
+            RF_Name        : W_Identifier_Unchecked_Id;
+            RF_Binders     : W_Binders_Unchecked_Id;
+            RF_Return_Type : W_Prog_Unchecked_Id;
+            RF_Variant     : W_Wf_Arg_Unchecked_Id;
+            RF_Def         : W_Prog_Unchecked_Id;
 
          when W_Loop_Annot =>
-            LA_Invariant : W_Assertion_Id := Why_Empty;
-            LA_Variant   : W_Wf_Arg_Id := Why_Empty;
+            LA_Invariant : W_Assertion_Unchecked_OId;
+            LA_Variant   : W_Wf_Arg_Unchecked_OId;
 
          when W_Wf_Arg =>
-            WA_Def    : W_Term_Id;
-            WA_For_Id : W_Identifier_Id := Why_Empty;
+            WA_Def    : W_Term_Unchecked_Id;
+            WA_For_Id : W_Identifier_Unchecked_OId;
 
          when W_Handler =>
-            H_Name      : W_Identifier_Id;
-            H_Parameter : W_Prog_Id := Why_Empty;
-            H_Def       : W_Prog_Id;
+            H_Name      : W_Identifier_Unchecked_Id;
+            H_Parameter : W_Prog_Unchecked_OId;
+            H_Def       : W_Prog_Unchecked_Id;
 
          when W_File =>
-            F_Declarations : W_Declaration_List := Why_Empty_List;
+            F_Declarations : W_Declaration_Unchecked_OList;
 
          when W_Global_Binding =>
-            GB_Name    : W_Identifier_Id;
-            GB_Binders : W_Binders_Id := Why_Empty;
-            GB_Def     : W_Prog_Id;
+            GB_Name    : W_Identifier_Unchecked_Id;
+            GB_Binders : W_Binders_Unchecked_OId;
+            GB_Def     : W_Prog_Unchecked_Id;
 
          when W_Global_Rec_Binding =>
-            GRB_Name : W_Recfun_Id;
+            GRB_Name : W_Recfun_Unchecked_Id;
 
          when W_Parameter_Declaration =>
-            PD_External       : W_External_Id;
-            PD_Names          : W_Identifier_List;
-            PD_Parameter_Type : W_Value_Type_List;
+            PD_External       : W_External_Unchecked_Id;
+            PD_Names          : W_Identifier_Unchecked_List;
+            PD_Parameter_Type : W_Value_Type_Unchecked_List;
 
          when W_Exception_Declaration =>
-            ED_Name      : W_Identifier_Id;
-            ED_Parameter : W_Primitive_Type_Id := Why_Empty;
+            ED_Name      : W_Identifier_Unchecked_Id;
+            ED_Parameter : W_Primitive_Type_Unchecked_OId;
 
          when W_Logic_Declaration =>
-            LD_Decl : W_Logic_Id;
+            LD_Decl : W_Logic_Unchecked_Id;
 
       end case;
    end record;
