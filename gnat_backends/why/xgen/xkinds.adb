@@ -213,6 +213,23 @@ procedure Xkinds is
 
             NL (O);
             PL (O, "  with Predicate =>");
+            PL (O, "  (Get_Kind (" & S.all & "_Id)");
+            PL (O, "   in " & S.all & "'Range));");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
+         P (O, "subtype " & S.all & "_OId is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
             PL (O, "  (" & S.all & "_Id = W_Empty");
             PL (O, "   or else (Get_Kind (" & S.all & "_Id)");
             PL (O, "            in " & S.all & "'Range));");
@@ -224,6 +241,10 @@ procedure Xkinds is
          end if;
 
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
+         NL (O);
+
+         PL (O, "subtype " & S.all & "_OList is Why_Node_List;");
          PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Classes.Last then
@@ -246,8 +267,25 @@ procedure Xkinds is
 
             NL (O);
             PL (O, "  with Predicate =>");
+            PL (O, "  (Get_Kind (" & S.all & "_Id) = ");
+            PL (O, "   " & S.all & ");");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
+         P (O, "subtype " & S.all & "_OId is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
             PL (O, "  (Option (" & S.all & "_Id,");
-            PL (O, "           "& S.all & ")" & ");");
+            PL (O, "           " & S.all & "));");
             NL (O);
          else
             PL (O, ";");
@@ -256,6 +294,10 @@ procedure Xkinds is
          end if;
 
          PL (O, "subtype " & S.all & "_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
+         NL (O);
+
+         PL (O, "subtype " & S.all & "_OList is Why_Node_List;");
          PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Kinds.Last then
@@ -295,7 +337,11 @@ procedure Xkinds is
       begin
          PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
          NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id;");
+         NL (O);
          PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_OList is Why_Node_List;");
 
          if Position /= Classes.Last then
             NL (O);
@@ -311,7 +357,11 @@ procedure Xkinds is
       begin
          PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
          NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id;");
+         NL (O);
          PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Unchecked_OList is Why_Node_List;");
 
          if Position /= Kinds.Last then
             NL (O);
