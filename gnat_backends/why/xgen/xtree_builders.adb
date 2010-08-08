@@ -63,7 +63,7 @@ package body Xtree_Builders is
 
    procedure Print_Builder_Bodies  (O : in out Output_Record) is
    begin
-      for J in Why_Tree_Info'Range loop
+      for J in Valid_Kind'Range loop
          Print_Builder_Body (O, J);
 
          if J /= Why_Tree_Info'Last then
@@ -103,7 +103,7 @@ package body Xtree_Builders is
      (O  : in out Output_Record)
    is
    begin
-      for J in Why_Tree_Info'Range loop
+      for J in Valid_Kind'Range loop
          Print_Builder_Declaration (O, J);
 
          if J /= Why_Tree_Info'Last then

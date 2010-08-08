@@ -87,7 +87,7 @@ package body Xtree_Accessors is
       Common_Fields.Fields.Iterate (Print_Common_Field_Accessor'Access);
       NL (O);
 
-      for J in Why_Tree_Info'Range loop
+      for J in Valid_Kind'Range loop
          if Has_Variant_Part (J) then
             Print_Accessor_Functional_Expressions (O, J);
 
