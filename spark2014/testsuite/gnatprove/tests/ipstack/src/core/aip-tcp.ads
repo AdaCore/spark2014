@@ -70,7 +70,10 @@ is
    --# global in out State;
 
    procedure TCP_Event
-     (Ev : TCP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Ev : TCP_Event_T;
+      PCB : PCBs.PCB_Id;
+      Cbid : Callbacks.CBK_Id;
+      Err  : out AIP.Err_T);
    --# global in out Buffers.State;
    pragma Import (Ada, TCP_Event, "AIP_tcp_event");
    pragma Weak_External (TCP_Event);
@@ -292,6 +295,7 @@ is
    ------------
 
    procedure TCP_Fast_Timer;
+   --# global in out Buffers.State, State;
    --  Called every TCP_FAST_INTERVAL (250 ms) and process data previously
    --  "refused" by upper layer (application) and sends delayed ACKs.
 
@@ -317,6 +321,9 @@ private
    --  Buf (which may be NOBUF to force the emission of an empty segment
    --  carrying only control information). Syn and Ack set the respective
    --  TCP flags.
+
+   procedure TCP_Output (PCB : PCBs.PCB_Id);
+   --  Start output for any pending data or control information on PCB
 
    procedure TCP_Send_Rst
      (Src_IP   : IPaddrs.IPaddr;

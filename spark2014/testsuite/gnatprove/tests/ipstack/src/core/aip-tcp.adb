@@ -92,45 +92,55 @@ is
       Unack_Queue : Buffers.Packet_Queue;
       --  Sent packets waiting for ack/retransmit
 
+      --  Receive queue
+
+      Refused_Packet : Buffers.Buffer_Id;
+      --  At most one segment of deferred data is kept pending for delivery
+      --  to application.
+
       --  User (application) callbacks
 
       Callbacks : TCP_Callbacks;
    end record;
 
    TCP_PCB_Initializer : constant TCP_PCB :=
-                           TCP_PCB'(State       => Closed,
+                           TCP_PCB'(State          => Closed,
 
-                                    Active      => False,
+                                    Active         => False,
 
-                                    Local_MSS   => 0,
-                                    Remote_MSS  => 0,
+                                    Local_MSS      => 0,
+                                    Remote_MSS     => 0,
 
-                                    SND_UNA     => 0,
-                                    SND_NXT     => 0,
-                                    SND_WND     => 0,
-                                    SND_UP      => 0,
-                                    SND_WL1     => 0,
-                                    SND_WL2     => 0,
-                                    ISS         => 0,
+                                    SND_UNA        => 0,
+                                    SND_NXT        => 0,
+                                    SND_WND        => 0,
+                                    SND_UP         => 0,
+                                    SND_WL1        => 0,
+                                    SND_WL2        => 0,
+                                    ISS            => 0,
 
-                                    RCV_NXT     => 0,
-                                    RCV_WND     => 0,
-                                    RCV_UP      => 0,
-                                    IRS         => 0,
+                                    RCV_NXT        => 0,
+                                    RCV_WND        => 0,
+                                    RCV_UP         => 0,
+                                    IRS            => 0,
 
-                                    Poll_Ticks  => 0,
-                                    Poll_Ivl    => 0,
+                                    Poll_Ticks     => 0,
+                                    Poll_Ivl       => 0,
 
-                                    RTT_Seq     => 0,
-                                    RTT_Ticks   => 0,
-                                    RTT_Average => 0,
-                                    RTT_Stddev  => 0,
-                                    RTO         => 0,
+                                    RTT_Seq        => 0,
+                                    RTT_Ticks      => 0,
+                                    RTT_Average    => 0,
+                                    RTT_Stddev     => 0,
+                                    RTO            => 0,
 
-                                    Send_Queue  => Buffers.Empty_Packet_Queue,
-                                    Unack_Queue => Buffers.Empty_Packet_Queue,
+                                    Send_Queue     =>
+                                      Buffers.Empty_Packet_Queue,
+                                    Unack_Queue    =>
+                                      Buffers.Empty_Packet_Queue,
 
-                                    Callbacks   =>
+                                    Refused_Packet => Buffers.NOBUF,
+
+                                    Callbacks      =>
                                       TCP_Callbacks'(others =>
                                                        Callbacks.NOCB));
 
@@ -212,6 +222,114 @@ is
 
    --  procedure Process_Ack (PCB : PCBs.PCB_Id; Seg : Segment);
    --  Process received ack in Seg
+
+   --  procedure Deliver_Segment
+   --    (PCB : PCBs.PCB_Id;
+   --     Buf : Buffers.Buffer_Id);
+   --  Attempt to deliver pending refused data and/or new segment in Buf to
+   --  application.
+
+   ----------------
+   -- TCP_Output --
+   ----------------
+
+   procedure TCP_Output (PCB : PCBs.PCB_Id)
+   is
+   begin
+      null;
+      --  TBD???
+   end TCP_Output;
+
+   ---------------------
+   -- Deliver_Segment --
+   ---------------------
+
+   procedure Deliver_Segment
+     (PCB : PCBs.PCB_Id;
+      Buf : Buffers.Buffer_Id)
+   --# global in out Buffers.State, TPCBs;
+   is
+      Saved_Payload : System.Address;
+      D_Buf : Buffers.Buffer_Id;
+      D_Len : AIP.M32_T;
+      Err   : AIP.Err_T;
+   begin
+      --  Retry deferred data, if any, and then proceed to deliver new segment,
+      --  if any. If deferred data was present and was refused again, the new
+      --  segment (if present) is dropped.
+
+      if TPCBs (PCB).Refused_Packet /= Buffers.NOBUF then
+         D_Buf := TPCBs (PCB).Refused_Packet;
+      else
+         D_Buf := Buf;
+      end if;
+
+      loop
+         Saved_Payload := Buffers.Buffer_Payload (D_Buf);
+         D_Len := AIP.M32_T (Buffers.Buffer_Tlen (D_Buf));
+         TCP_Event
+           (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
+                                 Len  => D_Len,
+                                 Buf  => D_Buf,
+                                 Addr => IPaddrs.IP_ADDR_ANY,
+                                 Port => PCBs.NOPORT,
+                                 Err  => AIP.NOERR),
+            PCB  => PCB,
+            Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
+            Err  => Err);
+
+         if AIP.No (Err) then
+            Buffers.Buffer_Blind_Free (D_Buf);
+            TPCBs (PCB).Refused_Packet := Buffers.NOBUF;
+            TPCBs (PCB).RCV_NXT := TPCBs (PCB).RCV_NXT + D_Len;
+
+            if TCPH.TCPH_Fin (Buffers.Packet_Info (D_Buf)) = 1 then
+               pragma Assert (D_Buf = Buf);
+
+               --  Got FIN: signal end of stream to the application by
+               --  delivering an empty buffer, unless already done above
+
+               if D_Len /= 0 then
+                  TCP_Event
+                    (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
+                                          Len  => 0,
+                                          Buf  => Buffers.NOBUF,
+                                          Addr => IPaddrs.IP_ADDR_ANY,
+                                          Port => PCBs.NOPORT,
+                                          Err  => AIP.NOERR),
+                     PCB  => PCB,
+                     Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
+                     Err  => Err);
+               end if;
+            end if;
+
+            if D_Buf /= Buf then
+
+               --  More data to deliver
+
+               D_Buf := Buf;
+
+            else
+               --  All data delivered with no error: try sending data and ack
+
+               TCP_Output (PCB);
+            end if;
+
+         else
+            --  Got error: restore payload pointer, park refused segment in PCB
+            --  for later retry, and drop further segment if present.
+
+            Buffers.Buffer_Set_Payload (D_Buf, Saved_Payload, Err);
+            pragma Assert (AIP.No (Err));
+
+            TPCBs (PCB).Refused_Packet := D_Buf;
+            if Buf /= D_Buf then
+               Buffers.Buffer_Blind_Free (Buf);
+            end if;
+         end if;
+         exit when D_Buf = Buffers.NOBUF or else AIP.Any (Err);
+      end loop;
+   end Deliver_Segment;
 
    ----------------------------
    -- Initial_Sequence_Numer --
@@ -321,6 +439,7 @@ is
       Packet : Buffers.Buffer_Id;
       Thdr   : System.Address;
       Len    : AIP.M32_T;
+      Err    : AIP.Err_T;
    begin
       if Seq_Lt (Seg.Ack, TPCBs (PCB).SND_UNA) then
          --  Ignore duplicated ack
@@ -366,7 +485,8 @@ is
                                     Port => PCBs.NOPORT,
                                     Err  => AIP.ERR_RST),
                PCB  => PCB,
-               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT));
+               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT),
+               Err  => Err);
 
             if TPCBs (PCB).State = Fin_Wait_1
               and then TCPH.TCPH_Fin (Thdr) = 1
@@ -852,6 +972,7 @@ is
       --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
       --#        in PCB;
       is
+         Err : AIP.Err_T;
       begin
          if Callback then
             TCP_Event
@@ -862,7 +983,8 @@ is
                                     Port => PCBs.NOPORT,
                                     Err  => AIP.ERR_RST),
                PCB  => PCB,
-               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT));
+               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT),
+               Err  => Err);
 
             --  Notify failure of pending send operations???
          end if;
@@ -999,7 +1121,8 @@ is
                                              Port => PCBs.NOPORT,
                                              Err  => AIP.ERR_RST),
                         PCB  => PCB,
-                        Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT));
+                        Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT),
+                        Err  => Err);
 
                      --  Drop PCB
 
@@ -1147,6 +1270,29 @@ is
 
             null;
             --  TBD???
+
+            --  7. Process segment text
+
+            Buffers.Buffer_Header
+              (Seg.Buf,
+               -(4 * AIP.S16_T (IPH.IPH_IHL (Seg.Ihdr)
+                                  + TCPH.TCPH_Data_Offset (Seg.Thdr))),
+               Err);
+            pragma Assert (AIP.No (Err));
+
+            pragma Assert (not Seq_Lt (TPCBs (PCB).RCV_NXT, Seg.Seq));
+            --  Else segment is out of order
+
+            if Seq_Lt (Seg.Seq, TPCBs (PCB).RCV_NXT) then
+               --  Drop head of segment that was already received
+
+               Buffers.Buffer_Header
+                 (Seg.Buf,
+                  -AIP.S16_T (TPCBs (PCB).RCV_NXT - Seg.Seq),
+                  Err);
+               pragma Assert (AIP.No (Err));
+            end if;
+            Deliver_Segment (PCB, Seg.Buf);
       end case;
    end TCP_Receive;
 
@@ -1296,6 +1442,11 @@ is
          Seg.Seq := TCPH.TCPH_Seq_Num (Seg.Thdr);
          Seg.Ack := TCPH.TCPH_Ack_Num (Seg.Thdr);
 
+         --  Save Thdr in buffer so that we can easily access it if we park
+         --  the segment for later delivery.
+
+         Buffers.Set_Packet_Info (Buf, Seg.Thdr);
+
          --  Parse TCP options
 
          Option_Offset := TCPH.TCP_Header_Size / 8;
@@ -1425,8 +1576,21 @@ is
    -- TCP_Fast_Timer --
    --------------------
 
-   procedure TCP_Fast_Timer is
+   procedure TCP_Fast_Timer
+   --# global in out Buffers.State, TPCBs; in Active_PCBs, IPCBs;
+   is
+      PCB : PCBs.PCB_Id;
    begin
+      --  Retry delivery of pending segments
+
+      PCB := Active_PCBs;
+      while PCB /= PCBs.NOPCB loop
+         if TPCBs (PCB).Refused_Packet /= Buffers.NOBUF then
+            Deliver_Segment (PCB, Buffers.NOBUF);
+         end if;
+         PCB := IPCBs (PCB).Link;
+      end loop;
+
       --  Generated stub: replace with real body!
       null;
    end TCP_Fast_Timer;
