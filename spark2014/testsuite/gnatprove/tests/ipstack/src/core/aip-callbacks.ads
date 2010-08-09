@@ -5,18 +5,21 @@
 
 --  Definition of external (application-level) callbacks
 
---# inherit AIP;
+with AIP_Constants;
+--# inherit AIP, AIP_constants;
 
 package AIP.Callbacks is
 
    pragma Pure;
 
-   --  Since we can't use access to subprograms in SPARK, callbacks and the
-   --  associated application level data are identified by arbitrary opaque
-   --  identifiers.
+   --  Since we can't use access to subprograms in SPARK, callbacks are
+   --  identified by arbitrary opaque identifiers. We arrange for these to be
+   --  the same size as a machine address, still, to let users assign
+   --  subprogram access values (with user level intermediate conversions) if
+   --  they like.
 
-   subtype CBK_Id is AIP.EID;
-   NOCB : constant CBK_Id := AIP.NULID;
+   type CBK_Id is mod 2 ** AIP_Constants.Address_Size;
+   NOCB : constant CBK_Id := 0;
 
    --  The general scheme is as follows (PROTO = UDP|TCP):
    --

@@ -8,7 +8,7 @@
 with System;
 
 with AIP.Buffers;
-with AIP.Callbacks;
+with AIP.Callbacks;  use type AIP.Callbacks.CBK_Id;
 with AIP.IPaddrs;
 with AIP.NIF;
 with AIP.PCBs;
