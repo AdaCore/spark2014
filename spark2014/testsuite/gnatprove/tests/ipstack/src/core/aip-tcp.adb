@@ -86,10 +86,10 @@ is
 
       --  Transmission queues
 
-      Send_Queue  : Buffers.Packet_List;
+      Send_Queue  : Buffers.Packet_Queue;
       --  Packets to be sent out
 
-      Unack_Queue : Buffers.Packet_List;
+      Unack_Queue : Buffers.Packet_Queue;
       --  Sent packets waiting for ack/retransmit
 
       --  User (application) callbacks
@@ -127,8 +127,8 @@ is
                                     RTT_Stddev  => 0,
                                     RTO         => 0,
 
-                                    Send_Queue  => Buffers.Empty_Packet_List,
-                                    Unack_Queue => Buffers.Empty_Packet_List,
+                                    Send_Queue  => Buffers.Empty_Packet_Queue,
+                                    Unack_Queue => Buffers.Empty_Packet_Queue,
 
                                     Callbacks   =>
                                       TCP_Callbacks'(others =>
@@ -379,7 +379,10 @@ is
             --  Note: the following call leaves Packet unchanged (but removes
             --  it from the head of Unack_Queue).
 
-            Buffers.Remove_Packet (TPCBs (PCB).Unack_Queue, Packet);
+            Buffers.Remove_Packet
+              (Buffers.Transport,
+               TPCBs (PCB).Unack_Queue,
+               Packet);
          end loop;
 
          if Seq_Lt (TPCBs (PCB).SND_WL1, Seg.Seq)

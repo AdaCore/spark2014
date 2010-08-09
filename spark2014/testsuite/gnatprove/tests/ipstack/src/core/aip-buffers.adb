@@ -34,16 +34,19 @@ is
    -- Append_Packet --
    -------------------
 
-   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id)
+   procedure Append_Packet
+     (Layer : Packet_Layer;
+      Queue : in out Packet_Queue;
+      Buf   : Buffer_Id)
    --# global in out Common.Buf_List;
    is
    begin
-      if L.Tail /= NOBUF then
-         Common.Buf_List (L.Tail).Next_Packet := Buf;
-         L.Tail := Buf;
+      if Queue.Tail /= NOBUF then
+         Common.Buf_List (Queue.Tail).Next_Packet (Layer) := Buf;
+         Queue.Tail := Buf;
       else
-         L.Head := Buf;
-         L.Tail := Buf;
+         Queue.Head := Buf;
+         Queue.Tail := Buf;
       end if;
    end Append_Packet;
 
@@ -95,7 +98,8 @@ is
         Common.Buffer_Array'
           (others =>
                Common.Buffer'(Next        => NOBUF,
-                              Next_Packet => NOBUF,
+                              Next_Packet =>
+                                Common.Packet_Queue_Ptrs'(others => NOBUF),
                               Packet_Info => System.Null_Address,
                               Len         => 0,
                               Tot_Len     => 0,
@@ -454,7 +458,7 @@ is
    -- Empty --
    -----------
 
-   function Empty (L : Packet_List) return Boolean is
+   function Empty (L : Packet_Queue) return Boolean is
    begin
       return L.Head = NOBUF;
    end Empty;
@@ -463,9 +467,9 @@ is
    -- Head_Packet --
    -----------------
 
-   function Head_Packet (L : Packet_List) return Buffer_Id is
+   function Head_Packet (Queue : Packet_Queue) return Buffer_Id is
    begin
-      return L.Head;
+      return Queue.Head;
    end Head_Packet;
 
    -----------------
@@ -483,16 +487,19 @@ is
    -- Remove_Packet --
    -------------------
 
-   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id)
+   procedure Remove_Packet
+     (Layer : Packet_Layer;
+      Queue : in out Packet_Queue;
+      Buf : out Buffer_Id)
    --# global in Common.Buf_List;
    is
    begin
-      Buf := L.Head;
-      if L.Head /= NOBUF then
-         L.Head := Common.Buf_List (Buf).Next_Packet;
+      Buf := Queue.Head;
+      if Queue.Head /= NOBUF then
+         Queue.Head := Common.Buf_List (Buf).Next_Packet (Layer);
       end if;
-      if L.Head = NOBUF then
-         L.Tail := NOBUF;
+      if Queue.Head = NOBUF then
+         Queue.Tail := NOBUF;
       end if;
    end Remove_Packet;
 

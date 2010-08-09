@@ -13,11 +13,13 @@ private package AIP.Buffers.Common
 is
    pragma Preelaborate;
 
+   type Packet_Queue_Ptrs is array (Buffers.Packet_Layer) of Buffers.Buffer_Id;
+
    type Buffer is record
       Next        : Buffers.Buffer_Id;
       --  Next buffer in this buffer chain
 
-      Next_Packet : Buffers.Buffer_Id;
+      Next_Packet : Packet_Queue_Ptrs;
       --  Next packet in queue
 
       Packet_Info : System.Address;

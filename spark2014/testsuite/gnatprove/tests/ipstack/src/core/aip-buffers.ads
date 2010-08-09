@@ -242,23 +242,35 @@ is
    ----------------------------
 
    --  A network packet is represented as a chain of buffers. Packets
-   --  themselves can be attached to chained lists.
+   --  themselves can be attached to chained lists to form queues.
 
-   type Packet_List is private;
-   Empty_Packet_List : constant Packet_List;
+   --  Separate sets of queues are maintained by each protocol layer. Any
+   --  packet can be on a single queue at most at any given time for each layer
+   --  but may be on different (unrelated) queues for different layers.
 
-   function Head_Packet (L : Packet_List) return Buffer_Id;
+   type Packet_Layer is (Link, Transport);
+
+   type Packet_Queue is private;
+   Empty_Packet_Queue : constant Packet_Queue;
+
+   function Head_Packet (Queue : Packet_Queue) return Buffer_Id;
    --  Return head packet of L
 
-   procedure Append_Packet (L : in out Packet_List; Buf : Buffer_Id);
+   procedure Append_Packet
+     (Layer : Packet_Layer;
+      Queue : in out Packet_Queue;
+      Buf   : Buffer_Id);
    --# global in out State;
    --  Append Buf to list L
 
-   procedure Remove_Packet (L : in out Packet_List; Buf : out Buffer_Id);
+   procedure Remove_Packet
+     (Layer : Packet_Layer;
+      Queue : in out Packet_Queue;
+      Buf   : out Buffer_Id);
    --# global in State;
    --  Detach head packet from L and return its id in Buf
 
-   function Empty (L : Packet_List) return Boolean;
+   function Empty (L : Packet_Queue) return Boolean;
    --  True if L contains no packets
 
    function Packet_Info (B : Buffer_Id) return System.Address;
@@ -269,12 +281,12 @@ is
 
 private
 
-   type Packet_List is record
+   type Packet_Queue is record
       Head, Tail : Buffer_Id;
    end record;
 
-   Empty_Packet_List : constant Packet_List :=
-                         Packet_List'(Head => NOBUF, Tail => NOBUF);
+   Empty_Packet_Queue : constant Packet_Queue :=
+                         Packet_Queue'(Head => NOBUF, Tail => NOBUF);
 
    function Is_Data_Buffer (Buf : Buffer_Id) return Boolean;
    --  Return whether buffer Buf is a data buffer or a no-data buffer.

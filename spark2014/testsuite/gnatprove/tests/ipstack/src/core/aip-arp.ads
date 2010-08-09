@@ -53,7 +53,7 @@ private
       Dst_IP_Address  : IPaddrs.IPaddr;
       Dst_MAC_Address : AIP.Ethernet_Address;
 
-      Packet_Queue    : Buffers.Packet_List;
+      Packet_Queue    : Buffers.Packet_Queue;
       --  For incomplete entries, chained list of pending packets to be sent
       --  once ARP lookup is completed.
 

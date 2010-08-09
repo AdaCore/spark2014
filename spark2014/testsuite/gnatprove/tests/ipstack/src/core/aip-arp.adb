@@ -148,7 +148,7 @@ is
       AE.State        := Incomplete;
       AE.Permanent    := False;
       AE.Timestamp    := Time_Types.Time'First;
-      AE.Packet_Queue := Buffers.Empty_Packet_List;
+      AE.Packet_Queue := Buffers.Empty_Packet_Queue;
    end ARP_Reset;
 
    --------------
@@ -234,7 +234,7 @@ is
                               Dst_IP_Address  => IPaddrs.IP_ADDR_ANY,
                               Dst_MAC_Address => AIP.Ethernet_Address'
                                                    (others => 0),
-                              Packet_Queue    => Buffers.Empty_Packet_List,
+                              Packet_Queue    => Buffers.Empty_Packet_Queue,
                               Next            => No_ARP_Entry));
       for J in ARP_Entry_Id loop
          ARP_Table (J).Next := J - 1;
@@ -271,7 +271,10 @@ is
          ARP_Table (AEID).Dst_MAC_Address := Eth_Address;
 
          Flush_Queue : loop
-            Buffers.Remove_Packet (ARP_Table (AEID).Packet_Queue, Packet_Buf);
+            Buffers.Remove_Packet
+              (Buffers.Link,
+               ARP_Table (AEID).Packet_Queue,
+               Packet_Buf);
             exit Flush_Queue when Packet_Buf = Buffers.NOBUF;
 
             Send_Packet (Nid, EtherH.Ether_Type_IP, Packet_Buf, Eth_Address);
@@ -418,7 +421,10 @@ is
             when Incomplete =>
                --  Park packet on entry's pending list
 
-               Buffers.Append_Packet (ARP_Table (AEID).Packet_Queue, Buf);
+               Buffers.Append_Packet
+                 (Buffers.Link,
+                  ARP_Table (AEID).Packet_Queue,
+                  Buf);
 
                --  If last attempt is old enough (also case of a newly
                --  created incomplete entry), send out ARP request.
@@ -467,7 +473,9 @@ is
          then
             loop
                Buffers.Remove_Packet
-                 (ARP_Table (AEID).Packet_Queue, Packet_Buf);
+                 (Buffers.Link,
+                  ARP_Table (AEID).Packet_Queue,
+                  Packet_Buf);
                exit when Packet_Buf = Buffers.NOBUF;
                Buffers.Buffer_Blind_Free (Packet_Buf);
             end loop;
