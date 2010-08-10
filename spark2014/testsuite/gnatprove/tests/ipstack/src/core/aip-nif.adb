@@ -262,6 +262,15 @@ package body AIP.NIF is
       return NIFs (Nid).Mask;
    end NIF_Mask;
 
+   -------------
+   -- NIF_MTU --
+   -------------
+
+   function NIF_MTU (Nid : Netif_Id) return AIP.U16_T is
+   begin
+      return NIFs (Nid).MTU;
+   end NIF_MTU;
+
    ------------
    -- Output --
    ------------

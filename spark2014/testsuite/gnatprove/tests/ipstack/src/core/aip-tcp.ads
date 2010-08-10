@@ -286,7 +286,7 @@ is
    -----------------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State, State;
+   --# global in out Buffers.State, IP.FIB, State;
    --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
    --  to the appropriate user callback. Buf is then free'd.
 
@@ -323,6 +323,7 @@ private
    --  TCP flags.
 
    procedure TCP_Output (PCB : PCBs.PCB_Id);
+   --# global in State;
    --  Start output for any pending data or control information on PCB
 
    procedure TCP_Send_Rst

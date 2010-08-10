@@ -34,6 +34,9 @@ package AIP.NIF is
    function NIF_Mask      (Nid : Netif_Id) return IPaddrs.IPaddr;
    function NIF_Broadcast (Nid : Netif_Id) return IPaddrs.IPaddr;
 
+   function NIF_MTU       (Nid : Netif_Id) return AIP.U16_T;
+   --  Maximum transmission unit
+
    procedure If_Config
      (Nid       : Netif_Id;
       IP        : IPaddrs.IPaddr;

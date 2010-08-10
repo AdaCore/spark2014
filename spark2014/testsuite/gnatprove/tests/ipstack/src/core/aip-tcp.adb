@@ -51,20 +51,27 @@ is
 
       --  Send sequence variables
 
-      SND_UNA : AIP.M32_T; --  Send unacknowledged
-      SND_NXT : AIP.M32_T; --  Send next
-      SND_WND : AIP.M32_T; --  Send window
-      SND_UP  : AIP.M32_T; --  Send urgent pointer
-      SND_WL1 : AIP.M32_T; --  Segment sequence number for last window update
-      SND_WL2 : AIP.M32_T; --  Segment ack number for last window update
-      ISS     : AIP.M32_T; --  Initial send sequence number
+      SND_UNA  : AIP.M32_T; --  Send unacknowledged
+      SND_NXT  : AIP.M32_T; --  Send next
+      SND_WND  : AIP.M32_T; --  Send window
+      SND_UP   : AIP.M32_T; --  Send urgent pointer
+      SND_WL1  : AIP.M32_T; --  Segment sequence number for last window update
+      SND_WL2  : AIP.M32_T; --  Segment ack number for last window update
+      ISS      : AIP.M32_T; --  Initial send sequence number
+
+      Dup_Acks : AIP.U8_T;  --  Consecutive duplicated acks
 
       --  Receive sequence variables
 
-      RCV_NXT : AIP.M32_T; --  Receive next
-      RCV_WND : AIP.M32_T; --  Receive window
-      RCV_UP  : AIP.M32_T; --  Receive urgent pointer
-      IRS     : AIP.M32_T; --  Initial receive sequence number
+      RCV_NXT  : AIP.M32_T; --  Receive next
+      RCV_WND  : AIP.M32_T; --  Receive window
+      RCV_UP   : AIP.M32_T; --  Receive urgent pointer
+      IRS      : AIP.M32_T; --  Initial receive sequence number
+
+      --  Slow start
+
+      CWND     : AIP.M32_T; --  Congestion window
+      SSTHRESH : AIP.M32_T; --  Slow start threshold
 
       --  Round-trip average and standard deviation estimators for computation
       --  of retransmit timeout (in TCP 500 ms ticks).
@@ -91,6 +98,11 @@ is
 
       Unack_Queue : Buffers.Packet_Queue;
       --  Sent packets waiting for ack/retransmit
+
+      --  Cached next hop information
+
+      Next_Hop_IP    : IPaddrs.IPaddr;
+      Next_Hop_Netif : AIP.EID;
 
       --  Receive queue
 
@@ -119,10 +131,15 @@ is
                                     SND_WL2        => 0,
                                     ISS            => 0,
 
+                                    Dup_Acks       => 0,
+
                                     RCV_NXT        => 0,
-                                    RCV_WND        => 0,
+                                    RCV_WND        => Config.TCP_WINDOW,
                                     RCV_UP         => 0,
                                     IRS            => 0,
+
+                                    CWND           => 0,
+                                    SSTHRESH       => 0,
 
                                     Poll_Ticks     => 0,
                                     Poll_Ivl       => 0,
@@ -137,6 +154,9 @@ is
                                       Buffers.Empty_Packet_Queue,
                                     Unack_Queue    =>
                                       Buffers.Empty_Packet_Queue,
+
+                                    Next_Hop_IP    => IPaddrs.IP_ADDR_ANY,
+                                    Next_Hop_Netif => NIF.IF_NOID,
 
                                     Refused_Packet => Buffers.NOBUF,
 
@@ -229,13 +249,29 @@ is
    --  Attempt to deliver pending refused data and/or new segment in Buf to
    --  application.
 
+   --  procedure Setup_PCB
+   --    (PCB         : PCBs.PCB_Id;
+   --     Local_IP    : IPaddrs.IPaddr;
+   --     Local_Port  : PCBs.Port_T;
+   --     Remote_IP   : IPaddrs.IPaddr;
+   --     Remote_Port : PCBs.Port_T;
+   --     Err         : out AIP.Err_T);
+   --  Common setup procedure shared by active and passive opens
+
    ----------------
    -- TCP_Output --
    ----------------
 
    procedure TCP_Output (PCB : PCBs.PCB_Id)
+   --# global in TPCBs;
    is
+      Max_Send : AIP.M32_T;
+      pragma Unreferenced (Max_Send);
+      --  Maximum amount of data to be sent: minimum of send window and
+      --  congestion window.
    begin
+      Max_Send := AIP.M32_T'Min (TPCBs (PCB).SND_WND, TPCBs (PCB).CWND);
+
       null;
       --  TBD???
    end TCP_Output;
@@ -281,7 +317,11 @@ is
          if AIP.No (Err) then
             Buffers.Buffer_Blind_Free (D_Buf);
             TPCBs (PCB).Refused_Packet := Buffers.NOBUF;
-            TPCBs (PCB).RCV_NXT := TPCBs (PCB).RCV_NXT + D_Len;
+
+            --  Open receive window
+
+            TPCBs (PCB).RCV_WND :=
+              AIP.M32_T'Min (TPCBs (PCB).RCV_WND + D_Len, Config.TCP_Window);
 
             if TCPH.TCPH_Fin (Buffers.Packet_Info (D_Buf)) = 1 then
                pragma Assert (D_Buf = Buf);
@@ -440,10 +480,19 @@ is
       Thdr   : System.Address;
       Len    : AIP.M32_T;
       Err    : AIP.Err_T;
+
+      CWND_Increment : AIP.M32_T;
    begin
       if Seq_Lt (Seg.Ack, TPCBs (PCB).SND_UNA) then
-         --  Ignore duplicated ack
+         --  Duplicated ack
 
+         TPCBs (PCB).Dup_Acks := TPCBs (PCB).Dup_Acks + 1;
+
+         --  Ignore duplicated ack, unless it's the third in a row, in which
+         --  case we initiate a fast retransmit without waiting for the
+         --  retransmit timer to expire.
+
+         --  Fast retransmit /fast recovery are not implemented yet???
          null;
 
       else
@@ -451,7 +500,23 @@ is
 
          pragma Assert (Seq_Le (Seg.Ack, TPCBs (PCB).SND_NXT));
 
+         TPCBs (PCB).Dup_Acks := 0;
+
          TPCBs (PCB).SND_UNA := Seg.Ack;
+
+         --  Perform slow start and congestion avoidance
+
+         if TPCBs (PCB).CWND < TPCBs (PCB).SSTHRESH then
+            CWND_Increment := AIP.M32_T (TPCBs (PCB).Remote_MSS);
+         else
+            CWND_Increment :=
+              AIP.M32_T (TPCBs (PCB).Remote_MSS * TPCBs (PCB).Remote_MSS)
+                / TPCBs (PCB).CWND;
+         end if;
+
+         TPCBs (PCB).CWND := TPCBs (PCB).CWND + CWND_Increment;
+
+         --  Update RTT estimator
 
          if TPCBs (PCB).RTT_Seq = Seg.Ack then
             Update_RTT_Estimator
@@ -500,21 +565,26 @@ is
             --  it from the head of Unack_Queue).
 
             Buffers.Remove_Packet
-              (Buffers.Transport,
-               TPCBs (PCB).Unack_Queue,
-               Packet);
+              (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
          end loop;
+
+         --  Update window if:
+         --    Seg.Seq > WL1
+         --    Seg.Seq = WL1 and Seg.Ack > WL2
+         --    Seg.Seq = WL1 and Seg.Awk = WL2 and window grows
 
          if Seq_Lt (TPCBs (PCB).SND_WL1, Seg.Seq)
               or else
             (TPCBs (PCB).SND_WL1 = Seg.Seq
-               and then Seq_Le (TPCBs (PCB).SND_WL2, Seg.Ack))
+             and then (Seq_Lt (TPCBs (PCB).SND_WL2, Seg.Ack)
+                         or else (TPCBs (PCB).SND_WL2 = Seg.Ack
+                                    and then
+                                  AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr))
+                                    > TPCBs (PCB).SND_WND)))
          then
-            --  Update window
-
             TPCBs (PCB).SND_WND := AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr));
-            TPCBs (PCB).SND_WND := Seg.Seq;
-            TPCBs (PCB).SND_WND := Seg.Ack;
+            TPCBs (PCB).SND_WL1 := Seg.Seq;
+            TPCBs (PCB).SND_WL2 := Seg.Ack;
          end if;
       end if;
    end Process_Ack;
@@ -940,6 +1010,59 @@ is
       TCP_Callback (TCP_EVENT_ABORT, PCB, Cb);
    end TCP_Abort;
 
+   ---------------
+   -- Setup_PCB --
+   ---------------
+
+   procedure Setup_PCB
+     (PCB         : PCBs.PCB_Id;
+      Local_IP    : IPaddrs.IPaddr;
+      Local_Port  : PCBs.Port_T;
+      Remote_IP   : IPaddrs.IPaddr;
+      Remote_Port : PCBs.Port_T;
+      Err         : out AIP.Err_T)
+   --# global in out Boot_Time, IPCBs, TPCBs; in IP.FIB;
+   is
+      Next_Hop_IP    : IPaddrs.IPaddr;
+      Next_Hop_Netif : NIF.Netif_Id;
+   begin
+      IPCBs (PCB).Local_IP    := Local_IP;
+      IPCBs (PCB).Local_Port  := Local_Port;
+      IPCBs (PCB).Remote_IP   := Remote_IP;
+      IPCBs (PCB).Remote_Port := Remote_Port;
+
+      --  Find and cache return path information
+
+      IP.IP_Route (IPCBs (PCB).Remote_IP, Next_Hop_IP, Next_Hop_Netif);
+      TPCBs (PCB).Next_Hop_IP    := Next_Hop_IP;
+      TPCBs (PCB).Next_Hop_Netif := Next_Hop_Netif;
+
+      if TPCBs (PCB).Next_Hop_Netif = NIF.IF_NOID then
+         --  No route to host: bail out
+
+         Err := AIP.ERR_RTE;
+
+      else
+         --  Choose our ISN
+
+         TPCBs (PCB).ISS :=
+           Initial_Sequence_Number
+             (Local_IP    => IPCBs (PCB).Local_IP,
+              Local_Port  => IPCBs (PCB).Local_Port,
+              Remote_IP   => IPCBs (PCB).Remote_IP,
+              Remote_Port => IPCBs (PCB).Remote_Port);
+
+         --  Set MSS using MTU of next hop interface, accounting for IP and TCP
+         --  headers, and provisioning for 20 bytes of options.
+
+         TPCBs (PCB).Local_MSS :=
+           NIF.NIF_MTU (TPCBs (PCB).Next_Hop_Netif)
+           - IPH.IP_Header_Size / 8
+           - TCPH.TCP_Header_Size / 8
+           - 20;
+      end if;
+   end Setup_PCB;
+
    -----------------
    -- TCP_Receive --
    -----------------
@@ -949,7 +1072,7 @@ is
       Seg : Segment;
       Err : out AIP.Err_T)
    --# global in out Buffers.State, TPCBs, IPCBs;
-   --#        in Boot_Time, TCP_Ticks,
+   --#        in IP.FIB, Boot_Time, TCP_Ticks,
    --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
       New_PCB : PCBs.PCB_Id;
@@ -957,11 +1080,44 @@ is
       Win_L, Win_R : AIP.M32_T;
       --  Left and right edges of receive window
 
+      New_Data_Len : AIP.M32_T;
+      --  Length of non-duplicate data in segment
+
       Discard : Boolean := False;
       --  Set True to prevent any further processing
 
+      --  procedure Setup_Flow_Control;
+      --  Shared processing between passive and active open: once the remote
+      --  MSS is known, set up the congestion window and other flow control
+      --  parameters.
+
       --  procedure Teardown (Callback : Boolean);
       --  Tear down the current connection, notify user if Callback is True
+
+      ------------------------
+      -- Setup_Flow_Control --
+      ------------------------
+
+      procedure Setup_Flow_Control (PCB : PCBs.PCB_Id)
+      --# global in out TPCBs; in Seg;
+      is
+      begin
+         --  Set remote MSS
+
+         if Seg.MSS = 0 then
+            TPCBs (PCB).Remote_MSS := 512;
+         else
+            TPCBs (PCB).Remote_MSS := Seg.MSS;
+         end if;
+
+         --  Slow start: initialize CWND to 1 segment
+
+         TPCBs (PCB).CWND := AIP.M32_T (TPCBs (PCB).Remote_MSS);
+
+         --  Congestion avoidance: initialize SSthresh to 65_535
+
+         TPCBs (PCB).SSTHRESH := 65_535;
+      end Setup_Flow_Control;
 
       --------------
       -- Teardown --
@@ -1038,43 +1194,41 @@ is
                   --  Set up PCB for new connection
 
                   TPCBs (New_PCB).State := Syn_Received;
+                  Setup_PCB
+                    (PCB         => New_PCB,
+                     Local_IP    => IPH.IPH_Dst_Address (Seg.Ihdr),
+                     Local_Port  => TCPH.TCPH_Dst_Port  (Seg.Thdr),
+                     Remote_IP   => IPH.IPH_Src_Address (Seg.Ihdr),
+                     Remote_Port => TCPH.TCPH_Src_Port  (Seg.Thdr),
+                     Err         => Err);
 
-                  IPCBs (New_PCB).Local_IP    := IPH.IPH_Dst_Address
-                    (Seg.Ihdr);
-                  IPCBs (New_PCB).Local_Port  := TCPH.TCPH_Dst_Port
-                    (Seg.Thdr);
-                  IPCBs (New_PCB).Remote_IP   := IPH.IPH_Dst_Address
-                    (Seg.Ihdr);
-                  IPCBs (New_PCB).Remote_Port := TCPH.TCPH_Dst_Port
-                    (Seg.Thdr);
+                  if AIP.No (Err) then
+                     Setup_Flow_Control (New_PCB);
 
-                  TPCBs (New_PCB).Remote_MSS := Seg.MSS;
-                  TPCBs (New_PCB).ISS :=
-                    Initial_Sequence_Number
-                      (Local_IP    => IPCBs (New_PCB).Local_IP,
-                       Local_Port  => IPCBs (New_PCB).Local_Port,
-                       Remote_IP   => IPCBs (New_PCB).Remote_IP,
-                       Remote_Port => IPCBs (New_PCB).Remote_Port);
+                     TPCBs (New_PCB).SND_UNA := TPCBs (New_PCB).ISS;
+                     TPCBs (New_PCB).SND_NXT := TPCBs (New_PCB).ISS;
+                     TPCBs (New_PCB).IRS     := Seg.Seq;
+                     TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
-                  TPCBs (New_PCB).SND_UNA := TPCBs (New_PCB).ISS;
-                  TPCBs (New_PCB).SND_NXT := TPCBs (New_PCB).ISS;
-                  TPCBs (New_PCB).IRS     := Seg.Seq;
-                  TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
+                     --  Insert new PCB in active list
 
-                  --  Insert new PCB in active list
+                     PCBs.Prepend
+                       (PCB      => New_PCB,
+                        PCB_Head => Active_PCBs,
+                        PCB_Pool => IPCBs);
 
-                  PCBs.Prepend
-                    (PCB      => New_PCB,
-                     PCB_Head => Active_PCBs,
-                     PCB_Pool => IPCBs);
+                     --  Send SYN|ACK
 
-                  --  Send SYN|ACK
+                     TCP_Send_Control
+                       (PCB => New_PCB,
+                        Syn => True,
+                        Ack => True,
+                        Err => Err);
+                  else
+                     --  Failed to set up PCB: bail out
 
-                  TCP_Send_Control
-                    (PCB => New_PCB,
-                     Syn => True,
-                     Ack => True,
-                     Err => Err);
+                     TCP_Free (New_PCB);
+                  end if;
                end if;
 
             else
@@ -1138,6 +1292,8 @@ is
                --  Check precedence???
 
                if TCPH.TCPH_Syn (Seg.Thdr) = 1 then
+                  Setup_Flow_Control (PCB);
+
                   TPCBs (PCB).IRS     := Seg.Seq + 1;
                   TPCBs (PCB).RCV_NXT := TPCBs (PCB).IRS + 1;
 
@@ -1286,12 +1442,27 @@ is
             if Seq_Lt (Seg.Seq, TPCBs (PCB).RCV_NXT) then
                --  Drop head of segment that was already received
 
+               New_Data_Len :=
+                 AIP.M32_T (Seg.Len) - (TPCBs (PCB).RCV_NXT - Seg.Seq);
+
                Buffers.Buffer_Header
                  (Seg.Buf,
                   -AIP.S16_T (TPCBs (PCB).RCV_NXT - Seg.Seq),
                   Err);
                pragma Assert (AIP.No (Err));
+            else
+               New_Data_Len := AIP.M32_T (Seg.Len);
             end if;
+
+            TPCBs (PCB).RCV_NXT := Seg.Seq + New_Data_Len;
+
+            if AIP.M32_T (Seg.Len) < TPCBs (PCB).RCV_WND then
+               TPCBs (PCB).RCV_WND := TPCBs (PCB).RCV_WND - New_Data_Len;
+
+            else
+               TPCBs (PCB).RCV_WND := 0;
+            end if;
+
             Deliver_Segment (PCB, Seg.Buf);
       end case;
    end TCP_Receive;
@@ -1302,7 +1473,7 @@ is
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
    --# global in out Buffers.State, TPCBs, IPCBs;
-   --#        in Boot_Time, TCP_Ticks,
+   --#        in IP.FIB, Boot_Time, TCP_Ticks,
    --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
       pragma Unreferenced (Netif);

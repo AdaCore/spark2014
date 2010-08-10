@@ -87,4 +87,7 @@ package AIP.Config is
 
    TCP_DEFAULT_LISTEN_BACKLOG : constant := 5;
 
+   TCP_WINDOW : constant := 2048;
+   --  TCP window size
+
 end AIP.Config;
