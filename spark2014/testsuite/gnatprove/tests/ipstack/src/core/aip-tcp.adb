@@ -268,22 +268,152 @@ is
    --  appropriate PCB lists. Verifies that PCB is not already in that State,
    --  and that the transition is legal.
 
+   --  procedure TCP_Send_Segment (Seg : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
+   --  Helper for TCP_Output. Actually send segment Seg over IP for PCB.
+
+   -----------------
+   -- TCP_Seg_Len --
+   -----------------
+
+   procedure TCP_Seg_Len (Buf : Buffers.Buffer_Id; Seg_Len : out AIP.M32_T)
+   --# global in out Buffers.State;
+   is
+      Saved_Payload : System.Address;
+      Thdr          : System.Address;
+      Err           : AIP.Err_T;
+   begin
+      Saved_Payload := Buffers.Buffer_Payload (Buf);
+      Thdr := Buffers.Packet_Info (Buf);
+      Buffers.Buffer_Set_Payload (Buf, Thdr, Err);
+      pragma Assert (AIP.No (Err));
+
+      Seg_Len := AIP.M32_T (Buffers.Buffer_Tlen (Buf))
+                   - 4 * AIP.M32_T (TCPH.TCPH_Data_Offset (Thdr))
+                   + AIP.M32_T (TCPH.TCPH_Syn (Thdr))
+                   + AIP.M32_T (TCPH.TCPH_Fin (Thdr));
+      Buffers.Buffer_Set_Payload (Buf, Saved_Payload, Err);
+      pragma Assert (AIP.No (Err));
+   end TCP_Seg_Len;
+
+   ------------
+   -- Seq_Lt --
+   ------------
+
+   function Seq_Lt (L, R : AIP.M32_T) return Boolean is
+   begin
+      return L - R > AIP.M32_T'(2 ** 31);
+   end Seq_Lt;
+
+   ------------
+   -- Seq_Le --
+   ------------
+
+   function Seq_Le (L, R : AIP.M32_T) return Boolean is
+   begin
+      return R - L < AIP.M32_T'(2 ** 31);
+   end Seq_Le;
+
+   ---------------
+   -- Seq_Range --
+   ---------------
+
+   function Seq_Range (L, S, R : AIP.M32_T) return Boolean is
+   begin
+      return Seq_Le (L, S) and then Seq_Lt (S, R);
+   end Seq_Range;
+
+   ----------------------
+   -- TCP_Send_Segment --
+   ----------------------
+
+   procedure TCP_Send_Segment (Seg : Buffers.Buffer_Id; PCB : PCBs.PCB_Id)
+   --# global in TPCBs; in out Buffers.State;
+   is
+      Thdr : System.Address;
+   begin
+
+      Thdr := Buffers.Buffer_Payload (Seg);
+
+      --  Fill in the ACK number field and advertise our receiving window
+      --  size.
+
+      TCPH.Set_TCPH_Ack_Num (Thdr, TPCBs (PCB).RCV_NXT);
+      TCPH.Set_TCPH_Window  (Thdr, 512); -- ??? fetch/compute this
+
+      null; -- ??? To be completed
+
+   end TCP_Send_Segment;
+
    ----------------
    -- TCP_Output --
    ----------------
 
    procedure TCP_Output (PCB : PCBs.PCB_Id)
-   --# global in TPCBs;
+   --# global in TPCBs; in out Buffers.State;
    is
-      Max_Send : AIP.M32_T;
-      pragma Unreferenced (Max_Send);
-      --  Maximum amount of data to be sent: minimum of send window and
-      --  congestion window.
-   begin
-      Max_Send := AIP.M32_T'Min (TPCBs (PCB).SND_WND, TPCBs (PCB).CWND);
+      Seg     : Buffers.Buffer_Id;
+      Seg_Len : AIP.M32_T;
+      --  Segment to be processed (first buffer of segment packet) and
+      --  associated length
 
-      null;
-      --  TBD???
+      This_WND : AIP.M32_T;
+      --  Window size for this output sequence: minimum of send window
+      --  and congestion window.
+
+      Thdr : System.Address;
+   begin
+
+      This_WND := AIP.M32_T'Min (TPCBs (PCB).SND_WND, TPCBs (PCB).CWND);
+
+      --  If we need to ACK now and won't have a segment to piggyback on,
+      --  setup an empty carrier.
+
+      null;  -- ??? Implement this
+
+      --  Now check every segment in the send queue, sending if within the
+      --  current window.
+
+      loop
+         Seg := Buffers.Head_Packet (TPCBs (PCB).Send_Queue);
+         exit when Seg = Buffers.NOBUF;
+
+         --  Here we have a candidate segment.
+
+         --  See if it fits the send window, as delimited by SND_UNA and
+         --  This_WND.  Out of Send_Queue, we expect the segment not to have
+         --  been sent already, hence the start of segment to be past the
+         --  start of window. Then we check if the segment ends before of
+         --  beyond the end of window.
+
+         Thdr := Buffers.Buffer_Payload (Seg);
+
+         pragma Assert (TCPH.TCPH_Seq_Num (Thdr) >= TPCBs (PCB).SND_UNA);
+
+         TCP_Seg_Len (Seg, Seg_Len);
+         exit when Seq_Le (TCPH.TCPH_Seq_Num (Thdr) + Seg_Len,
+                           TPCBs (PCB).SND_UNA + This_WND);
+
+         --  ??? exit when naggle blob
+
+         --  Now prepare and send current segment. We always fill the ACK
+         --  number in Send_Segment but only really ACK when not in SYN_SENT
+         --  state.
+
+         if TPCBs (PCB).State /= Syn_Sent then
+            TCPH.Set_TCPH_Ack (Thdr, 1);
+         end if;
+
+         TCP_Send_Segment (Seg, PCB);
+
+         --  Update state Variables
+
+         Buffers.Remove_Packet
+           (Buffers.Transport, TPCBs (PCB).Send_Queue, Seg);
+
+         TPCBs (PCB).SND_NXT := TPCBs (PCB).SND_NXT + Seg_Len;
+         --  ??? proper place for the NXT update ?
+
+      end loop;
    end TCP_Output;
 
    ---------------------
@@ -400,57 +530,6 @@ is
                 + Remote_IP * 13
                 + AIP.M32_T (Local_Port) * AIP.M32_T (Remote_Port)));
    end Initial_Sequence_Number;
-
-   -----------------
-   -- TCP_Seg_Len --
-   -----------------
-
-   procedure TCP_Seg_Len (Buf : Buffers.Buffer_Id; Seg_Len : out AIP.M32_T)
-   --# global in out Buffers.State;
-   is
-      Saved_Payload : System.Address;
-      Thdr          : System.Address;
-      Err           : AIP.Err_T;
-   begin
-      Saved_Payload := Buffers.Buffer_Payload (Buf);
-      Thdr := Buffers.Packet_Info (Buf);
-      Buffers.Buffer_Set_Payload (Buf, Thdr, Err);
-      pragma Assert (AIP.No (Err));
-
-      Seg_Len := AIP.M32_T (Buffers.Buffer_Tlen (Buf))
-                   - 4 * AIP.M32_T (TCPH.TCPH_Data_Offset (Thdr))
-                   + AIP.M32_T (TCPH.TCPH_Syn (Thdr))
-                   + AIP.M32_T (TCPH.TCPH_Fin (Thdr));
-      Buffers.Buffer_Set_Payload (Buf, Saved_Payload, Err);
-      pragma Assert (AIP.No (Err));
-   end TCP_Seg_Len;
-
-   ------------
-   -- Seq_Lt --
-   ------------
-
-   function Seq_Lt (L, R : AIP.M32_T) return Boolean is
-   begin
-      return L - R > AIP.M32_T'(2 ** 31);
-   end Seq_Lt;
-
-   ------------
-   -- Seq_Le --
-   ------------
-
-   function Seq_Le (L, R : AIP.M32_T) return Boolean is
-   begin
-      return R - L < AIP.M32_T'(2 ** 31);
-   end Seq_Le;
-
-   ---------------
-   -- Seq_Range --
-   ---------------
-
-   function Seq_Range (L, S, R : AIP.M32_T) return Boolean is
-   begin
-      return Seq_Le (L, S) and then Seq_Lt (S, R);
-   end Seq_Range;
 
    --------------------------
    -- Update_RTT_Estimator --

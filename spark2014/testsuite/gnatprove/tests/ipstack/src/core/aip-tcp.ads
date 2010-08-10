@@ -323,7 +323,7 @@ private
    --  TCP flags.
 
    procedure TCP_Output (PCB : PCBs.PCB_Id);
-   --# global in State;
+   --# global in State; in out Buffers.State;
    --  Start output for any pending data or control information on PCB
 
    procedure TCP_Send_Rst
