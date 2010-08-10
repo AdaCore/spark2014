@@ -39,6 +39,9 @@ is
 
    type TCP_PCB is record
       State : TCP_State;
+      --  TCP state of this connection.
+      --  Can be changed only by procedure Set_State below, which verifies
+      --  the legality of the requested transition.
 
       Active : Boolean;
       --  Set True if connection was initiated with an active open (i.e. went
@@ -258,6 +261,13 @@ is
    --     Err         : out AIP.Err_T);
    --  Common setup procedure shared by active and passive opens
 
+   --  procedure Set_State
+   --    (PCB   : PCBs.PCB_Id;
+   --     State : TCP_State);
+   --  Sets PCB's state to the given state, handling chaining on the
+   --  appropriate PCB lists. Verifies that PCB is not already in that State,
+   --  and that the transition is legal.
+
    ----------------
    -- TCP_Output --
    ----------------
@@ -469,6 +479,117 @@ is
       TPCB.RTO := TPCB.RTT_Average / 8 + TPCB.RTT_Stddev;
    end Update_RTT_Estimator;
 
+   ---------------
+   -- Set_State --
+   ---------------
+
+   procedure Set_State
+     (PCB   : PCBs.PCB_Id;
+      State : TCP_State)
+   --# global in out TPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   is
+   begin
+      pragma Assert (TPCBs (PCB).State /= State);
+
+      case TPCBs (PCB).State is
+         when Closed =>
+            pragma Assert (State = Listen or else State = Syn_Sent);
+
+            pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
+
+            PCBs.Unlink
+              (PCB      => PCB,
+               PCB_Head => Bound_PCBs,
+               PCB_Pool => IPCBs);
+
+            if State = Listen then
+               PCBs.Prepend
+                 (PCB      => PCB,
+                  PCB_Head => Listen_PCBs,
+                  PCB_Pool => IPCBs);
+            else
+               PCBs.Prepend
+                 (PCB      => PCB,
+                  PCB_Head => Active_PCBs,
+                  PCB_Pool => IPCBs);
+            end if;
+
+         when Listen =>
+            pragma Assert (State = Syn_Received or else State = Closed);
+
+            --  No transition from Listen to Syn_Sent
+
+            if State = Closed then
+               PCBs.Unlink
+                 (PCB      => PCB,
+                  PCB_Head => Listen_PCBs,
+                  PCB_Pool => IPCBs);
+            end if;
+
+         when Syn_Sent =>
+
+            --  We allow going directly from Syn_Sent to Closed for the case
+            --  of the user closing a half-open connection.
+
+            pragma Assert (State = Syn_Received
+                           or else State = Established
+                           or else State = Closed);
+
+            if State = Closed then
+               PCBs.Unlink
+                 (PCB      => PCB,
+                  PCB_Head => Active_PCBs,
+                  PCB_Pool => IPCBs);
+            end if;
+
+         when Syn_Received =>
+
+            --  Similarly an incoming RST may abort an half-open passive
+            --  connection.
+
+            pragma Assert (State = Estalished
+                           or else State = Fin_Wait_1
+                           or else State = Closed);
+
+            if State = Closed then
+               PCBs.Unlink
+                 (PCB      => PCB,
+                  PCB_Head => Active_PCBs,
+                  PCB_Pool => IPCBs);
+            end if;
+
+         when Established =>
+            pragma Assert (State = Fin_Wait_1 or else State = Close_Wait);
+            null;
+
+         when Fin_Wait_1 =>
+            pragma Assert (State = Fin_Wait_2 or else State = Closing);
+            null;
+
+         when Fin_Wait_2 =>
+            pragma Assert (State = Time_Wait);
+            null;
+
+         when Close_Wait =>
+            pragma Assert (State = Last_Ack);
+            null;
+
+         when Closing =>
+            pragma Assert (State = Time_Wait);
+            null;
+
+         when Last_Ack | Time_Wait =>
+            pragma Assert (State = Closed);
+            PCBs.Unlink
+              (PCB      => PCB,
+               PCB_Head => Active_PCBs,
+               PCB_Pool => IPCBs);
+      end case;
+
+      TPCBs (PCB).State := State;
+   end Set_State;
+
    -----------------
    -- Process_Ack --
    -----------------
@@ -553,12 +674,29 @@ is
                Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT),
                Err  => Err);
 
-            if TPCBs (PCB).State = Fin_Wait_1
-              and then TCPH.TCPH_Fin (Thdr) = 1
-            then
-               --  FIN acked in FIN_WAIT_1 state: proceed to FIN_WAIT_2
+            if TCPH.TCPH_Fin (Thdr) = 1 then
+               case TPCBs (PCB).State is
+                  when Fin_Wait_1 =>
+                     Set_State (PCB, Fin_Wait_2);
 
-               TPCBs (PCB).State := Fin_Wait_2;
+                  when Closing =>
+                     Set_State (PCB, Time_Wait);
+
+                  when Last_Ack =>
+                     TCP_Free (PCB);
+
+                  when Time_Wait =>
+
+                     --  Ack retransmitted FIN
+
+                     TCP_Send_Control
+                       (PCB => PCB,
+                        Syn => False,
+                        Ack => True,
+                        Err => Err);
+
+                     --  Restart 2MSL timeout???
+               end case;
             end if;
 
             --  Note: the following call leaves Packet unchanged (but removes
@@ -738,15 +876,8 @@ is
 
          case TPCBs (PCB).State is
             when Closed =>
-               TPCBs (PCB).State := Listen;
-               PCBs.Unlink
-                 (PCB      => PCB,
-                  PCB_Head => Bound_PCBs,
-                  PCB_Pool => IPCBs);
-               PCBs.Prepend
-                 (PCB      => PCB,
-                  PCB_Head => Listen_PCBs,
-                  PCB_Pool => IPCBs);
+               Set_State (PCB, Listen);
+
             when Listen =>
                null;
 
@@ -793,38 +924,15 @@ is
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
    begin
-      case TPCBs (PCB).State is
-         when Closed   =>
-            if IPCBs (PCB).Local_Port /= PCBs.NOPORT then
-               PCBs.Unlink (PCB      => PCB,
-                            PCB_Head => Bound_PCBs,
-                            PCB_Pool => IPCBs);
-            end if;
-
-         when Listen   =>
-            PCBs.Unlink (PCB      => PCB,
-                         PCB_Head => Listen_PCBs,
-                         PCB_Pool => IPCBs);
-
-         when Syn_Sent =>
-            PCBs.Unlink (PCB      => PCB,
-                         PCB_Head => Bound_PCBs,
-                         PCB_Pool => IPCBs);
-
-         when Established =>
-            PCBs.Unlink (PCB      => PCB,
-                         PCB_Head => Active_PCBs,
-                         PCB_Pool => IPCBs);
-
-         when Time_Wait =>
-            PCBs.Unlink (PCB      => PCB,
-                         PCB_Head => Time_Wait_PCBs,
-                         PCB_Pool => IPCBs);
-
-         when others =>
-            --  Is this PCB supposed to be on a list???
-            null;
-      end case;
+      if TPCBs (PCB).State = Closed
+        and then IPCBs (PCB).Local_Port /= PCBs.NOPORT
+      then
+         PCBs.Unlink (PCB      => PCB,
+                      PCB_Head => Bound_PCBs,
+                      PCB_Pool => IPCBs);
+      else
+         Set_State (PCB, Closed);
+      end if;
 
       IPCBs (PCB) := PCBs.IP_PCB_Initializer;
    end TCP_Free;
@@ -1144,7 +1252,7 @@ is
 
             --  Notify failure of pending send operations???
          end if;
-         TPCBs (PCB).State := Closed;
+         Set_State (PCB, Closed);
          TCP_Free (PCB);
          Discard := True;
       end Teardown;
@@ -1193,7 +1301,8 @@ is
 
                   --  Set up PCB for new connection
 
-                  TPCBs (New_PCB).State := Syn_Received;
+                  Set_State (New_PCB, Syn_Received);
+
                   Setup_PCB
                     (PCB         => New_PCB,
                      Local_IP    => IPH.IPH_Dst_Address (Seg.Ihdr),
@@ -1302,14 +1411,14 @@ is
                   end if;
 
                   if TPCBs (PCB).SND_UNA > TPCBs (PCB).ISS then
-                     TPCBs (PCB).State := Established;
+                     Set_State (PCB, Established);
                      TCP_Send_Control (PCB => PCB,
                                        Syn => False,
                                        Ack => True,
                                        Err => Err);
 
                   else
-                     TPCBs (PCB).State := Syn_Received;
+                     Set_State (PCB, Syn_Received);
                      TCP_Send_Control (PCB => PCB,
                                        Syn => True,
                                        Ack => True,
@@ -1380,7 +1489,7 @@ is
                      Seg.Ack,
                      TPCBs (PCB).SND_NXT + 1)
                   then
-                     TPCBs (PCB).State := Established;
+                     Set_State (PCB, Established);
                   else
                      TCP_Send_Rst
                        (Src_IP   => IPH.IPH_Dst_Address (Seg.Ihdr),
@@ -1403,67 +1512,114 @@ is
 
                      null; -- raise Program_Error; ???
 
-                  when Established =>
-                     Process_Ack (PCB, Seg);
-
-                  when Fin_Wait_1 | Fin_Wait_2 =>
+                  when Established | Fin_Wait_1 | Fin_Wait_2 =>
                      Process_Ack (PCB, Seg);
 
                      if TPCBs (PCB).State = Fin_Wait_2
-                          and then Buffers.Empty (TPCBs (PCB).Unack_Queue)
+                       and then Buffers.Empty (TPCBs (PCB).Unack_Queue)
                      then
                         --  Ack user CLOSE but do not free PCB???
                         null; --  TBD???
                      end if;
 
+                     --  6. Check URG bit
+
+                     if TCPH.TCPH_Urg (Thdr)
+                       and then Seq_Lt (TPCBs (PCB).RCV_UP,
+                                        TCPH.TCPH_Urgent_Ptr (Thdr))
+                     then
+                        TPCBs (PCB).RCV_UP := TCPH.TCPH_Urgent_Ptr (Thdr);
+
+                        --  Signal user ???
+                     end if;
+
+                     --  7. Process segment text
+
+                     Buffers.Buffer_Header
+                       (Seg.Buf,
+                        -(4 * AIP.S16_T (IPH.IPH_IHL (Seg.Ihdr)
+                          + TCPH.TCPH_Data_Offset (Seg.Thdr))),
+                        Err);
+                     pragma Assert (AIP.No (Err));
+
+                     pragma Assert (not Seq_Lt (TPCBs (PCB).RCV_NXT, Seg.Seq));
+                     --  Else segment is out of order
+
+                     if Seq_Lt (Seg.Seq, TPCBs (PCB).RCV_NXT) then
+                        --  Drop head of segment that was already received
+
+                        New_Data_Len :=
+                          AIP.M32_T (Seg.Len)
+                          - (TPCBs (PCB).RCV_NXT - Seg.Seq);
+
+                        Buffers.Buffer_Header
+                          (Seg.Buf,
+                           -AIP.S16_T (TPCBs (PCB).RCV_NXT - Seg.Seq),
+                           Err);
+                        pragma Assert (AIP.No (Err));
+                     else
+                        New_Data_Len := AIP.M32_T (Seg.Len);
+                     end if;
+
+                     TPCBs (PCB).RCV_NXT := Seg.Seq + New_Data_Len;
+
+                     if AIP.M32_T (Seg.Len) < TPCBs (PCB).RCV_WND then
+                        TPCBs (PCB).RCV_WND :=
+                          TPCBs (PCB).RCV_WND - New_Data_Len;
+
+                     else
+                        TPCBs (PCB).RCV_WND := 0;
+                     end if;
+
+                     Deliver_Segment (PCB, Seg.Buf);
+
                   when others =>
-                     null; --  TBD???
 
+                     --  Ignore urgent pointer and segment text
+
+                     null;
                end case;
+
+               --  8. check FIN bit
+
+               if TCPH.TCP_Fin (Thdr) = 1 then
+                  case TPCBs (PCB).State is
+                     when Closed | Listen | Syn_Sent =>
+                        null;
+
+                     when Established | Syn_Received =>
+                        TCP_Event
+                          (Ev   => TCP_Event_T'(Kind => TCP_EVENT_CLOSE,
+                                                Len  => 0,
+                                                Buf  => Buffers.NOBUF,
+                                                Addr => IPaddrs.IP_ADDR_ANY,
+                                                Port => PCBs.NOPORT,
+                                                Err  => AIP.NOERR),
+                           PCB  => PCB,
+                           Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_CLOSE),
+                           Err  => Err);
+                        Set_State (PCB, Close_Wait);
+
+                     when Fin_Wait_1 =>
+                        --  If our FIN has been Ack'd then we are already
+                        --  in Closing or Fin_Wait_2.
+
+                        Set_State (PCB, Closing);
+
+                     when Fin_Wait_2 =>
+                        Set_State (PCB, Time_Wait);
+
+                        --  Start Time_Wait timer???
+
+                     when Close_Wait | Closing | Last_Ack =>
+                        null;
+
+                     when Time_Wait =>
+                        --  Restart 2MSL timeout???
+                        null;
+                  end case;
+               end if;
             end if;
-
-            --  6. Check URG bit
-
-            null;
-            --  TBD???
-
-            --  7. Process segment text
-
-            Buffers.Buffer_Header
-              (Seg.Buf,
-               -(4 * AIP.S16_T (IPH.IPH_IHL (Seg.Ihdr)
-                                  + TCPH.TCPH_Data_Offset (Seg.Thdr))),
-               Err);
-            pragma Assert (AIP.No (Err));
-
-            pragma Assert (not Seq_Lt (TPCBs (PCB).RCV_NXT, Seg.Seq));
-            --  Else segment is out of order
-
-            if Seq_Lt (Seg.Seq, TPCBs (PCB).RCV_NXT) then
-               --  Drop head of segment that was already received
-
-               New_Data_Len :=
-                 AIP.M32_T (Seg.Len) - (TPCBs (PCB).RCV_NXT - Seg.Seq);
-
-               Buffers.Buffer_Header
-                 (Seg.Buf,
-                  -AIP.S16_T (TPCBs (PCB).RCV_NXT - Seg.Seq),
-                  Err);
-               pragma Assert (AIP.No (Err));
-            else
-               New_Data_Len := AIP.M32_T (Seg.Len);
-            end if;
-
-            TPCBs (PCB).RCV_NXT := Seg.Seq + New_Data_Len;
-
-            if AIP.M32_T (Seg.Len) < TPCBs (PCB).RCV_WND then
-               TPCBs (PCB).RCV_WND := TPCBs (PCB).RCV_WND - New_Data_Len;
-
-            else
-               TPCBs (PCB).RCV_WND := 0;
-            end if;
-
-            Deliver_Segment (PCB, Seg.Buf);
       end case;
    end TCP_Receive;
 

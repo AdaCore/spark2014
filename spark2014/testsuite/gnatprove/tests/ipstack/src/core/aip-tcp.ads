@@ -70,8 +70,8 @@ is
    --# global in out State;
 
    procedure TCP_Event
-     (Ev : TCP_Event_T;
-      PCB : PCBs.PCB_Id;
+     (Ev   : TCP_Event_T;
+      PCB  : PCBs.PCB_Id;
       Cbid : Callbacks.CBK_Id;
       Err  : out AIP.Err_T);
    --# global in out Buffers.State;
