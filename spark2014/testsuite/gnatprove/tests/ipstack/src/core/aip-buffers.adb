@@ -458,9 +458,9 @@ is
    -- Empty --
    -----------
 
-   function Empty (L : Packet_Queue) return Boolean is
+   function Empty (Queue : Packet_Queue) return Boolean is
    begin
-      return L.Head = NOBUF;
+      return Queue.Head = NOBUF;
    end Empty;
 
    -----------------

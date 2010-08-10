@@ -254,24 +254,24 @@ is
    Empty_Packet_Queue : constant Packet_Queue;
 
    function Head_Packet (Queue : Packet_Queue) return Buffer_Id;
-   --  Return head packet of L
+   --  Return head packet of Queue
 
    procedure Append_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : Buffer_Id);
    --# global in out State;
-   --  Append Buf to list L
+   --  Append Buf to list Queue
 
    procedure Remove_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;
       Buf   : out Buffer_Id);
    --# global in State;
-   --  Detach head packet from L and return its id in Buf
+   --  Detach head packet from Queue and return its id in Buf
 
-   function Empty (L : Packet_Queue) return Boolean;
-   --  True if L contains no packets
+   function Empty (Queue : Packet_Queue) return Boolean;
+   --  True if Queue contains no packets
 
    function Packet_Info (B : Buffer_Id) return System.Address;
    --# global in State;
