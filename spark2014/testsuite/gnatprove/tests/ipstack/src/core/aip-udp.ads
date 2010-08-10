@@ -58,9 +58,9 @@ is
    --# global in out State;
    --  Register Remote_IP/Remote_Port as the destination endpoint for
    --  datagrams sent later with UDP_Send on this PCB. Until disconnected,
-   --  packets from this endpoint only are processed by PCB. A forced local
-   --  binding is attempted if none was established beforehand. No network
-   --  trafic gets generated.
+   --  packets from this endpoint only are processed by PCB. A local binding
+   --  on IP_ADDR_ANY is attempted if none was established beforehand. No
+   --  network trafic gets generated.
    --
    --  ERR_USE if a forced binding is attempted and no port is available.
 

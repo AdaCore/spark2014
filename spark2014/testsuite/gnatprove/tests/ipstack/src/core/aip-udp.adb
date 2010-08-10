@@ -225,11 +225,9 @@ is
    procedure PCB_Force_Bind (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
       --# global in out IPCBs, Bound_PCBs;
    is
-      Local_IP : IPaddrs.IPaddr;
    begin
       if IPCBs (PCB).Local_Port = PCBs.NOPORT then
-         Local_IP := IPCBs (PCB).Local_IP;
-         UDP_Bind (PCB, Local_IP, PCBs.NOPORT, Err);
+         UDP_Bind (PCB, IPaddrs.IP_ADDR_ANY, PCBs.NOPORT, Err);
       else
          Err := AIP.NOERR;
       end if;
