@@ -141,7 +141,7 @@ package body Xtree_Accessors is
       end Print_Accessor_Functional_Expression;
 
    begin
-      if Why_Tree_Info (Kind).Fields.Length > 0 then
+      if Has_Variant_Part (Kind) then
          Why_Tree_Info (Kind).Fields.Iterate
            (Print_Accessor_Functional_Expression'Access);
       end if;
