@@ -126,7 +126,7 @@ is
 
    function Buffer_Len (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Amount of packet data
+   --  Amount of payload data
    --  - held in buffer Buf for Kind = LINK_BUF
    --  - held in all buffers of the split buffer Buf for Kind = SPLIT_BUF
    --  - referenced by buffer Buf for Kind = REF_BUF
@@ -134,7 +134,7 @@ is
 
    function Buffer_Tlen (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Amount of packet data
+   --  Amount of payload data
    --  - held in all buffers from Buf through the chain for Kind /= REF_BUF
    --    Tlen = Len means Buf is the last buffer in the chain for a packet.
    --  - referenced by buffer Buf for Kind = REF_BUF
@@ -154,7 +154,7 @@ is
 
    function Buffer_Poffset (Buf : Buffer_Id) return AIP.U16_T;
    --# global in State;
-   --  Room available in BUF in front of payload, typically useful for
+   --  Room available in BUF in front of payload, typically for
    --  protocol headers
 
    procedure Buffer_Set_Payload

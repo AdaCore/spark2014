@@ -255,9 +255,9 @@ is
 
       --  Adjust payload offset and lengths if all went fine
 
-      if AIP.No (Err) then
+      if Bump /= 0 and then AIP.No (Err) then
 
-         if Bump >= 0 then
+         if Bump > 0 then
             Common.Buf_List (Buf).Poffset :=
               Common.Buf_List (Buf).Poffset - Offset;
 
