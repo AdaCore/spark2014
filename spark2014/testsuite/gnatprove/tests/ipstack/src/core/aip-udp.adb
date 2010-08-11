@@ -31,9 +31,8 @@ is
    end record;
 
    UDP_PCB_Initializer : constant UDP_PCB :=
-                           UDP_PCB'(Callbacks =>
-                                      UDP_Callbacks'
-                                        (others => Callbacks.NOCB));
+     UDP_PCB'(Callbacks =>
+                UDP_Callbacks'(others => Callbacks.NOCB));
 
    subtype UDP_PCB_Index is PCBs.Valid_PCB_Id
      range PCBs.Valid_PCB_Id'First
@@ -49,9 +48,9 @@ is
    subtype UDP_PCB_Heads_Range is Natural range 1 .. 1;
    subtype UDP_PCB_Heads is PCBs.PCB_List (UDP_PCB_Heads_Range);
 
-   ----------------
-   --  UDP_Init  --
-   ----------------
+   --------------
+   -- UDP_Init --
+   --------------
 
    procedure UDP_Init
       --# global out IPCBs, UPCBs, Bound_PCBs;
@@ -190,9 +189,9 @@ is
       end if;
    end UDP_Input;
 
-   ----------------
-   --  UDP_Bind  --
-   ----------------
+   --------------
+   -- UDP_Bind --
+   --------------
 
    procedure UDP_Bind
      (PCB        : PCBs.PCB_Id;
@@ -231,9 +230,9 @@ is
       end if;
    end PCB_Force_Bind;
 
-   -------------------
-   --  UDP_Connect  --
-   -------------------
+   -----------------
+   -- UDP_Connect --
+   -----------------
 
    procedure UDP_Connect
      (PCB         : PCBs.PCB_Id;
@@ -260,9 +259,9 @@ is
       end if;
    end UDP_Connect;
 
-   -------------------------
-   --  UDP_Send internals --
-   -------------------------
+   ------------------------
+   -- UDP_Send internals --
+   ------------------------
 
    ------------------------
    -- Prepend_UDP_Header --
@@ -474,9 +473,9 @@ is
       end if;
    end UDP_Send;
 
-   ----------------------
-   --  UDP_Disconnect  --
-   ----------------------
+   --------------------
+   -- UDP_Disconnect --
+   --------------------
 
    procedure UDP_Disconnect (PCB : PCBs.PCB_Id)
       --# global in out IPCBs;
@@ -489,9 +488,9 @@ is
       IPCBs (PCB).Connected   := False;
    end UDP_Disconnect;
 
-   -------------------
-   --  UDP_Release  --
-   -------------------
+   -----------------
+   -- UDP_Release --
+   -----------------
 
    procedure UDP_Release (PCB : PCBs.PCB_Id)
       --# global in out IPCBs, Bound_PCBs;
@@ -501,9 +500,9 @@ is
       IPCBs (PCB).Link := PCBs.PCB_UNUSED;
    end UDP_Release;
 
-   --------------------
-   --  UDP_Callback  --
-   --------------------
+   ------------------
+   -- UDP_Callback --
+   ------------------
 
    procedure UDP_Callback
      (Evk  : UDP_Event_Kind;
