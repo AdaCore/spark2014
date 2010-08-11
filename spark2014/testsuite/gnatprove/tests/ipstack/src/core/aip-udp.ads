@@ -8,7 +8,7 @@
 with System;
 
 with AIP.Buffers;
-with AIP.Callbacks;  use type AIP.Callbacks.CBK_Id;
+with AIP.Callbacks;
 with AIP.IPaddrs;
 with AIP.NIF;
 with AIP.PCBs;
@@ -41,10 +41,10 @@ is
       Err        : out AIP.Err_T);
    --# global in out State;
    --  Bind PCB to a Local_IP address and Local_Port, after which datagrams
-   --  received for this endpoint might be delivered to PCB and trigger an
-   --  UDP_RECV event/callback. If Local_IP is IP_ADDR_ANY, the endpoint
-   --  serves the port on all the active network interfaces. Local_Port might
-   --  be NOPORT, in which case an arbitrary available one is picked.
+   --  received for this endpoint might be delivered to PCB and trigger a
+   --  UDP_EVENT_RECV event. If Local_IP is IP_ADDR_ANY, the endpoint serves
+   --  the port on all the active network interfaces. Local_Port might be
+   --  NOPORT, in which case an arbitrary available one is picked.
    --
    --  ERR_USE if another PCB is already bound to this local endpoint and
    --          we are configured not to accept that.
@@ -98,7 +98,7 @@ is
    --  applicative handler (UDP_Event).
 
    type UDP_Event_Kind is
-     (UDP_RECV);   -- UDP Datagram received
+     (UDP_EVENT_RECV);   -- UDP Datagram received
 
    type UDP_Event_T is record
       Kind : UDP_Event_Kind;
@@ -107,18 +107,18 @@ is
       Port : PCBs.Port_T;
    end record;
 
-   --  UDP_RECV triggers when a datagram is received for a destination port
-   --  to which we have a bound PCB. One which in addition is UDP_Connect'ed
-   --  to the datagram origin endpoint gets preference.
-   --
-   --  .Buf is the datagram packet buffer
-   --  .IP/.Port is the datagram origin endpoint (remote source)
-
-   procedure UDP_Callback
-     (Evk : UDP_Event_Kind; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+   procedure UDP_Recv
+     (PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
    --# global in out State;
-   --  Register that ID should be passed back to the user defined
-   --  UDP_Event hook when an event of kind EVK triggers for PCB.
+   --  Register that ID should be passed back to the UDP_Event hook when an
+   --  event of kind UDP_EVENT_RECV triggers for PCB.
+   --
+   --  UDP_EVENT_RECV triggers when a datagram is received for a destination
+   --  port to which we have a bound PCB. One which is UDP_Connect'ed to the
+   --  datagram remote endpoint gets preference.
+   --
+   --  Ev.Buf is the datagram packet buffer
+   --  Ev.IP/.Port is the datagram origin endpoint (remote source)
 
    procedure UDP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address);
    --# global in out State;

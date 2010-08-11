@@ -166,29 +166,25 @@ is
          end if;
       end if;
 
-      --  If we have a taker, trigger an UDP_RECV event if a callback was
-      --  registered for it. Releasing the buffer is the application's
-      --  responsibility in this case.
+      --  If we have a taker, trigger UDP_EVENT_RECV.
+      --  Releasing the buffer is the app's responsibility in this case (???).
 
-      if AIP.No (Err)
-        and then PCB /= PCBs.NOPCB
-        and then UPCBs (PCB).Callbacks (UDP_RECV) /= Callbacks.NOCB
-      then
+      if AIP.No (Err) and then PCB /= PCBs.NOPCB  then
+
          --  Skip UDP header and perform upcall to application
 
          Buffers.Buffer_Header (Buf, -UDP_HLEN, Err);
 
          if AIP.No (Err) then
             UDP_Event
-              (UDP_Event_T'(Kind => UDP_RECV,
+              (UDP_Event_T'(Kind => UDP_EVENT_RECV,
                             Buf  => Buf,
                             IP   => IPH.IPH_Src_Address (Ihdr),
                             Port => UDPH.UDPH_Src_Port (Uhdr)),
                PCB,
-               UPCBs (PCB).Callbacks (UDP_RECV));
+               UPCBs (PCB).Callbacks (UDP_EVENT_RECV));
          end if;
 
-         --  No free if buffer passed to application???
       else
          Buffers.Buffer_Blind_Free (Buf);
       end if;
@@ -518,6 +514,18 @@ is
    begin
       UPCBs (PCB).Callbacks (Evk) := Cbid;
    end UDP_Callback;
+
+   --------------
+   -- UDP_Recv --
+   --------------
+
+   procedure UDP_Recv
+     (PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id)
+   --# global in out UPCBs;
+   is
+   begin
+      UDP_Callback (UDP_EVENT_RECV, PCB, Cbid);
+   end UDP_Recv;
 
    ---------------
    -- UDP_Udata --

@@ -28,9 +28,6 @@ package body RAW_UDP_Syslog is
       --  the syslog port of a well known peer where we have setup a syslogd
       --  to listen.
 
-      --  Preliminary data (syslog header + start of data), to which
-      --  we'll catenate the incoming Buffer:
-
       Logheader : constant String
         := "<15>1 2010-04-20T12:30:00.00Z 192.168.0.2 msglogger - 666";
       --  Syslog header per se ...
@@ -43,15 +40,15 @@ package body RAW_UDP_Syslog is
       --  SD [SP MSG]
 
       Logmsgstart : constant String := Logheader & " " & Logdata;
-
-      --  Packet buffer to hold the message start and to which we'll chain the
-      --  incoming Buffer:
+      --  Preliminary data (syslog header + start of data), to which
+      --  we'll catenate the incoming Buffer
 
       Logbuf : AIP.Buffers.Buffer_Id;
-
-      --  IP of real syslog server to which we'll forward
+      --  Packet buffer to hold the message start and to which we'll chain the
+      --  incoming Buffer.
 
       Syslogd_IP : AIP.IPaddrs.IPaddr;
+      --  IP of real syslog server to which we'll forward
 
       Err : AIP.Err_T;
 
@@ -77,10 +74,13 @@ package body RAW_UDP_Syslog is
 
       AIP.Buffers.Buffer_Cat (Logbuf, Ev.Buf);
 
-      --  Connect our PCB to the intended destination and send
+      --  Connect our PCB to the intended destination and send.
 
       Syslogd_IP := AIP.IPaddrs.IP4 (192, 168, 0, 1);
       AIP.UDP.UDP_Connect (Pcb, Syslogd_IP, 514, Err);
+      pragma Assert (AIP.No (Err));
+
+      AIP.UDP.UDP_Send (Pcb, Logbuf, Err);
       pragma Assert (AIP.No (Err));
 
       AIP.UDP.UDP_Send (Pcb, Logbuf, Err);
@@ -111,8 +111,7 @@ package body RAW_UDP_Syslog is
       AIP.UDP.UDP_New (Pcb);
       pragma Assert (Pcb /= AIP.PCBs.NOPCB);
 
-      AIP.UDP.UDP_Callback
-        (AIP.UDP.UDP_RECV, Pcb, RAW_UDP_Callbacks.SYSLOG_RECV);
+      AIP.UDP.UDP_Recv (Pcb, RAW_UDP_Callbacks.SYSLOG_RECV);
 
       AIP.UDP.UDP_Bind (Pcb, AIP.IPaddrs.IP_ADDR_ANY, 514, Err);
       pragma Assert (AIP.No (Err));
