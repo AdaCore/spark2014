@@ -52,6 +52,12 @@ package Why.Atree.Tables is
      return Boolean;
    --  Return True if Node is Empty or has kind Value
 
+   package Node_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
+                                             "=" => "=");
+
+   function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
+
 private
    --  These tables are used as storage pools for nodes and lists.
    --  They could ultimately be implemented using the containers
@@ -66,10 +72,6 @@ private
 
    Node_Table : Node_Tables.Vector;
 
-   package Node_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
-                                             "=" => "=");
-
    function "=" (Left, Right : Node_Lists.List) return Boolean;
    --  Return True if Left and Right have the same extension
 
@@ -77,6 +79,7 @@ private
      new Ada.Containers.Vectors (Index_Type => Why_Node_List,
                                  Element_Type => Node_Lists.List,
                                  "=" => "=");
+   List_Table : Node_List_Tables.Vector;
 
    function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
       (Node_Tables.Element (Node_Table, Node_Id));
@@ -89,5 +92,8 @@ private
       Value : Why_Node_Kind)
      return Boolean is
       (Node = Why_Empty or else Get_Kind (Node) = Value);
+
+   function Get_List (List_Id : Why_Node_List) return Node_Lists.List is
+      (Node_List_Tables.Element (List_Table, List_Id));
 
 end Why.Atree.Tables;
