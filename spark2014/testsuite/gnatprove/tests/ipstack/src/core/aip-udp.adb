@@ -514,17 +514,18 @@ is
       UPCBs (PCB).Callbacks (Evk) := Cbid;
    end UDP_Callback;
 
-   --------------
-   -- UDP_Recv --
-   --------------
+   -----------------
+   -- On_UDP_Recv --
+   -----------------
 
-   procedure UDP_Recv
-     (PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id)
+   procedure On_UDP_Recv
+     (PCB  : PCBs.PCB_Id;
+      Cbid : Callbacks.CBK_Id)
    --# global in out UPCBs;
    is
    begin
       UDP_Callback (UDP_EVENT_RECV, PCB, Cbid);
-   end UDP_Recv;
+   end On_UDP_Recv;
 
    ---------------
    -- UDP_Udata --

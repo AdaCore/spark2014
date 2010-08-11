@@ -35,9 +35,6 @@ is
    -- Callbacks interface --
    -------------------------
 
-   procedure TCP_Arg (PCB : PCBs.PCB_Id; Arg : System.Address);
-   --  Setup to pass ARG on every callback call for PCB.
-
    type TCP_Event_Kind is
      (TCP_EVENT_ACCEPT,
       TCP_EVENT_CONNECT,
@@ -71,8 +68,14 @@ is
    --# global in out Buffers.State;
    pragma Import (Ada, TCP_Event, "AIP_tcp_event");
    pragma Weak_External (TCP_Event);
-   --  Process UDP event EV, aimed at bound PCB, for which Cbid was registered.
+   --  Process TCP event EV, aimed at bound PCB, for which Cbid was registered.
    --  Expected to be provided by the applicative code.
+
+   procedure TCP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address);
+   --  Attach Udata to PCB, for later retrieval on event callbacks
+
+   function TCP_Udata (PCB : PCBs.PCB_Id) return System.Address;
+   --  Retrive callback Udata attached to PCB
 
    --------------------------------
    -- Setting up TCP connections --
@@ -106,7 +109,9 @@ is
    --# global in out State;
    --  Same as TCP_Listen but with a user-specified backlog size
 
-   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb : Callbacks.CBK_Id);
+   procedure On_TCP_Accept
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id);
    --# global in out State;
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_ACCEPT for PCB.
    --
@@ -125,12 +130,11 @@ is
    --  To be called by the TCP_EVENT_ACCEPT callback for proper management of
    --  the listening backlog.
 
-   subtype Connect_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Connect
      (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
-      Cb   : Connect_Cb_Id;
+      Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T);
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
@@ -169,7 +173,7 @@ is
    function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
    --  Room available for output data queuing.
 
-   procedure TCP_Sent
+   procedure On_TCP_Sent
      (PCB : PCBs.PCB_Id;
       Cb  : Callbacks.CBK_Id);
    --# global in out State;
@@ -188,7 +192,9 @@ is
 
    --  Data reception is callback based, as everything else.
 
-   procedure TCP_Recv (PCB : PCBs.PCB_Id; Cb : Callbacks.CBK_Id);
+   procedure On_TCP_Recv
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id);
    --# global in out State;
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_RECV for PCB.
    --
@@ -217,10 +223,9 @@ is
    --  for this purpose. This can be used to timeout idle connections or as an
    --  opportunity to retry failed TCP_Write attempts.
 
-   subtype Poll_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Poll
+   procedure On_TCP_Poll
      (PCB : PCBs.PCB_Id;
-      Cb  : Poll_Cb_Id;
+      Cb  : Callbacks.CBK_Id;
       Ivl : AIP.U16_T);
    --# global in out State;
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_POLL for PCB,
@@ -241,8 +246,9 @@ is
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
 
-   subtype Abort_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Abort (PCB : PCBs.PCB_Id; Cb : Abort_Cb_Id);
+   procedure On_TCP_Abort
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id);
    --# global in out State;
    --  Register CB as the id to pass TCP_Event on TCP_EVENT_ABORT for PCB.
    --

@@ -21,30 +21,6 @@ is
    --# global out FIB;
    --  Set the default route to the given value
 
-   --  IP_PCB is the common part of the PCB for all IP-based protocols
-
-   type IP_PCB is record
-      Local_IP  : IPaddrs.IPaddr;
-      Remote_IP : IPaddrs.IPaddr;
-
-      SOO : AIP.U16_T;
-      --  Socket options
-      --  Should use boolean components instead???
-
-      TOS : AIP.U8_T;
-      --  Type Of Service
-
-      TTL : AIP.U8_T;
-      --  Time To Live
-   end record;
-
-   IP_PCB_Initializer : constant IP_PCB :=
-                          IP_PCB'(Local_IP  => IPaddrs.IP_ADDR_ANY,
-                                  Remote_IP => IPaddrs.IP_ADDR_ANY,
-                                  SOO       => 0,
-                                  TOS       => 0,
-                                  TTL       => 0);
-
    procedure IP_Route
      (Dst_IP   : IPaddrs.IPaddr;
       Next_Hop : out IPaddrs.IPaddr;

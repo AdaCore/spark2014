@@ -969,15 +969,23 @@ is
       --  TBD???
    end TCP_Send_Control;
 
-   -------------
-   -- TCP_Arg --
-   -------------
+   ---------------
+   -- TCP_Udata --
+   ---------------
 
-   procedure TCP_Arg (PCB : PCBs.PCB_Id; Arg : System.Address) is
+   procedure TCP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address)
+   --# global in out IPCBs;
+   is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
-   end TCP_Arg;
+      IPCBs (PCB).Udata := Udata;
+   end TCP_Set_Udata;
+
+   function TCP_Udata (PCB : PCBs.PCB_Id) return System.Address
+   --# global in IPCBs;
+   is
+   begin
+      return IPCBs (PCB).Udata;
+   end TCP_Udata;
 
    --------------
    -- TCP_Bind --
@@ -1119,16 +1127,18 @@ is
       IPCBs (PCB) := PCBs.IP_PCB_Initializer;
    end TCP_Free;
 
-   ----------------
-   -- TCP_Accept --
-   ----------------
+   ------------------
+   -- On_TCP_Accept --
+   ------------------
 
-   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb : Accept_Cb_Id)
+   procedure On_TCP_Accept
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id)
    --# global in out TPCBs;
    is
    begin
       TCP_Callback (TCP_EVENT_ACCEPT, PCB, Cb);
-   end TCP_Accept;
+   end On_TCP_Accept;
 
    ------------------
    -- TCP_Accepted --
@@ -1148,7 +1158,7 @@ is
      (PCB  : PCBs.PCB_Id;
       Addr : IPaddrs.IPaddr;
       Port : PCBs.Port_T;
-      Cb   : Connect_Cb_Id;
+      Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T)
    is
    begin
@@ -1183,27 +1193,31 @@ is
       return 0; --  TBD???
    end TCP_Sndbuf;
 
-   --------------
-   -- TCP_Sent --
-   --------------
+   -----------------
+   -- On_TCP_Sent --
+   -----------------
 
-   procedure TCP_Sent (PCB : PCBs.PCB_Id; Cb : Sent_Cb_Id)
+   procedure On_TCP_Sent
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id)
    --# global in out TPCBs;
    is
    begin
       TCP_Callback (TCP_EVENT_SENT, PCB, Cb);
-   end TCP_Sent;
+   end On_TCP_Sent;
 
-   --------------
-   -- TCP_Recv --
-   --------------
+   -----------------
+   -- On_TCP_Recv --
+   -----------------
 
-   procedure TCP_Recv (PCB : PCBs.PCB_Id; Cb : Recv_Cb_Id)
+   procedure On_TCP_Recv
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id)
    --# global in out TPCBs;
    is
    begin
       TCP_Callback (TCP_EVENT_RECV, PCB, Cb);
-   end TCP_Recv;
+   end On_TCP_Recv;
 
    ----------------
    -- TCP_Recved --
@@ -1218,13 +1232,13 @@ is
       null; --  TBD??
    end TCP_Recved;
 
-   --------------
-   -- TCP_Poll --
-   --------------
+   -----------------
+   -- On_TCP_Poll --
+   -----------------
 
-   procedure TCP_Poll
+   procedure On_TCP_Poll
      (PCB : PCBs.PCB_Id;
-      Cb  : Poll_Cb_Id;
+      Cb  : Callbacks.CBK_Id;
       Ivl : AIP.U16_T)
    --# global in out TPCBs; in TCP_Ticks;
    is
@@ -1241,7 +1255,7 @@ is
 
       TPCBs (PCB).Poll_Ticks := TCP_Ticks - AIP.M32_T (Ivl) - 1;
       TPCBs (PCB).Poll_Ivl   := AIP.M32_T (Ivl);
-   end TCP_Poll;
+   end On_TCP_Poll;
 
    ---------------
    -- TCP_Close --
@@ -1289,16 +1303,18 @@ is
       TCP_Free (PCB);
    end TCP_Drop;
 
-   -------------
-   -- TCP_Err --
-   -------------
+   ------------------
+   -- On_TCP_Abort --
+   ------------------
 
-   procedure TCP_Abort (PCB : PCBs.PCB_Id; Cb : Abort_Cb_Id)
+   procedure On_TCP_Abort
+     (PCB : PCBs.PCB_Id;
+      Cb  : Callbacks.CBK_Id)
    --# global in out TPCBs;
    is
    begin
       TCP_Callback (TCP_EVENT_ABORT, PCB, Cb);
-   end TCP_Abort;
+   end On_TCP_Abort;
 
    ---------------
    -- Setup_PCB --

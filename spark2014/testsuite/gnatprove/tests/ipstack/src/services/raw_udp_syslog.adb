@@ -111,7 +111,7 @@ package body RAW_UDP_Syslog is
       AIP.UDP.UDP_New (Pcb);
       pragma Assert (Pcb /= AIP.PCBs.NOPCB);
 
-      AIP.UDP.UDP_Recv (Pcb, RAW_UDP_Callbacks.SYSLOG_RECV);
+      AIP.UDP.On_UDP_Recv (Pcb, RAW_UDP_Callbacks.SYSLOG_RECV);
 
       AIP.UDP.UDP_Bind (Pcb, AIP.IPaddrs.IP_ADDR_ANY, 514, Err);
       pragma Assert (AIP.No (Err));

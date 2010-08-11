@@ -107,8 +107,9 @@ is
       Port : PCBs.Port_T;
    end record;
 
-   procedure UDP_Recv
-     (PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+   procedure On_UDP_Recv
+     (PCB  : PCBs.PCB_Id;
+      Cbid : Callbacks.CBK_Id);
    --# global in out State;
    --  Register that ID should be passed back to the UDP_Event hook when an
    --  event of kind UDP_EVENT_RECV triggers for PCB.
