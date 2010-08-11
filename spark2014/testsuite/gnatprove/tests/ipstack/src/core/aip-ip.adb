@@ -149,15 +149,15 @@ is
       --    checksum
 
       if False
-           or else Buffers.Buffer_Tlen (Buf) < IP_HLEN
-           or else Buffers.Buffer_Tlen (Buf)
-                     < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4
-           or else IPH.IPH_Version (Ihdr) /= 4
-           or else (IPH.IPH_Checksum (Ihdr) /= 0
-                     and then Checksum.Sum
-                                (Buf     => Buf,
-                                 Length  => AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
-                                /= 16#Ffff#)
+        or else Buffers.Buffer_Tlen (Buf) < IPH.IP_Header_Size / 8
+        or else Buffers.Buffer_Tlen (Buf)
+                  < AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4
+        or else IPH.IPH_Version (Ihdr) /= 4
+        or else (IPH.IPH_Checksum (Ihdr) /= 0
+                   and then Checksum.Sum
+                            (Buf     => Buf,
+                             Length  => AIP.U16_T (IPH.IPH_IHL (Ihdr)) * 4)
+                             /= 16#Ffff#)
       then
          Err := AIP.ERR_USE;
       end if;

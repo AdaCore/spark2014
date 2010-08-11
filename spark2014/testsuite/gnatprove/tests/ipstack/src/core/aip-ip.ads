@@ -45,9 +45,6 @@ is
    --# global in out State, Buffers.State;
    --  Output IP datagram
 
-   IP_HLEN : constant := 20;
-   --  What if there are options???
-
    procedure Get_Next_Header
      (Buf  : Buffers.Buffer_Id;
       Nlen : AIP.U16_T;
