@@ -180,18 +180,10 @@ procedure Xtree is
       C_Def      : constant Asis.Component_Definition :=
                      Object_Declaration_View (Element);
       Type_Image : constant Program_Text := Img (C_Def);
-      FI         : constant Field_Info :=
-                     (Field_Name     => new Wide_String'(Name_Image),
-                      Field_Type     => new Wide_String'(Type_Image),
-                      In_Variant     => In_Variant,
-                      Is_Why_Node_Id => False,
-                      Is_List        => False,
-                      Maybe_Null     => False);
    begin
       pragma Assert (C_Names'Length = 1);
       --  Support only one name only per component declaration
-
-      New_Field (NI, FI);
+      New_Field (NI, In_Variant, Name_Image, Type_Image);
    end Record_Field;
 
    --------------------

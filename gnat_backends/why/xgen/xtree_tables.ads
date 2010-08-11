@@ -41,22 +41,23 @@ package Xtree_Tables is
       Field_Type     : String_Access;
       --  Field type
 
+      Id_Type        : String_Access;
+      --  Checked id subtype, if any
+
       In_Variant     : Boolean;
       --  False if this field is shared amongst all kinds, True if
       --  it is kind-specific.
 
-      Is_Why_Node_Id : Boolean;
+      Is_Why_Id      : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_Id
-      --  ??? Not used yet; always set to False for now.
+      --  or a subtype of Why_Node_List.
 
       Is_List        : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_List
-      --  ??? Not used yet; always set to False for now.
 
       Maybe_Null     : Boolean;
       --  Whether or not this field is optional for its node
       --  (i.e. if it can be Empty).
-      --  ??? Not used yet; always set to False for now.
    end record;
 
    package Node_Lists is
@@ -92,7 +93,11 @@ package Xtree_Tables is
    Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
    --  Structural info for the variant part of the Why syntax tree
 
-   procedure New_Field (NI : in out Why_Node_Info; FI : Field_Info);
+   procedure New_Field
+     (NI         : in out Why_Node_Info;
+      In_Variant : Boolean;
+      Field_Name : Wide_String;
+      Field_Type : Wide_String);
    --  Add new field info to the node info
 
    function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean;
@@ -135,5 +140,18 @@ package Xtree_Tables is
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the kind-specific list subtype name
+
+   function Is_List (FI : Field_Info) return Boolean;
+   --  True if FI is a subtype of Why_Node_List
+
+   function In_Variant (FI : Field_Info) return Boolean;
+   --  True if this field has been defined in a variant part
+
+   function Maybe_Null (FI : Field_Info) return Boolean;
+   --  True if this field may be null or empty
+
+   function Is_Why_Id  (FI : Field_Info) return Boolean;
+   --  True if the type of this field is a subtype of Why_Node_Id
+   --  or a subtype of Why_Node_List.
 
 end Xtree_Tables;

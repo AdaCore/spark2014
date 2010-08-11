@@ -107,27 +107,35 @@ package body Xtree_Tables is
    function Id_Type_Name (FI : Field_Info) return Wide_String is
       Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
    begin
-      if Multiplicity = "Id"
-        or else Multiplicity = "OId"
-        or else Multiplicity = "List"
-        or else Multiplicity = "OList"
-      then
-         declare
-            Node_Kind : constant Wide_String :=
-                          Strip_Suffix (FI.Field_Type.all);
-            Checking  : constant Wide_String := Suffix (Node_Kind);
-         begin
-            if Checking = "Unchecked" then
-               return Strip_Suffix (Node_Kind)
-                 & "_" & Multiplicity;
-            else
-               return FI.Field_Type.all;
-            end if;
-         end;
-      else
-         return FI.Field_Type.all;
-      end if;
+      return FI.Id_Type.all;
    end Id_Type_Name;
+
+   ----------------
+   -- In_Variant --
+   ----------------
+
+   function In_Variant (FI : Field_Info) return Boolean is
+   begin
+      return FI.In_Variant;
+   end In_Variant;
+
+   -------------
+   -- Is_List --
+   -------------
+
+   function Is_List (FI : Field_Info) return Boolean is
+   begin
+      return FI.Is_List;
+   end Is_List;
+
+   ---------------
+   -- Is_Why_Id --
+   ---------------
+
+   function Is_Why_Id  (FI : Field_Info) return Boolean is
+   begin
+      return FI.Is_Why_Id;
+   end Is_Why_Id;
 
    --------------------
    -- List_Type_Name --
@@ -143,12 +151,65 @@ package body Xtree_Tables is
       return Kind & "_List";
    end List_Type_Name;
 
+   ----------------
+   -- Maybe_Null --
+   ----------------
+
+   function Maybe_Null (FI : Field_Info) return Boolean is
+   begin
+      return FI.Maybe_Null;
+   end Maybe_Null;
+
    ---------------
    -- New_Field --
    ---------------
 
-   procedure New_Field (NI : in out Why_Node_Info; FI : Field_Info) is
+   procedure New_Field
+     (NI         : in out Why_Node_Info;
+      In_Variant : Boolean;
+      Field_Name : Wide_String;
+      Field_Type : Wide_String)
+   is
+      FI           : Field_Info :=
+                       (Field_Name     => new Wide_String'(Field_Name),
+                        Field_Type     => new Wide_String'(Field_Type),
+                        Id_Type        => null,
+                        In_Variant     => In_Variant,
+                        Is_Why_Id      => False,
+                        Is_List        => False,
+                        Maybe_Null     => False);
+      Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
    begin
+      if Multiplicity = "Id"
+        or else Multiplicity = "OId"
+        or else Multiplicity = "List"
+        or else Multiplicity = "OList"
+      then
+         declare
+            Node_Kind : constant Wide_String :=
+                          Strip_Suffix (FI.Field_Type.all);
+            Checking  : constant Wide_String := Suffix (Node_Kind);
+         begin
+            if Checking = "Unchecked" then
+               FI.Is_Why_Id := True;
+
+               if Multiplicity = "List" or else Multiplicity = "OList" then
+                  FI.Is_List := True;
+               end if;
+
+               if Multiplicity = "OId" or else Multiplicity = "OList" then
+                  FI.Maybe_Null := True;
+               end if;
+
+               FI.Id_Type := new Wide_String'(Strip_Suffix (Node_Kind)
+                                              & "_" &Multiplicity);
+            else
+               FI.Id_Type := new Wide_String'(FI.Field_Type.all);
+            end if;
+         end;
+      else
+         FI.Id_Type := new Wide_String'(FI.Field_Type.all);
+      end if;
       NI.Fields.Append (FI);
       NI.Max_Field_Name_Length :=
         Natural'Max (NI.Max_Field_Name_Length,
