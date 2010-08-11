@@ -147,8 +147,6 @@ is
    --  registered for the destination port, if any. Discards the datagram
    --  (free BUF) otherwise.
 
-   UDP_HLEN : constant := 8;
-
 private
 
    --------------------------

@@ -21,6 +21,9 @@ is
    -- Data structures --
    ---------------------
 
+   UDP_HLEN : constant := UDPH.UDP_Header_Size / 8;
+   --  Fixed length of a UDP header, in bytes
+
    type UDP_Callbacks is array (UDP_Event_Kind) of Callbacks.CBK_Id;
 
    type UDP_PCB is record
@@ -133,9 +136,8 @@ is
          Buffers.Buffer_Blind_Free (PUH_Buf);
       end if;
 
-      --  Find the best UDP PCB to take the datagram, verify the checksum
-      --  and adjust the payload offset before passing up to the applicative
-      --  callback.
+      --  Search the best UDP PCB to take the datagram. ERR_VAL and ICMP port
+      --  unreachable if none could be found.
 
       if AIP.No (Err) then
          PCBs.Find_PCB_In_List
@@ -385,12 +387,10 @@ is
             UDPH.Set_UDPP_Protocol    (PUhdr, IPH.IP_Proto_UDP);
             UDPH.Set_UDPP_Length      (PUhdr, Ulen);
 
-            --  Initialize checksum field to 0 to compute the actual checksum
+            --  Compute the actual checksum, including pseudo-header. This
+            --  relies on a preliminary initialization of the checksum field.
 
             UDPH.Set_UDPH_Checksum (Uhdr, 0);
-
-            --  Compute checksum, including pseudo-header
-
             UDPH.Set_UDPH_Checksum
               (Uhdr, not Checksum.Sum (Ubuf, Buffers.Buffer_Tlen (Ubuf)));
 
