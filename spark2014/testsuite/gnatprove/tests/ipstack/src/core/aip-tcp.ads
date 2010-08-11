@@ -16,7 +16,7 @@ with AIP.PCBs;
 
 --# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
 --#         AIP.IP, AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.TCPH,
---#         AIP.Time_Types;
+--#         AIP.Time_Types, AIP.Inet;
 
 package AIP.TCP
    --# own State;

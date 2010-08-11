@@ -6,6 +6,7 @@
 with AIP.Checksum;
 with AIP.Config;
 with AIP.Conversions;
+with AIP.Inet;
 with AIP.IP;
 with AIP.IPH;
 with AIP.TCPH;
@@ -96,6 +97,9 @@ is
 
       --  Transmission queues
 
+      ACK_Needed  : Boolean;
+      --  As soon as we know we need to output an ACK
+
       Send_Queue  : Buffers.Packet_Queue;
       --  Packets to be sent out
 
@@ -153,6 +157,7 @@ is
                                     RTT_Stddev     => 0,
                                     RTO            => 0,
 
+                                    ACK_Needed     => False,
                                     Send_Queue     =>
                                       Buffers.Empty_Packet_Queue,
                                     Unack_Queue    =>
@@ -268,8 +273,9 @@ is
    --  appropriate PCB lists. Verifies that PCB is not already in that State,
    --  and that the transition is legal.
 
-   --  procedure TCP_Send_Segment (Seg : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
-   --  Helper for TCP_Output. Actually send segment Seg over IP for PCB.
+   --  procedure TCP_Send_Segment
+   --  (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
+   --  Helper for TCP_Output. Send segment held in Tbuf over IP for PCB.
 
    -----------------
    -- TCP_Seg_Len --
@@ -326,21 +332,77 @@ is
    -- TCP_Send_Segment --
    ----------------------
 
-   procedure TCP_Send_Segment (Seg : Buffers.Buffer_Id; PCB : PCBs.PCB_Id)
+   procedure TCP_Send_Segment
+     (Tbuf : Buffers.Buffer_Id;
+      PCB  : PCBs.PCB_Id)
    --# global in TPCBs; in out Buffers.State;
    is
-      Thdr : System.Address;
+      PThdr, Thdr : System.Address;
+      Tlen : AIP.U16_T;
+
+      Src_IP, Dst_IP : IPaddrs.IPaddr;
+      Err : AIP.ERR_T;
    begin
 
-      Thdr := Buffers.Buffer_Payload (Seg);
+      Src_IP := IPCBs (PCB).Local_IP;
+      Dst_IP := IPCBs (PCB).Remote_IP;
+
+      --  Fetch the TCP header address from Packet_Info, then set the payload
+      --  pointer to designate that for checksum computation and IP processing
+      --  downstream.
+
+      Thdr := Buffers.Packet_Info (Tbuf);
+      Buffers.Buffer_Set_Payload (Tbuf, Thdr, Err);
 
       --  Fill in the ACK number field and advertise our receiving window
       --  size.
 
       TCPH.Set_TCPH_Ack_Num (Thdr, TPCBs (PCB).RCV_NXT);
-      TCPH.Set_TCPH_Window  (Thdr, 512); -- ??? fetch/compute this
+      TCPH.Set_TCPH_Window  (Thdr, 2048); -- ??? fetch/compute this
 
-      null; -- ??? To be completed
+      --  Start retransmission timer if need be
+
+      null; -- ??? how are these handled
+
+      --  Compute checksum and pass down to IP, assuming the current payload
+      --  pointer designates the TCP header.
+
+      --  Capture the current segment length, then expose room for a temporary
+      --  pseudo-header and fill it in. We expect that much room to be
+      --  available as part of the space allocation for the protocol headers
+      --  (TCP and down) issued when this segment was constructed.
+
+      Tlen := Buffers.Buffer_Tlen (Tbuf);
+      Buffers.Buffer_Header (Tbuf, TCPH.TCP_Pseudo_Header_Size / 8, Err);
+
+      PThdr := Buffers.Buffer_Payload (Tbuf);
+      TCPH.Set_TCPP_Src_Address (PThdr, Src_IP);
+      TCPH.Set_TCPP_Dst_Address (PThdr, Dst_IP);
+      TCPH.Set_TCPP_Zero        (PThdr, 0);
+      TCPH.Set_TCPP_Protocol    (PThdr, IPH.IP_Proto_TCP);
+      TCPH.Set_TCPP_Length      (PThdr, Tlen);
+
+      --  Compute the actual checksum, including pseudo-header. This relies on
+      --  a preliminary initialization of the checksum field.
+
+      TCPH.Set_TCPH_Checksum (Thdr, 0);
+      TCPH.Set_TCPH_Checksum
+        (Thdr, not Checksum.Sum (Tbuf, Buffers.Buffer_Tlen (Tbuf)));
+
+      --  Now remove pseudo-header and hand down to IP
+
+      Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Pseudo_Header_Size / 8, Err);
+
+      IP.IP_Output_If
+        (Buf    => Tbuf,
+         Src_IP => Src_IP,
+         Dst_IP => Dst_IP,
+         NH_IP  => TPCBs (PCB).Next_Hop_IP,
+         TTL    => IPCBs (PCB).TTL,
+         TOS    => IPCBs (PCB).TOS,
+         Proto  => IPH.IP_Proto_TCP,
+         Netif  => TPCBs (PCB).Next_Hop_Netif,
+         Err    => Err);
 
    end TCP_Send_Segment;
 
@@ -348,8 +410,7 @@ is
    -- TCP_Output --
    ----------------
 
-   procedure TCP_Output (PCB : PCBs.PCB_Id)
-   --# global in TPCBs; in out Buffers.State;
+   procedure TCP_Output (PCB   : PCBs.PCB_Id)
    is
       Seg     : Buffers.Buffer_Id;
       Seg_Len : AIP.M32_T;
@@ -361,17 +422,24 @@ is
       --  and congestion window.
 
       Thdr : System.Address;
+
+      N_ACKs_Q : U32_T;
+      --  Number of ACKs sent together with segments on the Send_Queue.
+
    begin
 
+      --  Default the PCB local IP to that of the interface if it's not set
+      --  already, required for checksum computations later on.
+
+      if IPCBs (PCB).Local_IP = IPaddrs.IP_ADDR_ANY then
+         IPCBs (PCB).Local_IP := NIF.NIF_Addr (TPCBs (PCB).Next_Hop_Netif);
+      end if;
+
+      --  Send every segment in the send queue that fits within the current
+      --  window. Count the number of ACKs sent along the way.
+
+      N_ACKs_Q := 0;
       This_WND := AIP.M32_T'Min (TPCBs (PCB).SND_WND, TPCBs (PCB).CWND);
-
-      --  If we need to ACK now and won't have a segment to piggyback on,
-      --  setup an empty carrier.
-
-      null;  -- ??? Implement this
-
-      --  Now check every segment in the send queue, sending if within the
-      --  current window.
 
       loop
          Seg := Buffers.Head_Packet (TPCBs (PCB).Send_Queue);
@@ -385,7 +453,7 @@ is
          --  start of window. Then we check if the segment ends before of
          --  beyond the end of window.
 
-         Thdr := Buffers.Buffer_Payload (Seg);
+         Thdr := Buffers.Packet_Info (Seg);
 
          pragma Assert (TCPH.TCPH_Seq_Num (Thdr) >= TPCBs (PCB).SND_UNA);
 
@@ -395,12 +463,14 @@ is
 
          --  ??? exit when naggle blob
 
-         --  Now prepare and send current segment. We always fill the ACK
-         --  number in Send_Segment but only really ACK when not in SYN_SENT
-         --  state.
+         --  Now prepare and send current segment.
+
+         --  We always piggyback an ACK number in Send_Segment but only really
+         --  ACK when not in SYN_SENT state.
 
          if TPCBs (PCB).State /= Syn_Sent then
             TCPH.Set_TCPH_Ack (Thdr, 1);
+            N_ACKs_Q := N_ACKs_Q + 1;
          end if;
 
          TCP_Send_Segment (Seg, PCB);
@@ -411,9 +481,42 @@ is
            (Buffers.Transport, TPCBs (PCB).Send_Queue, Seg);
 
          TPCBs (PCB).SND_NXT := TPCBs (PCB).SND_NXT + Seg_Len;
-         --  ??? proper place for the NXT update ?
 
       end loop;
+
+      --  If we need to ACK this time around and haven't already piggybacked
+      --  while processing the send queue, setup and send an empty ACK segment
+      --  now.
+
+      if TPCBs (PCB).ACK_Needed then
+         if N_ACKs_Q = 0 then
+            Buffers.Buffer_Alloc
+              (Size   => TCPH.TCP_Header_Size / 8,
+               Offset => Inet.HLEN_To (Inet.IP_LAYER),
+               Kind   => Buffers.SPLIT_BUF,
+               Buf    => Seg);
+
+            Thdr := Buffers.Buffer_Payload (Seg);
+
+            TCPH.Set_TCPH_Data_Offset (Thdr, 5);
+
+            TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
+            TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
+            TCPH.Set_TCPH_Seq_Num  (Thdr, TPCBs (PCB).SND_NXT);
+            TCPH.Set_TCPH_Reserved (Thdr, 0);
+
+            TCPH.Set_TCPH_Urg (Thdr, 0);
+            TCPH.Set_TCPH_Psh (Thdr, 0);
+            TCPH.Set_TCPH_Syn (Thdr, 0);
+            TCPH.Set_TCPH_Fin (Thdr, 0);
+            TCPH.Set_TCPH_Ack (Thdr, 1);
+
+            TCP_Send_Segment (Seg, PCB);
+
+            Buffers.Buffer_Blind_Free (Seg);
+         end if;
+         TPCBs (PCB).ACK_Needed := False;
+      end if;
    end TCP_Output;
 
    ---------------------
@@ -627,7 +730,7 @@ is
             --  Similarly an incoming RST may abort an half-open passive
             --  connection.
 
-            pragma Assert (State = Estalished
+            pragma Assert (State = Established
                            or else State = Fin_Wait_1
                            or else State = Closed);
 
@@ -1603,11 +1706,11 @@ is
 
                      --  6. Check URG bit
 
-                     if TCPH.TCPH_Urg (Thdr)
+                     if TCPH.TCPH_Urg (Seg.Thdr)
                        and then Seq_Lt (TPCBs (PCB).RCV_UP,
-                                        TCPH.TCPH_Urgent_Ptr (Thdr))
+                                        TCPH.TCPH_Urgent_Ptr (Seg.Thdr))
                      then
-                        TPCBs (PCB).RCV_UP := TCPH.TCPH_Urgent_Ptr (Thdr);
+                        TPCBs (PCB).RCV_UP := TCPH.TCPH_Urgent_Ptr (Seg.Thdr);
 
                         --  Signal user ???
                      end if;
@@ -1661,7 +1764,7 @@ is
 
                --  8. check FIN bit
 
-               if TCPH.TCP_Fin (Thdr) = 1 then
+               if TCPH.TCPH_Fin (Seg.Thdr) = 1 then
                   case TPCBs (PCB).State is
                      when Closed | Listen | Syn_Sent =>
                         null;
