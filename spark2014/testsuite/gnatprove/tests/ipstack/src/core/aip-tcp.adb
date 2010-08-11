@@ -1178,8 +1178,16 @@ is
       Err   : out AIP.Err_T)
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      case TPCBs (PCB).State is
+         when Established | Close_Wait | Syn_Sent | Syn_Received =>
+            if Len > 0 then
+               null;
+               --  ??? TCP_Enqueue (bla) still unclear on the API here
+            end if;
+            Err := AIP.NOERR;
+         when others =>
+            Err := AIP.ERR_USE;
+      end case;
    end TCP_Write;
 
    ----------------
