@@ -424,12 +424,12 @@ is
       Thdr : System.Address;
 
       N_ACKs_Q : U32_T;
-      --  Number of ACKs sent together with segments on the Send_Queue.
+      --  Number of ACKs sent together with segments from the Send_Queue.
 
    begin
 
       --  Default the PCB local IP to that of the interface if it's not set
-      --  already, required for checksum computations later on.
+      --  already, used for checksum computations later on.
 
       if IPCBs (PCB).Local_IP = IPaddrs.IP_ADDR_ANY then
          IPCBs (PCB).Local_IP := NIF.NIF_Addr (TPCBs (PCB).Next_Hop_Netif);

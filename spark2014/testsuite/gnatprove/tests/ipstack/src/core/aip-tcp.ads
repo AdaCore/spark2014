@@ -31,9 +31,9 @@ is
    --  Initialize internal datastructures. To be called once, before any of
    --  the other subprograms.
 
-   ---------------------
-   -- Callbacks setup --
-   ---------------------
+   -------------------------
+   -- Callbacks interface --
+   -------------------------
 
    procedure TCP_Arg (PCB : PCBs.PCB_Id; Arg : System.Address);
    --  Setup to pass ARG on every callback call for PCB.
@@ -62,12 +62,6 @@ is
       Err : AIP.Err_T;
       --  Reason of abort (for ABORT)
    end record;
-
-   procedure TCP_Callback
-     (Evk  : TCP_Event_Kind;
-      PCB  : PCBs.PCB_Id;
-      Cbid : Callbacks.CBK_Id);
-   --# global in out State;
 
    procedure TCP_Event
      (Ev   : TCP_Event_T;
@@ -112,18 +106,14 @@ is
    --# global in out State;
    --  Same as TCP_Listen but with a user-specified backlog size
 
-   subtype Accept_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb  : Accept_Cb_Id);
+   procedure TCP_Accept (PCB : PCBs.PCB_Id; Cb : Callbacks.CBK_Id);
    --# global in out State;
-   --  Request CB to be called when a connection request comes in on PCB.
-   --  CB's signature is expected to be:
+   --  Register CB as the id to pass TCP_Event on TCP_EVENT_ACCEPT for PCB.
    --
-   --    function TCP_Accept_Cb
-   --      (Arg : System.Address; Tcb : AIP.TCP.PCB_Id; Err : AIP.Err_T)
-   --    return AIP.Err_T
+   --  TCP_EVENT_ACCEPT triggers when a connection request comes in.
    --
-   --  PCB is the new pcb allocated for the established connection and ERR is
-   --  expected to be NOERR.
+   --  Ev.PCB is the new pcb allocated for the established connection
+   --  Ev.Addr/Port designate the connection request origin
    --
    --  The callback typically allocates an application state block, then calls
    --  TCP_Accepted and returns NOERR if all went well. If anything goes
@@ -132,8 +122,8 @@ is
 
    procedure TCP_Accepted (PCB : PCBs.PCB_Id);
    --  Inform the AIP stack that a connection has just been accepted on PCB.
-   --  To be called by the acceptation callback for proper management of the
-   --  listening backlog.
+   --  To be called by the TCP_EVENT_ACCEPT callback for proper management of
+   --  the listening backlog.
 
    subtype Connect_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Connect
@@ -179,22 +169,18 @@ is
    function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
    --  Room available for output data queuing.
 
-   subtype Sent_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Sent
      (PCB : PCBs.PCB_Id;
-      Cb  : Sent_Cb_Id);
+      Cb  : Callbacks.CBK_Id);
    --# global in out State;
-   --  Request that CB is called when sent data has been acknowledged by
-   --  the remote host on PCB. CB's signature is expected to be:
+   --  Register CB as the id to pass TCP_Event on TCP_EVENT_SENT for PCB.
    --
-   --    function TCP_Sent_Cb
-   --      (Arg : System.Address;
-   --       Tcb : AIP.TCP.PCB_Id;
-   --       Len : AIP.U16_T) return AIP.Err_T
+   --  TCP_EVENT_SENT triggers when sent data has been acknowledged by
+   --  the remote host on PCB.
    --
-   --  ARG and PCB are the usual app/user arg and connection control block.
-   --  LEN is the amount data just acknowledged by the remote peer. NOERR is
-   --  expected on return.
+   --  Ev.Len is the amount data just acknowledged by the remote peer.
+   --
+   --  NOERR is expected on return.
 
    ------------------------
    -- Receiving TCP data --
@@ -202,28 +188,20 @@ is
 
    --  Data reception is callback based, as everything else.
 
-   subtype Recv_Cb_Id is Callbacks.CBK_Id;
-   procedure TCP_Recv
-     (PCB : PCBs.PCB_Id;
-      Cb  : Recv_Cb_Id);
+   procedure TCP_Recv (PCB : PCBs.PCB_Id; Cb : Callbacks.CBK_Id);
    --# global in out State;
-   --  Request that CB is called when new data or a close-connection request
-   --  arrives on PCB. CB's profile is expected to be;
+   --  Register CB as the id to pass TCP_Event on TCP_EVENT_RECV for PCB.
    --
-   --    function TCP_Recv_Cb
-   --      (Arg : System.Address;
-   --       Tcb : AIP.TCP.PCB_Id;
-   --       Pbu : AIP.Pbufs.Pbuf_Id;
-   --       Err : AIP.Err_T) return AIP.Err_T;
+   --  TCP_EVENT_RECV triggers when new data or a close-connection request
+   --  arrives on PCB.
    --
-   --  ARG and PCB are the usual app/user arg and connection control block.
-   --  PBU designates the packet buffer where the received data resides, or is
-   --  NOPBUF for a close-connection request.
+   --  Ev.Buf designates the packet buffer where the received data resides, or
+   --         is NOBUF for a close-connection request.
    --
    --  When all goes well, NOERR is expected on return, and the packet buffer
-   --  should be Pbuf_Free'd by the callback if it isn't needed by the app any
-   --  more. Otherwise, the callback should leave PBU untouched and return a
-   --  descriptive error code.
+   --  should be Buffer_Free'd by the callback if it isn't needed by the app
+   --  any more. Otherwise, the callback should leave Ev.Buf untouched and
+   --  return a descriptive error code.
 
    procedure TCP_Recved
      (PCB : PCBs.PCB_Id;
@@ -245,14 +223,8 @@ is
       Cb  : Poll_Cb_Id;
       Ivl : AIP.U16_T);
    --# global in out State;
-   --  Request CB to be called for polling purposes on PCB, every IVL ticks
-   --  (TCP slow timer ticks, every 500 ms). CB's profile is expected to be:
-   --
-   --    function TCP_Poll_Cb
-   --      (Arg : System.Address;
-   --       Tcb : AIP.TCP.PCB_Id) return AIP.Err_T
-   --
-   --  ARG and PCB are the usual app/user arg and connection control block.
+   --  Register CB as the id to pass TCP_Event on TCP_EVENT_POLL for PCB,
+   --  and request that it triggers every IVL ticks from now on.
 
    ------------------------------
    --  Closing TCP connections --
@@ -272,14 +244,12 @@ is
    subtype Abort_Cb_Id is Callbacks.CBK_Id;
    procedure TCP_Abort (PCB : PCBs.PCB_Id; Cb : Abort_Cb_Id);
    --# global in out State;
-   --  Request CB to be called when a connection gets aborted because
-   --  of some error. CB's profile is expected to be:
+   --  Register CB as the id to pass TCP_Event on TCP_EVENT_ABORT for PCB.
    --
-   --    procedure TCP_Abort_Cb
-   --      (Arg : System.Address;
-   --       Err : AIP.Err_T)
+   --  TCP_EVENT_ABORT triggers when a connection gets aborted because
+   --  of some error.
    --
-   --  ARG is the usual user/app argument. ERR is the aborting error code.
+   --  Ev.Err is the aborting error code.
 
    -----------------------
    -- IPstack interface --
