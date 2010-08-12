@@ -27,6 +27,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Namet; use Namet;
 
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+
 package body Why.Atree.Sprint is
 
    ---------------------
@@ -52,20 +54,6 @@ package body Why.Atree.Sprint is
       Put (Get_Name_String (Get_Node (Node).Symbol));
    end Identifier_Pre_Op;
 
-   ------------------------
-   -- Identifier_Post_Op --
-   ------------------------
-
-   procedure Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Identifier_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      null;
-   end Identifier_Post_Op;
-
    ----------------------
    -- Type_Prop_Pre_Op --
    ----------------------
@@ -75,20 +63,8 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Prop_Id)
    is
    begin
-      raise Not_Implemented;
+      Put ("prop");
    end Type_Prop_Pre_Op;
-
-   -----------------------
-   -- Type_Prop_Post_Op --
-   -----------------------
-
-   procedure Type_Prop_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Prop_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Type_Prop_Post_Op;
 
    ---------------------
    -- Type_Int_Pre_Op --
@@ -99,20 +75,8 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Int_Id)
    is
    begin
-      raise Not_Implemented;
+      Put ("int");
    end Type_Int_Pre_Op;
-
-   ----------------------
-   -- Type_Int_Post_Op --
-   ----------------------
-
-   procedure Type_Int_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Int_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Type_Int_Post_Op;
 
    ----------------------
    -- Type_Bool_Pre_Op --
@@ -123,20 +87,8 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Bool_Id)
    is
    begin
-      raise Not_Implemented;
+      Put ("bool");
    end Type_Bool_Pre_Op;
-
-   -----------------------
-   -- Type_Bool_Post_Op --
-   -----------------------
-
-   procedure Type_Bool_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Bool_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Type_Bool_Post_Op;
 
    ----------------------
    -- Type_Real_Pre_Op --
@@ -147,20 +99,8 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Real_Id)
    is
    begin
-      raise Not_Implemented;
+      Put ("real");
    end Type_Real_Pre_Op;
-
-   -----------------------
-   -- Type_Real_Post_Op --
-   -----------------------
-
-   procedure Type_Real_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Real_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Type_Real_Post_Op;
 
    ----------------------
    -- Type_Unit_Pre_Op --
@@ -171,52 +111,8 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Unit_Id)
    is
    begin
-      raise Not_Implemented;
+      Put ("unit");
    end Type_Unit_Pre_Op;
-
-   -----------------------
-   -- Type_Unit_Post_Op --
-   -----------------------
-
-   procedure Type_Unit_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Unit_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Type_Unit_Post_Op;
-
-   --------------------------
-   -- Abstract_Type_Pre_Op --
-   --------------------------
-
-   procedure Abstract_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Abstract_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Abstract_Type_Get_Name (Node));
-   end Abstract_Type_Pre_Op;
-
-   ---------------------------
-   -- Abstract_Type_Post_Op --
-   ---------------------------
-
-   procedure Abstract_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Abstract_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Abstract_Type_Get_Name (Node));
-   end Abstract_Type_Post_Op;
 
    --------------------------------
    -- Generic_Formal_Type_Pre_Op --
@@ -227,28 +123,8 @@ package body Why.Atree.Sprint is
       Node  : W_Generic_Formal_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Generic_Formal_Type_Get_Name (Node));
+      Put ("'");
    end Generic_Formal_Type_Pre_Op;
-
-   ---------------------------------
-   -- Generic_Formal_Type_Post_Op --
-   ---------------------------------
-
-   procedure Generic_Formal_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Formal_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Generic_Formal_Type_Get_Name (Node));
-   end Generic_Formal_Type_Post_Op;
 
    --------------------------------------
    -- Generic_Actual_Type_Chain_Pre_Op --
@@ -258,51 +134,27 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Generic_Actual_Type_Chain_Id)
    is
-   begin
-      raise Not_Implemented;
+      use Node_Lists;
 
-      --  Traverse_List
-      --    (State,
-      --     Generic_Actual_Type_Chain_Get_Type_Chain (Node));
-      --  Traverse
-      --    (State,
-      --     Generic_Actual_Type_Chain_Get_Name (Node));
+      Types    : constant List :=
+                   Get_List (Generic_Actual_Type_Chain_Get_Type_Chain (Node));
+      Position : Cursor := First (Types);
+   begin
+      while Position /= No_Element loop
+         declare
+            Node : constant W_Primitive_Type_Id := Element (Position);
+         begin
+            Traverse (State, Node);
+            Put (" ");
+         end;
+      end loop;
+
+      Traverse
+        (State,
+         Generic_Actual_Type_Chain_Get_Name (Node));
+
+      State.Control := Abandon_Children;
    end Generic_Actual_Type_Chain_Pre_Op;
-
-   ---------------------------------------
-   -- Generic_Actual_Type_Chain_Post_Op --
-   ---------------------------------------
-
-   procedure Generic_Actual_Type_Chain_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Generic_Actual_Type_Chain_Get_Type_Chain (Node));
-      --  Traverse
-      --    (State,
-      --     Generic_Actual_Type_Chain_Get_Name (Node));
-   end Generic_Actual_Type_Chain_Post_Op;
-
-   -----------------------
-   -- Array_Type_Pre_Op --
-   -----------------------
-
-   procedure Array_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Array_Type_Get_Component_Type (Node));
-   end Array_Type_Pre_Op;
 
    ------------------------
    -- Array_Type_Post_Op --
@@ -313,28 +165,8 @@ package body Why.Atree.Sprint is
       Node  : W_Array_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Array_Type_Get_Component_Type (Node));
+      Put (" array");
    end Array_Type_Post_Op;
-
-   ---------------------
-   -- Ref_Type_Pre_Op --
-   ---------------------
-
-   procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Ref_Type_Get_Aliased_Type (Node));
-   end Ref_Type_Pre_Op;
 
    ----------------------
    -- Ref_Type_Post_Op --
@@ -345,11 +177,7 @@ package body Why.Atree.Sprint is
       Node  : W_Ref_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Ref_Type_Get_Aliased_Type (Node));
+      Put (" ref");
    end Ref_Type_Post_Op;
 
    ---------------------------------
@@ -361,11 +189,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Value_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Protected_Value_Type_Get_Value_Type (Node));
+      Put ("(");
    end Protected_Value_Type_Pre_Op;
 
    ----------------------------------
@@ -377,11 +201,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Value_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Protected_Value_Type_Get_Value_Type (Node));
+      Put (")");
    end Protected_Value_Type_Post_Op;
 
    ---------------------------------
@@ -393,34 +213,18 @@ package body Why.Atree.Sprint is
       Node  : W_Anonymous_Arrow_Type_Id)
    is
    begin
-      raise Not_Implemented;
+      Traverse
+        (State,
+         Anonymous_Arrow_Type_Get_Left (Node));
 
-      --  Traverse
-      --    (State,
-      --     Anonymous_Arrow_Type_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Anonymous_Arrow_Type_Get_Right (Node));
+      Put (" -> ");
+
+      Traverse
+        (State,
+         Anonymous_Arrow_Type_Get_Right (Node));
+
+      State.Control := Abandon_Children;
    end Anonymous_Arrow_Type_Pre_Op;
-
-   ----------------------------------
-   -- Anonymous_Arrow_Type_Post_Op --
-   ----------------------------------
-
-   procedure Anonymous_Arrow_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Anonymous_Arrow_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Anonymous_Arrow_Type_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Anonymous_Arrow_Type_Get_Right (Node));
-   end Anonymous_Arrow_Type_Post_Op;
 
    -----------------------------
    -- Named_Arrow_Type_Pre_Op --
@@ -431,40 +235,19 @@ package body Why.Atree.Sprint is
       Node  : W_Named_Arrow_Type_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Right (Node));
+      Traverse
+        (State,
+         Named_Arrow_Type_Get_Name (Node));
+      Put (" : ");
+      Traverse
+        (State,
+         Named_Arrow_Type_Get_Left (Node));
+      Put (" -> ");
+      Traverse
+        (State,
+         Named_Arrow_Type_Get_Right (Node));
+      State.Control := Abandon_Children;
    end Named_Arrow_Type_Pre_Op;
-
-   ------------------------------
-   -- Named_Arrow_Type_Post_Op --
-   ------------------------------
-
-   procedure Named_Arrow_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Arrow_Type_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Arrow_Type_Get_Right (Node));
-   end Named_Arrow_Type_Post_Op;
 
    -----------------------------
    -- Computation_Spec_Pre_Op --
@@ -474,53 +257,40 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Computation_Spec_Id)
    is
+      Result : constant W_Identifier_OId :=
+                 Computation_Spec_Get_Result_Name (Node);
    begin
-      raise Not_Implemented;
+      Put ("{");
+      Traverse (State,
+                Computation_Spec_Get_Precondition (Node));
+      Put_Line ("}");
 
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Precondition (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Result_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Return_Type (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Effects (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Postcondition (Node));
+      if  Result /= Why_Empty then
+         Put ("returns ");
+         Traverse
+           (State,
+            Computation_Spec_Get_Result_Name (Node));
+         Put (" : ");
+      end if;
+
+      Traverse
+        (State,
+         Computation_Spec_Get_Return_Type (Node));
+      New_Line;
+
+      Traverse
+        (State,
+         Computation_Spec_Get_Effects (Node));
+      New_Line;
+
+      Put ("{");
+      Traverse
+        (State,
+         Computation_Spec_Get_Postcondition (Node));
+      Put ("}");
+
+      State.Control := Abandon_Children;
    end Computation_Spec_Pre_Op;
-
-   ------------------------------
-   -- Computation_Spec_Post_Op --
-   ------------------------------
-
-   procedure Computation_Spec_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Computation_Spec_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Precondition (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Result_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Return_Type (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Effects (Node));
-      --  Traverse
-      --    (State,
-      --     Computation_Spec_Get_Postcondition (Node));
-   end Computation_Spec_Post_Op;
 
    -----------------------------
    -- Integer_Constant_Pre_Op --

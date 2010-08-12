@@ -42,15 +42,7 @@ private
      (State : in out Printer_State;
       Node  : W_Identifier_Id);
 
-   procedure Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Identifier_Id);
-
    procedure Type_Prop_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Prop_Id);
-
-   procedure Type_Prop_Post_Op
      (State : in out Printer_State;
       Node  : W_Type_Prop_Id);
 
@@ -58,15 +50,7 @@ private
      (State : in out Printer_State;
       Node  : W_Type_Int_Id);
 
-   procedure Type_Int_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Int_Id);
-
    procedure Type_Bool_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Bool_Id);
-
-   procedure Type_Bool_Post_Op
      (State : in out Printer_State;
       Node  : W_Type_Bool_Id);
 
@@ -74,31 +58,11 @@ private
      (State : in out Printer_State;
       Node  : W_Type_Real_Id);
 
-   procedure Type_Real_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Real_Id);
-
    procedure Type_Unit_Pre_Op
      (State : in out Printer_State;
       Node  : W_Type_Unit_Id);
 
-   procedure Type_Unit_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Unit_Id);
-
-   procedure Abstract_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Abstract_Type_Id);
-
-   procedure Abstract_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Abstract_Type_Id);
-
    procedure Generic_Formal_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Formal_Type_Id);
-
-   procedure Generic_Formal_Type_Post_Op
      (State : in out Printer_State;
       Node  : W_Generic_Formal_Type_Id);
 
@@ -106,21 +70,9 @@ private
      (State : in out Printer_State;
       Node  : W_Generic_Actual_Type_Chain_Id);
 
-   procedure Generic_Actual_Type_Chain_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Id);
-
-   procedure Array_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Type_Id);
-
    procedure Array_Type_Post_Op
      (State : in out Printer_State;
       Node  : W_Array_Type_Id);
-
-   procedure Ref_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Ref_Type_Id);
 
    procedure Ref_Type_Post_Op
      (State : in out Printer_State;
@@ -138,23 +90,11 @@ private
      (State : in out Printer_State;
       Node  : W_Anonymous_Arrow_Type_Id);
 
-   procedure Anonymous_Arrow_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Anonymous_Arrow_Type_Id);
-
    procedure Named_Arrow_Type_Pre_Op
      (State : in out Printer_State;
       Node  : W_Named_Arrow_Type_Id);
 
-   procedure Named_Arrow_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Arrow_Type_Id);
-
    procedure Computation_Spec_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Computation_Spec_Id);
-
-   procedure Computation_Spec_Post_Op
      (State : in out Printer_State;
       Node  : W_Computation_Spec_Id);
 
