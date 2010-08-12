@@ -22,7 +22,7 @@
   <field name="Syn"         length= "1" />
   <field name="Fin"         length= "1" />
   <field name="Window"      length="16" />
-  <field name="Checksum"    length="16" />
+  <field name="Checksum"    length="16" class="modular" />
   <field name="Urgent_Ptr"  length="16" />
  </message>
 
