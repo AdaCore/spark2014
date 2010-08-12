@@ -27,31 +27,55 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Namet; use Namet;
 
-with Why.Atree.Fields; use Why.Atree.Fields;
-
 package body Why.Atree.Sprint is
 
+   -----------------------
+   -- Identifier_Pre_Op --
+   -----------------------
+
+   procedure Identifier_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Identifier_Id)
+   is
+      pragma Unreferenced (State);
+   begin
+      Put (Get_Name_String (Get_Node (Node).Symbol));
+   end Identifier_Pre_Op;
+
+   ------------------
+   -- Type_Post_Op --
+   ------------------
+
+   procedure Type_Post_Op
+     (State : in out Printer_State;
+      Node  : W_Type_Id)
+   is
+      pragma Unreferenced (State);
+   begin
+      New_Line;
+   end Type_Post_Op;
+
    -----------------
-   -- Sprint_Node --
+   -- Type_Pre_Op --
    -----------------
+
+   procedure Type_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Type_Id)
+   is
+      pragma Unreferenced (State);
+   begin
+      Put ("type ");
+   end Type_Pre_Op;
+
+   ---------------------
+   -- Sprint_Why_Node --
+   ---------------------
 
    procedure Sprint_Why_Node (Node : Why_Node_Id) is
+      PS : Printer_State;
    begin
-      case Get_Kind (Node) is
-         when W_Identifier =>
-            Put (Get_Name_String (Get_Node (Node).Symbol));
-
-         when W_Type =>
-            if Get_External (Node) /= Why_Empty then
-               Put ("external ");
-            end if;
-
-            Put ("type ");
-            Sprint_Why_Node (Get_Name (Node));
-
-         when others =>
-            raise Not_Implemented;
-      end case;
+      Traverse (PS, Node);
    end Sprint_Why_Node;
 
 end Why.Atree.Sprint;

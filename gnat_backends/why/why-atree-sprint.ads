@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Atree.Traversal; use Why.Atree.Traversal;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Ids;             use Why.Ids;
 
 package Why.Atree.Sprint is
 
@@ -32,5 +34,20 @@ package Why.Atree.Sprint is
 
    procedure Sprint_Why_Node (Node : Why_Node_Id);
    pragma Precondition (Get_Kind (Node) /= W_Unused_At_Start);
+
+private
+   type Printer_State is new Traversal_State with null record;
+
+   procedure Identifier_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Identifier_Id);
+
+   procedure Type_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Type_Id);
+
+   procedure Type_Post_Op
+     (State : in out Printer_State;
+      Node  : W_Type_Id);
 
 end Why.Atree.Sprint;
