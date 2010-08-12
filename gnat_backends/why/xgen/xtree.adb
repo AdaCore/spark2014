@@ -274,9 +274,15 @@ begin
    Add ("Implement_Builders", Print_Builder_Bodies'Access);
    Add ("Declare_Traversal_Ops", Print_Traversal_Op_Declarations'Access);
    Add ("Implement_Traverse", Print_Traverse_Body'Access);
+   Add ("Declare_Traversal_Op_Stubs",
+        Print_Traversal_Op_Stub_Declarations'Access);
+   Add ("Implement_Traversal_Op_Stubs",
+        Print_Traversal_Op_Stub_Bodies'Access);
    Process ("why-atree-builders.ads");
    Process ("why-atree-builders.adb");
    Process ("why-atree-accessors.ads");
    Process ("why-atree-traversal.ads");
    Process ("why-atree-traversal.adb");
+   Process ("why-atree-traversal_stub.ads");
+   Process ("why-atree-traversal_stub.adb");
 end Xtree;

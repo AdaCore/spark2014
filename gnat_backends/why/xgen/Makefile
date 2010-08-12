@@ -1,11 +1,13 @@
 
 GENERATED_FILES= \
- why-atree-accessors.ads \
- why-atree-builders.ads  \
- why-atree-builders.adb  \
- why-atree-traversal.ads \
- why-atree-traversal.adb \
- why-ids.ads             \
+ why-atree-accessors.ads      \
+ why-atree-builders.ads       \
+ why-atree-builders.adb       \
+ why-atree-traversal.ads      \
+ why-atree-traversal.adb      \
+ why-atree-traversal_stub.ads \
+ why-atree-traversal_stub.adb \
+ why-ids.ads                  \
  why-unchecked_ids.ads
 
 all: $(GENERATED_FILES)
@@ -31,6 +33,12 @@ why-atree-traversal.ads: xtree why-atree.adt why-atree-traversal.ads-tmpl
 	./xtree
 
 why-atree-traversal.adb: xtree why-atree.adt why-atree-traversal.adb-tmpl
+	./xtree
+
+why-atree-traversal_stub.ads: xtree why-atree.adt why-atree-traversal_stub.ads-tmpl
+	./xtree
+
+why-atree-traversal_stub.adb: xtree why-atree.adt why-atree-traversal_stub.adb-tmpl
 	./xtree
 
 why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl

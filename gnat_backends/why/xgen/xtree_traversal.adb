@@ -38,20 +38,30 @@ package body Xtree_Traversal is
    Abandon_Siblings      : constant Wide_String := "Abandon_Siblings";
    Continue              : constant Wide_String := "Continue";
 
+   Base_State_Type : constant Wide_String := "Traversal_State";
+   Stub_State_Type : constant Wide_String := "Traversal_Stub_State";
+
    procedure Print_Traversal_Op_Specification
-     (O       : in out Output_Record;
-      Op_Name : Wide_String;
-      Kind    : Why_Node_Kind);
+     (O          : in out Output_Record;
+      Op_Name    : Wide_String;
+      State_Type : Wide_String;
+      Kind       : Why_Node_Kind);
 
    procedure Print_Kind_Traversal_Implementation
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind);
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
+      In_Stub : Boolean := False);
 
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
       Traversal_Proc : Wide_String;
       Kind           : Why_Node_Kind;
-      FI             : Field_Info);
+      FI             : Field_Info;
+      Commented_Out  : Boolean := False);
+
+   procedure Print_Traversal_Op_Stub_Implementation
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind);
 
    procedure Start_If_Control
      (O     : in out Output_Record;
@@ -91,11 +101,28 @@ package body Xtree_Traversal is
      (O              : in out Output_Record;
       Traversal_Proc : Wide_String;
       Kind           : Why_Node_Kind;
-      FI             : Field_Info) is
+      FI             : Field_Info;
+      Commented_Out  : Boolean := False)
+   is
+      procedure PL_C (O : in out Output_Record; S : Wide_String);
+
+      --------
+      -- PC --
+      --------
+
+      procedure PL_C (O : in out Output_Record; S : Wide_String) is
+      begin
+         if Commented_Out then
+            P (O, "--  ");
+         end if;
+
+         PL (O, S);
+      end PL_C;
+
    begin
-      PL (O, Traversal_Proc);
-      PL (O, "  (" & State_Param & ",");
-      PL (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
+      PL_C (O, Traversal_Proc);
+      PL_C (O, "  (" & State_Param & ",");
+      PL_C (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
    end Print_Call_To_Traversal_Proc;
 
    -----------------------------------------
@@ -103,8 +130,9 @@ package body Xtree_Traversal is
    -----------------------------------------
 
    procedure Print_Kind_Traversal_Implementation
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind)
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
+      In_Stub : Boolean := False)
    is
       use Node_Lists;
 
@@ -126,37 +154,43 @@ package body Xtree_Traversal is
             end if;
 
             if Is_List (FI) then
-               Print_Call_To_Traversal_Proc (O, "Traverse_List", Kind, FI);
+               Print_Call_To_Traversal_Proc
+                 (O, "Traverse_List", Kind, FI, In_Stub);
             else
-               Print_Call_To_Traversal_Proc (O, "Traverse", Kind, FI);
+               Print_Call_To_Traversal_Proc
+                 (O, "Traverse", Kind, FI, In_Stub);
             end if;
          end if;
       end Print_Sub_Traversal;
 
    begin
-      PL (O, Traversal_Pre_Op (Kind)
-          & " (" & State_Param & ", " & Node_Param & ");");
+      if not In_Stub then
+         PL (O, Traversal_Pre_Op (Kind)
+             & " (" & State_Param & ", " & Node_Param & ");");
 
-      NL (O);
-      Reset_Return_If_Control (O, Abandon_Children);
-      NL (O);
-      Return_If_Control (O, Abandon_Siblings);
+         NL (O);
+         Reset_Return_If_Control (O, Abandon_Children);
+         NL (O);
+         Return_If_Control (O, Abandon_Siblings);
+      end if;
 
       if Has_Variant_Part (Kind) then
          Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
       end if;
 
-      NL (O);
-      Return_If_Control (O, Terminate_Immediately);
-      NL (O);
+      if not In_Stub then
+         NL (O);
+         Return_If_Control (O, Terminate_Immediately);
+         NL (O);
 
-      PL (O, Traversal_Post_Op (Kind)
-          & " (" & State_Param & ", " & Node_Param & ");");
+         PL (O, Traversal_Post_Op (Kind)
+             & " (" & State_Param & ", " & Node_Param & ");");
 
-      NL (O);
-      Reset_If_Control (O, Abandon_Siblings);
-      NL (O);
-      Return_If_Control (O, Terminate_Immediately);
+         NL (O);
+         Reset_If_Control (O, Abandon_Siblings);
+         NL (O);
+         Return_If_Control (O, Terminate_Immediately);
+      end if;
    end Print_Kind_Traversal_Implementation;
 
    -------------------------------------
@@ -166,11 +200,15 @@ package body Xtree_Traversal is
    procedure Print_Traversal_Op_Declarations  (O : in out Output_Record) is
    begin
       for J in Valid_Kind'Range loop
-         Print_Traversal_Op_Specification (O, Traversal_Pre_Op (J), J);
+         Print_Traversal_Op_Specification
+           (O, Traversal_Pre_Op (J), Base_State_Type, J);
+         NL (O);
          PL (O, "  is null;");
          NL (O);
 
-         Print_Traversal_Op_Specification (O, Traversal_Post_Op (J), J);
+         Print_Traversal_Op_Specification
+           (O, Traversal_Post_Op (J), Base_State_Type, J);
+         NL (O);
          PL (O, "  is null;");
 
          if J /= Valid_Kind'Last then
@@ -184,14 +222,91 @@ package body Xtree_Traversal is
    --------------------------------------
 
    procedure Print_Traversal_Op_Specification
-     (O       : in out Output_Record;
-      Op_Name : Wide_String;
-      Kind    : Why_Node_Kind) is
+     (O          : in out Output_Record;
+      Op_Name    : Wide_String;
+      State_Type : Wide_String;
+      Kind       : Why_Node_Kind) is
    begin
       PL (O, "procedure " & Op_Name);
-      PL (O, "  (State : in out Traversal_State;");
-      PL (O, "   Node  : " & Id_Type_Name (Kind) & ")");
+      PL (O, "  (State : in out " & State_Type & ";");
+      P  (O, "   Node  : " & Id_Type_Name (Kind) & ")");
    end Print_Traversal_Op_Specification;
+
+   ------------------------------------------
+   -- Print_Traversal_Op_Stub_Declarations --
+   ------------------------------------------
+
+   procedure Print_Traversal_Op_Stub_Declarations
+     (O : in out Output_Record) is
+   begin
+      for J in Valid_Kind'Range loop
+         Print_Traversal_Op_Specification
+           (O, Traversal_Pre_Op (J), Stub_State_Type, J);
+         PL (O, ";");
+         NL (O);
+
+         Print_Traversal_Op_Specification
+           (O, Traversal_Post_Op (J), Stub_State_Type, J);
+         PL (O, ";");
+
+         if J /= Valid_Kind'Last then
+            NL (O);
+         end if;
+      end loop;
+   end Print_Traversal_Op_Stub_Declarations;
+
+   ------------------------------------
+   -- Print_Traversal_Op_Stub_Bodies --
+   ------------------------------------
+
+   procedure Print_Traversal_Op_Stub_Bodies (O : in out Output_Record) is
+   begin
+      for J in Valid_Kind'Range loop
+
+         Print_Box (O, Traversal_Pre_Op (J));
+         NL (O);
+
+         Print_Traversal_Op_Specification
+           (O, Traversal_Pre_Op (J), Stub_State_Type, J);
+         NL (O);
+         PL (O, "is");
+         PL (O, "begin");
+         Relative_Indent (O, 3);
+         Print_Traversal_Op_Stub_Implementation (O, J);
+         Relative_Indent (O, -3);
+         PL (O, "end " & Traversal_Pre_Op (J) & ";");
+         NL (O);
+
+         Print_Box (O, Traversal_Post_Op (J));
+         NL (O);
+
+         Print_Traversal_Op_Specification
+           (O, Traversal_Post_Op (J), Stub_State_Type, J);
+         NL (O);
+         PL (O, "is");
+         PL (O, "begin");
+         Relative_Indent (O, 3);
+         Print_Traversal_Op_Stub_Implementation (O, J);
+         Relative_Indent (O, -3);
+         PL (O, "end " & Traversal_Post_Op (J) & ";");
+
+         if J /= Valid_Kind'Last then
+            NL (O);
+         end if;
+      end loop;
+   end Print_Traversal_Op_Stub_Bodies;
+
+   --------------------------------------------
+   -- Print_Traversal_Op_Stub_Implementation --
+   --------------------------------------------
+
+   procedure Print_Traversal_Op_Stub_Implementation
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind) is
+   begin
+      PL (O, "raise Not_Implemented;");
+      Print_Kind_Traversal_Implementation (O, Kind, True);
+   end Print_Traversal_Op_Stub_Implementation;
 
    -------------------------
    -- Print_Traverse_Body --
