@@ -50,22 +50,24 @@ package body Why.Atree.Traversal is
    is
       use Node_Lists;
 
-      procedure Traverse (Position : Cursor);
-
-      --------------
-      -- Traverse --
-      --------------
-
-      procedure Traverse (Position : Cursor) is
-         Node : constant Why_Node_Id := Element (Position);
-      begin
-         Traverse (State, Node);
-      end Traverse;
-
-   --  Start of processing for Traverse_List
-
+      Position : Cursor := First (Get_List (List_Id));
    begin
-      Get_List (List_Id).Iterate (Traverse'Access);
+      while Position /= No_Element loop
+         pragma Assert (Has_Element (Position)
+                        and then State.Control /= Abandon_Siblings
+                        and then State.Control /= Terminate_Immediately);
+
+         declare
+            Node : constant Why_Node_Id := Element (Position);
+         begin
+            exit when State.Control = Abandon_Siblings
+              or else State.Control = Terminate_Immediately;
+
+            Traverse (State, Node);
+         end;
+
+         Next (Position);
+      end loop;
    end Traverse_List;
 
 end Why.Atree.Traversal;

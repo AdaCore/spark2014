@@ -31,6 +31,12 @@ package body Xtree_Traversal is
 
    Node_Param  : constant Wide_String := "Node";
    State_Param : constant Wide_String := "State";
+   Control     : constant Wide_String := State_Param & "." & "Control";
+
+   Terminate_Immediately : constant Wide_String := "Terminate_Immediately";
+   Abandon_Children      : constant Wide_String := "Abandon_Children";
+   Abandon_Siblings      : constant Wide_String := "Abandon_Siblings";
+   Continue              : constant Wide_String := "Continue";
 
    procedure Print_Traversal_Op_Specification
      (O       : in out Output_Record;
@@ -46,6 +52,36 @@ package body Xtree_Traversal is
       Traversal_Proc : Wide_String;
       Kind           : Why_Node_Kind;
       FI             : Field_Info);
+
+   procedure Start_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String);
+
+   procedure End_If (O     : in out Output_Record);
+
+   procedure Reset_Control (O : in out Output_Record);
+
+   procedure Reset_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String);
+
+   procedure Reset_Return_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String);
+
+   procedure Return_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String);
+
+   ------------
+   -- End_If --
+   ------------
+
+   procedure End_If (O     : in out Output_Record) is
+   begin
+      Relative_Indent (O, -3);
+      PL (O, "end if;");
+   end End_If;
 
    -------------------------------------
    -- Print_Traversal_Op_Declarations --
@@ -87,6 +123,11 @@ package body Xtree_Traversal is
 
    procedure Print_Traverse_Body  (O : in out Output_Record) is
    begin
+      Return_If_Control (O, Terminate_Immediately);
+      NL (O);
+      Return_If_Control (O, Abandon_Siblings);
+      NL (O);
+
       PL (O, "if " & Node_Param & " = Why_Empty then");
       PL (O, "   return;");
       PL (O, "end if;");
@@ -117,6 +158,8 @@ package body Xtree_Traversal is
    is
       use Node_Lists;
 
+      First_Child : Boolean := True;
+
       procedure Print_Sub_Traversal (Position : Cursor);
 
       -------------------------
@@ -127,6 +170,11 @@ package body Xtree_Traversal is
          FI : constant Field_Info := Element (Position);
       begin
          if Is_Why_Id (FI) then
+            if First_Child then
+               NL (O);
+               First_Child := False;
+            end if;
+
             if Is_List (FI) then
                Print_Call_To_Traversal_Proc (O, "Traverse_List", Kind, FI);
             else
@@ -139,12 +187,26 @@ package body Xtree_Traversal is
       PL (O, Traversal_Pre_Op (Kind)
           & " (" & State_Param & ", " & Node_Param & ");");
 
+      NL (O);
+      Reset_Return_If_Control (O, Abandon_Children);
+      NL (O);
+      Return_If_Control (O, Abandon_Siblings);
+
       if Has_Variant_Part (Kind) then
          Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
       end if;
 
+      NL (O);
+      Return_If_Control (O, Terminate_Immediately);
+      NL (O);
+
       PL (O, Traversal_Post_Op (Kind)
           & " (" & State_Param & ", " & Node_Param & ");");
+
+      NL (O);
+      Reset_If_Control (O, Abandon_Siblings);
+      NL (O);
+      Return_If_Control (O, Terminate_Immediately);
    end Print_Kind_Traversal_Implementation;
 
    ----------------------------------
@@ -161,5 +223,70 @@ package body Xtree_Traversal is
       PL (O, "  (" & State_Param & ",");
       PL (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
    end Print_Call_To_Traversal_Proc;
+
+   -------------------
+   -- Reset_Control --
+   -------------------
+
+   procedure Reset_Control (O : in out Output_Record) is
+   begin
+      PL (O, Control & " := " & Continue & ";");
+   end Reset_Control;
+
+   ----------------------
+   -- Reset_If_Control --
+   ----------------------
+
+   procedure Reset_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String)
+   is
+   begin
+      Start_If_Control (O, Value);
+      Reset_Control (O);
+      End_If (O);
+   end Reset_If_Control;
+
+   -----------------------------
+   -- Reset_Return_If_Control --
+   -----------------------------
+
+   procedure Reset_Return_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String)
+   is
+   begin
+      Start_If_Control (O, Value);
+      Reset_Control (O);
+      PL (O, "return;");
+      End_If (O);
+   end Reset_Return_If_Control;
+
+   -----------------------
+   -- Return_If_Control --
+   -----------------------
+
+   procedure Return_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String)
+   is
+   begin
+      Start_If_Control (O, Value);
+      PL (O, "return;");
+      End_If (O);
+   end Return_If_Control;
+
+   --------------------
+   -- Start_If_Control --
+   --------------------
+
+   procedure Start_If_Control
+     (O     : in out Output_Record;
+      Value : Wide_String)
+   is
+   begin
+      PL (O, "if " & Control & " = " & Value & " then");
+      Relative_Indent (O, 3);
+   end Start_If_Control;
 
 end Xtree_Traversal;

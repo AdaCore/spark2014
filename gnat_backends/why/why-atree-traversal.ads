@@ -27,7 +27,24 @@ with Why.Ids; use Why.Ids;
 
 package Why.Atree.Traversal is
 
-   type Traversal_State is abstract tagged null record;
+   type Traverse_Control is
+     (Continue,
+      --  Continues the normal depth-first traversal
+
+      Abandon_Children,
+      --  Prevents traversal of the current element's children
+
+      Abandon_Siblings,
+      --  Prevents traversal of the current element's children and remaining
+      --  siblings.
+
+      Terminate_Immediately
+      --  Does exactly that
+      );
+
+   type Traversal_State is abstract tagged record
+      Control : Traverse_Control;
+   end record;
 
    procedure Traverse
      (State : in out Traversal_State'Class;
