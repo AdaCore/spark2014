@@ -1,0 +1,71 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNAT2WHY COMPONENTS                           --
+--                                                                          --
+--                  W H Y - A T R E E - T R A V E R S A L                   --
+--                                                                          --
+--                                 B o d y                                  --
+--                                                                          --
+--                       Copyright (C) 2010, AdaCore                        --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute it and/or modify it   --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software Foundation;  either version  2,  or  (at your option) any later --
+-- version. gnat2why is distributed in the hope that it will  be  useful,   --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-  --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License  for more details. You  should  have  received a copy of the GNU --
+-- General Public License  distributed with GNAT; see file COPYING. If not, --
+-- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
+-- Boston,                                                                  --
+--                                                                          --
+-- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+
+package body Why.Atree.Traversal is
+
+   --------------
+   -- Traverse --
+   --------------
+
+   procedure Traverse
+     (State : in out Traversal_State'Class;
+      Node  : Why_Node_Id) is
+   begin
+      _@Implement_Traverse@_
+   end Traverse;
+
+   -------------------
+   -- Traverse_List --
+   -------------------
+
+   procedure Traverse_List
+     (State   : in out Traversal_State'Class;
+      List_Id : Why_Node_List)
+   is
+      use Node_Lists;
+
+      procedure Traverse (Position : Cursor);
+
+      --------------
+      -- Traverse --
+      --------------
+
+      procedure Traverse (Position : Cursor) is
+         Node : constant Why_Node_Id := Element (Position);
+      begin
+         Traverse (State, Node);
+      end Traverse;
+
+   --  Start of processing for Traverse_List
+
+   begin
+      Get_List (List_Id).Iterate (Traverse'Access);
+   end Traverse_List;
+
+end Why.Atree.Traversal;

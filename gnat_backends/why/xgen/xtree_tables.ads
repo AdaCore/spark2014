@@ -131,6 +131,16 @@ package Xtree_Tables is
    function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the builder name for the given node kind
 
+   function Traversal_Pre_Op (Kind : Why_Node_Kind) return Wide_String;
+   --  Return the name of prep op hooks for a given node kind
+   --  in recursive traversals. Prep Op hooks are called before going
+   --  recursively through children of a given node.
+
+   function Traversal_Post_Op (Kind : Why_Node_Kind) return Wide_String;
+   --  Return the name of post op hooks for a given kind
+   --  in recursive traversals. Post Op hooks are called after having
+   --  gone recursively through children of a given node.
+
    function Field_Name (FI : Field_Info) return Wide_String;
    --  Return the name of this field
 

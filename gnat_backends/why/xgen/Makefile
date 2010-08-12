@@ -15,6 +15,12 @@ why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl why-unchecked_ids.ads-tmpl
 why-atree-builders.ads: xtree why-atree.adt why-atree-builders.ads-tmpl
 	./xtree
 
+why-atree-traversal.ads: xtree why-atree.adt why-atree-traversal.ads-tmpl
+	./xtree
+
+why-atree-traversal.adb: xtree why-atree.adt why-atree-traversal.adb-tmpl
+	./xtree
+
 xkinds: force
 	gnatmake -Phelpers xkinds
 

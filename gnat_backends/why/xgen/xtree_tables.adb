@@ -339,4 +339,22 @@ package body Xtree_Tables is
       return Name (Stop + 1 .. Name'Last);
    end Suffix;
 
+   -----------------------
+   -- Traversal_Post_Op --
+   -----------------------
+
+   function Traversal_Post_Op (Kind : Why_Node_Kind) return Wide_String is
+   begin
+      return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Post_Op";
+   end Traversal_Post_Op;
+
+   ----------------------
+   -- Traversal_Pre_Op --
+   ----------------------
+
+   function Traversal_Pre_Op (Kind : Why_Node_Kind) return Wide_String is
+   begin
+      return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Pre_Op";
+   end Traversal_Pre_Op;
+
 end Xtree_Tables;
