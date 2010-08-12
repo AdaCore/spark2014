@@ -5,6 +5,7 @@
 
 --  Internal conversion services for AIP
 
+with Ada.Unchecked_Conversion;
 with System.Storage_Elements;
 
 package body AIP.Conversions is
@@ -28,5 +29,28 @@ package body AIP.Conversions is
    begin
       return Integer (A - B);
    end Diff;
+
+   ------------
+   -- Memcpy --
+   ------------
+
+   procedure Memcpy
+     (Dst : System.Address;
+      Src : System.Address;
+      Len : Integer)
+   is
+      type mem is array (Integer) of Character;
+      type memptr is access mem;
+      function to_memptr is
+        new Ada.Unchecked_Conversion (System.Address, memptr);
+      dst_p : constant memptr := to_memptr (Dst);
+      src_p : constant memptr := to_memptr (Src);
+   begin
+      if Len > 0 then
+         for J in 0 .. Len - 1 loop
+            dst_p (J) := src_p (J);
+         end loop;
+      end if;
+   end Memcpy;
 
 end AIP.Conversions;

@@ -18,4 +18,13 @@ package AIP.Conversions is
    function Diff (A : System.Address; B : System.Address) return Integer;
    --  Return A - B
 
+   procedure Memcpy
+     (Dst : System.Address;
+      Src : System.Address;
+      Len : Integer);
+   pragma Export (C, Memcpy, "aip_memcpy");
+   --  Copies N storage units from area starting at Src to area starting at
+   --  Dest. The memory areas must not overlap, or the result of this call is
+   --  undefined.
+
 end AIP.Conversions;

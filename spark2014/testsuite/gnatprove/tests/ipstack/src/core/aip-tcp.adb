@@ -63,6 +63,9 @@ is
       SND_WL2  : AIP.M32_T; --  Segment ack number for last window update
       ISS      : AIP.M32_T; --  Initial send sequence number
 
+      NSS      : AIP.M32_T; --  Next send sequence number
+      SND_BUF  : AIP.M32_T; --  Available send buffer room
+
       Dup_Acks : AIP.U8_T;  --  Consecutive duplicated acks
 
       --  Receive sequence variables
@@ -137,6 +140,9 @@ is
                                     SND_WL1        => 0,
                                     SND_WL2        => 0,
                                     ISS            => 0,
+
+                                    NSS            => 0,
+                                    SND_BUF        => Config.TCP_SND_BUF,
 
                                     Dup_Acks       => 0,
 
@@ -273,6 +279,18 @@ is
    --  appropriate PCB lists. Verifies that PCB is not already in that State,
    --  and that the transition is legal.
 
+   --  procedure TCP_Segment_For
+   --    (Ptr  : System.Address;
+   --     Len  : AIP.U16_T;
+   --     Copy : Boolean;
+   --     Tbuf : out Buffers.Buffer_Id);
+   --  Allocate a packet (segment) suitable for the TCP transmission of Len
+   --  bytes of Data starting at Ptr. Copy controls whether data needs to be
+   --  copied within buffer space or if we just keep a reference to it.
+   --  Header space is allocated for all the protocol layers downstream,
+   --  without options. Packet_Info is set to designate the TCP header, and
+   --  Payload designates the data.
+
    --  procedure TCP_Send_Segment
    --  (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
    --  Helper for TCP_Output. Send segment held in Tbuf over IP for PCB.
@@ -347,6 +365,8 @@ is
       Src_IP := IPCBs (PCB).Local_IP;
       Dst_IP := IPCBs (PCB).Remote_IP;
 
+      --  ??? Verify correctness for both Data and Ref possible segments.
+
       --  Fetch the TCP header address from Packet_Info, then set the payload
       --  pointer to designate that for checksum computation and IP processing
       --  downstream.
@@ -358,11 +378,11 @@ is
       --  size.
 
       TCPH.Set_TCPH_Ack_Num (Thdr, TPCBs (PCB).RCV_NXT);
-      TCPH.Set_TCPH_Window  (Thdr, 2048); -- ??? fetch/compute this
+      TCPH.Set_TCPH_Window  (Thdr, AIP.U16_T (TPCBs (PCB).RCV_WND));
 
       --  Start retransmission timer if need be
 
-      null; -- ??? how are these handled
+      null; -- ??? implement me
 
       --  Compute checksum and pass down to IP, assuming the current payload
       --  pointer designates the TCP header.
@@ -465,8 +485,8 @@ is
 
          --  Now prepare and send current segment.
 
-         --  We always piggyback an ACK number in Send_Segment but only really
-         --  ACK when not in SYN_SENT state.
+         --  We always piggyback an ACK number in Send_Segment but only (and
+         --  always) really ACK when not in SYN_SENT state.
 
          if TPCBs (PCB).State /= Syn_Sent then
             TCPH.Set_TCPH_Ack (Thdr, 1);
@@ -954,21 +974,6 @@ is
       --  TBD???
    end TCP_Send_Rst;
 
-   ----------------------
-   -- TCP_Send_Control --
-   ----------------------
-
-   procedure TCP_Send_Control
-     (PCB : PCBs.PCB_Id;
-      Syn : Boolean;
-      Ack : Boolean;
-      Err : out AIP.Err_T)
-   is
-   begin
-      null;
-      --  TBD???
-   end TCP_Send_Control;
-
    ---------------
    -- TCP_Udata --
    ---------------
@@ -1150,6 +1155,170 @@ is
       null; --  TBD??
    end TCP_Accepted;
 
+   ---------------------
+   -- TCP_Segment_For --
+   ---------------------
+
+   procedure TCP_Data_Segment_For
+     (Ptr  : System.Address;
+      Len  : AIP.U16_T;
+      Tbuf : out Buffers.Buffer_Id)
+   is
+      Err : AIP.Err_T;
+   begin
+      --  Allocate one data buffer to hold user data + protocol headers,
+      --  memorize the TCP header location and copy data at payload addr
+
+      Buffers.Buffer_Alloc
+        (Size   => Len,
+         Offset => Inet.HLEN_To (Inet.TRANSPORT_LAYER),
+         Kind   => Buffers.SPLIT_BUF,
+         Buf    => Tbuf);
+
+      if Tbuf /= Buffers.NOBUF then
+
+         Buffers.Buffer_Header (Tbuf, TCPH.TCP_Header_Size / 8, Err);
+         Buffers.Set_Packet_Info (Tbuf, Buffers.Buffer_Payload (Tbuf));
+         Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Header_Size / 8, Err);
+
+         Conversions.Memcpy
+           (Dst => Buffers.Buffer_Payload (Tbuf), Src => Ptr, Len => Len);
+      end if;
+   end TCP_Data_Segment_For;
+
+   procedure TCP_Ref_Segment_For
+     (Ptr  : System.Address;
+      Len  : AIP.U16_T;
+      Tbuf : out Buffers.Buffer_Id)
+   is
+      Hbuf : Buffers.Buffer_Id;
+      --  Separate buffer for protocol headers
+
+   begin
+      --  Allocate one ref buffer to reference the user data, a distinct
+      --  one for protocol headers. Chain them together and memorize the
+      --  TCP header address.
+
+      Buffers.Ref_Buffer_Alloc
+        (Size     => Len,
+         Offset   => 0,
+         Data_Ref => Ptr,
+         Buf      => Tbuf);
+
+      if Tbuf /= Buffers.NOBUF then
+
+         Buffers.Buffer_Alloc
+           (Size   => TCPH.TCP_Header_Size / 8,
+            Offset => Inet.HLEN_To (Inet.IP_LAYER),
+            Kind   => Buffers.SPLIT_BUF,
+            Buf    => Hbuf);
+
+         if Hbuf = Buffers.NOBUF then
+            Buffers.Buffer_Blind_Free (Tbuf);
+            Tbuf := Buffers.NOBUF;
+         else
+            Buffers.Buffer_Chain (Tail => Tbuf, Head => Hbuf);
+            Tbuf := Hbuf;
+            Buffers.Set_Packet_Info (Tbuf, Buffers.Buffer_Payload (Hbuf));
+         end if;
+      end if;
+   end TCP_Ref_Segment_For;
+
+   procedure TCP_Segment_For
+     (Ptr  : System.Address;
+      Len  : AIP.U16_T;
+      Copy : Boolean;
+      Tbuf : out Buffers.Buffer_Id)
+   is
+   begin
+      pragma Assert (Len > 0);
+
+      if Copy then
+         TCP_Data_Segment_For (Ptr, Len, Tbuf);
+      else
+         TCP_Ref_Segment_For (Ptr, Len, Tbuf);
+      end if;
+   end TCP_Segment_For;
+
+   -----------------
+   -- TCP_Enqueue --
+   -----------------
+
+   procedure TCP_Enqueue
+     (PCB  : PCBs.PCB_Id;
+      Data : System.Address;
+      Len  : AIP.M32_T;
+      Copy : Boolean;
+      Push : Boolean;
+      Syn  : Boolean;
+      Ack  : Boolean;
+      Err  : out AIP.Err_T)
+   is
+
+      Left  : AIP.M32_T;
+      Ptr   : System.Address;
+      Seqno : AIP.M32_T;
+      Seglen : AIP.U16_T;
+      Qhead, Qtail : Buffers.Buffer_Id;
+      Tbuf : Buffers.Buffer_Id;
+
+   begin
+
+      Err := AIP.NOERR;
+
+      if Len > TPCBs (PCB).SND_BUF then
+         Err := AIP.ERR_MEM;
+      else
+
+         --  Cut DATA into segment buffers according to MSS
+
+         Left := Len;
+         Ptr  := Data;
+
+         Seqno := TPCBs (PCB).NSS;
+
+         Qhead := Buffers.NOBUF;
+         Qtail := Buffers.NOBUF;
+
+         while Left > 0 loop
+
+            if Left > AIP.M32_T (TPCBs (PCB).Remote_MSS) then
+               Seglen := TPCBs (PCB).Remote_MSS;
+            else
+               Seglen := U16_T (Left);
+            end if;
+
+            TCP_Segment_For (Ptr, Seglen, Copy, Tbuf);
+
+            Left := Left - AIP.M32_T (Seglen);
+         end loop;
+
+         --  ??? To be continued
+      end if;
+
+   end TCP_Enqueue;
+
+   ----------------------
+   -- TCP_Send_Control --
+   ----------------------
+
+   procedure TCP_Send_Control
+     (PCB : PCBs.PCB_Id;
+      Syn : Boolean;
+      Ack : Boolean;
+      Err : out AIP.Err_T)
+   is
+   begin
+      TCP_Enqueue (PCB  => PCB,
+                   Data => System.Null_Address,
+                   Len  => 0,
+                   Copy => True,
+                   Push => False,
+                   Syn  => Syn,
+                   Ack  => Ack,
+                   Err  => Err);
+   end TCP_Send_Control;
+
    -----------------
    -- TCP_Connect --
    -----------------
@@ -1173,18 +1342,26 @@ is
    procedure TCP_Write
      (PCB   : PCBs.PCB_Id;
       Data  : System.Address;
-      Len   : AIP.U16_T;
-      Flags : AIP.U8_T;
+      Len   : AIP.M32_T;
+      Copy  : Boolean;
+      Push  : Boolean;
       Err   : out AIP.Err_T)
    is
    begin
       case TPCBs (PCB).State is
          when Established | Close_Wait | Syn_Sent | Syn_Received =>
-            if Len > 0 then
-               null;
-               --  ??? TCP_Enqueue (bla) still unclear on the API here
+            if Len = 0 then
+               Err := AIP.NOERR;
+            else
+               TCP_Enqueue (PCB  => PCB,
+                            Data => Data,
+                            Len  => Len,
+                            Copy => Copy,
+                            Push => Push,
+                            Syn  => False,
+                            Ack  => False,
+                            Err  => Err);
             end if;
-            Err := AIP.NOERR;
          when others =>
             Err := AIP.ERR_USE;
       end case;
@@ -1365,6 +1542,8 @@ is
               Local_Port  => IPCBs (PCB).Local_Port,
               Remote_IP   => IPCBs (PCB).Remote_IP,
               Remote_Port => IPCBs (PCB).Remote_Port);
+
+         TPCBs (PCB).NSS := TPCBs (PCB).ISS;
 
          --  Set MSS using MTU of next hop interface, accounting for IP and TCP
          --  headers, and provisioning for 20 bytes of options.
@@ -1730,7 +1909,7 @@ is
 
                      --  6. Check URG bit
 
-                     if TCPH.TCPH_Urg (Seg.Thdr)
+                     if TCPH.TCPH_Urg (Seg.Thdr) = 1
                        and then Seq_Lt (TPCBs (PCB).RCV_UP,
                                         TCPH.TCPH_Urgent_Ptr (Seg.Thdr))
                      then
@@ -2088,22 +2267,6 @@ is
 
       Buffers.Buffer_Blind_Free (Buf);
    end TCP_Input;
-
-   -----------------
-   -- TCP_Enqueue --
-   -----------------
-
-   procedure TCP_Enqueue
-     (PCB : PCBs.PCB_Id;
-      Buf : Buffers.Buffer_Id;
-      Syn : Boolean;
-      Ack : Boolean;
-      Err : out AIP.Err_T)
-   is
-   begin
-      null;
-      --  TBD???
-   end TCP_Enqueue;
 
    --------------------
    -- TCP_Fast_Timer --

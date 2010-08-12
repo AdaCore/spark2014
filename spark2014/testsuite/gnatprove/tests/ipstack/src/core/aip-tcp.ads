@@ -140,8 +140,10 @@ is
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
    --  rejected, as indicated by the ERR argument. This function returns
-   --  ERR_MEM if no memory is available for enqueueing the SYN segment, or
-   --  NOERR otherwise.
+   --
+   --  ERR_MEM if no memory is available for enqueueing the SYN segment,
+   --
+   --  NOERR   if all went well.
 
    ----------------------
    -- Sending TCP data --
@@ -154,21 +156,26 @@ is
    procedure TCP_Write
      (PCB   : PCBs.PCB_Id;
       Data  : System.Address;
-      Len   : AIP.U16_T;
-      Flags : AIP.U8_T;
+      Len   : AIP.M32_T;
+      Copy  : Boolean;
+      Push  : Boolean;
       Err   : out AIP.Err_T);
-   --  Enqueue DATA/LEN for output through PCB. Flags is a combination of the
-   --  TCP_WRITE constants below. If all goes well, this function returns
-   --  NOERR. This function will fail and return ERR_MEM if the length of the
-   --  data exceeds the current send buffer size (as advertised by TCP_Sndbuf)
-   --  or if the length of the outgoing segments queue is larger than the
-   --  configured upper limit. On ERR_MEM, the application should wait until
-   --  some of the currently enqueued data has been successfully received by
-   --  the other host and try again.
-
-   TCP_WRITE_NOFLAG : constant := 16#00#;
-   TCP_WRITE_COPY   : constant := 16#01#;  --  Copy data into ipstack memory
-   TCP_WRITE_MORE   : constant := 16#02#;  --  Set PSH on last segment sent
+   --  Enqueue DATA/LEN for output through PCB. COPY controls whether data is
+   --  copied into AIP's memory before processing, or whether it only gets
+   --  referenced from there, in which case clients should not modify it until
+   --  it is known to have been acknowledged by the receiver.  PUSH controls
+   --  whether PSH should be sent on the last TCP segment sent.
+   --
+   --  ERR_MEM if the length of the data exceeds the current send buffer size
+   --          (as advertised by TCP_Sndbuf) or if the length of the outgoing
+   --          segments queue is larger than the configured upper limit. The
+   --          application should wait until some of the currently enqueued
+   --          data has been successfully received and try again.
+   --
+   --  ERR_USE if the TCP connection is in an inappropriate state, that is
+   --          not one of Established | Close_Wait | Syn_Sent | Syn_Received.
+   --
+   --  NOERR   if all went well.
 
    function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
    --  Room available for output data queuing.
@@ -286,17 +293,6 @@ private
    procedure TCP_Free (PCB : PCBs.PCB_Id);
    --# global in out State;
    --  Destroy PCB and mark it as unallocated
-
-   procedure TCP_Enqueue
-     (PCB : PCBs.PCB_Id;
-      Buf : Buffers.Buffer_Id;
-      Syn : Boolean;
-      Ack : Boolean;
-      Err : out AIP.Err_T);
-   --  Main TCP output routine: output one or more segment, whose data are in
-   --  Buf (which may be NOBUF to force the emission of an empty segment
-   --  carrying only control information). Syn and Ack set the respective
-   --  TCP flags.
 
    procedure TCP_Output (PCB : PCBs.PCB_Id);
    --# global in State; in out Buffers.State;
