@@ -25,6 +25,9 @@
 
 package body Why.Atree.Tables is
 
+   procedure Initialize;
+   --  Initialize this package
+
    ---------
    -- "=" --
    ---------
@@ -59,6 +62,36 @@ package body Why.Atree.Tables is
       return Result;
    end "=";
 
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+      use Node_Tables;
+
+      Empty_Node : constant Why_Node (W_Unused_At_Start)
+                     := (Kind => W_Unused_At_Start,
+                         Ada_Node => Empty,
+                         Link => Why_Empty);
+   begin
+      Append (Node_Table, Empty_Node);
+      pragma Assert (To_Index (Last (Node_Table)) = Why_Empty);
+   end Initialize;
+
+   --------------
+   -- New_List --
+   --------------
+
+   function New_List return Why_Node_List is
+      use Node_List_Tables;
+      use Node_Lists;
+
+      New_Item : List;
+   begin
+      Append (List_Table, New_Item);
+      return To_Index (Last (List_Table));
+   end New_List;
+
    ------------------
    -- New_Why_Node --
    ------------------
@@ -70,4 +103,6 @@ package body Why.Atree.Tables is
       return To_Index (Last (Node_Table));
    end New_Why_Node_Id;
 
+begin
+   Initialize;
 end Why.Atree.Tables;

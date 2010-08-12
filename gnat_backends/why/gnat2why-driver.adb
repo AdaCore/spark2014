@@ -31,9 +31,10 @@ with Treepr;
 with Types; use Types;
 with Namet; use Namet;
 
-with Why.Types; use Why.Types;
+with Why.Types;          use Why.Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Sprint; use Why.Atree.Sprint;
+with Why.Atree.Sprint;   use Why.Atree.Sprint;
+with Why.Atree.Tables;   use Why.Atree.Tables;
 
 package body Gnat2Why.Driver is
 
@@ -98,7 +99,7 @@ package body Gnat2Why.Driver is
          T := New_Type (Empty,
                         Why_Empty,
                         Why_Empty,
-                        Why_Empty_List,
+                        New_List,
                         I);
          Sprint_Why_Node (T);
       end;

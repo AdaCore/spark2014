@@ -35,6 +35,5 @@ package Why.Types is
    type Why_Node_List is new Int range 0 .. Int'Last;
 
    Why_Empty      : constant := 0;
-   Why_Empty_List : constant := 0;
 
 end Why.Types;

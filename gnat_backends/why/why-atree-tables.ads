@@ -58,6 +58,12 @@ package Why.Atree.Tables is
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
 
+   function Is_Empty (List_Id : Why_Node_List) return Boolean;
+
+   function New_List return Why_Node_List;
+   pragma Postcondition (Is_Empty (New_List'Result));
+   --  Allocate a new empty list in table and return its Id
+
 private
    --  These tables are used as storage pools for nodes and lists.
    --  They could ultimately be implemented using the containers
@@ -95,5 +101,8 @@ private
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List is
       (Node_List_Tables.Element (List_Table, List_Id));
+
+   function Is_Empty (List_Id : Why_Node_List) return Boolean is
+      (Node_Lists.Is_Empty (Get_List (List_Id)));
 
 end Why.Atree.Tables;
