@@ -61,6 +61,14 @@ package Outputs is
    --  Add a new line to output O; no trailing spaces are added
    --  even if the identation level is greater than zero.
 
+   procedure Print_Box
+     (O               : in out Output_Record;
+      Subprogram_Name : Wide_String);
+   --  Print a comment box of the form:
+   --  ---------------------
+   --  -- Subprogram_Name --
+   --  ---------------------
+
 private
 
    type Output_Record is limited record

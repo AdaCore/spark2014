@@ -32,5 +32,6 @@ package Xtree_Traversal is
    --  Print kind-specific traversal operations
 
    procedure Print_Traverse_Body (O : in out Output_Record);
+   --  Print a body implementing a recursive traversal of the Why syntax tree
 
 end Xtree_Traversal;

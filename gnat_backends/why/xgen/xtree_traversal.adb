@@ -83,6 +83,82 @@ package body Xtree_Traversal is
       PL (O, "end if;");
    end End_If;
 
+   ----------------------------------
+   -- Print_Call_To_Traversal_Proc --
+   ----------------------------------
+
+   procedure Print_Call_To_Traversal_Proc
+     (O              : in out Output_Record;
+      Traversal_Proc : Wide_String;
+      Kind           : Why_Node_Kind;
+      FI             : Field_Info) is
+   begin
+      PL (O, Traversal_Proc);
+      PL (O, "  (" & State_Param & ",");
+      PL (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
+   end Print_Call_To_Traversal_Proc;
+
+   -----------------------------------------
+   -- Print_Kind_Traversal_Implementation --
+   -----------------------------------------
+
+   procedure Print_Kind_Traversal_Implementation
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind)
+   is
+      use Node_Lists;
+
+      First_Child : Boolean := True;
+
+      procedure Print_Sub_Traversal (Position : Cursor);
+
+      -------------------------
+      -- Print_Sub_Traversal --
+      -------------------------
+
+      procedure Print_Sub_Traversal (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+      begin
+         if Is_Why_Id (FI) then
+            if First_Child then
+               NL (O);
+               First_Child := False;
+            end if;
+
+            if Is_List (FI) then
+               Print_Call_To_Traversal_Proc (O, "Traverse_List", Kind, FI);
+            else
+               Print_Call_To_Traversal_Proc (O, "Traverse", Kind, FI);
+            end if;
+         end if;
+      end Print_Sub_Traversal;
+
+   begin
+      PL (O, Traversal_Pre_Op (Kind)
+          & " (" & State_Param & ", " & Node_Param & ");");
+
+      NL (O);
+      Reset_Return_If_Control (O, Abandon_Children);
+      NL (O);
+      Return_If_Control (O, Abandon_Siblings);
+
+      if Has_Variant_Part (Kind) then
+         Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
+      end if;
+
+      NL (O);
+      Return_If_Control (O, Terminate_Immediately);
+      NL (O);
+
+      PL (O, Traversal_Post_Op (Kind)
+          & " (" & State_Param & ", " & Node_Param & ");");
+
+      NL (O);
+      Reset_If_Control (O, Abandon_Siblings);
+      NL (O);
+      Return_If_Control (O, Terminate_Immediately);
+   end Print_Kind_Traversal_Implementation;
+
    -------------------------------------
    -- Print_Traversal_Op_Declarations --
    -------------------------------------
@@ -147,82 +223,6 @@ package body Xtree_Traversal is
       Relative_Indent (O, -3);
       P (O, "end case;");
    end Print_Traverse_Body;
-
-   -----------------------------------------
-   -- Print_Kind_Traversal_Implementation --
-   -----------------------------------------
-
-   procedure Print_Kind_Traversal_Implementation
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind)
-   is
-      use Node_Lists;
-
-      First_Child : Boolean := True;
-
-      procedure Print_Sub_Traversal (Position : Cursor);
-
-      -------------------------
-      -- Print_Sub_Traversal --
-      -------------------------
-
-      procedure Print_Sub_Traversal (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-      begin
-         if Is_Why_Id (FI) then
-            if First_Child then
-               NL (O);
-               First_Child := False;
-            end if;
-
-            if Is_List (FI) then
-               Print_Call_To_Traversal_Proc (O, "Traverse_List", Kind, FI);
-            else
-               Print_Call_To_Traversal_Proc (O, "Traverse", Kind, FI);
-            end if;
-         end if;
-      end Print_Sub_Traversal;
-
-   begin
-      PL (O, Traversal_Pre_Op (Kind)
-          & " (" & State_Param & ", " & Node_Param & ");");
-
-      NL (O);
-      Reset_Return_If_Control (O, Abandon_Children);
-      NL (O);
-      Return_If_Control (O, Abandon_Siblings);
-
-      if Has_Variant_Part (Kind) then
-         Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
-      end if;
-
-      NL (O);
-      Return_If_Control (O, Terminate_Immediately);
-      NL (O);
-
-      PL (O, Traversal_Post_Op (Kind)
-          & " (" & State_Param & ", " & Node_Param & ");");
-
-      NL (O);
-      Reset_If_Control (O, Abandon_Siblings);
-      NL (O);
-      Return_If_Control (O, Terminate_Immediately);
-   end Print_Kind_Traversal_Implementation;
-
-   ----------------------------------
-   -- Print_Call_To_Traversal_Proc --
-   ----------------------------------
-
-   procedure Print_Call_To_Traversal_Proc
-     (O              : in out Output_Record;
-      Traversal_Proc : Wide_String;
-      Kind           : Why_Node_Kind;
-      FI             : Field_Info) is
-   begin
-      PL (O, Traversal_Proc);
-      PL (O, "  (" & State_Param & ",");
-      PL (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
-   end Print_Call_To_Traversal_Proc;
 
    -------------------
    -- Reset_Control --

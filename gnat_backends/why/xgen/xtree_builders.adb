@@ -53,10 +53,6 @@ package body Xtree_Builders is
       Kind : Why_Node_Kind);
    --  Print the handled sequence of statements that implements this builder
 
-   procedure Print_Box
-     (O               : in out Output_Record;
-      Subprogram_Name : Wide_String);
-
    --------------------------
    -- Print_Builder_Bodies --
    --------------------------
@@ -111,31 +107,6 @@ package body Xtree_Builders is
          end if;
       end loop;
    end Print_Builder_Declarations;
-
-   ---------------
-   -- Print_Box --
-   ---------------
-
-   procedure Print_Box
-     (O               : in out Output_Record;
-      Subprogram_Name : Wide_String)
-   is
-      procedure Print_Line;
-
-      procedure Print_Line is
-      begin
-         P (O, "---");
-         for J in Subprogram_Name'Range loop
-            P (O, "-");
-         end loop;
-         PL (O, "---");
-      end Print_Line;
-
-   begin
-      Print_Line;
-      PL (O, "-- " & Subprogram_Name & " --");
-      Print_Line;
-   end Print_Box;
 
    -------------------------------
    -- Print_Builder_Declaration --
