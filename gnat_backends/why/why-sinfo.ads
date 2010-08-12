@@ -88,7 +88,7 @@ package Why.Sinfo is
       -------------------------------------
 
       W_Array_Type,
-      --  <array_type> ::= <primitive_type> array
+      --  <array_type> ::= <primitive_type> 'array'
 
       W_Ref_Type,
       --  <ref_type> ::= <primitive_type> 'ref'
