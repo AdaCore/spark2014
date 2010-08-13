@@ -166,6 +166,8 @@ package body Why.Atree.Sprint is
             Traverse (State, Node);
             P (O, " ");
          end;
+
+         Next (Position);
       end loop;
 
       Traverse
@@ -738,20 +740,8 @@ package body Why.Atree.Sprint is
       Node  : W_True_Literal_Pred_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "true");
    end True_Literal_Pred_Pre_Op;
-
-   -------------------------------
-   -- True_Literal_Pred_Post_Op --
-   -------------------------------
-
-   procedure True_Literal_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_True_Literal_Pred_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end True_Literal_Pred_Post_Op;
 
    -------------------------------
    -- False_Literal_Pred_Pre_Op --
@@ -762,52 +752,8 @@ package body Why.Atree.Sprint is
       Node  : W_False_Literal_Pred_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "false");
    end False_Literal_Pred_Pre_Op;
-
-   --------------------------------
-   -- False_Literal_Pred_Post_Op --
-   --------------------------------
-
-   procedure False_Literal_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_False_Literal_Pred_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end False_Literal_Pred_Post_Op;
-
-   ---------------------------------
-   -- Predicate_Identifier_Pre_Op --
-   ---------------------------------
-
-   procedure Predicate_Identifier_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Identifier_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Predicate_Identifier_Get_Name (Node));
-   end Predicate_Identifier_Pre_Op;
-
-   ----------------------------------
-   -- Predicate_Identifier_Post_Op --
-   ----------------------------------
-
-   procedure Predicate_Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Identifier_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Predicate_Identifier_Get_Name (Node));
-   end Predicate_Identifier_Post_Op;
 
    -------------------------------
    -- Predicate_Instance_Pre_Op --
@@ -818,34 +764,16 @@ package body Why.Atree.Sprint is
       Node  : W_Predicate_Instance_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Predicate_Instance_Get_Name (Node));
-      --  Traverse_List
-      --    (State,
-      --     Predicate_Instance_Get_Parameters (Node));
+      Traverse
+        (State,
+         Predicate_Instance_Get_Name (Node));
+      P (O, " (");
+      Traverse_List
+        (State,
+         Predicate_Instance_Get_Parameters (Node));
+      P (O, " )");
+      State.Control := Abandon_Children;
    end Predicate_Instance_Pre_Op;
-
-   --------------------------------
-   -- Predicate_Instance_Post_Op --
-   --------------------------------
-
-   procedure Predicate_Instance_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Instance_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Predicate_Instance_Get_Name (Node));
-      --  Traverse_List
-      --    (State,
-      --     Predicate_Instance_Get_Parameters (Node));
-   end Predicate_Instance_Post_Op;
 
    --------------------------
    -- Related_Terms_Pre_Op --
@@ -855,53 +783,27 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Related_Terms_Id)
    is
+      Left   : constant W_Term_Id := Related_Terms_Get_Left (Node);
+      Op     : constant W_Relation_Id := Related_Terms_Get_Op (Node);
+      Right  : constant W_Term_Id := Related_Terms_Get_Right (Node);
+      Op2    : constant W_Relation_OId := Related_Terms_Get_Op2 (Node);
+      Right2 : constant W_Term_Id := Related_Terms_Get_Right2 (Node);
    begin
-      raise Not_Implemented;
+      Traverse (State, Left);
+      P (O, " ");
+      Traverse (State, Op);
+      P (O, " ");
+      Traverse (State, Right);
 
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Op (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Right (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Op2 (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Right2 (Node));
+      if Op2 /= Why_Empty then
+         P (O, " ");
+         Traverse (State, Op2);
+         P (O, " ");
+         Traverse (State, Right2);
+      end if;
+
+      State.Control := Abandon_Children;
    end Related_Terms_Pre_Op;
-
-   ---------------------------
-   -- Related_Terms_Post_Op --
-   ---------------------------
-
-   procedure Related_Terms_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Related_Terms_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Op (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Right (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Op2 (Node));
-      --  Traverse
-      --    (State,
-      --     Related_Terms_Get_Right2 (Node));
-   end Related_Terms_Post_Op;
 
    ------------------------
    -- Implication_Pre_Op --
@@ -912,34 +814,15 @@ package body Why.Atree.Sprint is
       Node  : W_Implication_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Implication_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Implication_Get_Right (Node));
+      Traverse
+        (State,
+         Implication_Get_Left (Node));
+      P (O, " -> ");
+      Traverse
+        (State,
+         Implication_Get_Right (Node));
+      State.Control := Abandon_Children;
    end Implication_Pre_Op;
-
-   -------------------------
-   -- Implication_Post_Op --
-   -------------------------
-
-   procedure Implication_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Implication_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Implication_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Implication_Get_Right (Node));
-   end Implication_Post_Op;
 
    ------------------------
    -- Equivalence_Pre_Op --
@@ -950,34 +833,15 @@ package body Why.Atree.Sprint is
       Node  : W_Equivalence_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Equivalence_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Equivalence_Get_Right (Node));
+      Traverse
+        (State,
+         Equivalence_Get_Left (Node));
+      P (O, " <-> ");
+      Traverse
+        (State,
+         Equivalence_Get_Right (Node));
+      State.Control := Abandon_Children;
    end Equivalence_Pre_Op;
-
-   -------------------------
-   -- Equivalence_Post_Op --
-   -------------------------
-
-   procedure Equivalence_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Equivalence_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Equivalence_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Equivalence_Get_Right (Node));
-   end Equivalence_Post_Op;
 
    ------------------------
    -- Disjonction_Pre_Op --
@@ -988,34 +852,15 @@ package body Why.Atree.Sprint is
       Node  : W_Disjonction_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Disjonction_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Disjonction_Get_Right (Node));
+      Traverse
+        (State,
+         Disjonction_Get_Left (Node));
+      P (O, " or ");
+      Traverse
+        (State,
+         Disjonction_Get_Right (Node));
+      State.Control := Abandon_Children;
    end Disjonction_Pre_Op;
-
-   -------------------------
-   -- Disjonction_Post_Op --
-   -------------------------
-
-   procedure Disjonction_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Disjonction_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Disjonction_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Disjonction_Get_Right (Node));
-   end Disjonction_Post_Op;
 
    ------------------------
    -- Conjonction_Pre_Op --
@@ -1026,34 +871,15 @@ package body Why.Atree.Sprint is
       Node  : W_Conjonction_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Conjonction_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Conjonction_Get_Right (Node));
+      Traverse
+        (State,
+         Conjonction_Get_Left (Node));
+      P (O, " and ");
+      Traverse
+        (State,
+         Conjonction_Get_Right (Node));
+      State.Control := Abandon_Children;
    end Conjonction_Pre_Op;
-
-   -------------------------
-   -- Conjonction_Post_Op --
-   -------------------------
-
-   procedure Conjonction_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Conjonction_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Conjonction_Get_Left (Node));
-      --  Traverse
-      --    (State,
-      --     Conjonction_Get_Right (Node));
-   end Conjonction_Post_Op;
 
    ---------------------
    -- Negation_Pre_Op --
@@ -1064,28 +890,8 @@ package body Why.Atree.Sprint is
       Node  : W_Negation_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Negation_Get_Operand (Node));
+      P (O, "not ");
    end Negation_Pre_Op;
-
-   ----------------------
-   -- Negation_Post_Op --
-   ----------------------
-
-   procedure Negation_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Negation_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Negation_Get_Operand (Node));
-   end Negation_Post_Op;
 
    -----------------------------
    -- Conditional_Pred_Pre_Op --
@@ -1095,41 +901,36 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Conditional_Pred_Id)
    is
+      Condition : constant W_Term_Id :=
+                    Conditional_Pred_Get_Condition (Node);
+      Then_Part : constant W_Predicate_Id :=
+                    Conditional_Pred_Get_Then_Part (Node);
+      Else_Part : constant W_Predicate_Id :=
+                    Conditional_Pred_Get_Else_Part (Node);
+      Has_Elsif : constant Boolean :=
+                   Get_Kind (Else_Part) = W_Conditional_Pred;
    begin
-      raise Not_Implemented;
+      P (O, "if ");
+      Traverse (State, Condition);
+      PL (O, " then");
+      Relative_Indent (O, 1);
+      Traverse (State, Then_Part);
+      Relative_Indent (O, -1);
+      P (O, " else");
 
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Condition (Node));
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Then_Part (Node));
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Else_Part (Node));
+      if not Has_Elsif then
+         NL (O);
+         Relative_Indent (O, 1);
+      end if;
+
+      Traverse (State, Else_Part);
+
+      if not Has_Elsif then
+         Relative_Indent (O, -1);
+      end if;
+
+      State.Control := Abandon_Children;
    end Conditional_Pred_Pre_Op;
-
-   ------------------------------
-   -- Conditional_Pred_Post_Op --
-   ------------------------------
-
-   procedure Conditional_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Conditional_Pred_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Condition (Node));
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Then_Part (Node));
-      --  Traverse
-      --    (State,
-      --     Conditional_Pred_Get_Else_Part (Node));
-   end Conditional_Pred_Post_Op;
 
    -------------------------
    -- Binding_Pred_Pre_Op --
@@ -1139,41 +940,33 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Binding_Pred_Id)
    is
+      Name             : constant W_Identifier_Id :=
+                           Binding_Pred_Get_Name (Node);
+      Def              : constant W_Term_Id :=
+                           Binding_Pred_Get_Def (Node);
+      Context          : constant W_Predicate_Id :=
+                           Binding_Pred_Get_Context (Node);
+      Binding_Sequence : constant Boolean :=
+                           Get_Kind (Context) = W_Binding_Pred;
    begin
-      raise Not_Implemented;
+      P (O, "let ");
+      Traverse (State, Name);
+      P (O, " = ");
+      Traverse (State, Def);
+      PL (O, " in");
 
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Def (Node));
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Context (Node));
+      if not Binding_Sequence then
+         Relative_Indent (O, 1);
+      end if;
+
+      Traverse (State, Context);
+
+      if not Binding_Sequence then
+         Relative_Indent (O, -1);
+      end if;
+
+      State.Control := Abandon_Children;
    end Binding_Pred_Pre_Op;
-
-   --------------------------
-   -- Binding_Pred_Post_Op --
-   --------------------------
-
-   procedure Binding_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Pred_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Def (Node));
-      --  Traverse
-      --    (State,
-      --     Binding_Pred_Get_Context (Node));
-   end Binding_Pred_Post_Op;
 
    ------------------------------
    -- Universal_Quantif_Pre_Op --
@@ -1183,47 +976,58 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Universal_Quantif_Id)
    is
-   begin
-      raise Not_Implemented;
+      use Node_Lists;
 
-      --  Traverse_List
-      --    (State,
-      --     Universal_Quantif_Get_Variables (Node));
-      --  Traverse
-      --    (State,
-      --     Universal_Quantif_Get_Var_Type (Node));
-      --  Traverse_List
-      --    (State,
-      --     Universal_Quantif_Get_Triggers (Node));
-      --  Traverse
-      --    (State,
-      --     Universal_Quantif_Get_Pred (Node));
+      Variables       : constant List :=
+                          Get_List (Universal_Quantif_Get_Variables (Node));
+      Position        : Cursor := First (Variables);
+      Var_Type        : constant W_Primitive_Type_Id :=
+                          Universal_Quantif_Get_Var_Type (Node);
+      Triggers        : constant W_Triggers_OId :=
+                          Universal_Quantif_Get_Triggers (Node);
+      Pred            : constant W_Predicate_Id :=
+                          Universal_Quantif_Get_Pred (Node);
+      Forall_Sequence : constant Boolean :=
+                          Get_Kind (Pred) = W_Universal_Quantif;
+   begin
+      P (O, "forall ");
+
+      while Position /= No_Element loop
+         declare
+            Node : constant W_Identifier_Id := Element (Position);
+         begin
+            Traverse (State, Node);
+
+            if Next (Position) /= No_Element then
+               P (O, ", ");
+            end if;
+         end;
+
+         Next (Position);
+      end loop;
+
+      P (O, " : ");
+      Traverse (State, Var_Type);
+
+      if Triggers /= Why_Empty then
+         P (O, " ");
+         Traverse (State, Triggers);
+      end if;
+
+      PL (O, ".");
+
+      if not Forall_Sequence then
+         Relative_Indent (O, 1);
+      end if;
+
+      Traverse (State, Pred);
+
+      if not Forall_Sequence then
+         Relative_Indent (O, -1);
+      end if;
+
+      State.Control := Abandon_Children;
    end Universal_Quantif_Pre_Op;
-
-   -------------------------------
-   -- Universal_Quantif_Post_Op --
-   -------------------------------
-
-   procedure Universal_Quantif_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Universal_Quantif_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Universal_Quantif_Get_Variables (Node));
-      --  Traverse
-      --    (State,
-      --     Universal_Quantif_Get_Var_Type (Node));
-      --  Traverse_List
-      --    (State,
-      --     Universal_Quantif_Get_Triggers (Node));
-      --  Traverse
-      --    (State,
-      --     Universal_Quantif_Get_Pred (Node));
-   end Universal_Quantif_Post_Op;
 
    --------------------------------
    -- Existential_Quantif_Pre_Op --
@@ -1233,41 +1037,50 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Existential_Quantif_Id)
    is
-   begin
-      raise Not_Implemented;
+      use Node_Lists;
 
-      --  Traverse_List
-      --    (State,
-      --     Existential_Quantif_Get_Variables (Node));
-      --  Traverse
-      --    (State,
-      --     Existential_Quantif_Get_Var_Type (Node));
-      --  Traverse
-      --    (State,
-      --     Existential_Quantif_Get_Pred (Node));
+      Variables       : constant List :=
+                          Get_List (Existential_Quantif_Get_Variables (Node));
+      Position        : Cursor := First (Variables);
+      Var_Type        : constant W_Primitive_Type_Id :=
+                          Existential_Quantif_Get_Var_Type (Node);
+      Pred            : constant W_Predicate_Id :=
+                          Existential_Quantif_Get_Pred (Node);
+      Exists_Sequence : constant Boolean :=
+                          Get_Kind (Pred) = W_Existential_Quantif;
+   begin
+      P (O, "exists ");
+
+      while Position /= No_Element loop
+         declare
+            Node : constant W_Identifier_Id := Element (Position);
+         begin
+            Traverse (State, Node);
+
+            if Next (Position) /= No_Element then
+               P (O, ", ");
+            end if;
+         end;
+
+         Next (Position);
+      end loop;
+
+      P (O, " : ");
+      Traverse (State, Var_Type);
+      PL (O, ".");
+
+      if not Exists_Sequence then
+         Relative_Indent (O, 1);
+      end if;
+
+      Traverse (State, Pred);
+
+      if not Exists_Sequence then
+         Relative_Indent (O, -1);
+      end if;
+
+      State.Control := Abandon_Children;
    end Existential_Quantif_Pre_Op;
-
-   ---------------------------------
-   -- Existential_Quantif_Post_Op --
-   ---------------------------------
-
-   procedure Existential_Quantif_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Existential_Quantif_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Existential_Quantif_Get_Variables (Node));
-      --  Traverse
-      --    (State,
-      --     Existential_Quantif_Get_Var_Type (Node));
-      --  Traverse
-      --    (State,
-      --     Existential_Quantif_Get_Pred (Node));
-   end Existential_Quantif_Post_Op;
 
    ----------------------------
    -- Named_Predicate_Pre_Op --
@@ -1278,34 +1091,15 @@ package body Why.Atree.Sprint is
       Node  : W_Named_Predicate_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Named_Predicate_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Predicate_Get_Pred (Node));
+      Traverse
+        (State,
+         Named_Predicate_Get_Name (Node));
+      P (O, " : ");
+      Traverse
+        (State,
+         Named_Predicate_Get_Pred (Node));
+      State.Control := Abandon_Children;
    end Named_Predicate_Pre_Op;
-
-   -----------------------------
-   -- Named_Predicate_Post_Op --
-   -----------------------------
-
-   procedure Named_Predicate_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Predicate_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Named_Predicate_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Named_Predicate_Get_Pred (Node));
-   end Named_Predicate_Post_Op;
 
    --------------------------------
    -- Protected_Predicate_Pre_Op --
@@ -1316,11 +1110,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Predicate_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Protected_Predicate_Get_Pred (Node));
+      P (O, "(");
    end Protected_Predicate_Pre_Op;
 
    ---------------------------------
@@ -1332,11 +1122,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Predicate_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Protected_Predicate_Get_Pred (Node));
+      P (O, ")");
    end Protected_Predicate_Post_Op;
 
    ---------------------
@@ -1347,29 +1133,30 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Triggers_Id)
    is
-   begin
-      raise Not_Implemented;
+      use Node_Lists;
 
-      --  Traverse_List
-      --    (State,
-      --     Triggers_Get_Triggers (Node));
+      Triggers : constant List :=
+                   Get_List (Triggers_Get_Triggers (Node));
+      Position : Cursor := First (Triggers);
+   begin
+      P (O, "[");
+      while Position /= No_Element loop
+         declare
+            Trigger : constant W_Trigger_Id := Element (Position);
+         begin
+            Traverse (State, Trigger);
+         end;
+
+         if Next (Position) /= No_Element then
+            P (O, " | ");
+         end if;
+
+         Next (Position);
+      end loop;
+      P (O, "]");
+
+      State.Control := Abandon_Children;
    end Triggers_Pre_Op;
-
-   ----------------------
-   -- Triggers_Post_Op --
-   ----------------------
-
-   procedure Triggers_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Triggers_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Triggers_Get_Triggers (Node));
-   end Triggers_Post_Op;
 
    --------------------
    -- Trigger_Pre_Op --
@@ -1379,29 +1166,28 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Trigger_Id)
    is
-   begin
-      raise Not_Implemented;
+      use Node_Lists;
 
-      --  Traverse_List
-      --    (State,
-      --     Trigger_Get_Terms (Node));
+      Terms    : constant List :=
+                   Get_List (Trigger_Get_Terms (Node));
+      Position : Cursor := First (Terms);
+   begin
+      while Position /= No_Element loop
+         declare
+            Term : constant W_Term_Id := Element (Position);
+         begin
+            Traverse (State, Term);
+         end;
+
+         if Next (Position) /= No_Element then
+            P (O, ", ");
+         end if;
+
+         Next (Position);
+      end loop;
+
+      State.Control := Abandon_Children;
    end Trigger_Pre_Op;
-
-   ---------------------
-   -- Trigger_Post_Op --
-   ---------------------
-
-   procedure Trigger_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Trigger_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Trigger_Get_Terms (Node));
-   end Trigger_Post_Op;
 
    -------------------
    -- Rel_Eq_Pre_Op --
@@ -1412,20 +1198,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Eq_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "=");
    end Rel_Eq_Pre_Op;
-
-   --------------------
-   -- Rel_Eq_Post_Op --
-   --------------------
-
-   procedure Rel_Eq_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Eq_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Eq_Post_Op;
 
    -------------------
    -- Rel_Ne_Pre_Op --
@@ -1436,20 +1210,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Ne_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "<>");
    end Rel_Ne_Pre_Op;
-
-   --------------------
-   -- Rel_Ne_Post_Op --
-   --------------------
-
-   procedure Rel_Ne_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Ne_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Ne_Post_Op;
 
    -------------------
    -- Rel_Lt_Pre_Op --
@@ -1460,20 +1222,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Lt_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "<");
    end Rel_Lt_Pre_Op;
-
-   --------------------
-   -- Rel_Lt_Post_Op --
-   --------------------
-
-   procedure Rel_Lt_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Lt_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Lt_Post_Op;
 
    -------------------
    -- Rel_Le_Pre_Op --
@@ -1484,20 +1234,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Le_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "<=");
    end Rel_Le_Pre_Op;
-
-   --------------------
-   -- Rel_Le_Post_Op --
-   --------------------
-
-   procedure Rel_Le_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Le_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Le_Post_Op;
 
    -------------------
    -- Rel_Gt_Pre_Op --
@@ -1508,20 +1246,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Gt_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, ">");
    end Rel_Gt_Pre_Op;
-
-   --------------------
-   -- Rel_Gt_Post_Op --
-   --------------------
-
-   procedure Rel_Gt_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Gt_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Gt_Post_Op;
 
    -------------------
    -- Rel_Ge_Pre_Op --
@@ -1532,20 +1258,8 @@ package body Why.Atree.Sprint is
       Node  : W_Rel_Ge_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, ">=");
    end Rel_Ge_Pre_Op;
-
-   --------------------
-   -- Rel_Ge_Post_Op --
-   --------------------
-
-   procedure Rel_Ge_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Ge_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Rel_Ge_Post_Op;
 
    ------------------
    -- Type_Post_Op --

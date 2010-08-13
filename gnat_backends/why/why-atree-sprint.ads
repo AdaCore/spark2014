@@ -179,31 +179,11 @@ private
      (State : in out Printer_State;
       Node  : W_True_Literal_Pred_Id);
 
-   procedure True_Literal_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_True_Literal_Pred_Id);
-
    procedure False_Literal_Pred_Pre_Op
      (State : in out Printer_State;
       Node  : W_False_Literal_Pred_Id);
 
-   procedure False_Literal_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_False_Literal_Pred_Id);
-
-   procedure Predicate_Identifier_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Identifier_Id);
-
-   procedure Predicate_Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Identifier_Id);
-
    procedure Predicate_Instance_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Instance_Id);
-
-   procedure Predicate_Instance_Post_Op
      (State : in out Printer_State;
       Node  : W_Predicate_Instance_Id);
 
@@ -211,15 +191,7 @@ private
      (State : in out Printer_State;
       Node  : W_Related_Terms_Id);
 
-   procedure Related_Terms_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Related_Terms_Id);
-
    procedure Implication_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Implication_Id);
-
-   procedure Implication_Post_Op
      (State : in out Printer_State;
       Node  : W_Implication_Id);
 
@@ -227,15 +199,7 @@ private
      (State : in out Printer_State;
       Node  : W_Equivalence_Id);
 
-   procedure Equivalence_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Equivalence_Id);
-
    procedure Disjonction_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Disjonction_Id);
-
-   procedure Disjonction_Post_Op
      (State : in out Printer_State;
       Node  : W_Disjonction_Id);
 
@@ -243,15 +207,7 @@ private
      (State : in out Printer_State;
       Node  : W_Conjonction_Id);
 
-   procedure Conjonction_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Conjonction_Id);
-
    procedure Negation_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Negation_Id);
-
-   procedure Negation_Post_Op
      (State : in out Printer_State;
       Node  : W_Negation_Id);
 
@@ -259,15 +215,7 @@ private
      (State : in out Printer_State;
       Node  : W_Conditional_Pred_Id);
 
-   procedure Conditional_Pred_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Conditional_Pred_Id);
-
    procedure Binding_Pred_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Pred_Id);
-
-   procedure Binding_Pred_Post_Op
      (State : in out Printer_State;
       Node  : W_Binding_Pred_Id);
 
@@ -275,23 +223,11 @@ private
      (State : in out Printer_State;
       Node  : W_Universal_Quantif_Id);
 
-   procedure Universal_Quantif_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Universal_Quantif_Id);
-
    procedure Existential_Quantif_Pre_Op
      (State : in out Printer_State;
       Node  : W_Existential_Quantif_Id);
 
-   procedure Existential_Quantif_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Existential_Quantif_Id);
-
    procedure Named_Predicate_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Predicate_Id);
-
-   procedure Named_Predicate_Post_Op
      (State : in out Printer_State;
       Node  : W_Named_Predicate_Id);
 
@@ -307,15 +243,7 @@ private
      (State : in out Printer_State;
       Node  : W_Triggers_Id);
 
-   procedure Triggers_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Triggers_Id);
-
    procedure Trigger_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Trigger_Id);
-
-   procedure Trigger_Post_Op
      (State : in out Printer_State;
       Node  : W_Trigger_Id);
 
@@ -323,15 +251,7 @@ private
      (State : in out Printer_State;
       Node  : W_Rel_Eq_Id);
 
-   procedure Rel_Eq_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Eq_Id);
-
    procedure Rel_Ne_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Ne_Id);
-
-   procedure Rel_Ne_Post_Op
      (State : in out Printer_State;
       Node  : W_Rel_Ne_Id);
 
@@ -339,15 +259,7 @@ private
      (State : in out Printer_State;
       Node  : W_Rel_Lt_Id);
 
-   procedure Rel_Lt_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Lt_Id);
-
    procedure Rel_Le_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Le_Id);
-
-   procedure Rel_Le_Post_Op
      (State : in out Printer_State;
       Node  : W_Rel_Le_Id);
 
@@ -355,15 +267,7 @@ private
      (State : in out Printer_State;
       Node  : W_Rel_Gt_Id);
 
-   procedure Rel_Gt_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Gt_Id);
-
    procedure Rel_Ge_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Rel_Ge_Id);
-
-   procedure Rel_Ge_Post_Op
      (State : in out Printer_State;
       Node  : W_Rel_Ge_Id);
 
