@@ -575,6 +575,10 @@ is
 
       loop
          Saved_Payload := Buffers.Buffer_Payload (D_Buf);
+
+         --  Note: here we expect the application to know about chained buffers
+         --  and retrieve all data from the delivered buffer chain.
+
          D_Len := AIP.M32_T (Buffers.Buffer_Tlen (D_Buf));
          TCP_Event
            (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
@@ -2009,15 +2013,17 @@ is
                         null;
 
                      when Established | Syn_Received =>
+                        --  Notify connection closed: deliver 0 bytes of data
+
                         TCP_Event
-                          (Ev   => TCP_Event_T'(Kind => TCP_EVENT_CLOSE,
+                          (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
                                                 Len  => 0,
                                                 Buf  => Buffers.NOBUF,
                                                 Addr => IPaddrs.IP_ADDR_ANY,
                                                 Port => PCBs.NOPORT,
                                                 Err  => AIP.NOERR),
                            PCB  => PCB,
-                           Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_CLOSE),
+                           Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
                            Err  => Err);
                         Set_State (PCB, Close_Wait);
 

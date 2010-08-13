@@ -29,8 +29,8 @@ Building the TCP/IP Stack requires:
 Building for PowerPC also requires the ZFP-Support package to be
 installed and available to your cross build chain.
 
-BUILD AND RUN INSTRUCTIONS
---------------------------
+BUILDING
+--------
 
 To build the native Linux version:
    make TARGET=native
@@ -42,10 +42,28 @@ This builds a complete example application that implements the TCP echo
 service on well-known port 7.
 
 In both cases, the resulting executable is build/app/echop.
-To start the PowerPC version under qemu, you can use "make run".
 
-Note that running the application (either native or on qemu) involves
-opening a TAP device on the host, which may require super-user privileges.
+RUNNING THE TEST APPLICATION
+----------------------------
+
+To start the PowerPC version under qemu:
+   make run
+
+To start the native application using a TAP device:
+   build/app/echop tap:
+
+To start the native application using a multicast UDP virtual Ethernet:
+   build/app/echop mcast:224.0.0.1:3333
+(you can change the IP multicast group address and port number as desired)
+
+The IPstack application configures itself as 192.168.0.1/24.
+
+Note that the first two options above involve opening a TAP device on the
+host, which may require super-user privileges. The third option can be
+executed by a non-privileged user.
+
+To run another OS in QEmu on the virtual Ethernet, use:
+  qemu -net nic -net socket,mcast=224.0.0.1:3333 -cdrom other_os.iso
 
 SPARK
 -----
