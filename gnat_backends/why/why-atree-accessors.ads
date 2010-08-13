@@ -358,7 +358,7 @@ package Why.Atree.Accessors is
 
    function Universal_Quantif_Get_Triggers
      (Id : W_Universal_Quantif_Id)
-     return W_Triggers_OList is
+     return W_Triggers_OId is
      (Get_Node (Id).UQ_Triggers);
 
    function Universal_Quantif_Get_Pred

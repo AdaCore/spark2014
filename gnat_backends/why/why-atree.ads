@@ -213,7 +213,7 @@ package Why.Atree is
          when W_Universal_Quantif =>
             UQ_Variables : W_Identifier_Unchecked_List;
             UQ_Var_Type  : W_Primitive_Type_Unchecked_Id;
-            UQ_Triggers  : W_Triggers_Unchecked_OList;
+            UQ_Triggers  : W_Triggers_Unchecked_OId;
             UQ_Pred      : W_Predicate_Unchecked_Id;
 
          when W_Existential_Quantif =>

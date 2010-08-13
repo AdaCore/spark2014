@@ -248,12 +248,13 @@ package Why.Sinfo is
 
       W_Universal_Quantif,
       --  <universal_quantif> ::=
-      --     'forall' <identifier> + ':' <primitive_type>
+      --     'forall' <identifier> (, <identifier>)* ':' <primitive_type>
       --        [ <triggers> ] '.' <predicate>
 
       W_Existential_Quantif,
       --  <existential_quantif> ::=
-      --     'exists' <identifier>+ ':' <primitive_type> '.' <predicate>
+      --     'exists' <identifier> (, <identifier>*) ':' <primitive_type> '.'
+      --        <predicate>
 
       W_Named_Predicate,
       --  ( <identifier> | <string> ) ':' <predicate>

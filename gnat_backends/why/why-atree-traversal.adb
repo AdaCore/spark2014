@@ -1437,7 +1437,7 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Universal_Quantif_Get_Var_Type (Node));
-            Traverse_List
+            Traverse
               (State,
                Universal_Quantif_Get_Triggers (Node));
             Traverse

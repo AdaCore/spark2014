@@ -760,7 +760,7 @@ package Why.Atree.Builders is
       Link      : Why_Node_Id;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
-      Triggers  : W_Triggers_OList;
+      Triggers  : W_Triggers_OId;
       Pred      : W_Predicate_Id)
      return W_Universal_Quantif_Id;
    pragma Postcondition
