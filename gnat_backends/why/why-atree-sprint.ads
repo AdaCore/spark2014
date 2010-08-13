@@ -275,15 +275,7 @@ private
      (State : in out Printer_State;
       Node  : W_Type_Id);
 
-   procedure Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Type_Id);
-
    procedure Logic_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Id);
-
-   procedure Logic_Post_Op
      (State : in out Printer_State;
       Node  : W_Logic_Id);
 
@@ -291,15 +283,7 @@ private
      (State : in out Printer_State;
       Node  : W_Function_Id);
 
-   procedure Function_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Function_Id);
-
    procedure Predicate_Definition_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Predicate_Definition_Id);
-
-   procedure Predicate_Definition_Post_Op
      (State : in out Printer_State;
       Node  : W_Predicate_Definition_Id);
 
@@ -307,15 +291,7 @@ private
      (State : in out Printer_State;
       Node  : W_Inductive_Id);
 
-   procedure Inductive_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Inductive_Id);
-
    procedure Axiom_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Axiom_Id);
-
-   procedure Axiom_Post_Op
      (State : in out Printer_State;
       Node  : W_Axiom_Id);
 
@@ -323,15 +299,7 @@ private
      (State : in out Printer_State;
       Node  : W_Goal_Id);
 
-   procedure Goal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Goal_Id);
-
    procedure External_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_External_Id);
-
-   procedure External_Post_Op
      (State : in out Printer_State;
       Node  : W_External_Id);
 
@@ -339,23 +307,11 @@ private
      (State : in out Printer_State;
       Node  : W_Logic_Type_Id);
 
-   procedure Logic_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Type_Id);
-
    procedure Logic_Binder_Pre_Op
      (State : in out Printer_State;
       Node  : W_Logic_Binder_Id);
 
-   procedure Logic_Binder_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Binder_Id);
-
    procedure Inductive_Case_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Inductive_Case_Id);
-
-   procedure Inductive_Case_Post_Op
      (State : in out Printer_State;
       Node  : W_Inductive_Case_Id);
 
