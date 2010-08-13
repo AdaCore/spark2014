@@ -23,16 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
-with Namet; use Namet;
+with Namet;  use Namet;
+with Uintp;  use Uintp;
+with Urealp; use Urealp;
 
-with Outputs;             use Outputs;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
+
+   function Img (Value : Uint) return String;
+   --  Helper function that return the Why image of a Uint
 
    ---------------------
    -- Sprint_Why_Node --
@@ -44,6 +49,16 @@ package body Why.Atree.Sprint is
       O := To;
       Traverse (PS, Node);
    end Sprint_Why_Node;
+
+   ---------
+   -- Img --
+   ---------
+
+   function Img (Value : Uint) return String is
+      Result : String := Int'Image (UI_To_Int (Value));
+   begin
+      return Trim (Result, Ada.Strings.Both);
+   end Img;
 
    -----------------------
    -- Identifier_Pre_Op --
@@ -305,20 +320,55 @@ package body Why.Atree.Sprint is
       Node  : W_Integer_Constant_Id)
    is
    begin
-      raise Not_Implemented;
+      --  ??? The Why Reference does not give any detail about
+      --  the syntax of integer constants. We shall suppose that
+      --  it is similar to Ocaml's integer litterals:
+      --
+      --  IntegerLiteral ::=
+      --     [-]  UnprefixedIntegerLiteral
+      --
+      --  UnprefixedIntegerLiteral ::=
+      --      DecimalLiteral
+      --      HexadecimalLiteral
+      --      OctalLiteral
+      --      BinaryLiteral
+      --
+      --  DecimalLiteral ::=
+      --      DecimalLiteral  Digit
+      --      DecimalLiteral  _
+      --      Digit
+      --
+      --  HexadecimalLiteral ::=
+      --      HexadecimalLiteral  HexadecimalDigit
+      --      HexadecimalLiteral  _
+      --      0x  HexadecimalDigit
+      --      0X  HexadecimalDigit
+      --
+      --  OctalLiteral ::=
+      --      OctalLiteral  OctalDigit
+      --      OctalLiteral  _
+      --      0o  OctalDigit
+      --      0O  OctalDigit
+      --
+      --  BinaryLiteral ::=
+      --      BinaryLiteral  BinaryDigit
+      --      BinaryLiteral  _
+      --      0b  BinaryDigit
+      --      0B  BinaryDigit
+      --
+      --  Digit ::=
+      --      DecimalDigit
+      --
+      --  HexadecimalDigit ::=  { 0123456789abcdefABCDEF }
+      --
+      --  DecimalDigit ::=  { 0123456789 }
+      --
+      --  OctalDigit ::=  { 01234567 }
+      --
+      --  BinaryDigit ::=  { 01 }
+
+      P (O, Img (Integer_Constant_Get_Value (Node)));
    end Integer_Constant_Pre_Op;
-
-   ------------------------------
-   -- Integer_Constant_Post_Op --
-   ------------------------------
-
-   procedure Integer_Constant_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Integer_Constant_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Integer_Constant_Post_Op;
 
    --------------------------
    -- Real_Constant_Pre_Op --
@@ -328,21 +378,62 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Real_Constant_Id)
    is
+      UR   : constant Ureal := Real_Constant_Get_Value (Node);
+      Num  : constant Uint := Numerator (UR);
+      Den  : constant Uint := Denominator (UR);
+      Base : constant Nat := Rbase (UR);
    begin
-      raise Not_Implemented;
+      --  ??? Same remark as in the case of integer constants:
+      --  I suppose that Why's real constants follows the same syntax
+      --  as Ocaml's floating-point literals:
+      --
+      --      FloatingPointLiteral ::=
+      --        [-]  UnprefixedFloatingPointLiteral
+      --
+      --      UnprefixedFloatingPointLiteral ::=
+      --        DecimalLiteral  FractionalPart  ExponentPart
+      --        DecimalLiteral  FractionalPart
+      --        DecimalLiteral  ExponentPart
+      --
+      --      FractionalPart ::=
+      --        FractionalPart  Digit
+      --        FractionalPart  _
+      --        .
+      --
+      --      ExponentPart ::=
+      --        ExponentLetter  +  DecimalLiteral
+      --        ExponentLetter  -  DecimalLiteral
+      --        ExponentLetter     DecimalLiteral
+      --
+      --       ExponentLetter ::=  { eE }
+
+      if UR_Is_Negative (UR) then
+         P (O, "-");
+      end if;
+
+      if Base = 0 then
+         P (O, Img (Num));
+         P (O, "/");
+         P (O, Img (Den));
+
+      elsif Base = 10 then
+         P (O, Img (Num));
+         P (O, "E-");
+         P (O, Img (Den));
+
+      else
+         P (O, Img (Num));
+
+         if UI_To_Int (Den) > 0 then
+            P (O, "/");
+            P (O, Img ((UI_Expon (Den, Base))));
+
+         elsif UI_To_Int (Den) < 0 then
+            P (O, "*");
+            P (O, Img ((UI_Expon (UI_Negate (Den), Base))));
+         end if;
+      end if;
    end Real_Constant_Pre_Op;
-
-   ---------------------------
-   -- Real_Constant_Post_Op --
-   ---------------------------
-
-   procedure Real_Constant_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Real_Constant_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Real_Constant_Post_Op;
 
    -------------------------
    -- True_Literal_Pre_Op --
@@ -353,20 +444,8 @@ package body Why.Atree.Sprint is
       Node  : W_True_Literal_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "true");
    end True_Literal_Pre_Op;
-
-   --------------------------
-   -- True_Literal_Post_Op --
-   --------------------------
-
-   procedure True_Literal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_True_Literal_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end True_Literal_Post_Op;
 
    --------------------------
    -- False_Literal_Pre_Op --
@@ -377,20 +456,8 @@ package body Why.Atree.Sprint is
       Node  : W_False_Literal_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "false");
    end False_Literal_Pre_Op;
-
-   ---------------------------
-   -- False_Literal_Post_Op --
-   ---------------------------
-
-   procedure False_Literal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_False_Literal_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end False_Literal_Post_Op;
 
    -------------------------
    -- Void_Literal_Pre_Op --
@@ -401,20 +468,8 @@ package body Why.Atree.Sprint is
       Node  : W_Void_Literal_Id)
    is
    begin
-      raise Not_Implemented;
+      P (O, "void");
    end Void_Literal_Pre_Op;
-
-   --------------------------
-   -- Void_Literal_Post_Op --
-   --------------------------
-
-   procedure Void_Literal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Void_Literal_Id)
-   is
-   begin
-      raise Not_Implemented;
-   end Void_Literal_Post_Op;
 
    ----------------------------
    -- Arith_Operation_Pre_Op --

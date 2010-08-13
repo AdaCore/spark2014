@@ -103,15 +103,7 @@ private
      (State : in out Printer_State;
       Node  : W_Integer_Constant_Id);
 
-   procedure Integer_Constant_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Integer_Constant_Id);
-
    procedure Real_Constant_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Real_Constant_Id);
-
-   procedure Real_Constant_Post_Op
      (State : in out Printer_State;
       Node  : W_Real_Constant_Id);
 
@@ -119,23 +111,11 @@ private
      (State : in out Printer_State;
       Node  : W_True_Literal_Id);
 
-   procedure True_Literal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_True_Literal_Id);
-
    procedure False_Literal_Pre_Op
      (State : in out Printer_State;
       Node  : W_False_Literal_Id);
 
-   procedure False_Literal_Post_Op
-     (State : in out Printer_State;
-      Node  : W_False_Literal_Id);
-
    procedure Void_Literal_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Void_Literal_Id);
-
-   procedure Void_Literal_Post_Op
      (State : in out Printer_State;
       Node  : W_Void_Literal_Id);
 
