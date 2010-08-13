@@ -359,7 +359,7 @@ package Why.Sinfo is
       --  <logic_binder> ::= <identifier> ':' <primitive_type>
 
       W_Inductive_Case,
-      --  <inductive_case> ::= '|' <identifier> : <predicate>)
+      --  <inductive_case> ::= '|' <identifier> : <predicate>
 
       -------------------
       -- Program space --
