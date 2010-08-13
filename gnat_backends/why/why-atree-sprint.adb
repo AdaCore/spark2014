@@ -1582,73 +1582,33 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Effects_Id)
    is
+      Reads  : constant W_Identifier_List :=
+                 Effects_Get_Reads (Node);
+      Writes : constant W_Identifier_List :=
+                 Effects_Get_Writes (Node);
+      Raises : constant W_Identifier_List :=
+                 Effects_Get_Raises (Node);
    begin
-      raise Not_Implemented;
+      if not Is_Empty (Reads) then
+         P (O, "reads ");
+         Print_List (State, Reads);
+         NL (O);
+      end if;
 
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Reads (Node));
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Writes (Node));
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Raises (Node));
+      if not Is_Empty (Writes) then
+         P (O, "write ");
+         Print_List (State, Writes);
+         NL (O);
+      end if;
+
+      if not Is_Empty (Raises) then
+         P (O, "raises ");
+         Print_List (State, Raises);
+         NL (O);
+      end if;
+
+      State.Control := Abandon_Children;
    end Effects_Pre_Op;
-
-   ---------------------
-   -- Effects_Post_Op --
-   ---------------------
-
-   procedure Effects_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Effects_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Reads (Node));
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Writes (Node));
-      --  Traverse_List
-      --    (State,
-      --     Effects_Get_Raises (Node));
-   end Effects_Post_Op;
-
-   -------------------------
-   -- Precondition_Pre_Op --
-   -------------------------
-
-   procedure Precondition_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Precondition_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Precondition_Get_Assertion (Node));
-   end Precondition_Pre_Op;
-
-   --------------------------
-   -- Precondition_Post_Op --
-   --------------------------
-
-   procedure Precondition_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Precondition_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Precondition_Get_Assertion (Node));
-   end Precondition_Post_Op;
 
    --------------------------
    -- Postcondition_Pre_Op --
@@ -1659,34 +1619,18 @@ package body Why.Atree.Sprint is
       Node  : W_Postcondition_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Postcondition_Get_Assertion (Node));
-      --  Traverse_List
-      --    (State,
-      --     Postcondition_Get_Handlers (Node));
+      Traverse
+        (State,
+         Postcondition_Get_Assertion (Node));
+      NL (O);
+      Relative_Indent (O, 1);
+      Print_List
+        (State,
+         Postcondition_Get_Handlers (Node),
+         "" & ASCII.LF);
+      Relative_Indent (O, -1);
+      State.Control := Abandon_Children;
    end Postcondition_Pre_Op;
-
-   ---------------------------
-   -- Postcondition_Post_Op --
-   ---------------------------
-
-   procedure Postcondition_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Postcondition_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Postcondition_Get_Assertion (Node));
-      --  Traverse_List
-      --    (State,
-      --     Postcondition_Get_Handlers (Node));
-   end Postcondition_Post_Op;
 
    --------------------------
    -- Exn_Condition_Pre_Op --
@@ -1697,34 +1641,16 @@ package body Why.Atree.Sprint is
       Node  : W_Exn_Condition_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Exn_Condition_Get_Exn_Case (Node));
-      --  Traverse
-      --    (State,
-      --     Exn_Condition_Get_Assertion (Node));
+      P (O, "| ");
+      Traverse
+        (State,
+         Exn_Condition_Get_Exn_Case (Node));
+      P (O, " => ");
+      Traverse
+        (State,
+         Exn_Condition_Get_Assertion (Node));
+      State.Control := Abandon_Children;
    end Exn_Condition_Pre_Op;
-
-   ---------------------------
-   -- Exn_Condition_Post_Op --
-   ---------------------------
-
-   procedure Exn_Condition_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Exn_Condition_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Exn_Condition_Get_Exn_Case (Node));
-      --  Traverse
-      --    (State,
-      --     Exn_Condition_Get_Assertion (Node));
-   end Exn_Condition_Post_Op;
 
    ----------------------
    -- Assertion_Pre_Op --
@@ -1734,35 +1660,20 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Assertion_Id)
    is
+      As : constant W_Identifier_Id :=
+             Assertion_Get_As (Node);
    begin
-      raise Not_Implemented;
+      Traverse
+        (State,
+         Assertion_Get_Pred (Node));
 
-      --  Traverse
-      --    (State,
-      --     Assertion_Get_Pred (Node));
-      --  Traverse
-      --    (State,
-      --     Assertion_Get_As (Node));
+      if As /= Why_Empty then
+         P (O, " as ");
+         Traverse (State, As);
+      end if;
+
+      State.Control := Abandon_Children;
    end Assertion_Pre_Op;
-
-   -----------------------
-   -- Assertion_Post_Op --
-   -----------------------
-
-   procedure Assertion_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Assertion_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Assertion_Get_Pred (Node));
-      --  Traverse
-      --    (State,
-      --     Assertion_Get_As (Node));
-   end Assertion_Post_Op;
 
    --------------------------
    -- Prog_Constant_Pre_Op --

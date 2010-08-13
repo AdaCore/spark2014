@@ -319,23 +319,7 @@ private
      (State : in out Printer_State;
       Node  : W_Effects_Id);
 
-   procedure Effects_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Effects_Id);
-
-   procedure Precondition_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Precondition_Id);
-
-   procedure Precondition_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Precondition_Id);
-
    procedure Postcondition_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Postcondition_Id);
-
-   procedure Postcondition_Post_Op
      (State : in out Printer_State;
       Node  : W_Postcondition_Id);
 
@@ -343,15 +327,7 @@ private
      (State : in out Printer_State;
       Node  : W_Exn_Condition_Id);
 
-   procedure Exn_Condition_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Exn_Condition_Id);
-
    procedure Assertion_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Assertion_Id);
-
-   procedure Assertion_Post_Op
      (State : in out Printer_State;
       Node  : W_Assertion_Id);
 
