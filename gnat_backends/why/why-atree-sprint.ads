@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Outputs;             use Outputs;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Ids;             use Why.Ids;
@@ -32,7 +33,7 @@ package Why.Atree.Sprint is
    --  This package provides ways to print source code from the abstract
    --  syntax tree.
 
-   procedure Sprint_Why_Node (Node : Why_Node_Id);
+   procedure Sprint_Why_Node (Node : Why_Node_Id; To : Output_Id := Stdout);
    pragma Precondition (Get_Kind (Node) /= W_Unused_At_Start);
 
 private

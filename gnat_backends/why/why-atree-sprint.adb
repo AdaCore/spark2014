@@ -27,17 +27,21 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Namet; use Namet;
 
+with Outputs;             use Outputs;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Atree.Sprint is
+
+   O : Output_Id := Stdout;
 
    ---------------------
    -- Sprint_Why_Node --
    ---------------------
 
-   procedure Sprint_Why_Node (Node : Why_Node_Id) is
+   procedure Sprint_Why_Node (Node : Why_Node_Id; To : Output_Id := Stdout) is
       PS : Printer_State;
    begin
+      O := To;
       Traverse (PS, Node);
    end Sprint_Why_Node;
 
@@ -51,7 +55,7 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
-      Put (Get_Name_String (Get_Node (Node).Symbol));
+      P (O, Get_Name_String (Get_Node (Node).Symbol));
    end Identifier_Pre_Op;
 
    ----------------------
@@ -63,7 +67,7 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Prop_Id)
    is
    begin
-      Put ("prop");
+      P (O, "prop");
    end Type_Prop_Pre_Op;
 
    ---------------------
@@ -75,7 +79,7 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Int_Id)
    is
    begin
-      Put ("int");
+      P (O, "int");
    end Type_Int_Pre_Op;
 
    ----------------------
@@ -87,7 +91,7 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Bool_Id)
    is
    begin
-      Put ("bool");
+      P (O, "bool");
    end Type_Bool_Pre_Op;
 
    ----------------------
@@ -99,7 +103,7 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Real_Id)
    is
    begin
-      Put ("real");
+      P (O, "real");
    end Type_Real_Pre_Op;
 
    ----------------------
@@ -111,7 +115,7 @@ package body Why.Atree.Sprint is
       Node  : W_Type_Unit_Id)
    is
    begin
-      Put ("unit");
+      P (O, "unit");
    end Type_Unit_Pre_Op;
 
    --------------------------------
@@ -123,7 +127,7 @@ package body Why.Atree.Sprint is
       Node  : W_Generic_Formal_Type_Id)
    is
    begin
-      Put ("'");
+      P (O, "'");
    end Generic_Formal_Type_Pre_Op;
 
    --------------------------------------
@@ -145,7 +149,7 @@ package body Why.Atree.Sprint is
             Node : constant W_Primitive_Type_Id := Element (Position);
          begin
             Traverse (State, Node);
-            Put (" ");
+            P (O, " ");
          end;
       end loop;
 
@@ -165,7 +169,7 @@ package body Why.Atree.Sprint is
       Node  : W_Array_Type_Id)
    is
    begin
-      Put (" array");
+      P (O, " array");
    end Array_Type_Post_Op;
 
    ----------------------
@@ -177,7 +181,7 @@ package body Why.Atree.Sprint is
       Node  : W_Ref_Type_Id)
    is
    begin
-      Put (" ref");
+      P (O, " ref");
    end Ref_Type_Post_Op;
 
    ---------------------------------
@@ -189,7 +193,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Value_Type_Id)
    is
    begin
-      Put ("(");
+      P (O, "(");
    end Protected_Value_Type_Pre_Op;
 
    ----------------------------------
@@ -201,7 +205,7 @@ package body Why.Atree.Sprint is
       Node  : W_Protected_Value_Type_Id)
    is
    begin
-      Put (")");
+      P (O, ")");
    end Protected_Value_Type_Post_Op;
 
    ---------------------------------
@@ -217,7 +221,7 @@ package body Why.Atree.Sprint is
         (State,
          Anonymous_Arrow_Type_Get_Left (Node));
 
-      Put (" -> ");
+      P (O, " -> ");
 
       Traverse
         (State,
@@ -238,11 +242,11 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Named_Arrow_Type_Get_Name (Node));
-      Put (" : ");
+      P (O, " : ");
       Traverse
         (State,
          Named_Arrow_Type_Get_Left (Node));
-      Put (" -> ");
+      P (O, " -> ");
       Traverse
         (State,
          Named_Arrow_Type_Get_Right (Node));
@@ -260,34 +264,34 @@ package body Why.Atree.Sprint is
       Result : constant W_Identifier_OId :=
                  Computation_Spec_Get_Result_Name (Node);
    begin
-      Put ("{");
+      P (O, "{");
       Traverse (State,
                 Computation_Spec_Get_Precondition (Node));
-      Put_Line ("}");
+      PL (O, "}");
 
       if  Result /= Why_Empty then
-         Put ("returns ");
+         P (O, "returns ");
          Traverse
            (State,
             Computation_Spec_Get_Result_Name (Node));
-         Put (" : ");
+         P (O, " : ");
       end if;
 
       Traverse
         (State,
          Computation_Spec_Get_Return_Type (Node));
-      New_Line;
+      NL (O);
 
       Traverse
         (State,
          Computation_Spec_Get_Effects (Node));
-      New_Line;
+      NL (O);
 
-      Put ("{");
+      P (O, "{");
       Traverse
         (State,
          Computation_Spec_Get_Postcondition (Node));
-      Put ("}");
+      P (O, "}");
 
       State.Control := Abandon_Children;
    end Computation_Spec_Pre_Op;
@@ -1670,7 +1674,7 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
-      New_Line;
+      NL (O);
       --  Traverse
       --    (State,
       --     Type_Get_External (Node));
@@ -1692,7 +1696,7 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
-      Put ("type ");
+      P (O, "type ");
       --  Traverse
       --    (State,
       --     Type_Get_External (Node));
