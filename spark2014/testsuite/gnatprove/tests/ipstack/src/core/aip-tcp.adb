@@ -372,7 +372,10 @@ is
       Src_IP := IPCBs (PCB).Local_IP;
       Dst_IP := IPCBs (PCB).Remote_IP;
 
-      --  ??? Verify correctness for both Data and Ref possible segments.
+      --  Beware that we might have two kinds of packets here (from the send
+      --  queue): those with data copied in, standalone with headers in a
+      --  single buffer, and those with data referenced, as a hdrs-->data_ref
+      --  buffer chain.
 
       --  Fetch the TCP header address from Packet_Info, then set the payload
       --  pointer to designate that for checksum computation and IP processing
@@ -1301,9 +1304,25 @@ is
             end if;
 
             TCP_Segment_For (Ptr, Seglen, Copy, Tbuf);
+            exit when Tbuf = Buffers.NOBUF;
+
+            --  Queue etc
 
             Left := Left - AIP.M32_T (Seglen);
          end loop;
+
+         --  If we haven't been able to allocate or queue all the segments
+         --  required for this transmission, release what we got and err out.
+         --  Otherwise,
+
+         if Left > 0 then
+
+            null; -- ??? implement me
+            Err := AIP.ERR_MEM;
+         else
+
+            null; -- ???
+         end if;
 
          --  ??? To be continued
       end if;

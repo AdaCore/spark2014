@@ -90,4 +90,7 @@ package AIP.Config is
    TCP_WINDOW : constant := 2048;
    --  TCP window size
 
+   TCP_SND_BUF : constant := 512;
+   --  TCP send buffer size
+
 end AIP.Config;
