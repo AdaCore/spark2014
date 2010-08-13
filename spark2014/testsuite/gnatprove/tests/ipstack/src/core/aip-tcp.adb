@@ -34,8 +34,6 @@ is
       Last_Ack,
       Time_Wait);
 
-   pragma Unreferenced (Closing, Last_Ack);
-
    type TCP_Callbacks is array (TCP_Event_Kind) of Callbacks.CBK_Id;
 
    type TCP_PCB is record
@@ -74,6 +72,15 @@ is
       RCV_WND  : AIP.M32_T; --  Receive window
       RCV_UP   : AIP.M32_T; --  Receive urgent pointer
       IRS      : AIP.M32_T; --  Initial receive sequence number
+
+      --  Note: RCV_WND and SND_WND are kept as 32-bit values even though the
+      --  Window field in the TCP header is just 16 bits wide for two reasons:
+      --    - it makes it more convenient to do arithmetics involving sequence
+      --      numbers and window sizes;
+      --    - the window size in bytes may exceed 65_535 if a window scaling
+      --      option is negotiated (in which case the Window field must be
+      --      shifted left by the window scaling factor to obtain the actual
+      --      xxx_WND value).
 
       --  Slow start
 
@@ -898,6 +905,11 @@ is
                         Err => Err);
 
                      --  Restart 2MSL timeout???
+
+                  when others =>
+                     --  Can't happen (we sent a FIN)
+
+                     null;
                end case;
             end if;
 
@@ -1910,12 +1922,17 @@ is
                      --  6. Check URG bit
 
                      if TCPH.TCPH_Urg (Seg.Thdr) = 1
-                       and then Seq_Lt (TPCBs (PCB).RCV_UP,
-                                        TCPH.TCPH_Urgent_Ptr (Seg.Thdr))
+                          and then
+                        Seq_Lt (TPCBs (PCB).RCV_UP,
+                                Seg.Seq
+                                  + M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr)))
                      then
-                        TPCBs (PCB).RCV_UP := TCPH.TCPH_Urgent_Ptr (Seg.Thdr);
+                        TPCBs (PCB).RCV_UP :=
+                          Seg.Seq + M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr));
 
-                        --  Signal user ???
+                        --  Notify user ???
+
+                        null;
                      end if;
 
                      --  7. Process segment text
