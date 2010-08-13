@@ -123,15 +123,7 @@ private
      (State : in out Printer_State;
       Node  : W_Arith_Operation_Id);
 
-   procedure Arith_Operation_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Arith_Operation_Id);
-
    procedure Negative_Term_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Negative_Term_Id);
-
-   procedure Negative_Term_Post_Op
      (State : in out Printer_State;
       Node  : W_Negative_Term_Id);
 
@@ -139,15 +131,7 @@ private
      (State : in out Printer_State;
       Node  : W_Label_Identifier_Id);
 
-   procedure Label_Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Label_Identifier_Id);
-
    procedure Operation_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Operation_Id);
-
-   procedure Operation_Post_Op
      (State : in out Printer_State;
       Node  : W_Operation_Id);
 
@@ -155,23 +139,11 @@ private
      (State : in out Printer_State;
       Node  : W_Named_Term_Id);
 
-   procedure Named_Term_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Term_Id);
-
    procedure Conditional_Term_Pre_Op
      (State : in out Printer_State;
       Node  : W_Conditional_Term_Id);
 
-   procedure Conditional_Term_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Conditional_Term_Id);
-
    procedure Binding_Term_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Term_Id);
-
-   procedure Binding_Term_Post_Op
      (State : in out Printer_State;
       Node  : W_Binding_Term_Id);
 
@@ -187,15 +159,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Add_Id);
 
-   procedure Op_Add_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Add_Id);
-
    procedure Op_Substract_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Substract_Id);
-
-   procedure Op_Substract_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Substract_Id);
 
@@ -203,23 +167,11 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Multiply_Id);
 
-   procedure Op_Multiply_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Multiply_Id);
-
    procedure Op_Divide_Pre_Op
      (State : in out Printer_State;
       Node  : W_Op_Divide_Id);
 
-   procedure Op_Divide_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Divide_Id);
-
    procedure Op_Modulo_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Modulo_Id);
-
-   procedure Op_Modulo_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Modulo_Id);
 
