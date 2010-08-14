@@ -865,7 +865,7 @@ package body Why.Atree.Sprint is
       Op     : constant W_Relation_Id := Related_Terms_Get_Op (Node);
       Right  : constant W_Term_Id := Related_Terms_Get_Right (Node);
       Op2    : constant W_Relation_OId := Related_Terms_Get_Op2 (Node);
-      Right2 : constant W_Term_Id := Related_Terms_Get_Right2 (Node);
+      Right2 : constant W_Term_OId := Related_Terms_Get_Right2 (Node);
    begin
       Traverse (State, Left);
       P (O, " ");
@@ -1302,7 +1302,7 @@ package body Why.Atree.Sprint is
    is
       use Node_Lists;
 
-      External  : constant W_External_Id := Type_Get_External (Node);
+      External  : constant W_External_OId := Type_Get_External (Node);
       Params    : constant List :=
                     Get_List (Type_Get_Type_Parameters (Node));
       Nb_Params : constant Count_Type := Length (Params);
@@ -1352,7 +1352,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Logic_Id)
    is
-      External   : constant W_External_Id :=
+      External   : constant W_External_OId :=
                      Logic_Get_External (Node);
       Names      : constant W_Identifier_List :=
                      Logic_Get_Names (Node);
@@ -1660,7 +1660,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Assertion_Id)
    is
-      As : constant W_Identifier_Id :=
+      As : constant W_Identifier_OId :=
              Assertion_Get_As (Node);
    begin
       Traverse
