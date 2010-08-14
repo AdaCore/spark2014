@@ -51,7 +51,7 @@ package body Why.Atree.Sprint is
    ---------
 
    function Img (Value : Uint) return String is
-      Result : String := Int'Image (UI_To_Int (Value));
+      Result : constant String := Int'Image (UI_To_Int (Value));
    begin
       return Trim (Result, Ada.Strings.Both);
    end Img;
@@ -79,7 +79,7 @@ package body Why.Atree.Sprint is
          Position := Next (Position);
 
          if Position /= No_Element then
-            P (O, ", ");
+            P (O, Separator);
          end if;
       end loop;
    end Print_List;
@@ -577,7 +577,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Label_Identifier_Id)
    is
-      Label : W_Identifier_OId := Label_Identifier_Get_Label (Node);
+      Label : constant W_Identifier_OId := Label_Identifier_Get_Label (Node);
    begin
       Traverse
         (State,

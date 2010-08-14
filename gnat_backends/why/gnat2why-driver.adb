@@ -28,7 +28,6 @@ with Switch;  use Switch;
 with Sprint;  use Sprint;
 with Treepr;
 
-with Types; use Types;
 with Namet; use Namet;
 
 with Why.Types;          use Why.Types;
