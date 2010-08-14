@@ -575,7 +575,7 @@ package Why.Sinfo is
 
       W_Binder,
       --  <binder> ::=
-      --     ('(' <identifier> [',' <identifier>]+ ':' <value_type> ')')
+      --     '(' <identifier> [',' <identifier>]+ ':' <value_type> ')'
 
       W_Recfun,
       --  <recfun> ::= <identifier> <binders> ':' <value_type>

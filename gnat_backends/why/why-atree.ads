@@ -447,7 +447,7 @@ package Why.Atree is
          when W_Parameter_Declaration =>
             PD_External       : W_External_Unchecked_Id;
             PD_Names          : W_Identifier_Unchecked_List;
-            PD_Parameter_Type : W_Value_Type_Unchecked_List;
+            PD_Parameter_Type : W_Value_Type_Unchecked_Id;
 
          when W_Exception_Declaration =>
             ED_Name      : W_Identifier_Unchecked_Id;

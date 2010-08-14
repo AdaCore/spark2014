@@ -2387,7 +2387,7 @@ package body Why.Atree.Builders is
       Link           : Why_Node_Id;
       External       : W_External_Id;
       Names          : W_Identifier_List;
-      Parameter_Type : W_Value_Type_List)
+      Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id
    is
    begin

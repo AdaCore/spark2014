@@ -3917,7 +3917,7 @@ package body Why.Atree.Traversal is
             Traverse_List
               (State,
                Parameter_Declaration_Get_Names (Node));
-            Traverse_List
+            Traverse
               (State,
                Parameter_Declaration_Get_Parameter_Type (Node));
 

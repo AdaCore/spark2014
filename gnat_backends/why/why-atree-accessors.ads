@@ -973,7 +973,7 @@ package Why.Atree.Accessors is
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Id)
-     return W_Value_Type_List is
+     return W_Value_Type_Id is
      (Get_Node (Id).PD_Parameter_Type);
 
    function Exception_Declaration_Get_Name
