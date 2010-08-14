@@ -331,27 +331,7 @@ private
      (State : in out Printer_State;
       Node  : W_Assertion_Id);
 
-   procedure Prog_Constant_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Prog_Constant_Id);
-
-   procedure Prog_Constant_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Prog_Constant_Id);
-
-   procedure Prog_Identifier_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Prog_Identifier_Id);
-
-   procedure Prog_Identifier_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Prog_Identifier_Id);
-
    procedure Deref_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Deref_Id);
-
-   procedure Deref_Post_Op
      (State : in out Printer_State;
       Node  : W_Deref_Id);
 
@@ -359,15 +339,7 @@ private
      (State : in out Printer_State;
       Node  : W_Assignment_Id);
 
-   procedure Assignment_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Assignment_Id);
-
    procedure Array_Access_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Access_Id);
-
-   procedure Array_Access_Post_Op
      (State : in out Printer_State;
       Node  : W_Array_Access_Id);
 
@@ -375,15 +347,7 @@ private
      (State : in out Printer_State;
       Node  : W_Array_Update_Id);
 
-   procedure Array_Update_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Array_Update_Id);
-
    procedure Infix_Call_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Infix_Call_Id);
-
-   procedure Infix_Call_Post_Op
      (State : in out Printer_State;
       Node  : W_Infix_Call_Id);
 
@@ -391,15 +355,7 @@ private
      (State : in out Printer_State;
       Node  : W_Prefix_Call_Id);
 
-   procedure Prefix_Call_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Prefix_Call_Id);
-
    procedure Binding_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Prog_Id);
-
-   procedure Binding_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Binding_Prog_Id);
 
@@ -407,15 +363,7 @@ private
      (State : in out Printer_State;
       Node  : W_Binding_Ref_Id);
 
-   procedure Binding_Ref_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Ref_Id);
-
    procedure Conditional_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Conditional_Prog_Id);
-
-   procedure Conditional_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Conditional_Prog_Id);
 
@@ -423,15 +371,7 @@ private
      (State : in out Printer_State;
       Node  : W_While_Loop_Id);
 
-   procedure While_Loop_Post_Op
-     (State : in out Printer_State;
-      Node  : W_While_Loop_Id);
-
    procedure Statement_Sequence_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Statement_Sequence_Id);
-
-   procedure Statement_Sequence_Post_Op
      (State : in out Printer_State;
       Node  : W_Statement_Sequence_Id);
 
@@ -439,15 +379,7 @@ private
      (State : in out Printer_State;
       Node  : W_Label_Id);
 
-   procedure Label_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Label_Id);
-
    procedure Assert_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Assert_Id);
-
-   procedure Assert_Post_Op
      (State : in out Printer_State;
       Node  : W_Assert_Id);
 
@@ -455,15 +387,7 @@ private
      (State : in out Printer_State;
       Node  : W_Post_Assertion_Id);
 
-   procedure Post_Assertion_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Post_Assertion_Id);
-
    procedure Opaque_Assertion_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Opaque_Assertion_Id);
-
-   procedure Opaque_Assertion_Post_Op
      (State : in out Printer_State;
       Node  : W_Opaque_Assertion_Id);
 
@@ -471,15 +395,7 @@ private
      (State : in out Printer_State;
       Node  : W_Fun_Def_Id);
 
-   procedure Fun_Def_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Fun_Def_Id);
-
    procedure Binding_Fun_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Fun_Id);
-
-   procedure Binding_Fun_Post_Op
      (State : in out Printer_State;
       Node  : W_Binding_Fun_Id);
 
@@ -487,15 +403,7 @@ private
      (State : in out Printer_State;
       Node  : W_Binding_Rec_Id);
 
-   procedure Binding_Rec_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Binding_Rec_Id);
-
    procedure Prog_Sequence_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Prog_Sequence_Id);
-
-   procedure Prog_Sequence_Post_Op
      (State : in out Printer_State;
       Node  : W_Prog_Sequence_Id);
 
@@ -503,15 +411,7 @@ private
      (State : in out Printer_State;
       Node  : W_Raise_Statement_Id);
 
-   procedure Raise_Statement_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Raise_Statement_Id);
-
    procedure Raise_Statement_With_Parameters_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Raise_Statement_With_Parameters_Id);
-
-   procedure Raise_Statement_With_Parameters_Post_Op
      (State : in out Printer_State;
       Node  : W_Raise_Statement_With_Parameters_Id);
 
@@ -519,15 +419,7 @@ private
      (State : in out Printer_State;
       Node  : W_Try_Block_Id);
 
-   procedure Try_Block_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Try_Block_Id);
-
    procedure Unreachable_Code_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Unreachable_Code_Id);
-
-   procedure Unreachable_Code_Post_Op
      (State : in out Printer_State;
       Node  : W_Unreachable_Code_Id);
 
@@ -551,15 +443,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Add_Prog_Id);
 
-   procedure Op_Add_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Add_Prog_Id);
-
    procedure Op_Substract_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Substract_Prog_Id);
-
-   procedure Op_Substract_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Substract_Prog_Id);
 
@@ -567,15 +451,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Multiply_Prog_Id);
 
-   procedure Op_Multiply_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Multiply_Prog_Id);
-
    procedure Op_Divide_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Divide_Prog_Id);
-
-   procedure Op_Divide_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Divide_Prog_Id);
 
@@ -583,15 +459,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Mod_Prog_Id);
 
-   procedure Op_Mod_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Mod_Prog_Id);
-
    procedure Op_Eq_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Eq_Prog_Id);
-
-   procedure Op_Eq_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Eq_Prog_Id);
 
@@ -599,15 +467,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Ne_Prog_Id);
 
-   procedure Op_Ne_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Ne_Prog_Id);
-
    procedure Op_Lt_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Lt_Prog_Id);
-
-   procedure Op_Lt_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Lt_Prog_Id);
 
@@ -615,15 +475,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Le_Prog_Id);
 
-   procedure Op_Le_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Le_Prog_Id);
-
    procedure Op_Gt_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Gt_Prog_Id);
-
-   procedure Op_Gt_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Gt_Prog_Id);
 
@@ -631,15 +483,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Ge_Prog_Id);
 
-   procedure Op_Ge_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Ge_Prog_Id);
-
    procedure Op_Or_Else_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Or_Else_Prog_Id);
-
-   procedure Op_Or_Else_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Or_Else_Prog_Id);
 
@@ -647,15 +491,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_And_Then_Prog_Id);
 
-   procedure Op_And_Then_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_And_Then_Prog_Id);
-
    procedure Op_Minus_Prog_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Minus_Prog_Id);
-
-   procedure Op_Minus_Prog_Post_Op
      (State : in out Printer_State;
       Node  : W_Op_Minus_Prog_Id);
 
@@ -663,15 +499,7 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Not_Prog_Id);
 
-   procedure Op_Not_Prog_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Op_Not_Prog_Id);
-
    procedure Binders_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binders_Id);
-
-   procedure Binders_Post_Op
      (State : in out Printer_State;
       Node  : W_Binders_Id);
 
@@ -679,15 +507,7 @@ private
      (State : in out Printer_State;
       Node  : W_Binder_Id);
 
-   procedure Binder_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Binder_Id);
-
    procedure Recfun_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Recfun_Id);
-
-   procedure Recfun_Post_Op
      (State : in out Printer_State;
       Node  : W_Recfun_Id);
 
@@ -695,23 +515,11 @@ private
      (State : in out Printer_State;
       Node  : W_Loop_Annot_Id);
 
-   procedure Loop_Annot_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Loop_Annot_Id);
-
    procedure Wf_Arg_Pre_Op
      (State : in out Printer_State;
       Node  : W_Wf_Arg_Id);
 
-   procedure Wf_Arg_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Wf_Arg_Id);
-
    procedure Handler_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Handler_Id);
-
-   procedure Handler_Post_Op
      (State : in out Printer_State;
       Node  : W_Handler_Id);
 
