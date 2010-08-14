@@ -2667,28 +2667,12 @@ package body Why.Atree.Sprint is
       Node  : W_File_Id)
    is
    begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     File_Get_Declarations (Node));
+      Print_List
+        (State,
+         File_Get_Declarations (Node),
+         "" & ASCII.LF);
+      State.Control := Abandon_Children;
    end File_Pre_Op;
-
-   ------------------
-   -- File_Post_Op --
-   ------------------
-
-   procedure File_Post_Op
-     (State : in out Printer_State;
-      Node  : W_File_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse_List
-      --    (State,
-      --     File_Get_Declarations (Node));
-   end File_Post_Op;
 
    ---------------------------
    -- Global_Binding_Pre_Op --
@@ -2698,41 +2682,27 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Global_Binding_Id)
    is
+      Binders : constant W_Binders_OId :=
+                  Global_Binding_Get_Binders (Node);
    begin
-      raise Not_Implemented;
+      P (O, "let ");
+      Traverse
+        (State,
+         Global_Binding_Get_Name (Node));
 
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Binders (Node));
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Def (Node));
+      if Binders /= Why_Empty then
+         P (O, " ");
+         Traverse (State, Binders);
+      end if;
+
+      PL (O, " =");
+      Relative_Indent (O, 1);
+      Traverse
+        (State,
+         Global_Binding_Get_Def (Node));
+      Relative_Indent (O, -1);
+      State.Control := Abandon_Children;
    end Global_Binding_Pre_Op;
-
-   ----------------------------
-   -- Global_Binding_Post_Op --
-   ----------------------------
-
-   procedure Global_Binding_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Global_Binding_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Binders (Node));
-      --  Traverse
-      --    (State,
-      --     Global_Binding_Get_Def (Node));
-   end Global_Binding_Post_Op;
 
    -------------------------------
    -- Global_Rec_Binding_Pre_Op --
@@ -2742,29 +2712,11 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Global_Rec_Binding_Id)
    is
+      pragma Unreferenced (State);
+      pragma Unreferenced (Node);
    begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Global_Rec_Binding_Get_Name (Node));
+      P (O, "let rec ");
    end Global_Rec_Binding_Pre_Op;
-
-   --------------------------------
-   -- Global_Rec_Binding_Post_Op --
-   --------------------------------
-
-   procedure Global_Rec_Binding_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Global_Rec_Binding_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Global_Rec_Binding_Get_Name (Node));
-   end Global_Rec_Binding_Post_Op;
 
    ----------------------------------
    -- Parameter_Declaration_Pre_Op --
@@ -2774,41 +2726,22 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Parameter_Declaration_Id)
    is
+      External   : constant W_External_OId :=
+                     Parameter_Declaration_Get_External (Node);
    begin
-      raise Not_Implemented;
+      if External /= Why_Empty then
+         P (O, "external ");
+      end if;
 
-      --  Traverse
-      --    (State,
-      --     Parameter_Declaration_Get_External (Node));
-      --  Traverse_List
-      --    (State,
-      --     Parameter_Declaration_Get_Names (Node));
-      --  Traverse_List
-      --    (State,
-      --     Parameter_Declaration_Get_Parameter_Type (Node));
+      Print_List
+        (State,
+         Parameter_Declaration_Get_Names (Node));
+      P (O, " : ");
+      Traverse
+        (State,
+         Parameter_Declaration_Get_Parameter_Type (Node));
+      State.Control := Abandon_Children;
    end Parameter_Declaration_Pre_Op;
-
-   -----------------------------------
-   -- Parameter_Declaration_Post_Op --
-   -----------------------------------
-
-   procedure Parameter_Declaration_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Parameter_Declaration_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Parameter_Declaration_Get_External (Node));
-      --  Traverse_List
-      --    (State,
-      --     Parameter_Declaration_Get_Names (Node));
-      --  Traverse_List
-      --    (State,
-      --     Parameter_Declaration_Get_Parameter_Type (Node));
-   end Parameter_Declaration_Post_Op;
 
    ----------------------------------
    -- Exception_Declaration_Pre_Op --
@@ -2818,66 +2751,20 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Exception_Declaration_Id)
    is
+      Param : constant W_Identifier_OId :=
+                Exception_Declaration_Get_Parameter (Node);
    begin
-      raise Not_Implemented;
+      P (O, "exception ");
+      Traverse
+        (State,
+         Exception_Declaration_Get_Name (Node));
 
-      --  Traverse
-      --    (State,
-      --     Exception_Declaration_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Exception_Declaration_Get_Parameter (Node));
+      if Param /= Why_Empty then
+         P (O, "of ");
+         Traverse (State, Param);
+      end if;
+
+      State.Control := Abandon_Children;
    end Exception_Declaration_Pre_Op;
-
-   -----------------------------------
-   -- Exception_Declaration_Post_Op --
-   -----------------------------------
-
-   procedure Exception_Declaration_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Exception_Declaration_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Exception_Declaration_Get_Name (Node));
-      --  Traverse
-      --    (State,
-      --     Exception_Declaration_Get_Parameter (Node));
-   end Exception_Declaration_Post_Op;
-
-   ------------------------------
-   -- Logic_Declaration_Pre_Op --
-   ------------------------------
-
-   procedure Logic_Declaration_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Declaration_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Logic_Declaration_Get_Decl (Node));
-   end Logic_Declaration_Pre_Op;
-
-   -------------------------------
-   -- Logic_Declaration_Post_Op --
-   -------------------------------
-
-   procedure Logic_Declaration_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Declaration_Id)
-   is
-   begin
-      raise Not_Implemented;
-
-      --  Traverse
-      --    (State,
-      --     Logic_Declaration_Get_Decl (Node));
-   end Logic_Declaration_Post_Op;
 
 end Why.Atree.Sprint;

@@ -527,15 +527,7 @@ private
      (State : in out Printer_State;
       Node  : W_File_Id);
 
-   procedure File_Post_Op
-     (State : in out Printer_State;
-      Node  : W_File_Id);
-
    procedure Global_Binding_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Global_Binding_Id);
-
-   procedure Global_Binding_Post_Op
      (State : in out Printer_State;
       Node  : W_Global_Binding_Id);
 
@@ -543,32 +535,12 @@ private
      (State : in out Printer_State;
       Node  : W_Global_Rec_Binding_Id);
 
-   procedure Global_Rec_Binding_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Global_Rec_Binding_Id);
-
    procedure Parameter_Declaration_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Parameter_Declaration_Id);
-
-   procedure Parameter_Declaration_Post_Op
      (State : in out Printer_State;
       Node  : W_Parameter_Declaration_Id);
 
    procedure Exception_Declaration_Pre_Op
      (State : in out Printer_State;
       Node  : W_Exception_Declaration_Id);
-
-   procedure Exception_Declaration_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Exception_Declaration_Id);
-
-   procedure Logic_Declaration_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Declaration_Id);
-
-   procedure Logic_Declaration_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Logic_Declaration_Id);
 
 end Why.Atree.Sprint;
