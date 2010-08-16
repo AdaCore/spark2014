@@ -16,7 +16,7 @@ with AIP.PCBs;
 
 --# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
 --#         AIP.IP, AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.TCPH,
---#         AIP.Time_Types, AIP.Inet;
+--#         AIP.Time_Types, AIP.Inet, AIP.Conversions;
 
 package AIP.TCP
    --# own State;
@@ -72,9 +72,11 @@ is
    --  Expected to be provided by the applicative code.
 
    procedure TCP_Set_Udata (PCB : PCBs.PCB_Id; Udata : System.Address);
+   --# global in out State;
    --  Attach Udata to PCB, for later retrieval on event callbacks
 
    function TCP_Udata (PCB : PCBs.PCB_Id) return System.Address;
+   --# global in State;
    --  Retrive callback Udata attached to PCB
 
    --------------------------------
@@ -160,6 +162,7 @@ is
       Copy  : Boolean;
       Push  : Boolean;
       Err   : out AIP.Err_T);
+   --# global in out State, Buffers.State;
    --  Enqueue DATA/LEN for output through PCB. COPY controls whether data is
    --  copied into AIP's memory before processing, or whether it only gets
    --  referenced from there, in which case clients should not modify it until
@@ -178,6 +181,7 @@ is
    --  NOERR   if all went well.
 
    function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T;
+   --# global in State;
    --  Room available for output data queuing.
 
    procedure On_TCP_Sent
@@ -269,7 +273,7 @@ is
    -----------------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id);
-   --# global in out Buffers.State, IP.FIB, State;
+   --# global in out Buffers.State, IP.FIB, State, IP.State;
    --  Hook for IP.  Process a TCP segment in BUF, and dispatch the TCP payload
    --  to the appropriate user callback. Buf is then free'd.
 
@@ -278,7 +282,7 @@ is
    ------------
 
    procedure TCP_Fast_Timer;
-   --# global in out Buffers.State, State;
+   --# global in out Buffers.State, State, IP.State;
    --  Called every TCP_FAST_INTERVAL (250 ms) and process data previously
    --  "refused" by upper layer (application) and sends delayed ACKs.
 
@@ -295,7 +299,7 @@ private
    --  Destroy PCB and mark it as unallocated
 
    procedure TCP_Output (PCB : PCBs.PCB_Id);
-   --# global in State; in out Buffers.State;
+   --# global in out State, IP.State, Buffers.State;
    --  Start output for any pending data or control information on PCB
 
    procedure TCP_Send_Rst
@@ -314,6 +318,7 @@ private
       Syn : Boolean;
       Ack : Boolean;
       Err : out AIP.Err_T);
+   --# global in out State, Buffers.State;
    --  Send a TCP segment with no payload
 
    function Initial_Sequence_Number

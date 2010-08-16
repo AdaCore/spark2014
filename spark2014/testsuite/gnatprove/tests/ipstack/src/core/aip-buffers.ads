@@ -217,17 +217,13 @@ is
       Err  : out AIP.Err_T);
    --# global in out State;
    pragma Export (C, Buffer_Header, "AIP_buffer_header");
-   --  Move the payload pointer of Buf by Bump elements, signed.
-   --  Typically used to reveal or hide protocol headers.
+   --  Move the payload pointer of Buf by Bump elements, signed.  Typically
+   --  used to reveal or hide protocol headers. This should only be called on
+   --  front buffers (heads of buffer chain). A number of assumed invariants
+   --  may break and behavior is undefined otherwise.
    --
    --  ERR_MEM if the requested move would get the payload pointer off the
    --          buffer area.
-
-   --  Note: if this procedure is called on a buffer not in front of a chain,
-   --        then if will result in a violation of the invariant for the total
-   --        length of buffers that precede it in the chain.
-   --        This means that we should probably change this functionality in
-   --        our implementation of LWIP in SPARK.
 
    procedure Buffer_Copy
      (Dst : Buffer_Id;
@@ -268,7 +264,7 @@ is
       Queue : in out Packet_Queue;
       Buf   : out Buffer_Id);
    --# global in State;
-   --  Detach head packet from Queue and return its id in Buf
+   --  Detach (pop) head packet from Queue and return its id in Buf
 
    function Empty (Queue : Packet_Queue) return Boolean;
    --  True if Queue contains no packets

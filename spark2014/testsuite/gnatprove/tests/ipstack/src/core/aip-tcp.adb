@@ -62,7 +62,7 @@ is
       ISS      : AIP.M32_T; --  Initial send sequence number
 
       NSS      : AIP.M32_T; --  Next send sequence number
-      SND_BUF  : AIP.M32_T; --  Available send buffer room
+      SND_BUF  : AIP.U16_T; --  Available send buffer room
 
       Dup_Acks : AIP.U8_T;  --  Consecutive duplicated acks
 
@@ -391,7 +391,7 @@ is
      (Tbuf       : Buffers.Buffer_Id;
       PCB        : PCBs.PCB_Id;
       Retransmit : Boolean)
-   --# global in TPCBs; in out Buffers.State;
+   --# global in IPCBs, TPCBs; in out IP.State, Buffers.State;
    is
       PThdr, Thdr : System.Address;
       Tlen : AIP.U16_T;
@@ -482,6 +482,7 @@ is
    ----------------
 
    procedure TCP_Output (PCB   : PCBs.PCB_Id)
+   --# global in out IPCBs, TPCBs, IP.State, Buffers.State;
    is
       Seg     : Buffers.Buffer_Id;
       Seg_Len : AIP.M32_T;
@@ -494,7 +495,7 @@ is
 
       Thdr : System.Address;
 
-      N_ACKs_Q : U32_T;
+      N_ACKs_Q : AIP.U32_T;
       --  Number of ACKs sent together with segments from the Send_Queue.
 
    begin
@@ -603,7 +604,7 @@ is
    procedure Deliver_Segment
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id)
-   --# global in out Buffers.State, TPCBs;
+   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
    is
       Saved_Payload : System.Address;
       D_Buf : Buffers.Buffer_Id;
@@ -749,7 +750,7 @@ is
    procedure Set_State
      (PCB   : PCBs.PCB_Id;
       State : TCP_State)
-   --# global in out TPCBs,
+   --# global in out TPCBs, IPCBs,
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
    begin
@@ -852,161 +853,6 @@ is
 
       TPCBs (PCB).State := State;
    end Set_State;
-
-   -----------------
-   -- Process_Ack --
-   -----------------
-
-   procedure Process_Ack (PCB : PCBs.PCB_Id; Seg : Segment)
-   --# global in out Buffers.State, TPCBs; in TCP_Ticks;
-   is
-      Packet : Buffers.Buffer_Id;
-      Thdr   : System.Address;
-      Len    : AIP.M32_T;
-      Err    : AIP.Err_T;
-
-      CWND_Increment : AIP.M32_T;
-   begin
-      if Seq_Lt (Seg.Ack, TPCBs (PCB).SND_UNA) then
-         --  Duplicated ack
-
-         TPCBs (PCB).Dup_Acks := TPCBs (PCB).Dup_Acks + 1;
-
-         --  Ignore duplicated ack, unless it's the third in a row, in which
-         --  case we initiate a fast retransmit without waiting for the
-         --  retransmit timer to expire.
-
-         --  Fast retransmit /fast recovery are not implemented yet???
-         null;
-
-      else
-         --  Invalid ack for a seqno not sent yet should have been discarded
-
-         pragma Assert (Seq_Le (Seg.Ack, TPCBs (PCB).SND_NXT));
-
-         TPCBs (PCB).Dup_Acks := 0;
-
-         TPCBs (PCB).SND_UNA := Seg.Ack;
-
-         --  Perform slow start and congestion avoidance
-
-         if TPCBs (PCB).CWND < TPCBs (PCB).SSTHRESH then
-            CWND_Increment := AIP.M32_T (TPCBs (PCB).Remote_MSS);
-         else
-            CWND_Increment :=
-              AIP.M32_T (TPCBs (PCB).Remote_MSS * TPCBs (PCB).Remote_MSS)
-                / TPCBs (PCB).CWND;
-         end if;
-
-         TPCBs (PCB).CWND := TPCBs (PCB).CWND + CWND_Increment;
-
-         --  Update RTT estimator
-
-         if TPCBs (PCB).RTT_Seq = Seg.Ack then
-            Update_RTT_Estimator
-              (TPCB => TPCBs (PCB),
-               Meas => AIP.S16_T (TCP_Ticks - TPCBs (PCB).RTT_Ticks));
-            TPCBs (PCB).RTT_Seq := 0;
-         end if;
-
-         --  Purge entirely acked segments
-
-         loop
-            Packet := Buffers.Head_Packet (TPCBs (PCB).Unack_Queue);
-            exit when Packet = Buffers.NOBUF;
-
-            Thdr := Buffers.Packet_Info (Packet);
-            TCP_Seg_Len (Packet, Len);
-            exit when not Seq_Le (TCPH.TCPH_Seq_Num (Thdr) + Len, Seg.Ack);
-
-            --  Segment entirely acked: notify user and remove from queue.
-            --  Note: For a segment carrying a FIN, we do not signal it sent
-            --  if the ack covers all of the data but not the FIN flag.
-
-            TCP_Event
-              (Ev   => TCP_Event_T'(Kind => TCP_EVENT_SENT,
-                                    Len  =>
-                                      Len
-                                    - AIP.M32_T (TCPH.TCPH_Syn (Thdr))
-                                    - AIP.M32_T (TCPH.TCPH_Fin (Thdr)),
-                                    Buf  => Buffers.NOBUF,
-                                    Addr => IPaddrs.IP_ADDR_ANY,
-                                    Port => PCBs.NOPORT,
-                                    Err  => AIP.ERR_RST),
-               PCB  => PCB,
-               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT),
-               Err  => Err);
-
-            if TCPH.TCPH_Fin (Thdr) = 1 then
-               case TPCBs (PCB).State is
-                  when Fin_Wait_1 =>
-                     Set_State (PCB, Fin_Wait_2);
-
-                  when Closing =>
-                     Set_State (PCB, Time_Wait);
-
-                  when Last_Ack =>
-                     TCP_Free (PCB);
-
-                  when Time_Wait =>
-
-                     --  Ack retransmitted FIN
-
-                     TCP_Send_Control
-                       (PCB => PCB,
-                        Syn => False,
-                        Ack => True,
-                        Err => Err);
-
-                     --  Restart 2MSL timeout???
-
-                  when others =>
-                     --  Can't happen (we sent a FIN)
-
-                     null;
-               end case;
-            end if;
-
-            --  Note: the following call leaves Packet unchanged (but removes
-            --  it from the head of Unack_Queue).
-
-            Buffers.Remove_Packet
-              (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
-         end loop;
-
-         --  Update window if:
-         --    Seg.Seq > WL1
-         --    Seg.Seq = WL1 and Seg.Ack > WL2
-         --    Seg.Seq = WL1 and Seg.Awk = WL2 and window grows
-
-         if Seq_Lt (TPCBs (PCB).SND_WL1, Seg.Seq)
-              or else
-            (TPCBs (PCB).SND_WL1 = Seg.Seq
-             and then (Seq_Lt (TPCBs (PCB).SND_WL2, Seg.Ack)
-                         or else (TPCBs (PCB).SND_WL2 = Seg.Ack
-                                    and then
-                                  AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr))
-                                    > TPCBs (PCB).SND_WND)))
-         then
-            TPCBs (PCB).SND_WND := AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr));
-            TPCBs (PCB).SND_WL1 := Seg.Seq;
-            TPCBs (PCB).SND_WL2 := Seg.Ack;
-
-            if TPCBs (PCB).SND_WND = 0 then
-
-               --  Start persist timer
-
-               TPCBs (PCB).Persist_Count   := 0;
-               TPCBs (PCB).Persist_Backoff := Initial_Persist_Backoff;
-            else
-               --  Stop persist timer
-
-               TPCBs (PCB).Persist_Count   := -1;
-               TPCBs (PCB).Persist_Backoff := 0;
-            end if;
-         end if;
-      end if;
-   end Process_Ack;
 
    --------------
    -- TCP_Init --
@@ -1242,6 +1088,7 @@ is
      (Ptr  : System.Address;
       Len  : AIP.U16_T;
       Tbuf : out Buffers.Buffer_Id)
+   --# global in out Buffers.State;
    is
       Err : AIP.Err_T;
    begin
@@ -1275,6 +1122,7 @@ is
      (Ptr  : System.Address;
       Len  : AIP.U16_T;
       Tbuf : out Buffers.Buffer_Id)
+   --# global in out Buffers.State;
    is
       Hbuf : Buffers.Buffer_Id;
       --  Separate buffer for protocol headers
@@ -1314,10 +1162,11 @@ is
    ---------------------
 
    procedure TCP_Segment_For
-     (Ptr  : System.Address;
-      Len  : AIP.U16_T;
-      Copy : Boolean;
-      Tbuf : out Buffers.Buffer_Id)
+     (Ptr   : System.Address;
+      Len   : AIP.U16_T;
+      Copy  : Boolean;
+      Tbuf  : out Buffers.Buffer_Id)
+   --# global in out Buffers.State;
    is
    begin
       pragma Assert (Len > 0);
@@ -1327,6 +1176,7 @@ is
       else
          TCP_Ref_Segment_For (Ptr, Len, Tbuf);
       end if;
+
    end TCP_Segment_For;
 
    -----------------
@@ -1334,29 +1184,34 @@ is
    -----------------
 
    procedure TCP_Enqueue
-     (PCB  : PCBs.PCB_Id;
-      Data : System.Address;
-      Len  : AIP.M32_T;
-      Copy : Boolean;
-      Push : Boolean;
-      Syn  : Boolean;
-      Ack  : Boolean;
-      Err  : out AIP.Err_T)
+     (PCB     : PCBs.PCB_Id;
+      Data    : System.Address;
+      Len     : AIP.M32_T;
+      Control : Boolean;
+      Copy    : Boolean;
+      Push    : Boolean;
+      Syn     : Boolean;
+      Ack     : Boolean;
+      Err     : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
    is
 
       Left   : AIP.M32_T;
       Ptr    : System.Address;
-      Seqno  : AIP.M32_T;
+
       Seglen : AIP.U16_T;
-      Qhead  : Buffers.Buffer_Id;
-      Qtail  : Buffers.Buffer_Id;
-      Tbuf   : Buffers.Buffer_Id;
+      Segoff : AIP.U4_T;
+
+      NSS  : AIP.M32_T;
+      SegQ : Buffers.Packet_Queue;
+      Tbuf : Buffers.Buffer_Id;
+      Thdr : System.Address;
 
    begin
 
       Err := AIP.NOERR;
 
-      if Len > TPCBs (PCB).SND_BUF then
+      if Len > AIP.M32_T (TPCBs (PCB).SND_BUF) then
          Err := AIP.ERR_MEM;
       else
 
@@ -1365,41 +1220,106 @@ is
          Left := Len;
          Ptr  := Data;
 
-         Seqno := TPCBs (PCB).NSS;
+         NSS := TPCBs (PCB).NSS;
 
-         Qhead := Buffers.NOBUF;
-         Qtail := Buffers.NOBUF;
+         SegQ := Buffers.Empty_Packet_Queue;
+
+         if not Control then
+            Segoff := 5;
+         else
+            Segoff := 5 + AIP.U4_T (Len / 4);
+         end if;
 
          while Left > 0 loop
 
             if Left > AIP.M32_T (TPCBs (PCB).Remote_MSS) then
                Seglen := TPCBs (PCB).Remote_MSS;
             else
-               Seglen := U16_T (Left);
+               Seglen := AIP.U16_T (Left);
             end if;
 
             TCP_Segment_For (Ptr, Seglen, Copy, Tbuf);
             exit when Tbuf = Buffers.NOBUF;
 
-            --  Queue etc???
+            --  We have a new segment here. Assign the TCP header fields,
+            --  except WND and the ACK set, determined at output time. Compute
+            --  now what will be left to process.  This lets us determine if
+            --  this is the last segment we make this time around, needed for
+            --  some of the flags (e.g. PSH).
 
             Left := Left - AIP.M32_T (Seglen);
+
+            Thdr := Buffers.Packet_Info (Tbuf);
+
+            TCPH.Set_TCPH_Data_Offset (Thdr, Segoff);
+
+            TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
+            TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
+            TCPH.Set_TCPH_Seq_Num  (Thdr, NSS);
+            TCPH.Set_TCPH_Reserved (Thdr, 0);
+
+            TCPH.Set_TCPH_Urg (Thdr, 0);
+            TCPH.Set_TCPH_Fin (Thdr, 0);
+
+            if Syn then
+               TCPH.Set_TCPH_Syn (Thdr, 1);
+            else
+               TCPH.Set_TCPH_Syn (Thdr, 0);
+            end if;
+
+            if Ack then
+               TCPH.Set_TCPH_Ack (Thdr, 1);
+            else
+               TCPH.Set_TCPH_Ack (Thdr, 0);
+            end if;
+
+            if Left = 0 and then Push then
+               TCPH.Set_TCPH_Psh (Thdr, 1);
+            else
+               TCPH.Set_TCPH_Psh (Thdr, 0);
+            end if;
+
+            --  Now push on the temporary segment queue and prepare to proceed
+            --  with the next segment.
+
+            Buffers.Append_Packet
+              (Layer => Buffers.Transport,
+               Buf   => Tbuf,
+               Queue => SegQ);
+
+            Ptr := Conversions.Ofs (Ptr, Integer (Seglen));
+            NSS := NSS + AIP.M32_T (Seglen);
          end loop;
 
-         --  If we haven't been able to allocate or queue all the segments
-         --  required for this transmission, release what we got and err out.
-         --  Otherwise,
+         --  If we have had any kind of trouble so far, release what we got
+         --  and bail out. Otherwise proceed further.
 
-         if Left > 0 then
+         if AIP.Any (Err) then
 
-            null; -- ??? implement me
-            Err := AIP.ERR_MEM;
+            while not Buffers.Empty (SegQ) loop
+               Buffers.Remove_Packet
+                 (Layer => Buffers.Transport,
+                  Queue => SegQ,
+                  Buf   => Tbuf);
+               Buffers.Buffer_Blind_Free (Tbuf);
+            end loop;
+
          else
 
-            null; -- ???
+            --  Push the temporary queue on the Send_Queue for later
+            --  processing by TCP_Output.
+
+            Buffers.Append_Packet
+              (Layer => Buffers.Transport,
+               Buf   => Buffers.Head_Packet (SegQ),
+               Queue => TPCBs (PCB).Send_Queue);
+
+            --  Memorize what the next segment sequence should be
+
+            TPCBs (PCB).NSS := NSS;
+
          end if;
 
-         --  ??? To be continued
       end if;
 
    end TCP_Enqueue;
@@ -1413,16 +1333,18 @@ is
       Syn : Boolean;
       Ack : Boolean;
       Err : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
    is
    begin
-      TCP_Enqueue (PCB  => PCB,
-                   Data => System.Null_Address,
-                   Len  => 0,
-                   Copy => True,
-                   Push => False,
-                   Syn  => Syn,
-                   Ack  => Ack,
-                   Err  => Err);
+      TCP_Enqueue (PCB     => PCB,
+                   Data    => System.Null_Address,
+                   Len     => 0,
+                   Control => True,
+                   Copy    => True,
+                   Push    => False,
+                   Syn     => Syn,
+                   Ack     => Ack,
+                   Err     => Err);
    end TCP_Send_Control;
 
    -----------------
@@ -1452,6 +1374,7 @@ is
       Copy  : Boolean;
       Push  : Boolean;
       Err   : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
    is
    begin
       case TPCBs (PCB).State is
@@ -1459,29 +1382,173 @@ is
             if Len = 0 then
                Err := AIP.NOERR;
             else
-               TCP_Enqueue (PCB  => PCB,
-                            Data => Data,
-                            Len  => Len,
-                            Copy => Copy,
-                            Push => Push,
-                            Syn  => False,
-                            Ack  => False,
-                            Err  => Err);
+               TCP_Enqueue (PCB     => PCB,
+                            Data    => Data,
+                            Len     => Len,
+                            Control => False,
+                            Copy    => Copy,
+                            Push    => Push,
+                            Syn     => False,
+                            Ack     => False,
+                            Err     => Err);
             end if;
          when others =>
             Err := AIP.ERR_USE;
       end case;
    end TCP_Write;
 
+   -----------------
+   -- Process_Ack --
+   -----------------
+
+   procedure Process_Ack (PCB : PCBs.PCB_Id; Seg : Segment)
+   --# global in out Buffers.State, TPCBs, IPCBs, Bound_PCBs, Listen_PCBs,
+   --#               Active_PCBs, Time_Wait_PCBs; in TCP_Ticks;
+   is
+      Packet : Buffers.Buffer_Id;
+      Thdr   : System.Address;
+      Len    : AIP.M32_T;
+      Err    : AIP.Err_T;
+
+      CWND_Increment : AIP.M32_T;
+   begin
+      if Seq_Lt (Seg.Ack, TPCBs (PCB).SND_UNA) then
+         --  Duplicated ack
+
+         TPCBs (PCB).Dup_Acks := TPCBs (PCB).Dup_Acks + 1;
+
+         --  Ignore duplicated ack, unless it's the third in a row, in which
+         --  case we initiate a fast retransmit without waiting for the
+         --  retransmit timer to expire.
+
+         --  Fast retransmit /fast recovery are not implemented yet???
+         null;
+
+      else
+         --  Invalid ack for a seqno not sent yet should have been discarded
+
+         pragma Assert (Seq_Le (Seg.Ack, TPCBs (PCB).SND_NXT));
+
+         TPCBs (PCB).Dup_Acks := 0;
+
+         TPCBs (PCB).SND_UNA := Seg.Ack;
+
+         --  Perform slow start and congestion avoidance
+
+         if TPCBs (PCB).CWND < TPCBs (PCB).SSTHRESH then
+            CWND_Increment := AIP.M32_T (TPCBs (PCB).Remote_MSS);
+         else
+            CWND_Increment :=
+              AIP.M32_T (TPCBs (PCB).Remote_MSS * TPCBs (PCB).Remote_MSS)
+                / TPCBs (PCB).CWND;
+         end if;
+
+         TPCBs (PCB).CWND := TPCBs (PCB).CWND + CWND_Increment;
+
+         --  Update RTT estimator
+
+         if TPCBs (PCB).RTT_Seq = Seg.Ack then
+            Update_RTT_Estimator
+              (TPCB => TPCBs (PCB),
+               Meas => AIP.S16_T (TCP_Ticks - TPCBs (PCB).RTT_Ticks));
+            TPCBs (PCB).RTT_Seq := 0;
+         end if;
+
+         --  Purge entirely acked segments
+
+         loop
+            Packet := Buffers.Head_Packet (TPCBs (PCB).Unack_Queue);
+            exit when Packet = Buffers.NOBUF;
+
+            Thdr := Buffers.Packet_Info (Packet);
+            TCP_Seg_Len (Packet, Len);
+            exit when not Seq_Le (TCPH.TCPH_Seq_Num (Thdr) + Len, Seg.Ack);
+
+            --  Segment entirely acked: notify user and remove from queue.
+            --  Note: For a segment carrying a FIN, we do not signal it sent
+            --  if the ack covers all of the data but not the FIN flag.
+
+            TCP_Event
+              (Ev   => TCP_Event_T'(Kind => TCP_EVENT_SENT,
+                                    Len  =>
+                                      Len
+                                    - AIP.M32_T (TCPH.TCPH_Syn (Thdr))
+                                    - AIP.M32_T (TCPH.TCPH_Fin (Thdr)),
+                                    Buf  => Buffers.NOBUF,
+                                    Addr => IPaddrs.IP_ADDR_ANY,
+                                    Port => PCBs.NOPORT,
+                                    Err  => AIP.ERR_RST),
+               PCB  => PCB,
+               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_SENT),
+               Err  => Err);
+
+            if TCPH.TCPH_Fin (Thdr) = 1 then
+               case TPCBs (PCB).State is
+                  when Fin_Wait_1 =>
+                     Set_State (PCB, Fin_Wait_2);
+
+                  when Closing =>
+                     Set_State (PCB, Time_Wait);
+
+                  when Last_Ack =>
+                     TCP_Free (PCB);
+
+                  when Time_Wait =>
+
+                     --  Ack retransmitted FIN
+
+                     TCP_Send_Control
+                       (PCB => PCB,
+                        Syn => False,
+                        Ack => True,
+                        Err => Err);
+
+                     --  Restart 2MSL timeout???
+
+                  when others =>
+                     --  Can't happen (we sent a FIN)
+
+                     null;
+               end case;
+            end if;
+
+            --  Note: the following call leaves Packet unchanged (but removes
+            --  it from the head of Unack_Queue).
+
+            Buffers.Remove_Packet
+              (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
+         end loop;
+
+         --  Update window if:
+         --    Seg.Seq > WL1
+         --    Seg.Seq = WL1 and Seg.Ack > WL2
+         --    Seg.Seq = WL1 and Seg.Awk = WL2 and window grows
+
+         if Seq_Lt (TPCBs (PCB).SND_WL1, Seg.Seq)
+              or else
+            (TPCBs (PCB).SND_WL1 = Seg.Seq
+             and then (Seq_Lt (TPCBs (PCB).SND_WL2, Seg.Ack)
+                         or else (TPCBs (PCB).SND_WL2 = Seg.Ack
+                                    and then
+                                  AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr))
+                                    > TPCBs (PCB).SND_WND)))
+         then
+            TPCBs (PCB).SND_WND := AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr));
+            TPCBs (PCB).SND_WL1 := Seg.Seq;
+            TPCBs (PCB).SND_WL2 := Seg.Ack;
+         end if;
+      end if;
+   end Process_Ack;
+
    ----------------
    -- TCP_Sndbuf --
    ----------------
 
-   function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T is
-      pragma Unreferenced (PCB);
+   function TCP_Sndbuf (PCB : PCBs.PCB_Id) return AIP.U16_T
+   --# global in TPCBs;
+   is
    begin
-      --  Generated stub: replace with real body!
-      return 0; --  TBD???
+      return TPCBs (PCB).SND_BUF;
    end TCP_Sndbuf;
 
    -----------------
@@ -1670,7 +1737,7 @@ is
      (PCB : PCBs.PCB_Id;
       Seg : Segment;
       Err : out AIP.Err_T)
-   --# global in out Buffers.State, TPCBs, IPCBs;
+   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
    --#        in IP.FIB, Boot_Time, TCP_Ticks,
    --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
@@ -2019,10 +2086,11 @@ is
                           and then
                         Seq_Lt (TPCBs (PCB).RCV_UP,
                                 Seg.Seq
-                                  + M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr)))
+                                + AIP.M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr)))
                      then
                         TPCBs (PCB).RCV_UP :=
-                          Seg.Seq + M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr));
+                          Seg.Seq
+                          + AIP.M32_T (TCPH.TCPH_Urgent_Ptr (Seg.Thdr));
 
                         --  Notify user ???
 
@@ -2126,7 +2194,7 @@ is
    ---------------
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
-   --# global in out Buffers.State, TPCBs, IPCBs;
+   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
    --#        in IP.FIB, Boot_Time, TCP_Ticks,
    --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
@@ -2386,7 +2454,7 @@ is
    --------------------
 
    procedure TCP_Fast_Timer
-   --# global in out Buffers.State, TPCBs; in Active_PCBs, IPCBs;
+   --# global in out Buffers.State, TPCBs, IP.State; in Active_PCBs, IPCBs;
    is
       PCB : PCBs.PCB_Id;
    begin
@@ -2419,7 +2487,7 @@ is
 
       PCB := Active_PCBs;
       while PCB /= PCBs.NOPCB loop
-         Next_PCB := IPBCs (PCB).Link;
+         Next_PCB := IPCBs (PCB).Link;
          Remove_PCB := False;
 
          if (TPCBs (PCB).State = SYN_SENT
@@ -2427,13 +2495,13 @@ is
            or else
              TPCBs (PCB).Retransmit_Count = Config.TCP_MAX_RTX
            or else (TPCBs (PCB).State = FIN_WAIT_2
-                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Timer
+                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Ticks
                                 > Fin_Wait_Timeout)
            or else (TPCBs (PCB).State = Syn_Received
-                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Timer
+                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Ticks
                                 > Syn_Received_Timeout)
            or else (TPCBs (PCB).State = Last_Ack
-                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Timer
+                    and then TCP_Ticks - TPCBs (PCB).Watchdog_Ticks
                                 > 2 * Config.TCP_MSL * TCP_Hz)
          then
             Remove_PCB := True;
