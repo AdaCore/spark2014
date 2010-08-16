@@ -2541,7 +2541,7 @@ is
                     TPCBs (PCB).Retransmit_Ticks + 1;
                end if;
 
-               if not Buffers.Empty (TPCBs (PCB).Unacked_Queue)
+               if not Buffers.Empty (TPCBs (PCB).Unack_Queue)
                  and then TPCBs (PCB).Retransmit_Ticks
                             > S16_T (TPCBs (PCB).RTO)
                then
