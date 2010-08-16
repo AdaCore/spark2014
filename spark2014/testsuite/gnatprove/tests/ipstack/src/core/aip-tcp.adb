@@ -1225,6 +1225,7 @@ is
       Push    : Boolean;
       Syn     : Boolean;
       Ack     : Boolean;
+      Fin     : Boolean;
       Err     : out AIP.Err_T)
    --# global in out TPCBs, Buffers.State; in IPCBs;
    is
@@ -1290,9 +1291,9 @@ is
             exit when Tbuf = Buffers.NOBUF;
 
             --  We have a new segment to queue at this point. Assign the TCP
-            --  header fields, except WND and ACK, determined at output time.
-            --  Compute now what will be left to process afterwards, which
-            --  tells us if this is the last segment for this time around.
+            --  header fields, except WND determined at output time. Compute
+            --  now what will be left to process afterwards, which tells us
+            --  if this is the last segment for this time around.
 
             Left := Left - AIP.M32_T (Dlen);
 
@@ -1306,7 +1307,6 @@ is
             TCPH.Set_TCPH_Reserved (Thdr, 0);
 
             TCPH.Set_TCPH_Urg (Thdr, 0);
-            TCPH.Set_TCPH_Fin (Thdr, 0);
 
             if Syn then
                TCPH.Set_TCPH_Syn (Thdr, 1);
@@ -1318,6 +1318,12 @@ is
                TCPH.Set_TCPH_Ack (Thdr, 1);
             else
                TCPH.Set_TCPH_Ack (Thdr, 0);
+            end if;
+
+            if Fin then
+               TCPH.Set_TCPH_Fin (Thdr, 1);
+            else
+               TCPH.Set_TCPH_Fin (Thdr, 0);
             end if;
 
             if Left = 0 and then Push then
@@ -1356,10 +1362,18 @@ is
             --  Push the temporary queue on the Send_Queue for later
             --  processing by TCP_Output.
 
-            Buffers.Append_Packet
-              (Layer => Buffers.Transport,
-               Buf   => Buffers.Head_Packet (SegQ),
-               Queue => TPCBs (PCB).Send_Queue);
+            --  If we have a single non-control segment that fits in spare
+            --  room in the last segment in Send_Queue, chain our buffer to
+            --  that one.  Otherwise just append our segments.
+
+            if False then
+               null; -- ??? Implement me
+            else
+               Buffers.Append_Packet
+                 (Layer => Buffers.Transport,
+                  Buf   => Buffers.Head_Packet (SegQ),
+                  Queue => TPCBs (PCB).Send_Queue);
+            end if;
 
             --  Memorize what the next segment sequence should be
 
@@ -1379,6 +1393,7 @@ is
      (PCB : PCBs.PCB_Id;
       Syn : Boolean;
       Ack : Boolean;
+      Fin : Boolean;
       Err : out AIP.Err_T)
    --# global in out TPCBs, Buffers.State; in IPCBs;
    is
@@ -1391,6 +1406,7 @@ is
                    Push    => False,
                    Syn     => Syn,
                    Ack     => Ack,
+                   Fin     => Fin,
                    Err     => Err);
    end TCP_Send_Control;
 
@@ -1430,13 +1446,14 @@ is
                Err := AIP.NOERR;
             else
                TCP_Enqueue (PCB     => PCB,
+                            Control => False,
                             Data    => Data,
                             Len     => Len,
-                            Control => False,
                             Copy    => Copy,
                             Push    => Push,
                             Syn     => False,
                             Ack     => False,
+                            Fin     => False,
                             Err     => Err);
             end if;
          when others =>
@@ -1548,6 +1565,7 @@ is
                        (PCB => PCB,
                         Syn => False,
                         Ack => True,
+                        Fin => False,
                         Err => Err);
 
                      --  Restart 2MSL timeout???
@@ -1950,6 +1968,7 @@ is
                        (PCB => New_PCB,
                         Syn => True,
                         Ack => True,
+                        Fin => False,
                         Err => Err);
                   else
                      --  Failed to set up PCB: bail out
@@ -2033,6 +2052,7 @@ is
                      TCP_Send_Control (PCB => PCB,
                                        Syn => False,
                                        Ack => True,
+                                       Fin => False,
                                        Err => Err);
 
                   else
@@ -2040,6 +2060,7 @@ is
                      TCP_Send_Control (PCB => PCB,
                                        Syn => True,
                                        Ack => True,
+                                       Fin => False,
                                        Err => Err);
                   end if;
                end if;
@@ -2065,6 +2086,7 @@ is
                   TCP_Send_Control (PCB => PCB,
                                     Syn => False,
                                     Ack => True,
+                                    Fin => False,
                                     Err => Err);
                end if;
                Discard := True;

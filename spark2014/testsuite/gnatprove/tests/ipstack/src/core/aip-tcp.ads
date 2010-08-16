@@ -318,9 +318,11 @@ private
      (PCB : PCBs.PCB_Id;
       Syn : Boolean;
       Ack : Boolean;
+      Fin : Boolean;
       Err : out AIP.Err_T);
    --# global in out State, Buffers.State;
-   --  Send a TCP segment with no payload
+   --  Send a TCP segment with no payload, just control bits set according
+   --  to Syn, Ack and Fin.
 
    function Initial_Sequence_Number
      (Local_IP    : IPaddrs.IPaddr;
