@@ -122,9 +122,6 @@ is
 
       --  Transmission queues
 
-      ACK_Needed  : Boolean;
-      --  As soon as we know we need to output an ACK
-
       Send_Queue  : Buffers.Packet_Queue;
       --  Packets to be sent out
 
@@ -193,7 +190,6 @@ is
                                     RTT_Stddev       => 0,
                                     RTO              => 0,
 
-                                    ACK_Needed       => False,
                                     Send_Queue       =>
                                       Buffers.Empty_Packet_Queue,
                                     Unack_Queue      =>
@@ -335,7 +331,27 @@ is
    --  copied within buffer space or if we just keep a reference to it.
    --  Header space is allocated for all the protocol layers downstream,
    --  without options. Packet_Info is set to designate the TCP header, and
-   --  Payload designates the data.
+   --  Payload designates the data. None of the TCP header fields is set by
+   --  this operation.
+
+   --  procedure TCP_Enqueue
+   --    (PCB     : PCBs.PCB_Id;
+   --     Control : Boolean;
+   --     Data    : System.Address;
+   --     Len     : AIP.M32_T;
+   --     Copy    : Boolean;
+   --     Push    : Boolean;
+   --     Syn     : Boolean;
+   --     Ack     : Boolean;
+   --     Err     : out AIP.Err_T)
+   --  Request push onto the Send_Queue for later output by TCP_Output.
+   --  If Control is False, Data/Len, Copy and Push operate as for user data
+   --  passed to TCP_Write, with segments cut to be MSS bytes max each.
+   --  If Control is True, Data/Len designates a TCP options area, sent over
+   --  an empty segment with the SYN and ACK header bits set according to the
+   --  Syn and Ack arguments.
+   --
+   --  ERR_MEM on segment memory allocation failure
 
    --  procedure TCP_Send_Segment
    --    (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
@@ -499,7 +515,7 @@ is
    -- TCP_Output --
    ----------------
 
-   procedure TCP_Output (PCB   : PCBs.PCB_Id)
+   procedure TCP_Output (PCB : PCBs.PCB_Id; Ack_Now : Boolean)
    --# global in out IPCBs, TPCBs, IP.State, Buffers.State;
    is
       Seg     : Buffers.Buffer_Id;
@@ -581,38 +597,36 @@ is
       --  while processing the send queue, setup and send an empty ACK segment
       --  now.
 
-      if TPCBs (PCB).ACK_Needed then
-         if N_ACKs_Q = 0 then
-            Buffers.Buffer_Alloc
-              (Size   => TCPH.TCP_Header_Size / 8,
-               Offset => Inet.HLEN_To (Inet.IP_LAYER),
-               Kind   => Buffers.SPLIT_BUF,
-               Buf    => Seg);
+      if ACK_Now and then N_ACKs_Q = 0 then
+         Buffers.Buffer_Alloc
+           (Size   => TCPH.TCP_Header_Size / 8,
+            Offset => Inet.HLEN_To (Inet.IP_LAYER),
+            Kind   => Buffers.SPLIT_BUF,
+            Buf    => Seg);
 
-            Thdr := Buffers.Buffer_Payload (Seg);
+         Thdr := Buffers.Buffer_Payload (Seg);
 
-            TCPH.Set_TCPH_Data_Offset (Thdr, 5);
+         TCPH.Set_TCPH_Data_Offset (Thdr, 5);
 
-            TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
-            TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
-            TCPH.Set_TCPH_Seq_Num  (Thdr, TPCBs (PCB).SND_NXT);
-            TCPH.Set_TCPH_Reserved (Thdr, 0);
+         TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
+         TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
+         TCPH.Set_TCPH_Seq_Num  (Thdr, TPCBs (PCB).SND_NXT);
+         TCPH.Set_TCPH_Reserved (Thdr, 0);
 
-            TCPH.Set_TCPH_Urg (Thdr, 0);
-            TCPH.Set_TCPH_Psh (Thdr, 0);
-            TCPH.Set_TCPH_Syn (Thdr, 0);
-            TCPH.Set_TCPH_Fin (Thdr, 0);
-            TCPH.Set_TCPH_Ack (Thdr, 1);
+         TCPH.Set_TCPH_Urg (Thdr, 0);
+         TCPH.Set_TCPH_Psh (Thdr, 0);
+         TCPH.Set_TCPH_Syn (Thdr, 0);
+         TCPH.Set_TCPH_Fin (Thdr, 0);
+         TCPH.Set_TCPH_Ack (Thdr, 1);
 
-            TCP_Send_Segment
-              (Tbuf       => Seg,
-               PCB        => PCB,
-               Retransmit => False);
+         TCP_Send_Segment
+           (Tbuf       => Seg,
+            PCB        => PCB,
+            Retransmit => False);
 
-            Buffers.Buffer_Blind_Free (Seg);
-         end if;
-         TPCBs (PCB).ACK_Needed := False;
+         Buffers.Buffer_Blind_Free (Seg);
       end if;
+
    end TCP_Output;
 
    ---------------------
@@ -694,8 +708,9 @@ is
 
             else
                --  All data delivered with no error: try sending data and ack
+               --  as needed
 
-               TCP_Output (PCB);
+               TCP_Output (PCB => PCB, Ack_Now => False);
             end if;
 
          else
@@ -1203,9 +1218,9 @@ is
 
    procedure TCP_Enqueue
      (PCB     : PCBs.PCB_Id;
+      Control : Boolean;
       Data    : System.Address;
       Len     : AIP.M32_T;
-      Control : Boolean;
       Copy    : Boolean;
       Push    : Boolean;
       Syn     : Boolean;
@@ -1214,16 +1229,30 @@ is
    --# global in out TPCBs, Buffers.State; in IPCBs;
    is
 
-      Left   : AIP.M32_T;
-      Ptr    : System.Address;
+      Left : AIP.M32_T;
+      Ptr  : System.Address;
+      --  Amount of Data still unassigned a TCP segment, and start address
+      --  of this data. This designates user data or TCP options according
+      --  to Control.
 
-      Seglen : AIP.U16_T;
-      Segoff : AIP.U4_T;
+      Dlen : AIP.U16_T;
+      --  Amount of user or options Data carried by the current segment
+
+      Toff : AIP.U4_T;
+      --  TCP user data offset for current segment, in words.
+      --  5 + length of options.
+
+      SegQ : Buffers.Packet_Queue;
+      --  Local packet queue, to hold segments temporarily until we know we
+      --  can allocate all those we need.
 
       NSS  : AIP.M32_T;
-      SegQ : Buffers.Packet_Queue;
+      --  Next Send Sequence number, which we'll assign to the next segment to
+      --  be queued.
+
       Tbuf : Buffers.Buffer_Id;
       Thdr : System.Address;
+      --  One segment we build and its TCP header
 
    begin
 
@@ -1233,7 +1262,8 @@ is
          Err := AIP.ERR_MEM;
       else
 
-         --  Cut DATA into segment buffers according to MSS
+         --  Cut DATA into segments according to MSS, queuing into the
+         --  local queue until we know we can allocate all we need.
 
          Left := Len;
          Ptr  := Data;
@@ -1243,33 +1273,32 @@ is
          SegQ := Buffers.Empty_Packet_Queue;
 
          if not Control then
-            Segoff := 5;
+            Toff := 5;
          else
-            Segoff := 5 + AIP.U4_T (Len / 4);
+            Toff := 5 + AIP.U4_T (Len / 4);
          end if;
 
          while Left > 0 loop
 
             if Left > AIP.M32_T (TPCBs (PCB).Remote_MSS) then
-               Seglen := TPCBs (PCB).Remote_MSS;
+               Dlen := TPCBs (PCB).Remote_MSS;
             else
-               Seglen := AIP.U16_T (Left);
+               Dlen := AIP.U16_T (Left);
             end if;
 
-            TCP_Segment_For (Ptr, Seglen, Copy, Tbuf);
+            TCP_Segment_For (Ptr, Dlen, Copy, Tbuf);
             exit when Tbuf = Buffers.NOBUF;
 
-            --  We have a new segment here. Assign the TCP header fields,
-            --  except WND and the ACK set, determined at output time. Compute
-            --  now what will be left to process.  This lets us determine if
-            --  this is the last segment we make this time around, needed for
-            --  some of the flags (e.g. PSH).
+            --  We have a new segment to queue at this point. Assign the TCP
+            --  header fields, except WND and ACK, determined at output time.
+            --  Compute now what will be left to process afterwards, which
+            --  tells us if this is the last segment for this time around.
 
-            Left := Left - AIP.M32_T (Seglen);
+            Left := Left - AIP.M32_T (Dlen);
 
             Thdr := Buffers.Packet_Info (Tbuf);
 
-            TCPH.Set_TCPH_Data_Offset (Thdr, Segoff);
+            TCPH.Set_TCPH_Data_Offset (Thdr, Toff);
 
             TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
             TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
@@ -1297,16 +1326,16 @@ is
                TCPH.Set_TCPH_Psh (Thdr, 0);
             end if;
 
-            --  Now push on the temporary segment queue and prepare to proceed
-            --  with the next segment.
+            --  Push on the temporary queue and prepare to proceed with the
+            --  next segment.
 
             Buffers.Append_Packet
               (Layer => Buffers.Transport,
                Buf   => Tbuf,
                Queue => SegQ);
 
-            Ptr := Conversions.Ofs (Ptr, Integer (Seglen));
-            NSS := NSS + AIP.M32_T (Seglen);
+            Ptr := Conversions.Ofs (Ptr, Integer (Dlen));
+            NSS := NSS + AIP.M32_T (Dlen);
          end loop;
 
          --  If we have had any kind of trouble so far, release what we got
@@ -1355,9 +1384,9 @@ is
    is
    begin
       TCP_Enqueue (PCB     => PCB,
+                   Control => True,
                    Data    => System.Null_Address,
                    Len     => 0,
-                   Control => True,
                    Copy    => True,
                    Push    => False,
                    Syn     => Syn,
@@ -2526,7 +2555,7 @@ is
    --------------------
 
    procedure TCP_Slow_Timer
-   --# global in out TCP_Ticks;
+   --# global in out TCP_Ticks, Active_PCBs, IPCBs, TPCBs;
    is
       Remove_PCB : Boolean;
       PCB      : PCBs.PCB_Id;

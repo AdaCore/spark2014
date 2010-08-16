@@ -298,9 +298,10 @@ private
    --# global in out State;
    --  Destroy PCB and mark it as unallocated
 
-   procedure TCP_Output (PCB : PCBs.PCB_Id);
+   procedure TCP_Output (PCB : PCBs.PCB_Id; Ack_Now : Boolean);
    --# global in out State, IP.State, Buffers.State;
-   --  Start output for any pending data or control information on PCB
+   --  Start output for any pending data or control information on PCB. If
+   --  Ack_Now, make sure at least an ACK segment gets sent.
 
    procedure TCP_Send_Rst
      (Src_IP   : IPaddrs.IPaddr;
