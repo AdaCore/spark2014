@@ -505,7 +505,7 @@ is
 
          TCP_Send_Segment (Seg, PCB);
 
-         --  Update state Variables
+         --  Remove packet from the Send_Queue and bump SND_NXT
 
          Buffers.Remove_Packet
            (Buffers.Transport, TPCBs (PCB).Send_Queue, Seg);

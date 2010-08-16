@@ -261,7 +261,7 @@ is
       Queue : in out Packet_Queue;
       Buf   : Buffer_Id);
    --# global in out State;
-   --  Append Buf to list Queue
+   --  Append (push) packet designated by Buf at the tail of Queue
 
    procedure Remove_Packet
      (Layer : Packet_Layer;
