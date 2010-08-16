@@ -93,4 +93,10 @@ package AIP.Config is
    TCP_SND_BUF : constant := 512;
    --  TCP send buffer size
 
+   TCP_MAX_SYN_RTX : constant := 6;
+   --  Maximum retransmits for initial (SYN) segments
+
+   TCP_MAX_RTX : constant := 12;
+   --  Maximum retransmits for data segments
+
 end AIP.Config;

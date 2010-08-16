@@ -97,7 +97,7 @@ is
 
       Persist_Ticks   : AIP.S16_T;
       Persist_Backoff : AIP.S16_T;
-      --  TCK ticks value for persist timer (-1 if not running, ticks count
+      --  TCP ticks value for persist timer (-1 if not running, ticks count
       --  since last reset if running, and current backoff count (0 if not
       --  running).
 
@@ -216,14 +216,23 @@ is
    type TCP_TPCB_Array is array (Valid_TCP_PCB_Id) of TCP_PCB;
 
    Boot_Time : Time_Types.Time;
+   --  Startup time of TCP subsystem
+
    TCP_Ticks : AIP.M32_T;
+   --  Current TCP time counter (TCP_Hz ticks per second)
+
    TCP_Hz    : constant := 2;
-   --  Two TCP ticks per second
+   --  TCP timer frequency (do not change)
 
    --  Persist timer parameters, in TCP ticks (500 ms)
 
-   Initial_Persist_Backoff : constant := 3;
-   Max_Persist_Backoff     : constant := 120;
+   Initial_Persist_Backoff : constant := 3/2 * TCP_Hz;  -- 1.5 s
+   Max_Persist_Backoff     : constant := 60 * TCP_Hz;   -- 60 s
+
+   --  Timeouts, in TCP ticks
+
+   Fin_Wait_Timeout     : constant := 20 * TCP_Hz; -- 20 s
+   Syn_Received_Timeout : constant := 20 * TCP_Hz; -- 20 s
 
    IPCBs : TCP_IPCB_Array;
    TPCBs : TCP_TPCB_Array;
@@ -329,8 +338,14 @@ is
    --  Payload designates the data.
 
    --  procedure TCP_Send_Segment
-   --  (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
+   --    (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
    --  Helper for TCP_Output. Send segment held in Tbuf over IP for PCB.
+
+   --  procedure Retransmit_Timeout (PCB : PCBs.PCB_Id);
+   --  Handle expiration of the retransmit timer on PCB
+
+   --  procedure Send_Window_Probe (PCB : PCBs.PCB_Id);
+   --  Send window probe for PCB (expiration of persist timer)
 
    -----------------
    -- TCP_Seg_Len --
@@ -413,6 +428,7 @@ is
 
       Thdr := Buffers.Packet_Info (Tbuf);
       Buffers.Buffer_Set_Payload (Tbuf, Thdr, Err);
+      pragma Assert (AIP.No (Err));
 
       --  Fill in the ACK number field and advertise our receiving window
       --  size.
@@ -449,6 +465,7 @@ is
       --  Remove pseudo-header
 
       Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Pseudo_Header_Size / 8, Err);
+      pragma Assert (AIP.No (Err));
 
       if not Retransmit then
 
@@ -475,6 +492,7 @@ is
          Proto  => IPH.IP_Proto_TCP,
          Netif  => TPCBs (PCB).Next_Hop_Netif,
          Err    => Err);
+      pragma Assert (AIP.No (Err));
    end TCP_Send_Segment;
 
    ----------------
@@ -1536,6 +1554,19 @@ is
             TPCBs (PCB).SND_WND := AIP.M32_T (TCPH.TCPH_Window (Seg.Thdr));
             TPCBs (PCB).SND_WL1 := Seg.Seq;
             TPCBs (PCB).SND_WL2 := Seg.Ack;
+
+            if TPCBs (PCB).SND_WND = 0 then
+
+               --  Start persist timer
+
+               TPCBs (PCB).Persist_Ticks   := 0;
+               TPCBs (PCB).Persist_Backoff := Initial_Persist_Backoff;
+            else
+               --  Stop persist timer
+
+               TPCBs (PCB).Persist_Ticks   := -1;
+               TPCBs (PCB).Persist_Backoff := 0;
+            end if;
          end if;
       end if;
    end Process_Ack;
@@ -2472,6 +2503,24 @@ is
       null;
    end TCP_Fast_Timer;
 
+   ------------------------
+   -- Retransmit_Timeout --
+   ------------------------
+
+   procedure Retransmit_Timeout (PCB : PCBs.PCB_Id) is
+   begin
+      null; --  TBD???
+   end Retransmit_Timeout;
+
+   -----------------------
+   -- Send_Window_Probe --
+   -----------------------
+
+   procedure Send_Window_Probe (PCB : PCBs.PCB_Id) is
+   begin
+      null; --  TBD???
+   end Send_Window_Probe;
+
    --------------------
    -- TCP_Slow_Timer --
    --------------------
@@ -2530,7 +2579,7 @@ is
 
                   --  Send probe
 
-                  Send_Zero_Window_Probe (PCB);
+                  Send_Window_Probe (PCB);
                end if;
 
             else
@@ -2542,8 +2591,7 @@ is
                end if;
 
                if not Buffers.Empty (TPCBs (PCB).Unack_Queue)
-                 and then TPCBs (PCB).Retransmit_Ticks
-                            > S16_T (TPCBs (PCB).RTO)
+                 and then TPCBs (PCB).Retransmit_Ticks > TPCBs (PCB).RTO
                then
                   if TPCBs (PCB).State /= SYN_SENT then
                      --  Exponential backoff, except in SYN_SENT state
@@ -2558,8 +2606,8 @@ is
                     AIP.M32_T'Max
                       (AIP.M32_T'Min
                          (TPCBs (PCB).SND_WND, TPCBs (PCB).Cwnd) / 2,
-                       2 * TPCBs (PCB).Remote_MSS);
-                  TPCBs (PCB).Cwnd := TPCBs (PCB).Remote_MSS;
+                       2 * AIP.M32_T (TPCBs (PCB).Remote_MSS));
+                  TPCBs (PCB).Cwnd := AIP.M32_T (TPCBs (PCB).Remote_MSS);
 
                   Retransmit_Timeout (PCB);
                end if;
