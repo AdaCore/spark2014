@@ -403,12 +403,10 @@ mintapif_input (Netif_Id nid)
 
       if (err == NOERR) {
 	/* pass to network layer */
-	netif->Input_CB (p, nid);
+	netif->Input_CB (nid, p);
       } else {
 	AIP_buffer_blind_free (p);
       }
-
-      netif->Input_CB (nid, p);
       break;
     case Ether_Type_ARP:
       AIP_arp_input (nid, mintapif->ethaddr, p);

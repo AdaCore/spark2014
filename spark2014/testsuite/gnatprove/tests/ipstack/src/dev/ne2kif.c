@@ -340,7 +340,7 @@ ne2k_input (Netif_Id Nid)
 
       if (Err == NOERR) {
 	/* pass to network layer */
-	netif->Input_CB (p, Nid);
+	netif->Input_CB (Nid, p);
       } else {
 	AIP_buffer_blind_free (p);
       }
