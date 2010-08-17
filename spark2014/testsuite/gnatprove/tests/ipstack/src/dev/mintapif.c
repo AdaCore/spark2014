@@ -290,7 +290,8 @@ low_level_output(Netif_Id Nid, Buffer_Id p, Err_T *Err)
 /*
  * Pad Ethernet frames by 2 bytes so that the IP payload ends up aligned
  * on a 4-byte boundary.
- */
+*/
+static char bcast_address[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 static Buffer_Id
 low_level_input(struct netif *netif)
 {
@@ -311,6 +312,16 @@ low_level_input(struct netif *netif)
     printf("drop\n");
     return NULL;
     }*/
+
+  if (len < netif->LL_Address_Length
+      || (memcmp (buf, netif->LL_Address, netif->LL_Address_Length)
+	  &&
+	  memcmp (buf, bcast_address, sizeof bcast_address))) {
+      /* Packet is not for me: bail out early */
+      /* Multicast ??? */
+
+      return NOBUF;
+    }
 
   /* We allocate a pbuf chain of pbufs from the pool. */
   AIP_buffer_alloc (0, len, LINK_BUF, &p);
@@ -389,6 +400,13 @@ mintapif_input (Netif_Id nid)
 
       /* Skip Ethernet header */
       AIP_buffer_header (p, -14, &err);
+
+      if (err == NOERR) {
+	/* pass to network layer */
+	netif->Input_CB (p, nid);
+      } else {
+	AIP_buffer_blind_free (p);
+      }
 
       netif->Input_CB (nid, p);
       break;
