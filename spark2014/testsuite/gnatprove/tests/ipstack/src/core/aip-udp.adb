@@ -183,9 +183,6 @@ is
                PCB,
                UPCBs (PCB).Callbacks (UDP_EVENT_RECV));
          end if;
-
-      else
-         Buffers.Buffer_Blind_Free (Buf);
       end if;
    end UDP_Input;
 

@@ -2560,8 +2560,6 @@ is
             TCP_Receive (PCB, Seg, Err);
          end if;
       end if;
-
-      Buffers.Buffer_Blind_Free (Buf);
    end TCP_Input;
 
    --------------------

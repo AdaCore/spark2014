@@ -82,8 +82,6 @@ package body AIP.ICMP is
                null;
          end case;
       end if;
-
-      Buffers.Buffer_Blind_Free (Buf);
    end ICMP_Input;
 
    -----------------

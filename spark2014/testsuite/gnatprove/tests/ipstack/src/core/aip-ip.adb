@@ -203,9 +203,7 @@ is
          end if;
       end if;
 
-      if AIP.Any (Err) then
-         Buffers.Buffer_Blind_Free (Buf);
-      end if;
+      Buffers.Buffer_Blind_Free (Buf);
    end IP_Input;
 
    ------------------

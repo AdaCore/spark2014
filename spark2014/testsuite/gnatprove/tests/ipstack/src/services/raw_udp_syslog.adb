@@ -89,7 +89,6 @@ package body RAW_UDP_Syslog is
       --  Release the Buffer chain we have processed and disconnect our PCB so
       --  that it accepts further incoming messages from other endpoints.
 
-      AIP.Buffers.Buffer_Blind_Free (Logbuf);
       AIP.UDP.UDP_Disconnect (Pcb);
 
    end SYSLOG_Process_Recv;
