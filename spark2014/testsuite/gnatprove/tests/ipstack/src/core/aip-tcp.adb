@@ -1275,6 +1275,8 @@ is
 
    begin
 
+      pragma Assert (not (Syn and then Fin));
+
       Err := AIP.NOERR;
 
       if Len > AIP.M32_T (TPCBs (PCB).SND_BUF) then
@@ -1347,6 +1349,13 @@ is
 
             Ptr := Conversions.Ofs (Ptr, Integer (Dlen));
             NSS := NSS + AIP.M32_T (Dlen);
+
+            --  SYN and FIN are each part of the sequence, numbering-wise.  We
+            --  should never have both set at the same time here.
+
+            if Syn or else Fin then
+               NSS := NSS + 1;
+            end if;
          end loop;
 
          --  If we have had any kind of trouble so far, release what we got
