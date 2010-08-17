@@ -473,6 +473,15 @@ is
    end Head_Packet;
 
    -----------------
+   -- Tail_Packet --
+   -----------------
+
+   function Tail_Packet (Queue : Packet_Queue) return Buffer_Id is
+   begin
+      return Queue.Tail;
+   end Tail_Packet;
+
+   -----------------
    -- Packet_Info --
    -----------------
 

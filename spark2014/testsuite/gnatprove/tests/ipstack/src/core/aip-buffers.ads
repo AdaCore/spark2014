@@ -252,6 +252,9 @@ is
    function Head_Packet (Queue : Packet_Queue) return Buffer_Id;
    --  Return head packet of Queue
 
+   function Tail_Packet (Queue : Packet_Queue) return Buffer_Id;
+   --  Return tail packet of Queue
+
    procedure Append_Packet
      (Layer : Packet_Layer;
       Queue : in out Packet_Queue;

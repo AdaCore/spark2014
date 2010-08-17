@@ -317,12 +317,11 @@ private
    procedure TCP_Send_Control
      (PCB : PCBs.PCB_Id;
       Syn : Boolean;
-      Ack : Boolean;
       Fin : Boolean;
       Err : out AIP.Err_T);
    --# global in out State, Buffers.State;
    --  Send a TCP segment with no payload, just control bits set according
-   --  to Syn, Ack and Fin.
+   --  to Syn and Fin. Ack will be set as well unless in Syn_Sent state.
 
    function Initial_Sequence_Number
      (Local_IP    : IPaddrs.IPaddr;

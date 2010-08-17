@@ -342,7 +342,6 @@ is
    --     Copy    : Boolean;
    --     Push    : Boolean;
    --     Syn     : Boolean;
-   --     Ack     : Boolean;
    --     Err     : out AIP.Err_T)
    --  Request push onto the Send_Queue for later output by TCP_Output.
    --  If Control is False, Data/Len, Copy and Push operate as for user data
@@ -352,6 +351,12 @@ is
    --  Syn and Ack arguments.
    --
    --  ERR_MEM on segment memory allocation failure
+
+   --  procedure TCP_Force_Bind
+   --    (PCB : PCBs.PCB_Id;
+   --     Err : out AIP.Err_T);
+   --  TCP_Bind PCB on IP_ADDR_ANY and an ephemeral port if it is not
+   --  bound already.
 
    --  procedure TCP_Send_Segment
    --    (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
@@ -987,6 +992,22 @@ is
       end if;
    end TCP_Bind;
 
+   --------------------
+   -- TCP_Force_Bind --
+   --------------------
+
+   procedure TCP_Force_Bind
+     (PCB : PCBs.PCB_Id;
+      Err : out AIP.Err_T)
+   is
+   begin
+      if IPCBs (PCB).Local_Port = PCBs.NOPORT then
+         TCP_Bind (PCB, IPaddrs.IP_ADDR_ANY, PCBs.NOPORT, Err);
+      else
+         Err := AIP.NOERR;
+      end if;
+   end TCP_Force_Bind;
+
    ------------------
    -- TCP_Callback --
    ------------------
@@ -1016,13 +1037,9 @@ is
    begin
       pragma Assert (PCB /= PCBs.NOPCB);
 
-      Err := AIP.NOERR;
-
       --  First bind PCB if necessary
 
-      if IPCBs (PCB).Local_Port = PCBs.NOPORT then
-         TCP_Bind (PCB, IPaddrs.IP_ADDR_ANY, PCBs.NOPORT, Err);
-      end if;
+      TCP_Force_Bind (PCB, Err);
 
       if AIP.No (Err) then
          pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
@@ -1209,7 +1226,6 @@ is
       else
          TCP_Ref_Segment_For (Ptr, Len, Tbuf);
       end if;
-
    end TCP_Segment_For;
 
    -----------------
@@ -1224,7 +1240,6 @@ is
       Copy    : Boolean;
       Push    : Boolean;
       Syn     : Boolean;
-      Ack     : Boolean;
       Fin     : Boolean;
       Err     : out AIP.Err_T)
    --# global in out TPCBs, Buffers.State; in IPCBs;
@@ -1287,15 +1302,22 @@ is
                Dlen := AIP.U16_T (Left);
             end if;
 
+            --  Compute now what will be left to process afterwards, which
+            --  tells us if this is the last segment for this time around.
+
+            Left := Left - AIP.M32_T (Dlen);
+
+            --  If we have a single non-control segment that fits in spare
+            --  non-control room in the last segment of Send_Queue, request
+            --  a headerless buffer that we'll chain there.
+
+            --  ??? Implement me
+
             TCP_Segment_For (Ptr, Dlen, Copy, Tbuf);
             exit when Tbuf = Buffers.NOBUF;
 
             --  We have a new segment to queue at this point. Assign the TCP
-            --  header fields, except WND determined at output time. Compute
-            --  now what will be left to process afterwards, which tells us
-            --  if this is the last segment for this time around.
-
-            Left := Left - AIP.M32_T (Dlen);
+            --  header fields, except ACK and WND determined at output time.
 
             Thdr := Buffers.Packet_Info (Tbuf);
 
@@ -1308,29 +1330,9 @@ is
 
             TCPH.Set_TCPH_Urg (Thdr, 0);
 
-            if Syn then
-               TCPH.Set_TCPH_Syn (Thdr, 1);
-            else
-               TCPH.Set_TCPH_Syn (Thdr, 0);
-            end if;
-
-            if Ack then
-               TCPH.Set_TCPH_Ack (Thdr, 1);
-            else
-               TCPH.Set_TCPH_Ack (Thdr, 0);
-            end if;
-
-            if Fin then
-               TCPH.Set_TCPH_Fin (Thdr, 1);
-            else
-               TCPH.Set_TCPH_Fin (Thdr, 0);
-            end if;
-
-            if Left = 0 and then Push then
-               TCPH.Set_TCPH_Psh (Thdr, 1);
-            else
-               TCPH.Set_TCPH_Psh (Thdr, 0);
-            end if;
+            TCPH.Set_TCPH_Syn (Thdr, Boolean'Pos (Syn));
+            TCPH.Set_TCPH_Fin (Thdr, Boolean'Pos (Fin));
+            TCPH.Set_TCPH_Psh (Thdr, Boolean'Pos (Left = 0 and then Push));
 
             --  Push on the temporary queue and prepare to proceed with the
             --  next segment.
@@ -1362,13 +1364,7 @@ is
             --  Push the temporary queue on the Send_Queue for later
             --  processing by TCP_Output.
 
-            --  If we have a single non-control segment that fits in spare
-            --  room in the last segment in Send_Queue, chain our buffer to
-            --  that one.  Otherwise just append our segments.
-
-            if False then
-               null; -- ??? Implement me
-            else
+            if not Buffers.Empty (SegQ) then
                Buffers.Append_Packet
                  (Layer => Buffers.Transport,
                   Buf   => Buffers.Head_Packet (SegQ),
@@ -1392,7 +1388,6 @@ is
    procedure TCP_Send_Control
      (PCB : PCBs.PCB_Id;
       Syn : Boolean;
-      Ack : Boolean;
       Fin : Boolean;
       Err : out AIP.Err_T)
    --# global in out TPCBs, Buffers.State; in IPCBs;
@@ -1405,10 +1400,70 @@ is
                    Copy    => True,
                    Push    => False,
                    Syn     => Syn,
-                   Ack     => Ack,
                    Fin     => Fin,
                    Err     => Err);
    end TCP_Send_Control;
+
+   ---------------
+   -- Setup_PCB --
+   ---------------
+
+   procedure Setup_PCB
+     (PCB         : PCBs.PCB_Id;
+      Local_IP    : IPaddrs.IPaddr;
+      Local_Port  : PCBs.Port_T;
+      Remote_IP   : IPaddrs.IPaddr;
+      Remote_Port : PCBs.Port_T;
+      Err         : out AIP.Err_T)
+   --# global in out Boot_Time, IPCBs, TPCBs; in IP.FIB;
+   is
+      Next_Hop_IP    : IPaddrs.IPaddr;
+      Next_Hop_Netif : NIF.Netif_Id;
+   begin
+      IPCBs (PCB).Local_IP    := Local_IP;
+      IPCBs (PCB).Local_Port  := Local_Port;
+      IPCBs (PCB).Remote_IP   := Remote_IP;
+      IPCBs (PCB).Remote_Port := Remote_Port;
+
+      --  Find and cache return path information
+
+      IP.IP_Route (IPCBs (PCB).Remote_IP, Next_Hop_IP, Next_Hop_Netif);
+      TPCBs (PCB).Next_Hop_IP    := Next_Hop_IP;
+      TPCBs (PCB).Next_Hop_Netif := Next_Hop_Netif;
+
+      if TPCBs (PCB).Next_Hop_Netif = NIF.IF_NOID then
+         --  No route to host: bail out
+
+         Err := AIP.ERR_RTE;
+
+      else
+         --  Choose our ISN and set connection state variables
+
+         TPCBs (PCB).ISS :=
+           Initial_Sequence_Number
+             (Local_IP    => IPCBs (PCB).Local_IP,
+              Local_Port  => IPCBs (PCB).Local_Port,
+              Remote_IP   => IPCBs (PCB).Remote_IP,
+              Remote_Port => IPCBs (PCB).Remote_Port);
+
+         TPCBs (PCB).NSS := TPCBs (PCB).ISS;
+
+         TPCBs (PCB).SND_NXT := TPCBs (PCB).ISS;
+         TPCBs (PCB).SND_UNA := TPCBs (PCB).ISS - 1;
+         TPCBs (PCB).SND_WND := Config.TCP_WINDOW;
+
+         TPCBs (PCB).RCV_WND := Config.TCP_WINDOW;
+
+         --  Set MSS using MTU of next hop interface, accounting for IP and TCP
+         --  headers, and provisioning for 20 bytes of options.
+
+         TPCBs (PCB).Local_MSS :=
+           NIF.NIF_MTU (TPCBs (PCB).Next_Hop_Netif)
+           - IPH.IP_Header_Size / 8
+           - TCPH.TCP_Header_Size / 8
+           - 20;
+      end if;
+   end Setup_PCB;
 
    -----------------
    -- TCP_Connect --
@@ -1422,8 +1477,44 @@ is
       Err  : out AIP.Err_T)
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+
+      --  Check that we're in proper state for this operation and make sure
+      --  the local end of the connection is well identified.
+
+      if TPCBs (PCB).State /= Closed then
+         Err := ERR_USE;
+      else
+         TCP_Force_Bind (PCB, Err);
+      end if;
+
+      --  Compute an initial Next Send Sequence number and setup the
+      --  relevant connection state variables.
+
+      if AIP.No (Err) then
+         Setup_PCB
+           (PCB         => PCB,
+            Local_IP    => IPCBs (PCB).Local_IP,
+            Local_Port  => IPCBs (PCB).Local_Port,
+            Remote_IP   => Addr,
+            Remote_Port => Port,
+            Err         => Err);
+      end if;
+
+      --  Send the active-open SYN segment, switch to Syn_Sent state
+      --  and setup the TCP_EVENT_CONNECT callback identifier
+
+      if AIP.No (Err) then
+         TCP_Send_Control
+           (PCB => PCB,
+            Syn => True,
+            Fin => False,
+            Err => Err);
+      end if;
+
+      if AIP.No (Err) then
+         Set_State (PCB, Syn_Sent);
+         TCP_Callback (TCP_EVENT_CONNECT, PCB, Cb);
+      end if;
    end TCP_Connect;
 
    ---------------
@@ -1452,7 +1543,6 @@ is
                             Copy    => Copy,
                             Push    => Push,
                             Syn     => False,
-                            Ack     => False,
                             Fin     => False,
                             Err     => Err);
             end if;
@@ -1564,7 +1654,6 @@ is
                      TCP_Send_Control
                        (PCB => PCB,
                         Syn => False,
-                        Ack => True,
                         Fin => False,
                         Err => Err);
 
@@ -1752,61 +1841,6 @@ is
       TCP_Callback (TCP_EVENT_ABORT, PCB, Cb);
    end On_TCP_Abort;
 
-   ---------------
-   -- Setup_PCB --
-   ---------------
-
-   procedure Setup_PCB
-     (PCB         : PCBs.PCB_Id;
-      Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : PCBs.Port_T;
-      Remote_IP   : IPaddrs.IPaddr;
-      Remote_Port : PCBs.Port_T;
-      Err         : out AIP.Err_T)
-   --# global in out Boot_Time, IPCBs, TPCBs; in IP.FIB;
-   is
-      Next_Hop_IP    : IPaddrs.IPaddr;
-      Next_Hop_Netif : NIF.Netif_Id;
-   begin
-      IPCBs (PCB).Local_IP    := Local_IP;
-      IPCBs (PCB).Local_Port  := Local_Port;
-      IPCBs (PCB).Remote_IP   := Remote_IP;
-      IPCBs (PCB).Remote_Port := Remote_Port;
-
-      --  Find and cache return path information
-
-      IP.IP_Route (IPCBs (PCB).Remote_IP, Next_Hop_IP, Next_Hop_Netif);
-      TPCBs (PCB).Next_Hop_IP    := Next_Hop_IP;
-      TPCBs (PCB).Next_Hop_Netif := Next_Hop_Netif;
-
-      if TPCBs (PCB).Next_Hop_Netif = NIF.IF_NOID then
-         --  No route to host: bail out
-
-         Err := AIP.ERR_RTE;
-
-      else
-         --  Choose our ISN
-
-         TPCBs (PCB).ISS :=
-           Initial_Sequence_Number
-             (Local_IP    => IPCBs (PCB).Local_IP,
-              Local_Port  => IPCBs (PCB).Local_Port,
-              Remote_IP   => IPCBs (PCB).Remote_IP,
-              Remote_Port => IPCBs (PCB).Remote_Port);
-
-         TPCBs (PCB).NSS := TPCBs (PCB).ISS;
-
-         --  Set MSS using MTU of next hop interface, accounting for IP and TCP
-         --  headers, and provisioning for 20 bytes of options.
-
-         TPCBs (PCB).Local_MSS :=
-           NIF.NIF_MTU (TPCBs (PCB).Next_Hop_Netif)
-           - IPH.IP_Header_Size / 8
-           - TCPH.TCP_Header_Size / 8
-           - 20;
-      end if;
-   end Setup_PCB;
-
    -----------------
    -- TCP_Receive --
    -----------------
@@ -1967,7 +2001,6 @@ is
                      TCP_Send_Control
                        (PCB => New_PCB,
                         Syn => True,
-                        Ack => True,
                         Fin => False,
                         Err => Err);
                   else
@@ -2051,7 +2084,6 @@ is
                      Set_State (PCB, Established);
                      TCP_Send_Control (PCB => PCB,
                                        Syn => False,
-                                       Ack => True,
                                        Fin => False,
                                        Err => Err);
 
@@ -2059,7 +2091,6 @@ is
                      Set_State (PCB, Syn_Received);
                      TCP_Send_Control (PCB => PCB,
                                        Syn => True,
-                                       Ack => True,
                                        Fin => False,
                                        Err => Err);
                   end if;
@@ -2085,7 +2116,6 @@ is
                if TCPH.TCPH_Rst (Seg.Thdr) = 0 then
                   TCP_Send_Control (PCB => PCB,
                                     Syn => False,
-                                    Ack => True,
                                     Fin => False,
                                     Err => Err);
                end if;
