@@ -336,7 +336,7 @@ is
 
    --  procedure TCP_Enqueue
    --    (PCB     : PCBs.PCB_Id;
-   --     Control : Boolean;
+   --     Options : Boolean;
    --     Data    : System.Address;
    --     Len     : AIP.M32_T;
    --     Copy    : Boolean;
@@ -344,11 +344,14 @@ is
    --     Syn     : Boolean;
    --     Err     : out AIP.Err_T)
    --  Request push onto the Send_Queue for later output by TCP_Output.
-   --  If Control is False, Data/Len, Copy and Push operate as for user data
-   --  passed to TCP_Write, with segments cut to be MSS bytes max each.
-   --  If Control is True, Data/Len designates a TCP options area, sent over
-   --  an empty segment with the SYN and ACK header bits set according to the
-   --  Syn and Ack arguments.
+   --  Data/Len designates a memory area to be used as payload data or TCP
+   --  options, according to Options, with segments cut to be MSS bytes max
+   --  each.  Copy requests allocation of a single buffer for the protocol
+   --  headers and the data/options, as well as a copy of the latter within
+   --  buffer space. A mere ref buffer is built for the data/options
+   --  otherwise.  Push requests PSH to be set on the last segment to be
+   --  sent. The SYN and FIN bits are set on segments headers according to the
+   --  Syn and Fin arguments.
    --
    --  ERR_MEM on segment memory allocation failure
 
@@ -1234,7 +1237,7 @@ is
 
    procedure TCP_Enqueue
      (PCB     : PCBs.PCB_Id;
-      Control : Boolean;
+      Options : Boolean;
       Data    : System.Address;
       Len     : AIP.M32_T;
       Copy    : Boolean;
@@ -1288,7 +1291,7 @@ is
 
          SegQ := Buffers.Empty_Packet_Queue;
 
-         if not Control then
+         if not Options then
             Toff := 5;
          else
             Toff := 5 + AIP.U4_T (Len / 4);
@@ -1307,8 +1310,8 @@ is
 
             Left := Left - AIP.M32_T (Dlen);
 
-            --  If we have a single non-control segment that fits in spare
-            --  non-control room in the last segment of Send_Queue, request
+            --  If we have a single pure data segment that fits in spare
+            --  pure data room in the last segment of the Send_Queue, request
             --  a headerless buffer that we'll chain there.
 
             --  ??? Implement me
@@ -1394,7 +1397,7 @@ is
    is
    begin
       TCP_Enqueue (PCB     => PCB,
-                   Control => True,
+                   Options => False,
                    Data    => System.Null_Address,
                    Len     => 0,
                    Copy    => True,
@@ -1537,7 +1540,7 @@ is
                Err := AIP.NOERR;
             else
                TCP_Enqueue (PCB     => PCB,
-                            Control => False,
+                            Options => False,
                             Data    => Data,
                             Len     => Len,
                             Copy    => Copy,
