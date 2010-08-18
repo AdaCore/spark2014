@@ -1562,9 +1562,8 @@ is
       Err  : out AIP.Err_T)
    is
    begin
-
-      --  Check that we're in proper state for this operation and make sure
-      --  the local end of the connection is well identified.
+      --  Check that we're in proper state for this operation and make sure the
+      --  local end of the connection is well identified.
 
       if TPCBs (PCB).State /= Closed then
          Err := ERR_USE;
@@ -1572,8 +1571,8 @@ is
          TCP_Force_Bind (PCB, Err);
       end if;
 
-      --  Compute an initial Next Send Sequence number and setup the
-      --  relevant connection state variables.
+      --  Compute an initial Next Send Sequence number and setup the relevant
+      --  connection state variables.
 
       if AIP.No (Err) then
          Setup_PCB
@@ -1585,8 +1584,14 @@ is
             Err         => Err);
       end if;
 
-      --  Send the active-open SYN segment, switch to Syn_Sent state
-      --  and setup the TCP_EVENT_CONNECT callback identifier
+      --  Switch to Syn_Sent state and set up the TCP_EVENT_CONNECT callback
+
+      if AIP.No (Err) then
+         Set_State (PCB, Syn_Sent);
+         TCP_Callback (TCP_EVENT_CONNECT, PCB, Cb);
+      end if;
+
+      --  Actually send out the SYN segment
 
       if AIP.No (Err) then
          TCP_Send_Control
@@ -1594,11 +1599,6 @@ is
             Syn => True,
             Fin => False,
             Err => Err);
-      end if;
-
-      if AIP.No (Err) then
-         Set_State (PCB, Syn_Sent);
-         TCP_Callback (TCP_EVENT_CONNECT, PCB, Cb);
       end if;
    end TCP_Connect;
 
@@ -2069,8 +2069,6 @@ is
                   if AIP.No (Err) then
                      Setup_Flow_Control (New_PCB);
 
-                     TPCBs (New_PCB).SND_UNA := TPCBs (New_PCB).ISS;
-                     TPCBs (New_PCB).SND_NXT := TPCBs (New_PCB).ISS;
                      TPCBs (New_PCB).IRS     := Seg.Seq;
                      TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
