@@ -3,6 +3,9 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
+with System;
+use type System.Address;
+
 with AIP.Checksum;
 with AIP.Config;
 with AIP.Conversions;
@@ -362,7 +365,10 @@ is
    --  bound already.
 
    --  procedure TCP_Send_Segment
-   --    (Tbuf : Buffers.Buffer_Id; PCB : PCBs.PCB_Id);
+   --    (Tbuf       : Buffers.Buffer_Id;
+   --     IPCB       : PCBs.IP_PCB;
+   --     TPCB       : TCP_PCB;
+   --     Retransmit : Boolean);
    --  Helper for TCP_Output. Send segment held in Tbuf over IP for PCB.
 
    --  procedure Retransmit_Timeout (PCB : PCBs.PCB_Id);
@@ -428,9 +434,10 @@ is
 
    procedure TCP_Send_Segment
      (Tbuf       : Buffers.Buffer_Id;
-      PCB        : PCBs.PCB_Id;
+      IPCB       : PCBs.IP_PCB;
+      TPCB       : in out TCP_PCB;
       Retransmit : Boolean)
-   --# global in IPCBs, TPCBs; in out IP.State, Buffers.State;
+   --# global in out IP.State, Buffers.State;
    is
       PThdr, Thdr : System.Address;
       Tlen : AIP.U16_T;
@@ -438,8 +445,8 @@ is
       Src_IP, Dst_IP : IPaddrs.IPaddr;
       Err : AIP.ERR_T;
    begin
-      Src_IP := IPCBs (PCB).Local_IP;
-      Dst_IP := IPCBs (PCB).Remote_IP;
+      Src_IP := IPCB.Local_IP;
+      Dst_IP := IPCB.Remote_IP;
 
       --  Beware that we might have two kinds of packets here (from the send
       --  queue): those with data copied in, standalone with headers in a
@@ -451,14 +458,23 @@ is
       --  downstream.
 
       Thdr := Buffers.Packet_Info (Tbuf);
+      pragma Assert (Thdr /= System.Null_Address);
+
       Buffers.Buffer_Set_Payload (Tbuf, Thdr, Err);
       pragma Assert (AIP.No (Err));
 
-      --  Fill in the ACK number field and advertise our receiving window
-      --  size.
+      --  Finish set up of TCP header
 
-      TCPH.Set_TCPH_Ack_Num (Thdr, TPCBs (PCB).RCV_NXT);
-      TCPH.Set_TCPH_Window  (Thdr, AIP.U16_T (TPCBs (PCB).RCV_WND));
+      TCPH.Set_TCPH_Src_Port (Thdr, IPCB.Local_Port);
+      TCPH.Set_TCPH_Dst_Port (Thdr, IPCB.Remote_Port);
+      TCPH.Set_TCPH_Reserved (Thdr, 0);
+
+      --  Fill in the ACK number field and advertise our receiving window size
+
+      if TCPH.TCPH_Ack (Thdr) = 1 then
+         TCPH.Set_TCPH_Ack_Num (Thdr, TPCB.RCV_NXT);
+      end if;
+      TCPH.Set_TCPH_Window  (Thdr, AIP.U16_T (TPCB.RCV_WND));
 
       --  Compute checksum and pass down to IP, assuming the current payload
       --  pointer designates the TCP header.
@@ -491,17 +507,20 @@ is
       Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Pseudo_Header_Size / 8, Err);
       pragma Assert (AIP.No (Err));
 
+      --  Restart retransmit timer
+
+      TPCB.Retransmit_Ticks := 0;
+
       if not Retransmit then
 
-         --  New segment: reset retransmit timer
+         --  New segment: reset retransmit count
 
-         TPCBs (PCB).Retransmit_Ticks := 0;
-         TPCBs (PCB).Retransmit_Count := 0;
+         TPCB.Retransmit_Count := 0;
 
       else
          --  Here when retransmitting an already sent segment
 
-         TPCBs (PCB).Retransmit_Count := TPCBs (PCB).Retransmit_Count + 1;
+         TPCB.Retransmit_Count := TPCB.Retransmit_Count + 1;
       end if;
 
       --  Finally hand out segment to IP
@@ -510,11 +529,11 @@ is
         (Buf    => Tbuf,
          Src_IP => Src_IP,
          Dst_IP => Dst_IP,
-         NH_IP  => TPCBs (PCB).Next_Hop_IP,
-         TTL    => IPCBs (PCB).TTL,
-         TOS    => IPCBs (PCB).TOS,
+         NH_IP  => TPCB.Next_Hop_IP,
+         TTL    => IPCB.TTL,
+         TOS    => IPCB.TOS,
          Proto  => IPH.IP_Proto_TCP,
-         Netif  => TPCBs (PCB).Next_Hop_Netif,
+         Netif  => TPCB.Next_Hop_Netif,
          Err    => Err);
       pragma Assert (AIP.No (Err));
    end TCP_Send_Segment;
@@ -589,7 +608,8 @@ is
 
          TCP_Send_Segment
            (Tbuf       => Seg,
-            PCB        => PCB,
+            IPCB       => IPCBs (PCB),
+            TPCB       => TPCBs (PCB),
             Retransmit => False);
 
          --  Remove packet from the Send_Queue and bump SND_NXT
@@ -615,11 +635,10 @@ is
          Thdr := Buffers.Buffer_Payload (Seg);
 
          TCPH.Set_TCPH_Data_Offset (Thdr, 5);
+         --  Case of options present???
 
-         TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
-         TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
          TCPH.Set_TCPH_Seq_Num  (Thdr, TPCBs (PCB).SND_NXT);
-         TCPH.Set_TCPH_Reserved (Thdr, 0);
+         --  Already set in TCP_Enqueue???
 
          TCPH.Set_TCPH_Urg (Thdr, 0);
          TCPH.Set_TCPH_Psh (Thdr, 0);
@@ -629,7 +648,8 @@ is
 
          TCP_Send_Segment
            (Tbuf       => Seg,
-            PCB        => PCB,
+            IPCB       => IPCBs (PCB),
+            TPCB       => TPCBs (PCB),
             Retransmit => False);
 
          Buffers.Buffer_Blind_Free (Seg);
@@ -935,9 +955,66 @@ is
       Ack_Num  : AIP.M32_T;
       Err      : out AIP.Err_T)
    is
+      IPCB : PCBs.IP_PCB := PCBs.IP_PCB_Initializer;
+      TPCB : TCP_PCB     := TCP_PCB_Initializer;
+      Buf  : Buffers.Buffer_Id;
+      Thdr : System.Address;
    begin
-      null;
-      --  TBD???
+      --  Build a minimal PCB
+
+      IPCB.Local_IP    := Src_IP;
+      IPCB.Local_Port  := Src_Port;
+      IPCB.Remote_IP   := Dst_IP;
+      IPCB.Remote_Port := Dst_Port;
+
+      if Ack then
+         TPCB.RCV_NXT := Ack_Num;
+      else
+         TPCB.RCV_NXT := 0;
+      end if;
+
+      IP.IP_Route
+        (Dst_IP   => Dst_IP,
+         Next_Hop => TPCB.Next_Hop_IP,
+         Netif    => TPCB.Next_Hop_Netif);
+
+      Err := AIP.NOERR;
+      if TPCB.Next_Hop_Netif = NIF.IF_NOID then
+         Err := AIP.ERR_RTE;
+
+      else
+         Buffers.Buffer_Alloc
+           (Offset => Inet.HLEN_To (Inet.IP_LAYER),
+            Size   => TCPH.TCP_Header_Size / 8,
+            Kind   => Buffers.LINK_BUF,
+            Buf    => Buf);
+
+         if Buf = Buffers.NOBUF then
+            Err := AIP.ERR_MEM;
+         end if;
+      end if;
+
+      if AIP.No (Err) then
+         Thdr := Buffers.Buffer_Payload (Buf);
+
+         TCPH.Set_TCPH_Data_Offset (Thdr, (TCPH.TCP_Header_Size / 8) / 4);
+         TCPH.Set_TCPH_Urg (Thdr, 0);
+         TCPH.Set_TCPH_Psh (Thdr, 0);
+         TCPH.Set_TCPH_Syn (Thdr, 0);
+         TCPH.Set_TCPH_Fin (Thdr, 0);
+         TCPH.Set_TCPH_Ack (Thdr, Boolean'Pos (Ack));
+         TCPH.Set_TCPH_Rst (Thdr, 1);
+         TCPH.Set_TCPH_Seq_Num (Thdr, Seq_Num);
+
+         Buffers.Set_Packet_Info (Buf, Thdr);
+         TCP_Send_Segment
+           (Tbuf       => Buf,
+            IPCB       => IPCB,
+            TPCB       => TPCB,
+            Retransmit => False);
+         Buffers.Buffer_Blind_Free (Buf);
+         Err := AIP.NOERR;
+      end if;
    end TCP_Send_Rst;
 
    ---------------
@@ -1328,13 +1405,9 @@ is
 
             TCPH.Set_TCPH_Data_Offset (Thdr, Toff);
 
-            TCPH.Set_TCPH_Src_Port (Thdr, IPCBs (PCB).Local_Port);
-            TCPH.Set_TCPH_Dst_Port (Thdr, IPCBs (PCB).Remote_Port);
             TCPH.Set_TCPH_Seq_Num  (Thdr, NSS);
-            TCPH.Set_TCPH_Reserved (Thdr, 0);
 
             TCPH.Set_TCPH_Urg (Thdr, 0);
-
             TCPH.Set_TCPH_Syn (Thdr, Boolean'Pos (Syn));
             TCPH.Set_TCPH_Fin (Thdr, Boolean'Pos (Fin));
             TCPH.Set_TCPH_Psh (Thdr, Boolean'Pos (Left = 0 and then Push));
