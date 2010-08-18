@@ -114,7 +114,8 @@ is
       --  2MSL TIME_WAIT).
 
       RTT_Seq    : AIP.M32_T;
-      --  Sequence number of segment used for RTT estimation
+      --  Sequence number of segment used for RTT estimation, or 0 if no
+      --  measurement is in progress.
 
       RTT_Ticks  : AIP.M32_T;
       --  TCP ticks value when segment used for RTT estimation was sent
@@ -517,8 +518,21 @@ is
 
          TPCB.Retransmit_Count := 0;
 
+         --  If no RTT measurement is in progress, start one on this segment
+
+         if TPCB.RTT_Seq = 0 then
+            TPCB.RTT_Seq := TCPH.TCPH_Seq_Num (Thdr);
+            TPCB.RTT_Ticks := TCP_Ticks;
+         end if;
+
       else
          --  Here when retransmitting an already sent segment
+
+         --  Never attempt to measure RTT for a retransmitted segment
+
+         if TPCB.RTT_Seq = TCPH.TCPH_Seq_Num (Thdr) then
+            TPCB.RTT_Seq := 0;
+         end if;
 
          TPCB.Retransmit_Count := TPCB.Retransmit_Count + 1;
       end if;
@@ -635,10 +649,9 @@ is
          Thdr := Buffers.Buffer_Payload (Seg);
 
          TCPH.Set_TCPH_Data_Offset (Thdr, 5);
-         --  Case of options present???
+         --  No options present
 
          TCPH.Set_TCPH_Seq_Num  (Thdr, TPCBs (PCB).SND_NXT);
-         --  Already set in TCP_Enqueue???
 
          TCPH.Set_TCPH_Urg (Thdr, 0);
          TCPH.Set_TCPH_Psh (Thdr, 0);
@@ -1631,6 +1644,7 @@ is
                             Fin     => False,
                             Err     => Err);
             end if;
+
          when others =>
             Err := AIP.ERR_USE;
       end case;
@@ -1684,9 +1698,12 @@ is
 
          TPCBs (PCB).CWND := TPCBs (PCB).CWND + CWND_Increment;
 
-         --  Update RTT estimator
+         --  Update RTT estimator (note: 0 is a special value of RTT_Seq
+         --  denoting that no RTT easurement is in progress).
 
-         if TPCBs (PCB).RTT_Seq = Seg.Ack then
+         if TPCBs (PCB).RTT_Seq /= 0
+           and then TPCBs (PCB).RTT_Seq = Seg.Ack
+         then
             Update_RTT_Estimator
               (TPCB => TPCBs (PCB),
                Meas => AIP.S16_T (TCP_Ticks - TPCBs (PCB).RTT_Ticks));
@@ -2670,8 +2687,16 @@ is
    ------------------------
 
    procedure Retransmit_Timeout (PCB : PCBs.PCB_Id) is
+      Buf : Buffers.Buffer_Id;
    begin
-      null; --  TBD???
+      Buf := Buffers.Head_Packet (TPCBs (PCB).Unack_Queue);
+      if Buf /= Buffers.NOBUF then
+         TCP_Send_Segment
+           (Tbuf       => Buf,
+            IPCB       => IPCBs (PCB),
+            TPCB       => TPCBs (PCB),
+            Retransmit => True);
+      end if;
    end Retransmit_Timeout;
 
    -----------------------
@@ -2679,8 +2704,72 @@ is
    -----------------------
 
    procedure Send_Window_Probe (PCB : PCBs.PCB_Id) is
+      --  First queued segment
+
+      QBuf  : Buffers.Buffer_Id;
+      QThdr : System.Address;
+      QLen  : M32_T;
+
+      --  Probe segment
+
+      Buf   : Buffers.Buffer_Id;
+      Thdr  : System.Address;
+      Probe_Fin : Boolean;
+
    begin
-      null; --  TBD???
+      Qbuf := Buffers.Head_Packet (TPCBs (PCB).Unack_Queue);
+      if QBuf = Buffers.NOBUF then
+         QBuf := Buffers.Head_Packet (TPCBs (PCB).Send_Queue);
+      end if;
+
+      Buf := Buffers.NOBUF;
+      if QBuf /= Buffers.NOBUF then
+         TCP_Seg_Len (QBuf, QLen);
+
+         if QLen > 0 then
+            QThdr := Buffers.Packet_Info (Qbuf);
+
+            Probe_Fin := TCPH.TCPH_Fin (QThdr) = 1 and then QLen = 1;
+
+            Buffers.Buffer_Alloc
+              (Offset => Inet.HLEN_To (Inet.IP_LAYER),
+               Size   => TCPH.TCP_Header_Size / 8
+                           + 1 - Boolean'Pos (Probe_Fin),
+               Kind   => Buffers.LINK_BUF,
+               Buf    => Buf);
+         end if;
+      end if;
+
+      if Buf /= Buffers.NOBUF then
+         Thdr := Buffers.Buffer_Payload (Buf);
+         Buffers.Set_Packet_Info (Buf, Thdr);
+
+         TCPH.Set_TCPH_Data_Offset (Thdr, 5);
+         --  No options present
+
+         TCPH.Set_TCPH_Seq_Num  (Thdr, TCPH.TCPH_Seq_Num (QThdr));
+
+         TCPH.Set_TCPH_Urg (Thdr, 0);
+         TCPH.Set_TCPH_Psh (Thdr, 0);
+         TCPH.Set_TCPH_Syn (Thdr, 0);
+         TCPH.Set_TCPH_Fin (Thdr, Boolean'Pos (Probe_Fin));
+         TCPH.Set_TCPH_Ack (Thdr, 1);
+
+         if not Probe_Fin then
+            Conversions.Memcpy
+              (Dst => Conversions.Ofs
+                        (Thdr,  4 * Natural (TCPH.TCPH_Data_Offset (Thdr))),
+               Src => Conversions.Ofs
+                        (QThdr, 4 * Natural (TCPH.TCPH_Data_Offset (QThdr))),
+               Len => 1);
+         end if;
+
+         TCP_Send_Segment
+           (Tbuf       => Buf,
+            IPCB       => IPCBs (PCB),
+            TPCB       => TPCBs (PCB),
+            Retransmit => False);
+      end if;
    end Send_Window_Probe;
 
    --------------------
@@ -2693,6 +2782,7 @@ is
       Remove_PCB : Boolean;
       PCB      : PCBs.PCB_Id;
       Next_PCB : PCBs.PCB_Id;
+      Err      : AIP.Err_T;
    begin
       TCP_Ticks := TCP_Ticks + 1;
 
@@ -2701,10 +2791,7 @@ is
          Next_PCB := IPCBs (PCB).Link;
          Remove_PCB := False;
 
-         if (TPCBs (PCB).State = SYN_SENT
-             and then TPCBs (PCB).Retransmit_Count = Config.TCP_MAX_SYN_RTX)
-           or else
-             TPCBs (PCB).Retransmit_Count = Config.TCP_MAX_RTX
+         if False
            or else (TPCBs (PCB).State = FIN_WAIT_2
                     and then TCP_Ticks - TPCBs (PCB).Watchdog_Ticks
                                 > Fin_Wait_Timeout)
@@ -2755,23 +2842,40 @@ is
                if not Buffers.Empty (TPCBs (PCB).Unack_Queue)
                  and then TPCBs (PCB).Retransmit_Ticks > TPCBs (PCB).RTO
                then
-                  if TPCBs (PCB).State /= SYN_SENT then
-                     --  Exponential backoff, except in SYN_SENT state
+                  TPCBs (PCB).Retransmit_Count :=
+                    TPCBs (PCB).Retransmit_Count + 1;
+                  if TPCBs (PCB).State = SYN_SENT then
+                     --  SYN_SENT case: no backoff, MAX_SYN_RTX limit
 
-                     TPCBs (PCB).RTO := TPCBs (PCB).RTO * 2;
+                     if TPCBs (PCB).Retransmit_Count
+                          > Config.TCP_MAX_SYN_RTX
+                     then
+                        Remove_PCB := True;
+                     end if;
+
+                  else
+                     --  All other cases: exponential backoff, MAX_RTS limit
+                     if TPCBs (PCB).Retransmit_Count > Config.TCP_MAX_RTX then
+                        Remove_PCB := True;
+                     else
+                        TPCBs (PCB).RTO := TPCBs (PCB).RTO * 2;
+                     end if;
                   end if;
-                  TPCBs (PCB).Retransmit_Ticks := 0;
 
-                  --  Update SSTHRESH and congestion window
+                  if not Remove_PCB then
+                     TPCBs (PCB).Retransmit_Ticks := 0;
 
-                  TPCBs (PCB).SSTHRESH :=
-                    AIP.M32_T'Max
-                      (AIP.M32_T'Min
-                         (TPCBs (PCB).SND_WND, TPCBs (PCB).Cwnd) / 2,
-                       2 * AIP.M32_T (TPCBs (PCB).Remote_MSS));
-                  TPCBs (PCB).Cwnd := AIP.M32_T (TPCBs (PCB).Remote_MSS);
+                     --  Update SSTHRESH and congestion window
 
-                  Retransmit_Timeout (PCB);
+                     TPCBs (PCB).SSTHRESH :=
+                       AIP.M32_T'Max
+                         (AIP.M32_T'Min
+                              (TPCBs (PCB).SND_WND, TPCBs (PCB).Cwnd) / 2,
+                          2 * AIP.M32_T (TPCBs (PCB).Remote_MSS));
+                     TPCBs (PCB).Cwnd := AIP.M32_T (TPCBs (PCB).Remote_MSS);
+
+                     Retransmit_Timeout (PCB);
+                  end if;
                end if;
             end if;
 
@@ -2781,6 +2885,17 @@ is
          end if;
 
          if Remove_PCB then
+            TCP_Event
+              (Ev   => TCP_Event_T'(Kind => TCP_EVENT_ABORT,
+                                    Len  => 0,
+                                    Buf  => Buffers.NOBUF,
+                                    Addr => IPaddrs.IP_ADDR_ANY,
+                                    Port => PCBs.NOPORT,
+                                    Err  => AIP.ERR_RST),
+               PCB  => PCB,
+               Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_ABORT),
+               Err  => Err);
+
             TCP_Free (PCB);
          end if;
          PCB := Next_PCB;
