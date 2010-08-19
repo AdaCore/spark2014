@@ -1502,6 +1502,27 @@ is
                    Err     => Err);
    end TCP_Send_Control;
 
+   procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
+   is
+   begin
+      TCP_Send_Control (PCB => PCB, Syn => False, Fin => True, Err => Err);
+   end TCP_Fin;
+
+   procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
+   is
+   begin
+      TCP_Send_Control (PCB => PCB, Syn => True, Fin => False, Err => Err);
+   end TCP_Syn;
+
+   procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
+   --# global in out TPCBs, Buffers.State; in IPCBs;
+   is
+   begin
+      TCP_Send_Control (PCB => PCB, Syn => False, Fin => False, Err => Err);
+   end TCP_Ack;
+
    ---------------
    -- Setup_PCB --
    ---------------
@@ -1892,14 +1913,67 @@ is
    --# global in out IPCBs, TPCBs,
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
+
+      Flush : Boolean := False;
+      --  Whether we should call TCP_Output before returning, to have
+      --  our control segments sent out.
+
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      --  Except when the current PCB state is Closed already, we rely
+      --  on Set_State to perform the necessary list operations.
 
-      --  Finally deallocate PCB
+      case TPCBs (PCB).State is
 
-      TCP_Free (PCB);
-      Err := AIP.NOERR;
+         when Closed =>
+
+            --  Close request before any significant use of the PCB.  Not a
+            --  real state transition, so dealing directly with the possible
+            --  need to unlink here.
+
+            PCBs.Unlink
+              (PCB      => PCB,
+               PCB_Head => Bound_PCBs,
+               PCB_Pool => IPCBs);
+            TCP_Free (PCB);
+            Err := AIP.NOERR;
+
+         when Listen | Syn_Sent =>
+
+            --  Moving to Closed state now
+
+            Set_State (PCB, Closed);
+            TCP_Free (PCB);
+            Err := AIP.NOERR;
+
+         when Syn_Received | Established =>
+
+            --  Transition to FIN_WAIT_1 after sending FIN
+
+            TCP_Fin (PCB, Err);
+            if AIP.No (Err) then
+               Set_State (Pcb, Fin_Wait_1);
+               Flush := True;
+            end if;
+
+         when Close_Wait =>
+
+            --  Transition to LAST_ACK after sending FIN
+
+            TCP_Fin (PCB, Err);
+            if AIP.No (Err) then
+               Set_State (Pcb, Last_Ack);
+               Flush := True;
+            end if;
+
+         when others =>
+            Err := AIP.NOERR;
+      end case;
+
+      --  Flush control segments on request
+
+      if Flush then
+         TCP_Output (PCB => PCB, Ack_Now => False);
+      end if;
    end TCP_Close;
 
    ---------------

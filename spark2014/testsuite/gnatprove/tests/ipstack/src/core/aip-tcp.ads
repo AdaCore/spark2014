@@ -323,6 +323,20 @@ private
    --  Send a TCP segment with no payload, just control bits set according
    --  to Syn and Fin. Ack will be set as well unless in Syn_Sent state.
 
+   --  Send_Control shortcuts for common occurrences:
+
+   procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
+   --# global in out State, Buffers.State;
+   pragma Inline (TCP_Fin);
+
+   procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
+   --# global in out State, Buffers.State;
+   pragma Inline (TCP_Syn);
+
+   procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
+   --# global in out State, Buffers.State;
+   pragma Inline (TCP_Ack);
+
    function Initial_Sequence_Number
      (Local_IP    : IPaddrs.IPaddr;
       Local_Port  : PCBs.Port_T;
