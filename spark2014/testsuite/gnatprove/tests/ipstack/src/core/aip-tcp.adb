@@ -964,7 +964,7 @@ is
       TPCB : TCP_PCB     := TCP_PCB_Initializer;
 
       Next_Hop_IP    : IPaddrs.IPaddr;
-      Next_Hop_Netif : NIF.Netif_Id;
+      Next_Hop_Netif : AIP.EID;
       Buf            : Buffers.Buffer_Id;
       Thdr           : System.Address;
    begin
