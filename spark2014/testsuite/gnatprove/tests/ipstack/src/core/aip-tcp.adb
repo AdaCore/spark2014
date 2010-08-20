@@ -378,6 +378,10 @@ is
    --  procedure Send_Window_Probe (PCB : PCBs.PCB_Id);
    --  Send window probe for PCB (expiration of persist timer)
 
+   type Boolean_To_Flag_T is array (Boolean) of AIP.U1_T;
+   Boolean_To_Flag : constant Boolean_To_Flag_T :=
+                       Boolean_To_Flag_T'(False => 0, True => 1);
+
    -----------------
    -- TCP_Seg_Len --
    -----------------
@@ -438,7 +442,7 @@ is
       IPCB       : PCBs.IP_PCB;
       TPCB       : in out TCP_PCB;
       Retransmit : Boolean)
-   --# global in out IP.State, Buffers.State;
+   --# global in out IP.State, Buffers.State; in TCP_Ticks;
    is
       PThdr, Thdr : System.Address;
       Tlen : AIP.U16_T;
@@ -508,10 +512,6 @@ is
       Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Pseudo_Header_Size / 8, Err);
       pragma Assert (AIP.No (Err));
 
-      --  Restart retransmit timer
-
-      TPCB.Retransmit_Ticks := 0;
-
       --  If no RTT measurement is in progress, start one on this segment,
       --  unless retransmitting.
 
@@ -520,6 +520,13 @@ is
       then
          TPCB.RTT_Seq := TCPH.TCPH_Seq_Num (Thdr);
          TPCB.RTT_Ticks := TCP_Ticks;
+      end if;
+
+      --  Start retransmit timer if not already running
+
+      if TPCB.Retransmit_Ticks < 0 then
+         pragma Assert (TPCB.Retransmit_Count = 0);
+         TPCB.Retransmit_Ticks := 0;
       end if;
 
       --  Finally hand out segment to IP
@@ -542,7 +549,7 @@ is
    ----------------
 
    procedure TCP_Output (PCB : PCBs.PCB_Id; Ack_Now : Boolean)
-   --# global in out IPCBs, TPCBs, IP.State, Buffers.State;
+   --# global in out TCP_Ticks, IPCBs, TPCBs, IP.State, Buffers.State;
    is
       Seg     : Buffers.Buffer_Id;
       Seg_Len : AIP.M32_T;
@@ -662,7 +669,7 @@ is
    procedure Deliver_Segment
      (PCB : PCBs.PCB_Id;
       Buf : Buffers.Buffer_Id)
-   --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
+   --# global in out TCP_Ticks, TPCBs, IPCBs, IP.State, Buffers.State;
    is
       Saved_Payload : System.Address;
       D_Buf : Buffers.Buffer_Id;
@@ -734,7 +741,7 @@ is
 
             else
                --  All data delivered with no error: try sending data and ack
-               --  as needed
+               --  as needed.
 
                TCP_Output (PCB => PCB, Ack_Now => False);
             end if;
@@ -952,11 +959,15 @@ is
       Seq_Num  : AIP.M32_T;
       Ack_Num  : AIP.M32_T;
       Err      : out AIP.Err_T)
+   --# global in out Buffers.State, IP.State; in IP.FIB, TCP_Ticks;
    is
       IPCB : PCBs.IP_PCB := PCBs.IP_PCB_Initializer;
       TPCB : TCP_PCB     := TCP_PCB_Initializer;
-      Buf  : Buffers.Buffer_Id;
-      Thdr : System.Address;
+
+      Next_Hop_IP    : IPaddrs.IPaddr;
+      Next_Hop_Netif : NIF.Netif_Id;
+      Buf            : Buffers.Buffer_Id;
+      Thdr           : System.Address;
    begin
       --  Build a minimal PCB
 
@@ -973,8 +984,11 @@ is
 
       IP.IP_Route
         (Dst_IP   => Dst_IP,
-         Next_Hop => TPCB.Next_Hop_IP,
-         Netif    => TPCB.Next_Hop_Netif);
+         Next_Hop => Next_Hop_IP,
+         Netif    => Next_Hop_Netif);
+
+      TPCB.Next_Hop_IP    := Next_Hop_IP;
+      TPCB.Next_Hop_Netif := Next_Hop_Netif;
 
       Err := AIP.NOERR;
       if TPCB.Next_Hop_Netif = NIF.IF_NOID then
@@ -1000,7 +1014,7 @@ is
          TCPH.Set_TCPH_Psh (Thdr, 0);
          TCPH.Set_TCPH_Syn (Thdr, 0);
          TCPH.Set_TCPH_Fin (Thdr, 0);
-         TCPH.Set_TCPH_Ack (Thdr, Boolean'Pos (Ack));
+         TCPH.Set_TCPH_Ack (Thdr, Boolean_To_Flag (Ack));
          TCPH.Set_TCPH_Rst (Thdr, 1);
          TCPH.Set_TCPH_Seq_Num (Thdr, Seq_Num);
 
@@ -1077,6 +1091,8 @@ is
    procedure TCP_Force_Bind
      (PCB : PCBs.PCB_Id;
       Err : out AIP.Err_T)
+   --# global in out IPCBs, TPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
    begin
       if IPCBs (PCB).Local_Port = PCBs.NOPORT then
@@ -1349,17 +1365,19 @@ is
       --  One segment we build and its TCP header
 
    begin
+      --  pragma Assert (not (Syn and Fin));
+      --  ??? Assert triggers bug in SPARK
 
       pragma Assert (not Syn or else not Fin);
-      --  The intent is to convey "not (syn and fin)", which unfortunately
-      --  triggers a spurious error with ADA_RANGE in SPARK.
+      --  The intent is to convey "not (Syn and Fin)", which unfortunately
+      --  triggers a spurious error with ADA_RANGE in SPARK. ???
 
       Err := AIP.NOERR;
 
       if Len > AIP.M32_T (TPCBs (PCB).SND_BUF) then
          Err := AIP.ERR_MEM;
-      else
 
+      else
          --  Cut DATA into segments according to MSS, queuing into the
          --  local queue until we know we can allocate all we need.
 
@@ -1408,9 +1426,9 @@ is
             TCPH.Set_TCPH_Seq_Num  (Thdr, NSS);
 
             TCPH.Set_TCPH_Urg (Thdr, 0);
-            TCPH.Set_TCPH_Syn (Thdr, Boolean'Pos (Syn));
-            TCPH.Set_TCPH_Fin (Thdr, Boolean'Pos (Fin));
-            TCPH.Set_TCPH_Psh (Thdr, Boolean'Pos (Left = 0 and then Push));
+            TCPH.Set_TCPH_Syn (Thdr, Boolean_To_Flag (Syn));
+            TCPH.Set_TCPH_Fin (Thdr, Boolean_To_Flag (Fin));
+            TCPH.Set_TCPH_Psh (Thdr, Boolean_To_Flag (Left = 0 and then Push));
 
             --  Push on the temporary queue and prepare to proceed with the
             --  next segment.
@@ -1581,13 +1599,18 @@ is
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T)
+   --# global in out Buffers.State, IPCBs, TPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --#        in IP.FIB, Boot_Time;
    is
+      Local_IP   : IPaddrs.IPaddr;
+      Local_Port : PCBs.Port_T;
    begin
       --  Check that we're in proper state for this operation and make sure the
       --  local end of the connection is well identified.
 
       if TPCBs (PCB).State /= Closed then
-         Err := ERR_USE;
+         Err := AIP.ERR_USE;
       else
          TCP_Force_Bind (PCB, Err);
       end if;
@@ -1596,10 +1619,16 @@ is
       --  connection state variables.
 
       if AIP.No (Err) then
+         --  Need to copy parameters because SPARK considers two components of
+         --  the same record overlap???
+
+         Local_IP   := IPCBs (PCB).Local_IP;
+         Local_Port := IPCBs (PCB).Local_Port;
+
          Setup_PCB
            (PCB         => PCB,
-            Local_IP    => IPCBs (PCB).Local_IP,
-            Local_Port  => IPCBs (PCB).Local_Port,
+            Local_IP    => Local_IP,
+            Local_Port  => Local_Port,
             Remote_IP   => Addr,
             Remote_Port => Port,
             Err         => Err);
@@ -1702,10 +1731,10 @@ is
          TPCBs (PCB).Dup_Acks := 0;
          TPCBs (PCB).SND_UNA := Seg.Ack;
 
-         --  Reset retransmit timer
+         --  Reset retransmit timer (but keep it running)
 
-         TPCBs (PCB).Retransmit_Count := -1;
          TPCBs (PCB).Retransmit_Ticks := 0;
+         TPCBs (PCB).Retransmit_Count := 0;
 
          --  Perform slow start and congestion avoidance
 
@@ -1795,11 +1824,14 @@ is
               (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
          end loop;
 
-         --  If nothing remains on the Unack_Queue, stop retransmit timer
+         --  If nothing remains on the Unack_Queue, stop retransmit timer,
+         --  else reset it.
 
          if Buffers.Empty (TPCBs (PCB).Unack_Queue) then
-            TPCBs (PCB).Retransmit_Count := 0;
             TPCBs (PCB).Retransmit_Ticks := -1;
+            TPCBs (PCB).Retransmit_Count := 0;
+         else
+            TPCBs (PCB).Retransmit_Ticks := 0;
          end if;
 
          --  Update window if:
@@ -1916,7 +1948,7 @@ is
    ---------------
 
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out IPCBs, TPCBs,
+   --# global in out Buffers.State, IP.State, TCP_Ticks, IPCBs, TPCBs,
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
 
@@ -1987,8 +2019,9 @@ is
    ---------------
 
    procedure TCP_Drop (PCB : PCBs.PCB_Id)
-   --# global in out IPCBs, TPCBs,
+   --# global in out Buffers.State, IP.State, IPCBs, TPCBs,
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --#        in IP.FIB, TCP_Ticks;
    is
       Err : AIP.Err_T;
       pragma Unreferenced (Err);
@@ -2257,7 +2290,6 @@ is
                   TPCBs (PCB).RCV_NXT := TPCBs (PCB).IRS + 1;
 
                   if TCPH.TCPH_Ack (Seg.Thdr) = 1 then
-                     TPCBs (PCB).Last_Ack := Seg.Ack;
                      Process_Ack (PCB, Seg);
                   end if;
 
@@ -2745,7 +2777,8 @@ is
    --------------------
 
    procedure TCP_Fast_Timer
-   --# global in out Buffers.State, TPCBs, IP.State; in Active_PCBs, IPCBs;
+   --# global in out Buffers.State, TPCBs, IP.State;
+   --#        in TCP_Ticks, IPCBs, Active_PCBs;
    is
       PCB : PCBs.PCB_Id;
    begin
@@ -2767,11 +2800,15 @@ is
    -- Retransmit_Timeout --
    ------------------------
 
-   procedure Retransmit_Timeout (PCB : PCBs.PCB_Id) is
+   procedure Retransmit_Timeout (PCB : PCBs.PCB_Id)
+   --# global in out Buffers.State, IP.State, TPCBs;
+   --#        in IPCBs, TCP_Ticks;
+   is
    begin
-      --  Bump retransmit count
+      --  Bump retransmit count, reset timer
 
       TPCBs (PCB).Retransmit_Count := TPCBs (PCB).Retransmit_Count + 1;
+      TPCBs (PCB).Retransmit_Ticks := 0;
 
       --  Disable RTT estimate while retransmitting
 
@@ -2795,12 +2832,14 @@ is
    -- Send_Window_Probe --
    -----------------------
 
-   procedure Send_Window_Probe (PCB : PCBs.PCB_Id) is
+   procedure Send_Window_Probe (PCB : PCBs.PCB_Id)
+   --# global in out Buffers.State, IP.State; in TCP_Ticks, IPCBs, TPCBs;
+   is
       --  First queued segment
 
       QBuf  : Buffers.Buffer_Id;
       QThdr : System.Address;
-      QLen  : M32_T;
+      QLen  : AIP.M32_T;
 
       --  Probe segment
 
@@ -2826,7 +2865,7 @@ is
             Buffers.Buffer_Alloc
               (Offset => Inet.HLEN_To (Inet.IP_LAYER),
                Size   => TCPH.TCP_Header_Size / 8
-                           + 1 - Boolean'Pos (Probe_Fin),
+                           + 1 - AIP.U16_T (Boolean_To_Flag (Probe_Fin)),
                Kind   => Buffers.LINK_BUF,
                Buf    => Buf);
          end if;
@@ -2844,7 +2883,7 @@ is
          TCPH.Set_TCPH_Urg (Thdr, 0);
          TCPH.Set_TCPH_Psh (Thdr, 0);
          TCPH.Set_TCPH_Syn (Thdr, 0);
-         TCPH.Set_TCPH_Fin (Thdr, Boolean'Pos (Probe_Fin));
+         TCPH.Set_TCPH_Fin (Thdr, Boolean_To_Flag (Probe_Fin));
          TCPH.Set_TCPH_Ack (Thdr, 1);
 
          if not Probe_Fin then
@@ -2869,7 +2908,8 @@ is
    --------------------
 
    procedure TCP_Slow_Timer
-   --# global in out TCP_Ticks, Active_PCBs, IPCBs, TPCBs;
+   --# global in out Buffers.State, IP.State, TCP_Ticks, IPCBs, TPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    is
       Remove_PCB : Boolean;
       PCB      : PCBs.PCB_Id;
@@ -2892,7 +2932,7 @@ is
                                 > Syn_Received_Timeout)
            or else (TPCBs (PCB).State = Last_Ack
                     and then TCP_Ticks - TPCBs (PCB).Watchdog_Ticks
-                                > 2 * Config.TCP_MSL * TCP_Hz)
+                                > AIP.M32_T'(2 * Config.TCP_MSL * TCP_Hz))
          then
             Remove_PCB := True;
 
@@ -2953,8 +2993,6 @@ is
                   end if;
 
                   if not Remove_PCB then
-                     TPCBs (PCB).Retransmit_Ticks := 0;
-
                      --  Update SSTHRESH and congestion window
 
                      TPCBs (PCB).SSTHRESH :=

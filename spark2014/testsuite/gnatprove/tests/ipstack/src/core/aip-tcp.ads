@@ -138,6 +138,7 @@ is
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T);
+   --# global in out Buffers.State, State; in IP.FIB;
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -247,12 +248,12 @@ is
    ------------------------------
 
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out State;
+   --# global in out Buffers.State, IP.State, State;
    --  Closes the connection held by the provided PCB, which may not be
    --  referenced any more.
 
    procedure TCP_Drop (PCB : PCBs.PCB_Id);
-   --# global in out State;
+   --# global in out Buffers.State, IP.State, State; in IP.FIB;
    --  Aborts a connection by sending a RST to the remote host and deletes
    --  the local PCB. This is done when a connection is killed because of
    --  shortage of memory.
@@ -282,12 +283,12 @@ is
    ------------
 
    procedure TCP_Fast_Timer;
-   --# global in out Buffers.State, State, IP.State;
+   --# global in out Buffers.State, IP.State, State;
    --  Called every TCP_FAST_INTERVAL (250 ms) and process data previously
    --  "refused" by upper layer (application) and sends delayed ACKs.
 
    procedure TCP_Slow_Timer;
-   --# global in out State;
+   --# global in out Buffers.State, IP.State, State;
    --  Called every 500 ms and implements the retransmission timer and the
    --  timer that removes PCBs that have been in TIME-WAIT for enough time. It
    --  also increments various timers such as the inactivity timer in each PCB.
@@ -312,6 +313,7 @@ private
       Seq_Num  : AIP.M32_T;
       Ack_Num  : AIP.M32_T;
       Err      : out AIP.Err_T);
+   --# global in out Buffers.State, IP.State; in IP.FIB, State;
    --  Send a TCP RST segment
 
    procedure TCP_Send_Control

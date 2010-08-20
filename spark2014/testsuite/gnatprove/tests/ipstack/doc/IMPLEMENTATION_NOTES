@@ -82,6 +82,10 @@ Restrictions that would be nice to lift.
   less uniform and less readable, harder to maintain and subject to subtle,
   unexpected inconsistencies.
 
+* Overlapped parameters
+  Two distinct components of the same record object cannot be passed as
+  actuals for two formals of the same procedure call.
+
 2.2. Limitations on data structures
 -----------------------------------
 
