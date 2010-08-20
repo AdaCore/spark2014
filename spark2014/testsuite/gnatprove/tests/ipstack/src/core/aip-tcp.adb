@@ -1350,7 +1350,9 @@ is
 
    begin
 
-      pragma Assert (not (Syn and then Fin));
+      pragma Assert (not Syn or else not Fin);
+      --  The intent is to convey "not (syn and fin)", which unfortunately
+      --  triggers a spurious error with ADA_RANGE in SPARK.
 
       Err := AIP.NOERR;
 
@@ -1611,6 +1613,14 @@ is
       end if;
 
       --  Actually send out the SYN segment
+
+      --  Note that performing the state transition beforehand is necessary to
+      --  prevent TCP_Output from setting ACK on the segment. It is safe, in
+      --  addition, as we expect no prior segment to be queued, and nothing
+      --  else to happen in between for PCB at this stage of the connection
+      --  process.
+
+      pragma Assert (Buffers.Empty (TPCBs (PCB).Send_Queue));
 
       if AIP.No (Err) then
          TCP_Send_Control
