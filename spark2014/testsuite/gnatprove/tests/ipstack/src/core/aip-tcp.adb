@@ -114,11 +114,11 @@ is
       --  2MSL TIME_WAIT).
 
       RTT_Seq    : AIP.M32_T;
-      --  Sequence number of segment used for RTT estimation, or 0 if no
-      --  measurement is in progress.
+      --  Sequence number of segment used for RTT estimation
 
       RTT_Ticks  : AIP.M32_T;
-      --  TCP ticks value when segment used for RTT estimation was sent
+      --  TCP ticks value when segment used for RTT estimation was sent, or 0
+      --  if no measurement in progress.
 
       RTT_Average : AIP.S16_T;
       RTT_Stddev  : AIP.S16_T;
@@ -512,29 +512,14 @@ is
 
       TPCB.Retransmit_Ticks := 0;
 
-      if not Retransmit then
+      --  If no RTT measurement is in progress, start one on this segment,
+      --  unless retransmitting.
 
-         --  New segment: reset retransmit count
-
-         TPCB.Retransmit_Count := 0;
-
-         --  If no RTT measurement is in progress, start one on this segment
-
-         if TPCB.RTT_Seq = 0 then
-            TPCB.RTT_Seq := TCPH.TCPH_Seq_Num (Thdr);
-            TPCB.RTT_Ticks := TCP_Ticks;
-         end if;
-
-      else
-         --  Here when retransmitting an already sent segment
-
-         --  Never attempt to measure RTT for a retransmitted segment
-
-         if TPCB.RTT_Seq = TCPH.TCPH_Seq_Num (Thdr) then
-            TPCB.RTT_Seq := 0;
-         end if;
-
-         TPCB.Retransmit_Count := TPCB.Retransmit_Count + 1;
+      if TPCB.RTT_Seq = 0
+        and then Seq_Lt (TPCB.RTT_Seq, TCPH.TCPH_Seq_Num (Thdr))
+      then
+         TPCB.RTT_Seq := TCPH.TCPH_Seq_Num (Thdr);
+         TPCB.RTT_Ticks := TCP_Ticks;
       end if;
 
       --  Finally hand out segment to IP
@@ -1699,13 +1684,18 @@ is
          null;
 
       else
-         --  Invalid ack for a seqno not sent yet should have been discarded
+         --  Invalid ack for a seqno not sent yet should have been discarded,
+         --  so we end up here for an ACK that acks new data.
 
          pragma Assert (Seq_Le (Seg.Ack, TPCBs (PCB).SND_NXT));
 
          TPCBs (PCB).Dup_Acks := 0;
-
          TPCBs (PCB).SND_UNA := Seg.Ack;
+
+         --  Reset retransmit timer
+
+         TPCBs (PCB).Retransmit_Count := -1;
+         TPCBs (PCB).Retransmit_Ticks := 0;
 
          --  Perform slow start and congestion avoidance
 
@@ -1719,16 +1709,15 @@ is
 
          TPCBs (PCB).CWND := TPCBs (PCB).CWND + CWND_Increment;
 
-         --  Update RTT estimator (note: 0 is a special value of RTT_Seq
-         --  denoting that no RTT easurement is in progress).
+         --  Update RTT estimator
 
-         if TPCBs (PCB).RTT_Seq /= 0
-           and then TPCBs (PCB).RTT_Seq = Seg.Ack
+         if TPCBs (PCB).RTT_Ticks /= 0
+           and then Seq_Le (TPCBs (PCB).RTT_Seq, Seg.Ack)
          then
             Update_RTT_Estimator
               (TPCB => TPCBs (PCB),
                Meas => AIP.S16_T (TCP_Ticks - TPCBs (PCB).RTT_Ticks));
-            TPCBs (PCB).RTT_Seq := 0;
+            TPCBs (PCB).RTT_Ticks := 0;
          end if;
 
          --  Purge entirely acked segments
@@ -1795,6 +1784,13 @@ is
             Buffers.Remove_Packet
               (Buffers.Transport, TPCBs (PCB).Unack_Queue, Packet);
          end loop;
+
+         --  If nothing remains on the Unack_Queue, stop retransmit timer
+
+         if Buffers.Empty (TPCBs (PCB).Unack_Queue) then
+            TPCBs (PCB).Retransmit_Count := 0;
+            TPCBs (PCB).Retransmit_Ticks := -1;
+         end if;
 
          --  Update window if:
          --    Seg.Seq > WL1
@@ -2251,6 +2247,7 @@ is
                   TPCBs (PCB).RCV_NXT := TPCBs (PCB).IRS + 1;
 
                   if TCPH.TCPH_Ack (Seg.Thdr) = 1 then
+                     TPCBs (PCB).Last_Ack := Seg.Ack;
                      Process_Ack (PCB, Seg);
                   end if;
 
@@ -2761,16 +2758,27 @@ is
    ------------------------
 
    procedure Retransmit_Timeout (PCB : PCBs.PCB_Id) is
-      Buf : Buffers.Buffer_Id;
    begin
-      Buf := Buffers.Head_Packet (TPCBs (PCB).Unack_Queue);
-      if Buf /= Buffers.NOBUF then
-         TCP_Send_Segment
-           (Tbuf       => Buf,
-            IPCB       => IPCBs (PCB),
-            TPCB       => TPCBs (PCB),
-            Retransmit => True);
-      end if;
+      --  Bump retransmit count
+
+      TPCBs (PCB).Retransmit_Count := TPCBs (PCB).Retransmit_Count + 1;
+
+      --  Disable RTT estimate while retransmitting
+
+      TPCBs (PCB).RTT_Ticks := 0;
+
+      --  Move all packets from Unack_Queue to head of Send_Queue
+
+      Buffers.Append_Packet
+        (Layer => Buffers.Transport,
+         Queue => TPCBs (PCB).Unack_Queue,
+         Buf   => Buffers.Head_Packet (TPCBs (PCB).Send_Queue));
+      TPCBs (PCB).Send_Queue := TPCBs (PCB).Unack_Queue;
+      TPCBs (PCB).Unack_Queue := Buffers.Empty_Packet_Queue;
+
+      --  Start output
+
+      TCP_Output (PCB => PCB, Ack_Now => False);
    end Retransmit_Timeout;
 
    -----------------------
@@ -2916,8 +2924,6 @@ is
                if not Buffers.Empty (TPCBs (PCB).Unack_Queue)
                  and then TPCBs (PCB).Retransmit_Ticks > TPCBs (PCB).RTO
                then
-                  TPCBs (PCB).Retransmit_Count :=
-                    TPCBs (PCB).Retransmit_Count + 1;
                   if TPCBs (PCB).State = SYN_SENT then
                      --  SYN_SENT case: no backoff, MAX_SYN_RTX limit
 
@@ -2954,8 +2960,14 @@ is
             end if;
 
             --  Keep-alive timer
-
             --  TBD???
+
+            --  OOSEQ timer
+            --  TBD???
+
+            --  Poll application
+            --  TBD???
+
          end if;
 
          if Remove_PCB then
@@ -2974,6 +2986,9 @@ is
          end if;
          PCB := Next_PCB;
       end loop;
+
+      --  Purge old TIME_WAIT PCBs
+      --  TBD???
    end TCP_Slow_Timer;
 
 end AIP.TCP;
