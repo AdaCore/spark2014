@@ -311,12 +311,11 @@ is
 
    --  procedure Setup_PCB
    --    (PCB         : PCBs.PCB_Id;
-   --     Local_IP    : IPaddrs.IPaddr;
-   --     Local_Port  : PCBs.Port_T;
    --     Remote_IP   : IPaddrs.IPaddr;
    --     Remote_Port : PCBs.Port_T;
    --     Err         : out AIP.Err_T);
-   --  Common setup procedure shared by active and passive opens
+   --  Common setup procedure shared by active and passive opens. Note that
+   --  Local_IP and Local_Port should have already been set by caller in IPCB.
 
    --  procedure Set_State
    --    (PCB   : PCBs.PCB_Id;
@@ -1534,8 +1533,6 @@ is
 
    procedure Setup_PCB
      (PCB         : PCBs.PCB_Id;
-      Local_IP    : IPaddrs.IPaddr;
-      Local_Port  : PCBs.Port_T;
       Remote_IP   : IPaddrs.IPaddr;
       Remote_Port : PCBs.Port_T;
       Err         : out AIP.Err_T)
@@ -1544,8 +1541,6 @@ is
       Next_Hop_IP    : IPaddrs.IPaddr;
       Next_Hop_Netif : NIF.Netif_Id;
    begin
-      IPCBs (PCB).Local_IP    := Local_IP;
-      IPCBs (PCB).Local_Port  := Local_Port;
       IPCBs (PCB).Remote_IP   := Remote_IP;
       IPCBs (PCB).Remote_Port := Remote_Port;
 
@@ -1603,8 +1598,6 @@ is
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    --#        in IP.FIB, Boot_Time;
    is
-      Local_IP   : IPaddrs.IPaddr;
-      Local_Port : PCBs.Port_T;
    begin
       --  Check that we're in proper state for this operation and make sure the
       --  local end of the connection is well identified.
@@ -1619,16 +1612,8 @@ is
       --  connection state variables.
 
       if AIP.No (Err) then
-         --  Need to copy parameters because SPARK considers two components of
-         --  the same record overlap???
-
-         Local_IP   := IPCBs (PCB).Local_IP;
-         Local_Port := IPCBs (PCB).Local_Port;
-
          Setup_PCB
            (PCB         => PCB,
-            Local_IP    => Local_IP,
-            Local_Port  => Local_Port,
             Remote_IP   => Addr,
             Remote_Port => Port,
             Err         => Err);
@@ -2188,10 +2173,10 @@ is
 
                   Set_State (New_PCB, Syn_Received);
 
+                  IPCBs (PCB).Local_IP   := IPH.IPH_Dst_Address (Seg.Ihdr);
+                  IPCBs (PCB).Local_Port := TCPH.TCPH_Dst_Port  (Seg.Thdr);
                   Setup_PCB
                     (PCB         => New_PCB,
-                     Local_IP    => IPH.IPH_Dst_Address (Seg.Ihdr),
-                     Local_Port  => TCPH.TCPH_Dst_Port  (Seg.Thdr),
                      Remote_IP   => IPH.IPH_Src_Address (Seg.Ihdr),
                      Remote_Port => TCPH.TCPH_Src_Port  (Seg.Thdr),
                      Err         => Err);
