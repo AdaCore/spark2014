@@ -4000,7 +4000,8 @@ package body Why.Atree.Traversal is
 
          when others =>
             pragma Assert (False);
-      end case;   end Traverse;
+      end case;
+   end Traverse;
 
    -------------------
    -- Traverse_List --

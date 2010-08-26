@@ -336,7 +336,7 @@ package body Xtree_Traversal is
       PL (O, "when others =>");
       PL (O, "   pragma Assert (False);");
       Relative_Indent (O, -3);
-      P (O, "end case;");
+      PL (O, "end case;");
    end Print_Traverse_Body;
 
    -------------------

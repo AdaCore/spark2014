@@ -29,6 +29,9 @@ package body Outputs is
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
 
+   function File_Handle (O : Output_Id) return File_Type;
+   --  Return the file handle corresponding to this output id
+
    function File_Handle (O : Output_Id) return File_Type is
       (case O is
           when Stdout =>
@@ -37,7 +40,6 @@ package body Outputs is
              Standard_Error,
           when Current_File =>
              Current_File_Handle);
-   --  Return the file handle corresponding to this output id
 
    ------------------------
    -- Close_Current_File --

@@ -29,7 +29,6 @@ with Gnat2Why.Driver;
 with Adabkend;
 with Stringt;
 with Namet;
-with Opt;
 
 package body Back_End is
 

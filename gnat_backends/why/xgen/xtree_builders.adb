@@ -280,8 +280,10 @@ package body Xtree_Builders is
          FI : constant Field_Info := Element (Position);
          PN : constant Wide_String := Param_Name (FI);
       begin
-         PL (O, "and then " & Accessor_Name (Kind, FI));
-         P (O, "  (" & Builder_Name (Kind) & "'Result)" & " = " & PN);
+         PL (O, "and then");
+         PL (O, "  " &  Accessor_Name (Kind, FI));
+         PL (O, "  (" & Builder_Name (Kind) & "'Result)");
+         P  (O, "  = " & PN);
 
          if Next (Position) /= No_Element then
             NL (O);
@@ -292,8 +294,8 @@ package body Xtree_Builders is
       PL (O, "pragma Postcondition");
       Relative_Indent (O, 2);
       PL (O, "(Get_Kind");
-      PL (O, "  (" & Builder_Name (Kind) & "'Result)"
-          & " = " & Mixed_Case_Name (Kind));
+      PL (O, "  (" & Builder_Name (Kind) & "'Result)");
+      PL (O, "  = " & Mixed_Case_Name (Kind));
       Relative_Indent (O, 1);
       Common_Fields.Fields.Iterate (Print_Parameter_Postcondition'Access);
 

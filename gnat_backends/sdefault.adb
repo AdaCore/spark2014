@@ -37,7 +37,7 @@
 
 --  Hi-Lite backends differ in the way it locates the Ada library directories
 --  from the regular GNAT. Assuming Hi-Lite is installed in directory
--- <install-dir>, <install-dir> will contain, amongst others two important
+--  <install-dir>, <install-dir> will contain, amongst others two important
 --  directories: bin and lib as shown in the picture below.
 
 --  <install-dir>  [contains all the Hi-Lite executables...]
@@ -67,7 +67,7 @@ package body Sdefault is
 
    DS : constant Character := Directory_Separator;
 
-   Common_Dir           : constant String := "lib" ;
+   Common_Dir           : constant String := "lib";
    Relative_Include_Dir : constant String := "lib" & DS & "adainclude" & DS;
    Relative_Object_Dir  : constant String := Common_Dir & DS & "adalib" & DS;
    Target               : constant String := "HI-LITE";
@@ -112,7 +112,7 @@ package body Sdefault is
             end if;
          end loop;
 
-         return Exec (Exec'First .. Path_Last );
+         return Exec (Exec'First .. Path_Last);
       end Get_Install_Dir;
 
    --  Beginning of Executable_Location

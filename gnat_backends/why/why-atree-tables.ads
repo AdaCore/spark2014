@@ -23,12 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Unchecked_Conversion;
 with Ada.Containers.Vectors;
 with Ada.Containers.Doubly_Linked_Lists;
-
-with Why.Sinfo; use Why.Sinfo;
-with Why.Types; use Why.Types;
 
 package Why.Atree.Tables is
    --  This package allows to allocate new Why nodes and to associate

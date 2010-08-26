@@ -36,7 +36,7 @@ package body Why.Atree.Tables is
       use Node_Lists;
 
       In_Left  : Cursor  := First (Left);
-      In_Right : Cursor  := First (Left);
+      In_Right : Cursor  := First (Right);
       Result   : Boolean := True;
    begin
       loop
