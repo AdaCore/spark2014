@@ -50,11 +50,60 @@ package body Xtree_Accessors is
      (O    : in out Output_Record;
       FI   : Field_Info);
 
+   procedure Print_Accessor_Kind_Declarations
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind);
+   --  Print accessor declarations for the given node kind
+
    ---------------------------------
    -- Print_Accessor_Declarations --
    ---------------------------------
 
    procedure Print_Accessor_Declarations  (O : in out Output_Record)
+   is
+      use Node_Lists;
+
+      procedure Print_Common_Field_Accessor (Position : Cursor);
+
+      ---------------------------------
+      -- Print_Common_Field_Accessor --
+      ---------------------------------
+
+      procedure Print_Common_Field_Accessor (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+      begin
+         Print_Accessor_Specification
+           (O           => O,
+            Name        => Accessor_Name (W_Unused_At_Start, FI),
+            Param_Type  => "Why_Node_Id",
+            Return_Type => Id_Type_Name (FI));
+         PL (O, ";");
+
+         if Next (Position) /= No_Element then
+            NL (O);
+         end if;
+      end Print_Common_Field_Accessor;
+
+   begin
+      Common_Fields.Fields.Iterate (Print_Common_Field_Accessor'Access);
+      NL (O);
+
+      for J in Valid_Kind'Range loop
+         if Has_Variant_Part (J) then
+            Print_Accessor_Kind_Declarations (O, J);
+
+            if J /= Why_Tree_Info'Last then
+               NL (O);
+            end if;
+         end if;
+      end loop;
+   end Print_Accessor_Declarations;
+
+   ---------------------------
+   -- Print_Accessor_Bodies --
+   ---------------------------
+
+   procedure Print_Accessor_Bodies  (O : in out Output_Record)
    is
       use Node_Lists;
 
@@ -96,7 +145,7 @@ package body Xtree_Accessors is
             end if;
          end if;
       end loop;
-   end Print_Accessor_Declarations;
+   end Print_Accessor_Bodies;
 
    --------------------------------
    -- Print_Accessor_Expressions --
@@ -146,6 +195,40 @@ package body Xtree_Accessors is
            (Print_Accessor_Functional_Expression'Access);
       end if;
    end Print_Accessor_Functional_Expressions;
+
+   -------------------------------------------
+   -- Print_Accessor_Functional_Expressions --
+   -------------------------------------------
+
+   procedure Print_Accessor_Kind_Declarations
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind)
+   is
+      use Node_Lists;
+
+      procedure Print_Accessor_Kind_Declaration (Position : Cursor);
+
+      -------------------------------------
+      -- Print_Accessor_Kind_Declaration --
+      -------------------------------------
+
+      procedure Print_Accessor_Kind_Declaration (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+      begin
+         Print_Accessor_Specification (O, Kind, FI);
+         PL (O, ";");
+
+         if Next (Position) /= No_Element then
+            NL (O);
+         end if;
+      end Print_Accessor_Kind_Declaration;
+
+   begin
+      if Has_Variant_Part (Kind) then
+         Why_Tree_Info (Kind).Fields.Iterate
+           (Print_Accessor_Kind_Declaration'Access);
+      end if;
+   end Print_Accessor_Kind_Declarations;
 
    ----------------------------------
    -- Print_Accessor_Specification --

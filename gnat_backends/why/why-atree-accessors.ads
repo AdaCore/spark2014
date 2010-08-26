@@ -33,6 +33,776 @@ package Why.Atree.Accessors is
 
    function Get_Ada_Node
      (Id : Why_Node_Id)
+     return Node_Id;
+
+   function Get_Link
+     (Id : Why_Node_Id)
+     return Why_Node_Id;
+
+   function Identifier_Get_Symbol
+     (Id : W_Identifier_Id)
+     return Name_Id;
+
+   function Identifier_Get_Entity
+     (Id : W_Identifier_Id)
+     return Why_Node_Id;
+
+   function Abstract_Type_Get_Name
+     (Id : W_Abstract_Type_Id)
+     return W_Identifier_Id;
+
+   function Generic_Formal_Type_Get_Name
+     (Id : W_Generic_Formal_Type_Id)
+     return W_Identifier_Id;
+
+   function Generic_Actual_Type_Chain_Get_Type_Chain
+     (Id : W_Generic_Actual_Type_Chain_Id)
+     return W_Primitive_Type_List;
+
+   function Generic_Actual_Type_Chain_Get_Name
+     (Id : W_Generic_Actual_Type_Chain_Id)
+     return W_Identifier_Id;
+
+   function Array_Type_Get_Component_Type
+     (Id : W_Array_Type_Id)
+     return W_Primitive_Type_Id;
+
+   function Ref_Type_Get_Aliased_Type
+     (Id : W_Ref_Type_Id)
+     return W_Primitive_Type_Id;
+
+   function Protected_Value_Type_Get_Value_Type
+     (Id : W_Protected_Value_Type_Id)
+     return W_Value_Type_Id;
+
+   function Anonymous_Arrow_Type_Get_Left
+     (Id : W_Anonymous_Arrow_Type_Id)
+     return W_Simple_Value_Type_Id;
+
+   function Anonymous_Arrow_Type_Get_Right
+     (Id : W_Anonymous_Arrow_Type_Id)
+     return W_Computation_Type_Id;
+
+   function Named_Arrow_Type_Get_Name
+     (Id : W_Named_Arrow_Type_Id)
+     return W_Identifier_Id;
+
+   function Named_Arrow_Type_Get_Left
+     (Id : W_Named_Arrow_Type_Id)
+     return W_Simple_Value_Type_Id;
+
+   function Named_Arrow_Type_Get_Right
+     (Id : W_Named_Arrow_Type_Id)
+     return W_Computation_Type_Id;
+
+   function Computation_Spec_Get_Precondition
+     (Id : W_Computation_Spec_Id)
+     return W_Precondition_OId;
+
+   function Computation_Spec_Get_Result_Name
+     (Id : W_Computation_Spec_Id)
+     return W_Identifier_OId;
+
+   function Computation_Spec_Get_Return_Type
+     (Id : W_Computation_Spec_Id)
+     return W_Value_Type_Id;
+
+   function Computation_Spec_Get_Effects
+     (Id : W_Computation_Spec_Id)
+     return W_Effects_Id;
+
+   function Computation_Spec_Get_Postcondition
+     (Id : W_Computation_Spec_Id)
+     return W_Postcondition_OId;
+
+   function Integer_Constant_Get_Value
+     (Id : W_Integer_Constant_Id)
+     return Uint;
+
+   function Real_Constant_Get_Value
+     (Id : W_Real_Constant_Id)
+     return Ureal;
+
+   function Arith_Operation_Get_Left
+     (Id : W_Arith_Operation_Id)
+     return W_Term_Id;
+
+   function Arith_Operation_Get_Op
+     (Id : W_Arith_Operation_Id)
+     return W_Arith_Op_Id;
+
+   function Arith_Operation_Get_Right
+     (Id : W_Arith_Operation_Id)
+     return W_Term_Id;
+
+   function Negative_Term_Get_Operand
+     (Id : W_Negative_Term_Id)
+     return W_Term_Id;
+
+   function Label_Identifier_Get_Name
+     (Id : W_Label_Identifier_Id)
+     return W_Identifier_Id;
+
+   function Label_Identifier_Get_Label
+     (Id : W_Label_Identifier_Id)
+     return W_Identifier_OId;
+
+   function Operation_Get_Name
+     (Id : W_Operation_Id)
+     return W_Identifier_Id;
+
+   function Operation_Get_Parameters
+     (Id : W_Operation_Id)
+     return W_Term_List;
+
+   function Named_Term_Get_Name
+     (Id : W_Named_Term_Id)
+     return W_Label_Identifier_Id;
+
+   function Named_Term_Get_Term
+     (Id : W_Named_Term_Id)
+     return W_Term_Id;
+
+   function Conditional_Term_Get_Condition
+     (Id : W_Conditional_Term_Id)
+     return W_Term_Id;
+
+   function Conditional_Term_Get_Then_Part
+     (Id : W_Conditional_Term_Id)
+     return W_Term_Id;
+
+   function Conditional_Term_Get_Else_Part
+     (Id : W_Conditional_Term_Id)
+     return W_Term_Id;
+
+   function Binding_Term_Get_Name
+     (Id : W_Binding_Term_Id)
+     return W_Identifier_Id;
+
+   function Binding_Term_Get_Def
+     (Id : W_Binding_Term_Id)
+     return W_Term_Id;
+
+   function Binding_Term_Get_Context
+     (Id : W_Binding_Term_Id)
+     return W_Term_Id;
+
+   function Protected_Term_Get_Term
+     (Id : W_Protected_Term_Id)
+     return W_Term_Id;
+
+   function Predicate_Identifier_Get_Name
+     (Id : W_Predicate_Identifier_Id)
+     return W_Identifier_Id;
+
+   function Predicate_Instance_Get_Name
+     (Id : W_Predicate_Instance_Id)
+     return W_Identifier_Id;
+
+   function Predicate_Instance_Get_Parameters
+     (Id : W_Predicate_Instance_Id)
+     return W_Term_List;
+
+   function Related_Terms_Get_Left
+     (Id : W_Related_Terms_Id)
+     return W_Term_Id;
+
+   function Related_Terms_Get_Op
+     (Id : W_Related_Terms_Id)
+     return W_Relation_Id;
+
+   function Related_Terms_Get_Right
+     (Id : W_Related_Terms_Id)
+     return W_Term_Id;
+
+   function Related_Terms_Get_Op2
+     (Id : W_Related_Terms_Id)
+     return W_Relation_OId;
+
+   function Related_Terms_Get_Right2
+     (Id : W_Related_Terms_Id)
+     return W_Term_OId;
+
+   function Implication_Get_Left
+     (Id : W_Implication_Id)
+     return W_Predicate_Id;
+
+   function Implication_Get_Right
+     (Id : W_Implication_Id)
+     return W_Predicate_Id;
+
+   function Equivalence_Get_Left
+     (Id : W_Equivalence_Id)
+     return W_Predicate_Id;
+
+   function Equivalence_Get_Right
+     (Id : W_Equivalence_Id)
+     return W_Predicate_Id;
+
+   function Disjonction_Get_Left
+     (Id : W_Disjonction_Id)
+     return W_Predicate_Id;
+
+   function Disjonction_Get_Right
+     (Id : W_Disjonction_Id)
+     return W_Predicate_Id;
+
+   function Conjonction_Get_Left
+     (Id : W_Conjonction_Id)
+     return W_Predicate_Id;
+
+   function Conjonction_Get_Right
+     (Id : W_Conjonction_Id)
+     return W_Predicate_Id;
+
+   function Negation_Get_Operand
+     (Id : W_Negation_Id)
+     return W_Predicate_Id;
+
+   function Conditional_Pred_Get_Condition
+     (Id : W_Conditional_Pred_Id)
+     return W_Term_Id;
+
+   function Conditional_Pred_Get_Then_Part
+     (Id : W_Conditional_Pred_Id)
+     return W_Predicate_Id;
+
+   function Conditional_Pred_Get_Else_Part
+     (Id : W_Conditional_Pred_Id)
+     return W_Predicate_Id;
+
+   function Binding_Pred_Get_Name
+     (Id : W_Binding_Pred_Id)
+     return W_Identifier_Id;
+
+   function Binding_Pred_Get_Def
+     (Id : W_Binding_Pred_Id)
+     return W_Term_Id;
+
+   function Binding_Pred_Get_Context
+     (Id : W_Binding_Pred_Id)
+     return W_Predicate_Id;
+
+   function Universal_Quantif_Get_Variables
+     (Id : W_Universal_Quantif_Id)
+     return W_Identifier_List;
+
+   function Universal_Quantif_Get_Var_Type
+     (Id : W_Universal_Quantif_Id)
+     return W_Primitive_Type_Id;
+
+   function Universal_Quantif_Get_Triggers
+     (Id : W_Universal_Quantif_Id)
+     return W_Triggers_OId;
+
+   function Universal_Quantif_Get_Pred
+     (Id : W_Universal_Quantif_Id)
+     return W_Predicate_Id;
+
+   function Existential_Quantif_Get_Variables
+     (Id : W_Existential_Quantif_Id)
+     return W_Identifier_List;
+
+   function Existential_Quantif_Get_Var_Type
+     (Id : W_Existential_Quantif_Id)
+     return W_Primitive_Type_Id;
+
+   function Existential_Quantif_Get_Pred
+     (Id : W_Existential_Quantif_Id)
+     return W_Predicate_Id;
+
+   function Named_Predicate_Get_Name
+     (Id : W_Named_Predicate_Id)
+     return W_Identifier_Id;
+
+   function Named_Predicate_Get_Pred
+     (Id : W_Named_Predicate_Id)
+     return W_Predicate_Id;
+
+   function Protected_Predicate_Get_Pred
+     (Id : W_Protected_Predicate_Id)
+     return W_Predicate_Id;
+
+   function Triggers_Get_Triggers
+     (Id : W_Triggers_Id)
+     return W_Trigger_List;
+
+   function Trigger_Get_Terms
+     (Id : W_Trigger_Id)
+     return W_Term_List;
+
+   function Type_Get_External
+     (Id : W_Type_Id)
+     return W_External_OId;
+
+   function Type_Get_Type_Parameters
+     (Id : W_Type_Id)
+     return W_Identifier_OList;
+
+   function Type_Get_Name
+     (Id : W_Type_Id)
+     return W_Identifier_Id;
+
+   function Logic_Get_External
+     (Id : W_Logic_Id)
+     return W_External_OId;
+
+   function Logic_Get_Names
+     (Id : W_Logic_Id)
+     return W_Identifier_List;
+
+   function Logic_Get_Logic_Type
+     (Id : W_Logic_Id)
+     return W_Logic_Type_Id;
+
+   function Function_Get_Name
+     (Id : W_Function_Id)
+     return W_Identifier_Id;
+
+   function Function_Get_Binders
+     (Id : W_Function_Id)
+     return W_Logic_Binder_List;
+
+   function Function_Get_Return_Type
+     (Id : W_Function_Id)
+     return W_Primitive_Type_Id;
+
+   function Function_Get_Def
+     (Id : W_Function_Id)
+     return W_Term_Id;
+
+   function Predicate_Definition_Get_Name
+     (Id : W_Predicate_Definition_Id)
+     return W_Identifier_Id;
+
+   function Predicate_Definition_Get_Binders
+     (Id : W_Predicate_Definition_Id)
+     return W_Logic_Binder_List;
+
+   function Predicate_Definition_Get_Def
+     (Id : W_Predicate_Definition_Id)
+     return W_Predicate_Id;
+
+   function Inductive_Get_Name
+     (Id : W_Inductive_Id)
+     return W_Identifier_Id;
+
+   function Inductive_Get_Logic_Type
+     (Id : W_Inductive_Id)
+     return W_Logic_Type_Id;
+
+   function Inductive_Get_Def
+     (Id : W_Inductive_Id)
+     return W_Inductive_Case_List;
+
+   function Axiom_Get_Name
+     (Id : W_Axiom_Id)
+     return W_Identifier_Id;
+
+   function Axiom_Get_Def
+     (Id : W_Axiom_Id)
+     return W_Predicate_Id;
+
+   function Goal_Get_Name
+     (Id : W_Goal_Id)
+     return W_Identifier_Id;
+
+   function Goal_Get_Def
+     (Id : W_Goal_Id)
+     return W_Predicate_Id;
+
+   function Logic_Type_Get_Arg_Types
+     (Id : W_Logic_Type_Id)
+     return W_Logic_Arg_Type_List;
+
+   function Logic_Type_Get_Return_Type
+     (Id : W_Logic_Type_Id)
+     return W_Logic_Return_Type_List;
+
+   function Logic_Binder_Get_Name
+     (Id : W_Logic_Binder_Id)
+     return W_Identifier_Id;
+
+   function Logic_Binder_Get_Param_Type
+     (Id : W_Logic_Binder_Id)
+     return W_Primitive_Type_Id;
+
+   function Inductive_Case_Get_Name
+     (Id : W_Inductive_Case_Id)
+     return W_Identifier_Id;
+
+   function Inductive_Case_Get_Pred
+     (Id : W_Inductive_Case_Id)
+     return W_Predicate_Id;
+
+   function Effects_Get_Reads
+     (Id : W_Effects_Id)
+     return W_Identifier_OList;
+
+   function Effects_Get_Writes
+     (Id : W_Effects_Id)
+     return W_Identifier_OList;
+
+   function Effects_Get_Raises
+     (Id : W_Effects_Id)
+     return W_Identifier_OList;
+
+   function Precondition_Get_Assertion
+     (Id : W_Precondition_Id)
+     return W_Assertion_Id;
+
+   function Postcondition_Get_Assertion
+     (Id : W_Postcondition_Id)
+     return W_Assertion_Id;
+
+   function Postcondition_Get_Handlers
+     (Id : W_Postcondition_Id)
+     return W_Exn_Condition_OList;
+
+   function Exn_Condition_Get_Exn_Case
+     (Id : W_Exn_Condition_Id)
+     return W_Identifier_Id;
+
+   function Exn_Condition_Get_Assertion
+     (Id : W_Exn_Condition_Id)
+     return W_Assertion_Id;
+
+   function Assertion_Get_Pred
+     (Id : W_Assertion_Id)
+     return W_Predicate_Id;
+
+   function Assertion_Get_As
+     (Id : W_Assertion_Id)
+     return W_Identifier_OId;
+
+   function Prog_Constant_Get_Def
+     (Id : W_Prog_Constant_Id)
+     return W_Constant_Id;
+
+   function Prog_Identifier_Get_Def
+     (Id : W_Prog_Identifier_Id)
+     return W_Identifier_Id;
+
+   function Deref_Get_Ref
+     (Id : W_Deref_Id)
+     return W_Identifier_Id;
+
+   function Assignment_Get_Name
+     (Id : W_Assignment_Id)
+     return W_Identifier_Id;
+
+   function Assignment_Get_Value
+     (Id : W_Assignment_Id)
+     return W_Prog_Id;
+
+   function Array_Access_Get_Name
+     (Id : W_Array_Access_Id)
+     return W_Identifier_Id;
+
+   function Array_Access_Get_Index
+     (Id : W_Array_Access_Id)
+     return W_Prog_Id;
+
+   function Array_Update_Get_Name
+     (Id : W_Array_Update_Id)
+     return W_Identifier_Id;
+
+   function Array_Update_Get_Index
+     (Id : W_Array_Update_Id)
+     return W_Prog_Id;
+
+   function Array_Update_Get_Value
+     (Id : W_Array_Update_Id)
+     return W_Prog_Id;
+
+   function Infix_Call_Get_Left
+     (Id : W_Infix_Call_Id)
+     return W_Prog_Id;
+
+   function Infix_Call_Get_Infix
+     (Id : W_Infix_Call_Id)
+     return W_Infix_Id;
+
+   function Infix_Call_Get_Right
+     (Id : W_Infix_Call_Id)
+     return W_Prog_Id;
+
+   function Prefix_Call_Get_Prefix
+     (Id : W_Prefix_Call_Id)
+     return W_Prefix_Id;
+
+   function Prefix_Call_Get_Operand
+     (Id : W_Prefix_Call_Id)
+     return W_Prog_Id;
+
+   function Binding_Prog_Get_Name
+     (Id : W_Binding_Prog_Id)
+     return W_Identifier_Id;
+
+   function Binding_Prog_Get_Def
+     (Id : W_Binding_Prog_Id)
+     return W_Prog_Id;
+
+   function Binding_Prog_Get_Context
+     (Id : W_Binding_Prog_Id)
+     return W_Prog_Id;
+
+   function Binding_Ref_Get_Name
+     (Id : W_Binding_Ref_Id)
+     return W_Identifier_Id;
+
+   function Binding_Ref_Get_Def
+     (Id : W_Binding_Ref_Id)
+     return W_Prog_Id;
+
+   function Binding_Ref_Get_Context
+     (Id : W_Binding_Ref_Id)
+     return W_Prog_Id;
+
+   function Conditional_Prog_Get_Condition
+     (Id : W_Conditional_Prog_Id)
+     return W_Prog_Id;
+
+   function Conditional_Prog_Get_Then_Part
+     (Id : W_Conditional_Prog_Id)
+     return W_Prog_Id;
+
+   function Conditional_Prog_Get_Else_Part
+     (Id : W_Conditional_Prog_Id)
+     return W_Prog_OId;
+
+   function While_Loop_Get_Condition
+     (Id : W_While_Loop_Id)
+     return W_Prog_Id;
+
+   function While_Loop_Get_Annotation
+     (Id : W_While_Loop_Id)
+     return W_Loop_Annot_Id;
+
+   function While_Loop_Get_Loop_Content
+     (Id : W_While_Loop_Id)
+     return W_Prog_Id;
+
+   function Statement_Sequence_Get_Statements
+     (Id : W_Statement_Sequence_Id)
+     return W_Prog_List;
+
+   function Label_Get_Name
+     (Id : W_Label_Id)
+     return W_Identifier_Id;
+
+   function Label_Get_Def
+     (Id : W_Label_Id)
+     return W_Prog_Id;
+
+   function Assert_Get_Assertions
+     (Id : W_Assert_Id)
+     return W_Assertion_List;
+
+   function Assert_Get_Prog
+     (Id : W_Assert_Id)
+     return W_Prog_Id;
+
+   function Post_Assertion_Get_Prog
+     (Id : W_Post_Assertion_Id)
+     return W_Prog_Id;
+
+   function Post_Assertion_Get_Post
+     (Id : W_Post_Assertion_Id)
+     return W_Postcondition_Id;
+
+   function Opaque_Assertion_Get_Prog
+     (Id : W_Opaque_Assertion_Id)
+     return W_Prog_Id;
+
+   function Opaque_Assertion_Get_Post
+     (Id : W_Opaque_Assertion_Id)
+     return W_Postcondition_Id;
+
+   function Fun_Def_Get_Binders
+     (Id : W_Fun_Def_Id)
+     return W_Binders_Id;
+
+   function Fun_Def_Get_Def
+     (Id : W_Fun_Def_Id)
+     return W_Prog_Id;
+
+   function Binding_Fun_Get_Name
+     (Id : W_Binding_Fun_Id)
+     return W_Identifier_Id;
+
+   function Binding_Fun_Get_Binders
+     (Id : W_Binding_Fun_Id)
+     return W_Binders_Id;
+
+   function Binding_Fun_Get_Def
+     (Id : W_Binding_Fun_Id)
+     return W_Prog_Id;
+
+   function Binding_Fun_Get_Context
+     (Id : W_Binding_Fun_Id)
+     return W_Prog_Id;
+
+   function Binding_Rec_Get_Recfun
+     (Id : W_Binding_Rec_Id)
+     return W_Recfun_Id;
+
+   function Binding_Rec_Get_Context
+     (Id : W_Binding_Rec_Id)
+     return W_Prog_Id;
+
+   function Prog_Sequence_Get_Progs
+     (Id : W_Prog_Sequence_Id)
+     return W_Prog_List;
+
+   function Raise_Statement_Get_Name
+     (Id : W_Raise_Statement_Id)
+     return W_Identifier_Id;
+
+   function Raise_Statement_Get_Exn_Type
+     (Id : W_Raise_Statement_Id)
+     return W_Value_Type_OId;
+
+   function Raise_Statement_With_Parameters_Get_Name
+     (Id : W_Raise_Statement_With_Parameters_Id)
+     return W_Identifier_Id;
+
+   function Raise_Statement_With_Parameters_Get_Parameter
+     (Id : W_Raise_Statement_With_Parameters_Id)
+     return W_Term_Id;
+
+   function Raise_Statement_With_Parameters_Get_Exn_Type
+     (Id : W_Raise_Statement_With_Parameters_Id)
+     return W_Value_Type_OId;
+
+   function Try_Block_Get_Prog
+     (Id : W_Try_Block_Id)
+     return W_Prog_Id;
+
+   function Try_Block_Get_Handler
+     (Id : W_Try_Block_Id)
+     return W_Handler_List;
+
+   function Unreachable_Code_Get_Exn_Type
+     (Id : W_Unreachable_Code_Id)
+     return W_Value_Type_OId;
+
+   function Begin_Block_Get_Prog
+     (Id : W_Begin_Block_Id)
+     return W_Prog_Id;
+
+   function Protected_Prog_Get_Prog
+     (Id : W_Protected_Prog_Id)
+     return W_Prog_Id;
+
+   function Binders_Get_Binders
+     (Id : W_Binders_Id)
+     return W_Binders_List;
+
+   function Binder_Get_Names
+     (Id : W_Binder_Id)
+     return W_Identifier_List;
+
+   function Binder_Get_Arg_Type
+     (Id : W_Binder_Id)
+     return W_Value_Type_Id;
+
+   function Recfun_Get_Name
+     (Id : W_Recfun_Id)
+     return W_Identifier_Id;
+
+   function Recfun_Get_Binders
+     (Id : W_Recfun_Id)
+     return W_Binders_Id;
+
+   function Recfun_Get_Return_Type
+     (Id : W_Recfun_Id)
+     return W_Prog_Id;
+
+   function Recfun_Get_Variant
+     (Id : W_Recfun_Id)
+     return W_Wf_Arg_Id;
+
+   function Recfun_Get_Def
+     (Id : W_Recfun_Id)
+     return W_Prog_Id;
+
+   function Loop_Annot_Get_Invariant
+     (Id : W_Loop_Annot_Id)
+     return W_Assertion_OId;
+
+   function Loop_Annot_Get_Variant
+     (Id : W_Loop_Annot_Id)
+     return W_Wf_Arg_OId;
+
+   function Wf_Arg_Get_Def
+     (Id : W_Wf_Arg_Id)
+     return W_Term_Id;
+
+   function Wf_Arg_Get_For_Id
+     (Id : W_Wf_Arg_Id)
+     return W_Identifier_OId;
+
+   function Handler_Get_Name
+     (Id : W_Handler_Id)
+     return W_Identifier_Id;
+
+   function Handler_Get_Parameter
+     (Id : W_Handler_Id)
+     return W_Prog_OId;
+
+   function Handler_Get_Def
+     (Id : W_Handler_Id)
+     return W_Prog_Id;
+
+   function File_Get_Declarations
+     (Id : W_File_Id)
+     return W_Declaration_OList;
+
+   function Global_Binding_Get_Name
+     (Id : W_Global_Binding_Id)
+     return W_Identifier_Id;
+
+   function Global_Binding_Get_Binders
+     (Id : W_Global_Binding_Id)
+     return W_Binders_OId;
+
+   function Global_Binding_Get_Def
+     (Id : W_Global_Binding_Id)
+     return W_Prog_Id;
+
+   function Global_Rec_Binding_Get_Name
+     (Id : W_Global_Rec_Binding_Id)
+     return W_Recfun_Id;
+
+   function Parameter_Declaration_Get_External
+     (Id : W_Parameter_Declaration_Id)
+     return W_External_Id;
+
+   function Parameter_Declaration_Get_Names
+     (Id : W_Parameter_Declaration_Id)
+     return W_Identifier_List;
+
+   function Parameter_Declaration_Get_Parameter_Type
+     (Id : W_Parameter_Declaration_Id)
+     return W_Value_Type_Id;
+
+   function Exception_Declaration_Get_Name
+     (Id : W_Exception_Declaration_Id)
+     return W_Identifier_Id;
+
+   function Exception_Declaration_Get_Parameter
+     (Id : W_Exception_Declaration_Id)
+     return W_Primitive_Type_OId;
+
+   function Logic_Declaration_Get_Decl
+     (Id : W_Logic_Declaration_Id)
+     return W_Logic_Id;
+
+private
+
+   function Get_Ada_Node
+     (Id : Why_Node_Id)
      return Node_Id is
      (Get_Node (Id).Ada_Node);
 

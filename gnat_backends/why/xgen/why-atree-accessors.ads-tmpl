@@ -33,4 +33,8 @@ package Why.Atree.Accessors is
 
    _@Declare_Accessors@_
 
+private
+
+   _@Implement_Accessors@_
+
 end Why.Atree.Accessors;

@@ -272,6 +272,7 @@ begin
    Add ("Declare_Builders", Print_Builder_Declarations'Access);
    Add ("Declare_Accessors", Print_Accessor_Declarations'Access);
    Add ("Implement_Builders", Print_Builder_Bodies'Access);
+   Add ("Implement_Accessors", Print_Accessor_Bodies'Access);
    Add ("Declare_Traversal_Ops", Print_Traversal_Op_Declarations'Access);
    Add ("Implement_Traverse", Print_Traverse_Body'Access);
    Add ("Declare_Traversal_Op_Stubs",
