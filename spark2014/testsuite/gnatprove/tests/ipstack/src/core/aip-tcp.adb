@@ -45,6 +45,10 @@ is
       --  Can be changed only by procedure Set_State below, which verifies
       --  the legality of the requested transition.
 
+      Backlog : Natural;
+      --  For a PCB in Listen state, maxium number of client connections to
+      --  be accepted before they are taken by the appplication.
+
       Active : Boolean;
       --  Set True if connection was initiated with an active open (i.e. went
       --  through the SYN-SENT state).
@@ -150,6 +154,7 @@ is
 
    TCP_PCB_Initializer : constant TCP_PCB :=
                            TCP_PCB'(State            => Closed,
+                                    Backlog          => 0,
 
                                     Active           => False,
 
@@ -233,6 +238,7 @@ is
 
    Fin_Wait_Timeout     : constant := 20 * TCP_Hz; -- 20 s
    Syn_Received_Timeout : constant := 20 * TCP_Hz; -- 20 s
+   Time_Wait_Timeout    : constant := 2 * Config.TCP_MSL * TCP_Hz; -- 2MSL
 
    IPCBs : TCP_IPCB_Array;
    TPCBs : TCP_TPCB_Array;
@@ -707,10 +713,8 @@ is
             Buffers.Buffer_Blind_Free (D_Buf);
             TPCBs (PCB).Refused_Packet := Buffers.NOBUF;
 
-            --  Open receive window
-
-            TPCBs (PCB).RCV_WND :=
-              AIP.M32_T'Min (TPCBs (PCB).RCV_WND + D_Len, Config.TCP_Window);
+            --  Note: windows is re-opened once application confirms date
+            --  consumption by calling TCP_Recved.
 
             if TCPH.TCPH_Fin (Buffers.Packet_Info (D_Buf)) = 1 then
                pragma Assert (D_Buf = Buf);
@@ -1121,33 +1125,32 @@ is
 
    procedure TCP_Listen_BL
      (PCB     : PCBs.PCB_Id;
-      Backlog : AIP.U8_T;
+      Backlog : Natural;
       Err     : out AIP.Err_T)
    --# global in out IPCBs, TPCBs, Bound_PCBs, Listen_PCBs;
    --#        in Active_PCBs, Time_Wait_PCBs;
    is
-      pragma Unreferenced (Backlog);
    begin
       pragma Assert (PCB /= PCBs.NOPCB);
 
-      --  First bind PCB if necessary
+      case TPCBs (PCB).State is
+         when Closed =>
+            --  First bind PCB if necessary
 
-      TCP_Force_Bind (PCB, Err);
+            TCP_Force_Bind (PCB, Err);
+            if AIP.No (Err) then
+               pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
 
-      if AIP.No (Err) then
-         pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
-
-         case TPCBs (PCB).State is
-            when Closed =>
+               TPCBs (PCB).Backlog := Backlog;
                Set_State (PCB, Listen);
+            end if;
 
-            when Listen =>
-               null;
+         when Listen =>
+            null;
 
-            when others =>
-               Err := AIP.ERR_ISCONN;
-         end case;
-      end if;
+         when others =>
+            Err := AIP.ERR_ISCONN;
+      end case;
    end TCP_Listen_BL;
 
    ----------------
@@ -1217,10 +1220,11 @@ is
    -- TCP_Accepted --
    ------------------
 
-   procedure TCP_Accepted (PCB : PCBs.PCB_Id) is
+   procedure TCP_Accepted (PCB : PCBs.PCB_Id)
+   --# global in out TPCBs;
+   is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      TPCBs (PCB).Backlog := TPCBs (PCB).Backlog + 1;
    end TCP_Accepted;
 
    --------------------------
@@ -1780,6 +1784,10 @@ is
                   when Closing =>
                      Set_State (PCB, Time_Wait);
 
+                     --  Start 2MSL timeout
+
+                     TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
+
                   when Last_Ack =>
                      TCP_Free (PCB);
 
@@ -1793,7 +1801,9 @@ is
                         Fin => False,
                         Err => Err);
 
-                     --  Restart 2MSL timeout???
+                     --  Restart 2MSL timeout
+
+                     TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
                   when others =>
                      --  Can't happen (we sent a FIN)
@@ -1897,10 +1907,12 @@ is
    procedure TCP_Recved
      (PCB : PCBs.PCB_Id;
       Len : AIP.U16_T)
+   --# global in out TPCBs;
    is
    begin
-      --  Generated stub: replace with real body!
-      null; --  TBD??
+      --  Open receive window now that application has consumed the data
+
+      TPCBs (PCB).RCV_WND := TPCBs (PCB).RCV_WND + AIP.M32_T (Len);
    end TCP_Recved;
 
    -----------------
@@ -1938,20 +1950,20 @@ is
    is
 
       Flush : Boolean := False;
-      --  Whether we should call TCP_Output before returning, to have
-      --  our control segments sent out.
+      --  Whether we should call TCP_Output before returning, to have our
+      --  control segments sent out.
 
    begin
-      --  Except when the current PCB state is Closed already, we rely
-      --  on Set_State to perform the necessary list operations.
+      --  Except when the current PCB state is Closed already, we rely on
+      --  Set_State to perform the necessary list operations.
 
       case TPCBs (PCB).State is
 
          when Closed =>
 
-            --  Close request before any significant use of the PCB.  Not a
-            --  real state transition, so dealing directly with the possible
-            --  need to unlink here.
+            --  Close request before any significant use of the PCB. Not a real
+            --  state transition, so dealing directly with the possible need to
+            --  unlink here.
 
             PCBs.Unlink
               (PCB      => PCB,
@@ -2151,11 +2163,11 @@ is
                   Ack_Num  => 0,
                   Err      => Err);
 
-            elsif TCPH.TCPH_Syn (Seg.Thdr) = 1 then
+            elsif TCPH.TCPH_Syn (Seg.Thdr) = 1
+              and then TPCBs (PCB).Backlog > 0
+            then
                --  Check segment security???
                --  Check segment precedence???
-
-               --  Check backlog???
 
                TCP_New (New_PCB);
                if New_PCB = PCBs.NOPCB then
@@ -2193,6 +2205,10 @@ is
                        (PCB      => New_PCB,
                         PCB_Head => Active_PCBs,
                         PCB_Pool => IPCBs);
+
+                     --  Decrease backlog allowance
+
+                     TPCBs (PCB).Backlog := TPCBs (PCB).Backlog - 1;
 
                      --  Send SYN|ACK
 
@@ -2477,22 +2493,25 @@ is
                         Set_State (PCB, Close_Wait);
 
                      when Fin_Wait_1 =>
-                        --  If our FIN has been Ack'd then we are already
-                        --  in Closing or Fin_Wait_2.
+                        --  If our FIN has been Ack'd then we are already in
+                        --  Closing or Fin_Wait_2.
 
                         Set_State (PCB, Closing);
 
                      when Fin_Wait_2 =>
                         Set_State (PCB, Time_Wait);
 
-                        --  Start Time_Wait timer???
+                        --  Start 2MSL timeout
+
+                        TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
                      when Close_Wait | Closing | Last_Ack =>
                         null;
 
                      when Time_Wait =>
-                        --  Restart 2MSL timeout???
-                        null;
+                        --  Restart 2MSL timeout
+
+                        TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
                   end case;
                end if;
             end if;
@@ -3021,7 +3040,18 @@ is
       end loop;
 
       --  Purge old TIME_WAIT PCBs
-      --  TBD???
+
+      PCB := Time_Wait_PCBs;
+      while PCB /= PCBs.NOPCB loop
+         Next_PCB := IPCBs (PCB).Link;
+
+         pragma Assert (TPCBs (PCB).State = Time_Wait);
+
+         if TCP_Ticks - TPCBs (PCB).Watchdog_Ticks > Time_Wait_Timeout then
+            TCP_Free (PCB);
+         end if;
+         PCB := Next_PCB;
+      end loop;
    end TCP_Slow_Timer;
 
 end AIP.TCP;

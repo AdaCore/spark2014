@@ -106,7 +106,7 @@ is
 
    procedure TCP_Listen_BL
      (PCB     : PCBs.PCB_Id;
-      Backlog : AIP.U8_T;
+      Backlog : Natural;
       Err     : out AIP.Err_T);
    --# global in out State;
    --  Same as TCP_Listen but with a user-specified backlog size
@@ -128,9 +128,10 @@ is
    --  the connection.
 
    procedure TCP_Accepted (PCB : PCBs.PCB_Id);
+   --# global in out State;
    --  Inform the AIP stack that a connection has just been accepted on PCB.
    --  To be called by the TCP_EVENT_ACCEPT callback for proper management of
-   --  the listening backlog.
+   --  the listen backlog.
 
    procedure TCP_Connect
      (PCB  : PCBs.PCB_Id;
@@ -224,6 +225,7 @@ is
    procedure TCP_Recved
      (PCB : PCBs.PCB_Id;
       Len : AIP.U16_T);
+   --# global in out State;
    --  Inform AIP that LEN bytes of data have been processed and can be
    --  acknowledged.
 
