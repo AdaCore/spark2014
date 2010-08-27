@@ -2,7 +2,6 @@ with Random_Numbers; use Random_Numbers;
 with ASM_Stack;
 with ADT_Stack;
 with ADT_Stack.Child;
-with  Generic_Stack;
 
 package body Use_Stacks
 is
@@ -37,14 +36,5 @@ is
          ADT_Stack.Child.Push (My_STack, Random_Numbers.Random);
       end loop;
    end Fill_ADT_Stack_Child;
-
-   procedure Fill_Generic_Stack
-   is
-      package Stack_Int  is new Generic_Stack(Stack_Size => 100, Item => Integer);
-   begin
-      for I in 1 .. 100 loop -- insert automatically type in for-loop
-         Stack_Int.Push (I);
-      end loop;
-   end Fill_Generic_Stack;
 
 end Use_Stacks;

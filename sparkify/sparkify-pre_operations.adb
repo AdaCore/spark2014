@@ -588,6 +588,24 @@ package body Sparkify.Pre_Operations is
    -- A_Selected_Component_Pre_Op --
    ---------------------------------
 
+   procedure A_Private_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State)
+   is
+      pragma Unreferenced (Control);
+      --  get a enclosing element ( A_Private_Type_Declaration,
+      --  A_Private_Extension_Declaration)
+      Encl_Element : constant Asis.Element := Enclosing_Element (Element);
+   begin
+      PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Encl_Element));
+      State.Echo_Cursor := Cursor_After (Encl_Element);
+   end A_Private_Type_Definition_Pre_Op;
+
+   ---------------------------------
+   -- A_Selected_Component_Pre_Op --
+   ---------------------------------
+
    procedure A_Selected_Component_Pre_Op
      (Element :        Asis.Element;
       Control : in out Traverse_Control;

@@ -178,6 +178,11 @@ package Sparkify.Pre_Operations is
       Control : in out Traverse_Control;
       State   : in out Source_Traversal_State);
 
+   procedure A_Private_Type_Definition_Pre_Op
+     (Element :        Asis.Element;
+      Control : in out Traverse_Control;
+      State   : in out Source_Traversal_State);
+
    Specific_Pre_Operation : array (Flat_Element_Kinds) of Op_Access :=
      (Not_An_Element => No_Action'Access,
 
@@ -555,7 +560,7 @@ package Sparkify.Pre_Operations is
 
       A_Private_Type_Definition ..
       A_Tagged_Private_Type_Definition =>
-         No_Action'Access,
+         A_Private_Type_Definition_Pre_Op'Access,
 
       A_Private_Extension_Definition =>
          No_Action'Access,

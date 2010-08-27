@@ -32,9 +32,6 @@ is
    procedure Push(X : in Integer)
    is
    begin
-      if Is_Full  then
-         raise Overflow;  -- raise exception
-      end if;
       Stack_Top :=Stack_Top + 1;
       Stack_Vector(Stack_Top) := X;
    end Push;
@@ -42,9 +39,6 @@ is
    function Pop return Integer
    is
    begin
-      if Is_Empty then
-         raise Underflow;
-      end if;
       Stack_Top := Stack_Top - 1;
       return Stack_Vector(Stack_Top + 1);
    end Pop;

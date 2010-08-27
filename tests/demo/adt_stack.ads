@@ -19,11 +19,6 @@ package ADT_Stack is
 
    procedure Pop(S : in out Stack; X : out Integer); -- not a function as in ASM_Stack
 
-   Overflow, Underflow : exception; --  Not yet translated
-
-   --  overloading operators = to compare two stack
-   function "=" (S, T : Stack) return Boolean; -- Not yet transladed
-
 --  full details of the type Stack
 private
    Stack_Size : constant := 100;

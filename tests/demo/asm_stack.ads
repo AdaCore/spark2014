@@ -10,6 +10,4 @@ package ASM_Stack is
    procedure Push(X : in Integer);
    function Pop return Integer;
 
-   Overflow, Underflow : exception;
-
 end ASM_Stack;
