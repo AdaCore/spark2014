@@ -72,7 +72,8 @@ package body Why.Atree.Tables is
       Empty_Node : constant Why_Node (W_Unused_At_Start)
                      := (Kind => W_Unused_At_Start,
                          Ada_Node => Empty,
-                         Link => Why_Empty);
+                         Link => Why_Empty,
+                         Checked => True);
    begin
       Append (Node_Table, Empty_Node);
       pragma Assert (To_Index (Last (Node_Table)) = Why_Empty);

@@ -42,6 +42,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Identifier,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    Symbol   => Symbol,
                    Entity   => Entity));
    end New_Identifier;
@@ -59,7 +60,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Type_Prop,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Type_Prop;
 
    ------------------
@@ -75,7 +77,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Type_Int,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Type_Int;
 
    -------------------
@@ -91,7 +94,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Type_Bool,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Type_Bool;
 
    -------------------
@@ -107,7 +111,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Type_Real,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Type_Real;
 
    -------------------
@@ -123,7 +128,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Type_Unit,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Type_Unit;
 
    -----------------------
@@ -141,6 +147,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Abstract_Type,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    AT_Name  => Name));
    end New_Abstract_Type;
 
@@ -159,6 +166,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Generic_Formal_Type,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    GFT_Name => Name));
    end New_Generic_Formal_Type;
 
@@ -178,6 +186,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind            => W_Generic_Actual_Type_Chain,
                    Ada_Node        => Ada_Node,
                    Link            => Link,
+                   Checked         => True,
                    GATC_Type_Chain => Type_Chain,
                    GATC_Name       => Name));
    end New_Generic_Actual_Type_Chain;
@@ -197,6 +206,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind              => W_Array_Type,
                    Ada_Node          => Ada_Node,
                    Link              => Link,
+                   Checked           => True,
                    AT_Component_Type => Component_Type));
    end New_Array_Type;
 
@@ -215,6 +225,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind            => W_Ref_Type,
                    Ada_Node        => Ada_Node,
                    Link            => Link,
+                   Checked         => True,
                    RT_Aliased_Type => Aliased_Type));
    end New_Ref_Type;
 
@@ -233,6 +244,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Protected_Value_Type,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    PVT_Value_Type => Value_Type));
    end New_Protected_Value_Type;
 
@@ -252,6 +264,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Anonymous_Arrow_Type,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    AAT_Left  => Left,
                    AAT_Right => Right));
    end New_Anonymous_Arrow_Type;
@@ -273,6 +286,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Named_Arrow_Type,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    NA_Name  => Name,
                    NA_Left  => Left,
                    NA_Right => Right));
@@ -297,6 +311,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind             => W_Computation_Spec,
                    Ada_Node         => Ada_Node,
                    Link             => Link,
+                   Checked          => True,
                    CS_Precondition  => Precondition,
                    CS_Result_Name   => Result_Name,
                    CS_Return_Type   => Return_Type,
@@ -319,6 +334,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Integer_Constant,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    IC_Value => Value));
    end New_Integer_Constant;
 
@@ -337,6 +353,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Real_Constant,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    RC_Value => Value));
    end New_Real_Constant;
 
@@ -353,7 +370,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_True_Literal,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_True_Literal;
 
    -----------------------
@@ -369,7 +387,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_False_Literal,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_False_Literal;
 
    ----------------------
@@ -385,7 +404,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Void_Literal,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Void_Literal;
 
    -------------------------
@@ -405,6 +425,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Arith_Operation,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    AO_Left  => Left,
                    AO_Op    => Op,
                    AO_Right => Right));
@@ -425,6 +446,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Negative_Term,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    NT_Operand => Operand));
    end New_Negative_Term;
 
@@ -444,6 +466,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Label_Identifier,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    TI_Name  => Name,
                    TI_Label => Label));
    end New_Label_Identifier;
@@ -464,6 +487,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Operation,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    O_Name       => Name,
                    O_Parameters => Parameters));
    end New_Operation;
@@ -484,6 +508,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Named_Term,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    NT_Name  => Name,
                    NT_Term  => Term));
    end New_Named_Term;
@@ -505,6 +530,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Conditional_Term,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    CT_Condition => Condition,
                    CT_Then_Part => Then_Part,
                    CT_Else_Part => Else_Part));
@@ -527,6 +553,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Binding_Term,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    BT_Name    => Name,
                    BT_Def     => Def,
                    BT_Context => Context));
@@ -547,6 +574,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Protected_Term,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    BT_Term  => Term));
    end New_Protected_Term;
 
@@ -563,7 +591,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Add,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Add;
 
    ----------------------
@@ -579,7 +608,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Substract,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Substract;
 
    ---------------------
@@ -595,7 +625,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Multiply,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Multiply;
 
    -------------------
@@ -611,7 +642,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Divide,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Divide;
 
    -------------------
@@ -627,7 +659,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Modulo,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Modulo;
 
    ---------------------------
@@ -643,7 +676,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_True_Literal_Pred,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_True_Literal_Pred;
 
    ----------------------------
@@ -659,7 +693,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_False_Literal_Pred,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_False_Literal_Pred;
 
    ------------------------------
@@ -677,6 +712,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Predicate_Identifier,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PID_Name => Name));
    end New_Predicate_Identifier;
 
@@ -696,6 +732,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Predicate_Instance,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    PIN_Name       => Name,
                    PIN_Parameters => Parameters));
    end New_Predicate_Instance;
@@ -719,6 +756,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Related_Terms,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    RT_Left   => Left,
                    RT_Op     => Op,
                    RT_Right  => Right,
@@ -742,6 +780,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Implication,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    ITOC_Left  => Left,
                    ITOC_Right => Right));
    end New_Implication;
@@ -762,6 +801,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Equivalence,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    ITOC_Left  => Left,
                    ITOC_Right => Right));
    end New_Equivalence;
@@ -782,6 +822,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Disjonction,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    ITOC_Left  => Left,
                    ITOC_Right => Right));
    end New_Disjonction;
@@ -802,6 +843,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Conjonction,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    ITOC_Left  => Left,
                    ITOC_Right => Right));
    end New_Conjonction;
@@ -821,6 +863,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Negation,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    N_Operand => Operand));
    end New_Negation;
 
@@ -841,6 +884,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Conditional_Pred,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    CPD_Condition => Condition,
                    CPD_Then_Part => Then_Part,
                    CPD_Else_Part => Else_Part));
@@ -863,6 +907,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Binding_Pred,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    BPD_Name    => Name,
                    BPD_Def     => Def,
                    BPD_Context => Context));
@@ -886,6 +931,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Universal_Quantif,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    UQ_Variables => Variables,
                    UQ_Var_Type  => Var_Type,
                    UQ_Triggers  => Triggers,
@@ -909,6 +955,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Existential_Quantif,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    EQ_Variables => Variables,
                    EQ_Var_Type  => Var_Type,
                    EQ_Pred      => Pred));
@@ -930,6 +977,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Named_Predicate,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    NP_Name  => Name,
                    NP_Pred  => Pred));
    end New_Named_Predicate;
@@ -949,6 +997,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Protected_Predicate,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PP_Pred  => Pred));
    end New_Protected_Predicate;
 
@@ -967,6 +1016,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Triggers,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    TRS_Triggers => Triggers));
    end New_Triggers;
 
@@ -985,6 +1035,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Trigger,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    TRI_Terms => Terms));
    end New_Trigger;
 
@@ -1001,7 +1052,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Eq,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Eq;
 
    ----------------
@@ -1017,7 +1069,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Ne,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Ne;
 
    ----------------
@@ -1033,7 +1086,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Lt,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Lt;
 
    ----------------
@@ -1049,7 +1103,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Le,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Le;
 
    ----------------
@@ -1065,7 +1120,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Gt,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Gt;
 
    ----------------
@@ -1081,7 +1137,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Rel_Ge,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Rel_Ge;
 
    --------------
@@ -1101,6 +1158,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind              => W_Type,
                    Ada_Node          => Ada_Node,
                    Link              => Link,
+                   Checked           => True,
                    T_External        => External,
                    T_Type_Parameters => Type_Parameters,
                    T_Name            => Name));
@@ -1123,6 +1181,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Logic,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    L_External   => External,
                    L_Names      => Names,
                    L_Logic_Type => Logic_Type));
@@ -1146,6 +1205,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Function,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    F_Name        => Name,
                    F_Binders     => Binders,
                    F_Return_Type => Return_Type,
@@ -1169,6 +1229,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Predicate_Definition,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    P_Name    => Name,
                    P_Binders => Binders,
                    P_Def     => Def));
@@ -1191,6 +1252,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Inductive,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    I_Name       => Name,
                    I_Logic_Type => Logic_Type,
                    I_Def        => Def));
@@ -1212,6 +1274,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Axiom,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    AX_Name  => Name,
                    AX_Def   => Def));
    end New_Axiom;
@@ -1232,6 +1295,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Goal,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    G_Name   => Name,
                    G_Def    => Def));
    end New_Goal;
@@ -1249,7 +1313,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_External,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_External;
 
    --------------------
@@ -1268,6 +1333,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Logic_Type,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    LT_Arg_Types   => Arg_Types,
                    LT_Return_Type => Return_Type));
    end New_Logic_Type;
@@ -1288,6 +1354,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Logic_Binder,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    LB_Name       => Name,
                    LB_Param_Type => Param_Type));
    end New_Logic_Binder;
@@ -1308,6 +1375,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Inductive_Case,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    IC_Name  => Name,
                    IC_Pred  => Pred));
    end New_Inductive_Case;
@@ -1329,6 +1397,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Effects,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    E_Reads  => Reads,
                    E_Writes => Writes,
                    E_Raises => Raises));
@@ -1349,6 +1418,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Precondition,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    PRE_Assertion => Assertion));
    end New_Precondition;
 
@@ -1368,6 +1438,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Postcondition,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    POST_Assertion => Assertion,
                    POST_Handlers  => Handlers));
    end New_Postcondition;
@@ -1388,6 +1459,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Exn_Condition,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    EC_Exn_Case  => Exn_Case,
                    EC_Assertion => Assertion));
    end New_Exn_Condition;
@@ -1408,6 +1480,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Assertion,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    A_Pred   => Pred,
                    A_As     => As));
    end New_Assertion;
@@ -1427,6 +1500,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Prog_Constant,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PC_Def   => Def));
    end New_Prog_Constant;
 
@@ -1445,6 +1519,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Prog_Identifier,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PI_Def   => Def));
    end New_Prog_Identifier;
 
@@ -1463,6 +1538,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Deref,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    D_Ref    => Ref));
    end New_Deref;
 
@@ -1482,6 +1558,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Assignment,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    A_Name   => Name,
                    A_Value  => Value));
    end New_Assignment;
@@ -1502,6 +1579,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Array_Access,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    AA_Name  => Name,
                    AA_Index => Index));
    end New_Array_Access;
@@ -1523,6 +1601,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Array_Update,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    AU_Name  => Name,
                    AU_Index => Index,
                    AU_Value => Value));
@@ -1545,6 +1624,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Infix_Call,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    IC_Left  => Left,
                    IC_Infix => Infix,
                    IC_Right => Right));
@@ -1566,6 +1646,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Prefix_Call,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    PC_Prefix  => Prefix,
                    PC_Operand => Operand));
    end New_Prefix_Call;
@@ -1587,6 +1668,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Binding_Prog,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    BPG_Name    => Name,
                    BPG_Def     => Def,
                    BPG_Context => Context));
@@ -1609,6 +1691,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Binding_Ref,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    BPG_Name    => Name,
                    BPG_Def     => Def,
                    BPG_Context => Context));
@@ -1631,6 +1714,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Conditional_Prog,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    CPG_Condition => Condition,
                    CPG_Then_Part => Then_Part,
                    CPG_Else_Part => Else_Part));
@@ -1653,6 +1737,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind            => W_While_Loop,
                    Ada_Node        => Ada_Node,
                    Link            => Link,
+                   Checked         => True,
                    WL_Condition    => Condition,
                    WL_Annotation   => Annotation,
                    WL_Loop_Content => Loop_Content));
@@ -1673,6 +1758,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Statement_Sequence,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    SS_Statements => Statements));
    end New_Statement_Sequence;
 
@@ -1692,6 +1778,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Label,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    L_Name   => Name,
                    L_Def    => Def));
    end New_Label;
@@ -1712,6 +1799,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind          => W_Assert,
                    Ada_Node      => Ada_Node,
                    Link          => Link,
+                   Checked       => True,
                    AS_Assertions => Assertions,
                    AS_Prog       => Prog));
    end New_Assert;
@@ -1732,6 +1820,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Post_Assertion,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PA_Prog  => Prog,
                    PA_Post  => Post));
    end New_Post_Assertion;
@@ -1752,6 +1841,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Opaque_Assertion,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PA_Prog  => Prog,
                    PA_Post  => Post));
    end New_Opaque_Assertion;
@@ -1772,6 +1862,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Fun_Def,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    FD_Binders => Binders,
                    FD_Def     => Def));
    end New_Fun_Def;
@@ -1794,6 +1885,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Binding_Fun,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    BF_Name    => Name,
                    BF_Binders => Binders,
                    BF_Def     => Def,
@@ -1816,6 +1908,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Binding_Rec,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    BR_Recfun  => Recfun,
                    BR_Context => Context));
    end New_Binding_Rec;
@@ -1835,6 +1928,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Prog_Sequence,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    PS_Progs => Progs));
    end New_Prog_Sequence;
 
@@ -1854,6 +1948,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Raise_Statement,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    RS_Name     => Name,
                    RS_Exn_Type => Exn_Type));
    end New_Raise_Statement;
@@ -1875,6 +1970,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Raise_Statement_With_Parameters,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    RSWP_Name      => Name,
                    RSWP_Parameter => Parameter,
                    RSWP_Exn_Type  => Exn_Type));
@@ -1896,6 +1992,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Try_Block,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    TB_Prog    => Prog,
                    TB_Handler => Handler));
    end New_Try_Block;
@@ -1915,6 +2012,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Unreachable_Code,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    UC_Exn_Type => Exn_Type));
    end New_Unreachable_Code;
 
@@ -1933,6 +2031,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Begin_Block,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    BB_Prog  => Prog));
    end New_Begin_Block;
 
@@ -1951,6 +2050,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Protected_Prog,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    BB_Prog  => Prog));
    end New_Protected_Prog;
 
@@ -1967,7 +2067,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Add_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Add_Prog;
 
    ---------------------------
@@ -1983,7 +2084,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Substract_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Substract_Prog;
 
    --------------------------
@@ -1999,7 +2101,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Multiply_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Multiply_Prog;
 
    ------------------------
@@ -2015,7 +2118,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Divide_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Divide_Prog;
 
    ---------------------
@@ -2031,7 +2135,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Mod_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Mod_Prog;
 
    --------------------
@@ -2047,7 +2152,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Eq_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Eq_Prog;
 
    --------------------
@@ -2063,7 +2169,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Ne_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Ne_Prog;
 
    --------------------
@@ -2079,7 +2186,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Lt_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Lt_Prog;
 
    --------------------
@@ -2095,7 +2203,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Le_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Le_Prog;
 
    --------------------
@@ -2111,7 +2220,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Gt_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Gt_Prog;
 
    --------------------
@@ -2127,7 +2237,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Ge_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Ge_Prog;
 
    -------------------------
@@ -2143,7 +2254,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Or_Else_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Or_Else_Prog;
 
    --------------------------
@@ -2159,7 +2271,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_And_Then_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_And_Then_Prog;
 
    -----------------------
@@ -2175,7 +2288,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Minus_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Minus_Prog;
 
    ---------------------
@@ -2191,7 +2305,8 @@ package body Why.Atree.Builders is
       return New_Why_Node_Id
         (Why_Node'(Kind     => W_Op_Not_Prog,
                    Ada_Node => Ada_Node,
-                   Link     => Link));
+                   Link     => Link,
+                   Checked  => True));
    end New_Op_Not_Prog;
 
    -----------------
@@ -2209,6 +2324,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Binders,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    BS_Binders => Binders));
    end New_Binders;
 
@@ -2228,6 +2344,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Binder,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    B_Names    => Names,
                    B_Arg_Type => Arg_Type));
    end New_Binder;
@@ -2251,6 +2368,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_Recfun,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    RF_Name        => Name,
                    RF_Binders     => Binders,
                    RF_Return_Type => Return_Type,
@@ -2274,6 +2392,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Loop_Annot,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    LA_Invariant => Invariant,
                    LA_Variant   => Variant));
    end New_Loop_Annot;
@@ -2294,6 +2413,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind      => W_Wf_Arg,
                    Ada_Node  => Ada_Node,
                    Link      => Link,
+                   Checked   => True,
                    WA_Def    => Def,
                    WA_For_Id => For_Id));
    end New_Wf_Arg;
@@ -2315,6 +2435,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind        => W_Handler,
                    Ada_Node    => Ada_Node,
                    Link        => Link,
+                   Checked     => True,
                    H_Name      => Name,
                    H_Parameter => Parameter,
                    H_Def       => Def));
@@ -2335,6 +2456,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind           => W_File,
                    Ada_Node       => Ada_Node,
                    Link           => Link,
+                   Checked        => True,
                    F_Declarations => Declarations));
    end New_File;
 
@@ -2355,6 +2477,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind       => W_Global_Binding,
                    Ada_Node   => Ada_Node,
                    Link       => Link,
+                   Checked    => True,
                    GB_Name    => Name,
                    GB_Binders => Binders,
                    GB_Def     => Def));
@@ -2375,6 +2498,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Global_Rec_Binding,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    GRB_Name => Name));
    end New_Global_Rec_Binding;
 
@@ -2395,6 +2519,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind              => W_Parameter_Declaration,
                    Ada_Node          => Ada_Node,
                    Link              => Link,
+                   Checked           => True,
                    PD_External       => External,
                    PD_Names          => Names,
                    PD_Parameter_Type => Parameter_Type));
@@ -2416,6 +2541,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind         => W_Exception_Declaration,
                    Ada_Node     => Ada_Node,
                    Link         => Link,
+                   Checked      => True,
                    ED_Name      => Name,
                    ED_Parameter => Parameter));
    end New_Exception_Declaration;
@@ -2435,6 +2561,7 @@ package body Why.Atree.Builders is
         (Why_Node'(Kind     => W_Logic_Declaration,
                    Ada_Node => Ada_Node,
                    Link     => Link,
+                   Checked  => True,
                    LD_Decl  => Decl));
    end New_Logic_Declaration;
 

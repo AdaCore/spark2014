@@ -179,7 +179,14 @@ package body Xtree_Tables is
                         Is_List        => False,
                         Maybe_Null     => False);
       Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
+      SF           : constant Special_Field_Kind :=
+                       To_Special_Field_Kind (Field_Name);
    begin
+      if SF /= Special_Field_None then
+         Special_Fields (SF) := FI;
+         return;
+      end if;
+
       if Multiplicity = "Id"
         or else Multiplicity = "OId"
         or else Multiplicity = "List"
@@ -210,6 +217,7 @@ package body Xtree_Tables is
       else
          FI.Id_Type := new Wide_String'(FI.Field_Type.all);
       end if;
+
       NI.Fields.Append (FI);
       NI.Max_Field_Name_Length :=
         Natural'Max (NI.Max_Field_Name_Length,
@@ -338,6 +346,35 @@ package body Xtree_Tables is
 
       return Name (Stop + 1 .. Name'Last);
    end Suffix;
+
+   ---------------------------
+   -- To_Special_Field_Kind --
+   ---------------------------
+
+   function To_Special_Field_Kind
+     (Name : Wide_String)
+     return Special_Field_Kind is
+   begin
+      return Special_Field_Kind'Wide_Value (Special_Field_Prefix & Name);
+   exception
+      when Constraint_Error =>
+         return Special_Field_None;
+   end To_Special_Field_Kind;
+
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (Kind : Special_Field_Kind) return Wide_String is
+      Enum_Literal_Name : constant String :=
+                            Special_Field_Kind'Image (Kind);
+      Result            : String :=
+                            Enum_Literal_Name (Special_Field_Prefix'Last + 1
+                                               .. Enum_Literal_Name'Last);
+   begin
+      To_Mixed (Result);
+      return To_Wide_String (Result);
+   end To_String;
 
    -----------------------
    -- Traversal_Post_Op --

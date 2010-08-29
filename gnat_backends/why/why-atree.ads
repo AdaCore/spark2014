@@ -77,6 +77,12 @@ package Why.Atree is
       --  field of this structure should be explicited in the syntax given
       --  in Why.Sinfo.
 
+      -------------------
+      -- Common Fields --
+      -------------------
+
+      --  Fields that are shared amongst all node kinds
+
       Ada_Node : Node_Id;
       --  Id of the corresponding node in the Ada tree, if any.
       --  The type is Sinfo.Node_Id.
@@ -84,6 +90,24 @@ package Why.Atree is
       Link : Why_Node_Id;
       --  For a node, points to the Parent. For a list, points
       --  to the list header.
+
+      --------------------
+      -- Special Fields --
+      --------------------
+
+      --  Fields that have some specific in xtree; any field added here
+      --  should also be added in xtree_tables. They are meant to be used
+      --  for flags that records some properties on the syntax tree, and
+      --  that are updated implicitely by operations on node ids (mutators,
+      --  accessors, builders, traversals).
+
+      Checked : Boolean;
+      --  True if the sub-tree whose root is this node represents a valid
+      --  Why syntax tree.
+
+      ------------------
+      -- Variant Part --
+      ------------------
 
       case Kind is
          when W_Unused_At_Start =>

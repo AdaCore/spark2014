@@ -186,6 +186,19 @@ package body Xtree_Builders is
 
       Common_Fields.Fields.Iterate (Print_Record_Component_Association'Access);
 
+      for SF in Special_Fields'Range loop
+         case SF is
+            when Special_Field_Checked =>
+               PL (O, ",");
+               Print_Component_Choice (O, To_String (SF));
+               P (O, "True");
+
+            when others =>
+               --  All special fields should be initialized
+               pragma Assert (False);
+         end case;
+      end loop;
+
       if Has_Variant_Part (Kind) then
          PL (O, ",");
          Variant_Part.Fields.Iterate

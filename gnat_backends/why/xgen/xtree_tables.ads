@@ -30,6 +30,13 @@ package Xtree_Tables is
    --  This package provide an interface to record structural information
    --  about Why syntax trees.
 
+   ----------------------
+   -- Node description --
+   ----------------------
+
+   --  Types that are used to describe syntax nodes and their
+   --  corresponding fields (common, special or in variant part).
+
    type String_Access is access Wide_String;
 
    type Field_Info is record
@@ -81,17 +88,63 @@ package Xtree_Tables is
       --  List of structural information for fields
    end record;
 
+   -------------------
+   -- Common Fields --
+   -------------------
+
+   --  Fields that are shared amongst all node kinds
+
    Common_Fields : Why_Node_Info := (0,
                                      Why_Node_Kind'First,
                                      Why_Node_Kind'Last,
                                      Node_Lists.Empty_List);
-   --  Fields that are shared amongst all node kinds
+   --------------------
+   -- Special Fields --
+   --------------------
+
+   Special_Field_Prefix : constant Wide_String := "Special_Field_";
+   --  String representation of the common prefix of each
+   --  enum literal in Special_Field_Kind.
+
+   type Special_Field_Kind is
+     (Special_Field_None,
+      Special_Field_Checked);
+   --  Lists all special fields. Each literal shall be a
+   --  concatenation of "Special_Field_" with the name of
+   --  the special field in the node record (e.g. Checked).
+   --  The first field (Special_Field_None) is an exception here:
+   --  It does not represent any valid field in the node record,
+   --  but is used to represent a "no match" response in lookups.
+
+   subtype Valid_Special_Field_Kind is Special_Field_Kind range
+     Special_Field_Kind'Succ (Special_Field_Kind'First)
+     .. Special_Field_Kind'Last;
+
+   Special_Fields : array (Valid_Special_Field_Kind) of Field_Info;
+
+   function To_String (Kind : Special_Field_Kind) return Wide_String;
+   --  Name of the special field in the node record
+
+   function To_Special_Field_Kind
+     (Name : Wide_String)
+     return Special_Field_Kind;
+   --  Given a field name, return the corresponding special field kind;
+   --  and Special_Field_None is there is no corresponding special field
+   --  kind.
+
+   ------------------
+   -- Variant Part --
+   ------------------
 
    subtype Valid_Kind is Why_Node_Kind
      range W_Identifier .. Why_Node_Kind'Last;
 
    Why_Tree_Info : array (Why_Node_Kind) of Why_Node_Info;
    --  Structural info for the variant part of the Why syntax tree
+
+   ----------------
+   -- Operations --
+   ----------------
 
    procedure New_Field
      (NI         : in out Why_Node_Info;
