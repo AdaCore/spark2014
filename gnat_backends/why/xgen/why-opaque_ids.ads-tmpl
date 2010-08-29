@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                    W H Y - U N C H E C K E D _ I D S                     --
+--                       W H Y - O P A Q U E _ I D S                        --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -26,15 +26,17 @@
 
 with Why.Types; use Why.Types;
 
-package Why.Unchecked_Ids is
+package Why.Opaque_Ids is
    --  Declarations of subtypes of Why_Node_Id; one per node kind.
 
    --  A comprehensive description of the different node kinds may be
-   --  found in Why.Ids. This package only defines unchecked ids;
-   --  In a nutshell, those are the same as regular ids, except for the
-   --  subtype predicate which only assert the corresponding node is
-   --  kind-valid.
+   --  found in Why.Ids. This package only defines opaque ids;
+   --  In a nutshell, those are the same as regular ids, except that they
+   --  have no subtype predicate. These should only be needed in
+   --  Why.Atree; this package cannot depend on Why.Ids without a
+   --  circular dependancy. At any other location than Why.Atree,
+   --  regular ids or unchecked ids should be used.
 
-   _@Declare_Unchecked_Ids@_
+   _@Declare_Opaque_Ids@_
 
-end Why.Unchecked_Ids;
+end Why.Opaque_Ids;

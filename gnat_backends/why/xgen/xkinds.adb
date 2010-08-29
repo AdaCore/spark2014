@@ -87,16 +87,20 @@ procedure Xkinds is
    procedure Print_Subtypes (O : in out Output_Record);
    --  Expand the kind-specific subtype declarations of Why_Node_Id
    --  and Why_Node_List. To each subtypes a predicate is associated
-   --  that assert that the corresponding element in the node table (or
-   --  node list) is of the given Kind (e.g. a W_Type_Id always point to an
-   --  element of kind W_Type in the node table; and W_Type_List contains only
-   --  elements of kind W_Type).
+   --  that assert that the corresponding element in the node table is
+   --  the root of a valid Why syntax tree.
    --  Same thing for classes.
 
    procedure Print_Unchecked_Subtypes (O : in out Output_Record);
+   --  Same as Print_Subtypes, except that the expanded subtype will only
+   --  be checked for kind-validity. e.g. a W_Type_Id always point to an
+   --  element of kind W_Type in the node table; and W_Type_List contains only
+   --  elements of kind W_Type.
+
+   procedure Print_Opaque_Subtypes (O : in out Output_Record);
    --  Same as Print_Subtypes, except that the expanded subtype declarations
-   --  will have no subtype predicate; (e.g. W_Type_Unchecked_Id and
-   --  W_Type_Unchecked_List for kind W_Type).
+   --  will have no subtype predicate; (e.g. W_Type_Opaque_Id and
+   --  W_Type_Opaque_List for kind W_Type).
 
    -------------------
    -- Pre_Operation --
@@ -268,7 +272,8 @@ procedure Xkinds is
             NL (O);
             PL (O, "  with Predicate =>");
             PL (O, "  (Get_Kind (" & S.all & "_Id) = ");
-            PL (O, "   " & S.all & ");");
+            PL (O, "   " & S.all);
+            PL (O, "   and then Get_Node (" & S.all & ").Checked);");
             NL (O);
          else
             PL (O, ";");
@@ -313,20 +318,20 @@ procedure Xkinds is
       Classes.Iterate (Process_One_Class_Kind'Access);
    end Print_Subtypes;
 
-   ------------------------------
-   -- Print_Unchecked_Subtypes --
-   ------------------------------
+   --------------------
+   -- Print_Subtypes --
+   --------------------
 
    procedure Print_Unchecked_Subtypes (O : in out Output_Record) is
       use String_Lists;
 
       procedure Process_One_Node_Kind (Position : Cursor);
-      --  Same as Print_Unchecked_Subtypes, but only for the kind
-      --  pointed by Position
+      --  Same as Print_Subtypes, but only for the kind
+      --  pointed by Position.
 
       procedure Process_One_Class_Kind (Position : Cursor);
-      --  Same as Print_Unchecked_Subtypes, but only for the class
-      --  pointed by Position
+      --  Same as Print_Subtypes, but only for the class
+      --  pointed by Position.
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -335,13 +340,47 @@ procedure Xkinds is
       procedure Process_One_Class_Kind (Position : Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
-         NL (O);
-         PL (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id;");
-         NL (O);
+         P (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (Get_Kind (" & S.all & "_Unchecked_Id)");
+            PL (O, "   in " & S.all & "'Range));");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
+         P (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (" & S.all & "_Unchecked_Id = W_Empty");
+            PL (O, "   or else (Get_Kind (" & S.all & "_Unchecked_Id)");
+            PL (O, "            in " & S.all & "'Range));");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
          PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
          NL (O);
+
          PL (O, "subtype " & S.all & "_Unchecked_OList is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Classes.Last then
             NL (O);
@@ -355,13 +394,46 @@ procedure Xkinds is
       procedure Process_One_Node_Kind (Position : Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         PL (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id;");
-         NL (O);
-         PL (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id;");
-         NL (O);
+         P (O, "subtype " & S.all & "_Unchecked_Id is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (Get_Kind (" & S.all & "Unchecked_Id) = ");
+            PL (O, "   " & S.all & ");");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
+         P (O, "subtype " & S.all & "_Unchecked_OId is Why_Node_Id");
+
+         if False then
+            --  Disable generation of subtype predicates as they are not
+            --  supported yet.
+
+            NL (O);
+            PL (O, "  with Predicate =>");
+            PL (O, "  (Option (" & S.all & "_Unchecked_Id,");
+            PL (O, "           " & S.all & "));");
+            NL (O);
+         else
+            PL (O, ";");
+            PL (O, "--  ??? subtype predicate not generated yet");
+            NL (O);
+         end if;
+
          PL (O, "subtype " & S.all & "_Unchecked_List is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
          NL (O);
+
          PL (O, "subtype " & S.all & "_Unchecked_OList is Why_Node_List;");
+         PL (O, "--  ??? subtype predicate not generated yet");
 
          if Position /= Kinds.Last then
             NL (O);
@@ -375,6 +447,69 @@ procedure Xkinds is
       NL (O);
       Classes.Iterate (Process_One_Class_Kind'Access);
    end Print_Unchecked_Subtypes;
+
+   ---------------------------
+   -- Print_Opaque_Subtypes --
+   ---------------------------
+
+   procedure Print_Opaque_Subtypes (O : in out Output_Record) is
+      use String_Lists;
+
+      procedure Process_One_Node_Kind (Position : Cursor);
+      --  Same as Print_Opaque_Subtypes, but only for the kind
+      --  pointed by Position
+
+      procedure Process_One_Class_Kind (Position : Cursor);
+      --  Same as Print_Opaque_Subtypes, but only for the class
+      --  pointed by Position
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Opaque_Id is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_OId is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_List is Why_Node_List;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_OList is Why_Node_List;");
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+      ---------------------------
+      -- Process_One_Node_Kind --
+      ---------------------------
+
+      procedure Process_One_Node_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         PL (O, "subtype " & S.all & "_Opaque_Id is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_OId is Why_Node_Id;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_List is Why_Node_List;");
+         NL (O);
+         PL (O, "subtype " & S.all & "_Opaque_OList is Why_Node_List;");
+
+         if Position /= Kinds.Last then
+            NL (O);
+         end if;
+      end Process_One_Node_Kind;
+
+   --  Start of processing for Print_Opaque_Subtypes
+
+   begin
+      Kinds.Iterate (Process_One_Node_Kind'Access);
+      NL (O);
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Opaque_Subtypes;
 
    Control : Traverse_Control := Continue;
    State   : Traversal_State := Before_Why_Node_Kind;
@@ -410,7 +545,9 @@ begin
 
    Add ("Declare_Node_Ids", Print_Subtypes'Access);
    Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
+   Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
 
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");
+   Process ("why-opaque_ids.ads");
 end Xkinds;

@@ -197,7 +197,7 @@ package body Xtree_Tables is
                           Strip_Suffix (FI.Field_Type.all);
             Checking  : constant Wide_String := Suffix (Node_Kind);
          begin
-            if Checking = "Unchecked" then
+            if Checking = "Opaque" then
                FI.Is_Why_Id := True;
 
                if Multiplicity = "List" or else Multiplicity = "OList" then

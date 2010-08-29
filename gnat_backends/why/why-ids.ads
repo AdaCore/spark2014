@@ -32,6 +32,30 @@ with Why.Types;        use Why.Types;
 package Why.Ids is
    --  Declarations of subtypes of Why_Node_Id; one per node kind.
 
+   --  A node in a Why syntax tree may have two properties of interest for this
+   --  package:
+   --  * it can be valid: in which case it represents the root of a valid Why
+   --  syntax tree.
+   --  * it can be kind-valid: much weaker constraint that only states
+   --  that this node has a kind that corresponds to the Id subtype;
+   --  if it is an option, it can also be empty.
+   --
+   --  Two these two properties corresponds three 3 classes of ids:
+   --  * opaque ids: may not be kind-valid; no builders, accessors or mutators;
+   --  * unchecked ids:  may not be valid, but are kind-valid; builders with no
+   --    params; mutators and accessors;
+   --  * "regular" ids (no prefix): valid; two builders, one for which all
+   --    children must be specified, and a second for which optional children
+   --    are set to Why_Empty; mutators and accessors.
+   --
+   --  Opaque ids may only be used in Why.Atree; this package cannot depend
+   --  use regular ids without introducing a circular dependancy. Unchecked
+   --  ids may be practical for building a node before its fields nodes are
+   --  known.
+   --
+   --  This package only defines regular ids; other ids are in
+   --  Why.Unchecked_Ids and Why.Opaque_Ids.
+
    subtype W_Unused_At_Start_Id is Why_Node_Id;
    --  ??? subtype predicate not generated yet
 

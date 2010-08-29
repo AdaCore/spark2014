@@ -8,6 +8,7 @@ GENERATED_FILES= \
  why-atree-traversal_stub.ads \
  why-atree-traversal_stub.adb \
  why-ids.ads                  \
+ why-opaque_ids.ads           \
  why-unchecked_ids.ads
 
 all: $(GENERATED_FILES)
@@ -42,6 +43,9 @@ why-atree-traversal_stub.adb: xtree why-atree.adt why-atree-traversal_stub.adb-t
 	./xtree
 
 why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl
+	./xkinds
+
+why-opaque_ids.ads: xkinds why-sinfo.adt why-opaque_ids.ads-tmpl
 	./xkinds
 
 why-unchecked_ids.ads: xkinds why-sinfo.adt why-unchecked_ids.ads-tmpl
