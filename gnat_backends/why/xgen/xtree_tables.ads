@@ -199,6 +199,7 @@ package Xtree_Tables is
 
    function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    function Id_Type_Name (FI : Field_Info) return Wide_String;
+   function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the kind-specific id subtype name
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;

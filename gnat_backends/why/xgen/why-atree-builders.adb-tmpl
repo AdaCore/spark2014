@@ -28,4 +28,6 @@ package body Why.Atree.Builders is
 
    _@Implement_Builders@_
 
+   _@Implement_Unchecked_Builders@_
+
 end Why.Atree.Builders;

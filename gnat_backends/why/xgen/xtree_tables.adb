@@ -393,4 +393,13 @@ package body Xtree_Tables is
       return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Pre_Op";
    end Traversal_Pre_Op;
 
+   ----------------------------
+   -- Unchecked_Id_Type_Name --
+   ----------------------------
+
+   function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String is
+   begin
+      return Mixed_Case_Name (Kind) & "_Unchecked_Id";
+   end Unchecked_Id_Type_Name;
+
 end Xtree_Tables;

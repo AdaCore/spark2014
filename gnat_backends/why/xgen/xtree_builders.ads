@@ -34,4 +34,10 @@ package Xtree_Builders is
    procedure Print_Builder_Bodies  (O : in out Output_Record);
    --  Print builder bodies for Why nodes
 
+   procedure Print_Unchecked_Builder_Declarations  (O : in out Output_Record);
+   --  Print builder declarations for unchecked Why nodes
+
+   procedure Print_Unchecked_Builder_Bodies  (O : in out Output_Record);
+   --  Print builder bodies for unchecked Why nodes
+
 end Xtree_Builders;

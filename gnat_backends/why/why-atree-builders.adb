@@ -2565,4 +2565,2102 @@ package body Why.Atree.Builders is
                    LD_Decl  => Decl));
    end New_Logic_Declaration;
 
+   --------------------
+   -- New_Identifier --
+   --------------------
+
+   function New_Identifier
+     (Symbol : Name_Id)
+     return W_Identifier_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Identifier,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   Symbol   => Symbol,
+                   Entity   => Why_Empty));
+   end New_Identifier;
+
+   -------------------
+   -- New_Type_Prop --
+   -------------------
+
+   function New_Type_Prop
+     return W_Type_Prop_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Type_Prop,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Type_Prop;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     return W_Type_Int_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Type_Int,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Type_Int;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     return W_Type_Bool_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Type_Bool,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     return W_Type_Real_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Type_Real,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     return W_Type_Unit_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Type_Unit,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Type_Unit;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     return W_Abstract_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Abstract_Type,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   AT_Name  => Why_Empty));
+   end New_Abstract_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     return W_Generic_Formal_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Generic_Formal_Type,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   GFT_Name => Why_Empty));
+   end New_Generic_Formal_Type;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     return W_Generic_Actual_Type_Chain_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind            => W_Generic_Actual_Type_Chain,
+                   Ada_Node        => Empty,
+                   Link            => Why_Empty,
+                   Checked         => False,
+                   GATC_Type_Chain => New_List,
+                   GATC_Name       => Why_Empty));
+   end New_Generic_Actual_Type_Chain;
+
+   --------------------
+   -- New_Array_Type --
+   --------------------
+
+   function New_Array_Type
+     return W_Array_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind              => W_Array_Type,
+                   Ada_Node          => Empty,
+                   Link              => Why_Empty,
+                   Checked           => False,
+                   AT_Component_Type => Why_Empty));
+   end New_Array_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type
+     return W_Ref_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind            => W_Ref_Type,
+                   Ada_Node        => Empty,
+                   Link            => Why_Empty,
+                   Checked         => False,
+                   RT_Aliased_Type => Why_Empty));
+   end New_Ref_Type;
+
+   ------------------------------
+   -- New_Protected_Value_Type --
+   ------------------------------
+
+   function New_Protected_Value_Type
+     return W_Protected_Value_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Protected_Value_Type,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   PVT_Value_Type => Why_Empty));
+   end New_Protected_Value_Type;
+
+   ------------------------------
+   -- New_Anonymous_Arrow_Type --
+   ------------------------------
+
+   function New_Anonymous_Arrow_Type
+     return W_Anonymous_Arrow_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Anonymous_Arrow_Type,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   AAT_Left  => Why_Empty,
+                   AAT_Right => Why_Empty));
+   end New_Anonymous_Arrow_Type;
+
+   --------------------------
+   -- New_Named_Arrow_Type --
+   --------------------------
+
+   function New_Named_Arrow_Type
+     return W_Named_Arrow_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Named_Arrow_Type,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   NA_Name  => Why_Empty,
+                   NA_Left  => Why_Empty,
+                   NA_Right => Why_Empty));
+   end New_Named_Arrow_Type;
+
+   --------------------------
+   -- New_Computation_Spec --
+   --------------------------
+
+   function New_Computation_Spec
+     return W_Computation_Spec_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind             => W_Computation_Spec,
+                   Ada_Node         => Empty,
+                   Link             => Why_Empty,
+                   Checked          => False,
+                   CS_Precondition  => Why_Empty,
+                   CS_Result_Name   => Why_Empty,
+                   CS_Return_Type   => Why_Empty,
+                   CS_Effects       => Why_Empty,
+                   CS_Postcondition => Why_Empty));
+   end New_Computation_Spec;
+
+   --------------------------
+   -- New_Integer_Constant --
+   --------------------------
+
+   function New_Integer_Constant
+     (Value : Uint)
+     return W_Integer_Constant_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Integer_Constant,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   IC_Value => Value));
+   end New_Integer_Constant;
+
+   -----------------------
+   -- New_Real_Constant --
+   -----------------------
+
+   function New_Real_Constant
+     (Value : Ureal)
+     return W_Real_Constant_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Real_Constant,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   RC_Value => Value));
+   end New_Real_Constant;
+
+   ----------------------
+   -- New_True_Literal --
+   ----------------------
+
+   function New_True_Literal
+     return W_True_Literal_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_True_Literal,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_True_Literal;
+
+   -----------------------
+   -- New_False_Literal --
+   -----------------------
+
+   function New_False_Literal
+     return W_False_Literal_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_False_Literal,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_False_Literal;
+
+   ----------------------
+   -- New_Void_Literal --
+   ----------------------
+
+   function New_Void_Literal
+     return W_Void_Literal_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Void_Literal,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Void_Literal;
+
+   -------------------------
+   -- New_Arith_Operation --
+   -------------------------
+
+   function New_Arith_Operation
+     return W_Arith_Operation_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Arith_Operation,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   AO_Left  => Why_Empty,
+                   AO_Op    => Why_Empty,
+                   AO_Right => Why_Empty));
+   end New_Arith_Operation;
+
+   -----------------------
+   -- New_Negative_Term --
+   -----------------------
+
+   function New_Negative_Term
+     return W_Negative_Term_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Negative_Term,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   NT_Operand => Why_Empty));
+   end New_Negative_Term;
+
+   --------------------------
+   -- New_Label_Identifier --
+   --------------------------
+
+   function New_Label_Identifier
+     return W_Label_Identifier_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Label_Identifier,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   TI_Name  => Why_Empty,
+                   TI_Label => Why_Empty));
+   end New_Label_Identifier;
+
+   -------------------
+   -- New_Operation --
+   -------------------
+
+   function New_Operation
+     return W_Operation_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Operation,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   O_Name       => Why_Empty,
+                   O_Parameters => New_List));
+   end New_Operation;
+
+   --------------------
+   -- New_Named_Term --
+   --------------------
+
+   function New_Named_Term
+     return W_Named_Term_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Named_Term,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   NT_Name  => Why_Empty,
+                   NT_Term  => Why_Empty));
+   end New_Named_Term;
+
+   --------------------------
+   -- New_Conditional_Term --
+   --------------------------
+
+   function New_Conditional_Term
+     return W_Conditional_Term_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Conditional_Term,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   CT_Condition => Why_Empty,
+                   CT_Then_Part => Why_Empty,
+                   CT_Else_Part => Why_Empty));
+   end New_Conditional_Term;
+
+   ----------------------
+   -- New_Binding_Term --
+   ----------------------
+
+   function New_Binding_Term
+     return W_Binding_Term_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Binding_Term,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   BT_Name    => Why_Empty,
+                   BT_Def     => Why_Empty,
+                   BT_Context => Why_Empty));
+   end New_Binding_Term;
+
+   ------------------------
+   -- New_Protected_Term --
+   ------------------------
+
+   function New_Protected_Term
+     return W_Protected_Term_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Protected_Term,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   BT_Term  => Why_Empty));
+   end New_Protected_Term;
+
+   ----------------
+   -- New_Op_Add --
+   ----------------
+
+   function New_Op_Add
+     return W_Op_Add_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Add,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Add;
+
+   ----------------------
+   -- New_Op_Substract --
+   ----------------------
+
+   function New_Op_Substract
+     return W_Op_Substract_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Substract,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Substract;
+
+   ---------------------
+   -- New_Op_Multiply --
+   ---------------------
+
+   function New_Op_Multiply
+     return W_Op_Multiply_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Multiply,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Multiply;
+
+   -------------------
+   -- New_Op_Divide --
+   -------------------
+
+   function New_Op_Divide
+     return W_Op_Divide_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Divide,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Divide;
+
+   -------------------
+   -- New_Op_Modulo --
+   -------------------
+
+   function New_Op_Modulo
+     return W_Op_Modulo_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Modulo,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Modulo;
+
+   ---------------------------
+   -- New_True_Literal_Pred --
+   ---------------------------
+
+   function New_True_Literal_Pred
+     return W_True_Literal_Pred_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_True_Literal_Pred,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_True_Literal_Pred;
+
+   ----------------------------
+   -- New_False_Literal_Pred --
+   ----------------------------
+
+   function New_False_Literal_Pred
+     return W_False_Literal_Pred_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_False_Literal_Pred,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_False_Literal_Pred;
+
+   ------------------------------
+   -- New_Predicate_Identifier --
+   ------------------------------
+
+   function New_Predicate_Identifier
+     return W_Predicate_Identifier_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Predicate_Identifier,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PID_Name => Why_Empty));
+   end New_Predicate_Identifier;
+
+   ----------------------------
+   -- New_Predicate_Instance --
+   ----------------------------
+
+   function New_Predicate_Instance
+     return W_Predicate_Instance_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Predicate_Instance,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   PIN_Name       => Why_Empty,
+                   PIN_Parameters => New_List));
+   end New_Predicate_Instance;
+
+   -----------------------
+   -- New_Related_Terms --
+   -----------------------
+
+   function New_Related_Terms
+     return W_Related_Terms_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Related_Terms,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   RT_Left   => Why_Empty,
+                   RT_Op     => Why_Empty,
+                   RT_Right  => Why_Empty,
+                   RT_Op2    => Why_Empty,
+                   RT_Right2 => Why_Empty));
+   end New_Related_Terms;
+
+   ---------------------
+   -- New_Implication --
+   ---------------------
+
+   function New_Implication
+     return W_Implication_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Implication,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   ITOC_Left  => Why_Empty,
+                   ITOC_Right => Why_Empty));
+   end New_Implication;
+
+   ---------------------
+   -- New_Equivalence --
+   ---------------------
+
+   function New_Equivalence
+     return W_Equivalence_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Equivalence,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   ITOC_Left  => Why_Empty,
+                   ITOC_Right => Why_Empty));
+   end New_Equivalence;
+
+   ---------------------
+   -- New_Disjonction --
+   ---------------------
+
+   function New_Disjonction
+     return W_Disjonction_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Disjonction,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   ITOC_Left  => Why_Empty,
+                   ITOC_Right => Why_Empty));
+   end New_Disjonction;
+
+   ---------------------
+   -- New_Conjonction --
+   ---------------------
+
+   function New_Conjonction
+     return W_Conjonction_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Conjonction,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   ITOC_Left  => Why_Empty,
+                   ITOC_Right => Why_Empty));
+   end New_Conjonction;
+
+   ------------------
+   -- New_Negation --
+   ------------------
+
+   function New_Negation
+     return W_Negation_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Negation,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   N_Operand => Why_Empty));
+   end New_Negation;
+
+   --------------------------
+   -- New_Conditional_Pred --
+   --------------------------
+
+   function New_Conditional_Pred
+     return W_Conditional_Pred_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Conditional_Pred,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   CPD_Condition => Why_Empty,
+                   CPD_Then_Part => Why_Empty,
+                   CPD_Else_Part => Why_Empty));
+   end New_Conditional_Pred;
+
+   ----------------------
+   -- New_Binding_Pred --
+   ----------------------
+
+   function New_Binding_Pred
+     return W_Binding_Pred_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Binding_Pred,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   BPD_Name    => Why_Empty,
+                   BPD_Def     => Why_Empty,
+                   BPD_Context => Why_Empty));
+   end New_Binding_Pred;
+
+   ---------------------------
+   -- New_Universal_Quantif --
+   ---------------------------
+
+   function New_Universal_Quantif
+     return W_Universal_Quantif_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Universal_Quantif,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   UQ_Variables => New_List,
+                   UQ_Var_Type  => Why_Empty,
+                   UQ_Triggers  => Why_Empty,
+                   UQ_Pred      => Why_Empty));
+   end New_Universal_Quantif;
+
+   -----------------------------
+   -- New_Existential_Quantif --
+   -----------------------------
+
+   function New_Existential_Quantif
+     return W_Existential_Quantif_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Existential_Quantif,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   EQ_Variables => New_List,
+                   EQ_Var_Type  => Why_Empty,
+                   EQ_Pred      => Why_Empty));
+   end New_Existential_Quantif;
+
+   -------------------------
+   -- New_Named_Predicate --
+   -------------------------
+
+   function New_Named_Predicate
+     return W_Named_Predicate_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Named_Predicate,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   NP_Name  => Why_Empty,
+                   NP_Pred  => Why_Empty));
+   end New_Named_Predicate;
+
+   -----------------------------
+   -- New_Protected_Predicate --
+   -----------------------------
+
+   function New_Protected_Predicate
+     return W_Protected_Predicate_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Protected_Predicate,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PP_Pred  => Why_Empty));
+   end New_Protected_Predicate;
+
+   ------------------
+   -- New_Triggers --
+   ------------------
+
+   function New_Triggers
+     return W_Triggers_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Triggers,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   TRS_Triggers => New_List));
+   end New_Triggers;
+
+   -----------------
+   -- New_Trigger --
+   -----------------
+
+   function New_Trigger
+     return W_Trigger_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Trigger,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   TRI_Terms => New_List));
+   end New_Trigger;
+
+   ----------------
+   -- New_Rel_Eq --
+   ----------------
+
+   function New_Rel_Eq
+     return W_Rel_Eq_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Eq,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Eq;
+
+   ----------------
+   -- New_Rel_Ne --
+   ----------------
+
+   function New_Rel_Ne
+     return W_Rel_Ne_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Ne,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Ne;
+
+   ----------------
+   -- New_Rel_Lt --
+   ----------------
+
+   function New_Rel_Lt
+     return W_Rel_Lt_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Lt,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Lt;
+
+   ----------------
+   -- New_Rel_Le --
+   ----------------
+
+   function New_Rel_Le
+     return W_Rel_Le_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Le,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Le;
+
+   ----------------
+   -- New_Rel_Gt --
+   ----------------
+
+   function New_Rel_Gt
+     return W_Rel_Gt_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Gt,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Gt;
+
+   ----------------
+   -- New_Rel_Ge --
+   ----------------
+
+   function New_Rel_Ge
+     return W_Rel_Ge_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Rel_Ge,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Rel_Ge;
+
+   --------------
+   -- New_Type --
+   --------------
+
+   function New_Type
+     return W_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind              => W_Type,
+                   Ada_Node          => Empty,
+                   Link              => Why_Empty,
+                   Checked           => False,
+                   T_External        => Why_Empty,
+                   T_Type_Parameters => New_List,
+                   T_Name            => Why_Empty));
+   end New_Type;
+
+   ---------------
+   -- New_Logic --
+   ---------------
+
+   function New_Logic
+     return W_Logic_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Logic,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   L_External   => Why_Empty,
+                   L_Names      => New_List,
+                   L_Logic_Type => Why_Empty));
+   end New_Logic;
+
+   ------------------
+   -- New_Function --
+   ------------------
+
+   function New_Function
+     return W_Function_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Function,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   F_Name        => Why_Empty,
+                   F_Binders     => New_List,
+                   F_Return_Type => Why_Empty,
+                   F_Def         => Why_Empty));
+   end New_Function;
+
+   ------------------------------
+   -- New_Predicate_Definition --
+   ------------------------------
+
+   function New_Predicate_Definition
+     return W_Predicate_Definition_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Predicate_Definition,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   P_Name    => Why_Empty,
+                   P_Binders => New_List,
+                   P_Def     => Why_Empty));
+   end New_Predicate_Definition;
+
+   -------------------
+   -- New_Inductive --
+   -------------------
+
+   function New_Inductive
+     return W_Inductive_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Inductive,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   I_Name       => Why_Empty,
+                   I_Logic_Type => Why_Empty,
+                   I_Def        => New_List));
+   end New_Inductive;
+
+   ---------------
+   -- New_Axiom --
+   ---------------
+
+   function New_Axiom
+     return W_Axiom_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Axiom,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   AX_Name  => Why_Empty,
+                   AX_Def   => Why_Empty));
+   end New_Axiom;
+
+   --------------
+   -- New_Goal --
+   --------------
+
+   function New_Goal
+     return W_Goal_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Goal,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   G_Name   => Why_Empty,
+                   G_Def    => Why_Empty));
+   end New_Goal;
+
+   ------------------
+   -- New_External --
+   ------------------
+
+   function New_External
+     return W_External_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_External,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_External;
+
+   --------------------
+   -- New_Logic_Type --
+   --------------------
+
+   function New_Logic_Type
+     return W_Logic_Type_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Logic_Type,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   LT_Arg_Types   => New_List,
+                   LT_Return_Type => New_List));
+   end New_Logic_Type;
+
+   ----------------------
+   -- New_Logic_Binder --
+   ----------------------
+
+   function New_Logic_Binder
+     return W_Logic_Binder_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Logic_Binder,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   LB_Name       => Why_Empty,
+                   LB_Param_Type => Why_Empty));
+   end New_Logic_Binder;
+
+   ------------------------
+   -- New_Inductive_Case --
+   ------------------------
+
+   function New_Inductive_Case
+     return W_Inductive_Case_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Inductive_Case,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   IC_Name  => Why_Empty,
+                   IC_Pred  => Why_Empty));
+   end New_Inductive_Case;
+
+   -----------------
+   -- New_Effects --
+   -----------------
+
+   function New_Effects
+     return W_Effects_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Effects,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   E_Reads  => New_List,
+                   E_Writes => New_List,
+                   E_Raises => New_List));
+   end New_Effects;
+
+   ----------------------
+   -- New_Precondition --
+   ----------------------
+
+   function New_Precondition
+     return W_Precondition_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Precondition,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   PRE_Assertion => Why_Empty));
+   end New_Precondition;
+
+   -----------------------
+   -- New_Postcondition --
+   -----------------------
+
+   function New_Postcondition
+     return W_Postcondition_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Postcondition,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   POST_Assertion => Why_Empty,
+                   POST_Handlers  => New_List));
+   end New_Postcondition;
+
+   -----------------------
+   -- New_Exn_Condition --
+   -----------------------
+
+   function New_Exn_Condition
+     return W_Exn_Condition_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Exn_Condition,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   EC_Exn_Case  => Why_Empty,
+                   EC_Assertion => Why_Empty));
+   end New_Exn_Condition;
+
+   -------------------
+   -- New_Assertion --
+   -------------------
+
+   function New_Assertion
+     return W_Assertion_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Assertion,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   A_Pred   => Why_Empty,
+                   A_As     => Why_Empty));
+   end New_Assertion;
+
+   -----------------------
+   -- New_Prog_Constant --
+   -----------------------
+
+   function New_Prog_Constant
+     return W_Prog_Constant_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Prog_Constant,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PC_Def   => Why_Empty));
+   end New_Prog_Constant;
+
+   -------------------------
+   -- New_Prog_Identifier --
+   -------------------------
+
+   function New_Prog_Identifier
+     return W_Prog_Identifier_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Prog_Identifier,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PI_Def   => Why_Empty));
+   end New_Prog_Identifier;
+
+   ---------------
+   -- New_Deref --
+   ---------------
+
+   function New_Deref
+     return W_Deref_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Deref,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   D_Ref    => Why_Empty));
+   end New_Deref;
+
+   --------------------
+   -- New_Assignment --
+   --------------------
+
+   function New_Assignment
+     return W_Assignment_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Assignment,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   A_Name   => Why_Empty,
+                   A_Value  => Why_Empty));
+   end New_Assignment;
+
+   ----------------------
+   -- New_Array_Access --
+   ----------------------
+
+   function New_Array_Access
+     return W_Array_Access_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Array_Access,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   AA_Name  => Why_Empty,
+                   AA_Index => Why_Empty));
+   end New_Array_Access;
+
+   ----------------------
+   -- New_Array_Update --
+   ----------------------
+
+   function New_Array_Update
+     return W_Array_Update_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Array_Update,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   AU_Name  => Why_Empty,
+                   AU_Index => Why_Empty,
+                   AU_Value => Why_Empty));
+   end New_Array_Update;
+
+   --------------------
+   -- New_Infix_Call --
+   --------------------
+
+   function New_Infix_Call
+     return W_Infix_Call_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Infix_Call,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   IC_Left  => Why_Empty,
+                   IC_Infix => Why_Empty,
+                   IC_Right => Why_Empty));
+   end New_Infix_Call;
+
+   ---------------------
+   -- New_Prefix_Call --
+   ---------------------
+
+   function New_Prefix_Call
+     return W_Prefix_Call_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Prefix_Call,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   PC_Prefix  => Why_Empty,
+                   PC_Operand => Why_Empty));
+   end New_Prefix_Call;
+
+   ----------------------
+   -- New_Binding_Prog --
+   ----------------------
+
+   function New_Binding_Prog
+     return W_Binding_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Binding_Prog,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   BPG_Name    => Why_Empty,
+                   BPG_Def     => Why_Empty,
+                   BPG_Context => Why_Empty));
+   end New_Binding_Prog;
+
+   ---------------------
+   -- New_Binding_Ref --
+   ---------------------
+
+   function New_Binding_Ref
+     return W_Binding_Ref_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Binding_Ref,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   BPG_Name    => Why_Empty,
+                   BPG_Def     => Why_Empty,
+                   BPG_Context => Why_Empty));
+   end New_Binding_Ref;
+
+   --------------------------
+   -- New_Conditional_Prog --
+   --------------------------
+
+   function New_Conditional_Prog
+     return W_Conditional_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Conditional_Prog,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   CPG_Condition => Why_Empty,
+                   CPG_Then_Part => Why_Empty,
+                   CPG_Else_Part => Why_Empty));
+   end New_Conditional_Prog;
+
+   --------------------
+   -- New_While_Loop --
+   --------------------
+
+   function New_While_Loop
+     return W_While_Loop_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind            => W_While_Loop,
+                   Ada_Node        => Empty,
+                   Link            => Why_Empty,
+                   Checked         => False,
+                   WL_Condition    => Why_Empty,
+                   WL_Annotation   => Why_Empty,
+                   WL_Loop_Content => Why_Empty));
+   end New_While_Loop;
+
+   ----------------------------
+   -- New_Statement_Sequence --
+   ----------------------------
+
+   function New_Statement_Sequence
+     return W_Statement_Sequence_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Statement_Sequence,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   SS_Statements => New_List));
+   end New_Statement_Sequence;
+
+   ---------------
+   -- New_Label --
+   ---------------
+
+   function New_Label
+     return W_Label_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Label,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   L_Name   => Why_Empty,
+                   L_Def    => Why_Empty));
+   end New_Label;
+
+   ----------------
+   -- New_Assert --
+   ----------------
+
+   function New_Assert
+     return W_Assert_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind          => W_Assert,
+                   Ada_Node      => Empty,
+                   Link          => Why_Empty,
+                   Checked       => False,
+                   AS_Assertions => New_List,
+                   AS_Prog       => Why_Empty));
+   end New_Assert;
+
+   ------------------------
+   -- New_Post_Assertion --
+   ------------------------
+
+   function New_Post_Assertion
+     return W_Post_Assertion_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Post_Assertion,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PA_Prog  => Why_Empty,
+                   PA_Post  => Why_Empty));
+   end New_Post_Assertion;
+
+   --------------------------
+   -- New_Opaque_Assertion --
+   --------------------------
+
+   function New_Opaque_Assertion
+     return W_Opaque_Assertion_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Opaque_Assertion,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PA_Prog  => Why_Empty,
+                   PA_Post  => Why_Empty));
+   end New_Opaque_Assertion;
+
+   -----------------
+   -- New_Fun_Def --
+   -----------------
+
+   function New_Fun_Def
+     return W_Fun_Def_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Fun_Def,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   FD_Binders => Why_Empty,
+                   FD_Def     => Why_Empty));
+   end New_Fun_Def;
+
+   ---------------------
+   -- New_Binding_Fun --
+   ---------------------
+
+   function New_Binding_Fun
+     return W_Binding_Fun_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Binding_Fun,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   BF_Name    => Why_Empty,
+                   BF_Binders => Why_Empty,
+                   BF_Def     => Why_Empty,
+                   BF_Context => Why_Empty));
+   end New_Binding_Fun;
+
+   ---------------------
+   -- New_Binding_Rec --
+   ---------------------
+
+   function New_Binding_Rec
+     return W_Binding_Rec_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Binding_Rec,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   BR_Recfun  => Why_Empty,
+                   BR_Context => Why_Empty));
+   end New_Binding_Rec;
+
+   -----------------------
+   -- New_Prog_Sequence --
+   -----------------------
+
+   function New_Prog_Sequence
+     return W_Prog_Sequence_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Prog_Sequence,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   PS_Progs => New_List));
+   end New_Prog_Sequence;
+
+   -------------------------
+   -- New_Raise_Statement --
+   -------------------------
+
+   function New_Raise_Statement
+     return W_Raise_Statement_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Raise_Statement,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   RS_Name     => Why_Empty,
+                   RS_Exn_Type => Why_Empty));
+   end New_Raise_Statement;
+
+   -----------------------------------------
+   -- New_Raise_Statement_With_Parameters --
+   -----------------------------------------
+
+   function New_Raise_Statement_With_Parameters
+     return W_Raise_Statement_With_Parameters_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Raise_Statement_With_Parameters,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   RSWP_Name      => Why_Empty,
+                   RSWP_Parameter => Why_Empty,
+                   RSWP_Exn_Type  => Why_Empty));
+   end New_Raise_Statement_With_Parameters;
+
+   -------------------
+   -- New_Try_Block --
+   -------------------
+
+   function New_Try_Block
+     return W_Try_Block_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Try_Block,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   TB_Prog    => Why_Empty,
+                   TB_Handler => New_List));
+   end New_Try_Block;
+
+   --------------------------
+   -- New_Unreachable_Code --
+   --------------------------
+
+   function New_Unreachable_Code
+     return W_Unreachable_Code_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Unreachable_Code,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   UC_Exn_Type => Why_Empty));
+   end New_Unreachable_Code;
+
+   ---------------------
+   -- New_Begin_Block --
+   ---------------------
+
+   function New_Begin_Block
+     return W_Begin_Block_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Begin_Block,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   BB_Prog  => Why_Empty));
+   end New_Begin_Block;
+
+   ------------------------
+   -- New_Protected_Prog --
+   ------------------------
+
+   function New_Protected_Prog
+     return W_Protected_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Protected_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   BB_Prog  => Why_Empty));
+   end New_Protected_Prog;
+
+   ---------------------
+   -- New_Op_Add_Prog --
+   ---------------------
+
+   function New_Op_Add_Prog
+     return W_Op_Add_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Add_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Add_Prog;
+
+   ---------------------------
+   -- New_Op_Substract_Prog --
+   ---------------------------
+
+   function New_Op_Substract_Prog
+     return W_Op_Substract_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Substract_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Substract_Prog;
+
+   --------------------------
+   -- New_Op_Multiply_Prog --
+   --------------------------
+
+   function New_Op_Multiply_Prog
+     return W_Op_Multiply_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Multiply_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Multiply_Prog;
+
+   ------------------------
+   -- New_Op_Divide_Prog --
+   ------------------------
+
+   function New_Op_Divide_Prog
+     return W_Op_Divide_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Divide_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Divide_Prog;
+
+   ---------------------
+   -- New_Op_Mod_Prog --
+   ---------------------
+
+   function New_Op_Mod_Prog
+     return W_Op_Mod_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Mod_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Mod_Prog;
+
+   --------------------
+   -- New_Op_Eq_Prog --
+   --------------------
+
+   function New_Op_Eq_Prog
+     return W_Op_Eq_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Eq_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Eq_Prog;
+
+   --------------------
+   -- New_Op_Ne_Prog --
+   --------------------
+
+   function New_Op_Ne_Prog
+     return W_Op_Ne_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Ne_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Ne_Prog;
+
+   --------------------
+   -- New_Op_Lt_Prog --
+   --------------------
+
+   function New_Op_Lt_Prog
+     return W_Op_Lt_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Lt_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Lt_Prog;
+
+   --------------------
+   -- New_Op_Le_Prog --
+   --------------------
+
+   function New_Op_Le_Prog
+     return W_Op_Le_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Le_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Le_Prog;
+
+   --------------------
+   -- New_Op_Gt_Prog --
+   --------------------
+
+   function New_Op_Gt_Prog
+     return W_Op_Gt_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Gt_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Gt_Prog;
+
+   --------------------
+   -- New_Op_Ge_Prog --
+   --------------------
+
+   function New_Op_Ge_Prog
+     return W_Op_Ge_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Ge_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Ge_Prog;
+
+   -------------------------
+   -- New_Op_Or_Else_Prog --
+   -------------------------
+
+   function New_Op_Or_Else_Prog
+     return W_Op_Or_Else_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Or_Else_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Or_Else_Prog;
+
+   --------------------------
+   -- New_Op_And_Then_Prog --
+   --------------------------
+
+   function New_Op_And_Then_Prog
+     return W_Op_And_Then_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_And_Then_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_And_Then_Prog;
+
+   -----------------------
+   -- New_Op_Minus_Prog --
+   -----------------------
+
+   function New_Op_Minus_Prog
+     return W_Op_Minus_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Minus_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Minus_Prog;
+
+   ---------------------
+   -- New_Op_Not_Prog --
+   ---------------------
+
+   function New_Op_Not_Prog
+     return W_Op_Not_Prog_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Op_Not_Prog,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False));
+   end New_Op_Not_Prog;
+
+   -----------------
+   -- New_Binders --
+   -----------------
+
+   function New_Binders
+     return W_Binders_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Binders,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   BS_Binders => New_List));
+   end New_Binders;
+
+   ----------------
+   -- New_Binder --
+   ----------------
+
+   function New_Binder
+     return W_Binder_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Binder,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   B_Names    => New_List,
+                   B_Arg_Type => Why_Empty));
+   end New_Binder;
+
+   ----------------
+   -- New_Recfun --
+   ----------------
+
+   function New_Recfun
+     return W_Recfun_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_Recfun,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   RF_Name        => Why_Empty,
+                   RF_Binders     => Why_Empty,
+                   RF_Return_Type => Why_Empty,
+                   RF_Variant     => Why_Empty,
+                   RF_Def         => Why_Empty));
+   end New_Recfun;
+
+   --------------------
+   -- New_Loop_Annot --
+   --------------------
+
+   function New_Loop_Annot
+     return W_Loop_Annot_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Loop_Annot,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   LA_Invariant => Why_Empty,
+                   LA_Variant   => Why_Empty));
+   end New_Loop_Annot;
+
+   ----------------
+   -- New_Wf_Arg --
+   ----------------
+
+   function New_Wf_Arg
+     return W_Wf_Arg_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind      => W_Wf_Arg,
+                   Ada_Node  => Empty,
+                   Link      => Why_Empty,
+                   Checked   => False,
+                   WA_Def    => Why_Empty,
+                   WA_For_Id => Why_Empty));
+   end New_Wf_Arg;
+
+   -----------------
+   -- New_Handler --
+   -----------------
+
+   function New_Handler
+     return W_Handler_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind        => W_Handler,
+                   Ada_Node    => Empty,
+                   Link        => Why_Empty,
+                   Checked     => False,
+                   H_Name      => Why_Empty,
+                   H_Parameter => Why_Empty,
+                   H_Def       => Why_Empty));
+   end New_Handler;
+
+   --------------
+   -- New_File --
+   --------------
+
+   function New_File
+     return W_File_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind           => W_File,
+                   Ada_Node       => Empty,
+                   Link           => Why_Empty,
+                   Checked        => False,
+                   F_Declarations => New_List));
+   end New_File;
+
+   ------------------------
+   -- New_Global_Binding --
+   ------------------------
+
+   function New_Global_Binding
+     return W_Global_Binding_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind       => W_Global_Binding,
+                   Ada_Node   => Empty,
+                   Link       => Why_Empty,
+                   Checked    => False,
+                   GB_Name    => Why_Empty,
+                   GB_Binders => Why_Empty,
+                   GB_Def     => Why_Empty));
+   end New_Global_Binding;
+
+   ----------------------------
+   -- New_Global_Rec_Binding --
+   ----------------------------
+
+   function New_Global_Rec_Binding
+     return W_Global_Rec_Binding_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Global_Rec_Binding,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   GRB_Name => Why_Empty));
+   end New_Global_Rec_Binding;
+
+   -------------------------------
+   -- New_Parameter_Declaration --
+   -------------------------------
+
+   function New_Parameter_Declaration
+     return W_Parameter_Declaration_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind              => W_Parameter_Declaration,
+                   Ada_Node          => Empty,
+                   Link              => Why_Empty,
+                   Checked           => False,
+                   PD_External       => Why_Empty,
+                   PD_Names          => New_List,
+                   PD_Parameter_Type => Why_Empty));
+   end New_Parameter_Declaration;
+
+   -------------------------------
+   -- New_Exception_Declaration --
+   -------------------------------
+
+   function New_Exception_Declaration
+     return W_Exception_Declaration_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind         => W_Exception_Declaration,
+                   Ada_Node     => Empty,
+                   Link         => Why_Empty,
+                   Checked      => False,
+                   ED_Name      => Why_Empty,
+                   ED_Parameter => Why_Empty));
+   end New_Exception_Declaration;
+
+   ---------------------------
+   -- New_Logic_Declaration --
+   ---------------------------
+
+   function New_Logic_Declaration
+     return W_Logic_Declaration_Unchecked_Id
+   is
+   begin
+      return New_Why_Node_Id
+        (Why_Node'(Kind     => W_Logic_Declaration,
+                   Ada_Node => Empty,
+                   Link     => Why_Empty,
+                   Checked  => False,
+                   LD_Decl  => Why_Empty));
+   end New_Logic_Declaration;
+
 end Why.Atree.Builders;
