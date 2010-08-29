@@ -105,7 +105,6 @@ package body Xtree_Tables is
    end Id_Type_Name;
 
    function Id_Type_Name (FI : Field_Info) return Wide_String is
-      Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
    begin
       return FI.Id_Type.all;
    end Id_Type_Name;
