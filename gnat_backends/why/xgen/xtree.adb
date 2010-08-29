@@ -279,6 +279,7 @@ begin
         Print_Traversal_Op_Stub_Declarations'Access);
    Add ("Implement_Traversal_Op_Stubs",
         Print_Traversal_Op_Stub_Bodies'Access);
+
    Process ("why-atree-builders.ads");
    Process ("why-atree-builders.adb");
    Process ("why-atree-accessors.ads");

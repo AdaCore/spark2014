@@ -70,7 +70,7 @@ package body Xtree_Builders is
 
    ------------------------
    -- Print_Builder_Body --
-   -------------------------
+   ------------------------
 
    procedure Print_Builder_Body
      (O    : in out Output_Record;
