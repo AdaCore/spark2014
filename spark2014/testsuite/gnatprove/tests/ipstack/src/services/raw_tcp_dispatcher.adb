@@ -12,11 +12,12 @@ package body RAW_TCP_Dispatcher is
    procedure TCP_Event
      (Ev   : AIP.TCP.TCP_Event_T;
       PCB  : AIP.PCBs.PCB_Id;
-      Cbid : AIP.Callbacks.CBK_Id)
+      Cbid : AIP.Callbacks.CBK_Id;
+      Err  : out AIP.Err_T)
    is
    begin
       if Cbid /= AIP.Callbacks.NOCB then
-         RAW_TCP_Callbacks.To_Hook (Cbid).all (Ev, PCB);
+         RAW_TCP_Callbacks.To_Hook (Cbid).all (Ev, PCB, Err);
       end if;
    end TCP_Event;
 

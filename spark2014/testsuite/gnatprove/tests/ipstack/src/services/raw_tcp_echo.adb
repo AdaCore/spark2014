@@ -7,13 +7,16 @@ with AIP.TCP;
 with AIP.Buffers;
 with AIP.IPaddrs;
 with AIP.PCBs;
-with RAW_TCP_Callbacks;
+
+with System, RAW_TCP_Callbacks;
 
 use type AIP.S8_T, AIP.U8_T, AIP.U16_T, AIP.S32_T;
 
 package body RAW_TCP_Echo
    --#  own ECHO_STATE_POOL is ESP;
 is
+
+   use type System.Address;
 
    ---------------------------
    -- Echo State management --
@@ -58,22 +61,28 @@ is
 
    procedure ECHO_Process_Sent
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id);
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T);
 
    procedure ECHO_Process_Abort
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id);
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T);
 
    procedure ECHO_Process_Poll
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id);
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T);
 
    procedure ECHO_Process_Recv
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id);
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T);
+
    procedure ECHO_Process_Accept
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id);
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T);
 
    ------------------
    -- Init_ES_Pool --
@@ -146,7 +155,7 @@ is
    procedure Echo_Send
      (Pcb : AIP.PCBs.PCB_Id;
       Es  : in out Echo_State)
-   --# global in out ESP; in out AIP.Pools.BUFFER_POOL;
+   --# global in out ESP; in out AIP.Buffers.State;
    is
       Buf : AIP.Buffers.Buffer_Id;
       Plen : AIP.U16_T;
@@ -211,18 +220,18 @@ is
 
    procedure ECHO_Process_Sent
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id)
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T)
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
-
       if Es.Buf /= AIP.Buffers.NOBUF then
          Echo_Send (Pcb, Es);
       elsif Es.Kind = ES_CLOSING then
          Echo_Close (Pcb, Es);
       end if;
-
+      Err := AIP.NOERR;
    end ECHO_Process_Sent;
 
    ------------------------
@@ -231,13 +240,15 @@ is
 
    procedure ECHO_Process_Abort
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id)
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T)
    --# global in out ESP;
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
-      Es.Kind := ES_ABORT;
+      ES_Release (Es);
+      Err := AIP.NOERR;
    end ECHO_Process_Abort;
 
    -----------------------
@@ -246,23 +257,22 @@ is
 
    procedure ECHO_Process_Poll
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id)
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T)
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
    begin
-
-      --  if Sid = AIP.NULID then
-      --    AIP.TCP.TCP_Abort (Pcb);
-      --    TCP_Err (pcb, AIP.ERR_ABRT); ???
-
-      if Es.Buf /= AIP.Buffers.NOBUF then
+      if Es'Address = System.Null_Address then
+         AIP.TCP.TCP_Drop (Pcb);
+         Err := AIP.ERR_ABRT;
+      elsif Es.Buf /= AIP.Buffers.NOBUF then
          Echo_Send (Pcb, Es);
-
+         Err := AIP.NOERR;
       elsif Es.Kind = ES_CLOSING then
          Echo_Close (Pcb, Es);
+         Err := AIP.NOERR;
       end if;
-
    end ECHO_Process_Poll;
 
    -----------------------
@@ -271,7 +281,8 @@ is
 
    procedure ECHO_Process_Recv
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id)
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T)
    is
       Es : Echo_State;
       for Es'Address use AIP.TCP.TCP_Udata (Pcb);
@@ -309,14 +320,10 @@ is
                   AIP.Buffers.Buffer_Chain (Es.Buf, Ev.Buf);
                end if;
 
-            when ES_CLOSING =>
-
-               --  odd case, remote side closing twice, trash data
-               AIP.TCP.TCP_Recved (Pcb, AIP.Buffers.Buffer_Tlen (Ev.Buf));
-               Es.Buf := AIP.Buffers.NOBUF;
-               AIP.Buffers.Buffer_Blind_Free (Ev.Buf);
-
             when others =>
+
+               --  Remote side closing twice (ES_CLOSING), or inconsistent
+               --  state. Trash.
 
                AIP.TCP.TCP_Recved (Pcb, AIP.Buffers.Buffer_Tlen (Ev.Buf));
                Es.Buf := AIP.Buffers.NOBUF;
@@ -326,6 +333,8 @@ is
 
       end if;
 
+      Err := AIP.NOERR;
+
    end ECHO_Process_Recv;
 
    -------------------------
@@ -334,30 +343,36 @@ is
 
    procedure ECHO_Process_Accept
      (Ev  : AIP.TCP.TCP_Event_T;
-      Pcb : AIP.PCBs.PCB_Id)
+      Pcb : AIP.PCBs.PCB_Id;
+      Err : out AIP.Err_T)
    is
       Sid : ES_Id;
    begin
       ES_Alloc (Sid);
-      pragma Assert (Sid /= NOES);
 
-      ESP (Sid).Kind := ES_ACCEPTED;
-      ESP (Sid).Pcb  := Pcb;
-      ESP (Sid).Buf  := AIP.Buffers.NOBUF;
+      if Sid = NOES then
+         Err := AIP.ERR_MEM;
+      else
 
-      AIP.TCP.TCP_Set_Udata (Pcb, ESP (Sid)'Address);
+         ESP (Sid).Kind := ES_ACCEPTED;
+         ESP (Sid).Pcb  := Pcb;
+         ESP (Sid).Buf  := AIP.Buffers.NOBUF;
 
-      AIP.TCP.On_TCP_Sent
-        (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Sent'Access));
-      AIP.TCP.On_TCP_Recv
-        (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Recv'Access));
-      AIP.TCP.On_TCP_Abort
-        (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Abort'Access));
-      AIP.TCP.On_TCP_Poll
-        (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Poll'Access), 500);
+         AIP.TCP.TCP_Set_Udata (Pcb, ESP (Sid)'Address);
 
-      AIP.TCP.TCP_Accepted (Pcb);
+         AIP.TCP.On_TCP_Sent
+           (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Sent'Access));
+         AIP.TCP.On_TCP_Recv
+           (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Recv'Access));
+         AIP.TCP.On_TCP_Abort
+           (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Abort'Access));
+         AIP.TCP.On_TCP_Poll
+           (Pcb, RAW_TCP_Callbacks.To_CBID (ECHO_Process_Poll'Access), 500);
 
+         AIP.TCP.TCP_Accepted (Pcb);
+
+         Err := AIP.NOERR;
+      end if;
    end ECHO_Process_Accept;
 
    ----------

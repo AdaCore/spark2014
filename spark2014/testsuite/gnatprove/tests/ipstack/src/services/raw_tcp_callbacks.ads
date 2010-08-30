@@ -13,7 +13,8 @@ package RAW_TCP_Callbacks is
 
    type TCP_Hook is
      access procedure (Ev  : AIP.TCP.TCP_Event_T;
-                       Pcb : AIP.PCBs.PCB_Id);
+                       Pcb : AIP.PCBs.PCB_Id;
+                       Err : out AIP.Err_T);
 
    function To_CBID is new
      Ada.Unchecked_Conversion (TCP_Hook, AIP.Callbacks.CBK_Id);
