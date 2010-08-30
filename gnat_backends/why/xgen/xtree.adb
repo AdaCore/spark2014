@@ -36,6 +36,7 @@ with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 with Xtree_Tables;               use Xtree_Tables;
 with Xtree_Builders;             use Xtree_Builders;
 with Xtree_Accessors;            use Xtree_Accessors;
+with Xtree_Mutators;             use Xtree_Mutators;
 with Xtree_Traversal;            use Xtree_Traversal;
 with Why.Sinfo;                  use Why.Sinfo;
 with Utils;                      use Utils;
@@ -277,6 +278,8 @@ begin
         Print_Unchecked_Builder_Bodies'Access);
    Add ("Declare_Accessors", Print_Accessor_Declarations'Access);
    Add ("Implement_Accessors", Print_Accessor_Bodies'Access);
+   Add ("Declare_Mutators", Print_Mutator_Declarations'Access);
+   Add ("Implement_Mutators", Print_Mutator_Bodies'Access);
    Add ("Declare_Traversal_Ops", Print_Traversal_Op_Declarations'Access);
    Add ("Implement_Traverse", Print_Traverse_Body'Access);
    Add ("Declare_Traversal_Op_Stubs",
@@ -287,6 +290,8 @@ begin
    Process ("why-atree-builders.ads");
    Process ("why-atree-builders.adb");
    Process ("why-atree-accessors.ads");
+   Process ("why-atree-mutators.ads");
+   Process ("why-atree-mutators.adb");
    Process ("why-atree-traversal.ads");
    Process ("why-atree-traversal.adb");
    Process ("why-atree-traversal_stub.ads");

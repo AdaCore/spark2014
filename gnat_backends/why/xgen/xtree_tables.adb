@@ -159,6 +159,24 @@ package body Xtree_Tables is
       return FI.Maybe_Null;
    end Maybe_Null;
 
+   ------------------
+   -- Mutator_Name --
+   ------------------
+
+   function Mutator_Name
+     (Kind : Why_Node_Kind;
+      FI   : Field_Info)
+     return Wide_String is
+   begin
+      if FI.In_Variant then
+         return Strip_Prefix (Mixed_Case_Name (Kind))
+           & "_Set_"
+           & Strip_Prefix (FI.Field_Name.all);
+      else
+         return "Set_" & FI.Field_Name.all;
+      end if;
+   end Mutator_Name;
+
    ---------------
    -- New_Field --
    ---------------
@@ -400,6 +418,16 @@ package body Xtree_Tables is
    function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String is
    begin
       return Mixed_Case_Name (Kind) & "_Unchecked_Id";
+   end Unchecked_Id_Type_Name;
+
+   function Unchecked_Id_Type_Name (FI : Field_Info) return Wide_String is
+      Sx : constant Wide_String := Suffix (FI.Id_Type.all);
+   begin
+      if FI.Is_Why_Id then
+         return Strip_Suffix (FI.Id_Type.all) & "_Unchecked_" & Sx;
+      else
+         return FI.Id_Type.all;
+      end if;
    end Unchecked_Id_Type_Name;
 
 end Xtree_Tables;

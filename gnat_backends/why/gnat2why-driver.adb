@@ -32,8 +32,8 @@ with Namet; use Namet;
 
 with Why.Types;          use Why.Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Sprint;   use Why.Atree.Sprint;
-with Why.Atree.Tables;   use Why.Atree.Tables;
 
 package body Gnat2Why.Driver is
 
@@ -91,15 +91,12 @@ package body Gnat2Why.Driver is
       begin
          Name_Len := 0;
          Add_Str_To_Name_Buffer ("standard__integer");
+         T := New_Type;
          I := New_Identifier (Empty,
                               Why_Empty,
                               Name_Find,
                               Why_Empty);
-         T := New_Type (Empty,
-                        Why_Empty,
-                        Why_Empty,
-                        New_List,
-                        I);
+         Type_Set_Name (T, I);
          Sprint_Why_Node (T);
       end;
    end GNAT_To_Why;

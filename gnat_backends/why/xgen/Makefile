@@ -3,6 +3,8 @@ GENERATED_FILES= \
  why-atree-accessors.ads      \
  why-atree-builders.ads       \
  why-atree-builders.adb       \
+ why-atree-mutators.ads       \
+ why-atree-mutators.adb       \
  why-atree-traversal.ads      \
  why-atree-traversal.adb      \
  why-atree-traversal_stub.ads \
@@ -22,6 +24,12 @@ why-atree.adt: ../why-atree.ads
 	gcc -c -gnatct ../why-atree.ads -I../../gnat_src
 
 why-atree-accessors.ads: xtree why-atree.adt why-atree-accessors.ads-tmpl
+	./xtree
+
+why-atree-mutators.ads: xtree why-atree.adt why-atree-mutators.ads-tmpl
+	./xtree
+
+why-atree-mutators.adb: xtree why-atree.adt why-atree-mutators.adb-tmpl
 	./xtree
 
 why-atree-builders.ads: xtree why-atree.adt why-atree-builders.ads-tmpl

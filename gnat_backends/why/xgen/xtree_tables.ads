@@ -181,6 +181,12 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the accessor name for the given field of the given node kind
 
+   function Mutator_Name
+     (Kind : Why_Node_Kind;
+      FI   : Field_Info)
+     return Wide_String;
+   --  Return the mutator name for the given field of the given node kind
+
    function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the builder name for the given node kind
 
@@ -200,6 +206,7 @@ package Xtree_Tables is
    function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    function Id_Type_Name (FI : Field_Info) return Wide_String;
    function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
+   function Unchecked_Id_Type_Name (FI : Field_Info) return Wide_String;
    --  Return the kind-specific id subtype name
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;

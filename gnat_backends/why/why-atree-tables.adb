@@ -104,6 +104,16 @@ package body Why.Atree.Tables is
       return To_Index (Last (Node_Table));
    end New_Why_Node_Id;
 
+   --------------
+   -- Set_Node --
+   --------------
+
+   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node) is
+      use Node_Tables;
+   begin
+      Replace_Element (Node_Table, Node_Id, Node);
+   end Set_Node;
+
 begin
    Initialize;
 end Why.Atree.Tables;

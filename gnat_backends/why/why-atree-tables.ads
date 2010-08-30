@@ -39,6 +39,10 @@ package Why.Atree.Tables is
    function Get_Node (Node_Id : Why_Node_Id) return Why_Node;
    --  Get the node whose id is Node_Id
 
+   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node);
+   pragma Postcondition (Get_Node (Node_Id) = Node);
+   --  Assign the given Id to the given Node
+
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind;
    --  Get the kind of Node_Id
 
