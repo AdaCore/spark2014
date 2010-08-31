@@ -81,7 +81,7 @@ $(APP_IMAGE).bin: $(APP_IMAGE)
 	powerpc-elf-objcopy -O binary $< $@
 
 run: $(APP_IMAGE).bin
-	qemu-system-ppc -nographic -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=scripts/qemu-ifup
+	qemu-system-ppc -nographic -s -M prep -L $(dir $<) -bios $(notdir $<) -net nic -net tap,script=scripts/qemu-ifup
 	
 spark: force
 	mkdir -p spark && cd spark && spark -flow=data -index_file=../src/spark/aip.idx -config_file=../src/spark/config.shs -warning_file=../src/spark/aip.wrn  -brief @../src/spark/aip.smf
