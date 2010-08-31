@@ -7,7 +7,7 @@ project IPStack_Config is
    package Compiler is
       Common_Switches := ("-g");
       for Default_Switches ("Ada")
-        use Common_Switches & ("-gnat05", "-gnatwa", "-gnatyg");
+        use Common_Switches & ("-gnat05", "-gnatwa", "-gnatyg", "-gnata");
       for Default_Switches ("C")
         use Common_Switches;
    end Compiler;
