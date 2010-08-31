@@ -33,7 +33,7 @@ project Sparkify extends "tools/tool_utils/tool_utils" is
    type Os_Type is
       ("default_Unix", "powerpc_aix", "pa_hpux");
    for Main use ("asis_ul-several_files_driver.adb");
-   BLD : Bld_Type := external ("BLD");
+   Bld : Bld_Type := external ("BLD");
 
    package Builder is
       for Default_Switches ("ada") use Common.Builder'Default_Switches ("ada");
@@ -46,19 +46,18 @@ project Sparkify extends "tools/tool_utils/tool_utils" is
 
    package Compiler is
 
-            case BLD is
+      case Bld is
 
-               when "prod" =>
+         when "prod" =>
 
-               when "debug" =>
-                  for Default_Switches ("ada") use ("-gnat2012");
+         when "debug" =>
+            for Default_Switches ("ada") use ("-gnat2012");
 
-               when "prod_strict" =>
+         when "prod_strict" =>
 
-               when "prod_no_checks" =>
+         when "prod_no_checks" =>
 
-            end case;
-
+      end case;
    end Compiler;
 
 end Sparkify;
