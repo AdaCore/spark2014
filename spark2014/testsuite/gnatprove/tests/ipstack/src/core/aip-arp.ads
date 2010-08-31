@@ -15,7 +15,7 @@ with AIP.Time_Types;
 use type AIP.Time_Types.Time;
 
 --# inherit System, AIP, AIP.ARPH, AIP.Buffers, AIP.Conversions, AIP.EtherH,
---#         AIP.Inet, AIP.IPaddrs, AIP.NIF, AIP.Time_Types;
+--#         AIP.Inet, AIP.IPaddrs, AIP.NIF, AIP.Time_Types, AIP.Timers;
 
 package AIP.ARP
 --# own State;

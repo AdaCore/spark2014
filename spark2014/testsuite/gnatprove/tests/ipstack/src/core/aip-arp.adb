@@ -7,6 +7,7 @@ with AIP.ARPH;
 with AIP.Conversions;
 with AIP.EtherH;
 with AIP.Inet;
+with AIP.Timers;
 
 package body AIP.ARP
 --# own State is ARP_Table, ARP_Free_List, ARP_Active_List;
@@ -241,6 +242,8 @@ is
       end loop;
       ARP_Free_List := ARP_Table'Last;
       ARP_Active_List := No_ARP_Entry;
+
+      Timers.Set_Interval (Timers.TIMER_EVT_ETHARPTMR, Time_Types.Hz);
    end Initialize;
 
    ----------------
