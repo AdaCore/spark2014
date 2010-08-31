@@ -565,6 +565,7 @@ extern int
 mintapif_isr (Netif_Id nid) {
   sigset_t oldmask, empty;
 
+  sigprocmask (SIG_SETMASK, NULL, &oldmask);
   /* start of critical section,
      poll netif, pass packet to lwIP */
   if (mintapif_select(nid) > 0)

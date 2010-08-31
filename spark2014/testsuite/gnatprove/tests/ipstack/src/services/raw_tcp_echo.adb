@@ -26,7 +26,7 @@ is
    --  state information across calls for each connection.
 
    type State_Kind is
-     (ES_FREE, ES_READY, ES_ACCEPTED, ES_RECEIVED, ES_CLOSING, ES_ABORT);
+     (ES_FREE, ES_READY, ES_ACCEPTED, ES_RECEIVED, ES_CLOSING);
    type Echo_State is record
       Kind : State_Kind;
       Pcb  : AIP.PCBs.PCB_Id;
@@ -103,8 +103,8 @@ is
    -- ES_Alloc --
    --------------
 
-   --  Search a free for use entry in the pool. If found, move to ES_NONE
-   --  and return Id. Return NOES otherwise.
+   --  Search a free for use entry in the pool. If found, move to ES_NONE and
+   --  return Id. Return NOES otherwise.
 
    procedure ES_Alloc (Sid : out ES_Id)
    --# global in out ESP;
@@ -189,14 +189,7 @@ is
             --  the one we just processed and inform tell the other end.
 
             Es.Buf := AIP.Buffers.Buffer_Next (Buf);
-            if Es.Buf /= AIP.Buffers.NOBUF then
-               AIP.Buffers.Buffer_Ref (Es.Buf);
-            end if;
-
-            --  chop first Buff from chain
-
             Plen := AIP.Buffers.Buffer_Len (Buf);
-            AIP.Buffers.Buffer_Release (Buf);
 
             --  we can read more data now
 
@@ -312,7 +305,8 @@ is
 
             when ES_RECEIVED =>
 
-               --  read some more data
+               --  Read some more data
+
                if Es.Buf = AIP.Buffers.NOBUF then
                   Es.Buf := Ev.Buf;
                   Echo_Send (Pcb, Es);
@@ -327,7 +321,6 @@ is
 
                AIP.TCP.TCP_Recved (Pcb, AIP.Buffers.Buffer_Tlen (Ev.Buf));
                Es.Buf := AIP.Buffers.NOBUF;
-               AIP.Buffers.Buffer_Blind_Free (Ev.Buf);
 
          end case;
 
@@ -353,7 +346,6 @@ is
       if Sid = NOES then
          Err := AIP.ERR_MEM;
       else
-
          ESP (Sid).Kind := ES_ACCEPTED;
          ESP (Sid).Pcb  := Pcb;
          ESP (Sid).Buf  := AIP.Buffers.NOBUF;

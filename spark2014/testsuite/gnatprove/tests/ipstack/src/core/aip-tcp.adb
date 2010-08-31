@@ -715,8 +715,10 @@ is
             Err  => Err);
 
          if AIP.No (Err) then
-            Buffers.Buffer_Blind_Free (D_Buf);
-            TPCBs (PCB).Refused_Packet := Buffers.NOBUF;
+            if D_Buf = TPCBs (PCB).Refused_Packet then
+               Buffers.Buffer_Blind_Free (D_Buf);
+               TPCBs (PCB).Refused_Packet := Buffers.NOBUF;
+            end if;
 
             --  Note: windows is re-opened once application confirms date
             --  consumption by calling TCP_Recved.
@@ -751,6 +753,7 @@ is
                --  All data delivered with no error: try sending data and ack
                --  as needed.
 
+               D_Buf := Buffers.NOBUF;
                TCP_Output (PCB => PCB, Ack_Now => False);
             end if;
 
@@ -762,9 +765,7 @@ is
             pragma Assert (AIP.No (Err));
 
             TPCBs (PCB).Refused_Packet := D_Buf;
-            if Buf /= D_Buf then
-               Buffers.Buffer_Blind_Free (Buf);
-            end if;
+            Buffers.Buffer_Ref (D_Buf);
          end if;
          exit when D_Buf = Buffers.NOBUF or else AIP.Any (Err);
       end loop;
@@ -1601,6 +1602,8 @@ is
            - IPH.IP_Header_Size / 8
            - TCPH.TCP_Header_Size / 8
            - 20;
+
+         Err := AIP.NOERR;
       end if;
    end Setup_PCB;
 
@@ -2205,8 +2208,8 @@ is
 
                   --  Set up PCB for new connection
 
-                  IPCBs (PCB).Local_IP   := IPH.IPH_Dst_Address (Seg.Ihdr);
-                  IPCBs (PCB).Local_Port := TCPH.TCPH_Dst_Port  (Seg.Thdr);
+                  IPCBs (New_PCB).Local_IP   := IPH.IPH_Dst_Address (Seg.Ihdr);
+                  IPCBs (New_PCB).Local_Port := TCPH.TCPH_Dst_Port  (Seg.Thdr);
                   Setup_PCB
                     (PCB         => New_PCB,
                      Remote_IP   => IPH.IPH_Src_Address (Seg.Ihdr),
@@ -2228,6 +2231,25 @@ is
                      Set_State (New_PCB, Syn_Received);
                      TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
+                     --  Notify application
+                     TCP_Event (Ev   =>
+                                  TCP_Event_T'(Kind => TCP_EVENT_ACCEPT,
+                                               Len  => 0,
+                                               Buf  => Buffers.NOBUF,
+                                               Addr =>
+                                                 IPCBs (New_PCB).Remote_IP,
+                                               Port =>
+                                                 IPCBs (New_PCB).Remote_Port,
+                                               Err  => AIP.NOERR),
+                                PCB  =>
+                                  New_PCB,
+                                Cbid =>
+                                  TPCBs (New_PCB).Callbacks (TCP_EVENT_ACCEPT),
+                                Err  =>
+                                  Err);
+                  end if;
+
+                  if AIP.No (Err) then
                      --  Send SYN|ACK
 
                      TCP_Send_Control
@@ -2336,11 +2358,11 @@ is
             Win_R := TPCBs (PCB).RCV_NXT + TPCBs (PCB).RCV_WND;
 
             if not
-              (TPCBs (PCB).RCV_WND = 0 and then Seg.Seq = TPCBs (PCB).RCV_NXT)
-                or else
-              Seq_Range (Win_L, Seg.Seq, Win_R)
-                or else
-              Seq_Range (Win_L, Seg.Seq + AIP.M32_T (Seg.Len) - 1, Win_R)
+              ((TPCBs (PCB).RCV_WND = 0 and then Seg.Seq = TPCBs (PCB).RCV_NXT)
+                 or else
+               Seq_Range (Win_L, Seg.Seq, Win_R)
+                 or else
+               Seq_Range (Win_L, Seg.Seq + AIP.M32_T (Seg.Len) - 1, Win_R))
             then
                --  Segment is not acceptable: send ACK (unless RST is present)
                --  and discard.
@@ -2445,8 +2467,7 @@ is
 
                      Buffers.Buffer_Header
                        (Seg.Buf,
-                        -(4 * AIP.S16_T (IPH.IPH_IHL (Seg.Ihdr)
-                          + TCPH.TCPH_Data_Offset (Seg.Thdr))),
+                        (-4) * AIP.S16_T (TCPH.TCPH_Data_Offset (Seg.Thdr)),
                         Err);
                      pragma Assert (AIP.No (Err));
 
@@ -2479,7 +2500,9 @@ is
                         TPCBs (PCB).RCV_WND := 0;
                      end if;
 
-                     Deliver_Segment (PCB, Seg.Buf);
+                     if New_Data_Len > 0 then
+                        Deliver_Segment (PCB, Seg.Buf);
+                     end if;
 
                   when others =>
 
