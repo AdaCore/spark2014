@@ -1249,15 +1249,16 @@ is
          Buf    => Tbuf);
 
       if Tbuf /= Buffers.NOBUF then
-
          Buffers.Buffer_Header (Tbuf, TCPH.TCP_Header_Size / 8, Err);
          Buffers.Set_Packet_Info (Tbuf, Buffers.Buffer_Payload (Tbuf));
          Buffers.Buffer_Header (Tbuf, -TCPH.TCP_Header_Size / 8, Err);
 
-         Conversions.Memcpy
-           (Dst => Buffers.Buffer_Payload (Tbuf),
-            Src => Ptr,
-            Len => Natural (Len));
+         if Len > 0 then
+            Conversions.Memcpy
+              (Dst => Buffers.Buffer_Payload (Tbuf),
+               Src => Ptr,
+               Len => Natural (Len));
+         end if;
       end if;
    end TCP_Data_Segment_For;
 
@@ -1316,9 +1317,7 @@ is
    --# global in out Buffers.State;
    is
    begin
-      pragma Assert (Len > 0);
-
-      if Copy then
+      if Copy or else Len = 0 then
          TCP_Data_Segment_For (Ptr, Len, Tbuf);
       else
          TCP_Ref_Segment_For (Ptr, Len, Tbuf);
@@ -2502,8 +2501,12 @@ is
                         null;
 
                      when Established | Syn_Received =>
-                        --  Notify connection closed: deliver 0 bytes of data
+                        --  Notify connection closed: deliver 0 bytes of data.
+                        --  First transition to Close_Wait, as the application
+                        --  may decide to call Close from within the TCP_Event
+                        --  callback.
 
+                        Set_State (PCB, Close_Wait);
                         TCP_Event
                           (Ev   => TCP_Event_T'(Kind => TCP_EVENT_RECV,
                                                 Len  => 0,
@@ -2514,7 +2517,6 @@ is
                            PCB  => PCB,
                            Cbid => TPCBs (PCB).Callbacks (TCP_EVENT_RECV),
                            Err  => Err);
-                        Set_State (PCB, Close_Wait);
 
                      when Fin_Wait_1 =>
                         --  If our FIN has been Ack'd then we are already in
