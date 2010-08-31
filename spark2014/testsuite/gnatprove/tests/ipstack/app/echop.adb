@@ -56,7 +56,4 @@ begin
 
       AIP.OSAL.Single.Process_Timers (Clock);
    end loop;
-exception
-   when others =>
-      Ada.Text_IO.Put_Line ("!!! EXCEPTION !!!");
 end Echop;
