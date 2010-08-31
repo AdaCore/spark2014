@@ -19,7 +19,7 @@ with AIP.PCBs;
 --#         AIP.Time_Types, AIP.Timers, AIP.Inet, AIP.Conversions;
 
 package AIP.TCP
-   --# own State;
+--# own State;
 is
 
    --------------------

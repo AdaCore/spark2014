@@ -19,8 +19,7 @@ with AIP.Time_Types;
 use type AIP.Time_Types.Interval;
 
 package body AIP.TCP
---# own State is Boot_Time, TCP_Ticks, IPCBs, TPCBs, Bound_PCBs,
---#     Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+--# own State is Boot_Time, TCP_Ticks, IPCBs, TPCBs, All_PCBs;
 is
 
    ---------------------
@@ -249,12 +248,31 @@ is
    IPCBs : TCP_IPCB_Array;
    TPCBs : TCP_TPCB_Array;
 
-   Bound_PCBs     : PCBs.PCB_Id;
-   Listen_PCBs    : PCBs.PCB_Id;
-   Active_PCBs    : PCBs.PCB_Id;
-   Time_Wait_PCBs : PCBs.PCB_Id;
+   No_List        : constant := 0;
+   Bound_List     : constant := 1;
+   Listen_List    : constant := 2;
+   Active_List    : constant := 3;
+   Time_Wait_List : constant := 4;
+
    subtype TCP_PCB_Heads_Range is Natural range 1 .. 4;
    subtype TCP_PCB_Heads is PCBs.PCB_List (TCP_PCB_Heads_Range);
+   All_PCBs : TCP_PCB_Heads;
+
+   type List_For_State_T is array (TCP_State) of Natural;
+   List_For_State : constant List_For_State_T :=
+                          List_For_State_T'(Closed       => No_List,
+                                            Listen       => Listen_List,
+                                            Syn_Sent     |
+                                            Syn_Received |
+                                            Established  |
+                                            Fin_Wait_1   |
+                                            Fin_Wait_2   |
+                                            Close_Wait   |
+                                            Closing      |
+                                            Last_Ack     => Active_List,
+                                            Time_Wait    => Time_Wait_List);
+   --  Indicates what list a PCB is on, depending on its state (except for the
+   --  case of Closed PCBs, which may either be on no list or on Bound).
 
    --  Type used to carry around information about a received segment
 
@@ -825,51 +843,26 @@ is
    procedure Set_State
      (PCB   : PCBs.PCB_Id;
       State : TCP_State)
-   --# global in out TPCBs, IPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out TPCBs, IPCBs, All_PCBs;
    is
+      Old_List : Natural;
+      New_List : Natural;
    begin
       pragma Assert (TPCBs (PCB).State /= State);
+
+      Old_List := List_For_State (TPCBs (PCB).State);
+      New_List := List_For_State (State);
 
       case TPCBs (PCB).State is
          when Closed =>
             pragma Assert (State = Listen or else State = Syn_Sent);
 
             pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
-
-            PCBs.Unlink
-              (PCB      => PCB,
-               PCB_Head => Bound_PCBs,
-               PCB_Pool => IPCBs);
-
-            if State = Listen then
-               PCBs.Prepend
-                 (PCB      => PCB,
-                  PCB_Head => Listen_PCBs,
-                  PCB_Pool => IPCBs);
-            else
-               PCBs.Prepend
-                 (PCB      => PCB,
-                  PCB_Head => Active_PCBs,
-                  PCB_Pool => IPCBs);
-            end if;
+            Old_List := Bound_List;
 
          when Listen =>
             pragma Assert (State = Syn_Received or else State = Closed);
-
-            --  No transition from Listen to Syn_Sent
-
-            if State = Closed then
-               PCBs.Unlink
-                 (PCB      => PCB,
-                  PCB_Head => Listen_PCBs,
-                  PCB_Pool => IPCBs);
-            else
-               PCBs.Prepend
-                 (PCB      => PCB,
-                  PCB_Head => Active_PCBs,
-                  PCB_Pool => IPCBs);
-            end if;
+            null;
 
          when Syn_Sent =>
 
@@ -879,13 +872,7 @@ is
             pragma Assert (State = Syn_Received
                            or else State = Established
                            or else State = Closed);
-
-            if State = Closed then
-               PCBs.Unlink
-                 (PCB      => PCB,
-                  PCB_Head => Active_PCBs,
-                  PCB_Pool => IPCBs);
-            end if;
+            null;
 
          when Syn_Received =>
 
@@ -895,13 +882,7 @@ is
             pragma Assert (State = Established
                            or else State = Fin_Wait_1
                            or else State = Closed);
-
-            if State = Closed then
-               PCBs.Unlink
-                 (PCB      => PCB,
-                  PCB_Head => Active_PCBs,
-                  PCB_Pool => IPCBs);
-            end if;
+            null;
 
          when Established =>
             pragma Assert (State = Fin_Wait_1 or else State = Close_Wait);
@@ -925,11 +906,24 @@ is
 
          when Last_Ack | Time_Wait =>
             pragma Assert (State = Closed);
+            null;
+      end case;
+
+      if Old_List /= New_List then
+         if Old_List /= No_List then
             PCBs.Unlink
               (PCB      => PCB,
-               PCB_Head => Active_PCBs,
+               PCB_Head => All_PCBs (Old_List),
                PCB_Pool => IPCBs);
-      end case;
+         end if;
+
+         if New_List /= No_List then
+            PCBs.Prepend
+              (PCB      => PCB,
+               PCB_Head => All_PCBs (New_List),
+               PCB_Pool => IPCBs);
+         end if;
+      end if;
 
       TPCBs (PCB).State := State;
    end Set_State;
@@ -939,8 +933,7 @@ is
    --------------
 
    procedure TCP_Init
-   --# global out Boot_Time, TCP_Ticks, IPCBs, TPCBs, Bound_PCBs, Listen_PCBs,
-   --#            Active_PCBs, Time_Wait_PCBs;
+   --# global out Boot_Time, TCP_Ticks, IPCBs, TPCBs, All_PCBs;
    is
    begin
       --  Record boot time to serve as local secret for generation of ISN
@@ -951,13 +944,9 @@ is
       --  Initialize all the PCBs, marking them unused, and initialize the list
       --  of bound PCBs as empty.
 
-      IPCBs := TCP_IPCB_Array'(others => PCBs.IP_PCB_Initializer);
-      TPCBs := TCP_TPCB_Array'(others => TCP_PCB_Initializer);
-
-      Bound_PCBs     := PCBs.NOPCB;
-      Listen_PCBs    := PCBs.NOPCB;
-      Active_PCBs    := PCBs.NOPCB;
-      Time_Wait_PCBs := PCBs.NOPCB;
+      IPCBs    := TCP_IPCB_Array'(others => PCBs.IP_PCB_Initializer);
+      TPCBs    := TCP_TPCB_Array'(others => TCP_PCB_Initializer);
+      All_PCBs := TCP_PCB_Heads'(others => PCBs.NOPCB);
 
       --  Set frequency of TCP timers
 
@@ -1075,29 +1064,28 @@ is
       Local_IP   : IPaddrs.IPaddr;
       Local_Port : AIP.U16_T;
       Err        : out AIP.Err_T)
-   --# global in out IPCBs, Bound_PCBs; in TPCBs, Listen_PCBs, Active_PCBs,
-   --#               Time_Wait_PCBs;
+   --# global in out IPCBs, All_PCBs; in TPCBs;
    is
    begin
-      if TPCBs (PCB).State /= Closed then
+      if TPCBs (PCB).State /= Closed
+        or else IPCBs (PCB).Local_Port /= PCBs.NOPORT
+      then
          Err := AIP.ERR_USE;
+
       else
          PCBs.Bind_PCB
            (PCB        => PCB,
             Local_IP   => Local_IP,
             Local_Port => Local_Port,
-            PCB_Heads  =>
-              TCP_PCB_Heads'(1 => Listen_PCBs,
-                             2 => Bound_PCBs,
-                             3 => Active_PCBs,
-                             4 => Time_Wait_PCBs),
+            PCB_Heads  => All_PCBs,
             PCB_Pool   => IPCBs,
             Err        => Err);
 
          if AIP.No (Err) then
+            pragma Assert (IPCBs (PCB).Local_Port /= PCBs.NOPORT);
             PCBs.Prepend
               (PCB      => PCB,
-               PCB_Head => Bound_PCBs,
+               PCB_Head => All_PCBs (Bound_List),
                PCB_Pool => IPCBs);
          end if;
       end if;
@@ -1110,8 +1098,7 @@ is
    procedure TCP_Force_Bind
      (PCB : PCBs.PCB_Id;
       Err : out AIP.Err_T)
-   --# global in out IPCBs, TPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out IPCBs, TPCBs, All_PCBs;
    is
    begin
       if IPCBs (PCB).Local_Port = PCBs.NOPORT then
@@ -1143,8 +1130,7 @@ is
      (PCB     : PCBs.PCB_Id;
       Backlog : Natural;
       Err     : out AIP.Err_T)
-   --# global in out IPCBs, TPCBs, Bound_PCBs, Listen_PCBs;
-   --#        in Active_PCBs, Time_Wait_PCBs;
+   --# global in out IPCBs, TPCBs, All_PCBs;
    is
    begin
       pragma Assert (PCB /= PCBs.NOPCB);
@@ -1174,8 +1160,7 @@ is
    ----------------
 
    procedure TCP_Listen (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out IPCBs, TPCBs, Bound_PCBs, Listen_PCBs;
-   --#        in Active_PCBs, Time_Wait_PCBs;
+   --# global in out IPCBs, TPCBs, All_PCBs;
    is
    begin
       TCP_Listen_BL (PCB, Config.TCP_DEFAULT_LISTEN_BACKLOG, Err);
@@ -1202,15 +1187,14 @@ is
    --------------
 
    procedure TCP_Free (PCB : PCBs.PCB_Id)
-   --# global in out IPCBs, TPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out IPCBs, TPCBs, All_PCBs;
    is
    begin
       if TPCBs (PCB).State = Closed
         and then IPCBs (PCB).Local_Port /= PCBs.NOPORT
       then
          PCBs.Unlink (PCB      => PCB,
-                      PCB_Head => Bound_PCBs,
+                      PCB_Head => All_PCBs (Bound_List),
                       PCB_Pool => IPCBs);
       else
          Set_State (PCB, Closed);
@@ -1617,8 +1601,8 @@ is
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, IPCBs, TPCBs, TCP_Ticks,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out Buffers.State, IP.State,
+   --#               IPCBs, TPCBs, TCP_Ticks, All_PCBs;
    --#        in IP.FIB, Boot_Time;
    is
    begin
@@ -1708,8 +1692,7 @@ is
    -----------------
 
    procedure Process_Ack (PCB : PCBs.PCB_Id; Seg : Segment)
-   --# global in out Buffers.State, IP.State, TPCBs, IPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs, All_PCBs;
    --#        in TCP_Ticks;
    is
       Packet : Buffers.Buffer_Id;
@@ -1969,8 +1952,8 @@ is
    ---------------
 
    procedure TCP_Close (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out Buffers.State, IP.State, TCP_Ticks, IPCBs, TPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out Buffers.State, IP.State,
+   --#               TCP_Ticks, IPCBs, TPCBs, All_PCBs;
    is
 
       Flush : Boolean := False;
@@ -1989,10 +1972,12 @@ is
             --  state transition, so dealing directly with the possible need to
             --  unlink here.
 
-            PCBs.Unlink
-              (PCB      => PCB,
-               PCB_Head => Bound_PCBs,
-               PCB_Pool => IPCBs);
+            if IPCBs (PCB).Local_Port /= PCBs.NOPORT then
+               PCBs.Unlink
+                 (PCB      => PCB,
+                  PCB_Head => All_PCBs (Bound_List),
+                  PCB_Pool => IPCBs);
+            end if;
             TCP_Free (PCB);
             Err := AIP.NOERR;
 
@@ -2040,8 +2025,7 @@ is
    ---------------
 
    procedure TCP_Drop (PCB : PCBs.PCB_Id)
-   --# global in out Buffers.State, IP.State, IPCBs, TPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out Buffers.State, IP.State, IPCBs, TPCBs, All_PCBs;
    --#        in IP.FIB, TCP_Ticks;
    is
       Err : AIP.Err_T;
@@ -2086,8 +2070,7 @@ is
       Seg : Segment;
       Err : out AIP.Err_T)
    --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
-   --#        in IP.FIB, Boot_Time, TCP_Ticks,
-   --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --#        in IP.FIB, Boot_Time, TCP_Ticks, All_PCBs;
    is
       New_PCB : PCBs.PCB_Id;
 
@@ -2138,8 +2121,7 @@ is
       --------------
 
       procedure Teardown (Callback : Boolean)
-      --# global in out Buffers.State, Discard, IPCBs, TPCBs,
-      --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+      --# global in out Buffers.State, Discard, IPCBs, TPCBs, All_PCBs;
       --#        in PCB;
       is
          Err : AIP.Err_T;
@@ -2158,6 +2140,7 @@ is
 
             --  Notify failure of pending send operations???
          end if;
+
          Set_State (PCB, Closed);
          TCP_Free (PCB);
          Discard := True;
@@ -2565,8 +2548,7 @@ is
 
    procedure TCP_Input (Buf : Buffers.Buffer_Id; Netif : NIF.Netif_Id)
    --# global in out TPCBs, IPCBs, IP.State, Buffers.State;
-   --#        in IP.FIB, Boot_Time, TCP_Ticks,
-   --#           Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --#        in IP.FIB, Boot_Time, TCP_Ticks, All_PCBs;
    is
       pragma Unreferenced (Netif);
 
@@ -2769,11 +2751,7 @@ is
             Local_Port  => TCPH.TCPH_Dst_Port  (Seg.Thdr),
             Remote_IP   => IPH.IPH_Src_Address (Seg.Ihdr),
             Remote_Port => TCPH.TCPH_Src_Port  (Seg.Thdr),
-            PCB_Heads   =>
-              TCP_PCB_Heads'(1 => Listen_PCBs,
-                             2 => Bound_PCBs,
-                             3 => Active_PCBs,
-                             4 => Time_Wait_PCBs),
+            PCB_Heads   => All_PCBs,
             PCB_Pool    => IPCBs,
             PCB         => PCB);
 
@@ -2823,13 +2801,13 @@ is
 
    procedure TCP_Fast_Timer
    --# global in out Buffers.State, TPCBs, IP.State;
-   --#        in TCP_Ticks, IPCBs, Active_PCBs;
+   --#        in TCP_Ticks, IPCBs, All_PCBs;
    is
       PCB : PCBs.PCB_Id;
    begin
       --  Retry delivery of pending segments
 
-      PCB := Active_PCBs;
+      PCB := All_PCBs (Active_List);
       while PCB /= PCBs.NOPCB loop
          if TPCBs (PCB).Refused_Packet /= Buffers.NOBUF then
             Deliver_Segment (PCB, Buffers.NOBUF);
@@ -2953,8 +2931,8 @@ is
    --------------------
 
    procedure TCP_Slow_Timer
-   --# global in out Buffers.State, IP.State, TCP_Ticks, IPCBs, TPCBs,
-   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --# global in out Buffers.State, IP.State,
+   --#               TCP_Ticks, IPCBs, TPCBs, All_PCBs;
    is
       Remove_PCB : Boolean;
       PCB      : PCBs.PCB_Id;
@@ -2963,7 +2941,7 @@ is
    begin
       TCP_Ticks := TCP_Ticks + 1;
 
-      PCB := Active_PCBs;
+      PCB := All_PCBs (Active_List);
       while PCB /= PCBs.NOPCB loop
          Next_PCB := IPCBs (PCB).Link;
          Remove_PCB := False;
@@ -3082,7 +3060,7 @@ is
 
       --  Purge old TIME_WAIT PCBs
 
-      PCB := Time_Wait_PCBs;
+      PCB := All_PCBs (Time_Wait_List);
       while PCB /= PCBs.NOPCB loop
          Next_PCB := IPCBs (PCB).Link;
 
