@@ -157,7 +157,11 @@ package body AIP.PCBs is
       PCB_Pool    : IP_PCB_Array;
       PCB         : out PCB_Id)
    is
+      Try_PCB      : PCB_Id;
+      Try_Wildcard : Natural;
+      Wildcard     : Natural := 3;
    begin
+      PCB := NOPCB;
       for J in PCB_Heads'Range loop
          Find_PCB_In_List
            (Local_IP,
@@ -166,8 +170,14 @@ package body AIP.PCBs is
             Remote_Port,
             PCB_Heads (J),
             PCB_Pool,
-            PCB);
-         exit when PCB /= NOPCB;
+            Try_PCB,
+            Try_Wildcard);
+
+         if Try_Wildcard < Wildcard then
+            PCB      := Try_PCB;
+            Wildcard := Try_Wildcard;
+         end if;
+         exit when Wildcard = 0;
       end loop;
    end Find_PCB;
 
@@ -182,22 +192,45 @@ package body AIP.PCBs is
       Remote_Port : Port_T;
       PCB_Head    : PCB_Id;
       PCB_Pool    : IP_PCB_Array;
-      PCB         : out PCB_Id)
+      PCB         : out PCB_Id;
+      Wildcard    : out Natural)
    is
       Cid : PCB_Id;
-      Ideal_PCB, Good_PCB : AIP.EID := NOPCB;
+      Match_Wildcard : Natural;
 
-      Local_Match, Remote_Match : Boolean;
+      --  function Wildcard_Count
+      --    (Addr : IPaddrs.IPaddr;
+      --     Port : Port_T) return Natural;
+      --  Return 1 if Addr is IP_ADDR_ANY or Port is Any_Port, 0 otherwise
+
+      --------------------
+      -- Wildcard_Count --
+      --------------------
+
+      function Wildcard_Count
+        (Addr : IPaddrs.IPaddr;
+         Port : Port_T) return Natural
+      is
+      begin
+         if Addr = IPaddrs.IP_ADDR_ANY or else Port = NOPORT then
+            return 1;
+         else
+            return 0;
+         end if;
+      end Wildcard_Count;
+
+   --  Start of processing for Find_PCB_In_List
 
    begin
+      PCB      := NOPCB;
+      Wildcard := 3;
+
       --  Scan the given PCB list, looking for a PCB associated with the given
       --  local, and possibly remote, endpoint identifications.
 
       Cid := PCB_Head;
 
-      loop
-         exit when Ideal_PCB /= NOPCB or else Cid = NOPCB;
-
+      while Cid /= NOPCB and then Wildcard > 0 loop
          --  See if the current PCB corresponds to the given local address. It
          --  does when the port numbers are the same and either the packet was
          --  broadcasted to the interface or the specific destination IP
@@ -205,46 +238,35 @@ package body AIP.PCBs is
          --  ANY). Note: IPaddrs.Match returns True if both addresses are the
          --  same or if either is ANY.
 
-         Local_Match :=
-           Match (PCB_Pool (Cid).Local_Port, Local_Port)
-             and then
-           (IPaddrs.Match (PCB_Pool (Cid).Local_IP, Local_IP)
-              or else
-            IPaddrs.Match (NIF.NIF_Broadcast (PCB_Pool (Cid).Netif),
-                           Local_IP)
-              or else
-            IPaddrs.Match (IPaddrs.IP_ADDR_BCAST, Local_IP));
+         if Match (PCB_Pool (Cid).Local_Port, Local_Port)
+              and then
+            (IPaddrs.Match (PCB_Pool (Cid).Local_IP, Local_IP)
+               or else
+             IPaddrs.Match (NIF.NIF_Broadcast (PCB_Pool (Cid).Netif),
+                            Local_IP)
+               or else
+             IPaddrs.Match (IPaddrs.IP_ADDR_BCAST, Local_IP))
 
-         --  If we don't have a local match, proceed with the next
-         --  candidate. If we do have a local match, see if the PCB remote
-         --  addr+port pair matches the transport source. If it does, the PCB
-         --  is connected to that source and is an ideal taker. Otherwise,
-         --  remember that PCB as a fallback possible destination if it is
-         --  unconnected.
+           and then
+             Match (PCB_Pool (Cid).Remote_Port, Remote_Port)
+               and then
+             IPaddrs.Match (PCB_Pool (Cid).Remote_IP, Remote_IP)
+         then
+            Match_Wildcard :=
+              Wildcard_Count
+                (PCB_Pool (Cid).Local_IP, PCB_Pool (Cid).Local_Port)
+              +
+              Wildcard_Count
+                (PCB_Pool (Cid).Remote_IP, PCB_Pool (Cid).Remote_Port);
 
-         if Local_Match then
-            Remote_Match :=
-              Match (PCB_Pool (Cid).Remote_Port, Remote_Port)
-                and then
-              IPaddrs.Match (PCB_Pool (Cid).Remote_IP, Remote_IP);
-
-            if Remote_Match then
-               Ideal_PCB := Cid;
-
-            elsif Good_PCB = NOPCB and then not PCB_Pool (Cid).Connected then
-               Good_PCB := Cid;
+            if Match_Wildcard < Wildcard then
+               Wildcard := Match_Wildcard;
+               PCB      := Cid;
             end if;
          end if;
 
          Cid := PCB_Pool (Cid).Link;
       end loop;
-
-      if Ideal_PCB /= NOPCB then
-         PCB := Ideal_PCB;
-      else
-         PCB := Good_PCB;
-         --  Might be NULID
-      end if;
    end Find_PCB_In_List;
 
    -----------

@@ -79,7 +79,9 @@ package body AIP.Timers is
    is
       My_Timer : Timer renames My_Timers (TID);
    begin
-      if My_Timer.Last_Event + My_Timer.Interval <= Now then
+      if My_Timer.Interval > 0
+        and then My_Timer.Last_Event + My_Timer.Interval <= Now
+      then
          My_Timer.Last_Event := Now;
          return True;
       else

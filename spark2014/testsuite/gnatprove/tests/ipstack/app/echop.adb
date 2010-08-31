@@ -5,8 +5,9 @@
 
 with Ada.Text_IO;
 
---  with Raw_TCPEcho;
---  TCP service temporarily deactivated???
+with Raw_TCP_Echo;
+with Raw_TCP_Dispatcher;
+pragma Warnings (Off, Raw_TCP_Dispatcher);
 
 with Raw_UDP_Syslog;
 with Raw_UDP_Dispatcher;
@@ -35,7 +36,7 @@ begin
 
    --  Initialize application services
 
-   --  Raw_TCPEcho.Init;
+   Raw_TCP_Echo.Init;
    Raw_UDP_Syslog.Init;
 
    --  Run application main loop

@@ -3,7 +3,6 @@
 --             Copyright (C) 2010, Free Software Foundation, Inc.           --
 ------------------------------------------------------------------------------
 
-with System;
 with Ada.Unchecked_Conversion;
 with AIP.TCP;
 with AIP.PCBs;

@@ -94,9 +94,10 @@ is
       pragma Unreferenced (Netif);
       Ihdr, Uhdr, PUhdr : System.Address;
 
-      PUH_Buf : Buffers.Buffer_Id;
-      Err : AIP.Err_T;
-      PCB : AIP.EID := PCBs.NOPCB;
+      PUH_Buf  : Buffers.Buffer_Id;
+      Err      : AIP.Err_T;
+      PCB      : PCBs.PCB_Id := PCBs.NOPCB;
+      Wildcard : Natural;
    begin
       --  Latch address of IP header and retrieve a UDP view of the incoming
       --  datagram.
@@ -146,7 +147,8 @@ is
             Remote_Port => UDPH.UDPH_Src_Port  (Uhdr),
             PCB_Head    => Bound_PCBs,
             PCB_Pool    => IPCBs,
-            PCB         => PCB);
+            PCB         => PCB,
+            Wildcard    => Wildcard);
 
          if PCB = PCBs.NOPCB then
             --  Recover IP header and send ICMP destination unreachable

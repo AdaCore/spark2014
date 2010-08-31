@@ -131,7 +131,9 @@ is
    --  Retrieve Udata previously attached to PCB, System.Null_Address if none.
 
    procedure UDP_Event
-     (Ev : UDP_Event_T; PCB : PCBs.PCB_Id; Cbid : Callbacks.CBK_Id);
+     (Ev   : UDP_Event_T;
+      PCB  : PCBs.PCB_Id;
+      Cbid : Callbacks.CBK_Id);
    --# global in out Buffers.State;
    pragma Import (Ada, UDP_Event, "AIP_udp_event");
    pragma Weak_External (UDP_Event);

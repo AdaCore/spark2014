@@ -5,6 +5,8 @@
 
 with AIP.Time_Types;
 
+--# inherit AIP.Time_Types;
+
 package AIP.Timers is
 
    type Timer_Id is (TIMER_EVT_ETHARPTMR,

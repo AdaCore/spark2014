@@ -118,8 +118,10 @@ package AIP.PCBs is
       Remote_Port : Port_T;
       PCB_Head    : PCB_Id;
       PCB_Pool    : IP_PCB_Array;
-      PCB         : out PCB_Id);
-   --  Same as above but search a single list whose head is PCB_Head
+      PCB         : out PCB_Id;
+      Wildcard    : out Natural);
+   --  Same as above but search a single list whose head is PCB_Head. Wildcard
+   --  counts how many items (0, 1 or 2) were a wildcard match.
 
    procedure Prepend
      (PCB      : PCB_Id;

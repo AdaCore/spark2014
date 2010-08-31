@@ -13,7 +13,10 @@ with AIP.Inet;
 with AIP.IP;
 with AIP.IPH;
 with AIP.TCPH;
+with AIP.Timers;
+
 with AIP.Time_Types;
+use type AIP.Time_Types.Interval;
 
 package body AIP.TCP
 --# own State is Boot_Time, TCP_Ticks, IPCBs, TPCBs, Bound_PCBs,
@@ -228,6 +231,9 @@ is
 
    TCP_Hz    : constant := 2;
    --  TCP timer frequency (do not change)
+
+   TCP_Slow_Interval : constant := Time_Types.Hz / TCP_Hz;
+   TCP_Fast_Interval : constant := TCP_Slow_Interval / 2;
 
    --  Persist timer parameters, in TCP ticks (500 ms)
 
@@ -602,8 +608,8 @@ is
          pragma Assert (TCPH.TCPH_Seq_Num (Thdr) >= TPCBs (PCB).SND_UNA);
 
          TCP_Seg_Len (Seg, Seg_Len);
-         exit when Seq_Le (TCPH.TCPH_Seq_Num (Thdr) + Seg_Len,
-                           TPCBs (PCB).SND_UNA + This_WND);
+         exit when not Seq_Le (TCPH.TCPH_Seq_Num (Thdr) + Seg_Len,
+                               TPCBs (PCB).SND_UNA + This_WND);
 
          --  ??? exit when Nagle blob
 
@@ -664,7 +670,6 @@ is
 
          Buffers.Buffer_Blind_Free (Seg);
       end if;
-
    end TCP_Output;
 
    ---------------------
@@ -858,6 +863,11 @@ is
                  (PCB      => PCB,
                   PCB_Head => Listen_PCBs,
                   PCB_Pool => IPCBs);
+            else
+               PCBs.Prepend
+                 (PCB      => PCB,
+                  PCB_Head => Active_PCBs,
+                  PCB_Pool => IPCBs);
             end if;
 
          when Syn_Sent =>
@@ -947,6 +957,11 @@ is
       Listen_PCBs    := PCBs.NOPCB;
       Active_PCBs    := PCBs.NOPCB;
       Time_Wait_PCBs := PCBs.NOPCB;
+
+      --  Set frequency of TCP timers
+
+      Timers.Set_Interval (Timers.TIMER_EVT_TCPFASTTMR, TCP_Fast_Interval);
+      Timers.Set_Interval (Timers.TIMER_EVT_TCPSLOWTMR, TCP_Slow_Interval);
    end TCP_Init;
 
    ------------------
@@ -1339,9 +1354,8 @@ is
       Syn     : Boolean;
       Fin     : Boolean;
       Err     : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out TPCBs, Buffers.State, IP.State; in IPCBs, TCP_Ticks;
    is
-
       Left : AIP.M32_T;
       Ptr  : System.Address;
       --  Amount of Data still unassigned a TCP segment, and start address
@@ -1397,7 +1411,7 @@ is
             Toff := 5 + AIP.U4_T (Len / 4);
          end if;
 
-         while Left > 0 loop
+         while Left > 0 or else (Syn or Fin) loop
 
             if Left > AIP.M32_T (TPCBs (PCB).Remote_MSS) then
                Dlen := TPCBs (PCB).Remote_MSS;
@@ -1410,9 +1424,9 @@ is
 
             Left := Left - AIP.M32_T (Dlen);
 
-            --  If we have a single pure data segment that fits in spare
-            --  pure data room in the last segment of the Send_Queue, request
-            --  a headerless buffer that we'll chain there.
+            --  If we have a single pure data segment that fits in spare pure
+            --  data room in the last segment of the Send_Queue, request a
+            --  headerless buffer that we'll chain there.
 
             --  ??? Implement me
 
@@ -1428,10 +1442,12 @@ is
 
             TCPH.Set_TCPH_Seq_Num  (Thdr, NSS);
 
+            TCPH.Set_TCPH_Reserved (Thdr, 0);
             TCPH.Set_TCPH_Urg (Thdr, 0);
+            TCPH.Set_TCPH_Psh (Thdr, Boolean_To_Flag (Left = 0 and then Push));
+            TCPH.Set_TCPH_Rst (Thdr, 0);
             TCPH.Set_TCPH_Syn (Thdr, Boolean_To_Flag (Syn));
             TCPH.Set_TCPH_Fin (Thdr, Boolean_To_Flag (Fin));
-            TCPH.Set_TCPH_Psh (Thdr, Boolean_To_Flag (Left = 0 and then Push));
 
             --  Push on the temporary queue and prepare to proceed with the
             --  next segment.
@@ -1450,10 +1466,12 @@ is
             if Syn or else Fin then
                NSS := NSS + 1;
             end if;
+
+            exit when Left = 0;
          end loop;
 
-         --  If we have had any kind of trouble so far, release what we got
-         --  and bail out. Otherwise proceed further.
+         --  If we have had any kind of trouble so far, release what we got and
+         --  bail out. Otherwise proceed further.
 
          if AIP.Any (Err) then
 
@@ -1466,25 +1484,23 @@ is
             end loop;
 
          else
+            --  Update next sequence number for stream
 
-            --  Push the temporary queue on the Send_Queue for later
-            --  processing by TCP_Output.
+            TPCBs (PCB).NSS := NSS;
+
+            --  Push the temporary queue on the Send_Queue for later processing
+            --  by TCP_Output.
 
             if not Buffers.Empty (SegQ) then
                Buffers.Append_Packet
                  (Layer => Buffers.Transport,
                   Buf   => Buffers.Head_Packet (SegQ),
                   Queue => TPCBs (PCB).Send_Queue);
+               TCP_Output (PCB => PCB, Ack_Now => False);
             end if;
 
-            --  Memorize what the next segment sequence should be
-
-            TPCBs (PCB).NSS := NSS;
-
          end if;
-
       end if;
-
    end TCP_Enqueue;
 
    ----------------------
@@ -1496,7 +1512,7 @@ is
       Syn : Boolean;
       Fin : Boolean;
       Err : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
    is
    begin
       TCP_Enqueue (PCB     => PCB,
@@ -1511,21 +1527,21 @@ is
    end TCP_Send_Control;
 
    procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => False, Fin => True, Err => Err);
    end TCP_Fin;
 
    procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => True, Fin => False, Err => Err);
    end TCP_Syn;
 
    procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
    is
    begin
       TCP_Send_Control (PCB => PCB, Syn => False, Fin => False, Err => Err);
@@ -1598,7 +1614,7 @@ is
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T)
-   --# global in out Buffers.State, IPCBs, TPCBs,
+   --# global in out Buffers.State, IP.State, IPCBs, TPCBs, TCP_Ticks,
    --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
    --#        in IP.FIB, Boot_Time;
    is
@@ -1660,7 +1676,7 @@ is
       Copy  : Boolean;
       Push  : Boolean;
       Err   : out AIP.Err_T)
-   --# global in out TPCBs, Buffers.State; in IPCBs;
+   --# global in out Buffers.State, IP.State, TPCBs; in IPCBs, TCP_Ticks;
    is
    begin
       case TPCBs (PCB).State is
@@ -1689,8 +1705,9 @@ is
    -----------------
 
    procedure Process_Ack (PCB : PCBs.PCB_Id; Seg : Segment)
-   --# global in out Buffers.State, TPCBs, IPCBs, Bound_PCBs, Listen_PCBs,
-   --#               Active_PCBs, Time_Wait_PCBs; in TCP_Ticks;
+   --# global in out Buffers.State, IP.State, TPCBs, IPCBs,
+   --#               Bound_PCBs, Listen_PCBs, Active_PCBs, Time_Wait_PCBs;
+   --#        in TCP_Ticks;
    is
       Packet : Buffers.Buffer_Id;
       Thdr   : System.Address;
@@ -1780,6 +1797,10 @@ is
                case TPCBs (PCB).State is
                   when Fin_Wait_1 =>
                      Set_State (PCB, Fin_Wait_2);
+
+                     --  Start Fin_Wait_2 timeout
+
+                     TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
                   when Closing =>
                      Set_State (PCB, Time_Wait);
@@ -2179,11 +2200,10 @@ is
                else
                   --  Copy TCP parameters from Listen PCB
 
+                  IPCBs (New_PCB) := IPCBs (PCB);
                   TPCBs (New_PCB) := TPCBs (PCB);
 
                   --  Set up PCB for new connection
-
-                  Set_State (New_PCB, Syn_Received);
 
                   IPCBs (PCB).Local_IP   := IPH.IPH_Dst_Address (Seg.Ihdr);
                   IPCBs (PCB).Local_Port := TCPH.TCPH_Dst_Port  (Seg.Thdr);
@@ -2199,16 +2219,14 @@ is
                      TPCBs (New_PCB).IRS     := Seg.Seq;
                      TPCBs (New_PCB).RCV_NXT := TPCBs (New_PCB).IRS + 1;
 
-                     --  Insert new PCB in active list
-
-                     PCBs.Prepend
-                       (PCB      => New_PCB,
-                        PCB_Head => Active_PCBs,
-                        PCB_Pool => IPCBs);
-
                      --  Decrease backlog allowance
 
                      TPCBs (PCB).Backlog := TPCBs (PCB).Backlog - 1;
+
+                     --  Transition to Syn_Received, and start timer
+
+                     Set_State (New_PCB, Syn_Received);
+                     TPCBs (PCB).Watchdog_Ticks := TCP_Ticks;
 
                      --  Send SYN|ACK
 

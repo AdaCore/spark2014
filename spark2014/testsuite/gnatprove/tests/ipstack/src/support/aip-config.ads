@@ -24,7 +24,7 @@ package AIP.Config is
    Data_Buffer_Size : constant := 256;
    --  Size of an individual data buffer
 
-   Data_Buffer_Num : constant := 10;
+   Data_Buffer_Num : constant := 32;
    --  Total number of data buffers statically allocated
 
    No_Data_Buffer_Num : constant := 64;

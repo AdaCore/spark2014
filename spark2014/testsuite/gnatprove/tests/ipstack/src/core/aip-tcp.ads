@@ -16,7 +16,7 @@ with AIP.PCBs;
 
 --# inherit System, AIP.Buffers, AIP.Callbacks, AIP.Checksum, AIP.Config,
 --#         AIP.IP, AIP.IPaddrs, AIP.IPH, AIP.NIF, AIP.PCBs, AIP.TCPH,
---#         AIP.Time_Types, AIP.Inet, AIP.Conversions;
+--#         AIP.Time_Types, AIP.Timers, AIP.Inet, AIP.Conversions;
 
 package AIP.TCP
    --# own State;
@@ -139,7 +139,7 @@ is
       Port : PCBs.Port_T;
       Cb   : Callbacks.CBK_Id;
       Err  : out AIP.Err_T);
-   --# global in out Buffers.State, State; in IP.FIB;
+   --# global in out Buffers.State, IP.State, State; in IP.FIB;
    --  Setup PCB to connect to the remote ADDR/PORT and send the initial SYN
    --  segment.  Do not wait for the connection to be entirely setup, but
    --  instead arrange to have CB called when the connection is established or
@@ -164,7 +164,7 @@ is
       Copy  : Boolean;
       Push  : Boolean;
       Err   : out AIP.Err_T);
-   --# global in out State, Buffers.State;
+   --# global in out Buffers.State, IP.State, State;
    --  Enqueue DATA/LEN for output through PCB. COPY controls whether data is
    --  copied into AIP's memory before processing, or whether it only gets
    --  referenced from there, in which case clients should not modify it until
@@ -323,22 +323,22 @@ private
       Syn : Boolean;
       Fin : Boolean;
       Err : out AIP.Err_T);
-   --# global in out State, Buffers.State;
+   --# global in out Buffers.State, IP.State, State;
    --  Send a TCP segment with no payload, just control bits set according
    --  to Syn and Fin. Ack will be set as well unless in Syn_Sent state.
 
    --  Send_Control shortcuts for common occurrences:
 
    procedure TCP_Fin (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out State, Buffers.State;
+   --# global in out Buffers.State, IP.State, State;
    pragma Inline (TCP_Fin);
 
    procedure TCP_Syn (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out State, Buffers.State;
+   --# global in out Buffers.State, IP.State, State;
    pragma Inline (TCP_Syn);
 
    procedure TCP_Ack (PCB : PCBs.PCB_Id; Err : out AIP.Err_T);
-   --# global in out State, Buffers.State;
+   --# global in out Buffers.State, IP.State, State;
    pragma Inline (TCP_Ack);
 
    function Initial_Sequence_Number
