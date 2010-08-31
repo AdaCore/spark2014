@@ -56,6 +56,11 @@ seem to serve any useful purpose with respect to proofs.
   program, but should be enforced separately. The language should provide
   mechanism, not policy.
 
+* Array or record aggregates require an enclosing qualified expression.
+
+* Either all or none of the constituents of an own variable can be
+  initialized, you can't initialize just some of them.
+
 2.2. Language limitations
 -------------------------
 
