@@ -2114,7 +2114,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Term_OList is
-     W_Term_Unchecked_List;
+     W_Term_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Constant_Id is
@@ -2130,7 +2130,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Constant_OList is
-     W_Constant_Unchecked_List;
+     W_Constant_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Arith_Op_Id is
@@ -2146,7 +2146,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Arith_Op_OList is
-     W_Arith_Op_Unchecked_List;
+     W_Arith_Op_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Predicate_Id is
@@ -2162,7 +2162,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Predicate_OList is
-     W_Predicate_Unchecked_List;
+     W_Predicate_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Primitive_Type_Id is
@@ -2178,7 +2178,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Primitive_Type_OList is
-     W_Primitive_Type_Unchecked_List;
+     W_Primitive_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Relation_Id is
@@ -2194,7 +2194,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Relation_OList is
-     W_Relation_Unchecked_List;
+     W_Relation_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Declaration_Class_Id is
@@ -2210,7 +2210,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Declaration_Class_OList is
-     W_Logic_Declaration_Class_Unchecked_List;
+     W_Logic_Declaration_Class_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Return_Type_Id is
@@ -2226,7 +2226,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Return_Type_OList is
-     W_Logic_Return_Type_Unchecked_List;
+     W_Logic_Return_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Arg_Type_Id is
@@ -2242,7 +2242,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Logic_Arg_Type_OList is
-     W_Logic_Arg_Type_Unchecked_List;
+     W_Logic_Arg_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Simple_Value_Type_Id is
@@ -2258,7 +2258,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Simple_Value_Type_OList is
-     W_Simple_Value_Type_Unchecked_List;
+     W_Simple_Value_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Value_Type_Id is
@@ -2274,7 +2274,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Value_Type_OList is
-     W_Value_Type_Unchecked_List;
+     W_Value_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Computation_Type_Id is
@@ -2290,7 +2290,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Computation_Type_OList is
-     W_Computation_Type_Unchecked_List;
+     W_Computation_Type_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Prog_Id is
@@ -2306,7 +2306,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Prog_OList is
-     W_Prog_Unchecked_List;
+     W_Prog_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Infix_Id is
@@ -2322,7 +2322,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Infix_OList is
-     W_Infix_Unchecked_List;
+     W_Infix_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Prefix_Id is
@@ -2338,7 +2338,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Prefix_OList is
-     W_Prefix_Unchecked_List;
+     W_Prefix_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Declaration_Id is
@@ -2354,7 +2354,7 @@ package Why.Ids is
    --  ??? subtype predicate not generated yet
 
    subtype W_Declaration_OList is
-     W_Declaration_Unchecked_List;
+     W_Declaration_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
 end Why.Ids;
