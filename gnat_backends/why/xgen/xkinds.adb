@@ -161,25 +161,31 @@ procedure Xkinds is
    --  Return the name of the kind-validity check for the given
    --  node kind
 
-   -------------------------
-   -- Multiplicity_Suffix --
-   -------------------------
+   ---------------------
+   -- Base_Id_Subtype --
+   ---------------------
 
-   function Multiplicity_Suffix
-     (Multiplicity : Id_Multiplicity)
-     return Wide_String is
+   function Base_Id_Subtype
+     (Prefix       : Wide_String;
+      Kind         : Id_Kind;
+      Multiplicity : Id_Multiplicity)
+     return Wide_String
+   is
    begin
-      case Multiplicity is
-         when Id_One =>
-            return "_Id";
-         when Id_Lone =>
-            return "_OId";
-         when Id_Some =>
-            return "_List";
-         when Id_Set =>
-            return "_OList";
+      case Kind is
+         when Opaque =>
+            case Multiplicity is
+               when Id_One | Id_Lone =>
+                  return "Why_Node_Id";
+               when Id_Some | Id_Set =>
+                  return "Why_Node_List";
+            end case;
+         when Unchecked =>
+            return Id_Subtype (Prefix, Opaque, Multiplicity);
+          when Regular =>
+            return Id_Subtype (Prefix, Unchecked, Multiplicity);
       end case;
-   end Multiplicity_Suffix;
+   end Base_Id_Subtype;
 
    ----------------
    -- Id_Subtype --
@@ -214,32 +220,6 @@ procedure Xkinds is
       return Prefix & Kind_Suffix & Multiplicity_Suffix (Multiplicity);
    end Id_Subtype;
 
-   ---------------------
-   -- Base_Id_Subtype --
-   ---------------------
-
-   function Base_Id_Subtype
-     (Prefix       : Wide_String;
-      Kind         : Id_Kind;
-      Multiplicity : Id_Multiplicity)
-     return Wide_String
-   is
-   begin
-      case Kind is
-         when Opaque =>
-            case Multiplicity is
-               when Id_One | Id_Lone =>
-                  return "Why_Node_Id";
-               when Id_Some | Id_Set =>
-                  return "Why_Node_List";
-            end case;
-         when Unchecked =>
-            return Id_Subtype (Prefix, Opaque, Multiplicity);
-          when Regular =>
-            return Id_Subtype (Prefix, Unchecked, Multiplicity);
-      end case;
-   end Base_Id_Subtype;
-
    ----------------
    -- Kind_Check --
    ----------------
@@ -251,6 +231,26 @@ procedure Xkinds is
    begin
       return Prefix & Multiplicity_Suffix (M) & "_Kind_Valid";
    end Kind_Check;
+
+   -------------------------
+   -- Multiplicity_Suffix --
+   -------------------------
+
+   function Multiplicity_Suffix
+     (Multiplicity : Id_Multiplicity)
+     return Wide_String is
+   begin
+      case Multiplicity is
+         when Id_One =>
+            return "_Id";
+         when Id_Lone =>
+            return "_OId";
+         when Id_Some =>
+            return "_List";
+         when Id_Set =>
+            return "_OList";
+      end case;
+   end Multiplicity_Suffix;
 
    -------------------
    -- Pre_Operation --
@@ -347,8 +347,15 @@ procedure Xkinds is
       type State is (Processing_Classes, Processing_Nodes);
 
       procedure Process_One_Node_Kind (Position : Cursor);
+      --  Same as Print_Kind_Check_Body, but only for nodes
+
       procedure Process_One_Class_Kind (Position : Cursor);
+      --  Same as Print_Kind_Check_Body, but only for classes
+
       procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State);
+      --  Print the body of kind-validity checks for the given node
+      --  kind; S tells us if the Prefix designates a node kind
+      --  or a node class.
 
       ---------------------------
       -- Print_Kind_Check_Body --
@@ -459,8 +466,15 @@ procedure Xkinds is
       use String_Lists;
 
       procedure Process_One_Node_Kind (Position : Cursor);
+      -- Same as Print_Kind_Checks_Declaration, but only for node classes
+
       procedure Process_One_Class_Kind (Position : Cursor);
+      -- Same as Print_Kind_Checks_Declaration, but only for node kinds
+
       procedure Print_Kind_Checks_Declaration (Prefix : Wide_String);
+      --  Print the declarations of kind-validity checks for the given node
+      --  kind; S tells us if the Prefix designates a node kind
+      --  or a node class.
 
       -----------------------------------
       -- Print_Kind_Checks_Declaration --
@@ -526,6 +540,24 @@ procedure Xkinds is
           & Id_Subtype (Prefix, Opaque, M) & ")");
       P (O, "  return Boolean");
    end Print_Kind_Checks_Specification;
+
+   ---------------------------
+   -- Print_Opaque_Subtypes --
+   ---------------------------
+
+   procedure Print_Opaque_Subtypes (O : in out Output_Record) is
+   begin
+      Print_Subtypes (O, Opaque);
+   end Print_Opaque_Subtypes;
+
+   ----------------------------
+   -- Print_Regular_Subtypes --
+   ----------------------------
+
+   procedure Print_Regular_Subtypes (O : in out Output_Record) is
+   begin
+      Print_Subtypes (O, Regular);
+   end Print_Regular_Subtypes;
 
    --------------------
    -- Print_Subtypes --
@@ -608,15 +640,6 @@ procedure Xkinds is
       Classes.Iterate (Process_One_Class_Kind'Access);
    end Print_Subtypes;
 
-   ----------------------------
-   -- Print_Regular_Subtypes --
-   ----------------------------
-
-   procedure Print_Regular_Subtypes (O : in out Output_Record) is
-   begin
-      Print_Subtypes (O, Regular);
-   end Print_Regular_Subtypes;
-
    ------------------------------
    -- Print_Unchecked_Subtypes --
    ------------------------------
@@ -625,15 +648,6 @@ procedure Xkinds is
    begin
       Print_Subtypes (O, Unchecked);
    end Print_Unchecked_Subtypes;
-
-   ---------------------------
-   -- Print_Opaque_Subtypes --
-   ---------------------------
-
-   procedure Print_Opaque_Subtypes (O : in out Output_Record) is
-   begin
-      Print_Subtypes (O, Opaque);
-   end Print_Opaque_Subtypes;
 
    Control : Traverse_Control := Continue;
    State   : Traversal_State := Before_Why_Node_Kind;
