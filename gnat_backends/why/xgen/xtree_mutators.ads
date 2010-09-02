@@ -26,7 +26,7 @@
 with Outputs; use Outputs;
 
 package Xtree_Mutators is
-   --  This package provides generators for Why node builders
+   --  This package provides generators for Why node mutators
 
    procedure Print_Mutator_Declarations  (O : in out Output_Record);
    --  Print mutator declarations for Why nodes
