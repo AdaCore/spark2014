@@ -139,6 +139,28 @@ procedure Xkinds is
    --  Same as the three Print_*_Subtypes method, Kind being the
    --  Id Kind of the subtypes to generate.
 
+   Node_Id_Param : constant Wide_String := "Id";
+
+   procedure Print_Kind_Checks_Declarations (O : in out Output_Record);
+   --  Print kind-validity check declarations
+
+   procedure Print_Kind_Checks_Bodies (O : in out Output_Record);
+   --  Print kind-validity check bodies
+
+   procedure Print_Kind_Checks_Specification
+     (O      : in out Output_Record;
+      Prefix : Wide_String;
+      M      : Id_Multiplicity);
+   --  Print subprogram specification for the kind-validity check of
+   --  a node kind.
+
+   function Kind_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String;
+   --  Return the name of the kind-validity check for the given
+   --  node kind
+
    -------------------------
    -- Multiplicity_Suffix --
    -------------------------
@@ -217,6 +239,18 @@ procedure Xkinds is
             return Id_Subtype (Prefix, Unchecked, Multiplicity);
       end case;
    end Base_Id_Subtype;
+
+   ----------------
+   -- Kind_Check --
+   ----------------
+
+   function Kind_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String is
+   begin
+      return Prefix & Multiplicity_Suffix (M) & "_Kind_Valid";
+   end Kind_Check;
 
    -------------------
    -- Pre_Operation --
@@ -302,6 +336,196 @@ procedure Xkinds is
             null;
       end case;
    end Post_Operation;
+
+   ------------------------------
+   -- Print_Kind_Checks_Bodies --
+   ------------------------------
+
+   procedure Print_Kind_Checks_Bodies (O : in out Output_Record) is
+      use String_Lists;
+
+      type State is (Processing_Classes, Processing_Nodes);
+
+      procedure Process_One_Node_Kind (Position : Cursor);
+      procedure Process_One_Class_Kind (Position : Cursor);
+      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State);
+
+      ---------------------------
+      -- Print_Kind_Check_Body --
+      ---------------------------
+
+      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State) is
+      begin
+         for M in Id_Multiplicity'Range loop
+            Print_Kind_Checks_Specification (O, Prefix, M);
+            PL (O, " is");
+
+            Relative_Indent (O, 2);
+            case M is
+               when Id_One =>
+                  P (O,
+                     "(Get_Kind (" & Node_Id_Param & ")");
+
+                  case S is
+                     when Processing_Nodes =>
+                        P (O, " = " & Prefix);
+                     when Processing_Classes =>
+                        P (O, " in " & Prefix & "'Range");
+                  end case;
+
+                  PL (O, ");");
+
+               when Id_Lone =>
+                  PL (O,
+                      "(" & Node_Id_Param & " = Why_Empty");
+                  PL (O,
+                      " or else "
+                      & Kind_Check (Prefix, Id_One)
+                      & " (" & Node_Id_Param & "));");
+
+               when Id_Some =>
+                  PL (O, "(not Is_Empty (" & Node_Id_Param & ")");
+
+                  if False then
+                     PL (O,
+                         " and then for all Element in Get_List ("
+                         & Node_Id_Param & ") | ");
+                     PL (O, Kind_Check (Prefix, Id_One) & " (Element));");
+                  else
+                     PL (O, " and then True);");
+                     Relative_Indent (O, -2);
+                     PL (O, "--  ??? Partial implementation;");
+                     PL (O, "--  ??? universal quantif on containers "
+                         & "has not been implemented yet.");
+                     Relative_Indent (O, 2);
+                  end if;
+
+               when Id_Set =>
+                  PL (O,
+                      "(Is_Empty (" & Node_Id_Param & ")");
+                  PL (O,
+                      " or else "
+                      & Kind_Check (Prefix, Id_Some)
+                      & " (" & Node_Id_Param & "));");
+            end case;
+            Relative_Indent (O, -2);
+
+            if M /= Id_Multiplicity'Last then
+               NL (O);
+            end if;
+         end loop;
+      end Print_Kind_Check_Body;
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         Print_Kind_Check_Body (S.all, Processing_Classes);
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+      ---------------------------
+      -- Process_One_Node_Kind --
+      ---------------------------
+
+      procedure Process_One_Node_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         Print_Kind_Check_Body (S.all, Processing_Nodes);
+
+         if Position /= Kinds.Last then
+            NL (O);
+         end if;
+      end Process_One_Node_Kind;
+
+   begin
+      Kinds.Iterate (Process_One_Node_Kind'Access);
+      NL (O);
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Kind_Checks_Bodies;
+
+   ------------------------------------
+   -- Print_Kind_Checks_Declarations --
+   ------------------------------------
+
+   procedure Print_Kind_Checks_Declarations (O : in out Output_Record)
+   is
+      use String_Lists;
+
+      procedure Process_One_Node_Kind (Position : Cursor);
+      procedure Process_One_Class_Kind (Position : Cursor);
+      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String);
+
+      -----------------------------------
+      -- Print_Kind_Checks_Declaration --
+      -----------------------------------
+
+      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String) is
+      begin
+         for M in Id_Multiplicity'Range loop
+            Print_Kind_Checks_Specification (O, Prefix, M);
+            PL (O, ";");
+
+            if M /= Id_Multiplicity'Last then
+               NL (O);
+            end if;
+         end loop;
+      end Print_Kind_Checks_Declaration;
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         Print_Kind_Checks_Declaration (S.all);
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+      ---------------------------
+      -- Process_One_Node_Kind --
+      ---------------------------
+
+      procedure Process_One_Node_Kind (Position : Cursor) is
+         S : constant Wide_String_Access := String_Lists.Element (Position);
+      begin
+         Print_Kind_Checks_Declaration (S.all);
+
+         if Position /= Kinds.Last then
+            NL (O);
+         end if;
+      end Process_One_Node_Kind;
+
+   begin
+      Kinds.Iterate (Process_One_Node_Kind'Access);
+      NL (O);
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Kind_Checks_Declarations;
+
+   -------------------------------------
+   -- Print_Kind_Checks_Specification --
+   -------------------------------------
+
+   procedure Print_Kind_Checks_Specification
+     (O      : in out Output_Record;
+      Prefix : Wide_String;
+      M      : Id_Multiplicity) is
+   begin
+      PL (O, "function " & Kind_Check (Prefix, M));
+      PL (O, "  (" & Node_Id_Param & " : "
+          & Id_Subtype (Prefix, Opaque, M) & ")");
+      P (O, "  return Boolean");
+   end Print_Kind_Checks_Specification;
 
    --------------------
    -- Print_Subtypes --
@@ -446,8 +670,11 @@ begin
    Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
    Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
    Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
+   Add ("Declare_Kind_Checks", Print_Kind_Checks_Declarations'Access);
+   Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
 
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");
    Process ("why-opaque_ids.ads");
+   Process ("why-kind_validity.ads");
 end Xkinds;

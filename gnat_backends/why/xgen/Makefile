@@ -10,6 +10,7 @@ GENERATED_FILES= \
  why-atree-traversal_stub.ads \
  why-atree-traversal_stub.adb \
  why-ids.ads                  \
+ why-kind_validity.ads        \
  why-opaque_ids.ads           \
  why-unchecked_ids.ads
 
@@ -51,6 +52,9 @@ why-atree-traversal_stub.adb: xtree why-atree.adt why-atree-traversal_stub.adb-t
 	./xtree
 
 why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl
+	./xkinds
+
+why-kind_validity.ads: xkinds why-sinfo.adt why-kind_validity.ads-tmpl
 	./xkinds
 
 why-opaque_ids.ads: xkinds why-sinfo.adt why-opaque_ids.ads-tmpl
