@@ -2,9 +2,9 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                               X K I N D S                                --
+--                           X K I N D _ L O A D                            --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                       Copyright (C) 2010, AdaCore                        --
 --                                                                          --
@@ -23,30 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Templates;    use Templates;
-with Xkind_Ids;    use Xkind_Ids;
-with Xkind_Checks; use Xkind_Checks;
-with Xkind_Load;   use Xkind_Load;
+package Xkind_Load is
+   --  ASIS helper that takes Why.Sinfo's syntax tree and populate the
+   --  node kind/class list in Xkind_Tables.
 
-procedure Xkinds is
-   --  ASIS helper that takes Why.Sinfo's syntax tree and generates a list
-   --  of subtypes of Why_Node_Id, one per kind (and will also generate
-   --  a subtype predicate when GNAT will support them). Same thing for
-   --  node classes.
+   procedure Load_Sinfo;
 
-begin
-   Load_Sinfo;
-
-   --  Production of packages from the kind/class lists
-
-   Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
-   Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
-   Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
-   Add ("Declare_Kind_Checks", Print_Kind_Checks_Declarations'Access);
-   Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
-
-   Process ("why-ids.ads");
-   Process ("why-unchecked_ids.ads");
-   Process ("why-opaque_ids.ads");
-   Process ("why-kind_validity.ads");
-end Xkinds;
+end Xkind_Load;
