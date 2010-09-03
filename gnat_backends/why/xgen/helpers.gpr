@@ -5,7 +5,7 @@ project Helpers is
 
    for Source_Dirs use (".", "..");
 
-   for Main use ("xkinds", "xtree");
+   for Main use ("xtree");
 
    for Object_Dir use ".";
 

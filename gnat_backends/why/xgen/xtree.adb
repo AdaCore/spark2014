@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Xkind_Load;      use Xkind_Load;
+with Xkind_Ids;       use Xkind_Ids;
+with Xkind_Checks;    use Xkind_Checks;
 with Xtree_Load;      use Xtree_Load;
 with Xtree_Builders;  use Xtree_Builders;
 with Xtree_Accessors; use Xtree_Accessors;
@@ -31,11 +34,25 @@ with Xtree_Traversal; use Xtree_Traversal;
 with Templates;       use Templates;
 
 procedure Xtree is
-   --  ASIS helper that takes Why.Atree's syntax tree and generates
+   --  ASIS helper that takes Why.Sinfo/Why.Atree's syntax tree and generates
    --  builders, accessors/mutators, recursive traversal...
 
 begin
+   Load_Sinfo;
    Load_Atree;
+
+   --  Production of packages from the kind/class lists
+
+   Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
+   Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
+   Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
+   Add ("Declare_Kind_Checks", Print_Kind_Checks_Declarations'Access);
+   Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
+
+   Process ("why-ids.ads");
+   Process ("why-unchecked_ids.ads");
+   Process ("why-opaque_ids.ads");
+   Process ("why-kind_validity.ads");
 
    --  Production of packages for builders, accessors, mutators
 

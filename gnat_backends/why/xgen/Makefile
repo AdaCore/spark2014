@@ -51,20 +51,17 @@ why-atree-traversal_stub.ads: xtree why-atree.adt why-atree-traversal_stub.ads-t
 why-atree-traversal_stub.adb: xtree why-atree.adt why-atree-traversal_stub.adb-tmpl
 	./xtree
 
-why-ids.ads: xkinds why-sinfo.adt why-ids.ads-tmpl
-	./xkinds
+why-ids.ads: xtree why-sinfo.adt why-ids.ads-tmpl
+	./xtree
 
-why-kind_validity.ads: xkinds why-sinfo.adt why-kind_validity.ads-tmpl
-	./xkinds
+why-kind_validity.ads: xtree why-sinfo.adt why-kind_validity.ads-tmpl
+	./xtree
 
-why-opaque_ids.ads: xkinds why-sinfo.adt why-opaque_ids.ads-tmpl
-	./xkinds
+why-opaque_ids.ads: xtree why-sinfo.adt why-opaque_ids.ads-tmpl
+	./xtree
 
-why-unchecked_ids.ads: xkinds why-sinfo.adt why-unchecked_ids.ads-tmpl
-	./xkinds
-
-xkinds: force
-	gnatmake -Phelpers xkinds
+why-unchecked_ids.ads: xtree why-sinfo.adt why-unchecked_ids.ads-tmpl
+	./xtree
 
 xtree: force
 	gnatmake -Phelpers xtree
@@ -75,5 +72,4 @@ clean:
 	-rm *.ali
 	-rm b~* 
 	-rm *.adt
-	-rm xkinds
 	-rm xtree
