@@ -23,15 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Xkind_Load;      use Xkind_Load;
-with Xkind_Ids;       use Xkind_Ids;
-with Xkind_Checks;    use Xkind_Checks;
-with Xtree_Load;      use Xtree_Load;
-with Xtree_Builders;  use Xtree_Builders;
-with Xtree_Accessors; use Xtree_Accessors;
-with Xtree_Mutators;  use Xtree_Mutators;
-with Xtree_Traversal; use Xtree_Traversal;
-with Templates;       use Templates;
+with Xkind_Load;            use Xkind_Load;
+with Xkind_Ids;             use Xkind_Ids;
+with Xkind_Checks;          use Xkind_Checks;
+with Xtree_Load;            use Xtree_Load;
+with Xtree_Builders;        use Xtree_Builders;
+with Xtree_Accessors;       use Xtree_Accessors;
+with Xtree_Mutators;        use Xtree_Mutators;
+with Xtree_Traversal;       use Xtree_Traversal;
+with Xtree_Checks;          use Xtree_Checks;
+with Xtree_Children_Checks; use Xtree_Children_Checks;
+with Templates;             use Templates;
 
 procedure Xtree is
    --  ASIS helper that takes Why.Sinfo/Why.Atree's syntax tree and generates
@@ -46,13 +48,10 @@ begin
    Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
    Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
    Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
-   Add ("Declare_Kind_Checks", Print_Kind_Checks_Declarations'Access);
-   Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
 
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");
    Process ("why-opaque_ids.ads");
-   Process ("why-kind_validity.ads");
 
    --  Production of packages for builders, accessors, mutators
 
@@ -82,4 +81,18 @@ begin
    Process ("why-atree-traversal.adb");
    Process ("why-atree-traversal_stub.ads");
    Process ("why-atree-traversal_stub.adb");
+
+   --  Production of packages for validity checks
+
+   Add ("Declare_Kind_Checks", Print_Kind_Checks_Declarations'Access);
+   Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
+   Add ("Declare_Checks", Print_Checks_Declarations'Access);
+   Add ("Implement_Checks", Print_Checks_Bodies'Access);
+   Add ("Declare_Cache_Checks", Print_Cache_Checks_Declarations'Access);
+   Add ("Implement_Cache_Checks", Print_Cache_Checks_Bodies'Access);
+   Add ("Declare_Children_Checks", Print_Children_Checks_Declarations'Access);
+   Add ("Implement_Children_Checks", Print_Children_Checks_Bodies'Access);
+
+   Process ("why-kind_validity.ads");
+   Process ("why-atree-validity.ads");
 end Xtree;

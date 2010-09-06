@@ -35,6 +35,7 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Sprint;   use Why.Atree.Sprint;
 with Why.Kind_Validity;  use Why.Kind_Validity;
+with Why.Atree.Validity; use Why.Atree.Validity;
 
 package body Gnat2Why.Driver is
 
@@ -98,8 +99,9 @@ package body Gnat2Why.Driver is
                               Name_Find,
                               Why_Empty);
          Type_Set_Name (T, I);
-         pragma Assert (W_Type_Id_Kind_Valid (T));
-         pragma Assert (W_Identifier_Id_Kind_Valid (I));
+         pragma Assert (Type_Id_Kind_Valid (T));
+         pragma Assert (Identifier_Id_Kind_Valid (I));
+         pragma Assert (Type_Id_Valid (T));
          Sprint_Why_Node (T);
       end;
    end GNAT_To_Why;

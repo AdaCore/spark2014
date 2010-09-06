@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                         X K I N D _ C H E C K S                          --
+--                X T R E E _ C H I L D R E N _ C H E C K S                 --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -24,71 +24,78 @@
 ------------------------------------------------------------------------------
 
 with Xkind_Tables; use Xkind_Tables;
+with Xtree_Tables; use Xtree_Tables;
+with Why.Sinfo;    use Why.Sinfo;
 
-package body Xkind_Checks is
+package body Xtree_Children_Checks is
    --  This package provides routines to print kind-validity checks
 
    Node_Id_Param : constant Wide_String := "Id";
 
-   procedure Print_Kind_Checks_Specification
+   procedure Print_Children_Checks_Specification
      (O      : in out Output_Record;
       Prefix : Wide_String;
       M      : Id_Multiplicity);
    --  Print subprogram specification for the kind-validity check of
    --  a node kind.
 
-   ------------------------------
-   -- Print_Kind_Checks_Bodies --
-   ------------------------------
+   procedure Print_Children_Check_Expression
+     (O      : in out Output_Record;
+      Prefix : Wide_String);
 
-   procedure Print_Kind_Checks_Bodies (O : in out Output_Record) is
+   procedure Print_Class_Check_Expression
+     (O      : in out Output_Record;
+      CI     : Class_Info);
+
+   ----------------------------------
+   -- Print_Children_Checks_Bodies --
+   ----------------------------------
+
+   procedure Print_Children_Checks_Bodies (O : in out Output_Record) is
       use String_Lists;
       use Class_Lists;
 
-      type State is (Processing_Classes, Processing_Nodes);
-
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
-      --  Same as Print_Kind_Check_Body, but only for nodes
+      --  Same as Print_Children_Check_Body, but only for nodes
 
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
-      --  Same as Print_Kind_Check_Body, but only for classes
+      --  Same as Print_Children_Check_Body, but only for classes
 
-      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State);
+      procedure Print_Children_Check_Body
+        (Prefix : Wide_String;
+         CI     : Class_Info);
       --  Print the body of kind-validity checks for the given node
-      --  kind; S tells us if the Prefix designates a node kind
-      --  or a node class.
+      --  kind if CI.Name is null; otherwise, print a children check
+      --  for the corresponding node class.
 
-      ---------------------------
-      -- Print_Kind_Check_Body --
-      ---------------------------
+      -------------------------------
+      -- Print_Children_Check_Body --
+      -------------------------------
 
-      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State) is
+      procedure Print_Children_Check_Body
+        (Prefix : Wide_String;
+         CI     : Class_Info) is
       begin
          for M in Id_Multiplicity'Range loop
-            Print_Kind_Checks_Specification (O, Prefix, M);
+            Print_Children_Checks_Specification (O, Prefix, M);
             PL (O, " is");
 
             Relative_Indent (O, 2);
             case M is
                when Id_One =>
-                  P (O,
-                     "(Get_Kind (" & Node_Id_Param & ")");
-
-                  case S is
-                     when Processing_Nodes =>
-                        P (O, " = " & Prefix);
-                     when Processing_Classes =>
-                        P (O, " in " & Prefix & "'Range");
-                  end case;
-
-                  PL (O, ");");
+                  if CI.Name = null then
+                     Print_Children_Check_Expression (O, Prefix);
+                  else
+                     Print_Class_Check_Expression (O, CI);
+                  end if;
+                  NL (O);
 
                when Id_Lone =>
                   PL (O,
                       "(" & Node_Id_Param & " = Why_Empty");
                   PL (O,
                       " or else "
-                      & Kind_Check (Prefix, Id_One)
+                      & Children_Check (Prefix, Id_One)
                       & " (" & Node_Id_Param & "));");
 
                when Id_Some =>
@@ -98,7 +105,7 @@ package body Xkind_Checks is
                      PL (O,
                          " and then for all Element in Get_List ("
                          & Node_Id_Param & ") | ");
-                     PL (O, Kind_Check (Prefix, Id_One) & " (Element));");
+                     PL (O, Children_Check (Prefix, Id_One) & " (Element));");
                   else
                      PL (O, " and then True);");
                      Relative_Indent (O, -2);
@@ -113,7 +120,7 @@ package body Xkind_Checks is
                       "(Is_Empty (" & Node_Id_Param & ")");
                   PL (O,
                       " or else "
-                      & Kind_Check (Prefix, Id_Some)
+                      & Children_Check (Prefix, Id_Some)
                       & " (" & Node_Id_Param & "));");
             end case;
             Relative_Indent (O, -2);
@@ -122,7 +129,7 @@ package body Xkind_Checks is
                NL (O);
             end if;
          end loop;
-      end Print_Kind_Check_Body;
+      end Print_Children_Check_Body;
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -131,7 +138,7 @@ package body Xkind_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
          CI : constant Class_Info := Class_Lists.Element (Position);
       begin
-         Print_Kind_Check_Body (Class_Name (CI), Processing_Classes);
+         Print_Children_Check_Body (Class_Name (CI), CI);
 
          if Position /= Classes.Last then
             NL (O);
@@ -145,7 +152,7 @@ package body Xkind_Checks is
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         Print_Kind_Check_Body (S.all, Processing_Nodes);
+         Print_Children_Check_Body (S.all, (null, null, null));
 
          if Position /= Kinds.Last then
             NL (O);
@@ -156,13 +163,13 @@ package body Xkind_Checks is
       Kinds.Iterate (Process_One_Node_Kind'Access);
       NL (O);
       Classes.Iterate (Process_One_Class_Kind'Access);
-   end Print_Kind_Checks_Bodies;
+   end Print_Children_Checks_Bodies;
 
-   ------------------------------------
-   -- Print_Kind_Checks_Declarations --
-   ------------------------------------
+   ----------------------------------------
+   -- Print_Children_Checks_Declarations --
+   ----------------------------------------
 
-   procedure Print_Kind_Checks_Declarations (O : in out Output_Record)
+   procedure Print_Children_Checks_Declarations (O : in out Output_Record)
    is
       use String_Lists;
       use Class_Lists;
@@ -173,26 +180,26 @@ package body Xkind_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       -- Same as Print_Kind_Checks_Declaration, but only for node kinds
 
-      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String);
+      procedure Print_Children_Checks_Declaration (Prefix : Wide_String);
       --  Print the declarations of kind-validity checks for the given node
       --  kind; S tells us if the Prefix designates a node kind
       --  or a node class.
 
-      -----------------------------------
-      -- Print_Kind_Checks_Declaration --
-      -----------------------------------
+      ---------------------------------------
+      -- Print_Children_Checks_Declaration --
+      ---------------------------------------
 
-      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String) is
+      procedure Print_Children_Checks_Declaration (Prefix : Wide_String) is
       begin
          for M in Id_Multiplicity'Range loop
-            Print_Kind_Checks_Specification (O, Prefix, M);
+            Print_Children_Checks_Specification (O, Prefix, M);
             PL (O, ";");
 
             if M /= Id_Multiplicity'Last then
                NL (O);
             end if;
          end loop;
-      end Print_Kind_Checks_Declaration;
+      end Print_Children_Checks_Declaration;
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -201,7 +208,7 @@ package body Xkind_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
          CI : constant Class_Info := Class_Lists.Element (Position);
       begin
-         Print_Kind_Checks_Declaration (Class_Name (CI));
+         Print_Children_Checks_Declaration (Class_Name (CI));
 
          if Position /= Classes.Last then
             NL (O);
@@ -215,7 +222,7 @@ package body Xkind_Checks is
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
-         Print_Kind_Checks_Declaration (S.all);
+         Print_Children_Checks_Declaration (S.all);
 
          if Position /= Kinds.Last then
             NL (O);
@@ -226,21 +233,97 @@ package body Xkind_Checks is
       Kinds.Iterate (Process_One_Node_Kind'Access);
       NL (O);
       Classes.Iterate (Process_One_Class_Kind'Access);
-   end Print_Kind_Checks_Declarations;
+   end Print_Children_Checks_Declarations;
 
-   -------------------------------------
-   -- Print_Kind_Checks_Specification --
-   -------------------------------------
+   --------------------------------------
+   -- Print_Children_Checks_Expression --
+   --------------------------------------
 
-   procedure Print_Kind_Checks_Specification
+   procedure Print_Children_Check_Expression
+     (O      : in out Output_Record;
+      Prefix : Wide_String)
+   is
+      use Node_Lists;
+
+      Kind : constant Why_Node_Kind :=
+               Why_Node_Kind'Wide_Value (Prefix);
+
+      procedure Print_Field_Check (Position : Cursor);
+
+      -----------------------
+      -- Print_Field_Check --
+      -----------------------
+
+      procedure Print_Field_Check (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+      begin
+         if Previous (Position) /= No_Element then
+            Relative_Indent (O, 2);
+         end if;
+
+         if Is_Why_Id (FI) then
+            PL (O, Cache_Check (Field_Kind (FI), Multiplicity (FI)));
+            P (O, "  (" & Accessor_Name (Kind, FI)
+               & " (" & Node_Id_Param & "))");
+         else
+            P (O, "True");
+         end if;
+
+         if Previous (Position) /= No_Element then
+            Relative_Indent (O, -2);
+         end if;
+
+         if Next (Position) /= No_Element then
+            NL (O);
+            PL (O, "and then");
+         end if;
+      end Print_Field_Check;
+
+   begin
+      P (O, "(");
+
+      if Has_Variant_Part (Kind) then
+         Why_Tree_Info (Kind).Fields.Iterate (Print_Field_Check'Access);
+      else
+         P (O, "True");
+      end if;
+
+      P (O, ");");
+   end Print_Children_Check_Expression;
+
+   -----------------------------------------
+   -- Print_Children_Checks_Specification --
+   -----------------------------------------
+
+   procedure Print_Children_Checks_Specification
      (O      : in out Output_Record;
       Prefix : Wide_String;
       M      : Id_Multiplicity) is
    begin
-      PL (O, "function " & Kind_Check (Prefix, M));
+      PL (O, "function " & Children_Check (Prefix, M));
       PL (O, "  (" & Node_Id_Param & " : "
-          & Id_Subtype (Prefix, Opaque, M) & ")");
+          & Id_Subtype (Prefix, Unchecked, M) & ")");
       P (O, "  return Boolean");
-   end Print_Kind_Checks_Specification;
+   end Print_Children_Checks_Specification;
 
-end Xkind_Checks;
+   ----------------------------------
+   -- Print_Class_Check_Expression --
+   ----------------------------------
+
+   procedure Print_Class_Check_Expression
+     (O      : in out Output_Record;
+      CI     : Class_Info)
+   is
+      Prefix : constant Wide_String := Class_Name (CI);
+   begin
+      PL (O, "(case Get_Kind (" & Node_Id_Param & ") is");
+      for Kind in Class_First (CI) .. Class_Last (CI) loop
+         PL (O, "   when " & Mixed_Case_Name (Kind) & " =>");
+         PL (O, "      " & Children_Check (Mixed_Case_Name (Kind), Id_One)
+             & " (" & Node_Id_Param & "),");
+      end loop;
+      PL (O, "   when others =>");
+      P  (O, "      False);");
+   end Print_Class_Check_Expression;
+
+end Xtree_Children_Checks;

@@ -53,6 +53,62 @@ package body Xkind_Tables is
       end case;
    end Base_Id_Subtype;
 
+   -----------------
+   -- Cache_Check --
+   -----------------
+
+   function Cache_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String
+   is
+   begin
+      return Strip_Prefix (Prefix)
+        & Multiplicity_Suffix (M)
+        & "_Cache_Valid";
+   end Cache_Check;
+
+   --------------------
+   -- Children_Check --
+   --------------------
+
+   function Children_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String is
+   begin
+      return Strip_Prefix (Prefix)
+        & Multiplicity_Suffix (M)
+        & "_Children_Valid";
+   end Children_Check;
+
+   -----------------
+   -- Class_First --
+   -----------------
+
+   function Class_First (CI : Class_Info) return Why_Node_Kind is
+   begin
+      return Why_Node_Kind'Wide_Value (CI.First.all);
+   end Class_First;
+
+   ----------------
+   -- Class_Last --
+   ----------------
+
+   function Class_Last (CI : Class_Info) return Why_Node_Kind is
+   begin
+      return Why_Node_Kind'Wide_Value (CI.Last.all);
+   end Class_Last;
+
+   ----------------
+   -- Class_Name --
+   ----------------
+
+   function Class_Name (CI : Class_Info) return Wide_String is
+   begin
+      return CI.Name.all;
+   end Class_Name;
+
    ----------------
    -- Id_Subtype --
    ----------------
@@ -119,5 +175,19 @@ package body Xkind_Tables is
             return "_OList";
       end case;
    end Multiplicity_Suffix;
+
+   ----------------
+   -- Tree_Check --
+   ----------------
+
+   function Tree_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String is
+   begin
+      return Strip_Prefix (Prefix)
+        & Multiplicity_Suffix (M)
+        & "_Valid";
+   end Tree_Check;
 
 end XKind_Tables;

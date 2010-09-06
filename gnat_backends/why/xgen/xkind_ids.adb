@@ -55,12 +55,13 @@ package body Xkind_Ids is
 
    procedure Print_Subtypes (O : in out Output_Record; Kind : Id_Kind) is
       use String_Lists;
+      use Class_Lists;
 
-      procedure Process_One_Node_Kind (Position : Cursor);
+      procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
       --  Same as Print_Subtypes, but only for the kind
       --  pointed by Position.
 
-      procedure Process_One_Class_Kind (Position : Cursor);
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       --  Same as Print_Subtypes, but only for the class
       --  pointed by Position.
 
@@ -98,10 +99,10 @@ package body Xkind_Ids is
       -- Process_One_Class_Kind --
       ----------------------------
 
-      procedure Process_One_Class_Kind (Position : Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
+         CI : constant Class_Info := Class_Lists.Element (Position);
       begin
-         Print_Subtypes (S.all);
+         Print_Subtypes (Class_Name (CI));
 
          if Position /= Classes.Last then
             NL (O);
@@ -112,7 +113,7 @@ package body Xkind_Ids is
       -- Process_One_Node_Kind --
       ---------------------------
 
-      procedure Process_One_Node_Kind (Position : Cursor) is
+      procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
          S : constant Wide_String_Access := String_Lists.Element (Position);
       begin
          Print_Subtypes (S.all);

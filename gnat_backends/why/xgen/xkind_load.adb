@@ -29,6 +29,8 @@ with Asis.Ada_Environments;      use Asis.Ada_Environments;
 with Asis.Compilation_Units;     use Asis.Compilation_Units;
 with Asis.Iterator;              use Asis.Iterator;
 with Asis.Elements;              use Asis.Elements;
+with Asis.Declarations;          use Asis.Declarations;
+with Asis.Definitions;           use Asis.Definitions;
 with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 with Xkind_Tables;               use Xkind_Tables;
 with Utils;                      use Utils;
@@ -40,8 +42,7 @@ package body Xkind_Load is
    type Traversal_State is
      (Before_Why_Node_Kind,
       In_Why_Node_Kind,
-      After_Why_Node_Kind,
-      In_Why_Node_Class_Declaration);
+      After_Why_Node_Kind);
    --  The traversal of the syntax tree is implemented as a state machine
    --  whose states are defined by this enumeration and whose transitions
    --  are triggered by the detection of some Ada entities. See the
@@ -62,6 +63,8 @@ package body Xkind_Load is
 
    procedure Traverse_Source is new Asis.Iterator.Traverse_Element
      (State_Information => Traversal_State);
+
+   procedure Record_Class (Element : Asis.Declaration);
 
    ----------------
    -- Load_Sinfo --
@@ -135,18 +138,9 @@ package body Xkind_Load is
                end;
             end if;
 
-         when In_Why_Node_Class_Declaration =>
-            if Kind = A_Defining_Identifier then
-               declare
-                  Text : constant Asis.Program_Text := Img (Element);
-               begin
-                  Classes.Append (new Wide_String'(Text));
-               end;
-            end if;
-
          when After_Why_Node_Kind =>
             if Kind = A_Subtype_Declaration then
-               State := In_Why_Node_Class_Declaration;
+               Record_Class (Element);
             end if;
 
       end case;
@@ -174,14 +168,39 @@ package body Xkind_Load is
                State := After_Why_Node_Kind;
             end if;
 
-         when In_Why_Node_Class_Declaration =>
-            if Kind = A_Subtype_Declaration then
-               State := After_Why_Node_Kind;
-            end if;
-
          when After_Why_Node_Kind =>
             null;
       end case;
    end Post_Operation;
+
+   ------------------
+   -- Record_Class --
+   ------------------
+
+   procedure Record_Class (Element : Asis.Declaration) is
+      DI      : constant Asis.Defining_Name_List :=
+                  Names (Element);
+      Name    : constant Wide_String_Access :=
+                  new Wide_String'(Img (DI (DI'First)));
+      SI      : constant Asis.Subtype_Indication :=
+                  Type_Declaration_View (Element);
+      RC      : constant Asis.Constraint :=
+                  Subtype_Constraint (SI);
+      First_E : constant Asis.Element :=
+                  Lower_Bound (RC);
+      Last_E  : constant Asis.Element :=
+                  Upper_Bound (RC);
+      First   : constant Wide_String_Access :=
+                  new Wide_String'(Img (First_E));
+      Last    : constant Wide_String_Access :=
+                  new Wide_String'(Img (Last_E));
+      CI      : constant Class_Info :=
+                  (Name  => Name,
+                   First => First,
+                   Last  => Last);
+   begin
+      pragma Assert (DI'Length = 1);
+      Classes.Append (CI);
+   end Record_Class;
 
 end Xkind_Load;

@@ -63,6 +63,25 @@ package body Xtree_Tables is
    end Builder_Name;
 
    ----------------
+   -- Field_Kind --
+   ----------------
+
+   function Field_Kind (FI : Field_Info) return Wide_String is
+      Type_With_Visibility_Info : constant Wide_String :=
+                                    Strip_Suffix (FI.Field_Type.all);
+      Visibility_Info           : constant Wide_String :=
+                                    Suffix (Type_With_Visibility_Info);
+   begin
+      if Visibility_Info = "Opaque"
+        or else Visibility_Info = "Unchecked"
+      then
+         return Strip_Suffix (Type_With_Visibility_Info);
+      else
+         return Type_With_Visibility_Info;
+      end if;
+   end Field_Kind;
+
+   ----------------
    -- Field_Name --
    ----------------
 
@@ -149,6 +168,27 @@ package body Xtree_Tables is
    begin
       return FI.Maybe_Null;
    end Maybe_Null;
+
+   ------------------
+   -- Multiplicity --
+   ------------------
+
+   function Multiplicity (FI : Field_Info) return Id_Multiplicity is
+   begin
+      if FI.Maybe_Null then
+         if FI.Is_List then
+            return Id_Set;
+         else
+            return Id_Lone;
+         end if;
+      else
+         if FI.Is_List then
+            return Id_Some;
+         else
+            return Id_One;
+         end if;
+      end if;
+   end Multiplicity;
 
    ------------------
    -- Mutator_Name --

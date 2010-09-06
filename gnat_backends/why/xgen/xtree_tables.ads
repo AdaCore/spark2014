@@ -24,7 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Why.Sinfo; use Why.Sinfo;
+with Why.Sinfo;    use Why.Sinfo;
+with Xkind_Tables; use Xkind_Tables;
 
 package Xtree_Tables is
    --  This package provide an interface to record structural information
@@ -203,6 +204,10 @@ package Xtree_Tables is
    function Field_Name (FI : Field_Info) return Wide_String;
    --  Return the name of this field
 
+   function Field_Kind (FI : Field_Info) return Wide_String;
+   pragma Precondition (Is_Why_Id (FI));
+   --  For a node field, return its kind
+
    function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    function Id_Type_Name (FI : Field_Info) return Wide_String;
    function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
@@ -224,5 +229,9 @@ package Xtree_Tables is
    function Is_Why_Id  (FI : Field_Info) return Boolean;
    --  True if the type of this field is a subtype of Why_Node_Id
    --  or a subtype of Why_Node_List.
+
+   function Multiplicity (FI : Field_Info) return Id_Multiplicity;
+   pragma Precondition (Is_Why_Id (FI));
+   --  For a node child, return corresponding multiplicity
 
 end Xtree_Tables;

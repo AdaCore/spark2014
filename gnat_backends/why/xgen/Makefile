@@ -9,10 +9,15 @@ GENERATED_FILES= \
  why-atree-traversal.adb      \
  why-atree-traversal_stub.ads \
  why-atree-traversal_stub.adb \
+ why-atree-validity.ads       \
  why-ids.ads                  \
  why-kind_validity.ads        \
  why-opaque_ids.ads           \
  why-unchecked_ids.ads
+
+ASIS_FILES=\
+ why-sinfo.adt \
+ why-atree.adt
 
 all: $(GENERATED_FILES)
 
@@ -24,31 +29,34 @@ why-sinfo.adt: ../why-sinfo.ads
 why-atree.adt: ../why-atree.ads
 	gcc -c -gnatct ../why-atree.ads -I../../gnat_src
 
-why-atree-accessors.ads: xtree why-atree.adt why-atree-accessors.ads-tmpl
+why-atree-accessors.ads: xtree $(ASIS_FILES) why-atree-accessors.ads-tmpl
 	./xtree
 
-why-atree-mutators.ads: xtree why-atree.adt why-atree-mutators.ads-tmpl
+why-atree-mutators.ads: xtree $(ASIS_FILES) why-atree-mutators.ads-tmpl
 	./xtree
 
-why-atree-mutators.adb: xtree why-atree.adt why-atree-mutators.adb-tmpl
+why-atree-mutators.adb: xtree $(ASIS_FILES) why-atree-mutators.adb-tmpl
 	./xtree
 
-why-atree-builders.ads: xtree why-atree.adt why-atree-builders.ads-tmpl
+why-atree-builders.ads: xtree $(ASIS_FILES) why-atree-builders.ads-tmpl
 	./xtree
 
-why-atree-builders.adb: xtree why-atree.adt why-atree-builders.adb-tmpl
+why-atree-builders.adb: xtree $(ASIS_FILES) why-atree-builders.adb-tmpl
 	./xtree
 
-why-atree-traversal.ads: xtree why-atree.adt why-atree-traversal.ads-tmpl
+why-atree-traversal.ads: xtree $(ASIS_FILES) why-atree-traversal.ads-tmpl
 	./xtree
 
-why-atree-traversal.adb: xtree why-atree.adt why-atree-traversal.adb-tmpl
+why-atree-traversal.adb: xtree $(ASIS_FILES) why-atree-traversal.adb-tmpl
 	./xtree
 
-why-atree-traversal_stub.ads: xtree why-atree.adt why-atree-traversal_stub.ads-tmpl
+why-atree-traversal_stub.ads: xtree $(ASIS_FILES) why-atree-traversal_stub.ads-tmpl
 	./xtree
 
-why-atree-traversal_stub.adb: xtree why-atree.adt why-atree-traversal_stub.adb-tmpl
+why-atree-traversal_stub.adb: xtree $(ASIS_FILES) why-atree-traversal_stub.adb-tmpl
+	./xtree
+
+why-atree-validity.ads: xtree $(ASIS_FILES) why-atree-validity.ads-tmpl
 	./xtree
 
 why-ids.ads: xtree why-sinfo.adt why-ids.ads-tmpl

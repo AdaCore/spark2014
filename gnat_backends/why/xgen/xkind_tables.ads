@@ -25,6 +25,8 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Why.Sinfo; use Why.Sinfo;
+
 package Xkind_Tables is
    --  This package provides an interface to record information about
    --  kinds and classes of nodes in the Why syntax tree.
@@ -38,7 +40,16 @@ package Xkind_Tables is
    --  List of node kinds; extracted from the syntax tree of Why.Sinfo
    --  by the ASIS traversal.
 
-   Classes : String_Lists.List;
+   type Class_Info is record
+      Name  : Wide_String_Access;
+      First : Wide_String_Access;
+      Last  : Wide_String_Access;
+   end record;
+
+   package Class_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Class_Info, "=");
+
+   Classes : Class_Lists.List;
    --  List of node classes; extracted from the syntax tree of Why.Sinfo
    --  by the ASIS traversal.
 
@@ -81,5 +92,36 @@ package Xkind_Tables is
      return Wide_String;
    --  Return the name of the kind-validity check for the given
    --  node kind
+
+   function Tree_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String;
+   --  Return the name of the tree-validity check for the given
+   --  node kind
+
+   function Children_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String;
+   --  Return the name of the tree-validity check for the children of node
+   --  whose kind is given in parameters
+
+   function Cache_Check
+     (Prefix : Wide_String;
+      M      : Id_Multiplicity)
+     return Wide_String;
+   --  Return the name of the cached tree-validity check for the given node
+   --  kind
+
+   function Class_Name (CI : Class_Info) return Wide_String;
+
+   function Class_First (CI : Class_Info) return Why_Node_Kind;
+   --  Given the string representation of a node class, return
+   --  <this class>'First
+
+   function Class_Last (CI : Class_Info) return Why_Node_Kind;
+   --  Given the string representation of a node class, return
+   --  <this class>'Last
 
 end XKind_Tables;
