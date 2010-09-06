@@ -842,7 +842,7 @@ package body Sparkify.Pre_Operations is
          --  for those bodies without a corresponding declaration.
 
          if Acts_As_Spec (Element) then
-            --  Subprogram defintion serves as declaration
+            --  Subprogram definition serves as declaration
             PP_Echo_Cursor_Range
               (State.Echo_Cursor, Cursor_Before (Proc_Name));
             PP_Word (To_Wide_String (Return_Overloaded_Name (Element)));
@@ -867,7 +867,7 @@ package body Sparkify.Pre_Operations is
          --  previous declarations and local subprograms (which do not have
          --  corresponding declarations in SPARK).
 
-         --  Subprogram defintion serves as declaration
+         --  Subprogram definition serves as declaration
          PP_Echo_Cursor_Range  (State.Echo_Cursor, Cursor_Before (Proc_Name));
          PP_Word (To_Wide_String (Return_Overloaded_Name (Element)));
          State.Echo_Cursor := Cursor_After (Proc_Name);
@@ -1460,8 +1460,7 @@ package body Sparkify.Pre_Operations is
             State.Echo_Cursor := Cursor_After (Object_Def);
 
             --  Record that a new name was (possibly) created for
-            --  the declaration. If this was not the case, store the existing
-            --  name anyway.
+            --  the declaration.
             Store_New_Name (Element, Subtype_Name);
 
          when others =>
