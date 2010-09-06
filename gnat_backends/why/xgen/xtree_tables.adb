@@ -24,8 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Conversions; use Ada.Characters.Conversions;
-with Ada.Containers;   use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with GNAT.Case_Util; use GNAT.Case_Util;
+with Utils;          use Utils;
 
 package body Xtree_Tables is
 
@@ -33,16 +34,6 @@ package body Xtree_Tables is
    function List_Type_Name (Kind : Wide_String) return Wide_String;
    function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Helper functions for the corresponding homonyms
-
-   function Strip_Prefix (Name : Wide_String) return Wide_String;
-   --  Strip anything that precedes the first underscord in Name
-   --  and return the result.
-
-   function Strip_Suffix (Name : Wide_String) return Wide_String;
-   --  Strip anything that follows the last underscord in Name
-   --  and return the result.
-
-   function Suffix (Name : Wide_String) return Wide_String;
 
    -------------------
    -- Accessor_Name --
@@ -312,57 +303,6 @@ package body Xtree_Tables is
       To_Mixed (Name);
       return To_Wide_String (Name);
    end Mixed_Case_Name;
-
-   ------------------
-   -- Strip_Prefix --
-   ------------------
-
-   function Strip_Prefix (Name : Wide_String) return Wide_String is
-      Start : Integer := Name'First;
-   begin
-      for J in Name'Range loop
-         if Name (J) = '_' then
-            Start := J + 1;
-            exit;
-         end if;
-      end loop;
-
-      return Name (Start .. Name'Last);
-   end Strip_Prefix;
-
-   ------------------
-   -- Strip_Suffix --
-   ------------------
-
-   function Strip_Suffix (Name : Wide_String) return Wide_String is
-      Stop : Integer := Name'Last;
-   begin
-      for J in reverse Name'Range loop
-         if Name (J) = '_' then
-            Stop := J - 1;
-            exit;
-         end if;
-      end loop;
-
-      return Name (Name'First .. Stop);
-   end Strip_Suffix;
-
-   ------------
-   -- Suffix --
-   ------------
-
-   function Suffix (Name : Wide_String) return Wide_String is
-      Stop : Integer := Name'Last;
-   begin
-      for J in reverse Name'Range loop
-         if Name (J) = '_' then
-            Stop := J;
-            exit;
-         end if;
-      end loop;
-
-      return Name (Stop + 1 .. Name'Last);
-   end Suffix;
 
    ---------------------------
    -- To_Special_Field_Kind --

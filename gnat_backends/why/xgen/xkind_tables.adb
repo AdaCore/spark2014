@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Utils; use Utils;
+
 package body Xkind_Tables is
 
    ---------------------
@@ -93,7 +95,9 @@ package body Xkind_Tables is
       M      : Id_Multiplicity)
      return Wide_String is
    begin
-      return Prefix & Multiplicity_Suffix (M) & "_Kind_Valid";
+      return Strip_Prefix (Prefix)
+        & Multiplicity_Suffix (M)
+        & "_Kind_Valid";
    end Kind_Check;
 
    -------------------------

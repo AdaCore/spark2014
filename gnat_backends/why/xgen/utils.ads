@@ -31,4 +31,16 @@ package Utils is
    function Img (Element : Asis.Element) return Wide_String;
    --  Return the Wide_String image of Element (trimed on both sides)
 
+   function Strip_Prefix (Name : Wide_String) return Wide_String;
+   --  Strip anything that precedes the first underscore in Name
+   --  and return the result.
+
+   function Strip_Suffix (Name : Wide_String) return Wide_String;
+   --  Strip anything that follows the last underscore in Name
+   --  and return the result.
+
+   function Suffix (Name : Wide_String) return Wide_String;
+   --  Return the end of the string passed in parameters, starting from
+   --  the last underscore.
+
 end Utils;
