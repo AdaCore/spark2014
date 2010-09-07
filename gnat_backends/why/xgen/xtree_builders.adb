@@ -394,6 +394,7 @@ package body Xtree_Builders is
             NL (O);
             Variant_Part.Fields.Iterate (Print_Parameter_Postcondition'Access);
          end if;
+
          Relative_Indent (O, -1);
       end if;
 
