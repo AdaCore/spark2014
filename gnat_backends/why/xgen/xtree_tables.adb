@@ -146,6 +146,35 @@ package body Xtree_Tables is
       return FI.Is_Why_Id;
    end Is_Why_Id;
 
+   ------------------
+   -- List_Op_Name --
+   ------------------
+
+   function List_Op_Name
+     (List_Op : List_Op_Kind)
+     return Wide_String is
+      Literal_Name : String := List_Op_Kind'Image (List_Op);
+   begin
+      To_Mixed (Literal_Name);
+      return Strip_Prefix (To_Wide_String (Literal_Name));
+   end List_Op_Name;
+
+   ------------------
+   -- List_Op_Name --
+   ------------------
+
+   function List_Op_Name
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind)
+     return Wide_String is
+   begin
+      return Strip_Prefix (Mixed_Case_Name (Kind))
+        & "_" & List_Op_Name (List_Op)
+        & "_To_"
+        & Strip_Prefix (FI.Field_Name.all);
+   end List_Op_Name;
+
    --------------------
    -- List_Type_Name --
    --------------------
@@ -390,6 +419,15 @@ package body Xtree_Tables is
    begin
       return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Pre_Op";
    end Traversal_Pre_Op;
+
+   ---------------------------------
+   -- Unchecked_Element_Type_Name --
+   ---------------------------------
+
+   function Unchecked_Element_Type_Name (FI : Field_Info) return Wide_String is
+   begin
+      return Strip_Suffix (FI.Id_Type.all) & "_Id";
+   end Unchecked_Element_Type_Name;
 
    ----------------------------
    -- Unchecked_Id_Type_Name --

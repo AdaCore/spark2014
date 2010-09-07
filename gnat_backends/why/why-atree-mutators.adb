@@ -112,19 +112,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Generic_Formal_Type_Set_Name;
 
-   ----------------------------------------------
-   -- Generic_Actual_Type_Chain_Set_Type_Chain --
-   ----------------------------------------------
+   ----------------------------------------------------
+   -- Generic_Actual_Type_Chain_Append_To_Type_Chain --
+   ----------------------------------------------------
 
-   procedure Generic_Actual_Type_Chain_Set_Type_Chain
-     (Id         : W_Generic_Actual_Type_Chain_Unchecked_Id;
-      Type_Chain : W_Primitive_Type_Unchecked_List)
+   procedure Generic_Actual_Type_Chain_Append_To_Type_Chain
+     (Id       : W_Generic_Actual_Type_Chain_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.GATC_Type_Chain := Type_Chain;
-      Set_Node (Id, Node);
-   end Generic_Actual_Type_Chain_Set_Type_Chain;
+      Append (Node.GATC_Type_Chain, New_Item);
+   end Generic_Actual_Type_Chain_Append_To_Type_Chain;
+
+   -----------------------------------------------------
+   -- Generic_Actual_Type_Chain_Prepend_To_Type_Chain --
+   -----------------------------------------------------
+
+   procedure Generic_Actual_Type_Chain_Prepend_To_Type_Chain
+     (Id       : W_Generic_Actual_Type_Chain_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.GATC_Type_Chain, New_Item);
+   end Generic_Actual_Type_Chain_Prepend_To_Type_Chain;
 
    ----------------------------------------
    -- Generic_Actual_Type_Chain_Set_Name --
@@ -448,19 +462,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Operation_Set_Name;
 
-   ------------------------------
-   -- Operation_Set_Parameters --
-   ------------------------------
+   ------------------------------------
+   -- Operation_Append_To_Parameters --
+   ------------------------------------
 
-   procedure Operation_Set_Parameters
-     (Id         : W_Operation_Unchecked_Id;
-      Parameters : W_Term_Unchecked_List)
+   procedure Operation_Append_To_Parameters
+     (Id       : W_Operation_Unchecked_Id;
+      New_Item : W_Term_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.O_Parameters := Parameters;
-      Set_Node (Id, Node);
-   end Operation_Set_Parameters;
+      Append (Node.O_Parameters, New_Item);
+   end Operation_Append_To_Parameters;
+
+   -------------------------------------
+   -- Operation_Prepend_To_Parameters --
+   -------------------------------------
+
+   procedure Operation_Prepend_To_Parameters
+     (Id       : W_Operation_Unchecked_Id;
+      New_Item : W_Term_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.O_Parameters, New_Item);
+   end Operation_Prepend_To_Parameters;
 
    -------------------------
    -- Named_Term_Set_Name --
@@ -616,19 +644,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Predicate_Instance_Set_Name;
 
-   ---------------------------------------
-   -- Predicate_Instance_Set_Parameters --
-   ---------------------------------------
+   ---------------------------------------------
+   -- Predicate_Instance_Append_To_Parameters --
+   ---------------------------------------------
 
-   procedure Predicate_Instance_Set_Parameters
-     (Id         : W_Predicate_Instance_Unchecked_Id;
-      Parameters : W_Term_Unchecked_List)
+   procedure Predicate_Instance_Append_To_Parameters
+     (Id       : W_Predicate_Instance_Unchecked_Id;
+      New_Item : W_Term_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.PIN_Parameters := Parameters;
-      Set_Node (Id, Node);
-   end Predicate_Instance_Set_Parameters;
+      Append (Node.PIN_Parameters, New_Item);
+   end Predicate_Instance_Append_To_Parameters;
+
+   ----------------------------------------------
+   -- Predicate_Instance_Prepend_To_Parameters --
+   ----------------------------------------------
+
+   procedure Predicate_Instance_Prepend_To_Parameters
+     (Id       : W_Predicate_Instance_Unchecked_Id;
+      New_Item : W_Term_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.PIN_Parameters, New_Item);
+   end Predicate_Instance_Prepend_To_Parameters;
 
    ----------------------------
    -- Related_Terms_Set_Left --
@@ -910,19 +952,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Binding_Pred_Set_Context;
 
-   -------------------------------------
-   -- Universal_Quantif_Set_Variables --
-   -------------------------------------
+   -------------------------------------------
+   -- Universal_Quantif_Append_To_Variables --
+   -------------------------------------------
 
-   procedure Universal_Quantif_Set_Variables
-     (Id        : W_Universal_Quantif_Unchecked_Id;
-      Variables : W_Identifier_Unchecked_List)
+   procedure Universal_Quantif_Append_To_Variables
+     (Id       : W_Universal_Quantif_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.UQ_Variables := Variables;
-      Set_Node (Id, Node);
-   end Universal_Quantif_Set_Variables;
+      Append (Node.UQ_Variables, New_Item);
+   end Universal_Quantif_Append_To_Variables;
+
+   --------------------------------------------
+   -- Universal_Quantif_Prepend_To_Variables --
+   --------------------------------------------
+
+   procedure Universal_Quantif_Prepend_To_Variables
+     (Id       : W_Universal_Quantif_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.UQ_Variables, New_Item);
+   end Universal_Quantif_Prepend_To_Variables;
 
    ------------------------------------
    -- Universal_Quantif_Set_Var_Type --
@@ -966,19 +1022,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Universal_Quantif_Set_Pred;
 
-   ---------------------------------------
-   -- Existential_Quantif_Set_Variables --
-   ---------------------------------------
+   ---------------------------------------------
+   -- Existential_Quantif_Append_To_Variables --
+   ---------------------------------------------
 
-   procedure Existential_Quantif_Set_Variables
-     (Id        : W_Existential_Quantif_Unchecked_Id;
-      Variables : W_Identifier_Unchecked_List)
+   procedure Existential_Quantif_Append_To_Variables
+     (Id       : W_Existential_Quantif_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.EQ_Variables := Variables;
-      Set_Node (Id, Node);
-   end Existential_Quantif_Set_Variables;
+      Append (Node.EQ_Variables, New_Item);
+   end Existential_Quantif_Append_To_Variables;
+
+   ----------------------------------------------
+   -- Existential_Quantif_Prepend_To_Variables --
+   ----------------------------------------------
+
+   procedure Existential_Quantif_Prepend_To_Variables
+     (Id       : W_Existential_Quantif_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.EQ_Variables, New_Item);
+   end Existential_Quantif_Prepend_To_Variables;
 
    --------------------------------------
    -- Existential_Quantif_Set_Var_Type --
@@ -1050,33 +1120,61 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Protected_Predicate_Set_Pred;
 
-   ---------------------------
-   -- Triggers_Set_Triggers --
-   ---------------------------
+   ---------------------------------
+   -- Triggers_Append_To_Triggers --
+   ---------------------------------
 
-   procedure Triggers_Set_Triggers
+   procedure Triggers_Append_To_Triggers
      (Id       : W_Triggers_Unchecked_Id;
-      Triggers : W_Trigger_Unchecked_List)
+      New_Item : W_Trigger_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.TRS_Triggers := Triggers;
-      Set_Node (Id, Node);
-   end Triggers_Set_Triggers;
+      Append (Node.TRS_Triggers, New_Item);
+   end Triggers_Append_To_Triggers;
 
-   -----------------------
-   -- Trigger_Set_Terms --
-   -----------------------
+   ----------------------------------
+   -- Triggers_Prepend_To_Triggers --
+   ----------------------------------
 
-   procedure Trigger_Set_Terms
-     (Id    : W_Trigger_Unchecked_Id;
-      Terms : W_Term_Unchecked_List)
+   procedure Triggers_Prepend_To_Triggers
+     (Id       : W_Triggers_Unchecked_Id;
+      New_Item : W_Trigger_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.TRI_Terms := Terms;
-      Set_Node (Id, Node);
-   end Trigger_Set_Terms;
+      Prepend (Node.TRS_Triggers, New_Item);
+   end Triggers_Prepend_To_Triggers;
+
+   -----------------------------
+   -- Trigger_Append_To_Terms --
+   -----------------------------
+
+   procedure Trigger_Append_To_Terms
+     (Id       : W_Trigger_Unchecked_Id;
+      New_Item : W_Term_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.TRI_Terms, New_Item);
+   end Trigger_Append_To_Terms;
+
+   ------------------------------
+   -- Trigger_Prepend_To_Terms --
+   ------------------------------
+
+   procedure Trigger_Prepend_To_Terms
+     (Id       : W_Trigger_Unchecked_Id;
+      New_Item : W_Term_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.TRI_Terms, New_Item);
+   end Trigger_Prepend_To_Terms;
 
    -----------------------
    -- Type_Set_External --
@@ -1092,19 +1190,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Type_Set_External;
 
-   ------------------------------
-   -- Type_Set_Type_Parameters --
-   ------------------------------
+   ------------------------------------
+   -- Type_Append_To_Type_Parameters --
+   ------------------------------------
 
-   procedure Type_Set_Type_Parameters
-     (Id              : W_Type_Unchecked_Id;
-      Type_Parameters : W_Identifier_Unchecked_OList)
+   procedure Type_Append_To_Type_Parameters
+     (Id       : W_Type_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.T_Type_Parameters := Type_Parameters;
-      Set_Node (Id, Node);
-   end Type_Set_Type_Parameters;
+      Append (Node.T_Type_Parameters, New_Item);
+   end Type_Append_To_Type_Parameters;
+
+   -------------------------------------
+   -- Type_Prepend_To_Type_Parameters --
+   -------------------------------------
+
+   procedure Type_Prepend_To_Type_Parameters
+     (Id       : W_Type_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.T_Type_Parameters, New_Item);
+   end Type_Prepend_To_Type_Parameters;
 
    -------------------
    -- Type_Set_Name --
@@ -1134,19 +1246,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Logic_Set_External;
 
-   ---------------------
-   -- Logic_Set_Names --
-   ---------------------
+   ---------------------------
+   -- Logic_Append_To_Names --
+   ---------------------------
 
-   procedure Logic_Set_Names
-     (Id    : W_Logic_Unchecked_Id;
-      Names : W_Identifier_Unchecked_List)
+   procedure Logic_Append_To_Names
+     (Id       : W_Logic_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.L_Names := Names;
-      Set_Node (Id, Node);
-   end Logic_Set_Names;
+      Append (Node.L_Names, New_Item);
+   end Logic_Append_To_Names;
+
+   ----------------------------
+   -- Logic_Prepend_To_Names --
+   ----------------------------
+
+   procedure Logic_Prepend_To_Names
+     (Id       : W_Logic_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.L_Names, New_Item);
+   end Logic_Prepend_To_Names;
 
    --------------------------
    -- Logic_Set_Logic_Type --
@@ -1176,19 +1302,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Function_Set_Name;
 
-   --------------------------
-   -- Function_Set_Binders --
-   --------------------------
+   --------------------------------
+   -- Function_Append_To_Binders --
+   --------------------------------
 
-   procedure Function_Set_Binders
-     (Id      : W_Function_Unchecked_Id;
-      Binders : W_Logic_Binder_Unchecked_List)
+   procedure Function_Append_To_Binders
+     (Id       : W_Function_Unchecked_Id;
+      New_Item : W_Logic_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.F_Binders := Binders;
-      Set_Node (Id, Node);
-   end Function_Set_Binders;
+      Append (Node.F_Binders, New_Item);
+   end Function_Append_To_Binders;
+
+   ---------------------------------
+   -- Function_Prepend_To_Binders --
+   ---------------------------------
+
+   procedure Function_Prepend_To_Binders
+     (Id       : W_Function_Unchecked_Id;
+      New_Item : W_Logic_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.F_Binders, New_Item);
+   end Function_Prepend_To_Binders;
 
    ------------------------------
    -- Function_Set_Return_Type --
@@ -1232,19 +1372,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Predicate_Definition_Set_Name;
 
-   --------------------------------------
-   -- Predicate_Definition_Set_Binders --
-   --------------------------------------
+   --------------------------------------------
+   -- Predicate_Definition_Append_To_Binders --
+   --------------------------------------------
 
-   procedure Predicate_Definition_Set_Binders
-     (Id      : W_Predicate_Definition_Unchecked_Id;
-      Binders : W_Logic_Binder_Unchecked_List)
+   procedure Predicate_Definition_Append_To_Binders
+     (Id       : W_Predicate_Definition_Unchecked_Id;
+      New_Item : W_Logic_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.P_Binders := Binders;
-      Set_Node (Id, Node);
-   end Predicate_Definition_Set_Binders;
+      Append (Node.P_Binders, New_Item);
+   end Predicate_Definition_Append_To_Binders;
+
+   ---------------------------------------------
+   -- Predicate_Definition_Prepend_To_Binders --
+   ---------------------------------------------
+
+   procedure Predicate_Definition_Prepend_To_Binders
+     (Id       : W_Predicate_Definition_Unchecked_Id;
+      New_Item : W_Logic_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.P_Binders, New_Item);
+   end Predicate_Definition_Prepend_To_Binders;
 
    ----------------------------------
    -- Predicate_Definition_Set_Def --
@@ -1288,19 +1442,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Inductive_Set_Logic_Type;
 
-   -----------------------
-   -- Inductive_Set_Def --
-   -----------------------
+   -----------------------------
+   -- Inductive_Append_To_Def --
+   -----------------------------
 
-   procedure Inductive_Set_Def
-     (Id  : W_Inductive_Unchecked_Id;
-      Def : W_Inductive_Case_Unchecked_List)
+   procedure Inductive_Append_To_Def
+     (Id       : W_Inductive_Unchecked_Id;
+      New_Item : W_Inductive_Case_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.I_Def := Def;
-      Set_Node (Id, Node);
-   end Inductive_Set_Def;
+      Append (Node.I_Def, New_Item);
+   end Inductive_Append_To_Def;
+
+   ------------------------------
+   -- Inductive_Prepend_To_Def --
+   ------------------------------
+
+   procedure Inductive_Prepend_To_Def
+     (Id       : W_Inductive_Unchecked_Id;
+      New_Item : W_Inductive_Case_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.I_Def, New_Item);
+   end Inductive_Prepend_To_Def;
 
    --------------------
    -- Axiom_Set_Name --
@@ -1358,33 +1526,61 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Goal_Set_Def;
 
-   ------------------------------
-   -- Logic_Type_Set_Arg_Types --
-   ------------------------------
+   ------------------------------------
+   -- Logic_Type_Append_To_Arg_Types --
+   ------------------------------------
 
-   procedure Logic_Type_Set_Arg_Types
-     (Id        : W_Logic_Type_Unchecked_Id;
-      Arg_Types : W_Logic_Arg_Type_Unchecked_List)
+   procedure Logic_Type_Append_To_Arg_Types
+     (Id       : W_Logic_Type_Unchecked_Id;
+      New_Item : W_Logic_Arg_Type_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.LT_Arg_Types := Arg_Types;
-      Set_Node (Id, Node);
-   end Logic_Type_Set_Arg_Types;
+      Append (Node.LT_Arg_Types, New_Item);
+   end Logic_Type_Append_To_Arg_Types;
 
-   --------------------------------
-   -- Logic_Type_Set_Return_Type --
-   --------------------------------
+   -------------------------------------
+   -- Logic_Type_Prepend_To_Arg_Types --
+   -------------------------------------
 
-   procedure Logic_Type_Set_Return_Type
-     (Id          : W_Logic_Type_Unchecked_Id;
-      Return_Type : W_Logic_Return_Type_Unchecked_List)
+   procedure Logic_Type_Prepend_To_Arg_Types
+     (Id       : W_Logic_Type_Unchecked_Id;
+      New_Item : W_Logic_Arg_Type_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.LT_Return_Type := Return_Type;
-      Set_Node (Id, Node);
-   end Logic_Type_Set_Return_Type;
+      Prepend (Node.LT_Arg_Types, New_Item);
+   end Logic_Type_Prepend_To_Arg_Types;
+
+   --------------------------------------
+   -- Logic_Type_Append_To_Return_Type --
+   --------------------------------------
+
+   procedure Logic_Type_Append_To_Return_Type
+     (Id       : W_Logic_Type_Unchecked_Id;
+      New_Item : W_Logic_Return_Type_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.LT_Return_Type, New_Item);
+   end Logic_Type_Append_To_Return_Type;
+
+   ---------------------------------------
+   -- Logic_Type_Prepend_To_Return_Type --
+   ---------------------------------------
+
+   procedure Logic_Type_Prepend_To_Return_Type
+     (Id       : W_Logic_Type_Unchecked_Id;
+      New_Item : W_Logic_Return_Type_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.LT_Return_Type, New_Item);
+   end Logic_Type_Prepend_To_Return_Type;
 
    ---------------------------
    -- Logic_Binder_Set_Name --
@@ -1442,47 +1638,89 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Inductive_Case_Set_Pred;
 
-   -----------------------
-   -- Effects_Set_Reads --
-   -----------------------
+   -----------------------------
+   -- Effects_Append_To_Reads --
+   -----------------------------
 
-   procedure Effects_Set_Reads
-     (Id    : W_Effects_Unchecked_Id;
-      Reads : W_Identifier_Unchecked_OList)
+   procedure Effects_Append_To_Reads
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.E_Reads := Reads;
-      Set_Node (Id, Node);
-   end Effects_Set_Reads;
+      Append (Node.E_Reads, New_Item);
+   end Effects_Append_To_Reads;
 
-   ------------------------
-   -- Effects_Set_Writes --
-   ------------------------
+   ------------------------------
+   -- Effects_Prepend_To_Reads --
+   ------------------------------
 
-   procedure Effects_Set_Writes
-     (Id     : W_Effects_Unchecked_Id;
-      Writes : W_Identifier_Unchecked_OList)
+   procedure Effects_Prepend_To_Reads
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.E_Writes := Writes;
-      Set_Node (Id, Node);
-   end Effects_Set_Writes;
+      Prepend (Node.E_Reads, New_Item);
+   end Effects_Prepend_To_Reads;
 
-   ------------------------
-   -- Effects_Set_Raises --
-   ------------------------
+   ------------------------------
+   -- Effects_Append_To_Writes --
+   ------------------------------
 
-   procedure Effects_Set_Raises
-     (Id     : W_Effects_Unchecked_Id;
-      Raises : W_Identifier_Unchecked_OList)
+   procedure Effects_Append_To_Writes
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.E_Raises := Raises;
-      Set_Node (Id, Node);
-   end Effects_Set_Raises;
+      Append (Node.E_Writes, New_Item);
+   end Effects_Append_To_Writes;
+
+   -------------------------------
+   -- Effects_Prepend_To_Writes --
+   -------------------------------
+
+   procedure Effects_Prepend_To_Writes
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.E_Writes, New_Item);
+   end Effects_Prepend_To_Writes;
+
+   ------------------------------
+   -- Effects_Append_To_Raises --
+   ------------------------------
+
+   procedure Effects_Append_To_Raises
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.E_Raises, New_Item);
+   end Effects_Append_To_Raises;
+
+   -------------------------------
+   -- Effects_Prepend_To_Raises --
+   -------------------------------
+
+   procedure Effects_Prepend_To_Raises
+     (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.E_Raises, New_Item);
+   end Effects_Prepend_To_Raises;
 
    --------------------------------
    -- Precondition_Set_Assertion --
@@ -1512,19 +1750,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Postcondition_Set_Assertion;
 
-   --------------------------------
-   -- Postcondition_Set_Handlers --
-   --------------------------------
+   --------------------------------------
+   -- Postcondition_Append_To_Handlers --
+   --------------------------------------
 
-   procedure Postcondition_Set_Handlers
+   procedure Postcondition_Append_To_Handlers
      (Id       : W_Postcondition_Unchecked_Id;
-      Handlers : W_Exn_Condition_Unchecked_OList)
+      New_Item : W_Exn_Condition_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.POST_Handlers := Handlers;
-      Set_Node (Id, Node);
-   end Postcondition_Set_Handlers;
+      Append (Node.POST_Handlers, New_Item);
+   end Postcondition_Append_To_Handlers;
+
+   ---------------------------------------
+   -- Postcondition_Prepend_To_Handlers --
+   ---------------------------------------
+
+   procedure Postcondition_Prepend_To_Handlers
+     (Id       : W_Postcondition_Unchecked_Id;
+      New_Item : W_Exn_Condition_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.POST_Handlers, New_Item);
+   end Postcondition_Prepend_To_Handlers;
 
    --------------------------------
    -- Exn_Condition_Set_Exn_Case --
@@ -1960,19 +2212,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end While_Loop_Set_Loop_Content;
 
-   ---------------------------------------
-   -- Statement_Sequence_Set_Statements --
-   ---------------------------------------
+   ---------------------------------------------
+   -- Statement_Sequence_Append_To_Statements --
+   ---------------------------------------------
 
-   procedure Statement_Sequence_Set_Statements
-     (Id         : W_Statement_Sequence_Unchecked_Id;
-      Statements : W_Prog_Unchecked_List)
+   procedure Statement_Sequence_Append_To_Statements
+     (Id       : W_Statement_Sequence_Unchecked_Id;
+      New_Item : W_Prog_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.SS_Statements := Statements;
-      Set_Node (Id, Node);
-   end Statement_Sequence_Set_Statements;
+      Append (Node.SS_Statements, New_Item);
+   end Statement_Sequence_Append_To_Statements;
+
+   ----------------------------------------------
+   -- Statement_Sequence_Prepend_To_Statements --
+   ----------------------------------------------
+
+   procedure Statement_Sequence_Prepend_To_Statements
+     (Id       : W_Statement_Sequence_Unchecked_Id;
+      New_Item : W_Prog_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.SS_Statements, New_Item);
+   end Statement_Sequence_Prepend_To_Statements;
 
    --------------------
    -- Label_Set_Name --
@@ -2002,19 +2268,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Label_Set_Def;
 
-   ---------------------------
-   -- Assert_Set_Assertions --
-   ---------------------------
+   ---------------------------------
+   -- Assert_Append_To_Assertions --
+   ---------------------------------
 
-   procedure Assert_Set_Assertions
-     (Id         : W_Assert_Unchecked_Id;
-      Assertions : W_Assertion_Unchecked_List)
+   procedure Assert_Append_To_Assertions
+     (Id       : W_Assert_Unchecked_Id;
+      New_Item : W_Assertion_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.AS_Assertions := Assertions;
-      Set_Node (Id, Node);
-   end Assert_Set_Assertions;
+      Append (Node.AS_Assertions, New_Item);
+   end Assert_Append_To_Assertions;
+
+   ----------------------------------
+   -- Assert_Prepend_To_Assertions --
+   ----------------------------------
+
+   procedure Assert_Prepend_To_Assertions
+     (Id       : W_Assert_Unchecked_Id;
+      New_Item : W_Assertion_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.AS_Assertions, New_Item);
+   end Assert_Prepend_To_Assertions;
 
    ---------------------
    -- Assert_Set_Prog --
@@ -2198,19 +2478,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Binding_Rec_Set_Context;
 
-   -----------------------------
-   -- Prog_Sequence_Set_Progs --
-   -----------------------------
+   -----------------------------------
+   -- Prog_Sequence_Append_To_Progs --
+   -----------------------------------
 
-   procedure Prog_Sequence_Set_Progs
-     (Id    : W_Prog_Sequence_Unchecked_Id;
-      Progs : W_Prog_Unchecked_List)
+   procedure Prog_Sequence_Append_To_Progs
+     (Id       : W_Prog_Sequence_Unchecked_Id;
+      New_Item : W_Prog_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.PS_Progs := Progs;
-      Set_Node (Id, Node);
-   end Prog_Sequence_Set_Progs;
+      Append (Node.PS_Progs, New_Item);
+   end Prog_Sequence_Append_To_Progs;
+
+   ------------------------------------
+   -- Prog_Sequence_Prepend_To_Progs --
+   ------------------------------------
+
+   procedure Prog_Sequence_Prepend_To_Progs
+     (Id       : W_Prog_Sequence_Unchecked_Id;
+      New_Item : W_Prog_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.PS_Progs, New_Item);
+   end Prog_Sequence_Prepend_To_Progs;
 
    ------------------------------
    -- Raise_Statement_Set_Name --
@@ -2296,19 +2590,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Try_Block_Set_Prog;
 
-   ---------------------------
-   -- Try_Block_Set_Handler --
-   ---------------------------
+   ---------------------------------
+   -- Try_Block_Append_To_Handler --
+   ---------------------------------
 
-   procedure Try_Block_Set_Handler
-     (Id      : W_Try_Block_Unchecked_Id;
-      Handler : W_Handler_Unchecked_List)
+   procedure Try_Block_Append_To_Handler
+     (Id       : W_Try_Block_Unchecked_Id;
+      New_Item : W_Handler_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.TB_Handler := Handler;
-      Set_Node (Id, Node);
-   end Try_Block_Set_Handler;
+      Append (Node.TB_Handler, New_Item);
+   end Try_Block_Append_To_Handler;
+
+   ----------------------------------
+   -- Try_Block_Prepend_To_Handler --
+   ----------------------------------
+
+   procedure Try_Block_Prepend_To_Handler
+     (Id       : W_Try_Block_Unchecked_Id;
+      New_Item : W_Handler_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.TB_Handler, New_Item);
+   end Try_Block_Prepend_To_Handler;
 
    -----------------------------------
    -- Unreachable_Code_Set_Exn_Type --
@@ -2352,33 +2660,61 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Protected_Prog_Set_Prog;
 
-   -------------------------
-   -- Binders_Set_Binders --
-   -------------------------
+   -------------------------------
+   -- Binders_Append_To_Binders --
+   -------------------------------
 
-   procedure Binders_Set_Binders
-     (Id      : W_Binders_Unchecked_Id;
-      Binders : W_Binders_Unchecked_List)
+   procedure Binders_Append_To_Binders
+     (Id       : W_Binders_Unchecked_Id;
+      New_Item : W_Binders_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.BS_Binders := Binders;
-      Set_Node (Id, Node);
-   end Binders_Set_Binders;
+      Append (Node.BS_Binders, New_Item);
+   end Binders_Append_To_Binders;
 
-   ----------------------
-   -- Binder_Set_Names --
-   ----------------------
+   --------------------------------
+   -- Binders_Prepend_To_Binders --
+   --------------------------------
 
-   procedure Binder_Set_Names
-     (Id    : W_Binder_Unchecked_Id;
-      Names : W_Identifier_Unchecked_List)
+   procedure Binders_Prepend_To_Binders
+     (Id       : W_Binders_Unchecked_Id;
+      New_Item : W_Binders_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.B_Names := Names;
-      Set_Node (Id, Node);
-   end Binder_Set_Names;
+      Prepend (Node.BS_Binders, New_Item);
+   end Binders_Prepend_To_Binders;
+
+   ----------------------------
+   -- Binder_Append_To_Names --
+   ----------------------------
+
+   procedure Binder_Append_To_Names
+     (Id       : W_Binder_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.B_Names, New_Item);
+   end Binder_Append_To_Names;
+
+   -----------------------------
+   -- Binder_Prepend_To_Names --
+   -----------------------------
+
+   procedure Binder_Prepend_To_Names
+     (Id       : W_Binder_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.B_Names, New_Item);
+   end Binder_Prepend_To_Names;
 
    -------------------------
    -- Binder_Set_Arg_Type --
@@ -2562,19 +2898,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Handler_Set_Def;
 
-   ---------------------------
-   -- File_Set_Declarations --
-   ---------------------------
+   ---------------------------------
+   -- File_Append_To_Declarations --
+   ---------------------------------
 
-   procedure File_Set_Declarations
-     (Id           : W_File_Unchecked_Id;
-      Declarations : W_Declaration_Unchecked_OList)
+   procedure File_Append_To_Declarations
+     (Id       : W_File_Unchecked_Id;
+      New_Item : W_Declaration_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.F_Declarations := Declarations;
-      Set_Node (Id, Node);
-   end File_Set_Declarations;
+      Append (Node.F_Declarations, New_Item);
+   end File_Append_To_Declarations;
+
+   ----------------------------------
+   -- File_Prepend_To_Declarations --
+   ----------------------------------
+
+   procedure File_Prepend_To_Declarations
+     (Id       : W_File_Unchecked_Id;
+      New_Item : W_Declaration_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.F_Declarations, New_Item);
+   end File_Prepend_To_Declarations;
 
    -----------------------------
    -- Global_Binding_Set_Name --
@@ -2646,19 +2996,33 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Parameter_Declaration_Set_External;
 
-   -------------------------------------
-   -- Parameter_Declaration_Set_Names --
-   -------------------------------------
+   -------------------------------------------
+   -- Parameter_Declaration_Append_To_Names --
+   -------------------------------------------
 
-   procedure Parameter_Declaration_Set_Names
-     (Id    : W_Parameter_Declaration_Unchecked_Id;
-      Names : W_Identifier_Unchecked_List)
+   procedure Parameter_Declaration_Append_To_Names
+     (Id       : W_Parameter_Declaration_Unchecked_Id;
+      New_Item : W_Identifier_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.PD_Names := Names;
-      Set_Node (Id, Node);
-   end Parameter_Declaration_Set_Names;
+      Append (Node.PD_Names, New_Item);
+   end Parameter_Declaration_Append_To_Names;
+
+   --------------------------------------------
+   -- Parameter_Declaration_Prepend_To_Names --
+   --------------------------------------------
+
+   procedure Parameter_Declaration_Prepend_To_Names
+     (Id       : W_Parameter_Declaration_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.PD_Names, New_Item);
+   end Parameter_Declaration_Prepend_To_Names;
 
    ----------------------------------------------
    -- Parameter_Declaration_Set_Parameter_Type --

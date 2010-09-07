@@ -182,6 +182,21 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the accessor name for the given field of the given node kind
 
+   type List_Op_Kind is (Op_Append, Op_Prepend);
+
+   function List_Op_Name
+     (List_Op : List_Op_Kind)
+     return Wide_String;
+
+   function List_Op_Name
+     (Kind    : Why_Node_Kind;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind)
+     return Wide_String;
+   pragma Precondition (Is_List (FI));
+   --  Return the name of the append/prepend routine for the given field
+   --  of the given node kind
+
    function Mutator_Name
      (Kind : Why_Node_Kind;
       FI   : Field_Info)
@@ -213,6 +228,9 @@ package Xtree_Tables is
    function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    function Unchecked_Id_Type_Name (FI : Field_Info) return Wide_String;
    --  Return the kind-specific id subtype name
+
+   function Unchecked_Element_Type_Name (FI : Field_Info) return Wide_String;
+   pragma Precondition (Is_List (FI));
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the kind-specific list subtype name

@@ -62,6 +62,34 @@ package body Why.Atree.Tables is
       return Result;
    end "=";
 
+   ------------
+   -- Append --
+   ------------
+
+   procedure Append (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
+      use Node_List_Tables;
+      use Node_Lists;
+
+      LI : List_Info := List_Table.Element (List_Id);
+   begin
+      Append (LI.Content, New_Item);
+      Replace_Element (List_Table, List_Id, LI);
+   end Append;
+
+   -------------
+   -- Prepend --
+   -------------
+
+   procedure Prepend (List_Id : Why_Node_List; New_Item : Why_Node_Id) is
+      use Node_List_Tables;
+      use Node_Lists;
+
+      LI : List_Info := List_Table.Element (List_Id);
+   begin
+      Prepend (LI.Content, New_Item);
+      Replace_Element (List_Table, List_Id, LI);
+   end Prepend;
+
    ----------------
    -- Initialize --
    ----------------

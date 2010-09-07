@@ -58,6 +58,10 @@ package Why.Atree.Tables is
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List;
 
+   procedure Append (List_Id : Why_Node_List; New_Item : Why_Node_Id);
+
+   procedure Prepend (List_Id : Why_Node_List; New_Item : Why_Node_Id);
+
    function Is_Empty (List_Id : Why_Node_List) return Boolean;
 
    function Is_Checked (List_Id : Why_Node_List) return Boolean;

@@ -34,6 +34,10 @@ package body Xtree_Mutators is
    --  is the id of the node whose children are modified through the
    --  corresponding mutator.
 
+   Element_Param : constant Wide_String := "New_Item";
+   --  Name of a formal parameter that is common to all append/prepend
+   --  routines; this is the id of the new node to append to the list.
+
    procedure Print_Mutator_Implementation
      (O    : in out Output_Record;
       FI   : Field_Info);
@@ -66,6 +70,54 @@ package body Xtree_Mutators is
       Field_Param : Wide_String;
       Field_Type  : Wide_String);
    --  Print mutator specification from its formals
+
+   procedure Print_List_Op_Specification
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind);
+
+   procedure Print_List_Op_Implementation
+     (O       : in out Output_Record;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind);
+
+   -----------------------------------
+   -- Print_List_Op__Implementation --
+   -----------------------------------
+
+   procedure Print_List_Op_Implementation
+     (O       : in out Output_Record;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind) is
+   begin
+      PL (O, "   Node : constant Why_Node :=");
+      PL (O, "            Get_Node (" & Node_Id_Param & ");");
+      PL (O, "begin");
+      PL (O, "   " & List_Op_Name (List_Op)
+          & " (Node." & Field_Name (FI)
+          & ", " & Element_Param & ");");
+      --  ??? Missing handling for Checked (should be updated
+      --  if the node is valid after the assignment)
+   end Print_List_Op_Implementation;
+
+   --------------------------------
+   -- Print_List_Op_Specification --
+   --------------------------------
+
+   procedure Print_List_Op_Specification
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
+      FI      : Field_Info;
+      List_Op : List_Op_Kind) is
+   begin
+      Print_Mutator_Specification
+        (O           => O,
+         Name        => List_Op_Name (Kind, FI, List_Op),
+         Param_Type  => Unchecked_Id_Type_Name (Kind),
+         Field_Param => Element_Param,
+         Field_Type  => Unchecked_Element_Type_Name (FI));
+   end Print_List_Op_Specification;
 
    --------------------------
    -- Print_Mutator_Bodies --
@@ -206,16 +258,41 @@ package body Xtree_Mutators is
 
       procedure Print_Mutator_Body (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
-         MN : constant Wide_String := Mutator_Name (Kind, FI);
       begin
-         Print_Box (O, MN);
-         NL (O);
+         if not Is_List (FI) then
+            declare
+               MN : constant Wide_String := Mutator_Name (Kind, FI);
+            begin
+               Print_Box (O, MN);
+               NL (O);
 
-         Print_Mutator_Specification (O, Kind, FI);
-         NL (O);
-         PL (O, "is");
-         Print_Mutator_Implementation (O, FI);
-         PL (O, "end " & MN & ";");
+               Print_Mutator_Specification (O, Kind, FI);
+               NL (O);
+               PL (O, "is");
+               Print_Mutator_Implementation (O, FI);
+               PL (O, "end " & MN & ";");
+            end;
+         else
+            for List_Op in List_Op_Kind'Range loop
+               declare
+                  LON : constant Wide_String :=
+                          List_Op_Name (Kind, FI, List_Op);
+               begin
+                  Print_Box (O, LON);
+                  NL (O);
+
+                  Print_List_Op_Specification (O, Kind, FI, List_Op);
+                  NL (O);
+                  PL (O, "is");
+                  Print_List_Op_Implementation (O, FI, List_Op);
+                  PL (O, "end " & LON & ";");
+
+                  if List_Op /= List_Op_Kind'Last then
+                     NL (O);
+                  end if;
+               end;
+            end loop;
+         end if;
 
          if Next (Position) /= No_Element then
             NL (O);
@@ -252,8 +329,19 @@ package body Xtree_Mutators is
       procedure Print_Mutator_Kind_Declaration (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
       begin
-         Print_Mutator_Specification (O, Kind, FI);
-         PL (O, ";");
+         if not Is_List (FI) then
+            Print_Mutator_Specification (O, Kind, FI);
+            PL (O, ";");
+         else
+            for List_Op in List_Op_Kind'Range loop
+               Print_List_Op_Specification (O, Kind, FI, List_Op);
+               PL (O, ";");
+
+               if List_Op /= List_Op_Kind'Last then
+                  NL (O);
+               end if;
+            end loop;
+         end if;
 
          if Next (Position) /= No_Element then
             NL (O);
