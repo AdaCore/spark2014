@@ -26,6 +26,7 @@
 with Ada.Containers; use Ada.Containers;
 with Why.Sinfo;      use Why.Sinfo;
 with Xtree_Tables;   use Xtree_Tables;
+with Xkind_Tables;   use Xkind_Tables;
 
 package body Xtree_Mutators is
 
@@ -63,6 +64,16 @@ package body Xtree_Mutators is
       FI   : Field_Info);
    --  Print mutator specification for the given node child
 
+   procedure Print_Mutator_Precondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      FI   : Field_Info);
+   --  Print mutator precondition for the given node child.
+   --  Note that this precondition can be replaced nicely
+   --  replaced by a subtype predicate on ids; when subtype
+   --  predicates are supported by GNAT, it will be a good time
+   --  to do the substitution.
+
    procedure Print_Mutator_Specification
      (O           : in out Output_Record;
       Name        : Wide_String;
@@ -82,9 +93,9 @@ package body Xtree_Mutators is
       FI      : Field_Info;
       List_Op : List_Op_Kind);
 
-   -----------------------------------
-   -- Print_List_Op__Implementation --
-   -----------------------------------
+   ----------------------------------
+   -- Print_List_Op_Implementation --
+   ----------------------------------
 
    procedure Print_List_Op_Implementation
      (O       : in out Output_Record;
@@ -332,10 +343,12 @@ package body Xtree_Mutators is
          if not Is_List (FI) then
             Print_Mutator_Specification (O, Kind, FI);
             PL (O, ";");
+            Print_Mutator_Precondition (O, Kind, FI);
          else
             for List_Op in List_Op_Kind'Range loop
                Print_List_Op_Specification (O, Kind, FI, List_Op);
                PL (O, ";");
+               Print_Mutator_Precondition (O, Kind, FI);
 
                if List_Op /= List_Op_Kind'Last then
                   NL (O);
@@ -356,6 +369,29 @@ package body Xtree_Mutators is
            (Print_Mutator_Kind_Declaration'Access);
       end if;
    end Print_Mutator_Kind_Declarations;
+
+   --------------------------------
+   -- Print_Mutator_Precondition --
+   --------------------------------
+
+   procedure Print_Mutator_Precondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      FI   : Field_Info)
+   is
+      PN : constant Wide_String :=
+             (if Is_List (FI) then Element_Param
+              else Param_Name (FI));
+      M  : constant Id_Multiplicity :=
+             (if Is_List (FI) then Id_One
+              else Multiplicity (FI));
+    begin
+      if Is_Why_Id (FI) then
+         PL (O, "pragma Precondition");
+         PL (O, "  (" & Tree_Check (Field_Kind (FI), M)
+             & " (" & PN  & "));");
+      end if;
+   end Print_Mutator_Precondition;
 
    ---------------------------------
    -- Print_Mutator_Specification --
