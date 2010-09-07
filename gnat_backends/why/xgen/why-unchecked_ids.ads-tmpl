@@ -27,9 +27,10 @@
 with Why.Opaque_Ids; use Why.Opaque_Ids;
 
 package Why.Unchecked_Ids is
-   --  Declarations of subtypes of Why_Node_Id; one per node kind.
+   --  Declarations of subtypes of Why_Node_Id/Why_Node_List; one per
+   --  node kind/multiplicity.
 
-   --  A comprehensive description of the different node kinds may be
+   --  A comprehensive description of the different subtypes may be
    --  found in Why.Ids. This package only defines unchecked ids;
    --  In a nutshell, those are the same as regular ids, except for the
    --  subtype predicate which only assert the corresponding node is

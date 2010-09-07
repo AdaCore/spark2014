@@ -27,9 +27,10 @@
 with Why.Types; use Why.Types;
 
 package Why.Opaque_Ids is
-   --  Declarations of subtypes of Why_Node_Id; one per node kind.
+   --  Declarations of subtypes of Why_Node_Id/Why_Node_List; one per
+   --  node kind/multiplicity.
 
-   --  A comprehensive description of the different node kinds may be
+   --  A comprehensive description of the different subtypes may be
    --  found in Why.Ids. This package only defines opaque ids;
    --  In a nutshell, those are the same as regular ids, except that they
    --  have no subtype predicate. These should only be needed in

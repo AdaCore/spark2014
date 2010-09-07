@@ -27,10 +27,46 @@
 with Why.Unchecked_Ids; use Why.Unchecked_Ids;
 
 package Why.Ids is
-   --  Declarations of subtypes of Why_Node_Id; one per node kind.
+   --  Declarations of subtypes of for references to node; one per
+   --  kind/multiplicity/validity status.
 
+   --  Kind:
+   --  -----
+   --
+   --  Subtypes defined in this packages are references to node in the syntax;
+   --  each subtype is supposed to refers to exactly one node kind. Each
+   --  corresponding subtype is prefixed by the name of the kind. e.g.
+   --  subtype W_Identifier_Id for node kind W_Identifier.
+   --
+   --  Whether or not this property (and the other properties that one
+   --  would expect from a reference to a node in a syntax tree) is
+   --  actually valid at some point is detailled in the section
+   --  "Validity".
+   --
+   --  Multiplicity:
+   --  -------------
+   --
+   --  A reference to a node may have one of these four multiplicity property:
+   --
+   --  * it may only be valid if it refers to exactly one node, in which case
+   --  it is called an id;
+   --  * it may only be valid if it refers to a most one node (either it is
+   --  empty, or it refers to one node); in which case it is called an
+   --  option id;
+   --  * it may only be valid if it refers to a least one node, maybe more;
+   --  in which case it is called a list;
+   --  * it may only be valid if it refers any number of nodes, potentially
+   --  zero; in which case it is called an option list.
+   --
+   --  Specific subtypes are associated to each of these multiplicity property;
+   --  those are prefixed by "Id", "OId", "List", "OList".
+   --
+   --  Validity:
+   --  ---------
+   --
    --  A node in a Why syntax tree may have two properties of interest for this
    --  package:
+   --
    --  * it can be valid: in which case it represents the root of a valid Why
    --  syntax tree.
    --  * it can be kind-valid: much weaker constraint that only states
