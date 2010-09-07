@@ -48,7 +48,7 @@ package body Why.Atree.Mutators is
 
    procedure Set_Link
      (Id   : Why_Node_Id;
-      Link : Why_Node_Id)
+      Link : Why_Node_Set)
    is
       Node : Why_Node := Get_Node (Id);
    begin

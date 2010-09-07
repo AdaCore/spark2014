@@ -60,6 +60,8 @@ package Why.Atree.Tables is
 
    function Is_Empty (List_Id : Why_Node_List) return Boolean;
 
+   function Is_Checked (List_Id : Why_Node_List) return Boolean;
+
    function New_List return Why_Node_List;
    pragma Postcondition (Is_Empty (New_List'Result));
    --  Allocate a new empty list in table and return its Id
@@ -81,9 +83,14 @@ private
    function "=" (Left, Right : Node_Lists.List) return Boolean;
    --  Return True if Left and Right have the same extension
 
+   type List_Info is record
+      Checked : Boolean;
+      Content : Node_Lists.List;
+   end record;
+
    package Node_List_Tables is
      new Ada.Containers.Vectors (Index_Type => Why_Node_List,
-                                 Element_Type => Node_Lists.List,
+                                 Element_Type => List_Info,
                                  "=" => "=");
    List_Table : Node_List_Tables.Vector;
 
@@ -100,9 +107,12 @@ private
       (Node = Why_Empty or else Get_Kind (Node) = Value);
 
    function Get_List (List_Id : Why_Node_List) return Node_Lists.List is
-      (Node_List_Tables.Element (List_Table, List_Id));
+      (Node_List_Tables.Element (List_Table, List_Id).Content);
 
    function Is_Empty (List_Id : Why_Node_List) return Boolean is
       (Node_Lists.Is_Empty (Get_List (List_Id)));
+
+   function Is_Checked (List_Id : Why_Node_List) return Boolean is
+      (Node_List_Tables.Element (List_Table, List_Id).Checked);
 
 end Why.Atree.Tables;

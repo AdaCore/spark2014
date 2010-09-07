@@ -8433,9 +8433,7 @@ private
      (Id = Why_Empty or else Id_Cache_Valid (Id));
 
    function List_Cache_Valid (Id : Why_Node_List) return Boolean is
-     (not Is_Empty (Id) and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+     (not Is_Empty (Id) and then Is_Checked (Id));
 
    function OList_Cache_Valid (Id : Why_Node_List) return Boolean is
      (Is_Empty (Id) or else List_Cache_Valid (Id));
@@ -8455,9 +8453,7 @@ private
      (Id : W_Unused_At_Start_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Unused_At_Start_OList_Children_Valid
      (Id : W_Unused_At_Start_Unchecked_OList)
@@ -8482,9 +8478,7 @@ private
      (Id : W_Identifier_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Identifier_OList_Children_Valid
      (Id : W_Identifier_Unchecked_OList)
@@ -8507,9 +8501,7 @@ private
      (Id : W_Type_Prop_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_Prop_OList_Children_Valid
      (Id : W_Type_Prop_Unchecked_OList)
@@ -8532,9 +8524,7 @@ private
      (Id : W_Type_Int_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_Int_OList_Children_Valid
      (Id : W_Type_Int_Unchecked_OList)
@@ -8557,9 +8547,7 @@ private
      (Id : W_Type_Bool_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_Bool_OList_Children_Valid
      (Id : W_Type_Bool_Unchecked_OList)
@@ -8582,9 +8570,7 @@ private
      (Id : W_Type_Real_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_Real_OList_Children_Valid
      (Id : W_Type_Real_Unchecked_OList)
@@ -8607,9 +8593,7 @@ private
      (Id : W_Type_Unit_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_Unit_OList_Children_Valid
      (Id : W_Type_Unit_Unchecked_OList)
@@ -8633,9 +8617,7 @@ private
      (Id : W_Abstract_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Abstract_Type_OList_Children_Valid
      (Id : W_Abstract_Type_Unchecked_OList)
@@ -8659,9 +8641,7 @@ private
      (Id : W_Generic_Formal_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Generic_Formal_Type_OList_Children_Valid
      (Id : W_Generic_Formal_Type_Unchecked_OList)
@@ -8688,9 +8668,7 @@ private
      (Id : W_Generic_Actual_Type_Chain_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Generic_Actual_Type_Chain_OList_Children_Valid
      (Id : W_Generic_Actual_Type_Chain_Unchecked_OList)
@@ -8714,9 +8692,7 @@ private
      (Id : W_Array_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Array_Type_OList_Children_Valid
      (Id : W_Array_Type_Unchecked_OList)
@@ -8740,9 +8716,7 @@ private
      (Id : W_Ref_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Ref_Type_OList_Children_Valid
      (Id : W_Ref_Type_Unchecked_OList)
@@ -8766,9 +8740,7 @@ private
      (Id : W_Protected_Value_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Protected_Value_Type_OList_Children_Valid
      (Id : W_Protected_Value_Type_Unchecked_OList)
@@ -8795,9 +8767,7 @@ private
      (Id : W_Anonymous_Arrow_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Anonymous_Arrow_Type_OList_Children_Valid
      (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
@@ -8827,9 +8797,7 @@ private
      (Id : W_Named_Arrow_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Named_Arrow_Type_OList_Children_Valid
      (Id : W_Named_Arrow_Type_Unchecked_OList)
@@ -8865,9 +8833,7 @@ private
      (Id : W_Computation_Spec_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Computation_Spec_OList_Children_Valid
      (Id : W_Computation_Spec_Unchecked_OList)
@@ -8890,9 +8856,7 @@ private
      (Id : W_Integer_Constant_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Integer_Constant_OList_Children_Valid
      (Id : W_Integer_Constant_Unchecked_OList)
@@ -8915,9 +8879,7 @@ private
      (Id : W_Real_Constant_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Real_Constant_OList_Children_Valid
      (Id : W_Real_Constant_Unchecked_OList)
@@ -8940,9 +8902,7 @@ private
      (Id : W_True_Literal_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function True_Literal_OList_Children_Valid
      (Id : W_True_Literal_Unchecked_OList)
@@ -8965,9 +8925,7 @@ private
      (Id : W_False_Literal_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function False_Literal_OList_Children_Valid
      (Id : W_False_Literal_Unchecked_OList)
@@ -8990,9 +8948,7 @@ private
      (Id : W_Void_Literal_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Void_Literal_OList_Children_Valid
      (Id : W_Void_Literal_Unchecked_OList)
@@ -9022,9 +8978,7 @@ private
      (Id : W_Arith_Operation_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Arith_Operation_OList_Children_Valid
      (Id : W_Arith_Operation_Unchecked_OList)
@@ -9048,9 +9002,7 @@ private
      (Id : W_Negative_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Negative_Term_OList_Children_Valid
      (Id : W_Negative_Term_Unchecked_OList)
@@ -9077,9 +9029,7 @@ private
      (Id : W_Label_Identifier_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Label_Identifier_OList_Children_Valid
      (Id : W_Label_Identifier_Unchecked_OList)
@@ -9106,9 +9056,7 @@ private
      (Id : W_Operation_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Operation_OList_Children_Valid
      (Id : W_Operation_Unchecked_OList)
@@ -9135,9 +9083,7 @@ private
      (Id : W_Named_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Named_Term_OList_Children_Valid
      (Id : W_Named_Term_Unchecked_OList)
@@ -9167,9 +9113,7 @@ private
      (Id : W_Conditional_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Conditional_Term_OList_Children_Valid
      (Id : W_Conditional_Term_Unchecked_OList)
@@ -9199,9 +9143,7 @@ private
      (Id : W_Binding_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Term_OList_Children_Valid
      (Id : W_Binding_Term_Unchecked_OList)
@@ -9225,9 +9167,7 @@ private
      (Id : W_Protected_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Protected_Term_OList_Children_Valid
      (Id : W_Protected_Term_Unchecked_OList)
@@ -9250,9 +9190,7 @@ private
      (Id : W_Op_Add_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Add_OList_Children_Valid
      (Id : W_Op_Add_Unchecked_OList)
@@ -9275,9 +9213,7 @@ private
      (Id : W_Op_Substract_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Substract_OList_Children_Valid
      (Id : W_Op_Substract_Unchecked_OList)
@@ -9300,9 +9236,7 @@ private
      (Id : W_Op_Multiply_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Multiply_OList_Children_Valid
      (Id : W_Op_Multiply_Unchecked_OList)
@@ -9325,9 +9259,7 @@ private
      (Id : W_Op_Divide_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Divide_OList_Children_Valid
      (Id : W_Op_Divide_Unchecked_OList)
@@ -9350,9 +9282,7 @@ private
      (Id : W_Op_Modulo_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Modulo_OList_Children_Valid
      (Id : W_Op_Modulo_Unchecked_OList)
@@ -9375,9 +9305,7 @@ private
      (Id : W_True_Literal_Pred_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function True_Literal_Pred_OList_Children_Valid
      (Id : W_True_Literal_Pred_Unchecked_OList)
@@ -9400,9 +9328,7 @@ private
      (Id : W_False_Literal_Pred_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function False_Literal_Pred_OList_Children_Valid
      (Id : W_False_Literal_Pred_Unchecked_OList)
@@ -9426,9 +9352,7 @@ private
      (Id : W_Predicate_Identifier_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Predicate_Identifier_OList_Children_Valid
      (Id : W_Predicate_Identifier_Unchecked_OList)
@@ -9455,9 +9379,7 @@ private
      (Id : W_Predicate_Instance_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Predicate_Instance_OList_Children_Valid
      (Id : W_Predicate_Instance_Unchecked_OList)
@@ -9493,9 +9415,7 @@ private
      (Id : W_Related_Terms_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Related_Terms_OList_Children_Valid
      (Id : W_Related_Terms_Unchecked_OList)
@@ -9522,9 +9442,7 @@ private
      (Id : W_Implication_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Implication_OList_Children_Valid
      (Id : W_Implication_Unchecked_OList)
@@ -9551,9 +9469,7 @@ private
      (Id : W_Equivalence_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Equivalence_OList_Children_Valid
      (Id : W_Equivalence_Unchecked_OList)
@@ -9580,9 +9496,7 @@ private
      (Id : W_Disjonction_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Disjonction_OList_Children_Valid
      (Id : W_Disjonction_Unchecked_OList)
@@ -9609,9 +9523,7 @@ private
      (Id : W_Conjonction_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Conjonction_OList_Children_Valid
      (Id : W_Conjonction_Unchecked_OList)
@@ -9635,9 +9547,7 @@ private
      (Id : W_Negation_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Negation_OList_Children_Valid
      (Id : W_Negation_Unchecked_OList)
@@ -9667,9 +9577,7 @@ private
      (Id : W_Conditional_Pred_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Conditional_Pred_OList_Children_Valid
      (Id : W_Conditional_Pred_Unchecked_OList)
@@ -9699,9 +9607,7 @@ private
      (Id : W_Binding_Pred_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Pred_OList_Children_Valid
      (Id : W_Binding_Pred_Unchecked_OList)
@@ -9734,9 +9640,7 @@ private
      (Id : W_Universal_Quantif_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Universal_Quantif_OList_Children_Valid
      (Id : W_Universal_Quantif_Unchecked_OList)
@@ -9766,9 +9670,7 @@ private
      (Id : W_Existential_Quantif_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Existential_Quantif_OList_Children_Valid
      (Id : W_Existential_Quantif_Unchecked_OList)
@@ -9795,9 +9697,7 @@ private
      (Id : W_Named_Predicate_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Named_Predicate_OList_Children_Valid
      (Id : W_Named_Predicate_Unchecked_OList)
@@ -9821,9 +9721,7 @@ private
      (Id : W_Protected_Predicate_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Protected_Predicate_OList_Children_Valid
      (Id : W_Protected_Predicate_Unchecked_OList)
@@ -9847,9 +9745,7 @@ private
      (Id : W_Triggers_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Triggers_OList_Children_Valid
      (Id : W_Triggers_Unchecked_OList)
@@ -9873,9 +9769,7 @@ private
      (Id : W_Trigger_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Trigger_OList_Children_Valid
      (Id : W_Trigger_Unchecked_OList)
@@ -9898,9 +9792,7 @@ private
      (Id : W_Rel_Eq_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Eq_OList_Children_Valid
      (Id : W_Rel_Eq_Unchecked_OList)
@@ -9923,9 +9815,7 @@ private
      (Id : W_Rel_Ne_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Ne_OList_Children_Valid
      (Id : W_Rel_Ne_Unchecked_OList)
@@ -9948,9 +9838,7 @@ private
      (Id : W_Rel_Lt_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Lt_OList_Children_Valid
      (Id : W_Rel_Lt_Unchecked_OList)
@@ -9973,9 +9861,7 @@ private
      (Id : W_Rel_Le_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Le_OList_Children_Valid
      (Id : W_Rel_Le_Unchecked_OList)
@@ -9998,9 +9884,7 @@ private
      (Id : W_Rel_Gt_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Gt_OList_Children_Valid
      (Id : W_Rel_Gt_Unchecked_OList)
@@ -10023,9 +9907,7 @@ private
      (Id : W_Rel_Ge_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Rel_Ge_OList_Children_Valid
      (Id : W_Rel_Ge_Unchecked_OList)
@@ -10055,9 +9937,7 @@ private
      (Id : W_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Type_OList_Children_Valid
      (Id : W_Type_Unchecked_OList)
@@ -10087,9 +9967,7 @@ private
      (Id : W_Logic_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_OList_Children_Valid
      (Id : W_Logic_Unchecked_OList)
@@ -10122,9 +10000,7 @@ private
      (Id : W_Function_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Function_OList_Children_Valid
      (Id : W_Function_Unchecked_OList)
@@ -10154,9 +10030,7 @@ private
      (Id : W_Predicate_Definition_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Predicate_Definition_OList_Children_Valid
      (Id : W_Predicate_Definition_Unchecked_OList)
@@ -10186,9 +10060,7 @@ private
      (Id : W_Inductive_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Inductive_OList_Children_Valid
      (Id : W_Inductive_Unchecked_OList)
@@ -10215,9 +10087,7 @@ private
      (Id : W_Axiom_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Axiom_OList_Children_Valid
      (Id : W_Axiom_Unchecked_OList)
@@ -10244,9 +10114,7 @@ private
      (Id : W_Goal_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Goal_OList_Children_Valid
      (Id : W_Goal_Unchecked_OList)
@@ -10269,9 +10137,7 @@ private
      (Id : W_External_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function External_OList_Children_Valid
      (Id : W_External_Unchecked_OList)
@@ -10298,9 +10164,7 @@ private
      (Id : W_Logic_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Type_OList_Children_Valid
      (Id : W_Logic_Type_Unchecked_OList)
@@ -10327,9 +10191,7 @@ private
      (Id : W_Logic_Binder_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Binder_OList_Children_Valid
      (Id : W_Logic_Binder_Unchecked_OList)
@@ -10356,9 +10218,7 @@ private
      (Id : W_Inductive_Case_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Inductive_Case_OList_Children_Valid
      (Id : W_Inductive_Case_Unchecked_OList)
@@ -10388,9 +10248,7 @@ private
      (Id : W_Effects_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Effects_OList_Children_Valid
      (Id : W_Effects_Unchecked_OList)
@@ -10414,9 +10272,7 @@ private
      (Id : W_Precondition_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Precondition_OList_Children_Valid
      (Id : W_Precondition_Unchecked_OList)
@@ -10443,9 +10299,7 @@ private
      (Id : W_Postcondition_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Postcondition_OList_Children_Valid
      (Id : W_Postcondition_Unchecked_OList)
@@ -10472,9 +10326,7 @@ private
      (Id : W_Exn_Condition_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Exn_Condition_OList_Children_Valid
      (Id : W_Exn_Condition_Unchecked_OList)
@@ -10501,9 +10353,7 @@ private
      (Id : W_Assertion_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Assertion_OList_Children_Valid
      (Id : W_Assertion_Unchecked_OList)
@@ -10527,9 +10377,7 @@ private
      (Id : W_Prog_Constant_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prog_Constant_OList_Children_Valid
      (Id : W_Prog_Constant_Unchecked_OList)
@@ -10553,9 +10401,7 @@ private
      (Id : W_Prog_Identifier_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prog_Identifier_OList_Children_Valid
      (Id : W_Prog_Identifier_Unchecked_OList)
@@ -10579,9 +10425,7 @@ private
      (Id : W_Deref_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Deref_OList_Children_Valid
      (Id : W_Deref_Unchecked_OList)
@@ -10608,9 +10452,7 @@ private
      (Id : W_Assignment_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Assignment_OList_Children_Valid
      (Id : W_Assignment_Unchecked_OList)
@@ -10637,9 +10479,7 @@ private
      (Id : W_Array_Access_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Array_Access_OList_Children_Valid
      (Id : W_Array_Access_Unchecked_OList)
@@ -10669,9 +10509,7 @@ private
      (Id : W_Array_Update_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Array_Update_OList_Children_Valid
      (Id : W_Array_Update_Unchecked_OList)
@@ -10701,9 +10539,7 @@ private
      (Id : W_Infix_Call_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Infix_Call_OList_Children_Valid
      (Id : W_Infix_Call_Unchecked_OList)
@@ -10730,9 +10566,7 @@ private
      (Id : W_Prefix_Call_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prefix_Call_OList_Children_Valid
      (Id : W_Prefix_Call_Unchecked_OList)
@@ -10762,9 +10596,7 @@ private
      (Id : W_Binding_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Prog_OList_Children_Valid
      (Id : W_Binding_Prog_Unchecked_OList)
@@ -10794,9 +10626,7 @@ private
      (Id : W_Binding_Ref_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Ref_OList_Children_Valid
      (Id : W_Binding_Ref_Unchecked_OList)
@@ -10826,9 +10656,7 @@ private
      (Id : W_Conditional_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Conditional_Prog_OList_Children_Valid
      (Id : W_Conditional_Prog_Unchecked_OList)
@@ -10858,9 +10686,7 @@ private
      (Id : W_While_Loop_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function While_Loop_OList_Children_Valid
      (Id : W_While_Loop_Unchecked_OList)
@@ -10884,9 +10710,7 @@ private
      (Id : W_Statement_Sequence_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Statement_Sequence_OList_Children_Valid
      (Id : W_Statement_Sequence_Unchecked_OList)
@@ -10913,9 +10737,7 @@ private
      (Id : W_Label_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Label_OList_Children_Valid
      (Id : W_Label_Unchecked_OList)
@@ -10942,9 +10764,7 @@ private
      (Id : W_Assert_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Assert_OList_Children_Valid
      (Id : W_Assert_Unchecked_OList)
@@ -10971,9 +10791,7 @@ private
      (Id : W_Post_Assertion_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Post_Assertion_OList_Children_Valid
      (Id : W_Post_Assertion_Unchecked_OList)
@@ -11000,9 +10818,7 @@ private
      (Id : W_Opaque_Assertion_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Opaque_Assertion_OList_Children_Valid
      (Id : W_Opaque_Assertion_Unchecked_OList)
@@ -11029,9 +10845,7 @@ private
      (Id : W_Fun_Def_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Fun_Def_OList_Children_Valid
      (Id : W_Fun_Def_Unchecked_OList)
@@ -11064,9 +10878,7 @@ private
      (Id : W_Binding_Fun_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Fun_OList_Children_Valid
      (Id : W_Binding_Fun_Unchecked_OList)
@@ -11093,9 +10905,7 @@ private
      (Id : W_Binding_Rec_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binding_Rec_OList_Children_Valid
      (Id : W_Binding_Rec_Unchecked_OList)
@@ -11119,9 +10929,7 @@ private
      (Id : W_Prog_Sequence_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prog_Sequence_OList_Children_Valid
      (Id : W_Prog_Sequence_Unchecked_OList)
@@ -11148,9 +10956,7 @@ private
      (Id : W_Raise_Statement_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Raise_Statement_OList_Children_Valid
      (Id : W_Raise_Statement_Unchecked_OList)
@@ -11180,9 +10986,7 @@ private
      (Id : W_Raise_Statement_With_Parameters_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Raise_Statement_With_Parameters_OList_Children_Valid
      (Id : W_Raise_Statement_With_Parameters_Unchecked_OList)
@@ -11209,9 +11013,7 @@ private
      (Id : W_Try_Block_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Try_Block_OList_Children_Valid
      (Id : W_Try_Block_Unchecked_OList)
@@ -11235,9 +11037,7 @@ private
      (Id : W_Unreachable_Code_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Unreachable_Code_OList_Children_Valid
      (Id : W_Unreachable_Code_Unchecked_OList)
@@ -11261,9 +11061,7 @@ private
      (Id : W_Begin_Block_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Begin_Block_OList_Children_Valid
      (Id : W_Begin_Block_Unchecked_OList)
@@ -11287,9 +11085,7 @@ private
      (Id : W_Protected_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Protected_Prog_OList_Children_Valid
      (Id : W_Protected_Prog_Unchecked_OList)
@@ -11312,9 +11108,7 @@ private
      (Id : W_Op_Add_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Add_Prog_OList_Children_Valid
      (Id : W_Op_Add_Prog_Unchecked_OList)
@@ -11337,9 +11131,7 @@ private
      (Id : W_Op_Substract_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Substract_Prog_OList_Children_Valid
      (Id : W_Op_Substract_Prog_Unchecked_OList)
@@ -11362,9 +11154,7 @@ private
      (Id : W_Op_Multiply_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Multiply_Prog_OList_Children_Valid
      (Id : W_Op_Multiply_Prog_Unchecked_OList)
@@ -11387,9 +11177,7 @@ private
      (Id : W_Op_Divide_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Divide_Prog_OList_Children_Valid
      (Id : W_Op_Divide_Prog_Unchecked_OList)
@@ -11412,9 +11200,7 @@ private
      (Id : W_Op_Mod_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Mod_Prog_OList_Children_Valid
      (Id : W_Op_Mod_Prog_Unchecked_OList)
@@ -11437,9 +11223,7 @@ private
      (Id : W_Op_Eq_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Eq_Prog_OList_Children_Valid
      (Id : W_Op_Eq_Prog_Unchecked_OList)
@@ -11462,9 +11246,7 @@ private
      (Id : W_Op_Ne_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Ne_Prog_OList_Children_Valid
      (Id : W_Op_Ne_Prog_Unchecked_OList)
@@ -11487,9 +11269,7 @@ private
      (Id : W_Op_Lt_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Lt_Prog_OList_Children_Valid
      (Id : W_Op_Lt_Prog_Unchecked_OList)
@@ -11512,9 +11292,7 @@ private
      (Id : W_Op_Le_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Le_Prog_OList_Children_Valid
      (Id : W_Op_Le_Prog_Unchecked_OList)
@@ -11537,9 +11315,7 @@ private
      (Id : W_Op_Gt_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Gt_Prog_OList_Children_Valid
      (Id : W_Op_Gt_Prog_Unchecked_OList)
@@ -11562,9 +11338,7 @@ private
      (Id : W_Op_Ge_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Ge_Prog_OList_Children_Valid
      (Id : W_Op_Ge_Prog_Unchecked_OList)
@@ -11587,9 +11361,7 @@ private
      (Id : W_Op_Or_Else_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Or_Else_Prog_OList_Children_Valid
      (Id : W_Op_Or_Else_Prog_Unchecked_OList)
@@ -11612,9 +11384,7 @@ private
      (Id : W_Op_And_Then_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_And_Then_Prog_OList_Children_Valid
      (Id : W_Op_And_Then_Prog_Unchecked_OList)
@@ -11637,9 +11407,7 @@ private
      (Id : W_Op_Minus_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Minus_Prog_OList_Children_Valid
      (Id : W_Op_Minus_Prog_Unchecked_OList)
@@ -11662,9 +11430,7 @@ private
      (Id : W_Op_Not_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Op_Not_Prog_OList_Children_Valid
      (Id : W_Op_Not_Prog_Unchecked_OList)
@@ -11688,9 +11454,7 @@ private
      (Id : W_Binders_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binders_OList_Children_Valid
      (Id : W_Binders_Unchecked_OList)
@@ -11717,9 +11481,7 @@ private
      (Id : W_Binder_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Binder_OList_Children_Valid
      (Id : W_Binder_Unchecked_OList)
@@ -11755,9 +11517,7 @@ private
      (Id : W_Recfun_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Recfun_OList_Children_Valid
      (Id : W_Recfun_Unchecked_OList)
@@ -11784,9 +11544,7 @@ private
      (Id : W_Loop_Annot_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Loop_Annot_OList_Children_Valid
      (Id : W_Loop_Annot_Unchecked_OList)
@@ -11813,9 +11571,7 @@ private
      (Id : W_Wf_Arg_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Wf_Arg_OList_Children_Valid
      (Id : W_Wf_Arg_Unchecked_OList)
@@ -11845,9 +11601,7 @@ private
      (Id : W_Handler_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Handler_OList_Children_Valid
      (Id : W_Handler_Unchecked_OList)
@@ -11871,9 +11625,7 @@ private
      (Id : W_File_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function File_OList_Children_Valid
      (Id : W_File_Unchecked_OList)
@@ -11903,9 +11655,7 @@ private
      (Id : W_Global_Binding_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Global_Binding_OList_Children_Valid
      (Id : W_Global_Binding_Unchecked_OList)
@@ -11929,9 +11679,7 @@ private
      (Id : W_Global_Rec_Binding_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Global_Rec_Binding_OList_Children_Valid
      (Id : W_Global_Rec_Binding_Unchecked_OList)
@@ -11961,9 +11709,7 @@ private
      (Id : W_Parameter_Declaration_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Parameter_Declaration_OList_Children_Valid
      (Id : W_Parameter_Declaration_Unchecked_OList)
@@ -11990,9 +11736,7 @@ private
      (Id : W_Exception_Declaration_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Exception_Declaration_OList_Children_Valid
      (Id : W_Exception_Declaration_Unchecked_OList)
@@ -12016,9 +11760,7 @@ private
      (Id : W_Logic_Declaration_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Declaration_OList_Children_Valid
      (Id : W_Logic_Declaration_Unchecked_OList)
@@ -12069,9 +11811,7 @@ private
      (Id : W_Term_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Term_OList_Children_Valid
      (Id : W_Term_Unchecked_OList)
@@ -12106,9 +11846,7 @@ private
      (Id : W_Constant_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Constant_OList_Children_Valid
      (Id : W_Constant_Unchecked_OList)
@@ -12143,9 +11881,7 @@ private
      (Id : W_Arith_Op_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Arith_Op_OList_Children_Valid
      (Id : W_Arith_Op_Unchecked_OList)
@@ -12234,9 +11970,7 @@ private
      (Id : W_Predicate_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Predicate_OList_Children_Valid
      (Id : W_Predicate_Unchecked_OList)
@@ -12275,9 +12009,7 @@ private
      (Id : W_Primitive_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Primitive_Type_OList_Children_Valid
      (Id : W_Primitive_Type_Unchecked_OList)
@@ -12314,9 +12046,7 @@ private
      (Id : W_Relation_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Relation_OList_Children_Valid
      (Id : W_Relation_Unchecked_OList)
@@ -12355,9 +12085,7 @@ private
      (Id : W_Logic_Declaration_Class_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Declaration_Class_OList_Children_Valid
      (Id : W_Logic_Declaration_Class_Unchecked_OList)
@@ -12398,9 +12126,7 @@ private
      (Id : W_Logic_Return_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Return_Type_OList_Children_Valid
      (Id : W_Logic_Return_Type_Unchecked_OList)
@@ -12441,9 +12167,7 @@ private
      (Id : W_Logic_Arg_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Logic_Arg_Type_OList_Children_Valid
      (Id : W_Logic_Arg_Type_Unchecked_OList)
@@ -12488,9 +12212,7 @@ private
      (Id : W_Simple_Value_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Simple_Value_Type_OList_Children_Valid
      (Id : W_Simple_Value_Type_Unchecked_OList)
@@ -12539,9 +12261,7 @@ private
      (Id : W_Value_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Value_Type_OList_Children_Valid
      (Id : W_Value_Type_Unchecked_OList)
@@ -12592,9 +12312,7 @@ private
      (Id : W_Computation_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Computation_Type_OList_Children_Valid
      (Id : W_Computation_Type_Unchecked_OList)
@@ -12673,9 +12391,7 @@ private
      (Id : W_Prog_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prog_OList_Children_Valid
      (Id : W_Prog_Unchecked_OList)
@@ -12726,9 +12442,7 @@ private
      (Id : W_Infix_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Infix_OList_Children_Valid
      (Id : W_Infix_Unchecked_OList)
@@ -12757,9 +12471,7 @@ private
      (Id : W_Prefix_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Prefix_OList_Children_Valid
      (Id : W_Prefix_Unchecked_OList)
@@ -12794,9 +12506,7 @@ private
      (Id : W_Declaration_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+      and then List_Cache_Valid (Id));
 
    function Declaration_OList_Children_Valid
      (Id : W_Declaration_Unchecked_OList)

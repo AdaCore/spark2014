@@ -190,7 +190,8 @@ package body Xtree_Builders is
             else
                if Id_Type_Name (FI) = "Node_Id" then
                   P (O, "Empty");
-               elsif Id_Type_Name (FI) = "Why_Node_Id" then
+               elsif Id_Type_Name (FI) = "Why_Node_Id"
+                 or else Id_Type_Name (FI) = "Why_Node_Set" then
                   P (O, "Why_Empty");
                else
                   P (O, Param_Name (FI));
@@ -277,7 +278,9 @@ package body Xtree_Builders is
             if Is_List (FI)
               or else Is_Why_Id (FI)
               or else Id_Type_Name (FI) = "Node_Id"
-              or else Id_Type_Name (FI) = "Why_Node_Id" then
+              or else Id_Type_Name (FI) = "Why_Node_Id"
+              or else Id_Type_Name (FI) = "Why_Node_Set"
+            then
                return;
             end if;
          end if;

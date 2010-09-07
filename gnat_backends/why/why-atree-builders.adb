@@ -32,7 +32,7 @@ package body Why.Atree.Builders is
 
    function New_Identifier
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Symbol   : Name_Id;
       Entity   : Why_Node_Id)
      return W_Identifier_Id
@@ -53,7 +53,7 @@ package body Why.Atree.Builders is
 
    function New_Type_Prop
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Type_Prop_Id
    is
    begin
@@ -70,7 +70,7 @@ package body Why.Atree.Builders is
 
    function New_Type_Int
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Type_Int_Id
    is
    begin
@@ -87,7 +87,7 @@ package body Why.Atree.Builders is
 
    function New_Type_Bool
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Type_Bool_Id
    is
    begin
@@ -104,7 +104,7 @@ package body Why.Atree.Builders is
 
    function New_Type_Real
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Type_Real_Id
    is
    begin
@@ -121,7 +121,7 @@ package body Why.Atree.Builders is
 
    function New_Type_Unit
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Type_Unit_Id
    is
    begin
@@ -138,7 +138,7 @@ package body Why.Atree.Builders is
 
    function New_Abstract_Type
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Abstract_Type_Id
    is
@@ -157,7 +157,7 @@ package body Why.Atree.Builders is
 
    function New_Generic_Formal_Type
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Generic_Formal_Type_Id
    is
@@ -176,7 +176,7 @@ package body Why.Atree.Builders is
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id
@@ -197,7 +197,7 @@ package body Why.Atree.Builders is
 
    function New_Array_Type
      (Ada_Node       : Node_Id;
-      Link           : Why_Node_Id;
+      Link           : Why_Node_Set;
       Component_Type : W_Primitive_Type_Id)
      return W_Array_Type_Id
    is
@@ -216,7 +216,7 @@ package body Why.Atree.Builders is
 
    function New_Ref_Type
      (Ada_Node     : Node_Id;
-      Link         : Why_Node_Id;
+      Link         : Why_Node_Set;
       Aliased_Type : W_Primitive_Type_Id)
      return W_Ref_Type_Id
    is
@@ -235,7 +235,7 @@ package body Why.Atree.Builders is
 
    function New_Protected_Value_Type
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Value_Type : W_Value_Type_Id)
      return W_Protected_Value_Type_Id
    is
@@ -254,7 +254,7 @@ package body Why.Atree.Builders is
 
    function New_Anonymous_Arrow_Type
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
      return W_Anonymous_Arrow_Type_Id
@@ -275,7 +275,7 @@ package body Why.Atree.Builders is
 
    function New_Named_Arrow_Type
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
@@ -298,7 +298,7 @@ package body Why.Atree.Builders is
 
    function New_Computation_Spec
      (Ada_Node      : Node_Id;
-      Link          : Why_Node_Id;
+      Link          : Why_Node_Set;
       Precondition  : W_Precondition_OId;
       Result_Name   : W_Identifier_OId;
       Return_Type   : W_Value_Type_Id;
@@ -325,7 +325,7 @@ package body Why.Atree.Builders is
 
    function New_Integer_Constant
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Value    : Uint)
      return W_Integer_Constant_Id
    is
@@ -344,7 +344,7 @@ package body Why.Atree.Builders is
 
    function New_Real_Constant
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Value    : Ureal)
      return W_Real_Constant_Id
    is
@@ -363,7 +363,7 @@ package body Why.Atree.Builders is
 
    function New_True_Literal
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_True_Literal_Id
    is
    begin
@@ -380,7 +380,7 @@ package body Why.Atree.Builders is
 
    function New_False_Literal
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_False_Literal_Id
    is
    begin
@@ -397,7 +397,7 @@ package body Why.Atree.Builders is
 
    function New_Void_Literal
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Void_Literal_Id
    is
    begin
@@ -414,7 +414,7 @@ package body Why.Atree.Builders is
 
    function New_Arith_Operation
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Term_Id;
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
@@ -437,7 +437,7 @@ package body Why.Atree.Builders is
 
    function New_Negative_Term
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Operand  : W_Term_Id)
      return W_Negative_Term_Id
    is
@@ -456,7 +456,7 @@ package body Why.Atree.Builders is
 
    function New_Label_Identifier
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId)
      return W_Label_Identifier_Id
@@ -477,7 +477,7 @@ package body Why.Atree.Builders is
 
    function New_Operation
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Operation_Id
@@ -498,7 +498,7 @@ package body Why.Atree.Builders is
 
    function New_Named_Term
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id
@@ -519,7 +519,7 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Term
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Condition : W_Term_Id;
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
@@ -542,7 +542,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Term
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Term_Id)
@@ -565,7 +565,7 @@ package body Why.Atree.Builders is
 
    function New_Protected_Term
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Term     : W_Term_Id)
      return W_Protected_Term_Id
    is
@@ -584,7 +584,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Add
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Add_Id
    is
    begin
@@ -601,7 +601,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Substract
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Substract_Id
    is
    begin
@@ -618,7 +618,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Multiply
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Multiply_Id
    is
    begin
@@ -635,7 +635,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Divide
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Divide_Id
    is
    begin
@@ -652,7 +652,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Modulo
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Modulo_Id
    is
    begin
@@ -669,7 +669,7 @@ package body Why.Atree.Builders is
 
    function New_True_Literal_Pred
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_True_Literal_Pred_Id
    is
    begin
@@ -686,7 +686,7 @@ package body Why.Atree.Builders is
 
    function New_False_Literal_Pred
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_False_Literal_Pred_Id
    is
    begin
@@ -703,7 +703,7 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Identifier
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Predicate_Identifier_Id
    is
@@ -722,7 +722,7 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Instance
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Predicate_Instance_Id
@@ -743,7 +743,7 @@ package body Why.Atree.Builders is
 
    function New_Related_Terms
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Term_Id;
       Op       : W_Relation_Id;
       Right    : W_Term_Id;
@@ -770,7 +770,7 @@ package body Why.Atree.Builders is
 
    function New_Implication
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Implication_Id
@@ -791,7 +791,7 @@ package body Why.Atree.Builders is
 
    function New_Equivalence
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Equivalence_Id
@@ -812,7 +812,7 @@ package body Why.Atree.Builders is
 
    function New_Disjonction
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Disjonction_Id
@@ -833,7 +833,7 @@ package body Why.Atree.Builders is
 
    function New_Conjonction
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Conjonction_Id
@@ -854,7 +854,7 @@ package body Why.Atree.Builders is
 
    function New_Negation
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Operand  : W_Predicate_Id)
      return W_Negation_Id
    is
@@ -873,7 +873,7 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Pred
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Condition : W_Term_Id;
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
@@ -896,7 +896,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Pred
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
@@ -919,7 +919,7 @@ package body Why.Atree.Builders is
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId;
@@ -944,7 +944,7 @@ package body Why.Atree.Builders is
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
@@ -967,7 +967,7 @@ package body Why.Atree.Builders is
 
    function New_Named_Predicate
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Named_Predicate_Id
@@ -988,7 +988,7 @@ package body Why.Atree.Builders is
 
    function New_Protected_Predicate
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Pred     : W_Predicate_Id)
      return W_Protected_Predicate_Id
    is
@@ -1007,7 +1007,7 @@ package body Why.Atree.Builders is
 
    function New_Triggers
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Triggers : W_Trigger_List)
      return W_Triggers_Id
    is
@@ -1026,7 +1026,7 @@ package body Why.Atree.Builders is
 
    function New_Trigger
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Terms    : W_Term_List)
      return W_Trigger_Id
    is
@@ -1045,7 +1045,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Eq
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Eq_Id
    is
    begin
@@ -1062,7 +1062,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Ne
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Ne_Id
    is
    begin
@@ -1079,7 +1079,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Lt
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Lt_Id
    is
    begin
@@ -1096,7 +1096,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Le
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Le_Id
    is
    begin
@@ -1113,7 +1113,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Gt
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Gt_Id
    is
    begin
@@ -1130,7 +1130,7 @@ package body Why.Atree.Builders is
 
    function New_Rel_Ge
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Rel_Ge_Id
    is
    begin
@@ -1147,7 +1147,7 @@ package body Why.Atree.Builders is
 
    function New_Type
      (Ada_Node        : Node_Id;
-      Link            : Why_Node_Id;
+      Link            : Why_Node_Set;
       External        : W_External_OId;
       Type_Parameters : W_Identifier_OList;
       Name            : W_Identifier_Id)
@@ -1170,7 +1170,7 @@ package body Why.Atree.Builders is
 
    function New_Logic
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       External   : W_External_OId;
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
@@ -1193,7 +1193,7 @@ package body Why.Atree.Builders is
 
    function New_Function
      (Ada_Node    : Node_Id;
-      Link        : Why_Node_Id;
+      Link        : Why_Node_Set;
       Name        : W_Identifier_Id;
       Binders     : W_Logic_Binder_List;
       Return_Type : W_Primitive_Type_Id;
@@ -1218,7 +1218,7 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Definition
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
@@ -1241,7 +1241,7 @@ package body Why.Atree.Builders is
 
    function New_Inductive
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
@@ -1264,7 +1264,7 @@ package body Why.Atree.Builders is
 
    function New_Axiom
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Axiom_Id
@@ -1285,7 +1285,7 @@ package body Why.Atree.Builders is
 
    function New_Goal
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Goal_Id
@@ -1306,7 +1306,7 @@ package body Why.Atree.Builders is
 
    function New_External
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_External_Id
    is
    begin
@@ -1323,7 +1323,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id;
-      Link        : Why_Node_Id;
+      Link        : Why_Node_Set;
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_List)
      return W_Logic_Type_Id
@@ -1344,7 +1344,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Binder
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
      return W_Logic_Binder_Id
@@ -1365,7 +1365,7 @@ package body Why.Atree.Builders is
 
    function New_Inductive_Case
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Inductive_Case_Id
@@ -1386,7 +1386,7 @@ package body Why.Atree.Builders is
 
    function New_Effects
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Reads    : W_Identifier_OList;
       Writes   : W_Identifier_OList;
       Raises   : W_Identifier_OList)
@@ -1409,7 +1409,7 @@ package body Why.Atree.Builders is
 
    function New_Precondition
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Assertion : W_Assertion_Id)
      return W_Precondition_Id
    is
@@ -1428,7 +1428,7 @@ package body Why.Atree.Builders is
 
    function New_Postcondition
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Assertion : W_Assertion_Id;
       Handlers  : W_Exn_Condition_OList)
      return W_Postcondition_Id
@@ -1449,7 +1449,7 @@ package body Why.Atree.Builders is
 
    function New_Exn_Condition
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
      return W_Exn_Condition_Id
@@ -1470,7 +1470,7 @@ package body Why.Atree.Builders is
 
    function New_Assertion
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Pred     : W_Predicate_Id;
       As       : W_Identifier_OId)
      return W_Assertion_Id
@@ -1491,7 +1491,7 @@ package body Why.Atree.Builders is
 
    function New_Prog_Constant
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Def      : W_Constant_Id)
      return W_Prog_Constant_Id
    is
@@ -1510,7 +1510,7 @@ package body Why.Atree.Builders is
 
    function New_Prog_Identifier
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Def      : W_Identifier_Id)
      return W_Prog_Identifier_Id
    is
@@ -1529,7 +1529,7 @@ package body Why.Atree.Builders is
 
    function New_Deref
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Ref      : W_Identifier_Id)
      return W_Deref_Id
    is
@@ -1548,7 +1548,7 @@ package body Why.Atree.Builders is
 
    function New_Assignment
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
      return W_Assignment_Id
@@ -1569,7 +1569,7 @@ package body Why.Atree.Builders is
 
    function New_Array_Access
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
      return W_Array_Access_Id
@@ -1590,7 +1590,7 @@ package body Why.Atree.Builders is
 
    function New_Array_Update
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
@@ -1613,7 +1613,7 @@ package body Why.Atree.Builders is
 
    function New_Infix_Call
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Left     : W_Prog_Id;
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
@@ -1636,7 +1636,7 @@ package body Why.Atree.Builders is
 
    function New_Prefix_Call
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
      return W_Prefix_Call_Id
@@ -1657,7 +1657,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -1680,7 +1680,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Ref
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -1703,7 +1703,7 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Prog
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Condition : W_Prog_Id;
       Then_Part : W_Prog_Id;
       Else_Part : W_Prog_OId)
@@ -1726,7 +1726,7 @@ package body Why.Atree.Builders is
 
    function New_While_Loop
      (Ada_Node     : Node_Id;
-      Link         : Why_Node_Id;
+      Link         : Why_Node_Set;
       Condition    : W_Prog_Id;
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
@@ -1749,7 +1749,7 @@ package body Why.Atree.Builders is
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Statements : W_Prog_List)
      return W_Statement_Sequence_Id
    is
@@ -1768,7 +1768,7 @@ package body Why.Atree.Builders is
 
    function New_Label
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
      return W_Label_Id
@@ -1789,7 +1789,7 @@ package body Why.Atree.Builders is
 
    function New_Assert
      (Ada_Node   : Node_Id;
-      Link       : Why_Node_Id;
+      Link       : Why_Node_Set;
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
      return W_Assert_Id
@@ -1810,7 +1810,7 @@ package body Why.Atree.Builders is
 
    function New_Post_Assertion
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Post_Assertion_Id
@@ -1831,7 +1831,7 @@ package body Why.Atree.Builders is
 
    function New_Opaque_Assertion
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Opaque_Assertion_Id
@@ -1852,7 +1852,7 @@ package body Why.Atree.Builders is
 
    function New_Fun_Def
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id
@@ -1873,7 +1873,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Fun
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id;
@@ -1898,7 +1898,7 @@ package body Why.Atree.Builders is
 
    function New_Binding_Rec
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
      return W_Binding_Rec_Id
@@ -1919,7 +1919,7 @@ package body Why.Atree.Builders is
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Progs    : W_Prog_List)
      return W_Prog_Sequence_Id
    is
@@ -1938,7 +1938,7 @@ package body Why.Atree.Builders is
 
    function New_Raise_Statement
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Exn_Type : W_Value_Type_OId)
      return W_Raise_Statement_Id
@@ -1959,7 +1959,7 @@ package body Why.Atree.Builders is
 
    function New_Raise_Statement_With_Parameters
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
       Exn_Type  : W_Value_Type_OId)
@@ -1982,7 +1982,7 @@ package body Why.Atree.Builders is
 
    function New_Try_Block
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
      return W_Try_Block_Id
@@ -2003,7 +2003,7 @@ package body Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Exn_Type : W_Value_Type_OId)
      return W_Unreachable_Code_Id
    is
@@ -2022,7 +2022,7 @@ package body Why.Atree.Builders is
 
    function New_Begin_Block
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prog     : W_Prog_Id)
      return W_Begin_Block_Id
    is
@@ -2041,7 +2041,7 @@ package body Why.Atree.Builders is
 
    function New_Protected_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Prog     : W_Prog_Id)
      return W_Protected_Prog_Id
    is
@@ -2060,7 +2060,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Add_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Add_Prog_Id
    is
    begin
@@ -2077,7 +2077,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Substract_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Substract_Prog_Id
    is
    begin
@@ -2094,7 +2094,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Multiply_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Multiply_Prog_Id
    is
    begin
@@ -2111,7 +2111,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Divide_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Divide_Prog_Id
    is
    begin
@@ -2128,7 +2128,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Mod_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Mod_Prog_Id
    is
    begin
@@ -2145,7 +2145,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Eq_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Eq_Prog_Id
    is
    begin
@@ -2162,7 +2162,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Ne_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Ne_Prog_Id
    is
    begin
@@ -2179,7 +2179,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Lt_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Lt_Prog_Id
    is
    begin
@@ -2196,7 +2196,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Le_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Le_Prog_Id
    is
    begin
@@ -2213,7 +2213,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Gt_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Gt_Prog_Id
    is
    begin
@@ -2230,7 +2230,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Ge_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Ge_Prog_Id
    is
    begin
@@ -2247,7 +2247,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Or_Else_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Or_Else_Prog_Id
    is
    begin
@@ -2264,7 +2264,7 @@ package body Why.Atree.Builders is
 
    function New_Op_And_Then_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_And_Then_Prog_Id
    is
    begin
@@ -2281,7 +2281,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Minus_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Minus_Prog_Id
    is
    begin
@@ -2298,7 +2298,7 @@ package body Why.Atree.Builders is
 
    function New_Op_Not_Prog
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id)
+      Link     : Why_Node_Set)
      return W_Op_Not_Prog_Id
    is
    begin
@@ -2315,7 +2315,7 @@ package body Why.Atree.Builders is
 
    function New_Binders
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Binders  : W_Binders_List)
      return W_Binders_Id
    is
@@ -2334,7 +2334,7 @@ package body Why.Atree.Builders is
 
    function New_Binder
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id
@@ -2355,7 +2355,7 @@ package body Why.Atree.Builders is
 
    function New_Recfun
      (Ada_Node    : Node_Id;
-      Link        : Why_Node_Id;
+      Link        : Why_Node_Set;
       Name        : W_Identifier_Id;
       Binders     : W_Binders_Id;
       Return_Type : W_Prog_Id;
@@ -2382,7 +2382,7 @@ package body Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Invariant : W_Assertion_OId;
       Variant   : W_Wf_Arg_OId)
      return W_Loop_Annot_Id
@@ -2403,7 +2403,7 @@ package body Why.Atree.Builders is
 
    function New_Wf_Arg
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Def      : W_Term_Id;
       For_Id   : W_Identifier_OId)
      return W_Wf_Arg_Id
@@ -2424,7 +2424,7 @@ package body Why.Atree.Builders is
 
    function New_Handler
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Name      : W_Identifier_Id;
       Parameter : W_Prog_OId;
       Def       : W_Prog_Id)
@@ -2447,7 +2447,7 @@ package body Why.Atree.Builders is
 
    function New_File
      (Ada_Node     : Node_Id;
-      Link         : Why_Node_Id;
+      Link         : Why_Node_Set;
       Declarations : W_Declaration_OList)
      return W_File_Id
    is
@@ -2466,7 +2466,7 @@ package body Why.Atree.Builders is
 
    function New_Global_Binding
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_OId;
       Def      : W_Prog_Id)
@@ -2489,7 +2489,7 @@ package body Why.Atree.Builders is
 
    function New_Global_Rec_Binding
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Name     : W_Recfun_Id)
      return W_Global_Rec_Binding_Id
    is
@@ -2508,7 +2508,7 @@ package body Why.Atree.Builders is
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id;
-      Link           : Why_Node_Id;
+      Link           : Why_Node_Set;
       External       : W_External_Id;
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
@@ -2531,7 +2531,7 @@ package body Why.Atree.Builders is
 
    function New_Exception_Declaration
      (Ada_Node  : Node_Id;
-      Link      : Why_Node_Id;
+      Link      : Why_Node_Set;
       Name      : W_Identifier_Id;
       Parameter : W_Primitive_Type_OId)
      return W_Exception_Declaration_Id
@@ -2552,7 +2552,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id;
-      Link     : Why_Node_Id;
+      Link     : Why_Node_Set;
       Decl     : W_Logic_Id)
      return W_Logic_Declaration_Id
    is

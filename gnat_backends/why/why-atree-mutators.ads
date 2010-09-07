@@ -35,7 +35,7 @@ package Why.Atree.Mutators is
 
    procedure Set_Link
      (Id   : Why_Node_Id;
-      Link : Why_Node_Id);
+      Link : Why_Node_Set);
 
    procedure Identifier_Set_Symbol
      (Id     : W_Identifier_Unchecked_Id;

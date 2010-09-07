@@ -30,10 +30,13 @@ package Why.Types is
 
    type Why_Int is range -2 ** 31 .. +2 ** 31 - 1;
 
-   type Why_Node_Id is new Why_Int range 0 .. Why_Int'Last;
+   type Why_Node_Set is new Why_Int range 0 .. Why_Int'Last;
 
-   type Why_Node_List is new Why_Int range 0 .. Why_Int'Last;
+   type Why_Node_Id is new Why_Node_Set range 0 .. Why_Node_Set'Last / 2;
 
-   Why_Empty      : constant := 0;
+   type Why_Node_List is new Why_Node_Set
+     range Why_Node_Set (Why_Node_Id'Last) .. Why_Node_Set'Last;
+
+   Why_Empty : constant := 0;
 
 end Why.Types;

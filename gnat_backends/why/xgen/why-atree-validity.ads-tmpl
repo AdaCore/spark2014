@@ -87,9 +87,7 @@ private
      (Id = Why_Empty or else Id_Cache_Valid (Id));
 
    function List_Cache_Valid (Id : Why_Node_List) return Boolean is
-     (not Is_Empty (Id) and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
+     (not Is_Empty (Id) and then Is_Checked (Id));
 
    function OList_Cache_Valid (Id : Why_Node_List) return Boolean is
      (Is_Empty (Id) or else List_Cache_Valid (Id));

@@ -87,7 +87,8 @@ package body Why.Atree.Tables is
       use Node_List_Tables;
       use Node_Lists;
 
-      New_Item : List;
+      New_List : List;
+      New_Item : constant List_Info := (False, New_List);
    begin
       Append (List_Table, New_Item);
       return To_Index (Last (List_Table));
