@@ -1589,6 +1589,8 @@ package body Sparkify.Pre_Operations is
                           Corresponding_Body (Element_Unit);
          --  Body_Unit might be null or the body unit corresponding to
          --  specification unit Element_Unit
+         Spec_Unit    : constant Asis.Compilation_Unit :=
+                          Corresponding_Declaration (Element_Unit);
 
          Def_In_Standard : constant Boolean := Is_Standard (Element_Unit);
          Def_In_Cur_Spec : Boolean;
@@ -1609,7 +1611,10 @@ package body Sparkify.Pre_Operations is
 
          Def_In_Cur_Body :=
            Declaration_Kind (Pack_Element) = A_Package_Body_Declaration
-           and then Is_Equal (Element_Unit, The_Unit);
+           and then
+           (Is_Equal (Element_Unit, The_Unit)
+            or else
+            (not Is_Nil (Spec_Unit) and then Is_Equal (Spec_Unit, The_Unit)));
 
          Def_In_Current :=
            not Standard_Only and then
