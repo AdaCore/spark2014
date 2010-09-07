@@ -28,6 +28,7 @@ with Why.Ids;             use Why.Ids;
 with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Validity;  use Why.Atree.Validity;
 
 package Why.Atree.Builders is
    --  This package provides a set of unchecked builders, generated
@@ -39,6 +40,9 @@ package Why.Atree.Builders is
       Symbol   : Name_Id;
       Entity   : Why_Node_Id)
      return W_Identifier_Id;
+   pragma Precondition
+     (True
+      and then True);
    pragma Postcondition
      (Get_Kind
        (New_Identifier'Result)
@@ -150,6 +154,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Abstract_Type_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Abstract_Type'Result)
@@ -172,6 +178,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Generic_Formal_Type_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Generic_Formal_Type'Result)
@@ -195,6 +203,9 @@ package Why.Atree.Builders is
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id;
+   pragma Precondition
+     (Primitive_Type_List_Valid (Type_Chain)
+      and then Identifier_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Generic_Actual_Type_Chain'Result)
@@ -221,6 +232,8 @@ package Why.Atree.Builders is
       Link           : Why_Node_Set;
       Component_Type : W_Primitive_Type_Id)
      return W_Array_Type_Id;
+   pragma Precondition
+     (Primitive_Type_Id_Valid (Component_Type));
    pragma Postcondition
      (Get_Kind
        (New_Array_Type'Result)
@@ -243,6 +256,8 @@ package Why.Atree.Builders is
       Link         : Why_Node_Set;
       Aliased_Type : W_Primitive_Type_Id)
      return W_Ref_Type_Id;
+   pragma Precondition
+     (Primitive_Type_Id_Valid (Aliased_Type));
    pragma Postcondition
      (Get_Kind
        (New_Ref_Type'Result)
@@ -265,6 +280,8 @@ package Why.Atree.Builders is
       Link       : Why_Node_Set;
       Value_Type : W_Value_Type_Id)
      return W_Protected_Value_Type_Id;
+   pragma Precondition
+     (Value_Type_Id_Valid (Value_Type));
    pragma Postcondition
      (Get_Kind
        (New_Protected_Value_Type'Result)
@@ -288,6 +305,9 @@ package Why.Atree.Builders is
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
      return W_Anonymous_Arrow_Type_Id;
+   pragma Precondition
+     (Simple_Value_Type_Id_Valid (Left)
+      and then Computation_Type_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Anonymous_Arrow_Type'Result)
@@ -316,6 +336,10 @@ package Why.Atree.Builders is
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
      return W_Named_Arrow_Type_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Simple_Value_Type_Id_Valid (Left)
+      and then Computation_Type_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Named_Arrow_Type'Result)
@@ -350,6 +374,12 @@ package Why.Atree.Builders is
       Effects       : W_Effects_Id;
       Postcondition : W_Postcondition_OId)
      return W_Computation_Spec_Id;
+   pragma Precondition
+     (Precondition_OId_Valid (Precondition)
+      and then Identifier_OId_Valid (Result_Name)
+      and then Value_Type_Id_Valid (Return_Type)
+      and then Effects_Id_Valid (Effects)
+      and then Postcondition_OId_Valid (Postcondition));
    pragma Postcondition
      (Get_Kind
        (New_Computation_Spec'Result)
@@ -388,6 +418,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Value    : Uint)
      return W_Integer_Constant_Id;
+   pragma Precondition
+     (True);
    pragma Postcondition
      (Get_Kind
        (New_Integer_Constant'Result)
@@ -410,6 +442,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Value    : Ureal)
      return W_Real_Constant_Id;
+   pragma Precondition
+     (True);
    pragma Postcondition
      (Get_Kind
        (New_Real_Constant'Result)
@@ -485,6 +519,10 @@ package Why.Atree.Builders is
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
      return W_Arith_Operation_Id;
+   pragma Precondition
+     (Term_Id_Valid (Left)
+      and then Arith_Op_Id_Valid (Op)
+      and then Term_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Arith_Operation'Result)
@@ -515,6 +553,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Operand  : W_Term_Id)
      return W_Negative_Term_Id;
+   pragma Precondition
+     (Term_Id_Valid (Operand));
    pragma Postcondition
      (Get_Kind
        (New_Negative_Term'Result)
@@ -538,6 +578,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId)
      return W_Label_Identifier_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Identifier_OId_Valid (Label));
    pragma Postcondition
      (Get_Kind
        (New_Label_Identifier'Result)
@@ -565,6 +608,9 @@ package Why.Atree.Builders is
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Operation_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Term_List_Valid (Parameters));
    pragma Postcondition
      (Get_Kind
        (New_Operation'Result)
@@ -592,6 +638,9 @@ package Why.Atree.Builders is
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id;
+   pragma Precondition
+     (Label_Identifier_Id_Valid (Name)
+      and then Term_Id_Valid (Term));
    pragma Postcondition
      (Get_Kind
        (New_Named_Term'Result)
@@ -620,6 +669,10 @@ package Why.Atree.Builders is
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
      return W_Conditional_Term_Id;
+   pragma Precondition
+     (Term_Id_Valid (Condition)
+      and then Term_Id_Valid (Then_Part)
+      and then Term_Id_Valid (Else_Part));
    pragma Postcondition
      (Get_Kind
        (New_Conditional_Term'Result)
@@ -652,6 +705,10 @@ package Why.Atree.Builders is
       Def      : W_Term_Id;
       Context  : W_Term_Id)
      return W_Binding_Term_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Term_Id_Valid (Def)
+      and then Term_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Term'Result)
@@ -682,6 +739,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Term     : W_Term_Id)
      return W_Protected_Term_Id;
+   pragma Precondition
+     (Term_Id_Valid (Term));
    pragma Postcondition
      (Get_Kind
        (New_Protected_Term'Result)
@@ -823,6 +882,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Name     : W_Identifier_Id)
      return W_Predicate_Identifier_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Predicate_Identifier'Result)
@@ -846,6 +907,9 @@ package Why.Atree.Builders is
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Predicate_Instance_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Term_List_Valid (Parameters));
    pragma Postcondition
      (Get_Kind
        (New_Predicate_Instance'Result)
@@ -876,6 +940,12 @@ package Why.Atree.Builders is
       Op2      : W_Relation_OId;
       Right2   : W_Term_OId)
      return W_Related_Terms_Id;
+   pragma Precondition
+     (Term_Id_Valid (Left)
+      and then Relation_Id_Valid (Op)
+      and then Term_Id_Valid (Right)
+      and then Relation_OId_Valid (Op2)
+      and then Term_OId_Valid (Right2));
    pragma Postcondition
      (Get_Kind
        (New_Related_Terms'Result)
@@ -915,6 +985,9 @@ package Why.Atree.Builders is
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Implication_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Left)
+      and then Predicate_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Implication'Result)
@@ -942,6 +1015,9 @@ package Why.Atree.Builders is
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Equivalence_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Left)
+      and then Predicate_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Equivalence'Result)
@@ -969,6 +1045,9 @@ package Why.Atree.Builders is
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Disjonction_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Left)
+      and then Predicate_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Disjonction'Result)
@@ -996,6 +1075,9 @@ package Why.Atree.Builders is
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Conjonction_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Left)
+      and then Predicate_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Conjonction'Result)
@@ -1022,6 +1104,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Operand  : W_Predicate_Id)
      return W_Negation_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Operand));
    pragma Postcondition
      (Get_Kind
        (New_Negation'Result)
@@ -1046,6 +1130,10 @@ package Why.Atree.Builders is
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
      return W_Conditional_Pred_Id;
+   pragma Precondition
+     (Term_Id_Valid (Condition)
+      and then Predicate_Id_Valid (Then_Part)
+      and then Predicate_Id_Valid (Else_Part));
    pragma Postcondition
      (Get_Kind
        (New_Conditional_Pred'Result)
@@ -1078,6 +1166,10 @@ package Why.Atree.Builders is
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
      return W_Binding_Pred_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Term_Id_Valid (Def)
+      and then Predicate_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Pred'Result)
@@ -1111,6 +1203,11 @@ package Why.Atree.Builders is
       Triggers  : W_Triggers_OId;
       Pred      : W_Predicate_Id)
      return W_Universal_Quantif_Id;
+   pragma Precondition
+     (Identifier_List_Valid (Variables)
+      and then Primitive_Type_Id_Valid (Var_Type)
+      and then Triggers_OId_Valid (Triggers)
+      and then Predicate_Id_Valid (Pred));
    pragma Postcondition
      (Get_Kind
        (New_Universal_Quantif'Result)
@@ -1147,6 +1244,10 @@ package Why.Atree.Builders is
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
      return W_Existential_Quantif_Id;
+   pragma Precondition
+     (Identifier_List_Valid (Variables)
+      and then Primitive_Type_Id_Valid (Var_Type)
+      and then Predicate_Id_Valid (Pred));
    pragma Postcondition
      (Get_Kind
        (New_Existential_Quantif'Result)
@@ -1178,6 +1279,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Named_Predicate_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Predicate_Id_Valid (Pred));
    pragma Postcondition
      (Get_Kind
        (New_Named_Predicate'Result)
@@ -1204,6 +1308,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Pred     : W_Predicate_Id)
      return W_Protected_Predicate_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Pred));
    pragma Postcondition
      (Get_Kind
        (New_Protected_Predicate'Result)
@@ -1226,6 +1332,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Triggers : W_Trigger_List)
      return W_Triggers_Id;
+   pragma Precondition
+     (Trigger_List_Valid (Triggers));
    pragma Postcondition
      (Get_Kind
        (New_Triggers'Result)
@@ -1248,6 +1356,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Terms    : W_Term_List)
      return W_Trigger_Id;
+   pragma Precondition
+     (Term_List_Valid (Terms));
    pragma Postcondition
      (Get_Kind
        (New_Trigger'Result)
@@ -1374,6 +1484,10 @@ package Why.Atree.Builders is
       Type_Parameters : W_Identifier_OList;
       Name            : W_Identifier_Id)
      return W_Type_Id;
+   pragma Precondition
+     (External_OId_Valid (External)
+      and then Identifier_OList_Valid (Type_Parameters)
+      and then Identifier_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Type'Result)
@@ -1406,6 +1520,10 @@ package Why.Atree.Builders is
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
      return W_Logic_Id;
+   pragma Precondition
+     (External_OId_Valid (External)
+      and then Identifier_List_Valid (Names)
+      and then Logic_Type_Id_Valid (Logic_Type));
    pragma Postcondition
      (Get_Kind
        (New_Logic'Result)
@@ -1439,6 +1557,11 @@ package Why.Atree.Builders is
       Return_Type : W_Primitive_Type_Id;
       Def         : W_Term_Id)
      return W_Function_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Logic_Binder_List_Valid (Binders)
+      and then Primitive_Type_Id_Valid (Return_Type)
+      and then Term_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Function'Result)
@@ -1475,6 +1598,10 @@ package Why.Atree.Builders is
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
      return W_Predicate_Definition_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Logic_Binder_List_Valid (Binders)
+      and then Predicate_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Predicate_Definition'Result)
@@ -1507,6 +1634,10 @@ package Why.Atree.Builders is
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
      return W_Inductive_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Logic_Type_Id_Valid (Logic_Type)
+      and then Inductive_Case_List_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Inductive'Result)
@@ -1538,6 +1669,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Axiom_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Predicate_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Axiom'Result)
@@ -1565,6 +1699,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Goal_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Predicate_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Goal'Result)
@@ -1609,6 +1746,9 @@ package Why.Atree.Builders is
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_List)
      return W_Logic_Type_Id;
+   pragma Precondition
+     (Logic_Arg_Type_List_Valid (Arg_Types)
+      and then Logic_Return_Type_List_Valid (Return_Type));
    pragma Postcondition
      (Get_Kind
        (New_Logic_Type'Result)
@@ -1636,6 +1776,9 @@ package Why.Atree.Builders is
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
      return W_Logic_Binder_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Primitive_Type_Id_Valid (Param_Type));
    pragma Postcondition
      (Get_Kind
        (New_Logic_Binder'Result)
@@ -1663,6 +1806,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Inductive_Case_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Predicate_Id_Valid (Pred));
    pragma Postcondition
      (Get_Kind
        (New_Inductive_Case'Result)
@@ -1691,6 +1837,10 @@ package Why.Atree.Builders is
       Writes   : W_Identifier_OList;
       Raises   : W_Identifier_OList)
      return W_Effects_Id;
+   pragma Precondition
+     (Identifier_OList_Valid (Reads)
+      and then Identifier_OList_Valid (Writes)
+      and then Identifier_OList_Valid (Raises));
    pragma Postcondition
      (Get_Kind
        (New_Effects'Result)
@@ -1721,6 +1871,8 @@ package Why.Atree.Builders is
       Link      : Why_Node_Set;
       Assertion : W_Assertion_Id)
      return W_Precondition_Id;
+   pragma Precondition
+     (Assertion_Id_Valid (Assertion));
    pragma Postcondition
      (Get_Kind
        (New_Precondition'Result)
@@ -1744,6 +1896,9 @@ package Why.Atree.Builders is
       Assertion : W_Assertion_Id;
       Handlers  : W_Exn_Condition_OList)
      return W_Postcondition_Id;
+   pragma Precondition
+     (Assertion_Id_Valid (Assertion)
+      and then Exn_Condition_OList_Valid (Handlers));
    pragma Postcondition
      (Get_Kind
        (New_Postcondition'Result)
@@ -1771,6 +1926,9 @@ package Why.Atree.Builders is
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
      return W_Exn_Condition_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Exn_Case)
+      and then Assertion_Id_Valid (Assertion));
    pragma Postcondition
      (Get_Kind
        (New_Exn_Condition'Result)
@@ -1798,6 +1956,9 @@ package Why.Atree.Builders is
       Pred     : W_Predicate_Id;
       As       : W_Identifier_OId)
      return W_Assertion_Id;
+   pragma Precondition
+     (Predicate_Id_Valid (Pred)
+      and then Identifier_OId_Valid (As));
    pragma Postcondition
      (Get_Kind
        (New_Assertion'Result)
@@ -1824,6 +1985,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Def      : W_Constant_Id)
      return W_Prog_Constant_Id;
+   pragma Precondition
+     (Constant_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Prog_Constant'Result)
@@ -1846,6 +2009,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Def      : W_Identifier_Id)
      return W_Prog_Identifier_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Prog_Identifier'Result)
@@ -1868,6 +2033,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Ref      : W_Identifier_Id)
      return W_Deref_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Ref));
    pragma Postcondition
      (Get_Kind
        (New_Deref'Result)
@@ -1891,6 +2058,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
      return W_Assignment_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Value));
    pragma Postcondition
      (Get_Kind
        (New_Assignment'Result)
@@ -1918,6 +2088,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
      return W_Array_Access_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Index));
    pragma Postcondition
      (Get_Kind
        (New_Array_Access'Result)
@@ -1946,6 +2119,10 @@ package Why.Atree.Builders is
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
      return W_Array_Update_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Index)
+      and then Prog_Id_Valid (Value));
    pragma Postcondition
      (Get_Kind
        (New_Array_Update'Result)
@@ -1978,6 +2155,10 @@ package Why.Atree.Builders is
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
      return W_Infix_Call_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Left)
+      and then Infix_Id_Valid (Infix)
+      and then Prog_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
        (New_Infix_Call'Result)
@@ -2009,6 +2190,9 @@ package Why.Atree.Builders is
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
      return W_Prefix_Call_Id;
+   pragma Precondition
+     (Prefix_Id_Valid (Prefix)
+      and then Prog_Id_Valid (Operand));
    pragma Postcondition
      (Get_Kind
        (New_Prefix_Call'Result)
@@ -2037,6 +2221,10 @@ package Why.Atree.Builders is
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Binding_Prog_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Def)
+      and then Prog_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Prog'Result)
@@ -2069,6 +2257,10 @@ package Why.Atree.Builders is
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Binding_Ref_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Def)
+      and then Prog_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Ref'Result)
@@ -2101,6 +2293,10 @@ package Why.Atree.Builders is
       Then_Part : W_Prog_Id;
       Else_Part : W_Prog_OId)
      return W_Conditional_Prog_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Condition)
+      and then Prog_Id_Valid (Then_Part)
+      and then Prog_OId_Valid (Else_Part));
    pragma Postcondition
      (Get_Kind
        (New_Conditional_Prog'Result)
@@ -2133,6 +2329,10 @@ package Why.Atree.Builders is
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
      return W_While_Loop_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Condition)
+      and then Loop_Annot_Id_Valid (Annotation)
+      and then Prog_Id_Valid (Loop_Content));
    pragma Postcondition
      (Get_Kind
        (New_While_Loop'Result)
@@ -2163,6 +2363,8 @@ package Why.Atree.Builders is
       Link       : Why_Node_Set;
       Statements : W_Prog_List)
      return W_Statement_Sequence_Id;
+   pragma Precondition
+     (Prog_List_Valid (Statements));
    pragma Postcondition
      (Get_Kind
        (New_Statement_Sequence'Result)
@@ -2186,6 +2388,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
      return W_Label_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Label'Result)
@@ -2213,6 +2418,9 @@ package Why.Atree.Builders is
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
      return W_Assert_Id;
+   pragma Precondition
+     (Assertion_List_Valid (Assertions)
+      and then Prog_Id_Valid (Prog));
    pragma Postcondition
      (Get_Kind
        (New_Assert'Result)
@@ -2240,6 +2448,9 @@ package Why.Atree.Builders is
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Post_Assertion_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Prog)
+      and then Postcondition_Id_Valid (Post));
    pragma Postcondition
      (Get_Kind
        (New_Post_Assertion'Result)
@@ -2267,6 +2478,9 @@ package Why.Atree.Builders is
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Opaque_Assertion_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Prog)
+      and then Postcondition_Id_Valid (Post));
    pragma Postcondition
      (Get_Kind
        (New_Opaque_Assertion'Result)
@@ -2294,6 +2508,9 @@ package Why.Atree.Builders is
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id;
+   pragma Precondition
+     (Binders_Id_Valid (Binders)
+      and then Prog_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Fun_Def'Result)
@@ -2323,6 +2540,11 @@ package Why.Atree.Builders is
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Binding_Fun_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Binders_Id_Valid (Binders)
+      and then Prog_Id_Valid (Def)
+      and then Prog_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Fun'Result)
@@ -2358,6 +2580,9 @@ package Why.Atree.Builders is
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
      return W_Binding_Rec_Id;
+   pragma Precondition
+     (Recfun_Id_Valid (Recfun)
+      and then Prog_Id_Valid (Context));
    pragma Postcondition
      (Get_Kind
        (New_Binding_Rec'Result)
@@ -2384,6 +2609,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Progs    : W_Prog_List)
      return W_Prog_Sequence_Id;
+   pragma Precondition
+     (Prog_List_Valid (Progs));
    pragma Postcondition
      (Get_Kind
        (New_Prog_Sequence'Result)
@@ -2407,6 +2634,9 @@ package Why.Atree.Builders is
       Name     : W_Identifier_Id;
       Exn_Type : W_Value_Type_OId)
      return W_Raise_Statement_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Value_Type_OId_Valid (Exn_Type));
    pragma Postcondition
      (Get_Kind
        (New_Raise_Statement'Result)
@@ -2435,6 +2665,10 @@ package Why.Atree.Builders is
       Parameter : W_Term_Id;
       Exn_Type  : W_Value_Type_OId)
      return W_Raise_Statement_With_Parameters_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Term_Id_Valid (Parameter)
+      and then Value_Type_OId_Valid (Exn_Type));
    pragma Postcondition
      (Get_Kind
        (New_Raise_Statement_With_Parameters'Result)
@@ -2466,6 +2700,9 @@ package Why.Atree.Builders is
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
      return W_Try_Block_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Prog)
+      and then Handler_List_Valid (Handler));
    pragma Postcondition
      (Get_Kind
        (New_Try_Block'Result)
@@ -2492,6 +2729,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Exn_Type : W_Value_Type_OId)
      return W_Unreachable_Code_Id;
+   pragma Precondition
+     (Value_Type_OId_Valid (Exn_Type));
    pragma Postcondition
      (Get_Kind
        (New_Unreachable_Code'Result)
@@ -2514,6 +2753,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Prog     : W_Prog_Id)
      return W_Begin_Block_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Prog));
    pragma Postcondition
      (Get_Kind
        (New_Begin_Block'Result)
@@ -2536,6 +2777,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Prog     : W_Prog_Id)
      return W_Protected_Prog_Id;
+   pragma Precondition
+     (Prog_Id_Valid (Prog));
    pragma Postcondition
      (Get_Kind
        (New_Protected_Prog'Result)
@@ -2813,6 +3056,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Binders  : W_Binders_List)
      return W_Binders_Id;
+   pragma Precondition
+     (Binders_List_Valid (Binders));
    pragma Postcondition
      (Get_Kind
        (New_Binders'Result)
@@ -2836,6 +3081,9 @@ package Why.Atree.Builders is
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id;
+   pragma Precondition
+     (Identifier_List_Valid (Names)
+      and then Value_Type_Id_Valid (Arg_Type));
    pragma Postcondition
      (Get_Kind
        (New_Binder'Result)
@@ -2866,6 +3114,12 @@ package Why.Atree.Builders is
       Variant     : W_Wf_Arg_Id;
       Def         : W_Prog_Id)
      return W_Recfun_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Binders_Id_Valid (Binders)
+      and then Prog_Id_Valid (Return_Type)
+      and then Wf_Arg_Id_Valid (Variant)
+      and then Prog_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Recfun'Result)
@@ -2905,6 +3159,9 @@ package Why.Atree.Builders is
       Invariant : W_Assertion_OId;
       Variant   : W_Wf_Arg_OId)
      return W_Loop_Annot_Id;
+   pragma Precondition
+     (Assertion_OId_Valid (Invariant)
+      and then Wf_Arg_OId_Valid (Variant));
    pragma Postcondition
      (Get_Kind
        (New_Loop_Annot'Result)
@@ -2932,6 +3189,9 @@ package Why.Atree.Builders is
       Def      : W_Term_Id;
       For_Id   : W_Identifier_OId)
      return W_Wf_Arg_Id;
+   pragma Precondition
+     (Term_Id_Valid (Def)
+      and then Identifier_OId_Valid (For_Id));
    pragma Postcondition
      (Get_Kind
        (New_Wf_Arg'Result)
@@ -2960,6 +3220,10 @@ package Why.Atree.Builders is
       Parameter : W_Prog_OId;
       Def       : W_Prog_Id)
      return W_Handler_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Prog_OId_Valid (Parameter)
+      and then Prog_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Handler'Result)
@@ -2990,6 +3254,8 @@ package Why.Atree.Builders is
       Link         : Why_Node_Set;
       Declarations : W_Declaration_OList)
      return W_File_Id;
+   pragma Precondition
+     (Declaration_OList_Valid (Declarations));
    pragma Postcondition
      (Get_Kind
        (New_File'Result)
@@ -3014,6 +3280,10 @@ package Why.Atree.Builders is
       Binders  : W_Binders_OId;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Binders_OId_Valid (Binders)
+      and then Prog_Id_Valid (Def));
    pragma Postcondition
      (Get_Kind
        (New_Global_Binding'Result)
@@ -3044,6 +3314,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Name     : W_Recfun_Id)
      return W_Global_Rec_Binding_Id;
+   pragma Precondition
+     (Recfun_Id_Valid (Name));
    pragma Postcondition
      (Get_Kind
        (New_Global_Rec_Binding'Result)
@@ -3068,6 +3340,10 @@ package Why.Atree.Builders is
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id;
+   pragma Precondition
+     (External_Id_Valid (External)
+      and then Identifier_List_Valid (Names)
+      and then Value_Type_Id_Valid (Parameter_Type));
    pragma Postcondition
      (Get_Kind
        (New_Parameter_Declaration'Result)
@@ -3099,6 +3375,9 @@ package Why.Atree.Builders is
       Name      : W_Identifier_Id;
       Parameter : W_Primitive_Type_OId)
      return W_Exception_Declaration_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Name)
+      and then Primitive_Type_OId_Valid (Parameter));
    pragma Postcondition
      (Get_Kind
        (New_Exception_Declaration'Result)
@@ -3125,6 +3404,8 @@ package Why.Atree.Builders is
       Link     : Why_Node_Set;
       Decl     : W_Logic_Id)
      return W_Logic_Declaration_Id;
+   pragma Precondition
+     (Logic_Id_Valid (Decl));
    pragma Postcondition
      (Get_Kind
        (New_Logic_Declaration'Result)

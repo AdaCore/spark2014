@@ -28,6 +28,7 @@ with Why.Ids;             use Why.Ids;
 with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Validity;  use Why.Atree.Validity;
 
 package Why.Atree.Builders is
    --  This package provides a set of unchecked builders, generated

@@ -25,6 +25,7 @@
 
 with Why.Sinfo;    use Why.Sinfo;
 with Xtree_Tables; use Xtree_Tables;
+with Xkind_Tables; use Xkind_Tables;
 
 package body Xtree_Builders is
 
@@ -50,6 +51,16 @@ package body Xtree_Builders is
       Kind : Why_Node_Kind;
       BK   : Builder_Kind);
    --  Print builder postcondition for the given node kind
+
+   procedure Print_Builder_Precondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      BK   : Builder_Kind);
+   --  Print builder precondition for the given node kind.
+   --  Note that this precondition can be replaced nicely
+   --  replaced by a subtype predicate on ids; when subtype
+   --  predicates are supported by GNAT, it will be a good time
+   --  to do the substitution.
 
    procedure Print_Builder_Body
      (O    : in out Output_Record;
@@ -130,6 +141,7 @@ package body Xtree_Builders is
    begin
       Print_Builder_Specification (O, Kind, BK);
       PL (O, ";");
+      Print_Builder_Precondition (O, Kind, BK);
       Print_Builder_Postcondition (O, Kind, BK);
    end Print_Builder_Declaration;
 
@@ -388,6 +400,62 @@ package body Xtree_Builders is
       PL (O, ");");
       Relative_Indent (O, -2);
    end Print_Builder_Postcondition;
+
+   --------------------------------
+   -- Print_Builder_Precondition --
+   --------------------------------
+
+   procedure Print_Builder_Precondition
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      BK   : Builder_Kind)
+   is
+      use Node_Lists;
+
+      Variant_Part  : constant Why_Node_Info :=
+                        Why_Tree_Info (Kind);
+
+      procedure Print_Parameter_Precondition (Position : Cursor);
+
+      ----------------------------------
+      -- Print_Parameter_Precondition --
+      ----------------------------------
+
+      procedure Print_Parameter_Precondition (Position : Cursor) is
+         FI : constant Field_Info := Element (Position);
+         PN : constant Wide_String := Param_Name (FI);
+      begin
+         if Is_Why_Id (FI) then
+            P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
+            P (O, " (" & PN & ")");
+         else
+            P (O, "True");
+         end if;
+
+         if Previous (Position) = No_Element then
+            Relative_Indent (O, 1);
+         end if;
+
+         if Next (Position) /= No_Element then
+            NL (O);
+            P (O, "and then ");
+         else
+            Relative_Indent (O, -1);
+         end if;
+      end Print_Parameter_Precondition;
+
+   begin
+      if Has_Variant_Part (Kind)
+        and then BK = Builder_Regular
+      then
+         PL (O, "pragma Precondition");
+         Relative_Indent (O, 2);
+         P (O, "(");
+         Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
+         PL (O, ");");
+         Relative_Indent (O, -2);
+      end if;
+   end Print_Builder_Precondition;
 
    ------------------------------------
    -- Print_Unchecked_Builder_Bodies --
