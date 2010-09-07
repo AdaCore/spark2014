@@ -31,52 +31,17 @@ package body Xtree_Checks is
    Node_Id_Param : constant Wide_String := "Id";
 
    procedure Print_Tree_Checks_Specification
-     (O                : in out Output_Record;
-      Prefix           : Wide_String;
-      M                : Id_Multiplicity;
-      Check_Cache_Only : Boolean);
+     (O      : in out Output_Record;
+      Prefix : Wide_String;
+      M      : Id_Multiplicity);
    --  Print subprogram specification for the kind-validity check of
    --  a node kind.
-
-   procedure Print_Checks_Bodies
-     (O                : in out Output_Record;
-      Check_Cache_Only : Boolean);
-
-   procedure Print_Checks_Declarations
-     (O                : in out Output_Record;
-      Check_Cache_Only : Boolean);
-
-   -------------------------------
-   -- Print_Cache_Checks_Bodies --
-   -------------------------------
-
-   procedure Print_Cache_Checks_Bodies (O : in out Output_Record) is
-   begin
-      Print_Checks_Bodies (O, True);
-   end Print_Cache_Checks_Bodies;
-
-   -------------------------------------
-   -- Print_Cache_Checks_Declarations --
-   -------------------------------------
-
-   procedure Print_Cache_Checks_Declarations (O : in out Output_Record) is
-   begin
-      Print_Checks_Declarations (O, True);
-   end Print_Cache_Checks_Declarations;
 
    -------------------------
    -- Print_Checks_Bodies --
    -------------------------
 
    procedure Print_Checks_Bodies (O : in out Output_Record) is
-   begin
-      Print_Checks_Bodies (O, False);
-   end Print_Checks_Bodies;
-
-   procedure Print_Checks_Bodies
-     (O                : in out Output_Record;
-      Check_Cache_Only : Boolean)
-   is
 
       use String_Lists;
       use Class_Lists;
@@ -98,40 +63,28 @@ package body Xtree_Checks is
       begin
          for M in Id_Multiplicity'Range loop
             declare
-               Check_One  : constant Wide_String :=
-                              (if Check_Cache_Only
-                               then Cache_Check (Prefix, Id_One)
-                               else Tree_Check (Prefix, Id_One));
-               Check_Some  : constant Wide_String :=
-                              (if Check_Cache_Only
-                               then Cache_Check (Prefix, Id_Some)
-                               else Tree_Check (Prefix, Id_Some));
+               Check_One : constant Wide_String := Cache_Check (Id_One);
             begin
-               Print_Tree_Checks_Specification (O, Prefix, M,
-                                                Check_Cache_Only);
+               Print_Tree_Checks_Specification (O, Prefix, M);
                PL (O, " is");
 
                Relative_Indent (O, 2);
                case M is
                   when Id_One =>
-                     if Check_Cache_Only then
-                        PL (O, "(Get_Node (" & Node_Id_Param & ").Checked);");
-                     else
-                        PL (O,
-                            "(" & Cache_Check (Prefix, M)
-                            & " (" & Node_Id_Param & ")");
-                        PL (O,
-                            " or else "
-                            & Children_Check (Prefix, M)
-                            & " (" & Node_Id_Param  & "));");
-                     end if;
+                     PL (O,
+                         "(" & Check_One
+                         & " (" & Node_Id_Param & ")");
+                     PL (O,
+                         " or else "
+                         & Children_Check (Prefix, M)
+                         & " (" & Node_Id_Param  & "));");
 
                   when Id_Lone =>
                      PL (O,
                          "(" & Node_Id_Param & " = Why_Empty");
                      PL (O,
                          " or else "
-                         & Check_One
+                         & Tree_Check (Prefix, Id_One)
                          & " (" & Node_Id_Param & "));");
 
                   when Id_Some =>
@@ -156,7 +109,7 @@ package body Xtree_Checks is
                          "(Is_Empty (" & Node_Id_Param & ")");
                      PL (O,
                          " or else "
-                         & Check_Some
+                         & Tree_Check (Prefix, Id_Some)
                          & " (" & Node_Id_Param & "));");
                end case;
                Relative_Indent (O, -2);
@@ -209,14 +162,7 @@ package body Xtree_Checks is
    -------------------------------
 
    procedure Print_Checks_Declarations (O : in out Output_Record) is
-   begin
-      Print_Checks_Declarations (O, False);
-   end Print_Checks_Declarations;
 
-   procedure Print_Checks_Declarations
-     (O                : in out Output_Record;
-      Check_Cache_Only : Boolean)
-   is
       use String_Lists;
       use Class_Lists;
 
@@ -238,7 +184,7 @@ package body Xtree_Checks is
       procedure Print_Tree_Checks_Declaration (Prefix : Wide_String) is
       begin
          for M in Id_Multiplicity'Range loop
-            Print_Tree_Checks_Specification (O, Prefix, M, Check_Cache_Only);
+            Print_Tree_Checks_Specification (O, Prefix, M);
             PL (O, ";");
 
             if M /= Id_Multiplicity'Last then
@@ -288,15 +234,11 @@ package body Xtree_Checks is
    -------------------------------------
 
    procedure Print_Tree_Checks_Specification
-     (O                : in out Output_Record;
-      Prefix           : Wide_String;
-      M                : Id_Multiplicity;
-      Check_Cache_Only : Boolean)
+     (O      : in out Output_Record;
+      Prefix : Wide_String;
+      M      : Id_Multiplicity)
    is
-      Check_Name : constant Wide_String :=
-                     (if Check_Cache_Only then
-                      Cache_Check (Prefix, M)
-                      else Tree_Check (Prefix, M));
+      Check_Name : constant Wide_String := Tree_Check (Prefix, M);
    begin
       PL (O, "function " & Check_Name);
       PL (O, "  (" & Node_Id_Param & " : "

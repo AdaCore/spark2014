@@ -262,7 +262,7 @@ package body Xtree_Children_Checks is
          end if;
 
          if Is_Why_Id (FI) then
-            PL (O, Cache_Check (Field_Kind (FI), Multiplicity (FI)));
+            PL (O, Cache_Check (Multiplicity (FI)));
             P (O, "  (" & Accessor_Name (Kind, FI)
                & " (" & Node_Id_Param & "))");
          else

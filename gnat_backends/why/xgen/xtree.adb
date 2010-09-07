@@ -88,8 +88,6 @@ begin
    Add ("Implement_Kind_Checks", Print_Kind_Checks_Bodies'Access);
    Add ("Declare_Checks", Print_Checks_Declarations'Access);
    Add ("Implement_Checks", Print_Checks_Bodies'Access);
-   Add ("Declare_Cache_Checks", Print_Cache_Checks_Declarations'Access);
-   Add ("Implement_Cache_Checks", Print_Cache_Checks_Bodies'Access);
    Add ("Declare_Children_Checks", Print_Children_Checks_Declarations'Access);
    Add ("Implement_Children_Checks", Print_Children_Checks_Bodies'Access);
 

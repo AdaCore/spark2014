@@ -107,12 +107,9 @@ package Xkind_Tables is
    --  Return the name of the tree-validity check for the children of node
    --  whose kind is given in parameters
 
-   function Cache_Check
-     (Prefix : Wide_String;
-      M      : Id_Multiplicity)
-     return Wide_String;
-   --  Return the name of the cached tree-validity check for the given node
-   --  kind
+   function Cache_Check (M : Id_Multiplicity) return Wide_String;
+   --  Return the name of the cached tree-validity check for the given
+   --  multiplicity
 
    function Class_Name (CI : Class_Info) return Wide_String;
 

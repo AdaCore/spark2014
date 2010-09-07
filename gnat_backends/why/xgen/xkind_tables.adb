@@ -57,15 +57,10 @@ package body Xkind_Tables is
    -- Cache_Check --
    -----------------
 
-   function Cache_Check
-     (Prefix : Wide_String;
-      M      : Id_Multiplicity)
-     return Wide_String
+   function Cache_Check (M : Id_Multiplicity) return Wide_String
    is
    begin
-      return Strip_Prefix (Prefix)
-        & Multiplicity_Suffix (M)
-        & "_Cache_Valid";
+      return Strip_Prefix (Multiplicity_Suffix (M)) & "_Cache_Valid";
    end Cache_Check;
 
    --------------------

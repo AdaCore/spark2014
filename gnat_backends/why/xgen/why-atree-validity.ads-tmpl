@@ -62,12 +62,17 @@ package Why.Atree.Validity is
    --  also provided for node classes: they dispatch on the "real" check
    --  depending on the actual node kind.
 
-
    _@Declare_Checks@_
 
 private
 
-   _@Declare_Cache_Checks@_
+   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean;
+
+   function OId_Cache_Valid (Id : Why_Node_Id) return Boolean;
+
+   function List_Cache_Valid (Id : Why_Node_List) return Boolean;
+
+   function OList_Cache_Valid (Id : Why_Node_List) return Boolean;
 
    _@Declare_Children_Checks@_
 
@@ -75,7 +80,19 @@ private
 
    _@Implement_Checks@_
 
-   _@Implement_Cache_Checks@_
+   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
+     (Get_Node (Id).Checked);
+
+   function OId_Cache_Valid (Id : Why_Node_Id) return Boolean is
+     (Id = Why_Empty or else Id_Cache_Valid (Id));
+
+   function List_Cache_Valid (Id : Why_Node_List) return Boolean is
+     (not Is_Empty (Id) and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function OList_Cache_Valid (Id : Why_Node_List) return Boolean is
+     (Is_Empty (Id) or else List_Cache_Valid (Id));
 
    _@Implement_Children_Checks@_
 

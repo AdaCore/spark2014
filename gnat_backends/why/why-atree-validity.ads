@@ -62,7 +62,6 @@ package Why.Atree.Validity is
    --  also provided for node classes: they dispatch on the "real" check
    --  depending on the actual node kind.
 
-
    function Unused_At_Start_Id_Valid
      (Id : W_Unused_At_Start_Unchecked_Id)
      return Boolean;
@@ -2369,2309 +2368,13 @@ package Why.Atree.Validity is
 
 private
 
-   function Unused_At_Start_Id_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_Id)
-     return Boolean;
+   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean;
 
-   function Unused_At_Start_OId_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_OId)
-     return Boolean;
+   function OId_Cache_Valid (Id : Why_Node_Id) return Boolean;
 
-   function Unused_At_Start_List_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_List)
-     return Boolean;
+   function List_Cache_Valid (Id : Why_Node_List) return Boolean;
 
-   function Unused_At_Start_OList_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_OList)
-     return Boolean;
-
-   function Identifier_Id_Cache_Valid
-     (Id : W_Identifier_Unchecked_Id)
-     return Boolean;
-
-   function Identifier_OId_Cache_Valid
-     (Id : W_Identifier_Unchecked_OId)
-     return Boolean;
-
-   function Identifier_List_Cache_Valid
-     (Id : W_Identifier_Unchecked_List)
-     return Boolean;
-
-   function Identifier_OList_Cache_Valid
-     (Id : W_Identifier_Unchecked_OList)
-     return Boolean;
-
-   function Type_Prop_Id_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_Id)
-     return Boolean;
-
-   function Type_Prop_OId_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_OId)
-     return Boolean;
-
-   function Type_Prop_List_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_List)
-     return Boolean;
-
-   function Type_Prop_OList_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_OList)
-     return Boolean;
-
-   function Type_Int_Id_Cache_Valid
-     (Id : W_Type_Int_Unchecked_Id)
-     return Boolean;
-
-   function Type_Int_OId_Cache_Valid
-     (Id : W_Type_Int_Unchecked_OId)
-     return Boolean;
-
-   function Type_Int_List_Cache_Valid
-     (Id : W_Type_Int_Unchecked_List)
-     return Boolean;
-
-   function Type_Int_OList_Cache_Valid
-     (Id : W_Type_Int_Unchecked_OList)
-     return Boolean;
-
-   function Type_Bool_Id_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_Id)
-     return Boolean;
-
-   function Type_Bool_OId_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_OId)
-     return Boolean;
-
-   function Type_Bool_List_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_List)
-     return Boolean;
-
-   function Type_Bool_OList_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_OList)
-     return Boolean;
-
-   function Type_Real_Id_Cache_Valid
-     (Id : W_Type_Real_Unchecked_Id)
-     return Boolean;
-
-   function Type_Real_OId_Cache_Valid
-     (Id : W_Type_Real_Unchecked_OId)
-     return Boolean;
-
-   function Type_Real_List_Cache_Valid
-     (Id : W_Type_Real_Unchecked_List)
-     return Boolean;
-
-   function Type_Real_OList_Cache_Valid
-     (Id : W_Type_Real_Unchecked_OList)
-     return Boolean;
-
-   function Type_Unit_Id_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_Id)
-     return Boolean;
-
-   function Type_Unit_OId_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_OId)
-     return Boolean;
-
-   function Type_Unit_List_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_List)
-     return Boolean;
-
-   function Type_Unit_OList_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_OList)
-     return Boolean;
-
-   function Abstract_Type_Id_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_Id)
-     return Boolean;
-
-   function Abstract_Type_OId_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_OId)
-     return Boolean;
-
-   function Abstract_Type_List_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_List)
-     return Boolean;
-
-   function Abstract_Type_OList_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_OList)
-     return Boolean;
-
-   function Generic_Formal_Type_Id_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_Id)
-     return Boolean;
-
-   function Generic_Formal_Type_OId_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_OId)
-     return Boolean;
-
-   function Generic_Formal_Type_List_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_List)
-     return Boolean;
-
-   function Generic_Formal_Type_OList_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_OList)
-     return Boolean;
-
-   function Generic_Actual_Type_Chain_Id_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
-     return Boolean;
-
-   function Generic_Actual_Type_Chain_OId_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_OId)
-     return Boolean;
-
-   function Generic_Actual_Type_Chain_List_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_List)
-     return Boolean;
-
-   function Generic_Actual_Type_Chain_OList_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_OList)
-     return Boolean;
-
-   function Array_Type_Id_Cache_Valid
-     (Id : W_Array_Type_Unchecked_Id)
-     return Boolean;
-
-   function Array_Type_OId_Cache_Valid
-     (Id : W_Array_Type_Unchecked_OId)
-     return Boolean;
-
-   function Array_Type_List_Cache_Valid
-     (Id : W_Array_Type_Unchecked_List)
-     return Boolean;
-
-   function Array_Type_OList_Cache_Valid
-     (Id : W_Array_Type_Unchecked_OList)
-     return Boolean;
-
-   function Ref_Type_Id_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_Id)
-     return Boolean;
-
-   function Ref_Type_OId_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_OId)
-     return Boolean;
-
-   function Ref_Type_List_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_List)
-     return Boolean;
-
-   function Ref_Type_OList_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_OList)
-     return Boolean;
-
-   function Protected_Value_Type_Id_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
-     return Boolean;
-
-   function Protected_Value_Type_OId_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
-     return Boolean;
-
-   function Protected_Value_Type_List_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Protected_Value_Type_OList_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
-     return Boolean;
-
-   function Anonymous_Arrow_Type_Id_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Anonymous_Arrow_Type_OId_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Anonymous_Arrow_Type_List_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Anonymous_Arrow_Type_OList_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Named_Arrow_Type_Id_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Named_Arrow_Type_OId_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Named_Arrow_Type_List_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Named_Arrow_Type_OList_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Spec_Id_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Spec_OId_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Spec_List_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
-     return Boolean;
-
-   function Computation_Spec_OList_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean;
-
-   function Integer_Constant_Id_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_Id)
-     return Boolean;
-
-   function Integer_Constant_OId_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_OId)
-     return Boolean;
-
-   function Integer_Constant_List_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_List)
-     return Boolean;
-
-   function Integer_Constant_OList_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_OList)
-     return Boolean;
-
-   function Real_Constant_Id_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_Id)
-     return Boolean;
-
-   function Real_Constant_OId_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_OId)
-     return Boolean;
-
-   function Real_Constant_List_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_List)
-     return Boolean;
-
-   function Real_Constant_OList_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_OList)
-     return Boolean;
-
-   function True_Literal_Id_Cache_Valid
-     (Id : W_True_Literal_Unchecked_Id)
-     return Boolean;
-
-   function True_Literal_OId_Cache_Valid
-     (Id : W_True_Literal_Unchecked_OId)
-     return Boolean;
-
-   function True_Literal_List_Cache_Valid
-     (Id : W_True_Literal_Unchecked_List)
-     return Boolean;
-
-   function True_Literal_OList_Cache_Valid
-     (Id : W_True_Literal_Unchecked_OList)
-     return Boolean;
-
-   function False_Literal_Id_Cache_Valid
-     (Id : W_False_Literal_Unchecked_Id)
-     return Boolean;
-
-   function False_Literal_OId_Cache_Valid
-     (Id : W_False_Literal_Unchecked_OId)
-     return Boolean;
-
-   function False_Literal_List_Cache_Valid
-     (Id : W_False_Literal_Unchecked_List)
-     return Boolean;
-
-   function False_Literal_OList_Cache_Valid
-     (Id : W_False_Literal_Unchecked_OList)
-     return Boolean;
-
-   function Void_Literal_Id_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_Id)
-     return Boolean;
-
-   function Void_Literal_OId_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_OId)
-     return Boolean;
-
-   function Void_Literal_List_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_List)
-     return Boolean;
-
-   function Void_Literal_OList_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_OList)
-     return Boolean;
-
-   function Arith_Operation_Id_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_Id)
-     return Boolean;
-
-   function Arith_Operation_OId_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_OId)
-     return Boolean;
-
-   function Arith_Operation_List_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_List)
-     return Boolean;
-
-   function Arith_Operation_OList_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_OList)
-     return Boolean;
-
-   function Negative_Term_Id_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_Id)
-     return Boolean;
-
-   function Negative_Term_OId_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_OId)
-     return Boolean;
-
-   function Negative_Term_List_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_List)
-     return Boolean;
-
-   function Negative_Term_OList_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_OList)
-     return Boolean;
-
-   function Label_Identifier_Id_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_Id)
-     return Boolean;
-
-   function Label_Identifier_OId_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_OId)
-     return Boolean;
-
-   function Label_Identifier_List_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_List)
-     return Boolean;
-
-   function Label_Identifier_OList_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_OList)
-     return Boolean;
-
-   function Operation_Id_Cache_Valid
-     (Id : W_Operation_Unchecked_Id)
-     return Boolean;
-
-   function Operation_OId_Cache_Valid
-     (Id : W_Operation_Unchecked_OId)
-     return Boolean;
-
-   function Operation_List_Cache_Valid
-     (Id : W_Operation_Unchecked_List)
-     return Boolean;
-
-   function Operation_OList_Cache_Valid
-     (Id : W_Operation_Unchecked_OList)
-     return Boolean;
-
-   function Named_Term_Id_Cache_Valid
-     (Id : W_Named_Term_Unchecked_Id)
-     return Boolean;
-
-   function Named_Term_OId_Cache_Valid
-     (Id : W_Named_Term_Unchecked_OId)
-     return Boolean;
-
-   function Named_Term_List_Cache_Valid
-     (Id : W_Named_Term_Unchecked_List)
-     return Boolean;
-
-   function Named_Term_OList_Cache_Valid
-     (Id : W_Named_Term_Unchecked_OList)
-     return Boolean;
-
-   function Conditional_Term_Id_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_Id)
-     return Boolean;
-
-   function Conditional_Term_OId_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_OId)
-     return Boolean;
-
-   function Conditional_Term_List_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_List)
-     return Boolean;
-
-   function Conditional_Term_OList_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Term_Id_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Term_OId_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Term_List_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_List)
-     return Boolean;
-
-   function Binding_Term_OList_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_OList)
-     return Boolean;
-
-   function Protected_Term_Id_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_Id)
-     return Boolean;
-
-   function Protected_Term_OId_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_OId)
-     return Boolean;
-
-   function Protected_Term_List_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_List)
-     return Boolean;
-
-   function Protected_Term_OList_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_OList)
-     return Boolean;
-
-   function Op_Add_Id_Cache_Valid
-     (Id : W_Op_Add_Unchecked_Id)
-     return Boolean;
-
-   function Op_Add_OId_Cache_Valid
-     (Id : W_Op_Add_Unchecked_OId)
-     return Boolean;
-
-   function Op_Add_List_Cache_Valid
-     (Id : W_Op_Add_Unchecked_List)
-     return Boolean;
-
-   function Op_Add_OList_Cache_Valid
-     (Id : W_Op_Add_Unchecked_OList)
-     return Boolean;
-
-   function Op_Substract_Id_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_Id)
-     return Boolean;
-
-   function Op_Substract_OId_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_OId)
-     return Boolean;
-
-   function Op_Substract_List_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_List)
-     return Boolean;
-
-   function Op_Substract_OList_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_OList)
-     return Boolean;
-
-   function Op_Multiply_Id_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_Id)
-     return Boolean;
-
-   function Op_Multiply_OId_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_OId)
-     return Boolean;
-
-   function Op_Multiply_List_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_List)
-     return Boolean;
-
-   function Op_Multiply_OList_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_OList)
-     return Boolean;
-
-   function Op_Divide_Id_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_Id)
-     return Boolean;
-
-   function Op_Divide_OId_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_OId)
-     return Boolean;
-
-   function Op_Divide_List_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_List)
-     return Boolean;
-
-   function Op_Divide_OList_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_OList)
-     return Boolean;
-
-   function Op_Modulo_Id_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_Id)
-     return Boolean;
-
-   function Op_Modulo_OId_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_OId)
-     return Boolean;
-
-   function Op_Modulo_List_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_List)
-     return Boolean;
-
-   function Op_Modulo_OList_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_OList)
-     return Boolean;
-
-   function True_Literal_Pred_Id_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_Id)
-     return Boolean;
-
-   function True_Literal_Pred_OId_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_OId)
-     return Boolean;
-
-   function True_Literal_Pred_List_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_List)
-     return Boolean;
-
-   function True_Literal_Pred_OList_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_OList)
-     return Boolean;
-
-   function False_Literal_Pred_Id_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_Id)
-     return Boolean;
-
-   function False_Literal_Pred_OId_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_OId)
-     return Boolean;
-
-   function False_Literal_Pred_List_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_List)
-     return Boolean;
-
-   function False_Literal_Pred_OList_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_OList)
-     return Boolean;
-
-   function Predicate_Identifier_Id_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_Id)
-     return Boolean;
-
-   function Predicate_Identifier_OId_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_OId)
-     return Boolean;
-
-   function Predicate_Identifier_List_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_List)
-     return Boolean;
-
-   function Predicate_Identifier_OList_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_OList)
-     return Boolean;
-
-   function Predicate_Instance_Id_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_Id)
-     return Boolean;
-
-   function Predicate_Instance_OId_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_OId)
-     return Boolean;
-
-   function Predicate_Instance_List_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_List)
-     return Boolean;
-
-   function Predicate_Instance_OList_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_OList)
-     return Boolean;
-
-   function Related_Terms_Id_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_Id)
-     return Boolean;
-
-   function Related_Terms_OId_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_OId)
-     return Boolean;
-
-   function Related_Terms_List_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_List)
-     return Boolean;
-
-   function Related_Terms_OList_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_OList)
-     return Boolean;
-
-   function Implication_Id_Cache_Valid
-     (Id : W_Implication_Unchecked_Id)
-     return Boolean;
-
-   function Implication_OId_Cache_Valid
-     (Id : W_Implication_Unchecked_OId)
-     return Boolean;
-
-   function Implication_List_Cache_Valid
-     (Id : W_Implication_Unchecked_List)
-     return Boolean;
-
-   function Implication_OList_Cache_Valid
-     (Id : W_Implication_Unchecked_OList)
-     return Boolean;
-
-   function Equivalence_Id_Cache_Valid
-     (Id : W_Equivalence_Unchecked_Id)
-     return Boolean;
-
-   function Equivalence_OId_Cache_Valid
-     (Id : W_Equivalence_Unchecked_OId)
-     return Boolean;
-
-   function Equivalence_List_Cache_Valid
-     (Id : W_Equivalence_Unchecked_List)
-     return Boolean;
-
-   function Equivalence_OList_Cache_Valid
-     (Id : W_Equivalence_Unchecked_OList)
-     return Boolean;
-
-   function Disjonction_Id_Cache_Valid
-     (Id : W_Disjonction_Unchecked_Id)
-     return Boolean;
-
-   function Disjonction_OId_Cache_Valid
-     (Id : W_Disjonction_Unchecked_OId)
-     return Boolean;
-
-   function Disjonction_List_Cache_Valid
-     (Id : W_Disjonction_Unchecked_List)
-     return Boolean;
-
-   function Disjonction_OList_Cache_Valid
-     (Id : W_Disjonction_Unchecked_OList)
-     return Boolean;
-
-   function Conjonction_Id_Cache_Valid
-     (Id : W_Conjonction_Unchecked_Id)
-     return Boolean;
-
-   function Conjonction_OId_Cache_Valid
-     (Id : W_Conjonction_Unchecked_OId)
-     return Boolean;
-
-   function Conjonction_List_Cache_Valid
-     (Id : W_Conjonction_Unchecked_List)
-     return Boolean;
-
-   function Conjonction_OList_Cache_Valid
-     (Id : W_Conjonction_Unchecked_OList)
-     return Boolean;
-
-   function Negation_Id_Cache_Valid
-     (Id : W_Negation_Unchecked_Id)
-     return Boolean;
-
-   function Negation_OId_Cache_Valid
-     (Id : W_Negation_Unchecked_OId)
-     return Boolean;
-
-   function Negation_List_Cache_Valid
-     (Id : W_Negation_Unchecked_List)
-     return Boolean;
-
-   function Negation_OList_Cache_Valid
-     (Id : W_Negation_Unchecked_OList)
-     return Boolean;
-
-   function Conditional_Pred_Id_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_Id)
-     return Boolean;
-
-   function Conditional_Pred_OId_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_OId)
-     return Boolean;
-
-   function Conditional_Pred_List_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_List)
-     return Boolean;
-
-   function Conditional_Pred_OList_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Pred_Id_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Pred_OId_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Pred_List_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_List)
-     return Boolean;
-
-   function Binding_Pred_OList_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_OList)
-     return Boolean;
-
-   function Universal_Quantif_Id_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_Id)
-     return Boolean;
-
-   function Universal_Quantif_OId_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_OId)
-     return Boolean;
-
-   function Universal_Quantif_List_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_List)
-     return Boolean;
-
-   function Universal_Quantif_OList_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_OList)
-     return Boolean;
-
-   function Existential_Quantif_Id_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_Id)
-     return Boolean;
-
-   function Existential_Quantif_OId_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_OId)
-     return Boolean;
-
-   function Existential_Quantif_List_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_List)
-     return Boolean;
-
-   function Existential_Quantif_OList_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_OList)
-     return Boolean;
-
-   function Named_Predicate_Id_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_Id)
-     return Boolean;
-
-   function Named_Predicate_OId_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_OId)
-     return Boolean;
-
-   function Named_Predicate_List_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_List)
-     return Boolean;
-
-   function Named_Predicate_OList_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_OList)
-     return Boolean;
-
-   function Protected_Predicate_Id_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_Id)
-     return Boolean;
-
-   function Protected_Predicate_OId_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_OId)
-     return Boolean;
-
-   function Protected_Predicate_List_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_List)
-     return Boolean;
-
-   function Protected_Predicate_OList_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_OList)
-     return Boolean;
-
-   function Triggers_Id_Cache_Valid
-     (Id : W_Triggers_Unchecked_Id)
-     return Boolean;
-
-   function Triggers_OId_Cache_Valid
-     (Id : W_Triggers_Unchecked_OId)
-     return Boolean;
-
-   function Triggers_List_Cache_Valid
-     (Id : W_Triggers_Unchecked_List)
-     return Boolean;
-
-   function Triggers_OList_Cache_Valid
-     (Id : W_Triggers_Unchecked_OList)
-     return Boolean;
-
-   function Trigger_Id_Cache_Valid
-     (Id : W_Trigger_Unchecked_Id)
-     return Boolean;
-
-   function Trigger_OId_Cache_Valid
-     (Id : W_Trigger_Unchecked_OId)
-     return Boolean;
-
-   function Trigger_List_Cache_Valid
-     (Id : W_Trigger_Unchecked_List)
-     return Boolean;
-
-   function Trigger_OList_Cache_Valid
-     (Id : W_Trigger_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Eq_Id_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Eq_OId_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Eq_List_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_List)
-     return Boolean;
-
-   function Rel_Eq_OList_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Ne_Id_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Ne_OId_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Ne_List_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_List)
-     return Boolean;
-
-   function Rel_Ne_OList_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Lt_Id_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Lt_OId_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Lt_List_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_List)
-     return Boolean;
-
-   function Rel_Lt_OList_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Le_Id_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Le_OId_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Le_List_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_List)
-     return Boolean;
-
-   function Rel_Le_OList_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Gt_Id_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Gt_OId_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Gt_List_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_List)
-     return Boolean;
-
-   function Rel_Gt_OList_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_OList)
-     return Boolean;
-
-   function Rel_Ge_Id_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_Id)
-     return Boolean;
-
-   function Rel_Ge_OId_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_OId)
-     return Boolean;
-
-   function Rel_Ge_List_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_List)
-     return Boolean;
-
-   function Rel_Ge_OList_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_OList)
-     return Boolean;
-
-   function Type_Id_Cache_Valid
-     (Id : W_Type_Unchecked_Id)
-     return Boolean;
-
-   function Type_OId_Cache_Valid
-     (Id : W_Type_Unchecked_OId)
-     return Boolean;
-
-   function Type_List_Cache_Valid
-     (Id : W_Type_Unchecked_List)
-     return Boolean;
-
-   function Type_OList_Cache_Valid
-     (Id : W_Type_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Id_Cache_Valid
-     (Id : W_Logic_Unchecked_Id)
-     return Boolean;
-
-   function Logic_OId_Cache_Valid
-     (Id : W_Logic_Unchecked_OId)
-     return Boolean;
-
-   function Logic_List_Cache_Valid
-     (Id : W_Logic_Unchecked_List)
-     return Boolean;
-
-   function Logic_OList_Cache_Valid
-     (Id : W_Logic_Unchecked_OList)
-     return Boolean;
-
-   function Function_Id_Cache_Valid
-     (Id : W_Function_Unchecked_Id)
-     return Boolean;
-
-   function Function_OId_Cache_Valid
-     (Id : W_Function_Unchecked_OId)
-     return Boolean;
-
-   function Function_List_Cache_Valid
-     (Id : W_Function_Unchecked_List)
-     return Boolean;
-
-   function Function_OList_Cache_Valid
-     (Id : W_Function_Unchecked_OList)
-     return Boolean;
-
-   function Predicate_Definition_Id_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_Id)
-     return Boolean;
-
-   function Predicate_Definition_OId_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_OId)
-     return Boolean;
-
-   function Predicate_Definition_List_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_List)
-     return Boolean;
-
-   function Predicate_Definition_OList_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_OList)
-     return Boolean;
-
-   function Inductive_Id_Cache_Valid
-     (Id : W_Inductive_Unchecked_Id)
-     return Boolean;
-
-   function Inductive_OId_Cache_Valid
-     (Id : W_Inductive_Unchecked_OId)
-     return Boolean;
-
-   function Inductive_List_Cache_Valid
-     (Id : W_Inductive_Unchecked_List)
-     return Boolean;
-
-   function Inductive_OList_Cache_Valid
-     (Id : W_Inductive_Unchecked_OList)
-     return Boolean;
-
-   function Axiom_Id_Cache_Valid
-     (Id : W_Axiom_Unchecked_Id)
-     return Boolean;
-
-   function Axiom_OId_Cache_Valid
-     (Id : W_Axiom_Unchecked_OId)
-     return Boolean;
-
-   function Axiom_List_Cache_Valid
-     (Id : W_Axiom_Unchecked_List)
-     return Boolean;
-
-   function Axiom_OList_Cache_Valid
-     (Id : W_Axiom_Unchecked_OList)
-     return Boolean;
-
-   function Goal_Id_Cache_Valid
-     (Id : W_Goal_Unchecked_Id)
-     return Boolean;
-
-   function Goal_OId_Cache_Valid
-     (Id : W_Goal_Unchecked_OId)
-     return Boolean;
-
-   function Goal_List_Cache_Valid
-     (Id : W_Goal_Unchecked_List)
-     return Boolean;
-
-   function Goal_OList_Cache_Valid
-     (Id : W_Goal_Unchecked_OList)
-     return Boolean;
-
-   function External_Id_Cache_Valid
-     (Id : W_External_Unchecked_Id)
-     return Boolean;
-
-   function External_OId_Cache_Valid
-     (Id : W_External_Unchecked_OId)
-     return Boolean;
-
-   function External_List_Cache_Valid
-     (Id : W_External_Unchecked_List)
-     return Boolean;
-
-   function External_OList_Cache_Valid
-     (Id : W_External_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Type_Id_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Type_OId_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Type_List_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_List)
-     return Boolean;
-
-   function Logic_Type_OList_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Binder_Id_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Binder_OId_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Binder_List_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_List)
-     return Boolean;
-
-   function Logic_Binder_OList_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_OList)
-     return Boolean;
-
-   function Inductive_Case_Id_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_Id)
-     return Boolean;
-
-   function Inductive_Case_OId_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_OId)
-     return Boolean;
-
-   function Inductive_Case_List_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_List)
-     return Boolean;
-
-   function Inductive_Case_OList_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_OList)
-     return Boolean;
-
-   function Effects_Id_Cache_Valid
-     (Id : W_Effects_Unchecked_Id)
-     return Boolean;
-
-   function Effects_OId_Cache_Valid
-     (Id : W_Effects_Unchecked_OId)
-     return Boolean;
-
-   function Effects_List_Cache_Valid
-     (Id : W_Effects_Unchecked_List)
-     return Boolean;
-
-   function Effects_OList_Cache_Valid
-     (Id : W_Effects_Unchecked_OList)
-     return Boolean;
-
-   function Precondition_Id_Cache_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean;
-
-   function Precondition_OId_Cache_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean;
-
-   function Precondition_List_Cache_Valid
-     (Id : W_Precondition_Unchecked_List)
-     return Boolean;
-
-   function Precondition_OList_Cache_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean;
-
-   function Postcondition_Id_Cache_Valid
-     (Id : W_Postcondition_Unchecked_Id)
-     return Boolean;
-
-   function Postcondition_OId_Cache_Valid
-     (Id : W_Postcondition_Unchecked_OId)
-     return Boolean;
-
-   function Postcondition_List_Cache_Valid
-     (Id : W_Postcondition_Unchecked_List)
-     return Boolean;
-
-   function Postcondition_OList_Cache_Valid
-     (Id : W_Postcondition_Unchecked_OList)
-     return Boolean;
-
-   function Exn_Condition_Id_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_Id)
-     return Boolean;
-
-   function Exn_Condition_OId_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_OId)
-     return Boolean;
-
-   function Exn_Condition_List_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_List)
-     return Boolean;
-
-   function Exn_Condition_OList_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_OList)
-     return Boolean;
-
-   function Assertion_Id_Cache_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean;
-
-   function Assertion_OId_Cache_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean;
-
-   function Assertion_List_Cache_Valid
-     (Id : W_Assertion_Unchecked_List)
-     return Boolean;
-
-   function Assertion_OList_Cache_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean;
-
-   function Prog_Constant_Id_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_Id)
-     return Boolean;
-
-   function Prog_Constant_OId_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_OId)
-     return Boolean;
-
-   function Prog_Constant_List_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_List)
-     return Boolean;
-
-   function Prog_Constant_OList_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_OList)
-     return Boolean;
-
-   function Prog_Identifier_Id_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_Id)
-     return Boolean;
-
-   function Prog_Identifier_OId_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_OId)
-     return Boolean;
-
-   function Prog_Identifier_List_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_List)
-     return Boolean;
-
-   function Prog_Identifier_OList_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_OList)
-     return Boolean;
-
-   function Deref_Id_Cache_Valid
-     (Id : W_Deref_Unchecked_Id)
-     return Boolean;
-
-   function Deref_OId_Cache_Valid
-     (Id : W_Deref_Unchecked_OId)
-     return Boolean;
-
-   function Deref_List_Cache_Valid
-     (Id : W_Deref_Unchecked_List)
-     return Boolean;
-
-   function Deref_OList_Cache_Valid
-     (Id : W_Deref_Unchecked_OList)
-     return Boolean;
-
-   function Assignment_Id_Cache_Valid
-     (Id : W_Assignment_Unchecked_Id)
-     return Boolean;
-
-   function Assignment_OId_Cache_Valid
-     (Id : W_Assignment_Unchecked_OId)
-     return Boolean;
-
-   function Assignment_List_Cache_Valid
-     (Id : W_Assignment_Unchecked_List)
-     return Boolean;
-
-   function Assignment_OList_Cache_Valid
-     (Id : W_Assignment_Unchecked_OList)
-     return Boolean;
-
-   function Array_Access_Id_Cache_Valid
-     (Id : W_Array_Access_Unchecked_Id)
-     return Boolean;
-
-   function Array_Access_OId_Cache_Valid
-     (Id : W_Array_Access_Unchecked_OId)
-     return Boolean;
-
-   function Array_Access_List_Cache_Valid
-     (Id : W_Array_Access_Unchecked_List)
-     return Boolean;
-
-   function Array_Access_OList_Cache_Valid
-     (Id : W_Array_Access_Unchecked_OList)
-     return Boolean;
-
-   function Array_Update_Id_Cache_Valid
-     (Id : W_Array_Update_Unchecked_Id)
-     return Boolean;
-
-   function Array_Update_OId_Cache_Valid
-     (Id : W_Array_Update_Unchecked_OId)
-     return Boolean;
-
-   function Array_Update_List_Cache_Valid
-     (Id : W_Array_Update_Unchecked_List)
-     return Boolean;
-
-   function Array_Update_OList_Cache_Valid
-     (Id : W_Array_Update_Unchecked_OList)
-     return Boolean;
-
-   function Infix_Call_Id_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_Id)
-     return Boolean;
-
-   function Infix_Call_OId_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_OId)
-     return Boolean;
-
-   function Infix_Call_List_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_List)
-     return Boolean;
-
-   function Infix_Call_OList_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_OList)
-     return Boolean;
-
-   function Prefix_Call_Id_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_Id)
-     return Boolean;
-
-   function Prefix_Call_OId_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_OId)
-     return Boolean;
-
-   function Prefix_Call_List_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_List)
-     return Boolean;
-
-   function Prefix_Call_OList_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Prog_Id_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Prog_OId_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Prog_List_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_List)
-     return Boolean;
-
-   function Binding_Prog_OList_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Ref_Id_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Ref_OId_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Ref_List_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_List)
-     return Boolean;
-
-   function Binding_Ref_OList_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_OList)
-     return Boolean;
-
-   function Conditional_Prog_Id_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Conditional_Prog_OId_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Conditional_Prog_List_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_List)
-     return Boolean;
-
-   function Conditional_Prog_OList_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_OList)
-     return Boolean;
-
-   function While_Loop_Id_Cache_Valid
-     (Id : W_While_Loop_Unchecked_Id)
-     return Boolean;
-
-   function While_Loop_OId_Cache_Valid
-     (Id : W_While_Loop_Unchecked_OId)
-     return Boolean;
-
-   function While_Loop_List_Cache_Valid
-     (Id : W_While_Loop_Unchecked_List)
-     return Boolean;
-
-   function While_Loop_OList_Cache_Valid
-     (Id : W_While_Loop_Unchecked_OList)
-     return Boolean;
-
-   function Statement_Sequence_Id_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_Id)
-     return Boolean;
-
-   function Statement_Sequence_OId_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_OId)
-     return Boolean;
-
-   function Statement_Sequence_List_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_List)
-     return Boolean;
-
-   function Statement_Sequence_OList_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_OList)
-     return Boolean;
-
-   function Label_Id_Cache_Valid
-     (Id : W_Label_Unchecked_Id)
-     return Boolean;
-
-   function Label_OId_Cache_Valid
-     (Id : W_Label_Unchecked_OId)
-     return Boolean;
-
-   function Label_List_Cache_Valid
-     (Id : W_Label_Unchecked_List)
-     return Boolean;
-
-   function Label_OList_Cache_Valid
-     (Id : W_Label_Unchecked_OList)
-     return Boolean;
-
-   function Assert_Id_Cache_Valid
-     (Id : W_Assert_Unchecked_Id)
-     return Boolean;
-
-   function Assert_OId_Cache_Valid
-     (Id : W_Assert_Unchecked_OId)
-     return Boolean;
-
-   function Assert_List_Cache_Valid
-     (Id : W_Assert_Unchecked_List)
-     return Boolean;
-
-   function Assert_OList_Cache_Valid
-     (Id : W_Assert_Unchecked_OList)
-     return Boolean;
-
-   function Post_Assertion_Id_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_Id)
-     return Boolean;
-
-   function Post_Assertion_OId_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_OId)
-     return Boolean;
-
-   function Post_Assertion_List_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_List)
-     return Boolean;
-
-   function Post_Assertion_OList_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_OList)
-     return Boolean;
-
-   function Opaque_Assertion_Id_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_Id)
-     return Boolean;
-
-   function Opaque_Assertion_OId_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_OId)
-     return Boolean;
-
-   function Opaque_Assertion_List_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_List)
-     return Boolean;
-
-   function Opaque_Assertion_OList_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_OList)
-     return Boolean;
-
-   function Fun_Def_Id_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_Id)
-     return Boolean;
-
-   function Fun_Def_OId_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_OId)
-     return Boolean;
-
-   function Fun_Def_List_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_List)
-     return Boolean;
-
-   function Fun_Def_OList_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Fun_Id_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Fun_OId_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Fun_List_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_List)
-     return Boolean;
-
-   function Binding_Fun_OList_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_OList)
-     return Boolean;
-
-   function Binding_Rec_Id_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_Id)
-     return Boolean;
-
-   function Binding_Rec_OId_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_OId)
-     return Boolean;
-
-   function Binding_Rec_List_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_List)
-     return Boolean;
-
-   function Binding_Rec_OList_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_OList)
-     return Boolean;
-
-   function Prog_Sequence_Id_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
-     return Boolean;
-
-   function Prog_Sequence_OId_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
-     return Boolean;
-
-   function Prog_Sequence_List_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
-     return Boolean;
-
-   function Prog_Sequence_OList_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
-     return Boolean;
-
-   function Raise_Statement_Id_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_Id)
-     return Boolean;
-
-   function Raise_Statement_OId_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_OId)
-     return Boolean;
-
-   function Raise_Statement_List_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_List)
-     return Boolean;
-
-   function Raise_Statement_OList_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_OList)
-     return Boolean;
-
-   function Raise_Statement_With_Parameters_Id_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
-     return Boolean;
-
-   function Raise_Statement_With_Parameters_OId_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_OId)
-     return Boolean;
-
-   function Raise_Statement_With_Parameters_List_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_List)
-     return Boolean;
-
-   function Raise_Statement_With_Parameters_OList_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_OList)
-     return Boolean;
-
-   function Try_Block_Id_Cache_Valid
-     (Id : W_Try_Block_Unchecked_Id)
-     return Boolean;
-
-   function Try_Block_OId_Cache_Valid
-     (Id : W_Try_Block_Unchecked_OId)
-     return Boolean;
-
-   function Try_Block_List_Cache_Valid
-     (Id : W_Try_Block_Unchecked_List)
-     return Boolean;
-
-   function Try_Block_OList_Cache_Valid
-     (Id : W_Try_Block_Unchecked_OList)
-     return Boolean;
-
-   function Unreachable_Code_Id_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_Id)
-     return Boolean;
-
-   function Unreachable_Code_OId_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_OId)
-     return Boolean;
-
-   function Unreachable_Code_List_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_List)
-     return Boolean;
-
-   function Unreachable_Code_OList_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_OList)
-     return Boolean;
-
-   function Begin_Block_Id_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_Id)
-     return Boolean;
-
-   function Begin_Block_OId_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_OId)
-     return Boolean;
-
-   function Begin_Block_List_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_List)
-     return Boolean;
-
-   function Begin_Block_OList_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_OList)
-     return Boolean;
-
-   function Protected_Prog_Id_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Protected_Prog_OId_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Protected_Prog_List_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_List)
-     return Boolean;
-
-   function Protected_Prog_OList_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Add_Prog_Id_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Add_Prog_OId_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Add_Prog_List_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Add_Prog_OList_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Substract_Prog_Id_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Substract_Prog_OId_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Substract_Prog_List_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Substract_Prog_OList_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Multiply_Prog_Id_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Multiply_Prog_OId_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Multiply_Prog_List_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Multiply_Prog_OList_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Divide_Prog_Id_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Divide_Prog_OId_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Divide_Prog_List_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Divide_Prog_OList_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Mod_Prog_Id_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Mod_Prog_OId_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Mod_Prog_List_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Mod_Prog_OList_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Eq_Prog_Id_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Eq_Prog_OId_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Eq_Prog_List_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Eq_Prog_OList_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Ne_Prog_Id_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Ne_Prog_OId_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Ne_Prog_List_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Ne_Prog_OList_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Lt_Prog_Id_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Lt_Prog_OId_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Lt_Prog_List_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Lt_Prog_OList_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Le_Prog_Id_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Le_Prog_OId_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Le_Prog_List_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Le_Prog_OList_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Gt_Prog_Id_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Gt_Prog_OId_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Gt_Prog_List_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Gt_Prog_OList_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Ge_Prog_Id_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Ge_Prog_OId_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Ge_Prog_List_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Ge_Prog_OList_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Or_Else_Prog_Id_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Or_Else_Prog_OId_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Or_Else_Prog_List_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Or_Else_Prog_OList_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_And_Then_Prog_Id_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_And_Then_Prog_OId_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_And_Then_Prog_List_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_And_Then_Prog_OList_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Minus_Prog_Id_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Minus_Prog_OId_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Minus_Prog_List_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Minus_Prog_OList_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Op_Not_Prog_Id_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Op_Not_Prog_OId_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Op_Not_Prog_List_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_List)
-     return Boolean;
-
-   function Op_Not_Prog_OList_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Binders_Id_Cache_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean;
-
-   function Binders_OId_Cache_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean;
-
-   function Binders_List_Cache_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean;
-
-   function Binders_OList_Cache_Valid
-     (Id : W_Binders_Unchecked_OList)
-     return Boolean;
-
-   function Binder_Id_Cache_Valid
-     (Id : W_Binder_Unchecked_Id)
-     return Boolean;
-
-   function Binder_OId_Cache_Valid
-     (Id : W_Binder_Unchecked_OId)
-     return Boolean;
-
-   function Binder_List_Cache_Valid
-     (Id : W_Binder_Unchecked_List)
-     return Boolean;
-
-   function Binder_OList_Cache_Valid
-     (Id : W_Binder_Unchecked_OList)
-     return Boolean;
-
-   function Recfun_Id_Cache_Valid
-     (Id : W_Recfun_Unchecked_Id)
-     return Boolean;
-
-   function Recfun_OId_Cache_Valid
-     (Id : W_Recfun_Unchecked_OId)
-     return Boolean;
-
-   function Recfun_List_Cache_Valid
-     (Id : W_Recfun_Unchecked_List)
-     return Boolean;
-
-   function Recfun_OList_Cache_Valid
-     (Id : W_Recfun_Unchecked_OList)
-     return Boolean;
-
-   function Loop_Annot_Id_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_Id)
-     return Boolean;
-
-   function Loop_Annot_OId_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_OId)
-     return Boolean;
-
-   function Loop_Annot_List_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_List)
-     return Boolean;
-
-   function Loop_Annot_OList_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_OList)
-     return Boolean;
-
-   function Wf_Arg_Id_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_Id)
-     return Boolean;
-
-   function Wf_Arg_OId_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_OId)
-     return Boolean;
-
-   function Wf_Arg_List_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_List)
-     return Boolean;
-
-   function Wf_Arg_OList_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_OList)
-     return Boolean;
-
-   function Handler_Id_Cache_Valid
-     (Id : W_Handler_Unchecked_Id)
-     return Boolean;
-
-   function Handler_OId_Cache_Valid
-     (Id : W_Handler_Unchecked_OId)
-     return Boolean;
-
-   function Handler_List_Cache_Valid
-     (Id : W_Handler_Unchecked_List)
-     return Boolean;
-
-   function Handler_OList_Cache_Valid
-     (Id : W_Handler_Unchecked_OList)
-     return Boolean;
-
-   function File_Id_Cache_Valid
-     (Id : W_File_Unchecked_Id)
-     return Boolean;
-
-   function File_OId_Cache_Valid
-     (Id : W_File_Unchecked_OId)
-     return Boolean;
-
-   function File_List_Cache_Valid
-     (Id : W_File_Unchecked_List)
-     return Boolean;
-
-   function File_OList_Cache_Valid
-     (Id : W_File_Unchecked_OList)
-     return Boolean;
-
-   function Global_Binding_Id_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_Id)
-     return Boolean;
-
-   function Global_Binding_OId_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_OId)
-     return Boolean;
-
-   function Global_Binding_List_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_List)
-     return Boolean;
-
-   function Global_Binding_OList_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_OList)
-     return Boolean;
-
-   function Global_Rec_Binding_Id_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_Id)
-     return Boolean;
-
-   function Global_Rec_Binding_OId_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_OId)
-     return Boolean;
-
-   function Global_Rec_Binding_List_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_List)
-     return Boolean;
-
-   function Global_Rec_Binding_OList_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_OList)
-     return Boolean;
-
-   function Parameter_Declaration_Id_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_Id)
-     return Boolean;
-
-   function Parameter_Declaration_OId_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_OId)
-     return Boolean;
-
-   function Parameter_Declaration_List_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_List)
-     return Boolean;
-
-   function Parameter_Declaration_OList_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_OList)
-     return Boolean;
-
-   function Exception_Declaration_Id_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_Id)
-     return Boolean;
-
-   function Exception_Declaration_OId_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_OId)
-     return Boolean;
-
-   function Exception_Declaration_List_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_List)
-     return Boolean;
-
-   function Exception_Declaration_OList_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Declaration_Id_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Declaration_OId_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Declaration_List_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_List)
-     return Boolean;
-
-   function Logic_Declaration_OList_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_OList)
-     return Boolean;
-
-   function Term_Id_Cache_Valid
-     (Id : W_Term_Unchecked_Id)
-     return Boolean;
-
-   function Term_OId_Cache_Valid
-     (Id : W_Term_Unchecked_OId)
-     return Boolean;
-
-   function Term_List_Cache_Valid
-     (Id : W_Term_Unchecked_List)
-     return Boolean;
-
-   function Term_OList_Cache_Valid
-     (Id : W_Term_Unchecked_OList)
-     return Boolean;
-
-   function Constant_Id_Cache_Valid
-     (Id : W_Constant_Unchecked_Id)
-     return Boolean;
-
-   function Constant_OId_Cache_Valid
-     (Id : W_Constant_Unchecked_OId)
-     return Boolean;
-
-   function Constant_List_Cache_Valid
-     (Id : W_Constant_Unchecked_List)
-     return Boolean;
-
-   function Constant_OList_Cache_Valid
-     (Id : W_Constant_Unchecked_OList)
-     return Boolean;
-
-   function Arith_Op_Id_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_Id)
-     return Boolean;
-
-   function Arith_Op_OId_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_OId)
-     return Boolean;
-
-   function Arith_Op_List_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_List)
-     return Boolean;
-
-   function Arith_Op_OList_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_OList)
-     return Boolean;
-
-   function Predicate_Id_Cache_Valid
-     (Id : W_Predicate_Unchecked_Id)
-     return Boolean;
-
-   function Predicate_OId_Cache_Valid
-     (Id : W_Predicate_Unchecked_OId)
-     return Boolean;
-
-   function Predicate_List_Cache_Valid
-     (Id : W_Predicate_Unchecked_List)
-     return Boolean;
-
-   function Predicate_OList_Cache_Valid
-     (Id : W_Predicate_Unchecked_OList)
-     return Boolean;
-
-   function Primitive_Type_Id_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_Id)
-     return Boolean;
-
-   function Primitive_Type_OId_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_OId)
-     return Boolean;
-
-   function Primitive_Type_List_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_List)
-     return Boolean;
-
-   function Primitive_Type_OList_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_OList)
-     return Boolean;
-
-   function Relation_Id_Cache_Valid
-     (Id : W_Relation_Unchecked_Id)
-     return Boolean;
-
-   function Relation_OId_Cache_Valid
-     (Id : W_Relation_Unchecked_OId)
-     return Boolean;
-
-   function Relation_List_Cache_Valid
-     (Id : W_Relation_Unchecked_List)
-     return Boolean;
-
-   function Relation_OList_Cache_Valid
-     (Id : W_Relation_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Declaration_Class_Id_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Declaration_Class_OId_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Declaration_Class_List_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_List)
-     return Boolean;
-
-   function Logic_Declaration_Class_OList_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Return_Type_Id_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Return_Type_OId_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Return_Type_List_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_List)
-     return Boolean;
-
-   function Logic_Return_Type_OList_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_OList)
-     return Boolean;
-
-   function Logic_Arg_Type_Id_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_Id)
-     return Boolean;
-
-   function Logic_Arg_Type_OId_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_OId)
-     return Boolean;
-
-   function Logic_Arg_Type_List_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_List)
-     return Boolean;
-
-   function Logic_Arg_Type_OList_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_OList)
-     return Boolean;
-
-   function Simple_Value_Type_Id_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_Id)
-     return Boolean;
-
-   function Simple_Value_Type_OId_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_OId)
-     return Boolean;
-
-   function Simple_Value_Type_List_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Simple_Value_Type_OList_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_OList)
-     return Boolean;
-
-   function Value_Type_Id_Cache_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean;
-
-   function Value_Type_OId_Cache_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean;
-
-   function Value_Type_List_Cache_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Value_Type_OList_Cache_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Type_Id_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Type_OId_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Type_List_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_List)
-     return Boolean;
-
-   function Computation_Type_OList_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean;
-
-   function Prog_Id_Cache_Valid
-     (Id : W_Prog_Unchecked_Id)
-     return Boolean;
-
-   function Prog_OId_Cache_Valid
-     (Id : W_Prog_Unchecked_OId)
-     return Boolean;
-
-   function Prog_List_Cache_Valid
-     (Id : W_Prog_Unchecked_List)
-     return Boolean;
-
-   function Prog_OList_Cache_Valid
-     (Id : W_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Infix_Id_Cache_Valid
-     (Id : W_Infix_Unchecked_Id)
-     return Boolean;
-
-   function Infix_OId_Cache_Valid
-     (Id : W_Infix_Unchecked_OId)
-     return Boolean;
-
-   function Infix_List_Cache_Valid
-     (Id : W_Infix_Unchecked_List)
-     return Boolean;
-
-   function Infix_OList_Cache_Valid
-     (Id : W_Infix_Unchecked_OList)
-     return Boolean;
-
-   function Prefix_Id_Cache_Valid
-     (Id : W_Prefix_Unchecked_Id)
-     return Boolean;
-
-   function Prefix_OId_Cache_Valid
-     (Id : W_Prefix_Unchecked_OId)
-     return Boolean;
-
-   function Prefix_List_Cache_Valid
-     (Id : W_Prefix_Unchecked_List)
-     return Boolean;
-
-   function Prefix_OList_Cache_Valid
-     (Id : W_Prefix_Unchecked_OList)
-     return Boolean;
-
-   function Declaration_Id_Cache_Valid
-     (Id : W_Declaration_Unchecked_Id)
-     return Boolean;
-
-   function Declaration_OId_Cache_Valid
-     (Id : W_Declaration_Unchecked_OId)
-     return Boolean;
-
-   function Declaration_List_Cache_Valid
-     (Id : W_Declaration_Unchecked_List)
-     return Boolean;
-
-   function Declaration_OList_Cache_Valid
-     (Id : W_Declaration_Unchecked_OList)
-     return Boolean;
+   function OList_Cache_Valid (Id : Why_Node_List) return Boolean;
 
    function Unused_At_Start_Id_Children_Valid
      (Id : W_Unused_At_Start_Unchecked_Id)
@@ -6982,7 +4685,7 @@ private
    function Unused_At_Start_Id_Valid
      (Id : W_Unused_At_Start_Unchecked_Id)
      return Boolean is
-     (Unused_At_Start_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Unused_At_Start_Id_Children_Valid (Id));
 
    function Unused_At_Start_OId_Valid
@@ -7008,7 +4711,7 @@ private
    function Identifier_Id_Valid
      (Id : W_Identifier_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Identifier_Id_Children_Valid (Id));
 
    function Identifier_OId_Valid
@@ -7034,7 +4737,7 @@ private
    function Type_Prop_Id_Valid
      (Id : W_Type_Prop_Unchecked_Id)
      return Boolean is
-     (Type_Prop_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Prop_Id_Children_Valid (Id));
 
    function Type_Prop_OId_Valid
@@ -7060,7 +4763,7 @@ private
    function Type_Int_Id_Valid
      (Id : W_Type_Int_Unchecked_Id)
      return Boolean is
-     (Type_Int_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Int_Id_Children_Valid (Id));
 
    function Type_Int_OId_Valid
@@ -7086,7 +4789,7 @@ private
    function Type_Bool_Id_Valid
      (Id : W_Type_Bool_Unchecked_Id)
      return Boolean is
-     (Type_Bool_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Bool_Id_Children_Valid (Id));
 
    function Type_Bool_OId_Valid
@@ -7112,7 +4815,7 @@ private
    function Type_Real_Id_Valid
      (Id : W_Type_Real_Unchecked_Id)
      return Boolean is
-     (Type_Real_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Real_Id_Children_Valid (Id));
 
    function Type_Real_OId_Valid
@@ -7138,7 +4841,7 @@ private
    function Type_Unit_Id_Valid
      (Id : W_Type_Unit_Unchecked_Id)
      return Boolean is
-     (Type_Unit_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Unit_Id_Children_Valid (Id));
 
    function Type_Unit_OId_Valid
@@ -7164,7 +4867,7 @@ private
    function Abstract_Type_Id_Valid
      (Id : W_Abstract_Type_Unchecked_Id)
      return Boolean is
-     (Abstract_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Abstract_Type_Id_Children_Valid (Id));
 
    function Abstract_Type_OId_Valid
@@ -7190,7 +4893,7 @@ private
    function Generic_Formal_Type_Id_Valid
      (Id : W_Generic_Formal_Type_Unchecked_Id)
      return Boolean is
-     (Generic_Formal_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Generic_Formal_Type_Id_Children_Valid (Id));
 
    function Generic_Formal_Type_OId_Valid
@@ -7216,7 +4919,7 @@ private
    function Generic_Actual_Type_Chain_Id_Valid
      (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
      return Boolean is
-     (Generic_Actual_Type_Chain_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Generic_Actual_Type_Chain_Id_Children_Valid (Id));
 
    function Generic_Actual_Type_Chain_OId_Valid
@@ -7242,7 +4945,7 @@ private
    function Array_Type_Id_Valid
      (Id : W_Array_Type_Unchecked_Id)
      return Boolean is
-     (Array_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Array_Type_Id_Children_Valid (Id));
 
    function Array_Type_OId_Valid
@@ -7268,7 +4971,7 @@ private
    function Ref_Type_Id_Valid
      (Id : W_Ref_Type_Unchecked_Id)
      return Boolean is
-     (Ref_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Ref_Type_Id_Children_Valid (Id));
 
    function Ref_Type_OId_Valid
@@ -7294,7 +4997,7 @@ private
    function Protected_Value_Type_Id_Valid
      (Id : W_Protected_Value_Type_Unchecked_Id)
      return Boolean is
-     (Protected_Value_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Protected_Value_Type_Id_Children_Valid (Id));
 
    function Protected_Value_Type_OId_Valid
@@ -7320,7 +5023,7 @@ private
    function Anonymous_Arrow_Type_Id_Valid
      (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
      return Boolean is
-     (Anonymous_Arrow_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Anonymous_Arrow_Type_Id_Children_Valid (Id));
 
    function Anonymous_Arrow_Type_OId_Valid
@@ -7346,7 +5049,7 @@ private
    function Named_Arrow_Type_Id_Valid
      (Id : W_Named_Arrow_Type_Unchecked_Id)
      return Boolean is
-     (Named_Arrow_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Named_Arrow_Type_Id_Children_Valid (Id));
 
    function Named_Arrow_Type_OId_Valid
@@ -7372,7 +5075,7 @@ private
    function Computation_Spec_Id_Valid
      (Id : W_Computation_Spec_Unchecked_Id)
      return Boolean is
-     (Computation_Spec_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Computation_Spec_Id_Children_Valid (Id));
 
    function Computation_Spec_OId_Valid
@@ -7398,7 +5101,7 @@ private
    function Integer_Constant_Id_Valid
      (Id : W_Integer_Constant_Unchecked_Id)
      return Boolean is
-     (Integer_Constant_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Integer_Constant_Id_Children_Valid (Id));
 
    function Integer_Constant_OId_Valid
@@ -7424,7 +5127,7 @@ private
    function Real_Constant_Id_Valid
      (Id : W_Real_Constant_Unchecked_Id)
      return Boolean is
-     (Real_Constant_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Real_Constant_Id_Children_Valid (Id));
 
    function Real_Constant_OId_Valid
@@ -7450,7 +5153,7 @@ private
    function True_Literal_Id_Valid
      (Id : W_True_Literal_Unchecked_Id)
      return Boolean is
-     (True_Literal_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else True_Literal_Id_Children_Valid (Id));
 
    function True_Literal_OId_Valid
@@ -7476,7 +5179,7 @@ private
    function False_Literal_Id_Valid
      (Id : W_False_Literal_Unchecked_Id)
      return Boolean is
-     (False_Literal_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else False_Literal_Id_Children_Valid (Id));
 
    function False_Literal_OId_Valid
@@ -7502,7 +5205,7 @@ private
    function Void_Literal_Id_Valid
      (Id : W_Void_Literal_Unchecked_Id)
      return Boolean is
-     (Void_Literal_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Void_Literal_Id_Children_Valid (Id));
 
    function Void_Literal_OId_Valid
@@ -7528,7 +5231,7 @@ private
    function Arith_Operation_Id_Valid
      (Id : W_Arith_Operation_Unchecked_Id)
      return Boolean is
-     (Arith_Operation_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Arith_Operation_Id_Children_Valid (Id));
 
    function Arith_Operation_OId_Valid
@@ -7554,7 +5257,7 @@ private
    function Negative_Term_Id_Valid
      (Id : W_Negative_Term_Unchecked_Id)
      return Boolean is
-     (Negative_Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Negative_Term_Id_Children_Valid (Id));
 
    function Negative_Term_OId_Valid
@@ -7580,7 +5283,7 @@ private
    function Label_Identifier_Id_Valid
      (Id : W_Label_Identifier_Unchecked_Id)
      return Boolean is
-     (Label_Identifier_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Label_Identifier_Id_Children_Valid (Id));
 
    function Label_Identifier_OId_Valid
@@ -7606,7 +5309,7 @@ private
    function Operation_Id_Valid
      (Id : W_Operation_Unchecked_Id)
      return Boolean is
-     (Operation_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Operation_Id_Children_Valid (Id));
 
    function Operation_OId_Valid
@@ -7632,7 +5335,7 @@ private
    function Named_Term_Id_Valid
      (Id : W_Named_Term_Unchecked_Id)
      return Boolean is
-     (Named_Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Named_Term_Id_Children_Valid (Id));
 
    function Named_Term_OId_Valid
@@ -7658,7 +5361,7 @@ private
    function Conditional_Term_Id_Valid
      (Id : W_Conditional_Term_Unchecked_Id)
      return Boolean is
-     (Conditional_Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Conditional_Term_Id_Children_Valid (Id));
 
    function Conditional_Term_OId_Valid
@@ -7684,7 +5387,7 @@ private
    function Binding_Term_Id_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean is
-     (Binding_Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Term_Id_Children_Valid (Id));
 
    function Binding_Term_OId_Valid
@@ -7710,7 +5413,7 @@ private
    function Protected_Term_Id_Valid
      (Id : W_Protected_Term_Unchecked_Id)
      return Boolean is
-     (Protected_Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Protected_Term_Id_Children_Valid (Id));
 
    function Protected_Term_OId_Valid
@@ -7736,7 +5439,7 @@ private
    function Op_Add_Id_Valid
      (Id : W_Op_Add_Unchecked_Id)
      return Boolean is
-     (Op_Add_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Add_Id_Children_Valid (Id));
 
    function Op_Add_OId_Valid
@@ -7762,7 +5465,7 @@ private
    function Op_Substract_Id_Valid
      (Id : W_Op_Substract_Unchecked_Id)
      return Boolean is
-     (Op_Substract_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Substract_Id_Children_Valid (Id));
 
    function Op_Substract_OId_Valid
@@ -7788,7 +5491,7 @@ private
    function Op_Multiply_Id_Valid
      (Id : W_Op_Multiply_Unchecked_Id)
      return Boolean is
-     (Op_Multiply_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Multiply_Id_Children_Valid (Id));
 
    function Op_Multiply_OId_Valid
@@ -7814,7 +5517,7 @@ private
    function Op_Divide_Id_Valid
      (Id : W_Op_Divide_Unchecked_Id)
      return Boolean is
-     (Op_Divide_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Divide_Id_Children_Valid (Id));
 
    function Op_Divide_OId_Valid
@@ -7840,7 +5543,7 @@ private
    function Op_Modulo_Id_Valid
      (Id : W_Op_Modulo_Unchecked_Id)
      return Boolean is
-     (Op_Modulo_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Modulo_Id_Children_Valid (Id));
 
    function Op_Modulo_OId_Valid
@@ -7866,7 +5569,7 @@ private
    function True_Literal_Pred_Id_Valid
      (Id : W_True_Literal_Pred_Unchecked_Id)
      return Boolean is
-     (True_Literal_Pred_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else True_Literal_Pred_Id_Children_Valid (Id));
 
    function True_Literal_Pred_OId_Valid
@@ -7892,7 +5595,7 @@ private
    function False_Literal_Pred_Id_Valid
      (Id : W_False_Literal_Pred_Unchecked_Id)
      return Boolean is
-     (False_Literal_Pred_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else False_Literal_Pred_Id_Children_Valid (Id));
 
    function False_Literal_Pred_OId_Valid
@@ -7918,7 +5621,7 @@ private
    function Predicate_Identifier_Id_Valid
      (Id : W_Predicate_Identifier_Unchecked_Id)
      return Boolean is
-     (Predicate_Identifier_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Predicate_Identifier_Id_Children_Valid (Id));
 
    function Predicate_Identifier_OId_Valid
@@ -7944,7 +5647,7 @@ private
    function Predicate_Instance_Id_Valid
      (Id : W_Predicate_Instance_Unchecked_Id)
      return Boolean is
-     (Predicate_Instance_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Predicate_Instance_Id_Children_Valid (Id));
 
    function Predicate_Instance_OId_Valid
@@ -7970,7 +5673,7 @@ private
    function Related_Terms_Id_Valid
      (Id : W_Related_Terms_Unchecked_Id)
      return Boolean is
-     (Related_Terms_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Related_Terms_Id_Children_Valid (Id));
 
    function Related_Terms_OId_Valid
@@ -7996,7 +5699,7 @@ private
    function Implication_Id_Valid
      (Id : W_Implication_Unchecked_Id)
      return Boolean is
-     (Implication_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Implication_Id_Children_Valid (Id));
 
    function Implication_OId_Valid
@@ -8022,7 +5725,7 @@ private
    function Equivalence_Id_Valid
      (Id : W_Equivalence_Unchecked_Id)
      return Boolean is
-     (Equivalence_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Equivalence_Id_Children_Valid (Id));
 
    function Equivalence_OId_Valid
@@ -8048,7 +5751,7 @@ private
    function Disjonction_Id_Valid
      (Id : W_Disjonction_Unchecked_Id)
      return Boolean is
-     (Disjonction_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Disjonction_Id_Children_Valid (Id));
 
    function Disjonction_OId_Valid
@@ -8074,7 +5777,7 @@ private
    function Conjonction_Id_Valid
      (Id : W_Conjonction_Unchecked_Id)
      return Boolean is
-     (Conjonction_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Conjonction_Id_Children_Valid (Id));
 
    function Conjonction_OId_Valid
@@ -8100,7 +5803,7 @@ private
    function Negation_Id_Valid
      (Id : W_Negation_Unchecked_Id)
      return Boolean is
-     (Negation_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Negation_Id_Children_Valid (Id));
 
    function Negation_OId_Valid
@@ -8126,7 +5829,7 @@ private
    function Conditional_Pred_Id_Valid
      (Id : W_Conditional_Pred_Unchecked_Id)
      return Boolean is
-     (Conditional_Pred_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Conditional_Pred_Id_Children_Valid (Id));
 
    function Conditional_Pred_OId_Valid
@@ -8152,7 +5855,7 @@ private
    function Binding_Pred_Id_Valid
      (Id : W_Binding_Pred_Unchecked_Id)
      return Boolean is
-     (Binding_Pred_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Pred_Id_Children_Valid (Id));
 
    function Binding_Pred_OId_Valid
@@ -8178,7 +5881,7 @@ private
    function Universal_Quantif_Id_Valid
      (Id : W_Universal_Quantif_Unchecked_Id)
      return Boolean is
-     (Universal_Quantif_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Universal_Quantif_Id_Children_Valid (Id));
 
    function Universal_Quantif_OId_Valid
@@ -8204,7 +5907,7 @@ private
    function Existential_Quantif_Id_Valid
      (Id : W_Existential_Quantif_Unchecked_Id)
      return Boolean is
-     (Existential_Quantif_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Existential_Quantif_Id_Children_Valid (Id));
 
    function Existential_Quantif_OId_Valid
@@ -8230,7 +5933,7 @@ private
    function Named_Predicate_Id_Valid
      (Id : W_Named_Predicate_Unchecked_Id)
      return Boolean is
-     (Named_Predicate_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Named_Predicate_Id_Children_Valid (Id));
 
    function Named_Predicate_OId_Valid
@@ -8256,7 +5959,7 @@ private
    function Protected_Predicate_Id_Valid
      (Id : W_Protected_Predicate_Unchecked_Id)
      return Boolean is
-     (Protected_Predicate_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Protected_Predicate_Id_Children_Valid (Id));
 
    function Protected_Predicate_OId_Valid
@@ -8282,7 +5985,7 @@ private
    function Triggers_Id_Valid
      (Id : W_Triggers_Unchecked_Id)
      return Boolean is
-     (Triggers_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Triggers_Id_Children_Valid (Id));
 
    function Triggers_OId_Valid
@@ -8308,7 +6011,7 @@ private
    function Trigger_Id_Valid
      (Id : W_Trigger_Unchecked_Id)
      return Boolean is
-     (Trigger_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Trigger_Id_Children_Valid (Id));
 
    function Trigger_OId_Valid
@@ -8334,7 +6037,7 @@ private
    function Rel_Eq_Id_Valid
      (Id : W_Rel_Eq_Unchecked_Id)
      return Boolean is
-     (Rel_Eq_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Eq_Id_Children_Valid (Id));
 
    function Rel_Eq_OId_Valid
@@ -8360,7 +6063,7 @@ private
    function Rel_Ne_Id_Valid
      (Id : W_Rel_Ne_Unchecked_Id)
      return Boolean is
-     (Rel_Ne_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Ne_Id_Children_Valid (Id));
 
    function Rel_Ne_OId_Valid
@@ -8386,7 +6089,7 @@ private
    function Rel_Lt_Id_Valid
      (Id : W_Rel_Lt_Unchecked_Id)
      return Boolean is
-     (Rel_Lt_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Lt_Id_Children_Valid (Id));
 
    function Rel_Lt_OId_Valid
@@ -8412,7 +6115,7 @@ private
    function Rel_Le_Id_Valid
      (Id : W_Rel_Le_Unchecked_Id)
      return Boolean is
-     (Rel_Le_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Le_Id_Children_Valid (Id));
 
    function Rel_Le_OId_Valid
@@ -8438,7 +6141,7 @@ private
    function Rel_Gt_Id_Valid
      (Id : W_Rel_Gt_Unchecked_Id)
      return Boolean is
-     (Rel_Gt_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Gt_Id_Children_Valid (Id));
 
    function Rel_Gt_OId_Valid
@@ -8464,7 +6167,7 @@ private
    function Rel_Ge_Id_Valid
      (Id : W_Rel_Ge_Unchecked_Id)
      return Boolean is
-     (Rel_Ge_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Rel_Ge_Id_Children_Valid (Id));
 
    function Rel_Ge_OId_Valid
@@ -8490,7 +6193,7 @@ private
    function Type_Id_Valid
      (Id : W_Type_Unchecked_Id)
      return Boolean is
-     (Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Type_Id_Children_Valid (Id));
 
    function Type_OId_Valid
@@ -8516,7 +6219,7 @@ private
    function Logic_Id_Valid
      (Id : W_Logic_Unchecked_Id)
      return Boolean is
-     (Logic_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Id_Children_Valid (Id));
 
    function Logic_OId_Valid
@@ -8542,7 +6245,7 @@ private
    function Function_Id_Valid
      (Id : W_Function_Unchecked_Id)
      return Boolean is
-     (Function_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Function_Id_Children_Valid (Id));
 
    function Function_OId_Valid
@@ -8568,7 +6271,7 @@ private
    function Predicate_Definition_Id_Valid
      (Id : W_Predicate_Definition_Unchecked_Id)
      return Boolean is
-     (Predicate_Definition_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Predicate_Definition_Id_Children_Valid (Id));
 
    function Predicate_Definition_OId_Valid
@@ -8594,7 +6297,7 @@ private
    function Inductive_Id_Valid
      (Id : W_Inductive_Unchecked_Id)
      return Boolean is
-     (Inductive_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Inductive_Id_Children_Valid (Id));
 
    function Inductive_OId_Valid
@@ -8620,7 +6323,7 @@ private
    function Axiom_Id_Valid
      (Id : W_Axiom_Unchecked_Id)
      return Boolean is
-     (Axiom_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Axiom_Id_Children_Valid (Id));
 
    function Axiom_OId_Valid
@@ -8646,7 +6349,7 @@ private
    function Goal_Id_Valid
      (Id : W_Goal_Unchecked_Id)
      return Boolean is
-     (Goal_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Goal_Id_Children_Valid (Id));
 
    function Goal_OId_Valid
@@ -8672,7 +6375,7 @@ private
    function External_Id_Valid
      (Id : W_External_Unchecked_Id)
      return Boolean is
-     (External_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else External_Id_Children_Valid (Id));
 
    function External_OId_Valid
@@ -8698,7 +6401,7 @@ private
    function Logic_Type_Id_Valid
      (Id : W_Logic_Type_Unchecked_Id)
      return Boolean is
-     (Logic_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Type_Id_Children_Valid (Id));
 
    function Logic_Type_OId_Valid
@@ -8724,7 +6427,7 @@ private
    function Logic_Binder_Id_Valid
      (Id : W_Logic_Binder_Unchecked_Id)
      return Boolean is
-     (Logic_Binder_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Binder_Id_Children_Valid (Id));
 
    function Logic_Binder_OId_Valid
@@ -8750,7 +6453,7 @@ private
    function Inductive_Case_Id_Valid
      (Id : W_Inductive_Case_Unchecked_Id)
      return Boolean is
-     (Inductive_Case_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Inductive_Case_Id_Children_Valid (Id));
 
    function Inductive_Case_OId_Valid
@@ -8776,7 +6479,7 @@ private
    function Effects_Id_Valid
      (Id : W_Effects_Unchecked_Id)
      return Boolean is
-     (Effects_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Effects_Id_Children_Valid (Id));
 
    function Effects_OId_Valid
@@ -8802,7 +6505,7 @@ private
    function Precondition_Id_Valid
      (Id : W_Precondition_Unchecked_Id)
      return Boolean is
-     (Precondition_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Precondition_Id_Children_Valid (Id));
 
    function Precondition_OId_Valid
@@ -8828,7 +6531,7 @@ private
    function Postcondition_Id_Valid
      (Id : W_Postcondition_Unchecked_Id)
      return Boolean is
-     (Postcondition_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Postcondition_Id_Children_Valid (Id));
 
    function Postcondition_OId_Valid
@@ -8854,7 +6557,7 @@ private
    function Exn_Condition_Id_Valid
      (Id : W_Exn_Condition_Unchecked_Id)
      return Boolean is
-     (Exn_Condition_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Exn_Condition_Id_Children_Valid (Id));
 
    function Exn_Condition_OId_Valid
@@ -8880,7 +6583,7 @@ private
    function Assertion_Id_Valid
      (Id : W_Assertion_Unchecked_Id)
      return Boolean is
-     (Assertion_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Assertion_Id_Children_Valid (Id));
 
    function Assertion_OId_Valid
@@ -8906,7 +6609,7 @@ private
    function Prog_Constant_Id_Valid
      (Id : W_Prog_Constant_Unchecked_Id)
      return Boolean is
-     (Prog_Constant_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prog_Constant_Id_Children_Valid (Id));
 
    function Prog_Constant_OId_Valid
@@ -8932,7 +6635,7 @@ private
    function Prog_Identifier_Id_Valid
      (Id : W_Prog_Identifier_Unchecked_Id)
      return Boolean is
-     (Prog_Identifier_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prog_Identifier_Id_Children_Valid (Id));
 
    function Prog_Identifier_OId_Valid
@@ -8958,7 +6661,7 @@ private
    function Deref_Id_Valid
      (Id : W_Deref_Unchecked_Id)
      return Boolean is
-     (Deref_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Deref_Id_Children_Valid (Id));
 
    function Deref_OId_Valid
@@ -8984,7 +6687,7 @@ private
    function Assignment_Id_Valid
      (Id : W_Assignment_Unchecked_Id)
      return Boolean is
-     (Assignment_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Assignment_Id_Children_Valid (Id));
 
    function Assignment_OId_Valid
@@ -9010,7 +6713,7 @@ private
    function Array_Access_Id_Valid
      (Id : W_Array_Access_Unchecked_Id)
      return Boolean is
-     (Array_Access_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Array_Access_Id_Children_Valid (Id));
 
    function Array_Access_OId_Valid
@@ -9036,7 +6739,7 @@ private
    function Array_Update_Id_Valid
      (Id : W_Array_Update_Unchecked_Id)
      return Boolean is
-     (Array_Update_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Array_Update_Id_Children_Valid (Id));
 
    function Array_Update_OId_Valid
@@ -9062,7 +6765,7 @@ private
    function Infix_Call_Id_Valid
      (Id : W_Infix_Call_Unchecked_Id)
      return Boolean is
-     (Infix_Call_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Infix_Call_Id_Children_Valid (Id));
 
    function Infix_Call_OId_Valid
@@ -9088,7 +6791,7 @@ private
    function Prefix_Call_Id_Valid
      (Id : W_Prefix_Call_Unchecked_Id)
      return Boolean is
-     (Prefix_Call_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prefix_Call_Id_Children_Valid (Id));
 
    function Prefix_Call_OId_Valid
@@ -9114,7 +6817,7 @@ private
    function Binding_Prog_Id_Valid
      (Id : W_Binding_Prog_Unchecked_Id)
      return Boolean is
-     (Binding_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Prog_Id_Children_Valid (Id));
 
    function Binding_Prog_OId_Valid
@@ -9140,7 +6843,7 @@ private
    function Binding_Ref_Id_Valid
      (Id : W_Binding_Ref_Unchecked_Id)
      return Boolean is
-     (Binding_Ref_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Ref_Id_Children_Valid (Id));
 
    function Binding_Ref_OId_Valid
@@ -9166,7 +6869,7 @@ private
    function Conditional_Prog_Id_Valid
      (Id : W_Conditional_Prog_Unchecked_Id)
      return Boolean is
-     (Conditional_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Conditional_Prog_Id_Children_Valid (Id));
 
    function Conditional_Prog_OId_Valid
@@ -9192,7 +6895,7 @@ private
    function While_Loop_Id_Valid
      (Id : W_While_Loop_Unchecked_Id)
      return Boolean is
-     (While_Loop_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else While_Loop_Id_Children_Valid (Id));
 
    function While_Loop_OId_Valid
@@ -9218,7 +6921,7 @@ private
    function Statement_Sequence_Id_Valid
      (Id : W_Statement_Sequence_Unchecked_Id)
      return Boolean is
-     (Statement_Sequence_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Statement_Sequence_Id_Children_Valid (Id));
 
    function Statement_Sequence_OId_Valid
@@ -9244,7 +6947,7 @@ private
    function Label_Id_Valid
      (Id : W_Label_Unchecked_Id)
      return Boolean is
-     (Label_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Label_Id_Children_Valid (Id));
 
    function Label_OId_Valid
@@ -9270,7 +6973,7 @@ private
    function Assert_Id_Valid
      (Id : W_Assert_Unchecked_Id)
      return Boolean is
-     (Assert_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Assert_Id_Children_Valid (Id));
 
    function Assert_OId_Valid
@@ -9296,7 +6999,7 @@ private
    function Post_Assertion_Id_Valid
      (Id : W_Post_Assertion_Unchecked_Id)
      return Boolean is
-     (Post_Assertion_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Post_Assertion_Id_Children_Valid (Id));
 
    function Post_Assertion_OId_Valid
@@ -9322,7 +7025,7 @@ private
    function Opaque_Assertion_Id_Valid
      (Id : W_Opaque_Assertion_Unchecked_Id)
      return Boolean is
-     (Opaque_Assertion_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Opaque_Assertion_Id_Children_Valid (Id));
 
    function Opaque_Assertion_OId_Valid
@@ -9348,7 +7051,7 @@ private
    function Fun_Def_Id_Valid
      (Id : W_Fun_Def_Unchecked_Id)
      return Boolean is
-     (Fun_Def_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Fun_Def_Id_Children_Valid (Id));
 
    function Fun_Def_OId_Valid
@@ -9374,7 +7077,7 @@ private
    function Binding_Fun_Id_Valid
      (Id : W_Binding_Fun_Unchecked_Id)
      return Boolean is
-     (Binding_Fun_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Fun_Id_Children_Valid (Id));
 
    function Binding_Fun_OId_Valid
@@ -9400,7 +7103,7 @@ private
    function Binding_Rec_Id_Valid
      (Id : W_Binding_Rec_Unchecked_Id)
      return Boolean is
-     (Binding_Rec_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binding_Rec_Id_Children_Valid (Id));
 
    function Binding_Rec_OId_Valid
@@ -9426,7 +7129,7 @@ private
    function Prog_Sequence_Id_Valid
      (Id : W_Prog_Sequence_Unchecked_Id)
      return Boolean is
-     (Prog_Sequence_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prog_Sequence_Id_Children_Valid (Id));
 
    function Prog_Sequence_OId_Valid
@@ -9452,7 +7155,7 @@ private
    function Raise_Statement_Id_Valid
      (Id : W_Raise_Statement_Unchecked_Id)
      return Boolean is
-     (Raise_Statement_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Raise_Statement_Id_Children_Valid (Id));
 
    function Raise_Statement_OId_Valid
@@ -9478,7 +7181,7 @@ private
    function Raise_Statement_With_Parameters_Id_Valid
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
      return Boolean is
-     (Raise_Statement_With_Parameters_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Raise_Statement_With_Parameters_Id_Children_Valid (Id));
 
    function Raise_Statement_With_Parameters_OId_Valid
@@ -9504,7 +7207,7 @@ private
    function Try_Block_Id_Valid
      (Id : W_Try_Block_Unchecked_Id)
      return Boolean is
-     (Try_Block_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Try_Block_Id_Children_Valid (Id));
 
    function Try_Block_OId_Valid
@@ -9530,7 +7233,7 @@ private
    function Unreachable_Code_Id_Valid
      (Id : W_Unreachable_Code_Unchecked_Id)
      return Boolean is
-     (Unreachable_Code_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Unreachable_Code_Id_Children_Valid (Id));
 
    function Unreachable_Code_OId_Valid
@@ -9556,7 +7259,7 @@ private
    function Begin_Block_Id_Valid
      (Id : W_Begin_Block_Unchecked_Id)
      return Boolean is
-     (Begin_Block_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Begin_Block_Id_Children_Valid (Id));
 
    function Begin_Block_OId_Valid
@@ -9582,7 +7285,7 @@ private
    function Protected_Prog_Id_Valid
      (Id : W_Protected_Prog_Unchecked_Id)
      return Boolean is
-     (Protected_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Protected_Prog_Id_Children_Valid (Id));
 
    function Protected_Prog_OId_Valid
@@ -9608,7 +7311,7 @@ private
    function Op_Add_Prog_Id_Valid
      (Id : W_Op_Add_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Add_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Add_Prog_Id_Children_Valid (Id));
 
    function Op_Add_Prog_OId_Valid
@@ -9634,7 +7337,7 @@ private
    function Op_Substract_Prog_Id_Valid
      (Id : W_Op_Substract_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Substract_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Substract_Prog_Id_Children_Valid (Id));
 
    function Op_Substract_Prog_OId_Valid
@@ -9660,7 +7363,7 @@ private
    function Op_Multiply_Prog_Id_Valid
      (Id : W_Op_Multiply_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Multiply_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Multiply_Prog_Id_Children_Valid (Id));
 
    function Op_Multiply_Prog_OId_Valid
@@ -9686,7 +7389,7 @@ private
    function Op_Divide_Prog_Id_Valid
      (Id : W_Op_Divide_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Divide_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Divide_Prog_Id_Children_Valid (Id));
 
    function Op_Divide_Prog_OId_Valid
@@ -9712,7 +7415,7 @@ private
    function Op_Mod_Prog_Id_Valid
      (Id : W_Op_Mod_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Mod_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Mod_Prog_Id_Children_Valid (Id));
 
    function Op_Mod_Prog_OId_Valid
@@ -9738,7 +7441,7 @@ private
    function Op_Eq_Prog_Id_Valid
      (Id : W_Op_Eq_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Eq_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Eq_Prog_Id_Children_Valid (Id));
 
    function Op_Eq_Prog_OId_Valid
@@ -9764,7 +7467,7 @@ private
    function Op_Ne_Prog_Id_Valid
      (Id : W_Op_Ne_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Ne_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Ne_Prog_Id_Children_Valid (Id));
 
    function Op_Ne_Prog_OId_Valid
@@ -9790,7 +7493,7 @@ private
    function Op_Lt_Prog_Id_Valid
      (Id : W_Op_Lt_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Lt_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Lt_Prog_Id_Children_Valid (Id));
 
    function Op_Lt_Prog_OId_Valid
@@ -9816,7 +7519,7 @@ private
    function Op_Le_Prog_Id_Valid
      (Id : W_Op_Le_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Le_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Le_Prog_Id_Children_Valid (Id));
 
    function Op_Le_Prog_OId_Valid
@@ -9842,7 +7545,7 @@ private
    function Op_Gt_Prog_Id_Valid
      (Id : W_Op_Gt_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Gt_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Gt_Prog_Id_Children_Valid (Id));
 
    function Op_Gt_Prog_OId_Valid
@@ -9868,7 +7571,7 @@ private
    function Op_Ge_Prog_Id_Valid
      (Id : W_Op_Ge_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Ge_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Ge_Prog_Id_Children_Valid (Id));
 
    function Op_Ge_Prog_OId_Valid
@@ -9894,7 +7597,7 @@ private
    function Op_Or_Else_Prog_Id_Valid
      (Id : W_Op_Or_Else_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Or_Else_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Or_Else_Prog_Id_Children_Valid (Id));
 
    function Op_Or_Else_Prog_OId_Valid
@@ -9920,7 +7623,7 @@ private
    function Op_And_Then_Prog_Id_Valid
      (Id : W_Op_And_Then_Prog_Unchecked_Id)
      return Boolean is
-     (Op_And_Then_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_And_Then_Prog_Id_Children_Valid (Id));
 
    function Op_And_Then_Prog_OId_Valid
@@ -9946,7 +7649,7 @@ private
    function Op_Minus_Prog_Id_Valid
      (Id : W_Op_Minus_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Minus_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Minus_Prog_Id_Children_Valid (Id));
 
    function Op_Minus_Prog_OId_Valid
@@ -9972,7 +7675,7 @@ private
    function Op_Not_Prog_Id_Valid
      (Id : W_Op_Not_Prog_Unchecked_Id)
      return Boolean is
-     (Op_Not_Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Op_Not_Prog_Id_Children_Valid (Id));
 
    function Op_Not_Prog_OId_Valid
@@ -9998,7 +7701,7 @@ private
    function Binders_Id_Valid
      (Id : W_Binders_Unchecked_Id)
      return Boolean is
-     (Binders_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binders_Id_Children_Valid (Id));
 
    function Binders_OId_Valid
@@ -10024,7 +7727,7 @@ private
    function Binder_Id_Valid
      (Id : W_Binder_Unchecked_Id)
      return Boolean is
-     (Binder_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Binder_Id_Children_Valid (Id));
 
    function Binder_OId_Valid
@@ -10050,7 +7753,7 @@ private
    function Recfun_Id_Valid
      (Id : W_Recfun_Unchecked_Id)
      return Boolean is
-     (Recfun_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Recfun_Id_Children_Valid (Id));
 
    function Recfun_OId_Valid
@@ -10076,7 +7779,7 @@ private
    function Loop_Annot_Id_Valid
      (Id : W_Loop_Annot_Unchecked_Id)
      return Boolean is
-     (Loop_Annot_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Loop_Annot_Id_Children_Valid (Id));
 
    function Loop_Annot_OId_Valid
@@ -10102,7 +7805,7 @@ private
    function Wf_Arg_Id_Valid
      (Id : W_Wf_Arg_Unchecked_Id)
      return Boolean is
-     (Wf_Arg_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Wf_Arg_Id_Children_Valid (Id));
 
    function Wf_Arg_OId_Valid
@@ -10128,7 +7831,7 @@ private
    function Handler_Id_Valid
      (Id : W_Handler_Unchecked_Id)
      return Boolean is
-     (Handler_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Handler_Id_Children_Valid (Id));
 
    function Handler_OId_Valid
@@ -10154,7 +7857,7 @@ private
    function File_Id_Valid
      (Id : W_File_Unchecked_Id)
      return Boolean is
-     (File_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else File_Id_Children_Valid (Id));
 
    function File_OId_Valid
@@ -10180,7 +7883,7 @@ private
    function Global_Binding_Id_Valid
      (Id : W_Global_Binding_Unchecked_Id)
      return Boolean is
-     (Global_Binding_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Global_Binding_Id_Children_Valid (Id));
 
    function Global_Binding_OId_Valid
@@ -10206,7 +7909,7 @@ private
    function Global_Rec_Binding_Id_Valid
      (Id : W_Global_Rec_Binding_Unchecked_Id)
      return Boolean is
-     (Global_Rec_Binding_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Global_Rec_Binding_Id_Children_Valid (Id));
 
    function Global_Rec_Binding_OId_Valid
@@ -10232,7 +7935,7 @@ private
    function Parameter_Declaration_Id_Valid
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return Boolean is
-     (Parameter_Declaration_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Parameter_Declaration_Id_Children_Valid (Id));
 
    function Parameter_Declaration_OId_Valid
@@ -10258,7 +7961,7 @@ private
    function Exception_Declaration_Id_Valid
      (Id : W_Exception_Declaration_Unchecked_Id)
      return Boolean is
-     (Exception_Declaration_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Exception_Declaration_Id_Children_Valid (Id));
 
    function Exception_Declaration_OId_Valid
@@ -10284,7 +7987,7 @@ private
    function Logic_Declaration_Id_Valid
      (Id : W_Logic_Declaration_Unchecked_Id)
      return Boolean is
-     (Logic_Declaration_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Declaration_Id_Children_Valid (Id));
 
    function Logic_Declaration_OId_Valid
@@ -10310,7 +8013,7 @@ private
    function Term_Id_Valid
      (Id : W_Term_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Term_Id_Children_Valid (Id));
 
    function Term_OId_Valid
@@ -10336,7 +8039,7 @@ private
    function Constant_Id_Valid
      (Id : W_Constant_Unchecked_Id)
      return Boolean is
-     (Constant_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Constant_Id_Children_Valid (Id));
 
    function Constant_OId_Valid
@@ -10362,7 +8065,7 @@ private
    function Arith_Op_Id_Valid
      (Id : W_Arith_Op_Unchecked_Id)
      return Boolean is
-     (Arith_Op_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Arith_Op_Id_Children_Valid (Id));
 
    function Arith_Op_OId_Valid
@@ -10388,7 +8091,7 @@ private
    function Predicate_Id_Valid
      (Id : W_Predicate_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Predicate_Id_Children_Valid (Id));
 
    function Predicate_OId_Valid
@@ -10414,7 +8117,7 @@ private
    function Primitive_Type_Id_Valid
      (Id : W_Primitive_Type_Unchecked_Id)
      return Boolean is
-     (Primitive_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Primitive_Type_Id_Children_Valid (Id));
 
    function Primitive_Type_OId_Valid
@@ -10440,7 +8143,7 @@ private
    function Relation_Id_Valid
      (Id : W_Relation_Unchecked_Id)
      return Boolean is
-     (Relation_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Relation_Id_Children_Valid (Id));
 
    function Relation_OId_Valid
@@ -10466,7 +8169,7 @@ private
    function Logic_Declaration_Class_Id_Valid
      (Id : W_Logic_Declaration_Class_Unchecked_Id)
      return Boolean is
-     (Logic_Declaration_Class_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Declaration_Class_Id_Children_Valid (Id));
 
    function Logic_Declaration_Class_OId_Valid
@@ -10492,7 +8195,7 @@ private
    function Logic_Return_Type_Id_Valid
      (Id : W_Logic_Return_Type_Unchecked_Id)
      return Boolean is
-     (Logic_Return_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Return_Type_Id_Children_Valid (Id));
 
    function Logic_Return_Type_OId_Valid
@@ -10518,7 +8221,7 @@ private
    function Logic_Arg_Type_Id_Valid
      (Id : W_Logic_Arg_Type_Unchecked_Id)
      return Boolean is
-     (Logic_Arg_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Logic_Arg_Type_Id_Children_Valid (Id));
 
    function Logic_Arg_Type_OId_Valid
@@ -10544,7 +8247,7 @@ private
    function Simple_Value_Type_Id_Valid
      (Id : W_Simple_Value_Type_Unchecked_Id)
      return Boolean is
-     (Simple_Value_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Simple_Value_Type_Id_Children_Valid (Id));
 
    function Simple_Value_Type_OId_Valid
@@ -10570,7 +8273,7 @@ private
    function Value_Type_Id_Valid
      (Id : W_Value_Type_Unchecked_Id)
      return Boolean is
-     (Value_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Value_Type_Id_Children_Valid (Id));
 
    function Value_Type_OId_Valid
@@ -10596,7 +8299,7 @@ private
    function Computation_Type_Id_Valid
      (Id : W_Computation_Type_Unchecked_Id)
      return Boolean is
-     (Computation_Type_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Computation_Type_Id_Children_Valid (Id));
 
    function Computation_Type_OId_Valid
@@ -10622,7 +8325,7 @@ private
    function Prog_Id_Valid
      (Id : W_Prog_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prog_Id_Children_Valid (Id));
 
    function Prog_OId_Valid
@@ -10648,7 +8351,7 @@ private
    function Infix_Id_Valid
      (Id : W_Infix_Unchecked_Id)
      return Boolean is
-     (Infix_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Infix_Id_Children_Valid (Id));
 
    function Infix_OId_Valid
@@ -10674,7 +8377,7 @@ private
    function Prefix_Id_Valid
      (Id : W_Prefix_Unchecked_Id)
      return Boolean is
-     (Prefix_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Prefix_Id_Children_Valid (Id));
 
    function Prefix_OId_Valid
@@ -10700,7 +8403,7 @@ private
    function Declaration_Id_Valid
      (Id : W_Declaration_Unchecked_Id)
      return Boolean is
-     (Declaration_Id_Cache_Valid (Id)
+     (Id_Cache_Valid (Id)
       or else Declaration_Id_Children_Valid (Id));
 
    function Declaration_OId_Valid
@@ -10723,3605 +8426,19 @@ private
      (Is_Empty (Id)
       or else Declaration_List_Valid (Id));
 
-   function Unused_At_Start_Id_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_Id)
-     return Boolean is
+   function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
      (Get_Node (Id).Checked);
 
-   function Unused_At_Start_OId_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Unused_At_Start_Id_Cache_Valid (Id));
+   function OId_Cache_Valid (Id : Why_Node_Id) return Boolean is
+     (Id = Why_Empty or else Id_Cache_Valid (Id));
 
-   function Unused_At_Start_List_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
+   function List_Cache_Valid (Id : Why_Node_List) return Boolean is
+     (not Is_Empty (Id) and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Unused_At_Start_OList_Cache_Valid
-     (Id : W_Unused_At_Start_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Unused_At_Start_List_Cache_Valid (Id));
-
-   function Identifier_Id_Cache_Valid
-     (Id : W_Identifier_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Identifier_OId_Cache_Valid
-     (Id : W_Identifier_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Identifier_Id_Cache_Valid (Id));
-
-   function Identifier_List_Cache_Valid
-     (Id : W_Identifier_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Identifier_OList_Cache_Valid
-     (Id : W_Identifier_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Identifier_List_Cache_Valid (Id));
-
-   function Type_Prop_Id_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_Prop_OId_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Prop_Id_Cache_Valid (Id));
-
-   function Type_Prop_List_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_Prop_OList_Cache_Valid
-     (Id : W_Type_Prop_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_Prop_List_Cache_Valid (Id));
-
-   function Type_Int_Id_Cache_Valid
-     (Id : W_Type_Int_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_Int_OId_Cache_Valid
-     (Id : W_Type_Int_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Int_Id_Cache_Valid (Id));
-
-   function Type_Int_List_Cache_Valid
-     (Id : W_Type_Int_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_Int_OList_Cache_Valid
-     (Id : W_Type_Int_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_Int_List_Cache_Valid (Id));
-
-   function Type_Bool_Id_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_Bool_OId_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Bool_Id_Cache_Valid (Id));
-
-   function Type_Bool_List_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_Bool_OList_Cache_Valid
-     (Id : W_Type_Bool_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_Bool_List_Cache_Valid (Id));
-
-   function Type_Real_Id_Cache_Valid
-     (Id : W_Type_Real_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_Real_OId_Cache_Valid
-     (Id : W_Type_Real_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Real_Id_Cache_Valid (Id));
-
-   function Type_Real_List_Cache_Valid
-     (Id : W_Type_Real_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_Real_OList_Cache_Valid
-     (Id : W_Type_Real_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_Real_List_Cache_Valid (Id));
-
-   function Type_Unit_Id_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_Unit_OId_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Unit_Id_Cache_Valid (Id));
-
-   function Type_Unit_List_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_Unit_OList_Cache_Valid
-     (Id : W_Type_Unit_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_Unit_List_Cache_Valid (Id));
-
-   function Abstract_Type_Id_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Abstract_Type_OId_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Abstract_Type_Id_Cache_Valid (Id));
-
-   function Abstract_Type_List_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Abstract_Type_OList_Cache_Valid
-     (Id : W_Abstract_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Abstract_Type_List_Cache_Valid (Id));
-
-   function Generic_Formal_Type_Id_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Generic_Formal_Type_OId_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Generic_Formal_Type_Id_Cache_Valid (Id));
-
-   function Generic_Formal_Type_List_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Generic_Formal_Type_OList_Cache_Valid
-     (Id : W_Generic_Formal_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Generic_Formal_Type_List_Cache_Valid (Id));
-
-   function Generic_Actual_Type_Chain_Id_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Generic_Actual_Type_Chain_OId_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Generic_Actual_Type_Chain_Id_Cache_Valid (Id));
-
-   function Generic_Actual_Type_Chain_List_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Generic_Actual_Type_Chain_OList_Cache_Valid
-     (Id : W_Generic_Actual_Type_Chain_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Generic_Actual_Type_Chain_List_Cache_Valid (Id));
-
-   function Array_Type_Id_Cache_Valid
-     (Id : W_Array_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Array_Type_OId_Cache_Valid
-     (Id : W_Array_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Array_Type_Id_Cache_Valid (Id));
-
-   function Array_Type_List_Cache_Valid
-     (Id : W_Array_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Array_Type_OList_Cache_Valid
-     (Id : W_Array_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Array_Type_List_Cache_Valid (Id));
-
-   function Ref_Type_Id_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Ref_Type_OId_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Ref_Type_Id_Cache_Valid (Id));
-
-   function Ref_Type_List_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Ref_Type_OList_Cache_Valid
-     (Id : W_Ref_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Ref_Type_List_Cache_Valid (Id));
-
-   function Protected_Value_Type_Id_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Protected_Value_Type_OId_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Protected_Value_Type_Id_Cache_Valid (Id));
-
-   function Protected_Value_Type_List_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Protected_Value_Type_OList_Cache_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Protected_Value_Type_List_Cache_Valid (Id));
-
-   function Anonymous_Arrow_Type_Id_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Anonymous_Arrow_Type_OId_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Anonymous_Arrow_Type_Id_Cache_Valid (Id));
-
-   function Anonymous_Arrow_Type_List_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Anonymous_Arrow_Type_OList_Cache_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Anonymous_Arrow_Type_List_Cache_Valid (Id));
-
-   function Named_Arrow_Type_Id_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Named_Arrow_Type_OId_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Arrow_Type_Id_Cache_Valid (Id));
-
-   function Named_Arrow_Type_List_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Named_Arrow_Type_OList_Cache_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Arrow_Type_List_Cache_Valid (Id));
-
-   function Computation_Spec_Id_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Computation_Spec_OId_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Spec_Id_Cache_Valid (Id));
-
-   function Computation_Spec_List_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Spec_OList_Cache_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Spec_List_Cache_Valid (Id));
-
-   function Integer_Constant_Id_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Integer_Constant_OId_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Integer_Constant_Id_Cache_Valid (Id));
-
-   function Integer_Constant_List_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Integer_Constant_OList_Cache_Valid
-     (Id : W_Integer_Constant_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Integer_Constant_List_Cache_Valid (Id));
-
-   function Real_Constant_Id_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Real_Constant_OId_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Real_Constant_Id_Cache_Valid (Id));
-
-   function Real_Constant_List_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Real_Constant_OList_Cache_Valid
-     (Id : W_Real_Constant_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Real_Constant_List_Cache_Valid (Id));
-
-   function True_Literal_Id_Cache_Valid
-     (Id : W_True_Literal_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function True_Literal_OId_Cache_Valid
-     (Id : W_True_Literal_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else True_Literal_Id_Cache_Valid (Id));
-
-   function True_Literal_List_Cache_Valid
-     (Id : W_True_Literal_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function True_Literal_OList_Cache_Valid
-     (Id : W_True_Literal_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else True_Literal_List_Cache_Valid (Id));
-
-   function False_Literal_Id_Cache_Valid
-     (Id : W_False_Literal_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function False_Literal_OId_Cache_Valid
-     (Id : W_False_Literal_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else False_Literal_Id_Cache_Valid (Id));
-
-   function False_Literal_List_Cache_Valid
-     (Id : W_False_Literal_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function False_Literal_OList_Cache_Valid
-     (Id : W_False_Literal_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else False_Literal_List_Cache_Valid (Id));
-
-   function Void_Literal_Id_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Void_Literal_OId_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Void_Literal_Id_Cache_Valid (Id));
-
-   function Void_Literal_List_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Void_Literal_OList_Cache_Valid
-     (Id : W_Void_Literal_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Void_Literal_List_Cache_Valid (Id));
-
-   function Arith_Operation_Id_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Arith_Operation_OId_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Arith_Operation_Id_Cache_Valid (Id));
-
-   function Arith_Operation_List_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Arith_Operation_OList_Cache_Valid
-     (Id : W_Arith_Operation_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Arith_Operation_List_Cache_Valid (Id));
-
-   function Negative_Term_Id_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Negative_Term_OId_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Negative_Term_Id_Cache_Valid (Id));
-
-   function Negative_Term_List_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Negative_Term_OList_Cache_Valid
-     (Id : W_Negative_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Negative_Term_List_Cache_Valid (Id));
-
-   function Label_Identifier_Id_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Label_Identifier_OId_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Label_Identifier_Id_Cache_Valid (Id));
-
-   function Label_Identifier_List_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Label_Identifier_OList_Cache_Valid
-     (Id : W_Label_Identifier_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Label_Identifier_List_Cache_Valid (Id));
-
-   function Operation_Id_Cache_Valid
-     (Id : W_Operation_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Operation_OId_Cache_Valid
-     (Id : W_Operation_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Operation_Id_Cache_Valid (Id));
-
-   function Operation_List_Cache_Valid
-     (Id : W_Operation_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Operation_OList_Cache_Valid
-     (Id : W_Operation_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Operation_List_Cache_Valid (Id));
-
-   function Named_Term_Id_Cache_Valid
-     (Id : W_Named_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Named_Term_OId_Cache_Valid
-     (Id : W_Named_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Term_Id_Cache_Valid (Id));
-
-   function Named_Term_List_Cache_Valid
-     (Id : W_Named_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Named_Term_OList_Cache_Valid
-     (Id : W_Named_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Term_List_Cache_Valid (Id));
-
-   function Conditional_Term_Id_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Conditional_Term_OId_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Conditional_Term_Id_Cache_Valid (Id));
-
-   function Conditional_Term_List_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Conditional_Term_OList_Cache_Valid
-     (Id : W_Conditional_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Conditional_Term_List_Cache_Valid (Id));
-
-   function Binding_Term_Id_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Term_OId_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Term_Id_Cache_Valid (Id));
-
-   function Binding_Term_List_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Term_OList_Cache_Valid
-     (Id : W_Binding_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Term_List_Cache_Valid (Id));
-
-   function Protected_Term_Id_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Protected_Term_OId_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Protected_Term_Id_Cache_Valid (Id));
-
-   function Protected_Term_List_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Protected_Term_OList_Cache_Valid
-     (Id : W_Protected_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Protected_Term_List_Cache_Valid (Id));
-
-   function Op_Add_Id_Cache_Valid
-     (Id : W_Op_Add_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Add_OId_Cache_Valid
-     (Id : W_Op_Add_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Add_Id_Cache_Valid (Id));
-
-   function Op_Add_List_Cache_Valid
-     (Id : W_Op_Add_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Add_OList_Cache_Valid
-     (Id : W_Op_Add_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Add_List_Cache_Valid (Id));
-
-   function Op_Substract_Id_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Substract_OId_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Substract_Id_Cache_Valid (Id));
-
-   function Op_Substract_List_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Substract_OList_Cache_Valid
-     (Id : W_Op_Substract_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Substract_List_Cache_Valid (Id));
-
-   function Op_Multiply_Id_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Multiply_OId_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Multiply_Id_Cache_Valid (Id));
-
-   function Op_Multiply_List_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Multiply_OList_Cache_Valid
-     (Id : W_Op_Multiply_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Multiply_List_Cache_Valid (Id));
-
-   function Op_Divide_Id_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Divide_OId_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Divide_Id_Cache_Valid (Id));
-
-   function Op_Divide_List_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Divide_OList_Cache_Valid
-     (Id : W_Op_Divide_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Divide_List_Cache_Valid (Id));
-
-   function Op_Modulo_Id_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Modulo_OId_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Modulo_Id_Cache_Valid (Id));
-
-   function Op_Modulo_List_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Modulo_OList_Cache_Valid
-     (Id : W_Op_Modulo_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Modulo_List_Cache_Valid (Id));
-
-   function True_Literal_Pred_Id_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function True_Literal_Pred_OId_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else True_Literal_Pred_Id_Cache_Valid (Id));
-
-   function True_Literal_Pred_List_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function True_Literal_Pred_OList_Cache_Valid
-     (Id : W_True_Literal_Pred_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else True_Literal_Pred_List_Cache_Valid (Id));
-
-   function False_Literal_Pred_Id_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function False_Literal_Pred_OId_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else False_Literal_Pred_Id_Cache_Valid (Id));
-
-   function False_Literal_Pred_List_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function False_Literal_Pred_OList_Cache_Valid
-     (Id : W_False_Literal_Pred_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else False_Literal_Pred_List_Cache_Valid (Id));
-
-   function Predicate_Identifier_Id_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Predicate_Identifier_OId_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Predicate_Identifier_Id_Cache_Valid (Id));
-
-   function Predicate_Identifier_List_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Predicate_Identifier_OList_Cache_Valid
-     (Id : W_Predicate_Identifier_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Predicate_Identifier_List_Cache_Valid (Id));
-
-   function Predicate_Instance_Id_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Predicate_Instance_OId_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Predicate_Instance_Id_Cache_Valid (Id));
-
-   function Predicate_Instance_List_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Predicate_Instance_OList_Cache_Valid
-     (Id : W_Predicate_Instance_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Predicate_Instance_List_Cache_Valid (Id));
-
-   function Related_Terms_Id_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Related_Terms_OId_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Related_Terms_Id_Cache_Valid (Id));
-
-   function Related_Terms_List_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Related_Terms_OList_Cache_Valid
-     (Id : W_Related_Terms_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Related_Terms_List_Cache_Valid (Id));
-
-   function Implication_Id_Cache_Valid
-     (Id : W_Implication_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Implication_OId_Cache_Valid
-     (Id : W_Implication_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Implication_Id_Cache_Valid (Id));
-
-   function Implication_List_Cache_Valid
-     (Id : W_Implication_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Implication_OList_Cache_Valid
-     (Id : W_Implication_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Implication_List_Cache_Valid (Id));
-
-   function Equivalence_Id_Cache_Valid
-     (Id : W_Equivalence_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Equivalence_OId_Cache_Valid
-     (Id : W_Equivalence_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Equivalence_Id_Cache_Valid (Id));
-
-   function Equivalence_List_Cache_Valid
-     (Id : W_Equivalence_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Equivalence_OList_Cache_Valid
-     (Id : W_Equivalence_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Equivalence_List_Cache_Valid (Id));
-
-   function Disjonction_Id_Cache_Valid
-     (Id : W_Disjonction_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Disjonction_OId_Cache_Valid
-     (Id : W_Disjonction_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Disjonction_Id_Cache_Valid (Id));
-
-   function Disjonction_List_Cache_Valid
-     (Id : W_Disjonction_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Disjonction_OList_Cache_Valid
-     (Id : W_Disjonction_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Disjonction_List_Cache_Valid (Id));
-
-   function Conjonction_Id_Cache_Valid
-     (Id : W_Conjonction_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Conjonction_OId_Cache_Valid
-     (Id : W_Conjonction_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Conjonction_Id_Cache_Valid (Id));
-
-   function Conjonction_List_Cache_Valid
-     (Id : W_Conjonction_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Conjonction_OList_Cache_Valid
-     (Id : W_Conjonction_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Conjonction_List_Cache_Valid (Id));
-
-   function Negation_Id_Cache_Valid
-     (Id : W_Negation_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Negation_OId_Cache_Valid
-     (Id : W_Negation_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Negation_Id_Cache_Valid (Id));
-
-   function Negation_List_Cache_Valid
-     (Id : W_Negation_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Negation_OList_Cache_Valid
-     (Id : W_Negation_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Negation_List_Cache_Valid (Id));
-
-   function Conditional_Pred_Id_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Conditional_Pred_OId_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Conditional_Pred_Id_Cache_Valid (Id));
-
-   function Conditional_Pred_List_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Conditional_Pred_OList_Cache_Valid
-     (Id : W_Conditional_Pred_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Conditional_Pred_List_Cache_Valid (Id));
-
-   function Binding_Pred_Id_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Pred_OId_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Pred_Id_Cache_Valid (Id));
-
-   function Binding_Pred_List_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Pred_OList_Cache_Valid
-     (Id : W_Binding_Pred_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Pred_List_Cache_Valid (Id));
-
-   function Universal_Quantif_Id_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Universal_Quantif_OId_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Universal_Quantif_Id_Cache_Valid (Id));
-
-   function Universal_Quantif_List_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Universal_Quantif_OList_Cache_Valid
-     (Id : W_Universal_Quantif_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Universal_Quantif_List_Cache_Valid (Id));
-
-   function Existential_Quantif_Id_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Existential_Quantif_OId_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Existential_Quantif_Id_Cache_Valid (Id));
-
-   function Existential_Quantif_List_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Existential_Quantif_OList_Cache_Valid
-     (Id : W_Existential_Quantif_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Existential_Quantif_List_Cache_Valid (Id));
-
-   function Named_Predicate_Id_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Named_Predicate_OId_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Predicate_Id_Cache_Valid (Id));
-
-   function Named_Predicate_List_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Named_Predicate_OList_Cache_Valid
-     (Id : W_Named_Predicate_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Predicate_List_Cache_Valid (Id));
-
-   function Protected_Predicate_Id_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Protected_Predicate_OId_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Protected_Predicate_Id_Cache_Valid (Id));
-
-   function Protected_Predicate_List_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Protected_Predicate_OList_Cache_Valid
-     (Id : W_Protected_Predicate_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Protected_Predicate_List_Cache_Valid (Id));
-
-   function Triggers_Id_Cache_Valid
-     (Id : W_Triggers_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Triggers_OId_Cache_Valid
-     (Id : W_Triggers_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Triggers_Id_Cache_Valid (Id));
-
-   function Triggers_List_Cache_Valid
-     (Id : W_Triggers_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Triggers_OList_Cache_Valid
-     (Id : W_Triggers_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Triggers_List_Cache_Valid (Id));
-
-   function Trigger_Id_Cache_Valid
-     (Id : W_Trigger_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Trigger_OId_Cache_Valid
-     (Id : W_Trigger_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Trigger_Id_Cache_Valid (Id));
-
-   function Trigger_List_Cache_Valid
-     (Id : W_Trigger_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Trigger_OList_Cache_Valid
-     (Id : W_Trigger_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Trigger_List_Cache_Valid (Id));
-
-   function Rel_Eq_Id_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Eq_OId_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Eq_Id_Cache_Valid (Id));
-
-   function Rel_Eq_List_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Eq_OList_Cache_Valid
-     (Id : W_Rel_Eq_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Eq_List_Cache_Valid (Id));
-
-   function Rel_Ne_Id_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Ne_OId_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Ne_Id_Cache_Valid (Id));
-
-   function Rel_Ne_List_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Ne_OList_Cache_Valid
-     (Id : W_Rel_Ne_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Ne_List_Cache_Valid (Id));
-
-   function Rel_Lt_Id_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Lt_OId_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Lt_Id_Cache_Valid (Id));
-
-   function Rel_Lt_List_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Lt_OList_Cache_Valid
-     (Id : W_Rel_Lt_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Lt_List_Cache_Valid (Id));
-
-   function Rel_Le_Id_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Le_OId_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Le_Id_Cache_Valid (Id));
-
-   function Rel_Le_List_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Le_OList_Cache_Valid
-     (Id : W_Rel_Le_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Le_List_Cache_Valid (Id));
-
-   function Rel_Gt_Id_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Gt_OId_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Gt_Id_Cache_Valid (Id));
-
-   function Rel_Gt_List_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Gt_OList_Cache_Valid
-     (Id : W_Rel_Gt_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Gt_List_Cache_Valid (Id));
-
-   function Rel_Ge_Id_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Rel_Ge_OId_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Rel_Ge_Id_Cache_Valid (Id));
-
-   function Rel_Ge_List_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Rel_Ge_OList_Cache_Valid
-     (Id : W_Rel_Ge_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Rel_Ge_List_Cache_Valid (Id));
-
-   function Type_Id_Cache_Valid
-     (Id : W_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Type_OId_Cache_Valid
-     (Id : W_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Type_Id_Cache_Valid (Id));
-
-   function Type_List_Cache_Valid
-     (Id : W_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Type_OList_Cache_Valid
-     (Id : W_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Type_List_Cache_Valid (Id));
-
-   function Logic_Id_Cache_Valid
-     (Id : W_Logic_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_OId_Cache_Valid
-     (Id : W_Logic_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Id_Cache_Valid (Id));
-
-   function Logic_List_Cache_Valid
-     (Id : W_Logic_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_OList_Cache_Valid
-     (Id : W_Logic_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_List_Cache_Valid (Id));
-
-   function Function_Id_Cache_Valid
-     (Id : W_Function_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Function_OId_Cache_Valid
-     (Id : W_Function_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Function_Id_Cache_Valid (Id));
-
-   function Function_List_Cache_Valid
-     (Id : W_Function_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Function_OList_Cache_Valid
-     (Id : W_Function_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Function_List_Cache_Valid (Id));
-
-   function Predicate_Definition_Id_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Predicate_Definition_OId_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Predicate_Definition_Id_Cache_Valid (Id));
-
-   function Predicate_Definition_List_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Predicate_Definition_OList_Cache_Valid
-     (Id : W_Predicate_Definition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Predicate_Definition_List_Cache_Valid (Id));
-
-   function Inductive_Id_Cache_Valid
-     (Id : W_Inductive_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Inductive_OId_Cache_Valid
-     (Id : W_Inductive_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Inductive_Id_Cache_Valid (Id));
-
-   function Inductive_List_Cache_Valid
-     (Id : W_Inductive_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Inductive_OList_Cache_Valid
-     (Id : W_Inductive_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Inductive_List_Cache_Valid (Id));
-
-   function Axiom_Id_Cache_Valid
-     (Id : W_Axiom_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Axiom_OId_Cache_Valid
-     (Id : W_Axiom_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Axiom_Id_Cache_Valid (Id));
-
-   function Axiom_List_Cache_Valid
-     (Id : W_Axiom_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Axiom_OList_Cache_Valid
-     (Id : W_Axiom_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Axiom_List_Cache_Valid (Id));
-
-   function Goal_Id_Cache_Valid
-     (Id : W_Goal_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Goal_OId_Cache_Valid
-     (Id : W_Goal_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Goal_Id_Cache_Valid (Id));
-
-   function Goal_List_Cache_Valid
-     (Id : W_Goal_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Goal_OList_Cache_Valid
-     (Id : W_Goal_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Goal_List_Cache_Valid (Id));
-
-   function External_Id_Cache_Valid
-     (Id : W_External_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function External_OId_Cache_Valid
-     (Id : W_External_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else External_Id_Cache_Valid (Id));
-
-   function External_List_Cache_Valid
-     (Id : W_External_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function External_OList_Cache_Valid
-     (Id : W_External_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else External_List_Cache_Valid (Id));
-
-   function Logic_Type_Id_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Type_OId_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Type_Id_Cache_Valid (Id));
-
-   function Logic_Type_List_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Type_OList_Cache_Valid
-     (Id : W_Logic_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Type_List_Cache_Valid (Id));
-
-   function Logic_Binder_Id_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Binder_OId_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Binder_Id_Cache_Valid (Id));
-
-   function Logic_Binder_List_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Binder_OList_Cache_Valid
-     (Id : W_Logic_Binder_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Binder_List_Cache_Valid (Id));
-
-   function Inductive_Case_Id_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Inductive_Case_OId_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Inductive_Case_Id_Cache_Valid (Id));
-
-   function Inductive_Case_List_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Inductive_Case_OList_Cache_Valid
-     (Id : W_Inductive_Case_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Inductive_Case_List_Cache_Valid (Id));
-
-   function Effects_Id_Cache_Valid
-     (Id : W_Effects_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Effects_OId_Cache_Valid
-     (Id : W_Effects_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Effects_Id_Cache_Valid (Id));
-
-   function Effects_List_Cache_Valid
-     (Id : W_Effects_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Effects_OList_Cache_Valid
-     (Id : W_Effects_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Effects_List_Cache_Valid (Id));
-
-   function Precondition_Id_Cache_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Precondition_OId_Cache_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Precondition_Id_Cache_Valid (Id));
-
-   function Precondition_List_Cache_Valid
-     (Id : W_Precondition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Precondition_OList_Cache_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Precondition_List_Cache_Valid (Id));
-
-   function Postcondition_Id_Cache_Valid
-     (Id : W_Postcondition_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Postcondition_OId_Cache_Valid
-     (Id : W_Postcondition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Postcondition_Id_Cache_Valid (Id));
-
-   function Postcondition_List_Cache_Valid
-     (Id : W_Postcondition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Postcondition_OList_Cache_Valid
-     (Id : W_Postcondition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Postcondition_List_Cache_Valid (Id));
-
-   function Exn_Condition_Id_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Exn_Condition_OId_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Exn_Condition_Id_Cache_Valid (Id));
-
-   function Exn_Condition_List_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Exn_Condition_OList_Cache_Valid
-     (Id : W_Exn_Condition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Exn_Condition_List_Cache_Valid (Id));
-
-   function Assertion_Id_Cache_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Assertion_OId_Cache_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assertion_Id_Cache_Valid (Id));
-
-   function Assertion_List_Cache_Valid
-     (Id : W_Assertion_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Assertion_OList_Cache_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assertion_List_Cache_Valid (Id));
-
-   function Prog_Constant_Id_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prog_Constant_OId_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prog_Constant_Id_Cache_Valid (Id));
-
-   function Prog_Constant_List_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prog_Constant_OList_Cache_Valid
-     (Id : W_Prog_Constant_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prog_Constant_List_Cache_Valid (Id));
-
-   function Prog_Identifier_Id_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prog_Identifier_OId_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prog_Identifier_Id_Cache_Valid (Id));
-
-   function Prog_Identifier_List_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prog_Identifier_OList_Cache_Valid
-     (Id : W_Prog_Identifier_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prog_Identifier_List_Cache_Valid (Id));
-
-   function Deref_Id_Cache_Valid
-     (Id : W_Deref_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Deref_OId_Cache_Valid
-     (Id : W_Deref_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Deref_Id_Cache_Valid (Id));
-
-   function Deref_List_Cache_Valid
-     (Id : W_Deref_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Deref_OList_Cache_Valid
-     (Id : W_Deref_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Deref_List_Cache_Valid (Id));
-
-   function Assignment_Id_Cache_Valid
-     (Id : W_Assignment_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Assignment_OId_Cache_Valid
-     (Id : W_Assignment_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assignment_Id_Cache_Valid (Id));
-
-   function Assignment_List_Cache_Valid
-     (Id : W_Assignment_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Assignment_OList_Cache_Valid
-     (Id : W_Assignment_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assignment_List_Cache_Valid (Id));
-
-   function Array_Access_Id_Cache_Valid
-     (Id : W_Array_Access_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Array_Access_OId_Cache_Valid
-     (Id : W_Array_Access_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Array_Access_Id_Cache_Valid (Id));
-
-   function Array_Access_List_Cache_Valid
-     (Id : W_Array_Access_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Array_Access_OList_Cache_Valid
-     (Id : W_Array_Access_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Array_Access_List_Cache_Valid (Id));
-
-   function Array_Update_Id_Cache_Valid
-     (Id : W_Array_Update_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Array_Update_OId_Cache_Valid
-     (Id : W_Array_Update_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Array_Update_Id_Cache_Valid (Id));
-
-   function Array_Update_List_Cache_Valid
-     (Id : W_Array_Update_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Array_Update_OList_Cache_Valid
-     (Id : W_Array_Update_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Array_Update_List_Cache_Valid (Id));
-
-   function Infix_Call_Id_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Infix_Call_OId_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Infix_Call_Id_Cache_Valid (Id));
-
-   function Infix_Call_List_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Infix_Call_OList_Cache_Valid
-     (Id : W_Infix_Call_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Infix_Call_List_Cache_Valid (Id));
-
-   function Prefix_Call_Id_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prefix_Call_OId_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prefix_Call_Id_Cache_Valid (Id));
-
-   function Prefix_Call_List_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prefix_Call_OList_Cache_Valid
-     (Id : W_Prefix_Call_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prefix_Call_List_Cache_Valid (Id));
-
-   function Binding_Prog_Id_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Prog_OId_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Prog_Id_Cache_Valid (Id));
-
-   function Binding_Prog_List_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Prog_OList_Cache_Valid
-     (Id : W_Binding_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Prog_List_Cache_Valid (Id));
-
-   function Binding_Ref_Id_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Ref_OId_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Ref_Id_Cache_Valid (Id));
-
-   function Binding_Ref_List_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Ref_OList_Cache_Valid
-     (Id : W_Binding_Ref_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Ref_List_Cache_Valid (Id));
-
-   function Conditional_Prog_Id_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Conditional_Prog_OId_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Conditional_Prog_Id_Cache_Valid (Id));
-
-   function Conditional_Prog_List_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Conditional_Prog_OList_Cache_Valid
-     (Id : W_Conditional_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Conditional_Prog_List_Cache_Valid (Id));
-
-   function While_Loop_Id_Cache_Valid
-     (Id : W_While_Loop_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function While_Loop_OId_Cache_Valid
-     (Id : W_While_Loop_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else While_Loop_Id_Cache_Valid (Id));
-
-   function While_Loop_List_Cache_Valid
-     (Id : W_While_Loop_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function While_Loop_OList_Cache_Valid
-     (Id : W_While_Loop_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else While_Loop_List_Cache_Valid (Id));
-
-   function Statement_Sequence_Id_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Statement_Sequence_OId_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Statement_Sequence_Id_Cache_Valid (Id));
-
-   function Statement_Sequence_List_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Statement_Sequence_OList_Cache_Valid
-     (Id : W_Statement_Sequence_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Statement_Sequence_List_Cache_Valid (Id));
-
-   function Label_Id_Cache_Valid
-     (Id : W_Label_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Label_OId_Cache_Valid
-     (Id : W_Label_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Label_Id_Cache_Valid (Id));
-
-   function Label_List_Cache_Valid
-     (Id : W_Label_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Label_OList_Cache_Valid
-     (Id : W_Label_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Label_List_Cache_Valid (Id));
-
-   function Assert_Id_Cache_Valid
-     (Id : W_Assert_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Assert_OId_Cache_Valid
-     (Id : W_Assert_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assert_Id_Cache_Valid (Id));
-
-   function Assert_List_Cache_Valid
-     (Id : W_Assert_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Assert_OList_Cache_Valid
-     (Id : W_Assert_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assert_List_Cache_Valid (Id));
-
-   function Post_Assertion_Id_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Post_Assertion_OId_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Post_Assertion_Id_Cache_Valid (Id));
-
-   function Post_Assertion_List_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Post_Assertion_OList_Cache_Valid
-     (Id : W_Post_Assertion_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Post_Assertion_List_Cache_Valid (Id));
-
-   function Opaque_Assertion_Id_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Opaque_Assertion_OId_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Opaque_Assertion_Id_Cache_Valid (Id));
-
-   function Opaque_Assertion_List_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Opaque_Assertion_OList_Cache_Valid
-     (Id : W_Opaque_Assertion_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Opaque_Assertion_List_Cache_Valid (Id));
-
-   function Fun_Def_Id_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Fun_Def_OId_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Fun_Def_Id_Cache_Valid (Id));
-
-   function Fun_Def_List_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Fun_Def_OList_Cache_Valid
-     (Id : W_Fun_Def_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Fun_Def_List_Cache_Valid (Id));
-
-   function Binding_Fun_Id_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Fun_OId_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Fun_Id_Cache_Valid (Id));
-
-   function Binding_Fun_List_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Fun_OList_Cache_Valid
-     (Id : W_Binding_Fun_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Fun_List_Cache_Valid (Id));
-
-   function Binding_Rec_Id_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binding_Rec_OId_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binding_Rec_Id_Cache_Valid (Id));
-
-   function Binding_Rec_List_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binding_Rec_OList_Cache_Valid
-     (Id : W_Binding_Rec_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binding_Rec_List_Cache_Valid (Id));
-
-   function Prog_Sequence_Id_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prog_Sequence_OId_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prog_Sequence_Id_Cache_Valid (Id));
-
-   function Prog_Sequence_List_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prog_Sequence_OList_Cache_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prog_Sequence_List_Cache_Valid (Id));
-
-   function Raise_Statement_Id_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Raise_Statement_OId_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Raise_Statement_Id_Cache_Valid (Id));
-
-   function Raise_Statement_List_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Raise_Statement_OList_Cache_Valid
-     (Id : W_Raise_Statement_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Raise_Statement_List_Cache_Valid (Id));
-
-   function Raise_Statement_With_Parameters_Id_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Raise_Statement_With_Parameters_OId_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Raise_Statement_With_Parameters_Id_Cache_Valid (Id));
-
-   function Raise_Statement_With_Parameters_List_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Raise_Statement_With_Parameters_OList_Cache_Valid
-     (Id : W_Raise_Statement_With_Parameters_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Raise_Statement_With_Parameters_List_Cache_Valid (Id));
-
-   function Try_Block_Id_Cache_Valid
-     (Id : W_Try_Block_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Try_Block_OId_Cache_Valid
-     (Id : W_Try_Block_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Try_Block_Id_Cache_Valid (Id));
-
-   function Try_Block_List_Cache_Valid
-     (Id : W_Try_Block_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Try_Block_OList_Cache_Valid
-     (Id : W_Try_Block_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Try_Block_List_Cache_Valid (Id));
-
-   function Unreachable_Code_Id_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Unreachable_Code_OId_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Unreachable_Code_Id_Cache_Valid (Id));
-
-   function Unreachable_Code_List_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Unreachable_Code_OList_Cache_Valid
-     (Id : W_Unreachable_Code_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Unreachable_Code_List_Cache_Valid (Id));
-
-   function Begin_Block_Id_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Begin_Block_OId_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Begin_Block_Id_Cache_Valid (Id));
-
-   function Begin_Block_List_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Begin_Block_OList_Cache_Valid
-     (Id : W_Begin_Block_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Begin_Block_List_Cache_Valid (Id));
-
-   function Protected_Prog_Id_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Protected_Prog_OId_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Protected_Prog_Id_Cache_Valid (Id));
-
-   function Protected_Prog_List_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Protected_Prog_OList_Cache_Valid
-     (Id : W_Protected_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Protected_Prog_List_Cache_Valid (Id));
-
-   function Op_Add_Prog_Id_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Add_Prog_OId_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Add_Prog_Id_Cache_Valid (Id));
-
-   function Op_Add_Prog_List_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Add_Prog_OList_Cache_Valid
-     (Id : W_Op_Add_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Add_Prog_List_Cache_Valid (Id));
-
-   function Op_Substract_Prog_Id_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Substract_Prog_OId_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Substract_Prog_Id_Cache_Valid (Id));
-
-   function Op_Substract_Prog_List_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Substract_Prog_OList_Cache_Valid
-     (Id : W_Op_Substract_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Substract_Prog_List_Cache_Valid (Id));
-
-   function Op_Multiply_Prog_Id_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Multiply_Prog_OId_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Multiply_Prog_Id_Cache_Valid (Id));
-
-   function Op_Multiply_Prog_List_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Multiply_Prog_OList_Cache_Valid
-     (Id : W_Op_Multiply_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Multiply_Prog_List_Cache_Valid (Id));
-
-   function Op_Divide_Prog_Id_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Divide_Prog_OId_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Divide_Prog_Id_Cache_Valid (Id));
-
-   function Op_Divide_Prog_List_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Divide_Prog_OList_Cache_Valid
-     (Id : W_Op_Divide_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Divide_Prog_List_Cache_Valid (Id));
-
-   function Op_Mod_Prog_Id_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Mod_Prog_OId_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Mod_Prog_Id_Cache_Valid (Id));
-
-   function Op_Mod_Prog_List_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Mod_Prog_OList_Cache_Valid
-     (Id : W_Op_Mod_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Mod_Prog_List_Cache_Valid (Id));
-
-   function Op_Eq_Prog_Id_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Eq_Prog_OId_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Eq_Prog_Id_Cache_Valid (Id));
-
-   function Op_Eq_Prog_List_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Eq_Prog_OList_Cache_Valid
-     (Id : W_Op_Eq_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Eq_Prog_List_Cache_Valid (Id));
-
-   function Op_Ne_Prog_Id_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Ne_Prog_OId_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Ne_Prog_Id_Cache_Valid (Id));
-
-   function Op_Ne_Prog_List_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Ne_Prog_OList_Cache_Valid
-     (Id : W_Op_Ne_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Ne_Prog_List_Cache_Valid (Id));
-
-   function Op_Lt_Prog_Id_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Lt_Prog_OId_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Lt_Prog_Id_Cache_Valid (Id));
-
-   function Op_Lt_Prog_List_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Lt_Prog_OList_Cache_Valid
-     (Id : W_Op_Lt_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Lt_Prog_List_Cache_Valid (Id));
-
-   function Op_Le_Prog_Id_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Le_Prog_OId_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Le_Prog_Id_Cache_Valid (Id));
-
-   function Op_Le_Prog_List_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Le_Prog_OList_Cache_Valid
-     (Id : W_Op_Le_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Le_Prog_List_Cache_Valid (Id));
-
-   function Op_Gt_Prog_Id_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Gt_Prog_OId_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Gt_Prog_Id_Cache_Valid (Id));
-
-   function Op_Gt_Prog_List_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Gt_Prog_OList_Cache_Valid
-     (Id : W_Op_Gt_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Gt_Prog_List_Cache_Valid (Id));
-
-   function Op_Ge_Prog_Id_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Ge_Prog_OId_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Ge_Prog_Id_Cache_Valid (Id));
-
-   function Op_Ge_Prog_List_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Ge_Prog_OList_Cache_Valid
-     (Id : W_Op_Ge_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Ge_Prog_List_Cache_Valid (Id));
-
-   function Op_Or_Else_Prog_Id_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Or_Else_Prog_OId_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Or_Else_Prog_Id_Cache_Valid (Id));
-
-   function Op_Or_Else_Prog_List_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Or_Else_Prog_OList_Cache_Valid
-     (Id : W_Op_Or_Else_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Or_Else_Prog_List_Cache_Valid (Id));
-
-   function Op_And_Then_Prog_Id_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_And_Then_Prog_OId_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_And_Then_Prog_Id_Cache_Valid (Id));
-
-   function Op_And_Then_Prog_List_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_And_Then_Prog_OList_Cache_Valid
-     (Id : W_Op_And_Then_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_And_Then_Prog_List_Cache_Valid (Id));
-
-   function Op_Minus_Prog_Id_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Minus_Prog_OId_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Minus_Prog_Id_Cache_Valid (Id));
-
-   function Op_Minus_Prog_List_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Minus_Prog_OList_Cache_Valid
-     (Id : W_Op_Minus_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Minus_Prog_List_Cache_Valid (Id));
-
-   function Op_Not_Prog_Id_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Op_Not_Prog_OId_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Op_Not_Prog_Id_Cache_Valid (Id));
-
-   function Op_Not_Prog_List_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Op_Not_Prog_OList_Cache_Valid
-     (Id : W_Op_Not_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Op_Not_Prog_List_Cache_Valid (Id));
-
-   function Binders_Id_Cache_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binders_OId_Cache_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binders_Id_Cache_Valid (Id));
-
-   function Binders_List_Cache_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binders_OList_Cache_Valid
-     (Id : W_Binders_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binders_List_Cache_Valid (Id));
-
-   function Binder_Id_Cache_Valid
-     (Id : W_Binder_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Binder_OId_Cache_Valid
-     (Id : W_Binder_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binder_Id_Cache_Valid (Id));
-
-   function Binder_List_Cache_Valid
-     (Id : W_Binder_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binder_OList_Cache_Valid
-     (Id : W_Binder_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binder_List_Cache_Valid (Id));
-
-   function Recfun_Id_Cache_Valid
-     (Id : W_Recfun_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Recfun_OId_Cache_Valid
-     (Id : W_Recfun_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Recfun_Id_Cache_Valid (Id));
-
-   function Recfun_List_Cache_Valid
-     (Id : W_Recfun_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Recfun_OList_Cache_Valid
-     (Id : W_Recfun_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Recfun_List_Cache_Valid (Id));
-
-   function Loop_Annot_Id_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Loop_Annot_OId_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Loop_Annot_Id_Cache_Valid (Id));
-
-   function Loop_Annot_List_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Loop_Annot_OList_Cache_Valid
-     (Id : W_Loop_Annot_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Loop_Annot_List_Cache_Valid (Id));
-
-   function Wf_Arg_Id_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Wf_Arg_OId_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Wf_Arg_Id_Cache_Valid (Id));
-
-   function Wf_Arg_List_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Wf_Arg_OList_Cache_Valid
-     (Id : W_Wf_Arg_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Wf_Arg_List_Cache_Valid (Id));
-
-   function Handler_Id_Cache_Valid
-     (Id : W_Handler_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Handler_OId_Cache_Valid
-     (Id : W_Handler_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Handler_Id_Cache_Valid (Id));
-
-   function Handler_List_Cache_Valid
-     (Id : W_Handler_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Handler_OList_Cache_Valid
-     (Id : W_Handler_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Handler_List_Cache_Valid (Id));
-
-   function File_Id_Cache_Valid
-     (Id : W_File_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function File_OId_Cache_Valid
-     (Id : W_File_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else File_Id_Cache_Valid (Id));
-
-   function File_List_Cache_Valid
-     (Id : W_File_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function File_OList_Cache_Valid
-     (Id : W_File_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else File_List_Cache_Valid (Id));
-
-   function Global_Binding_Id_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Global_Binding_OId_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Global_Binding_Id_Cache_Valid (Id));
-
-   function Global_Binding_List_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Global_Binding_OList_Cache_Valid
-     (Id : W_Global_Binding_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Global_Binding_List_Cache_Valid (Id));
-
-   function Global_Rec_Binding_Id_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Global_Rec_Binding_OId_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Global_Rec_Binding_Id_Cache_Valid (Id));
-
-   function Global_Rec_Binding_List_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Global_Rec_Binding_OList_Cache_Valid
-     (Id : W_Global_Rec_Binding_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Global_Rec_Binding_List_Cache_Valid (Id));
-
-   function Parameter_Declaration_Id_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Parameter_Declaration_OId_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Parameter_Declaration_Id_Cache_Valid (Id));
-
-   function Parameter_Declaration_List_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Parameter_Declaration_OList_Cache_Valid
-     (Id : W_Parameter_Declaration_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Parameter_Declaration_List_Cache_Valid (Id));
-
-   function Exception_Declaration_Id_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Exception_Declaration_OId_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Exception_Declaration_Id_Cache_Valid (Id));
-
-   function Exception_Declaration_List_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Exception_Declaration_OList_Cache_Valid
-     (Id : W_Exception_Declaration_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Exception_Declaration_List_Cache_Valid (Id));
-
-   function Logic_Declaration_Id_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Declaration_OId_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Declaration_Id_Cache_Valid (Id));
-
-   function Logic_Declaration_List_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Declaration_OList_Cache_Valid
-     (Id : W_Logic_Declaration_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Declaration_List_Cache_Valid (Id));
-
-   function Term_Id_Cache_Valid
-     (Id : W_Term_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Term_OId_Cache_Valid
-     (Id : W_Term_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Term_Id_Cache_Valid (Id));
-
-   function Term_List_Cache_Valid
-     (Id : W_Term_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Term_OList_Cache_Valid
-     (Id : W_Term_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Term_List_Cache_Valid (Id));
-
-   function Constant_Id_Cache_Valid
-     (Id : W_Constant_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Constant_OId_Cache_Valid
-     (Id : W_Constant_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Constant_Id_Cache_Valid (Id));
-
-   function Constant_List_Cache_Valid
-     (Id : W_Constant_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Constant_OList_Cache_Valid
-     (Id : W_Constant_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Constant_List_Cache_Valid (Id));
-
-   function Arith_Op_Id_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Arith_Op_OId_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Arith_Op_Id_Cache_Valid (Id));
-
-   function Arith_Op_List_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Arith_Op_OList_Cache_Valid
-     (Id : W_Arith_Op_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Arith_Op_List_Cache_Valid (Id));
-
-   function Predicate_Id_Cache_Valid
-     (Id : W_Predicate_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Predicate_OId_Cache_Valid
-     (Id : W_Predicate_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Predicate_Id_Cache_Valid (Id));
-
-   function Predicate_List_Cache_Valid
-     (Id : W_Predicate_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Predicate_OList_Cache_Valid
-     (Id : W_Predicate_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Predicate_List_Cache_Valid (Id));
-
-   function Primitive_Type_Id_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Primitive_Type_OId_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Primitive_Type_Id_Cache_Valid (Id));
-
-   function Primitive_Type_List_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Primitive_Type_OList_Cache_Valid
-     (Id : W_Primitive_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Primitive_Type_List_Cache_Valid (Id));
-
-   function Relation_Id_Cache_Valid
-     (Id : W_Relation_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Relation_OId_Cache_Valid
-     (Id : W_Relation_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Relation_Id_Cache_Valid (Id));
-
-   function Relation_List_Cache_Valid
-     (Id : W_Relation_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Relation_OList_Cache_Valid
-     (Id : W_Relation_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Relation_List_Cache_Valid (Id));
-
-   function Logic_Declaration_Class_Id_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Declaration_Class_OId_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Declaration_Class_Id_Cache_Valid (Id));
-
-   function Logic_Declaration_Class_List_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Declaration_Class_OList_Cache_Valid
-     (Id : W_Logic_Declaration_Class_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Declaration_Class_List_Cache_Valid (Id));
-
-   function Logic_Return_Type_Id_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Return_Type_OId_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Return_Type_Id_Cache_Valid (Id));
-
-   function Logic_Return_Type_List_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Return_Type_OList_Cache_Valid
-     (Id : W_Logic_Return_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Return_Type_List_Cache_Valid (Id));
-
-   function Logic_Arg_Type_Id_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Logic_Arg_Type_OId_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Logic_Arg_Type_Id_Cache_Valid (Id));
-
-   function Logic_Arg_Type_List_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Logic_Arg_Type_OList_Cache_Valid
-     (Id : W_Logic_Arg_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Logic_Arg_Type_List_Cache_Valid (Id));
-
-   function Simple_Value_Type_Id_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Simple_Value_Type_OId_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Simple_Value_Type_Id_Cache_Valid (Id));
-
-   function Simple_Value_Type_List_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Simple_Value_Type_OList_Cache_Valid
-     (Id : W_Simple_Value_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Simple_Value_Type_List_Cache_Valid (Id));
-
-   function Value_Type_Id_Cache_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Value_Type_OId_Cache_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Value_Type_Id_Cache_Valid (Id));
-
-   function Value_Type_List_Cache_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Value_Type_OList_Cache_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Value_Type_List_Cache_Valid (Id));
-
-   function Computation_Type_Id_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Computation_Type_OId_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Type_Id_Cache_Valid (Id));
-
-   function Computation_Type_List_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Type_OList_Cache_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Type_List_Cache_Valid (Id));
-
-   function Prog_Id_Cache_Valid
-     (Id : W_Prog_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prog_OId_Cache_Valid
-     (Id : W_Prog_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prog_Id_Cache_Valid (Id));
-
-   function Prog_List_Cache_Valid
-     (Id : W_Prog_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prog_OList_Cache_Valid
-     (Id : W_Prog_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prog_List_Cache_Valid (Id));
-
-   function Infix_Id_Cache_Valid
-     (Id : W_Infix_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Infix_OId_Cache_Valid
-     (Id : W_Infix_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Infix_Id_Cache_Valid (Id));
-
-   function Infix_List_Cache_Valid
-     (Id : W_Infix_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Infix_OList_Cache_Valid
-     (Id : W_Infix_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Infix_List_Cache_Valid (Id));
-
-   function Prefix_Id_Cache_Valid
-     (Id : W_Prefix_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Prefix_OId_Cache_Valid
-     (Id : W_Prefix_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Prefix_Id_Cache_Valid (Id));
-
-   function Prefix_List_Cache_Valid
-     (Id : W_Prefix_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Prefix_OList_Cache_Valid
-     (Id : W_Prefix_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Prefix_List_Cache_Valid (Id));
-
-   function Declaration_Id_Cache_Valid
-     (Id : W_Declaration_Unchecked_Id)
-     return Boolean is
-     (Get_Node (Id).Checked);
-
-   function Declaration_OId_Cache_Valid
-     (Id : W_Declaration_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Declaration_Id_Cache_Valid (Id));
-
-   function Declaration_List_Cache_Valid
-     (Id : W_Declaration_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Declaration_OList_Cache_Valid
-     (Id : W_Declaration_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Declaration_List_Cache_Valid (Id));
+   function OList_Cache_Valid (Id : Why_Node_List) return Boolean is
+     (Is_Empty (Id) or else List_Cache_Valid (Id));
 
    function Unused_At_Start_Id_Children_Valid
      (Id : W_Unused_At_Start_Unchecked_Id)
@@ -14503,7 +8620,7 @@ private
    function Abstract_Type_Id_Children_Valid
      (Id : W_Abstract_Type_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Abstract_Type_Get_Name (Id)));
 
    function Abstract_Type_OId_Children_Valid
@@ -14529,7 +8646,7 @@ private
    function Generic_Formal_Type_Id_Children_Valid
      (Id : W_Generic_Formal_Type_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Generic_Formal_Type_Get_Name (Id)));
 
    function Generic_Formal_Type_OId_Children_Valid
@@ -14555,10 +8672,10 @@ private
    function Generic_Actual_Type_Chain_Id_Children_Valid
      (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
      return Boolean is
-     (Primitive_Type_List_Cache_Valid
+     (List_Cache_Valid
        (Generic_Actual_Type_Chain_Get_Type_Chain (Id))
      and then
-       Identifier_Id_Cache_Valid
+       Id_Cache_Valid
          (Generic_Actual_Type_Chain_Get_Name (Id)));
 
    function Generic_Actual_Type_Chain_OId_Children_Valid
@@ -14584,7 +8701,7 @@ private
    function Array_Type_Id_Children_Valid
      (Id : W_Array_Type_Unchecked_Id)
      return Boolean is
-     (Primitive_Type_Id_Cache_Valid
+     (Id_Cache_Valid
        (Array_Type_Get_Component_Type (Id)));
 
    function Array_Type_OId_Children_Valid
@@ -14610,7 +8727,7 @@ private
    function Ref_Type_Id_Children_Valid
      (Id : W_Ref_Type_Unchecked_Id)
      return Boolean is
-     (Primitive_Type_Id_Cache_Valid
+     (Id_Cache_Valid
        (Ref_Type_Get_Aliased_Type (Id)));
 
    function Ref_Type_OId_Children_Valid
@@ -14636,7 +8753,7 @@ private
    function Protected_Value_Type_Id_Children_Valid
      (Id : W_Protected_Value_Type_Unchecked_Id)
      return Boolean is
-     (Value_Type_Id_Cache_Valid
+     (Id_Cache_Valid
        (Protected_Value_Type_Get_Value_Type (Id)));
 
    function Protected_Value_Type_OId_Children_Valid
@@ -14662,10 +8779,10 @@ private
    function Anonymous_Arrow_Type_Id_Children_Valid
      (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
      return Boolean is
-     (Simple_Value_Type_Id_Cache_Valid
+     (Id_Cache_Valid
        (Anonymous_Arrow_Type_Get_Left (Id))
      and then
-       Computation_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Anonymous_Arrow_Type_Get_Right (Id)));
 
    function Anonymous_Arrow_Type_OId_Children_Valid
@@ -14691,13 +8808,13 @@ private
    function Named_Arrow_Type_Id_Children_Valid
      (Id : W_Named_Arrow_Type_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Named_Arrow_Type_Get_Name (Id))
      and then
-       Simple_Value_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Named_Arrow_Type_Get_Left (Id))
      and then
-       Computation_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Named_Arrow_Type_Get_Right (Id)));
 
    function Named_Arrow_Type_OId_Children_Valid
@@ -14723,19 +8840,19 @@ private
    function Computation_Spec_Id_Children_Valid
      (Id : W_Computation_Spec_Unchecked_Id)
      return Boolean is
-     (Precondition_OId_Cache_Valid
+     (OId_Cache_Valid
        (Computation_Spec_Get_Precondition (Id))
      and then
-       Identifier_OId_Cache_Valid
+       OId_Cache_Valid
          (Computation_Spec_Get_Result_Name (Id))
      and then
-       Value_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Computation_Spec_Get_Return_Type (Id))
      and then
-       Effects_Id_Cache_Valid
+       Id_Cache_Valid
          (Computation_Spec_Get_Effects (Id))
      and then
-       Postcondition_OId_Cache_Valid
+       OId_Cache_Valid
          (Computation_Spec_Get_Postcondition (Id)));
 
    function Computation_Spec_OId_Children_Valid
@@ -14886,13 +9003,13 @@ private
    function Arith_Operation_Id_Children_Valid
      (Id : W_Arith_Operation_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Arith_Operation_Get_Left (Id))
      and then
-       Arith_Op_Id_Cache_Valid
+       Id_Cache_Valid
          (Arith_Operation_Get_Op (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Arith_Operation_Get_Right (Id)));
 
    function Arith_Operation_OId_Children_Valid
@@ -14918,7 +9035,7 @@ private
    function Negative_Term_Id_Children_Valid
      (Id : W_Negative_Term_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Negative_Term_Get_Operand (Id)));
 
    function Negative_Term_OId_Children_Valid
@@ -14944,10 +9061,10 @@ private
    function Label_Identifier_Id_Children_Valid
      (Id : W_Label_Identifier_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Label_Identifier_Get_Name (Id))
      and then
-       Identifier_OId_Cache_Valid
+       OId_Cache_Valid
          (Label_Identifier_Get_Label (Id)));
 
    function Label_Identifier_OId_Children_Valid
@@ -14973,10 +9090,10 @@ private
    function Operation_Id_Children_Valid
      (Id : W_Operation_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Operation_Get_Name (Id))
      and then
-       Term_List_Cache_Valid
+       List_Cache_Valid
          (Operation_Get_Parameters (Id)));
 
    function Operation_OId_Children_Valid
@@ -15002,10 +9119,10 @@ private
    function Named_Term_Id_Children_Valid
      (Id : W_Named_Term_Unchecked_Id)
      return Boolean is
-     (Label_Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Named_Term_Get_Name (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Named_Term_Get_Term (Id)));
 
    function Named_Term_OId_Children_Valid
@@ -15031,13 +9148,13 @@ private
    function Conditional_Term_Id_Children_Valid
      (Id : W_Conditional_Term_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Conditional_Term_Get_Condition (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Conditional_Term_Get_Then_Part (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Conditional_Term_Get_Else_Part (Id)));
 
    function Conditional_Term_OId_Children_Valid
@@ -15063,13 +9180,13 @@ private
    function Binding_Term_Id_Children_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Term_Get_Name (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Term_Get_Def (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Term_Get_Context (Id)));
 
    function Binding_Term_OId_Children_Valid
@@ -15095,7 +9212,7 @@ private
    function Protected_Term_Id_Children_Valid
      (Id : W_Protected_Term_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Protected_Term_Get_Term (Id)));
 
    function Protected_Term_OId_Children_Valid
@@ -15296,7 +9413,7 @@ private
    function Predicate_Identifier_Id_Children_Valid
      (Id : W_Predicate_Identifier_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Predicate_Identifier_Get_Name (Id)));
 
    function Predicate_Identifier_OId_Children_Valid
@@ -15322,10 +9439,10 @@ private
    function Predicate_Instance_Id_Children_Valid
      (Id : W_Predicate_Instance_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Predicate_Instance_Get_Name (Id))
      and then
-       Term_List_Cache_Valid
+       List_Cache_Valid
          (Predicate_Instance_Get_Parameters (Id)));
 
    function Predicate_Instance_OId_Children_Valid
@@ -15351,19 +9468,19 @@ private
    function Related_Terms_Id_Children_Valid
      (Id : W_Related_Terms_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Related_Terms_Get_Left (Id))
      and then
-       Relation_Id_Cache_Valid
+       Id_Cache_Valid
          (Related_Terms_Get_Op (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Related_Terms_Get_Right (Id))
      and then
-       Relation_OId_Cache_Valid
+       OId_Cache_Valid
          (Related_Terms_Get_Op2 (Id))
      and then
-       Term_OId_Cache_Valid
+       OId_Cache_Valid
          (Related_Terms_Get_Right2 (Id)));
 
    function Related_Terms_OId_Children_Valid
@@ -15389,10 +9506,10 @@ private
    function Implication_Id_Children_Valid
      (Id : W_Implication_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Implication_Get_Left (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Implication_Get_Right (Id)));
 
    function Implication_OId_Children_Valid
@@ -15418,10 +9535,10 @@ private
    function Equivalence_Id_Children_Valid
      (Id : W_Equivalence_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Equivalence_Get_Left (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Equivalence_Get_Right (Id)));
 
    function Equivalence_OId_Children_Valid
@@ -15447,10 +9564,10 @@ private
    function Disjonction_Id_Children_Valid
      (Id : W_Disjonction_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Disjonction_Get_Left (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Disjonction_Get_Right (Id)));
 
    function Disjonction_OId_Children_Valid
@@ -15476,10 +9593,10 @@ private
    function Conjonction_Id_Children_Valid
      (Id : W_Conjonction_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Conjonction_Get_Left (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Conjonction_Get_Right (Id)));
 
    function Conjonction_OId_Children_Valid
@@ -15505,7 +9622,7 @@ private
    function Negation_Id_Children_Valid
      (Id : W_Negation_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Negation_Get_Operand (Id)));
 
    function Negation_OId_Children_Valid
@@ -15531,13 +9648,13 @@ private
    function Conditional_Pred_Id_Children_Valid
      (Id : W_Conditional_Pred_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Conditional_Pred_Get_Condition (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Conditional_Pred_Get_Then_Part (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Conditional_Pred_Get_Else_Part (Id)));
 
    function Conditional_Pred_OId_Children_Valid
@@ -15563,13 +9680,13 @@ private
    function Binding_Pred_Id_Children_Valid
      (Id : W_Binding_Pred_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Pred_Get_Name (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Pred_Get_Def (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Pred_Get_Context (Id)));
 
    function Binding_Pred_OId_Children_Valid
@@ -15595,16 +9712,16 @@ private
    function Universal_Quantif_Id_Children_Valid
      (Id : W_Universal_Quantif_Unchecked_Id)
      return Boolean is
-     (Identifier_List_Cache_Valid
+     (List_Cache_Valid
        (Universal_Quantif_Get_Variables (Id))
      and then
-       Primitive_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Universal_Quantif_Get_Var_Type (Id))
      and then
-       Triggers_OId_Cache_Valid
+       OId_Cache_Valid
          (Universal_Quantif_Get_Triggers (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Universal_Quantif_Get_Pred (Id)));
 
    function Universal_Quantif_OId_Children_Valid
@@ -15630,13 +9747,13 @@ private
    function Existential_Quantif_Id_Children_Valid
      (Id : W_Existential_Quantif_Unchecked_Id)
      return Boolean is
-     (Identifier_List_Cache_Valid
+     (List_Cache_Valid
        (Existential_Quantif_Get_Variables (Id))
      and then
-       Primitive_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Existential_Quantif_Get_Var_Type (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Existential_Quantif_Get_Pred (Id)));
 
    function Existential_Quantif_OId_Children_Valid
@@ -15662,10 +9779,10 @@ private
    function Named_Predicate_Id_Children_Valid
      (Id : W_Named_Predicate_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Named_Predicate_Get_Name (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Named_Predicate_Get_Pred (Id)));
 
    function Named_Predicate_OId_Children_Valid
@@ -15691,7 +9808,7 @@ private
    function Protected_Predicate_Id_Children_Valid
      (Id : W_Protected_Predicate_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Protected_Predicate_Get_Pred (Id)));
 
    function Protected_Predicate_OId_Children_Valid
@@ -15717,7 +9834,7 @@ private
    function Triggers_Id_Children_Valid
      (Id : W_Triggers_Unchecked_Id)
      return Boolean is
-     (Trigger_List_Cache_Valid
+     (List_Cache_Valid
        (Triggers_Get_Triggers (Id)));
 
    function Triggers_OId_Children_Valid
@@ -15743,7 +9860,7 @@ private
    function Trigger_Id_Children_Valid
      (Id : W_Trigger_Unchecked_Id)
      return Boolean is
-     (Term_List_Cache_Valid
+     (List_Cache_Valid
        (Trigger_Get_Terms (Id)));
 
    function Trigger_OId_Children_Valid
@@ -15919,13 +10036,13 @@ private
    function Type_Id_Children_Valid
      (Id : W_Type_Unchecked_Id)
      return Boolean is
-     (External_OId_Cache_Valid
+     (OId_Cache_Valid
        (Type_Get_External (Id))
      and then
-       Identifier_OList_Cache_Valid
+       OList_Cache_Valid
          (Type_Get_Type_Parameters (Id))
      and then
-       Identifier_Id_Cache_Valid
+       Id_Cache_Valid
          (Type_Get_Name (Id)));
 
    function Type_OId_Children_Valid
@@ -15951,13 +10068,13 @@ private
    function Logic_Id_Children_Valid
      (Id : W_Logic_Unchecked_Id)
      return Boolean is
-     (External_OId_Cache_Valid
+     (OId_Cache_Valid
        (Logic_Get_External (Id))
      and then
-       Identifier_List_Cache_Valid
+       List_Cache_Valid
          (Logic_Get_Names (Id))
      and then
-       Logic_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Logic_Get_Logic_Type (Id)));
 
    function Logic_OId_Children_Valid
@@ -15983,16 +10100,16 @@ private
    function Function_Id_Children_Valid
      (Id : W_Function_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Function_Get_Name (Id))
      and then
-       Logic_Binder_List_Cache_Valid
+       List_Cache_Valid
          (Function_Get_Binders (Id))
      and then
-       Primitive_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Function_Get_Return_Type (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Function_Get_Def (Id)));
 
    function Function_OId_Children_Valid
@@ -16018,13 +10135,13 @@ private
    function Predicate_Definition_Id_Children_Valid
      (Id : W_Predicate_Definition_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Predicate_Definition_Get_Name (Id))
      and then
-       Logic_Binder_List_Cache_Valid
+       List_Cache_Valid
          (Predicate_Definition_Get_Binders (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Predicate_Definition_Get_Def (Id)));
 
    function Predicate_Definition_OId_Children_Valid
@@ -16050,13 +10167,13 @@ private
    function Inductive_Id_Children_Valid
      (Id : W_Inductive_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Inductive_Get_Name (Id))
      and then
-       Logic_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Inductive_Get_Logic_Type (Id))
      and then
-       Inductive_Case_List_Cache_Valid
+       List_Cache_Valid
          (Inductive_Get_Def (Id)));
 
    function Inductive_OId_Children_Valid
@@ -16082,10 +10199,10 @@ private
    function Axiom_Id_Children_Valid
      (Id : W_Axiom_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Axiom_Get_Name (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Axiom_Get_Def (Id)));
 
    function Axiom_OId_Children_Valid
@@ -16111,10 +10228,10 @@ private
    function Goal_Id_Children_Valid
      (Id : W_Goal_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Goal_Get_Name (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Goal_Get_Def (Id)));
 
    function Goal_OId_Children_Valid
@@ -16165,10 +10282,10 @@ private
    function Logic_Type_Id_Children_Valid
      (Id : W_Logic_Type_Unchecked_Id)
      return Boolean is
-     (Logic_Arg_Type_List_Cache_Valid
+     (List_Cache_Valid
        (Logic_Type_Get_Arg_Types (Id))
      and then
-       Logic_Return_Type_List_Cache_Valid
+       List_Cache_Valid
          (Logic_Type_Get_Return_Type (Id)));
 
    function Logic_Type_OId_Children_Valid
@@ -16194,10 +10311,10 @@ private
    function Logic_Binder_Id_Children_Valid
      (Id : W_Logic_Binder_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Logic_Binder_Get_Name (Id))
      and then
-       Primitive_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Logic_Binder_Get_Param_Type (Id)));
 
    function Logic_Binder_OId_Children_Valid
@@ -16223,10 +10340,10 @@ private
    function Inductive_Case_Id_Children_Valid
      (Id : W_Inductive_Case_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Inductive_Case_Get_Name (Id))
      and then
-       Predicate_Id_Cache_Valid
+       Id_Cache_Valid
          (Inductive_Case_Get_Pred (Id)));
 
    function Inductive_Case_OId_Children_Valid
@@ -16252,13 +10369,13 @@ private
    function Effects_Id_Children_Valid
      (Id : W_Effects_Unchecked_Id)
      return Boolean is
-     (Identifier_OList_Cache_Valid
+     (OList_Cache_Valid
        (Effects_Get_Reads (Id))
      and then
-       Identifier_OList_Cache_Valid
+       OList_Cache_Valid
          (Effects_Get_Writes (Id))
      and then
-       Identifier_OList_Cache_Valid
+       OList_Cache_Valid
          (Effects_Get_Raises (Id)));
 
    function Effects_OId_Children_Valid
@@ -16284,7 +10401,7 @@ private
    function Precondition_Id_Children_Valid
      (Id : W_Precondition_Unchecked_Id)
      return Boolean is
-     (Assertion_Id_Cache_Valid
+     (Id_Cache_Valid
        (Precondition_Get_Assertion (Id)));
 
    function Precondition_OId_Children_Valid
@@ -16310,10 +10427,10 @@ private
    function Postcondition_Id_Children_Valid
      (Id : W_Postcondition_Unchecked_Id)
      return Boolean is
-     (Assertion_Id_Cache_Valid
+     (Id_Cache_Valid
        (Postcondition_Get_Assertion (Id))
      and then
-       Exn_Condition_OList_Cache_Valid
+       OList_Cache_Valid
          (Postcondition_Get_Handlers (Id)));
 
    function Postcondition_OId_Children_Valid
@@ -16339,10 +10456,10 @@ private
    function Exn_Condition_Id_Children_Valid
      (Id : W_Exn_Condition_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Exn_Condition_Get_Exn_Case (Id))
      and then
-       Assertion_Id_Cache_Valid
+       Id_Cache_Valid
          (Exn_Condition_Get_Assertion (Id)));
 
    function Exn_Condition_OId_Children_Valid
@@ -16368,10 +10485,10 @@ private
    function Assertion_Id_Children_Valid
      (Id : W_Assertion_Unchecked_Id)
      return Boolean is
-     (Predicate_Id_Cache_Valid
+     (Id_Cache_Valid
        (Assertion_Get_Pred (Id))
      and then
-       Identifier_OId_Cache_Valid
+       OId_Cache_Valid
          (Assertion_Get_As (Id)));
 
    function Assertion_OId_Children_Valid
@@ -16397,7 +10514,7 @@ private
    function Prog_Constant_Id_Children_Valid
      (Id : W_Prog_Constant_Unchecked_Id)
      return Boolean is
-     (Constant_Id_Cache_Valid
+     (Id_Cache_Valid
        (Prog_Constant_Get_Def (Id)));
 
    function Prog_Constant_OId_Children_Valid
@@ -16423,7 +10540,7 @@ private
    function Prog_Identifier_Id_Children_Valid
      (Id : W_Prog_Identifier_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Prog_Identifier_Get_Def (Id)));
 
    function Prog_Identifier_OId_Children_Valid
@@ -16449,7 +10566,7 @@ private
    function Deref_Id_Children_Valid
      (Id : W_Deref_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Deref_Get_Ref (Id)));
 
    function Deref_OId_Children_Valid
@@ -16475,10 +10592,10 @@ private
    function Assignment_Id_Children_Valid
      (Id : W_Assignment_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Assignment_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Assignment_Get_Value (Id)));
 
    function Assignment_OId_Children_Valid
@@ -16504,10 +10621,10 @@ private
    function Array_Access_Id_Children_Valid
      (Id : W_Array_Access_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Array_Access_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Array_Access_Get_Index (Id)));
 
    function Array_Access_OId_Children_Valid
@@ -16533,13 +10650,13 @@ private
    function Array_Update_Id_Children_Valid
      (Id : W_Array_Update_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Array_Update_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Array_Update_Get_Index (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Array_Update_Get_Value (Id)));
 
    function Array_Update_OId_Children_Valid
@@ -16565,13 +10682,13 @@ private
    function Infix_Call_Id_Children_Valid
      (Id : W_Infix_Call_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Infix_Call_Get_Left (Id))
      and then
-       Infix_Id_Cache_Valid
+       Id_Cache_Valid
          (Infix_Call_Get_Infix (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Infix_Call_Get_Right (Id)));
 
    function Infix_Call_OId_Children_Valid
@@ -16597,10 +10714,10 @@ private
    function Prefix_Call_Id_Children_Valid
      (Id : W_Prefix_Call_Unchecked_Id)
      return Boolean is
-     (Prefix_Id_Cache_Valid
+     (Id_Cache_Valid
        (Prefix_Call_Get_Prefix (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Prefix_Call_Get_Operand (Id)));
 
    function Prefix_Call_OId_Children_Valid
@@ -16626,13 +10743,13 @@ private
    function Binding_Prog_Id_Children_Valid
      (Id : W_Binding_Prog_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Prog_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Prog_Get_Def (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Prog_Get_Context (Id)));
 
    function Binding_Prog_OId_Children_Valid
@@ -16658,13 +10775,13 @@ private
    function Binding_Ref_Id_Children_Valid
      (Id : W_Binding_Ref_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Ref_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Ref_Get_Def (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Ref_Get_Context (Id)));
 
    function Binding_Ref_OId_Children_Valid
@@ -16690,13 +10807,13 @@ private
    function Conditional_Prog_Id_Children_Valid
      (Id : W_Conditional_Prog_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Conditional_Prog_Get_Condition (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Conditional_Prog_Get_Then_Part (Id))
      and then
-       Prog_OId_Cache_Valid
+       OId_Cache_Valid
          (Conditional_Prog_Get_Else_Part (Id)));
 
    function Conditional_Prog_OId_Children_Valid
@@ -16722,13 +10839,13 @@ private
    function While_Loop_Id_Children_Valid
      (Id : W_While_Loop_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (While_Loop_Get_Condition (Id))
      and then
-       Loop_Annot_Id_Cache_Valid
+       Id_Cache_Valid
          (While_Loop_Get_Annotation (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (While_Loop_Get_Loop_Content (Id)));
 
    function While_Loop_OId_Children_Valid
@@ -16754,7 +10871,7 @@ private
    function Statement_Sequence_Id_Children_Valid
      (Id : W_Statement_Sequence_Unchecked_Id)
      return Boolean is
-     (Prog_List_Cache_Valid
+     (List_Cache_Valid
        (Statement_Sequence_Get_Statements (Id)));
 
    function Statement_Sequence_OId_Children_Valid
@@ -16780,10 +10897,10 @@ private
    function Label_Id_Children_Valid
      (Id : W_Label_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Label_Get_Name (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Label_Get_Def (Id)));
 
    function Label_OId_Children_Valid
@@ -16809,10 +10926,10 @@ private
    function Assert_Id_Children_Valid
      (Id : W_Assert_Unchecked_Id)
      return Boolean is
-     (Assertion_List_Cache_Valid
+     (List_Cache_Valid
        (Assert_Get_Assertions (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Assert_Get_Prog (Id)));
 
    function Assert_OId_Children_Valid
@@ -16838,10 +10955,10 @@ private
    function Post_Assertion_Id_Children_Valid
      (Id : W_Post_Assertion_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Post_Assertion_Get_Prog (Id))
      and then
-       Postcondition_Id_Cache_Valid
+       Id_Cache_Valid
          (Post_Assertion_Get_Post (Id)));
 
    function Post_Assertion_OId_Children_Valid
@@ -16867,10 +10984,10 @@ private
    function Opaque_Assertion_Id_Children_Valid
      (Id : W_Opaque_Assertion_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Opaque_Assertion_Get_Prog (Id))
      and then
-       Postcondition_Id_Cache_Valid
+       Id_Cache_Valid
          (Opaque_Assertion_Get_Post (Id)));
 
    function Opaque_Assertion_OId_Children_Valid
@@ -16896,10 +11013,10 @@ private
    function Fun_Def_Id_Children_Valid
      (Id : W_Fun_Def_Unchecked_Id)
      return Boolean is
-     (Binders_Id_Cache_Valid
+     (Id_Cache_Valid
        (Fun_Def_Get_Binders (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Fun_Def_Get_Def (Id)));
 
    function Fun_Def_OId_Children_Valid
@@ -16925,16 +11042,16 @@ private
    function Binding_Fun_Id_Children_Valid
      (Id : W_Binding_Fun_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Fun_Get_Name (Id))
      and then
-       Binders_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Fun_Get_Binders (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Fun_Get_Def (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Fun_Get_Context (Id)));
 
    function Binding_Fun_OId_Children_Valid
@@ -16960,10 +11077,10 @@ private
    function Binding_Rec_Id_Children_Valid
      (Id : W_Binding_Rec_Unchecked_Id)
      return Boolean is
-     (Recfun_Id_Cache_Valid
+     (Id_Cache_Valid
        (Binding_Rec_Get_Recfun (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Binding_Rec_Get_Context (Id)));
 
    function Binding_Rec_OId_Children_Valid
@@ -16989,7 +11106,7 @@ private
    function Prog_Sequence_Id_Children_Valid
      (Id : W_Prog_Sequence_Unchecked_Id)
      return Boolean is
-     (Prog_List_Cache_Valid
+     (List_Cache_Valid
        (Prog_Sequence_Get_Progs (Id)));
 
    function Prog_Sequence_OId_Children_Valid
@@ -17015,10 +11132,10 @@ private
    function Raise_Statement_Id_Children_Valid
      (Id : W_Raise_Statement_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Raise_Statement_Get_Name (Id))
      and then
-       Value_Type_OId_Cache_Valid
+       OId_Cache_Valid
          (Raise_Statement_Get_Exn_Type (Id)));
 
    function Raise_Statement_OId_Children_Valid
@@ -17044,13 +11161,13 @@ private
    function Raise_Statement_With_Parameters_Id_Children_Valid
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Raise_Statement_With_Parameters_Get_Name (Id))
      and then
-       Term_Id_Cache_Valid
+       Id_Cache_Valid
          (Raise_Statement_With_Parameters_Get_Parameter (Id))
      and then
-       Value_Type_OId_Cache_Valid
+       OId_Cache_Valid
          (Raise_Statement_With_Parameters_Get_Exn_Type (Id)));
 
    function Raise_Statement_With_Parameters_OId_Children_Valid
@@ -17076,10 +11193,10 @@ private
    function Try_Block_Id_Children_Valid
      (Id : W_Try_Block_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Try_Block_Get_Prog (Id))
      and then
-       Handler_List_Cache_Valid
+       List_Cache_Valid
          (Try_Block_Get_Handler (Id)));
 
    function Try_Block_OId_Children_Valid
@@ -17105,7 +11222,7 @@ private
    function Unreachable_Code_Id_Children_Valid
      (Id : W_Unreachable_Code_Unchecked_Id)
      return Boolean is
-     (Value_Type_OId_Cache_Valid
+     (OId_Cache_Valid
        (Unreachable_Code_Get_Exn_Type (Id)));
 
    function Unreachable_Code_OId_Children_Valid
@@ -17131,7 +11248,7 @@ private
    function Begin_Block_Id_Children_Valid
      (Id : W_Begin_Block_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Begin_Block_Get_Prog (Id)));
 
    function Begin_Block_OId_Children_Valid
@@ -17157,7 +11274,7 @@ private
    function Protected_Prog_Id_Children_Valid
      (Id : W_Protected_Prog_Unchecked_Id)
      return Boolean is
-     (Prog_Id_Cache_Valid
+     (Id_Cache_Valid
        (Protected_Prog_Get_Prog (Id)));
 
    function Protected_Prog_OId_Children_Valid
@@ -17558,7 +11675,7 @@ private
    function Binders_Id_Children_Valid
      (Id : W_Binders_Unchecked_Id)
      return Boolean is
-     (Binders_List_Cache_Valid
+     (List_Cache_Valid
        (Binders_Get_Binders (Id)));
 
    function Binders_OId_Children_Valid
@@ -17584,10 +11701,10 @@ private
    function Binder_Id_Children_Valid
      (Id : W_Binder_Unchecked_Id)
      return Boolean is
-     (Identifier_List_Cache_Valid
+     (List_Cache_Valid
        (Binder_Get_Names (Id))
      and then
-       Value_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Binder_Get_Arg_Type (Id)));
 
    function Binder_OId_Children_Valid
@@ -17613,19 +11730,19 @@ private
    function Recfun_Id_Children_Valid
      (Id : W_Recfun_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Recfun_Get_Name (Id))
      and then
-       Binders_Id_Cache_Valid
+       Id_Cache_Valid
          (Recfun_Get_Binders (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Recfun_Get_Return_Type (Id))
      and then
-       Wf_Arg_Id_Cache_Valid
+       Id_Cache_Valid
          (Recfun_Get_Variant (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Recfun_Get_Def (Id)));
 
    function Recfun_OId_Children_Valid
@@ -17651,10 +11768,10 @@ private
    function Loop_Annot_Id_Children_Valid
      (Id : W_Loop_Annot_Unchecked_Id)
      return Boolean is
-     (Assertion_OId_Cache_Valid
+     (OId_Cache_Valid
        (Loop_Annot_Get_Invariant (Id))
      and then
-       Wf_Arg_OId_Cache_Valid
+       OId_Cache_Valid
          (Loop_Annot_Get_Variant (Id)));
 
    function Loop_Annot_OId_Children_Valid
@@ -17680,10 +11797,10 @@ private
    function Wf_Arg_Id_Children_Valid
      (Id : W_Wf_Arg_Unchecked_Id)
      return Boolean is
-     (Term_Id_Cache_Valid
+     (Id_Cache_Valid
        (Wf_Arg_Get_Def (Id))
      and then
-       Identifier_OId_Cache_Valid
+       OId_Cache_Valid
          (Wf_Arg_Get_For_Id (Id)));
 
    function Wf_Arg_OId_Children_Valid
@@ -17709,13 +11826,13 @@ private
    function Handler_Id_Children_Valid
      (Id : W_Handler_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Handler_Get_Name (Id))
      and then
-       Prog_OId_Cache_Valid
+       OId_Cache_Valid
          (Handler_Get_Parameter (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Handler_Get_Def (Id)));
 
    function Handler_OId_Children_Valid
@@ -17741,7 +11858,7 @@ private
    function File_Id_Children_Valid
      (Id : W_File_Unchecked_Id)
      return Boolean is
-     (Declaration_OList_Cache_Valid
+     (OList_Cache_Valid
        (File_Get_Declarations (Id)));
 
    function File_OId_Children_Valid
@@ -17767,13 +11884,13 @@ private
    function Global_Binding_Id_Children_Valid
      (Id : W_Global_Binding_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Global_Binding_Get_Name (Id))
      and then
-       Binders_OId_Cache_Valid
+       OId_Cache_Valid
          (Global_Binding_Get_Binders (Id))
      and then
-       Prog_Id_Cache_Valid
+       Id_Cache_Valid
          (Global_Binding_Get_Def (Id)));
 
    function Global_Binding_OId_Children_Valid
@@ -17799,7 +11916,7 @@ private
    function Global_Rec_Binding_Id_Children_Valid
      (Id : W_Global_Rec_Binding_Unchecked_Id)
      return Boolean is
-     (Recfun_Id_Cache_Valid
+     (Id_Cache_Valid
        (Global_Rec_Binding_Get_Name (Id)));
 
    function Global_Rec_Binding_OId_Children_Valid
@@ -17825,13 +11942,13 @@ private
    function Parameter_Declaration_Id_Children_Valid
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return Boolean is
-     (External_Id_Cache_Valid
+     (Id_Cache_Valid
        (Parameter_Declaration_Get_External (Id))
      and then
-       Identifier_List_Cache_Valid
+       List_Cache_Valid
          (Parameter_Declaration_Get_Names (Id))
      and then
-       Value_Type_Id_Cache_Valid
+       Id_Cache_Valid
          (Parameter_Declaration_Get_Parameter_Type (Id)));
 
    function Parameter_Declaration_OId_Children_Valid
@@ -17857,10 +11974,10 @@ private
    function Exception_Declaration_Id_Children_Valid
      (Id : W_Exception_Declaration_Unchecked_Id)
      return Boolean is
-     (Identifier_Id_Cache_Valid
+     (Id_Cache_Valid
        (Exception_Declaration_Get_Name (Id))
      and then
-       Primitive_Type_OId_Cache_Valid
+       OId_Cache_Valid
          (Exception_Declaration_Get_Parameter (Id)));
 
    function Exception_Declaration_OId_Children_Valid
@@ -17886,7 +12003,7 @@ private
    function Logic_Declaration_Id_Children_Valid
      (Id : W_Logic_Declaration_Unchecked_Id)
      return Boolean is
-     (Logic_Id_Cache_Valid
+     (Id_Cache_Valid
        (Logic_Declaration_Get_Decl (Id)));
 
    function Logic_Declaration_OId_Children_Valid

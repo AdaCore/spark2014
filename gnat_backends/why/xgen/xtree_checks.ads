@@ -34,10 +34,4 @@ package Xtree_Checks is
    procedure Print_Checks_Bodies (O : in out Output_Record);
    --  Print tree-validity check bodies
 
-   procedure Print_Cache_Checks_Declarations (O : in out Output_Record);
-   --  Print declarations of cache accesses to tree-validity check
-
-   procedure Print_Cache_Checks_Bodies (O : in out Output_Record);
-   --  Print  bodies of cache access to tree-validity check
-
 end Xtree_Checks;
