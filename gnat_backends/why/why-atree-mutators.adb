@@ -96,6 +96,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AT_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Abstract_Type_Id_Valid (Id));
    end Abstract_Type_Set_Name;
 
    ----------------------------------
@@ -110,6 +113,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GFT_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Generic_Formal_Type_Id_Valid (Id));
    end Generic_Formal_Type_Set_Name;
 
    ----------------------------------------------------
@@ -124,6 +130,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.GATC_Type_Chain, New_Item);
+      Update_Validity_Status
+        (Id,
+         Generic_Actual_Type_Chain_Id_Valid (Id));
    end Generic_Actual_Type_Chain_Append_To_Type_Chain;
 
    -----------------------------------------------------
@@ -138,6 +147,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.GATC_Type_Chain, New_Item);
+      Update_Validity_Status
+        (Id,
+         Generic_Actual_Type_Chain_Id_Valid (Id));
    end Generic_Actual_Type_Chain_Prepend_To_Type_Chain;
 
    ----------------------------------------
@@ -152,6 +164,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GATC_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Generic_Actual_Type_Chain_Id_Valid (Id));
    end Generic_Actual_Type_Chain_Set_Name;
 
    -----------------------------------
@@ -166,6 +181,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AT_Component_Type := Component_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Type_Id_Valid (Id));
    end Array_Type_Set_Component_Type;
 
    -------------------------------
@@ -180,6 +198,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Aliased_Type := Aliased_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Ref_Type_Id_Valid (Id));
    end Ref_Type_Set_Aliased_Type;
 
    -----------------------------------------
@@ -194,6 +215,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PVT_Value_Type := Value_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Protected_Value_Type_Id_Valid (Id));
    end Protected_Value_Type_Set_Value_Type;
 
    -----------------------------------
@@ -208,6 +232,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AAT_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Anonymous_Arrow_Type_Id_Valid (Id));
    end Anonymous_Arrow_Type_Set_Left;
 
    ------------------------------------
@@ -222,6 +249,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AAT_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Anonymous_Arrow_Type_Id_Valid (Id));
    end Anonymous_Arrow_Type_Set_Right;
 
    -------------------------------
@@ -236,6 +266,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NA_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Arrow_Type_Id_Valid (Id));
    end Named_Arrow_Type_Set_Name;
 
    -------------------------------
@@ -250,6 +283,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NA_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Arrow_Type_Id_Valid (Id));
    end Named_Arrow_Type_Set_Left;
 
    --------------------------------
@@ -264,6 +300,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NA_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Arrow_Type_Id_Valid (Id));
    end Named_Arrow_Type_Set_Right;
 
    ---------------------------------------
@@ -278,6 +317,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CS_Precondition := Precondition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Computation_Spec_Id_Valid (Id));
    end Computation_Spec_Set_Precondition;
 
    --------------------------------------
@@ -292,6 +334,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CS_Result_Name := Result_Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Computation_Spec_Id_Valid (Id));
    end Computation_Spec_Set_Result_Name;
 
    --------------------------------------
@@ -306,6 +351,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CS_Return_Type := Return_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Computation_Spec_Id_Valid (Id));
    end Computation_Spec_Set_Return_Type;
 
    ----------------------------------
@@ -320,6 +368,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CS_Effects := Effects;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Computation_Spec_Id_Valid (Id));
    end Computation_Spec_Set_Effects;
 
    ----------------------------------------
@@ -334,6 +385,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CS_Postcondition := Postcondition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Computation_Spec_Id_Valid (Id));
    end Computation_Spec_Set_Postcondition;
 
    --------------------------------
@@ -376,6 +430,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AO_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Arith_Operation_Id_Valid (Id));
    end Arith_Operation_Set_Left;
 
    ----------------------------
@@ -390,6 +447,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AO_Op := Op;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Arith_Operation_Id_Valid (Id));
    end Arith_Operation_Set_Op;
 
    -------------------------------
@@ -404,6 +464,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AO_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Arith_Operation_Id_Valid (Id));
    end Arith_Operation_Set_Right;
 
    -------------------------------
@@ -418,6 +481,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NT_Operand := Operand;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Negative_Term_Id_Valid (Id));
    end Negative_Term_Set_Operand;
 
    -------------------------------
@@ -432,6 +498,9 @@ package body Why.Atree.Mutators is
    begin
       Node.TI_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Label_Identifier_Id_Valid (Id));
    end Label_Identifier_Set_Name;
 
    --------------------------------
@@ -446,6 +515,9 @@ package body Why.Atree.Mutators is
    begin
       Node.TI_Label := Label;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Label_Identifier_Id_Valid (Id));
    end Label_Identifier_Set_Label;
 
    ------------------------
@@ -460,6 +532,9 @@ package body Why.Atree.Mutators is
    begin
       Node.O_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Operation_Id_Valid (Id));
    end Operation_Set_Name;
 
    ------------------------------------
@@ -474,6 +549,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.O_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Operation_Id_Valid (Id));
    end Operation_Append_To_Parameters;
 
    -------------------------------------
@@ -488,6 +566,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.O_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Operation_Id_Valid (Id));
    end Operation_Prepend_To_Parameters;
 
    -------------------------
@@ -502,6 +583,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NT_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Term_Id_Valid (Id));
    end Named_Term_Set_Name;
 
    -------------------------
@@ -516,6 +600,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NT_Term := Term;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Term_Id_Valid (Id));
    end Named_Term_Set_Term;
 
    ------------------------------------
@@ -530,6 +617,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CT_Condition := Condition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Term_Id_Valid (Id));
    end Conditional_Term_Set_Condition;
 
    ------------------------------------
@@ -544,6 +634,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CT_Then_Part := Then_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Term_Id_Valid (Id));
    end Conditional_Term_Set_Then_Part;
 
    ------------------------------------
@@ -558,6 +651,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CT_Else_Part := Else_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Term_Id_Valid (Id));
    end Conditional_Term_Set_Else_Part;
 
    ---------------------------
@@ -572,6 +668,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BT_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Term_Id_Valid (Id));
    end Binding_Term_Set_Name;
 
    --------------------------
@@ -586,6 +685,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BT_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Term_Id_Valid (Id));
    end Binding_Term_Set_Def;
 
    ------------------------------
@@ -600,6 +702,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BT_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Term_Id_Valid (Id));
    end Binding_Term_Set_Context;
 
    -----------------------------
@@ -614,6 +719,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BT_Term := Term;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Protected_Term_Id_Valid (Id));
    end Protected_Term_Set_Term;
 
    -----------------------------------
@@ -628,6 +736,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PID_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Predicate_Identifier_Id_Valid (Id));
    end Predicate_Identifier_Set_Name;
 
    ---------------------------------
@@ -642,6 +753,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PIN_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Predicate_Instance_Id_Valid (Id));
    end Predicate_Instance_Set_Name;
 
    ---------------------------------------------
@@ -656,6 +770,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.PIN_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Predicate_Instance_Id_Valid (Id));
    end Predicate_Instance_Append_To_Parameters;
 
    ----------------------------------------------
@@ -670,6 +787,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.PIN_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Predicate_Instance_Id_Valid (Id));
    end Predicate_Instance_Prepend_To_Parameters;
 
    ----------------------------
@@ -684,6 +804,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Related_Terms_Id_Valid (Id));
    end Related_Terms_Set_Left;
 
    --------------------------
@@ -698,6 +821,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Op := Op;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Related_Terms_Id_Valid (Id));
    end Related_Terms_Set_Op;
 
    -----------------------------
@@ -712,6 +838,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Related_Terms_Id_Valid (Id));
    end Related_Terms_Set_Right;
 
    ---------------------------
@@ -726,6 +855,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Op2 := Op2;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Related_Terms_Id_Valid (Id));
    end Related_Terms_Set_Op2;
 
    ------------------------------
@@ -740,6 +872,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RT_Right2 := Right2;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Related_Terms_Id_Valid (Id));
    end Related_Terms_Set_Right2;
 
    --------------------------
@@ -754,6 +889,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Implication_Id_Valid (Id));
    end Implication_Set_Left;
 
    ---------------------------
@@ -768,6 +906,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Implication_Id_Valid (Id));
    end Implication_Set_Right;
 
    --------------------------
@@ -782,6 +923,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Equivalence_Id_Valid (Id));
    end Equivalence_Set_Left;
 
    ---------------------------
@@ -796,6 +940,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Equivalence_Id_Valid (Id));
    end Equivalence_Set_Right;
 
    --------------------------
@@ -810,6 +957,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Disjonction_Id_Valid (Id));
    end Disjonction_Set_Left;
 
    ---------------------------
@@ -824,6 +974,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Disjonction_Id_Valid (Id));
    end Disjonction_Set_Right;
 
    --------------------------
@@ -838,6 +991,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conjonction_Id_Valid (Id));
    end Conjonction_Set_Left;
 
    ---------------------------
@@ -852,6 +1008,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ITOC_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conjonction_Id_Valid (Id));
    end Conjonction_Set_Right;
 
    --------------------------
@@ -866,6 +1025,9 @@ package body Why.Atree.Mutators is
    begin
       Node.N_Operand := Operand;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Negation_Id_Valid (Id));
    end Negation_Set_Operand;
 
    ------------------------------------
@@ -880,6 +1042,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPD_Condition := Condition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Pred_Id_Valid (Id));
    end Conditional_Pred_Set_Condition;
 
    ------------------------------------
@@ -894,6 +1059,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPD_Then_Part := Then_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Pred_Id_Valid (Id));
    end Conditional_Pred_Set_Then_Part;
 
    ------------------------------------
@@ -908,6 +1076,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPD_Else_Part := Else_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Pred_Id_Valid (Id));
    end Conditional_Pred_Set_Else_Part;
 
    ---------------------------
@@ -922,6 +1093,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPD_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Pred_Id_Valid (Id));
    end Binding_Pred_Set_Name;
 
    --------------------------
@@ -936,6 +1110,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPD_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Pred_Id_Valid (Id));
    end Binding_Pred_Set_Def;
 
    ------------------------------
@@ -950,6 +1127,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPD_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Pred_Id_Valid (Id));
    end Binding_Pred_Set_Context;
 
    -------------------------------------------
@@ -964,6 +1144,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.UQ_Variables, New_Item);
+      Update_Validity_Status
+        (Id,
+         Universal_Quantif_Id_Valid (Id));
    end Universal_Quantif_Append_To_Variables;
 
    --------------------------------------------
@@ -978,6 +1161,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.UQ_Variables, New_Item);
+      Update_Validity_Status
+        (Id,
+         Universal_Quantif_Id_Valid (Id));
    end Universal_Quantif_Prepend_To_Variables;
 
    ------------------------------------
@@ -992,6 +1178,9 @@ package body Why.Atree.Mutators is
    begin
       Node.UQ_Var_Type := Var_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Universal_Quantif_Id_Valid (Id));
    end Universal_Quantif_Set_Var_Type;
 
    ------------------------------------
@@ -1006,6 +1195,9 @@ package body Why.Atree.Mutators is
    begin
       Node.UQ_Triggers := Triggers;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Universal_Quantif_Id_Valid (Id));
    end Universal_Quantif_Set_Triggers;
 
    --------------------------------
@@ -1020,6 +1212,9 @@ package body Why.Atree.Mutators is
    begin
       Node.UQ_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Universal_Quantif_Id_Valid (Id));
    end Universal_Quantif_Set_Pred;
 
    ---------------------------------------------
@@ -1034,6 +1229,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.EQ_Variables, New_Item);
+      Update_Validity_Status
+        (Id,
+         Existential_Quantif_Id_Valid (Id));
    end Existential_Quantif_Append_To_Variables;
 
    ----------------------------------------------
@@ -1048,6 +1246,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.EQ_Variables, New_Item);
+      Update_Validity_Status
+        (Id,
+         Existential_Quantif_Id_Valid (Id));
    end Existential_Quantif_Prepend_To_Variables;
 
    --------------------------------------
@@ -1062,6 +1263,9 @@ package body Why.Atree.Mutators is
    begin
       Node.EQ_Var_Type := Var_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Existential_Quantif_Id_Valid (Id));
    end Existential_Quantif_Set_Var_Type;
 
    ----------------------------------
@@ -1076,6 +1280,9 @@ package body Why.Atree.Mutators is
    begin
       Node.EQ_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Existential_Quantif_Id_Valid (Id));
    end Existential_Quantif_Set_Pred;
 
    ------------------------------
@@ -1090,6 +1297,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NP_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Predicate_Id_Valid (Id));
    end Named_Predicate_Set_Name;
 
    ------------------------------
@@ -1104,6 +1314,9 @@ package body Why.Atree.Mutators is
    begin
       Node.NP_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Named_Predicate_Id_Valid (Id));
    end Named_Predicate_Set_Pred;
 
    ----------------------------------
@@ -1118,6 +1331,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PP_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Protected_Predicate_Id_Valid (Id));
    end Protected_Predicate_Set_Pred;
 
    ---------------------------------
@@ -1132,6 +1348,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.TRS_Triggers, New_Item);
+      Update_Validity_Status
+        (Id,
+         Triggers_Id_Valid (Id));
    end Triggers_Append_To_Triggers;
 
    ----------------------------------
@@ -1146,6 +1365,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.TRS_Triggers, New_Item);
+      Update_Validity_Status
+        (Id,
+         Triggers_Id_Valid (Id));
    end Triggers_Prepend_To_Triggers;
 
    -----------------------------
@@ -1160,6 +1382,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.TRI_Terms, New_Item);
+      Update_Validity_Status
+        (Id,
+         Trigger_Id_Valid (Id));
    end Trigger_Append_To_Terms;
 
    ------------------------------
@@ -1174,6 +1399,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.TRI_Terms, New_Item);
+      Update_Validity_Status
+        (Id,
+         Trigger_Id_Valid (Id));
    end Trigger_Prepend_To_Terms;
 
    -----------------------
@@ -1188,6 +1416,9 @@ package body Why.Atree.Mutators is
    begin
       Node.T_External := External;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Type_Id_Valid (Id));
    end Type_Set_External;
 
    ------------------------------------
@@ -1202,6 +1433,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.T_Type_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Type_Id_Valid (Id));
    end Type_Append_To_Type_Parameters;
 
    -------------------------------------
@@ -1216,6 +1450,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.T_Type_Parameters, New_Item);
+      Update_Validity_Status
+        (Id,
+         Type_Id_Valid (Id));
    end Type_Prepend_To_Type_Parameters;
 
    -------------------
@@ -1230,6 +1467,9 @@ package body Why.Atree.Mutators is
    begin
       Node.T_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Type_Id_Valid (Id));
    end Type_Set_Name;
 
    ------------------------
@@ -1244,6 +1484,9 @@ package body Why.Atree.Mutators is
    begin
       Node.L_External := External;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Logic_Id_Valid (Id));
    end Logic_Set_External;
 
    ---------------------------
@@ -1258,6 +1501,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.L_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Id_Valid (Id));
    end Logic_Append_To_Names;
 
    ----------------------------
@@ -1272,6 +1518,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.L_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Id_Valid (Id));
    end Logic_Prepend_To_Names;
 
    --------------------------
@@ -1286,6 +1535,9 @@ package body Why.Atree.Mutators is
    begin
       Node.L_Logic_Type := Logic_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Logic_Id_Valid (Id));
    end Logic_Set_Logic_Type;
 
    -----------------------
@@ -1300,6 +1552,9 @@ package body Why.Atree.Mutators is
    begin
       Node.F_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Function_Id_Valid (Id));
    end Function_Set_Name;
 
    --------------------------------
@@ -1314,6 +1569,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.F_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Function_Id_Valid (Id));
    end Function_Append_To_Binders;
 
    ---------------------------------
@@ -1328,6 +1586,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.F_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Function_Id_Valid (Id));
    end Function_Prepend_To_Binders;
 
    ------------------------------
@@ -1342,6 +1603,9 @@ package body Why.Atree.Mutators is
    begin
       Node.F_Return_Type := Return_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Function_Id_Valid (Id));
    end Function_Set_Return_Type;
 
    ----------------------
@@ -1356,6 +1620,9 @@ package body Why.Atree.Mutators is
    begin
       Node.F_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Function_Id_Valid (Id));
    end Function_Set_Def;
 
    -----------------------------------
@@ -1370,6 +1637,9 @@ package body Why.Atree.Mutators is
    begin
       Node.P_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Predicate_Definition_Id_Valid (Id));
    end Predicate_Definition_Set_Name;
 
    --------------------------------------------
@@ -1384,6 +1654,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.P_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Predicate_Definition_Id_Valid (Id));
    end Predicate_Definition_Append_To_Binders;
 
    ---------------------------------------------
@@ -1398,6 +1671,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.P_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Predicate_Definition_Id_Valid (Id));
    end Predicate_Definition_Prepend_To_Binders;
 
    ----------------------------------
@@ -1412,6 +1688,9 @@ package body Why.Atree.Mutators is
    begin
       Node.P_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Predicate_Definition_Id_Valid (Id));
    end Predicate_Definition_Set_Def;
 
    ------------------------
@@ -1426,6 +1705,9 @@ package body Why.Atree.Mutators is
    begin
       Node.I_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Inductive_Id_Valid (Id));
    end Inductive_Set_Name;
 
    ------------------------------
@@ -1440,6 +1722,9 @@ package body Why.Atree.Mutators is
    begin
       Node.I_Logic_Type := Logic_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Inductive_Id_Valid (Id));
    end Inductive_Set_Logic_Type;
 
    -----------------------------
@@ -1454,6 +1739,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.I_Def, New_Item);
+      Update_Validity_Status
+        (Id,
+         Inductive_Id_Valid (Id));
    end Inductive_Append_To_Def;
 
    ------------------------------
@@ -1468,6 +1756,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.I_Def, New_Item);
+      Update_Validity_Status
+        (Id,
+         Inductive_Id_Valid (Id));
    end Inductive_Prepend_To_Def;
 
    --------------------
@@ -1482,6 +1773,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AX_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Axiom_Id_Valid (Id));
    end Axiom_Set_Name;
 
    -------------------
@@ -1496,6 +1790,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AX_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Axiom_Id_Valid (Id));
    end Axiom_Set_Def;
 
    -------------------
@@ -1510,6 +1807,9 @@ package body Why.Atree.Mutators is
    begin
       Node.G_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Goal_Id_Valid (Id));
    end Goal_Set_Name;
 
    ------------------
@@ -1524,6 +1824,9 @@ package body Why.Atree.Mutators is
    begin
       Node.G_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Goal_Id_Valid (Id));
    end Goal_Set_Def;
 
    ------------------------------------
@@ -1538,6 +1841,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.LT_Arg_Types, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Type_Id_Valid (Id));
    end Logic_Type_Append_To_Arg_Types;
 
    -------------------------------------
@@ -1552,6 +1858,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.LT_Arg_Types, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Type_Id_Valid (Id));
    end Logic_Type_Prepend_To_Arg_Types;
 
    --------------------------------------
@@ -1566,6 +1875,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.LT_Return_Type, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Type_Id_Valid (Id));
    end Logic_Type_Append_To_Return_Type;
 
    ---------------------------------------
@@ -1580,6 +1892,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.LT_Return_Type, New_Item);
+      Update_Validity_Status
+        (Id,
+         Logic_Type_Id_Valid (Id));
    end Logic_Type_Prepend_To_Return_Type;
 
    ---------------------------
@@ -1594,6 +1909,9 @@ package body Why.Atree.Mutators is
    begin
       Node.LB_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Logic_Binder_Id_Valid (Id));
    end Logic_Binder_Set_Name;
 
    ---------------------------------
@@ -1608,6 +1926,9 @@ package body Why.Atree.Mutators is
    begin
       Node.LB_Param_Type := Param_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Logic_Binder_Id_Valid (Id));
    end Logic_Binder_Set_Param_Type;
 
    -----------------------------
@@ -1622,6 +1943,9 @@ package body Why.Atree.Mutators is
    begin
       Node.IC_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Inductive_Case_Id_Valid (Id));
    end Inductive_Case_Set_Name;
 
    -----------------------------
@@ -1636,6 +1960,9 @@ package body Why.Atree.Mutators is
    begin
       Node.IC_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Inductive_Case_Id_Valid (Id));
    end Inductive_Case_Set_Pred;
 
    -----------------------------
@@ -1650,6 +1977,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.E_Reads, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Append_To_Reads;
 
    ------------------------------
@@ -1664,6 +1994,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.E_Reads, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Prepend_To_Reads;
 
    ------------------------------
@@ -1678,6 +2011,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.E_Writes, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Append_To_Writes;
 
    -------------------------------
@@ -1692,6 +2028,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.E_Writes, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Prepend_To_Writes;
 
    ------------------------------
@@ -1706,6 +2045,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.E_Raises, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Append_To_Raises;
 
    -------------------------------
@@ -1720,6 +2062,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.E_Raises, New_Item);
+      Update_Validity_Status
+        (Id,
+         Effects_Id_Valid (Id));
    end Effects_Prepend_To_Raises;
 
    --------------------------------
@@ -1734,6 +2079,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PRE_Assertion := Assertion;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Precondition_Id_Valid (Id));
    end Precondition_Set_Assertion;
 
    ---------------------------------
@@ -1748,6 +2096,9 @@ package body Why.Atree.Mutators is
    begin
       Node.POST_Assertion := Assertion;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Postcondition_Id_Valid (Id));
    end Postcondition_Set_Assertion;
 
    --------------------------------------
@@ -1762,6 +2113,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.POST_Handlers, New_Item);
+      Update_Validity_Status
+        (Id,
+         Postcondition_Id_Valid (Id));
    end Postcondition_Append_To_Handlers;
 
    ---------------------------------------
@@ -1776,6 +2130,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.POST_Handlers, New_Item);
+      Update_Validity_Status
+        (Id,
+         Postcondition_Id_Valid (Id));
    end Postcondition_Prepend_To_Handlers;
 
    --------------------------------
@@ -1790,6 +2147,9 @@ package body Why.Atree.Mutators is
    begin
       Node.EC_Exn_Case := Exn_Case;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Exn_Condition_Id_Valid (Id));
    end Exn_Condition_Set_Exn_Case;
 
    ---------------------------------
@@ -1804,6 +2164,9 @@ package body Why.Atree.Mutators is
    begin
       Node.EC_Assertion := Assertion;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Exn_Condition_Id_Valid (Id));
    end Exn_Condition_Set_Assertion;
 
    ------------------------
@@ -1818,6 +2181,9 @@ package body Why.Atree.Mutators is
    begin
       Node.A_Pred := Pred;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Assertion_Id_Valid (Id));
    end Assertion_Set_Pred;
 
    ----------------------
@@ -1832,6 +2198,9 @@ package body Why.Atree.Mutators is
    begin
       Node.A_As := As;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Assertion_Id_Valid (Id));
    end Assertion_Set_As;
 
    ---------------------------
@@ -1846,6 +2215,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PC_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Prog_Constant_Id_Valid (Id));
    end Prog_Constant_Set_Def;
 
    -----------------------------
@@ -1860,6 +2232,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PI_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Prog_Identifier_Id_Valid (Id));
    end Prog_Identifier_Set_Def;
 
    -------------------
@@ -1874,6 +2249,9 @@ package body Why.Atree.Mutators is
    begin
       Node.D_Ref := Ref;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Deref_Id_Valid (Id));
    end Deref_Set_Ref;
 
    -------------------------
@@ -1888,6 +2266,9 @@ package body Why.Atree.Mutators is
    begin
       Node.A_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Assignment_Id_Valid (Id));
    end Assignment_Set_Name;
 
    --------------------------
@@ -1902,6 +2283,9 @@ package body Why.Atree.Mutators is
    begin
       Node.A_Value := Value;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Assignment_Id_Valid (Id));
    end Assignment_Set_Value;
 
    ---------------------------
@@ -1916,6 +2300,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AA_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Access_Id_Valid (Id));
    end Array_Access_Set_Name;
 
    ----------------------------
@@ -1930,6 +2317,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AA_Index := Index;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Access_Id_Valid (Id));
    end Array_Access_Set_Index;
 
    ---------------------------
@@ -1944,6 +2334,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AU_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Update_Id_Valid (Id));
    end Array_Update_Set_Name;
 
    ----------------------------
@@ -1958,6 +2351,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AU_Index := Index;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Update_Id_Valid (Id));
    end Array_Update_Set_Index;
 
    ----------------------------
@@ -1972,6 +2368,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AU_Value := Value;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Array_Update_Id_Valid (Id));
    end Array_Update_Set_Value;
 
    -------------------------
@@ -1986,6 +2385,9 @@ package body Why.Atree.Mutators is
    begin
       Node.IC_Left := Left;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Infix_Call_Id_Valid (Id));
    end Infix_Call_Set_Left;
 
    --------------------------
@@ -2000,6 +2402,9 @@ package body Why.Atree.Mutators is
    begin
       Node.IC_Infix := Infix;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Infix_Call_Id_Valid (Id));
    end Infix_Call_Set_Infix;
 
    --------------------------
@@ -2014,6 +2419,9 @@ package body Why.Atree.Mutators is
    begin
       Node.IC_Right := Right;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Infix_Call_Id_Valid (Id));
    end Infix_Call_Set_Right;
 
    ----------------------------
@@ -2028,6 +2436,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PC_Prefix := Prefix;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Prefix_Call_Id_Valid (Id));
    end Prefix_Call_Set_Prefix;
 
    -----------------------------
@@ -2042,6 +2453,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PC_Operand := Operand;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Prefix_Call_Id_Valid (Id));
    end Prefix_Call_Set_Operand;
 
    ---------------------------
@@ -2056,6 +2470,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Prog_Id_Valid (Id));
    end Binding_Prog_Set_Name;
 
    --------------------------
@@ -2070,6 +2487,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Prog_Id_Valid (Id));
    end Binding_Prog_Set_Def;
 
    ------------------------------
@@ -2084,6 +2504,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Prog_Id_Valid (Id));
    end Binding_Prog_Set_Context;
 
    --------------------------
@@ -2098,6 +2521,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Ref_Id_Valid (Id));
    end Binding_Ref_Set_Name;
 
    -------------------------
@@ -2112,6 +2538,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Ref_Id_Valid (Id));
    end Binding_Ref_Set_Def;
 
    -----------------------------
@@ -2126,6 +2555,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BPG_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Ref_Id_Valid (Id));
    end Binding_Ref_Set_Context;
 
    ------------------------------------
@@ -2140,6 +2572,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPG_Condition := Condition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Prog_Id_Valid (Id));
    end Conditional_Prog_Set_Condition;
 
    ------------------------------------
@@ -2154,6 +2589,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPG_Then_Part := Then_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Prog_Id_Valid (Id));
    end Conditional_Prog_Set_Then_Part;
 
    ------------------------------------
@@ -2168,6 +2606,9 @@ package body Why.Atree.Mutators is
    begin
       Node.CPG_Else_Part := Else_Part;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Conditional_Prog_Id_Valid (Id));
    end Conditional_Prog_Set_Else_Part;
 
    ------------------------------
@@ -2182,6 +2623,9 @@ package body Why.Atree.Mutators is
    begin
       Node.WL_Condition := Condition;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         While_Loop_Id_Valid (Id));
    end While_Loop_Set_Condition;
 
    -------------------------------
@@ -2196,6 +2640,9 @@ package body Why.Atree.Mutators is
    begin
       Node.WL_Annotation := Annotation;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         While_Loop_Id_Valid (Id));
    end While_Loop_Set_Annotation;
 
    ---------------------------------
@@ -2210,6 +2657,9 @@ package body Why.Atree.Mutators is
    begin
       Node.WL_Loop_Content := Loop_Content;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         While_Loop_Id_Valid (Id));
    end While_Loop_Set_Loop_Content;
 
    ---------------------------------------------
@@ -2224,6 +2674,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.SS_Statements, New_Item);
+      Update_Validity_Status
+        (Id,
+         Statement_Sequence_Id_Valid (Id));
    end Statement_Sequence_Append_To_Statements;
 
    ----------------------------------------------
@@ -2238,6 +2691,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.SS_Statements, New_Item);
+      Update_Validity_Status
+        (Id,
+         Statement_Sequence_Id_Valid (Id));
    end Statement_Sequence_Prepend_To_Statements;
 
    --------------------
@@ -2252,6 +2708,9 @@ package body Why.Atree.Mutators is
    begin
       Node.L_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Label_Id_Valid (Id));
    end Label_Set_Name;
 
    -------------------
@@ -2266,6 +2725,9 @@ package body Why.Atree.Mutators is
    begin
       Node.L_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Label_Id_Valid (Id));
    end Label_Set_Def;
 
    ---------------------------------
@@ -2280,6 +2742,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.AS_Assertions, New_Item);
+      Update_Validity_Status
+        (Id,
+         Assert_Id_Valid (Id));
    end Assert_Append_To_Assertions;
 
    ----------------------------------
@@ -2294,6 +2759,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.AS_Assertions, New_Item);
+      Update_Validity_Status
+        (Id,
+         Assert_Id_Valid (Id));
    end Assert_Prepend_To_Assertions;
 
    ---------------------
@@ -2308,6 +2776,9 @@ package body Why.Atree.Mutators is
    begin
       Node.AS_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Assert_Id_Valid (Id));
    end Assert_Set_Prog;
 
    -----------------------------
@@ -2322,6 +2793,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PA_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Post_Assertion_Id_Valid (Id));
    end Post_Assertion_Set_Prog;
 
    -----------------------------
@@ -2336,6 +2810,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PA_Post := Post;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Post_Assertion_Id_Valid (Id));
    end Post_Assertion_Set_Post;
 
    -------------------------------
@@ -2350,6 +2827,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PA_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Opaque_Assertion_Id_Valid (Id));
    end Opaque_Assertion_Set_Prog;
 
    -------------------------------
@@ -2364,6 +2844,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PA_Post := Post;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Opaque_Assertion_Id_Valid (Id));
    end Opaque_Assertion_Set_Post;
 
    -------------------------
@@ -2378,6 +2861,9 @@ package body Why.Atree.Mutators is
    begin
       Node.FD_Binders := Binders;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Fun_Def_Id_Valid (Id));
    end Fun_Def_Set_Binders;
 
    ---------------------
@@ -2392,6 +2878,9 @@ package body Why.Atree.Mutators is
    begin
       Node.FD_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Fun_Def_Id_Valid (Id));
    end Fun_Def_Set_Def;
 
    --------------------------
@@ -2406,6 +2895,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BF_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Name;
 
    -----------------------------
@@ -2420,6 +2912,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BF_Binders := Binders;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Binders;
 
    -------------------------
@@ -2434,6 +2929,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BF_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Def;
 
    -----------------------------
@@ -2448,6 +2946,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BF_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Context;
 
    ----------------------------
@@ -2462,6 +2963,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BR_Recfun := Recfun;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Rec_Id_Valid (Id));
    end Binding_Rec_Set_Recfun;
 
    -----------------------------
@@ -2476,6 +2980,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BR_Context := Context;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binding_Rec_Id_Valid (Id));
    end Binding_Rec_Set_Context;
 
    -----------------------------------
@@ -2490,6 +2997,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.PS_Progs, New_Item);
+      Update_Validity_Status
+        (Id,
+         Prog_Sequence_Id_Valid (Id));
    end Prog_Sequence_Append_To_Progs;
 
    ------------------------------------
@@ -2504,6 +3014,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.PS_Progs, New_Item);
+      Update_Validity_Status
+        (Id,
+         Prog_Sequence_Id_Valid (Id));
    end Prog_Sequence_Prepend_To_Progs;
 
    ------------------------------
@@ -2518,6 +3031,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RS_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Raise_Statement_Id_Valid (Id));
    end Raise_Statement_Set_Name;
 
    ----------------------------------
@@ -2532,6 +3048,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RS_Exn_Type := Exn_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Raise_Statement_Id_Valid (Id));
    end Raise_Statement_Set_Exn_Type;
 
    ----------------------------------------------
@@ -2546,6 +3065,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RSWP_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Raise_Statement_With_Parameters_Id_Valid (Id));
    end Raise_Statement_With_Parameters_Set_Name;
 
    ---------------------------------------------------
@@ -2560,6 +3082,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RSWP_Parameter := Parameter;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Raise_Statement_With_Parameters_Id_Valid (Id));
    end Raise_Statement_With_Parameters_Set_Parameter;
 
    --------------------------------------------------
@@ -2574,6 +3099,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RSWP_Exn_Type := Exn_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Raise_Statement_With_Parameters_Id_Valid (Id));
    end Raise_Statement_With_Parameters_Set_Exn_Type;
 
    ------------------------
@@ -2588,6 +3116,9 @@ package body Why.Atree.Mutators is
    begin
       Node.TB_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Try_Block_Id_Valid (Id));
    end Try_Block_Set_Prog;
 
    ---------------------------------
@@ -2602,6 +3133,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.TB_Handler, New_Item);
+      Update_Validity_Status
+        (Id,
+         Try_Block_Id_Valid (Id));
    end Try_Block_Append_To_Handler;
 
    ----------------------------------
@@ -2616,6 +3150,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.TB_Handler, New_Item);
+      Update_Validity_Status
+        (Id,
+         Try_Block_Id_Valid (Id));
    end Try_Block_Prepend_To_Handler;
 
    -----------------------------------
@@ -2630,6 +3167,9 @@ package body Why.Atree.Mutators is
    begin
       Node.UC_Exn_Type := Exn_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Unreachable_Code_Id_Valid (Id));
    end Unreachable_Code_Set_Exn_Type;
 
    --------------------------
@@ -2644,6 +3184,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BB_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Begin_Block_Id_Valid (Id));
    end Begin_Block_Set_Prog;
 
    -----------------------------
@@ -2658,6 +3201,9 @@ package body Why.Atree.Mutators is
    begin
       Node.BB_Prog := Prog;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Protected_Prog_Id_Valid (Id));
    end Protected_Prog_Set_Prog;
 
    -------------------------------
@@ -2672,6 +3218,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.BS_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Binders_Id_Valid (Id));
    end Binders_Append_To_Binders;
 
    --------------------------------
@@ -2686,6 +3235,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.BS_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Binders_Id_Valid (Id));
    end Binders_Prepend_To_Binders;
 
    ----------------------------
@@ -2700,6 +3252,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.B_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Binder_Id_Valid (Id));
    end Binder_Append_To_Names;
 
    -----------------------------
@@ -2714,6 +3269,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.B_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Binder_Id_Valid (Id));
    end Binder_Prepend_To_Names;
 
    -------------------------
@@ -2728,6 +3286,9 @@ package body Why.Atree.Mutators is
    begin
       Node.B_Arg_Type := Arg_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Binder_Id_Valid (Id));
    end Binder_Set_Arg_Type;
 
    ---------------------
@@ -2742,6 +3303,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RF_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
    end Recfun_Set_Name;
 
    ------------------------
@@ -2756,6 +3320,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RF_Binders := Binders;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
    end Recfun_Set_Binders;
 
    ----------------------------
@@ -2770,6 +3337,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RF_Return_Type := Return_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
    end Recfun_Set_Return_Type;
 
    ------------------------
@@ -2784,6 +3354,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RF_Variant := Variant;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
    end Recfun_Set_Variant;
 
    --------------------
@@ -2798,6 +3371,9 @@ package body Why.Atree.Mutators is
    begin
       Node.RF_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
    end Recfun_Set_Def;
 
    ------------------------------
@@ -2812,6 +3388,9 @@ package body Why.Atree.Mutators is
    begin
       Node.LA_Invariant := Invariant;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Loop_Annot_Id_Valid (Id));
    end Loop_Annot_Set_Invariant;
 
    ----------------------------
@@ -2826,6 +3405,9 @@ package body Why.Atree.Mutators is
    begin
       Node.LA_Variant := Variant;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Loop_Annot_Id_Valid (Id));
    end Loop_Annot_Set_Variant;
 
    --------------------
@@ -2840,6 +3422,9 @@ package body Why.Atree.Mutators is
    begin
       Node.WA_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Wf_Arg_Id_Valid (Id));
    end Wf_Arg_Set_Def;
 
    -----------------------
@@ -2854,6 +3439,9 @@ package body Why.Atree.Mutators is
    begin
       Node.WA_For_Id := For_Id;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Wf_Arg_Id_Valid (Id));
    end Wf_Arg_Set_For_Id;
 
    ----------------------
@@ -2868,6 +3456,9 @@ package body Why.Atree.Mutators is
    begin
       Node.H_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Handler_Id_Valid (Id));
    end Handler_Set_Name;
 
    ---------------------------
@@ -2882,6 +3473,9 @@ package body Why.Atree.Mutators is
    begin
       Node.H_Parameter := Parameter;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Handler_Id_Valid (Id));
    end Handler_Set_Parameter;
 
    ---------------------
@@ -2896,6 +3490,9 @@ package body Why.Atree.Mutators is
    begin
       Node.H_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Handler_Id_Valid (Id));
    end Handler_Set_Def;
 
    ---------------------------------
@@ -2910,6 +3507,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.F_Declarations, New_Item);
+      Update_Validity_Status
+        (Id,
+         File_Id_Valid (Id));
    end File_Append_To_Declarations;
 
    ----------------------------------
@@ -2924,6 +3524,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.F_Declarations, New_Item);
+      Update_Validity_Status
+        (Id,
+         File_Id_Valid (Id));
    end File_Prepend_To_Declarations;
 
    -----------------------------
@@ -2938,6 +3541,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GB_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Global_Binding_Id_Valid (Id));
    end Global_Binding_Set_Name;
 
    --------------------------------
@@ -2952,6 +3558,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GB_Binders := Binders;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Global_Binding_Id_Valid (Id));
    end Global_Binding_Set_Binders;
 
    ----------------------------
@@ -2966,6 +3575,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GB_Def := Def;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Global_Binding_Id_Valid (Id));
    end Global_Binding_Set_Def;
 
    ---------------------------------
@@ -2980,6 +3592,9 @@ package body Why.Atree.Mutators is
    begin
       Node.GRB_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Global_Rec_Binding_Id_Valid (Id));
    end Global_Rec_Binding_Set_Name;
 
    ----------------------------------------
@@ -2994,6 +3609,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PD_External := External;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Parameter_Declaration_Id_Valid (Id));
    end Parameter_Declaration_Set_External;
 
    -------------------------------------------
@@ -3008,6 +3626,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Append (Node.PD_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Parameter_Declaration_Id_Valid (Id));
    end Parameter_Declaration_Append_To_Names;
 
    --------------------------------------------
@@ -3022,6 +3643,9 @@ package body Why.Atree.Mutators is
                Get_Node (Id);
    begin
       Prepend (Node.PD_Names, New_Item);
+      Update_Validity_Status
+        (Id,
+         Parameter_Declaration_Id_Valid (Id));
    end Parameter_Declaration_Prepend_To_Names;
 
    ----------------------------------------------
@@ -3036,6 +3660,9 @@ package body Why.Atree.Mutators is
    begin
       Node.PD_Parameter_Type := Parameter_Type;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Parameter_Declaration_Id_Valid (Id));
    end Parameter_Declaration_Set_Parameter_Type;
 
    ------------------------------------
@@ -3050,6 +3677,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ED_Name := Name;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Exception_Declaration_Id_Valid (Id));
    end Exception_Declaration_Set_Name;
 
    -----------------------------------------
@@ -3064,6 +3694,9 @@ package body Why.Atree.Mutators is
    begin
       Node.ED_Parameter := Parameter;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Exception_Declaration_Id_Valid (Id));
    end Exception_Declaration_Set_Parameter;
 
    --------------------------------
@@ -3078,6 +3711,9 @@ package body Why.Atree.Mutators is
    begin
       Node.LD_Decl := Decl;
       Set_Node (Id, Node);
+      Update_Validity_Status
+        (Id,
+         Logic_Declaration_Id_Valid (Id));
    end Logic_Declaration_Set_Decl;
 
 end Why.Atree.Mutators;

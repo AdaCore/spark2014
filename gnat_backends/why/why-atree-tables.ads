@@ -43,6 +43,14 @@ package Why.Atree.Tables is
    pragma Postcondition (Get_Node (Node_Id) = Node);
    --  Assign the given Id to the given Node
 
+   procedure Update_Validity_Status
+     (Node_Id : Why_Node_Id;
+      Checked : Boolean);
+   procedure Update_Validity_Status
+     (List_Id : Why_Node_List;
+      Checked : Boolean);
+   --  Set the validity status of the given node/list to the value of Checked
+
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind;
    --  Get the kind of Node_Id
 

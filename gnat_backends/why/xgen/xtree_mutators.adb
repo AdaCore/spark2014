@@ -40,8 +40,9 @@ package body Xtree_Mutators is
    --  routines; this is the id of the new node to append to the list.
 
    procedure Print_Setter_Implementation
-     (O  : in out Output_Record;
-      FI : Field_Info);
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      FI   : Field_Info);
    pragma Precondition (not Is_List (FI));
    --  Print setter implementation for the given node child
    --  (from the declarative part of the mutator to the end
@@ -103,6 +104,7 @@ package body Xtree_Mutators is
 
    procedure Print_List_Op_Implementation
      (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
       FI      : Field_Info;
       List_Op : List_Op_Kind);
    pragma Precondition (Is_List (FI));
@@ -112,23 +114,33 @@ package body Xtree_Mutators is
    --  specification, the "is" keyword and the "end designator;"
    --  part).
 
+   procedure Print_Update_Validity_Status
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind);
+   --  Print an expression that updates the validity status of a node of
+   --  the given kind.
+
    ----------------------------------
    -- Print_List_Op_Implementation --
    ----------------------------------
 
    procedure Print_List_Op_Implementation
      (O       : in out Output_Record;
+      Kind    : Why_Node_Kind;
       FI      : Field_Info;
       List_Op : List_Op_Kind) is
    begin
-      PL (O, "   Node : constant Why_Node :=");
-      PL (O, "            Get_Node (" & Node_Id_Param & ");");
+      Relative_Indent (O, 3);
+      PL (O, "Node : constant Why_Node :=");
+      PL (O, "         Get_Node (" & Node_Id_Param & ");");
+      Relative_Indent (O, -3);
       PL (O, "begin");
-      PL (O, "   " & List_Op_Name (List_Op)
+      Relative_Indent (O, 3);
+      PL (O, List_Op_Name (List_Op)
           & " (Node." & Field_Name (FI)
           & ", " & Element_Param & ");");
-      --  ??? Missing handling for Checked (should be updated
-      --  if the node is valid after the assignment)
+      Print_Update_Validity_Status (O, Kind);
+      Relative_Indent (O, -3);
    end Print_List_Op_Implementation;
 
    --------------------------------
@@ -179,7 +191,7 @@ package body Xtree_Mutators is
             Field_Type  => Id_Type_Name (FI));
          NL (O);
          PL (O, "is");
-         Print_Setter_Implementation (O, FI);
+         Print_Setter_Implementation (O, W_Unused_At_Start, FI);
          PL (O, "end " & MN & ";");
 
          if Next (Position) /= No_Element then
@@ -284,7 +296,7 @@ package body Xtree_Mutators is
                Print_Setter_Specification (O, Kind, FI);
                NL (O);
                PL (O, "is");
-               Print_Setter_Implementation (O, FI);
+               Print_Setter_Implementation (O, Kind, FI);
                PL (O, "end " & MN & ";");
             end;
          else
@@ -299,7 +311,7 @@ package body Xtree_Mutators is
                   Print_List_Op_Specification (O, Kind, FI, List_Op);
                   NL (O);
                   PL (O, "is");
-                  Print_List_Op_Implementation (O, FI, List_Op);
+                  Print_List_Op_Implementation (O, Kind, FI, List_Op);
                   PL (O, "end " & LON & ";");
 
                   if List_Op /= List_Op_Kind'Last then
@@ -433,15 +445,23 @@ package body Xtree_Mutators is
    ---------------------------------
 
    procedure Print_Setter_Implementation
-     (O  : in out Output_Record;
-      FI : Field_Info) is
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      FI   : Field_Info) is
    begin
-      PL (O, "   Node : Why_Node := Get_Node (" & Node_Id_Param & ");");
+      Relative_Indent (O, 3);
+      PL (O, "Node : Why_Node := Get_Node (" & Node_Id_Param & ");");
+      Relative_Indent (O, -3);
       PL (O, "begin");
-      PL (O, "   Node." & Field_Name (FI) & " := " & Param_Name (FI) & ";");
-      PL (O, "   Set_Node (" & Node_Id_Param &", Node);");
-      --  ??? Missing handling for Checked (should be updated
-      --  if the node is valid after the assignment)
+      Relative_Indent (O, 3);
+      PL (O, "Node." & Field_Name (FI) & " := " & Param_Name (FI) & ";");
+      PL (O, "Set_Node (" & Node_Id_Param &", Node);");
+
+      if Is_Why_Id (FI) then
+         Print_Update_Validity_Status (O, Kind);
+      end if;
+
+      Relative_Indent (O, -3);
    end Print_Setter_Implementation;
 
    --------------------------------
@@ -460,5 +480,19 @@ package body Xtree_Mutators is
          Field_Param => Param_Name (FI),
          Field_Type  => Unchecked_Id_Type_Name (FI));
    end Print_Setter_Specification;
+
+   ----------------------------------
+   -- Print_Update_Validity_Status --
+   ----------------------------------
+
+   procedure Print_Update_Validity_Status
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind) is
+   begin
+      PL (O, "Update_Validity_Status");
+      PL (O, "  (" & Node_Id_Param & ",");
+      PL (O, "   " &Tree_Check (Mixed_Case_Name (Kind), Id_One)
+          & " (" & Node_Id_Param &"));");
+   end Print_Update_Validity_Status;
 
 end Xtree_Mutators;

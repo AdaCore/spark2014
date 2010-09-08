@@ -143,6 +143,35 @@ package body Why.Atree.Tables is
       Replace_Element (Node_Table, Node_Id, Node);
    end Set_Node;
 
+   ----------------------------
+   -- Update_Validity_Status --
+   ----------------------------
+
+   procedure Update_Validity_Status
+     (Node_Id : Why_Node_Id;
+      Checked : Boolean)
+   is
+      use Node_Tables;
+
+      Node    : Why_Node := Get_Node (Node_Id);
+   begin
+      Node.Checked := Checked;
+      Set_Node (Node_Id, Node);
+   end Update_Validity_Status;
+
+   procedure Update_Validity_Status
+     (List_Id : Why_Node_List;
+      Checked : Boolean)
+   is
+      use Node_List_Tables;
+      use Node_Lists;
+
+      LI      : List_Info := List_Table.Element (List_Id);
+   begin
+      LI.Checked := Checked;
+      Replace_Element (List_Table, List_Id, LI);
+   end Update_Validity_Status;
+
 begin
    Initialize;
 end Why.Atree.Tables;
