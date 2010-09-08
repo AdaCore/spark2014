@@ -39,14 +39,15 @@ package body Xtree_Mutators is
    --  Name of a formal parameter that is common to all append/prepend
    --  routines; this is the id of the new node to append to the list.
 
-   procedure Print_Mutator_Implementation
-     (O    : in out Output_Record;
-      FI   : Field_Info);
-   --  Print mutator implementation for the given node child
+   procedure Print_Setter_Implementation
+     (O  : in out Output_Record;
+      FI : Field_Info);
+   pragma Precondition (not Is_List (FI));
+   --  Print setter implementation for the given node child
    --  (from the declarative part of the mutator to the end
    --  of its sequence of statement. Not included: the subprogram
    --  specification, the "is" keyword and the "end designator;"
-   --  part)
+   --  part).
 
    procedure Print_Mutator_Kind_Bodies
      (O    : in out Output_Record;
@@ -58,11 +59,12 @@ package body Xtree_Mutators is
       Kind : Why_Node_Kind);
    --  Print mutator declarations for the given node kind
 
-   procedure Print_Mutator_Specification
+   procedure Print_Setter_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
       FI   : Field_Info);
-   --  Print mutator specification for the given node child
+   pragma Precondition (not Is_List (FI));
+   --  Print setter specification for the given node child
 
    procedure Print_Mutator_Precondition
      (O    : in out Output_Record;
@@ -80,18 +82,35 @@ package body Xtree_Mutators is
       Param_Type  : Wide_String;
       Field_Param : Wide_String;
       Field_Type  : Wide_String);
-   --  Print mutator specification from its formals
+   --  Print mutator specification from its formals. the mutator
+   --  may be a setter, but it may as well be an append/prepend
+   --  operations (when the considered child is a node list);
+   --  this procedure makes no assumption on the final nature of
+   --  this mutator. It just suppose that it is a procedure with
+   --  two parameters, whose formal name/type name are given in
+   --  Name/Param_Type and Field_Param/Field_Type.
 
    procedure Print_List_Op_Specification
      (O       : in out Output_Record;
       Kind    : Why_Node_Kind;
       FI      : Field_Info;
       List_Op : List_Op_Kind);
+   pragma Precondition (Is_List (FI));
+   --  Print specification of the given operation on node lists,
+   --  for the a child of any node of the given kind. e.g.
+   --  append operations on child of a given node, assuming that
+   --  this child has List or OList for multiplicity modifier.
 
    procedure Print_List_Op_Implementation
      (O       : in out Output_Record;
       FI      : Field_Info;
       List_Op : List_Op_Kind);
+   pragma Precondition (Is_List (FI));
+   --  Print implementation of the given operation on node lists
+   --  (from the declarative part of the mutator to the end
+   --  of its sequence of statement. Not included: the subprogram
+   --  specification, the "is" keyword and the "end designator;"
+   --  part).
 
    ----------------------------------
    -- Print_List_Op_Implementation --
@@ -160,7 +179,7 @@ package body Xtree_Mutators is
             Field_Type  => Id_Type_Name (FI));
          NL (O);
          PL (O, "is");
-         Print_Mutator_Implementation (O, FI);
+         Print_Setter_Implementation (O, FI);
          PL (O, "end " & MN & ";");
 
          if Next (Position) /= No_Element then
@@ -189,7 +208,8 @@ package body Xtree_Mutators is
    -- Print_Mutator_Declarations --
    --------------------------------
 
-   procedure Print_Mutator_Declarations  (O : in out Output_Record) is
+   procedure Print_Mutator_Declarations  (O : in out Output_Record)
+   is
       use Node_Lists;
 
       procedure Print_Common_Field_Mutator (Position : Cursor);
@@ -233,22 +253,6 @@ package body Xtree_Mutators is
       end loop;
    end Print_Mutator_Declarations;
 
-   ----------------------------------
-   -- Print_Mutator_Implementation --
-   ----------------------------------
-
-   procedure Print_Mutator_Implementation
-     (O    : in out Output_Record;
-      FI   : Field_Info) is
-   begin
-      PL (O, "   Node : Why_Node := Get_Node (" & Node_Id_Param & ");");
-      PL (O, "begin");
-      PL (O, "   Node." & Field_Name (FI) & " := " & Param_Name (FI) & ";");
-      PL (O, "   Set_Node (" & Node_Id_Param &", Node);");
-      --  ??? Missing handling for Checked (should be updated
-      --  if the node is valid after the assignment)
-   end Print_Mutator_Implementation;
-
    -------------------------------
    -- Print_Mutator_Kind_Bodies --
    -------------------------------
@@ -277,10 +281,10 @@ package body Xtree_Mutators is
                Print_Box (O, MN);
                NL (O);
 
-               Print_Mutator_Specification (O, Kind, FI);
+               Print_Setter_Specification (O, Kind, FI);
                NL (O);
                PL (O, "is");
-               Print_Mutator_Implementation (O, FI);
+               Print_Setter_Implementation (O, FI);
                PL (O, "end " & MN & ";");
             end;
          else
@@ -341,9 +345,12 @@ package body Xtree_Mutators is
          FI : constant Field_Info := Element (Position);
       begin
          if not Is_List (FI) then
-            Print_Mutator_Specification (O, Kind, FI);
+            Print_Setter_Specification (O, Kind, FI);
             PL (O, ";");
-            Print_Mutator_Precondition (O, Kind, FI);
+
+            if Is_Why_Id (FI) then
+               Print_Mutator_Precondition (O, Kind, FI);
+            end if;
          else
             for List_Op in List_Op_Kind'Range loop
                Print_List_Op_Specification (O, Kind, FI, List_Op);
@@ -398,19 +405,6 @@ package body Xtree_Mutators is
    ---------------------------------
 
    procedure Print_Mutator_Specification
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      FI   : Field_Info) is
-   begin
-      Print_Mutator_Specification
-        (O           => O,
-         Name        => Mutator_Name (Kind, FI),
-         Param_Type  => Unchecked_Id_Type_Name (Kind),
-         Field_Param => Param_Name (FI),
-         Field_Type  => Unchecked_Id_Type_Name (FI));
-   end Print_Mutator_Specification;
-
-   procedure Print_Mutator_Specification
      (O           : in out Output_Record;
       Name        : Wide_String;
       Param_Type  : Wide_String;
@@ -433,5 +427,38 @@ package body Xtree_Mutators is
       end loop;
       P (O, ": " & Field_Type  & ")");
    end Print_Mutator_Specification;
+
+   ---------------------------------
+   -- Print_Setter_Implementation --
+   ---------------------------------
+
+   procedure Print_Setter_Implementation
+     (O  : in out Output_Record;
+      FI : Field_Info) is
+   begin
+      PL (O, "   Node : Why_Node := Get_Node (" & Node_Id_Param & ");");
+      PL (O, "begin");
+      PL (O, "   Node." & Field_Name (FI) & " := " & Param_Name (FI) & ";");
+      PL (O, "   Set_Node (" & Node_Id_Param &", Node);");
+      --  ??? Missing handling for Checked (should be updated
+      --  if the node is valid after the assignment)
+   end Print_Setter_Implementation;
+
+   --------------------------------
+   -- Print_Setter_Specification --
+   --------------------------------
+
+   procedure Print_Setter_Specification
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      FI   : Field_Info) is
+   begin
+      Print_Mutator_Specification
+        (O           => O,
+         Name        => Mutator_Name (Kind, FI),
+         Param_Type  => Unchecked_Id_Type_Name (Kind),
+         Field_Param => Param_Name (FI),
+         Field_Type  => Unchecked_Id_Type_Name (FI));
+   end Print_Setter_Specification;
 
 end Xtree_Mutators;
