@@ -18,7 +18,7 @@ is
    subtype New_Name_2 is 
 --@ line 13
                    Integer range 1 .. 4000;
-   subtype New_Name_4 is Integer range 
+   subtype New_Name_4 is Positive range 
 --@ line 14
                           1 .. 6;
 --@ line 14

@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-with Stack;
+with Stack;use type Stack.Stack_Range; 
 --@ line 1
 --# inherit stack;
 package External_Stack
@@ -9,7 +9,8 @@ is
 --@ line 3
   Stack_Size : constant := 100;
 end External_Stack;
-with Stack;with External_Stack;
+with Stack;use type Stack.Stack_Range; 
+with External_Stack;
 --@ line 1
 --# inherit stack, external_stack;
 --@ line 1

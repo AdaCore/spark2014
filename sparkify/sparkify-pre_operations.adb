@@ -108,6 +108,7 @@ package body Sparkify.Pre_Operations is
    function Transform_A_Discrete_Range
      (Element       : Asis.Discrete_Range;
       Column_Start  : Character_Position_Positive;
+      Subtype_Decl  : Asis.Declaration := Nil_Element;
       For_Loop_Mode : Boolean := False) return Wide_String;
 
    function Transform_An_Index_Constraint
@@ -1723,14 +1724,35 @@ package body Sparkify.Pre_Operations is
    ------------------------
 
    procedure Print_All_Use_Type (Element : Asis.Declaration) is
-      Private_Items : constant Declarative_Item_List :=
-                        Private_Part_Declarative_Items
-                          (Declaration => Element, Include_Pragmas => False);
-      Visible_Items : constant Declarative_Item_List :=
-                        Visible_Part_Declarative_Items
-                          (Declaration => Element, Include_Pragmas => False);
-      Decl_Items    : constant Declarative_Item_List :=
-                        Private_Items & Visible_Items;
+
+      function Get_Decls (Element : Asis.Declaration)
+                          return Asis.Declarative_Item_List;
+
+      function Get_Decls (Element : Asis.Declaration)
+                          return Asis.Declarative_Item_List is
+      begin
+         if Declaration_Kind (Element) = A_Package_Declaration then
+            declare
+               Private_Items : constant Declarative_Item_List :=
+                                 Private_Part_Declarative_Items
+                                   (Declaration => Element,
+                                    Include_Pragmas => False);
+               Visible_Items : constant Declarative_Item_List :=
+                                 Visible_Part_Declarative_Items
+                                   (Declaration => Element,
+                                    Include_Pragmas => False);
+            begin
+               return Private_Items & Visible_Items;
+            end;
+         elsif Declaration_Kind (Element) = A_Package_Body_Declaration then
+            return Body_Declarative_Items (Declaration => Element,
+                                           Include_Pragmas => False);
+         else
+            return Nil_Element_List;
+         end if;
+      end Get_Decls;
+
+      Decl_Items : constant Asis.Declarative_Item_List := Get_Decls (Element);
    begin
       for J in Decl_Items'Range loop
          declare
@@ -1892,6 +1914,7 @@ package body Sparkify.Pre_Operations is
    function Transform_A_Discrete_Range
      (Element       : Asis.Discrete_Range;
       Column_Start  : Character_Position_Positive;
+      Subtype_Decl  : Asis.Declaration := Nil_Element;
       For_Loop_Mode : Boolean := False) return Wide_String
    is
 
@@ -2008,72 +2031,76 @@ package body Sparkify.Pre_Operations is
                Type_Decl   : Asis.Declaration;
                Name        : Unbounded_Wide_String;
             begin
-               case Discrete_Range_Kind (Element) is
-                  when A_Discrete_Range_Attribute_Reference =>
-                     declare
-                        Expr_Att  : constant Asis.Expression :=
-                                      Range_Attribute (Element);
-                        Expr      : constant Asis.Expression :=
-                                      Prefix (Expr_Att);
-                        Att       : constant Asis.Expression_List :=
-                                      Attribute_Designator_Expressions
-                                        (Expr_Att);
-                        Index_Ref : Positive;
-                     begin
-                        --  Retrieve type from prefix of range expression
-                        Type_Decl := Corresponding_Expression_Type (Expr);
-                        if Is_Nil (Type_Decl) then
-                           Type_Decl := Corresponding_Name_Declaration (Expr);
-                        end if;
-
-                        if Att = Nil_Element_List then
-                           Index_Ref := 1;
-                        else
-                           declare
-                              pragma Assert (Att'Length = 1);
-                              Att_Value : constant Wide_String :=
-                                            Trim
-                                              (Static_Expression_Value_Image
-                                                 (Att (1)), Ada.Strings.Left);
-                              Last      : Positive;
-                           begin
-                              pragma Assert (Att_Value /= "");
-                              Ada.Integer_Wide_Text_IO.Get
-                                (Att_Value, Index_Ref, Last);
-                              pragma Assert (Last = Att_Value'Length);
-                           end;
-                        end if;
-
+               if Is_Nil (Subtype_Decl) then
+                  case Discrete_Range_Kind (Element) is
+                     when A_Discrete_Range_Attribute_Reference =>
                         declare
-                           Type_Def : constant Asis.Definition :=
-                                        Type_Declaration_View (Type_Decl);
+                           Expr_Att  : constant Asis.Expression :=
+                                         Range_Attribute (Element);
+                           Expr      : constant Asis.Expression :=
+                                         Prefix (Expr_Att);
+                           Att       : constant Asis.Expression_List :=
+                                         Attribute_Designator_Expressions
+                                           (Expr_Att);
+                           Index_Ref : Positive;
                         begin
-                           case Type_Kind (Type_Def) is
-                           when A_Constrained_Array_Definition |
-                                An_Unconstrained_Array_Definition =>
-                              --  Type_Decl is currently an array type, from
-                              --  which we should retrieve the appropriate
-                              --  index type, depending on the range being
-                              --  accessed
+                           --  Retrieve type from prefix of range expression
+                           Type_Decl := Corresponding_Expression_Type (Expr);
+                           if Is_Nil (Type_Decl) then
                               Type_Decl :=
-                                Index_Type_Of_Array_Type_Declaration
+                                Corresponding_Name_Declaration (Expr);
+                           end if;
+
+                           if Att = Nil_Element_List then
+                              Index_Ref := 1;
+                           else
+                              declare
+                                 pragma Assert (Att'Length = 1);
+                                 Att_Value : constant Wide_String
+                                   := Trim (Static_Expression_Value_Image
+                                            (Att (1)), Ada.Strings.Left);
+                                 Last      : Positive;
+                              begin
+                                 pragma Assert (Att_Value /= "");
+                                 Ada.Integer_Wide_Text_IO.Get
+                                   (Att_Value, Index_Ref, Last);
+                                 pragma Assert (Last = Att_Value'Length);
+                              end;
+                           end if;
+
+                           declare
+                              Type_Def : constant Asis.Definition :=
+                                           Type_Declaration_View (Type_Decl);
+                           begin
+                              case Type_Kind (Type_Def) is
+                              when A_Constrained_Array_Definition |
+                                   An_Unconstrained_Array_Definition =>
+                                 --  Type_Decl is currently an array type, from
+                                 --  which we should retrieve the appropriate
+                                 --  index type, depending on the range being
+                                 --  accessed
+                                 Type_Decl :=
+                                   Index_Type_Of_Array_Type_Declaration
                                      (Type_Def, Index_Ref);
-                           when others =>
-                              null;
-                           end case;
+                              when others =>
+                                 null;
+                              end case;
+                           end;
                         end;
-                     end;
 
-                  when A_Discrete_Simple_Expression_Range =>
-                     Type_Decl := Corresponding_Type_Of_Range (Element);
-                  when others =>
-                     pragma Assert (False);
-                     null;
-               end case;
+                     when A_Discrete_Simple_Expression_Range =>
+                        Type_Decl := Corresponding_Type_Of_Range (Element);
+                     when others =>
+                        pragma Assert (False);
+                        null;
+                  end case;
+               else
+                  Type_Decl := Subtype_Decl;
+               end if;
 
-               --  If not in the special case where Type_Decl is Nil, then
-               --  retrieve the name of the corresponding type
                if not Is_Nil (Type_Decl) then
+                  --  If not in the special case where Type_Decl is Nil, then
+                  --  retrieve the name of the corresponding type
                   Name := To_Unbounded_Wide_String
                     (Prepend_Package_Name
                        (Type_Decl, Declaration_Unique_Name (Type_Decl)));
@@ -2128,19 +2155,42 @@ package body Sparkify.Pre_Operations is
       Constraint_Str    : Unbounded_Wide_String :=
                             To_Unbounded_Wide_String (Subtype_Str & " (");
 
+      function Index_Of_An_Unconstrained_Array
+        (Decl : Asis.Declaration) return Asis.Expression_List;
+
+      function Index_Of_An_Unconstrained_Array
+        (Decl : Asis.Declaration) return Asis.Expression_List
+      is
+         Type_Def : constant Asis.Definition :=
+                      Type_Declaration_View (Decl);
+      begin
+         pragma
+           Assert (Type_Kind (Type_Def) = An_Unconstrained_Array_Definition);
+         return Index_Subtype_Definitions (Type_Def);
+      end Index_Of_An_Unconstrained_Array;
+
    begin
-      Constraint_Str := Constraint_Str &
-      Transform_A_Discrete_Range (Discrete_Range (Discrete_Range'First),
-                                  Column_Start);
+      declare
+         List_Def : constant Asis.Expression_List :=
+                      Index_Of_An_Unconstrained_Array (Subtype_Decl);
+         Index_Subtype     : Asis.Declaration := Nil_Element;
+      begin
 
-      for J in Discrete_Range'First + 1 .. Discrete_Range'Last loop
-         Constraint_Str := Constraint_Str & ", "
-           & Transform_A_Discrete_Range (Discrete_Range (J),
-                                         Column_Start);
-      end loop;
+         Index_Subtype := Corresponding_Name_Declaration (List_Def (1));
+         Constraint_Str := Constraint_Str &
+         Transform_A_Discrete_Range (Discrete_Range (Discrete_Range'First),
+                                     Column_Start, Index_Subtype);
 
-      Constraint_Str := Constraint_Str & ")";
-      return To_Wide_String (Constraint_Str);
+         for J in Discrete_Range'First + 1 .. Discrete_Range'Last loop
+            Index_Subtype := Corresponding_Name_Declaration (List_Def (J));
+            Constraint_Str := Constraint_Str & ", "
+              & Transform_A_Discrete_Range (Discrete_Range (J),
+                                            Column_Start, Index_Subtype);
+         end loop;
+
+         Constraint_Str := Constraint_Str & ")";
+         return To_Wide_String (Constraint_Str);
+      end;
    end Transform_An_Index_Constraint;
 
    --------------------------------------------

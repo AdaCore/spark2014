@@ -69,7 +69,7 @@ package body Internal_Anon_Type
 --@ line 24
       A, B           : New_Name_3                    ;
 
-      subtype New_Name_5 is Integer range 
+      subtype New_Name_5 is Positive range 
 --@ line 26
                               1 .. 10;
 --@ line 26

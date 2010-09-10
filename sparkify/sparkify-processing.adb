@@ -269,6 +269,9 @@ package body Sparkify.Processing is
                --  Add all possible use-type clauses in SPARK code, to make for
                --  the absence of a use-package clauses.
                Sparkify.Pre_Operations.Print_All_Use_Type (Unit_Decl);
+               if not Is_Nil (Unit_Body) then
+                  Sparkify.Pre_Operations.Print_All_Use_Type (Unit_Body);
+               end if;
                --  Always inherit the data package in an external or internal
                --  package
                Nameset.Include (Packages, Normalized_Name (Unit_Name));

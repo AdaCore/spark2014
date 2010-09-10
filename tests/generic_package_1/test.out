@@ -1,7 +1,7 @@
 sparkify: body is not analyzed for p.ads:11:18
 sparkify: body is not analyzed for p.ads:12:19
 ------------------------------------------------------------------------
-with P;use type P.R; 
+with P;
 --@ line 1
 --# inherit p;
 package External_P
@@ -22,8 +22,7 @@ is
 --@ line 23
    --# global in     P.T, P.X, P.Y, P.Z;
 end External_P;
-with P;use type P.R; 
-with External_P;
+with P;with External_P;
 --@ line 1
 --# inherit p, external_p;
 --@ line 1
