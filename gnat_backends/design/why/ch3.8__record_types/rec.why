@@ -17,7 +17,7 @@ axiom rec__complex___coerce :
 
 axiom rec__complex___unicity :
  forall x, y : rec__complex.
-  integer_of___rec__complex (x) = integer_of___rec__complex (y) <-> x = y
+  integer_of___rec__complex (x) = integer_of___rec__complex (y) -> x = y
 
 logic rec__complex___get : 'a farray, rec__complex -> 'a
 

@@ -26,7 +26,7 @@ axiom standard__character___range :
 axiom standard__character___unicity :
  forall x, y : standard__character.
   integer_of___standard__character (x) = integer_of___standard__character (y)
-   <-> x = y
+   -> x = y
 
 parameter any___standard__character : unit -> { } standard__character { true }
 

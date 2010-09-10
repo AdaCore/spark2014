@@ -24,7 +24,7 @@ axiom floats__fp___range :
 
 axiom floats__fp___unicity :
  forall x, y : floats__fp.
-  real_of___floats__fp (x) = real_of___floats__fp (y) <-> x = y
+  real_of___floats__fp (x) = real_of___floats__fp (y) -> x = y
 
 parameter any___floats__fp : unit -> { } floats__fp { true }
 

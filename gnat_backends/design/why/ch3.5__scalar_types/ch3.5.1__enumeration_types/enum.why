@@ -8,10 +8,16 @@ type enum__day =
   | enum__sat
   | enum__sun
 
-logic integer_of___enum__day : enum__day -> int
-(* YM: could be simply a "function", i.e. a defined logic function, defined
-   with a match like axiom enum__day___ordering below, which would make 
-   this axiom useless *)
+function integer_of___enum__day (x : enum__day) : int =
+ (match x with
+  | enum__mon -> 0
+  | enum__tue -> 1
+  | enum__wed -> 2
+  | enum__thu -> 3
+  | enum__fri -> 4
+  | enum__sat -> 5
+  | enum__sun -> 6
+ end)
 
 predicate eq___enum__day (left : enum__day, right : enum__day) =
  integer_of___enum__day (left) = integer_of___enum__day (right)
@@ -20,7 +26,12 @@ predicate le___enum__day (left : enum__day, right : enum__day) =
  integer_of___enum__day (left) <= integer_of___enum__day (right)
 
 (* YM: why have a special eq___enum__day and le___enum__day instead of 
-   doing directly the operations on integers? *)
+   doing directly the operations on integers?
+
+   JG: no particular reason. It might be easier to generate, would make it
+   easier to read the generated code, may not make the prover's work harder.
+   Lots of modals here... I'll experiment both possibilities.
+ *)
 
 predicate enum__day___in_range (x : int) =
  let first = 0 in
@@ -33,18 +44,6 @@ axiom enum__day___coerce :
  (forall x : int.
    enum__day___in_range (x) ->
     integer_of___enum__day (enum__day___of_integer (x)) = x)
-
-axiom enum__day___ordering :
- (forall x : enum__day.
-   match x with
-    | enum__mon -> integer_of___enum__day (x) = 0
-    | enum__tue -> integer_of___enum__day (x) = 1
-    | enum__wed -> integer_of___enum__day (x) = 2
-    | enum__thu -> integer_of___enum__day (x) = 3
-    | enum__fri -> integer_of___enum__day (x) = 4
-    | enum__sat -> integer_of___enum__day (x) = 5
-    | enum__sun -> integer_of___enum__day (x) = 6
-   end)
 
 parameter any___enum__day : unit -> { } enum__day { true }
 
@@ -101,7 +100,12 @@ logic enum__weekday___of___enum__day : enum__day -> enum__weekday
        enum__weekday___of___enum__day should be defined for any day, so
        refrain from using this function directly. It should only be used
        in axiom enum__weekday___coerce below.
- *)
+
+   JG: actually, it would also be used in the corresponding parameter
+       in the program space (in the postcondition; with a precondition that
+       would assert that we are in the defined range). See
+       enum__day___of_integer_.
+*)
 
 axiom enum__weekday___coerce :
  (forall x : enum__day.
@@ -116,6 +120,6 @@ axiom enum__weekday___range :
 axiom enum__weekday___unicity :
  forall x, y : enum__weekday.
   enum__day___of___enum__weekday (x) = enum__day___of___enum__weekday (y)
-   <-> x = y
+   -> x = y
 
 (* ...snip parameters, similar to enum__day... *)

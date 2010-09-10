@@ -30,7 +30,7 @@ axiom modular__byte___range :
    modular__byte___in_range (integer_of___modular__byte (x)))
 
 axiom modular__byte___unicity :
- (forall x, y : modular__byte. eq___modular__byte (x, y) <-> x = y)
+ (forall x, y : modular__byte. eq___modular__byte (x, y) -> x = y)
 
 parameter any___modular__byte : unit -> { } modular__byte { true }
 

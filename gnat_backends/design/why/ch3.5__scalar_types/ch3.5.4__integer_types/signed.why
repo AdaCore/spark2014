@@ -24,9 +24,13 @@ axiom signed__int8___range :
 
 axiom signed__int8___unicity :
  forall x, y : signed__int8.
-  integer_of___signed__int8 (x) = integer_of___signed__int8 (y) <-> x = y
+  integer_of___signed__int8 (x) = integer_of___signed__int8 (y) -> x = y
 (* YM: equivalence is not strictly needed. Implication -> would be sufficient, 
-   and may help automatic provers(?) *)
+   and may help automatic provers(?)
+
+   JG: I got the same result for the two possibilities; so I implemented
+   your suggestion (applying occam's razor).
+*)
 
 parameter any___signed__int8 : unit -> { } signed__int8 { true }
 

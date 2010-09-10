@@ -14,7 +14,7 @@ predicate eq___two__index (x : two__index, y : two__index) =
 
 axiom two__index___unicity :
  forall x, y : two__index.
-  integer_of___two__index (x) = integer_of___two__index (y) <-> x = y
+  integer_of___two__index (x) = integer_of___two__index (y) -> x = y
 
 predicate two__index___in_range (x : int) =
  let first = 1 in
@@ -61,7 +61,7 @@ predicate eq___two__table (x : two__table, y : two__table) =
 
 axiom two__table___unicity :
  forall x, y : two__table.
-  array_of___two__table (x) = array_of___two__table (y) <-> x = y
+  array_of___two__table (x) = array_of___two__table (y) -> x = y
 
 axiom two__table___coerce :
  forall x : standard__integer farray farray.
@@ -118,19 +118,17 @@ axiom two__table___last_value2 :
  forall x : two__table.
   two__table___last2 (x) = two__index___of_integer (10)
 
-logic two__table___get :
- two__table, two__index, two__index -> standard__integer
+function two__table___get
+ (a  : two__table,
+  i1 : two__index,
+  i2 : two__index)
+ : standard__integer =
+  access (access (array_of___two__table (a),
+                  integer_of___two__index (i1)),
+          integer_of___two__index (i2))
 
 logic two__table___set :
  two__table, two__index, two__index, standard__integer -> two__table
-
-axiom two__table___get_definition :
- forall a  : two__table.
- forall i1 : two__index.
- forall i2 : two__index.
-  two__table___get (a, i1, i2) = access (access (array_of___two__table (a),
-                                                 integer_of___two__index (i1)),
-                                         integer_of___two__index (i2))
 
 axiom two__table___set_definition :
  forall a  : two__table.

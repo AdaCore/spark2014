@@ -24,7 +24,7 @@ axiom fixed__volt___range :
 
 axiom fixed__volt___unicity :
  forall x, y : fixed__volt.
-  integer_of___fixed__volt (x) = integer_of___fixed__volt (y) <-> x = y
+  integer_of___fixed__volt (x) = integer_of___fixed__volt (y) -> x = y
 
 parameter any___fixed__volt : unit -> { } fixed__volt { true }
 

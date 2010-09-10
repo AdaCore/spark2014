@@ -1,24 +1,25 @@
+include "bool.why"
 
 type standard__boolean =
   | standard__true
   | standard__false
 
-logic bool_of___standard__boolean : standard__boolean -> bool
+function bool_of___standard__boolean (x : standard__boolean) : bool =
+ match x with
+  | standard__true  -> true
+  | standard__false -> false
+ end
 
-logic standard__boolean___of_bool : bool -> standard__boolean
+function standard__boolean___of_bool (x : bool) : standard__boolean =
+ if x then standard__true else standard__false
 
-axiom standard__boolean___coerce_bool :
- (forall x : bool.
-   bool_of___standard__boolean (standard__boolean___of_bool (x)) = x)
+function integer_of___standard__boolean (x : standard__boolean) : int =
+ match x with
+  | standard__true  -> 0
+  | standard__false -> 1
+ end
 
-axiom standard__boolean___ordering_bool :
- (forall x : standard__boolean.
-   match x with
-    | standard__true  -> bool_of___standard__boolean (x) = true
-    | standard__false -> bool_of___standard__boolean (x) = false
-   end)
-
-logic integer_of___standard__boolean : standard__boolean -> int
+logic standard__boolean___of_integer : int -> standard__boolean
 
 predicate le___standard__boolean
 (left : standard__boolean,
@@ -31,19 +32,10 @@ predicate standard__boolean___in_range (x : int) =
  let last = 1 in
   first <= x <= last
 
-logic standard__boolean___of_integer : int -> standard__boolean
-
 axiom standard__boolean___coerce :
  (forall x : int.
    standard__boolean___in_range (x) ->
     integer_of___standard__boolean (standard__boolean___of_integer (x)) = x)
-
-axiom standard__boolean___ordering :
- (forall x : standard__boolean.
-   match x with
-    | standard__true  -> integer_of___standard__boolean (x) = 0
-    | standard__false -> integer_of___standard__boolean (x) = 1
-   end)
 
 parameter any___standard__boolean : unit -> { } standard__boolean { true }
 

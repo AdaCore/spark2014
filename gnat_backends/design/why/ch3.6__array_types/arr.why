@@ -20,7 +20,7 @@ predicate eq___arr__index
 
 axiom arr__index___unicity :
  forall x, y : arr__index.
-  integer_of___arr__index (x) = integer_of___arr__index (y) <-> x = y
+  integer_of___arr__index (x) = integer_of___arr__index (y) -> x = y
 
 predicate arr__index___in_range (x : int) =
  let first = 1 in
@@ -63,7 +63,7 @@ predicate eq___arr__table (x : arr__table, y : arr__table) =
 
 axiom arr__table___unicity :
  forall x, y : arr__table.
-  array_of___arr__table (x) = array_of___arr__table (y) <-> x = y
+  array_of___arr__table (x) = array_of___arr__table (y) -> x = y
 
 axiom arr__table___coerce :
  forall x : standard__integer farray.
@@ -101,18 +101,14 @@ axiom arr__table___last_value :
  forall x : arr__table.
   arr__table___last (x) = arr__index___of_integer (10)
 
-logic arr__table___get :
- arr__table, arr__index -> standard__integer
+function arr__table___get
+ (x : arr__table,
+  y : arr__index)
+ : standard__integer =
+ access (array_of___arr__table (x), integer_of___arr__index (y))
 
 logic arr__table___set :
  arr__table, arr__index, standard__integer -> arr__table
-
-axiom arr__table___get_definition :
- forall x : arr__table.
-  forall y : arr__index.
-   arr__table___get (x, y) = access (array_of___arr__table (x),
-                                     integer_of___arr__index (y))
-(* YM: replace by "function" which is same as logic + definition? *)
 
 axiom arr__table___set_definition :
  forall x : arr__table.
