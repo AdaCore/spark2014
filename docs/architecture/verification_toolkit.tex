@@ -1,0 +1,206 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\title{A Verification Toolkit\\for Unit Testing and Unit Proof}
+
+\begin{document}
+
+\maketitle
+
+\section{Context}
+
+In this document, we describe the general architecture of the verification
+toolkit which will be the result of project Hi-Lite.
+
+The context of use of this verification toolkit is a software developement
+project in the C or Ada programming language, for which some components require
+a high level of confidence. Traditionally, this is attained by unit
+testing. Here, we propose to combine the usual approach with unit proof where
+applicable. An important departure from traditional formal verification
+literature is that unit proof is only applied here to testable components. For
+example, one cannot apply unit proof to a subprogram for which he does not have
+access to the body of all the subprograms it calls directly or indirectly
+(downward closure). The same is true in general for unit testing.
+
+Applicability of unit proof is decided on a subprogram by subprogram basis. It
+depends most notably on the features used in a specific subprograms. Typically,
+subprograms which use explicit pointers and machine address manipulations will
+not be fit for unit proof. Although a precise definition of what it means for a
+subprogram to be fit for unit proof should be available for both C and Ada, it
+should be automatically detected by the toolset, so that unit proof is applied
+as much as possible, and unit testing is applied in the remaining cases.
+
+A crucial criteria for a subprogram to be fit for unit proof is that it has a
+formal contract, and each subprogram it calls directly also has a formal
+contract. A formal contract defines the specification for a subprogram, so that
+a subprogram correctly implements its contract if, on every input it accepts
+(according to the contract), it generates proper output (according to the
+contract).
+
+A basic subprogram contract is made up of:
+\begin{itemize}
+\item a precondition, which states the valid inputs to the subprogram;
+\item a postcondition, which states the valid outputs to the subprogram.
+\end{itemize}
+
+For example, a contract for the square-root function is:
+\begin{itemize}
+\item precondition: it takes as input any non-negative integer;
+\item postcondition: it returns the greatest non-negative integer whose square
+  is less than the input value.
+\end{itemize}
+
+Of course, such contracts are written in a formal language that a program can
+understand. This annotation language is called E-ACSL for C and ALFA for Ada.
+Both E-ACSL and ALFA are described in details in separate documents. In the
+following, we use the syntax of Ada and ALFA in our examples.
+
+\section{Low Level Specifications}
+
+\subsection{Subprogram Contracts}
+
+A subprogram contract is a pair of a precondition and a postcondition, which
+default to true if not present. For example, the contract for the square-root
+function discussed previously can be expressed as:
+
+\begin{verbatim}
+function Sqrt (X: Integer) return Integer with
+  Pre  => X >= 0,
+  Post => Sqrt'Result >= 0 and 
+          Sqrt'Result ** 2 <= X and
+          (Sqrt'Result + 1) ** 2 > X;
+\end{verbatim}
+
+\subsection{Subprogram Test Cases}
+
+It is quite common for software developed according to safety standards like
+DO-178C and ECSS-E-40 to define low-level requirements as a set of test cases
+on individual subprograms. For example, a verification plan could say the
+following for the square-root function:
+\begin{itemize}
+\item test case 1: on input X = 100, the function should return 10;
+\item test case 2: on input X $<$ 100, the function should return a result between 0 included and 10 excluded.
+\end{itemize}
+
+This readily translates in formal test cases:
+
+\begin{verbatim}
+function Sqrt (X: Integer) return Integer with
+  Test_Case => (Requires => X = 100, 
+                Ensures  => Sqrt'Result = 10),
+  Test_Case => (Requires => X < 100, 
+                Ensures  => Sqrt'Result >= 0 and Sqrt'Result < 10);
+\end{verbatim}
+
+Notice that if the postcondition of the subprogram already guarantees part of
+what the test-case must ensure, like here the non-negativity of the result, it
+can be omitted from the test-case:
+
+\begin{verbatim}
+function Sqrt (X: Integer) return Integer with
+  Test_Case => (Requires => X = 100, 
+                Ensures  => Sqrt'Result = 10),
+  Test_Case => (Requires => X < 100, 
+                Ensures  => Sqrt'Result < 10);
+\end{verbatim}
+
+\subsection{Type Invariants}
+
+For the sake of conciseness, common parts of contracts that require and ensure
+the preservation of a property attached to an object can be stated only once in
+a type invariant attached to the type of this object.
+
+\section{Unit Testing}
+
+\subsection{Executing Contracts and Test Cases}
+
+In the traditional approach to unit testing, each test case is implemented as
+one or more test procedures, which set an appropriate calling context, call the
+subprogram on appropriate inputs and check the output obtained.
+
+Test procedures are collected in a test harness which takes care of dispatching
+a selected set of tests on selected machines, collecting the results of the
+individual tests and presenting the aggregated results to the user. In our
+verification toolkit, this test harness is automatically generated by the AUnit
+tool.
+
+The contracts, test cases and invariants are dynamically checked as part of the
+normal execution of the subprogram called, so that any specification failure is
+reported as a failure of the corresponding test procedure.
+
+Additionally, the coverage of a test case by a test procedure could also
+checked by the framework. This amounts to checking that the call to the
+subprogram tested in a test procedure satisfies the \textit{Requires} part of
+the corresponding test case.
+
+\subsection{Generating Test Inputs}
+
+Following the approach of QuickCheck, it should be possible to generate test
+inputs automatically, which could serve to:
+\begin{enumerate}
+\item debug a subprogram implementation;
+\item debug subprogram contracts and test cases;
+\item cover the test cases of a subprogram.
+\end{enumerate}
+
+For each parameter of a subprogram, the input value generated could be:
+\begin{itemize}
+\item chosen at random in the appropriate range of values for its type;
+\item selected among distinguished values: extreme values, zero and one;
+\item generated by a call to some user-provided generator function.
+\end{itemize}
+
+Ideally, a log file containing the inputs generated should be generated for
+manual inspection, and possibly for regression testing by reading the input
+values back.
+
+Contrary to manual test procedures which should not fail the precondition or
+the \textit{Requires} part of the corresponding test case, generated inputs
+can:
+\begin{enumerate}
+\item fail the precondition: these are invalid test inputs for this
+  subprogram and thus ignored;
+\item succeed the precondition: these are valid test inputs for this subprogram
+  and thus kept.
+\end{enumerate}
+
+\section{Unit Proof}
+
+\subsection{Proving Contracts and Test Cases}
+
+While a test procedure typically verifies a contract or a test case for one
+specific set of input values, a proof of a contract or a test case does the
+same for the full set of input values specified in a precondition and the
+\textit{Requires} part of the corresponding test case.
+
+This unit proof operates at the level of a subprogram, hence it is correct only
+if the subprograms called also implement their contracts and test cases. In
+particular, if a subprogram F verified by unit proof calls a subprogram G
+verified by unit testing, and G violates its contract during execution, then F
+will likely violate its contract too.
+
+When proving a test case with a \textit{Requires} part and an \textit{Ensures}
+part, we can always assume that the subprogram is called in a context where
+both the precondition and the \textit{Requires} part hold.
+
+\subsection{Proving Absence of Runtime Errors}
+
+While unit testing automatically performs some verification that there are no
+runtime errors when targetting verification of contracts and test cases, unit
+proof can target either one separately or both at the same time.
+
+\textit{Absence of runtime errors} targets really absence of semantically
+undefined behavior, which can manifest during execution as runtime errors
+(exception raised or segmentation fault) or go unnoticed (reads to
+uninitialized data).
+
+\section{Verification Framework}
+
+Either through a GUI or in batch mode, the verification framework should output
+for which subprograms unit proof is available or not. It should allow
+performing unit proof and unit testing at various granularity levels, down to
+individual subprograms. Finally, it should provide an aggregate view of the
+verification results to the user.
+
+\end{document}
