@@ -529,6 +529,12 @@ package body Sparkify.Processing is
             end if;
 
             PP_Word_Alone_On_Line ("is");
+
+            if Current_Pass = Printing_Data then
+               PP_Word ("pragma Elaborate_Body ("
+                         & To_Wide_String (This_Unit_Name) & ");");
+            end if;
+
             Print_Decl (Unit_Decl);
             if Is_Decl_With_Body then
                Print_Decl (Unit_Body);
