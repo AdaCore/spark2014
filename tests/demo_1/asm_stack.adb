@@ -7,8 +7,8 @@ is
    type Stack_Range is range 0 .. Stack_Size;
    type Vector is array(Stack_Range range <>) of Integer;
 
-   Stack_Vector : Vector (1 .. Stack_Size); --  anonymous type in unconstrained array
-   Stack_Top : Stack_Range;
+   Stack_Vector : Vector (1 .. Stack_Size) := (others => 0); --  anonymous type in unconstrained array
+   Stack_Top : Stack_Range := 0;
 
    function Is_Empty return Boolean
    is
@@ -42,11 +42,5 @@ is
       Stack_Top := Stack_Top - 1;
       X := Stack_Vector(Stack_Top + 1);
    end Pop;
-
-
---  In contrast to the ADT_Stack package the state is initialized
-begin
-   Stack_Top := 0;
-   Stack_Vector := (others => 0); -- The aggregat must be qualified
 
 end ASM_Stack;
