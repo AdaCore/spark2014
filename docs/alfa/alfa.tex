@@ -1,0 +1,292 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\title{ALFA: Annotated Language of Functions for Ada}
+
+\begin{document}
+
+\maketitle
+
+\section{Ada 2012}
+
+Ada 2012 is the next version of the Ada standard, expected to be finalized in
+2012. It contains many extensions that facilitate the expression of
+specifications as subprogram contracts or type invariants:
+
+\begin{itemize}
+\item AI05-0001: bounded containers
+\item AI05-0183: aspect specifications
+\item AI05-0147: conditional expressions
+\item AI05-0188: case expressions
+\item AI05-0177: parameterized expressions
+\item AI05-0176: quantified expressions
+\item AI05-0146: type invariants
+\item AI05-0153: subtype predicates
+\end{itemize}
+
+While the ARG website is the final authority on these extensions
+(http://www.ada-auth.org/AI05-SUMMARY.HTML), we sketch in the following the
+semantics and interest of each one.
+
+Bounded containers introduce bounded versions of the existing generic
+containers in Ada 2005 container library (vector, list, hashed set, ordered
+set, hashed map, ordered map). The bound on the size of the container is used
+to preallocate an array of the desired size, so that dynamic allocation is not
+used for these containers. This opens up the possibility to perform proofs on
+programs using containers, as the validity of cursors is far simpler in this
+new model.
+
+Aspect specifications allow defining contracts for subprograms, a contract
+being a pair of a precondition (Pre) and a postcondition (Post). Special
+contracts can also be issued for overriding, so that an overriding subprogram
+can only weaken the inherited precondition and strengthen the inherited
+postcondition. The standard defines a general syntax for aspects which allows
+the definition of compiler-specific aspects, like the test case aspect in ALFA.
+As an example, a contract for a square-root function is:
+
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer with
+  Pre  => X >= 0,
+  Post => Sqrt'Result >= 0 and 
+          Sqrt'Result ** 2 <= X and
+          (Sqrt'Result + 1) ** 2 > X;
+\end{verbatim}
+
+Conditional expressions and case expressions allow the use of 'if' and 'case'
+in expressions, which simplifies specifications.
+
+Parameterized expressions are a simple form of function definitions (or lambda
+expressions) allowed in the specification part of a package. In particular,
+simple boolean predicates on accessors to a (private) type, which are typically
+the predicates one needs to write subprogram contracts, can be defined as
+parameterized expressions. This has the advantage for proofs that parameterized
+expressions (contrary to functions) 1) cannot have write side-effects, 2) have
+a much simpler form easier to translate into proof predicates, 3) can be
+defined in a package specification which makes them available for proof even if
+the package body is not.
+
+Quantified expressions allow the expression of predicates which hold for all
+elements in a range or a container, or for some element in a range or a
+container.
+
+Type invariants express invariant properties of private types, which should be
+typically observed by any value of the type outside its package. However, the
+standard only defines specific points at which this property is checked on a
+value of the type, like entry and exit points of a subprogram. This does not
+enforce by itself that the property always holds.
+
+Subtype predicates express fine-grain properties of subtypes, like the various
+enumeration values allowed for the discriminant of a record. Like for type
+invariants, the standard only defines specific points at which this property is
+checked.
+
+\section{ALFA}
+
+Ada 2012 is a new revision of Ada which makes it quite easy to perform unit
+testing based on subprogram contracts. ALFA is a sub-language of Ada which
+identifies which subprograms are fit for formal verification. ALFA does not
+work as an Ada profile, as the complete program does not need to be in ALFA for
+individual subprograms to be in ALFA. Rather, subprograms are in ALFA or not
+depending exclusively on their specification and body. In particular, the
+location in the source where a subprogram is defined should not influence
+whether it is in ALFA.
+
+\subsection{ALFA Extensions}
+
+ALFA defines a compiler-specific aspect called Test\_Case, which applies to
+subprograms exactly like the standard Pre and Post. More than one test-case can
+be defined for a subprogram. Verifying a test-case is similar to verifying a
+subprogram contract, except the base contract is extended as follows: each
+test-case defines a specific precondition introduced with \textit{Requires}
+which is and'ed with the subprogram's precondition and a specific postcondition
+introduced with \textit{Ensures} which is and'ed with the subprogram's
+postcondition. As an example, a contract with test-cases for a square-root
+function is:
+
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer with
+  Pre  => X >= 0,
+  Post => Sqrt'Result >= 0 and 
+          Sqrt'Result ** 2 <= X and
+          (Sqrt'Result + 1) ** 2 > X,
+  Test_Case => (Requires => X = 100, 
+                Ensures  => Sqrt'Result = 10),
+  Test_Case => (Requires => X < 100, 
+                Ensures  => Sqrt'Result >= 0 and Sqrt'Result < 10);
+\end{verbatim}
+
+ALFA defines a compiler-specific pragma called Loop\_Invariant, which is a
+special kind of assertion. Pragma Loop\_Invariant can only occur inside a
+loop at the top-level scope. As an example, the following implementation of the
+square-root function has a loop invariant:
+
+\begin{verbatim}
+function Sqrt (X : Integer) return Integer is
+   Res, Two_Res, Res_Square : Integer := 0;
+begin
+   while Res_Square <= X loop
+      pragma Loop_Invariant (Res >= 0 and
+                             Two_Res = 2 * Res and
+                             Res_Square = Res * Res);
+      Res_Square := Res_Square + Two_Res + 1;
+      Two_Res    := Two_Res + 2;
+      Res        := Res + 1;
+  end loop;
+  return Res - 1;
+end Sqrt;
+\end{verbatim}
+
+This defines a loop invariant to be used for formal proof, which should be:
+\begin{itemize}
+\item True the first time the loop is entered;
+\item Provable from assuming it at some previous iteration through the loop and
+  examining the effect of the loop body.
+\end{itemize}
+
+ALFA introduces a new form of containers called the verified containers, to be
+used for proof of programs which manipulate containers. These are a variant of
+bounded containers, with a different API meant to facilitate proofs.
+
+\subsection{ALFA Restrictions}
+
+A subprogram is in ALFA if both its specification and its body are in
+ALFA. Notice that if a subprogram F calls directly a subprogram G, then for F
+to be in ALFA, G's specification needs to be in ALFA.
+
+A subprogram specification is in ALFA if:
+\begin{enumerate}
+\item All parameters and return are in ALFA;
+\item The subprogram has a contract, and this contract is in ALFA.
+\end{enumerate}
+
+A contract is in ALFA if all expressions appearing in precondition,
+postcondition and test-cases are specification expressions in ALFA.
+
+A specification expression in ALFA is an expression in ALFA which appears as
+part of a contract or an invariant, and:
+\begin{enumerate}
+\item It may contain calls to parameterized expressions, but no calls to
+  functions;
+\item It may contain uses of verified containers, but no uses of other
+  containers.
+\end{enumerate}
+
+A subprogram body is in ALFA if:
+\begin{enumerate}
+\item The corresponding subprogram specification is in ALFA;
+\item All declarations in its declarative part are in ALFA;
+\item It has no exception handler;
+\item All statements in its sequence of statements are in ALFA.
+\end{enumerate}
+
+More generally, the definition of which constructs are in ALFA or not should be
+derived from the report written by Marc Sango for his internship on the
+definition of a verification profile for Ada.
+
+\section{Translation to SPARK / Why}
+
+A subprogram in ALFA should be translated into an intermediate representation
+in SPARK or in Why. From this representation, the Examiner or Why tools can
+generated Verification Conditions (VCs) to prove using an automatic prover.  In
+order to facilitate fine-grain modular proof, each subprogram should lead to
+the generation of a separate unit (package in SPARK, module in Why), which can
+be proved independently.
+
+\subsection{Generation of Annotations}
+
+A valid SPARK or Why subprogram needs to indicate explicitly which global
+variables can be read and/or written during the execution of this
+subprogram. As this information is not present in the source Ada program, it
+must be generated by our translation. As these reads and writes must account
+for direct and indirect accesses, through any number of calls, this global
+information must be retrieved by performing a global analysis on the closed set
+of subprograms called directly and indirectly.
+
+A special global variable called Heap represents all the dynamically allocated
+memory, so that reads and writes to dynamically allocated memory show in SPARK
+or Why contracts as reads and writes to Heap. Notice that without this Heap
+variable, contracts would be wrong and break the consistency of the proof
+system. For example, it would be possible to prove that Problem below always
+returns True, because Set would be seen as a noop, and Get would be seen as a
+constant function:
+
+\begin{verbatim}
+X : access Integer;
+
+procedure Set is
+   X.all := 0;
+end Set;
+
+function Get return Integer is
+begin
+   return X.all;
+end Get;
+
+function Problem return Boolean is
+   X1 : Integer := Get;
+begin
+   Set;
+   return X1 = Get;
+end Problem;
+\end{verbatim}
+
+Functional contracts (precondition and postcondition) in SPARK and Why have a
+slightly different semantics than contracts in Ada 2012, because contracts in
+SPARK and Why completely ignore the possibility of a run-time error being
+raised while evaluating the contract. When checking for absence of run-time
+errors (which can be separated from contract checking), the absence of run-time
+errors in contracts should also be proved, which requires the extension of
+contracts with additional conjuncts in SPARK and Why. For example, the
+following contract in Ada:
+
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element
+   with Pre => A (X) /= Nil_Element;
+\end{verbatim}
+
+would become in SPARK:
+
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element;
+--# pre X in My_Array'Range and A (X) /= Nil_Element;
+\end{verbatim}
+
+\subsection{General Architecture}
+
+The first requirement is to break the mutual dependencies between packages and
+between subprograms in Ada, in order to 1) achieve modular verification at the
+subprogram level and 2) prevent circular dependencies between unit and between
+elements of units, which are either not supported or supported with
+restrictions in both SPARK and Why. These mutual dependencies come from
+recursion between subprograms as well as cross calls between packages (P.F
+calls Q.G which calls P.H) even without recursion. To that end, each
+declarative part leads to the generation of two units: one for the data+types
+of this declarative part, one for the subprogram specifications of this
+declarative part.
+
+As an example, a package P defining data and subprograms should lead to the
+generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
+specifications. Then, a subprogram P.F in ALFA should be translated into a unit
+P\_F which manipulates data from P\_Data and calls subprograms from P\_Spec
+(including potential calls to F in P\_Spec, which correspond to recursive calls
+in the source program.)
+
+As another example, a subprogram F in ALFA defining local variables and local
+subprograms should lead to the generation of a unit F\_Data for its local
+variables and F\_Spec for its local subprogram specifications. Then, F's body
+should be translated into a unit F which manipulates data from F\_Data and
+calls subprograms from F\_Spec.
+
+Thus, the generated units should be layered in:
+\begin{enumerate}
+\item data: units which define global data in SPARK or Why, corresponding to
+  either global or local variables in Ada. These units also define types.
+\item spec: units which define subprogram specifications in SPARK or Why,
+  corresponding to all subprograms specifications and definitions in Ada. These
+  units also define parameterized expressions.
+\item body: units which define a single subprogram specification and body in
+  SPARK or Why from a subprogram in ALFA.
+\end{enumerate}
+
+\end{document}
