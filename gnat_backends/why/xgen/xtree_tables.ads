@@ -203,8 +203,28 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the mutator name for the given field of the given node kind
 
-   function Builder_Name (Kind : Why_Node_Kind) return Wide_String;
+   type Builder_Kind is (Builder_Regular, Builder_Unchecked);
+   --  Type of builder. Builder_Regular for building builders
+   --  that return regular ids (to valid nodes); Builder_Unchecked
+   --  for builders that returns unchecked ids (to kind-valid nodes).
+
+   function Builder_Name
+     (Kind : Why_Node_Kind;
+      BK   : Builder_Kind := Builder_Regular)
+     return Wide_String;
    --  Return the builder name for the given node kind
+
+   function Has_Default_Value
+     (FI : Field_Info;
+      BK : Builder_Kind := Builder_Regular)
+     return Boolean;
+   --  Return True if the given field has an appropriate default value
+
+   function Default_Value
+     (FI : Field_Info;
+      BK : Builder_Kind := Builder_Regular)
+     return Wide_String;
+   --  Return a default value for the given field if one exists, "" otherwise
 
    function Traversal_Pre_Op (Kind : Why_Node_Kind) return Wide_String;
    --  Return the name of prep op hooks for a given node kind

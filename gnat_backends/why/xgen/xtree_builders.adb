@@ -29,11 +29,6 @@ with Xkind_Tables; use Xkind_Tables;
 
 package body Xtree_Builders is
 
-   type Builder_Kind is (Builder_Regular, Builder_Unchecked);
-   --  Type of builder. Builder_Regular for building builders
-   --  that return regular ids (to valid nodes); Builder_Unchecked
-   --  for builders that returns unchecked ids (to kind-valid nodes).
-
    procedure Print_Builder_Declaration
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
@@ -98,7 +93,7 @@ package body Xtree_Builders is
       Kind : Why_Node_Kind;
       BK   : Builder_Kind)
    is
-      BN : constant Wide_String := Builder_Name (Kind);
+      BN : constant Wide_String := Builder_Name (Kind, BK);
    begin
       Print_Box (O, BN);
       NL (O);
@@ -195,19 +190,10 @@ package body Xtree_Builders is
             P (O, Param_Name (FI));
 
          else
-            if Is_List (FI) then
-               P (O, "New_List");
-            elsif Is_Why_Id (FI) then
-               P (O, "Why_Empty");
+            if Has_Default_Value (FI, BK) then
+               P (O, Default_Value (FI, BK));
             else
-               if Id_Type_Name (FI) = "Node_Id" then
-                  P (O, "Empty");
-               elsif Id_Type_Name (FI) = "Why_Node_Id"
-                 or else Id_Type_Name (FI) = "Why_Node_Set" then
-                  P (O, "Why_Empty");
-               else
-                  P (O, Param_Name (FI));
-               end if;
+               P (O, Param_Name (FI));
             end if;
          end if;
 
@@ -287,12 +273,7 @@ package body Xtree_Builders is
          PN       : constant Wide_String := Param_Name (FI);
       begin
          if BK = Builder_Unchecked then
-            if Is_List (FI)
-              or else Is_Why_Id (FI)
-              or else Id_Type_Name (FI) = "Node_Id"
-              or else Id_Type_Name (FI) = "Why_Node_Id"
-              or else Id_Type_Name (FI) = "Why_Node_Set"
-            then
+            if Has_Default_Value (FI, BK) then
                return;
             end if;
          end if;
@@ -319,13 +300,19 @@ package body Xtree_Builders is
 
          P (O, ": ");
          P (O, Id_Type_Name (FI));
+
+         if Has_Default_Value (FI) then
+            P (O, " := ");
+            P (O, Default_Value (FI));
+         end if;
+
          Field_Number := Field_Number + 1;
       end Print_Parameter_Specification;
 
    --  Start of processing for Print_Builder_Specification
 
    begin
-      PL (O, "function " & Builder_Name (Kind));
+      PL (O, "function " & Builder_Name (Kind, BK));
       Relative_Indent (O, 2);
 
       Common_Fields.Fields.Iterate (Print_Parameter_Specification'Access);
@@ -371,7 +358,8 @@ package body Xtree_Builders is
       begin
          PL (O, "and then");
          PL (O, "  " &  Accessor_Name (Kind, FI));
-         PL (O, "  (" & Builder_Name (Kind) & "'Result)");
+         PL (O, "  (" & Builder_Name (Kind, BK)
+             & "'Result)");
          P  (O, "  = " & PN);
 
          if Next (Position) /= No_Element then
@@ -383,7 +371,7 @@ package body Xtree_Builders is
       PL (O, "pragma Postcondition");
       Relative_Indent (O, 2);
       PL (O, "(Get_Kind");
-      PL (O, "  (" & Builder_Name (Kind) & "'Result)");
+      PL (O, "  (" & Builder_Name (Kind, BK) & "'Result)");
       PL (O, "  = " & Mixed_Case_Name (Kind));
 
       if BK = Builder_Regular then

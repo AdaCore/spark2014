@@ -35,10 +35,10 @@ package Why.Atree.Builders is
    --  automatically from Why.Atree.Why_Node using an ASIS tool
 
    function New_Identifier
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Symbol   : Name_Id;
-      Entity   : Why_Node_Id)
+      Entity   : Why_Node_Id := Why_Empty)
      return W_Identifier_Id;
    pragma Precondition
      (True
@@ -65,8 +65,8 @@ package Why.Atree.Builders is
         = Entity);
 
    function New_Type_Prop
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Type_Prop_Id;
    pragma Postcondition
      (Get_Kind
@@ -82,8 +82,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Type_Int
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Type_Int_Id;
    pragma Postcondition
      (Get_Kind
@@ -99,8 +99,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Type_Bool
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Type_Bool_Id;
    pragma Postcondition
      (Get_Kind
@@ -116,8 +116,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Type_Real
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Type_Real_Id;
    pragma Postcondition
      (Get_Kind
@@ -133,8 +133,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Type_Unit
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Type_Unit_Id;
    pragma Postcondition
      (Get_Kind
@@ -150,8 +150,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Abstract_Type
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Abstract_Type_Id;
    pragma Precondition
@@ -174,8 +174,8 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Generic_Formal_Type
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Generic_Formal_Type_Id;
    pragma Precondition
@@ -198,8 +198,8 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Generic_Actual_Type_Chain
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id;
@@ -228,8 +228,8 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Array_Type
-     (Ada_Node       : Node_Id;
-      Link           : Why_Node_Set;
+     (Ada_Node       : Node_Id := Empty;
+      Link           : Why_Node_Set := Why_Empty;
       Component_Type : W_Primitive_Type_Id)
      return W_Array_Type_Id;
    pragma Precondition
@@ -252,8 +252,8 @@ package Why.Atree.Builders is
         = Component_Type);
 
    function New_Ref_Type
-     (Ada_Node     : Node_Id;
-      Link         : Why_Node_Set;
+     (Ada_Node     : Node_Id := Empty;
+      Link         : Why_Node_Set := Why_Empty;
       Aliased_Type : W_Primitive_Type_Id)
      return W_Ref_Type_Id;
    pragma Precondition
@@ -276,8 +276,8 @@ package Why.Atree.Builders is
         = Aliased_Type);
 
    function New_Protected_Value_Type
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Value_Type : W_Value_Type_Id)
      return W_Protected_Value_Type_Id;
    pragma Precondition
@@ -300,8 +300,8 @@ package Why.Atree.Builders is
         = Value_Type);
 
    function New_Anonymous_Arrow_Type
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
      return W_Anonymous_Arrow_Type_Id;
@@ -330,8 +330,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Named_Arrow_Type
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
@@ -366,13 +366,13 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Computation_Spec
-     (Ada_Node      : Node_Id;
-      Link          : Why_Node_Set;
-      Precondition  : W_Precondition_OId;
-      Result_Name   : W_Identifier_OId;
+     (Ada_Node      : Node_Id := Empty;
+      Link          : Why_Node_Set := Why_Empty;
+      Precondition  : W_Precondition_OId := Why_Empty;
+      Result_Name   : W_Identifier_OId := Why_Empty;
       Return_Type   : W_Value_Type_Id;
       Effects       : W_Effects_Id;
-      Postcondition : W_Postcondition_OId)
+      Postcondition : W_Postcondition_OId := Why_Empty)
      return W_Computation_Spec_Id;
    pragma Precondition
      (Precondition_OId_Valid (Precondition)
@@ -414,8 +414,8 @@ package Why.Atree.Builders is
         = Postcondition);
 
    function New_Integer_Constant
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Value    : Uint)
      return W_Integer_Constant_Id;
    pragma Precondition
@@ -438,8 +438,8 @@ package Why.Atree.Builders is
         = Value);
 
    function New_Real_Constant
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Value    : Ureal)
      return W_Real_Constant_Id;
    pragma Precondition
@@ -462,8 +462,8 @@ package Why.Atree.Builders is
         = Value);
 
    function New_True_Literal
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_True_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -479,8 +479,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_False_Literal
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_False_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -496,8 +496,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Void_Literal
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Void_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -513,8 +513,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Arith_Operation
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
@@ -549,8 +549,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Negative_Term
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Term_Id)
      return W_Negative_Term_Id;
    pragma Precondition
@@ -573,10 +573,10 @@ package Why.Atree.Builders is
         = Operand);
 
    function New_Label_Identifier
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
-      Label    : W_Identifier_OId)
+      Label    : W_Identifier_OId := Why_Empty)
      return W_Label_Identifier_Id;
    pragma Precondition
      (Identifier_Id_Valid (Name)
@@ -603,8 +603,8 @@ package Why.Atree.Builders is
         = Label);
 
    function New_Operation
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Operation_Id;
@@ -633,8 +633,8 @@ package Why.Atree.Builders is
         = Parameters);
 
    function New_Named_Term
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id;
@@ -663,8 +663,8 @@ package Why.Atree.Builders is
         = Term);
 
    function New_Conditional_Term
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
@@ -699,8 +699,8 @@ package Why.Atree.Builders is
         = Else_Part);
 
    function New_Binding_Term
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Term_Id)
@@ -735,8 +735,8 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Protected_Term
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Term     : W_Term_Id)
      return W_Protected_Term_Id;
    pragma Precondition
@@ -759,8 +759,8 @@ package Why.Atree.Builders is
         = Term);
 
    function New_Op_Add
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Add_Id;
    pragma Postcondition
      (Get_Kind
@@ -776,8 +776,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Substract
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Substract_Id;
    pragma Postcondition
      (Get_Kind
@@ -793,8 +793,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Multiply
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Multiply_Id;
    pragma Postcondition
      (Get_Kind
@@ -810,8 +810,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Divide
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Divide_Id;
    pragma Postcondition
      (Get_Kind
@@ -827,8 +827,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Modulo
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Modulo_Id;
    pragma Postcondition
      (Get_Kind
@@ -844,8 +844,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_True_Literal_Pred
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_True_Literal_Pred_Id;
    pragma Postcondition
      (Get_Kind
@@ -861,8 +861,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_False_Literal_Pred
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_False_Literal_Pred_Id;
    pragma Postcondition
      (Get_Kind
@@ -878,8 +878,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Predicate_Identifier
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Predicate_Identifier_Id;
    pragma Precondition
@@ -902,8 +902,8 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Predicate_Instance
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Predicate_Instance_Id;
@@ -932,13 +932,13 @@ package Why.Atree.Builders is
         = Parameters);
 
    function New_Related_Terms
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Relation_Id;
       Right    : W_Term_Id;
-      Op2      : W_Relation_OId;
-      Right2   : W_Term_OId)
+      Op2      : W_Relation_OId := Why_Empty;
+      Right2   : W_Term_OId := Why_Empty)
      return W_Related_Terms_Id;
    pragma Precondition
      (Term_Id_Valid (Left)
@@ -980,8 +980,8 @@ package Why.Atree.Builders is
         = Right2);
 
    function New_Implication
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Implication_Id;
@@ -1010,8 +1010,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Equivalence
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Equivalence_Id;
@@ -1040,8 +1040,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Disjonction
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Disjonction_Id;
@@ -1070,8 +1070,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Conjonction
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Conjonction_Id;
@@ -1100,8 +1100,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Negation
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Predicate_Id)
      return W_Negation_Id;
    pragma Precondition
@@ -1124,8 +1124,8 @@ package Why.Atree.Builders is
         = Operand);
 
    function New_Conditional_Pred
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
@@ -1160,8 +1160,8 @@ package Why.Atree.Builders is
         = Else_Part);
 
    function New_Binding_Pred
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
@@ -1196,11 +1196,11 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Universal_Quantif
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
-      Triggers  : W_Triggers_OId;
+      Triggers  : W_Triggers_OId := Why_Empty;
       Pred      : W_Predicate_Id)
      return W_Universal_Quantif_Id;
    pragma Precondition
@@ -1238,8 +1238,8 @@ package Why.Atree.Builders is
         = Pred);
 
    function New_Existential_Quantif
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
@@ -1274,8 +1274,8 @@ package Why.Atree.Builders is
         = Pred);
 
    function New_Named_Predicate
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Named_Predicate_Id;
@@ -1304,8 +1304,8 @@ package Why.Atree.Builders is
         = Pred);
 
    function New_Protected_Predicate
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id)
      return W_Protected_Predicate_Id;
    pragma Precondition
@@ -1328,8 +1328,8 @@ package Why.Atree.Builders is
         = Pred);
 
    function New_Triggers
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Triggers : W_Trigger_List)
      return W_Triggers_Id;
    pragma Precondition
@@ -1352,8 +1352,8 @@ package Why.Atree.Builders is
         = Triggers);
 
    function New_Trigger
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Terms    : W_Term_List)
      return W_Trigger_Id;
    pragma Precondition
@@ -1376,8 +1376,8 @@ package Why.Atree.Builders is
         = Terms);
 
    function New_Rel_Eq
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Eq_Id;
    pragma Postcondition
      (Get_Kind
@@ -1393,8 +1393,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Rel_Ne
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Ne_Id;
    pragma Postcondition
      (Get_Kind
@@ -1410,8 +1410,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Rel_Lt
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Lt_Id;
    pragma Postcondition
      (Get_Kind
@@ -1427,8 +1427,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Rel_Le
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Le_Id;
    pragma Postcondition
      (Get_Kind
@@ -1444,8 +1444,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Rel_Gt
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Gt_Id;
    pragma Postcondition
      (Get_Kind
@@ -1461,8 +1461,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Rel_Ge
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Rel_Ge_Id;
    pragma Postcondition
      (Get_Kind
@@ -1478,10 +1478,10 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Type
-     (Ada_Node        : Node_Id;
-      Link            : Why_Node_Set;
-      External        : W_External_OId;
-      Type_Parameters : W_Identifier_OList;
+     (Ada_Node        : Node_Id := Empty;
+      Link            : Why_Node_Set := Why_Empty;
+      External        : W_External_OId := Why_Empty;
+      Type_Parameters : W_Identifier_OList := New_List;
       Name            : W_Identifier_Id)
      return W_Type_Id;
    pragma Precondition
@@ -1514,9 +1514,9 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Logic
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
-      External   : W_External_OId;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
+      External   : W_External_OId := Why_Empty;
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
      return W_Logic_Id;
@@ -1550,8 +1550,8 @@ package Why.Atree.Builders is
         = Logic_Type);
 
    function New_Function
-     (Ada_Node    : Node_Id;
-      Link        : Why_Node_Set;
+     (Ada_Node    : Node_Id := Empty;
+      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Logic_Binder_List;
       Return_Type : W_Primitive_Type_Id;
@@ -1592,8 +1592,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Predicate_Definition
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
@@ -1628,8 +1628,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Inductive
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
@@ -1664,8 +1664,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Axiom
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Axiom_Id;
@@ -1694,8 +1694,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Goal
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Goal_Id;
@@ -1724,8 +1724,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_External
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_External_Id;
    pragma Postcondition
      (Get_Kind
@@ -1741,8 +1741,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Logic_Type
-     (Ada_Node    : Node_Id;
-      Link        : Why_Node_Set;
+     (Ada_Node    : Node_Id := Empty;
+      Link        : Why_Node_Set := Why_Empty;
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_List)
      return W_Logic_Type_Id;
@@ -1771,8 +1771,8 @@ package Why.Atree.Builders is
         = Return_Type);
 
    function New_Logic_Binder
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
      return W_Logic_Binder_Id;
@@ -1801,8 +1801,8 @@ package Why.Atree.Builders is
         = Param_Type);
 
    function New_Inductive_Case
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Inductive_Case_Id;
@@ -1831,11 +1831,11 @@ package Why.Atree.Builders is
         = Pred);
 
    function New_Effects
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
-      Reads    : W_Identifier_OList;
-      Writes   : W_Identifier_OList;
-      Raises   : W_Identifier_OList)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Reads    : W_Identifier_OList := New_List;
+      Writes   : W_Identifier_OList := New_List;
+      Raises   : W_Identifier_OList := New_List)
      return W_Effects_Id;
    pragma Precondition
      (Identifier_OList_Valid (Reads)
@@ -1867,8 +1867,8 @@ package Why.Atree.Builders is
         = Raises);
 
    function New_Precondition
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id)
      return W_Precondition_Id;
    pragma Precondition
@@ -1891,10 +1891,10 @@ package Why.Atree.Builders is
         = Assertion);
 
    function New_Postcondition
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id;
-      Handlers  : W_Exn_Condition_OList)
+      Handlers  : W_Exn_Condition_OList := New_List)
      return W_Postcondition_Id;
    pragma Precondition
      (Assertion_Id_Valid (Assertion)
@@ -1921,8 +1921,8 @@ package Why.Atree.Builders is
         = Handlers);
 
    function New_Exn_Condition
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
      return W_Exn_Condition_Id;
@@ -1951,10 +1951,10 @@ package Why.Atree.Builders is
         = Assertion);
 
    function New_Assertion
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id;
-      As       : W_Identifier_OId)
+      As       : W_Identifier_OId := Why_Empty)
      return W_Assertion_Id;
    pragma Precondition
      (Predicate_Id_Valid (Pred)
@@ -1981,8 +1981,8 @@ package Why.Atree.Builders is
         = As);
 
    function New_Prog_Constant
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Constant_Id)
      return W_Prog_Constant_Id;
    pragma Precondition
@@ -2005,8 +2005,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Prog_Identifier
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Identifier_Id)
      return W_Prog_Identifier_Id;
    pragma Precondition
@@ -2029,8 +2029,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Deref
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Ref      : W_Identifier_Id)
      return W_Deref_Id;
    pragma Precondition
@@ -2053,8 +2053,8 @@ package Why.Atree.Builders is
         = Ref);
 
    function New_Assignment
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
      return W_Assignment_Id;
@@ -2083,8 +2083,8 @@ package Why.Atree.Builders is
         = Value);
 
    function New_Array_Access
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
      return W_Array_Access_Id;
@@ -2113,8 +2113,8 @@ package Why.Atree.Builders is
         = Index);
 
    function New_Array_Update
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
@@ -2149,8 +2149,8 @@ package Why.Atree.Builders is
         = Value);
 
    function New_Infix_Call
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Prog_Id;
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
@@ -2185,8 +2185,8 @@ package Why.Atree.Builders is
         = Right);
 
    function New_Prefix_Call
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
      return W_Prefix_Call_Id;
@@ -2215,8 +2215,8 @@ package Why.Atree.Builders is
         = Operand);
 
    function New_Binding_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2251,8 +2251,8 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Binding_Ref
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2287,11 +2287,11 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Conditional_Prog
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Prog_Id;
       Then_Part : W_Prog_Id;
-      Else_Part : W_Prog_OId)
+      Else_Part : W_Prog_OId := Why_Empty)
      return W_Conditional_Prog_Id;
    pragma Precondition
      (Prog_Id_Valid (Condition)
@@ -2323,8 +2323,8 @@ package Why.Atree.Builders is
         = Else_Part);
 
    function New_While_Loop
-     (Ada_Node     : Node_Id;
-      Link         : Why_Node_Set;
+     (Ada_Node     : Node_Id := Empty;
+      Link         : Why_Node_Set := Why_Empty;
       Condition    : W_Prog_Id;
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
@@ -2359,8 +2359,8 @@ package Why.Atree.Builders is
         = Loop_Content);
 
    function New_Statement_Sequence
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Statements : W_Prog_List)
      return W_Statement_Sequence_Id;
    pragma Precondition
@@ -2383,8 +2383,8 @@ package Why.Atree.Builders is
         = Statements);
 
    function New_Label
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
      return W_Label_Id;
@@ -2413,8 +2413,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Assert
-     (Ada_Node   : Node_Id;
-      Link       : Why_Node_Set;
+     (Ada_Node   : Node_Id := Empty;
+      Link       : Why_Node_Set := Why_Empty;
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
      return W_Assert_Id;
@@ -2443,8 +2443,8 @@ package Why.Atree.Builders is
         = Prog);
 
    function New_Post_Assertion
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Post_Assertion_Id;
@@ -2473,8 +2473,8 @@ package Why.Atree.Builders is
         = Post);
 
    function New_Opaque_Assertion
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Opaque_Assertion_Id;
@@ -2503,8 +2503,8 @@ package Why.Atree.Builders is
         = Post);
 
    function New_Fun_Def
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id;
@@ -2533,8 +2533,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Binding_Fun
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id;
@@ -2575,8 +2575,8 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Binding_Rec
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
      return W_Binding_Rec_Id;
@@ -2605,8 +2605,8 @@ package Why.Atree.Builders is
         = Context);
 
    function New_Prog_Sequence
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Progs    : W_Prog_List)
      return W_Prog_Sequence_Id;
    pragma Precondition
@@ -2629,10 +2629,10 @@ package Why.Atree.Builders is
         = Progs);
 
    function New_Raise_Statement
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_Id;
    pragma Precondition
      (Identifier_Id_Valid (Name)
@@ -2659,11 +2659,11 @@ package Why.Atree.Builders is
         = Exn_Type);
 
    function New_Raise_Statement_With_Parameters
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
-      Exn_Type  : W_Value_Type_OId)
+      Exn_Type  : W_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_With_Parameters_Id;
    pragma Precondition
      (Identifier_Id_Valid (Name)
@@ -2695,8 +2695,8 @@ package Why.Atree.Builders is
         = Exn_Type);
 
    function New_Try_Block
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
      return W_Try_Block_Id;
@@ -2725,9 +2725,9 @@ package Why.Atree.Builders is
         = Handler);
 
    function New_Unreachable_Code
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
-      Exn_Type : W_Value_Type_OId)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Unreachable_Code_Id;
    pragma Precondition
      (Value_Type_OId_Valid (Exn_Type));
@@ -2749,8 +2749,8 @@ package Why.Atree.Builders is
         = Exn_Type);
 
    function New_Begin_Block
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Begin_Block_Id;
    pragma Precondition
@@ -2773,8 +2773,8 @@ package Why.Atree.Builders is
         = Prog);
 
    function New_Protected_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Protected_Prog_Id;
    pragma Precondition
@@ -2797,8 +2797,8 @@ package Why.Atree.Builders is
         = Prog);
 
    function New_Op_Add_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Add_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2814,8 +2814,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Substract_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Substract_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2831,8 +2831,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Multiply_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Multiply_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2848,8 +2848,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Divide_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Divide_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2865,8 +2865,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Mod_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Mod_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2882,8 +2882,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Eq_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Eq_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2899,8 +2899,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Ne_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Ne_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2916,8 +2916,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Lt_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Lt_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2933,8 +2933,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Le_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Le_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2950,8 +2950,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Gt_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Gt_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2967,8 +2967,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Ge_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Ge_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2984,8 +2984,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Or_Else_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Or_Else_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -3001,8 +3001,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_And_Then_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_And_Then_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -3018,8 +3018,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Minus_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Minus_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -3035,8 +3035,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Op_Not_Prog
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set)
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty)
      return W_Op_Not_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -3052,8 +3052,8 @@ package Why.Atree.Builders is
         = Link);
 
    function New_Binders
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binders_List)
      return W_Binders_Id;
    pragma Precondition
@@ -3076,8 +3076,8 @@ package Why.Atree.Builders is
         = Binders);
 
    function New_Binder
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id;
@@ -3106,8 +3106,8 @@ package Why.Atree.Builders is
         = Arg_Type);
 
    function New_Recfun
-     (Ada_Node    : Node_Id;
-      Link        : Why_Node_Set;
+     (Ada_Node    : Node_Id := Empty;
+      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Binders_Id;
       Return_Type : W_Prog_Id;
@@ -3154,10 +3154,10 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Loop_Annot
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
-      Invariant : W_Assertion_OId;
-      Variant   : W_Wf_Arg_OId)
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
+      Invariant : W_Assertion_OId := Why_Empty;
+      Variant   : W_Wf_Arg_OId := Why_Empty)
      return W_Loop_Annot_Id;
    pragma Precondition
      (Assertion_OId_Valid (Invariant)
@@ -3184,10 +3184,10 @@ package Why.Atree.Builders is
         = Variant);
 
    function New_Wf_Arg
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Term_Id;
-      For_Id   : W_Identifier_OId)
+      For_Id   : W_Identifier_OId := Why_Empty)
      return W_Wf_Arg_Id;
    pragma Precondition
      (Term_Id_Valid (Def)
@@ -3214,10 +3214,10 @@ package Why.Atree.Builders is
         = For_Id);
 
    function New_Handler
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
-      Parameter : W_Prog_OId;
+      Parameter : W_Prog_OId := Why_Empty;
       Def       : W_Prog_Id)
      return W_Handler_Id;
    pragma Precondition
@@ -3250,9 +3250,9 @@ package Why.Atree.Builders is
         = Def);
 
    function New_File
-     (Ada_Node     : Node_Id;
-      Link         : Why_Node_Set;
-      Declarations : W_Declaration_OList)
+     (Ada_Node     : Node_Id := Empty;
+      Link         : Why_Node_Set := Why_Empty;
+      Declarations : W_Declaration_OList := New_List)
      return W_File_Id;
    pragma Precondition
      (Declaration_OList_Valid (Declarations));
@@ -3274,10 +3274,10 @@ package Why.Atree.Builders is
         = Declarations);
 
    function New_Global_Binding
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Binders_OId;
+      Binders  : W_Binders_OId := Why_Empty;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id;
    pragma Precondition
@@ -3310,8 +3310,8 @@ package Why.Atree.Builders is
         = Def);
 
    function New_Global_Rec_Binding
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Recfun_Id)
      return W_Global_Rec_Binding_Id;
    pragma Precondition
@@ -3334,8 +3334,8 @@ package Why.Atree.Builders is
         = Name);
 
    function New_Parameter_Declaration
-     (Ada_Node       : Node_Id;
-      Link           : Why_Node_Set;
+     (Ada_Node       : Node_Id := Empty;
+      Link           : Why_Node_Set := Why_Empty;
       External       : W_External_Id;
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
@@ -3370,10 +3370,10 @@ package Why.Atree.Builders is
         = Parameter_Type);
 
    function New_Exception_Declaration
-     (Ada_Node  : Node_Id;
-      Link      : Why_Node_Set;
+     (Ada_Node  : Node_Id := Empty;
+      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
-      Parameter : W_Primitive_Type_OId)
+      Parameter : W_Primitive_Type_OId := Why_Empty)
      return W_Exception_Declaration_Id;
    pragma Precondition
      (Identifier_Id_Valid (Name)
@@ -3400,8 +3400,8 @@ package Why.Atree.Builders is
         = Parameter);
 
    function New_Logic_Declaration
-     (Ada_Node : Node_Id;
-      Link     : Why_Node_Set;
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
       Decl     : W_Logic_Id)
      return W_Logic_Declaration_Id;
    pragma Precondition
@@ -3423,1022 +3423,1022 @@ package Why.Atree.Builders is
         (New_Logic_Declaration'Result)
         = Decl);
 
-   function New_Identifier
+   function New_Unchecked_Identifier
      (Symbol : Name_Id)
      return W_Identifier_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Identifier'Result)
+       (New_Unchecked_Identifier'Result)
        = W_Identifier
      );
 
-   function New_Type_Prop
+   function New_Unchecked_Type_Prop
      return W_Type_Prop_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type_Prop'Result)
+       (New_Unchecked_Type_Prop'Result)
        = W_Type_Prop
      );
 
-   function New_Type_Int
+   function New_Unchecked_Type_Int
      return W_Type_Int_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type_Int'Result)
+       (New_Unchecked_Type_Int'Result)
        = W_Type_Int
      );
 
-   function New_Type_Bool
+   function New_Unchecked_Type_Bool
      return W_Type_Bool_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type_Bool'Result)
+       (New_Unchecked_Type_Bool'Result)
        = W_Type_Bool
      );
 
-   function New_Type_Real
+   function New_Unchecked_Type_Real
      return W_Type_Real_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type_Real'Result)
+       (New_Unchecked_Type_Real'Result)
        = W_Type_Real
      );
 
-   function New_Type_Unit
+   function New_Unchecked_Type_Unit
      return W_Type_Unit_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type_Unit'Result)
+       (New_Unchecked_Type_Unit'Result)
        = W_Type_Unit
      );
 
-   function New_Abstract_Type
+   function New_Unchecked_Abstract_Type
      return W_Abstract_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Abstract_Type'Result)
+       (New_Unchecked_Abstract_Type'Result)
        = W_Abstract_Type
      );
 
-   function New_Generic_Formal_Type
+   function New_Unchecked_Generic_Formal_Type
      return W_Generic_Formal_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Generic_Formal_Type'Result)
+       (New_Unchecked_Generic_Formal_Type'Result)
        = W_Generic_Formal_Type
      );
 
-   function New_Generic_Actual_Type_Chain
+   function New_Unchecked_Generic_Actual_Type_Chain
      return W_Generic_Actual_Type_Chain_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Generic_Actual_Type_Chain'Result)
+       (New_Unchecked_Generic_Actual_Type_Chain'Result)
        = W_Generic_Actual_Type_Chain
      );
 
-   function New_Array_Type
+   function New_Unchecked_Array_Type
      return W_Array_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Array_Type'Result)
+       (New_Unchecked_Array_Type'Result)
        = W_Array_Type
      );
 
-   function New_Ref_Type
+   function New_Unchecked_Ref_Type
      return W_Ref_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Ref_Type'Result)
+       (New_Unchecked_Ref_Type'Result)
        = W_Ref_Type
      );
 
-   function New_Protected_Value_Type
+   function New_Unchecked_Protected_Value_Type
      return W_Protected_Value_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Protected_Value_Type'Result)
+       (New_Unchecked_Protected_Value_Type'Result)
        = W_Protected_Value_Type
      );
 
-   function New_Anonymous_Arrow_Type
+   function New_Unchecked_Anonymous_Arrow_Type
      return W_Anonymous_Arrow_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Anonymous_Arrow_Type'Result)
+       (New_Unchecked_Anonymous_Arrow_Type'Result)
        = W_Anonymous_Arrow_Type
      );
 
-   function New_Named_Arrow_Type
+   function New_Unchecked_Named_Arrow_Type
      return W_Named_Arrow_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Named_Arrow_Type'Result)
+       (New_Unchecked_Named_Arrow_Type'Result)
        = W_Named_Arrow_Type
      );
 
-   function New_Computation_Spec
+   function New_Unchecked_Computation_Spec
      return W_Computation_Spec_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Computation_Spec'Result)
+       (New_Unchecked_Computation_Spec'Result)
        = W_Computation_Spec
      );
 
-   function New_Integer_Constant
+   function New_Unchecked_Integer_Constant
      (Value : Uint)
      return W_Integer_Constant_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Integer_Constant'Result)
+       (New_Unchecked_Integer_Constant'Result)
        = W_Integer_Constant
      );
 
-   function New_Real_Constant
+   function New_Unchecked_Real_Constant
      (Value : Ureal)
      return W_Real_Constant_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Real_Constant'Result)
+       (New_Unchecked_Real_Constant'Result)
        = W_Real_Constant
      );
 
-   function New_True_Literal
+   function New_Unchecked_True_Literal
      return W_True_Literal_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_True_Literal'Result)
+       (New_Unchecked_True_Literal'Result)
        = W_True_Literal
      );
 
-   function New_False_Literal
+   function New_Unchecked_False_Literal
      return W_False_Literal_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_False_Literal'Result)
+       (New_Unchecked_False_Literal'Result)
        = W_False_Literal
      );
 
-   function New_Void_Literal
+   function New_Unchecked_Void_Literal
      return W_Void_Literal_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Void_Literal'Result)
+       (New_Unchecked_Void_Literal'Result)
        = W_Void_Literal
      );
 
-   function New_Arith_Operation
+   function New_Unchecked_Arith_Operation
      return W_Arith_Operation_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Arith_Operation'Result)
+       (New_Unchecked_Arith_Operation'Result)
        = W_Arith_Operation
      );
 
-   function New_Negative_Term
+   function New_Unchecked_Negative_Term
      return W_Negative_Term_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Negative_Term'Result)
+       (New_Unchecked_Negative_Term'Result)
        = W_Negative_Term
      );
 
-   function New_Label_Identifier
+   function New_Unchecked_Label_Identifier
      return W_Label_Identifier_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Label_Identifier'Result)
+       (New_Unchecked_Label_Identifier'Result)
        = W_Label_Identifier
      );
 
-   function New_Operation
+   function New_Unchecked_Operation
      return W_Operation_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Operation'Result)
+       (New_Unchecked_Operation'Result)
        = W_Operation
      );
 
-   function New_Named_Term
+   function New_Unchecked_Named_Term
      return W_Named_Term_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Named_Term'Result)
+       (New_Unchecked_Named_Term'Result)
        = W_Named_Term
      );
 
-   function New_Conditional_Term
+   function New_Unchecked_Conditional_Term
      return W_Conditional_Term_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Conditional_Term'Result)
+       (New_Unchecked_Conditional_Term'Result)
        = W_Conditional_Term
      );
 
-   function New_Binding_Term
+   function New_Unchecked_Binding_Term
      return W_Binding_Term_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Term'Result)
+       (New_Unchecked_Binding_Term'Result)
        = W_Binding_Term
      );
 
-   function New_Protected_Term
+   function New_Unchecked_Protected_Term
      return W_Protected_Term_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Protected_Term'Result)
+       (New_Unchecked_Protected_Term'Result)
        = W_Protected_Term
      );
 
-   function New_Op_Add
+   function New_Unchecked_Op_Add
      return W_Op_Add_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Add'Result)
+       (New_Unchecked_Op_Add'Result)
        = W_Op_Add
      );
 
-   function New_Op_Substract
+   function New_Unchecked_Op_Substract
      return W_Op_Substract_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Substract'Result)
+       (New_Unchecked_Op_Substract'Result)
        = W_Op_Substract
      );
 
-   function New_Op_Multiply
+   function New_Unchecked_Op_Multiply
      return W_Op_Multiply_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Multiply'Result)
+       (New_Unchecked_Op_Multiply'Result)
        = W_Op_Multiply
      );
 
-   function New_Op_Divide
+   function New_Unchecked_Op_Divide
      return W_Op_Divide_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Divide'Result)
+       (New_Unchecked_Op_Divide'Result)
        = W_Op_Divide
      );
 
-   function New_Op_Modulo
+   function New_Unchecked_Op_Modulo
      return W_Op_Modulo_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Modulo'Result)
+       (New_Unchecked_Op_Modulo'Result)
        = W_Op_Modulo
      );
 
-   function New_True_Literal_Pred
+   function New_Unchecked_True_Literal_Pred
      return W_True_Literal_Pred_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_True_Literal_Pred'Result)
+       (New_Unchecked_True_Literal_Pred'Result)
        = W_True_Literal_Pred
      );
 
-   function New_False_Literal_Pred
+   function New_Unchecked_False_Literal_Pred
      return W_False_Literal_Pred_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_False_Literal_Pred'Result)
+       (New_Unchecked_False_Literal_Pred'Result)
        = W_False_Literal_Pred
      );
 
-   function New_Predicate_Identifier
+   function New_Unchecked_Predicate_Identifier
      return W_Predicate_Identifier_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Predicate_Identifier'Result)
+       (New_Unchecked_Predicate_Identifier'Result)
        = W_Predicate_Identifier
      );
 
-   function New_Predicate_Instance
+   function New_Unchecked_Predicate_Instance
      return W_Predicate_Instance_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Predicate_Instance'Result)
+       (New_Unchecked_Predicate_Instance'Result)
        = W_Predicate_Instance
      );
 
-   function New_Related_Terms
+   function New_Unchecked_Related_Terms
      return W_Related_Terms_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Related_Terms'Result)
+       (New_Unchecked_Related_Terms'Result)
        = W_Related_Terms
      );
 
-   function New_Implication
+   function New_Unchecked_Implication
      return W_Implication_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Implication'Result)
+       (New_Unchecked_Implication'Result)
        = W_Implication
      );
 
-   function New_Equivalence
+   function New_Unchecked_Equivalence
      return W_Equivalence_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Equivalence'Result)
+       (New_Unchecked_Equivalence'Result)
        = W_Equivalence
      );
 
-   function New_Disjonction
+   function New_Unchecked_Disjonction
      return W_Disjonction_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Disjonction'Result)
+       (New_Unchecked_Disjonction'Result)
        = W_Disjonction
      );
 
-   function New_Conjonction
+   function New_Unchecked_Conjonction
      return W_Conjonction_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Conjonction'Result)
+       (New_Unchecked_Conjonction'Result)
        = W_Conjonction
      );
 
-   function New_Negation
+   function New_Unchecked_Negation
      return W_Negation_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Negation'Result)
+       (New_Unchecked_Negation'Result)
        = W_Negation
      );
 
-   function New_Conditional_Pred
+   function New_Unchecked_Conditional_Pred
      return W_Conditional_Pred_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Conditional_Pred'Result)
+       (New_Unchecked_Conditional_Pred'Result)
        = W_Conditional_Pred
      );
 
-   function New_Binding_Pred
+   function New_Unchecked_Binding_Pred
      return W_Binding_Pred_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Pred'Result)
+       (New_Unchecked_Binding_Pred'Result)
        = W_Binding_Pred
      );
 
-   function New_Universal_Quantif
+   function New_Unchecked_Universal_Quantif
      return W_Universal_Quantif_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Universal_Quantif'Result)
+       (New_Unchecked_Universal_Quantif'Result)
        = W_Universal_Quantif
      );
 
-   function New_Existential_Quantif
+   function New_Unchecked_Existential_Quantif
      return W_Existential_Quantif_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Existential_Quantif'Result)
+       (New_Unchecked_Existential_Quantif'Result)
        = W_Existential_Quantif
      );
 
-   function New_Named_Predicate
+   function New_Unchecked_Named_Predicate
      return W_Named_Predicate_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Named_Predicate'Result)
+       (New_Unchecked_Named_Predicate'Result)
        = W_Named_Predicate
      );
 
-   function New_Protected_Predicate
+   function New_Unchecked_Protected_Predicate
      return W_Protected_Predicate_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Protected_Predicate'Result)
+       (New_Unchecked_Protected_Predicate'Result)
        = W_Protected_Predicate
      );
 
-   function New_Triggers
+   function New_Unchecked_Triggers
      return W_Triggers_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Triggers'Result)
+       (New_Unchecked_Triggers'Result)
        = W_Triggers
      );
 
-   function New_Trigger
+   function New_Unchecked_Trigger
      return W_Trigger_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Trigger'Result)
+       (New_Unchecked_Trigger'Result)
        = W_Trigger
      );
 
-   function New_Rel_Eq
+   function New_Unchecked_Rel_Eq
      return W_Rel_Eq_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Eq'Result)
+       (New_Unchecked_Rel_Eq'Result)
        = W_Rel_Eq
      );
 
-   function New_Rel_Ne
+   function New_Unchecked_Rel_Ne
      return W_Rel_Ne_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Ne'Result)
+       (New_Unchecked_Rel_Ne'Result)
        = W_Rel_Ne
      );
 
-   function New_Rel_Lt
+   function New_Unchecked_Rel_Lt
      return W_Rel_Lt_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Lt'Result)
+       (New_Unchecked_Rel_Lt'Result)
        = W_Rel_Lt
      );
 
-   function New_Rel_Le
+   function New_Unchecked_Rel_Le
      return W_Rel_Le_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Le'Result)
+       (New_Unchecked_Rel_Le'Result)
        = W_Rel_Le
      );
 
-   function New_Rel_Gt
+   function New_Unchecked_Rel_Gt
      return W_Rel_Gt_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Gt'Result)
+       (New_Unchecked_Rel_Gt'Result)
        = W_Rel_Gt
      );
 
-   function New_Rel_Ge
+   function New_Unchecked_Rel_Ge
      return W_Rel_Ge_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Rel_Ge'Result)
+       (New_Unchecked_Rel_Ge'Result)
        = W_Rel_Ge
      );
 
-   function New_Type
+   function New_Unchecked_Type
      return W_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Type'Result)
+       (New_Unchecked_Type'Result)
        = W_Type
      );
 
-   function New_Logic
+   function New_Unchecked_Logic
      return W_Logic_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Logic'Result)
+       (New_Unchecked_Logic'Result)
        = W_Logic
      );
 
-   function New_Function
+   function New_Unchecked_Function
      return W_Function_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Function'Result)
+       (New_Unchecked_Function'Result)
        = W_Function
      );
 
-   function New_Predicate_Definition
+   function New_Unchecked_Predicate_Definition
      return W_Predicate_Definition_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Predicate_Definition'Result)
+       (New_Unchecked_Predicate_Definition'Result)
        = W_Predicate_Definition
      );
 
-   function New_Inductive
+   function New_Unchecked_Inductive
      return W_Inductive_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Inductive'Result)
+       (New_Unchecked_Inductive'Result)
        = W_Inductive
      );
 
-   function New_Axiom
+   function New_Unchecked_Axiom
      return W_Axiom_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Axiom'Result)
+       (New_Unchecked_Axiom'Result)
        = W_Axiom
      );
 
-   function New_Goal
+   function New_Unchecked_Goal
      return W_Goal_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Goal'Result)
+       (New_Unchecked_Goal'Result)
        = W_Goal
      );
 
-   function New_External
+   function New_Unchecked_External
      return W_External_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_External'Result)
+       (New_Unchecked_External'Result)
        = W_External
      );
 
-   function New_Logic_Type
+   function New_Unchecked_Logic_Type
      return W_Logic_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Logic_Type'Result)
+       (New_Unchecked_Logic_Type'Result)
        = W_Logic_Type
      );
 
-   function New_Logic_Binder
+   function New_Unchecked_Logic_Binder
      return W_Logic_Binder_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Logic_Binder'Result)
+       (New_Unchecked_Logic_Binder'Result)
        = W_Logic_Binder
      );
 
-   function New_Inductive_Case
+   function New_Unchecked_Inductive_Case
      return W_Inductive_Case_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Inductive_Case'Result)
+       (New_Unchecked_Inductive_Case'Result)
        = W_Inductive_Case
      );
 
-   function New_Effects
+   function New_Unchecked_Effects
      return W_Effects_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Effects'Result)
+       (New_Unchecked_Effects'Result)
        = W_Effects
      );
 
-   function New_Precondition
+   function New_Unchecked_Precondition
      return W_Precondition_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Precondition'Result)
+       (New_Unchecked_Precondition'Result)
        = W_Precondition
      );
 
-   function New_Postcondition
+   function New_Unchecked_Postcondition
      return W_Postcondition_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Postcondition'Result)
+       (New_Unchecked_Postcondition'Result)
        = W_Postcondition
      );
 
-   function New_Exn_Condition
+   function New_Unchecked_Exn_Condition
      return W_Exn_Condition_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Exn_Condition'Result)
+       (New_Unchecked_Exn_Condition'Result)
        = W_Exn_Condition
      );
 
-   function New_Assertion
+   function New_Unchecked_Assertion
      return W_Assertion_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Assertion'Result)
+       (New_Unchecked_Assertion'Result)
        = W_Assertion
      );
 
-   function New_Prog_Constant
+   function New_Unchecked_Prog_Constant
      return W_Prog_Constant_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Prog_Constant'Result)
+       (New_Unchecked_Prog_Constant'Result)
        = W_Prog_Constant
      );
 
-   function New_Prog_Identifier
+   function New_Unchecked_Prog_Identifier
      return W_Prog_Identifier_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Prog_Identifier'Result)
+       (New_Unchecked_Prog_Identifier'Result)
        = W_Prog_Identifier
      );
 
-   function New_Deref
+   function New_Unchecked_Deref
      return W_Deref_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Deref'Result)
+       (New_Unchecked_Deref'Result)
        = W_Deref
      );
 
-   function New_Assignment
+   function New_Unchecked_Assignment
      return W_Assignment_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Assignment'Result)
+       (New_Unchecked_Assignment'Result)
        = W_Assignment
      );
 
-   function New_Array_Access
+   function New_Unchecked_Array_Access
      return W_Array_Access_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Array_Access'Result)
+       (New_Unchecked_Array_Access'Result)
        = W_Array_Access
      );
 
-   function New_Array_Update
+   function New_Unchecked_Array_Update
      return W_Array_Update_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Array_Update'Result)
+       (New_Unchecked_Array_Update'Result)
        = W_Array_Update
      );
 
-   function New_Infix_Call
+   function New_Unchecked_Infix_Call
      return W_Infix_Call_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Infix_Call'Result)
+       (New_Unchecked_Infix_Call'Result)
        = W_Infix_Call
      );
 
-   function New_Prefix_Call
+   function New_Unchecked_Prefix_Call
      return W_Prefix_Call_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Prefix_Call'Result)
+       (New_Unchecked_Prefix_Call'Result)
        = W_Prefix_Call
      );
 
-   function New_Binding_Prog
+   function New_Unchecked_Binding_Prog
      return W_Binding_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Prog'Result)
+       (New_Unchecked_Binding_Prog'Result)
        = W_Binding_Prog
      );
 
-   function New_Binding_Ref
+   function New_Unchecked_Binding_Ref
      return W_Binding_Ref_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Ref'Result)
+       (New_Unchecked_Binding_Ref'Result)
        = W_Binding_Ref
      );
 
-   function New_Conditional_Prog
+   function New_Unchecked_Conditional_Prog
      return W_Conditional_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Conditional_Prog'Result)
+       (New_Unchecked_Conditional_Prog'Result)
        = W_Conditional_Prog
      );
 
-   function New_While_Loop
+   function New_Unchecked_While_Loop
      return W_While_Loop_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_While_Loop'Result)
+       (New_Unchecked_While_Loop'Result)
        = W_While_Loop
      );
 
-   function New_Statement_Sequence
+   function New_Unchecked_Statement_Sequence
      return W_Statement_Sequence_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Statement_Sequence'Result)
+       (New_Unchecked_Statement_Sequence'Result)
        = W_Statement_Sequence
      );
 
-   function New_Label
+   function New_Unchecked_Label
      return W_Label_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Label'Result)
+       (New_Unchecked_Label'Result)
        = W_Label
      );
 
-   function New_Assert
+   function New_Unchecked_Assert
      return W_Assert_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Assert'Result)
+       (New_Unchecked_Assert'Result)
        = W_Assert
      );
 
-   function New_Post_Assertion
+   function New_Unchecked_Post_Assertion
      return W_Post_Assertion_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Post_Assertion'Result)
+       (New_Unchecked_Post_Assertion'Result)
        = W_Post_Assertion
      );
 
-   function New_Opaque_Assertion
+   function New_Unchecked_Opaque_Assertion
      return W_Opaque_Assertion_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Opaque_Assertion'Result)
+       (New_Unchecked_Opaque_Assertion'Result)
        = W_Opaque_Assertion
      );
 
-   function New_Fun_Def
+   function New_Unchecked_Fun_Def
      return W_Fun_Def_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Fun_Def'Result)
+       (New_Unchecked_Fun_Def'Result)
        = W_Fun_Def
      );
 
-   function New_Binding_Fun
+   function New_Unchecked_Binding_Fun
      return W_Binding_Fun_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Fun'Result)
+       (New_Unchecked_Binding_Fun'Result)
        = W_Binding_Fun
      );
 
-   function New_Binding_Rec
+   function New_Unchecked_Binding_Rec
      return W_Binding_Rec_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binding_Rec'Result)
+       (New_Unchecked_Binding_Rec'Result)
        = W_Binding_Rec
      );
 
-   function New_Prog_Sequence
+   function New_Unchecked_Prog_Sequence
      return W_Prog_Sequence_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Prog_Sequence'Result)
+       (New_Unchecked_Prog_Sequence'Result)
        = W_Prog_Sequence
      );
 
-   function New_Raise_Statement
+   function New_Unchecked_Raise_Statement
      return W_Raise_Statement_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Raise_Statement'Result)
+       (New_Unchecked_Raise_Statement'Result)
        = W_Raise_Statement
      );
 
-   function New_Raise_Statement_With_Parameters
+   function New_Unchecked_Raise_Statement_With_Parameters
      return W_Raise_Statement_With_Parameters_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Raise_Statement_With_Parameters'Result)
+       (New_Unchecked_Raise_Statement_With_Parameters'Result)
        = W_Raise_Statement_With_Parameters
      );
 
-   function New_Try_Block
+   function New_Unchecked_Try_Block
      return W_Try_Block_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Try_Block'Result)
+       (New_Unchecked_Try_Block'Result)
        = W_Try_Block
      );
 
-   function New_Unreachable_Code
+   function New_Unchecked_Unreachable_Code
      return W_Unreachable_Code_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Unreachable_Code'Result)
+       (New_Unchecked_Unreachable_Code'Result)
        = W_Unreachable_Code
      );
 
-   function New_Begin_Block
+   function New_Unchecked_Begin_Block
      return W_Begin_Block_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Begin_Block'Result)
+       (New_Unchecked_Begin_Block'Result)
        = W_Begin_Block
      );
 
-   function New_Protected_Prog
+   function New_Unchecked_Protected_Prog
      return W_Protected_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Protected_Prog'Result)
+       (New_Unchecked_Protected_Prog'Result)
        = W_Protected_Prog
      );
 
-   function New_Op_Add_Prog
+   function New_Unchecked_Op_Add_Prog
      return W_Op_Add_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Add_Prog'Result)
+       (New_Unchecked_Op_Add_Prog'Result)
        = W_Op_Add_Prog
      );
 
-   function New_Op_Substract_Prog
+   function New_Unchecked_Op_Substract_Prog
      return W_Op_Substract_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Substract_Prog'Result)
+       (New_Unchecked_Op_Substract_Prog'Result)
        = W_Op_Substract_Prog
      );
 
-   function New_Op_Multiply_Prog
+   function New_Unchecked_Op_Multiply_Prog
      return W_Op_Multiply_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Multiply_Prog'Result)
+       (New_Unchecked_Op_Multiply_Prog'Result)
        = W_Op_Multiply_Prog
      );
 
-   function New_Op_Divide_Prog
+   function New_Unchecked_Op_Divide_Prog
      return W_Op_Divide_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Divide_Prog'Result)
+       (New_Unchecked_Op_Divide_Prog'Result)
        = W_Op_Divide_Prog
      );
 
-   function New_Op_Mod_Prog
+   function New_Unchecked_Op_Mod_Prog
      return W_Op_Mod_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Mod_Prog'Result)
+       (New_Unchecked_Op_Mod_Prog'Result)
        = W_Op_Mod_Prog
      );
 
-   function New_Op_Eq_Prog
+   function New_Unchecked_Op_Eq_Prog
      return W_Op_Eq_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Eq_Prog'Result)
+       (New_Unchecked_Op_Eq_Prog'Result)
        = W_Op_Eq_Prog
      );
 
-   function New_Op_Ne_Prog
+   function New_Unchecked_Op_Ne_Prog
      return W_Op_Ne_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Ne_Prog'Result)
+       (New_Unchecked_Op_Ne_Prog'Result)
        = W_Op_Ne_Prog
      );
 
-   function New_Op_Lt_Prog
+   function New_Unchecked_Op_Lt_Prog
      return W_Op_Lt_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Lt_Prog'Result)
+       (New_Unchecked_Op_Lt_Prog'Result)
        = W_Op_Lt_Prog
      );
 
-   function New_Op_Le_Prog
+   function New_Unchecked_Op_Le_Prog
      return W_Op_Le_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Le_Prog'Result)
+       (New_Unchecked_Op_Le_Prog'Result)
        = W_Op_Le_Prog
      );
 
-   function New_Op_Gt_Prog
+   function New_Unchecked_Op_Gt_Prog
      return W_Op_Gt_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Gt_Prog'Result)
+       (New_Unchecked_Op_Gt_Prog'Result)
        = W_Op_Gt_Prog
      );
 
-   function New_Op_Ge_Prog
+   function New_Unchecked_Op_Ge_Prog
      return W_Op_Ge_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Ge_Prog'Result)
+       (New_Unchecked_Op_Ge_Prog'Result)
        = W_Op_Ge_Prog
      );
 
-   function New_Op_Or_Else_Prog
+   function New_Unchecked_Op_Or_Else_Prog
      return W_Op_Or_Else_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Or_Else_Prog'Result)
+       (New_Unchecked_Op_Or_Else_Prog'Result)
        = W_Op_Or_Else_Prog
      );
 
-   function New_Op_And_Then_Prog
+   function New_Unchecked_Op_And_Then_Prog
      return W_Op_And_Then_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_And_Then_Prog'Result)
+       (New_Unchecked_Op_And_Then_Prog'Result)
        = W_Op_And_Then_Prog
      );
 
-   function New_Op_Minus_Prog
+   function New_Unchecked_Op_Minus_Prog
      return W_Op_Minus_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Minus_Prog'Result)
+       (New_Unchecked_Op_Minus_Prog'Result)
        = W_Op_Minus_Prog
      );
 
-   function New_Op_Not_Prog
+   function New_Unchecked_Op_Not_Prog
      return W_Op_Not_Prog_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Op_Not_Prog'Result)
+       (New_Unchecked_Op_Not_Prog'Result)
        = W_Op_Not_Prog
      );
 
-   function New_Binders
+   function New_Unchecked_Binders
      return W_Binders_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binders'Result)
+       (New_Unchecked_Binders'Result)
        = W_Binders
      );
 
-   function New_Binder
+   function New_Unchecked_Binder
      return W_Binder_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Binder'Result)
+       (New_Unchecked_Binder'Result)
        = W_Binder
      );
 
-   function New_Recfun
+   function New_Unchecked_Recfun
      return W_Recfun_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Recfun'Result)
+       (New_Unchecked_Recfun'Result)
        = W_Recfun
      );
 
-   function New_Loop_Annot
+   function New_Unchecked_Loop_Annot
      return W_Loop_Annot_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Loop_Annot'Result)
+       (New_Unchecked_Loop_Annot'Result)
        = W_Loop_Annot
      );
 
-   function New_Wf_Arg
+   function New_Unchecked_Wf_Arg
      return W_Wf_Arg_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Wf_Arg'Result)
+       (New_Unchecked_Wf_Arg'Result)
        = W_Wf_Arg
      );
 
-   function New_Handler
+   function New_Unchecked_Handler
      return W_Handler_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Handler'Result)
+       (New_Unchecked_Handler'Result)
        = W_Handler
      );
 
-   function New_File
+   function New_Unchecked_File
      return W_File_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_File'Result)
+       (New_Unchecked_File'Result)
        = W_File
      );
 
-   function New_Global_Binding
+   function New_Unchecked_Global_Binding
      return W_Global_Binding_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Global_Binding'Result)
+       (New_Unchecked_Global_Binding'Result)
        = W_Global_Binding
      );
 
-   function New_Global_Rec_Binding
+   function New_Unchecked_Global_Rec_Binding
      return W_Global_Rec_Binding_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Global_Rec_Binding'Result)
+       (New_Unchecked_Global_Rec_Binding'Result)
        = W_Global_Rec_Binding
      );
 
-   function New_Parameter_Declaration
+   function New_Unchecked_Parameter_Declaration
      return W_Parameter_Declaration_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Parameter_Declaration'Result)
+       (New_Unchecked_Parameter_Declaration'Result)
        = W_Parameter_Declaration
      );
 
-   function New_Exception_Declaration
+   function New_Unchecked_Exception_Declaration
      return W_Exception_Declaration_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Exception_Declaration'Result)
+       (New_Unchecked_Exception_Declaration'Result)
        = W_Exception_Declaration
      );
 
-   function New_Logic_Declaration
+   function New_Unchecked_Logic_Declaration
      return W_Logic_Declaration_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Logic_Declaration'Result)
+       (New_Unchecked_Logic_Declaration'Result)
        = W_Logic_Declaration
      );
 

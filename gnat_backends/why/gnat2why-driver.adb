@@ -93,11 +93,8 @@ package body Gnat2Why.Driver is
       begin
          Name_Len := 0;
          Add_Str_To_Name_Buffer ("standard__integer");
-         T := New_Type;
-         I := New_Identifier (Empty,
-                              Why_Empty,
-                              Name_Find,
-                              Why_Empty);
+         T := New_Unchecked_Type;
+         I := New_Identifier (Symbol => Name_Find);
          Type_Set_Name (T, I);
          pragma Assert (Type_Id_Kind_Valid (T));
          pragma Assert (Identifier_Id_Kind_Valid (I));

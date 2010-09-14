@@ -57,10 +57,47 @@ package body Xtree_Tables is
    -- Buider_Name --
    -----------------
 
-   function Builder_Name (Kind : Why_Node_Kind) return Wide_String is
+   function Builder_Name
+     (Kind : Why_Node_Kind;
+      BK   : Builder_Kind := Builder_Regular)
+     return Wide_String is
+
    begin
-      return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
+      case BK is
+         when Builder_Regular =>
+            return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
+         when Builder_Unchecked =>
+            return "New_Unchecked_" & Strip_Prefix (Mixed_Case_Name (Kind));
+      end case;
    end Builder_Name;
+
+   -------------------
+   -- Default_Value --
+   -------------------
+
+   function Default_Value
+     (FI : Field_Info;
+      BK : Builder_Kind := Builder_Regular)
+     return Wide_String is
+      Type_Name : Wide_String := Id_Type_Name (FI);
+   begin
+      if Type_Name = "Why_Node_Id" then
+         return "Why_Empty";
+      elsif Type_Name = "Node_Id" then
+         return "Empty";
+      elsif Type_Name = "Why_Node_Set" then
+         return "Why_Empty";
+      elsif Is_List (FI)
+        and then (BK = Builder_Unchecked or else Maybe_Null (FI))
+      then
+         return "New_List";
+      elsif Is_Why_Id (FI)
+        and then (BK = Builder_Unchecked or else Maybe_Null (FI)) then
+         return "Why_Empty";
+      else
+         return "";
+      end if;
+   end Default_Value;
 
    ----------------
    -- Field_Kind --
@@ -89,6 +126,18 @@ package body Xtree_Tables is
    begin
       return FI.Field_Name.all;
    end Field_Name;
+
+   -----------------------
+   -- Has_Default_Value --
+   -----------------------
+
+   function Has_Default_Value
+     (FI : Field_Info;
+      BK : Builder_Kind := Builder_Regular)
+     return Boolean is
+   begin
+      return Default_Value (FI, BK) /= "";
+   end Has_Default_Value;
 
    ----------------------
    -- Has_Variant_Part --
