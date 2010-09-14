@@ -144,6 +144,7 @@ package body Sparkify.Processing is
                               else Unit_Declaration (Match_Unit));
       Is_Decl_With_Body  : constant Boolean :=
                              not Is_Nil (Match_Unit)
+                               and then not Is_Nil (Unit_Body)
                                and then not Is_Equal (Match_Unit, Unit);
 
       Context_Clause     : constant Asis.Context_Clause_List :=
