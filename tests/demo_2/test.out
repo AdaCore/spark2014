@@ -1,0 +1,167 @@
+------------------------------------------------------------------------
+package ADT_Stack
+is
+pragma Elaborate_Body (ADT_Stack);
+--@ line 24
+   Stack_Size : constant := 100;
+   subtype Stack_Range is  Integer range 0 .. Stack_Size;
+   subtype New_Name_1 is Stack_Range range 
+--@ line 26
+                        1 .. Stack_Range'Last;
+--@ line 26
+   type Vector is array (New_Name_1) of Integer;
+   type Stack is tagged
+      record
+         STack_Vector  : Vector;
+         STack_Top : Stack_Range;
+      end record;
+end ADT_Stack;
+with ADT_Stack;use type ADT_Stack.Vector; 
+use type ADT_Stack.Stack; 
+--@ line 1
+-- This specification is a implementation of a Stack ADT (Abstract Data Type)
+-- An ADT defines a set of objects, with a set of operations that characterize
+-- the behaviour of those object. Khown well on the name OOP.
+
+--# inherit adt_stack;
+package External_ADT_Stack
+is
+
+
+   function Is_Empty(S : ADT_Stack.Stack
+--@ line 10
+                              ) return Boolean;
+   function Is_Full(S : ADT_Stack.Stack
+--@ line 11
+                             ) return Boolean;
+
+   procedure Clear(S : out ADT_Stack.Stack
+--@ line 13
+                                );
+
+   procedure Push(S : in out ADT_Stack.Stack
+--@ line 15
+                                  ; X : in Integer);
+
+
+
+
+   procedure Pop(S : in out ADT_Stack.Stack
+--@ line 20
+                                 ; X : out Integer);
+
+
+
+   Stack_Size : constant := 100;
+end External_ADT_Stack;
+with ADT_Stack;use type ADT_Stack.Vector; 
+use type ADT_Stack.Stack; 
+with External_ADT_Stack;
+--@ line 1
+-- This specification is a implementation of a Stack ADT (Abstract Data Type)
+-- An ADT defines a set of objects, with a set of operations that characterize
+-- the behaviour of those object. Khown well on the name OOP.
+
+--# inherit adt_stack, external_adt_stack;
+package Internal_ADT_Stack
+--@ line 6
+                  is
+
+                                 -- tagged for extension in child package
+
+   function Is_Empty(S : ADT_Stack.Stack
+--@ line 10
+                              ) return Boolean;
+   function Is_Full(S : ADT_Stack.Stack
+--@ line 11
+                             ) return Boolean;
+
+   procedure Clear(S : out ADT_Stack.Stack
+--@ line 13
+                                );
+
+   procedure Push(S : in out ADT_Stack.Stack
+--@ line 15
+                                  ; X : in Integer);
+   -- assert,precondition and postcondition are translated in SPARK syntax
+   -- pragma Precondition (S.Stack_Top < Stack_Size);
+   -- pragma Postcondition (S.Stack_Vector(S.Stack_Top) = X);
+
+   procedure Pop(S : in out ADT_Stack.Stack
+--@ line 20
+                                 ; X : out Integer); -- not a function as in ASM_Stack
+
+--  full details of the type Stack
+private
+   Stack_Size : constant := 100;
+                                                          -- derived type
+                                                           --  anonymous type
+--@ line 33
+end Internal_ADT_Stack;
+--@ line 33
+     -- Not necessary to repeat the name of package,it can be generated
+package body Internal_ADT_Stack
+is
+
+   function Is_Empty(S : ADT_Stack.Stack
+--@ line 4
+                              ) return Boolean
+   is
+   begin
+      return S.Stack_Top = 0;
+   end Is_Empty;
+--@ line 8
+        -- the name of subprograms can be generated if missing
+
+   function Is_Full(S : ADT_Stack.Stack
+--@ line 10
+                             ) return Boolean
+   is
+   begin
+      return S.Stack_Top = ADT_Stack.Stack_Size
+--@ line 13
+                                     ;
+   end Is_Full;
+
+   procedure Clear(S : out ADT_Stack.Stack
+--@ line 16
+                                )
+   is
+   begin
+      S.Stack_Top :=0;
+      S.Stack_Vector := ADT_Stack.Vector'
+--@ line 20
+                        (others => 0); -- The aggregat must be qualified
+   end Clear;
+
+   procedure Push(S : in out ADT_Stack.Stack
+--@ line 23
+                                  ; X : in Integer)
+   is
+   begin
+      S.Stack_Top :=S.Stack_Top + 1;
+      S.Stack_Vector(S.Stack_Top) := X;
+   end Push;
+
+   procedure Pop(S : in out ADT_Stack.Stack
+--@ line 30
+                                 ; X : out Integer)
+   is
+   begin
+      X := S.Stack_Vector(S.Stack_Top);
+      S.Stack_Top :=S.Stack_Top - 1;
+   end Pop;
+
+end Internal_ADT_Stack;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          5      5      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           6      0      4              0      0      0       2
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 11      5      4              0      0      0       2  <<<
+% Totals:                      45%    36%             0%     0%     0%     18% <<<
+===================== End of Semantic Analysis Summary ========================

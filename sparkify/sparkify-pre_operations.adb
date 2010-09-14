@@ -1767,7 +1767,16 @@ package body Sparkify.Pre_Operations is
             Type_Decl : constant Asis.Declaration := Decl_Items (J);
          begin
             case Declaration_Kind (Type_Decl) is
-               when A_Type_Declaration =>
+               --  We don't used a subtype A_Type_Declaration because it
+               --  contains A_Private_Type_Declaration and
+               --  A_Private_Extension_Declaration while a use type clause
+               --  must be printed once for private type.
+               when An_Ordinary_Type_Declaration |
+                    A_Task_Type_Declaration |
+                    A_Protected_Type_Declaration |
+                    An_Incomplete_Type_Declaration |
+                    A_Tagged_Incomplete_Type_Declaration |
+                    A_Private_Extension_Declaration =>
                   if Type_Kind (Type_Declaration_View (Type_Decl))
                     /= A_Derived_Type_Definition then
                      PP_Word ("use type "

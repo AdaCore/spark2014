@@ -1,0 +1,169 @@
+------------------------------------------------------------------------
+package ASM_Stack
+--@ line 1
+--# own Stack_Top, Stack_Vector;
+--# initializes Stack_Top, Stack_Vector;
+is
+pragma Elaborate_Body (ASM_Stack);
+
+   Stack_Size : constant := 100;
+   type Stack_Range is range 0 .. Stack_Size;
+   type Vector is array(Stack_Range range <>) of Integer;
+
+   subtype New_Name_2 is Stack_Range range 
+--@ line 10
+                          1 .. Stack_Size;
+--@ line 10
+   subtype New_Name_1 is Vector (New_Name_2);
+--@ line 10
+   Stack_Vector : New_Name_1               := New_Name_1'
+--@ line 10
+                                              (others => 0);
+   Stack_Top : Stack_Range := 0;
+end ASM_Stack;
+with ASM_Stack;use type ASM_Stack.Stack_Range; 
+use type ASM_Stack.Vector; 
+--@ line 1
+-- This specification is a implementation of a ASM (Abstract Stata Machine)
+-- " An ASM is an entity which has well defined states plus a set of operation
+-- which cause state transitions
+--# inherit asm_stack;
+package External_ASM_Stack
+is
+   function Is_Empty return Boolean;
+--@ line 7
+   --# global in     ASM_Stack.Stack_Top;
+   function Is_Full return Boolean;
+--@ line 8
+   --# global in     ASM_Stack.Stack_Top;
+   procedure Clear;
+--@ line 9
+   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   procedure Push(X : in Integer);
+--@ line 10
+   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   procedure Pop (X : out Integer);
+--@ line 11
+   --# global in     ASM_Stack.Stack_Vector;
+   --#        in out ASM_Stack.Stack_Top;
+--@ line 6
+   Stack_Size : constant := 100;
+end External_ASM_Stack;
+with ASM_Stack;use type ASM_Stack.Stack_Range; 
+use type ASM_Stack.Vector; 
+with External_ASM_Stack;
+--@ line 1
+-- This specification is a implementation of a ASM (Abstract Stata Machine)
+-- " An ASM is an entity which has well defined states plus a set of operation
+-- which cause state transitions
+--# inherit external_asm_stack, asm_stack;
+package Internal_ASM_Stack
+--@ line 5
+                  is
+
+   function Is_Empty return Boolean;
+--@ line 7
+   --# global in     ASM_Stack.Stack_Top;
+   function Is_Full return Boolean;
+--@ line 8
+   --# global in     ASM_Stack.Stack_Top;
+   procedure Clear;
+--@ line 9
+   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   procedure Push(X : in Integer);
+--@ line 10
+   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   procedure Pop (X : out Integer);
+--@ line 11
+   --# global in     ASM_Stack.Stack_Vector;
+   --#        in out ASM_Stack.Stack_Top;
+
+end Internal_ASM_Stack;
+--  Implementation of the subprograms
+
+package body Internal_ASM_Stack
+is
+
+   Stack_Size : constant := 100;
+
+
+
+                                                             --  anonymous type in unconstrained array
+
+
+   function Is_Empty return Boolean
+   is
+   begin
+      return ASM_Stack.Stack_Top
+--@ line 16
+                       = 0;
+   end Is_Empty;
+
+   function Is_Full return Boolean
+   is
+   begin
+      return ASM_Stack.Stack_Top
+--@ line 22
+                       = ASM_Stack.Stack_Size
+--@ line 22
+                                   ;
+   end Is_Full;
+--@ line 23
+         -- the name will be generated
+
+   procedure Clear
+   is
+   begin
+      ASM_Stack.Stack_Top
+--@ line 28
+                :=0;
+      ASM_Stack.Stack_Vector
+--@ line 29
+                   := ASM_Stack.New_Name_1'
+--@ line 29
+                      (others => 0); -- The aggregat must be qualified
+   end Clear;
+
+   procedure Push(X : in Integer)
+   is
+   begin
+      ASM_Stack.Stack_Top
+--@ line 35
+                :=ASM_Stack.Stack_Top
+--@ line 35
+                            + 1;
+      ASM_Stack.Stack_Vector
+--@ line 36
+                  (ASM_Stack.Stack_Top
+--@ line 36
+                            ) := X;
+   end Push;
+
+   procedure Pop (X : out Integer)
+   is
+   begin
+      ASM_Stack.Stack_Top
+--@ line 42
+                := ASM_Stack.Stack_Top
+--@ line 42
+                             - 1;
+      X := ASM_Stack.Stack_Vector
+--@ line 43
+                       (ASM_Stack.Stack_Top
+--@ line 43
+                                  + 1);
+   end Pop;
+
+end Internal_ASM_Stack;
+------------------------------------------------------------------------
+                     Total  Examiner Simp(U/R)  Checker Review False Undiscgd
+Assert or Post:          5      5      0              0      0      0       0
+Precondition check:      0      0      0              0      0      0       0
+Check statement:         0      0      0              0      0      0       0
+Runtime check:           6      0      4              0      0      0       2
+Refinement VCs:          0      0      0              0      0      0       0
+Inheritance VCs:         0      0      0              0      0      0       0
+===============================================================================
+Totals:                 11      5      4              0      0      0       2  <<<
+% Totals:                      45%    36%             0%     0%     0%     18% <<<
+===================== End of Semantic Analysis Summary ========================
