@@ -48,8 +48,8 @@ As an example, a contract for a square-root function is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
   Pre  => X >= 0,
-  Post => Sqrt'Result >= 0 and 
-          Sqrt'Result ** 2 <= X and
+  Post => Sqrt'Result >= 0 and then
+          Sqrt'Result ** 2 <= X and then
           (Sqrt'Result + 1) ** 2 > X;
 \end{verbatim}
 
@@ -107,13 +107,14 @@ function is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
   Pre  => X >= 0,
-  Post => Sqrt'Result >= 0 and 
-          Sqrt'Result ** 2 <= X and
+  Post => Sqrt'Result >= 0 and then
+          Sqrt'Result ** 2 <= X and then
           (Sqrt'Result + 1) ** 2 > X,
   Test_Case => (Requires => X = 100, 
                 Ensures  => Sqrt'Result = 10),
   Test_Case => (Requires => X < 100, 
-                Ensures  => Sqrt'Result >= 0 and Sqrt'Result < 10);
+                Ensures  => Sqrt'Result >= 0 and then 
+                            Sqrt'Result < 10);
 \end{verbatim}
 
 ALFA defines a compiler-specific pragma called Loop\_Invariant, which is a
@@ -126,8 +127,8 @@ function Sqrt (X : Integer) return Integer is
    Res, Two_Res, Res_Square : Integer := 0;
 begin
    while Res_Square <= X loop
-      pragma Loop_Invariant (Res >= 0 and
-                             Two_Res = 2 * Res and
+      pragma Loop_Invariant (Res >= 0 and then
+                             Two_Res = 2 * Res and then
                              Res_Square = Res * Res);
       Res_Square := Res_Square + Two_Res + 1;
       Two_Res    := Two_Res + 2;
@@ -157,11 +158,17 @@ to be in ALFA, G's specification needs to be in ALFA.
 A subprogram specification is in ALFA if:
 \begin{enumerate}
 \item All parameters and return are in ALFA;
-\item The subprogram has a contract, and this contract is in ALFA.
+\item The subprogram has a postcondition;
+\item The contract of the subprogram is in ALFA.
 \end{enumerate}
 
 A contract is in ALFA if all expressions appearing in precondition,
-postcondition and test-cases are specification expressions in ALFA.
+postcondition and test-cases are specification expressions in ALFA. The
+requirement that a subprogram has a postcondition ensures that the user states
+desired properties to prove on this subprogram, and that callers can rely on a
+precise indication of what this subprogram does. Of course, such a
+postcondition can be simply 'True' in which case the user chooses not to give
+any more precise information.
 
 A specification expression in ALFA is an expression in ALFA which appears as
 part of a contract or an invariant, and:
@@ -180,9 +187,13 @@ A subprogram body is in ALFA if:
 \item All statements in its sequence of statements are in ALFA.
 \end{enumerate}
 
+In particular, all calls in a body should be to subprograms whose specification
+is in ALFA for the body to be ALFA.
+
 More generally, the definition of which constructs are in ALFA or not should be
 derived from the report written by Marc Sango for his internship on the
-definition of a verification profile for Ada.
+definition of a verification profile for Ada. Note that uses of 'or/and' are
+not in ALFA while uses of 'or else/and then' are in ALFA.
 
 \section{Translation to SPARK / Why}
 
@@ -249,7 +260,7 @@ would become in SPARK:
 
 \begin{verbatim}
 function Get (A : My_Array; X : Integer) return Element;
---# pre X in My_Array'Range and A (X) /= Nil_Element;
+--# pre X in My_Array'Range and then A (X) /= Nil_Element;
 \end{verbatim}
 
 \subsection{General Architecture}
