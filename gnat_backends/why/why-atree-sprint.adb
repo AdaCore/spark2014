@@ -67,7 +67,8 @@ package body Why.Atree.Sprint is
    is
       use Node_Lists;
 
-      Position : Cursor := First (Get_List (List_Id));
+      Nodes    : constant List := Get_List (List_Id);
+      Position : Cursor := First (Nodes);
    begin
       while Position /= No_Element loop
          declare

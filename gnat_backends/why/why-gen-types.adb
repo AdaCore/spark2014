@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - D R I V E R                       --
+--                        W H Y - G E N - T Y P E S                         --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -19,65 +19,29 @@
 -- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
 -- Boston,                                                                  --
 --                                                                          --
--- gnat2why is maintained by AdaCore (http://www.adacore.com)             --
+-- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Switch;  use Switch;
-with Sprint;  use Sprint;
-with Opt;     use Opt;
-with Treepr;
+with Namet; use Namet;
 
-with Gnat2Why.Standard; use Gnat2Why.Standard;
+with Why.Atree.Builders; use Why.Atree.Builders;
 
-package body Gnat2Why.Driver is
+package body Why.Gen.Types is
 
-   --   This is the main driver for the Ada-to-Why back-end
+   ---------------------------
+   -- Declare_Abstract_Type --
+   ---------------------------
 
-   ------------------------
-   -- Is_Back_End_Switch --
-   ------------------------
-
-   function Is_Back_End_Switch (Switch : String) return Boolean is
-      First : constant Positive := Switch'First + 1;
-      Last  : Natural           := Switch'Last;
+   function Declare_Abstract_Type (Name : String) return W_Type_Id is
+      I : W_Identifier_Id;
+      T : W_Type_Id;
    begin
-      if Last >= First
-        and then Switch (Last) = ASCII.NUL
-      then
-         Last := Last - 1;
-      end if;
+      Name_Len := 0;
+      Add_Str_To_Name_Buffer (Name);
+      I := New_Identifier (Symbol => Name_Find);
+      T := New_Type (Name => I);
+      return T;
+   end Declare_Abstract_Type;
 
-      if not Is_Switch (Switch) then
-         return False;
-      end if;
-
-      --  For now we just allow the -g and -O switches, even though they
-      --  will have no effect.
-
-      case Switch (First) is
-         when 'g' | 'O' =>
-            return True;
-
-         when others =>
-            return False;
-      end case;
-   end Is_Back_End_Switch;
-
-   -----------------
-   -- GNAT_To_Why --
-   -----------------
-
-   procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-   begin
-      if Print_Generated_Code then
-         Treepr.Print_Node_Subtree (GNAT_Root);
-         Sprint_Node (GNAT_Root);
-      end if;
-
-      if Print_Standard then
-         Create_Standard;
-      end if;
-   end GNAT_To_Why;
-
-end Gnat2Why.Driver;
+end Why.Gen.Types;

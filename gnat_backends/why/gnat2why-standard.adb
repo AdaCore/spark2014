@@ -2,16 +2,17 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      G N A T 2 W H Y - D R I V E R                       --
+--                    G N A T 2 W H Y - S T A N D A R D                     --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
 --                       Copyright (C) 2010, AdaCore                        --
 --                                                                          --
--- gnat2why is  free  software;  you can redistribute it and/or modify it   --
+
+-- gnat2why is  free  software;  you can redistribute it and/or modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
 -- Software Foundation;  either version  2,  or  (at your option) any later --
--- version. gnat2why is distributed in the hope that it will  be  useful,   --
+-- version. gnat2why is distributed in the hope that it will  be  useful, --
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-  --
 -- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
 -- License  for more details. You  should  have  received a copy of the GNU --
@@ -23,61 +24,35 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Switch;  use Switch;
-with Sprint;  use Sprint;
-with Opt;     use Opt;
-with Treepr;
+with Outputs; use Outputs;
 
-with Gnat2Why.Standard; use Gnat2Why.Standard;
+with Why.Ids;       use Why.Ids;
+with Why.Gen.Types; use Why.Gen.Types;
 
-package body Gnat2Why.Driver is
+with Why.Atree.Sprint;   use Why.Atree.Sprint;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Atree.Builders; use Why.Atree.Builders;
 
-   --   This is the main driver for the Ada-to-Why back-end
+package body Gnat2Why.Standard is
 
-   ------------------------
-   -- Is_Back_End_Switch --
-   ------------------------
+   ---------------------
+   -- Create_Standard --
+   ---------------------
 
-   function Is_Back_End_Switch (Switch : String) return Boolean is
-      First : constant Positive := Switch'First + 1;
-      Last  : Natural           := Switch'Last;
+   procedure Create_Standard is
+      F : constant W_File_Id := New_File;
    begin
-      if Last >= First
-        and then Switch (Last) = ASCII.NUL
-      then
-         Last := Last - 1;
-      end if;
+      File_Append_To_Declarations
+        (F, Declare_Abstract_Type ("standard__boolean"));
+      File_Append_To_Declarations
+        (F, Declare_Abstract_Type ("standard__integer"));
+      File_Append_To_Declarations
+        (F, Declare_Abstract_Type ("standard__natural"));
+      File_Append_To_Declarations
+        (F, Declare_Abstract_Type ("standard__positive"));
+      Open_Current_File ("standard.why");
+      Sprint_Why_Node (F, Current_File);
+      Close_Current_File;
+   end Create_Standard;
 
-      if not Is_Switch (Switch) then
-         return False;
-      end if;
-
-      --  For now we just allow the -g and -O switches, even though they
-      --  will have no effect.
-
-      case Switch (First) is
-         when 'g' | 'O' =>
-            return True;
-
-         when others =>
-            return False;
-      end case;
-   end Is_Back_End_Switch;
-
-   -----------------
-   -- GNAT_To_Why --
-   -----------------
-
-   procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-   begin
-      if Print_Generated_Code then
-         Treepr.Print_Node_Subtree (GNAT_Root);
-         Sprint_Node (GNAT_Root);
-      end if;
-
-      if Print_Standard then
-         Create_Standard;
-      end if;
-   end GNAT_To_Why;
-
-end Gnat2Why.Driver;
+end Gnat2Why.Standard;
