@@ -20,6 +20,7 @@ package Internal_P
 end Internal_P;
 package P
 is
+pragma Elaborate_Body (P);
 end P;
 package body Internal_P
 --@ line 1

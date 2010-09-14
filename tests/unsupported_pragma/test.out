@@ -65,6 +65,8 @@ package Internal_S
 end Internal_S;
 package S
 is
+pragma Elaborate_Body (S);
+--@ line 3
    type Array_Range is range 1 .. 10;
 
    type IntArray is array (Array_Range) of Integer;

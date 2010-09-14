@@ -80,6 +80,8 @@ package Search
 --# own Counter;
 --# initializes Counter;
 is
+pragma Elaborate_Body (Search);
+--@ line 4
   type IntArray is array (Integer range <>) of Integer;
 
   Counter : Natural := 0;

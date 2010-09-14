@@ -98,9 +98,12 @@ with T;use type T.Signed;
 --# inherit t;
 package S
 is
+pragma Elaborate_Body (S);
 end S;
 package T
 is
+pragma Elaborate_Body (T);
+--@ line 3
    type Signed is range -10 .. 10;
 end T;
 package body Internal_S

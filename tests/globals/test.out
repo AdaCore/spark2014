@@ -41,7 +41,7 @@ package Globals
 --@ line 1
 --# own G;
 is
-
+pragma Elaborate_Body (Globals);
 
    G : Integer;
 end Globals;

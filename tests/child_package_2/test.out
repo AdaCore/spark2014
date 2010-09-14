@@ -56,6 +56,7 @@ package Parent_Child
 --@ line 2
 --# own Y;
 is
+pragma Elaborate_Body (Parent_Child);
 --@ line 3
    Y : Integer;
 end Parent_Child;
@@ -63,6 +64,8 @@ package Parent
 --@ line 1
 --# own X;
 is
+pragma Elaborate_Body (Parent);
+--@ line 3
    X : Integer;
 end Parent;
 package body Internal_Parent_Child

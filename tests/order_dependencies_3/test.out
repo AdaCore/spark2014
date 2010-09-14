@@ -53,12 +53,16 @@ package P
 --@ line 1
 --# own X;
 is
+pragma Elaborate_Body (P);
+--@ line 3
    X : Integer;
 end P;
 package Q
 --@ line 1
 --# own Y;
 is
+pragma Elaborate_Body (Q);
+--@ line 3
    Y : Integer;
 end Q;
 

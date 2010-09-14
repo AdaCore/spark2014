@@ -66,6 +66,8 @@ package Internal_tq
 end Internal_tq;
 package tq
 is
+pragma Elaborate_Body (tq);
+--@ line 3
    type Complex is record
       mReal : Float;
       mImaginary : Float;

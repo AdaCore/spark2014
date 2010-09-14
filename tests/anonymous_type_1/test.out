@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 package Anon_Type
 is
-
+pragma Elaborate_Body (Anon_Type);
 
 
    subtype New_Name_1 is 

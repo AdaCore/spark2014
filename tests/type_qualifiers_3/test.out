@@ -35,6 +35,8 @@ package Internal_tq
 end Internal_tq;
 package tq
 is
+pragma Elaborate_Body (tq);
+--@ line 3
         Board_Size : constant Integer :=8;
         type Board_Index is range 1 .. Board_Size;
         type Colours is (No_colour, Black, White);

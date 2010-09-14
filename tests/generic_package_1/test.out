@@ -48,6 +48,7 @@ package P
 --# own T, X, Y, Z;
 --# initializes T, Z;
 is
+pragma Elaborate_Body (P);
 --@ line 2
    X:  Integer;
    Y:     Integer;

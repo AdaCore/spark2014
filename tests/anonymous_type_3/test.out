@@ -3,7 +3,7 @@ package Anon_Type
 --@ line 1
 --# own ToDay1, ToDay2, ToDay3;
 is
-
+pragma Elaborate_Body (Anon_Type);
 
 
 

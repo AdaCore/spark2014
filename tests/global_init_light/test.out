@@ -18,6 +18,7 @@ package Globals
 --# own G1, G2;
 --# initializes G2;
 is
+pragma Elaborate_Body (Globals);
 --@ line 3
    G1 : Integer;
 

@@ -57,6 +57,8 @@ package Internal_Search
 end Internal_Search;
 package Search
 is
+pragma Elaborate_Body (Search);
+--@ line 3
   type IntArray is array (Integer range <>) of Integer;
 end Search;
 package body Internal_Search

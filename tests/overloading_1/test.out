@@ -30,6 +30,7 @@ is
 end Internal_Overloading;
 package Overloading
 is
+pragma Elaborate_Body (Overloading);
 end Overloading;
 package body Internal_Overloading
 is

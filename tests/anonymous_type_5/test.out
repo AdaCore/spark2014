@@ -1,6 +1,8 @@
 ------------------------------------------------------------------------
 package Anon_Type
 is
+pragma Elaborate_Body (Anon_Type);
+--@ line 3
    subtype New_Name_1 is 
 --@ line 3
       Integer range 0 .. 10;

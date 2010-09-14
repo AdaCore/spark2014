@@ -75,6 +75,8 @@ package Internal_Unc_Test
 end Internal_Unc_Test;
 package Unc
 is
+pragma Elaborate_Body (Unc);
+--@ line 3
    type Vector is array (Integer range <>) of Integer;
 end Unc;
 
@@ -83,6 +85,7 @@ with Unc;use type Unc.Vector;
 --# inherit unc;
 package Unc_Test
 is
+pragma Elaborate_Body (Unc_Test);
 end Unc_Test;
 package body Internal_Unc_Test
 --@ line 1

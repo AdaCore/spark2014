@@ -7,6 +7,7 @@ with C2;
 --# inherit data_model, c2;
 package C1
 is
+pragma Elaborate_Body (C1);
 end C1;
 
 with Data_Model;use type Data_Model.Int32_T; 
@@ -16,6 +17,7 @@ with C3;
 --# inherit data_model, c3;
 package C2
 is
+pragma Elaborate_Body (C2);
 end C2;
 
 with Data_Model;use type Data_Model.Int32_T; 
@@ -23,10 +25,11 @@ with Data_Model;use type Data_Model.Int32_T;
 --# inherit data_model;
 package C3
 is
+pragma Elaborate_Body (C3);
 end C3;
 package Data_Model
 is
-
+pragma Elaborate_Body (Data_Model);
 
    type Int32_T is range - 2 ** 31 .. 2 ** 31 - 1;
    for Int32_T'Value_Size use 32;

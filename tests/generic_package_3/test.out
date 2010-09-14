@@ -65,6 +65,7 @@ package P
 --@ line 1
 --# own X, Y;
 is
+pragma Elaborate_Body (P);
 --@ line 2
    X:         Integer;
    Y:         Integer;
@@ -73,6 +74,8 @@ package Q
 --@ line 1
 --# own A, B;
 is
+pragma Elaborate_Body (Q);
+--@ line 3
    A : Integer;
    B : Integer;
 end Q;

@@ -38,6 +38,8 @@ is
 end External_S;
 package Integer_Types
 is
+pragma Elaborate_Body (Integer_Types);
+--@ line 3
    type Array_Range is range 1 .. 10;
 end Integer_Types;
 with Integer_Types;use type Integer_Types.Array_Range; 
@@ -94,6 +96,8 @@ with Integer_Types;use type Integer_Types.Array_Range;
 --# inherit integer_types;
 package S
 is
+pragma Elaborate_Body (S);
+--@ line 5
    type IntArray is array (Integer_Types.Array_Range) of Integer;
 end S;
 package body Internal_S

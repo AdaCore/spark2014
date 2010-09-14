@@ -4,7 +4,7 @@ anon_type.adb:17:33: sparkify: implicit loop invariant
 ------------------------------------------------------------------------
 package Anon_Type
 is
-
+pragma Elaborate_Body (Anon_Type);
 
 
    subtype Index is Integer range 0 .. 4;

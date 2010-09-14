@@ -30,6 +30,8 @@ package P
 --@ line 1
 --# own X;
 is
+pragma Elaborate_Body (P);
+--@ line 3
    X : Boolean;
 end P;
 package body Internal_P

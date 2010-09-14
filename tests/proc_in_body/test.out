@@ -29,6 +29,7 @@ package Internal_S
 end Internal_S;
 package S
 is
+pragma Elaborate_Body (S);
 end S;
 package body Internal_S
 --@ line 1

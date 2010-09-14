@@ -135,6 +135,8 @@ package Internal_Two_Test
 end Internal_Two_Test;
 package Two
 is
+pragma Elaborate_Body (Two);
+--@ line 3
    type Index is range 1 .. 10;
 
    type Table is array (Index, Index) of Integer;
@@ -146,6 +148,7 @@ use type Two.Table;
 --# inherit two;
 package Two_Test
 is
+pragma Elaborate_Body (Two_Test);
 end Two_Test;
 package body Internal_Two_Test
 --@ line 1

@@ -1,6 +1,8 @@
 ------------------------------------------------------------------------
 package Derived_Type
 is
+pragma Elaborate_Body (Derived_Type);
+--@ line 3
    subtype Counter is  Positive;
    subtype Index_Int is  Integer range 1 .. 10;
    subtype Index_Real is  Float range 1.0 .. 10.0;

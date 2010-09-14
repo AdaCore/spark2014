@@ -1186,6 +1186,14 @@ package body Sparkify.Pre_Operations is
    is
       pragma Unreferenced (Control);
 
+      --  We need to know the variable declaration of which the aggregate
+      --  is part, in order to correctly prefix the name of the type in case
+      --  it is a type introduced by the translation. Indeed, a type introduced
+      --  for a local variable will be defined locally, so it should not be
+      --  prefixed, while a type introduced for a global variable should be
+      --  prefixed, as it will end up in another package.
+      Var_Decl : Asis.Declaration;
+
       --  It may occur that the name does not exist in the original source code
       --  but we created it instead during the translation. Try to retrieve it
       --  from the map which was created by the translation.
@@ -1196,7 +1204,6 @@ package body Sparkify.Pre_Operations is
         (Element : Asis.Element) return Wide_String
       is
          Encl_Element : constant Asis.Element := Enclosing_Element (Element);
-         Var_Decl     : Asis.Declaration;
       begin
          case Element_Kind (Encl_Element) is
             when A_Declaration =>
@@ -1244,10 +1251,11 @@ package body Sparkify.Pre_Operations is
          return;
       elsif Is_Nil (Type_Decl) or else
         Type_Kind (Type_Declaration_View (Type_Decl))
-        = An_Unconstrained_Array_Definition
-      then
-         Type_Str :=
-           To_Unbounded_Wide_String (Get_Type_Name_From_Context (Element));
+        = An_Unconstrained_Array_Definition then
+
+         Type_Str := To_Unbounded_Wide_String
+           (Prepend_Package_Name (Var_Decl,
+            Get_Type_Name_From_Context (Element)));
       else
          declare
             Decl_Name : constant Defining_Name_List :=

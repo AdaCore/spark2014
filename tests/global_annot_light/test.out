@@ -16,6 +16,8 @@ package Globals
 --# own B1, B2, B3, D1, D2, D3, R1, RW1, W1;
 --# initializes B2, B3, D2, D3, R1, RW1;
 is
+pragma Elaborate_Body (Globals);
+--@ line 4
    D2 : Integer := 41;
    D1 : Integer;
    D3 : Integer := 0;

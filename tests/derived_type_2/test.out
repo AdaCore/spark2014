@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------
 package Derived_Type
 is
+pragma Elaborate_Body (Derived_Type);
 --@ line 2
    type Day_Name is (Mon, Tue, Wed, Thu, Fri, Sat, Sun);
    subtype Week_Day is  Day_Name range Mon .. Fri;

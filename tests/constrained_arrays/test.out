@@ -3,6 +3,8 @@ arr_test.adb:25:3: sparkify: discard contract on definition of subprogram
 ------------------------------------------------------------------------
 package Arr
 is
+pragma Elaborate_Body (Arr);
+--@ line 3
    type Index is range 1 .. 10;
 
    type Table is array (Index) of Integer;
@@ -14,6 +16,7 @@ use type Arr.Table;
 --# inherit arr;
 package Arr_Test
 is
+pragma Elaborate_Body (Arr_Test);
 end Arr_Test;
 with Arr;use type Arr.Index; 
 use type Arr.Table; 
