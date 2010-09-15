@@ -23,6 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Asis.Text;                        use Asis.Text;
+
+with Sparkify.Basic;                   use Sparkify.Basic;
+
 package body Sparkify.State is
 
    ----------------
@@ -43,5 +47,24 @@ package body Sparkify.State is
       Out_File_Exists   := False;
 
    end Initialize;
+
+   ----------------------------------
+   -- Fill_Lines_Table_For_Element --
+   ----------------------------------
+
+   procedure Fill_Lines_Table_For_Element (Element : Asis.Element) is
+      Full_Span : constant Asis.Text.Span := Compilation_Span (Element);
+   begin
+      --  Feeding the line table
+      Lines_Table.Set_Last (Full_Span.Last_Line);
+      Lines_Table.Table (1 .. Full_Span.Last_Line) :=
+         Lines_Table.Table_Type
+           (Lines (Element    => Element,
+                   First_Line => Full_Span.First_Line,
+                   Last_Line  => Full_Span.Last_Line));
+
+      The_Last_Line   := Full_Span.Last_Line;
+      The_Last_Column := Full_Span.Last_Column;
+   end Fill_Lines_Table_For_Element;
 
 end Sparkify.State;

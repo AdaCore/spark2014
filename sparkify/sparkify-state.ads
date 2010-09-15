@@ -33,6 +33,8 @@ with Ada.Strings.Wide_Unbounded;       use Ada.Strings.Wide_Unbounded;
 
 with GNAT.OS_Lib;                      use GNAT.OS_Lib;
 
+with Asis;
+
 package Sparkify.State is
 
    ---------------------
@@ -73,5 +75,7 @@ package Sparkify.State is
    procedure Initialize;
    --  (Re)initialize the global variables declared in this package, needed in
    --  case of multiple file processing
+
+   procedure Fill_Lines_Table_For_Element (Element : Asis.Element);
 
 end Sparkify.State;

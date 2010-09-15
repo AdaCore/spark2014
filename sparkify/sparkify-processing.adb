@@ -65,8 +65,6 @@ package body Sparkify.Processing is
    procedure Print_Decl (Element : Asis.Declaration);
 
    procedure Print_Decl (Element : Asis.Declaration) is
-      Full_Span      : constant Asis.Text.Span := Compilation_Span (Element);
-
       procedure Print_Decl_List (Decl_Items : Asis.Declarative_Item_List);
 
       procedure Print_Decl_List (Decl_Items : Asis.Declarative_Item_List) is
@@ -78,15 +76,7 @@ package body Sparkify.Processing is
       end Print_Decl_List;
    begin
       --  Feeding the line table
-      Lines_Table.Set_Last (Full_Span.Last_Line);
-      Lines_Table.Table (1 .. Full_Span.Last_Line) :=
-         Lines_Table.Table_Type
-           (Lines (Element    => Element,
-                   First_Line => Full_Span.First_Line,
-                   Last_Line  => Full_Span.Last_Line));
-
-      The_Last_Line   := Full_Span.Last_Line;
-      The_Last_Column := Full_Span.Last_Column;
+      Fill_Lines_Table_For_Element (Element);
 
       case Declaration_Kind (Element) is
          when A_Package_Declaration |
@@ -153,8 +143,6 @@ package body Sparkify.Processing is
                              Compilation_Pragmas (Unit);
       First_Pragma_After : Asis.List_Index := Comp_Pragmas'Last + 1;
 
-      Full_Span          : constant Asis.Text.Span :=
-                             Compilation_Span (Unit_Decl);
       Unit_Span          : constant Asis.Text.Span :=
                              Element_Span (Unit_Decl);
 
@@ -171,23 +159,13 @@ package body Sparkify.Processing is
       Sparkify.Names.Initialize;
 
       --  Feeding the line table
-
-      Lines_Table.Set_Last (Full_Span.Last_Line);
-
-      Lines_Table.Table (1 .. Full_Span.Last_Line) :=
-         Lines_Table.Table_Type
-           (Lines (Element    => Unit_Decl,
-                   First_Line => Full_Span.First_Line,
-                   Last_Line  => Full_Span.Last_Line));
+      Fill_Lines_Table_For_Element (Unit_Decl);
 
       --  To keep the reference to the current unit in a global variable
       The_Unit := Unit;
 
       --  Set after The_Unit has been set
       Source_State := Initial_State;
-
-      The_Last_Line   := Full_Span.Last_Line;
-      The_Last_Column := Full_Span.Last_Column;
 
       --  We separate the following parts of the original source:
       --
