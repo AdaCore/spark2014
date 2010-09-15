@@ -48,6 +48,7 @@ with Sparkify.Source_Line_Buffer;      use Sparkify.Source_Line_Buffer;
 with Sparkify.Cursors;                 use Sparkify.Cursors;
 with Sparkify.Basic;                   use Sparkify.Basic;
 with Sparkify.Source_Traversal;        use Sparkify.Source_Traversal;
+with Sparkify.State;                   use Sparkify.State;
 
 package body Sparkify.Pre_Operations is
 
@@ -678,6 +679,36 @@ package body Sparkify.Pre_Operations is
       pragma Assert (Proc_Names'Length = 1);
       Proc_Name    : constant Defining_Name :=
                        Proc_Names (Proc_Names'First);
+
+      function Get_Pragmas
+        (Element : Asis.Declaration) return Pragma_Element_List;
+
+      function Get_Pragmas
+        (Element : Asis.Declaration) return Pragma_Element_List
+      is
+         Body_Decl : constant Asis.Declaration :=
+                       Corresponding_Body (Element);
+      begin
+         if Is_Nil (Body_Decl) then
+            return Pragmas;
+         else
+            declare
+               Body_Pragmas : constant Pragma_Element_List :=
+                                Corresponding_Pragmas (Body_Decl);
+            begin
+               pragma Assert (not Has_SPARK_Contract (Pragmas) or else
+                              not Has_SPARK_Contract (Body_Pragmas));
+
+               if Has_SPARK_Contract (Pragmas) then
+                  return Pragmas;
+               elsif Has_SPARK_Contract (Body_Pragmas) then
+                  return Body_Pragmas;
+               else
+                  return Nil_Element_List;
+               end if;
+            end;
+         end if;
+      end Get_Pragmas;
    begin
       if Current_Pass = Printing_Data then
          --  Discard subprograms during data printing
@@ -729,11 +760,19 @@ package body Sparkify.Pre_Operations is
                           Is_Function => Is_Function,
                           Column      => Column_Start);
 
-         if Has_SPARK_Contract (Pragmas) then
-            SPARK_Contract (Pragmas     => Pragmas,
-                            Is_Function => Is_Function,
-                            Column      => Column_Start);
-         end if;
+         declare
+            Contract_Pragmas : constant Pragma_Element_List :=
+                                 Get_Pragmas (Element);
+         begin
+            if Has_SPARK_Contract (Contract_Pragmas) then
+               Fill_Lines_Table_For_Element
+                 (Contract_Pragmas (Contract_Pragmas'First));
+               SPARK_Contract (Pragmas     => Contract_Pragmas,
+                               Is_Function => Is_Function,
+                               Column      => Column_Start);
+               Fill_Lines_Table_For_Element (Element);
+            end if;
+         end;
 
          State.Echo_Cursor := Cursor_After (Element);
 
@@ -1821,29 +1860,36 @@ package body Sparkify.Pre_Operations is
      (Params     : Asis.Association_List;
       Global_Str : Wide_String := "") is
    begin
-      if not Is_Nil (Params) then
-         declare
-            First_Param : constant Asis.Association := Params (Params'First);
-         begin
-            PP_Word ("(");
-            PP_Word (Element_Name (Formal_Parameter (First_Param)));
-            PP_Word (" => ");
-            Traverse_Element_And_Print (Actual_Parameter (First_Param));
+      if not Is_Nil (Params) or else Global_Str /= "" then
 
-            for J in Params'First + 1 .. Params'Last loop
-               PP_Word (", ");
-               PP_Word (Element_Name (Formal_Parameter (Params (J))));
-               PP_Word (" => ");
-               Traverse_Element_And_Print (Actual_Parameter (Params (J)));
-            end loop;
-
-            PP_Word (")");
-         end;
-      end if;
-
-      if Global_Str /= "" then
          PP_Word ("(");
-         PP_Word (Global_Str);
+
+         if not Is_Nil (Params) then
+            declare
+               First_Param : constant Asis.Association :=
+                               Params (Params'First);
+            begin
+               PP_Word (Element_Name (Formal_Parameter (First_Param)));
+               PP_Word (" => ");
+               Traverse_Element_And_Print (Actual_Parameter (First_Param));
+
+               for J in Params'First + 1 .. Params'Last loop
+                  PP_Word (", ");
+                  PP_Word (Element_Name (Formal_Parameter (Params (J))));
+                  PP_Word (" => ");
+                  Traverse_Element_And_Print (Actual_Parameter (Params (J)));
+               end loop;
+            end;
+         end if;
+
+         if not Is_Nil (Params) and then Global_Str /= "" then
+            PP_Word (", ");
+         end if;
+
+         if Global_Str /= "" then
+            PP_Word (Global_Str);
+         end if;
+
          PP_Word (")");
       end if;
    end Print_An_Association_List;
