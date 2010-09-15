@@ -35,11 +35,21 @@ is
    function Is_Empty return Boolean;
 --@ line 7
    --# global in     ASM_Stack.Stack_Top;
+   --# --@ line 15
+   --# return Result =>     Result          = (ASM_Stack.Stack_Top
+   --# --@ line 15
+   --#                                                   = 0);
+--@ line 8
    function Is_Full return Boolean;
 --@ line 8
    --# global in     ASM_Stack.Stack_Top;
-
-
+   --# --@ line 22
+   --# return Result =>     Result         = (ASM_Stack.Stack_Top
+   --# --@ line 22
+   --#                                                  = ASM_Stack.Stack_Size
+   --# --@ line 22
+   --#                                                              );
+--@ line 11
    procedure Clear;
 --@ line 11
    --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
@@ -74,10 +84,21 @@ package Internal_ASM_Stack
    function Is_Empty return Boolean;
 --@ line 7
    --# global in     ASM_Stack.Stack_Top;
+   --# --@ line 15
+   --# return Result =>     Result          = (ASM_Stack.Stack_Top
+   --# --@ line 15
+   --#                                                   = 0);
+--@ line 8
    function Is_Full return Boolean;
 --@ line 8
    --# global in     ASM_Stack.Stack_Top;
-
+   --# --@ line 22
+   --# return Result =>     Result         = (ASM_Stack.Stack_Top
+   --# --@ line 22
+   --#                                                  = ASM_Stack.Stack_Size
+   --# --@ line 22
+   --#                                                              );
+--@ line 10
    -- assert,precondition and postcondition are translated in SPARK syntax
    procedure Clear;
 --@ line 11
@@ -178,13 +199,13 @@ is
 end Internal_ASM_Stack;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          5      4      0              0      0      0       1
+Assert or Post:          5      2      2              0      0      0       1
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
 Runtime check:           6      0      4              0      0      0       2
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 11      4      4              0      0      0       3  <<<
-% Totals:                      36%    36%             0%     0%     0%     27% <<<
+Totals:                 11      2      6              0      0      0       3  <<<
+% Totals:                      18%    55%             0%     0%     0%     27% <<<
 ===================== End of Semantic Analysis Summary ========================

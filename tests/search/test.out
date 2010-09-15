@@ -1,5 +1,9 @@
+search.ads:5:3: sparkify: discard contract on declaration inside subprogram
+search.ads:12:3: sparkify: discard contract on declaration inside subprogram
 search.adb:3:3: sparkify: discard contract on definition of subprogram
 search.adb:25:3: sparkify: discard contract on definition of subprogram
+search.ads:5:3: sparkify: discard contract on declaration inside subprogram
+search.ads:12:3: sparkify: discard contract on declaration inside subprogram
 ------------------------------------------------------------------------
 with Search;use type Search.IntArray; 
 --@ line 1

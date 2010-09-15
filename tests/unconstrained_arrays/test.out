@@ -1,5 +1,9 @@
+unc_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+unc_test.ads:12:3: sparkify: discard contract on declaration inside subprogram
 unc_test.adb:3:3: sparkify: discard contract on definition of subprogram
 unc_test.adb:25:3: sparkify: discard contract on definition of subprogram
+unc_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+unc_test.ads:12:3: sparkify: discard contract on declaration inside subprogram
 ------------------------------------------------------------------------
 with Unc;use type Unc.Vector; 
 --@ line 1

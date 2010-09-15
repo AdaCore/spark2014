@@ -1,5 +1,9 @@
+arr_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+arr_test.ads:12:3: sparkify: discard contract on declaration inside subprogram
 arr_test.adb:3:3: sparkify: discard contract on definition of subprogram
 arr_test.adb:25:3: sparkify: discard contract on definition of subprogram
+arr_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+arr_test.ads:12:3: sparkify: discard contract on declaration inside subprogram
 ------------------------------------------------------------------------
 package Arr
 is

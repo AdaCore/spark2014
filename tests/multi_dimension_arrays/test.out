@@ -1,5 +1,9 @@
+two_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+two_test.ads:13:3: sparkify: discard contract on declaration inside subprogram
 two_test.adb:3:3: sparkify: discard contract on definition of subprogram
 two_test.adb:33:3: sparkify: discard contract on definition of subprogram
+two_test.ads:5:3: sparkify: discard contract on declaration inside subprogram
+two_test.ads:13:3: sparkify: discard contract on declaration inside subprogram
 ------------------------------------------------------------------------
 with Two;use type Two.Index; 
 use type Two.Table; 
