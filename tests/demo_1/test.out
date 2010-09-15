@@ -1,3 +1,5 @@
+asm_stack.adb:13:4: sparkify: discard contract on definition of subprogram
+asm_stack.adb:20:4: sparkify: discard contract on definition of subprogram
 ------------------------------------------------------------------------
 package ASM_Stack
 --@ line 1
@@ -36,16 +38,24 @@ is
    function Is_Full return Boolean;
 --@ line 8
    --# global in     ASM_Stack.Stack_Top;
+
+
    procedure Clear;
---@ line 9
-   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
-   procedure Push(X : in Integer);
---@ line 10
-   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
-   procedure Pop (X : out Integer);
 --@ line 11
+   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   --# post              Is_Empty(ASM_Stack.Stack_Top);
+
+   procedure Push(X : in Integer);
+--@ line 14
+   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   --# pre              not Is_Full(ASM_Stack.Stack_Top);
+
+   procedure Pop (X : out Integer);
+--@ line 17
    --# global in     ASM_Stack.Stack_Vector;
    --#        in out ASM_Stack.Stack_Top;
+   --# --@ line 18
+   --# pre              not Is_Empty(ASM_Stack.Stack_Top);
 --@ line 6
    Stack_Size : constant := 100;
 end External_ASM_Stack;
@@ -67,16 +77,25 @@ package Internal_ASM_Stack
    function Is_Full return Boolean;
 --@ line 8
    --# global in     ASM_Stack.Stack_Top;
+
+   -- assert,precondition and postcondition are translated in SPARK syntax
    procedure Clear;
---@ line 9
-   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
-   procedure Push(X : in Integer);
---@ line 10
-   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
-   procedure Pop (X : out Integer);
 --@ line 11
+   --# global    out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   --# post              External_ASM_Stack.Is_Empty(ASM_Stack.Stack_Top);
+
+   procedure Push(X : in Integer);
+--@ line 14
+   --# global in out ASM_Stack.Stack_Top, ASM_Stack.Stack_Vector;
+   --# pre              not External_ASM_Stack.Is_Full(ASM_Stack.Stack_Top);
+
+   procedure Pop (X : out Integer);
+--@ line 17
    --# global in     ASM_Stack.Stack_Vector;
    --#        in out ASM_Stack.Stack_Top;
+   --# --@ line 18
+   --# pre              not External_ASM_Stack.Is_Empty(ASM_Stack.Stack_Top);
+
 
 end Internal_ASM_Stack;
 --  Implementation of the subprograms
@@ -93,34 +112,36 @@ is
 
    function Is_Empty return Boolean
    is
+
    begin
       return ASM_Stack.Stack_Top
---@ line 16
+--@ line 17
                        = 0;
    end Is_Empty;
 
    function Is_Full return Boolean
    is
+
    begin
       return ASM_Stack.Stack_Top
---@ line 22
+--@ line 24
                        = ASM_Stack.Stack_Size
---@ line 22
+--@ line 24
                                    ;
    end Is_Full;
---@ line 23
+--@ line 25
          -- the name will be generated
 
    procedure Clear
    is
    begin
       ASM_Stack.Stack_Top
---@ line 28
+--@ line 30
                 :=0;
       ASM_Stack.Stack_Vector
---@ line 29
+--@ line 31
                    := ASM_Stack.New_Name_1'
---@ line 29
+--@ line 31
                       (others => 0); -- The aggregat must be qualified
    end Clear;
 
@@ -128,14 +149,14 @@ is
    is
    begin
       ASM_Stack.Stack_Top
---@ line 35
+--@ line 37
                 :=ASM_Stack.Stack_Top
---@ line 35
+--@ line 37
                             + 1;
       ASM_Stack.Stack_Vector
---@ line 36
+--@ line 38
                   (ASM_Stack.Stack_Top
---@ line 36
+--@ line 38
                             ) := X;
    end Push;
 
@@ -143,27 +164,27 @@ is
    is
    begin
       ASM_Stack.Stack_Top
---@ line 42
+--@ line 44
                 := ASM_Stack.Stack_Top
---@ line 42
+--@ line 44
                              - 1;
       X := ASM_Stack.Stack_Vector
---@ line 43
+--@ line 45
                        (ASM_Stack.Stack_Top
---@ line 43
+--@ line 45
                                   + 1);
    end Pop;
 
 end Internal_ASM_Stack;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          5      5      0              0      0      0       0
+Assert or Post:          5      4      0              0      0      0       1
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
 Runtime check:           6      0      4              0      0      0       2
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 11      5      4              0      0      0       2  <<<
-% Totals:                      45%    36%             0%     0%     0%     18% <<<
+Totals:                 11      4      4              0      0      0       3  <<<
+% Totals:                      36%    36%             0%     0%     0%     27% <<<
 ===================== End of Semantic Analysis Summary ========================

@@ -94,7 +94,9 @@ package body Sparkify.Pre_Operations is
    --  Functions would be call by an An_Identifier_Pre_Op or others
    --  Methodes where an Identifier should be prefixed by its package name
 
-   procedure Print_An_Association_List (Params : Asis.Association_List);
+   procedure Print_An_Association_List
+     (Params     : Asis.Association_List;
+      Global_Str : Wide_String := "");
 
    function Simple_Subtype_Indication
      (Element : Subtype_Indication) return Boolean;
@@ -339,14 +341,23 @@ package body Sparkify.Pre_Operations is
       Params : constant Asis.Association_List :=
                  Function_Call_Parameters (Expression => Element,
                                            Normalized => True);
+      Global_Str : Unbounded_Wide_String;
    begin
+      if State.Phase = Printing_Logic and then
+        Declaration_Kind (Caller) /= Not_A_Declaration
+      then
+         Global_Str :=
+           ASIS_UL.Global_State.CG.Sparkify.Global_Reads (El  => Caller,
+                                                          Sep => ",");
+      end if;
+
       --  Do nothing for a predefined operator
       if not Is_Nil (Caller) then
          PP_Echo_Cursor_Range (State.Echo_Cursor, Cursor_Before (Element));
          PP_Text_At (Line            => First_Line_Number (Element),
                      Column          => Element_Span (Element).First_Column,
                      Text            => Declaration_Complete_Name (Caller));
-         Print_An_Association_List (Params);
+         Print_An_Association_List (Params, To_Wide_String (Global_Str));
          State.Echo_Cursor := Cursor_After (Element);
       end if;
    end A_Function_Call_Pre_Op;
@@ -1806,7 +1817,9 @@ package body Sparkify.Pre_Operations is
    -- Print_An_Association_List --
    -------------------------------
 
-   procedure Print_An_Association_List (Params : Asis.Association_List) is
+   procedure Print_An_Association_List
+     (Params     : Asis.Association_List;
+      Global_Str : Wide_String := "") is
    begin
       if not Is_Nil (Params) then
          declare
@@ -1826,6 +1839,12 @@ package body Sparkify.Pre_Operations is
 
             PP_Word (")");
          end;
+      end if;
+
+      if Global_Str /= "" then
+         PP_Word ("(");
+         PP_Word (Global_Str);
+         PP_Word (")");
       end if;
    end Print_An_Association_List;
 
