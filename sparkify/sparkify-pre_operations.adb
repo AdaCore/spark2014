@@ -1528,12 +1528,12 @@ package body Sparkify.Pre_Operations is
                     To_Unbounded_Wide_String
                       (Defining_Name_Image (Names (Names'First)));
    begin
-      if Is_Subprogram_Declaration (Element) then
-         Base_Name := Return_Overloaded_Name (Element);
-      end if;
+      pragma Assert (Is_Subprogram_Declaration (Element));
+
+      Base_Name := Return_Overloaded_Name (Element);
 
       if Is_Defined_In_Standard_Or_Current_Compilation_Unit
-        (Element, Standard_Only => True) then
+        (Element, Standard_Only => Current_Pass = Printing_Internal) then
          return To_Wide_String (Base_Name);
       else
          --  Identifier should be prefixed by its package name
@@ -1634,7 +1634,16 @@ package body Sparkify.Pre_Operations is
             --  call and reference the original body in their expressions
             case Element_Kind (Element) is
                when An_Expression =>
-                  return Def_In_Standard;
+                  if Current_Pass = Printing_External and then
+                    Is_Subprogram_Name (Element) then
+                     --  When printing a call in the external specification
+                     --  package declaration, in particular in subprogram
+                     --  contracts, it may refer to a function in the current
+                     --  package.
+                     return Def_In_Standard or else Def_In_Current;
+                  else
+                     return Def_In_Standard;
+                  end if;
                when A_Declaration =>
                   case Declaration_Kind (Element) is
                      when A_Function_Declaration |
