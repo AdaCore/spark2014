@@ -11,13 +11,14 @@ package ADT_Stack is
    function Is_Full(S : Stack) return Boolean;
 
    procedure Clear(S : out Stack);
+   pragma Postcondition (Is_Empty (S));
 
    procedure Push(S : in out Stack; X : in Integer);
    -- assert,precondition and postcondition are translated in SPARK syntax
-   -- pragma Precondition (S.Stack_Top < Stack_Size);
-   -- pragma Postcondition (S.Stack_Vector(S.Stack_Top) = X);
+   pragma Precondition (not Is_Full (S));
 
    procedure Pop(S : in out Stack; X : out Integer); -- not a function as in ASM_Stack
+   pragma Precondition (not Is_Empty (S));
 
 --  full details of the type Stack
 private

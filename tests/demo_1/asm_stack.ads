@@ -6,9 +6,16 @@ package ASM_Stack is
 
    function Is_Empty return Boolean;
    function Is_Full return Boolean;
+
+   -- assert,precondition and postcondition are translated in SPARK syntax
    procedure Clear;
+   pragma Postcondition (Is_Empty);
+
    procedure Push(X : in Integer);
+   pragma Precondition (not Is_Full);
+
    procedure Pop (X : out Integer);
+   pragma Precondition (not Is_Empty);
 
 
 end ASM_Stack;

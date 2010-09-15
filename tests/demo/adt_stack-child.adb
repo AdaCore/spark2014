@@ -8,14 +8,14 @@ is
    begin
       ADT_Stack.Clear(ADT_Stack.Stack(S));
       S.Next_Value := 1;
-      S.Child_Stack_Vector := (others => 0);
+      S.STack_Vector := (others => 0);
    end Clear;
 
    procedure Push(S : in out Child_Stack; X : in Integer)
    is
    begin
       ADT_Stack.Push(ADT_Stack.Stack(S), X);
-      S.Child_Stack_Vector (S.Stack_Top) := Integer(S.Next_Value);
+      S.STack_Vector (S.Stack_Top) := Integer(S.Next_Value);
       S.Next_Value := S.Next_Value + 1;
    end Push;
 
@@ -26,7 +26,7 @@ is
       if Is_Empty(S) then
          Result := 0;
       else
-         Result := Integer (s.Child_Stack_Vector (S.Stack_Top));
+         Result := Integer (S.STack_Vector (S.Stack_Top));
       end if;
       return Result;
    end Top_Identity;

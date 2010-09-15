@@ -1,6 +1,6 @@
 package body Random_Numbers
 is
-   Seed     : Integer;
+   Seed     : Integer := 77;
    Seed_Max : constant Integer := 99;
 
    function Random return Integer
@@ -13,19 +13,19 @@ is
          Seed := ASM_Stack.Pop;
       end if;
 
-      return GCD (Seed, Seed_Max);
+      return GCD_Function (Seed, Seed_Max);
    end Random;
 
-   function GCD (M, N : Integer) return Integer
+   function GCD_Function(M, N : Integer) return Integer
    is
+      Res : Integer;
    begin
       if N = 0 then
-         return M;
+        Res := M;
       else
-           return GCD (N, M rem N);  -- direct recursion
+           Res := GCD_Function (N, M rem N);  -- direct recursion
       end if;
-   end GCD;
+      return Res;
+   end GCD_Function;
 
-begin
-   Seed := 77;
 end Random_Numbers;

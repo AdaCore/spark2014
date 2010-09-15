@@ -12,12 +12,14 @@ is
 
    function Is_Empty return Boolean
    is
+      pragma Postcondition (Is_Empty'Result = (Stack_Top = 0));
    begin
       return Stack_Top = 0;
    end Is_Empty;
 
    function Is_Full return Boolean
    is
+      pragma Postcondition (Is_Full'Result = (Stack_Top = Stack_Size));
    begin
       return Stack_Top = Stack_Size;
    end;  -- the name will be generated
