@@ -1,0 +1,10 @@
+internal_asm_stack(1): 
+  external_asm_stack__is_empty(asm_stack__stack_range__first) may_be_deduced.
+internal_asm_stack(2): 
+  external_asm_stack__is_full(asm_stack__stack_range__last) may_be_deduced.
+internal_asm_stack(3):
+  X > asm_stack__stack_range__first may_be_deduced_from 
+    [not (external_asm_stack__is_empty(X))].
+internal_asm_stack(4):
+  X < asm_stack__stack_range__last may_be_deduced_from 
+    [not (external_asm_stack__is_full(X))].
