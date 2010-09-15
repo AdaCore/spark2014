@@ -696,11 +696,18 @@ package body Sparkify.Pre_Operations is
                Body_Pragmas : constant Pragma_Element_List :=
                                 Corresponding_Pragmas (Body_Decl);
             begin
-               pragma Assert (not Has_SPARK_Contract (Pragmas) or else
-                              not Has_SPARK_Contract (Body_Pragmas));
-
                if Has_SPARK_Contract (Pragmas) then
+
+                  if Has_SPARK_Contract (Body_Pragmas) then
+                     --  Output a warning that the corresponding
+                     --  contract is lost in translation
+                     SLOC_Warning
+                       ("discard contract on declaration inside subprogram",
+                        Build_GNAT_Location (Element));
+                  end if;
+
                   return Pragmas;
+
                elsif Has_SPARK_Contract (Body_Pragmas) then
                   return Body_Pragmas;
                else
