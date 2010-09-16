@@ -73,6 +73,12 @@ package body Why.Atree.Tables is
       LI : List_Info := List_Table.Element (List_Id);
    begin
       Append (LI.Content, New_Item);
+
+      --  Assuming that the list is kind-valid (which should have been
+      --  checked at this point), it is now valid, as it contains at
+      --  least one element.
+      LI.Checked := True;
+
       Replace_Element (List_Table, List_Id, LI);
    end Append;
 
@@ -87,6 +93,12 @@ package body Why.Atree.Tables is
       LI : List_Info := List_Table.Element (List_Id);
    begin
       Prepend (LI.Content, New_Item);
+
+      --  Assuming that the list is kind-valid (which should have been
+      --  checked at this point), it is now valid, as it contains at
+      --  least one element.
+      LI.Checked := True;
+
       Replace_Element (List_Table, List_Id, LI);
    end Prepend;
 
