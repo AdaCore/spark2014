@@ -24,13 +24,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;  use Types;
+with Ttypes; use Ttypes;
+
 with Outputs; use Outputs;
 
 with Why.Ids;       use Why.Ids;
-with Why.Gen.Types; use Why.Gen.Types;
+with Why.Gen.Enums; use Why.Gen.Enums;
+with Why.Gen.Ints;  use Why.Gen.Ints;
 
 with Why.Atree.Sprint;   use Why.Atree.Sprint;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Builders; use Why.Atree.Builders;
 
 package body Gnat2Why.Standard is
@@ -40,18 +43,43 @@ package body Gnat2Why.Standard is
    ---------------------
 
    procedure Create_Standard is
-      F : constant W_File_Id := New_File;
+      File : constant W_File_Id := New_File;
    begin
-      File_Append_To_Declarations
-        (F, Declare_Abstract_Type ("standard__boolean"));
-      File_Append_To_Declarations
-        (F, Declare_Abstract_Type ("standard__integer"));
-      File_Append_To_Declarations
-        (F, Declare_Abstract_Type ("standard__natural"));
-      File_Append_To_Declarations
-        (F, Declare_Abstract_Type ("standard__positive"));
+      Declare_Abstract_Boolean_Type (File, "standard__boolean");
+
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__integer",
+         Standard_Integer_Size);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__natural",
+         0,
+         2 ** Natural (Standard_Integer_Size - 1) - 1);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__positive",
+         1,
+         2 ** Natural (Standard_Integer_Size - 1) - 1);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__short_short_integer",
+         Standard_Short_Short_Integer_Size);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__short_integer",
+         Standard_Short_Integer_Size);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__long_integer",
+         Standard_Long_Integer_Size);
+      Declare_Abstract_Signed_Int
+        (File,
+         "standard__long_long_integer",
+         Standard_Long_Long_Integer_Size);
+
       Open_Current_File ("standard.why");
-      Sprint_Why_Node (F, Current_File);
+      Sprint_Why_Node (File, Current_File);
       Close_Current_File;
    end Create_Standard;
 
