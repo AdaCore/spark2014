@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - T Y P E S                         --
+--                        W H Y - G E N - N A M E S                         --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,34 +23,31 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet; use Namet;
+
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Names;      use Why.Gen.Names;
 
-package body Why.Gen.Types is
+package body Why.Gen.Names is
 
    ---------------------------
-   -- Declare_Abstract_Type --
+   -- New_Conversion_To_Int --
    ---------------------------
 
-   function Declare_Abstract_Type (Name : String) return W_Type_Id is
-      I : W_Identifier_Id;
-      T : W_Type_Id;
+   function New_Conversion_To_Int (Name : String) return W_Identifier_Id is
+      Prefix : constant String := "integer_of___";
    begin
-      I := New_Identifier (Name);
-      T := New_Type (Name => I);
-      return T;
-   end Declare_Abstract_Type;
+      return New_Identifier (Prefix & Name);
+   end New_Conversion_To_Int;
 
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
+   --------------------
+   -- New_Identifier --
+   --------------------
 
-   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id
-   is
-      I : constant W_Identifier_Id := New_Identifier (Name);
-      T : constant W_Abstract_Type_Id := New_Abstract_Type (Name => I);
+   function New_Identifier (Name : String) return W_Identifier_Id is
    begin
-      return T;
-   end New_Abstract_Type;
+      Name_Len := 0;
+      Add_Str_To_Name_Buffer (Name);
+      return New_Identifier (Symbol => Name_Find);
+   end New_Identifier;
 
-end Why.Gen.Types;
+end Why.Gen.Names;

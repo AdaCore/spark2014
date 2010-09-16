@@ -27,6 +27,8 @@ with Why.Ids; use Why.Ids;
 
 package Why.Gen.Types is
 
+   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
+
    function Declare_Abstract_Type (Name : String) return W_Type_Id;
 
 end Why.Gen.Types;

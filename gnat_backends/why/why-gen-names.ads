@@ -2,9 +2,9 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - T Y P E S                         --
+--                        W H Y - G E N - N A M E S                         --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
 --                       Copyright (C) 2010, AdaCore                        --
 --                                                                          --
@@ -23,34 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Ids; use Why.Ids;
 
-package body Why.Gen.Types is
+package Why.Gen.Names is
 
-   ---------------------------
-   -- Declare_Abstract_Type --
-   ---------------------------
+   function New_Identifier (Name : String) return W_Identifier_Id;
 
-   function Declare_Abstract_Type (Name : String) return W_Type_Id is
-      I : W_Identifier_Id;
-      T : W_Type_Id;
-   begin
-      I := New_Identifier (Name);
-      T := New_Type (Name => I);
-      return T;
-   end Declare_Abstract_Type;
+   function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
 
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
-
-   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id
-   is
-      I : constant W_Identifier_Id := New_Identifier (Name);
-      T : constant W_Abstract_Type_Id := New_Abstract_Type (Name => I);
-   begin
-      return T;
-   end New_Abstract_Type;
-
-end Why.Gen.Types;
+end Why.Gen.Names;
