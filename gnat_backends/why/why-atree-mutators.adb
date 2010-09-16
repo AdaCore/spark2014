@@ -1863,39 +1863,22 @@ package body Why.Atree.Mutators is
          Logic_Type_Id_Valid (Id));
    end Logic_Type_Prepend_To_Arg_Types;
 
-   --------------------------------------
-   -- Logic_Type_Append_To_Return_Type --
-   --------------------------------------
+   --------------------------------
+   -- Logic_Type_Set_Return_Type --
+   --------------------------------
 
-   procedure Logic_Type_Append_To_Return_Type
-     (Id       : W_Logic_Type_Unchecked_Id;
-      New_Item : W_Logic_Return_Type_Id)
+   procedure Logic_Type_Set_Return_Type
+     (Id          : W_Logic_Type_Unchecked_Id;
+      Return_Type : W_Logic_Return_Type_Unchecked_Id)
    is
-      Node : constant Why_Node :=
-               Get_Node (Id);
+      Node : Why_Node := Get_Node (Id);
    begin
-      Append (Node.LT_Return_Type, New_Item);
+      Node.LT_Return_Type := Return_Type;
+      Set_Node (Id, Node);
       Update_Validity_Status
         (Id,
          Logic_Type_Id_Valid (Id));
-   end Logic_Type_Append_To_Return_Type;
-
-   ---------------------------------------
-   -- Logic_Type_Prepend_To_Return_Type --
-   ---------------------------------------
-
-   procedure Logic_Type_Prepend_To_Return_Type
-     (Id       : W_Logic_Type_Unchecked_Id;
-      New_Item : W_Logic_Return_Type_Id)
-   is
-      Node : constant Why_Node :=
-               Get_Node (Id);
-   begin
-      Prepend (Node.LT_Return_Type, New_Item);
-      Update_Validity_Status
-        (Id,
-         Logic_Type_Id_Valid (Id));
-   end Logic_Type_Prepend_To_Return_Type;
+   end Logic_Type_Set_Return_Type;
 
    ---------------------------
    -- Logic_Binder_Set_Name --
@@ -3212,7 +3195,7 @@ package body Why.Atree.Mutators is
 
    procedure Binders_Append_To_Binders
      (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binders_Id)
+      New_Item : W_Binder_Id)
    is
       Node : constant Why_Node :=
                Get_Node (Id);
@@ -3229,7 +3212,7 @@ package body Why.Atree.Mutators is
 
    procedure Binders_Prepend_To_Binders
      (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binders_Id)
+      New_Item : W_Binder_Id)
    is
       Node : constant Why_Node :=
                Get_Node (Id);

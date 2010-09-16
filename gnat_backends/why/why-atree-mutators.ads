@@ -673,17 +673,11 @@ package Why.Atree.Mutators is
    pragma Precondition
      (Logic_Arg_Type_Id_Valid (New_Item));
 
-   procedure Logic_Type_Append_To_Return_Type
-     (Id       : W_Logic_Type_Unchecked_Id;
-      New_Item : W_Logic_Return_Type_Id);
+   procedure Logic_Type_Set_Return_Type
+     (Id          : W_Logic_Type_Unchecked_Id;
+      Return_Type : W_Logic_Return_Type_Unchecked_Id);
    pragma Precondition
-     (Logic_Return_Type_Id_Valid (New_Item));
-
-   procedure Logic_Type_Prepend_To_Return_Type
-     (Id       : W_Logic_Type_Unchecked_Id;
-      New_Item : W_Logic_Return_Type_Id);
-   pragma Precondition
-     (Logic_Return_Type_Id_Valid (New_Item));
+     (Logic_Return_Type_Id_Valid (Return_Type));
 
    procedure Logic_Binder_Set_Name
      (Id   : W_Logic_Binder_Unchecked_Id;

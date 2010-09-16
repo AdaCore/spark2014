@@ -417,7 +417,7 @@ package Why.Atree.Accessors is
 
    function Logic_Type_Get_Return_Type
      (Id : W_Logic_Type_Id)
-     return W_Logic_Return_Type_List;
+     return W_Logic_Return_Type_Id;
 
    function Logic_Binder_Get_Name
      (Id : W_Logic_Binder_Id)
@@ -1283,7 +1283,7 @@ private
 
    function Logic_Type_Get_Return_Type
      (Id : W_Logic_Type_Id)
-     return W_Logic_Return_Type_List is
+     return W_Logic_Return_Type_Id is
      (Get_Node (Id).LT_Return_Type);
 
    function Logic_Binder_Get_Name

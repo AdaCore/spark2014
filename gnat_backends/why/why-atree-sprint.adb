@@ -1529,7 +1529,7 @@ package body Why.Atree.Sprint is
    begin
       Print_List (State, Arg_Types);
       P (O, " -> ");
-      Traverse_List
+      Traverse
         (State,
          Logic_Type_Get_Return_Type (Node));
       State.Control := Abandon_Children;

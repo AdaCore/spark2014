@@ -2063,7 +2063,7 @@ package body Why.Atree.Traversal is
             Traverse_List
               (State,
                Logic_Type_Get_Arg_Types (Node));
-            Traverse_List
+            Traverse
               (State,
                Logic_Type_Get_Return_Type (Node));
 

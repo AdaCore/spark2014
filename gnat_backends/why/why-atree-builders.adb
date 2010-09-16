@@ -1325,7 +1325,7 @@ package body Why.Atree.Builders is
      (Ada_Node    : Node_Id := Empty;
       Link        : Why_Node_Set := Why_Empty;
       Arg_Types   : W_Logic_Arg_Type_List;
-      Return_Type : W_Logic_Return_Type_List)
+      Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id
    is
    begin
@@ -2316,7 +2316,7 @@ package body Why.Atree.Builders is
    function New_Binders
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Binders  : W_Binders_List)
+      Binders  : W_Binder_List)
      return W_Binders_Id
    is
    begin
@@ -3650,7 +3650,7 @@ package body Why.Atree.Builders is
                    Link           => Why_Empty,
                    Checked        => False,
                    LT_Arg_Types   => New_List,
-                   LT_Return_Type => New_List));
+                   LT_Return_Type => Why_Empty));
    end New_Unchecked_Logic_Type;
 
    --------------------------------

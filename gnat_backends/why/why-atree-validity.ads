@@ -10151,7 +10151,7 @@ private
      (List_Cache_Valid
        (Logic_Type_Get_Arg_Types (Id))
      and then
-       List_Cache_Valid
+       Id_Cache_Valid
          (Logic_Type_Get_Return_Type (Id)));
 
    function Logic_Type_OId_Children_Valid

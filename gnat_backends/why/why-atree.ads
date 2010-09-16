@@ -300,7 +300,7 @@ package Why.Atree is
 
          when W_Logic_Type =>
             LT_Arg_Types   : W_Logic_Arg_Type_Opaque_List;
-            LT_Return_Type : W_Logic_Return_Type_Opaque_List;
+            LT_Return_Type : W_Logic_Return_Type_Opaque_Id;
 
          when W_Logic_Binder =>
             LB_Name       : W_Identifier_Opaque_Id;
