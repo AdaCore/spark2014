@@ -697,7 +697,7 @@ package Why.Atree.Accessors is
 
    function Binders_Get_Binders
      (Id : W_Binders_Id)
-     return W_Binders_List;
+     return W_Binder_List;
 
    function Binder_Get_Names
      (Id : W_Binder_Id)
@@ -1633,7 +1633,7 @@ private
 
    function Binders_Get_Binders
      (Id : W_Binders_Id)
-     return W_Binders_List is
+     return W_Binder_List is
      (Get_Node (Id).BS_Binders);
 
    function Binder_Get_Names

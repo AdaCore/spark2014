@@ -1149,15 +1149,15 @@ package Why.Atree.Mutators is
 
    procedure Binders_Append_To_Binders
      (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binders_Id);
+      New_Item : W_Binder_Id);
    pragma Precondition
-     (Binders_Id_Valid (New_Item));
+     (Binder_Id_Valid (New_Item));
 
    procedure Binders_Prepend_To_Binders
      (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binders_Id);
+      New_Item : W_Binder_Id);
    pragma Precondition
-     (Binders_Id_Valid (New_Item));
+     (Binder_Id_Valid (New_Item));
 
    procedure Binder_Append_To_Names
      (Id       : W_Binder_Unchecked_Id;

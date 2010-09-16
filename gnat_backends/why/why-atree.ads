@@ -431,7 +431,7 @@ package Why.Atree is
             null;
 
          when W_Binders =>
-            BS_Binders : W_Binders_Opaque_List;
+            BS_Binders : W_Binder_Opaque_List;
 
          when W_Binder =>
             B_Names     : W_Identifier_Opaque_List;
