@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - F U N C S                         --
+--                       W H Y - G E N - A R R O W S                        --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,23 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
+with Why.Types;         use Why.Types;
+with Why.Ids;           use Why.Ids;
+with Why.Unchecked_Ids; use Why.Unchecked_Ids;
 
-package Why.Gen.Funcs is
+package Why.Gen.Arrows is
 
-   procedure Declare_Logic
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
+   function New_Arrow_Stack
+     (Return_Type : W_Primitive_Type_Id)
+     return W_Arrow_Type_Unchecked_Id;
 
-   procedure Declare_Logic_And_Parameters
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
+   function Push_Arg
+     (Arrow    : W_Arrow_Type_Unchecked_Id;
+      Name     : W_Identifier_OId := Why_Empty;
+      Arg_Type : W_Simple_Value_Type_Id)
+     return W_Arrow_Type_Id;
 
-   procedure Declare_Parameter
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
-
-end Why.Gen.Funcs;
+end Why.Gen.Arrows;

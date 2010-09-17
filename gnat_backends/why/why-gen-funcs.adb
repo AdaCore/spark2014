@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Sinfo;           use Why.Sinfo;
 with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -38,33 +39,37 @@ package body Why.Gen.Funcs is
    -------------------
 
    procedure Declare_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binders_Id;
-      Return_Type : W_Logic_Return_Type_Id)
+     (File   : W_File_Id;
+      Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id)
    is
-      use Node_Lists;
-
       Logic     : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
       Spec      : constant W_Logic_Type_Unchecked_Id :=
                     New_Unchecked_Logic_Type;
-      Bind_List : constant List := Get_List (Binders_Get_Binders (Binders));
-      Position  : Cursor := First (Bind_List);
+
+      procedure Append_To_Spec (Arrow : W_Arrow_Type_Id);
+
+      --------------------
+      -- Append_To_Spec --
+      --------------------
+
+      procedure Append_To_Spec (Arrow : W_Arrow_Type_Id) is
+         Right : constant W_Computation_Type_Id :=
+                   Arrow_Type_Get_Right (Arrow);
+      begin
+         Logic_Type_Append_To_Arg_Types (Spec, Arrow_Type_Get_Left (Arrow));
+
+         if Get_Kind (Right) = W_Computation_Spec then
+            Logic_Type_Set_Return_Type
+              (Spec,
+               Computation_Spec_Get_Return_Type (Right));
+         else
+            Append_To_Spec (Right);
+         end if;
+      end Append_To_Spec;
+
    begin
-      Logic_Type_Set_Return_Type (Spec, Return_Type);
-
-      while Position /= No_Element loop
-         declare
-            Binder   : constant W_Binder_Id := Element (Position);
-            Arg_Type : constant W_Logic_Arg_Type_Unchecked_Id :=
-                         Binder_Get_Arg_Type (Binder);
-         begin
-            Logic_Type_Append_To_Arg_Types (Spec, Arg_Type);
-         end;
-
-         Next (Position);
-      end loop;
-
+      Append_To_Spec (Arrows);
       Logic_Append_To_Names (Logic, Name);
       Logic_Set_Logic_Type (Logic, Spec);
       File_Append_To_Declarations (File,
@@ -76,13 +81,12 @@ package body Why.Gen.Funcs is
    ----------------------------------
 
    procedure Declare_Logic_And_Parameters
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binders_Id;
-      Return_Type : W_Primitive_Type_Id) is
+     (File   : W_File_Id;
+      Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id) is
    begin
-      Declare_Logic (File, Name, Binders, Return_Type);
-      Declare_Parameter (File, To_Program_Space (Name), Binders, Return_Type);
+      Declare_Logic (File, Name, Arrows);
+      Declare_Parameter (File, To_Program_Space (Name), Arrows);
    end Declare_Logic_And_Parameters;
 
    -----------------------
@@ -90,26 +94,15 @@ package body Why.Gen.Funcs is
    -----------------------
 
    procedure Declare_Parameter
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Binders     : W_Binders_Id;
-      Return_Type : W_Primitive_Type_Id)
+     (File   : W_File_Id;
+      Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id)
    is
       Parameter  : constant W_Parameter_Declaration_Unchecked_Id :=
                      New_Unchecked_Parameter_Declaration;
-      Contract   : constant W_Computation_Spec_Id :=
-                     New_Computation_Spec (Return_Type => Return_Type,
-                                           Effects => New_Effects);
-      --  ??? This is not correct. The left part of an arrow cannot
-      --  be of kind Binders; only fully specified programs
-      --  have W_Binders nodes... Parameters should use a chain
-      --  of W_Computation_Type nodes.
-      Arrow      : constant W_Anonymous_Arrow_Type_Id :=
-                     New_Anonymous_Arrow_Type (Left => Binders,
-                                               Right => Contract);
    begin
       Parameter_Declaration_Append_To_Names (Parameter, Name);
-      Parameter_Declaration_Set_Parameter_Type (Parameter, Arrow);
+      Parameter_Declaration_Set_Parameter_Type (Parameter, Arrows);
       File_Append_To_Declarations (File, Parameter);
    end Declare_Parameter;
 

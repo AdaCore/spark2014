@@ -29,6 +29,7 @@ with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
+with Why.Gen.Arrows;     use Why.Gen.Arrows;
 
 package body Why.Gen.Ints is
 
@@ -79,19 +80,14 @@ package body Why.Gen.Ints is
       pragma Unreferenced (Last);
       --  ??? Not fully implemented yet
 
-      Binders     : constant W_Binders_Unchecked_Id :=
-                      New_Unchecked_Binders;
-      Int_Param   : constant W_Binder_Unchecked_Id :=
-                      New_Unchecked_Binder;
       Return_Type : constant W_Primitive_Type_Id := New_Abstract_Type (Name);
+      Arrows      : W_Arrow_Type_Unchecked_Id :=
+                      New_Arrow_Stack (Return_Type);
    begin
-      Binder_Append_To_Names (Int_Param, New_Identifier ("n"));
-      Binder_Set_Arg_Type (Int_Param, New_Type_Int);
-      Binders_Append_To_Binders (Binders, Int_Param);
+      Arrows := Push_Arg (Arrows, New_Identifier ("n"), New_Type_Int);
       Declare_Logic_And_Parameters (File,
                                     New_Conversion_To_Int (Name),
-                                    Binders,
-                                    Return_Type);
+                                    Arrows);
    end Define_Signed_Int_Conversions;
 
 end Why.Gen.Ints;
