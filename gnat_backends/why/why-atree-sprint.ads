@@ -87,13 +87,9 @@ private
      (State : in out Printer_State;
       Node  : W_Protected_Value_Type_Id);
 
-   procedure Anonymous_Arrow_Type_Pre_Op
+   procedure Arrow_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Anonymous_Arrow_Type_Id);
-
-   procedure Named_Arrow_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Arrow_Type_Id);
+      Node  : W_Arrow_Type_Id);
 
    procedure Computation_Spec_Pre_Op
      (State : in out Printer_State;

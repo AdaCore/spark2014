@@ -270,36 +270,20 @@ package Why.Atree.Validity is
      (Id : W_Protected_Value_Type_Unchecked_OList)
      return Boolean;
 
-   function Anonymous_Arrow_Type_Id_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
+   function Arrow_Type_Id_Valid
+     (Id : W_Arrow_Type_Unchecked_Id)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OId_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
+   function Arrow_Type_OId_Valid
+     (Id : W_Arrow_Type_Unchecked_OId)
      return Boolean;
 
-   function Anonymous_Arrow_Type_List_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
+   function Arrow_Type_List_Valid
+     (Id : W_Arrow_Type_Unchecked_List)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OList_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Named_Arrow_Type_Id_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Named_Arrow_Type_OId_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Named_Arrow_Type_List_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Named_Arrow_Type_OList_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
+   function Arrow_Type_OList_Valid
+     (Id : W_Arrow_Type_Unchecked_OList)
      return Boolean;
 
    function Computation_Spec_Id_Valid
@@ -2584,36 +2568,20 @@ private
      (Id : W_Protected_Value_Type_Unchecked_OList)
      return Boolean;
 
-   function Anonymous_Arrow_Type_Id_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
+   function Arrow_Type_Id_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_Id)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OId_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
+   function Arrow_Type_OId_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_OId)
      return Boolean;
 
-   function Anonymous_Arrow_Type_List_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
+   function Arrow_Type_List_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_List)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OList_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Named_Arrow_Type_Id_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Named_Arrow_Type_OId_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Named_Arrow_Type_List_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Named_Arrow_Type_OList_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
+   function Arrow_Type_OList_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_OList)
      return Boolean;
 
    function Computation_Spec_Id_Children_Valid
@@ -5020,57 +4988,31 @@ private
      (Is_Empty (Id)
       or else Protected_Value_Type_List_Valid (Id));
 
-   function Anonymous_Arrow_Type_Id_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
+   function Arrow_Type_Id_Valid
+     (Id : W_Arrow_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid (Id)
-      or else Anonymous_Arrow_Type_Id_Children_Valid (Id));
+      or else Arrow_Type_Id_Children_Valid (Id));
 
-   function Anonymous_Arrow_Type_OId_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
+   function Arrow_Type_OId_Valid
+     (Id : W_Arrow_Type_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Anonymous_Arrow_Type_Id_Valid (Id));
+      or else Arrow_Type_Id_Valid (Id));
 
-   function Anonymous_Arrow_Type_List_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
+   function Arrow_Type_List_Valid
+     (Id : W_Arrow_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Anonymous_Arrow_Type_OList_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
+   function Arrow_Type_OList_Valid
+     (Id : W_Arrow_Type_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Anonymous_Arrow_Type_List_Valid (Id));
-
-   function Named_Arrow_Type_Id_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Named_Arrow_Type_Id_Children_Valid (Id));
-
-   function Named_Arrow_Type_OId_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Arrow_Type_Id_Valid (Id));
-
-   function Named_Arrow_Type_List_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Named_Arrow_Type_OList_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Arrow_Type_List_Valid (Id));
+      or else Arrow_Type_List_Valid (Id));
 
    function Computation_Spec_Id_Valid
      (Id : W_Computation_Spec_Unchecked_Id)
@@ -8748,62 +8690,35 @@ private
      (Is_Empty (Id)
       or else Protected_Value_Type_List_Children_Valid (Id));
 
-   function Anonymous_Arrow_Type_Id_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_Id)
+   function Arrow_Type_Id_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_Id)
      return Boolean is
-     (Id_Cache_Valid
-       (Anonymous_Arrow_Type_Get_Left (Id))
+     (OId_Cache_Valid
+       (Arrow_Type_Get_Name (Id))
      and then
        Id_Cache_Valid
-         (Anonymous_Arrow_Type_Get_Right (Id)));
+         (Arrow_Type_Get_Left (Id))
+     and then
+       Id_Cache_Valid
+         (Arrow_Type_Get_Right (Id)));
 
-   function Anonymous_Arrow_Type_OId_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OId)
+   function Arrow_Type_OId_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Anonymous_Arrow_Type_Id_Children_Valid (Id));
+      or else Arrow_Type_Id_Children_Valid (Id));
 
-   function Anonymous_Arrow_Type_List_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_List)
+   function Arrow_Type_List_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
 
-   function Anonymous_Arrow_Type_OList_Children_Valid
-     (Id : W_Anonymous_Arrow_Type_Unchecked_OList)
+   function Arrow_Type_OList_Children_Valid
+     (Id : W_Arrow_Type_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Anonymous_Arrow_Type_List_Children_Valid (Id));
-
-   function Named_Arrow_Type_Id_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid
-       (Named_Arrow_Type_Get_Name (Id))
-     and then
-       Id_Cache_Valid
-         (Named_Arrow_Type_Get_Left (Id))
-     and then
-       Id_Cache_Valid
-         (Named_Arrow_Type_Get_Right (Id)));
-
-   function Named_Arrow_Type_OId_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Arrow_Type_Id_Children_Valid (Id));
-
-   function Named_Arrow_Type_List_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Named_Arrow_Type_OList_Children_Valid
-     (Id : W_Named_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Arrow_Type_List_Children_Valid (Id));
+      or else Arrow_Type_List_Children_Valid (Id));
 
    function Computation_Spec_Id_Children_Valid
      (Id : W_Computation_Spec_Unchecked_Id)
@@ -12244,10 +12159,8 @@ private
            Ref_Type_Id_Children_Valid (Id),
         when W_Protected_Value_Type =>
            Protected_Value_Type_Id_Children_Valid (Id),
-        when W_Anonymous_Arrow_Type =>
-           Anonymous_Arrow_Type_Id_Children_Valid (Id),
-        when W_Named_Arrow_Type =>
-           Named_Arrow_Type_Id_Children_Valid (Id),
+        when W_Arrow_Type =>
+           Arrow_Type_Id_Children_Valid (Id),
         when others =>
            False);
 
@@ -12293,10 +12206,8 @@ private
            Ref_Type_Id_Children_Valid (Id),
         when W_Protected_Value_Type =>
            Protected_Value_Type_Id_Children_Valid (Id),
-        when W_Anonymous_Arrow_Type =>
-           Anonymous_Arrow_Type_Id_Children_Valid (Id),
-        when W_Named_Arrow_Type =>
-           Named_Arrow_Type_Id_Children_Valid (Id),
+        when W_Arrow_Type =>
+           Arrow_Type_Id_Children_Valid (Id),
         when W_Computation_Spec =>
            Computation_Spec_Id_Children_Valid (Id),
         when others =>

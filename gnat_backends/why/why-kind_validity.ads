@@ -240,36 +240,20 @@ package Why.Kind_Validity is
      (Id : W_Protected_Value_Type_Opaque_OList)
      return Boolean;
 
-   function Anonymous_Arrow_Type_Id_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_Id)
+   function Arrow_Type_Id_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_Id)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OId_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_OId)
+   function Arrow_Type_OId_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_OId)
      return Boolean;
 
-   function Anonymous_Arrow_Type_List_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_List)
+   function Arrow_Type_List_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_List)
      return Boolean;
 
-   function Anonymous_Arrow_Type_OList_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_OList)
-     return Boolean;
-
-   function Named_Arrow_Type_Id_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_Id)
-     return Boolean;
-
-   function Named_Arrow_Type_OId_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_OId)
-     return Boolean;
-
-   function Named_Arrow_Type_List_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_List)
-     return Boolean;
-
-   function Named_Arrow_Type_OList_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_OList)
+   function Arrow_Type_OList_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_OList)
      return Boolean;
 
    function Computation_Spec_Id_Kind_Valid
@@ -2663,55 +2647,30 @@ private
      (Is_Empty (Id)
       or else Protected_Value_Type_List_Kind_Valid (Id));
 
-   function Anonymous_Arrow_Type_Id_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_Id)
+   function Arrow_Type_Id_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Anonymous_Arrow_Type);
+     (Get_Kind (Id) = W_Arrow_Type);
 
-   function Anonymous_Arrow_Type_OId_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_OId)
+   function Arrow_Type_OId_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Anonymous_Arrow_Type_Id_Kind_Valid (Id));
+      or else Arrow_Type_Id_Kind_Valid (Id));
 
-   function Anonymous_Arrow_Type_List_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_List)
+   function Arrow_Type_List_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Anonymous_Arrow_Type_OList_Kind_Valid
-     (Id : W_Anonymous_Arrow_Type_Opaque_OList)
+   function Arrow_Type_OList_Kind_Valid
+     (Id : W_Arrow_Type_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Anonymous_Arrow_Type_List_Kind_Valid (Id));
-
-   function Named_Arrow_Type_Id_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Named_Arrow_Type);
-
-   function Named_Arrow_Type_OId_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Named_Arrow_Type_Id_Kind_Valid (Id));
-
-   function Named_Arrow_Type_List_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Named_Arrow_Type_OList_Kind_Valid
-     (Id : W_Named_Arrow_Type_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Named_Arrow_Type_List_Kind_Valid (Id));
+      or else Arrow_Type_List_Kind_Valid (Id));
 
    function Computation_Spec_Id_Kind_Valid
      (Id : W_Computation_Spec_Opaque_Id)

@@ -139,12 +139,8 @@ package Why.Atree is
          when W_Protected_Value_Type =>
             PVT_Value_Type : W_Value_Type_Opaque_Id;
 
-         when W_Anonymous_Arrow_Type =>
-            AAT_Left  : W_Simple_Value_Type_Opaque_Id;
-            AAT_Right : W_Computation_Type_Opaque_Id;
-
-         when W_Named_Arrow_Type =>
-            NA_Name  : W_Identifier_Opaque_Id;
+         when W_Arrow_Type =>
+            NA_Name  : W_Identifier_Opaque_OId;
             NA_Left  : W_Simple_Value_Type_Opaque_Id;
             NA_Right : W_Computation_Type_Opaque_Id;
 

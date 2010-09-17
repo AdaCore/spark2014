@@ -96,11 +96,8 @@ package Why.Sinfo is
       W_Protected_Value_Type,
       --  <protected_value_type> ::= '(' <value_type> ')'
 
-      W_Anonymous_Arrow_Type,
-      --  <anonymous_arrow> ::= <simple_value_type> '->' <computation_type>
-
-      W_Named_Arrow_Type,
-      --  <named_arrow_type> ::= <identifier> ':' <simple_value_type>
+      W_Arrow_Type,
+      --  <arrow_type> ::= [<identifier> ':'] <simple_value_type>
       --                          '->' <computation_type>
 
       W_Computation_Spec,
@@ -374,8 +371,7 @@ package Why.Sinfo is
       --                          | <protected_value_type>
 
       --  <value_type> ::= <simple_value_type>
-      --                   | <anonymous_arrow_type>
-      --                   | <named_arrow_type>
+      --                   | <arrow_type>
 
       --  <computation_type> ::= <computation_spec> | <value_type>
 
@@ -666,7 +662,7 @@ package Why.Sinfo is
 
    subtype W_Value_Type is Why_Node_Kind range
      W_Type_Int ..
-     W_Named_Arrow_Type;
+     W_Arrow_Type;
 
    subtype W_Computation_Type is Why_Node_Kind range
      W_Type_Int ..

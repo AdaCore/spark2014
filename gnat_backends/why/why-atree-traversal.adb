@@ -390,8 +390,8 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Anonymous_Arrow_Type =>
-            Anonymous_Arrow_Type_Pre_Op (State, Node);
+         when W_Arrow_Type =>
+            Arrow_Type_Pre_Op (State, Node);
 
             if State.Control = Abandon_Children then
                State.Control := Continue;
@@ -404,52 +404,19 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Anonymous_Arrow_Type_Get_Left (Node));
+               Arrow_Type_Get_Name (Node));
             Traverse
               (State,
-               Anonymous_Arrow_Type_Get_Right (Node));
+               Arrow_Type_Get_Left (Node));
+            Traverse
+              (State,
+               Arrow_Type_Get_Right (Node));
 
             if State.Control = Terminate_Immediately then
                return;
             end if;
 
-            Anonymous_Arrow_Type_Post_Op (State, Node);
-
-            if State.Control = Abandon_Siblings then
-               State.Control := Continue;
-            end if;
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-         when W_Named_Arrow_Type =>
-            Named_Arrow_Type_Pre_Op (State, Node);
-
-            if State.Control = Abandon_Children then
-               State.Control := Continue;
-               return;
-            end if;
-
-            if State.Control = Abandon_Siblings then
-               return;
-            end if;
-
-            Traverse
-              (State,
-               Named_Arrow_Type_Get_Name (Node));
-            Traverse
-              (State,
-               Named_Arrow_Type_Get_Left (Node));
-            Traverse
-              (State,
-               Named_Arrow_Type_Get_Right (Node));
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-            Named_Arrow_Type_Post_Op (State, Node);
+            Arrow_Type_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;

@@ -142,21 +142,13 @@ package Why.Opaque_Ids is
 
    subtype W_Protected_Value_Type_Opaque_OList is Why_Node_List;
 
-   subtype W_Anonymous_Arrow_Type_Opaque_Id is Why_Node_Id;
+   subtype W_Arrow_Type_Opaque_Id is Why_Node_Id;
 
-   subtype W_Anonymous_Arrow_Type_Opaque_OId is Why_Node_Id;
+   subtype W_Arrow_Type_Opaque_OId is Why_Node_Id;
 
-   subtype W_Anonymous_Arrow_Type_Opaque_List is Why_Node_List;
+   subtype W_Arrow_Type_Opaque_List is Why_Node_List;
 
-   subtype W_Anonymous_Arrow_Type_Opaque_OList is Why_Node_List;
-
-   subtype W_Named_Arrow_Type_Opaque_Id is Why_Node_Id;
-
-   subtype W_Named_Arrow_Type_Opaque_OId is Why_Node_Id;
-
-   subtype W_Named_Arrow_Type_Opaque_List is Why_Node_List;
-
-   subtype W_Named_Arrow_Type_Opaque_OList is Why_Node_List;
+   subtype W_Arrow_Type_Opaque_OList is Why_Node_List;
 
    subtype W_Computation_Spec_Opaque_Id is Why_Node_Id;
 

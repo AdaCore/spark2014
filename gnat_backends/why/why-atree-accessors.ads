@@ -75,24 +75,16 @@ package Why.Atree.Accessors is
      (Id : W_Protected_Value_Type_Id)
      return W_Value_Type_Id;
 
-   function Anonymous_Arrow_Type_Get_Left
-     (Id : W_Anonymous_Arrow_Type_Id)
+   function Arrow_Type_Get_Name
+     (Id : W_Arrow_Type_Id)
+     return W_Identifier_OId;
+
+   function Arrow_Type_Get_Left
+     (Id : W_Arrow_Type_Id)
      return W_Simple_Value_Type_Id;
 
-   function Anonymous_Arrow_Type_Get_Right
-     (Id : W_Anonymous_Arrow_Type_Id)
-     return W_Computation_Type_Id;
-
-   function Named_Arrow_Type_Get_Name
-     (Id : W_Named_Arrow_Type_Id)
-     return W_Identifier_Id;
-
-   function Named_Arrow_Type_Get_Left
-     (Id : W_Named_Arrow_Type_Id)
-     return W_Simple_Value_Type_Id;
-
-   function Named_Arrow_Type_Get_Right
-     (Id : W_Named_Arrow_Type_Id)
+   function Arrow_Type_Get_Right
+     (Id : W_Arrow_Type_Id)
      return W_Computation_Type_Id;
 
    function Computation_Spec_Get_Precondition
@@ -856,28 +848,18 @@ private
      return W_Value_Type_Id is
      (Get_Node (Id).PVT_Value_Type);
 
-   function Anonymous_Arrow_Type_Get_Left
-     (Id : W_Anonymous_Arrow_Type_Id)
-     return W_Simple_Value_Type_Id is
-     (Get_Node (Id).AAT_Left);
-
-   function Anonymous_Arrow_Type_Get_Right
-     (Id : W_Anonymous_Arrow_Type_Id)
-     return W_Computation_Type_Id is
-     (Get_Node (Id).AAT_Right);
-
-   function Named_Arrow_Type_Get_Name
-     (Id : W_Named_Arrow_Type_Id)
-     return W_Identifier_Id is
+   function Arrow_Type_Get_Name
+     (Id : W_Arrow_Type_Id)
+     return W_Identifier_OId is
      (Get_Node (Id).NA_Name);
 
-   function Named_Arrow_Type_Get_Left
-     (Id : W_Named_Arrow_Type_Id)
+   function Arrow_Type_Get_Left
+     (Id : W_Arrow_Type_Id)
      return W_Simple_Value_Type_Id is
      (Get_Node (Id).NA_Left);
 
-   function Named_Arrow_Type_Get_Right
-     (Id : W_Named_Arrow_Type_Id)
+   function Arrow_Type_Get_Right
+     (Id : W_Arrow_Type_Id)
      return W_Computation_Type_Id is
      (Get_Node (Id).NA_Right);
 

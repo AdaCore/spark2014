@@ -220,47 +220,13 @@ package body Why.Atree.Mutators is
          Protected_Value_Type_Id_Valid (Id));
    end Protected_Value_Type_Set_Value_Type;
 
-   -----------------------------------
-   -- Anonymous_Arrow_Type_Set_Left --
-   -----------------------------------
+   -------------------------
+   -- Arrow_Type_Set_Name --
+   -------------------------
 
-   procedure Anonymous_Arrow_Type_Set_Left
-     (Id   : W_Anonymous_Arrow_Type_Unchecked_Id;
-      Left : W_Simple_Value_Type_Unchecked_Id)
-   is
-      Node : Why_Node := Get_Node (Id);
-   begin
-      Node.AAT_Left := Left;
-      Set_Node (Id, Node);
-      Update_Validity_Status
-        (Id,
-         Anonymous_Arrow_Type_Id_Valid (Id));
-   end Anonymous_Arrow_Type_Set_Left;
-
-   ------------------------------------
-   -- Anonymous_Arrow_Type_Set_Right --
-   ------------------------------------
-
-   procedure Anonymous_Arrow_Type_Set_Right
-     (Id    : W_Anonymous_Arrow_Type_Unchecked_Id;
-      Right : W_Computation_Type_Unchecked_Id)
-   is
-      Node : Why_Node := Get_Node (Id);
-   begin
-      Node.AAT_Right := Right;
-      Set_Node (Id, Node);
-      Update_Validity_Status
-        (Id,
-         Anonymous_Arrow_Type_Id_Valid (Id));
-   end Anonymous_Arrow_Type_Set_Right;
-
-   -------------------------------
-   -- Named_Arrow_Type_Set_Name --
-   -------------------------------
-
-   procedure Named_Arrow_Type_Set_Name
-     (Id   : W_Named_Arrow_Type_Unchecked_Id;
-      Name : W_Identifier_Unchecked_Id)
+   procedure Arrow_Type_Set_Name
+     (Id   : W_Arrow_Type_Unchecked_Id;
+      Name : W_Identifier_Unchecked_OId)
    is
       Node : Why_Node := Get_Node (Id);
    begin
@@ -268,15 +234,15 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
       Update_Validity_Status
         (Id,
-         Named_Arrow_Type_Id_Valid (Id));
-   end Named_Arrow_Type_Set_Name;
+         Arrow_Type_Id_Valid (Id));
+   end Arrow_Type_Set_Name;
 
-   -------------------------------
-   -- Named_Arrow_Type_Set_Left --
-   -------------------------------
+   -------------------------
+   -- Arrow_Type_Set_Left --
+   -------------------------
 
-   procedure Named_Arrow_Type_Set_Left
-     (Id   : W_Named_Arrow_Type_Unchecked_Id;
+   procedure Arrow_Type_Set_Left
+     (Id   : W_Arrow_Type_Unchecked_Id;
       Left : W_Simple_Value_Type_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -285,15 +251,15 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
       Update_Validity_Status
         (Id,
-         Named_Arrow_Type_Id_Valid (Id));
-   end Named_Arrow_Type_Set_Left;
+         Arrow_Type_Id_Valid (Id));
+   end Arrow_Type_Set_Left;
 
-   --------------------------------
-   -- Named_Arrow_Type_Set_Right --
-   --------------------------------
+   --------------------------
+   -- Arrow_Type_Set_Right --
+   --------------------------
 
-   procedure Named_Arrow_Type_Set_Right
-     (Id    : W_Named_Arrow_Type_Unchecked_Id;
+   procedure Arrow_Type_Set_Right
+     (Id    : W_Arrow_Type_Unchecked_Id;
       Right : W_Computation_Type_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -302,8 +268,8 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
       Update_Validity_Status
         (Id,
-         Named_Arrow_Type_Id_Valid (Id));
-   end Named_Arrow_Type_Set_Right;
+         Arrow_Type_Id_Valid (Id));
+   end Arrow_Type_Set_Right;
 
    ---------------------------------------
    -- Computation_Spec_Set_Precondition --

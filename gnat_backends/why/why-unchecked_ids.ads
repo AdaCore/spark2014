@@ -244,36 +244,20 @@ package Why.Unchecked_Ids is
      W_Protected_Value_Type_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Anonymous_Arrow_Type_Unchecked_Id is
-     W_Anonymous_Arrow_Type_Opaque_Id;
+   subtype W_Arrow_Type_Unchecked_Id is
+     W_Arrow_Type_Opaque_Id;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Anonymous_Arrow_Type_Unchecked_OId is
-     W_Anonymous_Arrow_Type_Opaque_OId;
+   subtype W_Arrow_Type_Unchecked_OId is
+     W_Arrow_Type_Opaque_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Anonymous_Arrow_Type_Unchecked_List is
-     W_Anonymous_Arrow_Type_Opaque_List;
+   subtype W_Arrow_Type_Unchecked_List is
+     W_Arrow_Type_Opaque_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Anonymous_Arrow_Type_Unchecked_OList is
-     W_Anonymous_Arrow_Type_Opaque_OList;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Named_Arrow_Type_Unchecked_Id is
-     W_Named_Arrow_Type_Opaque_Id;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Named_Arrow_Type_Unchecked_OId is
-     W_Named_Arrow_Type_Opaque_OId;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Named_Arrow_Type_Unchecked_List is
-     W_Named_Arrow_Type_Opaque_List;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Named_Arrow_Type_Unchecked_OList is
-     W_Named_Arrow_Type_Opaque_OList;
+   subtype W_Arrow_Type_Unchecked_OList is
+     W_Arrow_Type_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Computation_Spec_Unchecked_Id is

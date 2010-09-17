@@ -276,50 +276,30 @@ package body Why.Atree.Sprint is
       P (O, ")");
    end Protected_Value_Type_Post_Op;
 
-   ---------------------------------
-   -- Anonymous_Arrow_Type_Pre_Op --
-   ---------------------------------
+   -----------------------
+   -- Arrow_Type_Pre_Op --
+   -----------------------
 
-   procedure Anonymous_Arrow_Type_Pre_Op
+   procedure Arrow_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Anonymous_Arrow_Type_Id)
+      Node  : W_Arrow_Type_Id)
    is
+      Name : constant W_Identifier_OId := Arrow_Type_Get_Name (Node);
    begin
+      if Name /= Why_Empty then
+         Traverse (State, Name);
+         P (O, " : ");
+      end if;
+
       Traverse
         (State,
-         Anonymous_Arrow_Type_Get_Left (Node));
-
-      P (O, " -> ");
-
-      Traverse
-        (State,
-         Anonymous_Arrow_Type_Get_Right (Node));
-
-      State.Control := Abandon_Children;
-   end Anonymous_Arrow_Type_Pre_Op;
-
-   -----------------------------
-   -- Named_Arrow_Type_Pre_Op --
-   -----------------------------
-
-   procedure Named_Arrow_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Named_Arrow_Type_Id)
-   is
-   begin
-      Traverse
-        (State,
-         Named_Arrow_Type_Get_Name (Node));
-      P (O, " : ");
-      Traverse
-        (State,
-         Named_Arrow_Type_Get_Left (Node));
+         Arrow_Type_Get_Left (Node));
       P (O, " -> ");
       Traverse
         (State,
-         Named_Arrow_Type_Get_Right (Node));
+         Arrow_Type_Get_Right (Node));
       State.Control := Abandon_Children;
-   end Named_Arrow_Type_Pre_Op;
+   end Arrow_Type_Pre_Op;
 
    -----------------------------
    -- Computation_Spec_Pre_Op --

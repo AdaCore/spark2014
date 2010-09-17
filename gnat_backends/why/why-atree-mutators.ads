@@ -95,32 +95,20 @@ package Why.Atree.Mutators is
    pragma Precondition
      (Value_Type_Id_Valid (Value_Type));
 
-   procedure Anonymous_Arrow_Type_Set_Left
-     (Id   : W_Anonymous_Arrow_Type_Unchecked_Id;
+   procedure Arrow_Type_Set_Name
+     (Id   : W_Arrow_Type_Unchecked_Id;
+      Name : W_Identifier_Unchecked_OId);
+   pragma Precondition
+     (Identifier_OId_Valid (Name));
+
+   procedure Arrow_Type_Set_Left
+     (Id   : W_Arrow_Type_Unchecked_Id;
       Left : W_Simple_Value_Type_Unchecked_Id);
    pragma Precondition
      (Simple_Value_Type_Id_Valid (Left));
 
-   procedure Anonymous_Arrow_Type_Set_Right
-     (Id    : W_Anonymous_Arrow_Type_Unchecked_Id;
-      Right : W_Computation_Type_Unchecked_Id);
-   pragma Precondition
-     (Computation_Type_Id_Valid (Right));
-
-   procedure Named_Arrow_Type_Set_Name
-     (Id   : W_Named_Arrow_Type_Unchecked_Id;
-      Name : W_Identifier_Unchecked_Id);
-   pragma Precondition
-     (Identifier_Id_Valid (Name));
-
-   procedure Named_Arrow_Type_Set_Left
-     (Id   : W_Named_Arrow_Type_Unchecked_Id;
-      Left : W_Simple_Value_Type_Unchecked_Id);
-   pragma Precondition
-     (Simple_Value_Type_Id_Valid (Left));
-
-   procedure Named_Arrow_Type_Set_Right
-     (Id    : W_Named_Arrow_Type_Unchecked_Id;
+   procedure Arrow_Type_Set_Right
+     (Id    : W_Arrow_Type_Unchecked_Id;
       Right : W_Computation_Type_Unchecked_Id);
    pragma Precondition
      (Computation_Type_Id_Valid (Right));

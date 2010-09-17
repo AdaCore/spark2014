@@ -248,49 +248,28 @@ package body Why.Atree.Builders is
                    PVT_Value_Type => Value_Type));
    end New_Protected_Value_Type;
 
-   ------------------------------
-   -- New_Anonymous_Arrow_Type --
-   ------------------------------
+   --------------------
+   -- New_Arrow_Type --
+   --------------------
 
-   function New_Anonymous_Arrow_Type
+   function New_Arrow_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
+      Name     : W_Identifier_OId := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
-     return W_Anonymous_Arrow_Type_Id
+     return W_Arrow_Type_Id
    is
    begin
       return New_Why_Node_Id
-        (Why_Node'(Kind      => W_Anonymous_Arrow_Type,
-                   Ada_Node  => Ada_Node,
-                   Link      => Link,
-                   Checked   => True,
-                   AAT_Left  => Left,
-                   AAT_Right => Right));
-   end New_Anonymous_Arrow_Type;
-
-   --------------------------
-   -- New_Named_Arrow_Type --
-   --------------------------
-
-   function New_Named_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
-      Name     : W_Identifier_Id;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Named_Arrow_Type_Id
-   is
-   begin
-      return New_Why_Node_Id
-        (Why_Node'(Kind     => W_Named_Arrow_Type,
+        (Why_Node'(Kind     => W_Arrow_Type,
                    Ada_Node => Ada_Node,
                    Link     => Link,
                    Checked  => True,
                    NA_Name  => Name,
                    NA_Left  => Left,
                    NA_Right => Right));
-   end New_Named_Arrow_Type;
+   end New_Arrow_Type;
 
    --------------------------
    -- New_Computation_Spec --
@@ -2755,40 +2734,23 @@ package body Why.Atree.Builders is
                    PVT_Value_Type => Why_Empty));
    end New_Unchecked_Protected_Value_Type;
 
-   ----------------------------------------
-   -- New_Unchecked_Anonymous_Arrow_Type --
-   ----------------------------------------
+   ------------------------------
+   -- New_Unchecked_Arrow_Type --
+   ------------------------------
 
-   function New_Unchecked_Anonymous_Arrow_Type
-     return W_Anonymous_Arrow_Type_Unchecked_Id
+   function New_Unchecked_Arrow_Type
+     return W_Arrow_Type_Unchecked_Id
    is
    begin
       return New_Why_Node_Id
-        (Why_Node'(Kind      => W_Anonymous_Arrow_Type,
-                   Ada_Node  => Empty,
-                   Link      => Why_Empty,
-                   Checked   => False,
-                   AAT_Left  => Why_Empty,
-                   AAT_Right => Why_Empty));
-   end New_Unchecked_Anonymous_Arrow_Type;
-
-   ------------------------------------
-   -- New_Unchecked_Named_Arrow_Type --
-   ------------------------------------
-
-   function New_Unchecked_Named_Arrow_Type
-     return W_Named_Arrow_Type_Unchecked_Id
-   is
-   begin
-      return New_Why_Node_Id
-        (Why_Node'(Kind     => W_Named_Arrow_Type,
+        (Why_Node'(Kind     => W_Arrow_Type,
                    Ada_Node => Empty,
                    Link     => Why_Empty,
                    Checked  => False,
                    NA_Name  => Why_Empty,
                    NA_Left  => Why_Empty,
                    NA_Right => Why_Empty));
-   end New_Unchecked_Named_Arrow_Type;
+   end New_Unchecked_Arrow_Type;
 
    ------------------------------------
    -- New_Unchecked_Computation_Spec --

@@ -299,70 +299,40 @@ package Why.Atree.Builders is
         (New_Protected_Value_Type'Result)
         = Value_Type);
 
-   function New_Anonymous_Arrow_Type
+   function New_Arrow_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
+      Name     : W_Identifier_OId := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
-     return W_Anonymous_Arrow_Type_Id;
+     return W_Arrow_Type_Id;
    pragma Precondition
-     (Simple_Value_Type_Id_Valid (Left)
-      and then Computation_Type_Id_Valid (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Anonymous_Arrow_Type'Result)
-       = W_Anonymous_Arrow_Type
-      and then
-        Get_Ada_Node
-        (New_Anonymous_Arrow_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Anonymous_Arrow_Type'Result)
-        = Link
-      and then
-        Anonymous_Arrow_Type_Get_Left
-        (New_Anonymous_Arrow_Type'Result)
-        = Left
-      and then
-        Anonymous_Arrow_Type_Get_Right
-        (New_Anonymous_Arrow_Type'Result)
-        = Right);
-
-   function New_Named_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
-      Name     : W_Identifier_Id;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Named_Arrow_Type_Id;
-   pragma Precondition
-     (Identifier_Id_Valid (Name)
+     (Identifier_OId_Valid (Name)
       and then Simple_Value_Type_Id_Valid (Left)
       and then Computation_Type_Id_Valid (Right));
    pragma Postcondition
      (Get_Kind
-       (New_Named_Arrow_Type'Result)
-       = W_Named_Arrow_Type
+       (New_Arrow_Type'Result)
+       = W_Arrow_Type
       and then
         Get_Ada_Node
-        (New_Named_Arrow_Type'Result)
+        (New_Arrow_Type'Result)
         = Ada_Node
       and then
         Get_Link
-        (New_Named_Arrow_Type'Result)
+        (New_Arrow_Type'Result)
         = Link
       and then
-        Named_Arrow_Type_Get_Name
-        (New_Named_Arrow_Type'Result)
+        Arrow_Type_Get_Name
+        (New_Arrow_Type'Result)
         = Name
       and then
-        Named_Arrow_Type_Get_Left
-        (New_Named_Arrow_Type'Result)
+        Arrow_Type_Get_Left
+        (New_Arrow_Type'Result)
         = Left
       and then
-        Named_Arrow_Type_Get_Right
-        (New_Named_Arrow_Type'Result)
+        Arrow_Type_Get_Right
+        (New_Arrow_Type'Result)
         = Right);
 
    function New_Computation_Spec
@@ -3520,20 +3490,12 @@ package Why.Atree.Builders is
        = W_Protected_Value_Type
      );
 
-   function New_Unchecked_Anonymous_Arrow_Type
-     return W_Anonymous_Arrow_Type_Unchecked_Id;
+   function New_Unchecked_Arrow_Type
+     return W_Arrow_Type_Unchecked_Id;
    pragma Postcondition
      (Get_Kind
-       (New_Unchecked_Anonymous_Arrow_Type'Result)
-       = W_Anonymous_Arrow_Type
-     );
-
-   function New_Unchecked_Named_Arrow_Type
-     return W_Named_Arrow_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Named_Arrow_Type'Result)
-       = W_Named_Arrow_Type
+       (New_Unchecked_Arrow_Type'Result)
+       = W_Arrow_Type
      );
 
    function New_Unchecked_Computation_Spec

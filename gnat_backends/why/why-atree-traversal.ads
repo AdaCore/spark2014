@@ -175,24 +175,14 @@ package Why.Atree.Traversal is
       Node  : W_Protected_Value_Type_Id)
      is null;
 
-   procedure Anonymous_Arrow_Type_Pre_Op
+   procedure Arrow_Type_Pre_Op
      (State : in out Traversal_State;
-      Node  : W_Anonymous_Arrow_Type_Id)
+      Node  : W_Arrow_Type_Id)
      is null;
 
-   procedure Anonymous_Arrow_Type_Post_Op
+   procedure Arrow_Type_Post_Op
      (State : in out Traversal_State;
-      Node  : W_Anonymous_Arrow_Type_Id)
-     is null;
-
-   procedure Named_Arrow_Type_Pre_Op
-     (State : in out Traversal_State;
-      Node  : W_Named_Arrow_Type_Id)
-     is null;
-
-   procedure Named_Arrow_Type_Post_Op
-     (State : in out Traversal_State;
-      Node  : W_Named_Arrow_Type_Id)
+      Node  : W_Arrow_Type_Id)
      is null;
 
    procedure Computation_Spec_Pre_Op
