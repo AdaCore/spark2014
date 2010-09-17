@@ -23,11 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;    use Why.Sinfo;
-with Xtree_Tables; use Xtree_Tables;
-with Xkind_Tables; use Xkind_Tables;
+with Why.Sinfo;     use Why.Sinfo;
+with Xtree_Tables;  use Xtree_Tables;
+with Xkind_Tables;  use Xkind_Tables;
+with Xtree_Classes; use Xtree_Classes;
 
 package body Xtree_Builders is
+
+   Node_Id_Param : constant Wide_String := "Id";
+   New_Node      : constant Wide_String := "Result";
 
    procedure Print_Builder_Declaration
      (O    : in out Output_Record;
@@ -69,6 +73,43 @@ package body Xtree_Builders is
       BK   : Builder_Kind);
    --  Print the handled sequence of statements that implements this builder
 
+   procedure Print_Builder_Local_Declarations
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      BK   : Builder_Kind);
+   --  Print the local declarations in builder body
+
+   procedure Print_Class_Copy_Builder_Body
+     (O  : in out Output_Record;
+      CI : Class_Info);
+
+   procedure Print_Class_Copy_Builder_Declaration
+     (O      : in out Output_Record;
+      Prefix : Wide_String);
+
+   procedure Print_Class_Copy_Builder_Specification
+     (O      : in out Output_Record;
+      Prefix : Wide_String);
+
+   procedure Adjust_Columns
+     (O        : in out Output_Record;
+      Name_Len : Positive;
+      Max_Len  : Positive);
+
+   --------------------
+   -- Adjust_Columns --
+   --------------------
+
+   procedure Adjust_Columns
+     (O        : in out Output_Record;
+      Name_Len : Positive;
+      Max_Len  : Positive) is
+   begin
+      for J in Name_Len .. Max_Len loop
+         P (O, " ");
+      end loop;
+   end Adjust_Columns;
+
    --------------------------
    -- Print_Builder_Bodies --
    --------------------------
@@ -101,6 +142,9 @@ package body Xtree_Builders is
       Print_Builder_Specification (O, Kind, BK);
       NL (O);
       PL (O, "is");
+      Relative_Indent (O, 3);
+      Print_Builder_Local_Declarations (O, Kind, BK);
+      Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
       Print_Builder_Implementation (O, Kind, BK);
@@ -151,81 +195,116 @@ package body Xtree_Builders is
    is
       use Node_Lists;
 
-      Max_FN_Len   : constant Natural := Max_Field_Name_Length (Kind);
       Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
-      Qualifier    : constant Wide_String := "  (Why_Node'(";
 
-      procedure Print_Record_Component_Association (Position : Cursor);
+      procedure Print_Record_Initialization (Position : Cursor);
 
-      procedure Print_Component_Choice
-        (O      : in out Output_Record;
-         Choice : Wide_String);
+      ---------------------------------
+      -- Print_Record_Initialization --
+      ---------------------------------
 
-      ----------------------------
-      -- Print_Component_Choice --
-      ----------------------------
-
-      procedure Print_Component_Choice
-        (O      : in out Output_Record;
-         Choice : Wide_String) is
-      begin
-         P (O, Choice);
-         for J in Choice'Length .. Max_FN_Len loop
-            P (O, " ");
-         end loop;
-         P (O, "=> ");
-      end Print_Component_Choice;
-
-      ----------------------------------------
-      -- Print_Record_Component_Association --
-      ----------------------------------------
-
-      procedure Print_Record_Component_Association (Position : Cursor) is
+      procedure Print_Record_Initialization (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
          FN : constant Wide_String := Field_Name (FI);
       begin
-         Print_Component_Choice (O, FN);
+         if BK = Builder_Unchecked then
+            P (O, New_Node & "." & FN & " := ");
 
-         if BK = Builder_Regular then
-            P (O, Param_Name (FI));
-
-         else
             if Has_Default_Value (FI, BK) then
                P (O, Default_Value (FI, BK));
             else
                P (O, Param_Name (FI));
             end if;
-         end if;
 
-         if Next (Position) /= No_Element then
-            PL (O, ",");
+            PL (O, ";");
+
+         elsif BK = Builder_Regular then
+            P (O, New_Node & "." & FN & " := ");
+            P (O, Param_Name (FI));
+            PL (O, ";");
+
+         else
+            if Is_List (FI) then
+               PL (O, "declare");
+               Relative_Indent (O, 3);
+               PL (O, "use Node_Lists;");
+               NL (O);
+               PL (O, "Nodes    : constant List := "
+                  & "Get_List (" & Param_Name (FI) & ");");
+               PL (O, "Position : Cursor := First (Nodes);");
+               PL (O, "NL       : constant Why_Node_List := New_List;");
+               Relative_Indent (O, -3);
+
+               PL (O, "begin");
+               Relative_Indent (O, 3);
+               PL (O, "while Position /= No_Element loop");
+               Relative_Indent (O, 3);
+
+               PL (O, "declare");
+               Relative_Indent (O, 3);
+               PL (O, "Node : constant " & Unchecked_Element_Type_Name (FI)
+                   & " := Element (Position);");
+               Relative_Indent (O, -3);
+               PL (O, "begin");
+               Relative_Indent (O, 3);
+               PL (O, List_Op_Name (Op_Append) & " (NL,  Node);");
+               Relative_Indent (O, -3);
+               PL (O, "end;");
+
+               PL (O, "Position := Next (Position);");
+               Relative_Indent (O, -3);
+               PL (O, "end loop;");
+               PL (O, New_Node & "." & FN & " := NL;");
+               Relative_Indent (O, -3);
+               PL (O, "end;");
+               --  ??? To be implemented
+               --  P (O, New_Node & "." & FN & " := ");
+               --  P (O, Param_Name (FI));
+               --  PL (O, ";");
+
+            elsif not Is_Why_Id (FI) then
+               P (O, New_Node & "." & FN & " := ");
+               P (O, Param_Name (FI));
+               PL (O, ";");
+
+            else
+               if Maybe_Null (FI) then
+                  PL (O, "if " & Param_Name (FI) & " = Why_Empty then");
+                  Relative_Indent (O, 3);
+                  PL (O, New_Node & "." & FN & " := Why_Empty;");
+                  Relative_Indent (O, -3);
+
+                  PL (O, "else");
+                  Relative_Indent (O, 3);
+               end if;
+
+               PL (O, New_Node & "." & FN & " :=");
+               Relative_Indent (O, 2);
+               PL (O, Builder_Name (Field_Kind (FI), Builder_Copy));
+               PL (O, "(Id => " & Param_Name (FI) & ");");
+               Relative_Indent (O, -2);
+
+               if Maybe_Null (FI) then
+                  Relative_Indent (O, -3);
+                  PL (O, "end if;");
+               end if;
+            end if;
          end if;
-      end Print_Record_Component_Association;
+      end Print_Record_Initialization;
 
    begin
-      PL (O, "return New_Why_Node_Id");
-      P (O, Qualifier);
-      Relative_Indent (O, Qualifier'Length);
-
-      --  Print discriminant association
-
-      Print_Component_Choice (O, "Kind");
-      PL (O, Mixed_Case_Name (Kind) & ",");
-
-      --  Print other components association
-
-      Common_Fields.Fields.Iterate (Print_Record_Component_Association'Access);
+      Common_Fields.Fields.Iterate (Print_Record_Initialization'Access);
+      Variant_Part.Fields.Iterate (Print_Record_Initialization'Access);
 
       for SF in Special_Fields'Range loop
          case SF is
             when Special_Field_Checked =>
-               PL (O, ",");
-               Print_Component_Choice (O, To_String (SF));
+               P (O, New_Node & "." & To_String (SF) & " := ");
 
-               if BK = Builder_Regular then
-                  P (O, "True");
+               if BK = Builder_Unchecked then
+                  PL (O, "False;");
                else
-                  P (O, "False");
+                  PL (O, "True;");
                end if;
 
             when others =>
@@ -234,15 +313,69 @@ package body Xtree_Builders is
          end case;
       end loop;
 
-      if Has_Variant_Part (Kind) then
-         PL (O, ",");
-         Variant_Part.Fields.Iterate
-           (Print_Record_Component_Association'Access);
+      PL (O, "return New_Why_Node_Id (" & New_Node & ");");
+   end Print_Builder_Implementation;
+
+   --------------------------------------
+   -- Print_Builder_Local_Declarations --
+   --------------------------------------
+
+   procedure Print_Builder_Local_Declarations
+     (O    : in out Output_Record;
+      Kind : Why_Node_Kind;
+      BK   : Builder_Kind)
+   is
+      use Node_Lists;
+
+      Variant_Part  : constant Why_Node_Info :=
+                        Why_Tree_Info (Kind);
+      Max_Param_Len : Natural;
+
+      procedure Print_Variable_Declaration (Position : Cursor);
+
+      --------------------------------
+      -- Print_Variable_Declaration --
+      --------------------------------
+
+      procedure Print_Variable_Declaration (Position : Cursor)
+      is
+         Name_Len : Natural;
+         FI       : constant Field_Info := Element (Position);
+         PN       : constant Wide_String := Param_Name (FI);
+      begin
+         P (O, PN);
+         Name_Len := PN'Length;
+
+         --  Align columns
+
+         if BK = Builder_Unchecked then
+            P (O, " ");
+         else
+            Adjust_Columns (O, Name_Len, Max_Param_Len);
+         end if;
+
+         P (O, ": constant ");
+         P (O, Id_Type_Name (FI));
+
+         PL (O, " :=");
+         Relative_Indent (O, 3);
+         P (O, Accessor_Name (Kind, FI));
+         PL (O, " (" & Node_Id_Param & ");");
+         Relative_Indent (O, -3);
+      end Print_Variable_Declaration;
+
+   --  Start of processing for Print_Builder_Specification
+
+   begin
+      PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
+
+      if BK /= Builder_Copy then
+         return;
       end if;
 
-      PL (O, "));");
-      Relative_Indent (O, -Qualifier'Length);
-   end Print_Builder_Implementation;
+      Max_Param_Len := Max_Param_Length (Kind, False);
+      Variant_Part.Fields.Iterate (Print_Variable_Declaration'Access);
+   end Print_Builder_Local_Declarations;
 
    ---------------------------------
    -- Print_Builder_Specification --
@@ -257,10 +390,25 @@ package body Xtree_Builders is
 
       Variant_Part  : constant Why_Node_Info :=
                         Why_Tree_Info (Kind);
-      Max_Param_Len : constant Natural := Max_Param_Length (Kind);
+      Max_Param_Len : Natural;
       Field_Number  : Positive := 1;
 
       procedure Print_Parameter_Specification (Position : Cursor);
+
+      procedure Print_Id_Parameter_Specification;
+
+      --------------------------------------
+      -- Print_Id_Parameter_Specification --
+      --------------------------------------
+
+      procedure Print_Id_Parameter_Specification is
+      begin
+         PL (O, ";");
+         P (O, Node_Id_Param);
+         Adjust_Columns (O, Node_Id_Param'Length, Max_Param_Len);
+         P (O, ": ");
+         P (O, Id_Type_Name (Kind));
+      end Print_Id_Parameter_Specification;
 
       -----------------------------------
       -- Print_Parameter_Specification --
@@ -290,12 +438,10 @@ package body Xtree_Builders is
 
          --  Align columns
 
-         if BK = Builder_Regular then
-            for J in Name_Len .. Max_Param_Len loop
-               P (O, " ");
-            end loop;
-         else
+         if BK = Builder_Unchecked then
             P (O, " ");
+         else
+            Adjust_Columns (O, Name_Len, Max_Param_Len);
          end if;
 
          P (O, ": ");
@@ -312,21 +458,32 @@ package body Xtree_Builders is
    --  Start of processing for Print_Builder_Specification
 
    begin
+      if BK = Builder_Copy then
+         Max_Param_Len := Common_Fields.Max_Field_Name_Length;
+      else
+         Max_Param_Len := Max_Param_Length (Kind);
+      end if;
+
       PL (O, "function " & Builder_Name (Kind, BK));
       Relative_Indent (O, 2);
 
       Common_Fields.Fields.Iterate (Print_Parameter_Specification'Access);
-      Variant_Part.Fields.Iterate (Print_Parameter_Specification'Access);
+
+      if BK = Builder_Copy then
+         Print_Id_Parameter_Specification;
+      else
+         Variant_Part.Fields.Iterate (Print_Parameter_Specification'Access);
+      end if;
 
       if Field_Number > 1 then
          PL (O, ")");
          Relative_Indent (O, -1);
       end if;
 
-      if BK = Builder_Regular then
-         P (O, "return " & Id_Type_Name (Kind));
-      else
+      if BK = Builder_Unchecked then
          P (O, "return " & Unchecked_Id_Type_Name (Kind));
+      else
+         P (O, "return " & Id_Type_Name (Kind));
       end if;
 
       Relative_Indent (O, -2);
@@ -374,11 +531,11 @@ package body Xtree_Builders is
       PL (O, "  (" & Builder_Name (Kind, BK) & "'Result)");
       PL (O, "  = " & Mixed_Case_Name (Kind));
 
-      if BK = Builder_Regular then
+      if BK /= Builder_Unchecked then
          Relative_Indent (O, 1);
          Common_Fields.Fields.Iterate (Print_Parameter_Postcondition'Access);
 
-         if Has_Variant_Part (Kind) then
+         if Has_Variant_Part (Kind) and then BK = Builder_Regular then
             NL (O);
             Variant_Part.Fields.Iterate (Print_Parameter_Postcondition'Access);
          end if;
@@ -405,6 +562,18 @@ package body Xtree_Builders is
                         Why_Tree_Info (Kind);
 
       procedure Print_Parameter_Precondition (Position : Cursor);
+
+      procedure Print_Id_Parameter_Precondition;
+
+      -------------------------------------
+      -- Print_Id_Parameter_Precondition --
+      -------------------------------------
+
+      procedure Print_Id_Parameter_Precondition is
+      begin
+         P (O, Tree_Check (Mixed_Case_Name (Kind), Id_One));
+         P (O, " (" & Node_Id_Param & ")");
+      end Print_Id_Parameter_Precondition;
 
       ----------------------------------
       -- Print_Parameter_Precondition --
@@ -434,17 +603,269 @@ package body Xtree_Builders is
       end Print_Parameter_Precondition;
 
    begin
-      if Has_Variant_Part (Kind)
-        and then BK = Builder_Regular
+      if (Has_Variant_Part (Kind)
+          and then BK = Builder_Regular)
+        or else BK = Builder_Copy
       then
          PL (O, "pragma Precondition");
          Relative_Indent (O, 2);
          P (O, "(");
-         Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
+
+         if BK = Builder_Regular then
+            Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
+         else
+            Print_Id_Parameter_Precondition;
+         end if;
+
          PL (O, ");");
          Relative_Indent (O, -2);
       end if;
    end Print_Builder_Precondition;
+
+   -------------------------------------
+   -- Print_Class_Copy_Builder_Bodies --
+   -------------------------------------
+
+   procedure Print_Class_Copy_Builder_Bodies
+     (O : in out Output_Record)
+   is
+      use Class_Lists;
+
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
+         CI : constant Class_Info := Class_Lists.Element (Position);
+      begin
+         Print_Class_Copy_Builder_Body (O, CI);
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+   begin
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Class_Copy_Builder_Bodies;
+
+   -----------------------------------
+   -- Print_Class_Copy_Builder_Body --
+   -----------------------------------
+
+   procedure Print_Class_Copy_Builder_Body
+     (O  : in out Output_Record;
+      CI : Class_Info)
+   is
+      Max_Param_Len : constant Natural := Common_Fields.Max_Field_Name_Length;
+
+      procedure Print_Kind_Expression
+        (O    : in out Output_Record;
+         Kind : Why_Node_Kind);
+
+      ---------------------------
+      -- Print_Kind_Expression --
+      ---------------------------
+
+      procedure Print_Kind_Expression
+        (O    : in out Output_Record;
+         Kind : Why_Node_Kind)
+      is
+         use Node_Lists;
+
+         procedure Print_Field_Component_Choice (Position : Cursor);
+         procedure Print_Component_Choice (PN : Wide_String);
+
+         ----------------------------
+         -- Print_Component_Choice --
+         ----------------------------
+
+         procedure Print_Component_Choice (PN : Wide_String) is
+         begin
+            P (O, PN);
+            Adjust_Columns (O, PN'Length, Max_Param_Len);
+            P (O, " => " & PN);
+         end;
+
+         ----------------------------------
+         -- Print_Field_Component_Choice --
+         ----------------------------------
+
+         procedure Print_Field_Component_Choice (Position : Cursor) is
+            FI : constant Field_Info := Element (Position);
+            PN : constant Wide_String := Param_Name (FI);
+         begin
+            Print_Component_Choice (PN);
+            PL (O, ",");
+         end Print_Field_Component_Choice;
+
+      begin
+         PL (O, Builder_Name (Kind, Builder_Copy));
+         P (O, " (");
+         Relative_Indent (O, 2);
+         Common_Fields.Fields.Iterate (Print_Field_Component_Choice'Access);
+         Print_Component_Choice (Node_Id_Param);
+         P (O, ")");
+         Relative_Indent (O, -2);
+      end Print_Kind_Expression;
+
+   begin
+      Print_Class_Copy_Builder_Specification (O, Class_Name (CI));
+      PL (O, " is");
+      Relative_Indent (O, 2);
+      Print_Class_Case_Expression (O, CI, Node_Id_Param, "Why_Empty",
+                                   Print_Kind_Expression'Access);
+      Relative_Indent (O, -2);
+      NL (O);
+   end Print_Class_Copy_Builder_Body;
+
+   -------------------------------------------
+   -- Print_Class_Copy_Builder_Declarations --
+   -------------------------------------------
+
+   procedure Print_Class_Copy_Builder_Declarations
+     (O : in out Output_Record)
+   is
+      use Class_Lists;
+
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
+
+      ----------------------------
+      -- Process_One_Class_Kind --
+      ----------------------------
+
+      procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
+         CI : constant Class_Info := Class_Lists.Element (Position);
+      begin
+         Print_Class_Copy_Builder_Declaration (O, Class_Name (CI));
+
+         if Position /= Classes.Last then
+            NL (O);
+         end if;
+      end Process_One_Class_Kind;
+
+   begin
+      Classes.Iterate (Process_One_Class_Kind'Access);
+   end Print_Class_Copy_Builder_Declarations;
+
+   ------------------------------------------
+   -- Print_Class_Copy_Builder_Declaration --
+   ------------------------------------------
+
+   procedure Print_Class_Copy_Builder_Declaration
+     (O      : in out Output_Record;
+      Prefix : Wide_String)
+   is
+   begin
+      Print_Class_Copy_Builder_Specification (O, Prefix);
+      PL (O, ";");
+   end Print_Class_Copy_Builder_Declaration;
+
+   --------------------------------------------
+   -- Print_Class_Copy_Builder_Specification --
+   --------------------------------------------
+
+   procedure Print_Class_Copy_Builder_Specification
+     (O      : in out Output_Record;
+      Prefix : Wide_String)
+   is
+      use Node_Lists;
+
+      Max_Param_Len : Natural;
+      Field_Number  : Positive := 1;
+
+      procedure Print_Parameter_Specification (Position : Cursor);
+
+      procedure Print_Id_Parameter_Specification;
+
+      --------------------------------------
+      -- Print_Id_Parameter_Specification --
+      --------------------------------------
+
+      procedure Print_Id_Parameter_Specification is
+      begin
+         P (O, Node_Id_Param);
+         Adjust_Columns (O, Node_Id_Param'Length, Max_Param_Len);
+         P (O, ": ");
+         P (O, Id_Type_Name (Prefix));
+      end Print_Id_Parameter_Specification;
+
+      -----------------------------------
+      -- Print_Parameter_Specification --
+      -----------------------------------
+
+      procedure Print_Parameter_Specification (Position : Cursor)
+      is
+         Name_Len : Natural;
+         FI       : constant Field_Info := Element (Position);
+         PN       : constant Wide_String := Param_Name (FI);
+      begin
+         P (O, PN);
+         Name_Len := PN'Length;
+         Adjust_Columns (O, Name_Len, Max_Param_Len);
+
+         P (O, ": ");
+         P (O, Id_Type_Name (FI));
+
+         if Has_Default_Value (FI) then
+            P (O, " := ");
+            P (O, Default_Value (FI));
+         end if;
+
+         PL (O, ";");
+      end Print_Parameter_Specification;
+
+   --  Start of processing for Print_Class_Copy_Builder_Specification
+
+   begin
+      Max_Param_Len := Common_Fields.Max_Field_Name_Length;
+
+      PL (O, "function " & Builder_Name (Prefix, Builder_Copy));
+      Relative_Indent (O, 2);
+
+      P (O, "(");
+      Relative_Indent (O, 1);
+      Common_Fields.Fields.Iterate (Print_Parameter_Specification'Access);
+      Print_Id_Parameter_Specification;
+      PL (O, ")");
+      Relative_Indent (O, -1);
+      P (O, "return " & Id_Type_Name (Prefix));
+      Relative_Indent (O, -2);
+   end Print_Class_Copy_Builder_Specification;
+
+   -------------------------------
+   -- Print_Copy_Builder_Bodies --
+   -------------------------------
+
+   procedure Print_Copy_Builder_Bodies (O : in out Output_Record) is
+   begin
+      for J in Valid_Kind'Range loop
+         Print_Builder_Body (O, J, Builder_Copy);
+
+         if J /= Why_Tree_Info'Last then
+            NL (O);
+         end if;
+      end loop;
+   end Print_Copy_Builder_Bodies;
+
+   -------------------------------------
+   -- Print_Copy_Builder_Declarations --
+   -------------------------------------
+
+   procedure Print_Copy_Builder_Declarations
+     (O  : in out Output_Record)
+   is
+   begin
+      for J in Valid_Kind'Range loop
+         Print_Builder_Declaration (O, J, Builder_Copy);
+
+         if J /= Why_Tree_Info'Last then
+            NL (O);
+         end if;
+      end loop;
+   end Print_Copy_Builder_Declarations;
 
    ------------------------------------
    -- Print_Unchecked_Builder_Bodies --

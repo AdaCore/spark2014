@@ -169,7 +169,10 @@ package Xtree_Tables is
    --  Return the maximum field length for the given node kind;
    --  this is meant to be used to have proper indentation of these parameters.
 
-   function Max_Param_Length (Kind : Why_Node_Kind) return Natural;
+   function Max_Param_Length
+     (Kind                  : Why_Node_Kind;
+      Common_Field_Included : Boolean := True)
+     return Natural;
    --  Return the maximum length of a parameter for the given node kind;
    --  this is meant to be used to have proper indentation of these parameters.
 
@@ -203,16 +206,23 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the mutator name for the given field of the given node kind
 
-   type Builder_Kind is (Builder_Regular, Builder_Unchecked);
+   type Builder_Kind is (Builder_Regular, Builder_Unchecked, Builder_Copy);
    --  Type of builder. Builder_Regular for building builders
    --  that return regular ids (to valid nodes); Builder_Unchecked
    --  for builders that returns unchecked ids (to kind-valid nodes).
+   --  Builder_Copy for builders that duplicate the subtree given in
+   --  parameter.
 
    function Builder_Name
      (Kind : Why_Node_Kind;
       BK   : Builder_Kind := Builder_Regular)
      return Wide_String;
    --  Return the builder name for the given node kind
+
+   function Builder_Name
+     (Prefix : Wide_String;
+      BK     : Builder_Kind := Builder_Regular)
+     return Wide_String;
 
    function Has_Default_Value
      (FI : Field_Info;
@@ -243,6 +253,7 @@ package Xtree_Tables is
    pragma Precondition (Is_Why_Id (FI));
    --  For a node field, return its kind
 
+   function Id_Type_Name (Prefix : Wide_String) return Wide_String;
    function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    function Id_Type_Name (FI : Field_Info) return Wide_String;
    function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;

@@ -66,12 +66,15 @@ package body Why.Gen.Funcs is
          Right : constant W_Computation_Type_Id :=
                    Arrow_Type_Get_Right (Arrow);
       begin
-         Logic_Type_Append_To_Arg_Types (Spec, Arrow_Type_Get_Left (Arrow));
+         Logic_Type_Append_To_Arg_Types
+           (Spec,
+            Duplicate_Logic_Arg_Type (Id => Arrow_Type_Get_Left (Arrow)));
 
          if Get_Kind (Right) = W_Computation_Spec then
             Logic_Type_Set_Return_Type
               (Spec,
-               Computation_Spec_Get_Return_Type (Right));
+               Duplicate_Logic_Return_Type
+               (Id => Computation_Spec_Get_Return_Type (Right)));
          else
             Append_To_Spec (Right);
          end if;

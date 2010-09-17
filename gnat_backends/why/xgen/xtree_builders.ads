@@ -40,4 +40,14 @@ package Xtree_Builders is
    procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record);
    --  Print builder bodies for unchecked Why nodes
 
+   procedure Print_Copy_Builder_Bodies (O : in out Output_Record);
+   --  Print copy builder bodies for Why nodes
+
+   procedure Print_Copy_Builder_Declarations (O : in out Output_Record);
+   --  Print copy builder declarations for Why nodes
+
+   procedure Print_Class_Copy_Builder_Declarations (O : in out Output_Record);
+
+   procedure Print_Class_Copy_Builder_Bodies (O : in out Output_Record);
+
 end Xtree_Builders;

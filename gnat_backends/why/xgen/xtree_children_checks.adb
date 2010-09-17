@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Xkind_Tables; use Xkind_Tables;
-with Xtree_Tables; use Xtree_Tables;
-with Why.Sinfo;    use Why.Sinfo;
+with Xkind_Tables;  use Xkind_Tables;
+with Xtree_Tables;  use Xtree_Tables;
+with Xtree_Classes; use Xtree_Classes;
+with Why.Sinfo;     use Why.Sinfo;
 
 package body Xtree_Children_Checks is
    --  This package provides routines to print kind-validity checks
@@ -300,19 +301,28 @@ package body Xtree_Children_Checks is
    ----------------------------------
 
    procedure Print_Class_Check_Expression
-     (O      : in out Output_Record;
-      CI     : Class_Info)
+     (O  : in out Output_Record;
+      CI : Class_Info)
    is
-      Prefix : constant Wide_String := Class_Name (CI);
+      procedure Print_Kind_Expression
+        (O    : in out Output_Record;
+         Kind : Why_Node_Kind);
+
+      ---------------------------
+      -- Print_Kind_Expression --
+      ---------------------------
+
+      procedure Print_Kind_Expression
+        (O    : in out Output_Record;
+         Kind : Why_Node_Kind) is
+      begin
+         P (O, Children_Check (Mixed_Case_Name (Kind), Id_One)
+            & " (" & Node_Id_Param & ")");
+      end Print_Kind_Expression;
+
    begin
-      PL (O, "(case Get_Kind (" & Node_Id_Param & ") is");
-      for Kind in Class_First (CI) .. Class_Last (CI) loop
-         PL (O, "   when " & Mixed_Case_Name (Kind) & " =>");
-         PL (O, "      " & Children_Check (Mixed_Case_Name (Kind), Id_One)
-             & " (" & Node_Id_Param & "),");
-      end loop;
-      PL (O, "   when others =>");
-      P  (O, "      False);");
+      Print_Class_Case_Expression (O, CI, Node_Id_Param, "False",
+                                   Print_Kind_Expression'Access);
    end Print_Class_Check_Expression;
 
 end Xtree_Children_Checks;

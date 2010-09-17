@@ -30,7 +30,6 @@ with Utils;          use Utils;
 
 package body Xtree_Tables is
 
-   function Id_Type_Name (Kind : Wide_String) return Wide_String;
    function List_Type_Name (Kind : Wide_String) return Wide_String;
    function Param_Name (Field_Name : Wide_String) return Wide_String;
    --  Helper functions for the corresponding homonyms
@@ -58,17 +57,30 @@ package body Xtree_Tables is
    -----------------
 
    function Builder_Name
-     (Kind : Why_Node_Kind;
-      BK   : Builder_Kind := Builder_Regular)
+     (Prefix : Wide_String;
+      BK     : Builder_Kind := Builder_Regular)
      return Wide_String is
-
    begin
       case BK is
          when Builder_Regular =>
-            return "New_" & Strip_Prefix (Mixed_Case_Name (Kind));
+            return "New_" & Strip_Prefix (Prefix);
          when Builder_Unchecked =>
-            return "New_Unchecked_" & Strip_Prefix (Mixed_Case_Name (Kind));
+            return "New_Unchecked_" & Strip_Prefix (Prefix);
+         when Builder_Copy =>
+            return "Duplicate_" & Strip_Prefix (Prefix);
       end case;
+   end Builder_Name;
+
+   ------------------
+   -- Builder_Name --
+   ------------------
+
+   function Builder_Name
+     (Kind : Why_Node_Kind;
+      BK   : Builder_Kind := Builder_Regular)
+     return Wide_String is
+   begin
+      return Builder_Name (Mixed_Case_Name (Kind), BK);
    end Builder_Name;
 
    -------------------
@@ -158,9 +170,9 @@ package body Xtree_Tables is
       return Id_Type_Name (Mixed_Case_Name (Kind));
    end Id_Type_Name;
 
-   function Id_Type_Name (Kind : Wide_String) return Wide_String is
+   function Id_Type_Name (Prefix : Wide_String) return Wide_String is
    begin
-      return Kind & "_Id";
+      return Prefix & "_Id";
    end Id_Type_Name;
 
    function Id_Type_Name (FI : Field_Info) return Wide_String is
@@ -386,13 +398,21 @@ package body Xtree_Tables is
    -- Max_Param_Length --
    ----------------------
 
-   function Max_Param_Length (Kind : Why_Node_Kind) return Natural is
+   function Max_Param_Length
+     (Kind                  : Why_Node_Kind;
+      Common_Field_Included : Boolean := True)
+     return Natural
+   is
       use Node_Lists;
 
-      Variant_Part  : constant Why_Node_Info := Why_Tree_Info (Kind);
+      Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
+      CF_Length    : constant Natural :=
+                       (if Common_Field_Included then
+                           Common_Fields.Max_Field_Name_Length
+                       else 0);
    begin
       if Length (Variant_Part.Fields) = 0 then
-         return Common_Fields.Max_Field_Name_Length;
+         return CF_Length;
       else
          declare
             First_FI      : constant Field_Info :=
@@ -406,7 +426,7 @@ package body Xtree_Tables is
          begin
             return Natural'Max
               (Variant_Part.Max_Field_Name_Length - Prefix_Len,
-               Common_Fields.Max_Field_Name_Length);
+               CF_Length);
          end;
       end if;
    end Max_Param_Length;

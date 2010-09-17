@@ -4404,4 +4404,3621 @@ package Why.Atree.Builders is
        = W_Logic_Declaration
      );
 
+   function Duplicate_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Identifier_Id)
+     return W_Identifier_Id;
+   pragma Precondition
+     (Identifier_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Identifier'Result)
+       = W_Identifier
+      and then
+        Get_Ada_Node
+        (Duplicate_Identifier'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Identifier'Result)
+        = Link);
+
+   function Duplicate_Type_Prop
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Prop_Id)
+     return W_Type_Prop_Id;
+   pragma Precondition
+     (Type_Prop_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type_Prop'Result)
+       = W_Type_Prop
+      and then
+        Get_Ada_Node
+        (Duplicate_Type_Prop'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type_Prop'Result)
+        = Link);
+
+   function Duplicate_Type_Int
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Int_Id)
+     return W_Type_Int_Id;
+   pragma Precondition
+     (Type_Int_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type_Int'Result)
+       = W_Type_Int
+      and then
+        Get_Ada_Node
+        (Duplicate_Type_Int'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type_Int'Result)
+        = Link);
+
+   function Duplicate_Type_Bool
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Bool_Id)
+     return W_Type_Bool_Id;
+   pragma Precondition
+     (Type_Bool_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type_Bool'Result)
+       = W_Type_Bool
+      and then
+        Get_Ada_Node
+        (Duplicate_Type_Bool'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type_Bool'Result)
+        = Link);
+
+   function Duplicate_Type_Real
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Real_Id)
+     return W_Type_Real_Id;
+   pragma Precondition
+     (Type_Real_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type_Real'Result)
+       = W_Type_Real
+      and then
+        Get_Ada_Node
+        (Duplicate_Type_Real'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type_Real'Result)
+        = Link);
+
+   function Duplicate_Type_Unit
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Unit_Id)
+     return W_Type_Unit_Id;
+   pragma Precondition
+     (Type_Unit_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type_Unit'Result)
+       = W_Type_Unit
+      and then
+        Get_Ada_Node
+        (Duplicate_Type_Unit'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type_Unit'Result)
+        = Link);
+
+   function Duplicate_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Abstract_Type_Id)
+     return W_Abstract_Type_Id;
+   pragma Precondition
+     (Abstract_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Abstract_Type'Result)
+       = W_Abstract_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Abstract_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Abstract_Type'Result)
+        = Link);
+
+   function Duplicate_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Generic_Formal_Type_Id)
+     return W_Generic_Formal_Type_Id;
+   pragma Precondition
+     (Generic_Formal_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Generic_Formal_Type'Result)
+       = W_Generic_Formal_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Generic_Formal_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Generic_Formal_Type'Result)
+        = Link);
+
+   function Duplicate_Generic_Actual_Type_Chain
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Generic_Actual_Type_Chain_Id)
+     return W_Generic_Actual_Type_Chain_Id;
+   pragma Precondition
+     (Generic_Actual_Type_Chain_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Generic_Actual_Type_Chain'Result)
+       = W_Generic_Actual_Type_Chain
+      and then
+        Get_Ada_Node
+        (Duplicate_Generic_Actual_Type_Chain'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Generic_Actual_Type_Chain'Result)
+        = Link);
+
+   function Duplicate_Array_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Array_Type_Id)
+     return W_Array_Type_Id;
+   pragma Precondition
+     (Array_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Array_Type'Result)
+       = W_Array_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Array_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Array_Type'Result)
+        = Link);
+
+   function Duplicate_Ref_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Ref_Type_Id)
+     return W_Ref_Type_Id;
+   pragma Precondition
+     (Ref_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Ref_Type'Result)
+       = W_Ref_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Ref_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Ref_Type'Result)
+        = Link);
+
+   function Duplicate_Protected_Value_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Protected_Value_Type_Id)
+     return W_Protected_Value_Type_Id;
+   pragma Precondition
+     (Protected_Value_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Protected_Value_Type'Result)
+       = W_Protected_Value_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Protected_Value_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Protected_Value_Type'Result)
+        = Link);
+
+   function Duplicate_Arrow_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Arrow_Type_Id)
+     return W_Arrow_Type_Id;
+   pragma Precondition
+     (Arrow_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Arrow_Type'Result)
+       = W_Arrow_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Arrow_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Arrow_Type'Result)
+        = Link);
+
+   function Duplicate_Computation_Spec
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Computation_Spec_Id)
+     return W_Computation_Spec_Id;
+   pragma Precondition
+     (Computation_Spec_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Computation_Spec'Result)
+       = W_Computation_Spec
+      and then
+        Get_Ada_Node
+        (Duplicate_Computation_Spec'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Computation_Spec'Result)
+        = Link);
+
+   function Duplicate_Integer_Constant
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Integer_Constant_Id)
+     return W_Integer_Constant_Id;
+   pragma Precondition
+     (Integer_Constant_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Integer_Constant'Result)
+       = W_Integer_Constant
+      and then
+        Get_Ada_Node
+        (Duplicate_Integer_Constant'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Integer_Constant'Result)
+        = Link);
+
+   function Duplicate_Real_Constant
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Real_Constant_Id)
+     return W_Real_Constant_Id;
+   pragma Precondition
+     (Real_Constant_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Real_Constant'Result)
+       = W_Real_Constant
+      and then
+        Get_Ada_Node
+        (Duplicate_Real_Constant'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Real_Constant'Result)
+        = Link);
+
+   function Duplicate_True_Literal
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_True_Literal_Id)
+     return W_True_Literal_Id;
+   pragma Precondition
+     (True_Literal_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_True_Literal'Result)
+       = W_True_Literal
+      and then
+        Get_Ada_Node
+        (Duplicate_True_Literal'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_True_Literal'Result)
+        = Link);
+
+   function Duplicate_False_Literal
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_False_Literal_Id)
+     return W_False_Literal_Id;
+   pragma Precondition
+     (False_Literal_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_False_Literal'Result)
+       = W_False_Literal
+      and then
+        Get_Ada_Node
+        (Duplicate_False_Literal'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_False_Literal'Result)
+        = Link);
+
+   function Duplicate_Void_Literal
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Void_Literal_Id)
+     return W_Void_Literal_Id;
+   pragma Precondition
+     (Void_Literal_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Void_Literal'Result)
+       = W_Void_Literal
+      and then
+        Get_Ada_Node
+        (Duplicate_Void_Literal'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Void_Literal'Result)
+        = Link);
+
+   function Duplicate_Arith_Operation
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Arith_Operation_Id)
+     return W_Arith_Operation_Id;
+   pragma Precondition
+     (Arith_Operation_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Arith_Operation'Result)
+       = W_Arith_Operation
+      and then
+        Get_Ada_Node
+        (Duplicate_Arith_Operation'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Arith_Operation'Result)
+        = Link);
+
+   function Duplicate_Negative_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Negative_Term_Id)
+     return W_Negative_Term_Id;
+   pragma Precondition
+     (Negative_Term_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Negative_Term'Result)
+       = W_Negative_Term
+      and then
+        Get_Ada_Node
+        (Duplicate_Negative_Term'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Negative_Term'Result)
+        = Link);
+
+   function Duplicate_Label_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Label_Identifier_Id)
+     return W_Label_Identifier_Id;
+   pragma Precondition
+     (Label_Identifier_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Label_Identifier'Result)
+       = W_Label_Identifier
+      and then
+        Get_Ada_Node
+        (Duplicate_Label_Identifier'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Label_Identifier'Result)
+        = Link);
+
+   function Duplicate_Operation
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Operation_Id)
+     return W_Operation_Id;
+   pragma Precondition
+     (Operation_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Operation'Result)
+       = W_Operation
+      and then
+        Get_Ada_Node
+        (Duplicate_Operation'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Operation'Result)
+        = Link);
+
+   function Duplicate_Named_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Named_Term_Id)
+     return W_Named_Term_Id;
+   pragma Precondition
+     (Named_Term_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Named_Term'Result)
+       = W_Named_Term
+      and then
+        Get_Ada_Node
+        (Duplicate_Named_Term'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Named_Term'Result)
+        = Link);
+
+   function Duplicate_Conditional_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Conditional_Term_Id)
+     return W_Conditional_Term_Id;
+   pragma Precondition
+     (Conditional_Term_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Conditional_Term'Result)
+       = W_Conditional_Term
+      and then
+        Get_Ada_Node
+        (Duplicate_Conditional_Term'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Conditional_Term'Result)
+        = Link);
+
+   function Duplicate_Binding_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Term_Id)
+     return W_Binding_Term_Id;
+   pragma Precondition
+     (Binding_Term_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Term'Result)
+       = W_Binding_Term
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Term'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Term'Result)
+        = Link);
+
+   function Duplicate_Protected_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Protected_Term_Id)
+     return W_Protected_Term_Id;
+   pragma Precondition
+     (Protected_Term_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Protected_Term'Result)
+       = W_Protected_Term
+      and then
+        Get_Ada_Node
+        (Duplicate_Protected_Term'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Protected_Term'Result)
+        = Link);
+
+   function Duplicate_Op_Add
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Add_Id)
+     return W_Op_Add_Id;
+   pragma Precondition
+     (Op_Add_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Add'Result)
+       = W_Op_Add
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Add'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Add'Result)
+        = Link);
+
+   function Duplicate_Op_Substract
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Substract_Id)
+     return W_Op_Substract_Id;
+   pragma Precondition
+     (Op_Substract_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Substract'Result)
+       = W_Op_Substract
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Substract'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Substract'Result)
+        = Link);
+
+   function Duplicate_Op_Multiply
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Multiply_Id)
+     return W_Op_Multiply_Id;
+   pragma Precondition
+     (Op_Multiply_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Multiply'Result)
+       = W_Op_Multiply
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Multiply'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Multiply'Result)
+        = Link);
+
+   function Duplicate_Op_Divide
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Divide_Id)
+     return W_Op_Divide_Id;
+   pragma Precondition
+     (Op_Divide_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Divide'Result)
+       = W_Op_Divide
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Divide'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Divide'Result)
+        = Link);
+
+   function Duplicate_Op_Modulo
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Modulo_Id)
+     return W_Op_Modulo_Id;
+   pragma Precondition
+     (Op_Modulo_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Modulo'Result)
+       = W_Op_Modulo
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Modulo'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Modulo'Result)
+        = Link);
+
+   function Duplicate_True_Literal_Pred
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_True_Literal_Pred_Id)
+     return W_True_Literal_Pred_Id;
+   pragma Precondition
+     (True_Literal_Pred_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_True_Literal_Pred'Result)
+       = W_True_Literal_Pred
+      and then
+        Get_Ada_Node
+        (Duplicate_True_Literal_Pred'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_True_Literal_Pred'Result)
+        = Link);
+
+   function Duplicate_False_Literal_Pred
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_False_Literal_Pred_Id)
+     return W_False_Literal_Pred_Id;
+   pragma Precondition
+     (False_Literal_Pred_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_False_Literal_Pred'Result)
+       = W_False_Literal_Pred
+      and then
+        Get_Ada_Node
+        (Duplicate_False_Literal_Pred'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_False_Literal_Pred'Result)
+        = Link);
+
+   function Duplicate_Predicate_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Predicate_Identifier_Id)
+     return W_Predicate_Identifier_Id;
+   pragma Precondition
+     (Predicate_Identifier_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Predicate_Identifier'Result)
+       = W_Predicate_Identifier
+      and then
+        Get_Ada_Node
+        (Duplicate_Predicate_Identifier'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Predicate_Identifier'Result)
+        = Link);
+
+   function Duplicate_Predicate_Instance
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Predicate_Instance_Id)
+     return W_Predicate_Instance_Id;
+   pragma Precondition
+     (Predicate_Instance_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Predicate_Instance'Result)
+       = W_Predicate_Instance
+      and then
+        Get_Ada_Node
+        (Duplicate_Predicate_Instance'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Predicate_Instance'Result)
+        = Link);
+
+   function Duplicate_Related_Terms
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Related_Terms_Id)
+     return W_Related_Terms_Id;
+   pragma Precondition
+     (Related_Terms_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Related_Terms'Result)
+       = W_Related_Terms
+      and then
+        Get_Ada_Node
+        (Duplicate_Related_Terms'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Related_Terms'Result)
+        = Link);
+
+   function Duplicate_Implication
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Implication_Id)
+     return W_Implication_Id;
+   pragma Precondition
+     (Implication_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Implication'Result)
+       = W_Implication
+      and then
+        Get_Ada_Node
+        (Duplicate_Implication'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Implication'Result)
+        = Link);
+
+   function Duplicate_Equivalence
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Equivalence_Id)
+     return W_Equivalence_Id;
+   pragma Precondition
+     (Equivalence_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Equivalence'Result)
+       = W_Equivalence
+      and then
+        Get_Ada_Node
+        (Duplicate_Equivalence'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Equivalence'Result)
+        = Link);
+
+   function Duplicate_Disjonction
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Disjonction_Id)
+     return W_Disjonction_Id;
+   pragma Precondition
+     (Disjonction_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Disjonction'Result)
+       = W_Disjonction
+      and then
+        Get_Ada_Node
+        (Duplicate_Disjonction'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Disjonction'Result)
+        = Link);
+
+   function Duplicate_Conjonction
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Conjonction_Id)
+     return W_Conjonction_Id;
+   pragma Precondition
+     (Conjonction_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Conjonction'Result)
+       = W_Conjonction
+      and then
+        Get_Ada_Node
+        (Duplicate_Conjonction'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Conjonction'Result)
+        = Link);
+
+   function Duplicate_Negation
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Negation_Id)
+     return W_Negation_Id;
+   pragma Precondition
+     (Negation_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Negation'Result)
+       = W_Negation
+      and then
+        Get_Ada_Node
+        (Duplicate_Negation'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Negation'Result)
+        = Link);
+
+   function Duplicate_Conditional_Pred
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Conditional_Pred_Id)
+     return W_Conditional_Pred_Id;
+   pragma Precondition
+     (Conditional_Pred_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Conditional_Pred'Result)
+       = W_Conditional_Pred
+      and then
+        Get_Ada_Node
+        (Duplicate_Conditional_Pred'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Conditional_Pred'Result)
+        = Link);
+
+   function Duplicate_Binding_Pred
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Pred_Id)
+     return W_Binding_Pred_Id;
+   pragma Precondition
+     (Binding_Pred_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Pred'Result)
+       = W_Binding_Pred
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Pred'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Pred'Result)
+        = Link);
+
+   function Duplicate_Universal_Quantif
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Universal_Quantif_Id)
+     return W_Universal_Quantif_Id;
+   pragma Precondition
+     (Universal_Quantif_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Universal_Quantif'Result)
+       = W_Universal_Quantif
+      and then
+        Get_Ada_Node
+        (Duplicate_Universal_Quantif'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Universal_Quantif'Result)
+        = Link);
+
+   function Duplicate_Existential_Quantif
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Existential_Quantif_Id)
+     return W_Existential_Quantif_Id;
+   pragma Precondition
+     (Existential_Quantif_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Existential_Quantif'Result)
+       = W_Existential_Quantif
+      and then
+        Get_Ada_Node
+        (Duplicate_Existential_Quantif'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Existential_Quantif'Result)
+        = Link);
+
+   function Duplicate_Named_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Named_Predicate_Id)
+     return W_Named_Predicate_Id;
+   pragma Precondition
+     (Named_Predicate_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Named_Predicate'Result)
+       = W_Named_Predicate
+      and then
+        Get_Ada_Node
+        (Duplicate_Named_Predicate'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Named_Predicate'Result)
+        = Link);
+
+   function Duplicate_Protected_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Protected_Predicate_Id)
+     return W_Protected_Predicate_Id;
+   pragma Precondition
+     (Protected_Predicate_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Protected_Predicate'Result)
+       = W_Protected_Predicate
+      and then
+        Get_Ada_Node
+        (Duplicate_Protected_Predicate'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Protected_Predicate'Result)
+        = Link);
+
+   function Duplicate_Triggers
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Triggers_Id)
+     return W_Triggers_Id;
+   pragma Precondition
+     (Triggers_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Triggers'Result)
+       = W_Triggers
+      and then
+        Get_Ada_Node
+        (Duplicate_Triggers'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Triggers'Result)
+        = Link);
+
+   function Duplicate_Trigger
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Trigger_Id)
+     return W_Trigger_Id;
+   pragma Precondition
+     (Trigger_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Trigger'Result)
+       = W_Trigger
+      and then
+        Get_Ada_Node
+        (Duplicate_Trigger'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Trigger'Result)
+        = Link);
+
+   function Duplicate_Rel_Eq
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Eq_Id)
+     return W_Rel_Eq_Id;
+   pragma Precondition
+     (Rel_Eq_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Eq'Result)
+       = W_Rel_Eq
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Eq'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Eq'Result)
+        = Link);
+
+   function Duplicate_Rel_Ne
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Ne_Id)
+     return W_Rel_Ne_Id;
+   pragma Precondition
+     (Rel_Ne_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Ne'Result)
+       = W_Rel_Ne
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Ne'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Ne'Result)
+        = Link);
+
+   function Duplicate_Rel_Lt
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Lt_Id)
+     return W_Rel_Lt_Id;
+   pragma Precondition
+     (Rel_Lt_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Lt'Result)
+       = W_Rel_Lt
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Lt'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Lt'Result)
+        = Link);
+
+   function Duplicate_Rel_Le
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Le_Id)
+     return W_Rel_Le_Id;
+   pragma Precondition
+     (Rel_Le_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Le'Result)
+       = W_Rel_Le
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Le'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Le'Result)
+        = Link);
+
+   function Duplicate_Rel_Gt
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Gt_Id)
+     return W_Rel_Gt_Id;
+   pragma Precondition
+     (Rel_Gt_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Gt'Result)
+       = W_Rel_Gt
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Gt'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Gt'Result)
+        = Link);
+
+   function Duplicate_Rel_Ge
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Rel_Ge_Id)
+     return W_Rel_Ge_Id;
+   pragma Precondition
+     (Rel_Ge_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Rel_Ge'Result)
+       = W_Rel_Ge
+      and then
+        Get_Ada_Node
+        (Duplicate_Rel_Ge'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Rel_Ge'Result)
+        = Link);
+
+   function Duplicate_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Type_Id)
+     return W_Type_Id;
+   pragma Precondition
+     (Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Type'Result)
+       = W_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Type'Result)
+        = Link);
+
+   function Duplicate_Logic
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Id)
+     return W_Logic_Id;
+   pragma Precondition
+     (Logic_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Logic'Result)
+       = W_Logic
+      and then
+        Get_Ada_Node
+        (Duplicate_Logic'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Logic'Result)
+        = Link);
+
+   function Duplicate_Function
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Function_Id)
+     return W_Function_Id;
+   pragma Precondition
+     (Function_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Function'Result)
+       = W_Function
+      and then
+        Get_Ada_Node
+        (Duplicate_Function'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Function'Result)
+        = Link);
+
+   function Duplicate_Predicate_Definition
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Predicate_Definition_Id)
+     return W_Predicate_Definition_Id;
+   pragma Precondition
+     (Predicate_Definition_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Predicate_Definition'Result)
+       = W_Predicate_Definition
+      and then
+        Get_Ada_Node
+        (Duplicate_Predicate_Definition'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Predicate_Definition'Result)
+        = Link);
+
+   function Duplicate_Inductive
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Inductive_Id)
+     return W_Inductive_Id;
+   pragma Precondition
+     (Inductive_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Inductive'Result)
+       = W_Inductive
+      and then
+        Get_Ada_Node
+        (Duplicate_Inductive'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Inductive'Result)
+        = Link);
+
+   function Duplicate_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Axiom_Id)
+     return W_Axiom_Id;
+   pragma Precondition
+     (Axiom_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Axiom'Result)
+       = W_Axiom
+      and then
+        Get_Ada_Node
+        (Duplicate_Axiom'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Axiom'Result)
+        = Link);
+
+   function Duplicate_Goal
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Goal_Id)
+     return W_Goal_Id;
+   pragma Precondition
+     (Goal_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Goal'Result)
+       = W_Goal
+      and then
+        Get_Ada_Node
+        (Duplicate_Goal'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Goal'Result)
+        = Link);
+
+   function Duplicate_External
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_External_Id)
+     return W_External_Id;
+   pragma Precondition
+     (External_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_External'Result)
+       = W_External
+      and then
+        Get_Ada_Node
+        (Duplicate_External'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_External'Result)
+        = Link);
+
+   function Duplicate_Logic_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Type_Id)
+     return W_Logic_Type_Id;
+   pragma Precondition
+     (Logic_Type_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Logic_Type'Result)
+       = W_Logic_Type
+      and then
+        Get_Ada_Node
+        (Duplicate_Logic_Type'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Logic_Type'Result)
+        = Link);
+
+   function Duplicate_Logic_Binder
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Binder_Id)
+     return W_Logic_Binder_Id;
+   pragma Precondition
+     (Logic_Binder_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Logic_Binder'Result)
+       = W_Logic_Binder
+      and then
+        Get_Ada_Node
+        (Duplicate_Logic_Binder'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Logic_Binder'Result)
+        = Link);
+
+   function Duplicate_Inductive_Case
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Inductive_Case_Id)
+     return W_Inductive_Case_Id;
+   pragma Precondition
+     (Inductive_Case_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Inductive_Case'Result)
+       = W_Inductive_Case
+      and then
+        Get_Ada_Node
+        (Duplicate_Inductive_Case'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Inductive_Case'Result)
+        = Link);
+
+   function Duplicate_Effects
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Effects_Id)
+     return W_Effects_Id;
+   pragma Precondition
+     (Effects_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Effects'Result)
+       = W_Effects
+      and then
+        Get_Ada_Node
+        (Duplicate_Effects'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Effects'Result)
+        = Link);
+
+   function Duplicate_Precondition
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Precondition_Id)
+     return W_Precondition_Id;
+   pragma Precondition
+     (Precondition_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Precondition'Result)
+       = W_Precondition
+      and then
+        Get_Ada_Node
+        (Duplicate_Precondition'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Precondition'Result)
+        = Link);
+
+   function Duplicate_Postcondition
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Postcondition_Id)
+     return W_Postcondition_Id;
+   pragma Precondition
+     (Postcondition_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Postcondition'Result)
+       = W_Postcondition
+      and then
+        Get_Ada_Node
+        (Duplicate_Postcondition'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Postcondition'Result)
+        = Link);
+
+   function Duplicate_Exn_Condition
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Exn_Condition_Id)
+     return W_Exn_Condition_Id;
+   pragma Precondition
+     (Exn_Condition_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Exn_Condition'Result)
+       = W_Exn_Condition
+      and then
+        Get_Ada_Node
+        (Duplicate_Exn_Condition'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Exn_Condition'Result)
+        = Link);
+
+   function Duplicate_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Assertion_Id)
+     return W_Assertion_Id;
+   pragma Precondition
+     (Assertion_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Assertion'Result)
+       = W_Assertion
+      and then
+        Get_Ada_Node
+        (Duplicate_Assertion'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Assertion'Result)
+        = Link);
+
+   function Duplicate_Prog_Constant
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prog_Constant_Id)
+     return W_Prog_Constant_Id;
+   pragma Precondition
+     (Prog_Constant_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Prog_Constant'Result)
+       = W_Prog_Constant
+      and then
+        Get_Ada_Node
+        (Duplicate_Prog_Constant'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Prog_Constant'Result)
+        = Link);
+
+   function Duplicate_Prog_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prog_Identifier_Id)
+     return W_Prog_Identifier_Id;
+   pragma Precondition
+     (Prog_Identifier_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Prog_Identifier'Result)
+       = W_Prog_Identifier
+      and then
+        Get_Ada_Node
+        (Duplicate_Prog_Identifier'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Prog_Identifier'Result)
+        = Link);
+
+   function Duplicate_Deref
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Deref_Id)
+     return W_Deref_Id;
+   pragma Precondition
+     (Deref_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Deref'Result)
+       = W_Deref
+      and then
+        Get_Ada_Node
+        (Duplicate_Deref'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Deref'Result)
+        = Link);
+
+   function Duplicate_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Assignment_Id)
+     return W_Assignment_Id;
+   pragma Precondition
+     (Assignment_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Assignment'Result)
+       = W_Assignment
+      and then
+        Get_Ada_Node
+        (Duplicate_Assignment'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Assignment'Result)
+        = Link);
+
+   function Duplicate_Array_Access
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Array_Access_Id)
+     return W_Array_Access_Id;
+   pragma Precondition
+     (Array_Access_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Array_Access'Result)
+       = W_Array_Access
+      and then
+        Get_Ada_Node
+        (Duplicate_Array_Access'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Array_Access'Result)
+        = Link);
+
+   function Duplicate_Array_Update
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Array_Update_Id)
+     return W_Array_Update_Id;
+   pragma Precondition
+     (Array_Update_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Array_Update'Result)
+       = W_Array_Update
+      and then
+        Get_Ada_Node
+        (Duplicate_Array_Update'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Array_Update'Result)
+        = Link);
+
+   function Duplicate_Infix_Call
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Infix_Call_Id)
+     return W_Infix_Call_Id;
+   pragma Precondition
+     (Infix_Call_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Infix_Call'Result)
+       = W_Infix_Call
+      and then
+        Get_Ada_Node
+        (Duplicate_Infix_Call'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Infix_Call'Result)
+        = Link);
+
+   function Duplicate_Prefix_Call
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prefix_Call_Id)
+     return W_Prefix_Call_Id;
+   pragma Precondition
+     (Prefix_Call_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Prefix_Call'Result)
+       = W_Prefix_Call
+      and then
+        Get_Ada_Node
+        (Duplicate_Prefix_Call'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Prefix_Call'Result)
+        = Link);
+
+   function Duplicate_Binding_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Prog_Id)
+     return W_Binding_Prog_Id;
+   pragma Precondition
+     (Binding_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Prog'Result)
+       = W_Binding_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Prog'Result)
+        = Link);
+
+   function Duplicate_Binding_Ref
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Ref_Id)
+     return W_Binding_Ref_Id;
+   pragma Precondition
+     (Binding_Ref_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Ref'Result)
+       = W_Binding_Ref
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Ref'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Ref'Result)
+        = Link);
+
+   function Duplicate_Conditional_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Conditional_Prog_Id)
+     return W_Conditional_Prog_Id;
+   pragma Precondition
+     (Conditional_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Conditional_Prog'Result)
+       = W_Conditional_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Conditional_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Conditional_Prog'Result)
+        = Link);
+
+   function Duplicate_While_Loop
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_While_Loop_Id)
+     return W_While_Loop_Id;
+   pragma Precondition
+     (While_Loop_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_While_Loop'Result)
+       = W_While_Loop
+      and then
+        Get_Ada_Node
+        (Duplicate_While_Loop'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_While_Loop'Result)
+        = Link);
+
+   function Duplicate_Statement_Sequence
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Statement_Sequence_Id)
+     return W_Statement_Sequence_Id;
+   pragma Precondition
+     (Statement_Sequence_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Statement_Sequence'Result)
+       = W_Statement_Sequence
+      and then
+        Get_Ada_Node
+        (Duplicate_Statement_Sequence'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Statement_Sequence'Result)
+        = Link);
+
+   function Duplicate_Label
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Label_Id)
+     return W_Label_Id;
+   pragma Precondition
+     (Label_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Label'Result)
+       = W_Label
+      and then
+        Get_Ada_Node
+        (Duplicate_Label'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Label'Result)
+        = Link);
+
+   function Duplicate_Assert
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Assert_Id)
+     return W_Assert_Id;
+   pragma Precondition
+     (Assert_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Assert'Result)
+       = W_Assert
+      and then
+        Get_Ada_Node
+        (Duplicate_Assert'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Assert'Result)
+        = Link);
+
+   function Duplicate_Post_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Post_Assertion_Id)
+     return W_Post_Assertion_Id;
+   pragma Precondition
+     (Post_Assertion_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Post_Assertion'Result)
+       = W_Post_Assertion
+      and then
+        Get_Ada_Node
+        (Duplicate_Post_Assertion'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Post_Assertion'Result)
+        = Link);
+
+   function Duplicate_Opaque_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Opaque_Assertion_Id)
+     return W_Opaque_Assertion_Id;
+   pragma Precondition
+     (Opaque_Assertion_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Opaque_Assertion'Result)
+       = W_Opaque_Assertion
+      and then
+        Get_Ada_Node
+        (Duplicate_Opaque_Assertion'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Opaque_Assertion'Result)
+        = Link);
+
+   function Duplicate_Fun_Def
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Fun_Def_Id)
+     return W_Fun_Def_Id;
+   pragma Precondition
+     (Fun_Def_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Fun_Def'Result)
+       = W_Fun_Def
+      and then
+        Get_Ada_Node
+        (Duplicate_Fun_Def'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Fun_Def'Result)
+        = Link);
+
+   function Duplicate_Binding_Fun
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Fun_Id)
+     return W_Binding_Fun_Id;
+   pragma Precondition
+     (Binding_Fun_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Fun'Result)
+       = W_Binding_Fun
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Fun'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Fun'Result)
+        = Link);
+
+   function Duplicate_Binding_Rec
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binding_Rec_Id)
+     return W_Binding_Rec_Id;
+   pragma Precondition
+     (Binding_Rec_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binding_Rec'Result)
+       = W_Binding_Rec
+      and then
+        Get_Ada_Node
+        (Duplicate_Binding_Rec'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binding_Rec'Result)
+        = Link);
+
+   function Duplicate_Prog_Sequence
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prog_Sequence_Id)
+     return W_Prog_Sequence_Id;
+   pragma Precondition
+     (Prog_Sequence_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Prog_Sequence'Result)
+       = W_Prog_Sequence
+      and then
+        Get_Ada_Node
+        (Duplicate_Prog_Sequence'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Prog_Sequence'Result)
+        = Link);
+
+   function Duplicate_Raise_Statement
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Raise_Statement_Id)
+     return W_Raise_Statement_Id;
+   pragma Precondition
+     (Raise_Statement_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Raise_Statement'Result)
+       = W_Raise_Statement
+      and then
+        Get_Ada_Node
+        (Duplicate_Raise_Statement'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Raise_Statement'Result)
+        = Link);
+
+   function Duplicate_Raise_Statement_With_Parameters
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Raise_Statement_With_Parameters_Id)
+     return W_Raise_Statement_With_Parameters_Id;
+   pragma Precondition
+     (Raise_Statement_With_Parameters_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Raise_Statement_With_Parameters'Result)
+       = W_Raise_Statement_With_Parameters
+      and then
+        Get_Ada_Node
+        (Duplicate_Raise_Statement_With_Parameters'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Raise_Statement_With_Parameters'Result)
+        = Link);
+
+   function Duplicate_Try_Block
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Try_Block_Id)
+     return W_Try_Block_Id;
+   pragma Precondition
+     (Try_Block_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Try_Block'Result)
+       = W_Try_Block
+      and then
+        Get_Ada_Node
+        (Duplicate_Try_Block'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Try_Block'Result)
+        = Link);
+
+   function Duplicate_Unreachable_Code
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Unreachable_Code_Id)
+     return W_Unreachable_Code_Id;
+   pragma Precondition
+     (Unreachable_Code_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Unreachable_Code'Result)
+       = W_Unreachable_Code
+      and then
+        Get_Ada_Node
+        (Duplicate_Unreachable_Code'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Unreachable_Code'Result)
+        = Link);
+
+   function Duplicate_Begin_Block
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Begin_Block_Id)
+     return W_Begin_Block_Id;
+   pragma Precondition
+     (Begin_Block_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Begin_Block'Result)
+       = W_Begin_Block
+      and then
+        Get_Ada_Node
+        (Duplicate_Begin_Block'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Begin_Block'Result)
+        = Link);
+
+   function Duplicate_Protected_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Protected_Prog_Id)
+     return W_Protected_Prog_Id;
+   pragma Precondition
+     (Protected_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Protected_Prog'Result)
+       = W_Protected_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Protected_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Protected_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Add_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Add_Prog_Id)
+     return W_Op_Add_Prog_Id;
+   pragma Precondition
+     (Op_Add_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Add_Prog'Result)
+       = W_Op_Add_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Add_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Add_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Substract_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Substract_Prog_Id)
+     return W_Op_Substract_Prog_Id;
+   pragma Precondition
+     (Op_Substract_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Substract_Prog'Result)
+       = W_Op_Substract_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Substract_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Substract_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Multiply_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Multiply_Prog_Id)
+     return W_Op_Multiply_Prog_Id;
+   pragma Precondition
+     (Op_Multiply_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Multiply_Prog'Result)
+       = W_Op_Multiply_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Multiply_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Multiply_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Divide_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Divide_Prog_Id)
+     return W_Op_Divide_Prog_Id;
+   pragma Precondition
+     (Op_Divide_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Divide_Prog'Result)
+       = W_Op_Divide_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Divide_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Divide_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Mod_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Mod_Prog_Id)
+     return W_Op_Mod_Prog_Id;
+   pragma Precondition
+     (Op_Mod_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Mod_Prog'Result)
+       = W_Op_Mod_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Mod_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Mod_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Eq_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Eq_Prog_Id)
+     return W_Op_Eq_Prog_Id;
+   pragma Precondition
+     (Op_Eq_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Eq_Prog'Result)
+       = W_Op_Eq_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Eq_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Eq_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Ne_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Ne_Prog_Id)
+     return W_Op_Ne_Prog_Id;
+   pragma Precondition
+     (Op_Ne_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Ne_Prog'Result)
+       = W_Op_Ne_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Ne_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Ne_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Lt_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Lt_Prog_Id)
+     return W_Op_Lt_Prog_Id;
+   pragma Precondition
+     (Op_Lt_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Lt_Prog'Result)
+       = W_Op_Lt_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Lt_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Lt_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Le_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Le_Prog_Id)
+     return W_Op_Le_Prog_Id;
+   pragma Precondition
+     (Op_Le_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Le_Prog'Result)
+       = W_Op_Le_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Le_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Le_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Gt_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Gt_Prog_Id)
+     return W_Op_Gt_Prog_Id;
+   pragma Precondition
+     (Op_Gt_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Gt_Prog'Result)
+       = W_Op_Gt_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Gt_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Gt_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Ge_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Ge_Prog_Id)
+     return W_Op_Ge_Prog_Id;
+   pragma Precondition
+     (Op_Ge_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Ge_Prog'Result)
+       = W_Op_Ge_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Ge_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Ge_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Or_Else_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Or_Else_Prog_Id)
+     return W_Op_Or_Else_Prog_Id;
+   pragma Precondition
+     (Op_Or_Else_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Or_Else_Prog'Result)
+       = W_Op_Or_Else_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Or_Else_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Or_Else_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_And_Then_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_And_Then_Prog_Id)
+     return W_Op_And_Then_Prog_Id;
+   pragma Precondition
+     (Op_And_Then_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_And_Then_Prog'Result)
+       = W_Op_And_Then_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_And_Then_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_And_Then_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Minus_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Minus_Prog_Id)
+     return W_Op_Minus_Prog_Id;
+   pragma Precondition
+     (Op_Minus_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Minus_Prog'Result)
+       = W_Op_Minus_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Minus_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Minus_Prog'Result)
+        = Link);
+
+   function Duplicate_Op_Not_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Op_Not_Prog_Id)
+     return W_Op_Not_Prog_Id;
+   pragma Precondition
+     (Op_Not_Prog_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Op_Not_Prog'Result)
+       = W_Op_Not_Prog
+      and then
+        Get_Ada_Node
+        (Duplicate_Op_Not_Prog'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Op_Not_Prog'Result)
+        = Link);
+
+   function Duplicate_Binders
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binders_Id)
+     return W_Binders_Id;
+   pragma Precondition
+     (Binders_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binders'Result)
+       = W_Binders
+      and then
+        Get_Ada_Node
+        (Duplicate_Binders'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binders'Result)
+        = Link);
+
+   function Duplicate_Binder
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Binder_Id)
+     return W_Binder_Id;
+   pragma Precondition
+     (Binder_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Binder'Result)
+       = W_Binder
+      and then
+        Get_Ada_Node
+        (Duplicate_Binder'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Binder'Result)
+        = Link);
+
+   function Duplicate_Recfun
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Recfun_Id)
+     return W_Recfun_Id;
+   pragma Precondition
+     (Recfun_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Recfun'Result)
+       = W_Recfun
+      and then
+        Get_Ada_Node
+        (Duplicate_Recfun'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Recfun'Result)
+        = Link);
+
+   function Duplicate_Loop_Annot
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Loop_Annot_Id)
+     return W_Loop_Annot_Id;
+   pragma Precondition
+     (Loop_Annot_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Loop_Annot'Result)
+       = W_Loop_Annot
+      and then
+        Get_Ada_Node
+        (Duplicate_Loop_Annot'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Loop_Annot'Result)
+        = Link);
+
+   function Duplicate_Wf_Arg
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Wf_Arg_Id)
+     return W_Wf_Arg_Id;
+   pragma Precondition
+     (Wf_Arg_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Wf_Arg'Result)
+       = W_Wf_Arg
+      and then
+        Get_Ada_Node
+        (Duplicate_Wf_Arg'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Wf_Arg'Result)
+        = Link);
+
+   function Duplicate_Handler
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Handler_Id)
+     return W_Handler_Id;
+   pragma Precondition
+     (Handler_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Handler'Result)
+       = W_Handler
+      and then
+        Get_Ada_Node
+        (Duplicate_Handler'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Handler'Result)
+        = Link);
+
+   function Duplicate_File
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_File_Id)
+     return W_File_Id;
+   pragma Precondition
+     (File_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_File'Result)
+       = W_File
+      and then
+        Get_Ada_Node
+        (Duplicate_File'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_File'Result)
+        = Link);
+
+   function Duplicate_Global_Binding
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Global_Binding_Id)
+     return W_Global_Binding_Id;
+   pragma Precondition
+     (Global_Binding_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Global_Binding'Result)
+       = W_Global_Binding
+      and then
+        Get_Ada_Node
+        (Duplicate_Global_Binding'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Global_Binding'Result)
+        = Link);
+
+   function Duplicate_Global_Rec_Binding
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Global_Rec_Binding_Id)
+     return W_Global_Rec_Binding_Id;
+   pragma Precondition
+     (Global_Rec_Binding_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Global_Rec_Binding'Result)
+       = W_Global_Rec_Binding
+      and then
+        Get_Ada_Node
+        (Duplicate_Global_Rec_Binding'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Global_Rec_Binding'Result)
+        = Link);
+
+   function Duplicate_Parameter_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Parameter_Declaration_Id)
+     return W_Parameter_Declaration_Id;
+   pragma Precondition
+     (Parameter_Declaration_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Parameter_Declaration'Result)
+       = W_Parameter_Declaration
+      and then
+        Get_Ada_Node
+        (Duplicate_Parameter_Declaration'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Parameter_Declaration'Result)
+        = Link);
+
+   function Duplicate_Exception_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Exception_Declaration_Id)
+     return W_Exception_Declaration_Id;
+   pragma Precondition
+     (Exception_Declaration_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Exception_Declaration'Result)
+       = W_Exception_Declaration
+      and then
+        Get_Ada_Node
+        (Duplicate_Exception_Declaration'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Exception_Declaration'Result)
+        = Link);
+
+   function Duplicate_Logic_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Declaration_Id)
+     return W_Logic_Declaration_Id;
+   pragma Precondition
+     (Logic_Declaration_Id_Valid (Id));
+   pragma Postcondition
+     (Get_Kind
+       (Duplicate_Logic_Declaration'Result)
+       = W_Logic_Declaration
+      and then
+        Get_Ada_Node
+        (Duplicate_Logic_Declaration'Result)
+        = Ada_Node
+      and then
+        Get_Link
+        (Duplicate_Logic_Declaration'Result)
+        = Link);
+
+   function Duplicate_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Term_Id)
+     return W_Term_Id;
+
+   function Duplicate_Constant
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Constant_Id)
+     return W_Constant_Id;
+
+   function Duplicate_Arith_Op
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Arith_Op_Id)
+     return W_Arith_Op_Id;
+
+   function Duplicate_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Predicate_Id)
+     return W_Predicate_Id;
+
+   function Duplicate_Primitive_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Primitive_Type_Id)
+     return W_Primitive_Type_Id;
+
+   function Duplicate_Relation
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Relation_Id)
+     return W_Relation_Id;
+
+   function Duplicate_Logic_Declaration_Class
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Declaration_Class_Id)
+     return W_Logic_Declaration_Class_Id;
+
+   function Duplicate_Logic_Return_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Return_Type_Id)
+     return W_Logic_Return_Type_Id;
+
+   function Duplicate_Logic_Arg_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Arg_Type_Id)
+     return W_Logic_Arg_Type_Id;
+
+   function Duplicate_Simple_Value_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Simple_Value_Type_Id)
+     return W_Simple_Value_Type_Id;
+
+   function Duplicate_Value_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Value_Type_Id)
+     return W_Value_Type_Id;
+
+   function Duplicate_Computation_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Computation_Type_Id)
+     return W_Computation_Type_Id;
+
+   function Duplicate_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prog_Id)
+     return W_Prog_Id;
+
+   function Duplicate_Infix
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Infix_Id)
+     return W_Infix_Id;
+
+   function Duplicate_Prefix
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prefix_Id)
+     return W_Prefix_Id;
+
+   function Duplicate_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Declaration_Id)
+     return W_Declaration_Id;
+
+private
+
+   function Duplicate_Term
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Term_Id)
+     return W_Term_Id is
+     (case Get_Kind (Id) is
+        when W_Integer_Constant =>
+           Duplicate_Integer_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Real_Constant =>
+           Duplicate_Real_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_True_Literal =>
+           Duplicate_True_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal =>
+           Duplicate_False_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Void_Literal =>
+           Duplicate_Void_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arith_Operation =>
+           Duplicate_Arith_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Negative_Term =>
+           Duplicate_Negative_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Label_Identifier =>
+           Duplicate_Label_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Operation =>
+           Duplicate_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Named_Term =>
+           Duplicate_Named_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Term =>
+           Duplicate_Conditional_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Term =>
+           Duplicate_Binding_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Term =>
+           Duplicate_Protected_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Constant
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Constant_Id)
+     return W_Constant_Id is
+     (case Get_Kind (Id) is
+        when W_Integer_Constant =>
+           Duplicate_Integer_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Real_Constant =>
+           Duplicate_Real_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_True_Literal =>
+           Duplicate_True_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal =>
+           Duplicate_False_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Void_Literal =>
+           Duplicate_Void_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Arith_Op
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Arith_Op_Id)
+     return W_Arith_Op_Id is
+     (case Get_Kind (Id) is
+        when W_Op_Add =>
+           Duplicate_Op_Add
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Substract =>
+           Duplicate_Op_Substract
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Multiply =>
+           Duplicate_Op_Multiply
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Divide =>
+           Duplicate_Op_Divide
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Modulo =>
+           Duplicate_Op_Modulo
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Predicate_Id)
+     return W_Predicate_Id is
+     (case Get_Kind (Id) is
+        when W_True_Literal =>
+           Duplicate_True_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal =>
+           Duplicate_False_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Void_Literal =>
+           Duplicate_Void_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arith_Operation =>
+           Duplicate_Arith_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Negative_Term =>
+           Duplicate_Negative_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Label_Identifier =>
+           Duplicate_Label_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Operation =>
+           Duplicate_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Named_Term =>
+           Duplicate_Named_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Term =>
+           Duplicate_Conditional_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Term =>
+           Duplicate_Binding_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Term =>
+           Duplicate_Protected_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Add =>
+           Duplicate_Op_Add
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Substract =>
+           Duplicate_Op_Substract
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Multiply =>
+           Duplicate_Op_Multiply
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Divide =>
+           Duplicate_Op_Divide
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Modulo =>
+           Duplicate_Op_Modulo
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_True_Literal_Pred =>
+           Duplicate_True_Literal_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal_Pred =>
+           Duplicate_False_Literal_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Identifier =>
+           Duplicate_Predicate_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Instance =>
+           Duplicate_Predicate_Instance
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Related_Terms =>
+           Duplicate_Related_Terms
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Implication =>
+           Duplicate_Implication
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Equivalence =>
+           Duplicate_Equivalence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Disjonction =>
+           Duplicate_Disjonction
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conjonction =>
+           Duplicate_Conjonction
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Negation =>
+           Duplicate_Negation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Pred =>
+           Duplicate_Conditional_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Pred =>
+           Duplicate_Binding_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Universal_Quantif =>
+           Duplicate_Universal_Quantif
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Existential_Quantif =>
+           Duplicate_Existential_Quantif
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Named_Predicate =>
+           Duplicate_Named_Predicate
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Predicate =>
+           Duplicate_Protected_Predicate
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Primitive_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Primitive_Type_Id)
+     return W_Primitive_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Relation
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Relation_Id)
+     return W_Relation_Id is
+     (case Get_Kind (Id) is
+        when W_Rel_Eq =>
+           Duplicate_Rel_Eq
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Ne =>
+           Duplicate_Rel_Ne
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Lt =>
+           Duplicate_Rel_Lt
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Le =>
+           Duplicate_Rel_Le
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Gt =>
+           Duplicate_Rel_Gt
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Ge =>
+           Duplicate_Rel_Ge
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Logic_Declaration_Class
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Declaration_Class_Id)
+     return W_Logic_Declaration_Class_Id is
+     (case Get_Kind (Id) is
+        when W_Type =>
+           Duplicate_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic =>
+           Duplicate_Logic
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Function =>
+           Duplicate_Function
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Definition =>
+           Duplicate_Predicate_Definition
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Inductive =>
+           Duplicate_Inductive
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Axiom =>
+           Duplicate_Axiom
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Goal =>
+           Duplicate_Goal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Logic_Return_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Return_Type_Id)
+     return W_Logic_Return_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Prop =>
+           Duplicate_Type_Prop
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Logic_Arg_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Logic_Arg_Type_Id)
+     return W_Logic_Arg_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Type =>
+           Duplicate_Array_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Simple_Value_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Simple_Value_Type_Id)
+     return W_Simple_Value_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Type =>
+           Duplicate_Array_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Ref_Type =>
+           Duplicate_Ref_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Value_Type =>
+           Duplicate_Protected_Value_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Value_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Value_Type_Id)
+     return W_Value_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Type =>
+           Duplicate_Array_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Ref_Type =>
+           Duplicate_Ref_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Value_Type =>
+           Duplicate_Protected_Value_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arrow_Type =>
+           Duplicate_Arrow_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Computation_Type
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Computation_Type_Id)
+     return W_Computation_Type_Id is
+     (case Get_Kind (Id) is
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Type =>
+           Duplicate_Array_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Ref_Type =>
+           Duplicate_Ref_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Value_Type =>
+           Duplicate_Protected_Value_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arrow_Type =>
+           Duplicate_Arrow_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Computation_Spec =>
+           Duplicate_Computation_Spec
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Prog
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prog_Id)
+     return W_Prog_Id is
+     (case Get_Kind (Id) is
+        when W_Prog_Constant =>
+           Duplicate_Prog_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prog_Identifier =>
+           Duplicate_Prog_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Deref =>
+           Duplicate_Deref
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Assignment =>
+           Duplicate_Assignment
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Access =>
+           Duplicate_Array_Access
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Update =>
+           Duplicate_Array_Update
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Infix_Call =>
+           Duplicate_Infix_Call
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prefix_Call =>
+           Duplicate_Prefix_Call
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Prog =>
+           Duplicate_Binding_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Ref =>
+           Duplicate_Binding_Ref
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Prog =>
+           Duplicate_Conditional_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_While_Loop =>
+           Duplicate_While_Loop
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Statement_Sequence =>
+           Duplicate_Statement_Sequence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Label =>
+           Duplicate_Label
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Assert =>
+           Duplicate_Assert
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Post_Assertion =>
+           Duplicate_Post_Assertion
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Opaque_Assertion =>
+           Duplicate_Opaque_Assertion
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Fun_Def =>
+           Duplicate_Fun_Def
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Fun =>
+           Duplicate_Binding_Fun
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Rec =>
+           Duplicate_Binding_Rec
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prog_Sequence =>
+           Duplicate_Prog_Sequence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Raise_Statement =>
+           Duplicate_Raise_Statement
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Raise_Statement_With_Parameters =>
+           Duplicate_Raise_Statement_With_Parameters
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Try_Block =>
+           Duplicate_Try_Block
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Unreachable_Code =>
+           Duplicate_Unreachable_Code
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Begin_Block =>
+           Duplicate_Begin_Block
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Prog =>
+           Duplicate_Protected_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Infix
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Infix_Id)
+     return W_Infix_Id is
+     (case Get_Kind (Id) is
+        when W_Op_Add_Prog =>
+           Duplicate_Op_Add_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Substract_Prog =>
+           Duplicate_Op_Substract_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Multiply_Prog =>
+           Duplicate_Op_Multiply_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Divide_Prog =>
+           Duplicate_Op_Divide_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Mod_Prog =>
+           Duplicate_Op_Mod_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Eq_Prog =>
+           Duplicate_Op_Eq_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Ne_Prog =>
+           Duplicate_Op_Ne_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Lt_Prog =>
+           Duplicate_Op_Lt_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Le_Prog =>
+           Duplicate_Op_Le_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Gt_Prog =>
+           Duplicate_Op_Gt_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Ge_Prog =>
+           Duplicate_Op_Ge_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Or_Else_Prog =>
+           Duplicate_Op_Or_Else_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_And_Then_Prog =>
+           Duplicate_Op_And_Then_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Prefix
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Prefix_Id)
+     return W_Prefix_Id is
+     (case Get_Kind (Id) is
+        when W_Op_Minus_Prog =>
+           Duplicate_Op_Minus_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Not_Prog =>
+           Duplicate_Op_Not_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Declaration_Id)
+     return W_Declaration_Id is
+     (case Get_Kind (Id) is
+        when W_Global_Binding =>
+           Duplicate_Global_Binding
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Global_Rec_Binding =>
+           Duplicate_Global_Rec_Binding
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Parameter_Declaration =>
+           Duplicate_Parameter_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Exception_Declaration =>
+           Duplicate_Exception_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic_Declaration =>
+           Duplicate_Logic_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
 end Why.Atree.Builders;
