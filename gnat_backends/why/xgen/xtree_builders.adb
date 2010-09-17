@@ -73,7 +73,7 @@ package body Xtree_Builders is
    -- Print_Builder_Bodies --
    --------------------------
 
-   procedure Print_Builder_Bodies  (O : in out Output_Record) is
+   procedure Print_Builder_Bodies (O : in out Output_Record) is
    begin
       for J in Valid_Kind'Range loop
          Print_Builder_Body (O, J, Builder_Regular);
@@ -450,7 +450,7 @@ package body Xtree_Builders is
    -- Print_Unchecked_Builder_Bodies --
    ------------------------------------
 
-   procedure Print_Unchecked_Builder_Bodies  (O : in out Output_Record) is
+   procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record) is
    begin
       for J in Valid_Kind'Range loop
          Print_Builder_Body (O, J, Builder_Unchecked);

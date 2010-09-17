@@ -28,16 +28,16 @@ with Outputs; use Outputs;
 package Xtree_Builders is
    --  This package provides generators for Why node builders
 
-   procedure Print_Builder_Declarations  (O : in out Output_Record);
+   procedure Print_Builder_Declarations (O : in out Output_Record);
    --  Print builder declarations for Why nodes
 
-   procedure Print_Builder_Bodies  (O : in out Output_Record);
+   procedure Print_Builder_Bodies (O : in out Output_Record);
    --  Print builder bodies for Why nodes
 
-   procedure Print_Unchecked_Builder_Declarations  (O : in out Output_Record);
+   procedure Print_Unchecked_Builder_Declarations (O : in out Output_Record);
    --  Print builder declarations for unchecked Why nodes
 
-   procedure Print_Unchecked_Builder_Bodies  (O : in out Output_Record);
+   procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record);
    --  Print builder bodies for unchecked Why nodes
 
 end Xtree_Builders;
