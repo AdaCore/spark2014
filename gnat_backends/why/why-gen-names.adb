@@ -55,12 +55,12 @@ package body Why.Gen.Names is
    -- To_Program_Space --
    ----------------------
 
-   function To_Program_Space (Id : W_Identifier_Id) return W_Identifier_Id is
+   function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id is
       Suffix : constant String := "_";
-      N_Id   : constant Name_Id := Identifier_Get_Symbol (Id);
-      Name   : constant String := Get_Name_String (N_Id);
+      N_Id   : constant Name_Id := Identifier_Get_Symbol (Name);
+      Img    : constant String := Get_Name_String (N_Id);
    begin
-      return New_Identifier (Name & Suffix);
+      return New_Identifier (Img & Suffix);
    end To_Program_Space;
 
 end Why.Gen.Names;

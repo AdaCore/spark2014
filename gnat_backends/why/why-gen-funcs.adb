@@ -43,11 +43,20 @@ package body Why.Gen.Funcs is
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
    is
-      Logic     : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
-      Spec      : constant W_Logic_Type_Unchecked_Id :=
-                    New_Unchecked_Logic_Type;
+      Logic : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
+      Spec  : constant W_Logic_Type_Unchecked_Id :=
+                New_Unchecked_Logic_Type;
 
       procedure Append_To_Spec (Arrow : W_Arrow_Type_Id);
+      --  Append the content of Arrow in the declaration of the
+      --  logic function; in other words, build a logic spec from
+      --  a program spec. e.g. transform:
+      --
+      --  x : type1 -> y : type2 -> {} type3 {}
+      --
+      --  ...into:
+      --
+      --  type1, type2 -> type3
 
       --------------------
       -- Append_To_Spec --
@@ -67,6 +76,8 @@ package body Why.Gen.Funcs is
             Append_To_Spec (Right);
          end if;
       end Append_To_Spec;
+
+   --  Start of processing for Declare_Logic
 
    begin
       Append_To_Spec (Arrows);
@@ -98,8 +109,8 @@ package body Why.Gen.Funcs is
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
    is
-      Parameter  : constant W_Parameter_Declaration_Unchecked_Id :=
-                     New_Unchecked_Parameter_Declaration;
+      Parameter : constant W_Parameter_Declaration_Unchecked_Id :=
+                    New_Unchecked_Parameter_Declaration;
    begin
       Parameter_Declaration_Append_To_Names (Parameter, Name);
       Parameter_Declaration_Set_Parameter_Type (Parameter, Arrows);

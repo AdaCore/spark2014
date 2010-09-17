@@ -26,20 +26,34 @@
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Funcs is
+   --  This package provides facilities to generate subprograms declarations
+   --  in the program space and in the logic space.
 
    procedure Declare_Logic
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id);
+   --  Create a logic declaration from Name and Arrows and append it
+   --  to File. Name is inserted into the resulting syntax tree,
+   --  Arrows is not; the spec of the logic declaration is created
+   --  from it.
 
    procedure Declare_Logic_And_Parameters
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id);
+   --  Create a logic declaration and it corresponding declaration in
+   --  the program space (safe and default) and append it to File. Name
+   --  is the name of the logic function declaration, Arrows is the
+   --  spec of the default program declaration; both will be merged as is
+   --  into the resulting syntax tree.
 
    procedure Declare_Parameter
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id);
+   --  Create a subprogram declaration in the program space (a so called
+   --  "parameter") from its name (Name) and its signature (Arrows). Both
+   --  parameters will be inserted as is into the resulting syntax tree.
 
 end Why.Gen.Funcs;

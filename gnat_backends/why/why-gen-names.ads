@@ -26,11 +26,18 @@
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Names is
+   --  This package provides ways to manipulate subprogram names and
+   --  to create identifiers from their string representation
 
    function New_Identifier (Name : String) return W_Identifier_Id;
+   --  Create a new identifier for Name and return the result
 
    function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
+   --  Create a new identifier for a conversion from an abstract type
+   --  to int. The name of the astract type is given in parameter.
 
-   function To_Program_Space (Id : W_Identifier_Id) return W_Identifier_Id;
+   function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  Create a new identifier for an entity in program space, given
+   --  the name of the corresponding entity in logic space.
 
 end Why.Gen.Names;

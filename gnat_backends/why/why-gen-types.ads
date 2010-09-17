@@ -26,9 +26,12 @@
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Types is
+   --  This package provides ways to create Why types
 
    function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
+   --  Create an abstract type identifier with name Name
 
    function Declare_Abstract_Type (Name : String) return W_Type_Id;
+   --  Create the declaration of an abstract type whose name is Name
 
 end Why.Gen.Types;

@@ -28,15 +28,23 @@ with Why.Ids;           use Why.Ids;
 with Why.Unchecked_Ids; use Why.Unchecked_Ids;
 
 package Why.Gen.Arrows is
+   --  This package provides ways to create arrow types
 
    function New_Arrow_Stack
      (Return_Type : W_Primitive_Type_Id)
      return W_Arrow_Type_Unchecked_Id;
+   --  This creates an invalid arrow type where only the return type
+   --  (the right hand side of the arrow) is specified. The left hand
+   --  side is left empty. Push_Arg should then be used to complete the
+   --  the subprogram spec that this arrow express, by adding parameters
+   --  (last one being push first).
 
    function Push_Arg
      (Arrow    : W_Arrow_Type_Unchecked_Id;
       Name     : W_Identifier_OId := Why_Empty;
       Arg_Type : W_Simple_Value_Type_Id)
      return W_Arrow_Type_Id;
+   --  Preprend the given parameters in Arrow, i.e. generating something
+   --  like "Name : Arg_Type -> Arrow".
 
 end Why.Gen.Arrows;

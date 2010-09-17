@@ -37,11 +37,11 @@ package body Why.Gen.Arrows is
      (Return_Type : W_Primitive_Type_Id)
      return W_Arrow_Type_Unchecked_Id
    is
-      Contract   : constant W_Computation_Spec_Id :=
-                     New_Computation_Spec (Return_Type => Return_Type,
-                                           Effects => New_Effects);
-      Result     : constant W_Arrow_Type_Unchecked_Id :=
-                     New_Unchecked_Arrow_Type;
+      Contract : constant W_Computation_Spec_Id :=
+                   New_Computation_Spec (Return_Type => Return_Type,
+                                         Effects => New_Effects);
+      Result   : constant W_Arrow_Type_Unchecked_Id :=
+                   New_Unchecked_Arrow_Type;
    begin
       Arrow_Type_Set_Right (Result, Contract);
       return Result;
