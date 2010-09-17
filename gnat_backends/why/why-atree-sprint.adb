@@ -1349,7 +1349,10 @@ package body Why.Atree.Sprint is
       P (O, "logic ");
       Print_List (State, Names);
       P (O, " : ");
+      NL (O);
+      Relative_Indent (O, 1);
       Traverse (State, Logic_Type);
+      Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
    end Logic_Pre_Op;
