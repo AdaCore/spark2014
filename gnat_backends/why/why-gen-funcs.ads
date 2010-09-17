@@ -39,4 +39,10 @@ package Why.Gen.Funcs is
       Binders     : W_Binders_Id;
       Return_Type : W_Primitive_Type_Id);
 
+   procedure Declare_Parameter
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Binders     : W_Binders_Id;
+      Return_Type : W_Primitive_Type_Id);
+
 end Why.Gen.Funcs;

@@ -31,4 +31,6 @@ package Why.Gen.Names is
 
    function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
 
+   function To_Program_Space (Id : W_Identifier_Id) return W_Identifier_Id;
+
 end Why.Gen.Names;

@@ -25,7 +25,8 @@
 
 with Namet; use Namet;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Gen.Names is
 
@@ -49,5 +50,17 @@ package body Why.Gen.Names is
       Add_Str_To_Name_Buffer (Name);
       return New_Identifier (Symbol => Name_Find);
    end New_Identifier;
+
+   ----------------------
+   -- To_Program_Space --
+   ----------------------
+
+   function To_Program_Space (Id : W_Identifier_Id) return W_Identifier_Id is
+      Suffix : constant String := "_";
+      N_Id   : constant Name_Id := Identifier_Get_Symbol (Id);
+      Name   : constant String := Get_Name_String (N_Id);
+   begin
+      return New_Identifier (Name & Suffix);
+   end To_Program_Space;
 
 end Why.Gen.Names;
