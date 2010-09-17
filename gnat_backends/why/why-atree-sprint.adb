@@ -332,10 +332,12 @@ package body Why.Atree.Sprint is
       Result : constant W_Identifier_OId :=
                  Computation_Spec_Get_Result_Name (Node);
    begin
+      NL (O);
       P (O, "{");
       Traverse (State,
                 Computation_Spec_Get_Precondition (Node));
       PL (O, "}");
+      Relative_Indent (O, 1);
 
       if  Result /= Why_Empty then
          P (O, "returns ");
@@ -353,8 +355,8 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Computation_Spec_Get_Effects (Node));
-      NL (O);
 
+      Relative_Indent (O, -1);
       P (O, "{");
       Traverse
         (State,
@@ -2734,13 +2736,19 @@ package body Why.Atree.Sprint is
          P (O, "external ");
       end if;
 
+      P (O, "parameter ");
       Print_List
         (State,
          Parameter_Declaration_Get_Names (Node));
       P (O, " : ");
+
+      Relative_Indent (O, 1);
+      NL (O);
       Traverse
         (State,
          Parameter_Declaration_Get_Parameter_Type (Node));
+      Relative_Indent (O, -1);
+      NL (O);
       State.Control := Abandon_Children;
    end Parameter_Declaration_Pre_Op;
 
