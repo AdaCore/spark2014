@@ -2350,6 +2350,22 @@ package Why.Atree.Validity is
      (Id : W_Declaration_Unchecked_OList)
      return Boolean;
 
+   function Any_Node_Id_Valid
+     (Id : W_Any_Node_Unchecked_Id)
+     return Boolean;
+
+   function Any_Node_OId_Valid
+     (Id : W_Any_Node_Unchecked_OId)
+     return Boolean;
+
+   function Any_Node_List_Valid
+     (Id : W_Any_Node_Unchecked_List)
+     return Boolean;
+
+   function Any_Node_OList_Valid
+     (Id : W_Any_Node_Unchecked_OList)
+     return Boolean;
+
 private
 
    function Id_Cache_Valid (Id : Why_Node_Id) return Boolean;
@@ -4646,6 +4662,22 @@ private
 
    function Declaration_OList_Children_Valid
      (Id : W_Declaration_Unchecked_OList)
+     return Boolean;
+
+   function Any_Node_Id_Children_Valid
+     (Id : W_Any_Node_Unchecked_Id)
+     return Boolean;
+
+   function Any_Node_OId_Children_Valid
+     (Id : W_Any_Node_Unchecked_OId)
+     return Boolean;
+
+   function Any_Node_List_Children_Valid
+     (Id : W_Any_Node_Unchecked_List)
+     return Boolean;
+
+   function Any_Node_OList_Children_Valid
+     (Id : W_Any_Node_Unchecked_OList)
      return Boolean;
 
    pragma Warnings (Off, "formal parameter ""Id"" is not referenced");
@@ -8367,6 +8399,32 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Declaration_List_Valid (Id));
+
+   function Any_Node_Id_Valid
+     (Id : W_Any_Node_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Any_Node_Id_Children_Valid (Id));
+
+   function Any_Node_OId_Valid
+     (Id : W_Any_Node_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Node_Id_Valid (Id));
+
+   function Any_Node_List_Valid
+     (Id : W_Any_Node_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Any_Node_OList_Valid
+     (Id : W_Any_Node_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Node_List_Valid (Id));
 
    function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
      (Get_Node (Id).Checked);
@@ -12424,6 +12482,283 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Declaration_List_Children_Valid (Id));
+
+   function Any_Node_Id_Children_Valid
+     (Id : W_Any_Node_Unchecked_Id)
+     return Boolean is
+     (case Get_Kind (Id) is
+        when W_Identifier =>
+           Identifier_Id_Children_Valid (Id),
+        when W_Type_Prop =>
+           Type_Prop_Id_Children_Valid (Id),
+        when W_Type_Int =>
+           Type_Int_Id_Children_Valid (Id),
+        when W_Type_Bool =>
+           Type_Bool_Id_Children_Valid (Id),
+        when W_Type_Real =>
+           Type_Real_Id_Children_Valid (Id),
+        when W_Type_Unit =>
+           Type_Unit_Id_Children_Valid (Id),
+        when W_Abstract_Type =>
+           Abstract_Type_Id_Children_Valid (Id),
+        when W_Generic_Formal_Type =>
+           Generic_Formal_Type_Id_Children_Valid (Id),
+        when W_Generic_Actual_Type_Chain =>
+           Generic_Actual_Type_Chain_Id_Children_Valid (Id),
+        when W_Array_Type =>
+           Array_Type_Id_Children_Valid (Id),
+        when W_Ref_Type =>
+           Ref_Type_Id_Children_Valid (Id),
+        when W_Protected_Value_Type =>
+           Protected_Value_Type_Id_Children_Valid (Id),
+        when W_Arrow_Type =>
+           Arrow_Type_Id_Children_Valid (Id),
+        when W_Computation_Spec =>
+           Computation_Spec_Id_Children_Valid (Id),
+        when W_Integer_Constant =>
+           Integer_Constant_Id_Children_Valid (Id),
+        when W_Real_Constant =>
+           Real_Constant_Id_Children_Valid (Id),
+        when W_True_Literal =>
+           True_Literal_Id_Children_Valid (Id),
+        when W_False_Literal =>
+           False_Literal_Id_Children_Valid (Id),
+        when W_Void_Literal =>
+           Void_Literal_Id_Children_Valid (Id),
+        when W_Arith_Operation =>
+           Arith_Operation_Id_Children_Valid (Id),
+        when W_Negative_Term =>
+           Negative_Term_Id_Children_Valid (Id),
+        when W_Label_Identifier =>
+           Label_Identifier_Id_Children_Valid (Id),
+        when W_Operation =>
+           Operation_Id_Children_Valid (Id),
+        when W_Named_Term =>
+           Named_Term_Id_Children_Valid (Id),
+        when W_Conditional_Term =>
+           Conditional_Term_Id_Children_Valid (Id),
+        when W_Binding_Term =>
+           Binding_Term_Id_Children_Valid (Id),
+        when W_Protected_Term =>
+           Protected_Term_Id_Children_Valid (Id),
+        when W_Op_Add =>
+           Op_Add_Id_Children_Valid (Id),
+        when W_Op_Substract =>
+           Op_Substract_Id_Children_Valid (Id),
+        when W_Op_Multiply =>
+           Op_Multiply_Id_Children_Valid (Id),
+        when W_Op_Divide =>
+           Op_Divide_Id_Children_Valid (Id),
+        when W_Op_Modulo =>
+           Op_Modulo_Id_Children_Valid (Id),
+        when W_True_Literal_Pred =>
+           True_Literal_Pred_Id_Children_Valid (Id),
+        when W_False_Literal_Pred =>
+           False_Literal_Pred_Id_Children_Valid (Id),
+        when W_Predicate_Identifier =>
+           Predicate_Identifier_Id_Children_Valid (Id),
+        when W_Predicate_Instance =>
+           Predicate_Instance_Id_Children_Valid (Id),
+        when W_Related_Terms =>
+           Related_Terms_Id_Children_Valid (Id),
+        when W_Implication =>
+           Implication_Id_Children_Valid (Id),
+        when W_Equivalence =>
+           Equivalence_Id_Children_Valid (Id),
+        when W_Disjonction =>
+           Disjonction_Id_Children_Valid (Id),
+        when W_Conjonction =>
+           Conjonction_Id_Children_Valid (Id),
+        when W_Negation =>
+           Negation_Id_Children_Valid (Id),
+        when W_Conditional_Pred =>
+           Conditional_Pred_Id_Children_Valid (Id),
+        when W_Binding_Pred =>
+           Binding_Pred_Id_Children_Valid (Id),
+        when W_Universal_Quantif =>
+           Universal_Quantif_Id_Children_Valid (Id),
+        when W_Existential_Quantif =>
+           Existential_Quantif_Id_Children_Valid (Id),
+        when W_Named_Predicate =>
+           Named_Predicate_Id_Children_Valid (Id),
+        when W_Protected_Predicate =>
+           Protected_Predicate_Id_Children_Valid (Id),
+        when W_Triggers =>
+           Triggers_Id_Children_Valid (Id),
+        when W_Trigger =>
+           Trigger_Id_Children_Valid (Id),
+        when W_Rel_Eq =>
+           Rel_Eq_Id_Children_Valid (Id),
+        when W_Rel_Ne =>
+           Rel_Ne_Id_Children_Valid (Id),
+        when W_Rel_Lt =>
+           Rel_Lt_Id_Children_Valid (Id),
+        when W_Rel_Le =>
+           Rel_Le_Id_Children_Valid (Id),
+        when W_Rel_Gt =>
+           Rel_Gt_Id_Children_Valid (Id),
+        when W_Rel_Ge =>
+           Rel_Ge_Id_Children_Valid (Id),
+        when W_Type =>
+           Type_Id_Children_Valid (Id),
+        when W_Logic =>
+           Logic_Id_Children_Valid (Id),
+        when W_Function =>
+           Function_Id_Children_Valid (Id),
+        when W_Predicate_Definition =>
+           Predicate_Definition_Id_Children_Valid (Id),
+        when W_Inductive =>
+           Inductive_Id_Children_Valid (Id),
+        when W_Axiom =>
+           Axiom_Id_Children_Valid (Id),
+        when W_Goal =>
+           Goal_Id_Children_Valid (Id),
+        when W_External =>
+           External_Id_Children_Valid (Id),
+        when W_Logic_Type =>
+           Logic_Type_Id_Children_Valid (Id),
+        when W_Logic_Binder =>
+           Logic_Binder_Id_Children_Valid (Id),
+        when W_Inductive_Case =>
+           Inductive_Case_Id_Children_Valid (Id),
+        when W_Effects =>
+           Effects_Id_Children_Valid (Id),
+        when W_Precondition =>
+           Precondition_Id_Children_Valid (Id),
+        when W_Postcondition =>
+           Postcondition_Id_Children_Valid (Id),
+        when W_Exn_Condition =>
+           Exn_Condition_Id_Children_Valid (Id),
+        when W_Assertion =>
+           Assertion_Id_Children_Valid (Id),
+        when W_Prog_Constant =>
+           Prog_Constant_Id_Children_Valid (Id),
+        when W_Prog_Identifier =>
+           Prog_Identifier_Id_Children_Valid (Id),
+        when W_Deref =>
+           Deref_Id_Children_Valid (Id),
+        when W_Assignment =>
+           Assignment_Id_Children_Valid (Id),
+        when W_Array_Access =>
+           Array_Access_Id_Children_Valid (Id),
+        when W_Array_Update =>
+           Array_Update_Id_Children_Valid (Id),
+        when W_Infix_Call =>
+           Infix_Call_Id_Children_Valid (Id),
+        when W_Prefix_Call =>
+           Prefix_Call_Id_Children_Valid (Id),
+        when W_Binding_Prog =>
+           Binding_Prog_Id_Children_Valid (Id),
+        when W_Binding_Ref =>
+           Binding_Ref_Id_Children_Valid (Id),
+        when W_Conditional_Prog =>
+           Conditional_Prog_Id_Children_Valid (Id),
+        when W_While_Loop =>
+           While_Loop_Id_Children_Valid (Id),
+        when W_Statement_Sequence =>
+           Statement_Sequence_Id_Children_Valid (Id),
+        when W_Label =>
+           Label_Id_Children_Valid (Id),
+        when W_Assert =>
+           Assert_Id_Children_Valid (Id),
+        when W_Post_Assertion =>
+           Post_Assertion_Id_Children_Valid (Id),
+        when W_Opaque_Assertion =>
+           Opaque_Assertion_Id_Children_Valid (Id),
+        when W_Fun_Def =>
+           Fun_Def_Id_Children_Valid (Id),
+        when W_Binding_Fun =>
+           Binding_Fun_Id_Children_Valid (Id),
+        when W_Binding_Rec =>
+           Binding_Rec_Id_Children_Valid (Id),
+        when W_Prog_Sequence =>
+           Prog_Sequence_Id_Children_Valid (Id),
+        when W_Raise_Statement =>
+           Raise_Statement_Id_Children_Valid (Id),
+        when W_Raise_Statement_With_Parameters =>
+           Raise_Statement_With_Parameters_Id_Children_Valid (Id),
+        when W_Try_Block =>
+           Try_Block_Id_Children_Valid (Id),
+        when W_Unreachable_Code =>
+           Unreachable_Code_Id_Children_Valid (Id),
+        when W_Begin_Block =>
+           Begin_Block_Id_Children_Valid (Id),
+        when W_Protected_Prog =>
+           Protected_Prog_Id_Children_Valid (Id),
+        when W_Op_Add_Prog =>
+           Op_Add_Prog_Id_Children_Valid (Id),
+        when W_Op_Substract_Prog =>
+           Op_Substract_Prog_Id_Children_Valid (Id),
+        when W_Op_Multiply_Prog =>
+           Op_Multiply_Prog_Id_Children_Valid (Id),
+        when W_Op_Divide_Prog =>
+           Op_Divide_Prog_Id_Children_Valid (Id),
+        when W_Op_Mod_Prog =>
+           Op_Mod_Prog_Id_Children_Valid (Id),
+        when W_Op_Eq_Prog =>
+           Op_Eq_Prog_Id_Children_Valid (Id),
+        when W_Op_Ne_Prog =>
+           Op_Ne_Prog_Id_Children_Valid (Id),
+        when W_Op_Lt_Prog =>
+           Op_Lt_Prog_Id_Children_Valid (Id),
+        when W_Op_Le_Prog =>
+           Op_Le_Prog_Id_Children_Valid (Id),
+        when W_Op_Gt_Prog =>
+           Op_Gt_Prog_Id_Children_Valid (Id),
+        when W_Op_Ge_Prog =>
+           Op_Ge_Prog_Id_Children_Valid (Id),
+        when W_Op_Or_Else_Prog =>
+           Op_Or_Else_Prog_Id_Children_Valid (Id),
+        when W_Op_And_Then_Prog =>
+           Op_And_Then_Prog_Id_Children_Valid (Id),
+        when W_Op_Minus_Prog =>
+           Op_Minus_Prog_Id_Children_Valid (Id),
+        when W_Op_Not_Prog =>
+           Op_Not_Prog_Id_Children_Valid (Id),
+        when W_Binders =>
+           Binders_Id_Children_Valid (Id),
+        when W_Binder =>
+           Binder_Id_Children_Valid (Id),
+        when W_Recfun =>
+           Recfun_Id_Children_Valid (Id),
+        when W_Loop_Annot =>
+           Loop_Annot_Id_Children_Valid (Id),
+        when W_Wf_Arg =>
+           Wf_Arg_Id_Children_Valid (Id),
+        when W_Handler =>
+           Handler_Id_Children_Valid (Id),
+        when W_File =>
+           File_Id_Children_Valid (Id),
+        when W_Global_Binding =>
+           Global_Binding_Id_Children_Valid (Id),
+        when W_Global_Rec_Binding =>
+           Global_Rec_Binding_Id_Children_Valid (Id),
+        when W_Parameter_Declaration =>
+           Parameter_Declaration_Id_Children_Valid (Id),
+        when W_Exception_Declaration =>
+           Exception_Declaration_Id_Children_Valid (Id),
+        when W_Logic_Declaration =>
+           Logic_Declaration_Id_Children_Valid (Id),
+        when others =>
+           False);
+
+   function Any_Node_OId_Children_Valid
+     (Id : W_Any_Node_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Node_Id_Children_Valid (Id));
+
+   function Any_Node_List_Children_Valid
+     (Id : W_Any_Node_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Any_Node_OList_Children_Valid
+     (Id : W_Any_Node_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Node_List_Children_Valid (Id));
 
    pragma Warnings (On, "formal parameter ""Id"" is not referenced");
 

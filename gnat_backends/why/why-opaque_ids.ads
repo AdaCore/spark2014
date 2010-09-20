@@ -1182,4 +1182,12 @@ package Why.Opaque_Ids is
 
    subtype W_Declaration_Opaque_OList is Why_Node_List;
 
+   subtype W_Any_Node_Opaque_Id is Why_Node_Id;
+
+   subtype W_Any_Node_Opaque_OId is Why_Node_Id;
+
+   subtype W_Any_Node_Opaque_List is Why_Node_List;
+
+   subtype W_Any_Node_Opaque_OList is Why_Node_List;
+
 end Why.Opaque_Ids;

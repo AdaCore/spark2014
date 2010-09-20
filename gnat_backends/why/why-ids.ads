@@ -2377,4 +2377,20 @@ package Why.Ids is
      W_Declaration_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Any_Node_Id is
+     W_Any_Node_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Node_OId is
+     W_Any_Node_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Node_List is
+     W_Any_Node_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Node_OList is
+     W_Any_Node_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
 end Why.Ids;

@@ -684,4 +684,8 @@ package Why.Sinfo is
      W_Global_Binding ..
      W_Logic_Declaration;
 
+   subtype W_Any_Node is Why_Node_Kind range
+     W_Identifier ..
+     W_Logic_Declaration;
+
 end Why.Sinfo;

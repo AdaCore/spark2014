@@ -2320,6 +2320,22 @@ package Why.Kind_Validity is
      (Id : W_Declaration_Opaque_OList)
      return Boolean;
 
+   function Any_Node_Id_Kind_Valid
+     (Id : W_Any_Node_Opaque_Id)
+     return Boolean;
+
+   function Any_Node_OId_Kind_Valid
+     (Id : W_Any_Node_Opaque_OId)
+     return Boolean;
+
+   function Any_Node_List_Kind_Valid
+     (Id : W_Any_Node_Opaque_List)
+     return Boolean;
+
+   function Any_Node_OList_Kind_Valid
+     (Id : W_Any_Node_Opaque_OList)
+     return Boolean;
+
 private
 
    function Unused_At_Start_Id_Kind_Valid
@@ -5896,5 +5912,30 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Declaration_List_Kind_Valid (Id));
+
+   function Any_Node_Id_Kind_Valid
+     (Id : W_Any_Node_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) in W_Any_Node'Range);
+
+   function Any_Node_OId_Kind_Valid
+     (Id : W_Any_Node_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Node_Id_Kind_Valid (Id));
+
+   function Any_Node_List_Kind_Valid
+     (Id : W_Any_Node_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Any_Node_OList_Kind_Valid
+     (Id : W_Any_Node_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Node_List_Kind_Valid (Id));
 
 end Why.Kind_Validity;

@@ -68,12 +68,12 @@ package body Why.Gen.Funcs is
       begin
          Logic_Type_Append_To_Arg_Types
            (Spec,
-            Duplicate_Logic_Arg_Type (Id => Arrow_Type_Get_Left (Arrow)));
+            Duplicate_Any_Node (Id => Arrow_Type_Get_Left (Arrow)));
 
          if Get_Kind (Right) = W_Computation_Spec then
             Logic_Type_Set_Return_Type
               (Spec,
-               Duplicate_Logic_Return_Type
+               Duplicate_Any_Node
                (Id => Computation_Spec_Get_Return_Type (Right)));
          else
             Append_To_Spec (Right);

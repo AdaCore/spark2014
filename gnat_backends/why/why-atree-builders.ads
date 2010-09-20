@@ -7020,6 +7020,12 @@ package Why.Atree.Builders is
       Id       : W_Declaration_Id)
      return W_Declaration_Id;
 
+   function Duplicate_Any_Node
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Any_Node_Id)
+     return W_Any_Node_Id;
+
 private
 
    function Duplicate_Term
@@ -7993,6 +7999,645 @@ private
       Id       : W_Declaration_Id)
      return W_Declaration_Id is
      (case Get_Kind (Id) is
+        when W_Global_Binding =>
+           Duplicate_Global_Binding
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Global_Rec_Binding =>
+           Duplicate_Global_Rec_Binding
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Parameter_Declaration =>
+           Duplicate_Parameter_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Exception_Declaration =>
+           Duplicate_Exception_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic_Declaration =>
+           Duplicate_Logic_Declaration
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Any_Node
+     (Ada_Node : Node_Id := Empty;
+      Link     : Why_Node_Set := Why_Empty;
+      Id       : W_Any_Node_Id)
+     return W_Any_Node_Id is
+     (case Get_Kind (Id) is
+        when W_Identifier =>
+           Duplicate_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Prop =>
+           Duplicate_Type_Prop
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Int =>
+           Duplicate_Type_Int
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Bool =>
+           Duplicate_Type_Bool
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Real =>
+           Duplicate_Type_Real
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type_Unit =>
+           Duplicate_Type_Unit
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Abstract_Type =>
+           Duplicate_Abstract_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Formal_Type =>
+           Duplicate_Generic_Formal_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Generic_Actual_Type_Chain =>
+           Duplicate_Generic_Actual_Type_Chain
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Type =>
+           Duplicate_Array_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Ref_Type =>
+           Duplicate_Ref_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Value_Type =>
+           Duplicate_Protected_Value_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arrow_Type =>
+           Duplicate_Arrow_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Computation_Spec =>
+           Duplicate_Computation_Spec
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Integer_Constant =>
+           Duplicate_Integer_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Real_Constant =>
+           Duplicate_Real_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_True_Literal =>
+           Duplicate_True_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal =>
+           Duplicate_False_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Void_Literal =>
+           Duplicate_Void_Literal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Arith_Operation =>
+           Duplicate_Arith_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Negative_Term =>
+           Duplicate_Negative_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Label_Identifier =>
+           Duplicate_Label_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Operation =>
+           Duplicate_Operation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Named_Term =>
+           Duplicate_Named_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Term =>
+           Duplicate_Conditional_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Term =>
+           Duplicate_Binding_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Term =>
+           Duplicate_Protected_Term
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Add =>
+           Duplicate_Op_Add
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Substract =>
+           Duplicate_Op_Substract
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Multiply =>
+           Duplicate_Op_Multiply
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Divide =>
+           Duplicate_Op_Divide
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Modulo =>
+           Duplicate_Op_Modulo
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_True_Literal_Pred =>
+           Duplicate_True_Literal_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_False_Literal_Pred =>
+           Duplicate_False_Literal_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Identifier =>
+           Duplicate_Predicate_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Instance =>
+           Duplicate_Predicate_Instance
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Related_Terms =>
+           Duplicate_Related_Terms
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Implication =>
+           Duplicate_Implication
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Equivalence =>
+           Duplicate_Equivalence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Disjonction =>
+           Duplicate_Disjonction
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conjonction =>
+           Duplicate_Conjonction
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Negation =>
+           Duplicate_Negation
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Pred =>
+           Duplicate_Conditional_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Pred =>
+           Duplicate_Binding_Pred
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Universal_Quantif =>
+           Duplicate_Universal_Quantif
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Existential_Quantif =>
+           Duplicate_Existential_Quantif
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Named_Predicate =>
+           Duplicate_Named_Predicate
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Predicate =>
+           Duplicate_Protected_Predicate
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Triggers =>
+           Duplicate_Triggers
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Trigger =>
+           Duplicate_Trigger
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Eq =>
+           Duplicate_Rel_Eq
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Ne =>
+           Duplicate_Rel_Ne
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Lt =>
+           Duplicate_Rel_Lt
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Le =>
+           Duplicate_Rel_Le
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Gt =>
+           Duplicate_Rel_Gt
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Rel_Ge =>
+           Duplicate_Rel_Ge
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Type =>
+           Duplicate_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic =>
+           Duplicate_Logic
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Function =>
+           Duplicate_Function
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Predicate_Definition =>
+           Duplicate_Predicate_Definition
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Inductive =>
+           Duplicate_Inductive
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Axiom =>
+           Duplicate_Axiom
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Goal =>
+           Duplicate_Goal
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_External =>
+           Duplicate_External
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic_Type =>
+           Duplicate_Logic_Type
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Logic_Binder =>
+           Duplicate_Logic_Binder
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Inductive_Case =>
+           Duplicate_Inductive_Case
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Effects =>
+           Duplicate_Effects
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Precondition =>
+           Duplicate_Precondition
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Postcondition =>
+           Duplicate_Postcondition
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Exn_Condition =>
+           Duplicate_Exn_Condition
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Assertion =>
+           Duplicate_Assertion
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prog_Constant =>
+           Duplicate_Prog_Constant
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prog_Identifier =>
+           Duplicate_Prog_Identifier
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Deref =>
+           Duplicate_Deref
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Assignment =>
+           Duplicate_Assignment
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Access =>
+           Duplicate_Array_Access
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Array_Update =>
+           Duplicate_Array_Update
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Infix_Call =>
+           Duplicate_Infix_Call
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prefix_Call =>
+           Duplicate_Prefix_Call
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Prog =>
+           Duplicate_Binding_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Ref =>
+           Duplicate_Binding_Ref
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Conditional_Prog =>
+           Duplicate_Conditional_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_While_Loop =>
+           Duplicate_While_Loop
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Statement_Sequence =>
+           Duplicate_Statement_Sequence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Label =>
+           Duplicate_Label
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Assert =>
+           Duplicate_Assert
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Post_Assertion =>
+           Duplicate_Post_Assertion
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Opaque_Assertion =>
+           Duplicate_Opaque_Assertion
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Fun_Def =>
+           Duplicate_Fun_Def
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Fun =>
+           Duplicate_Binding_Fun
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binding_Rec =>
+           Duplicate_Binding_Rec
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Prog_Sequence =>
+           Duplicate_Prog_Sequence
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Raise_Statement =>
+           Duplicate_Raise_Statement
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Raise_Statement_With_Parameters =>
+           Duplicate_Raise_Statement_With_Parameters
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Try_Block =>
+           Duplicate_Try_Block
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Unreachable_Code =>
+           Duplicate_Unreachable_Code
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Begin_Block =>
+           Duplicate_Begin_Block
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Protected_Prog =>
+           Duplicate_Protected_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Add_Prog =>
+           Duplicate_Op_Add_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Substract_Prog =>
+           Duplicate_Op_Substract_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Multiply_Prog =>
+           Duplicate_Op_Multiply_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Divide_Prog =>
+           Duplicate_Op_Divide_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Mod_Prog =>
+           Duplicate_Op_Mod_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Eq_Prog =>
+           Duplicate_Op_Eq_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Ne_Prog =>
+           Duplicate_Op_Ne_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Lt_Prog =>
+           Duplicate_Op_Lt_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Le_Prog =>
+           Duplicate_Op_Le_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Gt_Prog =>
+           Duplicate_Op_Gt_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Ge_Prog =>
+           Duplicate_Op_Ge_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Or_Else_Prog =>
+           Duplicate_Op_Or_Else_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_And_Then_Prog =>
+           Duplicate_Op_And_Then_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Minus_Prog =>
+           Duplicate_Op_Minus_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Op_Not_Prog =>
+           Duplicate_Op_Not_Prog
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binders =>
+           Duplicate_Binders
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Binder =>
+           Duplicate_Binder
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Recfun =>
+           Duplicate_Recfun
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Loop_Annot =>
+           Duplicate_Loop_Annot
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Wf_Arg =>
+           Duplicate_Wf_Arg
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_Handler =>
+           Duplicate_Handler
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
+        when W_File =>
+           Duplicate_File
+            (Ada_Node  => Ada_Node,
+             Link      => Link,
+             Id        => Id),
         when W_Global_Binding =>
            Duplicate_Global_Binding
             (Ada_Node  => Ada_Node,
