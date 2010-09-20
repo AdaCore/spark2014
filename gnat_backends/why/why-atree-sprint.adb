@@ -313,10 +313,10 @@ package body Why.Atree.Sprint is
                  Computation_Spec_Get_Result_Name (Node);
    begin
       NL (O);
-      P (O, "{");
+      P (O, "{ ");
       Traverse (State,
                 Computation_Spec_Get_Precondition (Node));
-      PL (O, "}");
+      PL (O, " }");
       Relative_Indent (O, 1);
 
       if  Result /= Why_Empty then
@@ -337,11 +337,11 @@ package body Why.Atree.Sprint is
          Computation_Spec_Get_Effects (Node));
 
       Relative_Indent (O, -1);
-      P (O, "{");
+      P (O, "{ ");
       Traverse
         (State,
          Computation_Spec_Get_Postcondition (Node));
-      P (O, "}");
+      P (O, " }");
 
       State.Control := Abandon_Children;
    end Computation_Spec_Pre_Op;
