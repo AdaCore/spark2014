@@ -4407,7 +4407,7 @@ package Why.Atree.Builders is
    function Duplicate_Identifier
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Identifier_Id)
+      Id       : W_Identifier_OId)
      return W_Identifier_Id;
    pragma Precondition
      (Identifier_Id_Valid (Id));
@@ -4427,7 +4427,7 @@ package Why.Atree.Builders is
    function Duplicate_Type_Prop
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Prop_Id)
+      Id       : W_Type_Prop_OId)
      return W_Type_Prop_Id;
    pragma Precondition
      (Type_Prop_Id_Valid (Id));
@@ -4447,7 +4447,7 @@ package Why.Atree.Builders is
    function Duplicate_Type_Int
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Int_Id)
+      Id       : W_Type_Int_OId)
      return W_Type_Int_Id;
    pragma Precondition
      (Type_Int_Id_Valid (Id));
@@ -4467,7 +4467,7 @@ package Why.Atree.Builders is
    function Duplicate_Type_Bool
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Bool_Id)
+      Id       : W_Type_Bool_OId)
      return W_Type_Bool_Id;
    pragma Precondition
      (Type_Bool_Id_Valid (Id));
@@ -4487,7 +4487,7 @@ package Why.Atree.Builders is
    function Duplicate_Type_Real
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Real_Id)
+      Id       : W_Type_Real_OId)
      return W_Type_Real_Id;
    pragma Precondition
      (Type_Real_Id_Valid (Id));
@@ -4507,7 +4507,7 @@ package Why.Atree.Builders is
    function Duplicate_Type_Unit
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Unit_Id)
+      Id       : W_Type_Unit_OId)
      return W_Type_Unit_Id;
    pragma Precondition
      (Type_Unit_Id_Valid (Id));
@@ -4527,7 +4527,7 @@ package Why.Atree.Builders is
    function Duplicate_Abstract_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Abstract_Type_Id)
+      Id       : W_Abstract_Type_OId)
      return W_Abstract_Type_Id;
    pragma Precondition
      (Abstract_Type_Id_Valid (Id));
@@ -4547,7 +4547,7 @@ package Why.Atree.Builders is
    function Duplicate_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Generic_Formal_Type_Id)
+      Id       : W_Generic_Formal_Type_OId)
      return W_Generic_Formal_Type_Id;
    pragma Precondition
      (Generic_Formal_Type_Id_Valid (Id));
@@ -4567,7 +4567,7 @@ package Why.Atree.Builders is
    function Duplicate_Generic_Actual_Type_Chain
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Generic_Actual_Type_Chain_Id)
+      Id       : W_Generic_Actual_Type_Chain_OId)
      return W_Generic_Actual_Type_Chain_Id;
    pragma Precondition
      (Generic_Actual_Type_Chain_Id_Valid (Id));
@@ -4587,7 +4587,7 @@ package Why.Atree.Builders is
    function Duplicate_Array_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Array_Type_Id)
+      Id       : W_Array_Type_OId)
      return W_Array_Type_Id;
    pragma Precondition
      (Array_Type_Id_Valid (Id));
@@ -4607,7 +4607,7 @@ package Why.Atree.Builders is
    function Duplicate_Ref_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Ref_Type_Id)
+      Id       : W_Ref_Type_OId)
      return W_Ref_Type_Id;
    pragma Precondition
      (Ref_Type_Id_Valid (Id));
@@ -4627,7 +4627,7 @@ package Why.Atree.Builders is
    function Duplicate_Protected_Value_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Protected_Value_Type_Id)
+      Id       : W_Protected_Value_Type_OId)
      return W_Protected_Value_Type_Id;
    pragma Precondition
      (Protected_Value_Type_Id_Valid (Id));
@@ -4647,7 +4647,7 @@ package Why.Atree.Builders is
    function Duplicate_Arrow_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Arrow_Type_Id)
+      Id       : W_Arrow_Type_OId)
      return W_Arrow_Type_Id;
    pragma Precondition
      (Arrow_Type_Id_Valid (Id));
@@ -4667,7 +4667,7 @@ package Why.Atree.Builders is
    function Duplicate_Computation_Spec
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Computation_Spec_Id)
+      Id       : W_Computation_Spec_OId)
      return W_Computation_Spec_Id;
    pragma Precondition
      (Computation_Spec_Id_Valid (Id));
@@ -4687,7 +4687,7 @@ package Why.Atree.Builders is
    function Duplicate_Integer_Constant
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Integer_Constant_Id)
+      Id       : W_Integer_Constant_OId)
      return W_Integer_Constant_Id;
    pragma Precondition
      (Integer_Constant_Id_Valid (Id));
@@ -4707,7 +4707,7 @@ package Why.Atree.Builders is
    function Duplicate_Real_Constant
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Real_Constant_Id)
+      Id       : W_Real_Constant_OId)
      return W_Real_Constant_Id;
    pragma Precondition
      (Real_Constant_Id_Valid (Id));
@@ -4727,7 +4727,7 @@ package Why.Atree.Builders is
    function Duplicate_True_Literal
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_True_Literal_Id)
+      Id       : W_True_Literal_OId)
      return W_True_Literal_Id;
    pragma Precondition
      (True_Literal_Id_Valid (Id));
@@ -4747,7 +4747,7 @@ package Why.Atree.Builders is
    function Duplicate_False_Literal
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_False_Literal_Id)
+      Id       : W_False_Literal_OId)
      return W_False_Literal_Id;
    pragma Precondition
      (False_Literal_Id_Valid (Id));
@@ -4767,7 +4767,7 @@ package Why.Atree.Builders is
    function Duplicate_Void_Literal
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Void_Literal_Id)
+      Id       : W_Void_Literal_OId)
      return W_Void_Literal_Id;
    pragma Precondition
      (Void_Literal_Id_Valid (Id));
@@ -4787,7 +4787,7 @@ package Why.Atree.Builders is
    function Duplicate_Arith_Operation
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Arith_Operation_Id)
+      Id       : W_Arith_Operation_OId)
      return W_Arith_Operation_Id;
    pragma Precondition
      (Arith_Operation_Id_Valid (Id));
@@ -4807,7 +4807,7 @@ package Why.Atree.Builders is
    function Duplicate_Negative_Term
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Negative_Term_Id)
+      Id       : W_Negative_Term_OId)
      return W_Negative_Term_Id;
    pragma Precondition
      (Negative_Term_Id_Valid (Id));
@@ -4827,7 +4827,7 @@ package Why.Atree.Builders is
    function Duplicate_Label_Identifier
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Label_Identifier_Id)
+      Id       : W_Label_Identifier_OId)
      return W_Label_Identifier_Id;
    pragma Precondition
      (Label_Identifier_Id_Valid (Id));
@@ -4847,7 +4847,7 @@ package Why.Atree.Builders is
    function Duplicate_Operation
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Operation_Id)
+      Id       : W_Operation_OId)
      return W_Operation_Id;
    pragma Precondition
      (Operation_Id_Valid (Id));
@@ -4867,7 +4867,7 @@ package Why.Atree.Builders is
    function Duplicate_Named_Term
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Named_Term_Id)
+      Id       : W_Named_Term_OId)
      return W_Named_Term_Id;
    pragma Precondition
      (Named_Term_Id_Valid (Id));
@@ -4887,7 +4887,7 @@ package Why.Atree.Builders is
    function Duplicate_Conditional_Term
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Conditional_Term_Id)
+      Id       : W_Conditional_Term_OId)
      return W_Conditional_Term_Id;
    pragma Precondition
      (Conditional_Term_Id_Valid (Id));
@@ -4907,7 +4907,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Term
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Term_Id)
+      Id       : W_Binding_Term_OId)
      return W_Binding_Term_Id;
    pragma Precondition
      (Binding_Term_Id_Valid (Id));
@@ -4927,7 +4927,7 @@ package Why.Atree.Builders is
    function Duplicate_Protected_Term
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Protected_Term_Id)
+      Id       : W_Protected_Term_OId)
      return W_Protected_Term_Id;
    pragma Precondition
      (Protected_Term_Id_Valid (Id));
@@ -4947,7 +4947,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Add
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Add_Id)
+      Id       : W_Op_Add_OId)
      return W_Op_Add_Id;
    pragma Precondition
      (Op_Add_Id_Valid (Id));
@@ -4967,7 +4967,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Substract
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Substract_Id)
+      Id       : W_Op_Substract_OId)
      return W_Op_Substract_Id;
    pragma Precondition
      (Op_Substract_Id_Valid (Id));
@@ -4987,7 +4987,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Multiply
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Multiply_Id)
+      Id       : W_Op_Multiply_OId)
      return W_Op_Multiply_Id;
    pragma Precondition
      (Op_Multiply_Id_Valid (Id));
@@ -5007,7 +5007,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Divide
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Divide_Id)
+      Id       : W_Op_Divide_OId)
      return W_Op_Divide_Id;
    pragma Precondition
      (Op_Divide_Id_Valid (Id));
@@ -5027,7 +5027,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Modulo
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Modulo_Id)
+      Id       : W_Op_Modulo_OId)
      return W_Op_Modulo_Id;
    pragma Precondition
      (Op_Modulo_Id_Valid (Id));
@@ -5047,7 +5047,7 @@ package Why.Atree.Builders is
    function Duplicate_True_Literal_Pred
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_True_Literal_Pred_Id)
+      Id       : W_True_Literal_Pred_OId)
      return W_True_Literal_Pred_Id;
    pragma Precondition
      (True_Literal_Pred_Id_Valid (Id));
@@ -5067,7 +5067,7 @@ package Why.Atree.Builders is
    function Duplicate_False_Literal_Pred
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_False_Literal_Pred_Id)
+      Id       : W_False_Literal_Pred_OId)
      return W_False_Literal_Pred_Id;
    pragma Precondition
      (False_Literal_Pred_Id_Valid (Id));
@@ -5087,7 +5087,7 @@ package Why.Atree.Builders is
    function Duplicate_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Predicate_Identifier_Id)
+      Id       : W_Predicate_Identifier_OId)
      return W_Predicate_Identifier_Id;
    pragma Precondition
      (Predicate_Identifier_Id_Valid (Id));
@@ -5107,7 +5107,7 @@ package Why.Atree.Builders is
    function Duplicate_Predicate_Instance
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Predicate_Instance_Id)
+      Id       : W_Predicate_Instance_OId)
      return W_Predicate_Instance_Id;
    pragma Precondition
      (Predicate_Instance_Id_Valid (Id));
@@ -5127,7 +5127,7 @@ package Why.Atree.Builders is
    function Duplicate_Related_Terms
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Related_Terms_Id)
+      Id       : W_Related_Terms_OId)
      return W_Related_Terms_Id;
    pragma Precondition
      (Related_Terms_Id_Valid (Id));
@@ -5147,7 +5147,7 @@ package Why.Atree.Builders is
    function Duplicate_Implication
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Implication_Id)
+      Id       : W_Implication_OId)
      return W_Implication_Id;
    pragma Precondition
      (Implication_Id_Valid (Id));
@@ -5167,7 +5167,7 @@ package Why.Atree.Builders is
    function Duplicate_Equivalence
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Equivalence_Id)
+      Id       : W_Equivalence_OId)
      return W_Equivalence_Id;
    pragma Precondition
      (Equivalence_Id_Valid (Id));
@@ -5187,7 +5187,7 @@ package Why.Atree.Builders is
    function Duplicate_Disjonction
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Disjonction_Id)
+      Id       : W_Disjonction_OId)
      return W_Disjonction_Id;
    pragma Precondition
      (Disjonction_Id_Valid (Id));
@@ -5207,7 +5207,7 @@ package Why.Atree.Builders is
    function Duplicate_Conjonction
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Conjonction_Id)
+      Id       : W_Conjonction_OId)
      return W_Conjonction_Id;
    pragma Precondition
      (Conjonction_Id_Valid (Id));
@@ -5227,7 +5227,7 @@ package Why.Atree.Builders is
    function Duplicate_Negation
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Negation_Id)
+      Id       : W_Negation_OId)
      return W_Negation_Id;
    pragma Precondition
      (Negation_Id_Valid (Id));
@@ -5247,7 +5247,7 @@ package Why.Atree.Builders is
    function Duplicate_Conditional_Pred
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Conditional_Pred_Id)
+      Id       : W_Conditional_Pred_OId)
      return W_Conditional_Pred_Id;
    pragma Precondition
      (Conditional_Pred_Id_Valid (Id));
@@ -5267,7 +5267,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Pred
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Pred_Id)
+      Id       : W_Binding_Pred_OId)
      return W_Binding_Pred_Id;
    pragma Precondition
      (Binding_Pred_Id_Valid (Id));
@@ -5287,7 +5287,7 @@ package Why.Atree.Builders is
    function Duplicate_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Universal_Quantif_Id)
+      Id       : W_Universal_Quantif_OId)
      return W_Universal_Quantif_Id;
    pragma Precondition
      (Universal_Quantif_Id_Valid (Id));
@@ -5307,7 +5307,7 @@ package Why.Atree.Builders is
    function Duplicate_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Existential_Quantif_Id)
+      Id       : W_Existential_Quantif_OId)
      return W_Existential_Quantif_Id;
    pragma Precondition
      (Existential_Quantif_Id_Valid (Id));
@@ -5327,7 +5327,7 @@ package Why.Atree.Builders is
    function Duplicate_Named_Predicate
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Named_Predicate_Id)
+      Id       : W_Named_Predicate_OId)
      return W_Named_Predicate_Id;
    pragma Precondition
      (Named_Predicate_Id_Valid (Id));
@@ -5347,7 +5347,7 @@ package Why.Atree.Builders is
    function Duplicate_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Protected_Predicate_Id)
+      Id       : W_Protected_Predicate_OId)
      return W_Protected_Predicate_Id;
    pragma Precondition
      (Protected_Predicate_Id_Valid (Id));
@@ -5367,7 +5367,7 @@ package Why.Atree.Builders is
    function Duplicate_Triggers
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Triggers_Id)
+      Id       : W_Triggers_OId)
      return W_Triggers_Id;
    pragma Precondition
      (Triggers_Id_Valid (Id));
@@ -5387,7 +5387,7 @@ package Why.Atree.Builders is
    function Duplicate_Trigger
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Trigger_Id)
+      Id       : W_Trigger_OId)
      return W_Trigger_Id;
    pragma Precondition
      (Trigger_Id_Valid (Id));
@@ -5407,7 +5407,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Eq
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Eq_Id)
+      Id       : W_Rel_Eq_OId)
      return W_Rel_Eq_Id;
    pragma Precondition
      (Rel_Eq_Id_Valid (Id));
@@ -5427,7 +5427,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Ne
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Ne_Id)
+      Id       : W_Rel_Ne_OId)
      return W_Rel_Ne_Id;
    pragma Precondition
      (Rel_Ne_Id_Valid (Id));
@@ -5447,7 +5447,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Lt
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Lt_Id)
+      Id       : W_Rel_Lt_OId)
      return W_Rel_Lt_Id;
    pragma Precondition
      (Rel_Lt_Id_Valid (Id));
@@ -5467,7 +5467,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Le
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Le_Id)
+      Id       : W_Rel_Le_OId)
      return W_Rel_Le_Id;
    pragma Precondition
      (Rel_Le_Id_Valid (Id));
@@ -5487,7 +5487,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Gt
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Gt_Id)
+      Id       : W_Rel_Gt_OId)
      return W_Rel_Gt_Id;
    pragma Precondition
      (Rel_Gt_Id_Valid (Id));
@@ -5507,7 +5507,7 @@ package Why.Atree.Builders is
    function Duplicate_Rel_Ge
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Rel_Ge_Id)
+      Id       : W_Rel_Ge_OId)
      return W_Rel_Ge_Id;
    pragma Precondition
      (Rel_Ge_Id_Valid (Id));
@@ -5527,7 +5527,7 @@ package Why.Atree.Builders is
    function Duplicate_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Type_Id)
+      Id       : W_Type_OId)
      return W_Type_Id;
    pragma Precondition
      (Type_Id_Valid (Id));
@@ -5547,7 +5547,7 @@ package Why.Atree.Builders is
    function Duplicate_Logic
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Logic_Id)
+      Id       : W_Logic_OId)
      return W_Logic_Id;
    pragma Precondition
      (Logic_Id_Valid (Id));
@@ -5567,7 +5567,7 @@ package Why.Atree.Builders is
    function Duplicate_Function
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Function_Id)
+      Id       : W_Function_OId)
      return W_Function_Id;
    pragma Precondition
      (Function_Id_Valid (Id));
@@ -5587,7 +5587,7 @@ package Why.Atree.Builders is
    function Duplicate_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Predicate_Definition_Id)
+      Id       : W_Predicate_Definition_OId)
      return W_Predicate_Definition_Id;
    pragma Precondition
      (Predicate_Definition_Id_Valid (Id));
@@ -5607,7 +5607,7 @@ package Why.Atree.Builders is
    function Duplicate_Inductive
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Inductive_Id)
+      Id       : W_Inductive_OId)
      return W_Inductive_Id;
    pragma Precondition
      (Inductive_Id_Valid (Id));
@@ -5627,7 +5627,7 @@ package Why.Atree.Builders is
    function Duplicate_Axiom
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Axiom_Id)
+      Id       : W_Axiom_OId)
      return W_Axiom_Id;
    pragma Precondition
      (Axiom_Id_Valid (Id));
@@ -5647,7 +5647,7 @@ package Why.Atree.Builders is
    function Duplicate_Goal
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Goal_Id)
+      Id       : W_Goal_OId)
      return W_Goal_Id;
    pragma Precondition
      (Goal_Id_Valid (Id));
@@ -5667,7 +5667,7 @@ package Why.Atree.Builders is
    function Duplicate_External
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_External_Id)
+      Id       : W_External_OId)
      return W_External_Id;
    pragma Precondition
      (External_Id_Valid (Id));
@@ -5687,7 +5687,7 @@ package Why.Atree.Builders is
    function Duplicate_Logic_Type
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Logic_Type_Id)
+      Id       : W_Logic_Type_OId)
      return W_Logic_Type_Id;
    pragma Precondition
      (Logic_Type_Id_Valid (Id));
@@ -5707,7 +5707,7 @@ package Why.Atree.Builders is
    function Duplicate_Logic_Binder
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Logic_Binder_Id)
+      Id       : W_Logic_Binder_OId)
      return W_Logic_Binder_Id;
    pragma Precondition
      (Logic_Binder_Id_Valid (Id));
@@ -5727,7 +5727,7 @@ package Why.Atree.Builders is
    function Duplicate_Inductive_Case
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Inductive_Case_Id)
+      Id       : W_Inductive_Case_OId)
      return W_Inductive_Case_Id;
    pragma Precondition
      (Inductive_Case_Id_Valid (Id));
@@ -5747,7 +5747,7 @@ package Why.Atree.Builders is
    function Duplicate_Effects
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Effects_Id)
+      Id       : W_Effects_OId)
      return W_Effects_Id;
    pragma Precondition
      (Effects_Id_Valid (Id));
@@ -5767,7 +5767,7 @@ package Why.Atree.Builders is
    function Duplicate_Precondition
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Precondition_Id)
+      Id       : W_Precondition_OId)
      return W_Precondition_Id;
    pragma Precondition
      (Precondition_Id_Valid (Id));
@@ -5787,7 +5787,7 @@ package Why.Atree.Builders is
    function Duplicate_Postcondition
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Postcondition_Id)
+      Id       : W_Postcondition_OId)
      return W_Postcondition_Id;
    pragma Precondition
      (Postcondition_Id_Valid (Id));
@@ -5807,7 +5807,7 @@ package Why.Atree.Builders is
    function Duplicate_Exn_Condition
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Exn_Condition_Id)
+      Id       : W_Exn_Condition_OId)
      return W_Exn_Condition_Id;
    pragma Precondition
      (Exn_Condition_Id_Valid (Id));
@@ -5827,7 +5827,7 @@ package Why.Atree.Builders is
    function Duplicate_Assertion
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Assertion_Id)
+      Id       : W_Assertion_OId)
      return W_Assertion_Id;
    pragma Precondition
      (Assertion_Id_Valid (Id));
@@ -5847,7 +5847,7 @@ package Why.Atree.Builders is
    function Duplicate_Prog_Constant
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Prog_Constant_Id)
+      Id       : W_Prog_Constant_OId)
      return W_Prog_Constant_Id;
    pragma Precondition
      (Prog_Constant_Id_Valid (Id));
@@ -5867,7 +5867,7 @@ package Why.Atree.Builders is
    function Duplicate_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Prog_Identifier_Id)
+      Id       : W_Prog_Identifier_OId)
      return W_Prog_Identifier_Id;
    pragma Precondition
      (Prog_Identifier_Id_Valid (Id));
@@ -5887,7 +5887,7 @@ package Why.Atree.Builders is
    function Duplicate_Deref
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Deref_Id)
+      Id       : W_Deref_OId)
      return W_Deref_Id;
    pragma Precondition
      (Deref_Id_Valid (Id));
@@ -5907,7 +5907,7 @@ package Why.Atree.Builders is
    function Duplicate_Assignment
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Assignment_Id)
+      Id       : W_Assignment_OId)
      return W_Assignment_Id;
    pragma Precondition
      (Assignment_Id_Valid (Id));
@@ -5927,7 +5927,7 @@ package Why.Atree.Builders is
    function Duplicate_Array_Access
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Array_Access_Id)
+      Id       : W_Array_Access_OId)
      return W_Array_Access_Id;
    pragma Precondition
      (Array_Access_Id_Valid (Id));
@@ -5947,7 +5947,7 @@ package Why.Atree.Builders is
    function Duplicate_Array_Update
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Array_Update_Id)
+      Id       : W_Array_Update_OId)
      return W_Array_Update_Id;
    pragma Precondition
      (Array_Update_Id_Valid (Id));
@@ -5967,7 +5967,7 @@ package Why.Atree.Builders is
    function Duplicate_Infix_Call
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Infix_Call_Id)
+      Id       : W_Infix_Call_OId)
      return W_Infix_Call_Id;
    pragma Precondition
      (Infix_Call_Id_Valid (Id));
@@ -5987,7 +5987,7 @@ package Why.Atree.Builders is
    function Duplicate_Prefix_Call
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Prefix_Call_Id)
+      Id       : W_Prefix_Call_OId)
      return W_Prefix_Call_Id;
    pragma Precondition
      (Prefix_Call_Id_Valid (Id));
@@ -6007,7 +6007,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Prog_Id)
+      Id       : W_Binding_Prog_OId)
      return W_Binding_Prog_Id;
    pragma Precondition
      (Binding_Prog_Id_Valid (Id));
@@ -6027,7 +6027,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Ref
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Ref_Id)
+      Id       : W_Binding_Ref_OId)
      return W_Binding_Ref_Id;
    pragma Precondition
      (Binding_Ref_Id_Valid (Id));
@@ -6047,7 +6047,7 @@ package Why.Atree.Builders is
    function Duplicate_Conditional_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Conditional_Prog_Id)
+      Id       : W_Conditional_Prog_OId)
      return W_Conditional_Prog_Id;
    pragma Precondition
      (Conditional_Prog_Id_Valid (Id));
@@ -6067,7 +6067,7 @@ package Why.Atree.Builders is
    function Duplicate_While_Loop
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_While_Loop_Id)
+      Id       : W_While_Loop_OId)
      return W_While_Loop_Id;
    pragma Precondition
      (While_Loop_Id_Valid (Id));
@@ -6087,7 +6087,7 @@ package Why.Atree.Builders is
    function Duplicate_Statement_Sequence
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Statement_Sequence_Id)
+      Id       : W_Statement_Sequence_OId)
      return W_Statement_Sequence_Id;
    pragma Precondition
      (Statement_Sequence_Id_Valid (Id));
@@ -6107,7 +6107,7 @@ package Why.Atree.Builders is
    function Duplicate_Label
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Label_Id)
+      Id       : W_Label_OId)
      return W_Label_Id;
    pragma Precondition
      (Label_Id_Valid (Id));
@@ -6127,7 +6127,7 @@ package Why.Atree.Builders is
    function Duplicate_Assert
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Assert_Id)
+      Id       : W_Assert_OId)
      return W_Assert_Id;
    pragma Precondition
      (Assert_Id_Valid (Id));
@@ -6147,7 +6147,7 @@ package Why.Atree.Builders is
    function Duplicate_Post_Assertion
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Post_Assertion_Id)
+      Id       : W_Post_Assertion_OId)
      return W_Post_Assertion_Id;
    pragma Precondition
      (Post_Assertion_Id_Valid (Id));
@@ -6167,7 +6167,7 @@ package Why.Atree.Builders is
    function Duplicate_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Opaque_Assertion_Id)
+      Id       : W_Opaque_Assertion_OId)
      return W_Opaque_Assertion_Id;
    pragma Precondition
      (Opaque_Assertion_Id_Valid (Id));
@@ -6187,7 +6187,7 @@ package Why.Atree.Builders is
    function Duplicate_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Fun_Def_Id)
+      Id       : W_Fun_Def_OId)
      return W_Fun_Def_Id;
    pragma Precondition
      (Fun_Def_Id_Valid (Id));
@@ -6207,7 +6207,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Fun
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Fun_Id)
+      Id       : W_Binding_Fun_OId)
      return W_Binding_Fun_Id;
    pragma Precondition
      (Binding_Fun_Id_Valid (Id));
@@ -6227,7 +6227,7 @@ package Why.Atree.Builders is
    function Duplicate_Binding_Rec
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binding_Rec_Id)
+      Id       : W_Binding_Rec_OId)
      return W_Binding_Rec_Id;
    pragma Precondition
      (Binding_Rec_Id_Valid (Id));
@@ -6247,7 +6247,7 @@ package Why.Atree.Builders is
    function Duplicate_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Prog_Sequence_Id)
+      Id       : W_Prog_Sequence_OId)
      return W_Prog_Sequence_Id;
    pragma Precondition
      (Prog_Sequence_Id_Valid (Id));
@@ -6267,7 +6267,7 @@ package Why.Atree.Builders is
    function Duplicate_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Raise_Statement_Id)
+      Id       : W_Raise_Statement_OId)
      return W_Raise_Statement_Id;
    pragma Precondition
      (Raise_Statement_Id_Valid (Id));
@@ -6287,7 +6287,7 @@ package Why.Atree.Builders is
    function Duplicate_Raise_Statement_With_Parameters
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Raise_Statement_With_Parameters_Id)
+      Id       : W_Raise_Statement_With_Parameters_OId)
      return W_Raise_Statement_With_Parameters_Id;
    pragma Precondition
      (Raise_Statement_With_Parameters_Id_Valid (Id));
@@ -6307,7 +6307,7 @@ package Why.Atree.Builders is
    function Duplicate_Try_Block
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Try_Block_Id)
+      Id       : W_Try_Block_OId)
      return W_Try_Block_Id;
    pragma Precondition
      (Try_Block_Id_Valid (Id));
@@ -6327,7 +6327,7 @@ package Why.Atree.Builders is
    function Duplicate_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Unreachable_Code_Id)
+      Id       : W_Unreachable_Code_OId)
      return W_Unreachable_Code_Id;
    pragma Precondition
      (Unreachable_Code_Id_Valid (Id));
@@ -6347,7 +6347,7 @@ package Why.Atree.Builders is
    function Duplicate_Begin_Block
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Begin_Block_Id)
+      Id       : W_Begin_Block_OId)
      return W_Begin_Block_Id;
    pragma Precondition
      (Begin_Block_Id_Valid (Id));
@@ -6367,7 +6367,7 @@ package Why.Atree.Builders is
    function Duplicate_Protected_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Protected_Prog_Id)
+      Id       : W_Protected_Prog_OId)
      return W_Protected_Prog_Id;
    pragma Precondition
      (Protected_Prog_Id_Valid (Id));
@@ -6387,7 +6387,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Add_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Add_Prog_Id)
+      Id       : W_Op_Add_Prog_OId)
      return W_Op_Add_Prog_Id;
    pragma Precondition
      (Op_Add_Prog_Id_Valid (Id));
@@ -6407,7 +6407,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Substract_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Substract_Prog_Id)
+      Id       : W_Op_Substract_Prog_OId)
      return W_Op_Substract_Prog_Id;
    pragma Precondition
      (Op_Substract_Prog_Id_Valid (Id));
@@ -6427,7 +6427,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Multiply_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Multiply_Prog_Id)
+      Id       : W_Op_Multiply_Prog_OId)
      return W_Op_Multiply_Prog_Id;
    pragma Precondition
      (Op_Multiply_Prog_Id_Valid (Id));
@@ -6447,7 +6447,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Divide_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Divide_Prog_Id)
+      Id       : W_Op_Divide_Prog_OId)
      return W_Op_Divide_Prog_Id;
    pragma Precondition
      (Op_Divide_Prog_Id_Valid (Id));
@@ -6467,7 +6467,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Mod_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Mod_Prog_Id)
+      Id       : W_Op_Mod_Prog_OId)
      return W_Op_Mod_Prog_Id;
    pragma Precondition
      (Op_Mod_Prog_Id_Valid (Id));
@@ -6487,7 +6487,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Eq_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Eq_Prog_Id)
+      Id       : W_Op_Eq_Prog_OId)
      return W_Op_Eq_Prog_Id;
    pragma Precondition
      (Op_Eq_Prog_Id_Valid (Id));
@@ -6507,7 +6507,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Ne_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Ne_Prog_Id)
+      Id       : W_Op_Ne_Prog_OId)
      return W_Op_Ne_Prog_Id;
    pragma Precondition
      (Op_Ne_Prog_Id_Valid (Id));
@@ -6527,7 +6527,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Lt_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Lt_Prog_Id)
+      Id       : W_Op_Lt_Prog_OId)
      return W_Op_Lt_Prog_Id;
    pragma Precondition
      (Op_Lt_Prog_Id_Valid (Id));
@@ -6547,7 +6547,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Le_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Le_Prog_Id)
+      Id       : W_Op_Le_Prog_OId)
      return W_Op_Le_Prog_Id;
    pragma Precondition
      (Op_Le_Prog_Id_Valid (Id));
@@ -6567,7 +6567,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Gt_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Gt_Prog_Id)
+      Id       : W_Op_Gt_Prog_OId)
      return W_Op_Gt_Prog_Id;
    pragma Precondition
      (Op_Gt_Prog_Id_Valid (Id));
@@ -6587,7 +6587,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Ge_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Ge_Prog_Id)
+      Id       : W_Op_Ge_Prog_OId)
      return W_Op_Ge_Prog_Id;
    pragma Precondition
      (Op_Ge_Prog_Id_Valid (Id));
@@ -6607,7 +6607,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Or_Else_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Or_Else_Prog_Id)
+      Id       : W_Op_Or_Else_Prog_OId)
      return W_Op_Or_Else_Prog_Id;
    pragma Precondition
      (Op_Or_Else_Prog_Id_Valid (Id));
@@ -6627,7 +6627,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_And_Then_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_And_Then_Prog_Id)
+      Id       : W_Op_And_Then_Prog_OId)
      return W_Op_And_Then_Prog_Id;
    pragma Precondition
      (Op_And_Then_Prog_Id_Valid (Id));
@@ -6647,7 +6647,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Minus_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Minus_Prog_Id)
+      Id       : W_Op_Minus_Prog_OId)
      return W_Op_Minus_Prog_Id;
    pragma Precondition
      (Op_Minus_Prog_Id_Valid (Id));
@@ -6667,7 +6667,7 @@ package Why.Atree.Builders is
    function Duplicate_Op_Not_Prog
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Op_Not_Prog_Id)
+      Id       : W_Op_Not_Prog_OId)
      return W_Op_Not_Prog_Id;
    pragma Precondition
      (Op_Not_Prog_Id_Valid (Id));
@@ -6687,7 +6687,7 @@ package Why.Atree.Builders is
    function Duplicate_Binders
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binders_Id)
+      Id       : W_Binders_OId)
      return W_Binders_Id;
    pragma Precondition
      (Binders_Id_Valid (Id));
@@ -6707,7 +6707,7 @@ package Why.Atree.Builders is
    function Duplicate_Binder
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Binder_Id)
+      Id       : W_Binder_OId)
      return W_Binder_Id;
    pragma Precondition
      (Binder_Id_Valid (Id));
@@ -6727,7 +6727,7 @@ package Why.Atree.Builders is
    function Duplicate_Recfun
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Recfun_Id)
+      Id       : W_Recfun_OId)
      return W_Recfun_Id;
    pragma Precondition
      (Recfun_Id_Valid (Id));
@@ -6747,7 +6747,7 @@ package Why.Atree.Builders is
    function Duplicate_Loop_Annot
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Loop_Annot_Id)
+      Id       : W_Loop_Annot_OId)
      return W_Loop_Annot_Id;
    pragma Precondition
      (Loop_Annot_Id_Valid (Id));
@@ -6767,7 +6767,7 @@ package Why.Atree.Builders is
    function Duplicate_Wf_Arg
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Wf_Arg_Id)
+      Id       : W_Wf_Arg_OId)
      return W_Wf_Arg_Id;
    pragma Precondition
      (Wf_Arg_Id_Valid (Id));
@@ -6787,7 +6787,7 @@ package Why.Atree.Builders is
    function Duplicate_Handler
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Handler_Id)
+      Id       : W_Handler_OId)
      return W_Handler_Id;
    pragma Precondition
      (Handler_Id_Valid (Id));
@@ -6807,7 +6807,7 @@ package Why.Atree.Builders is
    function Duplicate_File
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_File_Id)
+      Id       : W_File_OId)
      return W_File_Id;
    pragma Precondition
      (File_Id_Valid (Id));
@@ -6827,7 +6827,7 @@ package Why.Atree.Builders is
    function Duplicate_Global_Binding
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Global_Binding_Id)
+      Id       : W_Global_Binding_OId)
      return W_Global_Binding_Id;
    pragma Precondition
      (Global_Binding_Id_Valid (Id));
@@ -6847,7 +6847,7 @@ package Why.Atree.Builders is
    function Duplicate_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Global_Rec_Binding_Id)
+      Id       : W_Global_Rec_Binding_OId)
      return W_Global_Rec_Binding_Id;
    pragma Precondition
      (Global_Rec_Binding_Id_Valid (Id));
@@ -6867,7 +6867,7 @@ package Why.Atree.Builders is
    function Duplicate_Parameter_Declaration
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Parameter_Declaration_Id)
+      Id       : W_Parameter_Declaration_OId)
      return W_Parameter_Declaration_Id;
    pragma Precondition
      (Parameter_Declaration_Id_Valid (Id));
@@ -6887,7 +6887,7 @@ package Why.Atree.Builders is
    function Duplicate_Exception_Declaration
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Exception_Declaration_Id)
+      Id       : W_Exception_Declaration_OId)
      return W_Exception_Declaration_Id;
    pragma Precondition
      (Exception_Declaration_Id_Valid (Id));
@@ -6907,7 +6907,7 @@ package Why.Atree.Builders is
    function Duplicate_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
       Link     : Why_Node_Set := Why_Empty;
-      Id       : W_Logic_Declaration_Id)
+      Id       : W_Logic_Declaration_OId)
      return W_Logic_Declaration_Id;
    pragma Precondition
      (Logic_Declaration_Id_Valid (Id));

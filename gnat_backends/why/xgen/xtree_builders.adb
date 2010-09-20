@@ -142,6 +142,17 @@ package body Xtree_Builders is
       Print_Builder_Specification (O, Kind, BK);
       NL (O);
       PL (O, "is");
+
+      if BK = Builder_Copy then
+         PL (O, "begin");
+         Relative_Indent (O, 3);
+         PL (O, "if " & Node_Id_Param & " = Why_Empty then");
+         PL (O, "   return Why_Empty;");
+         PL (O, "end if;");
+         NL (O);
+         PL (O, "declare");
+      end if;
+
       Relative_Indent (O, 3);
       Print_Builder_Local_Declarations (O, Kind, BK);
       Relative_Indent (O, -3);
@@ -149,6 +160,12 @@ package body Xtree_Builders is
       Relative_Indent (O, 3);
       Print_Builder_Implementation (O, Kind, BK);
       Relative_Indent (O, -3);
+
+      if BK = Builder_Copy then
+         PL (O, "end;");
+         Relative_Indent (O, -3);
+      end if;
+
       PL (O, "end " & BN & ";");
    end Print_Builder_Body;
 
@@ -407,7 +424,7 @@ package body Xtree_Builders is
          P (O, Node_Id_Param);
          Adjust_Columns (O, Node_Id_Param'Length, Max_Param_Len);
          P (O, ": ");
-         P (O, Id_Type_Name (Kind));
+         P (O, Id_Subtype (Mixed_Case_Name (Kind), Regular, Id_Lone));
       end Print_Id_Parameter_Specification;
 
       -----------------------------------
