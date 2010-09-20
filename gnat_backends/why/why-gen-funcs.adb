@@ -111,9 +111,9 @@ package body Why.Gen.Funcs is
       Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Post);
       Declare_Parameter (File,
                          Safe_Version_Name,
-                         Duplicate_Any_Node (Arrows),
+                         Duplicate_Any_Node (Id => Arrows),
                          Why_Empty,
-                         Duplicate_Any_Node (Post));
+                         Duplicate_Any_Node (Id => Post));
    end Declare_Logic_And_Parameters;
 
    -----------------------
@@ -134,14 +134,28 @@ package body Why.Gen.Funcs is
          Contract : constant W_Computation_Spec_Id :=
                       Get_Computation_Spec (Arrows);
       begin
-         if Post /= Why_Empty then
-            Computation_Spec_Set_Postcondition
-              (Contract, New_Assertion (Pred => Post));
+         if Pre /= Why_Empty then
+            declare
+               Assertion     : constant W_Assertion_Id :=
+                                 New_Assertion (Pred => Post);
+               Precondition : constant W_Postcondition_Id :=
+                                 New_Precondition (Assertion => Assertion);
+            begin
+               Computation_Spec_Set_Precondition
+                 (Contract, Precondition);
+            end;
          end if;
 
-         if Pre /= Why_Empty then
-            Computation_Spec_Set_Postcondition
-              (Contract, New_Assertion (Pred => Pre));
+         if Post /= Why_Empty then
+            declare
+               Assertion     : constant W_Assertion_Id :=
+                                 New_Assertion (Pred => Post);
+               Postcondition : constant W_Postcondition_Id :=
+                                 New_Postcondition (Assertion => Assertion);
+            begin
+               Computation_Spec_Set_Postcondition
+                 (Contract, Postcondition);
+            end;
          end if;
       end;
 
