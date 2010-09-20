@@ -1604,17 +1604,20 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Postcondition_Id)
    is
+      Handlers : constant W_Exn_Condition_OList :=
+                   Postcondition_Get_Handlers (Node);
    begin
       Traverse
         (State,
          Postcondition_Get_Assertion (Node));
-      NL (O);
-      Relative_Indent (O, 1);
-      Print_List
-        (State,
-         Postcondition_Get_Handlers (Node),
-         "" & ASCII.LF);
-      Relative_Indent (O, -1);
+
+      if not Is_Empty (Handlers) then
+         NL (O);
+         Relative_Indent (O, 1);
+         Print_List (State, Handlers, "" & ASCII.LF);
+         Relative_Indent (O, -1);
+      end if;
+
       State.Control := Abandon_Children;
    end Postcondition_Pre_Op;
 

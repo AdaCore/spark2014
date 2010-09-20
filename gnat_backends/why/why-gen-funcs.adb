@@ -109,7 +109,11 @@ package body Why.Gen.Funcs is
    begin
       Declare_Logic (File, Name, Arrows);
       Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Post);
-      Declare_Parameter (File, Safe_Version_Name, Arrows, Why_Empty, Post);
+      Declare_Parameter (File,
+                         Safe_Version_Name,
+                         Duplicate_Any_Node (Arrows),
+                         Why_Empty,
+                         Duplicate_Any_Node (Post));
    end Declare_Logic_And_Parameters;
 
    -----------------------
