@@ -47,4 +47,16 @@ package Why.Gen.Arrows is
    --  Preprend the given parameters in Arrow, i.e. generating something
    --  like "Name : Arg_Type -> Arrow".
 
+   function Get_Computation_Spec
+     (Arrow : W_Arrow_Type_Id)
+     return W_Computation_Spec_Id;
+   --  Return the computation spec that is at the end of an arrow chain.
+   --  e.g. from:
+   --
+   --     n1 : type1 -> n2 : type2 -> {pre} type3 {post}
+   --
+   --  return:
+   --
+   --     {pre} type 3 {post}
+
 end Why.Gen.Arrows;

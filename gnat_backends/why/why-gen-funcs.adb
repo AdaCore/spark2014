@@ -31,6 +31,7 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Arrows;      use Why.Gen.Arrows;
 
 package body Why.Gen.Funcs is
 
@@ -97,10 +98,12 @@ package body Why.Gen.Funcs is
    procedure Declare_Logic_And_Parameters
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id) is
+      Arrows : W_Arrow_Type_Id;
+      Pre    : W_Predicate_OId := Why_Empty;
+      Post   : W_Predicate_OId := Why_Empty) is
    begin
       Declare_Logic (File, Name, Arrows);
-      Declare_Parameter (File, To_Program_Space (Name), Arrows);
+      Declare_Parameter (File, To_Program_Space (Name), Arrows, Pre, Post);
    end Declare_Logic_And_Parameters;
 
    -----------------------
@@ -110,11 +113,28 @@ package body Why.Gen.Funcs is
    procedure Declare_Parameter
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id)
+      Arrows : W_Arrow_Type_Id;
+      Pre    : W_Predicate_OId := Why_Empty;
+      Post   : W_Predicate_OId := Why_Empty)
    is
       Parameter : constant W_Parameter_Declaration_Unchecked_Id :=
                     New_Unchecked_Parameter_Declaration;
    begin
+      declare
+         Contract : constant W_Computation_Spec_Id :=
+                      Get_Computation_Spec (Arrows);
+      begin
+         if Post /= Why_Empty then
+            Computation_Spec_Set_Postcondition
+              (Contract, New_Assertion (Pred => Post));
+         end if;
+
+         if Pre /= Why_Empty then
+            Computation_Spec_Set_Postcondition
+              (Contract, New_Assertion (Pred => Pre));
+         end if;
+      end;
+
       Parameter_Declaration_Append_To_Names (Parameter, Name);
       Parameter_Declaration_Set_Parameter_Type (Parameter, Arrows);
       File_Append_To_Declarations (File, Parameter);

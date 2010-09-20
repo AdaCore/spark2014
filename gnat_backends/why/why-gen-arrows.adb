@@ -26,8 +26,28 @@
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Sinfo;           use Why.Sinfo;
 
 package body Why.Gen.Arrows is
+
+   --------------------------
+   -- Get_Computation_Spec --
+   --------------------------
+
+   function Get_Computation_Spec
+     (Arrow : W_Arrow_Type_Id)
+     return W_Computation_Spec_Id
+   is
+      Right : constant W_Computation_Type_Id :=
+                Arrow_Type_Get_Right (Arrow);
+   begin
+      if Get_Kind (Right) = W_Computation_Spec then
+         return Right;
+      else
+         return Get_Computation_Spec (Right);
+      end if;
+   end Get_Computation_Spec;
 
    ---------------------
    -- New_Arrow_Stack --

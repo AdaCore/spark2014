@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
+with Why.Ids;   use Why.Ids;
+with Why.Types; use Why.Types;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
@@ -41,19 +42,23 @@ package Why.Gen.Funcs is
    procedure Declare_Logic_And_Parameters
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
+      Arrows : W_Arrow_Type_Id;
+      Pre    : W_Predicate_OId := Why_Empty;
+      Post   : W_Predicate_OId := Why_Empty);
    --  Create a logic declaration and it corresponding declaration in
    --  the program space (safe and default) and append it to File. Name
    --  is the name of the logic function declaration, Arrows is the
-   --  spec of the default program declaration; both will be merged as is
-   --  into the resulting syntax tree.
+   --  spec of the default program declaration; all params will be merged
+   --  as is into the resulting syntax tree.
 
    procedure Declare_Parameter
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
+      Arrows : W_Arrow_Type_Id;
+      Pre    : W_Predicate_OId := Why_Empty;
+      Post   : W_Predicate_OId := Why_Empty);
    --  Create a subprogram declaration in the program space (a so called
-   --  "parameter") from its name (Name) and its signature (Arrows). Both
+   --  "parameter") from its name (Name) and its signature (Arrows). All
    --  parameters will be inserted as is into the resulting syntax tree.
 
 end Why.Gen.Funcs;
