@@ -100,10 +100,16 @@ package body Why.Gen.Funcs is
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id;
       Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty) is
+      Post   : W_Predicate_OId := Why_Empty)
+   is
+      Program_Space_Name : constant W_Identifier_Id :=
+                             To_Program_Space (Name);
+      Safe_Version_Name  : constant W_Identifier_Id :=
+                             Safe_Version (Program_Space_Name);
    begin
       Declare_Logic (File, Name, Arrows);
-      Declare_Parameter (File, To_Program_Space (Name), Arrows, Pre, Post);
+      Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Post);
+      Declare_Parameter (File, Safe_Version_Name, Arrows, Why_Empty, Post);
    end Declare_Logic_And_Parameters;
 
    -----------------------

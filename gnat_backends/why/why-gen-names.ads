@@ -40,4 +40,12 @@ package Why.Gen.Names is
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
 
+   function Safe_Version (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  Create a new identifier for the "safe" version (no precondition
+   --  for run-time checks) of a program-space subprogram (a so-called
+   --  "parameter").
+
+   procedure Set_Name (Id : W_Identifier_Id; Name : String);
+   --  Change the name of the given identifier
+
 end Why.Gen.Names;
