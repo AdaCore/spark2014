@@ -199,13 +199,13 @@ is
 end Internal_ASM_Stack;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          5      2      2              0      0      0       1
+Assert or Post:          5      2      3(   1)        0      0      0       0
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           6      0      4              0      0      0       2
+Runtime check:           6      0      6(   2)        0      0      0       0
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 11      2      6              0      0      0       3  <<<
-% Totals:                      18%    55%             0%     0%     0%     27% <<<
+Totals:                 11      2      9(   3)        0      0      0       0
+% Totals:                      18%    82%(  27%)      0%     0%     0%      0%
 ===================== End of Semantic Analysis Summary ========================
