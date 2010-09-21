@@ -152,7 +152,7 @@ package Why.Sinfo is
       --  <label_identifier> ::= <identifier> [ @ [ <identifier> ] ]
 
       W_Operation,
-      --  <operation> ::= <identifier> '(' <term>+ ')'
+      --  <operation> ::= <identifier> '(' <term> (',' <term>)* ')'
 
       W_Named_Term,
       --  <named_term> ::= <label_identifier> '[' <term> ']'
@@ -220,7 +220,7 @@ package Why.Sinfo is
       --  <predicate_instance> ::= <identifier> '(' <term>+ ')'
 
       W_Related_Terms,
-      --  <relation_site> ::= <term> <relation> <term> [ <relation> <term> ]
+      --  <related_terms> ::= <term> <relation> <term> [ <relation> <term> ]
 
       W_Implication,
       --  <implication> ::= <predicate> '->' <predicate>

@@ -587,7 +587,7 @@ package body Why.Atree.Sprint is
         (State,
          Operation_Get_Name (Node));
       P (O, " (");
-      Traverse_List
+      Print_List
         (State,
          Operation_Get_Parameters (Node));
       P (O, ")");
