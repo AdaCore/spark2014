@@ -137,7 +137,7 @@ package body Why.Gen.Funcs is
          if Pre /= Why_Empty then
             declare
                Assertion     : constant W_Assertion_Id :=
-                                 New_Assertion (Pred => Post);
+                                 New_Assertion (Pred => Pre);
                Precondition : constant W_Postcondition_Id :=
                                  New_Precondition (Assertion => Assertion);
             begin
