@@ -87,8 +87,7 @@ package body Why.Gen.Ints is
       Arrows := Push_Arg (Arrows, New_Identifier ("n"), New_Type_Int);
       Declare_Logic_And_Parameters (File,
                                     New_Conversion_To_Int (Name),
-                                    Arrows,
-                                    Post => New_True_Literal);
+                                    Arrows);
    end Define_Signed_Int_Conversions;
 
 end Why.Gen.Ints;

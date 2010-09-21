@@ -50,6 +50,33 @@ package Why.Gen.Funcs is
    --  is the name of the logic function declaration, Arrows is the
    --  spec of the default program declaration; all params will be merged
    --  as is into the resulting syntax tree.
+   --
+   --  If no postcondition is given, one will be generated that will use the
+   --  logic function. e.g. if Name is "my_func" and Arrows is:
+   --
+   --     x1 : type1 -> x2 : type2 -> {} type3 {}
+   --
+   --  ...then the logic declaration will be:
+   --
+   --     logic my_func : type1, type2 -> type3
+   --
+   --  ...and the generated program-space declaration, with the default
+   --  postcondition will be:
+   --
+   --     parameter my_func_ :
+   --      x1 : type1 -> x2 : type2 ->
+   --     { same_precondition }
+   --      type3
+   --     { my_func (x1, x2) = result }
+   --
+   --  ...along with a "safe" version of this declaration, with no pre:
+   --
+   --     parameter safe___my_func_ :
+   --      x1 : type1 -> x2 : type2 ->
+   --     { }
+   --      type3
+   --     { my_func (x1, x2) = result }
+   --
 
    procedure Declare_Parameter
      (File   : W_File_Id;
@@ -60,5 +87,20 @@ package Why.Gen.Funcs is
    --  Create a subprogram declaration in the program space (a so called
    --  "parameter") from its name (Name) and its signature (Arrows). All
    --  parameters will be inserted as is into the resulting syntax tree.
+
+   function New_Call_To_Logic
+     (Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id)
+     return W_Operation_Id;
+   --  Create a call to an operation in the logical space with parameters
+   --  taken from Arrows. Typically, from:
+   --
+   --     x1 : type1 -> x2 : type2 -> {} type3 {}
+   --
+   --  ...it would produce:
+   --
+   --     operation_name (x1, x2)
+   --
+   --  Name would be inserted as is into the resulting syntax tree.
 
 end Why.Gen.Funcs;

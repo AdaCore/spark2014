@@ -52,6 +52,16 @@ package body Why.Gen.Names is
       return New_Identifier (Symbol => Name_Find);
    end New_Identifier;
 
+   ---------------------------
+   -- New_Result_Identifier --
+   ---------------------------
+
+   function New_Result_Identifier return W_Identifier_Id is
+      Result_Name : constant String := "result";
+   begin
+      return New_Label_Identifier (Name => New_Identifier (Result_Name));
+   end New_Result_Identifier;
+
    ------------------
    -- Safe_Version --
    ------------------

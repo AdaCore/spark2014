@@ -106,14 +106,30 @@ package body Why.Gen.Funcs is
                              To_Program_Space (Name);
       Safe_Version_Name  : constant W_Identifier_Id :=
                              Safe_Version (Program_Space_Name);
+      Safe_Arrows        : constant W_Arrow_Type_Id :=
+                             Duplicate_Any_Node (Id => Arrows);
+      Final_Post         : W_Predicate_OId := Post;
    begin
       Declare_Logic (File, Name, Arrows);
-      Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Post);
+
+      if Final_Post = Why_Empty then
+         declare
+            Logic_Name : constant W_Identifier_Id :=
+                           Duplicate_Any_Node (Id => Name);
+         begin
+            Final_Post := New_Related_Terms
+              (Left  => New_Call_To_Logic (Logic_Name, Arrows),
+               Op    => New_Rel_Eq,
+               Right => New_Result_Identifier);
+         end;
+      end if;
+
+      Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Final_Post);
       Declare_Parameter (File,
                          Safe_Version_Name,
-                         Duplicate_Any_Node (Id => Arrows),
+                         Safe_Arrows,
                          Why_Empty,
-                         Duplicate_Any_Node (Id => Post));
+                         Duplicate_Any_Node (Id => Final_Post));
    end Declare_Logic_And_Parameters;
 
    -----------------------
@@ -163,5 +179,44 @@ package body Why.Gen.Funcs is
       Parameter_Declaration_Set_Parameter_Type (Parameter, Arrows);
       File_Append_To_Declarations (File, Parameter);
    end Declare_Parameter;
+
+   -----------------------
+   -- New_Call_To_Logic --
+   -----------------------
+
+   function New_Call_To_Logic
+     (Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id)
+     return W_Operation_Id
+   is
+      Operation : constant W_Operation_Unchecked_Id :=
+                    New_Unchecked_Operation;
+
+      procedure Append_Arg (Arrows : W_Arrow_Type_Id);
+      --  Duplicate arg names from arrow and append them
+      --  to Operation's arg lists.
+
+      ----------------
+      -- Append_Arg --
+      ----------------
+
+      procedure Append_Arg (Arrows : W_Arrow_Type_Id) is
+         Right : constant W_Computation_Type_Id :=
+                   Arrow_Type_Get_Right (Arrows);
+      begin
+         Operation_Append_To_Parameters
+           (Operation,
+            Duplicate_Any_Node (Id => Arrow_Type_Get_Name (Arrows)));
+
+         if Get_Kind (Right) /= W_Computation_Spec then
+            Append_Arg (Right);
+         end if;
+      end Append_Arg;
+
+   begin
+      Operation_Set_Name (Operation, Name);
+      Append_Arg (Arrows);
+      return Operation;
+   end New_Call_To_Logic;
 
 end Why.Gen.Funcs;

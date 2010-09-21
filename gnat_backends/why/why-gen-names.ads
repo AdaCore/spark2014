@@ -48,4 +48,8 @@ package Why.Gen.Names is
    procedure Set_Name (Id : W_Identifier_Id; Name : String);
    --  Change the name of the given identifier
 
+   function New_Result_Identifier return W_Label_Identifier_Id;
+   --  Return an new identifier for a function result as it
+   --  would be used into a postcondition.
+
 end Why.Gen.Names;
