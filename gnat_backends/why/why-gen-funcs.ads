@@ -65,7 +65,7 @@ package Why.Gen.Funcs is
    --
    --     parameter my_func_ :
    --      x1 : type1 -> x2 : type2 ->
-   --     { same_precondition }
+   --     { some_precondition }
    --      type3
    --     { my_func (x1, x2) = result }
    --
