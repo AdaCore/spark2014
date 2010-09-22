@@ -1,0 +1,12 @@
+internal_adt_stack(1):
+  external_adt_stack__is_empty(S) may_be_deduced_from
+    [fld_stack_top(S) = adt_stack__stack_range__first].
+internal_adt_stack(2):
+  external_adt_stack__is_full(S) may_be_deduced_from
+    [fld_stack_top(S) = adt_stack__stack_range__last].
+internal_adt_stack(3):
+  fld_stack_top(S) >= adt_stack__stack_range__first + 1 may_be_deduced_from
+    [not (external_adt_stack__is_empty(S))].
+internal_adt_stack(4):
+  fld_stack_top(S) <= adt_stack__stack_range__last - 1 may_be_deduced_from
+    [not (external_adt_stack__is_full(S))].
