@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 
-\title{ALFA: Annotated Language of Functions for Ada}
+\title{ALFA: Annotated Language for Functions in Ada}
 
 \begin{document}
 
@@ -12,7 +12,12 @@
 
 Ada 2012 is the next version of the Ada standard, expected to be finalized in
 2012. It contains many extensions that facilitate the expression of
-specifications as subprogram contracts or type invariants:
+specifications, for either dynamic or static checking.
+
+\subsection{Standard}
+
+The standard defines the following extensions to Ada 2005, which facilitate the
+expression of specifications as subprogram contracts or type invariants:
 
 \begin{itemize}
 \item AI05-0001: bounded containers
@@ -42,8 +47,13 @@ being a pair of a precondition (Pre) and a postcondition (Post). Special
 contracts can also be issued for overriding, so that an overriding subprogram
 can only weaken the inherited precondition and strengthen the inherited
 postcondition. The standard defines a general syntax for aspects which allows
-the definition of compiler-specific aspects, like the test case aspect in ALFA.
-As an example, a contract for a square-root function is:
+the definition of compiler-specific aspects, like the test-case aspect in GNAT
+described below. In the postcondition, attribute 'Old applied on a name
+indicates the value attached to this name at subprogram entry, and attribute
+'Result applied to the name of the current function indicates the result
+returned by this function. Preconditions and postconditions may be compiled
+into executable assertions if the right option is given to the compiler (-gnata
+in GNAT).  As an example, a contract for a square-root function is:
 
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
@@ -62,9 +72,9 @@ simple boolean predicates on accessors to a (private) type, which are typically
 the predicates one needs to write subprogram contracts, can be defined as
 parameterized expressions. This has the advantage for proofs that parameterized
 expressions (contrary to functions) 1) cannot have write side-effects, 2) have
-a much simpler form easier to translate into proof predicates, 3) can be
-defined in a package specification which makes them available for proof even if
-the package body is not.
+a much simpler form than the usual functions, which is easier to translate into
+proof predicates, 3) can be defined in a package specification which makes them
+available for proof even if the package body is not.
 
 Quantified expressions allow the expression of predicates which hold for all
 elements in a range or a container, or for some element in a range or a
@@ -81,28 +91,64 @@ enumeration values allowed for the discriminant of a record. Like for type
 invariants, the standard only defines specific points at which this property is
 checked.
 
-\section{ALFA}
+\subsection{GNAT-Specific Extensions}
 
-Ada 2012 is a new revision of Ada which makes it quite easy to perform unit
-testing based on subprogram contracts. ALFA is a sub-language of Ada which
-identifies which subprograms are fit for formal verification. ALFA does not
-work as an Ada profile, as the complete program does not need to be in ALFA for
-individual subprograms to be in ALFA. Rather, subprograms are in ALFA or not
-depending exclusively on their specification and body. In particular, the
-location in the source where a subprogram is defined should not influence
-whether it is in ALFA.
+GNAT defines an aspect called Test\_Case, which applies to subprograms exactly
+like the standard Pre and Post. A test-case is an aggregate with exactly three
+components, all of which are compulsory:
+\begin{itemize}
+\item a Name component, of type string, which gives the name of the test-case;
+\item a Requires component, of type boolean, which defines the entry condition
+  for the test-case;
+\item an Ensures component, of type boolean, which defines the exit condition
+  for the test-case.
+\end{itemize}
 
-\subsection{ALFA Extensions}
+A test-case (N,Req,Ens) is a part of the specification which indicates that
+under entry condition Req, the subprogram terminates with condition Ens. Thus,
+the Requires component bears much resemblance with the precondition, and the
+Ensures component bears much resemblance with the postcondition. Indeed, they
+share the same semantic restrictions (w.r.t. 'Old and 'Result).  More than one
+test-case can be defined for a subprogram. No two test-cases on a subprogram
+should have the same name.
 
-ALFA defines a compiler-specific aspect called Test\_Case, which applies to
-subprograms exactly like the standard Pre and Post. More than one test-case can
-be defined for a subprogram. Verifying a test-case is similar to verifying a
-subprogram contract, except the base contract is extended as follows: each
-test-case defines a specific precondition introduced with \textit{Requires}
-which is and'ed with the subprogram's precondition and a specific postcondition
-introduced with \textit{Ensures} which is and'ed with the subprogram's
-postcondition. As an example, a contract with test-cases for a square-root
-function is:
+Contrary to preconditions and postconditions, test-cases are not compiled into
+executable assertions by the compiler. GNAT only checks that test-cases are
+properly defined. Test-cases should be used by the verification toolkit either
+for unit testing or for unit proof.
+
+For unit testing, it is sufficient to write a test procedure which exercises a
+test-case to consider this test-case successful. To exercise a test-case, a
+test procedure must in order:
+\begin{enumerate}
+\item generate suitable arguments, by calling one or more subprograms
+  called \textit{fixtures};
+\item check that the requires is satisfied on these arguments;
+\item optionally check that the precondition is satisfied on these arguments;
+\item call the subprogram tested on these arguments;
+\item optionally check that the postconditions is satisfied on these arguments;
+\item check that the ensures is satisfied.
+\end{enumerate}
+
+The part about checking the contract of the subprogram is optional because some
+test-cases may correspond to cases beyond the normal behavior of the subprogram
+described in its contract. Typically, robustness tests deal with such abnormal
+behavior.
+
+For unit proof, it is sufficient to prove that the subprogram implements a
+special contract, with:
+\begin{itemize}
+\item the requires, optionally and'ed with the original precondition, as
+  precondition;
+\item the ensures as postcondition.
+\end{itemize}
+
+The original precondition should be and'ed with the requires for those
+test-cases which correspond to normal behavior, and the requires should be the
+only precondition for those test-cases which correspond to abnormal behavior.
+
+As an example, a contract with test-cases for an integer square-root function
+is:
 
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
@@ -110,26 +156,40 @@ function Sqrt (X : Integer) return Integer with
   Post => Sqrt'Result >= 0 and then
           Sqrt'Result ** 2 <= X and then
           (Sqrt'Result + 1) ** 2 > X,
-  Test_Case => (Requires => X = 100, 
+  Test_Case => (Name     => "test case 1",
+                Requires => X = 100, 
                 Ensures  => Sqrt'Result = 10),
-  Test_Case => (Requires => X < 100, 
+  Test_Case => (Name     => "test case 2",
+                Requires => X < 100, 
                 Ensures  => Sqrt'Result >= 0 and then 
                             Sqrt'Result < 10);
 \end{verbatim}
 
-ALFA defines a compiler-specific pragma called Loop\_Invariant, which is a
-special kind of assertion. Pragma Loop\_Invariant can only occur inside a
-loop at the top-level scope. As an example, the following implementation of the
-square-root function has a loop invariant:
+\section{ALFA}
+
+ALFA is a sub-language of Ada 2012 which identifies which subprograms are fit
+for formal verification. ALFA does not work as an Ada profile, as the complete
+program does not need to be in ALFA for individual subprograms to be in
+ALFA. Rather, subprograms are in ALFA or not depending exclusively on their
+specification and body. In particular, the location in the source where a
+subprogram is defined (inside a package or another subprogram, in the public or
+private part, etc.) should not influence whether it is in ALFA.
+
+\subsection{ALFA Extensions}
+
+ALFA considers that the pragma Assert immediately at the start of a loop
+statement list have a special meaning. They define a loop-invariant for this
+loop, which is used for unit proof.  As an example, the following
+implementation of the integer square-root function has a loop-invariant:
 
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer is
    Res, Two_Res, Res_Square : Integer := 0;
 begin
    while Res_Square <= X loop
-      pragma Loop_Invariant (Res >= 0 and then
-                             Two_Res = 2 * Res and then
-                             Res_Square = Res * Res);
+      pragma Assert (Res >= 0 and then
+                     Two_Res = 2 * Res and then
+                     Res_Square = Res * Res);
       Res_Square := Res_Square + Two_Res + 1;
       Two_Res    := Two_Res + 2;
       Res        := Res + 1;
@@ -138,10 +198,10 @@ begin
 end Sqrt;
 \end{verbatim}
 
-This defines a loop invariant to be used for formal proof, which should be:
+The loop-invariant to be used for unit proof should be:
 \begin{itemize}
-\item True the first time the loop is entered;
-\item Provable from assuming it at some previous iteration through the loop and
+\item true the first time the loop is entered;
+\item provable from assuming it at some previous iteration through the loop and
   examining the effect of the loop body.
 \end{itemize}
 
@@ -193,7 +253,7 @@ is in ALFA for the body to be ALFA.
 More generally, the definition of which constructs are in ALFA or not should be
 derived from the report written by Marc Sango for his internship on the
 definition of a verification profile for Ada. Note that uses of 'or/and' are
-not in ALFA while uses of 'or else/and then' are in ALFA.
+not in ALFA whereas uses of 'or else/and then' are in ALFA.
 
 \section{Translation to SPARK / Why}
 
@@ -202,7 +262,13 @@ in SPARK or in Why. From this representation, the Examiner or Why tools can
 generated Verification Conditions (VCs) to prove using an automatic prover.  In
 order to facilitate fine-grain modular proof, each subprogram should lead to
 the generation of a separate unit (package in SPARK, module in Why), which can
-be proved independently.
+be proved independently. Notice that the generated SPARK is not executable, and
+does not match in general the structure of the source Ada program, even if this
+program is written in the SPARK subset of Ada. Ideally, the generated SPARK
+should correspond to a simple subset of SPARK (for example no need for
+visibility rules in this subset as everything is public). Thus, it should be
+easier to formalize this subset and prove the correctness of transformations or
+analyzes on this subset if needed.
 
 \subsection{Generation of Annotations}
 
@@ -242,7 +308,7 @@ begin
 end Problem;
 \end{verbatim}
 
-Functional contracts (precondition and postcondition) in SPARK and Why have a
+Contracts (precondition and postcondition) in SPARK and Why have a
 slightly different semantics than contracts in Ada 2012, because contracts in
 SPARK and Why completely ignore the possibility of a run-time error being
 raised while evaluating the contract. When checking for absence of run-time
@@ -267,7 +333,7 @@ function Get (A : My_Array; X : Integer) return Element;
 
 The first requirement is to break the mutual dependencies between packages and
 between subprograms in Ada, in order to 1) achieve modular verification at the
-subprogram level and 2) prevent circular dependencies between unit and between
+subprogram level and 2) prevent circular dependencies between units and between
 elements of units, which are either not supported or supported with
 restrictions in both SPARK and Why. These mutual dependencies come from
 recursion between subprograms as well as cross calls between packages (P.F
@@ -278,26 +344,26 @@ declarative part.
 
 As an example, a package P defining data and subprograms should lead to the
 generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
-specifications. Then, a subprogram P.F in ALFA should be translated into a unit
-P\_F which manipulates data from P\_Data and calls subprograms from P\_Spec
-(including potential calls to F in P\_Spec, which correspond to recursive calls
-in the source program.)
+specifications. Then, a subprogram P.F in ALFA should be translated into the
+only subprogram in unit P\_F, which manipulates data from P\_Data and calls
+subprograms from P\_Spec (including potential calls to F in P\_Spec, which
+correspond to recursive calls in the source program).
 
 As another example, a subprogram F in ALFA defining local variables and local
 subprograms should lead to the generation of a unit F\_Data for its local
 variables and F\_Spec for its local subprogram specifications. Then, F's body
-should be translated into a unit F which manipulates data from F\_Data and
-calls subprograms from F\_Spec.
+should be translated into the only subprogram in unit F, which manipulates data
+from F\_Data and calls subprograms from F\_Spec.
 
 Thus, the generated units should be layered in:
 \begin{enumerate}
-\item data: units which define global data in SPARK or Why, corresponding to
-  either global or local variables in Ada. These units also define types.
-\item spec: units which define subprogram specifications in SPARK or Why,
+\item $<$data$>$: units which define global data in SPARK or Why, corresponding
+  to either global or local variables in Ada. These units also define types.
+\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
   corresponding to all subprograms specifications and definitions in Ada. These
   units also define parameterized expressions.
-\item body: units which define a single subprogram specification and body in
-  SPARK or Why from a subprogram in ALFA.
+\item $<$body$>$: units which define a single subprogram specification and body
+  in SPARK or Why from a subprogram in ALFA.
 \end{enumerate}
 
 \end{document}
