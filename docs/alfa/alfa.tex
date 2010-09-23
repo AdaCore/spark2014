@@ -7,7 +7,7 @@
 \begin{document}
 
 \maketitle
-
+\sloppy
 \section{Ada 2012}
 
 Ada 2012 is the next version of the Ada standard, expected to be finalized in
@@ -211,9 +211,40 @@ bounded containers, with a different API meant to facilitate proofs.
 
 \subsection{ALFA Restrictions}
 
-A subprogram is in ALFA if both its specification and its body are in
-ALFA. Notice that if a subprogram F calls directly a subprogram G, then for F
-to be in ALFA, G's specification needs to be in ALFA.
+\newcommand{\bnf}[1]{$\mathit{#1}$}
+
+In the following, we refer to entities in the program with the name of the
+corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
+subprogram body. As a general rule, an entity is in ALFA only if all its
+sub-entities which define it are in ALFA. As an example, a
+\bnf{subprogram\_body} is defined in Ada BNF as:
+
+\begin{verbatim}
+subprogram_body ::=
+  [overriding_indicator]
+  subprogram_specification is
+    declarative_part
+  begin
+    handled_sequence_of_statements
+  end [designator];
+\end{verbatim}
+
+Thus, a \bnf{subprogram\_body} is in ALFA only if its
+\bnf{overriding\_indicator} (if present), its \bnf{subprogram\_specification},
+its \bnf{declarative\_part}, its \bnf{handled\_sequence\_of\_statements} and
+its \bnf{designator} are in ALFA.
+
+The additional rules below further restrict which entities are in ALFA.
+
+\subsubsection{Lexical Elements}
+\subsubsection{Declarations}
+\subsubsection{Names and Expressions}
+\subsubsection{Statements}
+\subsubsection{Subprograms}
+
+A subprogram is in ALFA if both its specification and its body are in ALFA,
+when present. Notice that if a subprogram F calls directly a subprogram G, then
+for F to be in ALFA, G's specification needs to be in ALFA.
 
 A subprogram specification is in ALFA if:
 \begin{enumerate}
@@ -249,6 +280,14 @@ A subprogram body is in ALFA if:
 
 In particular, all calls in a body should be to subprograms whose specification
 is in ALFA for the body to be ALFA.
+
+\subsubsection{Package Specifications and Declarations}
+\subsubsection{Use Clauses}
+\subsubsection{Tasks and Synchronisation}
+\subsubsection{Program Structure and Compilation Issues}
+\subsubsection{Exceptions}
+\subsubsection{Generic Units}
+\subsubsection{Representation Issues}
 
 More generally, the definition of which constructs are in ALFA or not should be
 derived from the report written by Marc Sango for his internship on the
