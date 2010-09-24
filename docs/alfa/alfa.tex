@@ -4,6 +4,8 @@
 
 \title{ALFA: Annotated Language for Functions in Ada}
 
+\newcommand{\bnf}[1]{$\mathit{#1}$}
+
 \begin{document}
 
 \maketitle
@@ -211,8 +213,6 @@ bounded containers, with a different API meant to facilitate proofs.
 
 \subsection{ALFA Restrictions}
 
-\newcommand{\bnf}[1]{$\mathit{#1}$}
-
 In the following, we refer to entities in the program with the name of the
 corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
 subprogram body. As a general rule, an entity is in ALFA only if all its
@@ -238,51 +238,74 @@ The additional rules below further restrict which entities are in ALFA.
 
 \subsubsection{Lexical Elements}
 \subsubsection{Declarations}
+
+\bnf{access\_type\_definition} is not in ALFA.
+
+\noindent
+\bnf{access\_to\_object\_definition} is not in ALFA.
+
+\noindent
+\bnf{general\_access\_modifier} is not in ALFA.
+\bnf{access\_to\_subprogram\_definition} is not in ALFA.
+\noindent
+\bnf{null\_exclusion} is not in ALFA.
+\bnf{access\_definition} is not in ALFA.
+
 \subsubsection{Names and Expressions}
 \subsubsection{Statements}
 \subsubsection{Subprograms}
 
-A subprogram is in ALFA if both its specification and its body are in ALFA,
-when present. Notice that if a subprogram F calls directly a subprogram G, then
-for F to be in ALFA, G's specification needs to be in ALFA.
+No special rule. In particular, \bnf{extended\_return\_statement} is in ALFA.
 
-A subprogram specification is in ALFA if:
-\begin{enumerate}
-\item All parameters and return are in ALFA;
-\item The subprogram has a postcondition;
-\item The contract of the subprogram is in ALFA.
-\end{enumerate}
 
-A contract is in ALFA if all expressions appearing in precondition,
-postcondition and test-cases are specification expressions in ALFA. The
-requirement that a subprogram has a postcondition ensures that the user states
-desired properties to prove on this subprogram, and that callers can rely on a
-precise indication of what this subprogram does. Of course, such a
-postcondition can be simply 'True' in which case the user chooses not to give
-any more precise information.
+% A subprogram is in ALFA if both its specification and its body are in ALFA,
+% when present. Notice that if a subprogram F calls directly a subprogram G, then
+% for F to be in ALFA, G's specification needs to be in ALFA.
 
-A specification expression in ALFA is an expression in ALFA which appears as
-part of a contract or an invariant, and:
-\begin{enumerate}
-\item It may contain calls to parameterized expressions, but no calls to
-  functions;
-\item It may contain uses of verified containers, but no uses of other
-  containers.
-\end{enumerate}
+% A subprogram specification is in ALFA if:
+% \begin{enumerate}
+% \item All parameters and return are in ALFA;
+% \item The subprogram has a postcondition;
+% \item The contract of the subprogram is in ALFA.
+% \end{enumerate}
 
-A subprogram body is in ALFA if:
-\begin{enumerate}
-\item The corresponding subprogram specification is in ALFA;
-\item All declarations in its declarative part are in ALFA;
-\item It has no exception handler;
-\item All statements in its sequence of statements are in ALFA.
-\end{enumerate}
+% A contract is in ALFA if all expressions appearing in precondition,
+% postcondition and test-cases are specification expressions in ALFA. The
+% requirement that a subprogram has a postcondition ensures that the user states
+% desired properties to prove on this subprogram, and that callers can rely on a
+% precise indication of what this subprogram does. Of course, such a
+% postcondition can be simply 'True' in which case the user chooses not to give
+% any more precise information.
 
-In particular, all calls in a body should be to subprograms whose specification
-is in ALFA for the body to be ALFA.
+% A specification expression in ALFA is an expression in ALFA which appears as
+% part of a contract or an invariant, and:
+% \begin{enumerate}
+% \item It may contain calls to parameterized expressions, but no calls to
+%   functions;
+% \item It may contain uses of verified containers, but no uses of other
+%   containers.
+% \end{enumerate}
+
+% A subprogram body is in ALFA if:
+% \begin{enumerate}
+% \item The corresponding subprogram specification is in ALFA;
+% \item All declarations in its declarative part are in ALFA;
+% \item It has no exception handler;
+% \item All statements in its sequence of statements are in ALFA.
+% \end{enumerate}
+
+% In particular, all calls in a body should be to subprograms whose specification
+% is in ALFA for the body to be ALFA.
 
 \subsubsection{Package Specifications and Declarations}
+
+No special rule. In particular, renamings and the optional statements in a
+package body are in ALFA.
+
 \subsubsection{Use Clauses}
+
+No special rule.
+
 \subsubsection{Tasks and Synchronisation}
 \subsubsection{Program Structure and Compilation Issues}
 \subsubsection{Exceptions}
@@ -293,6 +316,42 @@ More generally, the definition of which constructs are in ALFA or not should be
 derived from the report written by Marc Sango for his internship on the
 definition of a verification profile for Ada. Note that uses of 'or/and' are
 not in ALFA whereas uses of 'or else/and then' are in ALFA.
+
+\section{Formal Verification}
+
+All of data-flow verification, contract verification and verification of
+absence of run-time errors can be performed independently. The results of
+contract verification and verification of absence of run-time errors are only
+valid if data-flow is correct, which in practice means that data-flow
+verification should be performed as a pre-requisite.
+
+
+\subsection{Data-Flow Verification}
+
+The \bnf{mode} part of a \bnf{parameter\_specification} has a stronger
+semantics in ALFA than in Ada, similar to what is found in SPARK:
+\begin{itemize}
+\item a \bnf{parameter\_specification} of mode \bnf{in} must be initialized at
+  subprogram entry, and there must exist at least one syntactic path through
+  the subprogram which reads it;
+\item a \bnf{parameter\_specification} of mode \bnf{out} must be initialized on
+  all syntactic paths through the subprogram before reaching subprogram exit;
+\item a \bnf{parameter\_specification} of mode \bnf{in\ out} must be initialized
+  at subprogram entry, and there must exist at least one syntactic path through
+  the subprogram which assigns to it before reaching subprogram exit.
+\end{itemize}
+
+Likewise, reads of variables are only allowed if all syntactic paths through
+the subprogram before reaching the read do initialize the complete aggregate
+object from which a part is read. This restriction is similar to the SPARK
+one. It applies both to local variables and parameters.
+
+[need expansion of what is a data-flow error, regarding useless computations]
+
+\subsection{Contract Verification}
+
+\subsection{Verification of Absence of Run-Errors}
+
 
 \section{Translation to SPARK / Why}
 
