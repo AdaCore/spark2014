@@ -609,7 +609,7 @@ package body Xtree_Builders is
          PN : constant Wide_String := Param_Name (FI);
       begin
          if Is_Why_Id (FI) then
-            P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
+            P (O, Kind_Check (Field_Kind (FI), Multiplicity (FI)));
             P (O, " (" & PN & ")");
          else
             P (O, "True");
@@ -617,6 +617,13 @@ package body Xtree_Builders is
 
          if Previous (Position) = No_Element then
             Relative_Indent (O, 1);
+         end if;
+
+         if Is_Why_Id (FI) then
+            NL (O);
+            P (O, "and then ");
+            P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
+            P (O, " (" & PN & ")");
          end if;
 
          if Next (Position) /= No_Element then

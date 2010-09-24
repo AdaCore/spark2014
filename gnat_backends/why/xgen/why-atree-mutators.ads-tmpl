@@ -26,6 +26,7 @@
 
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Ids;            use Why.Ids;
+with Why.Kind_Validity;  use Why.Kind_Validity;
 with Why.Atree.Validity; use Why.Atree.Validity;
 
 package Why.Atree.Mutators is

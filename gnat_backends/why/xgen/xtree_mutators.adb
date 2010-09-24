@@ -407,7 +407,9 @@ package body Xtree_Mutators is
     begin
       if Is_Why_Id (FI) then
          PL (O, "pragma Precondition");
-         PL (O, "  (" & Tree_Check (Field_Kind (FI), M)
+         PL (O, "  (" & Kind_Check (Field_Kind (FI), M)
+             & " (" & PN  & ")");
+         PL (O, "   and then " & Tree_Check (Field_Kind (FI), M)
              & " (" & PN  & "));");
       end if;
    end Print_Mutator_Precondition;

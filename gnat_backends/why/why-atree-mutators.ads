@@ -26,6 +26,7 @@
 
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Ids;            use Why.Ids;
+with Why.Kind_Validity;  use Why.Kind_Validity;
 with Why.Atree.Validity; use Why.Atree.Validity;
 
 package Why.Atree.Mutators is
@@ -47,97 +48,113 @@ package Why.Atree.Mutators is
      (Id   : W_Abstract_Type_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Generic_Formal_Type_Set_Name
      (Id   : W_Generic_Formal_Type_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Generic_Actual_Type_Chain_Append_To_Type_Chain
      (Id       : W_Generic_Actual_Type_Chain_Unchecked_Id;
       New_Item : W_Primitive_Type_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (New_Item));
+     (Primitive_Type_Id_Kind_Valid (New_Item)
+      and then Primitive_Type_Id_Valid (New_Item));
 
    procedure Generic_Actual_Type_Chain_Prepend_To_Type_Chain
      (Id       : W_Generic_Actual_Type_Chain_Unchecked_Id;
       New_Item : W_Primitive_Type_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (New_Item));
+     (Primitive_Type_Id_Kind_Valid (New_Item)
+      and then Primitive_Type_Id_Valid (New_Item));
 
    procedure Generic_Actual_Type_Chain_Set_Name
      (Id   : W_Generic_Actual_Type_Chain_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Array_Type_Set_Component_Type
      (Id             : W_Array_Type_Unchecked_Id;
       Component_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Component_Type));
+     (Primitive_Type_Id_Kind_Valid (Component_Type)
+      and then Primitive_Type_Id_Valid (Component_Type));
 
    procedure Ref_Type_Set_Aliased_Type
      (Id           : W_Ref_Type_Unchecked_Id;
       Aliased_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Aliased_Type));
+     (Primitive_Type_Id_Kind_Valid (Aliased_Type)
+      and then Primitive_Type_Id_Valid (Aliased_Type));
 
    procedure Protected_Value_Type_Set_Value_Type
      (Id         : W_Protected_Value_Type_Unchecked_Id;
       Value_Type : W_Value_Type_Unchecked_Id);
    pragma Precondition
-     (Value_Type_Id_Valid (Value_Type));
+     (Value_Type_Id_Kind_Valid (Value_Type)
+      and then Value_Type_Id_Valid (Value_Type));
 
    procedure Arrow_Type_Set_Name
      (Id   : W_Arrow_Type_Unchecked_Id;
       Name : W_Identifier_Unchecked_OId);
    pragma Precondition
-     (Identifier_OId_Valid (Name));
+     (Identifier_OId_Kind_Valid (Name)
+      and then Identifier_OId_Valid (Name));
 
    procedure Arrow_Type_Set_Left
      (Id   : W_Arrow_Type_Unchecked_Id;
       Left : W_Simple_Value_Type_Unchecked_Id);
    pragma Precondition
-     (Simple_Value_Type_Id_Valid (Left));
+     (Simple_Value_Type_Id_Kind_Valid (Left)
+      and then Simple_Value_Type_Id_Valid (Left));
 
    procedure Arrow_Type_Set_Right
      (Id    : W_Arrow_Type_Unchecked_Id;
       Right : W_Computation_Type_Unchecked_Id);
    pragma Precondition
-     (Computation_Type_Id_Valid (Right));
+     (Computation_Type_Id_Kind_Valid (Right)
+      and then Computation_Type_Id_Valid (Right));
 
    procedure Computation_Spec_Set_Precondition
      (Id           : W_Computation_Spec_Unchecked_Id;
       Precondition : W_Precondition_Unchecked_OId);
    pragma Precondition
-     (Precondition_OId_Valid (Precondition));
+     (Precondition_OId_Kind_Valid (Precondition)
+      and then Precondition_OId_Valid (Precondition));
 
    procedure Computation_Spec_Set_Result_Name
      (Id          : W_Computation_Spec_Unchecked_Id;
       Result_Name : W_Identifier_Unchecked_OId);
    pragma Precondition
-     (Identifier_OId_Valid (Result_Name));
+     (Identifier_OId_Kind_Valid (Result_Name)
+      and then Identifier_OId_Valid (Result_Name));
 
    procedure Computation_Spec_Set_Return_Type
      (Id          : W_Computation_Spec_Unchecked_Id;
       Return_Type : W_Value_Type_Unchecked_Id);
    pragma Precondition
-     (Value_Type_Id_Valid (Return_Type));
+     (Value_Type_Id_Kind_Valid (Return_Type)
+      and then Value_Type_Id_Valid (Return_Type));
 
    procedure Computation_Spec_Set_Effects
      (Id      : W_Computation_Spec_Unchecked_Id;
       Effects : W_Effects_Unchecked_Id);
    pragma Precondition
-     (Effects_Id_Valid (Effects));
+     (Effects_Id_Kind_Valid (Effects)
+      and then Effects_Id_Valid (Effects));
 
    procedure Computation_Spec_Set_Postcondition
      (Id            : W_Computation_Spec_Unchecked_Id;
       Postcondition : W_Postcondition_Unchecked_OId);
    pragma Precondition
-     (Postcondition_OId_Valid (Postcondition));
+     (Postcondition_OId_Kind_Valid (Postcondition)
+      and then Postcondition_OId_Valid (Postcondition));
 
    procedure Integer_Constant_Set_Value
      (Id    : W_Integer_Constant_Unchecked_Id;
@@ -151,1158 +168,1351 @@ package Why.Atree.Mutators is
      (Id   : W_Arith_Operation_Unchecked_Id;
       Left : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Left));
+     (Term_Id_Kind_Valid (Left)
+      and then Term_Id_Valid (Left));
 
    procedure Arith_Operation_Set_Op
      (Id : W_Arith_Operation_Unchecked_Id;
       Op : W_Arith_Op_Unchecked_Id);
    pragma Precondition
-     (Arith_Op_Id_Valid (Op));
+     (Arith_Op_Id_Kind_Valid (Op)
+      and then Arith_Op_Id_Valid (Op));
 
    procedure Arith_Operation_Set_Right
      (Id    : W_Arith_Operation_Unchecked_Id;
       Right : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Right));
+     (Term_Id_Kind_Valid (Right)
+      and then Term_Id_Valid (Right));
 
    procedure Negative_Term_Set_Operand
      (Id      : W_Negative_Term_Unchecked_Id;
       Operand : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Operand));
+     (Term_Id_Kind_Valid (Operand)
+      and then Term_Id_Valid (Operand));
 
    procedure Label_Identifier_Set_Name
      (Id   : W_Label_Identifier_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Label_Identifier_Set_Label
      (Id    : W_Label_Identifier_Unchecked_Id;
       Label : W_Identifier_Unchecked_OId);
    pragma Precondition
-     (Identifier_OId_Valid (Label));
+     (Identifier_OId_Kind_Valid (Label)
+      and then Identifier_OId_Valid (Label));
 
    procedure Operation_Set_Name
      (Id   : W_Operation_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Operation_Append_To_Parameters
      (Id       : W_Operation_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Operation_Prepend_To_Parameters
      (Id       : W_Operation_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Named_Term_Set_Name
      (Id   : W_Named_Term_Unchecked_Id;
       Name : W_Label_Identifier_Unchecked_Id);
    pragma Precondition
-     (Label_Identifier_Id_Valid (Name));
+     (Label_Identifier_Id_Kind_Valid (Name)
+      and then Label_Identifier_Id_Valid (Name));
 
    procedure Named_Term_Set_Term
      (Id   : W_Named_Term_Unchecked_Id;
       Term : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Term));
+     (Term_Id_Kind_Valid (Term)
+      and then Term_Id_Valid (Term));
 
    procedure Conditional_Term_Set_Condition
      (Id        : W_Conditional_Term_Unchecked_Id;
       Condition : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Condition));
+     (Term_Id_Kind_Valid (Condition)
+      and then Term_Id_Valid (Condition));
 
    procedure Conditional_Term_Set_Then_Part
      (Id        : W_Conditional_Term_Unchecked_Id;
       Then_Part : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Then_Part));
+     (Term_Id_Kind_Valid (Then_Part)
+      and then Term_Id_Valid (Then_Part));
 
    procedure Conditional_Term_Set_Else_Part
      (Id        : W_Conditional_Term_Unchecked_Id;
       Else_Part : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Else_Part));
+     (Term_Id_Kind_Valid (Else_Part)
+      and then Term_Id_Valid (Else_Part));
 
    procedure Binding_Term_Set_Name
      (Id   : W_Binding_Term_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Binding_Term_Set_Def
      (Id  : W_Binding_Term_Unchecked_Id;
       Def : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Def));
+     (Term_Id_Kind_Valid (Def)
+      and then Term_Id_Valid (Def));
 
    procedure Binding_Term_Set_Context
      (Id      : W_Binding_Term_Unchecked_Id;
       Context : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Context));
+     (Term_Id_Kind_Valid (Context)
+      and then Term_Id_Valid (Context));
 
    procedure Protected_Term_Set_Term
      (Id   : W_Protected_Term_Unchecked_Id;
       Term : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Term));
+     (Term_Id_Kind_Valid (Term)
+      and then Term_Id_Valid (Term));
 
    procedure Predicate_Identifier_Set_Name
      (Id   : W_Predicate_Identifier_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Predicate_Instance_Set_Name
      (Id   : W_Predicate_Instance_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Predicate_Instance_Append_To_Parameters
      (Id       : W_Predicate_Instance_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Predicate_Instance_Prepend_To_Parameters
      (Id       : W_Predicate_Instance_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Related_Terms_Set_Left
      (Id   : W_Related_Terms_Unchecked_Id;
       Left : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Left));
+     (Term_Id_Kind_Valid (Left)
+      and then Term_Id_Valid (Left));
 
    procedure Related_Terms_Set_Op
      (Id : W_Related_Terms_Unchecked_Id;
       Op : W_Relation_Unchecked_Id);
    pragma Precondition
-     (Relation_Id_Valid (Op));
+     (Relation_Id_Kind_Valid (Op)
+      and then Relation_Id_Valid (Op));
 
    procedure Related_Terms_Set_Right
      (Id    : W_Related_Terms_Unchecked_Id;
       Right : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Right));
+     (Term_Id_Kind_Valid (Right)
+      and then Term_Id_Valid (Right));
 
    procedure Related_Terms_Set_Op2
      (Id  : W_Related_Terms_Unchecked_Id;
       Op2 : W_Relation_Unchecked_OId);
    pragma Precondition
-     (Relation_OId_Valid (Op2));
+     (Relation_OId_Kind_Valid (Op2)
+      and then Relation_OId_Valid (Op2));
 
    procedure Related_Terms_Set_Right2
      (Id     : W_Related_Terms_Unchecked_Id;
       Right2 : W_Term_Unchecked_OId);
    pragma Precondition
-     (Term_OId_Valid (Right2));
+     (Term_OId_Kind_Valid (Right2)
+      and then Term_OId_Valid (Right2));
 
    procedure Implication_Set_Left
      (Id   : W_Implication_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Left));
+     (Predicate_Id_Kind_Valid (Left)
+      and then Predicate_Id_Valid (Left));
 
    procedure Implication_Set_Right
      (Id    : W_Implication_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Right));
+     (Predicate_Id_Kind_Valid (Right)
+      and then Predicate_Id_Valid (Right));
 
    procedure Equivalence_Set_Left
      (Id   : W_Equivalence_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Left));
+     (Predicate_Id_Kind_Valid (Left)
+      and then Predicate_Id_Valid (Left));
 
    procedure Equivalence_Set_Right
      (Id    : W_Equivalence_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Right));
+     (Predicate_Id_Kind_Valid (Right)
+      and then Predicate_Id_Valid (Right));
 
    procedure Disjonction_Set_Left
      (Id   : W_Disjonction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Left));
+     (Predicate_Id_Kind_Valid (Left)
+      and then Predicate_Id_Valid (Left));
 
    procedure Disjonction_Set_Right
      (Id    : W_Disjonction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Right));
+     (Predicate_Id_Kind_Valid (Right)
+      and then Predicate_Id_Valid (Right));
 
    procedure Conjonction_Set_Left
      (Id   : W_Conjonction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Left));
+     (Predicate_Id_Kind_Valid (Left)
+      and then Predicate_Id_Valid (Left));
 
    procedure Conjonction_Set_Right
      (Id    : W_Conjonction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Right));
+     (Predicate_Id_Kind_Valid (Right)
+      and then Predicate_Id_Valid (Right));
 
    procedure Negation_Set_Operand
      (Id      : W_Negation_Unchecked_Id;
       Operand : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Operand));
+     (Predicate_Id_Kind_Valid (Operand)
+      and then Predicate_Id_Valid (Operand));
 
    procedure Conditional_Pred_Set_Condition
      (Id        : W_Conditional_Pred_Unchecked_Id;
       Condition : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Condition));
+     (Term_Id_Kind_Valid (Condition)
+      and then Term_Id_Valid (Condition));
 
    procedure Conditional_Pred_Set_Then_Part
      (Id        : W_Conditional_Pred_Unchecked_Id;
       Then_Part : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Then_Part));
+     (Predicate_Id_Kind_Valid (Then_Part)
+      and then Predicate_Id_Valid (Then_Part));
 
    procedure Conditional_Pred_Set_Else_Part
      (Id        : W_Conditional_Pred_Unchecked_Id;
       Else_Part : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Else_Part));
+     (Predicate_Id_Kind_Valid (Else_Part)
+      and then Predicate_Id_Valid (Else_Part));
 
    procedure Binding_Pred_Set_Name
      (Id   : W_Binding_Pred_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Binding_Pred_Set_Def
      (Id  : W_Binding_Pred_Unchecked_Id;
       Def : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Def));
+     (Term_Id_Kind_Valid (Def)
+      and then Term_Id_Valid (Def));
 
    procedure Binding_Pred_Set_Context
      (Id      : W_Binding_Pred_Unchecked_Id;
       Context : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Context));
+     (Predicate_Id_Kind_Valid (Context)
+      and then Predicate_Id_Valid (Context));
 
    procedure Universal_Quantif_Append_To_Variables
      (Id       : W_Universal_Quantif_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Universal_Quantif_Prepend_To_Variables
      (Id       : W_Universal_Quantif_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Universal_Quantif_Set_Var_Type
      (Id       : W_Universal_Quantif_Unchecked_Id;
       Var_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Var_Type));
+     (Primitive_Type_Id_Kind_Valid (Var_Type)
+      and then Primitive_Type_Id_Valid (Var_Type));
 
    procedure Universal_Quantif_Set_Triggers
      (Id       : W_Universal_Quantif_Unchecked_Id;
       Triggers : W_Triggers_Unchecked_OId);
    pragma Precondition
-     (Triggers_OId_Valid (Triggers));
+     (Triggers_OId_Kind_Valid (Triggers)
+      and then Triggers_OId_Valid (Triggers));
 
    procedure Universal_Quantif_Set_Pred
      (Id   : W_Universal_Quantif_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Existential_Quantif_Append_To_Variables
      (Id       : W_Existential_Quantif_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Existential_Quantif_Prepend_To_Variables
      (Id       : W_Existential_Quantif_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Existential_Quantif_Set_Var_Type
      (Id       : W_Existential_Quantif_Unchecked_Id;
       Var_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Var_Type));
+     (Primitive_Type_Id_Kind_Valid (Var_Type)
+      and then Primitive_Type_Id_Valid (Var_Type));
 
    procedure Existential_Quantif_Set_Pred
      (Id   : W_Existential_Quantif_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Named_Predicate_Set_Name
      (Id   : W_Named_Predicate_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Named_Predicate_Set_Pred
      (Id   : W_Named_Predicate_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Protected_Predicate_Set_Pred
      (Id   : W_Protected_Predicate_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Triggers_Append_To_Triggers
      (Id       : W_Triggers_Unchecked_Id;
       New_Item : W_Trigger_Id);
    pragma Precondition
-     (Trigger_Id_Valid (New_Item));
+     (Trigger_Id_Kind_Valid (New_Item)
+      and then Trigger_Id_Valid (New_Item));
 
    procedure Triggers_Prepend_To_Triggers
      (Id       : W_Triggers_Unchecked_Id;
       New_Item : W_Trigger_Id);
    pragma Precondition
-     (Trigger_Id_Valid (New_Item));
+     (Trigger_Id_Kind_Valid (New_Item)
+      and then Trigger_Id_Valid (New_Item));
 
    procedure Trigger_Append_To_Terms
      (Id       : W_Trigger_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Trigger_Prepend_To_Terms
      (Id       : W_Trigger_Unchecked_Id;
       New_Item : W_Term_Id);
    pragma Precondition
-     (Term_Id_Valid (New_Item));
+     (Term_Id_Kind_Valid (New_Item)
+      and then Term_Id_Valid (New_Item));
 
    procedure Type_Set_External
      (Id       : W_Type_Unchecked_Id;
       External : W_External_Unchecked_OId);
    pragma Precondition
-     (External_OId_Valid (External));
+     (External_OId_Kind_Valid (External)
+      and then External_OId_Valid (External));
 
    procedure Type_Append_To_Type_Parameters
      (Id       : W_Type_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Type_Prepend_To_Type_Parameters
      (Id       : W_Type_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Type_Set_Name
      (Id   : W_Type_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Logic_Set_External
      (Id       : W_Logic_Unchecked_Id;
       External : W_External_Unchecked_OId);
    pragma Precondition
-     (External_OId_Valid (External));
+     (External_OId_Kind_Valid (External)
+      and then External_OId_Valid (External));
 
    procedure Logic_Append_To_Names
      (Id       : W_Logic_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Logic_Prepend_To_Names
      (Id       : W_Logic_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Logic_Set_Logic_Type
      (Id         : W_Logic_Unchecked_Id;
       Logic_Type : W_Logic_Type_Unchecked_Id);
    pragma Precondition
-     (Logic_Type_Id_Valid (Logic_Type));
+     (Logic_Type_Id_Kind_Valid (Logic_Type)
+      and then Logic_Type_Id_Valid (Logic_Type));
 
    procedure Function_Set_Name
      (Id   : W_Function_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Function_Append_To_Binders
      (Id       : W_Function_Unchecked_Id;
       New_Item : W_Logic_Binder_Id);
    pragma Precondition
-     (Logic_Binder_Id_Valid (New_Item));
+     (Logic_Binder_Id_Kind_Valid (New_Item)
+      and then Logic_Binder_Id_Valid (New_Item));
 
    procedure Function_Prepend_To_Binders
      (Id       : W_Function_Unchecked_Id;
       New_Item : W_Logic_Binder_Id);
    pragma Precondition
-     (Logic_Binder_Id_Valid (New_Item));
+     (Logic_Binder_Id_Kind_Valid (New_Item)
+      and then Logic_Binder_Id_Valid (New_Item));
 
    procedure Function_Set_Return_Type
      (Id          : W_Function_Unchecked_Id;
       Return_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Return_Type));
+     (Primitive_Type_Id_Kind_Valid (Return_Type)
+      and then Primitive_Type_Id_Valid (Return_Type));
 
    procedure Function_Set_Def
      (Id  : W_Function_Unchecked_Id;
       Def : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Def));
+     (Term_Id_Kind_Valid (Def)
+      and then Term_Id_Valid (Def));
 
    procedure Predicate_Definition_Set_Name
      (Id   : W_Predicate_Definition_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Predicate_Definition_Append_To_Binders
      (Id       : W_Predicate_Definition_Unchecked_Id;
       New_Item : W_Logic_Binder_Id);
    pragma Precondition
-     (Logic_Binder_Id_Valid (New_Item));
+     (Logic_Binder_Id_Kind_Valid (New_Item)
+      and then Logic_Binder_Id_Valid (New_Item));
 
    procedure Predicate_Definition_Prepend_To_Binders
      (Id       : W_Predicate_Definition_Unchecked_Id;
       New_Item : W_Logic_Binder_Id);
    pragma Precondition
-     (Logic_Binder_Id_Valid (New_Item));
+     (Logic_Binder_Id_Kind_Valid (New_Item)
+      and then Logic_Binder_Id_Valid (New_Item));
 
    procedure Predicate_Definition_Set_Def
      (Id  : W_Predicate_Definition_Unchecked_Id;
       Def : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Def));
+     (Predicate_Id_Kind_Valid (Def)
+      and then Predicate_Id_Valid (Def));
 
    procedure Inductive_Set_Name
      (Id   : W_Inductive_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Inductive_Set_Logic_Type
      (Id         : W_Inductive_Unchecked_Id;
       Logic_Type : W_Logic_Type_Unchecked_Id);
    pragma Precondition
-     (Logic_Type_Id_Valid (Logic_Type));
+     (Logic_Type_Id_Kind_Valid (Logic_Type)
+      and then Logic_Type_Id_Valid (Logic_Type));
 
    procedure Inductive_Append_To_Def
      (Id       : W_Inductive_Unchecked_Id;
       New_Item : W_Inductive_Case_Id);
    pragma Precondition
-     (Inductive_Case_Id_Valid (New_Item));
+     (Inductive_Case_Id_Kind_Valid (New_Item)
+      and then Inductive_Case_Id_Valid (New_Item));
 
    procedure Inductive_Prepend_To_Def
      (Id       : W_Inductive_Unchecked_Id;
       New_Item : W_Inductive_Case_Id);
    pragma Precondition
-     (Inductive_Case_Id_Valid (New_Item));
+     (Inductive_Case_Id_Kind_Valid (New_Item)
+      and then Inductive_Case_Id_Valid (New_Item));
 
    procedure Axiom_Set_Name
      (Id   : W_Axiom_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Axiom_Set_Def
      (Id  : W_Axiom_Unchecked_Id;
       Def : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Def));
+     (Predicate_Id_Kind_Valid (Def)
+      and then Predicate_Id_Valid (Def));
 
    procedure Goal_Set_Name
      (Id   : W_Goal_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Goal_Set_Def
      (Id  : W_Goal_Unchecked_Id;
       Def : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Def));
+     (Predicate_Id_Kind_Valid (Def)
+      and then Predicate_Id_Valid (Def));
 
    procedure Logic_Type_Append_To_Arg_Types
      (Id       : W_Logic_Type_Unchecked_Id;
       New_Item : W_Logic_Arg_Type_Id);
    pragma Precondition
-     (Logic_Arg_Type_Id_Valid (New_Item));
+     (Logic_Arg_Type_Id_Kind_Valid (New_Item)
+      and then Logic_Arg_Type_Id_Valid (New_Item));
 
    procedure Logic_Type_Prepend_To_Arg_Types
      (Id       : W_Logic_Type_Unchecked_Id;
       New_Item : W_Logic_Arg_Type_Id);
    pragma Precondition
-     (Logic_Arg_Type_Id_Valid (New_Item));
+     (Logic_Arg_Type_Id_Kind_Valid (New_Item)
+      and then Logic_Arg_Type_Id_Valid (New_Item));
 
    procedure Logic_Type_Set_Return_Type
      (Id          : W_Logic_Type_Unchecked_Id;
       Return_Type : W_Logic_Return_Type_Unchecked_Id);
    pragma Precondition
-     (Logic_Return_Type_Id_Valid (Return_Type));
+     (Logic_Return_Type_Id_Kind_Valid (Return_Type)
+      and then Logic_Return_Type_Id_Valid (Return_Type));
 
    procedure Logic_Binder_Set_Name
      (Id   : W_Logic_Binder_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Logic_Binder_Set_Param_Type
      (Id         : W_Logic_Binder_Unchecked_Id;
       Param_Type : W_Primitive_Type_Unchecked_Id);
    pragma Precondition
-     (Primitive_Type_Id_Valid (Param_Type));
+     (Primitive_Type_Id_Kind_Valid (Param_Type)
+      and then Primitive_Type_Id_Valid (Param_Type));
 
    procedure Inductive_Case_Set_Name
      (Id   : W_Inductive_Case_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Inductive_Case_Set_Pred
      (Id   : W_Inductive_Case_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Effects_Append_To_Reads
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Effects_Prepend_To_Reads
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Effects_Append_To_Writes
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Effects_Prepend_To_Writes
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Effects_Append_To_Raises
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Effects_Prepend_To_Raises
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Precondition_Set_Assertion
      (Id        : W_Precondition_Unchecked_Id;
       Assertion : W_Assertion_Unchecked_Id);
    pragma Precondition
-     (Assertion_Id_Valid (Assertion));
+     (Assertion_Id_Kind_Valid (Assertion)
+      and then Assertion_Id_Valid (Assertion));
 
    procedure Postcondition_Set_Assertion
      (Id        : W_Postcondition_Unchecked_Id;
       Assertion : W_Assertion_Unchecked_Id);
    pragma Precondition
-     (Assertion_Id_Valid (Assertion));
+     (Assertion_Id_Kind_Valid (Assertion)
+      and then Assertion_Id_Valid (Assertion));
 
    procedure Postcondition_Append_To_Handlers
      (Id       : W_Postcondition_Unchecked_Id;
       New_Item : W_Exn_Condition_Id);
    pragma Precondition
-     (Exn_Condition_Id_Valid (New_Item));
+     (Exn_Condition_Id_Kind_Valid (New_Item)
+      and then Exn_Condition_Id_Valid (New_Item));
 
    procedure Postcondition_Prepend_To_Handlers
      (Id       : W_Postcondition_Unchecked_Id;
       New_Item : W_Exn_Condition_Id);
    pragma Precondition
-     (Exn_Condition_Id_Valid (New_Item));
+     (Exn_Condition_Id_Kind_Valid (New_Item)
+      and then Exn_Condition_Id_Valid (New_Item));
 
    procedure Exn_Condition_Set_Exn_Case
      (Id       : W_Exn_Condition_Unchecked_Id;
       Exn_Case : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Exn_Case));
+     (Identifier_Id_Kind_Valid (Exn_Case)
+      and then Identifier_Id_Valid (Exn_Case));
 
    procedure Exn_Condition_Set_Assertion
      (Id        : W_Exn_Condition_Unchecked_Id;
       Assertion : W_Assertion_Unchecked_Id);
    pragma Precondition
-     (Assertion_Id_Valid (Assertion));
+     (Assertion_Id_Kind_Valid (Assertion)
+      and then Assertion_Id_Valid (Assertion));
 
    procedure Assertion_Set_Pred
      (Id   : W_Assertion_Unchecked_Id;
       Pred : W_Predicate_Unchecked_Id);
    pragma Precondition
-     (Predicate_Id_Valid (Pred));
+     (Predicate_Id_Kind_Valid (Pred)
+      and then Predicate_Id_Valid (Pred));
 
    procedure Assertion_Set_As
      (Id : W_Assertion_Unchecked_Id;
       As : W_Identifier_Unchecked_OId);
    pragma Precondition
-     (Identifier_OId_Valid (As));
+     (Identifier_OId_Kind_Valid (As)
+      and then Identifier_OId_Valid (As));
 
    procedure Prog_Constant_Set_Def
      (Id  : W_Prog_Constant_Unchecked_Id;
       Def : W_Constant_Unchecked_Id);
    pragma Precondition
-     (Constant_Id_Valid (Def));
+     (Constant_Id_Kind_Valid (Def)
+      and then Constant_Id_Valid (Def));
 
    procedure Prog_Identifier_Set_Def
      (Id  : W_Prog_Identifier_Unchecked_Id;
       Def : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Def));
+     (Identifier_Id_Kind_Valid (Def)
+      and then Identifier_Id_Valid (Def));
 
    procedure Deref_Set_Ref
      (Id  : W_Deref_Unchecked_Id;
       Ref : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Ref));
+     (Identifier_Id_Kind_Valid (Ref)
+      and then Identifier_Id_Valid (Ref));
 
    procedure Assignment_Set_Name
      (Id   : W_Assignment_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Assignment_Set_Value
      (Id    : W_Assignment_Unchecked_Id;
       Value : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Value));
+     (Prog_Id_Kind_Valid (Value)
+      and then Prog_Id_Valid (Value));
 
    procedure Array_Access_Set_Name
      (Id   : W_Array_Access_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Array_Access_Set_Index
      (Id    : W_Array_Access_Unchecked_Id;
       Index : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Index));
+     (Prog_Id_Kind_Valid (Index)
+      and then Prog_Id_Valid (Index));
 
    procedure Array_Update_Set_Name
      (Id   : W_Array_Update_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Array_Update_Set_Index
      (Id    : W_Array_Update_Unchecked_Id;
       Index : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Index));
+     (Prog_Id_Kind_Valid (Index)
+      and then Prog_Id_Valid (Index));
 
    procedure Array_Update_Set_Value
      (Id    : W_Array_Update_Unchecked_Id;
       Value : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Value));
+     (Prog_Id_Kind_Valid (Value)
+      and then Prog_Id_Valid (Value));
 
    procedure Infix_Call_Set_Left
      (Id   : W_Infix_Call_Unchecked_Id;
       Left : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Left));
+     (Prog_Id_Kind_Valid (Left)
+      and then Prog_Id_Valid (Left));
 
    procedure Infix_Call_Set_Infix
      (Id    : W_Infix_Call_Unchecked_Id;
       Infix : W_Infix_Unchecked_Id);
    pragma Precondition
-     (Infix_Id_Valid (Infix));
+     (Infix_Id_Kind_Valid (Infix)
+      and then Infix_Id_Valid (Infix));
 
    procedure Infix_Call_Set_Right
      (Id    : W_Infix_Call_Unchecked_Id;
       Right : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Right));
+     (Prog_Id_Kind_Valid (Right)
+      and then Prog_Id_Valid (Right));
 
    procedure Prefix_Call_Set_Prefix
      (Id     : W_Prefix_Call_Unchecked_Id;
       Prefix : W_Prefix_Unchecked_Id);
    pragma Precondition
-     (Prefix_Id_Valid (Prefix));
+     (Prefix_Id_Kind_Valid (Prefix)
+      and then Prefix_Id_Valid (Prefix));
 
    procedure Prefix_Call_Set_Operand
      (Id      : W_Prefix_Call_Unchecked_Id;
       Operand : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Operand));
+     (Prog_Id_Kind_Valid (Operand)
+      and then Prog_Id_Valid (Operand));
 
    procedure Binding_Prog_Set_Name
      (Id   : W_Binding_Prog_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Binding_Prog_Set_Def
      (Id  : W_Binding_Prog_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Binding_Prog_Set_Context
      (Id      : W_Binding_Prog_Unchecked_Id;
       Context : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Context));
+     (Prog_Id_Kind_Valid (Context)
+      and then Prog_Id_Valid (Context));
 
    procedure Binding_Ref_Set_Name
      (Id   : W_Binding_Ref_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Binding_Ref_Set_Def
      (Id  : W_Binding_Ref_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Binding_Ref_Set_Context
      (Id      : W_Binding_Ref_Unchecked_Id;
       Context : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Context));
+     (Prog_Id_Kind_Valid (Context)
+      and then Prog_Id_Valid (Context));
 
    procedure Conditional_Prog_Set_Condition
      (Id        : W_Conditional_Prog_Unchecked_Id;
       Condition : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Condition));
+     (Prog_Id_Kind_Valid (Condition)
+      and then Prog_Id_Valid (Condition));
 
    procedure Conditional_Prog_Set_Then_Part
      (Id        : W_Conditional_Prog_Unchecked_Id;
       Then_Part : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Then_Part));
+     (Prog_Id_Kind_Valid (Then_Part)
+      and then Prog_Id_Valid (Then_Part));
 
    procedure Conditional_Prog_Set_Else_Part
      (Id        : W_Conditional_Prog_Unchecked_Id;
       Else_Part : W_Prog_Unchecked_OId);
    pragma Precondition
-     (Prog_OId_Valid (Else_Part));
+     (Prog_OId_Kind_Valid (Else_Part)
+      and then Prog_OId_Valid (Else_Part));
 
    procedure While_Loop_Set_Condition
      (Id        : W_While_Loop_Unchecked_Id;
       Condition : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Condition));
+     (Prog_Id_Kind_Valid (Condition)
+      and then Prog_Id_Valid (Condition));
 
    procedure While_Loop_Set_Annotation
      (Id         : W_While_Loop_Unchecked_Id;
       Annotation : W_Loop_Annot_Unchecked_Id);
    pragma Precondition
-     (Loop_Annot_Id_Valid (Annotation));
+     (Loop_Annot_Id_Kind_Valid (Annotation)
+      and then Loop_Annot_Id_Valid (Annotation));
 
    procedure While_Loop_Set_Loop_Content
      (Id           : W_While_Loop_Unchecked_Id;
       Loop_Content : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Loop_Content));
+     (Prog_Id_Kind_Valid (Loop_Content)
+      and then Prog_Id_Valid (Loop_Content));
 
    procedure Statement_Sequence_Append_To_Statements
      (Id       : W_Statement_Sequence_Unchecked_Id;
       New_Item : W_Prog_Id);
    pragma Precondition
-     (Prog_Id_Valid (New_Item));
+     (Prog_Id_Kind_Valid (New_Item)
+      and then Prog_Id_Valid (New_Item));
 
    procedure Statement_Sequence_Prepend_To_Statements
      (Id       : W_Statement_Sequence_Unchecked_Id;
       New_Item : W_Prog_Id);
    pragma Precondition
-     (Prog_Id_Valid (New_Item));
+     (Prog_Id_Kind_Valid (New_Item)
+      and then Prog_Id_Valid (New_Item));
 
    procedure Label_Set_Name
      (Id   : W_Label_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Label_Set_Def
      (Id  : W_Label_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Assert_Append_To_Assertions
      (Id       : W_Assert_Unchecked_Id;
       New_Item : W_Assertion_Id);
    pragma Precondition
-     (Assertion_Id_Valid (New_Item));
+     (Assertion_Id_Kind_Valid (New_Item)
+      and then Assertion_Id_Valid (New_Item));
 
    procedure Assert_Prepend_To_Assertions
      (Id       : W_Assert_Unchecked_Id;
       New_Item : W_Assertion_Id);
    pragma Precondition
-     (Assertion_Id_Valid (New_Item));
+     (Assertion_Id_Kind_Valid (New_Item)
+      and then Assertion_Id_Valid (New_Item));
 
    procedure Assert_Set_Prog
      (Id   : W_Assert_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Post_Assertion_Set_Prog
      (Id   : W_Post_Assertion_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Post_Assertion_Set_Post
      (Id   : W_Post_Assertion_Unchecked_Id;
       Post : W_Postcondition_Unchecked_Id);
    pragma Precondition
-     (Postcondition_Id_Valid (Post));
+     (Postcondition_Id_Kind_Valid (Post)
+      and then Postcondition_Id_Valid (Post));
 
    procedure Opaque_Assertion_Set_Prog
      (Id   : W_Opaque_Assertion_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Opaque_Assertion_Set_Post
      (Id   : W_Opaque_Assertion_Unchecked_Id;
       Post : W_Postcondition_Unchecked_Id);
    pragma Precondition
-     (Postcondition_Id_Valid (Post));
+     (Postcondition_Id_Kind_Valid (Post)
+      and then Postcondition_Id_Valid (Post));
 
    procedure Fun_Def_Set_Binders
      (Id      : W_Fun_Def_Unchecked_Id;
       Binders : W_Binders_Unchecked_Id);
    pragma Precondition
-     (Binders_Id_Valid (Binders));
+     (Binders_Id_Kind_Valid (Binders)
+      and then Binders_Id_Valid (Binders));
 
    procedure Fun_Def_Set_Def
      (Id  : W_Fun_Def_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Binding_Fun_Set_Name
      (Id   : W_Binding_Fun_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Binding_Fun_Set_Binders
      (Id      : W_Binding_Fun_Unchecked_Id;
       Binders : W_Binders_Unchecked_Id);
    pragma Precondition
-     (Binders_Id_Valid (Binders));
+     (Binders_Id_Kind_Valid (Binders)
+      and then Binders_Id_Valid (Binders));
 
    procedure Binding_Fun_Set_Def
      (Id  : W_Binding_Fun_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Binding_Fun_Set_Context
      (Id      : W_Binding_Fun_Unchecked_Id;
       Context : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Context));
+     (Prog_Id_Kind_Valid (Context)
+      and then Prog_Id_Valid (Context));
 
    procedure Binding_Rec_Set_Recfun
      (Id     : W_Binding_Rec_Unchecked_Id;
       Recfun : W_Recfun_Unchecked_Id);
    pragma Precondition
-     (Recfun_Id_Valid (Recfun));
+     (Recfun_Id_Kind_Valid (Recfun)
+      and then Recfun_Id_Valid (Recfun));
 
    procedure Binding_Rec_Set_Context
      (Id      : W_Binding_Rec_Unchecked_Id;
       Context : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Context));
+     (Prog_Id_Kind_Valid (Context)
+      and then Prog_Id_Valid (Context));
 
    procedure Prog_Sequence_Append_To_Progs
      (Id       : W_Prog_Sequence_Unchecked_Id;
       New_Item : W_Prog_Id);
    pragma Precondition
-     (Prog_Id_Valid (New_Item));
+     (Prog_Id_Kind_Valid (New_Item)
+      and then Prog_Id_Valid (New_Item));
 
    procedure Prog_Sequence_Prepend_To_Progs
      (Id       : W_Prog_Sequence_Unchecked_Id;
       New_Item : W_Prog_Id);
    pragma Precondition
-     (Prog_Id_Valid (New_Item));
+     (Prog_Id_Kind_Valid (New_Item)
+      and then Prog_Id_Valid (New_Item));
 
    procedure Raise_Statement_Set_Name
      (Id   : W_Raise_Statement_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Raise_Statement_Set_Exn_Type
      (Id       : W_Raise_Statement_Unchecked_Id;
       Exn_Type : W_Value_Type_Unchecked_OId);
    pragma Precondition
-     (Value_Type_OId_Valid (Exn_Type));
+     (Value_Type_OId_Kind_Valid (Exn_Type)
+      and then Value_Type_OId_Valid (Exn_Type));
 
    procedure Raise_Statement_With_Parameters_Set_Name
      (Id   : W_Raise_Statement_With_Parameters_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Raise_Statement_With_Parameters_Set_Parameter
      (Id        : W_Raise_Statement_With_Parameters_Unchecked_Id;
       Parameter : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Parameter));
+     (Term_Id_Kind_Valid (Parameter)
+      and then Term_Id_Valid (Parameter));
 
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Unchecked_Id;
       Exn_Type : W_Value_Type_Unchecked_OId);
    pragma Precondition
-     (Value_Type_OId_Valid (Exn_Type));
+     (Value_Type_OId_Kind_Valid (Exn_Type)
+      and then Value_Type_OId_Valid (Exn_Type));
 
    procedure Try_Block_Set_Prog
      (Id   : W_Try_Block_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Try_Block_Append_To_Handler
      (Id       : W_Try_Block_Unchecked_Id;
       New_Item : W_Handler_Id);
    pragma Precondition
-     (Handler_Id_Valid (New_Item));
+     (Handler_Id_Kind_Valid (New_Item)
+      and then Handler_Id_Valid (New_Item));
 
    procedure Try_Block_Prepend_To_Handler
      (Id       : W_Try_Block_Unchecked_Id;
       New_Item : W_Handler_Id);
    pragma Precondition
-     (Handler_Id_Valid (New_Item));
+     (Handler_Id_Kind_Valid (New_Item)
+      and then Handler_Id_Valid (New_Item));
 
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Unchecked_Id;
       Exn_Type : W_Value_Type_Unchecked_OId);
    pragma Precondition
-     (Value_Type_OId_Valid (Exn_Type));
+     (Value_Type_OId_Kind_Valid (Exn_Type)
+      and then Value_Type_OId_Valid (Exn_Type));
 
    procedure Begin_Block_Set_Prog
      (Id   : W_Begin_Block_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Protected_Prog_Set_Prog
      (Id   : W_Protected_Prog_Unchecked_Id;
       Prog : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Prog));
+     (Prog_Id_Kind_Valid (Prog)
+      and then Prog_Id_Valid (Prog));
 
    procedure Binders_Append_To_Binders
      (Id       : W_Binders_Unchecked_Id;
       New_Item : W_Binder_Id);
    pragma Precondition
-     (Binder_Id_Valid (New_Item));
+     (Binder_Id_Kind_Valid (New_Item)
+      and then Binder_Id_Valid (New_Item));
 
    procedure Binders_Prepend_To_Binders
      (Id       : W_Binders_Unchecked_Id;
       New_Item : W_Binder_Id);
    pragma Precondition
-     (Binder_Id_Valid (New_Item));
+     (Binder_Id_Kind_Valid (New_Item)
+      and then Binder_Id_Valid (New_Item));
 
    procedure Binder_Append_To_Names
      (Id       : W_Binder_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Binder_Prepend_To_Names
      (Id       : W_Binder_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Unchecked_Id;
       Arg_Type : W_Value_Type_Unchecked_Id);
    pragma Precondition
-     (Value_Type_Id_Valid (Arg_Type));
+     (Value_Type_Id_Kind_Valid (Arg_Type)
+      and then Value_Type_Id_Valid (Arg_Type));
 
    procedure Recfun_Set_Name
      (Id   : W_Recfun_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Recfun_Set_Binders
      (Id      : W_Recfun_Unchecked_Id;
       Binders : W_Binders_Unchecked_Id);
    pragma Precondition
-     (Binders_Id_Valid (Binders));
+     (Binders_Id_Kind_Valid (Binders)
+      and then Binders_Id_Valid (Binders));
 
    procedure Recfun_Set_Return_Type
      (Id          : W_Recfun_Unchecked_Id;
       Return_Type : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Return_Type));
+     (Prog_Id_Kind_Valid (Return_Type)
+      and then Prog_Id_Valid (Return_Type));
 
    procedure Recfun_Set_Variant
      (Id      : W_Recfun_Unchecked_Id;
       Variant : W_Wf_Arg_Unchecked_Id);
    pragma Precondition
-     (Wf_Arg_Id_Valid (Variant));
+     (Wf_Arg_Id_Kind_Valid (Variant)
+      and then Wf_Arg_Id_Valid (Variant));
 
    procedure Recfun_Set_Def
      (Id  : W_Recfun_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Unchecked_Id;
       Invariant : W_Assertion_Unchecked_OId);
    pragma Precondition
-     (Assertion_OId_Valid (Invariant));
+     (Assertion_OId_Kind_Valid (Invariant)
+      and then Assertion_OId_Valid (Invariant));
 
    procedure Loop_Annot_Set_Variant
      (Id      : W_Loop_Annot_Unchecked_Id;
       Variant : W_Wf_Arg_Unchecked_OId);
    pragma Precondition
-     (Wf_Arg_OId_Valid (Variant));
+     (Wf_Arg_OId_Kind_Valid (Variant)
+      and then Wf_Arg_OId_Valid (Variant));
 
    procedure Wf_Arg_Set_Def
      (Id  : W_Wf_Arg_Unchecked_Id;
       Def : W_Term_Unchecked_Id);
    pragma Precondition
-     (Term_Id_Valid (Def));
+     (Term_Id_Kind_Valid (Def)
+      and then Term_Id_Valid (Def));
 
    procedure Wf_Arg_Set_For_Id
      (Id     : W_Wf_Arg_Unchecked_Id;
       For_Id : W_Identifier_Unchecked_OId);
    pragma Precondition
-     (Identifier_OId_Valid (For_Id));
+     (Identifier_OId_Kind_Valid (For_Id)
+      and then Identifier_OId_Valid (For_Id));
 
    procedure Handler_Set_Name
      (Id   : W_Handler_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Handler_Set_Parameter
      (Id        : W_Handler_Unchecked_Id;
       Parameter : W_Prog_Unchecked_OId);
    pragma Precondition
-     (Prog_OId_Valid (Parameter));
+     (Prog_OId_Kind_Valid (Parameter)
+      and then Prog_OId_Valid (Parameter));
 
    procedure Handler_Set_Def
      (Id  : W_Handler_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure File_Append_To_Declarations
      (Id       : W_File_Unchecked_Id;
       New_Item : W_Declaration_Id);
    pragma Precondition
-     (Declaration_Id_Valid (New_Item));
+     (Declaration_Id_Kind_Valid (New_Item)
+      and then Declaration_Id_Valid (New_Item));
 
    procedure File_Prepend_To_Declarations
      (Id       : W_File_Unchecked_Id;
       New_Item : W_Declaration_Id);
    pragma Precondition
-     (Declaration_Id_Valid (New_Item));
+     (Declaration_Id_Kind_Valid (New_Item)
+      and then Declaration_Id_Valid (New_Item));
 
    procedure Global_Binding_Set_Name
      (Id   : W_Global_Binding_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Global_Binding_Set_Binders
      (Id      : W_Global_Binding_Unchecked_Id;
       Binders : W_Binders_Unchecked_OId);
    pragma Precondition
-     (Binders_OId_Valid (Binders));
+     (Binders_OId_Kind_Valid (Binders)
+      and then Binders_OId_Valid (Binders));
 
    procedure Global_Binding_Set_Def
      (Id  : W_Global_Binding_Unchecked_Id;
       Def : W_Prog_Unchecked_Id);
    pragma Precondition
-     (Prog_Id_Valid (Def));
+     (Prog_Id_Kind_Valid (Def)
+      and then Prog_Id_Valid (Def));
 
    procedure Global_Rec_Binding_Set_Name
      (Id   : W_Global_Rec_Binding_Unchecked_Id;
       Name : W_Recfun_Unchecked_Id);
    pragma Precondition
-     (Recfun_Id_Valid (Name));
+     (Recfun_Id_Kind_Valid (Name)
+      and then Recfun_Id_Valid (Name));
 
    procedure Parameter_Declaration_Set_External
      (Id       : W_Parameter_Declaration_Unchecked_Id;
       External : W_External_Unchecked_Id);
    pragma Precondition
-     (External_Id_Valid (External));
+     (External_Id_Kind_Valid (External)
+      and then External_Id_Valid (External));
 
    procedure Parameter_Declaration_Append_To_Names
      (Id       : W_Parameter_Declaration_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Parameter_Declaration_Prepend_To_Names
      (Id       : W_Parameter_Declaration_Unchecked_Id;
       New_Item : W_Identifier_Id);
    pragma Precondition
-     (Identifier_Id_Valid (New_Item));
+     (Identifier_Id_Kind_Valid (New_Item)
+      and then Identifier_Id_Valid (New_Item));
 
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Unchecked_Id;
       Parameter_Type : W_Value_Type_Unchecked_Id);
    pragma Precondition
-     (Value_Type_Id_Valid (Parameter_Type));
+     (Value_Type_Id_Kind_Valid (Parameter_Type)
+      and then Value_Type_Id_Valid (Parameter_Type));
 
    procedure Exception_Declaration_Set_Name
      (Id   : W_Exception_Declaration_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id);
    pragma Precondition
-     (Identifier_Id_Valid (Name));
+     (Identifier_Id_Kind_Valid (Name)
+      and then Identifier_Id_Valid (Name));
 
    procedure Exception_Declaration_Set_Parameter
      (Id        : W_Exception_Declaration_Unchecked_Id;
       Parameter : W_Primitive_Type_Unchecked_OId);
    pragma Precondition
-     (Primitive_Type_OId_Valid (Parameter));
+     (Primitive_Type_OId_Kind_Valid (Parameter)
+      and then Primitive_Type_OId_Valid (Parameter));
 
    procedure Logic_Declaration_Set_Decl
      (Id   : W_Logic_Declaration_Unchecked_Id;
       Decl : W_Logic_Declaration_Class_Unchecked_Id);
    pragma Precondition
-     (Logic_Declaration_Class_Id_Valid (Decl));
+     (Logic_Declaration_Class_Id_Kind_Valid (Decl)
+      and then Logic_Declaration_Class_Id_Valid (Decl));
 
 end Why.Atree.Mutators;
