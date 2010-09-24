@@ -234,11 +234,23 @@ Thus, a \bnf{subprogram\_body} is in ALFA only if its
 its \bnf{declarative\_part}, its \bnf{handled\_sequence\_of\_statements} and
 its \bnf{designator} are in ALFA.
 
+This general rule applies individually to every production rule in the BNF
+which define program entities. Thus, some production rules defining a
+non-terminal may be in ALFA while others for the same non-terminal are not in
+ALFA.
+
 The additional rules below further restrict which entities are in ALFA.
 
 \subsubsection{Lexical Elements}
+
+
 \subsubsection{Declarations}
 
+\noindent
+The \bnf{aliased} keyword, wherever it appears, is not in ALFA.
+
+
+\noindent
 \bnf{access\_type\_definition} is not in ALFA.
 
 \noindent
@@ -246,13 +258,44 @@ The additional rules below further restrict which entities are in ALFA.
 
 \noindent
 \bnf{general\_access\_modifier} is not in ALFA.
+
+\noindent
 \bnf{access\_to\_subprogram\_definition} is not in ALFA.
+
 \noindent
 \bnf{null\_exclusion} is not in ALFA.
+
+\noindent
 \bnf{access\_definition} is not in ALFA.
 
+[what about \bnf{aspect_clause} in \bnf{component\_item}?]
+
 \subsubsection{Names and Expressions}
+
+\noindent
+\bnf{explicit\_dereference} is not in ALFA.
+
+\noindent
+\bnf{implicit\_dereference} is not in ALFA.
+
+\noindent
+The \bnf{Access} terminal defining an \bnf{attribute\_designator} is not in
+ALFA.
+
+\noindent
+The \bnf{null} terminal defining an \bnf{primary} is not in ALFA.
+
+\noindent
+\bnf{allocator} is not in ALFA.
+
 \subsubsection{Statements}
+
+\noindent
+\bnf{goto_statement} is not in ALFA.
+
+Note in particular that all possible \bnf{exit\_statement} are in ALFA,
+including those which exit an outter loop.
+
 \subsubsection{Subprograms}
 
 No special rule. In particular, \bnf{extended\_return\_statement} is in ALFA.
