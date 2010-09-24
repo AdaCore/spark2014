@@ -206,7 +206,7 @@ package body Why.Gen.Funcs is
       begin
          Operation_Append_To_Parameters
            (Operation,
-            Duplicate_Any_Node (Id => Arrow_Type_Get_Name (Arrows)));
+            To_Label_Identifier (Arrow_Type_Get_Name (Arrows)));
 
          if Get_Kind (Right) /= W_Computation_Spec then
             Append_Arg (Right);

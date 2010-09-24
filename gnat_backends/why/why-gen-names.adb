@@ -97,4 +97,15 @@ package body Why.Gen.Names is
       return New_Identifier (Img & Suffix);
    end To_Program_Space;
 
+   -------------------------
+   -- To_Label_Identifier --
+   -------------------------
+
+   function To_Label_Identifier
+     (Name : W_Identifier_Id)
+     return W_Label_Identifier_Id is
+   begin
+      return New_Label_Identifier (Name => Duplicate_Any_Node (Id => Name));
+   end To_Label_Identifier;
+
 end Why.Gen.Names;

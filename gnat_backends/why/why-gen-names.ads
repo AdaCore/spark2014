@@ -52,4 +52,9 @@ package Why.Gen.Names is
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.
 
+   function To_Label_Identifier
+     (Name : W_Identifier_Id)
+     return W_Label_Identifier_Id;
+   --  Create a label identifier from Name. Name is duplicated.
+
 end Why.Gen.Names;
