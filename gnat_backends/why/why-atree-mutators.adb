@@ -3798,7 +3798,7 @@ package body Why.Atree.Mutators is
 
    procedure Logic_Declaration_Set_Decl
      (Id   : W_Logic_Declaration_Unchecked_Id;
-      Decl : W_Logic_Unchecked_Id)
+      Decl : W_Logic_Declaration_Class_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
    begin

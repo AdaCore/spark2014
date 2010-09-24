@@ -474,7 +474,7 @@ package Why.Atree is
             ED_Parameter : W_Primitive_Type_Opaque_OId;
 
          when W_Logic_Declaration =>
-            LD_Decl : W_Logic_Opaque_Id;
+            LD_Decl : W_Logic_Declaration_Class_Opaque_Id;
 
       end case;
    end record;

@@ -785,7 +785,7 @@ package Why.Atree.Accessors is
 
    function Logic_Declaration_Get_Decl
      (Id : W_Logic_Declaration_Id)
-     return W_Logic_Id;
+     return W_Logic_Declaration_Class_Id;
 
 private
 
@@ -1731,7 +1731,7 @@ private
 
    function Logic_Declaration_Get_Decl
      (Id : W_Logic_Declaration_Id)
-     return W_Logic_Id is
+     return W_Logic_Declaration_Class_Id is
      (Get_Node (Id).LD_Decl);
 
 end Why.Atree.Accessors;

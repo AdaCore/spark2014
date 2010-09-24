@@ -2964,7 +2964,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Decl     : W_Logic_Id)
+      Decl     : W_Logic_Declaration_Class_Id)
      return W_Logic_Declaration_Id
    is
       Result : Why_Node (W_Logic_Declaration);
@@ -10560,12 +10560,12 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Logic_Declaration);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Logic_Declaration);
-         Decl : constant W_Logic_Id :=
+         Decl : constant W_Logic_Declaration_Class_Id :=
             Logic_Declaration_Get_Decl (Id);
       begin
          Result.Ada_Node := Ada_Node;
          Result.LD_Decl :=
-           Duplicate_Logic
+           Duplicate_Logic_Declaration_Class
            (Id => Decl);
          Set_Link (Result.LD_Decl, New_Id);
          Result.Link := Why_Empty;

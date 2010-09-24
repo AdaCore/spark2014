@@ -62,7 +62,7 @@ package body Why.Gen.Ints is
    is
       T : constant W_Type_Id := Declare_Abstract_Type (Name);
    begin
-      File_Append_To_Declarations (File, T);
+      File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
       Define_Signed_Int_Conversions (File, Name, First, Last);
    end Declare_Abstract_Signed_Int;
 

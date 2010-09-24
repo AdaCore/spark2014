@@ -1301,8 +1301,8 @@ package Why.Atree.Mutators is
 
    procedure Logic_Declaration_Set_Decl
      (Id   : W_Logic_Declaration_Unchecked_Id;
-      Decl : W_Logic_Unchecked_Id);
+      Decl : W_Logic_Declaration_Class_Unchecked_Id);
    pragma Precondition
-     (Logic_Id_Valid (Decl));
+     (Logic_Declaration_Class_Id_Valid (Decl));
 
 end Why.Atree.Mutators;

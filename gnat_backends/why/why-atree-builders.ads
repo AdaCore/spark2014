@@ -2746,10 +2746,10 @@ package Why.Atree.Builders is
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Decl     : W_Logic_Id)
+      Decl     : W_Logic_Declaration_Class_Id)
      return W_Logic_Declaration_Id;
    pragma Precondition
-     (Logic_Id_Valid (Decl));
+     (Logic_Declaration_Class_Id_Kind_Valid (Decl));
    pragma Postcondition
      (Get_Kind
        (New_Logic_Declaration'Result)

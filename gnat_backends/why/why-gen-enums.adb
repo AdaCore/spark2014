@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Types;      use Why.Gen.Types;
 
@@ -37,7 +38,7 @@ package body Why.Gen.Enums is
       T : constant W_Type_Id := Declare_Abstract_Type (Name);
       --  ??? Not fully implemented yet
    begin
-      File_Append_To_Declarations (File, T);
+      File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
    end Declare_Abstract_Boolean_Type;
 
 end Why.Gen.Enums;
