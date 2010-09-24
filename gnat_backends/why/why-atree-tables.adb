@@ -234,7 +234,7 @@ package body Why.Atree.Tables is
    is
       use Node_Tables;
 
-      Node    : Why_Node := Get_Node (Node_Id);
+      Node : Why_Node := Get_Node (Node_Id);
    begin
       Node.Checked := Checked;
       Set_Node (Node_Id, Node);
@@ -247,7 +247,7 @@ package body Why.Atree.Tables is
       use Node_List_Tables;
       use Node_Lists;
 
-      LI      : List_Info := List_Table.Element (List_Id);
+      LI : List_Info := List_Table.Element (List_Id);
    begin
       LI.Checked := Checked;
       Replace_Element (List_Table, List_Id, LI);
