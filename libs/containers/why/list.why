@@ -1,0 +1,316 @@
+(*** TYPES ***)
+
+type cursor
+type list
+type element_t
+
+logic no_element : cursor
+logic empty_ : list
+
+(*** LENGTH ***)
+
+logic length_ : list -> int
+
+axiom length_gte_zero :
+      forall co:list [length_(co)].
+      	     length_(co)>=0
+
+(*** POSITION ***)
+
+logic position_ : list, cursor -> int
+
+axiom position_gte_zero :
+      forall co:list. forall cu:cursor.
+      	     length_(co)>=position_(co,cu)>=0
+
+axiom position_no_element :
+      forall co:list.
+      	     position_(co, no_element) = 0
+
+axiom position_eq :
+      forall co:list. forall cu1:cursor. forall cu2:cursor.
+      	     position_(co,cu1)>0 -> position_(co,cu1)=position_(co,cu2) -> cu1=cu2
+
+(*** IS_EMPTY ***)
+
+predicate is_empty_ (co:list)=
+	  (forall cu:cursor.
+	  	 position_(co,cu)=0)
+	  and length_(co)=0
+
+axiom empty_is_empty :
+      is_empty_(empty_)
+
+
+(*** PREVIOUS ***)
+
+predicate previous__ (co:list, cu1:cursor, cu2:cursor) =
+	  (position_(co,cu1)>1 -> position_(co,cu2)=position_(co,cu1)-1)
+	  and (position_(co,cu1)=1 or cu1=no_element -> cu2=no_element)
+
+logic previous_ : list, cursor -> cursor
+
+axiom previous_previous :
+      forall co:list. forall cu:cursor [previous_(co,cu)].
+      	     previous__(co,cu,previous_(co,cu))
+
+(*** NEXT ***)
+
+predicate next__ (co:list, cu1:cursor, cu2:cursor) =
+	  (0<position_(co,cu1)<length_(co) -> position_(co,cu2)=position_(co,cu1)+1)
+	  and (position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
+
+logic next_ : list, cursor -> cursor
+
+axiom next_next :
+      forall co:list. forall cu:cursor [next_(co,cu)].
+      	     next__(co,cu,next_(co,cu))
+
+(*** LAST ***)
+
+predicate last__ (co:list,cu:cursor) =
+	  (not is_empty_(co) -> position_(co,cu)=length_(co))
+	  and (is_empty_(co) -> cu=no_element)
+
+logic last_ : list -> cursor
+
+axiom last_last :
+      forall co:list [last_(co)].
+      	     last__(co,last_(co))
+
+(*** FIRST ***)
+
+predicate first__ (co:list,cu:cursor) =
+	  ((not is_empty_(co)) -> position_(co,cu)=1)
+	  and (is_empty_(co) -> cu=no_element)
+
+logic first_ : list -> cursor
+
+axiom first_first :
+      forall co:list [first_(co)].
+      	     first__(co,first_(co))
+
+(*** ELEMENT ***)
+
+logic element_ : list, cursor -> element_t
+
+
+(*** FIND ***)
+logic find_ : list, element_t, cursor -> cursor
+
+predicate find__ (co:list,e:element_t,cumin:cursor,cu:cursor) =
+	  position_(co,cumin)>0 and
+	  (((cu=no_element and (forall cun:cursor. position_(co,cun)>=position_(co,cumin) -> not element_(co,cun)=e))
+	  or (position_(co,cu)>0 and element_(co,cu)=e
+	  and (forall cun:cursor. position_(co,cu)>position_(co,cun)>=position_(co,cumin) -> not element_(co,cun)=e))))
+
+axiom find_find_val :
+      forall co:list. forall e:element_t. forall cu:cursor.
+	     (position_(co,cu)>0 -> find__(co,e,cu,find_(co,e,cu))) and
+	     (is_empty_(co) -> find_(co,e,cu)=no_element) 
+
+(*** EQUAL ***)
+
+predicate equal_ (co1:list,co2:list) =
+	  forall cu:cursor.
+	  	 position_(co1,cu)=position_(co2,cu) and
+		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
+
+(*** REPLACE_ELEMENT ***)
+
+predicate replace_element_ (co1:list,cu:cursor,e:element_t,co2:list) =
+	  position_(co1,cu)>0 and length_(co1)=length_(co2) and
+	  element_(co2,cu)=e and
+	  forall cun:cursor.
+	  	 position_(co2,cun)=position_(co1,cun) and
+		 (cu<>cun and position_(co1,cun)>0 -> element_(co2,cun)=element_(co1,cun))
+
+(*** LEFT ***)
+
+predicate left_pos (co:list,i:int,col:list) =
+	  forall cu:cursor.
+	    (position_(co,cu)>=i -> position_(col,cu)=0)
+	    and (position_(co,cu)<i -> position_(col,cu)=position_(co,cu)
+	    	 and element_(col,cu)=element_(co,cu))
+	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
+
+predicate left__ (co:list, cu:cursor, col:list) =
+	  (cu=no_element -> col=co)
+	  and (position_(co,cu)>0 -> 
+	  length_(col)=position_(co,cu)-1 and left_pos(co,position_(co,cu),col))
+
+logic left_ : list, cursor -> list
+
+axiom left_left :
+      forall co:list. forall cu:cursor [left_(co,cu)].
+      	     left__(co,cu,left_(co,cu))
+
+
+(*** RIGHT ***)
+
+predicate right_pos (co:list,i:int,cor:list) =
+	  forall cu:cursor.
+	    (position_(co,cu)<i -> position_(cor,cu)=0)
+	    and (position_(co,cu)>=i -> position_(cor,cu)=position_(co,cu)-i+1
+	    	 and element_(cor,cu)=element_(co,cu))
+	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
+
+predicate right__ (co:list, cu:cursor, cor:list) =
+	  (cu=no_element -> cor=empty_)
+	  and (position_(co,cu)>0 ->
+	      length_(cor)=length_(co)-position_(co,cu)+1 and
+	      right_pos(co,position_(co,cu),cor))
+	  and (forall cun:cursor.
+	      	      position_(cor,cun)>0 -> position_(co,cun)>0)
+
+logic right_ : list, cursor -> list
+
+axiom right_right:
+      forall co:list. forall cu:cursor [right_(co,cu)].
+      	     right__(co,cu,right_(co,cu))
+
+(*** INSERT ***)	  
+
+predicate insert_pos (co1:list,i:int,co2:list) =
+	  forall cun:cursor.
+	    (0<position_(co1,cun)<i -> position_(co2,cun)=position_(co1,cun))
+	    and (i<=position_(co1,cun) -> position_(co2,cun)=position_(co1,cun)+1)
+	    and (0<position_(co1,cun) -> element_(co1,cun)=element_(co2,cun))
+
+predicate insert_inv (co1:list,i:int,e:element_t,co2:list) =
+	  forall cun:cursor.
+	    (position_(co2,cun)=i ->
+	     position_(co1,cun)=0 and element_(co2,cun)=e)
+	    and (0<position_(co2,cun)<i ->
+	     position_(co1,cun)=position_(co2,cun) and
+	     element_(co1,cun)=element_(co2,cun))
+	    and (i<position_(co2,cun) ->
+	     position_(co1,cun)=position_(co2,cun)-1 and
+	     element_(co1,cun)=element_(co2,cun))
+
+predicate insert_ (co1:list,cu:cursor,e:element_t,co2:list) =
+	  (cu=no_element or position_(co1,cu)>0) and length_(co2)=length_(co1)+1 and
+	  ((cu=no_element and insert_pos(co1,length_(co1)+1,co2) and insert_inv(co1,length_(co1)+1,e,co2))
+	  or (position_(co1,cu)>0 and insert_pos(co1,position_(co1,cu),co2) and insert_inv(co1,position_(co1,cu),e,co2)))
+
+(*** DELETE ***)
+
+predicate delete_pos (co1:list, i:int, co2:list) =
+	  forall cun:cursor.
+	    (position_(co1,cun)=i ->
+	     position_(co2,cun)=0)
+	    and (position_(co1,cun)>i ->
+	     position_(co2,cun)=position_(co1,cun)-1 and
+	     element_(co2,cun)=element_(co1,cun))
+	    and (position_(co1,cun)<i ->
+	     position_(co2,cun)=position_(co1,cun) and
+	     element_(co2,cun)=element_(co1,cun))
+
+predicate delete_inv (co1:list, i:int, co2:list) =
+	  forall cun:cursor.
+	    (position_(co2,cun)>=i ->
+	     position_(co1,cun)=position_(co2,cun)+1 and
+	     element_(co1,cun)=element_(co2,cun))
+	    and (0<position_(co2,cun)<i ->
+	     position_(co1,cun)=position_(co2,cun) and
+	     element_(co2,cun)=element_(co1,cun))
+
+predicate delete_ (co1:list,cu:cursor,co2:list) =
+	  position_(co1,cu)>0 and length_(co2)=length_(co1)-1 and
+	  delete_pos(co1,position_(co1,cu),co2) and delete_inv(co1,position_(co1,cu),co2)
+
+(*** HAS_ELEMENT ***)
+
+predicate has_element_(co:list, cu:cursor) =
+	  position_(co,cu)>0
+
+(*** CONTAINS ***)
+
+predicate contains_ (co:list,e:element_t) =
+	  position_(co,find_(co,e,first_(co)))>0
+
+(*** PARAMETERS ***)
+
+parameter element :
+	  co:list -> cu:cursor ->
+	  { has_element_(co,cu) }
+	  element_t
+	  { result=element_(co,cu) }
+
+parameter replace_element :
+	  co:list ref -> cu:cursor -> e:element_t ->
+	  { has_element_(co,cu) }
+	  unit writes co
+	  { replace_element_(co@,cu,e,co) }
+
+parameter insert :
+	  co:list ref -> cu:cursor -> e:element_t ->
+	  { has_element_(co,cu) or cu=no_element }
+	  unit reads co writes co
+	  { insert_(co@,cu,e,co) }
+
+parameter prepend :
+	  co:list ref -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_(co@,first_(co@),e,co) }
+
+parameter append :
+	  co:list ref -> e:element_t ->
+	  { }
+	  unit reads co writes co
+	  { insert_(co@,no_element,e,co) }
+
+parameter delete :
+	  co:list ref -> cu:cursor ->
+	  { has_element_(co,cu) }
+	  unit reads co writes co
+	  { delete_(co@,cu,co) }
+
+parameter previous :
+	  co:list -> cu:cursor ->
+	  { cu=no_element or has_element_(co,cu) }
+	  cursor
+	  { result=previous_(co,cu) }
+
+parameter next :
+	  co:list -> cu:cursor ->
+	  { cu=no_element or has_element_(co,cu) }
+	  cursor 
+	  { result=next_(co,cu) }
+
+parameter first :
+	  co:list ->
+	  { }
+	  cursor
+	  { result=first_(co) }
+
+parameter last :
+	  co:list ->
+	  { }
+	  cursor
+	  { result=last_(co) }
+
+parameter has_element :
+	  co:list -> cu:cursor ->
+	  { }
+	  bool
+	  { if result then has_element_(co,cu) else position_(co,cu)=0 }
+
+parameter length :
+	  co:list ->
+	  { }
+	  int
+	  { result=length_(co) }
+
+parameter curs_equal :
+	  cu1:cursor -> cu2:cursor ->
+	  { }
+	  bool
+	  { if result then cu1=cu2 else cu1<>cu2 }
+
+parameter elt_equal :
+	  e1:element_t -> e2:element_t ->
+	  { }
+	  bool
+	  { if result then e1=e2 else e1<>e2 }

@@ -1,0 +1,816 @@
+include "ordered_map.why"
+
+(* Everything works with alt-ergo (-redondance or not it depends) in 60s,
+   except :
+   	  - two goals, right_equal and right_equal_next, which are not proved in 30min
+	  - two goals contains_left and insert_has_element, which are proved in 15min
+   	  - two VC's of test_new_position which take less than 10min
+   	  - one VC of test12 and test22 which take less than 4min
+   	  - one VC of test_max which takes less than 90s. *)
+
+(* GOALS *)
+
+goal contains_insert :
+     forall l1:map. forall l2:map. forall k:key_t. forall e:element_t.
+     forall i:int [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
+     	    insert_(l1,k,e,l2) -> contains_(l2,i) -> i=witness(k) or contains_(l1,i)
+
+goal contains_delete :
+     forall l1:map. forall l2:map. forall cu:cursor.
+     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(key_(l1,cu))
+
+goal insert_has_element :
+      forall s:map. forall k:key_t. forall e:element_t. forall si:map.
+      forall cu:cursor [insert_(s,k,e,si),has_element_(si,cu)].
+      	     insert_(s,k,e,si) -> has_element_(si,cu) -> has_element_(s,cu) or cu=find_(si,witness(k))
+
+goal delete_has_element :
+      forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,cu)].
+      	     delete_(s,c,si) -> has_element_(si,cu) -> has_element_(s,cu) and not cu=c
+
+goal position_right :
+    forall s:map. forall c:cursor.
+    forall cu:cursor [position_(right_(s,c),cu) | key_(right_(s,c),cu) | element_(right_(s,c),cu)].
+    	   has_element_(s,c) ->
+    	   position_(right_(s,c),cu)>0 -> position_(s,cu)>=position_(s,c) and key_(s,cu)=key_(right_(s,c),cu) and
+	   element_(s,cu)=element_(right_(s,c),cu)
+
+goal left_contains :
+      forall s:map. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      	     has_element_(s,cu) ->
+	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(key_(s,cu)))
+
+goal contains_left :
+     forall ss:map. forall c:cursor [contains_(left_(ss,c),witness(key_(ss,c)))].
+     	    has_element_(ss,c) -> not contains_(left_(ss,c),witness(key_(ss,c)))
+
+goal contains_element :
+     forall s:map. forall cu:cursor [contains_(s,witness(key_(s,cu)))].
+     	    has_element_(s,cu) -> contains_(s,witness(key_(s,cu)))
+
+goal position_next :
+      forall s:map. forall cu:cursor [position_(s,next_(s,cu))].
+      	     has_element_(s,next_(s,cu)) -> position_(s,next_(s,cu))=position_(s,cu)+1
+
+goal delete_next :
+      forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,next_(s,c))].
+      	     delete_(s,c,si) -> has_element_(si,next_(s,c)) or next_(s,c)=no_element
+
+goal length_left :
+      forall s:map. forall c:cursor [length_(left_(s,c))].
+      	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
+
+goal right_delete :
+     forall s1:map. forall s2:map.
+     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
+     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
+
+goal equal_refl :
+     forall s1:map. forall s2:map [equal_(s2,s1)].
+     	    equal_(s1,s2) -> equal_(s2,s1)
+
+goal right_equal :
+     forall s:map. forall cu:cursor. forall s2:map [equal_(right_(s,next_(s,cu)),right_(s2,next_(s,cu)))].
+     	  has_element_(s,cu) -> equal_(right_(s,cu),right_(s2,cu)) ->
+	  equal_(right_(s,next_(s,cu)),right_(s2,next_(s,cu)))
+
+goal equal_trans :
+      forall l1:map. forall l2:map. forall l3:map [equal_(l2,l3),equal_(l1,l3) | equal_(l1,l2),equal_(l1,l3)].
+      	     equal_(l1,l2) -> equal_(l2,l3) -> equal_(l1,l3)
+
+goal has_element_next_right :
+    forall s:map. forall c:cursor [has_element_(s,next_(s,c)), right_(s,c) | has_element_(right_(s,c),next_(s,c))].
+    	   has_element_(s,c) -> has_element_(s,next_(s,c)) -> has_element_(right_(s,c),next_(s,c))
+
+goal has_element_right :
+    forall s:map. forall c:cursor. forall cu:cursor [has_element_(s,cu), right_(s,c) | has_element_(right_(s,c),cu)].
+    	   has_element_(right_(s,c),cu) -> has_element_(s,cu)
+
+goal equal_has_element :
+     forall s1:map. forall s2:map. forall c:cursor [equal_(s1,s2), has_element_(s2,c)].
+     	    has_element_(s1,c) -> equal_(s1,s2) -> has_element_(s2,c)
+
+goal left_length :
+      forall s:map. forall s1:map. forall cu:cursor. forall e:key_t [length_(left_(s,next_(s1,cu)))].
+      	     has_element_(s,cu) ->
+	     length_(left_(s,cu))+1=length_(left_(s,next_(s,cu)))
+
+goal right_equal_next :
+     forall s:map. forall cu:cursor.
+     forall s2:map [equal_(right_(s,cu),right_(s2,cu)),next_(s,cu)].
+     	  has_element_(s,cu) -> equal_(right_(s,cu),right_(s2,cu)) ->
+	  next_(s,cu)=next_(s2,cu)
+
+goal next_last :
+      forall s:map. forall c:cursor [has_element_(s,c),next_(s,c),position_(s,c),length_(s)].
+      	     has_element_(s,c) -> next_(s,c)=no_element -> position_(s,c)=length_(s)
+
+goal right_order :
+      forall co:map. forall cu:cursor. forall i:int [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
+      position_(co,find_(co,i)),position_(co,cu),right_(co,cu)].
+      has_element_(co,cu) ->
+      witness(key_(co,cu))<i ->  contains_(co,i) ->
+      position_(co,find_(co,i))>=position_(co,cu)
+
+goal delete_last :
+      forall s1:map. forall s2:map [delete_(s1,last_(s1),s2)].
+      delete_(s1,last_(s1),s2) -> not is_empty_(s2) -> witness(key_(s2,last_(s2)))<witness(key_(s1,last_(s1)))
+
+goal insert_first :
+      forall s1:map. forall s2:map. forall k:key_t. forall e:element_t [insert_(s1,k,e,s2),witness(key_(s1,first_(s1)))].
+      insert_(s1,k,e,s2) -> not is_empty_(s1) ->
+      witness(k)<witness(key_(s1,first_(s1))) ->
+      k=key_(s2,first_(s2))
+
+goal delete_first :
+      forall s1:map. forall s2:map [delete_(s1,first_(s1),s2)].
+      delete_(s1,first_(s1),s2) -> not is_empty_(s2) -> witness(key_(s2,first_(s2)))>witness(key_(s1,first_(s1)))
+
+goal insert_last :
+      forall s1:map. forall s2:map. forall k:key_t. forall e:element_t [insert_(s1,k,e,s2),witness(key_(s1,last_(s1)))].
+      insert_(s1,k,e,s2) -> not is_empty_(s1) ->
+      witness(k)>witness(key_(s1,last_(s1))) ->
+      k=key_(s2,last_(s2))
+
+goal key_find :
+      forall m:map. forall i:int [witness(key_(m,find_(m,i)))].
+      	     position_(m,find_(m,i))>0 -> i=witness(key_(m,find_(m,i)))
+
+goal equivalent_def :
+      forall i:int. forall m1:map. forall m2:map [equivalent_(m1,m2),contains_(m2,i)].
+      	     equivalent_(m1,m2)->contains_(m1,i)->contains_(m2,i)
+
+goal element__left_nxt :
+      forall i:int. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
+      	     has_element_(m,c) -> contains_(left_(m,next_(m,c)),i) ->
+	     i=witness(key_(m,c)) and element_(m,c)=element__(left_(m,next_(m,c)),i) or
+	     contains_(left_(m,c),i) and element__(left_(m,c),i)=element__(left_(m,next_(m,c)),i)
+
+goal element__left :
+      forall i:int. forall m:map. forall c:cursor [element__(left_(m,c),i)].
+      	     c=no_element or has_element_(m,c) -> contains_(left_(m,c),i) ->
+	     	   element__(left_(m,c),i)=element__(m,i)
+
+goal element_element :
+      forall m:map. forall c:cursor [element__(m,witness(key_(m,c)))].
+      	     has_element_(m,c) -> element__(m,witness(key_(m,c)))=element_(m,c)
+
+goal element__insert :
+      forall i:int. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
+      	     insert_(m,k,e,mi) -> contains_(mi,i) ->
+             contains_(m,i) and element__(m,i)=element__(mi,i) or i=witness(k) and element__(mi,i)=e
+
+goal has_element_left :
+      forall co:map. forall cu:cursor.
+      forall cun:cursor [has_element_(left_(co,cu),cun) | left_(co,cu),has_element_(co,cun)].
+      	     (has_element_(co,cu) or cu=no_element) -> has_element_(left_(co,cu),cun) -> has_element_(co,cun)
+
+goal find_nl :
+      forall m:map. forall c:cursor. forall e:int [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
+      	     has_element_(m,c) -> (c=first_(m) or not c=first_(m) and witness(key_(m,last_(left_(m,c))))<e)
+	     and e<witness(key_(m,c)) -> find_(m,e)=no_element
+
+(* REDONDANT AXIOMS (for Alt-Ergo) *)
+
+(* AXIOMS FROM HASHED_SET *)
+
+axiom contains_insert :
+     forall l1:map. forall l2:map. forall k:key_t. forall e:element_t.
+     forall i:int [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
+     	    insert_(l1,k,e,l2) -> contains_(l2,i) -> i=witness(k) or contains_(l1,i)
+
+axiom contains_delete :
+     forall l1:map. forall l2:map. forall cu:cursor.
+     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(key_(l1,cu))
+
+axiom insert_has_element :
+      forall s:map. forall k:key_t. forall e:element_t. forall si:map.
+      forall cu:cursor [insert_(s,k,e,si),has_element_(si,cu)].
+      	     insert_(s,k,e,si) -> has_element_(si,cu) -> has_element_(s,cu) or cu=find_(si,witness(k))
+
+axiom delete_has_element :
+      forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,cu)].
+      	     delete_(s,c,si) -> has_element_(si,cu) -> has_element_(s,cu) and not cu=c
+
+axiom position_right :
+    forall s:map. forall c:cursor.
+    forall cu:cursor [position_(right_(s,c),cu) | key_(right_(s,c),cu) | element_(right_(s,c),cu)].
+    	   has_element_(s,c) ->
+    	   position_(right_(s,c),cu)>0 -> position_(s,cu)>=position_(s,c) and key_(s,cu)=key_(right_(s,c),cu) and
+	   element_(s,cu)=element_(right_(s,c),cu)
+
+axiom left_contains :
+      forall s:map. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      	     has_element_(s,cu) ->
+	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(key_(s,cu)))
+
+axiom contains_left :
+     forall ss:map. forall c:cursor [contains_(left_(ss,c),witness(key_(ss,c)))].
+     	    has_element_(ss,c) -> not contains_(left_(ss,c),witness(key_(ss,c)))
+
+axiom contains_element :
+     forall s:map. forall cu:cursor [contains_(s,witness(key_(s,cu)))].
+     	    has_element_(s,cu) -> contains_(s,witness(key_(s,cu)))
+
+axiom position_next :
+      forall s:map. forall cu:cursor [position_(s,next_(s,cu))].
+      	     has_element_(s,next_(s,cu)) -> position_(s,next_(s,cu))=position_(s,cu)+1
+
+axiom delete_next :
+      forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,next_(s,c))].
+      	     delete_(s,c,si) -> has_element_(si,next_(s,c)) or next_(s,c)=no_element
+
+axiom length_left :
+      forall s:map. forall c:cursor [length_(left_(s,c))].
+      	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
+
+axiom right_delete :
+     forall s1:map. forall s2:map.
+     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
+     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
+
+axiom equal_refl :
+     forall s1:map. forall s2:map [equal_(s2,s1)].
+     	    equal_(s1,s2) -> equal_(s2,s1)
+
+axiom right_equal :
+     forall s:map. forall cu:cursor. forall s2:map [equal_(right_(s,next_(s,cu)),right_(s2,next_(s,cu)))].
+     	  has_element_(s,cu) -> equal_(right_(s,cu),right_(s2,cu)) ->
+	  equal_(right_(s,next_(s,cu)),right_(s2,next_(s,cu)))
+
+axiom equal_trans :
+      forall l1:map. forall l2:map. forall l3:map [equal_(l2,l3),equal_(l1,l3) | equal_(l1,l2),equal_(l1,l3)].
+      	     equal_(l1,l2) -> equal_(l2,l3) -> equal_(l1,l3)
+
+axiom has_element_next_right :
+    forall s:map. forall c:cursor [has_element_(s,next_(s,c)), right_(s,c) | has_element_(right_(s,c),next_(s,c))].
+    	   has_element_(s,c) -> has_element_(s,next_(s,c)) -> has_element_(right_(s,c),next_(s,c))
+
+axiom has_element_right :
+    forall s:map. forall c:cursor. forall cu:cursor [has_element_(s,cu), right_(s,c) | has_element_(right_(s,c),cu)].
+    	   has_element_(right_(s,c),cu) -> has_element_(s,cu)
+
+axiom equal_has_element :
+     forall s1:map. forall s2:map. forall c:cursor [equal_(s1,s2), has_element_(s2,c)].
+     	    has_element_(s1,c) -> equal_(s1,s2) -> has_element_(s2,c)
+
+axiom left_length :
+      forall s:map. forall s1:map. forall cu:cursor. forall e:key_t [length_(left_(s,next_(s1,cu)))].
+      	     has_element_(s,cu) ->
+	     length_(left_(s,cu))+1=length_(left_(s,next_(s,cu)))
+
+axiom right_equal_next :
+     forall s:map. forall cu:cursor.
+     forall s2:map [equal_(right_(s,cu),right_(s2,cu)),next_(s,cu)].
+     	  has_element_(s,cu) -> equal_(right_(s,cu),right_(s2,cu)) ->
+	  next_(s,cu)=next_(s2,cu)
+
+(* AXIOMS FROM ORDERED_SET *)
+
+axiom next_last :
+      forall s:map. forall c:cursor [has_element_(s,c),next_(s,c),position_(s,c),length_(s)].
+      	     has_element_(s,c) -> next_(s,c)=no_element -> position_(s,c)=length_(s)
+
+axiom right_order :
+      forall co:map. forall cu:cursor. forall i:int [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
+      position_(co,find_(co,i)),position_(co,cu),right_(co,cu)].
+      has_element_(co,cu) ->
+      witness(key_(co,cu))<i ->  contains_(co,i) ->
+      position_(co,find_(co,i))>=position_(co,cu)
+
+axiom delete_last :
+      forall s1:map. forall s2:map [delete_(s1,last_(s1),s2)].
+      delete_(s1,last_(s1),s2) -> not is_empty_(s2) -> witness(key_(s2,last_(s2)))<witness(key_(s1,last_(s1)))
+
+axiom insert_first :insert_first :
+      forall s1:map. forall s2:map. forall k:key_t. forall e:element_t [insert_(s1,k,e,s2),witness(key_(s1,first_(s1)))].
+      insert_(s1,k,e,s2) -> not is_empty_(s1) ->
+      witness(k)<witness(key_(s1,first_(s1))) ->
+      k=key_(s2,first_(s2))
+
+axiom delete_first :
+      forall s1:map. forall s2:map [delete_(s1,first_(s1),s2)].
+      delete_(s1,first_(s1),s2) -> not is_empty_(s2) -> witness(key_(s2,first_(s2)))>witness(key_(s1,first_(s1)))
+
+axiom insert_last :
+      forall s1:map. forall s2:map. forall k:key_t. forall e:element_t [insert_(s1,k,e,s2),witness(key_(s1,last_(s1)))].
+      insert_(s1,k,e,s2) -> not is_empty_(s1) ->
+      witness(k)>witness(key_(s1,last_(s1))) ->
+      k=key_(s2,last_(s2))
+
+(* AXIOMS FROM HASHED_MAP *)
+
+axiom key_find :
+      forall m:map. forall i:int [witness(key_(m,find_(m,i)))].
+      	     position_(m,find_(m,i))>0 -> i=witness(key_(m,find_(m,i)))
+
+axiom element__left_nxt :
+      forall i:int. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
+      	     has_element_(m,c) -> contains_(left_(m,next_(m,c)),i) ->
+	     i=witness(key_(m,c)) and element_(m,c)=element__(left_(m,next_(m,c)),i) or
+	     contains_(left_(m,c),i) and element__(left_(m,c),i)=element__(left_(m,next_(m,c)),i)
+
+axiom element__left :
+      forall i:int. forall m:map. forall c:cursor [element__(left_(m,c),i)].
+      	     c=no_element or has_element_(m,c) -> contains_(left_(m,c),i) ->
+	     	   element__(left_(m,c),i)=element__(m,i)
+
+axiom element_element :
+      forall m:map. forall c:cursor [element__(m,witness(key_(m,c)))].
+      	     has_element_(m,c) -> element__(m,witness(key_(m,c)))=element_(m,c)
+
+axiom element__insert :
+      forall i:int. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
+      	     insert_(m,k,e,mi) -> contains_(mi,i) ->
+             contains_(m,i) and element__(m,i)=element__(mi,i) or i=witness(k) and element__(mi,i)=e
+
+axiom lift :
+    forall i:int. forall m:map [contains_(m,i)].
+    	    contains_(m,i) -> exists k:key_t. witness(k)=i
+
+(* SPECIFIC AXIOMS *)
+
+axiom has_element_left :
+      forall co:map. forall cu:cursor.
+      forall cun:cursor [has_element_(left_(co,cu),cun) | left_(co,cu),has_element_(co,cun)].
+      	     (has_element_(co,cu) or cu=no_element) -> has_element_(left_(co,cu),cun) -> has_element_(co,cun)
+
+axiom find_nl :
+      forall m:map. forall c:cursor. forall e:int [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
+      	     has_element_(m,c) -> (c=first_(m) or not c=first_(m) and witness(key_(m,last_(left_(m,c))))<e)
+	     and e<witness(key_(m,c)) -> find_(m,e)=no_element
+
+
+(*** UNIT-TESTS ***)
+
+let test_replace_element1 (co:map ref) (cu:cursor) (cun:cursor) (k:key_t) (e:element_t) =
+    { has_element_(co,cu) and has_element_(co,cun) and not cu=cun and contains_(co,witness(k)) and
+     witness(k)<>witness(key_(co,cu)) }
+    replace_element co cu e
+    { element_(co,cu)=e and element_(co,cun)=element_(co@,cun) and has_element_(co,cun)
+    and element__(co,witness(k))=element__(co@,witness(k)) and position_(co,cun)=position_(co@,cun) and false }
+
+logic p : element_t -> prop
+
+predicate p_forall_cont (co:map) =
+	  forall cu:cursor.
+	  	 has_element_(co,cu) -> p(element_(co,cu))
+
+let test_replace_element2 (co:map ref) (cu:cursor) (e:element_t) =
+    { has_element_(co,cu) and p(e) and p_forall_cont(co) }
+    replace_element co cu e
+    { p_forall_cont(co) and element_(co,cu)=e and has_element_(co,cu) and false }
+
+let test_insert1 (co:map ref) (k:key_t) (e:element_t) (cu2:cursor) (kl:key_t) =
+    { p(e) and p_forall_cont(co) and has_element_(co,cu2) and not contains_(co,witness(k)) and
+    contains_(co,witness(kl)) }
+    insert co k e
+    { p_forall_cont(co) and
+    contains_(co,witness(k)) and
+    key_(co,cu2)=key_(co@,cu2) and
+    (witness(k)<>witness(kl) -> element__(co,witness(kl))=element__(co@,witness(kl))) and
+    element_(co,cu2)=element_(co@,cu2) and
+    element__(co,witness(k))=e and
+    length_(co)=length_(co@)+1 and
+    find_(co,witness(kl))=find_(co@,witness(kl)) and
+    (witness(key_(co,cu2))<witness(k) -> position_(co,cu2)=position_(co@,cu2)) and
+    (ceiling(co@,witness(k))=no_element -> position_(co,find_(co,witness(k)))=length_(co)) and
+    (has_element_(co@,ceiling(co@,witness(k))) ->
+    		position_(co,find_(co,witness(k)))=position_(co@,ceiling(co@,witness(k)))) and
+    false }
+
+let test_include1 (co:map ref) (k:key_t) (e:element_t) (cu2:cursor) (kl:key_t) =
+    { p(e) and p_forall_cont(co) and has_element_(co,cu2) and not contains_(co,witness(k)) and
+    contains_(co,witness(kl)) }
+    include_ co k e
+    { p_forall_cont(co) and
+    contains_(co,witness(k)) and
+    key_(co,cu2)=key_(co@,cu2) and
+    element_(co,cu2)=element_(co@,cu2) and
+    element__(co,witness(k))=e and
+    length_(co)=length_(co@)+1 and
+    find_(co,witness(kl))=find_(co@,witness(kl)) and
+    false }
+
+let test_include2 (co:map ref) (k:key_t) (e:element_t) (cu2:cursor) (kl:key_t) =
+    { p(e) and p_forall_cont(co) and has_element_(co,cu2) and contains_(co,witness(k)) and
+    witness(k)<>witness(kl) and not find_(co,witness(k))=cu2 }
+    replace co k e
+    { p_forall_cont(co) and 
+    key_(co,find_(co@,witness(k)))=k and
+    key_(co,cu2)=key_(co@,cu2) and
+    element_(co,cu2)=element_(co@,cu2) and
+    element__(co,witness(k))=e and
+    length_(co)=length_(co@) and
+    find_(co,witness(kl))=find_(co@,witness(kl)) and
+    false }
+
+let test_delete (co:map ref) (cu:cursor) (k:key_t) (cu2:cursor) =
+    { has_element_(co,cu) and p_forall_cont(co) and witness(k)<>witness(key_(co,cu)) and
+      witness(key_(co,cu2))<witness(key_(co,cu)) }
+    delete co cu
+    { p_forall_cont(co) and not has_element_(co,cu) and
+     position_(co,cu2)=position_(co@,cu2) and
+     find_(co,witness(k))=find_(co@,witness(k)) and
+     element__(co,witness(k))=element__(co@,witness(k)) and
+     not contains_(co,witness(key_(co@,cu))) and
+     length_(co)=length_(co@)-1 and false }
+
+let test_insert_delete1 (co:map ref) (cun:cursor) (k:key_t) (e:element_t) (kl:key_t) =
+    { p_forall_cont(co) and has_element_(co,cun) and not contains_(co,witness(k)) }
+    init:
+    insert co k e;
+    interm:
+    delete co (find !co k);
+    void
+    { p_forall_cont(co) and element_(co,cun)=element_(co@,cun) and find_(co,witness(kl))=find_(co@,witness(kl)) and false }
+
+let test_exclude (co:map ref) (cu:cursor)(cun:cursor) (k:key_t) =
+    { has_element_(co,cu) and key_(co,cu)=k and has_element_(co,cun) and not cu=cun }
+    exclude co k
+    { element_(co,cun)=element_(co@,cun) and false }
+
+let test_left1 (co:map) (cu:cursor) (k:key_t) (el:key_t) =
+    { p_forall_cont(left_(co,no_element))
+     and (has_element_(co,cu) or cu=no_element) and
+      0<position_(co,find_(co,witness(k)))<position_(co,cu)and
+     (has_element_(co,cu)->witness(el)<witness(key_(co,cu))) and  contains_(co,witness(el)) }
+    void
+    { p_forall_cont(left_(co,cu)) and
+      contains_(left_(co,cu),witness(el)) and 
+      is_empty_(left_(co,first_(co))) and
+      element__(left_(co,cu),witness(k))=element__(co,witness(k)) and
+      equal_(co,left_(co,no_element)) and
+      contains_(left_(co,cu),witness(k))
+      and false }
+
+let test_right1 (co:map) (cu:cursor) (k:key_t) (el:key_t) =
+    { p_forall_cont(co)
+      and has_element_(co,cu) and
+      position_(co,find_(co,witness(k)))>=position_(co,cu) and
+      witness(key_(co,cu))<witness(el) and  contains_(co,witness(el)) }
+    void
+    { p_forall_cont(right_(co,cu)) and
+      is_empty_(right_(co,no_element)) and
+      element__(right_(co,cu),witness(k))=element__(co,witness(k)) and
+      find_(right_(co,cu),witness(el))=find_(co,witness(el)) and
+      contains_(right_(co,cu),witness(el)) and
+      equal_(co,right_(co,first_(co))) and
+      contains_(right_(co,cu),witness(k))
+      and false }
+
+let test_right_delete (s:map ref) (cu1:cursor) (cu2:cursor) (cu:cursor) =
+     { 0<position_(s,cu1)<position_(s,cu2) and position_(s,cu)>position_(s,cu2) }
+     delete s cu1
+     { position_(right_(s@,cu2),cu)=position_(right_(s,cu2),cu) and
+	(position_(right_(s@,cu2),cu)>0 -> element_(right_(s@,cu2),cu)=element_(right_(s,cu2),cu)) and false }
+
+let test_false (co:map ref) (cu:cursor) =
+    { position_(co,cu)>0 }
+    void
+    { false }
+
+(*** TESTS ***)
+
+(* Copys the n first element s of ss into s. *)
+let test11 (s:map ref) (ss:map) (n:int) (c:cursor ref) =
+    { is_empty_(s) and length_(ss)>n and n>0 }
+    let i = ref 1 in
+    c := first ss;
+    init:
+    while !i <= n do
+    	  { invariant
+	    ((forall k:key_t. contains_(s,witness(k)) ->
+	    	     0<position_(ss,find_(ss,witness(k)))<i and
+		     element__(s,witness(k))=element__(ss,witness(k))) and
+	    length_(s)=i-1 and position_(ss,c)=i and i<=n+1)
+	  }
+    iloop:
+    insert s (key ss !c) (element ss !c);
+    c := next ss !c;
+    i := !i+1
+    done;
+    void
+    { equivalent_(s,left_(ss,c)) and length_(s)=n and false }
+
+(* A more user friendly version. *)
+let test12 (s:map ref) (ss:map) (n:int) (c:cursor ref) =
+    { is_empty_(s) and length_(ss)>n and n>0 }
+    let i = ref 0 in
+    c := first ss;
+    init:
+    while !i < n do
+    	  { invariant
+	    (has_element_(ss,c) and
+	    equivalent_(s,left_(ss,c)) and
+	    length_(s)=i and i<=n)
+	  }
+    iloop:
+    insert s (key ss !c) (element ss !c);
+    c := next ss !c;
+    (* 10s with the assertion, 4min without...
+    assert{ forall i:int. contains_(s,i) -> element__(s,i)=element__(left_(ss,c),i)};*)
+    i := !i+1
+    done
+    { equivalent_(s,left_(ss,c)) and length_(s)=n and false }
+
+(* Copys every element of ss into s. *)
+let test2 (s:map ref) (ss:map) =
+    { is_empty_(s) and length_(ss)>0 }
+    let c = ref first(ss) in
+    init:
+    while has_element ss !c do
+    	  { invariant
+	    ((has_element_(ss,c) or c=no_element) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
+	    	    0<position_(ss,find_(ss,witness(k)))<=length_(s) and
+		    element__(s,witness(k))=element__(ss,witness(k))) and
+	    (has_element_(ss,c) ->length_(s)=position_(ss,c)-1) and
+	    (c=no_element -> length_(s)=length_(ss)))
+	  }
+    insert s (key ss !c) (element ss !c);
+    c := next ss !c
+    done
+    { equivalent_(s,ss) and false }
+
+(* A more user friendly version. *)
+let test22 (s:map ref) (ss:map) =
+    { is_empty_(s) and length_(ss)>0 }
+    let c = ref first ss in
+    init:
+    while has_element ss !c do
+    	  { invariant
+	    ((has_element_(ss,c) or c=no_element) and
+	    equivalent_(s,left_(ss,c)))
+	  }
+    insert s (key ss !c) (element ss !c);
+    c := next ss !c;
+    (* 10s with the assertion, 4min without...
+    assert{ forall i:int. contains_(s,i) -> element__(s,i)=element__(left_(ss,c),i)};*)
+    void
+    done
+    { equivalent_(s,ss) and false }
+
+let test3 (s:map) (k:key_t) (c:cursor ref) =
+    c:=first s;
+    let b=ref false in
+    while has_element s !c && not !b do
+    	  { invariant
+	    ((has_element_(s,c) or c=no_element) and
+	    (b=true and has_element_(s,c) and witness(k)=witness(key_(s,c))
+	    or b=false and not contains_(left_(s,c),witness(k)))) }
+	    if equivalent_keys k (key s !c) then
+	       b:=true
+	    else c:=next s !c
+    done;
+    !b
+    { (if result then contains_(s,witness(k)) else not contains_(s,witness(k))) and c=find_(s,witness(k)) and false }
+ 
+
+(* Removes some elements from s and stores them in removed *)
+logic fun_test : element_t -> bool
+
+let interm6 (s:map ref) (removed:map ref) (c:cursor ref) =
+    { has_element_(s,c) and no_overlaping(s,removed) }
+    let c_int = next !s !c in
+    insert removed (key !s !c) (element !s !c);
+    delete s !c;
+    c := c_int
+    { ((has_element_(s@,c) and has_element_(s,c)) or c=no_element) and
+        no_overlaping(s,removed) and
+	length_(left_(s,c))+length_(removed)=length_(left_(s@,c))+length_(removed@) and
+      	equal_(right_(s,c),right_(s@,c)) and c=next_(s@,c@) }
+
+let test6 (s:map ref) (removed:map ref) =
+  { not is_empty_(s) and is_empty_(removed) }
+  let c = ref first !s in
+  init:
+  while has_element !s !c do
+    { invariant
+	(((has_element_(s@init,c) and has_element_(s,c)) or c=no_element) and
+	length_(left_(s,c))+length_(removed)=length_(left_(s@init,c)) and
+	no_overlaping(s,removed) and
+      	equal_(right_(s,c),right_(s@init,c)))
+    }
+    interm6 s removed c
+  done
+   { length_(s)+length_(removed)=length_(s@) and false }
+
+(*** ORDER ***)
+
+let test_order (v:map ref) (k:key_t) (e:element_t) =
+    { is_empty_(v) or witness(key_(v,last_(v)))<=witness(k) }
+    include_ v k e;
+    void
+    { element_(v,last_(v))=e and key_(v,last_(v))=k }
+
+(* Heap : all the elements of result are bigger than those still in v_min *)
+let test_max_order (v_min:map ref) (n:int) =
+    { length_(v_min)>=n }
+    init:
+    let i=ref 1 in
+    let v_max=ref empty_ in
+    if !i<=n then
+    while !i<=n do
+    	  { invariant
+	    (length_(v_min)=length_(v_min@init)-i+1 and
+	    (not is_empty_(v_min) -> not is_empty_(v_max) ->
+	    witness(key_(v_min,last_(v_min)))<witness(key_(v_max,first_(v_max))))) }
+	  iii:
+    	  insert v_max (key !v_min (last !v_min)) (element !v_min (last !v_min));
+	  interm:
+	  delete v_min (last !v_min);
+	  i := !i+1
+    done;
+    !v_max
+    { (not is_empty_(v_min) -> not is_empty_(result) ->
+    witness(key_(v_min,last_(v_min)))<witness(key_(result,first_(result)))) and false }
+
+(* all the elements of result are smaller than those still in v_max *)
+let test_min_order (v_max:map ref) (n:int) =
+    { length_(v_max)>=n }
+    init:
+    let i=ref 1 in
+    let v_min=ref empty_ in
+    if !i<=n then
+    while !i<=n do
+    	  { invariant
+	    (length_(v_max)=length_(v_max@init)-i+1 and
+	    (not is_empty_(v_min) -> not is_empty_(v_max) ->
+	    witness(key_(v_min,last_(v_min)))<witness(key_(v_max,first_(v_max))))) }
+	  iii:
+    	  insert v_min (key !v_max (first !v_max)) (element !v_max (first !v_max));
+	  interm:
+	  delete v_max (first !v_max);
+	  i := !i+1
+    done;
+    !v_min
+    { (not is_empty_(v_max) -> not is_empty_(result) ->
+    witness(key_(result,last_(result)))<witness(key_(v_max,first_(v_max)))) and false }
+
+(* Finds the position in s were e will be inserted.
+   Then includes e in s and returns the cursor which should points toward it .
+   NB : Gwy adds 3 false cases to the 3 cases comming from the if statements *)
+let test_new_position (s:map ref) (e:key_t) (el:element_t) (b:bool) =
+    let c=ref first !s in
+    while ((has_element !s !c) && (lt (key !s !c) e)) do
+    	  { invariant
+	    (has_element_(s,c) or c=no_element) and
+	    (c=first_(s) or witness(key_(s,last_(left_(s,c))))<witness(e))
+	  }
+    	  c:= next !s !c
+    done;
+    eloop:
+    assert{c=ceiling(s,witness(e))};
+    include_ s e el;
+    if has_element !s !c then
+    if lt e (key !s !c) then
+       previous !s !c
+    else !c
+    else 
+    last !s
+    { result=find_(s,witness(e)) and false }
+
+(*** MAX TESTS ***)
+
+logic compare_ : element_t, element_t -> int
+
+predicate is_max (v:map,cu:cursor) =
+	  has_element_(v,cu) and
+	  (forall cun:cursor.
+		 has_element_(v,cun) -> compare_(element_(v,cu),element_(v,cun))>=0)
+
+logic max_ : map -> cursor
+
+axiom is_max_max :
+      forall v:map.
+      	     (not is_empty_(v) -> is_max(v,max_(v)))
+
+parameter max :
+	  v:map ->
+	  { not is_empty_(v) }
+	  cursor
+	  { result=max_(v) }
+
+(* Heap : all the elements of result are bigger than those still in v_min *)
+let test_max (v_min:map ref) (n:int) =
+    { length_(v_min)>=n }
+    init:
+    let i=ref 1 in
+    let v_max=ref empty_ in
+    if !i<=n then
+    while !i<=n do
+    	  { invariant
+	    (length_(v_min)=length_(v_min@init)-i+1 and
+	    no_overlaping(v_min,v_max) and
+	    (forall cu1:cursor. forall cu2:cursor. has_element_(v_max,cu1) ->
+	    has_element_(v_min,cu2) ->
+	    compare_(element_(v_max,cu1),element_(v_min,cu2))>=0))}
+	  eloop:
+    	  insert v_max (key !v_min (max !v_min)) (element !v_min (max !v_min));
+	  delete v_min (max !v_min);
+	  i := !i+1
+    done;
+    !v_max
+    { (forall cu1:cursor. forall cu2:cursor. has_element_(result,cu1) ->
+	    has_element_(v_min,cu2) ->
+	    compare_(element_(result,cu1),element_(v_min,cu2))>=0) and false}
+
+(*** SUM_OF TESTS ***)
+
+logic weight_ : element_t -> int
+logic checkk_ : element_t -> prop
+
+parameter weight :
+	  e:element_t ->
+	  {}
+	  int
+	  {result=weight_(e)}
+
+axiom positive_weight :
+      forall e:element_t.
+      	     weight_(e)>=0
+
+parameter checkk :
+	  e:element_t ->
+	  {}
+	  bool
+	  {result=true <-> checkk_(e)}
+
+(* Sum_of_weight and some axioms *)
+logic sum_of_weight : map -> int
+
+axiom sum_of_weight_delete :
+      forall v1:map. forall v2:map. forall cu:cursor [ sum_of_weight(v1), delete_(v1,cu,v2) ].
+      	     delete_(v1,cu,v2) -> sum_of_weight(v2)=sum_of_weight(v1)-weight_(element_(v1,cu))
+
+axiom sum_of_weight_insert :
+      forall v1:map. forall v2:map. forall k:key_t. forall e:element_t[ sum_of_weight(v1), insert_(v1,k,e,v2) ].
+      	     insert_(v1,k,e,v2) -> sum_of_weight(v2)=sum_of_weight(v1)+weight_(e)
+
+axiom sum_of_weight_null :
+      forall v:map [sum_of_weight(v)].
+      	     is_empty_(v) -> sum_of_weight(v)=0
+
+axiom sum_of_weight_equal :
+      forall v1:map. forall v2:map [sum_of_weight(v1)].
+      	     equivalent_(v1,v2) -> sum_of_weight(v1)=sum_of_weight(v2)
+
+axiom sum_of_weight_left :
+      forall v:map. forall cu:cursor [sum_of_weight(left_(v,cu))].
+      	     has_element_(v,cu) ->
+	     sum_of_weight(left_(v,next_(v,cu)))=sum_of_weight(left_(v,cu))+weight_(element_(v,cu))
+
+(* deletes some elements from v and then inserts an equivalent element *)
+let test_sum_of (v:map ref) (w:int ref) (e:element_t) (k:key_t) =
+    { not contains_(v,witness(k)) }
+    init:
+    w:=0;
+    let c= ref (first !v) in
+    while has_element !v !c do
+    	  { invariant
+	    (sum_of_weight(v)=sum_of_weight(v@init)-w) and
+	    not contains_(v,witness(k))
+    	  }
+    	  if (checkk (element !v !c)) then
+	     (w := !w+(weight(element !v !c));
+	     delete v !c)
+	  else c:=next !v !c
+    done;
+    assert { weight_(e)=w }; (* IMPOSSIBLE TO PROVE *)
+    insert v k e
+    { sum_of_weight(v)=sum_of_weight(v@) }
+
+(* deletes elements from v until their total weight exceeds wmin *)
+let test_sum_of2 (v:map ref) (w:int ref) (wmin : int) =
+    { wmin <= sum_of_weight(v) }
+    init:
+    w:=0;
+    if !w<wmin then
+    while !w<wmin do
+    	  { invariant
+	    (sum_of_weight(v)=sum_of_weight(v@init)-w)
+    	  }
+    	 w := !w+(weight (element !v (first !v)));
+	 delete v (first !v)
+    done
+    { sum_of_weight(v)=sum_of_weight(v@)-w and w>=wmin }
+
+(* computes sum_of_weight(v) *)
+let test_sum_of3 (v:map) =
+    init:
+    let w = ref 0 in
+    let c = ref (first v) in
+    if has_element v !c then
+    while has_element v !c do
+    	  { invariant
+	    (w=sum_of_weight(left_(v,c)) and
+	    (has_element_(v,c) or c=no_element))
+    	  }
+    	 w := !w+(weight(element v !c));
+	 c := next v !c
+    done;
+    !w
+    { sum_of_weight(v)=result }
