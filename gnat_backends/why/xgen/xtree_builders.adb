@@ -274,10 +274,6 @@ package body Xtree_Builders is
                PL (O, New_Node & "." & FN & " := NL;");
                Relative_Indent (O, -3);
                PL (O, "end;");
-               --  ??? To be implemented
-               --  P (O, New_Node & "." & FN & " := ");
-               --  P (O, Param_Name (FI));
-               --  PL (O, ";");
 
             elsif not Is_Why_Id (FI) then
                P (O, New_Node & "." & FN & " := ");
