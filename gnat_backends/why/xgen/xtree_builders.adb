@@ -624,6 +624,8 @@ package body Xtree_Builders is
             P (O, "and then ");
             P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
             P (O, " (" & PN & ")");
+            NL (O);
+            P (O, "and then Is_Root (" & PN & ")");
          end if;
 
          if Next (Position) /= No_Element then

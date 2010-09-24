@@ -410,7 +410,8 @@ package body Xtree_Mutators is
          PL (O, "  (" & Kind_Check (Field_Kind (FI), M)
              & " (" & PN  & ")");
          PL (O, "   and then " & Tree_Check (Field_Kind (FI), M)
-             & " (" & PN  & "));");
+             & " (" & PN  & ")");
+         PL (O, "   and then Is_Root (" & PN  & "));");
       end if;
    end Print_Mutator_Precondition;
 
