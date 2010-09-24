@@ -32,6 +32,7 @@ package body Xtree_Builders is
 
    Node_Id_Param : constant Wide_String := "Id";
    New_Node      : constant Wide_String := "Result";
+   New_Node_Id   : constant Wide_String := "New_Id";
 
    procedure Print_Builder_Declaration
      (O    : in out Output_Record;
@@ -303,6 +304,11 @@ package body Xtree_Builders is
                end if;
             end if;
          end if;
+
+         if Is_Why_Id (FI) then
+            PL (O, "Set_Link (" & New_Node & "." & FN
+                & ", " & New_Node_Id & ");");
+         end if;
       end Print_Record_Initialization;
 
    begin
@@ -329,7 +335,8 @@ package body Xtree_Builders is
          end case;
       end loop;
 
-      PL (O, "return New_Why_Node_Id (" & New_Node & ");");
+      PL (O, "Set_Node (" & New_Node_Id & ", " & New_Node & ");");
+      PL (O, "return " & New_Node_Id & ";");
    end Print_Builder_Implementation;
 
    --------------------------------------
@@ -384,6 +391,8 @@ package body Xtree_Builders is
 
    begin
       PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
+      PL (O, New_Node_Id & " : constant Why_Node_Id :=");
+      PL (O, "  New_Why_Node_Id (" & Mixed_Case_Name (Kind)  & ");");
 
       if BK /= Builder_Copy then
          return;

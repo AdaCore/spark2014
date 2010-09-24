@@ -165,12 +165,18 @@ package body Why.Atree.Tables is
 
    procedure Set_Link
      (Node_Id : Why_Node_Id;
-      Link    : Why_Node_Set)
-   is
-      Node : Why_Node := Get_Node (Node_Id);
+      Link    : Why_Node_Set) is
    begin
-      Node.Link := Link;
-      Set_Node (Node_Id, Node);
+      if Node_Id = Why_Empty then
+         return;
+      end if;
+
+      declare
+         Node : Why_Node := Get_Node (Node_Id);
+      begin
+         Node.Link := Link;
+         Set_Node (Node_Id, Node);
+      end;
    end Set_Link;
 
    procedure Set_Link

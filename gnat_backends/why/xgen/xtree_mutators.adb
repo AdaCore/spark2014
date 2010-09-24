@@ -458,6 +458,7 @@ package body Xtree_Mutators is
       PL (O, "Set_Node (" & Node_Id_Param &", Node);");
 
       if Is_Why_Id (FI) then
+         PL (O, "Set_Link (" & Param_Name (FI) &", " & Node_Id_Param & ");");
          Print_Update_Validity_Status (O, Kind);
       end if;
 

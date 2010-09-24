@@ -54,11 +54,14 @@ package Why.Atree.Tables is
    function Get_Link (List_Id : Why_Node_List) return Why_Node_Set;
 
    procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set);
-   pragma Postcondition (Get_Link (Node_Id) = Link);
+   pragma Postcondition (Node_Id = Why_Empty
+                           or else Get_Link (Node_Id) = Link);
    procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Id);
-   pragma Postcondition (Get_Link (Node_Id) = Why_Node_Set (Link));
+   pragma Postcondition (Node_Id = Why_Empty
+                           or else Get_Link (Node_Id) = Why_Node_Set (Link));
    procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_List);
-   pragma Postcondition (Get_Link (Node_Id) = Why_Node_Set (Link));
+   pragma Postcondition (Node_Id = Why_Empty
+                           or else Get_Link (Node_Id) = Why_Node_Set (Link));
    procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Set);
    pragma Postcondition (Get_Link (List_Id) = Link);
    procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Id);
