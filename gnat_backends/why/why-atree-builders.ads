@@ -36,7 +36,6 @@ package Why.Atree.Builders is
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Symbol   : Name_Id;
       Entity   : Why_Node_Id := Why_Empty)
      return W_Identifier_Id;
@@ -52,10 +51,6 @@ package Why.Atree.Builders is
         (New_Identifier'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Identifier'Result)
-        = Link
-      and then
         Identifier_Get_Symbol
         (New_Identifier'Result)
         = Symbol
@@ -65,8 +60,7 @@ package Why.Atree.Builders is
         = Entity);
 
    function New_Type_Prop
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Prop_Id;
    pragma Postcondition
      (Get_Kind
@@ -75,15 +69,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Type_Prop'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Type_Prop'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Type_Int
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Int_Id;
    pragma Postcondition
      (Get_Kind
@@ -92,15 +81,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Type_Int'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Type_Int'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Type_Bool
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Bool_Id;
    pragma Postcondition
      (Get_Kind
@@ -109,15 +93,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Type_Bool'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Type_Bool'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Type_Real
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Real_Id;
    pragma Postcondition
      (Get_Kind
@@ -126,15 +105,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Type_Real'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Type_Real'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Type_Unit
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Unit_Id;
    pragma Postcondition
      (Get_Kind
@@ -143,15 +117,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Type_Unit'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Type_Unit'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Abstract_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Abstract_Type_Id;
    pragma Precondition
@@ -165,17 +134,12 @@ package Why.Atree.Builders is
         (New_Abstract_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Abstract_Type'Result)
-        = Link
-      and then
         Abstract_Type_Get_Name
         (New_Abstract_Type'Result)
         = Name);
 
    function New_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Generic_Formal_Type_Id;
    pragma Precondition
@@ -189,17 +153,12 @@ package Why.Atree.Builders is
         (New_Generic_Formal_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Generic_Formal_Type'Result)
-        = Link
-      and then
         Generic_Formal_Type_Get_Name
         (New_Generic_Formal_Type'Result)
         = Name);
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id;
@@ -215,10 +174,6 @@ package Why.Atree.Builders is
         (New_Generic_Actual_Type_Chain'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Generic_Actual_Type_Chain'Result)
-        = Link
-      and then
         Generic_Actual_Type_Chain_Get_Type_Chain
         (New_Generic_Actual_Type_Chain'Result)
         = Type_Chain
@@ -229,7 +184,6 @@ package Why.Atree.Builders is
 
    function New_Array_Type
      (Ada_Node       : Node_Id := Empty;
-      Link           : Why_Node_Set := Why_Empty;
       Component_Type : W_Primitive_Type_Id)
      return W_Array_Type_Id;
    pragma Precondition
@@ -243,17 +197,12 @@ package Why.Atree.Builders is
         (New_Array_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Array_Type'Result)
-        = Link
-      and then
         Array_Type_Get_Component_Type
         (New_Array_Type'Result)
         = Component_Type);
 
    function New_Ref_Type
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Aliased_Type : W_Primitive_Type_Id)
      return W_Ref_Type_Id;
    pragma Precondition
@@ -267,17 +216,12 @@ package Why.Atree.Builders is
         (New_Ref_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Ref_Type'Result)
-        = Link
-      and then
         Ref_Type_Get_Aliased_Type
         (New_Ref_Type'Result)
         = Aliased_Type);
 
    function New_Protected_Value_Type
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Value_Type : W_Value_Type_Id)
      return W_Protected_Value_Type_Id;
    pragma Precondition
@@ -291,17 +235,12 @@ package Why.Atree.Builders is
         (New_Protected_Value_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Protected_Value_Type'Result)
-        = Link
-      and then
         Protected_Value_Type_Get_Value_Type
         (New_Protected_Value_Type'Result)
         = Value_Type);
 
    function New_Arrow_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_OId := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
@@ -319,10 +258,6 @@ package Why.Atree.Builders is
         (New_Arrow_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Arrow_Type'Result)
-        = Link
-      and then
         Arrow_Type_Get_Name
         (New_Arrow_Type'Result)
         = Name
@@ -337,7 +272,6 @@ package Why.Atree.Builders is
 
    function New_Computation_Spec
      (Ada_Node      : Node_Id := Empty;
-      Link          : Why_Node_Set := Why_Empty;
       Precondition  : W_Precondition_OId := Why_Empty;
       Result_Name   : W_Identifier_OId := Why_Empty;
       Return_Type   : W_Value_Type_Id;
@@ -358,10 +292,6 @@ package Why.Atree.Builders is
         Get_Ada_Node
         (New_Computation_Spec'Result)
         = Ada_Node
-      and then
-        Get_Link
-        (New_Computation_Spec'Result)
-        = Link
       and then
         Computation_Spec_Get_Precondition
         (New_Computation_Spec'Result)
@@ -385,7 +315,6 @@ package Why.Atree.Builders is
 
    function New_Integer_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Value    : Uint)
      return W_Integer_Constant_Id;
    pragma Precondition
@@ -399,17 +328,12 @@ package Why.Atree.Builders is
         (New_Integer_Constant'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Integer_Constant'Result)
-        = Link
-      and then
         Integer_Constant_Get_Value
         (New_Integer_Constant'Result)
         = Value);
 
    function New_Real_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Value    : Ureal)
      return W_Real_Constant_Id;
    pragma Precondition
@@ -423,17 +347,12 @@ package Why.Atree.Builders is
         (New_Real_Constant'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Real_Constant'Result)
-        = Link
-      and then
         Real_Constant_Get_Value
         (New_Real_Constant'Result)
         = Value);
 
    function New_True_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_True_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -442,15 +361,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_True_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_True_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function New_False_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_False_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -459,15 +373,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_False_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_False_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Void_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Void_Literal_Id;
    pragma Postcondition
      (Get_Kind
@@ -476,15 +385,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Void_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Void_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Arith_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
@@ -502,10 +406,6 @@ package Why.Atree.Builders is
         (New_Arith_Operation'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Arith_Operation'Result)
-        = Link
-      and then
         Arith_Operation_Get_Left
         (New_Arith_Operation'Result)
         = Left
@@ -520,7 +420,6 @@ package Why.Atree.Builders is
 
    function New_Negative_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Term_Id)
      return W_Negative_Term_Id;
    pragma Precondition
@@ -534,17 +433,12 @@ package Why.Atree.Builders is
         (New_Negative_Term'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Negative_Term'Result)
-        = Link
-      and then
         Negative_Term_Get_Operand
         (New_Negative_Term'Result)
         = Operand);
 
    function New_Label_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId := Why_Empty)
      return W_Label_Identifier_Id;
@@ -560,10 +454,6 @@ package Why.Atree.Builders is
         (New_Label_Identifier'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Label_Identifier'Result)
-        = Link
-      and then
         Label_Identifier_Get_Name
         (New_Label_Identifier'Result)
         = Name
@@ -574,7 +464,6 @@ package Why.Atree.Builders is
 
    function New_Operation
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Operation_Id;
@@ -590,10 +479,6 @@ package Why.Atree.Builders is
         (New_Operation'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Operation'Result)
-        = Link
-      and then
         Operation_Get_Name
         (New_Operation'Result)
         = Name
@@ -604,7 +489,6 @@ package Why.Atree.Builders is
 
    function New_Named_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id;
@@ -620,10 +504,6 @@ package Why.Atree.Builders is
         (New_Named_Term'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Named_Term'Result)
-        = Link
-      and then
         Named_Term_Get_Name
         (New_Named_Term'Result)
         = Name
@@ -634,7 +514,6 @@ package Why.Atree.Builders is
 
    function New_Conditional_Term
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
@@ -652,10 +531,6 @@ package Why.Atree.Builders is
         (New_Conditional_Term'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Conditional_Term'Result)
-        = Link
-      and then
         Conditional_Term_Get_Condition
         (New_Conditional_Term'Result)
         = Condition
@@ -670,7 +545,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Term_Id)
@@ -688,10 +562,6 @@ package Why.Atree.Builders is
         (New_Binding_Term'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Term'Result)
-        = Link
-      and then
         Binding_Term_Get_Name
         (New_Binding_Term'Result)
         = Name
@@ -706,7 +576,6 @@ package Why.Atree.Builders is
 
    function New_Protected_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Term     : W_Term_Id)
      return W_Protected_Term_Id;
    pragma Precondition
@@ -720,17 +589,12 @@ package Why.Atree.Builders is
         (New_Protected_Term'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Protected_Term'Result)
-        = Link
-      and then
         Protected_Term_Get_Term
         (New_Protected_Term'Result)
         = Term);
 
    function New_Op_Add
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Add_Id;
    pragma Postcondition
      (Get_Kind
@@ -739,15 +603,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Add'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Add'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Substract
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Substract_Id;
    pragma Postcondition
      (Get_Kind
@@ -756,15 +615,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Substract'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Substract'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Multiply
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Multiply_Id;
    pragma Postcondition
      (Get_Kind
@@ -773,15 +627,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Multiply'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Multiply'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Divide
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Divide_Id;
    pragma Postcondition
      (Get_Kind
@@ -790,15 +639,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Divide'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Divide'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Modulo
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Modulo_Id;
    pragma Postcondition
      (Get_Kind
@@ -807,15 +651,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Modulo'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Modulo'Result)
-        = Link);
+        = Ada_Node);
 
    function New_True_Literal_Pred
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_True_Literal_Pred_Id;
    pragma Postcondition
      (Get_Kind
@@ -824,15 +663,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_True_Literal_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_True_Literal_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function New_False_Literal_Pred
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_False_Literal_Pred_Id;
    pragma Postcondition
      (Get_Kind
@@ -841,15 +675,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_False_Literal_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_False_Literal_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Predicate_Identifier_Id;
    pragma Precondition
@@ -863,17 +692,12 @@ package Why.Atree.Builders is
         (New_Predicate_Identifier'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Predicate_Identifier'Result)
-        = Link
-      and then
         Predicate_Identifier_Get_Name
         (New_Predicate_Identifier'Result)
         = Name);
 
    function New_Predicate_Instance
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Predicate_Instance_Id;
@@ -889,10 +713,6 @@ package Why.Atree.Builders is
         (New_Predicate_Instance'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Predicate_Instance'Result)
-        = Link
-      and then
         Predicate_Instance_Get_Name
         (New_Predicate_Instance'Result)
         = Name
@@ -903,7 +723,6 @@ package Why.Atree.Builders is
 
    function New_Related_Terms
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Relation_Id;
       Right    : W_Term_Id;
@@ -924,10 +743,6 @@ package Why.Atree.Builders is
         Get_Ada_Node
         (New_Related_Terms'Result)
         = Ada_Node
-      and then
-        Get_Link
-        (New_Related_Terms'Result)
-        = Link
       and then
         Related_Terms_Get_Left
         (New_Related_Terms'Result)
@@ -951,7 +766,6 @@ package Why.Atree.Builders is
 
    function New_Implication
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Implication_Id;
@@ -967,10 +781,6 @@ package Why.Atree.Builders is
         (New_Implication'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Implication'Result)
-        = Link
-      and then
         Implication_Get_Left
         (New_Implication'Result)
         = Left
@@ -981,7 +791,6 @@ package Why.Atree.Builders is
 
    function New_Equivalence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Equivalence_Id;
@@ -997,10 +806,6 @@ package Why.Atree.Builders is
         (New_Equivalence'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Equivalence'Result)
-        = Link
-      and then
         Equivalence_Get_Left
         (New_Equivalence'Result)
         = Left
@@ -1011,7 +816,6 @@ package Why.Atree.Builders is
 
    function New_Disjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Disjonction_Id;
@@ -1027,10 +831,6 @@ package Why.Atree.Builders is
         (New_Disjonction'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Disjonction'Result)
-        = Link
-      and then
         Disjonction_Get_Left
         (New_Disjonction'Result)
         = Left
@@ -1041,7 +841,6 @@ package Why.Atree.Builders is
 
    function New_Conjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Conjonction_Id;
@@ -1057,10 +856,6 @@ package Why.Atree.Builders is
         (New_Conjonction'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Conjonction'Result)
-        = Link
-      and then
         Conjonction_Get_Left
         (New_Conjonction'Result)
         = Left
@@ -1071,7 +866,6 @@ package Why.Atree.Builders is
 
    function New_Negation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Predicate_Id)
      return W_Negation_Id;
    pragma Precondition
@@ -1085,17 +879,12 @@ package Why.Atree.Builders is
         (New_Negation'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Negation'Result)
-        = Link
-      and then
         Negation_Get_Operand
         (New_Negation'Result)
         = Operand);
 
    function New_Conditional_Pred
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
@@ -1113,10 +902,6 @@ package Why.Atree.Builders is
         (New_Conditional_Pred'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Conditional_Pred'Result)
-        = Link
-      and then
         Conditional_Pred_Get_Condition
         (New_Conditional_Pred'Result)
         = Condition
@@ -1131,7 +916,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
@@ -1149,10 +933,6 @@ package Why.Atree.Builders is
         (New_Binding_Pred'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Pred'Result)
-        = Link
-      and then
         Binding_Pred_Get_Name
         (New_Binding_Pred'Result)
         = Name
@@ -1167,7 +947,6 @@ package Why.Atree.Builders is
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId := Why_Empty;
@@ -1187,10 +966,6 @@ package Why.Atree.Builders is
         (New_Universal_Quantif'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Universal_Quantif'Result)
-        = Link
-      and then
         Universal_Quantif_Get_Variables
         (New_Universal_Quantif'Result)
         = Variables
@@ -1209,7 +984,6 @@ package Why.Atree.Builders is
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
@@ -1227,10 +1001,6 @@ package Why.Atree.Builders is
         (New_Existential_Quantif'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Existential_Quantif'Result)
-        = Link
-      and then
         Existential_Quantif_Get_Variables
         (New_Existential_Quantif'Result)
         = Variables
@@ -1245,7 +1015,6 @@ package Why.Atree.Builders is
 
    function New_Named_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Named_Predicate_Id;
@@ -1261,10 +1030,6 @@ package Why.Atree.Builders is
         (New_Named_Predicate'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Named_Predicate'Result)
-        = Link
-      and then
         Named_Predicate_Get_Name
         (New_Named_Predicate'Result)
         = Name
@@ -1275,7 +1040,6 @@ package Why.Atree.Builders is
 
    function New_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id)
      return W_Protected_Predicate_Id;
    pragma Precondition
@@ -1289,17 +1053,12 @@ package Why.Atree.Builders is
         (New_Protected_Predicate'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Protected_Predicate'Result)
-        = Link
-      and then
         Protected_Predicate_Get_Pred
         (New_Protected_Predicate'Result)
         = Pred);
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Triggers : W_Trigger_List)
      return W_Triggers_Id;
    pragma Precondition
@@ -1313,17 +1072,12 @@ package Why.Atree.Builders is
         (New_Triggers'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Triggers'Result)
-        = Link
-      and then
         Triggers_Get_Triggers
         (New_Triggers'Result)
         = Triggers);
 
    function New_Trigger
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Terms    : W_Term_List)
      return W_Trigger_Id;
    pragma Precondition
@@ -1337,17 +1091,12 @@ package Why.Atree.Builders is
         (New_Trigger'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Trigger'Result)
-        = Link
-      and then
         Trigger_Get_Terms
         (New_Trigger'Result)
         = Terms);
 
    function New_Rel_Eq
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Eq_Id;
    pragma Postcondition
      (Get_Kind
@@ -1356,15 +1105,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Eq'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Eq'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Rel_Ne
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Ne_Id;
    pragma Postcondition
      (Get_Kind
@@ -1373,15 +1117,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Ne'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Ne'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Rel_Lt
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Lt_Id;
    pragma Postcondition
      (Get_Kind
@@ -1390,15 +1129,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Lt'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Lt'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Rel_Le
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Le_Id;
    pragma Postcondition
      (Get_Kind
@@ -1407,15 +1141,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Le'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Le'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Rel_Gt
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Gt_Id;
    pragma Postcondition
      (Get_Kind
@@ -1424,15 +1153,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Gt'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Gt'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Rel_Ge
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Ge_Id;
    pragma Postcondition
      (Get_Kind
@@ -1441,15 +1165,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Rel_Ge'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Rel_Ge'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Type
      (Ada_Node        : Node_Id := Empty;
-      Link            : Why_Node_Set := Why_Empty;
       External        : W_External_OId := Why_Empty;
       Type_Parameters : W_Identifier_OList := New_List;
       Name            : W_Identifier_Id)
@@ -1467,10 +1186,6 @@ package Why.Atree.Builders is
         (New_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Type'Result)
-        = Link
-      and then
         Type_Get_External
         (New_Type'Result)
         = External
@@ -1485,7 +1200,6 @@ package Why.Atree.Builders is
 
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       External   : W_External_OId := Why_Empty;
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
@@ -1503,10 +1217,6 @@ package Why.Atree.Builders is
         (New_Logic'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Logic'Result)
-        = Link
-      and then
         Logic_Get_External
         (New_Logic'Result)
         = External
@@ -1521,7 +1231,6 @@ package Why.Atree.Builders is
 
    function New_Function
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Logic_Binder_List;
       Return_Type : W_Primitive_Type_Id;
@@ -1541,10 +1250,6 @@ package Why.Atree.Builders is
         (New_Function'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Function'Result)
-        = Link
-      and then
         Function_Get_Name
         (New_Function'Result)
         = Name
@@ -1563,7 +1268,6 @@ package Why.Atree.Builders is
 
    function New_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
@@ -1581,10 +1285,6 @@ package Why.Atree.Builders is
         (New_Predicate_Definition'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Predicate_Definition'Result)
-        = Link
-      and then
         Predicate_Definition_Get_Name
         (New_Predicate_Definition'Result)
         = Name
@@ -1599,7 +1299,6 @@ package Why.Atree.Builders is
 
    function New_Inductive
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
@@ -1617,10 +1316,6 @@ package Why.Atree.Builders is
         (New_Inductive'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Inductive'Result)
-        = Link
-      and then
         Inductive_Get_Name
         (New_Inductive'Result)
         = Name
@@ -1635,7 +1330,6 @@ package Why.Atree.Builders is
 
    function New_Axiom
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Axiom_Id;
@@ -1651,10 +1345,6 @@ package Why.Atree.Builders is
         (New_Axiom'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Axiom'Result)
-        = Link
-      and then
         Axiom_Get_Name
         (New_Axiom'Result)
         = Name
@@ -1665,7 +1355,6 @@ package Why.Atree.Builders is
 
    function New_Goal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Goal_Id;
@@ -1681,10 +1370,6 @@ package Why.Atree.Builders is
         (New_Goal'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Goal'Result)
-        = Link
-      and then
         Goal_Get_Name
         (New_Goal'Result)
         = Name
@@ -1694,8 +1379,7 @@ package Why.Atree.Builders is
         = Def);
 
    function New_External
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_External_Id;
    pragma Postcondition
      (Get_Kind
@@ -1704,15 +1388,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_External'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_External'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id;
@@ -1728,10 +1407,6 @@ package Why.Atree.Builders is
         (New_Logic_Type'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Logic_Type'Result)
-        = Link
-      and then
         Logic_Type_Get_Arg_Types
         (New_Logic_Type'Result)
         = Arg_Types
@@ -1742,7 +1417,6 @@ package Why.Atree.Builders is
 
    function New_Logic_Binder
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
      return W_Logic_Binder_Id;
@@ -1758,10 +1432,6 @@ package Why.Atree.Builders is
         (New_Logic_Binder'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Logic_Binder'Result)
-        = Link
-      and then
         Logic_Binder_Get_Name
         (New_Logic_Binder'Result)
         = Name
@@ -1772,7 +1442,6 @@ package Why.Atree.Builders is
 
    function New_Inductive_Case
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Inductive_Case_Id;
@@ -1788,10 +1457,6 @@ package Why.Atree.Builders is
         (New_Inductive_Case'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Inductive_Case'Result)
-        = Link
-      and then
         Inductive_Case_Get_Name
         (New_Inductive_Case'Result)
         = Name
@@ -1802,7 +1467,6 @@ package Why.Atree.Builders is
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Reads    : W_Identifier_OList := New_List;
       Writes   : W_Identifier_OList := New_List;
       Raises   : W_Identifier_OList := New_List)
@@ -1820,10 +1484,6 @@ package Why.Atree.Builders is
         (New_Effects'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Effects'Result)
-        = Link
-      and then
         Effects_Get_Reads
         (New_Effects'Result)
         = Reads
@@ -1838,7 +1498,6 @@ package Why.Atree.Builders is
 
    function New_Precondition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id)
      return W_Precondition_Id;
    pragma Precondition
@@ -1852,17 +1511,12 @@ package Why.Atree.Builders is
         (New_Precondition'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Precondition'Result)
-        = Link
-      and then
         Precondition_Get_Assertion
         (New_Precondition'Result)
         = Assertion);
 
    function New_Postcondition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id;
       Handlers  : W_Exn_Condition_OList := New_List)
      return W_Postcondition_Id;
@@ -1878,10 +1532,6 @@ package Why.Atree.Builders is
         (New_Postcondition'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Postcondition'Result)
-        = Link
-      and then
         Postcondition_Get_Assertion
         (New_Postcondition'Result)
         = Assertion
@@ -1892,7 +1542,6 @@ package Why.Atree.Builders is
 
    function New_Exn_Condition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
      return W_Exn_Condition_Id;
@@ -1908,10 +1557,6 @@ package Why.Atree.Builders is
         (New_Exn_Condition'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Exn_Condition'Result)
-        = Link
-      and then
         Exn_Condition_Get_Exn_Case
         (New_Exn_Condition'Result)
         = Exn_Case
@@ -1922,7 +1567,6 @@ package Why.Atree.Builders is
 
    function New_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id;
       As       : W_Identifier_OId := Why_Empty)
      return W_Assertion_Id;
@@ -1938,10 +1582,6 @@ package Why.Atree.Builders is
         (New_Assertion'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Assertion'Result)
-        = Link
-      and then
         Assertion_Get_Pred
         (New_Assertion'Result)
         = Pred
@@ -1952,7 +1592,6 @@ package Why.Atree.Builders is
 
    function New_Prog_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Constant_Id)
      return W_Prog_Constant_Id;
    pragma Precondition
@@ -1966,17 +1605,12 @@ package Why.Atree.Builders is
         (New_Prog_Constant'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Prog_Constant'Result)
-        = Link
-      and then
         Prog_Constant_Get_Def
         (New_Prog_Constant'Result)
         = Def);
 
    function New_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Identifier_Id)
      return W_Prog_Identifier_Id;
    pragma Precondition
@@ -1990,17 +1624,12 @@ package Why.Atree.Builders is
         (New_Prog_Identifier'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Prog_Identifier'Result)
-        = Link
-      and then
         Prog_Identifier_Get_Def
         (New_Prog_Identifier'Result)
         = Def);
 
    function New_Deref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Ref      : W_Identifier_Id)
      return W_Deref_Id;
    pragma Precondition
@@ -2014,17 +1643,12 @@ package Why.Atree.Builders is
         (New_Deref'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Deref'Result)
-        = Link
-      and then
         Deref_Get_Ref
         (New_Deref'Result)
         = Ref);
 
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
      return W_Assignment_Id;
@@ -2040,10 +1664,6 @@ package Why.Atree.Builders is
         (New_Assignment'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Assignment'Result)
-        = Link
-      and then
         Assignment_Get_Name
         (New_Assignment'Result)
         = Name
@@ -2054,7 +1674,6 @@ package Why.Atree.Builders is
 
    function New_Array_Access
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
      return W_Array_Access_Id;
@@ -2070,10 +1689,6 @@ package Why.Atree.Builders is
         (New_Array_Access'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Array_Access'Result)
-        = Link
-      and then
         Array_Access_Get_Name
         (New_Array_Access'Result)
         = Name
@@ -2084,7 +1699,6 @@ package Why.Atree.Builders is
 
    function New_Array_Update
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
@@ -2102,10 +1716,6 @@ package Why.Atree.Builders is
         (New_Array_Update'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Array_Update'Result)
-        = Link
-      and then
         Array_Update_Get_Name
         (New_Array_Update'Result)
         = Name
@@ -2120,7 +1730,6 @@ package Why.Atree.Builders is
 
    function New_Infix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Prog_Id;
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
@@ -2138,10 +1747,6 @@ package Why.Atree.Builders is
         (New_Infix_Call'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Infix_Call'Result)
-        = Link
-      and then
         Infix_Call_Get_Left
         (New_Infix_Call'Result)
         = Left
@@ -2156,7 +1761,6 @@ package Why.Atree.Builders is
 
    function New_Prefix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
      return W_Prefix_Call_Id;
@@ -2172,10 +1776,6 @@ package Why.Atree.Builders is
         (New_Prefix_Call'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Prefix_Call'Result)
-        = Link
-      and then
         Prefix_Call_Get_Prefix
         (New_Prefix_Call'Result)
         = Prefix
@@ -2186,7 +1786,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2204,10 +1803,6 @@ package Why.Atree.Builders is
         (New_Binding_Prog'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Prog'Result)
-        = Link
-      and then
         Binding_Prog_Get_Name
         (New_Binding_Prog'Result)
         = Name
@@ -2222,7 +1817,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Ref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2240,10 +1834,6 @@ package Why.Atree.Builders is
         (New_Binding_Ref'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Ref'Result)
-        = Link
-      and then
         Binding_Ref_Get_Name
         (New_Binding_Ref'Result)
         = Name
@@ -2258,7 +1848,6 @@ package Why.Atree.Builders is
 
    function New_Conditional_Prog
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Prog_Id;
       Then_Part : W_Prog_Id;
       Else_Part : W_Prog_OId := Why_Empty)
@@ -2276,10 +1865,6 @@ package Why.Atree.Builders is
         (New_Conditional_Prog'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Conditional_Prog'Result)
-        = Link
-      and then
         Conditional_Prog_Get_Condition
         (New_Conditional_Prog'Result)
         = Condition
@@ -2294,7 +1879,6 @@ package Why.Atree.Builders is
 
    function New_While_Loop
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Condition    : W_Prog_Id;
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
@@ -2312,10 +1896,6 @@ package Why.Atree.Builders is
         (New_While_Loop'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_While_Loop'Result)
-        = Link
-      and then
         While_Loop_Get_Condition
         (New_While_Loop'Result)
         = Condition
@@ -2330,7 +1910,6 @@ package Why.Atree.Builders is
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Statements : W_Prog_List)
      return W_Statement_Sequence_Id;
    pragma Precondition
@@ -2344,17 +1923,12 @@ package Why.Atree.Builders is
         (New_Statement_Sequence'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Statement_Sequence'Result)
-        = Link
-      and then
         Statement_Sequence_Get_Statements
         (New_Statement_Sequence'Result)
         = Statements);
 
    function New_Label
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
      return W_Label_Id;
@@ -2370,10 +1944,6 @@ package Why.Atree.Builders is
         (New_Label'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Label'Result)
-        = Link
-      and then
         Label_Get_Name
         (New_Label'Result)
         = Name
@@ -2384,7 +1954,6 @@ package Why.Atree.Builders is
 
    function New_Assert
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
      return W_Assert_Id;
@@ -2400,10 +1969,6 @@ package Why.Atree.Builders is
         (New_Assert'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Assert'Result)
-        = Link
-      and then
         Assert_Get_Assertions
         (New_Assert'Result)
         = Assertions
@@ -2414,7 +1979,6 @@ package Why.Atree.Builders is
 
    function New_Post_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Post_Assertion_Id;
@@ -2430,10 +1994,6 @@ package Why.Atree.Builders is
         (New_Post_Assertion'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Post_Assertion'Result)
-        = Link
-      and then
         Post_Assertion_Get_Prog
         (New_Post_Assertion'Result)
         = Prog
@@ -2444,7 +2004,6 @@ package Why.Atree.Builders is
 
    function New_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Opaque_Assertion_Id;
@@ -2460,10 +2019,6 @@ package Why.Atree.Builders is
         (New_Opaque_Assertion'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Opaque_Assertion'Result)
-        = Link
-      and then
         Opaque_Assertion_Get_Prog
         (New_Opaque_Assertion'Result)
         = Prog
@@ -2474,7 +2029,6 @@ package Why.Atree.Builders is
 
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id;
@@ -2490,10 +2044,6 @@ package Why.Atree.Builders is
         (New_Fun_Def'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Fun_Def'Result)
-        = Link
-      and then
         Fun_Def_Get_Binders
         (New_Fun_Def'Result)
         = Binders
@@ -2504,7 +2054,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Fun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id;
@@ -2524,10 +2073,6 @@ package Why.Atree.Builders is
         (New_Binding_Fun'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Fun'Result)
-        = Link
-      and then
         Binding_Fun_Get_Name
         (New_Binding_Fun'Result)
         = Name
@@ -2546,7 +2091,6 @@ package Why.Atree.Builders is
 
    function New_Binding_Rec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
      return W_Binding_Rec_Id;
@@ -2562,10 +2106,6 @@ package Why.Atree.Builders is
         (New_Binding_Rec'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binding_Rec'Result)
-        = Link
-      and then
         Binding_Rec_Get_Recfun
         (New_Binding_Rec'Result)
         = Recfun
@@ -2576,7 +2116,6 @@ package Why.Atree.Builders is
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Progs    : W_Prog_List)
      return W_Prog_Sequence_Id;
    pragma Precondition
@@ -2590,17 +2129,12 @@ package Why.Atree.Builders is
         (New_Prog_Sequence'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Prog_Sequence'Result)
-        = Link
-      and then
         Prog_Sequence_Get_Progs
         (New_Prog_Sequence'Result)
         = Progs);
 
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_Id;
@@ -2616,10 +2150,6 @@ package Why.Atree.Builders is
         (New_Raise_Statement'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Raise_Statement'Result)
-        = Link
-      and then
         Raise_Statement_Get_Name
         (New_Raise_Statement'Result)
         = Name
@@ -2630,7 +2160,6 @@ package Why.Atree.Builders is
 
    function New_Raise_Statement_With_Parameters
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
       Exn_Type  : W_Value_Type_OId := Why_Empty)
@@ -2648,10 +2177,6 @@ package Why.Atree.Builders is
         (New_Raise_Statement_With_Parameters'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Raise_Statement_With_Parameters'Result)
-        = Link
-      and then
         Raise_Statement_With_Parameters_Get_Name
         (New_Raise_Statement_With_Parameters'Result)
         = Name
@@ -2666,7 +2191,6 @@ package Why.Atree.Builders is
 
    function New_Try_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
      return W_Try_Block_Id;
@@ -2682,10 +2206,6 @@ package Why.Atree.Builders is
         (New_Try_Block'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Try_Block'Result)
-        = Link
-      and then
         Try_Block_Get_Prog
         (New_Try_Block'Result)
         = Prog
@@ -2696,7 +2216,6 @@ package Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Unreachable_Code_Id;
    pragma Precondition
@@ -2710,17 +2229,12 @@ package Why.Atree.Builders is
         (New_Unreachable_Code'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Unreachable_Code'Result)
-        = Link
-      and then
         Unreachable_Code_Get_Exn_Type
         (New_Unreachable_Code'Result)
         = Exn_Type);
 
    function New_Begin_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Begin_Block_Id;
    pragma Precondition
@@ -2734,17 +2248,12 @@ package Why.Atree.Builders is
         (New_Begin_Block'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Begin_Block'Result)
-        = Link
-      and then
         Begin_Block_Get_Prog
         (New_Begin_Block'Result)
         = Prog);
 
    function New_Protected_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Protected_Prog_Id;
    pragma Precondition
@@ -2758,17 +2267,12 @@ package Why.Atree.Builders is
         (New_Protected_Prog'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Protected_Prog'Result)
-        = Link
-      and then
         Protected_Prog_Get_Prog
         (New_Protected_Prog'Result)
         = Prog);
 
    function New_Op_Add_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Add_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2777,15 +2281,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Add_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Add_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Substract_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Substract_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2794,15 +2293,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Substract_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Substract_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Multiply_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Multiply_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2811,15 +2305,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Multiply_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Multiply_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Divide_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Divide_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2828,15 +2317,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Divide_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Divide_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Mod_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Mod_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2845,15 +2329,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Mod_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Mod_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Eq_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Eq_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2862,15 +2341,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Eq_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Eq_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Ne_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Ne_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2879,15 +2353,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Ne_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Ne_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Lt_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Lt_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2896,15 +2365,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Lt_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Lt_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Le_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Le_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2913,15 +2377,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Le_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Le_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Gt_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Gt_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2930,15 +2389,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Gt_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Gt_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Ge_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Ge_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2947,15 +2401,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Ge_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Ge_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Or_Else_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Or_Else_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2964,15 +2413,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Or_Else_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Or_Else_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_And_Then_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_And_Then_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2981,15 +2425,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_And_Then_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_And_Then_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Minus_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Minus_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -2998,15 +2437,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Minus_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Minus_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Op_Not_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Not_Prog_Id;
    pragma Postcondition
      (Get_Kind
@@ -3015,15 +2449,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (New_Op_Not_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (New_Op_Not_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function New_Binders
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binder_List)
      return W_Binders_Id;
    pragma Precondition
@@ -3037,17 +2466,12 @@ package Why.Atree.Builders is
         (New_Binders'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binders'Result)
-        = Link
-      and then
         Binders_Get_Binders
         (New_Binders'Result)
         = Binders);
 
    function New_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id;
@@ -3063,10 +2487,6 @@ package Why.Atree.Builders is
         (New_Binder'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Binder'Result)
-        = Link
-      and then
         Binder_Get_Names
         (New_Binder'Result)
         = Names
@@ -3077,7 +2497,6 @@ package Why.Atree.Builders is
 
    function New_Recfun
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Binders_Id;
       Return_Type : W_Prog_Id;
@@ -3098,10 +2517,6 @@ package Why.Atree.Builders is
         Get_Ada_Node
         (New_Recfun'Result)
         = Ada_Node
-      and then
-        Get_Link
-        (New_Recfun'Result)
-        = Link
       and then
         Recfun_Get_Name
         (New_Recfun'Result)
@@ -3125,7 +2540,6 @@ package Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Invariant : W_Assertion_OId := Why_Empty;
       Variant   : W_Wf_Arg_OId := Why_Empty)
      return W_Loop_Annot_Id;
@@ -3141,10 +2555,6 @@ package Why.Atree.Builders is
         (New_Loop_Annot'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Loop_Annot'Result)
-        = Link
-      and then
         Loop_Annot_Get_Invariant
         (New_Loop_Annot'Result)
         = Invariant
@@ -3155,7 +2565,6 @@ package Why.Atree.Builders is
 
    function New_Wf_Arg
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Term_Id;
       For_Id   : W_Identifier_OId := Why_Empty)
      return W_Wf_Arg_Id;
@@ -3171,10 +2580,6 @@ package Why.Atree.Builders is
         (New_Wf_Arg'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Wf_Arg'Result)
-        = Link
-      and then
         Wf_Arg_Get_Def
         (New_Wf_Arg'Result)
         = Def
@@ -3185,7 +2590,6 @@ package Why.Atree.Builders is
 
    function New_Handler
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Prog_OId := Why_Empty;
       Def       : W_Prog_Id)
@@ -3203,10 +2607,6 @@ package Why.Atree.Builders is
         (New_Handler'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Handler'Result)
-        = Link
-      and then
         Handler_Get_Name
         (New_Handler'Result)
         = Name
@@ -3221,7 +2621,6 @@ package Why.Atree.Builders is
 
    function New_File
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Declarations : W_Declaration_OList := New_List)
      return W_File_Id;
    pragma Precondition
@@ -3235,17 +2634,12 @@ package Why.Atree.Builders is
         (New_File'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_File'Result)
-        = Link
-      and then
         File_Get_Declarations
         (New_File'Result)
         = Declarations);
 
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_OId := Why_Empty;
       Def      : W_Prog_Id)
@@ -3263,10 +2657,6 @@ package Why.Atree.Builders is
         (New_Global_Binding'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Global_Binding'Result)
-        = Link
-      and then
         Global_Binding_Get_Name
         (New_Global_Binding'Result)
         = Name
@@ -3281,7 +2671,6 @@ package Why.Atree.Builders is
 
    function New_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Recfun_Id)
      return W_Global_Rec_Binding_Id;
    pragma Precondition
@@ -3295,17 +2684,12 @@ package Why.Atree.Builders is
         (New_Global_Rec_Binding'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Global_Rec_Binding'Result)
-        = Link
-      and then
         Global_Rec_Binding_Get_Name
         (New_Global_Rec_Binding'Result)
         = Name);
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
-      Link           : Why_Node_Set := Why_Empty;
       External       : W_External_Id;
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
@@ -3323,10 +2707,6 @@ package Why.Atree.Builders is
         (New_Parameter_Declaration'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Parameter_Declaration'Result)
-        = Link
-      and then
         Parameter_Declaration_Get_External
         (New_Parameter_Declaration'Result)
         = External
@@ -3341,7 +2721,6 @@ package Why.Atree.Builders is
 
    function New_Exception_Declaration
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Primitive_Type_OId := Why_Empty)
      return W_Exception_Declaration_Id;
@@ -3357,10 +2736,6 @@ package Why.Atree.Builders is
         (New_Exception_Declaration'Result)
         = Ada_Node
       and then
-        Get_Link
-        (New_Exception_Declaration'Result)
-        = Link
-      and then
         Exception_Declaration_Get_Name
         (New_Exception_Declaration'Result)
         = Name
@@ -3371,7 +2746,6 @@ package Why.Atree.Builders is
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Decl     : W_Logic_Id)
      return W_Logic_Declaration_Id;
    pragma Precondition
@@ -3384,10 +2758,6 @@ package Why.Atree.Builders is
         Get_Ada_Node
         (New_Logic_Declaration'Result)
         = Ada_Node
-      and then
-        Get_Link
-        (New_Logic_Declaration'Result)
-        = Link
       and then
         Logic_Declaration_Get_Decl
         (New_Logic_Declaration'Result)
@@ -4406,7 +3776,6 @@ package Why.Atree.Builders is
 
    function Duplicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Identifier_OId)
      return W_Identifier_Id;
    pragma Precondition
@@ -4418,15 +3787,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Identifier'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Identifier'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type_Prop
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Prop_OId)
      return W_Type_Prop_Id;
    pragma Precondition
@@ -4438,15 +3802,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type_Prop'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type_Prop'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type_Int
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Int_OId)
      return W_Type_Int_Id;
    pragma Precondition
@@ -4458,15 +3817,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type_Int'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type_Int'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type_Bool
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Bool_OId)
      return W_Type_Bool_Id;
    pragma Precondition
@@ -4478,15 +3832,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type_Bool'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type_Bool'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type_Real
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Real_OId)
      return W_Type_Real_Id;
    pragma Precondition
@@ -4498,15 +3847,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type_Real'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type_Real'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type_Unit
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Unit_OId)
      return W_Type_Unit_Id;
    pragma Precondition
@@ -4518,15 +3862,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type_Unit'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type_Unit'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Abstract_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Abstract_Type_OId)
      return W_Abstract_Type_Id;
    pragma Precondition
@@ -4538,15 +3877,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Abstract_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Abstract_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Generic_Formal_Type_OId)
      return W_Generic_Formal_Type_Id;
    pragma Precondition
@@ -4558,15 +3892,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Generic_Formal_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Generic_Formal_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Generic_Actual_Type_Chain
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Generic_Actual_Type_Chain_OId)
      return W_Generic_Actual_Type_Chain_Id;
    pragma Precondition
@@ -4578,15 +3907,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Generic_Actual_Type_Chain'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Generic_Actual_Type_Chain'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Array_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Type_OId)
      return W_Array_Type_Id;
    pragma Precondition
@@ -4598,15 +3922,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Array_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Array_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Ref_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Ref_Type_OId)
      return W_Ref_Type_Id;
    pragma Precondition
@@ -4618,15 +3937,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Ref_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Ref_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Protected_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Value_Type_OId)
      return W_Protected_Value_Type_Id;
    pragma Precondition
@@ -4638,15 +3952,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Protected_Value_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Protected_Value_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Arrow_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arrow_Type_OId)
      return W_Arrow_Type_Id;
    pragma Precondition
@@ -4658,15 +3967,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Arrow_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Arrow_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Computation_Spec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Computation_Spec_OId)
      return W_Computation_Spec_Id;
    pragma Precondition
@@ -4678,15 +3982,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Computation_Spec'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Computation_Spec'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Integer_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Integer_Constant_OId)
      return W_Integer_Constant_Id;
    pragma Precondition
@@ -4698,15 +3997,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Integer_Constant'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Integer_Constant'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Real_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Real_Constant_OId)
      return W_Real_Constant_Id;
    pragma Precondition
@@ -4718,15 +4012,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Real_Constant'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Real_Constant'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_True_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_True_Literal_OId)
      return W_True_Literal_Id;
    pragma Precondition
@@ -4738,15 +4027,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_True_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_True_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_False_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_False_Literal_OId)
      return W_False_Literal_Id;
    pragma Precondition
@@ -4758,15 +4042,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_False_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_False_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Void_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Void_Literal_OId)
      return W_Void_Literal_Id;
    pragma Precondition
@@ -4778,15 +4057,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Void_Literal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Void_Literal'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Arith_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arith_Operation_OId)
      return W_Arith_Operation_Id;
    pragma Precondition
@@ -4798,15 +4072,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Arith_Operation'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Arith_Operation'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Negative_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Negative_Term_OId)
      return W_Negative_Term_Id;
    pragma Precondition
@@ -4818,15 +4087,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Negative_Term'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Negative_Term'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Label_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Label_Identifier_OId)
      return W_Label_Identifier_Id;
    pragma Precondition
@@ -4838,15 +4102,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Label_Identifier'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Label_Identifier'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Operation_OId)
      return W_Operation_Id;
    pragma Precondition
@@ -4858,15 +4117,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Operation'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Operation'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Named_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Named_Term_OId)
      return W_Named_Term_Id;
    pragma Precondition
@@ -4878,15 +4132,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Named_Term'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Named_Term'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Conditional_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Term_OId)
      return W_Conditional_Term_Id;
    pragma Precondition
@@ -4898,15 +4147,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Conditional_Term'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Conditional_Term'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Term_OId)
      return W_Binding_Term_Id;
    pragma Precondition
@@ -4918,15 +4162,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Term'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Term'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Protected_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Term_OId)
      return W_Protected_Term_Id;
    pragma Precondition
@@ -4938,15 +4177,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Protected_Term'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Protected_Term'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Add
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Add_OId)
      return W_Op_Add_Id;
    pragma Precondition
@@ -4958,15 +4192,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Add'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Add'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Substract
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Substract_OId)
      return W_Op_Substract_Id;
    pragma Precondition
@@ -4978,15 +4207,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Substract'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Substract'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Multiply
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Multiply_OId)
      return W_Op_Multiply_Id;
    pragma Precondition
@@ -4998,15 +4222,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Multiply'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Multiply'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Divide
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Divide_OId)
      return W_Op_Divide_Id;
    pragma Precondition
@@ -5018,15 +4237,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Divide'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Divide'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Modulo
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Modulo_OId)
      return W_Op_Modulo_Id;
    pragma Precondition
@@ -5038,15 +4252,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Modulo'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Modulo'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_True_Literal_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_True_Literal_Pred_OId)
      return W_True_Literal_Pred_Id;
    pragma Precondition
@@ -5058,15 +4267,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_True_Literal_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_True_Literal_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_False_Literal_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_False_Literal_Pred_OId)
      return W_False_Literal_Pred_Id;
    pragma Precondition
@@ -5078,15 +4282,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_False_Literal_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_False_Literal_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Identifier_OId)
      return W_Predicate_Identifier_Id;
    pragma Precondition
@@ -5098,15 +4297,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Predicate_Identifier'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Predicate_Identifier'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Predicate_Instance
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Instance_OId)
      return W_Predicate_Instance_Id;
    pragma Precondition
@@ -5118,15 +4312,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Predicate_Instance'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Predicate_Instance'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Related_Terms
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Related_Terms_OId)
      return W_Related_Terms_Id;
    pragma Precondition
@@ -5138,15 +4327,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Related_Terms'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Related_Terms'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Implication
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Implication_OId)
      return W_Implication_Id;
    pragma Precondition
@@ -5158,15 +4342,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Implication'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Implication'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Equivalence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Equivalence_OId)
      return W_Equivalence_Id;
    pragma Precondition
@@ -5178,15 +4357,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Equivalence'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Equivalence'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Disjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Disjonction_OId)
      return W_Disjonction_Id;
    pragma Precondition
@@ -5198,15 +4372,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Disjonction'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Disjonction'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Conjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conjonction_OId)
      return W_Conjonction_Id;
    pragma Precondition
@@ -5218,15 +4387,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Conjonction'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Conjonction'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Negation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Negation_OId)
      return W_Negation_Id;
    pragma Precondition
@@ -5238,15 +4402,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Negation'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Negation'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Conditional_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Pred_OId)
      return W_Conditional_Pred_Id;
    pragma Precondition
@@ -5258,15 +4417,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Conditional_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Conditional_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Pred_OId)
      return W_Binding_Pred_Id;
    pragma Precondition
@@ -5278,15 +4432,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Pred'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Pred'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Universal_Quantif_OId)
      return W_Universal_Quantif_Id;
    pragma Precondition
@@ -5298,15 +4447,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Universal_Quantif'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Universal_Quantif'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Existential_Quantif_OId)
      return W_Existential_Quantif_Id;
    pragma Precondition
@@ -5318,15 +4462,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Existential_Quantif'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Existential_Quantif'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Named_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Named_Predicate_OId)
      return W_Named_Predicate_Id;
    pragma Precondition
@@ -5338,15 +4477,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Named_Predicate'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Named_Predicate'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Predicate_OId)
      return W_Protected_Predicate_Id;
    pragma Precondition
@@ -5358,15 +4492,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Protected_Predicate'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Protected_Predicate'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Triggers
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Triggers_OId)
      return W_Triggers_Id;
    pragma Precondition
@@ -5378,15 +4507,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Triggers'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Triggers'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Trigger
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Trigger_OId)
      return W_Trigger_Id;
    pragma Precondition
@@ -5398,15 +4522,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Trigger'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Trigger'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Eq
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Eq_OId)
      return W_Rel_Eq_Id;
    pragma Precondition
@@ -5418,15 +4537,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Eq'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Eq'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Ne
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Ne_OId)
      return W_Rel_Ne_Id;
    pragma Precondition
@@ -5438,15 +4552,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Ne'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Ne'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Lt
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Lt_OId)
      return W_Rel_Lt_Id;
    pragma Precondition
@@ -5458,15 +4567,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Lt'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Lt'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Le
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Le_OId)
      return W_Rel_Le_Id;
    pragma Precondition
@@ -5478,15 +4582,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Le'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Le'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Gt
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Gt_OId)
      return W_Rel_Gt_Id;
    pragma Precondition
@@ -5498,15 +4597,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Gt'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Gt'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Rel_Ge
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Ge_OId)
      return W_Rel_Ge_Id;
    pragma Precondition
@@ -5518,15 +4612,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Rel_Ge'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Rel_Ge'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_OId)
      return W_Type_Id;
    pragma Precondition
@@ -5538,15 +4627,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Logic
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_OId)
      return W_Logic_Id;
    pragma Precondition
@@ -5558,15 +4642,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Logic'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Logic'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Function
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Function_OId)
      return W_Function_Id;
    pragma Precondition
@@ -5578,15 +4657,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Function'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Function'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Definition_OId)
      return W_Predicate_Definition_Id;
    pragma Precondition
@@ -5598,15 +4672,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Predicate_Definition'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Predicate_Definition'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Inductive
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Inductive_OId)
      return W_Inductive_Id;
    pragma Precondition
@@ -5618,15 +4687,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Inductive'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Inductive'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Axiom
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Axiom_OId)
      return W_Axiom_Id;
    pragma Precondition
@@ -5638,15 +4702,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Axiom'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Axiom'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Goal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Goal_OId)
      return W_Goal_Id;
    pragma Precondition
@@ -5658,15 +4717,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Goal'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Goal'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_External
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_External_OId)
      return W_External_Id;
    pragma Precondition
@@ -5678,15 +4732,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_External'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_External'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Logic_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Type_OId)
      return W_Logic_Type_Id;
    pragma Precondition
@@ -5698,15 +4747,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Logic_Type'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Logic_Type'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Logic_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Binder_OId)
      return W_Logic_Binder_Id;
    pragma Precondition
@@ -5718,15 +4762,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Logic_Binder'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Logic_Binder'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Inductive_Case
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Inductive_Case_OId)
      return W_Inductive_Case_Id;
    pragma Precondition
@@ -5738,15 +4777,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Inductive_Case'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Inductive_Case'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Effects
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Effects_OId)
      return W_Effects_Id;
    pragma Precondition
@@ -5758,15 +4792,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Effects'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Effects'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Precondition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Precondition_OId)
      return W_Precondition_Id;
    pragma Precondition
@@ -5778,15 +4807,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Precondition'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Precondition'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Postcondition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Postcondition_OId)
      return W_Postcondition_Id;
    pragma Precondition
@@ -5798,15 +4822,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Postcondition'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Postcondition'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Exn_Condition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Exn_Condition_OId)
      return W_Exn_Condition_Id;
    pragma Precondition
@@ -5818,15 +4837,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Exn_Condition'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Exn_Condition'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assertion_OId)
      return W_Assertion_Id;
    pragma Precondition
@@ -5838,15 +4852,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Assertion'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Assertion'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Prog_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Constant_OId)
      return W_Prog_Constant_Id;
    pragma Precondition
@@ -5858,15 +4867,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Prog_Constant'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Prog_Constant'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Identifier_OId)
      return W_Prog_Identifier_Id;
    pragma Precondition
@@ -5878,15 +4882,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Prog_Identifier'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Prog_Identifier'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Deref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Deref_OId)
      return W_Deref_Id;
    pragma Precondition
@@ -5898,15 +4897,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Deref'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Deref'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Assignment
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assignment_OId)
      return W_Assignment_Id;
    pragma Precondition
@@ -5918,15 +4912,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Assignment'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Assignment'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Array_Access
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Access_OId)
      return W_Array_Access_Id;
    pragma Precondition
@@ -5938,15 +4927,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Array_Access'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Array_Access'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Array_Update
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Update_OId)
      return W_Array_Update_Id;
    pragma Precondition
@@ -5958,15 +4942,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Array_Update'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Array_Update'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Infix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Infix_Call_OId)
      return W_Infix_Call_Id;
    pragma Precondition
@@ -5978,15 +4957,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Infix_Call'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Infix_Call'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Prefix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prefix_Call_OId)
      return W_Prefix_Call_Id;
    pragma Precondition
@@ -5998,15 +4972,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Prefix_Call'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Prefix_Call'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Prog_OId)
      return W_Binding_Prog_Id;
    pragma Precondition
@@ -6018,15 +4987,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Ref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Ref_OId)
      return W_Binding_Ref_Id;
    pragma Precondition
@@ -6038,15 +5002,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Ref'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Ref'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Conditional_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Prog_OId)
      return W_Conditional_Prog_Id;
    pragma Precondition
@@ -6058,15 +5017,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Conditional_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Conditional_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_While_Loop
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_While_Loop_OId)
      return W_While_Loop_Id;
    pragma Precondition
@@ -6078,15 +5032,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_While_Loop'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_While_Loop'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Statement_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Statement_Sequence_OId)
      return W_Statement_Sequence_Id;
    pragma Precondition
@@ -6098,15 +5047,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Statement_Sequence'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Statement_Sequence'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Label
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Label_OId)
      return W_Label_Id;
    pragma Precondition
@@ -6118,15 +5062,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Label'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Label'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Assert
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assert_OId)
      return W_Assert_Id;
    pragma Precondition
@@ -6138,15 +5077,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Assert'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Assert'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Post_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Post_Assertion_OId)
      return W_Post_Assertion_Id;
    pragma Precondition
@@ -6158,15 +5092,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Post_Assertion'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Post_Assertion'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Opaque_Assertion_OId)
      return W_Opaque_Assertion_Id;
    pragma Precondition
@@ -6178,15 +5107,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Opaque_Assertion'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Opaque_Assertion'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Fun_Def_OId)
      return W_Fun_Def_Id;
    pragma Precondition
@@ -6198,15 +5122,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Fun_Def'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Fun_Def'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Fun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Fun_OId)
      return W_Binding_Fun_Id;
    pragma Precondition
@@ -6218,15 +5137,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Fun'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Fun'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binding_Rec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Rec_OId)
      return W_Binding_Rec_Id;
    pragma Precondition
@@ -6238,15 +5152,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binding_Rec'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binding_Rec'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Sequence_OId)
      return W_Prog_Sequence_Id;
    pragma Precondition
@@ -6258,15 +5167,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Prog_Sequence'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Prog_Sequence'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Raise_Statement
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Raise_Statement_OId)
      return W_Raise_Statement_Id;
    pragma Precondition
@@ -6278,15 +5182,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Raise_Statement'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Raise_Statement'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Raise_Statement_With_Parameters
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Raise_Statement_With_Parameters_OId)
      return W_Raise_Statement_With_Parameters_Id;
    pragma Precondition
@@ -6298,15 +5197,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Raise_Statement_With_Parameters'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Raise_Statement_With_Parameters'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Try_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Try_Block_OId)
      return W_Try_Block_Id;
    pragma Precondition
@@ -6318,15 +5212,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Try_Block'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Try_Block'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Unreachable_Code_OId)
      return W_Unreachable_Code_Id;
    pragma Precondition
@@ -6338,15 +5227,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Unreachable_Code'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Unreachable_Code'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Begin_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Begin_Block_OId)
      return W_Begin_Block_Id;
    pragma Precondition
@@ -6358,15 +5242,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Begin_Block'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Begin_Block'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Protected_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Prog_OId)
      return W_Protected_Prog_Id;
    pragma Precondition
@@ -6378,15 +5257,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Protected_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Protected_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Add_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Add_Prog_OId)
      return W_Op_Add_Prog_Id;
    pragma Precondition
@@ -6398,15 +5272,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Add_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Add_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Substract_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Substract_Prog_OId)
      return W_Op_Substract_Prog_Id;
    pragma Precondition
@@ -6418,15 +5287,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Substract_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Substract_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Multiply_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Multiply_Prog_OId)
      return W_Op_Multiply_Prog_Id;
    pragma Precondition
@@ -6438,15 +5302,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Multiply_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Multiply_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Divide_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Divide_Prog_OId)
      return W_Op_Divide_Prog_Id;
    pragma Precondition
@@ -6458,15 +5317,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Divide_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Divide_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Mod_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Mod_Prog_OId)
      return W_Op_Mod_Prog_Id;
    pragma Precondition
@@ -6478,15 +5332,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Mod_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Mod_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Eq_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Eq_Prog_OId)
      return W_Op_Eq_Prog_Id;
    pragma Precondition
@@ -6498,15 +5347,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Eq_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Eq_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Ne_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Ne_Prog_OId)
      return W_Op_Ne_Prog_Id;
    pragma Precondition
@@ -6518,15 +5362,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Ne_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Ne_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Lt_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Lt_Prog_OId)
      return W_Op_Lt_Prog_Id;
    pragma Precondition
@@ -6538,15 +5377,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Lt_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Lt_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Le_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Le_Prog_OId)
      return W_Op_Le_Prog_Id;
    pragma Precondition
@@ -6558,15 +5392,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Le_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Le_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Gt_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Gt_Prog_OId)
      return W_Op_Gt_Prog_Id;
    pragma Precondition
@@ -6578,15 +5407,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Gt_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Gt_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Ge_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Ge_Prog_OId)
      return W_Op_Ge_Prog_Id;
    pragma Precondition
@@ -6598,15 +5422,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Ge_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Ge_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Or_Else_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Or_Else_Prog_OId)
      return W_Op_Or_Else_Prog_Id;
    pragma Precondition
@@ -6618,15 +5437,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Or_Else_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Or_Else_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_And_Then_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_And_Then_Prog_OId)
      return W_Op_And_Then_Prog_Id;
    pragma Precondition
@@ -6638,15 +5452,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_And_Then_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_And_Then_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Minus_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Minus_Prog_OId)
      return W_Op_Minus_Prog_Id;
    pragma Precondition
@@ -6658,15 +5467,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Minus_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Minus_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Op_Not_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Not_Prog_OId)
      return W_Op_Not_Prog_Id;
    pragma Precondition
@@ -6678,15 +5482,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Op_Not_Prog'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Op_Not_Prog'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binders
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binders_OId)
      return W_Binders_Id;
    pragma Precondition
@@ -6698,15 +5497,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binders'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binders'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binder_OId)
      return W_Binder_Id;
    pragma Precondition
@@ -6718,15 +5512,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Binder'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Binder'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Recfun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Recfun_OId)
      return W_Recfun_Id;
    pragma Precondition
@@ -6738,15 +5527,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Recfun'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Recfun'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Loop_Annot
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Loop_Annot_OId)
      return W_Loop_Annot_Id;
    pragma Precondition
@@ -6758,15 +5542,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Loop_Annot'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Loop_Annot'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Wf_Arg
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Wf_Arg_OId)
      return W_Wf_Arg_Id;
    pragma Precondition
@@ -6778,15 +5557,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Wf_Arg'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Wf_Arg'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Handler
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Handler_OId)
      return W_Handler_Id;
    pragma Precondition
@@ -6798,15 +5572,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Handler'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Handler'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_File
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_File_OId)
      return W_File_Id;
    pragma Precondition
@@ -6818,15 +5587,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_File'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_File'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Global_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Global_Binding_OId)
      return W_Global_Binding_Id;
    pragma Precondition
@@ -6838,15 +5602,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Global_Binding'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Global_Binding'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Global_Rec_Binding_OId)
      return W_Global_Rec_Binding_Id;
    pragma Precondition
@@ -6858,15 +5617,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Global_Rec_Binding'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Global_Rec_Binding'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Parameter_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Parameter_Declaration_OId)
      return W_Parameter_Declaration_Id;
    pragma Precondition
@@ -6878,15 +5632,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Parameter_Declaration'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Parameter_Declaration'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Exception_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Exception_Declaration_OId)
      return W_Exception_Declaration_Id;
    pragma Precondition
@@ -6898,15 +5647,10 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Exception_Declaration'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Exception_Declaration'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Declaration_OId)
      return W_Logic_Declaration_Id;
    pragma Precondition
@@ -6918,111 +5662,90 @@ package Why.Atree.Builders is
       and then
         Get_Ada_Node
         (Duplicate_Logic_Declaration'Result)
-        = Ada_Node
-      and then
-        Get_Link
-        (Duplicate_Logic_Declaration'Result)
-        = Link);
+        = Ada_Node);
 
    function Duplicate_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Term_Id)
      return W_Term_Id;
 
    function Duplicate_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Constant_Id)
      return W_Constant_Id;
 
    function Duplicate_Arith_Op
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arith_Op_Id)
      return W_Arith_Op_Id;
 
    function Duplicate_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Id)
      return W_Predicate_Id;
 
    function Duplicate_Primitive_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Primitive_Type_Id)
      return W_Primitive_Type_Id;
 
    function Duplicate_Relation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Relation_Id)
      return W_Relation_Id;
 
    function Duplicate_Logic_Declaration_Class
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Declaration_Class_Id)
      return W_Logic_Declaration_Class_Id;
 
    function Duplicate_Logic_Return_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Return_Type_Id)
      return W_Logic_Return_Type_Id;
 
    function Duplicate_Logic_Arg_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Arg_Type_Id)
      return W_Logic_Arg_Type_Id;
 
    function Duplicate_Simple_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Simple_Value_Type_Id)
      return W_Simple_Value_Type_Id;
 
    function Duplicate_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Value_Type_Id)
      return W_Value_Type_Id;
 
    function Duplicate_Computation_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Computation_Type_Id)
      return W_Computation_Type_Id;
 
    function Duplicate_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Id)
      return W_Prog_Id;
 
    function Duplicate_Infix
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Infix_Id)
      return W_Infix_Id;
 
    function Duplicate_Prefix
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prefix_Id)
      return W_Prefix_Id;
 
    function Duplicate_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Declaration_Id)
      return W_Declaration_Id;
 
    function Duplicate_Any_Node
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Any_Node_Id)
      return W_Any_Node_Id;
 
@@ -7030,1638 +5753,1324 @@ private
 
    function Duplicate_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Term_Id)
      return W_Term_Id is
      (case Get_Kind (Id) is
         when W_Integer_Constant =>
            Duplicate_Integer_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Real_Constant =>
            Duplicate_Real_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_True_Literal =>
            Duplicate_True_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal =>
            Duplicate_False_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Void_Literal =>
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Negative_Term =>
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Label_Identifier =>
            Duplicate_Label_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Operation =>
            Duplicate_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Named_Term =>
            Duplicate_Named_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Term =>
            Duplicate_Conditional_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Term =>
            Duplicate_Binding_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Term =>
            Duplicate_Protected_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Constant_Id)
      return W_Constant_Id is
      (case Get_Kind (Id) is
         when W_Integer_Constant =>
            Duplicate_Integer_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Real_Constant =>
            Duplicate_Real_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_True_Literal =>
            Duplicate_True_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal =>
            Duplicate_False_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Void_Literal =>
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Arith_Op
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arith_Op_Id)
      return W_Arith_Op_Id is
      (case Get_Kind (Id) is
         when W_Op_Add =>
            Duplicate_Op_Add
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Substract =>
            Duplicate_Op_Substract
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Multiply =>
            Duplicate_Op_Multiply
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Divide =>
            Duplicate_Op_Divide
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Modulo =>
            Duplicate_Op_Modulo
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Id)
      return W_Predicate_Id is
      (case Get_Kind (Id) is
         when W_True_Literal =>
            Duplicate_True_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal =>
            Duplicate_False_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Void_Literal =>
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Negative_Term =>
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Label_Identifier =>
            Duplicate_Label_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Operation =>
            Duplicate_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Named_Term =>
            Duplicate_Named_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Term =>
            Duplicate_Conditional_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Term =>
            Duplicate_Binding_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Term =>
            Duplicate_Protected_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Add =>
            Duplicate_Op_Add
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Substract =>
            Duplicate_Op_Substract
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Multiply =>
            Duplicate_Op_Multiply
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Divide =>
            Duplicate_Op_Divide
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Modulo =>
            Duplicate_Op_Modulo
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_True_Literal_Pred =>
            Duplicate_True_Literal_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal_Pred =>
            Duplicate_False_Literal_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Identifier =>
            Duplicate_Predicate_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Instance =>
            Duplicate_Predicate_Instance
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Related_Terms =>
            Duplicate_Related_Terms
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Implication =>
            Duplicate_Implication
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Equivalence =>
            Duplicate_Equivalence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Disjonction =>
            Duplicate_Disjonction
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conjonction =>
            Duplicate_Conjonction
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Negation =>
            Duplicate_Negation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Pred =>
            Duplicate_Conditional_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Pred =>
            Duplicate_Binding_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Universal_Quantif =>
            Duplicate_Universal_Quantif
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Existential_Quantif =>
            Duplicate_Existential_Quantif
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Named_Predicate =>
            Duplicate_Named_Predicate
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Predicate =>
            Duplicate_Protected_Predicate
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Primitive_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Primitive_Type_Id)
      return W_Primitive_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Relation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Relation_Id)
      return W_Relation_Id is
      (case Get_Kind (Id) is
         when W_Rel_Eq =>
            Duplicate_Rel_Eq
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Ne =>
            Duplicate_Rel_Ne
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Lt =>
            Duplicate_Rel_Lt
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Le =>
            Duplicate_Rel_Le
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Gt =>
            Duplicate_Rel_Gt
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Ge =>
            Duplicate_Rel_Ge
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Logic_Declaration_Class
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Declaration_Class_Id)
      return W_Logic_Declaration_Class_Id is
      (case Get_Kind (Id) is
         when W_Type =>
            Duplicate_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic =>
            Duplicate_Logic
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Function =>
            Duplicate_Function
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Definition =>
            Duplicate_Predicate_Definition
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Inductive =>
            Duplicate_Inductive
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Axiom =>
            Duplicate_Axiom
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Goal =>
            Duplicate_Goal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Logic_Return_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Return_Type_Id)
      return W_Logic_Return_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Prop =>
            Duplicate_Type_Prop
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Logic_Arg_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Arg_Type_Id)
      return W_Logic_Arg_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Type =>
            Duplicate_Array_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Simple_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Simple_Value_Type_Id)
      return W_Simple_Value_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Type =>
            Duplicate_Array_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Ref_Type =>
            Duplicate_Ref_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Value_Type =>
            Duplicate_Protected_Value_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Value_Type_Id)
      return W_Value_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Type =>
            Duplicate_Array_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Ref_Type =>
            Duplicate_Ref_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Value_Type =>
            Duplicate_Protected_Value_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arrow_Type =>
            Duplicate_Arrow_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Computation_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Computation_Type_Id)
      return W_Computation_Type_Id is
      (case Get_Kind (Id) is
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Type =>
            Duplicate_Array_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Ref_Type =>
            Duplicate_Ref_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Value_Type =>
            Duplicate_Protected_Value_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arrow_Type =>
            Duplicate_Arrow_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Computation_Spec =>
            Duplicate_Computation_Spec
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Id)
      return W_Prog_Id is
      (case Get_Kind (Id) is
         when W_Prog_Constant =>
            Duplicate_Prog_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prog_Identifier =>
            Duplicate_Prog_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Deref =>
            Duplicate_Deref
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Assignment =>
            Duplicate_Assignment
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Access =>
            Duplicate_Array_Access
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Update =>
            Duplicate_Array_Update
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Infix_Call =>
            Duplicate_Infix_Call
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prefix_Call =>
            Duplicate_Prefix_Call
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Prog =>
            Duplicate_Binding_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Ref =>
            Duplicate_Binding_Ref
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Prog =>
            Duplicate_Conditional_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_While_Loop =>
            Duplicate_While_Loop
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Statement_Sequence =>
            Duplicate_Statement_Sequence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Label =>
            Duplicate_Label
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Assert =>
            Duplicate_Assert
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Post_Assertion =>
            Duplicate_Post_Assertion
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Opaque_Assertion =>
            Duplicate_Opaque_Assertion
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Fun_Def =>
            Duplicate_Fun_Def
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Fun =>
            Duplicate_Binding_Fun
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Rec =>
            Duplicate_Binding_Rec
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prog_Sequence =>
            Duplicate_Prog_Sequence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Raise_Statement =>
            Duplicate_Raise_Statement
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Raise_Statement_With_Parameters =>
            Duplicate_Raise_Statement_With_Parameters
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Try_Block =>
            Duplicate_Try_Block
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Unreachable_Code =>
            Duplicate_Unreachable_Code
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Begin_Block =>
            Duplicate_Begin_Block
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Prog =>
            Duplicate_Protected_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Infix
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Infix_Id)
      return W_Infix_Id is
      (case Get_Kind (Id) is
         when W_Op_Add_Prog =>
            Duplicate_Op_Add_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Substract_Prog =>
            Duplicate_Op_Substract_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Multiply_Prog =>
            Duplicate_Op_Multiply_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Divide_Prog =>
            Duplicate_Op_Divide_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Mod_Prog =>
            Duplicate_Op_Mod_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Eq_Prog =>
            Duplicate_Op_Eq_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Ne_Prog =>
            Duplicate_Op_Ne_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Lt_Prog =>
            Duplicate_Op_Lt_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Le_Prog =>
            Duplicate_Op_Le_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Gt_Prog =>
            Duplicate_Op_Gt_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Ge_Prog =>
            Duplicate_Op_Ge_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Or_Else_Prog =>
            Duplicate_Op_Or_Else_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_And_Then_Prog =>
            Duplicate_Op_And_Then_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Prefix
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prefix_Id)
      return W_Prefix_Id is
      (case Get_Kind (Id) is
         when W_Op_Minus_Prog =>
            Duplicate_Op_Minus_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Not_Prog =>
            Duplicate_Op_Not_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Declaration_Id)
      return W_Declaration_Id is
      (case Get_Kind (Id) is
         when W_Global_Binding =>
            Duplicate_Global_Binding
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Global_Rec_Binding =>
            Duplicate_Global_Rec_Binding
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Parameter_Declaration =>
            Duplicate_Parameter_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Exception_Declaration =>
            Duplicate_Exception_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic_Declaration =>
            Duplicate_Logic_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);
 
    function Duplicate_Any_Node
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Any_Node_Id)
      return W_Any_Node_Id is
      (case Get_Kind (Id) is
         when W_Identifier =>
            Duplicate_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Prop =>
            Duplicate_Type_Prop
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Int =>
            Duplicate_Type_Int
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Bool =>
            Duplicate_Type_Bool
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Real =>
            Duplicate_Type_Real
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type_Unit =>
            Duplicate_Type_Unit
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Abstract_Type =>
            Duplicate_Abstract_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Formal_Type =>
            Duplicate_Generic_Formal_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Generic_Actual_Type_Chain =>
            Duplicate_Generic_Actual_Type_Chain
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Type =>
            Duplicate_Array_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Ref_Type =>
            Duplicate_Ref_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Value_Type =>
            Duplicate_Protected_Value_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arrow_Type =>
            Duplicate_Arrow_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Computation_Spec =>
            Duplicate_Computation_Spec
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Integer_Constant =>
            Duplicate_Integer_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Real_Constant =>
            Duplicate_Real_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_True_Literal =>
            Duplicate_True_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal =>
            Duplicate_False_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Void_Literal =>
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Negative_Term =>
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Label_Identifier =>
            Duplicate_Label_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Operation =>
            Duplicate_Operation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Named_Term =>
            Duplicate_Named_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Term =>
            Duplicate_Conditional_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Term =>
            Duplicate_Binding_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Term =>
            Duplicate_Protected_Term
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Add =>
            Duplicate_Op_Add
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Substract =>
            Duplicate_Op_Substract
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Multiply =>
            Duplicate_Op_Multiply
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Divide =>
            Duplicate_Op_Divide
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Modulo =>
            Duplicate_Op_Modulo
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_True_Literal_Pred =>
            Duplicate_True_Literal_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_False_Literal_Pred =>
            Duplicate_False_Literal_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Identifier =>
            Duplicate_Predicate_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Instance =>
            Duplicate_Predicate_Instance
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Related_Terms =>
            Duplicate_Related_Terms
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Implication =>
            Duplicate_Implication
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Equivalence =>
            Duplicate_Equivalence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Disjonction =>
            Duplicate_Disjonction
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conjonction =>
            Duplicate_Conjonction
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Negation =>
            Duplicate_Negation
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Pred =>
            Duplicate_Conditional_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Pred =>
            Duplicate_Binding_Pred
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Universal_Quantif =>
            Duplicate_Universal_Quantif
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Existential_Quantif =>
            Duplicate_Existential_Quantif
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Named_Predicate =>
            Duplicate_Named_Predicate
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Predicate =>
            Duplicate_Protected_Predicate
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Triggers =>
            Duplicate_Triggers
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Trigger =>
            Duplicate_Trigger
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Eq =>
            Duplicate_Rel_Eq
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Ne =>
            Duplicate_Rel_Ne
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Lt =>
            Duplicate_Rel_Lt
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Le =>
            Duplicate_Rel_Le
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Gt =>
            Duplicate_Rel_Gt
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Rel_Ge =>
            Duplicate_Rel_Ge
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Type =>
            Duplicate_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic =>
            Duplicate_Logic
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Function =>
            Duplicate_Function
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Predicate_Definition =>
            Duplicate_Predicate_Definition
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Inductive =>
            Duplicate_Inductive
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Axiom =>
            Duplicate_Axiom
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Goal =>
            Duplicate_Goal
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_External =>
            Duplicate_External
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic_Type =>
            Duplicate_Logic_Type
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic_Binder =>
            Duplicate_Logic_Binder
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Inductive_Case =>
            Duplicate_Inductive_Case
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Effects =>
            Duplicate_Effects
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Precondition =>
            Duplicate_Precondition
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Postcondition =>
            Duplicate_Postcondition
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Exn_Condition =>
            Duplicate_Exn_Condition
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Assertion =>
            Duplicate_Assertion
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prog_Constant =>
            Duplicate_Prog_Constant
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prog_Identifier =>
            Duplicate_Prog_Identifier
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Deref =>
            Duplicate_Deref
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Assignment =>
            Duplicate_Assignment
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Access =>
            Duplicate_Array_Access
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Array_Update =>
            Duplicate_Array_Update
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Infix_Call =>
            Duplicate_Infix_Call
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prefix_Call =>
            Duplicate_Prefix_Call
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Prog =>
            Duplicate_Binding_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Ref =>
            Duplicate_Binding_Ref
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Conditional_Prog =>
            Duplicate_Conditional_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_While_Loop =>
            Duplicate_While_Loop
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Statement_Sequence =>
            Duplicate_Statement_Sequence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Label =>
            Duplicate_Label
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Assert =>
            Duplicate_Assert
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Post_Assertion =>
            Duplicate_Post_Assertion
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Opaque_Assertion =>
            Duplicate_Opaque_Assertion
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Fun_Def =>
            Duplicate_Fun_Def
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Fun =>
            Duplicate_Binding_Fun
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binding_Rec =>
            Duplicate_Binding_Rec
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Prog_Sequence =>
            Duplicate_Prog_Sequence
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Raise_Statement =>
            Duplicate_Raise_Statement
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Raise_Statement_With_Parameters =>
            Duplicate_Raise_Statement_With_Parameters
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Try_Block =>
            Duplicate_Try_Block
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Unreachable_Code =>
            Duplicate_Unreachable_Code
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Begin_Block =>
            Duplicate_Begin_Block
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Protected_Prog =>
            Duplicate_Protected_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Add_Prog =>
            Duplicate_Op_Add_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Substract_Prog =>
            Duplicate_Op_Substract_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Multiply_Prog =>
            Duplicate_Op_Multiply_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Divide_Prog =>
            Duplicate_Op_Divide_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Mod_Prog =>
            Duplicate_Op_Mod_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Eq_Prog =>
            Duplicate_Op_Eq_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Ne_Prog =>
            Duplicate_Op_Ne_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Lt_Prog =>
            Duplicate_Op_Lt_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Le_Prog =>
            Duplicate_Op_Le_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Gt_Prog =>
            Duplicate_Op_Gt_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Ge_Prog =>
            Duplicate_Op_Ge_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Or_Else_Prog =>
            Duplicate_Op_Or_Else_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_And_Then_Prog =>
            Duplicate_Op_And_Then_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Minus_Prog =>
            Duplicate_Op_Minus_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Op_Not_Prog =>
            Duplicate_Op_Not_Prog
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binders =>
            Duplicate_Binders
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Binder =>
            Duplicate_Binder
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Recfun =>
            Duplicate_Recfun
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Loop_Annot =>
            Duplicate_Loop_Annot
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Wf_Arg =>
            Duplicate_Wf_Arg
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Handler =>
            Duplicate_Handler
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_File =>
            Duplicate_File
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Global_Binding =>
            Duplicate_Global_Binding
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Global_Rec_Binding =>
            Duplicate_Global_Rec_Binding
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Parameter_Declaration =>
            Duplicate_Parameter_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Exception_Declaration =>
            Duplicate_Exception_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when W_Logic_Declaration =>
            Duplicate_Logic_Declaration
             (Ada_Node  => Ada_Node,
-             Link      => Link,
              Id        => Id),
         when others =>
            Why_Empty);

@@ -324,6 +324,9 @@ package body Xtree_Builders is
                   PL (O, "True;");
                end if;
 
+            when Special_Field_Link =>
+               PL (O, New_Node & "." & To_String (SF) & " := Why_Empty;");
+
             when others =>
                --  All special fields should be initialized
                pragma Assert (False);

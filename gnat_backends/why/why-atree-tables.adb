@@ -73,6 +73,7 @@ package body Why.Atree.Tables is
       LI : List_Info := List_Table.Element (List_Id);
    begin
       Append (LI.Content, New_Item);
+      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been
       --  checked at this point), it is now valid, as it contains at
@@ -93,6 +94,7 @@ package body Why.Atree.Tables is
       LI : List_Info := List_Table.Element (List_Id);
    begin
       Prepend (LI.Content, New_Item);
+      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been
       --  checked at this point), it is now valid, as it contains at
@@ -128,7 +130,7 @@ package body Why.Atree.Tables is
       use Node_Lists;
 
       New_List : List;
-      New_Item : constant List_Info := (False, New_List);
+      New_Item : constant List_Info := (False, Why_Empty, New_List);
    begin
       Append (List_Table, New_Item);
       return To_Index (Last (List_Table));
@@ -144,6 +146,73 @@ package body Why.Atree.Tables is
       Append (Node_Table, Node);
       return To_Index (Last (Node_Table));
    end New_Why_Node_Id;
+
+   function New_Why_Node_Id
+     (Kind : W_Any_Node)
+     return Why_Node_Id
+   is
+      New_Node : Why_Node (Kind);
+   begin
+      New_Node.Ada_Node := Empty;
+      New_Node.Link := Why_Empty;
+      New_Node.Checked := False;
+      return New_Why_Node_Id (New_Node);
+   end New_Why_Node_Id;
+
+   --------------
+   -- Set_Link --
+   --------------
+
+   procedure Set_Link
+     (Node_Id : Why_Node_Id;
+      Link    : Why_Node_Set)
+   is
+      Node : Why_Node := Get_Node (Node_Id);
+   begin
+      Node.Link := Link;
+      Set_Node (Node_Id, Node);
+   end Set_Link;
+
+   procedure Set_Link
+     (Node_Id : Why_Node_Id;
+      Link    : Why_Node_Id) is
+   begin
+      Set_Link (Node_Id, Why_Node_Set (Link));
+   end Set_Link;
+
+   procedure Set_Link
+     (Node_Id : Why_Node_Id;
+      Link    : Why_Node_List) is
+   begin
+      Set_Link (Node_Id, Why_Node_Set (Link));
+   end Set_Link;
+
+   procedure Set_Link
+     (List_Id : Why_Node_List;
+      Link    : Why_Node_Set)
+   is
+      use Node_List_Tables;
+      use Node_Lists;
+
+      LI : List_Info := List_Table.Element (List_Id);
+   begin
+      LI.Link := Link;
+      Replace_Element (List_Table, List_Id, LI);
+   end Set_Link;
+
+   procedure Set_Link
+     (List_Id : Why_Node_List;
+      Link    : Why_Node_Id) is
+   begin
+      Set_Link (List_Id, Why_Node_Set (Link));
+   end Set_Link;
+
+   procedure Set_Link
+     (List_Id : Why_Node_List;
+      Link    : Why_Node_List) is
+   begin
+      Set_Link (List_Id, Why_Node_Set (Link));
+   end Set_Link;
 
    --------------
    -- Set_Node --

@@ -87,10 +87,6 @@ package Why.Atree is
       --  Id of the corresponding node in the Ada tree, if any.
       --  The type is Sinfo.Node_Id.
 
-      Link : Why_Node_Set;
-      --  For a node, points to the Parent. For a list, points
-      --  to the list header.
-
       --------------------
       -- Special Fields --
       --------------------
@@ -100,6 +96,10 @@ package Why.Atree is
       --  for flags that records some properties on the syntax tree, and
       --  that are updated implicitely by operations on node ids (mutators,
       --  accessors, builders, traversals).
+
+      Link : Why_Node_Set;
+      --  For a node, points to the Parent. For a list, points
+      --  to the list header.
 
       Checked : Boolean;
       --  True if the sub-tree whose root is this node represents a valid

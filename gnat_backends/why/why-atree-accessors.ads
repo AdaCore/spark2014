@@ -35,10 +35,6 @@ package Why.Atree.Accessors is
      (Id : Why_Node_Id)
      return Node_Id;
 
-   function Get_Link
-     (Id : Why_Node_Id)
-     return Why_Node_Set;
-
    function Identifier_Get_Symbol
      (Id : W_Identifier_Id)
      return Name_Id;
@@ -797,11 +793,6 @@ private
      (Id : Why_Node_Id)
      return Node_Id is
      (Get_Node (Id).Ada_Node);
-
-   function Get_Link
-     (Id : Why_Node_Id)
-     return Why_Node_Set is
-     (Get_Node (Id).Link);
 
    function Identifier_Get_Symbol
      (Id : W_Identifier_Id)

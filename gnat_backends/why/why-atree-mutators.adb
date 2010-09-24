@@ -42,20 +42,6 @@ package body Why.Atree.Mutators is
       Set_Node (Id, Node);
    end Set_Ada_Node;
 
-   --------------
-   -- Set_Link --
-   --------------
-
-   procedure Set_Link
-     (Id   : Why_Node_Id;
-      Link : Why_Node_Set)
-   is
-      Node : Why_Node := Get_Node (Id);
-   begin
-      Node.Link := Link;
-      Set_Node (Id, Node);
-   end Set_Link;
-
    ---------------------------
    -- Identifier_Set_Symbol --
    ---------------------------

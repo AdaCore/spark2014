@@ -109,6 +109,7 @@ package Xtree_Tables is
 
    type Special_Field_Kind is
      (Special_Field_None,
+      Special_Field_Link,
       Special_Field_Checked);
    --  Lists all special fields. Each literal shall be a
    --  concatenation of "Special_Field_" with the name of

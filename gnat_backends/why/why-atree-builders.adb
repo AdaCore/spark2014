@@ -32,7 +32,6 @@ package body Why.Atree.Builders is
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Symbol   : Name_Id;
       Entity   : Why_Node_Id := Why_Empty)
      return W_Identifier_Id
@@ -40,9 +39,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Identifier);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.Symbol := Symbol;
       Result.Entity := Entity;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Identifier;
@@ -52,14 +51,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Type_Prop
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Prop_Id
    is
       Result : Why_Node (W_Type_Prop);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type_Prop;
@@ -69,14 +67,13 @@ package body Why.Atree.Builders is
    ------------------
 
    function New_Type_Int
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Int_Id
    is
       Result : Why_Node (W_Type_Int);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type_Int;
@@ -86,14 +83,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Type_Bool
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Bool_Id
    is
       Result : Why_Node (W_Type_Bool);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type_Bool;
@@ -103,14 +99,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Type_Real
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Real_Id
    is
       Result : Why_Node (W_Type_Real);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type_Real;
@@ -120,14 +115,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Type_Unit
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Type_Unit_Id
    is
       Result : Why_Node (W_Type_Unit);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type_Unit;
@@ -138,15 +132,14 @@ package body Why.Atree.Builders is
 
    function New_Abstract_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Abstract_Type_Id
    is
       Result : Why_Node (W_Abstract_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AT_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Abstract_Type;
@@ -157,15 +150,14 @@ package body Why.Atree.Builders is
 
    function New_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Generic_Formal_Type_Id
    is
       Result : Why_Node (W_Generic_Formal_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.GFT_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Generic_Formal_Type;
@@ -176,7 +168,6 @@ package body Why.Atree.Builders is
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id
@@ -184,9 +175,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Generic_Actual_Type_Chain);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.GATC_Type_Chain := Type_Chain;
       Result.GATC_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Generic_Actual_Type_Chain;
@@ -197,15 +188,14 @@ package body Why.Atree.Builders is
 
    function New_Array_Type
      (Ada_Node       : Node_Id := Empty;
-      Link           : Why_Node_Set := Why_Empty;
       Component_Type : W_Primitive_Type_Id)
      return W_Array_Type_Id
    is
       Result : Why_Node (W_Array_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AT_Component_Type := Component_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Array_Type;
@@ -216,15 +206,14 @@ package body Why.Atree.Builders is
 
    function New_Ref_Type
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Aliased_Type : W_Primitive_Type_Id)
      return W_Ref_Type_Id
    is
       Result : Why_Node (W_Ref_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RT_Aliased_Type := Aliased_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Ref_Type;
@@ -235,15 +224,14 @@ package body Why.Atree.Builders is
 
    function New_Protected_Value_Type
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Value_Type : W_Value_Type_Id)
      return W_Protected_Value_Type_Id
    is
       Result : Why_Node (W_Protected_Value_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PVT_Value_Type := Value_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Protected_Value_Type;
@@ -254,7 +242,6 @@ package body Why.Atree.Builders is
 
    function New_Arrow_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_OId := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
@@ -263,10 +250,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Arrow_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.NA_Name := Name;
       Result.NA_Left := Left;
       Result.NA_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Arrow_Type;
@@ -277,7 +264,6 @@ package body Why.Atree.Builders is
 
    function New_Computation_Spec
      (Ada_Node      : Node_Id := Empty;
-      Link          : Why_Node_Set := Why_Empty;
       Precondition  : W_Precondition_OId := Why_Empty;
       Result_Name   : W_Identifier_OId := Why_Empty;
       Return_Type   : W_Value_Type_Id;
@@ -288,12 +274,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Computation_Spec);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.CS_Precondition := Precondition;
       Result.CS_Result_Name := Result_Name;
       Result.CS_Return_Type := Return_Type;
       Result.CS_Effects := Effects;
       Result.CS_Postcondition := Postcondition;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Computation_Spec;
@@ -304,15 +290,14 @@ package body Why.Atree.Builders is
 
    function New_Integer_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Value    : Uint)
      return W_Integer_Constant_Id
    is
       Result : Why_Node (W_Integer_Constant);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.IC_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Integer_Constant;
@@ -323,15 +308,14 @@ package body Why.Atree.Builders is
 
    function New_Real_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Value    : Ureal)
      return W_Real_Constant_Id
    is
       Result : Why_Node (W_Real_Constant);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RC_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Real_Constant;
@@ -341,14 +325,13 @@ package body Why.Atree.Builders is
    ----------------------
 
    function New_True_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_True_Literal_Id
    is
       Result : Why_Node (W_True_Literal);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_True_Literal;
@@ -358,14 +341,13 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_False_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_False_Literal_Id
    is
       Result : Why_Node (W_False_Literal);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_False_Literal;
@@ -375,14 +357,13 @@ package body Why.Atree.Builders is
    ----------------------
 
    function New_Void_Literal
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Void_Literal_Id
    is
       Result : Why_Node (W_Void_Literal);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Void_Literal;
@@ -393,7 +374,6 @@ package body Why.Atree.Builders is
 
    function New_Arith_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
@@ -402,10 +382,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Arith_Operation);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AO_Left := Left;
       Result.AO_Op := Op;
       Result.AO_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Arith_Operation;
@@ -416,15 +396,14 @@ package body Why.Atree.Builders is
 
    function New_Negative_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Term_Id)
      return W_Negative_Term_Id
    is
       Result : Why_Node (W_Negative_Term);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.NT_Operand := Operand;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Negative_Term;
@@ -435,7 +414,6 @@ package body Why.Atree.Builders is
 
    function New_Label_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId := Why_Empty)
      return W_Label_Identifier_Id
@@ -443,9 +421,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Label_Identifier);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.TI_Name := Name;
       Result.TI_Label := Label;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Label_Identifier;
@@ -456,7 +434,6 @@ package body Why.Atree.Builders is
 
    function New_Operation
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Operation_Id
@@ -464,9 +441,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Operation);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.O_Name := Name;
       Result.O_Parameters := Parameters;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Operation;
@@ -477,7 +454,6 @@ package body Why.Atree.Builders is
 
    function New_Named_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id
@@ -485,9 +461,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Named_Term);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.NT_Name := Name;
       Result.NT_Term := Term;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Named_Term;
@@ -498,7 +474,6 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Term
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
@@ -507,10 +482,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Term);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.CT_Condition := Condition;
       Result.CT_Then_Part := Then_Part;
       Result.CT_Else_Part := Else_Part;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Conditional_Term;
@@ -521,7 +496,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Term_Id)
@@ -530,10 +504,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Term);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BT_Name := Name;
       Result.BT_Def := Def;
       Result.BT_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Term;
@@ -544,15 +518,14 @@ package body Why.Atree.Builders is
 
    function New_Protected_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Term     : W_Term_Id)
      return W_Protected_Term_Id
    is
       Result : Why_Node (W_Protected_Term);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BT_Term := Term;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Protected_Term;
@@ -562,14 +535,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Op_Add
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Add_Id
    is
       Result : Why_Node (W_Op_Add);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Add;
@@ -579,14 +551,13 @@ package body Why.Atree.Builders is
    ----------------------
 
    function New_Op_Substract
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Substract_Id
    is
       Result : Why_Node (W_Op_Substract);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Substract;
@@ -596,14 +567,13 @@ package body Why.Atree.Builders is
    ---------------------
 
    function New_Op_Multiply
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Multiply_Id
    is
       Result : Why_Node (W_Op_Multiply);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Multiply;
@@ -613,14 +583,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Op_Divide
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Divide_Id
    is
       Result : Why_Node (W_Op_Divide);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Divide;
@@ -630,14 +599,13 @@ package body Why.Atree.Builders is
    -------------------
 
    function New_Op_Modulo
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Modulo_Id
    is
       Result : Why_Node (W_Op_Modulo);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Modulo;
@@ -647,14 +615,13 @@ package body Why.Atree.Builders is
    ---------------------------
 
    function New_True_Literal_Pred
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_True_Literal_Pred_Id
    is
       Result : Why_Node (W_True_Literal_Pred);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_True_Literal_Pred;
@@ -664,14 +631,13 @@ package body Why.Atree.Builders is
    ----------------------------
 
    function New_False_Literal_Pred
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_False_Literal_Pred_Id
    is
       Result : Why_Node (W_False_Literal_Pred);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_False_Literal_Pred;
@@ -682,15 +648,14 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id)
      return W_Predicate_Identifier_Id
    is
       Result : Why_Node (W_Predicate_Identifier);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PID_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Predicate_Identifier;
@@ -701,7 +666,6 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Instance
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
      return W_Predicate_Instance_Id
@@ -709,9 +673,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Predicate_Instance);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PIN_Name := Name;
       Result.PIN_Parameters := Parameters;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Predicate_Instance;
@@ -722,7 +686,6 @@ package body Why.Atree.Builders is
 
    function New_Related_Terms
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Term_Id;
       Op       : W_Relation_Id;
       Right    : W_Term_Id;
@@ -733,12 +696,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Related_Terms);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RT_Left := Left;
       Result.RT_Op := Op;
       Result.RT_Right := Right;
       Result.RT_Op2 := Op2;
       Result.RT_Right2 := Right2;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Related_Terms;
@@ -749,7 +712,6 @@ package body Why.Atree.Builders is
 
    function New_Implication
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Implication_Id
@@ -757,9 +719,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Implication);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.ITOC_Left := Left;
       Result.ITOC_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Implication;
@@ -770,7 +732,6 @@ package body Why.Atree.Builders is
 
    function New_Equivalence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Equivalence_Id
@@ -778,9 +739,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Equivalence);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.ITOC_Left := Left;
       Result.ITOC_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Equivalence;
@@ -791,7 +752,6 @@ package body Why.Atree.Builders is
 
    function New_Disjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Disjonction_Id
@@ -799,9 +759,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Disjonction);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.ITOC_Left := Left;
       Result.ITOC_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Disjonction;
@@ -812,7 +772,6 @@ package body Why.Atree.Builders is
 
    function New_Conjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
      return W_Conjonction_Id
@@ -820,9 +779,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conjonction);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.ITOC_Left := Left;
       Result.ITOC_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Conjonction;
@@ -833,15 +792,14 @@ package body Why.Atree.Builders is
 
    function New_Negation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Operand  : W_Predicate_Id)
      return W_Negation_Id
    is
       Result : Why_Node (W_Negation);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.N_Operand := Operand;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Negation;
@@ -852,7 +810,6 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Pred
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Term_Id;
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
@@ -861,10 +818,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Pred);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.CPD_Condition := Condition;
       Result.CPD_Then_Part := Then_Part;
       Result.CPD_Else_Part := Else_Part;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Conditional_Pred;
@@ -875,7 +832,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
@@ -884,10 +840,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Pred);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BPD_Name := Name;
       Result.BPD_Def := Def;
       Result.BPD_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Pred;
@@ -898,7 +854,6 @@ package body Why.Atree.Builders is
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId := Why_Empty;
@@ -908,11 +863,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Universal_Quantif);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.UQ_Variables := Variables;
       Result.UQ_Var_Type := Var_Type;
       Result.UQ_Triggers := Triggers;
       Result.UQ_Pred := Pred;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Universal_Quantif;
@@ -923,7 +878,6 @@ package body Why.Atree.Builders is
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
@@ -932,10 +886,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Existential_Quantif);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.EQ_Variables := Variables;
       Result.EQ_Var_Type := Var_Type;
       Result.EQ_Pred := Pred;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Existential_Quantif;
@@ -946,7 +900,6 @@ package body Why.Atree.Builders is
 
    function New_Named_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Named_Predicate_Id
@@ -954,9 +907,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Named_Predicate);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.NP_Name := Name;
       Result.NP_Pred := Pred;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Named_Predicate;
@@ -967,15 +920,14 @@ package body Why.Atree.Builders is
 
    function New_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id)
      return W_Protected_Predicate_Id
    is
       Result : Why_Node (W_Protected_Predicate);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PP_Pred := Pred;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Protected_Predicate;
@@ -986,15 +938,14 @@ package body Why.Atree.Builders is
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Triggers : W_Trigger_List)
      return W_Triggers_Id
    is
       Result : Why_Node (W_Triggers);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.TRS_Triggers := Triggers;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Triggers;
@@ -1005,15 +956,14 @@ package body Why.Atree.Builders is
 
    function New_Trigger
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Terms    : W_Term_List)
      return W_Trigger_Id
    is
       Result : Why_Node (W_Trigger);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.TRI_Terms := Terms;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Trigger;
@@ -1023,14 +973,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Eq
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Eq_Id
    is
       Result : Why_Node (W_Rel_Eq);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Eq;
@@ -1040,14 +989,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Ne
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Ne_Id
    is
       Result : Why_Node (W_Rel_Ne);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Ne;
@@ -1057,14 +1005,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Lt
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Lt_Id
    is
       Result : Why_Node (W_Rel_Lt);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Lt;
@@ -1074,14 +1021,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Le
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Le_Id
    is
       Result : Why_Node (W_Rel_Le);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Le;
@@ -1091,14 +1037,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Gt
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Gt_Id
    is
       Result : Why_Node (W_Rel_Gt);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Gt;
@@ -1108,14 +1053,13 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Rel_Ge
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Rel_Ge_Id
    is
       Result : Why_Node (W_Rel_Ge);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Rel_Ge;
@@ -1126,7 +1070,6 @@ package body Why.Atree.Builders is
 
    function New_Type
      (Ada_Node        : Node_Id := Empty;
-      Link            : Why_Node_Set := Why_Empty;
       External        : W_External_OId := Why_Empty;
       Type_Parameters : W_Identifier_OList := New_List;
       Name            : W_Identifier_Id)
@@ -1135,10 +1078,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.T_External := External;
       Result.T_Type_Parameters := Type_Parameters;
       Result.T_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Type;
@@ -1149,7 +1092,6 @@ package body Why.Atree.Builders is
 
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       External   : W_External_OId := Why_Empty;
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
@@ -1158,10 +1100,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.L_External := External;
       Result.L_Names := Names;
       Result.L_Logic_Type := Logic_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Logic;
@@ -1172,7 +1114,6 @@ package body Why.Atree.Builders is
 
    function New_Function
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Logic_Binder_List;
       Return_Type : W_Primitive_Type_Id;
@@ -1182,11 +1123,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Function);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.F_Name := Name;
       Result.F_Binders := Binders;
       Result.F_Return_Type := Return_Type;
       Result.F_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Function;
@@ -1197,7 +1138,6 @@ package body Why.Atree.Builders is
 
    function New_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
@@ -1206,10 +1146,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Predicate_Definition);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.P_Name := Name;
       Result.P_Binders := Binders;
       Result.P_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Predicate_Definition;
@@ -1220,7 +1160,6 @@ package body Why.Atree.Builders is
 
    function New_Inductive
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
@@ -1229,10 +1168,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Inductive);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.I_Name := Name;
       Result.I_Logic_Type := Logic_Type;
       Result.I_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Inductive;
@@ -1243,7 +1182,6 @@ package body Why.Atree.Builders is
 
    function New_Axiom
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Axiom_Id
@@ -1251,9 +1189,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Axiom);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AX_Name := Name;
       Result.AX_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Axiom;
@@ -1264,7 +1202,6 @@ package body Why.Atree.Builders is
 
    function New_Goal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
      return W_Goal_Id
@@ -1272,9 +1209,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Goal);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.G_Name := Name;
       Result.G_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Goal;
@@ -1284,14 +1221,13 @@ package body Why.Atree.Builders is
    ------------------
 
    function New_External
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_External_Id
    is
       Result : Why_Node (W_External);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_External;
@@ -1302,7 +1238,6 @@ package body Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id
@@ -1310,9 +1245,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.LT_Arg_Types := Arg_Types;
       Result.LT_Return_Type := Return_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Logic_Type;
@@ -1323,7 +1258,6 @@ package body Why.Atree.Builders is
 
    function New_Logic_Binder
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
      return W_Logic_Binder_Id
@@ -1331,9 +1265,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic_Binder);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.LB_Name := Name;
       Result.LB_Param_Type := Param_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Logic_Binder;
@@ -1344,7 +1278,6 @@ package body Why.Atree.Builders is
 
    function New_Inductive_Case
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
      return W_Inductive_Case_Id
@@ -1352,9 +1285,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Inductive_Case);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.IC_Name := Name;
       Result.IC_Pred := Pred;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Inductive_Case;
@@ -1365,7 +1298,6 @@ package body Why.Atree.Builders is
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Reads    : W_Identifier_OList := New_List;
       Writes   : W_Identifier_OList := New_List;
       Raises   : W_Identifier_OList := New_List)
@@ -1374,10 +1306,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Effects);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.E_Reads := Reads;
       Result.E_Writes := Writes;
       Result.E_Raises := Raises;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Effects;
@@ -1388,15 +1320,14 @@ package body Why.Atree.Builders is
 
    function New_Precondition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id)
      return W_Precondition_Id
    is
       Result : Why_Node (W_Precondition);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PRE_Assertion := Assertion;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Precondition;
@@ -1407,7 +1338,6 @@ package body Why.Atree.Builders is
 
    function New_Postcondition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Assertion : W_Assertion_Id;
       Handlers  : W_Exn_Condition_OList := New_List)
      return W_Postcondition_Id
@@ -1415,9 +1345,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Postcondition);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.POST_Assertion := Assertion;
       Result.POST_Handlers := Handlers;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Postcondition;
@@ -1428,7 +1358,6 @@ package body Why.Atree.Builders is
 
    function New_Exn_Condition
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
      return W_Exn_Condition_Id
@@ -1436,9 +1365,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Exn_Condition);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.EC_Exn_Case := Exn_Case;
       Result.EC_Assertion := Assertion;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Exn_Condition;
@@ -1449,7 +1378,6 @@ package body Why.Atree.Builders is
 
    function New_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Pred     : W_Predicate_Id;
       As       : W_Identifier_OId := Why_Empty)
      return W_Assertion_Id
@@ -1457,9 +1385,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assertion);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.A_Pred := Pred;
       Result.A_As := As;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Assertion;
@@ -1470,15 +1398,14 @@ package body Why.Atree.Builders is
 
    function New_Prog_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Constant_Id)
      return W_Prog_Constant_Id
    is
       Result : Why_Node (W_Prog_Constant);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PC_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Prog_Constant;
@@ -1489,15 +1416,14 @@ package body Why.Atree.Builders is
 
    function New_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Identifier_Id)
      return W_Prog_Identifier_Id
    is
       Result : Why_Node (W_Prog_Identifier);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PI_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Prog_Identifier;
@@ -1508,15 +1434,14 @@ package body Why.Atree.Builders is
 
    function New_Deref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Ref      : W_Identifier_Id)
      return W_Deref_Id
    is
       Result : Why_Node (W_Deref);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.D_Ref := Ref;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Deref;
@@ -1527,7 +1452,6 @@ package body Why.Atree.Builders is
 
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
      return W_Assignment_Id
@@ -1535,9 +1459,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assignment);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.A_Name := Name;
       Result.A_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Assignment;
@@ -1548,7 +1472,6 @@ package body Why.Atree.Builders is
 
    function New_Array_Access
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
      return W_Array_Access_Id
@@ -1556,9 +1479,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Array_Access);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AA_Name := Name;
       Result.AA_Index := Index;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Array_Access;
@@ -1569,7 +1492,6 @@ package body Why.Atree.Builders is
 
    function New_Array_Update
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
@@ -1578,10 +1500,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Array_Update);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AU_Name := Name;
       Result.AU_Index := Index;
       Result.AU_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Array_Update;
@@ -1592,7 +1514,6 @@ package body Why.Atree.Builders is
 
    function New_Infix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Left     : W_Prog_Id;
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
@@ -1601,10 +1522,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Infix_Call);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.IC_Left := Left;
       Result.IC_Infix := Infix;
       Result.IC_Right := Right;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Infix_Call;
@@ -1615,7 +1536,6 @@ package body Why.Atree.Builders is
 
    function New_Prefix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
      return W_Prefix_Call_Id
@@ -1623,9 +1543,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Prefix_Call);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PC_Prefix := Prefix;
       Result.PC_Operand := Operand;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Prefix_Call;
@@ -1636,7 +1556,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -1645,10 +1564,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BPG_Name := Name;
       Result.BPG_Def := Def;
       Result.BPG_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Prog;
@@ -1659,7 +1578,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Ref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -1668,10 +1586,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Ref);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BPG_Name := Name;
       Result.BPG_Def := Def;
       Result.BPG_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Ref;
@@ -1682,7 +1600,6 @@ package body Why.Atree.Builders is
 
    function New_Conditional_Prog
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Condition : W_Prog_Id;
       Then_Part : W_Prog_Id;
       Else_Part : W_Prog_OId := Why_Empty)
@@ -1691,10 +1608,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.CPG_Condition := Condition;
       Result.CPG_Then_Part := Then_Part;
       Result.CPG_Else_Part := Else_Part;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Conditional_Prog;
@@ -1705,7 +1622,6 @@ package body Why.Atree.Builders is
 
    function New_While_Loop
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Condition    : W_Prog_Id;
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
@@ -1714,10 +1630,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_While_Loop);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.WL_Condition := Condition;
       Result.WL_Annotation := Annotation;
       Result.WL_Loop_Content := Loop_Content;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_While_Loop;
@@ -1728,15 +1644,14 @@ package body Why.Atree.Builders is
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Statements : W_Prog_List)
      return W_Statement_Sequence_Id
    is
       Result : Why_Node (W_Statement_Sequence);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.SS_Statements := Statements;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Statement_Sequence;
@@ -1747,7 +1662,6 @@ package body Why.Atree.Builders is
 
    function New_Label
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
      return W_Label_Id
@@ -1755,9 +1669,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Label);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.L_Name := Name;
       Result.L_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Label;
@@ -1768,7 +1682,6 @@ package body Why.Atree.Builders is
 
    function New_Assert
      (Ada_Node   : Node_Id := Empty;
-      Link       : Why_Node_Set := Why_Empty;
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
      return W_Assert_Id
@@ -1776,9 +1689,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assert);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.AS_Assertions := Assertions;
       Result.AS_Prog := Prog;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Assert;
@@ -1789,7 +1702,6 @@ package body Why.Atree.Builders is
 
    function New_Post_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Post_Assertion_Id
@@ -1797,9 +1709,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Post_Assertion);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PA_Prog := Prog;
       Result.PA_Post := Post;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Post_Assertion;
@@ -1810,7 +1722,6 @@ package body Why.Atree.Builders is
 
    function New_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
      return W_Opaque_Assertion_Id
@@ -1818,9 +1729,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Opaque_Assertion);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PA_Prog := Prog;
       Result.PA_Post := Post;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Opaque_Assertion;
@@ -1831,7 +1742,6 @@ package body Why.Atree.Builders is
 
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id
@@ -1839,9 +1749,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Fun_Def);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.FD_Binders := Binders;
       Result.FD_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Fun_Def;
@@ -1852,7 +1762,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Fun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id;
@@ -1862,11 +1771,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Fun);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BF_Name := Name;
       Result.BF_Binders := Binders;
       Result.BF_Def := Def;
       Result.BF_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Fun;
@@ -1877,7 +1786,6 @@ package body Why.Atree.Builders is
 
    function New_Binding_Rec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
      return W_Binding_Rec_Id
@@ -1885,9 +1793,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Rec);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BR_Recfun := Recfun;
       Result.BR_Context := Context;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binding_Rec;
@@ -1898,15 +1806,14 @@ package body Why.Atree.Builders is
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Progs    : W_Prog_List)
      return W_Prog_Sequence_Id
    is
       Result : Why_Node (W_Prog_Sequence);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PS_Progs := Progs;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Prog_Sequence;
@@ -1917,7 +1824,6 @@ package body Why.Atree.Builders is
 
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_Id
@@ -1925,9 +1831,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Raise_Statement);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RS_Name := Name;
       Result.RS_Exn_Type := Exn_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Raise_Statement;
@@ -1938,7 +1844,6 @@ package body Why.Atree.Builders is
 
    function New_Raise_Statement_With_Parameters
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
       Exn_Type  : W_Value_Type_OId := Why_Empty)
@@ -1947,10 +1852,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Raise_Statement_With_Parameters);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RSWP_Name := Name;
       Result.RSWP_Parameter := Parameter;
       Result.RSWP_Exn_Type := Exn_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Raise_Statement_With_Parameters;
@@ -1961,7 +1866,6 @@ package body Why.Atree.Builders is
 
    function New_Try_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
      return W_Try_Block_Id
@@ -1969,9 +1873,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Try_Block);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.TB_Prog := Prog;
       Result.TB_Handler := Handler;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Try_Block;
@@ -1982,15 +1886,14 @@ package body Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Exn_Type : W_Value_Type_OId := Why_Empty)
      return W_Unreachable_Code_Id
    is
       Result : Why_Node (W_Unreachable_Code);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.UC_Exn_Type := Exn_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Unreachable_Code;
@@ -2001,15 +1904,14 @@ package body Why.Atree.Builders is
 
    function New_Begin_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Begin_Block_Id
    is
       Result : Why_Node (W_Begin_Block);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BB_Prog := Prog;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Begin_Block;
@@ -2020,15 +1922,14 @@ package body Why.Atree.Builders is
 
    function New_Protected_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Prog     : W_Prog_Id)
      return W_Protected_Prog_Id
    is
       Result : Why_Node (W_Protected_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BB_Prog := Prog;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Protected_Prog;
@@ -2038,14 +1939,13 @@ package body Why.Atree.Builders is
    ---------------------
 
    function New_Op_Add_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Add_Prog_Id
    is
       Result : Why_Node (W_Op_Add_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Add_Prog;
@@ -2055,14 +1955,13 @@ package body Why.Atree.Builders is
    ---------------------------
 
    function New_Op_Substract_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Substract_Prog_Id
    is
       Result : Why_Node (W_Op_Substract_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Substract_Prog;
@@ -2072,14 +1971,13 @@ package body Why.Atree.Builders is
    --------------------------
 
    function New_Op_Multiply_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Multiply_Prog_Id
    is
       Result : Why_Node (W_Op_Multiply_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Multiply_Prog;
@@ -2089,14 +1987,13 @@ package body Why.Atree.Builders is
    ------------------------
 
    function New_Op_Divide_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Divide_Prog_Id
    is
       Result : Why_Node (W_Op_Divide_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Divide_Prog;
@@ -2106,14 +2003,13 @@ package body Why.Atree.Builders is
    ---------------------
 
    function New_Op_Mod_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Mod_Prog_Id
    is
       Result : Why_Node (W_Op_Mod_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Mod_Prog;
@@ -2123,14 +2019,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Eq_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Eq_Prog_Id
    is
       Result : Why_Node (W_Op_Eq_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Eq_Prog;
@@ -2140,14 +2035,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Ne_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Ne_Prog_Id
    is
       Result : Why_Node (W_Op_Ne_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Ne_Prog;
@@ -2157,14 +2051,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Lt_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Lt_Prog_Id
    is
       Result : Why_Node (W_Op_Lt_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Lt_Prog;
@@ -2174,14 +2067,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Le_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Le_Prog_Id
    is
       Result : Why_Node (W_Op_Le_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Le_Prog;
@@ -2191,14 +2083,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Gt_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Gt_Prog_Id
    is
       Result : Why_Node (W_Op_Gt_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Gt_Prog;
@@ -2208,14 +2099,13 @@ package body Why.Atree.Builders is
    --------------------
 
    function New_Op_Ge_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Ge_Prog_Id
    is
       Result : Why_Node (W_Op_Ge_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Ge_Prog;
@@ -2225,14 +2115,13 @@ package body Why.Atree.Builders is
    -------------------------
 
    function New_Op_Or_Else_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Or_Else_Prog_Id
    is
       Result : Why_Node (W_Op_Or_Else_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Or_Else_Prog;
@@ -2242,14 +2131,13 @@ package body Why.Atree.Builders is
    --------------------------
 
    function New_Op_And_Then_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_And_Then_Prog_Id
    is
       Result : Why_Node (W_Op_And_Then_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_And_Then_Prog;
@@ -2259,14 +2147,13 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_Op_Minus_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Minus_Prog_Id
    is
       Result : Why_Node (W_Op_Minus_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Minus_Prog;
@@ -2276,14 +2163,13 @@ package body Why.Atree.Builders is
    ---------------------
 
    function New_Op_Not_Prog
-     (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty)
+     (Ada_Node : Node_Id := Empty)
      return W_Op_Not_Prog_Id
    is
       Result : Why_Node (W_Op_Not_Prog);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Op_Not_Prog;
@@ -2294,15 +2180,14 @@ package body Why.Atree.Builders is
 
    function New_Binders
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Binders  : W_Binder_List)
      return W_Binders_Id
    is
       Result : Why_Node (W_Binders);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.BS_Binders := Binders;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binders;
@@ -2313,7 +2198,6 @@ package body Why.Atree.Builders is
 
    function New_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id
@@ -2321,9 +2205,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binder);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.B_Names := Names;
       Result.B_Arg_Type := Arg_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Binder;
@@ -2334,7 +2218,6 @@ package body Why.Atree.Builders is
 
    function New_Recfun
      (Ada_Node    : Node_Id := Empty;
-      Link        : Why_Node_Set := Why_Empty;
       Name        : W_Identifier_Id;
       Binders     : W_Binders_Id;
       Return_Type : W_Prog_Id;
@@ -2345,12 +2228,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Recfun);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.RF_Name := Name;
       Result.RF_Binders := Binders;
       Result.RF_Return_Type := Return_Type;
       Result.RF_Variant := Variant;
       Result.RF_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Recfun;
@@ -2361,7 +2244,6 @@ package body Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Invariant : W_Assertion_OId := Why_Empty;
       Variant   : W_Wf_Arg_OId := Why_Empty)
      return W_Loop_Annot_Id
@@ -2369,9 +2251,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Loop_Annot);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.LA_Invariant := Invariant;
       Result.LA_Variant := Variant;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Loop_Annot;
@@ -2382,7 +2264,6 @@ package body Why.Atree.Builders is
 
    function New_Wf_Arg
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Def      : W_Term_Id;
       For_Id   : W_Identifier_OId := Why_Empty)
      return W_Wf_Arg_Id
@@ -2390,9 +2271,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Wf_Arg);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.WA_Def := Def;
       Result.WA_For_Id := For_Id;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Wf_Arg;
@@ -2403,7 +2284,6 @@ package body Why.Atree.Builders is
 
    function New_Handler
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Prog_OId := Why_Empty;
       Def       : W_Prog_Id)
@@ -2412,10 +2292,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Handler);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.H_Name := Name;
       Result.H_Parameter := Parameter;
       Result.H_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Handler;
@@ -2426,15 +2306,14 @@ package body Why.Atree.Builders is
 
    function New_File
      (Ada_Node     : Node_Id := Empty;
-      Link         : Why_Node_Set := Why_Empty;
       Declarations : W_Declaration_OList := New_List)
      return W_File_Id
    is
       Result : Why_Node (W_File);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.F_Declarations := Declarations;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_File;
@@ -2445,7 +2324,6 @@ package body Why.Atree.Builders is
 
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_OId := Why_Empty;
       Def      : W_Prog_Id)
@@ -2454,10 +2332,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Global_Binding);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.GB_Name := Name;
       Result.GB_Binders := Binders;
       Result.GB_Def := Def;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Global_Binding;
@@ -2468,15 +2346,14 @@ package body Why.Atree.Builders is
 
    function New_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Name     : W_Recfun_Id)
      return W_Global_Rec_Binding_Id
    is
       Result : Why_Node (W_Global_Rec_Binding);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.GRB_Name := Name;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Global_Rec_Binding;
@@ -2487,7 +2364,6 @@ package body Why.Atree.Builders is
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
-      Link           : Why_Node_Set := Why_Empty;
       External       : W_External_Id;
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
@@ -2496,10 +2372,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Parameter_Declaration);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.PD_External := External;
       Result.PD_Names := Names;
       Result.PD_Parameter_Type := Parameter_Type;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Parameter_Declaration;
@@ -2510,7 +2386,6 @@ package body Why.Atree.Builders is
 
    function New_Exception_Declaration
      (Ada_Node  : Node_Id := Empty;
-      Link      : Why_Node_Set := Why_Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Primitive_Type_OId := Why_Empty)
      return W_Exception_Declaration_Id
@@ -2518,9 +2393,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Exception_Declaration);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.ED_Name := Name;
       Result.ED_Parameter := Parameter;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Exception_Declaration;
@@ -2531,15 +2406,14 @@ package body Why.Atree.Builders is
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Decl     : W_Logic_Id)
      return W_Logic_Declaration_Id
    is
       Result : Why_Node (W_Logic_Declaration);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Link := Link;
       Result.LD_Decl := Decl;
+      Result.Link := Why_Empty;
       Result.Checked := True;
       return New_Why_Node_Id (Result);
    end New_Logic_Declaration;
@@ -2555,9 +2429,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Identifier);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.Symbol := Symbol;
       Result.Entity := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Identifier;
@@ -2647,8 +2521,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Abstract_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AT_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Abstract_Type;
@@ -2663,8 +2537,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Generic_Formal_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.GFT_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Generic_Formal_Type;
@@ -2679,9 +2553,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Generic_Actual_Type_Chain);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.GATC_Type_Chain := New_List;
       Result.GATC_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Generic_Actual_Type_Chain;
@@ -2696,8 +2570,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Array_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AT_Component_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Array_Type;
@@ -2712,8 +2586,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Ref_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RT_Aliased_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Ref_Type;
@@ -2728,8 +2602,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Protected_Value_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PVT_Value_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Protected_Value_Type;
@@ -2744,10 +2618,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Arrow_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.NA_Name := Why_Empty;
       Result.NA_Left := Why_Empty;
       Result.NA_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Arrow_Type;
@@ -2762,12 +2636,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Computation_Spec);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.CS_Precondition := Why_Empty;
       Result.CS_Result_Name := Why_Empty;
       Result.CS_Return_Type := Why_Empty;
       Result.CS_Effects := Why_Empty;
       Result.CS_Postcondition := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Computation_Spec;
@@ -2783,8 +2657,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Integer_Constant);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.IC_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Integer_Constant;
@@ -2800,8 +2674,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Real_Constant);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RC_Value := Value;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Real_Constant;
@@ -2861,10 +2735,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Arith_Operation);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AO_Left := Why_Empty;
       Result.AO_Op := Why_Empty;
       Result.AO_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Arith_Operation;
@@ -2879,8 +2753,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Negative_Term);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.NT_Operand := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Negative_Term;
@@ -2895,9 +2769,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Label_Identifier);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.TI_Name := Why_Empty;
       Result.TI_Label := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Label_Identifier;
@@ -2912,9 +2786,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Operation);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.O_Name := Why_Empty;
       Result.O_Parameters := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Operation;
@@ -2929,9 +2803,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Named_Term);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.NT_Name := Why_Empty;
       Result.NT_Term := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Named_Term;
@@ -2946,10 +2820,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Term);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.CT_Condition := Why_Empty;
       Result.CT_Then_Part := Why_Empty;
       Result.CT_Else_Part := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Conditional_Term;
@@ -2964,10 +2838,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Term);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BT_Name := Why_Empty;
       Result.BT_Def := Why_Empty;
       Result.BT_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Term;
@@ -2982,8 +2856,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Protected_Term);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BT_Term := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Protected_Term;
@@ -3103,8 +2977,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Predicate_Identifier);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PID_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Predicate_Identifier;
@@ -3119,9 +2993,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Predicate_Instance);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PIN_Name := Why_Empty;
       Result.PIN_Parameters := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Predicate_Instance;
@@ -3136,12 +3010,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Related_Terms);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RT_Left := Why_Empty;
       Result.RT_Op := Why_Empty;
       Result.RT_Right := Why_Empty;
       Result.RT_Op2 := Why_Empty;
       Result.RT_Right2 := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Related_Terms;
@@ -3156,9 +3030,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Implication);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.ITOC_Left := Why_Empty;
       Result.ITOC_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Implication;
@@ -3173,9 +3047,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Equivalence);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.ITOC_Left := Why_Empty;
       Result.ITOC_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Equivalence;
@@ -3190,9 +3064,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Disjonction);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.ITOC_Left := Why_Empty;
       Result.ITOC_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Disjonction;
@@ -3207,9 +3081,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conjonction);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.ITOC_Left := Why_Empty;
       Result.ITOC_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Conjonction;
@@ -3224,8 +3098,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Negation);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.N_Operand := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Negation;
@@ -3240,10 +3114,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Pred);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.CPD_Condition := Why_Empty;
       Result.CPD_Then_Part := Why_Empty;
       Result.CPD_Else_Part := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Conditional_Pred;
@@ -3258,10 +3132,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Pred);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BPD_Name := Why_Empty;
       Result.BPD_Def := Why_Empty;
       Result.BPD_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Pred;
@@ -3276,11 +3150,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Universal_Quantif);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.UQ_Variables := New_List;
       Result.UQ_Var_Type := Why_Empty;
       Result.UQ_Triggers := Why_Empty;
       Result.UQ_Pred := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Universal_Quantif;
@@ -3295,10 +3169,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Existential_Quantif);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.EQ_Variables := New_List;
       Result.EQ_Var_Type := Why_Empty;
       Result.EQ_Pred := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Existential_Quantif;
@@ -3313,9 +3187,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Named_Predicate);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.NP_Name := Why_Empty;
       Result.NP_Pred := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Named_Predicate;
@@ -3330,8 +3204,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Protected_Predicate);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PP_Pred := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Protected_Predicate;
@@ -3346,8 +3220,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Triggers);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.TRS_Triggers := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Triggers;
@@ -3362,8 +3236,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Trigger);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.TRI_Terms := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Trigger;
@@ -3468,10 +3342,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.T_External := Why_Empty;
       Result.T_Type_Parameters := New_List;
       Result.T_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Type;
@@ -3486,10 +3360,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.L_External := Why_Empty;
       Result.L_Names := New_List;
       Result.L_Logic_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Logic;
@@ -3504,11 +3378,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Function);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.F_Name := Why_Empty;
       Result.F_Binders := New_List;
       Result.F_Return_Type := Why_Empty;
       Result.F_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Function;
@@ -3523,10 +3397,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Predicate_Definition);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.P_Name := Why_Empty;
       Result.P_Binders := New_List;
       Result.P_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Predicate_Definition;
@@ -3541,10 +3415,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Inductive);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.I_Name := Why_Empty;
       Result.I_Logic_Type := Why_Empty;
       Result.I_Def := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Inductive;
@@ -3559,9 +3433,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Axiom);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AX_Name := Why_Empty;
       Result.AX_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Axiom;
@@ -3576,9 +3450,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Goal);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.G_Name := Why_Empty;
       Result.G_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Goal;
@@ -3608,9 +3482,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic_Type);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.LT_Arg_Types := New_List;
       Result.LT_Return_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Logic_Type;
@@ -3625,9 +3499,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic_Binder);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.LB_Name := Why_Empty;
       Result.LB_Param_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Logic_Binder;
@@ -3642,9 +3516,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Inductive_Case);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.IC_Name := Why_Empty;
       Result.IC_Pred := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Inductive_Case;
@@ -3659,10 +3533,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Effects);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.E_Reads := New_List;
       Result.E_Writes := New_List;
       Result.E_Raises := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Effects;
@@ -3677,8 +3551,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Precondition);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PRE_Assertion := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Precondition;
@@ -3693,9 +3567,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Postcondition);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.POST_Assertion := Why_Empty;
       Result.POST_Handlers := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Postcondition;
@@ -3710,9 +3584,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Exn_Condition);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.EC_Exn_Case := Why_Empty;
       Result.EC_Assertion := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Exn_Condition;
@@ -3727,9 +3601,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assertion);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.A_Pred := Why_Empty;
       Result.A_As := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Assertion;
@@ -3744,8 +3618,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Prog_Constant);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PC_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Prog_Constant;
@@ -3760,8 +3634,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Prog_Identifier);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PI_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Prog_Identifier;
@@ -3776,8 +3650,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Deref);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.D_Ref := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Deref;
@@ -3792,9 +3666,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assignment);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.A_Name := Why_Empty;
       Result.A_Value := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Assignment;
@@ -3809,9 +3683,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Array_Access);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AA_Name := Why_Empty;
       Result.AA_Index := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Array_Access;
@@ -3826,10 +3700,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Array_Update);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AU_Name := Why_Empty;
       Result.AU_Index := Why_Empty;
       Result.AU_Value := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Array_Update;
@@ -3844,10 +3718,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Infix_Call);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.IC_Left := Why_Empty;
       Result.IC_Infix := Why_Empty;
       Result.IC_Right := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Infix_Call;
@@ -3862,9 +3736,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Prefix_Call);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PC_Prefix := Why_Empty;
       Result.PC_Operand := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Prefix_Call;
@@ -3879,10 +3753,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Prog);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BPG_Name := Why_Empty;
       Result.BPG_Def := Why_Empty;
       Result.BPG_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Prog;
@@ -3897,10 +3771,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Ref);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BPG_Name := Why_Empty;
       Result.BPG_Def := Why_Empty;
       Result.BPG_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Ref;
@@ -3915,10 +3789,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Conditional_Prog);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.CPG_Condition := Why_Empty;
       Result.CPG_Then_Part := Why_Empty;
       Result.CPG_Else_Part := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Conditional_Prog;
@@ -3933,10 +3807,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_While_Loop);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.WL_Condition := Why_Empty;
       Result.WL_Annotation := Why_Empty;
       Result.WL_Loop_Content := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_While_Loop;
@@ -3951,8 +3825,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Statement_Sequence);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.SS_Statements := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Statement_Sequence;
@@ -3967,9 +3841,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Label);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.L_Name := Why_Empty;
       Result.L_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Label;
@@ -3984,9 +3858,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Assert);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.AS_Assertions := New_List;
       Result.AS_Prog := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Assert;
@@ -4001,9 +3875,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Post_Assertion);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PA_Prog := Why_Empty;
       Result.PA_Post := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Post_Assertion;
@@ -4018,9 +3892,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Opaque_Assertion);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PA_Prog := Why_Empty;
       Result.PA_Post := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Opaque_Assertion;
@@ -4035,9 +3909,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Fun_Def);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.FD_Binders := Why_Empty;
       Result.FD_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Fun_Def;
@@ -4052,11 +3926,11 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Fun);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BF_Name := Why_Empty;
       Result.BF_Binders := Why_Empty;
       Result.BF_Def := Why_Empty;
       Result.BF_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Fun;
@@ -4071,9 +3945,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binding_Rec);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BR_Recfun := Why_Empty;
       Result.BR_Context := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binding_Rec;
@@ -4088,8 +3962,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Prog_Sequence);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PS_Progs := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Prog_Sequence;
@@ -4104,9 +3978,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Raise_Statement);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RS_Name := Why_Empty;
       Result.RS_Exn_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Raise_Statement;
@@ -4121,10 +3995,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Raise_Statement_With_Parameters);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RSWP_Name := Why_Empty;
       Result.RSWP_Parameter := Why_Empty;
       Result.RSWP_Exn_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Raise_Statement_With_Parameters;
@@ -4139,9 +4013,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Try_Block);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.TB_Prog := Why_Empty;
       Result.TB_Handler := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Try_Block;
@@ -4156,8 +4030,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Unreachable_Code);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.UC_Exn_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Unreachable_Code;
@@ -4172,8 +4046,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Begin_Block);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BB_Prog := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Begin_Block;
@@ -4188,8 +4062,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Protected_Prog);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BB_Prog := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Protected_Prog;
@@ -4429,8 +4303,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binders);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.BS_Binders := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binders;
@@ -4445,9 +4319,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Binder);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.B_Names := New_List;
       Result.B_Arg_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Binder;
@@ -4462,12 +4336,12 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Recfun);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.RF_Name := Why_Empty;
       Result.RF_Binders := Why_Empty;
       Result.RF_Return_Type := Why_Empty;
       Result.RF_Variant := Why_Empty;
       Result.RF_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Recfun;
@@ -4482,9 +4356,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Loop_Annot);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.LA_Invariant := Why_Empty;
       Result.LA_Variant := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Loop_Annot;
@@ -4499,9 +4373,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Wf_Arg);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.WA_Def := Why_Empty;
       Result.WA_For_Id := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Wf_Arg;
@@ -4516,10 +4390,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Handler);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.H_Name := Why_Empty;
       Result.H_Parameter := Why_Empty;
       Result.H_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Handler;
@@ -4534,8 +4408,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_File);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.F_Declarations := New_List;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_File;
@@ -4550,10 +4424,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Global_Binding);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.GB_Name := Why_Empty;
       Result.GB_Binders := Why_Empty;
       Result.GB_Def := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Global_Binding;
@@ -4568,8 +4442,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Global_Rec_Binding);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.GRB_Name := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Global_Rec_Binding;
@@ -4584,10 +4458,10 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Parameter_Declaration);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.PD_External := Why_Empty;
       Result.PD_Names := New_List;
       Result.PD_Parameter_Type := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Parameter_Declaration;
@@ -4602,9 +4476,9 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Exception_Declaration);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.ED_Name := Why_Empty;
       Result.ED_Parameter := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Exception_Declaration;
@@ -4619,8 +4493,8 @@ package body Why.Atree.Builders is
       Result : Why_Node (W_Logic_Declaration);
    begin
       Result.Ada_Node := Empty;
-      Result.Link := Why_Empty;
       Result.LD_Decl := Why_Empty;
+      Result.Link := Why_Empty;
       Result.Checked := False;
       return New_Why_Node_Id (Result);
    end New_Unchecked_Logic_Declaration;
@@ -4631,7 +4505,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Identifier_OId)
      return W_Identifier_Id
    is
@@ -4648,9 +4521,9 @@ package body Why.Atree.Builders is
             Identifier_Get_Entity (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.Symbol := Symbol;
          Result.Entity := Entity;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4662,7 +4535,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type_Prop
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Prop_OId)
      return W_Type_Prop_Id
    is
@@ -4675,7 +4547,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Type_Prop);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4687,7 +4559,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type_Int
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Int_OId)
      return W_Type_Int_Id
    is
@@ -4700,7 +4571,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Type_Int);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4712,7 +4583,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type_Bool
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Bool_OId)
      return W_Type_Bool_Id
    is
@@ -4725,7 +4595,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Type_Bool);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4737,7 +4607,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type_Real
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Real_OId)
      return W_Type_Real_Id
    is
@@ -4750,7 +4619,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Type_Real);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4762,7 +4631,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type_Unit
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_Unit_OId)
      return W_Type_Unit_Id
    is
@@ -4775,7 +4643,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Type_Unit);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4787,7 +4655,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Abstract_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Abstract_Type_OId)
      return W_Abstract_Type_Id
    is
@@ -4802,10 +4669,10 @@ package body Why.Atree.Builders is
             Abstract_Type_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AT_Name :=
            Duplicate_Identifier
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4817,7 +4684,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Generic_Formal_Type_OId)
      return W_Generic_Formal_Type_Id
    is
@@ -4832,10 +4698,10 @@ package body Why.Atree.Builders is
             Generic_Formal_Type_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.GFT_Name :=
            Duplicate_Identifier
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4847,7 +4713,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Generic_Actual_Type_Chain
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Generic_Actual_Type_Chain_OId)
      return W_Generic_Actual_Type_Chain_Id
    is
@@ -4864,7 +4729,6 @@ package body Why.Atree.Builders is
             Generic_Actual_Type_Chain_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -4885,6 +4749,7 @@ package body Why.Atree.Builders is
          Result.GATC_Name :=
            Duplicate_Identifier
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4896,7 +4761,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Array_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Type_OId)
      return W_Array_Type_Id
    is
@@ -4911,10 +4775,10 @@ package body Why.Atree.Builders is
             Array_Type_Get_Component_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AT_Component_Type :=
            Duplicate_Primitive_Type
            (Id => Component_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4926,7 +4790,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Ref_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Ref_Type_OId)
      return W_Ref_Type_Id
    is
@@ -4941,10 +4804,10 @@ package body Why.Atree.Builders is
             Ref_Type_Get_Aliased_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RT_Aliased_Type :=
            Duplicate_Primitive_Type
            (Id => Aliased_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4956,7 +4819,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Protected_Value_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Value_Type_OId)
      return W_Protected_Value_Type_Id
    is
@@ -4971,10 +4833,10 @@ package body Why.Atree.Builders is
             Protected_Value_Type_Get_Value_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PVT_Value_Type :=
            Duplicate_Value_Type
            (Id => Value_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -4986,7 +4848,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Arrow_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arrow_Type_OId)
      return W_Arrow_Type_Id
    is
@@ -5005,7 +4866,6 @@ package body Why.Atree.Builders is
             Arrow_Type_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if Name = Why_Empty then
             Result.NA_Name := Why_Empty;
          else
@@ -5019,6 +4879,7 @@ package body Why.Atree.Builders is
          Result.NA_Right :=
            Duplicate_Computation_Type
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5030,7 +4891,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Computation_Spec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Computation_Spec_OId)
      return W_Computation_Spec_Id
    is
@@ -5053,7 +4913,6 @@ package body Why.Atree.Builders is
             Computation_Spec_Get_Postcondition (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if Precondition = Why_Empty then
             Result.CS_Precondition := Why_Empty;
          else
@@ -5081,6 +4940,7 @@ package body Why.Atree.Builders is
               Duplicate_Postcondition
               (Id => Postcondition);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5092,7 +4952,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Integer_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Integer_Constant_OId)
      return W_Integer_Constant_Id
    is
@@ -5107,8 +4966,8 @@ package body Why.Atree.Builders is
             Integer_Constant_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.IC_Value := Value;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5120,7 +4979,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Real_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Real_Constant_OId)
      return W_Real_Constant_Id
    is
@@ -5135,8 +4993,8 @@ package body Why.Atree.Builders is
             Real_Constant_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RC_Value := Value;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5148,7 +5006,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_True_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_True_Literal_OId)
      return W_True_Literal_Id
    is
@@ -5161,7 +5018,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_True_Literal);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5173,7 +5030,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_False_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_False_Literal_OId)
      return W_False_Literal_Id
    is
@@ -5186,7 +5042,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_False_Literal);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5198,7 +5054,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Void_Literal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Void_Literal_OId)
      return W_Void_Literal_Id
    is
@@ -5211,7 +5066,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Void_Literal);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5223,7 +5078,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Arith_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Arith_Operation_OId)
      return W_Arith_Operation_Id
    is
@@ -5242,7 +5096,6 @@ package body Why.Atree.Builders is
             Arith_Operation_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AO_Left :=
            Duplicate_Term
            (Id => Left);
@@ -5252,6 +5105,7 @@ package body Why.Atree.Builders is
          Result.AO_Right :=
            Duplicate_Term
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5263,7 +5117,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Negative_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Negative_Term_OId)
      return W_Negative_Term_Id
    is
@@ -5278,10 +5131,10 @@ package body Why.Atree.Builders is
             Negative_Term_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.NT_Operand :=
            Duplicate_Term
            (Id => Operand);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5293,7 +5146,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Label_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Label_Identifier_OId)
      return W_Label_Identifier_Id
    is
@@ -5310,7 +5162,6 @@ package body Why.Atree.Builders is
             Label_Identifier_Get_Label (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.TI_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -5321,6 +5172,7 @@ package body Why.Atree.Builders is
               Duplicate_Identifier
               (Id => Label);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5332,7 +5184,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Operation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Operation_OId)
      return W_Operation_Id
    is
@@ -5349,7 +5200,6 @@ package body Why.Atree.Builders is
             Operation_Get_Parameters (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.O_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -5370,6 +5220,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.O_Parameters := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5381,7 +5232,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Named_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Named_Term_OId)
      return W_Named_Term_Id
    is
@@ -5398,13 +5248,13 @@ package body Why.Atree.Builders is
             Named_Term_Get_Term (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.NT_Name :=
            Duplicate_Label_Identifier
            (Id => Name);
          Result.NT_Term :=
            Duplicate_Term
            (Id => Term);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5416,7 +5266,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Conditional_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Term_OId)
      return W_Conditional_Term_Id
    is
@@ -5435,7 +5284,6 @@ package body Why.Atree.Builders is
             Conditional_Term_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.CT_Condition :=
            Duplicate_Term
            (Id => Condition);
@@ -5445,6 +5293,7 @@ package body Why.Atree.Builders is
          Result.CT_Else_Part :=
            Duplicate_Term
            (Id => Else_Part);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5456,7 +5305,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Term_OId)
      return W_Binding_Term_Id
    is
@@ -5475,7 +5323,6 @@ package body Why.Atree.Builders is
             Binding_Term_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BT_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -5485,6 +5332,7 @@ package body Why.Atree.Builders is
          Result.BT_Context :=
            Duplicate_Term
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5496,7 +5344,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Protected_Term
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Term_OId)
      return W_Protected_Term_Id
    is
@@ -5511,10 +5358,10 @@ package body Why.Atree.Builders is
             Protected_Term_Get_Term (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BT_Term :=
            Duplicate_Term
            (Id => Term);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5526,7 +5373,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Add
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Add_OId)
      return W_Op_Add_Id
    is
@@ -5539,7 +5385,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Add);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5551,7 +5397,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Substract
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Substract_OId)
      return W_Op_Substract_Id
    is
@@ -5564,7 +5409,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Substract);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5576,7 +5421,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Multiply
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Multiply_OId)
      return W_Op_Multiply_Id
    is
@@ -5589,7 +5433,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Multiply);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5601,7 +5445,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Divide
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Divide_OId)
      return W_Op_Divide_Id
    is
@@ -5614,7 +5457,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Divide);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5626,7 +5469,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Modulo
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Modulo_OId)
      return W_Op_Modulo_Id
    is
@@ -5639,7 +5481,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Modulo);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5651,7 +5493,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_True_Literal_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_True_Literal_Pred_OId)
      return W_True_Literal_Pred_Id
    is
@@ -5664,7 +5505,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_True_Literal_Pred);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5676,7 +5517,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_False_Literal_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_False_Literal_Pred_OId)
      return W_False_Literal_Pred_Id
    is
@@ -5689,7 +5529,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_False_Literal_Pred);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5701,7 +5541,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Identifier_OId)
      return W_Predicate_Identifier_Id
    is
@@ -5716,10 +5555,10 @@ package body Why.Atree.Builders is
             Predicate_Identifier_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PID_Name :=
            Duplicate_Identifier
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5731,7 +5570,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Predicate_Instance
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Instance_OId)
      return W_Predicate_Instance_Id
    is
@@ -5748,7 +5586,6 @@ package body Why.Atree.Builders is
             Predicate_Instance_Get_Parameters (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PIN_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -5769,6 +5606,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.PIN_Parameters := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5780,7 +5618,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Related_Terms
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Related_Terms_OId)
      return W_Related_Terms_Id
    is
@@ -5803,7 +5640,6 @@ package body Why.Atree.Builders is
             Related_Terms_Get_Right2 (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RT_Left :=
            Duplicate_Term
            (Id => Left);
@@ -5827,6 +5663,7 @@ package body Why.Atree.Builders is
               Duplicate_Term
               (Id => Right2);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5838,7 +5675,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Implication
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Implication_OId)
      return W_Implication_Id
    is
@@ -5855,13 +5691,13 @@ package body Why.Atree.Builders is
             Implication_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.ITOC_Left :=
            Duplicate_Predicate
            (Id => Left);
          Result.ITOC_Right :=
            Duplicate_Predicate
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5873,7 +5709,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Equivalence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Equivalence_OId)
      return W_Equivalence_Id
    is
@@ -5890,13 +5725,13 @@ package body Why.Atree.Builders is
             Equivalence_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.ITOC_Left :=
            Duplicate_Predicate
            (Id => Left);
          Result.ITOC_Right :=
            Duplicate_Predicate
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5908,7 +5743,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Disjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Disjonction_OId)
      return W_Disjonction_Id
    is
@@ -5925,13 +5759,13 @@ package body Why.Atree.Builders is
             Disjonction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.ITOC_Left :=
            Duplicate_Predicate
            (Id => Left);
          Result.ITOC_Right :=
            Duplicate_Predicate
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5943,7 +5777,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Conjonction
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conjonction_OId)
      return W_Conjonction_Id
    is
@@ -5960,13 +5793,13 @@ package body Why.Atree.Builders is
             Conjonction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.ITOC_Left :=
            Duplicate_Predicate
            (Id => Left);
          Result.ITOC_Right :=
            Duplicate_Predicate
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -5978,7 +5811,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Negation
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Negation_OId)
      return W_Negation_Id
    is
@@ -5993,10 +5825,10 @@ package body Why.Atree.Builders is
             Negation_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.N_Operand :=
            Duplicate_Predicate
            (Id => Operand);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6008,7 +5840,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Conditional_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Pred_OId)
      return W_Conditional_Pred_Id
    is
@@ -6027,7 +5858,6 @@ package body Why.Atree.Builders is
             Conditional_Pred_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.CPD_Condition :=
            Duplicate_Term
            (Id => Condition);
@@ -6037,6 +5867,7 @@ package body Why.Atree.Builders is
          Result.CPD_Else_Part :=
            Duplicate_Predicate
            (Id => Else_Part);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6048,7 +5879,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Pred
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Pred_OId)
      return W_Binding_Pred_Id
    is
@@ -6067,7 +5897,6 @@ package body Why.Atree.Builders is
             Binding_Pred_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BPD_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -6077,6 +5906,7 @@ package body Why.Atree.Builders is
          Result.BPD_Context :=
            Duplicate_Predicate
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6088,7 +5918,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Universal_Quantif_OId)
      return W_Universal_Quantif_Id
    is
@@ -6109,7 +5938,6 @@ package body Why.Atree.Builders is
             Universal_Quantif_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -6140,6 +5968,7 @@ package body Why.Atree.Builders is
          Result.UQ_Pred :=
            Duplicate_Predicate
            (Id => Pred);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6151,7 +5980,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Existential_Quantif_OId)
      return W_Existential_Quantif_Id
    is
@@ -6170,7 +5998,6 @@ package body Why.Atree.Builders is
             Existential_Quantif_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -6194,6 +6021,7 @@ package body Why.Atree.Builders is
          Result.EQ_Pred :=
            Duplicate_Predicate
            (Id => Pred);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6205,7 +6033,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Named_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Named_Predicate_OId)
      return W_Named_Predicate_Id
    is
@@ -6222,13 +6049,13 @@ package body Why.Atree.Builders is
             Named_Predicate_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.NP_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.NP_Pred :=
            Duplicate_Predicate
            (Id => Pred);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6240,7 +6067,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Predicate_OId)
      return W_Protected_Predicate_Id
    is
@@ -6255,10 +6081,10 @@ package body Why.Atree.Builders is
             Protected_Predicate_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PP_Pred :=
            Duplicate_Predicate
            (Id => Pred);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6270,7 +6096,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Triggers
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Triggers_OId)
      return W_Triggers_Id
    is
@@ -6285,7 +6110,6 @@ package body Why.Atree.Builders is
             Triggers_Get_Triggers (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -6303,6 +6127,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.TRS_Triggers := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6314,7 +6139,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Trigger
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Trigger_OId)
      return W_Trigger_Id
    is
@@ -6329,7 +6153,6 @@ package body Why.Atree.Builders is
             Trigger_Get_Terms (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -6347,6 +6170,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.TRI_Terms := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6358,7 +6182,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Eq
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Eq_OId)
      return W_Rel_Eq_Id
    is
@@ -6371,7 +6194,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Eq);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6383,7 +6206,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Ne
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Ne_OId)
      return W_Rel_Ne_Id
    is
@@ -6396,7 +6218,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Ne);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6408,7 +6230,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Lt
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Lt_OId)
      return W_Rel_Lt_Id
    is
@@ -6421,7 +6242,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Lt);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6433,7 +6254,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Le
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Le_OId)
      return W_Rel_Le_Id
    is
@@ -6446,7 +6266,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Le);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6458,7 +6278,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Gt
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Gt_OId)
      return W_Rel_Gt_Id
    is
@@ -6471,7 +6290,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Gt);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6483,7 +6302,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Rel_Ge
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Rel_Ge_OId)
      return W_Rel_Ge_Id
    is
@@ -6496,7 +6314,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Rel_Ge);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6508,7 +6326,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Type_OId)
      return W_Type_Id
    is
@@ -6527,7 +6344,6 @@ package body Why.Atree.Builders is
             Type_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if External = Why_Empty then
             Result.T_External := Why_Empty;
          else
@@ -6555,6 +6371,7 @@ package body Why.Atree.Builders is
          Result.T_Name :=
            Duplicate_Identifier
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6566,7 +6383,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Logic
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_OId)
      return W_Logic_Id
    is
@@ -6585,7 +6401,6 @@ package body Why.Atree.Builders is
             Logic_Get_Logic_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if External = Why_Empty then
             Result.L_External := Why_Empty;
          else
@@ -6613,6 +6428,7 @@ package body Why.Atree.Builders is
          Result.L_Logic_Type :=
            Duplicate_Logic_Type
            (Id => Logic_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6624,7 +6440,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Function
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Function_OId)
      return W_Function_Id
    is
@@ -6645,7 +6460,6 @@ package body Why.Atree.Builders is
             Function_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.F_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -6672,6 +6486,7 @@ package body Why.Atree.Builders is
          Result.F_Def :=
            Duplicate_Term
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6683,7 +6498,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Predicate_Definition_OId)
      return W_Predicate_Definition_Id
    is
@@ -6702,7 +6516,6 @@ package body Why.Atree.Builders is
             Predicate_Definition_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.P_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -6726,6 +6539,7 @@ package body Why.Atree.Builders is
          Result.P_Def :=
            Duplicate_Predicate
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6737,7 +6551,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Inductive
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Inductive_OId)
      return W_Inductive_Id
    is
@@ -6756,7 +6569,6 @@ package body Why.Atree.Builders is
             Inductive_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.I_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -6780,6 +6592,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.I_Def := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6791,7 +6604,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Axiom
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Axiom_OId)
      return W_Axiom_Id
    is
@@ -6808,13 +6620,13 @@ package body Why.Atree.Builders is
             Axiom_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AX_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.AX_Def :=
            Duplicate_Predicate
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6826,7 +6638,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Goal
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Goal_OId)
      return W_Goal_Id
    is
@@ -6843,13 +6654,13 @@ package body Why.Atree.Builders is
             Goal_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.G_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.G_Def :=
            Duplicate_Predicate
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6861,7 +6672,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_External
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_External_OId)
      return W_External_Id
    is
@@ -6874,7 +6684,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_External);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6886,7 +6696,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Logic_Type
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Type_OId)
      return W_Logic_Type_Id
    is
@@ -6903,7 +6712,6 @@ package body Why.Atree.Builders is
             Logic_Type_Get_Return_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -6924,6 +6732,7 @@ package body Why.Atree.Builders is
          Result.LT_Return_Type :=
            Duplicate_Logic_Return_Type
            (Id => Return_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6935,7 +6744,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Logic_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Binder_OId)
      return W_Logic_Binder_Id
    is
@@ -6952,13 +6760,13 @@ package body Why.Atree.Builders is
             Logic_Binder_Get_Param_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.LB_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.LB_Param_Type :=
            Duplicate_Primitive_Type
            (Id => Param_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -6970,7 +6778,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Inductive_Case
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Inductive_Case_OId)
      return W_Inductive_Case_Id
    is
@@ -6987,13 +6794,13 @@ package body Why.Atree.Builders is
             Inductive_Case_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.IC_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.IC_Pred :=
            Duplicate_Predicate
            (Id => Pred);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7005,7 +6812,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Effects
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Effects_OId)
      return W_Effects_Id
    is
@@ -7024,7 +6830,6 @@ package body Why.Atree.Builders is
             Effects_Get_Raises (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -7076,6 +6881,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.E_Raises := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7087,7 +6893,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Precondition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Precondition_OId)
      return W_Precondition_Id
    is
@@ -7102,10 +6907,10 @@ package body Why.Atree.Builders is
             Precondition_Get_Assertion (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PRE_Assertion :=
            Duplicate_Assertion
            (Id => Assertion);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7117,7 +6922,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Postcondition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Postcondition_OId)
      return W_Postcondition_Id
    is
@@ -7134,7 +6938,6 @@ package body Why.Atree.Builders is
             Postcondition_Get_Handlers (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.POST_Assertion :=
            Duplicate_Assertion
            (Id => Assertion);
@@ -7155,6 +6958,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.POST_Handlers := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7166,7 +6970,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Exn_Condition
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Exn_Condition_OId)
      return W_Exn_Condition_Id
    is
@@ -7183,13 +6986,13 @@ package body Why.Atree.Builders is
             Exn_Condition_Get_Assertion (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.EC_Exn_Case :=
            Duplicate_Identifier
            (Id => Exn_Case);
          Result.EC_Assertion :=
            Duplicate_Assertion
            (Id => Assertion);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7201,7 +7004,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assertion_OId)
      return W_Assertion_Id
    is
@@ -7218,7 +7020,6 @@ package body Why.Atree.Builders is
             Assertion_Get_As (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.A_Pred :=
            Duplicate_Predicate
            (Id => Pred);
@@ -7229,6 +7030,7 @@ package body Why.Atree.Builders is
               Duplicate_Identifier
               (Id => As);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7240,7 +7042,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Prog_Constant
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Constant_OId)
      return W_Prog_Constant_Id
    is
@@ -7255,10 +7056,10 @@ package body Why.Atree.Builders is
             Prog_Constant_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PC_Def :=
            Duplicate_Constant
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7270,7 +7071,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Identifier_OId)
      return W_Prog_Identifier_Id
    is
@@ -7285,10 +7085,10 @@ package body Why.Atree.Builders is
             Prog_Identifier_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PI_Def :=
            Duplicate_Identifier
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7300,7 +7100,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Deref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Deref_OId)
      return W_Deref_Id
    is
@@ -7315,10 +7114,10 @@ package body Why.Atree.Builders is
             Deref_Get_Ref (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.D_Ref :=
            Duplicate_Identifier
            (Id => Ref);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7330,7 +7129,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Assignment
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assignment_OId)
      return W_Assignment_Id
    is
@@ -7347,13 +7145,13 @@ package body Why.Atree.Builders is
             Assignment_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.A_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.A_Value :=
            Duplicate_Prog
            (Id => Value);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7365,7 +7163,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Array_Access
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Access_OId)
      return W_Array_Access_Id
    is
@@ -7382,13 +7179,13 @@ package body Why.Atree.Builders is
             Array_Access_Get_Index (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AA_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.AA_Index :=
            Duplicate_Prog
            (Id => Index);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7400,7 +7197,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Array_Update
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Array_Update_OId)
      return W_Array_Update_Id
    is
@@ -7419,7 +7215,6 @@ package body Why.Atree.Builders is
             Array_Update_Get_Value (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.AU_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -7429,6 +7224,7 @@ package body Why.Atree.Builders is
          Result.AU_Value :=
            Duplicate_Prog
            (Id => Value);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7440,7 +7236,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Infix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Infix_Call_OId)
      return W_Infix_Call_Id
    is
@@ -7459,7 +7254,6 @@ package body Why.Atree.Builders is
             Infix_Call_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.IC_Left :=
            Duplicate_Prog
            (Id => Left);
@@ -7469,6 +7263,7 @@ package body Why.Atree.Builders is
          Result.IC_Right :=
            Duplicate_Prog
            (Id => Right);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7480,7 +7275,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Prefix_Call
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prefix_Call_OId)
      return W_Prefix_Call_Id
    is
@@ -7497,13 +7291,13 @@ package body Why.Atree.Builders is
             Prefix_Call_Get_Operand (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PC_Prefix :=
            Duplicate_Prefix
            (Id => Prefix);
          Result.PC_Operand :=
            Duplicate_Prog
            (Id => Operand);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7515,7 +7309,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Prog_OId)
      return W_Binding_Prog_Id
    is
@@ -7534,7 +7327,6 @@ package body Why.Atree.Builders is
             Binding_Prog_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BPG_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -7544,6 +7336,7 @@ package body Why.Atree.Builders is
          Result.BPG_Context :=
            Duplicate_Prog
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7555,7 +7348,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Ref
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Ref_OId)
      return W_Binding_Ref_Id
    is
@@ -7574,7 +7366,6 @@ package body Why.Atree.Builders is
             Binding_Ref_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BPG_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -7584,6 +7375,7 @@ package body Why.Atree.Builders is
          Result.BPG_Context :=
            Duplicate_Prog
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7595,7 +7387,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Conditional_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Conditional_Prog_OId)
      return W_Conditional_Prog_Id
    is
@@ -7614,7 +7405,6 @@ package body Why.Atree.Builders is
             Conditional_Prog_Get_Else_Part (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.CPG_Condition :=
            Duplicate_Prog
            (Id => Condition);
@@ -7628,6 +7418,7 @@ package body Why.Atree.Builders is
               Duplicate_Prog
               (Id => Else_Part);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7639,7 +7430,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_While_Loop
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_While_Loop_OId)
      return W_While_Loop_Id
    is
@@ -7658,7 +7448,6 @@ package body Why.Atree.Builders is
             While_Loop_Get_Loop_Content (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.WL_Condition :=
            Duplicate_Prog
            (Id => Condition);
@@ -7668,6 +7457,7 @@ package body Why.Atree.Builders is
          Result.WL_Loop_Content :=
            Duplicate_Prog
            (Id => Loop_Content);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7679,7 +7469,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Statement_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Statement_Sequence_OId)
      return W_Statement_Sequence_Id
    is
@@ -7694,7 +7483,6 @@ package body Why.Atree.Builders is
             Statement_Sequence_Get_Statements (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -7712,6 +7500,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.SS_Statements := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7723,7 +7512,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Label
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Label_OId)
      return W_Label_Id
    is
@@ -7740,13 +7528,13 @@ package body Why.Atree.Builders is
             Label_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.L_Name :=
            Duplicate_Identifier
            (Id => Name);
          Result.L_Def :=
            Duplicate_Prog
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7758,7 +7546,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Assert
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Assert_OId)
      return W_Assert_Id
    is
@@ -7775,7 +7562,6 @@ package body Why.Atree.Builders is
             Assert_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -7796,6 +7582,7 @@ package body Why.Atree.Builders is
          Result.AS_Prog :=
            Duplicate_Prog
            (Id => Prog);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7807,7 +7594,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Post_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Post_Assertion_OId)
      return W_Post_Assertion_Id
    is
@@ -7824,13 +7610,13 @@ package body Why.Atree.Builders is
             Post_Assertion_Get_Post (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PA_Prog :=
            Duplicate_Prog
            (Id => Prog);
          Result.PA_Post :=
            Duplicate_Postcondition
            (Id => Post);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7842,7 +7628,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Opaque_Assertion_OId)
      return W_Opaque_Assertion_Id
    is
@@ -7859,13 +7644,13 @@ package body Why.Atree.Builders is
             Opaque_Assertion_Get_Post (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PA_Prog :=
            Duplicate_Prog
            (Id => Prog);
          Result.PA_Post :=
            Duplicate_Postcondition
            (Id => Post);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7877,7 +7662,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Fun_Def_OId)
      return W_Fun_Def_Id
    is
@@ -7894,13 +7678,13 @@ package body Why.Atree.Builders is
             Fun_Def_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.FD_Binders :=
            Duplicate_Binders
            (Id => Binders);
          Result.FD_Def :=
            Duplicate_Prog
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7912,7 +7696,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Fun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Fun_OId)
      return W_Binding_Fun_Id
    is
@@ -7933,7 +7716,6 @@ package body Why.Atree.Builders is
             Binding_Fun_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BF_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -7946,6 +7728,7 @@ package body Why.Atree.Builders is
          Result.BF_Context :=
            Duplicate_Prog
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7957,7 +7740,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binding_Rec
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binding_Rec_OId)
      return W_Binding_Rec_Id
    is
@@ -7974,13 +7756,13 @@ package body Why.Atree.Builders is
             Binding_Rec_Get_Context (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BR_Recfun :=
            Duplicate_Recfun
            (Id => Recfun);
          Result.BR_Context :=
            Duplicate_Prog
            (Id => Context);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -7992,7 +7774,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Prog_Sequence_OId)
      return W_Prog_Sequence_Id
    is
@@ -8007,7 +7788,6 @@ package body Why.Atree.Builders is
             Prog_Sequence_Get_Progs (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -8025,6 +7805,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.PS_Progs := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8036,7 +7817,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Raise_Statement
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Raise_Statement_OId)
      return W_Raise_Statement_Id
    is
@@ -8053,7 +7833,6 @@ package body Why.Atree.Builders is
             Raise_Statement_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RS_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -8064,6 +7843,7 @@ package body Why.Atree.Builders is
               Duplicate_Value_Type
               (Id => Exn_Type);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8075,7 +7855,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Raise_Statement_With_Parameters
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Raise_Statement_With_Parameters_OId)
      return W_Raise_Statement_With_Parameters_Id
    is
@@ -8094,7 +7873,6 @@ package body Why.Atree.Builders is
             Raise_Statement_With_Parameters_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RSWP_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -8108,6 +7886,7 @@ package body Why.Atree.Builders is
               Duplicate_Value_Type
               (Id => Exn_Type);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8119,7 +7898,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Try_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Try_Block_OId)
      return W_Try_Block_Id
    is
@@ -8136,7 +7914,6 @@ package body Why.Atree.Builders is
             Try_Block_Get_Handler (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.TB_Prog :=
            Duplicate_Prog
            (Id => Prog);
@@ -8157,6 +7934,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.TB_Handler := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8168,7 +7946,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Unreachable_Code_OId)
      return W_Unreachable_Code_Id
    is
@@ -8183,7 +7960,6 @@ package body Why.Atree.Builders is
             Unreachable_Code_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if Exn_Type = Why_Empty then
             Result.UC_Exn_Type := Why_Empty;
          else
@@ -8191,6 +7967,7 @@ package body Why.Atree.Builders is
               Duplicate_Value_Type
               (Id => Exn_Type);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8202,7 +7979,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Begin_Block
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Begin_Block_OId)
      return W_Begin_Block_Id
    is
@@ -8217,10 +7993,10 @@ package body Why.Atree.Builders is
             Begin_Block_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BB_Prog :=
            Duplicate_Prog
            (Id => Prog);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8232,7 +8008,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Protected_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Protected_Prog_OId)
      return W_Protected_Prog_Id
    is
@@ -8247,10 +8022,10 @@ package body Why.Atree.Builders is
             Protected_Prog_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.BB_Prog :=
            Duplicate_Prog
            (Id => Prog);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8262,7 +8037,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Add_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Add_Prog_OId)
      return W_Op_Add_Prog_Id
    is
@@ -8275,7 +8049,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Add_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8287,7 +8061,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Substract_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Substract_Prog_OId)
      return W_Op_Substract_Prog_Id
    is
@@ -8300,7 +8073,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Substract_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8312,7 +8085,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Multiply_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Multiply_Prog_OId)
      return W_Op_Multiply_Prog_Id
    is
@@ -8325,7 +8097,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Multiply_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8337,7 +8109,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Divide_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Divide_Prog_OId)
      return W_Op_Divide_Prog_Id
    is
@@ -8350,7 +8121,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Divide_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8362,7 +8133,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Mod_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Mod_Prog_OId)
      return W_Op_Mod_Prog_Id
    is
@@ -8375,7 +8145,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Mod_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8387,7 +8157,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Eq_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Eq_Prog_OId)
      return W_Op_Eq_Prog_Id
    is
@@ -8400,7 +8169,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Eq_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8412,7 +8181,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Ne_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Ne_Prog_OId)
      return W_Op_Ne_Prog_Id
    is
@@ -8425,7 +8193,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Ne_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8437,7 +8205,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Lt_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Lt_Prog_OId)
      return W_Op_Lt_Prog_Id
    is
@@ -8450,7 +8217,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Lt_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8462,7 +8229,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Le_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Le_Prog_OId)
      return W_Op_Le_Prog_Id
    is
@@ -8475,7 +8241,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Le_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8487,7 +8253,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Gt_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Gt_Prog_OId)
      return W_Op_Gt_Prog_Id
    is
@@ -8500,7 +8265,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Gt_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8512,7 +8277,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Ge_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Ge_Prog_OId)
      return W_Op_Ge_Prog_Id
    is
@@ -8525,7 +8289,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Ge_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8537,7 +8301,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Or_Else_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Or_Else_Prog_OId)
      return W_Op_Or_Else_Prog_Id
    is
@@ -8550,7 +8313,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Or_Else_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8562,7 +8325,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_And_Then_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_And_Then_Prog_OId)
      return W_Op_And_Then_Prog_Id
    is
@@ -8575,7 +8337,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_And_Then_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8587,7 +8349,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Minus_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Minus_Prog_OId)
      return W_Op_Minus_Prog_Id
    is
@@ -8600,7 +8361,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Minus_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8612,7 +8373,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Op_Not_Prog
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Op_Not_Prog_OId)
      return W_Op_Not_Prog_Id
    is
@@ -8625,7 +8385,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Op_Not_Prog);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8637,7 +8397,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binders
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binders_OId)
      return W_Binders_Id
    is
@@ -8652,7 +8411,6 @@ package body Why.Atree.Builders is
             Binders_Get_Binders (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -8670,6 +8428,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.BS_Binders := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8681,7 +8440,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Binder
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Binder_OId)
      return W_Binder_Id
    is
@@ -8698,7 +8456,6 @@ package body Why.Atree.Builders is
             Binder_Get_Arg_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -8719,6 +8476,7 @@ package body Why.Atree.Builders is
          Result.B_Arg_Type :=
            Duplicate_Value_Type
            (Id => Arg_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8730,7 +8488,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Recfun
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Recfun_OId)
      return W_Recfun_Id
    is
@@ -8753,7 +8510,6 @@ package body Why.Atree.Builders is
             Recfun_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.RF_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -8769,6 +8525,7 @@ package body Why.Atree.Builders is
          Result.RF_Def :=
            Duplicate_Prog
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8780,7 +8537,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Loop_Annot
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Loop_Annot_OId)
      return W_Loop_Annot_Id
    is
@@ -8797,7 +8553,6 @@ package body Why.Atree.Builders is
             Loop_Annot_Get_Variant (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          if Invariant = Why_Empty then
             Result.LA_Invariant := Why_Empty;
          else
@@ -8812,6 +8567,7 @@ package body Why.Atree.Builders is
               Duplicate_Wf_Arg
               (Id => Variant);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8823,7 +8579,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Wf_Arg
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Wf_Arg_OId)
      return W_Wf_Arg_Id
    is
@@ -8840,7 +8595,6 @@ package body Why.Atree.Builders is
             Wf_Arg_Get_For_Id (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.WA_Def :=
            Duplicate_Term
            (Id => Def);
@@ -8851,6 +8605,7 @@ package body Why.Atree.Builders is
               Duplicate_Identifier
               (Id => For_Id);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8862,7 +8617,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Handler
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Handler_OId)
      return W_Handler_Id
    is
@@ -8881,7 +8635,6 @@ package body Why.Atree.Builders is
             Handler_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.H_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -8895,6 +8648,7 @@ package body Why.Atree.Builders is
          Result.H_Def :=
            Duplicate_Prog
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8906,7 +8660,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_File
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_File_OId)
      return W_File_Id
    is
@@ -8921,7 +8674,6 @@ package body Why.Atree.Builders is
             File_Get_Declarations (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          declare
             use Node_Lists;
 
@@ -8939,6 +8691,7 @@ package body Why.Atree.Builders is
             end loop;
             Result.F_Declarations := NL;
          end;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8950,7 +8703,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Global_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Global_Binding_OId)
      return W_Global_Binding_Id
    is
@@ -8969,7 +8721,6 @@ package body Why.Atree.Builders is
             Global_Binding_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.GB_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -8983,6 +8734,7 @@ package body Why.Atree.Builders is
          Result.GB_Def :=
            Duplicate_Prog
            (Id => Def);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -8994,7 +8746,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Global_Rec_Binding_OId)
      return W_Global_Rec_Binding_Id
    is
@@ -9009,10 +8760,10 @@ package body Why.Atree.Builders is
             Global_Rec_Binding_Get_Name (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.GRB_Name :=
            Duplicate_Recfun
            (Id => Name);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -9024,7 +8775,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Parameter_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Parameter_Declaration_OId)
      return W_Parameter_Declaration_Id
    is
@@ -9043,7 +8793,6 @@ package body Why.Atree.Builders is
             Parameter_Declaration_Get_Parameter_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.PD_External :=
            Duplicate_External
            (Id => External);
@@ -9067,6 +8816,7 @@ package body Why.Atree.Builders is
          Result.PD_Parameter_Type :=
            Duplicate_Value_Type
            (Id => Parameter_Type);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -9078,7 +8828,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Exception_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Exception_Declaration_OId)
      return W_Exception_Declaration_Id
    is
@@ -9095,7 +8844,6 @@ package body Why.Atree.Builders is
             Exception_Declaration_Get_Parameter (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.ED_Name :=
            Duplicate_Identifier
            (Id => Name);
@@ -9106,6 +8854,7 @@ package body Why.Atree.Builders is
               Duplicate_Primitive_Type
               (Id => Parameter);
          end if;
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;
@@ -9117,7 +8866,6 @@ package body Why.Atree.Builders is
 
    function Duplicate_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
-      Link     : Why_Node_Set := Why_Empty;
       Id       : W_Logic_Declaration_OId)
      return W_Logic_Declaration_Id
    is
@@ -9132,10 +8880,10 @@ package body Why.Atree.Builders is
             Logic_Declaration_Get_Decl (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.Link := Link;
          Result.LD_Decl :=
            Duplicate_Logic
            (Id => Decl);
+         Result.Link := Why_Empty;
          Result.Checked := True;
          return New_Why_Node_Id (Result);
       end;

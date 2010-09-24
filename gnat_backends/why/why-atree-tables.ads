@@ -36,12 +36,36 @@ package Why.Atree.Tables is
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new Why node in table, and return its Id
 
+   function New_Why_Node_Id
+     (Kind : W_Any_Node)
+     return Why_Node_Id;
+   pragma Postcondition (Get_Kind (New_Why_Node_Id'Result) = Kind);
+   pragma Inline (New_Why_Node_Id);
+   --  Allocate a new (uninitialized) Why node in table of the given kind
+
    function Get_Node (Node_Id : Why_Node_Id) return Why_Node;
    --  Get the node whose id is Node_Id
 
    procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node);
    pragma Postcondition (Get_Node (Node_Id) = Node);
    --  Assign the given Id to the given Node
+
+   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set;
+   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set;
+
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set);
+   pragma Postcondition (Get_Link (Node_Id) = Link);
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Id);
+   pragma Postcondition (Get_Link (Node_Id) = Why_Node_Set (Link));
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_List);
+   pragma Postcondition (Get_Link (Node_Id) = Why_Node_Set (Link));
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Set);
+   pragma Postcondition (Get_Link (List_Id) = Link);
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Id);
+   pragma Postcondition (Get_Link (List_Id) = Why_Node_Set (Link));
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_List);
+   pragma Postcondition (Get_Link (List_Id) = Why_Node_Set (Link));
+   --  Set the link of the given node
 
    procedure Update_Validity_Status
      (Node_Id : Why_Node_Id;
@@ -97,6 +121,7 @@ private
 
    type List_Info is record
       Checked : Boolean;
+      Link    : Why_Node_Set;
       Content : Node_Lists.List;
    end record;
 
@@ -111,6 +136,12 @@ private
 
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
       (Get_Node (Node_Id).Kind);
+
+   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set is
+      (Get_Node (Node_Id).Link);
+
+   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set is
+      (Node_List_Tables.Element (List_Table, List_Id).Link);
 
    function Option
      (Node  : Why_Node_Id;
