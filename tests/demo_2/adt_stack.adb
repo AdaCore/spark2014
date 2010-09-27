@@ -3,12 +3,14 @@ is
 
    function Is_Empty(S : Stack) return Boolean
    is
+      -- pragma Postcondition (Is_Empty'Result = (S.Stack_Top = 0));
    begin
       return S.Stack_Top = 0;
    end; -- the name of subprograms can be generated if missing
 
    function Is_Full(S : Stack) return Boolean
    is
+      -- pragma Postcondition (Is_Full'Result = (S.Stack_Top = Stack_Size));
    begin
       return S.Stack_Top = Stack_Size;
    end Is_Full;
