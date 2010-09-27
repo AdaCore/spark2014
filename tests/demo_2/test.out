@@ -167,13 +167,13 @@ is
 end Internal_ADT_Stack;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          5      4      0              0      0      0       1
+Assert or Post:          5      4      1(   1)        0      0      0       0
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
-Runtime check:           6      0      4              0      0      0       2
+Runtime check:           6      0      5(   1)        0      0      0       1
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 11      4      4              0      0      0       3  <<<
-% Totals:                      36%    36%             0%     0%     0%     27% <<<
+Totals:                 11      4      6(   2)        0      0      0       1  <<<
+% Totals:                      36%    55%(  18%)      0%     0%     0%      9% <<<
 ===================== End of Semantic Analysis Summary ========================
