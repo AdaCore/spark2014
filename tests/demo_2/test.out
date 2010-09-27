@@ -38,17 +38,23 @@ is
    procedure Clear(S : out ADT_Stack.Stack
 --@ line 13
                                 );
+   --# post              Is_Empty(S => 
+   --# --@ line 14
+   --#                             S);
 
    procedure Push(S : in out ADT_Stack.Stack
---@ line 15
+--@ line 16
                                   ; X : in Integer);
-
-
-
+   --# pre              not Is_Full(S => 
+   --# --@ line 17
+   --#                               S);
 
    procedure Pop(S : in out ADT_Stack.Stack
---@ line 20
+--@ line 19
                                  ; X : out Integer);
+   --# pre              not Is_Empty(S => 
+   --# --@ line 20
+   --#                                S);
 
 
 
@@ -79,17 +85,23 @@ package Internal_ADT_Stack
    procedure Clear(S : out ADT_Stack.Stack
 --@ line 13
                                 );
+   --# post              External_ADT_Stack.Is_Empty(S => 
+   --# --@ line 14
+   --#                             S);
 
    procedure Push(S : in out ADT_Stack.Stack
---@ line 15
+--@ line 16
                                   ; X : in Integer);
-   -- assert,precondition and postcondition are translated in SPARK syntax
-   -- pragma Precondition (S.Stack_Top < Stack_Size);
-   -- pragma Postcondition (S.Stack_Vector(S.Stack_Top) = X);
+   --# pre              not External_ADT_Stack.Is_Full(S => 
+   --# --@ line 17
+   --#                               S);
 
    procedure Pop(S : in out ADT_Stack.Stack
---@ line 20
-                                 ; X : out Integer); -- not a function as in ASM_Stack
+--@ line 19
+                                 ; X : out Integer);
+   --# pre              not External_ADT_Stack.Is_Empty(S => 
+   --# --@ line 20
+   --#                                S);
 
 --  full details of the type Stack
 private
@@ -155,13 +167,13 @@ is
 end Internal_ADT_Stack;
 ------------------------------------------------------------------------
                      Total  Examiner Simp(U/R)  Checker Review False Undiscgd
-Assert or Post:          5      5      0              0      0      0       0
+Assert or Post:          5      4      0              0      0      0       1
 Precondition check:      0      0      0              0      0      0       0
 Check statement:         0      0      0              0      0      0       0
 Runtime check:           6      0      4              0      0      0       2
 Refinement VCs:          0      0      0              0      0      0       0
 Inheritance VCs:         0      0      0              0      0      0       0
 ===============================================================================
-Totals:                 11      5      4              0      0      0       2  <<<
-% Totals:                      45%    36%             0%     0%     0%     18% <<<
+Totals:                 11      4      4              0      0      0       3  <<<
+% Totals:                      36%    36%             0%     0%     0%     27% <<<
 ===================== End of Semantic Analysis Summary ========================

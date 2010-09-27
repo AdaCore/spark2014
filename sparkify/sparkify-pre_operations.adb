@@ -686,9 +686,16 @@ package body Sparkify.Pre_Operations is
       function Get_Pragmas
         (Element : Asis.Declaration) return Pragma_Element_List
       is
-         Body_Decl : constant Asis.Declaration :=
-                       Corresponding_Body (Element);
+         Body_Decl : Asis.Declaration;
       begin
+         if Flat_Element_Kind (Element) = A_Formal_Procedure_Declaration
+           or else
+             Flat_Element_Kind (Element) = A_Formal_Function_Declaration then
+            Body_Decl := Nil_Element;
+         else
+            Body_Decl := Corresponding_Body (Element);
+         end if;
+
          if Is_Nil (Body_Decl) then
             return Pragmas;
          else

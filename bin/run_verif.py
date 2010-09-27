@@ -51,7 +51,7 @@ dir = sys.argv[1]
 os.chdir(dir)
 
 files = glob.glob('*.ad?')
-cmd = 'sparkify ' + " ".join(files) + '> dummy.log 2>&1'
+cmd = 'sparkify ' + " ".join(files) + '> dummy.log'
 os.system(cmd)
 
 # simplication: we assume currently only one *.adb file in the source 

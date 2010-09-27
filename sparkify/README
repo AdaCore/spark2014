@@ -17,17 +17,18 @@ Sparkify is an Ada to SPARK translator based on GNAT. It takes a compilable Ada
 source as input and generates the transformed version of the source as output.
 
 The final goal for this tool is to translate Ada programs complying
-to a certain set of restrictions (a 'Spark' profile) into SPARK, and reject
-other programs.
+to a larger subset defined for Ada for verification purpose
+(a Verification Profile for Ada) into SPARK, and reject other
+programs who use the restrictions of Profile.
 
-Currently, Sparkify translates very few Ada programs into correct SPARK
-programs, and it does not attempt to detect when the output is correct SPARK or
-not.
+Currently, Sparkify translates some extensions expected in the Profile programs
+into correct SPARK programs, and detects when the output is correct SPARK or
+not(get proper error messages).
 
-Sparkify has a command-line interface. By default the output is sent to a file
-with the same name in sub-directory 'sparkified'. The Sparkify output can be
-directed to a specific file or to Stdout. All diagnostic information is sent to
-Stderr.
+Sparkify can be used has a command-line interface or GPS interface.
+By default the output is sent to a file with the same name in sub-directory
+'sparkified'. The Sparkify output can be directed to a specific file or to
+Stdout. All diagnostic information is sent to Stderr.
 
 Sparkify is an ASIS-based tool. It compiles the given source to create the
 corresponding tree file. If the tree for the specified source already exists,
@@ -77,9 +78,12 @@ Then go to the directory tests at the same level as sparkify
      cd ../tests
 To run all tests, type
      ./run-tests
-To run a specific test, e.g. 'search' type
-     ./run-tests search
-
+To run a specific test, we can use:
+command-line : e.g. 'demo_1' type
+     ./run-tests demo_1
+GPS-Interface
+     The Build Menu => Custom Build... => Enter 'run_verif'
+Be aware that you should have the path to run_verif in your PATH.
 
 4. Sparkify parameters
    -------------------
@@ -107,12 +111,12 @@ Output file control:
  -of output_file - write the output into output_file, overriding the existing
      		   file
  -r    		 - replace the argument source with the printed source and copy
- 		   the argument source into filename.npp. Give up if 
+ 		   the argument source into filename.npp. Give up if
 		   filename.npp already exists
  -rnb  		 - replace the argument source with the printed source. Do not
  		   copy the argument source.
  -rf  		 - replace the argument source with the printed source and copy
- 		   the argument source into filename.npp, overriding the 
+ 		   the argument source into filename.npp, overriding the
 		   existing file
  -eol            - sets the format of the sparkify output (unix/lf/dos/crlf)
  -W  		 - wide character encoding method for the output (h/u/s/e/8/b)
@@ -126,23 +130,23 @@ Output file control:
    ---------------
 
 The general architecture of Sparkify consists in a depth-first traversal of
-the AST. During this traversal, we maintain a cursor pointing to the first 
+the AST. During this traversal, we maintain a cursor pointing to the first
 point in the source that was not treated previously (Echo_Cursor).
 
-Some code is simply echoed on the output, while some constructs 
-undergo a special printing. E.g., this is the case for subprogram 
+Some code is simply echoed on the output, while some constructs
+undergo a special printing. E.g., this is the case for subprogram
 declarations and definitions, as well as pragmas.
 
 When reaching such a particular element:
 
-       - we echo all the text of the source file on the output, from cursor 
+       - we echo all the text of the source file on the output, from cursor
          Echo_Cursor to the current cursor;
        - we do some special printing on the output;
-       - we may set cursor Echo_Cursor to skip some text in the source file 
+       - we may set cursor Echo_Cursor to skip some text in the source file
          when doing the next echo
 
-This can be done either during the pre-operations, when a node is treated 
-before its childen nodes are visited, or during the post-operations, when a 
+This can be done either during the pre-operations, when a node is treated
+before its childen nodes are visited, or during the post-operations, when a
 node is treated after its childen nodes have been visited.
 
 As an example of transformation in Sparkify, pragmas Precondition,
@@ -150,7 +154,7 @@ Postcondition and Assert are transformed into special comments that respect the
 way SPARK preconditions, postcondition, assertions and checks are formatted.
 Attributes 'Old and 'Result are printed as expected by SPARK.
 
-For example, the precondition 
+For example, the precondition
 
    pragma Precondition (X >= 0);
 
