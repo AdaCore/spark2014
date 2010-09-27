@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 
-\title{ALFA: Annotated Language for Functions in Ada}
+\title{ALFA: Annotated Language of Functions in Ada}
 
 \newcommand{\bnf}[1]{$\mathit{#1}$}
 
@@ -16,7 +16,9 @@ Ada 2012 is the next version of the Ada standard, expected to be finalized in
 2012. It contains many extensions that facilitate the expression of
 specifications, for either dynamic or static checking.
 
-\subsection{Standard}
+\subsection{Introduction to Ada}
+
+\subsection{New in Ada 2012}
 
 The standard defines the following extensions to Ada 2005, which facilitate the
 expression of specifications as subprogram contracts or type invariants:
@@ -207,7 +209,7 @@ The loop-invariant to be used for unit proof should be:
   examining the effect of the loop body.
 \end{itemize}
 
-ALFA introduces a new form of containers called the verified containers, to be
+ALFA introduces a new form of containers called the formal containers, to be
 used for proof of programs which manipulate containers. These are a variant of
 bounded containers, with a different API meant to facilitate proofs.
 
@@ -229,136 +231,134 @@ subprogram_body ::=
   end [designator];
 \end{verbatim}
 
-Thus, a \bnf{subprogram\_body} is in ALFA only if its
-\bnf{overriding\_indicator} (if present), its \bnf{subprogram\_specification},
-its \bnf{declarative\_part}, its \bnf{handled\_sequence\_of\_statements} and
-its \bnf{designator} are in ALFA.
+Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
+\begin{itemize}
+\item its \bnf{overriding\_indicator} (if present);
+\item its \bnf{subprogram\_specification};
+\item its \bnf{declarative\_part};
+\item its \bnf{handled\_sequence\_of\_statements};
+\item its \bnf{designator} (if present).
+\end{itemize}
 
 This general rule applies individually to every production rule in the BNF
 which define program entities. Thus, some production rules defining a
 non-terminal may be in ALFA while others for the same non-terminal are not in
 ALFA.
 
-The additional rules below further restrict which entities are in ALFA.
+The additional rules below further restrict which entities are in ALFA. These
+rules build on the report written by Marc Sango for his internship on the
+definition of a verification profile for Ada. 
 
 \subsubsection{Lexical Elements}
 
+No special rules.
 
 \subsubsection{Declarations}
 
-\noindent
-The \bnf{aliased} keyword, wherever it appears, is not in ALFA.
-
-
-\noindent
-\bnf{access\_type\_definition} is not in ALFA.
-
-\noindent
-\bnf{access\_to\_object\_definition} is not in ALFA.
-
-\noindent
-\bnf{general\_access\_modifier} is not in ALFA.
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item the \bnf{aliased} keyword, wherever it appears;
+\item \bnf{access\_type\_definition};
+\item \bnf{access\_to\_object\_definition};
+\item \bnf{general\_access\_modifier};
+\item \bnf{access\_to\_subprogram\_definition};
+\item \bnf{null\_exclusion};
+\item \bnf{access\_definition}.
+\end{itemize}
 
 \noindent
-\bnf{access\_to\_subprogram\_definition} is not in ALFA.
+[what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
 
-\noindent
-\bnf{null\_exclusion} is not in ALFA.
-
-\noindent
-\bnf{access\_definition} is not in ALFA.
-
-[what about \bnf{aspect_clause} in \bnf{component\_item}?]
+Note in particular that a \bnf{default\_expression} in a
+\bnf{component\_declaration} is allowed, as well as a \bnf{variant\_part} in
+a \bnf{component\_list}.
 
 \subsubsection{Names and Expressions}
 
-\noindent
-\bnf{explicit\_dereference} is not in ALFA.
+An \bnf{identifier} or a \bnf{name} which has a corresponding declaration is in
+ALFA if-and-only-if its declaration is in ALFA. As a consequence, a call is in
+ALFA only if the declaration of the subprogram called is in ALFA.\\
 
 \noindent
-\bnf{implicit\_dereference} is not in ALFA.
+[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]\\
 
-\noindent
-The \bnf{Access} terminal defining an \bnf{attribute\_designator} is not in
-ALFA.
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item \bnf{explicit\_dereference};
+\item \bnf{implicit\_dereference};
+\item the \bnf{Access} terminal defining an \bnf{attribute\_designator};
+\item the \bnf{null} terminal defining a \bnf{primary};
+\item \bnf{allocator}.
+\end{itemize}
 
-\noindent
-The \bnf{null} terminal defining an \bnf{primary} is not in ALFA.
+Uses of the keywords \bnf{and}, \bnf{or} and \bnf{xor} are not in ALFA. Only
+the keywords for the lazy operations \bnf{and\ then} and \bnf{or\ else} are in
+ALFA.\\
 
-\noindent
-\bnf{allocator} is not in ALFA.
+An expression in ALFA which appears as part of a contract or an invariant must
+respect additional constraints:
+\begin{enumerate}
+\item it may contain calls to parameterized expressions, but no calls to
+  functions;
+\item it may contain uses of formal containers, but no uses of other
+  containers.
+\end{enumerate}
 
 \subsubsection{Statements}
 
 \noindent
-\bnf{goto_statement} is not in ALFA.
+\bnf{goto\_statement} is not in ALFA.
 
 Note in particular that all possible \bnf{exit\_statement} are in ALFA,
 including those which exit an outter loop.
 
 \subsubsection{Subprograms}
 
-No special rule. In particular, \bnf{extended\_return\_statement} is in ALFA.
+A subprogram may have both a \bnf{subprogram\_declaration} and a
+\bnf{subprogram\_body}. Such a subprogram is in ALFA only if both its
+declaration and body are in ALFA. Additionally, the subprogram should have a
+postcondition attached to its declaration. The requirement that a subprogram
+has a postcondition ensures that the user states desired properties to prove on
+this subprogram, and that callers can rely on a precise indication of what this
+subprogram does. Of course, such a postcondition can be simply 'True' in which
+case the user chooses not to give any more precise information.
 
-
-% A subprogram is in ALFA if both its specification and its body are in ALFA,
-% when present. Notice that if a subprogram F calls directly a subprogram G, then
-% for F to be in ALFA, G's specification needs to be in ALFA.
-
-% A subprogram specification is in ALFA if:
-% \begin{enumerate}
-% \item All parameters and return are in ALFA;
-% \item The subprogram has a postcondition;
-% \item The contract of the subprogram is in ALFA.
-% \end{enumerate}
-
-% A contract is in ALFA if all expressions appearing in precondition,
-% postcondition and test-cases are specification expressions in ALFA. The
-% requirement that a subprogram has a postcondition ensures that the user states
-% desired properties to prove on this subprogram, and that callers can rely on a
-% precise indication of what this subprogram does. Of course, such a
-% postcondition can be simply 'True' in which case the user chooses not to give
-% any more precise information.
-
-% A specification expression in ALFA is an expression in ALFA which appears as
-% part of a contract or an invariant, and:
-% \begin{enumerate}
-% \item It may contain calls to parameterized expressions, but no calls to
-%   functions;
-% \item It may contain uses of verified containers, but no uses of other
-%   containers.
-% \end{enumerate}
-
-% A subprogram body is in ALFA if:
-% \begin{enumerate}
-% \item The corresponding subprogram specification is in ALFA;
-% \item All declarations in its declarative part are in ALFA;
-% \item It has no exception handler;
-% \item All statements in its sequence of statements are in ALFA.
-% \end{enumerate}
-
-% In particular, all calls in a body should be to subprograms whose specification
-% is in ALFA for the body to be ALFA.
+Note that \bnf{extended\_return\_statement} is in ALFA.
 
 \subsubsection{Package Specifications and Declarations}
 
-No special rule. In particular, renamings and the optional statements in a
+No special rules. In particular, renamings and the optional statements in a
 package body are in ALFA.
 
 \subsubsection{Use Clauses}
 
-No special rule.
+No special rules.
 
 \subsubsection{Tasks and Synchronisation}
+
+Most probably, the same restrictions as in RavenSPARK should be enforced for
+the sequential verification to apply to the concurrent code.
+
 \subsubsection{Program Structure and Compilation Issues}
+
+No special rules.
+
 \subsubsection{Exceptions}
+
+All entities related to exception handling are not in ALFA:
+\begin{itemize}
+\item \bnf{exception\_handler};
+\item \bnf{choice\_parameter\_specification};
+\item \bnf{exception\_choice}.
+\end{itemize}
+
 \subsubsection{Generic Units}
+
+No special rules.
+
 \subsubsection{Representation Issues}
 
-More generally, the definition of which constructs are in ALFA or not should be
-derived from the report written by Marc Sango for his internship on the
-definition of a verification profile for Ada. Note that uses of 'or/and' are
-not in ALFA whereas uses of 'or else/and then' are in ALFA.
+[To be discussed.]
 
 \section{Formal Verification}
 
@@ -367,7 +367,6 @@ absence of run-time errors can be performed independently. The results of
 contract verification and verification of absence of run-time errors are only
 valid if data-flow is correct, which in practice means that data-flow
 verification should be performed as a pre-requisite.
-
 
 \subsection{Data-Flow Verification}
 
@@ -410,6 +409,8 @@ should correspond to a simple subset of SPARK (for example no need for
 visibility rules in this subset as everything is public). Thus, it should be
 easier to formalize this subset and prove the correctness of transformations or
 analyzes on this subset if needed.
+
+\subsection{Introduction to SPARK/Why}
 
 \subsection{Generation of Annotations}
 
