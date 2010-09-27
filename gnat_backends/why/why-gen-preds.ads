@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - N A M E S                         --
+--                        W H Y - G E N - P R E D S                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,45 +23,47 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
+with Types;                use Types;
+with Why.Ids;              use Why.Ids;
+with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
+with Why.Atree.Properties; use Why.Atree.Properties;
 
-package Why.Gen.Names is
-   --  This package provides ways to manipulate subprogram names and
-   --  to create identifiers from their string representation
+package Why.Gen.Preds is
 
-   function New_Identifier (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for Name and return the result
+   --  This package provides facilities to manipulate Why predicates
 
-   function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for a conversion from an abstract type
-   --  to int. The name of the astract type is given in parameter.
+   procedure Define_Range_Predicate
+     (File  : W_File_Id;
+      Name  : String;
+      First : Int;
+      Last  : Int);
+   --  Generate the definition of the range predicate for an integer type.
+   --  This predicate is True when the int argument is in range First .. Last.
 
-   function Range_Pred_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its range predicate.
+   function New_Binding_Pred
+     (Name  : String;
+      Value : Int)
+     return W_Binding_Pred_Unchecked_Id;
+   --  Create a new binding for a predicate; the context is left empty.
+   --  e.g. let <name> = <value> in <empty>
 
-   function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for an entity in program space, given
-   --  the name of the corresponding entity in logic space.
+   type Binding_Pred_Chain is array (Positive range <>)
+     of W_Binding_Pred_Unchecked_Id;
+   --  Array of bindings with an empty context. Those are meant to be
+   --  linked together in a predicate of the form:
+   --
+   --  let <my_chain_1_name> = <my_chain_1_value> in
+   --  let <my_chain_2_name> = <my_chain_2_value> in
+   --  [...]
+   --  let <my_chain_n_name> = <my_chain_n_value> in
+   --     <empty>
 
-   function Safe_Version (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for the "safe" version (no precondition
-   --  for run-time checks) of a program-space subprogram (a so-called
-   --  "parameter").
+   function New_Predicate_Body
+     (Bindings : Binding_Pred_Chain;
+      Context  : W_Predicate_Id)
+     return W_Predicate_Id;
+   pragma Precondition (Is_Root (Context));
+   --  Create a predicate by linking together the bindings and
+   --  associating the context to them.
 
-   procedure Set_Name (Id : W_Identifier_Id; Name : String);
-   --  Change the name of the given identifier
-
-   function New_Result_Identifier return W_Label_Identifier_Id;
-   --  Return an new identifier for a function result as it
-   --  would be used into a postcondition.
-
-   function To_Label_Identifier
-     (Name : W_Identifier_Id)
-     return W_Label_Identifier_Id;
-   --  Create a label identifier from Name. Name is duplicated.
-
-   function New_Term (Name : String) return W_Label_Identifier_Id;
-   --  Return a term identified by the given name
-
-end Why.Gen.Names;
+end Why.Gen.Preds;

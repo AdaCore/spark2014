@@ -62,6 +62,25 @@ package body Why.Gen.Names is
       return New_Label_Identifier (Name => New_Identifier (Result_Name));
    end New_Result_Identifier;
 
+   --------------
+   -- New_Term --
+   --------------
+
+   function New_Term (Name : String) return W_Label_Identifier_Id is
+   begin
+      return New_Label_Identifier (Name => New_Identifier (Name));
+   end New_Term;
+
+   ---------------------
+   -- Range_Pred_Name --
+   ---------------------
+
+   function Range_Pred_Name (Name : String) return W_Identifier_Id is
+      Suffix : constant String := "___in_range";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Range_Pred_Name;
+
    ------------------
    -- Safe_Version --
    ------------------

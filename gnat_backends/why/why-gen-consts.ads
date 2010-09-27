@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - N A M E S                         --
+--                       W H Y - G E N - C O N S T S                        --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,45 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;   use Types;
 with Why.Ids; use Why.Ids;
 
-package Why.Gen.Names is
-   --  This package provides ways to manipulate subprogram names and
-   --  to create identifiers from their string representation
+package Why.Gen.Consts is
+   --  This package provides ways to manipulate constant literals (ints
+   --  and floats).
 
-   function New_Identifier (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for Name and return the result
+   function New_Constant (Value : Int) return W_Integer_Constant_Id;
 
-   function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
-   --  Create a new identifier for a conversion from an abstract type
-   --  to int. The name of the astract type is given in parameter.
-
-   function Range_Pred_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its range predicate.
-
-   function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for an entity in program space, given
-   --  the name of the corresponding entity in logic space.
-
-   function Safe_Version (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for the "safe" version (no precondition
-   --  for run-time checks) of a program-space subprogram (a so-called
-   --  "parameter").
-
-   procedure Set_Name (Id : W_Identifier_Id; Name : String);
-   --  Change the name of the given identifier
-
-   function New_Result_Identifier return W_Label_Identifier_Id;
-   --  Return an new identifier for a function result as it
-   --  would be used into a postcondition.
-
-   function To_Label_Identifier
-     (Name : W_Identifier_Id)
-     return W_Label_Identifier_Id;
-   --  Create a label identifier from Name. Name is duplicated.
-
-   function New_Term (Name : String) return W_Label_Identifier_Id;
-   --  Return a term identified by the given name
-
-end Why.Gen.Names;
+end Why.Gen.Consts;

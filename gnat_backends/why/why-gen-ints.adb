@@ -30,6 +30,7 @@ with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
+with Why.Gen.Preds;      use Why.Gen.Preds;
 
 package body Why.Gen.Ints is
 
@@ -76,14 +77,13 @@ package body Why.Gen.Ints is
       First : Int;
       Last  : Int)
    is
-      pragma Unreferenced (First);
-      pragma Unreferenced (Last);
       --  ??? Not fully implemented yet
 
       Return_Type : constant W_Primitive_Type_Id := New_Abstract_Type (Name);
       Arrows      : W_Arrow_Type_Unchecked_Id :=
                       New_Arrow_Stack (Return_Type);
    begin
+      Define_Range_Predicate (File, Name, First, Last);
       Arrows := Push_Arg (Arrows, New_Identifier ("n"), New_Type_Int);
       Declare_Logic_And_Parameters (File,
                                     New_Conversion_To_Int (Name),
