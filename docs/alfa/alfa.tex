@@ -383,17 +383,33 @@ semantics in ALFA than in Ada, similar to what is found in SPARK:
   the subprogram which assigns to it before reaching subprogram exit.
 \end{itemize}
 
-Likewise, reads of variables are only allowed if all syntactic paths through
-the subprogram before reaching the read do initialize the complete aggregate
-object from which a part is read. This restriction is similar to the SPARK
-one. It applies both to local variables and parameters.
+Reads of variables are only allowed if all syntactic paths through the
+subprogram before reaching the read do initialize the complete aggregate object
+from which a part is read. This restriction is similar to the SPARK one. It
+applies both to local variables and parameters.
 
 [need expansion of what is a data-flow error, regarding useless computations]
 
+Aliasing between parameters and globals accessed by a subprogram is forbidden,
+unless all aliasing paramaters and globals are read. This restriction is
+similar to the SPARK one.
+
 \subsection{Contract Verification}
+
+The contract of a subprogram in ALFA is verified by assuming that the
+subprograms it calls do respect their contracts, which includes a possible
+recursive call (in which case the assumption is made only for the recursive
+call). For the purpose of contract verification, possible run-time errors are
+ignored, both in the program and in the contracts. Thus, the results of
+contract verification hold for all executions which do not raise a run-time
+error.
 
 \subsection{Verification of Absence of Run-Errors}
 
+Verifying that a subprogram in ALFA is free from run-time errors is verified by
+assuming that the subprograms it calls do respect their contracts and that they
+are free from run-time errors, which includes a possible recursive call (in
+which case the assumption is made only for the recursive call).
 
 \section{Translation to SPARK / Why}
 
@@ -507,5 +523,38 @@ Thus, the generated units should be layered in:
 \item $<$body$>$: units which define a single subprogram specification and body
   in SPARK or Why from a subprogram in ALFA.
 \end{enumerate}
+
+\subsection{Translations}
+
+\subsubsection{Lexical Elements}
+
+\subsubsection{Declarations}
+
+\subsubsection{Names and Expressions}
+
+\subsubsection{Statements}
+
+
+\subsubsection{Subprograms}
+
+
+\subsubsection{Package Specifications and Declarations}
+
+
+\subsubsection{Use Clauses}
+
+\subsubsection{Tasks and Synchronisation}
+
+\subsubsection{Program Structure and Compilation Issues}
+
+
+\subsubsection{Exceptions}
+
+\subsubsection{Generic Units}
+
+
+\subsubsection{Representation Issues}
+
+
 
 \end{document}
