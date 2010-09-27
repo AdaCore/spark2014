@@ -1372,7 +1372,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Function_Get_Name (Node));
-      P (O, "(");
+      P (O, " (");
       Print_List (State, Binders);
       P (O, ") : ");
       Traverse
@@ -1403,7 +1403,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Predicate_Definition_Get_Name (Node));
-      P (O, "(");
+      P (O, " (");
       Print_List (State, Binders);
       PL (O, ") =");
       Relative_Indent (O, 1);
