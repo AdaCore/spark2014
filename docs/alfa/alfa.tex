@@ -18,6 +18,111 @@ specifications, for either dynamic or static checking.
 
 \subsection{Introduction to Ada}
 
+\subsubsection{Module System}
+
+Programs in Ada are structured in packages, which consist in:
+\begin{itemize}
+\item a package specification, which defines the external API of the package,
+  consisting of types, variables and subprogram declarations whose lifetime and
+  visibility scope are the same as the one of the package itself;
+\item an optional package body, which defines the entities declared in the
+  package specification, plus additional entities which are not part of the
+  external API.
+\end{itemize}
+
+The package specification may be divided in a public part and a private part,
+so that the private part is visible to the compiler, for use in separate
+compilation, but not visible to the external program. Thus, a type may be
+declared as having a private definition, so that the compiler knows its precise
+definition (size, initialization, etc.) but the program cannot depend on it
+outside the package.
+
+Packages may be defined in any declarative section: at the outtermost level as
+library-level compilation units, or inside other packages and subprogram
+bodies. Subprograms too can be defined either as library-level compilation
+units, or in local declarative sections. Variables and types can only be
+defined in local declarative sections.
+
+Child packages are derived from their parent package with which they have
+special visibility relations, which depends on the public/private status of the
+child package.
+
+\subsubsection{Type System}
+
+Ada enforces a strong type system by default, although it can be circumvented
+by using specific conversion functions (e.g. on addresses), for example to
+connect the program to external sensors/actuators.
+
+Integers come in a variety of flavors. New integer types can be defined which
+are incompatible, so that type checking uncovers mistakes where different
+integer types are mixed, and a subprogram can be overloaded for different
+integer types. Subtypes of existing integer types can define a range constraint
+which should hold for all initialized values of this subtype, and the compiler
+inserts a run-time check anywhere the constraint could be violated. Given a
+subtype S of a type T, there exists a base machine type B for both T and S such
+that all arithmetic operations on S and/or T are performed in B.  After the
+result is computed, it is stored back in a variable of type S or T and the
+corresponding range check is performed.
+
+Enumerations define named enumerators which are the only values of this
+type. Although pattern-matching is available for all discrete types, it is
+mostly used for enumerations. As part of type checking, the compiler checks
+that pattern-matching is complete and that no case is redundant.
+
+Floating-point types follow the IEEE-754 standard. Fixed-point types limit the
+precision of values to a fixed number of figures.
+
+Aggregate types come in two flavors: records aggregate heterogeneous data
+components, while arrays aggregate homogeneous data components. Records may
+have one or more discriminants: discriminants of enumerated type are used to
+provide a form of algebraic datatypes, as the discriminant is used to provide a
+variant distinction between different sets of components; discriminants of
+integer type are used to provide dependent types, as the discriminant is used
+to give the size of some array component.
+
+Pointer types, a.k.a. access types in Ada, follow a set of somewhat complex
+rules to prevent dangling pointer references. In the following, we will mostly
+ignore pointers.
+
+The set of non-aggregate types are called elementary types.
+
+\subsubsection{Metaprogramming}
+
+Generic packages and subprograms define template entities to instantiate at
+compile-time. They come with a set of formal parameters for types, variables,
+values and subprograms. Formal parameters declare individual constraints and
+relations with other formal parameters, so that once the compiler has checked a
+generic entity, any instantiation with correct arguments will generate a
+compilable entity.
+
+\subsubsection{Object-Oriented Programming}
+
+Classes are known in Ada as tagged (record) types. Objects are values of tagged
+types. Methods are known as primitive operations, which can take their
+dispatching type in any position. When the first operand is the dispatching
+one, the usual object-dot-method syntax is allowed for calls.
+
+An object can be considered either of type T, in which case there is no
+dispatching involved when calling a primitive operation of T, or of type
+T'Class, in which case all primitive operations on this object are dispatching.
+
+Interfaces can be defined which only introduce primitive operations, not
+components.
+
+\subsubsection{Calling Conventions}
+
+Parameters of elementary types are passed by copy.  Parameters of tagged type
+are passed by reference. For most other parameters, the compiler is choosing
+between by-reference and by-copy.
+
+Parameters have a mode, which can be by default \emph{in} or else \emph{out}
+and \emph{in out}:
+\begin{itemize}
+\item parameters of mode \emph{in} can only be read;
+\item parameters of mode \emph{out} can only be written;
+\item parameters of mode \emph{in out} can be both read and written.
+\end{itemize}
+
 \subsection{New in Ada 2012}
 
 The standard defines the following extensions to Ada 2005, which facilitate the
@@ -428,6 +533,42 @@ analyzes on this subset if needed.
 
 \subsection{Introduction to SPARK/Why}
 
+\subsubsection{Common Basis of SPARK and Why}
+
+SPARK and Why are both programming languages designed for deductive
+verification, more than execution. They both mix coding constructs with logic
+constructs whose aim is to state invariant properties of the program.
+
+The central logic construct is the contract, which serves to fully describe the
+effect of calling a subprogram, for the purpose of separate verification. Each
+subprogram in SPARK/Why must be defined with a proper contract:
+\begin{itemize}
+\item a precondition describes constraints on the calling context;
+\item a frame condition describes both the variables on which the result of the
+  subprogram depends (variables read) and the variables which may be modified
+  as a result of the call (variables written);
+\item a postcondition describes constraints on the result of the subprogram.
+\end{itemize}
+
+Both SPARK and Why define references which are used to pass parameters to
+subprogram calls. None defines pointer types. Both SPARK and Why define static
+rules to check that the only parameters which may be aliased are those which
+are only read.
+
+\subsubsection{SPARK Specificities}
+
+SPARK code, when stripped from its logic constructs, is a subset from
+Ada. Thus, SPARK inherits many constructs of Ada, and it is of course
+executable.
+
+SPARK enforces strict data-flow properties, that are checked statically.
+
+\subsubsection{Why Specificities}
+
+Why is a functional language with imperative features, of an OCaml flavor. Why
+allows mixing freely axiomatized entities and defined entities, so that Why
+programs cannot be executed.
+
 \subsection{Generation of Annotations}
 
 A valid SPARK or Why subprogram needs to indicate explicitly which global
@@ -534,12 +675,9 @@ Thus, the generated units should be layered in:
 
 \subsubsection{Statements}
 
-
 \subsubsection{Subprograms}
 
-
 \subsubsection{Package Specifications and Declarations}
-
 
 \subsubsection{Use Clauses}
 
@@ -547,14 +685,11 @@ Thus, the generated units should be layered in:
 
 \subsubsection{Program Structure and Compilation Issues}
 
-
 \subsubsection{Exceptions}
 
 \subsubsection{Generic Units}
 
-
 \subsubsection{Representation Issues}
-
 
 
 \end{document}
