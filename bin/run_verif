@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ $# != 0 ]; then
+   echo 'run_verif expects no arguments'
+   exit 1
+fi
+unset PYTHONHOME
+run_verif.py .
