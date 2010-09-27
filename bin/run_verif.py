@@ -104,6 +104,13 @@ os.system(cmd)
 cmd = 'spark -noecho -fdl=_fdl_ -flow=data -config=' + config_file 
 cmd = cmd + ' -vcg @spark'
 os.system(cmd)
+
+# copy user rule files at the proper location
+rule_files = glob.glob('../*.rlu')
+for f in rule_files:
+    base = os.path.splitext(os.path.basename(f))[0]
+    os.system('cp ' + f + ' ' + base)
+
 cmd = 'sparksimp > dummy.log'
 os.system(cmd)
 cmd = 'pogs > dummy.log'
