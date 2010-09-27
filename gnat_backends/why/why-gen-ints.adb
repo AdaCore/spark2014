@@ -78,16 +78,46 @@ package body Why.Gen.Ints is
       Last  : Int)
    is
       --  ??? Not fully implemented yet
+      Arg_S : constant String := "n";
 
-      Return_Type : constant W_Primitive_Type_Id := New_Abstract_Type (Name);
-      Arrows      : W_Arrow_Type_Unchecked_Id :=
-                      New_Arrow_Stack (Return_Type);
    begin
       Define_Range_Predicate (File, Name, First, Last);
-      Arrows := Push_Arg (Arrows, New_Identifier ("n"), New_Type_Int);
-      Declare_Logic_And_Parameters (File,
-                                    New_Conversion_To_Int (Name),
-                                    Arrows);
+
+      --  to int:
+      Declare_Logic (File,
+                     New_Conversion_To_Int (Name),
+                     (1 => New_Abstract_Type (Name)),
+                     New_Type_Int);
+
+      --  from int:
+      declare
+         Return_Type : constant W_Primitive_Type_Id :=
+                         New_Abstract_Type (Name);
+         Arrows      : W_Arrow_Type_Unchecked_Id :=
+                         New_Arrow_Stack (Return_Type);
+         Range_Check : constant W_Operation_Unchecked_Id :=
+                         New_Unchecked_Operation;
+         Int_Result  : constant W_Operation_Unchecked_Id :=
+                         New_Unchecked_Operation;
+         Post        : constant W_Predicate_Unchecked_Id :=
+                         New_Unchecked_Related_Terms;
+      begin
+         Arrows := Push_Arg (Arrows, New_Identifier (Arg_S), New_Type_Int);
+         Operation_Set_Name (Range_Check, Range_Pred_Name (Name));
+         Operation_Append_To_Parameters (Range_Check, New_Term (Arg_S));
+
+         --  postcondition: { <name>___of_integer (result) = n }
+         Operation_Set_Name (Int_Result, New_Conversion_To_Int (Name));
+         Operation_Append_To_Parameters (Int_Result, New_Result_Identifier);
+         Related_Terms_Set_Left (Post, Int_Result);
+         Related_Terms_Set_Op (Post, New_Rel_Eq);
+         Related_Terms_Set_Right (Post, New_Term (Arg_S));
+         Declare_Logic_And_Parameters (File,
+                                       New_Conversion_From_Int (Name),
+                                       Arrows,
+                                       Range_Check,
+                                       Post);
+      end;
    end Define_Signed_Int_Conversions;
 
 end Why.Gen.Ints;

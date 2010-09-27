@@ -31,6 +31,16 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 
 package body Why.Gen.Names is
 
+   -----------------------------
+   -- New_Conversion_From_Int --
+   -----------------------------
+
+   function New_Conversion_From_Int (Name : String) return W_Identifier_Id is
+      Suffix : constant String := "___of_integer";
+   begin
+      return New_Identifier (Name & Suffix);
+   end New_Conversion_From_Int;
+
    ---------------------------
    -- New_Conversion_To_Int --
    ---------------------------

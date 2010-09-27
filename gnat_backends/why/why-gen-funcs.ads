@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids;              use Why.Ids;
+with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 with Why.Types;            use Why.Types;
 with Why.Atree.Properties; use Why.Atree.Properties;
 
@@ -40,6 +41,22 @@ package Why.Gen.Funcs is
    --  to File. Name is inserted into the resulting syntax tree,
    --  Arrows is not; the spec of the logic declaration is created
    --  from it.
+
+   type Logic_Arg_Chain is array (Natural range <>)
+     of W_Logic_Arg_Type_Unchecked_Id;
+   --  Representation of a list of argument types for a logic function,
+   --  in an array; say, for an array (type1, type2), represents the
+   --  arrow chain type1 -> type2.
+
+   procedure Declare_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Args        : Logic_Arg_Chain;
+      Return_Type : W_Logic_Return_Type_Id);
+   pragma Precondition (Is_Root (Name));
+   --  Create a logic declaration from Name and Args and append it tp
+   --  File. Name and all elements in the arg chain are inserted into the
+   --  resulting syntax tree.
 
    procedure Declare_Logic_And_Parameters
      (File   : W_File_Id;

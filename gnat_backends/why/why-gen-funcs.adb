@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Why.Sinfo;           use Why.Sinfo;
-with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -85,6 +84,27 @@ package body Why.Gen.Funcs is
 
    begin
       Append_To_Spec (Arrows);
+      Logic_Append_To_Names (Logic, Name);
+      Logic_Set_Logic_Type (Logic, Spec);
+      File_Append_To_Declarations (File,
+                                   New_Logic_Declaration (Decl => Logic));
+   end Declare_Logic;
+
+   procedure Declare_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Args        : Logic_Arg_Chain;
+      Return_Type : W_Logic_Return_Type_Id)
+   is
+      Logic : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
+      Spec  : constant W_Logic_Type_Unchecked_Id :=
+                New_Unchecked_Logic_Type;
+   begin
+      for J in Args'Range loop
+         Logic_Type_Append_To_Arg_Types (Spec, Args (J));
+      end loop;
+
+      Logic_Type_Set_Return_Type (Spec, Return_Type);
       Logic_Append_To_Names (Logic, Name);
       Logic_Set_Logic_Type (Logic, Spec);
       File_Append_To_Declarations (File,
