@@ -137,7 +137,7 @@ package body Verified_Hashed_Sets is
 
       while CuL.Node /= 0 or CuR.Node /= 0 loop
          if CuL.Node /= CuR.Node or else
-           Element(Left,CuL) /= Element(Right,CuR) then
+           Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element then
             return False;
          end if;
          CuL := Next_Unchecked(Left, CuL);
@@ -1370,7 +1370,7 @@ package body Verified_Hashed_Sets is
 
       if not Has_Element(Container, Position) then
          raise Constraint_Error
-           with "Can't modify part of container";
+           with "Position has no element";
       end if;
 
       pragma Assert (Vet (Container, Position), "bad cursor in Next");
