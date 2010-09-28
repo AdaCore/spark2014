@@ -569,6 +569,18 @@ Why is a functional language with imperative features, of an OCaml flavor. Why
 allows mixing freely axiomatized entities and defined entities, so that Why
 programs cannot be executed.
 
+Why defines four primitive types:
+\begin{itemize}
+\item \emph{int} for mathematical integers;
+\item \emph{bool} for Booleans;
+\item \emph{real} for mathematical real numbers;
+\item \emph{unit} for the type of statements.
+\end{itemize}
+
+There are no aggregate types in Why. These should be defined as abstract types
+and axiomatized. In this respect, Why is closer to the translation in FDL of
+SPARK data structures than to SPARK.
+
 \subsection{Generation of Annotations}
 
 A valid SPARK or Why subprogram needs to indicate explicitly which global
