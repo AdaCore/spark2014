@@ -605,9 +605,9 @@ Why defines four primitive types:
 \item \emph{unit} for the type of statements.
 \end{itemize}
 
-There are no aggregate types in Why. These should be defined as abstract types
-and axiomatized. In this respect, Why is closer to the translation in FDL of
-SPARK data structures than to SPARK.
+There are no aggregate types (records and arrays) in Why. These should be
+defined as abstract types and axiomatized. In this respect, Why is closer to
+the translation in FDL of SPARK data structures than to SPARK.
 
 \subsection{Generation of Annotations}
 
@@ -707,8 +707,22 @@ Thus, the generated units should be layered in:
   in SPARK or Why from a subprogram in ALFA.
 \end{enumerate}
 
+\subsection{Translation From Ada to Unambiguous Ada}
+
+Ada functions may write global variables, so that the compiler choice of
+evaluation order for expressions may influence the result. Whatever it is, this
+choice should be the same for execution and verification, which is obtained by
+lifting function calls outside of expressions in the specified order of
+evaluation. This consists in a simple walk through the AST following the order
+of evaluation, and introducing temporary variables for every function call.
+
 \subsection{Generation of Data-Flow Annotations}
 \label{sub:data-flow}
+
+For the purpose of this verification, we consider a package body as a special
+form of subprogram, where the body of the subprogram is given by the various
+initializations performed in the declarations of variables, as well as the
+optional sequence of statements.
 
 A data-flow analysis of the source Ada program should associate each subprogram
 with three sets of global variables:
@@ -769,7 +783,7 @@ before the statement \inwrites{s}:
 Likewise:
 
 \begin{eqnarray*}
-\outallwrites{s} &=& \inwrites{s} \union \{w\}\\
+\outallwrites{s} &=& \inallwrites{s} \union \{w\}\\
 \inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
 \end{eqnarray*}
 
@@ -868,7 +882,7 @@ verification of absence of run-time errors.
 % We denote the former as \why
 % (translation to Why) and the latter as \spark (translation to SPARK).
 
-\subsection{Shared Translation From Ada to SPARK}
+\subsection{Translation From Unambiguous Ada to Extended SPARK}
 
 Additional copied may be introduced (extended returns, etc.)
 
@@ -878,6 +892,8 @@ Additional copied may be introduced (extended returns, etc.)
 
 \subsubsection{Names and Expressions}
 
+
+
 calls to functions into calls to statements, with special result variable value
 read just after the call and stored in local temp
 
@@ -885,19 +901,9 @@ read just after the call and stored in local temp
 
 \subsubsection{Subprograms}
 
-Both procedures and functions in Ada should be translated into SPARK
-procedures. Indeed, Ada functions may write global variables, so that the
-compiler choice of evaluation order for expressions may influence the
-result. Whatever it is, this choice should be the same for execution and
-verification, which is obtained by forcing the compiler evaluation order when
-translating function calls in expressions into sequential procedure calls.  In
-particular, this applies also to user-defined operators.  In order to translate
-a function F into a procedure, we should add a global variable F\_Result in the
-scope where the function is defined, which is used to store the result of the
-function.
-
 Various translations remove entities not defined in SPARK and/or in Why:
 \begin{itemize}
+\item user-defined operators should be translated as regular functions;
 \item default expressions for parameters should be inlined at call sites, so
   that they do not appear as default expressions anymore;
 \item the \kw{overriding} keyword should be simply removed, as it only serves
@@ -918,7 +924,41 @@ Various translations remove entities not defined in SPARK and/or in Why:
 
 \subsubsection{Package Specifications and Declarations}
 
+Entities declared in the package specification and those declared in the
+package body should be treated identically. In particular, all entities
+declared in the package body should become visible from outside the package in
+the generated SPARK code. Likewise, the private part of a package specification
+should be merged in its public part, so that all entities become public. As a
+consequence, all private views of types should be removed [should they be
+kept?].
+
+The set of global variables defined in the package specification and package
+body should become the ``own'' global variables of the corresponding $<$data$>$
+package.
+
+A subprogram should be generated for the initialization part of variable
+declarations, both in the package body and in the package declaration, as well
+as the optional sequence of statements in the package body. This subprogram
+should have the global annotations computed as described in
+section~\ref{sub:data-flow}, and additionally:
+\begin{itemize}
+\item there should not be any ``in'' or ``in out'' global variables, to prevent
+  undue dependencies on the order of elaboration;
+\item the ``out'' global variables should be the ``initializes'' global
+  variables of the corresponding $<$data$>$ package.
+\end{itemize}
+
 \subsubsection{Use Clauses}
+
+Various translations remove entities not defined in SPARK and/or in Why:
+\begin{itemize}
+\item use clauses (not allowed in SPARK) should be replaced by use-type clauses
+  (allowed in SPARK) for all types in the package, so that operations are still
+  permitted on the types exported;
+\item renamings, which provide a proxy name for an entity, and which are
+  strongly limited in SPARK, should be removed and each occurrence of the
+  new name should be replaced by the entity being renamed;
+\end{itemize}
 
 \subsubsection{Tasks and Synchronisation}
 
@@ -930,9 +970,13 @@ Various translations remove entities not defined in SPARK and/or in Why:
 
 \subsubsection{Representation Issues}
 
-\subsection{End of Translation From SPARK to SPARK}
+\subsection{End of Translation From Extended SPARK to SPARK}
 
-\subsection{End of Translation From SPARK to Why}
+Ada functions may write global variables, which is not allowed in SPARK. Thus,
+functions should be translated into procedures by introducing an additional
+``out'' parameter.
+
+\subsection{End of Translation From Extended SPARK to Why}
 
 from intermediate SPARK code in a reduced subset of SPARK
 
