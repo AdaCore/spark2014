@@ -49,6 +49,12 @@ package body Verified_Hashed_Maps is
       Node : Node_Access) return Boolean;
    pragma Inline (Equivalent_Key_Node);
 
+   function Find_Between
+        (HT  : Hash_Table_Type;
+         Key : Key_Type;
+         From : Count_Type;
+         To : Count_Type) return Node_Access;
+
    function Hash_Node
      (HT   : Hash_Table_Type;
       Node : Node_Access) return Hash_Type;
@@ -325,7 +331,7 @@ package body Verified_Hashed_Maps is
    -------------
 
    function Element (Container : Map; Key : Key_Type) return Element_Type is
-      Node : constant Node_Access := Key_Ops.Find (Container.HT.all, Key);
+      Node : constant Node_Access := Find (Container, Key).Node;
 
    begin
       if Node = 0 then
@@ -346,6 +352,49 @@ package body Verified_Hashed_Maps is
 
       return Container.HT.Nodes (Position.Node).Element;
    end Element;
+
+   ----------------
+   -- Equivalent --
+   ----------------
+
+   function Equivalent (Left, Right : Map) return Boolean is
+   begin
+
+      if Length(Left) /= Length(Right) then
+         return False;
+      end if;
+
+      if Length(Left) = 0 then
+         return True;
+      end if;
+
+      declare
+         Node : Count_Type := First(Left).Node;
+         ENode : Count_Type;
+         Last : Count_Type;
+      begin
+
+         if Left.K = Plain then
+            Last := 0;
+         else
+            Last := Left.HT.Nodes(Left.Last).Next;
+         end if;
+
+         while Node /= Last loop
+               ENode := Find(Container => Right, Key => Left.HT.Nodes(Node).Key).Node;
+            if ENode = 0 or else
+              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
+               return False;
+            end if;
+
+            Node := HT_Ops.Next(Left.HT.all, Node);
+         end loop;
+
+         return True;
+
+      end;
+
+   end Equivalent;
 
    -------------------------
    -- Equivalent_Key_Node --
@@ -448,6 +497,46 @@ package body Verified_Hashed_Maps is
    ----------
    -- Find --
    ----------
+      function Find_Between
+        (HT  : Hash_Table_Type;
+         Key : Key_Type;
+         From : Count_Type;
+         To : Count_Type) return Node_Access is
+
+         Indx : Hash_Type;
+         Indx_From : Hash_Type := Key_Ops.Index (HT, HT.Nodes(From).Key);
+         Indx_To : Hash_Type := Key_Ops.Index (HT, HT.Nodes(To).Key);
+         Node : Node_Access;
+         To_Node : Node_Access;
+
+      begin
+
+         Indx := Key_Ops.Index (HT, Key);
+
+         if Indx < Indx_From or Indx > Indx_To then
+            return 0;
+         end if;
+
+         if Indx = Indx_From then
+            Node := From;
+         else
+            Node := HT.Buckets (Indx);
+         end if;
+
+         if Indx = Indx_To then
+            To_Node := HT.Nodes(To).Next;
+         else
+            To_Node := 0;
+         end if;
+
+         while Node /= To_Node loop
+            if Equivalent_Key_Node (Key, HT, Node) then
+               return Node;
+            end if;
+            Node := HT.Nodes(Node).Next;
+         end loop;
+         return 0;
+      end Find_Between;
 
    function Find (Container : Map; Key : Key_Type) return Cursor is
    begin
@@ -464,56 +553,12 @@ package body Verified_Hashed_Maps is
                return (Node => Node);
             end;
          when Part =>
-            declare
-               function Find_Between
-                 (HT  : Hash_Table_Type;
-                  Key : Key_Type;
-                  From : Count_Type;
-                  To : Count_Type) return Node_Access is
-
-                  Indx : Hash_Type;
-                  Indx_From : Hash_Type := Key_Ops.Index (HT, HT.Nodes(From).Key);
-                  Indx_To : Hash_Type := Key_Ops.Index (HT, HT.Nodes(To).Key);
-                  Node : Node_Access;
-                  To_Node : Node_Access;
-
-               begin
-
-                  Indx := Key_Ops.Index (HT, Key);
-
-                  if Indx < Indx_From or Indx > Indx_To then
-                     return 0;
-                  end if;
-
-                  if Indx = Indx_From then
-                     Node := From;
-                  else
-                     Node := HT.Buckets (Indx);
-                  end if;
-
-                  if Indx = Indx_To then
-                     To_Node := HT.Nodes(To).Next;
-                  else
-                     To_Node := 0;
-                  end if;
-
-                  while Node /= To_Node loop
-                     if Equivalent_Key_Node (Key, HT, Node) then
-                        return Node;
-                     end if;
-                     Node := HT.Nodes(Node).Next;
-                  end loop;
-                  return 0;
-               end Find_Between;
-            begin
-
                if Container.Length = 0 then
                   return No_Element;
                end if;
 
                return (Node => Find_Between(Container.HT.all, Key,
                        Container.First, Container.Last));
-            end;
       end case;
    end Find;
 
@@ -1029,6 +1074,48 @@ package body Verified_Hashed_Maps is
    begin
       Position := Next (Container, Position);
    end Next;
+
+   -------------
+   -- Overlap --
+   -------------
+
+   function Overlap (Left, Right : Map) return Boolean is
+      Left_Node  : Node_Access;
+      Left_Nodes : Nodes_Type renames Left.HT.Nodes;
+      To_Node : Node_Access;
+   begin
+      if Length(Right) = 0 or Length(Left) = 0 then
+         return False;
+      end if;
+
+      if Left'Address = Right'Address then
+         return True;
+      end if;
+
+      Left_Node := First (Left).Node;
+
+      if Left.K = Plain then
+         To_Node := 0;
+      else
+         To_Node := Left.HT.Nodes(Left.Last).Next;
+      end if;
+
+      while Left_Node /= To_Node loop
+         declare
+            N : Node_Type renames Left_Nodes (Left_Node);
+            E : Key_Type renames N.Key;
+
+         begin
+            if Find (Right, E).Node /= 0 then
+               return True;
+            end if;
+         end;
+
+         Left_Node := HT_Ops.Next (Left.HT.all, Left_Node);
+      end loop;
+
+      return False;
+   end Overlap;
 
    -------------------
    -- Query_Element --

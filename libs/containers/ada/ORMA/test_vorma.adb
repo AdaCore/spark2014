@@ -1,31 +1,18 @@
 with Ada.Text_IO;
-with Verified_Hashed_Maps;
+with Verified_Ordered_Maps;
 with Ada.Containers;
 use Ada.Containers;
 
-procedure test_vhama is
+procedure test_vorma is
 
-   function Hash (Element : Integer) return Hash_Type is
-   begin
-      return Hash_Type(Element);
-   end;
-
-   function Equivalent_Keys (Element1 : Integer; Element2 : Integer)
-                                 return Boolean is
-   begin
-      return Element1 = Element2;
-   end;
-
-   package VHAMA is new Verified_Hashed_Maps
-     (Element_Type => Integer,
-      Key_Type => Integer,
-      Hash => Hash,
-      Equivalent_Keys => Equivalent_Keys);
-   use VHAMA;
-   L1 :  Map(3,2);
-   L2 :  Map(3,2);
-   L3 :  Map(3,2);
-   L4 :  Map(5,2);
+   package VORMA is new Verified_Ordered_Maps
+     (Key_Type => Integer,
+      Element_Type => Integer);
+   use VORMA;
+   L1 :  Map(3);
+   L2 :  Map(3);
+   L3 :  Map(3);
+   L4 :  Map(5);
    C1 :  Cursor;
    C2 :  Cursor;
 
@@ -60,12 +47,12 @@ begin
    end if;
 
    -- Has_Element of first
-   Insert(Container => L1,
-          Key => 3,
-          New_Item  => 1);
+    Insert(Container => L1,
+           New_Item  => 3,
+           Key => 1);
    if  Has_Element(L1, First(L1)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L1, First(L1),1,3,"Has_Element of first");
+      Test_Element(L1, First(L1),3,1,"Has_Element of first");
    else
       Ada.Text_IO.Put_Line("Has_Element of first => KO ???");
    end if;
@@ -74,32 +61,32 @@ begin
      L2 :=  Copy(L1,3);
      if  Has_Element(L2, First(L1)) then
         Ada.Text_IO.Put_Line("OK");
-        Test_Element(L2, First(L1),1,3,"Has_Element of a copy");
+        Test_Element(L2, First(L1),3,1,"Has_Element of a copy");
      else
         Ada.Text_IO.Put_Line("Has_Element of a copy => KO ???");
      end if;
 
    -- Has_Element of inserted Element after Insertion
-   Insert(Container => L1,
-          Key => 1,
-          New_Item  => 2);
+    Insert(Container => L1,
+           New_Item  => 4,
+           Key => 2);
    if  Has_Element(L1, Next(L1, First(L1))) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L1, First(L1),2,1,"Has_Element of inserted Element after Insertion");
-      Test_Element(L1, Next(L1, First(L1)),1,3,"Has_Element of inserted Element after Insertion");
+      Test_Element(L1, First(L1),3,1,"Has_Element of inserted Element after Insertion");
+      Test_Element(L1, Next(L1, First(L1)),4,2,"Has_Element of inserted Element after Insertion");
    else
       Ada.Text_IO.Put_Line("Has_Element of inserted Element after Insertion => KO ???");
    end if;
 
    -- Has_Element of inserted Element before Insertion
-     if  Has_Element(L2, First(L1)) then
+     if  Has_Element(L2, Next(L1,First(L1))) then
         Ada.Text_IO.Put_Line("Has_Element of inserted Element before Insertion => KO ???");
      else
         Ada.Text_IO.Put_Line("OK");
      end if;
 
    -- Has_Element of deleted Element after deletion
-    Insert(Container => L1, New_Item => 3, Key => 2);
+    Insert(Container => L1, New_Item => 2, Key => 3);
      C1 :=  Next(L1, First(L1));
      C2 :=  Next(L1, First(L1));
      Delete(Container => L1, Position  => C1);
@@ -111,18 +98,23 @@ begin
 
    -- Has_Element of a copy
      L2 :=  Copy(L1,3);
-     if  Has_Element(L2, First(L1)) then
+     if  Has_Element(L2, Next(L1,First(L1))) then
         Ada.Text_IO.Put_Line("OK");
-        Test_Element(L2, First(L2),3,2,"Has_Element of a copy");
+        Test_Element(L2, Next(L1,First(L1)),2,3,"Has_Element of a copy");
      else
         Ada.Text_IO.Put_Line("Has_Element of a copy => KO ???");
      end if;
 
-   Insert(Container => L1, New_Item => 4, Key => 5);
+   Insert(Container => L1, New_Item => 1, Key => 4);
 
    -- Find
-   if  Find(L1,3) /=  Next(L1, Next(L1, First(L1))) then
-      Ada.Text_IO.Put_Line("Find => KO ???");
+   if  Find(L1,4) /=  Next(L1, Next(L1, First(L1))) or Find(L1, 4) /= Last(L1) then
+      Ada.Text_IO.Put_Line("Find 1 => KO ???");
+   else
+      Ada.Text_IO.Put_Line("OK");
+   end if;
+   if  Find(L1,3) /=  Next(L1, First(L1))  or Find(L1, 3) /= Previous(L1,Last(L1)) then
+      Ada.Text_IO.Put_Line("Find 2 => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
@@ -140,13 +132,13 @@ begin
    -- Has_Element of Left in range
    if  Has_Element(L3, First(L3)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L3, First(L3),3,2,"Has_Element of Left in range 1");
+      Test_Element(L3, First(L3),3,1,"Has_Element of Left in range 1");
    else
       Ada.Text_IO.Put_Line("Has_Element of Left in range 1 => KO ???");
    end if;
-   if  Has_Element(L3, Next(L3, First(L3))) then
+   if  Has_Element(L3, Next(L1, First(L3))) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L3, Next(L3, First(L3)),4,5,"Has_Element of Left in range 2");
+      Test_Element(L3, Next(L3, First(L3)),2,3,"Has_Element of Left in range 2");
    else
       Ada.Text_IO.Put_Line("Has_Element of Left in range 2 => KO ???");
    end if;
@@ -159,14 +151,19 @@ begin
    end if;
 
    -- Find of Left in range
-   if  Find(L3,5) /=  Next(L3, First(L3)) then
-      Ada.Text_IO.Put_Line("Find of Left in range => KO ???");
+   if  Find(L3,3) /=  Next(L3, First(L3)) or Find(L3,3) /=  Last(L3) then
+      Ada.Text_IO.Put_Line("Find of Left in range 1 => KO ???");
+   else
+      Ada.Text_IO.Put_Line("OK");
+   end if;
+   if  Find(L3,1) /=  First(L3) or Find(L3,1) /=  Previous(L3,Last(L3)) then
+      Ada.Text_IO.Put_Line("Find of Left in range 2 => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
 
    -- Find of Left out of range
-   if  Find(L3,3) /=  No_Element then
+   if  Find(L3,4) /=  No_Element then
       Ada.Text_IO.Put_Line("Find of Left out of range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -183,7 +180,7 @@ begin
    -- Copy of Left : Has_Element in range
    if  Has_Element(L4, First(L4)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L4, First(L4),3,2,"Copy of Left : Has_Element in range");
+      Test_Element(L4, First(L1),3,1,"Copy of Left : Has_Element in range");
    else
       Ada.Text_IO.Put_Line("Copy of Left : Has_Element in range => KO ???");
    end if;
@@ -196,14 +193,14 @@ begin
    end if;
 
    -- Copy of Left : Find in range
-   if  Find(L4,2) /=  First(L4) then
+   if  Find(L4,1) /=  First(L4) then
       Ada.Text_IO.Put_Line("Copy of Left : Find in range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
 
    -- Copy of Left : Find out of range
-   if  Find(L4,5) /=  No_Element then
+   if  Find(L4,2) /=  No_Element or Find(L4,3) /=  No_Element then
       Ada.Text_IO.Put_Line("Copy of Left : Find out of range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -211,11 +208,16 @@ begin
 
    -- Deleting a cursor after the cut doesn't change Left
    L2 :=  Copy(L1,3);
-   Delete(L2,3);
-   if  "=" ( Left(L2, Next(L2, First(L2))),  Left(L1, Next(L1, First(L1)))) then
+   Delete(L2,4);
+   if  "=" ( Left(L2, Last(L2)),  Left(L1, Previous(L1, Last(L1)))) then
       Ada.Text_IO.Put_Line("OK");
    else
-      Ada.Text_IO.Put_Line("Deleting a cursor after the cut doesn't change Left => KO ???");
+      Ada.Text_IO.Put_Line("Deleting a cursor after the cut doesn't change Left 1 => KO ???");
+   end if;
+   if  "=" ( L2,  Left(L1, Last(L1))) then
+      Ada.Text_IO.Put_Line("OK");
+   else
+      Ada.Text_IO.Put_Line("Deleting a cursor after the cut doesn't change Left 2 => KO ???");
    end if;
 
    if  Equivalent (L3, Copy(L3,3)) then
@@ -243,13 +245,13 @@ begin
    -- Has_Element of Right in range
    if  Has_Element(L3, First(L3)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L3, First(L3),4,5,"Has_Element of Right in range 1");
+      Test_Element(L3, Next(L1,First(L1)),2,3,"Has_Element of Right in range 1");
    else
       Ada.Text_IO.Put_Line("Has_Element of Right in range 1 => KO ???");
    end if;
    if  Has_Element(L3, Next(L3, First(L3))) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L3, Next(L3, First(L3)),1,3,"Has_Element of Right in range 2");
+      Test_Element(L3, Next(L3, First(L3)),1,4,"Has_Element of Right in range 2");
    else
       Ada.Text_IO.Put_Line("Has_Element of Right in range 2 => KO ???");
    end if;
@@ -262,19 +264,19 @@ begin
    end if;
 
    -- Find of Right in range
-   if  Find(L3,3) /=  Next(L3, First(L3)) then
+   if  Find(L3,4) /=  Next(L3, First(L3)) or Find(L3,4) /=  Last(L3) then
       Ada.Text_IO.Put_Line("Find of Right in range 1 => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
-   if  Find(L3,5) /=  First(L3) then
+   if  Find(L3,3) /=  First(L3) or Find(L3,3) /=  Previous(L3,Last(L3)) then
       Ada.Text_IO.Put_Line("Find of Right in range 2 => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
 
    -- Find of Right out of range
-   if  Find(L3,2) /=  No_Element then
+   if  Find(L3,1) /=  No_Element or Find(L3,2) /=  No_Element then
       Ada.Text_IO.Put_Line("Find of Right out of range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -291,7 +293,7 @@ begin
    -- Copy of Right : Has_Element in range
    if  Has_Element(L4, First(L4)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L4, First(L4),1,3,"Copy of Right : Has_Element in range");
+      Test_Element(L4, Last(L1),1,4,"Copy of Right : Has_Element in range");
    else
       Ada.Text_IO.Put_Line("Copy of Right : Has_Element in range => KO ???");
    end if;
@@ -304,14 +306,14 @@ begin
    end if;
 
    -- Copy of Right : Find in range
-   if  Find(L4,3) /=  First(L4) then
+   if  Find(L4,4) /=  First(L4) then
       Ada.Text_IO.Put_Line("Copy of Right : Find in range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
 
    -- Copy of Right : Find out of range
-   if  Find(L4,5) /=  No_Element then
+   if  Find(L4,2) /=  No_Element or Find(L4,3) /=  No_Element then
       Ada.Text_IO.Put_Line("Copy of Right : Find out of range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -319,7 +321,7 @@ begin
 
    -- Deleting a cursor before the cut doesn't change Right
    L2 :=  Copy(L1,3);
-    Delete(L2, 2);
+    Delete(L2, 1);
    if  "=" ( Right(L2, First(L2)),  Right(L1, Next(L1, First(L1)))) then
       Ada.Text_IO.Put_Line("OK");
    else
@@ -338,4 +340,4 @@ begin
       Ada.Text_IO.Put_Line("Overlap => KO ???");
    end if;
 
-end test_vhama;
+end test_vorma;
