@@ -1,11 +1,38 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{xspace}
 
 \title{ALFA: Annotated Language of Functions in Ada}
 
 \newcommand{\bnf}[1]{$\mathit{#1}$}
-
+\newcommand{\kw}[1]{\textbf{#1}}
+\newcommand{\spark}{$\tau_S$}
+\newcommand{\why}{$\tau_W$}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\heap}{\code{Heap}\xspace}
+\newcommand{\pred}[1]{\ensuremath{\mathit{pred}(#1)}\xspace}
+\newcommand{\allwrites}{$\mathcal{W^+}$\xspace}
+\newcommand{\Outallwrites}{\ensuremath{\mathcal{W}^{+out}}\xspace}
+\newcommand{\Inallwrites}{\ensuremath{\mathcal{W}^{+in}}\xspace}
+\newcommand{\inallwrites}[1]{\ensuremath{\mathcal{W}^{+in}(#1)}\xspace}
+\newcommand{\outallwrites}[1]{\ensuremath{\mathcal{W}^{+out}(#1)}\xspace}
+\newcommand{\writes}{$\mathcal{W}$\xspace}
+\newcommand{\Outwrites}{\ensuremath{\mathcal{W}^{out}}\xspace}
+\newcommand{\Inwrites}{\ensuremath{\mathcal{W}^{in}}\xspace}
+\newcommand{\inwrites}[1]{\ensuremath{\mathcal{W}^{in}(#1)}\xspace}
+\newcommand{\outwrites}[1]{\ensuremath{\mathcal{W}^{out}(#1)}\xspace}
+\newcommand{\reads}{$\mathcal{R}$\xspace}
+\newcommand{\Inreads}{\ensuremath{\mathcal{R}^{in}}\xspace}
+\newcommand{\Outreads}{\ensuremath{\mathcal{R}^{out}}\xspace}
+\newcommand{\inreads}[1]{\ensuremath{\mathcal{R}^{in}(#1)}\xspace}
+\newcommand{\outreads}[1]{\ensuremath{\mathcal{R}^{out}(#1)}\xspace}
+\newcommand{\union}{~\cup~}
+\newcommand{\bigunion}{~\bigcup~}
+\newcommand{\inter}{~\cap~}
+\newcommand{\biginter}{~\bigcap~}
+\newcommand{\minus}{~\backslash~}
 \begin{document}
 
 \maketitle
@@ -400,8 +427,9 @@ Uses of the keywords \bnf{and}, \bnf{or} and \bnf{xor} are not in ALFA. Only
 the keywords for the lazy operations \bnf{and\ then} and \bnf{or\ else} are in
 ALFA.\\
 
-An expression in ALFA which appears as part of a contract or an invariant must
-respect additional constraints:
+An expression in ALFA which appears as part of an assertion must respect
+additional constraints, where an assertion is any of a pragma Assert, a
+precondition or postcondition, a type invariant or a subtype predicate:
 \begin{enumerate}
 \item it may contain calls to parameterized expressions, but no calls to
   functions;
@@ -509,7 +537,7 @@ ignored, both in the program and in the contracts. Thus, the results of
 contract verification hold for all executions which do not raise a run-time
 error.
 
-\subsection{Verification of Absence of Run-Errors}
+\subsection{Verification of Absence of Run-Time Errors}
 
 Verifying that a subprogram in ALFA is free from run-time errors is verified by
 assuming that the subprograms it calls do respect their contracts and that they
@@ -591,13 +619,13 @@ for direct and indirect accesses, through any number of calls, this global
 information must be retrieved by performing a global analysis on the closed set
 of subprograms called directly and indirectly.
 
-A special global variable called Heap represents all the dynamically allocated
-memory, so that reads and writes to dynamically allocated memory show in SPARK
-or Why contracts as reads and writes to Heap. Notice that without this Heap
-variable, contracts would be wrong and break the consistency of the proof
-system. For example, it would be possible to prove that Problem below always
-returns True, because Set would be seen as a noop, and Get would be seen as a
-constant function:
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken, so that reads and writes to
+dynamically allocated memory show in SPARK or Why contracts as reads and writes
+to \heap. Notice that without this \heap variable, contracts would be wrong and
+break the consistency of the proof system. For example, it would be possible to
+prove that Problem below always returns True, because Set would be seen as a
+noop, and Get would be seen as a constant function:
 
 \begin{verbatim}
 X : access Integer;
@@ -662,9 +690,11 @@ correspond to recursive calls in the source program).
 
 As another example, a subprogram F in ALFA defining local variables and local
 subprograms should lead to the generation of a unit F\_Data for its local
-variables and F\_Spec for its local subprogram specifications. Then, F's body
-should be translated into the only subprogram in unit F, which manipulates data
-from F\_Data and calls subprograms from F\_Spec.
+variables (including the variables defined in block statements inside F) and
+F\_Spec for its local subprogram specifications (including the local
+subprograms defined in block statements inside F). Then, F's body should be
+translated into the only subprogram in unit F, which manipulates data from
+F\_Data and calls subprograms from F\_Spec.
 
 Thus, the generated units should be layered in:
 \begin{enumerate}
@@ -677,7 +707,170 @@ Thus, the generated units should be layered in:
   in SPARK or Why from a subprogram in ALFA.
 \end{enumerate}
 
-\subsection{Translations}
+\subsection{Generation of Data-Flow Annotations}
+\label{sub:data-flow}
+
+A data-flow analysis of the source Ada program should associate each subprogram
+with three sets of global variables:
+\begin{itemize}
+\item the read-set of variables possibly read by the subprogram;
+\item the write-set of variables possibly written by the subprogram;
+\item the read-write-set of variables possibly read and written by the
+  subprogram.
+\end{itemize}
+
+Note that a variable which is always written by the subprogram before being
+read, so that the initial value of the variable is never read, belongs to the
+write-set, not the read-write-set.
+
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken.
+
+The algorithm should compute various maps from program points $p$ to sets of
+global variables:
+\begin{itemize}
+\item the map \writes of global variables written on all paths to $p$;
+\item the map \allwrites of global variables written on some path to $p$;
+\item the map \reads of global variable whose initial value at subprogram
+  entry has been possibly read on some path to $p$.
+\end{itemize}
+
+As \reads depends on \writes, \writes should be computed first. As \writes,
+\allwrites and \reads take program entities as parameters, they are decomposed
+into (\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites) and
+(\Inreads,\Outreads) respectively, where the ``in'' part describes the program
+point immediately before the entity and the ``out'' part describes the program
+point immediately after the entity.
+
+The control-flow graph of a subprogram allows defining for each statement $s$
+the set of its predecessor statements \pred{s}.
+
+\subsubsection{Computing \writes}
+
+There are two sources of writes: assignment statements and calls. A statement
+$s$ writes a global variable $w$ in the following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$ or a part of $w$;
+\item $s$ is an assignment statement through a dereference, and $w$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
+\end{itemize}
+
+Then, given a statement $s$ writing global variables $w$, the algorithm
+iterates the following transition relation, which mutually defines the set of
+global variables written on all paths immediately after the statement
+\outwrites{s} and the set of global variables written on all paths immediately
+before the statement \inwrites{s}:
+
+\begin{eqnarray*}
+\outwrites{s} &=& \inwrites{s} \union \{w\}\\
+\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
+\end{eqnarray*}
+
+Likewise:
+
+\begin{eqnarray*}
+\outallwrites{s} &=& \inwrites{s} \union \{w\}\\
+\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
+\end{eqnarray*}
+
+As a result of this data-flow analysis, the set of global variables written is
+propagated through the subprogram body so that, for example, a sequence of
+statements is associated with the set of variables written by any statement in
+the sequence.
+
+As these sets grow, the algorithm necessarily reaches a fixpoint and
+terminates.
+
+\subsubsection{Computing \reads}
+
+All occurences of names of global variables should either count as writes, as
+described above, or else as reads, for the enclosing statement. Then, given a
+statement $s$ reading global variables $r_i$, the algorithm iterates the
+following transition relation, which mutually defines the set of global
+variables read on some path immediately after the statement \outreads{s} and
+the set of global variables read on some path immediately before the statement
+\inreads{s}:
+
+\begin{eqnarray*}
+\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})\\
+\inreads{s} &=& \bigunion \outreads{\pred{s}}\\
+\end{eqnarray*}
+
+As these sets grow, the algorithm necessarily reaches a fixpoint and
+terminates.
+
+\subsubsection{Computing the read-set, write-set and read-write-set}
+
+Given subprogram $f$:
+\begin{itemize}
+\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
+\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
+\item the initial read-write-set for $f$ is $\outreads{f} \inter
+  \outallwrites{f}$.
+\end{itemize}
+
+Then, the write-set of $f$ should be augmented with all the local variables
+defined in $f$, whether in the declarative part of the subprogram or in a block
+statement inside the body. 
+
+The goal of this computation is that:
+\begin{itemize}
+\item for the translation to SPARK:
+\begin{itemize}
+\item the global ``in'' annotation should be the read-set;
+\item the global ``out'' annotation should be the write-set;
+\item the global ``in out'' annotation should be the read-write-set.
+\end{itemize}
+\item and for the translation to Why:
+\begin{itemize}
+\item the ``reads'' annotation should be the read-set;
+\item the ``writes'' annotation should be the union of the write-set and the
+  read-write-set.
+\end{itemize}
+\end{itemize}
+
+The reason for augmenting the write-set with local variables is that the
+translation will put these local variables in another package, and they will
+appear as global variables from within $f$. Defining these in the write-set
+makes sure that SPARK will not consider them as initialized prior to calling
+$f$, so that all reads will have to be preceded by appropriate writes. In order
+to prevent warnings that some of these variables may not be written on some
+path before returning, an initialization subprogram should be declared, which
+takes all local variables in its ``in out'' annotation. This initialization
+subprogram should be called prior to returning from the subprogram, which
+ensures the translated subprogram respects its data-flow contracts for local
+variables. Only the absence of any read to some local variable will be detected
+and displayed as an error, which is safe to do.
+
+\subsection{Contract Verification and Verification of Absence of Run-Time Errors}
+
+The two verifications should be performed independently, first because the user
+may be interested in only one of these, second because we will aim at contract
+verification through Why and verification of absence of run-time errors through
+SPARK. The two are nonetheless related, which raises questions as to what is
+assumed for each verification, so that performing both effectively gives
+assurance that contracts are verified and there are no possible run-time
+errors.
+
+On the one hand, both types of verification depend on contracts and
+intermediate assertions (loop-invariants and other assertions). For example,
+loop-invariants usually contain information on the range of values, which are
+both used for proving absence of run-time error and functional
+properties. Thus, contracts and intermediate assertions should be assumed for
+verification of absence of run-time errors. On the other hand, proving
+contracts and intermediate assertions can be performed without assuming absence
+of run-time errors. Indeed, what is proved in this case is that, provided there
+are no run-time errors, the contracts and intermediate assertions hold.
+
+Thus, the translation should be different for contract verification and for
+verification of absence of run-time errors. 
+
+% We denote the former as \why
+% (translation to Why) and the latter as \spark (translation to SPARK).
+
+\subsection{Shared Translation From Ada to SPARK}
+
+Additional copied may be introduced (extended returns, etc.)
 
 \subsubsection{Lexical Elements}
 
@@ -685,9 +878,43 @@ Thus, the generated units should be layered in:
 
 \subsubsection{Names and Expressions}
 
+calls to functions into calls to statements, with special result variable value
+read just after the call and stored in local temp
+
 \subsubsection{Statements}
 
 \subsubsection{Subprograms}
+
+Both procedures and functions in Ada should be translated into SPARK
+procedures. Indeed, Ada functions may write global variables, so that the
+compiler choice of evaluation order for expressions may influence the
+result. Whatever it is, this choice should be the same for execution and
+verification, which is obtained by forcing the compiler evaluation order when
+translating function calls in expressions into sequential procedure calls.  In
+particular, this applies also to user-defined operators.  In order to translate
+a function F into a procedure, we should add a global variable F\_Result in the
+scope where the function is defined, which is used to store the result of the
+function.
+
+Various translations remove entities not defined in SPARK and/or in Why:
+\begin{itemize}
+\item default expressions for parameters should be inlined at call sites, so
+  that they do not appear as default expressions anymore;
+\item the \kw{overriding} keyword should be simply removed, as it only serves
+  as a visual reminder of the status of the subprogram;
+\item parameters in calls should be given in the order of their definition,
+  even in the case where use of parameter associations in the Ada code gives
+  them outside of their definition order;
+\item extended returns should be translated in either:
+  \begin{itemize}
+  \item a simple return when there is no return statement;
+  \item otherwise, the declaration of a corresponding local variable (in the
+    $<$data$>$ package) and corresponding initialization code, followed by a
+    simple return.
+  \end{itemize}
+\item null procedure declarations should be translated into procedures with a
+  null body statement.
+\end{itemize}
 
 \subsubsection{Package Specifications and Declarations}
 
@@ -703,5 +930,10 @@ Thus, the generated units should be layered in:
 
 \subsubsection{Representation Issues}
 
+\subsection{End of Translation From SPARK to SPARK}
+
+\subsection{End of Translation From SPARK to Why}
+
+from intermediate SPARK code in a reduced subset of SPARK
 
 \end{document}
