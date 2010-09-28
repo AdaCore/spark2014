@@ -44,7 +44,7 @@ def find_executable(executable, path=None):
 
 sparkify_cmd = find_executable('sparkify')
 root_dir = os.path.dirname(os.path.dirname(sparkify_cmd))
-config_file = os.path.join(os.path.join(root_dir, 'test-support'), 
+config_file = os.path.join(os.path.join(root_dir, 'test-support'),
                            'standard.ads')
 
 dir = sys.argv[1]
@@ -54,7 +54,7 @@ files = glob.glob('*.ad?')
 cmd = 'sparkify ' + " ".join(files) + '> dummy.log'
 os.system(cmd)
 
-# simplication: we assume currently only one *.adb file in the source 
+# simplication: we assume currently only one *.adb file in the source
 #               directory, and likewise for the sparkified directory
 
 source_file = glob.glob('*.adb')
@@ -101,9 +101,19 @@ os.chdir('sparkified')
 
 cmd = 'sparkmake > dummy.log'
 os.system(cmd)
-cmd = 'spark -noecho -fdl=_fdl_ -flow=data -config=' + config_file 
-cmd = cmd + ' -vcg @spark'
+cmd = 'spark -brief -fdl=_fdl_ -flow=data -config=' + config_file
+cmd = cmd + ' -vcg @spark > spark.out'
 os.system(cmd)
+
+f = open('spark.out', 'r')
+for line in f:
+    if line.find('Flow Error') != -1:
+        words = line.split(':')
+        linenum = str(source_corresp[words[1]])
+        column = words[2]
+        error_msg = source_file + ':' + linenum + ':' + column + ': '
+        error_msg += line.partition(' - ')[2]
+	print error_msg
 
 # copy user rule files at the proper location
 rule_files = glob.glob('../*.rlu')
@@ -126,12 +136,12 @@ for line in f:
         sub = words[3].split('@')
         check = sub[0].strip()
         linenum = sub[1].strip()
-        error_msg = source_file + ":" + str(source_corresp[linenum]) + ":1: "
+        error_msg = source_file + ':' + str(source_corresp[linenum]) + ':1: '
         if check == 'rtc check':
-            error_msg = error_msg + "run-time check cannot be proved"
+            error_msg = error_msg + 'run-time check cannot be proved'
         elif check == 'assert':
             if linenum == 'finish':
-                error_msg = error_msg + "postcondition cannot be proved"
+                error_msg = error_msg + 'postcondition cannot be proved'
             else:
-                error_msg = error_msg + "assertion cannot be proved"
+                error_msg = error_msg + 'assertion cannot be proved'
         print error_msg
