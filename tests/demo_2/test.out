@@ -119,35 +119,37 @@ is
 --@ line 4
                               ) return Boolean
    is
+      -- pragma Postcondition (Is_Empty'Result = (S.Stack_Top = 0));
    begin
       return S.Stack_Top = 0;
    end Is_Empty;
---@ line 8
+--@ line 9
         -- the name of subprograms can be generated if missing
 
    function Is_Full(S : ADT_Stack.Stack
---@ line 10
+--@ line 11
                              ) return Boolean
    is
+      -- pragma Postcondition (Is_Full'Result = (S.Stack_Top = Stack_Size));
    begin
       return S.Stack_Top = ADT_Stack.Stack_Size
---@ line 13
+--@ line 15
                                      ;
    end Is_Full;
 
    procedure Clear(S : out ADT_Stack.Stack
---@ line 16
+--@ line 18
                                 )
    is
    begin
       S.Stack_Top :=0;
       S.Stack_Vector := ADT_Stack.Vector'
---@ line 20
+--@ line 22
                         (others => 0); -- The aggregat must be qualified
    end Clear;
 
    procedure Push(S : in out ADT_Stack.Stack
---@ line 23
+--@ line 25
                                   ; X : in Integer)
    is
    begin
@@ -156,7 +158,7 @@ is
    end Push;
 
    procedure Pop(S : in out ADT_Stack.Stack
---@ line 30
+--@ line 32
                                  ; X : out Integer)
    is
    begin
