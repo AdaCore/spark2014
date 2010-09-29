@@ -34,6 +34,26 @@ with Why.Gen.Arrows;      use Why.Gen.Arrows;
 
 package body Why.Gen.Funcs is
 
+   -----------------------
+   -- Declare_Allocator --
+   -----------------------
+
+   procedure Declare_Allocator
+     (File : W_File_Id;
+      Name : String)
+   is
+      T_Id   : constant W_Identifier_Id := New_Identifier (Name);
+      Arrows : constant W_Arrow_Type_Unchecked_Id :=
+                 New_Arrow_Stack (New_Abstract_Type (Name => T_Id));
+   begin
+      Arrow_Type_Set_Left (Arrows, New_Type_Unit);
+      Declare_Parameter (File,
+                         Allocator_Name (Name),
+                         Arrows,
+                         Why_Empty,
+                         New_True_Literal);
+   end Declare_Allocator;
+
    -------------------
    -- Declare_Logic --
    -------------------

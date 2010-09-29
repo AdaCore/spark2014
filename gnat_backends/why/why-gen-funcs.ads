@@ -131,4 +131,12 @@ package Why.Gen.Funcs is
    --
    --  Name would be inserted as is into the resulting syntax tree.
 
+   procedure Declare_Allocator
+     (File : W_File_Id;
+      Name : String);
+   --  Create a program-space declaration that creates an arbitrary instance of
+   --  an abstract type of the given name. i.e.
+   --
+   --     parameter any___<name> : unit -> { } <name> { true }
+
 end Why.Gen.Funcs;

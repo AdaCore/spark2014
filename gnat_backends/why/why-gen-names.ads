@@ -44,6 +44,10 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its range predicate.
 
+   function Allocator_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an abstract type, return the name of
+   --  its allocator.
+
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id;
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.

@@ -31,6 +31,16 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 
 package body Why.Gen.Names is
 
+   --------------------
+   -- Allocator_Name --
+   --------------------
+
+   function Allocator_Name (Name : String) return W_Identifier_Id is
+      Prefix : constant String := "any___";
+   begin
+      return New_Identifier (Prefix & Name);
+   end Allocator_Name;
+
    -----------------------------
    -- New_Conversion_From_Int --
    -----------------------------
