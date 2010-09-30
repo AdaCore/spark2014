@@ -6,6 +6,95 @@
 
 \title{ALFA: Annotated Language of Functions in Ada}
 
+\usepackage{color}
+
+\newlength\sidebar
+\newlength\envrule
+\newlength\envborder
+
+\setlength\sidebar{1.5mm}
+\setlength\envrule{0.4pt}
+\setlength\envborder{2.5mm}
+
+\definecolor{exampleborder}{rgb}{0,0,.7}
+\definecolor{examplebg}{rgb}{.9,.9,1}
+\definecolor{statementborder}{rgb}{.9,0,0}
+\definecolor{statementbg}{rgb}{1,.9,.9}
+
+\newsavebox\envbox
+
+\newcounter{example}
+
+\newenvironment{example}[1][EXAMPLE]{%
+\par
+\refstepcounter{example}%
+\SpecialEnv{#1}{exampleborder}{examplebg}{}{\theexample}%
+}{%
+\endSpecialEnv
+}
+
+\newenvironment{statement}[1][]{% Default statement has no title
+\par
+\SpecialEnv{#1}{statementborder}{stateme
+ntbg}{statementborder}{}%
+}{%
+\endSpecialEnv
+}
+
+\def\Empty{}
+
+% #1 title (if any)
+% #2 sidebar (and title bg) color
+% #3 background color
+% #4 border color (or null for no border)
+% #5 Counter, if any.
+\newenvironment{SpecialEnv}[5]{%
+\par
+\def\EnvSideC{#2}% To use later (in end)
+\def\EnvBackgroundC{#3}%
+\def\EnvFrameC{#4}%
+\flushleft
+\setlength\leftskip{-\sidebar}%
+\addtolength\leftskip{-\envborder}%
+\noindent \nobreak
+% Check if title is null:
+\ifx\delimiter#1\delimiter\else
+% If a title is specified, then typeset it in reverse color
+\colorbox{\EnvSideC}{%
+\hspace{-\leftskip}% usually positive
+\hspace{-\fboxsep}%
+\footnotesize\sffamily\bfseries\textcolor{white}{#1}%
+\hspace{\envborder}}%
+\par\nobreak
+\setlength\parskip{-0.2pt}% Tiny overlap to counter pixel round-off errors
+\nointerlineskip
+\fi
+% Make side-bar
+\textcolor{\EnvSideC}{\vrule width\sidebar}%
+% collect body in \envbox:
+\begin{lrbox}\envbox
+\begin{minipage}{\hsize}%
+% insert counter, if any:
+\ifx\delimiter#5\delimiter\else
+\theexample.\enspace
+\fi
+\ignorespaces
+}{\par
+\end{minipage}\end{lrbox}%
+% body is collected. Add background color
+\setlength\fboxsep\envborder
+\ifx\EnvFrameC\Empty % no frame
+\colorbox{\EnvBackgroundC}{\usebox\envbox}%
+\else % frame
+\setlength\fboxrule\envrule
+\addtolength\fboxsep{-\envrule}%
+\fcolorbox{\EnvFrameC}{\EnvBackgroundC}{
+\usebox\envbox}%
+\fi
+\nobreak \hspace{-2\envborder}\null
+\endflushleft
+}
+
 \newcommand{\bnf}[1]{$\mathit{#1}$}
 \newcommand{\kw}[1]{\textbf{#1}}
 \newcommand{\spark}{$\tau_S$}
@@ -148,16 +237,29 @@ components.
 \subsubsection{Calling Conventions}
 
 Parameters of elementary types are passed by copy.  Parameters of tagged type
-are passed by reference. For most other parameters, the compiler is choosing
-between by-reference and by-copy.
+are passed by reference. For most other parameters, the compiler is free to
+choose between by-reference and by-copy.
 
 Parameters have a mode, which can be by default \emph{in} or else \emph{out}
 and \emph{in out}:
 \begin{itemize}
 \item parameters of mode \emph{in} can only be read;
-\item parameters of mode \emph{out} can only be written;
+\item parameters of mode \emph{out} can be both read and written: although the
+  user indicates by not making them \emph{in out} that he does not intend to
+  read their initial values, he should still be able to read their value after
+  writing them, so the compiler cannot check in general this data-flow
+  property;
 \item parameters of mode \emph{in out} can be both read and written.
 \end{itemize}
+
+The Ada standard does not rule out aliasing between parameters or between
+parameters and global variables accessed directly in general. However, the
+standard rules out any possible different behaviors which could arise from the
+compiler chosing to pass some parameters by-reference or by-copy, which would
+lead to an ambiguous definition of a program. This is a theoretical rule that
+the compiler does not try to enforce, although GNAT will generate warnings for
+overlapping exported parameters, following the adoption of ``in out'' formal
+parameters for functions in Ada 2012.
 
 \subsection{New in Ada 2012}
 
@@ -198,8 +300,10 @@ indicates the value attached to this name at subprogram entry, and attribute
 'Result applied to the name of the current function indicates the result
 returned by this function. Preconditions and postconditions may be compiled
 into executable assertions if the right option is given to the compiler (-gnata
-in GNAT).  As an example, a contract for a square-root function is:
+in GNAT).  
 
+\begin{example}
+A contract for a square-root function is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
   Pre  => X >= 0,
@@ -207,6 +311,7 @@ function Sqrt (X : Integer) return Integer with
           Sqrt'Result ** 2 <= X and then
           (Sqrt'Result + 1) ** 2 > X;
 \end{verbatim}
+\end{example}
 
 Conditional expressions and case expressions allow the use of 'if' and 'case'
 in expressions, which simplifies specifications.
@@ -292,9 +397,8 @@ The original precondition should be and'ed with the requires for those
 test-cases which correspond to normal behavior, and the requires should be the
 only precondition for those test-cases which correspond to abnormal behavior.
 
-As an example, a contract with test-cases for an integer square-root function
-is:
-
+\begin{example}
+  A contract with test-cases for an integer square-root function is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
   Pre  => X >= 0,
@@ -309,6 +413,7 @@ function Sqrt (X : Integer) return Integer with
                 Ensures  => Sqrt'Result >= 0 and then 
                             Sqrt'Result < 10);
 \end{verbatim}
+\end{example}
 
 \section{ALFA}
 
@@ -324,9 +429,11 @@ private part, etc.) should not influence whether it is in ALFA.
 
 ALFA considers that the pragma Assert immediately at the start of a loop
 statement list have a special meaning. They define a loop-invariant for this
-loop, which is used for unit proof.  As an example, the following
-implementation of the integer square-root function has a loop-invariant:
+loop, which is used for unit proof.  
 
+\begin{example}
+  The following implementation of the integer square-root function has a
+  loop-invariant:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer is
    Res, Two_Res, Res_Square : Integer := 0;
@@ -342,6 +449,7 @@ begin
   return Res - 1;
 end Sqrt;
 \end{verbatim}
+\end{example}
 
 The loop-invariant to be used for unit proof should be:
 \begin{itemize}
@@ -662,20 +770,21 @@ SPARK and Why completely ignore the possibility of a run-time error being
 raised while evaluating the contract. When checking for absence of run-time
 errors (which can be separated from contract checking), the absence of run-time
 errors in contracts should also be proved, which requires the extension of
-contracts with additional conjuncts in SPARK and Why. For example, the
-following contract in Ada:
+contracts with additional conjuncts in SPARK and Why. 
 
+\begin{example}
+  The following contract in Ada:
 \begin{verbatim}
 function Get (A : My_Array; X : Integer) return Element
    with Pre => A (X) /= Nil_Element;
 \end{verbatim}
 
 would become in SPARK:
-
 \begin{verbatim}
 function Get (A : My_Array; X : Integer) return Element;
 --# pre X in My_Array'Range and then A (X) /= Nil_Element;
 \end{verbatim}
+\end{example}
 
 \subsection{General Architecture}
 
@@ -771,7 +880,10 @@ variable) as follows:
   was of type $t$ so that we can refer to its $c_i$ components.)
 \end{itemize}
 
-For example, take the following code:
+\begin{example}
+  On the following code, the set of paths of \verb|X| is: \verb|X.B.J|,
+  \verb|X.B.K|, \verb|X.A.J|, \verb|X.A.K|.
+
 \begin{verbatim}
 type Base is record 
   J : Integer;
@@ -784,8 +896,7 @@ type Ext is record
 end record;
 X : Ext;
 \end{verbatim}
-On this code, the set of paths of \verb|X| is: \verb|X.B.J|, \verb|X.B.K|,
-\verb|X.A.J|, \verb|X.A.K|.
+\end{example}
 
 A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
 $\sel_i$ on the path refers to an array, we say that the path is an array
