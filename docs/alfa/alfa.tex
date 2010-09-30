@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[fullpage]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
@@ -23,6 +23,11 @@
 \newcommand{\Inwrites}{\ensuremath{\mathcal{W}^{in}}\xspace}
 \newcommand{\inwrites}[1]{\ensuremath{\mathcal{W}^{in}(#1)}\xspace}
 \newcommand{\outwrites}[1]{\ensuremath{\mathcal{W}^{out}(#1)}\xspace}
+\newcommand{\allreads}{$\mathcal{R^+}$\xspace}
+\newcommand{\Outallreads}{\ensuremath{\mathcal{R}^{+out}}\xspace}
+\newcommand{\Inallreads}{\ensuremath{\mathcal{R}^{+in}}\xspace}
+\newcommand{\inallreads}[1]{\ensuremath{\mathcal{R}^{+in}(#1)}\xspace}
+\newcommand{\outallreads}[1]{\ensuremath{\mathcal{R}^{+out}(#1)}\xspace}
 \newcommand{\reads}{$\mathcal{R}$\xspace}
 \newcommand{\Inreads}{\ensuremath{\mathcal{R}^{in}}\xspace}
 \newcommand{\Outreads}{\ensuremath{\mathcal{R}^{out}}\xspace}
@@ -33,6 +38,10 @@
 \newcommand{\inter}{~\cap~}
 \newcommand{\biginter}{~\bigcap~}
 \newcommand{\minus}{~\backslash~}
+
+\newcommand{\path}[1]{\ensuremath{\pi(#1)}\xspace}
+\newcommand{\sel}{\ensuremath{\sigma}\xspace}
+
 \begin{document}
 
 \maketitle
@@ -714,104 +723,217 @@ evaluation order for expressions may influence the result. Whatever it is, this
 choice should be the same for execution and verification, which is obtained by
 lifting function calls outside of expressions in the specified order of
 evaluation. This consists in a simple walk through the AST following the order
-of evaluation, and introducing temporary variables for every function call.
+of evaluation, and introducing temporary variables for every function
+call. With a left-to-right evaluation order, the statement
+\begin{verbatim}
+X := F(X) + G(H(Y),K(Z));
+\end{verbatim}
+thus translates into:
+\begin{verbatim}
+Tmp1 := F(X);
+Tmp2 := H(Y);
+Tmp3 := K(Z);
+Tmp4 := G(Tmp2,Tmp3);
+X := Tmp1 + Tmp4;
+\end{verbatim}
+
+Likewise, Ada arithmetic expressions may be reordered by the compiler when not
+enough parenthesized, so the translation will introduce the necessary
+parentheses which force the natural evaluation order given by operators
+associativity. Thus the expression \verb|X + Y + Z| translates into
+\verb|(X + Y) + Z|.
+
+\subsection{Translation From Unambiguous Ada to Lowered Ada}
+
+expanded aggregate initializations
+
+expanded checks
 
 \subsection{Generation of Data-Flow Annotations}
 \label{sub:data-flow}
 
-For the purpose of this verification, we consider a package body as a special
-form of subprogram, where the body of the subprogram is given by the various
-initializations performed in the declarations of variables, as well as the
-optional sequence of statements.
+\subsubsection{Variable Paths}
 
-A data-flow analysis of the source Ada program should associate each subprogram
-with three sets of global variables:
+A variable in ALFA may only have a scalar type (discrete or real) or an
+aggregate type (record or array) such that all sub-components have themselves a
+scalar type or an aggregate type with the same restriction. Given a variable
+$v$ in ALFA, we associate a set of paths \path{v} to $v$. More generally, we
+associate a set of paths \path{v} to an individual path $v$ (which may be a
+variable) as follows:
 \begin{itemize}
-\item the read-set of variables possibly read by the subprogram;
-\item the write-set of variables possibly written by the subprogram;
-\item the read-write-set of variables possibly read and written by the
-  subprogram.
+\item if $v$ has a scalar type, $\path{v} = \{v\}$;
+\item if $v$ has a record type with components $c_i$, 
+  $\path{v} = \bigunion \path{v.c_i}$;
+\item if $v$ has an array type whose element type $t$ is a scalar type,
+  $\path{v} = \{v\}$;
+\item if $v$ has an array type whose element type $t$ is a record type with
+  components $c_i$, $\path{v} = \bigunion \path{v.c_i}$. (Here, we do as if $v$
+  was of type $t$ so that we can refer to its $c_i$ components.)
 \end{itemize}
 
-Note that a variable which is always written by the subprogram before being
-read, so that the initial value of the variable is never read, belongs to the
-write-set, not the read-write-set.
+For example, take the following code:
+\begin{verbatim}
+type Base is record 
+  J : Integer;
+  K : Integer range 0 .. 5;
+end record;
+type Base_Array is array (Boolean) of Base;
+type Ext is record 
+  B : Base;
+  A : Base_Array;
+end record;
+X : Ext;
+\end{verbatim}
+On this code, the set of paths of \verb|X| is: \verb|X.B.J|, \verb|X.B.K|,
+\verb|X.A.J|, \verb|X.A.K|.
+
+A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
+$\sel_i$ on the path refers to an array, we say that the path is an array
+path. Otherwise, we say that the path is a record path. A record path refers to
+a single value of scalar type, while an array path usually refers to more than
+one value of scalar type.
+ 
+\subsubsection{Problem Statement}
+
+For the purpose of data-flow verification, we consider a package body as a
+special form of subprogram, where the body of the subprogram is given by the
+various initializations performed in the declarations of variables, as well as
+the optional sequence of statements.
+
+A data-flow analysis of the source Ada program should associate each subprogram
+with three sets of global variables paths:
+\begin{itemize}
+\item the read-set of global variable paths possibly read by the subprogram;
+\item the write-set of global variable paths alway written by the subprogram;
+\item the read-write-set of global variable paths possibly read and written by
+  the subprogram.
+\end{itemize}
+
+Note that a variable path which is always written by the subprogram before
+being read, so that the initial value of the variable path is never read,
+belongs to the write-set, not the read-write-set.
 
 A special global variable called \heap represents all the dynamically allocated
 memory plus all variables whose address is taken.
 
 The algorithm should compute various maps from program points $p$ to sets of
-global variables:
+(local and global) variable paths:
 \begin{itemize}
-\item the map \writes of global variables written on all paths to $p$;
-\item the map \allwrites of global variables written on some path to $p$;
-\item the map \reads of global variable whose initial value at subprogram
-  entry has been possibly read on some path to $p$.
+\item \writes stores variable paths completely written on all program paths
+  to $p$;
+\item \allwrites stores variable paths partially written on some program
+  path to $p$;
+\item \reads stores variable paths whose initial value at subprogram entry has
+  been partially read on some program path to $p$;
+\item \allreads stores variable paths partially read on some program path to
+  $p$.
 \end{itemize}
 
-As \reads depends on \writes, \writes should be computed first. As \writes,
-\allwrites and \reads take program entities as parameters, they are decomposed
-into (\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites) and
-(\Inreads,\Outreads) respectively, where the ``in'' part describes the program
-point immediately before the entity and the ``out'' part describes the program
-point immediately after the entity.
+As \reads depends on \writes which depends on \allreads, \allreads should be
+computed first, then \writes, then \reads. \allwrites can computed at any time, as it is independent from the other maps.
+
+As \writes, \allwrites, \reads and
+\allreads take program entities as parameters, they are decomposed into
+(\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites), (\Inreads,\Outreads) and
+(\Inallreads,\Outallreads) respectively, where the ``in'' part describes the
+program point immediately before the entity and the ``out'' part describes the
+program point immediately after the entity.
+
+In the following, we give data-flow equations defining each one of \writes,
+\allwrites, \reads and \allreads. These equations provide an algorithm for
+computing the sets, and since the sets only grow, the algorithm necessarily
+reaches a fixpoint and terminates. Note that \writes, \allwrites, \reads and
+\allreads should only contain global variables when applied to subprograms
+(local variables are removed in this case).
 
 The control-flow graph of a subprogram allows defining for each statement $s$
 the set of its predecessor statements \pred{s}.
 
-\subsubsection{Computing \writes}
+\subsubsection{Computing \allwrites}
 
-There are two sources of writes: assignment statements and calls. A statement
-$s$ writes a global variable $w$ in the following cases:
+There are two sources of partial writes: assignment statements and calls. A
+statement $s$ partially writes a variable path $w$ in the following cases:
 \begin{itemize}
-\item $s$ is an assignment statement to $w$ or a part of $w$;
+\item $s$ is an assignment statement to $w$;
 \item $s$ is an assignment statement through a dereference, and $w$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
+\item $s$ contains a call to a subprogram $f$, and $w \in \outallwrites{f}$.
 \end{itemize}
 
-Then, given a statement $s$ writing global variables $w$, the algorithm
-iterates the following transition relation, which mutually defines the set of
-global variables written on all paths immediately after the statement
-\outwrites{s} and the set of global variables written on all paths immediately
-before the statement \inwrites{s}:
-
-\begin{eqnarray*}
-\outwrites{s} &=& \inwrites{s} \union \{w\}\\
-\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
-\end{eqnarray*}
-
-Likewise:
-
+Given a statement $s$ partially writing variable path $w$, the following
+equations define \allwrites:
 \begin{eqnarray*}
 \outallwrites{s} &=& \inallwrites{s} \union \{w\}\\
-\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
+\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}
 \end{eqnarray*}
 
-As a result of this data-flow analysis, the set of global variables written is
-propagated through the subprogram body so that, for example, a sequence of
-statements is associated with the set of variables written by any statement in
-the sequence.
+\subsubsection{Computing \allreads}
 
-As these sets grow, the algorithm necessarily reaches a fixpoint and
-terminates.
+There are two sources of reads: expressions and calls. A statement $s$
+partially reads a variable path $r$ in the following cases:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $r \in \outallreads{f}$.
+\end{itemize}
+
+Given a statement $s$ partially reading variable paths $r_i$, the following
+equations define \allreads:
+\begin{eqnarray*}
+\inallreads{s} &=& \bigunion \outallreads{\pred{s}}\\
+\outallreads{s} &=& \inallreads{s} \union \{r_i\}
+\end{eqnarray*}
+
+\subsubsection{Computing \writes}
+
+There are two natural sources of complete writes: assignment statements and
+calls. A statement $s$ completely writes a global variable path $w$ in the
+following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$, and $w$ is a record path;
+\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
+\end{itemize}
+Additionally, if $l_1$ is a loop and $w$ a variable path such that:
+\begin{enumerate}
+\item there is a set of loops $l_1...l_n$ such that each $l_i$ ranges over the
+  set of indexes of an array selector in $w$, and there is one loop for every
+  array selector;
+\item for all $i$, $l_i$ contains
+  $l_{i+1}$ as a statement in its outter sequence of statements;
+\item $l_1$ does not contain any exit statement (even in inner loops);
+\item $w \notin \outallreads{l_1}$;
+\item $l_n$ contains a statement assigning to $w$, where all indexes used for
+  array accesses are exactly all the loop variables;
+\end{enumerate}
+then loop $l_1$ completely writes variable path $w$.
+
+Given a statement $s$ completely writing variable paths $w$, the following
+equations define \writes:
+\begin{eqnarray*}
+\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
+\outwrites{s} &=& \inwrites{s} \union \{w\}
+\end{eqnarray*}
 
 \subsubsection{Computing \reads}
 
-All occurences of names of global variables should either count as writes, as
-described above, or else as reads, for the enclosing statement. Then, given a
-statement $s$ reading global variables $r_i$, the algorithm iterates the
-following transition relation, which mutually defines the set of global
-variables read on some path immediately after the statement \outreads{s} and
-the set of global variables read on some path immediately before the statement
-\inreads{s}:
+There are two sources of reads: expressions and calls. A statement $s$
+partially reads the initial value of a variable path $r$ in the following
+cases:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $r \in \outreads{f}$.
+\end{itemize}
 
+Given a statement $s$ partially reading the initial value of variable paths
+$r_i$, the following equations define \reads:
 \begin{eqnarray*}
-\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})\\
 \inreads{s} &=& \bigunion \outreads{\pred{s}}\\
+\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})
 \end{eqnarray*}
-
-As these sets grow, the algorithm necessarily reaches a fixpoint and
-terminates.
 
 \subsubsection{Computing the read-set, write-set and read-write-set}
 
@@ -823,9 +945,9 @@ Given subprogram $f$:
   \outallwrites{f}$.
 \end{itemize}
 
-Then, the write-set of $f$ should be augmented with all the local variables
+Then, the write-set of $f$ should be augmented with all the local variable paths
 defined in $f$, whether in the declarative part of the subprogram or in a block
-statement inside the body. 
+statement inside the body.
 
 The goal of this computation is that:
 \begin{itemize}
@@ -837,24 +959,26 @@ The goal of this computation is that:
 \end{itemize}
 \item and for the translation to Why:
 \begin{itemize}
-\item the ``reads'' annotation should be the read-set;
+\item the ``reads'' annotation should be the union of the read-set and the
+  read-write-set;
 \item the ``writes'' annotation should be the union of the write-set and the
   read-write-set.
 \end{itemize}
 \end{itemize}
 
-The reason for augmenting the write-set with local variables is that the
-translation will put these local variables in another package, and they will
-appear as global variables from within $f$. Defining these in the write-set
-makes sure that SPARK will not consider them as initialized prior to calling
-$f$, so that all reads will have to be preceded by appropriate writes. In order
-to prevent warnings that some of these variables may not be written on some
-path before returning, an initialization subprogram should be declared, which
-takes all local variables in its ``in out'' annotation. This initialization
-subprogram should be called prior to returning from the subprogram, which
-ensures the translated subprogram respects its data-flow contracts for local
-variables. Only the absence of any read to some local variable will be detected
-and displayed as an error, which is safe to do.
+The reason for augmenting the write-set with local variable paths is that the
+translation will put these local variable paths in another package, and they
+will appear as global variable paths from within $f$. Defining these in the
+write-set makes sure that SPARK will not consider them as initialized prior to
+calling $f$, so that all reads will have to be preceded by appropriate
+writes. In order to prevent warnings that some of these variable paths may not
+be written on some path before returning, an initialization subprogram should
+be declared, which takes all local variable paths in its ``in out''
+annotation. This initialization subprogram should be called prior to returning
+from the subprogram, which ensures the translated subprogram respects its
+data-flow contracts for local variable paths. Only the absence of any read to
+some local variable path will be detected and displayed as an error, which is
+safe to do.
 
 \subsection{Contract Verification and Verification of Absence of Run-Time Errors}
 
@@ -890,12 +1014,72 @@ Additional copied may be introduced (extended returns, etc.)
 
 \subsubsection{Declarations}
 
+
+
+Types which depend on some defining elements determined dynamically should be
+translated so as to remove this dynamic element, which should be replaced by
+additional dynamic run-time checks. This concerns types with discrete subtypes
+with dynamic bounds, record types with discriminants, and all array
+types. Although array types can have either static or dynamic bounds, it is
+convenient to consider that all array types have potentially dynamic bounds, in
+order to translate easily the slices of arrays passed as ``in out'' parameters
+to subprograms.
+
+A discrete subtype S of type T with dynamic bounds should be translated into a
+record with three components:
+\begin{itemize}
+\item a component for the value, of type T;
+\item a component for the first allowed value S'First;
+\item a component for the last allowed value S'Last.
+\end{itemize}
+
+An array type with bounds of type S should be translated into a record with
+three components:
+\begin{itemize}
+\item a component for the array, ranging over the first subtype of S which has
+  static bounds;
+\item a component for the first allowed value S'First;
+\item a component for the last allowed value S'Last.
+\end{itemize}
+
+Each discriminant of a record type should be translated into a normal
+component. When this discriminant controls a variant, all components of the
+different cases should be added as components of the record. When this
+discriminant controls the size of an array, this array component should be
+translated like an array with dynamic bounds.
+
+All anonymous types should be explicitly named. This concerns:
+\begin{itemize}
+\item anonymous subtypes in type definitions (for example, the bounds in an
+  array);
+\item anonymous subtypes in object and component declarations;
+\item anonymous array types in object declarations.
+\end{itemize}
+
+Object declarations with an initialization should be split so that the
+initialization is performed instead in assignment statement in the appropriate
+subprogram.
+
+Various translations remove entities not defined in SPARK and/or in Why:
+\begin{itemize}
+\item named numbers should be inlined;
+\item the keywords \kw{abstract} and \kw{limited} in a derived type definition
+  should be dropped, as they have no dynamic semantics;
+\item derived scalar types should be replaced by subtypes with the same bounds;
+\item character literals used in enumerations should be renamed into usual
+  enumeration values.
+\end{itemize}
+
 \subsubsection{Names and Expressions}
 
+All names should be made unique in their package. This takes care of
+overloading, which is allowed in Ada but not in SPARK or Why. In particular,
+operator symbols should be renamed so that operators become regular functions.
 
+Taking a slice should lead to a temporary update of the first and last allowed
+indexes of the corresponding array object, so that, after the call or the
+statement, the previous bounds are restored.
 
-calls to functions into calls to statements, with special result variable value
-read just after the call and stored in local temp
 
 \subsubsection{Statements}
 
