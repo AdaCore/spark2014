@@ -1275,4 +1275,62 @@ functions should be translated into procedures by introducing an additional
 
 from intermediate SPARK code in a reduced subset of SPARK
 
+\subsubsection{Types}
+
+\paragraph{Integer Types}
+
+Ada integer types (signed and modular) should be translated into Why abstract
+types. Convertion functions in Why between such an abstract type and type
+\verb|int|, suitably axiomatized, will provide:
+\begin{itemize}
+\item a way to enforce the static type range;
+\item a representation for the usual arithmetic operations;
+\item a representation giving the expected order.
+\end{itemize}
+
+Ada integer subtypes (signed and modular) should be translated into Why
+abstract types. 
+
+Ada enumeration types should be translated into Why enumeration
+types. Convertions to and from Why \verb|int| type provide a way to get an
+order on the enumeration, as well as positions (Ada \verb|'Pos|
+attribute). Subtypes of enumerations in Ada should be translated into abstract
+types in Why, with suitable conversion functions, to and from their underlying
+enumeration type.
+
+The Ada \verb|Boolean| type should be translated into Why predefined
+\verb|bool| type in all cases where the features of \verb|Boolean| as an
+enumeration type are not used. In the remaining cases, for example to range
+over values of type \verb|Boolean|, an enumeration type
+\verb|standard__boolean| should be defined in Why.
+
+
+
+
+
+
+
+\subsubsection{Array Indexes and Array Slices}
+
+Why knows nothing of 
+
+\begin{example}
+\begin{verbatim}
+   type Index is range 1 .. 10;
+   type Arr is array (Index) of Integer;
+
+   procedure One (X : out Integer) is
+   begin
+      X := 1;
+   end One;
+
+   procedure All_One (A : in out Arr) is
+   begin
+      for J in Index loop
+         One (A(J));
+      end loop;
+   end All_One;
+\end{verbatim}
+\end{example}
+
 \end{document}
