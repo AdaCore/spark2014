@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{xspace}
+\usepackage{url}
 
 \title{ALFA: Annotated Language of Functions in Ada}
 
@@ -25,7 +26,7 @@
 
 \newcounter{example}
 
-\newenvironment{example}[1][EXAMPLE]{%
+\newenvironment{example}[1][EXAMPLE \theexample]{%
 \par
 \refstepcounter{example}%
 \SpecialEnv{#1}{exampleborder}{examplebg}{}{\theexample}%
@@ -76,7 +77,8 @@ ntbg}{statementborder}{}%
 \begin{minipage}{\hsize}%
 % insert counter, if any:
 \ifx\delimiter#5\delimiter\else
-\theexample.\enspace
+% \theexample. Yannick: i don't like it.
+\enspace
 \fi
 \ignorespaces
 }{\par
@@ -128,8 +130,10 @@ ntbg}{statementborder}{}%
 \newcommand{\biginter}{~\bigcap~}
 \newcommand{\minus}{~\backslash~}
 
-\newcommand{\path}[1]{\ensuremath{\pi(#1)}\xspace}
+\newcommand{\vpath}[1]{\ensuremath{\pi(#1)}\xspace}
 \newcommand{\sel}{\ensuremath{\sigma}\xspace}
+
+\newcommand{\etc}{\textit{etc.}\xspace}
 
 \begin{document}
 
@@ -697,8 +701,16 @@ subprogram in SPARK/Why must be defined with a proper contract:
 
 Both SPARK and Why define references which are used to pass parameters to
 subprogram calls. None defines pointer types. Both SPARK and Why define static
-rules to check that the only parameters which may be aliased are those which
-are only read.
+rules to check that the only parameters and globals (mentioned in the frame
+condition) which may be aliased are those which are only read.
+
+Both languages come equipped with a verification condition generator (VCGen)
+which produces formulas which should be proved (automatically or manually) for
+the contracts expressed on the SPARK or Why code to hold. The VCGen for Why is
+the Why tool; it can produce VCs in a variety of languages, among which Why
+itself and SMTLIB format.  The VCGen for SPARK is the Examiner; it produces VCs
+in FDL, which can be translated by the ViCToR tool into a variety of languages,
+among which SMTLIB format.
 
 \subsubsection{SPARK Specificities}
 
@@ -706,13 +718,37 @@ SPARK code, when stripped from its logic constructs, is a subset from
 Ada. Thus, SPARK inherits many constructs of Ada, and it is of course
 executable.
 
-SPARK enforces strict data-flow properties, that are checked statically.
+SPARK enforces strict data-flow properties, that are checked statically by the
+Examiner tool:
+\begin{itemize}
+\item to read any part of a variable, the entire variable must be initialized
+  on all syntactic program paths from the start of the current subprogram to
+  the program point where the read is performed;
+\item a parameter of mode ``in'' or ``in out'' in a call counts as a read;
+\item every parameter of mode ``out'' in the current subprogram must be
+  initialized on all syntactic program paths from the start of the subprogram
+  to the end of the subprogram;
+\item every parameter of mode ``in'' or ``in out'' in the current subprogram
+  must be partially read on at least one syntactic program path from the start
+  of the subprogram to the end of the subprogram;
+\item global variables mentioned in the frame condition must respect the same
+  constraints as parameters.
+\end{itemize}
+
+Essentially, these data-flow properties enforce a programming discipline which
+ensures that there is no read of an uninitialized value anywhere in the
+program, and which the Examiner checks statically.  As part of the same static
+analysis, the Examiner also issues errors if some variables or statements are
+unused.
+
+As SPARK is a subset of Ada, it knows all about the possible run-time errors in
+this subset, and it generates VCs guarding against such errors.
 
 \subsubsection{Why Specificities}
 
 Why is a functional language with imperative features, of an OCaml flavor. Why
-allows mixing freely axiomatized entities and defined entities, so that Why
-programs cannot be executed.
+allows mixing freely axiomatized entities and defined entities, which means
+that Why programs cannot be executed.
 
 Why defines four primitive types:
 \begin{itemize}
@@ -722,39 +758,97 @@ Why defines four primitive types:
 \item \emph{unit} for the type of statements.
 \end{itemize}
 
-There are no aggregate types (records and arrays) in Why. These should be
-defined as abstract types and axiomatized. In this respect, Why is closer to
-the translation in FDL of SPARK data structures than to SPARK.
+There are no predefined aggregate types (records and arrays) in Why. In
+general, these should be defined as abstract types and axiomatized. In this
+respect, Why is closer to the translation in FDL of SPARK data structures than
+to SPARK itself. However, Why provides a definition for functional arrays in
+its prelude (its automatically loaded standard library), and a predefined type
+array acting as a mutable reference on functional arrays. This type is
+polymorphic, so that it can be instantiated to define arrays over whatever
+element type.
 
-\subsection{Generation of Annotations}
+Why also provides algebraic types which allow defining enumerations, LISP-like
+lists, discriminated unions, \etc, together with pattern-matching expressions
+(the equivalent of Ada case-statements and case-expressions) on algebraic
+types~\cite{Paskevich09RR}.
+ 
+\subsection{Generation of Contracts}
 
-A valid SPARK or Why subprogram needs to indicate explicitly which global
-variables can be read and/or written during the execution of this
-subprogram. As this information is not present in the source Ada program, it
-must be generated by our translation. As these reads and writes must account
-for direct and indirect accesses, through any number of calls, this global
-information must be retrieved by performing a global analysis on the closed set
-of subprograms called directly and indirectly.
+In contract-based verification, a subprogram body is verified independently
+from other subprograms, by relying on subprogram contracts only to assess the
+effect of calls. Thus, it is crucial that subprogram contracts are precise. In
+particular, the frame condition which is not present in the source Ada code
+needs to be generated as precisely as possible. Thus, we aim at generating
+frame conditions which distinguish between components of variables, so that a
+write to component \verb|X| of variable \verb|V| does not count as a write to
+all the components of variable \verb|V|.
+
+\begin{example}
+Consider a procedure which sets a field of an element of an array of points:
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+type Points is array (Index) of Point;
+
+procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) with
+  Post => P(N).X = V;
+\end{verbatim}
+
+The postcondition of \verb|Set_X_Of_Nth| only says something about the value of
+\verb|P(N).X| in the post-state. It says nothing about the value of
+\verb|P(N).Y|, or the value of \verb|P(M).X| and \verb|P(M).Y| for some
+\verb|M| different from \verb|N|.\\
+
+The only way to add this information in Ada is to explicitly state in the
+postcondition that these other values have not changed:
+\begin{verbatim}
+  Post => P(N).X = V and then P(N).Y = P(N).Y'Old and then
+          (for all M in Index => 
+             (if M /= N then P(M).X = P'Old(M).X)) and then
+          (for all M in Index => 
+             (if M /= N then P(M).Y = P'Old(M).Y));
+\end{verbatim}
+
+This detailed postcondition is needed if we generate in SPARK/Why an imprecise
+frame condition which only says that array \verb|P| is written. But if we
+generate a more precise frame condition saying that only field \verb|X| of an
+element of \verb|P| is written, then the postcondition is Ada can be reduced,
+because it is known in SPARK/Why that no field \verb|Y| has changed:
+\begin{verbatim}
+  Post => P(N).X = V and then
+          (for all M in Index => 
+             (if M /= N then P(M).X = P'Old(M).X));
+\end{verbatim}
+\end{example}
+
+The frame condition of a valid SPARK/Why subprogram needs to indicate
+explicitly which parameters and global variables can be read and/or written
+during the execution of this subprogram. In order to distinguish between
+variable components at the Ada level, each variable component must be
+translated into a different parameter or global variable in the SPARK/Why
+program; and the generation of the frame condition should be precise at the
+variable component level.
+
+As the frame condition must account for direct and indirect accesses, through
+any number of calls, this global information must be retrieved by performing a
+global analysis on the closed set of subprograms called directly and
+indirectly.
 
 A special global variable called \heap represents all the dynamically allocated
 memory plus all variables whose address is taken, so that reads and writes to
 dynamically allocated memory show in SPARK or Why contracts as reads and writes
 to \heap. Notice that without this \heap variable, contracts would be wrong and
-break the consistency of the proof system. For example, it would be possible to
-prove that Problem below always returns True, because Set would be seen as a
-noop, and Get would be seen as a constant function:
+break the consistency of the proof system. 
+
+\begin{example}
+  If reads and writes to \heap were not computed, it would be possible to prove
+  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
+  would be seen as a noop, and \verb|Get| would be seen as a constant function:
 
 \begin{verbatim}
 X : access Integer;
 
-procedure Set is
-   X.all := 0;
-end Set;
-
-function Get return Integer is
-begin
-   return X.all;
-end Get;
+procedure Set is X.all := 0; end Set;
+function Get return Integer is (X.all);
 
 function Problem return Boolean is
    X1 : Integer := Get;
@@ -763,14 +857,15 @@ begin
    return X1 = Get;
 end Problem;
 \end{verbatim}
+\end{example}
 
-Contracts (precondition and postcondition) in SPARK and Why have a
+Contracts (precondition and postcondition) in SPARK/Why have a
 slightly different semantics than contracts in Ada 2012, because contracts in
-SPARK and Why completely ignore the possibility of a run-time error being
+SPARK/Why completely ignore the possibility of a run-time error being
 raised while evaluating the contract. When checking for absence of run-time
 errors (which can be separated from contract checking), the absence of run-time
 errors in contracts should also be proved, which requires the extension of
-contracts with additional conjuncts in SPARK and Why. 
+contracts with additional conjuncts in SPARK/Why. 
 
 \begin{example}
   The following contract in Ada:
@@ -779,51 +874,12 @@ function Get (A : My_Array; X : Integer) return Element
    with Pre => A (X) /= Nil_Element;
 \end{verbatim}
 
-would become in SPARK:
+is equivalent to the following contract in SPARK:
 \begin{verbatim}
 function Get (A : My_Array; X : Integer) return Element;
 --# pre X in My_Array'Range and then A (X) /= Nil_Element;
 \end{verbatim}
 \end{example}
-
-\subsection{General Architecture}
-
-The first requirement is to break the mutual dependencies between packages and
-between subprograms in Ada, in order to 1) achieve modular verification at the
-subprogram level and 2) prevent circular dependencies between units and between
-elements of units, which are either not supported or supported with
-restrictions in both SPARK and Why. These mutual dependencies come from
-recursion between subprograms as well as cross calls between packages (P.F
-calls Q.G which calls P.H) even without recursion. To that end, each
-declarative part leads to the generation of two units: one for the data+types
-of this declarative part, one for the subprogram specifications of this
-declarative part.
-
-As an example, a package P defining data and subprograms should lead to the
-generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
-specifications. Then, a subprogram P.F in ALFA should be translated into the
-only subprogram in unit P\_F, which manipulates data from P\_Data and calls
-subprograms from P\_Spec (including potential calls to F in P\_Spec, which
-correspond to recursive calls in the source program).
-
-As another example, a subprogram F in ALFA defining local variables and local
-subprograms should lead to the generation of a unit F\_Data for its local
-variables (including the variables defined in block statements inside F) and
-F\_Spec for its local subprogram specifications (including the local
-subprograms defined in block statements inside F). Then, F's body should be
-translated into the only subprogram in unit F, which manipulates data from
-F\_Data and calls subprograms from F\_Spec.
-
-Thus, the generated units should be layered in:
-\begin{enumerate}
-\item $<$data$>$: units which define global data in SPARK or Why, corresponding
-  to either global or local variables in Ada. These units also define types.
-\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
-  corresponding to all subprograms specifications and definitions in Ada. These
-  units also define parameterized expressions.
-\item $<$body$>$: units which define a single subprogram specification and body
-  in SPARK or Why from a subprogram in ALFA.
-\end{enumerate}
 
 \subsection{Translation From Ada to Unambiguous Ada}
 
@@ -833,11 +889,14 @@ choice should be the same for execution and verification, which is obtained by
 lifting function calls outside of expressions in the specified order of
 evaluation. This consists in a simple walk through the AST following the order
 of evaluation, and introducing temporary variables for every function
-call. With a left-to-right evaluation order, the statement
+call. 
+
+\begin{example}
+  With a left-to-right evaluation order, the statement
 \begin{verbatim}
 X := F(X) + G(H(Y),K(Z));
 \end{verbatim}
-thus translates into:
+  should be translated into:
 \begin{verbatim}
 Tmp1 := F(X);
 Tmp2 := H(Y);
@@ -845,18 +904,26 @@ Tmp3 := K(Z);
 Tmp4 := G(Tmp2,Tmp3);
 X := Tmp1 + Tmp4;
 \end{verbatim}
+\end{example}
 
 Likewise, Ada arithmetic expressions may be reordered by the compiler when not
 enough parenthesized, so the translation will introduce the necessary
 parentheses which force the natural evaluation order given by operators
-associativity. Thus the expression \verb|X + Y + Z| translates into
-\verb|(X + Y) + Z|.
+associativity. 
 
-\subsection{Translation From Unambiguous Ada to Lowered Ada}
+\begin{example}
+  The expression \verb|X + Y + Z| should be translated into \verb|(X + Y) + Z|.
+\end{example}
 
-expanded aggregate initializations
+\subsection{Translation From Unambiguous Ada to Expanded Ada}
 
-expanded checks
+The GNAT front-end defines an expansion phase which simplifies the work needed
+in subsequent phases:
+\begin{itemize}
+\item it unfolds all aggregate initializations;
+\item it makes all checks for run-time errors explicit;
+\item \etc [add some more here]
+\end{itemize}
 
 \subsection{Generation of Data-Flow Annotations}
 \label{sub:data-flow}
@@ -866,17 +933,17 @@ expanded checks
 A variable in ALFA may only have a scalar type (discrete or real) or an
 aggregate type (record or array) such that all sub-components have themselves a
 scalar type or an aggregate type with the same restriction. Given a variable
-$v$ in ALFA, we associate a set of paths \path{v} to $v$. More generally, we
-associate a set of paths \path{v} to an individual path $v$ (which may be a
+$v$ in ALFA, we associate a set of paths \vpath{v} to $v$. More generally, we
+associate a set of paths \vpath{v} to an individual path $v$ (which may be a
 variable) as follows:
 \begin{itemize}
-\item if $v$ has a scalar type, $\path{v} = \{v\}$;
+\item if $v$ has a scalar type, $\vpath{v} = \{v\}$;
 \item if $v$ has a record type with components $c_i$, 
-  $\path{v} = \bigunion \path{v.c_i}$;
+  $\vpath{v} = \bigunion \vpath{v.c_i}$;
 \item if $v$ has an array type whose element type $t$ is a scalar type,
-  $\path{v} = \{v\}$;
+  $\vpath{v} = \{v\}$;
 \item if $v$ has an array type whose element type $t$ is a record type with
-  components $c_i$, $\path{v} = \bigunion \path{v.c_i}$. (Here, we do as if $v$
+  components $c_i$, $\vpath{v} = \bigunion \vpath{v.c_i}$. (Here, we do as if $v$
   was of type $t$ so that we can refer to its $c_i$ components.)
 \end{itemize}
 
@@ -1117,7 +1184,7 @@ verification of absence of run-time errors.
 % We denote the former as \why
 % (translation to Why) and the latter as \spark (translation to SPARK).
 
-\subsection{Translation From Unambiguous Ada to Extended SPARK}
+\subsection{Translation From Expanded Ada to Extended SPARK}
 
 Additional copied may be introduced (extended returns, etc.)
 
@@ -1219,6 +1286,43 @@ Various translations remove entities not defined in SPARK and/or in Why:
 
 \subsubsection{Package Specifications and Declarations}
 
+The first requirement is to break the mutual dependencies between packages and
+between subprograms in Ada, in order to 1) achieve modular verification at the
+subprogram level and 2) prevent circular dependencies between units and between
+elements of units, which are either not supported or supported with
+restrictions in both SPARK and Why. These mutual dependencies come from
+recursion between subprograms as well as cross calls between packages (P.F
+calls Q.G which calls P.H) even without recursion. To that end, each
+declarative part leads to the generation of two units: one for the data+types
+of this declarative part, one for the subprogram specifications of this
+declarative part.
+
+As an example, a package P defining data and subprograms should lead to the
+generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
+specifications. Then, a subprogram P.F in ALFA should be translated into the
+only subprogram in unit P\_F, which manipulates data from P\_Data and calls
+subprograms from P\_Spec (including potential calls to F in P\_Spec, which
+correspond to recursive calls in the source program).
+
+As another example, a subprogram F in ALFA defining local variables and local
+subprograms should lead to the generation of a unit F\_Data for its local
+variables (including the variables defined in block statements inside F) and
+F\_Spec for its local subprogram specifications (including the local
+subprograms defined in block statements inside F). Then, F's body should be
+translated into the only subprogram in unit F, which manipulates data from
+F\_Data and calls subprograms from F\_Spec.
+
+Thus, the generated units should be layered in:
+\begin{enumerate}
+\item $<$data$>$: units which define global data in SPARK or Why, corresponding
+  to either global or local variables in Ada. These units also define types.
+\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
+  corresponding to all subprograms specifications and definitions in Ada. These
+  units also define parameterized expressions.
+\item $<$body$>$: units which define a single subprogram specification and body
+  in SPARK or Why from a subprogram in ALFA.
+\end{enumerate}
+
 Entities declared in the package specification and those declared in the
 package body should be treated identically. In particular, all entities
 declared in the package body should become visible from outside the package in
@@ -1275,6 +1379,9 @@ functions should be translated into procedures by introducing an additional
 
 from intermediate SPARK code in a reduced subset of SPARK
 
+Why distinguishes between logic and programs, and between terms and predicates
+in the logic.
+
 \subsubsection{Types}
 
 \paragraph{Integer Types}
@@ -1289,7 +1396,10 @@ types. Convertion functions in Why between such an abstract type and type
 \end{itemize}
 
 Ada integer subtypes (signed and modular) should be translated into Why
-abstract types. 
+abstract types. Convertion functions in Why between such an abstract type and
+type \verb|int| provide a way to translate all allowed type conversions in Ada.
+ 
+\paragraph{Enumeration Types}
 
 Ada enumeration types should be translated into Why enumeration
 types. Convertions to and from Why \verb|int| type provide a way to get an
@@ -1304,33 +1414,128 @@ enumeration type are not used. In the remaining cases, for example to range
 over values of type \verb|Boolean|, an enumeration type
 \verb|standard__boolean| should be defined in Why.
 
+\paragraph{Real Types}
 
+The translation of real types (floating-point and fixed-point) remains
+undecided for now.
 
+\paragraph{Array Types}
 
+Ada array types should be translated into instances of the Why array type. 
 
+\subsubsection{Expressions}
 
+\paragraph{Indexed Components} 
 
-\subsubsection{Array Indexes and Array Slices}
-
-Why knows nothing of 
+Simple reads and writes of array elements should be translated in the
+corresponding calls to \verb|access| and \verb|update| from the prelude of Why,
+which encode the usual theory of functional arrays.
 
 \begin{example}
+  The following Ada code increments array element \verb|A(I)| through a
+  temporary:
 \begin{verbatim}
-   type Index is range 1 .. 10;
-   type Arr is array (Index) of Integer;
+Tmp := A(I); A(I) := Tmp + 1;
+\end{verbatim}
 
-   procedure One (X : out Integer) is
-   begin
-      X := 1;
-   end One;
-
-   procedure All_One (A : in out Arr) is
-   begin
-      for J in Index loop
-         One (A(J));
-      end loop;
-   end All_One;
+Here is its translation in Why:
+\begin{verbatim}
+Tmp := access (!A, I); A := update (!A, I, Tmp + 1)
 \end{verbatim}
 \end{example}
+
+Indexed components passed as ``in'' parameters should be translated like simple
+reads. Indexed components passed as ``out'' or ``in out'' parameters should be
+copied back after the call from a local reference passed in
+parameter. Additionally, the local reference should be initialized from the
+indexed component before the call for an ``in out'' parameter.
+
+\begin{example}
+  The following Ada code sets all elements of an array to 1 through repeated
+  calls to \verb|One|:
+\begin{verbatim}
+procedure One (X : out Integer) is begin X := 1; end One;
+
+procedure All_One (A : in out Arr) is
+begin
+   for J in Index loop
+      One (A(J));
+   end loop;
+end All_One;
+\end{verbatim}
+
+Here is the translation of the loop body in Why:
+\begin{verbatim}
+let tmp = ref any_integer() in
+One (tmp);
+A := update (!A, J, tmp);
+\end{verbatim}
+\end{example}
+
+\paragraph{Slices}
+
+Similar to indexed components.
+
+\paragraph{If Expressions} Ada if-expressions should be translated into Why
+if-expressions.
+
+\paragraph{Case Expressions} Ada case-expressions over an enumerated type
+should be translated into Why pattern-matching expressions. Ada
+case-expressions over a discrete type which is not enumerated should be
+translated as a series of if-expressions.
+
+\paragraph{Quantified Expressions} A quantified expression should be translated
+differently in Why depending on the location where it appears in the generated
+Why code:
+\begin{itemize}
+\item in predicate position, it should be translated into the corresponding
+  predicate in Why (\verb|for all| in Ada becomes \verb|forall| in Why;
+  \verb|for some| in Ada becomes \verb|exists| in Why);
+\item in term position, it should be translated into a temporary boolean
+  binding whose value is contrained to be true whenever the predicate holds,
+  which requires hosting this equivalence as the left part of an implication in
+  the closest enclosing predicate;
+\item in program position, it should be translated into a temporary boolean
+  binding whose value is contrained to be true whenever the predicate holds,
+  which requires hosting this equivalence as a postcondition of a hidden
+  expression in the closest enclosing unit-valued expression.
+\end{itemize}
+
+\begin{example}
+When appearing in predicate position:
+\begin{verbatim}
+procedure P with Pre => (for all X in Index => Prop (X));
+\end{verbatim}
+the quantified expression should be translated into a predicate:
+\begin{verbatim}
+forall X : Index. Prop (X)
+\end{verbatim}
+
+When appearing in term position:
+\begin{verbatim}
+procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
+\end{verbatim}
+the quantified expression should be translated into an equivalence:
+\begin{verbatim}
+let tmp = any_bool() in
+(tmp = true <-> forall X : Index. Prop (X)) -> if tmp then Y
+\end{verbatim}
+
+When appearing in program position:
+\begin{verbatim}
+B : Boolean := (for all X in Index => Prop (X));
+\end{verbatim}
+the quantified expression should be translated into a hidden expression:
+\begin{verbatim}
+let tmp = any_bool() in
+[ {} bool { tmp = true <-> forall X : Index. Prop (X) } ];
+B := tmp
+\end{verbatim}
+\end{example}
+
+[what about quantification over containers?]
+
+\bibliographystyle{plain}
+\bibliography{alfa}
 
 \end{document}

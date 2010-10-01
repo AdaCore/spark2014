@@ -2,6 +2,7 @@ ALL: alfa.pdf
 
 %.pdf: %.tex
 	pdflatex $^
+	bibtex $*
 	pdflatex $^
 	$(MAKE) clean_tmp
 
