@@ -420,10 +420,10 @@ function Sqrt (X : Integer) return Integer with
   Test_Case => (Name     => "test case 2",
                 Requires => X < 100, 
                 Ensures  => Sqrt'Result >= 0 and then 
-                            Sqrt'Result < 10);
+                            Sqrt'Result < 10),
   Test_Case => (Name     => "robustness test case",
                 Requires => X = -1, 
-                Ensures  => Sqrt'Result = 0),
+                Ensures  => Sqrt'Result = 0);
 \end{verbatim}
 \end{example}
 
@@ -643,7 +643,22 @@ Indeed, the results of CV are valid only if DFV is verified, and the results of
 RTE are valid only if DFV and RTE are verified. In practice, this means that
 DFV, CV and RTE should be usually performed in this order.
 
-\subsection{Data-Flow Verification}
+On the one hand, both CV and RTE depend on contracts and intermediate
+assertions (loop-invariants and other assertions). For example, loop-invariants
+usually contain information on the range of values, which are both used for
+proving absence of run-time error and functional properties. Thus, contracts
+and intermediate assertions should be assumed for RTE. On the other hand,
+proving contracts and intermediate assertions can be performed without assuming
+absence of run-time errors. Indeed, what is proved in this case is that,
+provided there are no run-time errors, the contracts and intermediate
+assertions hold.
+
+It should be possible to perform CV and RTE independently, first because the
+user may be interested in only one of these, second because we will aim at CV
+principally through Why and RTE principally through SPARK.
+
+\subsection{Data-Flow Verification (DFV)}
+\label{sub:DFV}
 
 Data-flow verification should be performed as a static analysis, similar to
 what the Examiner does for SPARK code. However, we aim at finer-grain data-flow
@@ -689,7 +704,8 @@ do the same at the component level.
 Reads of components of local variables are only allowed if all syntactic paths
 through the subprogram before reaching the read do initialize completely the
 corresponding component which is read. This restriction is similar to the SPARK
-one, except ot applies to components of variables instead of entire variables.
+one, except that it applies to components of variables instead of entire
+variables.
 
 [need expansion of what is a data-flow error, regarding useless computations]
 
@@ -697,7 +713,7 @@ Aliasing between parameters and globals accessed by a subprogram is forbidden,
 unless all aliasing parameters and globals are read. This restriction is
 similar to the SPARK one.
 
-\subsection{Contract Verification}
+\subsection{Contract Verification (CV)}
 
 The contract of a subprogram in ALFA is verified by assuming that the
 subprograms it calls do respect their contracts, which includes a possible
@@ -707,19 +723,52 @@ ignored, both in the program and in the contracts. Thus, the results of
 contract verification hold for all executions which do not raise a run-time
 error.
 
-\subsection{Verification of Absence of Run-Time Errors}
+As part of CV, all intermediate assertions and loop-invariants are also
+proved. This includes the contracts, intermediate assertions and
+loop-invariants that are useful to prove absence of run-time errors, if RTE is
+also an objective.
+
+\subsection{Verification of Absence of Run-Time Errors (RTE)}
 
 Verifying that a subprogram in ALFA is free from run-time errors is verified by
 assuming that the subprograms it calls do respect their contracts and that they
 are free from run-time errors, which includes a possible recursive call (in
 which case the assumption is made only for the recursive call).
 
+RTE includes proving that the evaluation of assertions (including contracts and
+loop-invariants) does not lead to run-time errors. To that end, the checks
+inserted by the compiler to prove absence of runt-time error should be proved.
+
+\begin{example}
+  Proving RTE on the procedure \verb|Do_Something_On_Array| involves proving
+  that evaluating its postcondition cannot lead to a run-time error:
+  \verb|I + J| and \verb|A(I) + A(J)| should not overflow; \verb|I|, \verb|J|
+  and \verb|I + J| should be allowed indexes for \verb|A|. Proving RTE on a
+  caller of procedure \verb|Do_Something_On_Array| involves proving that
+  evaluating its precondition cannot lead to a run-time error: \verb|I| and
+  \verb|J| should be allowed indexes for \verb|A|.
+\begin{verbatim}
+procedure Do_Something_On_Array (A : My_Array; I, J : Index) with
+   Pre  => A(I) /= A(J),
+   Post => A(I + J) = A(I) + A(J);
+\end{verbatim}
+\end{example}
+
+Although SPARK already generates VCs for absence of run-time errors on the
+subset of Ada it defines, we will not use these capabilities directly. Instead,
+we will rely on the compiler to insert the proper checks, which translate in
+SPARK as assertions, for which it also generate VCs. The benefits of this
+approach are that 1) the compiler controls which run-time checks should be
+proved, which can be modified on option, and reduced to fewer checks if the
+compiler is able to prove some of them; 2) the same process applies to checks
+that SPARK would generate and checks that SPARK does not know about, because
+they originate in language constructs that are not in SPARK; 3) the same checks
+are generated whatever the proof chain used, through SPARK or through Why.
+
 \subsection{Verification Modes}
 
-Since contract verification and verification of absence of run-time errors are
-independent verification objectives, which require different (although
-compatible) choices during the translation.  Therefore, we define three modes
-for the translation:
+CV and RTE require different (although compatible) choices during the
+translation.  Therefore, we define three modes for the translation:
 \begin{enumerate}
 \item mode CV for contract verification;
 \item mode RTE for verification of absence of run-time errors;
@@ -727,8 +776,13 @@ for the translation:
   absence of run-time errors.
 \end{enumerate}
 
-In all three modes, the 
-
+In all three modes, the only part of the program which is translated
+differently is the logic part, having to do with the translation of
+assertions. Modes CV and RTE both insert different assertions, which means that
+more reads are performed, thus putting more constraints on the data-flow in
+terms of non-aliasing and initialization. Thus, it is sufficient to prove DFV
+in mode CV+RTE for data-flow to be verified in both modes CV and RTE. Hence DFW
+should be performed in mode CV+RTE.
 
 \section{Translation to SPARK/Why}
 
@@ -756,13 +810,13 @@ constructs whose aim is to state invariant properties of the program.
 The central logic construct is the contract, which serves to fully describe the
 effect of calling a subprogram, for the purpose of separate verification. Each
 subprogram in SPARK/Why must be defined with a proper contract:
-\begin{itemize}
+\begin{enumerate}
 \item a precondition describes constraints on the calling context;
 \item a frame condition describes both the variables on which the result of the
   subprogram depends (variables read) and the variables which may be modified
   as a result of the call (variables written);
 \item a postcondition describes constraints on the result of the subprogram.
-\end{itemize}
+\end{enumerate}
 
 Both SPARK and Why define references which are used to pass parameters to
 subprogram calls. None defines pointer types. Both SPARK and Why define static
@@ -779,7 +833,7 @@ among which SMTLIB format.
 
 \subsubsection{SPARK Specificities}
 
-SPARK code, when stripped from its logic constructs, is a subset from
+SPARK code, when stripped from its logic constructs, is a subset of
 Ada. Thus, SPARK inherits many constructs of Ada, and it is of course
 executable.
 
@@ -836,7 +890,11 @@ Why also provides algebraic types which allow defining enumerations, LISP-like
 lists, discriminated unions, \etc, together with pattern-matching expressions
 (the equivalent of Ada case-statements and case-expressions) on algebraic
 types~\cite{Paskevich09RR}.
- 
+
+Why distinguishes between logic and programs, and between terms and predicates
+in the logic. For example, a quantification is of type \verb|prop| which is
+different from the Boolean type for terms \verb|bool|.
+
 \subsection{Generation of Contracts}
 
 In contract-based verification, a subprogram body is verified independently
@@ -845,7 +903,7 @@ effect of calls. Thus, it is crucial that subprogram contracts are precise. In
 particular, the frame condition which is not present in the source Ada code
 needs to be generated as precisely as possible. Thus, we aim at generating
 frame conditions which distinguish between components of variables, so that a
-write to component \verb|X| of variable \verb|V| does not count as a write to
+read of component \verb|X| of variable \verb|V| does not count as a read of
 all the components of variable \verb|V|.
 
 \begin{example}
@@ -982,42 +1040,33 @@ associativity.
 
 \subsection{From Unambiguous Ada to Expanded Ada}
 
-The two verifications should be performed independently, first because the user
-may be interested in only one of these, second because we will aim at contract
-verification through Why and verification of absence of run-time errors through
-SPARK. The two are nonetheless related, which raises questions as to what is
-assumed for each verification, so that performing both effectively gives
-assurance that contracts are verified and there are no possible run-time
-errors.
-
-On the one hand, both types of verification depend on contracts and
-intermediate assertions (loop-invariants and other assertions). For example,
-loop-invariants usually contain information on the range of values, which are
-both used for proving absence of run-time error and functional
-properties. Thus, contracts and intermediate assertions should be assumed for
-verification of absence of run-time errors. On the other hand, proving
-contracts and intermediate assertions can be performed without assuming absence
-of run-time errors. Indeed, what is proved in this case is that, provided there
-are no run-time errors, the contracts and intermediate assertions hold.
-
-Thus, the translation should be different for contract verification and for
-verification of absence of run-time errors. 
-
-% We denote the former as \why
-% (translation to Why) and the latter as \spark (translation to SPARK).
-
-The GNAT front-end defines an expansion phase which simplifies the work needed
-in subsequent phases:
+This translation should be different for CV and RTE. It is based on the
+expansion phase in the GNAT front-end which will simplify the work needed in
+subsequent phases:
 \begin{itemize}
 \item it unfolds all aggregate initializations;
 \item it makes all checks for run-time errors explicit;
 \item \etc [add some more here]
 \end{itemize}
 
+In particular, types which depend on some dynamic bounds should be translated
+into types with static bounds, by creating additional variables to hold the
+dynamic bounds. Then, the run-time checks should mention these dynamic bounds.
+This concerns discrete subtypes with dynamic bounds and array types with
+dynamic bounds. Parameters of array type with dynamic bounds should be
+translated into three parameters: one for the array and two for the bounds.
+
+Each discriminant of a record type should be translated into a normal
+component. When this discriminant controls a variant, all components of the
+different cases should be added as components of the record. When this
+discriminant controls the size of an array, this array component should be
+translated like an array with dynamic bounds.
+
 \subsection{Computing the Frame Condition}
 \label{sub:data-flow}
 
 \subsubsection{Variable Paths}
+\label{sub:variable-path}
 
 A variable in ALFA may only have a scalar type (discrete or real) or an
 aggregate type (record or array) such that all sub-components have themselves a
@@ -1068,11 +1117,11 @@ various initializations performed in the declarations of variables, as well as
 the optional sequence of statements.
 
 A data-flow analysis of the source Ada program should associate each subprogram
-with three sets of global variables paths:
+with three sets of variables paths:
 \begin{itemize}
-\item the read-set of global variable paths possibly read by the subprogram;
-\item the write-set of global variable paths alway written by the subprogram;
-\item the read-write-set of global variable paths possibly read and written by
+\item the read-set of variable paths possibly read by the subprogram;
+\item the write-set of variable paths alway written by the subprogram;
+\item the read-write-set of variable paths possibly read and written by
   the subprogram.
 \end{itemize}
 
@@ -1145,6 +1194,9 @@ partially reads a variable path $r$ in the following cases:
 \item $s$ contains a call to a subprogram $f$, and $r \in \outallreads{f}$.
 \end{itemize}
 
+Notice that an expression used to define the dynamic bounds of a subtype counts
+as a read of any variable path occurring in this expression.
+
 Given a statement $s$ partially reading variable paths $r_i$, the following
 equations define \allreads:
 \begin{eqnarray*}
@@ -1174,6 +1226,11 @@ Additionally, if $l_1$ is a loop and $w$ a variable path such that:
   array accesses are exactly all the loop variables;
 \end{enumerate}
 then loop $l_1$ completely writes variable path $w$.
+
+The aim of this special rule for loops is to allow the initialization of array
+paths through loops, which is both common in user code and which arises as a
+result of expansion, in particular due to default expressions for record
+components.
 
 Given a statement $s$ completely writing variable paths $w$, the following
 equations define \writes:
@@ -1244,50 +1301,54 @@ be declared, which takes all local variable paths in its ``in out''
 annotation. This initialization subprogram should be called prior to returning
 from the subprogram, which ensures the translated subprogram respects its
 data-flow contracts for local variable paths. Only the absence of any read to
-some local variable path will be detected and displayed as an error, which is
+some local variable path could be detected and displayed as an error, which is
 safe to do.
 
 \subsection{From Expanded Ada to Extended SPARK}
 
-Additional copied may be introduced (extended returns, etc.)
+As a general remark, the translation should be free to introduce copies of any
+values (for example to translate extended returns), which should not have any
+effect on the validity of the proofs.
 
 \subsubsection{Lexical Elements}
 
+Ada uses the Universal Character Set (ISO/IEC 10646:2003) whereas SPARK/Why use
+only the full Latin-1 set. Identifiers outside the Latin-1 set should therefore
+be translated.
+
 \subsubsection{Declarations}
 
+Each variable should be translated into a set of variables, one for each
+variable path as defined in Section~\ref{sub:variable-path}. This applies also
+to parameters, so that one parameter in expanded Ada might be translated in
+many parameters in extended SPARK. For external subprograms, as defined in
+Section~\ref{sub:DFV}, a parameter should be translated into the set of all
+path variables thus created. For internal subprograms, a parameter should be
+translated into the set of path variables which are mentioned in its read-set,
+write-set or read-write-set, and the mode of the new parameter corresponds to
+the set it comes from.
 
+\begin{example}
+  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
+  parameter:
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+procedure Set (P : out Point) is begin P.X := 0; end Set;
+\end{verbatim}
 
-Types which depend on some defining elements determined dynamically should be
-translated so as to remove this dynamic element, which should be replaced by
-additional dynamic run-time checks. This concerns types with discrete subtypes
-with dynamic bounds, record types with discriminants, and all array
-types. Although array types can have either static or dynamic bounds, it is
-convenient to consider that all array types have potentially dynamic bounds, in
-order to translate easily the slices of arrays passed as ``in out'' parameters
-to subprograms.
+  If the procedure \verb|Set| below is an internal procedure, it should mention
+  only path variables that are part of its frame condition:
+\begin{verbatim}
+procedure Set (P_X : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
 
-A discrete subtype S of type T with dynamic bounds should be translated into a
-record with three components:
-\begin{itemize}
-\item a component for the value, of type T;
-\item a component for the first allowed value S'First;
-\item a component for the last allowed value S'Last.
-\end{itemize}
-
-An array type with bounds of type S should be translated into a record with
-three components:
-\begin{itemize}
-\item a component for the array, ranging over the first subtype of S which has
-  static bounds;
-\item a component for the first allowed value S'First;
-\item a component for the last allowed value S'Last.
-\end{itemize}
-
-Each discriminant of a record type should be translated into a normal
-component. When this discriminant controls a variant, all components of the
-different cases should be added as components of the record. When this
-discriminant controls the size of an array, this array component should be
-translated like an array with dynamic bounds.
+  If the procedure \verb|Set| below is an external procedure, it should mention
+  all path variables derived from its initial parameter, so that the lack of
+  initialization of \verb|P.Y| would be detected here by DFV:
+\begin{verbatim}
+procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
+\end{example}
 
 All anonymous types should be explicitly named. This concerns:
 \begin{itemize}
@@ -1317,14 +1378,40 @@ All names should be made unique in their package. This takes care of
 overloading, which is allowed in Ada but not in SPARK or Why. In particular,
 operator symbols should be renamed so that operators become regular functions.
 
-Taking a slice should lead to a temporary update of the first and last allowed
-indexes of the corresponding array object, so that, after the call or the
-statement, the previous bounds are restored.
-
+[It is not clear how slices should be translated in all cases. At first, I
+thought slices appearing as parameters could be translated as the complete
+array with additional bound parameters. But this does not work for a
+multi-dimensional slice, say A(0)(1..10).]
 
 \subsubsection{Statements}
 
+Translation of statements is delayed until final translation to SPARK/Why. [in
+particular, translation of arbitrary exit and return statements to SPARK is not
+solved. It is ok in Why.]
+
 \subsubsection{Subprograms}
+
+For each global variable of mode ``in'', it may be necessary to add a
+precondition to the subprogram which asserts the implicit corresponding type
+invariant, when the original type for this variable has a dynamic flavor
+(subtype with dynamic bounds, discriminant record).
+
+\begin{example}
+The parameter \verb|X| below has a type with dynamic bounds:
+\begin{verbatim}
+subtype Index is Integer range A .. B;
+procedure P (X : Index);
+\end{verbatim}
+
+It should be translated into a variable \verb|X| which is constrained in the
+precondition to be within the allowed bounds:
+\begin{verbatim}
+X : Integer;
+procedure P;
+--# global in X;
+--# pre X in Index_First .. Index_Last;
+\end{verbatim}
+\end{example}
 
 Various translations remove entities not defined in SPARK and/or in Why:
 \begin{itemize}
@@ -1426,24 +1513,42 @@ Various translations remove entities not defined in SPARK and/or in Why:
 
 \subsubsection{Program Structure and Compilation Issues}
 
+Library-level subprograms should be wrapped in a library-level package.
+
+Use clauses should be removed.
+
+The treatment of subunits should be no different if they were defined inlined.
+
 \subsubsection{Exceptions}
 
 \subsubsection{Generic Units}
 
+Specifications of generic unit instantiations should be generated, so that the
+corresponding instantiated subprograms are called.
+
 \subsubsection{Representation Issues}
 
 \subsection{From Extended SPARK to SPARK}
+
+\subsubsection{Types}
+
+Ada derived scalar types should be translated into SPARK subtypes. Indeed,
+after the front-end has checked that derived types are properly used and after
+overloading has been resolved, the constraints respected by a derived type are
+the same as those respected by a subtype with the same bounds.
+
+\subsubsection{Expressions}
+
+[how to translate quantified expression in code? maybe ALFA should be limited
+to quantification in the logic.]
+
+\subsubsection{Subprograms}
 
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
 
 \subsection{From Extended SPARK to Why}
-
-from intermediate SPARK code in a reduced subset of SPARK
-
-Why distinguishes between logic and programs, and between terms and predicates
-in the logic.
 
 \subsubsection{Types}
 
@@ -1537,7 +1642,7 @@ A := update (!A, J, tmp);
 
 \paragraph{Slices}
 
-Similar to indexed components.
+[still not knwn]
 
 \paragraph{If Expressions} Ada if-expressions should be translated into Why
 if-expressions.
