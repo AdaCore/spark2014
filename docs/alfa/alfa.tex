@@ -135,10 +135,17 @@ ntbg}{statementborder}{}%
 
 \newcommand{\etc}{\textit{etc.}\xspace}
 
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.1in}
+
 \begin{document}
 
 \maketitle
 \sloppy
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
 \section{Ada 2012}
 
 Ada 2012 is the next version of the Ada standard, expected to be finalized in
@@ -153,18 +160,18 @@ Programs in Ada are structured in packages, which consist in:
 \begin{itemize}
 \item a package specification, which defines the external API of the package,
   consisting of types, variables and subprogram declarations whose lifetime and
-  visibility scope are the same as the one of the package itself;
+  visibility are the same as the one of the package itself;
 \item an optional package body, which defines the entities declared in the
   package specification, plus additional entities which are not part of the
-  external API.
+  external API of the package.
 \end{itemize}
 
 The package specification may be divided in a public part and a private part,
 so that the private part is visible to the compiler, for use in separate
 compilation, but not visible to the external program. Thus, a type may be
 declared as having a private definition, so that the compiler knows its precise
-definition (size, initialization, etc.) but the program cannot depend on it
-outside the package.
+definition (size, initialization, etc.) but the program cannot depend on this
+definition outside the package.
 
 Packages may be defined in any declarative section: at the outtermost level as
 library-level compilation units, or inside other packages and subprogram
@@ -217,25 +224,25 @@ The set of non-aggregate types are called elementary types.
 
 \subsubsection{Metaprogramming}
 
-Generic packages and subprograms define template entities to instantiate at
-compile-time. They come with a set of formal parameters for types, variables,
-values and subprograms. Formal parameters declare individual constraints and
-relations with other formal parameters, so that once the compiler has checked a
-generic entity, any instantiation with correct arguments will generate a
-compilable entity.
+Generic packages and generic subprograms define template entities that are
+instantiated at compile-time. They come with a set of formal parameters for
+types, variables, values, subprograms and packages. There are individual
+constraints on individual formal parameters and relational constraints between
+formal parameters, so that once the compiler has checked a generic entity, any
+instantiation with correct arguments will generate a compilable entity.
 
 \subsubsection{Object-Oriented Programming}
 
 Classes are known in Ada as tagged (record) types. Objects are values of tagged
 types. Methods are known as primitive operations, which can take their
 dispatching type in any position. When the first operand is the dispatching
-one, the usual object-dot-method syntax is allowed for calls.
+one, the usual object-dot-method notation is allowed for calls.
 
 An object can be considered either of type T, in which case there is no
 dispatching involved when calling a primitive operation of T, or of type
 T'Class, in which case all primitive operations on this object are dispatching.
 
-Interfaces can be defined which only introduce primitive operations, not
+Interfaces can be defined which only introduce primitive operations and no
 components.
 
 \subsubsection{Calling Conventions}
@@ -259,7 +266,7 @@ and \emph{in out}:
 The Ada standard does not rule out aliasing between parameters or between
 parameters and global variables accessed directly in general. However, the
 standard rules out any possible different behaviors which could arise from the
-compiler chosing to pass some parameters by-reference or by-copy, which would
+compiler choosing to pass some parameters by-reference or by-copy, which would
 lead to an ambiguous definition of a program. This is a theoretical rule that
 the compiler does not try to enforce, although GNAT will generate warnings for
 overlapping exported parameters, following the adoption of ``in out'' formal
@@ -294,17 +301,17 @@ programs using containers, as the validity of cursors is far simpler in this
 new model.
 
 Aspect specifications allow defining contracts for subprograms, a contract
-being a pair of a precondition (Pre) and a postcondition (Post). Special
-contracts can also be issued for overriding, so that an overriding subprogram
-can only weaken the inherited precondition and strengthen the inherited
-postcondition. The standard defines a general syntax for aspects which allows
-the definition of compiler-specific aspects, like the test-case aspect in GNAT
-described below. In the postcondition, attribute 'Old applied on a name
-indicates the value attached to this name at subprogram entry, and attribute
-'Result applied to the name of the current function indicates the result
-returned by this function. Preconditions and postconditions may be compiled
-into executable assertions if the right option is given to the compiler (-gnata
-in GNAT).  
+being a pair of a precondition (\verb|Pre|) and a postcondition
+(\verb|Post|). Special contracts can also be issued for overriding, so that an
+overriding subprogram can only weaken the inherited precondition and strengthen
+the inherited postcondition. The standard defines a general syntax for aspects
+which allows the definition of compiler-specific aspects, like the test-case
+aspect in GNAT described below. In the postcondition, attribute \verb|'Old|
+applied on a name indicates the value attached to this name at subprogram
+entry, and attribute \verb|'Result| applied to the name of the current function
+indicates the result returned by this function. Preconditions and
+postconditions may be compiled into executable assertions if the right option
+is given to the compiler (-gnata in GNAT).
 
 \begin{example}
 A contract for a square-root function is:
@@ -317,8 +324,8 @@ function Sqrt (X : Integer) return Integer with
 \end{verbatim}
 \end{example}
 
-Conditional expressions and case expressions allow the use of 'if' and 'case'
-in expressions, which simplifies specifications.
+Conditional expressions and case expressions allow the use of ``if'' and
+``case'' in expressions, which simplifies specifications.
 
 Parameterized expressions are a simple form of function definitions (or lambda
 expressions) allowed in the specification part of a package. In particular,
@@ -335,7 +342,7 @@ elements in a range or a container, or for some element in a range or a
 container.
 
 Type invariants express invariant properties of private types, which should be
-typically observed by any value of the type outside its package. However, the
+typically observed for any value of the type outside its package. However, the
 standard only defines specific points at which this property is checked on a
 value of the type, like entry and exit points of a subprogram. This does not
 enforce by itself that the property always holds.
@@ -346,25 +353,28 @@ invariants, the standard only defines specific points at which this property is
 checked.
 
 \subsection{GNAT-Specific Extensions}
+\label{sub:formal-containers}
 
-GNAT defines an aspect called Test\_Case, which applies to subprograms exactly
-like the standard Pre and Post. A test-case is an aggregate with exactly three
-components, all of which are compulsory:
-\begin{itemize}
-\item a Name component, of type string, which gives the name of the test-case;
-\item a Requires component, of type boolean, which defines the entry condition
-  for the test-case;
-\item an Ensures component, of type boolean, which defines the exit condition
-  for the test-case.
-\end{itemize}
+GNAT defines an aspect called \verb|Test\_Case|, which applies to subprograms
+exactly like the standard \verb|Pre| and \verb|Post|. A test-case is an
+aggregate with exactly three components, all of which are compulsory:
+\begin{enumerate}
+\item a \verb|Name| component, of type string, which gives the name of the
+  test-case;
+\item a \verb|Requires| component, of type boolean, which defines the entry
+  condition for the test-case;
+\item an \verb|Ensures| component, of type boolean, which defines the exit
+  condition for the test-case.
+\end{enumerate}
 
 A test-case (N,Req,Ens) is a part of the specification which indicates that
 under entry condition Req, the subprogram terminates with condition Ens. Thus,
-the Requires component bears much resemblance with the precondition, and the
-Ensures component bears much resemblance with the postcondition. Indeed, they
-share the same semantic restrictions (w.r.t. 'Old and 'Result).  More than one
-test-case can be defined for a subprogram. No two test-cases on a subprogram
-should have the same name.
+the \verb|Requires| component bears much resemblance with the precondition, and
+the \verb|Ensures| component bears much resemblance with the
+postcondition. Indeed, they share the same semantic restrictions
+(w.r.t. \verb|'Old| and \verb|'Result|).  More than one test-case can be
+defined for a subprogram. No two test-cases on a subprogram should have the
+same name.
 
 Contrary to preconditions and postconditions, test-cases are not compiled into
 executable assertions by the compiler. GNAT only checks that test-cases are
@@ -390,16 +400,11 @@ described in its contract. Typically, robustness tests deal with such abnormal
 behavior.
 
 For unit proof, it is sufficient to prove that the subprogram implements a
-special contract, with:
-\begin{itemize}
-\item the requires, optionally and'ed with the original precondition, as
-  precondition;
-\item the ensures as postcondition.
-\end{itemize}
-
-The original precondition should be and'ed with the requires for those
-test-cases which correspond to normal behavior, and the requires should be the
-only precondition for those test-cases which correspond to abnormal behavior.
+special contract, with 1) the requires, optionally and'ed with the original
+precondition, as precondition and 2) the ensures as postcondition.  The
+original precondition should be and'ed with the requires for those test-cases
+which correspond to normal behavior, and the requires should be the only
+precondition for those test-cases which correspond to abnormal behavior.
 
 \begin{example}
   A contract with test-cases for an integer square-root function is:
@@ -416,24 +421,31 @@ function Sqrt (X : Integer) return Integer with
                 Requires => X < 100, 
                 Ensures  => Sqrt'Result >= 0 and then 
                             Sqrt'Result < 10);
+  Test_Case => (Name     => "robustness test case",
+                Requires => X = -1, 
+                Ensures  => Sqrt'Result = 0),
 \end{verbatim}
 \end{example}
+
+GNAT introduces a new form of containers called the formal containers, to be
+used for proof of programs which manipulate containers. These are variants of
+Ada 2012 bounded containers, with a different API meant to facilitate proofs.
 
 \section{ALFA}
 
 ALFA is a sub-language of Ada 2012 which identifies which subprograms are fit
-for formal verification. ALFA does not work as an Ada profile, as the complete
-program does not need to be in ALFA for individual subprograms to be in
-ALFA. Rather, subprograms are in ALFA or not depending exclusively on their
-specification and body. In particular, the location in the source where a
+for formal verification. ALFA is not a profile, as defined in the Ada standard,
+as the complete program does not need to be in ALFA for individual subprograms
+to be in ALFA. Rather, subprograms are in ALFA or not depending exclusively on
+their specification and body. In particular, the location in the source where a
 subprogram is defined (inside a package or another subprogram, in the public or
-private part, etc.) should not influence whether it is in ALFA.
+private part, \etc) should not influence whether it is in ALFA.
 
 \subsection{ALFA Extensions}
 
-ALFA considers that the pragma Assert immediately at the start of a loop
-statement list have a special meaning. They define a loop-invariant for this
-loop, which is used for unit proof.  
+In ALFA, the pragma Assert immediately at the start of a loop body has a
+special meaning. It defines a loop-invariant for this loop, which is used for
+unit proof.
 
 \begin{example}
   The following implementation of the integer square-root function has a
@@ -455,34 +467,25 @@ end Sqrt;
 \end{verbatim}
 \end{example}
 
-The loop-invariant to be used for unit proof should be:
-\begin{itemize}
-\item true the first time the loop is entered;
-\item provable from assuming it at some previous iteration through the loop and
-  examining the effect of the loop body.
-\end{itemize}
-
-ALFA introduces a new form of containers called the formal containers, to be
-used for proof of programs which manipulate containers. These are a variant of
-bounded containers, with a different API meant to facilitate proofs.
+The loop-invariant to be used for unit proof should be 1) true the first time
+the loop is entered and 2) provable from assuming it at some previous iteration
+through the loop and examining the effect of the loop body.
 
 \subsection{ALFA Restrictions}
 
 In the following, we refer to entities in the program with the name of the
 corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
-subprogram body. As a general rule, an entity is in ALFA only if all its
+subprogram body. As a general rule, an entity is in ALFA only if all the
 sub-entities which define it are in ALFA. As an example, a
 \bnf{subprogram\_body} is defined in Ada BNF as:
 
-\begin{verbatim}
-subprogram_body ::=
-  [overriding_indicator]
-  subprogram_specification is
-    declarative_part
-  begin
-    handled_sequence_of_statements
-  end [designator];
-\end{verbatim}
+\hspace*{1cm}\bnf{subprogram\_body} ::=\\
+\hspace*{2cm}\lbrack\bnf{overriding\_indicator}\rbrack\\
+\hspace*{2cm}\bnf{subprogram\_specification} is\\
+\hspace*{3cm}  \bnf{declarative\_part}\\
+\hspace*{2cm}  begin\\
+\hspace*{3cm}    \bnf{handled\_sequence\_of\_statements}\\
+\hspace*{2cm}  end \lbrack\bnf{designator}\rbrack;\\
 
 Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
 \begin{itemize}
@@ -493,14 +496,14 @@ Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
 \item its \bnf{designator} (if present).
 \end{itemize}
 
-This general rule applies individually to every production rule in the BNF
+This general rule applies individually to all production rules in the BNF
 which define program entities. Thus, some production rules defining a
 non-terminal may be in ALFA while others for the same non-terminal are not in
 ALFA.
 
 The additional rules below further restrict which entities are in ALFA. These
 rules build on the report written by Marc Sango for his internship on the
-definition of a verification profile for Ada. 
+definition of a verification profile for Ada~\cite{Sango2010RR}. 
 
 \subsubsection{Lexical Elements}
 
@@ -519,7 +522,13 @@ All entities related to access types are not in ALFA:
 \item \bnf{access\_definition}.
 \end{itemize}
 
-\noindent
+Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
+containers, as it contains a pointer to the underlying container. The formal
+containers as described in Section~\ref{sub:formal-containers} define cursors
+that are in ALFA. Although the complete definition of formal containers may not
+be in ALFA by the rules described here, they are specially included in ALFA as
+a whole.
+
 [what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
 
 Note in particular that a \bnf{default\_expression} in a
@@ -530,10 +539,9 @@ a \bnf{component\_list}.
 
 An \bnf{identifier} or a \bnf{name} which has a corresponding declaration is in
 ALFA if-and-only-if its declaration is in ALFA. As a consequence, a call is in
-ALFA only if the declaration of the subprogram called is in ALFA.\\
+ALFA only if the declaration of the subprogram called is in ALFA. 
 
-\noindent
-[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]\\
+[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]
 
 All entities related to access types are not in ALFA:
 \begin{itemize}
@@ -544,23 +552,18 @@ All entities related to access types are not in ALFA:
 \item \bnf{allocator}.
 \end{itemize}
 
-Uses of the keywords \bnf{and}, \bnf{or} and \bnf{xor} are not in ALFA. Only
-the keywords for the lazy operations \bnf{and\ then} and \bnf{or\ else} are in
-ALFA.\\
+Operations \bnf{and}, \bnf{or} and \bnf{xor} on Boolean arguments are not in
+ALFA. The same operations on arrays of Boolean elements are in ALFA.  Only the
+lazy operations \bnf{and\ then} and \bnf{or\ else} on Boolean arguments are 
+in ALFA.
 
-An expression in ALFA which appears as part of an assertion must respect
-additional constraints, where an assertion is any of a pragma Assert, a
-precondition or postcondition, a type invariant or a subtype predicate:
-\begin{enumerate}
-\item it may contain calls to parameterized expressions, but no calls to
-  functions;
-\item it may contain uses of formal containers, but no uses of other
-  containers.
-\end{enumerate}
+Additionally, an expression in ALFA which appears as part of an assertion
+cannot contain calls to functions. Instead, it may contain contain calls to
+parameterized expressions. A precondition, a postcondition, a type invariant or
+a subtype predicate count as assertions.
 
 \subsubsection{Statements}
 
-\noindent
 \bnf{goto\_statement} is not in ALFA.
 
 Note in particular that all possible \bnf{exit\_statement} are in ALFA,
@@ -574,8 +577,8 @@ declaration and body are in ALFA. Additionally, the subprogram should have a
 postcondition attached to its declaration. The requirement that a subprogram
 has a postcondition ensures that the user states desired properties to prove on
 this subprogram, and that callers can rely on a precise indication of what this
-subprogram does. Of course, such a postcondition can be simply 'True' in which
-case the user chooses not to give any more precise information.
+subprogram does. Of course, such a postcondition can be simply \verb|True| in
+which case the user chooses not to give any more precise information.
 
 Note that \bnf{extended\_return\_statement} is in ALFA.
 
@@ -591,7 +594,7 @@ No special rules.
 \subsubsection{Tasks and Synchronisation}
 
 Most probably, the same restrictions as in RavenSPARK should be enforced for
-the sequential verification to apply to the concurrent code.
+the sequential verification results to apply to concurrent code.
 
 \subsubsection{Program Structure and Compilation Issues}
 
@@ -606,6 +609,8 @@ All entities related to exception handling are not in ALFA:
 \item \bnf{exception\_choice}.
 \end{itemize}
 
+However, defining exceptions and raising exceptions are in ALFA.
+
 \subsubsection{Generic Units}
 
 No special rules.
@@ -615,37 +620,81 @@ No special rules.
 [To be discussed.]
 
 \section{Formal Verification}
+\label{sec:formal-verification}
+
+We target three types of formal verification goals:
+\begin{enumerate}
+\item Data-flow verification (DFV) ensures that there are no reads of
+  uninitialized data, and that there is no possible unintended aliasing.
+\item Contract verification (CV) ensures that subprograms respect their
+  contract.
+\item Verification of absence of run-time errors (RTE) ensures that subprograms
+  are free from most types of run-time errors.
+\end{enumerate}
 
 All of data-flow verification, contract verification and verification of
-absence of run-time errors can be performed independently. The results of
-contract verification and verification of absence of run-time errors are only
-valid if data-flow is correct, which in practice means that data-flow
-verification should be performed as a pre-requisite.
+absence of run-time errors can be performed independently. However, there is a
+natural ordering which arises from the logical dependencies between them: 
+\begin{center}
+  DFV $<$ CV $<$ RTE
+\end{center}
+
+Indeed, the results of CV are valid only if DFV is verified, and the results of
+RTE are valid only if DFV and RTE are verified. In practice, this means that
+DFV, CV and RTE should be usually performed in this order.
 
 \subsection{Data-Flow Verification}
 
-The \bnf{mode} part of a \bnf{parameter\_specification} has a stronger
-semantics in ALFA than in Ada, similar to what is found in SPARK:
-\begin{itemize}
-\item a \bnf{parameter\_specification} of mode \bnf{in} must be initialized at
-  subprogram entry, and there must exist at least one syntactic path through
-  the subprogram which reads it;
-\item a \bnf{parameter\_specification} of mode \bnf{out} must be initialized on
-  all syntactic paths through the subprogram before reaching subprogram exit;
-\item a \bnf{parameter\_specification} of mode \bnf{in\ out} must be initialized
-  at subprogram entry, and there must exist at least one syntactic path through
-  the subprogram which assigns to it before reaching subprogram exit.
-\end{itemize}
+Data-flow verification should be performed as a static analysis, similar to
+what the Examiner does for SPARK code. However, we aim at finer-grain data-flow
+verification than the one provided in SPARK. Instead of considering entire
+variables, we consider components of aggregate variables as the elementary
+entities whose initialization should be tracked.
 
-Reads of variables are only allowed if all syntactic paths through the
-subprogram before reaching the read do initialize the complete aggregate object
-from which a part is read. This restriction is similar to the SPARK one. It
-applies both to local variables and parameters.
+\begin{example}
+\label{ex:component-init}
+  The following is not allowed in SPARK, as \verb|Zero_X| and \verb|Zero_Y|
+  only initialize part of a \verb|Point|. It should be allowed in ALFA.
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+procedure Zero_X (P : in out Point) is begin P.X := 0; end Zero_X;
+procedure Zero_Y (P : in out Point) is begin P.Y := 0; end Zero_X;
+
+procedure Zero (P : out Point) is
+begin
+   Zero_X (P); Zero_Y (P);
+end Zero;
+\end{verbatim}
+\end{example}
+
+We draw a distinction between external subprograms and internal
+subprograms. External subprograms are those subprograms for which we do not
+know all the calling contexts, such as library-level subprograms, either
+defined as such or declared inside library-level package
+specifications. Internal subprograms are subprograms for which we do know all
+the calling contexts, such as local subprograms whose address is not taken.
+Data-flow verification of external subprograms in ALFA should assume that all
+parameters and globals read are initialized at subprogram entry, and it should
+check that the subprogram initializes the parameters and globals written on all
+syntactic program paths. Data-flow verification of internal subprograms should
+do the same at the component level.
+
+\begin{example}
+  Data-flow verification on \verb|Zero_X| and \verb|Zero_Y| as defined in
+  Example~\ref{ex:component-init} should succeed if they are defined as
+  internal subprograms, and fail if they are defined as external subprograms.
+  Data-flow verification on \verb|Zero| should succeed in both cases.
+\end{example}
+
+Reads of components of local variables are only allowed if all syntactic paths
+through the subprogram before reaching the read do initialize completely the
+corresponding component which is read. This restriction is similar to the SPARK
+one, except ot applies to components of variables instead of entire variables.
 
 [need expansion of what is a data-flow error, regarding useless computations]
 
 Aliasing between parameters and globals accessed by a subprogram is forbidden,
-unless all aliasing paramaters and globals are read. This restriction is
+unless all aliasing parameters and globals are read. This restriction is
 similar to the SPARK one.
 
 \subsection{Contract Verification}
@@ -665,7 +714,23 @@ assuming that the subprograms it calls do respect their contracts and that they
 are free from run-time errors, which includes a possible recursive call (in
 which case the assumption is made only for the recursive call).
 
-\section{Translation to SPARK / Why}
+\subsection{Verification Modes}
+
+Since contract verification and verification of absence of run-time errors are
+independent verification objectives, which require different (although
+compatible) choices during the translation.  Therefore, we define three modes
+for the translation:
+\begin{enumerate}
+\item mode CV for contract verification;
+\item mode RTE for verification of absence of run-time errors;
+\item mode CV+RTE for combined contract verification and verification of
+  absence of run-time errors.
+\end{enumerate}
+
+In all three modes, the 
+
+
+\section{Translation to SPARK/Why}
 
 A subprogram in ALFA should be translated into an intermediate representation
 in SPARK or in Why. From this representation, the Examiner or Why tools can
@@ -881,7 +946,7 @@ function Get (A : My_Array; X : Integer) return Element;
 \end{verbatim}
 \end{example}
 
-\subsection{Translation From Ada to Unambiguous Ada}
+\subsection{From Ada to Unambiguous Ada}
 
 Ada functions may write global variables, so that the compiler choice of
 evaluation order for expressions may influence the result. Whatever it is, this
@@ -915,7 +980,31 @@ associativity.
   The expression \verb|X + Y + Z| should be translated into \verb|(X + Y) + Z|.
 \end{example}
 
-\subsection{Translation From Unambiguous Ada to Expanded Ada}
+\subsection{From Unambiguous Ada to Expanded Ada}
+
+The two verifications should be performed independently, first because the user
+may be interested in only one of these, second because we will aim at contract
+verification through Why and verification of absence of run-time errors through
+SPARK. The two are nonetheless related, which raises questions as to what is
+assumed for each verification, so that performing both effectively gives
+assurance that contracts are verified and there are no possible run-time
+errors.
+
+On the one hand, both types of verification depend on contracts and
+intermediate assertions (loop-invariants and other assertions). For example,
+loop-invariants usually contain information on the range of values, which are
+both used for proving absence of run-time error and functional
+properties. Thus, contracts and intermediate assertions should be assumed for
+verification of absence of run-time errors. On the other hand, proving
+contracts and intermediate assertions can be performed without assuming absence
+of run-time errors. Indeed, what is proved in this case is that, provided there
+are no run-time errors, the contracts and intermediate assertions hold.
+
+Thus, the translation should be different for contract verification and for
+verification of absence of run-time errors. 
+
+% We denote the former as \why
+% (translation to Why) and the latter as \spark (translation to SPARK).
 
 The GNAT front-end defines an expansion phase which simplifies the work needed
 in subsequent phases:
@@ -925,7 +1014,7 @@ in subsequent phases:
 \item \etc [add some more here]
 \end{itemize}
 
-\subsection{Generation of Data-Flow Annotations}
+\subsection{Computing the Frame Condition}
 \label{sub:data-flow}
 
 \subsubsection{Variable Paths}
@@ -1158,33 +1247,7 @@ data-flow contracts for local variable paths. Only the absence of any read to
 some local variable path will be detected and displayed as an error, which is
 safe to do.
 
-\subsection{Contract Verification and Verification of Absence of Run-Time Errors}
-
-The two verifications should be performed independently, first because the user
-may be interested in only one of these, second because we will aim at contract
-verification through Why and verification of absence of run-time errors through
-SPARK. The two are nonetheless related, which raises questions as to what is
-assumed for each verification, so that performing both effectively gives
-assurance that contracts are verified and there are no possible run-time
-errors.
-
-On the one hand, both types of verification depend on contracts and
-intermediate assertions (loop-invariants and other assertions). For example,
-loop-invariants usually contain information on the range of values, which are
-both used for proving absence of run-time error and functional
-properties. Thus, contracts and intermediate assertions should be assumed for
-verification of absence of run-time errors. On the other hand, proving
-contracts and intermediate assertions can be performed without assuming absence
-of run-time errors. Indeed, what is proved in this case is that, provided there
-are no run-time errors, the contracts and intermediate assertions hold.
-
-Thus, the translation should be different for contract verification and for
-verification of absence of run-time errors. 
-
-% We denote the former as \why
-% (translation to Why) and the latter as \spark (translation to SPARK).
-
-\subsection{Translation From Expanded Ada to Extended SPARK}
+\subsection{From Expanded Ada to Extended SPARK}
 
 Additional copied may be introduced (extended returns, etc.)
 
@@ -1369,13 +1432,13 @@ Various translations remove entities not defined in SPARK and/or in Why:
 
 \subsubsection{Representation Issues}
 
-\subsection{End of Translation From Extended SPARK to SPARK}
+\subsection{From Extended SPARK to SPARK}
 
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
 
-\subsection{End of Translation From Extended SPARK to Why}
+\subsection{From Extended SPARK to Why}
 
 from intermediate SPARK code in a reduced subset of SPARK
 
