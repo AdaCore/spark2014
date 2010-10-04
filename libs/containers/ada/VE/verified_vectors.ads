@@ -44,7 +44,7 @@ generic
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
 package Verified_Vectors is
-   pragma Pure;
+   --pragma Pure;
 
    subtype Extended_Index is Index_Type'Base
      range Index_Type'First - 1 ..
@@ -320,6 +320,10 @@ package Verified_Vectors is
 
    end Generic_Sorting;
 
+   function Left (Container : Vector; Position : Cursor) return Vector;
+
+   function Right (Container : Vector; Position : Cursor) return Vector;
+
 private
 
    pragma Inline (First_Index);
@@ -352,7 +356,7 @@ private
       Plain : Plain_Access := new Plain_Vector (Capacity);
       K : Kind := Verified_Vectors.Plain;
       First : Count_Type := 0;
-      Last : Index_Type := Index_Type'First;
+      Last : Index_Type'Base := No_Index;
    end record;
 
    use Ada.Streams;

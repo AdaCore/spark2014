@@ -32,6 +32,8 @@
 with Ada.Containers.Generic_Array_Sort;
 with System; use type System.Address;
 
+with Ada.Text_IO;
+
 package body Verified_Vectors is
 
    type Int is range System.Min_Int .. System.Max_Int;
@@ -117,7 +119,7 @@ package body Verified_Vectors is
 
                LE : Elements_Array (1 .. Length(Left)) := Left.Plain.Elements (LFst .. LLst);
 
-               RE : Elements_Array renames Right.Plain.Elements (1 .. Length(Right));
+               RE : Elements_Array renames Right.Plain.Elements (RFst .. RLst);
 
                Capacity : constant Count_Type := Length(Left) + Length(Right);
 
@@ -653,7 +655,7 @@ package body Verified_Vectors is
    begin
 
       if Position.Valid then
-         if Position.Index > Container.Plain.Last then
+         if Position.Index > Last_Index(Container) then
             raise Program_Error with "Position index is out of range";
          end if;
       end if;
@@ -1513,6 +1515,31 @@ package body Verified_Vectors is
    end Length;
 
    ----------
+   -- Left --
+   ----------
+
+   function Left (Container : Vector; Position : Cursor) return Vector is
+	Fst : Count_Type;
+   begin
+      if Container.K = Plain then
+         Fst := 1;
+      else
+         Fst := Container.First;
+      end if;
+
+      if not Position.Valid then
+         return (Container.Capacity, Container.Plain, Part, Fst, Last_Index(Container));
+      end if;
+
+      if Position.Index > Last_Index(Container) then
+         raise Constraint_Error with
+           "Before index is out of range (too large)";
+      end if;
+
+      return (Container.Capacity, Container.Plain, Part, Fst, (Position.Index - 1));
+   end Left;
+
+   ----------
    -- Move --
    ----------
 
@@ -1949,6 +1976,36 @@ package body Verified_Vectors is
 
       B := B - 1;
    end Reverse_Iterate;
+
+   -----------
+   -- Right --
+   -----------
+
+   function Right (Container : Vector; Position : Cursor) return Vector is
+	Fst : Count_Type;
+   begin
+      if Container.K = Plain then
+         Fst := 1;
+      else
+         Fst := Container.First;
+      end if;
+
+      if not Position.Valid then
+         return (Container.Capacity, Container.Plain, Part, Fst, No_Index);
+      end if;
+
+      if Position.Index > Last_Index(Container) then
+         raise Constraint_Error with
+           "Position index is out of range (too large)";
+      end if;
+
+      Fst := Fst + Count_Type(Int(Position.Index) - Int(No_Index)) - 1;
+
+      --Ada.Text_IO.Put_Line(Count_Type'Image(Fst));
+
+      return (Container.Capacity, Container.Plain, Part, Fst,
+              (Last_Index(Container) - Position.Index + 1));
+   end Right;
 
    ----------------
    -- Set_Length --
