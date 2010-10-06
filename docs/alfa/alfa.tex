@@ -5,7 +5,9 @@
 \usepackage{xspace}
 \usepackage{url}
 
-\title{ALFA: Annotated Language of Functions in Ada}
+\newcommand{\version}{0.1}
+
+\title{ALFA v\version:\\Annotated Language of Functions in Ada}
 
 \usepackage{color}
 
@@ -441,6 +443,9 @@ their specification and body. In particular, the location in the source where a
 subprogram is defined (inside a package or another subprogram, in the public or
 private part, \etc) should not influence whether it is in ALFA.
 
+ALFA is expected to be extended to support more Ada programs, the current
+version described in this document is version \version.
+
 \subsection{ALFA Extensions}
 
 In ALFA, the pragma Assert immediately at the start of a loop body has a
@@ -507,7 +512,12 @@ definition of a verification profile for Ada~\cite{Sango2010RR}.
 
 \subsubsection{Lexical Elements}
 
-No special rules.
+ALFA only supports the Latin-1 Character Set, not the full Universal Character
+Set (ISO/IEC 10646:2003) supported by Ada.
+
+Based forms of real literals are not in ALFA.
+
+[what about pragmas?]
 
 \subsubsection{Declarations}
 
@@ -522,12 +532,27 @@ All entities related to access types are not in ALFA:
 \item \bnf{access\_definition}.
 \end{itemize}
 
+All entities related to fixed-point types are not in ALFA:
+\begin{itemize}
+\item \bnf{fixed\_point\_definition};
+\item \bnf{ordinary\_fixed\_point\_definition};
+\item \bnf{decimal\_fixed\_point\_definition};
+\item \bnf{digits\_constraint};
+\item \bnf{delta\_constraint}.
+\end{itemize}
+
 Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
 containers, as it contains a pointer to the underlying container. The formal
 containers as described in Section~\ref{sub:formal-containers} define cursors
 that are in ALFA. Although the complete definition of formal containers may not
 be in ALFA by the rules described here, they are specially included in ALFA as
 a whole.
+
+All entities related to interfaces are not in ALFA:
+\begin{itemize}
+\item \bnf{interface\_type\_definition};
+\item \bnf{interface\_list}.
+\end{itemize}
 
 [what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
 
@@ -557,6 +582,29 @@ ALFA. The same operations on arrays of Boolean elements are in ALFA.  Only the
 lazy operations \bnf{and\ then} and \bnf{or\ else} on Boolean arguments are 
 in ALFA.
 
+Quantified expressions are in ALFA only if they appear in predicate position,
+that is, at the top-level of the boolean structure of an expression used in
+assertions.
+
+\begin{example}
+\label{ex:alfa-quantifiers}
+The following quantified expression appearing in predicate position is in ALFA:
+\begin{verbatim}
+procedure P with Pre => (for all X in Index => Prop (X));
+\end{verbatim}
+
+The following quantified expression appearing in term position is not in ALFA:
+\begin{verbatim}
+procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
+\end{verbatim}
+
+The following quantified expression appearing in program position is not in
+ALFA:
+\begin{verbatim}
+B : Boolean := (for all X in Index => Prop (X));
+\end{verbatim}
+\end{example}
+
 Additionally, an expression in ALFA which appears as part of an assertion
 cannot contain calls to functions. Instead, it may contain contain calls to
 parameterized expressions. A precondition, a postcondition, a type invariant or
@@ -580,7 +628,7 @@ this subprogram, and that callers can rely on a precise indication of what this
 subprogram does. Of course, such a postcondition can be simply \verb|True| in
 which case the user chooses not to give any more precise information.
 
-Note that \bnf{extended\_return\_statement} is in ALFA.
+\bnf{extended\_return\_statement} is not in ALFA.
 
 \subsubsection{Package Specifications and Declarations}
 
@@ -760,10 +808,11 @@ we will rely on the compiler to insert the proper checks, which translate in
 SPARK as assertions, for which it also generate VCs. The benefits of this
 approach are that 1) the compiler controls which run-time checks should be
 proved, which can be modified on option, and reduced to fewer checks if the
-compiler is able to prove some of them; 2) the same process applies to checks
-that SPARK would generate and checks that SPARK does not know about, because
-they originate in language constructs that are not in SPARK; 3) the same checks
-are generated whatever the proof chain used, through SPARK or through Why.
+compiler is able to prove some of them (typically for checks that deal with
+type checking constraints); 2) the same process applies to checks that SPARK
+would generate and checks that SPARK does not know about, because they
+originate in language constructs that are not in SPARK; 3) the same checks are
+generated whatever the proof chain used, through SPARK or through Why.
 
 \subsection{Verification Modes}
 
@@ -1029,6 +1078,9 @@ X := Tmp1 + Tmp4;
 \end{verbatim}
 \end{example}
 
+To simplify further passes, array concatenation \verb|&| should be replaced at
+this stage by equivalent concatenation functions, and treated as such.
+
 Likewise, Ada arithmetic expressions may be reordered by the compiler when not
 enough parenthesized, so the translation will introduce the necessary
 parentheses which force the natural evaluation order given by operators
@@ -1046,6 +1098,7 @@ subsequent phases:
 \begin{itemize}
 \item it unfolds all aggregate initializations;
 \item it makes all checks for run-time errors explicit;
+\item it removes renamings;
 \item \etc [add some more here]
 \end{itemize}
 
@@ -1056,11 +1109,21 @@ This concerns discrete subtypes with dynamic bounds and array types with
 dynamic bounds. Parameters of array type with dynamic bounds should be
 translated into three parameters: one for the array and two for the bounds.
 
+Whenever a subprogram has an in-variable of such a type with dynamic bounds, an
+additional precondition should be generated stating that the variable is within
+bounds.  Whenever a subprogram has an out-variable of such a type with dynamic
+bounds, an additional postcondition should be generated stating that the
+variable is within bounds.
+
 Each discriminant of a record type should be translated into a normal
 component. When this discriminant controls a variant, all components of the
 different cases should be added as components of the record. When this
 discriminant controls the size of an array, this array component should be
 translated like an array with dynamic bounds.
+
+Declarations of generic entities should be instantiated for each generic
+instantiation in the program. Bodies of generic entities should be kept not
+instantiated, so that each generic body is verified only once.
 
 \subsection{Computing the Frame Condition}
 \label{sub:data-flow}
@@ -1310,13 +1373,19 @@ As a general remark, the translation should be free to introduce copies of any
 values (for example to translate extended returns), which should not have any
 effect on the validity of the proofs.
 
-\subsubsection{Lexical Elements}
-
-Ada uses the Universal Character Set (ISO/IEC 10646:2003) whereas SPARK/Why use
-only the full Latin-1 set. Identifiers outside the Latin-1 set should therefore
-be translated.
-
 \subsubsection{Declarations}
+
+An abstract subprogram declaration should be translated into a normal
+subprogram declaration, as the constraint that such subprograms are not defined
+is a compile-time constraint checked by the compiler.
+
+A null subprogram declaration should be translated into a normal subprogram
+declaration and a body with a single null statement. [unless SPARK defines null
+procedures as a way to specify axioms or lemmas at the source level, see
+J925-004]
+
+Incomplete type declarations should be dropped, as they are redundant with the
+corresponding complete type declarations.
 
 Each variable should be translated into a set of variables, one for each
 variable path as defined in Section~\ref{sub:variable-path}. This applies also
@@ -1389,12 +1458,128 @@ Translation of statements is delayed until final translation to SPARK/Why. [in
 particular, translation of arbitrary exit and return statements to SPARK is not
 solved. It is ok in Why.]
 
+\paragraph{Return Statements} 
+
+SPARK mandates that procedures do not contain return statements, and that
+functions contain a single return statement as last statement. 
+
+Thus, all return
+statements of a procedure \verb|P| should be translated into calls to a local
+procedure \verb|P_Return| which:
+\begin{enumerate}
+\item \label{it:no-param} takes no parameters;
+\item \label{it:in-globals} has the out-parameters and out-globals of \verb|P|
+  as in-globals;
+\item \label{it:out-globals} has the local variables of \verb|P| as out-globals;
+\item \label{it:pre} has the postcondition of \verb|P| as precondition;
+\item \label{it:in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:in-globals}) ensures that at the calling point of \verb|P_Return|, all
+out-variables of \verb|P| are initialized. (\ref{it:out-globals}) ensures that
+no flow error will be generated due to some (locally dead) path through this
+call not initializing some local variables. (\ref{it:pre}) ensures that at the
+calling point of \verb|P_Return|, the postcondition of \verb|P|
+holds. (\ref{it:in-globals-more}) adds the variables mentioned in the
+precondition of \verb|P_Return| as in-globals, which is compulsory in SPARK.
+(\ref{it:post}) ensures that any path through this call is considered as a dead
+path when proving VCs.
+
+\begin{example}
+  Take procedure \verb|P| with local variable V, which should be declared in
+  SPARK as:
+\begin{verbatim}
+procedure P (X : in T; Y : out T; Z : in out T);
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# post Prop (X, Z~, B);
+\end{verbatim}
+Any return statement in \verb|P| should be translated into a call to local
+procedure \verb|P_Return|, declared as:
+\begin{verbatim}
+procedure P_Return;
+--# global in     Y, B,      --  out-variables of P
+--#               X, Z_Old;  --  added because used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B);
+--# post False;
+\end{verbatim}
+where \verb|Z_Old| is a variable declared to hold the value of \verb|Z| at the
+entry to \verb|P|.
+\end{example}
+
+Likewise, a return statement of a function \verb|F| which is not the final
+return statement should be translated into an assignment of the returned value
+to a new local variable \verb|F_Result| followed by a call to a local procedure
+\verb|F_Return| which:
+\begin{enumerate}
+\item \label{it:fn-no-param} takes no parameters;
+\item \label{it:fn-in-globals} has the out-parameters and out-globals of
+  \verb|F| as in-globals;
+\item \label{it:fn-out-globals} has the local variables of \verb|F| as
+  out-globals;
+\item \label{it:fn-pre} has the postcondition of \verb|F| as precondition;
+\item \label{it:fn-in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:fn-post} has \verb|False| as postcondition.
+\end{enumerate}
+These conditions provide the same guarantees than in the procedure
+case. Additionally, a statement returning \verb|Result| should be inserted as
+final statement if no final return statement is present. This will lead to a
+flow error if-and-only-if there is a path which can reach the exit of the
+function without a return statement.
+
+\begin{example}
+  Take function \verb|F| with local variable V, which would be declared in
+  pseudo-SPARK as:
+\begin{verbatim}
+function F (X : in T; Y : out T; Z : in out T) return Integer;
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# return Res => Prop (X, Z~, B, Res);
+\end{verbatim}
+  Any non-terminal return statement in \verb|F| should be translated into an
+  assignment to \verb|F_Result| followed by a call to local procedure
+  \verb|F_Return|, declared as:
+\begin{verbatim}
+procedure F_Return;
+--# global in     Y, B,                --  out-variables of P
+--#               F_Result, X, Z_Old;  --  used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B, Res);
+--# post False;
+\end{verbatim}
+\end{example}
+
+\paragraph{Raise Statements} 
+
+Raising an exception is very similar to returning from a subprogram, except the
+postcondition and data-flow contract do not have to be respected in this case.
+
+Thus, all raise statements in a subprogram \verb|S| should be translated into
+calls to a local procedure \verb|S_Raise| which:
+\begin{enumerate}
+\item \label{it:exc-no-param} takes no parameters;
+\item \label{it:exc-out-globals} has the local variables of \verb|S| as
+  out-globals;
+\item \label{it:exc-post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
+some (locally dead) path through this call not initializing some local
+variables. (\ref{it:exc-post}) ensures that any path through this call is
+considered as a dead path when proving VCs.
+
 \subsubsection{Subprograms}
 
-For each global variable of mode ``in'', it may be necessary to add a
-precondition to the subprogram which asserts the implicit corresponding type
-invariant, when the original type for this variable has a dynamic flavor
-(subtype with dynamic bounds, discriminant record).
+\paragraph{Parameters} 
+
+For each global variable of mode ``in'', it may be
+necessary to add a precondition to the subprogram which asserts the implicit
+corresponding type invariant, when the original type for this variable has a
+dynamic flavor (subtype with dynamic bounds, discriminant record).
 
 \begin{example}
 The parameter \verb|X| below has a type with dynamic bounds:
@@ -1535,7 +1720,9 @@ corresponding instantiated subprograms are called.
 Ada derived scalar types should be translated into SPARK subtypes. Indeed,
 after the front-end has checked that derived types are properly used and after
 overloading has been resolved, the constraints respected by a derived type are
-the same as those respected by a subtype with the same bounds.
+the same as those respected by a subtype with the same bounds. Notice that this
+may require that new packages are withed to make inherited primitive operations
+for the parent type available.
 
 \subsubsection{Expressions}
 
@@ -1642,7 +1829,7 @@ A := update (!A, J, tmp);
 
 \paragraph{Slices}
 
-[still not knwn]
+[still not known]
 
 \paragraph{If Expressions} Ada if-expressions should be translated into Why
 if-expressions.
@@ -1652,52 +1839,19 @@ should be translated into Why pattern-matching expressions. Ada
 case-expressions over a discrete type which is not enumerated should be
 translated as a series of if-expressions.
 
-\paragraph{Quantified Expressions} A quantified expression should be translated
-differently in Why depending on the location where it appears in the generated
-Why code:
-\begin{itemize}
-\item in predicate position, it should be translated into the corresponding
-  predicate in Why (\verb|for all| in Ada becomes \verb|forall| in Why;
-  \verb|for some| in Ada becomes \verb|exists| in Why);
-\item in term position, it should be translated into a temporary boolean
-  binding whose value is contrained to be true whenever the predicate holds,
-  which requires hosting this equivalence as the left part of an implication in
-  the closest enclosing predicate;
-\item in program position, it should be translated into a temporary boolean
-  binding whose value is contrained to be true whenever the predicate holds,
-  which requires hosting this equivalence as a postcondition of a hidden
-  expression in the closest enclosing unit-valued expression.
-\end{itemize}
+\paragraph{Quantified Expressions} A quantified expression in Ada should be
+translated into the corresponding logic proposition in Why (\verb|for all| in
+Ada becomes \verb|forall| in Why; \verb|for some| in Ada becomes \verb|exists|
+in Why). A quantified expression over integer ranges tran
 
 \begin{example}
-When appearing in predicate position:
+The quantified expresssion shown in Example~\ref{ex:alfa-quantifiers}:
 \begin{verbatim}
-procedure P with Pre => (for all X in Index => Prop (X));
+for all X in Index => Prop (X)
 \end{verbatim}
-the quantified expression should be translated into a predicate:
+translates into the following predicate:
 \begin{verbatim}
 forall X : Index. Prop (X)
-\end{verbatim}
-
-When appearing in term position:
-\begin{verbatim}
-procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
-\end{verbatim}
-the quantified expression should be translated into an equivalence:
-\begin{verbatim}
-let tmp = any_bool() in
-(tmp = true <-> forall X : Index. Prop (X)) -> if tmp then Y
-\end{verbatim}
-
-When appearing in program position:
-\begin{verbatim}
-B : Boolean := (for all X in Index => Prop (X));
-\end{verbatim}
-the quantified expression should be translated into a hidden expression:
-\begin{verbatim}
-let tmp = any_bool() in
-[ {} bool { tmp = true <-> forall X : Index. Prop (X) } ];
-B := tmp
 \end{verbatim}
 \end{example}
 
