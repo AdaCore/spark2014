@@ -1,9 +1,11 @@
+include "real.why" 
+
 (*** TYPES ***)
 
 type cursor
-type map
-type element_t
 type key_t
+type element_t
+type map
 
 logic no_element : cursor
 logic empty_ : map
@@ -18,7 +20,13 @@ axiom length_gte_zero :
 
 (*** EQUIVALENCE BETWEEN ELEMENTS ***)
 
-logic witness : key_t -> int
+logic witness : key_t -> real
+
+logic lt_ : key_t, key_t -> bool
+
+axiom lt_witness :
+      forall k1 : key_t. forall k2 : key_t [lt_(k1,k2)].
+      	     lt_ (k1, k2) = true <-> witness (k1) < witness (k2)
 
 (*** POSITION ***)
 
@@ -104,15 +112,15 @@ logic key_ : map, cursor -> key_t
 
 
 (*** FIND ***)
-logic find_ : map, int -> cursor
+logic find_ : map, real -> cursor
 
-predicate find__ (co:map,i:int,cu:cursor) =
+predicate find__ (co:map,i:real,cu:cursor) =
 	  ((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> witness(key_(co,cun))<>i))
 	  or (position_(co,cu)>0 and witness(key_(co,cu))=i
 	  and (forall cun:cursor. position_(co,cu)<>position_(co,cun) -> witness(key_(co,cun))<>i)))
 
 axiom find_find_val :
-      forall co:map. forall i:int.
+      forall co:map. forall i:real.
 	     find__(co,i,find_(co,i)) and
 	     (is_empty_(co) -> find_(co,i)=no_element)
 
@@ -130,7 +138,7 @@ logic element_ : map, cursor -> element_t
 
 (*** ELEMENT__ ***)
 
-function element__ (m:map,i:int) : element_t =
+function element__ (m:map,i:real) : element_t =
 	 element_(m,find_(m,i))
 
 (*** LEFT ***)
@@ -144,7 +152,7 @@ predicate left_pos (co:map,i:int,col:map) =
 	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
 
 predicate left_find (co:map,i:int,col:map) =
-	  forall w:int.
+	  forall w:real.
 	    0<position_(co,find_(co,w))<i or position_(col,find_(col,w))>0 ->
 	    find_(co,w)=find_(col,w)
 
@@ -172,7 +180,7 @@ predicate right_pos (co:map,i:int,cor:map) =
 	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
 
 predicate right_find (co:map,i:int,cor:map) =
-	  forall w:int.
+	  forall w:real.
 	    0<i<=position_(co,find_(co,w)) or position_(cor,find_(cor,w))>0 ->
 	    find_(co,w)=find_(cor,w)
 
@@ -201,7 +209,7 @@ predicate replace_ (co1:map,k:key_t,e:element_t,co2:map) =
 	  	 position_(co2,cun)=position_(co1,cun) and
 		 (not cun=find_(co1,witness(k)) -> key_(co2,cun)=key_(co1,cun) and
 		      element_(co2,cun)=element_(co1,cun))) and
-	  (forall w:int.
+	  (forall w:real.
 	  	  find_(co1,w)=find_(co2,w))
 
 (*** REPLACE_ELEMENT ***)		 
@@ -215,14 +223,14 @@ predicate replace_element_ (co1:map,cu:cursor,e:element_t,co2:map) =
 		 (position_(co1,cun)>0 -> 
 		 	key_(co2,cun)=key_(co1,cun) and
 		        (cu<>cun -> element_(co2,cun)=element_(co1,cun)))) and
-	  (forall w:int.
+	  (forall w:real.
 	  	  find_(co1,w)=find_(co2,w))
 
 (*** CEILING ***)
 
-logic ceiling : map, int -> cursor
+logic ceiling : map, real -> cursor
 
-predicate is_ceiling (s:map, i:int, cu:cursor) =
+predicate is_ceiling (s:map, i:real, cu:cursor) =
 	  (cu=no_element or position_(s,cu)>0) and
 	  (cu=no_element ->
 	    (is_empty_(s) or witness(key_(s,last_(s)))<i)) and
@@ -232,13 +240,13 @@ predicate is_ceiling (s:map, i:int, cu:cursor) =
 	    (cu=first_(s) or not cu=first_(s) and witness(key_(s,last_(left_(s,cu))))<i)))
 
 axiom ceiling_is_ceiling :
-      forall s:map. forall i:int [ceiling(s,i)].
+      forall s:map. forall i:real [ceiling(s,i)].
       	     is_ceiling(s,i,ceiling(s,i))
 
 (*** INSERT ***)
 
 predicate insert_find (co1:map,k:key_t,co2:map) =
-	  forall i:int.
+	  forall i:real.
 	    (i<>witness(k) -> find_(co1,i)=find_(co2,i)) 
 
 predicate insert_pos (co1:map,k:key_t,co2:map) =
@@ -276,7 +284,7 @@ axiom insert_find_nl :
 (*** DELETE ***)
 
 predicate delete_find (co1:map,k:key_t,co2:map) =
-	  forall w:int.
+	  forall w:real.
 	    (witness(k)<>w -> find_(co1,w)=find_(co2,w)) and
 	    (witness(k)=w -> find_(co2,w)=no_element)
 
@@ -330,11 +338,11 @@ predicate has_element_(co:map, cu:cursor) =
 
 (*** CONTAINS ***)
 
-predicate contains_ (co:map,i:int) =
+predicate contains_ (co:map,i:real) =
 	  position_(co,find_(co,i))>0 
 
 axiom empty_contains :
-     forall s:map [is_empty_(s)]. (forall i:int. not contains_(s,i)) -> is_empty_(s)
+     forall s:map [is_empty_(s)]. (forall i:real. not contains_(s,i)) -> is_empty_(s)
 
 (*** EQUAL ***)
 
@@ -347,7 +355,7 @@ predicate equal_ (co1:map,co2:map) =
 (*** EQUIVALENT ***)
 
 predicate equivalent_ (co1:map,co2:map) =
-	  (forall i:int.
+	  (forall i:real.
 	  	 contains_(co1,i) -> contains_(co2,i) and
 		 element__(co1,i)=element__(co2,i)) and
 		 length_(co1)=length_(co2)
@@ -360,7 +368,7 @@ axiom equivalent_sym :
 (*** OVERLAP ***)
 
 predicate no_overlaping (co1:map, co2:map) =
-	  forall i:int. not contains_(co1,i) or not contains_(co2,i)
+	  forall i:real. not contains_(co1,i) or not contains_(co2,i)
 
 (*** PARAMETERS ***)
 

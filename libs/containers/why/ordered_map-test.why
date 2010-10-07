@@ -3,21 +3,22 @@ include "ordered_map.why"
 (* Everything works with alt-ergo (-redondance or not it depends) in 60s,
    except :
    	  - two goals, right_equal and right_equal_next, which are not proved in 30min
-	  - two goals contains_left and insert_has_element, which are proved in 15min
+	  - three goals contains_left, delete_last and insert_has_element, which are proved in 15min
    	  - two VC's of test_new_position which take less than 10min
    	  - one VC of test12 and test22 which take less than 4min
+	  - one VC of test11 which takes less than 90s
    	  - one VC of test_max which takes less than 90s. *)
 
 (* GOALS *)
 
 goal contains_insert :
      forall l1:map. forall l2:map. forall k:key_t. forall e:element_t.
-     forall i:int [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
+     forall i:real [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
      	    insert_(l1,k,e,l2) -> contains_(l2,i) -> i=witness(k) or contains_(l1,i)
 
 goal contains_delete :
      forall l1:map. forall l2:map. forall cu:cursor.
-     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     forall i:real [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
      	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(key_(l1,cu))
 
 goal insert_has_element :
@@ -37,7 +38,7 @@ goal position_right :
 	   element_(s,cu)=element_(right_(s,c),cu)
 
 goal left_contains :
-      forall s:map. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      forall s:map. forall cu:cursor. forall i:real [contains_(left_(s,next_(s,cu)),i)].
       	     has_element_(s,cu) ->
 	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(key_(s,cu)))
 
@@ -107,7 +108,7 @@ goal next_last :
       	     has_element_(s,c) -> next_(s,c)=no_element -> position_(s,c)=length_(s)
 
 goal right_order :
-      forall co:map. forall cu:cursor. forall i:int [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
+      forall co:map. forall cu:cursor. forall i:real [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
       position_(co,find_(co,i)),position_(co,cu),right_(co,cu)].
       has_element_(co,cu) ->
       witness(key_(co,cu))<i ->  contains_(co,i) ->
@@ -134,21 +135,21 @@ goal insert_last :
       k=key_(s2,last_(s2))
 
 goal key_find :
-      forall m:map. forall i:int [witness(key_(m,find_(m,i)))].
+      forall m:map. forall i:real [witness(key_(m,find_(m,i)))].
       	     position_(m,find_(m,i))>0 -> i=witness(key_(m,find_(m,i)))
 
 goal equivalent_def :
-      forall i:int. forall m1:map. forall m2:map [equivalent_(m1,m2),contains_(m2,i)].
+      forall i:real. forall m1:map. forall m2:map [equivalent_(m1,m2),contains_(m2,i)].
       	     equivalent_(m1,m2)->contains_(m1,i)->contains_(m2,i)
 
 goal element__left_nxt :
-      forall i:int. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
+      forall i:real. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
       	     has_element_(m,c) -> contains_(left_(m,next_(m,c)),i) ->
 	     i=witness(key_(m,c)) and element_(m,c)=element__(left_(m,next_(m,c)),i) or
 	     contains_(left_(m,c),i) and element__(left_(m,c),i)=element__(left_(m,next_(m,c)),i)
 
 goal element__left :
-      forall i:int. forall m:map. forall c:cursor [element__(left_(m,c),i)].
+      forall i:real. forall m:map. forall c:cursor [element__(left_(m,c),i)].
       	     c=no_element or has_element_(m,c) -> contains_(left_(m,c),i) ->
 	     	   element__(left_(m,c),i)=element__(m,i)
 
@@ -157,7 +158,7 @@ goal element_element :
       	     has_element_(m,c) -> element__(m,witness(key_(m,c)))=element_(m,c)
 
 goal element__insert :
-      forall i:int. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
+      forall i:real. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
       	     insert_(m,k,e,mi) -> contains_(mi,i) ->
              contains_(m,i) and element__(m,i)=element__(mi,i) or i=witness(k) and element__(mi,i)=e
 
@@ -167,7 +168,7 @@ goal has_element_left :
       	     (has_element_(co,cu) or cu=no_element) -> has_element_(left_(co,cu),cun) -> has_element_(co,cun)
 
 goal find_nl :
-      forall m:map. forall c:cursor. forall e:int [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
+      forall m:map. forall c:cursor. forall e:real [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
       	     has_element_(m,c) -> (c=first_(m) or not c=first_(m) and witness(key_(m,last_(left_(m,c))))<e)
 	     and e<witness(key_(m,c)) -> find_(m,e)=no_element
 
@@ -177,12 +178,12 @@ goal find_nl :
 
 axiom contains_insert :
      forall l1:map. forall l2:map. forall k:key_t. forall e:element_t.
-     forall i:int [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
+     forall i:real [insert_(l1,k,e,l2),contains_(l1,i)|insert_(l1,k,e,l2),contains_(l2,i)].
      	    insert_(l1,k,e,l2) -> contains_(l2,i) -> i=witness(k) or contains_(l1,i)
 
 axiom contains_delete :
      forall l1:map. forall l2:map. forall cu:cursor.
-     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     forall i:real [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
      	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(key_(l1,cu))
 
 axiom insert_has_element :
@@ -202,7 +203,7 @@ axiom position_right :
 	   element_(s,cu)=element_(right_(s,c),cu)
 
 axiom left_contains :
-      forall s:map. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      forall s:map. forall cu:cursor. forall i:real [contains_(left_(s,next_(s,cu)),i)].
       	     has_element_(s,cu) ->
 	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(key_(s,cu)))
 
@@ -274,7 +275,7 @@ axiom next_last :
       	     has_element_(s,c) -> next_(s,c)=no_element -> position_(s,c)=length_(s)
 
 axiom right_order :
-      forall co:map. forall cu:cursor. forall i:int [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
+      forall co:map. forall cu:cursor. forall i:real [has_element_(co,cu),witness(key_(co,cu)),contains_(co,i),
       position_(co,find_(co,i)),position_(co,cu),right_(co,cu)].
       has_element_(co,cu) ->
       witness(key_(co,cu))<i ->  contains_(co,i) ->
@@ -303,17 +304,17 @@ axiom insert_last :
 (* AXIOMS FROM HASHED_MAP *)
 
 axiom key_find :
-      forall m:map. forall i:int [witness(key_(m,find_(m,i)))].
+      forall m:map. forall i:real [witness(key_(m,find_(m,i)))].
       	     position_(m,find_(m,i))>0 -> i=witness(key_(m,find_(m,i)))
 
 axiom element__left_nxt :
-      forall i:int. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
+      forall i:real. forall m:map. forall c:cursor [element__(left_(m,next_(m,c)),i)].
       	     has_element_(m,c) -> contains_(left_(m,next_(m,c)),i) ->
 	     i=witness(key_(m,c)) and element_(m,c)=element__(left_(m,next_(m,c)),i) or
 	     contains_(left_(m,c),i) and element__(left_(m,c),i)=element__(left_(m,next_(m,c)),i)
 
 axiom element__left :
-      forall i:int. forall m:map. forall c:cursor [element__(left_(m,c),i)].
+      forall i:real. forall m:map. forall c:cursor [element__(left_(m,c),i)].
       	     c=no_element or has_element_(m,c) -> contains_(left_(m,c),i) ->
 	     	   element__(left_(m,c),i)=element__(m,i)
 
@@ -322,12 +323,12 @@ axiom element_element :
       	     has_element_(m,c) -> element__(m,witness(key_(m,c)))=element_(m,c)
 
 axiom element__insert :
-      forall i:int. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
+      forall i:real. forall m:map. forall mi:map. forall k:key_t. forall e:element_t [insert_(m,k,e,mi),element__(mi,i)].
       	     insert_(m,k,e,mi) -> contains_(mi,i) ->
              contains_(m,i) and element__(m,i)=element__(mi,i) or i=witness(k) and element__(mi,i)=e
 
 axiom lift :
-    forall i:int. forall m:map [contains_(m,i)].
+    forall i:real. forall m:map [contains_(m,i)].
     	    contains_(m,i) -> exists k:key_t. witness(k)=i
 
 (* SPECIFIC AXIOMS *)
@@ -338,7 +339,7 @@ axiom has_element_left :
       	     (has_element_(co,cu) or cu=no_element) -> has_element_(left_(co,cu),cun) -> has_element_(co,cun)
 
 axiom find_nl :
-      forall m:map. forall c:cursor. forall e:int [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
+      forall m:map. forall c:cursor. forall e:real [witness(key_(m,last_(left_(m,c)))), witness(key_(m,c)), find_(m,e)].
       	     has_element_(m,c) -> (c=first_(m) or not c=first_(m) and witness(key_(m,last_(left_(m,c))))<e)
 	     and e<witness(key_(m,c)) -> find_(m,e)=no_element
 

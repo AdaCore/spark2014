@@ -100,9 +100,10 @@ logic find_ : list, element_t, cursor -> cursor
 
 predicate find__ (co:list,e:element_t,cumin:cursor,cu:cursor) =
 	  position_(co,cumin)>0 and
-	  (((cu=no_element and (forall cun:cursor. position_(co,cun)>=position_(co,cumin) -> not element_(co,cun)=e))
+	  (((cu=no_element and (forall cun:cursor. position_(co,cumin)<=position_(co,cun) -> not element_(co,cun)=e))
 	  or (position_(co,cu)>0 and element_(co,cu)=e
-	  and (forall cun:cursor. position_(co,cu)>position_(co,cun)>=position_(co,cumin) -> not element_(co,cun)=e))))
+	  and (forall cun:cursor. position_(co,cu)>position_(co,cun) and position_(co,cumin)<=position_(co,cun)
+	      -> not element_(co,cun)=e))))
 
 axiom find_find_val :
       forall co:list. forall e:element_t. forall cu:cursor.
@@ -129,8 +130,8 @@ predicate replace_element_ (co1:list,cu:cursor,e:element_t,co2:list) =
 
 predicate left_pos (co:list,i:int,col:list) =
 	  forall cu:cursor.
-	    (position_(co,cu)>=i -> position_(col,cu)=0)
-	    and (position_(co,cu)<i -> position_(col,cu)=position_(co,cu)
+	    (i <= position_(co,cu) -> position_(col,cu)=0)
+	    and (i > position_(co,cu) -> position_(col,cu)=position_(co,cu)
 	    	 and element_(col,cu)=element_(co,cu))
 	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
 
@@ -150,8 +151,8 @@ axiom left_left :
 
 predicate right_pos (co:list,i:int,cor:list) =
 	  forall cu:cursor.
-	    (position_(co,cu)<i -> position_(cor,cu)=0)
-	    and (position_(co,cu)>=i -> position_(cor,cu)=position_(co,cu)-i+1
+	    (i > position_(co,cu) -> position_(cor,cu)=0)
+	    and (i <= position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1
 	    	 and element_(cor,cu)=element_(co,cu))
 	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
 
@@ -173,18 +174,18 @@ axiom right_right:
 
 predicate insert_pos (co1:list,i:int,co2:list) =
 	  forall cun:cursor.
-	    (0<position_(co1,cun)<i -> position_(co2,cun)=position_(co1,cun))
+	    (i>position_(co1,cun)>0 -> position_(co2,cun)=position_(co1,cun))
 	    and (i<=position_(co1,cun) -> position_(co2,cun)=position_(co1,cun)+1)
-	    and (0<position_(co1,cun) -> element_(co1,cun)=element_(co2,cun))
+	    and (position_(co1,cun)>0 -> element_(co1,cun)=element_(co2,cun))
 
 predicate insert_inv (co1:list,i:int,e:element_t,co2:list) =
 	  forall cun:cursor.
 	    (position_(co2,cun)=i ->
 	     position_(co1,cun)=0 and element_(co2,cun)=e)
-	    and (0<position_(co2,cun)<i ->
+	    and (i>position_(co2,cun)>0 ->
 	     position_(co1,cun)=position_(co2,cun) and
 	     element_(co1,cun)=element_(co2,cun))
-	    and (i<position_(co2,cun) ->
+	    and (position_(co2,cun)>i ->
 	     position_(co1,cun)=position_(co2,cun)-1 and
 	     element_(co1,cun)=element_(co2,cun))
 
@@ -202,16 +203,16 @@ predicate delete_pos (co1:list, i:int, co2:list) =
 	    and (position_(co1,cun)>i ->
 	     position_(co2,cun)=position_(co1,cun)-1 and
 	     element_(co2,cun)=element_(co1,cun))
-	    and (position_(co1,cun)<i ->
+	    and (i > position_(co1,cun) ->
 	     position_(co2,cun)=position_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_inv (co1:list, i:int, co2:list) =
 	  forall cun:cursor.
-	    (position_(co2,cun)>=i ->
+	    (i <= position_(co2,cun) ->
 	     position_(co1,cun)=position_(co2,cun)+1 and
 	     element_(co1,cun)=element_(co2,cun))
-	    and (0<position_(co2,cun)<i ->
+	    and (i>position_(co2,cun)>0 ->
 	     position_(co1,cun)=position_(co2,cun) and
 	     element_(co2,cun)=element_(co1,cun))
 
