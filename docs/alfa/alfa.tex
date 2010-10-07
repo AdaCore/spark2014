@@ -157,7 +157,9 @@ ntbg}{statementborder}{}%
 
 Ada 2012 is the next version of the Ada standard, expected to be finalized in
 2012. It contains many extensions that facilitate the expression of
-specifications, for either dynamic or static checking.
+specifications, for either dynamic or static checking. Its Reference Manual
+(RM) in progress is online at
+\url{http://www.ada-auth.org/standards/12rm/html/RM-TOC.html}.
 
 \subsection{Introduction to Ada}
 
@@ -454,14 +456,14 @@ the evolution of ALFA.
 
 \paragraph{Verification Profile} 
 
-This document written by Marc Sango as part of an internship describes a
-possible Ada profile suitable for formal verification by translation to
-SPARK. The viewpoint taken implies that the set of features considered as part
-of the profile is quite large, as using any feature outside the profile would
-abort the possibility of formal verification for the program (or at least the
-package). As a result, many translations from Ada to SPARK are left for a
-future SPARK roadmap (that is, the SPARK language and toolset should be
-extended).
+This document~\cite{Sango2010RR} written by Marc Sango as part of an internship
+describes a possible Ada profile suitable for formal verification by
+translation to SPARK. The viewpoint taken implies that the set of features
+considered as part of the profile is quite large, as using any feature outside
+the profile would abort the possibility of formal verification for the program
+(or at least the package). As a result, many translations from Ada to SPARK are
+left for a future SPARK roadmap (that is, the SPARK language and toolset should
+be extended).
 
 The document documents clearly the differences between Ada and SPARK, and it
 offers a head-to-head comparison of BNF grammars in appendix.
@@ -543,9 +545,7 @@ which define program entities. Thus, some production rules defining a
 non-terminal may be in ALFA while others for the same non-terminal are not in
 ALFA.
 
-The additional rules below further restrict which entities are in ALFA. These
-rules build on the report written by Marc Sango for his internship on the
-definition of a verification profile for Ada~\cite{Sango2010RR}. 
+The additional rules below further restrict which entities are in ALFA. 
 
 \subsubsection{Lexical Elements}
 
@@ -569,6 +569,11 @@ All entities related to access types are not in ALFA:
 \item \bnf{access\_definition}.
 \end{itemize}
 
+Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
+containers, as it contains a pointer to the underlying container. The formal
+containers as described in Section~\ref{sub:formal-containers} define cursors
+that are in ALFA.
+
 All entities related to fixed-point types are not in ALFA:
 \begin{itemize}
 \item \bnf{fixed\_point\_definition};
@@ -577,13 +582,6 @@ All entities related to fixed-point types are not in ALFA:
 \item \bnf{digits\_constraint};
 \item \bnf{delta\_constraint}.
 \end{itemize}
-
-Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
-containers, as it contains a pointer to the underlying container. The formal
-containers as described in Section~\ref{sub:formal-containers} define cursors
-that are in ALFA. Although the complete definition of formal containers may not
-be in ALFA by the rules described here, they are specially included in ALFA as
-a whole.
 
 All entities related to interfaces are not in ALFA:
 \begin{itemize}
@@ -651,8 +649,35 @@ a subtype predicate count as assertions.
 
 \bnf{goto\_statement} is not in ALFA.
 
-Note in particular that all possible \bnf{exit\_statement} are in ALFA,
-including those which exit an outter loop.
+In order to be in ALFA, an exit-statement must follow the same restrictions as
+in SPARK:
+\begin{enumerate}
+\item Exit-statements always apply to their innermost enclosing loops.
+\item If an exit-statement contains a when clause then its closest-containing
+  compound statement must be a loop-statement.
+\item If an exit-statement does not contain a when clause then its
+  closest-containing compound statement must be an if-statement without an else
+  or elsif clause, whose closest-containing compound statement is a
+  loop-statement.
+\end{enumerate}
+
+\begin{example}
+  The following exit-statements from Ada RM are in ALFA:
+\begin{verbatim}
+for N in 1 .. Max_Num_Items loop
+   Get_New_Item(New_Item);
+   Merge_Item(New_Item, Storage_File);
+   exit when New_Item = Terminal_Item;
+end loop;
+
+Main_Cycle:
+   loop
+      --  initial statements
+      exit Main_Cycle when Found;
+      --  final statements
+   end loop Main_Cycle;
+\end{verbatim}
+\end{example}
 
 \subsubsection{Subprograms}
 
@@ -698,7 +723,13 @@ However, defining exceptions and raising exceptions are in ALFA.
 
 \subsubsection{Generic Units}
 
-No special rules.
+Generic formal object parameters of mode ``in out'' are not in ALFA.
+
+Generic formal type definitions for fixed-point types are not in ALFA.
+
+Subprograms passed in argument to a generic instantiation as formal subprograms
+should write only global variables that none of the generic entity subprograms
+writes, neither directy nor indirectly.
 
 \subsubsection{Representation Issues}
 
@@ -1091,6 +1122,7 @@ function Get (A : My_Array; X : Integer) return Element;
 \end{example}
 
 \subsection{From Ada to Unambiguous Ada}
+\label{sub:slicing-function}
 
 Ada functions may write global variables, so that the compiler choice of
 evaluation order for expressions may influence the result. Whatever it is, this
@@ -1116,7 +1148,9 @@ X := Tmp1 + Tmp4;
 \end{example}
 
 To simplify further passes, array concatenation \verb|&| should be replaced at
-this stage by equivalent concatenation functions, and treated as such.
+this stage by equivalent concatenation functions, and treated as
+such. Similarly, slices used in expressions should be replaced by equivalent
+slicing functions, and treated as such.
 
 Likewise, Ada arithmetic expressions may be reordered by the compiler when not
 enough parenthesized, so the translation will introduce the necessary
@@ -1489,6 +1523,85 @@ thought slices appearing as parameters could be translated as the complete
 array with additional bound parameters. But this does not work for a
 multi-dimensional slice, say A(0)(1..10).]
 
+\paragraph{Slices}
+
+The calls to slicing functions introduced in Section~\ref{sub:slicing-function}
+for slices in expressions should be translated in calls to procedures
+\verb|Create_Slice_T| where \verb|T| is the type of array element. This
+procedure takes the following parameters:
+\begin{enumerate}
+\item a destination array \verb|Dest|;
+\item a destination integer variable \verb|Dest_First| for the lower bound of
+  \verb|Dest|;
+\item a destination integer variable \verb|Dest_Last| for the upper bound of
+  \verb|Dest|;
+\item a source array \verb|Src|;
+\item an integer value \verb|Src_First| for the lower bound of the slice;
+\item an integer value \verb|Src_Last| for the upper bound of the slice.
+\end{enumerate}
+
+The postcondition of \verb|Create_Slice_T| would ensure that the proper copy is
+made:
+\begin{verbatim}
+type Arr_T is array (Integer range <>) of T;
+procedure Create_Slice_T (Dest : out Arr_T; Dest_First, Dest_Last : out Integer;
+                          Src  : Arr_T;     Src_First, Src_Last   : Integer);
+--# post (for all J in Integer => (Src_First <= J and J <= Src_Last) ->
+--#                                  Dest (J) = Src (J)) and
+--#      Dest_First = Src_First and Dest_Last = Src_Last;
+\end{verbatim}
+
+\begin{example}
+The simple slice of array Arr below:
+\begin{verbatim}
+X := Arr (1 .. 10);
+\end{verbatim}
+
+should be translated into a call of \verb|Create_Slice_T| like the following:
+\begin{verbatim}
+Create_Slice_T (Dest => Tmp, Dest_First => Tmp_First, Dest_Last => Tmp_Last, 
+                Src  => Arr, Src_First  => 1,         Src_Last  => 10);
+X := Tmp;
+\end{verbatim}
+\end{example}
+
+Direct writes into a slice should be translated into calls to procedures
+\verb|Copy_Slice_T| where \verb|T| is the type of array element. This
+procedure takes the following parameters:
+\begin{enumerate}
+\item a destination array \verb|Dest|;
+\item a source array \verb|Src|;
+\item an integer value \verb|Src_First| for the lower bound of the slice;
+\item an integer value \verb|Src_Last| for the upper bound of the slice.
+\end{enumerate}
+
+The postcondition of \verb|Copy_Slice_T| would ensure that the proper copy is
+made:
+\begin{verbatim}
+type Arr_T is array (Integer range <>) of T;
+procedure Copy_Slice_T (Dest : out Arr_T; Src : Arr_T; Src_First, Src_Last : Integer);
+--# post for all J in Integer => (Src_First <= J and J <= Src_Last) ->
+--#                                 Dest (J) = Src (J);
+\end{verbatim}
+
+\begin{example}
+The simple slice of array Arr below:
+\begin{verbatim}
+Arr (1 .. 10) := X;
+\end{verbatim}
+
+should be translated into a call of \verb|Copy_Slice_T| like the following:
+\begin{verbatim}
+Copy_Slice_T (Dest => Arr, Src  => X, Src_First  => 1, Src_Last  => 10);
+\end{verbatim}
+\end{example}
+
+Slices passed in parameters should be translated differently if the parameter
+is of a definite or an indefinite array type. If the parameter is of a definite
+type, the bounds are known so the entire array should be passed as
+parameter. If the parameter is of an indefinite type, the bounds of the slice
+should be passed as additional parameters to the call.
+
 \subsubsection{Statements}
 
 Translation of statements is delayed until final translation to SPARK/Why. [in
@@ -1591,24 +1704,6 @@ procedure F_Return;
 \end{verbatim}
 \end{example}
 
-\paragraph{Raise Statements} 
-
-Raising an exception is very similar to returning from a subprogram, except the
-postcondition and data-flow contract do not have to be respected in this case.
-
-Thus, all raise statements in a subprogram \verb|S| should be translated into
-calls to a local procedure \verb|S_Raise| which:
-\begin{enumerate}
-\item \label{it:exc-no-param} takes no parameters;
-\item \label{it:exc-out-globals} has the local variables of \verb|S| as
-  out-globals;
-\item \label{it:exc-post} has \verb|False| as postcondition.
-\end{enumerate}
-(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
-some (locally dead) path through this call not initializing some local
-variables. (\ref{it:exc-post}) ensures that any path through this call is
-considered as a dead path when proving VCs.
-
 \subsubsection{Subprograms}
 
 \paragraph{Parameters} 
@@ -1634,6 +1729,11 @@ procedure P;
 --# pre X in Index_First .. Index_Last;
 \end{verbatim}
 \end{example}
+
+The declaration of a subprogram in the $<$spec$>$ package (see below) should
+only have array parameters of an indefinite type: known array bounds should be
+relaxed so that it is easier to translate calls that take slices as actual
+parameters.
 
 Various translations remove entities not defined in SPARK and/or in Why:
 \begin{itemize}
@@ -1743,10 +1843,57 @@ The treatment of subunits should be no different if they were defined inlined.
 
 \subsubsection{Exceptions}
 
+\paragraph{Raise Statements} 
+
+Raising an exception is very similar to returning from a subprogram, except the
+postcondition and data-flow contract do not have to be respected in this case.
+
+Thus, all raise statements in a subprogram \verb|S| should be translated into
+calls to a local procedure \verb|S_Raise| which:
+\begin{enumerate}
+\item \label{it:exc-no-param} takes no parameters;
+\item \label{it:exc-out-globals} has the local variables of \verb|S| as
+  out-globals;
+\item \label{it:exc-post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
+some (locally dead) path through this call not initializing some local
+variables. (\ref{it:exc-post}) ensures that any path through this call is
+considered as a dead path when proving VCs.
+
 \subsubsection{Generic Units}
 
 Specifications of generic unit instantiations should be generated, so that the
 corresponding instantiated subprograms are called.
+
+The formal part of a generic declaration should be translated like a special
+case of package specification, which is used in the declaration and definition
+of the generic entity (package or subprogram). Formal parameters should be
+translated accordingly:
+\begin{itemize}
+\item A formal object declaration should be translated like an object
+  declaration of the special package. Since its value is defined at the point
+  of instantiation, the instantiation should be translated into a call to a
+  special procedure which takes the object argument in parameter.
+\item A formal private type definition should be translated into a new record
+  type with no components.
+\item A formal derived type definition from a record type should be translated
+  into a new derived type from this same record type, with no additional
+  components.
+\item A formal derived type definition from a scalar type should be translated
+  into a new derived type from this scalar.
+\item A formal signed integer type definition should be translated into a
+  signed integer type with unknown (dynamic) bounds.
+\item A formal modular type definition should be translated into a modular type
+  with unknown (dynamic) upper bound.
+\item A formal floating-point definition should be translated into a
+  floating-point type with unknown (dynamic) bounds.
+\item A formal discrete type definition?
+\item A formal array type definition should be translated into an array type
+  definition.
+\item A formal subprogram should be translated into a subprogram specification.
+\item A formal package should be translated into a package specification.
+\end{itemize}
 
 \subsubsection{Representation Issues}
 
@@ -1866,7 +2013,9 @@ A := update (!A, J, tmp);
 
 \paragraph{Slices}
 
-[still not known]
+Since the translation to Why does not have to worry about detecting possible
+aliasing, slices should be translated similarly as indexed components, by
+making the appropriate copies for passing a slice in parameter to a call.
 
 \paragraph{If Expressions} Ada if-expressions should be translated into Why
 if-expressions.
