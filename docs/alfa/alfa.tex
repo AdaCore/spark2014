@@ -448,8 +448,40 @@ their specification and body. In particular, the location in the source where a
 subprogram is defined (inside a package or another subprogram, in the public or
 private part, \etc) should not influence whether it is in ALFA.
 
-ALFA is expected to be extended to support more Ada programs, the current
-version described in this document is version \version.
+ALFA is expected to evolve to support more Ada programs, the current version
+described in this document is version \version. The following notes describe
+the evolution of ALFA.
+
+\paragraph{Verification Profile} 
+
+This document written by Marc Sango as part of an internship describes a
+possible Ada profile suitable for formal verification by translation to
+SPARK. The viewpoint taken implies that the set of features considered as part
+of the profile is quite large, as using any feature outside the profile would
+abort the possibility of formal verification for the program (or at least the
+package). As a result, many translations from Ada to SPARK are left for a
+future SPARK roadmap (that is, the SPARK language and toolset should be
+extended).
+
+The document documents clearly the differences between Ada and SPARK, and it
+offers a head-to-head comparison of BNF grammars in appendix.
+
+A prototype translation from Ada to SPARK was created to experiment with some
+of the translations described in the verification profile. This ASIS-based tool
+called Sparkify is available from the Hi-Lite public forge on Open-DO website.
+
+\paragraph{Version \version}
+
+The initial version of ALFA departs from the profile point-of-view, in that
+subprograms should be inside or outside ALFA by themselves, which offers a much
+finer grain of verification. Translations are described in much more details
+than in the verification profile, where some are not even
+mentioned. Translations are described not only for SPARK but also for Why. A
+sequence of translation passes is defined. All features that were pushed on the
+SPARK roadmap in the verification profile are now either in ALFA and a
+translation to SPARK is given, or outside ALFA. Practical considerations also
+lead to some features excluded from ALFA because not enough beneficial at this
+stage, although they could be added later (for example fixed-point types).
 
 \subsection{ALFA Extensions}
 
