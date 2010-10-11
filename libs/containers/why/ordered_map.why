@@ -16,7 +16,7 @@ logic length_ : map -> int
 
 axiom length_gte_zero :
       forall co:map [length_(co)].
-      	     length_(co)>=0
+      	     0<=length_(co)
 
 (*** EQUIVALENCE BETWEEN ELEMENTS ***)
 
@@ -34,7 +34,7 @@ logic position_ : map, cursor -> int
 
 axiom position_gte_zero :
       forall co:map. forall cu:cursor.
-      	     length_(co)>=position_(co,cu)>=0
+      	     0<=position_(co,cu)<=length_(co)
 
 axiom position_no_element :
       forall co:map.
@@ -73,7 +73,7 @@ axiom previous_previous :
 (*** NEXT ***)
 
 predicate next__ (co:map, cu1:cursor, cu2:cursor) =
-	  (0<position_(co,cu1)<length_(co) or position_(co,cu2)>0 -> position_(co,cu2)=position_(co,cu1)+1)
+	  (length_(co)>position_(co,cu1)>0 or position_(co,cu2)>0 -> position_(co,cu2)=position_(co,cu1)+1)
 	  and (position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
 
 logic next_ : map, cursor -> cursor
@@ -117,7 +117,8 @@ logic find_ : map, real -> cursor
 predicate find__ (co:map,i:real,cu:cursor) =
 	  ((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> witness(key_(co,cun))<>i))
 	  or (position_(co,cu)>0 and witness(key_(co,cu))=i
-	  and (forall cun:cursor. position_(co,cu)<>position_(co,cun) -> witness(key_(co,cun))<>i)))
+	  and (forall cun:cursor. position_(co,cun)>0 ->
+	      position_(co,cu)<>position_(co,cun) -> witness(key_(co,cun))<>i)))
 
 axiom find_find_val :
       forall co:map. forall i:real.
@@ -130,7 +131,7 @@ axiom ordered :
       forall s:map. forall cu1:cursor. forall cu2:cursor.
       	     position_(s,cu1)>0 and position_(s,cu2)>0 ->
 	     (position_(s,cu2)>position_(s,cu1) <->
-	     witness(key_(s,cu1))<witness(key_(s,cu2)))
+	     witness(key_(s,cu2))>witness(key_(s,cu1)))
 
 (*** ELEMENT ***)
 
@@ -145,15 +146,15 @@ function element__ (m:map,i:real) : element_t =
 
 predicate left_pos (co:map,i:int,col:map) =
 	  forall cu:cursor.
-	    (position_(co,cu)>=i -> position_(col,cu)=0)
-	    and (position_(co,cu)<i -> position_(col,cu)=position_(co,cu)
+	    (i<=position_(co,cu) -> position_(col,cu)=0)
+	    and (i>position_(co,cu) -> position_(col,cu)=position_(co,cu)
 	    	 and key_(col,cu)=key_(co,cu)
 	    	 and element_(col,cu)=element_(co,cu))
 	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
 
 predicate left_find (co:map,i:int,col:map) =
 	  forall w:real.
-	    0<position_(co,find_(co,w))<i or position_(col,find_(col,w))>0 ->
+	    i>position_(co,find_(co,w))>0 or position_(col,find_(col,w))>0 ->
 	    find_(co,w)=find_(col,w)
 
 predicate left__ (co:map, cu:cursor, col:map) =
@@ -173,15 +174,15 @@ axiom left_left :
 
 predicate right_pos (co:map,i:int,cor:map) =
 	  forall cu:cursor.
-	    (position_(co,cu)<i -> position_(cor,cu)=0)
-	    and (position_(co,cu)>=i -> position_(cor,cu)=position_(co,cu)-i+1
+	    (i>position_(co,cu) -> position_(cor,cu)=0)
+	    and (i<=position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1
 	    	 and key_(cor,cu)=key_(co,cu)
 	    	 and element_(cor,cu)=element_(co,cu))
 	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
 
 predicate right_find (co:map,i:int,cor:map) =
 	  forall w:real.
-	    0<i<=position_(co,find_(co,w)) or position_(cor,find_(cor,w))>0 ->
+	    i>0 and i<=position_(co,find_(co,w)) or position_(cor,find_(cor,w))>0 ->
 	    find_(co,w)=find_(cor,w)
 
 predicate right__ (co:map, cu:cursor, cor:map) =
@@ -233,11 +234,11 @@ logic ceiling : map, real -> cursor
 predicate is_ceiling (s:map, i:real, cu:cursor) =
 	  (cu=no_element or position_(s,cu)>0) and
 	  (cu=no_element ->
-	    (is_empty_(s) or witness(key_(s,last_(s)))<i)) and
+	    (is_empty_(s) or i>witness(key_(s,last_(s))))) and
 	  (position_(s,cu)>0 -> i<=witness(key_(s,cu)) and
-	  (i<witness(key_(s,cu)) ->
+	  (witness(key_(s,cu))>i ->
 	    find_(s,i)=no_element and
-	    (cu=first_(s) or not cu=first_(s) and witness(key_(s,last_(left_(s,cu))))<i)))
+	    (cu=first_(s) or not cu=first_(s) and i>witness(key_(s,last_(left_(s,cu)))))))
 
 axiom ceiling_is_ceiling :
       forall s:map. forall i:real [ceiling(s,i)].
@@ -251,11 +252,11 @@ predicate insert_find (co1:map,k:key_t,co2:map) =
 
 predicate insert_pos (co1:map,k:key_t,co2:map) =
 	  forall cun:cursor.
-	    0<position_(co1,cun) ->
+	    position_(co1,cun)>0 ->
 	    key_(co1,cun)=key_(co2,cun)
 	    and element_(co1,cun)=element_(co2,cun)
 	    and witness(key_(co1,cun))<>witness(k)
-	    and (witness(key_(co1,cun))<witness(k) -> position_(co2,cun)=position_(co1,cun))
+	    and (witness(k)>witness(key_(co1,cun)) -> position_(co2,cun)=position_(co1,cun))
 	    and (witness(key_(co1,cun))>witness(k) -> position_(co2,cun)=position_(co1,cun)+1)
 
 predicate insert_inv (co1:map,k:key_t,e:element_t,co2:map) =
@@ -296,18 +297,18 @@ predicate delete_pos (co1:map, i:int, co2:map) =
 	     position_(co2,cun)=position_(co1,cun)-1 and
 	     key_(co2,cun)=key_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
-	    and (position_(co1,cun)<i ->
+	    and (i>position_(co1,cun) ->
 	     position_(co2,cun)=position_(co1,cun) and
 	     key_(co2,cun)=key_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_inv (co1:map, i:int, co2:map) =
 	  forall cun:cursor.
-	    (position_(co2,cun)>=i ->
+	    (i<=position_(co2,cun) ->
 	     position_(co1,cun)=position_(co2,cun)+1 and
 	     key_(co1,cun)=key_(co2,cun) and
 	     element_(co2,cun)=element_(co1,cun))
-	    and (0<position_(co2,cun)<i ->
+	    and (i>position_(co2,cun)>0 ->
 	     position_(co1,cun)=position_(co2,cun) and
 	     key_(co2,cun)=key_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
@@ -472,4 +473,4 @@ parameter lt :
 	  k1:key_t -> k2:key_t ->
 	  { }
 	  bool
-	  { if result then witness(k1)<witness(k2) else witness(k1)>=witness(k2) }
+	  { if result then witness(k2)>witness(k1) else witness(k2)<=witness(k1) }

@@ -6,7 +6,6 @@ include "ordered_map.why"
 	  - three goals contains_left, delete_last and insert_has_element, which are proved in 15min
    	  - two VC's of test_new_position which take less than 10min
    	  - one VC of test12 and test22 which take less than 4min
-	  - one VC of test11 which takes less than 90s
    	  - one VC of test_max which takes less than 90s. *)
 
 (* GOALS *)
@@ -343,7 +342,6 @@ axiom find_nl :
       	     has_element_(m,c) -> (c=first_(m) or not c=first_(m) and witness(key_(m,last_(left_(m,c))))<e)
 	     and e<witness(key_(m,c)) -> find_(m,e)=no_element
 
-
 (*** UNIT-TESTS ***)
 
 let test_replace_element1 (co:map ref) (cu:cursor) (cun:cursor) (k:key_t) (e:element_t) =
@@ -670,7 +668,7 @@ let test_new_position (s:map ref) (e:key_t) (el:element_t) (b:bool) =
     if lt e (key !s !c) then
        previous !s !c
     else !c
-    else 
+    else
     last !s
     { result=find_(s,witness(e)) and false }
 
