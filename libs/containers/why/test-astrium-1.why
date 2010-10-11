@@ -1,0 +1,31 @@
+(* a list can be used to store the set of currently enabled monitoring of a
+   system. Then, we may wish to verify that if no monitoring detects failure,
+   then no recovery is triggered *)
+
+include "list.why"
+
+type recovery_t = None | Reboot
+
+exception Recovery of recovery_t
+
+logic detects_failure: element_t -> bool 
+
+predicate no_monitor_detects_failure (co:list) =
+	  forall cu:cursor.
+	      has_element_(co,cu) -> detects_failure(element_(co,cu)) = false
+
+let test_recovery (co:list) =
+    let cu = ref (first co) in
+    let res = ref None in
+    try
+        while has_element co !cu do
+            { invariant 
+               no_monitor_detects_failure(left_(co,cu)) -> res = None } 
+            if detects_failure (element co !cu) then
+               raise (Recovery Reboot);
+            cu := next co !cu
+        done
+    with Recovery re -> res := re end;
+    !res
+    { no_monitor_detects_failure(co) -> result = None }
+
