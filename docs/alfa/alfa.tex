@@ -39,8 +39,7 @@
 
 \newenvironment{statement}[1][]{% Default statement has no title
 \par
-\SpecialEnv{#1}{statementborder}{stateme
-ntbg}{statementborder}{}%
+\SpecialEnv{#1}{statementborder}{statementbg}{statementborder}{}%
 }{%
 \endSpecialEnv
 }
@@ -100,6 +99,7 @@ ntbg}{statementborder}{}%
 \endflushleft
 }
 
+\newcommand{\rationale}{\fbox{rationale}~}
 \newcommand{\bnf}[1]{$\mathit{#1}$}
 \newcommand{\kw}[1]{\textbf{#1}}
 \newcommand{\spark}{$\tau_S$}
@@ -366,10 +366,12 @@ checked.
 
 GNAT defines an aspect called \verb|Test\_Case|, which applies to subprograms
 exactly like the standard \verb|Pre| and \verb|Post|. A test-case is an
-aggregate with exactly three components, all of which are compulsory:
+aggregate with exactly four components, all of which are compulsory:
 \begin{enumerate}
 \item a \verb|Name| component, of type string, which gives the name of the
   test-case;
+\item a \verb|Mode| component, of a predefined enumerated type, which set the
+  mode for executing the test-case (\verb|Nominal| or \verb|Robustness|);
 \item a \verb|Requires| component, of type boolean, which defines the entry
   condition for the test-case;
 \item an \verb|Ensures| component, of type boolean, which defines the exit
@@ -397,11 +399,19 @@ test procedure must in order:
 \item generate suitable arguments, by calling one or more subprograms
   called \textit{fixtures};
 \item check that the requires is satisfied on these arguments;
-\item optionally check that the precondition is satisfied on these arguments;
+\item if the mode is \verb|Nominal|, check that the precondition is satisfied on
+  these arguments;
 \item call the subprogram tested on these arguments;
-\item optionally check that the postconditions is satisfied on these arguments;
+\item if the mode is \verb|Nominal|, check that the postconditions is satisfied
+  on these arguments;
 \item check that the ensures is satisfied.
 \end{enumerate}
+
+Note that the test may not execute its ensures or postcondition due to some
+exception being raised. A predefined exception raised should count as a failure
+(for example \verb|Constraint_Error|) while a user-defined exeption raised
+should count as a sucess, as the ensures/postcondition in this case does not
+apply.
 
 The part about checking the contract of the subprogram is optional because some
 test-cases may correspond to cases beyond the normal behavior of the subprogram
@@ -424,13 +434,16 @@ function Sqrt (X : Integer) return Integer with
           Sqrt'Result ** 2 <= X and then
           (Sqrt'Result + 1) ** 2 > X,
   Test_Case => (Name     => "test case 1",
+                Mode     => Nominal,
                 Requires => X = 100, 
                 Ensures  => Sqrt'Result = 10),
   Test_Case => (Name     => "test case 2",
+                Mode     => Nominal,
                 Requires => X < 100, 
                 Ensures  => Sqrt'Result >= 0 and then 
                             Sqrt'Result < 10),
   Test_Case => (Name     => "robustness test case",
+                Mode     => Robustness,
                 Requires => X = -1, 
                 Ensures  => Sqrt'Result = 0);
 \end{verbatim}
@@ -477,13 +490,417 @@ called Sparkify is available from the Hi-Lite public forge on Open-DO website.
 The initial version of ALFA departs from the profile point-of-view, in that
 subprograms should be inside or outside ALFA by themselves, which offers a much
 finer grain of verification. Translations are described in much more details
-than in the verification profile, where some are not even
-mentioned. Translations are described not only for SPARK but also for Why. A
-sequence of translation passes is defined. All features that were pushed on the
-SPARK roadmap in the verification profile are now either in ALFA and a
-translation to SPARK is given, or outside ALFA. Practical considerations also
-lead to some features excluded from ALFA because not enough beneficial at this
-stage, although they could be added later (for example fixed-point types).
+than in the verification profile, and they target not only SPARK but also
+Why. A sequence of translation passes is defined. All features that were pushed
+on the SPARK roadmap in the verification profile are now either in ALFA and a
+translation to SPARK/Why is given, or outside ALFA. Practical considerations
+also lead to some features excluded from ALFA because not enough beneficial at
+this stage, although they could be added later (for example fixed-point types).
+
+\subsection{ALFA Overview}
+
+The high-level goals of ALFA are to:
+\begin{enumerate}
+\item \label{it:alfa-verif} enable verification of the absence of run-time
+  errors and contract verification on individual subprograms;
+\item \label{it:alfa-combine} make it possible to combine unit testing and unit
+  proof;
+\item \label{it:alfa-annot} reduce the annotation burden on the programmer;
+\item \label{it:alfa-auto} lead to 100\% automatic proof on subprograms
+  whenever it is possible.
+\end{enumerate}
+
+Following the approach of SPARK, we aim at proving the absence of reads of
+uninitialized data (a part of goal (\ref{it:alfa-verif})) by enforcing and
+checking stricter data-flow properties than required in Ada. However, we depart
+from SPARK in requiring that the analysis follows initialization at the level
+of variable subcomponents instead of entire variables. In ALFA, all syntactic
+program paths through a subprogram should initialize individual variable
+subcomponents before a subcomponent is read, while other subcomponents of the
+same variable may remain uninitialized. Likewise, parameter modes do not impose
+initialization of entire variables. Instead, an analysis computes the set of
+variable subcomponents only read, only written and both read and written in a
+subprogram, which are treated like the ``in'', ``out'' and ``in out''
+parameters in a SPARK data-flow analysis:
+\begin{itemize}
+\item variable subcomponents only read and those both read and written should
+  be completely initialized at subprogram entry;
+\item variable subcomponents only written should be completely initialized at
+  subprogram exit.
+\end{itemize}
+
+\begin{example}
+  The following subprograms are incorrect in SPARK, both because components
+  \verb|X| and \verb|Y| of parameter \verb|P| are initialized separately, and
+  because out-parameter \verb|P| is not completely initialized by
+  \verb|Init_X|. They are correct in ALFA.
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  
+  procedure Init_X (P : out Point) is begin 
+     P.X := 0; 
+  end Init_X;
+  
+  procedure Init (P : out Point) is begin 
+     Init_X (P);
+     P.Y := 0; 
+  end Init;
+\end{verbatim}
+\end{example}
+
+To achieve goal (\ref{it:alfa-annot}), we do not require any user annotations
+(a.k.a. frame condition) related to parameters and global variables read or
+written, as in SPARK or Why.  Instead, we provide an analysis to compute these
+annotations from the source program. This analysis requires that the code of
+the subprograms called by the subprograms analyzed is available. This
+corresponds to the code which is needed to perform unit testing on a unit,
+which is required anyway to achieve goal (\ref{it:alfa-combine}).
+
+In contract-based verification (a part of goal (\ref{it:alfa-verif})), a
+subprogram body is verified independently from other subprograms, by relying on
+subprogram contracts only to assess the effect of calls. Thus, it is crucial
+that subprogram contracts are precise. In particular, the frame condition needs
+to be generated as precisely as possible, which is partly achieved by
+distinguishing between variable components in the frame condition.
+
+\begin{example}
+Consider a procedure which sets a field of an element of an array of points:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) with
+     Post => P(N).X = V;
+\end{verbatim}
+
+The postcondition of \verb|Set_X_Of_Nth| only says something about the value of
+\verb|P(N).X| in the post-state. It says nothing about the value of
+\verb|P(N).Y|, or the value of \verb|P(M).X| and \verb|P(M).Y| for some
+\verb|M| different from \verb|N|.\\
+
+The only way to add this information in Ada is to explicitly state in the
+postcondition that these other values have not changed:
+\begin{verbatim}
+  Post => P(N).X = V and then P(N).Y = P(N).Y'Old and then
+          (for all M in Index => (if M /= N then P(M).X = P'Old(M).X)) and then
+          (for all M in Index => (if M /= N then P(M).Y = P'Old(M).Y));
+\end{verbatim}
+
+This detailed postcondition is needed if we generate in SPARK/Why an imprecise
+frame condition which only says that array \verb|P| is written. But if we
+generate a more precise frame condition saying that only field \verb|X| of an
+element of \verb|P| is written, then the postcondition is Ada can be reduced,
+because it is known in SPARK/Why that no field \verb|Y| has changed:
+\begin{verbatim}
+  Post => P(N).X = V and then
+          (for all M in Index => (if M /= N then P(M).X = P'Old(M).X));
+\end{verbatim}
+\end{example}
+
+ALFA allows mutual dependencies between packages and (direct or indirect)
+recursive calls. Although these should be handled with care to ensure program
+termination, the user should deal with termination separately as ALFA does not
+target proof of termination.
+
+ALFA does not deal with concurrency at this stage, which means that the
+verification results are only valid for sequential programs, or for concurrent
+programs if it can be shown that the results are the same as for the underlying
+sequential programs (for example, when there is no communication between
+threads). The RavenSPARK profile of SPARK, based on the Ravenscar profile of
+Ada, suggests restrictions that make formal verification of concurrent programs
+feasible using the SPARK toolset. Similar restrictions could be added to ALFA
+in a later version to allow dealing with concurrency.
+
+ALFA allows analyzing formally many more constructs than SPARK does, but it
+inherits some of its limitations from SPARK, for lack of a simple translation
+into SPARK (for example, restrictions on the form of exit statements in loops).
+
+\subsection{Computing the Frame Condition}
+\label{sub:data-flow}
+
+In order to define which entities are in ALFA and which are not, we need to
+compute the set of components of parameters and global variables which are
+read/written by each subprogram, a.k.a. the frame condition of each subprogram.
+
+\subsubsection{Variable Paths}
+\label{sub:variable-path}
+
+A variable in ALFA may only have a scalar type (discrete or real) or an
+aggregate type (record or array) such that all sub-components have themselves a
+scalar type or an aggregate type with the same restriction. Given a variable
+$v$ in ALFA, we associate a set of paths \vpath{v} to $v$. More generally, we
+associate a set of paths \vpath{v} to an individual path $v$ (which may be a
+variable) as follows:
+\begin{itemize}
+\item if $v$ has a scalar type, $\vpath{v} = \{v\}$;
+\item if $v$ has a record type with components $c_i$, 
+  $\vpath{v} = \bigunion \vpath{v.c_i}$;
+\item if $v$ has an array type whose element type $t$ is a scalar type,
+  $\vpath{v} = \{v\}$;
+\item if $v$ has an array type whose element type $t$ is a record type with
+  components $c_i$, $\vpath{v} = \bigunion \vpath{v.c_i}$. (Here, we do as if $v$
+  was of type $t$ so that we can refer to its $c_i$ components.)
+\end{itemize}
+
+\begin{example}
+  On the following code, the set of paths of \verb|X| is: \verb|X.B.J|,
+  \verb|X.B.K|, \verb|X.A.J|, \verb|X.A.K|.
+
+\begin{verbatim}
+type Base is record 
+  J : Integer;
+  K : Integer range 0 .. 5;
+end record;
+type Base_Array is array (Boolean) of Base;
+type Ext is record 
+  B : Base;
+  A : Base_Array;
+end record;
+X : Ext;
+\end{verbatim}
+\end{example}
+
+A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
+$\sel_i$ on the path refers to an array, we say that the path is an array
+path. Otherwise, we say that the path is a record path. A record path refers to
+a single value of scalar type, while an array path usually refers to more than
+one value of scalar type.
+ 
+\subsubsection{Problem Statement}
+
+For the purpose of data-flow verification, we consider a package body as a
+special form of subprogram, where the body of the subprogram is given by the
+various initializations performed in the declarations of variables, as well as
+the optional sequence of statements.
+
+A data-flow analysis of the source Ada program should associate each subprogram
+with three sets of variables paths:
+\begin{itemize}
+\item the read-set of variable paths possibly read by the subprogram;
+\item the write-set of variable paths alway written by the subprogram;
+\item the read-write-set of variable paths possibly read and written by
+  the subprogram.
+\end{itemize}
+
+Note that a variable path which is always written by the subprogram before
+being read, so that the initial value of the variable path is never read,
+belongs to the write-set, not the read-write-set.
+
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken.
+
+The algorithm should compute various maps from program points $p$ to sets of
+(local and global) variable paths:
+\begin{itemize}
+\item \writes stores variable paths completely written on all program paths
+  to $p$;
+\item \allwrites stores variable paths partially written on some program
+  path to $p$;
+\item \reads stores variable paths whose initial value at subprogram entry has
+  been partially read on some program path to $p$;
+\item \allreads stores variable paths partially read on some program path to
+  $p$.
+\end{itemize}
+
+As \reads depends on \writes which depends on \allreads, \allreads should be
+computed first, then \writes, then \reads. \allwrites can computed at any time, as it is independent from the other maps.
+
+As \writes, \allwrites, \reads and
+\allreads take program entities as parameters, they are decomposed into
+(\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites), (\Inreads,\Outreads) and
+(\Inallreads,\Outallreads) respectively, where the ``in'' part describes the
+program point immediately before the entity and the ``out'' part describes the
+program point immediately after the entity.
+
+In the following, we give data-flow equations defining each one of \writes,
+\allwrites, \reads and \allreads. These equations provide an algorithm for
+computing the sets, and since the sets only grow, the algorithm necessarily
+reaches a fixpoint and terminates. Note that \writes, \allwrites, \reads and
+\allreads should only contain path variables for paramaters and global
+variables when applied to subprograms (local variables are removed in this
+case).
+
+The control-flow graph of a subprogram allows defining for each statement $s$
+the set of its predecessor statements \pred{s}.
+
+\subsubsection{Computing \allwrites}
+
+There are two sources of partial writes: assignment statements and calls. A
+statement $s$ partially writes a variable path $w$ in the following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$;
+\item $s$ is an assignment statement through a dereference, and $w$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $w \in \outallwrites{f}$.
+\end{itemize}
+
+Given a statement $s$ partially writing variable path $w$, the following
+equations define \allwrites:
+\begin{eqnarray*}
+\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
+\outallwrites{s} &=& \inallwrites{s} \union \{w\}
+\end{eqnarray*}
+
+\subsubsection{Computing \allreads}
+
+There are two sources of reads: expressions and calls. A statement $s$
+partially reads a variable path $r$ in the following cases:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $r \in \outallreads{f}$.
+\end{itemize}
+
+Notice that expressions used in the definition of types, for example dynamic
+bounds of a subtype, are also considered here.
+
+Given a statement $s$ partially reading variable paths $r_i$, the following
+equations define \allreads:
+\begin{eqnarray*}
+\inallreads{s} &=& \bigunion \outallreads{\pred{s}}\\
+\outallreads{s} &=& \inallreads{s} \union \{r_i\}
+\end{eqnarray*}
+
+\subsubsection{Computing \writes}
+
+There are two natural sources of complete writes: assignment statements and
+calls. A statement $s$ completely writes a global variable path $w$ in the
+following cases:
+\begin{itemize}
+\item $s$ is an assignment statement to $w$, and $w$ is a record path;
+\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
+\end{itemize}
+Additionally, if $l_1$ is a loop and $w$ an array path such that:
+\begin{enumerate}
+\item there is a set of loops $l_1...l_n$ such that each $l_i$ ranges over the
+  set of indexes of an array selector in $w$, and there is one loop for every
+  array selector;
+\item for all $i$, $l_i$ contains
+  $l_{i+1}$ as a statement in its outter sequence of statements;
+\item $l_1$ does not contain any exit statement (even in inner loops);
+\item $w \notin \outallreads{l_1}$ (that is, $w$ is not read in the loop);
+\item $l_n$ contains a statement assigning to $w$, where all indexes used for
+  array accesses are exactly all the loop variables;
+\end{enumerate}
+then loop $l_1$ completely writes variable path $w$.
+
+The aim of this special rule for loops is to allow the initialization of array
+paths through loops, which is both common in user code and which arises as a
+result of expansion, in particular due to default expressions for record
+components.
+
+Given a statement $s$ completely writing variable paths $w$, the following
+equations define \writes:
+\begin{eqnarray*}
+\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
+\outwrites{s} &=& \inwrites{s} \union \{w\}
+\end{eqnarray*}
+
+\subsubsection{Computing \reads}
+
+\reads is computed similarly as \allreads, except it does not count variable
+paths completely written on all syntactic program paths before reaching the
+current program point. A statement $s$ partially reads the initial value of a
+variable path $r$ if $r$ is not in \writes and:
+\begin{itemize}
+\item $s$ contains an occurence of $r$ that does not count as write, as
+  described above;
+\item $s$ contains a dereference that does not count as write, as described
+  above, and $r$ is \heap;
+\item $s$ contains a call to a subprogram $f$, and $r \in \outreads{f}$.
+\end{itemize}
+
+Given a statement $s$ partially reading the initial value of variable paths
+$r_i$, the following equations define \reads:
+\begin{eqnarray*}
+\inreads{s} &=& \bigunion \outreads{\pred{s}}\\
+\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})
+\end{eqnarray*}
+
+\subsubsection{Computing the read-set, write-set and read-write-set}
+
+Given subprogram $f$:
+\begin{itemize}
+\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
+\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
+\item the initial read-write-set for $f$ is $\outallwrites{f} \minus
+  \outwrites{f}$.
+\end{itemize}
+
+The read-set is simply the set of variable paths whose initial value may be
+read and which are never written. The write-set if the set of variable paths
+always written on all program paths to the exit of the subprogram, and whose
+initial value is not read. The read-write-set is all other variable paths read
+or written.
+
+\begin{example}
+Consider the following code for setting a field of an array element:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) is begin
+     P(N).X := V;
+  end Set_X_Of_Nth;
+\end{verbatim}
+
+We compute the sets for \verb|Set_X_Of_Nth| as follows:
+\begin{itemize}
+\item \outallwrites{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|P.X| \}
+\item \outallreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}
+\item \outwrites{\mathit{Set\_X\_Of\_Nth}} = \{\}
+\item \outreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}
+\end{itemize}
+
+So that the read-set of \verb|Set_X_Of_Nth| is \{ \verb|V| \}, its write-set is
+ \{\} and its read-write-set is  \{ \verb|P.X| \}.
+\end{example}
+
+\subsection{ALFA Restrictions}
+
+In the following, we describe the restrictions in ALFA with respect to
+packages, types, variables, subprograms, expressions and statements, as well as
+their rationale. A precise description of ALFA restrictions based on Ada BNF is
+given in Appendix~\ref{sec:bnf-alfa}.
+
+\subsubsection{Packages}
+
+Library-level packages, local packages, child packages and generic packages are
+all in ALFA.
+
+\subsubsection{Types}
+
+Access types are not in ALFA, because they create aliasing which makes formal
+verification intractable.
+
+Fixed-point types are not in ALFA for convenience, although they could be in a
+future version.
+
+Interfaces are not in ALFA also for convenience.
+
+\subsubsection{Variables}
+
+Variables whose address is taken are not in ALFA.
+
+\subsubsection{Subprograms}
+
+Library-level subprograms, package subprograms, local subprograms and generic
+subprograms are all in ALFA.
+
+\subsubsection{Expressions}
+
+Quantified expressions are in ALFA only if they appear in predicate position,
+that is, at the top-level of the boolean structure of an expression used in
+assertions.
+
+\subsubsection{Statements}
+
+Exception handlers are not in ALFA, because they create complex control-flow
+which make formal verification intractable. However, defining exceptions and
+raising exceptions are in ALFA. As far as formal verification of data-flow,
+run-time errors and contracts is concerned, raising an exception is similar to
+removing the program path from consideration.
 
 \subsection{ALFA Extensions}
 
@@ -514,226 +931,6 @@ end Sqrt;
 The loop-invariant to be used for unit proof should be 1) true the first time
 the loop is entered and 2) provable from assuming it at some previous iteration
 through the loop and examining the effect of the loop body.
-
-\subsection{ALFA Restrictions}
-
-In the following, we refer to entities in the program with the name of the
-corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
-subprogram body. As a general rule, an entity is in ALFA only if all the
-sub-entities which define it are in ALFA. As an example, a
-\bnf{subprogram\_body} is defined in Ada BNF as:
-
-\hspace*{1cm}\bnf{subprogram\_body} ::=\\
-\hspace*{2cm}\lbrack\bnf{overriding\_indicator}\rbrack\\
-\hspace*{2cm}\bnf{subprogram\_specification} is\\
-\hspace*{3cm}  \bnf{declarative\_part}\\
-\hspace*{2cm}  begin\\
-\hspace*{3cm}    \bnf{handled\_sequence\_of\_statements}\\
-\hspace*{2cm}  end \lbrack\bnf{designator}\rbrack;\\
-
-Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
-\begin{itemize}
-\item its \bnf{overriding\_indicator} (if present);
-\item its \bnf{subprogram\_specification};
-\item its \bnf{declarative\_part};
-\item its \bnf{handled\_sequence\_of\_statements};
-\item its \bnf{designator} (if present).
-\end{itemize}
-
-This general rule applies individually to all production rules in the BNF
-which define program entities. Thus, some production rules defining a
-non-terminal may be in ALFA while others for the same non-terminal are not in
-ALFA.
-
-The additional rules below further restrict which entities are in ALFA. 
-
-\subsubsection{Lexical Elements}
-
-ALFA only supports the Latin-1 Character Set, not the full Universal Character
-Set (ISO/IEC 10646:2003) supported by Ada.
-
-Based forms of real literals are not in ALFA.
-
-[what about pragmas?]
-
-\subsubsection{Declarations}
-
-All entities related to access types are not in ALFA:
-\begin{itemize}
-\item the \bnf{aliased} keyword, wherever it appears;
-\item \bnf{access\_type\_definition};
-\item \bnf{access\_to\_object\_definition};
-\item \bnf{general\_access\_modifier};
-\item \bnf{access\_to\_subprogram\_definition};
-\item \bnf{null\_exclusion};
-\item \bnf{access\_definition}.
-\end{itemize}
-
-Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
-containers, as it contains a pointer to the underlying container. The formal
-containers as described in Section~\ref{sub:formal-containers} define cursors
-that are in ALFA.
-
-All entities related to fixed-point types are not in ALFA:
-\begin{itemize}
-\item \bnf{fixed\_point\_definition};
-\item \bnf{ordinary\_fixed\_point\_definition};
-\item \bnf{decimal\_fixed\_point\_definition};
-\item \bnf{digits\_constraint};
-\item \bnf{delta\_constraint}.
-\end{itemize}
-
-All entities related to interfaces are not in ALFA:
-\begin{itemize}
-\item \bnf{interface\_type\_definition};
-\item \bnf{interface\_list}.
-\end{itemize}
-
-[what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
-
-Note in particular that a \bnf{default\_expression} in a
-\bnf{component\_declaration} is allowed, as well as a \bnf{variant\_part} in
-a \bnf{component\_list}.
-
-\subsubsection{Names and Expressions}
-
-An \bnf{identifier} or a \bnf{name} which has a corresponding declaration is in
-ALFA if-and-only-if its declaration is in ALFA. As a consequence, a call is in
-ALFA only if the declaration of the subprogram called is in ALFA. 
-
-[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]
-
-All entities related to access types are not in ALFA:
-\begin{itemize}
-\item \bnf{explicit\_dereference};
-\item \bnf{implicit\_dereference};
-\item the \bnf{Access} terminal defining an \bnf{attribute\_designator};
-\item the \bnf{null} terminal defining a \bnf{primary};
-\item \bnf{allocator}.
-\end{itemize}
-
-Operations \bnf{and}, \bnf{or} and \bnf{xor} on Boolean arguments are not in
-ALFA. The same operations on arrays of Boolean elements are in ALFA.  Only the
-lazy operations \bnf{and\ then} and \bnf{or\ else} on Boolean arguments are 
-in ALFA.
-
-Quantified expressions are in ALFA only if they appear in predicate position,
-that is, at the top-level of the boolean structure of an expression used in
-assertions.
-
-\begin{example}
-\label{ex:alfa-quantifiers}
-The following quantified expression appearing in predicate position is in ALFA:
-\begin{verbatim}
-procedure P with Pre => (for all X in Index => Prop (X));
-\end{verbatim}
-
-The following quantified expression appearing in term position is not in ALFA:
-\begin{verbatim}
-procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
-\end{verbatim}
-
-The following quantified expression appearing in program position is not in
-ALFA:
-\begin{verbatim}
-B : Boolean := (for all X in Index => Prop (X));
-\end{verbatim}
-\end{example}
-
-Additionally, an expression in ALFA which appears as part of an assertion
-cannot contain calls to functions. Instead, it may contain contain calls to
-parameterized expressions. A precondition, a postcondition, a type invariant or
-a subtype predicate count as assertions.
-
-\subsubsection{Statements}
-
-\bnf{goto\_statement} is not in ALFA.
-
-In order to be in ALFA, an exit-statement must follow the same restrictions as
-in SPARK:
-\begin{enumerate}
-\item Exit-statements always apply to their innermost enclosing loops.
-\item If an exit-statement contains a when clause then its closest-containing
-  compound statement must be a loop-statement.
-\item If an exit-statement does not contain a when clause then its
-  closest-containing compound statement must be an if-statement without an else
-  or elsif clause, whose closest-containing compound statement is a
-  loop-statement.
-\end{enumerate}
-
-\begin{example}
-  The following exit-statements from Ada RM are in ALFA:
-\begin{verbatim}
-for N in 1 .. Max_Num_Items loop
-   Get_New_Item(New_Item);
-   Merge_Item(New_Item, Storage_File);
-   exit when New_Item = Terminal_Item;
-end loop;
-
-Main_Cycle:
-   loop
-      --  initial statements
-      exit Main_Cycle when Found;
-      --  final statements
-   end loop Main_Cycle;
-\end{verbatim}
-\end{example}
-
-\subsubsection{Subprograms}
-
-A subprogram may have both a \bnf{subprogram\_declaration} and a
-\bnf{subprogram\_body}. Such a subprogram is in ALFA only if both its
-declaration and body are in ALFA. Additionally, the subprogram should have a
-postcondition attached to its declaration. The requirement that a subprogram
-has a postcondition ensures that the user states desired properties to prove on
-this subprogram, and that callers can rely on a precise indication of what this
-subprogram does. Of course, such a postcondition can be simply \verb|True| in
-which case the user chooses not to give any more precise information.
-
-\bnf{extended\_return\_statement} is not in ALFA.
-
-\subsubsection{Package Specifications and Declarations}
-
-No special rules. In particular, renamings and the optional statements in a
-package body are in ALFA.
-
-\subsubsection{Use Clauses}
-
-No special rules.
-
-\subsubsection{Tasks and Synchronisation}
-
-Most probably, the same restrictions as in RavenSPARK should be enforced for
-the sequential verification results to apply to concurrent code.
-
-\subsubsection{Program Structure and Compilation Issues}
-
-No special rules.
-
-\subsubsection{Exceptions}
-
-All entities related to exception handling are not in ALFA:
-\begin{itemize}
-\item \bnf{exception\_handler};
-\item \bnf{choice\_parameter\_specification};
-\item \bnf{exception\_choice}.
-\end{itemize}
-
-However, defining exceptions and raising exceptions are in ALFA.
-
-\subsubsection{Generic Units}
-
-Generic formal object parameters of mode ``in out'' are not in ALFA.
-
-Generic formal type definitions for fixed-point types are not in ALFA.
-
-Subprograms passed in argument to a generic instantiation as formal subprograms
-should write only global variables that none of the generic entity subprograms
-writes, neither directy nor indirectly.
-
-\subsubsection{Representation Issues}
-
-[To be discussed.]
 
 \section{Formal Verification}
 \label{sec:formal-verification}
@@ -1196,202 +1393,32 @@ Declarations of generic entities should be instantiated for each generic
 instantiation in the program. Bodies of generic entities should be kept not
 instantiated, so that each generic body is verified only once.
 
-\subsection{Computing the Frame Condition}
-\label{sub:data-flow}
-
-\subsubsection{Variable Paths}
-\label{sub:variable-path}
-
-A variable in ALFA may only have a scalar type (discrete or real) or an
-aggregate type (record or array) such that all sub-components have themselves a
-scalar type or an aggregate type with the same restriction. Given a variable
-$v$ in ALFA, we associate a set of paths \vpath{v} to $v$. More generally, we
-associate a set of paths \vpath{v} to an individual path $v$ (which may be a
-variable) as follows:
-\begin{itemize}
-\item if $v$ has a scalar type, $\vpath{v} = \{v\}$;
-\item if $v$ has a record type with components $c_i$, 
-  $\vpath{v} = \bigunion \vpath{v.c_i}$;
-\item if $v$ has an array type whose element type $t$ is a scalar type,
-  $\vpath{v} = \{v\}$;
-\item if $v$ has an array type whose element type $t$ is a record type with
-  components $c_i$, $\vpath{v} = \bigunion \vpath{v.c_i}$. (Here, we do as if $v$
-  was of type $t$ so that we can refer to its $c_i$ components.)
-\end{itemize}
+A quantified expression over formal containers should be translated into a
+quantification over the corresponding cursor type, inserting a guard that the
+cursor belongs to the container. This is possible because cursors of formal
+containers are simply integer types.
 
 \begin{example}
-  On the following code, the set of paths of \verb|X| is: \verb|X.B.J|,
-  \verb|X.B.K|, \verb|X.A.J|, \verb|X.A.K|.
-
+The quantified expresssion:
 \begin{verbatim}
-type Base is record 
-  J : Integer;
-  K : Integer range 0 .. 5;
-end record;
-type Base_Array is array (Boolean) of Base;
-type Ext is record 
-  B : Base;
-  A : Base_Array;
-end record;
-X : Ext;
+for all X of My_Set => Prop (X)
+\end{verbatim}
+should be translated into:
+\begin{verbatim}
+for all C in Cursor => if Has_Element (My_Set, C) then Prop (Element (My_Set, C))
 \end{verbatim}
 \end{example}
 
-A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
-$\sel_i$ on the path refers to an array, we say that the path is an array
-path. Otherwise, we say that the path is a record path. A record path refers to
-a single value of scalar type, while an array path usually refers to more than
-one value of scalar type.
- 
-\subsubsection{Problem Statement}
+\subsection{From Expanded Ada to Extended SPARK}
 
-For the purpose of data-flow verification, we consider a package body as a
-special form of subprogram, where the body of the subprogram is given by the
-various initializations performed in the declarations of variables, as well as
-the optional sequence of statements.
+As a general remark, the translation should be free to introduce copies of any
+values (for example to translate extended returns), which should not have any
+effect on the validity of the proofs.
 
-A data-flow analysis of the source Ada program should associate each subprogram
-with three sets of variables paths:
-\begin{itemize}
-\item the read-set of variable paths possibly read by the subprogram;
-\item the write-set of variable paths alway written by the subprogram;
-\item the read-write-set of variable paths possibly read and written by
-  the subprogram.
-\end{itemize}
-
-Note that a variable path which is always written by the subprogram before
-being read, so that the initial value of the variable path is never read,
-belongs to the write-set, not the read-write-set.
-
-A special global variable called \heap represents all the dynamically allocated
-memory plus all variables whose address is taken.
-
-The algorithm should compute various maps from program points $p$ to sets of
-(local and global) variable paths:
-\begin{itemize}
-\item \writes stores variable paths completely written on all program paths
-  to $p$;
-\item \allwrites stores variable paths partially written on some program
-  path to $p$;
-\item \reads stores variable paths whose initial value at subprogram entry has
-  been partially read on some program path to $p$;
-\item \allreads stores variable paths partially read on some program path to
-  $p$.
-\end{itemize}
-
-As \reads depends on \writes which depends on \allreads, \allreads should be
-computed first, then \writes, then \reads. \allwrites can computed at any time, as it is independent from the other maps.
-
-As \writes, \allwrites, \reads and
-\allreads take program entities as parameters, they are decomposed into
-(\Inwrites,\Outwrites), (\Inallwrites,\Outallwrites), (\Inreads,\Outreads) and
-(\Inallreads,\Outallreads) respectively, where the ``in'' part describes the
-program point immediately before the entity and the ``out'' part describes the
-program point immediately after the entity.
-
-In the following, we give data-flow equations defining each one of \writes,
-\allwrites, \reads and \allreads. These equations provide an algorithm for
-computing the sets, and since the sets only grow, the algorithm necessarily
-reaches a fixpoint and terminates. Note that \writes, \allwrites, \reads and
-\allreads should only contain global variables when applied to subprograms
-(local variables are removed in this case).
-
-The control-flow graph of a subprogram allows defining for each statement $s$
-the set of its predecessor statements \pred{s}.
-
-\subsubsection{Computing \allwrites}
-
-There are two sources of partial writes: assignment statements and calls. A
-statement $s$ partially writes a variable path $w$ in the following cases:
-\begin{itemize}
-\item $s$ is an assignment statement to $w$;
-\item $s$ is an assignment statement through a dereference, and $w$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $w \in \outallwrites{f}$.
-\end{itemize}
-
-Given a statement $s$ partially writing variable path $w$, the following
-equations define \allwrites:
-\begin{eqnarray*}
-\outallwrites{s} &=& \inallwrites{s} \union \{w\}\\
-\inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}
-\end{eqnarray*}
-
-\subsubsection{Computing \allreads}
-
-There are two sources of reads: expressions and calls. A statement $s$
-partially reads a variable path $r$ in the following cases:
-\begin{itemize}
-\item $s$ contains an occurence of $r$ that does not count as write, as
-  described above;
-\item $s$ contains a dereference that does not count as write, as described
-  above, and $r$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $r \in \outallreads{f}$.
-\end{itemize}
-
-Notice that an expression used to define the dynamic bounds of a subtype counts
-as a read of any variable path occurring in this expression.
-
-Given a statement $s$ partially reading variable paths $r_i$, the following
-equations define \allreads:
-\begin{eqnarray*}
-\inallreads{s} &=& \bigunion \outallreads{\pred{s}}\\
-\outallreads{s} &=& \inallreads{s} \union \{r_i\}
-\end{eqnarray*}
-
-\subsubsection{Computing \writes}
-
-There are two natural sources of complete writes: assignment statements and
-calls. A statement $s$ completely writes a global variable path $w$ in the
-following cases:
-\begin{itemize}
-\item $s$ is an assignment statement to $w$, and $w$ is a record path;
-\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
-\end{itemize}
-Additionally, if $l_1$ is a loop and $w$ a variable path such that:
-\begin{enumerate}
-\item there is a set of loops $l_1...l_n$ such that each $l_i$ ranges over the
-  set of indexes of an array selector in $w$, and there is one loop for every
-  array selector;
-\item for all $i$, $l_i$ contains
-  $l_{i+1}$ as a statement in its outter sequence of statements;
-\item $l_1$ does not contain any exit statement (even in inner loops);
-\item $w \notin \outallreads{l_1}$;
-\item $l_n$ contains a statement assigning to $w$, where all indexes used for
-  array accesses are exactly all the loop variables;
-\end{enumerate}
-then loop $l_1$ completely writes variable path $w$.
-
-The aim of this special rule for loops is to allow the initialization of array
-paths through loops, which is both common in user code and which arises as a
-result of expansion, in particular due to default expressions for record
-components.
-
-Given a statement $s$ completely writing variable paths $w$, the following
-equations define \writes:
-\begin{eqnarray*}
-\inwrites{s} &=& \biginter \outwrites{\pred{s}}\\
-\outwrites{s} &=& \inwrites{s} \union \{w\}
-\end{eqnarray*}
-
-\subsubsection{Computing \reads}
-
-There are two sources of reads: expressions and calls. A statement $s$
-partially reads the initial value of a variable path $r$ in the following
-cases:
-\begin{itemize}
-\item $s$ contains an occurence of $r$ that does not count as write, as
-  described above;
-\item $s$ contains a dereference that does not count as write, as described
-  above, and $r$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $r \in \outreads{f}$.
-\end{itemize}
-
-Given a statement $s$ partially reading the initial value of variable paths
-$r_i$, the following equations define \reads:
-\begin{eqnarray*}
-\inreads{s} &=& \bigunion \outreads{\pred{s}}\\
-\outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})
-\end{eqnarray*}
+\subsubsection{Packages}
+\subsubsection{Types}
+\subsubsection{Variables}
+\subsubsection{Subprograms}
 
 \subsubsection{Computing the read-set, write-set and read-write-set}
 
@@ -1438,11 +1465,8 @@ data-flow contracts for local variable paths. Only the absence of any read to
 some local variable path could be detected and displayed as an error, which is
 safe to do.
 
-\subsection{From Expanded Ada to Extended SPARK}
-
-As a general remark, the translation should be free to introduce copies of any
-values (for example to translate extended returns), which should not have any
-effect on the validity of the proofs.
+\subsubsection{Expressions}
+\subsubsection{Statements}
 
 \subsubsection{Declarations}
 
@@ -1899,6 +1923,13 @@ translated accordingly:
 
 \subsection{From Extended SPARK to SPARK}
 
+\subsubsection{Packages}
+\subsubsection{Types}
+\subsubsection{Variables}
+\subsubsection{Subprograms}
+\subsubsection{Expressions}
+\subsubsection{Statements}
+
 \subsubsection{Types}
 
 Ada derived scalar types should be translated into SPARK subtypes. Indeed,
@@ -1920,6 +1951,13 @@ functions should be translated into procedures by introducing an additional
 ``out'' parameter.
 
 \subsection{From Extended SPARK to Why}
+
+\subsubsection{Packages}
+\subsubsection{Types}
+\subsubsection{Variables}
+\subsubsection{Subprograms}
+\subsubsection{Expressions}
+\subsubsection{Statements}
 
 \subsubsection{Types}
 
@@ -2025,25 +2063,253 @@ should be translated into Why pattern-matching expressions. Ada
 case-expressions over a discrete type which is not enumerated should be
 translated as a series of if-expressions.
 
-\paragraph{Quantified Expressions} A quantified expression in Ada should be
-translated into the corresponding logic proposition in Why (\verb|for all| in
-Ada becomes \verb|forall| in Why; \verb|for some| in Ada becomes \verb|exists|
-in Why). A quantified expression over integer ranges tran
+\paragraph{Quantified Expressions} 
+
+A quantified expression in Ada should be translated into the corresponding
+logic proposition in Why (\verb|for all| in Ada becomes \verb|forall| in Why;
+\verb|for some| in Ada becomes \verb|exists| in Why). All quantified
+expressions should be over integer ranges at this point. They should be
+translated into a quantification over the corresponding type in Why, inserting
+a guard that the value respects the dynamic types for the integer range.
 
 \begin{example}
-The quantified expresssion shown in Example~\ref{ex:alfa-quantifiers}:
+The quantified expresssion:
 \begin{verbatim}
-for all X in Index => Prop (X)
+for all X in Index range A .. B => Prop (X)
 \end{verbatim}
-translates into the following predicate:
+should be translated into the following predicate:
 \begin{verbatim}
-forall X : Index. Prop (X)
+forall X : Index. A <= X <= B -> Prop (X)
 \end{verbatim}
 \end{example}
 
-[what about quantification over containers?]
+\subsubsection{Subprograms}
+
+Each subprogram in Extended SPARK should be translated into a corresponding
+subprogram in Why.
 
 \bibliographystyle{plain}
 \bibliography{alfa}
+
+\appendix
+
+\section{BNF-Based Definition of ALFA}
+\label{sec:bnf-alfa}
+
+In the following, we refer to entities in the program with the name of the
+corresponding non-terminal in the Ada BNF, like \bnf{subprogram\_body} for a
+subprogram body. As a general rule, an entity is in ALFA only if all the
+sub-entities which define it are in ALFA. As an example, a
+\bnf{subprogram\_body} is defined in Ada BNF as:
+
+\hspace*{1cm}\bnf{subprogram\_body} ::=\\
+\hspace*{2cm}\lbrack\bnf{overriding\_indicator}\rbrack\\
+\hspace*{2cm}\bnf{subprogram\_specification} is\\
+\hspace*{3cm}  \bnf{declarative\_part}\\
+\hspace*{2cm}  begin\\
+\hspace*{3cm}    \bnf{handled\_sequence\_of\_statements}\\
+\hspace*{2cm}  end \lbrack\bnf{designator}\rbrack;\\
+
+Thus, a \bnf{subprogram\_body} is in ALFA only if the following are in ALFA:
+\begin{itemize}
+\item its \bnf{overriding\_indicator} (if present);
+\item its \bnf{subprogram\_specification};
+\item its \bnf{declarative\_part};
+\item its \bnf{handled\_sequence\_of\_statements};
+\item its \bnf{designator} (if present).
+\end{itemize}
+
+This general rule applies individually to all production rules in the BNF
+which define program entities. Thus, some production rules defining a
+non-terminal may be in ALFA while others for the same non-terminal are not in
+ALFA.
+
+The additional rules below further restrict which entities are in ALFA. 
+
+\subsubsection{Lexical Elements}
+
+ALFA only supports the Latin-1 Character Set, not the full Universal Character
+Set (ISO/IEC 10646:2003) supported by Ada.
+
+Based forms of real literals are not in ALFA.
+
+[what about pragmas?]
+
+\subsubsection{Declarations}
+
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item the \bnf{aliased} keyword, wherever it appears;
+\item \bnf{access\_type\_definition};
+\item \bnf{access\_to\_object\_definition};
+\item \bnf{general\_access\_modifier};
+\item \bnf{access\_to\_subprogram\_definition};
+\item \bnf{null\_exclusion};
+\item \bnf{access\_definition}.
+\end{itemize}
+
+Notice that this rules out the type cursor in Ada 2005 containers and Ada 2012
+containers, as it contains a pointer to the underlying container. The formal
+containers as described in Section~\ref{sub:formal-containers} define cursors
+that are in ALFA.
+
+All entities related to fixed-point types are not in ALFA:
+\begin{itemize}
+\item \bnf{fixed\_point\_definition};
+\item \bnf{ordinary\_fixed\_point\_definition};
+\item \bnf{decimal\_fixed\_point\_definition};
+\item \bnf{digits\_constraint};
+\item \bnf{delta\_constraint}.
+\end{itemize}
+
+All entities related to interfaces are not in ALFA:
+\begin{itemize}
+\item \bnf{interface\_type\_definition};
+\item \bnf{interface\_list}.
+\end{itemize}
+
+[what about \bnf{aspect\_clause} in \bnf{component\_item}?]\\
+
+Note in particular that a \bnf{default\_expression} in a
+\bnf{component\_declaration} is allowed, as well as a \bnf{variant\_part} in
+a \bnf{component\_list}.
+
+\subsubsection{Names and Expressions}
+
+An \bnf{identifier} or a \bnf{name} which has a corresponding declaration is in
+ALFA if-and-only-if its declaration is in ALFA. As a consequence, a call is in
+ALFA only if the declaration of the subprogram called is in ALFA. 
+
+[what about \bnf{aspect\_clause} in \bnf{basic\_declarative\_item}?]
+
+All entities related to access types are not in ALFA:
+\begin{itemize}
+\item \bnf{explicit\_dereference};
+\item \bnf{implicit\_dereference};
+\item the \bnf{Access} terminal defining an \bnf{attribute\_designator};
+\item the \bnf{null} terminal defining a \bnf{primary};
+\item \bnf{allocator}.
+\end{itemize}
+
+Operations \bnf{and}, \bnf{or} and \bnf{xor} on Boolean arguments are not in
+ALFA. The same operations on arrays of Boolean elements are in ALFA.  Only the
+lazy operations \bnf{and\ then} and \bnf{or\ else} on Boolean arguments are 
+in ALFA.
+
+Quantified expressions are in ALFA only if they appear in predicate position,
+that is, at the top-level of the boolean structure of an expression used in
+assertions.
+
+\begin{example}
+\label{ex:alfa-quantifiers}
+The following quantified expression appearing in predicate position is in ALFA:
+\begin{verbatim}
+procedure P with Pre => (for all X in Index => Prop (X));
+\end{verbatim}
+
+The following quantified expression appearing in term position is not in ALFA:
+\begin{verbatim}
+procedure P with Pre => if (for all X in Index => Prop (X)) then Y;
+\end{verbatim}
+
+The following quantified expression appearing in program position is not in
+ALFA:
+\begin{verbatim}
+B : Boolean := (for all X in Index => Prop (X));
+\end{verbatim}
+\end{example}
+
+Additionally, an expression in ALFA which appears as part of an assertion
+cannot contain calls to functions which write global variables. A syntactic way
+to make sure it is the case if to call only parameterized expressions, but
+calls to functions which do not write global variables are also in ALFA. A
+precondition, a postcondition, a type invariant or a subtype predicate count as
+assertions.
+
+\subsubsection{Statements}
+
+\bnf{goto\_statement} is not in ALFA.
+
+In order to be in ALFA, an exit-statement must follow the same restrictions as
+in SPARK:
+\begin{enumerate}
+\item Exit-statements always apply to their innermost enclosing loops.
+\item If an exit-statement contains a when clause then its closest-containing
+  compound statement must be a loop-statement.
+\item If an exit-statement does not contain a when clause then its
+  closest-containing compound statement must be an if-statement without an else
+  or elsif clause, whose closest-containing compound statement is a
+  loop-statement.
+\end{enumerate}
+
+\begin{example}
+  The following exit-statements from Ada RM are in ALFA:
+\begin{verbatim}
+for N in 1 .. Max_Num_Items loop
+   Get_New_Item(New_Item);
+   Merge_Item(New_Item, Storage_File);
+   exit when New_Item = Terminal_Item;
+end loop;
+
+Main_Cycle:
+   loop
+      --  initial statements
+      exit Main_Cycle when Found;
+      --  final statements
+   end loop Main_Cycle;
+\end{verbatim}
+\end{example}
+
+\subsubsection{Subprograms}
+
+A subprogram may have both a \bnf{subprogram\_declaration} and a
+\bnf{subprogram\_body}. Such a subprogram is in ALFA only if both its
+declaration and body are in ALFA. Additionally, the subprogram should have a
+postcondition attached to its declaration. 
+
+\bnf{extended\_return\_statement} is not in ALFA.
+
+\subsubsection{Package Specifications and Declarations}
+
+No special rules. In particular, renamings and the optional statements in a
+package body are in ALFA.
+
+\subsubsection{Use Clauses}
+
+No special rules.
+
+\subsubsection{Tasks and Synchronisation}
+
+Most probably, the same restrictions as in RavenSPARK should be enforced for
+the sequential verification results to apply to concurrent code.
+
+\subsubsection{Program Structure and Compilation Issues}
+
+No special rules.
+
+\subsubsection{Exceptions}
+
+All entities related to exception handling are not in ALFA:
+\begin{itemize}
+\item \bnf{exception\_handler};
+\item \bnf{choice\_parameter\_specification};
+\item \bnf{exception\_choice}.
+\end{itemize}
+
+However, defining exceptions and raising exceptions are in ALFA.
+
+\subsubsection{Generic Units}
+
+Generic formal object parameters of mode ``in out'' are not in ALFA.
+
+Generic formal type definitions for fixed-point types are not in ALFA.
+
+Subprograms passed in argument to a generic instantiation as formal subprograms
+should write only global variables that none of the generic entity subprograms
+writes, neither directy nor indirectly.
+
+\subsubsection{Representation Issues}
+
+[To be discussed.]
 
 \end{document}
