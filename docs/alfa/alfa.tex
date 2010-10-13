@@ -719,9 +719,8 @@ In the following, we give data-flow equations defining each one of \writes,
 \allwrites, \reads and \allreads. These equations provide an algorithm for
 computing the sets, and since the sets only grow, the algorithm necessarily
 reaches a fixpoint and terminates. Note that \writes, \allwrites, \reads and
-\allreads should only contain path variables for paramaters and global
-variables when applied to subprograms (local variables are removed in this
-case).
+\allreads will contain path variables for parameters and global variables but
+also local variables, even when applied to subprograms.
 
 The control-flow graph of a subprogram allows defining for each statement $s$
 the set of its predecessor statements \pred{s}.
@@ -733,7 +732,8 @@ statement $s$ partially writes a variable path $w$ in the following cases:
 \begin{itemize}
 \item $s$ is an assignment statement to $w$;
 \item $s$ is an assignment statement through a dereference, and $w$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $w \in \outallwrites{f}$.
+\item $s$ contains a call to a subprogram $f$, $w$ is not a local variable path
+  of $f$ and $w \in \outallwrites{f}$.
 \end{itemize}
 
 Given a statement $s$ partially writing variable path $w$, the following
@@ -752,7 +752,8 @@ partially reads a variable path $r$ in the following cases:
   described above;
 \item $s$ contains a dereference that does not count as write, as described
   above, and $r$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $r \in \outallreads{f}$.
+\item $s$ contains a call to a subprogram $f$, $r$ is not a local variable path
+  of $f$ and $r \in \outallreads{f}$.
 \end{itemize}
 
 Notice that expressions used in the definition of types, for example dynamic
@@ -772,7 +773,8 @@ calls. A statement $s$ completely writes a global variable path $w$ in the
 following cases:
 \begin{itemize}
 \item $s$ is an assignment statement to $w$, and $w$ is a record path;
-\item $s$ contains a call to a subprogram $f$, and $w \in \outwrites{f}$.
+\item $s$ contains a call to a subprogram $f$, $w$ is not a local variable path
+  of $f$ and $w \in \outwrites{f}$.
 \end{itemize}
 Additionally, if $l_1$ is a loop and $w$ an array path such that:
 \begin{enumerate}
@@ -811,7 +813,8 @@ variable path $r$ if $r$ is not in \writes and:
   described above;
 \item $s$ contains a dereference that does not count as write, as described
   above, and $r$ is \heap;
-\item $s$ contains a call to a subprogram $f$, and $r \in \outreads{f}$.
+\item $s$ contains a call to a subprogram $f$, $r$ is not a local variable path
+  of $f$ and $r \in \outreads{f}$.
 \end{itemize}
 
 Given a statement $s$ partially reading the initial value of variable paths
@@ -826,7 +829,8 @@ $r_i$, the following equations define \reads:
 Given subprogram $f$:
 \begin{itemize}
 \item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
-\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
+\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$
+  augmented with all local variables of $f$;
 \item the initial read-write-set for $f$ is $\outallwrites{f} \minus
   \outwrites{f}$.
 \end{itemize}
@@ -834,8 +838,10 @@ Given subprogram $f$:
 The read-set is simply the set of variable paths whose initial value may be
 read and which are never written. The write-set if the set of variable paths
 always written on all program paths to the exit of the subprogram, and whose
-initial value is not read. The read-write-set is all other variable paths read
-or written.
+initial value is not read. We add all local variables to this set because their
+value should not be read before they are assigned, and it does not matter if
+they are initialized prior to returning from the function. The read-write-set
+is all other variable paths read or written.
 
 \begin{example}
 Consider the following code for setting a field of an array element:
@@ -869,11 +875,11 @@ given in Appendix~\ref{sec:bnf-alfa}.
 
 \subsubsection{Packages}
 
-Library-level packages, local packages, child packages and generic packages are
-all in ALFA.
+Library-level packages, child packages and generic packages are all in ALFA.
 
-Formal packages for generic packages and subprograms are not in ALFA, as they
-may require quite some work for no clear benefit.
+Local packages to other packages or subprograms and formal packages for generic
+packages and subprograms are not in ALFA, as they would require quite some work
+for no clear benefit.
 
 \subsubsection{Types}
 
@@ -1474,125 +1480,52 @@ procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
 \subsubsection{Subprograms}
 \label{Ada2SPARK:subprograms}
 
-Library-level subprograms should be wrapped in a library-level package.
+\paragraph{Declarative Sections}
 
+In Ada, subprograms may define several local declarative sections, either at
+the start of the subprogram body, or inside a local block-statement. Local
+subprograms defined inside these declarative blocks may introduce mutual
+dependencies with other packages as seen in
+Section~\ref{Ada2SPARK:packages}. Given a subprogram \verb|F| defined in
+package \verb|P|, we should extend the solution described in
+Section~\ref{Ada2SPARK:packages}, by adding local types to \verb|P_Type|, local
+variables to \verb|P_Data| and local subprograms to \verb|P_Spec|. Notice in
+particular that local variables are translated into global variables for the
+purpose of verification. This translation is correct for deductive
+verification, in the sense that every assertion proved on the generated code by
+deductive verification is true of the original code too.
 
-The first requirement is to break the mutual dependencies between packages and
-between subprograms in Ada, in order to 1) achieve modular verification at the
-subprogram level and 2) prevent circular dependencies between units and between
-elements of units, which are either not supported or supported with
-restrictions in both SPARK and Why. These mutual dependencies come from
-recursion between subprograms as well as 
+\paragraph{Library-level}
 
- Then, a subprogram P.F in ALFA should be translated into the
-only subprogram in unit P\_F, which manipulates data from P\_Data and calls
-subprograms from P\_Spec (including potential calls to F in P\_Spec, which
-correspond to recursive calls in the source program).
+Contrary to Ada, SPARK only allows the definition of one library-level
+subprogram, which should be the main entry point for the program. In order to
+prepare the translation to SPARK, and to provide a uniform solution to the
+problem of declarative sections mentioned above, we should translate
+library-level subprograms as if they were defined in their own library-level
+package.
 
-As another example, a subprogram F in ALFA defining local variables and local
-subprograms should lead to the generation of a unit F\_Data for its local
-variables (including the variables defined in block statements inside F) and
-F\_Spec for its local subprogram specifications (including the local
-subprograms defined in block statements inside F). Then, F's body should be
-translated into the only subprogram in unit F, which manipulates data from
-F\_Data and calls subprograms from F\_Spec.
+\paragraph{Body}
 
+The body of a subprogram \verb|F| defined in package \verb|P| should be
+translated in its own package \verb|F_Body|, with a package specification
+containing the subprogram specification for \verb|F|, and a package body
+containing the subprogram body for \verb|F|. Thus, the original subprogram
+specification for \verb|F| is splitted in the generated SPARK code into two
+subprogram specifications: one in \verb|P_Spec| and one in \verb|F_Body|. This
+separation is necessary to 1) apply deductive verification in SPARK/Why to the
+body of function \verb|F| only, in order to get modularity without relying on
+specific features of SPARK/Why tools; 2) break dependencies which may arise
+from recursion between subprograms, including self and mutual recursion.  Thus,
+all calls to \verb|V| in the Ada program should be translated into calls to
+\verb|P_Spec.F|, including possible recursive calls in \verb|F_Body.F|.
+
+\paragraph{Overloading}
 
 All names should be made unique in their package. This takes care of
 overloading, which is allowed in Ada but not in SPARK or Why. In particular,
 operator symbols should be renamed so that operators become regular functions.
 
-Given subprogram $f$:
-\begin{itemize}
-\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
-\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
-\item the initial read-write-set for $f$ is $\outreads{f} \inter
-  \outallwrites{f}$.
-\end{itemize}
-
-Then, the write-set of $f$ should be augmented with all the local variable paths
-defined in $f$, whether in the declarative part of the subprogram or in a block
-statement inside the body.
-
-The goal of this computation is that:
-\begin{itemize}
-\item for the translation to SPARK:
-\begin{itemize}
-\item the global ``in'' annotation should be the read-set;
-\item the global ``out'' annotation should be the write-set;
-\item the global ``in out'' annotation should be the read-write-set.
-\end{itemize}
-\item and for the translation to Why:
-\begin{itemize}
-\item the ``reads'' annotation should be the union of the read-set and the
-  read-write-set;
-\item the ``writes'' annotation should be the union of the write-set and the
-  read-write-set.
-\end{itemize}
-\end{itemize}
-
-The reason for augmenting the write-set with local variable paths is that the
-translation will put these local variable paths in another package, and they
-will appear as global variable paths from within $f$. Defining these in the
-write-set makes sure that SPARK will not consider them as initialized prior to
-calling $f$, so that all reads will have to be preceded by appropriate
-writes. In order to prevent warnings that some of these variable paths may not
-be written on some path before returning, an initialization subprogram should
-be declared, which takes all local variable paths in its ``in out''
-annotation. This initialization subprogram should be called prior to returning
-from the subprogram, which ensures the translated subprogram respects its
-data-flow contracts for local variable paths. Only the absence of any read to
-some local variable path could be detected and displayed as an error, which is
-safe to do.
-
-
-A special global variable called \heap represents all the dynamically allocated
-memory plus all variables whose address is taken, so that reads and writes to
-dynamically allocated memory show in SPARK or Why contracts as reads and writes
-to \heap. Notice that without this \heap variable, contracts would be wrong and
-break the consistency of the proof system. 
-
-\begin{example}
-  If reads and writes to \heap were not computed, it would be possible to prove
-  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
-  would be seen as a noop, and \verb|Get| would be seen as a constant function:
-
-\begin{verbatim}
-X : access Integer;
-
-procedure Set is X.all := 0; end Set;
-function Get return Integer is (X.all);
-
-function Problem return Boolean is
-   X1 : Integer := Get;
-begin
-   Set;
-   return X1 = Get;
-end Problem;
-\end{verbatim}
-\end{example}
-
-Contracts (precondition and postcondition) in SPARK/Why have a
-slightly different semantics than contracts in Ada 2012, because contracts in
-SPARK/Why completely ignore the possibility of a run-time error being
-raised while evaluating the contract. When checking for absence of run-time
-errors (which can be separated from contract checking), the absence of run-time
-errors in contracts should also be proved, which requires the extension of
-contracts with additional conjuncts in SPARK/Why. 
-
-\begin{example}
-  The following contract in Ada:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element
-   with Pre => A (X) /= Nil_Element;
-\end{verbatim}
-
-is equivalent to the following contract in SPARK:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element;
---# pre X in My_Array'Range and then A (X) /= Nil_Element;
-\end{verbatim}
-\end{example}
+\paragraph{Abstract and Null}
 
 An abstract subprogram declaration should be translated into a normal
 subprogram declaration, as the constraint that such subprograms are not defined
@@ -1605,55 +1538,49 @@ J925-004]
 
 \paragraph{Parameters} 
 
-For each global variable of mode ``in'', it may be
-necessary to add a precondition to the subprogram which asserts the implicit
-corresponding type invariant, when the original type for this variable has a
-dynamic flavor (subtype with dynamic bounds, discriminant record).
+For each path-variable of mode ``in'' or ``in out'' in the frame condition of
+\verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
+invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
+invariant should be stated in the precondition of \verb|F_Body.F|, so that it
+will be assumed during formal verification of the body of~\verb|F|.
+
+For each path-variable of mode ``out'' in the frame condition of
+\verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
+invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
+invariant should be stated in the postcondition of \verb|P_Spec.F|, so that it
+will be assumed during formal verification of the callers of~\verb|F|.
 
 \begin{example}
-The parameter \verb|X| below has a type with dynamic bounds:
+The parameters \verb|X| and \verb|Y| below have a type with dynamic bounds:
 \begin{verbatim}
 subtype Index is Integer range A .. B;
-procedure P (X : Index);
+procedure F (X : in Index; Y : out Index);
 \end{verbatim}
 
-It should be translated into a variable \verb|X| which is constrained in the
-precondition to be within the allowed bounds:
+They should be translated into parameters of the underlying static subtype,
+plus a precondition on \verb|F_Body.F| and a postcondition on \verb|P_Spec.F|:
 \begin{verbatim}
-X : Integer;
-procedure P;
---# global in X;
+procedure F_Body.F (X : in Integer; Y : out Integer);
 --# pre X in Index_First .. Index_Last;
+
+procedure P_Spec.F (X : in Integer; Y : out Integer);
+--# post Y in Index_First .. Index_Last;
 \end{verbatim}
 \end{example}
 
-The declaration of a subprogram in the $<$spec$>$ package (see below) should
-only have array parameters of an indefinite type: known array bounds should be
-relaxed so that it is easier to translate calls that take slices as actual
-parameters.
+Any parameter of a definite array type should be translated into a parameter of
+the corresponding indefinite array type in \verb|P_Spec|, so that it is easier
+to translate calls that take slices as actual parameters.
 
-Various translations remove entities not defined in SPARK and/or in Why:
-\begin{itemize}
-\item user-defined operators should be translated as regular functions;
-\item default expressions for parameters should be inlined at call sites, so
-  that they do not appear as default expressions anymore;
-\item the \kw{overriding} keyword should be simply removed, as it only serves
-  as a visual reminder of the status of the subprogram;
-\item parameters in calls should be given in the order of their definition,
-  even in the case where use of parameter associations in the Ada code gives
-  them outside of their definition order;
-\item extended returns should be translated in either:
-  \begin{itemize}
-  \item a simple return when there is no return statement;
-  \item otherwise, the declaration of a corresponding local variable (in the
-    $<$data$>$ package) and corresponding initialization code, followed by a
-    simple return.
-  \end{itemize}
-\item null procedure declarations should be translated into procedures with a
-  null body statement.
-\end{itemize}
+\paragraph{Generics} Similarly to what is done for generic packages,
+instantiations should be translated like normal subprogram specifications, and
+a special package should be generated for the analysis of the generic
+subprogram body.
 
 \subsubsection{Expressions}
+
+default expressions for parameters should be inlined at call sites, so
+  that they do not appear as default expressions anymore;
 
 [It is not clear how slices should be translated in all cases. At first, I
 thought slices appearing as parameters could be translated as the complete
@@ -1912,6 +1839,101 @@ for the parent type available.
 \subsubsection{Variables}
 \subsubsection{Subprograms}
 
+\paragraph{SPARK Annotations}
+
+Given subprogram $f$:
+\begin{itemize}
+\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
+\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
+\item the initial read-write-set for $f$ is $\outreads{f} \inter
+  \outallwrites{f}$.
+\end{itemize}
+
+Then, the write-set of $f$ should be augmented with all the local variable paths
+defined in $f$, whether in the declarative part of the subprogram or in a block
+statement inside the body.
+
+The goal of this computation is that:
+\begin{itemize}
+\item for the translation to SPARK:
+\begin{itemize}
+\item the global ``in'' annotation should be the read-set;
+\item the global ``out'' annotation should be the write-set;
+\item the global ``in out'' annotation should be the read-write-set.
+\end{itemize}
+\item and for the translation to Why:
+\begin{itemize}
+\item the ``reads'' annotation should be the union of the read-set and the
+  read-write-set;
+\item the ``writes'' annotation should be the union of the write-set and the
+  read-write-set.
+\end{itemize}
+\end{itemize}
+
+The reason for augmenting the write-set with local variable paths is that the
+translation will put these local variable paths in another package, and they
+will appear as global variable paths from within $f$. Defining these in the
+write-set makes sure that SPARK will not consider them as initialized prior to
+calling $f$, so that all reads will have to be preceded by appropriate
+writes. In order to prevent warnings that some of these variable paths may not
+be written on some path before returning, an initialization subprogram should
+be declared, which takes all local variable paths in its ``in out''
+annotation. This initialization subprogram should be called prior to returning
+from the subprogram, which ensures the translated subprogram respects its
+data-flow contracts for local variable paths. Only the absence of any read to
+some local variable path could be detected and displayed as an error, which is
+safe to do.
+
+
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken, so that reads and writes to
+dynamically allocated memory show in SPARK or Why contracts as reads and writes
+to \heap. Notice that without this \heap variable, contracts would be wrong and
+break the consistency of the proof system. 
+
+\begin{example}
+  If reads and writes to \heap were not computed, it would be possible to prove
+  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
+  would be seen as a noop, and \verb|Get| would be seen as a constant function:
+
+\begin{verbatim}
+X : access Integer;
+
+procedure Set is X.all := 0; end Set;
+function Get return Integer is (X.all);
+
+function Problem return Boolean is
+   X1 : Integer := Get;
+begin
+   Set;
+   return X1 = Get;
+end Problem;
+\end{verbatim}
+\end{example}
+
+Contracts (precondition and postcondition) in SPARK/Why have a
+slightly different semantics than contracts in Ada 2012, because contracts in
+SPARK/Why completely ignore the possibility of a run-time error being
+raised while evaluating the contract. When checking for absence of run-time
+errors (which can be separated from contract checking), the absence of run-time
+errors in contracts should also be proved, which requires the extension of
+contracts with additional conjuncts in SPARK/Why. 
+
+\begin{example}
+  The following contract in Ada:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element
+   with Pre => A (X) /= Nil_Element;
+\end{verbatim}
+
+is equivalent to the following contract in SPARK:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element;
+--# pre X in My_Array'Range and then A (X) /= Nil_Element;
+\end{verbatim}
+\end{example}
+
+
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
@@ -1979,6 +2001,10 @@ Each subprogram in Extended SPARK should be translated into a corresponding
 subprogram in Why.
 
 \subsubsection{Expressions}
+
+ parameters in calls should be given in the order of their definition,
+  even in the case where use of parameter associations in the Ada code gives
+  them outside of their definition order;
 
 \paragraph{Indexed Components} 
 
