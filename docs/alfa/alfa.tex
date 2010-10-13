@@ -5,6 +5,9 @@
 \usepackage{xspace}
 \usepackage{url}
 \usepackage{fullpage}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\usepackage{pgflibraryshapes} % for ellipse shape
 
 \newcommand{\version}{0.1}
 
@@ -869,6 +872,9 @@ given in Appendix~\ref{sec:bnf-alfa}.
 Library-level packages, local packages, child packages and generic packages are
 all in ALFA.
 
+Formal packages for generic packages and subprograms are not in ALFA, as they
+may require quite some work for no clear benefit.
+
 \subsubsection{Types}
 
 Access types are not in ALFA, because they create aliasing which makes formal
@@ -1215,6 +1221,7 @@ associativity.
 \end{example}
 
 \subsection{From Unambiguous Ada to Expanded Ada}
+\label{UnambigAda2ExpandedAda}
 
 This translation should be different for CV and RTE. It is based on the
 expansion phase in the GNAT front-end which will simplify the work needed in
@@ -1272,121 +1279,137 @@ values (for example to translate extended returns), which should not have any
 effect on the validity of the proofs.
 
 \subsubsection{Packages}
+\label{Ada2SPARK:packages}
 
-Library-level subprograms should be wrapped in a library-level package.
+\paragraph{Specification and Body}
 
-Use clauses should be removed.
+Packages in Ada are mutually dependent, as package bodies can refer to visible
+types, variables and subprograms of any other package. Only package
+specifications must respect a partial ordering so that there is no circular
+dependencies between package specifications. But circular dependencies between
+package specifications become apparent once we express frame conditions on the
+subprograms declared in the package: subprogram \verb|P.F| may read variable
+\verb|Q.Y| while subprogram \verb|Q.G| reads variable \verb|P.X|.  As SPARK/Why
+do not allow expressing circular dependencies (SPARK rules prevent mutual
+dependencies between package specifications or bodies; Why prevents circular
+inclusion), a package in Ada should be translated into more than one unit in
+SPARK/Why. A unit is a package in SPARK and a module in Why.
 
-The treatment of subunits should be no different if they were defined inlined.
+Visibility should be completely ignored in the translation, so that entities
+which are declared public/private in the package specification and entities
+which are declared in the package body are treated alike. A package \verb|P| in
+Ada (specification+body if present) should be translated into three package
+specifications in SPARK: a package specification \verb|P_Type| for its types, a
+package specification \verb|P_Data| for its variables and a package
+specification \verb|P_Spec| for its subprogram specifications.
 
-The first requirement is to break the mutual dependencies between packages and
-between subprograms in Ada, in order to 1) achieve modular verification at the
-subprogram level and 2) prevent circular dependencies between units and between
-elements of units, which are either not supported or supported with
-restrictions in both SPARK and Why. These mutual dependencies come from
-recursion between subprograms as well as cross calls between packages (P.F
-calls Q.G which calls P.H) even without recursion. To that end, each
-declarative part leads to the generation of two units: one for the data+types
-of this declarative part, one for the subprogram specifications of this
-declarative part.
+\begin{example}
+\tikzstyle{arrow}=[->, thick]
+The mutual dependence in:
+\begin{tikzpicture}[baseline=(current bounding box.west)]
+  \node at (0.5,1.2) {\verb|P|};
+  \node at (0.5,0.5) (X) {\verb|X|};
+  \node at (0.5,0) (F) {\verb|F|};
+  \draw (0,-0.5) -- (0,1) -- (1,1) -- (1,-0.5) -- (0,-0.5);
 
-As an example, a package P defining data and subprograms should lead to the
-generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
-specifications. Then, a subprogram P.F in ALFA should be translated into the
-only subprogram in unit P\_F, which manipulates data from P\_Data and calls
-subprograms from P\_Spec (including potential calls to F in P\_Spec, which
-correspond to recursive calls in the source program).
+  \node at (2.5,1.2) {\verb|Q|};
+  \node at (2.5,0.5) (Y) {\verb|Y|};
+  \node at (2.5,0) (G) {\verb|G|};
+  \draw (2,-0.5) -- (2,1) -- (3,1) -- (3,-0.5) -- (2,-0.5);
 
-As another example, a subprogram F in ALFA defining local variables and local
-subprograms should lead to the generation of a unit F\_Data for its local
-variables (including the variables defined in block statements inside F) and
-F\_Spec for its local subprogram specifications (including the local
-subprograms defined in block statements inside F). Then, F's body should be
-translated into the only subprogram in unit F, which manipulates data from
-F\_Data and calls subprograms from F\_Spec.
+  \draw[arrow] (F) -- (Y);
+  \draw[arrow] (G) -- (X);
+\end{tikzpicture}
+should be translated into: 
+\begin{tikzpicture}[baseline=(current bounding box.west)]
+  \node at (0.5,1.2) {\verb|P_Data|};
+  \node at (0.5,0.5) (X) {\verb|X|};
+  \draw (0,0) -- (0,1) -- (1,1) -- (1,0) -- (0,0);
 
-Thus, the generated units should be layered in:
-\begin{enumerate}
-\item $<$data$>$: units which define global data in SPARK or Why, corresponding
-  to either global or local variables in Ada. These units also define types.
-\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
-  corresponding to all subprograms specifications and definitions in Ada. These
-  units also define parameterized expressions.
-\item $<$body$>$: units which define a single subprogram specification and body
-  in SPARK or Why from a subprogram in ALFA.
-\end{enumerate}
+  \node at (0.5,-0.8) {\verb|P_Spec|};
+  \node at (0.5,-1.5) (F) {\verb|F|};
+  \draw (0,-2) -- (0,-1) -- (1,-1) -- (1,-2) -- (0,-2);
 
-Entities declared in the package specification and those declared in the
-package body should be treated identically. In particular, all entities
-declared in the package body should become visible from outside the package in
-the generated SPARK code. Likewise, the private part of a package specification
-should be merged in its public part, so that all entities become public. As a
-consequence, all private views of types should be removed [should they be
-kept?].
+  \node at (2.5,1.2) {\verb|Q_Data|};
+  \node at (2.5,0.5) (Y) {\verb|Y|};
+  \draw (2,0) -- (2,1) -- (3,1) -- (3,0) -- (2,0);
 
-The set of global variables defined in the package specification and package
-body should become the ``own'' global variables of the corresponding $<$data$>$
-package.
+  \node at (2.5,-0.8) {\verb|Q_Spec|};
+  \node at (2.5,-1.5) (G) {\verb|G|};
+  \draw (2,-2) -- (2,-1) -- (3,-1) -- (3,-2) -- (2,-2);
 
-A subprogram should be generated for the initialization part of variable
-declarations, both in the package body and in the package declaration, as well
-as the optional sequence of statements in the package body. This subprogram
-should have the global annotations computed as described in
-section~\ref{sub:data-flow}, and additionally:
-\begin{itemize}
-\item there should not be any ``in'' or ``in out'' global variables, to prevent
-  undue dependencies on the order of elaboration;
-\item the ``out'' global variables should be the ``initializes'' global
-  variables of the corresponding $<$data$>$ package.
-\end{itemize}
+  \draw[arrow] (F) -- (Y);
+  \draw[arrow] (G) -- (X);
+\end{tikzpicture}
+\end{example}
 
-\paragraph{Use Clauses}
+Hierarchical relations between packages (child packages, local packages), which
+govern special visibility rules, should disappear during the translation, so
+that all packages are generated in SPARK at library-level, without any
+hierarchical relations between them.
 
-Various translations remove entities not defined in SPARK and/or in Why:
-\begin{itemize}
-\item use clauses (not allowed in SPARK) should be replaced by use-type clauses
-  (allowed in SPARK) for all types in the package, so that operations are still
-  permitted on the types exported;
-\item renamings, which provide a proxy name for an entity, and which are
-  strongly limited in SPARK, should be removed and each occurrence of the
-  new name should be replaced by the entity being renamed;
-\end{itemize}
+\paragraph{Elaboration}
 
-\paragraph{Generic Units}
+All initializations and statements which are executed during package
+elaboration should be treated like the body of a special elaboration
+subprogram, and translated like other subprograms as described in
+Section~\ref{Ada2SPARK:subprograms}.
 
-Specifications of generic unit instantiations should be generated, so that the
-corresponding instantiated subprograms are called.
+\paragraph{Renamings}
 
-The formal part of a generic declaration should be translated like a special
-case of package specification, which is used in the declaration and definition
-of the generic entity (package or subprogram). Formal parameters should be
-translated accordingly:
+Renamings, which provide a proxy name for an existing Ada name, are strongly
+limited in SPARK and inexistant in Why. They should be replaced by the original
+name which they rename.
+
+\paragraph{Generics}
+
+Instantiations of generic packages produced during expansion (see
+Section~\ref{UnambigAda2ExpandedAda}) should be translated like non-generic
+packages, except no subprogram is generated for elaboration.
+
+The generic package itself should be translated specially, so that verification
+of the subprogram bodies it defines (including the elaboration subprogram) is
+performed only once, instead of being performed for each instantation
+separately. A generic package \verb|P| in Ada (specification+body if present)
+should be translated into four package specifications in SPARK: package
+specifications \verb|P_Type|, \verb|P_Data| and \verb|P_Spec| like previously,
+plus a package specification \verb|P_Formal| for its formal part.
+
+Formal parameters should be translated into special entities of
+\verb|P_Formal|:
 \begin{itemize}
 \item A formal object declaration should be translated like an object
-  declaration of the special package. Since its value is defined at the point
-  of instantiation, the instantiation should be translated into a call to a
-  special procedure which takes the object argument in parameter.
-\item A formal private type definition should be translated into a new record
-  type with no components.
+  declaration.
+\item A formal private type definition should be translated into a private type
+  with no definition.
 \item A formal derived type definition from a record type should be translated
-  into a new derived type from this same record type, with no additional
-  components.
+  into a private derived type from this same record type with no definition.
 \item A formal derived type definition from a scalar type should be translated
-  into a new derived type from this scalar.
+  into a new derived type from this scalar type.
 \item A formal signed integer type definition should be translated into a
   signed integer type with unknown (dynamic) bounds.
 \item A formal modular type definition should be translated into a modular type
   with unknown (dynamic) upper bound.
 \item A formal floating-point definition should be translated into a
   floating-point type with unknown (dynamic) bounds.
-\item A formal discrete type definition?
+\item A formal discrete type definition should be translated into a private
+  type with no definition.
 \item A formal array type definition should be translated into an array type
   definition.
 \item A formal subprogram should be translated into a subprogram specification.
-\item A formal package should be translated into a package specification.
+\item A formal package is not in ALFA.
 \end{itemize}
 
+See Sections~\ref{Ada2SPARK:types}, \ref{Ada2SPARK:variables}
+and~\ref{Ada2SPARK:subprograms} for the precise translation of these formal
+parameters.
+
+A generic package instantiation should be translated into a call to a special
+procedure, whose parameters are the formal object declarations of the generic,
+with the same modes: ``in'' or ``in out''.
+
 \subsubsection{Types}
+\label{Ada2SPARK:types}
 
 Incomplete type declarations should be dropped, as they are redundant with the
 corresponding complete type declarations.
@@ -1408,6 +1431,7 @@ character literals used in enumerations should be renamed into usual
   enumeration values.
 
 \subsubsection{Variables}
+\label{Ada2SPARK:variables}
 
 Object declarations with an initialization should be split so that the
 initialization is performed instead in assignment statement in the appropriate
@@ -1448,6 +1472,31 @@ procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
 \end{example}
 
 \subsubsection{Subprograms}
+\label{Ada2SPARK:subprograms}
+
+Library-level subprograms should be wrapped in a library-level package.
+
+
+The first requirement is to break the mutual dependencies between packages and
+between subprograms in Ada, in order to 1) achieve modular verification at the
+subprogram level and 2) prevent circular dependencies between units and between
+elements of units, which are either not supported or supported with
+restrictions in both SPARK and Why. These mutual dependencies come from
+recursion between subprograms as well as 
+
+ Then, a subprogram P.F in ALFA should be translated into the
+only subprogram in unit P\_F, which manipulates data from P\_Data and calls
+subprograms from P\_Spec (including potential calls to F in P\_Spec, which
+correspond to recursive calls in the source program).
+
+As another example, a subprogram F in ALFA defining local variables and local
+subprograms should lead to the generation of a unit F\_Data for its local
+variables (including the variables defined in block statements inside F) and
+F\_Spec for its local subprogram specifications (including the local
+subprograms defined in block statements inside F). Then, F's body should be
+translated into the only subprogram in unit F, which manipulates data from
+F\_Data and calls subprograms from F\_Spec.
+
 
 All names should be made unique in their package. This takes care of
 overloading, which is allowed in Ada but not in SPARK or Why. In particular,
@@ -1813,7 +1862,45 @@ considered as a dead path when proving VCs.
 \subsection{From Extended SPARK to SPARK}
 
 \subsubsection{Packages}
+\label{SPARK2SPARK:packages}
+
+\paragraph{SPARK Annotations}
+
+As described in Section~\ref{Ada2SPARK:packages}, a package \verb|P| in Ada may
+be translated into three package specifications in SPARK: a package
+specification \verb|P_Type| for its types, a package specification
+\verb|P_Data| for its variables and a package specification \verb|P_Spec| for
+its subprogram specifications. Additional SPARK annotations should be generated
+in each package for visibility and data-flow analysis.
+
+First, each package should start with SPARK inherit annotations for all
+generated packages from which is refers entities. These should reflect 1) the
+with-clauses in the original package; 2) the separation between generated
+packages; 3) the data dependencies in the generated frame conditions; 4) the
+new location of previously inherited primitive subprograms due to the
+translation of derived scalar types into subtypes (see
+Section~\ref{SPARK2SPARK:types}). Thus, it will probably more convenient to
+recompute the set of packages which should be inherited.
+
+Second, each data package \verb|P_Data| should include a SPARK own annotation
+for all the variables it defines, and a SPARK initialization annotation for
+those variables which were initialized at elaboration. In order to detect
+elaboration order dependencies, a package \verb|P_Data_Uninit| should be
+defined which duplicates \verb|P_Data| without any initialization annotation,
+to be referred to from elaboration subprograms. The elaboration subprogram for
+package \verb|P| should have all variables initialized at elaboration in its
+out global annotation.
+
+\paragraph{Use Clauses}
+
+Use-type-clauses should be generated to restore visibility of predefined
+primitive operations for 1) original use-clauses in package \verb|P| which are
+removed in SPARK; 2) the new location of previously inherited primitive
+operations due to the translation of derived scalar types into subtypes (see
+Section~\ref{SPARK2SPARK:types}).
+
 \subsubsection{Types}
+\label{SPARK2SPARK:types}
 
 Ada derived scalar types should be translated into SPARK subtypes. Indeed,
 after the front-end has checked that derived types are properly used and after
@@ -1839,6 +1926,11 @@ to quantification in the logic.]
 \subsection{From Extended SPARK to Why}
 
 \subsubsection{Packages}
+
+Each package in SPARK should be translated into a module in Why, with
+(non-cyclic) visibility relations between packages being translated into
+inclusion between modules in Why. 
+
 \subsubsection{Types}
 
 \paragraph{Integer Types}
