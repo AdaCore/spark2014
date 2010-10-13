@@ -8,7 +8,7 @@
 
 \newcommand{\version}{0.1}
 
-\title{ALFA v\version:\\Annotated Language of Functions in Ada}
+\title{ALFA \version:\\Annotated Language of Functions in Ada}
 
 \usepackage{color}
 
@@ -478,7 +478,7 @@ the profile would abort the possibility of formal verification for the program
 left for a future SPARK roadmap (that is, the SPARK language and toolset should
 be extended).
 
-The document documents clearly the differences between Ada and SPARK, and it
+The document outlines the differences between Ada and SPARK, and it
 offers a head-to-head comparison of BNF grammars in appendix.
 
 A prototype translation from Ada to SPARK was created to experiment with some
@@ -975,56 +975,20 @@ principally through Why and RTE principally through SPARK.
 
 Data-flow verification should be performed as a static analysis, similar to
 what the Examiner does for SPARK code. However, we aim at finer-grain data-flow
-verification than the one provided in SPARK. Instead of considering entire
-variables, we consider components of aggregate variables as the elementary
-entities whose initialization should be tracked.
+verification than the one provided in SPARK. Instead of tracking the
+initialization of entire variables, we track the initialization of variable
+subcomponents.
 
-\begin{example}
-\label{ex:component-init}
-  The following is not allowed in SPARK, as \verb|Zero_X| and \verb|Zero_Y|
-  only initialize part of a \verb|Point|. It should be allowed in ALFA.
-\begin{verbatim}
-type Point is record X, Y : Val; end record;
-procedure Zero_X (P : in out Point) is begin P.X := 0; end Zero_X;
-procedure Zero_Y (P : in out Point) is begin P.Y := 0; end Zero_X;
-
-procedure Zero (P : out Point) is
-begin
-   Zero_X (P); Zero_Y (P);
-end Zero;
-\end{verbatim}
-\end{example}
-
-We draw a distinction between external subprograms and internal
-subprograms. External subprograms are those subprograms for which we do not
-know all the calling contexts, such as library-level subprograms, either
-defined as such or declared inside library-level package
-specifications. Internal subprograms are subprograms for which we do know all
-the calling contexts, such as local subprograms whose address is not taken.
-Data-flow verification of external subprograms in ALFA should assume that all
-parameters and globals read are initialized at subprogram entry, and it should
-check that the subprogram initializes the parameters and globals written on all
-syntactic program paths. Data-flow verification of internal subprograms should
-do the same at the component level.
-
-\begin{example}
-  Data-flow verification on \verb|Zero_X| and \verb|Zero_Y| as defined in
-  Example~\ref{ex:component-init} should succeed if they are defined as
-  internal subprograms, and fail if they are defined as external subprograms.
-  Data-flow verification on \verb|Zero| should succeed in both cases.
-\end{example}
-
-Reads of components of local variables are only allowed if all syntactic paths
-through the subprogram before reaching the read do initialize completely the
-corresponding component which is read. This restriction is similar to the SPARK
-one, except that it applies to components of variables instead of entire
+Reads of variable subcomponents are only allowed if all syntactic paths through
+the subprogram before reaching the read do initialize completely the
+corresponding variable subcomponent. This restriction is similar to the SPARK
+one, except that it applies to variable subcomponents instead of entire
 variables.
 
-[need expansion of what is a data-flow error, regarding useless computations]
-
-Aliasing between parameters and globals accessed by a subprogram is forbidden,
-unless all aliasing parameters and globals are read. This restriction is
-similar to the SPARK one.
+Aliasing between parameter subcomponents and global subcomponents accessed by
+a subprogram is forbidden, unless all aliasing parameters and globals are
+read. This restriction is similar to the SPARK one, except that it applies to
+variable subcomponents instead of entire variables.
 
 \subsection{Contract Verification (CV)}
 
@@ -1067,17 +1031,18 @@ procedure Do_Something_On_Array (A : My_Array; I, J : Index) with
 \end{verbatim}
 \end{example}
 
-Although SPARK already generates VCs for absence of run-time errors on the
-subset of Ada it defines, we will not use these capabilities directly. Instead,
-we will rely on the compiler to insert the proper checks, which translate in
-SPARK as assertions, for which it also generate VCs. The benefits of this
-approach are that 1) the compiler controls which run-time checks should be
-proved, which can be modified on option, and reduced to fewer checks if the
-compiler is able to prove some of them (typically for checks that deal with
-type checking constraints); 2) the same process applies to checks that SPARK
-would generate and checks that SPARK does not know about, because they
-originate in language constructs that are not in SPARK; 3) the same checks are
-generated whatever the proof chain used, through SPARK or through Why.
+Although the Examiner already generates VCs for absence of run-time errors on
+the SPARK subset of Ada, we will not use these capabilities directly. Instead,
+we will rely on the compiler to insert the proper checks, which will be
+translate into assertions in SPARK, for which the Examiner also generate
+VCs. The benefits of this approach are that 1) the compiler controls which
+run-time checks should be proved, which can be modified on option, and reduced
+to fewer checks if the compiler is able to prove some of them (typically for
+checks that deal with type checking constraints); 2) the same process applies
+to checks that the Examiner would generate and checks that the Examiner does
+not know about, because they originate in language constructs that are not in
+SPARK; 3) the same checks are generated whatever the proof chain used, through
+SPARK or through Why.
 
 \subsection{Verification Modes}
 
@@ -1095,7 +1060,7 @@ differently is the logic part, having to do with the translation of
 assertions. Modes CV and RTE both insert different assertions, which means that
 more reads are performed, thus putting more constraints on the data-flow in
 terms of non-aliasing and initialization. Thus, it is sufficient to prove DFV
-in mode CV+RTE for data-flow to be verified in both modes CV and RTE. Hence DFW
+in mode CV+RTE for data-flow to be verified in both modes CV and RTE. Hence DFV
 should be performed in mode CV+RTE.
 
 \section{Translation to SPARK/Why}
@@ -1111,7 +1076,7 @@ program is written in the SPARK subset of Ada. Ideally, the generated SPARK
 should correspond to a simple subset of SPARK (for example no need for
 visibility rules in this subset as everything is public). Thus, it should be
 easier to formalize this subset and prove the correctness of transformations or
-analyzes on this subset if needed.
+analyses on this subset if needed.
 
 \subsection{Introduction to SPARK/Why}
 
@@ -1208,115 +1173,6 @@ types~\cite{Paskevich09RR}.
 Why distinguishes between logic and programs, and between terms and predicates
 in the logic. For example, a quantification is of type \verb|prop| which is
 different from the Boolean type for terms \verb|bool|.
-
-\subsection{Generation of Contracts}
-
-In contract-based verification, a subprogram body is verified independently
-from other subprograms, by relying on subprogram contracts only to assess the
-effect of calls. Thus, it is crucial that subprogram contracts are precise. In
-particular, the frame condition which is not present in the source Ada code
-needs to be generated as precisely as possible. Thus, we aim at generating
-frame conditions which distinguish between components of variables, so that a
-read of component \verb|X| of variable \verb|V| does not count as a read of
-all the components of variable \verb|V|.
-
-\begin{example}
-Consider a procedure which sets a field of an element of an array of points:
-\begin{verbatim}
-type Point is record X, Y : Val; end record;
-type Points is array (Index) of Point;
-
-procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) with
-  Post => P(N).X = V;
-\end{verbatim}
-
-The postcondition of \verb|Set_X_Of_Nth| only says something about the value of
-\verb|P(N).X| in the post-state. It says nothing about the value of
-\verb|P(N).Y|, or the value of \verb|P(M).X| and \verb|P(M).Y| for some
-\verb|M| different from \verb|N|.\\
-
-The only way to add this information in Ada is to explicitly state in the
-postcondition that these other values have not changed:
-\begin{verbatim}
-  Post => P(N).X = V and then P(N).Y = P(N).Y'Old and then
-          (for all M in Index => 
-             (if M /= N then P(M).X = P'Old(M).X)) and then
-          (for all M in Index => 
-             (if M /= N then P(M).Y = P'Old(M).Y));
-\end{verbatim}
-
-This detailed postcondition is needed if we generate in SPARK/Why an imprecise
-frame condition which only says that array \verb|P| is written. But if we
-generate a more precise frame condition saying that only field \verb|X| of an
-element of \verb|P| is written, then the postcondition is Ada can be reduced,
-because it is known in SPARK/Why that no field \verb|Y| has changed:
-\begin{verbatim}
-  Post => P(N).X = V and then
-          (for all M in Index => 
-             (if M /= N then P(M).X = P'Old(M).X));
-\end{verbatim}
-\end{example}
-
-The frame condition of a valid SPARK/Why subprogram needs to indicate
-explicitly which parameters and global variables can be read and/or written
-during the execution of this subprogram. In order to distinguish between
-variable components at the Ada level, each variable component must be
-translated into a different parameter or global variable in the SPARK/Why
-program; and the generation of the frame condition should be precise at the
-variable component level.
-
-As the frame condition must account for direct and indirect accesses, through
-any number of calls, this global information must be retrieved by performing a
-global analysis on the closed set of subprograms called directly and
-indirectly.
-
-A special global variable called \heap represents all the dynamically allocated
-memory plus all variables whose address is taken, so that reads and writes to
-dynamically allocated memory show in SPARK or Why contracts as reads and writes
-to \heap. Notice that without this \heap variable, contracts would be wrong and
-break the consistency of the proof system. 
-
-\begin{example}
-  If reads and writes to \heap were not computed, it would be possible to prove
-  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
-  would be seen as a noop, and \verb|Get| would be seen as a constant function:
-
-\begin{verbatim}
-X : access Integer;
-
-procedure Set is X.all := 0; end Set;
-function Get return Integer is (X.all);
-
-function Problem return Boolean is
-   X1 : Integer := Get;
-begin
-   Set;
-   return X1 = Get;
-end Problem;
-\end{verbatim}
-\end{example}
-
-Contracts (precondition and postcondition) in SPARK/Why have a
-slightly different semantics than contracts in Ada 2012, because contracts in
-SPARK/Why completely ignore the possibility of a run-time error being
-raised while evaluating the contract. When checking for absence of run-time
-errors (which can be separated from contract checking), the absence of run-time
-errors in contracts should also be proved, which requires the extension of
-contracts with additional conjuncts in SPARK/Why. 
-
-\begin{example}
-  The following contract in Ada:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element
-   with Pre => A (X) /= Nil_Element;
-\end{verbatim}
-
-is equivalent to the following contract in SPARK:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element;
---# pre X in My_Array'Range and then A (X) /= Nil_Element;
-\end{verbatim}
-\end{example}
 
 \subsection{From Ada to Unambiguous Ada}
 \label{sub:slicing-function}
@@ -1416,11 +1272,186 @@ values (for example to translate extended returns), which should not have any
 effect on the validity of the proofs.
 
 \subsubsection{Packages}
+
+Library-level subprograms should be wrapped in a library-level package.
+
+Use clauses should be removed.
+
+The treatment of subunits should be no different if they were defined inlined.
+
+The first requirement is to break the mutual dependencies between packages and
+between subprograms in Ada, in order to 1) achieve modular verification at the
+subprogram level and 2) prevent circular dependencies between units and between
+elements of units, which are either not supported or supported with
+restrictions in both SPARK and Why. These mutual dependencies come from
+recursion between subprograms as well as cross calls between packages (P.F
+calls Q.G which calls P.H) even without recursion. To that end, each
+declarative part leads to the generation of two units: one for the data+types
+of this declarative part, one for the subprogram specifications of this
+declarative part.
+
+As an example, a package P defining data and subprograms should lead to the
+generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
+specifications. Then, a subprogram P.F in ALFA should be translated into the
+only subprogram in unit P\_F, which manipulates data from P\_Data and calls
+subprograms from P\_Spec (including potential calls to F in P\_Spec, which
+correspond to recursive calls in the source program).
+
+As another example, a subprogram F in ALFA defining local variables and local
+subprograms should lead to the generation of a unit F\_Data for its local
+variables (including the variables defined in block statements inside F) and
+F\_Spec for its local subprogram specifications (including the local
+subprograms defined in block statements inside F). Then, F's body should be
+translated into the only subprogram in unit F, which manipulates data from
+F\_Data and calls subprograms from F\_Spec.
+
+Thus, the generated units should be layered in:
+\begin{enumerate}
+\item $<$data$>$: units which define global data in SPARK or Why, corresponding
+  to either global or local variables in Ada. These units also define types.
+\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
+  corresponding to all subprograms specifications and definitions in Ada. These
+  units also define parameterized expressions.
+\item $<$body$>$: units which define a single subprogram specification and body
+  in SPARK or Why from a subprogram in ALFA.
+\end{enumerate}
+
+Entities declared in the package specification and those declared in the
+package body should be treated identically. In particular, all entities
+declared in the package body should become visible from outside the package in
+the generated SPARK code. Likewise, the private part of a package specification
+should be merged in its public part, so that all entities become public. As a
+consequence, all private views of types should be removed [should they be
+kept?].
+
+The set of global variables defined in the package specification and package
+body should become the ``own'' global variables of the corresponding $<$data$>$
+package.
+
+A subprogram should be generated for the initialization part of variable
+declarations, both in the package body and in the package declaration, as well
+as the optional sequence of statements in the package body. This subprogram
+should have the global annotations computed as described in
+section~\ref{sub:data-flow}, and additionally:
+\begin{itemize}
+\item there should not be any ``in'' or ``in out'' global variables, to prevent
+  undue dependencies on the order of elaboration;
+\item the ``out'' global variables should be the ``initializes'' global
+  variables of the corresponding $<$data$>$ package.
+\end{itemize}
+
+\paragraph{Use Clauses}
+
+Various translations remove entities not defined in SPARK and/or in Why:
+\begin{itemize}
+\item use clauses (not allowed in SPARK) should be replaced by use-type clauses
+  (allowed in SPARK) for all types in the package, so that operations are still
+  permitted on the types exported;
+\item renamings, which provide a proxy name for an entity, and which are
+  strongly limited in SPARK, should be removed and each occurrence of the
+  new name should be replaced by the entity being renamed;
+\end{itemize}
+
+\paragraph{Generic Units}
+
+Specifications of generic unit instantiations should be generated, so that the
+corresponding instantiated subprograms are called.
+
+The formal part of a generic declaration should be translated like a special
+case of package specification, which is used in the declaration and definition
+of the generic entity (package or subprogram). Formal parameters should be
+translated accordingly:
+\begin{itemize}
+\item A formal object declaration should be translated like an object
+  declaration of the special package. Since its value is defined at the point
+  of instantiation, the instantiation should be translated into a call to a
+  special procedure which takes the object argument in parameter.
+\item A formal private type definition should be translated into a new record
+  type with no components.
+\item A formal derived type definition from a record type should be translated
+  into a new derived type from this same record type, with no additional
+  components.
+\item A formal derived type definition from a scalar type should be translated
+  into a new derived type from this scalar.
+\item A formal signed integer type definition should be translated into a
+  signed integer type with unknown (dynamic) bounds.
+\item A formal modular type definition should be translated into a modular type
+  with unknown (dynamic) upper bound.
+\item A formal floating-point definition should be translated into a
+  floating-point type with unknown (dynamic) bounds.
+\item A formal discrete type definition?
+\item A formal array type definition should be translated into an array type
+  definition.
+\item A formal subprogram should be translated into a subprogram specification.
+\item A formal package should be translated into a package specification.
+\end{itemize}
+
 \subsubsection{Types}
+
+Incomplete type declarations should be dropped, as they are redundant with the
+corresponding complete type declarations.
+
+All anonymous types should be explicitly named. This concerns:
+\begin{itemize}
+\item anonymous subtypes in type definitions (for example, the bounds in an
+  array);
+\item anonymous subtypes in object and component declarations;
+\item anonymous array types in object declarations.
+\end{itemize}
+
+the keywords \kw{abstract} and \kw{limited} in a derived type definition
+  should be dropped, as they have no dynamic semantics;
+
+derived scalar types should be replaced by subtypes with the same bounds;
+
+character literals used in enumerations should be renamed into usual
+  enumeration values.
+
 \subsubsection{Variables}
+
+Object declarations with an initialization should be split so that the
+initialization is performed instead in assignment statement in the appropriate
+subprogram.
+
+named numbers should be inlined;
+
+Each variable should be translated into a set of variables, one for each
+variable path as defined in Section~\ref{sub:variable-path}. This applies also
+to parameters, so that one parameter in expanded Ada might be translated in
+many parameters in extended SPARK. For external subprograms, as defined in
+Section~\ref{sub:DFV}, a parameter should be translated into the set of all
+path variables thus created. For internal subprograms, a parameter should be
+translated into the set of path variables which are mentioned in its read-set,
+write-set or read-write-set, and the mode of the new parameter corresponds to
+the set it comes from.
+
+\begin{example}
+  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
+  parameter:
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+procedure Set (P : out Point) is begin P.X := 0; end Set;
+\end{verbatim}
+
+  If the procedure \verb|Set| below is an internal procedure, it should mention
+  only path variables that are part of its frame condition:
+\begin{verbatim}
+procedure Set (P_X : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
+
+  If the procedure \verb|Set| below is an external procedure, it should mention
+  all path variables derived from its initial parameter, so that the lack of
+  initialization of \verb|P.Y| would be detected here by DFV:
+\begin{verbatim}
+procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
+\end{example}
+
 \subsubsection{Subprograms}
 
-\subsubsection{Computing the read-set, write-set and read-write-set}
+All names should be made unique in their package. This takes care of
+overloading, which is allowed in Ada but not in SPARK or Why. In particular,
+operator symbols should be renamed so that operators become regular functions.
 
 Given subprogram $f$:
 \begin{itemize}
@@ -1465,10 +1496,54 @@ data-flow contracts for local variable paths. Only the absence of any read to
 some local variable path could be detected and displayed as an error, which is
 safe to do.
 
-\subsubsection{Expressions}
-\subsubsection{Statements}
 
-\subsubsection{Declarations}
+A special global variable called \heap represents all the dynamically allocated
+memory plus all variables whose address is taken, so that reads and writes to
+dynamically allocated memory show in SPARK or Why contracts as reads and writes
+to \heap. Notice that without this \heap variable, contracts would be wrong and
+break the consistency of the proof system. 
+
+\begin{example}
+  If reads and writes to \heap were not computed, it would be possible to prove
+  that \verb|Problem| below always returns \verb|True|, because \verb|Set|
+  would be seen as a noop, and \verb|Get| would be seen as a constant function:
+
+\begin{verbatim}
+X : access Integer;
+
+procedure Set is X.all := 0; end Set;
+function Get return Integer is (X.all);
+
+function Problem return Boolean is
+   X1 : Integer := Get;
+begin
+   Set;
+   return X1 = Get;
+end Problem;
+\end{verbatim}
+\end{example}
+
+Contracts (precondition and postcondition) in SPARK/Why have a
+slightly different semantics than contracts in Ada 2012, because contracts in
+SPARK/Why completely ignore the possibility of a run-time error being
+raised while evaluating the contract. When checking for absence of run-time
+errors (which can be separated from contract checking), the absence of run-time
+errors in contracts should also be proved, which requires the extension of
+contracts with additional conjuncts in SPARK/Why. 
+
+\begin{example}
+  The following contract in Ada:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element
+   with Pre => A (X) /= Nil_Element;
+\end{verbatim}
+
+is equivalent to the following contract in SPARK:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element;
+--# pre X in My_Array'Range and then A (X) /= Nil_Element;
+\end{verbatim}
+\end{example}
 
 An abstract subprogram declaration should be translated into a normal
 subprogram declaration, as the constraint that such subprograms are not defined
@@ -1479,68 +1554,57 @@ declaration and a body with a single null statement. [unless SPARK defines null
 procedures as a way to specify axioms or lemmas at the source level, see
 J925-004]
 
-Incomplete type declarations should be dropped, as they are redundant with the
-corresponding complete type declarations.
+\paragraph{Parameters} 
 
-Each variable should be translated into a set of variables, one for each
-variable path as defined in Section~\ref{sub:variable-path}. This applies also
-to parameters, so that one parameter in expanded Ada might be translated in
-many parameters in extended SPARK. For external subprograms, as defined in
-Section~\ref{sub:DFV}, a parameter should be translated into the set of all
-path variables thus created. For internal subprograms, a parameter should be
-translated into the set of path variables which are mentioned in its read-set,
-write-set or read-write-set, and the mode of the new parameter corresponds to
-the set it comes from.
+For each global variable of mode ``in'', it may be
+necessary to add a precondition to the subprogram which asserts the implicit
+corresponding type invariant, when the original type for this variable has a
+dynamic flavor (subtype with dynamic bounds, discriminant record).
 
 \begin{example}
-  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
-  parameter:
+The parameter \verb|X| below has a type with dynamic bounds:
 \begin{verbatim}
-type Point is record X, Y : Val; end record;
-procedure Set (P : out Point) is begin P.X := 0; end Set;
+subtype Index is Integer range A .. B;
+procedure P (X : Index);
 \end{verbatim}
 
-  If the procedure \verb|Set| below is an internal procedure, it should mention
-  only path variables that are part of its frame condition:
+It should be translated into a variable \verb|X| which is constrained in the
+precondition to be within the allowed bounds:
 \begin{verbatim}
-procedure Set (P_X : out Val) is begin P_X := 0; end Set;
-\end{verbatim}
-
-  If the procedure \verb|Set| below is an external procedure, it should mention
-  all path variables derived from its initial parameter, so that the lack of
-  initialization of \verb|P.Y| would be detected here by DFV:
-\begin{verbatim}
-procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
+X : Integer;
+procedure P;
+--# global in X;
+--# pre X in Index_First .. Index_Last;
 \end{verbatim}
 \end{example}
 
-All anonymous types should be explicitly named. This concerns:
-\begin{itemize}
-\item anonymous subtypes in type definitions (for example, the bounds in an
-  array);
-\item anonymous subtypes in object and component declarations;
-\item anonymous array types in object declarations.
-\end{itemize}
-
-Object declarations with an initialization should be split so that the
-initialization is performed instead in assignment statement in the appropriate
-subprogram.
+The declaration of a subprogram in the $<$spec$>$ package (see below) should
+only have array parameters of an indefinite type: known array bounds should be
+relaxed so that it is easier to translate calls that take slices as actual
+parameters.
 
 Various translations remove entities not defined in SPARK and/or in Why:
 \begin{itemize}
-\item named numbers should be inlined;
-\item the keywords \kw{abstract} and \kw{limited} in a derived type definition
-  should be dropped, as they have no dynamic semantics;
-\item derived scalar types should be replaced by subtypes with the same bounds;
-\item character literals used in enumerations should be renamed into usual
-  enumeration values.
+\item user-defined operators should be translated as regular functions;
+\item default expressions for parameters should be inlined at call sites, so
+  that they do not appear as default expressions anymore;
+\item the \kw{overriding} keyword should be simply removed, as it only serves
+  as a visual reminder of the status of the subprogram;
+\item parameters in calls should be given in the order of their definition,
+  even in the case where use of parameter associations in the Ada code gives
+  them outside of their definition order;
+\item extended returns should be translated in either:
+  \begin{itemize}
+  \item a simple return when there is no return statement;
+  \item otherwise, the declaration of a corresponding local variable (in the
+    $<$data$>$ package) and corresponding initialization code, followed by a
+    simple return.
+  \end{itemize}
+\item null procedure declarations should be translated into procedures with a
+  null body statement.
 \end{itemize}
 
-\subsubsection{Names and Expressions}
-
-All names should be made unique in their package. This takes care of
-overloading, which is allowed in Ada but not in SPARK or Why. In particular,
-operator symbols should be renamed so that operators become regular functions.
+\subsubsection{Expressions}
 
 [It is not clear how slices should be translated in all cases. At first, I
 thought slices appearing as parameters could be translated as the complete
@@ -1728,145 +1792,6 @@ procedure F_Return;
 \end{verbatim}
 \end{example}
 
-\subsubsection{Subprograms}
-
-\paragraph{Parameters} 
-
-For each global variable of mode ``in'', it may be
-necessary to add a precondition to the subprogram which asserts the implicit
-corresponding type invariant, when the original type for this variable has a
-dynamic flavor (subtype with dynamic bounds, discriminant record).
-
-\begin{example}
-The parameter \verb|X| below has a type with dynamic bounds:
-\begin{verbatim}
-subtype Index is Integer range A .. B;
-procedure P (X : Index);
-\end{verbatim}
-
-It should be translated into a variable \verb|X| which is constrained in the
-precondition to be within the allowed bounds:
-\begin{verbatim}
-X : Integer;
-procedure P;
---# global in X;
---# pre X in Index_First .. Index_Last;
-\end{verbatim}
-\end{example}
-
-The declaration of a subprogram in the $<$spec$>$ package (see below) should
-only have array parameters of an indefinite type: known array bounds should be
-relaxed so that it is easier to translate calls that take slices as actual
-parameters.
-
-Various translations remove entities not defined in SPARK and/or in Why:
-\begin{itemize}
-\item user-defined operators should be translated as regular functions;
-\item default expressions for parameters should be inlined at call sites, so
-  that they do not appear as default expressions anymore;
-\item the \kw{overriding} keyword should be simply removed, as it only serves
-  as a visual reminder of the status of the subprogram;
-\item parameters in calls should be given in the order of their definition,
-  even in the case where use of parameter associations in the Ada code gives
-  them outside of their definition order;
-\item extended returns should be translated in either:
-  \begin{itemize}
-  \item a simple return when there is no return statement;
-  \item otherwise, the declaration of a corresponding local variable (in the
-    $<$data$>$ package) and corresponding initialization code, followed by a
-    simple return.
-  \end{itemize}
-\item null procedure declarations should be translated into procedures with a
-  null body statement.
-\end{itemize}
-
-\subsubsection{Package Specifications and Declarations}
-
-The first requirement is to break the mutual dependencies between packages and
-between subprograms in Ada, in order to 1) achieve modular verification at the
-subprogram level and 2) prevent circular dependencies between units and between
-elements of units, which are either not supported or supported with
-restrictions in both SPARK and Why. These mutual dependencies come from
-recursion between subprograms as well as cross calls between packages (P.F
-calls Q.G which calls P.H) even without recursion. To that end, each
-declarative part leads to the generation of two units: one for the data+types
-of this declarative part, one for the subprogram specifications of this
-declarative part.
-
-As an example, a package P defining data and subprograms should lead to the
-generation of a unit P\_Data for its data+types and P\_Spec for its subprogram
-specifications. Then, a subprogram P.F in ALFA should be translated into the
-only subprogram in unit P\_F, which manipulates data from P\_Data and calls
-subprograms from P\_Spec (including potential calls to F in P\_Spec, which
-correspond to recursive calls in the source program).
-
-As another example, a subprogram F in ALFA defining local variables and local
-subprograms should lead to the generation of a unit F\_Data for its local
-variables (including the variables defined in block statements inside F) and
-F\_Spec for its local subprogram specifications (including the local
-subprograms defined in block statements inside F). Then, F's body should be
-translated into the only subprogram in unit F, which manipulates data from
-F\_Data and calls subprograms from F\_Spec.
-
-Thus, the generated units should be layered in:
-\begin{enumerate}
-\item $<$data$>$: units which define global data in SPARK or Why, corresponding
-  to either global or local variables in Ada. These units also define types.
-\item $<$spec$>$: units which define subprogram specifications in SPARK or Why,
-  corresponding to all subprograms specifications and definitions in Ada. These
-  units also define parameterized expressions.
-\item $<$body$>$: units which define a single subprogram specification and body
-  in SPARK or Why from a subprogram in ALFA.
-\end{enumerate}
-
-Entities declared in the package specification and those declared in the
-package body should be treated identically. In particular, all entities
-declared in the package body should become visible from outside the package in
-the generated SPARK code. Likewise, the private part of a package specification
-should be merged in its public part, so that all entities become public. As a
-consequence, all private views of types should be removed [should they be
-kept?].
-
-The set of global variables defined in the package specification and package
-body should become the ``own'' global variables of the corresponding $<$data$>$
-package.
-
-A subprogram should be generated for the initialization part of variable
-declarations, both in the package body and in the package declaration, as well
-as the optional sequence of statements in the package body. This subprogram
-should have the global annotations computed as described in
-section~\ref{sub:data-flow}, and additionally:
-\begin{itemize}
-\item there should not be any ``in'' or ``in out'' global variables, to prevent
-  undue dependencies on the order of elaboration;
-\item the ``out'' global variables should be the ``initializes'' global
-  variables of the corresponding $<$data$>$ package.
-\end{itemize}
-
-\subsubsection{Use Clauses}
-
-Various translations remove entities not defined in SPARK and/or in Why:
-\begin{itemize}
-\item use clauses (not allowed in SPARK) should be replaced by use-type clauses
-  (allowed in SPARK) for all types in the package, so that operations are still
-  permitted on the types exported;
-\item renamings, which provide a proxy name for an entity, and which are
-  strongly limited in SPARK, should be removed and each occurrence of the
-  new name should be replaced by the entity being renamed;
-\end{itemize}
-
-\subsubsection{Tasks and Synchronisation}
-
-\subsubsection{Program Structure and Compilation Issues}
-
-Library-level subprograms should be wrapped in a library-level package.
-
-Use clauses should be removed.
-
-The treatment of subunits should be no different if they were defined inlined.
-
-\subsubsection{Exceptions}
-
 \paragraph{Raise Statements} 
 
 Raising an exception is very similar to returning from a subprogram, except the
@@ -1885,51 +1810,9 @@ some (locally dead) path through this call not initializing some local
 variables. (\ref{it:exc-post}) ensures that any path through this call is
 considered as a dead path when proving VCs.
 
-\subsubsection{Generic Units}
-
-Specifications of generic unit instantiations should be generated, so that the
-corresponding instantiated subprograms are called.
-
-The formal part of a generic declaration should be translated like a special
-case of package specification, which is used in the declaration and definition
-of the generic entity (package or subprogram). Formal parameters should be
-translated accordingly:
-\begin{itemize}
-\item A formal object declaration should be translated like an object
-  declaration of the special package. Since its value is defined at the point
-  of instantiation, the instantiation should be translated into a call to a
-  special procedure which takes the object argument in parameter.
-\item A formal private type definition should be translated into a new record
-  type with no components.
-\item A formal derived type definition from a record type should be translated
-  into a new derived type from this same record type, with no additional
-  components.
-\item A formal derived type definition from a scalar type should be translated
-  into a new derived type from this scalar.
-\item A formal signed integer type definition should be translated into a
-  signed integer type with unknown (dynamic) bounds.
-\item A formal modular type definition should be translated into a modular type
-  with unknown (dynamic) upper bound.
-\item A formal floating-point definition should be translated into a
-  floating-point type with unknown (dynamic) bounds.
-\item A formal discrete type definition?
-\item A formal array type definition should be translated into an array type
-  definition.
-\item A formal subprogram should be translated into a subprogram specification.
-\item A formal package should be translated into a package specification.
-\end{itemize}
-
-\subsubsection{Representation Issues}
-
 \subsection{From Extended SPARK to SPARK}
 
 \subsubsection{Packages}
-\subsubsection{Types}
-\subsubsection{Variables}
-\subsubsection{Subprograms}
-\subsubsection{Expressions}
-\subsubsection{Statements}
-
 \subsubsection{Types}
 
 Ada derived scalar types should be translated into SPARK subtypes. Indeed,
@@ -1939,26 +1822,23 @@ the same as those respected by a subtype with the same bounds. Notice that this
 may require that new packages are withed to make inherited primitive operations
 for the parent type available.
 
-\subsubsection{Expressions}
-
-[how to translate quantified expression in code? maybe ALFA should be limited
-to quantification in the logic.]
-
+\subsubsection{Variables}
 \subsubsection{Subprograms}
 
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
 
+\subsubsection{Expressions}
+
+[how to translate quantified expression in code? maybe ALFA should be limited
+to quantification in the logic.]
+
+\subsubsection{Statements}
+
 \subsection{From Extended SPARK to Why}
 
 \subsubsection{Packages}
-\subsubsection{Types}
-\subsubsection{Variables}
-\subsubsection{Subprograms}
-\subsubsection{Expressions}
-\subsubsection{Statements}
-
 \subsubsection{Types}
 
 \paragraph{Integer Types}
@@ -1999,6 +1879,12 @@ undecided for now.
 \paragraph{Array Types}
 
 Ada array types should be translated into instances of the Why array type. 
+
+\subsubsection{Variables}
+\subsubsection{Subprograms}
+
+Each subprogram in Extended SPARK should be translated into a corresponding
+subprogram in Why.
 
 \subsubsection{Expressions}
 
@@ -2083,10 +1969,7 @@ forall X : Index. A <= X <= B -> Prop (X)
 \end{verbatim}
 \end{example}
 
-\subsubsection{Subprograms}
-
-Each subprogram in Extended SPARK should be translated into a corresponding
-subprogram in Why.
+\subsubsection{Statements}
 
 \bibliographystyle{plain}
 \bibliography{alfa}
