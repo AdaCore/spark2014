@@ -261,10 +261,10 @@ predicate insert_pos (co1:map,k:key_t,co2:map) =
 
 predicate insert_inv (co1:map,k:key_t,e:element_t,co2:map) =
 	  forall cun:cursor.
-	    0<position_(co2,cun) ->
+	    position_(co2,cun)>0 ->
 	     (witness(key_(co2,cun))=witness(k) -> position_(co1,cun)=0 and key_(co2,cun)=k and element_(co2,cun)=e) and
 	     (witness(key_(co2,cun))<>witness(k) -> key_(co1,cun)=key_(co2,cun) and element_(co1,cun)=element_(co2,cun)
-	     and 0<position_(co1,cun))
+	     and position_(co1,cun)>0)
 
 predicate insert_ (co1:map,k:key_t,e:element_t,co2:map) =
 	  position_(co2,find_(co2,witness(k)))>0 and
