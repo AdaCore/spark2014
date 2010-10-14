@@ -887,8 +887,12 @@ for no clear benefit.
 Access types are not in ALFA, because they create aliasing which makes formal
 verification intractable.
 
-Fixed-point types are not in ALFA for convenience, although they could be in a
-future version.
+Floating-point and fixed-point types are not in ALFA, although they could be in
+a future version. Floating-point are particularly difficult to translate
+accurately, because the IEEE-754 standard is quite complex, but a simpler
+(safe) model bounding floating-point values by reals would be possible. Notice
+that the current treatment of floating-point numbers as reals in both SPARK and
+Frama-C is plain incorrect, and identified as such.
 
 Interfaces are not in ALFA also for convenience.
 
@@ -1397,8 +1401,7 @@ Formal parameters should be translated into special entities of
   signed integer type with unknown (dynamic) bounds.
 \item A formal modular type definition should be translated into a modular type
   with unknown (dynamic) upper bound.
-\item A formal floating-point definition should be translated into a
-  floating-point type with unknown (dynamic) bounds.
+\item A formal floating-point or fixed-point definition is not in ALFA.
 \item A formal discrete type definition should be translated into a private
   type with no definition.
 \item A formal array type definition should be translated into an array type
@@ -1447,6 +1450,16 @@ The variables above should be splitted into individual subcomponents as follows:
 \end{verbatim}
 \end{example}
 
+\paragraph{Array Variables}
+
+As described in Section~\ref{Ada2SPARK:types} below, array types with dynamic
+bounds should be translated into array types with static bounds. In order to
+still allow expressing the value of the \verb|'First| and \verb|'Last|
+attribute applied to this array, two new variables should be generated for
+every dimension of every path-variable of array type, which hold the value of
+\verb|'First| and \verb|'Last| applied to this path-variable and this
+dimension.
+
 \paragraph{Initialization}
 
 The initialization part of a variable declaration should be translated into an
@@ -1467,10 +1480,61 @@ path-variables.
 \subsubsection{Types}
 \label{Ada2SPARK:types}
 
-Incomplete type declarations should be dropped, as they are redundant with the
-corresponding complete type declarations.
+\paragraph{Discrete Types}
 
-All anonymous types should be explicitly named. This concerns:
+Enumeration types should be kept unchanged. Character types should be
+translated into normal enumeration types, by inserting calls to suitable
+conversion functions between characters and the new enumeration types. Boolean
+types should be kept unchanged.
+
+Integer types with static bounds should be kept unchanged.
+
+Integer types with dynamic bounds should be translated into the closest
+enclosing subtype with static bounds, together with a type invariant to be
+asserted in preconditions and postconditions. See
+Example~\ref{ex:dynamic-bounds} below. The type invariant states that a value
+is within the allowed dynamic bounds.
+
+The type invariant should be asserted:
+\begin{itemize}
+\item in the precondition of subprogram \verb|F| (the version used for
+  verifying the body of \verb|F|) for all path-variables of mode ``in'' and
+  ``in out'' in the frame condition of \verb|F|;
+\item in the postcondition of subprogram \verb|F| (the version used for
+  verifying the body of callers of \verb|F|) for all path-variables of mode
+  ``out'' and ``in out'' in the frame condition of \verb|F|;
+\end{itemize}
+
+Derived scalar types should be kept (translation into SPARK subtypes is delayed
+until Section~\ref{SPARK2SPARK:types}).
+
+\paragraph{Array Types}
+
+One-dimensional array types with static bounds should be kept unchanged.
+
+One-dimensional array types with dynamic bounds should be translated into
+arrays types with static bounds by taking the closest enclosing subtype with
+static bounds of its index type as new index type, together with special
+variables holding the \verb|'First| and \verb|'Last| attributes applied to this
+variable (as presented in Section~\ref{Ada2SPARK:variables}).
+
+Multi-dimensional array types should be translated like arrays of arrays, each
+array having dimension one only.
+
+\paragraph{Record Types}
+
+As shown in Section~\ref{Ada2SPARK:variables}, record types should disappear
+as a result of splitting every composite variable into path-variables.
+
+The discriminants of a discriminant record should be treated like normal
+components. Discriminants used to bound array components should be used in
+place of the special variables holding the \verb|'First| and \verb|'Last|
+attributes applied to this component (as presented in
+Section~\ref{Ada2SPARK:variables}). 
+
+\paragraph{Anonymous Types}
+
+All anonymous types should be explicitly named for SPARK/Why. This concerns:
 \begin{itemize}
 \item anonymous subtypes in type definitions (for example, the bounds in an
   array);
@@ -1478,13 +1542,10 @@ All anonymous types should be explicitly named. This concerns:
 \item anonymous array types in object declarations.
 \end{itemize}
 
-the keywords \kw{abstract} and \kw{limited} in a derived type definition
-  should be dropped, as they have no dynamic semantics;
+\paragraph{Incomplete Types}
 
-derived scalar types should be replaced by subtypes with the same bounds;
-
-character literals used in enumerations should be renamed into usual
-  enumeration values.
+Incomplete type declarations should be dropped, as they are redundant with the
+corresponding complete type declarations.
 
 \subsubsection{Subprograms}
 \label{Ada2SPARK:subprograms}
@@ -1587,7 +1648,6 @@ the frame condition of \verb|F|:
   globals of \verb|F|.
 \end{enumerate}
 
-
 \begin{example}
   Take a procedure \verb|Set| which only initializes part of its \verb|Point|
   parameter:
@@ -1609,13 +1669,14 @@ invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
 invariant should be stated in the precondition of \verb|F_Body.F|, so that it
 will be assumed during formal verification of the body of~\verb|F|.
 
-For each path-variable of mode ``out'' in the frame condition of
+For each path-variable of mode ``out'' or ``in out'' in the frame condition of
 \verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
 invariant (see Section~\ref{Ada2SPARK:types}), the corresponding dynamic
 invariant should be stated in the postcondition of \verb|P_Spec.F|, so that it
 will be assumed during formal verification of the callers of~\verb|F|.
 
 \begin{example}
+\label{ex:dynamic-bounds}
 The parameters \verb|X| and \verb|Y| below have a type with dynamic bounds:
 \begin{verbatim}
 subtype Index is Integer range A .. B;
@@ -1642,7 +1703,23 @@ instantiations should be translated like normal subprogram specifications, and
 a special package should be generated for the analysis of the generic
 subprogram body.
 
+\paragraph{Overriding}
+
+For every overriding subprogram \verb|B.F| of a subprogram \verb|A.F|, we
+should show that the Liskov Substitution Principle holds between modified
+versions of \verb|B.F| and \verb|A.F|. Namely, we generate a specification
+\verb|B.F'| which has the same contract as \verb|B.F|, except a frame condition
+which aggregates all the frame conditions of all the overridings of the
+subprogram along the hierarchy. Same for \verb|A.F'| from \verb|A.F|. Then, we
+should generate a separate hierarchy when only \verb|B.F'| overrides
+\verb|A.F'|.
+
 \subsubsection{Expressions}
+
+\paragraph{Dispatching Calls}
+
+For every subprogram which is overriden in a derived type, we should generate a
+new subprogram which has a frame condition combining 
 
 default expressions for parameters should be inlined at call sites, so
   that they do not appear as default expressions anymore;
@@ -2059,11 +2136,6 @@ The Ada \verb|Boolean| type should be translated into Why predefined
 enumeration type are not used. In the remaining cases, for example to range
 over values of type \verb|Boolean|, an enumeration type
 \verb|standard__boolean| should be defined in Why.
-
-\paragraph{Real Types}
-
-The translation of real types (floating-point and fixed-point) remains
-undecided for now.
 
 \paragraph{Array Types}
 
