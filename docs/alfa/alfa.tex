@@ -1716,6 +1716,8 @@ should generate a separate hierarchy when only \verb|B.F'| overrides
 
 \subsubsection{Expressions}
 
+
+
 \paragraph{Dispatching Calls}
 
 For every subprogram which is overriden in a derived type, we should generate a
@@ -1810,123 +1812,8 @@ should be passed as additional parameters to the call.
 
 \subsubsection{Statements}
 
-Translation of statements is delayed until final translation to SPARK/Why. [in
-particular, translation of arbitrary exit and return statements to SPARK is not
-solved. It is ok in Why.]
-
-\paragraph{Return Statements} 
-
-SPARK mandates that procedures do not contain return statements, and that
-functions contain a single return statement as last statement. 
-
-Thus, all return
-statements of a procedure \verb|P| should be translated into calls to a local
-procedure \verb|P_Return| which:
-\begin{enumerate}
-\item \label{it:no-param} takes no parameters;
-\item \label{it:in-globals} has the out-parameters and out-globals of \verb|P|
-  as in-globals;
-\item \label{it:out-globals} has the local variables of \verb|P| as out-globals;
-\item \label{it:pre} has the postcondition of \verb|P| as precondition;
-\item \label{it:in-globals-more} has all variables mentioned in the
-  postcondition of \verb|P| as in-globals;
-\item \label{it:post} has \verb|False| as postcondition.
-\end{enumerate}
-(\ref{it:in-globals}) ensures that at the calling point of \verb|P_Return|, all
-out-variables of \verb|P| are initialized. (\ref{it:out-globals}) ensures that
-no flow error will be generated due to some (locally dead) path through this
-call not initializing some local variables. (\ref{it:pre}) ensures that at the
-calling point of \verb|P_Return|, the postcondition of \verb|P|
-holds. (\ref{it:in-globals-more}) adds the variables mentioned in the
-precondition of \verb|P_Return| as in-globals, which is compulsory in SPARK.
-(\ref{it:post}) ensures that any path through this call is considered as a dead
-path when proving VCs.
-
-\begin{example}
-  Take procedure \verb|P| with local variable V, which should be declared in
-  SPARK as:
-\begin{verbatim}
-procedure P (X : in T; Y : out T; Z : in out T);
---# global in     A;
---#           out B;
---#        in out C;
---# post Prop (X, Z~, B);
-\end{verbatim}
-Any return statement in \verb|P| should be translated into a call to local
-procedure \verb|P_Return|, declared as:
-\begin{verbatim}
-procedure P_Return;
---# global in     Y, B,      --  out-variables of P
---#               X, Z_Old;  --  added because used in the pre
---#           out V;
---# pre  Prop (X, Z_Old, B);
---# post False;
-\end{verbatim}
-where \verb|Z_Old| is a variable declared to hold the value of \verb|Z| at the
-entry to \verb|P|.
-\end{example}
-
-Likewise, a return statement of a function \verb|F| which is not the final
-return statement should be translated into an assignment of the returned value
-to a new local variable \verb|F_Result| followed by a call to a local procedure
-\verb|F_Return| which:
-\begin{enumerate}
-\item \label{it:fn-no-param} takes no parameters;
-\item \label{it:fn-in-globals} has the out-parameters and out-globals of
-  \verb|F| as in-globals;
-\item \label{it:fn-out-globals} has the local variables of \verb|F| as
-  out-globals;
-\item \label{it:fn-pre} has the postcondition of \verb|F| as precondition;
-\item \label{it:fn-in-globals-more} has all variables mentioned in the
-  postcondition of \verb|P| as in-globals;
-\item \label{it:fn-post} has \verb|False| as postcondition.
-\end{enumerate}
-These conditions provide the same guarantees than in the procedure
-case. Additionally, a statement returning \verb|Result| should be inserted as
-final statement if no final return statement is present. This will lead to a
-flow error if-and-only-if there is a path which can reach the exit of the
-function without a return statement.
-
-\begin{example}
-  Take function \verb|F| with local variable V, which would be declared in
-  pseudo-SPARK as:
-\begin{verbatim}
-function F (X : in T; Y : out T; Z : in out T) return Integer;
---# global in     A;
---#           out B;
---#        in out C;
---# return Res => Prop (X, Z~, B, Res);
-\end{verbatim}
-  Any non-terminal return statement in \verb|F| should be translated into an
-  assignment to \verb|F_Result| followed by a call to local procedure
-  \verb|F_Return|, declared as:
-\begin{verbatim}
-procedure F_Return;
---# global in     Y, B,                --  out-variables of P
---#               F_Result, X, Z_Old;  --  used in the pre
---#           out V;
---# pre  Prop (X, Z_Old, B, Res);
---# post False;
-\end{verbatim}
-\end{example}
-
-\paragraph{Raise Statements} 
-
-Raising an exception is very similar to returning from a subprogram, except the
-postcondition and data-flow contract do not have to be respected in this case.
-
-Thus, all raise statements in a subprogram \verb|S| should be translated into
-calls to a local procedure \verb|S_Raise| which:
-\begin{enumerate}
-\item \label{it:exc-no-param} takes no parameters;
-\item \label{it:exc-out-globals} has the local variables of \verb|S| as
-  out-globals;
-\item \label{it:exc-post} has \verb|False| as postcondition.
-\end{enumerate}
-(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
-some (locally dead) path through this call not initializing some local
-variables. (\ref{it:exc-post}) ensures that any path through this call is
-considered as a dead path when proving VCs.
+Block statements should be trimmed from their declarative part after the
+translation described in Section~\ref{Ada2SPARK:subprograms}.
 
 \subsection{From Extended SPARK to SPARK}
 
@@ -2091,6 +1978,120 @@ to quantification in the logic.]
 
 \subsubsection{Statements}
 
+\paragraph{Return Statements} 
+
+SPARK mandates that procedures do not contain return statements, and that
+functions contain a single return statement as last statement. 
+
+Thus, all return
+statements of a procedure \verb|P| should be translated into calls to a local
+procedure \verb|P_Return| which:
+\begin{enumerate}
+\item \label{it:no-param} takes no parameters;
+\item \label{it:in-globals} has the out-parameters and out-globals of \verb|P|
+  as in-globals;
+\item \label{it:out-globals} has the local variables of \verb|P| as out-globals;
+\item \label{it:pre} has the postcondition of \verb|P| as precondition;
+\item \label{it:in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:in-globals}) ensures that at the calling point of \verb|P_Return|, all
+out-variables of \verb|P| are initialized. (\ref{it:out-globals}) ensures that
+no flow error will be generated due to some (locally dead) path through this
+call not initializing some local variables. (\ref{it:pre}) ensures that at the
+calling point of \verb|P_Return|, the postcondition of \verb|P|
+holds. (\ref{it:in-globals-more}) adds the variables mentioned in the
+precondition of \verb|P_Return| as in-globals, which is compulsory in SPARK.
+(\ref{it:post}) ensures that any path through this call is considered as a dead
+path when proving VCs.
+
+\begin{example}
+  Take procedure \verb|P| with local variable V, which should be declared in
+  SPARK as:
+\begin{verbatim}
+procedure P (X : in T; Y : out T; Z : in out T);
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# post Prop (X, Z~, B);
+\end{verbatim}
+Any return statement in \verb|P| should be translated into a call to local
+procedure \verb|P_Return|, declared as:
+\begin{verbatim}
+procedure P_Return;
+--# global in     Y, B,      --  out-variables of P
+--#               X, Z_Old;  --  added because used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B);
+--# post False;
+\end{verbatim}
+where \verb|Z_Old| is a variable declared to hold the value of \verb|Z| at the
+entry to \verb|P|.
+\end{example}
+
+Likewise, a return statement of a function \verb|F| which is not the final
+return statement should be translated into an assignment of the returned value
+to a new local variable \verb|F_Result| followed by a call to a local procedure
+\verb|F_Return| which:
+\begin{enumerate}
+\item \label{it:fn-no-param} takes no parameters;
+\item \label{it:fn-in-globals} has the out-parameters and out-globals of
+  \verb|F| as in-globals;
+\item \label{it:fn-out-globals} has the local variables of \verb|F| as
+  out-globals;
+\item \label{it:fn-pre} has the postcondition of \verb|F| as precondition;
+\item \label{it:fn-in-globals-more} has all variables mentioned in the
+  postcondition of \verb|P| as in-globals;
+\item \label{it:fn-post} has \verb|False| as postcondition.
+\end{enumerate}
+These conditions provide the same guarantees than in the procedure
+case. Additionally, a statement returning \verb|Result| should be inserted as
+final statement if no final return statement is present. This will lead to a
+flow error if-and-only-if there is a path which can reach the exit of the
+function without a return statement.
+
+\begin{example}
+  Take function \verb|F| with local variable V, which would be declared in
+  pseudo-SPARK as:
+\begin{verbatim}
+function F (X : in T; Y : out T; Z : in out T) return Integer;
+--# global in     A;
+--#           out B;
+--#        in out C;
+--# return Res => Prop (X, Z~, B, Res);
+\end{verbatim}
+  Any non-terminal return statement in \verb|F| should be translated into an
+  assignment to \verb|F_Result| followed by a call to local procedure
+  \verb|F_Return|, declared as:
+\begin{verbatim}
+procedure F_Return;
+--# global in     Y, B,                --  out-variables of P
+--#               F_Result, X, Z_Old;  --  used in the pre
+--#           out V;
+--# pre  Prop (X, Z_Old, B, Res);
+--# post False;
+\end{verbatim}
+\end{example}
+
+\paragraph{Raise Statements} 
+
+Raising an exception is very similar to returning from a subprogram, except the
+postcondition and data-flow contract do not have to be respected in this case.
+
+Thus, all raise statements in a subprogram \verb|S| should be translated into
+calls to a local procedure \verb|S_Raise| which:
+\begin{enumerate}
+\item \label{it:exc-no-param} takes no parameters;
+\item \label{it:exc-out-globals} has the local variables of \verb|S| as
+  out-globals;
+\item \label{it:exc-post} has \verb|False| as postcondition.
+\end{enumerate}
+(\ref{it:exc-out-globals}) ensures that no flow error will be generated due to
+some (locally dead) path through this call not initializing some local
+variables. (\ref{it:exc-post}) ensures that any path through this call is
+considered as a dead path when proving VCs.
+
 \subsection{From Extended SPARK to Why}
 
 \subsubsection{Packages}
@@ -2205,13 +2206,13 @@ Since the translation to Why does not have to worry about detecting possible
 aliasing, slices should be translated similarly as indexed components, by
 making the appropriate copies for passing a slice in parameter to a call.
 
-\paragraph{If Expressions} Ada if-expressions should be translated into Why
-if-expressions.
+\paragraph{If and Case Expressions} 
 
-\paragraph{Case Expressions} Ada case-expressions over an enumerated type
-should be translated into Why pattern-matching expressions. Ada
-case-expressions over a discrete type which is not enumerated should be
-translated as a series of if-expressions.
+Ada if-expressions should be translated into Why if-expressions.
+
+Ada case-expressions over an enumerated type should be translated into Why
+pattern-matching expressions. Ada case-expressions over a discrete type which
+is not enumerated should be translated as a series of if-expressions.
 
 \paragraph{Quantified Expressions} 
 
@@ -2234,6 +2235,21 @@ forall X : Index. A <= X <= B -> Prop (X)
 \end{example}
 
 \subsubsection{Statements}
+
+\paragraph{If and Case Statements} 
+
+Alternative parts starting with \verb|elsif| in Ada should be translated into
+embedded if-statements in Why. 
+
+Ada case-statements over an enumerated type should be translated into Why
+pattern-matching expressions. Ada case-statements over a discrete type which is
+not enumerated should be translated as a series of embedded if-expressions.
+
+\paragraph{Return and Raise Statements} 
+
+Both should be translated as raising exceptions in Why, with a suitable
+exception handler to catch the exception for returns at the end of the
+subprogram, before actually returning the value if any.
 
 \bibliographystyle{plain}
 \bibliography{alfa}
