@@ -501,6 +501,7 @@ also lead to some features excluded from ALFA because not enough beneficial at
 this stage, although they could be added later (for example fixed-point types).
 
 \subsection{ALFA Overview}
+\label{sec:ALFA-overview}
 
 The high-level goals of ALFA are to:
 \begin{enumerate}
@@ -1414,6 +1415,55 @@ A generic package instantiation should be translated into a call to a special
 procedure, whose parameters are the formal object declarations of the generic,
 with the same modes: ``in'' or ``in out''.
 
+\subsubsection{Variables}
+\label{Ada2SPARK:variables}
+
+\paragraph{Splitting Subcomponents}
+
+As mentioned in Section~\ref{sec:ALFA-overview}, we aim at using the data-flow
+analysis in SPARK to prove the absence of reads of uninitialized data, and the
+absence of unintended aliasing. Since we aim at analyze the initialization of
+variable subcomponents instead, and since SPARK only analyzes the
+initialization of entire variables, we need to split all variables into their
+individual subcomponents.
+
+For each variable path as defined in Section~\ref{sub:data-flow}, we introduce
+a new path-variable, so that each variable in the source Ada program is
+translated into a set of path-variables of elementary or array type (over
+elements which have elementary or array types, recursively).
+
+\begin{example}
+  Consider the various types and variables below, where \verb|Val| is an
+  elementary type:
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+  J : Val; A : Point; B : Points;
+\end{verbatim}
+The variables above should be splitted into individual subcomponents as follows:
+\begin{verbatim}
+  type Val_Array is array (Index) of Val;
+  J, A_X, A_Y : Val; B_X, B_Y : Val_Array;
+\end{verbatim}
+\end{example}
+
+\paragraph{Initialization}
+
+The initialization part of a variable declaration should be translated into an
+assignment in the body of the elaboration subprogram (for global variables) or
+in the body of the subprogram (for local variables).
+
+\paragraph{Named Numbers and Constants}
+
+Named numbers, which simply provide a proxy name for a literal, should be
+inlined.
+
+Constants with a static value, which could be as well named numbers, should be
+inlined too.
+
+Constants with a non-static value should be splitted like variables into
+path-variables.
+
 \subsubsection{Types}
 \label{Ada2SPARK:types}
 
@@ -1436,49 +1486,17 @@ derived scalar types should be replaced by subtypes with the same bounds;
 character literals used in enumerations should be renamed into usual
   enumeration values.
 
-\subsubsection{Variables}
-\label{Ada2SPARK:variables}
-
-Object declarations with an initialization should be split so that the
-initialization is performed instead in assignment statement in the appropriate
-subprogram.
-
-named numbers should be inlined;
-
-Each variable should be translated into a set of variables, one for each
-variable path as defined in Section~\ref{sub:variable-path}. This applies also
-to parameters, so that one parameter in expanded Ada might be translated in
-many parameters in extended SPARK. For external subprograms, as defined in
-Section~\ref{sub:DFV}, a parameter should be translated into the set of all
-path variables thus created. For internal subprograms, a parameter should be
-translated into the set of path variables which are mentioned in its read-set,
-write-set or read-write-set, and the mode of the new parameter corresponds to
-the set it comes from.
-
-\begin{example}
-  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
-  parameter:
-\begin{verbatim}
-type Point is record X, Y : Val; end record;
-procedure Set (P : out Point) is begin P.X := 0; end Set;
-\end{verbatim}
-
-  If the procedure \verb|Set| below is an internal procedure, it should mention
-  only path variables that are part of its frame condition:
-\begin{verbatim}
-procedure Set (P_X : out Val) is begin P_X := 0; end Set;
-\end{verbatim}
-
-  If the procedure \verb|Set| below is an external procedure, it should mention
-  all path variables derived from its initial parameter, so that the lack of
-  initialization of \verb|P.Y| would be detected here by DFV:
-\begin{verbatim}
-procedure Set (P_X, P_Y : out Val) is begin P_X := 0; end Set;
-\end{verbatim}
-\end{example}
-
 \subsubsection{Subprograms}
 \label{Ada2SPARK:subprograms}
+
+ In ALFA, all syntactic
+program paths through a subprogram should initialize individual variable
+subcomponents before a subcomponent is read, while other subcomponents of the
+same variable may remain uninitialized. Likewise, parameter modes do not impose
+initialization of entire variables. Instead, an analysis computes the set of
+variable subcomponents only read, only written and both read and written in a
+subprogram, which are treated like the ``in'', ``out'' and ``in out''
+parameters in a SPARK data-flow analysis:
 
 \paragraph{Declarative Sections}
 
@@ -1537,6 +1555,53 @@ procedures as a way to specify axioms or lemmas at the source level, see
 J925-004]
 
 \paragraph{Parameters} 
+
+Like shown in Section~\ref{Ada2SPARK:variables} for variables,
+each subprogram parameter should be splitted into a set of path-variables
+too. However, only those path-variables which correspond to variable paths in
+the frame condition of the subprogram should be added as parameters:
+\begin{enumerate}
+\item path-variables corresponding to (parameter) variable paths in the
+  read-set of subprogram \verb|F| should be added as ``in'' parameters of
+  \verb|F|;
+\item path-variables corresponding to (parameter) variable paths in the
+  write-set of subprogram \verb|F| should be added as ``out'' parameters of
+  \verb|F|;
+\item path-variables corresponding to (parameter) variable paths in the
+  read-write-set of subprogram \verb|F| should be added as ``in out''
+  parameters of \verb|F|.
+\end{enumerate}
+
+Likewise, globals in the frame condition of subprogram \verb|F| should be
+splitted in those path-variables which correspond to variable paths in
+the frame condition of \verb|F|:
+\begin{enumerate}
+\item path-variables corresponding to (global) variable paths in the
+  read-set of subprogram \verb|F| should be added as ``in'' globals of
+  \verb|F|;
+\item path-variables corresponding to (global and local) variable paths in the
+  write-set of subprogram \verb|F| should be added as ``out'' globals of
+  \verb|F|;
+\item path-variables corresponding to (global) variable paths in the
+  read-write-set of subprogram \verb|F| should be added as ``in out''
+  globals of \verb|F|.
+\end{enumerate}
+
+
+\begin{example}
+  Take a procedure \verb|Set| which only initializes part of its \verb|Point|
+  parameter:
+\begin{verbatim}
+type Point is record X, Y : Val; end record;
+procedure Set (P : out Point) is begin P.X := 0; end Set;
+\end{verbatim}
+
+  It should be translated into a subprogram which only takes as parameters
+  those path-variables that are part of its frame condition:
+\begin{verbatim}
+procedure Set (P_X : out Val) is begin P_X := 0; end Set;
+\end{verbatim}
+\end{example}
 
 For each path-variable of mode ``in'' or ``in out'' in the frame condition of
 \verb|F| (see Section~\ref{Ada2SPARK:variables}) whose type defines a dynamic
@@ -1826,6 +1891,11 @@ removed in SPARK; 2) the new location of previously inherited primitive
 operations due to the translation of derived scalar types into subtypes (see
 Section~\ref{SPARK2SPARK:types}).
 
+\subsubsection{Variables}
+\label{SPARK2SPARK:variables}
+
+Nothing special.
+
 \subsubsection{Types}
 \label{SPARK2SPARK:types}
 
@@ -1836,7 +1906,6 @@ the same as those respected by a subtype with the same bounds. Notice that this
 may require that new packages are withed to make inherited primitive operations
 for the parent type available.
 
-\subsubsection{Variables}
 \subsubsection{Subprograms}
 
 \paragraph{SPARK Annotations}
@@ -1953,6 +2022,12 @@ Each package in SPARK should be translated into a module in Why, with
 (non-cyclic) visibility relations between packages being translated into
 inclusion between modules in Why. 
 
+\subsubsection{Variables}
+
+All variables in Why should be given an initial value. As usual in this case,
+we should declare a function returning a value of the appropriate type, which
+is used to initialize the variable to any value of the type.
+
 \subsubsection{Types}
 
 \paragraph{Integer Types}
@@ -1994,7 +2069,6 @@ undecided for now.
 
 Ada array types should be translated into instances of the Why array type. 
 
-\subsubsection{Variables}
 \subsubsection{Subprograms}
 
 Each subprogram in Extended SPARK should be translated into a corresponding
