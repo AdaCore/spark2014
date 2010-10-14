@@ -1240,6 +1240,7 @@ subsequent phases:
 \begin{itemize}
 \item it unfolds all aggregate initializations;
 \item it makes all checks for run-time errors explicit;
+\item it explicits default expressions for parameters in calls;
 \item it removes renamings;
 \item \etc [add some more here]
 \end{itemize}
@@ -1365,12 +1366,6 @@ All initializations and statements which are executed during package
 elaboration should be treated like the body of a special elaboration
 subprogram, and translated like other subprograms as described in
 Section~\ref{Ada2SPARK:subprograms}.
-
-\paragraph{Renamings}
-
-Renamings, which provide a proxy name for an existing Ada name, are strongly
-limited in SPARK and inexistant in Why. They should be replaced by the original
-name which they rename.
 
 \paragraph{Generics}
 
@@ -1696,7 +1691,10 @@ procedure P_Spec.F (X : in Integer; Y : out Integer);
 
 Any parameter of a definite array type should be translated into a parameter of
 the corresponding indefinite array type in \verb|P_Spec|, so that it is easier
-to translate calls that take slices as actual parameters.
+to translate calls that take slices as actual parameters. Any parameter of an
+indefinite array type in the original Ada code should lead to the generation of
+two additional parameters to hold the value of the \verb|'First| and
+\verb|'Last| attributes applied to this parameter.
 
 \paragraph{Generics} Similarly to what is done for generic packages,
 instantiations should be translated like normal subprogram specifications, and
@@ -1714,22 +1712,16 @@ subprogram along the hierarchy. Same for \verb|A.F'| from \verb|A.F|. Then, we
 should generate a separate hierarchy when only \verb|B.F'| overrides
 \verb|A.F'|.
 
-\subsubsection{Expressions}
-
-
+\subsubsection{Calls}
 
 \paragraph{Dispatching Calls}
 
 For every subprogram which is overriden in a derived type, we should generate a
-new subprogram which has a frame condition combining 
+new subprogram which has a frame condition which aggregates all the frame
+conditions of all the overridings of the subprogram along the hierarchy, and
+the contract of the static type on which the dispatching is performed.
 
-default expressions for parameters should be inlined at call sites, so
-  that they do not appear as default expressions anymore;
-
-[It is not clear how slices should be translated in all cases. At first, I
-thought slices appearing as parameters could be translated as the complete
-array with additional bound parameters. But this does not work for a
-multi-dimensional slice, say A(0)(1..10).]
+\subsubsection{Expressions}
 
 \paragraph{Slices}
 
@@ -1809,6 +1801,29 @@ is of a definite or an indefinite array type. If the parameter is of a definite
 type, the bounds are known so the entire array should be passed as
 parameter. If the parameter is of an indefinite type, the bounds of the slice
 should be passed as additional parameters to the call.
+
+\paragraph{Quantified Expressions} 
+
+A quantified expression in Ada should be translated into the corresponding
+logic annotation in SPARK (\verb|for all| in Ada becomes \verb|for all| in
+SPARK; \verb|for some| in Ada becomes \verb|for some| in SPARK). All quantified
+expressions should be over integer ranges at this point. They should be
+translated into a quantification over the corresponding static type in SPARK,
+inserting a guard that the value respects the dynamic types for the integer
+range.
+
+\begin{example}
+  The quantified expression over type \verb|Index| with dynamic bounds \verb|A|
+  and \verb|B|:
+\begin{verbatim}
+for all X in Index => Prop (X)
+\end{verbatim}
+should be translated into:
+\begin{verbatim}
+for all X : Index range A .. B => Prop (X)
+\end{verbatim}
+\end{example}
+
 
 \subsubsection{Statements}
 
@@ -1971,10 +1986,13 @@ Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
 
+\subsubsection{Calls}
+
+Nothing special.
+
 \subsubsection{Expressions}
 
-[how to translate quantified expression in code? maybe ALFA should be limited
-to quantification in the logic.]
+Nothing special.
 
 \subsubsection{Statements}
 
@@ -2147,11 +2165,13 @@ Ada array types should be translated into instances of the Why array type.
 Each subprogram in Extended SPARK should be translated into a corresponding
 subprogram in Why.
 
-\subsubsection{Expressions}
+\subsubsection{Calls}
 
- parameters in calls should be given in the order of their definition,
-  even in the case where use of parameter associations in the Ada code gives
-  them outside of their definition order;
+Actual parameters in calls should be given in the order of the definition of
+the corresponding formal parameters, as use of parameter associations in the
+Ada code may give them outside of their definition order.
+
+\subsubsection{Expressions}
 
 \paragraph{Indexed Components} 
 
