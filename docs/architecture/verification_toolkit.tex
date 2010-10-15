@@ -111,10 +111,10 @@ project in the C or Ada programming language, for which some components require
 a high level of confidence. Traditionally, this is attained by unit
 testing. Here, we propose to combine the usual approach with unit proof where
 applicable. An important departure from traditional formal verification
-literature is that unit proof is only applied here to testable components. For
-example, one cannot apply unit proof to a function for which he does not have
-access to the body of all the functions it calls directly or indirectly
-(downward closure). The same is true for unit testing.
+literature is that unit proof is only applied here to testable components.  In
+order to apply unit proof to a function $f$, all the functions called by $f$
+directly or indirectly need to be defined, not only declared (downward
+closure). The same is true for unit testing.
 
 Applicability of unit proof is decided on a function by function basis. It
 depends most notably on the features used in a specific function. Typically,
