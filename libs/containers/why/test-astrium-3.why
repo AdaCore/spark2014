@@ -12,7 +12,7 @@ axiom positive_weight :
 logic sum_of_weight : list -> int
 
 axiom sum_of_weight_replace_element :
-      forall v1:list. forall v2:list. forall cu:cursor. forall e:element_t[sum_of_weight(v2),insert_(v1,cu,e,v2)].
+      forall v1:list. forall v2:list. forall cu:cursor. forall e:element_t[sum_of_weight(v2),replace_element_(v1,cu,e,v2)].
       	     replace_element_(v1,cu,e,v2) -> sum_of_weight(v2)=sum_of_weight(v1)-weight_(element_(v1,cu))+weight_(e)
 
 logic is_active: element_t -> bool
