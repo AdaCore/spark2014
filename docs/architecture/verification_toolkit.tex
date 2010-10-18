@@ -213,8 +213,9 @@ function Sqrt (X: Integer) return Integer with Pre => ..., Post => ...,
 \end{example}
 
 The \emph{mode} of a test-case indicates whether the function contract should
-be checked together with the test-case proper. In \emph{Nominal} mode, the
-contract is checked, whereas in \emph{Robustness} mode, it is not.
+be checked together with the test-case proper. In \emph{Nominal} mode (a.k.a.
+\emph{normal range} in DO-178B), the contract is checked, whereas in
+\emph{Robustness} mode, it is not.
 
 Thus, in \emph{Nominal} mode, if the postcondition of the function already
 guarantees part of what the test-case must ensure, like here the non-negativity
@@ -299,6 +300,18 @@ if the functions called also implement their contracts and test cases. In
 particular, if a function F verified by unit proof calls a function G
 verified by unit testing, and G violates its contract during execution, then F
 will likely violate its contract too.
+
+It should be possible to prove the completeness of the set of test-cases, as
+required in DO-178C, which amount to showing that:
+\begin{enumerate}
+\item the precondition is included in (is stronger than, implies) the
+  disjunction of all requires parts of nominal test-cases;
+\item the negation of the precondition is included in (is stronger than,
+  implies) the disjunction of all requires parts of robustness test-cases.
+\end{enumerate}
+
+Additionally, it should be possible to prove the mutual exclusion of the set of
+test-cases, which is not required in DO-178C but might be useful in some cases.
 
 \subsection{Proving Absence of Run-Time Errors}
 
