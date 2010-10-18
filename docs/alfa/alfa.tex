@@ -647,21 +647,31 @@ variable) as follows:
 \end{itemize}
 
 \begin{example}
-  On the following code, the set of paths of \verb|X| is: \verb|X.B.J|,
-  \verb|X.B.K|, \verb|X.A.J|, \verb|X.A.K|.
+\label{ex:variable_path}
+  On the following code, there are four variable paths associated to variable
+  \verb|X|: \verb|X.B.J|,
+  \verb|X.B.K|, \verb|X.A.J| and \verb|X.A.K|.\\
 
+\begin{minipage}{0.65\linewidth}
 \begin{verbatim}
 type Base is record 
   J : Integer;
   K : Integer range 0 .. 5;
 end record;
+
 type Base_Array is array (Boolean) of Base;
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+\begin{verbatim}
 type Ext is record 
   B : Base;
   A : Base_Array;
 end record;
+
 X : Ext;
 \end{verbatim}
+\end{minipage}
 \end{example}
 
 A path is a sequence of selectors $\sel_1.\sel_2...\sel_n$.  If any selector
@@ -669,7 +679,17 @@ $\sel_i$ on the path refers to an array, we say that the path is an array
 path. Otherwise, we say that the path is a record path. A record path refers to
 a single value of scalar type, while an array path usually refers to more than
 one value of scalar type.
- 
+
+\begin{example}
+  In Example~\ref{ex:variable_path}, \verb|X.B.J|, and \verb|X.B.K| are record
+  paths; \verb|X.A.J| and \verb|X.A.K| are array paths.
+\end{example}
+
+Notice that writing to a record path assigns the new value to the subcomponent
+represented by the record path. Writing to an array path only changes part of
+the value of the subcomponent represented by the array path, which is partially
+written.
+
 \subsubsection{Problem Statement}
 
 For the purpose of data-flow verification, we consider a package body as a
@@ -726,6 +746,21 @@ also local variables, even when applied to subprograms.
 The control-flow graph of a subprogram allows defining for each statement $s$
 the set of its predecessor statements \pred{s}.
 
+\begin{example}
+\label{ex:frame-condition}
+  We will use the following code, which sets a field of an array element, as
+  running example throughout the definition of the algorithms for computing the
+  frame condition.
+\begin{verbatim}
+  type Point is record X, Y : Val; end record;
+  type Points is array (Index) of Point;
+
+  procedure Set_X_Of_Nth (P : in out Points; V : Val; N : Index) is begin
+     P(N).X := V;
+  end Set_X_Of_Nth;
+\end{verbatim}
+\end{example}
+
 \subsubsection{Computing \allwrites}
 
 There are two sources of partial writes: assignment statements and calls. A
@@ -743,6 +778,10 @@ equations define \allwrites:
 \inallwrites{s} &=& \bigunion \outallwrites{\pred{s}}\\
 \outallwrites{s} &=& \inallwrites{s} \union \{w\}
 \end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute \outallwrites{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|P.X| \}.
+\end{example}
 
 \subsubsection{Computing \allreads}
 
@@ -767,7 +806,13 @@ equations define \allreads:
 \outallreads{s} &=& \inallreads{s} \union \{r_i\}
 \end{eqnarray*}
 
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+  \outallreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}.
+\end{example}
+
 \subsubsection{Computing \writes}
+\label{sec:init-array-through-loop}
 
 There are two natural sources of complete writes: assignment statements and
 calls. A statement $s$ completely writes a global variable path $w$ in the
@@ -803,6 +848,11 @@ equations define \writes:
 \outwrites{s} &=& \inwrites{s} \union \{w\}
 \end{eqnarray*}
 
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+ \outwrites{\mathit{Set\_X\_Of\_Nth}} = \{\}.
+\end{example}
+
 \subsubsection{Computing \reads}
 
 \reads is computed similarly as \allreads, except it does not count variable
@@ -824,6 +874,11 @@ $r_i$, the following equations define \reads:
 \inreads{s} &=& \bigunion \outreads{\pred{s}}\\
 \outreads{s} &=& \inreads{s} \union (\{r_i\} \minus \inwrites{s})
 \end{eqnarray*}
+
+\begin{example}
+  On the code of Example~\ref{ex:frame-condition}, we compute
+ \outreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}.
+\end{example}
 
 \subsubsection{Computing the read-set, write-set and read-write-set}
 
@@ -855,7 +910,7 @@ Consider the following code for setting a field of an array element:
   end Set_X_Of_Nth;
 \end{verbatim}
 
-We compute the sets for \verb|Set_X_Of_Nth| as follows:
+We computed the sets for \verb|Set_X_Of_Nth| as follows:
 \begin{itemize}
 \item \outallwrites{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|P.X| \}
 \item \outallreads{\mathit{Set\_X\_Of\_Nth}} = \{ \verb|V| \}
@@ -1985,6 +2040,17 @@ function Get (A : My_Array; X : Integer) return Element;
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
 ``out'' parameter.
+
+\paragraph{Array Initialization Through Loops}
+
+In Section~\ref{sec:init-array-through-loop}, we have described how we can
+detect that a loop $l$ completely initializes an array path $w$, without any
+reads (direct or indirect) of this array path in the loop. The Examiner does
+not perform this kind of fine-grain analysis, and thus it will issue wrong
+warnings about the corresponding path-variable not being properly
+initialized. To prevent the generation of these warnings, the translation
+should insert a call to a special procedure which has a single out-global: the
+path-variable corresponding to $w$.
 
 \subsubsection{Calls}
 
