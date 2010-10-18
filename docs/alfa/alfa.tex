@@ -185,7 +185,7 @@ declared as having a private definition, so that the compiler knows its precise
 definition (size, initialization, etc.) but the program cannot depend on this
 definition outside the package.
 
-Packages may be defined in any declarative section: at the outtermost level as
+Packages may be defined in any declarative section: at the outermost level as
 library-level compilation units, or inside other packages and subprogram
 bodies. Subprograms too can be defined either as library-level compilation
 units, or in local declarative sections. Variables and types can only be
@@ -232,7 +232,7 @@ Pointer types, a.k.a. access types in Ada, follow a set of somewhat complex
 rules to prevent dangling pointer references. In the following, we will mostly
 ignore pointers.
 
-The set of non-aggregate types are called elementary types.
+A non-aggregate type is called an elementary type.
 
 \subsubsection{Metaprogramming}
 
@@ -345,9 +345,9 @@ simple boolean predicates on accessors to a (private) type, which are typically
 the predicates one needs to write subprogram contracts, can be defined as
 parameterized expressions. This has the advantage for proofs that parameterized
 expressions (contrary to functions) 1) cannot have write side-effects, 2) have
-a much simpler form than the usual functions, which is easier to translate into
-proof predicates, 3) can be defined in a package specification which makes them
-available for proof even if the package body is not.
+a much simpler form than the usual functions, which makes them easier to
+translate into proof predicates, 3) can be defined in a package specification
+which makes them available for proof even if the package body is not.
 
 Quantified expressions allow the expression of predicates which hold for all
 elements in a range or a container, or for some element in a range or a
@@ -367,7 +367,7 @@ checked.
 \subsection{GNAT-Specific Extensions}
 \label{sub:formal-containers}
 
-GNAT defines an aspect called \verb|Test\_Case|, which applies to subprograms
+GNAT defines an aspect called \verb|Test_Case|, which applies to subprograms
 exactly like the standard \verb|Pre| and \verb|Post|. A test-case is an
 aggregate with exactly four components, all of which are compulsory:
 \begin{enumerate}
@@ -1024,7 +1024,7 @@ also an objective.
 
 \subsection{Verification of Absence of Run-Time Errors (RTE)}
 
-Verifying that a subprogram in ALFA is free from run-time errors is verified by
+The fact that a subprogram in ALFA is free from run-time errors is verified by
 assuming that the subprograms it calls do respect their contracts and that they
 are free from run-time errors, which includes a possible recursive call (in
 which case the assumption is made only for the recursive call).
@@ -1674,7 +1674,7 @@ will be assumed during formal verification of the callers of~\verb|F|.
 \label{ex:dynamic-bounds}
 The parameters \verb|X| and \verb|Y| below have a type with dynamic bounds:
 \begin{verbatim}
-subtype Index is Integer range A .. B;
+subtype Index is Integer range Index_First .. Index_Last;
 procedure F (X : in Index; Y : out Index);
 \end{verbatim}
 
@@ -1850,7 +1850,7 @@ with-clauses in the original package; 2) the separation between generated
 packages; 3) the data dependencies in the generated frame conditions; 4) the
 new location of previously inherited primitive subprograms due to the
 translation of derived scalar types into subtypes (see
-Section~\ref{SPARK2SPARK:types}). Thus, it will probably more convenient to
+Section~\ref{SPARK2SPARK:types}). Thus, it will probably be more convenient to
 recompute the set of packages which should be inherited.
 
 Second, each data package \verb|P_Data| should include a SPARK own annotation
@@ -1947,7 +1947,7 @@ break the consistency of the proof system.
 \begin{verbatim}
 X : access Integer;
 
-procedure Set is X.all := 0; end Set;
+procedure Set is begin X.all := 0; end Set;
 function Get return Integer is (X.all);
 
 function Problem return Boolean is
@@ -2064,7 +2064,7 @@ to a new local variable \verb|F_Result| followed by a call to a local procedure
 \item \label{it:fn-post} has \verb|False| as postcondition.
 \end{enumerate}
 These conditions provide the same guarantees than in the procedure
-case. Additionally, a statement returning \verb|Result| should be inserted as
+case. Additionally, a statement returning \verb|F_Result| should be inserted as
 final statement if no final return statement is present. This will lead to a
 flow error if-and-only-if there is a path which can reach the exit of the
 function without a return statement.
