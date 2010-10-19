@@ -881,6 +881,7 @@ $r_i$, the following equations define \reads:
 \end{example}
 
 \subsubsection{Computing the read-set, write-set and read-write-set}
+\label{sec:frame-sets}
 
 Given subprogram $f$:
 \begin{itemize}
@@ -949,7 +950,7 @@ accurately, because the IEEE-754 standard is quite complex, but a simpler
 that the current treatment of floating-point numbers as reals in both SPARK and
 Frama-C is plain incorrect, and identified as such.
 
-Interfaces are not in ALFA also for convenience.
+Interfaces are not in ALFA also to simplify the work on the first version.
 
 \subsubsection{Variables}
 
@@ -988,6 +989,8 @@ call is in ALFA only if the subprogram associated to the type on which the
 dispatch is performed has a \verb|Pre'Class| aspect, directly or inherited.
 
 \subsubsection{Expressions}
+
+All expressions involving pointers (access types, addresses) are not in ALFA.
 
 Quantified expressions are in ALFA only if they appear in predicate position,
 that is, at the top-level of the boolean structure of an expression used in
@@ -1052,7 +1055,7 @@ natural ordering which arises from the logical dependencies between them:
 \end{center}
 
 Indeed, the results of CV are valid only if DFV is verified, and the results of
-RTE are valid only if DFV and RTE are verified. In practice, this means that
+RTE are valid only if DFV and CV are verified. In practice, this means that
 DFV, CV and RTE should be usually performed in this order.
 
 On the one hand, both CV and RTE depend on contracts and intermediate
@@ -1305,7 +1308,7 @@ such. Similarly, slices used in expressions should be replaced by equivalent
 slicing functions, and treated as such.
 
 Likewise, Ada arithmetic expressions may be reordered by the compiler when not
-enough parenthesized, so the translation will introduce the necessary
+enough parenthesized, so the translation should introduce the necessary
 parentheses which force the natural evaluation order given by operators
 associativity. 
 
@@ -1324,7 +1327,7 @@ subsequent phases:
 \item it makes all checks for run-time errors explicit;
 \item it explicits default expressions for parameters in calls;
 \item it removes renamings;
-\item \etc [add some more here]
+\item \etc [add other expansions here]
 \end{itemize}
 
 In particular, types which depend on some dynamic bounds should be translated
@@ -1366,11 +1369,34 @@ for all C in Cursor => if Has_Element (My_Set, C) then Prop (Element (My_Set, C)
 \end{verbatim}
 \end{example}
 
+Contracts (precondition and postcondition) in SPARK/Why have a slightly
+different semantics than contracts in Ada 2012, because contracts in SPARK/Why
+completely ignore the possibility of a run-time error being raised while
+evaluating the contract. When checking for absence of run-time errors (which
+can be separated from contract checking), the absence of run-time errors in
+contracts should also be proved, which requires the extension of contracts with
+additional conjuncts in SPARK/Why. This expansion should be performed at this
+stage.
+
+\begin{example}
+  The following contract in Ada:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element
+   with Pre => A (X) /= Nil_Element;
+\end{verbatim}
+
+is equivalent to the following contract in SPARK:
+\begin{verbatim}
+function Get (A : My_Array; X : Integer) return Element;
+--# pre X in My_Array'Range and then A (X) /= Nil_Element;
+\end{verbatim}
+\end{example}
+
 \subsection{From Expanded Ada to Extended SPARK}
 
-As a general remark, the translation should be free to introduce copies of any
-values (for example to translate extended returns), which should not have any
-effect on the validity of the proofs.
+As a general remark, the translation should be allowed to introduce copies of
+any values (for example to translate extended returns), which should not have
+any effect on the validity of the proofs.
 
 \subsubsection{Packages}
 \label{Ada2SPARK:packages}
@@ -1634,7 +1660,7 @@ same variable may remain uninitialized. Likewise, parameter modes do not impose
 initialization of entire variables. Instead, an analysis computes the set of
 variable subcomponents only read, only written and both read and written in a
 subprogram, which are treated like the ``in'', ``out'' and ``in out''
-parameters in a SPARK data-flow analysis:
+parameters in a SPARK data-flow analysis.
 
 \paragraph{Declarative Sections}
 
@@ -1807,10 +1833,27 @@ postconditions. Thus, the only remaining part of the contract to check is the
 frame condition. In order to ensure automatically that the Liskov Subtitution
 Principle is obeyed by the frame condition, we should generate a new subprogram
 declaration used in dispatching calls, whose frame condition aggregates all the
-frame conditions of all the overridings of the subprogram along the hierarchy.
+frame conditions of all the overridings of the subprogram along the hierarchy:
+\begin{enumerate}
+\item any path-variable which is ``in out'' in some overriding is kept as ``in
+  out'';
+\item any other path-variable which is ``in'' in some overriding and ``out'' in
+  some other overriding is kept as ``in out'';
+\item any other path-variable which is ``in'' or ``out'' in some overriding is
+  kept.
+\end{enumerate}
 
 \begin{example}
-  
+  Suppose a primitive subprogram A.F is overriden by B.F and C.F:
+  \begin{itemize}
+  \item A.F takes AI as ``in'', AO as ``out'' and AOI as ``in out'';
+  \item B.F takes BI as ``in'' and AI as ``out'';
+  \item C.F takes AO as ``in''.
+  \end{itemize}
+
+  Then the aggregated frame condition takes AI, AO and AIO as ``in out'' and BI
+  as ``in''. It is more restrictive than any of the frame conditions of A.F,
+  B.F or C.F.
 \end{example}
 
 \subsubsection{Expressions}
@@ -1981,55 +2024,29 @@ for the parent type available.
 
 \paragraph{SPARK Annotations}
 
-Given subprogram $f$:
-\begin{itemize}
-\item the initial read-set for $f$ is $\outreads{f} \minus \outallwrites{f}$;
-\item the initial write-set for $f$ is $\outwrites{f} \minus \outreads{f}$;
-\item the initial read-write-set for $f$ is $\outreads{f} \inter
-  \outallwrites{f}$.
-\end{itemize}
-
-Then, the write-set of $f$ should be augmented with all the local variable paths
-defined in $f$, whether in the declarative part of the subprogram or in a block
-statement inside the body.
-
-The goal of this computation is that:
-\begin{itemize}
-\item for the translation to SPARK:
+SPARK global annotations should be generated from the sets of variable paths
+computed in Section~\ref{sub:data-flow}:
 \begin{itemize}
 \item the global ``in'' annotation should be the read-set;
 \item the global ``out'' annotation should be the write-set;
 \item the global ``in out'' annotation should be the read-write-set.
 \end{itemize}
-\item and for the translation to Why:
-\begin{itemize}
-\item the ``reads'' annotation should be the union of the read-set and the
-  read-write-set;
-\item the ``writes'' annotation should be the union of the write-set and the
-  read-write-set.
-\end{itemize}
-\end{itemize}
 
-The reason for augmenting the write-set with local variable paths is that the
-translation will put these local variable paths in another package, and they
-will appear as global variable paths from within $f$. Defining these in the
-write-set makes sure that SPARK will not consider them as initialized prior to
-calling $f$, so that all reads will have to be preceded by appropriate
-writes. In order to prevent warnings that some of these variable paths may not
-be written on some path before returning, an initialization subprogram should
-be declared, which takes all local variable paths in its ``in out''
-annotation. This initialization subprogram should be called prior to returning
-from the subprogram, which ensures the translated subprogram respects its
-data-flow contracts for local variable paths. Only the absence of any read to
-some local variable path could be detected and displayed as an error, which is
-safe to do.
+As local variables were added to the write-set in Section~\ref{sec:frame-sets},
+the translation should prevent warnings to be issued because some of these
+variable paths may not be written on some path before returning. So an
+initialization subprogram should be declared, which takes all local variable
+paths in its ``in out'' annotation. This initialization subprogram should be
+called prior to returning from the subprogram, which ensures the translated
+subprogram respects its data-flow contracts for local variable paths. Only the
+absence of any read to some local variable path could be detected and displayed
+as an error, which is safe to do.
 
-
-A special global variable called \heap represents all the dynamically allocated
-memory plus all variables whose address is taken, so that reads and writes to
-dynamically allocated memory show in SPARK or Why contracts as reads and writes
-to \heap. Notice that without this \heap variable, contracts would be wrong and
-break the consistency of the proof system. 
+As said before, a special global variable called \heap represents all the
+dynamically allocated memory plus all variables whose address is taken, so that
+reads and writes to dynamically allocated memory show in SPARK contracts
+as reads and writes to \heap. Notice that without this \heap variable,
+contracts would be wrong and break the consistency of the proof system.
 
 \begin{example}
   If reads and writes to \heap were not computed, it would be possible to prove
@@ -2050,29 +2067,6 @@ begin
 end Problem;
 \end{verbatim}
 \end{example}
-
-Contracts (precondition and postcondition) in SPARK/Why have a
-slightly different semantics than contracts in Ada 2012, because contracts in
-SPARK/Why completely ignore the possibility of a run-time error being
-raised while evaluating the contract. When checking for absence of run-time
-errors (which can be separated from contract checking), the absence of run-time
-errors in contracts should also be proved, which requires the extension of
-contracts with additional conjuncts in SPARK/Why. 
-
-\begin{example}
-  The following contract in Ada:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element
-   with Pre => A (X) /= Nil_Element;
-\end{verbatim}
-
-is equivalent to the following contract in SPARK:
-\begin{verbatim}
-function Get (A : My_Array; X : Integer) return Element;
---# pre X in My_Array'Range and then A (X) /= Nil_Element;
-\end{verbatim}
-\end{example}
-
 
 Ada functions may write global variables, which is not allowed in SPARK. Thus,
 functions should be translated into procedures by introducing an additional
@@ -2268,6 +2262,15 @@ Ada array types should be translated into instances of the Why array type.
 Each subprogram in Extended SPARK should be translated into a corresponding
 subprogram in Why.
 
+Why frame conditions should be generated from the sets of variable paths
+computed in Section~\ref{sub:data-flow}:
+\begin{itemize}
+\item the ``reads'' annotation should be the union of the read-set and the
+  read-write-set;
+\item the ``writes'' annotation should be the union of the write-set and the
+  read-write-set.
+\end{itemize}
+
 \subsubsection{Calls}
 
 Actual parameters in calls should be given in the order of the definition of
@@ -2377,6 +2380,7 @@ subprogram, before actually returning the value if any.
 \bibliographystyle{plain}
 \bibliography{alfa}
 
+\newpage
 \appendix
 
 \section{BNF-Based Definition of ALFA}
