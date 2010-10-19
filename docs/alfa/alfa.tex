@@ -960,6 +960,33 @@ Variables whose address is taken are not in ALFA.
 Library-level subprograms, package subprograms, local subprograms and generic
 subprograms are all in ALFA.
 
+\subsubsection{Calls}
+\label{ALFA:calls}
+
+\paragraph{Dispatching Calls}
+
+Ada 2012 defines two differents types of contracts on primitive subprograms of
+tagged types, that is subprograms which can be subject to dynamic dispatch:
+\begin{enumerate}
+\item regular \verb|Pre| and \verb|Post| aspects only apply to the subprogram
+  on which they are defined;
+\item inherited \verb|Pre'Class| and \verb|Post'Class| aspects are inherited by
+  the overriding subprograms, in a way that ensures (partly) the Liskov
+  Subtitution Principle: inherited preconditions are or'ed, which results in a
+  weaker precondition; inherited postconditions are and'ed, which results in a
+  stronger postcondition.
+\end{enumerate}
+
+The or'ing of inherited preconditions does not fit well a user who does not
+want to obey the Liskov Subtitution Principle. In this case, the standard
+mandates that none of the subprograms in this inheritance hierarchy has a
+\verb|Pre'Class| aspect. The \verb|Pre| aspect should be used instead.
+
+In order to perform formal verification of dipatching calls, we require that
+the program obeys the Liskov Subtitution Principle. As a result, a dispatching
+call is in ALFA only if the subprogram associated to the type on which the
+dispatch is performed has a \verb|Pre'Class| aspect, directly or inherited.
+
 \subsubsection{Expressions}
 
 Quantified expressions are in ALFA only if they appear in predicate position,
@@ -1771,10 +1798,20 @@ should generate a separate hierarchy when only \verb|B.F'| overrides
 
 \paragraph{Dispatching Calls}
 
-For every subprogram which is overriden in a derived type, we should generate a
-new subprogram which has a frame condition which aggregates all the frame
-conditions of all the overridings of the subprogram along the hierarchy, and
-the contract of the static type on which the dispatching is performed.
+As seen in Section~\ref{Ada2SPARK:subprograms}, inheritance relations disappear
+during the translation of subprograms. However, as seen in
+Section~\ref{ALFA:calls}, we should check that overriding subprograms obey the
+Liskov Subtitution Principle. Ada rules for inheritance of \verb|Pre'Class| and
+\verb|Post'Class| ensure that this is the case for preconditions and
+postconditions. Thus, the only remaining part of the contract to check is the
+frame condition. In order to ensure automatically that the Liskov Subtitution
+Principle is obeyed by the frame condition, we should generate a new subprogram
+declaration used in dispatching calls, whose frame condition aggregates all the
+frame conditions of all the overridings of the subprogram along the hierarchy.
+
+\begin{example}
+  
+\end{example}
 
 \subsubsection{Expressions}
 
@@ -2049,8 +2086,8 @@ reads (direct or indirect) of this array path in the loop. The Examiner does
 not perform this kind of fine-grain analysis, and thus it will issue wrong
 warnings about the corresponding path-variable not being properly
 initialized. To prevent the generation of these warnings, the translation
-should insert a call to a special procedure which has a single out-global: the
-path-variable corresponding to $w$.
+should insert before the loop a call to a special procedure which has a single
+out-global: the path-variable corresponding to $w$.
 
 \subsubsection{Calls}
 
