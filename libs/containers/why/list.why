@@ -100,7 +100,7 @@ logic find_ : list, element_t, cursor -> cursor
 
 predicate find__ (co:list,e:element_t,cumin:cursor,cu:cursor) =
 	  position_(co,cumin)>0 and
-	  (((cu=no_element and (forall cun:cursor. position_(co,cumin)<=position_(co,cun) -> not element_(co,cun)=e))
+	  (((cu=no_element and (forall cun:cursor. position_(co,cumin)<=position_(co,cun) -> element_(co,cun)<>e))
 	  or (position_(co,cu)>0 and element_(co,cu)=e
 	  and (forall cun:cursor. position_(co,cu)>position_(co,cun) and position_(co,cumin)<=position_(co,cun)
 	      -> not element_(co,cun)=e))))
@@ -229,6 +229,11 @@ predicate has_element_(co:list, cu:cursor) =
 
 predicate contains_ (co:list,e:element_t) =
 	  position_(co,find_(co,e,first_(co)))>0
+
+axiom contains_inserted :
+     forall l1:list. forall l2:list. forall cu:cursor. forall e:element_t
+     [insert_(l1,cu,e,l2), contains_(l2,e)].
+     	    insert_(l1,cu,e,l2) -> contains_(l2,e)
 
 (*** PARAMETERS ***)
 

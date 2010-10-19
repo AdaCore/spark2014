@@ -100,7 +100,7 @@ axiom next_insert :
 
 axiom insert_has_element :
      forall l1:list. forall l2:list. forall cu1:cursor. forall cu2:cursor.
-     forall e:element_t [insert_(l1,cu1,e,l2),has_element_(l2,cu2)].
+     forall e:element_t [insert_(l1,cu1,e,l2), has_element_(l2,cu2)].
      	    insert_(l1,cu1,e,l2) -> has_element_(l1,cu2) -> has_element_(l2,cu2)
 
 axiom right_delete :
@@ -230,6 +230,16 @@ let test_false (co:list ref) (cu:cursor) =
 
 (*** TESTS ***)
 
+parameter contains :
+l : list -> e : element_t ->
+{}
+bool
+{if result then contains_(l,e) else not contains_(l,e)} 
+
+let conditional_insert (l : list ref) (e : element_t) =
+	if not contains !l e then
+		append l e
+	{ contains_ (l, e) }
 
 (* removing an element from a list decreases its length by one *)
 let test1 (li : list ref) (c : cursor) =
