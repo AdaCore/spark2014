@@ -217,8 +217,9 @@ type. Although pattern-matching is available for all discrete types, it is
 mostly used for enumerations. As part of type checking, the compiler checks
 that pattern-matching is complete and that no case is redundant.
 
-Floating-point types follow the IEEE-754 standard. Fixed-point types limit the
-precision of values to a fixed number of figures.
+In GNAT, floating-point types follow the IEEE-754 standard, although this is
+not part of the Ada language definition. Fixed-point types limit the precision
+of values to a fixed number of figures.
 
 Aggregate types come in two flavors: records aggregate heterogeneous data
 components, while arrays aggregate homogeneous data components. Records may
@@ -344,10 +345,11 @@ expressions) allowed in the specification part of a package. In particular,
 simple boolean predicates on accessors to a (private) type, which are typically
 the predicates one needs to write subprogram contracts, can be defined as
 parameterized expressions. This has the advantage for proofs that parameterized
-expressions (contrary to functions) 1) cannot have write side-effects, 2) have
-a much simpler form than the usual functions, which makes them easier to
-translate into proof predicates, 3) can be defined in a package specification
-which makes them available for proof even if the package body is not.
+expressions (contrary to functions) 1) cannot have write side-effects if they
+do not contain a function call, 2) have a much simpler form than the usual
+functions, which makes them easier to translate into proof predicates, 3) can
+be defined in a package specification which makes them available for proof even
+if the package body is not.
 
 Quantified expressions allow the expression of predicates which hold for all
 elements in a range or a container, or for some element in a range or a
@@ -973,18 +975,18 @@ tagged types, that is subprograms which can be subject to dynamic dispatch:
   on which they are defined;
 \item inherited \verb|Pre'Class| and \verb|Post'Class| aspects are inherited by
   the overriding subprograms, in a way that ensures (partly) the Liskov
-  Subtitution Principle: inherited preconditions are or'ed, which results in a
+  Substitution Principle: inherited preconditions are or'ed, which results in a
   weaker precondition; inherited postconditions are and'ed, which results in a
   stronger postcondition.
 \end{enumerate}
 
 The or'ing of inherited preconditions does not fit well a user who does not
-want to obey the Liskov Subtitution Principle. In this case, the standard
+want to obey the Liskov Substitution Principle. In this case, the standard
 mandates that none of the subprograms in this inheritance hierarchy has a
 \verb|Pre'Class| aspect. The \verb|Pre| aspect should be used instead.
 
 In order to perform formal verification of dipatching calls, we require that
-the program obeys the Liskov Subtitution Principle. As a result, a dispatching
+the program obeys the Liskov Substitution Principle. As a result, a dispatching
 call is in ALFA only if the subprogram associated to the type on which the
 dispatch is performed has a \verb|Pre'Class| aspect, directly or inherited.
 
@@ -1546,7 +1548,7 @@ elements which have elementary or array types, recursively).
   type Points is array (Index) of Point;
   J : Val; A : Point; B : Points;
 \end{verbatim}
-The variables above should be splitted into individual subcomponents as follows:
+The variables above should be split into individual subcomponents as follows:
 \begin{verbatim}
   type Val_Array is array (Index) of Val;
   J, A_X, A_Y : Val; B_X, B_Y : Val_Array;
@@ -1577,7 +1579,7 @@ inlined.
 Constants with a static value, which could be as well named numbers, should be
 inlined too.
 
-Constants with a non-static value should be splitted like variables into
+Constants with a non-static value should be split like variables into
 path-variables.
 
 \subsubsection{Types}
@@ -1692,7 +1694,7 @@ The body of a subprogram \verb|F| defined in package \verb|P| should be
 translated in its own package \verb|F_Body|, with a package specification
 containing the subprogram specification for \verb|F|, and a package body
 containing the subprogram body for \verb|F|. Thus, the original subprogram
-specification for \verb|F| is splitted in the generated SPARK code into two
+specification for \verb|F| is split in the generated SPARK code into two
 subprogram specifications: one in \verb|P_Spec| and one in \verb|F_Body|. This
 separation is necessary to 1) apply deductive verification in SPARK/Why to the
 body of function \verb|F| only, in order to get modularity without relying on
@@ -1721,7 +1723,7 @@ J925-004]
 \paragraph{Parameters} 
 
 Like shown in Section~\ref{Ada2SPARK:variables} for variables,
-each subprogram parameter should be splitted into a set of path-variables
+each subprogram parameter should be split into a set of path-variables
 too. However, only those path-variables which correspond to variable paths in
 the frame condition of the subprogram should be added as parameters:
 \begin{enumerate}
@@ -1737,7 +1739,7 @@ the frame condition of the subprogram should be added as parameters:
 \end{enumerate}
 
 Likewise, globals in the frame condition of subprogram \verb|F| should be
-splitted in those path-variables which correspond to variable paths in
+split in those path-variables which correspond to variable paths in
 the frame condition of \verb|F|:
 \begin{enumerate}
 \item path-variables corresponding to (global) variable paths in the
@@ -1827,10 +1829,10 @@ should generate a separate hierarchy when only \verb|B.F'| overrides
 As seen in Section~\ref{Ada2SPARK:subprograms}, inheritance relations disappear
 during the translation of subprograms. However, as seen in
 Section~\ref{ALFA:calls}, we should check that overriding subprograms obey the
-Liskov Subtitution Principle. Ada rules for inheritance of \verb|Pre'Class| and
+Liskov Substitution Principle. Ada rules for inheritance of \verb|Pre'Class| and
 \verb|Post'Class| ensure that this is the case for preconditions and
 postconditions. Thus, the only remaining part of the contract to check is the
-frame condition. In order to ensure automatically that the Liskov Subtitution
+frame condition. In order to ensure automatically that the Liskov Substitution
 Principle is obeyed by the frame condition, we should generate a new subprogram
 declaration used in dispatching calls, whose frame condition aggregates all the
 frame conditions of all the overridings of the subprogram along the hierarchy:
