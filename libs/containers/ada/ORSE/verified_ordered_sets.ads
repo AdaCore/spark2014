@@ -226,6 +226,8 @@ package Verified_Ordered_Sets is
 
    end Generic_Keys;
 
+   function Strict_Equal (Left, Right : Set) return Boolean;
+
    function Left (Container : Set; Position : Cursor) return Set;
 
    function Right (Container : Set; Position : Cursor) return Set;
@@ -245,6 +247,8 @@ private
 
    type Nodes_Type is array (Count_Type range <>) of Node_Type;
 
+   type Kind is (Plain, Part);
+
    type Tree_Type (Capacity : Count_Type) is
      new Bounded_Red_Black_Trees.Tree_Type with record
         Free  : Count_Type := 0;
@@ -252,8 +256,6 @@ private
    end record;
 
    type Tree_Type_Access is access all Tree_Type;
-
-   type Kind is (Plain, Part);
 
    type Set (Capacity : Count_Type) is tagged record
       Tree : Tree_Type_Access := new Tree_Type'(Capacity, others => <>);

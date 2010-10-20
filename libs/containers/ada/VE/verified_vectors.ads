@@ -341,6 +341,8 @@ private
    type Elements_Array is array (Count_Type range <>) of Element_Type;
    function "=" (L, R : Elements_Array) return Boolean is abstract;
 
+   type Kind is (Plain, Part);
+
    type Plain_Vector (Capacity : Capacity_Subtype) is record
       Elements : Elements_Array (1 .. Capacity);
       Last     : Extended_Index := No_Index;
@@ -349,8 +351,6 @@ private
    end record;
 
    type Plain_Access is access all Plain_Vector;
-
-   type Kind is (Plain, Part);
 
    type Vector (Capacity : Capacity_Subtype) is tagged record
       Plain : Plain_Access := new Plain_Vector (Capacity);

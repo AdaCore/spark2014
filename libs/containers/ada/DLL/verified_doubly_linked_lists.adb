@@ -76,17 +76,28 @@ package body Verified_Doubly_Linked_Lists is
    ---------
 
    function "=" (Left, Right : List) return Boolean is
-      CL : Count_Type := Left.First;
-      CR : Count_Type := Right.First;
+      LI, RI : Count_Type;
+
    begin
-      while CL /= 0 or CR /= 0 loop
-         if CL /= CR or else
-           Element_Unchecked(Left, CL) /= Element_Unchecked(Right,CL) then
+      if Left'Address = Right'Address then
+         return True;
+      end if;
+
+      if Left.Length /= Right.Length then
+         return False;
+      end if;
+
+      LI := Left.First;
+      RI := Right.First;
+      while LI /= 0 loop
+         if Element_Unchecked(Left, LI) /= Element_Unchecked(Right, LI) then
             return False;
          end if;
-         CL := Next_Unchecked(Left, CL);
-         CR := Next_Unchecked(Right,CR);
+
+         LI := Next_Unchecked(Left, LI);
+         RI := Next_Unchecked(Right,RI);
       end loop;
+
       return True;
    end "=";
 
@@ -1639,7 +1650,7 @@ package body Verified_Doubly_Linked_Lists is
    -----------
 
    function Right (Container : List; Position : Cursor) return List is
-      L : Count_Type := 1;
+      L : Count_Type := 0;
       C : Count_Type := Container.First;
       LLe : Count_Type;
       LF : Count_Type;
@@ -1674,7 +1685,7 @@ package body Verified_Doubly_Linked_Lists is
          end loop;
          return (Capacity => Container.Capacity,
                  K => Part,
-                 Length => L,
+                 Length => Container.Length - L,
                  First => Position.Node,
                  Last => Container.Last,
                  Plain => Container.Plain,
@@ -1909,6 +1920,25 @@ package body Verified_Doubly_Linked_Lists is
          pragma Assert (N (Container.Last).Next = 0);
       end;
    end Splice;
+
+   ------------------
+   -- Strict_Equal --
+   ------------------
+
+   function Strict_Equal (Left, Right : List) return Boolean is
+      CL : Count_Type := Left.First;
+      CR : Count_Type := Right.First;
+   begin
+      while CL /= 0 or CR /= 0 loop
+         if CL /= CR or else
+           Element_Unchecked(Left, CL) /= Element_Unchecked(Right,CL) then
+            return False;
+         end if;
+         CL := Next_Unchecked(Left, CL);
+         CR := Next_Unchecked(Right,CR);
+      end loop;
+      return True;
+   end Strict_Equal;
 
    ----------
    -- Swap --

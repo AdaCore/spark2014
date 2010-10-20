@@ -139,27 +139,31 @@ package body Verified_Ordered_Maps is
    ---------
 
    function "=" (Left, Right : Map) return Boolean is
-      LNode : Count_Type := First(Left).Node;
-      RNode : Count_Type := First(Right).Node;
+      Lst : Count_Type;
+      Node : Count_Type := First(Left).Node;
+      ENode : Count_Type;
    begin
+
       if Length(Left) /= Length(Right) then
          return False;
       end if;
 
-      while LNode = RNode loop
-         if LNode = 0 then
-            return True;
-         end if;
+      if Is_Empty(Left) then
+         return True;
+      end if;
 
-         if Left.Tree.Nodes(LNode).Element /= Right.Tree.Nodes(RNode).Element or
-         Left.Tree.Nodes(LNode).Key /= Right.Tree.Nodes(RNode).Key then
-            exit;
+      Lst := Next(Left.Tree.all, Last(Left).Node);
+      while Node /= Lst loop
+         ENode := Find(Right, Left.Tree.Nodes(Node).Key).Node;
+         if ENode = 0 or else
+           Left.Tree.Nodes(Node).Element /= Right.Tree.Nodes(ENode).Element then
+            return False;
          end if;
-
-         LNode := Next_Unchecked(Left, LNode);
-         RNode := Next_Unchecked(Right, RNode);
+         Node := Next(Left.Tree.all, Node);
       end loop;
-      return False;
+
+      return True;
+
    end "=";
 
    ------------
@@ -459,38 +463,6 @@ package body Verified_Ordered_Maps is
 
       return Container.Tree.Nodes (Node).Element;
    end Element;
-
-   ---------------------
-   -- Equivalent --
-   ---------------------
-
-   function Equivalent (Left, Right : Map) return Boolean is
-      Lst : Count_Type;
-      Node : Count_Type := First(Left).Node;
-      ENode : Count_Type;
-   begin
-
-      if Length(Left) /= Length(Right) then
-         return False;
-      end if;
-
-      if Is_Empty(Left) then
-         return True;
-      end if;
-
-      Lst := Next(Left.Tree.all, Last(Left).Node);
-      while Node /= Lst loop
-         ENode := Find(Right, Left.Tree.Nodes(Node).Key).Node;
-         if ENode = 0 or else
-           Left.Tree.Nodes(Node).Element /= Right.Tree.Nodes(ENode).Element then
-            return False;
-         end if;
-         Node := Next(Left.Tree.all, Node);
-      end loop;
-
-      return True;
-
-   end Equivalent;
 
    ---------------------
    -- Equivalent_Keys --
@@ -1744,6 +1716,34 @@ package body Verified_Ordered_Maps is
    begin
       Tree.Nodes (Node).Right := Right;
    end Set_Right;
+
+   ------------------
+   -- Strict_Equal --
+   ------------------
+
+   function Strict_Equal (Left, Right : Map) return Boolean is
+      LNode : Count_Type := First(Left).Node;
+      RNode : Count_Type := First(Right).Node;
+   begin
+      if Length(Left) /= Length(Right) then
+         return False;
+      end if;
+
+      while LNode = RNode loop
+         if LNode = 0 then
+            return True;
+         end if;
+
+         if Left.Tree.Nodes(LNode).Element /= Right.Tree.Nodes(RNode).Element or
+         Left.Tree.Nodes(LNode).Key /= Right.Tree.Nodes(RNode).Key then
+            exit;
+         end if;
+
+         LNode := Next_Unchecked(Left, LNode);
+         RNode := Next_Unchecked(Right, RNode);
+      end loop;
+      return False;
+   end Strict_Equal;
 
    --------------------
    -- Update_Element --

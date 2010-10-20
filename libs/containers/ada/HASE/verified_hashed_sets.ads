@@ -213,6 +213,8 @@ package Verified_Hashed_Sets is
 
    end Generic_Keys;
 
+   function Strict_Equal (Left, Right : Set) return Boolean;
+
    function Left (Container : Set; Position : Cursor) return Set;
 
    function Right (Container : Set; Position : Cursor) return Set;

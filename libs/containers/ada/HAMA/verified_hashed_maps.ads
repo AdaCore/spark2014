@@ -166,11 +166,11 @@ package Verified_Hashed_Maps is
 
    function Default_Modulus (Capacity : Count_Type) return Hash_Type;
 
+   function Strict_Equal (Left, Right : Map) return Boolean;
+
    function Left (Container : Map; Position : Cursor) return Map;
 
    function Right (Container : Map; Position : Cursor) return Map;
-
-   function Equivalent (Left, Right : Map) return Boolean;
 
    function Overlap (Left, Right : Map) return Boolean;
 

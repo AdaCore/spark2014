@@ -128,23 +128,43 @@ package body Verified_Hashed_Sets is
    ---------
 
    function "=" (Left, Right : Set) return Boolean is
-      CuL : Cursor := First(Left);
-      CuR : Cursor := First(Right);
    begin
+
       if Length(Left) /= Length(Right) then
-         return false;
+         return False;
       end if;
 
-      while CuL.Node /= 0 or CuR.Node /= 0 loop
-         if CuL.Node /= CuR.Node or else
-           Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element then
-            return False;
-         end if;
-         CuL := Next_Unchecked(Left, CuL);
-         CuR := Next_Unchecked(Right, CuR);
-      end loop;
+      if Length(Left) = 0 then
+         return True;
+      end if;
 
-      return True;
+      declare
+         Node : Count_Type := First(Left).Node;
+         ENode : Count_Type;
+         Last : Count_Type;
+      begin
+
+         if Left.K = Plain then
+            Last := 0;
+         else
+            Last := HT_Ops.Next(Left.HT.all, Left.Last);
+         end if;
+
+         while Node /= Last loop
+            ENode := Find(Container => Right,
+                          Item => Left.HT.Nodes(Node).Element).Node;
+            if ENode = 0  or else
+              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
+               return False;
+            end if;
+
+            Node := HT_Ops.Next(Left.HT.all, Node);
+         end loop;
+
+         return True;
+
+      end;
+
    end "=";
 
    ------------
@@ -1699,6 +1719,30 @@ package body Verified_Hashed_Sets is
    begin
       HT.Nodes (Node).Next := Next;
    end Set_Next;
+
+   ------------------
+   -- Strict_Equal --
+   ------------------
+
+   function Strict_Equal (Left, Right : Set) return Boolean is
+      CuL : Cursor := First(Left);
+      CuR : Cursor := First(Right);
+   begin
+      if Length(Left) /= Length(Right) then
+         return false;
+      end if;
+
+      while CuL.Node /= 0 or CuR.Node /= 0 loop
+         if CuL.Node /= CuR.Node or else
+           Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element then
+            return False;
+         end if;
+         CuL := Next_Unchecked(Left, CuL);
+         CuR := Next_Unchecked(Right, CuR);
+      end loop;
+
+      return True;
+   end Strict_Equal;
 
    --------------------------
    -- Symmetric_Difference --

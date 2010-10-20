@@ -224,7 +224,7 @@ begin
    -- Deleting a cursor after the cut doesn't change Left
    L2 :=  Copy(L1,3);
     Delete_Last(L2);
-   if  "=" ( Left(L2, Next(L2, First(L2))),  Left(L1, Next(L1, First(L1)))) then
+   if  Strict_Equal ( Left(L2, Next(L2, First(L2))),  Left(L1, Next(L1, First(L1)))) then
       Ada.Text_IO.Put_Line("OK");
    else
       Ada.Text_IO.Put_Line("Deleting a cursor after the cut doesn't change Left => KO ???");
@@ -329,8 +329,8 @@ begin
 
    -- Deleting a cursor before the cut doesn't change Right
    L2 :=  Copy(L1,3);
-    Delete_First(L2);
-   if  "=" ( Right(L2, First(L2)),  Right(L1, Next(L1, First(L1)))) then
+   Delete_First(L2);
+   if  Strict_Equal ( Right(L2, First(L2)),  Right(L1, Next(L1, First(L1)))) then
       Ada.Text_IO.Put_Line("OK");
    else
       Ada.Text_IO.Put_Line("Deleting a cursor before the cut doesn't change Right => KO ???");

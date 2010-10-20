@@ -205,6 +205,8 @@ package Verified_Doubly_Linked_Lists is
 
    end Generic_Sorting;
 
+   function Strict_Equal (Left, Right : List) return Boolean;
+
    function Left (Container : List; Position : Cursor) return List;
 
    function Right (Container : List; Position : Cursor) return List;
@@ -224,7 +226,7 @@ private
    type List_Access is access all List;
    for List_Access'Storage_Size use 0;
 
-   type Kind is (Part, Plain);
+   type Kind is (Plain, Part);
 
    type Plain_List (Capacity : Count_Type) is record
       Nodes  : Node_Array (1 .. Capacity) := (others => <>);

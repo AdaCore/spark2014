@@ -172,11 +172,11 @@ package Verified_Ordered_Maps is
      (Container : Map;
       Process   : not null access procedure (Container : Map; Position : Cursor));
 
+   function Strict_Equal (Left, Right : Map) return Boolean;
+
    function Left (Container : Map; Position : Cursor) return Map;
 
    function Right (Container : Map; Position : Cursor) return Map;
-
-   function Equivalent (Left, Right : Map) return Boolean;
 
    function Overlap (Left, Right : Map) return Boolean;
 
@@ -200,6 +200,8 @@ private
 
    type Nodes_Type is array (Count_Type range <>) of Node_Type;
 
+   type Kind is (Plain, Part);
+
    type Tree_Type (Capacity : Count_Type) is
      new Bounded_Red_Black_Trees.Tree_Type with record
         Free  : Count_Type := 0;
@@ -207,8 +209,6 @@ private
    end record;
 
    type Tree_Type_Access is access all Tree_Type;
-
-   type Kind is (Plain, Part);
 
    type Map (Capacity : Count_Type) is tagged record
       Tree : Tree_Type_Access := new Tree_Type'(Capacity, others => <>);

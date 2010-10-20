@@ -36,6 +36,7 @@ with Verified_Hash_Tables.Generic_Keys;
 pragma Elaborate_All (Verified_Hash_Tables.Generic_Keys);
 
 with System;  use type System.Address;
+with Ada.Text_IO;
 
 package body Verified_Hashed_Maps is
 
@@ -109,24 +110,43 @@ package body Verified_Hashed_Maps is
    ---------
 
    function "=" (Left, Right : Map) return Boolean is
-      CuL : Cursor := First(Left);
-      CuR : Cursor := First(Right);
    begin
+
       if Length(Left) /= Length(Right) then
-         return false;
+         Ada.Text_IO.Put_Line("lgth");
+         return False;
       end if;
 
-      while CuL.Node /= 0 or CuR.Node /= 0 loop
-         if CuL.Node /= CuR.Node or else
-           (Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element or
-            Left.HT.Nodes(CuL.Node).Key /= Right.HT.Nodes(CuR.Node).Key) then
-            return False;
-         end if;
-         CuL := Next_Unchecked(Left, CuL);
-         CuR := Next_Unchecked(Right, CuR);
-      end loop;
+      if Length(Left) = 0 then
+         return True;
+      end if;
 
-      return True;
+      declare
+         Node : Count_Type := First(Left).Node;
+         ENode : Count_Type;
+         Last : Count_Type;
+      begin
+
+         if Left.K = Plain then
+            Last := 0;
+         else
+            Last := HT_Ops.Next(Left.HT.all, Left.Last);
+         end if;
+
+         while Node /= Last loop
+            ENode := Find(Container => Right, Key => Left.HT.Nodes(Node).Key).Node;
+            if ENode = 0 or else
+              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
+               return False;
+            end if;
+
+            Node := HT_Ops.Next(Left.HT.all, Node);
+         end loop;
+
+         return True;
+
+      end;
+
    end "=";
 
    ------------
@@ -352,49 +372,6 @@ package body Verified_Hashed_Maps is
 
       return Container.HT.Nodes (Position.Node).Element;
    end Element;
-
-   ----------------
-   -- Equivalent --
-   ----------------
-
-   function Equivalent (Left, Right : Map) return Boolean is
-   begin
-
-      if Length(Left) /= Length(Right) then
-         return False;
-      end if;
-
-      if Length(Left) = 0 then
-         return True;
-      end if;
-
-      declare
-         Node : Count_Type := First(Left).Node;
-         ENode : Count_Type;
-         Last : Count_Type;
-      begin
-
-         if Left.K = Plain then
-            Last := 0;
-         else
-            Last := Left.HT.Nodes(Left.Last).Next;
-         end if;
-
-         while Node /= Last loop
-               ENode := Find(Container => Right, Key => Left.HT.Nodes(Node).Key).Node;
-            if ENode = 0 or else
-              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
-               return False;
-            end if;
-
-            Node := HT_Ops.Next(Left.HT.all, Node);
-         end loop;
-
-         return True;
-
-      end;
-
-   end Equivalent;
 
    -------------------------
    -- Equivalent_Key_Node --
@@ -1372,6 +1349,31 @@ package body Verified_Hashed_Maps is
    begin
       HT.Nodes (Node).Next := Next;
    end Set_Next;
+
+   ------------------
+   -- Strict_Equal --
+   ------------------
+
+   function Strict_Equal (Left, Right : Map) return Boolean is
+      CuL : Cursor := First(Left);
+      CuR : Cursor := First(Right);
+   begin
+      if Length(Left) /= Length(Right) then
+         return false;
+      end if;
+
+      while CuL.Node /= 0 or CuR.Node /= 0 loop
+         if CuL.Node /= CuR.Node or else
+           (Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element or
+            Left.HT.Nodes(CuL.Node).Key /= Right.HT.Nodes(CuR.Node).Key) then
+            return False;
+         end if;
+         CuL := Next_Unchecked(Left, CuL);
+         CuR := Next_Unchecked(Right, CuR);
+      end loop;
+
+      return True;
+   end Strict_Equal;
 
    --------------------
    -- Update_Element --
