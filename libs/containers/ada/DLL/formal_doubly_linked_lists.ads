@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---                 ADA.CONTAINERS.BOUNDED_DOUBLY_LINKED_LISTS               --
+--                 ADA.CONTAINERS.FORMAL_DOUBLY_LINKED_LISTS                --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -30,7 +30,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 private with Ada.Streams;
@@ -40,9 +41,9 @@ generic
    type Element_Type is private;
 
    with function "=" (Left, Right : Element_Type)
-      return Boolean is <>;
+                      return Boolean is <>;
 
-package Verified_Doubly_Linked_Lists is
+package Formal_Doubly_Linked_Lists is
    pragma Pure;
 
    type List (Capacity : Count_Type) is tagged private;
@@ -76,7 +77,7 @@ package Verified_Doubly_Linked_Lists is
 
    procedure Query_Element
      (Container : List; Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type));
+      Process   : not null access procedure (Element : Element_Type));
 
    procedure Update_Element
      (Container : in out List;
@@ -187,11 +188,13 @@ package Verified_Doubly_Linked_Lists is
 
    procedure Iterate
      (Container : List;
-      Process   : not null access procedure (Container : List; Position : Cursor));
+      Process   :
+      not null access procedure (Container : List; Position : Cursor));
 
    procedure Reverse_Iterate
      (Container : List;
-      Process   : not null access procedure (Container : List; Position : Cursor));
+      Process   :
+      not null access procedure (Container : List; Position : Cursor));
 
    generic
       with function "<" (Left, Right : Element_Type) return Boolean is <>;
@@ -239,17 +242,17 @@ private
 
    type Part_List is record
       LLength : Count_Type := 0;
-      LFirst : Count_Type := 0;
-      LLast : Count_Type := 0;
+      LFirst  : Count_Type := 0;
+      LLast   : Count_Type := 0;
    end record;
 
    type List (Capacity : Count_Type) is tagged record
-      K : Kind := Plain;
+      K      : Kind := Plain;
       Length : Count_Type := 0;
-      First : Count_Type := 0;
-      Last : Count_Type := 0;
-      Part : Part_List;
-      Plain : PList_Access := new Plain_List'(Capacity, others => <>);
+      First  : Count_Type := 0;
+      Last   : Count_Type := 0;
+      Part   : Part_List;
+      Plain  : PList_Access := new Plain_List'(Capacity, others => <>);
    end record;
 
    use Ada.Streams;
@@ -287,4 +290,4 @@ private
 
    No_Element : constant Cursor := (Node => 0);
 
-end Verified_Doubly_Linked_Lists;
+end Formal_Doubly_Linked_Lists;

@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---       A D A . C O N T A I N E R S . B O U N D E D _ V E C T O R S        --
+--         A D A . C O N T A I N E R S . F O R M A L _ V E C T O R S        --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -30,7 +30,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 private with Ada.Streams;
@@ -43,12 +44,12 @@ generic
 
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Verified_Vectors is
+package Formal_Vectors is
    --pragma Pure;
 
    subtype Extended_Index is Index_Type'Base
-     range Index_Type'First - 1 ..
-           Index_Type'Min (Index_Type'Base'Last - 1, Index_Type'Last) + 1;
+   range Index_Type'First - 1 ..
+     Index_Type'Min (Index_Type'Base'Last - 1, Index_Type'Last) + 1;
 
    --  ??? i don't think we can do this...
    --  TODO: we need the ARG to either figure out how to declare this subtype,
@@ -140,8 +141,8 @@ package Verified_Vectors is
 
    procedure Query_Element
      (Container : Vector;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type));
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type));
 
    procedure Update_Element
      (Container : in out Vector;
@@ -302,11 +303,13 @@ package Verified_Vectors is
 
    procedure Iterate
      (Container : Vector;
-      Process   : not null access procedure (Container : Vector; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Vector; Position : Cursor));
 
    procedure Reverse_Iterate
      (Container : Vector;
-      Process   : not null access procedure (Container : Vector; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Vector; Position : Cursor));
 
    generic
       with function "<" (Left, Right : Element_Type) return Boolean is <>;
@@ -354,9 +357,9 @@ private
 
    type Vector (Capacity : Capacity_Subtype) is tagged record
       Plain : Plain_Access := new Plain_Vector (Capacity);
-      K : Kind := Verified_Vectors.Plain;
+      K     : Kind := Formal_Vectors.Plain;
       First : Count_Type := 0;
-      Last : Index_Type'Base := No_Index;
+      Last  : Index_Type'Base := No_Index;
    end record;
 
    use Ada.Streams;
@@ -374,7 +377,7 @@ private
    for Vector'Read use Read;
 
    type Cursor is record
-      Valid : Boolean := True;
+      Valid     : Boolean := True;
       Index     : Index_Type := Index_Type'First;
    end record;
 
@@ -394,4 +397,4 @@ private
 
    No_Element : constant Cursor := (Valid => False, Index => Index_Type'First);
 
-end Verified_Vectors;
+end Formal_Vectors;

@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---  A D A . C O N T A I N E R S . B O U N D E D _ O R D E R E D _ S E T S   --
+--   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ S E T S    --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -30,7 +30,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 private with Bounded_Red_Black_Trees;
@@ -45,7 +46,7 @@ generic
    with function "<" (Left, Right : Element_Type) return Boolean is <>;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Verified_Ordered_Sets is
+package Formal_Ordered_Sets is
    --pragma Pure;
 
    function Equivalent_Elements (Left, Right : Element_Type) return Boolean;
@@ -85,8 +86,8 @@ package Verified_Ordered_Sets is
 
    procedure Query_Element
      (Container : in out Set;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type));
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type));
 
    procedure Move (Target : in out Set; Source : in out Set);
 
@@ -180,11 +181,13 @@ package Verified_Ordered_Sets is
 
    procedure Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor));
 
    procedure Reverse_Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor));
 
    generic
       type Key_Type (<>) is private;
@@ -222,7 +225,7 @@ package Verified_Ordered_Sets is
         (Container : in out Set;
          Position  : Cursor;
          Process   : not null access
-                       procedure (Element : in out Element_Type));
+           procedure (Element : in out Element_Type));
 
    end Generic_Keys;
 
@@ -251,18 +254,18 @@ private
 
    type Tree_Type (Capacity : Count_Type) is
      new Bounded_Red_Black_Trees.Tree_Type with record
-        Free  : Count_Type := 0;
-        Nodes : Nodes_Type (1 .. Capacity);
+      Free  : Count_Type := 0;
+      Nodes : Nodes_Type (1 .. Capacity);
    end record;
 
    type Tree_Type_Access is access all Tree_Type;
 
    type Set (Capacity : Count_Type) is tagged record
-      Tree : Tree_Type_Access := new Tree_Type'(Capacity, others => <>);
-      K : Kind := Plain;
+      Tree   : Tree_Type_Access := new Tree_Type'(Capacity, others => <>);
+      K      : Kind := Plain;
       Length : Count_Type := 0;
-      First : Count_Type := 0;
-      Last : Count_Type := 0;
+      First  : Count_Type := 0;
+      Last   : Count_Type := 0;
    end record;
 
    use Bounded_Red_Black_Trees;
@@ -302,6 +305,6 @@ private
    for Set'Read use Read;
 
    Empty_Set : constant Set :=
-     (Capacity => 0, others => <>);
+                 (Capacity => 0, others => <>);
 
-end Verified_Ordered_Sets;
+end Formal_Ordered_Sets;

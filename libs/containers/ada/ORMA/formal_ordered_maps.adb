@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---  A D A . C O N T A I N E R S . B O U N D E D _ O R D E R E D _ M A P S   --
+--   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ M A P S    --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,7 +26,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with Bounded_Red_Black_Trees.Generic_Operations;
@@ -38,7 +39,7 @@ pragma Elaborate_All (Bounded_Red_Black_Trees.Generic_Keys);
 
 with System; use type System.Address;
 
-package body Verified_Ordered_Maps is
+package body Formal_Ordered_Maps is
 
    -----------------------------
    -- Node Access Subprograms --
@@ -96,7 +97,7 @@ package body Verified_Ordered_Maps is
       X    : out Count_Type);
 
    generic
-     with procedure Allocate_Node (X : out Node_Access);
+      with procedure Allocate_Node (X : out Node_Access);
    procedure Generic_Append (Container : in out Tree_Type);
 
    function Is_Greater_Key_Node
@@ -113,17 +114,17 @@ package body Verified_Ordered_Maps is
 
    function Next_Unchecked
      (Container : Map;
-      Position : Count_Type) return Count_Type;
+      Position  : Count_Type) return Count_Type;
 
    --------------------------
    -- Local Instantiations --
    --------------------------
 
    package Tree_Operations is
-      new Bounded_Red_Black_Trees.Generic_Operations
+     new Bounded_Red_Black_Trees.Generic_Operations
        (Tree_Type => Tree_Type,
-        Left => Left_Son,
-        Right => Right_Son);
+        Left      => Left_Son,
+        Right     => Right_Son);
 
    use Tree_Operations;
 
@@ -139,27 +140,28 @@ package body Verified_Ordered_Maps is
    ---------
 
    function "=" (Left, Right : Map) return Boolean is
-      Lst : Count_Type;
-      Node : Count_Type := First(Left).Node;
+      Lst   : Count_Type;
+      Node  : Count_Type := First (Left).Node;
       ENode : Count_Type;
    begin
 
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
-      if Is_Empty(Left) then
+      if Is_Empty (Left) then
          return True;
       end if;
 
-      Lst := Next(Left.Tree.all, Last(Left).Node);
+      Lst := Next (Left.Tree.all, Last (Left).Node);
       while Node /= Lst loop
-         ENode := Find(Right, Left.Tree.Nodes(Node).Key).Node;
+         ENode := Find (Right, Left.Tree.Nodes (Node).Key).Node;
          if ENode = 0 or else
-           Left.Tree.Nodes(Node).Element /= Right.Tree.Nodes(ENode).Element then
+           Left.Tree.Nodes (Node).Element /= Right.Tree.Nodes (ENode).Element
+         then
             return False;
          end if;
-         Node := Next(Left.Tree.all, Node);
+         Node := Next (Left.Tree.all, Node);
       end loop;
 
       return True;
@@ -174,7 +176,7 @@ package body Verified_Ordered_Maps is
       procedure Append_Item_From_Source (Src_Node : Node_Access);
 
       procedure Append_Items_From_Source is
-         new Tree_Operations.Generic_Iteration (Append_Item_From_Source);
+        new Tree_Operations.Generic_Iteration (Append_Item_From_Source);
 
       -----------------------------
       -- Append_Item_From_Source --
@@ -200,7 +202,7 @@ package body Verified_Ordered_Maps is
             Allocate_Node (Target.Tree.all, X);
          end Allocate_Node;
 
-      --  Start of process for Assign
+         --  Start of process for Assign
 
       begin
          Append (Target.Tree.all);
@@ -216,7 +218,7 @@ package body Verified_Ordered_Maps is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Storage_Error with "not enough capacity";  -- SE or CE? ???
       end if;
 
@@ -228,9 +230,9 @@ package body Verified_Ordered_Maps is
             X : Count_Type;
          begin
             X := Source.First;
-            while X /= Next(Source.Tree.all, Source.Last) loop
+            while X /= Next (Source.Tree.all, Source.Last) loop
                Append_Item_From_Source (X);
-               X := Next(Source.Tree.all, X);
+               X := Next (Source.Tree.all, X);
             end loop;
          end;
       end if;
@@ -248,18 +250,18 @@ package body Verified_Ordered_Maps is
             return No_Element;
          end if;
 
-         if Key < Container.Tree.Nodes(Container.First).Key then
+         if Key < Container.Tree.Nodes (Container.First).Key then
             return (Node => Container.First);
          end if;
 
-         if Container.Tree.Nodes(Container.Last).Key < Key then
+         if Container.Tree.Nodes (Container.Last).Key < Key then
             return No_Element;
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Key_Ops.Ceiling (Container.Tree.all, Key);
+                  Key_Ops.Ceiling (Container.Tree.all, Key);
 
       begin
          if Node = 0 then
@@ -308,11 +310,11 @@ package body Verified_Ordered_Maps is
 
    function Copy (Source : Map; Capacity : Count_Type := 0) return Map is
       Node : Count_Type := 1;
-      N : Count_Type;
-      Cu : Cursor;
+      N    : Count_Type;
+      Cu   : Cursor;
    begin
       return Target : Map (Count_Type'Max (Source.Capacity, Capacity)) do
-         if Length(Source) > 0 then
+         if Length (Source) > 0 then
             Target.Tree.Length := Source.Tree.Length;
             Target.Tree.Root := Source.Tree.Root;
             Target.Tree.First := Source.Tree.First;
@@ -320,18 +322,24 @@ package body Verified_Ordered_Maps is
             Target.Tree.Free := Source.Tree.Free;
 
             while Node <= Source.Capacity loop
-               Target.Tree.Nodes(Node).Element := Source.Tree.Nodes(Node).Element;
-               Target.Tree.Nodes(Node).Key := Source.Tree.Nodes(Node).Key;
-               Target.Tree.Nodes(Node).Parent := Source.Tree.Nodes(Node).Parent;
-               Target.Tree.Nodes(Node).Left := Source.Tree.Nodes(Node).Left;
-               Target.Tree.Nodes(Node).Right := Source.Tree.Nodes(Node).Right;
-               Target.Tree.Nodes(Node).Color := Source.Tree.Nodes(Node).Color;
+               Target.Tree.Nodes (Node).Element :=
+                 Source.Tree.Nodes (Node).Element;
+               Target.Tree.Nodes (Node).Key :=
+                 Source.Tree.Nodes (Node).Key;
+               Target.Tree.Nodes (Node).Parent :=
+                 Source.Tree.Nodes (Node).Parent;
+               Target.Tree.Nodes (Node).Left :=
+                 Source.Tree.Nodes (Node).Left;
+               Target.Tree.Nodes (Node).Right :=
+                 Source.Tree.Nodes (Node).Right;
+               Target.Tree.Nodes (Node).Color :=
+                 Source.Tree.Nodes (Node).Color;
                Node := Node + 1;
             end loop;
 
             while Node <= Target.Capacity loop
                N := Node;
-               Free(Tree => Target.Tree.all, X => N);
+               Free (Tree => Target.Tree.all, X => N);
                Node := Node + 1;
             end loop;
 
@@ -339,16 +347,16 @@ package body Verified_Ordered_Maps is
                Node := Target.Tree.First;
                while Node /= Source.First loop
                   Cu := (Node => Node);
-                  Node := Next(Target.Tree.all, Node);
-                  Delete(Target, Cu);
+                  Node := Next (Target.Tree.all, Node);
+                  Delete (Target, Cu);
                end loop;
 
-               Node := Next(Target.Tree.all, Source.Last);
+               Node := Next (Target.Tree.all, Source.Last);
 
                while Node /= 0 loop
                   Cu := (Node => Node);
-                  Node := Next(Target.Tree.all, Node);
-                  Delete(Target, Cu);
+                  Node := Next (Target.Tree.all, Node);
+                  Delete (Target, Cu);
                end loop;
             end if;
          end if;
@@ -366,7 +374,7 @@ package body Verified_Ordered_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Delete has no element";
       end if;
@@ -374,7 +382,8 @@ package body Verified_Ordered_Maps is
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "Position cursor of Delete is bad");
 
-      Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, Position.Node);
+      Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all,
+                                             Position.Node);
       Free (Container.Tree.all, Position.Node);
    end Delete;
 
@@ -402,7 +411,7 @@ package body Verified_Ordered_Maps is
    ------------------
 
    procedure Delete_First (Container : in out Map) is
-      X : Node_Access := First(Container).Node;
+      X : Node_Access := First (Container).Node;
 
    begin
       if Container.K /= Plain then
@@ -421,7 +430,7 @@ package body Verified_Ordered_Maps is
    -----------------
 
    procedure Delete_Last (Container : in out Map) is
-      X : Node_Access := Last(Container).Node;
+      X : Node_Access := Last (Container).Node;
 
    begin
       if Container.K /= Plain then
@@ -441,7 +450,7 @@ package body Verified_Ordered_Maps is
 
    function Element (Container : Map; Position : Cursor) return Element_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of function Element has no element";
       end if;
@@ -509,15 +518,15 @@ package body Verified_Ordered_Maps is
             return No_Element;
          end if;
 
-         if Key < Container.Tree.Nodes(Container.First).Key or
-           Container.Tree.Nodes(Container.Last).Key < Key then
+         if Key < Container.Tree.Nodes (Container.First).Key or
+           Container.Tree.Nodes (Container.Last).Key < Key then
             return No_Element;
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Key_Ops.Find (Container.Tree.all, Key);
+                  Key_Ops.Find (Container.Tree.all, Key);
 
       begin
          if Node = 0 then
@@ -534,7 +543,7 @@ package body Verified_Ordered_Maps is
 
    function First (Container : Map) return Cursor is
    begin
-      if Length(Container) = 0 then
+      if Length (Container) = 0 then
          return No_Element;
       end if;
 
@@ -552,11 +561,11 @@ package body Verified_Ordered_Maps is
 
    function First_Element (Container : Map) return Element_Type is
    begin
-      if is_empty(Container) then
+      if Is_Empty (Container) then
          raise Constraint_Error with "map is empty";
       end if;
 
-      return Container.Tree.Nodes (First(Container).Node).Element;
+      return Container.Tree.Nodes (First (Container).Node).Element;
    end First_Element;
 
    ---------------
@@ -565,11 +574,11 @@ package body Verified_Ordered_Maps is
 
    function First_Key (Container : Map) return Key_Type is
    begin
-      if is_empty(Container) then
+      if Is_Empty (Container) then
          raise Constraint_Error with "map is empty";
       end if;
 
-      return Container.Tree.Nodes (First(Container).Node).Key;
+      return Container.Tree.Nodes (First (Container).Node).Key;
    end First_Key;
 
    -----------
@@ -584,18 +593,18 @@ package body Verified_Ordered_Maps is
             return No_Element;
          end if;
 
-         if Key < Container.Tree.Nodes(Container.First).Key then
+         if Key < Container.Tree.Nodes (Container.First).Key then
             return No_Element;
          end if;
 
-         if Container.Tree.Nodes(Container.Last).Key < Key then
+         if Container.Tree.Nodes (Container.Last).Key < Key then
             return (Node => Container.Last);
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Key_Ops.Floor (Container.Tree.all, Key);
+                  Key_Ops.Floor (Container.Tree.all, Key);
 
       begin
          if Node = 0 then
@@ -737,7 +746,7 @@ package body Verified_Ordered_Maps is
       Y : Count_Type;
       B : Boolean;
 
-   --  Start of processing for Append
+      --  Start of processing for Append
 
    begin
       Allocate_Node (X);
@@ -763,7 +772,7 @@ package body Verified_Ordered_Maps is
          return False;
       end if;
 
-      if Container.Tree.Nodes(Position.Node).Parent < 0 then
+      if Container.Tree.Nodes (Position.Node).Parent < 0 then
          return False;
       end if;
 
@@ -772,11 +781,11 @@ package body Verified_Ordered_Maps is
       end if;
 
       declare
-         Key : Key_Type := Container.Tree.Nodes(Position.Node).Key;
+         Key : Key_Type := Container.Tree.Nodes (Position.Node).Key;
       begin
 
-         if Key < Container.Tree.Nodes(Container.First).Key or
-           Container.Tree.Nodes(Container.Last).Key < Key then
+         if Key < Container.Tree.Nodes (Container.First).Key or
+           Container.Tree.Nodes (Container.Last).Key < Key then
             return False;
          end if;
 
@@ -948,7 +957,7 @@ package body Verified_Ordered_Maps is
 
    function Is_Empty (Container : Map) return Boolean is
    begin
-      return Length(Container) = 0;
+      return Length (Container) = 0;
    end Is_Empty;
 
    -------------------------
@@ -985,13 +994,14 @@ package body Verified_Ordered_Maps is
 
    procedure Iterate
      (Container : Map;
-      Process   : not null access procedure (Container : Map; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Map; Position : Cursor))
    is
       procedure Process_Node (Node : Node_Access);
       pragma Inline (Process_Node);
 
       procedure Local_Iterate is
-         new Tree_Operations.Generic_Iteration (Process_Node);
+        new Tree_Operations.Generic_Iteration (Process_Node);
 
       ------------------
       -- Process_Node --
@@ -1004,7 +1014,7 @@ package body Verified_Ordered_Maps is
 
       B : Natural renames Container.Tree.all.Busy;
 
-   --  Start of processing for Iterate
+      --  Start of processing for Iterate
 
    begin
       B := B + 1;
@@ -1022,21 +1032,21 @@ package body Verified_Ordered_Maps is
 
 
          declare
-            FElt : Key_Type := Container.Tree.Nodes(Container.First).Key;
-            TElt : Key_Type := Container.Tree.Nodes(Container.Last).Key;
+            FElt : Key_Type := Container.Tree.Nodes (Container.First).Key;
+            TElt : Key_Type := Container.Tree.Nodes (Container.Last).Key;
 
             procedure Iterate (P : Count_Type) is
                X : Count_Type := P;
             begin
                while X /= 0 loop
-                  if Container.Tree.Nodes(X).Key < FElt then
-                     X := Container.Tree.Nodes(X).Right;
-                  elsif TElt < Container.Tree.Nodes(X).Key then
-                     X := Container.Tree.Nodes(X).Left;
+                  if Container.Tree.Nodes (X).Key < FElt then
+                     X := Container.Tree.Nodes (X).Right;
+                  elsif TElt < Container.Tree.Nodes (X).Key then
+                     X := Container.Tree.Nodes (X).Left;
                   else
-                     Iterate(Container.Tree.Nodes(X).Left);
-                     Process_Node(X);
-                     X := Container.Tree.Nodes(X).Right;
+                     Iterate (Container.Tree.Nodes (X).Left);
+                     Process_Node (X);
+                     X := Container.Tree.Nodes (X).Right;
                   end if;
                end loop;
             end Iterate;
@@ -1060,7 +1070,7 @@ package body Verified_Ordered_Maps is
 
    function Key (Container : Map; Position : Cursor) return Key_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of function Key has no element";
       end if;
@@ -1077,7 +1087,7 @@ package body Verified_Ordered_Maps is
 
    function Last (Container : Map) return Cursor is
    begin
-      if Length(Container) = 0 then
+      if Length (Container) = 0 then
          return No_Element;
       end if;
 
@@ -1094,11 +1104,11 @@ package body Verified_Ordered_Maps is
 
    function Last_Element (Container : Map) return Element_Type is
    begin
-      if Is_Empty(Container) then
+      if Is_Empty (Container) then
          raise Constraint_Error with "map is empty";
       end if;
 
-      return Container.Tree.Nodes (Last(Container).Node).Element;
+      return Container.Tree.Nodes (Last (Container).Node).Element;
    end Last_Element;
 
    --------------
@@ -1107,11 +1117,11 @@ package body Verified_Ordered_Maps is
 
    function Last_Key (Container : Map) return Key_Type is
    begin
-      if Is_Empty(Container) then
+      if Is_Empty (Container) then
          raise Constraint_Error with "map is empty";
       end if;
 
-      return Container.Tree.Nodes (Last(Container).Node).Key;
+      return Container.Tree.Nodes (Last (Container).Node).Key;
    end Last_Key;
 
    ----------
@@ -1120,33 +1130,33 @@ package body Verified_Ordered_Maps is
 
    function Left (Container : Map; Position : Cursor) return Map is
       Lst : Count_Type;
-      Fst : constant Count_Type := First(Container).Node;
-      L : Count_Type := 0;
-      C : Count_Type := Fst;
+      Fst : constant Count_Type := First (Container).Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Fst;
    begin
       while C /= Position.Node loop
-         if C = Last(Container).Node or C = 0 then
+         if C = Last (Container).Node or C = 0 then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
          Lst := C;
-         C := Next(Container.Tree.all, C);
+         C := Next (Container.Tree.all, C);
          L := L + 1;
       end loop;
       if L = 0 then
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       else
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => L,
-                 First => Fst,
-                 Last => Lst);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => L,
+                 First    => Fst,
+                 Last     => Lst);
       end if;
    end Left;
 
@@ -1154,7 +1164,9 @@ package body Verified_Ordered_Maps is
    -- Left_Son --
    --------------
 
-   function Left_Son (Tree : Tree_Type; Node : Node_Access) return Node_Access is
+   function Left_Son
+     (Tree : Tree_Type;
+      Node : Node_Access) return Node_Access is
    begin
       return Tree.Nodes (Node).Left;
    end Left_Son;
@@ -1190,7 +1202,7 @@ package body Verified_Ordered_Maps is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Constraint_Error with  -- ???
            "Source length exceeds Target capacity";
       end if;
@@ -1203,7 +1215,7 @@ package body Verified_Ordered_Maps is
       Clear (Target);
 
       loop
-         X := First(Source).Node;
+         X := First (Source).Node;
          exit when X = 0;
 
          --  Here we insert a copy of the source element into the target, and
@@ -1222,7 +1234,9 @@ package body Verified_Ordered_Maps is
    -- Next --
    ----------
 
-   function Next_Unchecked (Container : Map; Position : Count_Type) return Count_Type is
+   function Next_Unchecked
+     (Container : Map;
+      Position  : Count_Type) return Count_Type is
    begin
 
       if Container.K = Part and then
@@ -1244,14 +1258,14 @@ package body Verified_Ordered_Maps is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error;
       end if;
 
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "bad cursor in Next");
 
-      return (Node => Next_Unchecked(Container, Position.Node));
+      return (Node => Next_Unchecked (Container, Position.Node));
    end Next;
 
    -------------
@@ -1261,17 +1275,19 @@ package body Verified_Ordered_Maps is
    function Overlap (Left, Right : Map) return Boolean is
    begin
 
-      if Length(Left) = 0 or Length(Right) = 0 then
+      if Length (Left) = 0 or Length (Right) = 0 then
          return False;
       end if;
 
       declare
 
-         L_Node : Count_Type := First(Left).Node;
-         R_Node : Count_Type := First(Right).Node;
+         L_Node : Count_Type := First (Left).Node;
+         R_Node : Count_Type := First (Right).Node;
 
-         L_Last : constant Count_Type := Next(Left.Tree.all, Last(Left).Node);
-         R_Last : constant Count_Type := Next(Right.Tree.all, Last(Right).Node);
+         L_Last : constant Count_Type :=
+                    Next (Left.Tree.all, Last (Left).Node);
+         R_Last : constant Count_Type :=
+                    Next (Right.Tree.all, Last (Right).Node);
 
       begin
          if Left'Address = Right'Address then
@@ -1285,10 +1301,12 @@ package body Verified_Ordered_Maps is
                return False;
             end if;
 
-            if Left.Tree.Nodes(L_Node).Key < Right.Tree.Nodes(R_Node).Key then
+            if Left.Tree.Nodes (L_Node).Key < Right.Tree.Nodes (R_Node).Key
+            then
                L_Node := Next (Left.Tree.all, L_Node);
 
-            elsif Right.Tree.Nodes(R_Node).Key < Left.Tree.Nodes(L_Node).Key then
+            elsif Right.Tree.Nodes (R_Node).Key < Left.Tree.Nodes (L_Node).Key
+            then
                R_Node := Next (Right.Tree.all, R_Node);
 
             else
@@ -1322,7 +1340,7 @@ package body Verified_Ordered_Maps is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error;
       end if;
 
@@ -1354,9 +1372,9 @@ package body Verified_Ordered_Maps is
 
    procedure Query_Element
      (Container : in out Map;
-      Position : Cursor;
-      Process  : not null access procedure (Key     : Key_Type;
-                                            Element : Element_Type))
+      Position  : Cursor;
+      Process   : not null access procedure (Key     : Key_Type;
+                                             Element : Element_Type))
    is
    begin
       if Container.K /= Plain then
@@ -1364,7 +1382,7 @@ package body Verified_Ordered_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Query_Element has no element";
       end if;
@@ -1384,8 +1402,8 @@ package body Verified_Ordered_Maps is
 
          declare
             N  : Node_Type renames T.Nodes (Position.Node);
-            K : Key_Type renames N.Key;
-            E : Element_Type renames N.Element;
+            K  : Key_Type renames N.Key;
+            E  : Element_Type renames N.Element;
 
          begin
             Process (K, E);
@@ -1433,7 +1451,7 @@ package body Verified_Ordered_Maps is
 
       N : Count_Type'Base;
 
-   --  Start of processing for Read
+      --  Start of processing for Read
 
    begin
       Container.Clear;  -- clear before or after storage check???
@@ -1518,7 +1536,7 @@ package body Verified_Ordered_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Replace_Element has no element";
       end if;
@@ -1540,13 +1558,14 @@ package body Verified_Ordered_Maps is
 
    procedure Reverse_Iterate
      (Container : Map;
-      Process   : not null access procedure (Container : Map; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Map; Position : Cursor))
    is
       procedure Process_Node (Node : Node_Access);
       pragma Inline (Process_Node);
 
       procedure Local_Reverse_Iterate is
-         new Tree_Operations.Generic_Reverse_Iteration (Process_Node);
+        new Tree_Operations.Generic_Reverse_Iteration (Process_Node);
 
       ------------------
       -- Process_Node --
@@ -1577,21 +1596,21 @@ package body Verified_Ordered_Maps is
 
 
          declare
-            FElt : Key_Type := Container.Tree.Nodes(Container.First).Key;
-            TElt : Key_Type := Container.Tree.Nodes(Container.Last).Key;
+            FElt : Key_Type := Container.Tree.Nodes (Container.First).Key;
+            TElt : Key_Type := Container.Tree.Nodes (Container.Last).Key;
 
             procedure Iterate (P : Count_Type) is
                X : Count_Type := P;
             begin
                while X /= 0 loop
-                  if Container.Tree.Nodes(X).Key < FElt then
-                     X := Container.Tree.Nodes(X).Right;
-                  elsif TElt < Container.Tree.Nodes(X).Key then
-                     X := Container.Tree.Nodes(X).Left;
+                  if Container.Tree.Nodes (X).Key < FElt then
+                     X := Container.Tree.Nodes (X).Right;
+                  elsif TElt < Container.Tree.Nodes (X).Key then
+                     X := Container.Tree.Nodes (X).Left;
                   else
-                     Iterate(Container.Tree.Nodes(X).Right);
-                     Process_Node(X);
-                     X := Container.Tree.Nodes(X).Left;
+                     Iterate (Container.Tree.Nodes (X).Right);
+                     Process_Node (X);
+                     X := Container.Tree.Nodes (X).Left;
                   end if;
                end loop;
             end Iterate;
@@ -1615,23 +1634,23 @@ package body Verified_Ordered_Maps is
 
    function Right (Container : Map; Position : Cursor) return Map is
       Lst : Count_Type;
-      L : Count_Type := 0;
-      C : Count_Type := Position.Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Position.Node;
    begin
 
       if C = 0 then
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       end if;
 
       if Container.K = Plain then
          Lst := 0;
       else
-         Lst := Next(Container.Tree.all, Container.Last);
+         Lst := Next (Container.Tree.all, Container.Last);
       end if;
 
       if C = Lst then
@@ -1644,23 +1663,25 @@ package body Verified_Ordered_Maps is
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
-         C := Next(Container.Tree.all, C);
+         C := Next (Container.Tree.all, C);
          L := L + 1;
       end loop;
 
       return (Capacity => Container.Capacity,
-              K => Part,
-              Tree => Container.Tree,
-              Length => L,
-              First => Position.Node,
-              Last => Last(Container).Node);
+              K        => Part,
+              Tree     => Container.Tree,
+              Length   => L,
+              First    => Position.Node,
+              Last     => Last (Container).Node);
    end Right;
 
    ---------------
    -- Right_Son --
    ---------------
 
-   function Right_Son (Tree : Tree_Type; Node : Node_Access) return Node_Access is
+   function Right_Son
+     (Tree : Tree_Type;
+      Node : Node_Access) return Node_Access is
    begin
       return Tree.Nodes (Node).Right;
    end Right_Son;
@@ -1722,10 +1743,10 @@ package body Verified_Ordered_Maps is
    ------------------
 
    function Strict_Equal (Left, Right : Map) return Boolean is
-      LNode : Count_Type := First(Left).Node;
-      RNode : Count_Type := First(Right).Node;
+      LNode : Count_Type := First (Left).Node;
+      RNode : Count_Type := First (Right).Node;
    begin
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
@@ -1734,13 +1755,14 @@ package body Verified_Ordered_Maps is
             return True;
          end if;
 
-         if Left.Tree.Nodes(LNode).Element /= Right.Tree.Nodes(RNode).Element or
-         Left.Tree.Nodes(LNode).Key /= Right.Tree.Nodes(RNode).Key then
+         if Left.Tree.Nodes (LNode).Element /=
+           Right.Tree.Nodes (RNode).Element or
+           Left.Tree.Nodes (LNode).Key /= Right.Tree.Nodes (RNode).Key then
             exit;
          end if;
 
-         LNode := Next_Unchecked(Left, LNode);
-         RNode := Next_Unchecked(Right, RNode);
+         LNode := Next_Unchecked (Left, LNode);
+         RNode := Next_Unchecked (Right, RNode);
       end loop;
       return False;
    end Strict_Equal;
@@ -1761,7 +1783,7 @@ package body Verified_Ordered_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Update_Element has no element";
       end if;
@@ -1812,7 +1834,7 @@ package body Verified_Ordered_Maps is
       pragma Inline (Write_Node);
 
       procedure Write is
-         new Tree_Operations.Generic_Write (Write_Node);
+        new Tree_Operations.Generic_Write (Write_Node);
 
       ----------------
       -- Write_Node --
@@ -1828,7 +1850,7 @@ package body Verified_Ordered_Maps is
          Element_Type'Write (Stream, N.Element);
       end Write_Node;
 
-   --  Start of processing for Write
+      --  Start of processing for Write
 
    begin
       Write (Stream, Container.Tree.all);
@@ -1842,4 +1864,4 @@ package body Verified_Ordered_Maps is
       raise Program_Error with "attempt to stream map cursor";
    end Write;
 
-end Verified_Ordered_Maps;
+end Formal_Ordered_Maps;

@@ -1,12 +1,12 @@
 with Ada.Text_IO;
-with Verified_Vectors;
+with Formal_Vectors;
 with Ada.Containers;
 use Ada.Containers;
 
 procedure test_vve is
    type Index_Type is range 1 .. 5;
 
-   package VVE is new Verified_Vectors
+   package VVE is new Formal_Vectors
      (Element_Type => Integer,
       Index_Type => Index_Type);
    use VVE;

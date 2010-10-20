@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---   A D A . C O N T A I N E R S . B O U N D E D _ H A S H E D _ M A P S    --
+--    A D A . C O N T A I N E R S . F O R M A L _ H A S H E D _ M A P S     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -29,8 +29,9 @@
 -- covered  by the  GNU  General  Public  License.  This exception does not --
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
---                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+--
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 private with Verified_Hash_Tables;  -- generalize this???
@@ -45,7 +46,7 @@ generic
    with function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Verified_Hashed_Maps is
+package Formal_Hashed_Maps is
    --pragma Pure;
 
    type Map (Capacity : Count_Type; Modulus : Hash_Type) is tagged private;
@@ -93,15 +94,15 @@ package Verified_Hashed_Maps is
 
    procedure Query_Element
      (Container : in out Map;
-      Position : Cursor;
-      Process  : not null access
-                   procedure (Key : Key_Type; Element : Element_Type));
+      Position  : Cursor;
+      Process   : not null access
+        procedure (Key : Key_Type; Element : Element_Type));
 
    procedure Update_Element
      (Container : in out Map;
       Position  : Cursor;
       Process   : not null access
-                   procedure (Key : Key_Type; Element : in out Element_Type));
+        procedure (Key : Key_Type; Element : in out Element_Type));
 
    procedure Move (Target : in out Map; Source : in out Map);
 
@@ -153,16 +154,26 @@ package Verified_Hashed_Maps is
 
    function Has_Element (Container : Map; Position : Cursor) return Boolean;
 
-   function Equivalent_Keys (Left : Map; CLeft : Cursor;
-                             Right : Map; CRight : Cursor) return Boolean;
+   function Equivalent_Keys
+     (Left   : Map;
+      CLeft  : Cursor;
+      Right  : Map;
+      CRight : Cursor) return Boolean;
 
-   function Equivalent_Keys (Left : Map; CLeft : Cursor; Right : Key_Type) return Boolean;
+   function Equivalent_Keys
+     (Left  : Map;
+      CLeft : Cursor;
+      Right : Key_Type) return Boolean;
 
-   function Equivalent_Keys (Left : Key_Type; Right : Map; CRight : Cursor) return Boolean;
+   function Equivalent_Keys
+     (Left   : Key_Type;
+      Right  : Map;
+      CRight : Cursor) return Boolean;
 
    procedure Iterate
      (Container : Map;
-      Process   : not null access procedure (Container : Map; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Map; Position : Cursor));
 
    function Default_Modulus (Capacity : Count_Type) return Hash_Type;
 
@@ -190,10 +201,10 @@ private
    pragma Inline (Next);
 
    type Node_Type is record
-      Key     : Key_Type;
-      Element : Element_Type;
-      Next    : Count_Type;
-      Has_Element : Boolean := false;
+      Key         : Key_Type;
+      Element     : Element_Type;
+      Next        : Count_Type;
+      Has_Element : Boolean := False;
    end record;
 
    package HT_Types is new Verified_Hash_Tables.Generic_Hash_Table_Types
@@ -204,11 +215,11 @@ private
    type Kind is (Plain, Part);
 
    type Map (Capacity : Count_Type; Modulus : Hash_Type) is tagged record
-      HT : HT_Access := new HT_Types.Hash_Table_Type(Capacity, Modulus);
-      K : Kind := Plain;
+      HT     : HT_Access := new HT_Types.Hash_Table_Type (Capacity, Modulus);
+      K      : Kind := Plain;
       Length : Count_Type := 0;
-      First : Count_Type := 0;
-      Last : Count_Type := 0;
+      First  : Count_Type := 0;
+      Last   : Count_Type := 0;
    end record;
 
    use HT_Types;
@@ -250,4 +261,4 @@ private
 
    No_Element : constant Cursor := (Node => 0);
 
-end Verified_Hashed_Maps;
+end Formal_Hashed_Maps;

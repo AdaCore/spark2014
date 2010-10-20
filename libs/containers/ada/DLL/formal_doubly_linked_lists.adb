@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---                 ADA.CONTAINERS.BOUNDED_DOUBLY_LINKED_LISTS               --
+--                 ADA.CONTAINERS.FORMAL_DOUBLY_LINKED_LISTS                --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,13 +26,14 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with System;  use type System.Address;
 --with Ada.Text_IO;
 
-package body Verified_Doubly_Linked_Lists is
+package body Formal_Doubly_Linked_Lists is
 
    -----------------------
    -- Local Subprograms --
@@ -50,24 +51,30 @@ package body Verified_Doubly_Linked_Lists is
    function Find_Between
      (Container : Plain_List;
       Item      : Element_Type;
-      From  : Count_Type;
-      To : Count_Type;
-      Bg : Count_Type) return Cursor;
+      From      : Count_Type;
+      To        : Count_Type;
+      Bg        : Count_Type) return Cursor;
 
-   function Element_Unchecked (Container : List; Position : Count_Type) return Element_Type;
+   function Element_Unchecked
+     (Container : List;
+      Position  : Count_Type) return Element_Type;
 
    procedure Free
      (Container : in out Plain_List;
       X         : Count_Type);
 
-   function Has_Element_Base (Container : Plain_List; Position : Cursor) return Boolean;
+   function Has_Element_Base
+     (Container : Plain_List;
+      Position  : Cursor) return Boolean;
 
    procedure Insert_Internal
      (Container : in out List;
       Before    : Count_Type;
       New_Node  : Count_Type);
 
-   function Next_Unchecked (Container : List; Position : Count_Type) return Count_Type;
+   function Next_Unchecked
+     (Container : List;
+      Position  : Count_Type) return Count_Type;
 
    function Vet (L : List; Position : Cursor) return Boolean;
 
@@ -90,12 +97,12 @@ package body Verified_Doubly_Linked_Lists is
       LI := Left.First;
       RI := Right.First;
       while LI /= 0 loop
-         if Element_Unchecked(Left, LI) /= Element_Unchecked(Right, LI) then
+         if Element_Unchecked (Left, LI) /= Element_Unchecked (Right, LI) then
             return False;
          end if;
 
-         LI := Next_Unchecked(Left, LI);
-         RI := Next_Unchecked(Right,RI);
+         LI := Next_Unchecked (Left, LI);
+         RI := Next_Unchecked (Right, RI);
       end loop;
 
       return True;
@@ -276,26 +283,26 @@ package body Verified_Doubly_Linked_Lists is
    ----------
 
    function Copy
-     (Source : Plain_List;
+     (Source   : Plain_List;
       Capacity : Count_Type := 0) return PList_Access
    is
       C : constant Count_Type := Count_Type'Max (Source.Capacity, Capacity);
       P : PList_Access;
       N : Count_Type := 1;
    begin
-      P:= new Plain_List(C);
+      P := new Plain_List (C);
       while N <= Source.Capacity loop
-         P.Nodes(N).Prev := Source.Nodes(N).Prev;
-         P.Nodes(N).Next := Source.Nodes(N).Next;
-         P.Nodes(N).Element := Source.Nodes(N).Element;
-         N := N+1;
+         P.Nodes (N).Prev := Source.Nodes (N).Prev;
+         P.Nodes (N).Next := Source.Nodes (N).Next;
+         P.Nodes (N).Element := Source.Nodes (N).Element;
+         N := N + 1;
       end loop;
       P.Free := Source.Free;
       if P.Free >= 0 then
-         N := Source.Capacity+1;
+         N := Source.Capacity + 1;
          while N <= C loop
             Free (P.all, N);
-            N := N+1;
+            N := N + 1;
          end loop;
       end if;
       return P;
@@ -310,49 +317,49 @@ package body Verified_Doubly_Linked_Lists is
       case Source.K is
          when Plain =>
             return (Capacity => Cap,
-                    Length => Source.Length,
-                    Plain => Copy(Source.Plain.all, Cap),
-                    First => Source.First,
-                    Last => Source.Last,
-                    others => <>);
+                    Length   => Source.Length,
+                    Plain    => Copy (Source.Plain.all, Cap),
+                    First    => Source.First,
+                    Last     => Source.Last,
+                    others   => <>);
          when Part =>
             declare
-               Target : List(Capacity => Cap);
-               C : Cursor;
-               P : Cursor;
+               Target : List (Capacity => Cap);
+               C      : Cursor;
+               P      : Cursor;
                --CT : Count_Type;
             begin
                Target := (Capacity => Cap,
-                          Length => Source.Part.LLength,
-                          Plain => Copy(Source.Plain.all, Cap),
-                          First => Source.Part.LFirst,
-                          Last => Source.Part.LLast,
-                          others => <>);
+                          Length   => Source.Part.LLength,
+                          Plain    => Copy (Source.Plain.all, Cap),
+                          First    => Source.Part.LFirst,
+                          Last     => Source.Part.LLast,
+                          others   => <>);
                C := (Node => Target.First);
                while C.Node /= Source.First loop
-                  P := Next(Target, C);
-                  Delete(Container => Target, Position => C);
+                  P := Next (Target, C);
+                  Delete (Container => Target, Position => C);
                   C := P;
                end loop;
                if Source.Last /= 0 then
-                  C := (Node => Source.Plain.all.Nodes(Source.Last).Next);
+                  C := (Node => Source.Plain.all.Nodes (Source.Last).Next);
                   while C.Node /= 0 loop
-                     P := Next(Target, C);
-                     Delete(Container => Target, Position => C);
+                     P := Next (Target, C);
+                     Delete (Container => Target, Position => C);
                      C := P;
                   end loop;
                end if;
-               --CT := 1;
-                  --Ada.Text_IO.Put("Free = ");
-                  --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Free));
-               --while CT <= Cap loop
-                  --Ada.Text_IO.Put_Line("------------");
-                  --Ada.Text_IO.Put("Prev = ");
-                  --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Nodes(CT).Prev));
-                  --Ada.Text_IO.Put("Next = ");
-                  --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Nodes(CT).Next));
-                  --CT:=CT+1;
-               --end loop;
+      --CT := 1;
+      --Ada.Text_IO.Put("Free = ");
+      --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Free));
+      --while CT <= Cap loop
+      --Ada.Text_IO.Put_Line("------------");
+      --Ada.Text_IO.Put("Prev = ");
+      --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Nodes(CT).Prev));
+      --Ada.Text_IO.Put("Next = ");
+      --Ada.Text_IO.Put_Line(Count_Type'Image(Target.Plain.Nodes(CT).Next));
+      --CT:=CT+1;
+      --end loop;
                return Target;
             end;
       end case;
@@ -377,7 +384,8 @@ package body Verified_Doubly_Linked_Lists is
          X : Count_Type;
 
       begin
-         if not Has_Element(Container => Container, Position  => Position) then
+         if not Has_Element (Container => Container, Position  => Position)
+         then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
@@ -528,7 +536,9 @@ package body Verified_Doubly_Linked_Lists is
    -- Element --
    -------------
 
-   function Element_Unchecked (Container : List; Position : Count_Type) return Element_Type is
+   function Element_Unchecked
+     (Container : List;
+      Position  : Count_Type) return Element_Type is
    begin
       case Container.K is
          when Plain =>
@@ -538,14 +548,17 @@ package body Verified_Doubly_Linked_Lists is
       end case;
    end Element_Unchecked;
 
-   function Element (Container : List; Position : Cursor) return Element_Type is
+   function Element
+     (Container : List;
+      Position  : Cursor) return Element_Type is
    begin
-      if not Has_Element(Container => Container, Position  => Position) then
+      if not Has_Element (Container => Container, Position  => Position) then
          raise Constraint_Error with
            "Position cursor has no element";
       end if;
 
-      return Element_Unchecked (Container => Container, Position => Position.Node);
+      return Element_Unchecked (Container => Container,
+                                Position  => Position.Node);
    end Element;
 
    ----------
@@ -555,21 +568,21 @@ package body Verified_Doubly_Linked_Lists is
    function Find_Between
      (Container : Plain_List;
       Item      : Element_Type;
-      From  : Count_Type;
-      To : Count_Type;
-      Bg : Count_Type) return Cursor
+      From      : Count_Type;
+      To        : Count_Type;
+      Bg        : Count_Type) return Cursor
    is
       Nodes : Node_Array renames Container.Nodes;
-      Node : Count_Type := Bg;
+      Node  : Count_Type := Bg;
    begin
       while Node /= From loop
          if Node = 0 or else Node = To then
-         raise Constraint_Error with
+            raise Constraint_Error with
               "Position cursor has no element";
          end if;
          Node := Nodes (Node).Next;
       end loop;
-      while Node /= Nodes(To).Next loop
+      while Node /= Nodes (To).Next loop
          if Nodes (Node).Element = Item then
             return (Node => Node);
          end if;
@@ -593,15 +606,15 @@ package body Verified_Doubly_Linked_Lists is
          From := Container.First;
       end if;
       if Position.Node /= 0 and then
-        not Has_Element_Base(Container.Plain.all, Position) then
+        not Has_Element_Base (Container.Plain.all, Position) then
          raise Constraint_Error with
            "Position cursor has no element";
       end if;
-      return Find_Between(Container => Container.Plain.all,
-                          Item => Item,
-                          From => From,
-                          To => Container.Last,
-                          Bg => Container.First);
+      return Find_Between (Container => Container.Plain.all,
+                           Item      => Item,
+                           From      => From,
+                           To        => Container.Last,
+                           Bg        => Container.First);
    end Find;
 
    -----------
@@ -627,7 +640,7 @@ package body Verified_Doubly_Linked_Lists is
       if F = 0 then
          raise Constraint_Error with "list is empty";
       else
-         return Element_Unchecked(Container, F);
+         return Element_Unchecked (Container, F);
       end if;
    end First_Element;
 
@@ -686,7 +699,7 @@ package body Verified_Doubly_Linked_Lists is
 
       function Is_Sorted (Container : List) return Boolean is
          Nodes : Node_Array renames Container.Plain.all.Nodes;
-         Node : Count_Type := Container.First;
+         Node  : Count_Type := Container.First;
       begin
          for I in 2 .. Container.Length loop
             if Nodes (Nodes (Node).Next).Element < Nodes (Node).Element then
@@ -873,9 +886,11 @@ package body Verified_Doubly_Linked_Lists is
    -- Has_Element --
    -----------------
 
-   function Has_Element_Base (Container : Plain_List; Position : Cursor) return Boolean is
+   function Has_Element_Base (Container : Plain_List; Position : Cursor)
+                              return Boolean
+   is
    begin
-      return Container.Nodes(Position.Node).Prev /= -1;
+      return Container.Nodes (Position.Node).Prev /= -1;
    end Has_Element_Base;
 
    function Has_Element (Container : List; Position : Cursor) return Boolean is
@@ -886,21 +901,21 @@ package body Verified_Doubly_Linked_Lists is
 
       case Container.K is
          when Plain =>
-        	return Container.Plain.Nodes(Position.Node).Prev /= -1;
+            return Container.Plain.Nodes (Position.Node).Prev /= -1;
          when Part =>
             declare
                Current : Count_Type := Container.First;
             begin
-               if Container.Plain.Nodes(Position.Node).Prev = -1 then
-                  return false;
+               if Container.Plain.Nodes (Position.Node).Prev = -1 then
+                  return False;
                end if;
                while Current /= 0 loop
                   if Current = Position.Node then
-                     return true;
+                     return True;
                   end if;
-                  Current := Next_Unchecked(Container, Current);
+                  Current := Next_Unchecked (Container, Current);
                end loop;
-               return false;
+               return False;
             end;
       end case;
    end Has_Element;
@@ -1076,7 +1091,7 @@ package body Verified_Doubly_Linked_Lists is
 
    function Is_Empty (Container : List) return Boolean is
    begin
-      return Length(Container) = 0;
+      return Length (Container) = 0;
    end Is_Empty;
 
    -------------
@@ -1085,9 +1100,10 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Iterate_Between
      (Container : List;
-      From : Count_Type;
-      To : Count_Type;
-      Process   : not null access procedure (Container : List; Position : Cursor))
+      From      : Count_Type;
+      To        : Count_Type;
+      Process   :
+        not null access procedure (Container : List; Position : Cursor))
    is
       C : Plain_List renames Container.Plain.all;
       N : Node_Array renames C.Nodes;
@@ -1099,7 +1115,7 @@ package body Verified_Doubly_Linked_Lists is
       B := B + 1;
 
       begin
-         while Node /= N(To).Next loop
+         while Node /= N (To).Next loop
             pragma Assert (N (Node).Prev >= 0);
             Process (Container, Position => (Node => Node));
             Node := N (Node).Next;
@@ -1115,13 +1131,14 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Iterate
      (Container : List;
-      Process   : not null access procedure (Container : List; Position : Cursor))
+      Process   :
+        not null access procedure (Container : List; Position : Cursor))
    is
    begin
       if Container.Length = 0 then
          return;
       end if;
-      Iterate_Between(Container, Container.First, Container.Last, Process);
+      Iterate_Between (Container, Container.First, Container.Last, Process);
    end Iterate;
 
    ----------
@@ -1146,7 +1163,7 @@ package body Verified_Doubly_Linked_Lists is
       if L = 0 then
          raise Constraint_Error with "list is empty";
       else
-         return Element_Unchecked(Container, L);
+         return Element_Unchecked (Container, L);
       end if;
    end Last_Element;
 
@@ -1155,10 +1172,10 @@ package body Verified_Doubly_Linked_Lists is
    ----------
 
    function Left (Container : List; Position : Cursor) return List is
-      L : Count_Type := 0;
-      C : Count_Type := Container.First;
+      L   : Count_Type := 0;
+      C   : Count_Type := Container.First;
       LLe : Count_Type;
-      LF : Count_Type;
+      LF  : Count_Type;
       LLa : Count_Type;
    begin
       case Container.K is
@@ -1173,37 +1190,37 @@ package body Verified_Doubly_Linked_Lists is
       end case;
       if Position.Node = 0 then
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Length => Container.Length,
-                 First => Container.First,
-                 Last => Container.Last,
-                 Plain => Container.Plain,
-                 Part => (LLength => LLe, LFirst => LF, LLast => LLa));
+                 K        => Part,
+                 Length   => Container.Length,
+                 First    => Container.First,
+                 Last     => Container.Last,
+                 Plain    => Container.Plain,
+                 Part     => (LLength => LLe, LFirst => LF, LLast => LLa));
       else
          while C /= Position.Node loop
             if C = Container.Last or C = 0 then
                raise Constraint_Error with
                  "Position cursor has no element";
             end if;
-            C := Next_Unchecked(Container, C);
+            C := Next_Unchecked (Container, C);
             L := L + 1;
          end loop;
          if L = 0 then
             return (Capacity => Container.Capacity,
-                    K => Part,
-                    Length => 0,
-                    First => 0,
-                    Last => 0,
-                    Plain => Container.Plain,
-                    Part => (LLength => LLe, LFirst => LF, LLast => LLa));
+                    K        => Part,
+                    Length   => 0,
+                    First    => 0,
+                    Last     => 0,
+                    Plain    => Container.Plain,
+                    Part     => (LLength => LLe, LFirst => LF, LLast => LLa));
          else
             return (Capacity => Container.Capacity,
-                    K => Part,
-                    Length => L,
-                    First => Container.First,
-                    Last => Container.Plain.Nodes(C).Prev,
-                    Plain => Container.Plain,
-                    Part => (LLength => LLe, LFirst => LF, LLast => LLa));
+                    K        => Part,
+                    Length   => L,
+                    First    => Container.First,
+                    Last     => Container.Plain.Nodes (C).Prev,
+                    Plain    => Container.Plain,
+                    Part     => (LLength => LLe, LFirst => LF, LLast => LLa));
          end if;
       end if;
    end Left;
@@ -1280,22 +1297,24 @@ package body Verified_Doubly_Linked_Lists is
       if Position.Node = 0 then
          return No_Element;
       end if;
-      if not Has_Element(Container, Position) then
-         raise Program_error with "Position cursor has no element";
+      if not Has_Element (Container, Position) then
+         raise Program_Error with "Position cursor has no element";
       end if;
       return (Node => Next_Unchecked (Container, Position.Node));
    end Next;
 
-   function Next_Unchecked (Container : List; Position : Count_Type) return Count_Type is
+   function Next_Unchecked (Container : List; Position : Count_Type)
+                            return Count_Type
+   is
    begin
       case Container.K is
          when Plain =>
-            return Container.Plain.Nodes(Position).Next;
+            return Container.Plain.Nodes (Position).Next;
          when Part =>
             if Position = Container.Last then
                return 0;
             else
-               return Container.Plain.Nodes(Position).Next;
+               return Container.Plain.Nodes (Position).Next;
             end if;
       end case;
    end Next_Unchecked;
@@ -1328,18 +1347,18 @@ package body Verified_Doubly_Linked_Lists is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
-         raise Program_error with "Position cursor has no element";
+      if not Has_Element (Container, Position) then
+         raise Program_Error with "Position cursor has no element";
       end if;
 
       case Container.K is
          when Plain =>
-            return (Node => Container.Plain.Nodes(Position.Node).Prev);
+            return (Node => Container.Plain.Nodes (Position.Node).Prev);
          when Part =>
             if Container.First = Position.Node then
                return No_Element;
             else
-               return (Node => Container.Plain.Nodes(Position.Node).Prev);
+               return (Node => Container.Plain.Nodes (Position.Node).Prev);
             end if;
       end case;
    end Previous;
@@ -1350,7 +1369,7 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Query_Element_Plain
      (Container : Plain_List; Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type))
+      Process   : not null access procedure (Element : Element_Type))
    is
       C : Plain_List renames Container'Unrestricted_Access.all;
       B : Natural renames C.Busy;
@@ -1377,14 +1396,14 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Query_Element
      (Container : List; Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type))
+      Process   : not null access procedure (Element : Element_Type))
    is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor has no element";
       end if;
-      Query_Element_Plain(Container.Plain.all, Position, Process);
+      Query_Element_Plain (Container.Plain.all, Position, Process);
    end Query_Element;
 
    ----------
@@ -1441,7 +1460,7 @@ package body Verified_Doubly_Linked_Lists is
          raise Program_Error with "cannot modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor has no element";
       end if;
 
@@ -1455,7 +1474,8 @@ package body Verified_Doubly_Linked_Lists is
            "attempt to tamper with cursors (list is locked)";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in Replace_Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in Replace_Element");
 
       declare
          N : Node_Array renames Container.Plain.Nodes;
@@ -1566,13 +1586,13 @@ package body Verified_Doubly_Linked_Lists is
    function Reverse_Find_Between
      (Container : Plain_List;
       Item      : Element_Type;
-      From  : Count_Type;
-      To : Count_Type) return Cursor
+      From      : Count_Type;
+      To        : Count_Type) return Cursor
    is
       Nodes : Node_Array renames Container.Nodes;
-      Node : Count_Type := To;
+      Node  : Count_Type := To;
    begin
-      while Node /= Nodes(From).Prev loop
+      while Node /= Nodes (From).Prev loop
          if Nodes (Node).Element = Item then
             return (Node => Node);
          end if;
@@ -1591,10 +1611,10 @@ package body Verified_Doubly_Linked_Lists is
       if Container.Length = 0 then
          return No_Element;
       end if;
-      return Reverse_Find_Between(Container => Container.Plain.all,
-                                  Item => Item,
-                                  From => Container.First,
-                                  To => Container.Last);
+      return Reverse_Find_Between (Container => Container.Plain.all,
+                                   Item      => Item,
+                                   From      => Container.First,
+                                   To        => Container.Last);
    end Reverse_Find;
 
    -- NOT MODIFIED YET
@@ -1605,9 +1625,10 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Reverse_Iterate_Between
      (Container : List;
-      From : Count_Type;
-      To : Count_Type;
-      Process   : not null access procedure (Container : List; Position : Cursor))
+      From      : Count_Type;
+      To        : Count_Type;
+      Process   :
+        not null access procedure (Container : List; Position : Cursor))
    is
       C : Plain_List renames Container.Plain.all;
       N : Node_Array renames C.Nodes;
@@ -1619,7 +1640,7 @@ package body Verified_Doubly_Linked_Lists is
       B := B + 1;
 
       begin
-         while Node /= N(From).Prev loop
+         while Node /= N (From).Prev loop
             pragma Assert (N (Node).Prev >= 0);
             Process (Container, Position => (Node => Node));
             Node := N (Node).Prev;
@@ -1636,13 +1657,15 @@ package body Verified_Doubly_Linked_Lists is
 
    procedure Reverse_Iterate
      (Container : List;
-      Process   : not null access procedure (Container : List; Position : Cursor))
+      Process   :
+        not null access procedure (Container : List; Position : Cursor))
    is
    begin
       if Container.Length = 0 then
          return;
       end if;
-      Reverse_Iterate_Between(Container, Container.First, Container.Last, Process);
+      Reverse_Iterate_Between
+        (Container, Container.First, Container.Last, Process);
    end Reverse_Iterate;
 
    -----------
@@ -1650,10 +1673,10 @@ package body Verified_Doubly_Linked_Lists is
    -----------
 
    function Right (Container : List; Position : Cursor) return List is
-      L : Count_Type := 0;
-      C : Count_Type := Container.First;
+      L   : Count_Type := 0;
+      C   : Count_Type := Container.First;
       LLe : Count_Type;
-      LF : Count_Type;
+      LF  : Count_Type;
       LLa : Count_Type;
    begin
       case Container.K is
@@ -1668,28 +1691,28 @@ package body Verified_Doubly_Linked_Lists is
       end case;
       if Position.Node = 0 then
          return (Capacity => Container.Capacity,
-                    K => Part,
-                    Length => 0,
-                    First => 0,
-                    Last => 0,
-                    Plain => Container.Plain,
-                    Part => (LLength => LLe, LFirst => LF, LLast => LLa));
+                 K        => Part,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0,
+                 Plain    => Container.Plain,
+                 Part     => (LLength => LLe, LFirst => LF, LLast => LLa));
       else
          while C /= Position.Node loop
             if C = Container.Last or C = 0 then
                raise Constraint_Error with
                  "Position cursor has no element";
             end if;
-            C := Next_Unchecked(Container, C);
+            C := Next_Unchecked (Container, C);
             L := L + 1;
          end loop;
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Length => Container.Length - L,
-                 First => Position.Node,
-                 Last => Container.Last,
-                 Plain => Container.Plain,
-                 Part => (LLength => LLe, LFirst => LF, LLast => LLa));
+                 K        => Part,
+                 Length   => Container.Length - L,
+                 First    => Position.Node,
+                 Last     => Container.Last,
+                 Plain    => Container.Plain,
+                 Part     => (LLength => LLe, LFirst => LF, LLast => LLa));
       end if;
    end Right;
 
@@ -1828,7 +1851,8 @@ package body Verified_Doubly_Linked_Lists is
             --     "Before cursor designates wrong container";
             --end if;
             null;
-            pragma Assert (Vet (Container, Before), "bad Before cursor in Splice");
+            pragma Assert (Vet (Container, Before),
+                           "bad Before cursor in Splice");
          end if;
 
          if Position.Node = 0 then
@@ -1840,7 +1864,8 @@ package body Verified_Doubly_Linked_Lists is
          --     "Position cursor designates wrong container";
          --end if;
 
-         pragma Assert (Vet (Container, Position), "bad Position cursor in Splice");
+         pragma Assert (Vet (Container, Position),
+                        "bad Position cursor in Splice");
 
          if Position.Node = Before.Node
            or else N (Position.Node).Next = Before.Node
@@ -1931,11 +1956,11 @@ package body Verified_Doubly_Linked_Lists is
    begin
       while CL /= 0 or CR /= 0 loop
          if CL /= CR or else
-           Element_Unchecked(Left, CL) /= Element_Unchecked(Right,CL) then
+           Element_Unchecked (Left, CL) /= Element_Unchecked (Right, CL) then
             return False;
          end if;
-         CL := Next_Unchecked(Left, CL);
-         CR := Next_Unchecked(Right,CR);
+         CL := Next_Unchecked (Left, CL);
+         CR := Next_Unchecked (Right, CR);
       end loop;
       return True;
    end Strict_Equal;
@@ -2255,8 +2280,8 @@ package body Verified_Doubly_Linked_Lists is
      (Stream : not null access Root_Stream_Type'Class;
       Item   : Plain_List;
       Length : Count_Type;
-      From : Count_Type;
-      To : Count_Type) is
+      From   : Count_Type;
+      To     : Count_Type) is
 
       N    : Node_Array renames Item.Nodes;
       Node : Count_Type;
@@ -2265,7 +2290,7 @@ package body Verified_Doubly_Linked_Lists is
       Count_Type'Base'Write (Stream, Length);
 
       Node := From;
-      while Node /= N(To).Next loop
+      while Node /= N (To).Next loop
          Element_Type'Write (Stream, N (Node).Element);
          Node := N (Node).Next;
       end loop;
@@ -2276,7 +2301,8 @@ package body Verified_Doubly_Linked_Lists is
       Item   : List)
    is
    begin
-      Write_Between(Stream, Item.Plain.all, Item.Length, Item.First, Item.Last);
+      Write_Between
+        (Stream, Item.Plain.all, Item.Length, Item.First, Item.Last);
    end Write;
 
    procedure Write
@@ -2287,4 +2313,4 @@ package body Verified_Doubly_Linked_Lists is
       raise Program_Error with "attempt to stream list cursor";
    end Write;
 
-end Verified_Doubly_Linked_Lists;
+end Formal_Doubly_Linked_Lists;

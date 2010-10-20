@@ -1,10 +1,10 @@
 with Ada.Text_IO;
-with Verified_Doubly_Linked_Lists;
+with Formal_Doubly_Linked_Lists;
 with Ada.Containers;
 use Ada.Containers;
 
 procedure test_vdll is
-   package VDLL is new Verified_Doubly_Linked_Lists
+   package VDLL is new Formal_Doubly_Linked_Lists
      (Element_Type => Integer);
    use VDLL;
    L1 :  List(3);

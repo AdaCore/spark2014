@@ -1,5 +1,5 @@
 with Ada.Text_IO;
-with Verified_Hashed_Maps;
+with Formal_Hashed_Maps;
 with Ada.Containers;
 use Ada.Containers;
 
@@ -16,7 +16,7 @@ procedure test_vhama is
       return Element1 = Element2;
    end;
 
-   package VHAMA is new Verified_Hashed_Maps
+   package VHAMA is new Formal_Hashed_Maps
      (Element_Type => Integer,
       Key_Type => Integer,
       Hash => Hash,

@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---   A D A . C O N T A I N E R S . B O U N D E D _ H A S H E D _ M A P S    --
+--    A D A . C O N T A I N E R S . F O R M A L _ H A S H E D _ M A P S     --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -25,8 +25,9 @@
 -- covered  by the  GNU  General  Public  License.  This exception does not --
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
---                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+--
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with Verified_Hash_Tables.Generic_Operations;
@@ -38,7 +39,7 @@ pragma Elaborate_All (Verified_Hash_Tables.Generic_Keys);
 with System;  use type System.Address;
 with Ada.Text_IO;
 
-package body Verified_Hashed_Maps is
+package body Formal_Hashed_Maps is
 
    -----------------------
    -- Local Subprograms --
@@ -51,10 +52,10 @@ package body Verified_Hashed_Maps is
    pragma Inline (Equivalent_Key_Node);
 
    function Find_Between
-        (HT  : Hash_Table_Type;
-         Key : Key_Type;
-         From : Count_Type;
-         To : Count_Type) return Node_Access;
+     (HT   : Hash_Table_Type;
+      Key  : Key_Type;
+      From : Count_Type;
+      To   : Count_Type) return Node_Access;
 
    function Hash_Node
      (HT   : Hash_Table_Type;
@@ -68,11 +69,11 @@ package body Verified_Hashed_Maps is
 
    function Next_Unchecked
      (Container : Map;
-      Position : Cursor) return Cursor;
+      Position  : Cursor) return Cursor;
 
    procedure Set_Has_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
+     (HT          : in out Hash_Table_Type;
+      Node        : Node_Access;
       Has_Element : Boolean);
    pragma Inline (Set_Has_Element);
 
@@ -89,20 +90,20 @@ package body Verified_Hashed_Maps is
    --------------------------
 
    package HT_Ops is
-      new Verified_Hash_Tables.Generic_Operations
-       (HT_Types  => HT_Types,
-        Hash_Node => Hash_Node,
-        Get_Next  => Get_Next,
-        Set_Next  => Set_Next,
+     new Verified_Hash_Tables.Generic_Operations
+       (HT_Types        => HT_Types,
+        Hash_Node       => Hash_Node,
+        Get_Next        => Get_Next,
+        Set_Next        => Set_Next,
         Set_Has_Element => Set_Has_Element);
 
    package Key_Ops is
-      new Verified_Hash_Tables.Generic_Keys
-       (HT_Types  => HT_Types,
-        Get_Next  => Get_Next,
-        Set_Next  => Set_Next,
-        Key_Type  => Key_Type,
-        Hash      => Hash,
+     new Verified_Hash_Tables.Generic_Keys
+       (HT_Types        => HT_Types,
+        Get_Next        => Get_Next,
+        Set_Next        => Set_Next,
+        Key_Type        => Key_Type,
+        Hash            => Hash,
         Equivalent_Keys => Equivalent_Key_Node);
 
    ---------
@@ -112,35 +113,37 @@ package body Verified_Hashed_Maps is
    function "=" (Left, Right : Map) return Boolean is
    begin
 
-      if Length(Left) /= Length(Right) then
-         Ada.Text_IO.Put_Line("lgth");
+      if Length (Left) /= Length (Right) then
+         Ada.Text_IO.Put_Line ("lgth");
          return False;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return True;
       end if;
 
       declare
-         Node : Count_Type := First(Left).Node;
+         Node  : Count_Type := First (Left).Node;
          ENode : Count_Type;
-         Last : Count_Type;
+         Last  : Count_Type;
       begin
 
          if Left.K = Plain then
             Last := 0;
          else
-            Last := HT_Ops.Next(Left.HT.all, Left.Last);
+            Last := HT_Ops.Next (Left.HT.all, Left.Last);
          end if;
 
          while Node /= Last loop
-            ENode := Find(Container => Right, Key => Left.HT.Nodes(Node).Key).Node;
+            ENode := Find (Container => Right,
+                           Key       => Left.HT.Nodes (Node).Key).Node;
             if ENode = 0 or else
-              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
+              Right.HT.Nodes (ENode).Element /= Left.HT.Nodes (Node).Element
+            then
                return False;
             end if;
 
-            Node := HT_Ops.Next(Left.HT.all, Node);
+            Node := HT_Ops.Next (Left.HT.all, Node);
          end loop;
 
          return True;
@@ -158,7 +161,7 @@ package body Verified_Hashed_Maps is
       pragma Inline (Insert_Element);
 
       procedure Insert_Elements is
-         new HT_Ops.Generic_Iteration (Insert_Element);
+        new HT_Ops.Generic_Iteration (Insert_Element);
 
       --------------------
       -- Insert_Element --
@@ -170,7 +173,7 @@ package body Verified_Hashed_Maps is
          Target.Insert (N.Key, N.Element);
       end Insert_Element;
 
-   --  Start of processing for Assign
+      --  Start of processing for Assign
 
    begin
       if Target.K /= Plain then
@@ -182,7 +185,7 @@ package body Verified_Hashed_Maps is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Constraint_Error with  -- correct exception ???
            "Source length exceeds Target capacity";
       end if;
@@ -196,9 +199,9 @@ package body Verified_Hashed_Maps is
             declare
                N : Count_Type := Source.First;
             begin
-               while N /= HT_Ops.Next(Source.HT.all, Source.Last) loop
-                  Insert_Element(N);
-                  N := HT_Ops.Next(Source.HT.all, N);
+               while N /= HT_Ops.Next (Source.HT.all, Source.Last) loop
+                  Insert_Element (N);
+                  N := HT_Ops.Next (Source.HT.all, N);
                end loop;
             end;
       end case;
@@ -246,11 +249,12 @@ package body Verified_Hashed_Maps is
       Capacity : Count_Type := 0;
       Modulus  : Hash_Type := 0) return Map
    is
-      C : constant Count_Type := Count_Type'Max (Capacity, Source.Capacity);
-      H : Hash_Type := 1;
-      N : Count_Type := 1;
-      Target : Map(C, Source.Modulus);
-      Cu : Cursor;
+      C      : constant Count_Type :=
+                 Count_Type'Max (Capacity, Source.Capacity);
+      H      : Hash_Type := 1;
+      N      : Count_Type := 1;
+      Target : Map (C, Source.Modulus);
+      Cu     : Cursor;
    begin
       if (Source.K = Part and Source.Length = 0) or
         Source.HT.Length = 0 then
@@ -259,31 +263,31 @@ package body Verified_Hashed_Maps is
 
       Target.HT.Length := Source.HT.Length;
       Target.HT.Free := Source.HT.Free;
-      while H<=Source.Modulus loop
-         Target.HT.Buckets(H) := Source.HT.Buckets(H);
-         H := H+1;
+      while H <= Source.Modulus loop
+         Target.HT.Buckets (H) := Source.HT.Buckets (H);
+         H := H + 1;
       end loop;
-      while N<=Source.Capacity loop
-         Target.HT.Nodes(N) := Source.HT.Nodes(N);
-         N := N+1;
+      while N <= Source.Capacity loop
+         Target.HT.Nodes (N) := Source.HT.Nodes (N);
+         N := N + 1;
       end loop;
       while N <= C loop
          Cu := (Node => N);
-         HT_Ops.Free(Target.HT.all, Cu.Node);
-         N := N+1;
+         HT_Ops.Free (Target.HT.all, Cu.Node);
+         N := N + 1;
       end loop;
       if Source.K = Part then
-         N := HT_Ops.First(Target.HT.all);
+         N := HT_Ops.First (Target.HT.all);
          while N /= Source.First loop
             Cu := (Node => N);
-            N := HT_Ops.Next(Target.HT.all,N);
-            Delete(Target, Cu);
+            N := HT_Ops.Next (Target.HT.all, N);
+            Delete (Target, Cu);
          end loop;
-         N := HT_Ops.Next(Target.HT.all, Source.Last);
+         N := HT_Ops.Next (Target.HT.all, Source.Last);
          while N /= 0 loop
             Cu := (Node => N);
-            N := HT_Ops.Next(Target.HT.all,N);
-            Delete(Target, Cu);
+            N := HT_Ops.Next (Target.HT.all, N);
+            Delete (Target, Cu);
          end loop;
       end if;
       return Target;
@@ -329,7 +333,7 @@ package body Verified_Hashed_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Delete has no element";
       end if;
@@ -364,11 +368,12 @@ package body Verified_Hashed_Maps is
 
    function Element (Container : Map; Position : Cursor) return Element_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor equals No_Element";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in function Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in function Element");
 
       return Container.HT.Nodes (Position.Node).Element;
    end Element;
@@ -389,22 +394,24 @@ package body Verified_Hashed_Maps is
    -- Equivalent_Keys --
    ---------------------
 
-   function Equivalent_Keys (Left : Map; CLeft : Cursor;
+   function Equivalent_Keys (Left  : Map; CLeft : Cursor;
                              Right : Map; CRight : Cursor)
-     return Boolean is
+                             return Boolean is
    begin
-      if not Has_Element(Left, CLeft) then
+      if not Has_Element (Left, CLeft) then
          raise Constraint_Error with
            "Left cursor of Equivalent_Keys has no element";
       end if;
 
-      if not Has_Element(Right, CRight) then
+      if not Has_Element (Right, CRight) then
          raise Constraint_Error with
            "Right cursor of Equivalent_Keys has no element";
       end if;
 
-      pragma Assert (Vet (Left, CLeft), "Left cursor of Equivalent_Keys is bad");
-      pragma Assert (Vet (Right, CRight), "Right cursor of Equivalent_Keys is bad");
+      pragma Assert (Vet (Left, CLeft),
+                     "Left cursor of Equivalent_Keys is bad");
+      pragma Assert (Vet (Right, CRight),
+                     "Right cursor of Equivalent_Keys is bad");
 
       declare
          LT : Hash_Table_Type renames Left.HT.all;
@@ -418,14 +425,18 @@ package body Verified_Hashed_Maps is
       end;
    end Equivalent_Keys;
 
-   function Equivalent_Keys (Left : Map; CLeft : Cursor; Right : Key_Type) return Boolean is
+   function Equivalent_Keys
+     (Left  : Map;
+      CLeft : Cursor;
+      Right : Key_Type) return Boolean is
    begin
-      if not Has_Element(Left, CLeft) then
+      if not Has_Element (Left, CLeft) then
          raise Constraint_Error with
            "Left cursor of Equivalent_Keys has no element";
       end if;
 
-      pragma Assert (Vet (Left, CLeft), "Left cursor in Equivalent_Keys is bad");
+      pragma Assert (Vet (Left, CLeft),
+                     "Left cursor in Equivalent_Keys is bad");
 
       declare
          LT : Hash_Table_Type renames Left.HT.all;
@@ -436,14 +447,18 @@ package body Verified_Hashed_Maps is
       end;
    end Equivalent_Keys;
 
-   function Equivalent_Keys (Left : Key_Type; Right : Map; CRight : Cursor) return Boolean is
+   function Equivalent_Keys
+     (Left   : Key_Type;
+      Right  : Map;
+      CRight : Cursor) return Boolean is
    begin
-      if Has_Element(Right, CRight) then
+      if Has_Element (Right, CRight) then
          raise Constraint_Error with
            "Right cursor of Equivalent_Keys has no element";
       end if;
 
-      pragma Assert (Vet (Right, CRight), "Right cursor of Equivalent_Keys is bad");
+      pragma Assert (Vet (Right, CRight),
+                     "Right cursor of Equivalent_Keys is bad");
 
       declare
          RT : Hash_Table_Type renames Right.HT.all;
@@ -474,53 +489,54 @@ package body Verified_Hashed_Maps is
    ----------
    -- Find --
    ----------
-      function Find_Between
-        (HT  : Hash_Table_Type;
-         Key : Key_Type;
-         From : Count_Type;
-         To : Count_Type) return Node_Access is
+   function Find_Between
+     (HT   : Hash_Table_Type;
+      Key  : Key_Type;
+      From : Count_Type;
+      To   : Count_Type) return Node_Access is
 
-         Indx : Hash_Type;
-         Indx_From : Hash_Type := Key_Ops.Index (HT, HT.Nodes(From).Key);
-         Indx_To : Hash_Type := Key_Ops.Index (HT, HT.Nodes(To).Key);
-         Node : Node_Access;
-         To_Node : Node_Access;
+      Indx      : Hash_Type;
+      Indx_From : Hash_Type := Key_Ops.Index (HT, HT.Nodes (From).Key);
+      Indx_To   : Hash_Type := Key_Ops.Index (HT, HT.Nodes (To).Key);
+      Node      : Node_Access;
+      To_Node   : Node_Access;
 
-      begin
+   begin
 
-         Indx := Key_Ops.Index (HT, Key);
+      Indx := Key_Ops.Index (HT, Key);
 
-         if Indx < Indx_From or Indx > Indx_To then
-            return 0;
-         end if;
-
-         if Indx = Indx_From then
-            Node := From;
-         else
-            Node := HT.Buckets (Indx);
-         end if;
-
-         if Indx = Indx_To then
-            To_Node := HT.Nodes(To).Next;
-         else
-            To_Node := 0;
-         end if;
-
-         while Node /= To_Node loop
-            if Equivalent_Key_Node (Key, HT, Node) then
-               return Node;
-            end if;
-            Node := HT.Nodes(Node).Next;
-         end loop;
+      if Indx < Indx_From or Indx > Indx_To then
          return 0;
-      end Find_Between;
+      end if;
+
+      if Indx = Indx_From then
+         Node := From;
+      else
+         Node := HT.Buckets (Indx);
+      end if;
+
+      if Indx = Indx_To then
+         To_Node := HT.Nodes (To).Next;
+      else
+         To_Node := 0;
+      end if;
+
+      while Node /= To_Node loop
+         if Equivalent_Key_Node (Key, HT, Node) then
+            return Node;
+         end if;
+         Node := HT.Nodes (Node).Next;
+      end loop;
+      return 0;
+   end Find_Between;
 
    function Find (Container : Map; Key : Key_Type) return Cursor is
    begin
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access := Key_Ops.Find (Container.HT.all, Key);
+               Node : constant Node_Access :=
+                        Key_Ops.Find (Container.HT.all, Key);
 
             begin
                if Node = 0 then
@@ -530,12 +546,12 @@ package body Verified_Hashed_Maps is
                return (Node => Node);
             end;
          when Part =>
-               if Container.Length = 0 then
-                  return No_Element;
-               end if;
+            if Container.Length = 0 then
+               return No_Element;
+            end if;
 
-               return (Node => Find_Between(Container.HT.all, Key,
-                       Container.First, Container.Last));
+            return (Node => Find_Between (Container.HT.all, Key,
+                    Container.First, Container.Last));
       end case;
    end Find;
 
@@ -589,26 +605,26 @@ package body Verified_Hashed_Maps is
    function Has_Element (Container : Map; Position : Cursor) return Boolean is
    begin
       if Position.Node = 0 or else
-        not Container.HT.Nodes(Position.Node).Has_Element then
+        not Container.HT.Nodes (Position.Node).Has_Element then
          return False;
       end if;
 
       if Container.K = Plain then
-         return true;
+         return True;
       end if;
 
       declare
          Lst_Index : Hash_Type :=
-           Key_Ops.Index(Container.HT.all,
-                              Container.HT.Nodes(Container.Last).Key);
+                       Key_Ops.Index (Container.HT.all,
+                                      Container.HT.Nodes (Container.Last).Key);
          Fst_Index : Hash_Type :=
-           Key_Ops.Index(Container.HT.all,
-                              Container.HT.Nodes(Container.First).Key);
-         Index : Hash_Type :=
-           Key_Ops.Index(Container.HT.all,
-                              Container.HT.Nodes(Position.Node).Key);
-         Lst_Node : Count_Type;
-         Node : Count_Type;
+                       Key_Ops.Index (Container.HT.all,
+                                     Container.HT.Nodes (Container.First).Key);
+         Index     : Hash_Type :=
+                       Key_Ops.Index (Container.HT.all,
+                                      Container.HT.Nodes (Position.Node).Key);
+         Lst_Node  : Count_Type;
+         Node      : Count_Type;
       begin
 
          if Index < Fst_Index or Index > Lst_Index then
@@ -622,11 +638,11 @@ package body Verified_Hashed_Maps is
          if Index = Fst_Index then
             Node := Container.First;
          else
-            Node := Container.HT.Buckets(Index);
+            Node := Container.HT.Buckets (Index);
          end if;
 
          if Index = Lst_Index then
-            Lst_Node := Container.HT.Nodes(Container.Last).Next;
+            Lst_Node := Container.HT.Nodes (Container.Last).Next;
          else
             Lst_Node := 0;
          end if;
@@ -635,7 +651,7 @@ package body Verified_Hashed_Maps is
             if Position.Node = Node then
                return True;
             end if;
-            Node := HT_Ops.Next(Container.HT.all, Node);
+            Node := HT_Ops.Next (Container.HT.all, Node);
          end loop;
 
          return False;
@@ -830,7 +846,7 @@ package body Verified_Hashed_Maps is
 
    function Is_Empty (Container : Map) return Boolean is
    begin
-      return Length(Container) = 0;
+      return Length (Container) = 0;
    end Is_Empty;
 
    -------------
@@ -839,7 +855,8 @@ package body Verified_Hashed_Maps is
 
    procedure Iterate
      (Container : Map;
-      Process   : not null access procedure (Container : Map; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Map; Position : Cursor))
    is
       procedure Process_Node (Node : Node_Access);
       pragma Inline (Process_Node);
@@ -857,7 +874,7 @@ package body Verified_Hashed_Maps is
 
       B : Natural renames Container'Unrestricted_Access.HT.Busy;
 
-   --  Start of processing for Iterate
+      --  Start of processing for Iterate
 
    begin
       B := B + 1;
@@ -875,9 +892,9 @@ package body Verified_Hashed_Maps is
                declare
                   Node : Count_Type := Container.First;
                begin
-                  while Node /= Container.HT.Nodes(Container.Last).Next loop
-                     Process_Node(Node);
-                     Node := HT_Ops.Next(Container.HT.all, Node);
+                  while Node /= Container.HT.Nodes (Container.Last).Next loop
+                     Process_Node (Node);
+                     Node := HT_Ops.Next (Container.HT.all, Node);
                   end loop;
                end;
          end case;
@@ -896,7 +913,7 @@ package body Verified_Hashed_Maps is
 
    function Key (Container : Map; Position : Cursor) return Key_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of function Key has no element";
       end if;
@@ -912,9 +929,9 @@ package body Verified_Hashed_Maps is
 
    function Left (Container : Map; Position : Cursor) return Map is
       Lst : Count_Type;
-      Fst : constant Count_Type := First(Container).Node;
-      L : Count_Type := 0;
-      C : Count_Type := Fst;
+      Fst : constant Count_Type := First (Container).Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Fst;
    begin
       while C /= Position.Node loop
          if C = 0 or C = Container.Last then
@@ -922,25 +939,25 @@ package body Verified_Hashed_Maps is
               "Position cursor has no element";
          end if;
          Lst := C;
-         C := HT_Ops.Next(Container.HT.all, C);
+         C := HT_Ops.Next (Container.HT.all, C);
          L := L + 1;
       end loop;
       if L = 0 then
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       else
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => L,
-                 First => Fst,
-                 Last => Lst);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => L,
+                 First    => Fst,
+                 Last     => Lst);
       end if;
    end Left;
 
@@ -982,7 +999,7 @@ package body Verified_Hashed_Maps is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Constraint_Error with  -- ???
            "Source length exceeds Target capacity";
       end if;
@@ -1015,7 +1032,10 @@ package body Verified_Hashed_Maps is
    -- Next --
    ----------
 
-   function Next_Unchecked (Container : Map; Position : Cursor) return Cursor is
+   function Next_Unchecked
+     (Container : Map;
+      Position  : Cursor) return Cursor
+   is
       HT   : Hash_Table_Type renames Container.HT.all;
       Node : constant Node_Access := HT_Ops.Next (HT, Position.Node);
 
@@ -1037,14 +1057,14 @@ package body Verified_Hashed_Maps is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error
            with "Position has no element";
       end if;
 
       pragma Assert (Vet (Container, Position), "bad cursor in function Next");
 
-      return Next_Unchecked(Container, Position);
+      return Next_Unchecked (Container, Position);
    end Next;
 
    procedure Next (Container : Map; Position : in out Cursor) is
@@ -1059,9 +1079,9 @@ package body Verified_Hashed_Maps is
    function Overlap (Left, Right : Map) return Boolean is
       Left_Node  : Node_Access;
       Left_Nodes : Nodes_Type renames Left.HT.Nodes;
-      To_Node : Node_Access;
+      To_Node    : Node_Access;
    begin
-      if Length(Right) = 0 or Length(Left) = 0 then
+      if Length (Right) = 0 or Length (Left) = 0 then
          return False;
       end if;
 
@@ -1074,7 +1094,7 @@ package body Verified_Hashed_Maps is
       if Left.K = Plain then
          To_Node := 0;
       else
-         To_Node := Left.HT.Nodes(Left.Last).Next;
+         To_Node := Left.HT.Nodes (Left.Last).Next;
       end if;
 
       while Left_Node /= To_Node loop
@@ -1100,9 +1120,9 @@ package body Verified_Hashed_Maps is
 
    procedure Query_Element
      (Container : in out Map;
-      Position : Cursor;
-      Process  : not null access
-                   procedure (Key : Key_Type; Element : Element_Type))
+      Position  : Cursor;
+      Process   : not null access
+        procedure (Key : Key_Type; Element : Element_Type))
    is
    begin
       if Container.K /= Plain then
@@ -1110,7 +1130,7 @@ package body Verified_Hashed_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Query_Element has no element";
       end if;
@@ -1160,10 +1180,10 @@ package body Verified_Hashed_Maps is
       pragma Inline (Initialize_Node);
 
       procedure Allocate_Node is
-         new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+        new HT_Ops.Generic_Allocate_Node (Initialize_Node);
 
       procedure Read is
-         new HT_Ops.Generic_Read (Allocate_Node);
+        new HT_Ops.Generic_Read (Allocate_Node);
 
       ---------------------
       -- Initialize_Node --
@@ -1175,7 +1195,7 @@ package body Verified_Hashed_Maps is
          Element_Type'Read (Stream, N.Element);
       end Initialize_Node;
 
-   --  Start of processing for Read
+      --  Start of processing for Read
 
    begin
       Container.HT := null;
@@ -1240,7 +1260,7 @@ package body Verified_Hashed_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Replace_Element has no element";
       end if;
@@ -1250,7 +1270,8 @@ package body Verified_Hashed_Maps is
            "Replace_Element attempted to tamper with cursors (map is locked)";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in Replace_Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in Replace_Element");
 
       Container.HT.Nodes (Position.Node).Element := New_Item;
    end Replace_Element;
@@ -1278,25 +1299,25 @@ package body Verified_Hashed_Maps is
 
    function Right (Container : Map; Position : Cursor) return Map is
       Last : Count_Type;
-      Lst : Count_Type;
-      L : Count_Type := 0;
-      C : Count_Type := Position.Node;
+      Lst  : Count_Type;
+      L    : Count_Type := 0;
+      C    : Count_Type := Position.Node;
    begin
 
       if C = 0 then
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       end if;
 
       if Container.K = Plain then
          Lst := 0;
       else
-         Lst := HT_Ops.Next(Container.HT.all, Container.Last);
+         Lst := HT_Ops.Next (Container.HT.all, Container.Last);
       end if;
 
       if C = Lst then
@@ -1310,17 +1331,17 @@ package body Verified_Hashed_Maps is
               "Position cursor has no element";
          end if;
          Last := C;
-         C := HT_Ops.Next(Container.HT.all, C);
+         C := HT_Ops.Next (Container.HT.all, C);
          L := L + 1;
       end loop;
 
       return (Capacity => Container.Capacity,
-              Modulus => Container.Modulus,
-              K => Part,
-              HT => Container.HT,
-              Length => L,
-              First => Position.Node,
-              Last => Last);
+              Modulus  => Container.Modulus,
+              K        => Part,
+              HT       => Container.HT,
+              Length   => L,
+              First    => Position.Node,
+              Last     => Last);
    end Right;
 
 
@@ -1329,8 +1350,8 @@ package body Verified_Hashed_Maps is
    ---------------------
 
    procedure Set_Has_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
+     (HT          : in out Hash_Table_Type;
+      Node        : Node_Access;
       Has_Element : Boolean)
    is
    begin
@@ -1355,21 +1376,23 @@ package body Verified_Hashed_Maps is
    ------------------
 
    function Strict_Equal (Left, Right : Map) return Boolean is
-      CuL : Cursor := First(Left);
-      CuR : Cursor := First(Right);
+      CuL : Cursor := First (Left);
+      CuR : Cursor := First (Right);
    begin
-      if Length(Left) /= Length(Right) then
-         return false;
+      if Length (Left) /= Length (Right) then
+         return False;
       end if;
 
       while CuL.Node /= 0 or CuR.Node /= 0 loop
          if CuL.Node /= CuR.Node or else
-           (Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element or
-            Left.HT.Nodes(CuL.Node).Key /= Right.HT.Nodes(CuR.Node).Key) then
+           (Left.HT.Nodes (CuL.Node).Element /=
+              Right.HT.Nodes (CuR.Node).Element or
+              Left.HT.Nodes (CuL.Node).Key /=
+              Right.HT.Nodes (CuR.Node).Key) then
             return False;
          end if;
-         CuL := Next_Unchecked(Left, CuL);
-         CuR := Next_Unchecked(Right, CuR);
+         CuL := Next_Unchecked (Left, CuL);
+         CuR := Next_Unchecked (Right, CuR);
       end loop;
 
       return True;
@@ -1391,12 +1414,13 @@ package body Verified_Hashed_Maps is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Update_Element has no element";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in Update_Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in Update_Element");
 
       declare
          HT : Hash_Table_Type renames Container.HT.all;
@@ -1433,7 +1457,7 @@ package body Verified_Hashed_Maps is
    function Vet (Container : Map; Position : Cursor) return Boolean is
    begin
       if Position.Node = 0 then
-         return true;
+         return True;
       end if;
 
       return HT_Ops.Vet (Container.HT.all, Position.Node);
@@ -1469,7 +1493,7 @@ package body Verified_Hashed_Maps is
          Element_Type'Write (Stream, N.Element);
       end Write_Node;
 
-   --  Start of processing for Write
+      --  Start of processing for Write
 
    begin
       Write_Nodes (Stream, Container.HT.all);
@@ -1483,4 +1507,4 @@ package body Verified_Hashed_Maps is
       raise Program_Error with "attempt to stream map cursor";
    end Write;
 
-end Verified_Hashed_Maps;
+end Formal_Hashed_Maps;

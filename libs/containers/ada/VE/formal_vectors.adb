@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---       A D A . C O N T A I N E R S . B O U N D E D _ V E C T O R S        --
+--         A D A . C O N T A I N E R S . F O R M A L _ V E C T O R S        --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,7 +26,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Generic_Array_Sort;
@@ -34,12 +35,14 @@ with System; use type System.Address;
 
 with Ada.Text_IO;
 
-package body Verified_Vectors is
+package body Formal_Vectors is
 
    type Int is range System.Min_Int .. System.Max_Int;
    type UInt is mod System.Max_Binary_Modulus;
 
-   function Get_Element(Container : Vector; Position : Count_Type) return Element_Type;
+   function Get_Element
+     (Container : Vector;
+      Position  : Count_Type) return Element_Type;
 
    ---------
    -- "&" --
@@ -73,74 +76,81 @@ package body Verified_Vectors is
       end if;
 
       if LN = 0 then
-            if RN = 0 then
-               return Empty_Vector;
-         end if;
-
-         declare
-            E : Elements_Array (1 .. Length(Right)) := Right.Plain.Elements (RFst .. RLst);
-            begin
-               return (Length(Right),
-                       new Plain_Vector'(Length(Right), E, Last => Right.Plain.Last, others => <>),
-                       others => <>);
-            end;
-         end if;
-
          if RN = 0 then
-            declare
-               E : Elements_Array (1 .. Length(Left)) := Left.Plain.Elements (LFst .. LLst);
-            begin
-               return (Length(Left),
-                       new Plain_Vector'(Length(Left), E, Last => Left.Plain.Last, others => <>),
-                       others => <>);
-            end;
-
+            return Empty_Vector;
          end if;
 
          declare
-            N           : constant Int'Base := Int (LN) + Int (RN);
-            Last_As_Int : Int'Base;
-
+            E : Elements_Array (1 .. Length (Right)) :=
+                  Right.Plain.Elements (RFst .. RLst);
          begin
-            if Int (No_Index) > Int'Last - N then
-               raise Constraint_Error with "new length is out of range";
-            end if;
+            return (Length (Right),
+              new Plain_Vector'(Length (Right), E,
+                Last => Right.Plain.Last, others => <>),
+              others => <>);
+         end;
+      end if;
 
-            Last_As_Int := Int (No_Index) + N;
+      if RN = 0 then
+         declare
+            E : Elements_Array (1 .. Length (Left)) :=
+                  Left.Plain.Elements (LFst .. LLst);
+         begin
+            return (Length (Left),
+                    new Plain_Vector'(Length (Left), E,
+                          Last => Left.Plain.Last, others => <>),
+                    others => <>);
+         end;
 
-            if Last_As_Int > Int (Index_Type'Last) then
-               raise Constraint_Error with "new length is out of range";
-            end if;
+      end if;
 
-            --  TODO: should check whether length > max capacity (cnt_t'last)  ???
+      declare
+         N           : constant Int'Base := Int (LN) + Int (RN);
+         Last_As_Int : Int'Base;
 
-            declare
+      begin
+         if Int (No_Index) > Int'Last - N then
+            raise Constraint_Error with "new length is out of range";
+         end if;
+
+         Last_As_Int := Int (No_Index) + N;
+
+         if Last_As_Int > Int (Index_Type'Last) then
+            raise Constraint_Error with "new length is out of range";
+         end if;
+
+         --  TODO: should check whether length > max capacity (cnt_t'last)  ???
+
+         declare
             Last : constant Index_Type := Index_Type (Last_As_Int);
 
-               LE : Elements_Array (1 .. Length(Left)) := Left.Plain.Elements (LFst .. LLst);
+            LE : Elements_Array (1 .. Length (Left)) :=
+                   Left.Plain.Elements (LFst .. LLst);
 
-               RE : Elements_Array renames Right.Plain.Elements (RFst .. RLst);
+            RE : Elements_Array renames Right.Plain.Elements (RFst .. RLst);
 
-               Capacity : constant Count_Type := Length(Left) + Length(Right);
+            Capacity : constant Count_Type := Length (Left) + Length (Right);
 
-            begin
-               return (Capacity,
-                       new Plain_Vector'(Capacity, LE & RE, Last => Last, others => <>),
-                       others => <>);
-            end;
+         begin
+            return (Capacity,
+                    new Plain_Vector'(Capacity, LE & RE,
+                          Last => Last, others => <>),
+                    others => <>);
          end;
+      end;
    end "&";
 
    function "&" (Left  : Vector; Right : Element_Type) return Vector is
       LN          : constant Count_Type := Length (Left);
       Last_As_Int : Int'Base;
-      LFst : Count_Type;
-      LLst : Count_Type;
+      LFst        : Count_Type;
+      LLst        : Count_Type;
 
    begin
       if LN = 0 then
          return (1,
-                 new Plain_Vector'(1, (1 .. 1 => Right), Index_Type'First, others => <>),
+                 new Plain_Vector'(1, (1 .. 1 => Right),
+                       Index_Type'First, others => <>),
                  others => <>);
       end if;
 
@@ -167,11 +177,12 @@ package body Verified_Vectors is
 
          LE : Elements_Array (1 .. LN) := Left.Plain.Elements (LFst .. LLst);
 
-         Capacity : constant Count_Type := Length(Left) + 1;
+         Capacity : constant Count_Type := Length (Left) + 1;
 
       begin
          return (Capacity,
-                 new Plain_Vector'(Capacity, LE & Right, Last => Last, others => <>),
+                 new Plain_Vector'(Capacity, LE & Right,
+                       Last => Last, others => <>),
                  others => <>);
       end;
 
@@ -187,7 +198,8 @@ package body Verified_Vectors is
    begin
       if RN = 0 then
          return (1,
-                 new Plain_Vector'(1, (1 .. 1 => Left), Index_Type'First, others => <>),
+                 new Plain_Vector'(1, (1 .. 1 => Left),
+                       Index_Type'First, others => <>),
                  others => <>);
       end if;
 
@@ -214,11 +226,12 @@ package body Verified_Vectors is
 
          RE : Elements_Array renames Right.Plain.Elements (RFst .. RLst);
 
-         Capacity : constant Count_Type := 1 + Length(Right);
+         Capacity : constant Count_Type := 1 + Length (Right);
 
       begin
          return (Capacity,
-                 new Plain_Vector'(Capacity, Left & RE, Last => Last, others => <>),
+                 new Plain_Vector'(Capacity, Left & RE,
+                       Last => Last, others => <>),
                  others => <>);
       end;
    end "&";
@@ -234,7 +247,8 @@ package body Verified_Vectors is
 
       begin
          return (2,
-                 new Plain_Vector'(2, (Left, Right), Last => Last, others => <>),
+                 new Plain_Vector'(2, (Left, Right),
+                       Last => Last, others => <>),
                  others => <>);
       end;
    end "&";
@@ -249,12 +263,12 @@ package body Verified_Vectors is
          return True;
       end if;
 
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
-      for J in Count_Type range 1 .. Length(Left) loop
-         if Get_Element(Left, J) /= Get_Element(Right, J) then
+      for J in Count_Type range 1 .. Length (Left) loop
+         if Get_Element (Left, J) /= Get_Element (Right, J) then
             return False;
          end if;
       end loop;
@@ -322,7 +336,7 @@ package body Verified_Vectors is
    ------------
 
    procedure Assign (Target : in out Vector; Source : Vector) is
-      LS : constant Count_Type := Length(Source);
+      LS : constant Count_Type := Length (Source);
    begin
 
       if Target.K /= Plain then
@@ -346,7 +360,7 @@ package body Verified_Vectors is
          Target.Plain.Last := Source.Plain.Last;
       else
          Target.Plain.Elements (1 .. LS) :=
-           Source.Plain.Elements (Source.First .. (Source.First + LS -1));
+           Source.Plain.Elements (Source.First .. (Source.First + LS - 1));
          Target.Plain.Last := Source.Last;
       end if;
 
@@ -401,8 +415,8 @@ package body Verified_Vectors is
      (Source   : Vector;
       Capacity : Capacity_Subtype := 0) return Vector
    is
-      LS : constant Count_Type := Length(Source);
-      C : Capacity_Subtype;
+      LS : constant Count_Type := Length (Source);
+      C  : Capacity_Subtype;
 
    begin
       if Capacity = 0 then
@@ -415,7 +429,7 @@ package body Verified_Vectors is
          raise Constraint_Error;
       end if;
 
-      return Target : Vector (C) do
+      return Target                   : Vector (C) do
          if Source.K = Plain then
             Target.Plain.Elements (1 .. LS) :=
               Source.Plain.Elements (1 .. LS);
@@ -468,7 +482,8 @@ package body Verified_Vectors is
 
       declare
          I_As_Int        : constant Int := Int (Index);
-         Old_Last_As_Int : constant Int := Index_Type'Pos (Container.Plain.Last);
+         Old_Last_As_Int : constant Int :=
+                             Index_Type'Pos (Container.Plain.Last);
 
          Count1 : constant Int'Base := Count_Type'Pos (Count);
          Count2 : constant Int'Base := Old_Last_As_Int - I_As_Int + 1;
@@ -498,7 +513,7 @@ package body Verified_Vectors is
                K  : constant Count_Type := Count_Type (KK);
 
             begin
-               EA (I .. K) := EA (J .. Length(Container));
+               EA (I .. K) := EA (J .. Length (Container));
                Container.Plain.Last := New_Last;
             end;
          end if;
@@ -611,7 +626,7 @@ package body Verified_Vectors is
       begin
 
          if Container.K = Part and then
-           (I > Length(Container)) then
+           (I > Length (Container)) then
             raise Constraint_Error with "Index is out of range";
          end if;
 
@@ -619,8 +634,11 @@ package body Verified_Vectors is
       end;
    end Element;
 
-   function Element (Container : Vector; Position : Cursor) return Element_Type is
-      Lst : constant Index_Type := Last_Index(Container);
+   function Element
+     (Container : Vector;
+      Position  : Cursor) return Element_Type
+   is
+      Lst : constant Index_Type := Last_Index (Container);
    begin
       if not Position.Valid then
          raise Constraint_Error with "Position cursor has no element";
@@ -649,13 +667,13 @@ package body Verified_Vectors is
       Item      : Element_Type;
       Position  : Cursor := No_Element) return Cursor
    is
-      K : Count_Type;
-      Last : constant Index_Type := Last_Index(Container);
+      K    : Count_Type;
+      Last : constant Index_Type := Last_Index (Container);
 
    begin
 
       if Position.Valid then
-         if Position.Index > Last_Index(Container) then
+         if Position.Index > Last_Index (Container) then
             raise Program_Error with "Position index is out of range";
          end if;
       end if;
@@ -682,8 +700,8 @@ package body Verified_Vectors is
       Item      : Element_Type;
       Index     : Index_Type := Index_Type'First) return Extended_Index
    is
-      K : Count_Type;
-      Last : constant Index_Type := Last_Index(Container);
+      K    : Count_Type;
+      Last : constant Index_Type := Last_Index (Container);
 
    begin
 
@@ -745,7 +763,7 @@ package body Verified_Vectors is
       ---------------
 
       function Is_Sorted (Container : Vector) return Boolean is
-         Last : constant Index_Type := Last_Index(Container);
+         Last : constant Index_Type := Last_Index (Container);
       begin
 
          if Container.Plain.Last <= Last then
@@ -753,11 +771,12 @@ package body Verified_Vectors is
          end if;
 
          declare
-            L : Capacity_Subtype := Length(Container);
+            L : Capacity_Subtype := Length (Container);
          begin
 
             for J in Count_Type range 1 .. L - 1 loop
-               if Get_Element (Container, J + 1) < Get_Element (Container, J) then
+               if Get_Element (Container, J + 1) < Get_Element (Container, J)
+               then
                   return False;
                end if;
             end loop;
@@ -810,17 +829,17 @@ package body Verified_Vectors is
                  "attempt to tamper with elements (vector is busy)";
             end if;
 
-            I := Length(Target);
-            Target.Set_Length (I + Length(Source));
+            I := Length (Target);
+            Target.Set_Length (I + Length (Source));
 
-            J := Length(Target);
+            J := Length (Target);
             while not Source.Is_Empty loop
-               pragma Assert (Length(Source) <= 1
-                 or else not (SA (Length(Source)) <
-                     SA (Length(Source) - 1)));
+               pragma Assert (Length (Source) <= 1
+                 or else not (SA (Length (Source)) <
+                     SA (Length (Source) - 1)));
 
                if I = 0 then
-                  TA (1 .. J) := SA (1 .. Length(Source));
+                  TA (1 .. J) := SA (1 .. Length (Source));
                   Source.Plain.Last := No_Index;
                   return;
                end if;
@@ -828,12 +847,12 @@ package body Verified_Vectors is
                pragma Assert (I <= 1
                               or else not (TA (I) < TA (I - 1)));
 
-               if SA (Length(Source)) < TA (I) then
+               if SA (Length (Source)) < TA (I) then
                   TA (J) := TA (I);
                   I := I - 1;
 
                else
-                  TA (J) := SA (Length(Source));
+                  TA (J) := SA (Length (Source));
                   Source.Plain.Last := Source.Plain.Last - 1;
                end if;
 
@@ -849,7 +868,7 @@ package body Verified_Vectors is
       procedure Sort (Container : in out Vector)
       is
          procedure Sort is
-            new Generic_Array_Sort
+           new Generic_Array_Sort
              (Index_Type   => Count_Type,
               Element_Type => Element_Type,
               Array_Type   => Elements_Array,
@@ -871,7 +890,7 @@ package body Verified_Vectors is
               "attempt to tamper with cursors (vector is locked)";
          end if;
 
-         Sort (Container.Plain.Elements (1 .. Length(Container)));
+         Sort (Container.Plain.Elements (1 .. Length (Container)));
       end Sort;
 
    end Generic_Sorting;
@@ -880,26 +899,30 @@ package body Verified_Vectors is
    -- Get_Element --
    -----------------
 
-   function Get_Element(Container : Vector; Position : Count_Type) return Element_Type is
+   function Get_Element
+     (Container : Vector;
+      Position  : Count_Type) return Element_Type is
    begin
       if Container.K = Plain then
-           return Container.Plain.Elements(Position);
+         return Container.Plain.Elements (Position);
       end if;
 
-      return Container.Plain.Elements(Position + Container.First - 1);
+      return Container.Plain.Elements (Position + Container.First - 1);
    end Get_Element;
 
    -----------------
    -- Has_Element --
    -----------------
 
-   function Has_Element (Container : Vector; Position : Cursor) return Boolean is
+   function Has_Element
+     (Container : Vector;
+      Position  : Cursor) return Boolean is
    begin
       if not Position.Valid then
          return False;
       end if;
 
-      return Position.Index <= Last_Index(Container);
+      return Position.Index <= Last_Index (Container);
    end Has_Element;
 
    ------------
@@ -989,7 +1012,7 @@ package body Verified_Vectors is
                I  : constant Count_Type := Count_Type (II);
 
             begin
-               EA (I .. L) := EA (B .. Length(Container));
+               EA (I .. L) := EA (B .. Length (Container));
                EA (B .. I - 1) := (others => New_Item);
             end;
 
@@ -1075,13 +1098,14 @@ package body Verified_Vectors is
             Dst := Src;
          end;
 
-         if Dst_Last = Length(Container) then
+         if Dst_Last = Length (Container) then
             return;
          end if;
 
          declare
             Src : Elements_Array renames
-                    Container.Plain.Elements (Dst_Last + 1 .. Length(Container));
+                    Container.Plain.Elements
+                      (Dst_Last + 1 .. Length (Container));
 
             Index_As_Int : constant Int'Base :=
                              Dst_Last_As_Int - Src'Length + 1;
@@ -1372,7 +1396,7 @@ package body Verified_Vectors is
                I  : constant Count_Type := Count_Type (II);
 
             begin
-               EA (I .. L) := EA (B .. Length(Container));
+               EA (I .. L) := EA (B .. Length (Container));
             end;
          end if;
       end;
@@ -1432,7 +1456,7 @@ package body Verified_Vectors is
 
    function Is_Empty (Container : Vector) return Boolean is
    begin
-      return Last_Index(Container) < Index_Type'First;
+      return Last_Index (Container) < Index_Type'First;
    end Is_Empty;
 
    -------------
@@ -1441,7 +1465,8 @@ package body Verified_Vectors is
 
    procedure Iterate
      (Container : Vector;
-      Process   : not null access procedure (Container : Vector; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Vector; Position : Cursor))
    is
       V : Vector renames Container'Unrestricted_Access.all;
       B : Natural renames V.Plain.Busy;
@@ -1450,7 +1475,7 @@ package body Verified_Vectors is
       B := B + 1;
 
       begin
-         for Indx in Index_Type'First .. Last_Index(Container) loop
+         for Indx in Index_Type'First .. Last_Index (Container) loop
             Process (Container, Cursor'(True, Indx));
          end loop;
       exception
@@ -1472,7 +1497,7 @@ package body Verified_Vectors is
          return No_Element;
       end if;
 
-      return (True, Last_Index(Container));
+      return (True, Last_Index (Container));
    end Last;
 
    ------------------
@@ -1485,7 +1510,7 @@ package body Verified_Vectors is
          raise Constraint_Error with "Container is empty";
       end if;
 
-      return Get_Element(Container, Length(Container));
+      return Get_Element (Container, Length (Container));
    end Last_Element;
 
    ----------------
@@ -1506,7 +1531,7 @@ package body Verified_Vectors is
    ------------
 
    function Length (Container : Vector) return Capacity_Subtype is
-      L : constant Int := Int (Last_Index(Container));
+      L : constant Int := Int (Last_Index (Container));
       F : constant Int := Int (Index_Type'First);
       N : constant Int'Base := L - F + 1;
 
@@ -1519,7 +1544,7 @@ package body Verified_Vectors is
    ----------
 
    function Left (Container : Vector; Position : Cursor) return Vector is
-	Fst : Count_Type;
+      Fst : Count_Type;
    begin
       if Container.K = Plain then
          Fst := 1;
@@ -1528,15 +1553,17 @@ package body Verified_Vectors is
       end if;
 
       if not Position.Valid then
-         return (Container.Capacity, Container.Plain, Part, Fst, Last_Index(Container));
+         return (Container.Capacity, Container.Plain, Part, Fst,
+                 Last_Index (Container));
       end if;
 
-      if Position.Index > Last_Index(Container) then
+      if Position.Index > Last_Index (Container) then
          raise Constraint_Error with
            "Before index is out of range (too large)";
       end if;
 
-      return (Container.Capacity, Container.Plain, Part, Fst, (Position.Index - 1));
+      return (Container.Capacity, Container.Plain, Part, Fst,
+              (Position.Index - 1));
    end Left;
 
    ----------
@@ -1547,7 +1574,7 @@ package body Verified_Vectors is
      (Target : in out Vector;
       Source : in out Vector)
    is
-      N : constant Count_Type := Length(Source);
+      N : constant Count_Type := Length (Source);
 
    begin
 
@@ -1595,7 +1622,7 @@ package body Verified_Vectors is
          return No_Element;
       end if;
 
-      if Position.Index < Last_Index(Container) then
+      if Position.Index < Last_Index (Container) then
          return (True, Position.Index + 1);
       end if;
 
@@ -1612,7 +1639,7 @@ package body Verified_Vectors is
          return;
       end if;
 
-      if Position.Index < Last_Index(Container) then
+      if Position.Index < Last_Index (Container) then
          Position.Index := Position.Index + 1;
       else
          Position := No_Element;
@@ -1684,7 +1711,7 @@ package body Verified_Vectors is
       L : Natural renames V.Plain.Lock;
 
    begin
-      if Index > Last_Index(Container) then
+      if Index > Last_Index (Container) then
          raise Constraint_Error with "Index is out of range";
       end if;
 
@@ -1696,7 +1723,7 @@ package body Verified_Vectors is
          I  : constant Count_Type := Count_Type (II);
 
       begin
-         Process (Get_Element(V, I));
+         Process (Get_Element (V, I));
       exception
          when others =>
             L := L - 1;
@@ -1710,8 +1737,8 @@ package body Verified_Vectors is
 
    procedure Query_Element
      (Container : Vector;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type))
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type))
    is
    begin
       if not Position.Valid then
@@ -1856,7 +1883,7 @@ package body Verified_Vectors is
            with "Can't modify part of container";
       end if;
 
-      if Length(Container) <= 1 then
+      if Length (Container) <= 1 then
          return;
       end if;
 
@@ -1871,7 +1898,7 @@ package body Verified_Vectors is
 
       begin
          I := 1;
-         J := Length(Container);
+         J := Length (Container);
          while I < J loop
             declare
                EI : constant Element_Type := E (I);
@@ -1902,16 +1929,16 @@ package body Verified_Vectors is
    begin
 
       if not Position.Valid
-        or else Position.Index > Last_Index(Container)
+        or else Position.Index > Last_Index (Container)
       then
-         Last := Last_Index(Container);
+         Last := Last_Index (Container);
       else
          Last := Position.Index;
       end if;
 
       K := Count_Type (Int (Last) - Int (No_Index));
       for Indx in reverse Index_Type'First .. Last loop
-         if Get_Element(Container, K) = Item then
+         if Get_Element (Container, K) = Item then
             return (True, Indx);
          end if;
          K := K - 1;
@@ -1933,8 +1960,8 @@ package body Verified_Vectors is
       K    : Count_Type;
 
    begin
-      if Index > Last_Index(Container) then
-         Last := Last_Index(Container);
+      if Index > Last_Index (Container) then
+         Last := Last_Index (Container);
       else
          Last := Index;
       end if;
@@ -1956,7 +1983,8 @@ package body Verified_Vectors is
 
    procedure Reverse_Iterate
      (Container : Vector;
-      Process   : not null access procedure (Container : Vector; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Vector; Position : Cursor))
    is
       V : Vector renames Container'Unrestricted_Access.all;
       B : Natural renames V.Plain.Busy;
@@ -1965,7 +1993,7 @@ package body Verified_Vectors is
       B := B + 1;
 
       begin
-         for Indx in reverse Index_Type'First .. Last_Index(Container) loop
+         for Indx in reverse Index_Type'First .. Last_Index (Container) loop
             Process (Container, Cursor'(True, Indx));
          end loop;
       exception
@@ -1982,7 +2010,7 @@ package body Verified_Vectors is
    -----------
 
    function Right (Container : Vector; Position : Cursor) return Vector is
-	Fst : Count_Type;
+      Fst : Count_Type;
    begin
       if Container.K = Plain then
          Fst := 1;
@@ -1994,17 +2022,17 @@ package body Verified_Vectors is
          return (Container.Capacity, Container.Plain, Part, Fst, No_Index);
       end if;
 
-      if Position.Index > Last_Index(Container) then
+      if Position.Index > Last_Index (Container) then
          raise Constraint_Error with
            "Position index is out of range (too large)";
       end if;
 
-      Fst := Fst + Count_Type(Int(Position.Index) - Int(No_Index)) - 1;
+      Fst := Fst + Count_Type (Int (Position.Index) - Int (No_Index)) - 1;
 
       --Ada.Text_IO.Put_Line(Count_Type'Image(Fst));
 
       return (Container.Capacity, Container.Plain, Part, Fst,
-              (Last_Index(Container) - Position.Index + 1));
+              (Last_Index (Container) - Position.Index + 1));
    end Right;
 
    ----------------
@@ -2021,7 +2049,7 @@ package body Verified_Vectors is
            with "Can't modify part of container";
       end if;
 
-      if Length = Verified_Vectors.Length (Container) then
+      if Length = Formal_Vectors.Length (Container) then
          return;
       end if;
 
@@ -2112,7 +2140,7 @@ package body Verified_Vectors is
       Index     : Extended_Index) return Cursor
    is
    begin
-      if Index not in Index_Type'First ..Last_Index(Container) then
+      if Index not in Index_Type'First .. Last_Index (Container) then
          return No_Element;
       end if;
 
@@ -2155,7 +2183,8 @@ package body Verified_Vectors is
          Last := Index_Type (Last_As_Int);
 
          return (Length,
-                 new Plain_Vector'(Length, (others => <>), Last => Last, others => <>),
+                 new Plain_Vector'(Length, (others => <>), Last => Last,
+                                   others => <>),
                  others => <>);
       end;
    end To_Vector;
@@ -2182,7 +2211,8 @@ package body Verified_Vectors is
          Last := Index_Type (Last_As_Int);
 
          return (Length,
-                 new Plain_Vector'(Length, (others => New_Item), Last => Last, others => <>),
+                 new Plain_Vector'(Length, (others => New_Item), Last => Last,
+                                   others => <>),
                  others => <>);
       end;
    end To_Vector;
@@ -2253,7 +2283,7 @@ package body Verified_Vectors is
    begin
       Count_Type'Base'Write (Stream, Length (Container));
 
-      for J in 1 .. Length(Container) loop
+      for J in 1 .. Length (Container) loop
          Element_Type'Write (Stream, Container.Plain.Elements (J));
       end loop;
    end Write;
@@ -2266,4 +2296,4 @@ package body Verified_Vectors is
       raise Program_Error with "attempt to stream vector cursor";
    end Write;
 
-end Verified_Vectors;
+end Formal_Vectors;

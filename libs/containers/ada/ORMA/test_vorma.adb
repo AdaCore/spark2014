@@ -1,11 +1,11 @@
 with Ada.Text_IO;
-with Verified_Ordered_Maps;
+with Formal_Ordered_Maps;
 with Ada.Containers;
 use Ada.Containers;
 
 procedure test_vorma is
 
-   package VORMA is new Verified_Ordered_Maps
+   package VORMA is new Formal_Ordered_Maps
      (Key_Type => Integer,
       Element_Type => Integer);
    use VORMA;

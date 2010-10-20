@@ -1,11 +1,11 @@
 with Ada.Text_IO;
-with Verified_Ordered_Sets;
+with Formal_Ordered_Sets;
 with Ada.Containers;
 use Ada.Containers;
 
 procedure test_vorse is
 
-   package VORSE is new Verified_Ordered_Sets
+   package VORSE is new Formal_Ordered_Sets
      (Element_Type => Integer);
    use VORSE;
    L1 :  Set(3);

@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---   A D A . C O N T A I N E R S . B O U N D E D _ H A S H E D _ S E T S    --
+--    A D A . C O N T A I N E R S . F O R M A L _ H A S H E D _ S E T S     --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,7 +26,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit has originally being developed by Matthew J Heaney.            --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
@@ -42,7 +43,7 @@ pragma Elaborate_All (Verified_Hash_Tables.Generic_Keys);
 
 with System; use type System.Address;
 
-package body Verified_Hashed_Sets is
+package body Formal_Hashed_Sets is
 
    -----------------------
    -- Local Subprograms --
@@ -69,8 +70,8 @@ package body Verified_Hashed_Sets is
    pragma Inline (Hash_Node);
 
    procedure Intersection
-     (Left : Hash_Table_Type;
-      Right : Set;
+     (Left        : Hash_Table_Type;
+      Right       : Set;
       Target      : in out Hash_Table_Type);
 
    procedure Insert
@@ -81,7 +82,7 @@ package body Verified_Hashed_Sets is
 
    function Next_Unchecked
      (Container : Set;
-      Position : Cursor) return Cursor;
+      Position  : Cursor) return Cursor;
 
    procedure Replace_Element
      (HT   : in out Hash_Table_Type;
@@ -89,8 +90,8 @@ package body Verified_Hashed_Sets is
       Key  : Element_Type);
 
    procedure Set_Has_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
+     (HT          : in out Hash_Table_Type;
+      Node        : Node_Access;
       Has_Element : Boolean);
    pragma Inline (Set_Has_Element);
 
@@ -108,19 +109,19 @@ package body Verified_Hashed_Sets is
 
    package HT_Ops is
      new Verified_Hash_Tables.Generic_Operations
-       (HT_Types  => HT_Types,
-        Hash_Node => Hash_Node,
-        Get_Next  => Get_Next,
-        Set_Next  => Set_Next,
+       (HT_Types        => HT_Types,
+        Hash_Node       => Hash_Node,
+        Get_Next        => Get_Next,
+        Set_Next        => Set_Next,
         Set_Has_Element => Set_Has_Element);
 
    package Element_Keys is
      new Verified_Hash_Tables.Generic_Keys
-       (HT_Types  => HT_Types,
-        Get_Next  => Get_Next,
-        Set_Next  => Set_Next,
-        Key_Type  => Element_Type,
-        Hash      => Hash,
+       (HT_Types        => HT_Types,
+        Get_Next        => Get_Next,
+        Set_Next        => Set_Next,
+        Key_Type        => Element_Type,
+        Hash            => Hash,
         Equivalent_Keys => Equivalent_Keys);
 
    ---------
@@ -130,35 +131,36 @@ package body Verified_Hashed_Sets is
    function "=" (Left, Right : Set) return Boolean is
    begin
 
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return True;
       end if;
 
       declare
-         Node : Count_Type := First(Left).Node;
+         Node  : Count_Type := First (Left).Node;
          ENode : Count_Type;
-         Last : Count_Type;
+         Last  : Count_Type;
       begin
 
          if Left.K = Plain then
             Last := 0;
          else
-            Last := HT_Ops.Next(Left.HT.all, Left.Last);
+            Last := HT_Ops.Next (Left.HT.all, Left.Last);
          end if;
 
          while Node /= Last loop
-            ENode := Find(Container => Right,
-                          Item => Left.HT.Nodes(Node).Element).Node;
+            ENode := Find (Container => Right,
+                           Item      => Left.HT.Nodes (Node).Element).Node;
             if ENode = 0  or else
-              Right.HT.Nodes(ENode).Element /= Left.HT.Nodes(Node).Element then
+              Right.HT.Nodes (ENode).Element /= Left.HT.Nodes (Node).Element
+            then
                return False;
             end if;
 
-            Node := HT_Ops.Next(Left.HT.all, Node);
+            Node := HT_Ops.Next (Left.HT.all, Node);
          end loop;
 
          return True;
@@ -185,7 +187,8 @@ package body Verified_Hashed_Sets is
          X : Node_Access;
          B : Boolean;
       begin
-         Insert (Target.HT.all, Source.HT.Nodes (Src_Node).Element, X, B);  -- ???
+         Insert (Target.HT.all, Source.HT.Nodes (Src_Node).Element, X, B);
+         -- ???
          pragma Assert (B);
       end Process;
 
@@ -201,7 +204,7 @@ package body Verified_Hashed_Sets is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Storage_Error with "not enough capacity";  -- SE or CE? ???
       end if;
 
@@ -214,9 +217,9 @@ package body Verified_Hashed_Sets is
             declare
                N : Count_Type := Source.First;
             begin
-               while N /= HT_Ops.Next(Source.HT.all, Source.Last) loop
-                  process(N);
-                  N := HT_Ops.Next(Source.HT.all, N);
+               while N /= HT_Ops.Next (Source.HT.all, Source.Last) loop
+                  Process (N);
+                  N := HT_Ops.Next (Source.HT.all, N);
                end loop;
             end;
       end case;
@@ -263,11 +266,12 @@ package body Verified_Hashed_Sets is
      (Source   : Set;
       Capacity : Count_Type := 0) return Set
    is
-      C : constant Count_Type := Count_Type'Max (Capacity, Source.Capacity);
-      H : Hash_Type := 1;
-      N : Count_Type := 1;
-      Target : Set(C, Source.Modulus);
-      Cu : Cursor;
+      C      : constant Count_Type :=
+                 Count_Type'Max (Capacity, Source.Capacity);
+      H      : Hash_Type := 1;
+      N      : Count_Type := 1;
+      Target : Set (C, Source.Modulus);
+      Cu     : Cursor;
    begin
       if (Source.K = Part and Source.Length = 0) or
         Source.HT.Length = 0 then
@@ -276,31 +280,31 @@ package body Verified_Hashed_Sets is
 
       Target.HT.Length := Source.HT.Length;
       Target.HT.Free := Source.HT.Free;
-      while H<=Source.Modulus loop
-         Target.HT.Buckets(H) := Source.HT.Buckets(H);
-         H := H+1;
+      while H <= Source.Modulus loop
+         Target.HT.Buckets (H) := Source.HT.Buckets (H);
+         H := H + 1;
       end loop;
-      while N<=Source.Capacity loop
-         Target.HT.Nodes(N) := Source.HT.Nodes(N);
-         N := N+1;
+      while N <= Source.Capacity loop
+         Target.HT.Nodes (N) := Source.HT.Nodes (N);
+         N := N + 1;
       end loop;
       while N <= C loop
          Cu := (Node => N);
-         HT_Ops.Free(Target.HT.all, Cu.Node);
-         N := N+1;
+         HT_Ops.Free (Target.HT.all, Cu.Node);
+         N := N + 1;
       end loop;
       if Source.K = Part then
-         N := HT_Ops.First(Target.HT.all);
+         N := HT_Ops.First (Target.HT.all);
          while N /= Source.First loop
             Cu := (Node => N);
-            N := HT_Ops.Next(Target.HT.all,N);
-            Delete(Target, Cu);
+            N := HT_Ops.Next (Target.HT.all, N);
+            Delete (Target, Cu);
          end loop;
-         N := HT_Ops.Next(Target.HT.all, Source.Last);
+         N := HT_Ops.Next (Target.HT.all, Source.Last);
          while N /= 0 loop
             Cu := (Node => N);
-            N := HT_Ops.Next(Target.HT.all,N);
-            Delete(Target, Cu);
+            N := HT_Ops.Next (Target.HT.all, N);
+            Delete (Target, Cu);
          end loop;
       end if;
       return Target;
@@ -351,7 +355,7 @@ package body Verified_Hashed_Sets is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor has no element";
       end if;
 
@@ -394,7 +398,7 @@ package body Verified_Hashed_Sets is
       case Source.K is
          when Plain =>
             Src_Length := Source.HT.Length;
-         when Part=>
+         when Part =>
             Src_Length := Source.Length;
       end case;
 
@@ -412,7 +416,8 @@ package body Verified_Hashed_Sets is
             if Src_Length >= Target.HT.Length then
                Tgt_Node := HT_Ops.First (Target.HT.all);
                while Tgt_Node /= 0 loop
-                  if Element_Keys.Find (Source.HT.all, TN (Tgt_Node).Element) /= 0 then
+                  if Element_Keys.Find (Source.HT.all,
+                                        TN (Tgt_Node).Element) /= 0 then
                      declare
                         X : Node_Access := Tgt_Node;
                      begin
@@ -429,7 +434,7 @@ package body Verified_Hashed_Sets is
                Src_Node := HT_Ops.First (Source.HT.all);
                Src_Last := 0;
             end if;
-         when Part=>
+         when Part =>
             Src_Node := Source.First;
             Src_Last := HT_Ops.Next (Source.HT.all, Source.Last);
       end case;
@@ -485,9 +490,9 @@ package body Verified_Hashed_Sets is
          declare
             Node : Count_Type := Left.First;
          begin
-            while Node /= Left.HT.Nodes(Left.Last).Next loop
-               Process(Node);
-               Node := HT_Ops.Next(Left.HT.all, Node);
+            while Node /= Left.HT.Nodes (Left.Last).Next loop
+               Process (Node);
+               Node := HT_Ops.Next (Left.HT.all, Node);
             end loop;
          end;
       end if;
@@ -502,15 +507,15 @@ package body Verified_Hashed_Sets is
          return Empty_Set;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Empty_Set;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      C := Length(Left);
+      C := Length (Left);
       H := Default_Modulus (C);
       Difference (Left, Right, Target => S.HT.all);
       return S;
@@ -520,13 +525,16 @@ package body Verified_Hashed_Sets is
    -- Element --
    -------------
 
-   function Element (Container : Set; Position : Cursor) return Element_Type is
+   function Element
+     (Container : Set;
+      Position  : Cursor) return Element_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor equals No_Element";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in function Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in function Element");
 
       declare
          HT : Hash_Table_Type renames Container.HT.all;
@@ -563,7 +571,7 @@ package body Verified_Hashed_Sets is
                RNN : Nodes_Type renames R_HT.Nodes;
 
                R_Index : constant Hash_Type :=
-                 Element_Keys.Index (R_HT, LN.Element);
+                           Element_Keys.Index (R_HT, LN.Element);
 
                R_Node  : Node_Access := R_HT.Buckets (R_Index);
 
@@ -573,7 +581,8 @@ package body Verified_Hashed_Sets is
                      return False;
                   end if;
 
-                  if Equivalent_Elements (LN.Element, RNN (R_Node).Element) then
+                  if Equivalent_Elements (LN.Element, RNN (R_Node).Element)
+                  then
                      return True;
                   end if;
 
@@ -591,28 +600,30 @@ package body Verified_Hashed_Sets is
 
             -- To and From are valid and Length are equal
             function Equal_Between
-              (L : Hash_Table_Type; R : Set;
+              (L    : Hash_Table_Type; R : Set;
                From : Count_Type; To : Count_Type) return Boolean
             is
-               L_Index : Hash_Type;
-               To_Index : Hash_Type := Element_Keys.Index (L, L.Nodes(To).Element);
-               L_Node  : Node_Access := From;
+               L_Index  : Hash_Type;
+               To_Index : Hash_Type :=
+                            Element_Keys.Index (L, L.Nodes (To).Element);
+               L_Node   : Node_Access := From;
 
             begin
 
-               L_Index := Element_Keys.Index (L, L.Nodes(From).Element);
+               L_Index := Element_Keys.Index (L, L.Nodes (From).Element);
 
-               --  For each node of hash table L, search for an equivalent node in hash
-               --  table R.
+               --  For each node of hash table L, search for an equivalent
+               --  node in hash table R.
 
-               while L_Index /= To_Index or else L_Node /= HT_Ops.Next(L, To) loop
+               while L_Index /= To_Index or else
+                 L_Node /= HT_Ops.Next (L, To) loop
                   pragma Assert (L_Node /= 0);
 
-                  if Find (R, L.Nodes(L_Node).Element).Node = 0 then
+                  if Find (R, L.Nodes (L_Node).Element).Node = 0 then
                      return False;
                   end if;
 
-                  L_Node := L.Nodes(L_Node).Next;
+                  L_Node := L.Nodes (L_Node).Next;
 
                   if L_Node = 0 then
                      --  We have exhausted the nodes in this bucket
@@ -626,20 +637,22 @@ package body Verified_Hashed_Sets is
                   end if;
                end loop;
 
-               return true;
+               return True;
             end Equal_Between;
 
          begin
-            if Length(Left) /= Length(Right) then
+            if Length (Left) /= Length (Right) then
                return False;
             end if;
-            if Length(Left) = 0 then
+            if Length (Left) = 0 then
                return True;
             end if;
             if Left.K = Part then
-               return Equal_Between(Left.HT.all, Right, Left.First, Left.Last);
+               return Equal_Between (Left.HT.all, Right,
+                                     Left.First, Left.Last);
             else
-               return Equal_Between(Right.HT.all, Left, Right.First, Right.Last);
+               return Equal_Between (Right.HT.all, Left,
+                                     Right.First, Right.Last);
             end if;
          end;
       end if;
@@ -649,22 +662,24 @@ package body Verified_Hashed_Sets is
    -- Equivalent_Elements --
    -------------------------
 
-   function Equivalent_Elements (Left : Set; CLeft : Cursor;
+   function Equivalent_Elements (Left  : Set; CLeft : Cursor;
                                  Right : Set; CRight : Cursor)
                                  return Boolean is
    begin
-      if not Has_Element(Left, CLeft) then
+      if not Has_Element (Left, CLeft) then
          raise Constraint_Error with
            "Left cursor of Equivalent_Elements has no element";
       end if;
 
-      if not Has_Element(Right, CRight) then
+      if not Has_Element (Right, CRight) then
          raise Constraint_Error with
            "Right cursor of Equivalent_Elements has no element";
       end if;
 
-      pragma Assert (Vet (Left, CLeft), "bad Left cursor in Equivalent_Elements");
-      pragma Assert (Vet (Right, CRight), "bad Right cursor in Equivalent_Elements");
+      pragma Assert (Vet (Left, CLeft),
+                     "bad Left cursor in Equivalent_Elements");
+      pragma Assert (Vet (Right, CRight),
+                     "bad Right cursor in Equivalent_Elements");
 
       declare
          LN : Node_Type renames Left.HT.Nodes (CLeft.Node);
@@ -674,15 +689,18 @@ package body Verified_Hashed_Sets is
       end;
    end Equivalent_Elements;
 
-   function Equivalent_Elements (Left : Set; CLeft : Cursor; Right : Element_Type)
-                                 return Boolean is
+   function Equivalent_Elements
+     (Left  : Set;
+      CLeft : Cursor;
+      Right : Element_Type) return Boolean is
    begin
-      if not Has_Element(Left, CLeft) then
+      if not Has_Element (Left, CLeft) then
          raise Constraint_Error with
            "Left cursor of Equivalent_Elements has no element";
       end if;
 
-      pragma Assert (Vet (Left, CLeft), "Left cursor in Equivalent_Elements is bad");
+      pragma Assert (Vet (Left, CLeft),
+                     "Left cursor in Equivalent_Elements is bad");
 
       declare
          LN : Node_Type renames Left.HT.Nodes (CLeft.Node);
@@ -691,10 +709,12 @@ package body Verified_Hashed_Sets is
       end;
    end Equivalent_Elements;
 
-   function Equivalent_Elements (Left : Element_Type; Right : Set; CRight : Cursor)
-                                 return Boolean is
+   function Equivalent_Elements
+     (Left   : Element_Type;
+      Right  : Set;
+      CRight : Cursor) return Boolean is
    begin
-      if not Has_Element(Right, CRight) then
+      if not Has_Element (Right, CRight) then
          raise Constraint_Error with
            "Right cursor of Equivalent_Elements has no element";
       end if;
@@ -756,7 +776,8 @@ package body Verified_Hashed_Sets is
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access := Element_Keys.Find (Container.HT.all, Item);
+               Node : constant Node_Access :=
+                        Element_Keys.Find (Container.HT.all, Item);
 
             begin
                if Node = 0 then
@@ -768,16 +789,20 @@ package body Verified_Hashed_Sets is
          when Part =>
             declare
                function Find_Between
-                 (HT  : Hash_Table_Type;
-                  Key : Element_Type;
+                 (HT   : Hash_Table_Type;
+                  Key  : Element_Type;
                   From : Count_Type;
-                  To : Count_Type) return Node_Access is
+                  To   : Count_Type) return Node_Access is
 
-                  Indx : Hash_Type;
-                  Indx_From : Hash_Type := Element_Keys.Index (HT, HT.Nodes(From).Element);
-                  Indx_To : Hash_Type := Element_Keys.Index (HT, HT.Nodes(To).Element);
-                  Node : Node_Access;
-                  To_Node : Node_Access;
+                  Indx      : Hash_Type;
+                  Indx_From : Hash_Type :=
+                                Element_Keys.Index (HT,
+                                                    HT.Nodes (From).Element);
+                  Indx_To   : Hash_Type :=
+                                Element_Keys.Index (HT,
+                                                    HT.Nodes (To).Element);
+                  Node      : Node_Access;
+                  To_Node   : Node_Access;
 
                begin
 
@@ -794,7 +819,7 @@ package body Verified_Hashed_Sets is
                   end if;
 
                   if Indx = Indx_To then
-                     To_Node := HT.Nodes(To).Next;
+                     To_Node := HT.Nodes (To).Next;
                   else
                      To_Node := 0;
                   end if;
@@ -803,7 +828,7 @@ package body Verified_Hashed_Sets is
                      if Equivalent_Keys (Key, HT, Node) then
                         return Node;
                      end if;
-                     Node := HT.Nodes(Node).Next;
+                     Node := HT.Nodes (Node).Next;
                   end loop;
                   return 0;
                end Find_Between;
@@ -813,7 +838,7 @@ package body Verified_Hashed_Sets is
                   return No_Element;
                end if;
 
-               return (Node => Find_Between(Container.HT.all, Item,
+               return (Node => Find_Between (Container.HT.all, Item,
                        Container.First, Container.Last));
             end;
       end case;
@@ -871,26 +896,29 @@ package body Verified_Hashed_Sets is
    function Has_Element (Container : Set; Position : Cursor) return Boolean is
    begin
       if Position.Node = 0 or else
-        not Container.HT.Nodes(Position.Node).Has_Element then
+        not Container.HT.Nodes (Position.Node).Has_Element then
          return False;
       end if;
 
       if Container.K = Plain then
-         return true;
+         return True;
       end if;
 
       declare
          Lst_Index : Hash_Type :=
-           Element_Keys.Index(Container.HT.all,
-                              Container.HT.Nodes(Container.Last).Element);
+                       Element_Keys.Index (Container.HT.all,
+                                           Container.HT.Nodes
+                                             (Container.Last).Element);
          Fst_Index : Hash_Type :=
-           Element_Keys.Index(Container.HT.all,
-                              Container.HT.Nodes(Container.First).Element);
-         Index : Hash_Type :=
-           Element_Keys.Index(Container.HT.all,
-                              Container.HT.Nodes(Position.Node).Element);
-         Lst_Node : Count_Type;
-         Node : Count_Type;
+                       Element_Keys.Index (Container.HT.all,
+                                           Container.HT.Nodes
+                                             (Container.First).Element);
+         Index     : Hash_Type :=
+                       Element_Keys.Index (Container.HT.all,
+                                           Container.HT.Nodes
+                                             (Position.Node).Element);
+         Lst_Node  : Count_Type;
+         Node      : Count_Type;
       begin
 
          if Index < Fst_Index or Index > Lst_Index then
@@ -904,11 +932,11 @@ package body Verified_Hashed_Sets is
          if Index = Fst_Index then
             Node := Container.First;
          else
-            Node := Container.HT.Buckets(Index);
+            Node := Container.HT.Buckets (Index);
          end if;
 
          if Index = Lst_Index then
-            Lst_Node := Container.HT.Nodes(Container.Last).Next;
+            Lst_Node := Container.HT.Nodes (Container.Last).Next;
          else
             Lst_Node := 0;
          end if;
@@ -917,7 +945,7 @@ package body Verified_Hashed_Sets is
             if Position.Node = Node then
                return True;
             end if;
-            Node := HT_Ops.Next(Container.HT.all, Node);
+            Node := HT_Ops.Next (Container.HT.all, Node);
          end loop;
 
          return False;
@@ -1089,8 +1117,8 @@ package body Verified_Hashed_Sets is
    end Intersection;
 
    procedure Intersection
-     (Left : Hash_Table_Type;
-      Right : Set;
+     (Left   : Hash_Table_Type;
+      Right  : Set;
       Target : in out Hash_Table_Type)
    is
       procedure Process (L_Node : Node_Access);
@@ -1131,21 +1159,21 @@ package body Verified_Hashed_Sets is
          return Left.Copy;
       end if;
 
-      C := Count_Type'Min (Length(Left), Length(Right));  -- ???
+      C := Count_Type'Min (Length (Left), Length (Right));  -- ???
       H := Default_Modulus (C);
       return S : Set (C, H) do
-         if Length(Left) /= 0 and Length(Right) /= 0 then
+         if Length (Left) /= 0 and Length (Right) /= 0 then
             if Left.K = Plain then
                Intersection (Left.HT.all, Right, Target => S.HT.all);
             else
                C := Left.First;
-               while C /= Left.HT.Nodes(Left.Last).Next loop
+               while C /= Left.HT.Nodes (Left.Last).Next loop
                   pragma Assert (C /= 0);
-                  if Find (Right, Left.HT.Nodes(C).Element).Node /= 0 then
-                     Insert (S.HT.all, Left.HT.Nodes(C).Element, X, B);
+                  if Find (Right, Left.HT.Nodes (C).Element).Node /= 0 then
+                     Insert (S.HT.all, Left.HT.Nodes (C).Element, X, B);
                      pragma Assert (B);
                   end if;
-                  C := Left.HT.Nodes(C).Next;
+                  C := Left.HT.Nodes (C).Next;
                end loop;
             end if;
          end if;
@@ -1158,7 +1186,7 @@ package body Verified_Hashed_Sets is
 
    function Is_Empty (Container : Set) return Boolean is
    begin
-      return Length(Container) = 0;
+      return Length (Container) = 0;
    end Is_Empty;
 
    ---------------
@@ -1168,13 +1196,13 @@ package body Verified_Hashed_Sets is
    function Is_Subset (Subset : Set; Of_Set : Set) return Boolean is
       Subset_Node  : Node_Access;
       Subset_Nodes : Nodes_Type renames Subset.HT.Nodes;
-      To_Node : Count_Type;
+      To_Node      : Count_Type;
    begin
       if Subset'Address = Of_Set'Address then
          return True;
       end if;
 
-      if Length(Subset) > Length(Of_Set) then
+      if Length (Subset) > Length (Of_Set) then
          return False;
       end if;
 
@@ -1183,7 +1211,7 @@ package body Verified_Hashed_Sets is
       if Subset.K = Plain then
          To_Node := 0;
       else
-         To_Node := Subset.HT.Nodes(Subset.Last).Next;
+         To_Node := Subset.HT.Nodes (Subset.Last).Next;
       end if;
 
       while Subset_Node /= To_Node loop
@@ -1209,7 +1237,8 @@ package body Verified_Hashed_Sets is
 
    procedure Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor))
    is
       procedure Process_Node (Node : Node_Access);
       pragma Inline (Process_Node);
@@ -1246,9 +1275,9 @@ package body Verified_Hashed_Sets is
                declare
                   Node : Count_Type := Container.First;
                begin
-                  while Node /= Container.HT.Nodes(Container.Last).Next loop
-                     Process_Node(Node);
-                     Node := HT_Ops.Next(Container.HT.all, Node);
+                  while Node /= Container.HT.Nodes (Container.Last).Next loop
+                     Process_Node (Node);
+                     Node := HT_Ops.Next (Container.HT.all, Node);
                   end loop;
                end;
          end case;
@@ -1267,9 +1296,9 @@ package body Verified_Hashed_Sets is
 
    function Left (Container : Set; Position : Cursor) return Set is
       Lst : Count_Type;
-      Fst : constant Count_Type := First(Container).Node;
-      L : Count_Type := 0;
-      C : Count_Type := Fst;
+      Fst : constant Count_Type := First (Container).Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Fst;
    begin
       while C /= Position.Node loop
          if C = 0 or C = Container.Last then
@@ -1277,25 +1306,25 @@ package body Verified_Hashed_Sets is
               "Position cursor has no element";
          end if;
          Lst := C;
-         C := HT_Ops.Next(Container.HT.all, C);
+         C := HT_Ops.Next (Container.HT.all, C);
          L := L + 1;
       end loop;
       if L = 0 then
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       else
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => L,
-                 First => Fst,
-                 Last => Lst);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => L,
+                 First    => Fst,
+                 Last     => Lst);
       end if;
    end Left;
 
@@ -1333,7 +1362,7 @@ package body Verified_Hashed_Sets is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Constraint_Error with  -- ???
            "Source length exceeds Target capacity";
       end if;
@@ -1366,7 +1395,10 @@ package body Verified_Hashed_Sets is
    -- Next --
    ----------
 
-   function Next_Unchecked (Container : Set; Position : Cursor) return Cursor is
+   function Next_Unchecked
+     (Container : Set;
+      Position  : Cursor) return Cursor
+   is
       HT   : Hash_Table_Type renames Container.HT.all;
       Node : constant Node_Access := HT_Ops.Next (HT, Position.Node);
 
@@ -1388,14 +1420,14 @@ package body Verified_Hashed_Sets is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error
            with "Position has no element";
       end if;
 
       pragma Assert (Vet (Container, Position), "bad cursor in Next");
 
-      return Next_Unchecked(Container, Position);
+      return Next_Unchecked (Container, Position);
    end Next;
 
    procedure Next (Container : Set; Position : in out Cursor) is
@@ -1410,9 +1442,9 @@ package body Verified_Hashed_Sets is
    function Overlap (Left, Right : Set) return Boolean is
       Left_Node  : Node_Access;
       Left_Nodes : Nodes_Type renames Left.HT.Nodes;
-      To_Node : Node_Access;
+      To_Node    : Node_Access;
    begin
-      if Length(Right) = 0 or Length(Left) = 0 then
+      if Length (Right) = 0 or Length (Left) = 0 then
          return False;
       end if;
 
@@ -1425,7 +1457,7 @@ package body Verified_Hashed_Sets is
       if Left.K = Plain then
          To_Node := 0;
       else
-         To_Node := Left.HT.Nodes(Left.Last).Next;
+         To_Node := Left.HT.Nodes (Left.Last).Next;
       end if;
 
       while Left_Node /= To_Node loop
@@ -1451,8 +1483,8 @@ package body Verified_Hashed_Sets is
 
    procedure Query_Element
      (Container : in out Set;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type))
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type))
    is
    begin
       if Container.K /= Plain then
@@ -1460,7 +1492,7 @@ package body Verified_Hashed_Sets is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor of Query_Element has no element";
       end if;
@@ -1521,7 +1553,7 @@ package body Verified_Hashed_Sets is
 
       --  Start of processing for Read
 
-      C : Set(0,0);
+      C : Set (0, 0);
    begin
       Container := C;
       Read (Stream, Container.HT.all);
@@ -1544,7 +1576,7 @@ package body Verified_Hashed_Sets is
       New_Item  : Element_Type)
    is
       Node : constant Node_Access :=
-        Element_Keys.Find (Container.HT.all, New_Item);
+               Element_Keys.Find (Container.HT.all, New_Item);
 
    begin
       if Container.K /= Plain then
@@ -1617,12 +1649,13 @@ package body Verified_Hashed_Sets is
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor has no element";
       end if;
 
-      pragma Assert (Vet (Container, Position), "bad cursor in Replace_Element");
+      pragma Assert (Vet (Container, Position),
+                     "bad cursor in Replace_Element");
 
       Replace_Element (Container.HT.all, Position.Node, New_Item);
    end Replace_Element;
@@ -1649,25 +1682,25 @@ package body Verified_Hashed_Sets is
 
    function Right (Container : Set; Position : Cursor) return Set is
       Last : Count_Type;
-      Lst : Count_Type;
-      L : Count_Type := 0;
-      C : Count_Type := Position.Node;
+      Lst  : Count_Type;
+      L    : Count_Type := 0;
+      C    : Count_Type := Position.Node;
    begin
 
       if C = 0 then
          return (Capacity => Container.Capacity,
-                 Modulus => Container.Modulus,
-                 K => Part,
-                 HT => Container.HT,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 Modulus  => Container.Modulus,
+                 K        => Part,
+                 HT       => Container.HT,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       end if;
 
       if Container.K = Plain then
          Lst := 0;
       else
-         Lst := HT_Ops.Next(Container.HT.all, Container.Last);
+         Lst := HT_Ops.Next (Container.HT.all, Container.Last);
       end if;
 
       if C = Lst then
@@ -1681,17 +1714,17 @@ package body Verified_Hashed_Sets is
               "Position cursor has no element";
          end if;
          Last := C;
-         C := HT_Ops.Next(Container.HT.all, C);
+         C := HT_Ops.Next (Container.HT.all, C);
          L := L + 1;
       end loop;
 
       return (Capacity => Container.Capacity,
-              Modulus => Container.Modulus,
-              K => Part,
-              HT => Container.HT,
-              Length => L,
-              First => Position.Node,
-              Last => Last);
+              Modulus  => Container.Modulus,
+              K        => Part,
+              HT       => Container.HT,
+              Length   => L,
+              First    => Position.Node,
+              Last     => Last);
    end Right;
 
    ---------------------
@@ -1699,8 +1732,8 @@ package body Verified_Hashed_Sets is
    ---------------------
 
    procedure Set_Has_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
+     (HT          : in out Hash_Table_Type;
+      Node        : Node_Access;
       Has_Element : Boolean)
    is
    begin
@@ -1725,20 +1758,21 @@ package body Verified_Hashed_Sets is
    ------------------
 
    function Strict_Equal (Left, Right : Set) return Boolean is
-      CuL : Cursor := First(Left);
-      CuR : Cursor := First(Right);
+      CuL : Cursor := First (Left);
+      CuR : Cursor := First (Right);
    begin
-      if Length(Left) /= Length(Right) then
-         return false;
+      if Length (Left) /= Length (Right) then
+         return False;
       end if;
 
       while CuL.Node /= 0 or CuR.Node /= 0 loop
          if CuL.Node /= CuR.Node or else
-           Left.HT.Nodes(CuL.Node).Element /= Right.HT.Nodes(CuR.Node).Element then
+           Left.HT.Nodes (CuL.Node).Element /=
+           Right.HT.Nodes (CuR.Node).Element then
             return False;
          end if;
-         CuL := Next_Unchecked(Left, CuL);
-         CuR := Next_Unchecked(Right, CuR);
+         CuL := Next_Unchecked (Left, CuL);
+         CuR := Next_Unchecked (Right, CuR);
       end loop;
 
       return True;
@@ -1859,7 +1893,7 @@ package body Verified_Hashed_Sets is
          return;
       end if;
 
-      if Length(Target) = 0 then
+      if Length (Target) = 0 then
          Assign (Target, Source);
          return;
       end if;
@@ -1880,9 +1914,9 @@ package body Verified_Hashed_Sets is
          declare
             Node : Count_Type := Source.First;
          begin
-            while Node /= Source.HT.Nodes(Source.Last).Next loop
+            while Node /= Source.HT.Nodes (Source.Last).Next loop
                Process (Node);
-               Node := HT_Ops.Next(Source.HT.all, Node);
+               Node := HT_Ops.Next (Source.HT.all, Node);
             end loop;
          end;
       end if;
@@ -1898,15 +1932,15 @@ package body Verified_Hashed_Sets is
          return Empty_Set;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Right.Copy;
       end if;
 
-      C := Length(Left) + Length(Right);
+      C := Length (Left) + Length (Right);
       H := Default_Modulus (C);
       return S : Set (C, H) do
          Difference (Left, Right, S.HT.all);
@@ -1986,9 +2020,9 @@ package body Verified_Hashed_Sets is
          declare
             Node : Count_Type := Source.First;
          begin
-            while Node /= Source.HT.Nodes(Source.Last).Next loop
-               Process(Node);
-               Node := HT_Ops.Next(Source.HT.all, Node);
+            while Node /= Source.HT.Nodes (Source.Last).Next loop
+               Process (Node);
+               Node := HT_Ops.Next (Source.HT.all, Node);
             end loop;
          end;
       end if;
@@ -2003,15 +2037,15 @@ package body Verified_Hashed_Sets is
          return Left.Copy;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Right.Copy;
       end if;
 
-      C := Length(Left) + Length(Right);
+      C := Length (Left) + Length (Right);
       H := Default_Modulus (C);
       return S : Set (C, H) do
          Assign (Target => S, Source => Left);
@@ -2026,7 +2060,7 @@ package body Verified_Hashed_Sets is
    function Vet (Container : Set; Position : Cursor) return Boolean is
    begin
       if Position.Node = 0 then
-         return false;
+         return False;
       end if;
 
       return HT_Ops.Vet (Container.HT.all, Position.Node);
@@ -2094,11 +2128,11 @@ package body Verified_Hashed_Sets is
 
       package Key_Keys is
         new Verified_Hash_Tables.Generic_Keys
-          (HT_Types  => HT_Types,
-           Get_Next  => Get_Next,
-           Set_Next  => Set_Next,
-           Key_Type  => Key_Type,
-           Hash      => Hash,
+          (HT_Types        => HT_Types,
+           Get_Next        => Get_Next,
+           Set_Next        => Set_Next,
+           Key_Type        => Key_Type,
+           Hash            => Hash,
            Equivalent_Keys => Equivalent_Key_Node);
 
       --------------
@@ -2207,7 +2241,7 @@ package body Verified_Hashed_Sets is
          if Container.K = Plain then
             declare
                Node : constant Node_Access :=
-                 Key_Keys.Find (Container.HT.all, Key);
+                        Key_Keys.Find (Container.HT.all, Key);
 
             begin
                if Node = 0 then
@@ -2218,18 +2252,20 @@ package body Verified_Hashed_Sets is
             end;
          else declare
                function Find_Between
-                 (HT  : Hash_Table_Type;
-                  Key : Key_Type;
+                 (HT   : Hash_Table_Type;
+                  Key  : Key_Type;
                   From : Count_Type;
-                  To : Count_Type) return Node_Access is
+                  To   : Count_Type) return Node_Access is
 
-                  Indx : Hash_Type;
+                  Indx      : Hash_Type;
                   Indx_From : Hash_Type :=
-                    Key_Keys.Index (HT, Generic_Keys.Key (HT.Nodes(From).Element));
-                  Indx_To : Hash_Type :=
-                    Key_Keys.Index (HT, Generic_Keys.Key (HT.Nodes(To).Element));
-                  Node : Node_Access;
-                  To_Node : Node_Access;
+                                Key_Keys.Index (HT, Generic_Keys.Key
+                                                (HT.Nodes (From).Element));
+                  Indx_To   : Hash_Type :=
+                                Key_Keys.Index (HT, Generic_Keys.Key
+                                                (HT.Nodes (To).Element));
+                  Node      : Node_Access;
+                  To_Node   : Node_Access;
 
                begin
 
@@ -2246,7 +2282,7 @@ package body Verified_Hashed_Sets is
                   end if;
 
                   if Indx = Indx_To then
-                     To_Node := HT.Nodes(To).Next;
+                     To_Node := HT.Nodes (To).Next;
                   else
                      To_Node := 0;
                   end if;
@@ -2255,7 +2291,7 @@ package body Verified_Hashed_Sets is
                      if Equivalent_Key_Node (Key, HT, Node) then
                         return Node;
                      end if;
-                     Node := HT.Nodes(Node).Next;
+                     Node := HT.Nodes (Node).Next;
                   end loop;
 
                   return 0;
@@ -2266,7 +2302,7 @@ package body Verified_Hashed_Sets is
                   return No_Element;
                end if;
 
-               return (Node => Find_Between(Container.HT.all, Key,
+               return (Node => Find_Between (Container.HT.all, Key,
                        Container.First, Container.Last));
             end;
          end if;
@@ -2278,12 +2314,13 @@ package body Verified_Hashed_Sets is
 
       function Key (Container : Set; Position : Cursor) return Key_Type is
       begin
-         if not Has_Element(Container, Position) then
+         if not Has_Element (Container, Position) then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
 
-         pragma Assert (Vet (Container, Position), "bad cursor in function Key");
+         pragma Assert (Vet (Container, Position),
+                        "bad cursor in function Key");
 
          declare
             HT : Hash_Table_Type renames Container.HT.all;
@@ -2310,7 +2347,7 @@ package body Verified_Hashed_Sets is
 
          declare
             Node : constant Node_Access :=
-              Key_Keys.Find (Container.HT.all, Key);
+                     Key_Keys.Find (Container.HT.all, Key);
 
          begin
             if Node = 0 then
@@ -2343,7 +2380,7 @@ package body Verified_Hashed_Sets is
 
          --  needs careful review ???
 
-         if not Has_Element(Container, Position) then
+         if not Has_Element (Container, Position) then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
@@ -2428,4 +2465,4 @@ package body Verified_Hashed_Sets is
 
    end Generic_Keys;
 
-end Verified_Hashed_Sets;
+end Formal_Hashed_Sets;

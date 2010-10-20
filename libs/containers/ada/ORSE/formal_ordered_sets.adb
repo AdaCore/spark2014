@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---  A D A . C O N T A I N E R S . B O U N D E D _ O R D E R E D _ S E T S   --
+--   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ S E T S    --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,7 +26,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 with Bounded_Red_Black_Trees.Generic_Operations;
@@ -44,7 +45,7 @@ with System;  use type System.Address;
 
 with Ada.Text_IO;
 
-package body Verified_Ordered_Sets is
+package body Formal_Ordered_Sets is
 
    ------------------------------
    -- Access to Fields of Node --
@@ -78,14 +79,14 @@ package body Verified_Ordered_Sets is
    pragma Inline (Set_Left);
 
    procedure Set_Right
-     (Tree : in out Tree_Type;
-      Node : Count_Type;
+     (Tree  : in out Tree_Type;
+      Node  : Count_Type;
       Right : Count_Type);
    pragma Inline (Set_Right);
 
    procedure Set_Parent
-     (Tree : in out Tree_Type;
-      Node : Count_Type;
+     (Tree   : in out Tree_Type;
+      Node   : Count_Type;
       Parent : Count_Type);
    pragma Inline (Set_Parent);
 
@@ -139,11 +140,11 @@ package body Verified_Ordered_Sets is
       with procedure Process (Node : Count_Type) is <>;
    procedure Iterate_Between (Tree : Tree_Type;
                               From : Count_Type;
-                              To : Count_Type);
+                              To   : Count_Type);
 
    function Next_Unchecked
      (Container : Set;
-      Position : Count_Type) return Count_Type;
+      Position  : Count_Type) return Count_Type;
 
    procedure Replace_Element
      (Tree : in out Tree_Type;
@@ -157,51 +158,52 @@ package body Verified_Ordered_Sets is
    package Tree_Operations is
      new Bounded_Red_Black_Trees.Generic_Operations
        (Tree_Type => Tree_Type,
-        Left => Left_Son,
-        Right => Right_Son);
+        Left      => Left_Son,
+        Right     => Right_Son);
 
    use Tree_Operations;
 
    package Element_Keys is
      new Bounded_Red_Black_Trees.Generic_Keys
-      (Ops                 => Tree_Operations,
-       Key_Type            => Element_Type,
-       Is_Less_Key_Node    => Is_Less_Element_Node,
-       Is_Greater_Key_Node => Is_Greater_Element_Node);
+       (Ops                 => Tree_Operations,
+        Key_Type            => Element_Type,
+        Is_Less_Key_Node    => Is_Less_Element_Node,
+        Is_Greater_Key_Node => Is_Greater_Element_Node);
 
    package Set_Ops is
      new Bounded_Set_Operations
-      (Ops              => Tree_Operations,
-       Insert_With_Hint => Insert_With_Hint,
-       Is_Less          => Is_Less_Node_Node,
-       Free             => Free);
+       (Ops              => Tree_Operations,
+        Insert_With_Hint => Insert_With_Hint,
+        Is_Less          => Is_Less_Node_Node,
+        Free             => Free);
 
    ---------
    -- "=" --
    ---------
 
    function "=" (Left, Right : Set) return Boolean is
-      Lst : Count_Type;
-      Node : Count_Type := First(Left).Node;
+      Lst   : Count_Type;
+      Node  : Count_Type := First (Left).Node;
       ENode : Count_Type;
    begin
 
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
-      if Is_Empty(Left) then
+      if Is_Empty (Left) then
          return True;
       end if;
 
-      Lst := Next(Left.Tree.all, Last(Left).Node);
+      Lst := Next (Left.Tree.all, Last (Left).Node);
       while Node /= Lst loop
-         ENode := Find(Right, Left.Tree.Nodes(Node).Element).Node;
+         ENode := Find (Right, Left.Tree.Nodes (Node).Element).Node;
          if ENode = 0 or else
-           Left.Tree.Nodes(Node).Element /= Right.Tree.Nodes(ENode).Element then
+           Left.Tree.Nodes (Node).Element /= Right.Tree.Nodes (ENode).Element
+         then
             return False;
          end if;
-         Node := Next(Left.Tree.all, Node);
+         Node := Next (Left.Tree.all, Node);
       end loop;
 
       return True;
@@ -286,7 +288,7 @@ package body Verified_Ordered_Sets is
       procedure Assign is
         new Tree_Operations.Generic_Assign (Insert_With_Hint);
 
-      X : Count_Type;
+      X        : Count_Type;
       Tgt_Node : Count_Type;
 
    begin
@@ -299,7 +301,7 @@ package body Verified_Ordered_Sets is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Storage_Error with "not enough capacity";  -- SE or CE? ???
       end if;
 
@@ -308,10 +310,10 @@ package body Verified_Ordered_Sets is
       else
          Clear (Target.Tree.all);
          X := Source.First;
-         while X /= Next(Source.Tree.all, Source.Last) loop
+         while X /= Next (Source.Tree.all, Source.Last) loop
             Insert_With_Hint
               (Target.Tree.all, Source.Tree.all, 0, X, Tgt_Node);
-            X := Next(Source.Tree.all, X);
+            X := Next (Source.Tree.all, X);
          end loop;
       end if;
    end Assign;
@@ -328,18 +330,18 @@ package body Verified_Ordered_Sets is
             return No_Element;
          end if;
 
-         if Item < Container.Tree.Nodes(Container.First).Element then
+         if Item < Container.Tree.Nodes (Container.First).Element then
             return (Node => Container.First);
          end if;
 
-         if Container.Tree.Nodes(Container.Last).Element < Item then
+         if Container.Tree.Nodes (Container.Last).Element < Item then
             return No_Element;
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Element_Keys.Ceiling (Container.Tree.all, Item);
+                  Element_Keys.Ceiling (Container.Tree.all, Item);
 
       begin
          if Node = 0 then
@@ -391,11 +393,11 @@ package body Verified_Ordered_Sets is
 
    function Copy (Source : Set; Capacity : Count_Type := 0) return Set is
       Node : Count_Type := 1;
-      N : Count_Type;
-      Cu : Cursor;
+      N    : Count_Type;
+      Cu   : Cursor;
    begin
       return Target : Set (Count_Type'Max (Source.Capacity, Capacity)) do
-         if Length(Source) > 0 then
+         if Length (Source) > 0 then
             Target.Tree.Length := Source.Tree.Length;
             Target.Tree.Root := Source.Tree.Root;
             Target.Tree.First := Source.Tree.First;
@@ -403,17 +405,22 @@ package body Verified_Ordered_Sets is
             Target.Tree.Free := Source.Tree.Free;
 
             while Node <= Source.Capacity loop
-               Target.Tree.Nodes(Node).Element := Source.Tree.Nodes(Node).Element;
-               Target.Tree.Nodes(Node).Parent := Source.Tree.Nodes(Node).Parent;
-               Target.Tree.Nodes(Node).Left := Source.Tree.Nodes(Node).Left;
-               Target.Tree.Nodes(Node).Right := Source.Tree.Nodes(Node).Right;
-               Target.Tree.Nodes(Node).Color := Source.Tree.Nodes(Node).Color;
+               Target.Tree.Nodes (Node).Element :=
+                 Source.Tree.Nodes (Node).Element;
+               Target.Tree.Nodes (Node).Parent :=
+                 Source.Tree.Nodes (Node).Parent;
+               Target.Tree.Nodes (Node).Left :=
+                 Source.Tree.Nodes (Node).Left;
+               Target.Tree.Nodes (Node).Right :=
+                 Source.Tree.Nodes (Node).Right;
+               Target.Tree.Nodes (Node).Color :=
+                 Source.Tree.Nodes (Node).Color;
                Node := Node + 1;
             end loop;
 
             while Node <= Target.Capacity loop
                N := Node;
-               Free(Tree => Target.Tree.all, X => N);
+               Free (Tree => Target.Tree.all, X => N);
                Node := Node + 1;
             end loop;
 
@@ -421,16 +428,16 @@ package body Verified_Ordered_Sets is
                Node := Target.Tree.First;
                while Node /= Source.First loop
                   Cu := (Node => Node);
-                  Node := Next(Target.Tree.all, Node);
-                  Delete(Target, Cu);
+                  Node := Next (Target.Tree.all, Node);
+                  Delete (Target, Cu);
                end loop;
 
-               Node := Next(Target.Tree.all, Source.Last);
+               Node := Next (Target.Tree.all, Source.Last);
 
                while Node /= 0 loop
                   Cu := (Node => Node);
-                  Node := Next(Target.Tree.all, Node);
-                  Delete(Target, Cu);
+                  Node := Next (Target.Tree.all, Node);
+                  Delete (Target, Cu);
                end loop;
             end if;
          end if;
@@ -448,14 +455,15 @@ package body Verified_Ordered_Sets is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor has no element";
       end if;
 
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "bad cursor in Delete");
 
-      Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, Position.Node);
+      Tree_Operations.Delete_Node_Sans_Free
+        (Container.Tree.all, Position.Node);
       Free (Container.Tree.all, Position.Node);
    end Delete;
 
@@ -558,14 +566,16 @@ package body Verified_Ordered_Sets is
                   return;
                end if;
 
-               if Src = Next(Source.Tree.all, Source.Last) then
+               if Src = Next (Source.Tree.all, Source.Last) then
                   return;
                end if;
 
-               if Target.Tree.Nodes (Tgt).Element < Source.Tree.Nodes (Src).Element then
+               if Target.Tree.Nodes (Tgt).Element <
+                 Source.Tree.Nodes (Src).Element then
                   Tgt := Next (Target.Tree.all, Tgt);
 
-               elsif Source.Tree.Nodes (Src).Element < Target.Tree.Nodes (Tgt).Element then
+               elsif Source.Tree.Nodes (Src).Element <
+                 Target.Tree.Nodes (Tgt).Element then
                   Src := Next (Source.Tree.all, Src);
 
                else
@@ -590,26 +600,27 @@ package body Verified_Ordered_Sets is
          return Empty_Set;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Empty_Set;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      return S : Set (Length(Left)) do
+      return S : Set (Length (Left)) do
          if Left.K = Plain and Right.K = Plain then
-            Set_Ops.Difference (Left.Tree.all, Right.Tree.all, Target => S.Tree.all);
+            Set_Ops.Difference (Left.Tree.all, Right.Tree.all,
+                                Target => S.Tree.all);
          else
             declare
                Tree : Tree_Type renames S.Tree.all;
 
-               L_Node : Count_Type := First(Left).Node;
-               R_Node : Count_Type := First(Right).Node;
+               L_Node : Count_Type := First (Left).Node;
+               R_Node : Count_Type := First (Right).Node;
 
-               L_Last : Count_Type := Next(Left.Tree.all, Last(Left).Node);
-               R_Last : Count_Type := Next(Right.Tree.all, Last(Right).Node);
+               L_Last : Count_Type := Next (Left.Tree.all, Last (Left).Node);
+               R_Last : Count_Type := Next (Right.Tree.all, Last (Right).Node);
 
                Dst_Node : Count_Type;
 
@@ -635,7 +646,8 @@ package body Verified_Ordered_Sets is
                      return;
                   end if;
 
-                  if Left.Tree.Nodes(L_Node).Element < Right.Tree.Nodes(R_Node).Element then
+                  if Left.Tree.Nodes (L_Node).Element <
+                    Right.Tree.Nodes (R_Node).Element then
                      Insert_With_Hint
                        (Dst_Tree => Tree,
                         Src_Tree => Left.Tree.all,
@@ -645,7 +657,8 @@ package body Verified_Ordered_Sets is
 
                      L_Node := Next (Left.Tree.all, L_Node);
 
-                  elsif Right.Tree.Nodes(R_Node).Element < Left.Tree.Nodes(L_Node).Element then
+                  elsif Right.Tree.Nodes (R_Node).Element <
+                    Left.Tree.Nodes (L_Node).Element then
                      R_Node := Next (Right.Tree.all, R_Node);
 
                   else
@@ -664,7 +677,7 @@ package body Verified_Ordered_Sets is
 
    function Element (Container : Set; Position : Cursor) return Element_Type is
    begin
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor has no element";
       end if;
 
@@ -704,7 +717,7 @@ package body Verified_Ordered_Sets is
       pragma Inline (Is_Equivalent_Node_Node);
 
       function Is_Equivalent is
-         new Tree_Operations.Generic_Equal (Is_Equivalent_Node_Node);
+        new Tree_Operations.Generic_Equal (Is_Equivalent_Node_Node);
 
       -----------------------------
       -- Is_Equivalent_Node_Node --
@@ -727,7 +740,7 @@ package body Verified_Ordered_Sets is
          end if;
       end Is_Equivalent_Node_Node;
 
-   --  Start of processing for Equivalent_Sets
+      --  Start of processing for Equivalent_Sets
 
    begin
       if Left.K = Plain and Right.K = Plain then
@@ -738,11 +751,11 @@ package body Verified_Ordered_Sets is
          return True;
       end if;
 
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return True;
       end if;
 
@@ -750,13 +763,14 @@ package body Verified_Ordered_Sets is
          L_Node : Count_Type;
          R_Node : Count_Type;
 
-         L_Last : Count_Type := Next(Left.Tree.all, Last(Left).Node);
+         L_Last : Count_Type := Next (Left.Tree.all, Last (Left).Node);
       begin
 
-         L_Node := First(Left).Node;
-         R_Node := First(Right).Node;
+         L_Node := First (Left).Node;
+         R_Node := First (Right).Node;
          while L_Node /= L_Last loop
-            if not Is_Equivalent_Node_Node (Left.Tree.all, Right.Tree.all, L_Node, R_Node) then
+            if not Is_Equivalent_Node_Node (Left.Tree.all, Right.Tree.all,
+                                            L_Node, R_Node) then
                return False;
             end if;
 
@@ -799,15 +813,15 @@ package body Verified_Ordered_Sets is
             return No_Element;
          end if;
 
-         if Item < Container.Tree.Nodes(Container.First).Element or
-           Container.Tree.Nodes(Container.Last).Element < Item then
+         if Item < Container.Tree.Nodes (Container.First).Element or
+           Container.Tree.Nodes (Container.Last).Element < Item then
             return No_Element;
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Element_Keys.Find (Container.Tree.all, Item);
+                  Element_Keys.Find (Container.Tree.all, Item);
 
       begin
          if Node = 0 then
@@ -824,7 +838,7 @@ package body Verified_Ordered_Sets is
 
    function First (Container : Set) return Cursor is
    begin
-      if Length(Container) = 0 then
+      if Length (Container) = 0 then
          return No_Element;
       end if;
 
@@ -841,7 +855,7 @@ package body Verified_Ordered_Sets is
    -------------------
 
    function First_Element (Container : Set) return Element_Type is
-      Fst : Count_Type :=  First(Container).Node;
+      Fst : Count_Type :=  First (Container).Node;
    begin
       if Fst = 0 then
          raise Constraint_Error with "set is empty";
@@ -866,18 +880,18 @@ package body Verified_Ordered_Sets is
             return No_Element;
          end if;
 
-         if Item < Container.Tree.Nodes(Container.First).Element then
+         if Item < Container.Tree.Nodes (Container.First).Element then
             return No_Element;
          end if;
 
-         if Container.Tree.Nodes(Container.Last).Element < Item then
+         if Container.Tree.Nodes (Container.Last).Element < Item then
             return (Node => Container.Last);
          end if;
       end if;
 
       declare
          Node : constant Count_Type :=
-           Element_Keys.Floor (Container.Tree.all, Item);
+                  Element_Keys.Floor (Container.Tree.all, Item);
 
       begin
          if Node = 0 then
@@ -980,18 +994,20 @@ package body Verified_Ordered_Sets is
                return No_Element;
             end if;
 
-            if Key < Generic_Keys.Key(Container.Tree.Nodes(Container.First).Element) then
+            if Key < Generic_Keys.Key
+                       (Container.Tree.Nodes (Container.First).Element) then
                return (Node => Container.First);
             end if;
 
-            if Generic_Keys.Key(Container.Tree.Nodes(Container.Last).Element) < Key then
+            if Generic_Keys.Key
+              (Container.Tree.Nodes (Container.Last).Element) < Key then
                return No_Element;
             end if;
          end if;
 
          declare
             Node : constant Count_Type :=
-              Key_Keys.Ceiling (Container.Tree.all, Key);
+                     Key_Keys.Ceiling (Container.Tree.all, Key);
 
          begin
             if Node = 0 then
@@ -1044,15 +1060,17 @@ package body Verified_Ordered_Sets is
 
          if Container.K = Part then
             if Container.Length = 0 or else
-              (Key < Generic_Keys.Key (Container.Tree.Nodes(Container.First).Element) or
-              Generic_Keys.Key (Container.Tree.Nodes(Container.Last).Element) < Key) then
+              (Key < Generic_Keys.Key
+                       (Container.Tree.Nodes (Container.First).Element) or
+                 Generic_Keys.Key
+                   (Container.Tree.Nodes (Container.Last).Element) < Key) then
                raise Constraint_Error with "key not in set";
             end if;
          end if;
 
          declare
             Node : constant Count_Type :=
-              Key_Keys.Find (Container.Tree.all, Key);
+                     Key_Keys.Find (Container.Tree.all, Key);
 
          begin
             if Node = 0 then
@@ -1114,8 +1132,10 @@ package body Verified_Ordered_Sets is
 
          if Container.K = Part then
             if Container.Length = 0 or else
-              (Key < Generic_Keys.Key (Container.Tree.Nodes(Container.First).Element) or
-              Generic_Keys.Key (Container.Tree.Nodes(Container.Last).Element) < Key) then
+              (Key < Generic_Keys.Key
+                       (Container.Tree.Nodes (Container.First).Element) or
+                 Generic_Keys.Key
+                   (Container.Tree.Nodes (Container.Last).Element) < Key) then
                return No_Element;
             end if;
          end if;
@@ -1141,17 +1161,20 @@ package body Verified_Ordered_Sets is
       begin
          if Container.K = Part then
             if Container.Length = 0 or else
-              Key < Generic_Keys.Key (Container.Tree.Nodes(Container.First).Element) then
+              Key < Generic_Keys.Key
+                      (Container.Tree.Nodes (Container.First).Element) then
                return No_Element;
             end if;
 
-            if Generic_Keys.Key (Container.Tree.Nodes(Container.Last).Element) < Key then
+            if Generic_Keys.Key
+              (Container.Tree.Nodes (Container.Last).Element) < Key then
                return (Node => Container.Last);
             end if;
          end if;
 
          declare
-            Node : constant Count_Type := Key_Keys.Floor (Container.Tree.all, Key);
+            Node : constant Count_Type :=
+                     Key_Keys.Floor (Container.Tree.all, Key);
 
          begin
             if Node = 0 then
@@ -1194,7 +1217,7 @@ package body Verified_Ordered_Sets is
 
       function Key (Container : Set; Position : Cursor) return Key_Type is
       begin
-         if not Has_Element(Container, Position) then
+         if not Has_Element (Container, Position) then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
@@ -1226,7 +1249,7 @@ package body Verified_Ordered_Sets is
               with "Can't modify part of container";
          end if;
 
-         if not Has_Element(Container, (Node => Node)) then
+         if not Has_Element (Container, (Node => Node)) then
             raise Constraint_Error with
               "attempt to replace key not in set";
          end if;
@@ -1251,7 +1274,7 @@ package body Verified_Ordered_Sets is
               with "Can't modify part of container";
          end if;
 
-         if not Has_Element(Container, Position) then
+         if not Has_Element (Container, Position) then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
@@ -1311,7 +1334,7 @@ package body Verified_Ordered_Sets is
          return False;
       end if;
 
-      if Container.Tree.Nodes(Position.Node).Parent < 0 then
+      if Container.Tree.Nodes (Position.Node).Parent < 0 then
          return False;
       end if;
 
@@ -1320,11 +1343,11 @@ package body Verified_Ordered_Sets is
       end if;
 
       declare
-         Elt : Element_Type := Container.Tree.Nodes(Position.Node).Element;
+         Elt : Element_Type := Container.Tree.Nodes (Position.Node).Element;
       begin
 
-         if Elt < Container.Tree.Nodes(Container.First).Element or
-           Container.Tree.Nodes(Container.Last).Element < Elt then
+         if Elt < Container.Tree.Nodes (Container.First).Element or
+           Container.Tree.Nodes (Container.Last).Element < Elt then
             return False;
          end if;
 
@@ -1427,7 +1450,7 @@ package body Verified_Ordered_Sets is
          return Node;
       end New_Node;
 
-   --  Start of processing for Insert_Sans_Hint
+      --  Start of processing for Insert_Sans_Hint
 
    begin
       Conditional_Insert_Sans_Hint
@@ -1475,7 +1498,7 @@ package body Verified_Ordered_Sets is
          return Node;
       end New_Node;
 
-   --  Start of processing for Insert_With_Hint
+      --  Start of processing for Insert_With_Hint
 
    begin
       Local_Insert_With_Hint
@@ -1504,7 +1527,8 @@ package body Verified_Ordered_Sets is
             Tgt : Count_Type := Target.First;
             Src : Count_Type := Source.First;
 
-            S_Last : constant Count_Type := Next(Source.Tree.all, Source.Last);
+            S_Last : constant Count_Type :=
+                       Next (Source.Tree.all, Source.Last);
 
          begin
             if Target'Address = Source'Address then
@@ -1524,7 +1548,8 @@ package body Verified_Ordered_Sets is
             while Tgt /= 0
               and then Src /= S_Last
             loop
-               if Target.Tree.Nodes(Tgt).Element < Source.Tree.Nodes(Src).Element then
+               if Target.Tree.Nodes (Tgt).Element <
+                 Source.Tree.Nodes (Src).Element then
                   declare
                      X : Count_Type := Tgt;
                   begin
@@ -1533,7 +1558,8 @@ package body Verified_Ordered_Sets is
                      Free (Target.Tree.all, X);
                   end;
 
-               elsif Source.Tree.Nodes(Src).Element < Target.Tree.Nodes(Tgt).Element then
+               elsif Source.Tree.Nodes (Src).Element <
+                 Target.Tree.Nodes (Tgt).Element then
                   Src := Next (Source.Tree.all, Src);
 
                else
@@ -1561,13 +1587,14 @@ package body Verified_Ordered_Sets is
          return Left.Copy;
       end if;
 
-      return S : Set (Count_Type'Min (Length(Left), Length(Right))) do
+      return S : Set (Count_Type'Min (Length (Left), Length (Right))) do
          if Left.K = Plain and Right.K = Plain then
-            Set_Ops.Intersection (Left.Tree.all, Right.Tree.all, Target => S.Tree.all);
+            Set_Ops.Intersection
+              (Left.Tree.all, Right.Tree.all, Target => S.Tree.all);
             return;
          end if;
 
-         if Length(Left) = 0 or Length(Right) = 0 then
+         if Length (Left) = 0 or Length (Right) = 0 then
             return;
          end if;
 
@@ -1575,11 +1602,13 @@ package body Verified_Ordered_Sets is
 
             Tree : Tree_Type renames S.Tree.all;
 
-            L_Node : Count_Type := First(Left).Node;
-            R_Node : Count_Type := First(Right).Node;
+            L_Node : Count_Type := First (Left).Node;
+            R_Node : Count_Type := First (Right).Node;
 
-            L_Last : constant Count_Type := Next(Left.Tree.all, Last(Left).Node);
-            R_Last : constant Count_Type := Next(Right.Tree.all, Last(Right).Node);
+            L_Last : constant Count_Type :=
+                       Next (Left.Tree.all, Last (Left).Node);
+            R_Last : constant Count_Type :=
+                       Next (Right.Tree.all, Last (Right).Node);
 
             Dst_Node : Count_Type;
 
@@ -1590,10 +1619,12 @@ package body Verified_Ordered_Sets is
                   return;
                end if;
 
-               if Left.Tree.Nodes(L_Node).Element < Right.Tree.Nodes(R_Node).Element then
+               if Left.Tree.Nodes (L_Node).Element <
+                 Right.Tree.Nodes (R_Node).Element then
                   L_Node := Next (Left.Tree.all, L_Node);
 
-               elsif Right.Tree.Nodes(R_Node).Element < Left.Tree.Nodes(L_Node).Element then
+               elsif Right.Tree.Nodes (R_Node).Element <
+                 Left.Tree.Nodes (L_Node).Element then
                   R_Node := Next (Right.Tree.all, R_Node);
 
                else
@@ -1618,7 +1649,7 @@ package body Verified_Ordered_Sets is
 
    function Is_Empty (Container : Set) return Boolean is
    begin
-      return Length(Container) = 0;
+      return Length (Container) = 0;
    end Is_Empty;
 
    -----------------------------
@@ -1675,16 +1706,18 @@ package body Verified_Ordered_Sets is
          return True;
       end if;
 
-      if Length(Subset) > Length(Of_Set) then
+      if Length (Subset) > Length (Of_Set) then
          return False;
       end if;
 
       declare
-         Subset_Node : Count_Type := First(Subset).Node;
-         Set_Node    : Count_Type := First(Of_Set).Node;
+         Subset_Node : Count_Type := First (Subset).Node;
+         Set_Node    : Count_Type := First (Of_Set).Node;
 
-         Subset_Last : constant Count_Type := Next(Subset.Tree.all, Last(Subset).Node);
-         Set_Last : constant Count_Type := Next(Of_Set.Tree.all, Last(Of_Set).Node);
+         Subset_Last : constant Count_Type :=
+                         Next (Subset.Tree.all, Last (Subset).Node);
+         Set_Last    : constant Count_Type :=
+                         Next (Of_Set.Tree.all, Last (Of_Set).Node);
 
       begin
          loop
@@ -1696,11 +1729,13 @@ package body Verified_Ordered_Sets is
                return True;
             end if;
 
-            if Subset.Tree.Nodes(Subset_Node).Element < Of_Set.Tree.Nodes(Set_Node).Element then
+            if Subset.Tree.Nodes (Subset_Node).Element <
+              Of_Set.Tree.Nodes (Set_Node).Element then
                return False;
             end if;
 
-            if Of_Set.Tree.Nodes(Set_Node).Element < Subset.Tree.Nodes(Subset_Node).Element then
+            if Of_Set.Tree.Nodes (Set_Node).Element <
+              Subset.Tree.Nodes (Subset_Node).Element then
                Set_Node := Next (Of_Set.Tree.all, Set_Node);
             else
                Set_Node := Next (Of_Set.Tree.all, Set_Node);
@@ -1716,7 +1751,8 @@ package body Verified_Ordered_Sets is
 
    procedure Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor))
    is
       procedure Process_Node (Node : Count_Type);
       pragma Inline (Process_Node);
@@ -1739,7 +1775,7 @@ package body Verified_Ordered_Sets is
       T : Tree_Type renames Container.Tree.all;
       B : Natural renames T.Busy;
 
-   --  Start of prccessing for Iterate
+      --  Start of prccessing for Iterate
 
    begin
       B := B + 1;
@@ -1771,10 +1807,10 @@ package body Verified_Ordered_Sets is
 
    procedure Iterate_Between (Tree : Tree_Type;
                               From : Count_Type;
-                              To : Count_Type) is
+                              To   : Count_Type) is
 
-      FElt : Element_Type := Tree.Nodes(From).Element;
-      TElt : Element_Type := Tree.Nodes(To).Element;
+      FElt : Element_Type := Tree.Nodes (From).Element;
+      TElt : Element_Type := Tree.Nodes (To).Element;
       procedure Iterate (P : Count_Type);
 
       -------------
@@ -1785,14 +1821,14 @@ package body Verified_Ordered_Sets is
          X : Count_Type := P;
       begin
          while X /= 0 loop
-            if Tree.Nodes(X).Element < FElt then
-               X := Tree.Nodes(X).Right;
-            elsif TElt < Tree.Nodes(X).Element then
-               X := Tree.Nodes(X).Left;
+            if Tree.Nodes (X).Element < FElt then
+               X := Tree.Nodes (X).Right;
+            elsif TElt < Tree.Nodes (X).Element then
+               X := Tree.Nodes (X).Left;
             else
-               Iterate(Tree.Nodes(X).Left);
-               Process(X);
-               X := Tree.Nodes(X).Right;
+               Iterate (Tree.Nodes (X).Left);
+               Process (X);
+               X := Tree.Nodes (X).Right;
             end if;
          end loop;
       end Iterate;
@@ -1807,7 +1843,7 @@ package body Verified_Ordered_Sets is
 
    function Last (Container : Set) return Cursor is
    begin
-      if Length(Container) = 0 then
+      if Length (Container) = 0 then
          return No_Element;
       end if;
 
@@ -1824,14 +1860,14 @@ package body Verified_Ordered_Sets is
 
    function Last_Element (Container : Set) return Element_Type is
    begin
-      if Last(Container).Node = 0 then
+      if Last (Container).Node = 0 then
          raise Constraint_Error with "set is empty";
       end if;
 
       declare
          N : Nodes_Type renames Container.Tree.Nodes;
       begin
-         return N (Last(Container).Node).Element;
+         return N (Last (Container).Node).Element;
       end;
    end Last_Element;
 
@@ -1841,33 +1877,33 @@ package body Verified_Ordered_Sets is
 
    function Left (Container : Set; Position : Cursor) return Set is
       Lst : Count_Type;
-      Fst : constant Count_Type := First(Container).Node;
-      L : Count_Type := 0;
-      C : Count_Type := Fst;
+      Fst : constant Count_Type := First (Container).Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Fst;
    begin
       while C /= Position.Node loop
-         if C = Last(Container).Node or C = 0 then
+         if C = Last (Container).Node or C = 0 then
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
          Lst := C;
-         C := Next(Container.Tree.all, C);
+         C := Next (Container.Tree.all, C);
          L := L + 1;
       end loop;
       if L = 0 then
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       else
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => L,
-                 First => Fst,
-                 Last => Lst);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => L,
+                 First    => Fst,
+                 Last     => Lst);
       end if;
    end Left;
 
@@ -1912,7 +1948,7 @@ package body Verified_Ordered_Sets is
          return;
       end if;
 
-      if Target.Capacity < Length(Source) then
+      if Target.Capacity < Length (Source) then
          raise Constraint_Error with  -- ???
            "Source length exceeds Target capacity";
       end if;
@@ -1939,7 +1975,9 @@ package body Verified_Ordered_Sets is
    -- Next --
    ----------
 
-   function Next_Unchecked (Container : Set; Position : Count_Type) return Count_Type is
+   function Next_Unchecked
+     (Container : Set;
+      Position  : Count_Type) return Count_Type is
    begin
 
       if Container.K = Part and then
@@ -1956,14 +1994,14 @@ package body Verified_Ordered_Sets is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error;
       end if;
 
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "bad cursor in Next");
 
-      return (Node => Next_Unchecked(Container, Position.Node));
+      return (Node => Next_Unchecked (Container, Position.Node));
    end Next;
 
    procedure Next (Container : Set; Position : in out Cursor) is
@@ -1981,17 +2019,19 @@ package body Verified_Ordered_Sets is
          return Set_Ops.Overlap (Left.Tree.all, Right.Tree.all);
       end if;
 
-      if Length(Left) = 0 or Length(Right) = 0 then
+      if Length (Left) = 0 or Length (Right) = 0 then
          return False;
       end if;
 
       declare
 
-         L_Node : Count_Type := First(Left).Node;
-         R_Node : Count_Type := First(Right).Node;
+         L_Node : Count_Type := First (Left).Node;
+         R_Node : Count_Type := First (Right).Node;
 
-         L_Last : constant Count_Type := Next(Left.Tree.all, Last(Left).Node);
-         R_Last : constant Count_Type := Next(Right.Tree.all, Last(Right).Node);
+         L_Last : constant Count_Type :=
+                    Next (Left.Tree.all, Last (Left).Node);
+         R_Last : constant Count_Type :=
+                    Next (Right.Tree.all, Last (Right).Node);
 
       begin
          if Left'Address = Right'Address then
@@ -2005,10 +2045,12 @@ package body Verified_Ordered_Sets is
                return False;
             end if;
 
-            if Left.Tree.Nodes(L_Node).Element < Right.Tree.Nodes(R_Node).Element then
+            if Left.Tree.Nodes (L_Node).Element <
+              Right.Tree.Nodes (R_Node).Element then
                L_Node := Next (Left.Tree.all, L_Node);
 
-            elsif Right.Tree.Nodes(R_Node).Element < Left.Tree.Nodes(L_Node).Element then
+            elsif Right.Tree.Nodes (R_Node).Element <
+              Left.Tree.Nodes (L_Node).Element then
                R_Node := Next (Right.Tree.all, R_Node);
 
             else
@@ -2037,7 +2079,7 @@ package body Verified_Ordered_Sets is
          return No_Element;
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error;
       end if;
 
@@ -2074,8 +2116,8 @@ package body Verified_Ordered_Sets is
 
    procedure Query_Element
      (Container : in out Set;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type))
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type))
    is
    begin
       if Container.K /= Plain then
@@ -2083,7 +2125,7 @@ package body Verified_Ordered_Sets is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with "Position cursor has no element";
       end if;
 
@@ -2122,14 +2164,14 @@ package body Verified_Ordered_Sets is
      (Stream    : not null access Root_Stream_Type'Class;
       Container : out Set)
    is
---        function Read_Node
---          (Stream : not null access Root_Stream_Type'Class)
---           return Count_Type;
---        pragma Inline (Read_Node);
+      --        function Read_Node
+      --          (Stream : not null access Root_Stream_Type'Class)
+      --           return Count_Type;
+      --        pragma Inline (Read_Node);
 
---  compiler bug 2007/08/26 ???
---        procedure Read is
---           new Tree_Operations.Generic_Read (Clear, Read_Node);
+      --  compiler bug 2007/08/26 ???
+      --        procedure Read is
+      --           new Tree_Operations.Generic_Read (Clear, Read_Node);
 
       ---------------
       -- Read_Node --
@@ -2196,7 +2238,7 @@ package body Verified_Ordered_Sets is
       Y : Count_Type;
       B : Boolean;
 
-   --  Start of processing for Read
+      --  Start of processing for Read
 
    begin
       Container.Clear;
@@ -2251,7 +2293,7 @@ package body Verified_Ordered_Sets is
 
       declare
          Node : constant Count_Type :=
-           Element_Keys.Find (Container.Tree.all, New_Item);
+                  Element_Keys.Find (Container.Tree.all, New_Item);
 
       begin
          if Node = 0 then
@@ -2283,15 +2325,15 @@ package body Verified_Ordered_Sets is
       pragma Inline (New_Node);
 
       procedure Local_Insert_Post is
-         new Element_Keys.Generic_Insert_Post (New_Node);
+        new Element_Keys.Generic_Insert_Post (New_Node);
 
       procedure Local_Insert_Sans_Hint is
-         new Element_Keys.Generic_Conditional_Insert (Local_Insert_Post);
+        new Element_Keys.Generic_Conditional_Insert (Local_Insert_Post);
 
       procedure Local_Insert_With_Hint is
-         new Element_Keys.Generic_Conditional_Insert_With_Hint
-        (Local_Insert_Post,
-         Local_Insert_Sans_Hint);
+        new Element_Keys.Generic_Conditional_Insert_With_Hint
+          (Local_Insert_Post,
+           Local_Insert_Sans_Hint);
 
       NN : Nodes_Type renames Tree.Nodes;
 
@@ -2379,7 +2421,7 @@ package body Verified_Ordered_Sets is
            with "Can't modify part of container";
       end if;
 
-      if not Has_Element(Container, Position) then
+      if not Has_Element (Container, Position) then
          raise Constraint_Error with
            "Position cursor has no element";
       end if;
@@ -2396,13 +2438,14 @@ package body Verified_Ordered_Sets is
 
    procedure Reverse_Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor))
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor))
    is
       procedure Process_Node (Node : Count_Type);
       pragma Inline (Process_Node);
 
       procedure Local_Reverse_Iterate is
-         new Tree_Operations.Generic_Reverse_Iteration (Process_Node);
+        new Tree_Operations.Generic_Reverse_Iteration (Process_Node);
 
       ------------------
       -- Process_Node --
@@ -2416,7 +2459,7 @@ package body Verified_Ordered_Sets is
       T : Tree_Type renames Container.Tree.all;
       B : Natural renames T.Busy;
 
-   --  Start of processing for Reverse_Iterate
+      --  Start of processing for Reverse_Iterate
 
    begin
       B := B + 1;
@@ -2432,14 +2475,15 @@ package body Verified_Ordered_Sets is
          end if;
 
          declare
-            Node : Count_Type := Container.Last;
-            First : Count_Type := Previous(Container.Tree.all, Container.First);
+            Node  : Count_Type := Container.Last;
+            First : Count_Type :=
+                      Previous (Container.Tree.all, Container.First);
 
          begin
 
             while Node /= First loop
-               Process_Node(Node);
-               Node := Previous(Container.Tree.all, Node);
+               Process_Node (Node);
+               Node := Previous (Container.Tree.all, Node);
             end loop;
 
          end;
@@ -2459,23 +2503,23 @@ package body Verified_Ordered_Sets is
 
    function Right (Container : Set; Position : Cursor) return Set is
       Lst : Count_Type;
-      L : Count_Type := 0;
-      C : Count_Type := Position.Node;
+      L   : Count_Type := 0;
+      C   : Count_Type := Position.Node;
    begin
 
       if C = 0 then
          return (Capacity => Container.Capacity,
-                 K => Part,
-                 Tree => Container.Tree,
-                 Length => 0,
-                 First => 0,
-                 Last => 0);
+                 K        => Part,
+                 Tree     => Container.Tree,
+                 Length   => 0,
+                 First    => 0,
+                 Last     => 0);
       end if;
 
       if Container.K = Plain then
          Lst := 0;
       else
-         Lst := Next(Container.Tree.all, Container.Last);
+         Lst := Next (Container.Tree.all, Container.Last);
       end if;
 
       if C = Lst then
@@ -2488,23 +2532,25 @@ package body Verified_Ordered_Sets is
             raise Constraint_Error with
               "Position cursor has no element";
          end if;
-         C := Next(Container.Tree.all, C);
+         C := Next (Container.Tree.all, C);
          L := L + 1;
       end loop;
 
       return (Capacity => Container.Capacity,
-              K => Part,
-              Tree => Container.Tree,
-              Length => L,
-              First => Position.Node,
-              Last => Last(Container).Node);
+              K        => Part,
+              Tree     => Container.Tree,
+              Length   => L,
+              First    => Position.Node,
+              Last     => Last (Container).Node);
    end Right;
 
    ---------------
    -- Right_Son --
    ---------------
 
-   function Right_Son (Tree : Tree_Type; Node : Count_Type) return Count_Type is
+   function Right_Son
+     (Tree : Tree_Type;
+      Node : Count_Type) return Count_Type is
    begin
       return Tree.Nodes (Node).Right;
    end Right_Son;
@@ -2514,8 +2560,8 @@ package body Verified_Ordered_Sets is
    ---------------
 
    procedure Set_Color
-     (Tree : in out Tree_Type;
-      Node : Count_Type;
+     (Tree  : in out Tree_Type;
+      Node  : Count_Type;
       Color : Color_Type)
    is
    begin
@@ -2566,10 +2612,10 @@ package body Verified_Ordered_Sets is
    ------------------
 
    function Strict_Equal (Left, Right : Set) return Boolean is
-      LNode : Count_Type := First(Left).Node;
-      RNode : Count_Type := First(Right).Node;
+      LNode : Count_Type := First (Left).Node;
+      RNode : Count_Type := First (Right).Node;
    begin
-      if Length(Left) /= Length(Right) then
+      if Length (Left) /= Length (Right) then
          return False;
       end if;
 
@@ -2578,12 +2624,13 @@ package body Verified_Ordered_Sets is
             return True;
          end if;
 
-         if Left.Tree.Nodes(LNode).Element /= Right.Tree.Nodes(RNode).Element then
+         if Left.Tree.Nodes (LNode).Element /=
+           Right.Tree.Nodes (RNode).Element then
             exit;
          end if;
 
-         LNode := Next_Unchecked(Left, LNode);
-         RNode := Next_Unchecked(Right, RNode);
+         LNode := Next_Unchecked (Left, LNode);
+         RNode := Next_Unchecked (Right, RNode);
       end loop;
       return False;
 
@@ -2614,7 +2661,7 @@ package body Verified_Ordered_Sets is
          Tgt : Count_Type := Target.First;
          Src : Count_Type := Source.First;
 
-         SLast : constant Count_Type := Next(Source.Tree.all, Source.Last);
+         SLast : constant Count_Type := Next (Source.Tree.all, Source.Last);
 
          New_Tgt_Node : Count_Type;
 
@@ -2649,10 +2696,12 @@ package body Verified_Ordered_Sets is
                return;
             end if;
 
-            if Target.Tree.Nodes(Tgt).Element < Source.Tree.Nodes(Src).Element then
+            if Target.Tree.Nodes (Tgt).Element <
+              Source.Tree.Nodes (Src).Element then
                Tgt := Next (Target.Tree.all, Tgt);
 
-            elsif Source.Tree.Nodes(Src).Element < Target.Tree.Nodes(Tgt).Element then
+            elsif Source.Tree.Nodes (Src).Element <
+              Target.Tree.Nodes (Tgt).Element then
                Insert_With_Hint
                  (Dst_Tree => Target.Tree.all,
                   Src_Tree => Source.Tree.all,
@@ -2683,17 +2732,18 @@ package body Verified_Ordered_Sets is
          return Empty_Set;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Right.Copy;
       end if;
 
-      return S : Set (Length(Left) + Length(Right)) do
+      return S : Set (Length (Left) + Length (Right)) do
          if Left.K = Plain and Right.K = Plain then
-            Set_Ops.Symmetric_Difference (Left.Tree.all, Right.Tree.all, S.Tree.all);
+            Set_Ops.Symmetric_Difference (Left.Tree.all, Right.Tree.all,
+                                          S.Tree.all);
             return;
          end if;
 
@@ -2701,11 +2751,11 @@ package body Verified_Ordered_Sets is
 
             Tree : Tree_Type renames S.Tree.all;
 
-            L_Node : Count_Type := First(Left).Node;
-            R_Node : Count_Type := First(Right).Node;
+            L_Node : Count_Type := First (Left).Node;
+            R_Node : Count_Type := First (Right).Node;
 
-            L_Last : Count_Type := Next(Left.Tree.all, Last(Left).Node);
-            R_Last : Count_Type := Next(Right.Tree.all, Last(Right).Node);
+            L_Last : Count_Type := Next (Left.Tree.all, Last (Left).Node);
+            R_Last : Count_Type := Next (Right.Tree.all, Last (Right).Node);
 
             Dst_Node : Count_Type;
 
@@ -2740,7 +2790,8 @@ package body Verified_Ordered_Sets is
                   return;
                end if;
 
-               if Left.Tree.Nodes(L_Node).Element < Right.Tree.Nodes(R_Node).Element then
+               if Left.Tree.Nodes (L_Node).Element <
+                 Right.Tree.Nodes (R_Node).Element then
                   Insert_With_Hint
                     (Dst_Tree => Tree,
                      Src_Tree => Left.Tree.all,
@@ -2750,7 +2801,8 @@ package body Verified_Ordered_Sets is
 
                   L_Node := Next (Left.Tree.all, L_Node);
 
-               elsif Right.Tree.Nodes(R_Node).Element < Left.Tree.Nodes(L_Node).Element then
+               elsif Right.Tree.Nodes (R_Node).Element <
+                 Left.Tree.Nodes (L_Node).Element then
                   Insert_With_Hint
                     (Dst_Tree => Tree,
                      Src_Tree => Right.Tree.all,
@@ -2849,15 +2901,15 @@ package body Verified_Ordered_Sets is
          return Left.Copy;
       end if;
 
-      if Length(Left) = 0 then
+      if Length (Left) = 0 then
          return Right.Copy;
       end if;
 
-      if Length(Right) = 0 then
+      if Length (Right) = 0 then
          return Left.Copy;
       end if;
 
-      return S : Set (Length(Left) + Length(Right)) do
+      return S : Set (Length (Left) + Length (Right)) do
          S.Assign (Source => Left);
          S.Union (Right);
       end return;
@@ -2877,7 +2929,7 @@ package body Verified_Ordered_Sets is
       pragma Inline (Write_Node);
 
       procedure Write is
-         new Tree_Operations.Generic_Write (Write_Node);
+        new Tree_Operations.Generic_Write (Write_Node);
 
       ----------------
       -- Write_Node --
@@ -2893,7 +2945,7 @@ package body Verified_Ordered_Sets is
          Element_Type'Write (Stream, N (Node).Element);
       end Write_Node;
 
-   --  Start of processing for Write
+      --  Start of processing for Write
 
    begin
       Write (Stream, Container.Tree.all);
@@ -2907,4 +2959,4 @@ package body Verified_Ordered_Sets is
       raise Program_Error with "attempt to stream set cursor";
    end Write;
 
-end Verified_Ordered_Sets;
+end Formal_Ordered_Sets;

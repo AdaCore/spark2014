@@ -1,5 +1,5 @@
 with Ada.Text_IO;
-with Verified_Hashed_Sets;
+with Formal_Hashed_Sets;
 with Ada.Containers;
 use Ada.Containers;
 
@@ -16,7 +16,7 @@ procedure test_vhase is
       return Element1 = Element2;
    end;
 
-   package VHASE is new Verified_Hashed_Sets
+   package VHASE is new Formal_Hashed_Sets
      (Element_Type => Integer,
       Hash => Hash,
       Equivalent_Elements => Equivalent_Elements);

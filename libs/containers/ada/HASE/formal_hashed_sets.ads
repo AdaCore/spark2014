@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---   A D A . C O N T A I N E R S . B O U N D E D _ H A S H E D _ S E T S    --
+--    A D A . C O N T A I N E R S . F O R M A L _ H A S H E D _ S E T S     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2004-2008, Free Software Foundation, Inc.         --
+--          Copyright (C) 2010, Free Software Foundation, Inc.              --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -30,7 +30,8 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
--- This unit was originally developed by Matthew J Heaney.                  --
+-- This unit was originally developed by Claire Dross, based on the work    --
+-- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
 private with Verified_Hash_Tables;  -- ???
@@ -45,11 +46,11 @@ generic
    with function Hash (Element : Element_Type) return Hash_Type;
 
    with function Equivalent_Elements (Left, Right : Element_Type)
-                                     return Boolean;
+                                      return Boolean;
 
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Verified_Hashed_Sets is
+package Formal_Hashed_Sets is
    --pragma Pure;
 
    type Set (Capacity : Count_Type; Modulus : Hash_Type) is tagged private;
@@ -94,8 +95,8 @@ package Verified_Hashed_Sets is
 
    procedure Query_Element
      (Container : in out Set;
-      Position : Cursor;
-      Process  : not null access procedure (Element : Element_Type));
+      Position  : Cursor;
+      Process   : not null access procedure (Element : Element_Type));
 
    procedure Move (Target : in out Set; Source : in out Set);
 
@@ -140,7 +141,7 @@ package Verified_Hashed_Sets is
    function Symmetric_Difference (Left, Right : Set) return Set;
 
    function "xor" (Left, Right : Set) return Set
-     renames Symmetric_Difference;
+                   renames Symmetric_Difference;
 
    function Overlap (Left, Right : Set) return Boolean;
 
@@ -160,7 +161,7 @@ package Verified_Hashed_Sets is
 
    function Has_Element (Container : Set; Position : Cursor) return Boolean;
 
-   function Equivalent_Elements (Left : Set; CLeft : Cursor;
+   function Equivalent_Elements (Left  : Set; CLeft : Cursor;
                                  Right : Set; CRight : Cursor) return Boolean;
 
    function Equivalent_Elements
@@ -173,7 +174,8 @@ package Verified_Hashed_Sets is
 
    procedure Iterate
      (Container : Set;
-      Process   : not null access procedure (Container : Set; Position : Cursor));
+      Process   :
+        not null access procedure (Container : Set; Position : Cursor));
 
    function Default_Modulus (Capacity : Count_Type) return Hash_Type;
 
@@ -209,7 +211,7 @@ package Verified_Hashed_Sets is
         (Container : in out Set;
          Position  : Cursor;
          Process   : not null access
-                       procedure (Element : in out Element_Type));
+           procedure (Element : in out Element_Type));
 
    end Generic_Keys;
 
@@ -225,8 +227,8 @@ private
 
    type Node_Type is
       record
-         Element : Element_Type;
-         Next    : Count_Type;
+         Element     : Element_Type;
+         Next        : Count_Type;
          Has_Element : Boolean := False;
       end record;
 
@@ -238,11 +240,13 @@ private
    type Kind is (Plain, Part);
 
    type Set (Capacity : Count_Type; Modulus : Hash_Type) is tagged record
-      HT : HT_Access := new HT_Types.Hash_Table_Type'(Capacity, Modulus, others => <>);
-      K : Kind := Plain;
+      HT     : HT_Access :=
+                 new HT_Types.Hash_Table_Type'(Capacity, Modulus,
+                                               others => <>);
+      K      : Kind := Plain;
       Length : Count_Type := 0;
-      First : Count_Type := 0;
-      Last : Count_Type := 0;
+      First  : Count_Type := 0;
+      Last   : Count_Type := 0;
    end record;
 
    use HT_Types;
@@ -281,4 +285,4 @@ private
 
    Empty_Set : constant Set := (Capacity => 0, Modulus => 0, others => <>);
 
-end Verified_Hashed_Sets;
+end Formal_Hashed_Sets;
