@@ -955,6 +955,14 @@ Frama-C is plain incorrect, and identified as such.
 
 Interfaces are not in ALFA also to simplify the work on the first version.
 
+Controlled types in Ada define special subprograms which are called when
+assigning to an object of the type (a controlled object), or when a controlled
+object goes out of scope or is released. Controlled types are not in ALFA both
+because they are not usually used in critical software, and because they may
+lead to the generation of an implicit exception handler, in order to apply
+finalization to the controlled object in the cases where an exception has been
+raised.
+
 \subsubsection{Variables}
 
 Variables whose address is taken are not in ALFA.
