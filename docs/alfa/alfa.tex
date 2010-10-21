@@ -900,7 +900,8 @@ always written on all program paths to the exit of the subprogram, and whose
 initial value is not read. We add all local variables to this set because their
 value should not be read before they are assigned, and it does not matter if
 they are initialized prior to returning from the function. The read-write-set
-is all other variable paths read or written.
+is all other variable paths read or written. The frame condition is the
+defined by the value of all three sets.
 
 \begin{example}
 Consider the following code for setting a field of an array element:
@@ -963,13 +964,19 @@ Variables whose address is taken are not in ALFA.
 Library-level subprograms, package subprograms, local subprograms and generic
 subprograms are all in ALFA.
 
+Primitive subprograms of tagged types are in ALFA only if they do not have
+global variables in their frame condition. The reason for this restriction is
+that these subprograms can be subject to dynamic dispatching, which must
+respect the Liskov Substitution Principle to allow formal verification as
+described in Section~\ref{sec:LSP}.
+
 \subsubsection{Calls}
 \label{ALFA:calls}
 
 \paragraph{Dispatching Calls}
 
 Ada 2012 defines two differents types of contracts on primitive subprograms of
-tagged types, that is subprograms which can be subject to dynamic dispatch:
+tagged types, that is 
 \begin{enumerate}
 \item regular \verb|Pre| and \verb|Post| aspects only apply to the subprogram
   on which they are defined;
@@ -981,9 +988,10 @@ tagged types, that is subprograms which can be subject to dynamic dispatch:
 \end{enumerate}
 
 The or'ing of inherited preconditions does not fit well a user who does not
-want to obey the Liskov Substitution Principle. In this case, the standard
-mandates that none of the subprograms in this inheritance hierarchy has a
-\verb|Pre'Class| aspect. The \verb|Pre| aspect should be used instead.
+want to obey the Liskov Substitution Principle (see Section~\ref{sec:LSP} for
+the definition of LSP). In this case, the standard mandates that none of the
+subprograms in this inheritance hierarchy has a \verb|Pre'Class| aspect. The
+\verb|Pre| aspect should be used instead.
 
 In order to perform formal verification of dipatching calls, we require that
 the program obeys the Liskov Substitution Principle. As a result, a dispatching
@@ -1108,6 +1116,96 @@ As part of CV, all intermediate assertions and loop-invariants are also
 proved. This includes the contracts, intermediate assertions and
 loop-invariants that are useful to prove absence of run-time errors, if RTE is
 also an objective.
+
+\subsection{Liskov Substitution Principle Verification (LSP)}
+\label{sec:LSP}
+
+Dynamic dispatching on tagged types makes it impossible to know the complete
+set of subprograms called at a dispatching call site. A solution would be to
+require all overriding subprograms to be known to analyze a dispatching
+call. This solution is not modular, as it requires re-verifying a program
+whenever a type is derived and new overriding subprograms are defined. Instead,
+we restrict the behavior of overriding subprograms so that verification results
+are valid for any extension of the types which respect the said restrictions.
+
+These restrictions are known as the Liskov Substitution Principle:
+\begin{enumerate}
+\item \label{it:lsp-pre} The precondition of an overriding subprogram must be
+  weaker (be implied, include) than the precondition of the subprogram they
+  override.
+\item \label{it:lsp-post} The postcondition of an overriding subprogram must be
+  stronger (imply, be included in) than the postcondition of the subprogram
+  they override.
+\item \label{it:lsp-read} The frame condition of an overriding subprogram
+  should put less constraints on the calling context than the frame condition
+  of the subprogram they override.
+\item \label{it:lsp-write} The frame condition of an overriding subprogram
+  should give more guarantees to a caller, after the call, than the frame
+  condition of the subprogram they override.
+\end{enumerate}
+
+Conditions~\ref{it:lsp-pre} and~\ref{it:lsp-post} are automatically ensured by
+the conditions enforced on calls in ALFA, as described in
+Section~\ref{ALFA:calls}. These contracts should be verified as part of doing
+CV.
+
+Conditions~\ref{it:lsp-read} and~\ref{it:lsp-write} are verified by:
+\begin{itemize}
+\item checking that the computed frame condition of a primitive subprogram of a
+  tagged type both puts less constraints on the calling context and gives more
+  guarantees to a caller than the frame condition suggested by its
+  specification (``in'', ``out'' and ``in out'' parameters);
+\item assuming that each dispatching call has the frame condition suggested by
+  the specification of the subprogram on which it dispatches.
+\end{itemize}
+
+\begin{example}
+  Consider types \verb|T| and \verb|S| derived from \verb|T|, with primitive
+  subprogram \verb|F| being overriden for \verb|S|:~\\
+
+\begin{minipage}{0.5\linewidth}
+\begin{verbatim}
+type T is tagged record 
+   X : Integer; 
+end record;
+
+type S is new T with record 
+   Y : Integer; 
+end record;
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\begin{verbatim}
+procedure F (A : in out T) is
+begin
+   A.X := 0;
+end F;
+
+procedure F (A : in out S) is
+begin
+   A.Y := A.X + 1;
+end F;
+\end{verbatim}
+\end{minipage}
+
+The frame condition suggested by the specification of the subprogram \verb|F|
+applied to type \verb|T| is the read-write-set \{ \verb|A.X| \}.  The computed
+frame condition for \verb|F| applied to type \verb|T| is the write-set \{
+\verb|A.X| \}.  Since it does not require \verb|A.X| to be initialized at
+function call, it puts less constraint on the calling context than its
+specification suggests. Since it does not write any variable path not written
+in its specification, it provides as much guarantees to the caller as is
+specification suggests.\\
+
+The frame condition suggested by the specification of the subprogram \verb|F|
+applied to type \verb|S| is the read-write-set \{ \verb|A.X|, \verb|A.Y| \}.
+The computed frame condition for \verb|F| applied to type \verb|S| is the
+read-set \{ \verb|A.X| \} and the write-set \{ \verb|A.Y| \}. Since it does not
+require \verb|A.Y| to be initialized at function call, it puts less constraint
+on the calling context than its specification suggests. Since it does not write
+any variable path not written in its specification, it provides as much
+guarantees to the caller as is specification suggests.
+\end{example}
 
 \subsection{Verification of Absence of Run-Time Errors (RTE)}
 
@@ -1813,50 +1911,18 @@ subprogram body.
 
 \paragraph{Overriding}
 
-For every overriding subprogram \verb|B.F| of a subprogram \verb|A.F|, we
-should show that the Liskov Substitution Principle holds between modified
-versions of \verb|B.F| and \verb|A.F|. Namely, we generate a specification
-\verb|B.F'| which has the same contract as \verb|B.F|, except a frame condition
-which aggregates all the frame conditions of all the overridings of the
-subprogram along the hierarchy. Same for \verb|A.F'| from \verb|A.F|. Then, we
-should generate a separate hierarchy when only \verb|B.F'| overrides
-\verb|A.F'|.
+As seen in Section~\ref{Ada2SPARK:subprograms}, inheritance relations disappear
+during the translation of subprograms. As indicated in
+Section~\ref{sec:LSP}, Liskov Substitution Principle is verified as part of
+normal contract verification, so nothing special is required for LSP.
 
 \subsubsection{Calls}
 
 \paragraph{Dispatching Calls}
 
-As seen in Section~\ref{Ada2SPARK:subprograms}, inheritance relations disappear
-during the translation of subprograms. However, as seen in
-Section~\ref{ALFA:calls}, we should check that overriding subprograms obey the
-Liskov Substitution Principle. Ada rules for inheritance of \verb|Pre'Class| and
-\verb|Post'Class| ensure that this is the case for preconditions and
-postconditions. Thus, the only remaining part of the contract to check is the
-frame condition. In order to ensure automatically that the Liskov Substitution
-Principle is obeyed by the frame condition, we should generate a new subprogram
-declaration used in dispatching calls, whose frame condition aggregates all the
-frame conditions of all the overridings of the subprogram along the hierarchy:
-\begin{enumerate}
-\item any path-variable which is ``in out'' in some overriding is kept as ``in
-  out'';
-\item any other path-variable which is ``in'' in some overriding and ``out'' in
-  some other overriding is kept as ``in out'';
-\item any other path-variable which is ``in'' or ``out'' in some overriding is
-  kept.
-\end{enumerate}
-
-\begin{example}
-  Suppose a primitive subprogram A.F is overriden by B.F and C.F:
-  \begin{itemize}
-  \item A.F takes AI as ``in'', AO as ``out'' and AOI as ``in out'';
-  \item B.F takes BI as ``in'' and AI as ``out'';
-  \item C.F takes AO as ``in''.
-  \end{itemize}
-
-  Then the aggregated frame condition takes AI, AO and AIO as ``in out'' and BI
-  as ``in''. It is more restrictive than any of the frame conditions of A.F,
-  B.F or C.F.
-\end{example}
+As indicated in Section~\ref{sec:LSP}, a dispatching call should be analyzed as
+a call to the subprogram on which it is dispatching, with the frame condition
+suggested by the specification of the subprogram.
 
 \subsubsection{Expressions}
 
