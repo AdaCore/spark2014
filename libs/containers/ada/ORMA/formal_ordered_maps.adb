@@ -30,12 +30,12 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Bounded_Red_Black_Trees.Generic_Operations;
+with Red_Black_Trees.Generic_Bounded_Operations;
 pragma Elaborate_All
-  (Bounded_Red_Black_Trees.Generic_Operations);
+  (Red_Black_Trees.Generic_Bounded_Operations);
 
-with Bounded_Red_Black_Trees.Generic_Keys;
-pragma Elaborate_All (Bounded_Red_Black_Trees.Generic_Keys);
+with Red_Black_Trees.Generic_Bounded_Keys;
+pragma Elaborate_All (Red_Black_Trees.Generic_Bounded_Keys);
 
 with System; use type System.Address;
 
@@ -122,7 +122,7 @@ package body Formal_Ordered_Maps is
 
    package Tree_Operations is
      new Bounded_Red_Black_Trees.Generic_Operations
-       (Tree_Type => Tree_Type,
+       (Tree_Types => Tree_Types,
         Left      => Left_Son,
         Right     => Right_Son);
 

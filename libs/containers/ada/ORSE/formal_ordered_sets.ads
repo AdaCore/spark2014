@@ -34,7 +34,7 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-private with Bounded_Red_Black_Trees;
+private with Red_Black_Trees;
 private with Ada.Streams;
 
 with Ada.Containers;
@@ -47,7 +47,7 @@ generic
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
 package Formal_Ordered_Sets is
-   --pragma Pure;
+   pragma Pure;
 
    function Equivalent_Elements (Left, Right : Element_Type) return Boolean;
 
@@ -244,31 +244,29 @@ private
       Parent  : Count_Type'Base := -1;
       Left    : Count_Type;
       Right   : Count_Type;
-      Color   : Bounded_Red_Black_Trees.Color_Type;
+      Color   : Red_Black_Trees.Color_Type;
       Element : Element_Type;
    end record;
 
-   type Nodes_Type is array (Count_Type range <>) of Node_Type;
-
    type Kind is (Plain, Part);
 
+   package Tree_Types is
+     new Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
+
    type Tree_Type (Capacity : Count_Type) is
-     new Bounded_Red_Black_Trees.Tree_Type with record
-      Free  : Count_Type := 0;
-      Nodes : Nodes_Type (1 .. Capacity);
-   end record;
+     new Tree_Types.Tree_Type (Capacity) with null record;
 
    type Tree_Type_Access is access all Tree_Type;
 
    type Set (Capacity : Count_Type) is tagged record
-      Tree   : Tree_Type_Access := new Tree_Type'(Capacity, others => <>);
+      Tree   : Tree_Type_Access := new Tree_Type(Capacity);
       K      : Kind := Plain;
       Length : Count_Type := 0;
       First  : Count_Type := 0;
       Last   : Count_Type := 0;
    end record;
 
-   use Bounded_Red_Black_Trees;
+   use Red_Black_Trees;
    use Ada.Streams;
 
    type Set_Access is access all Set;
