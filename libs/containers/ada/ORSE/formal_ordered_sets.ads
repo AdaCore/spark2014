@@ -34,7 +34,7 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-private with Red_Black_Trees;
+private with Ada.Containers.Red_Black_Trees;
 private with Ada.Streams;
 
 with Ada.Containers;

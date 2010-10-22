@@ -30,16 +30,16 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Red_Black_Trees.Generic_Bounded_Operations;
+with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
 pragma Elaborate_All
-  (Red_Black_Trees.Generic_Bounded_Operations);
+  (Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations);
 
-with Red_Black_Trees.Generic_Bounded_Keys;
-pragma Elaborate_All (Red_Black_Trees.Generic_Bounded_Keys);
+with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
+pragma Elaborate_All (Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys);
 
-with Red_Black_Trees.Generic_Bounded_Set_Operations;
+with Ada.Containers.Red_Black_Trees.Generic_Bounded_Set_Operations;
 pragma Elaborate_All
-  (Red_Black_Trees.Generic_Bounded_Set_Operations);
+  (Ada.Containers.Red_Black_Trees.Generic_Bounded_Set_Operations);
 
 with System;  use type System.Address;
 
@@ -2322,7 +2322,7 @@ package body Formal_Ordered_Sets is
       end Read_Element;
 
       --  Start of processing for Read
-	Result : Tree_Type_Access;
+        Result : Tree_Type_Access;
    begin
       if Container.K /= Plain then
          raise Constraint_Error;
