@@ -2483,6 +2483,23 @@ Both should be translated as raising exceptions in Why, with a suitable
 exception handler to catch the exception for returns at the end of the
 subprogram, before actually returning the value if any.
 
+\paragraph{Loop Statements} 
+
+Loop-invariants in Why have a different semantics than in Ada and SPARK:
+instead of being true at the place where they are inserted in the toplevel
+sequence of statements in a loop body, loop-invariants in Why must be true at
+loop entry \emph{and} at loop exit. In order to account for this difference,
+the translation should do the following:
+\begin{itemize}
+\item generate an infinite loop in Why for the loop body, taking as
+  loop-invariant the translation of the Ada loop-invariant;
+\item terminate the loop body with an if-expression testing the condition for
+  exiting the loop, and raising an exception if this is the case;
+\item enclose the loop in a try-expression to catch exits from the loop;
+\item put the try-expression in the then-branch of an if-expression testing the
+  condition for entering the loop.
+\end{itemize}
+
 \bibliographystyle{plain}
 \bibliography{alfa}
 
