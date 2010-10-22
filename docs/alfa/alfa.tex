@@ -1065,6 +1065,9 @@ We target three types of formal verification goals:
   are free from most types of run-time errors.
 \end{enumerate}
 
+Verification of Liskov Substitution Principle (LSP), for primitive subprograms
+of tagged types and dispatching calls, is part of both DFV and CV.
+
 All of data-flow verification, contract verification and verification of
 absence of run-time errors can be performed independently. However, there is a
 natural ordering which arises from the logical dependencies between them: 
@@ -1139,10 +1142,10 @@ are valid for any extension of the types which respect the said restrictions.
 These restrictions are known as the Liskov Substitution Principle:
 \begin{enumerate}
 \item \label{it:lsp-pre} The precondition of an overriding subprogram must be
-  weaker (be implied, include) than the precondition of the subprogram they
-  override.
+  weaker than (be implied by, include) the precondition of the subprogram
+  they override.
 \item \label{it:lsp-post} The postcondition of an overriding subprogram must be
-  stronger (imply, be included in) than the postcondition of the subprogram
+  stronger than (imply, be included in) the postcondition of the subprogram
   they override.
 \item \label{it:lsp-read} The frame condition of an overriding subprogram
   should put less constraints on the calling context than the frame condition
@@ -1194,7 +1197,7 @@ begin
    A.Y := A.X + 1;
 end F;
 \end{verbatim}
-\end{minipage}
+\end{minipage}~\\
 
 The frame condition suggested by the specification of the subprogram \verb|F|
 applied to type \verb|T| is the read-write-set \{ \verb|A.X| \}.  The computed
@@ -1212,7 +1215,13 @@ read-set \{ \verb|A.X| \} and the write-set \{ \verb|A.Y| \}. Since it does not
 require \verb|A.Y| to be initialized at function call, it puts less constraint
 on the calling context than its specification suggests. Since it does not write
 any variable path not written in its specification, it provides as much
-guarantees to the caller as is specification suggests.
+guarantees to the caller as is specification suggests.~\\
+
+When analyzing a dispatching call to \verb|F| on static type \verb|T'Class|, it
+will be assumed that the subprogram called has the frame condition suggested by
+\verb|F|'s specification: the read-write-set \{ \verb|A.X|, \verb|A.?| \} where
+\verb|A.?| is the component of type \verb|T'Class| denoting all components of
+derived types, like \verb|A.Y| for type \verb|S|.
 \end{example}
 
 \subsection{Verification of Absence of Run-Time Errors (RTE)}
@@ -1435,6 +1444,7 @@ subsequent phases:
 \item it makes all checks for run-time errors explicit;
 \item it explicits default expressions for parameters in calls;
 \item it removes renamings;
+\item it add a tag component to tagged types;
 \item \etc [add other expansions here]
 \end{itemize}
 
@@ -1742,6 +1752,26 @@ components. Discriminants used to bound array components should be used in
 place of the special variables holding the \verb|'First| and \verb|'Last|
 attributes applied to this component (as presented in
 Section~\ref{Ada2SPARK:variables}). 
+
+\paragraph{Tagged Types}
+
+The type of a tagged type is stored in a tag component, which is inserted by
+expansion (see Section~\ref{UnambigAda2ExpandedAda}). This tag component is
+required to translate class-wide assignment (there is a check that the source
+and destination objects have the same dynamic type) and class-wide structural
+equality (objects must be of the same type and their components must be equal
+for the objects to be equal). The tag component should be translated like a
+mathematical integer (and not an enumerated value, because it would bound the
+number of derived types from a type).
+
+\paragraph{Class-wide Types}
+
+A class-wide type \verb|T'Class| denotes type \verb|T| and all types derived
+from \verb|T|. It should be translated away like record types into the same set
+of components as the underlying record type, plus a special component to denote
+all the unknown components of derived types. This special component will not be
+accessed directly by the code, but used in frame conditions for dispatching
+calls, as described in Section~\ref{sec:LSP}.
 
 \paragraph{Anonymous Types}
 
