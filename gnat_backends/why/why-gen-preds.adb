@@ -37,8 +37,8 @@ package body Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int)
+      First : Uint;
+      Last  : Uint)
    is
       --  Identifiers
       Arg_S      : constant String := "x";
@@ -84,7 +84,7 @@ package body Why.Gen.Preds is
 
    function New_Binding_Pred
      (Name  : String;
-      Value : Int)
+      Value : Uint)
      return W_Binding_Pred_Unchecked_Id
    is
       Result : constant W_Binding_Pred_Unchecked_Id :=

@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;                use Types;
+with Uintp;                use Uintp;
 with Why.Ids;              use Why.Ids;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 with Why.Atree.Properties; use Why.Atree.Properties;
@@ -35,14 +35,14 @@ package Why.Gen.Preds is
    procedure Define_Range_Predicate
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int);
+      First : Uint;
+      Last  : Uint);
    --  Generate the definition of the range predicate for an integer type.
    --  This predicate is True when the int argument is in range First .. Last.
 
    function New_Binding_Pred
      (Name  : String;
-      Value : Int)
+      Value : Uint)
      return W_Binding_Pred_Unchecked_Id;
    --  Create a new binding for a predicate; the context is left empty.
    --  e.g. let <name> = <value> in <empty>

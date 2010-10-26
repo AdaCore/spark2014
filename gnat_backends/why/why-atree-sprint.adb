@@ -23,8 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Containers;    use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 
 with Namet;  use Namet;
 with Uintp;  use Uintp;
@@ -51,9 +50,9 @@ package body Why.Atree.Sprint is
    ---------
 
    function Img (Value : Uint) return String is
-      Result : constant String := Int'Image (UI_To_Int (Value));
    begin
-      return Trim (Result, Ada.Strings.Both);
+      UI_Image (Value, Decimal);
+      return UI_Image_Buffer (1 .. UI_Image_Length);
    end Img;
 
    ----------------

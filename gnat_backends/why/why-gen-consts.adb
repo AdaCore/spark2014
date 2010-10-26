@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp; use Uintp;
-
 with Why.Atree.Builders; use Why.Atree.Builders;
 
 package body Why.Gen.Consts is
@@ -33,9 +31,9 @@ package body Why.Gen.Consts is
    -- New_Constant --
    ------------------
 
-   function New_Constant (Value : Int) return W_Integer_Constant_Id is
+   function New_Constant (Value : Uint) return W_Integer_Constant_Id is
    begin
-      return New_Integer_Constant (Value => UI_From_Int (Value));
+      return New_Integer_Constant (Value => Value);
    end New_Constant;
 
 end Why.Gen.Consts;

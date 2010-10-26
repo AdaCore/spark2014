@@ -26,6 +26,7 @@
 
 with Types;  use Types;
 with Ttypes; use Ttypes;
+with Uintp;  use Uintp;
 
 with Outputs; use Outputs;
 
@@ -50,33 +51,33 @@ package body Gnat2Why.Standard is
       Declare_Abstract_Signed_Int
         (File,
          "standard__integer",
-         Standard_Integer_Size);
+         UI_From_Int (Standard_Integer_Size));
       Declare_Abstract_Signed_Int
         (File,
          "standard__natural",
-         0,
-         2 ** Natural (Standard_Integer_Size - 1) - 1);
+         Uint_0,
+         2 ** UI_From_Int (Standard_Integer_Size - 1) - 1);
       Declare_Abstract_Signed_Int
         (File,
          "standard__positive",
-         1,
-         2 ** Natural (Standard_Integer_Size - 1) - 1);
+         Uint_1,
+         2 ** UI_From_Int (Standard_Integer_Size - 1) - 1);
       Declare_Abstract_Signed_Int
         (File,
          "standard__short_short_integer",
-         Standard_Short_Short_Integer_Size);
+         UI_From_Int (Standard_Short_Short_Integer_Size));
       Declare_Abstract_Signed_Int
         (File,
          "standard__short_integer",
-         Standard_Short_Integer_Size);
+         UI_From_Int (Standard_Short_Integer_Size));
       Declare_Abstract_Signed_Int
         (File,
          "standard__long_integer",
-         Standard_Long_Integer_Size);
+         UI_From_Int (Standard_Long_Integer_Size));
       Declare_Abstract_Signed_Int
         (File,
          "standard__long_long_integer",
-         Standard_Long_Long_Integer_Size);
+         UI_From_Int (Standard_Long_Long_Integer_Size));
 
       Open_Current_File ("standard.why");
       Sprint_Why_Node (File, Current_File);

@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types; use Types;
+with Uintp; use Uintp;
 
 with Why.Ids; use Why.Ids;
 
@@ -34,17 +34,17 @@ package Why.Gen.Ints is
    procedure Declare_Abstract_Signed_Int
      (File : W_File_Id;
       Name : String;
-      Size : Pos);
+      Size : Uint);
    --  Declare the whole theory for a signed int of the given size,
-   --  i.e. whose range is -2 ** (Pos - 1) .. 2 ** (Pos - 1) -1.
+   --  i.e. whose range is -2 ** (Size - 1) .. 2 ** (Size - 1) -1.
    --  This creates an abstract type whose name is given in parameter
    --  along with a set of axioms and subprograms for int conversion.
 
    procedure Declare_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int);
+      First : Uint;
+      Last  : Uint);
    --  Same as the previous function, except that the higher and lower
    --  bounds are specified explicitly.
 

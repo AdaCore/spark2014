@@ -23,13 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;   use Types;
+with Uintp;   use Uintp;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Consts is
    --  This package provides ways to manipulate constant literals (ints
    --  and floats).
 
-   function New_Constant (Value : Int) return W_Integer_Constant_Id;
+   function New_Constant (Value : Uint) return W_Integer_Constant_Id;
 
 end Why.Gen.Consts;

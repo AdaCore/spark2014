@@ -37,8 +37,8 @@ package body Why.Gen.Ints is
    procedure Define_Signed_Int_Conversions
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int);
+      First : Uint;
+      Last  : Uint);
 
    ---------------------------------
    -- Declare_Abstract_Signed_Int --
@@ -47,19 +47,19 @@ package body Why.Gen.Ints is
    procedure Declare_Abstract_Signed_Int
      (File : W_File_Id;
       Name : String;
-      Size : Pos) is
+      Size : Uint) is
    begin
       Declare_Abstract_Signed_Int (File,
                                    Name,
-                                   -2 ** Natural (Size - 1),
-                                   2 ** Natural (Size - 1)  - 1);
+                                   -2 ** (Size - 1),
+                                   2 ** (Size - 1)  - 1);
    end Declare_Abstract_Signed_Int;
 
    procedure Declare_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int)
+      First : Uint;
+      Last  : Uint)
    is
       T : constant W_Type_Id := Declare_Abstract_Type (Name);
    begin
@@ -75,8 +75,8 @@ package body Why.Gen.Ints is
    procedure Define_Signed_Int_Conversions
      (File  : W_File_Id;
       Name  : String;
-      First : Int;
-      Last  : Int)
+      First : Uint;
+      Last  : Uint)
    is
       --  ??? Not fully implemented yet
       Arg_S : constant String := "n";
