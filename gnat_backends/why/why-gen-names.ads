@@ -34,11 +34,11 @@ package Why.Gen.Names is
 
    function New_Conversion_To_Int (Name : String) return W_Identifier_Id;
    --  Create a new identifier for a conversion from an abstract type
-   --  to int. The name of the astract type is given in parameter.
+   --  to int. The name of the abstract type is given in parameter.
 
    function New_Conversion_From_Int (Name : String) return W_Identifier_Id;
    --  Create a new identifier for a conversion from int to an abstract type.
-   --  The name of the astract type is given in parameter.
+   --  The name of the abstract type is given in parameter.
 
    function Range_Pred_Name (Name : String) return W_Identifier_Id;
    --  From the name of an abstract type, return the name of
