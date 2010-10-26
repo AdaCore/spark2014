@@ -40,6 +40,12 @@ package Why.Gen.Preds is
    --  Generate the definition of the range predicate for an integer type.
    --  This predicate is True when the int argument is in range First .. Last.
 
+   procedure Define_Eq_Predicate
+     (File : W_File_Id;
+      Name : String);
+   --  Generate the definition of the equality predicate for an integer type.
+   --  This predicate is True when conversions to int are equal.
+
    function New_Binding_Pred
      (Name  : String;
       Value : Uint)

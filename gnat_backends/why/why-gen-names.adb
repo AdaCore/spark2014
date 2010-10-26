@@ -56,6 +56,21 @@ package body Why.Gen.Names is
       return Coerce_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Coerce_Axiom;
 
+   ------------------
+   -- Eq_Pred_Name --
+   ------------------
+
+   function Eq_Pred_Name (Name : String) return W_Identifier_Id is
+      Prefix : constant String := "eq___";
+   begin
+      return New_Identifier (Prefix & Name);
+   end Eq_Pred_Name;
+
+   function Eq_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Eq_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Eq_Pred_Name;
+
    -----------------------------
    -- New_Conversion_From_Int --
    -----------------------------

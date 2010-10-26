@@ -44,6 +44,64 @@ package body Why.Gen.Preds is
    --  for any type that can be "chained"; this function is used to factorize
    --  out the body of these two functions.
 
+   -------------------------
+   -- Define_Eq_Predicate --
+   -------------------------
+
+   procedure Define_Eq_Predicate
+     (File : W_File_Id;
+      Name : String)
+   is
+      --  Identifiers
+      X_S               : constant String := "x";
+      Y_S               : constant String := "y";
+
+      --  predicate eq___<name> (x : <name>, y : <name>) = [...]
+      Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name (Name);
+      X_Binder          : constant W_Binder_Id :=
+                            New_Logic_Binder
+                            (Name       => New_Identifier (X_S),
+                             Param_Type => New_Abstract_Type
+                             (Name => New_Identifier (Name)));
+      Y_Binder          : constant W_Binder_Id :=
+                            New_Logic_Binder
+                            (Name       => New_Identifier (Y_S),
+                             Param_Type => New_Abstract_Type
+                             (Name => New_Identifier (Name)));
+
+      --  integer_of___<name> (x) = integer_of___<name> (y)
+      Conversion        : constant W_Identifier_Id :=
+                            New_Conversion_To_Int (Name);
+      X_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
+                            New_Unchecked_Operation;
+      Y_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
+                            New_Unchecked_Operation;
+   begin
+      Operation_Set_Name (X_To_Base_Type_Op, Conversion);
+      Operation_Append_To_Parameters (X_To_Base_Type_Op, New_Term (X_S));
+
+      Operation_Set_Name (Y_To_Base_Type_Op,
+                          Duplicate_Any_Node (Id => Conversion));
+      Operation_Append_To_Parameters (Y_To_Base_Type_Op, New_Term (Y_S));
+
+      --  ...now set the pieces together:
+      declare
+         Pred_Body : constant W_Predicate_Id :=
+                       New_Related_Terms (Left  => X_To_Base_Type_Op,
+                                          Op    => New_Rel_Eq,
+                                          Right => Y_To_Base_Type_Op);
+         Result    : constant W_Predicate_Definition_Unchecked_Id :=
+                       New_Unchecked_Predicate_Definition;
+      begin
+         Predicate_Definition_Set_Name (Result, Pred_Name);
+         Predicate_Definition_Append_To_Binders (Result, X_Binder);
+         Predicate_Definition_Append_To_Binders (Result, Y_Binder);
+         Predicate_Definition_Set_Def (Result, Pred_Body);
+         File_Append_To_Declarations (File,
+                                      New_Logic_Declaration (Decl => Result));
+      end;
+   end Define_Eq_Predicate;
+
    ----------------------------
    -- Define_Range_Predicate --
    ----------------------------

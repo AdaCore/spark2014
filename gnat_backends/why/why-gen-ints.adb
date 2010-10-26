@@ -79,7 +79,6 @@ package body Why.Gen.Ints is
       First : Uint;
       Last  : Uint)
    is
-      --  ??? Not fully implemented yet
       Arg_S : constant String := "n";
 
    begin
@@ -119,6 +118,7 @@ package body Why.Gen.Ints is
                                        Arrows,
                                        Range_Check,
                                        Post);
+         Define_Eq_Predicate (File, Name);
          Define_Range_Axiom (File,
                              New_Identifier (Name),
                              New_Conversion_To_Int (Name));
