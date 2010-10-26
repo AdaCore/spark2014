@@ -1,24 +1,5 @@
 package body Test_Astrium_3 is
 
-   function Is_Active (E : Boolean) return Boolean is
-   begin
-      return E;
-   end Is_Active;
-
-   function Activate (E : Boolean) return Boolean is
-   begin
-      return True;
-   end Activate;
-
-   function Weight (E : Boolean) return Integer is
-   begin
-      if Is_Active(E) then
-         return 1;
-      else
-         return 0;
-      end if;
-   end Weight;
-
    procedure Activate_First_Non_Active (L : in out List) is
       Cu : Cursor := First(L);
    begin
