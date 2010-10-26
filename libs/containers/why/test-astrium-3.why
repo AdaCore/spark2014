@@ -2,28 +2,20 @@
    a given state *)
 
 include "list.why"
+include "bool.why"
 
-logic weight_ : element_t -> int
+logic is_active: element_t -> bool
 
-axiom positive_weight :
-      forall e:element_t.
-      	     weight_(e)>=0
+parameter activate: e:element_t -> { } element_t { is_active(result) = true }
+
+function weight_ (e : element_t) : int =
+	 if is_active(e) then 1 else 0
 
 logic sum_of_weight : list -> int
 
 axiom sum_of_weight_replace_element :
       forall v1:list. forall v2:list. forall cu:cursor. forall e:element_t[sum_of_weight(v2),replace_element_(v1,cu,e,v2)].
       	     replace_element_(v1,cu,e,v2) -> sum_of_weight(v2)=sum_of_weight(v1)-weight_(element_(v1,cu))+weight_(e)
-
-logic is_active: element_t -> bool
-
-parameter activate: e:element_t -> { } element_t { is_active(result) = true }
-
-axiom weight_active:
-    forall e:element_t. is_active(e) = true -> weight_(e) = 1
-
-axiom weight_inactive:
-    forall e:element_t. is_active(e) = false -> weight_(e) = 0
 
 function num_of_active (co:list) : int = sum_of_weight(co)
 
