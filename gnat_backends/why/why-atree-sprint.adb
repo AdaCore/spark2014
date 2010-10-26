@@ -283,7 +283,8 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Arrow_Type_Id)
    is
-      Name : constant W_Identifier_OId := Arrow_Type_Get_Name (Node);
+      Name  : constant W_Identifier_OId := Arrow_Type_Get_Name (Node);
+      Right : constant W_Computation_Type_Id := Arrow_Type_Get_Right (Node);
    begin
       if Name /= Why_Empty then
          Traverse (State, Name);
@@ -293,10 +294,16 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Arrow_Type_Get_Left (Node));
-      P (O, " -> ");
-      Traverse
-        (State,
-         Arrow_Type_Get_Right (Node));
+      P (O, " ->");
+
+      if Get_Kind (Right) = W_Computation_Spec then
+         NL (O);
+      else
+         P (O, " ");
+      end if;
+
+      Traverse (State, Right);
+
       State.Control := Abandon_Children;
    end Arrow_Type_Pre_Op;
 
@@ -311,7 +318,6 @@ package body Why.Atree.Sprint is
       Result : constant W_Identifier_OId :=
                  Computation_Spec_Get_Result_Name (Node);
    begin
-      NL (O);
       P (O, "{ ");
       Traverse (State,
                 Computation_Spec_Get_Precondition (Node));
@@ -1347,7 +1353,7 @@ package body Why.Atree.Sprint is
 
       P (O, "logic ");
       Print_List (State, Names);
-      P (O, " : ");
+      P (O, " :");
       NL (O);
       Relative_Indent (O, 1);
       Traverse (State, Logic_Type);
@@ -1453,7 +1459,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Axiom_Get_Name (Node));
-      PL (O, " : ");
+      PL (O, " :");
       Relative_Indent (O, 1);
       Traverse
         (State,
@@ -1476,7 +1482,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Goal_Get_Name (Node));
-      PL (O, " : ");
+      PL (O, " :");
       Relative_Indent (O, 1);
       Traverse
         (State,
@@ -2725,7 +2731,7 @@ package body Why.Atree.Sprint is
       Print_List
         (State,
          Parameter_Declaration_Get_Names (Node));
-      P (O, " : ");
+      P (O, " :");
 
       Relative_Indent (O, 1);
       NL (O);
