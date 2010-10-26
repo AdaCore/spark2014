@@ -37,6 +37,8 @@ pragma Elaborate_All
 with Red_Black_Trees.Generic_Bounded_Keys;
 pragma Elaborate_All (Red_Black_Trees.Generic_Bounded_Keys);
 
+--with Ada.Text_IO;
+
 with System; use type System.Address;
 
 package body Formal_Ordered_Maps is
@@ -48,68 +50,52 @@ package body Formal_Ordered_Maps is
    --  These subprograms provide a functional interface to access fields
    --  of a node, and a procedural interface for modifying these values.
 
-   function Color (Tree : Tree_Type; Node : Node_Access) return Color_Type;
+   function Color (Node : Node_Type) return Red_Black_Trees.Color_Type;
    pragma Inline (Color);
 
-   function Left_Son (Tree : Tree_Type; Node : Count_Type) return Count_Type;
-   pragma Inline (Left_Son);
+   function Left_Son (Node : Node_Type) return Count_Type;
+   pragma Inline (Left);
 
-   function Parent (Tree : Tree_Type; Node : Count_Type) return Count_Type;
+   function Parent (Node : Node_Type) return Count_Type;
    pragma Inline (Parent);
 
-   function Right_Son (Tree : Tree_Type; Node : Count_Type) return Count_Type;
-   pragma Inline (Right_Son);
-
-   procedure Set_Parent
-     (Tree   : in out Tree_Type;
-      Node   : Node_Access;
-      Parent : Node_Access);
-   pragma Inline (Set_Parent);
-
-   procedure Set_Left
-     (Tree : in out Tree_Type;
-      Node : Node_Access;
-      Left : Node_Access);
-   pragma Inline (Set_Left);
-
-   procedure Set_Right
-     (Tree  : in out Tree_Type;
-      Node  : Node_Access;
-      Right : Node_Access);
-   pragma Inline (Set_Right);
+   function Right_Son (Node : Node_Type) return Count_Type;
+   pragma Inline (Right);
 
    procedure Set_Color
-     (Tree  : in out Tree_Type;
-      Node  : Node_Access;
-      Color : Color_Type);
+     (Node  : in out Node_Type;
+      Color : Red_Black_Trees.Color_Type);
    pragma Inline (Set_Color);
+
+   procedure Set_Left (Node : in out Node_Type; Left : Count_Type);
+   pragma Inline (Set_Left);
+
+   procedure Set_Right (Node : in out Node_Type; Right : Count_Type);
+   pragma Inline (Set_Right);
+
+   procedure Set_Parent (Node : in out Node_Type; Parent : Count_Type);
+   pragma Inline (Set_Parent);
 
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Free (Tree : in out Tree_Type; X : in out Node_Access);
-
    generic
-      with procedure Initialize (X : Node_Access);
-   procedure Generic_Allocate_Node
-     (Tree : in out Tree_Type;
-      X    : out Count_Type);
+      with procedure Set_Element (Node : in out Node_Type);
+   procedure Generic_Allocate
+     (Tree : in out Tree_Types.Tree_Type'Class;
+      Node : out Count_Type);
 
-   generic
-      with procedure Allocate_Node (X : out Node_Access);
-   procedure Generic_Append (Container : in out Tree_Type);
+   procedure Free (Tree : in out Tree_Types.Tree_Type; X : Count_Type);
 
    function Is_Greater_Key_Node
-     (Tree  : Tree_Type;
-      Left  : Key_Type;
-      Right : Node_Access) return Boolean;
+     (Left  : Key_Type;
+      Right : Node_Type) return Boolean;
    pragma Inline (Is_Greater_Key_Node);
 
    function Is_Less_Key_Node
-     (Tree  : Tree_Type;
-      Left  : Key_Type;
-      Right : Node_Access) return Boolean;
+     (Left  : Key_Type;
+      Right : Node_Type) return Boolean;
    pragma Inline (Is_Less_Key_Node);
 
    function Next_Unchecked
@@ -121,7 +107,7 @@ package body Formal_Ordered_Maps is
    --------------------------
 
    package Tree_Operations is
-     new Bounded_Red_Black_Trees.Generic_Operations
+     new Red_Black_Trees.Generic_Bounded_Operations
        (Tree_Types => Tree_Types,
         Left      => Left_Son,
         Right     => Right_Son);
@@ -129,8 +115,8 @@ package body Formal_Ordered_Maps is
    use Tree_Operations;
 
    package Key_Ops is
-     new Bounded_Red_Black_Trees.Generic_Keys
-       (Ops                 => Tree_Operations,
+     new Red_Black_Trees.Generic_Bounded_Keys
+       (Tree_Operations     => Tree_Operations,
         Key_Type            => Key_Type,
         Is_Less_Key_Node    => Is_Less_Key_Node,
         Is_Greater_Key_Node => Is_Greater_Key_Node);
@@ -172,41 +158,76 @@ package body Formal_Ordered_Maps is
    -- Assign --
    ------------
 
+
+
    procedure Assign (Target : in out Map; Source : Map) is
-      procedure Append_Item_From_Source (Src_Node : Node_Access);
+      procedure Append_Element (Source_Node : Count_Type);
 
-      procedure Append_Items_From_Source is
-        new Tree_Operations.Generic_Iteration (Append_Item_From_Source);
+      procedure Append_Elements is
+         new Tree_Operations.Generic_Iteration (Append_Element);
 
-      -----------------------------
-      -- Append_Item_From_Source --
-      -----------------------------
+      --------------------
+      -- Append_Element --
+      --------------------
 
-      procedure Append_Item_From_Source (Src_Node : Node_Access) is
-         procedure Initialize (X : Node_Access);
-         procedure Allocate_Node (X : out Node_Access);
-         procedure Append is new Generic_Append (Allocate_Node);
+      procedure Append_Element (Source_Node : Count_Type) is
+         SN : Node_Type renames Source.Tree.Nodes (Source_Node);
 
-         procedure Initialize (X : Node_Access) is
-            S : Node_Type renames Source.Tree.Nodes (Src_Node);
-            T : Node_Type renames Target.Tree.Nodes (X);
+         procedure Set_Element (Node : in out Node_Type);
+         pragma Inline (Set_Element);
+
+         function New_Node return Count_Type;
+         pragma Inline (New_Node);
+
+         procedure Insert_Post is
+            new Key_Ops.Generic_Insert_Post (New_Node);
+
+         procedure Unconditional_Insert_Sans_Hint is
+            new Key_Ops.Generic_Unconditional_Insert (Insert_Post);
+
+         procedure Unconditional_Insert_Avec_Hint is
+            new Key_Ops.Generic_Unconditional_Insert_With_Hint
+              (Insert_Post,
+               Unconditional_Insert_Sans_Hint);
+
+         procedure Allocate is
+            new Generic_Allocate (Set_Element);
+
+         --------------
+         -- New_Node --
+         --------------
+
+         function New_Node return Count_Type is
+            Result : Count_Type;
+
          begin
-            T.Key := S.Key;
-            T.Element := S.Element;
-         end Initialize;
+            Allocate (Target.Tree.all, Result);
+            return Result;
+         end New_Node;
 
-         procedure Allocate_Node is new Generic_Allocate_Node (Initialize);
+         -----------------
+         -- Set_Element --
+         -----------------
 
-         procedure Allocate_Node (X : out Node_Access) is
+         procedure Set_Element (Node : in out Node_Type) is
          begin
-            Allocate_Node (Target.Tree.all, X);
-         end Allocate_Node;
+            Node.Key := SN.Key;
+            Node.Element := SN.Element;
+         end Set_Element;
 
-         --  Start of process for Assign
+         Target_Node : Count_Type;
+
+      --  Start of processing for Append_Element
 
       begin
-         Append (Target.Tree.all);
-      end Append_Item_From_Source;
+         Unconditional_Insert_Avec_Hint
+           (Tree  => Target.Tree.all,
+            Hint  => 0,
+            Key   => SN.Key,
+            Node  => Target_Node);
+      end Append_Element;
+
+   --  Start of processing for Assign
 
    begin
       if Target.K /= Plain then
@@ -222,16 +243,17 @@ package body Formal_Ordered_Maps is
          raise Storage_Error with "not enough capacity";  -- SE or CE? ???
       end if;
 
-      Target.Clear;
+      Tree_Operations.Clear_Tree (Target.Tree.all);
+
       if Source.K = Plain then
-         Append_Items_From_Source (Source.Tree.all);
+         Append_Elements (Source.Tree.all);
       else
          declare
             X : Count_Type;
          begin
             X := Source.First;
             while X /= Next (Source.Tree.all, Source.Last) loop
-               Append_Item_From_Source (X);
+               Append_Element (X);
                X := Next (Source.Tree.all, X);
             end loop;
          end;
@@ -283,16 +305,16 @@ package body Formal_Ordered_Maps is
            with "Can't modify part of container";
       end if;
 
-      Tree_Operations.Clear (Container.Tree.all);
+      Tree_Operations.Clear_Tree (Container.Tree.all);
    end Clear;
 
    -----------
    -- Color --
    -----------
 
-   function Color (Tree : Tree_Type; Node : Node_Access) return Color_Type is
+   function Color (Node : Node_Type) return Color_Type is
    begin
-      return Tree.Nodes (Node).Color;
+      return Node.Color;
    end Color;
 
    --------------
@@ -334,12 +356,14 @@ package body Formal_Ordered_Maps is
                  Source.Tree.Nodes (Node).Right;
                Target.Tree.Nodes (Node).Color :=
                  Source.Tree.Nodes (Node).Color;
+               Target.Tree.Nodes (Node).Has_Element :=
+                 Source.Tree.Nodes (Node).Has_Element;
                Node := Node + 1;
             end loop;
 
             while Node <= Target.Capacity loop
                N := Node;
-               Free (Tree => Target.Tree.all, X => N);
+               Formal_Ordered_Maps.Free (Tree => Target.Tree.all, X => N);
                Node := Node + 1;
             end loop;
 
@@ -384,7 +408,7 @@ package body Formal_Ordered_Maps is
 
       Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all,
                                              Position.Node);
-      Free (Container.Tree.all, Position.Node);
+      Formal_Ordered_Maps.Free (Container.Tree.all, Position.Node);
    end Delete;
 
    procedure Delete (Container : in out Map; Key : Key_Type) is
@@ -402,7 +426,7 @@ package body Formal_Ordered_Maps is
          end if;
 
          Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-         Free (Container.Tree.all, X);
+         Formal_Ordered_Maps.Free (Container.Tree.all, X);
       end;
    end Delete;
 
@@ -421,7 +445,7 @@ package body Formal_Ordered_Maps is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-         Free (Container.Tree.all, X);
+         Formal_Ordered_Maps.Free (Container.Tree.all, X);
       end if;
    end Delete_First;
 
@@ -440,7 +464,7 @@ package body Formal_Ordered_Maps is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-         Free (Container.Tree.all, X);
+         Formal_Ordered_Maps.Free (Container.Tree.all, X);
       end if;
    end Delete_Last;
 
@@ -503,7 +527,7 @@ package body Formal_Ordered_Maps is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-         Free (Container.Tree.all, X);
+         Formal_Ordered_Maps.Free (Container.Tree.all, X);
       end if;
    end Exclude;
 
@@ -620,147 +644,30 @@ package body Formal_Ordered_Maps is
    ----------
 
    procedure Free
-     (Tree : in out Tree_Type;
-      X    : in out Node_Access)
+     (Tree : in out Tree_Types.Tree_Type;
+      X  : Count_Type)
    is
-      N : Nodes_Type renames Tree.Nodes;
-
    begin
-      if X = 0 then
-         return;
-      end if;
-
-      pragma Assert (X in N'Range);
-
-      N (X).Parent := -1;
-      N (X).Left := X;
-
-      if Tree.Length = 0 then
-
-         N (X).Right := X;
-         X := 0;
-
-         return;
-      end if;
-
-      pragma Assert (Tree.Free <= N'Last);
-
-      pragma Assert (Tree.First in N'Range);
-      pragma Assert (Tree.First /= X);
-      pragma Assert (N (Tree.First).Left = 0);
-
-      pragma Assert (Tree.Last in N'Range);
-      pragma Assert (Tree.Last /= X);
-      pragma Assert (N (Tree.Last).Right = 0);
-
-      pragma Assert (Tree.Root in N'Range);
-      pragma Assert (Tree.Root /= X);
-      pragma Assert (N (Tree.Root).Parent = 0);
-
-      N (X).Right := Tree.Free;
-      Tree.Free := X;
-      X := 0;
+      Tree.Nodes(X).Has_Element := False;
+      Tree_Operations.Free(Tree,X);
    end Free;
 
-   ---------------------------
-   -- Generic_Allocate_Node --
-   ---------------------------
+   ----------------------
+   -- Generic_Allocate --
+   ----------------------
 
-   procedure Generic_Allocate_Node
-     (Tree : in out Tree_Type;
-      X    : out Count_Type)
+   procedure Generic_Allocate
+     (Tree : in out Tree_Types.Tree_Type'Class;
+      Node : out Count_Type)
    is
-      N : Nodes_Type renames Tree.Nodes;
+
+      procedure Allocate is
+        new Tree_Operations.Generic_Allocate (Set_Element);
 
    begin
-      if Tree.Length >= Tree.Capacity then
-         raise Storage_Error with "not enough capacity";
-      end if;
-
-      if Tree.Length = 0
-        or else Tree.Free = 0
-      then
-         X := Tree.Length + 1;
-         Initialize (X);
-         Tree.Free := 0;  -- we're allocating from initialized storage
-
-      else
-         pragma Assert (Tree.Free in N'Range);
-
-         X := Tree.Free;
-         Initialize (X);
-         Tree.Free := N (X).Right;
-      end if;
-
-      N (X).Parent := 0;
-      N (X).Right := 0;
-      N (X).Left := 0;
-      N (X).Color := Bounded_Red_Black_Trees.Red;
-   end Generic_Allocate_Node;
-
-   --------------------
-   -- Generic_Append --
-   --------------------
-
-   procedure Generic_Append (Container : in out Tree_Type) is
-      function New_Node return Count_Type;
-
-      procedure Insert_Sans_Hint
-        (Tree     : in out Tree_Type;
-         Key      : Key_Type;
-         Node     : out Count_Type;
-         Inserted : out Boolean);
-
-      X : Count_Type;
-
-      function New_Node return Count_Type is
-      begin
-         return X;
-      end New_Node;
-
-      procedure Insert_Post is
-        new Key_Ops.Generic_Insert_Post (New_Node);
-
-      --  This can be optimized away, since we know Insert_With_Hint with
-      --  always succeed (items in the stream are in key order), and therefore
-      --  we know insert_sans_hint will never be called. ???
-      procedure Insert_Sans_Hint
-        (Tree     : in out Tree_Type;
-         Key      : Key_Type;
-         Node     : out Count_Type;
-         Inserted : out Boolean)
-      is
-         pragma Unreferenced (Tree);
-         pragma Unreferenced (Key);
-      begin
-         pragma Assert (False);
-         Node := Count_Type'Last;
-         Inserted := False;
-      end Insert_Sans_Hint;
-
-      procedure Local_Insert_With_Hint is
-        new Key_Ops.Generic_Conditional_Insert_With_Hint
-          (Insert_Post,
-           Insert_Sans_Hint);
-
-      Y : Count_Type;
-      B : Boolean;
-
-      --  Start of processing for Append
-
-   begin
-      Allocate_Node (X);
-
-      Local_Insert_With_Hint
-        (Tree     => Container,
-         Position => 0,  --  begin search assuming large key
-         Key      => Container.Nodes (X).Key,
-         Node     => Y,
-         Inserted => B);
-
-      pragma Assert (B);
-      pragma Assert (Y = X);
-   end Generic_Append;
+      Allocate(Tree, Node);
+      Tree.Nodes(Node).Has_Element := True;
+   end Generic_Allocate;
 
    -----------------
    -- Has_Element --
@@ -772,7 +679,7 @@ package body Formal_Ordered_Maps is
          return False;
       end if;
 
-      if Container.Tree.Nodes (Position.Node).Parent < 0 then
+      if not Container.Tree.Nodes (Position.Node).Has_Element then
          return False;
       end if;
 
@@ -850,14 +757,13 @@ package body Formal_Ordered_Maps is
          --------------
 
          function New_Node return Node_Access is
-            procedure Initialize (X : Node_Access);
-            procedure Allocate_Node is new Generic_Allocate_Node (Initialize);
+            procedure Initialize (Node : in out Node_Type);
+            procedure Allocate_Node is new Generic_Allocate (Initialize);
 
-            procedure Initialize (X : Node_Access) is
-               N : Node_Type renames Container.Tree.Nodes (X);
+            procedure Initialize (Node : in out Node_Type) is
             begin
-               N.Key := Key;
-               N.Element := New_Item;
+               Node.Key := Key;
+               Node.Element := New_Item;
             end Initialize;
 
             X : Node_Access;
@@ -924,13 +830,12 @@ package body Formal_Ordered_Maps is
          --------------
 
          function New_Node return Node_Access is
-            procedure Initialize (X : Node_Access);
-            procedure Allocate_Node is new Generic_Allocate_Node (Initialize);
+            procedure Initialize (Node : in out Node_Type);
+            procedure Allocate_Node is new Generic_Allocate (Initialize);
 
-            procedure Initialize (X : Node_Access) is
-               N : Node_Type renames Container.Tree.Nodes (X);
+            procedure Initialize (Node : in out Node_Type) is
             begin
-               N.Key := Key;
+               Node.Key := Key;
             end Initialize;
 
             X : Node_Access;
@@ -965,14 +870,13 @@ package body Formal_Ordered_Maps is
    -------------------------
 
    function Is_Greater_Key_Node
-     (Tree  : Tree_Type;
-      Left  : Key_Type;
-      Right : Node_Access) return Boolean
+     (Left  : Key_Type;
+      Right : Node_Type) return Boolean
    is
    begin
       --  k > node same as node < k
 
-      return Tree.Nodes (Right).Key < Left;
+      return Right.Key < Left;
    end Is_Greater_Key_Node;
 
    ----------------------
@@ -980,12 +884,11 @@ package body Formal_Ordered_Maps is
    ----------------------
 
    function Is_Less_Key_Node
-     (Tree  : Tree_Type;
-      Left  : Key_Type;
-      Right : Node_Access) return Boolean
+     (Left  : Key_Type;
+      Right : Node_Type) return Boolean
    is
    begin
-      return Left < Tree.Nodes (Right).Key;
+      return Left < Right.Key;
    end Is_Less_Key_Node;
 
    -------------
@@ -1164,11 +1067,9 @@ package body Formal_Ordered_Maps is
    -- Left_Son --
    --------------
 
-   function Left_Son
-     (Tree : Tree_Type;
-      Node : Node_Access) return Node_Access is
+   function Left_Son (Node : Node_Type) return Count_Type is
    begin
-      return Tree.Nodes (Node).Left;
+      return Node.Left;
    end Left_Son;
 
    ------------
@@ -1189,7 +1090,7 @@ package body Formal_Ordered_Maps is
    ----------
 
    procedure Move (Target : in out Map; Source : in out Map) is
-      NN : Nodes_Type renames Source.Tree.Nodes;
+      NN : Tree_Types.Nodes_Type renames Source.Tree.Nodes;
       X  : Node_Access;
 
    begin
@@ -1226,7 +1127,7 @@ package body Formal_Ordered_Maps is
          Insert (Target, NN (X).Key, NN (X).Element);  -- optimize???
 
          Tree_Operations.Delete_Node_Sans_Free (Source.Tree.all, X);
-         Free (Source.Tree.all, X);
+         Formal_Ordered_Maps.Free (Source.Tree.all, X);
       end loop;
    end Move;
 
@@ -1320,9 +1221,9 @@ package body Formal_Ordered_Maps is
    -- Parent --
    ------------
 
-   function Parent (Tree : Tree_Type; Node : Node_Access) return Node_Access is
+   function Parent (Node : Node_Type) return Count_Type is
    begin
-      return Tree.Nodes (Node).Parent;
+      return Node.Parent;
    end Parent;
 
    --------------
@@ -1353,7 +1254,7 @@ package body Formal_Ordered_Maps is
       end if;
 
       declare
-         Tree : Tree_Type renames Container.Tree.all;
+         Tree : Tree_Types.Tree_Type renames Container.Tree.all;
          Node : constant Count_Type :=
                   Tree_Operations.Previous (Tree, Position.Node);
 
@@ -1391,7 +1292,7 @@ package body Formal_Ordered_Maps is
                      "Position cursor of Query_Element is bad");
 
       declare
-         T : Tree_Type renames Container.Tree.all;
+         T : Tree_Types.Tree_Type renames Container.Tree.all;
 
          B : Natural renames T.Busy;
          L : Natural renames T.Lock;
@@ -1427,52 +1328,40 @@ package body Formal_Ordered_Maps is
      (Stream    : not null access Root_Stream_Type'Class;
       Container : out Map)
    is
-      procedure Initialize (X : Node_Access);
-      pragma Inline (Initialize);
+      procedure Read_Element (Node : in out Node_Type);
+      pragma Inline (Read_Element);
 
-      procedure Allocate_Node (X : out Node_Access);
-      pragma Inline (Allocate_Node);
+      procedure Allocate is
+         new Generic_Allocate (Read_Element);
 
-      procedure Append is new Generic_Append (Allocate_Node);
+      procedure Read_Elements is
+         new Tree_Operations.Generic_Read (Allocate);
 
-      procedure Initialize (X : Node_Access) is
-         N : Node_Type renames Container.Tree.Nodes (X);
+      ------------------
+      -- Read_Element --
+      ------------------
+
+      procedure Read_Element (Node : in out Node_Type) is
       begin
-         Key_Type'Read (Stream, N.Key);
-         Element_Type'Read (Stream, N.Element);
-      end Initialize;
+         Key_Type'Read (Stream, Node.Key);
+         Element_Type'Read (Stream, Node.Element);
+      end Read_Element;
 
-      procedure Allocate_Node is new Generic_Allocate_Node (Initialize);
-
-      procedure Allocate_Node (X : out Node_Access) is
-      begin
-         Allocate_Node (Container.Tree.all, X);
-      end Allocate_Node;
-
-      N : Count_Type'Base;
-
-      --  Start of processing for Read
-
+   --  Start of processing for Read
+	Result : Tree_Type_Access;
    begin
-      Container.Clear;  -- clear before or after storage check???
-
-      Count_Type'Base'Read (Stream, N);
-
-      if N < 0 then
-         raise Program_Error with "stream appears to be corrupt";
+      if Container.K /= Plain then
+         raise Constraint_Error;
       end if;
 
-      if N = 0 then
-         return;
+      if Container.Tree = null then
+         Result := new Tree_Types.Tree_Type(Container.Capacity);
+      else
+         Result := Container.Tree;
       end if;
 
-      if N > Container.Capacity then  --  check here???
-         raise Storage_Error with "not enough capacity";  -- ???
-      end if;
-
-      for Indx in 1 .. N loop
-         Append (Container.Tree.all);
-      end loop;
+      Read_Elements (Stream, Result.all);
+      Container.Tree := Result;
    end Read;
 
    procedure Read
@@ -1679,11 +1568,9 @@ package body Formal_Ordered_Maps is
    -- Right_Son --
    ---------------
 
-   function Right_Son
-     (Tree : Tree_Type;
-      Node : Node_Access) return Node_Access is
+   function Right_Son(Node : Node_Type) return Count_Type is
    begin
-      return Tree.Nodes (Node).Right;
+      return Node.Right;
    end Right_Son;
 
    ---------------
@@ -1691,51 +1578,38 @@ package body Formal_Ordered_Maps is
    ---------------
 
    procedure Set_Color
-     (Tree  : in out Tree_Type;
-      Node  : Node_Access;
+     (Node  : in out Node_Type;
       Color : Color_Type)
    is
    begin
-      Tree.Nodes (Node).Color := Color;
+      Node.Color := Color;
    end Set_Color;
 
    --------------
    -- Set_Left --
    --------------
 
-   procedure Set_Left
-     (Tree : in out Tree_Type;
-      Node : Node_Access;
-      Left : Node_Access)
-   is
+   procedure Set_Left (Node : in out Node_Type; Left : Count_Type) is
    begin
-      Tree.Nodes (Node).Left := Left;
+      Node.Left := Left;
    end Set_Left;
 
    ----------------
    -- Set_Parent --
    ----------------
 
-   procedure Set_Parent
-     (Tree   : in out Tree_Type;
-      Node   : Node_Access;
-      Parent : Node_Access)
-   is
+   procedure Set_Parent (Node : in out Node_Type; Parent : Count_Type) is
    begin
-      Tree.Nodes (Node).Parent := Parent;
+      Node.Parent := Parent;
    end Set_Parent;
 
    ---------------
    -- Set_Right --
    ---------------
 
-   procedure Set_Right
-     (Tree  : in out Tree_Type;
-      Node  : Node_Access;
-      Right : Node_Access)
-   is
+   procedure Set_Right (Node : in out Node_Type; Right : Count_Type) is
    begin
-      Tree.Nodes (Node).Right := Right;
+      Node.Right := Right;
    end Set_Right;
 
    ------------------
@@ -1792,7 +1666,7 @@ package body Formal_Ordered_Maps is
                      "Position cursor of Update_Element is bad");
 
       declare
-         T : Tree_Type renames Container.Tree.all;
+         T : Tree_Types.Tree_Type renames Container.Tree.all;
 
          B : Natural renames T.Busy;
          L : Natural renames T.Lock;
@@ -1830,11 +1704,11 @@ package body Formal_Ordered_Maps is
    is
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access);
+         Node   : Node_Type);
       pragma Inline (Write_Node);
 
-      procedure Write is
-        new Tree_Operations.Generic_Write (Write_Node);
+      procedure Write_Nodes is
+         new Tree_Operations.Generic_Write (Write_Node);
 
       ----------------
       -- Write_Node --
@@ -1842,18 +1716,17 @@ package body Formal_Ordered_Maps is
 
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access)
+         Node   : Node_Type)
       is
-         N : Node_Type renames Container.Tree.Nodes (Node);
       begin
-         Key_Type'Write (Stream, N.Key);
-         Element_Type'Write (Stream, N.Element);
+         Key_Type'Write (Stream, Node.Key);
+         Element_Type'Write (Stream, Node.Element);
       end Write_Node;
 
-      --  Start of processing for Write
+   --  Start of processing for Write
 
    begin
-      Write (Stream, Container.Tree.all);
+      Write_Nodes (Stream, Container.Tree.all);
    end Write;
 
    procedure Write

@@ -43,9 +43,26 @@ pragma Elaborate_All
 
 with System;  use type System.Address;
 
---with Ada.Text_IO;
+with Ada.Text_IO;
 
 package body Formal_Ordered_Sets is
+
+   procedure print (C : Set) is
+      Node : Count_Type := 1;
+   begin
+      while Node <= C.Capacity loop
+            Ada.Text_IO.Put_Line("------");
+            if C.Tree.Nodes(Node).Has_Element then
+               Ada.Text_IO.Put_Line("true");
+            else
+               Ada.Text_IO.Put_Line("false");
+            end if;
+            Ada.Text_IO.Put_Line(Count_Type'Image(C.Tree.Nodes(Node).Parent));
+            Ada.Text_IO.Put_Line(Count_Type'Image(C.Tree.Nodes(Node).Left));
+            Ada.Text_IO.Put_Line(Count_Type'Image(C.Tree.Nodes(Node).Right));
+            Node := Node + 1;
+         end loop;
+   end;
 
    ------------------------------
    -- Access to Fields of Node --
@@ -84,28 +101,24 @@ package body Formal_Ordered_Sets is
    -- Local Subprograms --
    -----------------------
 
-   procedure Allocate_Node
-     (Tree : in out Tree_Type;
-      Item : Element_Type;
+   generic
+      with procedure Set_Element (Node : in out Node_Type);
+   procedure Generic_Allocate
+     (Tree : in out Tree_Types.Tree_Type'Class;
       Node : out Count_Type);
 
-   procedure Allocate_Node
-     (Tree   : in out Tree_Type;
-      Stream : not null access Root_Stream_Type'Class;
-      Node   : out Count_Type);
+   procedure Assign (Target : in out Tree_Types.Tree_Type; Source : Tree_Types.Tree_Type);
 
-   procedure Assign (Target : in out Tree_Type; Source : Tree_Type);
-
-   procedure Free (Tree : in out Tree_Type; X : in out Count_Type);
+   procedure Free (Tree : in out Tree_Types.Tree_Type; X : Count_Type);
 
    procedure Insert_Sans_Hint
-     (Container : in out Tree_Type;
+     (Container : in out Tree_Types.Tree_Type;
       New_Item  : Element_Type;
       Node      : out Count_Type;
       Inserted  : out Boolean);
 
    procedure Insert_With_Hint
-     (Dst_Set  : in out Tree_Type;
+     (Dst_Set  : in out Tree_Types.Tree_Type;
       Dst_Hint : Count_Type;
       Src_Node : Node_Type;
       Dst_Node : out Count_Type);
@@ -125,7 +138,7 @@ package body Formal_Ordered_Sets is
 
    generic
       with procedure Process (Node : Count_Type) is <>;
-   procedure Iterate_Between (Tree : Tree_Type;
+   procedure Iterate_Between (Tree : Tree_Types.Tree_Type;
                               From : Count_Type;
                               To   : Count_Type);
 
@@ -134,7 +147,7 @@ package body Formal_Ordered_Sets is
       Position  : Count_Type) return Count_Type;
 
    procedure Replace_Element
-     (Tree : in out Tree_Type;
+     (Tree : in out Tree_Types.Tree_Type;
       Node : Count_Type;
       Item : Element_Type);
 
@@ -160,7 +173,7 @@ package body Formal_Ordered_Sets is
    package Set_Ops is
      new Red_Black_Trees.Generic_Bounded_Set_Operations
        (Tree_Operations  => Tree_Operations,
-        Set_Type         => Tree_Type,
+        Set_Type         => Tree_Types.Tree_Type,
         Assign           => Assign,
         Insert_With_Hint => Insert_With_Hint,
         Is_Less          => Is_Less_Node_Node);
@@ -198,81 +211,12 @@ package body Formal_Ordered_Sets is
 
    end "=";
 
-   -------------------
-   -- Allocate_Node --
-   -------------------
-
-   procedure Allocate_Node
-     (Tree : in out Tree_Type;
-      Item : Element_Type;
-      Node : out Count_Type)
-   is
-      N : Tree_Types.Nodes_Type renames Tree.Nodes;
-
-   begin
-      if Tree.Length >= Tree.Capacity then
-         raise Storage_Error with "not enough capacity";
-      end if;
-
-      if Tree.Length = 0
-        or else Tree.Free = 0
-      then
-         Node := Tree.Length + 1;
-         N (Node).Element := Item;
-         Tree.Free := 0;  -- we're allocating from initialized storage
-
-      else
-         pragma Assert (Tree.Free in N'Range);
-
-         Node := Tree.Free;
-         N (Node).Element := Item;
-         Tree.Free := N (Node).Right;
-      end if;
-
-      N (Node).Parent := 0;
-      N (Node).Right := 0;
-      N (Node).Left := 0;
-      N (Node).Color := Red_Black_Trees.Red;
-   end Allocate_Node;
-
-   procedure Allocate_Node
-     (Tree   : in out Tree_Type;
-      Stream : not null access Root_Stream_Type'Class;
-      Node   : out Count_Type)
-   is
-      N : Tree_Types.Nodes_Type renames Tree.Nodes;
-
-   begin
-      if Tree.Length >= Tree.Capacity then
-         raise Storage_Error with "not enough capacity";
-      end if;
-
-      if Tree.Length = 0
-        or else Tree.Free = 0
-      then
-         Node := Tree.Length + 1;
-         Element_Type'Read (Stream, N (Node).Element);
-         Tree.Free := 0;  -- see note above
-
-      else
-         pragma Assert (Tree.Free in N'Range);
-
-         Node := Tree.Free;
-         Element_Type'Read (Stream, N (Node).Element);
-         Tree.Free := N (Node).Right;
-      end if;
-
-      N (Node).Parent := 0;
-      N (Node).Right := 0;
-      N (Node).Left := 0;
-      N (Node).Color := Red_Black_Trees.Red;
-   end Allocate_Node;
-
    ------------
    -- Assign --
    ------------
 
-   procedure Assign (Target : in out Tree_Type; Source : Tree_Type) is
+   procedure Assign (Target : in out Tree_Types.Tree_Type;
+                     Source : Tree_Types.Tree_Type) is
       procedure Append_Element (Source_Node : Count_Type);
 
       procedure Append_Elements is
@@ -303,7 +247,7 @@ package body Formal_Ordered_Sets is
               Unconditional_Insert_Sans_Hint);
 
          procedure Allocate is
-           new Tree_Operations.Generic_Allocate (Set_Element);
+           new Generic_Allocate (Set_Element);
 
          --------------
          -- New_Node --
@@ -395,7 +339,7 @@ package body Formal_Ordered_Sets is
                     Unconditional_Insert_Sans_Hint);
 
                procedure Allocate is
-                 new Tree_Operations.Generic_Allocate (Set_Element);
+                 new Generic_Allocate (Set_Element);
 
                --------------
                -- New_Node --
@@ -478,7 +422,7 @@ package body Formal_Ordered_Sets is
    -- Clear --
    -----------
 
-   procedure Clear (Container : in out Tree_Type) is
+   procedure Clear (Container : in out Tree_Types.Tree_Type) is
    begin
       Tree_Operations.Clear_Tree (Container);
    end Clear;
@@ -522,53 +466,60 @@ package body Formal_Ordered_Sets is
       Node : Count_Type := 1;
       N    : Count_Type;
       Cu   : Cursor;
+      Target : Set (Count_Type'Max (Source.Capacity, Capacity));
    begin
-      return Target : Set (Count_Type'Max (Source.Capacity, Capacity)) do
-         if Length (Source) > 0 then
-            Target.Tree.Length := Source.Tree.Length;
-            Target.Tree.Root := Source.Tree.Root;
-            Target.Tree.First := Source.Tree.First;
-            Target.Tree.Last := Source.Tree.Last;
-            Target.Tree.Free := Source.Tree.Free;
+      if Length (Source) > 0 then
+         Target.Tree.Length := Source.Tree.Length;
+         Target.Tree.Root := Source.Tree.Root;
+         Target.Tree.First := Source.Tree.First;
+         Target.Tree.Last := Source.Tree.Last;
+         Target.Tree.Free := Source.Tree.Free;
 
-            while Node <= Source.Capacity loop
-               Target.Tree.Nodes (Node).Element :=
-                 Source.Tree.Nodes (Node).Element;
-               Target.Tree.Nodes (Node).Parent :=
-                 Source.Tree.Nodes (Node).Parent;
-               Target.Tree.Nodes (Node).Left :=
-                 Source.Tree.Nodes (Node).Left;
-               Target.Tree.Nodes (Node).Right :=
-                 Source.Tree.Nodes (Node).Right;
-               Target.Tree.Nodes (Node).Color :=
-                 Source.Tree.Nodes (Node).Color;
-               Node := Node + 1;
+         while Node <= Source.Capacity loop
+            Target.Tree.Nodes (Node).Element :=
+              Source.Tree.Nodes (Node).Element;
+            Target.Tree.Nodes (Node).Parent :=
+              Source.Tree.Nodes (Node).Parent;
+            Target.Tree.Nodes (Node).Left :=
+              Source.Tree.Nodes (Node).Left;
+            Target.Tree.Nodes (Node).Right :=
+              Source.Tree.Nodes (Node).Right;
+            Target.Tree.Nodes (Node).Color :=
+              Source.Tree.Nodes (Node).Color;
+            Target.Tree.Nodes (Node).Has_Element :=
+              Source.Tree.Nodes (Node).Has_Element;
+            Node := Node + 1;
+         end loop;
+
+         while Node <= Target.Capacity loop
+            N := Node;
+            Formal_Ordered_Sets.Free (Tree => Target.Tree.all, X => N);
+            Node := Node + 1;
+         end loop;
+
+         if Source.K = Part then
+            Node := Target.Tree.First;
+            while Node /= Source.First loop
+               Cu := (Node => Node);
+               Node := Next (Target.Tree.all, Node);
+               Delete (Target, Cu);
             end loop;
 
-            while Node <= Target.Capacity loop
-               N := Node;
-               Tree_Operations.Free (Tree => Target.Tree.all, X => N);
-               Node := Node + 1;
+            Node := Next (Target.Tree.all, Source.Last);
+
+            while Node /= 0 loop
+               Cu := (Node => Node);
+               Node := Next (Target.Tree.all, Node);
+               Delete (Target, Cu);
             end loop;
-
-            if Source.K = Part then
-               Node := Target.Tree.First;
-               while Node /= Source.First loop
-                  Cu := (Node => Node);
-                  Node := Next (Target.Tree.all, Node);
-                  Delete (Target, Cu);
-               end loop;
-
-               Node := Next (Target.Tree.all, Source.Last);
-
-               while Node /= 0 loop
-                  Cu := (Node => Node);
-                  Node := Next (Target.Tree.all, Node);
-                  Delete (Target, Cu);
-               end loop;
-            end if;
+            --Ada.Text_IO.Put_Line("-----------");
+            --print(Source);
+            --print(Target);
          end if;
-      end return;
+         Node := 1;
+
+      end if;
+      return Target;
    end Copy;
 
    ------------
@@ -588,10 +539,13 @@ package body Formal_Ordered_Sets is
 
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "bad cursor in Delete");
+      --Ada.Text_IO.Put_Line("DELETE");
+      --print(Container);
 
-      Tree_Operations.Delete_Node_Sans_Free
-        (Container.Tree.all, Position.Node);
-      Tree_Operations.Free (Container.Tree.all, Position.Node);
+      Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, Position.Node);
+      Formal_Ordered_Sets.Free (Container.Tree.all, Position.Node);
+      --print(Container);
+      Position := No_Element;
    end Delete;
 
    procedure Delete (Container : in out Set; Item : Element_Type) is
@@ -608,7 +562,7 @@ package body Formal_Ordered_Sets is
       end if;
 
       Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-      Tree_Operations.Free (Container.Tree.all, X);
+      Formal_Ordered_Sets.Free (Container.Tree.all, X);
    end Delete;
 
    ------------------
@@ -616,7 +570,7 @@ package body Formal_Ordered_Sets is
    ------------------
 
    procedure Delete_First (Container : in out Set) is
-      Tree : Tree_Type renames Container.Tree.all;
+      Tree : Tree_Types.Tree_Type renames Container.Tree.all;
       X    : Count_Type := Tree.First;
 
    begin
@@ -627,7 +581,7 @@ package body Formal_Ordered_Sets is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Tree, X);
-         Tree_Operations.Free (Tree, X);
+         Formal_Ordered_Sets.Free (Tree, X);
       end if;
    end Delete_First;
 
@@ -636,7 +590,7 @@ package body Formal_Ordered_Sets is
    -----------------
 
    procedure Delete_Last (Container : in out Set) is
-      Tree : Tree_Type renames Container.Tree.all;
+      Tree : Tree_Types.Tree_Type renames Container.Tree.all;
       X    : Count_Type := Tree.Last;
 
    begin
@@ -647,7 +601,7 @@ package body Formal_Ordered_Sets is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Tree, X);
-         Tree_Operations.Free (Tree, X);
+         Formal_Ordered_Sets.Free (Tree, X);
       end if;
    end Delete_Last;
 
@@ -711,7 +665,7 @@ package body Formal_Ordered_Sets is
                   begin
                      Tgt := Next (Target.Tree.all, Tgt);
                      Delete_Node_Sans_Free (Target.Tree.all, X);
-                     Tree_Operations.Free (Target.Tree.all, X);
+                     Formal_Ordered_Sets.Free (Target.Tree.all, X);
                   end;
 
                   Src := Next (Source.Tree.all, Src);
@@ -740,7 +694,7 @@ package body Formal_Ordered_Sets is
             Assign(S.Tree.all, Set_Ops.Set_Difference (Left.Tree.all, Right.Tree.all));
          else
             declare
-               Tree : Tree_Type renames S.Tree.all;
+               Tree : Tree_Types.Tree_Type renames S.Tree.all;
 
                L_Node : Count_Type := First (Left).Node;
                R_Node : Count_Type := First (Right).Node;
@@ -914,7 +868,7 @@ package body Formal_Ordered_Sets is
 
       if X /= 0 then
          Tree_Operations.Delete_Node_Sans_Free (Container.Tree.all, X);
-         Tree_Operations.Free (Container.Tree.all, X);
+         Formal_Ordered_Sets.Free (Container.Tree.all, X);
       end if;
    end Exclude;
 
@@ -1023,48 +977,31 @@ package body Formal_Ordered_Sets is
    -- Free --
    ----------
 
-   procedure Free (Tree : in out Tree_Type; X : in out Count_Type) is
-      N : Tree_Types.Nodes_Type renames Tree.Nodes;
+   procedure Free
+     (Tree : in out Tree_Types.Tree_Type;
+      X  : Count_Type)
+   is
+   begin
+      Tree.Nodes(X).Has_Element := False;
+      Tree_Operations.Free(Tree,X);
+   end Free;
+
+   ----------------------
+   -- Generic_Allocate --
+   ----------------------
+
+   procedure Generic_Allocate
+     (Tree : in out Tree_Types.Tree_Type'Class;
+      Node : out Count_Type)
+   is
+
+      procedure Allocate is
+        new Tree_Operations.Generic_Allocate (Set_Element);
 
    begin
-      if X = 0 then
-         return;
-      end if;
-
-      pragma Assert (X in N'Range);
-
-      N (X).Parent := -1;
-      N (X).Left := X;
-
-      if Tree.Length = 0 then
-         pragma Assert (Tree.First = 0);
-         pragma Assert (Tree.Last = 0);
-         pragma Assert (Tree.Root = 0);
-
-         N (X).Right := X;
-         X := 0;
-
-         return;
-      end if;
-
-      pragma Assert (Tree.Free <= N'Last);
-
-      pragma Assert (Tree.First in N'Range);
-      pragma Assert (Tree.First /= X);
-      pragma Assert (N (Tree.First).Left = 0);
-
-      pragma Assert (Tree.Last in N'Range);
-      pragma Assert (Tree.Last /= X);
-      pragma Assert (N (Tree.Last).Right = 0);
-
-      pragma Assert (Tree.Root in N'Range);
-      pragma Assert (Tree.Root /= X);
-      pragma Assert (N (Tree.Root).Parent = 0);
-
-      N (X).Right := Tree.Free;
-      Tree.Free := X;
-      X := 0;
-   end Free;
+      Allocate(Tree, Node);
+      Tree.Nodes(Node).Has_Element := True;
+   end Generic_Allocate;
 
    ------------------
    -- Generic_Keys --
@@ -1162,7 +1099,7 @@ package body Formal_Ordered_Sets is
             end if;
 
             Delete_Node_Sans_Free (Container.Tree.all, X);
-            Tree_Operations.Free (Container.Tree.all, X);
+            Formal_Ordered_Sets.Free (Container.Tree.all, X);
          end;
       end Delete;
 
@@ -1233,7 +1170,7 @@ package body Formal_Ordered_Sets is
          begin
             if X /= 0 then
                Delete_Node_Sans_Free (Container.Tree.all, X);
-               Tree_Operations.Free (Container.Tree.all, X);
+               Formal_Ordered_Sets.Free (Container.Tree.all, X);
             end if;
          end;
       end Exclude;
@@ -1379,7 +1316,7 @@ package body Formal_Ordered_Sets is
          Position  : Cursor;
          Process   : not null access procedure (Element : in out Element_Type))
       is
-         Tree : Tree_Type renames Container.Tree.all;
+         Tree : Tree_Types.Tree_Type renames Container.Tree.all;
 
       begin
          if Container.K /= Plain then
@@ -1429,7 +1366,7 @@ package body Formal_Ordered_Sets is
             X : Count_Type := Position.Node;
          begin
             Tree_Operations.Delete_Node_Sans_Free (Tree, X);
-            Tree_Operations.Free (Tree, X);
+            Formal_Ordered_Sets.Free (Tree, X);
          end;
 
          raise Program_Error with "key was modified";
@@ -1447,7 +1384,7 @@ package body Formal_Ordered_Sets is
          return False;
       end if;
 
-      if Container.Tree.Nodes (Position.Node).Parent < 0 then
+      if not Container.Tree.Nodes (Position.Node).Has_Element then
          return False;
       end if;
 
@@ -1525,12 +1462,14 @@ package body Formal_Ordered_Sets is
       Inserted : Boolean;
 
    begin
+      --print(Container);
       Insert (Container, New_Item, Position, Inserted);
 
       if not Inserted then
          raise Constraint_Error with
            "attempt to insert element already in set";
       end if;
+      --print(Container);
    end Insert;
 
    ----------------------
@@ -1538,13 +1477,13 @@ package body Formal_Ordered_Sets is
    ----------------------
 
    procedure Insert_Sans_Hint
-     (Container : in out Tree_Type;
+     (Container : in out Tree_Types.Tree_Type;
       New_Item  : Element_Type;
       Node      : out Count_Type;
       Inserted  : out Boolean)
    is
+
       procedure Set_Element (Node : in out Node_Type);
-      pragma Inline (Set_Element);
 
       function New_Node return Count_Type;
       pragma Inline (New_Node);
@@ -1555,8 +1494,8 @@ package body Formal_Ordered_Sets is
       procedure Conditional_Insert_Sans_Hint is
         new Element_Keys.Generic_Conditional_Insert (Insert_Post);
 
-      procedure Allocate is
-         new Tree_Operations.Generic_Allocate (Set_Element);
+         procedure Allocate is
+           new Generic_Allocate (Set_Element);
 
       --------------
       -- New_Node --
@@ -1570,14 +1509,14 @@ package body Formal_Ordered_Sets is
          return Result;
       end New_Node;
 
-      -----------------
-      -- Set_Element --
-      -----------------
+         -----------------
+         -- Set_Element --
+         -----------------
 
-      procedure Set_Element (Node : in out Node_Type) is
-      begin
-         Node.Element := New_Item;
-      end Set_Element;
+         procedure Set_Element (Node : in out Node_Type) is
+         begin
+            Node.Element := New_Item;
+         end Set_Element;
 
    --  Start of processing for Insert_Sans_Hint
 
@@ -1594,7 +1533,7 @@ package body Formal_Ordered_Sets is
    ----------------------
 
    procedure Insert_With_Hint
-     (Dst_Set  : in out Tree_Type;
+     (Dst_Set  : in out Tree_Types.Tree_Type;
       Dst_Hint : Count_Type;
       Src_Node : Node_Type;
       Dst_Node : out Count_Type)
@@ -1603,7 +1542,6 @@ package body Formal_Ordered_Sets is
       pragma Unreferenced (Success);
 
       procedure Set_Element (Node : in out Node_Type);
-      pragma Inline (Set_Element);
 
       function New_Node return Count_Type;
       pragma Inline (New_Node);
@@ -1619,8 +1557,9 @@ package body Formal_Ordered_Sets is
           (Insert_Post,
            Insert_Sans_Hint);
 
-      procedure Allocate is
-        new Tree_Operations.Generic_Allocate (Set_Element);
+         procedure Allocate is
+           new Generic_Allocate (Set_Element);
+
 
       --------------
       -- New_Node --
@@ -1634,14 +1573,14 @@ package body Formal_Ordered_Sets is
          return Result;
       end New_Node;
 
-      -----------------
-      -- Set_Element --
-      -----------------
+         -----------------
+         -- Set_Element --
+         -----------------
 
-      procedure Set_Element (Node : in out Node_Type) is
-      begin
-         Node.Element := Src_Node.Element;
-      end Set_Element;
+         procedure Set_Element (Node : in out Node_Type) is
+         begin
+            Node.Element := Src_Node.Element;
+         end Set_Element;
 
       --  Start of processing for Insert_With_Hint
 
@@ -1700,7 +1639,7 @@ package body Formal_Ordered_Sets is
                   begin
                      Tgt := Next (Target.Tree.all, Tgt);
                      Delete_Node_Sans_Free (Target.Tree.all, X);
-                     Tree_Operations.Free (Target.Tree.all, X);
+                     Formal_Ordered_Sets.Free (Target.Tree.all, X);
                   end;
 
                elsif Source.Tree.Nodes (Src).Element <
@@ -1719,7 +1658,7 @@ package body Formal_Ordered_Sets is
                begin
                   Tgt := Next (Target.Tree.all, Tgt);
                   Delete_Node_Sans_Free (Target.Tree.all, X);
-                  Tree_Operations.Free (Target.Tree.all, X);
+                  Formal_Ordered_Sets.Free (Target.Tree.all, X);
                end;
             end loop;
          end;
@@ -1745,7 +1684,7 @@ package body Formal_Ordered_Sets is
 
          declare
 
-            Tree : Tree_Type renames S.Tree.all;
+            Tree : Tree_Types.Tree_Type renames S.Tree.all;
 
             L_Node : Count_Type := First (Left).Node;
             R_Node : Count_Type := First (Right).Node;
@@ -1911,7 +1850,7 @@ package body Formal_Ordered_Sets is
          Process (Container, (Node => Node));
       end Process_Node;
 
-      T : Tree_Type renames Container.Tree.all;
+      T : Tree_Types.Tree_Type renames Container.Tree.all;
       B : Natural renames T.Busy;
 
       --  Start of prccessing for Iterate
@@ -1944,7 +1883,7 @@ package body Formal_Ordered_Sets is
    -- Iterate_Between --
    ---------------------
 
-   procedure Iterate_Between (Tree : Tree_Type;
+   procedure Iterate_Between (Tree : Tree_Types.Tree_Type;
                               From : Count_Type;
                               To   : Count_Type) is
 
@@ -2073,7 +2012,7 @@ package body Formal_Ordered_Sets is
    ----------
 
    procedure Move (Target : in out Set; Source : in out Set) is
-      S : Tree_Type renames Source.Tree.all;
+      S : Tree_Types.Tree_Type renames Source.Tree.all;
       N : Tree_Types.Nodes_Type renames S.Nodes;
       X : Count_Type;
 
@@ -2106,7 +2045,7 @@ package body Formal_Ordered_Sets is
          Insert (Target, N (X).Element);  -- optimize???
 
          Tree_Operations.Delete_Node_Sans_Free (S, X);
-         Tree_Operations.Free (S, X);
+         Formal_Ordered_Sets.Free (S, X);
       end loop;
    end Move;
 
@@ -2139,7 +2078,6 @@ package body Formal_Ordered_Sets is
 
       pragma Assert (Vet (Container.Tree.all, Position.Node),
                      "bad cursor in Next");
-
       return (Node => Next_Unchecked (Container, Position.Node));
    end Next;
 
@@ -2231,7 +2169,7 @@ package body Formal_Ordered_Sets is
       end if;
 
       declare
-         Tree : Tree_Type renames Container.Tree.all;
+         Tree : Tree_Types.Tree_Type renames Container.Tree.all;
          Node : constant Count_Type :=
            Tree_Operations.Previous (Tree, Position.Node);
 
@@ -2272,7 +2210,7 @@ package body Formal_Ordered_Sets is
                      "bad cursor in Query_Element");
 
       declare
-         T : Tree_Type renames Container.Tree.all;
+         T : Tree_Types.Tree_Type renames Container.Tree.all;
 
          B : Natural renames T.Busy;
          L : Natural renames T.Lock;
@@ -2307,7 +2245,7 @@ package body Formal_Ordered_Sets is
       pragma Inline (Read_Element);
 
       procedure Allocate is
-         new Tree_Operations.Generic_Allocate (Read_Element);
+         new Generic_Allocate (Read_Element);
 
       procedure Read_Elements is
          new Tree_Operations.Generic_Read (Allocate);
@@ -2329,7 +2267,7 @@ package body Formal_Ordered_Sets is
       end if;
 
       if Container.Tree = null then
-         Result := new Tree_Type(Container.Capacity);
+         Result := new Tree_Types.Tree_Type(Container.Capacity);
       else
          Result := Container.Tree;
       end if;
@@ -2381,7 +2319,7 @@ package body Formal_Ordered_Sets is
    ---------------------
 
    procedure Replace_Element
-     (Tree : in out Tree_Type;
+     (Tree : in out Tree_Types.Tree_Type;
       Node : Count_Type;
       Item : Element_Type)
    is
@@ -2522,7 +2460,7 @@ package body Formal_Ordered_Sets is
          Process (Container, (Node => Node));
       end Process_Node;
 
-      T : Tree_Type renames Container.Tree.all;
+      T : Tree_Types.Tree_Type renames Container.Tree.all;
       B : Natural renames T.Busy;
 
       --  Start of processing for Reverse_Iterate
@@ -2766,7 +2704,7 @@ package body Formal_Ordered_Sets is
                begin
                   Tgt := Next (Target.Tree.all, Tgt);
                   Delete_Node_Sans_Free (Target.Tree.all, X);
-                  Tree_Operations.Free (Target.Tree.all, X);
+                  Formal_Ordered_Sets.Free (Target.Tree.all, X);
                end;
 
                Src := Next (Source.Tree.all, Src);
@@ -2798,7 +2736,7 @@ package body Formal_Ordered_Sets is
 
          declare
 
-            Tree : Tree_Type renames S.Tree.all;
+            Tree : Tree_Types.Tree_Type renames S.Tree.all;
 
             L_Node : Count_Type := First (Left).Node;
             R_Node : Count_Type := First (Right).Node;

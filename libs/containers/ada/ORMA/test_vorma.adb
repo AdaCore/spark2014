@@ -87,8 +87,8 @@ begin
 
    -- Has_Element of deleted Element after deletion
     Insert(Container => L1, New_Item => 2, Key => 3);
-     C1 :=  Next(L1, First(L1));
-     C2 :=  Next(L1, First(L1));
+     C1 :=  First(L1);
+     C2 :=  First(L1);
      Delete(Container => L1, Position  => C1);
      if  Has_Element(L1, C2) then
         Ada.Text_IO.Put_Line("Has_Element of deleted Element after deletion => KO ???");
@@ -132,7 +132,7 @@ begin
    -- Has_Element of Left in range
    if  Has_Element(L3, First(L3)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L3, First(L3),3,1,"Has_Element of Left in range 1");
+      Test_Element(L3, First(L3),4,2,"Has_Element of Left in range 1");
    else
       Ada.Text_IO.Put_Line("Has_Element of Left in range 1 => KO ???");
    end if;
@@ -156,7 +156,7 @@ begin
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
-   if  Find(L3,1) /=  First(L3) or Find(L3,1) /=  Previous(L3,Last(L3)) then
+   if  Find(L3,2) /=  First(L3) or Find(L3,2) /=  Previous(L3,Last(L3)) then
       Ada.Text_IO.Put_Line("Find of Left in range 2 => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -170,7 +170,7 @@ begin
    end if;
 
    -- Copy of Left : Length
-   L4 :=  Copy( Left(L1, Next(L1, First(L1))),5);
+   L4 :=  Copy(Left(L1, Next(L1, First(L1))),5);
    if  Length(L4) = 1 then
       Ada.Text_IO.Put_Line("OK");
    else
@@ -180,7 +180,7 @@ begin
    -- Copy of Left : Has_Element in range
    if  Has_Element(L4, First(L4)) then
       Ada.Text_IO.Put_Line("OK");
-      Test_Element(L4, First(L1),3,1,"Copy of Left : Has_Element in range");
+      Test_Element(L4, First(L1),4,2,"Copy of Left : Has_Element in range");
    else
       Ada.Text_IO.Put_Line("Copy of Left : Has_Element in range => KO ???");
    end if;
@@ -193,14 +193,14 @@ begin
    end if;
 
    -- Copy of Left : Find in range
-   if  Find(L4,1) /=  First(L4) then
+   if  Find(L4,2) /=  First(L4) then
       Ada.Text_IO.Put_Line("Copy of Left : Find in range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
    end if;
 
    -- Copy of Left : Find out of range
-   if  Find(L4,2) /=  No_Element or Find(L4,3) /=  No_Element then
+   if  Find(L4,3) /=  No_Element or Find(L4,4) /=  No_Element then
       Ada.Text_IO.Put_Line("Copy of Left : Find out of range => KO ???");
    else
       Ada.Text_IO.Put_Line("OK");
@@ -321,7 +321,7 @@ begin
 
    -- Deleting a cursor before the cut doesn't change Right
    L2 :=  Copy(L1,3);
-    Delete(L2, 1);
+    Delete(L2, 2);
    if  Strict_Equal ( Right(L2, First(L2)),  Right(L1, Next(L1, First(L1)))) then
       Ada.Text_IO.Put_Line("OK");
    else

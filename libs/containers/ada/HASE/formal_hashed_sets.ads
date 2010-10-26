@@ -34,7 +34,7 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-private with Verified_Hash_Tables;  -- ???
+private with Hash_Tables;
 private with Ada.Streams;
 
 with Ada.Containers;
@@ -232,7 +232,7 @@ private
          Has_Element : Boolean := False;
       end record;
 
-   package HT_Types is new Verified_Hash_Tables.Generic_Hash_Table_Types
+   package HT_Types is new Hash_Tables.Generic_Bounded_Hash_Table_Types
      (Node_Type);
 
    type HT_Access is access all HT_Types.Hash_Table_Type;
@@ -254,7 +254,7 @@ private
 
    type Cursor is
       record
-         Node      : Node_Access;
+         Node      : Count_Type;
       end record;
 
    procedure Write

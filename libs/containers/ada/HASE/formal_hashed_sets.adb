@@ -35,70 +35,84 @@ with Ada.Text_IO;
 with Ada.Containers;
 use Ada.Containers;
 
-with Verified_Hash_Tables.Generic_Operations;
-pragma Elaborate_All (Verified_Hash_Tables.Generic_Operations);
+with Hash_Tables.Generic_Bounded_Operations;
+pragma Elaborate_All (Hash_Tables.Generic_Bounded_Operations);
 
-with Verified_Hash_Tables.Generic_Keys;
-pragma Elaborate_All (Verified_Hash_Tables.Generic_Keys);
+with Hash_Tables.Generic_Bounded_Keys;
+pragma Elaborate_All (Hash_Tables.Generic_Bounded_Keys);
+
+with Ada.Containers.Prime_Numbers; use Ada.Containers.Prime_Numbers;
 
 with System; use type System.Address;
 
 package body Formal_Hashed_Sets is
 
+   procedure print (C : Set) is
+      Node : Count_Type := 1;
+      Hash : Hash_Type := 0;
+   begin
+      while Node <= C.Capacity loop
+         Ada.Text_IO.Put_Line("------");
+         if C.HT.Nodes(Node).Has_Element then
+            Ada.Text_IO.Put_Line("true");
+         else
+            Ada.Text_IO.Put_Line("false");
+         end if;
+         Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Nodes(Node).Next));
+         Node := Node + 1;
+      end loop;
+
+      while Hash <= C.Modulus loop
+         Ada.Text_IO.Put_Line("_____");
+         Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Buckets(Hash)));
+         Hash := Hash + 1;
+      end loop;
+   end;
+
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Difference
-     (Left, Right : Set;
-      Target      : in out Hash_Table_Type);
-
    function Equivalent_Keys
      (Key  : Element_Type;
-      HT   : Hash_Table_Type;
-      Node : Node_Access) return Boolean;
+      Node : Node_Type) return Boolean;
    pragma Inline (Equivalent_Keys);
 
-   function Get_Next
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Node_Access;
-   pragma Inline (Get_Next);
+   procedure Free
+     (HT : in out Hash_Table_Type;
+      X  : Count_Type);
 
-   function Hash_Node
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Hash_Type;
+   generic
+      with procedure Set_Element (Node : in out Node_Type);
+   procedure Generic_Allocate
+     (HT   : in out Hash_Table_Type;
+      Node : out Count_Type);
+
+   function Hash_Node (Node : Node_Type) return Hash_Type;
    pragma Inline (Hash_Node);
 
-   procedure Intersection
-     (Left        : Hash_Table_Type;
-      Right       : Set;
-      Target      : in out Hash_Table_Type);
-
    procedure Insert
-     (HT       : in out Hash_Table_Type;
+     (Container       : in out Hash_Table_Type;
       New_Item : Element_Type;
-      Node     : out Node_Access;
+      Node     : out Count_Type;
       Inserted : out Boolean);
+
+   function Is_In
+     (HT  : HT_Types.Hash_Table_Type;
+      Key : Node_Type) return Boolean;
+   pragma Inline (Is_In);
+
+   procedure Set_Element (Node : in out Node_Type; Item : Element_Type);
+   pragma Inline (Set_Element);
 
    function Next_Unchecked
      (Container : Set;
       Position  : Cursor) return Cursor;
 
-   procedure Replace_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Key  : Element_Type);
+   function Next (Node : Node_Type) return Count_Type;
+   pragma Inline (Next);
 
-   procedure Set_Has_Element
-     (HT          : in out Hash_Table_Type;
-      Node        : Node_Access;
-      Has_Element : Boolean);
-   pragma Inline (Set_Has_Element);
-
-   procedure Set_Next
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Next : Node_Access);
+   procedure Set_Next (Node : in out Node_Type; Next : Count_Type);
    pragma Inline (Set_Next);
 
    function Vet (Container : Set; Position : Cursor) return Boolean;
@@ -107,22 +121,22 @@ package body Formal_Hashed_Sets is
    -- Local Instantiations --
    --------------------------
 
-   package HT_Ops is
-     new Verified_Hash_Tables.Generic_Operations
-       (HT_Types        => HT_Types,
-        Hash_Node       => Hash_Node,
-        Get_Next        => Get_Next,
-        Set_Next        => Set_Next,
-        Set_Has_Element => Set_Has_Element);
+   package HT_Ops is new Hash_Tables.Generic_Bounded_Operations
+     (HT_Types  => HT_Types,
+      Hash_Node => Hash_Node,
+      Next      => Next,
+      Set_Next  => Set_Next);
 
-   package Element_Keys is
-     new Verified_Hash_Tables.Generic_Keys
-       (HT_Types        => HT_Types,
-        Get_Next        => Get_Next,
-        Set_Next        => Set_Next,
-        Key_Type        => Element_Type,
-        Hash            => Hash,
-        Equivalent_Keys => Equivalent_Keys);
+   package Element_Keys is new Hash_Tables.Generic_Bounded_Keys
+     (HT_Types        => HT_Types,
+      Next            => Next,
+      Set_Next        => Set_Next,
+      Key_Type        => Element_Type,
+      Hash            => Hash,
+      Equivalent_Keys => Equivalent_Keys);
+
+   procedure Replace_Element is
+     new Element_Keys.Generic_Replace_Element (Hash_Node, Set_Element);
 
    ---------
    -- "=" --
@@ -174,23 +188,24 @@ package body Formal_Hashed_Sets is
    ------------
 
    procedure Assign (Target : in out Set; Source : Set) is
-      procedure Process (Src_Node : Node_Access);
+      procedure Insert_Element (Source_Node : Count_Type);
 
-      procedure Iterate is
-        new HT_Ops.Generic_Iteration (Process);
+      procedure Insert_Elements is
+        new HT_Ops.Generic_Iteration (Insert_Element);
 
-      -------------
-      -- Process --
-      -------------
+      --------------------
+      -- Insert_Element --
+      --------------------
 
-      procedure Process (Src_Node : Node_Access) is
-         X : Node_Access;
+      procedure Insert_Element (Source_Node : Count_Type) is
+         N : Node_Type renames Source.HT.Nodes (Source_Node);
+         X : Count_Type;
          B : Boolean;
+
       begin
-         Insert (Target.HT.all, Source.HT.Nodes (Src_Node).Element, X, B);
-         -- ???
+         Insert (Target.HT.all, N.Element, X, B);
          pragma Assert (B);
-      end Process;
+      end Insert_Element;
 
       --  Start of processing for Assign
 
@@ -208,17 +223,17 @@ package body Formal_Hashed_Sets is
          raise Storage_Error with "not enough capacity";  -- SE or CE? ???
       end if;
 
-      Target.Clear;
+      HT_Ops.Clear (Target.HT.all);
 
       case Source.K is
          when Plain =>
-            Iterate (Source.HT.all);
+            Insert_Elements (Source.HT.all);
          when Part =>
             declare
                N : Count_Type := Source.First;
             begin
                while N /= HT_Ops.Next (Source.HT.all, Source.Last) loop
-                  Process (N);
+                  Insert_Element (N);
                   N := HT_Ops.Next (Source.HT.all, N);
                end loop;
             end;
@@ -267,7 +282,7 @@ package body Formal_Hashed_Sets is
       Capacity : Count_Type := 0) return Set
    is
       C      : constant Count_Type :=
-                 Count_Type'Max (Capacity, Source.Capacity);
+        Count_Type'Max (Capacity, Source.Capacity);
       H      : Hash_Type := 1;
       N      : Count_Type := 1;
       Target : Set (C, Source.Modulus);
@@ -290,7 +305,7 @@ package body Formal_Hashed_Sets is
       end loop;
       while N <= C loop
          Cu := (Node => N);
-         HT_Ops.Free (Target.HT.all, Cu.Node);
+         Free (Target.HT.all, Cu.Node);
          N := N + 1;
       end loop;
       if Source.K = Part then
@@ -316,7 +331,7 @@ package body Formal_Hashed_Sets is
 
    function Default_Modulus (Capacity : Count_Type) return Hash_Type is
    begin
-      return HT_Ops.Default_Modulus (Capacity);
+      return To_Prime (Capacity);
    end Default_Modulus;
 
    ------------
@@ -327,7 +342,7 @@ package body Formal_Hashed_Sets is
      (Container : in out Set;
       Item      : Element_Type)
    is
-      X : Node_Access;
+      X : Count_Type;
 
    begin
 
@@ -341,7 +356,7 @@ package body Formal_Hashed_Sets is
       if X = 0 then
          raise Constraint_Error with "attempt to delete element not in set";
       end if;
-      HT_Ops.Free (Container.HT.all, X);
+      Free (Container.HT.all, X);
    end Delete;
 
    procedure Delete
@@ -367,7 +382,9 @@ package body Formal_Hashed_Sets is
       pragma Assert (Vet (Container, Position), "bad cursor in Delete");
 
       HT_Ops.Delete_Node_Sans_Free (Container.HT.all, Position.Node);
-      HT_Ops.Free (Container.HT.all, Position.Node);
+      Free (Container.HT.all, Position.Node);
+
+      Position := No_Element;
    end Delete;
 
    ----------------
@@ -378,7 +395,7 @@ package body Formal_Hashed_Sets is
      (Target : in out Set;
       Source : Set)
    is
-      Tgt_Node, Src_Node, Src_Last, Src_Length : Node_Access;
+      Tgt_Node, Src_Node, Src_Last, Src_Length : Count_Type;
 
       TN : Nodes_Type renames Target.HT.Nodes;
       SN : Nodes_Type renames Source.HT.Nodes;
@@ -419,11 +436,11 @@ package body Formal_Hashed_Sets is
                   if Element_Keys.Find (Source.HT.all,
                                         TN (Tgt_Node).Element) /= 0 then
                      declare
-                        X : Node_Access := Tgt_Node;
+                        X : Count_Type := Tgt_Node;
                      begin
                         Tgt_Node := HT_Ops.Next (Target.HT.all, Tgt_Node);
                         HT_Ops.Delete_Node_Sans_Free (Target.HT.all, X);
-                        HT_Ops.Free (Target.HT.all, X);
+                        Free (Target.HT.all, X);
                      end;
                   else
                      Tgt_Node := HT_Ops.Next (Target.HT.all, Tgt_Node);
@@ -444,7 +461,7 @@ package body Formal_Hashed_Sets is
 
          if Tgt_Node /= 0 then
             HT_Ops.Delete_Node_Sans_Free (Target.HT.all, Tgt_Node);
-            HT_Ops.Free (Target.HT.all, Tgt_Node);
+            Free (Target.HT.all, Tgt_Node);
          end if;
 
          Src_Node := HT_Ops.Next (Source.HT.all, Src_Node);
@@ -455,7 +472,7 @@ package body Formal_Hashed_Sets is
      (Left, Right : Set;
       Target      : in out Hash_Table_Type)
    is
-      procedure Process (L_Node : Node_Access);
+      procedure Process (L_Node : Count_Type);
 
       procedure Iterate is
         new HT_Ops.Generic_Iteration (Process);
@@ -464,9 +481,9 @@ package body Formal_Hashed_Sets is
       -- Process --
       -------------
 
-      procedure Process (L_Node : Node_Access) is
+      procedure Process (L_Node : Count_Type) is
          E : Element_Type renames Left.HT.Nodes (L_Node).Element;
-         X : Node_Access;
+         X : Count_Type;
          B : Boolean;
 
       begin
@@ -553,8 +570,9 @@ package body Formal_Hashed_Sets is
          declare
 
             function Find_Equivalent_Key
-              (R_HT   : Hash_Table_Type;
-               L_Node : Node_Access) return Boolean;
+              (R_HT   : Hash_Table_Type'Class;
+               L_Node : Node_Type) return Boolean;
+            pragma Inline (Find_Equivalent_Key);
 
             function Is_Equivalent is
               new HT_Ops.Generic_Equal (Find_Equivalent_Key);
@@ -564,16 +582,15 @@ package body Formal_Hashed_Sets is
             -------------------------
 
             function Find_Equivalent_Key
-              (R_HT   : Hash_Table_Type;
-               L_Node : Node_Access) return Boolean
+              (R_HT   : Hash_Table_Type'Class;
+               L_Node : Node_Type) return Boolean
             is
-               LN  : Node_Type renames Left.HT.Nodes (L_Node);
-               RNN : Nodes_Type renames R_HT.Nodes;
-
                R_Index : constant Hash_Type :=
-                           Element_Keys.Index (R_HT, LN.Element);
+                 Element_Keys.Index (R_HT, L_Node.Element);
 
-               R_Node  : Node_Access := R_HT.Buckets (R_Index);
+               R_Node  : Count_Type := R_HT.Buckets (R_Index);
+
+               RN      : Nodes_Type renames R_HT.Nodes;
 
             begin
                loop
@@ -581,12 +598,11 @@ package body Formal_Hashed_Sets is
                      return False;
                   end if;
 
-                  if Equivalent_Elements (LN.Element, RNN (R_Node).Element)
-                  then
+                  if Equivalent_Elements (L_Node.Element, RN (R_Node).Element) then
                      return True;
                   end if;
 
-                  R_Node := Get_Next (R_HT, R_Node);
+                  R_Node := HT_Ops.Next (R_HT, R_Node);
                end loop;
             end Find_Equivalent_Key;
 
@@ -605,8 +621,8 @@ package body Formal_Hashed_Sets is
             is
                L_Index  : Hash_Type;
                To_Index : Hash_Type :=
-                            Element_Keys.Index (L, L.Nodes (To).Element);
-               L_Node   : Node_Access := From;
+                 Element_Keys.Index (L, L.Nodes (To).Element);
+               L_Node   : Count_Type := From;
 
             begin
 
@@ -736,14 +752,10 @@ package body Formal_Hashed_Sets is
    -- Equivalent_Keys --
    ---------------------
 
-   function Equivalent_Keys
-     (Key  : Element_Type;
-      HT   : Hash_Table_Type;
-      Node : Node_Access) return Boolean
-   is
-      N : Node_Type renames HT.Nodes (Node);
+   function Equivalent_Keys (Key : Element_Type; Node : Node_Type)
+                             return Boolean is
    begin
-      return Equivalent_Elements (Key, N.Element);
+      return Equivalent_Elements (Key, Node.Element);
    end Equivalent_Keys;
 
    -------------
@@ -754,14 +766,14 @@ package body Formal_Hashed_Sets is
      (Container : in out Set;
       Item      : Element_Type)
    is
-      X : Node_Access;
+      X : Count_Type;
    begin
       if Container.K /= Plain then
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
       Element_Keys.Delete_Key_Sans_Free (Container.HT.all, Item, X);
-      HT_Ops.Free (Container.HT.all, X);
+      Free (Container.HT.all, X);
    end Exclude;
 
    ----------
@@ -776,14 +788,16 @@ package body Formal_Hashed_Sets is
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access :=
-                        Element_Keys.Find (Container.HT.all, Item);
+               Node : constant Count_Type :=
+                 Element_Keys.Find (Container.HT.all, Item);
 
             begin
                if Node = 0 then
                   return No_Element;
                end if;
-
+               if not has_element (Container, (Node => Node)) then
+                  Ada.Text_IO.Put_Line("okkkkkkkkkkkk");
+               end if;
                return (Node => Node);
             end;
          when Part =>
@@ -792,17 +806,17 @@ package body Formal_Hashed_Sets is
                  (HT   : Hash_Table_Type;
                   Key  : Element_Type;
                   From : Count_Type;
-                  To   : Count_Type) return Node_Access is
+                  To   : Count_Type) return Count_Type is
 
                   Indx      : Hash_Type;
                   Indx_From : Hash_Type :=
-                                Element_Keys.Index (HT,
-                                                    HT.Nodes (From).Element);
+                    Element_Keys.Index (HT,
+                                        HT.Nodes (From).Element);
                   Indx_To   : Hash_Type :=
-                                Element_Keys.Index (HT,
-                                                    HT.Nodes (To).Element);
-                  Node      : Node_Access;
-                  To_Node   : Node_Access;
+                    Element_Keys.Index (HT,
+                                        HT.Nodes (To).Element);
+                  Node      : Count_Type;
+                  To_Node   : Count_Type;
 
                begin
 
@@ -825,7 +839,7 @@ package body Formal_Hashed_Sets is
                   end if;
 
                   while Node /= To_Node loop
-                     if Equivalent_Keys (Key, HT, Node) then
+                     if Equivalent_Keys (Key, HT.Nodes(Node)) then
                         return Node;
                      end if;
                      Node := HT.Nodes (Node).Next;
@@ -853,7 +867,7 @@ package body Formal_Hashed_Sets is
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access := HT_Ops.First (Container.HT.all);
+               Node : constant Count_Type := HT_Ops.First (Container.HT.all);
 
             begin
                if Node = 0 then
@@ -876,18 +890,35 @@ package body Formal_Hashed_Sets is
       end case;
    end First;
 
-   -- NOT MODIFIED
+   ----------
+   -- Free --
+   ----------
 
-   --------------
-   -- Get_Next --
-   --------------
-
-   function Get_Next
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Node_Access is
+   procedure Free
+     (HT : in out Hash_Table_Type;
+      X  : Count_Type)
+   is
    begin
-      return HT.Nodes (Node).Next;
-   end Get_Next;
+      HT.Nodes(X).Has_Element := False;
+      HT_Ops.Free(HT,X);
+   end Free;
+
+   ----------------------
+   -- Generic_Allocate --
+   ----------------------
+
+   procedure Generic_Allocate
+     (HT   : in out Hash_Table_Type;
+      Node : out Count_Type)
+   is
+
+      procedure Allocate is
+        new HT_Ops.Generic_Allocate (Set_Element);
+
+   begin
+      Allocate(HT, Node);
+      HT.Nodes(Node).Has_Element := True;
+   end Generic_Allocate;
 
    -----------------
    -- Has_Element --
@@ -906,17 +937,17 @@ package body Formal_Hashed_Sets is
 
       declare
          Lst_Index : Hash_Type :=
-                       Element_Keys.Index (Container.HT.all,
-                                           Container.HT.Nodes
-                                             (Container.Last).Element);
+           Element_Keys.Index (Container.HT.all,
+                               Container.HT.Nodes
+                                 (Container.Last).Element);
          Fst_Index : Hash_Type :=
-                       Element_Keys.Index (Container.HT.all,
-                                           Container.HT.Nodes
-                                             (Container.First).Element);
+           Element_Keys.Index (Container.HT.all,
+                               Container.HT.Nodes
+                                 (Container.First).Element);
          Index     : Hash_Type :=
-                       Element_Keys.Index (Container.HT.all,
-                                           Container.HT.Nodes
-                                             (Position.Node).Element);
+           Element_Keys.Index (Container.HT.all,
+                               Container.HT.Nodes
+                                 (Position.Node).Element);
          Lst_Node  : Count_Type;
          Node      : Count_Type;
       begin
@@ -956,11 +987,9 @@ package body Formal_Hashed_Sets is
    -- Hash_Node --
    ---------------
 
-   function Hash_Node
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Hash_Type is
+   function Hash_Node (Node : Node_Type) return Hash_Type is
    begin
-      return Hash (HT.Nodes (Node).Element);
+      return Hash (Node.Element);
    end Hash_Node;
 
    -------------
@@ -1023,49 +1052,49 @@ package body Formal_Hashed_Sets is
    end Insert;
 
    procedure Insert
-     (HT       : in out Hash_Table_Type;
-      New_Item : Element_Type;
-      Node     : out Node_Access;
-      Inserted : out Boolean)
+     (Container : in out Hash_Table_Type;
+      New_Item  : Element_Type;
+      Node      : out Count_Type;
+      Inserted  : out Boolean)
    is
-      function New_Node (Next : Node_Access) return Node_Access;
+      procedure Allocate_Set_Element (Node : in out Node_Type);
+      pragma Inline (Allocate_Set_Element);
+
+      function New_Node return Count_Type;
       pragma Inline (New_Node);
 
       procedure Local_Insert is
         new Element_Keys.Generic_Conditional_Insert (New_Node);
 
-      procedure Initialize_Node (Node : in out Node_Type);
-      pragma Inline (Initialize_Node);
+      procedure Allocate is
+        new Generic_Allocate (Allocate_Set_Element);
 
-      procedure Allocate_Node is
-        new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+      ---------------------------
+      --  Allocate_Set_Element --
+      ---------------------------
+
+      procedure Allocate_Set_Element (Node : in out Node_Type) is
+      begin
+         Node.Element := New_Item;
+      end Allocate_Set_Element;
 
       --------------
       -- New_Node --
       --------------
 
-      function New_Node (Next : Node_Access) return Node_Access is
-         X : Node_Access;
+      function New_Node return Count_Type is
+         Result : Count_Type;
       begin
-         Allocate_Node (HT, X);
-         HT.Nodes (X).Next := Next;
-         return X;
+         Allocate (Container, Result);
+         return Result;
       end New_Node;
-
-      ---------------------
-      -- Initialize_Node --
-      ---------------------
-
-      procedure Initialize_Node (Node : in out Node_Type) is
-      begin
-         Node.Element := New_Item;
-         Node.Has_Element := True;
-      end Initialize_Node;
 
       --  Start of processing for Insert
 
    begin
-      Local_Insert (HT, New_Item, Node, Inserted);
+
+      Local_Insert (Container, New_Item, Node, Inserted);
+
    end Insert;
 
    ------------------
@@ -1076,7 +1105,7 @@ package body Formal_Hashed_Sets is
      (Target : in out Set;
       Source : Set)
    is
-      Tgt_Node : Node_Access;
+      Tgt_Node : Count_Type;
       TN       : Nodes_Type renames Target.HT.Nodes;
 
    begin
@@ -1106,11 +1135,11 @@ package body Formal_Hashed_Sets is
 
          else
             declare
-               X : Node_Access := Tgt_Node;
+               X : Count_Type := Tgt_Node;
             begin
                Tgt_Node := HT_Ops.Next (Target.HT.all, Tgt_Node);
                HT_Ops.Delete_Node_Sans_Free (Target.HT.all, X);
-               HT_Ops.Free (Target.HT.all, X);
+               Free (Target.HT.all, X);
             end;
          end if;
       end loop;
@@ -1121,7 +1150,7 @@ package body Formal_Hashed_Sets is
       Right  : Set;
       Target : in out Hash_Table_Type)
    is
-      procedure Process (L_Node : Node_Access);
+      procedure Process (L_Node : Count_Type);
 
       procedure Iterate is
         new HT_Ops.Generic_Iteration (Process);
@@ -1130,9 +1159,9 @@ package body Formal_Hashed_Sets is
       -- Process --
       -------------
 
-      procedure Process (L_Node : Node_Access) is
+      procedure Process (L_Node : Count_Type) is
          E : Element_Type renames Left.Nodes (L_Node).Element;
-         X : Node_Access;
+         X : Count_Type;
          B : Boolean;
 
       begin
@@ -1151,7 +1180,7 @@ package body Formal_Hashed_Sets is
    function Intersection (Left, Right : Set) return Set is
       C : Count_Type;
       H : Hash_Type;
-      X : Node_Access;
+      X : Count_Type;
       B : Boolean;
 
    begin
@@ -1189,12 +1218,22 @@ package body Formal_Hashed_Sets is
       return Length (Container) = 0;
    end Is_Empty;
 
+   -----------
+   -- Is_In --
+   -----------
+
+   function Is_In (HT : HT_Types.Hash_Table_Type;
+                   Key : Node_Type) return Boolean is
+   begin
+      return Element_Keys.Find (HT, Key.Element) /= 0;
+   end Is_In;
+
    ---------------
    -- Is_Subset --
    ---------------
 
    function Is_Subset (Subset : Set; Of_Set : Set) return Boolean is
-      Subset_Node  : Node_Access;
+      Subset_Node  : Count_Type;
       Subset_Nodes : Nodes_Type renames Subset.HT.Nodes;
       To_Node      : Count_Type;
    begin
@@ -1238,9 +1277,9 @@ package body Formal_Hashed_Sets is
    procedure Iterate
      (Container : Set;
       Process   :
-        not null access procedure (Container : Set; Position : Cursor))
+      not null access procedure (Container : Set; Position : Cursor))
    is
-      procedure Process_Node (Node : Node_Access);
+      procedure Process_Node (Node : Count_Type);
       pragma Inline (Process_Node);
 
       procedure Iterate is
@@ -1250,7 +1289,7 @@ package body Formal_Hashed_Sets is
       -- Process_Node --
       ------------------
 
-      procedure Process_Node (Node : Node_Access) is
+      procedure Process_Node (Node : Count_Type) is
       begin
          Process (Container, (Node => Node));
       end Process_Node;
@@ -1349,7 +1388,7 @@ package body Formal_Hashed_Sets is
    procedure Move (Target : in out Set; Source : in out Set) is
       HT   : HT_Types.Hash_Table_Type renames Source.HT.all;
       NN   : HT_Types.Nodes_Type renames HT.Nodes;
-      X, Y : Node_Access;
+      X, Y : Count_Type;
 
    begin
 
@@ -1385,7 +1424,7 @@ package body Formal_Hashed_Sets is
          Y := HT_Ops.Next (HT, X);
 
          HT_Ops.Delete_Node_Sans_Free (HT, X);
-         HT_Ops.Free (HT, X);
+         Free (HT, X);
 
          X := Y;
       end loop;
@@ -1395,12 +1434,17 @@ package body Formal_Hashed_Sets is
    -- Next --
    ----------
 
+   function Next (Node : Node_Type) return Count_Type is
+   begin
+      return Node.Next;
+   end Next;
+
    function Next_Unchecked
      (Container : Set;
       Position  : Cursor) return Cursor
    is
       HT   : Hash_Table_Type renames Container.HT.all;
-      Node : constant Node_Access := HT_Ops.Next (HT, Position.Node);
+      Node : constant Count_Type := HT_Ops.Next (HT, Position.Node);
 
    begin
       if Node = 0 then
@@ -1440,9 +1484,9 @@ package body Formal_Hashed_Sets is
    -------------
 
    function Overlap (Left, Right : Set) return Boolean is
-      Left_Node  : Node_Access;
+      Left_Node  : Count_Type;
       Left_Nodes : Nodes_Type renames Left.HT.Nodes;
-      To_Node    : Node_Access;
+      To_Node    : Count_Type;
    begin
       if Length (Right) = 0 or Length (Left) = 0 then
          return False;
@@ -1527,36 +1571,60 @@ package body Formal_Hashed_Sets is
    -- Read --
    ----------
 
-   -- TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
    procedure Read
      (Stream    : not null access Root_Stream_Type'Class;
       Container : out Set)
    is
-      procedure Initialize_Node (N : in out Node_Type);
-      pragma Inline (Initialize_Node);
+      function Read_Node (Stream : not null access Root_Stream_Type'Class)
+                          return Count_Type;
 
-      procedure Allocate_Node is
-        new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+      procedure Read_Nodes is
+        new HT_Ops.Generic_Read (Read_Node);
 
-      procedure Read is
-        new HT_Ops.Generic_Read (Allocate_Node);
+      ---------------
+      -- Read_Node --
+      ---------------
 
-      ---------------------
-      -- Initialize_Node --
-      ---------------------
+      function Read_Node (Stream : not null access Root_Stream_Type'Class)
+                          return Count_Type
+      is
+         procedure Read_Element (Node : in out Node_Type);
+         pragma Inline (Read_Element);
 
-      procedure Initialize_Node (N : in out Node_Type) is
+         procedure Allocate is
+           new Generic_Allocate (Read_Element);
+
+         procedure Read_Element (Node : in out Node_Type) is
+         begin
+            Element_Type'Read (Stream, Node.Element);
+         end Read_Element;
+
+         Node : Count_Type;
+
+         --  Start of processing for Read_Node
+
       begin
-         Element_Type'Read (Stream, N.Element);
-      end Initialize_Node;
+         Allocate (Container.HT.all, Node);
+         return Node;
+      end Read_Node;
+
 
       --  Start of processing for Read
-
-      C : Set (0, 0);
+      Result : HT_Access;
    begin
-      Container := C;
-      Read (Stream, Container.HT.all);
+      if Container.K /= Plain then
+         raise Constraint_Error;
+      end if;
+
+      if Container.HT = null then
+         Result := new HT_Types.Hash_Table_Type(Container.Capacity,
+                                                Container.Modulus);
+      else
+         Result := Container.HT;
+      end if;
+
+      Read_Nodes (Stream, Result.all);
+      Container.HT := Result;
    end Read;
 
    procedure Read
@@ -1575,8 +1643,8 @@ package body Formal_Hashed_Sets is
      (Container : in out Set;
       New_Item  : Element_Type)
    is
-      Node : constant Node_Access :=
-               Element_Keys.Find (Container.HT.all, New_Item);
+      Node : constant Count_Type :=
+        Element_Keys.Find (Container.HT.all, New_Item);
 
    begin
       if Container.K /= Plain then
@@ -1602,44 +1670,6 @@ package body Formal_Hashed_Sets is
    ---------------------
 
    procedure Replace_Element
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Key  : Element_Type)
-   is
-      function Hash_Node (Node : Node_Access) return Hash_Type;
-      pragma Inline (Hash_Node);
-
-      procedure Assign (Node : Node_Access; Item : Element_Type);
-      pragma Inline (Assign);
-
-      procedure Local_Replace_Element is
-        new Element_Keys.Generic_Replace_Element (Hash_Node, Assign);
-
-      ---------------
-      -- Hash_Node --
-      ---------------
-
-      function Hash_Node (Node : Node_Access) return Hash_Type is
-      begin
-         return Hash (HT.Nodes (Node).Element);
-      end Hash_Node;
-
-      ------------
-      -- Assign --
-      ------------
-
-      procedure Assign (Node : Node_Access; Item : Element_Type) is
-      begin
-         HT.Nodes (Node).Element := Item;
-      end Assign;
-
-      --  Start of processing for Replace_Element
-
-   begin
-      Local_Replace_Element (HT, Node, Key);
-   end Replace_Element;
-
-   procedure Replace_Element
      (Container : in out Set;
       Position  : Cursor;
       New_Item  : Element_Type)
@@ -1649,13 +1679,13 @@ package body Formal_Hashed_Sets is
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
-      if not Has_Element (Container, Position) then
+
+      if not Has_Element(Container, Position) then
          raise Constraint_Error with
-           "Position cursor has no element";
+           "Position cursor equals No_Element";
       end if;
 
-      pragma Assert (Vet (Container, Position),
-                     "bad cursor in Replace_Element");
+      pragma Assert (Vet (Container, Position), "bad cursor in Replace_Element");
 
       Replace_Element (Container.HT.all, Position.Node, New_Item);
    end Replace_Element;
@@ -1673,7 +1703,9 @@ package body Formal_Hashed_Sets is
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
-      HT_Ops.Reserve_Capacity (Container.HT.all, Capacity);
+      if Capacity > Container.Capacity then
+         raise Constraint_Error with "requested capacity is too large";
+      end if;
    end Reserve_Capacity;
 
    -----------
@@ -1727,30 +1759,22 @@ package body Formal_Hashed_Sets is
               Last     => Last);
    end Right;
 
-   ---------------------
-   -- Set_Has_Element --
-   ---------------------
+   ------------------
+   --  Set_Element --
+   ------------------
 
-   procedure Set_Has_Element
-     (HT          : in out Hash_Table_Type;
-      Node        : Node_Access;
-      Has_Element : Boolean)
-   is
+   procedure Set_Element (Node : in out Node_Type; Item : Element_Type) is
    begin
-      HT.Nodes (Node).Has_Element := Has_Element;
-   end Set_Has_Element;
+      Node.Element := Item;
+   end Set_Element;
 
    --------------
    -- Set_Next --
    --------------
 
-   procedure Set_Next
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Next : Node_Access)
-   is
+   procedure Set_Next (Node : in out Node_Type; Next : Count_Type) is
    begin
-      HT.Nodes (Node).Next := Next;
+      Node.Next := Next;
    end Set_Next;
 
    ------------------
@@ -1786,99 +1810,29 @@ package body Formal_Hashed_Sets is
      (Target : in out Set;
       Source : Set)
    is
-      procedure Process (Src_Node : Node_Access);
+      procedure Process (Source_Node : Count_Type);
+      pragma Inline (Process);
 
-      procedure Symmetric_Difference is
+      procedure Iterate is
         new HT_Ops.Generic_Iteration (Process);
-
-      function New_Node
-        (Item : Element_Type;
-         Next : Node_Access) return Node_Access;
 
       -------------
       -- Process --
       -------------
 
-      procedure Process (Src_Node : Node_Access) is
-         SN : Node_Type renames Source.HT.Nodes (Src_Node);
-         E  : Element_Type renames SN.Element;
-
-         TN : Nodes_Type renames Target.HT.Nodes;
-         B  : Buckets_Type renames Target.HT.Buckets;
-
-         J : constant Hash_Type := B'First + Hash (E) mod B'Length;
-         L : Count_Type renames Target.HT.Length;
+      procedure Process (Source_Node : Count_Type) is
+         N : Node_Type renames Source.HT.Nodes (Source_Node);
+         X : Count_Type;
+         B : Boolean;
 
       begin
-         if B (J) = 0 then
-            B (J) := New_Node (E, 0);
-            L := L + 1;
-
-         elsif Equivalent_Elements (E, TN (B (J)).Element) then
-            declare
-               X : Node_Access := B (J);
-            begin
-               B (J) := TN (X).Next;
-               L := L - 1;
-               HT_Ops.Free (Target.HT.all, X);
-            end;
-
+         if Is_In (Target.HT.all, N) then
+            Delete (Target, N.Element);
          else
-            declare
-               Prev : Node_Access := B (J);
-               Curr : Node_Access := TN (Prev).Next;
-
-            begin
-               while Curr /= 0 loop
-                  if Equivalent_Elements (E, TN (Curr).Element) then
-                     TN (Prev).Next := TN (Curr).Next;
-                     L := L - 1;
-                     HT_Ops.Free (Target.HT.all, Curr);
-                     return;
-                  end if;
-
-                  Prev := Curr;
-                  Curr := TN (Prev).Next;
-               end loop;
-
-               B (J) := New_Node (E, B (J));
-               L := L + 1;
-            end;
+            Insert (Target.HT.all, N.Element, X, B);
+            pragma Assert (B);
          end if;
       end Process;
-
-      --------------
-      -- New_Node --
-      --------------
-
-      function New_Node
-        (Item : Element_Type;
-         Next : Node_Access) return Node_Access
-      is
-         procedure Initialize_Node (N : in out Node_Type);
-         pragma Inline (Initialize_Node);
-
-         procedure Allocate_Node is
-           new HT_Ops.Generic_Allocate_Node (Initialize_Node);
-
-         ---------------------
-         -- Initialize_Node --
-         ---------------------
-
-         procedure Initialize_Node (N : in out Node_Type) is
-         begin
-            N.Element := Item;
-         end Initialize_Node;
-
-         X : Node_Access;
-
-         --  Start of processing for New_Node
-
-      begin
-         Allocate_Node (Target.HT.all, X);
-         Target.HT.Nodes (X).Next := Next;
-         return X;
-      end New_Node;
 
       --  Start of processing for Symmetric_Difference
 
@@ -1904,7 +1858,7 @@ package body Formal_Hashed_Sets is
       end if;
 
       if Source.K = Plain then
-         Symmetric_Difference (Source.HT.all);
+         Iterate (Source.HT.all);
       else
 
          if Source.Length = 0 then
@@ -1953,7 +1907,7 @@ package body Formal_Hashed_Sets is
    ------------
 
    function To_Set (New_Item : Element_Type) return Set is
-      X : Node_Access;
+      X : Count_Type;
       B : Boolean;
 
    begin
@@ -1971,7 +1925,7 @@ package body Formal_Hashed_Sets is
      (Target : in out Set;
       Source : Set)
    is
-      procedure Process (Src_Node : Node_Access);
+      procedure Process (Src_Node : Count_Type);
 
       procedure Iterate is
         new HT_Ops.Generic_Iteration (Process);
@@ -1980,11 +1934,11 @@ package body Formal_Hashed_Sets is
       -- Process --
       -------------
 
-      procedure Process (Src_Node : Node_Access) is
+      procedure Process (Src_Node : Count_Type) is
          N : Node_Type renames Source.HT.Nodes (Src_Node);
          E : Element_Type renames N.Element;
 
-         X : Node_Access;
+         X : Count_Type;
          B : Boolean;
 
       begin
@@ -2060,17 +2014,53 @@ package body Formal_Hashed_Sets is
    function Vet (Container : Set; Position : Cursor) return Boolean is
    begin
       if Position.Node = 0 then
-         return False;
+         return true;
       end if;
 
-      return HT_Ops.Vet (Container.HT.all, Position.Node);
+      declare
+         S : Set renames Container;
+         N : Nodes_Type renames S.HT.Nodes;
+         X : Count_Type;
+
+      begin
+         if S.Length = 0 then
+            return False;
+         end if;
+
+         if Position.Node > N'Last then
+            return False;
+         end if;
+
+         if N (Position.Node).Next = Position.Node then
+            return False;
+         end if;
+
+         X := S.HT.Buckets (Element_Keys.Index (S.HT.all,
+           N (Position.Node).Element));
+
+         for J in 1 .. S.Length loop
+            if X = Position.Node then
+               return True;
+            end if;
+
+            if X = 0 then
+               return False;
+            end if;
+
+            if X = N (X).Next then  --  to prevent unnecessary looping
+               return False;
+            end if;
+
+            X := N (X).Next;
+         end loop;
+
+         return False;
+      end;
    end Vet;
 
    -----------
    -- Write --
    -----------
-
-   -- TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
    procedure Write
      (Stream    : not null access Root_Stream_Type'Class;
@@ -2078,7 +2068,7 @@ package body Formal_Hashed_Sets is
    is
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access);
+         Node   : Node_Type);
       pragma Inline (Write_Node);
 
       procedure Write_Nodes is
@@ -2090,10 +2080,10 @@ package body Formal_Hashed_Sets is
 
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access)
+         Node   : Node_Type)
       is
       begin
-         Element_Type'Write (Stream, Container.HT.Nodes (Node).Element);
+         Element_Type'Write (Stream, Node.Element);
       end Write_Node;
 
       --  Start of processing for Write
@@ -2109,7 +2099,6 @@ package body Formal_Hashed_Sets is
    begin
       raise Program_Error with "attempt to stream set cursor";
    end Write;
-
    package body Generic_Keys is
 
       -----------------------
@@ -2118,8 +2107,7 @@ package body Formal_Hashed_Sets is
 
       function Equivalent_Key_Node
         (Key  : Key_Type;
-         HT   : Hash_Table_Type;
-         Node : Node_Access) return Boolean;
+         Node : Node_Type) return Boolean;
       pragma Inline (Equivalent_Key_Node);
 
       --------------------------
@@ -2127,9 +2115,9 @@ package body Formal_Hashed_Sets is
       --------------------------
 
       package Key_Keys is
-        new Verified_Hash_Tables.Generic_Keys
+        new Hash_Tables.Generic_Bounded_Keys
           (HT_Types        => HT_Types,
-           Get_Next        => Get_Next,
+           Next            => Next,
            Set_Next        => Set_Next,
            Key_Type        => Key_Type,
            Hash            => Hash,
@@ -2155,7 +2143,7 @@ package body Formal_Hashed_Sets is
         (Container : in out Set;
          Key       : Key_Type)
       is
-         X : Node_Access;
+         X : Count_Type;
 
       begin
          if Container.K /= Plain then
@@ -2169,7 +2157,7 @@ package body Formal_Hashed_Sets is
             raise Constraint_Error with "attempt to delete key not in set";
          end if;
 
-         HT_Ops.Free (Container.HT.all, X);
+         Free (Container.HT.all, X);
       end Delete;
 
       -------------
@@ -2180,7 +2168,7 @@ package body Formal_Hashed_Sets is
         (Container : Set;
          Key       : Key_Type) return Element_Type
       is
-         Node : constant Node_Access := Find (Container, Key).Node;
+         Node : constant Count_Type := Find (Container, Key).Node;
 
       begin
          if Node = 0 then
@@ -2190,21 +2178,17 @@ package body Formal_Hashed_Sets is
          return Container.HT.Nodes (Node).Element;
       end Element;
 
+
       -------------------------
       -- Equivalent_Key_Node --
       -------------------------
 
       function Equivalent_Key_Node
         (Key  : Key_Type;
-         HT   : Hash_Table_Type;
-         Node : Node_Access) return Boolean
+         Node : Node_Type) return Boolean
       is
-         N : Nodes_Type renames HT.Nodes;
-         E : Element_Type renames N (Node).Element;
-         K : constant Key_Type := Generic_Keys.Key (E);
-
       begin
-         return Equivalent_Keys (Key, K);
+         return Equivalent_Keys (Key, Generic_Keys.Key (Node.Element));
       end Equivalent_Key_Node;
 
       -------------
@@ -2215,7 +2199,7 @@ package body Formal_Hashed_Sets is
         (Container : in out Set;
          Key       : Key_Type)
       is
-         X : Node_Access;
+         X : Count_Type;
       begin
          if Container.K /= Plain then
             raise Constraint_Error
@@ -2223,7 +2207,7 @@ package body Formal_Hashed_Sets is
          end if;
 
          Key_Keys.Delete_Key_Sans_Free (Container.HT.all, Key, X);
-         HT_Ops.Free (Container.HT.all, X);
+         Free (Container.HT.all, X);
       end Exclude;
 
       ----------
@@ -2240,8 +2224,8 @@ package body Formal_Hashed_Sets is
       begin
          if Container.K = Plain then
             declare
-               Node : constant Node_Access :=
-                        Key_Keys.Find (Container.HT.all, Key);
+               Node : constant Count_Type :=
+                 Key_Keys.Find (Container.HT.all, Key);
 
             begin
                if Node = 0 then
@@ -2255,17 +2239,17 @@ package body Formal_Hashed_Sets is
                  (HT   : Hash_Table_Type;
                   Key  : Key_Type;
                   From : Count_Type;
-                  To   : Count_Type) return Node_Access is
+                  To   : Count_Type) return Count_Type is
 
                   Indx      : Hash_Type;
                   Indx_From : Hash_Type :=
-                                Key_Keys.Index (HT, Generic_Keys.Key
-                                                (HT.Nodes (From).Element));
+                    Key_Keys.Index (HT, Generic_Keys.Key
+                                    (HT.Nodes (From).Element));
                   Indx_To   : Hash_Type :=
-                                Key_Keys.Index (HT, Generic_Keys.Key
-                                                (HT.Nodes (To).Element));
-                  Node      : Node_Access;
-                  To_Node   : Node_Access;
+                    Key_Keys.Index (HT, Generic_Keys.Key
+                                    (HT.Nodes (To).Element));
+                  Node      : Count_Type;
+                  To_Node   : Count_Type;
 
                begin
 
@@ -2288,7 +2272,7 @@ package body Formal_Hashed_Sets is
                   end if;
 
                   while Node /= To_Node loop
-                     if Equivalent_Key_Node (Key, HT, Node) then
+                     if Equivalent_Key_Node (Key, HT.Nodes(Node)) then
                         return Node;
                      end if;
                      Node := HT.Nodes (Node).Next;
@@ -2346,8 +2330,8 @@ package body Formal_Hashed_Sets is
          end if;
 
          declare
-            Node : constant Node_Access :=
-                     Key_Keys.Find (Container.HT.all, Key);
+            Node : constant Count_Type :=
+              Key_Keys.Find (Container.HT.all, Key);
 
          begin
             if Node = 0 then
@@ -2369,44 +2353,44 @@ package body Formal_Hashed_Sets is
          Process   : not null access
            procedure (Element : in out Element_Type))
       is
-         HT   : Hash_Table_Type renames Container.HT.all;
          Indx : Hash_Type;
+         N    : Nodes_Type renames Container.HT.Nodes;
 
       begin
+
          if Container.K /= Plain then
             raise Constraint_Error
               with "Can't modify part of container";
          end if;
 
-         --  needs careful review ???
-
-         if not Has_Element (Container, Position) then
+         if Position.Node = 0 then
             raise Constraint_Error with
-              "Position cursor has no element";
+              "Position cursor equals No_Element";
          end if;
 
-         if HT.Capacity = 0
-           or else HT.Length = 0
-           or else Position.Node not in HT.Nodes'Range
-           or else HT.Nodes (Position.Node).Next = Position.Node
-         then
-            raise Program_Error with "Position cursor is bad (set is empty)";
-         end if;
+         --  ???
+         --  if HT.Buckets = null
+         --    or else HT.Buckets'Length = 0
+         --    or else HT.Length = 0
+         --    or else Position.Node.Next = Position.Node
+         --  then
+         --     raise Program_Error with
+         --        "Position cursor is bad (set is empty)";
+         --  end if;
 
          pragma Assert
            (Vet (Container, Position),
             "bad cursor in Update_Element_Preserving_Key");
 
-         Indx := HT_Ops.Index (HT, Position.Node);
-         --  capture this value prior to allowing modification,
-         --  to ensure we have correct bucket
+         --  Record bucket now, in case key is changed.
+         Indx := HT_Ops.Index (Container.HT.Buckets, N (Position.Node));
 
          declare
-            E : Element_Type renames HT.Nodes (Position.Node).Element;
+            E : Element_Type renames N (Position.Node).Element;
             K : constant Key_Type := Key (E);
 
-            B : Natural renames HT.Busy;
-            L : Natural renames HT.Lock;
+            B : Natural renames Container.HT.Busy;
+            L : Natural renames Container.HT.Lock;
 
          begin
             B := B + 1;
@@ -2430,16 +2414,18 @@ package body Formal_Hashed_Sets is
             end if;
          end;
 
-         if HT.Buckets (Indx) = Position.Node then
-            HT.Buckets (Indx) := HT.Nodes (Position.Node).Next;
+         --  Key was modified, so remove this node from set.
+
+         if Container.HT.Buckets (Indx) = Position.Node then
+            Container.HT.Buckets (Indx) := N (Position.Node).Next;
 
          else
             declare
-               Prev : Node_Access := HT.Buckets (Indx);
+               Prev : Count_Type := Container.HT.Buckets (Indx);
 
             begin
-               while HT.Nodes (Prev).Next /= Position.Node loop
-                  Prev := HT.Nodes (Prev).Next;
+               while N (Prev).Next /= Position.Node loop
+                  Prev := N (Prev).Next;
 
                   if Prev = 0 then
                      raise Program_Error with
@@ -2447,18 +2433,12 @@ package body Formal_Hashed_Sets is
                   end if;
                end loop;
 
-               HT.Nodes (Prev).Next := HT.Nodes (Position.Node).Next;
+               N (Prev).Next := N (Position.Node).Next;
             end;
          end if;
 
-         HT.Length := HT.Length - 1;
-
-         declare
-            X : Node_Access := Position.Node;
-
-         begin
-            HT_Ops.Free (HT, X);
-         end;
+         Container.Length := Container.Length - 1;
+         Free (Container.HT.all, Position.Node);
 
          raise Program_Error with "key was modified";
       end Update_Element_Preserving_Key;

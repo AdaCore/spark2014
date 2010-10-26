@@ -30,57 +30,77 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Verified_Hash_Tables.Generic_Operations;
-pragma Elaborate_All (Verified_Hash_Tables.Generic_Operations);
+with Hash_Tables.Generic_Bounded_Operations;
+pragma Elaborate_All (Hash_Tables.Generic_Bounded_Operations);
 
-with Verified_Hash_Tables.Generic_Keys;
-pragma Elaborate_All (Verified_Hash_Tables.Generic_Keys);
+with Hash_Tables.Generic_Bounded_Keys;
+pragma Elaborate_All (Hash_Tables.Generic_Bounded_Keys);
+
+with Ada.Containers.Prime_Numbers; use Ada.Containers.Prime_Numbers;
 
 with System;  use type System.Address;
 with Ada.Text_IO;
 
 package body Formal_Hashed_Maps is
 
+   procedure print (C : Map) is
+      Node : Count_Type := 1;
+      Hash : Hash_Type := 1;
+   begin
+      while Node <= C.Capacity loop
+            Ada.Text_IO.Put_Line("------");
+            if C.HT.Nodes(Node).Has_Element then
+               Ada.Text_IO.Put_Line("true");
+            else
+               Ada.Text_IO.Put_Line("false");
+            end if;
+            Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Nodes(Node).Next));
+            Node := Node + 1;
+         end loop;
+
+      while Hash <= C.Modulus loop
+         Ada.Text_IO.Put_Line("_____");
+         Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Buckets(Hash)));
+         Hash := Hash + 1;
+      end loop;
+   end;
+
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   function Equivalent_Key_Node
+   function Equivalent_Keys
      (Key  : Key_Type;
-      HT   : Hash_Table_Type;
-      Node : Node_Access) return Boolean;
-   pragma Inline (Equivalent_Key_Node);
+      Node : Node_Type) return Boolean;
+   pragma Inline (Equivalent_Keys);
 
    function Find_Between
      (HT   : Hash_Table_Type;
       Key  : Key_Type;
       From : Count_Type;
-      To   : Count_Type) return Node_Access;
+      To   : Count_Type) return Count_Type;
 
-   function Hash_Node
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Hash_Type;
+   procedure Free
+     (HT : in out Hash_Table_Type;
+      X  : Count_Type);
+
+   generic
+      with procedure Set_Element (Node : in out Node_Type);
+   procedure Generic_Allocate
+     (HT   : in out Hash_Table_Type;
+      Node : out Count_Type);
+
+   function Hash_Node (Node : Node_Type) return Hash_Type;
    pragma Inline (Hash_Node);
-
-   function Get_Next
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Node_Access;
-   pragma Inline (Get_Next);
 
    function Next_Unchecked
      (Container : Map;
       Position  : Cursor) return Cursor;
 
-   procedure Set_Has_Element
-     (HT          : in out Hash_Table_Type;
-      Node        : Node_Access;
-      Has_Element : Boolean);
-   pragma Inline (Set_Has_Element);
+   function Next (Node : Node_Type) return Count_Type;
+   pragma Inline (Next);
 
-   procedure Set_Next
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Next : Node_Access);
+   procedure Set_Next (Node : in out Node_Type; Next : Count_Type);
    pragma Inline (Set_Next);
 
    function Vet (Container : Map; Position : Cursor) return Boolean;
@@ -90,21 +110,20 @@ package body Formal_Hashed_Maps is
    --------------------------
 
    package HT_Ops is
-     new Verified_Hash_Tables.Generic_Operations
+     new Hash_Tables.Generic_Bounded_Operations
        (HT_Types        => HT_Types,
         Hash_Node       => Hash_Node,
-        Get_Next        => Get_Next,
-        Set_Next        => Set_Next,
-        Set_Has_Element => Set_Has_Element);
+        Next        	=> Next,
+        Set_Next        => Set_Next);
 
    package Key_Ops is
-     new Verified_Hash_Tables.Generic_Keys
+     new Hash_Tables.Generic_Bounded_Keys
        (HT_Types        => HT_Types,
-        Get_Next        => Get_Next,
+        Next        	=> Next,
         Set_Next        => Set_Next,
         Key_Type        => Key_Type,
         Hash            => Hash,
-        Equivalent_Keys => Equivalent_Key_Node);
+        Equivalent_Keys => Equivalent_Keys);
 
    ---------
    -- "=" --
@@ -157,7 +176,7 @@ package body Formal_Hashed_Maps is
    ------------
 
    procedure Assign (Target : in out Map; Source : Map) is
-      procedure Insert_Element (Source_Node : Node_Access);
+      procedure Insert_Element (Source_Node : Count_Type);
       pragma Inline (Insert_Element);
 
       procedure Insert_Elements is
@@ -167,7 +186,7 @@ package body Formal_Hashed_Maps is
       -- Insert_Element --
       --------------------
 
-      procedure Insert_Element (Source_Node : Node_Access) is
+      procedure Insert_Element (Source_Node : Count_Type) is
          N : Node_Type renames Source.HT.Nodes (Source_Node);
       begin
          Target.Insert (N.Key, N.Element);
@@ -273,12 +292,15 @@ package body Formal_Hashed_Maps is
       end loop;
       while N <= C loop
          Cu := (Node => N);
-         HT_Ops.Free (Target.HT.all, Cu.Node);
+         Free (Target.HT.all, Cu.Node);
          N := N + 1;
       end loop;
       if Source.K = Part then
          N := HT_Ops.First (Target.HT.all);
          while N /= Source.First loop
+      --Ada.Text_IO.Put_Line("..........");
+      --Ada.Text_IO.Put_Line(Count_Type'Image(N));
+      --print(Target);
             Cu := (Node => N);
             N := HT_Ops.Next (Target.HT.all, N);
             Delete (Target, Cu);
@@ -289,6 +311,7 @@ package body Formal_Hashed_Maps is
             N := HT_Ops.Next (Target.HT.all, N);
             Delete (Target, Cu);
          end loop;
+      --print(Target);
       end if;
       return Target;
    end Copy;
@@ -299,7 +322,7 @@ package body Formal_Hashed_Maps is
 
    function Default_Modulus (Capacity : Count_Type) return Hash_Type is
    begin
-      return HT_Ops.Default_Modulus (Capacity);
+      return To_Prime (Capacity);
    end Default_Modulus;
 
    ------------
@@ -307,7 +330,7 @@ package body Formal_Hashed_Maps is
    ------------
 
    procedure Delete (Container : in out Map; Key : Key_Type) is
-      X : Node_Access;
+      X : Count_Type;
 
    begin
 
@@ -322,7 +345,7 @@ package body Formal_Hashed_Maps is
          raise Constraint_Error with "attempt to delete key not in map";
       end if;
 
-      HT_Ops.Free (Container.HT.all, X);
+      Free (Container.HT.all, X);
    end Delete;
 
    procedure Delete (Container : in out Map; Position : in out Cursor) is
@@ -347,7 +370,7 @@ package body Formal_Hashed_Maps is
 
       HT_Ops.Delete_Node_Sans_Free (Container.HT.all, Position.Node);
 
-      HT_Ops.Free (Container.HT.all, Position.Node);
+      Free (Container.HT.all, Position.Node);
    end Delete;
 
    -------------
@@ -355,7 +378,7 @@ package body Formal_Hashed_Maps is
    -------------
 
    function Element (Container : Map; Key : Key_Type) return Element_Type is
-      Node : constant Node_Access := Find (Container, Key).Node;
+      Node : constant Count_Type := Find (Container, Key).Node;
 
    begin
       if Node = 0 then
@@ -378,21 +401,16 @@ package body Formal_Hashed_Maps is
       return Container.HT.Nodes (Position.Node).Element;
    end Element;
 
-   -------------------------
-   -- Equivalent_Key_Node --
-   -------------------------
-
-   function Equivalent_Key_Node
-     (Key  : Key_Type;
-      HT   : Hash_Table_Type;
-      Node : Node_Access) return Boolean is
-   begin
-      return Equivalent_Keys (Key, HT.Nodes (Node).Key);
-   end Equivalent_Key_Node;
-
    ---------------------
    -- Equivalent_Keys --
    ---------------------
+
+   function Equivalent_Keys
+     (Key  : Key_Type;
+      Node : Node_Type) return Boolean is
+   begin
+      return Equivalent_Keys (Key, Node.Key);
+   end Equivalent_Keys;
 
    function Equivalent_Keys (Left  : Map; CLeft : Cursor;
                              Right : Map; CRight : Cursor)
@@ -474,7 +492,7 @@ package body Formal_Hashed_Maps is
    -------------
 
    procedure Exclude (Container : in out Map; Key : Key_Type) is
-      X : Node_Access;
+      X : Count_Type;
    begin
 
       if Container.K /= Plain then
@@ -483,7 +501,7 @@ package body Formal_Hashed_Maps is
       end if;
 
       Key_Ops.Delete_Key_Sans_Free (Container.HT.all, Key, X);
-      HT_Ops.Free (Container.HT.all, X);
+      Free (Container.HT.all, X);
    end Exclude;
 
    ----------
@@ -493,13 +511,13 @@ package body Formal_Hashed_Maps is
      (HT   : Hash_Table_Type;
       Key  : Key_Type;
       From : Count_Type;
-      To   : Count_Type) return Node_Access is
+      To   : Count_Type) return Count_Type is
 
       Indx      : Hash_Type;
       Indx_From : Hash_Type := Key_Ops.Index (HT, HT.Nodes (From).Key);
       Indx_To   : Hash_Type := Key_Ops.Index (HT, HT.Nodes (To).Key);
-      Node      : Node_Access;
-      To_Node   : Node_Access;
+      Node      : Count_Type;
+      To_Node   : Count_Type;
 
    begin
 
@@ -522,7 +540,7 @@ package body Formal_Hashed_Maps is
       end if;
 
       while Node /= To_Node loop
-         if Equivalent_Key_Node (Key, HT, Node) then
+         if Equivalent_Keys (Key, HT.Nodes(Node)) then
             return Node;
          end if;
          Node := HT.Nodes (Node).Next;
@@ -535,7 +553,7 @@ package body Formal_Hashed_Maps is
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access :=
+               Node : constant Count_Type :=
                         Key_Ops.Find (Container.HT.all, Key);
 
             begin
@@ -564,7 +582,7 @@ package body Formal_Hashed_Maps is
       case Container.K is
          when Plain =>
             declare
-               Node : constant Node_Access := HT_Ops.First (Container.HT.all);
+               Node : constant Count_Type := HT_Ops.First (Container.HT.all);
 
             begin
                if Node = 0 then
@@ -587,16 +605,35 @@ package body Formal_Hashed_Maps is
       end case;
    end First;
 
-   --------------
-   -- Get_Next --
-   --------------
+   ----------
+   -- Free --
+   ----------
 
-   function Get_Next
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Node_Access is
+   procedure Free
+     (HT : in out Hash_Table_Type;
+      X  : Count_Type)
+   is
    begin
-      return HT.Nodes (Node).Next;
-   end Get_Next;
+      HT.Nodes(X).Has_Element := False;
+      HT_Ops.Free(HT,X);
+   end Free;
+
+   ----------------------
+   -- Generic_Allocate --
+   ----------------------
+
+   procedure Generic_Allocate
+     (HT   : in out Hash_Table_Type;
+      Node : out Count_Type)
+   is
+
+      procedure Allocate is
+        new HT_Ops.Generic_Allocate (Set_Element);
+
+   begin
+      Allocate(HT, Node);
+      HT.Nodes(Node).Has_Element := True;
+   end Generic_Allocate;
 
    -----------------
    -- Has_Element --
@@ -663,10 +700,9 @@ package body Formal_Hashed_Maps is
    ---------------
 
    function Hash_Node
-     (HT   : Hash_Table_Type;
-      Node : Node_Access) return Hash_Type is
+     (Node : Node_Type) return Hash_Type is
    begin
-      return Hash (HT.Nodes (Node).Key);
+      return Hash (Node.Key);
    end Hash_Node;
 
    -------------
@@ -715,52 +751,45 @@ package body Formal_Hashed_Maps is
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
-
       declare
+         procedure Assign_Key (Node : in out Node_Type);
+         pragma Inline (Assign_Key);
 
-         HT : Hash_Table_Type renames Container.HT.all;
-
-         function New_Node (Next : Node_Access) return Node_Access;
+         function New_Node return Count_Type;
          pragma Inline (New_Node);
 
          procedure Local_Insert is
            new Key_Ops.Generic_Conditional_Insert (New_Node);
 
-         procedure Initialize_Node (N : in out Node_Type);
-         pragma Inline (Initialize_Node);
+         procedure Allocate is
+           new Generic_Allocate (Assign_Key);
 
-         procedure Allocate_Node is
-           new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+         -----------------
+         --  Assign_Key --
+         -----------------
+
+         procedure Assign_Key (Node : in out Node_Type) is
+         begin
+            Node.Key := Key;
+            --  Node.Element := New_Item;
+         end Assign_Key;
 
          --------------
          -- New_Node --
          --------------
 
-         function New_Node (Next : Node_Access) return Node_Access is
-            X : Node_Access;
+         function New_Node return Count_Type is
+            Result : Count_Type;
          begin
-            Allocate_Node (HT, X);
-            HT.Nodes (X).Next := Next;
-            return X;
+            Allocate (Container.HT.all, Result);
+            return Result;
          end New_Node;
-
-         ---------------------
-         -- Initialize_Node --
-         ---------------------
-
-         procedure Initialize_Node (N : in out Node_Type) is
-            E : Element_Type;  -- better way to make default ???
-            pragma Warnings (Off, E);
-
-         begin
-            N.Key := Key;
-            N.Element := E;
-         end Initialize_Node;
 
          --  Start of processing for Insert
 
       begin
-         Local_Insert (HT, Key, Position.Node, Inserted);
+
+         Local_Insert (Container.HT.all, Key, Position.Node, Inserted);
       end;
    end Insert;
 
@@ -777,49 +806,45 @@ package body Formal_Hashed_Maps is
          raise Constraint_Error
            with "Can't modify part of container";
       end if;
-
       declare
-         HT : Hash_Table_Type renames Container.HT.all;
+         procedure Assign_Key (Node : in out Node_Type);
+         pragma Inline (Assign_Key);
 
-         function New_Node (Next : Node_Access) return Node_Access;
+         function New_Node return Count_Type;
          pragma Inline (New_Node);
 
          procedure Local_Insert is
            new Key_Ops.Generic_Conditional_Insert (New_Node);
 
-         procedure Initialize_Node (N : in out Node_Type);
-         pragma Inline (Initialize_Node);
+         procedure Allocate is
+           new Generic_Allocate (Assign_Key);
 
-         procedure Allocate_Node is
-           new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+         -----------------
+         --  Assign_Key --
+         -----------------
+
+         procedure Assign_Key (Node : in out Node_Type) is
+         begin
+            Node.Key := Key;
+            Node.Element := New_Item;
+         end Assign_Key;
 
          --------------
          -- New_Node --
          --------------
 
-         function New_Node (Next : Node_Access) return Node_Access is
-            X : Node_Access;
+         function New_Node return Count_Type is
+            Result : Count_Type;
          begin
-            Allocate_Node (HT, X);
-            HT.Nodes (X).Next := Next;
-            return X;
+            Allocate (Container.HT.all, Result);
+            return Result;
          end New_Node;
-
-         ---------------------
-         -- Initialize_Node --
-         ---------------------
-
-         procedure Initialize_Node (N : in out Node_Type) is
-         begin
-            N.Key := Key;
-            N.Element := New_Item;
-            N.Has_Element := True;
-         end Initialize_Node;
 
          --  Start of processing for Insert
 
       begin
-         Local_Insert (HT, Key, Position.Node, Inserted);
+
+         Local_Insert (Container.HT.all, Key, Position.Node, Inserted);
       end;
    end Insert;
 
@@ -829,6 +854,8 @@ package body Formal_Hashed_Maps is
       New_Item  : Element_Type)
    is
       Position : Cursor;
+      pragma Unreferenced (Position);
+
       Inserted : Boolean;
 
    begin
@@ -858,7 +885,7 @@ package body Formal_Hashed_Maps is
       Process   :
         not null access procedure (Container : Map; Position : Cursor))
    is
-      procedure Process_Node (Node : Node_Access);
+      procedure Process_Node (Node : Count_Type);
       pragma Inline (Process_Node);
 
       procedure Local_Iterate is new HT_Ops.Generic_Iteration (Process_Node);
@@ -867,7 +894,7 @@ package body Formal_Hashed_Maps is
       -- Process_Node --
       ------------------
 
-      procedure Process_Node (Node : Node_Access) is
+      procedure Process_Node (Node : Count_Type) is
       begin
          Process (Container, (Node => Node));
       end Process_Node;
@@ -986,7 +1013,7 @@ package body Formal_Hashed_Maps is
    is
       HT   : HT_Types.Hash_Table_Type renames Source.HT.all;
       NN   : HT_Types.Nodes_Type renames HT.Nodes;
-      X, Y : Node_Access;
+      X, Y : Count_Type;
 
    begin
 
@@ -1022,7 +1049,7 @@ package body Formal_Hashed_Maps is
          Y := HT_Ops.Next (HT, X);
 
          HT_Ops.Delete_Node_Sans_Free (HT, X);
-         HT_Ops.Free (HT, X);
+         Free (HT, X);
 
          X := Y;
       end loop;
@@ -1032,12 +1059,17 @@ package body Formal_Hashed_Maps is
    -- Next --
    ----------
 
+   function Next (Node : Node_Type) return Count_Type is
+   begin
+      return Node.Next;
+   end Next;
+
    function Next_Unchecked
      (Container : Map;
       Position  : Cursor) return Cursor
    is
       HT   : Hash_Table_Type renames Container.HT.all;
-      Node : constant Node_Access := HT_Ops.Next (HT, Position.Node);
+      Node : constant Count_Type := HT_Ops.Next (HT, Position.Node);
 
    begin
       if Node = 0 then
@@ -1077,9 +1109,9 @@ package body Formal_Hashed_Maps is
    -------------
 
    function Overlap (Left, Right : Map) return Boolean is
-      Left_Node  : Node_Access;
+      Left_Node  : Count_Type;
       Left_Nodes : Nodes_Type renames Left.HT.Nodes;
-      To_Node    : Node_Access;
+      To_Node    : Count_Type;
    begin
       if Length (Right) = 0 or Length (Left) = 0 then
          return False;
@@ -1172,34 +1204,64 @@ package body Formal_Hashed_Maps is
    -- Read --
    ----------
 
+   ----------
+   -- Read --
+   ----------
+
    procedure Read
      (Stream    : not null access Root_Stream_Type'Class;
       Container : out Map)
    is
-      procedure Initialize_Node (N : in out Node_Type);
-      pragma Inline (Initialize_Node);
+      function Read_Node (Stream : not null access Root_Stream_Type'Class)
+                          return Count_Type;
 
-      procedure Allocate_Node is
-        new HT_Ops.Generic_Allocate_Node (Initialize_Node);
+      procedure Read_Nodes is
+        new HT_Ops.Generic_Read (Read_Node);
 
-      procedure Read is
-        new HT_Ops.Generic_Read (Allocate_Node);
+      ---------------
+      -- Read_Node --
+      ---------------
 
-      ---------------------
-      -- Initialize_Node --
-      ---------------------
+      function Read_Node (Stream : not null access Root_Stream_Type'Class)
+                          return Count_Type
+      is
+         procedure Read_Element (Node : in out Node_Type);
+         pragma Inline (Read_Element);
 
-      procedure Initialize_Node (N : in out Node_Type) is
+         procedure Allocate is
+           new Generic_Allocate (Read_Element);
+
+         procedure Read_Element (Node : in out Node_Type) is
+         begin
+            Element_Type'Read (Stream, Node.Element);
+         end Read_Element;
+
+         Node : Count_Type;
+
+         --  Start of processing for Read_Node
+
       begin
-         Key_Type'Read (Stream, N.Key);
-         Element_Type'Read (Stream, N.Element);
-      end Initialize_Node;
+         Allocate (Container.HT.all, Node);
+         return Node;
+      end Read_Node;
+
 
       --  Start of processing for Read
-
+      Result : HT_Access;
    begin
-      Container.HT := null;
-      Read (Stream, Container.HT.all);
+      if Container.K /= Plain then
+         raise Constraint_Error;
+      end if;
+
+      if Container.HT = null then
+         Result := new HT_Types.Hash_Table_Type(Container.Capacity,
+                                                Container.Modulus);
+      else
+         Result := Container.HT;
+      end if;
+
+      Read_Nodes (Stream, Result.all);
+      Container.HT := Result;
    end Read;
 
    procedure Read
@@ -1207,7 +1269,7 @@ package body Formal_Hashed_Maps is
       Item   : out Cursor)
    is
    begin
-      raise Program_Error with "attempt to stream map cursor";
+      raise Program_Error with "attempt to stream set cursor";
    end Read;
 
    -------------
@@ -1219,7 +1281,7 @@ package body Formal_Hashed_Maps is
       Key       : Key_Type;
       New_Item  : Element_Type)
    is
-      Node : constant Node_Access := Key_Ops.Find (Container.HT.all, Key);
+      Node : constant Count_Type := Key_Ops.Find (Container.HT.all, Key);
 
    begin
       if Container.K /= Plain then
@@ -1290,7 +1352,9 @@ package body Formal_Hashed_Maps is
            with "Can't modify part of container";
       end if;
 
-      HT_Ops.Reserve_Capacity (Container.HT.all, Capacity);
+      if Capacity > Container.Capacity then
+         raise Capacity_Error with "requested capacity is too large";
+      end if;
    end Reserve_Capacity;
 
    -----------
@@ -1344,31 +1408,13 @@ package body Formal_Hashed_Maps is
               Last     => Last);
    end Right;
 
-
-   ---------------------
-   -- Set_Has_Element --
-   ---------------------
-
-   procedure Set_Has_Element
-     (HT          : in out Hash_Table_Type;
-      Node        : Node_Access;
-      Has_Element : Boolean)
-   is
-   begin
-      HT.Nodes (Node).Has_Element := Has_Element;
-   end Set_Has_Element;
-
    --------------
    -- Set_Next --
    --------------
 
-   procedure Set_Next
-     (HT   : in out Hash_Table_Type;
-      Node : Node_Access;
-      Next : Node_Access)
-   is
+   procedure Set_Next (Node : in out Node_Type; Next : Count_Type) is
    begin
-      HT.Nodes (Node).Next := Next;
+      Node.Next := Next;
    end Set_Next;
 
    ------------------
@@ -1460,7 +1506,51 @@ package body Formal_Hashed_Maps is
          return True;
       end if;
 
-      return HT_Ops.Vet (Container.HT.all, Position.Node);
+      declare
+         M : HT_Types.Hash_Table_Type renames Container.HT.all;
+         X : Count_Type;
+
+      begin
+         if M.Length = 0 then
+            return False;
+         end if;
+
+         if M.Capacity = 0 then
+            return False;
+         end if;
+
+         if M.Buckets'Length = 0 then
+            return False;
+         end if;
+
+         if Position.Node > M.Capacity then
+            return False;
+         end if;
+
+         if M.Nodes (Position.Node).Next = Position.Node then
+            return False;
+         end if;
+
+         X := M.Buckets (Key_Ops.Index (M, M.Nodes (Position.Node).Key));
+
+         for J in 1 .. M.Length loop
+            if X = Position.Node then
+               return True;
+            end if;
+
+            if X = 0 then
+               return False;
+            end if;
+
+            if X = M.Nodes (X).Next then  --  to prevent unnecessary looping
+               return False;
+            end if;
+
+            X := M.Nodes (X).Next;
+         end loop;
+
+         return False;
+      end;
    end Vet;
 
    -----------
@@ -1473,7 +1563,7 @@ package body Formal_Hashed_Maps is
    is
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access);
+         Node   : Node_Type);
       pragma Inline (Write_Node);
 
       procedure Write_Nodes is new HT_Ops.Generic_Write (Write_Node);
@@ -1484,16 +1574,14 @@ package body Formal_Hashed_Maps is
 
       procedure Write_Node
         (Stream : not null access Root_Stream_Type'Class;
-         Node   : Node_Access)
+         Node   : Node_Type)
       is
-         N : Node_Type renames Container.HT.Nodes (Node);
-
       begin
-         Key_Type'Write (Stream, N.Key);
-         Element_Type'Write (Stream, N.Element);
+         Key_Type'Write (Stream, Node.Key);
+         Element_Type'Write (Stream, Node.Element);
       end Write_Node;
 
-      --  Start of processing for Write
+   --  Start of processing for Write
 
    begin
       Write_Nodes (Stream, Container.HT.all);

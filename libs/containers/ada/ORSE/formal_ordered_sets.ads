@@ -47,7 +47,7 @@ generic
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
 package Formal_Ordered_Sets is
-   pragma Pure;
+   --pragma Pure;
 
    function Equivalent_Elements (Left, Right : Element_Type) return Boolean;
 
@@ -241,7 +241,8 @@ private
    pragma Inline (Previous);
 
    type Node_Type is record
-      Parent  : Count_Type'Base := -1;
+      Has_Element : Boolean := false;
+      Parent  : Count_Type;
       Left    : Count_Type;
       Right   : Count_Type;
       Color   : Red_Black_Trees.Color_Type;
@@ -253,13 +254,10 @@ private
    package Tree_Types is
      new Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
 
-   type Tree_Type (Capacity : Count_Type) is
-     new Tree_Types.Tree_Type (Capacity) with null record;
-
-   type Tree_Type_Access is access all Tree_Type;
+   type Tree_Type_Access is access all Tree_Types.Tree_Type;
 
    type Set (Capacity : Count_Type) is tagged record
-      Tree   : Tree_Type_Access := new Tree_Type(Capacity);
+      Tree   : Tree_Type_Access := new Tree_Types.Tree_Type(Capacity);
       K      : Kind := Plain;
       Length : Count_Type := 0;
       First  : Count_Type := 0;
