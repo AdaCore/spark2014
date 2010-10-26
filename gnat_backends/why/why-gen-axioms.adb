@@ -1,0 +1,178 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNAT2WHY COMPONENTS                           --
+--                                                                          --
+--                       W H Y - G E N - A X I O M S                        --
+--                                                                          --
+--                                 B o d y                                  --
+--                                                                          --
+--                       Copyright (C) 2010, AdaCore                        --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute it and/or modify it   --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software Foundation;  either version  2,  or  (at your option) any later --
+-- version. gnat2why is distributed in the hope that it will  be  useful,   --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-  --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License  for more details. You  should  have  received a copy of the GNU --
+-- General Public License  distributed with GNAT; see file COPYING. If not, --
+-- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
+-- Boston,                                                                  --
+--                                                                          --
+-- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Preds;      use Why.Gen.Preds;
+
+package body Why.Gen.Axioms is
+
+   -------------------------
+   -- Define_Coerce_Axiom --
+   -------------------------
+
+   procedure Define_Coerce_Axiom
+     (File           : W_File_Id;
+      Type_Name      : W_Identifier_Id;
+      Base_Type      : W_Primitive_Type_Id;
+      From_Base_Type : W_Identifier_Id;
+      To_Base_Type   : W_Identifier_Id)
+   is
+      Arg_S                : constant String := "x";
+      X_To_Type_Op         : constant W_Operation_Unchecked_Id :=
+                               New_Unchecked_Operation;
+      Back_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
+                               New_Unchecked_Operation;
+      In_Range             : constant W_Operation_Unchecked_Id :=
+                               New_Unchecked_Operation;
+      Formula              : constant W_Implication_Unchecked_Id :=
+                               New_Unchecked_Implication;
+      Quantif_On_X         : constant W_Universal_Quantif_Unchecked_Id :=
+                               New_Unchecked_Universal_Quantif;
+      Axiom_Body           : W_Universal_Quantif_Id;
+      Axiom_Def            : W_Axiom_Id;
+   begin
+      Operation_Set_Name (X_To_Type_Op, From_Base_Type);
+      Operation_Append_To_Parameters (X_To_Type_Op,
+                                      New_Term (Arg_S));
+
+      Operation_Set_Name (Back_To_Base_Type_Op, To_Base_Type);
+      Operation_Append_To_Parameters (Back_To_Base_Type_Op, X_To_Type_Op);
+
+      Operation_Set_Name (In_Range, Range_Pred_Name (Type_Name));
+      Operation_Append_To_Parameters (In_Range, New_Term (Arg_S));
+
+      Implication_Set_Left (Formula, In_Range);
+      Implication_Set_Right (Formula,
+                             New_Related_Terms (Left  => Back_To_Base_Type_Op,
+                                                Op    => New_Rel_Eq,
+                                                Right => New_Term (Arg_S)));
+
+      Universal_Quantif_Set_Var_Type (Quantif_On_X, Base_Type);
+      Universal_Quantif_Append_To_Variables (Quantif_On_X,
+                                             New_Identifier (Arg_S));
+
+      Axiom_Body := New_Universal_Predicate_Body ((1 => Quantif_On_X),
+                                                  Formula);
+      Axiom_Def := New_Axiom (Name => Coerce_Axiom (Type_Name),
+                              Def  => Axiom_Body);
+      File_Append_To_Declarations (File,
+                                   New_Logic_Declaration (Decl => Axiom_Def));
+   end Define_Coerce_Axiom;
+
+   ------------------------
+   -- Define_Range_Axiom --
+   ------------------------
+
+   procedure Define_Range_Axiom
+     (File       : W_File_Id;
+      Type_Name  : W_Identifier_Id;
+      Conversion : W_Identifier_Id)
+   is
+      Arg_S              : constant String := "x";
+      Call_To_Conversion : constant W_Operation_Unchecked_Id :=
+                             New_Unchecked_Operation;
+      Formula            : constant W_Operation_Unchecked_Id :=
+                             New_Unchecked_Operation;
+      Quantif_On_X       : constant W_Universal_Quantif_Unchecked_Id :=
+                             New_Unchecked_Universal_Quantif;
+      Axiom_Body         : W_Universal_Quantif_Id;
+      Axiom_Def          : W_Axiom_Id;
+   begin
+      Operation_Set_Name (Call_To_Conversion, Conversion);
+      Operation_Append_To_Parameters (Call_To_Conversion, New_Term (Arg_S));
+
+      Operation_Set_Name (Formula, Range_Pred_Name (Type_Name));
+      Operation_Append_To_Parameters (Formula, Call_To_Conversion);
+
+      Universal_Quantif_Set_Var_Type (Quantif_On_X,
+                                      New_Abstract_Type (Name => Type_Name));
+      Universal_Quantif_Append_To_Variables (Quantif_On_X,
+                                             New_Identifier (Arg_S));
+
+      Axiom_Body := New_Universal_Predicate_Body ((1 => Quantif_On_X),
+                                                  Formula);
+      Axiom_Def := New_Axiom (Name => Range_Axiom (Type_Name),
+                              Def  => Axiom_Body);
+      File_Append_To_Declarations (File,
+                                   New_Logic_Declaration (Decl => Axiom_Def));
+   end Define_Range_Axiom;
+
+   --------------------------
+   -- Define_Unicity_Axiom --
+   --------------------------
+
+   procedure Define_Unicity_Axiom
+     (File       : W_File_Id;
+      Type_Name  : W_Identifier_Id;
+      Conversion : W_Identifier_Id)
+   is
+      X_S               : constant String := "x";
+      Y_S               : constant String := "y";
+      X_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
+                            New_Unchecked_Operation;
+      Y_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
+                            New_Unchecked_Operation;
+      Formula           : constant W_Implication_Unchecked_Id :=
+                            New_Unchecked_Implication;
+      Quantif_On_XY     : constant W_Universal_Quantif_Unchecked_Id :=
+                            New_Unchecked_Universal_Quantif;
+      Axiom_Body        : W_Universal_Quantif_Id;
+      Axiom_Def         : W_Axiom_Id;
+   begin
+      Operation_Set_Name (X_To_Base_Type_Op, Conversion);
+      Operation_Append_To_Parameters (X_To_Base_Type_Op, New_Term (X_S));
+
+      Operation_Set_Name (Y_To_Base_Type_Op,
+                          Duplicate_Any_Node (Id => Conversion));
+      Operation_Append_To_Parameters (Y_To_Base_Type_Op, New_Term (Y_S));
+
+      Implication_Set_Left (Formula,
+                            New_Related_Terms (Left  => X_To_Base_Type_Op,
+                                               Op    => New_Rel_Eq,
+                                               Right => Y_To_Base_Type_Op));
+      Implication_Set_Right (Formula,
+                             New_Related_Terms (Left  => New_Term (X_S),
+                                                Op    => New_Rel_Eq,
+                                                Right => New_Term (Y_S)));
+
+      Universal_Quantif_Set_Var_Type (Quantif_On_XY,
+                                      New_Abstract_Type (Name => Type_Name));
+      Universal_Quantif_Append_To_Variables (Quantif_On_XY,
+                                             New_Identifier (X_S));
+      Universal_Quantif_Append_To_Variables (Quantif_On_XY,
+                                             New_Identifier (Y_S));
+
+      Axiom_Body := New_Universal_Predicate_Body ((1 => Quantif_On_XY),
+                                                  Formula);
+      Axiom_Def := New_Axiom (Name => Unicity_Axiom (Type_Name),
+                              Def  => Axiom_Body);
+      File_Append_To_Declarations (File,
+                                   New_Logic_Declaration (Decl => Axiom_Def));
+   end Define_Unicity_Axiom;
+
+end Why.Gen.Axioms;

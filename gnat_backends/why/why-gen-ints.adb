@@ -31,6 +31,7 @@ with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Axioms;     use Why.Gen.Axioms;
 
 package body Why.Gen.Ints is
 
@@ -118,6 +119,17 @@ package body Why.Gen.Ints is
                                        Arrows,
                                        Range_Check,
                                        Post);
+         Define_Range_Axiom (File,
+                             New_Identifier (Name),
+                             New_Conversion_To_Int (Name));
+         Define_Coerce_Axiom (File,
+                              New_Identifier (Name),
+                              New_Type_Int,
+                              New_Conversion_From_Int (Name),
+                              New_Conversion_To_Int (Name));
+         Define_Unicity_Axiom (File,
+                               New_Identifier (Name),
+                               New_Conversion_To_Int (Name));
       end;
    end Define_Signed_Int_Conversions;
 

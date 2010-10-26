@@ -66,4 +66,23 @@ package Why.Gen.Preds is
    --  Create a predicate by linking together the bindings and
    --  associating the context to them.
 
+   type Universal_Quantif_Chain is array (Positive range <>)
+     of W_Universal_Quantif_Unchecked_Id;
+   --  Array of universal quantifiers with an empty context. Those are meant
+   --  to be linked together in a predicate of the form:
+   --
+   --  forall <my_chain_1_name> : <my_chain_1_type>.
+   --  forall <my_chain_2_name> : <my_chain_2_type>.
+   --  [...]
+   --  forall <my_chain_n_type> : <my_chain_n_type>.
+   --     <empty>
+
+   function New_Universal_Predicate_Body
+     (Foralls : Universal_Quantif_Chain;
+      Context : W_Predicate_Id)
+     return W_Predicate_Id;
+   pragma Precondition (Is_Root (Context));
+   --  Create a predicate by linking together the universal quantifiers and
+   --  associating the context to them.
+
 end Why.Gen.Preds;

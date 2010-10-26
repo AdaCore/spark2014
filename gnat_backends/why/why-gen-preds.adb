@@ -30,6 +30,20 @@ with Why.Gen.Consts;     use Why.Gen.Consts;
 
 package body Why.Gen.Preds is
 
+   generic
+      type Element_Type is private;
+      type Chain_Type is array (Positive range <>) of Element_Type;
+
+      with procedure Chain_Set (Root, Element : Element_Type);
+
+   function Finalize_Chain
+     (Chain : Chain_Type;
+      Tail  : Element_Type)
+     return Element_Type;
+   --  Same as New_Predicate_Body and New_Universal_Predicate_Body,
+   --  for any type that can be "chained"; this function is used to factorize
+   --  out the body of these two functions.
+
    ----------------------------
    -- Define_Range_Predicate --
    ----------------------------
@@ -78,6 +92,26 @@ package body Why.Gen.Preds is
                                    New_Logic_Declaration (Decl => Result));
    end Define_Range_Predicate;
 
+   --------------------
+   -- Finalize_Chain --
+   --------------------
+
+   function Finalize_Chain
+     (Chain : Chain_Type;
+      Tail  : Element_Type)
+     return Element_Type is
+   begin
+      for J in reverse Chain'Range loop
+         if J = Chain'Last then
+            Chain_Set (Chain (J), Tail);
+         else
+            Chain_Set (Chain (J), Chain (J + 1));
+         end if;
+      end loop;
+
+      return Chain (Chain'First);
+   end Finalize_Chain;
+
    ----------------------
    -- New_Binding_Pred --
    ----------------------
@@ -102,17 +136,37 @@ package body Why.Gen.Preds is
    function New_Predicate_Body
      (Bindings : Binding_Pred_Chain;
       Context  : W_Predicate_Id)
-     return W_Predicate_Id is
-   begin
-      for J in reverse Bindings'Range loop
-         if J = Bindings'Last then
-            Binding_Pred_Set_Context (Bindings (J), Context);
-         else
-            Binding_Pred_Set_Context (Bindings (J), Bindings (J + 1));
-         end if;
-      end loop;
+     return W_Predicate_Id
+   is
 
-      return Bindings (Bindings'First);
+      function Finalize_Binding_Chain is
+        new Finalize_Chain
+        (Element_Type => W_Predicate_Unchecked_Id,
+         Chain_Type   => Binding_Pred_Chain,
+         Chain_Set    => Binding_Pred_Set_Context);
+
+   begin
+      return Finalize_Binding_Chain (Bindings, Context);
    end New_Predicate_Body;
+
+   ----------------------------------
+   -- New_Universal_Predicate_Body --
+   ----------------------------------
+
+   function New_Universal_Predicate_Body
+     (Foralls : Universal_Quantif_Chain;
+      Context : W_Predicate_Id)
+     return W_Predicate_Id
+   is
+
+      function Finalize_Univ_Chain is
+        new Finalize_Chain
+        (Element_Type => W_Universal_Quantif_Unchecked_Id,
+         Chain_Type   => Universal_Quantif_Chain,
+         Chain_Set    => Universal_Quantif_Set_Pred);
+
+   begin
+      return Finalize_Univ_Chain (Foralls, Context);
+   end New_Universal_Predicate_Body;
 
 end Why.Gen.Preds;

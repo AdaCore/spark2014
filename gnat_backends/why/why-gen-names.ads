@@ -41,8 +41,24 @@ package Why.Gen.Names is
    --  The name of the abstract type is given in parameter.
 
    function Range_Pred_Name (Name : String) return W_Identifier_Id;
+   function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;
    --  From the name of an abstract type, return the name of
    --  its range predicate.
+
+   function Range_Axiom (Name : String) return  W_Identifier_Id;
+   function Range_Axiom (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  From the name of an abstract type, return the name of
+   --  its range axiom.
+
+   function Coerce_Axiom (Name : String) return  W_Identifier_Id;
+   function Coerce_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;
+   --  From the name of an abstract type, return the name of
+   --  its coerce axiom.
+
+   function Unicity_Axiom (Name : String) return  W_Identifier_Id;
+   function Unicity_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;
+   --  From the name of an abstract type, return the name of
+   --  its unicity axiom.
 
    function Allocator_Name (Name : String) return W_Identifier_Id;
    --  From the name of an abstract type, return the name of

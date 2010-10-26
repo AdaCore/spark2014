@@ -41,6 +41,21 @@ package body Why.Gen.Names is
       return New_Identifier (Prefix & Name);
    end Allocator_Name;
 
+   ------------------
+   -- Coerce_Axiom --
+   ------------------
+
+   function Coerce_Axiom (Name : String) return  W_Identifier_Id is
+      Suffix : constant String := "___coerce";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Coerce_Axiom;
+
+   function Coerce_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Coerce_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Coerce_Axiom;
+
    -----------------------------
    -- New_Conversion_From_Int --
    -----------------------------
@@ -91,6 +106,21 @@ package body Why.Gen.Names is
       return New_Label_Identifier (Name => New_Identifier (Name));
    end New_Term;
 
+   -----------------
+   -- Range_Axiom --
+   -----------------
+
+   function Range_Axiom (Name : String) return  W_Identifier_Id is
+      Suffix : constant String := "___range";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Range_Axiom;
+
+   function Range_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Range_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Range_Axiom;
+
    ---------------------
    -- Range_Pred_Name --
    ---------------------
@@ -99,6 +129,11 @@ package body Why.Gen.Names is
       Suffix : constant String := "___in_range";
    begin
       return New_Identifier (Name & Suffix);
+   end Range_Pred_Name;
+
+   function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Range_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Range_Pred_Name;
 
    ------------------
@@ -146,5 +181,20 @@ package body Why.Gen.Names is
    begin
       return New_Label_Identifier (Name => Duplicate_Any_Node (Id => Name));
    end To_Label_Identifier;
+
+   -------------------
+   -- Unicity_Axiom --
+   -------------------
+
+   function Unicity_Axiom (Name : String) return  W_Identifier_Id is
+      Suffix : constant String := "___unicity";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Unicity_Axiom;
+
+   function Unicity_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Unicity_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Unicity_Axiom;
 
 end Why.Gen.Names;
