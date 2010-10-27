@@ -30,12 +30,12 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Red_Black_Trees.Generic_Bounded_Operations;
+with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
 pragma Elaborate_All
-  (Red_Black_Trees.Generic_Bounded_Operations);
+  (Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations);
 
-with Red_Black_Trees.Generic_Bounded_Keys;
-pragma Elaborate_All (Red_Black_Trees.Generic_Bounded_Keys);
+with Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys;
+pragma Elaborate_All (Ada.Containers.Red_Black_Trees.Generic_Bounded_Keys);
 
 --with Ada.Text_IO;
 
@@ -50,7 +50,7 @@ package body Formal_Ordered_Maps is
    --  These subprograms provide a functional interface to access fields
    --  of a node, and a procedural interface for modifying these values.
 
-   function Color (Node : Node_Type) return Red_Black_Trees.Color_Type;
+   function Color (Node : Node_Type) return Ada.Containers.Red_Black_Trees.Color_Type;
    pragma Inline (Color);
 
    function Left_Son (Node : Node_Type) return Count_Type;
@@ -64,7 +64,7 @@ package body Formal_Ordered_Maps is
 
    procedure Set_Color
      (Node  : in out Node_Type;
-      Color : Red_Black_Trees.Color_Type);
+      Color : Ada.Containers.Red_Black_Trees.Color_Type);
    pragma Inline (Set_Color);
 
    procedure Set_Left (Node : in out Node_Type; Left : Count_Type);

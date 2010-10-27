@@ -30,16 +30,16 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
+--with Ada.Text_IO;
 
 with Ada.Containers;
 use Ada.Containers;
 
-with Hash_Tables.Generic_Bounded_Operations;
-pragma Elaborate_All (Hash_Tables.Generic_Bounded_Operations);
+with Ada.Containers.Hash_Tables.Generic_Bounded_Operations;
+pragma Elaborate_All (Ada.Containers.Hash_Tables.Generic_Bounded_Operations);
 
-with Hash_Tables.Generic_Bounded_Keys;
-pragma Elaborate_All (Hash_Tables.Generic_Bounded_Keys);
+with Ada.Containers.Hash_Tables.Generic_Bounded_Keys;
+pragma Elaborate_All (Ada.Containers.Hash_Tables.Generic_Bounded_Keys);
 
 with Ada.Containers.Prime_Numbers; use Ada.Containers.Prime_Numbers;
 
@@ -47,27 +47,27 @@ with System; use type System.Address;
 
 package body Formal_Hashed_Sets is
 
-   procedure print (C : Set) is
-      Node : Count_Type := 1;
-      Hash : Hash_Type := 0;
-   begin
-      while Node <= C.Capacity loop
-         Ada.Text_IO.Put_Line("------");
-         if C.HT.Nodes(Node).Has_Element then
-            Ada.Text_IO.Put_Line("true");
-         else
-            Ada.Text_IO.Put_Line("false");
-         end if;
-         Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Nodes(Node).Next));
-         Node := Node + 1;
-      end loop;
-
-      while Hash <= C.Modulus loop
-         Ada.Text_IO.Put_Line("_____");
-         Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Buckets(Hash)));
-         Hash := Hash + 1;
-      end loop;
-   end;
+--     procedure print (C : Set) is
+--        Node : Count_Type := 1;
+--        Hash : Hash_Type := 0;
+--     begin
+--        while Node <= C.Capacity loop
+--           Ada.Text_IO.Put_Line("------");
+--           if C.HT.Nodes(Node).Has_Element then
+--              Ada.Text_IO.Put_Line("true");
+--           else
+--              Ada.Text_IO.Put_Line("false");
+--           end if;
+--           Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Nodes(Node).Next));
+--           Node := Node + 1;
+--        end loop;
+--
+--        while Hash <= C.Modulus loop
+--           Ada.Text_IO.Put_Line("_____");
+--           Ada.Text_IO.Put_Line(Count_Type'Image(C.HT.Buckets(Hash)));
+--           Hash := Hash + 1;
+--        end loop;
+--     end;
 
    -----------------------
    -- Local Subprograms --
@@ -794,9 +794,6 @@ package body Formal_Hashed_Sets is
             begin
                if Node = 0 then
                   return No_Element;
-               end if;
-               if not has_element (Container, (Node => Node)) then
-                  Ada.Text_IO.Put_Line("okkkkkkkkkkkk");
                end if;
                return (Node => Node);
             end;

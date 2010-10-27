@@ -34,7 +34,7 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-private with Red_Black_Trees;
+private with Ada.Containers.Red_Black_Trees;
 private with Ada.Streams;
 with Ada.Containers; use Ada.Containers;
 
@@ -205,7 +205,7 @@ private
    type Kind is (Plain, Part);
 
    package Tree_Types is
-     new Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
+     new Ada.Containers.Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
 
    type Tree_Type_Access is access all Tree_Types.Tree_Type;
 

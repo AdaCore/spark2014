@@ -30,11 +30,11 @@
 -- of Matthew J Heaney on bounded containers.                               --
 ------------------------------------------------------------------------------
 
-with Hash_Tables.Generic_Bounded_Operations;
-pragma Elaborate_All (Hash_Tables.Generic_Bounded_Operations);
+with Ada.Containers.Hash_Tables.Generic_Bounded_Operations;
+pragma Elaborate_All (Ada.Containers.Hash_Tables.Generic_Bounded_Operations);
 
-with Hash_Tables.Generic_Bounded_Keys;
-pragma Elaborate_All (Hash_Tables.Generic_Bounded_Keys);
+with Ada.Containers.Hash_Tables.Generic_Bounded_Keys;
+pragma Elaborate_All (Ada.Containers.Hash_Tables.Generic_Bounded_Keys);
 
 with Ada.Containers.Prime_Numbers; use Ada.Containers.Prime_Numbers;
 
