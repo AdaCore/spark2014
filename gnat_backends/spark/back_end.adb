@@ -30,7 +30,6 @@ with Gnat2SPARK.Driver;
 with Adabkend;
 with Stringt;
 with Namet;
-with Opt;
 
 package body Back_End is
 
