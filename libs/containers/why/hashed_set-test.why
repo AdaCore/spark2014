@@ -8,12 +8,12 @@ include "hashed_set.why"
 
 goal contains_insert_g :
      forall l1:set. forall l2:set. forall e:element_t.
-     forall i:int [insert_(l1,e,l2),contains_(l1,i)|insert_(l1,e,l2),contains_(l2,i)].
+     forall i:real [insert_(l1,e,l2),contains_(l1,i)|insert_(l1,e,l2),contains_(l2,i)].
      	    insert_(l1,e,l2) -> contains_(l2,i) -> i=witness(e) or contains_(l1,i)
 
 goal contains_delete_g :
      forall l1:set. forall l2:set. forall cu:cursor.
-     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     forall i:real [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
      	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(element_(l1,cu))
 
 goal insert_has_element_g :
@@ -25,7 +25,7 @@ goal delete_has_element_g :
       	     delete_(s,c,si) -> has_element_(si,cu) -> has_element_(s,cu) and not cu=c
 
 goal left_contains_g :
-      forall s:set. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      forall s:set. forall cu:cursor. forall i:real [contains_(left_(s,next_(s,cu)),i)].
       	     has_element_(s,cu) ->
 	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(element_(s,cu)))
 
@@ -39,7 +39,7 @@ goal contains_element_g :
 
 goal is_empty_inter_g :
      forall s1:set. forall s2:set [is_empty_(inter_(s1,s2))].
-     	    is_empty_(inter_(s1,s2)) <-> (forall i:int. not(contains_(s1,i) and contains_(s2,i)))
+     	    is_empty_(inter_(s1,s2)) <-> (forall i:real. not(contains_(s1,i) and contains_(s2,i)))
 
 goal position_next_g :
       forall s:set. forall cu:cursor [position_(s,next_(s,cu))].
@@ -111,12 +111,12 @@ goal position_right_g :
 
 axiom contains_insert :
      forall l1:set. forall l2:set. forall e:element_t.
-     forall i:int [insert_(l1,e,l2),contains_(l1,i)|insert_(l1,e,l2),contains_(l2,i)].
+     forall i:real [insert_(l1,e,l2),contains_(l1,i)|insert_(l1,e,l2),contains_(l2,i)].
      	    insert_(l1,e,l2) -> contains_(l2,i) -> i=witness(e) or contains_(l1,i)
 
 axiom contains_delete :
      forall l1:set. forall l2:set. forall cu:cursor.
-     forall i:int [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
+     forall i:real [delete_(l1,cu,l2),contains_(l1,i)|delete_(l1,cu,l2),contains_(l2,i)].
      	    delete_(l1,cu,l2) -> contains_(l2,i) -> contains_(l1,i) and i<>witness(element_(l1,cu))
 
 axiom insert_has_element :
@@ -128,7 +128,7 @@ axiom delete_has_element :
       	     delete_(s,c,si) -> has_element_(si,cu) -> has_element_(s,cu) and not cu=c
 
 axiom left_contains :
-      forall s:set. forall cu:cursor. forall i:int [contains_(left_(s,next_(s,cu)),i)].
+      forall s:set. forall cu:cursor. forall i:real [contains_(left_(s,next_(s,cu)),i)].
       	     has_element_(s,cu) ->
 	     (contains_(left_(s,next_(s,cu)),i) <-> contains_(left_(s,cu),i) or i=witness(element_(s,cu)))
 
@@ -142,7 +142,7 @@ axiom contains_element :
 
 axiom is_empty_inter :
      forall s1:set. forall s2:set [is_empty_(inter_(s1,s2))].
-     	    is_empty_(inter_(s1,s2)) <-> (forall i:int. not(contains_(s1,i) and contains_(s2,i)))
+     	    is_empty_(inter_(s1,s2)) <-> (forall i:real. not(contains_(s1,i) and contains_(s2,i)))
 
 axiom position_next :
       forall s:set. forall cu:cursor [position_(s,next_(s,cu))].
@@ -520,12 +520,12 @@ let test6 (s:set ref) (removed:set ref) =
 
 (*** MAX TESTS ***)
 
-logic compare_ : int, int -> int
+logic compare_ : element_t, element_t -> int
 
 predicate is_max (v:set,cu:cursor) =
 	  has_element_(v,cu) and
-	  (forall i:int.
-		 contains_(v,i) -> compare_(witness(element_(v,cu)),i)>=0)
+	  (forall cun:cursor.
+		 has_element_(v,cun) -> compare_(element_(v,cu),element_(v,cun))>=0)
 
 logic max_ : set -> cursor
 
@@ -550,18 +550,18 @@ let test_max (v_min:set ref) (n:int) =
     	  { invariant
 	    (length_(v_min)=length_(v_min@init)-i+1 and
 	    is_empty_(inter_(v_min,v_max)) and
-	    (forall e1:element_t. forall e2:element_t. contains_(v_max,witness(e1)) ->
-	    contains_(v_min,witness(e2)) ->
-	    compare_(witness(e1),witness(e2))>=0))}
+	    (forall cu1:cursor. forall cu2:cursor. has_element_(v_max,cu1) ->
+	    has_element_(v_min,cu2) ->
+	    compare_(element_(v_max, cu1),element_(v_min, cu2))>=0))}
 	  iloop:
     	  insert v_max (element !v_min (max !v_min));
 	  delete v_min (max !v_min);
 	  i := !i+1
     done;
     !v_max
-    { (forall e1:element_t. forall e2:element_t. contains_(result,witness(e1)) ->
-	    contains_(v_min,witness(e2)) ->
-	    compare_(witness(e1),witness(e2))>=0) and false}
+    { (forall cu1:cursor. forall cu2:cursor. has_element_(result,cu1) ->
+	    has_element_(v_min,cu2) ->
+	    compare_(element_(result, cu1),element_(v_min, cu2))>=0) and false}
 
 (*** SUM_OF TESTS ***)
 
