@@ -35,8 +35,8 @@ package Why.Gen.Funcs is
    procedure Declare_Logic
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id);
-   pragma Precondition (Is_Root (Name));
+      Arrows : W_Arrow_Type_Id) with
+     Pre => (Is_Root (Name));
    --  Create a logic declaration from Name and Arrows and append it
    --  to File. Name is inserted into the resulting syntax tree,
    --  Arrows is not; the spec of the logic declaration is created
@@ -52,8 +52,8 @@ package Why.Gen.Funcs is
      (File        : W_File_Id;
       Name        : W_Identifier_Id;
       Args        : Logic_Arg_Chain;
-      Return_Type : W_Logic_Return_Type_Id);
-   pragma Precondition (Is_Root (Name));
+      Return_Type : W_Logic_Return_Type_Id) with
+     Pre => (Is_Root (Name));
    --  Create a logic declaration from Name and Args and append it tp
    --  File. Name and all elements in the arg chain are inserted into the
    --  resulting syntax tree.
@@ -63,11 +63,11 @@ package Why.Gen.Funcs is
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id;
       Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty);
-   pragma Precondition (Is_Root (Name)
-                        and then Is_Root (Arrows)
-                        and then Is_Root (Pre)
-                        and then Is_Root (Post));
+      Post   : W_Predicate_OId := Why_Empty) with
+     Pre => (Is_Root (Name)
+             and then Is_Root (Arrows)
+             and then Is_Root (Pre)
+             and then Is_Root (Post));
    --  Create a logic declaration and it corresponding declaration in
    --  the program space (safe and default) and append it to File. Name
    --  is the name of the logic function declaration, Arrows is the
@@ -106,11 +106,11 @@ package Why.Gen.Funcs is
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id;
       Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty);
-   pragma Precondition (Is_Root (Name)
-                        and then Is_Root (Arrows)
-                        and then Is_Root (Pre)
-                        and then Is_Root (Post));
+      Post   : W_Predicate_OId := Why_Empty) with
+     Pre => (Is_Root (Name)
+             and then Is_Root (Arrows)
+             and then Is_Root (Pre)
+             and then Is_Root (Post));
    --  Create a subprogram declaration in the program space (a so called
    --  "parameter") from its name (Name) and its signature (Arrows). All
    --  parameters will be inserted as is into the resulting syntax tree.
@@ -118,8 +118,8 @@ package Why.Gen.Funcs is
    function New_Call_To_Logic
      (Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
-     return W_Operation_Id;
-   pragma Precondition (Is_Root (Name));
+     return W_Operation_Id with
+     Pre => (Is_Root (Name));
    --  Create a call to an operation in the logical space with parameters
    --  taken from Arrows. Typically, from:
    --

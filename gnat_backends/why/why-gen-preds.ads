@@ -67,8 +67,8 @@ package Why.Gen.Preds is
    function New_Predicate_Body
      (Bindings : Binding_Pred_Chain;
       Context  : W_Predicate_Id)
-     return W_Predicate_Id;
-   pragma Precondition (Is_Root (Context));
+     return W_Predicate_Id with
+     Pre => (Is_Root (Context));
    --  Create a predicate by linking together the bindings and
    --  associating the context to them.
 
@@ -86,8 +86,8 @@ package Why.Gen.Preds is
    function New_Universal_Predicate_Body
      (Foralls : Universal_Quantif_Chain;
       Context : W_Predicate_Id)
-     return W_Predicate_Id;
-   pragma Precondition (Is_Root (Context));
+     return W_Predicate_Id with
+     Pre => (Is_Root (Context));
    --  Create a predicate by linking together the universal quantifiers and
    --  associating the context to them.
 

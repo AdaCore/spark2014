@@ -358,16 +358,23 @@ package body Xtree_Mutators is
       begin
          if not Is_List (FI) then
             Print_Setter_Specification (O, Kind, FI);
-            PL (O, ";");
 
             if Is_Why_Id (FI) then
+               PL (O, " with");
+               Relative_Indent (O, 2);
                Print_Mutator_Precondition (O, Kind, FI);
+               Relative_Indent (O, -2);
             end if;
+
+            PL (O, ";");
          else
             for List_Op in List_Op_Kind'Range loop
                Print_List_Op_Specification (O, Kind, FI, List_Op);
-               PL (O, ";");
+               PL (O, " with");
+               Relative_Indent (O, 2);
                Print_Mutator_Precondition (O, Kind, FI);
+               Relative_Indent (O, -2);
+               PL (O, ";");
 
                if List_Op /= List_Op_Kind'Last then
                   NL (O);
@@ -406,12 +413,12 @@ package body Xtree_Mutators is
               else Multiplicity (FI));
     begin
       if Is_Why_Id (FI) then
-         PL (O, "pragma Precondition");
+         PL (O, "Pre =>");
          PL (O, "  (" & Kind_Check (Field_Kind (FI), M)
              & " (" & PN  & ")");
          PL (O, "   and then " & Tree_Check (Field_Kind (FI), M)
              & " (" & PN  & ")");
-         PL (O, "   and then Is_Root (" & PN  & "));");
+         P (O, "   and then Is_Root (" & PN  & "))");
       end if;
    end Print_Mutator_Precondition;
 

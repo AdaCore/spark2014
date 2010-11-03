@@ -32,8 +32,8 @@ package Why.Gen.Axioms is
    procedure Define_Range_Axiom
      (File       : W_File_Id;
       Type_Name  : W_Identifier_Id;
-      Conversion : W_Identifier_Id);
-   pragma Precondition (Is_Root (Type_Name) and then Is_Root (Conversion));
+      Conversion : W_Identifier_Id) with
+     Pre => (Is_Root (Type_Name) and then Is_Root (Conversion));
    --  Define a range axiom; it asserts the given abstract type stays in the
    --  range of its base primitive type. The axiom is of the form:
    --
@@ -46,11 +46,11 @@ package Why.Gen.Axioms is
       Type_Name      : W_Identifier_Id;
       Base_Type      : W_Primitive_Type_Id;
       From_Base_Type : W_Identifier_Id;
-      To_Base_Type   : W_Identifier_Id);
-   pragma Precondition (Is_Root (Type_Name)
-                        and then Is_Root (Base_Type)
-                        and then Is_Root (From_Base_Type)
-                        and then Is_Root (To_Base_Type));
+      To_Base_Type   : W_Identifier_Id) with
+     Pre => (Is_Root (Type_Name)
+             and then Is_Root (Base_Type)
+             and then Is_Root (From_Base_Type)
+             and then Is_Root (To_Base_Type));
    --  Define a coerce axiom; it asserts that conversion from the base
    --  primitive type then back to the original type is the identity
    --  (as long as we are in the type range). The axiom is of the
@@ -64,8 +64,8 @@ package Why.Gen.Axioms is
    procedure Define_Unicity_Axiom
      (File       : W_File_Id;
       Type_Name  : W_Identifier_Id;
-      Conversion : W_Identifier_Id);
-   pragma Precondition (Is_Root (Type_Name) and then Is_Root (Conversion));
+      Conversion : W_Identifier_Id) with
+     Pre => (Is_Root (Type_Name) and then Is_Root (Conversion));
    --  Define a unicity axiom; it asserts that if two object of the
    --  given type convert to the same object on its base type, then
    --  they are equal. The axiom is of the form:

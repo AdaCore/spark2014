@@ -40,257 +40,262 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Symbol   : Name_Id;
       Entity   : Why_Node_Id := Why_Empty)
-     return W_Identifier_Id;
-   pragma Precondition
-     (True
-      and then True);
-   pragma Postcondition
-     (Get_Kind
-       (New_Identifier'Result)
-       = W_Identifier
-      and then
-        Get_Ada_Node
-        (New_Identifier'Result)
-        = Ada_Node
-      and then
-        Identifier_Get_Symbol
-        (New_Identifier'Result)
-        = Symbol
-      and then
-        Identifier_Get_Entity
-        (New_Identifier'Result)
-        = Entity);
+     return W_Identifier_Id with
+     Pre =>
+       (True
+        and then True),
+     Post =>
+       (Get_Kind
+         (New_Identifier'Result)
+         = W_Identifier
+        and then
+          Get_Ada_Node
+          (New_Identifier'Result)
+          = Ada_Node
+        and then
+          Identifier_Get_Symbol
+          (New_Identifier'Result)
+          = Symbol
+        and then
+          Identifier_Get_Entity
+          (New_Identifier'Result)
+          = Entity);
 
    function New_Type_Prop
      (Ada_Node : Node_Id := Empty)
-     return W_Type_Prop_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Type_Prop'Result)
-       = W_Type_Prop
-      and then
-        Get_Ada_Node
-        (New_Type_Prop'Result)
-        = Ada_Node);
+     return W_Type_Prop_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Type_Prop'Result)
+         = W_Type_Prop
+        and then
+          Get_Ada_Node
+          (New_Type_Prop'Result)
+          = Ada_Node);
 
    function New_Type_Int
      (Ada_Node : Node_Id := Empty)
-     return W_Type_Int_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Type_Int'Result)
-       = W_Type_Int
-      and then
-        Get_Ada_Node
-        (New_Type_Int'Result)
-        = Ada_Node);
+     return W_Type_Int_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Type_Int'Result)
+         = W_Type_Int
+        and then
+          Get_Ada_Node
+          (New_Type_Int'Result)
+          = Ada_Node);
 
    function New_Type_Bool
      (Ada_Node : Node_Id := Empty)
-     return W_Type_Bool_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Type_Bool'Result)
-       = W_Type_Bool
-      and then
-        Get_Ada_Node
-        (New_Type_Bool'Result)
-        = Ada_Node);
+     return W_Type_Bool_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Type_Bool'Result)
+         = W_Type_Bool
+        and then
+          Get_Ada_Node
+          (New_Type_Bool'Result)
+          = Ada_Node);
 
    function New_Type_Real
      (Ada_Node : Node_Id := Empty)
-     return W_Type_Real_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Type_Real'Result)
-       = W_Type_Real
-      and then
-        Get_Ada_Node
-        (New_Type_Real'Result)
-        = Ada_Node);
+     return W_Type_Real_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Type_Real'Result)
+         = W_Type_Real
+        and then
+          Get_Ada_Node
+          (New_Type_Real'Result)
+          = Ada_Node);
 
    function New_Type_Unit
      (Ada_Node : Node_Id := Empty)
-     return W_Type_Unit_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Type_Unit'Result)
-       = W_Type_Unit
-      and then
-        Get_Ada_Node
-        (New_Type_Unit'Result)
-        = Ada_Node);
+     return W_Type_Unit_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Type_Unit'Result)
+         = W_Type_Unit
+        and then
+          Get_Ada_Node
+          (New_Type_Unit'Result)
+          = Ada_Node);
 
    function New_Abstract_Type
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id)
-     return W_Abstract_Type_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Abstract_Type'Result)
-       = W_Abstract_Type
-      and then
-        Get_Ada_Node
-        (New_Abstract_Type'Result)
-        = Ada_Node
-      and then
-        Abstract_Type_Get_Name
-        (New_Abstract_Type'Result)
-        = Name);
+     return W_Abstract_Type_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Abstract_Type'Result)
+         = W_Abstract_Type
+        and then
+          Get_Ada_Node
+          (New_Abstract_Type'Result)
+          = Ada_Node
+        and then
+          Abstract_Type_Get_Name
+          (New_Abstract_Type'Result)
+          = Name);
 
    function New_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id)
-     return W_Generic_Formal_Type_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Generic_Formal_Type'Result)
-       = W_Generic_Formal_Type
-      and then
-        Get_Ada_Node
-        (New_Generic_Formal_Type'Result)
-        = Ada_Node
-      and then
-        Generic_Formal_Type_Get_Name
-        (New_Generic_Formal_Type'Result)
-        = Name);
+     return W_Generic_Formal_Type_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Generic_Formal_Type'Result)
+         = W_Generic_Formal_Type
+        and then
+          Get_Ada_Node
+          (New_Generic_Formal_Type'Result)
+          = Ada_Node
+        and then
+          Generic_Formal_Type_Get_Name
+          (New_Generic_Formal_Type'Result)
+          = Name);
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id := Empty;
       Type_Chain : W_Primitive_Type_List;
       Name       : W_Identifier_Id)
-     return W_Generic_Actual_Type_Chain_Id;
-   pragma Precondition
-     (Primitive_Type_List_Kind_Valid (Type_Chain)
-      and then Primitive_Type_List_Valid (Type_Chain)
-      and then Is_Root (Type_Chain)
-      and then Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Generic_Actual_Type_Chain'Result)
-       = W_Generic_Actual_Type_Chain
-      and then
-        Get_Ada_Node
-        (New_Generic_Actual_Type_Chain'Result)
-        = Ada_Node
-      and then
-        Generic_Actual_Type_Chain_Get_Type_Chain
-        (New_Generic_Actual_Type_Chain'Result)
-        = Type_Chain
-      and then
-        Generic_Actual_Type_Chain_Get_Name
-        (New_Generic_Actual_Type_Chain'Result)
-        = Name);
+     return W_Generic_Actual_Type_Chain_Id with
+     Pre =>
+       (Primitive_Type_List_Kind_Valid (Type_Chain)
+        and then Primitive_Type_List_Valid (Type_Chain)
+        and then Is_Root (Type_Chain)
+        and then Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Generic_Actual_Type_Chain'Result)
+         = W_Generic_Actual_Type_Chain
+        and then
+          Get_Ada_Node
+          (New_Generic_Actual_Type_Chain'Result)
+          = Ada_Node
+        and then
+          Generic_Actual_Type_Chain_Get_Type_Chain
+          (New_Generic_Actual_Type_Chain'Result)
+          = Type_Chain
+        and then
+          Generic_Actual_Type_Chain_Get_Name
+          (New_Generic_Actual_Type_Chain'Result)
+          = Name);
 
    function New_Array_Type
      (Ada_Node       : Node_Id := Empty;
       Component_Type : W_Primitive_Type_Id)
-     return W_Array_Type_Id;
-   pragma Precondition
-     (Primitive_Type_Id_Kind_Valid (Component_Type)
-      and then Primitive_Type_Id_Valid (Component_Type)
-      and then Is_Root (Component_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Array_Type'Result)
-       = W_Array_Type
-      and then
-        Get_Ada_Node
-        (New_Array_Type'Result)
-        = Ada_Node
-      and then
-        Array_Type_Get_Component_Type
-        (New_Array_Type'Result)
-        = Component_Type);
+     return W_Array_Type_Id with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Component_Type)
+        and then Primitive_Type_Id_Valid (Component_Type)
+        and then Is_Root (Component_Type)),
+     Post =>
+       (Get_Kind
+         (New_Array_Type'Result)
+         = W_Array_Type
+        and then
+          Get_Ada_Node
+          (New_Array_Type'Result)
+          = Ada_Node
+        and then
+          Array_Type_Get_Component_Type
+          (New_Array_Type'Result)
+          = Component_Type);
 
    function New_Ref_Type
      (Ada_Node     : Node_Id := Empty;
       Aliased_Type : W_Primitive_Type_Id)
-     return W_Ref_Type_Id;
-   pragma Precondition
-     (Primitive_Type_Id_Kind_Valid (Aliased_Type)
-      and then Primitive_Type_Id_Valid (Aliased_Type)
-      and then Is_Root (Aliased_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Ref_Type'Result)
-       = W_Ref_Type
-      and then
-        Get_Ada_Node
-        (New_Ref_Type'Result)
-        = Ada_Node
-      and then
-        Ref_Type_Get_Aliased_Type
-        (New_Ref_Type'Result)
-        = Aliased_Type);
+     return W_Ref_Type_Id with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Aliased_Type)
+        and then Primitive_Type_Id_Valid (Aliased_Type)
+        and then Is_Root (Aliased_Type)),
+     Post =>
+       (Get_Kind
+         (New_Ref_Type'Result)
+         = W_Ref_Type
+        and then
+          Get_Ada_Node
+          (New_Ref_Type'Result)
+          = Ada_Node
+        and then
+          Ref_Type_Get_Aliased_Type
+          (New_Ref_Type'Result)
+          = Aliased_Type);
 
    function New_Protected_Value_Type
      (Ada_Node   : Node_Id := Empty;
       Value_Type : W_Value_Type_Id)
-     return W_Protected_Value_Type_Id;
-   pragma Precondition
-     (Value_Type_Id_Kind_Valid (Value_Type)
-      and then Value_Type_Id_Valid (Value_Type)
-      and then Is_Root (Value_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Protected_Value_Type'Result)
-       = W_Protected_Value_Type
-      and then
-        Get_Ada_Node
-        (New_Protected_Value_Type'Result)
-        = Ada_Node
-      and then
-        Protected_Value_Type_Get_Value_Type
-        (New_Protected_Value_Type'Result)
-        = Value_Type);
+     return W_Protected_Value_Type_Id with
+     Pre =>
+       (Value_Type_Id_Kind_Valid (Value_Type)
+        and then Value_Type_Id_Valid (Value_Type)
+        and then Is_Root (Value_Type)),
+     Post =>
+       (Get_Kind
+         (New_Protected_Value_Type'Result)
+         = W_Protected_Value_Type
+        and then
+          Get_Ada_Node
+          (New_Protected_Value_Type'Result)
+          = Ada_Node
+        and then
+          Protected_Value_Type_Get_Value_Type
+          (New_Protected_Value_Type'Result)
+          = Value_Type);
 
    function New_Arrow_Type
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_OId := Why_Empty;
       Left     : W_Simple_Value_Type_Id;
       Right    : W_Computation_Type_Id)
-     return W_Arrow_Type_Id;
-   pragma Precondition
-     (Identifier_OId_Kind_Valid (Name)
-      and then Identifier_OId_Valid (Name)
-      and then Is_Root (Name)
-      and then Simple_Value_Type_Id_Kind_Valid (Left)
-      and then Simple_Value_Type_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Computation_Type_Id_Kind_Valid (Right)
-      and then Computation_Type_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Arrow_Type'Result)
-       = W_Arrow_Type
-      and then
-        Get_Ada_Node
-        (New_Arrow_Type'Result)
-        = Ada_Node
-      and then
-        Arrow_Type_Get_Name
-        (New_Arrow_Type'Result)
-        = Name
-      and then
-        Arrow_Type_Get_Left
-        (New_Arrow_Type'Result)
-        = Left
-      and then
-        Arrow_Type_Get_Right
-        (New_Arrow_Type'Result)
-        = Right);
+     return W_Arrow_Type_Id with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Name)
+        and then Identifier_OId_Valid (Name)
+        and then Is_Root (Name)
+        and then Simple_Value_Type_Id_Kind_Valid (Left)
+        and then Simple_Value_Type_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Computation_Type_Id_Kind_Valid (Right)
+        and then Computation_Type_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Arrow_Type'Result)
+         = W_Arrow_Type
+        and then
+          Get_Ada_Node
+          (New_Arrow_Type'Result)
+          = Ada_Node
+        and then
+          Arrow_Type_Get_Name
+          (New_Arrow_Type'Result)
+          = Name
+        and then
+          Arrow_Type_Get_Left
+          (New_Arrow_Type'Result)
+          = Left
+        and then
+          Arrow_Type_Get_Right
+          (New_Arrow_Type'Result)
+          = Right);
 
    function New_Computation_Spec
      (Ada_Node      : Node_Id := Empty;
@@ -299,499 +304,509 @@ package Why.Atree.Builders is
       Return_Type   : W_Value_Type_Id;
       Effects       : W_Effects_Id;
       Postcondition : W_Postcondition_OId := Why_Empty)
-     return W_Computation_Spec_Id;
-   pragma Precondition
-     (Precondition_OId_Kind_Valid (Precondition)
-      and then Precondition_OId_Valid (Precondition)
-      and then Is_Root (Precondition)
-      and then Identifier_OId_Kind_Valid (Result_Name)
-      and then Identifier_OId_Valid (Result_Name)
-      and then Is_Root (Result_Name)
-      and then Value_Type_Id_Kind_Valid (Return_Type)
-      and then Value_Type_Id_Valid (Return_Type)
-      and then Is_Root (Return_Type)
-      and then Effects_Id_Kind_Valid (Effects)
-      and then Effects_Id_Valid (Effects)
-      and then Is_Root (Effects)
-      and then Postcondition_OId_Kind_Valid (Postcondition)
-      and then Postcondition_OId_Valid (Postcondition)
-      and then Is_Root (Postcondition));
-   pragma Postcondition
-     (Get_Kind
-       (New_Computation_Spec'Result)
-       = W_Computation_Spec
-      and then
-        Get_Ada_Node
-        (New_Computation_Spec'Result)
-        = Ada_Node
-      and then
-        Computation_Spec_Get_Precondition
-        (New_Computation_Spec'Result)
-        = Precondition
-      and then
-        Computation_Spec_Get_Result_Name
-        (New_Computation_Spec'Result)
-        = Result_Name
-      and then
-        Computation_Spec_Get_Return_Type
-        (New_Computation_Spec'Result)
-        = Return_Type
-      and then
-        Computation_Spec_Get_Effects
-        (New_Computation_Spec'Result)
-        = Effects
-      and then
-        Computation_Spec_Get_Postcondition
-        (New_Computation_Spec'Result)
-        = Postcondition);
+     return W_Computation_Spec_Id with
+     Pre =>
+       (Precondition_OId_Kind_Valid (Precondition)
+        and then Precondition_OId_Valid (Precondition)
+        and then Is_Root (Precondition)
+        and then Identifier_OId_Kind_Valid (Result_Name)
+        and then Identifier_OId_Valid (Result_Name)
+        and then Is_Root (Result_Name)
+        and then Value_Type_Id_Kind_Valid (Return_Type)
+        and then Value_Type_Id_Valid (Return_Type)
+        and then Is_Root (Return_Type)
+        and then Effects_Id_Kind_Valid (Effects)
+        and then Effects_Id_Valid (Effects)
+        and then Is_Root (Effects)
+        and then Postcondition_OId_Kind_Valid (Postcondition)
+        and then Postcondition_OId_Valid (Postcondition)
+        and then Is_Root (Postcondition)),
+     Post =>
+       (Get_Kind
+         (New_Computation_Spec'Result)
+         = W_Computation_Spec
+        and then
+          Get_Ada_Node
+          (New_Computation_Spec'Result)
+          = Ada_Node
+        and then
+          Computation_Spec_Get_Precondition
+          (New_Computation_Spec'Result)
+          = Precondition
+        and then
+          Computation_Spec_Get_Result_Name
+          (New_Computation_Spec'Result)
+          = Result_Name
+        and then
+          Computation_Spec_Get_Return_Type
+          (New_Computation_Spec'Result)
+          = Return_Type
+        and then
+          Computation_Spec_Get_Effects
+          (New_Computation_Spec'Result)
+          = Effects
+        and then
+          Computation_Spec_Get_Postcondition
+          (New_Computation_Spec'Result)
+          = Postcondition);
 
    function New_Integer_Constant
      (Ada_Node : Node_Id := Empty;
       Value    : Uint)
-     return W_Integer_Constant_Id;
-   pragma Precondition
-     (True);
-   pragma Postcondition
-     (Get_Kind
-       (New_Integer_Constant'Result)
-       = W_Integer_Constant
-      and then
-        Get_Ada_Node
-        (New_Integer_Constant'Result)
-        = Ada_Node
-      and then
-        Integer_Constant_Get_Value
-        (New_Integer_Constant'Result)
-        = Value);
+     return W_Integer_Constant_Id with
+     Pre =>
+       (True),
+     Post =>
+       (Get_Kind
+         (New_Integer_Constant'Result)
+         = W_Integer_Constant
+        and then
+          Get_Ada_Node
+          (New_Integer_Constant'Result)
+          = Ada_Node
+        and then
+          Integer_Constant_Get_Value
+          (New_Integer_Constant'Result)
+          = Value);
 
    function New_Real_Constant
      (Ada_Node : Node_Id := Empty;
       Value    : Ureal)
-     return W_Real_Constant_Id;
-   pragma Precondition
-     (True);
-   pragma Postcondition
-     (Get_Kind
-       (New_Real_Constant'Result)
-       = W_Real_Constant
-      and then
-        Get_Ada_Node
-        (New_Real_Constant'Result)
-        = Ada_Node
-      and then
-        Real_Constant_Get_Value
-        (New_Real_Constant'Result)
-        = Value);
+     return W_Real_Constant_Id with
+     Pre =>
+       (True),
+     Post =>
+       (Get_Kind
+         (New_Real_Constant'Result)
+         = W_Real_Constant
+        and then
+          Get_Ada_Node
+          (New_Real_Constant'Result)
+          = Ada_Node
+        and then
+          Real_Constant_Get_Value
+          (New_Real_Constant'Result)
+          = Value);
 
    function New_True_Literal
      (Ada_Node : Node_Id := Empty)
-     return W_True_Literal_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_True_Literal'Result)
-       = W_True_Literal
-      and then
-        Get_Ada_Node
-        (New_True_Literal'Result)
-        = Ada_Node);
+     return W_True_Literal_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_True_Literal'Result)
+         = W_True_Literal
+        and then
+          Get_Ada_Node
+          (New_True_Literal'Result)
+          = Ada_Node);
 
    function New_False_Literal
      (Ada_Node : Node_Id := Empty)
-     return W_False_Literal_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_False_Literal'Result)
-       = W_False_Literal
-      and then
-        Get_Ada_Node
-        (New_False_Literal'Result)
-        = Ada_Node);
+     return W_False_Literal_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_False_Literal'Result)
+         = W_False_Literal
+        and then
+          Get_Ada_Node
+          (New_False_Literal'Result)
+          = Ada_Node);
 
    function New_Void_Literal
      (Ada_Node : Node_Id := Empty)
-     return W_Void_Literal_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Void_Literal'Result)
-       = W_Void_Literal
-      and then
-        Get_Ada_Node
-        (New_Void_Literal'Result)
-        = Ada_Node);
+     return W_Void_Literal_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Void_Literal'Result)
+         = W_Void_Literal
+        and then
+          Get_Ada_Node
+          (New_Void_Literal'Result)
+          = Ada_Node);
 
    function New_Arith_Operation
      (Ada_Node : Node_Id := Empty;
       Left     : W_Term_Id;
       Op       : W_Arith_Op_Id;
       Right    : W_Term_Id)
-     return W_Arith_Operation_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Left)
-      and then Term_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Arith_Op_Id_Kind_Valid (Op)
-      and then Arith_Op_Id_Valid (Op)
-      and then Is_Root (Op)
-      and then Term_Id_Kind_Valid (Right)
-      and then Term_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Arith_Operation'Result)
-       = W_Arith_Operation
-      and then
-        Get_Ada_Node
-        (New_Arith_Operation'Result)
-        = Ada_Node
-      and then
-        Arith_Operation_Get_Left
-        (New_Arith_Operation'Result)
-        = Left
-      and then
-        Arith_Operation_Get_Op
-        (New_Arith_Operation'Result)
-        = Op
-      and then
-        Arith_Operation_Get_Right
-        (New_Arith_Operation'Result)
-        = Right);
+     return W_Arith_Operation_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Left)
+        and then Term_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Arith_Op_Id_Kind_Valid (Op)
+        and then Arith_Op_Id_Valid (Op)
+        and then Is_Root (Op)
+        and then Term_Id_Kind_Valid (Right)
+        and then Term_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Arith_Operation'Result)
+         = W_Arith_Operation
+        and then
+          Get_Ada_Node
+          (New_Arith_Operation'Result)
+          = Ada_Node
+        and then
+          Arith_Operation_Get_Left
+          (New_Arith_Operation'Result)
+          = Left
+        and then
+          Arith_Operation_Get_Op
+          (New_Arith_Operation'Result)
+          = Op
+        and then
+          Arith_Operation_Get_Right
+          (New_Arith_Operation'Result)
+          = Right);
 
    function New_Negative_Term
      (Ada_Node : Node_Id := Empty;
       Operand  : W_Term_Id)
-     return W_Negative_Term_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Operand)
-      and then Term_Id_Valid (Operand)
-      and then Is_Root (Operand));
-   pragma Postcondition
-     (Get_Kind
-       (New_Negative_Term'Result)
-       = W_Negative_Term
-      and then
-        Get_Ada_Node
-        (New_Negative_Term'Result)
-        = Ada_Node
-      and then
-        Negative_Term_Get_Operand
-        (New_Negative_Term'Result)
-        = Operand);
+     return W_Negative_Term_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Operand)
+        and then Term_Id_Valid (Operand)
+        and then Is_Root (Operand)),
+     Post =>
+       (Get_Kind
+         (New_Negative_Term'Result)
+         = W_Negative_Term
+        and then
+          Get_Ada_Node
+          (New_Negative_Term'Result)
+          = Ada_Node
+        and then
+          Negative_Term_Get_Operand
+          (New_Negative_Term'Result)
+          = Operand);
 
    function New_Label_Identifier
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId := Why_Empty)
-     return W_Label_Identifier_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Identifier_OId_Kind_Valid (Label)
-      and then Identifier_OId_Valid (Label)
-      and then Is_Root (Label));
-   pragma Postcondition
-     (Get_Kind
-       (New_Label_Identifier'Result)
-       = W_Label_Identifier
-      and then
-        Get_Ada_Node
-        (New_Label_Identifier'Result)
-        = Ada_Node
-      and then
-        Label_Identifier_Get_Name
-        (New_Label_Identifier'Result)
-        = Name
-      and then
-        Label_Identifier_Get_Label
-        (New_Label_Identifier'Result)
-        = Label);
+     return W_Label_Identifier_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Identifier_OId_Kind_Valid (Label)
+        and then Identifier_OId_Valid (Label)
+        and then Is_Root (Label)),
+     Post =>
+       (Get_Kind
+         (New_Label_Identifier'Result)
+         = W_Label_Identifier
+        and then
+          Get_Ada_Node
+          (New_Label_Identifier'Result)
+          = Ada_Node
+        and then
+          Label_Identifier_Get_Name
+          (New_Label_Identifier'Result)
+          = Name
+        and then
+          Label_Identifier_Get_Label
+          (New_Label_Identifier'Result)
+          = Label);
 
    function New_Operation
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
-     return W_Operation_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_List_Kind_Valid (Parameters)
-      and then Term_List_Valid (Parameters)
-      and then Is_Root (Parameters));
-   pragma Postcondition
-     (Get_Kind
-       (New_Operation'Result)
-       = W_Operation
-      and then
-        Get_Ada_Node
-        (New_Operation'Result)
-        = Ada_Node
-      and then
-        Operation_Get_Name
-        (New_Operation'Result)
-        = Name
-      and then
-        Operation_Get_Parameters
-        (New_Operation'Result)
-        = Parameters);
+     return W_Operation_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_List_Kind_Valid (Parameters)
+        and then Term_List_Valid (Parameters)
+        and then Is_Root (Parameters)),
+     Post =>
+       (Get_Kind
+         (New_Operation'Result)
+         = W_Operation
+        and then
+          Get_Ada_Node
+          (New_Operation'Result)
+          = Ada_Node
+        and then
+          Operation_Get_Name
+          (New_Operation'Result)
+          = Name
+        and then
+          Operation_Get_Parameters
+          (New_Operation'Result)
+          = Parameters);
 
    function New_Named_Term
      (Ada_Node : Node_Id := Empty;
       Name     : W_Label_Identifier_Id;
       Term     : W_Term_Id)
-     return W_Named_Term_Id;
-   pragma Precondition
-     (Label_Identifier_Id_Kind_Valid (Name)
-      and then Label_Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_Id_Kind_Valid (Term)
-      and then Term_Id_Valid (Term)
-      and then Is_Root (Term));
-   pragma Postcondition
-     (Get_Kind
-       (New_Named_Term'Result)
-       = W_Named_Term
-      and then
-        Get_Ada_Node
-        (New_Named_Term'Result)
-        = Ada_Node
-      and then
-        Named_Term_Get_Name
-        (New_Named_Term'Result)
-        = Name
-      and then
-        Named_Term_Get_Term
-        (New_Named_Term'Result)
-        = Term);
+     return W_Named_Term_Id with
+     Pre =>
+       (Label_Identifier_Id_Kind_Valid (Name)
+        and then Label_Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term)),
+     Post =>
+       (Get_Kind
+         (New_Named_Term'Result)
+         = W_Named_Term
+        and then
+          Get_Ada_Node
+          (New_Named_Term'Result)
+          = Ada_Node
+        and then
+          Named_Term_Get_Name
+          (New_Named_Term'Result)
+          = Name
+        and then
+          Named_Term_Get_Term
+          (New_Named_Term'Result)
+          = Term);
 
    function New_Conditional_Term
      (Ada_Node  : Node_Id := Empty;
       Condition : W_Term_Id;
       Then_Part : W_Term_Id;
       Else_Part : W_Term_Id)
-     return W_Conditional_Term_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Condition)
-      and then Term_Id_Valid (Condition)
-      and then Is_Root (Condition)
-      and then Term_Id_Kind_Valid (Then_Part)
-      and then Term_Id_Valid (Then_Part)
-      and then Is_Root (Then_Part)
-      and then Term_Id_Kind_Valid (Else_Part)
-      and then Term_Id_Valid (Else_Part)
-      and then Is_Root (Else_Part));
-   pragma Postcondition
-     (Get_Kind
-       (New_Conditional_Term'Result)
-       = W_Conditional_Term
-      and then
-        Get_Ada_Node
-        (New_Conditional_Term'Result)
-        = Ada_Node
-      and then
-        Conditional_Term_Get_Condition
-        (New_Conditional_Term'Result)
-        = Condition
-      and then
-        Conditional_Term_Get_Then_Part
-        (New_Conditional_Term'Result)
-        = Then_Part
-      and then
-        Conditional_Term_Get_Else_Part
-        (New_Conditional_Term'Result)
-        = Else_Part);
+     return W_Conditional_Term_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Condition)
+        and then Term_Id_Valid (Condition)
+        and then Is_Root (Condition)
+        and then Term_Id_Kind_Valid (Then_Part)
+        and then Term_Id_Valid (Then_Part)
+        and then Is_Root (Then_Part)
+        and then Term_Id_Kind_Valid (Else_Part)
+        and then Term_Id_Valid (Else_Part)
+        and then Is_Root (Else_Part)),
+     Post =>
+       (Get_Kind
+         (New_Conditional_Term'Result)
+         = W_Conditional_Term
+        and then
+          Get_Ada_Node
+          (New_Conditional_Term'Result)
+          = Ada_Node
+        and then
+          Conditional_Term_Get_Condition
+          (New_Conditional_Term'Result)
+          = Condition
+        and then
+          Conditional_Term_Get_Then_Part
+          (New_Conditional_Term'Result)
+          = Then_Part
+        and then
+          Conditional_Term_Get_Else_Part
+          (New_Conditional_Term'Result)
+          = Else_Part);
 
    function New_Binding_Term
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Term_Id)
-     return W_Binding_Term_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_Id_Kind_Valid (Def)
-      and then Term_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Term_Id_Kind_Valid (Context)
-      and then Term_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Term'Result)
-       = W_Binding_Term
-      and then
-        Get_Ada_Node
-        (New_Binding_Term'Result)
-        = Ada_Node
-      and then
-        Binding_Term_Get_Name
-        (New_Binding_Term'Result)
-        = Name
-      and then
-        Binding_Term_Get_Def
-        (New_Binding_Term'Result)
-        = Def
-      and then
-        Binding_Term_Get_Context
-        (New_Binding_Term'Result)
-        = Context);
+     return W_Binding_Term_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_Id_Kind_Valid (Def)
+        and then Term_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Term_Id_Kind_Valid (Context)
+        and then Term_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Term'Result)
+         = W_Binding_Term
+        and then
+          Get_Ada_Node
+          (New_Binding_Term'Result)
+          = Ada_Node
+        and then
+          Binding_Term_Get_Name
+          (New_Binding_Term'Result)
+          = Name
+        and then
+          Binding_Term_Get_Def
+          (New_Binding_Term'Result)
+          = Def
+        and then
+          Binding_Term_Get_Context
+          (New_Binding_Term'Result)
+          = Context);
 
    function New_Protected_Term
      (Ada_Node : Node_Id := Empty;
       Term     : W_Term_Id)
-     return W_Protected_Term_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Term)
-      and then Term_Id_Valid (Term)
-      and then Is_Root (Term));
-   pragma Postcondition
-     (Get_Kind
-       (New_Protected_Term'Result)
-       = W_Protected_Term
-      and then
-        Get_Ada_Node
-        (New_Protected_Term'Result)
-        = Ada_Node
-      and then
-        Protected_Term_Get_Term
-        (New_Protected_Term'Result)
-        = Term);
+     return W_Protected_Term_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term)),
+     Post =>
+       (Get_Kind
+         (New_Protected_Term'Result)
+         = W_Protected_Term
+        and then
+          Get_Ada_Node
+          (New_Protected_Term'Result)
+          = Ada_Node
+        and then
+          Protected_Term_Get_Term
+          (New_Protected_Term'Result)
+          = Term);
 
    function New_Op_Add
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Add_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Add'Result)
-       = W_Op_Add
-      and then
-        Get_Ada_Node
-        (New_Op_Add'Result)
-        = Ada_Node);
+     return W_Op_Add_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Add'Result)
+         = W_Op_Add
+        and then
+          Get_Ada_Node
+          (New_Op_Add'Result)
+          = Ada_Node);
 
    function New_Op_Substract
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Substract_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Substract'Result)
-       = W_Op_Substract
-      and then
-        Get_Ada_Node
-        (New_Op_Substract'Result)
-        = Ada_Node);
+     return W_Op_Substract_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Substract'Result)
+         = W_Op_Substract
+        and then
+          Get_Ada_Node
+          (New_Op_Substract'Result)
+          = Ada_Node);
 
    function New_Op_Multiply
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Multiply_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Multiply'Result)
-       = W_Op_Multiply
-      and then
-        Get_Ada_Node
-        (New_Op_Multiply'Result)
-        = Ada_Node);
+     return W_Op_Multiply_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Multiply'Result)
+         = W_Op_Multiply
+        and then
+          Get_Ada_Node
+          (New_Op_Multiply'Result)
+          = Ada_Node);
 
    function New_Op_Divide
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Divide_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Divide'Result)
-       = W_Op_Divide
-      and then
-        Get_Ada_Node
-        (New_Op_Divide'Result)
-        = Ada_Node);
+     return W_Op_Divide_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Divide'Result)
+         = W_Op_Divide
+        and then
+          Get_Ada_Node
+          (New_Op_Divide'Result)
+          = Ada_Node);
 
    function New_Op_Modulo
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Modulo_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Modulo'Result)
-       = W_Op_Modulo
-      and then
-        Get_Ada_Node
-        (New_Op_Modulo'Result)
-        = Ada_Node);
+     return W_Op_Modulo_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Modulo'Result)
+         = W_Op_Modulo
+        and then
+          Get_Ada_Node
+          (New_Op_Modulo'Result)
+          = Ada_Node);
 
    function New_True_Literal_Pred
      (Ada_Node : Node_Id := Empty)
-     return W_True_Literal_Pred_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_True_Literal_Pred'Result)
-       = W_True_Literal_Pred
-      and then
-        Get_Ada_Node
-        (New_True_Literal_Pred'Result)
-        = Ada_Node);
+     return W_True_Literal_Pred_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_True_Literal_Pred'Result)
+         = W_True_Literal_Pred
+        and then
+          Get_Ada_Node
+          (New_True_Literal_Pred'Result)
+          = Ada_Node);
 
    function New_False_Literal_Pred
      (Ada_Node : Node_Id := Empty)
-     return W_False_Literal_Pred_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_False_Literal_Pred'Result)
-       = W_False_Literal_Pred
-      and then
-        Get_Ada_Node
-        (New_False_Literal_Pred'Result)
-        = Ada_Node);
+     return W_False_Literal_Pred_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_False_Literal_Pred'Result)
+         = W_False_Literal_Pred
+        and then
+          Get_Ada_Node
+          (New_False_Literal_Pred'Result)
+          = Ada_Node);
 
    function New_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id)
-     return W_Predicate_Identifier_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Predicate_Identifier'Result)
-       = W_Predicate_Identifier
-      and then
-        Get_Ada_Node
-        (New_Predicate_Identifier'Result)
-        = Ada_Node
-      and then
-        Predicate_Identifier_Get_Name
-        (New_Predicate_Identifier'Result)
-        = Name);
+     return W_Predicate_Identifier_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Predicate_Identifier'Result)
+         = W_Predicate_Identifier
+        and then
+          Get_Ada_Node
+          (New_Predicate_Identifier'Result)
+          = Ada_Node
+        and then
+          Predicate_Identifier_Get_Name
+          (New_Predicate_Identifier'Result)
+          = Name);
 
    function New_Predicate_Instance
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Parameters : W_Term_List)
-     return W_Predicate_Instance_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_List_Kind_Valid (Parameters)
-      and then Term_List_Valid (Parameters)
-      and then Is_Root (Parameters));
-   pragma Postcondition
-     (Get_Kind
-       (New_Predicate_Instance'Result)
-       = W_Predicate_Instance
-      and then
-        Get_Ada_Node
-        (New_Predicate_Instance'Result)
-        = Ada_Node
-      and then
-        Predicate_Instance_Get_Name
-        (New_Predicate_Instance'Result)
-        = Name
-      and then
-        Predicate_Instance_Get_Parameters
-        (New_Predicate_Instance'Result)
-        = Parameters);
+     return W_Predicate_Instance_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_List_Kind_Valid (Parameters)
+        and then Term_List_Valid (Parameters)
+        and then Is_Root (Parameters)),
+     Post =>
+       (Get_Kind
+         (New_Predicate_Instance'Result)
+         = W_Predicate_Instance
+        and then
+          Get_Ada_Node
+          (New_Predicate_Instance'Result)
+          = Ada_Node
+        and then
+          Predicate_Instance_Get_Name
+          (New_Predicate_Instance'Result)
+          = Name
+        and then
+          Predicate_Instance_Get_Parameters
+          (New_Predicate_Instance'Result)
+          = Parameters);
 
    function New_Related_Terms
      (Ada_Node : Node_Id := Empty;
@@ -800,262 +815,262 @@ package Why.Atree.Builders is
       Right    : W_Term_Id;
       Op2      : W_Relation_OId := Why_Empty;
       Right2   : W_Term_OId := Why_Empty)
-     return W_Related_Terms_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Left)
-      and then Term_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Relation_Id_Kind_Valid (Op)
-      and then Relation_Id_Valid (Op)
-      and then Is_Root (Op)
-      and then Term_Id_Kind_Valid (Right)
-      and then Term_Id_Valid (Right)
-      and then Is_Root (Right)
-      and then Relation_OId_Kind_Valid (Op2)
-      and then Relation_OId_Valid (Op2)
-      and then Is_Root (Op2)
-      and then Term_OId_Kind_Valid (Right2)
-      and then Term_OId_Valid (Right2)
-      and then Is_Root (Right2));
-   pragma Postcondition
-     (Get_Kind
-       (New_Related_Terms'Result)
-       = W_Related_Terms
-      and then
-        Get_Ada_Node
-        (New_Related_Terms'Result)
-        = Ada_Node
-      and then
-        Related_Terms_Get_Left
-        (New_Related_Terms'Result)
-        = Left
-      and then
-        Related_Terms_Get_Op
-        (New_Related_Terms'Result)
-        = Op
-      and then
-        Related_Terms_Get_Right
-        (New_Related_Terms'Result)
-        = Right
-      and then
-        Related_Terms_Get_Op2
-        (New_Related_Terms'Result)
-        = Op2
-      and then
-        Related_Terms_Get_Right2
-        (New_Related_Terms'Result)
-        = Right2);
+     return W_Related_Terms_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Left)
+        and then Term_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Relation_Id_Kind_Valid (Op)
+        and then Relation_Id_Valid (Op)
+        and then Is_Root (Op)
+        and then Term_Id_Kind_Valid (Right)
+        and then Term_Id_Valid (Right)
+        and then Is_Root (Right)
+        and then Relation_OId_Kind_Valid (Op2)
+        and then Relation_OId_Valid (Op2)
+        and then Is_Root (Op2)
+        and then Term_OId_Kind_Valid (Right2)
+        and then Term_OId_Valid (Right2)
+        and then Is_Root (Right2)),
+     Post =>
+       (Get_Kind
+         (New_Related_Terms'Result)
+         = W_Related_Terms
+        and then
+          Get_Ada_Node
+          (New_Related_Terms'Result)
+          = Ada_Node
+        and then
+          Related_Terms_Get_Left
+          (New_Related_Terms'Result)
+          = Left
+        and then
+          Related_Terms_Get_Op
+          (New_Related_Terms'Result)
+          = Op
+        and then
+          Related_Terms_Get_Right
+          (New_Related_Terms'Result)
+          = Right
+        and then
+          Related_Terms_Get_Op2
+          (New_Related_Terms'Result)
+          = Op2
+        and then
+          Related_Terms_Get_Right2
+          (New_Related_Terms'Result)
+          = Right2);
 
    function New_Implication
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Implication_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Left)
-      and then Predicate_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Predicate_Id_Kind_Valid (Right)
-      and then Predicate_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Implication'Result)
-       = W_Implication
-      and then
-        Get_Ada_Node
-        (New_Implication'Result)
-        = Ada_Node
-      and then
-        Implication_Get_Left
-        (New_Implication'Result)
-        = Left
-      and then
-        Implication_Get_Right
-        (New_Implication'Result)
-        = Right);
+     return W_Implication_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Left)
+        and then Predicate_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Predicate_Id_Kind_Valid (Right)
+        and then Predicate_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Implication'Result)
+         = W_Implication
+        and then
+          Get_Ada_Node
+          (New_Implication'Result)
+          = Ada_Node
+        and then
+          Implication_Get_Left
+          (New_Implication'Result)
+          = Left
+        and then
+          Implication_Get_Right
+          (New_Implication'Result)
+          = Right);
 
    function New_Equivalence
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Equivalence_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Left)
-      and then Predicate_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Predicate_Id_Kind_Valid (Right)
-      and then Predicate_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Equivalence'Result)
-       = W_Equivalence
-      and then
-        Get_Ada_Node
-        (New_Equivalence'Result)
-        = Ada_Node
-      and then
-        Equivalence_Get_Left
-        (New_Equivalence'Result)
-        = Left
-      and then
-        Equivalence_Get_Right
-        (New_Equivalence'Result)
-        = Right);
+     return W_Equivalence_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Left)
+        and then Predicate_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Predicate_Id_Kind_Valid (Right)
+        and then Predicate_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Equivalence'Result)
+         = W_Equivalence
+        and then
+          Get_Ada_Node
+          (New_Equivalence'Result)
+          = Ada_Node
+        and then
+          Equivalence_Get_Left
+          (New_Equivalence'Result)
+          = Left
+        and then
+          Equivalence_Get_Right
+          (New_Equivalence'Result)
+          = Right);
 
    function New_Disjonction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Disjonction_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Left)
-      and then Predicate_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Predicate_Id_Kind_Valid (Right)
-      and then Predicate_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Disjonction'Result)
-       = W_Disjonction
-      and then
-        Get_Ada_Node
-        (New_Disjonction'Result)
-        = Ada_Node
-      and then
-        Disjonction_Get_Left
-        (New_Disjonction'Result)
-        = Left
-      and then
-        Disjonction_Get_Right
-        (New_Disjonction'Result)
-        = Right);
+     return W_Disjonction_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Left)
+        and then Predicate_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Predicate_Id_Kind_Valid (Right)
+        and then Predicate_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Disjonction'Result)
+         = W_Disjonction
+        and then
+          Get_Ada_Node
+          (New_Disjonction'Result)
+          = Ada_Node
+        and then
+          Disjonction_Get_Left
+          (New_Disjonction'Result)
+          = Left
+        and then
+          Disjonction_Get_Right
+          (New_Disjonction'Result)
+          = Right);
 
    function New_Conjonction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Conjonction_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Left)
-      and then Predicate_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Predicate_Id_Kind_Valid (Right)
-      and then Predicate_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Conjonction'Result)
-       = W_Conjonction
-      and then
-        Get_Ada_Node
-        (New_Conjonction'Result)
-        = Ada_Node
-      and then
-        Conjonction_Get_Left
-        (New_Conjonction'Result)
-        = Left
-      and then
-        Conjonction_Get_Right
-        (New_Conjonction'Result)
-        = Right);
+     return W_Conjonction_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Left)
+        and then Predicate_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Predicate_Id_Kind_Valid (Right)
+        and then Predicate_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Conjonction'Result)
+         = W_Conjonction
+        and then
+          Get_Ada_Node
+          (New_Conjonction'Result)
+          = Ada_Node
+        and then
+          Conjonction_Get_Left
+          (New_Conjonction'Result)
+          = Left
+        and then
+          Conjonction_Get_Right
+          (New_Conjonction'Result)
+          = Right);
 
    function New_Negation
      (Ada_Node : Node_Id := Empty;
       Operand  : W_Predicate_Id)
-     return W_Negation_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Operand)
-      and then Predicate_Id_Valid (Operand)
-      and then Is_Root (Operand));
-   pragma Postcondition
-     (Get_Kind
-       (New_Negation'Result)
-       = W_Negation
-      and then
-        Get_Ada_Node
-        (New_Negation'Result)
-        = Ada_Node
-      and then
-        Negation_Get_Operand
-        (New_Negation'Result)
-        = Operand);
+     return W_Negation_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Operand)
+        and then Predicate_Id_Valid (Operand)
+        and then Is_Root (Operand)),
+     Post =>
+       (Get_Kind
+         (New_Negation'Result)
+         = W_Negation
+        and then
+          Get_Ada_Node
+          (New_Negation'Result)
+          = Ada_Node
+        and then
+          Negation_Get_Operand
+          (New_Negation'Result)
+          = Operand);
 
    function New_Conditional_Pred
      (Ada_Node  : Node_Id := Empty;
       Condition : W_Term_Id;
       Then_Part : W_Predicate_Id;
       Else_Part : W_Predicate_Id)
-     return W_Conditional_Pred_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Condition)
-      and then Term_Id_Valid (Condition)
-      and then Is_Root (Condition)
-      and then Predicate_Id_Kind_Valid (Then_Part)
-      and then Predicate_Id_Valid (Then_Part)
-      and then Is_Root (Then_Part)
-      and then Predicate_Id_Kind_Valid (Else_Part)
-      and then Predicate_Id_Valid (Else_Part)
-      and then Is_Root (Else_Part));
-   pragma Postcondition
-     (Get_Kind
-       (New_Conditional_Pred'Result)
-       = W_Conditional_Pred
-      and then
-        Get_Ada_Node
-        (New_Conditional_Pred'Result)
-        = Ada_Node
-      and then
-        Conditional_Pred_Get_Condition
-        (New_Conditional_Pred'Result)
-        = Condition
-      and then
-        Conditional_Pred_Get_Then_Part
-        (New_Conditional_Pred'Result)
-        = Then_Part
-      and then
-        Conditional_Pred_Get_Else_Part
-        (New_Conditional_Pred'Result)
-        = Else_Part);
+     return W_Conditional_Pred_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Condition)
+        and then Term_Id_Valid (Condition)
+        and then Is_Root (Condition)
+        and then Predicate_Id_Kind_Valid (Then_Part)
+        and then Predicate_Id_Valid (Then_Part)
+        and then Is_Root (Then_Part)
+        and then Predicate_Id_Kind_Valid (Else_Part)
+        and then Predicate_Id_Valid (Else_Part)
+        and then Is_Root (Else_Part)),
+     Post =>
+       (Get_Kind
+         (New_Conditional_Pred'Result)
+         = W_Conditional_Pred
+        and then
+          Get_Ada_Node
+          (New_Conditional_Pred'Result)
+          = Ada_Node
+        and then
+          Conditional_Pred_Get_Condition
+          (New_Conditional_Pred'Result)
+          = Condition
+        and then
+          Conditional_Pred_Get_Then_Part
+          (New_Conditional_Pred'Result)
+          = Then_Part
+        and then
+          Conditional_Pred_Get_Else_Part
+          (New_Conditional_Pred'Result)
+          = Else_Part);
 
    function New_Binding_Pred
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
       Context  : W_Predicate_Id)
-     return W_Binding_Pred_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_Id_Kind_Valid (Def)
-      and then Term_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Predicate_Id_Kind_Valid (Context)
-      and then Predicate_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Pred'Result)
-       = W_Binding_Pred
-      and then
-        Get_Ada_Node
-        (New_Binding_Pred'Result)
-        = Ada_Node
-      and then
-        Binding_Pred_Get_Name
-        (New_Binding_Pred'Result)
-        = Name
-      and then
-        Binding_Pred_Get_Def
-        (New_Binding_Pred'Result)
-        = Def
-      and then
-        Binding_Pred_Get_Context
-        (New_Binding_Pred'Result)
-        = Context);
+     return W_Binding_Pred_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_Id_Kind_Valid (Def)
+        and then Term_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Predicate_Id_Kind_Valid (Context)
+        and then Predicate_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Pred'Result)
+         = W_Binding_Pred
+        and then
+          Get_Ada_Node
+          (New_Binding_Pred'Result)
+          = Ada_Node
+        and then
+          Binding_Pred_Get_Name
+          (New_Binding_Pred'Result)
+          = Name
+        and then
+          Binding_Pred_Get_Def
+          (New_Binding_Pred'Result)
+          = Def
+        and then
+          Binding_Pred_Get_Context
+          (New_Binding_Pred'Result)
+          = Context);
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id := Empty;
@@ -1063,319 +1078,325 @@ package Why.Atree.Builders is
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId := Why_Empty;
       Pred      : W_Predicate_Id)
-     return W_Universal_Quantif_Id;
-   pragma Precondition
-     (Identifier_List_Kind_Valid (Variables)
-      and then Identifier_List_Valid (Variables)
-      and then Is_Root (Variables)
-      and then Primitive_Type_Id_Kind_Valid (Var_Type)
-      and then Primitive_Type_Id_Valid (Var_Type)
-      and then Is_Root (Var_Type)
-      and then Triggers_OId_Kind_Valid (Triggers)
-      and then Triggers_OId_Valid (Triggers)
-      and then Is_Root (Triggers)
-      and then Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred));
-   pragma Postcondition
-     (Get_Kind
-       (New_Universal_Quantif'Result)
-       = W_Universal_Quantif
-      and then
-        Get_Ada_Node
-        (New_Universal_Quantif'Result)
-        = Ada_Node
-      and then
-        Universal_Quantif_Get_Variables
-        (New_Universal_Quantif'Result)
-        = Variables
-      and then
-        Universal_Quantif_Get_Var_Type
-        (New_Universal_Quantif'Result)
-        = Var_Type
-      and then
-        Universal_Quantif_Get_Triggers
-        (New_Universal_Quantif'Result)
-        = Triggers
-      and then
-        Universal_Quantif_Get_Pred
-        (New_Universal_Quantif'Result)
-        = Pred);
+     return W_Universal_Quantif_Id with
+     Pre =>
+       (Identifier_List_Kind_Valid (Variables)
+        and then Identifier_List_Valid (Variables)
+        and then Is_Root (Variables)
+        and then Primitive_Type_Id_Kind_Valid (Var_Type)
+        and then Primitive_Type_Id_Valid (Var_Type)
+        and then Is_Root (Var_Type)
+        and then Triggers_OId_Kind_Valid (Triggers)
+        and then Triggers_OId_Valid (Triggers)
+        and then Is_Root (Triggers)
+        and then Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)),
+     Post =>
+       (Get_Kind
+         (New_Universal_Quantif'Result)
+         = W_Universal_Quantif
+        and then
+          Get_Ada_Node
+          (New_Universal_Quantif'Result)
+          = Ada_Node
+        and then
+          Universal_Quantif_Get_Variables
+          (New_Universal_Quantif'Result)
+          = Variables
+        and then
+          Universal_Quantif_Get_Var_Type
+          (New_Universal_Quantif'Result)
+          = Var_Type
+        and then
+          Universal_Quantif_Get_Triggers
+          (New_Universal_Quantif'Result)
+          = Triggers
+        and then
+          Universal_Quantif_Get_Pred
+          (New_Universal_Quantif'Result)
+          = Pred);
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id := Empty;
       Variables : W_Identifier_List;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
-     return W_Existential_Quantif_Id;
-   pragma Precondition
-     (Identifier_List_Kind_Valid (Variables)
-      and then Identifier_List_Valid (Variables)
-      and then Is_Root (Variables)
-      and then Primitive_Type_Id_Kind_Valid (Var_Type)
-      and then Primitive_Type_Id_Valid (Var_Type)
-      and then Is_Root (Var_Type)
-      and then Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred));
-   pragma Postcondition
-     (Get_Kind
-       (New_Existential_Quantif'Result)
-       = W_Existential_Quantif
-      and then
-        Get_Ada_Node
-        (New_Existential_Quantif'Result)
-        = Ada_Node
-      and then
-        Existential_Quantif_Get_Variables
-        (New_Existential_Quantif'Result)
-        = Variables
-      and then
-        Existential_Quantif_Get_Var_Type
-        (New_Existential_Quantif'Result)
-        = Var_Type
-      and then
-        Existential_Quantif_Get_Pred
-        (New_Existential_Quantif'Result)
-        = Pred);
+     return W_Existential_Quantif_Id with
+     Pre =>
+       (Identifier_List_Kind_Valid (Variables)
+        and then Identifier_List_Valid (Variables)
+        and then Is_Root (Variables)
+        and then Primitive_Type_Id_Kind_Valid (Var_Type)
+        and then Primitive_Type_Id_Valid (Var_Type)
+        and then Is_Root (Var_Type)
+        and then Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)),
+     Post =>
+       (Get_Kind
+         (New_Existential_Quantif'Result)
+         = W_Existential_Quantif
+        and then
+          Get_Ada_Node
+          (New_Existential_Quantif'Result)
+          = Ada_Node
+        and then
+          Existential_Quantif_Get_Variables
+          (New_Existential_Quantif'Result)
+          = Variables
+        and then
+          Existential_Quantif_Get_Var_Type
+          (New_Existential_Quantif'Result)
+          = Var_Type
+        and then
+          Existential_Quantif_Get_Pred
+          (New_Existential_Quantif'Result)
+          = Pred);
 
    function New_Named_Predicate
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
-     return W_Named_Predicate_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred));
-   pragma Postcondition
-     (Get_Kind
-       (New_Named_Predicate'Result)
-       = W_Named_Predicate
-      and then
-        Get_Ada_Node
-        (New_Named_Predicate'Result)
-        = Ada_Node
-      and then
-        Named_Predicate_Get_Name
-        (New_Named_Predicate'Result)
-        = Name
-      and then
-        Named_Predicate_Get_Pred
-        (New_Named_Predicate'Result)
-        = Pred);
+     return W_Named_Predicate_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)),
+     Post =>
+       (Get_Kind
+         (New_Named_Predicate'Result)
+         = W_Named_Predicate
+        and then
+          Get_Ada_Node
+          (New_Named_Predicate'Result)
+          = Ada_Node
+        and then
+          Named_Predicate_Get_Name
+          (New_Named_Predicate'Result)
+          = Name
+        and then
+          Named_Predicate_Get_Pred
+          (New_Named_Predicate'Result)
+          = Pred);
 
    function New_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
       Pred     : W_Predicate_Id)
-     return W_Protected_Predicate_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred));
-   pragma Postcondition
-     (Get_Kind
-       (New_Protected_Predicate'Result)
-       = W_Protected_Predicate
-      and then
-        Get_Ada_Node
-        (New_Protected_Predicate'Result)
-        = Ada_Node
-      and then
-        Protected_Predicate_Get_Pred
-        (New_Protected_Predicate'Result)
-        = Pred);
+     return W_Protected_Predicate_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)),
+     Post =>
+       (Get_Kind
+         (New_Protected_Predicate'Result)
+         = W_Protected_Predicate
+        and then
+          Get_Ada_Node
+          (New_Protected_Predicate'Result)
+          = Ada_Node
+        and then
+          Protected_Predicate_Get_Pred
+          (New_Protected_Predicate'Result)
+          = Pred);
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
       Triggers : W_Trigger_List)
-     return W_Triggers_Id;
-   pragma Precondition
-     (Trigger_List_Kind_Valid (Triggers)
-      and then Trigger_List_Valid (Triggers)
-      and then Is_Root (Triggers));
-   pragma Postcondition
-     (Get_Kind
-       (New_Triggers'Result)
-       = W_Triggers
-      and then
-        Get_Ada_Node
-        (New_Triggers'Result)
-        = Ada_Node
-      and then
-        Triggers_Get_Triggers
-        (New_Triggers'Result)
-        = Triggers);
+     return W_Triggers_Id with
+     Pre =>
+       (Trigger_List_Kind_Valid (Triggers)
+        and then Trigger_List_Valid (Triggers)
+        and then Is_Root (Triggers)),
+     Post =>
+       (Get_Kind
+         (New_Triggers'Result)
+         = W_Triggers
+        and then
+          Get_Ada_Node
+          (New_Triggers'Result)
+          = Ada_Node
+        and then
+          Triggers_Get_Triggers
+          (New_Triggers'Result)
+          = Triggers);
 
    function New_Trigger
      (Ada_Node : Node_Id := Empty;
       Terms    : W_Term_List)
-     return W_Trigger_Id;
-   pragma Precondition
-     (Term_List_Kind_Valid (Terms)
-      and then Term_List_Valid (Terms)
-      and then Is_Root (Terms));
-   pragma Postcondition
-     (Get_Kind
-       (New_Trigger'Result)
-       = W_Trigger
-      and then
-        Get_Ada_Node
-        (New_Trigger'Result)
-        = Ada_Node
-      and then
-        Trigger_Get_Terms
-        (New_Trigger'Result)
-        = Terms);
+     return W_Trigger_Id with
+     Pre =>
+       (Term_List_Kind_Valid (Terms)
+        and then Term_List_Valid (Terms)
+        and then Is_Root (Terms)),
+     Post =>
+       (Get_Kind
+         (New_Trigger'Result)
+         = W_Trigger
+        and then
+          Get_Ada_Node
+          (New_Trigger'Result)
+          = Ada_Node
+        and then
+          Trigger_Get_Terms
+          (New_Trigger'Result)
+          = Terms);
 
    function New_Rel_Eq
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Eq_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Eq'Result)
-       = W_Rel_Eq
-      and then
-        Get_Ada_Node
-        (New_Rel_Eq'Result)
-        = Ada_Node);
+     return W_Rel_Eq_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Eq'Result)
+         = W_Rel_Eq
+        and then
+          Get_Ada_Node
+          (New_Rel_Eq'Result)
+          = Ada_Node);
 
    function New_Rel_Ne
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Ne_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Ne'Result)
-       = W_Rel_Ne
-      and then
-        Get_Ada_Node
-        (New_Rel_Ne'Result)
-        = Ada_Node);
+     return W_Rel_Ne_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Ne'Result)
+         = W_Rel_Ne
+        and then
+          Get_Ada_Node
+          (New_Rel_Ne'Result)
+          = Ada_Node);
 
    function New_Rel_Lt
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Lt_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Lt'Result)
-       = W_Rel_Lt
-      and then
-        Get_Ada_Node
-        (New_Rel_Lt'Result)
-        = Ada_Node);
+     return W_Rel_Lt_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Lt'Result)
+         = W_Rel_Lt
+        and then
+          Get_Ada_Node
+          (New_Rel_Lt'Result)
+          = Ada_Node);
 
    function New_Rel_Le
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Le_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Le'Result)
-       = W_Rel_Le
-      and then
-        Get_Ada_Node
-        (New_Rel_Le'Result)
-        = Ada_Node);
+     return W_Rel_Le_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Le'Result)
+         = W_Rel_Le
+        and then
+          Get_Ada_Node
+          (New_Rel_Le'Result)
+          = Ada_Node);
 
    function New_Rel_Gt
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Gt_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Gt'Result)
-       = W_Rel_Gt
-      and then
-        Get_Ada_Node
-        (New_Rel_Gt'Result)
-        = Ada_Node);
+     return W_Rel_Gt_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Gt'Result)
+         = W_Rel_Gt
+        and then
+          Get_Ada_Node
+          (New_Rel_Gt'Result)
+          = Ada_Node);
 
    function New_Rel_Ge
      (Ada_Node : Node_Id := Empty)
-     return W_Rel_Ge_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Rel_Ge'Result)
-       = W_Rel_Ge
-      and then
-        Get_Ada_Node
-        (New_Rel_Ge'Result)
-        = Ada_Node);
+     return W_Rel_Ge_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Rel_Ge'Result)
+         = W_Rel_Ge
+        and then
+          Get_Ada_Node
+          (New_Rel_Ge'Result)
+          = Ada_Node);
 
    function New_Type
      (Ada_Node        : Node_Id := Empty;
       External        : W_External_OId := Why_Empty;
       Type_Parameters : W_Identifier_OList := New_List;
       Name            : W_Identifier_Id)
-     return W_Type_Id;
-   pragma Precondition
-     (External_OId_Kind_Valid (External)
-      and then External_OId_Valid (External)
-      and then Is_Root (External)
-      and then Identifier_OList_Kind_Valid (Type_Parameters)
-      and then Identifier_OList_Valid (Type_Parameters)
-      and then Is_Root (Type_Parameters)
-      and then Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Type'Result)
-       = W_Type
-      and then
-        Get_Ada_Node
-        (New_Type'Result)
-        = Ada_Node
-      and then
-        Type_Get_External
-        (New_Type'Result)
-        = External
-      and then
-        Type_Get_Type_Parameters
-        (New_Type'Result)
-        = Type_Parameters
-      and then
-        Type_Get_Name
-        (New_Type'Result)
-        = Name);
+     return W_Type_Id with
+     Pre =>
+       (External_OId_Kind_Valid (External)
+        and then External_OId_Valid (External)
+        and then Is_Root (External)
+        and then Identifier_OList_Kind_Valid (Type_Parameters)
+        and then Identifier_OList_Valid (Type_Parameters)
+        and then Is_Root (Type_Parameters)
+        and then Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Type'Result)
+         = W_Type
+        and then
+          Get_Ada_Node
+          (New_Type'Result)
+          = Ada_Node
+        and then
+          Type_Get_External
+          (New_Type'Result)
+          = External
+        and then
+          Type_Get_Type_Parameters
+          (New_Type'Result)
+          = Type_Parameters
+        and then
+          Type_Get_Name
+          (New_Type'Result)
+          = Name);
 
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
       External   : W_External_OId := Why_Empty;
       Names      : W_Identifier_List;
       Logic_Type : W_Logic_Type_Id)
-     return W_Logic_Id;
-   pragma Precondition
-     (External_OId_Kind_Valid (External)
-      and then External_OId_Valid (External)
-      and then Is_Root (External)
-      and then Identifier_List_Kind_Valid (Names)
-      and then Identifier_List_Valid (Names)
-      and then Is_Root (Names)
-      and then Logic_Type_Id_Kind_Valid (Logic_Type)
-      and then Logic_Type_Id_Valid (Logic_Type)
-      and then Is_Root (Logic_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Logic'Result)
-       = W_Logic
-      and then
-        Get_Ada_Node
-        (New_Logic'Result)
-        = Ada_Node
-      and then
-        Logic_Get_External
-        (New_Logic'Result)
-        = External
-      and then
-        Logic_Get_Names
-        (New_Logic'Result)
-        = Names
-      and then
-        Logic_Get_Logic_Type
-        (New_Logic'Result)
-        = Logic_Type);
+     return W_Logic_Id with
+     Pre =>
+       (External_OId_Kind_Valid (External)
+        and then External_OId_Valid (External)
+        and then Is_Root (External)
+        and then Identifier_List_Kind_Valid (Names)
+        and then Identifier_List_Valid (Names)
+        and then Is_Root (Names)
+        and then Logic_Type_Id_Kind_Valid (Logic_Type)
+        and then Logic_Type_Id_Valid (Logic_Type)
+        and then Is_Root (Logic_Type)),
+     Post =>
+       (Get_Kind
+         (New_Logic'Result)
+         = W_Logic
+        and then
+          Get_Ada_Node
+          (New_Logic'Result)
+          = Ada_Node
+        and then
+          Logic_Get_External
+          (New_Logic'Result)
+          = External
+        and then
+          Logic_Get_Names
+          (New_Logic'Result)
+          = Names
+        and then
+          Logic_Get_Logic_Type
+          (New_Logic'Result)
+          = Logic_Type);
 
    function New_Function
      (Ada_Node    : Node_Id := Empty;
@@ -1383,958 +1404,959 @@ package Why.Atree.Builders is
       Binders     : W_Logic_Binder_List;
       Return_Type : W_Primitive_Type_Id;
       Def         : W_Term_Id)
-     return W_Function_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Logic_Binder_List_Kind_Valid (Binders)
-      and then Logic_Binder_List_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Primitive_Type_Id_Kind_Valid (Return_Type)
-      and then Primitive_Type_Id_Valid (Return_Type)
-      and then Is_Root (Return_Type)
-      and then Term_Id_Kind_Valid (Def)
-      and then Term_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Function'Result)
-       = W_Function
-      and then
-        Get_Ada_Node
-        (New_Function'Result)
-        = Ada_Node
-      and then
-        Function_Get_Name
-        (New_Function'Result)
-        = Name
-      and then
-        Function_Get_Binders
-        (New_Function'Result)
-        = Binders
-      and then
-        Function_Get_Return_Type
-        (New_Function'Result)
-        = Return_Type
-      and then
-        Function_Get_Def
-        (New_Function'Result)
-        = Def);
+     return W_Function_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Logic_Binder_List_Kind_Valid (Binders)
+        and then Logic_Binder_List_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Primitive_Type_Id_Kind_Valid (Return_Type)
+        and then Primitive_Type_Id_Valid (Return_Type)
+        and then Is_Root (Return_Type)
+        and then Term_Id_Kind_Valid (Def)
+        and then Term_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Function'Result)
+         = W_Function
+        and then
+          Get_Ada_Node
+          (New_Function'Result)
+          = Ada_Node
+        and then
+          Function_Get_Name
+          (New_Function'Result)
+          = Name
+        and then
+          Function_Get_Binders
+          (New_Function'Result)
+          = Binders
+        and then
+          Function_Get_Return_Type
+          (New_Function'Result)
+          = Return_Type
+        and then
+          Function_Get_Def
+          (New_Function'Result)
+          = Def);
 
    function New_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Logic_Binder_List;
       Def      : W_Predicate_Id)
-     return W_Predicate_Definition_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Logic_Binder_List_Kind_Valid (Binders)
-      and then Logic_Binder_List_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Predicate_Id_Kind_Valid (Def)
-      and then Predicate_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Predicate_Definition'Result)
-       = W_Predicate_Definition
-      and then
-        Get_Ada_Node
-        (New_Predicate_Definition'Result)
-        = Ada_Node
-      and then
-        Predicate_Definition_Get_Name
-        (New_Predicate_Definition'Result)
-        = Name
-      and then
-        Predicate_Definition_Get_Binders
-        (New_Predicate_Definition'Result)
-        = Binders
-      and then
-        Predicate_Definition_Get_Def
-        (New_Predicate_Definition'Result)
-        = Def);
+     return W_Predicate_Definition_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Logic_Binder_List_Kind_Valid (Binders)
+        and then Logic_Binder_List_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Predicate_Id_Kind_Valid (Def)
+        and then Predicate_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Predicate_Definition'Result)
+         = W_Predicate_Definition
+        and then
+          Get_Ada_Node
+          (New_Predicate_Definition'Result)
+          = Ada_Node
+        and then
+          Predicate_Definition_Get_Name
+          (New_Predicate_Definition'Result)
+          = Name
+        and then
+          Predicate_Definition_Get_Binders
+          (New_Predicate_Definition'Result)
+          = Binders
+        and then
+          Predicate_Definition_Get_Def
+          (New_Predicate_Definition'Result)
+          = Def);
 
    function New_Inductive
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
       Def        : W_Inductive_Case_List)
-     return W_Inductive_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Logic_Type_Id_Kind_Valid (Logic_Type)
-      and then Logic_Type_Id_Valid (Logic_Type)
-      and then Is_Root (Logic_Type)
-      and then Inductive_Case_List_Kind_Valid (Def)
-      and then Inductive_Case_List_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Inductive'Result)
-       = W_Inductive
-      and then
-        Get_Ada_Node
-        (New_Inductive'Result)
-        = Ada_Node
-      and then
-        Inductive_Get_Name
-        (New_Inductive'Result)
-        = Name
-      and then
-        Inductive_Get_Logic_Type
-        (New_Inductive'Result)
-        = Logic_Type
-      and then
-        Inductive_Get_Def
-        (New_Inductive'Result)
-        = Def);
+     return W_Inductive_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Logic_Type_Id_Kind_Valid (Logic_Type)
+        and then Logic_Type_Id_Valid (Logic_Type)
+        and then Is_Root (Logic_Type)
+        and then Inductive_Case_List_Kind_Valid (Def)
+        and then Inductive_Case_List_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Inductive'Result)
+         = W_Inductive
+        and then
+          Get_Ada_Node
+          (New_Inductive'Result)
+          = Ada_Node
+        and then
+          Inductive_Get_Name
+          (New_Inductive'Result)
+          = Name
+        and then
+          Inductive_Get_Logic_Type
+          (New_Inductive'Result)
+          = Logic_Type
+        and then
+          Inductive_Get_Def
+          (New_Inductive'Result)
+          = Def);
 
    function New_Axiom
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
-     return W_Axiom_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Predicate_Id_Kind_Valid (Def)
-      and then Predicate_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Axiom'Result)
-       = W_Axiom
-      and then
-        Get_Ada_Node
-        (New_Axiom'Result)
-        = Ada_Node
-      and then
-        Axiom_Get_Name
-        (New_Axiom'Result)
-        = Name
-      and then
-        Axiom_Get_Def
-        (New_Axiom'Result)
-        = Def);
+     return W_Axiom_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Predicate_Id_Kind_Valid (Def)
+        and then Predicate_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Axiom'Result)
+         = W_Axiom
+        and then
+          Get_Ada_Node
+          (New_Axiom'Result)
+          = Ada_Node
+        and then
+          Axiom_Get_Name
+          (New_Axiom'Result)
+          = Name
+        and then
+          Axiom_Get_Def
+          (New_Axiom'Result)
+          = Def);
 
    function New_Goal
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Predicate_Id)
-     return W_Goal_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Predicate_Id_Kind_Valid (Def)
-      and then Predicate_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Goal'Result)
-       = W_Goal
-      and then
-        Get_Ada_Node
-        (New_Goal'Result)
-        = Ada_Node
-      and then
-        Goal_Get_Name
-        (New_Goal'Result)
-        = Name
-      and then
-        Goal_Get_Def
-        (New_Goal'Result)
-        = Def);
+     return W_Goal_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Predicate_Id_Kind_Valid (Def)
+        and then Predicate_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Goal'Result)
+         = W_Goal
+        and then
+          Get_Ada_Node
+          (New_Goal'Result)
+          = Ada_Node
+        and then
+          Goal_Get_Name
+          (New_Goal'Result)
+          = Name
+        and then
+          Goal_Get_Def
+          (New_Goal'Result)
+          = Def);
 
    function New_External
      (Ada_Node : Node_Id := Empty)
-     return W_External_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_External'Result)
-       = W_External
-      and then
-        Get_Ada_Node
-        (New_External'Result)
-        = Ada_Node);
+     return W_External_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_External'Result)
+         = W_External
+        and then
+          Get_Ada_Node
+          (New_External'Result)
+          = Ada_Node);
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
       Arg_Types   : W_Logic_Arg_Type_List;
       Return_Type : W_Logic_Return_Type_Id)
-     return W_Logic_Type_Id;
-   pragma Precondition
-     (Logic_Arg_Type_List_Kind_Valid (Arg_Types)
-      and then Logic_Arg_Type_List_Valid (Arg_Types)
-      and then Is_Root (Arg_Types)
-      and then Logic_Return_Type_Id_Kind_Valid (Return_Type)
-      and then Logic_Return_Type_Id_Valid (Return_Type)
-      and then Is_Root (Return_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Logic_Type'Result)
-       = W_Logic_Type
-      and then
-        Get_Ada_Node
-        (New_Logic_Type'Result)
-        = Ada_Node
-      and then
-        Logic_Type_Get_Arg_Types
-        (New_Logic_Type'Result)
-        = Arg_Types
-      and then
-        Logic_Type_Get_Return_Type
-        (New_Logic_Type'Result)
-        = Return_Type);
+     return W_Logic_Type_Id with
+     Pre =>
+       (Logic_Arg_Type_List_Kind_Valid (Arg_Types)
+        and then Logic_Arg_Type_List_Valid (Arg_Types)
+        and then Is_Root (Arg_Types)
+        and then Logic_Return_Type_Id_Kind_Valid (Return_Type)
+        and then Logic_Return_Type_Id_Valid (Return_Type)
+        and then Is_Root (Return_Type)),
+     Post =>
+       (Get_Kind
+         (New_Logic_Type'Result)
+         = W_Logic_Type
+        and then
+          Get_Ada_Node
+          (New_Logic_Type'Result)
+          = Ada_Node
+        and then
+          Logic_Type_Get_Arg_Types
+          (New_Logic_Type'Result)
+          = Arg_Types
+        and then
+          Logic_Type_Get_Return_Type
+          (New_Logic_Type'Result)
+          = Return_Type);
 
    function New_Logic_Binder
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Param_Type : W_Primitive_Type_Id)
-     return W_Logic_Binder_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Primitive_Type_Id_Kind_Valid (Param_Type)
-      and then Primitive_Type_Id_Valid (Param_Type)
-      and then Is_Root (Param_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Logic_Binder'Result)
-       = W_Logic_Binder
-      and then
-        Get_Ada_Node
-        (New_Logic_Binder'Result)
-        = Ada_Node
-      and then
-        Logic_Binder_Get_Name
-        (New_Logic_Binder'Result)
-        = Name
-      and then
-        Logic_Binder_Get_Param_Type
-        (New_Logic_Binder'Result)
-        = Param_Type);
+     return W_Logic_Binder_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Primitive_Type_Id_Kind_Valid (Param_Type)
+        and then Primitive_Type_Id_Valid (Param_Type)
+        and then Is_Root (Param_Type)),
+     Post =>
+       (Get_Kind
+         (New_Logic_Binder'Result)
+         = W_Logic_Binder
+        and then
+          Get_Ada_Node
+          (New_Logic_Binder'Result)
+          = Ada_Node
+        and then
+          Logic_Binder_Get_Name
+          (New_Logic_Binder'Result)
+          = Name
+        and then
+          Logic_Binder_Get_Param_Type
+          (New_Logic_Binder'Result)
+          = Param_Type);
 
    function New_Inductive_Case
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Pred     : W_Predicate_Id)
-     return W_Inductive_Case_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred));
-   pragma Postcondition
-     (Get_Kind
-       (New_Inductive_Case'Result)
-       = W_Inductive_Case
-      and then
-        Get_Ada_Node
-        (New_Inductive_Case'Result)
-        = Ada_Node
-      and then
-        Inductive_Case_Get_Name
-        (New_Inductive_Case'Result)
-        = Name
-      and then
-        Inductive_Case_Get_Pred
-        (New_Inductive_Case'Result)
-        = Pred);
+     return W_Inductive_Case_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)),
+     Post =>
+       (Get_Kind
+         (New_Inductive_Case'Result)
+         = W_Inductive_Case
+        and then
+          Get_Ada_Node
+          (New_Inductive_Case'Result)
+          = Ada_Node
+        and then
+          Inductive_Case_Get_Name
+          (New_Inductive_Case'Result)
+          = Name
+        and then
+          Inductive_Case_Get_Pred
+          (New_Inductive_Case'Result)
+          = Pred);
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
       Reads    : W_Identifier_OList := New_List;
       Writes   : W_Identifier_OList := New_List;
       Raises   : W_Identifier_OList := New_List)
-     return W_Effects_Id;
-   pragma Precondition
-     (Identifier_OList_Kind_Valid (Reads)
-      and then Identifier_OList_Valid (Reads)
-      and then Is_Root (Reads)
-      and then Identifier_OList_Kind_Valid (Writes)
-      and then Identifier_OList_Valid (Writes)
-      and then Is_Root (Writes)
-      and then Identifier_OList_Kind_Valid (Raises)
-      and then Identifier_OList_Valid (Raises)
-      and then Is_Root (Raises));
-   pragma Postcondition
-     (Get_Kind
-       (New_Effects'Result)
-       = W_Effects
-      and then
-        Get_Ada_Node
-        (New_Effects'Result)
-        = Ada_Node
-      and then
-        Effects_Get_Reads
-        (New_Effects'Result)
-        = Reads
-      and then
-        Effects_Get_Writes
-        (New_Effects'Result)
-        = Writes
-      and then
-        Effects_Get_Raises
-        (New_Effects'Result)
-        = Raises);
+     return W_Effects_Id with
+     Pre =>
+       (Identifier_OList_Kind_Valid (Reads)
+        and then Identifier_OList_Valid (Reads)
+        and then Is_Root (Reads)
+        and then Identifier_OList_Kind_Valid (Writes)
+        and then Identifier_OList_Valid (Writes)
+        and then Is_Root (Writes)
+        and then Identifier_OList_Kind_Valid (Raises)
+        and then Identifier_OList_Valid (Raises)
+        and then Is_Root (Raises)),
+     Post =>
+       (Get_Kind
+         (New_Effects'Result)
+         = W_Effects
+        and then
+          Get_Ada_Node
+          (New_Effects'Result)
+          = Ada_Node
+        and then
+          Effects_Get_Reads
+          (New_Effects'Result)
+          = Reads
+        and then
+          Effects_Get_Writes
+          (New_Effects'Result)
+          = Writes
+        and then
+          Effects_Get_Raises
+          (New_Effects'Result)
+          = Raises);
 
    function New_Precondition
      (Ada_Node  : Node_Id := Empty;
       Assertion : W_Assertion_Id)
-     return W_Precondition_Id;
-   pragma Precondition
-     (Assertion_Id_Kind_Valid (Assertion)
-      and then Assertion_Id_Valid (Assertion)
-      and then Is_Root (Assertion));
-   pragma Postcondition
-     (Get_Kind
-       (New_Precondition'Result)
-       = W_Precondition
-      and then
-        Get_Ada_Node
-        (New_Precondition'Result)
-        = Ada_Node
-      and then
-        Precondition_Get_Assertion
-        (New_Precondition'Result)
-        = Assertion);
+     return W_Precondition_Id with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Assertion)
+        and then Assertion_Id_Valid (Assertion)
+        and then Is_Root (Assertion)),
+     Post =>
+       (Get_Kind
+         (New_Precondition'Result)
+         = W_Precondition
+        and then
+          Get_Ada_Node
+          (New_Precondition'Result)
+          = Ada_Node
+        and then
+          Precondition_Get_Assertion
+          (New_Precondition'Result)
+          = Assertion);
 
    function New_Postcondition
      (Ada_Node  : Node_Id := Empty;
       Assertion : W_Assertion_Id;
       Handlers  : W_Exn_Condition_OList := New_List)
-     return W_Postcondition_Id;
-   pragma Precondition
-     (Assertion_Id_Kind_Valid (Assertion)
-      and then Assertion_Id_Valid (Assertion)
-      and then Is_Root (Assertion)
-      and then Exn_Condition_OList_Kind_Valid (Handlers)
-      and then Exn_Condition_OList_Valid (Handlers)
-      and then Is_Root (Handlers));
-   pragma Postcondition
-     (Get_Kind
-       (New_Postcondition'Result)
-       = W_Postcondition
-      and then
-        Get_Ada_Node
-        (New_Postcondition'Result)
-        = Ada_Node
-      and then
-        Postcondition_Get_Assertion
-        (New_Postcondition'Result)
-        = Assertion
-      and then
-        Postcondition_Get_Handlers
-        (New_Postcondition'Result)
-        = Handlers);
+     return W_Postcondition_Id with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Assertion)
+        and then Assertion_Id_Valid (Assertion)
+        and then Is_Root (Assertion)
+        and then Exn_Condition_OList_Kind_Valid (Handlers)
+        and then Exn_Condition_OList_Valid (Handlers)
+        and then Is_Root (Handlers)),
+     Post =>
+       (Get_Kind
+         (New_Postcondition'Result)
+         = W_Postcondition
+        and then
+          Get_Ada_Node
+          (New_Postcondition'Result)
+          = Ada_Node
+        and then
+          Postcondition_Get_Assertion
+          (New_Postcondition'Result)
+          = Assertion
+        and then
+          Postcondition_Get_Handlers
+          (New_Postcondition'Result)
+          = Handlers);
 
    function New_Exn_Condition
      (Ada_Node  : Node_Id := Empty;
       Exn_Case  : W_Identifier_Id;
       Assertion : W_Assertion_Id)
-     return W_Exn_Condition_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Exn_Case)
-      and then Identifier_Id_Valid (Exn_Case)
-      and then Is_Root (Exn_Case)
-      and then Assertion_Id_Kind_Valid (Assertion)
-      and then Assertion_Id_Valid (Assertion)
-      and then Is_Root (Assertion));
-   pragma Postcondition
-     (Get_Kind
-       (New_Exn_Condition'Result)
-       = W_Exn_Condition
-      and then
-        Get_Ada_Node
-        (New_Exn_Condition'Result)
-        = Ada_Node
-      and then
-        Exn_Condition_Get_Exn_Case
-        (New_Exn_Condition'Result)
-        = Exn_Case
-      and then
-        Exn_Condition_Get_Assertion
-        (New_Exn_Condition'Result)
-        = Assertion);
+     return W_Exn_Condition_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Exn_Case)
+        and then Identifier_Id_Valid (Exn_Case)
+        and then Is_Root (Exn_Case)
+        and then Assertion_Id_Kind_Valid (Assertion)
+        and then Assertion_Id_Valid (Assertion)
+        and then Is_Root (Assertion)),
+     Post =>
+       (Get_Kind
+         (New_Exn_Condition'Result)
+         = W_Exn_Condition
+        and then
+          Get_Ada_Node
+          (New_Exn_Condition'Result)
+          = Ada_Node
+        and then
+          Exn_Condition_Get_Exn_Case
+          (New_Exn_Condition'Result)
+          = Exn_Case
+        and then
+          Exn_Condition_Get_Assertion
+          (New_Exn_Condition'Result)
+          = Assertion);
 
    function New_Assertion
      (Ada_Node : Node_Id := Empty;
       Pred     : W_Predicate_Id;
       As       : W_Identifier_OId := Why_Empty)
-     return W_Assertion_Id;
-   pragma Precondition
-     (Predicate_Id_Kind_Valid (Pred)
-      and then Predicate_Id_Valid (Pred)
-      and then Is_Root (Pred)
-      and then Identifier_OId_Kind_Valid (As)
-      and then Identifier_OId_Valid (As)
-      and then Is_Root (As));
-   pragma Postcondition
-     (Get_Kind
-       (New_Assertion'Result)
-       = W_Assertion
-      and then
-        Get_Ada_Node
-        (New_Assertion'Result)
-        = Ada_Node
-      and then
-        Assertion_Get_Pred
-        (New_Assertion'Result)
-        = Pred
-      and then
-        Assertion_Get_As
-        (New_Assertion'Result)
-        = As);
+     return W_Assertion_Id with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Pred)
+        and then Predicate_Id_Valid (Pred)
+        and then Is_Root (Pred)
+        and then Identifier_OId_Kind_Valid (As)
+        and then Identifier_OId_Valid (As)
+        and then Is_Root (As)),
+     Post =>
+       (Get_Kind
+         (New_Assertion'Result)
+         = W_Assertion
+        and then
+          Get_Ada_Node
+          (New_Assertion'Result)
+          = Ada_Node
+        and then
+          Assertion_Get_Pred
+          (New_Assertion'Result)
+          = Pred
+        and then
+          Assertion_Get_As
+          (New_Assertion'Result)
+          = As);
 
    function New_Prog_Constant
      (Ada_Node : Node_Id := Empty;
       Def      : W_Constant_Id)
-     return W_Prog_Constant_Id;
-   pragma Precondition
-     (Constant_Id_Kind_Valid (Def)
-      and then Constant_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Prog_Constant'Result)
-       = W_Prog_Constant
-      and then
-        Get_Ada_Node
-        (New_Prog_Constant'Result)
-        = Ada_Node
-      and then
-        Prog_Constant_Get_Def
-        (New_Prog_Constant'Result)
-        = Def);
+     return W_Prog_Constant_Id with
+     Pre =>
+       (Constant_Id_Kind_Valid (Def)
+        and then Constant_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Prog_Constant'Result)
+         = W_Prog_Constant
+        and then
+          Get_Ada_Node
+          (New_Prog_Constant'Result)
+          = Ada_Node
+        and then
+          Prog_Constant_Get_Def
+          (New_Prog_Constant'Result)
+          = Def);
 
    function New_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
       Def      : W_Identifier_Id)
-     return W_Prog_Identifier_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Def)
-      and then Identifier_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Prog_Identifier'Result)
-       = W_Prog_Identifier
-      and then
-        Get_Ada_Node
-        (New_Prog_Identifier'Result)
-        = Ada_Node
-      and then
-        Prog_Identifier_Get_Def
-        (New_Prog_Identifier'Result)
-        = Def);
+     return W_Prog_Identifier_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Def)
+        and then Identifier_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Prog_Identifier'Result)
+         = W_Prog_Identifier
+        and then
+          Get_Ada_Node
+          (New_Prog_Identifier'Result)
+          = Ada_Node
+        and then
+          Prog_Identifier_Get_Def
+          (New_Prog_Identifier'Result)
+          = Def);
 
    function New_Deref
      (Ada_Node : Node_Id := Empty;
       Ref      : W_Identifier_Id)
-     return W_Deref_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Ref)
-      and then Identifier_Id_Valid (Ref)
-      and then Is_Root (Ref));
-   pragma Postcondition
-     (Get_Kind
-       (New_Deref'Result)
-       = W_Deref
-      and then
-        Get_Ada_Node
-        (New_Deref'Result)
-        = Ada_Node
-      and then
-        Deref_Get_Ref
-        (New_Deref'Result)
-        = Ref);
+     return W_Deref_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Ref)
+        and then Identifier_Id_Valid (Ref)
+        and then Is_Root (Ref)),
+     Post =>
+       (Get_Kind
+         (New_Deref'Result)
+         = W_Deref
+        and then
+          Get_Ada_Node
+          (New_Deref'Result)
+          = Ada_Node
+        and then
+          Deref_Get_Ref
+          (New_Deref'Result)
+          = Ref);
 
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Value    : W_Prog_Id)
-     return W_Assignment_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Value)
-      and then Prog_Id_Valid (Value)
-      and then Is_Root (Value));
-   pragma Postcondition
-     (Get_Kind
-       (New_Assignment'Result)
-       = W_Assignment
-      and then
-        Get_Ada_Node
-        (New_Assignment'Result)
-        = Ada_Node
-      and then
-        Assignment_Get_Name
-        (New_Assignment'Result)
-        = Name
-      and then
-        Assignment_Get_Value
-        (New_Assignment'Result)
-        = Value);
+     return W_Assignment_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Value)
+        and then Prog_Id_Valid (Value)
+        and then Is_Root (Value)),
+     Post =>
+       (Get_Kind
+         (New_Assignment'Result)
+         = W_Assignment
+        and then
+          Get_Ada_Node
+          (New_Assignment'Result)
+          = Ada_Node
+        and then
+          Assignment_Get_Name
+          (New_Assignment'Result)
+          = Name
+        and then
+          Assignment_Get_Value
+          (New_Assignment'Result)
+          = Value);
 
    function New_Array_Access
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id)
-     return W_Array_Access_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Index)
-      and then Prog_Id_Valid (Index)
-      and then Is_Root (Index));
-   pragma Postcondition
-     (Get_Kind
-       (New_Array_Access'Result)
-       = W_Array_Access
-      and then
-        Get_Ada_Node
-        (New_Array_Access'Result)
-        = Ada_Node
-      and then
-        Array_Access_Get_Name
-        (New_Array_Access'Result)
-        = Name
-      and then
-        Array_Access_Get_Index
-        (New_Array_Access'Result)
-        = Index);
+     return W_Array_Access_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Index)
+        and then Prog_Id_Valid (Index)
+        and then Is_Root (Index)),
+     Post =>
+       (Get_Kind
+         (New_Array_Access'Result)
+         = W_Array_Access
+        and then
+          Get_Ada_Node
+          (New_Array_Access'Result)
+          = Ada_Node
+        and then
+          Array_Access_Get_Name
+          (New_Array_Access'Result)
+          = Name
+        and then
+          Array_Access_Get_Index
+          (New_Array_Access'Result)
+          = Index);
 
    function New_Array_Update
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Index    : W_Prog_Id;
       Value    : W_Prog_Id)
-     return W_Array_Update_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Index)
-      and then Prog_Id_Valid (Index)
-      and then Is_Root (Index)
-      and then Prog_Id_Kind_Valid (Value)
-      and then Prog_Id_Valid (Value)
-      and then Is_Root (Value));
-   pragma Postcondition
-     (Get_Kind
-       (New_Array_Update'Result)
-       = W_Array_Update
-      and then
-        Get_Ada_Node
-        (New_Array_Update'Result)
-        = Ada_Node
-      and then
-        Array_Update_Get_Name
-        (New_Array_Update'Result)
-        = Name
-      and then
-        Array_Update_Get_Index
-        (New_Array_Update'Result)
-        = Index
-      and then
-        Array_Update_Get_Value
-        (New_Array_Update'Result)
-        = Value);
+     return W_Array_Update_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Index)
+        and then Prog_Id_Valid (Index)
+        and then Is_Root (Index)
+        and then Prog_Id_Kind_Valid (Value)
+        and then Prog_Id_Valid (Value)
+        and then Is_Root (Value)),
+     Post =>
+       (Get_Kind
+         (New_Array_Update'Result)
+         = W_Array_Update
+        and then
+          Get_Ada_Node
+          (New_Array_Update'Result)
+          = Ada_Node
+        and then
+          Array_Update_Get_Name
+          (New_Array_Update'Result)
+          = Name
+        and then
+          Array_Update_Get_Index
+          (New_Array_Update'Result)
+          = Index
+        and then
+          Array_Update_Get_Value
+          (New_Array_Update'Result)
+          = Value);
 
    function New_Infix_Call
      (Ada_Node : Node_Id := Empty;
       Left     : W_Prog_Id;
       Infix    : W_Infix_Id;
       Right    : W_Prog_Id)
-     return W_Infix_Call_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Left)
-      and then Prog_Id_Valid (Left)
-      and then Is_Root (Left)
-      and then Infix_Id_Kind_Valid (Infix)
-      and then Infix_Id_Valid (Infix)
-      and then Is_Root (Infix)
-      and then Prog_Id_Kind_Valid (Right)
-      and then Prog_Id_Valid (Right)
-      and then Is_Root (Right));
-   pragma Postcondition
-     (Get_Kind
-       (New_Infix_Call'Result)
-       = W_Infix_Call
-      and then
-        Get_Ada_Node
-        (New_Infix_Call'Result)
-        = Ada_Node
-      and then
-        Infix_Call_Get_Left
-        (New_Infix_Call'Result)
-        = Left
-      and then
-        Infix_Call_Get_Infix
-        (New_Infix_Call'Result)
-        = Infix
-      and then
-        Infix_Call_Get_Right
-        (New_Infix_Call'Result)
-        = Right);
+     return W_Infix_Call_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Left)
+        and then Prog_Id_Valid (Left)
+        and then Is_Root (Left)
+        and then Infix_Id_Kind_Valid (Infix)
+        and then Infix_Id_Valid (Infix)
+        and then Is_Root (Infix)
+        and then Prog_Id_Kind_Valid (Right)
+        and then Prog_Id_Valid (Right)
+        and then Is_Root (Right)),
+     Post =>
+       (Get_Kind
+         (New_Infix_Call'Result)
+         = W_Infix_Call
+        and then
+          Get_Ada_Node
+          (New_Infix_Call'Result)
+          = Ada_Node
+        and then
+          Infix_Call_Get_Left
+          (New_Infix_Call'Result)
+          = Left
+        and then
+          Infix_Call_Get_Infix
+          (New_Infix_Call'Result)
+          = Infix
+        and then
+          Infix_Call_Get_Right
+          (New_Infix_Call'Result)
+          = Right);
 
    function New_Prefix_Call
      (Ada_Node : Node_Id := Empty;
       Prefix   : W_Prefix_Id;
       Operand  : W_Prog_Id)
-     return W_Prefix_Call_Id;
-   pragma Precondition
-     (Prefix_Id_Kind_Valid (Prefix)
-      and then Prefix_Id_Valid (Prefix)
-      and then Is_Root (Prefix)
-      and then Prog_Id_Kind_Valid (Operand)
-      and then Prog_Id_Valid (Operand)
-      and then Is_Root (Operand));
-   pragma Postcondition
-     (Get_Kind
-       (New_Prefix_Call'Result)
-       = W_Prefix_Call
-      and then
-        Get_Ada_Node
-        (New_Prefix_Call'Result)
-        = Ada_Node
-      and then
-        Prefix_Call_Get_Prefix
-        (New_Prefix_Call'Result)
-        = Prefix
-      and then
-        Prefix_Call_Get_Operand
-        (New_Prefix_Call'Result)
-        = Operand);
+     return W_Prefix_Call_Id with
+     Pre =>
+       (Prefix_Id_Kind_Valid (Prefix)
+        and then Prefix_Id_Valid (Prefix)
+        and then Is_Root (Prefix)
+        and then Prog_Id_Kind_Valid (Operand)
+        and then Prog_Id_Valid (Operand)
+        and then Is_Root (Operand)),
+     Post =>
+       (Get_Kind
+         (New_Prefix_Call'Result)
+         = W_Prefix_Call
+        and then
+          Get_Ada_Node
+          (New_Prefix_Call'Result)
+          = Ada_Node
+        and then
+          Prefix_Call_Get_Prefix
+          (New_Prefix_Call'Result)
+          = Prefix
+        and then
+          Prefix_Call_Get_Operand
+          (New_Prefix_Call'Result)
+          = Operand);
 
    function New_Binding_Prog
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
-     return W_Binding_Prog_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Prog_Id_Kind_Valid (Context)
-      and then Prog_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Prog'Result)
-       = W_Binding_Prog
-      and then
-        Get_Ada_Node
-        (New_Binding_Prog'Result)
-        = Ada_Node
-      and then
-        Binding_Prog_Get_Name
-        (New_Binding_Prog'Result)
-        = Name
-      and then
-        Binding_Prog_Get_Def
-        (New_Binding_Prog'Result)
-        = Def
-      and then
-        Binding_Prog_Get_Context
-        (New_Binding_Prog'Result)
-        = Context);
+     return W_Binding_Prog_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Prog_Id_Kind_Valid (Context)
+        and then Prog_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Prog'Result)
+         = W_Binding_Prog
+        and then
+          Get_Ada_Node
+          (New_Binding_Prog'Result)
+          = Ada_Node
+        and then
+          Binding_Prog_Get_Name
+          (New_Binding_Prog'Result)
+          = Name
+        and then
+          Binding_Prog_Get_Def
+          (New_Binding_Prog'Result)
+          = Def
+        and then
+          Binding_Prog_Get_Context
+          (New_Binding_Prog'Result)
+          = Context);
 
    function New_Binding_Ref
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
-     return W_Binding_Ref_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Prog_Id_Kind_Valid (Context)
-      and then Prog_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Ref'Result)
-       = W_Binding_Ref
-      and then
-        Get_Ada_Node
-        (New_Binding_Ref'Result)
-        = Ada_Node
-      and then
-        Binding_Ref_Get_Name
-        (New_Binding_Ref'Result)
-        = Name
-      and then
-        Binding_Ref_Get_Def
-        (New_Binding_Ref'Result)
-        = Def
-      and then
-        Binding_Ref_Get_Context
-        (New_Binding_Ref'Result)
-        = Context);
+     return W_Binding_Ref_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Prog_Id_Kind_Valid (Context)
+        and then Prog_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Ref'Result)
+         = W_Binding_Ref
+        and then
+          Get_Ada_Node
+          (New_Binding_Ref'Result)
+          = Ada_Node
+        and then
+          Binding_Ref_Get_Name
+          (New_Binding_Ref'Result)
+          = Name
+        and then
+          Binding_Ref_Get_Def
+          (New_Binding_Ref'Result)
+          = Def
+        and then
+          Binding_Ref_Get_Context
+          (New_Binding_Ref'Result)
+          = Context);
 
    function New_Conditional_Prog
      (Ada_Node  : Node_Id := Empty;
       Condition : W_Prog_Id;
       Then_Part : W_Prog_Id;
       Else_Part : W_Prog_OId := Why_Empty)
-     return W_Conditional_Prog_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Condition)
-      and then Prog_Id_Valid (Condition)
-      and then Is_Root (Condition)
-      and then Prog_Id_Kind_Valid (Then_Part)
-      and then Prog_Id_Valid (Then_Part)
-      and then Is_Root (Then_Part)
-      and then Prog_OId_Kind_Valid (Else_Part)
-      and then Prog_OId_Valid (Else_Part)
-      and then Is_Root (Else_Part));
-   pragma Postcondition
-     (Get_Kind
-       (New_Conditional_Prog'Result)
-       = W_Conditional_Prog
-      and then
-        Get_Ada_Node
-        (New_Conditional_Prog'Result)
-        = Ada_Node
-      and then
-        Conditional_Prog_Get_Condition
-        (New_Conditional_Prog'Result)
-        = Condition
-      and then
-        Conditional_Prog_Get_Then_Part
-        (New_Conditional_Prog'Result)
-        = Then_Part
-      and then
-        Conditional_Prog_Get_Else_Part
-        (New_Conditional_Prog'Result)
-        = Else_Part);
+     return W_Conditional_Prog_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Condition)
+        and then Prog_Id_Valid (Condition)
+        and then Is_Root (Condition)
+        and then Prog_Id_Kind_Valid (Then_Part)
+        and then Prog_Id_Valid (Then_Part)
+        and then Is_Root (Then_Part)
+        and then Prog_OId_Kind_Valid (Else_Part)
+        and then Prog_OId_Valid (Else_Part)
+        and then Is_Root (Else_Part)),
+     Post =>
+       (Get_Kind
+         (New_Conditional_Prog'Result)
+         = W_Conditional_Prog
+        and then
+          Get_Ada_Node
+          (New_Conditional_Prog'Result)
+          = Ada_Node
+        and then
+          Conditional_Prog_Get_Condition
+          (New_Conditional_Prog'Result)
+          = Condition
+        and then
+          Conditional_Prog_Get_Then_Part
+          (New_Conditional_Prog'Result)
+          = Then_Part
+        and then
+          Conditional_Prog_Get_Else_Part
+          (New_Conditional_Prog'Result)
+          = Else_Part);
 
    function New_While_Loop
      (Ada_Node     : Node_Id := Empty;
       Condition    : W_Prog_Id;
       Annotation   : W_Loop_Annot_Id;
       Loop_Content : W_Prog_Id)
-     return W_While_Loop_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Condition)
-      and then Prog_Id_Valid (Condition)
-      and then Is_Root (Condition)
-      and then Loop_Annot_Id_Kind_Valid (Annotation)
-      and then Loop_Annot_Id_Valid (Annotation)
-      and then Is_Root (Annotation)
-      and then Prog_Id_Kind_Valid (Loop_Content)
-      and then Prog_Id_Valid (Loop_Content)
-      and then Is_Root (Loop_Content));
-   pragma Postcondition
-     (Get_Kind
-       (New_While_Loop'Result)
-       = W_While_Loop
-      and then
-        Get_Ada_Node
-        (New_While_Loop'Result)
-        = Ada_Node
-      and then
-        While_Loop_Get_Condition
-        (New_While_Loop'Result)
-        = Condition
-      and then
-        While_Loop_Get_Annotation
-        (New_While_Loop'Result)
-        = Annotation
-      and then
-        While_Loop_Get_Loop_Content
-        (New_While_Loop'Result)
-        = Loop_Content);
+     return W_While_Loop_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Condition)
+        and then Prog_Id_Valid (Condition)
+        and then Is_Root (Condition)
+        and then Loop_Annot_Id_Kind_Valid (Annotation)
+        and then Loop_Annot_Id_Valid (Annotation)
+        and then Is_Root (Annotation)
+        and then Prog_Id_Kind_Valid (Loop_Content)
+        and then Prog_Id_Valid (Loop_Content)
+        and then Is_Root (Loop_Content)),
+     Post =>
+       (Get_Kind
+         (New_While_Loop'Result)
+         = W_While_Loop
+        and then
+          Get_Ada_Node
+          (New_While_Loop'Result)
+          = Ada_Node
+        and then
+          While_Loop_Get_Condition
+          (New_While_Loop'Result)
+          = Condition
+        and then
+          While_Loop_Get_Annotation
+          (New_While_Loop'Result)
+          = Annotation
+        and then
+          While_Loop_Get_Loop_Content
+          (New_While_Loop'Result)
+          = Loop_Content);
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id := Empty;
       Statements : W_Prog_List)
-     return W_Statement_Sequence_Id;
-   pragma Precondition
-     (Prog_List_Kind_Valid (Statements)
-      and then Prog_List_Valid (Statements)
-      and then Is_Root (Statements));
-   pragma Postcondition
-     (Get_Kind
-       (New_Statement_Sequence'Result)
-       = W_Statement_Sequence
-      and then
-        Get_Ada_Node
-        (New_Statement_Sequence'Result)
-        = Ada_Node
-      and then
-        Statement_Sequence_Get_Statements
-        (New_Statement_Sequence'Result)
-        = Statements);
+     return W_Statement_Sequence_Id with
+     Pre =>
+       (Prog_List_Kind_Valid (Statements)
+        and then Prog_List_Valid (Statements)
+        and then Is_Root (Statements)),
+     Post =>
+       (Get_Kind
+         (New_Statement_Sequence'Result)
+         = W_Statement_Sequence
+        and then
+          Get_Ada_Node
+          (New_Statement_Sequence'Result)
+          = Ada_Node
+        and then
+          Statement_Sequence_Get_Statements
+          (New_Statement_Sequence'Result)
+          = Statements);
 
    function New_Label
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id)
-     return W_Label_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Label'Result)
-       = W_Label
-      and then
-        Get_Ada_Node
-        (New_Label'Result)
-        = Ada_Node
-      and then
-        Label_Get_Name
-        (New_Label'Result)
-        = Name
-      and then
-        Label_Get_Def
-        (New_Label'Result)
-        = Def);
+     return W_Label_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Label'Result)
+         = W_Label
+        and then
+          Get_Ada_Node
+          (New_Label'Result)
+          = Ada_Node
+        and then
+          Label_Get_Name
+          (New_Label'Result)
+          = Name
+        and then
+          Label_Get_Def
+          (New_Label'Result)
+          = Def);
 
    function New_Assert
      (Ada_Node   : Node_Id := Empty;
       Assertions : W_Assertion_List;
       Prog       : W_Prog_Id)
-     return W_Assert_Id;
-   pragma Precondition
-     (Assertion_List_Kind_Valid (Assertions)
-      and then Assertion_List_Valid (Assertions)
-      and then Is_Root (Assertions)
-      and then Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog));
-   pragma Postcondition
-     (Get_Kind
-       (New_Assert'Result)
-       = W_Assert
-      and then
-        Get_Ada_Node
-        (New_Assert'Result)
-        = Ada_Node
-      and then
-        Assert_Get_Assertions
-        (New_Assert'Result)
-        = Assertions
-      and then
-        Assert_Get_Prog
-        (New_Assert'Result)
-        = Prog);
+     return W_Assert_Id with
+     Pre =>
+       (Assertion_List_Kind_Valid (Assertions)
+        and then Assertion_List_Valid (Assertions)
+        and then Is_Root (Assertions)
+        and then Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)),
+     Post =>
+       (Get_Kind
+         (New_Assert'Result)
+         = W_Assert
+        and then
+          Get_Ada_Node
+          (New_Assert'Result)
+          = Ada_Node
+        and then
+          Assert_Get_Assertions
+          (New_Assert'Result)
+          = Assertions
+        and then
+          Assert_Get_Prog
+          (New_Assert'Result)
+          = Prog);
 
    function New_Post_Assertion
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
-     return W_Post_Assertion_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog)
-      and then Postcondition_Id_Kind_Valid (Post)
-      and then Postcondition_Id_Valid (Post)
-      and then Is_Root (Post));
-   pragma Postcondition
-     (Get_Kind
-       (New_Post_Assertion'Result)
-       = W_Post_Assertion
-      and then
-        Get_Ada_Node
-        (New_Post_Assertion'Result)
-        = Ada_Node
-      and then
-        Post_Assertion_Get_Prog
-        (New_Post_Assertion'Result)
-        = Prog
-      and then
-        Post_Assertion_Get_Post
-        (New_Post_Assertion'Result)
-        = Post);
+     return W_Post_Assertion_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)
+        and then Postcondition_Id_Kind_Valid (Post)
+        and then Postcondition_Id_Valid (Post)
+        and then Is_Root (Post)),
+     Post =>
+       (Get_Kind
+         (New_Post_Assertion'Result)
+         = W_Post_Assertion
+        and then
+          Get_Ada_Node
+          (New_Post_Assertion'Result)
+          = Ada_Node
+        and then
+          Post_Assertion_Get_Prog
+          (New_Post_Assertion'Result)
+          = Prog
+        and then
+          Post_Assertion_Get_Post
+          (New_Post_Assertion'Result)
+          = Post);
 
    function New_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id;
       Post     : W_Postcondition_Id)
-     return W_Opaque_Assertion_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog)
-      and then Postcondition_Id_Kind_Valid (Post)
-      and then Postcondition_Id_Valid (Post)
-      and then Is_Root (Post));
-   pragma Postcondition
-     (Get_Kind
-       (New_Opaque_Assertion'Result)
-       = W_Opaque_Assertion
-      and then
-        Get_Ada_Node
-        (New_Opaque_Assertion'Result)
-        = Ada_Node
-      and then
-        Opaque_Assertion_Get_Prog
-        (New_Opaque_Assertion'Result)
-        = Prog
-      and then
-        Opaque_Assertion_Get_Post
-        (New_Opaque_Assertion'Result)
-        = Post);
+     return W_Opaque_Assertion_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)
+        and then Postcondition_Id_Kind_Valid (Post)
+        and then Postcondition_Id_Valid (Post)
+        and then Is_Root (Post)),
+     Post =>
+       (Get_Kind
+         (New_Opaque_Assertion'Result)
+         = W_Opaque_Assertion
+        and then
+          Get_Ada_Node
+          (New_Opaque_Assertion'Result)
+          = Ada_Node
+        and then
+          Opaque_Assertion_Get_Prog
+          (New_Opaque_Assertion'Result)
+          = Prog
+        and then
+          Opaque_Assertion_Get_Post
+          (New_Opaque_Assertion'Result)
+          = Post);
 
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id)
-     return W_Fun_Def_Id;
-   pragma Precondition
-     (Binders_Id_Kind_Valid (Binders)
-      and then Binders_Id_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Fun_Def'Result)
-       = W_Fun_Def
-      and then
-        Get_Ada_Node
-        (New_Fun_Def'Result)
-        = Ada_Node
-      and then
-        Fun_Def_Get_Binders
-        (New_Fun_Def'Result)
-        = Binders
-      and then
-        Fun_Def_Get_Def
-        (New_Fun_Def'Result)
-        = Def);
+     return W_Fun_Def_Id with
+     Pre =>
+       (Binders_Id_Kind_Valid (Binders)
+        and then Binders_Id_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Fun_Def'Result)
+         = W_Fun_Def
+        and then
+          Get_Ada_Node
+          (New_Fun_Def'Result)
+          = Ada_Node
+        and then
+          Fun_Def_Get_Binders
+          (New_Fun_Def'Result)
+          = Binders
+        and then
+          Fun_Def_Get_Def
+          (New_Fun_Def'Result)
+          = Def);
 
    function New_Binding_Fun
      (Ada_Node : Node_Id := Empty;
@@ -2342,482 +2364,497 @@ package Why.Atree.Builders is
       Binders  : W_Binders_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
-     return W_Binding_Fun_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Binders_Id_Kind_Valid (Binders)
-      and then Binders_Id_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Prog_Id_Kind_Valid (Context)
-      and then Prog_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Fun'Result)
-       = W_Binding_Fun
-      and then
-        Get_Ada_Node
-        (New_Binding_Fun'Result)
-        = Ada_Node
-      and then
-        Binding_Fun_Get_Name
-        (New_Binding_Fun'Result)
-        = Name
-      and then
-        Binding_Fun_Get_Binders
-        (New_Binding_Fun'Result)
-        = Binders
-      and then
-        Binding_Fun_Get_Def
-        (New_Binding_Fun'Result)
-        = Def
-      and then
-        Binding_Fun_Get_Context
-        (New_Binding_Fun'Result)
-        = Context);
+     return W_Binding_Fun_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Binders_Id_Kind_Valid (Binders)
+        and then Binders_Id_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Prog_Id_Kind_Valid (Context)
+        and then Prog_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Fun'Result)
+         = W_Binding_Fun
+        and then
+          Get_Ada_Node
+          (New_Binding_Fun'Result)
+          = Ada_Node
+        and then
+          Binding_Fun_Get_Name
+          (New_Binding_Fun'Result)
+          = Name
+        and then
+          Binding_Fun_Get_Binders
+          (New_Binding_Fun'Result)
+          = Binders
+        and then
+          Binding_Fun_Get_Def
+          (New_Binding_Fun'Result)
+          = Def
+        and then
+          Binding_Fun_Get_Context
+          (New_Binding_Fun'Result)
+          = Context);
 
    function New_Binding_Rec
      (Ada_Node : Node_Id := Empty;
       Recfun   : W_Recfun_Id;
       Context  : W_Prog_Id)
-     return W_Binding_Rec_Id;
-   pragma Precondition
-     (Recfun_Id_Kind_Valid (Recfun)
-      and then Recfun_Id_Valid (Recfun)
-      and then Is_Root (Recfun)
-      and then Prog_Id_Kind_Valid (Context)
-      and then Prog_Id_Valid (Context)
-      and then Is_Root (Context));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binding_Rec'Result)
-       = W_Binding_Rec
-      and then
-        Get_Ada_Node
-        (New_Binding_Rec'Result)
-        = Ada_Node
-      and then
-        Binding_Rec_Get_Recfun
-        (New_Binding_Rec'Result)
-        = Recfun
-      and then
-        Binding_Rec_Get_Context
-        (New_Binding_Rec'Result)
-        = Context);
+     return W_Binding_Rec_Id with
+     Pre =>
+       (Recfun_Id_Kind_Valid (Recfun)
+        and then Recfun_Id_Valid (Recfun)
+        and then Is_Root (Recfun)
+        and then Prog_Id_Kind_Valid (Context)
+        and then Prog_Id_Valid (Context)
+        and then Is_Root (Context)),
+     Post =>
+       (Get_Kind
+         (New_Binding_Rec'Result)
+         = W_Binding_Rec
+        and then
+          Get_Ada_Node
+          (New_Binding_Rec'Result)
+          = Ada_Node
+        and then
+          Binding_Rec_Get_Recfun
+          (New_Binding_Rec'Result)
+          = Recfun
+        and then
+          Binding_Rec_Get_Context
+          (New_Binding_Rec'Result)
+          = Context);
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
       Progs    : W_Prog_List)
-     return W_Prog_Sequence_Id;
-   pragma Precondition
-     (Prog_List_Kind_Valid (Progs)
-      and then Prog_List_Valid (Progs)
-      and then Is_Root (Progs));
-   pragma Postcondition
-     (Get_Kind
-       (New_Prog_Sequence'Result)
-       = W_Prog_Sequence
-      and then
-        Get_Ada_Node
-        (New_Prog_Sequence'Result)
-        = Ada_Node
-      and then
-        Prog_Sequence_Get_Progs
-        (New_Prog_Sequence'Result)
-        = Progs);
+     return W_Prog_Sequence_Id with
+     Pre =>
+       (Prog_List_Kind_Valid (Progs)
+        and then Prog_List_Valid (Progs)
+        and then Is_Root (Progs)),
+     Post =>
+       (Get_Kind
+         (New_Prog_Sequence'Result)
+         = W_Prog_Sequence
+        and then
+          Get_Ada_Node
+          (New_Prog_Sequence'Result)
+          = Ada_Node
+        and then
+          Prog_Sequence_Get_Progs
+          (New_Prog_Sequence'Result)
+          = Progs);
 
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Exn_Type : W_Value_Type_OId := Why_Empty)
-     return W_Raise_Statement_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Value_Type_OId_Kind_Valid (Exn_Type)
-      and then Value_Type_OId_Valid (Exn_Type)
-      and then Is_Root (Exn_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Raise_Statement'Result)
-       = W_Raise_Statement
-      and then
-        Get_Ada_Node
-        (New_Raise_Statement'Result)
-        = Ada_Node
-      and then
-        Raise_Statement_Get_Name
-        (New_Raise_Statement'Result)
-        = Name
-      and then
-        Raise_Statement_Get_Exn_Type
-        (New_Raise_Statement'Result)
-        = Exn_Type);
+     return W_Raise_Statement_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Value_Type_OId_Kind_Valid (Exn_Type)
+        and then Value_Type_OId_Valid (Exn_Type)
+        and then Is_Root (Exn_Type)),
+     Post =>
+       (Get_Kind
+         (New_Raise_Statement'Result)
+         = W_Raise_Statement
+        and then
+          Get_Ada_Node
+          (New_Raise_Statement'Result)
+          = Ada_Node
+        and then
+          Raise_Statement_Get_Name
+          (New_Raise_Statement'Result)
+          = Name
+        and then
+          Raise_Statement_Get_Exn_Type
+          (New_Raise_Statement'Result)
+          = Exn_Type);
 
    function New_Raise_Statement_With_Parameters
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
       Exn_Type  : W_Value_Type_OId := Why_Empty)
-     return W_Raise_Statement_With_Parameters_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Term_Id_Kind_Valid (Parameter)
-      and then Term_Id_Valid (Parameter)
-      and then Is_Root (Parameter)
-      and then Value_Type_OId_Kind_Valid (Exn_Type)
-      and then Value_Type_OId_Valid (Exn_Type)
-      and then Is_Root (Exn_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Raise_Statement_With_Parameters'Result)
-       = W_Raise_Statement_With_Parameters
-      and then
-        Get_Ada_Node
-        (New_Raise_Statement_With_Parameters'Result)
-        = Ada_Node
-      and then
-        Raise_Statement_With_Parameters_Get_Name
-        (New_Raise_Statement_With_Parameters'Result)
-        = Name
-      and then
-        Raise_Statement_With_Parameters_Get_Parameter
-        (New_Raise_Statement_With_Parameters'Result)
-        = Parameter
-      and then
-        Raise_Statement_With_Parameters_Get_Exn_Type
-        (New_Raise_Statement_With_Parameters'Result)
-        = Exn_Type);
+     return W_Raise_Statement_With_Parameters_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Term_Id_Kind_Valid (Parameter)
+        and then Term_Id_Valid (Parameter)
+        and then Is_Root (Parameter)
+        and then Value_Type_OId_Kind_Valid (Exn_Type)
+        and then Value_Type_OId_Valid (Exn_Type)
+        and then Is_Root (Exn_Type)),
+     Post =>
+       (Get_Kind
+         (New_Raise_Statement_With_Parameters'Result)
+         = W_Raise_Statement_With_Parameters
+        and then
+          Get_Ada_Node
+          (New_Raise_Statement_With_Parameters'Result)
+          = Ada_Node
+        and then
+          Raise_Statement_With_Parameters_Get_Name
+          (New_Raise_Statement_With_Parameters'Result)
+          = Name
+        and then
+          Raise_Statement_With_Parameters_Get_Parameter
+          (New_Raise_Statement_With_Parameters'Result)
+          = Parameter
+        and then
+          Raise_Statement_With_Parameters_Get_Exn_Type
+          (New_Raise_Statement_With_Parameters'Result)
+          = Exn_Type);
 
    function New_Try_Block
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id;
       Handler  : W_Handler_List)
-     return W_Try_Block_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog)
-      and then Handler_List_Kind_Valid (Handler)
-      and then Handler_List_Valid (Handler)
-      and then Is_Root (Handler));
-   pragma Postcondition
-     (Get_Kind
-       (New_Try_Block'Result)
-       = W_Try_Block
-      and then
-        Get_Ada_Node
-        (New_Try_Block'Result)
-        = Ada_Node
-      and then
-        Try_Block_Get_Prog
-        (New_Try_Block'Result)
-        = Prog
-      and then
-        Try_Block_Get_Handler
-        (New_Try_Block'Result)
-        = Handler);
+     return W_Try_Block_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)
+        and then Handler_List_Kind_Valid (Handler)
+        and then Handler_List_Valid (Handler)
+        and then Is_Root (Handler)),
+     Post =>
+       (Get_Kind
+         (New_Try_Block'Result)
+         = W_Try_Block
+        and then
+          Get_Ada_Node
+          (New_Try_Block'Result)
+          = Ada_Node
+        and then
+          Try_Block_Get_Prog
+          (New_Try_Block'Result)
+          = Prog
+        and then
+          Try_Block_Get_Handler
+          (New_Try_Block'Result)
+          = Handler);
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
       Exn_Type : W_Value_Type_OId := Why_Empty)
-     return W_Unreachable_Code_Id;
-   pragma Precondition
-     (Value_Type_OId_Kind_Valid (Exn_Type)
-      and then Value_Type_OId_Valid (Exn_Type)
-      and then Is_Root (Exn_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Unreachable_Code'Result)
-       = W_Unreachable_Code
-      and then
-        Get_Ada_Node
-        (New_Unreachable_Code'Result)
-        = Ada_Node
-      and then
-        Unreachable_Code_Get_Exn_Type
-        (New_Unreachable_Code'Result)
-        = Exn_Type);
+     return W_Unreachable_Code_Id with
+     Pre =>
+       (Value_Type_OId_Kind_Valid (Exn_Type)
+        and then Value_Type_OId_Valid (Exn_Type)
+        and then Is_Root (Exn_Type)),
+     Post =>
+       (Get_Kind
+         (New_Unreachable_Code'Result)
+         = W_Unreachable_Code
+        and then
+          Get_Ada_Node
+          (New_Unreachable_Code'Result)
+          = Ada_Node
+        and then
+          Unreachable_Code_Get_Exn_Type
+          (New_Unreachable_Code'Result)
+          = Exn_Type);
 
    function New_Begin_Block
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id)
-     return W_Begin_Block_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog));
-   pragma Postcondition
-     (Get_Kind
-       (New_Begin_Block'Result)
-       = W_Begin_Block
-      and then
-        Get_Ada_Node
-        (New_Begin_Block'Result)
-        = Ada_Node
-      and then
-        Begin_Block_Get_Prog
-        (New_Begin_Block'Result)
-        = Prog);
+     return W_Begin_Block_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)),
+     Post =>
+       (Get_Kind
+         (New_Begin_Block'Result)
+         = W_Begin_Block
+        and then
+          Get_Ada_Node
+          (New_Begin_Block'Result)
+          = Ada_Node
+        and then
+          Begin_Block_Get_Prog
+          (New_Begin_Block'Result)
+          = Prog);
 
    function New_Protected_Prog
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id)
-     return W_Protected_Prog_Id;
-   pragma Precondition
-     (Prog_Id_Kind_Valid (Prog)
-      and then Prog_Id_Valid (Prog)
-      and then Is_Root (Prog));
-   pragma Postcondition
-     (Get_Kind
-       (New_Protected_Prog'Result)
-       = W_Protected_Prog
-      and then
-        Get_Ada_Node
-        (New_Protected_Prog'Result)
-        = Ada_Node
-      and then
-        Protected_Prog_Get_Prog
-        (New_Protected_Prog'Result)
-        = Prog);
+     return W_Protected_Prog_Id with
+     Pre =>
+       (Prog_Id_Kind_Valid (Prog)
+        and then Prog_Id_Valid (Prog)
+        and then Is_Root (Prog)),
+     Post =>
+       (Get_Kind
+         (New_Protected_Prog'Result)
+         = W_Protected_Prog
+        and then
+          Get_Ada_Node
+          (New_Protected_Prog'Result)
+          = Ada_Node
+        and then
+          Protected_Prog_Get_Prog
+          (New_Protected_Prog'Result)
+          = Prog);
 
    function New_Op_Add_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Add_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Add_Prog'Result)
-       = W_Op_Add_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Add_Prog'Result)
-        = Ada_Node);
+     return W_Op_Add_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Add_Prog'Result)
+         = W_Op_Add_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Add_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Substract_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Substract_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Substract_Prog'Result)
-       = W_Op_Substract_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Substract_Prog'Result)
-        = Ada_Node);
+     return W_Op_Substract_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Substract_Prog'Result)
+         = W_Op_Substract_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Substract_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Multiply_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Multiply_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Multiply_Prog'Result)
-       = W_Op_Multiply_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Multiply_Prog'Result)
-        = Ada_Node);
+     return W_Op_Multiply_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Multiply_Prog'Result)
+         = W_Op_Multiply_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Multiply_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Divide_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Divide_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Divide_Prog'Result)
-       = W_Op_Divide_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Divide_Prog'Result)
-        = Ada_Node);
+     return W_Op_Divide_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Divide_Prog'Result)
+         = W_Op_Divide_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Divide_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Mod_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Mod_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Mod_Prog'Result)
-       = W_Op_Mod_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Mod_Prog'Result)
-        = Ada_Node);
+     return W_Op_Mod_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Mod_Prog'Result)
+         = W_Op_Mod_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Mod_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Eq_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Eq_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Eq_Prog'Result)
-       = W_Op_Eq_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Eq_Prog'Result)
-        = Ada_Node);
+     return W_Op_Eq_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Eq_Prog'Result)
+         = W_Op_Eq_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Eq_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Ne_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Ne_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Ne_Prog'Result)
-       = W_Op_Ne_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Ne_Prog'Result)
-        = Ada_Node);
+     return W_Op_Ne_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Ne_Prog'Result)
+         = W_Op_Ne_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Ne_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Lt_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Lt_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Lt_Prog'Result)
-       = W_Op_Lt_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Lt_Prog'Result)
-        = Ada_Node);
+     return W_Op_Lt_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Lt_Prog'Result)
+         = W_Op_Lt_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Lt_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Le_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Le_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Le_Prog'Result)
-       = W_Op_Le_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Le_Prog'Result)
-        = Ada_Node);
+     return W_Op_Le_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Le_Prog'Result)
+         = W_Op_Le_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Le_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Gt_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Gt_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Gt_Prog'Result)
-       = W_Op_Gt_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Gt_Prog'Result)
-        = Ada_Node);
+     return W_Op_Gt_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Gt_Prog'Result)
+         = W_Op_Gt_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Gt_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Ge_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Ge_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Ge_Prog'Result)
-       = W_Op_Ge_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Ge_Prog'Result)
-        = Ada_Node);
+     return W_Op_Ge_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Ge_Prog'Result)
+         = W_Op_Ge_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Ge_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Or_Else_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Or_Else_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Or_Else_Prog'Result)
-       = W_Op_Or_Else_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Or_Else_Prog'Result)
-        = Ada_Node);
+     return W_Op_Or_Else_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Or_Else_Prog'Result)
+         = W_Op_Or_Else_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Or_Else_Prog'Result)
+          = Ada_Node);
 
    function New_Op_And_Then_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_And_Then_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_And_Then_Prog'Result)
-       = W_Op_And_Then_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_And_Then_Prog'Result)
-        = Ada_Node);
+     return W_Op_And_Then_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_And_Then_Prog'Result)
+         = W_Op_And_Then_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_And_Then_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Minus_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Minus_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Minus_Prog'Result)
-       = W_Op_Minus_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Minus_Prog'Result)
-        = Ada_Node);
+     return W_Op_Minus_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Minus_Prog'Result)
+         = W_Op_Minus_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Minus_Prog'Result)
+          = Ada_Node);
 
    function New_Op_Not_Prog
      (Ada_Node : Node_Id := Empty)
-     return W_Op_Not_Prog_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Op_Not_Prog'Result)
-       = W_Op_Not_Prog
-      and then
-        Get_Ada_Node
-        (New_Op_Not_Prog'Result)
-        = Ada_Node);
+     return W_Op_Not_Prog_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Op_Not_Prog'Result)
+         = W_Op_Not_Prog
+        and then
+          Get_Ada_Node
+          (New_Op_Not_Prog'Result)
+          = Ada_Node);
 
    function New_Binders
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binder_List)
-     return W_Binders_Id;
-   pragma Precondition
-     (Binder_List_Kind_Valid (Binders)
-      and then Binder_List_Valid (Binders)
-      and then Is_Root (Binders));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binders'Result)
-       = W_Binders
-      and then
-        Get_Ada_Node
-        (New_Binders'Result)
-        = Ada_Node
-      and then
-        Binders_Get_Binders
-        (New_Binders'Result)
-        = Binders);
+     return W_Binders_Id with
+     Pre =>
+       (Binder_List_Kind_Valid (Binders)
+        and then Binder_List_Valid (Binders)
+        and then Is_Root (Binders)),
+     Post =>
+       (Get_Kind
+         (New_Binders'Result)
+         = W_Binders
+        and then
+          Get_Ada_Node
+          (New_Binders'Result)
+          = Ada_Node
+        and then
+          Binders_Get_Binders
+          (New_Binders'Result)
+          = Binders);
 
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_List;
       Arg_Type : W_Value_Type_Id)
-     return W_Binder_Id;
-   pragma Precondition
-     (Identifier_List_Kind_Valid (Names)
-      and then Identifier_List_Valid (Names)
-      and then Is_Root (Names)
-      and then Value_Type_Id_Kind_Valid (Arg_Type)
-      and then Value_Type_Id_Valid (Arg_Type)
-      and then Is_Root (Arg_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Binder'Result)
-       = W_Binder
-      and then
-        Get_Ada_Node
-        (New_Binder'Result)
-        = Ada_Node
-      and then
-        Binder_Get_Names
-        (New_Binder'Result)
-        = Names
-      and then
-        Binder_Get_Arg_Type
-        (New_Binder'Result)
-        = Arg_Type);
+     return W_Binder_Id with
+     Pre =>
+       (Identifier_List_Kind_Valid (Names)
+        and then Identifier_List_Valid (Names)
+        and then Is_Root (Names)
+        and then Value_Type_Id_Kind_Valid (Arg_Type)
+        and then Value_Type_Id_Valid (Arg_Type)
+        and then Is_Root (Arg_Type)),
+     Post =>
+       (Get_Kind
+         (New_Binder'Result)
+         = W_Binder
+        and then
+          Get_Ada_Node
+          (New_Binder'Result)
+          = Ada_Node
+        and then
+          Binder_Get_Names
+          (New_Binder'Result)
+          = Names
+        and then
+          Binder_Get_Arg_Type
+          (New_Binder'Result)
+          = Arg_Type);
 
    function New_Recfun
      (Ada_Node    : Node_Id := Empty;
@@ -2826,3213 +2863,3339 @@ package Why.Atree.Builders is
       Return_Type : W_Prog_Id;
       Variant     : W_Wf_Arg_Id;
       Def         : W_Prog_Id)
-     return W_Recfun_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Binders_Id_Kind_Valid (Binders)
-      and then Binders_Id_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Prog_Id_Kind_Valid (Return_Type)
-      and then Prog_Id_Valid (Return_Type)
-      and then Is_Root (Return_Type)
-      and then Wf_Arg_Id_Kind_Valid (Variant)
-      and then Wf_Arg_Id_Valid (Variant)
-      and then Is_Root (Variant)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Recfun'Result)
-       = W_Recfun
-      and then
-        Get_Ada_Node
-        (New_Recfun'Result)
-        = Ada_Node
-      and then
-        Recfun_Get_Name
-        (New_Recfun'Result)
-        = Name
-      and then
-        Recfun_Get_Binders
-        (New_Recfun'Result)
-        = Binders
-      and then
-        Recfun_Get_Return_Type
-        (New_Recfun'Result)
-        = Return_Type
-      and then
-        Recfun_Get_Variant
-        (New_Recfun'Result)
-        = Variant
-      and then
-        Recfun_Get_Def
-        (New_Recfun'Result)
-        = Def);
+     return W_Recfun_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Binders_Id_Kind_Valid (Binders)
+        and then Binders_Id_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Prog_Id_Kind_Valid (Return_Type)
+        and then Prog_Id_Valid (Return_Type)
+        and then Is_Root (Return_Type)
+        and then Wf_Arg_Id_Kind_Valid (Variant)
+        and then Wf_Arg_Id_Valid (Variant)
+        and then Is_Root (Variant)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Recfun'Result)
+         = W_Recfun
+        and then
+          Get_Ada_Node
+          (New_Recfun'Result)
+          = Ada_Node
+        and then
+          Recfun_Get_Name
+          (New_Recfun'Result)
+          = Name
+        and then
+          Recfun_Get_Binders
+          (New_Recfun'Result)
+          = Binders
+        and then
+          Recfun_Get_Return_Type
+          (New_Recfun'Result)
+          = Return_Type
+        and then
+          Recfun_Get_Variant
+          (New_Recfun'Result)
+          = Variant
+        and then
+          Recfun_Get_Def
+          (New_Recfun'Result)
+          = Def);
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
       Invariant : W_Assertion_OId := Why_Empty;
       Variant   : W_Wf_Arg_OId := Why_Empty)
-     return W_Loop_Annot_Id;
-   pragma Precondition
-     (Assertion_OId_Kind_Valid (Invariant)
-      and then Assertion_OId_Valid (Invariant)
-      and then Is_Root (Invariant)
-      and then Wf_Arg_OId_Kind_Valid (Variant)
-      and then Wf_Arg_OId_Valid (Variant)
-      and then Is_Root (Variant));
-   pragma Postcondition
-     (Get_Kind
-       (New_Loop_Annot'Result)
-       = W_Loop_Annot
-      and then
-        Get_Ada_Node
-        (New_Loop_Annot'Result)
-        = Ada_Node
-      and then
-        Loop_Annot_Get_Invariant
-        (New_Loop_Annot'Result)
-        = Invariant
-      and then
-        Loop_Annot_Get_Variant
-        (New_Loop_Annot'Result)
-        = Variant);
+     return W_Loop_Annot_Id with
+     Pre =>
+       (Assertion_OId_Kind_Valid (Invariant)
+        and then Assertion_OId_Valid (Invariant)
+        and then Is_Root (Invariant)
+        and then Wf_Arg_OId_Kind_Valid (Variant)
+        and then Wf_Arg_OId_Valid (Variant)
+        and then Is_Root (Variant)),
+     Post =>
+       (Get_Kind
+         (New_Loop_Annot'Result)
+         = W_Loop_Annot
+        and then
+          Get_Ada_Node
+          (New_Loop_Annot'Result)
+          = Ada_Node
+        and then
+          Loop_Annot_Get_Invariant
+          (New_Loop_Annot'Result)
+          = Invariant
+        and then
+          Loop_Annot_Get_Variant
+          (New_Loop_Annot'Result)
+          = Variant);
 
    function New_Wf_Arg
      (Ada_Node : Node_Id := Empty;
       Def      : W_Term_Id;
       For_Id   : W_Identifier_OId := Why_Empty)
-     return W_Wf_Arg_Id;
-   pragma Precondition
-     (Term_Id_Kind_Valid (Def)
-      and then Term_Id_Valid (Def)
-      and then Is_Root (Def)
-      and then Identifier_OId_Kind_Valid (For_Id)
-      and then Identifier_OId_Valid (For_Id)
-      and then Is_Root (For_Id));
-   pragma Postcondition
-     (Get_Kind
-       (New_Wf_Arg'Result)
-       = W_Wf_Arg
-      and then
-        Get_Ada_Node
-        (New_Wf_Arg'Result)
-        = Ada_Node
-      and then
-        Wf_Arg_Get_Def
-        (New_Wf_Arg'Result)
-        = Def
-      and then
-        Wf_Arg_Get_For_Id
-        (New_Wf_Arg'Result)
-        = For_Id);
+     return W_Wf_Arg_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Def)
+        and then Term_Id_Valid (Def)
+        and then Is_Root (Def)
+        and then Identifier_OId_Kind_Valid (For_Id)
+        and then Identifier_OId_Valid (For_Id)
+        and then Is_Root (For_Id)),
+     Post =>
+       (Get_Kind
+         (New_Wf_Arg'Result)
+         = W_Wf_Arg
+        and then
+          Get_Ada_Node
+          (New_Wf_Arg'Result)
+          = Ada_Node
+        and then
+          Wf_Arg_Get_Def
+          (New_Wf_Arg'Result)
+          = Def
+        and then
+          Wf_Arg_Get_For_Id
+          (New_Wf_Arg'Result)
+          = For_Id);
 
    function New_Handler
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Prog_OId := Why_Empty;
       Def       : W_Prog_Id)
-     return W_Handler_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Prog_OId_Kind_Valid (Parameter)
-      and then Prog_OId_Valid (Parameter)
-      and then Is_Root (Parameter)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Handler'Result)
-       = W_Handler
-      and then
-        Get_Ada_Node
-        (New_Handler'Result)
-        = Ada_Node
-      and then
-        Handler_Get_Name
-        (New_Handler'Result)
-        = Name
-      and then
-        Handler_Get_Parameter
-        (New_Handler'Result)
-        = Parameter
-      and then
-        Handler_Get_Def
-        (New_Handler'Result)
-        = Def);
+     return W_Handler_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Prog_OId_Kind_Valid (Parameter)
+        and then Prog_OId_Valid (Parameter)
+        and then Is_Root (Parameter)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Handler'Result)
+         = W_Handler
+        and then
+          Get_Ada_Node
+          (New_Handler'Result)
+          = Ada_Node
+        and then
+          Handler_Get_Name
+          (New_Handler'Result)
+          = Name
+        and then
+          Handler_Get_Parameter
+          (New_Handler'Result)
+          = Parameter
+        and then
+          Handler_Get_Def
+          (New_Handler'Result)
+          = Def);
 
    function New_File
      (Ada_Node     : Node_Id := Empty;
       Declarations : W_Declaration_OList := New_List)
-     return W_File_Id;
-   pragma Precondition
-     (Declaration_OList_Kind_Valid (Declarations)
-      and then Declaration_OList_Valid (Declarations)
-      and then Is_Root (Declarations));
-   pragma Postcondition
-     (Get_Kind
-       (New_File'Result)
-       = W_File
-      and then
-        Get_Ada_Node
-        (New_File'Result)
-        = Ada_Node
-      and then
-        File_Get_Declarations
-        (New_File'Result)
-        = Declarations);
+     return W_File_Id with
+     Pre =>
+       (Declaration_OList_Kind_Valid (Declarations)
+        and then Declaration_OList_Valid (Declarations)
+        and then Is_Root (Declarations)),
+     Post =>
+       (Get_Kind
+         (New_File'Result)
+         = W_File
+        and then
+          Get_Ada_Node
+          (New_File'Result)
+          = Ada_Node
+        and then
+          File_Get_Declarations
+          (New_File'Result)
+          = Declarations);
 
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_OId := Why_Empty;
       Def      : W_Prog_Id)
-     return W_Global_Binding_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Binders_OId_Kind_Valid (Binders)
-      and then Binders_OId_Valid (Binders)
-      and then Is_Root (Binders)
-      and then Prog_Id_Kind_Valid (Def)
-      and then Prog_Id_Valid (Def)
-      and then Is_Root (Def));
-   pragma Postcondition
-     (Get_Kind
-       (New_Global_Binding'Result)
-       = W_Global_Binding
-      and then
-        Get_Ada_Node
-        (New_Global_Binding'Result)
-        = Ada_Node
-      and then
-        Global_Binding_Get_Name
-        (New_Global_Binding'Result)
-        = Name
-      and then
-        Global_Binding_Get_Binders
-        (New_Global_Binding'Result)
-        = Binders
-      and then
-        Global_Binding_Get_Def
-        (New_Global_Binding'Result)
-        = Def);
+     return W_Global_Binding_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Binders_OId_Kind_Valid (Binders)
+        and then Binders_OId_Valid (Binders)
+        and then Is_Root (Binders)
+        and then Prog_Id_Kind_Valid (Def)
+        and then Prog_Id_Valid (Def)
+        and then Is_Root (Def)),
+     Post =>
+       (Get_Kind
+         (New_Global_Binding'Result)
+         = W_Global_Binding
+        and then
+          Get_Ada_Node
+          (New_Global_Binding'Result)
+          = Ada_Node
+        and then
+          Global_Binding_Get_Name
+          (New_Global_Binding'Result)
+          = Name
+        and then
+          Global_Binding_Get_Binders
+          (New_Global_Binding'Result)
+          = Binders
+        and then
+          Global_Binding_Get_Def
+          (New_Global_Binding'Result)
+          = Def);
 
    function New_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
       Name     : W_Recfun_Id)
-     return W_Global_Rec_Binding_Id;
-   pragma Precondition
-     (Recfun_Id_Kind_Valid (Name)
-      and then Recfun_Id_Valid (Name)
-      and then Is_Root (Name));
-   pragma Postcondition
-     (Get_Kind
-       (New_Global_Rec_Binding'Result)
-       = W_Global_Rec_Binding
-      and then
-        Get_Ada_Node
-        (New_Global_Rec_Binding'Result)
-        = Ada_Node
-      and then
-        Global_Rec_Binding_Get_Name
-        (New_Global_Rec_Binding'Result)
-        = Name);
+     return W_Global_Rec_Binding_Id with
+     Pre =>
+       (Recfun_Id_Kind_Valid (Name)
+        and then Recfun_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Global_Rec_Binding'Result)
+         = W_Global_Rec_Binding
+        and then
+          Get_Ada_Node
+          (New_Global_Rec_Binding'Result)
+          = Ada_Node
+        and then
+          Global_Rec_Binding_Get_Name
+          (New_Global_Rec_Binding'Result)
+          = Name);
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_Id;
       Names          : W_Identifier_List;
       Parameter_Type : W_Value_Type_Id)
-     return W_Parameter_Declaration_Id;
-   pragma Precondition
-     (External_Id_Kind_Valid (External)
-      and then External_Id_Valid (External)
-      and then Is_Root (External)
-      and then Identifier_List_Kind_Valid (Names)
-      and then Identifier_List_Valid (Names)
-      and then Is_Root (Names)
-      and then Value_Type_Id_Kind_Valid (Parameter_Type)
-      and then Value_Type_Id_Valid (Parameter_Type)
-      and then Is_Root (Parameter_Type));
-   pragma Postcondition
-     (Get_Kind
-       (New_Parameter_Declaration'Result)
-       = W_Parameter_Declaration
-      and then
-        Get_Ada_Node
-        (New_Parameter_Declaration'Result)
-        = Ada_Node
-      and then
-        Parameter_Declaration_Get_External
-        (New_Parameter_Declaration'Result)
-        = External
-      and then
-        Parameter_Declaration_Get_Names
-        (New_Parameter_Declaration'Result)
-        = Names
-      and then
-        Parameter_Declaration_Get_Parameter_Type
-        (New_Parameter_Declaration'Result)
-        = Parameter_Type);
+     return W_Parameter_Declaration_Id with
+     Pre =>
+       (External_Id_Kind_Valid (External)
+        and then External_Id_Valid (External)
+        and then Is_Root (External)
+        and then Identifier_List_Kind_Valid (Names)
+        and then Identifier_List_Valid (Names)
+        and then Is_Root (Names)
+        and then Value_Type_Id_Kind_Valid (Parameter_Type)
+        and then Value_Type_Id_Valid (Parameter_Type)
+        and then Is_Root (Parameter_Type)),
+     Post =>
+       (Get_Kind
+         (New_Parameter_Declaration'Result)
+         = W_Parameter_Declaration
+        and then
+          Get_Ada_Node
+          (New_Parameter_Declaration'Result)
+          = Ada_Node
+        and then
+          Parameter_Declaration_Get_External
+          (New_Parameter_Declaration'Result)
+          = External
+        and then
+          Parameter_Declaration_Get_Names
+          (New_Parameter_Declaration'Result)
+          = Names
+        and then
+          Parameter_Declaration_Get_Parameter_Type
+          (New_Parameter_Declaration'Result)
+          = Parameter_Type);
 
    function New_Exception_Declaration
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Primitive_Type_OId := Why_Empty)
-     return W_Exception_Declaration_Id;
-   pragma Precondition
-     (Identifier_Id_Kind_Valid (Name)
-      and then Identifier_Id_Valid (Name)
-      and then Is_Root (Name)
-      and then Primitive_Type_OId_Kind_Valid (Parameter)
-      and then Primitive_Type_OId_Valid (Parameter)
-      and then Is_Root (Parameter));
-   pragma Postcondition
-     (Get_Kind
-       (New_Exception_Declaration'Result)
-       = W_Exception_Declaration
-      and then
-        Get_Ada_Node
-        (New_Exception_Declaration'Result)
-        = Ada_Node
-      and then
-        Exception_Declaration_Get_Name
-        (New_Exception_Declaration'Result)
-        = Name
-      and then
-        Exception_Declaration_Get_Parameter
-        (New_Exception_Declaration'Result)
-        = Parameter);
+     return W_Exception_Declaration_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Primitive_Type_OId_Kind_Valid (Parameter)
+        and then Primitive_Type_OId_Valid (Parameter)
+        and then Is_Root (Parameter)),
+     Post =>
+       (Get_Kind
+         (New_Exception_Declaration'Result)
+         = W_Exception_Declaration
+        and then
+          Get_Ada_Node
+          (New_Exception_Declaration'Result)
+          = Ada_Node
+        and then
+          Exception_Declaration_Get_Name
+          (New_Exception_Declaration'Result)
+          = Name
+        and then
+          Exception_Declaration_Get_Parameter
+          (New_Exception_Declaration'Result)
+          = Parameter);
 
    function New_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
       Decl     : W_Logic_Declaration_Class_Id)
-     return W_Logic_Declaration_Id;
-   pragma Precondition
-     (Logic_Declaration_Class_Id_Kind_Valid (Decl)
-      and then Logic_Declaration_Class_Id_Valid (Decl)
-      and then Is_Root (Decl));
-   pragma Postcondition
-     (Get_Kind
-       (New_Logic_Declaration'Result)
-       = W_Logic_Declaration
-      and then
-        Get_Ada_Node
-        (New_Logic_Declaration'Result)
-        = Ada_Node
-      and then
-        Logic_Declaration_Get_Decl
-        (New_Logic_Declaration'Result)
-        = Decl);
+     return W_Logic_Declaration_Id with
+     Pre =>
+       (Logic_Declaration_Class_Id_Kind_Valid (Decl)
+        and then Logic_Declaration_Class_Id_Valid (Decl)
+        and then Is_Root (Decl)),
+     Post =>
+       (Get_Kind
+         (New_Logic_Declaration'Result)
+         = W_Logic_Declaration
+        and then
+          Get_Ada_Node
+          (New_Logic_Declaration'Result)
+          = Ada_Node
+        and then
+          Logic_Declaration_Get_Decl
+          (New_Logic_Declaration'Result)
+          = Decl);
 
    function New_Unchecked_Identifier
      (Symbol : Name_Id)
-     return W_Identifier_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Identifier'Result)
-       = W_Identifier
-     );
+     return W_Identifier_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Identifier'Result)
+         = W_Identifier
+       );
 
    function New_Unchecked_Type_Prop
-     return W_Type_Prop_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type_Prop'Result)
-       = W_Type_Prop
-     );
+     return W_Type_Prop_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type_Prop'Result)
+         = W_Type_Prop
+       );
 
    function New_Unchecked_Type_Int
-     return W_Type_Int_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type_Int'Result)
-       = W_Type_Int
-     );
+     return W_Type_Int_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type_Int'Result)
+         = W_Type_Int
+       );
 
    function New_Unchecked_Type_Bool
-     return W_Type_Bool_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type_Bool'Result)
-       = W_Type_Bool
-     );
+     return W_Type_Bool_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type_Bool'Result)
+         = W_Type_Bool
+       );
 
    function New_Unchecked_Type_Real
-     return W_Type_Real_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type_Real'Result)
-       = W_Type_Real
-     );
+     return W_Type_Real_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type_Real'Result)
+         = W_Type_Real
+       );
 
    function New_Unchecked_Type_Unit
-     return W_Type_Unit_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type_Unit'Result)
-       = W_Type_Unit
-     );
+     return W_Type_Unit_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type_Unit'Result)
+         = W_Type_Unit
+       );
 
    function New_Unchecked_Abstract_Type
-     return W_Abstract_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Abstract_Type'Result)
-       = W_Abstract_Type
-     );
+     return W_Abstract_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Abstract_Type'Result)
+         = W_Abstract_Type
+       );
 
    function New_Unchecked_Generic_Formal_Type
-     return W_Generic_Formal_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Generic_Formal_Type'Result)
-       = W_Generic_Formal_Type
-     );
+     return W_Generic_Formal_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Generic_Formal_Type'Result)
+         = W_Generic_Formal_Type
+       );
 
    function New_Unchecked_Generic_Actual_Type_Chain
-     return W_Generic_Actual_Type_Chain_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Generic_Actual_Type_Chain'Result)
-       = W_Generic_Actual_Type_Chain
-     );
+     return W_Generic_Actual_Type_Chain_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Generic_Actual_Type_Chain'Result)
+         = W_Generic_Actual_Type_Chain
+       );
 
    function New_Unchecked_Array_Type
-     return W_Array_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Array_Type'Result)
-       = W_Array_Type
-     );
+     return W_Array_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Array_Type'Result)
+         = W_Array_Type
+       );
 
    function New_Unchecked_Ref_Type
-     return W_Ref_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Ref_Type'Result)
-       = W_Ref_Type
-     );
+     return W_Ref_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Ref_Type'Result)
+         = W_Ref_Type
+       );
 
    function New_Unchecked_Protected_Value_Type
-     return W_Protected_Value_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Protected_Value_Type'Result)
-       = W_Protected_Value_Type
-     );
+     return W_Protected_Value_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Protected_Value_Type'Result)
+         = W_Protected_Value_Type
+       );
 
    function New_Unchecked_Arrow_Type
-     return W_Arrow_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Arrow_Type'Result)
-       = W_Arrow_Type
-     );
+     return W_Arrow_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Arrow_Type'Result)
+         = W_Arrow_Type
+       );
 
    function New_Unchecked_Computation_Spec
-     return W_Computation_Spec_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Computation_Spec'Result)
-       = W_Computation_Spec
-     );
+     return W_Computation_Spec_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Computation_Spec'Result)
+         = W_Computation_Spec
+       );
 
    function New_Unchecked_Integer_Constant
      (Value : Uint)
-     return W_Integer_Constant_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Integer_Constant'Result)
-       = W_Integer_Constant
-     );
+     return W_Integer_Constant_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Integer_Constant'Result)
+         = W_Integer_Constant
+       );
 
    function New_Unchecked_Real_Constant
      (Value : Ureal)
-     return W_Real_Constant_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Real_Constant'Result)
-       = W_Real_Constant
-     );
+     return W_Real_Constant_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Real_Constant'Result)
+         = W_Real_Constant
+       );
 
    function New_Unchecked_True_Literal
-     return W_True_Literal_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_True_Literal'Result)
-       = W_True_Literal
-     );
+     return W_True_Literal_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_True_Literal'Result)
+         = W_True_Literal
+       );
 
    function New_Unchecked_False_Literal
-     return W_False_Literal_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_False_Literal'Result)
-       = W_False_Literal
-     );
+     return W_False_Literal_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_False_Literal'Result)
+         = W_False_Literal
+       );
 
    function New_Unchecked_Void_Literal
-     return W_Void_Literal_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Void_Literal'Result)
-       = W_Void_Literal
-     );
+     return W_Void_Literal_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Void_Literal'Result)
+         = W_Void_Literal
+       );
 
    function New_Unchecked_Arith_Operation
-     return W_Arith_Operation_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Arith_Operation'Result)
-       = W_Arith_Operation
-     );
+     return W_Arith_Operation_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Arith_Operation'Result)
+         = W_Arith_Operation
+       );
 
    function New_Unchecked_Negative_Term
-     return W_Negative_Term_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Negative_Term'Result)
-       = W_Negative_Term
-     );
+     return W_Negative_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Negative_Term'Result)
+         = W_Negative_Term
+       );
 
    function New_Unchecked_Label_Identifier
-     return W_Label_Identifier_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Label_Identifier'Result)
-       = W_Label_Identifier
-     );
+     return W_Label_Identifier_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Label_Identifier'Result)
+         = W_Label_Identifier
+       );
 
    function New_Unchecked_Operation
-     return W_Operation_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Operation'Result)
-       = W_Operation
-     );
+     return W_Operation_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Operation'Result)
+         = W_Operation
+       );
 
    function New_Unchecked_Named_Term
-     return W_Named_Term_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Named_Term'Result)
-       = W_Named_Term
-     );
+     return W_Named_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Named_Term'Result)
+         = W_Named_Term
+       );
 
    function New_Unchecked_Conditional_Term
-     return W_Conditional_Term_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Conditional_Term'Result)
-       = W_Conditional_Term
-     );
+     return W_Conditional_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Conditional_Term'Result)
+         = W_Conditional_Term
+       );
 
    function New_Unchecked_Binding_Term
-     return W_Binding_Term_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Term'Result)
-       = W_Binding_Term
-     );
+     return W_Binding_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Term'Result)
+         = W_Binding_Term
+       );
 
    function New_Unchecked_Protected_Term
-     return W_Protected_Term_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Protected_Term'Result)
-       = W_Protected_Term
-     );
+     return W_Protected_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Protected_Term'Result)
+         = W_Protected_Term
+       );
 
    function New_Unchecked_Op_Add
-     return W_Op_Add_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Add'Result)
-       = W_Op_Add
-     );
+     return W_Op_Add_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Add'Result)
+         = W_Op_Add
+       );
 
    function New_Unchecked_Op_Substract
-     return W_Op_Substract_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Substract'Result)
-       = W_Op_Substract
-     );
+     return W_Op_Substract_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Substract'Result)
+         = W_Op_Substract
+       );
 
    function New_Unchecked_Op_Multiply
-     return W_Op_Multiply_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Multiply'Result)
-       = W_Op_Multiply
-     );
+     return W_Op_Multiply_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Multiply'Result)
+         = W_Op_Multiply
+       );
 
    function New_Unchecked_Op_Divide
-     return W_Op_Divide_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Divide'Result)
-       = W_Op_Divide
-     );
+     return W_Op_Divide_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Divide'Result)
+         = W_Op_Divide
+       );
 
    function New_Unchecked_Op_Modulo
-     return W_Op_Modulo_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Modulo'Result)
-       = W_Op_Modulo
-     );
+     return W_Op_Modulo_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Modulo'Result)
+         = W_Op_Modulo
+       );
 
    function New_Unchecked_True_Literal_Pred
-     return W_True_Literal_Pred_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_True_Literal_Pred'Result)
-       = W_True_Literal_Pred
-     );
+     return W_True_Literal_Pred_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_True_Literal_Pred'Result)
+         = W_True_Literal_Pred
+       );
 
    function New_Unchecked_False_Literal_Pred
-     return W_False_Literal_Pred_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_False_Literal_Pred'Result)
-       = W_False_Literal_Pred
-     );
+     return W_False_Literal_Pred_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_False_Literal_Pred'Result)
+         = W_False_Literal_Pred
+       );
 
    function New_Unchecked_Predicate_Identifier
-     return W_Predicate_Identifier_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Predicate_Identifier'Result)
-       = W_Predicate_Identifier
-     );
+     return W_Predicate_Identifier_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Predicate_Identifier'Result)
+         = W_Predicate_Identifier
+       );
 
    function New_Unchecked_Predicate_Instance
-     return W_Predicate_Instance_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Predicate_Instance'Result)
-       = W_Predicate_Instance
-     );
+     return W_Predicate_Instance_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Predicate_Instance'Result)
+         = W_Predicate_Instance
+       );
 
    function New_Unchecked_Related_Terms
-     return W_Related_Terms_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Related_Terms'Result)
-       = W_Related_Terms
-     );
+     return W_Related_Terms_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Related_Terms'Result)
+         = W_Related_Terms
+       );
 
    function New_Unchecked_Implication
-     return W_Implication_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Implication'Result)
-       = W_Implication
-     );
+     return W_Implication_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Implication'Result)
+         = W_Implication
+       );
 
    function New_Unchecked_Equivalence
-     return W_Equivalence_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Equivalence'Result)
-       = W_Equivalence
-     );
+     return W_Equivalence_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Equivalence'Result)
+         = W_Equivalence
+       );
 
    function New_Unchecked_Disjonction
-     return W_Disjonction_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Disjonction'Result)
-       = W_Disjonction
-     );
+     return W_Disjonction_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Disjonction'Result)
+         = W_Disjonction
+       );
 
    function New_Unchecked_Conjonction
-     return W_Conjonction_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Conjonction'Result)
-       = W_Conjonction
-     );
+     return W_Conjonction_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Conjonction'Result)
+         = W_Conjonction
+       );
 
    function New_Unchecked_Negation
-     return W_Negation_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Negation'Result)
-       = W_Negation
-     );
+     return W_Negation_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Negation'Result)
+         = W_Negation
+       );
 
    function New_Unchecked_Conditional_Pred
-     return W_Conditional_Pred_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Conditional_Pred'Result)
-       = W_Conditional_Pred
-     );
+     return W_Conditional_Pred_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Conditional_Pred'Result)
+         = W_Conditional_Pred
+       );
 
    function New_Unchecked_Binding_Pred
-     return W_Binding_Pred_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Pred'Result)
-       = W_Binding_Pred
-     );
+     return W_Binding_Pred_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Pred'Result)
+         = W_Binding_Pred
+       );
 
    function New_Unchecked_Universal_Quantif
-     return W_Universal_Quantif_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Universal_Quantif'Result)
-       = W_Universal_Quantif
-     );
+     return W_Universal_Quantif_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Universal_Quantif'Result)
+         = W_Universal_Quantif
+       );
 
    function New_Unchecked_Existential_Quantif
-     return W_Existential_Quantif_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Existential_Quantif'Result)
-       = W_Existential_Quantif
-     );
+     return W_Existential_Quantif_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Existential_Quantif'Result)
+         = W_Existential_Quantif
+       );
 
    function New_Unchecked_Named_Predicate
-     return W_Named_Predicate_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Named_Predicate'Result)
-       = W_Named_Predicate
-     );
+     return W_Named_Predicate_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Named_Predicate'Result)
+         = W_Named_Predicate
+       );
 
    function New_Unchecked_Protected_Predicate
-     return W_Protected_Predicate_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Protected_Predicate'Result)
-       = W_Protected_Predicate
-     );
+     return W_Protected_Predicate_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Protected_Predicate'Result)
+         = W_Protected_Predicate
+       );
 
    function New_Unchecked_Triggers
-     return W_Triggers_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Triggers'Result)
-       = W_Triggers
-     );
+     return W_Triggers_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Triggers'Result)
+         = W_Triggers
+       );
 
    function New_Unchecked_Trigger
-     return W_Trigger_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Trigger'Result)
-       = W_Trigger
-     );
+     return W_Trigger_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Trigger'Result)
+         = W_Trigger
+       );
 
    function New_Unchecked_Rel_Eq
-     return W_Rel_Eq_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Eq'Result)
-       = W_Rel_Eq
-     );
+     return W_Rel_Eq_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Eq'Result)
+         = W_Rel_Eq
+       );
 
    function New_Unchecked_Rel_Ne
-     return W_Rel_Ne_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Ne'Result)
-       = W_Rel_Ne
-     );
+     return W_Rel_Ne_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Ne'Result)
+         = W_Rel_Ne
+       );
 
    function New_Unchecked_Rel_Lt
-     return W_Rel_Lt_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Lt'Result)
-       = W_Rel_Lt
-     );
+     return W_Rel_Lt_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Lt'Result)
+         = W_Rel_Lt
+       );
 
    function New_Unchecked_Rel_Le
-     return W_Rel_Le_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Le'Result)
-       = W_Rel_Le
-     );
+     return W_Rel_Le_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Le'Result)
+         = W_Rel_Le
+       );
 
    function New_Unchecked_Rel_Gt
-     return W_Rel_Gt_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Gt'Result)
-       = W_Rel_Gt
-     );
+     return W_Rel_Gt_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Gt'Result)
+         = W_Rel_Gt
+       );
 
    function New_Unchecked_Rel_Ge
-     return W_Rel_Ge_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Rel_Ge'Result)
-       = W_Rel_Ge
-     );
+     return W_Rel_Ge_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Rel_Ge'Result)
+         = W_Rel_Ge
+       );
 
    function New_Unchecked_Type
-     return W_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Type'Result)
-       = W_Type
-     );
+     return W_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Type'Result)
+         = W_Type
+       );
 
    function New_Unchecked_Logic
-     return W_Logic_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Logic'Result)
-       = W_Logic
-     );
+     return W_Logic_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Logic'Result)
+         = W_Logic
+       );
 
    function New_Unchecked_Function
-     return W_Function_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Function'Result)
-       = W_Function
-     );
+     return W_Function_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Function'Result)
+         = W_Function
+       );
 
    function New_Unchecked_Predicate_Definition
-     return W_Predicate_Definition_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Predicate_Definition'Result)
-       = W_Predicate_Definition
-     );
+     return W_Predicate_Definition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Predicate_Definition'Result)
+         = W_Predicate_Definition
+       );
 
    function New_Unchecked_Inductive
-     return W_Inductive_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Inductive'Result)
-       = W_Inductive
-     );
+     return W_Inductive_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Inductive'Result)
+         = W_Inductive
+       );
 
    function New_Unchecked_Axiom
-     return W_Axiom_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Axiom'Result)
-       = W_Axiom
-     );
+     return W_Axiom_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Axiom'Result)
+         = W_Axiom
+       );
 
    function New_Unchecked_Goal
-     return W_Goal_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Goal'Result)
-       = W_Goal
-     );
+     return W_Goal_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Goal'Result)
+         = W_Goal
+       );
 
    function New_Unchecked_External
-     return W_External_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_External'Result)
-       = W_External
-     );
+     return W_External_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_External'Result)
+         = W_External
+       );
 
    function New_Unchecked_Logic_Type
-     return W_Logic_Type_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Logic_Type'Result)
-       = W_Logic_Type
-     );
+     return W_Logic_Type_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Logic_Type'Result)
+         = W_Logic_Type
+       );
 
    function New_Unchecked_Logic_Binder
-     return W_Logic_Binder_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Logic_Binder'Result)
-       = W_Logic_Binder
-     );
+     return W_Logic_Binder_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Logic_Binder'Result)
+         = W_Logic_Binder
+       );
 
    function New_Unchecked_Inductive_Case
-     return W_Inductive_Case_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Inductive_Case'Result)
-       = W_Inductive_Case
-     );
+     return W_Inductive_Case_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Inductive_Case'Result)
+         = W_Inductive_Case
+       );
 
    function New_Unchecked_Effects
-     return W_Effects_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Effects'Result)
-       = W_Effects
-     );
+     return W_Effects_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Effects'Result)
+         = W_Effects
+       );
 
    function New_Unchecked_Precondition
-     return W_Precondition_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Precondition'Result)
-       = W_Precondition
-     );
+     return W_Precondition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Precondition'Result)
+         = W_Precondition
+       );
 
    function New_Unchecked_Postcondition
-     return W_Postcondition_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Postcondition'Result)
-       = W_Postcondition
-     );
+     return W_Postcondition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Postcondition'Result)
+         = W_Postcondition
+       );
 
    function New_Unchecked_Exn_Condition
-     return W_Exn_Condition_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Exn_Condition'Result)
-       = W_Exn_Condition
-     );
+     return W_Exn_Condition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Exn_Condition'Result)
+         = W_Exn_Condition
+       );
 
    function New_Unchecked_Assertion
-     return W_Assertion_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Assertion'Result)
-       = W_Assertion
-     );
+     return W_Assertion_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Assertion'Result)
+         = W_Assertion
+       );
 
    function New_Unchecked_Prog_Constant
-     return W_Prog_Constant_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Prog_Constant'Result)
-       = W_Prog_Constant
-     );
+     return W_Prog_Constant_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Prog_Constant'Result)
+         = W_Prog_Constant
+       );
 
    function New_Unchecked_Prog_Identifier
-     return W_Prog_Identifier_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Prog_Identifier'Result)
-       = W_Prog_Identifier
-     );
+     return W_Prog_Identifier_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Prog_Identifier'Result)
+         = W_Prog_Identifier
+       );
 
    function New_Unchecked_Deref
-     return W_Deref_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Deref'Result)
-       = W_Deref
-     );
+     return W_Deref_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Deref'Result)
+         = W_Deref
+       );
 
    function New_Unchecked_Assignment
-     return W_Assignment_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Assignment'Result)
-       = W_Assignment
-     );
+     return W_Assignment_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Assignment'Result)
+         = W_Assignment
+       );
 
    function New_Unchecked_Array_Access
-     return W_Array_Access_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Array_Access'Result)
-       = W_Array_Access
-     );
+     return W_Array_Access_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Array_Access'Result)
+         = W_Array_Access
+       );
 
    function New_Unchecked_Array_Update
-     return W_Array_Update_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Array_Update'Result)
-       = W_Array_Update
-     );
+     return W_Array_Update_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Array_Update'Result)
+         = W_Array_Update
+       );
 
    function New_Unchecked_Infix_Call
-     return W_Infix_Call_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Infix_Call'Result)
-       = W_Infix_Call
-     );
+     return W_Infix_Call_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Infix_Call'Result)
+         = W_Infix_Call
+       );
 
    function New_Unchecked_Prefix_Call
-     return W_Prefix_Call_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Prefix_Call'Result)
-       = W_Prefix_Call
-     );
+     return W_Prefix_Call_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Prefix_Call'Result)
+         = W_Prefix_Call
+       );
 
    function New_Unchecked_Binding_Prog
-     return W_Binding_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Prog'Result)
-       = W_Binding_Prog
-     );
+     return W_Binding_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Prog'Result)
+         = W_Binding_Prog
+       );
 
    function New_Unchecked_Binding_Ref
-     return W_Binding_Ref_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Ref'Result)
-       = W_Binding_Ref
-     );
+     return W_Binding_Ref_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Ref'Result)
+         = W_Binding_Ref
+       );
 
    function New_Unchecked_Conditional_Prog
-     return W_Conditional_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Conditional_Prog'Result)
-       = W_Conditional_Prog
-     );
+     return W_Conditional_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Conditional_Prog'Result)
+         = W_Conditional_Prog
+       );
 
    function New_Unchecked_While_Loop
-     return W_While_Loop_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_While_Loop'Result)
-       = W_While_Loop
-     );
+     return W_While_Loop_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_While_Loop'Result)
+         = W_While_Loop
+       );
 
    function New_Unchecked_Statement_Sequence
-     return W_Statement_Sequence_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Statement_Sequence'Result)
-       = W_Statement_Sequence
-     );
+     return W_Statement_Sequence_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Statement_Sequence'Result)
+         = W_Statement_Sequence
+       );
 
    function New_Unchecked_Label
-     return W_Label_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Label'Result)
-       = W_Label
-     );
+     return W_Label_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Label'Result)
+         = W_Label
+       );
 
    function New_Unchecked_Assert
-     return W_Assert_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Assert'Result)
-       = W_Assert
-     );
+     return W_Assert_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Assert'Result)
+         = W_Assert
+       );
 
    function New_Unchecked_Post_Assertion
-     return W_Post_Assertion_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Post_Assertion'Result)
-       = W_Post_Assertion
-     );
+     return W_Post_Assertion_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Post_Assertion'Result)
+         = W_Post_Assertion
+       );
 
    function New_Unchecked_Opaque_Assertion
-     return W_Opaque_Assertion_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Opaque_Assertion'Result)
-       = W_Opaque_Assertion
-     );
+     return W_Opaque_Assertion_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Opaque_Assertion'Result)
+         = W_Opaque_Assertion
+       );
 
    function New_Unchecked_Fun_Def
-     return W_Fun_Def_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Fun_Def'Result)
-       = W_Fun_Def
-     );
+     return W_Fun_Def_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Fun_Def'Result)
+         = W_Fun_Def
+       );
 
    function New_Unchecked_Binding_Fun
-     return W_Binding_Fun_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Fun'Result)
-       = W_Binding_Fun
-     );
+     return W_Binding_Fun_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Fun'Result)
+         = W_Binding_Fun
+       );
 
    function New_Unchecked_Binding_Rec
-     return W_Binding_Rec_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binding_Rec'Result)
-       = W_Binding_Rec
-     );
+     return W_Binding_Rec_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binding_Rec'Result)
+         = W_Binding_Rec
+       );
 
    function New_Unchecked_Prog_Sequence
-     return W_Prog_Sequence_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Prog_Sequence'Result)
-       = W_Prog_Sequence
-     );
+     return W_Prog_Sequence_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Prog_Sequence'Result)
+         = W_Prog_Sequence
+       );
 
    function New_Unchecked_Raise_Statement
-     return W_Raise_Statement_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Raise_Statement'Result)
-       = W_Raise_Statement
-     );
+     return W_Raise_Statement_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Raise_Statement'Result)
+         = W_Raise_Statement
+       );
 
    function New_Unchecked_Raise_Statement_With_Parameters
-     return W_Raise_Statement_With_Parameters_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Raise_Statement_With_Parameters'Result)
-       = W_Raise_Statement_With_Parameters
-     );
+     return W_Raise_Statement_With_Parameters_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Raise_Statement_With_Parameters'Result)
+         = W_Raise_Statement_With_Parameters
+       );
 
    function New_Unchecked_Try_Block
-     return W_Try_Block_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Try_Block'Result)
-       = W_Try_Block
-     );
+     return W_Try_Block_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Try_Block'Result)
+         = W_Try_Block
+       );
 
    function New_Unchecked_Unreachable_Code
-     return W_Unreachable_Code_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Unreachable_Code'Result)
-       = W_Unreachable_Code
-     );
+     return W_Unreachable_Code_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Unreachable_Code'Result)
+         = W_Unreachable_Code
+       );
 
    function New_Unchecked_Begin_Block
-     return W_Begin_Block_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Begin_Block'Result)
-       = W_Begin_Block
-     );
+     return W_Begin_Block_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Begin_Block'Result)
+         = W_Begin_Block
+       );
 
    function New_Unchecked_Protected_Prog
-     return W_Protected_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Protected_Prog'Result)
-       = W_Protected_Prog
-     );
+     return W_Protected_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Protected_Prog'Result)
+         = W_Protected_Prog
+       );
 
    function New_Unchecked_Op_Add_Prog
-     return W_Op_Add_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Add_Prog'Result)
-       = W_Op_Add_Prog
-     );
+     return W_Op_Add_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Add_Prog'Result)
+         = W_Op_Add_Prog
+       );
 
    function New_Unchecked_Op_Substract_Prog
-     return W_Op_Substract_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Substract_Prog'Result)
-       = W_Op_Substract_Prog
-     );
+     return W_Op_Substract_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Substract_Prog'Result)
+         = W_Op_Substract_Prog
+       );
 
    function New_Unchecked_Op_Multiply_Prog
-     return W_Op_Multiply_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Multiply_Prog'Result)
-       = W_Op_Multiply_Prog
-     );
+     return W_Op_Multiply_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Multiply_Prog'Result)
+         = W_Op_Multiply_Prog
+       );
 
    function New_Unchecked_Op_Divide_Prog
-     return W_Op_Divide_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Divide_Prog'Result)
-       = W_Op_Divide_Prog
-     );
+     return W_Op_Divide_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Divide_Prog'Result)
+         = W_Op_Divide_Prog
+       );
 
    function New_Unchecked_Op_Mod_Prog
-     return W_Op_Mod_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Mod_Prog'Result)
-       = W_Op_Mod_Prog
-     );
+     return W_Op_Mod_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Mod_Prog'Result)
+         = W_Op_Mod_Prog
+       );
 
    function New_Unchecked_Op_Eq_Prog
-     return W_Op_Eq_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Eq_Prog'Result)
-       = W_Op_Eq_Prog
-     );
+     return W_Op_Eq_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Eq_Prog'Result)
+         = W_Op_Eq_Prog
+       );
 
    function New_Unchecked_Op_Ne_Prog
-     return W_Op_Ne_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Ne_Prog'Result)
-       = W_Op_Ne_Prog
-     );
+     return W_Op_Ne_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Ne_Prog'Result)
+         = W_Op_Ne_Prog
+       );
 
    function New_Unchecked_Op_Lt_Prog
-     return W_Op_Lt_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Lt_Prog'Result)
-       = W_Op_Lt_Prog
-     );
+     return W_Op_Lt_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Lt_Prog'Result)
+         = W_Op_Lt_Prog
+       );
 
    function New_Unchecked_Op_Le_Prog
-     return W_Op_Le_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Le_Prog'Result)
-       = W_Op_Le_Prog
-     );
+     return W_Op_Le_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Le_Prog'Result)
+         = W_Op_Le_Prog
+       );
 
    function New_Unchecked_Op_Gt_Prog
-     return W_Op_Gt_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Gt_Prog'Result)
-       = W_Op_Gt_Prog
-     );
+     return W_Op_Gt_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Gt_Prog'Result)
+         = W_Op_Gt_Prog
+       );
 
    function New_Unchecked_Op_Ge_Prog
-     return W_Op_Ge_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Ge_Prog'Result)
-       = W_Op_Ge_Prog
-     );
+     return W_Op_Ge_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Ge_Prog'Result)
+         = W_Op_Ge_Prog
+       );
 
    function New_Unchecked_Op_Or_Else_Prog
-     return W_Op_Or_Else_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Or_Else_Prog'Result)
-       = W_Op_Or_Else_Prog
-     );
+     return W_Op_Or_Else_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Or_Else_Prog'Result)
+         = W_Op_Or_Else_Prog
+       );
 
    function New_Unchecked_Op_And_Then_Prog
-     return W_Op_And_Then_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_And_Then_Prog'Result)
-       = W_Op_And_Then_Prog
-     );
+     return W_Op_And_Then_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_And_Then_Prog'Result)
+         = W_Op_And_Then_Prog
+       );
 
    function New_Unchecked_Op_Minus_Prog
-     return W_Op_Minus_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Minus_Prog'Result)
-       = W_Op_Minus_Prog
-     );
+     return W_Op_Minus_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Minus_Prog'Result)
+         = W_Op_Minus_Prog
+       );
 
    function New_Unchecked_Op_Not_Prog
-     return W_Op_Not_Prog_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Op_Not_Prog'Result)
-       = W_Op_Not_Prog
-     );
+     return W_Op_Not_Prog_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Op_Not_Prog'Result)
+         = W_Op_Not_Prog
+       );
 
    function New_Unchecked_Binders
-     return W_Binders_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binders'Result)
-       = W_Binders
-     );
+     return W_Binders_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binders'Result)
+         = W_Binders
+       );
 
    function New_Unchecked_Binder
-     return W_Binder_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Binder'Result)
-       = W_Binder
-     );
+     return W_Binder_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Binder'Result)
+         = W_Binder
+       );
 
    function New_Unchecked_Recfun
-     return W_Recfun_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Recfun'Result)
-       = W_Recfun
-     );
+     return W_Recfun_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Recfun'Result)
+         = W_Recfun
+       );
 
    function New_Unchecked_Loop_Annot
-     return W_Loop_Annot_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Loop_Annot'Result)
-       = W_Loop_Annot
-     );
+     return W_Loop_Annot_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Loop_Annot'Result)
+         = W_Loop_Annot
+       );
 
    function New_Unchecked_Wf_Arg
-     return W_Wf_Arg_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Wf_Arg'Result)
-       = W_Wf_Arg
-     );
+     return W_Wf_Arg_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Wf_Arg'Result)
+         = W_Wf_Arg
+       );
 
    function New_Unchecked_Handler
-     return W_Handler_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Handler'Result)
-       = W_Handler
-     );
+     return W_Handler_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Handler'Result)
+         = W_Handler
+       );
 
    function New_Unchecked_File
-     return W_File_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_File'Result)
-       = W_File
-     );
+     return W_File_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_File'Result)
+         = W_File
+       );
 
    function New_Unchecked_Global_Binding
-     return W_Global_Binding_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Global_Binding'Result)
-       = W_Global_Binding
-     );
+     return W_Global_Binding_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Global_Binding'Result)
+         = W_Global_Binding
+       );
 
    function New_Unchecked_Global_Rec_Binding
-     return W_Global_Rec_Binding_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Global_Rec_Binding'Result)
-       = W_Global_Rec_Binding
-     );
+     return W_Global_Rec_Binding_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Global_Rec_Binding'Result)
+         = W_Global_Rec_Binding
+       );
 
    function New_Unchecked_Parameter_Declaration
-     return W_Parameter_Declaration_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Parameter_Declaration'Result)
-       = W_Parameter_Declaration
-     );
+     return W_Parameter_Declaration_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Parameter_Declaration'Result)
+         = W_Parameter_Declaration
+       );
 
    function New_Unchecked_Exception_Declaration
-     return W_Exception_Declaration_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Exception_Declaration'Result)
-       = W_Exception_Declaration
-     );
+     return W_Exception_Declaration_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Exception_Declaration'Result)
+         = W_Exception_Declaration
+       );
 
    function New_Unchecked_Logic_Declaration
-     return W_Logic_Declaration_Unchecked_Id;
-   pragma Postcondition
-     (Get_Kind
-       (New_Unchecked_Logic_Declaration'Result)
-       = W_Logic_Declaration
-     );
+     return W_Logic_Declaration_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Logic_Declaration'Result)
+         = W_Logic_Declaration
+       );
 
    function Duplicate_Identifier
      (Ada_Node : Node_Id := Empty;
       Id       : W_Identifier_OId)
-     return W_Identifier_Id;
-   pragma Precondition
-     (Identifier_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Identifier'Result)
-       = W_Identifier
-      and then
-        Get_Ada_Node
-        (Duplicate_Identifier'Result)
-        = Ada_Node);
+     return W_Identifier_Id with
+     Pre =>
+       (Identifier_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Identifier'Result)
+         = W_Identifier
+        and then
+          Get_Ada_Node
+          (Duplicate_Identifier'Result)
+          = Ada_Node);
 
    function Duplicate_Type_Prop
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_Prop_OId)
-     return W_Type_Prop_Id;
-   pragma Precondition
-     (Type_Prop_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type_Prop'Result)
-       = W_Type_Prop
-      and then
-        Get_Ada_Node
-        (Duplicate_Type_Prop'Result)
-        = Ada_Node);
+     return W_Type_Prop_Id with
+     Pre =>
+       (Type_Prop_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type_Prop'Result)
+         = W_Type_Prop
+        and then
+          Get_Ada_Node
+          (Duplicate_Type_Prop'Result)
+          = Ada_Node);
 
    function Duplicate_Type_Int
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_Int_OId)
-     return W_Type_Int_Id;
-   pragma Precondition
-     (Type_Int_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type_Int'Result)
-       = W_Type_Int
-      and then
-        Get_Ada_Node
-        (Duplicate_Type_Int'Result)
-        = Ada_Node);
+     return W_Type_Int_Id with
+     Pre =>
+       (Type_Int_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type_Int'Result)
+         = W_Type_Int
+        and then
+          Get_Ada_Node
+          (Duplicate_Type_Int'Result)
+          = Ada_Node);
 
    function Duplicate_Type_Bool
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_Bool_OId)
-     return W_Type_Bool_Id;
-   pragma Precondition
-     (Type_Bool_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type_Bool'Result)
-       = W_Type_Bool
-      and then
-        Get_Ada_Node
-        (Duplicate_Type_Bool'Result)
-        = Ada_Node);
+     return W_Type_Bool_Id with
+     Pre =>
+       (Type_Bool_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type_Bool'Result)
+         = W_Type_Bool
+        and then
+          Get_Ada_Node
+          (Duplicate_Type_Bool'Result)
+          = Ada_Node);
 
    function Duplicate_Type_Real
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_Real_OId)
-     return W_Type_Real_Id;
-   pragma Precondition
-     (Type_Real_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type_Real'Result)
-       = W_Type_Real
-      and then
-        Get_Ada_Node
-        (Duplicate_Type_Real'Result)
-        = Ada_Node);
+     return W_Type_Real_Id with
+     Pre =>
+       (Type_Real_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type_Real'Result)
+         = W_Type_Real
+        and then
+          Get_Ada_Node
+          (Duplicate_Type_Real'Result)
+          = Ada_Node);
 
    function Duplicate_Type_Unit
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_Unit_OId)
-     return W_Type_Unit_Id;
-   pragma Precondition
-     (Type_Unit_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type_Unit'Result)
-       = W_Type_Unit
-      and then
-        Get_Ada_Node
-        (Duplicate_Type_Unit'Result)
-        = Ada_Node);
+     return W_Type_Unit_Id with
+     Pre =>
+       (Type_Unit_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type_Unit'Result)
+         = W_Type_Unit
+        and then
+          Get_Ada_Node
+          (Duplicate_Type_Unit'Result)
+          = Ada_Node);
 
    function Duplicate_Abstract_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Abstract_Type_OId)
-     return W_Abstract_Type_Id;
-   pragma Precondition
-     (Abstract_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Abstract_Type'Result)
-       = W_Abstract_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Abstract_Type'Result)
-        = Ada_Node);
+     return W_Abstract_Type_Id with
+     Pre =>
+       (Abstract_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Abstract_Type'Result)
+         = W_Abstract_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Abstract_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Generic_Formal_Type_OId)
-     return W_Generic_Formal_Type_Id;
-   pragma Precondition
-     (Generic_Formal_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Generic_Formal_Type'Result)
-       = W_Generic_Formal_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Generic_Formal_Type'Result)
-        = Ada_Node);
+     return W_Generic_Formal_Type_Id with
+     Pre =>
+       (Generic_Formal_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Generic_Formal_Type'Result)
+         = W_Generic_Formal_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Generic_Formal_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Generic_Actual_Type_Chain
      (Ada_Node : Node_Id := Empty;
       Id       : W_Generic_Actual_Type_Chain_OId)
-     return W_Generic_Actual_Type_Chain_Id;
-   pragma Precondition
-     (Generic_Actual_Type_Chain_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Generic_Actual_Type_Chain'Result)
-       = W_Generic_Actual_Type_Chain
-      and then
-        Get_Ada_Node
-        (Duplicate_Generic_Actual_Type_Chain'Result)
-        = Ada_Node);
+     return W_Generic_Actual_Type_Chain_Id with
+     Pre =>
+       (Generic_Actual_Type_Chain_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Generic_Actual_Type_Chain'Result)
+         = W_Generic_Actual_Type_Chain
+        and then
+          Get_Ada_Node
+          (Duplicate_Generic_Actual_Type_Chain'Result)
+          = Ada_Node);
 
    function Duplicate_Array_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Array_Type_OId)
-     return W_Array_Type_Id;
-   pragma Precondition
-     (Array_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Array_Type'Result)
-       = W_Array_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Array_Type'Result)
-        = Ada_Node);
+     return W_Array_Type_Id with
+     Pre =>
+       (Array_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Array_Type'Result)
+         = W_Array_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Array_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Ref_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Ref_Type_OId)
-     return W_Ref_Type_Id;
-   pragma Precondition
-     (Ref_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Ref_Type'Result)
-       = W_Ref_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Ref_Type'Result)
-        = Ada_Node);
+     return W_Ref_Type_Id with
+     Pre =>
+       (Ref_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Ref_Type'Result)
+         = W_Ref_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Ref_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Protected_Value_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Protected_Value_Type_OId)
-     return W_Protected_Value_Type_Id;
-   pragma Precondition
-     (Protected_Value_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Protected_Value_Type'Result)
-       = W_Protected_Value_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Protected_Value_Type'Result)
-        = Ada_Node);
+     return W_Protected_Value_Type_Id with
+     Pre =>
+       (Protected_Value_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Protected_Value_Type'Result)
+         = W_Protected_Value_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Protected_Value_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Arrow_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Arrow_Type_OId)
-     return W_Arrow_Type_Id;
-   pragma Precondition
-     (Arrow_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Arrow_Type'Result)
-       = W_Arrow_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Arrow_Type'Result)
-        = Ada_Node);
+     return W_Arrow_Type_Id with
+     Pre =>
+       (Arrow_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Arrow_Type'Result)
+         = W_Arrow_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Arrow_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Computation_Spec
      (Ada_Node : Node_Id := Empty;
       Id       : W_Computation_Spec_OId)
-     return W_Computation_Spec_Id;
-   pragma Precondition
-     (Computation_Spec_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Computation_Spec'Result)
-       = W_Computation_Spec
-      and then
-        Get_Ada_Node
-        (Duplicate_Computation_Spec'Result)
-        = Ada_Node);
+     return W_Computation_Spec_Id with
+     Pre =>
+       (Computation_Spec_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Computation_Spec'Result)
+         = W_Computation_Spec
+        and then
+          Get_Ada_Node
+          (Duplicate_Computation_Spec'Result)
+          = Ada_Node);
 
    function Duplicate_Integer_Constant
      (Ada_Node : Node_Id := Empty;
       Id       : W_Integer_Constant_OId)
-     return W_Integer_Constant_Id;
-   pragma Precondition
-     (Integer_Constant_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Integer_Constant'Result)
-       = W_Integer_Constant
-      and then
-        Get_Ada_Node
-        (Duplicate_Integer_Constant'Result)
-        = Ada_Node);
+     return W_Integer_Constant_Id with
+     Pre =>
+       (Integer_Constant_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Integer_Constant'Result)
+         = W_Integer_Constant
+        and then
+          Get_Ada_Node
+          (Duplicate_Integer_Constant'Result)
+          = Ada_Node);
 
    function Duplicate_Real_Constant
      (Ada_Node : Node_Id := Empty;
       Id       : W_Real_Constant_OId)
-     return W_Real_Constant_Id;
-   pragma Precondition
-     (Real_Constant_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Real_Constant'Result)
-       = W_Real_Constant
-      and then
-        Get_Ada_Node
-        (Duplicate_Real_Constant'Result)
-        = Ada_Node);
+     return W_Real_Constant_Id with
+     Pre =>
+       (Real_Constant_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Real_Constant'Result)
+         = W_Real_Constant
+        and then
+          Get_Ada_Node
+          (Duplicate_Real_Constant'Result)
+          = Ada_Node);
 
    function Duplicate_True_Literal
      (Ada_Node : Node_Id := Empty;
       Id       : W_True_Literal_OId)
-     return W_True_Literal_Id;
-   pragma Precondition
-     (True_Literal_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_True_Literal'Result)
-       = W_True_Literal
-      and then
-        Get_Ada_Node
-        (Duplicate_True_Literal'Result)
-        = Ada_Node);
+     return W_True_Literal_Id with
+     Pre =>
+       (True_Literal_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_True_Literal'Result)
+         = W_True_Literal
+        and then
+          Get_Ada_Node
+          (Duplicate_True_Literal'Result)
+          = Ada_Node);
 
    function Duplicate_False_Literal
      (Ada_Node : Node_Id := Empty;
       Id       : W_False_Literal_OId)
-     return W_False_Literal_Id;
-   pragma Precondition
-     (False_Literal_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_False_Literal'Result)
-       = W_False_Literal
-      and then
-        Get_Ada_Node
-        (Duplicate_False_Literal'Result)
-        = Ada_Node);
+     return W_False_Literal_Id with
+     Pre =>
+       (False_Literal_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_False_Literal'Result)
+         = W_False_Literal
+        and then
+          Get_Ada_Node
+          (Duplicate_False_Literal'Result)
+          = Ada_Node);
 
    function Duplicate_Void_Literal
      (Ada_Node : Node_Id := Empty;
       Id       : W_Void_Literal_OId)
-     return W_Void_Literal_Id;
-   pragma Precondition
-     (Void_Literal_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Void_Literal'Result)
-       = W_Void_Literal
-      and then
-        Get_Ada_Node
-        (Duplicate_Void_Literal'Result)
-        = Ada_Node);
+     return W_Void_Literal_Id with
+     Pre =>
+       (Void_Literal_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Void_Literal'Result)
+         = W_Void_Literal
+        and then
+          Get_Ada_Node
+          (Duplicate_Void_Literal'Result)
+          = Ada_Node);
 
    function Duplicate_Arith_Operation
      (Ada_Node : Node_Id := Empty;
       Id       : W_Arith_Operation_OId)
-     return W_Arith_Operation_Id;
-   pragma Precondition
-     (Arith_Operation_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Arith_Operation'Result)
-       = W_Arith_Operation
-      and then
-        Get_Ada_Node
-        (Duplicate_Arith_Operation'Result)
-        = Ada_Node);
+     return W_Arith_Operation_Id with
+     Pre =>
+       (Arith_Operation_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Arith_Operation'Result)
+         = W_Arith_Operation
+        and then
+          Get_Ada_Node
+          (Duplicate_Arith_Operation'Result)
+          = Ada_Node);
 
    function Duplicate_Negative_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Negative_Term_OId)
-     return W_Negative_Term_Id;
-   pragma Precondition
-     (Negative_Term_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Negative_Term'Result)
-       = W_Negative_Term
-      and then
-        Get_Ada_Node
-        (Duplicate_Negative_Term'Result)
-        = Ada_Node);
+     return W_Negative_Term_Id with
+     Pre =>
+       (Negative_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Negative_Term'Result)
+         = W_Negative_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Negative_Term'Result)
+          = Ada_Node);
 
    function Duplicate_Label_Identifier
      (Ada_Node : Node_Id := Empty;
       Id       : W_Label_Identifier_OId)
-     return W_Label_Identifier_Id;
-   pragma Precondition
-     (Label_Identifier_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Label_Identifier'Result)
-       = W_Label_Identifier
-      and then
-        Get_Ada_Node
-        (Duplicate_Label_Identifier'Result)
-        = Ada_Node);
+     return W_Label_Identifier_Id with
+     Pre =>
+       (Label_Identifier_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Label_Identifier'Result)
+         = W_Label_Identifier
+        and then
+          Get_Ada_Node
+          (Duplicate_Label_Identifier'Result)
+          = Ada_Node);
 
    function Duplicate_Operation
      (Ada_Node : Node_Id := Empty;
       Id       : W_Operation_OId)
-     return W_Operation_Id;
-   pragma Precondition
-     (Operation_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Operation'Result)
-       = W_Operation
-      and then
-        Get_Ada_Node
-        (Duplicate_Operation'Result)
-        = Ada_Node);
+     return W_Operation_Id with
+     Pre =>
+       (Operation_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Operation'Result)
+         = W_Operation
+        and then
+          Get_Ada_Node
+          (Duplicate_Operation'Result)
+          = Ada_Node);
 
    function Duplicate_Named_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Named_Term_OId)
-     return W_Named_Term_Id;
-   pragma Precondition
-     (Named_Term_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Named_Term'Result)
-       = W_Named_Term
-      and then
-        Get_Ada_Node
-        (Duplicate_Named_Term'Result)
-        = Ada_Node);
+     return W_Named_Term_Id with
+     Pre =>
+       (Named_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Named_Term'Result)
+         = W_Named_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Named_Term'Result)
+          = Ada_Node);
 
    function Duplicate_Conditional_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Conditional_Term_OId)
-     return W_Conditional_Term_Id;
-   pragma Precondition
-     (Conditional_Term_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Conditional_Term'Result)
-       = W_Conditional_Term
-      and then
-        Get_Ada_Node
-        (Duplicate_Conditional_Term'Result)
-        = Ada_Node);
+     return W_Conditional_Term_Id with
+     Pre =>
+       (Conditional_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Conditional_Term'Result)
+         = W_Conditional_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Conditional_Term'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Term_OId)
-     return W_Binding_Term_Id;
-   pragma Precondition
-     (Binding_Term_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Term'Result)
-       = W_Binding_Term
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Term'Result)
-        = Ada_Node);
+     return W_Binding_Term_Id with
+     Pre =>
+       (Binding_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Term'Result)
+         = W_Binding_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Term'Result)
+          = Ada_Node);
 
    function Duplicate_Protected_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Protected_Term_OId)
-     return W_Protected_Term_Id;
-   pragma Precondition
-     (Protected_Term_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Protected_Term'Result)
-       = W_Protected_Term
-      and then
-        Get_Ada_Node
-        (Duplicate_Protected_Term'Result)
-        = Ada_Node);
+     return W_Protected_Term_Id with
+     Pre =>
+       (Protected_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Protected_Term'Result)
+         = W_Protected_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Protected_Term'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Add
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Add_OId)
-     return W_Op_Add_Id;
-   pragma Precondition
-     (Op_Add_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Add'Result)
-       = W_Op_Add
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Add'Result)
-        = Ada_Node);
+     return W_Op_Add_Id with
+     Pre =>
+       (Op_Add_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Add'Result)
+         = W_Op_Add
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Add'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Substract
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Substract_OId)
-     return W_Op_Substract_Id;
-   pragma Precondition
-     (Op_Substract_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Substract'Result)
-       = W_Op_Substract
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Substract'Result)
-        = Ada_Node);
+     return W_Op_Substract_Id with
+     Pre =>
+       (Op_Substract_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Substract'Result)
+         = W_Op_Substract
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Substract'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Multiply
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Multiply_OId)
-     return W_Op_Multiply_Id;
-   pragma Precondition
-     (Op_Multiply_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Multiply'Result)
-       = W_Op_Multiply
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Multiply'Result)
-        = Ada_Node);
+     return W_Op_Multiply_Id with
+     Pre =>
+       (Op_Multiply_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Multiply'Result)
+         = W_Op_Multiply
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Multiply'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Divide
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Divide_OId)
-     return W_Op_Divide_Id;
-   pragma Precondition
-     (Op_Divide_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Divide'Result)
-       = W_Op_Divide
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Divide'Result)
-        = Ada_Node);
+     return W_Op_Divide_Id with
+     Pre =>
+       (Op_Divide_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Divide'Result)
+         = W_Op_Divide
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Divide'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Modulo
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Modulo_OId)
-     return W_Op_Modulo_Id;
-   pragma Precondition
-     (Op_Modulo_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Modulo'Result)
-       = W_Op_Modulo
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Modulo'Result)
-        = Ada_Node);
+     return W_Op_Modulo_Id with
+     Pre =>
+       (Op_Modulo_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Modulo'Result)
+         = W_Op_Modulo
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Modulo'Result)
+          = Ada_Node);
 
    function Duplicate_True_Literal_Pred
      (Ada_Node : Node_Id := Empty;
       Id       : W_True_Literal_Pred_OId)
-     return W_True_Literal_Pred_Id;
-   pragma Precondition
-     (True_Literal_Pred_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_True_Literal_Pred'Result)
-       = W_True_Literal_Pred
-      and then
-        Get_Ada_Node
-        (Duplicate_True_Literal_Pred'Result)
-        = Ada_Node);
+     return W_True_Literal_Pred_Id with
+     Pre =>
+       (True_Literal_Pred_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_True_Literal_Pred'Result)
+         = W_True_Literal_Pred
+        and then
+          Get_Ada_Node
+          (Duplicate_True_Literal_Pred'Result)
+          = Ada_Node);
 
    function Duplicate_False_Literal_Pred
      (Ada_Node : Node_Id := Empty;
       Id       : W_False_Literal_Pred_OId)
-     return W_False_Literal_Pred_Id;
-   pragma Precondition
-     (False_Literal_Pred_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_False_Literal_Pred'Result)
-       = W_False_Literal_Pred
-      and then
-        Get_Ada_Node
-        (Duplicate_False_Literal_Pred'Result)
-        = Ada_Node);
+     return W_False_Literal_Pred_Id with
+     Pre =>
+       (False_Literal_Pred_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_False_Literal_Pred'Result)
+         = W_False_Literal_Pred
+        and then
+          Get_Ada_Node
+          (Duplicate_False_Literal_Pred'Result)
+          = Ada_Node);
 
    function Duplicate_Predicate_Identifier
      (Ada_Node : Node_Id := Empty;
       Id       : W_Predicate_Identifier_OId)
-     return W_Predicate_Identifier_Id;
-   pragma Precondition
-     (Predicate_Identifier_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Predicate_Identifier'Result)
-       = W_Predicate_Identifier
-      and then
-        Get_Ada_Node
-        (Duplicate_Predicate_Identifier'Result)
-        = Ada_Node);
+     return W_Predicate_Identifier_Id with
+     Pre =>
+       (Predicate_Identifier_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Predicate_Identifier'Result)
+         = W_Predicate_Identifier
+        and then
+          Get_Ada_Node
+          (Duplicate_Predicate_Identifier'Result)
+          = Ada_Node);
 
    function Duplicate_Predicate_Instance
      (Ada_Node : Node_Id := Empty;
       Id       : W_Predicate_Instance_OId)
-     return W_Predicate_Instance_Id;
-   pragma Precondition
-     (Predicate_Instance_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Predicate_Instance'Result)
-       = W_Predicate_Instance
-      and then
-        Get_Ada_Node
-        (Duplicate_Predicate_Instance'Result)
-        = Ada_Node);
+     return W_Predicate_Instance_Id with
+     Pre =>
+       (Predicate_Instance_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Predicate_Instance'Result)
+         = W_Predicate_Instance
+        and then
+          Get_Ada_Node
+          (Duplicate_Predicate_Instance'Result)
+          = Ada_Node);
 
    function Duplicate_Related_Terms
      (Ada_Node : Node_Id := Empty;
       Id       : W_Related_Terms_OId)
-     return W_Related_Terms_Id;
-   pragma Precondition
-     (Related_Terms_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Related_Terms'Result)
-       = W_Related_Terms
-      and then
-        Get_Ada_Node
-        (Duplicate_Related_Terms'Result)
-        = Ada_Node);
+     return W_Related_Terms_Id with
+     Pre =>
+       (Related_Terms_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Related_Terms'Result)
+         = W_Related_Terms
+        and then
+          Get_Ada_Node
+          (Duplicate_Related_Terms'Result)
+          = Ada_Node);
 
    function Duplicate_Implication
      (Ada_Node : Node_Id := Empty;
       Id       : W_Implication_OId)
-     return W_Implication_Id;
-   pragma Precondition
-     (Implication_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Implication'Result)
-       = W_Implication
-      and then
-        Get_Ada_Node
-        (Duplicate_Implication'Result)
-        = Ada_Node);
+     return W_Implication_Id with
+     Pre =>
+       (Implication_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Implication'Result)
+         = W_Implication
+        and then
+          Get_Ada_Node
+          (Duplicate_Implication'Result)
+          = Ada_Node);
 
    function Duplicate_Equivalence
      (Ada_Node : Node_Id := Empty;
       Id       : W_Equivalence_OId)
-     return W_Equivalence_Id;
-   pragma Precondition
-     (Equivalence_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Equivalence'Result)
-       = W_Equivalence
-      and then
-        Get_Ada_Node
-        (Duplicate_Equivalence'Result)
-        = Ada_Node);
+     return W_Equivalence_Id with
+     Pre =>
+       (Equivalence_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Equivalence'Result)
+         = W_Equivalence
+        and then
+          Get_Ada_Node
+          (Duplicate_Equivalence'Result)
+          = Ada_Node);
 
    function Duplicate_Disjonction
      (Ada_Node : Node_Id := Empty;
       Id       : W_Disjonction_OId)
-     return W_Disjonction_Id;
-   pragma Precondition
-     (Disjonction_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Disjonction'Result)
-       = W_Disjonction
-      and then
-        Get_Ada_Node
-        (Duplicate_Disjonction'Result)
-        = Ada_Node);
+     return W_Disjonction_Id with
+     Pre =>
+       (Disjonction_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Disjonction'Result)
+         = W_Disjonction
+        and then
+          Get_Ada_Node
+          (Duplicate_Disjonction'Result)
+          = Ada_Node);
 
    function Duplicate_Conjonction
      (Ada_Node : Node_Id := Empty;
       Id       : W_Conjonction_OId)
-     return W_Conjonction_Id;
-   pragma Precondition
-     (Conjonction_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Conjonction'Result)
-       = W_Conjonction
-      and then
-        Get_Ada_Node
-        (Duplicate_Conjonction'Result)
-        = Ada_Node);
+     return W_Conjonction_Id with
+     Pre =>
+       (Conjonction_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Conjonction'Result)
+         = W_Conjonction
+        and then
+          Get_Ada_Node
+          (Duplicate_Conjonction'Result)
+          = Ada_Node);
 
    function Duplicate_Negation
      (Ada_Node : Node_Id := Empty;
       Id       : W_Negation_OId)
-     return W_Negation_Id;
-   pragma Precondition
-     (Negation_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Negation'Result)
-       = W_Negation
-      and then
-        Get_Ada_Node
-        (Duplicate_Negation'Result)
-        = Ada_Node);
+     return W_Negation_Id with
+     Pre =>
+       (Negation_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Negation'Result)
+         = W_Negation
+        and then
+          Get_Ada_Node
+          (Duplicate_Negation'Result)
+          = Ada_Node);
 
    function Duplicate_Conditional_Pred
      (Ada_Node : Node_Id := Empty;
       Id       : W_Conditional_Pred_OId)
-     return W_Conditional_Pred_Id;
-   pragma Precondition
-     (Conditional_Pred_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Conditional_Pred'Result)
-       = W_Conditional_Pred
-      and then
-        Get_Ada_Node
-        (Duplicate_Conditional_Pred'Result)
-        = Ada_Node);
+     return W_Conditional_Pred_Id with
+     Pre =>
+       (Conditional_Pred_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Conditional_Pred'Result)
+         = W_Conditional_Pred
+        and then
+          Get_Ada_Node
+          (Duplicate_Conditional_Pred'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Pred
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Pred_OId)
-     return W_Binding_Pred_Id;
-   pragma Precondition
-     (Binding_Pred_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Pred'Result)
-       = W_Binding_Pred
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Pred'Result)
-        = Ada_Node);
+     return W_Binding_Pred_Id with
+     Pre =>
+       (Binding_Pred_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Pred'Result)
+         = W_Binding_Pred
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Pred'Result)
+          = Ada_Node);
 
    function Duplicate_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Id       : W_Universal_Quantif_OId)
-     return W_Universal_Quantif_Id;
-   pragma Precondition
-     (Universal_Quantif_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Universal_Quantif'Result)
-       = W_Universal_Quantif
-      and then
-        Get_Ada_Node
-        (Duplicate_Universal_Quantif'Result)
-        = Ada_Node);
+     return W_Universal_Quantif_Id with
+     Pre =>
+       (Universal_Quantif_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Universal_Quantif'Result)
+         = W_Universal_Quantif
+        and then
+          Get_Ada_Node
+          (Duplicate_Universal_Quantif'Result)
+          = Ada_Node);
 
    function Duplicate_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
       Id       : W_Existential_Quantif_OId)
-     return W_Existential_Quantif_Id;
-   pragma Precondition
-     (Existential_Quantif_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Existential_Quantif'Result)
-       = W_Existential_Quantif
-      and then
-        Get_Ada_Node
-        (Duplicate_Existential_Quantif'Result)
-        = Ada_Node);
+     return W_Existential_Quantif_Id with
+     Pre =>
+       (Existential_Quantif_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Existential_Quantif'Result)
+         = W_Existential_Quantif
+        and then
+          Get_Ada_Node
+          (Duplicate_Existential_Quantif'Result)
+          = Ada_Node);
 
    function Duplicate_Named_Predicate
      (Ada_Node : Node_Id := Empty;
       Id       : W_Named_Predicate_OId)
-     return W_Named_Predicate_Id;
-   pragma Precondition
-     (Named_Predicate_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Named_Predicate'Result)
-       = W_Named_Predicate
-      and then
-        Get_Ada_Node
-        (Duplicate_Named_Predicate'Result)
-        = Ada_Node);
+     return W_Named_Predicate_Id with
+     Pre =>
+       (Named_Predicate_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Named_Predicate'Result)
+         = W_Named_Predicate
+        and then
+          Get_Ada_Node
+          (Duplicate_Named_Predicate'Result)
+          = Ada_Node);
 
    function Duplicate_Protected_Predicate
      (Ada_Node : Node_Id := Empty;
       Id       : W_Protected_Predicate_OId)
-     return W_Protected_Predicate_Id;
-   pragma Precondition
-     (Protected_Predicate_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Protected_Predicate'Result)
-       = W_Protected_Predicate
-      and then
-        Get_Ada_Node
-        (Duplicate_Protected_Predicate'Result)
-        = Ada_Node);
+     return W_Protected_Predicate_Id with
+     Pre =>
+       (Protected_Predicate_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Protected_Predicate'Result)
+         = W_Protected_Predicate
+        and then
+          Get_Ada_Node
+          (Duplicate_Protected_Predicate'Result)
+          = Ada_Node);
 
    function Duplicate_Triggers
      (Ada_Node : Node_Id := Empty;
       Id       : W_Triggers_OId)
-     return W_Triggers_Id;
-   pragma Precondition
-     (Triggers_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Triggers'Result)
-       = W_Triggers
-      and then
-        Get_Ada_Node
-        (Duplicate_Triggers'Result)
-        = Ada_Node);
+     return W_Triggers_Id with
+     Pre =>
+       (Triggers_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Triggers'Result)
+         = W_Triggers
+        and then
+          Get_Ada_Node
+          (Duplicate_Triggers'Result)
+          = Ada_Node);
 
    function Duplicate_Trigger
      (Ada_Node : Node_Id := Empty;
       Id       : W_Trigger_OId)
-     return W_Trigger_Id;
-   pragma Precondition
-     (Trigger_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Trigger'Result)
-       = W_Trigger
-      and then
-        Get_Ada_Node
-        (Duplicate_Trigger'Result)
-        = Ada_Node);
+     return W_Trigger_Id with
+     Pre =>
+       (Trigger_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Trigger'Result)
+         = W_Trigger
+        and then
+          Get_Ada_Node
+          (Duplicate_Trigger'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Eq
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Eq_OId)
-     return W_Rel_Eq_Id;
-   pragma Precondition
-     (Rel_Eq_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Eq'Result)
-       = W_Rel_Eq
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Eq'Result)
-        = Ada_Node);
+     return W_Rel_Eq_Id with
+     Pre =>
+       (Rel_Eq_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Eq'Result)
+         = W_Rel_Eq
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Eq'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Ne
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Ne_OId)
-     return W_Rel_Ne_Id;
-   pragma Precondition
-     (Rel_Ne_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Ne'Result)
-       = W_Rel_Ne
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Ne'Result)
-        = Ada_Node);
+     return W_Rel_Ne_Id with
+     Pre =>
+       (Rel_Ne_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Ne'Result)
+         = W_Rel_Ne
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Ne'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Lt
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Lt_OId)
-     return W_Rel_Lt_Id;
-   pragma Precondition
-     (Rel_Lt_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Lt'Result)
-       = W_Rel_Lt
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Lt'Result)
-        = Ada_Node);
+     return W_Rel_Lt_Id with
+     Pre =>
+       (Rel_Lt_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Lt'Result)
+         = W_Rel_Lt
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Lt'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Le
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Le_OId)
-     return W_Rel_Le_Id;
-   pragma Precondition
-     (Rel_Le_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Le'Result)
-       = W_Rel_Le
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Le'Result)
-        = Ada_Node);
+     return W_Rel_Le_Id with
+     Pre =>
+       (Rel_Le_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Le'Result)
+         = W_Rel_Le
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Le'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Gt
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Gt_OId)
-     return W_Rel_Gt_Id;
-   pragma Precondition
-     (Rel_Gt_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Gt'Result)
-       = W_Rel_Gt
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Gt'Result)
-        = Ada_Node);
+     return W_Rel_Gt_Id with
+     Pre =>
+       (Rel_Gt_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Gt'Result)
+         = W_Rel_Gt
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Gt'Result)
+          = Ada_Node);
 
    function Duplicate_Rel_Ge
      (Ada_Node : Node_Id := Empty;
       Id       : W_Rel_Ge_OId)
-     return W_Rel_Ge_Id;
-   pragma Precondition
-     (Rel_Ge_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Rel_Ge'Result)
-       = W_Rel_Ge
-      and then
-        Get_Ada_Node
-        (Duplicate_Rel_Ge'Result)
-        = Ada_Node);
+     return W_Rel_Ge_Id with
+     Pre =>
+       (Rel_Ge_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Rel_Ge'Result)
+         = W_Rel_Ge
+        and then
+          Get_Ada_Node
+          (Duplicate_Rel_Ge'Result)
+          = Ada_Node);
 
    function Duplicate_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Type_OId)
-     return W_Type_Id;
-   pragma Precondition
-     (Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Type'Result)
-       = W_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Type'Result)
-        = Ada_Node);
+     return W_Type_Id with
+     Pre =>
+       (Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Type'Result)
+         = W_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Logic
      (Ada_Node : Node_Id := Empty;
       Id       : W_Logic_OId)
-     return W_Logic_Id;
-   pragma Precondition
-     (Logic_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Logic'Result)
-       = W_Logic
-      and then
-        Get_Ada_Node
-        (Duplicate_Logic'Result)
-        = Ada_Node);
+     return W_Logic_Id with
+     Pre =>
+       (Logic_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Logic'Result)
+         = W_Logic
+        and then
+          Get_Ada_Node
+          (Duplicate_Logic'Result)
+          = Ada_Node);
 
    function Duplicate_Function
      (Ada_Node : Node_Id := Empty;
       Id       : W_Function_OId)
-     return W_Function_Id;
-   pragma Precondition
-     (Function_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Function'Result)
-       = W_Function
-      and then
-        Get_Ada_Node
-        (Duplicate_Function'Result)
-        = Ada_Node);
+     return W_Function_Id with
+     Pre =>
+       (Function_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Function'Result)
+         = W_Function
+        and then
+          Get_Ada_Node
+          (Duplicate_Function'Result)
+          = Ada_Node);
 
    function Duplicate_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
       Id       : W_Predicate_Definition_OId)
-     return W_Predicate_Definition_Id;
-   pragma Precondition
-     (Predicate_Definition_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Predicate_Definition'Result)
-       = W_Predicate_Definition
-      and then
-        Get_Ada_Node
-        (Duplicate_Predicate_Definition'Result)
-        = Ada_Node);
+     return W_Predicate_Definition_Id with
+     Pre =>
+       (Predicate_Definition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Predicate_Definition'Result)
+         = W_Predicate_Definition
+        and then
+          Get_Ada_Node
+          (Duplicate_Predicate_Definition'Result)
+          = Ada_Node);
 
    function Duplicate_Inductive
      (Ada_Node : Node_Id := Empty;
       Id       : W_Inductive_OId)
-     return W_Inductive_Id;
-   pragma Precondition
-     (Inductive_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Inductive'Result)
-       = W_Inductive
-      and then
-        Get_Ada_Node
-        (Duplicate_Inductive'Result)
-        = Ada_Node);
+     return W_Inductive_Id with
+     Pre =>
+       (Inductive_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Inductive'Result)
+         = W_Inductive
+        and then
+          Get_Ada_Node
+          (Duplicate_Inductive'Result)
+          = Ada_Node);
 
    function Duplicate_Axiom
      (Ada_Node : Node_Id := Empty;
       Id       : W_Axiom_OId)
-     return W_Axiom_Id;
-   pragma Precondition
-     (Axiom_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Axiom'Result)
-       = W_Axiom
-      and then
-        Get_Ada_Node
-        (Duplicate_Axiom'Result)
-        = Ada_Node);
+     return W_Axiom_Id with
+     Pre =>
+       (Axiom_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Axiom'Result)
+         = W_Axiom
+        and then
+          Get_Ada_Node
+          (Duplicate_Axiom'Result)
+          = Ada_Node);
 
    function Duplicate_Goal
      (Ada_Node : Node_Id := Empty;
       Id       : W_Goal_OId)
-     return W_Goal_Id;
-   pragma Precondition
-     (Goal_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Goal'Result)
-       = W_Goal
-      and then
-        Get_Ada_Node
-        (Duplicate_Goal'Result)
-        = Ada_Node);
+     return W_Goal_Id with
+     Pre =>
+       (Goal_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Goal'Result)
+         = W_Goal
+        and then
+          Get_Ada_Node
+          (Duplicate_Goal'Result)
+          = Ada_Node);
 
    function Duplicate_External
      (Ada_Node : Node_Id := Empty;
       Id       : W_External_OId)
-     return W_External_Id;
-   pragma Precondition
-     (External_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_External'Result)
-       = W_External
-      and then
-        Get_Ada_Node
-        (Duplicate_External'Result)
-        = Ada_Node);
+     return W_External_Id with
+     Pre =>
+       (External_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_External'Result)
+         = W_External
+        and then
+          Get_Ada_Node
+          (Duplicate_External'Result)
+          = Ada_Node);
 
    function Duplicate_Logic_Type
      (Ada_Node : Node_Id := Empty;
       Id       : W_Logic_Type_OId)
-     return W_Logic_Type_Id;
-   pragma Precondition
-     (Logic_Type_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Logic_Type'Result)
-       = W_Logic_Type
-      and then
-        Get_Ada_Node
-        (Duplicate_Logic_Type'Result)
-        = Ada_Node);
+     return W_Logic_Type_Id with
+     Pre =>
+       (Logic_Type_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Logic_Type'Result)
+         = W_Logic_Type
+        and then
+          Get_Ada_Node
+          (Duplicate_Logic_Type'Result)
+          = Ada_Node);
 
    function Duplicate_Logic_Binder
      (Ada_Node : Node_Id := Empty;
       Id       : W_Logic_Binder_OId)
-     return W_Logic_Binder_Id;
-   pragma Precondition
-     (Logic_Binder_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Logic_Binder'Result)
-       = W_Logic_Binder
-      and then
-        Get_Ada_Node
-        (Duplicate_Logic_Binder'Result)
-        = Ada_Node);
+     return W_Logic_Binder_Id with
+     Pre =>
+       (Logic_Binder_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Logic_Binder'Result)
+         = W_Logic_Binder
+        and then
+          Get_Ada_Node
+          (Duplicate_Logic_Binder'Result)
+          = Ada_Node);
 
    function Duplicate_Inductive_Case
      (Ada_Node : Node_Id := Empty;
       Id       : W_Inductive_Case_OId)
-     return W_Inductive_Case_Id;
-   pragma Precondition
-     (Inductive_Case_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Inductive_Case'Result)
-       = W_Inductive_Case
-      and then
-        Get_Ada_Node
-        (Duplicate_Inductive_Case'Result)
-        = Ada_Node);
+     return W_Inductive_Case_Id with
+     Pre =>
+       (Inductive_Case_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Inductive_Case'Result)
+         = W_Inductive_Case
+        and then
+          Get_Ada_Node
+          (Duplicate_Inductive_Case'Result)
+          = Ada_Node);
 
    function Duplicate_Effects
      (Ada_Node : Node_Id := Empty;
       Id       : W_Effects_OId)
-     return W_Effects_Id;
-   pragma Precondition
-     (Effects_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Effects'Result)
-       = W_Effects
-      and then
-        Get_Ada_Node
-        (Duplicate_Effects'Result)
-        = Ada_Node);
+     return W_Effects_Id with
+     Pre =>
+       (Effects_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Effects'Result)
+         = W_Effects
+        and then
+          Get_Ada_Node
+          (Duplicate_Effects'Result)
+          = Ada_Node);
 
    function Duplicate_Precondition
      (Ada_Node : Node_Id := Empty;
       Id       : W_Precondition_OId)
-     return W_Precondition_Id;
-   pragma Precondition
-     (Precondition_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Precondition'Result)
-       = W_Precondition
-      and then
-        Get_Ada_Node
-        (Duplicate_Precondition'Result)
-        = Ada_Node);
+     return W_Precondition_Id with
+     Pre =>
+       (Precondition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Precondition'Result)
+         = W_Precondition
+        and then
+          Get_Ada_Node
+          (Duplicate_Precondition'Result)
+          = Ada_Node);
 
    function Duplicate_Postcondition
      (Ada_Node : Node_Id := Empty;
       Id       : W_Postcondition_OId)
-     return W_Postcondition_Id;
-   pragma Precondition
-     (Postcondition_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Postcondition'Result)
-       = W_Postcondition
-      and then
-        Get_Ada_Node
-        (Duplicate_Postcondition'Result)
-        = Ada_Node);
+     return W_Postcondition_Id with
+     Pre =>
+       (Postcondition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Postcondition'Result)
+         = W_Postcondition
+        and then
+          Get_Ada_Node
+          (Duplicate_Postcondition'Result)
+          = Ada_Node);
 
    function Duplicate_Exn_Condition
      (Ada_Node : Node_Id := Empty;
       Id       : W_Exn_Condition_OId)
-     return W_Exn_Condition_Id;
-   pragma Precondition
-     (Exn_Condition_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Exn_Condition'Result)
-       = W_Exn_Condition
-      and then
-        Get_Ada_Node
-        (Duplicate_Exn_Condition'Result)
-        = Ada_Node);
+     return W_Exn_Condition_Id with
+     Pre =>
+       (Exn_Condition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Exn_Condition'Result)
+         = W_Exn_Condition
+        and then
+          Get_Ada_Node
+          (Duplicate_Exn_Condition'Result)
+          = Ada_Node);
 
    function Duplicate_Assertion
      (Ada_Node : Node_Id := Empty;
       Id       : W_Assertion_OId)
-     return W_Assertion_Id;
-   pragma Precondition
-     (Assertion_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Assertion'Result)
-       = W_Assertion
-      and then
-        Get_Ada_Node
-        (Duplicate_Assertion'Result)
-        = Ada_Node);
+     return W_Assertion_Id with
+     Pre =>
+       (Assertion_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Assertion'Result)
+         = W_Assertion
+        and then
+          Get_Ada_Node
+          (Duplicate_Assertion'Result)
+          = Ada_Node);
 
    function Duplicate_Prog_Constant
      (Ada_Node : Node_Id := Empty;
       Id       : W_Prog_Constant_OId)
-     return W_Prog_Constant_Id;
-   pragma Precondition
-     (Prog_Constant_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Prog_Constant'Result)
-       = W_Prog_Constant
-      and then
-        Get_Ada_Node
-        (Duplicate_Prog_Constant'Result)
-        = Ada_Node);
+     return W_Prog_Constant_Id with
+     Pre =>
+       (Prog_Constant_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Prog_Constant'Result)
+         = W_Prog_Constant
+        and then
+          Get_Ada_Node
+          (Duplicate_Prog_Constant'Result)
+          = Ada_Node);
 
    function Duplicate_Prog_Identifier
      (Ada_Node : Node_Id := Empty;
       Id       : W_Prog_Identifier_OId)
-     return W_Prog_Identifier_Id;
-   pragma Precondition
-     (Prog_Identifier_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Prog_Identifier'Result)
-       = W_Prog_Identifier
-      and then
-        Get_Ada_Node
-        (Duplicate_Prog_Identifier'Result)
-        = Ada_Node);
+     return W_Prog_Identifier_Id with
+     Pre =>
+       (Prog_Identifier_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Prog_Identifier'Result)
+         = W_Prog_Identifier
+        and then
+          Get_Ada_Node
+          (Duplicate_Prog_Identifier'Result)
+          = Ada_Node);
 
    function Duplicate_Deref
      (Ada_Node : Node_Id := Empty;
       Id       : W_Deref_OId)
-     return W_Deref_Id;
-   pragma Precondition
-     (Deref_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Deref'Result)
-       = W_Deref
-      and then
-        Get_Ada_Node
-        (Duplicate_Deref'Result)
-        = Ada_Node);
+     return W_Deref_Id with
+     Pre =>
+       (Deref_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Deref'Result)
+         = W_Deref
+        and then
+          Get_Ada_Node
+          (Duplicate_Deref'Result)
+          = Ada_Node);
 
    function Duplicate_Assignment
      (Ada_Node : Node_Id := Empty;
       Id       : W_Assignment_OId)
-     return W_Assignment_Id;
-   pragma Precondition
-     (Assignment_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Assignment'Result)
-       = W_Assignment
-      and then
-        Get_Ada_Node
-        (Duplicate_Assignment'Result)
-        = Ada_Node);
+     return W_Assignment_Id with
+     Pre =>
+       (Assignment_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Assignment'Result)
+         = W_Assignment
+        and then
+          Get_Ada_Node
+          (Duplicate_Assignment'Result)
+          = Ada_Node);
 
    function Duplicate_Array_Access
      (Ada_Node : Node_Id := Empty;
       Id       : W_Array_Access_OId)
-     return W_Array_Access_Id;
-   pragma Precondition
-     (Array_Access_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Array_Access'Result)
-       = W_Array_Access
-      and then
-        Get_Ada_Node
-        (Duplicate_Array_Access'Result)
-        = Ada_Node);
+     return W_Array_Access_Id with
+     Pre =>
+       (Array_Access_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Array_Access'Result)
+         = W_Array_Access
+        and then
+          Get_Ada_Node
+          (Duplicate_Array_Access'Result)
+          = Ada_Node);
 
    function Duplicate_Array_Update
      (Ada_Node : Node_Id := Empty;
       Id       : W_Array_Update_OId)
-     return W_Array_Update_Id;
-   pragma Precondition
-     (Array_Update_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Array_Update'Result)
-       = W_Array_Update
-      and then
-        Get_Ada_Node
-        (Duplicate_Array_Update'Result)
-        = Ada_Node);
+     return W_Array_Update_Id with
+     Pre =>
+       (Array_Update_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Array_Update'Result)
+         = W_Array_Update
+        and then
+          Get_Ada_Node
+          (Duplicate_Array_Update'Result)
+          = Ada_Node);
 
    function Duplicate_Infix_Call
      (Ada_Node : Node_Id := Empty;
       Id       : W_Infix_Call_OId)
-     return W_Infix_Call_Id;
-   pragma Precondition
-     (Infix_Call_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Infix_Call'Result)
-       = W_Infix_Call
-      and then
-        Get_Ada_Node
-        (Duplicate_Infix_Call'Result)
-        = Ada_Node);
+     return W_Infix_Call_Id with
+     Pre =>
+       (Infix_Call_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Infix_Call'Result)
+         = W_Infix_Call
+        and then
+          Get_Ada_Node
+          (Duplicate_Infix_Call'Result)
+          = Ada_Node);
 
    function Duplicate_Prefix_Call
      (Ada_Node : Node_Id := Empty;
       Id       : W_Prefix_Call_OId)
-     return W_Prefix_Call_Id;
-   pragma Precondition
-     (Prefix_Call_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Prefix_Call'Result)
-       = W_Prefix_Call
-      and then
-        Get_Ada_Node
-        (Duplicate_Prefix_Call'Result)
-        = Ada_Node);
+     return W_Prefix_Call_Id with
+     Pre =>
+       (Prefix_Call_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Prefix_Call'Result)
+         = W_Prefix_Call
+        and then
+          Get_Ada_Node
+          (Duplicate_Prefix_Call'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Prog_OId)
-     return W_Binding_Prog_Id;
-   pragma Precondition
-     (Binding_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Prog'Result)
-       = W_Binding_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Prog'Result)
-        = Ada_Node);
+     return W_Binding_Prog_Id with
+     Pre =>
+       (Binding_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Prog'Result)
+         = W_Binding_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Ref
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Ref_OId)
-     return W_Binding_Ref_Id;
-   pragma Precondition
-     (Binding_Ref_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Ref'Result)
-       = W_Binding_Ref
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Ref'Result)
-        = Ada_Node);
+     return W_Binding_Ref_Id with
+     Pre =>
+       (Binding_Ref_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Ref'Result)
+         = W_Binding_Ref
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Ref'Result)
+          = Ada_Node);
 
    function Duplicate_Conditional_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Conditional_Prog_OId)
-     return W_Conditional_Prog_Id;
-   pragma Precondition
-     (Conditional_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Conditional_Prog'Result)
-       = W_Conditional_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Conditional_Prog'Result)
-        = Ada_Node);
+     return W_Conditional_Prog_Id with
+     Pre =>
+       (Conditional_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Conditional_Prog'Result)
+         = W_Conditional_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Conditional_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_While_Loop
      (Ada_Node : Node_Id := Empty;
       Id       : W_While_Loop_OId)
-     return W_While_Loop_Id;
-   pragma Precondition
-     (While_Loop_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_While_Loop'Result)
-       = W_While_Loop
-      and then
-        Get_Ada_Node
-        (Duplicate_While_Loop'Result)
-        = Ada_Node);
+     return W_While_Loop_Id with
+     Pre =>
+       (While_Loop_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_While_Loop'Result)
+         = W_While_Loop
+        and then
+          Get_Ada_Node
+          (Duplicate_While_Loop'Result)
+          = Ada_Node);
 
    function Duplicate_Statement_Sequence
      (Ada_Node : Node_Id := Empty;
       Id       : W_Statement_Sequence_OId)
-     return W_Statement_Sequence_Id;
-   pragma Precondition
-     (Statement_Sequence_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Statement_Sequence'Result)
-       = W_Statement_Sequence
-      and then
-        Get_Ada_Node
-        (Duplicate_Statement_Sequence'Result)
-        = Ada_Node);
+     return W_Statement_Sequence_Id with
+     Pre =>
+       (Statement_Sequence_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Statement_Sequence'Result)
+         = W_Statement_Sequence
+        and then
+          Get_Ada_Node
+          (Duplicate_Statement_Sequence'Result)
+          = Ada_Node);
 
    function Duplicate_Label
      (Ada_Node : Node_Id := Empty;
       Id       : W_Label_OId)
-     return W_Label_Id;
-   pragma Precondition
-     (Label_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Label'Result)
-       = W_Label
-      and then
-        Get_Ada_Node
-        (Duplicate_Label'Result)
-        = Ada_Node);
+     return W_Label_Id with
+     Pre =>
+       (Label_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Label'Result)
+         = W_Label
+        and then
+          Get_Ada_Node
+          (Duplicate_Label'Result)
+          = Ada_Node);
 
    function Duplicate_Assert
      (Ada_Node : Node_Id := Empty;
       Id       : W_Assert_OId)
-     return W_Assert_Id;
-   pragma Precondition
-     (Assert_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Assert'Result)
-       = W_Assert
-      and then
-        Get_Ada_Node
-        (Duplicate_Assert'Result)
-        = Ada_Node);
+     return W_Assert_Id with
+     Pre =>
+       (Assert_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Assert'Result)
+         = W_Assert
+        and then
+          Get_Ada_Node
+          (Duplicate_Assert'Result)
+          = Ada_Node);
 
    function Duplicate_Post_Assertion
      (Ada_Node : Node_Id := Empty;
       Id       : W_Post_Assertion_OId)
-     return W_Post_Assertion_Id;
-   pragma Precondition
-     (Post_Assertion_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Post_Assertion'Result)
-       = W_Post_Assertion
-      and then
-        Get_Ada_Node
-        (Duplicate_Post_Assertion'Result)
-        = Ada_Node);
+     return W_Post_Assertion_Id with
+     Pre =>
+       (Post_Assertion_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Post_Assertion'Result)
+         = W_Post_Assertion
+        and then
+          Get_Ada_Node
+          (Duplicate_Post_Assertion'Result)
+          = Ada_Node);
 
    function Duplicate_Opaque_Assertion
      (Ada_Node : Node_Id := Empty;
       Id       : W_Opaque_Assertion_OId)
-     return W_Opaque_Assertion_Id;
-   pragma Precondition
-     (Opaque_Assertion_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Opaque_Assertion'Result)
-       = W_Opaque_Assertion
-      and then
-        Get_Ada_Node
-        (Duplicate_Opaque_Assertion'Result)
-        = Ada_Node);
+     return W_Opaque_Assertion_Id with
+     Pre =>
+       (Opaque_Assertion_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Opaque_Assertion'Result)
+         = W_Opaque_Assertion
+        and then
+          Get_Ada_Node
+          (Duplicate_Opaque_Assertion'Result)
+          = Ada_Node);
 
    function Duplicate_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Id       : W_Fun_Def_OId)
-     return W_Fun_Def_Id;
-   pragma Precondition
-     (Fun_Def_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Fun_Def'Result)
-       = W_Fun_Def
-      and then
-        Get_Ada_Node
-        (Duplicate_Fun_Def'Result)
-        = Ada_Node);
+     return W_Fun_Def_Id with
+     Pre =>
+       (Fun_Def_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Fun_Def'Result)
+         = W_Fun_Def
+        and then
+          Get_Ada_Node
+          (Duplicate_Fun_Def'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Fun
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Fun_OId)
-     return W_Binding_Fun_Id;
-   pragma Precondition
-     (Binding_Fun_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Fun'Result)
-       = W_Binding_Fun
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Fun'Result)
-        = Ada_Node);
+     return W_Binding_Fun_Id with
+     Pre =>
+       (Binding_Fun_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Fun'Result)
+         = W_Binding_Fun
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Fun'Result)
+          = Ada_Node);
 
    function Duplicate_Binding_Rec
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Rec_OId)
-     return W_Binding_Rec_Id;
-   pragma Precondition
-     (Binding_Rec_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binding_Rec'Result)
-       = W_Binding_Rec
-      and then
-        Get_Ada_Node
-        (Duplicate_Binding_Rec'Result)
-        = Ada_Node);
+     return W_Binding_Rec_Id with
+     Pre =>
+       (Binding_Rec_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binding_Rec'Result)
+         = W_Binding_Rec
+        and then
+          Get_Ada_Node
+          (Duplicate_Binding_Rec'Result)
+          = Ada_Node);
 
    function Duplicate_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
       Id       : W_Prog_Sequence_OId)
-     return W_Prog_Sequence_Id;
-   pragma Precondition
-     (Prog_Sequence_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Prog_Sequence'Result)
-       = W_Prog_Sequence
-      and then
-        Get_Ada_Node
-        (Duplicate_Prog_Sequence'Result)
-        = Ada_Node);
+     return W_Prog_Sequence_Id with
+     Pre =>
+       (Prog_Sequence_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Prog_Sequence'Result)
+         = W_Prog_Sequence
+        and then
+          Get_Ada_Node
+          (Duplicate_Prog_Sequence'Result)
+          = Ada_Node);
 
    function Duplicate_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Id       : W_Raise_Statement_OId)
-     return W_Raise_Statement_Id;
-   pragma Precondition
-     (Raise_Statement_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Raise_Statement'Result)
-       = W_Raise_Statement
-      and then
-        Get_Ada_Node
-        (Duplicate_Raise_Statement'Result)
-        = Ada_Node);
+     return W_Raise_Statement_Id with
+     Pre =>
+       (Raise_Statement_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Raise_Statement'Result)
+         = W_Raise_Statement
+        and then
+          Get_Ada_Node
+          (Duplicate_Raise_Statement'Result)
+          = Ada_Node);
 
    function Duplicate_Raise_Statement_With_Parameters
      (Ada_Node : Node_Id := Empty;
       Id       : W_Raise_Statement_With_Parameters_OId)
-     return W_Raise_Statement_With_Parameters_Id;
-   pragma Precondition
-     (Raise_Statement_With_Parameters_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Raise_Statement_With_Parameters'Result)
-       = W_Raise_Statement_With_Parameters
-      and then
-        Get_Ada_Node
-        (Duplicate_Raise_Statement_With_Parameters'Result)
-        = Ada_Node);
+     return W_Raise_Statement_With_Parameters_Id with
+     Pre =>
+       (Raise_Statement_With_Parameters_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Raise_Statement_With_Parameters'Result)
+         = W_Raise_Statement_With_Parameters
+        and then
+          Get_Ada_Node
+          (Duplicate_Raise_Statement_With_Parameters'Result)
+          = Ada_Node);
 
    function Duplicate_Try_Block
      (Ada_Node : Node_Id := Empty;
       Id       : W_Try_Block_OId)
-     return W_Try_Block_Id;
-   pragma Precondition
-     (Try_Block_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Try_Block'Result)
-       = W_Try_Block
-      and then
-        Get_Ada_Node
-        (Duplicate_Try_Block'Result)
-        = Ada_Node);
+     return W_Try_Block_Id with
+     Pre =>
+       (Try_Block_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Try_Block'Result)
+         = W_Try_Block
+        and then
+          Get_Ada_Node
+          (Duplicate_Try_Block'Result)
+          = Ada_Node);
 
    function Duplicate_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
       Id       : W_Unreachable_Code_OId)
-     return W_Unreachable_Code_Id;
-   pragma Precondition
-     (Unreachable_Code_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Unreachable_Code'Result)
-       = W_Unreachable_Code
-      and then
-        Get_Ada_Node
-        (Duplicate_Unreachable_Code'Result)
-        = Ada_Node);
+     return W_Unreachable_Code_Id with
+     Pre =>
+       (Unreachable_Code_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Unreachable_Code'Result)
+         = W_Unreachable_Code
+        and then
+          Get_Ada_Node
+          (Duplicate_Unreachable_Code'Result)
+          = Ada_Node);
 
    function Duplicate_Begin_Block
      (Ada_Node : Node_Id := Empty;
       Id       : W_Begin_Block_OId)
-     return W_Begin_Block_Id;
-   pragma Precondition
-     (Begin_Block_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Begin_Block'Result)
-       = W_Begin_Block
-      and then
-        Get_Ada_Node
-        (Duplicate_Begin_Block'Result)
-        = Ada_Node);
+     return W_Begin_Block_Id with
+     Pre =>
+       (Begin_Block_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Begin_Block'Result)
+         = W_Begin_Block
+        and then
+          Get_Ada_Node
+          (Duplicate_Begin_Block'Result)
+          = Ada_Node);
 
    function Duplicate_Protected_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Protected_Prog_OId)
-     return W_Protected_Prog_Id;
-   pragma Precondition
-     (Protected_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Protected_Prog'Result)
-       = W_Protected_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Protected_Prog'Result)
-        = Ada_Node);
+     return W_Protected_Prog_Id with
+     Pre =>
+       (Protected_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Protected_Prog'Result)
+         = W_Protected_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Protected_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Add_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Add_Prog_OId)
-     return W_Op_Add_Prog_Id;
-   pragma Precondition
-     (Op_Add_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Add_Prog'Result)
-       = W_Op_Add_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Add_Prog'Result)
-        = Ada_Node);
+     return W_Op_Add_Prog_Id with
+     Pre =>
+       (Op_Add_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Add_Prog'Result)
+         = W_Op_Add_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Add_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Substract_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Substract_Prog_OId)
-     return W_Op_Substract_Prog_Id;
-   pragma Precondition
-     (Op_Substract_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Substract_Prog'Result)
-       = W_Op_Substract_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Substract_Prog'Result)
-        = Ada_Node);
+     return W_Op_Substract_Prog_Id with
+     Pre =>
+       (Op_Substract_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Substract_Prog'Result)
+         = W_Op_Substract_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Substract_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Multiply_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Multiply_Prog_OId)
-     return W_Op_Multiply_Prog_Id;
-   pragma Precondition
-     (Op_Multiply_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Multiply_Prog'Result)
-       = W_Op_Multiply_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Multiply_Prog'Result)
-        = Ada_Node);
+     return W_Op_Multiply_Prog_Id with
+     Pre =>
+       (Op_Multiply_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Multiply_Prog'Result)
+         = W_Op_Multiply_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Multiply_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Divide_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Divide_Prog_OId)
-     return W_Op_Divide_Prog_Id;
-   pragma Precondition
-     (Op_Divide_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Divide_Prog'Result)
-       = W_Op_Divide_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Divide_Prog'Result)
-        = Ada_Node);
+     return W_Op_Divide_Prog_Id with
+     Pre =>
+       (Op_Divide_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Divide_Prog'Result)
+         = W_Op_Divide_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Divide_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Mod_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Mod_Prog_OId)
-     return W_Op_Mod_Prog_Id;
-   pragma Precondition
-     (Op_Mod_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Mod_Prog'Result)
-       = W_Op_Mod_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Mod_Prog'Result)
-        = Ada_Node);
+     return W_Op_Mod_Prog_Id with
+     Pre =>
+       (Op_Mod_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Mod_Prog'Result)
+         = W_Op_Mod_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Mod_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Eq_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Eq_Prog_OId)
-     return W_Op_Eq_Prog_Id;
-   pragma Precondition
-     (Op_Eq_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Eq_Prog'Result)
-       = W_Op_Eq_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Eq_Prog'Result)
-        = Ada_Node);
+     return W_Op_Eq_Prog_Id with
+     Pre =>
+       (Op_Eq_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Eq_Prog'Result)
+         = W_Op_Eq_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Eq_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Ne_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Ne_Prog_OId)
-     return W_Op_Ne_Prog_Id;
-   pragma Precondition
-     (Op_Ne_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Ne_Prog'Result)
-       = W_Op_Ne_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Ne_Prog'Result)
-        = Ada_Node);
+     return W_Op_Ne_Prog_Id with
+     Pre =>
+       (Op_Ne_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Ne_Prog'Result)
+         = W_Op_Ne_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Ne_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Lt_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Lt_Prog_OId)
-     return W_Op_Lt_Prog_Id;
-   pragma Precondition
-     (Op_Lt_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Lt_Prog'Result)
-       = W_Op_Lt_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Lt_Prog'Result)
-        = Ada_Node);
+     return W_Op_Lt_Prog_Id with
+     Pre =>
+       (Op_Lt_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Lt_Prog'Result)
+         = W_Op_Lt_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Lt_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Le_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Le_Prog_OId)
-     return W_Op_Le_Prog_Id;
-   pragma Precondition
-     (Op_Le_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Le_Prog'Result)
-       = W_Op_Le_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Le_Prog'Result)
-        = Ada_Node);
+     return W_Op_Le_Prog_Id with
+     Pre =>
+       (Op_Le_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Le_Prog'Result)
+         = W_Op_Le_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Le_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Gt_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Gt_Prog_OId)
-     return W_Op_Gt_Prog_Id;
-   pragma Precondition
-     (Op_Gt_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Gt_Prog'Result)
-       = W_Op_Gt_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Gt_Prog'Result)
-        = Ada_Node);
+     return W_Op_Gt_Prog_Id with
+     Pre =>
+       (Op_Gt_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Gt_Prog'Result)
+         = W_Op_Gt_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Gt_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Ge_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Ge_Prog_OId)
-     return W_Op_Ge_Prog_Id;
-   pragma Precondition
-     (Op_Ge_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Ge_Prog'Result)
-       = W_Op_Ge_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Ge_Prog'Result)
-        = Ada_Node);
+     return W_Op_Ge_Prog_Id with
+     Pre =>
+       (Op_Ge_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Ge_Prog'Result)
+         = W_Op_Ge_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Ge_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Or_Else_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Or_Else_Prog_OId)
-     return W_Op_Or_Else_Prog_Id;
-   pragma Precondition
-     (Op_Or_Else_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Or_Else_Prog'Result)
-       = W_Op_Or_Else_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Or_Else_Prog'Result)
-        = Ada_Node);
+     return W_Op_Or_Else_Prog_Id with
+     Pre =>
+       (Op_Or_Else_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Or_Else_Prog'Result)
+         = W_Op_Or_Else_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Or_Else_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_And_Then_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_And_Then_Prog_OId)
-     return W_Op_And_Then_Prog_Id;
-   pragma Precondition
-     (Op_And_Then_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_And_Then_Prog'Result)
-       = W_Op_And_Then_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_And_Then_Prog'Result)
-        = Ada_Node);
+     return W_Op_And_Then_Prog_Id with
+     Pre =>
+       (Op_And_Then_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_And_Then_Prog'Result)
+         = W_Op_And_Then_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_And_Then_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Minus_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Minus_Prog_OId)
-     return W_Op_Minus_Prog_Id;
-   pragma Precondition
-     (Op_Minus_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Minus_Prog'Result)
-       = W_Op_Minus_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Minus_Prog'Result)
-        = Ada_Node);
+     return W_Op_Minus_Prog_Id with
+     Pre =>
+       (Op_Minus_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Minus_Prog'Result)
+         = W_Op_Minus_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Minus_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Op_Not_Prog
      (Ada_Node : Node_Id := Empty;
       Id       : W_Op_Not_Prog_OId)
-     return W_Op_Not_Prog_Id;
-   pragma Precondition
-     (Op_Not_Prog_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Op_Not_Prog'Result)
-       = W_Op_Not_Prog
-      and then
-        Get_Ada_Node
-        (Duplicate_Op_Not_Prog'Result)
-        = Ada_Node);
+     return W_Op_Not_Prog_Id with
+     Pre =>
+       (Op_Not_Prog_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Op_Not_Prog'Result)
+         = W_Op_Not_Prog
+        and then
+          Get_Ada_Node
+          (Duplicate_Op_Not_Prog'Result)
+          = Ada_Node);
 
    function Duplicate_Binders
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binders_OId)
-     return W_Binders_Id;
-   pragma Precondition
-     (Binders_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binders'Result)
-       = W_Binders
-      and then
-        Get_Ada_Node
-        (Duplicate_Binders'Result)
-        = Ada_Node);
+     return W_Binders_Id with
+     Pre =>
+       (Binders_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binders'Result)
+         = W_Binders
+        and then
+          Get_Ada_Node
+          (Duplicate_Binders'Result)
+          = Ada_Node);
 
    function Duplicate_Binder
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binder_OId)
-     return W_Binder_Id;
-   pragma Precondition
-     (Binder_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Binder'Result)
-       = W_Binder
-      and then
-        Get_Ada_Node
-        (Duplicate_Binder'Result)
-        = Ada_Node);
+     return W_Binder_Id with
+     Pre =>
+       (Binder_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Binder'Result)
+         = W_Binder
+        and then
+          Get_Ada_Node
+          (Duplicate_Binder'Result)
+          = Ada_Node);
 
    function Duplicate_Recfun
      (Ada_Node : Node_Id := Empty;
       Id       : W_Recfun_OId)
-     return W_Recfun_Id;
-   pragma Precondition
-     (Recfun_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Recfun'Result)
-       = W_Recfun
-      and then
-        Get_Ada_Node
-        (Duplicate_Recfun'Result)
-        = Ada_Node);
+     return W_Recfun_Id with
+     Pre =>
+       (Recfun_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Recfun'Result)
+         = W_Recfun
+        and then
+          Get_Ada_Node
+          (Duplicate_Recfun'Result)
+          = Ada_Node);
 
    function Duplicate_Loop_Annot
      (Ada_Node : Node_Id := Empty;
       Id       : W_Loop_Annot_OId)
-     return W_Loop_Annot_Id;
-   pragma Precondition
-     (Loop_Annot_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Loop_Annot'Result)
-       = W_Loop_Annot
-      and then
-        Get_Ada_Node
-        (Duplicate_Loop_Annot'Result)
-        = Ada_Node);
+     return W_Loop_Annot_Id with
+     Pre =>
+       (Loop_Annot_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Loop_Annot'Result)
+         = W_Loop_Annot
+        and then
+          Get_Ada_Node
+          (Duplicate_Loop_Annot'Result)
+          = Ada_Node);
 
    function Duplicate_Wf_Arg
      (Ada_Node : Node_Id := Empty;
       Id       : W_Wf_Arg_OId)
-     return W_Wf_Arg_Id;
-   pragma Precondition
-     (Wf_Arg_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Wf_Arg'Result)
-       = W_Wf_Arg
-      and then
-        Get_Ada_Node
-        (Duplicate_Wf_Arg'Result)
-        = Ada_Node);
+     return W_Wf_Arg_Id with
+     Pre =>
+       (Wf_Arg_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Wf_Arg'Result)
+         = W_Wf_Arg
+        and then
+          Get_Ada_Node
+          (Duplicate_Wf_Arg'Result)
+          = Ada_Node);
 
    function Duplicate_Handler
      (Ada_Node : Node_Id := Empty;
       Id       : W_Handler_OId)
-     return W_Handler_Id;
-   pragma Precondition
-     (Handler_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Handler'Result)
-       = W_Handler
-      and then
-        Get_Ada_Node
-        (Duplicate_Handler'Result)
-        = Ada_Node);
+     return W_Handler_Id with
+     Pre =>
+       (Handler_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Handler'Result)
+         = W_Handler
+        and then
+          Get_Ada_Node
+          (Duplicate_Handler'Result)
+          = Ada_Node);
 
    function Duplicate_File
      (Ada_Node : Node_Id := Empty;
       Id       : W_File_OId)
-     return W_File_Id;
-   pragma Precondition
-     (File_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_File'Result)
-       = W_File
-      and then
-        Get_Ada_Node
-        (Duplicate_File'Result)
-        = Ada_Node);
+     return W_File_Id with
+     Pre =>
+       (File_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_File'Result)
+         = W_File
+        and then
+          Get_Ada_Node
+          (Duplicate_File'Result)
+          = Ada_Node);
 
    function Duplicate_Global_Binding
      (Ada_Node : Node_Id := Empty;
       Id       : W_Global_Binding_OId)
-     return W_Global_Binding_Id;
-   pragma Precondition
-     (Global_Binding_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Global_Binding'Result)
-       = W_Global_Binding
-      and then
-        Get_Ada_Node
-        (Duplicate_Global_Binding'Result)
-        = Ada_Node);
+     return W_Global_Binding_Id with
+     Pre =>
+       (Global_Binding_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Global_Binding'Result)
+         = W_Global_Binding
+        and then
+          Get_Ada_Node
+          (Duplicate_Global_Binding'Result)
+          = Ada_Node);
 
    function Duplicate_Global_Rec_Binding
      (Ada_Node : Node_Id := Empty;
       Id       : W_Global_Rec_Binding_OId)
-     return W_Global_Rec_Binding_Id;
-   pragma Precondition
-     (Global_Rec_Binding_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Global_Rec_Binding'Result)
-       = W_Global_Rec_Binding
-      and then
-        Get_Ada_Node
-        (Duplicate_Global_Rec_Binding'Result)
-        = Ada_Node);
+     return W_Global_Rec_Binding_Id with
+     Pre =>
+       (Global_Rec_Binding_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Global_Rec_Binding'Result)
+         = W_Global_Rec_Binding
+        and then
+          Get_Ada_Node
+          (Duplicate_Global_Rec_Binding'Result)
+          = Ada_Node);
 
    function Duplicate_Parameter_Declaration
      (Ada_Node : Node_Id := Empty;
       Id       : W_Parameter_Declaration_OId)
-     return W_Parameter_Declaration_Id;
-   pragma Precondition
-     (Parameter_Declaration_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Parameter_Declaration'Result)
-       = W_Parameter_Declaration
-      and then
-        Get_Ada_Node
-        (Duplicate_Parameter_Declaration'Result)
-        = Ada_Node);
+     return W_Parameter_Declaration_Id with
+     Pre =>
+       (Parameter_Declaration_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Parameter_Declaration'Result)
+         = W_Parameter_Declaration
+        and then
+          Get_Ada_Node
+          (Duplicate_Parameter_Declaration'Result)
+          = Ada_Node);
 
    function Duplicate_Exception_Declaration
      (Ada_Node : Node_Id := Empty;
       Id       : W_Exception_Declaration_OId)
-     return W_Exception_Declaration_Id;
-   pragma Precondition
-     (Exception_Declaration_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Exception_Declaration'Result)
-       = W_Exception_Declaration
-      and then
-        Get_Ada_Node
-        (Duplicate_Exception_Declaration'Result)
-        = Ada_Node);
+     return W_Exception_Declaration_Id with
+     Pre =>
+       (Exception_Declaration_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Exception_Declaration'Result)
+         = W_Exception_Declaration
+        and then
+          Get_Ada_Node
+          (Duplicate_Exception_Declaration'Result)
+          = Ada_Node);
 
    function Duplicate_Logic_Declaration
      (Ada_Node : Node_Id := Empty;
       Id       : W_Logic_Declaration_OId)
-     return W_Logic_Declaration_Id;
-   pragma Precondition
-     (Logic_Declaration_Id_Valid (Id));
-   pragma Postcondition
-     (Get_Kind
-       (Duplicate_Logic_Declaration'Result)
-       = W_Logic_Declaration
-      and then
-        Get_Ada_Node
-        (Duplicate_Logic_Declaration'Result)
-        = Ada_Node);
+     return W_Logic_Declaration_Id with
+     Pre =>
+       (Logic_Declaration_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Logic_Declaration'Result)
+         = W_Logic_Declaration
+        and then
+          Get_Ada_Node
+          (Duplicate_Logic_Declaration'Result)
+          = Ada_Node);
 
    function Duplicate_Term
      (Ada_Node : Node_Id := Empty;

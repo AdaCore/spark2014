@@ -197,9 +197,13 @@ package body Xtree_Builders is
       BK   : Builder_Kind) is
    begin
       Print_Builder_Specification (O, Kind, BK);
-      PL (O, ";");
+      PL (O, " with");
+      Relative_Indent (O, 2);
       Print_Builder_Precondition (O, Kind, BK);
+      PL (O, ",");
       Print_Builder_Postcondition (O, Kind, BK);
+      PL (O, ";");
+      Relative_Indent (O, -2);
    end Print_Builder_Declaration;
 
    ----------------------------------
@@ -550,7 +554,7 @@ package body Xtree_Builders is
       end Print_Parameter_Postcondition;
 
    begin
-      PL (O, "pragma Postcondition");
+      PL (O, "Post =>");
       Relative_Indent (O, 2);
       PL (O, "(Get_Kind");
       PL (O, "  (" & Builder_Name (Kind, BK) & "'Result)");
@@ -568,7 +572,7 @@ package body Xtree_Builders is
          Relative_Indent (O, -1);
       end if;
 
-      PL (O, ");");
+      P (O, ")");
       Relative_Indent (O, -2);
    end Print_Builder_Postcondition;
 
@@ -641,7 +645,7 @@ package body Xtree_Builders is
           and then BK = Builder_Regular)
         or else BK = Builder_Copy
       then
-         PL (O, "pragma Precondition");
+         PL (O, "Pre =>");
          Relative_Indent (O, 2);
          P (O, "(");
 
@@ -651,8 +655,10 @@ package body Xtree_Builders is
             Print_Id_Parameter_Precondition;
          end if;
 
-         PL (O, ");");
+         P (O, ")");
          Relative_Indent (O, -2);
+      else
+         P (O, "Pre => True");
       end if;
    end Print_Builder_Precondition;
 

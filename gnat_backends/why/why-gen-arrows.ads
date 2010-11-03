@@ -33,8 +33,8 @@ package Why.Gen.Arrows is
 
    function New_Arrow_Stack
      (Return_Type : W_Primitive_Type_Id)
-     return W_Arrow_Type_Unchecked_Id;
-   pragma Precondition (Is_Root (Return_Type));
+     return W_Arrow_Type_Unchecked_Id with
+     Pre => (Is_Root (Return_Type));
    --  This creates an invalid arrow type where only the return type
    --  (the right hand side of the arrow) is specified. The left hand
    --  side is left empty. Push_Arg should then be used to complete the
@@ -45,9 +45,9 @@ package Why.Gen.Arrows is
      (Arrow    : W_Arrow_Type_Unchecked_Id;
       Name     : W_Identifier_OId := Why_Empty;
       Arg_Type : W_Simple_Value_Type_Id)
-     return W_Arrow_Type_Id;
-   pragma Precondition (Is_Root (Name)
-                        and then Is_Root (Arg_Type));
+     return W_Arrow_Type_Id with
+     Pre => (Is_Root (Name)
+             and then Is_Root (Arg_Type));
    --  Preprend the given parameters in Arrow, i.e. generating something
    --  like "Name : Arg_Type -> Arrow".
 

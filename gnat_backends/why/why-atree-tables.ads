@@ -30,44 +30,44 @@ package Why.Atree.Tables is
    --  This package allows to allocate new Why nodes and to associate
    --  then with an node Id.
 
-   function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id;
-   pragma Precondition (Node.Kind /= W_Unused_At_Start);
-   pragma Postcondition (Get_Node (New_Why_Node_Id'Result) = Node);
+   function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id with
+     Pre  => (Node.Kind /= W_Unused_At_Start),
+     Post => (Get_Node (New_Why_Node_Id'Result) = Node);
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new Why node in table, and return its Id
 
    function New_Why_Node_Id
      (Kind : W_Any_Node)
-     return Why_Node_Id;
-   pragma Postcondition (Get_Kind (New_Why_Node_Id'Result) = Kind);
+     return Why_Node_Id with
+     Post => (Get_Kind (New_Why_Node_Id'Result) = Kind);
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new (uninitialized) Why node in table of the given kind
 
    function Get_Node (Node_Id : Why_Node_Id) return Why_Node;
    --  Get the node whose id is Node_Id
 
-   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node);
-   pragma Postcondition (Get_Node (Node_Id) = Node);
+   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node) with
+     Post => (Get_Node (Node_Id) = Node);
    --  Assign the given Id to the given Node
 
    function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set;
    function Get_Link (List_Id : Why_Node_List) return Why_Node_Set;
 
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set);
-   pragma Postcondition (Node_Id = Why_Empty
-                           or else Get_Link (Node_Id) = Link);
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Id);
-   pragma Postcondition (Node_Id = Why_Empty
-                           or else Get_Link (Node_Id) = Why_Node_Set (Link));
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_List);
-   pragma Postcondition (Node_Id = Why_Empty
-                           or else Get_Link (Node_Id) = Why_Node_Set (Link));
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Set);
-   pragma Postcondition (Get_Link (List_Id) = Link);
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Id);
-   pragma Postcondition (Get_Link (List_Id) = Why_Node_Set (Link));
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_List);
-   pragma Postcondition (Get_Link (List_Id) = Why_Node_Set (Link));
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set) with
+     Post => (Node_Id = Why_Empty
+              or else Get_Link (Node_Id) = Link);
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Id) with
+     Post => (Node_Id = Why_Empty
+              or else Get_Link (Node_Id) = Why_Node_Set (Link));
+   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_List) with
+     Post => (Node_Id = Why_Empty
+              or else Get_Link (Node_Id) = Why_Node_Set (Link));
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Set) with
+     Post => (Get_Link (List_Id) = Link);
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Id) with
+     Post => (Get_Link (List_Id) = Why_Node_Set (Link));
+   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_List) with
+     Post => (Get_Link (List_Id) = Why_Node_Set (Link));
    --  Set the link of the given node
 
    procedure Update_Validity_Status
@@ -101,8 +101,8 @@ package Why.Atree.Tables is
 
    function Is_Checked (List_Id : Why_Node_List) return Boolean;
 
-   function New_List return Why_Node_List;
-   pragma Postcondition (Is_Empty (New_List'Result));
+   function New_List return Why_Node_List with
+     Post => (Is_Empty (New_List'Result));
    --  Allocate a new empty list in table and return its Id
 
 private

@@ -33,8 +33,9 @@ package Why.Atree.Sprint is
    --  This package provides ways to print source code from the abstract
    --  syntax tree.
 
-   procedure Sprint_Why_Node (Node : Why_Node_Id; To : Output_Id := Stdout);
-   pragma Precondition (Get_Kind (Node) /= W_Unused_At_Start);
+   procedure Sprint_Why_Node
+     (Node : Why_Node_Id; To : Output_Id := Stdout) with
+     Pre => (Get_Kind (Node) /= W_Unused_At_Start);
 
 private
    type Printer_State is new Traversal_State with null record;
