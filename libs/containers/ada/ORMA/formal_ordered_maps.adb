@@ -158,8 +158,6 @@ package body Formal_Ordered_Maps is
    -- Assign --
    ------------
 
-
-
    procedure Assign (Target : in out Map; Source : Map) is
       procedure Append_Element (Source_Node : Count_Type);
 
