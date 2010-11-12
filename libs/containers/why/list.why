@@ -94,38 +94,6 @@ axiom first_first :
 
 logic element_ : list, cursor -> element_t
 
-
-(*** FIND ***)
-logic find_ : list, element_t, cursor -> cursor
-
-predicate find__ (co:list,e:element_t,cumin:cursor,cu:cursor) =
-	  position_(co,cumin)>0 and
-	  (((cu=no_element and (forall cun:cursor. position_(co,cumin)<=position_(co,cun) -> element_(co,cun)<>e))
-	  or (position_(co,cu)>0 and element_(co,cu)=e
-	  and (forall cun:cursor. position_(co,cu)>position_(co,cun) and position_(co,cumin)<=position_(co,cun)
-	      -> not element_(co,cun)=e))))
-
-axiom find_find_val :
-      forall co:list. forall e:element_t. forall cu:cursor.
-	     (position_(co,cu)>0 -> find__(co,e,cu,find_(co,e,cu))) and
-	     (is_empty_(co) -> find_(co,e,cu)=no_element) 
-
-(*** EQUAL ***)
-
-predicate equal_ (co1:list,co2:list) =
-	  forall cu:cursor.
-	  	 position_(co1,cu)=position_(co2,cu) and
-		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
-
-(*** REPLACE_ELEMENT ***)
-
-predicate replace_element_ (co1:list,cu:cursor,e:element_t,co2:list) =
-	  position_(co1,cu)>0 and length_(co1)=length_(co2) and
-	  element_(co2,cu)=e and
-	  forall cun:cursor.
-	  	 position_(co2,cun)=position_(co1,cun) and
-		 (cu<>cun and position_(co1,cun)>0 -> element_(co2,cun)=element_(co1,cun))
-
 (*** LEFT ***)
 
 predicate left_pos (co:list,i:int,col:list) =
@@ -169,6 +137,40 @@ logic right_ : list, cursor -> list
 axiom right_right:
       forall co:list. forall cu:cursor [right_(co,cu)].
       	     right__(co,cu,right_(co,cu))
+
+
+(*** FIND ***)
+
+logic find_first : list, element_t -> cursor
+
+predicate find__ (co:list,e:element_t,cu:cursor) =
+	  (((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> element_(co,cun)<>e))
+	  or (position_(co,cu)>0 and element_(co,cu)=e
+	  and (forall cun:cursor. position_(co,cu)>position_(co,cun) and position_(co,cun)>0
+	      -> not element_(co,cun)=e))))
+
+axiom find_find_val :
+      forall co:list. forall e:element_t.
+	     find__(co,e,find_first(co,e))
+
+function find_ (l:list, e:element_t, cu:cursor) : cursor =
+	 find_first (right_(l, cu), e) 
+
+(*** EQUAL ***)
+
+predicate equal_ (co1:list,co2:list) =
+	  forall cu:cursor.
+	  	 position_(co1,cu)=position_(co2,cu) and
+		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
+
+(*** REPLACE_ELEMENT ***)
+
+predicate replace_element_ (co1:list,cu:cursor,e:element_t,co2:list) =
+	  position_(co1,cu)>0 and length_(co1)=length_(co2) and
+	  element_(co2,cu)=e and
+	  forall cun:cursor.
+	  	 position_(co2,cun)=position_(co1,cun) and
+		 (cu<>cun and position_(co1,cun)>0 -> element_(co2,cun)=element_(co1,cun))
 
 (*** INSERT ***)	  
 
@@ -228,7 +230,7 @@ predicate has_element_(co:list, cu:cursor) =
 (*** CONTAINS ***)
 
 predicate contains_ (co:list,e:element_t) =
-	  position_(co,find_(co,e,first_(co)))>0
+	  position_(co,find_first(co,e))>0
 
 axiom contains_inserted :
      forall l1:list. forall l2:list. forall cu:cursor. forall e:element_t

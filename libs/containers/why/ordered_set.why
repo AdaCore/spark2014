@@ -111,7 +111,7 @@ predicate find__ (co:set,i:real,cu:cursor) =
 	  ((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> witness(element_(co,cun))<>i))
 	  or (position_(co,cu)>0 and witness(element_(co,cu))=i
 	  and (forall cun:cursor. position_(co,cun)>0 -> 
-	  position_(co,cu)<>position_(co,cun) -> witness(element_(co,cun))<>i)))
+	  cu <> cun -> witness(element_(co,cun))<>i)))
 
 axiom find_find_val :
       forall co:set. forall i:real.

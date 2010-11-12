@@ -87,7 +87,7 @@ predicate find__ (co:map,i:real,cu:cursor) =
 	  ((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> witness(key_(co,cun))<>i))
 	  or (position_(co,cu)>0 and witness(key_(co,cu))=i
 	  and (forall cun:cursor. position_(co,cun)>0 -> 
-	   position_(co,cu)<>position_(co,cun) -> witness(key_(co,cun))<>i)))
+	   cu<>cun) -> witness(key_(co,cun))<>i)))
 
 axiom find_find_val :
       forall co:map. forall i:real.

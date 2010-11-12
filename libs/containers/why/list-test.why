@@ -344,22 +344,42 @@ let test6 (li:list ref) (removed:list ref) =
     if fun_test(element !li !c) then
     interm6 li removed c
   done
-   { length_(li)+length_(removed)=length_(li@) and false } 
+   { length_(li)+length_(removed)=length_(li@) and false }
+
+exception Return
 
 let test7 (s:list) (e:element_t) (c:cursor ref) =
     c:= first s;
-    let b=ref false in
-    while has_element s !c && not !b do
+    let res = ref false in
+    try
+      while has_element s !c do
     	  { invariant
 	    ((has_element_(s,c) or c=no_element) and
-	    ((b=true and has_element_(s,c) and e=element_(s,c)
-	    or b=false) and not contains_(left_(s,c),e))) }
+	    (not contains_(left_(s,c),e))) }
 	    if elt_equal e (element s !c) then
-	       b:=true
+	       raise Return
 	    else c:=next s !c
-    done;
-    !b
+      done
+    with Return -> res := true end;
+    ! res
     { (result=true <-> contains_(s,e)) and find_(s,e,first_(s))=c and false }
+
+let my_find (s : list) (e : element_t) (f : cursor) =
+  { has_element_ (s, f) }
+  let c = ref f in
+  try
+    while has_element s !c do
+      { invariant
+        (has_element_(right_(s, f), c) or c=no_element) and
+        find_(left_(right_(s, f), c), e, f) = no_element
+      }
+      if elt_equal e (element s !c) then
+        raise Return
+      else c := next s !c
+    done
+  with Return -> void end;
+  !c
+  { result = find_(s, e, f)}
 
 (*** MAX TESTS ***)
 
