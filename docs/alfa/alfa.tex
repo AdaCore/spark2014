@@ -219,7 +219,7 @@ that pattern-matching is complete and that no case is redundant.
 
 In GNAT, floating-point types follow the IEEE-754 standard, although this is
 not part of the Ada language definition. Fixed-point types limit the precision
-of values to a fixed number of figures.
+of values.
 
 Aggregate types come in two flavors: records aggregate heterogeneous data
 components, while arrays aggregate homogeneous data components. Records may
@@ -327,7 +327,8 @@ postconditions may be compiled into executable assertions if the right option
 is given to the compiler (-gnata in GNAT).
 
 \begin{example}
-A contract for a square-root function is:
+  A contract for an integer square-root function, where the rounding is
+  performed towards zero, is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
   Pre  => X >= 0,
@@ -357,9 +358,9 @@ container.
 
 Type invariants express invariant properties of private types, which should be
 typically observed for any value of the type outside its package. However, the
-standard only defines specific points at which this property is checked on a
-value of the type, like entry and exit points of a subprogram. This does not
-enforce by itself that the property always holds.
+Ada 2012 standard only defines specific points at which this property is
+checked on a value of the type, like entry and exit points of a
+subprogram. This does not enforce by itself that the property always holds.
 
 Subtype predicates express fine-grain properties of subtypes, like the various
 enumeration values allowed for the discriminant of a record. Like for type
@@ -421,7 +422,9 @@ apply.
 The part about checking the contract of the subprogram is optional because some
 test-cases may correspond to cases beyond the normal behavior of the subprogram
 described in its contract. Typically, robustness tests deal with such abnormal
-behavior.
+behavior. So that in Example~\ref{ex:test-case}, the robustness test case
+requires that \verb|X = -1| while the precondition for function \verb|Sqrt| is
+\verb|X >= 0|.
 
 For unit proof, it is sufficient to prove that the subprogram implements a
 special contract, with 1) the requires, optionally and'ed with the original
@@ -431,6 +434,7 @@ which correspond to normal behavior, and the requires should be the only
 precondition for those test-cases which correspond to abnormal behavior.
 
 \begin{example}
+\label{ex:test-case}
   A contract with test-cases for an integer square-root function is:
 \begin{verbatim}
 function Sqrt (X : Integer) return Integer with
@@ -713,7 +717,10 @@ being read, so that the initial value of the variable path is never read,
 belongs to the write-set, not the read-write-set.
 
 A special global variable called \heap represents all the dynamically allocated
-memory plus all variables whose address is taken.
+memory plus all variables whose address is taken. Although subprograms in ALFA
+do not contain pointers and memory allocation, they may call other subprograms
+which do contain pointers and memory allocation, so that their frame condition
+may end up mentioning \heap.
 
 The algorithm should compute various maps from program points $p$ to sets of
 (local and global) variable paths:
@@ -950,8 +957,9 @@ Floating-point and fixed-point types are not in ALFA, although they could be in
 a future version. Floating-point are particularly difficult to translate
 accurately, because the IEEE-754 standard is quite complex, but a simpler
 (safe) model bounding floating-point values by reals would be possible. Notice
-that the current treatment of floating-point numbers as reals in both SPARK and
-Frama-C is plain incorrect, and identified as such.
+that the current treatment of floating-point numbers as reals in SPARK is plain
+incorrect, and identified as such. Frama-C provides some support for
+floating-points~\cite{ayad10ijcar}.
 
 Interfaces are not in ALFA also to simplify the work on the first version.
 
@@ -1016,11 +1024,11 @@ assertions.
 
 \subsubsection{Statements}
 
-Exception handlers are not in ALFA, because they create complex control-flow
-which make formal verification intractable. However, defining exceptions and
-raising exceptions are in ALFA. As far as formal verification of data-flow,
-run-time errors and contracts is concerned, raising an exception is similar to
-removing the program path from consideration.
+Exception handlers are not in ALFA, because they are not a priority for the
+target programs (Krakatoa/Why do treat exception handling). However, defining
+exceptions and raising exceptions are in ALFA. As far as formal verification of
+data-flow, run-time errors and contracts is concerned, raising an exception is
+similar to removing the program path from consideration.
 
 Exit statements for loops follow the same restrictions in ALFA as in SPARK.
 
@@ -1169,7 +1177,9 @@ Conditions~\ref{it:lsp-read} and~\ref{it:lsp-write} are verified by:
   guarantees to a caller than the frame condition suggested by its
   specification (``in'', ``out'' and ``in out'' parameters);
 \item assuming that each dispatching call has the frame condition suggested by
-  the specification of the subprogram on which it dispatches.
+  the specification of the subprogram on which it dispatches. This implicitly
+  defines a datagroup~\cite{Leino-datagroups, tafat10rr} for each object of
+  primitive type, comprising all fields of the type.
 \end{itemize}
 
 \begin{example}
@@ -1380,11 +1390,10 @@ Why defines four primitive types:
 There are no predefined aggregate types (records and arrays) in Why. In
 general, these should be defined as abstract types and axiomatized. In this
 respect, Why is closer to the translation in FDL of SPARK data structures than
-to SPARK itself. However, Why provides a definition for functional arrays in
-its prelude (its automatically loaded standard library), and a predefined type
-array acting as a mutable reference on functional arrays. This type is
-polymorphic, so that it can be instantiated to define arrays over whatever
-element type.
+to SPARK itself. However, Why provides a definition for functional arrays and a
+predefined type array acting as a mutable reference on functional arrays. This
+type is polymorphic, so that it can be instantiated to define arrays over
+whatever element type.
 
 Why also provides algebraic types which allow defining enumerations, LISP-like
 lists, discriminated unions, \etc, together with pattern-matching expressions
@@ -2325,9 +2334,9 @@ inclusion between modules in Why.
 
 \subsubsection{Variables}
 
-All variables in Why should be given an initial value. As usual in this case,
-we should declare a function returning a value of the appropriate type, which
-is used to initialize the variable to any value of the type.
+All local variables in Why should be given an initial value. As usual in this
+case, we should declare a function returning a value of the appropriate type,
+which is used to initialize the variable to any value of the type.
 
 \subsubsection{Types}
 
@@ -2430,7 +2439,12 @@ Here is the translation of the loop body in Why:
 \begin{verbatim}
 let tmp = ref any_integer() in
 One (tmp);
-A := update (!A, J, tmp);
+A := update (!A, J, !tmp);
+\end{verbatim}
+
+given the procedure One also translated in Why:
+\begin{verbatim}
+parameter One : (x:int ref) -> {} unit writes x { !x = 1 }
 \end{verbatim}
 \end{example}
 
@@ -2465,6 +2479,14 @@ for all X in Index range A .. B => Prop (X)
 should be translated into the following predicate:
 \begin{verbatim}
 forall X : Index. A <= X <= B -> Prop (X)
+\end{verbatim}
+and the quantified expresssion:
+\begin{verbatim}
+for some X in Index range A .. B => Prop (X)
+\end{verbatim}
+should be translated into the following predicate:
+\begin{verbatim}
+exists X : Index. A <= X <= B and Prop (X)
 \end{verbatim}
 \end{example}
 
