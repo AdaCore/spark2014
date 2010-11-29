@@ -65,6 +65,25 @@ goal equal_trans_g :
       forall l1:list. forall l2:list. forall l3:list [equal_(l2,l3),equal_(l1,l3) | equal_(l1,l2),equal_(l1,l3)].
       	     equal_(l1,l2) -> equal_(l2,l3) -> equal_(l1,l3)
 
+
+
+goal right_replace :
+     forall l1:list. forall l2:list. forall cu1:cursor. forall e : element_t
+     [replace_element_(l1,cu1,e,l2),equal_(right_(l2,next_(l2,cu1)),right_(l1,next_(l2,cu1)))].
+      	    has_element_(l1,cu1) ->
+     	    replace_element_(l1,cu1,e,l2) -> equal_(right_(l2,next_(l2,cu1)),right_(l1,next_(l2,cu1)))
+
+goal next_replace :
+     forall l1:list. forall l2:list. forall cu1:cursor.
+     forall e:element_t [replace_element_(l1,cu1,e,l2),next_(l2,cu1)].
+      	    has_element_(l1,cu1) ->
+     	    replace_element_(l1,cu1,e,l2) -> next_(l1,cu1)=next_(l2,cu1)
+
+goal has_element_left :
+     forall l:list. forall cu:cursor. forall cun:cursor
+     [has_element_(left_(l,next_(l,cu)),cun)].
+      	    has_element_(l,cu) -> has_element_(left_(l,next_(l,cu)),cun) -> has_element_(left_(l,cu),cun) or cu = cun
+
 (*** REDONDANT AXIOMS (for Alt-Ergo) *)
 
 axiom left_contains :
@@ -120,12 +139,30 @@ axiom contains_delete :
      	    delete_(l1,cu,l2) -> contains_(l2,el) -> contains_(l1,el)
 
 axiom equal_refl :
-      forall l1:list. forall l2:list.
+      forall l1:list. forall l2:list [equal_(l1,l2) | equal_(l2,l1)].
       	     equal_(l1,l2) -> equal_(l2,l1)
 
 axiom equal_trans :
       forall l1:list. forall l2:list. forall l3:list [equal_(l2,l3),equal_(l1,l3) | equal_(l1,l2),equal_(l1,l3)].
       	     equal_(l1,l2) -> equal_(l2,l3) -> equal_(l1,l3)
+
+axiom right_replace :
+     forall l1:list. forall l2:list. forall cu1:cursor. forall e : element_t
+     [replace_element_(l1,cu1,e,l2),equal_(right_(l2,next_(l2,cu1)),right_(l1,next_(l2,cu1)))].
+      	    has_element_(l1,cu1) ->
+     	    replace_element_(l1,cu1,e,l2) -> equal_(right_(l2,next_(l2,cu1)),right_(l1,next_(l2,cu1)))
+
+axiom next_replace :
+     forall l1:list. forall l2:list. forall cu1:cursor.
+     forall e:element_t [replace_element_(l1,cu1,e,l2),next_(l2,cu1)|replace_element_(l1,cu1,e,l2),next_(l1,cu1)].
+      	    has_element_(l1,cu1) ->
+     	    replace_element_(l1,cu1,e,l2) -> next_(l1,cu1)=next_(l2,cu1)
+
+axiom has_element_left :
+     forall l:list. forall cu:cursor. forall cun:cursor
+     [has_element_(left_(l,next_(l,cu)),cun)].
+      	    has_element_(l,cu) -> has_element_(left_(l,next_(l,cu)),cun) -> has_element_(left_(l,cu),cun) or cu = cun
+     
 
 (*** UNIT-TESTS ***)
 
@@ -380,6 +417,45 @@ let my_find (s : list) (e : element_t) (f : cursor) =
   with Return -> void end;
   !c
   { result = find_(s, e, f)}
+
+logic f : element_t -> element_t
+
+let map_f (s : list ref) =
+  init :
+  let c = ref first !s in
+  while not (curs_equal !c no_element) do
+    { invariant
+     (has_element_(s,c) and has_element_(s@init,c) or c = no_element) and
+     (forall cu : cursor. has_element_(left_(s,c),cu) ->
+                                       element_(s,cu) = f(element_(s@init,cu))) and
+     equal_(right_(s@init,c), right_(s,c))
+    }
+    replace_element s !c (f(element !s !c));
+    c := next !s !c   
+  done
+  { forall cu : cursor. has_element_(s,cu) -> element_(s,cu)=f(element_(s@,cu)) }
+
+let map_f2 (s : list ref) =
+  init :
+  let c = ref first !s in
+  if not (curs_equal !c no_element) then
+  try
+  while true do
+    { invariant
+     (has_element_(s,c) and has_element_(s@init,c)) and
+     (forall cu : cursor. has_element_(s,cu) -> has_element_(s@init,cu) and next_(s,cu)=next_(s@init,cu)) and
+     (forall cu : cursor. has_element_(left_(s,c),cu) ->
+                                       element_(s,cu) = f(element_(s@init,cu))) and
+     equal_(right_(s@init,c), right_(s,c))
+    }
+    replace_element s !c (f(element !s !c));
+    c := next !s !c;
+    if curs_equal !c no_element then
+      raise Return     
+  done
+  with Return -> void end
+  { forall cu : cursor. has_element_(s,cu) -> has_element_(s@,cu) and next_(s,cu)=next_(s@,cu)
+   and element_(s,cu)=f(element_(s@,cu)) }
 
 (*** MAX TESTS ***)
 
