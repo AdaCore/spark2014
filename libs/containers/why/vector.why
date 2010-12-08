@@ -17,21 +17,25 @@ axiom length_gte_zero :
 
 (*** TO_INDEX ***)
 
-logic to_index_ : cursor -> int
+logic to_index_ : vector,  cursor -> int
 
 axiom to_index_gte_zero :
-      forall cu:cursor.
-      	     to_index_(cu)>=0
+      forall cu:cursor. forall v : vector.
+      	     length_(v)>=to_index_(v,cu)>=0
 
-axiom to_index_no_element :
-      	     to_index_(no_element) = 0
+axiom to_index_eq :
+      forall cu1:cursor. forall cu2:cursor. forall v : vector.
+      	     to_index_(v,cu1)=to_index_(v,cu2)>0 -> cu1=cu2
+
+axiom to_index_no_element : forall v : vector.
+      	     to_index_(v,no_element) = 0
 
 (*** TO_CURSOR ***)
 
 logic to_cursor_ : vector, int -> cursor
 
 predicate to_cursor__ (co:vector, i:int, cu:cursor) =
-      (to_index_(cu)=i and length_(co)>=i>0)
+      (to_index_(co,cu)=i and length_(co)>=i>0)
       or (cu=no_element and (i<=0 or i>length_(co)))
 
 axiom to_cursor_to_cursor :
@@ -48,37 +52,19 @@ axiom empty_is_empty :
 
 (* HAS_ELEMENT *)
 
-logic has_element_ : vector,cursor -> prop
-
-axiom has_element_index :
-      forall v:vector. forall cu:cursor.
-      	     has_element_(v,cu) -> 0<to_index_(cu)<=length_(v)
-
-axiom has_element_index_unique :
-      forall v:vector. forall cu1:cursor. forall cu2:cursor.
-      	     has_element_(v,cu1) -> has_element_(v,cu2) -> to_index_(cu1)=to_index_(cu2) ->
-	     cu1=cu2
-
-axiom has_element_to_cursor :
-      forall v:vector. forall i:int [has_element_(v,to_cursor_(v,i))].
-      	     0<i<=length_(v) -> has_element_(v,to_cursor_(v,i))
+predicate has_element_ (v : vector, cu : cursor) =
+          0<to_index_(v,cu)
 
 
 (*** PREVIOUS ***)
 
-logic previous_ : vector,cursor -> cursor
-
-axiom previous_to_cursor :
-      forall v:vector. forall cu:cursor [previous_(v,cu)].
-      	     has_element_(v,cu) -> previous_(v,cu)=to_cursor_(v,to_index_(cu)-1)
+function previous_ (v:vector,cu:cursor) : cursor =
+      	     to_cursor_(v,to_index_(v,cu)-1)
 
 (*** NEXT ***)
 
-logic next_ : vector,cursor -> cursor
-
-axiom next_to_cursor :
-      forall v:vector. forall cu:cursor [next_(v,cu)].
-      	     has_element_(v,cu) -> next_(v,cu)=to_cursor_(v,to_index_(cu)+1)
+function next_ (v:vector, cu:cursor) : cursor =
+      	     to_cursor_(v,to_index_(v,cu)+1)
 (*** LAST ***)
 
 function last_ (co:vector) :cursor = to_cursor_(co,length_(co))
@@ -90,11 +76,8 @@ function first_ (co:vector) :cursor = to_cursor_(co,1)
 (*** ELEMENT ***)
 
 logic element_ : vector, int -> element_t
-logic element_curs_ : vector, cursor -> element_t
-
-axiom has_element_element_curs :
-      forall v:vector. forall cu:cursor [element_curs_(v,cu)].
-      	     has_element_(v,cu) -> element_curs_(v,cu)=element_(v,to_index_(cu))
+function element_curs_ (v:vector, cu:cursor) : element_t =
+	 element_(v,to_index_(v,cu))
 
 (*** FIND ***)
 
@@ -126,7 +109,7 @@ predicate replace_element_ (co1:vector,i:int,e:element_t,co2:vector) =
 	  	 length_(co1)>=j>0 ->
 		 (i<>j -> element_(co2,j)=element_(co1,j))) and
           (forall cu:cursor.
-	  	 has_element_(co1,cu) <-> has_element_(co2,cu))
+	  	 to_index_(co1,cu) = to_index_(co2,cu))
 
 (*** LEFT ***)
 
@@ -136,7 +119,8 @@ predicate left__ (co:vector, i:int, col:vector) =
 	  (forall j:int.
 	       0<j<i -> element_(col,j)=element_(co,j)) and
 	  (forall cu:cursor.
-	  	 (has_element_(co,cu) and to_index_(cu)<i) <-> has_element_(col,cu)))
+	  	 (0<to_index_(co,cu)<i or 0<to_index_(col,cu)) ->
+		 		to_index_(col,cu)=to_index_(co,cu)))
 
 logic left_ : vector, int -> vector
 
@@ -170,14 +154,14 @@ predicate insert_elmt (co1:vector,i:int,e:element_t,co2:vector) =
 	     (i<j<=length_(co1)+1 ->
 	     element_(co1,j-1)=element_(co2,j)))
 
-predicate insert_curs (co1:vector, co2:vector)=
+predicate insert_curs (co1:vector, i :int, co2:vector)=
 	  forall cu:cursor.
-	  	 (has_element_(co1,cu) or cu=last_(co2)) <-> has_element_(co2,cu)
+	  	 ((0<to_index_(co1,cu)<i)or(0<to_index_(co2,cu)<i)) -> to_index_(co1,cu)=to_index_(co2,cu)
 
 predicate insert_ (co1:vector,i:int,e:element_t,co2:vector) =
 	  length_(co1)+1>=i>0 and length_(co2)=length_(co1)+1 and
 	  insert_elmt(co1,i,e,co2) and
-	  insert_curs (co1,co2)
+	  insert_curs (co1,i,co2)
 
 (*** DELETE ***)
 
@@ -188,14 +172,14 @@ predicate delete_elmt (co1:vector, i:int, co2:vector) =
 	    and (0<j<i ->
 	     element_(co2,j)=element_(co1,j))
 
-predicate delete_curs (co1:vector, co2:vector)=
+predicate delete_curs (co1:vector, i:int, co2:vector)=
 	  forall cu:cursor.
-	  	 (has_element_(co1,cu) and to_index_(cu)<=length_(co2)) <-> has_element_(co2,cu)
+                 (0<to_index_(co1,cu)<i or 0<to_index_(co2,cu)<i) -> to_index_(co1,cu)=to_index_(co2,cu)
 
 predicate delete_ (co1:vector,i:int,co2:vector) =
 	  length_(co1)>=i>0 and length_(co2)=length_(co1)-1 and
 	  delete_elmt(co1,i,co2) and
-	  delete_curs (co1,co2)
+	  delete_curs (co1,i,co2)
 
 (*** CONTAINS ***)
 
@@ -226,7 +210,7 @@ parameter replace_element_curs :
 	  co:vector ref -> cu:cursor -> e:element_t ->
 	  { has_element_(co,cu) }
 	  unit writes co
-	  { replace_element_(co@,to_index_(cu),e,co) }
+	  { replace_element_(co@,to_index_(co@,cu),e,co) }
 
 parameter insert :
 	  co:vector ref -> i:int -> e:element_t ->
@@ -238,7 +222,7 @@ parameter insert_curs :
 	  co:vector ref -> cu:cursor -> e:element_t ->
 	  { has_element_(co,cu) or cu=no_element }
 	  unit reads co writes co
-	  { (has_element_(co@,cu) -> insert_(co@,to_index_(cu),e,co))
+	  { (has_element_(co@,cu) -> insert_(co@,to_index_(co@,cu),e,co))
 	    and (cu=no_element -> insert_(co@,length_(co@)+1,e,co)) }
 
 parameter prepend :
@@ -263,7 +247,7 @@ parameter delete_curs :
 	  co:vector ref -> cu:cursor ->
 	  { has_element_(co,cu) }
 	  unit reads co writes co
-	  { delete_(co@,to_index_(cu),co) }
+	  { delete_(co@,to_index_(co@,cu),co) }
 
 parameter previous :
 	  co:vector -> cu:cursor ->

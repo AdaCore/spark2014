@@ -72,7 +72,8 @@ let test_contains (co:vector) (i:int) (e:element_t) =
 let test_replace_element_curs1 (co:vector ref) (cu:cursor) (cun:cursor) (e:element_t) =
     { has_element_(co,cu) and has_element_(co,cun) and not cu=cun }
     replace_element_curs co cu e
-    { element_curs_(co,cu)=e and element_curs_(co,cun)=element_curs_(co@,cun)
+    { element_curs_(co,cu)=e and 
+     element_curs_(co,cun)=element_curs_(co@,cun)
      and false }
 
 let test_replace_element_curs2 (co:vector ref) (cu:cursor) (e:element_t) =
@@ -81,13 +82,12 @@ let test_replace_element_curs2 (co:vector ref) (cu:cursor) (e:element_t) =
     { p_forall_cont(co) and element_curs_(co,cu)=e and false }
 
 let test_insert_curs1 (co:vector ref) (cu:cursor) (e:element_t) (cun:cursor) =
-    { has_element_(co,cu) and has_element_(co,cun) and p(e) and p_forall_cont(co) and length_(co)+1>=to_index_(cun)>0 }
+    { has_element_(co,cu) and has_element_(co,cun) and p(e) and p_forall_cont(co) and length_(co)+1>=to_index_(co,cun)>0 }
     init:
     insert_curs co cu e;
     void
-    { p_forall_cont(co) and element_curs_(co,cu)=e and 
-    (to_index_(cun)>to_index_(cu) -> element_curs_(co,cun)=element_curs_(co@,previous_(co,cun))) and 
-    (to_index_(cun)<to_index_(cu) -> element_curs_(co,cun)=element_curs_(co@,cun)) and
+    { p_forall_cont(co) and 
+    (0<to_index_(co,cun)<to_index_(co@,cu) -> element_curs_(co,cun)=element_curs_(co@,cun)) and
     length_(co)=length_(co@)+1 and false }
 
 let test_insert_curs2 (co:vector ref) (e:element_t) (cun:cursor) =
@@ -98,17 +98,18 @@ let test_insert_curs2 (co:vector ref) (e:element_t) (cun:cursor) =
      false}
 
 let test_delete_curs (co:vector ref) (cu:cursor) (cun:cursor) =
-    { has_element_(co,cu) and has_element_(co,cun) and p_forall_cont(co) and length_(co)>to_index_(cun)>0 and not cu=cun }
+    { has_element_(co,cu) and has_element_(co,cun) and p_forall_cont(co) and
+      length_(co)>to_index_(co,cun)>0 and not cu=cun }
     delete_curs co cu
     { p_forall_cont(co) and
-     (to_index_(cun)>=to_index_(cu) -> element_curs_(co,cun)=element_curs_(co@,next_(co@,cun))) and 
-     (to_index_(cun)<to_index_(cu) -> element_curs_(co,cun)=element_curs_(co@,cun)) and
+     (0<to_index_(co,cun)<to_index_(co@,cu) -> element_curs_(co,cun)=element_curs_(co@,cun)) and
      length_(co)=length_(co@)-1 and false }
 
 let test_insert_delete_curs1 (co:vector ref) (cu:cursor) (e:element_t) =
     {  has_element_(co,cu) }
+    let i = to_index_ !co cu in
     insert_curs co cu e;
-    delete_curs co cu
+    delete_curs co (to_cursor_ !co i)
     { equal_(co,co@) and false }
 
 let test_insert_delete_curs2 (co:vector ref) (e:element_t) =
