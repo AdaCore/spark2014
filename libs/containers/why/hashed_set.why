@@ -54,7 +54,7 @@ axiom empty_is_empty :
 
 predicate next__ (co:set, cu1:cursor, cu2:cursor) =
 	  (length_(co)>position_(co,cu1)>0 or position_(co,cu2)>0 -> position_(co,cu2)=position_(co,cu1)+1)
-	  and (position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
+	  and (length_(co)>0 and position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
 
 logic next_ : set, cursor -> cursor
 

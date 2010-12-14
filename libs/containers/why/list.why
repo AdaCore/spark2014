@@ -57,8 +57,8 @@ axiom previous_previous :
 (*** NEXT ***)
 
 predicate next__ (co:list, cu1:cursor, cu2:cursor) =
-	  (0<position_(co,cu1)<length_(co) -> position_(co,cu2)=position_(co,cu1)+1)
-	  and (position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
+	  (length_(co)>position_(co,cu1)>0 -> position_(co,cu2)=position_(co,cu1)+1)
+	  and (length_(co)>0 and position_(co,cu1)=length_(co) or cu1=no_element -> cu2=no_element)
 
 logic next_ : list, cursor -> cursor
 
