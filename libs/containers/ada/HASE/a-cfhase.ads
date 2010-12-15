@@ -2,11 +2,11 @@
 --                                                                          --
 --                         GNAT LIBRARY COMPONENTS                          --
 --                                                                          --
---   A D A . C O N T A I N E R S . F O R M A L _ O R D E R E D _ S E T S    --
+--    A D A . C O N T A I N E R S . F O R M A L _ H A S H E D _ S E T S     --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2010, Free Software Foundation, Inc.              --
+--          Copyright (C) 2004-2010, Free Software Foundation, Inc.         --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -14,45 +14,61 @@
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
--- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
 -- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
--- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
--- for  more details.  You should have  received  a copy of the GNU General --
--- Public License  distributed with GNAT;  see file COPYING.  If not, write --
--- to  the  Free Software Foundation,  51  Franklin  Street,  Fifth  Floor, --
--- Boston, MA 02110-1301, USA.                                              --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
 --                                                                          --
--- This unit was originally developed by Claire Dross, based on the work    --
--- of Matthew J Heaney on bounded containers.                               --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
 ------------------------------------------------------------------------------
 
-private with Ada.Containers.Red_Black_Trees;
-private with Ada.Streams;
+--  This spec is derived from package Ada.Containers.Bounded_Hashed_Sets in the
+--  Ada 2012 RM. The modifications are to facilitate formal proofs by making it
+--  easier to express properties.
 
-with Ada.Containers;
-use Ada.Containers;
+--  The modifications are:
+
+--    A parameter for the container is added to every function reading the
+--    content of a container: Element, Next, Query_Element, Has_Element, Key,
+--    Iterate, Equivalent_Elements. This change is motivated by the need to
+--    have cursors which are valid on different containers (typically a
+--    container C and its previous version C'Old) for expressing properties,
+--    which is not possible if cursors encapsulate an access to the underlying
+--    container.
+
+--    There are three new functions:
+
+--      function Strict_Equal (Left, Right : Set) return Boolean;
+--      function Left  (Container : Set; Position : Cursor) return Set;
+--      function Right (Container : Set; Position : Cursor) return Set;
+
+--    See detailed specifications for these subprograms
+
+private with Ada.Containers.Hash_Tables;
+private with Ada.Streams;
 
 generic
    type Element_Type is private;
 
-   with function "<" (Left, Right : Element_Type) return Boolean is <>;
+   with function Hash (Element : Element_Type) return Hash_Type;
+
+   with function Equivalent_Elements (Left, Right : Element_Type)
+                                      return Boolean;
+
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Formal_Ordered_Sets is
-   --pragma Pure;
+package Ada.Containers.Formal_Hashed_Sets is
+   pragma Pure;
 
-   function Equivalent_Elements (Left, Right : Element_Type) return Boolean;
-
-   type Set (Capacity : Count_Type) is tagged private;
-   --pragma Preelaborable_Initialization (Set);
+   type Set (Capacity : Count_Type; Modulus : Hash_Type) is tagged private;
+   --  pragma Preelaborable_Initialization (Set);
 
    type Cursor is private;
    pragma Preelaborable_Initialization (Cursor);
@@ -67,6 +83,12 @@ package Formal_Ordered_Sets is
 
    function To_Set (New_Item : Element_Type) return Set;
 
+   function Capacity (Container : Set) return Count_Type;
+
+   procedure Reserve_Capacity
+     (Container : in out Set;
+      Capacity  : Count_Type);
+
    function Length (Container : Set) return Count_Type;
 
    function Is_Empty (Container : Set) return Boolean;
@@ -75,7 +97,8 @@ package Formal_Ordered_Sets is
 
    procedure Assign (Target : in out Set; Source : Set);
 
-   function Copy (Source : Set; Capacity : Count_Type := 0) return Set;
+   function Copy (Source   : Set;
+                  Capacity : Count_Type := 0) return Set;
 
    function Element (Container : Set; Position : Cursor) return Element_Type;
 
@@ -97,33 +120,17 @@ package Formal_Ordered_Sets is
       Position  : out Cursor;
       Inserted  : out Boolean);
 
-   procedure Insert
-     (Container : in out Set;
-      New_Item  : Element_Type);
+   procedure Insert  (Container : in out Set; New_Item : Element_Type);
 
-   procedure Include
-     (Container : in out Set;
-      New_Item  : Element_Type);
+   procedure Include (Container : in out Set; New_Item : Element_Type);
 
-   procedure Replace
-     (Container : in out Set;
-      New_Item  : Element_Type);
+   procedure Replace (Container : in out Set; New_Item : Element_Type);
 
-   procedure Exclude
-     (Container : in out Set;
-      Item      : Element_Type);
+   procedure Exclude (Container : in out Set; Item     : Element_Type);
 
-   procedure Delete
-     (Container : in out Set;
-      Item      : Element_Type);
+   procedure Delete  (Container : in out Set; Item     : Element_Type);
 
-   procedure Delete
-     (Container : in out Set;
-      Position  : in out Cursor);
-
-   procedure Delete_First (Container : in out Set);
-
-   procedure Delete_Last (Container : in out Set);
+   procedure Delete (Container : in out Set; Position  : in out Cursor);
 
    procedure Union (Target : in out Set; Source : Set);
 
@@ -147,7 +154,8 @@ package Formal_Ordered_Sets is
 
    function Symmetric_Difference (Left, Right : Set) return Set;
 
-   function "xor" (Left, Right : Set) return Set renames Symmetric_Difference;
+   function "xor" (Left, Right : Set) return Set
+                   renames Symmetric_Difference;
 
    function Overlap (Left, Right : Set) return Boolean;
 
@@ -155,50 +163,46 @@ package Formal_Ordered_Sets is
 
    function First (Container : Set) return Cursor;
 
-   function First_Element (Container : Set) return Element_Type;
-
-   function Last (Container : Set) return Cursor;
-
-   function Last_Element (Container : Set) return Element_Type;
-
    function Next (Container : Set; Position : Cursor) return Cursor;
 
    procedure Next (Container : Set; Position : in out Cursor);
 
-   function Previous (Container : Set; Position : Cursor) return Cursor;
-
-   procedure Previous (Container : Set; Position : in out Cursor);
-
-   function Find (Container : Set; Item : Element_Type) return Cursor;
-
-   function Floor (Container : Set; Item : Element_Type) return Cursor;
-
-   function Ceiling (Container : Set; Item : Element_Type) return Cursor;
+   function Find
+     (Container : Set;
+      Item      : Element_Type) return Cursor;
 
    function Contains (Container : Set; Item : Element_Type) return Boolean;
 
    function Has_Element (Container : Set; Position : Cursor) return Boolean;
+
+   function Equivalent_Elements (Left  : Set; CLeft : Cursor;
+                                 Right : Set; CRight : Cursor) return Boolean;
+
+   function Equivalent_Elements
+     (Left  : Set; CLeft : Cursor;
+      Right : Element_Type) return Boolean;
+
+   function Equivalent_Elements
+     (Left  : Element_Type;
+      Right : Set; CRight : Cursor) return Boolean;
 
    procedure Iterate
      (Container : Set;
       Process   :
         not null access procedure (Container : Set; Position : Cursor));
 
-   procedure Reverse_Iterate
-     (Container : Set;
-      Process   :
-        not null access procedure (Container : Set; Position : Cursor));
+   function Default_Modulus (Capacity : Count_Type) return Hash_Type;
 
    generic
       type Key_Type (<>) is private;
 
       with function Key (Element : Element_Type) return Key_Type;
 
-      with function "<" (Left, Right : Key_Type) return Boolean is <>;
+      with function Hash (Key : Key_Type) return Hash_Type;
+
+      with function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
 
    package Generic_Keys is
-
-      function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
 
       function Key (Container : Set; Position : Cursor) return Key_Type;
 
@@ -215,63 +219,52 @@ package Formal_Ordered_Sets is
 
       function Find (Container : Set; Key : Key_Type) return Cursor;
 
-      function Floor (Container : Set; Key : Key_Type) return Cursor;
-
-      function Ceiling (Container : Set; Key : Key_Type) return Cursor;
-
       function Contains (Container : Set; Key : Key_Type) return Boolean;
 
       procedure Update_Element_Preserving_Key
         (Container : in out Set;
          Position  : Cursor;
          Process   : not null access
-           procedure (Element : in out Element_Type));
+                       procedure (Element : in out Element_Type));
 
    end Generic_Keys;
 
    function Strict_Equal (Left, Right : Set) return Boolean;
+   --  Strict_Equal returns True if the containers are physically equal, i.e.
+   --  they are structurally equal (function "=" returns True) and that they
+   --  have the same set of cursors.
 
-   function Left (Container : Set; Position : Cursor) return Set;
-
+   function Left  (Container : Set; Position : Cursor) return Set;
    function Right (Container : Set; Position : Cursor) return Set;
+   --  Left returns a container containing all elements preceding Position
+   --  (excluded) in Container. Right returns a container containing all
+   --  elements following Position (included) in Container. These two new
+   --  functions can be used to express invariant properties in loops which
+   --  iterate over containers. Left returns the part of the container already
+   --  scanned and Right the part not scanned yet.
 
 private
 
    pragma Inline (Next);
-   pragma Inline (Previous);
 
-   type Node_Type is record
-      Has_Element : Boolean := false;
-      Parent  : Count_Type;
-      Left    : Count_Type;
-      Right   : Count_Type;
-      Color   : Red_Black_Trees.Color_Type;
-      Element : Element_Type;
-   end record;
+   type Node_Type is
+      record
+         Element     : Element_Type;
+         Next        : Count_Type;
+         Has_Element : Boolean := False;
+      end record;
 
-   type Kind is (Plain, Part);
+   package HT_Types is new
+     Ada.Containers.Hash_Tables.Generic_Bounded_Hash_Table_Types (Node_Type);
 
-   package Tree_Types is
-     new Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
+   type Set (Capacity : Count_Type; Modulus : Hash_Type) is
+      new HT_Types.Hash_Table_Type (Capacity, Modulus) with null record;
 
-   type Tree_Type_Access is access all Tree_Types.Tree_Type;
-
-   type Set (Capacity : Count_Type) is tagged record
-      Tree   : Tree_Type_Access := new Tree_Types.Tree_Type(Capacity);
-      K      : Kind := Plain;
-      Length : Count_Type := 0;
-      First  : Count_Type := 0;
-      Last   : Count_Type := 0;
-   end record;
-
-   use Red_Black_Trees;
+   use HT_Types;
    use Ada.Streams;
 
-   type Set_Access is access all Set;
-   for Set_Access'Storage_Size use 0;
-
    type Cursor is record
-      Node      : Count_Type;
+      Node : Count_Type;
    end record;
 
    procedure Write
@@ -300,7 +293,6 @@ private
 
    for Set'Read use Read;
 
-   Empty_Set : constant Set :=
-                 (Capacity => 0, others => <>);
+   Empty_Set : constant Set := (Capacity => 0, Modulus => 0, others => <>);
 
-end Formal_Ordered_Sets;
+end Ada.Containers.Formal_Hashed_Sets;

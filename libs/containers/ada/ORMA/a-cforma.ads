@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2010, Free Software Foundation, Inc.              --
+--          Copyright (C) 2004-2010, Free Software Foundation, Inc.         --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -14,29 +14,47 @@
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
--- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
 -- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
--- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
--- for  more details.  You should have  received  a copy of the GNU General --
--- Public License  distributed with GNAT;  see file COPYING.  If not, write --
--- to  the  Free Software Foundation,  51  Franklin  Street,  Fifth  Floor, --
--- Boston, MA 02110-1301, USA.                                              --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
 --                                                                          --
--- This unit was originally developed by Claire Dross, based on the work    --
--- of Matthew J Heaney on bounded containers.                               --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
 ------------------------------------------------------------------------------
+
+--  This spec is derived from package Ada.Containers.Bounded_Ordered_Maps in
+--  the Ada 2012 RM. The modifications are to facilitate formal proofs by
+--  making it easier to express properties.
+
+--  The modifications are:
+
+--    A parameter for the container is added to every function reading the
+--    content of a container: Key, Element, Next, Query_Element, Previous,
+--    Has_Element, Iterate, Reverse_Iterate. This change is motivated by the
+--    need to have cursors which are valid on different containers (typically a
+--    container C and its previous version C'Old) for expressing properties,
+--    which is not possible if cursors encapsulate an access to the underlying
+--    container. The operators "<" and ">" that could not be modified that way
+--    have been removed.
+
+--    There are four new functions:
+
+--      function Strict_Equal (Left, Right : Map) return Boolean;
+--      function Overlap (Left, Right : Map) return Boolean;
+--      function Left  (Container : Map; Position : Cursor) return Map;
+--      function Right (Container : Map; Position : Cursor) return Map;
+
+--    See detailed specifications for these subprograms
 
 private with Ada.Containers.Red_Black_Trees;
 private with Ada.Streams;
-with Ada.Containers; use Ada.Containers;
 
 generic
    type Key_Type is private;
@@ -45,13 +63,13 @@ generic
    with function "<" (Left, Right : Key_Type) return Boolean is <>;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Formal_Ordered_Maps is
-   pragma Pure;
+package Ada.Containers.Formal_Ordered_Maps is
+   --  pragma Pure;
 
    function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
 
    type Map (Capacity : Count_Type) is tagged private;
-   --pragma Preelaborable_Initialization (Map);
+   pragma Preelaborable_Initialization (Map);
 
    type Cursor is private;
    pragma Preelaborable_Initialization (Cursor);
@@ -85,13 +103,13 @@ package Formal_Ordered_Maps is
      (Container : in out Map;
       Position  : Cursor;
       Process   : not null access
-        procedure (Key : Key_Type; Element : Element_Type));
+                    procedure (Key : Key_Type; Element : Element_Type));
 
    procedure Update_Element
      (Container : in out Map;
       Position  : Cursor;
       Process   : not null access
-        procedure (Key : Key_Type; Element : in out Element_Type));
+                    procedure (Key : Key_Type; Element : in out Element_Type));
 
    procedure Move (Target : in out Map; Source : in out Map);
 
@@ -172,17 +190,25 @@ package Formal_Ordered_Maps is
 
    procedure Reverse_Iterate
      (Container : Map;
-      Process   :
-        not null access procedure (Container : Map; Position : Cursor));
+      Process   : not null access
+                    procedure (Container : Map; Position : Cursor));
 
    function Strict_Equal (Left, Right : Map) return Boolean;
+   --  Strict_Equal returns True if the containers are physically equal, i.e.
+   --  they are structurally equal (function "=" returns True) and that they
+   --  have the same set of cursors.
 
-   function Left (Container : Map; Position : Cursor) return Map;
-
+   function Left  (Container : Map; Position : Cursor) return Map;
    function Right (Container : Map; Position : Cursor) return Map;
+   --  Left returns a container containing all elements preceding Position
+   --  (excluded) in Container. Right returns a container containing all
+   --  elements following Position (included) in Container. These two new
+   --  functions can be used to express invariant properties in loops which
+   --  iterate over containers. Left returns the part of the container already
+   --  scanned and Right the part not scanned yet.
 
    function Overlap (Left, Right : Map) return Boolean;
-
+   --  Overlap returns True if the containers have common keys
 private
 
    pragma Inline (Next);
@@ -193,7 +219,7 @@ private
    use Red_Black_Trees;
 
    type Node_Type is record
-      Has_Element : Boolean := false;
+      Has_Element : Boolean := False;
       Parent  : Node_Access;
       Left    : Node_Access;
       Right   : Node_Access;
@@ -207,23 +233,13 @@ private
    package Tree_Types is
      new Ada.Containers.Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);
 
-   type Tree_Type_Access is access all Tree_Types.Tree_Type;
-
-   type Map (Capacity : Count_Type) is tagged record
-      Tree   : Tree_Type_Access := new Tree_Types.Tree_Type(Capacity);
-      K      : Kind := Plain;
-      Length : Count_Type := 0;
-      First  : Count_Type := 0;
-      Last   : Count_Type := 0;
-   end record;
+   type Map (Capacity : Count_Type) is
+      new Tree_Types.Tree_Type (Capacity) with null record;
 
    use Ada.Streams;
 
-   type Map_Access is access all Map;
-   for Map_Access'Storage_Size use 0;
-
    type Cursor is record
-      Node      : Node_Access;
+      Node : Node_Access;
    end record;
 
    procedure Write
@@ -254,4 +270,4 @@ private
 
    Empty_Map : constant Map := (Capacity => 0, others => <>);
 
-end Formal_Ordered_Maps;
+end Ada.Containers.Formal_Ordered_Maps;

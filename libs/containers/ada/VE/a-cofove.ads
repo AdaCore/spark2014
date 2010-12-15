@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2010, Free Software Foundation, Inc.              --
+--          Copyright (C) 2004-2010, Free Software Foundation, Inc.         --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -14,25 +14,46 @@
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
--- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
 -- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
--- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
--- for  more details.  You should have  received  a copy of the GNU General --
--- Public License  distributed with GNAT;  see file COPYING.  If not, write --
--- to  the  Free Software Foundation,  51  Franklin  Street,  Fifth  Floor, --
--- Boston, MA 02110-1301, USA.                                              --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
 --                                                                          --
--- This unit was originally developed by Claire Dross, based on the work    --
--- of Matthew J Heaney on bounded containers.                               --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
 ------------------------------------------------------------------------------
+
+--  This spec is derived from package Ada.Containers.Bounded_Vectors in the Ada
+--  2012 RM. The modifications are to facilitate formal proofs by making it
+--  easier to express properties.
+
+--  The modifications are:
+
+--    A parameter for the container is added to every function reading the
+--    content of a container: Element, Next, Query_Element, Previous, Iterate,
+--    Has_Element, Reverse_Iterate. This change is motivated by the need
+--    to have cursors which are valid on different containers (typically a
+--    container C and its previous version C'Old) for expressing properties,
+--    which is not possible if cursors encapsulate an access to the underlying
+--    container.
+
+--    There are two new functions:
+
+--      function Left  (Container : Vector; Position : Cursor) return Vector;
+--      function Right (Container : Vector; Position : Cursor) return Vector;
+
+--      Left returns a container containing all elements preceding Position
+--      (excluded) in Container. Right returns a container containing all
+--      elements following Position (included) in Container. These two new
+--      functions are useful to express invariant properties in loops which
+--      iterate over containers. Left returns the part of the container already
+--      scanned and Right the part not scanned yet.
 
 private with Ada.Streams;
 with Ada.Containers;
@@ -44,8 +65,8 @@ generic
 
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
-package Formal_Vectors is
-   --pragma Pure;
+package Ada.Containers.Formal_Vectors is
+   pragma Pure;
 
    subtype Extended_Index is Index_Type'Base
    range Index_Type'First - 1 ..
@@ -65,7 +86,7 @@ package Formal_Vectors is
    No_Index : constant Extended_Index := Extended_Index'First;
 
    type Vector (Capacity : Capacity_Subtype) is tagged private;
-   --pragma Preelaborable_Initialization (Vector);
+   --  pragma Preelaborable_Initialization (Vector);
 
    type Cursor is private;
    pragma Preelaborable_Initialization (Cursor);
@@ -122,7 +143,8 @@ package Formal_Vectors is
      (Container : Vector;
       Index     : Index_Type) return Element_Type;
 
-   function Element (Container : Vector; Position : Cursor) return Element_Type;
+   function Element (Container : Vector; Position : Cursor)
+                     return Element_Type;
 
    procedure Replace_Element
      (Container : in out Vector;
@@ -303,13 +325,13 @@ package Formal_Vectors is
 
    procedure Iterate
      (Container : Vector;
-      Process   :
-        not null access procedure (Container : Vector; Position : Cursor));
+      Process   : not null access
+                    procedure (Container : Vector; Position : Cursor));
 
    procedure Reverse_Iterate
      (Container : Vector;
-      Process   :
-        not null access procedure (Container : Vector; Position : Cursor));
+      Process   : not null access
+                    procedure (Container : Vector; Position : Cursor));
 
    generic
       with function "<" (Left, Right : Element_Type) return Boolean is <>;
@@ -377,8 +399,8 @@ private
    for Vector'Read use Read;
 
    type Cursor is record
-      Valid     : Boolean := True;
-      Index     : Index_Type := Index_Type'First;
+      Valid : Boolean := True;
+      Index : Index_Type := Index_Type'First;
    end record;
 
    procedure Write
@@ -397,4 +419,4 @@ private
 
    No_Element : constant Cursor := (Valid => False, Index => Index_Type'First);
 
-end Formal_Vectors;
+end Ada.Containers.Formal_Vectors;

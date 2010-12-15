@@ -10,32 +10,25 @@
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
--- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
 -- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
--- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
--- for  more details.  You should have  received  a copy of the GNU General --
--- Public License  distributed with GNAT;  see file COPYING.  If not, write --
--- to  the  Free Software Foundation,  51  Franklin  Street,  Fifth  Floor, --
--- Boston, MA 02110-1301, USA.                                              --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
 --                                                                          --
--- This unit was originally developed by Claire Dross, based on the work    --
--- of Matthew J Heaney on bounded containers.                               --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Generic_Array_Sort;
 with System; use type System.Address;
 
-with Ada.Text_IO;
-
-package body Formal_Vectors is
+package body Ada.Containers.Formal_Vectors is
 
    type Int is range System.Min_Int .. System.Max_Int;
    type UInt is mod System.Max_Binary_Modulus;
@@ -81,8 +74,8 @@ package body Formal_Vectors is
          end if;
 
          declare
-            E : Elements_Array (1 .. Length (Right)) :=
-                  Right.Plain.Elements (RFst .. RLst);
+            E : constant Elements_Array (1 .. Length (Right)) :=
+              Right.Plain.Elements (RFst .. RLst);
          begin
             return (Length (Right),
               new Plain_Vector'(Length (Right), E,
@@ -93,8 +86,8 @@ package body Formal_Vectors is
 
       if RN = 0 then
          declare
-            E : Elements_Array (1 .. Length (Left)) :=
-                  Left.Plain.Elements (LFst .. LLst);
+            E : constant Elements_Array (1 .. Length (Left)) :=
+              Left.Plain.Elements (LFst .. LLst);
          begin
             return (Length (Left),
                     new Plain_Vector'(Length (Left), E,
@@ -124,8 +117,8 @@ package body Formal_Vectors is
          declare
             Last : constant Index_Type := Index_Type (Last_As_Int);
 
-            LE : Elements_Array (1 .. Length (Left)) :=
-                   Left.Plain.Elements (LFst .. LLst);
+            LE : constant Elements_Array (1 .. Length (Left)) :=
+              Left.Plain.Elements (LFst .. LLst);
 
             RE : Elements_Array renames Right.Plain.Elements (RFst .. RLst);
 
@@ -175,7 +168,8 @@ package body Formal_Vectors is
       declare
          Last : constant Index_Type := Index_Type (Last_As_Int);
 
-         LE : Elements_Array (1 .. LN) := Left.Plain.Elements (LFst .. LLst);
+         LE : constant Elements_Array (1 .. LN) :=
+           Left.Plain.Elements (LFst .. LLst);
 
          Capacity : constant Count_Type := Length (Left) + 1;
 
@@ -771,12 +765,12 @@ package body Formal_Vectors is
          end if;
 
          declare
-            L : Capacity_Subtype := Length (Container);
+            L : constant Capacity_Subtype := Length (Container);
          begin
 
             for J in Count_Type range 1 .. L - 1 loop
-               if Get_Element (Container, J + 1) < Get_Element (Container, J)
-               then
+               if Get_Element (Container, J + 1)
+                 < Get_Element (Container, J) then
                   return False;
                end if;
             end loop;
@@ -1677,7 +1671,8 @@ package body Formal_Vectors is
          return;
       end if;
 
-      if Position.Index > Index_Type'First then
+      if Position.Index > Index_Type'First and
+        Position.Index <= Last_Index (Container) then
          Position.Index := Position.Index - 1;
       else
          Position := No_Element;
@@ -1690,7 +1685,8 @@ package body Formal_Vectors is
          return No_Element;
       end if;
 
-      if Position.Index > Index_Type'First then
+      if Position.Index > Index_Type'First and
+        Position.Index <= Last_Index (Container) then
          return (True, Position.Index - 1);
       end if;
 
@@ -2029,8 +2025,6 @@ package body Formal_Vectors is
 
       Fst := Fst + Count_Type (Int (Position.Index) - Int (No_Index)) - 1;
 
-      --Ada.Text_IO.Put_Line(Count_Type'Image(Fst));
-
       return (Container.Capacity, Container.Plain, Part, Fst,
               (Last_Index (Container) - Position.Index + 1));
    end Right;
@@ -2296,4 +2290,4 @@ package body Formal_Vectors is
       raise Program_Error with "attempt to stream vector cursor";
    end Write;
 
-end Formal_Vectors;
+end Ada.Containers.Formal_Vectors;

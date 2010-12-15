@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---          Copyright (C) 2010, Free Software Foundation, Inc.              --
+--          Copyright (C) 2004-2010, Free Software Foundation, Inc.         --
 --                                                                          --
 -- This specification is derived from the Ada Reference Manual for use with --
 -- GNAT. The copyright notice above, and the license provisions that follow --
@@ -14,28 +14,45 @@
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
--- ware  Foundation;  either version 2,  or (at your option) any later ver- --
+-- ware  Foundation;  either version 3,  or (at your option) any later ver- --
 -- sion.  GNAT is distributed in the hope that it will be useful, but WITH- --
 -- OUT ANY WARRANTY;  without even the  implied warranty of MERCHANTABILITY --
--- or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License --
--- for  more details.  You should have  received  a copy of the GNU General --
--- Public License  distributed with GNAT;  see file COPYING.  If not, write --
--- to  the  Free Software Foundation,  51  Franklin  Street,  Fifth  Floor, --
--- Boston, MA 02110-1301, USA.                                              --
+-- or FITNESS FOR A PARTICULAR PURPOSE.                                     --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
+-- As a special exception under Section 7 of GPL version 3, you are granted --
+-- additional permissions described in the GCC Runtime Library Exception,   --
+-- version 3.1, as published by the Free Software Foundation.               --
 --                                                                          --
--- This unit was originally developed by Claire Dross, based on the work    --
--- of Matthew J Heaney on bounded containers.                               --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program;     --
+-- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
+-- <http://www.gnu.org/licenses/>.                                          --
 ------------------------------------------------------------------------------
 
+--  This spec is derived from Ada.Containers.Bounded_Doubly_Linked_Lists in the
+--  Ada 2012 RM. The modifications are to facilitate formal proofs by making it
+--  easier to express properties.
+
+--  The modifications are:
+
+--    A parameter for the container is added to every function reading the
+--    contents of a container: Next, Previous, Query_Element, Has_Element,
+--    Iterate, Reverse_Iterate, Element. This change is motivated by the need
+--    to have cursors which are valid on different containers (typically a
+--    container C and its previous version C'Old) for expressing properties,
+--    which is not possible if cursors encapsulate an access to the underlying
+--    container.
+
+--    There are three new functions:
+
+--      function Strict_Equal (Left, Right : List) return Boolean;
+--      function Left  (Container : List; Position : Cursor) return List;
+--      function Right (Container : List; Position : Cursor) return List;
+
+--    See detailed specifications for these subprograms
+
 private with Ada.Streams;
-with Ada.Containers; use Ada.Containers;
+with Ada.Containers;
 
 generic
    type Element_Type is private;
@@ -43,11 +60,11 @@ generic
    with function "=" (Left, Right : Element_Type)
                       return Boolean is <>;
 
-package Formal_Doubly_Linked_Lists is
+package Ada.Containers.Formal_Doubly_Linked_Lists is
    pragma Pure;
 
    type List (Capacity : Count_Type) is tagged private;
-   -- pragma Preelaborable_Initialization (List);
+   --  pragma Preelaborable_Initialization (List);
 
    type Cursor is private;
    pragma Preelaborable_Initialization (Cursor);
@@ -209,10 +226,18 @@ package Formal_Doubly_Linked_Lists is
    end Generic_Sorting;
 
    function Strict_Equal (Left, Right : List) return Boolean;
+   --  Strict_Equal returns True if the containers are physically equal, i.e.
+   --  they are structurally equal (function "=" returns True) and that they
+   --  have the same set of cursors.
 
-   function Left (Container : List; Position : Cursor) return List;
-
+   function Left  (Container : List; Position : Cursor) return List;
    function Right (Container : List; Position : Cursor) return List;
+   --  Left returns a container containing all elements preceding Position
+   --  (excluded) in Container. Right returns a container containing all
+   --  elements following Position (included) in Container. These two new
+   --  functions can be used to express invariant properties in loops which
+   --  iterate over containers. Left returns the part of the container already
+   --  scanned and Right the part not scanned yet.
 
 private
 
@@ -226,33 +251,14 @@ private
    type Node_Array is array (Count_Type range <>) of Node_Type;
    function "=" (L, R : Node_Array) return Boolean is abstract;
 
-   type List_Access is access all List;
-   for List_Access'Storage_Size use 0;
-
-   type Kind is (Plain, Part);
-
-   type Plain_List (Capacity : Count_Type) is record
+   type List (Capacity : Count_Type) is tagged record
       Nodes  : Node_Array (1 .. Capacity) := (others => <>);
       Free   : Count_Type'Base := -1;
       Busy   : Natural := 0;
       Lock   : Natural := 0;
-   end record;
-
-   type PList_Access is access Plain_List;
-
-   type Part_List is record
-      LLength : Count_Type := 0;
-      LFirst  : Count_Type := 0;
-      LLast   : Count_Type := 0;
-   end record;
-
-   type List (Capacity : Count_Type) is tagged record
-      K      : Kind := Plain;
       Length : Count_Type := 0;
       First  : Count_Type := 0;
       Last   : Count_Type := 0;
-      Part   : Part_List;
-      Plain  : PList_Access := new Plain_List'(Capacity, others => <>);
    end record;
 
    use Ada.Streams;
@@ -269,10 +275,9 @@ private
 
    for List'Write use Write;
 
-   type Cursor is
-      record
-         Node      : Count_Type := 0;
-      end record;
+   type Cursor is record
+      Node : Count_Type := 0;
+   end record;
 
    procedure Read
      (Stream : not null access Root_Stream_Type'Class;
@@ -290,4 +295,4 @@ private
 
    No_Element : constant Cursor := (Node => 0);
 
-end Formal_Doubly_Linked_Lists;
+end Ada.Containers.Formal_Doubly_Linked_Lists;
