@@ -34,13 +34,6 @@ begin
 
    Ada.Text_IO.Put_Line ("PLAIN :");
 
-   --  Has_Element of an empty vector
-   if  Has_Element (L1, First (L1)) then
-      Ada.Text_IO.Put_Line ("Has_Element of an empty vector => KO ???");
-   else
-      Ada.Text_IO.Put_Line ("OK");
-   end if;
-
    --  Has_Element of first
    Append (Container => L1,
                New_Item  => 1);

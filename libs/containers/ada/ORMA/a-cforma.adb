@@ -26,7 +26,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations;
-with Ada.Text_IO;
 pragma Elaborate_All
   (Ada.Containers.Red_Black_Trees.Generic_Bounded_Operations);
 
@@ -284,7 +283,6 @@ package body Ada.Containers.Formal_Ordered_Maps is
    function Copy (Source : Map; Capacity : Count_Type := 0) return Map is
       Node : Count_Type := 1;
       N    : Count_Type;
-      Cu   : Cursor;
    begin
       return Target : Map (Count_Type'Max (Source.Capacity, Capacity)) do
          if Length (Source) > 0 then
@@ -627,31 +625,13 @@ package body Ada.Containers.Formal_Ordered_Maps is
       end New_Node;
 
       --  Start of processing for Insert
-      Node : Count_Type;
 
    begin
-      Node := 1;
-      while Node <= Container.Capacity loop
-         Ada.Text_IO.Put_Line (Boolean'Image (Container.Nodes (Node).Has_Element));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Left));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Right));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Parent));
-         Node := Node + 1;
-      end loop;
       Insert_Sans_Hint
         (Container,
          Key,
          Position.Node,
          Inserted);
-      Node := 1;
-      while Node <= Container.Capacity loop
-         Ada.Text_IO.Put_Line (Boolean'Image (Container.Nodes (Node).Has_Element));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Left));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Right));
-         Ada.Text_IO.Put_Line (Count_Type'Image (Container.Nodes (Node).Parent));
-         Node := Node + 1;
-      end loop;
-
    end Insert;
 
    procedure Insert
@@ -855,14 +835,11 @@ package body Ada.Containers.Formal_Ordered_Maps is
    ----------
 
    function Left (Container : Map; Position : Cursor) return Map is
-     Curs : Cursor := Position;
+      Curs : Cursor := Position;
       C : Map (Container.Capacity) :=
         Copy (Container, Container.Capacity);
       Node : Count_Type;
    begin
-      if Curs = No_Element then
-         Curs := First (Container);
-      end if;
       if Curs = No_Element then
          return C;
       end if;
@@ -872,7 +849,7 @@ package body Ada.Containers.Formal_Ordered_Maps is
 
       while Curs.Node /= 0 loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;
@@ -1041,7 +1018,6 @@ package body Ada.Containers.Formal_Ordered_Maps is
       pragma Assert (Vet (Container, Position.Node),
                      "bad cursor in Previous");
 
-
       declare
          Node : constant Count_Type :=
                   Tree_Operations.Previous (Container, Position.Node);
@@ -1155,7 +1131,6 @@ package body Ada.Containers.Formal_Ordered_Maps is
    is
    begin
 
-
       declare
          Node : constant Node_Access := Key_Ops.Find (Container, Key);
 
@@ -1253,7 +1228,7 @@ package body Ada.Containers.Formal_Ordered_Maps is
    -----------
 
    function Right (Container : Map; Position : Cursor) return Map is
-      Curs : Cursor := First(Container);
+      Curs : Cursor := First (Container);
       C : Map (Container.Capacity) :=
         Copy (Container, Container.Capacity);
       Node : Count_Type;
@@ -1268,7 +1243,7 @@ package body Ada.Containers.Formal_Ordered_Maps is
 
       while Curs.Node /= Position.Node loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;

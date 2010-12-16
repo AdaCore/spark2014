@@ -64,7 +64,7 @@ generic
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
 
 package Ada.Containers.Formal_Ordered_Maps is
-   --  pragma Pure;
+   pragma Pure;
 
    function Equivalent_Keys (Left, Right : Key_Type) return Boolean;
 
@@ -220,15 +220,13 @@ private
 
    type Node_Type is record
       Has_Element : Boolean := False;
-      Parent  : Node_Access;
-      Left    : Node_Access;
-      Right   : Node_Access;
+      Parent  : Node_Access := 0;
+      Left    : Node_Access := 0;
+      Right   : Node_Access := 0;
       Color   : Red_Black_Trees.Color_Type := Red;
       Key     : Key_Type;
       Element : Element_Type;
    end record;
-
-   type Kind is (Plain, Part);
 
    package Tree_Types is
      new Ada.Containers.Red_Black_Trees.Generic_Bounded_Tree_Types (Node_Type);

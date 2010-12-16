@@ -403,7 +403,6 @@ package body Ada.Containers.Formal_Hashed_Sets is
    function Difference (Left, Right : Set) return Set is
       C : Count_Type;
       H : Hash_Type;
-      S : Set (C, H);
    begin
       if Left'Address = Right'Address then
          return Empty_Set;
@@ -419,8 +418,9 @@ package body Ada.Containers.Formal_Hashed_Sets is
 
       C := Length (Left);
       H := Default_Modulus (C);
-      Difference (Left, Right, Target => S);
-      return S;
+      return S : Set (C, H) do
+         Difference (Left, Right, Target => S);
+      end return;
    end Difference;
 
    -------------
@@ -854,8 +854,6 @@ package body Ada.Containers.Formal_Hashed_Sets is
    function Intersection (Left, Right : Set) return Set is
       C : Count_Type;
       H : Hash_Type;
-      X : Count_Type;
-      B : Boolean;
 
    begin
       if Left'Address = Right'Address then
@@ -978,9 +976,6 @@ package body Ada.Containers.Formal_Hashed_Sets is
       Node : Count_Type;
    begin
       if Curs = No_Element then
-         Curs := First (Container);
-      end if;
-      if Curs = No_Element then
          return C;
       end if;
       if not Has_Element (Container, Curs) then
@@ -989,7 +984,7 @@ package body Ada.Containers.Formal_Hashed_Sets is
 
       while Curs.Node /= 0 loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;
@@ -1274,7 +1269,7 @@ package body Ada.Containers.Formal_Hashed_Sets is
    -----------
 
    function Right (Container : Set; Position : Cursor) return Set is
-      Curs : Cursor := First(Container);
+      Curs : Cursor := First (Container);
       C : Set (Container.Capacity, Container.Modulus) :=
         Copy (Container, Container.Capacity);
       Node : Count_Type;
@@ -1289,7 +1284,7 @@ package body Ada.Containers.Formal_Hashed_Sets is
 
       while Curs.Node /= Position.Node loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;

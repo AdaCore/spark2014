@@ -77,7 +77,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
          end if;
 
          LI := Left.Nodes (LI).Next;
-         RI := Right.Nodes (LI).Next;
+         RI := Right.Nodes (RI).Next;
       end loop;
 
       return True;
@@ -319,8 +319,8 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
          N (N (X).Prev).Next := N (X).Next;
 
          Free (Container, X);
-         end loop;
-         Position := No_Element;
+      end loop;
+      Position := No_Element;
    end Delete;
 
    ------------------
@@ -472,7 +472,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
       if F = 0 then
          raise Constraint_Error with "list is empty";
       else
-         return Container.Nodes(F).Element;
+         return Container.Nodes (F).Element;
       end if;
    end First_Element;
 
@@ -878,7 +878,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
    procedure Iterate
      (Container : List;
       Process   :
-        not null access procedure (Container : List; Position : Cursor))
+      not null access procedure (Container : List; Position : Cursor))
    is
       C : List renames Container'Unrestricted_Access.all;
       B : Natural renames C.Busy;
@@ -938,9 +938,6 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
       Node : Count_Type;
    begin
       if Curs = No_Element then
-         Curs := First (Container);
-      end if;
-      if Curs = No_Element then
          return C;
       end if;
       if not Has_Element (Container, Curs) then
@@ -949,7 +946,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
 
       while Curs.Node /= 0 loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;
@@ -1256,7 +1253,6 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
    -- Reverse_Find --
    ------------------
 
-
    function Reverse_Find
      (Container : List;
       Item      : Element_Type;
@@ -1289,7 +1285,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
    procedure Reverse_Iterate
      (Container : List;
       Process   :
-        not null access procedure (Container : List; Position : Cursor))
+      not null access procedure (Container : List; Position : Cursor))
    is
       C : List renames Container'Unrestricted_Access.all;
       B : Natural renames C.Busy;
@@ -1319,7 +1315,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
    -----------
 
    function Right (Container : List; Position : Cursor) return List is
-      Curs : Cursor := First(Container);
+      Curs : Cursor := First (Container);
       C : List (Container.Capacity) := Copy (Container, Container.Capacity);
       Node : Count_Type;
    begin
@@ -1333,7 +1329,7 @@ package body Ada.Containers.Formal_Doubly_Linked_Lists is
 
       while Curs.Node /= Position.Node loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;

@@ -33,13 +33,6 @@ begin
 
    Ada.Text_IO.Put_Line ("PLAIN :");
 
-   --  Has_Element of an empty list
-   if  Has_Element (L1, First (L1)) then
-      Ada.Text_IO.Put_Line ("Has_Element of an empty list => KO ???");
-   else
-      Ada.Text_IO.Put_Line ("OK");
-   end if;
-
    --  Has_Element of first
    Insert (Container => L1,
                New_Item  => 1);

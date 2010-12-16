@@ -46,12 +46,6 @@ package body Ada.Containers.Formal_Hashed_Maps is
       Node : Node_Type) return Boolean;
    pragma Inline (Equivalent_Keys);
 
-   function Find_Between
-     (HT   : Hash_Table_Type;
-      Key  : Key_Type;
-      From : Count_Type;
-      To   : Count_Type) return Count_Type;
-
    procedure Free
      (HT : in out Map;
       X  : Count_Type);
@@ -402,48 +396,6 @@ package body Ada.Containers.Formal_Hashed_Maps is
    ----------
    -- Find --
    ----------
-   function Find_Between
-     (HT   : Hash_Table_Type;
-      Key  : Key_Type;
-      From : Count_Type;
-      To   : Count_Type) return Count_Type is
-
-      Indx      : Hash_Type;
-      Indx_From : constant Hash_Type :=
-        Key_Ops.Index (HT, HT.Nodes (From).Key);
-      Indx_To   : constant Hash_Type :=
-        Key_Ops.Index (HT, HT.Nodes (To).Key);
-      Node      : Count_Type;
-      To_Node   : Count_Type;
-
-   begin
-
-      Indx := Key_Ops.Index (HT, Key);
-
-      if Indx < Indx_From or Indx > Indx_To then
-         return 0;
-      end if;
-
-      if Indx = Indx_From then
-         Node := From;
-      else
-         Node := HT.Buckets (Indx);
-      end if;
-
-      if Indx = Indx_To then
-         To_Node := HT.Nodes (To).Next;
-      else
-         To_Node := 0;
-      end if;
-
-      while Node /= To_Node loop
-         if Equivalent_Keys (Key, HT.Nodes (Node)) then
-            return Node;
-         end if;
-         Node := HT.Nodes (Node).Next;
-      end loop;
-      return 0;
-   end Find_Between;
 
    function Find (Container : Map; Key : Key_Type) return Cursor is
       Node : constant Count_Type :=
@@ -749,9 +701,6 @@ package body Ada.Containers.Formal_Hashed_Maps is
       Node : Count_Type;
    begin
       if Curs = No_Element then
-         Curs := First (Container);
-      end if;
-      if Curs = No_Element then
          return C;
       end if;
       if not Has_Element (Container, Curs) then
@@ -760,7 +709,7 @@ package body Ada.Containers.Formal_Hashed_Maps is
 
       while Curs.Node /= 0 loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;
@@ -1074,7 +1023,7 @@ package body Ada.Containers.Formal_Hashed_Maps is
    -----------
 
    function Right (Container : Map; Position : Cursor) return Map is
-      Curs : Cursor := First(Container);
+      Curs : Cursor := First (Container);
       C : Map (Container.Capacity, Container.Modulus) :=
         Copy (Container, Container.Capacity);
       Node : Count_Type;
@@ -1089,7 +1038,7 @@ package body Ada.Containers.Formal_Hashed_Maps is
 
       while Curs.Node /= Position.Node loop
          Node := Curs.Node;
-         delete (C, Curs);
+         Delete (C, Curs);
          Curs := Next (Container, (Node => Node));
       end loop;
       return C;
