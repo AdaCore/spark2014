@@ -216,21 +216,15 @@ predicate delete_pos (co1:set, i:int, co2:set) =
 	  forall cun:cursor.
 	    (position_(co1,cun)=i ->
 	     position_(co2,cun)=0)
-	    and (position_(co1,cun)>i ->
-	     position_(co2,cun)=position_(co1,cun)-1 and
-	     element_(co2,cun)=element_(co1,cun))
-	    and (i>position_(co1,cun) ->
-	     position_(co2,cun)=position_(co1,cun) and
+	    and (position_(co1,cun)>0 and position_(co1,cun)<> i ->
+	     position_(co2,cun)>0 and
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_inv (co1:set, i:int, co2:set) =
 	  forall cun:cursor.
-	    (i<=position_(co2,cun) ->
-	     position_(co1,cun)=position_(co2,cun)+1 and
+	    (position_(co2,cun)>0 ->
+	     position_(co1,cun)>0 and
 	     element_(co1,cun)=element_(co2,cun))
-	    and (i>position_(co2,cun)>0 ->
-	     position_(co1,cun)=position_(co2,cun) and
-	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_ (co1:set,cu:cursor,co2:set) =
 	  find_(co2,witness(element_(co1,cu)))=no_element and

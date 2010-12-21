@@ -58,11 +58,6 @@ goal length_left :
       forall s:map. forall c:cursor [length_(left_(s,c))].
       	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
 
-goal right_delete :
-     forall s1:map. forall s2:map.
-     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
-     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
-
 goal equal_refl :
      forall s1:map. forall s2:map [equal_(s2,s1)].
      	    equal_(s1,s2) -> equal_(s2,s1)
@@ -181,11 +176,6 @@ axiom delete_next :
 axiom length_left :
       forall s:map. forall c:cursor [length_(left_(s,c))].
       	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
-
-axiom right_delete :
-     forall s1:map. forall s2:map.
-     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
-     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
 
 axiom equal_refl :
      forall s1:map. forall s2:map [equal_(s2,s1)].
@@ -315,7 +305,7 @@ let test_include2 (co:map ref) (k:key_t) (e:element_t) (cu2:cursor) (kl:key_t) =
     false }
 
 let test_delete (co:map ref) (cu:cursor) (k:key_t) =
-    { has_element_(co,cu) and p_forall_cont(co) and witness(k)<>witness(key_(co,cu)) }
+    { has_element_(co,cu) and p_forall_cont(co) and witness(k)<>witness(key_(co,cu)) and contains_(co,witness(k)) }
     delete co cu
     { p_forall_cont(co) and not has_element_(co,cu) and
      find_(co,witness(k))=find_(co@,witness(k)) and
@@ -360,12 +350,6 @@ let test_right1 (co:map) (cu:cursor) (k:key_t) =
       equal_(co,right_(co,first_(co))) and
       contains_(right_(co,cu),witness(k))
       and false }
-
-let test_right_delete (s:map ref) (cu1:cursor) (cu2:cursor) (cu:cursor) =
-     { 0<position_(s,cu1)<position_(s,cu2) and position_(s,cu)>position_(s,cu2) }
-     delete s cu1
-     { position_(right_(s@,cu2),cu)=position_(right_(s,cu2),cu) and
-	(position_(right_(s@,cu2),cu)>0 -> element_(right_(s@,cu2),cu)=element_(right_(s,cu2),cu)) and false }
 
 let test_false (co:map ref) (cu:cursor) =
     { position_(co,cu)>0 }
@@ -463,34 +447,6 @@ let test3 (s:map) (k:key_t) (c:cursor ref) =
     { (if result then contains_(s,witness(k)) else not contains_(s,witness(k))) and c=find_(s,witness(k)) and false }
  
 
-(* Removes some elements from s and stores them in removed *)
-logic fun_test : element_t -> bool
-
-let interm6 (s:map ref) (removed:map ref) (c:cursor ref) =
-    { has_element_(s,c) and no_overlaping(s,removed) }
-    let c_int = next !s !c in
-    insert removed (key !s !c) (element !s !c);
-    delete s !c;
-    c := c_int
-    { ((has_element_(s@,c) and has_element_(s,c)) or c=no_element) and
-        no_overlaping(s,removed) and
-	length_(left_(s,c))+length_(removed)=length_(left_(s@,c))+length_(removed@) and
-      	equal_(right_(s,c),right_(s@,c)) and c=next_(s@,c@) }
-
-let test6 (s:map ref) (removed:map ref) =
-  { not is_empty_(s) and is_empty_(removed) }
-  let c = ref first !s in
-  init:
-  while has_element !s !c do
-    { invariant
-	(((has_element_(s@init,c) and has_element_(s,c)) or c=no_element) and
-	length_(left_(s,c))+length_(removed)=length_(left_(s@init,c)) and
-	no_overlaping(s,removed) and
-      	equal_(right_(s,c),right_(s@init,c)))
-    }
-    interm6 s removed c
-  done
-   { length_(s)+length_(removed)=length_(s@) and false }
 
 (*** MAX TESTS ***)
 

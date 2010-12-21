@@ -87,7 +87,7 @@ predicate find__ (co:map,i:real,cu:cursor) =
 	  ((cu=no_element and (forall cun:cursor. position_(co,cun)>0 -> witness(key_(co,cun))<>i))
 	  or (position_(co,cu)>0 and witness(key_(co,cu))=i
 	  and (forall cun:cursor. position_(co,cun)>0 -> 
-	   cu<>cun) -> witness(key_(co,cun))<>i)))
+	   cu<>cun -> witness(key_(co,cun))<>i)))
 
 axiom find_find_val :
       forall co:map. forall i:real.
@@ -229,24 +229,16 @@ predicate delete_pos (co1:map, i:int, co2:map) =
 	  forall cun:cursor.
 	    (position_(co1,cun)=i ->
 	     position_(co2,cun)=0)
-	    and (position_(co1,cun)>i ->
-	     position_(co2,cun)=position_(co1,cun)-1 and
-	     key_(co2,cun)=key_(co1,cun) and
-	     element_(co2,cun)=element_(co1,cun))
-	    and (i>position_(co1,cun) ->
-	     position_(co2,cun)=position_(co1,cun) and
+	    and (position_(co1,cun)>0 and position_(co1,cun)<> i ->
+	     position_(co2,cun)>0 and
 	     key_(co2,cun)=key_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_inv (co1:map, i:int, co2:map) =
 	  forall cun:cursor.
-	    (i<=position_(co2,cun) ->
-	     position_(co1,cun)=position_(co2,cun)+1 and
+	    (position_(co2,cun)>0 ->
+	     position_(co1,cun)>0 and
 	     key_(co1,cun)=key_(co2,cun) and
-	     element_(co2,cun)=element_(co1,cun))
-	    and (i>position_(co2,cun)>0 ->
-	     position_(co1,cun)=position_(co2,cun) and
-	     key_(co2,cun)=key_(co1,cun) and
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_ (co1:map,cu:cursor,co2:map) =

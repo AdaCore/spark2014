@@ -53,11 +53,6 @@ goal length_left_g :
       forall s:set. forall c:cursor [length_(left_(s,c))].
       	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
 
-goal right_delete_g :
-     forall s1:set. forall s2:set.
-     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
-     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
-
 goal equal_refl_g :
      forall s1:set. forall s2:set [equal_(s2,s1)].
      	    equal_(s1,s2) -> equal_(s2,s1)
@@ -155,11 +150,6 @@ axiom delete_next :
 axiom length_left :
       forall s:set. forall c:cursor [length_(left_(s,c))].
       	     has_element_(s,c)->length_(left_(s,c))=position_(s,c)-1
-
-axiom right_delete :
-     forall s1:set. forall s2:set.
-     forall c:cursor [delete_(s1,c,s2), equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))].
-     	    delete_(s1,c,s2) -> has_element_(s1,c) -> equal_(right_(s1,next_(s1,c)),right_(s2,next_(s1,c)))
 
 axiom equal_refl :
      forall s1:set. forall s2:set [equal_(s2,s1)].
@@ -271,7 +261,8 @@ let test_include2 (co:set ref) (e:element_t) (cu2:cursor) (el:element_t) =
     false }
 
 let test_delete (co:set ref) (cu:cursor) (el:element_t) (cun:cursor) =
-    { has_element_(co,cu) and p_forall_cont(co) and not find_(co,witness(el))=cu and not cu=cun }
+    { has_element_(co,cu) and p_forall_cont(co) and not find_(co,witness(el))=cu and not cu=cun and
+      has_element_(co,cun) }
     delete co cu
     { p_forall_cont(co) and
      not has_element_(co,cu) and
@@ -323,13 +314,6 @@ let test_right2 (co:set) (cu:cursor) (cun:cursor) =
     void
     { not has_element_(right_(co,cun),cu)
       and false }
-
-let test_right_delete (s:set ref) (cu1:cursor) (cu2:cursor) (cu:cursor) =
-     { 0<position_(s,cu1)<position_(s,cu2) }
-     init:
-     delete s cu1
-     { position_(right_(s@,cu2),cu)=position_(right_(s,cu2),cu) and
-		 (position_(right_(s@,cu2),cu)>0 -> element_(right_(s@,cu2),cu)=element_(right_(s,cu2),cu)) and false }
 
 let test_union1 (s1:set) (s2:set) (e:element_t) =
     { contains_(union_(s1,s2),witness(e)) and not contains_(s2,witness(e)) }
@@ -487,36 +471,6 @@ let test4 (s:set) (e:element_t) (c:cursor ref) =
     done;
     !b
     { (result=true <-> contains_(s,witness(e))) and c=find_(s,witness(e)) and false }
-
-(* Removes some elements from s and stores them in removed *)
-logic fun_test : element_t -> bool
-
-let interm6 (s:set ref) (removed:set ref) (c:cursor ref) =
-    { has_element_(s,c) and is_empty_(inter_(s,removed)) }
-    let c_int = next !s !c in
-    insert removed (element !s !c);
-    delete s !c;
-    c := c_int
-    { ((has_element_(s@,c) and has_element_(s,c)) or c=no_element) and
-        is_empty_(inter_(s,removed)) and
-	length_(left_(s,c))+length_(removed)=length_(left_(s@,c))+length_(removed@) and
-      	equal_(right_(s,c),right_(s@,c)) and c=next_(s@,c@) }
-
-let test6 (s:set ref) (removed:set ref) =
-  { not is_empty_(s) and is_empty_(removed) }
-  let c = ref first !s in
-  init:
-  while has_element !s !c do
-    { invariant
-	(((has_element_(s@init,c) and has_element_(s,c)) or c=no_element) and
-	length_(left_(s,c))+length_(removed)=length_(left_(s@init,c)) and
-	is_empty_(inter_(s,removed)) and
-      	equal_(right_(s,c),right_(s@init,c)))
-    }
-    (*if fun_test(element !s !c) then*)
-    interm6 s removed c
-  done
-   { length_(s)+length_(removed)=length_(s@) and false }
 
 (*** MAX TESTS ***)
 
