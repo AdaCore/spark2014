@@ -168,10 +168,10 @@ package body Xkind_Checks is
       use Class_Lists;
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
-      -- Same as Print_Kind_Checks_Declaration, but only for node classes
+      --  Same as Print_Kind_Checks_Declaration, but only for node classes
 
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
-      -- Same as Print_Kind_Checks_Declaration, but only for node kinds
+      --  Same as Print_Kind_Checks_Declaration, but only for node kinds
 
       procedure Print_Kind_Checks_Declaration (Prefix : Wide_String);
       --  Print the declarations of kind-validity checks for the given node

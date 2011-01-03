@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
+--  with Ada.Containers; use Ada.Containers;
 with Why.Sinfo;      use Why.Sinfo;
 with Xtree_Tables;   use Xtree_Tables;
 
