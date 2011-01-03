@@ -38,6 +38,11 @@ package body Back_End is
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
+   procedure Register_Back_End_Types (Call_Back : Register_Type_Proc) is
+   begin
+      null;
+   end Register_Back_End_Types;
+
    -----------------------------
    -- Scan_Compiler_Arguments --
    -----------------------------
