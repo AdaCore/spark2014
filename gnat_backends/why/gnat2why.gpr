@@ -1,0 +1,19 @@
+
+project GNAT2Why is
+
+   for Object_Dir use "obj";
+   for Exec_Dir use "../install/bin";
+
+   for Source_Dirs use (".", "..", "../..", "../gnat_src", "obj");
+
+   for Main use ("gnat1drv.adb");
+
+   package Builder is
+      for Executable ("gnat1drv.adb") use "gnat2why";
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-O0", "-gnata", "-gnat12", "-gnatg");
+   end Compiler;
+
+end GNAT2Why;
