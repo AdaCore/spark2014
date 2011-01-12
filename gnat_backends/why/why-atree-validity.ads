@@ -10461,7 +10461,7 @@ private
    function Adt_Definition_Id_Children_Valid
      (Id : W_Adt_Definition_Unchecked_Id)
      return Boolean is
-     (OList_Cache_Valid
+     (List_Cache_Valid
        (Adt_Definition_Get_Constructors (Id)));
 
    function Adt_Definition_OId_Children_Valid

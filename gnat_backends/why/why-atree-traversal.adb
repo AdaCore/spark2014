@@ -4076,7 +4076,8 @@ package body Why.Atree.Traversal is
    is
       use Node_Lists;
 
-      Position : Cursor := First (Get_List (List_Id));
+      L        : constant List := Get_List (List_Id);
+      Position : Cursor := First (L);
    begin
       while Position /= No_Element loop
          pragma Assert (Has_Element (Position)

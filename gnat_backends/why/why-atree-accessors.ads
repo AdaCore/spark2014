@@ -433,7 +433,7 @@ package Why.Atree.Accessors is
 
    function Adt_Definition_Get_Constructors
      (Id : W_Adt_Definition_Id)
-     return W_Constr_Decl_OList;
+     return W_Constr_Decl_List;
 
    function Constr_Decl_Get_Name
      (Id : W_Constr_Decl_Id)
@@ -1311,7 +1311,7 @@ private
 
    function Adt_Definition_Get_Constructors
      (Id : W_Adt_Definition_Id)
-     return W_Constr_Decl_OList is
+     return W_Constr_Decl_List is
      (Get_Node (Id).Adt_Constructors);
 
    function Constr_Decl_Get_Name

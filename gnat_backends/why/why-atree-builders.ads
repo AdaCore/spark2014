@@ -1706,11 +1706,11 @@ package Why.Atree.Builders is
 
    function New_Adt_Definition
      (Ada_Node     : Node_Id := Empty;
-      Constructors : W_Constr_Decl_OList := New_List)
+      Constructors : W_Constr_Decl_List)
      return W_Adt_Definition_Id with
      Pre =>
-       (Constr_Decl_OList_Kind_Valid (Constructors)
-        and then Constr_Decl_OList_Valid (Constructors)
+       (Constr_Decl_List_Kind_Valid (Constructors)
+        and then Constr_Decl_List_Valid (Constructors)
         and then Is_Root (Constructors)),
      Post =>
        (Get_Kind

@@ -1617,7 +1617,7 @@ package body Why.Atree.Builders is
 
    function New_Adt_Definition
      (Ada_Node     : Node_Id := Empty;
-      Constructors : W_Constr_Decl_OList := New_List)
+      Constructors : W_Constr_Decl_List)
      return W_Adt_Definition_Id
    is
       Result : Why_Node (W_Adt_Definition);
@@ -8421,7 +8421,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Adt_Definition);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Adt_Definition);
-         Constructors : constant W_Constr_Decl_OList :=
+         Constructors : constant W_Constr_Decl_List :=
             Adt_Definition_Get_Constructors (Id);
       begin
          Result.Ada_Node := Ada_Node;
