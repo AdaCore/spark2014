@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -91,7 +91,7 @@ package body Xtree_Tables is
      (FI : Field_Info;
       BK : Builder_Kind := Builder_Regular)
      return Wide_String is
-      Type_Name : Wide_String := Id_Type_Name (FI);
+      Type_Name : constant Wide_String := Id_Type_Name (FI);
    begin
       if Type_Name = "Why_Node_Id" then
          return "Why_Empty";
@@ -347,7 +347,7 @@ package body Xtree_Tables is
                end if;
 
                FI.Id_Type := new Wide_String'(Strip_Suffix (Node_Kind)
-                                              & "_" &Multiplicity);
+                                              & "_" & Multiplicity);
             else
                FI.Id_Type := new Wide_String'(FI.Field_Type.all);
             end if;

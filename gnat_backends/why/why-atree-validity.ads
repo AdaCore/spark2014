@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1148,6 +1148,54 @@ package Why.Atree.Validity is
 
    function Inductive_Case_OList_Valid
      (Id : W_Inductive_Case_Unchecked_OList)
+     return Boolean;
+
+   function Transparent_Type_Definition_Id_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Transparent_Type_Definition_OId_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Transparent_Type_Definition_List_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_List)
+     return Boolean;
+
+   function Transparent_Type_Definition_OList_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OList)
+     return Boolean;
+
+   function Adt_Definition_Id_Valid
+     (Id : W_Adt_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Adt_Definition_OId_Valid
+     (Id : W_Adt_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Adt_Definition_List_Valid
+     (Id : W_Adt_Definition_Unchecked_List)
+     return Boolean;
+
+   function Adt_Definition_OList_Valid
+     (Id : W_Adt_Definition_Unchecked_OList)
+     return Boolean;
+
+   function Constr_Decl_Id_Valid
+     (Id : W_Constr_Decl_Unchecked_Id)
+     return Boolean;
+
+   function Constr_Decl_OId_Valid
+     (Id : W_Constr_Decl_Unchecked_OId)
+     return Boolean;
+
+   function Constr_Decl_List_Valid
+     (Id : W_Constr_Decl_Unchecked_List)
+     return Boolean;
+
+   function Constr_Decl_OList_Valid
+     (Id : W_Constr_Decl_Unchecked_OList)
      return Boolean;
 
    function Effects_Id_Valid
@@ -2366,6 +2414,22 @@ package Why.Atree.Validity is
      (Id : W_Any_Node_Unchecked_OList)
      return Boolean;
 
+   function Type_Definition_Id_Valid
+     (Id : W_Type_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Type_Definition_OId_Valid
+     (Id : W_Type_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Type_Definition_List_Valid
+     (Id : W_Type_Definition_Unchecked_List)
+     return Boolean;
+
+   function Type_Definition_OList_Valid
+     (Id : W_Type_Definition_Unchecked_OList)
+     return Boolean;
+
 private
 
    function Id_Cache_Valid (Id : Why_Node_Id) return Boolean;
@@ -3462,6 +3526,54 @@ private
 
    function Inductive_Case_OList_Children_Valid
      (Id : W_Inductive_Case_Unchecked_OList)
+     return Boolean;
+
+   function Transparent_Type_Definition_Id_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Transparent_Type_Definition_OId_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Transparent_Type_Definition_List_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_List)
+     return Boolean;
+
+   function Transparent_Type_Definition_OList_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OList)
+     return Boolean;
+
+   function Adt_Definition_Id_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Adt_Definition_OId_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Adt_Definition_List_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_List)
+     return Boolean;
+
+   function Adt_Definition_OList_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_OList)
+     return Boolean;
+
+   function Constr_Decl_Id_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_Id)
+     return Boolean;
+
+   function Constr_Decl_OId_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_OId)
+     return Boolean;
+
+   function Constr_Decl_List_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_List)
+     return Boolean;
+
+   function Constr_Decl_OList_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_OList)
      return Boolean;
 
    function Effects_Id_Children_Valid
@@ -4678,6 +4790,22 @@ private
 
    function Any_Node_OList_Children_Valid
      (Id : W_Any_Node_Unchecked_OList)
+     return Boolean;
+
+   function Type_Definition_Id_Children_Valid
+     (Id : W_Type_Definition_Unchecked_Id)
+     return Boolean;
+
+   function Type_Definition_OId_Children_Valid
+     (Id : W_Type_Definition_Unchecked_OId)
+     return Boolean;
+
+   function Type_Definition_List_Children_Valid
+     (Id : W_Type_Definition_Unchecked_List)
+     return Boolean;
+
+   function Type_Definition_OList_Children_Valid
+     (Id : W_Type_Definition_Unchecked_OList)
      return Boolean;
 
    pragma Warnings (Off, "formal parameter ""Id"" is not referenced");
@@ -6449,6 +6577,84 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Inductive_Case_List_Valid (Id));
+
+   function Transparent_Type_Definition_Id_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Transparent_Type_Definition_Id_Children_Valid (Id));
+
+   function Transparent_Type_Definition_OId_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Transparent_Type_Definition_Id_Valid (Id));
+
+   function Transparent_Type_Definition_List_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Transparent_Type_Definition_OList_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Transparent_Type_Definition_List_Valid (Id));
+
+   function Adt_Definition_Id_Valid
+     (Id : W_Adt_Definition_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Adt_Definition_Id_Children_Valid (Id));
+
+   function Adt_Definition_OId_Valid
+     (Id : W_Adt_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Adt_Definition_Id_Valid (Id));
+
+   function Adt_Definition_List_Valid
+     (Id : W_Adt_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Adt_Definition_OList_Valid
+     (Id : W_Adt_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Adt_Definition_List_Valid (Id));
+
+   function Constr_Decl_Id_Valid
+     (Id : W_Constr_Decl_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Constr_Decl_Id_Children_Valid (Id));
+
+   function Constr_Decl_OId_Valid
+     (Id : W_Constr_Decl_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Constr_Decl_Id_Valid (Id));
+
+   function Constr_Decl_List_Valid
+     (Id : W_Constr_Decl_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Constr_Decl_OList_Valid
+     (Id : W_Constr_Decl_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Constr_Decl_List_Valid (Id));
 
    function Effects_Id_Valid
      (Id : W_Effects_Unchecked_Id)
@@ -8426,6 +8632,32 @@ private
      (Is_Empty (Id)
       or else Any_Node_List_Valid (Id));
 
+   function Type_Definition_Id_Valid
+     (Id : W_Type_Definition_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Type_Definition_Id_Children_Valid (Id));
+
+   function Type_Definition_OId_Valid
+     (Id : W_Type_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Type_Definition_Id_Valid (Id));
+
+   function Type_Definition_List_Valid
+     (Id : W_Type_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Type_Definition_OList_Valid
+     (Id : W_Type_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Type_Definition_List_Valid (Id));
+
    function Id_Cache_Valid (Id : Why_Node_Id) return Boolean is
      (Get_Node (Id).Checked);
 
@@ -9898,7 +10130,10 @@ private
          (Type_Get_Type_Parameters (Id))
      and then
        Id_Cache_Valid
-         (Type_Get_Name (Id)));
+         (Type_Get_Name (Id))
+     and then
+       OId_Cache_Valid
+         (Type_Get_Definition (Id)));
 
    function Type_OId_Children_Valid
      (Id : W_Type_Unchecked_OId)
@@ -10198,6 +10433,81 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Inductive_Case_List_Children_Valid (Id));
+
+   function Transparent_Type_Definition_Id_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Transparent_Type_Definition_Get_Type_Definition (Id)));
+
+   function Transparent_Type_Definition_OId_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Transparent_Type_Definition_Id_Children_Valid (Id));
+
+   function Transparent_Type_Definition_List_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Transparent_Type_Definition_OList_Children_Valid
+     (Id : W_Transparent_Type_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Transparent_Type_Definition_List_Children_Valid (Id));
+
+   function Adt_Definition_Id_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_Id)
+     return Boolean is
+     (OList_Cache_Valid
+       (Adt_Definition_Get_Constructors (Id)));
+
+   function Adt_Definition_OId_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Adt_Definition_Id_Children_Valid (Id));
+
+   function Adt_Definition_List_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Adt_Definition_OList_Children_Valid
+     (Id : W_Adt_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Adt_Definition_List_Children_Valid (Id));
+
+   function Constr_Decl_Id_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Constr_Decl_Get_Name (Id))
+     and then
+       OList_Cache_Valid
+         (Constr_Decl_Get_Arg_List (Id)));
+
+   function Constr_Decl_OId_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Constr_Decl_Id_Children_Valid (Id));
+
+   function Constr_Decl_List_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Constr_Decl_OList_Children_Valid
+     (Id : W_Constr_Decl_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Constr_Decl_List_Children_Valid (Id));
 
    function Effects_Id_Children_Valid
      (Id : W_Effects_Unchecked_Id)
@@ -12621,6 +12931,12 @@ private
            Logic_Binder_Id_Children_Valid (Id),
         when W_Inductive_Case =>
            Inductive_Case_Id_Children_Valid (Id),
+        when W_Transparent_Type_Definition =>
+           Transparent_Type_Definition_Id_Children_Valid (Id),
+        when W_Adt_Definition =>
+           Adt_Definition_Id_Children_Valid (Id),
+        when W_Constr_Decl =>
+           Constr_Decl_Id_Children_Valid (Id),
         when W_Effects =>
            Effects_Id_Children_Valid (Id),
         when W_Precondition =>
@@ -12759,6 +13075,35 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Any_Node_List_Children_Valid (Id));
+
+   function Type_Definition_Id_Children_Valid
+     (Id : W_Type_Definition_Unchecked_Id)
+     return Boolean is
+     (case Get_Kind (Id) is
+        when W_Transparent_Type_Definition =>
+           Transparent_Type_Definition_Id_Children_Valid (Id),
+        when W_Adt_Definition =>
+           Adt_Definition_Id_Children_Valid (Id),
+        when others =>
+           False);
+
+   function Type_Definition_OId_Children_Valid
+     (Id : W_Type_Definition_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Type_Definition_Id_Children_Valid (Id));
+
+   function Type_Definition_List_Children_Valid
+     (Id : W_Type_Definition_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Type_Definition_OList_Children_Valid
+     (Id : W_Type_Definition_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Type_Definition_List_Children_Valid (Id));
 
    pragma Warnings (On, "formal parameter ""Id"" is not referenced");
 

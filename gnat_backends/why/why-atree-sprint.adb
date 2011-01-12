@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1290,12 +1290,14 @@ package body Why.Atree.Sprint is
    is
       use Node_Lists;
 
-      External  : constant W_External_OId := Type_Get_External (Node);
-      Params    : constant List :=
-                    Get_List (Type_Get_Type_Parameters (Node));
-      Nb_Params : constant Count_Type := Length (Params);
-      Position  : Cursor := First (Params);
-      Name      : constant W_Identifier_Id := Type_Get_Name (Node);
+      External   : constant W_External_OId := Type_Get_External (Node);
+      Params     : constant List :=
+                     Get_List (Type_Get_Type_Parameters (Node));
+      Nb_Params  : constant Count_Type := Length (Params);
+      Position   : Cursor := First (Params);
+      Name       : constant W_Identifier_Id := Type_Get_Name (Node);
+      Definition : constant W_Type_Definition_Id :=
+                   Type_Get_Definition (Node);
    begin
       if External /= Why_Empty then
          P (O, "external ");
@@ -1328,9 +1330,37 @@ package body Why.Atree.Sprint is
       end if;
 
       Traverse (State, Name);
+      if Definition /= Why_Empty then
+         P (O, " = ");
+         NL (O);
+         Relative_Indent (O, 1);
+         Traverse (State, Definition);
+         Relative_Indent (O, -1);
+      end if;
+
       NL (O);
       State.Control := Abandon_Children;
    end Type_Pre_Op;
+
+   procedure Constr_Decl_Pre_Op
+      (State : in out Printer_State;
+       Node : W_Constr_Decl_Id)
+   is
+      Args : constant W_Primitive_Type_List := Constr_Decl_Get_Arg_List (Node);
+      Name : constant W_Identifier_Id := Constr_Decl_Get_Name (Node);
+   begin
+      P (O, "| ");
+      Traverse (State, Name);
+      if not Is_Empty (Args) then
+         P (O, "( ");
+         --  ??? This is incorrect, the types have to be separated with commas
+         Print_List (State, Args, ", ");
+         Traverse_List (State, Args);
+         P (O, ") ");
+      end if;
+      NL (O);
+      State.Control := Abandon_Children;
+   end Constr_Decl_Pre_Op;
 
    ------------------
    -- Logic_Pre_Op --

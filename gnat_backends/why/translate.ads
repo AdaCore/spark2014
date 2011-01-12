@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        X T R E E _ C L A S S E S                         --
+--                             T R A N S L A T E                            --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,35 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Xtree_Tables; use Xtree_Tables;
+package Translate is
+   pragma Pure;
 
-package body Xtree_Classes is
+   --  This package hierarchy provides a way to translate GNAT types
+   --  into Why types.
 
-   ---------------------------------
-   -- Print_Class_Case_Expression --
-   ---------------------------------
+   Not_Implemented : exception;
 
-   procedure Print_Class_Case_Expression
-     (O            : in out Output_Record;
-      CI           : Class_Info;
-      Param        : Wide_String;
-      Default      : Wide_String;
-      Process_Kind : not null access procedure
-                       (O    : in out Output_Record;
-                        Kind : Why_Node_Kind))
-   is
-   begin
-      PL (O, "(case Get_Kind (" & Param & ") is");
-      for Kind in Class_First (CI) .. Class_Last (CI) loop
-         Relative_Indent (O, 3);
-         PL (O, "when " & Mixed_Case_Name (Kind) & " =>");
-         Relative_Indent (O, 3);
-         Process_Kind (O, Kind);
-         PL (O, ",");
-         Relative_Indent (O, -6);
-      end loop;
-      PL (O, "   when others =>");
-      P  (O, "      " & Default & ");");
-   end Print_Class_Case_Expression;
-
-end Xtree_Classes;
+end Translate;

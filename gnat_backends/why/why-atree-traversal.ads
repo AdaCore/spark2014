@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -723,6 +723,36 @@ package Why.Atree.Traversal is
    procedure Inductive_Case_Post_Op
      (State : in out Traversal_State;
       Node  : W_Inductive_Case_Id)
+     is null;
+
+   procedure Transparent_Type_Definition_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Transparent_Type_Definition_Id)
+     is null;
+
+   procedure Transparent_Type_Definition_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Transparent_Type_Definition_Id)
+     is null;
+
+   procedure Adt_Definition_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Adt_Definition_Id)
+     is null;
+
+   procedure Adt_Definition_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Adt_Definition_Id)
+     is null;
+
+   procedure Constr_Decl_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Constr_Decl_Id)
+     is null;
+
+   procedure Constr_Decl_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Constr_Decl_Id)
      is null;
 
    procedure Effects_Pre_Op

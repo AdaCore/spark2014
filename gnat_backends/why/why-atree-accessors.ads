@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -331,6 +331,10 @@ package Why.Atree.Accessors is
      (Id : W_Type_Id)
      return W_Identifier_Id;
 
+   function Type_Get_Definition
+     (Id : W_Type_Id)
+     return W_Type_Definition_OId;
+
    function Logic_Get_External
      (Id : W_Logic_Id)
      return W_External_OId;
@@ -422,6 +426,22 @@ package Why.Atree.Accessors is
    function Inductive_Case_Get_Pred
      (Id : W_Inductive_Case_Id)
      return W_Predicate_Id;
+
+   function Transparent_Type_Definition_Get_Type_Definition
+     (Id : W_Transparent_Type_Definition_Id)
+     return W_Primitive_Type_Id;
+
+   function Adt_Definition_Get_Constructors
+     (Id : W_Adt_Definition_Id)
+     return W_Constr_Decl_OList;
+
+   function Constr_Decl_Get_Name
+     (Id : W_Constr_Decl_Id)
+     return W_Identifier_Id;
+
+   function Constr_Decl_Get_Arg_List
+     (Id : W_Constr_Decl_Id)
+     return W_Primitive_Type_OList;
 
    function Effects_Get_Reads
      (Id : W_Effects_Id)
@@ -1164,6 +1184,11 @@ private
      return W_Identifier_Id is
      (Get_Node (Id).T_Name);
 
+   function Type_Get_Definition
+     (Id : W_Type_Id)
+     return W_Type_Definition_OId is
+     (Get_Node (Id).T_Definition);
+
    function Logic_Get_External
      (Id : W_Logic_Id)
      return W_External_OId is
@@ -1278,6 +1303,26 @@ private
      (Id : W_Inductive_Case_Id)
      return W_Predicate_Id is
      (Get_Node (Id).IC_Pred);
+
+   function Transparent_Type_Definition_Get_Type_Definition
+     (Id : W_Transparent_Type_Definition_Id)
+     return W_Primitive_Type_Id is
+     (Get_Node (Id).Tr_Type_Definition);
+
+   function Adt_Definition_Get_Constructors
+     (Id : W_Adt_Definition_Id)
+     return W_Constr_Decl_OList is
+     (Get_Node (Id).Adt_Constructors);
+
+   function Constr_Decl_Get_Name
+     (Id : W_Constr_Decl_Id)
+     return W_Identifier_Id is
+     (Get_Node (Id).C_Name);
+
+   function Constr_Decl_Get_Arg_List
+     (Id : W_Constr_Decl_Id)
+     return W_Primitive_Type_OList is
+     (Get_Node (Id).C_Arg_List);
 
    function Effects_Get_Reads
      (Id : W_Effects_Id)

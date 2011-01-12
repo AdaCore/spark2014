@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -261,6 +261,7 @@ package Why.Atree is
             T_External        : W_External_Opaque_OId;
             T_Type_Parameters : W_Identifier_Opaque_OList;
             T_Name            : W_Identifier_Opaque_Id;
+            T_Definition      : W_Type_Definition_Opaque_OId;
 
          when W_Logic =>
             L_External   : W_External_Opaque_OId;
@@ -305,6 +306,16 @@ package Why.Atree is
          when W_Inductive_Case =>
             IC_Name : W_Identifier_Opaque_Id;
             IC_Pred : W_Predicate_Opaque_Id;
+
+         when W_Transparent_Type_Definition =>
+            Tr_Type_Definition : W_Primitive_Type_Opaque_Id;
+
+         when W_Adt_Definition =>
+            Adt_Constructors : W_Constr_Decl_Opaque_List;
+
+         when W_Constr_Decl =>
+            C_Name     : W_Identifier_Opaque_Id;
+            C_Arg_List : W_Primitive_Type_Opaque_OList;
 
          when W_Effects =>
             E_Reads  : W_Identifier_Opaque_OList;

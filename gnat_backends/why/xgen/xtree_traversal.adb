@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
 with Why.Sinfo;      use Why.Sinfo;
 with Xtree_Tables;   use Xtree_Tables;
 

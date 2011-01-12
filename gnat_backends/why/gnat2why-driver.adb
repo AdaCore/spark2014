@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -19,16 +19,22 @@
 -- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
 -- Boston,                                                                  --
 --                                                                          --
--- gnat2why is maintained by AdaCore (http://www.adacore.com)             --
+-- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Switch;  use Switch;
-with Sprint;  use Sprint;
-with Opt;     use Opt;
+with Atree;              use Atree;
+with Gnat2Why.Standard;  use Gnat2Why.Standard;
+with Nlists;             use Nlists;
+with Opt;                use Opt;
+with Sinfo;              use Sinfo;
+with Sprint;             use Sprint;
+with Switch;             use Switch;
+with Translate.Types;    use Translate.Types;
 with Treepr;
-
-with Gnat2Why.Standard; use Gnat2Why.Standard;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Sprint;   use Why.Atree.Sprint;
+with Why.Ids;            use Why.Ids;
 
 package body Gnat2Why.Driver is
 
@@ -69,6 +75,18 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+      Decls : List_Id;
+      Decl  : Node_Id;
+      File  : constant W_File_Id := New_File;
+      function Is_Type_Node (N : Node_Id) return Boolean;
+      function Is_Type_Node (N : Node_Id) return Boolean is
+      begin
+         case Nkind (N) is
+            when N_Full_Type_Declaration | N_Subtype_Declaration =>
+               return True;
+            when others => return False;
+         end case;
+      end Is_Type_Node;
    begin
       if Print_Generated_Code then
          Treepr.Print_Node_Subtree (GNAT_Root);
@@ -77,6 +95,24 @@ package body Gnat2Why.Driver is
 
       if Print_Standard then
          Create_Standard;
+      end if;
+      if Nkind (GNAT_Root) = N_Compilation_Unit then
+         case Nkind (Unit (GNAT_Root)) is
+            when N_Package_Body =>
+               Decls := Declarations (Unit (GNAT_Root));
+            when N_Package_Declaration =>
+               Decls :=
+                 Visible_Declarations (Specification (Unit (GNAT_Root)));
+            when others => raise Program_Error;
+         end case;
+         Decl := First (Decls);
+         while Present (Decl) loop
+            if Is_Type_Node (Decl) then
+               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
+            end if;
+            Next (Decl);
+         end loop;
+         Sprint_Why_Node (File);
       end if;
    end GNAT_To_Why;
 

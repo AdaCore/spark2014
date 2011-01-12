@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1328,7 +1328,8 @@ package Why.Atree.Builders is
      (Ada_Node        : Node_Id := Empty;
       External        : W_External_OId := Why_Empty;
       Type_Parameters : W_Identifier_OList := New_List;
-      Name            : W_Identifier_Id)
+      Name            : W_Identifier_Id;
+      Definition      : W_Type_Definition_OId := Why_Empty)
      return W_Type_Id with
      Pre =>
        (External_OId_Kind_Valid (External)
@@ -1339,7 +1340,10 @@ package Why.Atree.Builders is
         and then Is_Root (Type_Parameters)
         and then Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
-        and then Is_Root (Name)),
+        and then Is_Root (Name)
+        and then Type_Definition_OId_Kind_Valid (Definition)
+        and then Type_Definition_OId_Valid (Definition)
+        and then Is_Root (Definition)),
      Post =>
        (Get_Kind
          (New_Type'Result)
@@ -1359,7 +1363,11 @@ package Why.Atree.Builders is
         and then
           Type_Get_Name
           (New_Type'Result)
-          = Name);
+          = Name
+        and then
+          Type_Get_Definition
+          (New_Type'Result)
+          = Definition);
 
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
@@ -1674,6 +1682,77 @@ package Why.Atree.Builders is
           Inductive_Case_Get_Pred
           (New_Inductive_Case'Result)
           = Pred);
+
+   function New_Transparent_Type_Definition
+     (Ada_Node        : Node_Id := Empty;
+      Type_Definition : W_Primitive_Type_Id)
+     return W_Transparent_Type_Definition_Id with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Type_Definition)
+        and then Primitive_Type_Id_Valid (Type_Definition)
+        and then Is_Root (Type_Definition)),
+     Post =>
+       (Get_Kind
+         (New_Transparent_Type_Definition'Result)
+         = W_Transparent_Type_Definition
+        and then
+          Get_Ada_Node
+          (New_Transparent_Type_Definition'Result)
+          = Ada_Node
+        and then
+          Transparent_Type_Definition_Get_Type_Definition
+          (New_Transparent_Type_Definition'Result)
+          = Type_Definition);
+
+   function New_Adt_Definition
+     (Ada_Node     : Node_Id := Empty;
+      Constructors : W_Constr_Decl_OList := New_List)
+     return W_Adt_Definition_Id with
+     Pre =>
+       (Constr_Decl_OList_Kind_Valid (Constructors)
+        and then Constr_Decl_OList_Valid (Constructors)
+        and then Is_Root (Constructors)),
+     Post =>
+       (Get_Kind
+         (New_Adt_Definition'Result)
+         = W_Adt_Definition
+        and then
+          Get_Ada_Node
+          (New_Adt_Definition'Result)
+          = Ada_Node
+        and then
+          Adt_Definition_Get_Constructors
+          (New_Adt_Definition'Result)
+          = Constructors);
+
+   function New_Constr_Decl
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Arg_List : W_Primitive_Type_OList := New_List)
+     return W_Constr_Decl_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then Primitive_Type_OList_Kind_Valid (Arg_List)
+        and then Primitive_Type_OList_Valid (Arg_List)
+        and then Is_Root (Arg_List)),
+     Post =>
+       (Get_Kind
+         (New_Constr_Decl'Result)
+         = W_Constr_Decl
+        and then
+          Get_Ada_Node
+          (New_Constr_Decl'Result)
+          = Ada_Node
+        and then
+          Constr_Decl_Get_Name
+          (New_Constr_Decl'Result)
+          = Name
+        and then
+          Constr_Decl_Get_Arg_List
+          (New_Constr_Decl'Result)
+          = Arg_List);
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
@@ -3776,6 +3855,33 @@ package Why.Atree.Builders is
          = W_Inductive_Case
        );
 
+   function New_Unchecked_Transparent_Type_Definition
+     return W_Transparent_Type_Definition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Transparent_Type_Definition'Result)
+         = W_Transparent_Type_Definition
+       );
+
+   function New_Unchecked_Adt_Definition
+     return W_Adt_Definition_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Adt_Definition'Result)
+         = W_Adt_Definition
+       );
+
+   function New_Unchecked_Constr_Decl
+     return W_Constr_Decl_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Constr_Decl'Result)
+         = W_Constr_Decl
+       );
+
    function New_Unchecked_Effects
      return W_Effects_Unchecked_Id with
      Pre => True,
@@ -5312,6 +5418,51 @@ package Why.Atree.Builders is
           (Duplicate_Inductive_Case'Result)
           = Ada_Node);
 
+   function Duplicate_Transparent_Type_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Transparent_Type_Definition_OId)
+     return W_Transparent_Type_Definition_Id with
+     Pre =>
+       (Transparent_Type_Definition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Transparent_Type_Definition'Result)
+         = W_Transparent_Type_Definition
+        and then
+          Get_Ada_Node
+          (Duplicate_Transparent_Type_Definition'Result)
+          = Ada_Node);
+
+   function Duplicate_Adt_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Adt_Definition_OId)
+     return W_Adt_Definition_Id with
+     Pre =>
+       (Adt_Definition_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Adt_Definition'Result)
+         = W_Adt_Definition
+        and then
+          Get_Ada_Node
+          (Duplicate_Adt_Definition'Result)
+          = Ada_Node);
+
+   function Duplicate_Constr_Decl
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Constr_Decl_OId)
+     return W_Constr_Decl_Id with
+     Pre =>
+       (Constr_Decl_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Constr_Decl'Result)
+         = W_Constr_Decl
+        and then
+          Get_Ada_Node
+          (Duplicate_Constr_Decl'Result)
+          = Ada_Node);
+
    function Duplicate_Effects
      (Ada_Node : Node_Id := Empty;
       Id       : W_Effects_OId)
@@ -6281,6 +6432,11 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Id       : W_Any_Node_Id)
      return W_Any_Node_Id;
+
+   function Duplicate_Type_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Type_Definition_Id)
+     return W_Type_Definition_Id;
 
 private
 
@@ -7369,6 +7525,18 @@ private
            Duplicate_Inductive_Case
             (Ada_Node  => Ada_Node,
              Id        => Id),
+        when W_Transparent_Type_Definition =>
+           Duplicate_Transparent_Type_Definition
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Adt_Definition =>
+           Duplicate_Adt_Definition
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Constr_Decl =>
+           Duplicate_Constr_Decl
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
         when W_Effects =>
            Duplicate_Effects
             (Ada_Node  => Ada_Node,
@@ -7603,6 +7771,22 @@ private
              Id        => Id),
         when W_Logic_Declaration =>
            Duplicate_Logic_Declaration
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when others =>
+           Why_Empty);
+
+   function Duplicate_Type_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Type_Definition_Id)
+     return W_Type_Definition_Id is
+     (case Get_Kind (Id) is
+        when W_Transparent_Type_Definition =>
+           Duplicate_Transparent_Type_Definition
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Adt_Definition =>
+           Duplicate_Adt_Definition
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when others =>

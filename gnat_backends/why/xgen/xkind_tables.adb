@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -48,7 +48,7 @@ package body Xkind_Tables is
             end case;
          when Unchecked =>
             return Id_Subtype (Prefix, Opaque, Multiplicity);
-          when Regular =>
+         when Regular =>
             return Id_Subtype (Prefix, Unchecked, Multiplicity);
       end case;
    end Base_Id_Subtype;
@@ -185,4 +185,4 @@ package body Xkind_Tables is
         & "_Valid";
    end Tree_Check;
 
-end XKind_Tables;
+end Xkind_Tables;

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1118,6 +1118,54 @@ package Why.Kind_Validity is
 
    function Inductive_Case_OList_Kind_Valid
      (Id : W_Inductive_Case_Opaque_OList)
+     return Boolean;
+
+   function Transparent_Type_Definition_Id_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_Id)
+     return Boolean;
+
+   function Transparent_Type_Definition_OId_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_OId)
+     return Boolean;
+
+   function Transparent_Type_Definition_List_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_List)
+     return Boolean;
+
+   function Transparent_Type_Definition_OList_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_OList)
+     return Boolean;
+
+   function Adt_Definition_Id_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_Id)
+     return Boolean;
+
+   function Adt_Definition_OId_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_OId)
+     return Boolean;
+
+   function Adt_Definition_List_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_List)
+     return Boolean;
+
+   function Adt_Definition_OList_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_OList)
+     return Boolean;
+
+   function Constr_Decl_Id_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_Id)
+     return Boolean;
+
+   function Constr_Decl_OId_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_OId)
+     return Boolean;
+
+   function Constr_Decl_List_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_List)
+     return Boolean;
+
+   function Constr_Decl_OList_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_OList)
      return Boolean;
 
    function Effects_Id_Kind_Valid
@@ -2334,6 +2382,22 @@ package Why.Kind_Validity is
 
    function Any_Node_OList_Kind_Valid
      (Id : W_Any_Node_Opaque_OList)
+     return Boolean;
+
+   function Type_Definition_Id_Kind_Valid
+     (Id : W_Type_Definition_Opaque_Id)
+     return Boolean;
+
+   function Type_Definition_OId_Kind_Valid
+     (Id : W_Type_Definition_Opaque_OId)
+     return Boolean;
+
+   function Type_Definition_List_Kind_Valid
+     (Id : W_Type_Definition_Opaque_List)
+     return Boolean;
+
+   function Type_Definition_OList_Kind_Valid
+     (Id : W_Type_Definition_Opaque_OList)
      return Boolean;
 
 private
@@ -4037,6 +4101,81 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Inductive_Case_List_Kind_Valid (Id));
+
+   function Transparent_Type_Definition_Id_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Transparent_Type_Definition);
+
+   function Transparent_Type_Definition_OId_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Transparent_Type_Definition_Id_Kind_Valid (Id));
+
+   function Transparent_Type_Definition_List_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Transparent_Type_Definition_OList_Kind_Valid
+     (Id : W_Transparent_Type_Definition_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Transparent_Type_Definition_List_Kind_Valid (Id));
+
+   function Adt_Definition_Id_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Adt_Definition);
+
+   function Adt_Definition_OId_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Adt_Definition_Id_Kind_Valid (Id));
+
+   function Adt_Definition_List_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Adt_Definition_OList_Kind_Valid
+     (Id : W_Adt_Definition_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Adt_Definition_List_Kind_Valid (Id));
+
+   function Constr_Decl_Id_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Constr_Decl);
+
+   function Constr_Decl_OId_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Constr_Decl_Id_Kind_Valid (Id));
+
+   function Constr_Decl_List_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Constr_Decl_OList_Kind_Valid
+     (Id : W_Constr_Decl_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Constr_Decl_List_Kind_Valid (Id));
 
    function Effects_Id_Kind_Valid
      (Id : W_Effects_Opaque_Id)
@@ -5937,5 +6076,30 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Any_Node_List_Kind_Valid (Id));
+
+   function Type_Definition_Id_Kind_Valid
+     (Id : W_Type_Definition_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) in W_Type_Definition'Range);
+
+   function Type_Definition_OId_Kind_Valid
+     (Id : W_Type_Definition_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Type_Definition_Id_Kind_Valid (Id));
+
+   function Type_Definition_List_Kind_Valid
+     (Id : W_Type_Definition_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Type_Definition_OList_Kind_Valid
+     (Id : W_Type_Definition_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Type_Definition_List_Kind_Valid (Id));
 
 end Why.Kind_Validity;

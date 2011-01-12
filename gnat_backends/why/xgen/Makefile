@@ -20,6 +20,7 @@ ASIS_FILES=\
  why-atree.adt
 
 all: $(GENERATED_FILES)
+	cp $(GENERATED_FILES) ../
 
 force:
 
@@ -78,6 +79,6 @@ clean:
 	-rm *~
 	-rm *.o
 	-rm *.ali
-	-rm b~* 
+	-rm b~*
 	-rm *.adt
 	-rm xtree

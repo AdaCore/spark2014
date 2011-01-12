@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -310,7 +310,9 @@ package Why.Sinfo is
       --                                | <goal>
 
       W_Type,
-      --  <type> ::= [ <external> ] 'type' [ <type_parameters> ] <identifier>
+      --  <type> ::=
+      --    [ <external> ] 'type' [ <type_parameters> ] <identifier>
+      --    [ = <type_definition>]
 
       --  <type_parameters> ::=
       --  "'" <identifier> | '(' "'" <identifier> (',' "'" <identifier>)+ ')'
@@ -357,6 +359,23 @@ package Why.Sinfo is
 
       W_Inductive_Case,
       --  <inductive_case> ::= '|' <identifier> : <predicate>
+
+      ----------------------
+      -- Type Definitions --
+      ----------------------
+      --  Type definitions are introduced by an extension of the Why manual:
+      --  http://hal.inria.fr/docs/00/48/73/62/PDF/RR-7128.pdf
+      --  <type_definition> ::= <logic_type> | <adt_definition>
+      W_Transparent_Type_Definition,
+
+      W_Adt_Definition,
+      --  <adt_definition> ::=
+      --    <constructor_declaration> [ constructor_declaration ]*
+
+      W_Constr_Decl,
+      --    <constructor_declaration> ::=
+      --    '|' identifier
+      --          [ '(' <primitive_type> [',' <primitive_type>]* ')' ]
 
       -------------------
       -- Program space --
@@ -687,5 +706,9 @@ package Why.Sinfo is
    subtype W_Any_Node is Why_Node_Kind range
      W_Identifier ..
      W_Logic_Declaration;
+
+   subtype W_Type_Definition is Why_Node_Kind range
+     W_Transparent_Type_Definition ..
+     W_Adt_Definition;
 
 end Why.Sinfo;

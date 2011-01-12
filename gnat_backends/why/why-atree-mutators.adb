@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1486,6 +1486,24 @@ package body Why.Atree.Mutators is
          Type_Id_Valid (Id));
    end Type_Set_Name;
 
+   -------------------------
+   -- Type_Set_Definition --
+   -------------------------
+
+   procedure Type_Set_Definition
+     (Id         : W_Type_Unchecked_Id;
+      Definition : W_Type_Definition_Unchecked_OId)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.T_Definition := Definition;
+      Set_Node (Id, Node);
+      Set_Link (Definition, Id);
+      Update_Validity_Status
+        (Id,
+         Type_Id_Valid (Id));
+   end Type_Set_Definition;
+
    ------------------------
    -- Logic_Set_External --
    ------------------------
@@ -1979,6 +1997,110 @@ package body Why.Atree.Mutators is
         (Id,
          Inductive_Case_Id_Valid (Id));
    end Inductive_Case_Set_Pred;
+
+   -----------------------------------------------------
+   -- Transparent_Type_Definition_Set_Type_Definition --
+   -----------------------------------------------------
+
+   procedure Transparent_Type_Definition_Set_Type_Definition
+     (Id              : W_Transparent_Type_Definition_Unchecked_Id;
+      Type_Definition : W_Primitive_Type_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.Tr_Type_Definition := Type_Definition;
+      Set_Node (Id, Node);
+      Set_Link (Type_Definition, Id);
+      Update_Validity_Status
+        (Id,
+         Transparent_Type_Definition_Id_Valid (Id));
+   end Transparent_Type_Definition_Set_Type_Definition;
+
+   -------------------------------------------
+   -- Adt_Definition_Append_To_Constructors --
+   -------------------------------------------
+
+   procedure Adt_Definition_Append_To_Constructors
+     (Id       : W_Adt_Definition_Unchecked_Id;
+      New_Item : W_Constr_Decl_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.Adt_Constructors, New_Item);
+      Update_Validity_Status
+        (Id,
+         Adt_Definition_Id_Valid (Id));
+   end Adt_Definition_Append_To_Constructors;
+
+   --------------------------------------------
+   -- Adt_Definition_Prepend_To_Constructors --
+   --------------------------------------------
+
+   procedure Adt_Definition_Prepend_To_Constructors
+     (Id       : W_Adt_Definition_Unchecked_Id;
+      New_Item : W_Constr_Decl_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.Adt_Constructors, New_Item);
+      Update_Validity_Status
+        (Id,
+         Adt_Definition_Id_Valid (Id));
+   end Adt_Definition_Prepend_To_Constructors;
+
+   --------------------------
+   -- Constr_Decl_Set_Name --
+   --------------------------
+
+   procedure Constr_Decl_Set_Name
+     (Id   : W_Constr_Decl_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.C_Name := Name;
+      Set_Node (Id, Node);
+      Set_Link (Name, Id);
+      Update_Validity_Status
+        (Id,
+         Constr_Decl_Id_Valid (Id));
+   end Constr_Decl_Set_Name;
+
+   ------------------------------------
+   -- Constr_Decl_Append_To_Arg_List --
+   ------------------------------------
+
+   procedure Constr_Decl_Append_To_Arg_List
+     (Id       : W_Constr_Decl_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.C_Arg_List, New_Item);
+      Update_Validity_Status
+        (Id,
+         Constr_Decl_Id_Valid (Id));
+   end Constr_Decl_Append_To_Arg_List;
+
+   -------------------------------------
+   -- Constr_Decl_Prepend_To_Arg_List --
+   -------------------------------------
+
+   procedure Constr_Decl_Prepend_To_Arg_List
+     (Id       : W_Constr_Decl_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.C_Arg_List, New_Item);
+      Update_Validity_Status
+        (Id,
+         Constr_Decl_Id_Valid (Id));
+   end Constr_Decl_Prepend_To_Arg_List;
 
    -----------------------------
    -- Effects_Append_To_Reads --

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -581,6 +581,30 @@ package Why.Opaque_Ids is
    subtype W_Inductive_Case_Opaque_List is Why_Node_List;
 
    subtype W_Inductive_Case_Opaque_OList is Why_Node_List;
+
+   subtype W_Transparent_Type_Definition_Opaque_Id is Why_Node_Id;
+
+   subtype W_Transparent_Type_Definition_Opaque_OId is Why_Node_Id;
+
+   subtype W_Transparent_Type_Definition_Opaque_List is Why_Node_List;
+
+   subtype W_Transparent_Type_Definition_Opaque_OList is Why_Node_List;
+
+   subtype W_Adt_Definition_Opaque_Id is Why_Node_Id;
+
+   subtype W_Adt_Definition_Opaque_OId is Why_Node_Id;
+
+   subtype W_Adt_Definition_Opaque_List is Why_Node_List;
+
+   subtype W_Adt_Definition_Opaque_OList is Why_Node_List;
+
+   subtype W_Constr_Decl_Opaque_Id is Why_Node_Id;
+
+   subtype W_Constr_Decl_Opaque_OId is Why_Node_Id;
+
+   subtype W_Constr_Decl_Opaque_List is Why_Node_List;
+
+   subtype W_Constr_Decl_Opaque_OList is Why_Node_List;
 
    subtype W_Effects_Opaque_Id is Why_Node_Id;
 
@@ -1189,5 +1213,13 @@ package Why.Opaque_Ids is
    subtype W_Any_Node_Opaque_List is Why_Node_List;
 
    subtype W_Any_Node_Opaque_OList is Why_Node_List;
+
+   subtype W_Type_Definition_Opaque_Id is Why_Node_Id;
+
+   subtype W_Type_Definition_Opaque_OId is Why_Node_Id;
+
+   subtype W_Type_Definition_Opaque_List is Why_Node_List;
+
+   subtype W_Type_Definition_Opaque_OList is Why_Node_List;
 
 end Why.Opaque_Ids;

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -333,9 +333,6 @@ package body Xtree_Builders is
             when Special_Field_Link =>
                PL (O, New_Node & "." & To_String (SF) & " := Why_Empty;");
 
-            when others =>
-               --  All special fields should be initialized
-               pragma Assert (False);
          end case;
       end loop;
 
@@ -727,7 +724,7 @@ package body Xtree_Builders is
             P (O, PN);
             Adjust_Columns (O, PN'Length, Max_Param_Len);
             P (O, " => " & PN);
-         end;
+         end Print_Component_Choice;
 
          ----------------------------------
          -- Print_Field_Component_Choice --
@@ -814,7 +811,6 @@ package body Xtree_Builders is
       use Node_Lists;
 
       Max_Param_Len : Natural;
-      Field_Number  : Positive := 1;
 
       procedure Print_Parameter_Specification (Position : Cursor);
 

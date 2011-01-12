@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -167,10 +167,10 @@ package body Xtree_Checks is
       use Class_Lists;
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
-      -- Same as Print_Tree_Checks_Declaration, but only for node classes
+      --  Same as Print_Tree_Checks_Declaration, but only for node classes
 
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
-      -- Same as Print_Tree_Checks_Declaration, but only for node kinds
+      --  Same as Print_Tree_Checks_Declaration, but only for node kinds
 
       procedure Print_Tree_Checks_Declaration (Prefix : Wide_String);
       --  Print the declarations of kind-validity checks for the given node

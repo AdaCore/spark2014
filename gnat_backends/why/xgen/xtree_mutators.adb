@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
 with Why.Sinfo;      use Why.Sinfo;
 with Xtree_Tables;   use Xtree_Tables;
 with Xkind_Tables;   use Xkind_Tables;
@@ -69,7 +68,6 @@ package body Xtree_Mutators is
 
    procedure Print_Mutator_Precondition
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
       FI   : Field_Info);
    --  Print mutator precondition for the given node child.
    --  Note that this precondition can be replaced nicely
@@ -362,7 +360,7 @@ package body Xtree_Mutators is
             if Is_Why_Id (FI) then
                PL (O, " with");
                Relative_Indent (O, 2);
-               Print_Mutator_Precondition (O, Kind, FI);
+               Print_Mutator_Precondition (O, FI);
                Relative_Indent (O, -2);
             end if;
 
@@ -372,7 +370,7 @@ package body Xtree_Mutators is
                Print_List_Op_Specification (O, Kind, FI, List_Op);
                PL (O, " with");
                Relative_Indent (O, 2);
-               Print_Mutator_Precondition (O, Kind, FI);
+               Print_Mutator_Precondition (O, FI);
                Relative_Indent (O, -2);
                PL (O, ";");
 
@@ -402,7 +400,6 @@ package body Xtree_Mutators is
 
    procedure Print_Mutator_Precondition
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
       FI   : Field_Info)
    is
       PN : constant Wide_String :=
@@ -411,7 +408,7 @@ package body Xtree_Mutators is
       M  : constant Id_Multiplicity :=
              (if Is_List (FI) then Id_One
               else Multiplicity (FI));
-    begin
+   begin
       if Is_Why_Id (FI) then
          PL (O, "Pre =>");
          PL (O, "  (" & Kind_Check (Field_Kind (FI), M)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1761,6 +1761,9 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Type_Get_Name (Node));
+            Traverse
+              (State,
+               Type_Get_Definition (Node));
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2105,6 +2108,99 @@ package body Why.Atree.Traversal is
             end if;
 
             Inductive_Case_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Transparent_Type_Definition =>
+            Transparent_Type_Definition_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Transparent_Type_Definition_Get_Type_Definition (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Transparent_Type_Definition_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Adt_Definition =>
+            Adt_Definition_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse_List
+              (State,
+               Adt_Definition_Get_Constructors (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Adt_Definition_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Constr_Decl =>
+            Constr_Decl_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Constr_Decl_Get_Name (Node));
+            Traverse_List
+              (State,
+               Constr_Decl_Get_Arg_List (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Constr_Decl_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,13 +24,26 @@
 ------------------------------------------------------------------------------
 
 with Why.Ids; use Why.Ids;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 
 package Why.Gen.Enums is
+
    --  This package provides ways to declare enumeration types
 
    procedure Declare_Abstract_Boolean_Type (File : W_File_Id; Name : String);
    --  This creates a new boolean type with the given name; it generates
    --  an abstract type for it, conversions from/to int and from/to bool
    --  and the corresponding axioms.
+
+   package String_Lists is new
+      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
+
+   procedure Declare_Enum_Type (
+      File         : W_File_Id;
+      Name         : String;
+      Constructors : String_Lists.List);
+   --  This creates a new enumeration type with the given name and given
+   --  constructor names. It generates the type definition itself, but also
+   --  conversions from/to int and the corresponding axioms.
 
 end Why.Gen.Enums;

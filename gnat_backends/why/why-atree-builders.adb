@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1307,7 +1307,8 @@ package body Why.Atree.Builders is
      (Ada_Node        : Node_Id := Empty;
       External        : W_External_OId := Why_Empty;
       Type_Parameters : W_Identifier_OList := New_List;
-      Name            : W_Identifier_Id)
+      Name            : W_Identifier_Id;
+      Definition      : W_Type_Definition_OId := Why_Empty)
      return W_Type_Id
    is
       Result : Why_Node (W_Type);
@@ -1321,6 +1322,8 @@ package body Why.Atree.Builders is
       Set_Link (Result.T_Type_Parameters, New_Id);
       Result.T_Name := Name;
       Set_Link (Result.T_Name, New_Id);
+      Result.T_Definition := Definition;
+      Set_Link (Result.T_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -1585,6 +1588,75 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Inductive_Case;
+
+   -------------------------------------
+   -- New_Transparent_Type_Definition --
+   -------------------------------------
+
+   function New_Transparent_Type_Definition
+     (Ada_Node        : Node_Id := Empty;
+      Type_Definition : W_Primitive_Type_Id)
+     return W_Transparent_Type_Definition_Id
+   is
+      Result : Why_Node (W_Transparent_Type_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Transparent_Type_Definition);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Tr_Type_Definition := Type_Definition;
+      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Transparent_Type_Definition;
+
+   ------------------------
+   -- New_Adt_Definition --
+   ------------------------
+
+   function New_Adt_Definition
+     (Ada_Node     : Node_Id := Empty;
+      Constructors : W_Constr_Decl_OList := New_List)
+     return W_Adt_Definition_Id
+   is
+      Result : Why_Node (W_Adt_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Adt_Definition);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Adt_Constructors := Constructors;
+      Set_Link (Result.Adt_Constructors, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Adt_Definition;
+
+   ---------------------
+   -- New_Constr_Decl --
+   ---------------------
+
+   function New_Constr_Decl
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
+      Arg_List : W_Primitive_Type_OList := New_List)
+     return W_Constr_Decl_Id
+   is
+      Result : Why_Node (W_Constr_Decl);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Constr_Decl);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.C_Name := Name;
+      Set_Link (Result.C_Name, New_Id);
+      Result.C_Arg_List := Arg_List;
+      Set_Link (Result.C_Arg_List, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Constr_Decl;
 
    -----------------
    -- New_Effects --
@@ -4147,6 +4219,8 @@ package body Why.Atree.Builders is
       Set_Link (Result.T_Type_Parameters, New_Id);
       Result.T_Name := Why_Empty;
       Set_Link (Result.T_Name, New_Id);
+      Result.T_Definition := Why_Empty;
+      Set_Link (Result.T_Definition, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -4378,6 +4452,68 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Unchecked_Inductive_Case;
+
+   -----------------------------------------------
+   -- New_Unchecked_Transparent_Type_Definition --
+   -----------------------------------------------
+
+   function New_Unchecked_Transparent_Type_Definition
+     return W_Transparent_Type_Definition_Unchecked_Id
+   is
+      Result : Why_Node (W_Transparent_Type_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Transparent_Type_Definition);
+   begin
+      Result.Ada_Node := Empty;
+      Result.Tr_Type_Definition := Why_Empty;
+      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Transparent_Type_Definition;
+
+   ----------------------------------
+   -- New_Unchecked_Adt_Definition --
+   ----------------------------------
+
+   function New_Unchecked_Adt_Definition
+     return W_Adt_Definition_Unchecked_Id
+   is
+      Result : Why_Node (W_Adt_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Adt_Definition);
+   begin
+      Result.Ada_Node := Empty;
+      Result.Adt_Constructors := New_List;
+      Set_Link (Result.Adt_Constructors, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Adt_Definition;
+
+   -------------------------------
+   -- New_Unchecked_Constr_Decl --
+   -------------------------------
+
+   function New_Unchecked_Constr_Decl
+     return W_Constr_Decl_Unchecked_Id
+   is
+      Result : Why_Node (W_Constr_Decl);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Constr_Decl);
+   begin
+      Result.Ada_Node := Empty;
+      Result.C_Name := Why_Empty;
+      Set_Link (Result.C_Name, New_Id);
+      Result.C_Arg_List := New_List;
+      Set_Link (Result.C_Arg_List, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Constr_Decl;
 
    ---------------------------
    -- New_Unchecked_Effects --
@@ -7703,6 +7839,8 @@ package body Why.Atree.Builders is
             Type_Get_Type_Parameters (Id);
          Name            : constant W_Identifier_Id :=
             Type_Get_Name (Id);
+         Definition      : constant W_Type_Definition_OId :=
+            Type_Get_Definition (Id);
       begin
          Result.Ada_Node := Ada_Node;
          if External = Why_Empty then
@@ -7735,6 +7873,14 @@ package body Why.Atree.Builders is
            Duplicate_Identifier
            (Id => Name);
          Set_Link (Result.T_Name, New_Id);
+         if Definition = Why_Empty then
+            Result.T_Definition := Why_Empty;
+         else
+            Result.T_Definition :=
+              Duplicate_Type_Definition
+              (Id => Definition);
+         end if;
+         Set_Link (Result.T_Definition, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -8223,6 +8369,139 @@ package body Why.Atree.Builders is
          return New_Id;
       end;
    end Duplicate_Inductive_Case;
+
+   -------------------------------------------
+   -- Duplicate_Transparent_Type_Definition --
+   -------------------------------------------
+
+   function Duplicate_Transparent_Type_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Transparent_Type_Definition_OId)
+     return W_Transparent_Type_Definition_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Transparent_Type_Definition);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Transparent_Type_Definition);
+         Type_Definition : constant W_Primitive_Type_Id :=
+            Transparent_Type_Definition_Get_Type_Definition (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.Tr_Type_Definition :=
+           Duplicate_Primitive_Type
+           (Id => Type_Definition);
+         Set_Link (Result.Tr_Type_Definition, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Transparent_Type_Definition;
+
+   ------------------------------
+   -- Duplicate_Adt_Definition --
+   ------------------------------
+
+   function Duplicate_Adt_Definition
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Adt_Definition_OId)
+     return W_Adt_Definition_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Adt_Definition);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Adt_Definition);
+         Constructors : constant W_Constr_Decl_OList :=
+            Adt_Definition_Get_Constructors (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Constructors);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Constr_Decl_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.Adt_Constructors := NL;
+         end;
+         Set_Link (Result.Adt_Constructors, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Adt_Definition;
+
+   ---------------------------
+   -- Duplicate_Constr_Decl --
+   ---------------------------
+
+   function Duplicate_Constr_Decl
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Constr_Decl_OId)
+     return W_Constr_Decl_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Constr_Decl);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Constr_Decl);
+         Name     : constant W_Identifier_Id :=
+            Constr_Decl_Get_Name (Id);
+         Arg_List : constant W_Primitive_Type_OList :=
+            Constr_Decl_Get_Arg_List (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.C_Name :=
+           Duplicate_Identifier
+           (Id => Name);
+         Set_Link (Result.C_Name, New_Id);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Arg_List);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Primitive_Type_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.C_Arg_List := NL;
+         end;
+         Set_Link (Result.C_Arg_List, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Constr_Decl;
 
    -----------------------
    -- Duplicate_Effects --

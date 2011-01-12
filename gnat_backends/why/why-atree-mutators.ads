@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -677,6 +677,14 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
+   procedure Type_Set_Definition
+     (Id         : W_Type_Unchecked_Id;
+      Definition : W_Type_Definition_Unchecked_OId) with
+     Pre =>
+       (Type_Definition_OId_Kind_Valid (Definition)
+        and then Type_Definition_OId_Valid (Definition)
+        and then Is_Root (Definition));
+
    procedure Logic_Set_External
      (Id       : W_Logic_Unchecked_Id;
       External : W_External_Unchecked_OId) with
@@ -900,6 +908,54 @@ package Why.Atree.Mutators is
        (Predicate_Id_Kind_Valid (Pred)
         and then Predicate_Id_Valid (Pred)
         and then Is_Root (Pred));
+
+   procedure Transparent_Type_Definition_Set_Type_Definition
+     (Id              : W_Transparent_Type_Definition_Unchecked_Id;
+      Type_Definition : W_Primitive_Type_Unchecked_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Type_Definition)
+        and then Primitive_Type_Id_Valid (Type_Definition)
+        and then Is_Root (Type_Definition));
+
+   procedure Adt_Definition_Append_To_Constructors
+     (Id       : W_Adt_Definition_Unchecked_Id;
+      New_Item : W_Constr_Decl_Id) with
+     Pre =>
+       (Constr_Decl_Id_Kind_Valid (New_Item)
+        and then Constr_Decl_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Adt_Definition_Prepend_To_Constructors
+     (Id       : W_Adt_Definition_Unchecked_Id;
+      New_Item : W_Constr_Decl_Id) with
+     Pre =>
+       (Constr_Decl_Id_Kind_Valid (New_Item)
+        and then Constr_Decl_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Constr_Decl_Set_Name
+     (Id   : W_Constr_Decl_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name));
+
+   procedure Constr_Decl_Append_To_Arg_List
+     (Id       : W_Constr_Decl_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (New_Item)
+        and then Primitive_Type_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Constr_Decl_Prepend_To_Arg_List
+     (Id       : W_Constr_Decl_Unchecked_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (New_Item)
+        and then Primitive_Type_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
 
    procedure Effects_Append_To_Reads
      (Id       : W_Effects_Unchecked_Id;

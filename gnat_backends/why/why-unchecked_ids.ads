@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1122,6 +1122,54 @@ package Why.Unchecked_Ids is
 
    subtype W_Inductive_Case_Unchecked_OList is
      W_Inductive_Case_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Transparent_Type_Definition_Unchecked_Id is
+     W_Transparent_Type_Definition_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Transparent_Type_Definition_Unchecked_OId is
+     W_Transparent_Type_Definition_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Transparent_Type_Definition_Unchecked_List is
+     W_Transparent_Type_Definition_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Transparent_Type_Definition_Unchecked_OList is
+     W_Transparent_Type_Definition_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Adt_Definition_Unchecked_Id is
+     W_Adt_Definition_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Adt_Definition_Unchecked_OId is
+     W_Adt_Definition_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Adt_Definition_Unchecked_List is
+     W_Adt_Definition_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Adt_Definition_Unchecked_OList is
+     W_Adt_Definition_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Constr_Decl_Unchecked_Id is
+     W_Constr_Decl_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Constr_Decl_Unchecked_OId is
+     W_Constr_Decl_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Constr_Decl_Unchecked_List is
+     W_Constr_Decl_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Constr_Decl_Unchecked_OList is
+     W_Constr_Decl_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Effects_Unchecked_Id is
@@ -2338,6 +2386,22 @@ package Why.Unchecked_Ids is
 
    subtype W_Any_Node_Unchecked_OList is
      W_Any_Node_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Type_Definition_Unchecked_Id is
+     W_Type_Definition_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Type_Definition_Unchecked_OId is
+     W_Type_Definition_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Type_Definition_Unchecked_List is
+     W_Type_Definition_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Type_Definition_Unchecked_OList is
+     W_Type_Definition_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
 end Why.Unchecked_Ids;
