@@ -28,9 +28,9 @@ with Namet;         use Namet;
 with Nlists;        use Nlists;
 with Sem_Eval;      use Sem_Eval;
 with Sinfo;         use Sinfo;
+with String_Utils;  use String_Utils;
 with Why.Gen.Ints;  use Why.Gen.Ints;
 with Why.Gen.Enums; use Why.Gen.Enums;
-with Why.Gen.Types; use Why.Gen.Types;
 
 package body Gnat2Why.Types is
 

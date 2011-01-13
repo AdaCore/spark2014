@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Gen.Types; use Why.Gen.Types;
+with String_Utils;  use String_Utils;
 with Why.Ids;       use Why.Ids;
 
 package Why.Gen.Enums is

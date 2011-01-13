@@ -23,13 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Why.Ids; use Why.Ids;
+with Why.Ids;      use Why.Ids;
+with String_Utils; use String_Utils;
 
 package Why.Gen.Types is
    --  This package provides ways to create Why types
-   package String_Lists is new
-      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
    function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
    --  Create an abstract type identifier with name Name

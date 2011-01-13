@@ -31,6 +31,7 @@ with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Enums is
