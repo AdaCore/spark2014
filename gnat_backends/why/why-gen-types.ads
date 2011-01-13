@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,15 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Types is
    --  This package provides ways to create Why types
+   package String_Lists is new
+      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
    function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
    --  Create an abstract type identifier with name Name
 
    function Declare_Abstract_Type (Name : String) return W_Type_Id;
    --  Create the declaration of an abstract type whose name is Name
+
+   function Declare_Enum_Type (
+      Name         : String;
+      Constructors : String_Lists.List) return W_Type_Id;
+   --  Create the declaration of an enumeration type with name [Name] and list
+   --  of constructors [Constructors]. The constructors do not have arguments.
 
 end Why.Gen.Types;

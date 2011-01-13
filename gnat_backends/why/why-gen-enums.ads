@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
-with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with Why.Gen.Types; use Why.Gen.Types;
+with Why.Ids;       use Why.Ids;
 
 package Why.Gen.Enums is
 
@@ -34,9 +34,6 @@ package Why.Gen.Enums is
    --  This creates a new boolean type with the given name; it generates
    --  an abstract type for it, conversions from/to int and from/to bool
    --  and the corresponding axioms.
-
-   package String_Lists is new
-      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
    procedure Declare_Enum_Type (
       File         : W_File_Id;

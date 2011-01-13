@@ -30,6 +30,7 @@ with Sem_Eval;      use Sem_Eval;
 with Sinfo;         use Sinfo;
 with Why.Gen.Ints;  use Why.Gen.Ints;
 with Why.Gen.Enums; use Why.Gen.Enums;
+with Why.Gen.Types; use Why.Gen.Types;
 
 package body Gnat2Why.Types is
 

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,7 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Types is
 
@@ -53,4 +55,30 @@ package body Why.Gen.Types is
       return T;
    end New_Abstract_Type;
 
+   function Declare_Enum_Type (
+      Name         : String;
+      Constructors : String_Lists.List) return W_Type_Id
+   is
+      use String_Lists;
+      T_I    : constant W_Identifier_Id               := New_Identifier (Name);
+      Adt    : constant W_Adt_Definition_Unchecked_Id :=
+         New_Unchecked_Adt_Definition;
+      T      : constant W_Type_Unchecked_Id           := New_Unchecked_Type;
+      Cursor : String_Lists.Cursor                    := First (Constructors);
+   begin
+      Type_Set_Name (T, T_I);
+      while Has_Element (Cursor) loop
+         declare
+            C_I : constant W_Identifier_Id :=
+                  New_Identifier (Element (Cursor));
+            D   : constant W_Constr_Decl_Unchecked_Id :=
+                  New_Constr_Decl (Name => C_I);
+         begin
+            Adt_Definition_Append_To_Constructors (Adt, D);
+            Next (Cursor);
+         end;
+      end loop;
+      Type_Set_Definition (T, Adt);
+      return T;
+   end Declare_Enum_Type;
 end Why.Gen.Types;
