@@ -619,6 +619,62 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Named_Term_Pre_Op;
 
+   --------------------------
+   -- Matching_Term_Pre_Op --
+   --------------------------
+
+   procedure Matching_Term_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Matching_Term_Id)
+   is
+   begin
+      P (O, "match ");
+      Traverse (State, Matching_Term_Get_Term (Node));
+      P (O, " with ");
+      NL (O);
+      Relative_Indent (O, 1);
+      Traverse_List (State, Matching_Term_Get_Branches (Node));
+      Relative_Indent (O, -1);
+      P (O, "end");
+      NL (O);
+      State.Control := Abandon_Children;
+   end Matching_Term_Pre_Op;
+
+   -----------------------
+   -- Match_Case_Pre_Op --
+   -----------------------
+
+   procedure Match_Case_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Match_Case_Id)
+   is
+   begin
+      P (O, "| ");
+      Traverse (State, Match_Case_Get_Pattern (Node));
+      P (O, " -> ");
+      NL (O);
+      Relative_Indent (O, 1);
+      Traverse (State, Match_Case_Get_Term (Node));
+      Relative_Indent (O, -1);
+      NL (O);
+      State.Control := Abandon_Children;
+   end Match_Case_Pre_Op;
+
+   procedure Pattern_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Pattern_Id)
+   is
+      Args : constant W_Identifier_OList := Pattern_Get_Args (Node);
+   begin
+      Traverse (State, Pattern_Get_Constr (Node));
+      if not (Is_Empty (Args)) then
+         P (O, "(");
+         Print_List (State, Args);
+         P (O, ")");
+      end if;
+      State.Control := Abandon_Children;
+   end Pattern_Pre_Op;
+
    -----------------------------
    -- Conditional_Term_Pre_Op --
    -----------------------------
