@@ -388,7 +388,7 @@ package body Xtree_Builders is
          Relative_Indent (O, -3);
       end Print_Variable_Declaration;
 
-   --  Start of processing for Print_Builder_Specification
+   --  Start of processing for Print_Builder_Local_Declarations
 
    begin
       PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
