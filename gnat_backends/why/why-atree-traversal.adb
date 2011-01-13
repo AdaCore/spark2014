@@ -799,6 +799,39 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
+         when W_Matching_Term =>
+            Matching_Term_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Matching_Term_Get_Term (Node));
+            Traverse_List
+              (State,
+               Matching_Term_Get_Branches (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Matching_Term_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
          when W_Binding_Term =>
             Binding_Term_Pre_Op (State, Node);
 
@@ -1515,6 +1548,72 @@ package body Why.Atree.Traversal is
             end if;
 
             Protected_Predicate_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Pattern =>
+            Pattern_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Pattern_Get_Constr (Node));
+            Traverse_List
+              (State,
+               Pattern_Get_Args (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Pattern_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Match_Case =>
+            Match_Case_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Match_Case_Get_Pattern (Node));
+            Traverse
+              (State,
+               Match_Case_Get_Term (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Match_Case_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;

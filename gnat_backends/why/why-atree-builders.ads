@@ -609,6 +609,35 @@ package Why.Atree.Builders is
           (New_Conditional_Term'Result)
           = Else_Part);
 
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : W_Term_Id;
+      Branches : W_Match_Case_List)
+     return W_Matching_Term_Id with
+     Pre =>
+       (Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term)
+        and then Match_Case_List_Kind_Valid (Branches)
+        and then Match_Case_List_Valid (Branches)
+        and then Is_Root (Branches)),
+     Post =>
+       (Get_Kind
+         (New_Matching_Term'Result)
+         = W_Matching_Term
+        and then
+          Get_Ada_Node
+          (New_Matching_Term'Result)
+          = Ada_Node
+        and then
+          Matching_Term_Get_Term
+          (New_Matching_Term'Result)
+          = Term
+        and then
+          Matching_Term_Get_Branches
+          (New_Matching_Term'Result)
+          = Branches);
+
    function New_Binding_Term
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
@@ -1203,6 +1232,64 @@ package Why.Atree.Builders is
           Protected_Predicate_Get_Pred
           (New_Protected_Predicate'Result)
           = Pred);
+
+   function New_Pattern
+     (Ada_Node : Node_Id := Empty;
+      Constr   : W_Identifier_Id;
+      Args     : W_Identifier_OList := New_List)
+     return W_Pattern_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Constr)
+        and then Identifier_Id_Valid (Constr)
+        and then Is_Root (Constr)
+        and then Identifier_OList_Kind_Valid (Args)
+        and then Identifier_OList_Valid (Args)
+        and then Is_Root (Args)),
+     Post =>
+       (Get_Kind
+         (New_Pattern'Result)
+         = W_Pattern
+        and then
+          Get_Ada_Node
+          (New_Pattern'Result)
+          = Ada_Node
+        and then
+          Pattern_Get_Constr
+          (New_Pattern'Result)
+          = Constr
+        and then
+          Pattern_Get_Args
+          (New_Pattern'Result)
+          = Args);
+
+   function New_Match_Case
+     (Ada_Node : Node_Id := Empty;
+      Pattern  : W_Pattern_Id;
+      Term     : W_Term_Id)
+     return W_Match_Case_Id with
+     Pre =>
+       (Pattern_Id_Kind_Valid (Pattern)
+        and then Pattern_Id_Valid (Pattern)
+        and then Is_Root (Pattern)
+        and then Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term)),
+     Post =>
+       (Get_Kind
+         (New_Match_Case'Result)
+         = W_Match_Case
+        and then
+          Get_Ada_Node
+          (New_Match_Case'Result)
+          = Ada_Node
+        and then
+          Match_Case_Get_Pattern
+          (New_Match_Case'Result)
+          = Pattern
+        and then
+          Match_Case_Get_Term
+          (New_Match_Case'Result)
+          = Term);
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
@@ -3477,6 +3564,15 @@ package Why.Atree.Builders is
          = W_Conditional_Term
        );
 
+   function New_Unchecked_Matching_Term
+     return W_Matching_Term_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Matching_Term'Result)
+         = W_Matching_Term
+       );
+
    function New_Unchecked_Binding_Term
      return W_Binding_Term_Unchecked_Id with
      Pre => True,
@@ -3682,6 +3778,24 @@ package Why.Atree.Builders is
        (Get_Kind
          (New_Unchecked_Protected_Predicate'Result)
          = W_Protected_Predicate
+       );
+
+   function New_Unchecked_Pattern
+     return W_Pattern_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Pattern'Result)
+         = W_Pattern
+       );
+
+   function New_Unchecked_Match_Case
+     return W_Match_Case_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Match_Case'Result)
+         = W_Match_Case
        );
 
    function New_Unchecked_Triggers
@@ -4788,6 +4902,21 @@ package Why.Atree.Builders is
           (Duplicate_Conditional_Term'Result)
           = Ada_Node);
 
+   function Duplicate_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Matching_Term_OId)
+     return W_Matching_Term_Id with
+     Pre =>
+       (Matching_Term_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Matching_Term'Result)
+         = W_Matching_Term
+        and then
+          Get_Ada_Node
+          (Duplicate_Matching_Term'Result)
+          = Ada_Node);
+
    function Duplicate_Binding_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binding_Term_OId)
@@ -5131,6 +5260,36 @@ package Why.Atree.Builders is
         and then
           Get_Ada_Node
           (Duplicate_Protected_Predicate'Result)
+          = Ada_Node);
+
+   function Duplicate_Pattern
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Pattern_OId)
+     return W_Pattern_Id with
+     Pre =>
+       (Pattern_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Pattern'Result)
+         = W_Pattern
+        and then
+          Get_Ada_Node
+          (Duplicate_Pattern'Result)
+          = Ada_Node);
+
+   function Duplicate_Match_Case
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Match_Case_OId)
+     return W_Match_Case_Id with
+     Pre =>
+       (Match_Case_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Match_Case'Result)
+         = W_Match_Case
+        and then
+          Get_Ada_Node
+          (Duplicate_Match_Case'Result)
           = Ada_Node);
 
    function Duplicate_Triggers
@@ -6489,6 +6648,10 @@ private
            Duplicate_Conditional_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
+        when W_Matching_Term =>
+           Duplicate_Matching_Term
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
         when W_Binding_Term =>
            Duplicate_Binding_Term
             (Ada_Node  => Ada_Node,
@@ -6595,6 +6758,10 @@ private
              Id        => Id),
         when W_Conditional_Term =>
            Duplicate_Conditional_Term
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Matching_Term =>
+           Duplicate_Matching_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Binding_Term =>
@@ -7357,6 +7524,10 @@ private
            Duplicate_Conditional_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
+        when W_Matching_Term =>
+           Duplicate_Matching_Term
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
         when W_Binding_Term =>
            Duplicate_Binding_Term
             (Ada_Node  => Ada_Node,
@@ -7447,6 +7618,14 @@ private
              Id        => Id),
         when W_Protected_Predicate =>
            Duplicate_Protected_Predicate
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Pattern =>
+           Duplicate_Pattern
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Match_Case =>
+           Duplicate_Match_Case
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Triggers =>

@@ -185,6 +185,10 @@ package Why.Atree is
             CT_Then_Part : W_Term_Opaque_Id;
             CT_Else_Part : W_Term_Opaque_Id;
 
+         when W_Matching_Term =>
+            MT_Term : W_Term_Opaque_Id;
+            MT_Branches : W_Match_Case_Opaque_List;
+
          when W_Binding_Term =>
             BT_Name    : W_Identifier_Opaque_Id;
             BT_Def     : W_Term_Opaque_Id;
@@ -247,6 +251,14 @@ package Why.Atree is
 
          when W_Protected_Predicate =>
             PP_Pred : W_Predicate_Opaque_Id;
+
+         when W_Pattern =>
+            PAT_Constr : W_Identifier_Opaque_Id;
+            PAT_Args   : W_Identifier_Opaque_OList;
+
+         when W_Match_Case =>
+            MC_Pattern : W_Pattern_Opaque_Id;
+            MC_Term : W_Term_Opaque_Id;
 
          when W_Triggers =>
             TRS_Triggers : W_Trigger_Opaque_List;

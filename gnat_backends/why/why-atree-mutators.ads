@@ -293,6 +293,30 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Else_Part)
         and then Is_Root (Else_Part));
 
+   procedure Matching_Term_Set_Term
+     (Id   : W_Matching_Term_Unchecked_Id;
+      Term : W_Term_Unchecked_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term));
+
+   procedure Matching_Term_Append_To_Branches
+     (Id       : W_Matching_Term_Unchecked_Id;
+      New_Item : W_Match_Case_Id) with
+     Pre =>
+       (Match_Case_Id_Kind_Valid (New_Item)
+        and then Match_Case_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Matching_Term_Prepend_To_Branches
+     (Id       : W_Matching_Term_Unchecked_Id;
+      New_Item : W_Match_Case_Id) with
+     Pre =>
+       (Match_Case_Id_Kind_Valid (New_Item)
+        and then Match_Case_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
    procedure Binding_Term_Set_Name
      (Id   : W_Binding_Term_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id) with
@@ -612,6 +636,46 @@ package Why.Atree.Mutators is
        (Predicate_Id_Kind_Valid (Pred)
         and then Predicate_Id_Valid (Pred)
         and then Is_Root (Pred));
+
+   procedure Pattern_Set_Constr
+     (Id     : W_Pattern_Unchecked_Id;
+      Constr : W_Identifier_Unchecked_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Constr)
+        and then Identifier_Id_Valid (Constr)
+        and then Is_Root (Constr));
+
+   procedure Pattern_Append_To_Args
+     (Id       : W_Pattern_Unchecked_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (New_Item)
+        and then Identifier_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Pattern_Prepend_To_Args
+     (Id       : W_Pattern_Unchecked_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (New_Item)
+        and then Identifier_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Match_Case_Set_Pattern
+     (Id      : W_Match_Case_Unchecked_Id;
+      Pattern : W_Pattern_Unchecked_Id) with
+     Pre =>
+       (Pattern_Id_Kind_Valid (Pattern)
+        and then Pattern_Id_Valid (Pattern)
+        and then Is_Root (Pattern));
+
+   procedure Match_Case_Set_Term
+     (Id   : W_Match_Case_Unchecked_Id;
+      Term : W_Term_Unchecked_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Term)
+        and then Term_Id_Valid (Term)
+        and then Is_Root (Term));
 
    procedure Triggers_Append_To_Triggers
      (Id       : W_Triggers_Unchecked_Id;

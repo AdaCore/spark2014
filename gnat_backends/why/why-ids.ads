@@ -505,6 +505,22 @@ package Why.Ids is
      W_Conditional_Term_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Matching_Term_Id is
+     W_Matching_Term_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Matching_Term_OId is
+     W_Matching_Term_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Matching_Term_List is
+     W_Matching_Term_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Matching_Term_OList is
+     W_Matching_Term_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Binding_Term_Id is
      W_Binding_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
@@ -871,6 +887,38 @@ package Why.Ids is
 
    subtype W_Protected_Predicate_OList is
      W_Protected_Predicate_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Pattern_Id is
+     W_Pattern_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Pattern_OId is
+     W_Pattern_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Pattern_List is
+     W_Pattern_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Pattern_OList is
+     W_Pattern_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Match_Case_Id is
+     W_Match_Case_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Match_Case_OId is
+     W_Match_Case_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Match_Case_List is
+     W_Match_Case_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Match_Case_OList is
+     W_Match_Case_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Triggers_Id is

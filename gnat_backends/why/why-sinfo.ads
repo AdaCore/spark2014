@@ -160,6 +160,10 @@ package Why.Sinfo is
       W_Conditional_Term,
       --  <logic_conditional_term> ::= 'if' <term> 'then' <term> 'else' <term>
 
+      W_Matching_Term,
+      --  <matching_term> ::=
+      --    'match' <term> 'with' matchcase [ matchcase ]* 'end'
+
       W_Binding_Term,
       --  <logic_binding> ::= 'let' <identifier> '=' <term> 'in' <term>
 
@@ -258,6 +262,12 @@ package Why.Sinfo is
 
       W_Protected_Predicate,
       --  <protected_predicate> ::= '(' <predicate> ')'
+
+      W_Pattern,
+      --  <pattern> ::= ident [ '(' ident [',' <ident> ] ')' ]
+
+      W_Match_Case,
+      --  <matchcase> ::= '|' <pattern> '->' <term>
 
       W_Triggers,
       --  <triggers> ::= '[' <trigger> ('|' <trigger>) * ']'

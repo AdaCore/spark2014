@@ -634,6 +634,58 @@ package body Why.Atree.Mutators is
          Conditional_Term_Id_Valid (Id));
    end Conditional_Term_Set_Else_Part;
 
+   ----------------------------
+   -- Matching_Term_Set_Term --
+   ----------------------------
+
+   procedure Matching_Term_Set_Term
+     (Id   : W_Matching_Term_Unchecked_Id;
+      Term : W_Term_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.MT_Term := Term;
+      Set_Node (Id, Node);
+      Set_Link (Term, Id);
+      Update_Validity_Status
+        (Id,
+         Matching_Term_Id_Valid (Id));
+   end Matching_Term_Set_Term;
+
+   --------------------------------------
+   -- Matching_Term_Append_To_Branches --
+   --------------------------------------
+
+   procedure Matching_Term_Append_To_Branches
+     (Id       : W_Matching_Term_Unchecked_Id;
+      New_Item : W_Match_Case_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.MT_Branches, New_Item);
+      Update_Validity_Status
+        (Id,
+         Matching_Term_Id_Valid (Id));
+   end Matching_Term_Append_To_Branches;
+
+   ---------------------------------------
+   -- Matching_Term_Prepend_To_Branches --
+   ---------------------------------------
+
+   procedure Matching_Term_Prepend_To_Branches
+     (Id       : W_Matching_Term_Unchecked_Id;
+      New_Item : W_Match_Case_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.MT_Branches, New_Item);
+      Update_Validity_Status
+        (Id,
+         Matching_Term_Id_Valid (Id));
+   end Matching_Term_Prepend_To_Branches;
+
    ---------------------------
    -- Binding_Term_Set_Name --
    ---------------------------
@@ -1347,6 +1399,94 @@ package body Why.Atree.Mutators is
         (Id,
          Protected_Predicate_Id_Valid (Id));
    end Protected_Predicate_Set_Pred;
+
+   ------------------------
+   -- Pattern_Set_Constr --
+   ------------------------
+
+   procedure Pattern_Set_Constr
+     (Id     : W_Pattern_Unchecked_Id;
+      Constr : W_Identifier_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.PAT_Constr := Constr;
+      Set_Node (Id, Node);
+      Set_Link (Constr, Id);
+      Update_Validity_Status
+        (Id,
+         Pattern_Id_Valid (Id));
+   end Pattern_Set_Constr;
+
+   ----------------------------
+   -- Pattern_Append_To_Args --
+   ----------------------------
+
+   procedure Pattern_Append_To_Args
+     (Id       : W_Pattern_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Append (Node.PAT_Args, New_Item);
+      Update_Validity_Status
+        (Id,
+         Pattern_Id_Valid (Id));
+   end Pattern_Append_To_Args;
+
+   -----------------------------
+   -- Pattern_Prepend_To_Args --
+   -----------------------------
+
+   procedure Pattern_Prepend_To_Args
+     (Id       : W_Pattern_Unchecked_Id;
+      New_Item : W_Identifier_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.PAT_Args, New_Item);
+      Update_Validity_Status
+        (Id,
+         Pattern_Id_Valid (Id));
+   end Pattern_Prepend_To_Args;
+
+   ----------------------------
+   -- Match_Case_Set_Pattern --
+   ----------------------------
+
+   procedure Match_Case_Set_Pattern
+     (Id      : W_Match_Case_Unchecked_Id;
+      Pattern : W_Pattern_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.MC_Pattern := Pattern;
+      Set_Node (Id, Node);
+      Set_Link (Pattern, Id);
+      Update_Validity_Status
+        (Id,
+         Match_Case_Id_Valid (Id));
+   end Match_Case_Set_Pattern;
+
+   -------------------------
+   -- Match_Case_Set_Term --
+   -------------------------
+
+   procedure Match_Case_Set_Term
+     (Id   : W_Match_Case_Unchecked_Id;
+      Term : W_Term_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.MC_Term := Term;
+      Set_Node (Id, Node);
+      Set_Link (Term, Id);
+      Update_Validity_Status
+        (Id,
+         Match_Case_Id_Valid (Id));
+   end Match_Case_Set_Term;
 
    ---------------------------------
    -- Triggers_Append_To_Triggers --

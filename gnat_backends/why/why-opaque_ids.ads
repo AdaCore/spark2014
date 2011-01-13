@@ -246,6 +246,14 @@ package Why.Opaque_Ids is
 
    subtype W_Conditional_Term_Opaque_OList is Why_Node_List;
 
+   subtype W_Matching_Term_Opaque_Id is Why_Node_Id;
+
+   subtype W_Matching_Term_Opaque_OId is Why_Node_Id;
+
+   subtype W_Matching_Term_Opaque_List is Why_Node_List;
+
+   subtype W_Matching_Term_Opaque_OList is Why_Node_List;
+
    subtype W_Binding_Term_Opaque_Id is Why_Node_Id;
 
    subtype W_Binding_Term_Opaque_OId is Why_Node_Id;
@@ -429,6 +437,22 @@ package Why.Opaque_Ids is
    subtype W_Protected_Predicate_Opaque_List is Why_Node_List;
 
    subtype W_Protected_Predicate_Opaque_OList is Why_Node_List;
+
+   subtype W_Pattern_Opaque_Id is Why_Node_Id;
+
+   subtype W_Pattern_Opaque_OId is Why_Node_Id;
+
+   subtype W_Pattern_Opaque_List is Why_Node_List;
+
+   subtype W_Pattern_Opaque_OList is Why_Node_List;
+
+   subtype W_Match_Case_Opaque_Id is Why_Node_Id;
+
+   subtype W_Match_Case_Opaque_OId is Why_Node_Id;
+
+   subtype W_Match_Case_Opaque_List is Why_Node_List;
+
+   subtype W_Match_Case_Opaque_OList is Why_Node_List;
 
    subtype W_Triggers_Opaque_Id is Why_Node_Id;
 

@@ -593,6 +593,31 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Conditional_Term;
 
+   -----------------------
+   -- New_Matching_Term --
+   -----------------------
+
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : W_Term_Id;
+      Branches : W_Match_Case_List)
+     return W_Matching_Term_Id
+   is
+      Result : Why_Node (W_Matching_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Matching_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.MT_Term := Term;
+      Set_Link (Result.MT_Term, New_Id);
+      Result.MT_Branches := Branches;
+      Set_Link (Result.MT_Branches, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Matching_Term;
+
    ----------------------
    -- New_Binding_Term --
    ----------------------
@@ -1140,6 +1165,56 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Protected_Predicate;
+
+   -----------------
+   -- New_Pattern --
+   -----------------
+
+   function New_Pattern
+     (Ada_Node : Node_Id := Empty;
+      Constr   : W_Identifier_Id;
+      Args     : W_Identifier_OList := New_List)
+     return W_Pattern_Id
+   is
+      Result : Why_Node (W_Pattern);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Pattern);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PAT_Constr := Constr;
+      Set_Link (Result.PAT_Constr, New_Id);
+      Result.PAT_Args := Args;
+      Set_Link (Result.PAT_Args, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Pattern;
+
+   --------------------
+   -- New_Match_Case --
+   --------------------
+
+   function New_Match_Case
+     (Ada_Node : Node_Id := Empty;
+      Pattern  : W_Pattern_Id;
+      Term     : W_Term_Id)
+     return W_Match_Case_Id
+   is
+      Result : Why_Node (W_Match_Case);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Match_Case);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.MC_Pattern := Pattern;
+      Set_Link (Result.MC_Pattern, New_Id);
+      Result.MC_Term := Term;
+      Set_Link (Result.MC_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Match_Case;
 
    ------------------
    -- New_Triggers --
@@ -3565,6 +3640,28 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Conditional_Term;
 
+   ---------------------------------
+   -- New_Unchecked_Matching_Term --
+   ---------------------------------
+
+   function New_Unchecked_Matching_Term
+     return W_Matching_Term_Unchecked_Id
+   is
+      Result : Why_Node (W_Matching_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Matching_Term);
+   begin
+      Result.Ada_Node := Empty;
+      Result.MT_Term := Why_Empty;
+      Set_Link (Result.MT_Term, New_Id);
+      Result.MT_Branches := New_List;
+      Set_Link (Result.MT_Branches, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Matching_Term;
+
    --------------------------------
    -- New_Unchecked_Binding_Term --
    --------------------------------
@@ -4052,6 +4149,50 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Unchecked_Protected_Predicate;
+
+   ---------------------------
+   -- New_Unchecked_Pattern --
+   ---------------------------
+
+   function New_Unchecked_Pattern
+     return W_Pattern_Unchecked_Id
+   is
+      Result : Why_Node (W_Pattern);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Pattern);
+   begin
+      Result.Ada_Node := Empty;
+      Result.PAT_Constr := Why_Empty;
+      Set_Link (Result.PAT_Constr, New_Id);
+      Result.PAT_Args := New_List;
+      Set_Link (Result.PAT_Args, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Pattern;
+
+   ------------------------------
+   -- New_Unchecked_Match_Case --
+   ------------------------------
+
+   function New_Unchecked_Match_Case
+     return W_Match_Case_Unchecked_Id
+   is
+      Result : Why_Node (W_Match_Case);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Match_Case);
+   begin
+      Result.Ada_Node := Empty;
+      Result.MC_Pattern := Why_Empty;
+      Set_Link (Result.MC_Pattern, New_Id);
+      Result.MC_Term := Why_Empty;
+      Set_Link (Result.MC_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Match_Case;
 
    ----------------------------
    -- New_Unchecked_Triggers --
@@ -6662,6 +6803,59 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Conditional_Term;
 
+   -----------------------------
+   -- Duplicate_Matching_Term --
+   -----------------------------
+
+   function Duplicate_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Matching_Term_OId)
+     return W_Matching_Term_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Matching_Term);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Matching_Term);
+         Term     : constant W_Term_Id :=
+            Matching_Term_Get_Term (Id);
+         Branches : constant W_Match_Case_List :=
+            Matching_Term_Get_Branches (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.MT_Term :=
+           Duplicate_Term
+           (Id => Term);
+         Set_Link (Result.MT_Term, New_Id);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Branches);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Match_Case_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.MT_Branches := NL;
+         end;
+         Set_Link (Result.MT_Branches, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Matching_Term;
+
    ----------------------------
    -- Duplicate_Binding_Term --
    ----------------------------
@@ -7558,6 +7752,98 @@ package body Why.Atree.Builders is
          return New_Id;
       end;
    end Duplicate_Protected_Predicate;
+
+   -----------------------
+   -- Duplicate_Pattern --
+   -----------------------
+
+   function Duplicate_Pattern
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Pattern_OId)
+     return W_Pattern_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Pattern);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Pattern);
+         Constr : constant W_Identifier_Id :=
+            Pattern_Get_Constr (Id);
+         Args   : constant W_Identifier_OList :=
+            Pattern_Get_Args (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.PAT_Constr :=
+           Duplicate_Identifier
+           (Id => Constr);
+         Set_Link (Result.PAT_Constr, New_Id);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Args);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Identifier_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.PAT_Args := NL;
+         end;
+         Set_Link (Result.PAT_Args, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Pattern;
+
+   --------------------------
+   -- Duplicate_Match_Case --
+   --------------------------
+
+   function Duplicate_Match_Case
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Match_Case_OId)
+     return W_Match_Case_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Match_Case);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Match_Case);
+         Pattern : constant W_Pattern_Id :=
+            Match_Case_Get_Pattern (Id);
+         Term    : constant W_Term_Id :=
+            Match_Case_Get_Term (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.MC_Pattern :=
+           Duplicate_Pattern
+           (Id => Pattern);
+         Set_Link (Result.MC_Pattern, New_Id);
+         Result.MC_Term :=
+           Duplicate_Term
+           (Id => Term);
+         Set_Link (Result.MC_Term, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Match_Case;
 
    ------------------------
    -- Duplicate_Triggers --

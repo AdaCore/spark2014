@@ -478,6 +478,22 @@ package Why.Atree.Validity is
      (Id : W_Conditional_Term_Unchecked_OList)
      return Boolean;
 
+   function Matching_Term_Id_Valid
+     (Id : W_Matching_Term_Unchecked_Id)
+     return Boolean;
+
+   function Matching_Term_OId_Valid
+     (Id : W_Matching_Term_Unchecked_OId)
+     return Boolean;
+
+   function Matching_Term_List_Valid
+     (Id : W_Matching_Term_Unchecked_List)
+     return Boolean;
+
+   function Matching_Term_OList_Valid
+     (Id : W_Matching_Term_Unchecked_OList)
+     return Boolean;
+
    function Binding_Term_Id_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean;
@@ -844,6 +860,38 @@ package Why.Atree.Validity is
 
    function Protected_Predicate_OList_Valid
      (Id : W_Protected_Predicate_Unchecked_OList)
+     return Boolean;
+
+   function Pattern_Id_Valid
+     (Id : W_Pattern_Unchecked_Id)
+     return Boolean;
+
+   function Pattern_OId_Valid
+     (Id : W_Pattern_Unchecked_OId)
+     return Boolean;
+
+   function Pattern_List_Valid
+     (Id : W_Pattern_Unchecked_List)
+     return Boolean;
+
+   function Pattern_OList_Valid
+     (Id : W_Pattern_Unchecked_OList)
+     return Boolean;
+
+   function Match_Case_Id_Valid
+     (Id : W_Match_Case_Unchecked_Id)
+     return Boolean;
+
+   function Match_Case_OId_Valid
+     (Id : W_Match_Case_Unchecked_OId)
+     return Boolean;
+
+   function Match_Case_List_Valid
+     (Id : W_Match_Case_Unchecked_List)
+     return Boolean;
+
+   function Match_Case_OList_Valid
+     (Id : W_Match_Case_Unchecked_OList)
      return Boolean;
 
    function Triggers_Id_Valid
@@ -2856,6 +2904,22 @@ private
      (Id : W_Conditional_Term_Unchecked_OList)
      return Boolean;
 
+   function Matching_Term_Id_Children_Valid
+     (Id : W_Matching_Term_Unchecked_Id)
+     return Boolean;
+
+   function Matching_Term_OId_Children_Valid
+     (Id : W_Matching_Term_Unchecked_OId)
+     return Boolean;
+
+   function Matching_Term_List_Children_Valid
+     (Id : W_Matching_Term_Unchecked_List)
+     return Boolean;
+
+   function Matching_Term_OList_Children_Valid
+     (Id : W_Matching_Term_Unchecked_OList)
+     return Boolean;
+
    function Binding_Term_Id_Children_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean;
@@ -3222,6 +3286,38 @@ private
 
    function Protected_Predicate_OList_Children_Valid
      (Id : W_Protected_Predicate_Unchecked_OList)
+     return Boolean;
+
+   function Pattern_Id_Children_Valid
+     (Id : W_Pattern_Unchecked_Id)
+     return Boolean;
+
+   function Pattern_OId_Children_Valid
+     (Id : W_Pattern_Unchecked_OId)
+     return Boolean;
+
+   function Pattern_List_Children_Valid
+     (Id : W_Pattern_Unchecked_List)
+     return Boolean;
+
+   function Pattern_OList_Children_Valid
+     (Id : W_Pattern_Unchecked_OList)
+     return Boolean;
+
+   function Match_Case_Id_Children_Valid
+     (Id : W_Match_Case_Unchecked_Id)
+     return Boolean;
+
+   function Match_Case_OId_Children_Valid
+     (Id : W_Match_Case_Unchecked_OId)
+     return Boolean;
+
+   function Match_Case_List_Children_Valid
+     (Id : W_Match_Case_Unchecked_List)
+     return Boolean;
+
+   function Match_Case_OList_Children_Valid
+     (Id : W_Match_Case_Unchecked_OList)
      return Boolean;
 
    function Triggers_Id_Children_Valid
@@ -5486,6 +5582,32 @@ private
      (Is_Empty (Id)
       or else Conditional_Term_List_Valid (Id));
 
+   function Matching_Term_Id_Valid
+     (Id : W_Matching_Term_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Matching_Term_Id_Children_Valid (Id));
+
+   function Matching_Term_OId_Valid
+     (Id : W_Matching_Term_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Matching_Term_Id_Valid (Id));
+
+   function Matching_Term_List_Valid
+     (Id : W_Matching_Term_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Matching_Term_OList_Valid
+     (Id : W_Matching_Term_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Matching_Term_List_Valid (Id));
+
    function Binding_Term_Id_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean is
@@ -6083,6 +6205,58 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Protected_Predicate_List_Valid (Id));
+
+   function Pattern_Id_Valid
+     (Id : W_Pattern_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Pattern_Id_Children_Valid (Id));
+
+   function Pattern_OId_Valid
+     (Id : W_Pattern_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Pattern_Id_Valid (Id));
+
+   function Pattern_List_Valid
+     (Id : W_Pattern_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Pattern_OList_Valid
+     (Id : W_Pattern_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Pattern_List_Valid (Id));
+
+   function Match_Case_Id_Valid
+     (Id : W_Match_Case_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Match_Case_Id_Children_Valid (Id));
+
+   function Match_Case_OId_Valid
+     (Id : W_Match_Case_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Match_Case_Id_Valid (Id));
+
+   function Match_Case_List_Valid
+     (Id : W_Match_Case_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Match_Case_OList_Valid
+     (Id : W_Match_Case_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Match_Case_List_Valid (Id));
 
    function Triggers_Id_Valid
      (Id : W_Triggers_Unchecked_Id)
@@ -9326,6 +9500,33 @@ private
      (Is_Empty (Id)
       or else Conditional_Term_List_Children_Valid (Id));
 
+   function Matching_Term_Id_Children_Valid
+     (Id : W_Matching_Term_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Matching_Term_Get_Term (Id))
+     and then
+       List_Cache_Valid
+         (Matching_Term_Get_Branches (Id)));
+
+   function Matching_Term_OId_Children_Valid
+     (Id : W_Matching_Term_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Matching_Term_Id_Children_Valid (Id));
+
+   function Matching_Term_List_Children_Valid
+     (Id : W_Matching_Term_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Matching_Term_OList_Children_Valid
+     (Id : W_Matching_Term_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Matching_Term_List_Children_Valid (Id));
+
    function Binding_Term_Id_Children_Valid
      (Id : W_Binding_Term_Unchecked_Id)
      return Boolean is
@@ -9933,6 +10134,60 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Protected_Predicate_List_Children_Valid (Id));
+
+   function Pattern_Id_Children_Valid
+     (Id : W_Pattern_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Pattern_Get_Constr (Id))
+     and then
+       OList_Cache_Valid
+         (Pattern_Get_Args (Id)));
+
+   function Pattern_OId_Children_Valid
+     (Id : W_Pattern_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Pattern_Id_Children_Valid (Id));
+
+   function Pattern_List_Children_Valid
+     (Id : W_Pattern_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Pattern_OList_Children_Valid
+     (Id : W_Pattern_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Pattern_List_Children_Valid (Id));
+
+   function Match_Case_Id_Children_Valid
+     (Id : W_Match_Case_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Match_Case_Get_Pattern (Id))
+     and then
+       Id_Cache_Valid
+         (Match_Case_Get_Term (Id)));
+
+   function Match_Case_OId_Children_Valid
+     (Id : W_Match_Case_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Match_Case_Id_Children_Valid (Id));
+
+   function Match_Case_List_Children_Valid
+     (Id : W_Match_Case_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Match_Case_OList_Children_Valid
+     (Id : W_Match_Case_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Match_Case_List_Children_Valid (Id));
 
    function Triggers_Id_Children_Valid
      (Id : W_Triggers_Unchecked_Id)
@@ -12077,6 +12332,8 @@ private
            Named_Term_Id_Children_Valid (Id),
         when W_Conditional_Term =>
            Conditional_Term_Id_Children_Valid (Id),
+        when W_Matching_Term =>
+           Matching_Term_Id_Children_Valid (Id),
         when W_Binding_Term =>
            Binding_Term_Id_Children_Valid (Id),
         when W_Protected_Term =>
@@ -12194,6 +12451,8 @@ private
            Named_Term_Id_Children_Valid (Id),
         when W_Conditional_Term =>
            Conditional_Term_Id_Children_Valid (Id),
+        when W_Matching_Term =>
+           Matching_Term_Id_Children_Valid (Id),
         when W_Binding_Term =>
            Binding_Term_Id_Children_Valid (Id),
         when W_Protected_Term =>
@@ -12847,6 +13106,8 @@ private
            Named_Term_Id_Children_Valid (Id),
         when W_Conditional_Term =>
            Conditional_Term_Id_Children_Valid (Id),
+        when W_Matching_Term =>
+           Matching_Term_Id_Children_Valid (Id),
         when W_Binding_Term =>
            Binding_Term_Id_Children_Valid (Id),
         when W_Protected_Term =>
@@ -12893,6 +13154,10 @@ private
            Named_Predicate_Id_Children_Valid (Id),
         when W_Protected_Predicate =>
            Protected_Predicate_Id_Children_Valid (Id),
+        when W_Pattern =>
+           Pattern_Id_Children_Valid (Id),
+        when W_Match_Case =>
+           Match_Case_Id_Children_Valid (Id),
         when W_Triggers =>
            Triggers_Id_Children_Valid (Id),
         when W_Trigger =>

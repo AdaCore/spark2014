@@ -305,6 +305,16 @@ package Why.Atree.Traversal is
       Node  : W_Conditional_Term_Id)
      is null;
 
+   procedure Matching_Term_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Matching_Term_Id)
+     is null;
+
+   procedure Matching_Term_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Matching_Term_Id)
+     is null;
+
    procedure Binding_Term_Pre_Op
      (State : in out Traversal_State;
       Node  : W_Binding_Term_Id)
@@ -533,6 +543,26 @@ package Why.Atree.Traversal is
    procedure Protected_Predicate_Post_Op
      (State : in out Traversal_State;
       Node  : W_Protected_Predicate_Id)
+     is null;
+
+   procedure Pattern_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Pattern_Id)
+     is null;
+
+   procedure Pattern_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Pattern_Id)
+     is null;
+
+   procedure Match_Case_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Match_Case_Id)
+     is null;
+
+   procedure Match_Case_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Match_Case_Id)
      is null;
 
    procedure Triggers_Pre_Op

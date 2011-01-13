@@ -163,6 +163,14 @@ package Why.Atree.Accessors is
      (Id : W_Conditional_Term_Id)
      return W_Term_Id;
 
+   function Matching_Term_Get_Term
+     (Id : W_Matching_Term_Id)
+     return W_Term_Id;
+
+   function Matching_Term_Get_Branches
+     (Id : W_Matching_Term_Id)
+     return W_Match_Case_List;
+
    function Binding_Term_Get_Name
      (Id : W_Binding_Term_Id)
      return W_Identifier_Id;
@@ -310,6 +318,22 @@ package Why.Atree.Accessors is
    function Protected_Predicate_Get_Pred
      (Id : W_Protected_Predicate_Id)
      return W_Predicate_Id;
+
+   function Pattern_Get_Constr
+     (Id : W_Pattern_Id)
+     return W_Identifier_Id;
+
+   function Pattern_Get_Args
+     (Id : W_Pattern_Id)
+     return W_Identifier_OList;
+
+   function Match_Case_Get_Pattern
+     (Id : W_Match_Case_Id)
+     return W_Pattern_Id;
+
+   function Match_Case_Get_Term
+     (Id : W_Match_Case_Id)
+     return W_Term_Id;
 
    function Triggers_Get_Triggers
      (Id : W_Triggers_Id)
@@ -974,6 +998,16 @@ private
      return W_Term_Id is
      (Get_Node (Id).CT_Else_Part);
 
+   function Matching_Term_Get_Term
+     (Id : W_Matching_Term_Id)
+     return W_Term_Id is
+     (Get_Node (Id).MT_Term);
+
+   function Matching_Term_Get_Branches
+     (Id : W_Matching_Term_Id)
+     return W_Match_Case_List is
+     (Get_Node (Id).MT_Branches);
+
    function Binding_Term_Get_Name
      (Id : W_Binding_Term_Id)
      return W_Identifier_Id is
@@ -1158,6 +1192,26 @@ private
      (Id : W_Protected_Predicate_Id)
      return W_Predicate_Id is
      (Get_Node (Id).PP_Pred);
+
+   function Pattern_Get_Constr
+     (Id : W_Pattern_Id)
+     return W_Identifier_Id is
+     (Get_Node (Id).PAT_Constr);
+
+   function Pattern_Get_Args
+     (Id : W_Pattern_Id)
+     return W_Identifier_OList is
+     (Get_Node (Id).PAT_Args);
+
+   function Match_Case_Get_Pattern
+     (Id : W_Match_Case_Id)
+     return W_Pattern_Id is
+     (Get_Node (Id).MC_Pattern);
+
+   function Match_Case_Get_Term
+     (Id : W_Match_Case_Id)
+     return W_Term_Id is
+     (Get_Node (Id).MC_Term);
 
    function Triggers_Get_Triggers
      (Id : W_Triggers_Id)

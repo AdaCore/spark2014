@@ -448,6 +448,22 @@ package Why.Kind_Validity is
      (Id : W_Conditional_Term_Opaque_OList)
      return Boolean;
 
+   function Matching_Term_Id_Kind_Valid
+     (Id : W_Matching_Term_Opaque_Id)
+     return Boolean;
+
+   function Matching_Term_OId_Kind_Valid
+     (Id : W_Matching_Term_Opaque_OId)
+     return Boolean;
+
+   function Matching_Term_List_Kind_Valid
+     (Id : W_Matching_Term_Opaque_List)
+     return Boolean;
+
+   function Matching_Term_OList_Kind_Valid
+     (Id : W_Matching_Term_Opaque_OList)
+     return Boolean;
+
    function Binding_Term_Id_Kind_Valid
      (Id : W_Binding_Term_Opaque_Id)
      return Boolean;
@@ -814,6 +830,38 @@ package Why.Kind_Validity is
 
    function Protected_Predicate_OList_Kind_Valid
      (Id : W_Protected_Predicate_Opaque_OList)
+     return Boolean;
+
+   function Pattern_Id_Kind_Valid
+     (Id : W_Pattern_Opaque_Id)
+     return Boolean;
+
+   function Pattern_OId_Kind_Valid
+     (Id : W_Pattern_Opaque_OId)
+     return Boolean;
+
+   function Pattern_List_Kind_Valid
+     (Id : W_Pattern_Opaque_List)
+     return Boolean;
+
+   function Pattern_OList_Kind_Valid
+     (Id : W_Pattern_Opaque_OList)
+     return Boolean;
+
+   function Match_Case_Id_Kind_Valid
+     (Id : W_Match_Case_Opaque_Id)
+     return Boolean;
+
+   function Match_Case_OId_Kind_Valid
+     (Id : W_Match_Case_Opaque_OId)
+     return Boolean;
+
+   function Match_Case_List_Kind_Valid
+     (Id : W_Match_Case_Opaque_List)
+     return Boolean;
+
+   function Match_Case_OList_Kind_Valid
+     (Id : W_Match_Case_Opaque_OList)
      return Boolean;
 
    function Triggers_Id_Kind_Valid
@@ -3052,6 +3100,31 @@ private
      (Is_Empty (Id)
       or else Conditional_Term_List_Kind_Valid (Id));
 
+   function Matching_Term_Id_Kind_Valid
+     (Id : W_Matching_Term_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Matching_Term);
+
+   function Matching_Term_OId_Kind_Valid
+     (Id : W_Matching_Term_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Matching_Term_Id_Kind_Valid (Id));
+
+   function Matching_Term_List_Kind_Valid
+     (Id : W_Matching_Term_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Matching_Term_OList_Kind_Valid
+     (Id : W_Matching_Term_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Matching_Term_List_Kind_Valid (Id));
+
    function Binding_Term_Id_Kind_Valid
      (Id : W_Binding_Term_Opaque_Id)
      return Boolean is
@@ -3626,6 +3699,56 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Protected_Predicate_List_Kind_Valid (Id));
+
+   function Pattern_Id_Kind_Valid
+     (Id : W_Pattern_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Pattern);
+
+   function Pattern_OId_Kind_Valid
+     (Id : W_Pattern_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Pattern_Id_Kind_Valid (Id));
+
+   function Pattern_List_Kind_Valid
+     (Id : W_Pattern_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Pattern_OList_Kind_Valid
+     (Id : W_Pattern_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Pattern_List_Kind_Valid (Id));
+
+   function Match_Case_Id_Kind_Valid
+     (Id : W_Match_Case_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Match_Case);
+
+   function Match_Case_OId_Kind_Valid
+     (Id : W_Match_Case_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Match_Case_Id_Kind_Valid (Id));
+
+   function Match_Case_List_Kind_Valid
+     (Id : W_Match_Case_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Match_Case_OList_Kind_Valid
+     (Id : W_Match_Case_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Match_Case_List_Kind_Valid (Id));
 
    function Triggers_Id_Kind_Valid
      (Id : W_Triggers_Opaque_Id)
