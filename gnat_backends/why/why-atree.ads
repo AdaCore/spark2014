@@ -186,7 +186,7 @@ package Why.Atree is
             CT_Else_Part : W_Term_Opaque_Id;
 
          when W_Matching_Term =>
-            MT_Term : W_Term_Opaque_Id;
+            MT_Term     : W_Term_Opaque_Id;
             MT_Branches : W_Match_Case_Opaque_List;
 
          when W_Binding_Term =>
@@ -258,7 +258,7 @@ package Why.Atree is
 
          when W_Match_Case =>
             MC_Pattern : W_Pattern_Opaque_Id;
-            MC_Term : W_Term_Opaque_Id;
+            MC_Term    : W_Term_Opaque_Id;
 
          when W_Triggers =>
             TRS_Triggers : W_Trigger_Opaque_List;
