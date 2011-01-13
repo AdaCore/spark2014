@@ -27,6 +27,15 @@ with Utils; use Utils;
 
 package body Xkind_Tables is
 
+   --------------
+   -- Arr_Type --
+   --------------
+
+   function Arr_Type (Prefix : Wide_String) return Wide_String is
+   begin
+      return Prefix & "_Array";
+   end Arr_Type;
+
    ---------------------
    -- Base_Id_Subtype --
    ---------------------

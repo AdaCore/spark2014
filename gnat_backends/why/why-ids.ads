@@ -93,6 +93,9 @@ package Why.Ids is
      W_Unused_At_Start_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Unused_At_Start_Array is array (Positive range <>)
+     of W_Unused_At_Start_Id;
+
    subtype W_Unused_At_Start_OId is
      W_Unused_At_Start_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -108,6 +111,9 @@ package Why.Ids is
    subtype W_Identifier_Id is
      W_Identifier_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Identifier_Array is array (Positive range <>)
+     of W_Identifier_Id;
 
    subtype W_Identifier_OId is
      W_Identifier_Unchecked_OId;
@@ -125,6 +131,9 @@ package Why.Ids is
      W_Type_Prop_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Type_Prop_Array is array (Positive range <>)
+     of W_Type_Prop_Id;
+
    subtype W_Type_Prop_OId is
      W_Type_Prop_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -140,6 +149,9 @@ package Why.Ids is
    subtype W_Type_Int_Id is
      W_Type_Int_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Type_Int_Array is array (Positive range <>)
+     of W_Type_Int_Id;
 
    subtype W_Type_Int_OId is
      W_Type_Int_Unchecked_OId;
@@ -157,6 +169,9 @@ package Why.Ids is
      W_Type_Bool_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Type_Bool_Array is array (Positive range <>)
+     of W_Type_Bool_Id;
+
    subtype W_Type_Bool_OId is
      W_Type_Bool_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -172,6 +187,9 @@ package Why.Ids is
    subtype W_Type_Real_Id is
      W_Type_Real_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Type_Real_Array is array (Positive range <>)
+     of W_Type_Real_Id;
 
    subtype W_Type_Real_OId is
      W_Type_Real_Unchecked_OId;
@@ -189,6 +207,9 @@ package Why.Ids is
      W_Type_Unit_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Type_Unit_Array is array (Positive range <>)
+     of W_Type_Unit_Id;
+
    subtype W_Type_Unit_OId is
      W_Type_Unit_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -204,6 +225,9 @@ package Why.Ids is
    subtype W_Abstract_Type_Id is
      W_Abstract_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Abstract_Type_Array is array (Positive range <>)
+     of W_Abstract_Type_Id;
 
    subtype W_Abstract_Type_OId is
      W_Abstract_Type_Unchecked_OId;
@@ -221,6 +245,9 @@ package Why.Ids is
      W_Generic_Formal_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Generic_Formal_Type_Array is array (Positive range <>)
+     of W_Generic_Formal_Type_Id;
+
    subtype W_Generic_Formal_Type_OId is
      W_Generic_Formal_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -236,6 +263,9 @@ package Why.Ids is
    subtype W_Generic_Actual_Type_Chain_Id is
      W_Generic_Actual_Type_Chain_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Generic_Actual_Type_Chain_Array is array (Positive range <>)
+     of W_Generic_Actual_Type_Chain_Id;
 
    subtype W_Generic_Actual_Type_Chain_OId is
      W_Generic_Actual_Type_Chain_Unchecked_OId;
@@ -253,6 +283,9 @@ package Why.Ids is
      W_Array_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Array_Type_Array is array (Positive range <>)
+     of W_Array_Type_Id;
+
    subtype W_Array_Type_OId is
      W_Array_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -268,6 +301,9 @@ package Why.Ids is
    subtype W_Ref_Type_Id is
      W_Ref_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Ref_Type_Array is array (Positive range <>)
+     of W_Ref_Type_Id;
 
    subtype W_Ref_Type_OId is
      W_Ref_Type_Unchecked_OId;
@@ -285,6 +321,9 @@ package Why.Ids is
      W_Protected_Value_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Protected_Value_Type_Array is array (Positive range <>)
+     of W_Protected_Value_Type_Id;
+
    subtype W_Protected_Value_Type_OId is
      W_Protected_Value_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -300,6 +339,9 @@ package Why.Ids is
    subtype W_Arrow_Type_Id is
      W_Arrow_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Arrow_Type_Array is array (Positive range <>)
+     of W_Arrow_Type_Id;
 
    subtype W_Arrow_Type_OId is
      W_Arrow_Type_Unchecked_OId;
@@ -317,6 +359,9 @@ package Why.Ids is
      W_Computation_Spec_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Computation_Spec_Array is array (Positive range <>)
+     of W_Computation_Spec_Id;
+
    subtype W_Computation_Spec_OId is
      W_Computation_Spec_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -332,6 +377,9 @@ package Why.Ids is
    subtype W_Integer_Constant_Id is
      W_Integer_Constant_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Integer_Constant_Array is array (Positive range <>)
+     of W_Integer_Constant_Id;
 
    subtype W_Integer_Constant_OId is
      W_Integer_Constant_Unchecked_OId;
@@ -349,6 +397,9 @@ package Why.Ids is
      W_Real_Constant_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Real_Constant_Array is array (Positive range <>)
+     of W_Real_Constant_Id;
+
    subtype W_Real_Constant_OId is
      W_Real_Constant_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -364,6 +415,9 @@ package Why.Ids is
    subtype W_True_Literal_Id is
      W_True_Literal_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_True_Literal_Array is array (Positive range <>)
+     of W_True_Literal_Id;
 
    subtype W_True_Literal_OId is
      W_True_Literal_Unchecked_OId;
@@ -381,6 +435,9 @@ package Why.Ids is
      W_False_Literal_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_False_Literal_Array is array (Positive range <>)
+     of W_False_Literal_Id;
+
    subtype W_False_Literal_OId is
      W_False_Literal_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -396,6 +453,9 @@ package Why.Ids is
    subtype W_Void_Literal_Id is
      W_Void_Literal_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Void_Literal_Array is array (Positive range <>)
+     of W_Void_Literal_Id;
 
    subtype W_Void_Literal_OId is
      W_Void_Literal_Unchecked_OId;
@@ -413,6 +473,9 @@ package Why.Ids is
      W_Arith_Operation_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Arith_Operation_Array is array (Positive range <>)
+     of W_Arith_Operation_Id;
+
    subtype W_Arith_Operation_OId is
      W_Arith_Operation_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -428,6 +491,9 @@ package Why.Ids is
    subtype W_Negative_Term_Id is
      W_Negative_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Negative_Term_Array is array (Positive range <>)
+     of W_Negative_Term_Id;
 
    subtype W_Negative_Term_OId is
      W_Negative_Term_Unchecked_OId;
@@ -445,6 +511,9 @@ package Why.Ids is
      W_Label_Identifier_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Label_Identifier_Array is array (Positive range <>)
+     of W_Label_Identifier_Id;
+
    subtype W_Label_Identifier_OId is
      W_Label_Identifier_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -460,6 +529,9 @@ package Why.Ids is
    subtype W_Operation_Id is
      W_Operation_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Operation_Array is array (Positive range <>)
+     of W_Operation_Id;
 
    subtype W_Operation_OId is
      W_Operation_Unchecked_OId;
@@ -477,6 +549,9 @@ package Why.Ids is
      W_Named_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Named_Term_Array is array (Positive range <>)
+     of W_Named_Term_Id;
+
    subtype W_Named_Term_OId is
      W_Named_Term_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -492,6 +567,9 @@ package Why.Ids is
    subtype W_Conditional_Term_Id is
      W_Conditional_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Conditional_Term_Array is array (Positive range <>)
+     of W_Conditional_Term_Id;
 
    subtype W_Conditional_Term_OId is
      W_Conditional_Term_Unchecked_OId;
@@ -509,6 +587,9 @@ package Why.Ids is
      W_Matching_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Matching_Term_Array is array (Positive range <>)
+     of W_Matching_Term_Id;
+
    subtype W_Matching_Term_OId is
      W_Matching_Term_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -524,6 +605,9 @@ package Why.Ids is
    subtype W_Binding_Term_Id is
      W_Binding_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Binding_Term_Array is array (Positive range <>)
+     of W_Binding_Term_Id;
 
    subtype W_Binding_Term_OId is
      W_Binding_Term_Unchecked_OId;
@@ -541,6 +625,9 @@ package Why.Ids is
      W_Protected_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Protected_Term_Array is array (Positive range <>)
+     of W_Protected_Term_Id;
+
    subtype W_Protected_Term_OId is
      W_Protected_Term_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -556,6 +643,9 @@ package Why.Ids is
    subtype W_Op_Add_Id is
      W_Op_Add_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Add_Array is array (Positive range <>)
+     of W_Op_Add_Id;
 
    subtype W_Op_Add_OId is
      W_Op_Add_Unchecked_OId;
@@ -573,6 +663,9 @@ package Why.Ids is
      W_Op_Substract_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Substract_Array is array (Positive range <>)
+     of W_Op_Substract_Id;
+
    subtype W_Op_Substract_OId is
      W_Op_Substract_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -588,6 +681,9 @@ package Why.Ids is
    subtype W_Op_Multiply_Id is
      W_Op_Multiply_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Multiply_Array is array (Positive range <>)
+     of W_Op_Multiply_Id;
 
    subtype W_Op_Multiply_OId is
      W_Op_Multiply_Unchecked_OId;
@@ -605,6 +701,9 @@ package Why.Ids is
      W_Op_Divide_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Divide_Array is array (Positive range <>)
+     of W_Op_Divide_Id;
+
    subtype W_Op_Divide_OId is
      W_Op_Divide_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -620,6 +719,9 @@ package Why.Ids is
    subtype W_Op_Modulo_Id is
      W_Op_Modulo_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Modulo_Array is array (Positive range <>)
+     of W_Op_Modulo_Id;
 
    subtype W_Op_Modulo_OId is
      W_Op_Modulo_Unchecked_OId;
@@ -637,6 +739,9 @@ package Why.Ids is
      W_True_Literal_Pred_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_True_Literal_Pred_Array is array (Positive range <>)
+     of W_True_Literal_Pred_Id;
+
    subtype W_True_Literal_Pred_OId is
      W_True_Literal_Pred_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -652,6 +757,9 @@ package Why.Ids is
    subtype W_False_Literal_Pred_Id is
      W_False_Literal_Pred_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_False_Literal_Pred_Array is array (Positive range <>)
+     of W_False_Literal_Pred_Id;
 
    subtype W_False_Literal_Pred_OId is
      W_False_Literal_Pred_Unchecked_OId;
@@ -669,6 +777,9 @@ package Why.Ids is
      W_Predicate_Identifier_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Predicate_Identifier_Array is array (Positive range <>)
+     of W_Predicate_Identifier_Id;
+
    subtype W_Predicate_Identifier_OId is
      W_Predicate_Identifier_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -684,6 +795,9 @@ package Why.Ids is
    subtype W_Predicate_Instance_Id is
      W_Predicate_Instance_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Predicate_Instance_Array is array (Positive range <>)
+     of W_Predicate_Instance_Id;
 
    subtype W_Predicate_Instance_OId is
      W_Predicate_Instance_Unchecked_OId;
@@ -701,6 +815,9 @@ package Why.Ids is
      W_Related_Terms_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Related_Terms_Array is array (Positive range <>)
+     of W_Related_Terms_Id;
+
    subtype W_Related_Terms_OId is
      W_Related_Terms_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -716,6 +833,9 @@ package Why.Ids is
    subtype W_Implication_Id is
      W_Implication_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Implication_Array is array (Positive range <>)
+     of W_Implication_Id;
 
    subtype W_Implication_OId is
      W_Implication_Unchecked_OId;
@@ -733,6 +853,9 @@ package Why.Ids is
      W_Equivalence_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Equivalence_Array is array (Positive range <>)
+     of W_Equivalence_Id;
+
    subtype W_Equivalence_OId is
      W_Equivalence_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -748,6 +871,9 @@ package Why.Ids is
    subtype W_Disjonction_Id is
      W_Disjonction_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Disjonction_Array is array (Positive range <>)
+     of W_Disjonction_Id;
 
    subtype W_Disjonction_OId is
      W_Disjonction_Unchecked_OId;
@@ -765,6 +891,9 @@ package Why.Ids is
      W_Conjonction_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Conjonction_Array is array (Positive range <>)
+     of W_Conjonction_Id;
+
    subtype W_Conjonction_OId is
      W_Conjonction_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -780,6 +909,9 @@ package Why.Ids is
    subtype W_Negation_Id is
      W_Negation_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Negation_Array is array (Positive range <>)
+     of W_Negation_Id;
 
    subtype W_Negation_OId is
      W_Negation_Unchecked_OId;
@@ -797,6 +929,9 @@ package Why.Ids is
      W_Conditional_Pred_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Conditional_Pred_Array is array (Positive range <>)
+     of W_Conditional_Pred_Id;
+
    subtype W_Conditional_Pred_OId is
      W_Conditional_Pred_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -812,6 +947,9 @@ package Why.Ids is
    subtype W_Binding_Pred_Id is
      W_Binding_Pred_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Binding_Pred_Array is array (Positive range <>)
+     of W_Binding_Pred_Id;
 
    subtype W_Binding_Pred_OId is
      W_Binding_Pred_Unchecked_OId;
@@ -829,6 +967,9 @@ package Why.Ids is
      W_Universal_Quantif_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Universal_Quantif_Array is array (Positive range <>)
+     of W_Universal_Quantif_Id;
+
    subtype W_Universal_Quantif_OId is
      W_Universal_Quantif_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -844,6 +985,9 @@ package Why.Ids is
    subtype W_Existential_Quantif_Id is
      W_Existential_Quantif_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Existential_Quantif_Array is array (Positive range <>)
+     of W_Existential_Quantif_Id;
 
    subtype W_Existential_Quantif_OId is
      W_Existential_Quantif_Unchecked_OId;
@@ -861,6 +1005,9 @@ package Why.Ids is
      W_Named_Predicate_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Named_Predicate_Array is array (Positive range <>)
+     of W_Named_Predicate_Id;
+
    subtype W_Named_Predicate_OId is
      W_Named_Predicate_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -876,6 +1023,9 @@ package Why.Ids is
    subtype W_Protected_Predicate_Id is
      W_Protected_Predicate_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Protected_Predicate_Array is array (Positive range <>)
+     of W_Protected_Predicate_Id;
 
    subtype W_Protected_Predicate_OId is
      W_Protected_Predicate_Unchecked_OId;
@@ -893,6 +1043,9 @@ package Why.Ids is
      W_Pattern_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Pattern_Array is array (Positive range <>)
+     of W_Pattern_Id;
+
    subtype W_Pattern_OId is
      W_Pattern_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -908,6 +1061,9 @@ package Why.Ids is
    subtype W_Match_Case_Id is
      W_Match_Case_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Match_Case_Array is array (Positive range <>)
+     of W_Match_Case_Id;
 
    subtype W_Match_Case_OId is
      W_Match_Case_Unchecked_OId;
@@ -925,6 +1081,9 @@ package Why.Ids is
      W_Triggers_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Triggers_Array is array (Positive range <>)
+     of W_Triggers_Id;
+
    subtype W_Triggers_OId is
      W_Triggers_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -940,6 +1099,9 @@ package Why.Ids is
    subtype W_Trigger_Id is
      W_Trigger_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Trigger_Array is array (Positive range <>)
+     of W_Trigger_Id;
 
    subtype W_Trigger_OId is
      W_Trigger_Unchecked_OId;
@@ -957,6 +1119,9 @@ package Why.Ids is
      W_Rel_Eq_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Rel_Eq_Array is array (Positive range <>)
+     of W_Rel_Eq_Id;
+
    subtype W_Rel_Eq_OId is
      W_Rel_Eq_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -972,6 +1137,9 @@ package Why.Ids is
    subtype W_Rel_Ne_Id is
      W_Rel_Ne_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Rel_Ne_Array is array (Positive range <>)
+     of W_Rel_Ne_Id;
 
    subtype W_Rel_Ne_OId is
      W_Rel_Ne_Unchecked_OId;
@@ -989,6 +1157,9 @@ package Why.Ids is
      W_Rel_Lt_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Rel_Lt_Array is array (Positive range <>)
+     of W_Rel_Lt_Id;
+
    subtype W_Rel_Lt_OId is
      W_Rel_Lt_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1004,6 +1175,9 @@ package Why.Ids is
    subtype W_Rel_Le_Id is
      W_Rel_Le_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Rel_Le_Array is array (Positive range <>)
+     of W_Rel_Le_Id;
 
    subtype W_Rel_Le_OId is
      W_Rel_Le_Unchecked_OId;
@@ -1021,6 +1195,9 @@ package Why.Ids is
      W_Rel_Gt_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Rel_Gt_Array is array (Positive range <>)
+     of W_Rel_Gt_Id;
+
    subtype W_Rel_Gt_OId is
      W_Rel_Gt_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1036,6 +1213,9 @@ package Why.Ids is
    subtype W_Rel_Ge_Id is
      W_Rel_Ge_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Rel_Ge_Array is array (Positive range <>)
+     of W_Rel_Ge_Id;
 
    subtype W_Rel_Ge_OId is
      W_Rel_Ge_Unchecked_OId;
@@ -1053,6 +1233,9 @@ package Why.Ids is
      W_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Type_Array is array (Positive range <>)
+     of W_Type_Id;
+
    subtype W_Type_OId is
      W_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1068,6 +1251,9 @@ package Why.Ids is
    subtype W_Logic_Id is
      W_Logic_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Logic_Array is array (Positive range <>)
+     of W_Logic_Id;
 
    subtype W_Logic_OId is
      W_Logic_Unchecked_OId;
@@ -1085,6 +1271,9 @@ package Why.Ids is
      W_Function_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Function_Array is array (Positive range <>)
+     of W_Function_Id;
+
    subtype W_Function_OId is
      W_Function_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1100,6 +1289,9 @@ package Why.Ids is
    subtype W_Predicate_Definition_Id is
      W_Predicate_Definition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Predicate_Definition_Array is array (Positive range <>)
+     of W_Predicate_Definition_Id;
 
    subtype W_Predicate_Definition_OId is
      W_Predicate_Definition_Unchecked_OId;
@@ -1117,6 +1309,9 @@ package Why.Ids is
      W_Inductive_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Inductive_Array is array (Positive range <>)
+     of W_Inductive_Id;
+
    subtype W_Inductive_OId is
      W_Inductive_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1132,6 +1327,9 @@ package Why.Ids is
    subtype W_Axiom_Id is
      W_Axiom_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Axiom_Array is array (Positive range <>)
+     of W_Axiom_Id;
 
    subtype W_Axiom_OId is
      W_Axiom_Unchecked_OId;
@@ -1149,6 +1347,9 @@ package Why.Ids is
      W_Goal_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Goal_Array is array (Positive range <>)
+     of W_Goal_Id;
+
    subtype W_Goal_OId is
      W_Goal_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1164,6 +1365,9 @@ package Why.Ids is
    subtype W_External_Id is
      W_External_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_External_Array is array (Positive range <>)
+     of W_External_Id;
 
    subtype W_External_OId is
      W_External_Unchecked_OId;
@@ -1181,6 +1385,9 @@ package Why.Ids is
      W_Logic_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Logic_Type_Array is array (Positive range <>)
+     of W_Logic_Type_Id;
+
    subtype W_Logic_Type_OId is
      W_Logic_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1196,6 +1403,9 @@ package Why.Ids is
    subtype W_Logic_Binder_Id is
      W_Logic_Binder_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Logic_Binder_Array is array (Positive range <>)
+     of W_Logic_Binder_Id;
 
    subtype W_Logic_Binder_OId is
      W_Logic_Binder_Unchecked_OId;
@@ -1213,6 +1423,9 @@ package Why.Ids is
      W_Inductive_Case_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Inductive_Case_Array is array (Positive range <>)
+     of W_Inductive_Case_Id;
+
    subtype W_Inductive_Case_OId is
      W_Inductive_Case_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1228,6 +1441,9 @@ package Why.Ids is
    subtype W_Transparent_Type_Definition_Id is
      W_Transparent_Type_Definition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Transparent_Type_Definition_Array is array (Positive range <>)
+     of W_Transparent_Type_Definition_Id;
 
    subtype W_Transparent_Type_Definition_OId is
      W_Transparent_Type_Definition_Unchecked_OId;
@@ -1245,6 +1461,9 @@ package Why.Ids is
      W_Adt_Definition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Adt_Definition_Array is array (Positive range <>)
+     of W_Adt_Definition_Id;
+
    subtype W_Adt_Definition_OId is
      W_Adt_Definition_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1260,6 +1479,9 @@ package Why.Ids is
    subtype W_Constr_Decl_Id is
      W_Constr_Decl_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Constr_Decl_Array is array (Positive range <>)
+     of W_Constr_Decl_Id;
 
    subtype W_Constr_Decl_OId is
      W_Constr_Decl_Unchecked_OId;
@@ -1277,6 +1499,9 @@ package Why.Ids is
      W_Effects_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Effects_Array is array (Positive range <>)
+     of W_Effects_Id;
+
    subtype W_Effects_OId is
      W_Effects_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1292,6 +1517,9 @@ package Why.Ids is
    subtype W_Precondition_Id is
      W_Precondition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Precondition_Array is array (Positive range <>)
+     of W_Precondition_Id;
 
    subtype W_Precondition_OId is
      W_Precondition_Unchecked_OId;
@@ -1309,6 +1537,9 @@ package Why.Ids is
      W_Postcondition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Postcondition_Array is array (Positive range <>)
+     of W_Postcondition_Id;
+
    subtype W_Postcondition_OId is
      W_Postcondition_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1324,6 +1555,9 @@ package Why.Ids is
    subtype W_Exn_Condition_Id is
      W_Exn_Condition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Exn_Condition_Array is array (Positive range <>)
+     of W_Exn_Condition_Id;
 
    subtype W_Exn_Condition_OId is
      W_Exn_Condition_Unchecked_OId;
@@ -1341,6 +1575,9 @@ package Why.Ids is
      W_Assertion_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Assertion_Array is array (Positive range <>)
+     of W_Assertion_Id;
+
    subtype W_Assertion_OId is
      W_Assertion_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1356,6 +1593,9 @@ package Why.Ids is
    subtype W_Prog_Constant_Id is
      W_Prog_Constant_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Prog_Constant_Array is array (Positive range <>)
+     of W_Prog_Constant_Id;
 
    subtype W_Prog_Constant_OId is
      W_Prog_Constant_Unchecked_OId;
@@ -1373,6 +1613,9 @@ package Why.Ids is
      W_Prog_Identifier_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Prog_Identifier_Array is array (Positive range <>)
+     of W_Prog_Identifier_Id;
+
    subtype W_Prog_Identifier_OId is
      W_Prog_Identifier_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1388,6 +1631,9 @@ package Why.Ids is
    subtype W_Deref_Id is
      W_Deref_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Deref_Array is array (Positive range <>)
+     of W_Deref_Id;
 
    subtype W_Deref_OId is
      W_Deref_Unchecked_OId;
@@ -1405,6 +1651,9 @@ package Why.Ids is
      W_Assignment_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Assignment_Array is array (Positive range <>)
+     of W_Assignment_Id;
+
    subtype W_Assignment_OId is
      W_Assignment_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1420,6 +1669,9 @@ package Why.Ids is
    subtype W_Array_Access_Id is
      W_Array_Access_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Array_Access_Array is array (Positive range <>)
+     of W_Array_Access_Id;
 
    subtype W_Array_Access_OId is
      W_Array_Access_Unchecked_OId;
@@ -1437,6 +1689,9 @@ package Why.Ids is
      W_Array_Update_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Array_Update_Array is array (Positive range <>)
+     of W_Array_Update_Id;
+
    subtype W_Array_Update_OId is
      W_Array_Update_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1452,6 +1707,9 @@ package Why.Ids is
    subtype W_Infix_Call_Id is
      W_Infix_Call_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Infix_Call_Array is array (Positive range <>)
+     of W_Infix_Call_Id;
 
    subtype W_Infix_Call_OId is
      W_Infix_Call_Unchecked_OId;
@@ -1469,6 +1727,9 @@ package Why.Ids is
      W_Prefix_Call_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Prefix_Call_Array is array (Positive range <>)
+     of W_Prefix_Call_Id;
+
    subtype W_Prefix_Call_OId is
      W_Prefix_Call_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1484,6 +1745,9 @@ package Why.Ids is
    subtype W_Binding_Prog_Id is
      W_Binding_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Binding_Prog_Array is array (Positive range <>)
+     of W_Binding_Prog_Id;
 
    subtype W_Binding_Prog_OId is
      W_Binding_Prog_Unchecked_OId;
@@ -1501,6 +1765,9 @@ package Why.Ids is
      W_Binding_Ref_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Binding_Ref_Array is array (Positive range <>)
+     of W_Binding_Ref_Id;
+
    subtype W_Binding_Ref_OId is
      W_Binding_Ref_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1516,6 +1783,9 @@ package Why.Ids is
    subtype W_Conditional_Prog_Id is
      W_Conditional_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Conditional_Prog_Array is array (Positive range <>)
+     of W_Conditional_Prog_Id;
 
    subtype W_Conditional_Prog_OId is
      W_Conditional_Prog_Unchecked_OId;
@@ -1533,6 +1803,9 @@ package Why.Ids is
      W_While_Loop_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_While_Loop_Array is array (Positive range <>)
+     of W_While_Loop_Id;
+
    subtype W_While_Loop_OId is
      W_While_Loop_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1548,6 +1821,9 @@ package Why.Ids is
    subtype W_Statement_Sequence_Id is
      W_Statement_Sequence_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Statement_Sequence_Array is array (Positive range <>)
+     of W_Statement_Sequence_Id;
 
    subtype W_Statement_Sequence_OId is
      W_Statement_Sequence_Unchecked_OId;
@@ -1565,6 +1841,9 @@ package Why.Ids is
      W_Label_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Label_Array is array (Positive range <>)
+     of W_Label_Id;
+
    subtype W_Label_OId is
      W_Label_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1580,6 +1859,9 @@ package Why.Ids is
    subtype W_Assert_Id is
      W_Assert_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Assert_Array is array (Positive range <>)
+     of W_Assert_Id;
 
    subtype W_Assert_OId is
      W_Assert_Unchecked_OId;
@@ -1597,6 +1879,9 @@ package Why.Ids is
      W_Post_Assertion_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Post_Assertion_Array is array (Positive range <>)
+     of W_Post_Assertion_Id;
+
    subtype W_Post_Assertion_OId is
      W_Post_Assertion_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1612,6 +1897,9 @@ package Why.Ids is
    subtype W_Opaque_Assertion_Id is
      W_Opaque_Assertion_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Opaque_Assertion_Array is array (Positive range <>)
+     of W_Opaque_Assertion_Id;
 
    subtype W_Opaque_Assertion_OId is
      W_Opaque_Assertion_Unchecked_OId;
@@ -1629,6 +1917,9 @@ package Why.Ids is
      W_Fun_Def_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Fun_Def_Array is array (Positive range <>)
+     of W_Fun_Def_Id;
+
    subtype W_Fun_Def_OId is
      W_Fun_Def_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1644,6 +1935,9 @@ package Why.Ids is
    subtype W_Binding_Fun_Id is
      W_Binding_Fun_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Binding_Fun_Array is array (Positive range <>)
+     of W_Binding_Fun_Id;
 
    subtype W_Binding_Fun_OId is
      W_Binding_Fun_Unchecked_OId;
@@ -1661,6 +1955,9 @@ package Why.Ids is
      W_Binding_Rec_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Binding_Rec_Array is array (Positive range <>)
+     of W_Binding_Rec_Id;
+
    subtype W_Binding_Rec_OId is
      W_Binding_Rec_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1676,6 +1973,9 @@ package Why.Ids is
    subtype W_Prog_Sequence_Id is
      W_Prog_Sequence_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Prog_Sequence_Array is array (Positive range <>)
+     of W_Prog_Sequence_Id;
 
    subtype W_Prog_Sequence_OId is
      W_Prog_Sequence_Unchecked_OId;
@@ -1693,6 +1993,9 @@ package Why.Ids is
      W_Raise_Statement_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Raise_Statement_Array is array (Positive range <>)
+     of W_Raise_Statement_Id;
+
    subtype W_Raise_Statement_OId is
      W_Raise_Statement_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1708,6 +2011,9 @@ package Why.Ids is
    subtype W_Raise_Statement_With_Parameters_Id is
      W_Raise_Statement_With_Parameters_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Raise_Statement_With_Parameters_Array is array (Positive range <>)
+     of W_Raise_Statement_With_Parameters_Id;
 
    subtype W_Raise_Statement_With_Parameters_OId is
      W_Raise_Statement_With_Parameters_Unchecked_OId;
@@ -1725,6 +2031,9 @@ package Why.Ids is
      W_Try_Block_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Try_Block_Array is array (Positive range <>)
+     of W_Try_Block_Id;
+
    subtype W_Try_Block_OId is
      W_Try_Block_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1740,6 +2049,9 @@ package Why.Ids is
    subtype W_Unreachable_Code_Id is
      W_Unreachable_Code_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Unreachable_Code_Array is array (Positive range <>)
+     of W_Unreachable_Code_Id;
 
    subtype W_Unreachable_Code_OId is
      W_Unreachable_Code_Unchecked_OId;
@@ -1757,6 +2069,9 @@ package Why.Ids is
      W_Begin_Block_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Begin_Block_Array is array (Positive range <>)
+     of W_Begin_Block_Id;
+
    subtype W_Begin_Block_OId is
      W_Begin_Block_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1772,6 +2087,9 @@ package Why.Ids is
    subtype W_Protected_Prog_Id is
      W_Protected_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Protected_Prog_Array is array (Positive range <>)
+     of W_Protected_Prog_Id;
 
    subtype W_Protected_Prog_OId is
      W_Protected_Prog_Unchecked_OId;
@@ -1789,6 +2107,9 @@ package Why.Ids is
      W_Op_Add_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Add_Prog_Array is array (Positive range <>)
+     of W_Op_Add_Prog_Id;
+
    subtype W_Op_Add_Prog_OId is
      W_Op_Add_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1804,6 +2125,9 @@ package Why.Ids is
    subtype W_Op_Substract_Prog_Id is
      W_Op_Substract_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Substract_Prog_Array is array (Positive range <>)
+     of W_Op_Substract_Prog_Id;
 
    subtype W_Op_Substract_Prog_OId is
      W_Op_Substract_Prog_Unchecked_OId;
@@ -1821,6 +2145,9 @@ package Why.Ids is
      W_Op_Multiply_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Multiply_Prog_Array is array (Positive range <>)
+     of W_Op_Multiply_Prog_Id;
+
    subtype W_Op_Multiply_Prog_OId is
      W_Op_Multiply_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1836,6 +2163,9 @@ package Why.Ids is
    subtype W_Op_Divide_Prog_Id is
      W_Op_Divide_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Divide_Prog_Array is array (Positive range <>)
+     of W_Op_Divide_Prog_Id;
 
    subtype W_Op_Divide_Prog_OId is
      W_Op_Divide_Prog_Unchecked_OId;
@@ -1853,6 +2183,9 @@ package Why.Ids is
      W_Op_Mod_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Mod_Prog_Array is array (Positive range <>)
+     of W_Op_Mod_Prog_Id;
+
    subtype W_Op_Mod_Prog_OId is
      W_Op_Mod_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1868,6 +2201,9 @@ package Why.Ids is
    subtype W_Op_Eq_Prog_Id is
      W_Op_Eq_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Eq_Prog_Array is array (Positive range <>)
+     of W_Op_Eq_Prog_Id;
 
    subtype W_Op_Eq_Prog_OId is
      W_Op_Eq_Prog_Unchecked_OId;
@@ -1885,6 +2221,9 @@ package Why.Ids is
      W_Op_Ne_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Ne_Prog_Array is array (Positive range <>)
+     of W_Op_Ne_Prog_Id;
+
    subtype W_Op_Ne_Prog_OId is
      W_Op_Ne_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1900,6 +2239,9 @@ package Why.Ids is
    subtype W_Op_Lt_Prog_Id is
      W_Op_Lt_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Lt_Prog_Array is array (Positive range <>)
+     of W_Op_Lt_Prog_Id;
 
    subtype W_Op_Lt_Prog_OId is
      W_Op_Lt_Prog_Unchecked_OId;
@@ -1917,6 +2259,9 @@ package Why.Ids is
      W_Op_Le_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Le_Prog_Array is array (Positive range <>)
+     of W_Op_Le_Prog_Id;
+
    subtype W_Op_Le_Prog_OId is
      W_Op_Le_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1932,6 +2277,9 @@ package Why.Ids is
    subtype W_Op_Gt_Prog_Id is
      W_Op_Gt_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Gt_Prog_Array is array (Positive range <>)
+     of W_Op_Gt_Prog_Id;
 
    subtype W_Op_Gt_Prog_OId is
      W_Op_Gt_Prog_Unchecked_OId;
@@ -1949,6 +2297,9 @@ package Why.Ids is
      W_Op_Ge_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Ge_Prog_Array is array (Positive range <>)
+     of W_Op_Ge_Prog_Id;
+
    subtype W_Op_Ge_Prog_OId is
      W_Op_Ge_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1964,6 +2315,9 @@ package Why.Ids is
    subtype W_Op_Or_Else_Prog_Id is
      W_Op_Or_Else_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Or_Else_Prog_Array is array (Positive range <>)
+     of W_Op_Or_Else_Prog_Id;
 
    subtype W_Op_Or_Else_Prog_OId is
      W_Op_Or_Else_Prog_Unchecked_OId;
@@ -1981,6 +2335,9 @@ package Why.Ids is
      W_Op_And_Then_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_And_Then_Prog_Array is array (Positive range <>)
+     of W_Op_And_Then_Prog_Id;
+
    subtype W_Op_And_Then_Prog_OId is
      W_Op_And_Then_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -1996,6 +2353,9 @@ package Why.Ids is
    subtype W_Op_Minus_Prog_Id is
      W_Op_Minus_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Op_Minus_Prog_Array is array (Positive range <>)
+     of W_Op_Minus_Prog_Id;
 
    subtype W_Op_Minus_Prog_OId is
      W_Op_Minus_Prog_Unchecked_OId;
@@ -2013,6 +2373,9 @@ package Why.Ids is
      W_Op_Not_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Op_Not_Prog_Array is array (Positive range <>)
+     of W_Op_Not_Prog_Id;
+
    subtype W_Op_Not_Prog_OId is
      W_Op_Not_Prog_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2028,6 +2391,9 @@ package Why.Ids is
    subtype W_Binders_Id is
      W_Binders_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Binders_Array is array (Positive range <>)
+     of W_Binders_Id;
 
    subtype W_Binders_OId is
      W_Binders_Unchecked_OId;
@@ -2045,6 +2411,9 @@ package Why.Ids is
      W_Binder_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Binder_Array is array (Positive range <>)
+     of W_Binder_Id;
+
    subtype W_Binder_OId is
      W_Binder_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2060,6 +2429,9 @@ package Why.Ids is
    subtype W_Recfun_Id is
      W_Recfun_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Recfun_Array is array (Positive range <>)
+     of W_Recfun_Id;
 
    subtype W_Recfun_OId is
      W_Recfun_Unchecked_OId;
@@ -2077,6 +2449,9 @@ package Why.Ids is
      W_Loop_Annot_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Loop_Annot_Array is array (Positive range <>)
+     of W_Loop_Annot_Id;
+
    subtype W_Loop_Annot_OId is
      W_Loop_Annot_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2092,6 +2467,9 @@ package Why.Ids is
    subtype W_Wf_Arg_Id is
      W_Wf_Arg_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Wf_Arg_Array is array (Positive range <>)
+     of W_Wf_Arg_Id;
 
    subtype W_Wf_Arg_OId is
      W_Wf_Arg_Unchecked_OId;
@@ -2109,6 +2487,9 @@ package Why.Ids is
      W_Handler_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Handler_Array is array (Positive range <>)
+     of W_Handler_Id;
+
    subtype W_Handler_OId is
      W_Handler_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2124,6 +2505,9 @@ package Why.Ids is
    subtype W_File_Id is
      W_File_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_File_Array is array (Positive range <>)
+     of W_File_Id;
 
    subtype W_File_OId is
      W_File_Unchecked_OId;
@@ -2141,6 +2525,9 @@ package Why.Ids is
      W_Global_Binding_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Global_Binding_Array is array (Positive range <>)
+     of W_Global_Binding_Id;
+
    subtype W_Global_Binding_OId is
      W_Global_Binding_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2156,6 +2543,9 @@ package Why.Ids is
    subtype W_Global_Rec_Binding_Id is
      W_Global_Rec_Binding_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Global_Rec_Binding_Array is array (Positive range <>)
+     of W_Global_Rec_Binding_Id;
 
    subtype W_Global_Rec_Binding_OId is
      W_Global_Rec_Binding_Unchecked_OId;
@@ -2173,6 +2563,9 @@ package Why.Ids is
      W_Parameter_Declaration_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Parameter_Declaration_Array is array (Positive range <>)
+     of W_Parameter_Declaration_Id;
+
    subtype W_Parameter_Declaration_OId is
      W_Parameter_Declaration_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2188,6 +2581,9 @@ package Why.Ids is
    subtype W_Exception_Declaration_Id is
      W_Exception_Declaration_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Exception_Declaration_Array is array (Positive range <>)
+     of W_Exception_Declaration_Id;
 
    subtype W_Exception_Declaration_OId is
      W_Exception_Declaration_Unchecked_OId;
@@ -2205,6 +2601,9 @@ package Why.Ids is
      W_Logic_Declaration_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Logic_Declaration_Array is array (Positive range <>)
+     of W_Logic_Declaration_Id;
+
    subtype W_Logic_Declaration_OId is
      W_Logic_Declaration_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2220,6 +2619,9 @@ package Why.Ids is
    subtype W_Term_Id is
      W_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Term_Array is array (Positive range <>)
+     of W_Term_Id;
 
    subtype W_Term_OId is
      W_Term_Unchecked_OId;
@@ -2237,6 +2639,9 @@ package Why.Ids is
      W_Constant_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Constant_Array is array (Positive range <>)
+     of W_Constant_Id;
+
    subtype W_Constant_OId is
      W_Constant_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2252,6 +2657,9 @@ package Why.Ids is
    subtype W_Arith_Op_Id is
      W_Arith_Op_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Arith_Op_Array is array (Positive range <>)
+     of W_Arith_Op_Id;
 
    subtype W_Arith_Op_OId is
      W_Arith_Op_Unchecked_OId;
@@ -2269,6 +2677,9 @@ package Why.Ids is
      W_Predicate_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Predicate_Array is array (Positive range <>)
+     of W_Predicate_Id;
+
    subtype W_Predicate_OId is
      W_Predicate_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2284,6 +2695,9 @@ package Why.Ids is
    subtype W_Primitive_Type_Id is
      W_Primitive_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Primitive_Type_Array is array (Positive range <>)
+     of W_Primitive_Type_Id;
 
    subtype W_Primitive_Type_OId is
      W_Primitive_Type_Unchecked_OId;
@@ -2301,6 +2715,9 @@ package Why.Ids is
      W_Relation_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Relation_Array is array (Positive range <>)
+     of W_Relation_Id;
+
    subtype W_Relation_OId is
      W_Relation_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2316,6 +2733,9 @@ package Why.Ids is
    subtype W_Logic_Declaration_Class_Id is
      W_Logic_Declaration_Class_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Logic_Declaration_Class_Array is array (Positive range <>)
+     of W_Logic_Declaration_Class_Id;
 
    subtype W_Logic_Declaration_Class_OId is
      W_Logic_Declaration_Class_Unchecked_OId;
@@ -2333,6 +2753,9 @@ package Why.Ids is
      W_Logic_Return_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Logic_Return_Type_Array is array (Positive range <>)
+     of W_Logic_Return_Type_Id;
+
    subtype W_Logic_Return_Type_OId is
      W_Logic_Return_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2348,6 +2771,9 @@ package Why.Ids is
    subtype W_Logic_Arg_Type_Id is
      W_Logic_Arg_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Logic_Arg_Type_Array is array (Positive range <>)
+     of W_Logic_Arg_Type_Id;
 
    subtype W_Logic_Arg_Type_OId is
      W_Logic_Arg_Type_Unchecked_OId;
@@ -2365,6 +2791,9 @@ package Why.Ids is
      W_Simple_Value_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Simple_Value_Type_Array is array (Positive range <>)
+     of W_Simple_Value_Type_Id;
+
    subtype W_Simple_Value_Type_OId is
      W_Simple_Value_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2380,6 +2809,9 @@ package Why.Ids is
    subtype W_Value_Type_Id is
      W_Value_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Value_Type_Array is array (Positive range <>)
+     of W_Value_Type_Id;
 
    subtype W_Value_Type_OId is
      W_Value_Type_Unchecked_OId;
@@ -2397,6 +2829,9 @@ package Why.Ids is
      W_Computation_Type_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Computation_Type_Array is array (Positive range <>)
+     of W_Computation_Type_Id;
+
    subtype W_Computation_Type_OId is
      W_Computation_Type_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2412,6 +2847,9 @@ package Why.Ids is
    subtype W_Prog_Id is
      W_Prog_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Prog_Array is array (Positive range <>)
+     of W_Prog_Id;
 
    subtype W_Prog_OId is
      W_Prog_Unchecked_OId;
@@ -2429,6 +2867,9 @@ package Why.Ids is
      W_Infix_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Infix_Array is array (Positive range <>)
+     of W_Infix_Id;
+
    subtype W_Infix_OId is
      W_Infix_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2444,6 +2885,9 @@ package Why.Ids is
    subtype W_Prefix_Id is
      W_Prefix_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Prefix_Array is array (Positive range <>)
+     of W_Prefix_Id;
 
    subtype W_Prefix_OId is
      W_Prefix_Unchecked_OId;
@@ -2461,6 +2905,9 @@ package Why.Ids is
      W_Declaration_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Declaration_Array is array (Positive range <>)
+     of W_Declaration_Id;
+
    subtype W_Declaration_OId is
      W_Declaration_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2477,6 +2924,9 @@ package Why.Ids is
      W_Any_Node_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
+   type W_Any_Node_Array is array (Positive range <>)
+     of W_Any_Node_Id;
+
    subtype W_Any_Node_OId is
      W_Any_Node_Unchecked_OId;
    --  ??? subtype predicate not generated yet
@@ -2492,6 +2942,9 @@ package Why.Ids is
    subtype W_Type_Definition_Id is
      W_Type_Definition_Unchecked_Id;
    --  ??? subtype predicate not generated yet
+
+   type W_Type_Definition_Array is array (Positive range <>)
+     of W_Type_Definition_Id;
 
    subtype W_Type_Definition_OId is
      W_Type_Definition_Unchecked_OId;

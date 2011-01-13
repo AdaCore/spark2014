@@ -77,6 +77,11 @@ package Xkind_Tables is
    --  e.g. Id_Subtype ("W_Type", Opaque, Lone) would return
    --  "W_Type_Opaque_OId".
 
+   function Arr_Type (Prefix : Wide_String) return Wide_String;
+   --  Return the name of an array type for the elements of the given Prefix
+   --  (e.g. of type W_Type_Id is Prefix is "W_Type").
+
+
    function Base_Id_Subtype
      (Prefix       : Wide_String;
       Kind         : Id_Kind;
