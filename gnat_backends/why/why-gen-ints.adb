@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -96,23 +96,25 @@ package body Why.Gen.Ints is
                          New_Abstract_Type (Name);
          Arrows      : W_Arrow_Type_Unchecked_Id :=
                          New_Arrow_Stack (Return_Type);
-         Range_Check : constant W_Operation_Unchecked_Id :=
-                         New_Unchecked_Operation;
-         Int_Result  : constant W_Operation_Unchecked_Id :=
-                         New_Unchecked_Operation;
-         Post        : constant W_Predicate_Unchecked_Id :=
-                         New_Unchecked_Related_Terms;
+         --  precondition: { <name>___in_range (n) }
+         Range_Check : constant W_Operation_Id :=
+                         New_Operation (Name =>
+                                          Range_Pred_Name (Name),
+                                        Parameters =>
+                                          (1 => New_Term (Arg_S)));
+         --  postcondition: { <name>___of_integer (result) = n }
+         Int_Result  : constant W_Operation_Id :=
+                         New_Operation (Name =>
+                                          New_Conversion_To_Int (Name),
+                                        Parameters =>
+                                          (1 => New_Result_Identifier));
+         Post        : constant W_Predicate_Id :=
+                         New_Related_Terms (Left  => Int_Result,
+                                            Op    => New_Rel_Eq,
+                                            Right => New_Term (Arg_S));
       begin
          Arrows := Push_Arg (Arrows, New_Identifier (Arg_S), New_Type_Int);
-         Operation_Set_Name (Range_Check, Range_Pred_Name (Name));
-         Operation_Append_To_Parameters (Range_Check, New_Term (Arg_S));
 
-         --  postcondition: { <name>___of_integer (result) = n }
-         Operation_Set_Name (Int_Result, New_Conversion_To_Int (Name));
-         Operation_Append_To_Parameters (Int_Result, New_Result_Identifier);
-         Related_Terms_Set_Left (Post, Int_Result);
-         Related_Terms_Set_Op (Post, New_Rel_Eq);
-         Related_Terms_Set_Right (Post, New_Term (Arg_S));
          Declare_Logic_And_Parameters (File,
                                        New_Conversion_From_Int (Name),
                                        Arrows,
