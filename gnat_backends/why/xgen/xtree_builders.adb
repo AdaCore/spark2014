@@ -232,8 +232,8 @@ package body Xtree_Builders is
          if BK = Builder_Unchecked then
             P (O, New_Node & "." & FN & " := ");
 
-            if Has_Default_Value (FI, BK) then
-               P (O, Default_Value (FI, BK));
+            if Has_Default_Value (FI, BK, In_Builder_Body) then
+               P (O, Default_Value (FI, BK, In_Builder_Body));
             else
                P (O, Param_Name (FI));
             end if;
@@ -241,9 +241,31 @@ package body Xtree_Builders is
             PL (O, ";");
 
          elsif BK = Builder_Regular then
-            P (O, New_Node & "." & FN & " := ");
-            P (O, Param_Name (FI));
-            PL (O, ";");
+            if Is_List (FI) then
+               if not Maybe_Null (FI) then
+                  PL (O, "pragma Assert ("
+                      & Param_Name (FI) & "'Length > 0);");
+               end if;
+
+               PL (O, New_Node & "." & FN & " := New_List;");
+               PL (O, "for J in " & Param_Name (FI) & "'Range loop");
+               Relative_Indent (O, 3);
+               PL (O, "pragma Assert");
+               PL (O, "  (" & Kind_Check (Field_Kind (FI), Id_One));
+               PL (O, "   (" & Param_Name (FI)  & " (J)));");
+               PL (O, "pragma Assert");
+               PL (O, "  (" & Tree_Check (Field_Kind (FI), Id_One));
+               PL (O, "   (" & Param_Name (FI)  & " (J)));");
+               PL (O, List_Op_Name (Op_Append));
+               PL (O, "  (" & New_Node & "." & FN & ",");
+               PL (O, "   " & Param_Name (FI) & " (J));");
+               Relative_Indent (O, -3);
+               PL (O, "end loop;");
+            else
+               P (O, New_Node & "." & FN & " := ");
+               P (O, Param_Name (FI));
+               PL (O, ";");
+            end if;
 
          else
             if Is_List (FI) then
@@ -447,7 +469,7 @@ package body Xtree_Builders is
          PN       : constant Wide_String := Param_Name (FI);
       begin
          if BK = Builder_Unchecked then
-            if Has_Default_Value (FI, BK) then
+            if Has_Default_Value (FI, BK, In_Builder_Spec) then
                return;
             end if;
          end if;
@@ -471,11 +493,11 @@ package body Xtree_Builders is
          end if;
 
          P (O, ": ");
-         P (O, Id_Type_Name (FI));
+         P (O, Builder_Param_Type (FI, In_Builder_Spec));
 
-         if Has_Default_Value (FI) then
+         if Has_Default_Value (FI, Builder_Regular, In_Builder_Spec) then
             P (O, " := ");
-            P (O, Default_Value (FI));
+            P (O, Default_Value (FI, Builder_Regular, In_Builder_Spec));
          end if;
 
          Field_Number := Field_Number + 1;
@@ -540,10 +562,15 @@ package body Xtree_Builders is
          PN : constant Wide_String := Param_Name (FI);
       begin
          PL (O, "and then");
-         PL (O, "  " &  Accessor_Name (Kind, FI));
-         PL (O, "  (" & Builder_Name (Kind, BK)
-             & "'Result)");
-         P  (O, "  = " & PN);
+         if Is_List (FI) then
+            --  ??? Not implemented for lists
+            P (O, "True");
+         else
+            PL (O, "  " &  Accessor_Name (Kind, FI));
+            PL (O, "  (" & Builder_Name (Kind, BK)
+                & "'Result)");
+            P  (O, "  = " & PN);
+         end if;
 
          if Next (Position) /= No_Element then
             NL (O);
@@ -609,7 +636,7 @@ package body Xtree_Builders is
          FI : constant Field_Info := Element (Position);
          PN : constant Wide_String := Param_Name (FI);
       begin
-         if Is_Why_Id (FI) then
+         if Is_Why_Id (FI) and then not Is_List (FI) then
             P (O, Kind_Check (Field_Kind (FI), Multiplicity (FI)));
             P (O, " (" & PN & ")");
          else
@@ -620,7 +647,7 @@ package body Xtree_Builders is
             Relative_Indent (O, 1);
          end if;
 
-         if Is_Why_Id (FI) then
+         if Is_Why_Id (FI) and then not Is_List (FI) then
             NL (O);
             P (O, "and then ");
             P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
@@ -845,9 +872,9 @@ package body Xtree_Builders is
          P (O, ": ");
          P (O, Id_Type_Name (FI));
 
-         if Has_Default_Value (FI) then
+         if Has_Default_Value (FI, Builder_Regular, In_Builder_Spec) then
             P (O, " := ");
-            P (O, Default_Value (FI));
+            P (O, Default_Value (FI, Builder_Regular, In_Builder_Spec));
          end if;
 
          PL (O, ";");

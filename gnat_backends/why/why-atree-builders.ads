@@ -170,13 +170,11 @@ package Why.Atree.Builders is
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_List;
+      Type_Chain : W_Primitive_Type_Array;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id with
      Pre =>
-       (Primitive_Type_List_Kind_Valid (Type_Chain)
-        and then Primitive_Type_List_Valid (Type_Chain)
-        and then Is_Root (Type_Chain)
+       (True
         and then Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)),
@@ -189,9 +187,7 @@ package Why.Atree.Builders is
           (New_Generic_Actual_Type_Chain'Result)
           = Ada_Node
         and then
-          Generic_Actual_Type_Chain_Get_Type_Chain
-          (New_Generic_Actual_Type_Chain'Result)
-          = Type_Chain
+        True
         and then
           Generic_Actual_Type_Chain_Get_Name
           (New_Generic_Actual_Type_Chain'Result)
@@ -517,15 +513,13 @@ package Why.Atree.Builders is
    function New_Operation
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
-      Parameters : W_Term_List)
+      Parameters : W_Term_Array)
      return W_Operation_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Term_List_Kind_Valid (Parameters)
-        and then Term_List_Valid (Parameters)
-        and then Is_Root (Parameters)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Operation'Result)
@@ -539,9 +533,7 @@ package Why.Atree.Builders is
           (New_Operation'Result)
           = Name
         and then
-          Operation_Get_Parameters
-          (New_Operation'Result)
-          = Parameters);
+        True);
 
    function New_Named_Term
      (Ada_Node : Node_Id := Empty;
@@ -612,15 +604,13 @@ package Why.Atree.Builders is
    function New_Matching_Term
      (Ada_Node : Node_Id := Empty;
       Term     : W_Term_Id;
-      Branches : W_Match_Case_List)
+      Branches : W_Match_Case_Array)
      return W_Matching_Term_Id with
      Pre =>
        (Term_Id_Kind_Valid (Term)
         and then Term_Id_Valid (Term)
         and then Is_Root (Term)
-        and then Match_Case_List_Kind_Valid (Branches)
-        and then Match_Case_List_Valid (Branches)
-        and then Is_Root (Branches)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Matching_Term'Result)
@@ -634,9 +624,7 @@ package Why.Atree.Builders is
           (New_Matching_Term'Result)
           = Term
         and then
-          Matching_Term_Get_Branches
-          (New_Matching_Term'Result)
-          = Branches);
+        True);
 
    function New_Binding_Term
      (Ada_Node : Node_Id := Empty;
@@ -811,15 +799,13 @@ package Why.Atree.Builders is
    function New_Predicate_Instance
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
-      Parameters : W_Term_List)
+      Parameters : W_Term_Array)
      return W_Predicate_Instance_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Term_List_Kind_Valid (Parameters)
-        and then Term_List_Valid (Parameters)
-        and then Is_Root (Parameters)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Predicate_Instance'Result)
@@ -833,9 +819,7 @@ package Why.Atree.Builders is
           (New_Predicate_Instance'Result)
           = Name
         and then
-          Predicate_Instance_Get_Parameters
-          (New_Predicate_Instance'Result)
-          = Parameters);
+        True);
 
    function New_Related_Terms
      (Ada_Node : Node_Id := Empty;
@@ -1103,15 +1087,13 @@ package Why.Atree.Builders is
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Variables : W_Identifier_List;
+      Variables : W_Identifier_Array;
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId := Why_Empty;
       Pred      : W_Predicate_Id)
      return W_Universal_Quantif_Id with
      Pre =>
-       (Identifier_List_Kind_Valid (Variables)
-        and then Identifier_List_Valid (Variables)
-        and then Is_Root (Variables)
+       (True
         and then Primitive_Type_Id_Kind_Valid (Var_Type)
         and then Primitive_Type_Id_Valid (Var_Type)
         and then Is_Root (Var_Type)
@@ -1130,9 +1112,7 @@ package Why.Atree.Builders is
           (New_Universal_Quantif'Result)
           = Ada_Node
         and then
-          Universal_Quantif_Get_Variables
-          (New_Universal_Quantif'Result)
-          = Variables
+        True
         and then
           Universal_Quantif_Get_Var_Type
           (New_Universal_Quantif'Result)
@@ -1148,14 +1128,12 @@ package Why.Atree.Builders is
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Variables : W_Identifier_List;
+      Variables : W_Identifier_Array;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
      return W_Existential_Quantif_Id with
      Pre =>
-       (Identifier_List_Kind_Valid (Variables)
-        and then Identifier_List_Valid (Variables)
-        and then Is_Root (Variables)
+       (True
         and then Primitive_Type_Id_Kind_Valid (Var_Type)
         and then Primitive_Type_Id_Valid (Var_Type)
         and then Is_Root (Var_Type)
@@ -1171,9 +1149,7 @@ package Why.Atree.Builders is
           (New_Existential_Quantif'Result)
           = Ada_Node
         and then
-          Existential_Quantif_Get_Variables
-          (New_Existential_Quantif'Result)
-          = Variables
+        True
         and then
           Existential_Quantif_Get_Var_Type
           (New_Existential_Quantif'Result)
@@ -1236,15 +1212,13 @@ package Why.Atree.Builders is
    function New_Pattern
      (Ada_Node : Node_Id := Empty;
       Constr   : W_Identifier_Id;
-      Args     : W_Identifier_OList := New_List)
+      Args     : W_Identifier_Array := (2 .. 1 => <>))
      return W_Pattern_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Constr)
         and then Identifier_Id_Valid (Constr)
         and then Is_Root (Constr)
-        and then Identifier_OList_Kind_Valid (Args)
-        and then Identifier_OList_Valid (Args)
-        and then Is_Root (Args)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Pattern'Result)
@@ -1258,9 +1232,7 @@ package Why.Atree.Builders is
           (New_Pattern'Result)
           = Constr
         and then
-          Pattern_Get_Args
-          (New_Pattern'Result)
-          = Args);
+        True);
 
    function New_Match_Case
      (Ada_Node : Node_Id := Empty;
@@ -1293,12 +1265,10 @@ package Why.Atree.Builders is
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
-      Triggers : W_Trigger_List)
+      Triggers : W_Trigger_Array)
      return W_Triggers_Id with
      Pre =>
-       (Trigger_List_Kind_Valid (Triggers)
-        and then Trigger_List_Valid (Triggers)
-        and then Is_Root (Triggers)),
+       (True),
      Post =>
        (Get_Kind
          (New_Triggers'Result)
@@ -1308,18 +1278,14 @@ package Why.Atree.Builders is
           (New_Triggers'Result)
           = Ada_Node
         and then
-          Triggers_Get_Triggers
-          (New_Triggers'Result)
-          = Triggers);
+        True);
 
    function New_Trigger
      (Ada_Node : Node_Id := Empty;
-      Terms    : W_Term_List)
+      Terms    : W_Term_Array)
      return W_Trigger_Id with
      Pre =>
-       (Term_List_Kind_Valid (Terms)
-        and then Term_List_Valid (Terms)
-        and then Is_Root (Terms)),
+       (True),
      Post =>
        (Get_Kind
          (New_Trigger'Result)
@@ -1329,9 +1295,7 @@ package Why.Atree.Builders is
           (New_Trigger'Result)
           = Ada_Node
         and then
-          Trigger_Get_Terms
-          (New_Trigger'Result)
-          = Terms);
+        True);
 
    function New_Rel_Eq
      (Ada_Node : Node_Id := Empty)
@@ -1414,7 +1378,7 @@ package Why.Atree.Builders is
    function New_Type
      (Ada_Node        : Node_Id := Empty;
       External        : W_External_OId := Why_Empty;
-      Type_Parameters : W_Identifier_OList := New_List;
+      Type_Parameters : W_Identifier_Array := (2 .. 1 => <>);
       Name            : W_Identifier_Id;
       Definition      : W_Type_Definition_OId := Why_Empty)
      return W_Type_Id with
@@ -1422,9 +1386,7 @@ package Why.Atree.Builders is
        (External_OId_Kind_Valid (External)
         and then External_OId_Valid (External)
         and then Is_Root (External)
-        and then Identifier_OList_Kind_Valid (Type_Parameters)
-        and then Identifier_OList_Valid (Type_Parameters)
-        and then Is_Root (Type_Parameters)
+        and then True
         and then Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
@@ -1444,9 +1406,7 @@ package Why.Atree.Builders is
           (New_Type'Result)
           = External
         and then
-          Type_Get_Type_Parameters
-          (New_Type'Result)
-          = Type_Parameters
+        True
         and then
           Type_Get_Name
           (New_Type'Result)
@@ -1459,16 +1419,14 @@ package Why.Atree.Builders is
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
       External   : W_External_OId := Why_Empty;
-      Names      : W_Identifier_List;
+      Names      : W_Identifier_Array;
       Logic_Type : W_Logic_Type_Id)
      return W_Logic_Id with
      Pre =>
        (External_OId_Kind_Valid (External)
         and then External_OId_Valid (External)
         and then Is_Root (External)
-        and then Identifier_List_Kind_Valid (Names)
-        and then Identifier_List_Valid (Names)
-        and then Is_Root (Names)
+        and then True
         and then Logic_Type_Id_Kind_Valid (Logic_Type)
         and then Logic_Type_Id_Valid (Logic_Type)
         and then Is_Root (Logic_Type)),
@@ -1485,9 +1443,7 @@ package Why.Atree.Builders is
           (New_Logic'Result)
           = External
         and then
-          Logic_Get_Names
-          (New_Logic'Result)
-          = Names
+        True
         and then
           Logic_Get_Logic_Type
           (New_Logic'Result)
@@ -1496,7 +1452,7 @@ package Why.Atree.Builders is
    function New_Function
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
-      Binders     : W_Logic_Binder_List;
+      Binders     : W_Logic_Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Def         : W_Term_Id)
      return W_Function_Id with
@@ -1504,9 +1460,7 @@ package Why.Atree.Builders is
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Logic_Binder_List_Kind_Valid (Binders)
-        and then Logic_Binder_List_Valid (Binders)
-        and then Is_Root (Binders)
+        and then True
         and then Primitive_Type_Id_Kind_Valid (Return_Type)
         and then Primitive_Type_Id_Valid (Return_Type)
         and then Is_Root (Return_Type)
@@ -1526,9 +1480,7 @@ package Why.Atree.Builders is
           (New_Function'Result)
           = Name
         and then
-          Function_Get_Binders
-          (New_Function'Result)
-          = Binders
+        True
         and then
           Function_Get_Return_Type
           (New_Function'Result)
@@ -1541,16 +1493,14 @@ package Why.Atree.Builders is
    function New_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Logic_Binder_List;
+      Binders  : W_Logic_Binder_Array;
       Def      : W_Predicate_Id)
      return W_Predicate_Definition_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Logic_Binder_List_Kind_Valid (Binders)
-        and then Logic_Binder_List_Valid (Binders)
-        and then Is_Root (Binders)
+        and then True
         and then Predicate_Id_Kind_Valid (Def)
         and then Predicate_Id_Valid (Def)
         and then Is_Root (Def)),
@@ -1567,9 +1517,7 @@ package Why.Atree.Builders is
           (New_Predicate_Definition'Result)
           = Name
         and then
-          Predicate_Definition_Get_Binders
-          (New_Predicate_Definition'Result)
-          = Binders
+        True
         and then
           Predicate_Definition_Get_Def
           (New_Predicate_Definition'Result)
@@ -1579,7 +1527,7 @@ package Why.Atree.Builders is
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
-      Def        : W_Inductive_Case_List)
+      Def        : W_Inductive_Case_Array)
      return W_Inductive_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
@@ -1588,9 +1536,7 @@ package Why.Atree.Builders is
         and then Logic_Type_Id_Kind_Valid (Logic_Type)
         and then Logic_Type_Id_Valid (Logic_Type)
         and then Is_Root (Logic_Type)
-        and then Inductive_Case_List_Kind_Valid (Def)
-        and then Inductive_Case_List_Valid (Def)
-        and then Is_Root (Def)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Inductive'Result)
@@ -1608,9 +1554,7 @@ package Why.Atree.Builders is
           (New_Inductive'Result)
           = Logic_Type
         and then
-          Inductive_Get_Def
-          (New_Inductive'Result)
-          = Def);
+        True);
 
    function New_Axiom
      (Ada_Node : Node_Id := Empty;
@@ -1685,13 +1629,11 @@ package Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Arg_Types   : W_Logic_Arg_Type_List;
+      Arg_Types   : W_Logic_Arg_Type_Array;
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id with
      Pre =>
-       (Logic_Arg_Type_List_Kind_Valid (Arg_Types)
-        and then Logic_Arg_Type_List_Valid (Arg_Types)
-        and then Is_Root (Arg_Types)
+       (True
         and then Logic_Return_Type_Id_Kind_Valid (Return_Type)
         and then Logic_Return_Type_Id_Valid (Return_Type)
         and then Is_Root (Return_Type)),
@@ -1704,9 +1646,7 @@ package Why.Atree.Builders is
           (New_Logic_Type'Result)
           = Ada_Node
         and then
-          Logic_Type_Get_Arg_Types
-          (New_Logic_Type'Result)
-          = Arg_Types
+        True
         and then
           Logic_Type_Get_Return_Type
           (New_Logic_Type'Result)
@@ -1793,12 +1733,10 @@ package Why.Atree.Builders is
 
    function New_Adt_Definition
      (Ada_Node     : Node_Id := Empty;
-      Constructors : W_Constr_Decl_List)
+      Constructors : W_Constr_Decl_Array)
      return W_Adt_Definition_Id with
      Pre =>
-       (Constr_Decl_List_Kind_Valid (Constructors)
-        and then Constr_Decl_List_Valid (Constructors)
-        and then Is_Root (Constructors)),
+       (True),
      Post =>
        (Get_Kind
          (New_Adt_Definition'Result)
@@ -1808,22 +1746,18 @@ package Why.Atree.Builders is
           (New_Adt_Definition'Result)
           = Ada_Node
         and then
-          Adt_Definition_Get_Constructors
-          (New_Adt_Definition'Result)
-          = Constructors);
+        True);
 
    function New_Constr_Decl
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Arg_List : W_Primitive_Type_OList := New_List)
+      Arg_List : W_Primitive_Type_Array := (2 .. 1 => <>))
      return W_Constr_Decl_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Primitive_Type_OList_Kind_Valid (Arg_List)
-        and then Primitive_Type_OList_Valid (Arg_List)
-        and then Is_Root (Arg_List)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Constr_Decl'Result)
@@ -1837,26 +1771,18 @@ package Why.Atree.Builders is
           (New_Constr_Decl'Result)
           = Name
         and then
-          Constr_Decl_Get_Arg_List
-          (New_Constr_Decl'Result)
-          = Arg_List);
+        True);
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
-      Reads    : W_Identifier_OList := New_List;
-      Writes   : W_Identifier_OList := New_List;
-      Raises   : W_Identifier_OList := New_List)
+      Reads    : W_Identifier_Array := (2 .. 1 => <>);
+      Writes   : W_Identifier_Array := (2 .. 1 => <>);
+      Raises   : W_Identifier_Array := (2 .. 1 => <>))
      return W_Effects_Id with
      Pre =>
-       (Identifier_OList_Kind_Valid (Reads)
-        and then Identifier_OList_Valid (Reads)
-        and then Is_Root (Reads)
-        and then Identifier_OList_Kind_Valid (Writes)
-        and then Identifier_OList_Valid (Writes)
-        and then Is_Root (Writes)
-        and then Identifier_OList_Kind_Valid (Raises)
-        and then Identifier_OList_Valid (Raises)
-        and then Is_Root (Raises)),
+       (True
+        and then True
+        and then True),
      Post =>
        (Get_Kind
          (New_Effects'Result)
@@ -1866,17 +1792,11 @@ package Why.Atree.Builders is
           (New_Effects'Result)
           = Ada_Node
         and then
-          Effects_Get_Reads
-          (New_Effects'Result)
-          = Reads
+        True
         and then
-          Effects_Get_Writes
-          (New_Effects'Result)
-          = Writes
+        True
         and then
-          Effects_Get_Raises
-          (New_Effects'Result)
-          = Raises);
+        True);
 
    function New_Precondition
      (Ada_Node  : Node_Id := Empty;
@@ -1902,15 +1822,13 @@ package Why.Atree.Builders is
    function New_Postcondition
      (Ada_Node  : Node_Id := Empty;
       Assertion : W_Assertion_Id;
-      Handlers  : W_Exn_Condition_OList := New_List)
+      Handlers  : W_Exn_Condition_Array := (2 .. 1 => <>))
      return W_Postcondition_Id with
      Pre =>
        (Assertion_Id_Kind_Valid (Assertion)
         and then Assertion_Id_Valid (Assertion)
         and then Is_Root (Assertion)
-        and then Exn_Condition_OList_Kind_Valid (Handlers)
-        and then Exn_Condition_OList_Valid (Handlers)
-        and then Is_Root (Handlers)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Postcondition'Result)
@@ -1924,9 +1842,7 @@ package Why.Atree.Builders is
           (New_Postcondition'Result)
           = Assertion
         and then
-          Postcondition_Get_Handlers
-          (New_Postcondition'Result)
-          = Handlers);
+        True);
 
    function New_Exn_Condition
      (Ada_Node  : Node_Id := Empty;
@@ -2360,12 +2276,10 @@ package Why.Atree.Builders is
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id := Empty;
-      Statements : W_Prog_List)
+      Statements : W_Prog_Array)
      return W_Statement_Sequence_Id with
      Pre =>
-       (Prog_List_Kind_Valid (Statements)
-        and then Prog_List_Valid (Statements)
-        and then Is_Root (Statements)),
+       (True),
      Post =>
        (Get_Kind
          (New_Statement_Sequence'Result)
@@ -2375,9 +2289,7 @@ package Why.Atree.Builders is
           (New_Statement_Sequence'Result)
           = Ada_Node
         and then
-          Statement_Sequence_Get_Statements
-          (New_Statement_Sequence'Result)
-          = Statements);
+        True);
 
    function New_Label
      (Ada_Node : Node_Id := Empty;
@@ -2410,13 +2322,11 @@ package Why.Atree.Builders is
 
    function New_Assert
      (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_List;
+      Assertions : W_Assertion_Array;
       Prog       : W_Prog_Id)
      return W_Assert_Id with
      Pre =>
-       (Assertion_List_Kind_Valid (Assertions)
-        and then Assertion_List_Valid (Assertions)
-        and then Is_Root (Assertions)
+       (True
         and then Prog_Id_Kind_Valid (Prog)
         and then Prog_Id_Valid (Prog)
         and then Is_Root (Prog)),
@@ -2429,9 +2339,7 @@ package Why.Atree.Builders is
           (New_Assert'Result)
           = Ada_Node
         and then
-          Assert_Get_Assertions
-          (New_Assert'Result)
-          = Assertions
+        True
         and then
           Assert_Get_Prog
           (New_Assert'Result)
@@ -2600,12 +2508,10 @@ package Why.Atree.Builders is
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Progs    : W_Prog_List)
+      Progs    : W_Prog_Array)
      return W_Prog_Sequence_Id with
      Pre =>
-       (Prog_List_Kind_Valid (Progs)
-        and then Prog_List_Valid (Progs)
-        and then Is_Root (Progs)),
+       (True),
      Post =>
        (Get_Kind
          (New_Prog_Sequence'Result)
@@ -2615,9 +2521,7 @@ package Why.Atree.Builders is
           (New_Prog_Sequence'Result)
           = Ada_Node
         and then
-          Prog_Sequence_Get_Progs
-          (New_Prog_Sequence'Result)
-          = Progs);
+        True);
 
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
@@ -2688,15 +2592,13 @@ package Why.Atree.Builders is
    function New_Try_Block
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id;
-      Handler  : W_Handler_List)
+      Handler  : W_Handler_Array)
      return W_Try_Block_Id with
      Pre =>
        (Prog_Id_Kind_Valid (Prog)
         and then Prog_Id_Valid (Prog)
         and then Is_Root (Prog)
-        and then Handler_List_Kind_Valid (Handler)
-        and then Handler_List_Valid (Handler)
-        and then Is_Root (Handler)),
+        and then True),
      Post =>
        (Get_Kind
          (New_Try_Block'Result)
@@ -2710,9 +2612,7 @@ package Why.Atree.Builders is
           (New_Try_Block'Result)
           = Prog
         and then
-          Try_Block_Get_Handler
-          (New_Try_Block'Result)
-          = Handler);
+        True);
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
@@ -2974,12 +2874,10 @@ package Why.Atree.Builders is
 
    function New_Binders
      (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binder_List)
+      Binders  : W_Binder_Array)
      return W_Binders_Id with
      Pre =>
-       (Binder_List_Kind_Valid (Binders)
-        and then Binder_List_Valid (Binders)
-        and then Is_Root (Binders)),
+       (True),
      Post =>
        (Get_Kind
          (New_Binders'Result)
@@ -2989,19 +2887,15 @@ package Why.Atree.Builders is
           (New_Binders'Result)
           = Ada_Node
         and then
-          Binders_Get_Binders
-          (New_Binders'Result)
-          = Binders);
+        True);
 
    function New_Binder
      (Ada_Node : Node_Id := Empty;
-      Names    : W_Identifier_List;
+      Names    : W_Identifier_Array;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id with
      Pre =>
-       (Identifier_List_Kind_Valid (Names)
-        and then Identifier_List_Valid (Names)
-        and then Is_Root (Names)
+       (True
         and then Value_Type_Id_Kind_Valid (Arg_Type)
         and then Value_Type_Id_Valid (Arg_Type)
         and then Is_Root (Arg_Type)),
@@ -3014,9 +2908,7 @@ package Why.Atree.Builders is
           (New_Binder'Result)
           = Ada_Node
         and then
-          Binder_Get_Names
-          (New_Binder'Result)
-          = Names
+        True
         and then
           Binder_Get_Arg_Type
           (New_Binder'Result)
@@ -3172,12 +3064,10 @@ package Why.Atree.Builders is
 
    function New_File
      (Ada_Node     : Node_Id := Empty;
-      Declarations : W_Declaration_OList := New_List)
+      Declarations : W_Declaration_Array := (2 .. 1 => <>))
      return W_File_Id with
      Pre =>
-       (Declaration_OList_Kind_Valid (Declarations)
-        and then Declaration_OList_Valid (Declarations)
-        and then Is_Root (Declarations)),
+       (True),
      Post =>
        (Get_Kind
          (New_File'Result)
@@ -3187,9 +3077,7 @@ package Why.Atree.Builders is
           (New_File'Result)
           = Ada_Node
         and then
-          File_Get_Declarations
-          (New_File'Result)
-          = Declarations);
+        True);
 
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
@@ -3252,16 +3140,14 @@ package Why.Atree.Builders is
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_Id;
-      Names          : W_Identifier_List;
+      Names          : W_Identifier_Array;
       Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id with
      Pre =>
        (External_Id_Kind_Valid (External)
         and then External_Id_Valid (External)
         and then Is_Root (External)
-        and then Identifier_List_Kind_Valid (Names)
-        and then Identifier_List_Valid (Names)
-        and then Is_Root (Names)
+        and then True
         and then Value_Type_Id_Kind_Valid (Parameter_Type)
         and then Value_Type_Id_Valid (Parameter_Type)
         and then Is_Root (Parameter_Type)),
@@ -3278,9 +3164,7 @@ package Why.Atree.Builders is
           (New_Parameter_Declaration'Result)
           = External
         and then
-          Parameter_Declaration_Get_Names
-          (New_Parameter_Declaration'Result)
-          = Names
+        True
         and then
           Parameter_Declaration_Get_Parameter_Type
           (New_Parameter_Declaration'Result)

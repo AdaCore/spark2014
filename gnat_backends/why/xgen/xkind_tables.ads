@@ -81,7 +81,6 @@ package Xkind_Tables is
    --  Return the name of an array type for the elements of the given Prefix
    --  (e.g. of type W_Type_Id is Prefix is "W_Type").
 
-
    function Base_Id_Subtype
      (Prefix       : Wide_String;
       Kind         : Id_Kind;

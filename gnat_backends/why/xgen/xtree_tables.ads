@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -214,6 +214,12 @@ package Xtree_Tables is
    --  Builder_Copy for builders that duplicate the subtree given in
    --  parameter.
 
+   type Builder_Context is (In_Builder_Spec, In_Builder_Body);
+   --  Context in which we are emitting a construct. This is mainly use
+   --  for lists in builder, where they can be represented either by a
+   --  container, or by an array, depending on whether we are emitting the
+   --  spec or the implementation.
+
    function Builder_Name
      (Kind : Why_Node_Kind;
       BK   : Builder_Kind := Builder_Regular)
@@ -225,15 +231,22 @@ package Xtree_Tables is
       BK     : Builder_Kind := Builder_Regular)
      return Wide_String;
 
+   function Builder_Param_Type
+     (FI      : Field_Info;
+      Context : Builder_Context)
+     return Wide_String;
+
    function Has_Default_Value
-     (FI : Field_Info;
-      BK : Builder_Kind := Builder_Regular)
+     (FI      : Field_Info;
+      BK      : Builder_Kind := Builder_Regular;
+      Context : Builder_Context := In_Builder_Body)
      return Boolean;
    --  Return True if the given field has an appropriate default value
 
    function Default_Value
-     (FI : Field_Info;
-      BK : Builder_Kind := Builder_Regular)
+     (FI      : Field_Info;
+      BK      : Builder_Kind := Builder_Regular;
+      Context : Builder_Context := In_Builder_Body)
      return Wide_String;
    --  Return a default value for the given field if one exists, "" otherwise
 

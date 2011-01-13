@@ -83,13 +83,33 @@ package body Xtree_Tables is
       return Builder_Name (Mixed_Case_Name (Kind), BK);
    end Builder_Name;
 
+   ------------------------
+   -- Builder_Param_Type --
+   ------------------------
+
+   function Builder_Param_Type
+     (FI      : Field_Info;
+      Context : Builder_Context)
+     return Wide_String
+   is
+   begin
+      if Context = In_Builder_Spec
+        and then Is_List (FI)
+      then
+         return Strip_Suffix (Id_Type_Name (FI)) & "_Array";
+      else
+         return Id_Type_Name (FI);
+      end if;
+   end Builder_Param_Type;
+
    -------------------
    -- Default_Value --
    -------------------
 
    function Default_Value
-     (FI : Field_Info;
-      BK : Builder_Kind := Builder_Regular)
+     (FI      : Field_Info;
+      BK      : Builder_Kind := Builder_Regular;
+      Context : Builder_Context := In_Builder_Body)
      return Wide_String is
       Type_Name : constant Wide_String := Id_Type_Name (FI);
    begin
@@ -102,7 +122,11 @@ package body Xtree_Tables is
       elsif Is_List (FI)
         and then (BK = Builder_Unchecked or else Maybe_Null (FI))
       then
-         return "New_List";
+         if Context = In_Builder_Body then
+            return "New_List";
+         else
+            return "(2 .. 1 => <>)";
+         end if;
       elsif Is_Why_Id (FI)
         and then (BK = Builder_Unchecked or else Maybe_Null (FI)) then
          return "Why_Empty";
@@ -144,11 +168,12 @@ package body Xtree_Tables is
    -----------------------
 
    function Has_Default_Value
-     (FI : Field_Info;
-      BK : Builder_Kind := Builder_Regular)
+     (FI      : Field_Info;
+      BK      : Builder_Kind := Builder_Regular;
+      Context : Builder_Context := In_Builder_Body)
      return Boolean is
    begin
-      return Default_Value (FI, BK) /= "";
+      return Default_Value (FI, BK, Context) /= "";
    end Has_Default_Value;
 
    ----------------------

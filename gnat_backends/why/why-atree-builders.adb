@@ -194,7 +194,7 @@ package body Why.Atree.Builders is
 
    function New_Generic_Actual_Type_Chain
      (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_List;
+      Type_Chain : W_Primitive_Type_Array;
       Name       : W_Identifier_Id)
      return W_Generic_Actual_Type_Chain_Id
    is
@@ -203,7 +203,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Generic_Actual_Type_Chain);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.GATC_Type_Chain := Type_Chain;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (Type_Chain (J)));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (Type_Chain (J)));
+         Append
+           (Result.GATC_Type_Chain,
+            Type_Chain (J));
+      end loop;
       Set_Link (Result.GATC_Type_Chain, New_Id);
       Result.GATC_Name := Name;
       Set_Link (Result.GATC_Name, New_Id);
@@ -522,7 +534,7 @@ package body Why.Atree.Builders is
    function New_Operation
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
-      Parameters : W_Term_List)
+      Parameters : W_Term_Array)
      return W_Operation_Id
    is
       Result : Why_Node (W_Operation);
@@ -532,7 +544,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.O_Name := Name;
       Set_Link (Result.O_Name, New_Id);
-      Result.O_Parameters := Parameters;
+      pragma Assert (Parameters'Length > 0);
+      Result.O_Parameters := New_List;
+      for J in Parameters'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (Parameters (J)));
+         pragma Assert
+           (Term_Id_Valid
+            (Parameters (J)));
+         Append
+           (Result.O_Parameters,
+            Parameters (J));
+      end loop;
       Set_Link (Result.O_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -600,7 +624,7 @@ package body Why.Atree.Builders is
    function New_Matching_Term
      (Ada_Node : Node_Id := Empty;
       Term     : W_Term_Id;
-      Branches : W_Match_Case_List)
+      Branches : W_Match_Case_Array)
      return W_Matching_Term_Id
    is
       Result : Why_Node (W_Matching_Term);
@@ -610,7 +634,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.MT_Term := Term;
       Set_Link (Result.MT_Term, New_Id);
-      Result.MT_Branches := Branches;
+      pragma Assert (Branches'Length > 0);
+      Result.MT_Branches := New_List;
+      for J in Branches'Range loop
+         pragma Assert
+           (Match_Case_Id_Kind_Valid
+            (Branches (J)));
+         pragma Assert
+           (Match_Case_Id_Valid
+            (Branches (J)));
+         Append
+           (Result.MT_Branches,
+            Branches (J));
+      end loop;
       Set_Link (Result.MT_Branches, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -830,7 +866,7 @@ package body Why.Atree.Builders is
    function New_Predicate_Instance
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
-      Parameters : W_Term_List)
+      Parameters : W_Term_Array)
      return W_Predicate_Instance_Id
    is
       Result : Why_Node (W_Predicate_Instance);
@@ -840,7 +876,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.PIN_Name := Name;
       Set_Link (Result.PIN_Name, New_Id);
-      Result.PIN_Parameters := Parameters;
+      pragma Assert (Parameters'Length > 0);
+      Result.PIN_Parameters := New_List;
+      for J in Parameters'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (Parameters (J)));
+         pragma Assert
+           (Term_Id_Valid
+            (Parameters (J)));
+         Append
+           (Result.PIN_Parameters,
+            Parameters (J));
+      end loop;
       Set_Link (Result.PIN_Parameters, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1066,7 +1114,7 @@ package body Why.Atree.Builders is
 
    function New_Universal_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Variables : W_Identifier_List;
+      Variables : W_Identifier_Array;
       Var_Type  : W_Primitive_Type_Id;
       Triggers  : W_Triggers_OId := Why_Empty;
       Pred      : W_Predicate_Id)
@@ -1077,7 +1125,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Universal_Quantif);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.UQ_Variables := Variables;
+      pragma Assert (Variables'Length > 0);
+      Result.UQ_Variables := New_List;
+      for J in Variables'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Variables (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Variables (J)));
+         Append
+           (Result.UQ_Variables,
+            Variables (J));
+      end loop;
       Set_Link (Result.UQ_Variables, New_Id);
       Result.UQ_Var_Type := Var_Type;
       Set_Link (Result.UQ_Var_Type, New_Id);
@@ -1097,7 +1157,7 @@ package body Why.Atree.Builders is
 
    function New_Existential_Quantif
      (Ada_Node  : Node_Id := Empty;
-      Variables : W_Identifier_List;
+      Variables : W_Identifier_Array;
       Var_Type  : W_Primitive_Type_Id;
       Pred      : W_Predicate_Id)
      return W_Existential_Quantif_Id
@@ -1107,7 +1167,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Existential_Quantif);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.EQ_Variables := Variables;
+      pragma Assert (Variables'Length > 0);
+      Result.EQ_Variables := New_List;
+      for J in Variables'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Variables (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Variables (J)));
+         Append
+           (Result.EQ_Variables,
+            Variables (J));
+      end loop;
       Set_Link (Result.EQ_Variables, New_Id);
       Result.EQ_Var_Type := Var_Type;
       Set_Link (Result.EQ_Var_Type, New_Id);
@@ -1173,7 +1245,7 @@ package body Why.Atree.Builders is
    function New_Pattern
      (Ada_Node : Node_Id := Empty;
       Constr   : W_Identifier_Id;
-      Args     : W_Identifier_OList := New_List)
+      Args     : W_Identifier_Array := (2 .. 1 => <>))
      return W_Pattern_Id
    is
       Result : Why_Node (W_Pattern);
@@ -1183,7 +1255,18 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.PAT_Constr := Constr;
       Set_Link (Result.PAT_Constr, New_Id);
-      Result.PAT_Args := Args;
+      Result.PAT_Args := New_List;
+      for J in Args'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Args (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Args (J)));
+         Append
+           (Result.PAT_Args,
+            Args (J));
+      end loop;
       Set_Link (Result.PAT_Args, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1222,7 +1305,7 @@ package body Why.Atree.Builders is
 
    function New_Triggers
      (Ada_Node : Node_Id := Empty;
-      Triggers : W_Trigger_List)
+      Triggers : W_Trigger_Array)
      return W_Triggers_Id
    is
       Result : Why_Node (W_Triggers);
@@ -1230,7 +1313,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Triggers);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.TRS_Triggers := Triggers;
+      pragma Assert (Triggers'Length > 0);
+      Result.TRS_Triggers := New_List;
+      for J in Triggers'Range loop
+         pragma Assert
+           (Trigger_Id_Kind_Valid
+            (Triggers (J)));
+         pragma Assert
+           (Trigger_Id_Valid
+            (Triggers (J)));
+         Append
+           (Result.TRS_Triggers,
+            Triggers (J));
+      end loop;
       Set_Link (Result.TRS_Triggers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1244,7 +1339,7 @@ package body Why.Atree.Builders is
 
    function New_Trigger
      (Ada_Node : Node_Id := Empty;
-      Terms    : W_Term_List)
+      Terms    : W_Term_Array)
      return W_Trigger_Id
    is
       Result : Why_Node (W_Trigger);
@@ -1252,7 +1347,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Trigger);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.TRI_Terms := Terms;
+      pragma Assert (Terms'Length > 0);
+      Result.TRI_Terms := New_List;
+      for J in Terms'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (Terms (J)));
+         pragma Assert
+           (Term_Id_Valid
+            (Terms (J)));
+         Append
+           (Result.TRI_Terms,
+            Terms (J));
+      end loop;
       Set_Link (Result.TRI_Terms, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1381,7 +1488,7 @@ package body Why.Atree.Builders is
    function New_Type
      (Ada_Node        : Node_Id := Empty;
       External        : W_External_OId := Why_Empty;
-      Type_Parameters : W_Identifier_OList := New_List;
+      Type_Parameters : W_Identifier_Array := (2 .. 1 => <>);
       Name            : W_Identifier_Id;
       Definition      : W_Type_Definition_OId := Why_Empty)
      return W_Type_Id
@@ -1393,7 +1500,18 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.T_External := External;
       Set_Link (Result.T_External, New_Id);
-      Result.T_Type_Parameters := Type_Parameters;
+      Result.T_Type_Parameters := New_List;
+      for J in Type_Parameters'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Type_Parameters (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Type_Parameters (J)));
+         Append
+           (Result.T_Type_Parameters,
+            Type_Parameters (J));
+      end loop;
       Set_Link (Result.T_Type_Parameters, New_Id);
       Result.T_Name := Name;
       Set_Link (Result.T_Name, New_Id);
@@ -1412,7 +1530,7 @@ package body Why.Atree.Builders is
    function New_Logic
      (Ada_Node   : Node_Id := Empty;
       External   : W_External_OId := Why_Empty;
-      Names      : W_Identifier_List;
+      Names      : W_Identifier_Array;
       Logic_Type : W_Logic_Type_Id)
      return W_Logic_Id
    is
@@ -1423,7 +1541,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.L_External := External;
       Set_Link (Result.L_External, New_Id);
-      Result.L_Names := Names;
+      pragma Assert (Names'Length > 0);
+      Result.L_Names := New_List;
+      for J in Names'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Names (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Names (J)));
+         Append
+           (Result.L_Names,
+            Names (J));
+      end loop;
       Set_Link (Result.L_Names, New_Id);
       Result.L_Logic_Type := Logic_Type;
       Set_Link (Result.L_Logic_Type, New_Id);
@@ -1440,7 +1570,7 @@ package body Why.Atree.Builders is
    function New_Function
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
-      Binders     : W_Logic_Binder_List;
+      Binders     : W_Logic_Binder_Array;
       Return_Type : W_Primitive_Type_Id;
       Def         : W_Term_Id)
      return W_Function_Id
@@ -1452,7 +1582,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.F_Name := Name;
       Set_Link (Result.F_Name, New_Id);
-      Result.F_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.F_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Logic_Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Logic_Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.F_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.F_Binders, New_Id);
       Result.F_Return_Type := Return_Type;
       Set_Link (Result.F_Return_Type, New_Id);
@@ -1471,7 +1613,7 @@ package body Why.Atree.Builders is
    function New_Predicate_Definition
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Logic_Binder_List;
+      Binders  : W_Logic_Binder_Array;
       Def      : W_Predicate_Id)
      return W_Predicate_Definition_Id
    is
@@ -1482,7 +1624,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.P_Name := Name;
       Set_Link (Result.P_Name, New_Id);
-      Result.P_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.P_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Logic_Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Logic_Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.P_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.P_Binders, New_Id);
       Result.P_Def := Def;
       Set_Link (Result.P_Def, New_Id);
@@ -1500,7 +1654,7 @@ package body Why.Atree.Builders is
      (Ada_Node   : Node_Id := Empty;
       Name       : W_Identifier_Id;
       Logic_Type : W_Logic_Type_Id;
-      Def        : W_Inductive_Case_List)
+      Def        : W_Inductive_Case_Array)
      return W_Inductive_Id
    is
       Result : Why_Node (W_Inductive);
@@ -1512,7 +1666,19 @@ package body Why.Atree.Builders is
       Set_Link (Result.I_Name, New_Id);
       Result.I_Logic_Type := Logic_Type;
       Set_Link (Result.I_Logic_Type, New_Id);
-      Result.I_Def := Def;
+      pragma Assert (Def'Length > 0);
+      Result.I_Def := New_List;
+      for J in Def'Range loop
+         pragma Assert
+           (Inductive_Case_Id_Kind_Valid
+            (Def (J)));
+         pragma Assert
+           (Inductive_Case_Id_Valid
+            (Def (J)));
+         Append
+           (Result.I_Def,
+            Def (J));
+      end loop;
       Set_Link (Result.I_Def, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1595,7 +1761,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Arg_Types   : W_Logic_Arg_Type_List;
+      Arg_Types   : W_Logic_Arg_Type_Array;
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id
    is
@@ -1604,7 +1770,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Logic_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.LT_Arg_Types := Arg_Types;
+      pragma Assert (Arg_Types'Length > 0);
+      Result.LT_Arg_Types := New_List;
+      for J in Arg_Types'Range loop
+         pragma Assert
+           (Logic_Arg_Type_Id_Kind_Valid
+            (Arg_Types (J)));
+         pragma Assert
+           (Logic_Arg_Type_Id_Valid
+            (Arg_Types (J)));
+         Append
+           (Result.LT_Arg_Types,
+            Arg_Types (J));
+      end loop;
       Set_Link (Result.LT_Arg_Types, New_Id);
       Result.LT_Return_Type := Return_Type;
       Set_Link (Result.LT_Return_Type, New_Id);
@@ -1692,7 +1870,7 @@ package body Why.Atree.Builders is
 
    function New_Adt_Definition
      (Ada_Node     : Node_Id := Empty;
-      Constructors : W_Constr_Decl_List)
+      Constructors : W_Constr_Decl_Array)
      return W_Adt_Definition_Id
    is
       Result : Why_Node (W_Adt_Definition);
@@ -1700,7 +1878,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Adt_Definition);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.Adt_Constructors := Constructors;
+      pragma Assert (Constructors'Length > 0);
+      Result.Adt_Constructors := New_List;
+      for J in Constructors'Range loop
+         pragma Assert
+           (Constr_Decl_Id_Kind_Valid
+            (Constructors (J)));
+         pragma Assert
+           (Constr_Decl_Id_Valid
+            (Constructors (J)));
+         Append
+           (Result.Adt_Constructors,
+            Constructors (J));
+      end loop;
       Set_Link (Result.Adt_Constructors, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1715,7 +1905,7 @@ package body Why.Atree.Builders is
    function New_Constr_Decl
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Arg_List : W_Primitive_Type_OList := New_List)
+      Arg_List : W_Primitive_Type_Array := (2 .. 1 => <>))
      return W_Constr_Decl_Id
    is
       Result : Why_Node (W_Constr_Decl);
@@ -1725,7 +1915,18 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.C_Name := Name;
       Set_Link (Result.C_Name, New_Id);
-      Result.C_Arg_List := Arg_List;
+      Result.C_Arg_List := New_List;
+      for J in Arg_List'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (Arg_List (J)));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (Arg_List (J)));
+         Append
+           (Result.C_Arg_List,
+            Arg_List (J));
+      end loop;
       Set_Link (Result.C_Arg_List, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1739,9 +1940,9 @@ package body Why.Atree.Builders is
 
    function New_Effects
      (Ada_Node : Node_Id := Empty;
-      Reads    : W_Identifier_OList := New_List;
-      Writes   : W_Identifier_OList := New_List;
-      Raises   : W_Identifier_OList := New_List)
+      Reads    : W_Identifier_Array := (2 .. 1 => <>);
+      Writes   : W_Identifier_Array := (2 .. 1 => <>);
+      Raises   : W_Identifier_Array := (2 .. 1 => <>))
      return W_Effects_Id
    is
       Result : Why_Node (W_Effects);
@@ -1749,11 +1950,44 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Effects);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.E_Reads := Reads;
+      Result.E_Reads := New_List;
+      for J in Reads'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Reads (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Reads (J)));
+         Append
+           (Result.E_Reads,
+            Reads (J));
+      end loop;
       Set_Link (Result.E_Reads, New_Id);
-      Result.E_Writes := Writes;
+      Result.E_Writes := New_List;
+      for J in Writes'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Writes (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Writes (J)));
+         Append
+           (Result.E_Writes,
+            Writes (J));
+      end loop;
       Set_Link (Result.E_Writes, New_Id);
-      Result.E_Raises := Raises;
+      Result.E_Raises := New_List;
+      for J in Raises'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Raises (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Raises (J)));
+         Append
+           (Result.E_Raises,
+            Raises (J));
+      end loop;
       Set_Link (Result.E_Raises, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -1790,7 +2024,7 @@ package body Why.Atree.Builders is
    function New_Postcondition
      (Ada_Node  : Node_Id := Empty;
       Assertion : W_Assertion_Id;
-      Handlers  : W_Exn_Condition_OList := New_List)
+      Handlers  : W_Exn_Condition_Array := (2 .. 1 => <>))
      return W_Postcondition_Id
    is
       Result : Why_Node (W_Postcondition);
@@ -1800,7 +2034,18 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.POST_Assertion := Assertion;
       Set_Link (Result.POST_Assertion, New_Id);
-      Result.POST_Handlers := Handlers;
+      Result.POST_Handlers := New_List;
+      for J in Handlers'Range loop
+         pragma Assert
+           (Exn_Condition_Id_Kind_Valid
+            (Handlers (J)));
+         pragma Assert
+           (Exn_Condition_Id_Valid
+            (Handlers (J)));
+         Append
+           (Result.POST_Handlers,
+            Handlers (J));
+      end loop;
       Set_Link (Result.POST_Handlers, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -2173,7 +2418,7 @@ package body Why.Atree.Builders is
 
    function New_Statement_Sequence
      (Ada_Node   : Node_Id := Empty;
-      Statements : W_Prog_List)
+      Statements : W_Prog_Array)
      return W_Statement_Sequence_Id
    is
       Result : Why_Node (W_Statement_Sequence);
@@ -2181,7 +2426,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Statement_Sequence);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.SS_Statements := Statements;
+      pragma Assert (Statements'Length > 0);
+      Result.SS_Statements := New_List;
+      for J in Statements'Range loop
+         pragma Assert
+           (Prog_Id_Kind_Valid
+            (Statements (J)));
+         pragma Assert
+           (Prog_Id_Valid
+            (Statements (J)));
+         Append
+           (Result.SS_Statements,
+            Statements (J));
+      end loop;
       Set_Link (Result.SS_Statements, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -2220,7 +2477,7 @@ package body Why.Atree.Builders is
 
    function New_Assert
      (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_List;
+      Assertions : W_Assertion_Array;
       Prog       : W_Prog_Id)
      return W_Assert_Id
    is
@@ -2229,7 +2486,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Assert);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.AS_Assertions := Assertions;
+      pragma Assert (Assertions'Length > 0);
+      Result.AS_Assertions := New_List;
+      for J in Assertions'Range loop
+         pragma Assert
+           (Assertion_Id_Kind_Valid
+            (Assertions (J)));
+         pragma Assert
+           (Assertion_Id_Valid
+            (Assertions (J)));
+         Append
+           (Result.AS_Assertions,
+            Assertions (J));
+      end loop;
       Set_Link (Result.AS_Assertions, New_Id);
       Result.AS_Prog := Prog;
       Set_Link (Result.AS_Prog, New_Id);
@@ -2376,7 +2645,7 @@ package body Why.Atree.Builders is
 
    function New_Prog_Sequence
      (Ada_Node : Node_Id := Empty;
-      Progs    : W_Prog_List)
+      Progs    : W_Prog_Array)
      return W_Prog_Sequence_Id
    is
       Result : Why_Node (W_Prog_Sequence);
@@ -2384,7 +2653,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Prog_Sequence);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.PS_Progs := Progs;
+      pragma Assert (Progs'Length > 0);
+      Result.PS_Progs := New_List;
+      for J in Progs'Range loop
+         pragma Assert
+           (Prog_Id_Kind_Valid
+            (Progs (J)));
+         pragma Assert
+           (Prog_Id_Valid
+            (Progs (J)));
+         Append
+           (Result.PS_Progs,
+            Progs (J));
+      end loop;
       Set_Link (Result.PS_Progs, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -2452,7 +2733,7 @@ package body Why.Atree.Builders is
    function New_Try_Block
      (Ada_Node : Node_Id := Empty;
       Prog     : W_Prog_Id;
-      Handler  : W_Handler_List)
+      Handler  : W_Handler_Array)
      return W_Try_Block_Id
    is
       Result : Why_Node (W_Try_Block);
@@ -2462,7 +2743,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.TB_Prog := Prog;
       Set_Link (Result.TB_Prog, New_Id);
-      Result.TB_Handler := Handler;
+      pragma Assert (Handler'Length > 0);
+      Result.TB_Handler := New_List;
+      for J in Handler'Range loop
+         pragma Assert
+           (Handler_Id_Kind_Valid
+            (Handler (J)));
+         pragma Assert
+           (Handler_Id_Valid
+            (Handler (J)));
+         Append
+           (Result.TB_Handler,
+            Handler (J));
+      end loop;
       Set_Link (Result.TB_Handler, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -2827,7 +3120,7 @@ package body Why.Atree.Builders is
 
    function New_Binders
      (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binder_List)
+      Binders  : W_Binder_Array)
      return W_Binders_Id
    is
       Result : Why_Node (W_Binders);
@@ -2835,7 +3128,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Binders);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.BS_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.BS_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.BS_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.BS_Binders, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -2849,7 +3154,7 @@ package body Why.Atree.Builders is
 
    function New_Binder
      (Ada_Node : Node_Id := Empty;
-      Names    : W_Identifier_List;
+      Names    : W_Identifier_Array;
       Arg_Type : W_Value_Type_Id)
      return W_Binder_Id
    is
@@ -2858,7 +3163,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Binder);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.B_Names := Names;
+      pragma Assert (Names'Length > 0);
+      Result.B_Names := New_List;
+      for J in Names'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Names (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Names (J)));
+         Append
+           (Result.B_Names,
+            Names (J));
+      end loop;
       Set_Link (Result.B_Names, New_Id);
       Result.B_Arg_Type := Arg_Type;
       Set_Link (Result.B_Arg_Type, New_Id);
@@ -2986,7 +3303,7 @@ package body Why.Atree.Builders is
 
    function New_File
      (Ada_Node     : Node_Id := Empty;
-      Declarations : W_Declaration_OList := New_List)
+      Declarations : W_Declaration_Array := (2 .. 1 => <>))
      return W_File_Id
    is
       Result : Why_Node (W_File);
@@ -2994,7 +3311,18 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_File);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.F_Declarations := Declarations;
+      Result.F_Declarations := New_List;
+      for J in Declarations'Range loop
+         pragma Assert
+           (Declaration_Id_Kind_Valid
+            (Declarations (J)));
+         pragma Assert
+           (Declaration_Id_Valid
+            (Declarations (J)));
+         Append
+           (Result.F_Declarations,
+            Declarations (J));
+      end loop;
       Set_Link (Result.F_Declarations, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -3059,7 +3387,7 @@ package body Why.Atree.Builders is
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_Id;
-      Names          : W_Identifier_List;
+      Names          : W_Identifier_Array;
       Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id
    is
@@ -3070,7 +3398,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.PD_External := External;
       Set_Link (Result.PD_External, New_Id);
-      Result.PD_Names := Names;
+      pragma Assert (Names'Length > 0);
+      Result.PD_Names := New_List;
+      for J in Names'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (Names (J)));
+         pragma Assert
+           (Identifier_Id_Valid
+            (Names (J)));
+         Append
+           (Result.PD_Names,
+            Names (J));
+      end loop;
       Set_Link (Result.PD_Names, New_Id);
       Result.PD_Parameter_Type := Parameter_Type;
       Set_Link (Result.PD_Parameter_Type, New_Id);
