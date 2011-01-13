@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -69,32 +69,6 @@ package body Xkind_Ids is
       --  Print subtypes for a given node kind whose prefix
       --  is passed as parameter.
 
-      procedure Print_Subtypes (Prefix : Wide_String) is
-      begin
-         for Multiplicity in Id_Multiplicity'Range loop
-            P (O, "subtype "
-                & Id_Subtype (Prefix, Kind, Multiplicity)
-                & " is");
-
-            if Kind = Opaque then
-               P (O, " ");
-            else
-               NL (O);
-               P (O, "  ");
-            end if;
-
-            PL (O, Base_Id_Subtype (Prefix, Kind, Multiplicity) & ";");
-
-            if Kind /= Opaque then
-               PL (O, "--  ??? subtype predicate not generated yet");
-            end if;
-
-            if Multiplicity /= Id_Multiplicity'Last then
-               NL (O);
-            end if;
-         end loop;
-      end Print_Subtypes;
-
       ----------------------------
       -- Process_One_Class_Kind --
       ----------------------------
@@ -122,6 +96,36 @@ package body Xkind_Ids is
             NL (O);
          end if;
       end Process_One_Node_Kind;
+
+      --------------------
+      -- Print_Subtypes --
+      --------------------
+
+      procedure Print_Subtypes (Prefix : Wide_String) is
+      begin
+         for Multiplicity in Id_Multiplicity'Range loop
+            P (O, "subtype "
+                & Id_Subtype (Prefix, Kind, Multiplicity)
+                & " is");
+
+            if Kind = Opaque then
+               P (O, " ");
+            else
+               NL (O);
+               P (O, "  ");
+            end if;
+
+            PL (O, Base_Id_Subtype (Prefix, Kind, Multiplicity) & ";");
+
+            if Kind /= Opaque then
+               PL (O, "--  ??? subtype predicate not generated yet");
+            end if;
+
+            if Multiplicity /= Id_Multiplicity'Last then
+               NL (O);
+            end if;
+         end loop;
+      end Print_Subtypes;
 
    --  Start of processing for Print_Subtypes
 

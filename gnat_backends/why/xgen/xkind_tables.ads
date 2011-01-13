@@ -73,8 +73,8 @@ package Xkind_Tables is
       Kind         : Id_Kind;
       Multiplicity : Id_Multiplicity)
      return Wide_String;
-   --  Return the suffix for the given Kind and the given Multiplicity.
-   --  e.g. Id_Suffix ("W_Type", Opaque, Lone) would return
+   --  Return the subtype for the given Kind and the given Multiplicity.
+   --  e.g. Id_Subtype ("W_Type", Opaque, Lone) would return
    --  "W_Type_Opaque_OId".
 
    function Base_Id_Subtype
