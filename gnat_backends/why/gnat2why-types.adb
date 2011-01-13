@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                      T R A N S L A T E - T Y P E S                       --
+--                      G N A T 2 W H Y - T Y P E S                         --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -31,7 +31,7 @@ with Sinfo;         use Sinfo;
 with Why.Gen.Ints;  use Why.Gen.Ints;
 with Why.Gen.Enums; use Why.Gen.Enums;
 
-package body Translate.Types is
+package body Gnat2Why.Types is
 
    procedure Why_Type_Decl_of_Gnat_Type_Decl
       (File : W_File_Id;
@@ -75,4 +75,4 @@ package body Translate.Types is
          when others => raise Program_Error;
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
-end Translate.Types;
+end Gnat2Why.Types;

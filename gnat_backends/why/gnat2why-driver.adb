@@ -30,7 +30,7 @@ with Opt;                use Opt;
 with Sinfo;              use Sinfo;
 with Sprint;             use Sprint;
 with Switch;             use Switch;
-with Translate.Types;    use Translate.Types;
+with Gnat2Why.Types;     use Gnat2Why.Types;
 with Treepr;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Sprint;   use Why.Atree.Sprint;

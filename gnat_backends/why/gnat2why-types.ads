@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                             T R A N S L A T E                            --
+--                      G N A T 2 W H Y - T Y P E S                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,12 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Translate is
-   pragma Pure;
+with Types;      use Types;
+with Why.Ids;    use Why.Ids;
 
-   --  This package hierarchy provides a way to translate GNAT types
-   --  into Why types.
-
-   Not_Implemented : exception;
-
-end Translate;
+package Gnat2Why.Types is
+   procedure Why_Type_Decl_of_Gnat_Type_Decl
+      (File : W_File_Id;
+       Node : Node_Id);
+end Gnat2Why.Types;
