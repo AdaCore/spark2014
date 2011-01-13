@@ -40,17 +40,17 @@ package body Why.Gen.Enums is
       File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
    end Declare_Abstract_Boolean_Type;
 
-   procedure Declare_Enum_Type (
-      File         : W_File_Id;
+   procedure Declare_Enum_Type
+     (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List)
    is
       --  ??? Not fully implemented yet
    begin
-      File_Append_To_Declarations (
-         File,
-         New_Logic_Declaration (
-            Decl => Declare_Enum_Type (Name, Constructors)));
+      File_Append_To_Declarations
+        (File,
+         New_Logic_Declaration
+         (Decl => Declare_Enum_Type (Name, Constructors)));
    end Declare_Enum_Type;
 
 end Why.Gen.Enums;
