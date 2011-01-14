@@ -514,7 +514,7 @@ package Why.Sinfo is
       W_Binding_Rec,
       --  <binding_rec> ::= 'let' 'rec' <recfun> [ 'in' <prog> ]
 
-      W_Prog_Sequence,
+      W_Prog_Call,
       --  <prog> <prog>+
 
       W_Raise_Statement,

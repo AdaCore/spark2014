@@ -3378,12 +3378,12 @@ package body Why.Atree.Mutators is
          Binding_Rec_Id_Valid (Id));
    end Binding_Rec_Set_Context;
 
-   -----------------------------------
-   -- Prog_Sequence_Append_To_Progs --
-   -----------------------------------
+   -------------------------------
+   -- Prog_Call_Append_To_Progs --
+   -------------------------------
 
-   procedure Prog_Sequence_Append_To_Progs
-     (Id       : W_Prog_Sequence_Unchecked_Id;
+   procedure Prog_Call_Append_To_Progs
+     (Id       : W_Prog_Call_Unchecked_Id;
       New_Item : W_Prog_Id)
    is
       Node : constant Why_Node :=
@@ -3392,15 +3392,15 @@ package body Why.Atree.Mutators is
       Append (Node.PS_Progs, New_Item);
       Update_Validity_Status
         (Id,
-         Prog_Sequence_Id_Valid (Id));
-   end Prog_Sequence_Append_To_Progs;
+         Prog_Call_Id_Valid (Id));
+   end Prog_Call_Append_To_Progs;
 
-   ------------------------------------
-   -- Prog_Sequence_Prepend_To_Progs --
-   ------------------------------------
+   --------------------------------
+   -- Prog_Call_Prepend_To_Progs --
+   --------------------------------
 
-   procedure Prog_Sequence_Prepend_To_Progs
-     (Id       : W_Prog_Sequence_Unchecked_Id;
+   procedure Prog_Call_Prepend_To_Progs
+     (Id       : W_Prog_Call_Unchecked_Id;
       New_Item : W_Prog_Id)
    is
       Node : constant Why_Node :=
@@ -3409,8 +3409,8 @@ package body Why.Atree.Mutators is
       Prepend (Node.PS_Progs, New_Item);
       Update_Validity_Status
         (Id,
-         Prog_Sequence_Id_Valid (Id));
-   end Prog_Sequence_Prepend_To_Progs;
+         Prog_Call_Id_Valid (Id));
+   end Prog_Call_Prepend_To_Progs;
 
    ------------------------------
    -- Raise_Statement_Set_Name --

@@ -1035,14 +1035,14 @@ package Why.Atree.Traversal is
       Node  : W_Binding_Rec_Id)
      is null;
 
-   procedure Prog_Sequence_Pre_Op
+   procedure Prog_Call_Pre_Op
      (State : in out Traversal_State;
-      Node  : W_Prog_Sequence_Id)
+      Node  : W_Prog_Call_Id)
      is null;
 
-   procedure Prog_Sequence_Post_Op
+   procedure Prog_Call_Post_Op
      (State : in out Traversal_State;
-      Node  : W_Prog_Sequence_Id)
+      Node  : W_Prog_Call_Id)
      is null;
 
    procedure Raise_Statement_Pre_Op

@@ -2210,17 +2210,17 @@ package body Why.Atree.Sprint is
    -- Prog_Sequence_Pre_Op --
    --------------------------
 
-   procedure Prog_Sequence_Pre_Op
+   procedure Prog_Call_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Prog_Sequence_Id)
+      Node  : W_Prog_Call_Id)
    is
    begin
       Print_List
         (State,
-         Prog_Sequence_Get_Progs (Node),
+         Prog_Call_Get_Progs (Node),
          "" & ASCII.LF);
       State.Control := Abandon_Children;
-   end Prog_Sequence_Pre_Op;
+   end Prog_Call_Pre_Op;
 
    ----------------------------
    -- Raise_Statement_Pre_Op --

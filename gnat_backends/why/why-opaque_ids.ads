@@ -830,13 +830,13 @@ package Why.Opaque_Ids is
 
    subtype W_Binding_Rec_Opaque_OList is Why_Node_List;
 
-   subtype W_Prog_Sequence_Opaque_Id is Why_Node_Id;
+   subtype W_Prog_Call_Opaque_Id is Why_Node_Id;
 
-   subtype W_Prog_Sequence_Opaque_OId is Why_Node_Id;
+   subtype W_Prog_Call_Opaque_OId is Why_Node_Id;
 
-   subtype W_Prog_Sequence_Opaque_List is Why_Node_List;
+   subtype W_Prog_Call_Opaque_List is Why_Node_List;
 
-   subtype W_Prog_Sequence_Opaque_OList is Why_Node_List;
+   subtype W_Prog_Call_Opaque_OList is Why_Node_List;
 
    subtype W_Raise_Statement_Opaque_Id is Why_Node_Id;
 

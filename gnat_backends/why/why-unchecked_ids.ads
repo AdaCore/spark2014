@@ -1620,20 +1620,20 @@ package Why.Unchecked_Ids is
      W_Binding_Rec_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_Unchecked_Id is
-     W_Prog_Sequence_Opaque_Id;
+   subtype W_Prog_Call_Unchecked_Id is
+     W_Prog_Call_Opaque_Id;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_Unchecked_OId is
-     W_Prog_Sequence_Opaque_OId;
+   subtype W_Prog_Call_Unchecked_OId is
+     W_Prog_Call_Opaque_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_Unchecked_List is
-     W_Prog_Sequence_Opaque_List;
+   subtype W_Prog_Call_Unchecked_List is
+     W_Prog_Call_Opaque_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_Unchecked_OList is
-     W_Prog_Sequence_Opaque_OList;
+   subtype W_Prog_Call_Unchecked_OList is
+     W_Prog_Call_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Raise_Statement_Unchecked_Id is

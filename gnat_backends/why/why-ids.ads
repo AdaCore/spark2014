@@ -1970,23 +1970,23 @@ package Why.Ids is
      W_Binding_Rec_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_Id is
-     W_Prog_Sequence_Unchecked_Id;
+   subtype W_Prog_Call_Id is
+     W_Prog_Call_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
-   type W_Prog_Sequence_Array is array (Positive range <>)
-     of W_Prog_Sequence_Id;
+   type W_Prog_Call_Array is array (Positive range <>)
+     of W_Prog_Call_Id;
 
-   subtype W_Prog_Sequence_OId is
-     W_Prog_Sequence_Unchecked_OId;
+   subtype W_Prog_Call_OId is
+     W_Prog_Call_Unchecked_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_List is
-     W_Prog_Sequence_Unchecked_List;
+   subtype W_Prog_Call_List is
+     W_Prog_Call_Unchecked_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Prog_Sequence_OList is
-     W_Prog_Sequence_Unchecked_OList;
+   subtype W_Prog_Call_OList is
+     W_Prog_Call_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Raise_Statement_Id is

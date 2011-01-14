@@ -426,7 +426,7 @@ package Why.Atree is
             BR_Recfun  : W_Recfun_Opaque_Id;
             BR_Context : W_Prog_Opaque_Id;
 
-         when W_Prog_Sequence =>
+         when W_Prog_Call =>
             PS_Progs : W_Prog_Opaque_List;
 
          when W_Raise_Statement =>

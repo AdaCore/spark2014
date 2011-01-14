@@ -1646,20 +1646,20 @@ package Why.Atree.Validity is
      (Id : W_Binding_Rec_Unchecked_OList)
      return Boolean;
 
-   function Prog_Sequence_Id_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
+   function Prog_Call_Id_Valid
+     (Id : W_Prog_Call_Unchecked_Id)
      return Boolean;
 
-   function Prog_Sequence_OId_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
+   function Prog_Call_OId_Valid
+     (Id : W_Prog_Call_Unchecked_OId)
      return Boolean;
 
-   function Prog_Sequence_List_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
+   function Prog_Call_List_Valid
+     (Id : W_Prog_Call_Unchecked_List)
      return Boolean;
 
-   function Prog_Sequence_OList_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
+   function Prog_Call_OList_Valid
+     (Id : W_Prog_Call_Unchecked_OList)
      return Boolean;
 
    function Raise_Statement_Id_Valid
@@ -4056,20 +4056,20 @@ private
      (Id : W_Binding_Rec_Unchecked_OList)
      return Boolean;
 
-   function Prog_Sequence_Id_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
+   function Prog_Call_Id_Children_Valid
+     (Id : W_Prog_Call_Unchecked_Id)
      return Boolean;
 
-   function Prog_Sequence_OId_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
+   function Prog_Call_OId_Children_Valid
+     (Id : W_Prog_Call_Unchecked_OId)
      return Boolean;
 
-   function Prog_Sequence_List_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
+   function Prog_Call_List_Children_Valid
+     (Id : W_Prog_Call_Unchecked_List)
      return Boolean;
 
-   function Prog_Sequence_OList_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
+   function Prog_Call_OList_Children_Valid
+     (Id : W_Prog_Call_Unchecked_OList)
      return Boolean;
 
    function Raise_Statement_Id_Children_Valid
@@ -7448,31 +7448,31 @@ private
      (Is_Empty (Id)
       or else Binding_Rec_List_Valid (Id));
 
-   function Prog_Sequence_Id_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
+   function Prog_Call_Id_Valid
+     (Id : W_Prog_Call_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid (Id)
-      or else Prog_Sequence_Id_Children_Valid (Id));
+      or else Prog_Call_Id_Children_Valid (Id));
 
-   function Prog_Sequence_OId_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
+   function Prog_Call_OId_Valid
+     (Id : W_Prog_Call_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Prog_Sequence_Id_Valid (Id));
+      or else Prog_Call_Id_Valid (Id));
 
-   function Prog_Sequence_List_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
+   function Prog_Call_List_Valid
+     (Id : W_Prog_Call_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Prog_Sequence_OList_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
+   function Prog_Call_OList_Valid
+     (Id : W_Prog_Call_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Prog_Sequence_List_Valid (Id));
+      or else Prog_Call_List_Valid (Id));
 
    function Raise_Statement_Id_Valid
      (Id : W_Raise_Statement_Unchecked_Id)
@@ -11399,29 +11399,29 @@ private
      (Is_Empty (Id)
       or else Binding_Rec_List_Children_Valid (Id));
 
-   function Prog_Sequence_Id_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_Id)
+   function Prog_Call_Id_Children_Valid
+     (Id : W_Prog_Call_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Prog_Sequence_Get_Progs (Id)));
+       (Prog_Call_Get_Progs (Id)));
 
-   function Prog_Sequence_OId_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_OId)
+   function Prog_Call_OId_Children_Valid
+     (Id : W_Prog_Call_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Prog_Sequence_Id_Children_Valid (Id));
+      or else Prog_Call_Id_Children_Valid (Id));
 
-   function Prog_Sequence_List_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_List)
+   function Prog_Call_List_Children_Valid
+     (Id : W_Prog_Call_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
 
-   function Prog_Sequence_OList_Children_Valid
-     (Id : W_Prog_Sequence_Unchecked_OList)
+   function Prog_Call_OList_Children_Valid
+     (Id : W_Prog_Call_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Prog_Sequence_List_Children_Valid (Id));
+      or else Prog_Call_List_Children_Valid (Id));
 
    function Raise_Statement_Id_Children_Valid
      (Id : W_Raise_Statement_Unchecked_Id)
@@ -12832,8 +12832,8 @@ private
            Binding_Fun_Id_Children_Valid (Id),
         when W_Binding_Rec =>
            Binding_Rec_Id_Children_Valid (Id),
-        when W_Prog_Sequence =>
-           Prog_Sequence_Id_Children_Valid (Id),
+        when W_Prog_Call =>
+           Prog_Call_Id_Children_Valid (Id),
         when W_Raise_Statement =>
            Raise_Statement_Id_Children_Valid (Id),
         when W_Raise_Statement_With_Parameters =>
@@ -13182,8 +13182,8 @@ private
            Binding_Fun_Id_Children_Valid (Id),
         when W_Binding_Rec =>
            Binding_Rec_Id_Children_Valid (Id),
-        when W_Prog_Sequence =>
-           Prog_Sequence_Id_Children_Valid (Id),
+        when W_Prog_Call =>
+           Prog_Call_Id_Children_Valid (Id),
         when W_Raise_Statement =>
            Raise_Statement_Id_Children_Valid (Id),
         when W_Raise_Statement_With_Parameters =>

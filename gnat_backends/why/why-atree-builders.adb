@@ -2669,18 +2669,18 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Binding_Rec;
 
-   -----------------------
-   -- New_Prog_Sequence --
-   -----------------------
+   -------------------
+   -- New_Prog_Call --
+   -------------------
 
-   function New_Prog_Sequence
+   function New_Prog_Call
      (Ada_Node : Node_Id := Empty;
       Progs    : W_Prog_Array)
-     return W_Prog_Sequence_Id
+     return W_Prog_Call_Id
    is
-      Result : Why_Node (W_Prog_Sequence);
+      Result : Why_Node (W_Prog_Call);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Prog_Sequence);
+        New_Why_Node_Id (W_Prog_Call);
    begin
       Result.Ada_Node := Ada_Node;
       pragma Assert (Progs'Length > 0);
@@ -2701,7 +2701,7 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Prog_Sequence;
+   end New_Prog_Call;
 
    -------------------------
    -- New_Raise_Statement --
@@ -5583,16 +5583,16 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Binding_Rec;
 
-   ---------------------------------
-   -- New_Unchecked_Prog_Sequence --
-   ---------------------------------
+   -----------------------------
+   -- New_Unchecked_Prog_Call --
+   -----------------------------
 
-   function New_Unchecked_Prog_Sequence
-     return W_Prog_Sequence_Unchecked_Id
+   function New_Unchecked_Prog_Call
+     return W_Prog_Call_Unchecked_Id
    is
-      Result : Why_Node (W_Prog_Sequence);
+      Result : Why_Node (W_Prog_Call);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Prog_Sequence);
+        New_Why_Node_Id (W_Prog_Call);
    begin
       Result.Ada_Node := Empty;
       Result.PS_Progs := New_List;
@@ -5601,7 +5601,7 @@ package body Why.Atree.Builders is
       Result.Checked := False;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Unchecked_Prog_Sequence;
+   end New_Unchecked_Prog_Call;
 
    -----------------------------------
    -- New_Unchecked_Raise_Statement --
@@ -10273,14 +10273,14 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Binding_Rec;
 
-   -----------------------------
-   -- Duplicate_Prog_Sequence --
-   -----------------------------
+   -------------------------
+   -- Duplicate_Prog_Call --
+   -------------------------
 
-   function Duplicate_Prog_Sequence
+   function Duplicate_Prog_Call
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Prog_Sequence_OId)
-     return W_Prog_Sequence_Id
+      Id       : W_Prog_Call_OId)
+     return W_Prog_Call_Id
    is
    begin
       if Id = Why_Empty then
@@ -10288,11 +10288,11 @@ package body Why.Atree.Builders is
       end if;
 
       declare
-         Result : Why_Node (W_Prog_Sequence);
+         Result : Why_Node (W_Prog_Call);
          New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Prog_Sequence);
+           New_Why_Node_Id (W_Prog_Call);
          Progs : constant W_Prog_List :=
-            Prog_Sequence_Get_Progs (Id);
+            Prog_Call_Get_Progs (Id);
       begin
          Result.Ada_Node := Ada_Node;
          declare
@@ -10318,7 +10318,7 @@ package body Why.Atree.Builders is
          Set_Node (New_Id, Result);
          return New_Id;
       end;
-   end Duplicate_Prog_Sequence;
+   end Duplicate_Prog_Call;
 
    -------------------------------
    -- Duplicate_Raise_Statement --

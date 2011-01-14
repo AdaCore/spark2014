@@ -2514,19 +2514,19 @@ package Why.Atree.Builders is
           (New_Binding_Rec'Result)
           = Context);
 
-   function New_Prog_Sequence
+   function New_Prog_Call
      (Ada_Node : Node_Id := Empty;
       Progs    : W_Prog_Array)
-     return W_Prog_Sequence_Id with
+     return W_Prog_Call_Id with
      Pre =>
        (True),
      Post =>
        (Get_Kind
-         (New_Prog_Sequence'Result)
-         = W_Prog_Sequence
+         (New_Prog_Call'Result)
+         = W_Prog_Call
         and then
           Get_Ada_Node
-          (New_Prog_Sequence'Result)
+          (New_Prog_Call'Result)
           = Ada_Node
         and then
         True);
@@ -4104,13 +4104,13 @@ package Why.Atree.Builders is
          = W_Binding_Rec
        );
 
-   function New_Unchecked_Prog_Sequence
-     return W_Prog_Sequence_Unchecked_Id with
+   function New_Unchecked_Prog_Call
+     return W_Prog_Call_Unchecked_Id with
      Pre => True,
      Post =>
        (Get_Kind
-         (New_Unchecked_Prog_Sequence'Result)
-         = W_Prog_Sequence
+         (New_Unchecked_Prog_Call'Result)
+         = W_Prog_Call
        );
 
    function New_Unchecked_Raise_Statement
@@ -5871,19 +5871,19 @@ package Why.Atree.Builders is
           (Duplicate_Binding_Rec'Result)
           = Ada_Node);
 
-   function Duplicate_Prog_Sequence
+   function Duplicate_Prog_Call
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Prog_Sequence_OId)
-     return W_Prog_Sequence_Id with
+      Id       : W_Prog_Call_OId)
+     return W_Prog_Call_Id with
      Pre =>
-       (Prog_Sequence_Id_Valid (Id)),
+       (Prog_Call_Id_Valid (Id)),
      Post =>
        (Get_Kind
-         (Duplicate_Prog_Sequence'Result)
-         = W_Prog_Sequence
+         (Duplicate_Prog_Call'Result)
+         = W_Prog_Call
         and then
           Get_Ada_Node
-          (Duplicate_Prog_Sequence'Result)
+          (Duplicate_Prog_Call'Result)
           = Ada_Node);
 
    function Duplicate_Raise_Statement
@@ -7143,8 +7143,8 @@ private
            Duplicate_Binding_Rec
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Prog_Sequence =>
-           Duplicate_Prog_Sequence
+        when W_Prog_Call =>
+           Duplicate_Prog_Call
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Raise_Statement =>
@@ -7675,8 +7675,8 @@ private
            Duplicate_Binding_Rec
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Prog_Sequence =>
-           Duplicate_Prog_Sequence
+        when W_Prog_Call =>
+           Duplicate_Prog_Call
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Raise_Statement =>

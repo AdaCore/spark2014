@@ -3152,8 +3152,8 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Prog_Sequence =>
-            Prog_Sequence_Pre_Op (State, Node);
+         when W_Prog_Call =>
+            Prog_Call_Pre_Op (State, Node);
 
             if State.Control = Abandon_Children then
                State.Control := Continue;
@@ -3166,13 +3166,13 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Prog_Sequence_Get_Progs (Node));
+               Prog_Call_Get_Progs (Node));
 
             if State.Control = Terminate_Immediately then
                return;
             end if;
 
-            Prog_Sequence_Post_Op (State, Node);
+            Prog_Call_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;

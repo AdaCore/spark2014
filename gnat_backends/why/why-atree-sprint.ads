@@ -420,9 +420,9 @@ private
      (State : in out Printer_State;
       Node  : W_Binding_Rec_Id);
 
-   procedure Prog_Sequence_Pre_Op
+   procedure Prog_Call_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Prog_Sequence_Id);
+      Node  : W_Prog_Call_Id);
 
    procedure Raise_Statement_Pre_Op
      (State : in out Printer_State;

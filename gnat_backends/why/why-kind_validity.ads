@@ -1616,20 +1616,20 @@ package Why.Kind_Validity is
      (Id : W_Binding_Rec_Opaque_OList)
      return Boolean;
 
-   function Prog_Sequence_Id_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_Id)
+   function Prog_Call_Id_Kind_Valid
+     (Id : W_Prog_Call_Opaque_Id)
      return Boolean;
 
-   function Prog_Sequence_OId_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_OId)
+   function Prog_Call_OId_Kind_Valid
+     (Id : W_Prog_Call_Opaque_OId)
      return Boolean;
 
-   function Prog_Sequence_List_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_List)
+   function Prog_Call_List_Kind_Valid
+     (Id : W_Prog_Call_Opaque_List)
      return Boolean;
 
-   function Prog_Sequence_OList_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_OList)
+   function Prog_Call_OList_Kind_Valid
+     (Id : W_Prog_Call_Opaque_OList)
      return Boolean;
 
    function Raise_Statement_Id_Kind_Valid
@@ -4909,30 +4909,30 @@ private
      (Is_Empty (Id)
       or else Binding_Rec_List_Kind_Valid (Id));
 
-   function Prog_Sequence_Id_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_Id)
+   function Prog_Call_Id_Kind_Valid
+     (Id : W_Prog_Call_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Prog_Sequence);
+     (Get_Kind (Id) = W_Prog_Call);
 
-   function Prog_Sequence_OId_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_OId)
+   function Prog_Call_OId_Kind_Valid
+     (Id : W_Prog_Call_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Prog_Sequence_Id_Kind_Valid (Id));
+      or else Prog_Call_Id_Kind_Valid (Id));
 
-   function Prog_Sequence_List_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_List)
+   function Prog_Call_List_Kind_Valid
+     (Id : W_Prog_Call_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Prog_Sequence_OList_Kind_Valid
-     (Id : W_Prog_Sequence_Opaque_OList)
+   function Prog_Call_OList_Kind_Valid
+     (Id : W_Prog_Call_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Prog_Sequence_List_Kind_Valid (Id));
+      or else Prog_Call_List_Kind_Valid (Id));
 
    function Raise_Statement_Id_Kind_Valid
      (Id : W_Raise_Statement_Opaque_Id)
