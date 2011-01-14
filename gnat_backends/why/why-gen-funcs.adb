@@ -265,6 +265,7 @@ package body Why.Gen.Funcs is
    procedure Declare_Global_Binding
       (File : W_File_Id;
        Name : String;
+       Binders  : W_Binders_OId := Why_Empty;
        Pre  : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred);
        Def  : W_Prog_Id;
        Post : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred)
@@ -276,6 +277,7 @@ package body Why.Gen.Funcs is
           New_Global_Binding
              (Name => New_Identifier (Name),
               Pre => New_Precondition (Assertion => Pre),
+              Binders => Binders,
               Def =>
                New_Post_Assertion
                   (Prog => Def,
