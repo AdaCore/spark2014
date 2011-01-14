@@ -149,6 +149,7 @@ package Why.Gen.Funcs is
       Def     : W_Prog_Id;
       Post    : W_Assertion_Id
                   := New_Assertion (Pred => New_True_Literal_Pred));
-   --  ??? Missing doc
+   --  declare a global function binding of the form:
+   --  let <name> <binders> = { <pre> } <def> {<post>}
 
 end Why.Gen.Funcs;
