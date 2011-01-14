@@ -307,6 +307,20 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Arrow_Type_Pre_Op;
 
+   -------------------------
+   -- Precondition_Pre_Op --
+   -------------------------
+   --
+   procedure Precondition_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Precondition_Id)
+   is
+   begin
+      P (O, "{ ");
+      Traverse (State, Precondition_Get_Assertion (Node));
+      PL (O, " }");
+      State.Control := Abandon_Children;
+   end Precondition_Pre_Op;
    -----------------------------
    -- Computation_Spec_Pre_Op --
    -----------------------------
@@ -318,10 +332,8 @@ package body Why.Atree.Sprint is
       Result : constant W_Identifier_OId :=
                  Computation_Spec_Get_Result_Name (Node);
    begin
-      P (O, "{ ");
       Traverse (State,
                 Computation_Spec_Get_Precondition (Node));
-      PL (O, " }");
       Relative_Indent (O, 1);
 
       if  Result /= Why_Empty then
@@ -2776,6 +2788,7 @@ package body Why.Atree.Sprint is
       end if;
 
       PL (O, " =");
+      Traverse (State, Global_Binding_Get_Pre (Node));
       Relative_Indent (O, 1);
       Traverse
         (State,

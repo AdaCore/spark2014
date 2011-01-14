@@ -92,6 +92,10 @@ private
      (State : in out Printer_State;
       Node  : W_Arrow_Type_Id);
 
+   procedure Precondition_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Precondition_Id);
+
    procedure Computation_Spec_Pre_Op
      (State : in out Printer_State;
       Node  : W_Computation_Spec_Id);
