@@ -11371,6 +11371,9 @@ private
        (Fun_Def_Get_Binders (Id))
      and then
        Id_Cache_Valid
+         (Fun_Def_Get_Pre (Id))
+     and then
+       Id_Cache_Valid
          (Fun_Def_Get_Def (Id)));
 
    function Fun_Def_OId_Children_Valid
@@ -11399,6 +11402,9 @@ private
      and then
        Id_Cache_Valid
          (Binding_Fun_Get_Binders (Id))
+     and then
+       Id_Cache_Valid
+         (Binding_Fun_Get_Pre (Id))
      and then
        Id_Cache_Valid
          (Binding_Fun_Get_Def (Id))
@@ -12043,6 +12049,9 @@ private
          (Recfun_Get_Variant (Id))
      and then
        Id_Cache_Valid
+         (Recfun_Get_Pre (Id))
+     and then
+       Id_Cache_Valid
          (Recfun_Get_Def (Id)));
 
    function Recfun_OId_Children_Valid
@@ -12179,6 +12188,9 @@ private
      and then
        OId_Cache_Valid
          (Global_Binding_Get_Binders (Id))
+     and then
+       Id_Cache_Valid
+         (Global_Binding_Get_Pre (Id))
      and then
        Id_Cache_Valid
          (Global_Binding_Get_Def (Id)));

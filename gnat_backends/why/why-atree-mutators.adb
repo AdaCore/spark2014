@@ -3185,6 +3185,24 @@ package body Why.Atree.Mutators is
    end Fun_Def_Set_Binders;
 
    ---------------------
+   -- Fun_Def_Set_Pre --
+   ---------------------
+
+   procedure Fun_Def_Set_Pre
+     (Id  : W_Fun_Def_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.FD_Pre := Pre;
+      Set_Node (Id, Node);
+      Set_Link (Pre, Id);
+      Update_Validity_Status
+        (Id,
+         Fun_Def_Id_Valid (Id));
+   end Fun_Def_Set_Pre;
+
+   ---------------------
    -- Fun_Def_Set_Def --
    ---------------------
 
@@ -3237,6 +3255,24 @@ package body Why.Atree.Mutators is
         (Id,
          Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Binders;
+
+   -------------------------
+   -- Binding_Fun_Set_Pre --
+   -------------------------
+
+   procedure Binding_Fun_Set_Pre
+     (Id  : W_Binding_Fun_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.BF_Pre := Pre;
+      Set_Node (Id, Node);
+      Set_Link (Pre, Id);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
+   end Binding_Fun_Set_Pre;
 
    -------------------------
    -- Binding_Fun_Set_Def --
@@ -3699,6 +3735,24 @@ package body Why.Atree.Mutators is
    end Recfun_Set_Variant;
 
    --------------------
+   -- Recfun_Set_Pre --
+   --------------------
+
+   procedure Recfun_Set_Pre
+     (Id  : W_Recfun_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.RF_Pre := Pre;
+      Set_Node (Id, Node);
+      Set_Link (Pre, Id);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
+   end Recfun_Set_Pre;
+
+   --------------------
    -- Recfun_Set_Def --
    --------------------
 
@@ -3911,6 +3965,24 @@ package body Why.Atree.Mutators is
         (Id,
          Global_Binding_Id_Valid (Id));
    end Global_Binding_Set_Binders;
+
+   ----------------------------
+   -- Global_Binding_Set_Pre --
+   ----------------------------
+
+   procedure Global_Binding_Set_Pre
+     (Id  : W_Global_Binding_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.GB_Pre := Pre;
+      Set_Node (Id, Node);
+      Set_Link (Pre, Id);
+      Update_Validity_Status
+        (Id,
+         Global_Binding_Id_Valid (Id));
+   end Global_Binding_Set_Pre;
 
    ----------------------------
    -- Global_Binding_Set_Def --

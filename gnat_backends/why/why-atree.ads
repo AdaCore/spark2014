@@ -412,11 +412,13 @@ package Why.Atree is
 
          when W_Fun_Def =>
             FD_Binders : W_Binders_Opaque_Id;
+            FD_Pre     : W_Precondition_Opaque_Id;
             FD_Def     : W_Prog_Opaque_Id;
 
          when W_Binding_Fun =>
             BF_Name    : W_Identifier_Opaque_Id;
             BF_Binders : W_Binders_Opaque_Id;
+            BF_Pre     : W_Precondition_Opaque_Id;
             BF_Def     : W_Prog_Opaque_Id;
             BF_Context : W_Prog_Opaque_Id;
 
@@ -461,6 +463,7 @@ package Why.Atree is
             RF_Binders     : W_Binders_Opaque_Id;
             RF_Return_Type : W_Prog_Opaque_Id;
             RF_Variant     : W_Wf_Arg_Opaque_Id;
+            RF_Pre         : W_Precondition_Opaque_Id;
             RF_Def         : W_Prog_Opaque_Id;
 
          when W_Loop_Annot =>
@@ -482,6 +485,7 @@ package Why.Atree is
          when W_Global_Binding =>
             GB_Name    : W_Identifier_Opaque_Id;
             GB_Binders : W_Binders_Opaque_OId;
+            GB_Pre     : W_Precondition_Opaque_Id;
             GB_Def     : W_Prog_Opaque_Id;
 
          when W_Global_Rec_Binding =>

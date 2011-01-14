@@ -1445,6 +1445,14 @@ package Why.Atree.Mutators is
         and then Binders_Id_Valid (Binders)
         and then Is_Root (Binders));
 
+   procedure Fun_Def_Set_Pre
+     (Id  : W_Fun_Def_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre));
+
    procedure Fun_Def_Set_Def
      (Id  : W_Fun_Def_Unchecked_Id;
       Def : W_Prog_Unchecked_Id) with
@@ -1468,6 +1476,14 @@ package Why.Atree.Mutators is
        (Binders_Id_Kind_Valid (Binders)
         and then Binders_Id_Valid (Binders)
         and then Is_Root (Binders));
+
+   procedure Binding_Fun_Set_Pre
+     (Id  : W_Binding_Fun_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre));
 
    procedure Binding_Fun_Set_Def
      (Id  : W_Binding_Fun_Unchecked_Id;
@@ -1677,6 +1693,14 @@ package Why.Atree.Mutators is
         and then Wf_Arg_Id_Valid (Variant)
         and then Is_Root (Variant));
 
+   procedure Recfun_Set_Pre
+     (Id  : W_Recfun_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre));
+
    procedure Recfun_Set_Def
      (Id  : W_Recfun_Unchecked_Id;
       Def : W_Prog_Unchecked_Id) with
@@ -1772,6 +1796,14 @@ package Why.Atree.Mutators is
        (Binders_OId_Kind_Valid (Binders)
         and then Binders_OId_Valid (Binders)
         and then Is_Root (Binders));
+
+   procedure Global_Binding_Set_Pre
+     (Id  : W_Global_Binding_Unchecked_Id;
+      Pre : W_Precondition_Unchecked_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre));
 
    procedure Global_Binding_Set_Def
      (Id  : W_Global_Binding_Unchecked_Id;

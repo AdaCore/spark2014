@@ -2406,12 +2406,16 @@ package Why.Atree.Builders is
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binders_Id;
+      Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id with
      Pre =>
        (Binders_Id_Kind_Valid (Binders)
         and then Binders_Id_Valid (Binders)
         and then Is_Root (Binders)
+        and then Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre)
         and then Prog_Id_Kind_Valid (Def)
         and then Prog_Id_Valid (Def)
         and then Is_Root (Def)),
@@ -2428,6 +2432,10 @@ package Why.Atree.Builders is
           (New_Fun_Def'Result)
           = Binders
         and then
+          Fun_Def_Get_Pre
+          (New_Fun_Def'Result)
+          = Pre
+        and then
           Fun_Def_Get_Def
           (New_Fun_Def'Result)
           = Def);
@@ -2436,6 +2444,7 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_Id;
+      Pre      : W_Precondition_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Binding_Fun_Id with
@@ -2446,6 +2455,9 @@ package Why.Atree.Builders is
         and then Binders_Id_Kind_Valid (Binders)
         and then Binders_Id_Valid (Binders)
         and then Is_Root (Binders)
+        and then Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre)
         and then Prog_Id_Kind_Valid (Def)
         and then Prog_Id_Valid (Def)
         and then Is_Root (Def)
@@ -2468,6 +2480,10 @@ package Why.Atree.Builders is
           Binding_Fun_Get_Binders
           (New_Binding_Fun'Result)
           = Binders
+        and then
+          Binding_Fun_Get_Pre
+          (New_Binding_Fun'Result)
+          = Pre
         and then
           Binding_Fun_Get_Def
           (New_Binding_Fun'Result)
@@ -2920,6 +2936,7 @@ package Why.Atree.Builders is
       Binders     : W_Binders_Id;
       Return_Type : W_Prog_Id;
       Variant     : W_Wf_Arg_Id;
+      Pre         : W_Precondition_Id;
       Def         : W_Prog_Id)
      return W_Recfun_Id with
      Pre =>
@@ -2935,6 +2952,9 @@ package Why.Atree.Builders is
         and then Wf_Arg_Id_Kind_Valid (Variant)
         and then Wf_Arg_Id_Valid (Variant)
         and then Is_Root (Variant)
+        and then Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre)
         and then Prog_Id_Kind_Valid (Def)
         and then Prog_Id_Valid (Def)
         and then Is_Root (Def)),
@@ -2962,6 +2982,10 @@ package Why.Atree.Builders is
           Recfun_Get_Variant
           (New_Recfun'Result)
           = Variant
+        and then
+          Recfun_Get_Pre
+          (New_Recfun'Result)
+          = Pre
         and then
           Recfun_Get_Def
           (New_Recfun'Result)
@@ -3083,6 +3107,7 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binders_OId := Why_Empty;
+      Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id with
      Pre =>
@@ -3092,6 +3117,9 @@ package Why.Atree.Builders is
         and then Binders_OId_Kind_Valid (Binders)
         and then Binders_OId_Valid (Binders)
         and then Is_Root (Binders)
+        and then Precondition_Id_Kind_Valid (Pre)
+        and then Precondition_Id_Valid (Pre)
+        and then Is_Root (Pre)
         and then Prog_Id_Kind_Valid (Def)
         and then Prog_Id_Valid (Def)
         and then Is_Root (Def)),
@@ -3111,6 +3139,10 @@ package Why.Atree.Builders is
           Global_Binding_Get_Binders
           (New_Global_Binding'Result)
           = Binders
+        and then
+          Global_Binding_Get_Pre
+          (New_Global_Binding'Result)
+          = Pre
         and then
           Global_Binding_Get_Def
           (New_Global_Binding'Result)

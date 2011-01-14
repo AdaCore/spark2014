@@ -655,6 +655,10 @@ package Why.Atree.Accessors is
      (Id : W_Fun_Def_Id)
      return W_Binders_Id;
 
+   function Fun_Def_Get_Pre
+     (Id : W_Fun_Def_Id)
+     return W_Precondition_Id;
+
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Id)
      return W_Prog_Id;
@@ -666,6 +670,10 @@ package Why.Atree.Accessors is
    function Binding_Fun_Get_Binders
      (Id : W_Binding_Fun_Id)
      return W_Binders_Id;
+
+   function Binding_Fun_Get_Pre
+     (Id : W_Binding_Fun_Id)
+     return W_Precondition_Id;
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Id)
@@ -755,6 +763,10 @@ package Why.Atree.Accessors is
      (Id : W_Recfun_Id)
      return W_Wf_Arg_Id;
 
+   function Recfun_Get_Pre
+     (Id : W_Recfun_Id)
+     return W_Precondition_Id;
+
    function Recfun_Get_Def
      (Id : W_Recfun_Id)
      return W_Prog_Id;
@@ -798,6 +810,10 @@ package Why.Atree.Accessors is
    function Global_Binding_Get_Binders
      (Id : W_Global_Binding_Id)
      return W_Binders_OId;
+
+   function Global_Binding_Get_Pre
+     (Id : W_Global_Binding_Id)
+     return W_Precondition_Id;
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Id)
@@ -1613,6 +1629,11 @@ private
      return W_Binders_Id is
      (Get_Node (Id).FD_Binders);
 
+   function Fun_Def_Get_Pre
+     (Id : W_Fun_Def_Id)
+     return W_Precondition_Id is
+     (Get_Node (Id).FD_Pre);
+
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Id)
      return W_Prog_Id is
@@ -1627,6 +1648,11 @@ private
      (Id : W_Binding_Fun_Id)
      return W_Binders_Id is
      (Get_Node (Id).BF_Binders);
+
+   function Binding_Fun_Get_Pre
+     (Id : W_Binding_Fun_Id)
+     return W_Precondition_Id is
+     (Get_Node (Id).BF_Pre);
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Id)
@@ -1738,6 +1764,11 @@ private
      return W_Wf_Arg_Id is
      (Get_Node (Id).RF_Variant);
 
+   function Recfun_Get_Pre
+     (Id : W_Recfun_Id)
+     return W_Precondition_Id is
+     (Get_Node (Id).RF_Pre);
+
    function Recfun_Get_Def
      (Id : W_Recfun_Id)
      return W_Prog_Id is
@@ -1792,6 +1823,11 @@ private
      (Id : W_Global_Binding_Id)
      return W_Binders_OId is
      (Get_Node (Id).GB_Binders);
+
+   function Global_Binding_Get_Pre
+     (Id : W_Global_Binding_Id)
+     return W_Precondition_Id is
+     (Get_Node (Id).GB_Pre);
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Id)

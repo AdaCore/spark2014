@@ -504,10 +504,12 @@ package Why.Sinfo is
       --  <opaque_assertion> ::= <prog> '{{' <postcondition> '}}'
 
       W_Fun_Def,
-      --  <fun_def> ::= 'fun' <binders> '->' <prog>
+      --  <fun_def> ::= 'fun' <binders> '->' '{' <precondition> '}' <prog>
 
       W_Binding_Fun,
-      --  <binding_fun> ::= 'let' <identifier> <binders> '=' <prog> 'in' <prog>
+      --  <binding_fun> ::=
+      --  'let' <identifier> <binders> '='
+      --    '{' <precondition> '}' <prog> 'in' <prog>
 
       W_Binding_Rec,
       --  <binding_rec> ::= 'let' 'rec' <recfun> [ 'in' <prog> ]
@@ -604,7 +606,7 @@ package Why.Sinfo is
 
       W_Recfun,
       --  <recfun> ::= <identifier> <binders> ':' <value_type>
-      --     '{' 'variant' <wf_arg> '}' = <prog>
+      --     '{' 'variant' <wf_arg> '}' = '{' <precondition> '}' <prog>
 
       W_Loop_Annot,
       --  <loop_annot> ::= '{' [ 'invariant' <assertion> ]
@@ -629,7 +631,8 @@ package Why.Sinfo is
       --                    | <logic_declaration>
 
       W_Global_Binding,
-      --  <global_binding> ::= 'let' <identifier> [ <binders> ] '=' <prog>
+      --  <global_binding> ::=
+      --    'let' <identifier> [ <binders> ] '=' '{' <precondition> '}' <prog>
 
       W_Global_Rec_Binding,
       --  <global_rec_binding> ::= 'let' 'rec' <recfun>

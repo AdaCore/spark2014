@@ -3058,6 +3058,9 @@ package body Why.Atree.Traversal is
                Fun_Def_Get_Binders (Node));
             Traverse
               (State,
+               Fun_Def_Get_Pre (Node));
+            Traverse
+              (State,
                Fun_Def_Get_Def (Node));
 
             if State.Control = Terminate_Immediately then
@@ -3092,6 +3095,9 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Binding_Fun_Get_Binders (Node));
+            Traverse
+              (State,
+               Binding_Fun_Get_Pre (Node));
             Traverse
               (State,
                Binding_Fun_Get_Def (Node));
@@ -3847,6 +3853,9 @@ package body Why.Atree.Traversal is
                Recfun_Get_Variant (Node));
             Traverse
               (State,
+               Recfun_Get_Pre (Node));
+            Traverse
+              (State,
                Recfun_Get_Def (Node));
 
             if State.Control = Terminate_Immediately then
@@ -4013,6 +4022,9 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Global_Binding_Get_Binders (Node));
+            Traverse
+              (State,
+               Global_Binding_Get_Pre (Node));
             Traverse
               (State,
                Global_Binding_Get_Def (Node));
