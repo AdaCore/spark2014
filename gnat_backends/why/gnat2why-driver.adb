@@ -81,10 +81,10 @@ package body Gnat2Why.Driver is
       File  : constant W_File_Id := New_File;
 
       function Is_Type_Node (N : Node_Id) return Boolean;
-      --  ??? Missing doc
+      --  Detect if a node of an Ada Tree is a typing declaration
 
       function Is_Func_Or_Proc_Node (N : Node_Id) return Boolean;
-      --  ??? Missing doc
+      --  Detect if a node is a function or procedure declaration
 
       ------------------
       -- Is_Type_Node --
