@@ -411,13 +411,13 @@ package Why.Atree is
             PA_Post : W_Postcondition_Opaque_Id;
 
          when W_Fun_Def =>
-            FD_Binders : W_Binders_Opaque_Id;
+            FD_Binders : W_Binder_Opaque_List;
             FD_Pre     : W_Precondition_Opaque_Id;
             FD_Def     : W_Prog_Opaque_Id;
 
          when W_Binding_Fun =>
             BF_Name    : W_Identifier_Opaque_Id;
-            BF_Binders : W_Binders_Opaque_Id;
+            BF_Binders : W_Binder_Opaque_List;
             BF_Pre     : W_Precondition_Opaque_Id;
             BF_Def     : W_Prog_Opaque_Id;
             BF_Context : W_Prog_Opaque_Id;
@@ -451,16 +451,13 @@ package Why.Atree is
          when W_Op_Add_Prog .. W_Op_Not_Prog =>
             null;
 
-         when W_Binders =>
-            BS_Binders : W_Binder_Opaque_List;
-
          when W_Binder =>
             B_Names     : W_Identifier_Opaque_List;
             B_Arg_Type  : W_Value_Type_Opaque_Id;
 
          when W_Recfun =>
             RF_Name        : W_Identifier_Opaque_Id;
-            RF_Binders     : W_Binders_Opaque_Id;
+            RF_Binders     : W_Binder_Opaque_List;
             RF_Return_Type : W_Prog_Opaque_Id;
             RF_Variant     : W_Wf_Arg_Opaque_Id;
             RF_Pre         : W_Precondition_Opaque_Id;
@@ -484,7 +481,7 @@ package Why.Atree is
 
          when W_Global_Binding =>
             GB_Name    : W_Identifier_Opaque_Id;
-            GB_Binders : W_Binders_Opaque_OId;
+            GB_Binders : W_Binder_Opaque_OList;
             GB_Pre     : W_Precondition_Opaque_Id;
             GB_Def     : W_Prog_Opaque_Id;
 

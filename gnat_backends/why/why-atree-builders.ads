@@ -2405,14 +2405,12 @@ package Why.Atree.Builders is
 
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binders_Id;
+      Binders  : W_Binder_Array;
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id with
      Pre =>
-       (Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders)
+       (True
         and then Precondition_Id_Kind_Valid (Pre)
         and then Precondition_Id_Valid (Pre)
         and then Is_Root (Pre)
@@ -2428,9 +2426,7 @@ package Why.Atree.Builders is
           (New_Fun_Def'Result)
           = Ada_Node
         and then
-          Fun_Def_Get_Binders
-          (New_Fun_Def'Result)
-          = Binders
+        True
         and then
           Fun_Def_Get_Pre
           (New_Fun_Def'Result)
@@ -2443,7 +2439,7 @@ package Why.Atree.Builders is
    function New_Binding_Fun
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Binders_Id;
+      Binders  : W_Binder_Array;
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2452,9 +2448,7 @@ package Why.Atree.Builders is
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders)
+        and then True
         and then Precondition_Id_Kind_Valid (Pre)
         and then Precondition_Id_Valid (Pre)
         and then Is_Root (Pre)
@@ -2477,9 +2471,7 @@ package Why.Atree.Builders is
           (New_Binding_Fun'Result)
           = Name
         and then
-          Binding_Fun_Get_Binders
-          (New_Binding_Fun'Result)
-          = Binders
+        True
         and then
           Binding_Fun_Get_Pre
           (New_Binding_Fun'Result)
@@ -2888,23 +2880,6 @@ package Why.Atree.Builders is
           (New_Op_Not_Prog'Result)
           = Ada_Node);
 
-   function New_Binders
-     (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binder_Array)
-     return W_Binders_Id with
-     Pre =>
-       (True),
-     Post =>
-       (Get_Kind
-         (New_Binders'Result)
-         = W_Binders
-        and then
-          Get_Ada_Node
-          (New_Binders'Result)
-          = Ada_Node
-        and then
-        True);
-
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_Array;
@@ -2933,7 +2908,7 @@ package Why.Atree.Builders is
    function New_Recfun
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
-      Binders     : W_Binders_Id;
+      Binders     : W_Binder_Array;
       Return_Type : W_Prog_Id;
       Variant     : W_Wf_Arg_Id;
       Pre         : W_Precondition_Id;
@@ -2943,9 +2918,7 @@ package Why.Atree.Builders is
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders)
+        and then True
         and then Prog_Id_Kind_Valid (Return_Type)
         and then Prog_Id_Valid (Return_Type)
         and then Is_Root (Return_Type)
@@ -2971,9 +2944,7 @@ package Why.Atree.Builders is
           (New_Recfun'Result)
           = Name
         and then
-          Recfun_Get_Binders
-          (New_Recfun'Result)
-          = Binders
+        True
         and then
           Recfun_Get_Return_Type
           (New_Recfun'Result)
@@ -3106,7 +3077,7 @@ package Why.Atree.Builders is
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Binders_OId := Why_Empty;
+      Binders  : W_Binder_Array := (2 .. 1 => <>);
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id with
@@ -3114,9 +3085,7 @@ package Why.Atree.Builders is
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
-        and then Binders_OId_Kind_Valid (Binders)
-        and then Binders_OId_Valid (Binders)
-        and then Is_Root (Binders)
+        and then True
         and then Precondition_Id_Kind_Valid (Pre)
         and then Precondition_Id_Valid (Pre)
         and then Is_Root (Pre)
@@ -3136,9 +3105,7 @@ package Why.Atree.Builders is
           (New_Global_Binding'Result)
           = Name
         and then
-          Global_Binding_Get_Binders
-          (New_Global_Binding'Result)
-          = Binders
+        True
         and then
           Global_Binding_Get_Pre
           (New_Global_Binding'Result)
@@ -4333,15 +4300,6 @@ package Why.Atree.Builders is
        (Get_Kind
          (New_Unchecked_Op_Not_Prog'Result)
          = W_Op_Not_Prog
-       );
-
-   function New_Unchecked_Binders
-     return W_Binders_Unchecked_Id with
-     Pre => True,
-     Post =>
-       (Get_Kind
-         (New_Unchecked_Binders'Result)
-         = W_Binders
        );
 
    function New_Unchecked_Binder
@@ -6243,21 +6201,6 @@ package Why.Atree.Builders is
           (Duplicate_Op_Not_Prog'Result)
           = Ada_Node);
 
-   function Duplicate_Binders
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Binders_OId)
-     return W_Binders_Id with
-     Pre =>
-       (Binders_Id_Valid (Id)),
-     Post =>
-       (Get_Kind
-         (Duplicate_Binders'Result)
-         = W_Binders
-        and then
-          Get_Ada_Node
-          (Duplicate_Binders'Result)
-          = Ada_Node);
-
    function Duplicate_Binder
      (Ada_Node : Node_Id := Empty;
       Id       : W_Binder_OId)
@@ -7818,10 +7761,6 @@ private
              Id        => Id),
         when W_Op_Not_Prog =>
            Duplicate_Op_Not_Prog
-            (Ada_Node  => Ada_Node,
-             Id        => Id),
-        when W_Binders =>
-           Duplicate_Binders
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Binder =>

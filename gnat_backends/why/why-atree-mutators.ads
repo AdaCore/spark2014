@@ -1437,13 +1437,21 @@ package Why.Atree.Mutators is
         and then Postcondition_Id_Valid (Post)
         and then Is_Root (Post));
 
-   procedure Fun_Def_Set_Binders
-     (Id      : W_Fun_Def_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id) with
+   procedure Fun_Def_Append_To_Binders
+     (Id       : W_Fun_Def_Unchecked_Id;
+      New_Item : W_Binder_Id) with
      Pre =>
-       (Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders));
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Fun_Def_Prepend_To_Binders
+     (Id       : W_Fun_Def_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
 
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Unchecked_Id;
@@ -1469,13 +1477,21 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
-   procedure Binding_Fun_Set_Binders
-     (Id      : W_Binding_Fun_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id) with
+   procedure Binding_Fun_Append_To_Binders
+     (Id       : W_Binding_Fun_Unchecked_Id;
+      New_Item : W_Binder_Id) with
      Pre =>
-       (Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders));
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Binding_Fun_Prepend_To_Binders
+     (Id       : W_Binding_Fun_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
 
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Unchecked_Id;
@@ -1621,22 +1637,6 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Prog)
         and then Is_Root (Prog));
 
-   procedure Binders_Append_To_Binders
-     (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binder_Id) with
-     Pre =>
-       (Binder_Id_Kind_Valid (New_Item)
-        and then Binder_Id_Valid (New_Item)
-        and then Is_Root (New_Item));
-
-   procedure Binders_Prepend_To_Binders
-     (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binder_Id) with
-     Pre =>
-       (Binder_Id_Kind_Valid (New_Item)
-        and then Binder_Id_Valid (New_Item)
-        and then Is_Root (New_Item));
-
    procedure Binder_Append_To_Names
      (Id       : W_Binder_Unchecked_Id;
       New_Item : W_Identifier_Id) with
@@ -1669,13 +1669,21 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
-   procedure Recfun_Set_Binders
-     (Id      : W_Recfun_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id) with
+   procedure Recfun_Append_To_Binders
+     (Id       : W_Recfun_Unchecked_Id;
+      New_Item : W_Binder_Id) with
      Pre =>
-       (Binders_Id_Kind_Valid (Binders)
-        and then Binders_Id_Valid (Binders)
-        and then Is_Root (Binders));
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Recfun_Prepend_To_Binders
+     (Id       : W_Recfun_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
 
    procedure Recfun_Set_Return_Type
      (Id          : W_Recfun_Unchecked_Id;
@@ -1789,13 +1797,21 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
-   procedure Global_Binding_Set_Binders
-     (Id      : W_Global_Binding_Unchecked_Id;
-      Binders : W_Binders_Unchecked_OId) with
+   procedure Global_Binding_Append_To_Binders
+     (Id       : W_Global_Binding_Unchecked_Id;
+      New_Item : W_Binder_Id) with
      Pre =>
-       (Binders_OId_Kind_Valid (Binders)
-        and then Binders_OId_Valid (Binders)
-        and then Is_Root (Binders));
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
+
+   procedure Global_Binding_Prepend_To_Binders
+     (Id       : W_Global_Binding_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (New_Item)
+        and then Binder_Id_Valid (New_Item)
+        and then Is_Root (New_Item));
 
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Unchecked_Id;

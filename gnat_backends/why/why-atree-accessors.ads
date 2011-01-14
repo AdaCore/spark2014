@@ -653,7 +653,7 @@ package Why.Atree.Accessors is
 
    function Fun_Def_Get_Binders
      (Id : W_Fun_Def_Id)
-     return W_Binders_Id;
+     return W_Binder_List;
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Id)
@@ -669,7 +669,7 @@ package Why.Atree.Accessors is
 
    function Binding_Fun_Get_Binders
      (Id : W_Binding_Fun_Id)
-     return W_Binders_Id;
+     return W_Binder_List;
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Id)
@@ -735,10 +735,6 @@ package Why.Atree.Accessors is
      (Id : W_Protected_Prog_Id)
      return W_Prog_Id;
 
-   function Binders_Get_Binders
-     (Id : W_Binders_Id)
-     return W_Binder_List;
-
    function Binder_Get_Names
      (Id : W_Binder_Id)
      return W_Identifier_List;
@@ -753,7 +749,7 @@ package Why.Atree.Accessors is
 
    function Recfun_Get_Binders
      (Id : W_Recfun_Id)
-     return W_Binders_Id;
+     return W_Binder_List;
 
    function Recfun_Get_Return_Type
      (Id : W_Recfun_Id)
@@ -809,7 +805,7 @@ package Why.Atree.Accessors is
 
    function Global_Binding_Get_Binders
      (Id : W_Global_Binding_Id)
-     return W_Binders_OId;
+     return W_Binder_OList;
 
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Id)
@@ -1626,7 +1622,7 @@ private
 
    function Fun_Def_Get_Binders
      (Id : W_Fun_Def_Id)
-     return W_Binders_Id is
+     return W_Binder_List is
      (Get_Node (Id).FD_Binders);
 
    function Fun_Def_Get_Pre
@@ -1646,7 +1642,7 @@ private
 
    function Binding_Fun_Get_Binders
      (Id : W_Binding_Fun_Id)
-     return W_Binders_Id is
+     return W_Binder_List is
      (Get_Node (Id).BF_Binders);
 
    function Binding_Fun_Get_Pre
@@ -1729,11 +1725,6 @@ private
      return W_Prog_Id is
      (Get_Node (Id).BB_Prog);
 
-   function Binders_Get_Binders
-     (Id : W_Binders_Id)
-     return W_Binder_List is
-     (Get_Node (Id).BS_Binders);
-
    function Binder_Get_Names
      (Id : W_Binder_Id)
      return W_Identifier_List is
@@ -1751,7 +1742,7 @@ private
 
    function Recfun_Get_Binders
      (Id : W_Recfun_Id)
-     return W_Binders_Id is
+     return W_Binder_List is
      (Get_Node (Id).RF_Binders);
 
    function Recfun_Get_Return_Type
@@ -1821,7 +1812,7 @@ private
 
    function Global_Binding_Get_Binders
      (Id : W_Global_Binding_Id)
-     return W_Binders_OId is
+     return W_Binder_OList is
      (Get_Node (Id).GB_Binders);
 
    function Global_Binding_Get_Pre

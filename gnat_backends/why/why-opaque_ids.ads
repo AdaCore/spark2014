@@ -1006,14 +1006,6 @@ package Why.Opaque_Ids is
 
    subtype W_Op_Not_Prog_Opaque_OList is Why_Node_List;
 
-   subtype W_Binders_Opaque_Id is Why_Node_Id;
-
-   subtype W_Binders_Opaque_OId is Why_Node_Id;
-
-   subtype W_Binders_Opaque_List is Why_Node_List;
-
-   subtype W_Binders_Opaque_OList is Why_Node_List;
-
    subtype W_Binder_Opaque_Id is Why_Node_Id;
 
    subtype W_Binder_Opaque_OId is Why_Node_Id;

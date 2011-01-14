@@ -1972,22 +1972,6 @@ package Why.Unchecked_Ids is
      W_Op_Not_Prog_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Binders_Unchecked_Id is
-     W_Binders_Opaque_Id;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Binders_Unchecked_OId is
-     W_Binders_Opaque_OId;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Binders_Unchecked_List is
-     W_Binders_Opaque_List;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Binders_Unchecked_OList is
-     W_Binders_Opaque_OList;
-   --  ??? subtype predicate not generated yet
-
    subtype W_Binder_Unchecked_Id is
      W_Binder_Opaque_Id;
    --  ??? subtype predicate not generated yet

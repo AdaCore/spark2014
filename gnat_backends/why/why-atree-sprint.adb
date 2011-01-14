@@ -2137,9 +2137,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "fun ");
-      Traverse
-        (State,
-         Fun_Def_Get_Binders (Node));
+      Print_List (State, Fun_Def_Get_Binders (Node), " ");
       P (O, " ->");
       NL (O);
       Relative_Indent (O, 1);
@@ -2164,9 +2162,7 @@ package body Why.Atree.Sprint is
         (State,
          Binding_Fun_Get_Name (Node));
       P (O, " ");
-      Traverse
-        (State,
-         Binding_Fun_Get_Binders (Node));
+      Print_List (State, Fun_Def_Get_Binders (Node), " ");
       PL (O, " =");
       Relative_Indent (O, 1);
       Traverse
@@ -2595,22 +2591,6 @@ package body Why.Atree.Sprint is
       P (O, "not");
    end Op_Not_Prog_Pre_Op;
 
-   --------------------
-   -- Binders_Pre_Op --
-   --------------------
-
-   procedure Binders_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binders_Id)
-   is
-   begin
-      Print_List
-        (State,
-         Binders_Get_Binders (Node),
-         " ");
-      State.Control := Abandon_Children;
-   end Binders_Pre_Op;
-
    -------------------
    -- Binder_Pre_Op --
    -------------------
@@ -2646,9 +2626,7 @@ package body Why.Atree.Sprint is
         (State,
          Recfun_Get_Name (Node));
       P (O, " ");
-      Traverse
-        (State,
-         Recfun_Get_Binders (Node));
+      Print_List (State, Recfun_Get_Binders (Node), " ");
       P (O, " : ");
       Traverse
         (State,
@@ -2774,7 +2752,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Global_Binding_Id)
    is
-      Binders : constant W_Binders_OId :=
+      Binders : constant W_Binder_OList :=
                   Global_Binding_Get_Binders (Node);
    begin
       P (O, "let ");
@@ -2782,9 +2760,9 @@ package body Why.Atree.Sprint is
         (State,
          Global_Binding_Get_Name (Node));
 
-      if Binders /= Why_Empty then
+      if not Is_Empty (Binders) then
          P (O, " ");
-         Traverse (State, Binders);
+         Print_List (State, Binders, " ");
       end if;
 
       PL (O, " =");

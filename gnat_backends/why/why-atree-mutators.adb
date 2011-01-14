@@ -3166,23 +3166,39 @@ package body Why.Atree.Mutators is
          Opaque_Assertion_Id_Valid (Id));
    end Opaque_Assertion_Set_Post;
 
-   -------------------------
-   -- Fun_Def_Set_Binders --
-   -------------------------
+   -------------------------------
+   -- Fun_Def_Append_To_Binders --
+   -------------------------------
 
-   procedure Fun_Def_Set_Binders
-     (Id      : W_Fun_Def_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id)
+   procedure Fun_Def_Append_To_Binders
+     (Id       : W_Fun_Def_Unchecked_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.FD_Binders := Binders;
-      Set_Node (Id, Node);
-      Set_Link (Binders, Id);
+      Append (Node.FD_Binders, New_Item);
       Update_Validity_Status
         (Id,
          Fun_Def_Id_Valid (Id));
-   end Fun_Def_Set_Binders;
+   end Fun_Def_Append_To_Binders;
+
+   --------------------------------
+   -- Fun_Def_Prepend_To_Binders --
+   --------------------------------
+
+   procedure Fun_Def_Prepend_To_Binders
+     (Id       : W_Fun_Def_Unchecked_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.FD_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Fun_Def_Id_Valid (Id));
+   end Fun_Def_Prepend_To_Binders;
 
    ---------------------
    -- Fun_Def_Set_Pre --
@@ -3238,23 +3254,39 @@ package body Why.Atree.Mutators is
          Binding_Fun_Id_Valid (Id));
    end Binding_Fun_Set_Name;
 
-   -----------------------------
-   -- Binding_Fun_Set_Binders --
-   -----------------------------
+   -----------------------------------
+   -- Binding_Fun_Append_To_Binders --
+   -----------------------------------
 
-   procedure Binding_Fun_Set_Binders
-     (Id      : W_Binding_Fun_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id)
+   procedure Binding_Fun_Append_To_Binders
+     (Id       : W_Binding_Fun_Unchecked_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.BF_Binders := Binders;
-      Set_Node (Id, Node);
-      Set_Link (Binders, Id);
+      Append (Node.BF_Binders, New_Item);
       Update_Validity_Status
         (Id,
          Binding_Fun_Id_Valid (Id));
-   end Binding_Fun_Set_Binders;
+   end Binding_Fun_Append_To_Binders;
+
+   ------------------------------------
+   -- Binding_Fun_Prepend_To_Binders --
+   ------------------------------------
+
+   procedure Binding_Fun_Prepend_To_Binders
+     (Id       : W_Binding_Fun_Unchecked_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.BF_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Binding_Fun_Id_Valid (Id));
+   end Binding_Fun_Prepend_To_Binders;
 
    -------------------------
    -- Binding_Fun_Set_Pre --
@@ -3576,40 +3608,6 @@ package body Why.Atree.Mutators is
          Protected_Prog_Id_Valid (Id));
    end Protected_Prog_Set_Prog;
 
-   -------------------------------
-   -- Binders_Append_To_Binders --
-   -------------------------------
-
-   procedure Binders_Append_To_Binders
-     (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binder_Id)
-   is
-      Node : constant Why_Node :=
-               Get_Node (Id);
-   begin
-      Append (Node.BS_Binders, New_Item);
-      Update_Validity_Status
-        (Id,
-         Binders_Id_Valid (Id));
-   end Binders_Append_To_Binders;
-
-   --------------------------------
-   -- Binders_Prepend_To_Binders --
-   --------------------------------
-
-   procedure Binders_Prepend_To_Binders
-     (Id       : W_Binders_Unchecked_Id;
-      New_Item : W_Binder_Id)
-   is
-      Node : constant Why_Node :=
-               Get_Node (Id);
-   begin
-      Prepend (Node.BS_Binders, New_Item);
-      Update_Validity_Status
-        (Id,
-         Binders_Id_Valid (Id));
-   end Binders_Prepend_To_Binders;
-
    ----------------------------
    -- Binder_Append_To_Names --
    ----------------------------
@@ -3680,23 +3678,39 @@ package body Why.Atree.Mutators is
          Recfun_Id_Valid (Id));
    end Recfun_Set_Name;
 
-   ------------------------
-   -- Recfun_Set_Binders --
-   ------------------------
+   ------------------------------
+   -- Recfun_Append_To_Binders --
+   ------------------------------
 
-   procedure Recfun_Set_Binders
-     (Id      : W_Recfun_Unchecked_Id;
-      Binders : W_Binders_Unchecked_Id)
+   procedure Recfun_Append_To_Binders
+     (Id       : W_Recfun_Unchecked_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.RF_Binders := Binders;
-      Set_Node (Id, Node);
-      Set_Link (Binders, Id);
+      Append (Node.RF_Binders, New_Item);
       Update_Validity_Status
         (Id,
          Recfun_Id_Valid (Id));
-   end Recfun_Set_Binders;
+   end Recfun_Append_To_Binders;
+
+   -------------------------------
+   -- Recfun_Prepend_To_Binders --
+   -------------------------------
+
+   procedure Recfun_Prepend_To_Binders
+     (Id       : W_Recfun_Unchecked_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.RF_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Recfun_Id_Valid (Id));
+   end Recfun_Prepend_To_Binders;
 
    ----------------------------
    -- Recfun_Set_Return_Type --
@@ -3948,23 +3962,39 @@ package body Why.Atree.Mutators is
          Global_Binding_Id_Valid (Id));
    end Global_Binding_Set_Name;
 
-   --------------------------------
-   -- Global_Binding_Set_Binders --
-   --------------------------------
+   --------------------------------------
+   -- Global_Binding_Append_To_Binders --
+   --------------------------------------
 
-   procedure Global_Binding_Set_Binders
-     (Id      : W_Global_Binding_Unchecked_Id;
-      Binders : W_Binders_Unchecked_OId)
+   procedure Global_Binding_Append_To_Binders
+     (Id       : W_Global_Binding_Unchecked_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (Id);
+      Node : constant Why_Node :=
+               Get_Node (Id);
    begin
-      Node.GB_Binders := Binders;
-      Set_Node (Id, Node);
-      Set_Link (Binders, Id);
+      Append (Node.GB_Binders, New_Item);
       Update_Validity_Status
         (Id,
          Global_Binding_Id_Valid (Id));
-   end Global_Binding_Set_Binders;
+   end Global_Binding_Append_To_Binders;
+
+   ---------------------------------------
+   -- Global_Binding_Prepend_To_Binders --
+   ---------------------------------------
+
+   procedure Global_Binding_Prepend_To_Binders
+     (Id       : W_Global_Binding_Unchecked_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (Id);
+   begin
+      Prepend (Node.GB_Binders, New_Item);
+      Update_Validity_Status
+        (Id,
+         Global_Binding_Id_Valid (Id));
+   end Global_Binding_Prepend_To_Binders;
 
    ----------------------------
    -- Global_Binding_Set_Pre --

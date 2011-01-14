@@ -2564,7 +2564,7 @@ package body Why.Atree.Builders is
 
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binders_Id;
+      Binders  : W_Binder_Array;
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id
@@ -2574,7 +2574,19 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Fun_Def);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.FD_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.FD_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.FD_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.FD_Binders, New_Id);
       Result.FD_Pre := Pre;
       Set_Link (Result.FD_Pre, New_Id);
@@ -2593,7 +2605,7 @@ package body Why.Atree.Builders is
    function New_Binding_Fun
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Binders_Id;
+      Binders  : W_Binder_Array;
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
@@ -2606,7 +2618,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.BF_Name := Name;
       Set_Link (Result.BF_Name, New_Id);
-      Result.BF_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.BF_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.BF_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.BF_Binders, New_Id);
       Result.BF_Pre := Pre;
       Set_Link (Result.BF_Pre, New_Id);
@@ -3120,40 +3144,6 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Op_Not_Prog;
 
-   -----------------
-   -- New_Binders --
-   -----------------
-
-   function New_Binders
-     (Ada_Node : Node_Id := Empty;
-      Binders  : W_Binder_Array)
-     return W_Binders_Id
-   is
-      Result : Why_Node (W_Binders);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Binders);
-   begin
-      Result.Ada_Node := Ada_Node;
-      pragma Assert (Binders'Length > 0);
-      Result.BS_Binders := New_List;
-      for J in Binders'Range loop
-         pragma Assert
-           (Binder_Id_Kind_Valid
-            (Binders (J)));
-         pragma Assert
-           (Binder_Id_Valid
-            (Binders (J)));
-         Append
-           (Result.BS_Binders,
-            Binders (J));
-      end loop;
-      Set_Link (Result.BS_Binders, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Binders;
-
    ----------------
    -- New_Binder --
    ----------------
@@ -3198,7 +3188,7 @@ package body Why.Atree.Builders is
    function New_Recfun
      (Ada_Node    : Node_Id := Empty;
       Name        : W_Identifier_Id;
-      Binders     : W_Binders_Id;
+      Binders     : W_Binder_Array;
       Return_Type : W_Prog_Id;
       Variant     : W_Wf_Arg_Id;
       Pre         : W_Precondition_Id;
@@ -3212,7 +3202,19 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.RF_Name := Name;
       Set_Link (Result.RF_Name, New_Id);
-      Result.RF_Binders := Binders;
+      pragma Assert (Binders'Length > 0);
+      Result.RF_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.RF_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.RF_Binders, New_Id);
       Result.RF_Return_Type := Return_Type;
       Set_Link (Result.RF_Return_Type, New_Id);
@@ -3346,7 +3348,7 @@ package body Why.Atree.Builders is
    function New_Global_Binding
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Binders  : W_Binders_OId := Why_Empty;
+      Binders  : W_Binder_Array := (2 .. 1 => <>);
       Pre      : W_Precondition_Id;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id
@@ -3358,7 +3360,18 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Ada_Node;
       Result.GB_Name := Name;
       Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders := Binders;
+      Result.GB_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.GB_Binders,
+            Binders (J));
+      end loop;
       Set_Link (Result.GB_Binders, New_Id);
       Result.GB_Pre := Pre;
       Set_Link (Result.GB_Pre, New_Id);
@@ -5508,7 +5521,7 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Fun_Def);
    begin
       Result.Ada_Node := Empty;
-      Result.FD_Binders := Why_Empty;
+      Result.FD_Binders := New_List;
       Set_Link (Result.FD_Binders, New_Id);
       Result.FD_Pre := Why_Empty;
       Set_Link (Result.FD_Pre, New_Id);
@@ -5534,7 +5547,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Empty;
       Result.BF_Name := Why_Empty;
       Set_Link (Result.BF_Name, New_Id);
-      Result.BF_Binders := Why_Empty;
+      Result.BF_Binders := New_List;
       Set_Link (Result.BF_Binders, New_Id);
       Result.BF_Pre := Why_Empty;
       Set_Link (Result.BF_Pre, New_Id);
@@ -5988,26 +6001,6 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Op_Not_Prog;
 
-   ---------------------------
-   -- New_Unchecked_Binders --
-   ---------------------------
-
-   function New_Unchecked_Binders
-     return W_Binders_Unchecked_Id
-   is
-      Result : Why_Node (W_Binders);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Binders);
-   begin
-      Result.Ada_Node := Empty;
-      Result.BS_Binders := New_List;
-      Set_Link (Result.BS_Binders, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := False;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Unchecked_Binders;
-
    --------------------------
    -- New_Unchecked_Binder --
    --------------------------
@@ -6044,7 +6037,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Empty;
       Result.RF_Name := Why_Empty;
       Set_Link (Result.RF_Name, New_Id);
-      Result.RF_Binders := Why_Empty;
+      Result.RF_Binders := New_List;
       Set_Link (Result.RF_Binders, New_Id);
       Result.RF_Return_Type := Why_Empty;
       Set_Link (Result.RF_Return_Type, New_Id);
@@ -6162,7 +6155,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node := Empty;
       Result.GB_Name := Why_Empty;
       Set_Link (Result.GB_Name, New_Id);
-      Result.GB_Binders := Why_Empty;
+      Result.GB_Binders := New_List;
       Set_Link (Result.GB_Binders, New_Id);
       Result.GB_Pre := Why_Empty;
       Set_Link (Result.GB_Pre, New_Id);
@@ -10129,7 +10122,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Fun_Def);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Fun_Def);
-         Binders : constant W_Binders_Id :=
+         Binders : constant W_Binder_List :=
             Fun_Def_Get_Binders (Id);
          Pre     : constant W_Precondition_Id :=
             Fun_Def_Get_Pre (Id);
@@ -10137,9 +10130,23 @@ package body Why.Atree.Builders is
             Fun_Def_Get_Def (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.FD_Binders :=
-           Duplicate_Binders
-           (Id => Binders);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Binders);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Binder_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.FD_Binders := NL;
+         end;
          Set_Link (Result.FD_Binders, New_Id);
          Result.FD_Pre :=
            Duplicate_Precondition
@@ -10176,7 +10183,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Binding_Fun);
          Name    : constant W_Identifier_Id :=
             Binding_Fun_Get_Name (Id);
-         Binders : constant W_Binders_Id :=
+         Binders : constant W_Binder_List :=
             Binding_Fun_Get_Binders (Id);
          Pre     : constant W_Precondition_Id :=
             Binding_Fun_Get_Pre (Id);
@@ -10190,9 +10197,23 @@ package body Why.Atree.Builders is
            Duplicate_Identifier
            (Id => Name);
          Set_Link (Result.BF_Name, New_Id);
-         Result.BF_Binders :=
-           Duplicate_Binders
-           (Id => Binders);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Binders);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Binder_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.BF_Binders := NL;
+         end;
          Set_Link (Result.BF_Binders, New_Id);
          Result.BF_Pre :=
            Duplicate_Precondition
@@ -10952,53 +10973,6 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Op_Not_Prog;
 
-   -----------------------
-   -- Duplicate_Binders --
-   -----------------------
-
-   function Duplicate_Binders
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Binders_OId)
-     return W_Binders_Id
-   is
-   begin
-      if Id = Why_Empty then
-         return Why_Empty;
-      end if;
-
-      declare
-         Result : Why_Node (W_Binders);
-         New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Binders);
-         Binders : constant W_Binder_List :=
-            Binders_Get_Binders (Id);
-      begin
-         Result.Ada_Node := Ada_Node;
-         declare
-            use Node_Lists;
-
-            Nodes    : constant List := Get_List (Binders);
-            Position : Cursor := First (Nodes);
-            NL       : constant Why_Node_List := New_List;
-         begin
-            while Position /= No_Element loop
-               declare
-                  Node : constant W_Binder_Id := Element (Position);
-               begin
-                  Append (NL,  Node);
-               end;
-               Position := Next (Position);
-            end loop;
-            Result.BS_Binders := NL;
-         end;
-         Set_Link (Result.BS_Binders, New_Id);
-         Result.Link := Why_Empty;
-         Result.Checked := True;
-         Set_Node (New_Id, Result);
-         return New_Id;
-      end;
-   end Duplicate_Binders;
-
    ----------------------
    -- Duplicate_Binder --
    ----------------------
@@ -11072,7 +11046,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Recfun);
          Name        : constant W_Identifier_Id :=
             Recfun_Get_Name (Id);
-         Binders     : constant W_Binders_Id :=
+         Binders     : constant W_Binder_List :=
             Recfun_Get_Binders (Id);
          Return_Type : constant W_Prog_Id :=
             Recfun_Get_Return_Type (Id);
@@ -11088,9 +11062,23 @@ package body Why.Atree.Builders is
            Duplicate_Identifier
            (Id => Name);
          Set_Link (Result.RF_Name, New_Id);
-         Result.RF_Binders :=
-           Duplicate_Binders
-           (Id => Binders);
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Binders);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Binder_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.RF_Binders := NL;
+         end;
          Set_Link (Result.RF_Binders, New_Id);
          Result.RF_Return_Type :=
            Duplicate_Prog
@@ -11321,7 +11309,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Global_Binding);
          Name    : constant W_Identifier_Id :=
             Global_Binding_Get_Name (Id);
-         Binders : constant W_Binders_OId :=
+         Binders : constant W_Binder_OList :=
             Global_Binding_Get_Binders (Id);
          Pre     : constant W_Precondition_Id :=
             Global_Binding_Get_Pre (Id);
@@ -11333,13 +11321,23 @@ package body Why.Atree.Builders is
            Duplicate_Identifier
            (Id => Name);
          Set_Link (Result.GB_Name, New_Id);
-         if Binders = Why_Empty then
-            Result.GB_Binders := Why_Empty;
-         else
-            Result.GB_Binders :=
-              Duplicate_Binders
-              (Id => Binders);
-         end if;
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Binders);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Binder_Id := Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.GB_Binders := NL;
+         end;
          Set_Link (Result.GB_Binders, New_Id);
          Result.GB_Pre :=
            Duplicate_Precondition

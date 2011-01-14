@@ -516,10 +516,6 @@ private
      (State : in out Printer_State;
       Node  : W_Op_Not_Prog_Id);
 
-   procedure Binders_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Binders_Id);
-
    procedure Binder_Pre_Op
      (State : in out Printer_State;
       Node  : W_Binder_Id);

@@ -2388,25 +2388,6 @@ package Why.Ids is
      W_Op_Not_Prog_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Binders_Id is
-     W_Binders_Unchecked_Id;
-   --  ??? subtype predicate not generated yet
-
-   type W_Binders_Array is array (Positive range <>)
-     of W_Binders_Id;
-
-   subtype W_Binders_OId is
-     W_Binders_Unchecked_OId;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Binders_List is
-     W_Binders_Unchecked_List;
-   --  ??? subtype predicate not generated yet
-
-   subtype W_Binders_OList is
-     W_Binders_Unchecked_OList;
-   --  ??? subtype predicate not generated yet
-
    subtype W_Binder_Id is
      W_Binder_Unchecked_Id;
    --  ??? subtype predicate not generated yet

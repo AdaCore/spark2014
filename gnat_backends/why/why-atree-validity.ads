@@ -1998,22 +1998,6 @@ package Why.Atree.Validity is
      (Id : W_Op_Not_Prog_Unchecked_OList)
      return Boolean;
 
-   function Binders_Id_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean;
-
-   function Binders_OId_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean;
-
-   function Binders_List_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean;
-
-   function Binders_OList_Valid
-     (Id : W_Binders_Unchecked_OList)
-     return Boolean;
-
    function Binder_Id_Valid
      (Id : W_Binder_Unchecked_Id)
      return Boolean;
@@ -4422,22 +4406,6 @@ private
 
    function Op_Not_Prog_OList_Children_Valid
      (Id : W_Op_Not_Prog_Unchecked_OList)
-     return Boolean;
-
-   function Binders_Id_Children_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean;
-
-   function Binders_OId_Children_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean;
-
-   function Binders_List_Children_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean;
-
-   function Binders_OList_Children_Valid
-     (Id : W_Binders_Unchecked_OList)
      return Boolean;
 
    function Binder_Id_Children_Valid
@@ -8052,32 +8020,6 @@ private
      (Is_Empty (Id)
       or else Op_Not_Prog_List_Valid (Id));
 
-   function Binders_Id_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Binders_Id_Children_Valid (Id));
-
-   function Binders_OId_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binders_Id_Valid (Id));
-
-   function Binders_List_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binders_OList_Valid
-     (Id : W_Binders_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binders_List_Valid (Id));
-
    function Binder_Id_Valid
      (Id : W_Binder_Unchecked_Id)
      return Boolean is
@@ -11367,7 +11309,7 @@ private
    function Fun_Def_Id_Children_Valid
      (Id : W_Fun_Def_Unchecked_Id)
      return Boolean is
-     (Id_Cache_Valid
+     (List_Cache_Valid
        (Fun_Def_Get_Binders (Id))
      and then
        Id_Cache_Valid
@@ -11400,7 +11342,7 @@ private
      (Id_Cache_Valid
        (Binding_Fun_Get_Name (Id))
      and then
-       Id_Cache_Valid
+       List_Cache_Valid
          (Binding_Fun_Get_Binders (Id))
      and then
        Id_Cache_Valid
@@ -11982,30 +11924,6 @@ private
      (Is_Empty (Id)
       or else Op_Not_Prog_List_Children_Valid (Id));
 
-   function Binders_Id_Children_Valid
-     (Id : W_Binders_Unchecked_Id)
-     return Boolean is
-     (List_Cache_Valid
-       (Binders_Get_Binders (Id)));
-
-   function Binders_OId_Children_Valid
-     (Id : W_Binders_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binders_Id_Children_Valid (Id));
-
-   function Binders_List_Children_Valid
-     (Id : W_Binders_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Binders_OList_Children_Valid
-     (Id : W_Binders_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binders_List_Children_Valid (Id));
-
    function Binder_Id_Children_Valid
      (Id : W_Binder_Unchecked_Id)
      return Boolean is
@@ -12039,7 +11957,7 @@ private
      (Id_Cache_Valid
        (Recfun_Get_Name (Id))
      and then
-       Id_Cache_Valid
+       List_Cache_Valid
          (Recfun_Get_Binders (Id))
      and then
        Id_Cache_Valid
@@ -12186,7 +12104,7 @@ private
      (Id_Cache_Valid
        (Global_Binding_Get_Name (Id))
      and then
-       OId_Cache_Valid
+       OList_Cache_Valid
          (Global_Binding_Get_Binders (Id))
      and then
        Id_Cache_Valid
@@ -13308,8 +13226,6 @@ private
            Op_Minus_Prog_Id_Children_Valid (Id),
         when W_Op_Not_Prog =>
            Op_Not_Prog_Id_Children_Valid (Id),
-        when W_Binders =>
-           Binders_Id_Children_Valid (Id),
         when W_Binder =>
            Binder_Id_Children_Valid (Id),
         when W_Recfun =>

@@ -1968,22 +1968,6 @@ package Why.Kind_Validity is
      (Id : W_Op_Not_Prog_Opaque_OList)
      return Boolean;
 
-   function Binders_Id_Kind_Valid
-     (Id : W_Binders_Opaque_Id)
-     return Boolean;
-
-   function Binders_OId_Kind_Valid
-     (Id : W_Binders_Opaque_OId)
-     return Boolean;
-
-   function Binders_List_Kind_Valid
-     (Id : W_Binders_Opaque_List)
-     return Boolean;
-
-   function Binders_OList_Kind_Valid
-     (Id : W_Binders_Opaque_OList)
-     return Boolean;
-
    function Binder_Id_Kind_Valid
      (Id : W_Binder_Opaque_Id)
      return Boolean;
@@ -5474,31 +5458,6 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Op_Not_Prog_List_Kind_Valid (Id));
-
-   function Binders_Id_Kind_Valid
-     (Id : W_Binders_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Binders);
-
-   function Binders_OId_Kind_Valid
-     (Id : W_Binders_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Binders_Id_Kind_Valid (Id));
-
-   function Binders_List_Kind_Valid
-     (Id : W_Binders_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Binders_OList_Kind_Valid
-     (Id : W_Binders_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Binders_List_Kind_Valid (Id));
 
    function Binder_Id_Kind_Valid
      (Id : W_Binder_Opaque_Id)

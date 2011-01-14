@@ -3053,7 +3053,7 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-            Traverse
+            Traverse_List
               (State,
                Fun_Def_Get_Binders (Node));
             Traverse
@@ -3092,7 +3092,7 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Binding_Fun_Get_Name (Node));
-            Traverse
+            Traverse_List
               (State,
                Binding_Fun_Get_Binders (Node));
             Traverse
@@ -3764,36 +3764,6 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Binders =>
-            Binders_Pre_Op (State, Node);
-
-            if State.Control = Abandon_Children then
-               State.Control := Continue;
-               return;
-            end if;
-
-            if State.Control = Abandon_Siblings then
-               return;
-            end if;
-
-            Traverse_List
-              (State,
-               Binders_Get_Binders (Node));
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-            Binders_Post_Op (State, Node);
-
-            if State.Control = Abandon_Siblings then
-               State.Control := Continue;
-            end if;
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
          when W_Binder =>
             Binder_Pre_Op (State, Node);
 
@@ -3842,7 +3812,7 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Recfun_Get_Name (Node));
-            Traverse
+            Traverse_List
               (State,
                Recfun_Get_Binders (Node));
             Traverse
@@ -4019,7 +3989,7 @@ package body Why.Atree.Traversal is
             Traverse
               (State,
                Global_Binding_Get_Name (Node));
-            Traverse
+            Traverse_List
               (State,
                Global_Binding_Get_Binders (Node));
             Traverse

@@ -597,9 +597,6 @@ package Why.Sinfo is
       W_Op_Not_Prog,
       --  <op_not> ::= 'not'
 
-      W_Binders,
-      --  <binders> ::= <binder>+
-
       W_Binder,
       --  <binder> ::=
       --     '(' <identifier> [',' <identifier>]+ ':' <value_type> ')'

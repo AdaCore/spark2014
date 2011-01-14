@@ -94,10 +94,9 @@ package body Gnat2Why.Subprograms is
             File => File,
             Name => Get_Name_String (Name),
             Binders =>
-               (New_Binders
-                  (Binders => (1 => New_Binder
-                     (Names => (1 => New_Identifier ("x")),
-                      Arg_Type => New_Type_Unit)))),
+               (1 => New_Binder
+                  (Names => (1 => New_Identifier ("x")),
+                   Arg_Type => New_Type_Unit)),
             Pre => New_Assertion (Pred => New_True_Literal_Pred),
             Post => New_Assertion (Pred => New_True_Literal_Pred),
             Def => Why_Expr_of_Ada_Stmts (Stmts));
