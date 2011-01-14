@@ -34,15 +34,41 @@ with Why.Gen.Funcs;      use Why.Gen.Funcs;
 package body Gnat2Why.Subprograms is
 
    --------------------------
+   -- Why_Expr_of_Ada_Expr --
+   --------------------------
+
+   function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
+   is
+      --  ??? TBD: complete this function for the remaining cases
+   begin
+      case Nkind (Expr) is
+         when N_Integer_Literal =>
+            return New_Prog_Constant
+              (Def => New_Integer_Constant (Value => Intval (Expr)));
+         when N_Identifier =>
+            return New_Deref
+              (Ref => New_Identifier (Symbol => Chars (Expr)));
+         when others => raise Program_Error;
+      end case;
+   end Why_Expr_of_Ada_Expr;
+
+   --------------------------
    -- Why_Expr_of_Ada_Stmt --
    --------------------------
 
    function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
+      --  ??? TBD: complete this function for the remaining cases
    begin
       case Nkind (Stmt) is
          when N_Null_Statement =>
             return New_Prog_Constant (Def => New_Void_Literal);
+         when N_Assignment_Statement =>
+            --  ??? TBD: Here we have to be more careful if the left hand side
+            --  is not a simple variable
+            return New_Assignment
+              (Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+               Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
          when N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
             --  in a procedure (translate to void or even omit) or function
@@ -90,11 +116,56 @@ package body Gnat2Why.Subprograms is
       --  * both functions and procedures
       --  * procedure arguments
       --  * return types
-      Is_Proc : Boolean := False;
-      Spec    : constant Node_Id := Specification (Node);
-      Stmts   : constant List_Id :=
-                  Statements (Handled_Statement_Sequence (Node));
-      Name    : Name_Id;
+      Is_Proc     : Boolean          := False;
+      Spec        : constant Node_Id := Specification (Node);
+      Stmts       : constant List_Id :=
+         Statements (Handled_Statement_Sequence (Node));
+      Name        : Name_Id;
+      Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
+
+      ---------------------
+      -- Compute_Binders --
+      ---------------------
+      function Compute_Binders return W_Binder_Array;
+      --  Compute the arguments of the generated Why function
+      --  use argument (x : void) if the Ada procedure / function has no
+      --  arguments
+
+      function Compute_Binders return W_Binder_Array
+      is
+         L : constant Nat := List_Length (Ada_Binders);
+      begin
+         if L = 0 then
+            --  ??? TBD: We should never choose variable names at random like
+            --  that, beware of variable capture
+            return (1 => New_Binder
+               (Names => (1 => New_Identifier ("x")),
+                Arg_Type => New_Type_Unit));
+         else
+            declare
+               Why_Binders : W_Binder_Array (1 .. Integer (L));
+               Arg         : Node_Or_Entity_Id := Nlists.First (Ada_Binders);
+               Cnt         : Integer range 0 .. Integer (L) := 0;
+            begin
+               while Nkind (Arg) /= N_Empty loop
+                  Cnt := Cnt + 1;
+                  --  ??? TBD: Get Argument type; it should be sufficient
+                  --  to simply get its name here
+                  --  Chars (Parameter_Type (Arg))
+                  Why_Binders (Cnt) :=
+                     New_Binder
+                       (Names =>
+                         (1 => New_Identifier
+                          (Symbol => Chars (Defining_Identifier (Arg)))),
+                        Arg_Type =>
+                          New_Ref_Type (Aliased_Type => New_Type_Int));
+                  Arg := Next (Arg);
+               end loop;
+               return Why_Binders;
+            end;
+         end if;
+      end Compute_Binders;
+
    begin
       case Nkind (Spec) is
          when N_Procedure_Specification =>
@@ -107,10 +178,7 @@ package body Gnat2Why.Subprograms is
          Declare_Global_Binding
            (File => File,
             Name => Get_Name_String (Name),
-            Binders =>
-              (1 => New_Binder
-               (Names => (1 => New_Identifier ("x")),
-                Arg_Type => New_Type_Unit)),
+            Binders => Compute_Binders,
             Pre => New_Assertion (Pred => New_True_Literal_Pred),
             Post => New_Assertion (Pred => New_True_Literal_Pred),
             Def => Why_Expr_of_Ada_Stmts (Stmts));
