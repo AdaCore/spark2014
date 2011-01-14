@@ -33,6 +33,10 @@ with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Subprograms is
 
+   --------------------------
+   -- Why_Expr_of_Ada_Stmt --
+   --------------------------
+
    function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
    begin
@@ -48,6 +52,10 @@ package body Gnat2Why.Subprograms is
       end case;
    end Why_Expr_of_Ada_Stmt;
 
+   ---------------------------
+   -- Why_Expr_of_Ada_Stmts --
+   ---------------------------
+
    function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id
    is
       L : constant Nat := List_Length (Stmts);
@@ -55,10 +63,11 @@ package body Gnat2Why.Subprograms is
       if L = 0 then
          return New_Prog_Constant (Def => New_Void_Literal);
       end if;
+
       declare
          Cursor   : Node_Or_Entity_Id := Nlists.First (Stmts);
          Sequence : W_Prog_Array (1 .. Integer (L));
-         Cnt : Integer range 0 .. Integer (L) := 0;
+         Cnt      : Integer range 0 .. Integer (L) := 0;
       begin
          while Nkind (Cursor) /= N_Empty loop
             Cnt := Cnt + 1;
@@ -69,9 +78,13 @@ package body Gnat2Why.Subprograms is
       end;
    end Why_Expr_of_Ada_Stmts;
 
+   --------------------------------
+   -- Why_Decl_of_Ada_Subprogram --
+   --------------------------------
+
    procedure Why_Decl_of_Ada_Subprogram
-      (File : W_File_Id;
-       Node : Node_Id)
+     (File : W_File_Id;
+      Node : Node_Id)
    is
       --  ??? This function has to be expanded to deal with:
       --  * both functions and procedures
@@ -79,8 +92,8 @@ package body Gnat2Why.Subprograms is
       --  * return types
       Is_Proc : Boolean := False;
       Spec    : constant Node_Id := Specification (Node);
-      Stmts : constant List_Id
-        := Statements (Handled_Statement_Sequence (Node));
+      Stmts   : constant List_Id :=
+                  Statements (Handled_Statement_Sequence (Node));
       Name    : Name_Id;
    begin
       case Nkind (Spec) is
@@ -89,17 +102,19 @@ package body Gnat2Why.Subprograms is
             Name := Chars (Defining_Unit_Name (Spec));
          when others => raise Program_Error;
       end case;
+
       if Is_Proc then
-         Declare_Global_Binding (
-            File => File,
+         Declare_Global_Binding
+           (File => File,
             Name => Get_Name_String (Name),
             Binders =>
-               (1 => New_Binder
-                  (Names => (1 => New_Identifier ("x")),
-                   Arg_Type => New_Type_Unit)),
+              (1 => New_Binder
+               (Names => (1 => New_Identifier ("x")),
+                Arg_Type => New_Type_Unit)),
             Pre => New_Assertion (Pred => New_True_Literal_Pred),
             Post => New_Assertion (Pred => New_True_Literal_Pred),
             Def => Why_Expr_of_Ada_Stmts (Stmts));
       end if;
    end Why_Decl_of_Ada_Subprogram;
+
 end Gnat2Why.Subprograms;

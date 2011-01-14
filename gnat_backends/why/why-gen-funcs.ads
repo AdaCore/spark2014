@@ -141,12 +141,14 @@ package Why.Gen.Funcs is
    --     parameter any___<name> : unit -> { } <name> { true }
 
    procedure Declare_Global_Binding
-      (File : W_File_Id;
-       Name : String;
-       Binders  : W_Binder_Array;
-       Pre  : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred);
-       Def  : W_Prog_Id;
-       Post : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred)
-       );
+     (File    : W_File_Id;
+      Name    : String;
+      Binders : W_Binder_Array;
+      Pre     : W_Assertion_Id
+                  := New_Assertion (Pred => New_True_Literal_Pred);
+      Def     : W_Prog_Id;
+      Post    : W_Assertion_Id
+                  := New_Assertion (Pred => New_True_Literal_Pred));
+   --  ??? Missing doc
 
 end Why.Gen.Funcs;

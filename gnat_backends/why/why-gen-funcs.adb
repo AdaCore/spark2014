@@ -263,25 +263,26 @@ package body Why.Gen.Funcs is
    ----------------------------
 
    procedure Declare_Global_Binding
-      (File : W_File_Id;
-       Name : String;
-       Binders  : W_Binder_Array;
-       Pre  : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred);
-       Def  : W_Prog_Id;
-       Post : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred)
-       )
+      (File    : W_File_Id;
+       Name    : String;
+       Binders : W_Binder_Array;
+       Pre     : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred);
+       Def     : W_Prog_Id;
+       Post    : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred))
    is
    begin
       File_Append_To_Declarations
          (File,
           New_Global_Binding
-             (Name => New_Identifier (Name),
-              Pre => New_Precondition (Assertion => Pre),
-              Binders => Binders,
-              Def =>
-               New_Post_Assertion
-                  (Prog => Def,
-                   Post => New_Postcondition (Assertion => Post))));
+          (Name => New_Identifier (Name),
+           Pre => New_Precondition (Assertion => Pre),
+           Binders => Binders,
+           Def =>
+             New_Post_Assertion
+               (Prog => Def,
+                Post => New_Postcondition (Assertion => Post))));
    end Declare_Global_Binding;
 
 end Why.Gen.Funcs;

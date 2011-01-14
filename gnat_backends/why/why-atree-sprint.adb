@@ -310,7 +310,7 @@ package body Why.Atree.Sprint is
    -------------------------
    -- Precondition_Pre_Op --
    -------------------------
-   --
+
    procedure Precondition_Pre_Op
      (State : in out Printer_State;
       Node  : W_Precondition_Id)
@@ -321,6 +321,7 @@ package body Why.Atree.Sprint is
       PL (O, " }");
       State.Control := Abandon_Children;
    end Precondition_Pre_Op;
+
    -----------------------------
    -- Computation_Spec_Pre_Op --
    -----------------------------

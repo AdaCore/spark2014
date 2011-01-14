@@ -29,10 +29,14 @@ with Why.Ids;    use Why.Ids;
 package Gnat2Why.Subprograms is
 
    function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
+   --  ??? Missing doc
 
    function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id;
+   --  ??? Missing doc
 
    procedure Why_Decl_of_Ada_Subprogram
-      (File : W_File_Id;
-       Node : Node_Id);
+     (File : W_File_Id;
+      Node : Node_Id);
+   --  ??? Missing doc
+
 end Gnat2Why.Subprograms;
