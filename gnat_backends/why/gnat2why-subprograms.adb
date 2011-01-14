@@ -27,7 +27,7 @@ with Atree;              use Atree;
 with Namet;              use Namet;
 with Sinfo;              use Sinfo;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Subprograms is
    procedure Why_Decl_of_Ada_Subprogram
@@ -48,20 +48,12 @@ package body Gnat2Why.Subprograms is
          when others => raise Program_Error;
       end case;
       if Is_Proc then
-         File_Append_To_Declarations
-            (File,
-             New_Global_Binding
-                (Node,
-                 Name => New_Identifier (Symbol => Name),
-                 Pre => New_Precondition
-                          (Assertion => New_Assertion
-                              (Pred => New_True_Literal_Pred)),
-                 Def =>
-                 New_Post_Assertion
-                     (Prog => New_Prog_Constant (Def => New_Void_Literal),
-                      Post => New_Postcondition
-                        (Assertion => New_Assertion
-                           (Pred => New_True_Literal_Pred)))));
+         Declare_Global_Binding (
+            File => File,
+            Name => Get_Name_String (Name),
+            Pre => New_Assertion (Pred => New_True_Literal_Pred),
+            Post => New_Assertion (Pred => New_True_Literal_Pred),
+            Def => New_Prog_Constant (Def => New_Void_Literal));
       end if;
    end Why_Decl_of_Ada_Subprogram;
 end Gnat2Why.Subprograms;

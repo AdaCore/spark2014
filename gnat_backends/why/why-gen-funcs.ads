@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;              use Why.Ids;
-with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
-with Why.Types;            use Why.Types;
+with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Properties; use Why.Atree.Properties;
+with Why.Ids;              use Why.Ids;
+with Why.Types;            use Why.Types;
+with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
@@ -138,5 +139,13 @@ package Why.Gen.Funcs is
    --  an abstract type of the given name. i.e.
    --
    --     parameter any___<name> : unit -> { } <name> { true }
+
+   procedure Declare_Global_Binding
+      (File : W_File_Id;
+       Name : String;
+       Pre  : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred);
+       Def  : W_Prog_Id;
+       Post : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred)
+       );
 
 end Why.Gen.Funcs;

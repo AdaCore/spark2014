@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -258,5 +257,29 @@ package body Why.Gen.Funcs is
       Append_Arg (Arrows);
       return Operation;
    end New_Call_To_Logic;
+
+   ----------------------------
+   -- Declare_Global_Binding --
+   ----------------------------
+
+   procedure Declare_Global_Binding
+      (File : W_File_Id;
+       Name : String;
+       Pre  : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred);
+       Def  : W_Prog_Id;
+       Post : W_Assertion_Id := New_Assertion (Pred => New_True_Literal_Pred)
+       )
+   is
+   begin
+      File_Append_To_Declarations
+         (File,
+          New_Global_Binding
+             (Name => New_Identifier (Name),
+              Pre => New_Precondition (Assertion => Pre),
+              Def =>
+               New_Post_Assertion
+                  (Prog => Def,
+                   Post => New_Postcondition (Assertion => Post))));
+   end Declare_Global_Binding;
 
 end Why.Gen.Funcs;
