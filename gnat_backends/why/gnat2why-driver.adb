@@ -23,18 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;              use Atree;
-with Gnat2Why.Standard;  use Gnat2Why.Standard;
-with Nlists;             use Nlists;
-with Opt;                use Opt;
-with Sinfo;              use Sinfo;
-with Sprint;             use Sprint;
-with Switch;             use Switch;
-with Gnat2Why.Types;     use Gnat2Why.Types;
+with Atree;                use Atree;
+with Gnat2Why.Standard;    use Gnat2Why.Standard;
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Gnat2Why.Types;       use Gnat2Why.Types;
+with Nlists;               use Nlists;
+with Opt;                  use Opt;
+with Sinfo;                use Sinfo;
+with Sprint;               use Sprint;
+with Switch;               use Switch;
 with Treepr;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Sprint;   use Why.Atree.Sprint;
-with Why.Ids;            use Why.Ids;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Sprint;     use Why.Atree.Sprint;
+with Why.Ids;              use Why.Ids;
 
 package body Gnat2Why.Driver is
 
@@ -79,6 +80,7 @@ package body Gnat2Why.Driver is
       Decl  : Node_Id;
       File  : constant W_File_Id := New_File;
       function Is_Type_Node (N : Node_Id) return Boolean;
+      function Is_Func_Or_Proc_Node (N : Node_Id) return Boolean;
       function Is_Type_Node (N : Node_Id) return Boolean is
       begin
          case Nkind (N) is
@@ -87,6 +89,16 @@ package body Gnat2Why.Driver is
             when others => return False;
          end case;
       end Is_Type_Node;
+
+      function Is_Func_Or_Proc_Node (N : Node_Id) return Boolean is
+      begin
+         case Nkind (N) is
+            when N_Subprogram_Body =>
+               return True;
+            when others => return False;
+         end case;
+      end Is_Func_Or_Proc_Node;
+
    begin
       if Print_Generated_Code then
          Treepr.Print_Node_Subtree (GNAT_Root);
@@ -97,6 +109,11 @@ package body Gnat2Why.Driver is
          Create_Standard;
       end if;
       if Nkind (GNAT_Root) = N_Compilation_Unit then
+         if Nkind (Unit (GNAT_Root)) = N_Subprogram_Body then
+            Why_Decl_of_Ada_Subprogram (File, Unit (GNAT_Root));
+            Sprint_Why_Node (File);
+            return;
+         end if;
          case Nkind (Unit (GNAT_Root)) is
             when N_Package_Body =>
                Decls := Declarations (Unit (GNAT_Root));
@@ -109,6 +126,9 @@ package body Gnat2Why.Driver is
          while Present (Decl) loop
             if Is_Type_Node (Decl) then
                Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
+            end if;
+            if Is_Func_Or_Proc_Node (Decl) then
+               null;
             end if;
             Next (Decl);
          end loop;
