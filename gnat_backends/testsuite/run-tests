@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# This is a wrapper to test-hilite.py; it sets the environment before launching
+# it.
+
+root=`dirname $0`
+
+# If "root" is a relative path, then convert it to absolute.
+if [ "`echo ${root} | cut -b1`" != '/' ]; then
+   root="`pwd`/${root}"
+fi
+
+TESTSUITE_ROOT=${root}
+export TESTSUITE_ROOT
+
+PYTHON_LIB=${root}/lib/python
+export PYTHON_LIB
+
+if [ "$OS" = "Windows_NT" ]; then
+   PYTHONPATH="$PYTHON_LIB;$PYTHONPATH"
+else
+   PYTHONPATH=$PYTHON_LIB:$PYTHONPATH
+fi
+export PYTHONPATH
+
+PATH=$PYTHON_LIB:$PATH
+export PATH
+
+$PYTHON_LIB/test-hilite.py "$@"

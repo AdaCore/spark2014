@@ -1,2 +1,3 @@
 libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
+gnat_backends/testsuite/tests/*/* no-precommit-check
