@@ -14,5 +14,9 @@
 *.idx
 *.smf
 *.rep
+*.pyc
 sparkified
 GNAT-*
+gnat_src
+gnat_backends/testsuite/out
+gnat_backends/install
