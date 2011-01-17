@@ -16,12 +16,21 @@ os.chdir(TESTDIR)
 from gnatpython.ex import Run
 
 def cat(filename):
-    # ??? Missing doc
-    f = open(filename, 'r')
-    print f.read()
+    """Dump the content of a file on stdout
+
+    PARAMETERS
+      filename: name of the file to print on stdout
+    """
+    with open(filename, 'r') as f:
+        print f.read()
 
 def gnat2why(src, opt=None):
-    # ??? Missing doc
+    """Invoke gnat2src
+
+    PARAMETERS
+      src: source file to process
+      opt: additional options to pass to gnat2why
+    """
     cmd = ["gnat2why",
            "-I" + get_path_to_adainclude()]
     cmd += to_list(opt)
@@ -31,16 +40,22 @@ def gnat2why(src, opt=None):
         print process.out
 
 def to_list(arg):
-    # ??? Missing doc
+    """Convert to list
+
+    If arg is already a list, return it unchanged. Otherwise, if it is
+    None, return an empty list. In any other case, wrap the argument in
+    a list (that contains, as a consequence, only one element).
+    """
     if arg is None:
         return []
-    elif isinstance(arg, type("")):
-        return [arg]
-    else:
+    elif isinstance(arg, list):
         return arg
+    else:
+        return [arg]
 
 def get_path_to_adainclude():
-    # ??? Missing doc
+    """Return path to adainclude
+    """
     cmd=[["gnatls", "-v"], ["grep", "adainclude"]]
     process = Run(cmd)
     return process.out.strip()
