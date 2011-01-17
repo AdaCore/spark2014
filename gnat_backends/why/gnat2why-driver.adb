@@ -24,11 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Atree;                use Atree;
-with Gnat2Why.Standard;    use Gnat2Why.Standard;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
+with Outputs;              use Outputs;
 with Sinfo;                use Sinfo;
 with Sprint;               use Sprint;
 with Switch;               use Switch;
@@ -142,10 +142,6 @@ package body Gnat2Why.Driver is
          Sprint_Node (GNAT_Root);
       end if;
 
-      if Print_Standard then
-         Create_Standard;
-      end if;
-
       Translate_List_Of_Decls
         (File,
          Visible_Declarations (Specification (Standard_Package_Node)));
@@ -153,7 +149,6 @@ package body Gnat2Why.Driver is
       if Nkind (GNAT_Root) = N_Compilation_Unit then
          if Nkind (Unit (GNAT_Root)) = N_Subprogram_Body then
             Why_Decl_of_Ada_Subprogram (File, Unit (GNAT_Root));
-            Sprint_Why_Node (File);
             return;
          end if;
 
@@ -168,8 +163,12 @@ package body Gnat2Why.Driver is
                   Visible_Declarations (Specification (Unit (GNAT_Root))));
             when others => raise Program_Error;
          end case;
-         Sprint_Why_Node (File);
       end if;
+      --  ??? TBD: create a file that has a meaningful name, depending on the
+      --  input file
+      Open_Current_File ("out.why");
+      Sprint_Why_Node (File, Current_File);
+      Close_Current_File;
    end GNAT_To_Why;
 
 end Gnat2Why.Driver;
