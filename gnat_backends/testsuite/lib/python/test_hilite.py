@@ -1,10 +1,9 @@
-#!/usr/bin/env python
-"""./test-hilite.py [options] [test name]
+"""Run the HI-LITE testsuite
 
-Run the HI-LITE testsuite
+This module assumes that lib/python has been added to PYTHONPATH.
 """
 
-from gnatpython.env import (Env, getenv)
+from gnatpython.env import Env
 from gnatpython.main import Main
 from gnatpython.mainloop import (MainLoop, add_mainloop_options,
                                  generate_collect_result,
@@ -17,12 +16,14 @@ from glob import glob
 import os
 
 
-def main():
-    """Run the testsuite"""
+def run_testsuite(test_driver):
+    """Run the testsuite
+
+    PARAMETERS
+      test_driver: path to the test driver (e.g. lib/python/run-test)
+    """
     options = __parse_options()
     env = Env()
-    python_lib = getenv("PYTHON_LIB")
-    env.add_search_path("PYTHONPATH", python_lib)
 
     test_list = [t for t in filter_list('tests/*', options.run_test)
                  if os.path.isdir(t)]
@@ -36,8 +37,7 @@ def main():
     if options.discs:
         discs += options.discs
 
-    run_testcase = generate_run_testcase(python_lib + '/run-test',
-                                         discs, options)
+    run_testcase = generate_run_testcase(test_driver, discs, options)
     collect_result = generate_collect_result(
         result_dir, results_file, options.verbose)
 
@@ -77,9 +77,3 @@ def __parse_options():
         m.options.discs = m.options.discs.split(',')
 
     return m.options
-
-if __name__ == "__main__":
-    try:
-        main()
-    except AssertionError, e:
-        print 'ERROR: %s' % e

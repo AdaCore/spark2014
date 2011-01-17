@@ -1,29 +1,25 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
+"""./runtests [options] [test name]
 
-# This is a wrapper to test-hilite.py; it sets the environment before launching
-# it.
+Run the HI-LITE testsuite
+"""
 
-root=`dirname $0`
+# This is a wrapper to test_hilite.py; it initializes the environment before
+# launching the testsuite.
 
-# If "root" is a relative path, then convert it to absolute.
-if [ "`echo ${root} | cut -b1`" != '/' ]; then
-   root="`pwd`/${root}"
-fi
+from lib.python.test_hilite import run_testsuite
+from gnatpython.env import Env
 
-TESTSUITE_ROOT=${root}
-export TESTSUITE_ROOT
+import os
 
-PYTHON_LIB=${root}/lib/python
-export PYTHON_LIB
+root = os.getcwd()
+env = Env()
+python_lib = root + "/lib/python"
+env.add_search_path("PYTHONPATH", python_lib)
 
-if [ "$OS" = "Windows_NT" ]; then
-   PYTHONPATH="$PYTHON_LIB;$PYTHONPATH"
-else
-   PYTHONPATH=$PYTHON_LIB:$PYTHONPATH
-fi
-export PYTHONPATH
+if __name__ == "__main__":
+    try:
+        run_testsuite(python_lib + '/run-test')
+    except AssertionError, e:
+        print 'ERROR: %s' % e
 
-PATH=$PYTHON_LIB:$PATH
-export PATH
-
-$PYTHON_LIB/test-hilite.py "$@"
