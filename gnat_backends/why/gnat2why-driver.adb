@@ -32,6 +32,7 @@ with Opt;                  use Opt;
 with Sinfo;                use Sinfo;
 with Sprint;               use Sprint;
 with Switch;               use Switch;
+with Stand;                use Stand;
 with Treepr;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
@@ -145,8 +146,9 @@ package body Gnat2Why.Driver is
          Create_Standard;
       end if;
 
-      --  First of all, we translate the Standard package
-      --  ??? TBD
+      Translate_List_Of_Decls
+        (File,
+         Visible_Declarations (Specification (Standard_Package_Node)));
 
       if Nkind (GNAT_Root) = N_Compilation_Unit then
          if Nkind (Unit (GNAT_Root)) = N_Subprogram_Body then

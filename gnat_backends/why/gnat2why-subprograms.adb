@@ -149,16 +149,16 @@ package body Gnat2Why.Subprograms is
             begin
                while Nkind (Arg) /= N_Empty loop
                   Cnt := Cnt + 1;
-                  --  ??? TBD: Get Argument type; it should be sufficient
-                  --  to simply get its name here
-                  --  Chars (Parameter_Type (Arg))
                   Why_Binders (Cnt) :=
                      New_Binder
                        (Names =>
                          (1 => New_Identifier
                           (Symbol => Chars (Defining_Identifier (Arg)))),
                         Arg_Type =>
-                          New_Ref_Type (Aliased_Type => New_Type_Int));
+                          New_Ref_Type (Aliased_Type =>
+                            New_Abstract_Type (Name =>
+                              New_Identifier (Symbol =>
+                                Chars (Parameter_Type (Arg))))));
                   Arg := Next (Arg);
                end loop;
                return Why_Binders;

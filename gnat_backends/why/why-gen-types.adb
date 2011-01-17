@@ -23,10 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;     use Ada.Containers;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Types is
 
@@ -64,27 +63,25 @@ package body Why.Gen.Types is
       Constructors : String_Lists.List) return W_Type_Id
    is
       use String_Lists;
-
-      T_I    : constant W_Identifier_Id := New_Identifier (Name);
-      Adt    : constant W_Adt_Definition_Unchecked_Id :=
-                 New_Unchecked_Adt_Definition;
-      T      : constant W_Type_Unchecked_Id := New_Unchecked_Type;
+      Len     : constant Count_Type :=
+            String_Lists.Length (Constructors);
+      Constrs : W_Constr_Decl_Array (1 .. Integer (Len));
       Cursor : String_Lists.Cursor := First (Constructors);
+      Cnt : Integer range 0 .. Integer (Len) := 0;
    begin
-      Type_Set_Name (T, T_I);
-      while Has_Element (Cursor) loop
-         declare
-            C_I : constant W_Identifier_Id :=
-                    New_Identifier (Element (Cursor));
-            D   : constant W_Constr_Decl_Unchecked_Id :=
-                    New_Constr_Decl (Name => C_I);
-         begin
-            Adt_Definition_Append_To_Constructors (Adt, D);
+      if Len = 0 then
+         return Declare_Abstract_Type (Name);
+      else
+         while Has_Element (Cursor) loop
+            Cnt := Cnt + 1;
+            Constrs (Cnt) :=
+               New_Constr_Decl (Name => New_Identifier (Element (Cursor)));
             Next (Cursor);
-         end;
-      end loop;
-      Type_Set_Definition (T, Adt);
-      return T;
+         end loop;
+         return New_Type
+           (Name => New_Identifier (Name),
+            Definition => New_Adt_Definition (Constructors => Constrs));
+      end if;
    end Declare_Enum_Type;
 
 end Why.Gen.Types;

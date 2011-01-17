@@ -42,5 +42,9 @@ package Why.Gen.Enums is
    --  This creates a new enumeration type with the given name and given
    --  constructor names. It generates the type definition itself, but also
    --  conversions from/to int and the corresponding axioms.
+   --  There are two special cases:
+   --  * for a type of name "boolean", the function does nothing
+   --  * if the list of constructors is empty, no conversion to integers is
+   --    generated
 
 end Why.Gen.Enums;

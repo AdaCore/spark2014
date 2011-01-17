@@ -40,5 +40,6 @@ package Why.Gen.Types is
       Constructors : String_Lists.List) return W_Type_Id;
    --  Create the declaration of an enumeration type with name [Name] and list
    --  of constructors [Constructors]. The constructors do not have arguments.
+   --  In the case of an empty constructor list, generate an abstract type.
 
 end Why.Gen.Types;

@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;     use Ada.Containers;
 with Uintp;              use Uintp;
 with Types;              use Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -111,27 +112,39 @@ package body Why.Gen.Enums is
       Constructors : String_Lists.List)
    is
       --  ??? Not fully implemented yet
+      Len : constant Count_Type := String_Lists.Length (Constructors);
    begin
-      File_Append_To_Declarations
-        (File,
-         New_Logic_Declaration
-         (Decl => Declare_Enum_Type (Name, Constructors)));
-      Declare_Logic (File,
-                     New_Conversion_From_Int (Name),
-                     (1 => New_Type_Int),
-                     New_Abstract_Type (Name));
-      Define_Range_Predicate
-        (File,
-         Name,
-         First => Uint_1,
-         Last => UI_From_Int (Int (String_Lists.Length (Constructors))));
-      Define_Enum_To_Int_Function (File, Name, Constructors);
-      Define_Coerce_Axiom
-        (File,
-         New_Identifier (Name),
-         New_Type_Int,
-         New_Conversion_From_Int (Name),
-         New_Conversion_To_Int (Name));
+      --  ??? TBD: It would be better to compare with the Entity_Id of
+      --  gnat/stand.ads instead of the name, but this would have to be done
+      --  higher up in the chain
+      if Name /= "boolean" then
+         File_Append_To_Declarations
+           (File,
+            New_Logic_Declaration
+            (Decl => Declare_Enum_Type (Name, Constructors)));
+         Declare_Logic (File,
+                        New_Conversion_From_Int (Name),
+                        (1 => New_Type_Int),
+                        New_Abstract_Type (Name));
+         Define_Range_Predicate
+           (File,
+            Name,
+            First => Uint_1,
+            Last => UI_From_Int (Int (Len)));
+         --  ??? TBD in the case of empty enumerations, we are probably
+         --  dealing with a type from the standard package, e.g. "char".
+         --  A special treatment would probably be better, in particular the
+         --  range predicate currently makes no sense
+         if Len /= 0 then
+            Define_Enum_To_Int_Function (File, Name, Constructors);
+            Define_Coerce_Axiom
+              (File,
+               New_Identifier (Name),
+               New_Type_Int,
+               New_Conversion_From_Int (Name),
+               New_Conversion_To_Int (Name));
+         end if;
+      end if;
    end Declare_Enum_Type;
 
 end Why.Gen.Enums;

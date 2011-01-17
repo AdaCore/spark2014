@@ -71,7 +71,7 @@ package body Gnat2Why.Types is
                when others => null;
             end case;
          when N_Subtype_Declaration =>
-            --  ??? TODO Complete This code
+            --  ??? TBD Complete This code
             null;
          when others => raise Program_Error;
       end case;
