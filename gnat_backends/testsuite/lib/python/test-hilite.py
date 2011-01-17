@@ -1,12 +1,10 @@
-#!/usr/bin/env gnatpython
+#!/usr/bin/env python
 """./test-hilite.py [options] [test name]
 
 Run the HI-LITE testsuite
 """
 
 from gnatpython.env import (Env, getenv)
-from gnatpython.ex import Run
-from gnatpython.fileutils import mkdir, rm
 from gnatpython.main import Main
 from gnatpython.mainloop import (MainLoop, add_mainloop_options,
                                  generate_collect_result,
@@ -17,13 +15,13 @@ from gnatpython.reports import ReportDiff
 from glob import glob
 
 import os
-import sys
+
 
 def main():
     """Run the testsuite"""
     options = __parse_options()
     env = Env()
-    python_lib=getenv("PYTHON_LIB")
+    python_lib = getenv("PYTHON_LIB")
     env.add_search_path("PYTHONPATH", python_lib)
 
     test_list = [t for t in filter_list('tests/*', options.run_test)
