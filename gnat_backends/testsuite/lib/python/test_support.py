@@ -25,7 +25,7 @@ def cat(filename):
         print f.read()
 
 def gnat2why(src, opt=None):
-    """Invoke gnat2src
+    """Invoke gnat2why
 
     PARAMETERS
       src: source file to process
@@ -33,6 +33,20 @@ def gnat2why(src, opt=None):
     """
     cmd = ["gnat2why",
            "-I" + get_path_to_adainclude()]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    if process.status:
+        print process.out
+
+def why(src, opt=None):
+    """Invoke why
+
+    PARAMETERS
+      src: source file to process
+      opt: additional options to pass to why
+    """
+    cmd = ["why"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
