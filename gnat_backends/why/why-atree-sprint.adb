@@ -332,9 +332,15 @@ package body Why.Atree.Sprint is
    is
       Result : constant W_Identifier_OId :=
                  Computation_Spec_Get_Result_Name (Node);
+      Pre    : constant W_Precondition_OId :=
+                 Computation_Spec_Get_Precondition (Node);
    begin
-      Traverse (State,
-                Computation_Spec_Get_Precondition (Node));
+      if Pre = Why_Empty then
+         P (O, " { } ");
+      else
+         Traverse (State, Pre);
+      end if;
+
       Relative_Indent (O, 1);
 
       if  Result /= Why_Empty then
