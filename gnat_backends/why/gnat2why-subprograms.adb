@@ -174,6 +174,7 @@ package body Gnat2Why.Subprograms is
          when others => raise Program_Error;
       end case;
 
+      --  ??? TBD compute the Why Pre/Post
       if Is_Proc then
          Declare_Global_Binding
            (File => File,

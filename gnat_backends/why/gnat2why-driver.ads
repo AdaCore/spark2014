@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,6 +24,11 @@
 ------------------------------------------------------------------------------
 --  This package is the main driver for the Gnat2Why translation. It is
 --  invoked by the gnat1 driver.
+--
+--  The main job of this package is to traverse the list of declarations of a
+--  Gnat package, detect the kind of each declaration and dispatch to the
+--  packages that deal with type declarations, data declarations and
+--  function/procedure definitions.
 
 with Types;  use Types;
 
