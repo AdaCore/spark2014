@@ -149,26 +149,25 @@ package body Gnat2Why.Driver is
       if Nkind (GNAT_Root) = N_Compilation_Unit then
          if Nkind (Unit (GNAT_Root)) = N_Subprogram_Body then
             Why_Decl_of_Ada_Subprogram (File, Unit (GNAT_Root));
-            return;
+         else
+            case Nkind (Unit (GNAT_Root)) is
+               when N_Package_Body =>
+                  Translate_List_Of_Decls
+                    (File,
+                     Declarations (Unit (GNAT_Root)));
+               when N_Package_Declaration =>
+                  Translate_List_Of_Decls
+                    (File,
+                     Visible_Declarations (Specification (Unit (GNAT_Root))));
+               when others => raise Program_Error;
+            end case;
          end if;
-
-         case Nkind (Unit (GNAT_Root)) is
-            when N_Package_Body =>
-               Translate_List_Of_Decls
-                 (File,
-                  Declarations (Unit (GNAT_Root)));
-            when N_Package_Declaration =>
-               Translate_List_Of_Decls
-                 (File,
-                  Visible_Declarations (Specification (Unit (GNAT_Root))));
-            when others => raise Program_Error;
-         end case;
+         --  ??? TBD: create a file that has a meaningful name, depending on
+         --  the input file
+         Open_Current_File ("out.why");
+         Sprint_Why_Node (File, Current_File);
+         Close_Current_File;
       end if;
-      --  ??? TBD: create a file that has a meaningful name, depending on the
-      --  input file
-      Open_Current_File ("out.why");
-      Sprint_Why_Node (File, Current_File);
-      Close_Current_File;
    end GNAT_To_Why;
 
 end Gnat2Why.Driver;
