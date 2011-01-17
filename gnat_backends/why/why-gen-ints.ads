@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,7 +31,7 @@ package Why.Gen.Ints is
    --  This package provides an interface to generate declarations
    --  (types, subprograms, axioms) for integer types.
 
-   procedure Declare_Abstract_Signed_Int
+   procedure Declare_Ada_Abstract_Signed_Int
      (File : W_File_Id;
       Name : String;
       Size : Uint);
@@ -40,7 +40,7 @@ package Why.Gen.Ints is
    --  This creates an abstract type whose name is given in parameter
    --  along with a set of axioms and subprograms for int conversion.
 
-   procedure Declare_Abstract_Signed_Int
+   procedure Declare_Ada_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
       First : Uint;

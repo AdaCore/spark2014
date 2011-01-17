@@ -48,7 +48,7 @@ package body Why.Gen.Enums is
 
    procedure Declare_Abstract_Boolean_Type (File : W_File_Id; Name : String)
    is
-      T : constant W_Type_Id := Declare_Abstract_Type (Name);
+      T : constant W_Type_Id := New_Abstract_Type_Declaration (Name);
       --  ??? Not fully implemented yet
    begin
       File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
@@ -106,7 +106,7 @@ package body Why.Gen.Enums is
    -- Declare_Enum_Type --
    -----------------------
 
-   procedure Declare_Enum_Type
+   procedure Declare_Ada_Enum_Type
      (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List)
@@ -121,7 +121,7 @@ package body Why.Gen.Enums is
          File_Append_To_Declarations
            (File,
             New_Logic_Declaration
-            (Decl => Declare_Enum_Type (Name, Constructors)));
+            (Decl => New_Enum_Type_Declaration (Name, Constructors)));
          Declare_Logic (File,
                         New_Conversion_From_Int (Name),
                         (1 => New_Type_Int),
@@ -145,6 +145,6 @@ package body Why.Gen.Enums is
                New_Conversion_To_Int (Name));
          end if;
       end if;
-   end Declare_Enum_Type;
+   end Declare_Ada_Enum_Type;
 
 end Why.Gen.Enums;

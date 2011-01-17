@@ -32,10 +32,10 @@ package Why.Gen.Types is
    function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
    --  Create an abstract type identifier with name Name
 
-   function Declare_Abstract_Type (Name : String) return W_Type_Id;
+   function New_Abstract_Type_Declaration (Name : String) return W_Type_Id;
    --  Create the declaration of an abstract type whose name is Name
 
-   function Declare_Enum_Type (
+   function New_Enum_Type_Declaration (
       Name         : String;
       Constructors : String_Lists.List) return W_Type_Id;
    --  Create the declaration of an enumeration type with name [Name] and list

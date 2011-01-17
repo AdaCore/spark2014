@@ -60,10 +60,10 @@ package body Gnat2Why.Types is
                            Get_Name_String (Chars (Cursor)));
                         Cursor := Next (Cursor);
                      end loop;
-                     Declare_Enum_Type (File, Name_Str, Constructors);
+                     Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                   end;
                when N_Signed_Integer_Type_Definition =>
-                  Declare_Abstract_Signed_Int (
+                  Declare_Ada_Abstract_Signed_Int (
                      File,
                      Name_Str,
                      Expr_Value (Low_Bound (Def_Node)),

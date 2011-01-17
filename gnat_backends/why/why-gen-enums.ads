@@ -35,7 +35,7 @@ package Why.Gen.Enums is
    --  an abstract type for it, conversions from/to int and from/to bool
    --  and the corresponding axioms.
 
-   procedure Declare_Enum_Type
+   procedure Declare_Ada_Enum_Type
      (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List);

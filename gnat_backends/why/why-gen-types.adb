@@ -33,14 +33,14 @@ package body Why.Gen.Types is
    -- Declare_Abstract_Type --
    ---------------------------
 
-   function Declare_Abstract_Type (Name : String) return W_Type_Id is
+   function New_Abstract_Type_Declaration (Name : String) return W_Type_Id is
       I : W_Identifier_Id;
       T : W_Type_Id;
    begin
       I := New_Identifier (Name);
       T := New_Type (Name => I);
       return T;
-   end Declare_Abstract_Type;
+   end New_Abstract_Type_Declaration;
 
    -----------------------
    -- New_Abstract_Type --
@@ -58,7 +58,7 @@ package body Why.Gen.Types is
    -- Declare_Enum_Type --
    -----------------------
 
-   function Declare_Enum_Type
+   function New_Enum_Type_Declaration
      (Name         : String;
       Constructors : String_Lists.List) return W_Type_Id
    is
@@ -70,7 +70,7 @@ package body Why.Gen.Types is
       Cnt : Integer range 0 .. Integer (Len) := 0;
    begin
       if Len = 0 then
-         return Declare_Abstract_Type (Name);
+         return New_Abstract_Type_Declaration (Name);
       else
          while Has_Element (Cursor) loop
             Cnt := Cnt + 1;
@@ -82,6 +82,6 @@ package body Why.Gen.Types is
            (Name => New_Identifier (Name),
             Definition => New_Adt_Definition (Constructors => Constrs));
       end if;
-   end Declare_Enum_Type;
+   end New_Enum_Type_Declaration;
 
 end Why.Gen.Types;

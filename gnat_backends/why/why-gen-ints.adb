@@ -45,29 +45,30 @@ package body Why.Gen.Ints is
    -- Declare_Abstract_Signed_Int --
    ---------------------------------
 
-   procedure Declare_Abstract_Signed_Int
+   procedure Declare_Ada_Abstract_Signed_Int
      (File : W_File_Id;
       Name : String;
       Size : Uint) is
    begin
-      Declare_Abstract_Signed_Int (File,
-                                   Name,
-                                   -2 ** (Size - 1),
-                                   2 ** (Size - 1)  - 1);
-   end Declare_Abstract_Signed_Int;
+      Declare_Ada_Abstract_Signed_Int
+        (File,
+         Name,
+         -2 ** (Size - 1),
+         2 ** (Size - 1)  - 1);
+   end Declare_Ada_Abstract_Signed_Int;
 
-   procedure Declare_Abstract_Signed_Int
+   procedure Declare_Ada_Abstract_Signed_Int
      (File  : W_File_Id;
       Name  : String;
       First : Uint;
       Last  : Uint)
    is
-      T : constant W_Type_Id := Declare_Abstract_Type (Name);
+      T : constant W_Type_Id := New_Abstract_Type_Declaration (Name);
    begin
       File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
       Declare_Allocator (File, Name);
       Define_Signed_Int_Conversions (File, Name, First, Last);
-   end Declare_Abstract_Signed_Int;
+   end Declare_Ada_Abstract_Signed_Int;
 
    -----------------------------------
    -- Define_Signed_Int_Conversions --
