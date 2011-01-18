@@ -32,7 +32,7 @@ package Gnat2Why.Subprograms is
    --  statements to Why declarations.
 
    --  There is one main distinction to make: the one between functions and
-   --  one between procedures.
+   --  procedures.
    --
    --  Here in the Gnat2Why backend, we assume that all functions are
    --  side effect free expression functions. All other functions have been
@@ -46,9 +46,9 @@ package Gnat2Why.Subprograms is
    --  (contracts). These assertions are strengthened to enforce the same
    --  semantics as if these assertions were executed. For example, an array
    --  access like
-   --     X (i) = 0
+   --     X (I) = 0
    --  is protected by a condition:
-   --     i in X'First .. X'Last and then X (i) = 0.
+   --     I in X'First .. X'Last and then X (I) = 0.
    --  To do this, we use the generic functions that exist in the GNAT
    --  frontend.
    --
@@ -65,8 +65,10 @@ package Gnat2Why.Subprograms is
    --  statements are simply expressions of the type "unit".
    --
    --  We need two functions to deal with Ada expressions: one to translate
-   --  them to logic terms (the body of Ada expression functions) and
-   --  one to translate them to program expressions. Ada Statements can only
+   --  them to logic terms (the body of Ada expression functions) and one to
+   --  translate them to program expressions. As logic terms are allowed in
+   --  program expressions, an Ada expression should be preferentially
+   --  translated to a logic term whenever possible.  Ada Statements can only
    --  occur in Ada procedures and are translated to program expressions only.
    --
    --  More specific documentation is given at the beginning of each function
