@@ -28,11 +28,46 @@ with Why.Ids;    use Why.Ids;
 
 package Gnat2Why.Subprograms is
 
-   --  This package deals with the translation of GNAT expressions and
-   --  statements to Why expressions.
+   --  This package deals with the translation of GNAT functions and
+   --  statements to Why declarations.
+
+   --  There is one main distinction to make: the one between functions and
+   --  one between procedures.
    --
-   --  In Why, there is no distinction between expressions and statements; a
-   --  statement is simply an expression that has the return type "unit".
+   --  Here in the Gnat2Why backend, we assume that all functions are
+   --  side effect free expression functions. All other functions have been
+   --  translated to procedures. We also currently assume that no recursion
+   --  exists. This means that we can translate such functions into Why
+   --  logical functions.
+   --  TBD: Do expression functions have a contract? We don't need one, but if
+   --  there is one, what to do with it?
+
+   --  Procedures are translated to Why programs with pre- and postconditions
+   --  (contracts). These assertions are strengthened to enforce the same
+   --  semantics as if these assertions were executed. For example, an array
+   --  access like
+   --     X (i) = 0
+   --  is protected by a condition:
+   --     i in X'First .. X'Last and then X (i) = 0.
+   --  To do this, we use the generic functions that exist in the GNAT
+   --  frontend.
+   --
+   --  Procedure contracts may contain calls to expression functions. As we
+   --  have translated these functions to Why logic functions, nothing special
+   --  needs to be done.
+   --
+   --  Why actually contains two languages: The logic language for assertions
+   --  and logical functions and the programming language for programs with
+   --  side effects. Programs may contain assertions, for example as pre- and
+   --  postconditions. We call the elements of the logic language "(logic)
+   --  terms" while we call the elements of the programming language
+   --  "(program) expressions".  There are no statements in the Why language;
+   --  statements are simply expressions of the type "unit".
+   --
+   --  We need two functions to deal with Ada expressions: one to translate
+   --  them to logic terms (the body of Ada expression functions) and
+   --  one to translate them to program expressions. Ada Statements can only
+   --  occur in Ada procedures and are translated to program expressions only.
    --
    --  More specific documentation is given at the beginning of each function
    --  in this package.
