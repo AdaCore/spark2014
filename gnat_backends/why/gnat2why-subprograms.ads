@@ -94,6 +94,7 @@ package Gnat2Why.Subprograms is
      (File : W_File_Id;
       Node : Node_Id);
    --  Generate a Why declaration that corresponds to an Ada subprogram
+   --  Node is a N_Subprogram_Body
    --
    --  Care must be taken in a few cases:
    --  * We need to add an argument of type "unit" if the Ada subprogram has

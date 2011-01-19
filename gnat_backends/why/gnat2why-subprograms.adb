@@ -144,11 +144,10 @@ package body Gnat2Why.Subprograms is
       --  * both functions and procedures
       --  * procedure arguments
       --  * return types
-      Is_Proc     : Boolean          := False;
       Spec        : constant Node_Id := Specification (Node);
       Stmts       : constant List_Id :=
          Statements (Handled_Statement_Sequence (Node));
-      Name        : Name_Id;
+      Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
 
       ---------------------
@@ -195,23 +194,22 @@ package body Gnat2Why.Subprograms is
       end Compute_Binders;
 
    begin
+      --  TBD deal with expression functions : transform into Why 'function'
+      --  ??? TBD compute the Why Pre/Post
       case Nkind (Spec) is
-         when N_Procedure_Specification =>
-            Is_Proc := True;
-            Name := Chars (Defining_Unit_Name (Spec));
+         when N_Procedure_Specification | N_Function_Specification =>
+            --  There really is no difference between functions and procedures
+            --  from the point of view of Why
+            Declare_Global_Binding
+              (File => File,
+               Name => Get_Name_String (Name),
+               Binders => Compute_Binders,
+               Pre => New_Assertion (Pred => New_True_Literal_Pred),
+               Post => New_Assertion (Pred => New_True_Literal_Pred),
+               Def => Why_Expr_of_Ada_Stmts (Stmts));
          when others => raise Program_Error;
       end case;
 
-      --  ??? TBD compute the Why Pre/Post
-      if Is_Proc then
-         Declare_Global_Binding
-           (File => File,
-            Name => Get_Name_String (Name),
-            Binders => Compute_Binders,
-            Pre => New_Assertion (Pred => New_True_Literal_Pred),
-            Post => New_Assertion (Pred => New_True_Literal_Pred),
-            Def => Why_Expr_of_Ada_Stmts (Stmts));
-      end if;
    end Why_Decl_of_Ada_Subprogram;
 
 end Gnat2Why.Subprograms;

@@ -121,8 +121,7 @@ package body Gnat2Why.Driver is
          end if;
 
          if Is_Func_Or_Proc_Node (Decl) then
-            --  ?? TODO
-            null;
+            Why_Decl_of_Ada_Subprogram (File, Decl);
          end if;
 
          Next (Decl);
