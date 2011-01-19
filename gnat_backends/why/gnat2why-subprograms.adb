@@ -34,7 +34,35 @@ with Why.Gen.Funcs;      use Why.Gen.Funcs;
 package body Gnat2Why.Subprograms is
 
    --------------------------
-   -- Why_Expr_of_Ada_Expr --
+   -- Why_Term_Of_Ada_Expr --
+   --------------------------
+
+   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
+   is
+      --  ??? TBD: complete this function for the remaining cases
+   begin
+      case Nkind (Expr) is
+         when N_Integer_Literal =>
+            return New_Integer_Constant (Value => Intval (Expr));
+         when N_Identifier =>
+            --  An identifier may or may not be of reference type; but here we
+            --  do not care, as Why, in annotations, happily converts a
+            --  reference to its base type.
+            return New_Identifier (Symbol => Chars (Expr));
+         when N_Op_Add =>
+            return New_Arith_Operation
+              (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+               Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+               Op => New_Op_Add);
+         when N_Type_Conversion =>
+            --  ??? TBD Treat this. Sometimes this seems to be inserted but
+            --  there actually is no type conversion to do
+            return Why_Term_Of_Ada_Expr (Expression (Expr));
+         when others => return New_Void_Literal;
+      end case;
+   end Why_Term_Of_Ada_Expr;
+   --------------------------
+   -- Why_Term_Of_Ada_Expr --
    --------------------------
 
    function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
