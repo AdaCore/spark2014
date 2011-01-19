@@ -382,6 +382,22 @@ package Why.Atree.Validity is
      (Id : W_Void_Literal_Unchecked_OList)
      return Boolean;
 
+   function Term_Identifier_Id_Valid
+     (Id : W_Term_Identifier_Unchecked_Id)
+     return Boolean;
+
+   function Term_Identifier_OId_Valid
+     (Id : W_Term_Identifier_Unchecked_OId)
+     return Boolean;
+
+   function Term_Identifier_List_Valid
+     (Id : W_Term_Identifier_Unchecked_List)
+     return Boolean;
+
+   function Term_Identifier_OList_Valid
+     (Id : W_Term_Identifier_Unchecked_OList)
+     return Boolean;
+
    function Arith_Operation_Id_Valid
      (Id : W_Arith_Operation_Unchecked_Id)
      return Boolean;
@@ -2790,6 +2806,22 @@ private
 
    function Void_Literal_OList_Children_Valid
      (Id : W_Void_Literal_Unchecked_OList)
+     return Boolean;
+
+   function Term_Identifier_Id_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_Id)
+     return Boolean;
+
+   function Term_Identifier_OId_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_OId)
+     return Boolean;
+
+   function Term_Identifier_List_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_List)
+     return Boolean;
+
+   function Term_Identifier_OList_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_OList)
      return Boolean;
 
    function Arith_Operation_Id_Children_Valid
@@ -5393,6 +5425,32 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Void_Literal_List_Valid (Id));
+
+   function Term_Identifier_Id_Valid
+     (Id : W_Term_Identifier_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Term_Identifier_Id_Children_Valid (Id));
+
+   function Term_Identifier_OId_Valid
+     (Id : W_Term_Identifier_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Term_Identifier_Id_Valid (Id));
+
+   function Term_Identifier_List_Valid
+     (Id : W_Term_Identifier_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Term_Identifier_OList_Valid
+     (Id : W_Term_Identifier_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Term_Identifier_List_Valid (Id));
 
    function Arith_Operation_Id_Valid
      (Id : W_Arith_Operation_Unchecked_Id)
@@ -9277,6 +9335,30 @@ private
      (Is_Empty (Id)
       or else Void_Literal_List_Children_Valid (Id));
 
+   function Term_Identifier_Id_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Term_Identifier_Get_Name (Id)));
+
+   function Term_Identifier_OId_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Term_Identifier_Id_Children_Valid (Id));
+
+   function Term_Identifier_List_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Term_Identifier_OList_Children_Valid
+     (Id : W_Term_Identifier_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Term_Identifier_List_Children_Valid (Id));
+
    function Arith_Operation_Id_Children_Valid
      (Id : W_Arith_Operation_Unchecked_Id)
      return Boolean is
@@ -12250,6 +12332,8 @@ private
            False_Literal_Id_Children_Valid (Id),
         when W_Void_Literal =>
            Void_Literal_Id_Children_Valid (Id),
+        when W_Term_Identifier =>
+           Term_Identifier_Id_Children_Valid (Id),
         when W_Arith_Operation =>
            Arith_Operation_Id_Children_Valid (Id),
         when W_Negative_Term =>
@@ -12369,6 +12453,8 @@ private
            False_Literal_Id_Children_Valid (Id),
         when W_Void_Literal =>
            Void_Literal_Id_Children_Valid (Id),
+        when W_Term_Identifier =>
+           Term_Identifier_Id_Children_Valid (Id),
         when W_Arith_Operation =>
            Arith_Operation_Id_Children_Valid (Id),
         when W_Negative_Term =>
@@ -13024,6 +13110,8 @@ private
            False_Literal_Id_Children_Valid (Id),
         when W_Void_Literal =>
            Void_Literal_Id_Children_Valid (Id),
+        when W_Term_Identifier =>
+           Term_Identifier_Id_Children_Valid (Id),
         when W_Arith_Operation =>
            Arith_Operation_Id_Children_Valid (Id),
         when W_Negative_Term =>

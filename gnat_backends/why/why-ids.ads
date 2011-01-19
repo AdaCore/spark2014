@@ -469,6 +469,25 @@ package Why.Ids is
      W_Void_Literal_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Term_Identifier_Id is
+     W_Term_Identifier_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   type W_Term_Identifier_Array is array (Positive range <>)
+     of W_Term_Identifier_Id;
+
+   subtype W_Term_Identifier_OId is
+     W_Term_Identifier_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Term_Identifier_List is
+     W_Term_Identifier_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Term_Identifier_OList is
+     W_Term_Identifier_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Arith_Operation_Id is
      W_Arith_Operation_Unchecked_Id;
    --  ??? subtype predicate not generated yet

@@ -453,6 +453,28 @@ package body Why.Atree.Builders is
    end New_Void_Literal;
 
    -------------------------
+   -- New_Term_Identifier --
+   -------------------------
+
+   function New_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id)
+     return W_Term_Identifier_Id
+   is
+      Result : Why_Node (W_Term_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Term_Identifier);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.TI_Name := Name;
+      Set_Link (Result.TI_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Term_Identifier;
+
+   -------------------------
    -- New_Arith_Operation --
    -------------------------
 
@@ -517,10 +539,10 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Label_Identifier);
    begin
       Result.Ada_Node := Ada_Node;
-      Result.TI_Name := Name;
-      Set_Link (Result.TI_Name, New_Id);
-      Result.TI_Label := Label;
-      Set_Link (Result.TI_Label, New_Id);
+      Result.TIL_Name := Name;
+      Set_Link (Result.TIL_Name, New_Id);
+      Result.TIL_Label := Label;
+      Set_Link (Result.TIL_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -3872,6 +3894,26 @@ package body Why.Atree.Builders is
    end New_Unchecked_Void_Literal;
 
    -----------------------------------
+   -- New_Unchecked_Term_Identifier --
+   -----------------------------------
+
+   function New_Unchecked_Term_Identifier
+     return W_Term_Identifier_Unchecked_Id
+   is
+      Result : Why_Node (W_Term_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Term_Identifier);
+   begin
+      Result.Ada_Node := Empty;
+      Result.TI_Name := Why_Empty;
+      Set_Link (Result.TI_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Term_Identifier;
+
+   -----------------------------------
    -- New_Unchecked_Arith_Operation --
    -----------------------------------
 
@@ -3927,10 +3969,10 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Label_Identifier);
    begin
       Result.Ada_Node := Empty;
-      Result.TI_Name := Why_Empty;
-      Set_Link (Result.TI_Name, New_Id);
-      Result.TI_Label := Why_Empty;
-      Set_Link (Result.TI_Label, New_Id);
+      Result.TIL_Name := Why_Empty;
+      Set_Link (Result.TIL_Name, New_Id);
+      Result.TIL_Label := Why_Empty;
+      Set_Link (Result.TIL_Label, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -6899,6 +6941,39 @@ package body Why.Atree.Builders is
    end Duplicate_Void_Literal;
 
    -------------------------------
+   -- Duplicate_Term_Identifier --
+   -------------------------------
+
+   function Duplicate_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Term_Identifier_OId)
+     return W_Term_Identifier_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Term_Identifier);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Term_Identifier);
+         Name : constant W_Identifier_Id :=
+            Term_Identifier_Get_Name (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.TI_Name :=
+           Duplicate_Identifier
+           (Id => Name);
+         Set_Link (Result.TI_Name, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Term_Identifier;
+
+   -------------------------------
    -- Duplicate_Arith_Operation --
    -------------------------------
 
@@ -7000,18 +7075,18 @@ package body Why.Atree.Builders is
             Label_Identifier_Get_Label (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.TI_Name :=
+         Result.TIL_Name :=
            Duplicate_Identifier
            (Id => Name);
-         Set_Link (Result.TI_Name, New_Id);
+         Set_Link (Result.TIL_Name, New_Id);
          if Label = Why_Empty then
-            Result.TI_Label := Why_Empty;
+            Result.TIL_Label := Why_Empty;
          else
-            Result.TI_Label :=
+            Result.TIL_Label :=
               Duplicate_Identifier
               (Id => Label);
          end if;
-         Set_Link (Result.TI_Label, New_Id);
+         Set_Link (Result.TIL_Label, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);

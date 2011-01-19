@@ -245,6 +245,16 @@ package Why.Atree.Traversal is
       Node  : W_Void_Literal_Id)
      is null;
 
+   procedure Term_Identifier_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Term_Identifier_Id)
+     is null;
+
+   procedure Term_Identifier_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Term_Identifier_Id)
+     is null;
+
    procedure Arith_Operation_Pre_Op
      (State : in out Traversal_State;
       Node  : W_Arith_Operation_Id)

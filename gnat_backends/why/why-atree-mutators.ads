@@ -181,6 +181,14 @@ package Why.Atree.Mutators is
      (Id    : W_Real_Constant_Unchecked_Id;
       Value : Ureal);
 
+   procedure Term_Identifier_Set_Name
+     (Id   : W_Term_Identifier_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name));
+
    procedure Arith_Operation_Set_Left
      (Id   : W_Arith_Operation_Unchecked_Id;
       Left : W_Term_Unchecked_Id) with

@@ -116,6 +116,7 @@ package Why.Sinfo is
       --  <term> ::= <constant>
       --             | <arith_operation>
       --             | <negative_term>
+      --             | <identifier>
       --             | <label_identifier>
       --             | <operation>
       --             | <named_term>
@@ -142,8 +143,10 @@ package Why.Sinfo is
       W_Void_Literal,
       --  <void_literal> ::= 'void'
 
+      W_Term_Identifier,
+
       W_Arith_Operation,
-      --  <operation> ::= <term> <arith_op> <term>
+      --  <arith_operation> ::= <term> <arith_op> <term>
 
       W_Negative_Term,
       --  <negative_term> ::= '-' <term>

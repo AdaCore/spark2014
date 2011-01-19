@@ -111,6 +111,10 @@ package Why.Atree.Accessors is
      (Id : W_Real_Constant_Id)
      return Ureal;
 
+   function Term_Identifier_Get_Name
+     (Id : W_Term_Identifier_Id)
+     return W_Identifier_Id;
+
    function Arith_Operation_Get_Left
      (Id : W_Arith_Operation_Id)
      return W_Term_Id;
@@ -945,6 +949,11 @@ private
      return Ureal is
      (Get_Node (Id).RC_Value);
 
+   function Term_Identifier_Get_Name
+     (Id : W_Term_Identifier_Id)
+     return W_Identifier_Id is
+     (Get_Node (Id).TI_Name);
+
    function Arith_Operation_Get_Left
      (Id : W_Arith_Operation_Id)
      return W_Term_Id is
@@ -968,12 +977,12 @@ private
    function Label_Identifier_Get_Name
      (Id : W_Label_Identifier_Id)
      return W_Identifier_Id is
-     (Get_Node (Id).TI_Name);
+     (Get_Node (Id).TIL_Name);
 
    function Label_Identifier_Get_Label
      (Id : W_Label_Identifier_Id)
      return W_Identifier_OId is
-     (Get_Node (Id).TI_Label);
+     (Get_Node (Id).TIL_Label);
 
    function Operation_Get_Name
      (Id : W_Operation_Id)

@@ -356,6 +356,22 @@ package Why.Unchecked_Ids is
      W_Void_Literal_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Term_Identifier_Unchecked_Id is
+     W_Term_Identifier_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Term_Identifier_Unchecked_OId is
+     W_Term_Identifier_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Term_Identifier_Unchecked_List is
+     W_Term_Identifier_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Term_Identifier_Unchecked_OList is
+     W_Term_Identifier_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Arith_Operation_Unchecked_Id is
      W_Arith_Operation_Opaque_Id;
    --  ??? subtype predicate not generated yet

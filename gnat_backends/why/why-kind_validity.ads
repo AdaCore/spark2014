@@ -352,6 +352,22 @@ package Why.Kind_Validity is
      (Id : W_Void_Literal_Opaque_OList)
      return Boolean;
 
+   function Term_Identifier_Id_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_Id)
+     return Boolean;
+
+   function Term_Identifier_OId_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OId)
+     return Boolean;
+
+   function Term_Identifier_List_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_List)
+     return Boolean;
+
+   function Term_Identifier_OList_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OList)
+     return Boolean;
+
    function Arith_Operation_Id_Kind_Valid
      (Id : W_Arith_Operation_Opaque_Id)
      return Boolean;
@@ -2933,6 +2949,31 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Void_Literal_List_Kind_Valid (Id));
+
+   function Term_Identifier_Id_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Term_Identifier);
+
+   function Term_Identifier_OId_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Term_Identifier_Id_Kind_Valid (Id));
+
+   function Term_Identifier_List_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Term_Identifier_OList_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Term_Identifier_List_Kind_Valid (Id));
 
    function Arith_Operation_Id_Kind_Valid
      (Id : W_Arith_Operation_Opaque_Id)

@@ -160,6 +160,9 @@ package Why.Atree is
          when W_True_Literal .. W_Void_Literal =>
             null;
 
+         when W_Term_Identifier =>
+            TI_Name : W_Identifier_Opaque_Id;
+
          when W_Arith_Operation =>
             AO_Left  : W_Term_Opaque_Id;
             AO_Op    : W_Arith_Op_Opaque_Id;
@@ -169,8 +172,8 @@ package Why.Atree is
             NT_Operand : W_Term_Opaque_Id;
 
          when W_Label_Identifier =>
-            TI_Name  : W_Identifier_Opaque_Id;
-            TI_Label : W_Identifier_Opaque_OId;
+            TIL_Name  : W_Identifier_Opaque_Id;
+            TIL_Label : W_Identifier_Opaque_OId;
 
          when W_Operation =>
             O_Name       : W_Identifier_Opaque_Id;

@@ -598,6 +598,36 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
+         when W_Term_Identifier =>
+            Term_Identifier_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Term_Identifier_Get_Name (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Term_Identifier_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
          when W_Arith_Operation =>
             Arith_Operation_Pre_Op (State, Node);
 
