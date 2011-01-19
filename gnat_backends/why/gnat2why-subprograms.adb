@@ -33,6 +33,49 @@ with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Subprograms is
 
+   ----------------------------
+   -- Map_Node_List_to_Array --
+   ----------------------------
+
+   generic
+      type T is private;
+      type A is array (Positive range <>) of T;
+      with function F (N : Node_Id) return T;
+   function Map_Node_List_to_Array (List : List_Id)
+      return A;
+   function Map_Node_List_to_Array (List : List_Id)
+      return A
+   is
+      --  The argument list should be non-empty
+      Len : constant Pos := List_Length (List);
+   begin
+      declare
+         Cursor : Node_Or_Entity_Id := Nlists.First (List);
+         Ret    : A (1 .. Integer (Len));
+         Cnt    : Integer range 0 .. Integer (Len) := 0;
+      begin
+         while Nkind (Cursor) /= N_Empty loop
+            Cnt := Cnt + 1;
+            Ret (Cnt) := F (Cursor);
+            Cursor := Next (Cursor);
+         end loop;
+         return Ret;
+      end;
+   end Map_Node_List_to_Array;
+
+   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
+   --  build a program that consists of only one identifier
+
+   --------------------
+   -- New_Prog_Ident --
+   --------------------
+   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id
+   is
+   begin
+      return
+        New_Prog_Identifier (Def => New_Identifier (Symbol => Chars (Id)));
+   end New_Prog_Ident;
+
    --------------------------
    -- Why_Term_Of_Ada_Expr --
    --------------------------
@@ -58,7 +101,7 @@ package body Gnat2Why.Subprograms is
             --  ??? TBD Treat this. Sometimes this seems to be inserted but
             --  there actually is no type conversion to do
             return Why_Term_Of_Ada_Expr (Expression (Expr));
-         when others => return New_Void_Literal;
+         when others => raise Program_Error;
       end case;
    end Why_Term_Of_Ada_Expr;
 
@@ -88,6 +131,9 @@ package body Gnat2Why.Subprograms is
    function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
       --  ??? TBD: complete this function for the remaining cases
+      --  ??? TBD: don't forget the corresponding Ada node
+      function Expr_Expr_Map is new Map_Node_List_to_Array
+         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Expr);
    begin
       case Nkind (Stmt) is
          when N_Null_Statement =>
@@ -102,7 +148,21 @@ package body Gnat2Why.Subprograms is
             --  ??? what to do in this case? We would need to know if we are
             --  in a procedure (translate to void or even omit) or function
             --  (just compile the returned expression)
-            return New_Prog_Constant (Def => New_Void_Literal);
+            if Expression (Stmt) /= Empty then
+               return Why_Expr_of_Ada_Expr (Expression (Stmt));
+            else
+               return New_Prog_Constant (Def => New_Void_Literal);
+            end if;
+         when N_Procedure_Call_Statement =>
+            declare
+               P : constant W_Prog_Id :=
+                  New_Prog_Call (
+                     Progs =>
+                       (1 => New_Prog_Ident (Name (Stmt))) &
+                     Expr_Expr_Map (Parameter_Associations (Stmt)));
+            begin
+               return P;
+            end;
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Stmt;
@@ -113,24 +173,14 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id
    is
-      L : constant Nat := List_Length (Stmts);
+      function Expr_Stmt_Map is new Map_Node_List_to_Array
+         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Stmt);
    begin
-      if L = 0 then
+      if List_Length (Stmts) = 0 then
          return New_Prog_Constant (Def => New_Void_Literal);
+      else
+         return New_Statement_Sequence (Statements => Expr_Stmt_Map (Stmts));
       end if;
-
-      declare
-         Cursor   : Node_Or_Entity_Id := Nlists.First (Stmts);
-         Sequence : W_Prog_Array (1 .. Integer (L));
-         Cnt      : Integer range 0 .. Integer (L) := 0;
-      begin
-         while Nkind (Cursor) /= N_Empty loop
-            Cnt := Cnt + 1;
-            Sequence (Cnt) := Why_Expr_of_Ada_Stmt (Cursor);
-            Cursor := Next (Cursor);
-         end loop;
-         return New_Statement_Sequence (Statements => Sequence);
-      end;
    end Why_Expr_of_Ada_Stmts;
 
    --------------------------------
@@ -151,10 +201,28 @@ package body Gnat2Why.Subprograms is
       Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
 
+      function Compute_Binder (Arg : Node_Id) return W_Binder_Id;
+
       function Compute_Binders return W_Binder_Array;
       --  Compute the arguments of the generated Why function
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments
+
+      ---------------------
+      -- Compute_Binder --
+      ---------------------
+
+      function Compute_Binder (Arg : Node_Id) return W_Binder_Id is
+      begin
+         return New_Binder
+           (Names =>
+             (1 => New_Identifier
+              (Symbol => Chars (Defining_Identifier (Arg)))),
+            Arg_Type =>
+              New_Ref_Type (Aliased_Type =>
+                New_Abstract_Type (Name =>
+                  New_Identifier (Symbol => Chars (Parameter_Type (Arg))))));
+      end Compute_Binder;
 
       ---------------------
       -- Compute_Binders --
@@ -162,6 +230,8 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Binders return W_Binder_Array
       is
+         function Binder_Map is new Map_Node_List_to_Array
+           (T => W_Binder_Id, A => W_Binder_Array, F => Compute_Binder);
          L : constant Nat := List_Length (Ada_Binders);
       begin
          if L = 0 then
@@ -171,33 +241,21 @@ package body Gnat2Why.Subprograms is
                     (Names => (1 => New_Identifier ("x")),
                      Arg_Type => New_Type_Unit));
          else
-            declare
-               Why_Binders : W_Binder_Array (1 .. Integer (L));
-               Arg         : Node_Or_Entity_Id := Nlists.First (Ada_Binders);
-               Cnt         : Integer range 0 .. Integer (L) := 0;
-            begin
-               while Nkind (Arg) /= N_Empty loop
-                  Cnt := Cnt + 1;
-                  Why_Binders (Cnt) :=
-                     New_Binder
-                       (Names =>
-                         (1 => New_Identifier
-                          (Symbol => Chars (Defining_Identifier (Arg)))),
-                        Arg_Type =>
-                          New_Ref_Type (Aliased_Type =>
-                            New_Abstract_Type (Name =>
-                              New_Identifier (Symbol =>
-                                Chars (Parameter_Type (Arg))))));
-                  Arg := Next (Arg);
-               end loop;
-               return Why_Binders;
-            end;
+            return Binder_Map (Ada_Binders);
          end if;
       end Compute_Binders;
 
+      --  function Compute_Pre return W_Assertion_Id
+      --  is
+      --  begin
+      --     null;
+      --  end Compute_Pre;
+
    begin
-      --  TBD deal with expression functions : transform into Why 'function'
+      --  ??? TBD deal with expression functions : transform into Why
+      --  'function'
       --  ??? TBD compute the Why Pre/Post
+      --  ??? TBD compute a VC for the TCC of the Precondition
       case Nkind (Spec) is
          when N_Procedure_Specification | N_Function_Specification =>
             --  There really is no difference between functions and procedures

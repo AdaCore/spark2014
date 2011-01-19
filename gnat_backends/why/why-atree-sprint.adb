@@ -2221,10 +2221,7 @@ package body Why.Atree.Sprint is
       Node  : W_Prog_Call_Id)
    is
    begin
-      Print_List
-        (State,
-         Prog_Call_Get_Progs (Node),
-         "" & ASCII.LF);
+      Print_List (State, Prog_Call_Get_Progs (Node), " ");
       State.Control := Abandon_Children;
    end Prog_Call_Pre_Op;
 
