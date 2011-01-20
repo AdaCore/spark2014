@@ -198,8 +198,13 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec (Kind : Name_Id) return W_Assertion_Id
       is
-         PPCs : Node_Id := Spec_PPC_List (Corresponding_Spec (Node));
+         Corr_Spec : constant Node_Id := Corresponding_Spec (Node);
+         PPCs : Node_Id;
       begin
+         if Nkind (Corr_Spec) = N_Empty then
+            return New_Assertion (Pred => New_True_Literal_Pred);
+         end if;
+         PPCs := Spec_PPC_List (Corr_Spec);
          loop
             if not Present (PPCs) then
                return New_Assertion (Pred => New_True_Literal_Pred);
@@ -222,7 +227,6 @@ package body Gnat2Why.Subprograms is
    begin
       --  ??? TBD deal with expression functions : transform into Why
       --  'function'
-      --  ??? TBD compute the Why Pre/Post
       --  ??? TBD compute a VC for the TCC of the Precondition
       case Nkind (Spec) is
          when N_Procedure_Specification | N_Function_Specification =>
