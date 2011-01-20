@@ -313,6 +313,13 @@ package body Gnat2Why.Subprograms is
                 (Ada_Node => Stmt,
                  Progs => (1 => New_Prog_Ident (Name (Stmt))) &
                              Expr_Expr_Map (Parameter_Associations (Stmt)));
+         when N_If_Statement =>
+            return
+              New_Conditional_Prog
+                (Ada_Node  => Stmt,
+                 Condition => Why_Expr_of_Ada_Expr (Condition (Stmt)),
+                 Then_Part => Why_Expr_of_Ada_Stmts (Then_Statements (Stmt)),
+                 Else_Part => Why_Expr_of_Ada_Stmts (Else_Statements (Stmt)));
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Stmt;
