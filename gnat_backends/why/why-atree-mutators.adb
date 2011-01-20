@@ -385,24 +385,6 @@ package body Why.Atree.Mutators is
    end Real_Constant_Set_Value;
 
    ------------------------------
-   -- Term_Identifier_Set_Name --
-   ------------------------------
-
-   procedure Term_Identifier_Set_Name
-     (Id   : W_Term_Identifier_Unchecked_Id;
-      Name : W_Identifier_Unchecked_Id)
-   is
-      Node : Why_Node := Get_Node (Id);
-   begin
-      Node.TI_Name := Name;
-      Set_Node (Id, Node);
-      Set_Link (Name, Id);
-      Update_Validity_Status
-        (Id,
-         Term_Identifier_Id_Valid (Id));
-   end Term_Identifier_Set_Name;
-
-   ------------------------------
    -- Arith_Operation_Set_Left --
    ------------------------------
 
@@ -474,12 +456,12 @@ package body Why.Atree.Mutators is
          Negative_Term_Id_Valid (Id));
    end Negative_Term_Set_Operand;
 
-   -------------------------------
-   -- Label_Identifier_Set_Name --
-   -------------------------------
+   ------------------------------
+   -- Term_Identifier_Set_Name --
+   ------------------------------
 
-   procedure Label_Identifier_Set_Name
-     (Id   : W_Label_Identifier_Unchecked_Id;
+   procedure Term_Identifier_Set_Name
+     (Id   : W_Term_Identifier_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -489,15 +471,15 @@ package body Why.Atree.Mutators is
       Set_Link (Name, Id);
       Update_Validity_Status
         (Id,
-         Label_Identifier_Id_Valid (Id));
-   end Label_Identifier_Set_Name;
+         Term_Identifier_Id_Valid (Id));
+   end Term_Identifier_Set_Name;
 
-   --------------------------------
-   -- Label_Identifier_Set_Label --
-   --------------------------------
+   -------------------------------
+   -- Term_Identifier_Set_Label --
+   -------------------------------
 
-   procedure Label_Identifier_Set_Label
-     (Id    : W_Label_Identifier_Unchecked_Id;
+   procedure Term_Identifier_Set_Label
+     (Id    : W_Term_Identifier_Unchecked_Id;
       Label : W_Identifier_Unchecked_OId)
    is
       Node : Why_Node := Get_Node (Id);
@@ -507,8 +489,8 @@ package body Why.Atree.Mutators is
       Set_Link (Label, Id);
       Update_Validity_Status
         (Id,
-         Label_Identifier_Id_Valid (Id));
-   end Label_Identifier_Set_Label;
+         Term_Identifier_Id_Valid (Id));
+   end Term_Identifier_Set_Label;
 
    ------------------------
    -- Operation_Set_Name --
@@ -568,7 +550,7 @@ package body Why.Atree.Mutators is
 
    procedure Named_Term_Set_Name
      (Id   : W_Named_Term_Unchecked_Id;
-      Name : W_Label_Identifier_Unchecked_Id)
+      Name : W_Identifier_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
    begin

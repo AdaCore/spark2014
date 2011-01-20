@@ -423,27 +423,6 @@ package Why.Atree.Builders is
           (New_Void_Literal'Result)
           = Ada_Node);
 
-   function New_Term_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Term_Identifier_Id with
-     Pre =>
-       (Identifier_Id_Kind_Valid (Name)
-        and then Identifier_Id_Valid (Name)
-        and then Is_Root (Name)),
-     Post =>
-       (Get_Kind
-         (New_Term_Identifier'Result)
-         = W_Term_Identifier
-        and then
-          Get_Ada_Node
-          (New_Term_Identifier'Result)
-          = Ada_Node
-        and then
-          Term_Identifier_Get_Name
-          (New_Term_Identifier'Result)
-          = Name);
-
    function New_Arith_Operation
      (Ada_Node : Node_Id := Empty;
       Left     : W_Term_Id;
@@ -502,11 +481,11 @@ package Why.Atree.Builders is
           (New_Negative_Term'Result)
           = Operand);
 
-   function New_Label_Identifier
+   function New_Term_Identifier
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Label    : W_Identifier_OId := Why_Empty)
-     return W_Label_Identifier_Id with
+     return W_Term_Identifier_Id with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
@@ -516,19 +495,19 @@ package Why.Atree.Builders is
         and then Is_Root (Label)),
      Post =>
        (Get_Kind
-         (New_Label_Identifier'Result)
-         = W_Label_Identifier
+         (New_Term_Identifier'Result)
+         = W_Term_Identifier
         and then
           Get_Ada_Node
-          (New_Label_Identifier'Result)
+          (New_Term_Identifier'Result)
           = Ada_Node
         and then
-          Label_Identifier_Get_Name
-          (New_Label_Identifier'Result)
+          Term_Identifier_Get_Name
+          (New_Term_Identifier'Result)
           = Name
         and then
-          Label_Identifier_Get_Label
-          (New_Label_Identifier'Result)
+          Term_Identifier_Get_Label
+          (New_Term_Identifier'Result)
           = Label);
 
    function New_Operation
@@ -558,12 +537,12 @@ package Why.Atree.Builders is
 
    function New_Named_Term
      (Ada_Node : Node_Id := Empty;
-      Name     : W_Label_Identifier_Id;
+      Name     : W_Identifier_Id;
       Term     : W_Term_Id)
      return W_Named_Term_Id with
      Pre =>
-       (Label_Identifier_Id_Kind_Valid (Name)
-        and then Label_Identifier_Id_Valid (Name)
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
         and then Is_Root (Name)
         and then Term_Id_Kind_Valid (Term)
         and then Term_Id_Valid (Term)
@@ -3414,15 +3393,6 @@ package Why.Atree.Builders is
          = W_Void_Literal
        );
 
-   function New_Unchecked_Term_Identifier
-     return W_Term_Identifier_Unchecked_Id with
-     Pre => True,
-     Post =>
-       (Get_Kind
-         (New_Unchecked_Term_Identifier'Result)
-         = W_Term_Identifier
-       );
-
    function New_Unchecked_Arith_Operation
      return W_Arith_Operation_Unchecked_Id with
      Pre => True,
@@ -3441,13 +3411,13 @@ package Why.Atree.Builders is
          = W_Negative_Term
        );
 
-   function New_Unchecked_Label_Identifier
-     return W_Label_Identifier_Unchecked_Id with
+   function New_Unchecked_Term_Identifier
+     return W_Term_Identifier_Unchecked_Id with
      Pre => True,
      Post =>
        (Get_Kind
-         (New_Unchecked_Label_Identifier'Result)
-         = W_Label_Identifier
+         (New_Unchecked_Term_Identifier'Result)
+         = W_Term_Identifier
        );
 
    function New_Unchecked_Operation
@@ -4716,21 +4686,6 @@ package Why.Atree.Builders is
           (Duplicate_Void_Literal'Result)
           = Ada_Node);
 
-   function Duplicate_Term_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Term_Identifier_OId)
-     return W_Term_Identifier_Id with
-     Pre =>
-       (Term_Identifier_Id_Valid (Id)),
-     Post =>
-       (Get_Kind
-         (Duplicate_Term_Identifier'Result)
-         = W_Term_Identifier
-        and then
-          Get_Ada_Node
-          (Duplicate_Term_Identifier'Result)
-          = Ada_Node);
-
    function Duplicate_Arith_Operation
      (Ada_Node : Node_Id := Empty;
       Id       : W_Arith_Operation_OId)
@@ -4761,19 +4716,19 @@ package Why.Atree.Builders is
           (Duplicate_Negative_Term'Result)
           = Ada_Node);
 
-   function Duplicate_Label_Identifier
+   function Duplicate_Term_Identifier
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Label_Identifier_OId)
-     return W_Label_Identifier_Id with
+      Id       : W_Term_Identifier_OId)
+     return W_Term_Identifier_Id with
      Pre =>
-       (Label_Identifier_Id_Valid (Id)),
+       (Term_Identifier_Id_Valid (Id)),
      Post =>
        (Get_Kind
-         (Duplicate_Label_Identifier'Result)
-         = W_Label_Identifier
+         (Duplicate_Term_Identifier'Result)
+         = W_Term_Identifier
         and then
           Get_Ada_Node
-          (Duplicate_Label_Identifier'Result)
+          (Duplicate_Term_Identifier'Result)
           = Ada_Node);
 
    function Duplicate_Operation
@@ -6528,10 +6483,6 @@ private
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Term_Identifier =>
-           Duplicate_Term_Identifier
-            (Ada_Node  => Ada_Node,
-             Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
@@ -6540,8 +6491,8 @@ private
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Label_Identifier =>
-           Duplicate_Label_Identifier
+        when W_Term_Identifier =>
+           Duplicate_Term_Identifier
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Operation =>
@@ -6644,10 +6595,6 @@ private
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Term_Identifier =>
-           Duplicate_Term_Identifier
-            (Ada_Node  => Ada_Node,
-             Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
@@ -6656,8 +6603,8 @@ private
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Label_Identifier =>
-           Duplicate_Label_Identifier
+        when W_Term_Identifier =>
+           Duplicate_Term_Identifier
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Operation =>
@@ -7412,10 +7359,6 @@ private
            Duplicate_Void_Literal
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Term_Identifier =>
-           Duplicate_Term_Identifier
-            (Ada_Node  => Ada_Node,
-             Id        => Id),
         when W_Arith_Operation =>
            Duplicate_Arith_Operation
             (Ada_Node  => Ada_Node,
@@ -7424,8 +7367,8 @@ private
            Duplicate_Negative_Term
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Label_Identifier =>
-           Duplicate_Label_Identifier
+        when W_Term_Identifier =>
+           Duplicate_Term_Identifier
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Operation =>

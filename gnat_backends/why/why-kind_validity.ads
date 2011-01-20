@@ -352,22 +352,6 @@ package Why.Kind_Validity is
      (Id : W_Void_Literal_Opaque_OList)
      return Boolean;
 
-   function Term_Identifier_Id_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_Id)
-     return Boolean;
-
-   function Term_Identifier_OId_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_OId)
-     return Boolean;
-
-   function Term_Identifier_List_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_List)
-     return Boolean;
-
-   function Term_Identifier_OList_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_OList)
-     return Boolean;
-
    function Arith_Operation_Id_Kind_Valid
      (Id : W_Arith_Operation_Opaque_Id)
      return Boolean;
@@ -400,20 +384,20 @@ package Why.Kind_Validity is
      (Id : W_Negative_Term_Opaque_OList)
      return Boolean;
 
-   function Label_Identifier_Id_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_Id)
+   function Term_Identifier_Id_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_Id)
      return Boolean;
 
-   function Label_Identifier_OId_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_OId)
+   function Term_Identifier_OId_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OId)
      return Boolean;
 
-   function Label_Identifier_List_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_List)
+   function Term_Identifier_List_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_List)
      return Boolean;
 
-   function Label_Identifier_OList_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_OList)
+   function Term_Identifier_OList_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OList)
      return Boolean;
 
    function Operation_Id_Kind_Valid
@@ -2950,31 +2934,6 @@ private
      (Is_Empty (Id)
       or else Void_Literal_List_Kind_Valid (Id));
 
-   function Term_Identifier_Id_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Term_Identifier);
-
-   function Term_Identifier_OId_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Term_Identifier_Id_Kind_Valid (Id));
-
-   function Term_Identifier_List_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Term_Identifier_OList_Kind_Valid
-     (Id : W_Term_Identifier_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Term_Identifier_List_Kind_Valid (Id));
-
    function Arith_Operation_Id_Kind_Valid
      (Id : W_Arith_Operation_Opaque_Id)
      return Boolean is
@@ -3025,30 +2984,30 @@ private
      (Is_Empty (Id)
       or else Negative_Term_List_Kind_Valid (Id));
 
-   function Label_Identifier_Id_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_Id)
+   function Term_Identifier_Id_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Label_Identifier);
+     (Get_Kind (Id) = W_Term_Identifier);
 
-   function Label_Identifier_OId_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_OId)
+   function Term_Identifier_OId_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Label_Identifier_Id_Kind_Valid (Id));
+      or else Term_Identifier_Id_Kind_Valid (Id));
 
-   function Label_Identifier_List_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_List)
+   function Term_Identifier_List_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Label_Identifier_OList_Kind_Valid
-     (Id : W_Label_Identifier_Opaque_OList)
+   function Term_Identifier_OList_Kind_Valid
+     (Id : W_Term_Identifier_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Label_Identifier_List_Kind_Valid (Id));
+      or else Term_Identifier_List_Kind_Valid (Id));
 
    function Operation_Id_Kind_Valid
      (Id : W_Operation_Opaque_Id)

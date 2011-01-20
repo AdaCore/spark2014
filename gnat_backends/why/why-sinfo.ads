@@ -143,15 +143,13 @@ package Why.Sinfo is
       W_Void_Literal,
       --  <void_literal> ::= 'void'
 
-      W_Term_Identifier,
-
       W_Arith_Operation,
       --  <arith_operation> ::= <term> <arith_op> <term>
 
       W_Negative_Term,
       --  <negative_term> ::= '-' <term>
 
-      W_Label_Identifier,
+      W_Term_Identifier,
       --  <label_identifier> ::= <identifier> [ @ [ <identifier> ] ]
 
       W_Operation,

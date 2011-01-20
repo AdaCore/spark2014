@@ -580,15 +580,15 @@ package body Why.Atree.Sprint is
    -- Label_Identifier_Pre_Op --
    -----------------------------
 
-   procedure Label_Identifier_Pre_Op
+   procedure Term_Identifier_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Label_Identifier_Id)
+      Node  : W_Term_Identifier_Id)
    is
-      Label : constant W_Identifier_OId := Label_Identifier_Get_Label (Node);
+      Label : constant W_Identifier_OId := Term_Identifier_Get_Label (Node);
    begin
       Traverse
         (State,
-         Label_Identifier_Get_Name (Node));
+         Term_Identifier_Get_Name (Node));
 
       if Label /= Why_Empty then
          P (O, "@");
@@ -596,7 +596,7 @@ package body Why.Atree.Sprint is
       end if;
 
       State.Control := Abandon_Children;
-   end Label_Identifier_Pre_Op;
+   end Term_Identifier_Pre_Op;
 
    ----------------------
    -- Operation_Pre_Op --

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -81,16 +81,16 @@ package Why.Gen.Names is
    procedure Set_Name (Id : W_Identifier_Id; Name : String);
    --  Change the name of the given identifier
 
-   function New_Result_Identifier return W_Label_Identifier_Id;
+   function New_Result_Identifier return W_Term_Identifier_Id;
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.
 
-   function To_Label_Identifier
+   function To_Term_Identifier
      (Name : W_Identifier_Id)
-     return W_Label_Identifier_Id;
+     return W_Term_Identifier_Id;
    --  Create a label identifier from Name. Name is duplicated.
 
-   function New_Term (Name : String) return W_Label_Identifier_Id;
+   function New_Term (Name : String) return W_Term_Identifier_Id;
    --  Return a term identified by the given name
 
 end Why.Gen.Names;

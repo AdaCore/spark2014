@@ -128,9 +128,9 @@ private
      (State : in out Printer_State;
       Node  : W_Negative_Term_Id);
 
-   procedure Label_Identifier_Pre_Op
+   procedure Term_Identifier_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Label_Identifier_Id);
+      Node  : W_Term_Identifier_Id);
 
    procedure Operation_Pre_Op
      (State : in out Printer_State;

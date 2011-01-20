@@ -111,10 +111,6 @@ package Why.Atree.Accessors is
      (Id : W_Real_Constant_Id)
      return Ureal;
 
-   function Term_Identifier_Get_Name
-     (Id : W_Term_Identifier_Id)
-     return W_Identifier_Id;
-
    function Arith_Operation_Get_Left
      (Id : W_Arith_Operation_Id)
      return W_Term_Id;
@@ -131,12 +127,12 @@ package Why.Atree.Accessors is
      (Id : W_Negative_Term_Id)
      return W_Term_Id;
 
-   function Label_Identifier_Get_Name
-     (Id : W_Label_Identifier_Id)
+   function Term_Identifier_Get_Name
+     (Id : W_Term_Identifier_Id)
      return W_Identifier_Id;
 
-   function Label_Identifier_Get_Label
-     (Id : W_Label_Identifier_Id)
+   function Term_Identifier_Get_Label
+     (Id : W_Term_Identifier_Id)
      return W_Identifier_OId;
 
    function Operation_Get_Name
@@ -149,7 +145,7 @@ package Why.Atree.Accessors is
 
    function Named_Term_Get_Name
      (Id : W_Named_Term_Id)
-     return W_Label_Identifier_Id;
+     return W_Identifier_Id;
 
    function Named_Term_Get_Term
      (Id : W_Named_Term_Id)
@@ -949,11 +945,6 @@ private
      return Ureal is
      (Get_Node (Id).RC_Value);
 
-   function Term_Identifier_Get_Name
-     (Id : W_Term_Identifier_Id)
-     return W_Identifier_Id is
-     (Get_Node (Id).TI_Name);
-
    function Arith_Operation_Get_Left
      (Id : W_Arith_Operation_Id)
      return W_Term_Id is
@@ -974,13 +965,13 @@ private
      return W_Term_Id is
      (Get_Node (Id).NT_Operand);
 
-   function Label_Identifier_Get_Name
-     (Id : W_Label_Identifier_Id)
+   function Term_Identifier_Get_Name
+     (Id : W_Term_Identifier_Id)
      return W_Identifier_Id is
      (Get_Node (Id).TIL_Name);
 
-   function Label_Identifier_Get_Label
-     (Id : W_Label_Identifier_Id)
+   function Term_Identifier_Get_Label
+     (Id : W_Term_Identifier_Id)
      return W_Identifier_OId is
      (Get_Node (Id).TIL_Label);
 
@@ -996,7 +987,7 @@ private
 
    function Named_Term_Get_Name
      (Id : W_Named_Term_Id)
-     return W_Label_Identifier_Id is
+     return W_Identifier_Id is
      (Get_Node (Id).NT_Name);
 
    function Named_Term_Get_Term

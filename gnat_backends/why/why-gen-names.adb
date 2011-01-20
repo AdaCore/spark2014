@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -109,16 +109,16 @@ package body Why.Gen.Names is
    function New_Result_Identifier return W_Identifier_Id is
       Result_Name : constant String := "result";
    begin
-      return New_Label_Identifier (Name => New_Identifier (Result_Name));
+      return New_Term_Identifier (Name => New_Identifier (Result_Name));
    end New_Result_Identifier;
 
    --------------
    -- New_Term --
    --------------
 
-   function New_Term (Name : String) return W_Label_Identifier_Id is
+   function New_Term (Name : String) return W_Term_Identifier_Id is
    begin
-      return New_Label_Identifier (Name => New_Identifier (Name));
+      return New_Term_Identifier (Name => New_Identifier (Name));
    end New_Term;
 
    -----------------
@@ -190,12 +190,12 @@ package body Why.Gen.Names is
    -- To_Label_Identifier --
    -------------------------
 
-   function To_Label_Identifier
+   function To_Term_Identifier
      (Name : W_Identifier_Id)
-     return W_Label_Identifier_Id is
+     return W_Term_Identifier_Id is
    begin
-      return New_Label_Identifier (Name => Duplicate_Any_Node (Id => Name));
-   end To_Label_Identifier;
+      return New_Term_Identifier (Name => Duplicate_Any_Node (Id => Name));
+   end To_Term_Identifier;
 
    -------------------
    -- Unicity_Axiom --

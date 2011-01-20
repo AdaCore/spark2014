@@ -181,14 +181,6 @@ package Why.Atree.Mutators is
      (Id    : W_Real_Constant_Unchecked_Id;
       Value : Ureal);
 
-   procedure Term_Identifier_Set_Name
-     (Id   : W_Term_Identifier_Unchecked_Id;
-      Name : W_Identifier_Unchecked_Id) with
-     Pre =>
-       (Identifier_Id_Kind_Valid (Name)
-        and then Identifier_Id_Valid (Name)
-        and then Is_Root (Name));
-
    procedure Arith_Operation_Set_Left
      (Id   : W_Arith_Operation_Unchecked_Id;
       Left : W_Term_Unchecked_Id) with
@@ -221,16 +213,16 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Operand)
         and then Is_Root (Operand));
 
-   procedure Label_Identifier_Set_Name
-     (Id   : W_Label_Identifier_Unchecked_Id;
+   procedure Term_Identifier_Set_Name
+     (Id   : W_Term_Identifier_Unchecked_Id;
       Name : W_Identifier_Unchecked_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Name)
         and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
-   procedure Label_Identifier_Set_Label
-     (Id    : W_Label_Identifier_Unchecked_Id;
+   procedure Term_Identifier_Set_Label
+     (Id    : W_Term_Identifier_Unchecked_Id;
       Label : W_Identifier_Unchecked_OId) with
      Pre =>
        (Identifier_OId_Kind_Valid (Label)
@@ -263,10 +255,10 @@ package Why.Atree.Mutators is
 
    procedure Named_Term_Set_Name
      (Id   : W_Named_Term_Unchecked_Id;
-      Name : W_Label_Identifier_Unchecked_Id) with
+      Name : W_Identifier_Unchecked_Id) with
      Pre =>
-       (Label_Identifier_Id_Kind_Valid (Name)
-        and then Label_Identifier_Id_Valid (Name)
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
         and then Is_Root (Name));
 
    procedure Named_Term_Set_Term

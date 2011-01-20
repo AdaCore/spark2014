@@ -198,14 +198,6 @@ package Why.Opaque_Ids is
 
    subtype W_Void_Literal_Opaque_OList is Why_Node_List;
 
-   subtype W_Term_Identifier_Opaque_Id is Why_Node_Id;
-
-   subtype W_Term_Identifier_Opaque_OId is Why_Node_Id;
-
-   subtype W_Term_Identifier_Opaque_List is Why_Node_List;
-
-   subtype W_Term_Identifier_Opaque_OList is Why_Node_List;
-
    subtype W_Arith_Operation_Opaque_Id is Why_Node_Id;
 
    subtype W_Arith_Operation_Opaque_OId is Why_Node_Id;
@@ -222,13 +214,13 @@ package Why.Opaque_Ids is
 
    subtype W_Negative_Term_Opaque_OList is Why_Node_List;
 
-   subtype W_Label_Identifier_Opaque_Id is Why_Node_Id;
+   subtype W_Term_Identifier_Opaque_Id is Why_Node_Id;
 
-   subtype W_Label_Identifier_Opaque_OId is Why_Node_Id;
+   subtype W_Term_Identifier_Opaque_OId is Why_Node_Id;
 
-   subtype W_Label_Identifier_Opaque_List is Why_Node_List;
+   subtype W_Term_Identifier_Opaque_List is Why_Node_List;
 
-   subtype W_Label_Identifier_Opaque_OList is Why_Node_List;
+   subtype W_Term_Identifier_Opaque_OList is Why_Node_List;
 
    subtype W_Operation_Opaque_Id is Why_Node_Id;
 
