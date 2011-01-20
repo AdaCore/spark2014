@@ -41,6 +41,7 @@ package body Why.Gen.Enums is
      (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List);
+   --  ??? Missing doc
 
    -----------------------------------
    -- Declare_Abstract_Boolean_Type --
@@ -102,9 +103,9 @@ package body Why.Gen.Enums is
          New_Logic_Declaration (Decl => Func));
    end Define_Enum_To_Int_Function;
 
-   -----------------------
-   -- Declare_Enum_Type --
-   -----------------------
+   ---------------------------
+   -- Declare_Ada_Enum_Type --
+   ---------------------------
 
    procedure Declare_Ada_Enum_Type
      (File         : W_File_Id;
@@ -117,6 +118,7 @@ package body Why.Gen.Enums is
       --  ??? TBD: It would be better to compare with the Entity_Id of
       --  gnat/stand.ads instead of the name, but this would have to be done
       --  higher up in the chain
+
       if Name /= "boolean" then
          File_Append_To_Declarations
            (File,
@@ -135,6 +137,7 @@ package body Why.Gen.Enums is
          --  dealing with a type from the standard package, e.g. "char".
          --  A special treatment would probably be better, in particular the
          --  range predicate currently makes no sense
+
          if Len /= 0 then
             Define_Enum_To_Int_Function (File, Name, Constructors);
             Define_Coerce_Axiom

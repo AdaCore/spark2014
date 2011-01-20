@@ -63,11 +63,12 @@ package body Why.Gen.Types is
       Constructors : String_Lists.List) return W_Type_Id
    is
       use String_Lists;
+
       Len     : constant Count_Type :=
-            String_Lists.Length (Constructors);
+                  String_Lists.Length (Constructors);
       Constrs : W_Constr_Decl_Array (1 .. Integer (Len));
-      Cursor : String_Lists.Cursor := First (Constructors);
-      Cnt : Integer range 0 .. Integer (Len) := 0;
+      Cursor  : String_Lists.Cursor := First (Constructors);
+      Cnt     : Integer range 0 .. Integer (Len) := 0;
    begin
       if Len = 0 then
          return New_Abstract_Type_Declaration (Name);
@@ -75,7 +76,7 @@ package body Why.Gen.Types is
          while Has_Element (Cursor) loop
             Cnt := Cnt + 1;
             Constrs (Cnt) :=
-               New_Constr_Decl (Name => New_Identifier (Element (Cursor)));
+              New_Constr_Decl (Name => New_Identifier (Element (Cursor)));
             Next (Cursor);
          end loop;
          return New_Type

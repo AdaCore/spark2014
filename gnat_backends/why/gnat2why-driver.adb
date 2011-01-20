@@ -42,6 +42,9 @@ package body Gnat2Why.Driver is
 
    --   This is the main driver for the Ada-to-Why back-end
 
+   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id);
+   --  ??? Missing doc
+
    ------------------------
    -- Is_Back_End_Switch --
    ------------------------
@@ -72,8 +75,6 @@ package body Gnat2Why.Driver is
       end case;
    end Is_Back_End_Switch;
 
-   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id);
-
    -----------------------------
    -- Translate_List_Of_Decls --
    -----------------------------
@@ -81,6 +82,7 @@ package body Gnat2Why.Driver is
    procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id)
    is
       Decl  : Node_Id;
+
       function Is_Type_Node (N : Node_Id) return Boolean;
       --  Detect if a node of an Ada Tree is a typing declaration
 

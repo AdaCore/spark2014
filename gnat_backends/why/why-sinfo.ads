@@ -117,7 +117,7 @@ package Why.Sinfo is
       --             | <arith_operation>
       --             | <negative_term>
       --             | <identifier>
-      --             | <label_identifier>
+      --             | <term_identifier>
       --             | <operation>
       --             | <named_term>
       --             | <conditional_term>
@@ -150,13 +150,13 @@ package Why.Sinfo is
       --  <negative_term> ::= '-' <term>
 
       W_Term_Identifier,
-      --  <label_identifier> ::= <identifier> [ @ [ <identifier> ] ]
+      --  <term_identifier> ::= <identifier> [ @ [ <identifier> ] ]
 
       W_Operation,
       --  <operation> ::= <identifier> '(' <term> (',' <term>)* ')'
 
       W_Named_Term,
-      --  <named_term> ::= <label_identifier> '[' <term> ']'
+      --  <named_term> ::= <term_identifier> '[' <term> ']'
 
       W_Conditional_Term,
       --  <logic_conditional_term> ::= 'if' <term> 'then' <term> 'else' <term>

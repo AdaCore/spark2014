@@ -61,6 +61,7 @@ package body Gnat2Why.Subprograms is
          when others => return New_Void_Literal;
       end case;
    end Why_Term_Of_Ada_Expr;
+
    --------------------------
    -- Why_Term_Of_Ada_Expr --
    --------------------------
@@ -146,17 +147,18 @@ package body Gnat2Why.Subprograms is
       --  * return types
       Spec        : constant Node_Id := Specification (Node);
       Stmts       : constant List_Id :=
-         Statements (Handled_Statement_Sequence (Node));
+                      Statements (Handled_Statement_Sequence (Node));
       Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
 
-      ---------------------
-      -- Compute_Binders --
-      ---------------------
       function Compute_Binders return W_Binder_Array;
       --  Compute the arguments of the generated Why function
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments
+
+      ---------------------
+      -- Compute_Binders --
+      ---------------------
 
       function Compute_Binders return W_Binder_Array
       is
@@ -166,8 +168,8 @@ package body Gnat2Why.Subprograms is
             --  ??? TBD: We should never choose variable names at random like
             --  that, beware of variable capture
             return (1 => New_Binder
-               (Names => (1 => New_Identifier ("x")),
-                Arg_Type => New_Type_Unit));
+                    (Names => (1 => New_Identifier ("x")),
+                     Arg_Type => New_Type_Unit));
          else
             declare
                Why_Binders : W_Binder_Array (1 .. Integer (L));
