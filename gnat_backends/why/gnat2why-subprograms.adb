@@ -24,9 +24,11 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
+with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
+with Snames;             use Snames;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
@@ -91,12 +93,30 @@ package body Gnat2Why.Subprograms is
             --  An identifier may or may not be of reference type; but here we
             --  do not care, as Why, in annotations, happily converts a
             --  reference to its base type.
-            return New_Identifier (Symbol => Chars (Expr));
-         when N_Op_Add =>
-            return New_Arith_Operation
-              (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-               Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
-               Op => New_Op_Add);
+            return
+               New_Term_Identifier
+                 (Name => New_Identifier (Symbol => Chars (Expr)));
+         when N_Op_Add | N_Op_Gt =>
+            declare
+               Left  : constant W_Term_Id :=
+                  Why_Term_Of_Ada_Expr (Left_Opnd (Expr));
+               Right : constant W_Term_Id :=
+                  Why_Term_Of_Ada_Expr (Right_Opnd (Expr));
+            begin
+               case Nkind (Expr) is
+               when N_Op_Add =>
+                  return New_Arith_Operation
+                    (Left => Left,
+                     Right => Right,
+                     Op => New_Op_Add);
+               when N_Op_Gt =>
+                  return New_Related_Terms
+                    (Left => Left,
+                     Right => Right,
+                     Op => New_Rel_Gt);
+               when others => raise Program_Error;
+               end case;
+            end;
          when N_Type_Conversion =>
             --  ??? TBD Treat this. Sometimes this seems to be inserted but
             --  there actually is no type conversion to do
@@ -106,7 +126,7 @@ package body Gnat2Why.Subprograms is
    end Why_Term_Of_Ada_Expr;
 
    --------------------------
-   -- Why_Term_Of_Ada_Expr --
+   -- Why_Expr_of_Ada_Expr --
    --------------------------
 
    function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
@@ -202,11 +222,16 @@ package body Gnat2Why.Subprograms is
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
 
       function Compute_Binder (Arg : Node_Id) return W_Binder_Id;
+      --  Compute a single Why function argument from a single Ada function /
+      --  procedure argument; all result types are reference types
 
       function Compute_Binders return W_Binder_Array;
       --  Compute the arguments of the generated Why function
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments
+
+      function Compute_Pre return W_Assertion_Id;
+      --  Compute the precondition of the generated Why functions
 
       ---------------------
       -- Compute_Binder --
@@ -245,12 +270,30 @@ package body Gnat2Why.Subprograms is
          end if;
       end Compute_Binders;
 
-      --  function Compute_Pre return W_Assertion_Id
-      --  is
-      --  begin
-      --     null;
-      --  end Compute_Pre;
+      -----------------
+      -- Compute_Pre --
+      -----------------
 
+      function Compute_Pre return W_Assertion_Id
+      is
+         PPCs        : Node_Id :=
+            Spec_PPC_List (Corresponding_Spec (Node));
+      begin
+         loop
+            if not Present (PPCs) then
+               return New_Assertion (Pred => New_True_Literal_Pred);
+            end if;
+            if Pragma_Name (PPCs) = Name_Precondition then
+               return
+                  New_Assertion
+                    (Pred =>
+                      Why_Term_Of_Ada_Expr
+                         (Expression
+                            (First (Pragma_Argument_Associations (PPCs)))));
+            end if;
+            PPCs := Next_Pragma (PPCs);
+         end loop;
+      end Compute_Pre;
    begin
       --  ??? TBD deal with expression functions : transform into Why
       --  'function'
@@ -264,7 +307,7 @@ package body Gnat2Why.Subprograms is
               (File => File,
                Name => Get_Name_String (Name),
                Binders => Compute_Binders,
-               Pre => New_Assertion (Pred => New_True_Literal_Pred),
+               Pre => Compute_Pre,
                Post => New_Assertion (Pred => New_True_Literal_Pred),
                Def => Why_Expr_of_Ada_Stmts (Stmts));
          when others => raise Program_Error;
