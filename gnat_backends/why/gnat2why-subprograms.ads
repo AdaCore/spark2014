@@ -100,6 +100,10 @@ package Gnat2Why.Subprograms is
    --  Translate a list of Ada statements into a single Why expression
    --  An empty list is translated to "void"
 
+   function Why_Predicate_of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id;
+   --  Translate an Ada Expression to a Why predicate
+
    function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
+   --  Translate an Ada Expression to a Why Term
 
 end Gnat2Why.Subprograms;

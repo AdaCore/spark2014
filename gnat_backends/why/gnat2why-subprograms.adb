@@ -162,7 +162,7 @@ package body Gnat2Why.Subprograms is
                return
                   New_Assertion
                     (Pred =>
-                      Why_Term_Of_Ada_Expr
+                      Why_Predicate_of_Ada_Expr
                          (Expression
                             (First (Pragma_Argument_Associations (PPCs)))));
             end if;
@@ -268,6 +268,19 @@ package body Gnat2Why.Subprograms is
       end if;
    end Why_Expr_of_Ada_Stmts;
 
+   function Why_Predicate_of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id
+   is
+   begin
+      case Nkind (Expr) is
+         when N_Op_Gt =>
+            return New_Related_Terms
+               (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+                Op => New_Rel_Gt);
+         when others => raise Program_Error;
+      end case;
+   end Why_Predicate_of_Ada_Expr;
+
    --------------------------
    -- Why_Term_Of_Ada_Expr --
    --------------------------
@@ -287,6 +300,11 @@ package body Gnat2Why.Subprograms is
                New_Term_Identifier
                  (Name => New_Identifier (Symbol => Chars (Expr)));
          when N_Op_Add | N_Op_Gt =>
+            --  ??? TBD The treatment of N_Op_Gt is incorrect: we need to use
+            --  a comparison function that returns bool
+            --  ??? TBD The treatment of N_Op_Add is incorrect: we need to
+            --  insert conversions depending on the type returned and the type
+            --  expected
             declare
                Left  : constant W_Term_Id :=
                   Why_Term_Of_Ada_Expr (Left_Opnd (Expr));
