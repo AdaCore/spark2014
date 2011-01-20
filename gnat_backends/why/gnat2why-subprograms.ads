@@ -103,7 +103,13 @@ package Gnat2Why.Subprograms is
    function Why_Predicate_of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id;
    --  Translate an Ada Expression to a Why predicate
 
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
-   --  Translate an Ada Expression to a Why Term
+   function Why_Term_Of_Ada_Expr
+     (Expr : Node_Id;
+      Expect_Int : Boolean := False) return W_Term_Id;
+   --  Translate an Ada Expression to a Why Term.
+   --  If Expect_Int is True, the function inserts conversions whenever
+   --  necessary to obtain an object of type "int" in Why.
+   --  Otherwise, the function tries *not* to obtain an object of type "int"
+   --  in Why.
 
 end Gnat2Why.Subprograms;

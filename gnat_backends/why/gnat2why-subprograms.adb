@@ -65,12 +65,49 @@ package body Gnat2Why.Subprograms is
       end;
    end Map_Node_List_to_Array;
 
+   function From_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+      return W_Term_Id;
+   --  convert the term Why_Expr, which is expected to be of "int" type, to
+   --  the type in Why that corresponds to the type of the Ada Node Expr
+
+   function To_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+      return W_Term_Id;
+   --  convert the term Why_Expr, which is expected to be of some type which
+   --  possesses a conversion function to int, to "int" type in Why
+
    function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
    --  build a program that consists of only one identifier
+
+   ------------------
+   -- From_Why_Int --
+   ------------------
+
+   function From_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+      return W_Term_Id is
+   begin
+      return New_Operation
+         (Name => New_Conversion_From_Int
+            (Get_Name_String (Chars (Etype (Expr)))),
+          Parameters => (1 => Why_Expr));
+   end From_Why_Int;
+
+   ------------------
+   -- To_Why_Int --
+   ------------------
+
+   function To_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+      return W_Term_Id is
+   begin
+      return New_Operation
+         (Name => New_Conversion_To_Int
+            (Get_Name_String (Chars (Etype (Expr)))),
+          Parameters => (1 => Why_Expr));
+   end To_Why_Int;
 
    --------------------
    -- New_Prog_Ident --
    --------------------
+
    function New_Prog_Ident (Id : Node_Id) return W_Prog_Id
    is
    begin
@@ -169,6 +206,7 @@ package body Gnat2Why.Subprograms is
             PPCs := Next_Pragma (PPCs);
          end loop;
       end Compute_Pre;
+
    begin
       --  ??? TBD deal with expression functions : transform into Why
       --  'function'
@@ -239,15 +277,13 @@ package body Gnat2Why.Subprograms is
                return New_Prog_Constant (Def => New_Void_Literal);
             end if;
          when N_Procedure_Call_Statement =>
-            declare
-               P : constant W_Prog_Id :=
-                  New_Prog_Call (
-                     Progs =>
-                       (1 => New_Prog_Ident (Name (Stmt))) &
-                     Expr_Expr_Map (Parameter_Associations (Stmt)));
-            begin
-               return P;
-            end;
+            --  Do not process calls to introduced "postcondition functions
+            if Get_Name_String (Chars (Name (Stmt))) = "_postconditions" then
+               return New_Prog_Constant (Def => New_Void_Literal);
+            end if;
+            return New_Prog_Call
+              (Progs => (1 => New_Prog_Ident (Name (Stmt))) &
+                           Expr_Expr_Map (Parameter_Associations (Stmt)));
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Stmt;
@@ -273,9 +309,11 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
          when N_Op_Gt =>
+            --  In Why, the builtin comparison function works on type "int"
+            --  only
             return New_Related_Terms
-               (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+               (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
+                Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
                 Op => New_Rel_Gt);
          when others => raise Program_Error;
       end case;
@@ -285,46 +323,60 @@ package body Gnat2Why.Subprograms is
    -- Why_Term_Of_Ada_Expr --
    --------------------------
 
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
+   function Why_Term_Of_Ada_Expr
+     (Expr : Node_Id;
+      Expect_Int : Boolean := False) return W_Term_Id
    is
       --  ??? TBD: complete this function for the remaining cases
+      T : W_Term_Id;
+      --  T contains the term that has been constructed before a possible
+      --  conversion to or from Int
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
-            return New_Integer_Constant (Value => Intval (Expr));
+            T := New_Integer_Constant (Value => Intval (Expr));
+            if Expect_Int then
+               return T;
+            else
+               return From_Why_Int (Expr, T);
+            end if;
          when N_Identifier =>
-            --  An identifier may or may not be of reference type; but here we
-            --  do not care, as Why, in annotations, happily converts a
-            --  reference to its base type.
-            return
-               New_Term_Identifier
-                 (Name => New_Identifier (Symbol => Chars (Expr)));
-         when N_Op_Add | N_Op_Gt =>
+            --  The corresponding Why type of the identifier may be of
+            --  reference type; but here we do not care, as Why, in
+            --  annotations, happily converts a reference to its base type.
+            --  Also, we expect the identifier to be of a type in Why that
+            --  corresponds to an Ada type, so if we want an "int", we have to
+            --  convert
+            T := New_Term_Identifier
+              (Name => New_Identifier (Symbol => Chars (Expr)));
+            if Expect_Int then
+               return To_Why_Int (Expr, T);
+            else
+               return T;
+            end if;
+         when N_Op_Add =>
+            --  In any case, we want to use the builtin Why addition function,
+            --  so here we go
+            --  The arguments of "+" are of type int as well
+            T := New_Arith_Operation
+              (Left  => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
+               Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
+               Op    => New_Op_Add);
+            --  If we expect an int, we are done, otherwise we must insert
+            --  a conversion
+            if Expect_Int then
+               return T;
+            else
+               return From_Why_Int (Expr, T);
+            end if;
+         when N_Op_Gt =>
             --  ??? TBD The treatment of N_Op_Gt is incorrect: we need to use
             --  a comparison function that returns bool
-            --  ??? TBD The treatment of N_Op_Add is incorrect: we need to
-            --  insert conversions depending on the type returned and the type
-            --  expected
-            declare
-               Left  : constant W_Term_Id :=
-                  Why_Term_Of_Ada_Expr (Left_Opnd (Expr));
-               Right : constant W_Term_Id :=
-                  Why_Term_Of_Ada_Expr (Right_Opnd (Expr));
-            begin
-               case Nkind (Expr) is
-               when N_Op_Add =>
-                  return New_Arith_Operation
-                    (Left => Left,
-                     Right => Right,
-                     Op => New_Op_Add);
-               when N_Op_Gt =>
-                  return New_Related_Terms
-                    (Left => Left,
-                     Right => Right,
-                     Op => New_Rel_Gt);
-               when others => raise Program_Error;
-               end case;
-            end;
+            --  ??? TBD respect the Expect_Int setting
+               return New_Related_Terms
+                 (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+                  Op => New_Rel_Gt);
          when N_Type_Conversion =>
             --  ??? TBD Treat this. Sometimes this seems to be inserted but
             --  there actually is no type conversion to do
