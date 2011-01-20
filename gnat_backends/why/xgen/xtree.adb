@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -77,6 +77,10 @@ begin
         Print_Traversal_Op_Stub_Declarations'Access);
    Add ("Implement_Traversal_Op_Stubs",
         Print_Traversal_Op_Stub_Bodies'Access);
+   Add ("Declare_Treepr_Traversals",
+        Print_Treepr_Traversal_Op_Declarations'Access);
+   Add ("Implement_Treepr_Traversals",
+        Print_Treepr_Traversal_Op_Bodies'Access);
 
    Process ("why-atree-builders.ads");
    Process ("why-atree-builders.adb");
@@ -87,6 +91,8 @@ begin
    Process ("why-atree-traversal.adb");
    Process ("why-atree-traversal_stub.ads");
    Process ("why-atree-traversal_stub.adb");
+   Process ("why-atree-treepr.ads");
+   Process ("why-atree-treepr.adb");
 
    --  Production of packages for validity checks
 

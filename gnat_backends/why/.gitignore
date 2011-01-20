@@ -7,6 +7,8 @@ xgen/why-atree-traversal.adb
 xgen/why-atree-traversal.ads
 xgen/why-atree-traversal_stub.adb
 xgen/why-atree-traversal_stub.ads
+xgen/why-atree-treepr.adb
+xgen/why-atree-treepr.ads
 xgen/why-atree-validity.ads
 xgen/why-atree.adt
 xgen/why-ids.ads

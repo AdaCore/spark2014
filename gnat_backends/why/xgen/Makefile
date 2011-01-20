@@ -9,6 +9,8 @@ GENERATED_FILES= \
  why-atree-traversal.adb      \
  why-atree-traversal_stub.ads \
  why-atree-traversal_stub.adb \
+ why-atree-treepr.ads         \
+ why-atree-treepr.adb         \
  why-atree-validity.ads       \
  why-ids.ads                  \
  why-kind_validity.ads        \
@@ -55,6 +57,12 @@ why-atree-traversal_stub.ads: xtree $(ASIS_FILES) why-atree-traversal_stub.ads-t
 	./xtree
 
 why-atree-traversal_stub.adb: xtree $(ASIS_FILES) why-atree-traversal_stub.adb-tmpl
+	./xtree
+
+why-atree-treepr.ads: xtree $(ASIS_FILES) why-atree-treepr.ads-tmpl
+	./xtree
+
+why-atree-treepr.adb: xtree $(ASIS_FILES) why-atree-treepr.adb-tmpl
 	./xtree
 
 why-atree-validity.ads: xtree $(ASIS_FILES) why-atree-validity.ads-tmpl

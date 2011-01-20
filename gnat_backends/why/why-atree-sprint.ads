@@ -36,6 +36,12 @@ package Why.Atree.Sprint is
    procedure Sprint_Why_Node
      (Node : Why_Node_Id; To : Output_Id := Stdout) with
      Pre => (Get_Kind (Node) /= W_Unused_At_Start);
+   --  Generate why code for Node and send it to Output_Id.
+
+   procedure wpg (Node : Why_Node_Id);
+   pragma Export (Ada, wpg);
+   --  Print generated source for argument Node. Intended only for use
+   --  from gdb for debugging purposes.
 
 private
    type Printer_State is new Traversal_State with null record;

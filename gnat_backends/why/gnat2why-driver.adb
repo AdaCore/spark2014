@@ -36,6 +36,7 @@ with Stand;                use Stand;
 with Treepr;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
+with Why.Atree.Treepr;     use Why.Atree.Treepr;
 with Why.Ids;              use Why.Ids;
 
 package body Gnat2Why.Driver is
@@ -168,6 +169,10 @@ package body Gnat2Why.Driver is
          Open_Current_File ("out.why");
          Sprint_Why_Node (File, Current_File);
          Close_Current_File;
+
+         if Print_Generated_Code then
+            wpn (File);
+         end if;
       end if;
    end GNAT_To_Why;
 

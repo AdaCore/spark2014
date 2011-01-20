@@ -95,6 +95,15 @@ package body Why.Atree.Sprint is
       Traverse (PS, Node);
    end Sprint_Why_Node;
 
+   ---------
+   -- wpg --
+   ---------
+
+   procedure wpg (Node : Why_Node_Id) is
+   begin
+      Sprint_Why_Node (Node, Stdout);
+   end wpg;
+
    ----------------------------------------
    -- Pre-operations and post-operations --
    ----------------------------------------
