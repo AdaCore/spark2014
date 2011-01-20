@@ -157,11 +157,12 @@ package body Gnat2Why.Subprograms is
       is
          Id : constant Node_Id := Defining_Identifier (Arg);
       begin
-         return New_Binder
-           (Ada_Node => Arg,
-            Names =>
-             (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
-            Arg_Type => Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
+         return
+           New_Binder
+             (Ada_Node => Arg,
+              Names =>
+               (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
+              Arg_Type => Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
       end Compute_Binder;
 
       ---------------------
@@ -177,9 +178,10 @@ package body Gnat2Why.Subprograms is
          if L = 0 then
             --  ??? TBD: We should never choose variable names at random like
             --  that, beware of variable capture
-            return (1 => New_Binder
-                    (Names => (1 => New_Identifier ("x")),
-                     Arg_Type => New_Type_Unit));
+            return
+               (1 => New_Binder
+                 (Names => (1 => New_Identifier ("x")),
+                  Arg_Type => New_Type_Unit));
          else
             return Binder_Map (Ada_Binders);
          end if;
@@ -202,9 +204,10 @@ package body Gnat2Why.Subprograms is
                   Ada_Pre : constant Node_Id :=
                      Expression (First (Pragma_Argument_Associations (PPCs)));
                begin
-                  return New_Assertion
-                    (Ada_Node => Ada_Pre, Pred =>
-                     Why_Predicate_of_Ada_Expr (Ada_Pre));
+                  return
+                    New_Assertion
+                      (Ada_Node => Ada_Pre, Pred =>
+                       Why_Predicate_of_Ada_Expr (Ada_Pre));
                end;
             end if;
             PPCs := Next_Pragma (PPCs);
@@ -242,17 +245,19 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
-            return New_Prog_Constant
-              (Ada_Node => Expr,
-               Def => New_Integer_Constant
-                 (Ada_Node => Expr,
-                  Value => Intval (Expr)));
+            return
+              New_Prog_Constant
+                (Ada_Node => Expr,
+                 Def => New_Integer_Constant
+                   (Ada_Node => Expr,
+                    Value => Intval (Expr)));
          when N_Identifier =>
-            return New_Deref
-              (Ada_Node => Expr,
-               Ref => New_Identifier
-                 (Ada_Node => Expr,
-                  Symbol => Chars (Expr)));
+            return
+              New_Deref
+                (Ada_Node => Expr,
+                 Ref => New_Identifier
+                   (Ada_Node => Expr,
+                    Symbol => Chars (Expr)));
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Expr;
@@ -274,10 +279,11 @@ package body Gnat2Why.Subprograms is
          when N_Assignment_Statement =>
             --  ??? TBD: Here we have to be more careful if the left hand side
             --  is not a simple variable
-            return New_Assignment
-              (Ada_Node => Stmt,
-               Name => New_Identifier (Symbol => Chars (Name (Stmt))),
-               Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
+            return
+              New_Assignment
+                (Ada_Node => Stmt,
+                 Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+                 Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
          when N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
             --  in a procedure (translate to void or even omit) or function
@@ -293,10 +299,11 @@ package body Gnat2Why.Subprograms is
             if Get_Name_String (Chars (Name (Stmt))) = "_postconditions" then
                return New_Prog_Constant (Stmt, New_Void_Literal);
             end if;
-            return New_Prog_Call
-              (Ada_Node => Stmt,
-               Progs => (1 => New_Prog_Ident (Name (Stmt))) &
-                           Expr_Expr_Map (Parameter_Associations (Stmt)));
+            return
+              New_Prog_Call
+                (Ada_Node => Stmt,
+                 Progs => (1 => New_Prog_Ident (Name (Stmt))) &
+                             Expr_Expr_Map (Parameter_Associations (Stmt)));
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Stmt;
