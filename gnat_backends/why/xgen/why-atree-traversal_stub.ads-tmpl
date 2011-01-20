@@ -29,7 +29,7 @@ with Why.Atree.Traversal; use Why.Atree.Traversal;
 
 package Why.Atree.Traversal_Stub is
 
-   type Traversal_Stub_State is new tagged null record;
+   type Traversal_Stub_State is new Traversal_State with null record;
 
    _@Declare_Traversal_Op_Stubs@_
 

@@ -45,11 +45,13 @@ package body Xtree_Traversal is
       Op_Name    : Wide_String;
       State_Type : Wide_String;
       Kind       : Why_Node_Kind);
+   --  ??? Missing doc
 
    procedure Print_Kind_Traversal_Implementation
      (O       : in out Output_Record;
       Kind    : Why_Node_Kind;
       In_Stub : Boolean := False);
+   --  ??? Missing doc
 
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
@@ -57,30 +59,38 @@ package body Xtree_Traversal is
       Kind           : Why_Node_Kind;
       FI             : Field_Info;
       Commented_Out  : Boolean := False);
+   --  ??? Missing doc
 
    procedure Print_Traversal_Op_Stub_Implementation
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
+   --  ??? Missing doc
 
    procedure Start_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
+   --  ??? Missing doc
 
    procedure End_If (O     : in out Output_Record);
+   --  ??? Missing doc
 
    procedure Reset_Control (O : in out Output_Record);
+   --  ??? Missing doc
 
    procedure Reset_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
+   --  ??? Missing doc
 
    procedure Reset_Return_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
+   --  ??? Missing doc
 
    procedure Return_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
+   --  ??? Missing doc
 
    ------------
    -- End_If --
@@ -196,7 +206,7 @@ package body Xtree_Traversal is
    -- Print_Traversal_Op_Declarations --
    -------------------------------------
 
-   procedure Print_Traversal_Op_Declarations  (O : in out Output_Record) is
+   procedure Print_Traversal_Op_Declarations (O : in out Output_Record) is
    begin
       for J in Valid_Kind'Range loop
          Print_Traversal_Op_Specification
