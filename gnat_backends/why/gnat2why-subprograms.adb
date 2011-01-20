@@ -25,6 +25,7 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Gnat2Why.Types;     use Gnat2Why.Types;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
@@ -86,7 +87,8 @@ package body Gnat2Why.Subprograms is
       return W_Term_Id is
    begin
       return New_Operation
-         (Name => New_Conversion_From_Int
+         (Ada_Node => Expr,
+          Name => New_Conversion_From_Int
             (Get_Name_String (Chars (Etype (Expr)))),
           Parameters => (1 => Why_Expr));
    end From_Why_Int;
@@ -99,7 +101,8 @@ package body Gnat2Why.Subprograms is
       return W_Term_Id is
    begin
       return New_Operation
-         (Name => New_Conversion_To_Int
+         (Ada_Node => Expr,
+          Name => New_Conversion_To_Int
             (Get_Name_String (Chars (Etype (Expr)))),
           Parameters => (1 => Why_Expr));
    end To_Why_Int;
@@ -112,7 +115,9 @@ package body Gnat2Why.Subprograms is
    is
    begin
       return
-        New_Prog_Identifier (Def => New_Identifier (Symbol => Chars (Id)));
+        New_Prog_Identifier
+           (Ada_Node => Id,
+            Def => New_Identifier (Ada_Node => Id, Symbol => Chars (Id)));
    end New_Prog_Ident;
 
    --------------------------------
@@ -129,7 +134,7 @@ package body Gnat2Why.Subprograms is
       --  * return types
       Spec        : constant Node_Id := Specification (Node);
       Stmts       : constant List_Id :=
-                      Statements (Handled_Statement_Sequence (Node));
+                     Statements (Handled_Statement_Sequence (Node));
       Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
 
@@ -148,17 +153,15 @@ package body Gnat2Why.Subprograms is
       ---------------------
       -- Compute_Binder --
       ---------------------
-
-      function Compute_Binder (Arg : Node_Id) return W_Binder_Id is
+      function Compute_Binder (Arg : Node_Id) return W_Binder_Id
+      is
+         Id : constant Node_Id := Defining_Identifier (Arg);
       begin
          return New_Binder
-           (Names =>
-             (1 => New_Identifier
-              (Symbol => Chars (Defining_Identifier (Arg)))),
-            Arg_Type =>
-              New_Ref_Type (Aliased_Type =>
-                New_Abstract_Type (Name =>
-                  New_Identifier (Symbol => Chars (Parameter_Type (Arg))))));
+           (Ada_Node => Arg,
+            Names =>
+             (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
+            Arg_Type => Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
       end Compute_Binder;
 
       ---------------------
@@ -188,20 +191,21 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Pre return W_Assertion_Id
       is
-         PPCs        : Node_Id :=
-            Spec_PPC_List (Corresponding_Spec (Node));
+         PPCs : Node_Id := Spec_PPC_List (Corresponding_Spec (Node));
       begin
          loop
             if not Present (PPCs) then
                return New_Assertion (Pred => New_True_Literal_Pred);
             end if;
             if Pragma_Name (PPCs) = Name_Precondition then
-               return
-                  New_Assertion
-                    (Pred =>
-                      Why_Predicate_of_Ada_Expr
-                         (Expression
-                            (First (Pragma_Argument_Associations (PPCs)))));
+               declare
+                  Ada_Pre : constant Node_Id :=
+                     Expression (First (Pragma_Argument_Associations (PPCs)));
+               begin
+                  return New_Assertion
+                    (Ada_Node => Ada_Pre, Pred =>
+                     Why_Predicate_of_Ada_Expr (Ada_Pre));
+               end;
             end if;
             PPCs := Next_Pragma (PPCs);
          end loop;
@@ -239,10 +243,16 @@ package body Gnat2Why.Subprograms is
       case Nkind (Expr) is
          when N_Integer_Literal =>
             return New_Prog_Constant
-              (Def => New_Integer_Constant (Value => Intval (Expr)));
+              (Ada_Node => Expr,
+               Def => New_Integer_Constant
+                 (Ada_Node => Expr,
+                  Value => Intval (Expr)));
          when N_Identifier =>
             return New_Deref
-              (Ref => New_Identifier (Symbol => Chars (Expr)));
+              (Ada_Node => Expr,
+               Ref => New_Identifier
+                 (Ada_Node => Expr,
+                  Symbol => Chars (Expr)));
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Expr;
@@ -260,12 +270,13 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Stmt) is
          when N_Null_Statement =>
-            return New_Prog_Constant (Def => New_Void_Literal);
+            return New_Prog_Constant (Stmt, New_Void_Literal);
          when N_Assignment_Statement =>
             --  ??? TBD: Here we have to be more careful if the left hand side
             --  is not a simple variable
             return New_Assignment
-              (Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+              (Ada_Node => Stmt,
+               Name => New_Identifier (Symbol => Chars (Name (Stmt))),
                Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
          when N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
@@ -274,15 +285,17 @@ package body Gnat2Why.Subprograms is
             if Expression (Stmt) /= Empty then
                return Why_Expr_of_Ada_Expr (Expression (Stmt));
             else
-               return New_Prog_Constant (Def => New_Void_Literal);
+               return
+                 New_Prog_Constant (Ada_Node => Stmt, Def => New_Void_Literal);
             end if;
          when N_Procedure_Call_Statement =>
             --  Do not process calls to introduced "postcondition functions
             if Get_Name_String (Chars (Name (Stmt))) = "_postconditions" then
-               return New_Prog_Constant (Def => New_Void_Literal);
+               return New_Prog_Constant (Stmt, New_Void_Literal);
             end if;
             return New_Prog_Call
-              (Progs => (1 => New_Prog_Ident (Name (Stmt))) &
+              (Ada_Node => Stmt,
+               Progs => (1 => New_Prog_Ident (Name (Stmt))) &
                            Expr_Expr_Map (Parameter_Associations (Stmt)));
          when others => raise Program_Error;
       end case;
@@ -312,7 +325,8 @@ package body Gnat2Why.Subprograms is
             --  In Why, the builtin comparison function works on type "int"
             --  only
             return New_Related_Terms
-               (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
+               (Ada_Node => Expr,
+                Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
                 Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
                 Op => New_Rel_Gt);
          when others => raise Program_Error;
@@ -334,7 +348,8 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
-            T := New_Integer_Constant (Value => Intval (Expr));
+            T :=
+              New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
             if Expect_Int then
                return T;
             else
@@ -347,8 +362,10 @@ package body Gnat2Why.Subprograms is
             --  Also, we expect the identifier to be of a type in Why that
             --  corresponds to an Ada type, so if we want an "int", we have to
             --  convert
-            T := New_Term_Identifier
-              (Name => New_Identifier (Symbol => Chars (Expr)));
+            T :=
+              New_Term_Identifier
+                 (Ada_Node => Expr,
+                  Name => New_Identifier (Symbol => Chars (Expr)));
             if Expect_Int then
                return To_Why_Int (Expr, T);
             else
@@ -358,10 +375,12 @@ package body Gnat2Why.Subprograms is
             --  In any case, we want to use the builtin Why addition function,
             --  so here we go
             --  The arguments of "+" are of type int as well
-            T := New_Arith_Operation
-              (Left  => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
-               Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
-               Op    => New_Op_Add);
+            T :=
+              New_Arith_Operation
+                (Ada_Node => Expr,
+                 Left  => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
+                 Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
+                 Op    => New_Op_Add);
             --  If we expect an int, we are done, otherwise we must insert
             --  a conversion
             if Expect_Int then
@@ -374,7 +393,8 @@ package body Gnat2Why.Subprograms is
             --  a comparison function that returns bool
             --  ??? TBD respect the Expect_Int setting
                return New_Related_Terms
-                 (Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                 (Ada_Node => Expr,
+                  Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                   Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
                   Op => New_Rel_Gt);
          when N_Type_Conversion =>

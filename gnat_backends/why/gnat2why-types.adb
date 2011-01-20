@@ -23,14 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;         use Atree;
-with Namet;         use Namet;
-with Nlists;        use Nlists;
-with Sem_Eval;      use Sem_Eval;
-with Sinfo;         use Sinfo;
-with String_Utils;  use String_Utils;
-with Why.Gen.Ints;  use Why.Gen.Ints;
-with Why.Gen.Enums; use Why.Gen.Enums;
+with Atree;              use Atree;
+with Namet;              use Namet;
+with Nlists;             use Nlists;
+with Sem_Eval;           use Sem_Eval;
+with Sinfo;              use Sinfo;
+with String_Utils;       use String_Utils;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Ints;       use Why.Gen.Ints;
+with Why.Gen.Enums;      use Why.Gen.Enums;
 
 package body Gnat2Why.Types is
 
@@ -76,4 +77,15 @@ package body Gnat2Why.Types is
          when others => raise Program_Error;
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
+
+   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id)
+      return W_Computation_Type_Id
+   is
+   begin
+      return New_Ref_Type
+        (Ada_Node => Ty,
+         Aliased_Type => New_Abstract_Type
+           (Ada_Node => Ty,
+            Name => New_Identifier (Ada_Node => Ty, Symbol => Chars (Ty))));
+   end  Why_Prog_Type_of_Ada_Type;
 end Gnat2Why.Types;
