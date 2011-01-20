@@ -71,13 +71,16 @@ package body Gnat2Why.Subprograms is
    --  convert the term Why_Expr, which is expected to be of "int" type, to
    --  the type in Why that corresponds to the type of the Ada Node Expr
 
+   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
+   --  build a program that consists of only one identifier
+
    function To_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
       return W_Term_Id;
    --  convert the term Why_Expr, which is expected to be of some type which
    --  possesses a conversion function to int, to "int" type in Why
 
-   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
-   --  build a program that consists of only one identifier
+   function Why_Op_Of_Ada_Op (Op : N_Op_Compare) return W_Relation_Id;
+   --  convert an Ada comparison operator to a Why one
 
    ------------------
    -- From_Why_Int --
@@ -147,8 +150,10 @@ package body Gnat2Why.Subprograms is
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments
 
-      function Compute_Pre return W_Assertion_Id;
+      function Compute_Spec (Kind : Name_Id) return W_Assertion_Id;
       --  Compute the precondition of the generated Why functions
+      --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
+      --  you want the pre- or postcondition
 
       ---------------------
       -- Compute_Binder --
@@ -187,11 +192,11 @@ package body Gnat2Why.Subprograms is
          end if;
       end Compute_Binders;
 
-      -----------------
-      -- Compute_Pre --
-      -----------------
+      ------------------
+      -- Compute_Spec --
+      ------------------
 
-      function Compute_Pre return W_Assertion_Id
+      function Compute_Spec (Kind : Name_Id) return W_Assertion_Id
       is
          PPCs : Node_Id := Spec_PPC_List (Corresponding_Spec (Node));
       begin
@@ -199,7 +204,7 @@ package body Gnat2Why.Subprograms is
             if not Present (PPCs) then
                return New_Assertion (Pred => New_True_Literal_Pred);
             end if;
-            if Pragma_Name (PPCs) = Name_Precondition then
+            if Pragma_Name (PPCs) = Kind then
                declare
                   Ada_Pre : constant Node_Id :=
                      Expression (First (Pragma_Argument_Associations (PPCs)));
@@ -212,7 +217,7 @@ package body Gnat2Why.Subprograms is
             end if;
             PPCs := Next_Pragma (PPCs);
          end loop;
-      end Compute_Pre;
+      end Compute_Spec;
 
    begin
       --  ??? TBD deal with expression functions : transform into Why
@@ -227,8 +232,8 @@ package body Gnat2Why.Subprograms is
               (File => File,
                Name => Get_Name_String (Name),
                Binders => Compute_Binders,
-               Pre => Compute_Pre,
-               Post => New_Assertion (Pred => New_True_Literal_Pred),
+               Pre => Compute_Spec (Name_Precondition),
+               Post => Compute_Spec (Name_Postcondition),
                Def => Why_Expr_of_Ada_Stmts (Stmts));
          when others => raise Program_Error;
       end case;
@@ -324,18 +329,39 @@ package body Gnat2Why.Subprograms is
       end if;
    end Why_Expr_of_Ada_Stmts;
 
+   ----------------------
+   -- Why_Op_Of_Ada_Op --
+   ----------------------
+
+   function Why_Op_Of_Ada_Op (Op : N_Op_Compare) return W_Relation_Id
+   is
+   begin
+      case Op is
+         when N_Op_Gt => return New_Rel_Gt;
+         when N_Op_Lt => return New_Rel_Lt;
+         when N_Op_Eq => return New_Rel_Eq;
+         when N_Op_Ge => return New_Rel_Ge;
+         when N_Op_Le => return New_Rel_Le;
+         when N_Op_Ne => return New_Rel_Ne;
+      end case;
+   end Why_Op_Of_Ada_Op;
+
+   -------------------------------
+   -- Why_Predicate_of_Ada_Expr --
+   -------------------------------
+
    function Why_Predicate_of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id
    is
    begin
       case Nkind (Expr) is
-         when N_Op_Gt =>
+         when N_Op_Compare =>
             --  In Why, the builtin comparison function works on type "int"
             --  only
             return New_Related_Terms
                (Ada_Node => Expr,
                 Left => Why_Term_Of_Ada_Expr (Left_Opnd (Expr), True),
                 Right => Why_Term_Of_Ada_Expr (Right_Opnd (Expr), True),
-                Op => New_Rel_Gt);
+                Op => Why_Op_Of_Ada_Op (Nkind (Expr)));
          when others => raise Program_Error;
       end case;
    end Why_Predicate_of_Ada_Expr;
