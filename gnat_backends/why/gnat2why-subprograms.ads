@@ -74,7 +74,17 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
+   procedure Why_Decl_of_Ada_Subprogram
+     (File : W_File_Id;
+      Node : Node_Id);
+   --  Generate a Why declaration that corresponds to an Ada subprogram
+   --  Node is a N_Subprogram_Body
+   --
+   --  Care must be taken in a few cases:
+   --  * We need to add an argument of type "unit" if the Ada subprogram has
+   --    no parameters
+   --  * The types of arguments have to be references
+   --  * The pre/postconditions need special treatment (TCC)
 
    function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression
@@ -90,16 +100,6 @@ package Gnat2Why.Subprograms is
    --  Translate a list of Ada statements into a single Why expression
    --  An empty list is translated to "void"
 
-   procedure Why_Decl_of_Ada_Subprogram
-     (File : W_File_Id;
-      Node : Node_Id);
-   --  Generate a Why declaration that corresponds to an Ada subprogram
-   --  Node is a N_Subprogram_Body
-   --
-   --  Care must be taken in a few cases:
-   --  * We need to add an argument of type "unit" if the Ada subprogram has
-   --    no parameters
-   --  * The types of arguments have to be references
-   --  * The pre/postconditions need special treatment (TCC)
+   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
 
 end Gnat2Why.Subprograms;

@@ -78,131 +78,6 @@ package body Gnat2Why.Subprograms is
         New_Prog_Identifier (Def => New_Identifier (Symbol => Chars (Id)));
    end New_Prog_Ident;
 
-   --------------------------
-   -- Why_Term_Of_Ada_Expr --
-   --------------------------
-
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
-   is
-      --  ??? TBD: complete this function for the remaining cases
-   begin
-      case Nkind (Expr) is
-         when N_Integer_Literal =>
-            return New_Integer_Constant (Value => Intval (Expr));
-         when N_Identifier =>
-            --  An identifier may or may not be of reference type; but here we
-            --  do not care, as Why, in annotations, happily converts a
-            --  reference to its base type.
-            return
-               New_Term_Identifier
-                 (Name => New_Identifier (Symbol => Chars (Expr)));
-         when N_Op_Add | N_Op_Gt =>
-            declare
-               Left  : constant W_Term_Id :=
-                  Why_Term_Of_Ada_Expr (Left_Opnd (Expr));
-               Right : constant W_Term_Id :=
-                  Why_Term_Of_Ada_Expr (Right_Opnd (Expr));
-            begin
-               case Nkind (Expr) is
-               when N_Op_Add =>
-                  return New_Arith_Operation
-                    (Left => Left,
-                     Right => Right,
-                     Op => New_Op_Add);
-               when N_Op_Gt =>
-                  return New_Related_Terms
-                    (Left => Left,
-                     Right => Right,
-                     Op => New_Rel_Gt);
-               when others => raise Program_Error;
-               end case;
-            end;
-         when N_Type_Conversion =>
-            --  ??? TBD Treat this. Sometimes this seems to be inserted but
-            --  there actually is no type conversion to do
-            return Why_Term_Of_Ada_Expr (Expression (Expr));
-         when others => raise Program_Error;
-      end case;
-   end Why_Term_Of_Ada_Expr;
-
-   --------------------------
-   -- Why_Expr_of_Ada_Expr --
-   --------------------------
-
-   function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
-   is
-      --  ??? TBD: complete this function for the remaining cases
-   begin
-      case Nkind (Expr) is
-         when N_Integer_Literal =>
-            return New_Prog_Constant
-              (Def => New_Integer_Constant (Value => Intval (Expr)));
-         when N_Identifier =>
-            return New_Deref
-              (Ref => New_Identifier (Symbol => Chars (Expr)));
-         when others => raise Program_Error;
-      end case;
-   end Why_Expr_of_Ada_Expr;
-
-   --------------------------
-   -- Why_Expr_of_Ada_Stmt --
-   --------------------------
-
-   function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
-   is
-      --  ??? TBD: complete this function for the remaining cases
-      --  ??? TBD: don't forget the corresponding Ada node
-      function Expr_Expr_Map is new Map_Node_List_to_Array
-         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Expr);
-   begin
-      case Nkind (Stmt) is
-         when N_Null_Statement =>
-            return New_Prog_Constant (Def => New_Void_Literal);
-         when N_Assignment_Statement =>
-            --  ??? TBD: Here we have to be more careful if the left hand side
-            --  is not a simple variable
-            return New_Assignment
-              (Name => New_Identifier (Symbol => Chars (Name (Stmt))),
-               Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
-         when N_Return_Statement =>
-            --  ??? what to do in this case? We would need to know if we are
-            --  in a procedure (translate to void or even omit) or function
-            --  (just compile the returned expression)
-            if Expression (Stmt) /= Empty then
-               return Why_Expr_of_Ada_Expr (Expression (Stmt));
-            else
-               return New_Prog_Constant (Def => New_Void_Literal);
-            end if;
-         when N_Procedure_Call_Statement =>
-            declare
-               P : constant W_Prog_Id :=
-                  New_Prog_Call (
-                     Progs =>
-                       (1 => New_Prog_Ident (Name (Stmt))) &
-                     Expr_Expr_Map (Parameter_Associations (Stmt)));
-            begin
-               return P;
-            end;
-         when others => raise Program_Error;
-      end case;
-   end Why_Expr_of_Ada_Stmt;
-
-   ---------------------------
-   -- Why_Expr_of_Ada_Stmts --
-   ---------------------------
-
-   function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id
-   is
-      function Expr_Stmt_Map is new Map_Node_List_to_Array
-         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Stmt);
-   begin
-      if List_Length (Stmts) = 0 then
-         return New_Prog_Constant (Def => New_Void_Literal);
-      else
-         return New_Statement_Sequence (Statements => Expr_Stmt_Map (Stmts));
-      end if;
-   end Why_Expr_of_Ada_Stmts;
-
    --------------------------------
    -- Why_Decl_of_Ada_Subprogram --
    --------------------------------
@@ -314,5 +189,130 @@ package body Gnat2Why.Subprograms is
       end case;
 
    end Why_Decl_of_Ada_Subprogram;
+
+   --------------------------
+   -- Why_Expr_of_Ada_Expr --
+   --------------------------
+
+   function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
+   is
+      --  ??? TBD: complete this function for the remaining cases
+   begin
+      case Nkind (Expr) is
+         when N_Integer_Literal =>
+            return New_Prog_Constant
+              (Def => New_Integer_Constant (Value => Intval (Expr)));
+         when N_Identifier =>
+            return New_Deref
+              (Ref => New_Identifier (Symbol => Chars (Expr)));
+         when others => raise Program_Error;
+      end case;
+   end Why_Expr_of_Ada_Expr;
+
+   --------------------------
+   -- Why_Expr_of_Ada_Stmt --
+   --------------------------
+
+   function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
+   is
+      --  ??? TBD: complete this function for the remaining cases
+      --  ??? TBD: don't forget the corresponding Ada node
+      function Expr_Expr_Map is new Map_Node_List_to_Array
+         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Expr);
+   begin
+      case Nkind (Stmt) is
+         when N_Null_Statement =>
+            return New_Prog_Constant (Def => New_Void_Literal);
+         when N_Assignment_Statement =>
+            --  ??? TBD: Here we have to be more careful if the left hand side
+            --  is not a simple variable
+            return New_Assignment
+              (Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+               Value => Why_Expr_of_Ada_Expr (Expression (Stmt)));
+         when N_Return_Statement =>
+            --  ??? what to do in this case? We would need to know if we are
+            --  in a procedure (translate to void or even omit) or function
+            --  (just compile the returned expression)
+            if Expression (Stmt) /= Empty then
+               return Why_Expr_of_Ada_Expr (Expression (Stmt));
+            else
+               return New_Prog_Constant (Def => New_Void_Literal);
+            end if;
+         when N_Procedure_Call_Statement =>
+            declare
+               P : constant W_Prog_Id :=
+                  New_Prog_Call (
+                     Progs =>
+                       (1 => New_Prog_Ident (Name (Stmt))) &
+                     Expr_Expr_Map (Parameter_Associations (Stmt)));
+            begin
+               return P;
+            end;
+         when others => raise Program_Error;
+      end case;
+   end Why_Expr_of_Ada_Stmt;
+
+   ---------------------------
+   -- Why_Expr_of_Ada_Stmts --
+   ---------------------------
+
+   function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id
+   is
+      function Expr_Stmt_Map is new Map_Node_List_to_Array
+         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Stmt);
+   begin
+      if List_Length (Stmts) = 0 then
+         return New_Prog_Constant (Def => New_Void_Literal);
+      else
+         return New_Statement_Sequence (Statements => Expr_Stmt_Map (Stmts));
+      end if;
+   end Why_Expr_of_Ada_Stmts;
+
+   --------------------------
+   -- Why_Term_Of_Ada_Expr --
+   --------------------------
+
+   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
+   is
+      --  ??? TBD: complete this function for the remaining cases
+   begin
+      case Nkind (Expr) is
+         when N_Integer_Literal =>
+            return New_Integer_Constant (Value => Intval (Expr));
+         when N_Identifier =>
+            --  An identifier may or may not be of reference type; but here we
+            --  do not care, as Why, in annotations, happily converts a
+            --  reference to its base type.
+            return
+               New_Term_Identifier
+                 (Name => New_Identifier (Symbol => Chars (Expr)));
+         when N_Op_Add | N_Op_Gt =>
+            declare
+               Left  : constant W_Term_Id :=
+                  Why_Term_Of_Ada_Expr (Left_Opnd (Expr));
+               Right : constant W_Term_Id :=
+                  Why_Term_Of_Ada_Expr (Right_Opnd (Expr));
+            begin
+               case Nkind (Expr) is
+               when N_Op_Add =>
+                  return New_Arith_Operation
+                    (Left => Left,
+                     Right => Right,
+                     Op => New_Op_Add);
+               when N_Op_Gt =>
+                  return New_Related_Terms
+                    (Left => Left,
+                     Right => Right,
+                     Op => New_Rel_Gt);
+               when others => raise Program_Error;
+               end case;
+            end;
+         when N_Type_Conversion =>
+            --  ??? TBD Treat this. Sometimes this seems to be inserted but
+            --  there actually is no type conversion to do
+            return Why_Term_Of_Ada_Expr (Expression (Expr));
+         when others => raise Program_Error;
+      end case;
+   end Why_Term_Of_Ada_Expr;
 
 end Gnat2Why.Subprograms;
