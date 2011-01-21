@@ -1437,7 +1437,6 @@ package body Why.Atree.Sprint is
       Traverse (State, Name);
       if not Is_Empty (Args) then
          P (O, "( ");
-         --  ??? This is incorrect, the types have to be separated with commas
          Print_List (State, Args, ", ");
          Traverse_List (State, Args);
          P (O, ") ");
@@ -2229,8 +2228,32 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Prog_Call_Id)
    is
+      use Node_Lists;
+      Progs    : constant W_Prog_List := Prog_Call_Get_Progs (Node);
+      Nodes    : constant List := Get_List (Progs);
+      Position : Cursor := First (Nodes);
    begin
-      Print_List (State, Prog_Call_Get_Progs (Node), " ");
+      while Position /= No_Element loop
+         declare
+            Node : constant W_Identifier_Id := Element (Position);
+         begin
+            --  We have to protect complex subprograms by parentheses
+            case Get_Kind (Node) is
+               when W_Prog_Constant .. W_Deref =>
+                  Traverse (State, Node);
+               when others =>
+                  P (O, "(");
+                  Traverse (State, Node);
+                  P (O, ")");
+            end case;
+         end;
+
+         Position := Next (Position);
+
+         if Position /= No_Element then
+            P (O, " ");
+         end if;
+      end loop;
       State.Control := Abandon_Children;
    end Prog_Call_Pre_Op;
 
