@@ -81,6 +81,7 @@ package body Why.Gen.Ints is
       Last  : Uint)
    is
       Arg_S : constant String := "n";
+      Arg_T : constant String := "m";
 
    begin
       Define_Range_Predicate (File, Name, First, Last);
@@ -133,6 +134,41 @@ package body Why.Gen.Ints is
          Define_Unicity_Axiom (File,
                                New_Identifier (Name),
                                New_Conversion_To_Int (Name));
+      end;
+      declare
+         Post : constant W_Predicate_Id :=
+            New_Conditional_Pred
+              (Condition => New_Result_Identifier,
+               Then_Part =>
+                 New_Related_Terms (Left => New_Term (Arg_S),
+                                    Right => New_Term (Arg_T),
+                                    Op => New_Rel_Eq),
+               Else_Part =>
+                 New_Related_Terms (Left => New_Term (Arg_S),
+                                    Right => New_Term (Arg_T),
+                                    Op => New_Rel_Ne));
+         Comp_Type : W_Computation_Type_Id :=
+            New_Computation_Spec
+              (Return_Type => New_Type_Bool,
+               Effects => New_Effects,
+               Postcondition =>
+                 New_Postcondition
+                   (Assertion => New_Assertion (Pred => Post)));
+      begin
+         Comp_Type :=
+            New_Arrow_Type
+              (Name => New_Identifier (Arg_S),
+               Left => New_Abstract_Type (Name),
+               Right => Comp_Type);
+         Comp_Type :=
+            New_Arrow_Type
+              (Name => New_Identifier (Arg_T),
+               Left => New_Abstract_Type (Name),
+               Right => Comp_Type);
+         Declare_Parameter
+           (File => File,
+            Name => Eq_Param_Name (Name),
+            Arrows => Comp_Type);
       end;
    end Define_Signed_Int_Conversions;
 
