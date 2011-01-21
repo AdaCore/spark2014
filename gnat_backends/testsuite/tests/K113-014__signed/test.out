@@ -42,6 +42,13 @@ axiom short_short_integer___unicity :
  forall x, y : short_short_integer.
   integer_of___short_short_integer (x) = integer_of___short_short_integer (y) -> x = y
 
+parameter eq_bool___short_short_integer :
+ m : short_short_integer -> n : short_short_integer ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
+
 type short_integer
 
 parameter any___short_integer :
@@ -85,6 +92,13 @@ axiom short_integer___coerce :
 axiom short_integer___unicity :
  forall x, y : short_integer.
   integer_of___short_integer (x) = integer_of___short_integer (y) -> x = y
+
+parameter eq_bool___short_integer :
+ m : short_integer -> n : short_integer ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
 
 type integer
 
@@ -130,6 +144,13 @@ axiom integer___unicity :
  forall x, y : integer.
   integer_of___integer (x) = integer_of___integer (y) -> x = y
 
+parameter eq_bool___integer :
+ m : integer -> n : integer ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
+
 type long_integer
 
 parameter any___long_integer :
@@ -174,6 +195,13 @@ axiom long_integer___unicity :
  forall x, y : long_integer.
   integer_of___long_integer (x) = integer_of___long_integer (y) -> x = y
 
+parameter eq_bool___long_integer :
+ m : long_integer -> n : long_integer ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
+
 type long_long_integer
 
 parameter any___long_long_integer :
@@ -217,6 +245,13 @@ axiom long_long_integer___coerce :
 axiom long_long_integer___unicity :
  forall x, y : long_long_integer.
   integer_of___long_long_integer (x) = integer_of___long_long_integer (y) -> x = y
+
+parameter eq_bool___long_long_integer :
+ m : long_long_integer -> n : long_long_integer ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
 
 type character
 
@@ -291,3 +326,10 @@ axiom signed__int8___coerce :
 axiom signed__int8___unicity :
  forall x, y : signed__int8.
   integer_of___signed__int8 (x) = integer_of___signed__int8 (y) -> x = y
+
+parameter eq_bool___signed__int8 :
+ m : signed__int8 -> n : signed__int8 ->
+  { } bool
+ { if result then
+  n = m else
+  n <> m }
