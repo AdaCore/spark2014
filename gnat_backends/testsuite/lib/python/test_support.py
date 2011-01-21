@@ -5,6 +5,7 @@ This module contains support functions for all test.py
 
 import os
 import sys
+import re
 
 #  Change directory
 
@@ -52,6 +53,26 @@ def why(src, opt=None):
     process = Run(cmd)
     if process.status:
         print process.out
+
+def altergo(src, opt=None):
+    """Invoke alt-ergo
+
+    PARAMETERS
+      src: source file to process
+      opt: additional options to pass to alt-ergo
+    """
+    cmd = ["alt-ergo"]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    # Remove Filename, linenumber and time of proof, just keep status
+    res = re.compile(".*:(.*)\(.*")
+    for line in str.splitlines(process.out):
+       m = re.search(res, line)
+       if m:
+          print m.group(1)
+       else:
+          print line
 
 def to_list(arg):
     """Convert to list
