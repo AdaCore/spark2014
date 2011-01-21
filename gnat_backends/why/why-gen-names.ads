@@ -45,6 +45,11 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its range predicate.
 
+   function Eq_Param_Name (Name : String) return W_Identifier_Id;
+   function Eq_Param_Name (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  From the name of an abstract type, return the name of
+   --  its equality parameter.
+
    function Eq_Pred_Name (Name : String) return W_Identifier_Id;
    function Eq_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;
    --  From the name of an abstract type, return the name of

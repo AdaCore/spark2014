@@ -57,6 +57,21 @@ package body Why.Gen.Names is
    end Coerce_Axiom;
 
    ------------------
+   -- Eq_Param_Name --
+   ------------------
+
+   function Eq_Param_Name (Name : String) return W_Identifier_Id is
+      Prefix : constant String := "eq_bool___";
+   begin
+      return New_Identifier (Prefix & Name);
+   end Eq_Param_Name;
+
+   function Eq_Param_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Eq_Param_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Eq_Param_Name;
+
+   ------------------
    -- Eq_Pred_Name --
    ------------------
 
