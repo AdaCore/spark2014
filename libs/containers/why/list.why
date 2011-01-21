@@ -322,3 +322,9 @@ parameter elt_equal :
 	  { }
 	  bool
 	  { if result then e1=e2 else e1<>e2 }
+
+parameter contains :
+          l : list -> e : element_t ->
+          { }
+          bool
+          {if result then contains_(l,e) else not contains_(l,e)}

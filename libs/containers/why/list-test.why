@@ -1,7 +1,8 @@
 include "list.why"
 
 (* Everything works with alt-ergo (-redondance or not it depends) in 60s
-   except two VC's of test3 which take less then 10s with Z3, Simplify and Yices and between 2 and 3min with Alt-Ergo *)
+   except two VC's of test3 which take less then 10s with Z3, Simplify and Yices and between 2 and 3min with Alt-Ergo and one VC of map_f which takes less
+than 1s with Simplify *)
 
 (*** GOALS ***)
 
@@ -166,17 +167,17 @@ axiom has_element_left :
 
 (*** UNIT-TESTS ***)
 
-let test_replace_element1 (co:list ref) (cu:cursor) (cun:cursor) (e:element_t) =
-    { has_element_(co,cu) and has_element_(co,cun) and not cu=cun }
-    replace_element co cu e
-    { element_(co,cu)=e and element_(co,cun)=element_(co@,cun) and has_element_(co,cun)
-    and position_(co,cun)=position_(co@,cun) and false }
-
 logic p : element_t -> prop
 
 predicate p_forall_cont (co:list) =
 	  forall cu:cursor.
 	  	 has_element_(co,cu) -> p(element_(co,cu))
+
+let test_replace_element1 (co:list ref) (cu:cursor) (cun:cursor) (e:element_t) =
+    { has_element_(co,cu) and has_element_(co,cun) and not cu=cun }
+    replace_element co cu e
+    { element_(co,cu)=e and element_(co,cun)=element_(co@,cun) and has_element_(co,cun)
+    and position_(co,cun)=position_(co@,cun) and false }
 
 let test_replace_element2 (co:list ref) (cu:cursor) (e:element_t) =
     { has_element_(co,cu) and p(e) and p_forall_cont(co) }
@@ -265,14 +266,9 @@ let test_false (co:list ref) (cu:cursor) =
     void
     { false }
 
-(*** TESTS ***)
+(*** TESTS ***) 
 
-parameter contains :
-l : list -> e : element_t ->
-{}
-bool
-{if result then contains_(l,e) else not contains_(l,e)} 
-
+(* inserting an element only if it is not there yet garantees the presence of the element *)
 let conditional_insert (l : list ref) (e : element_t) =
 	if not contains !l e then
 		append l e
@@ -338,7 +334,6 @@ let test4 (li : list) =
 
 (* iterate through the list by adding element e at every position. This doubles
    the size of the list *)
-
 let test5 (li : list ref) (e : element_t) =
   { not is_empty_(li) }
   let c = ref first !li in
@@ -385,8 +380,9 @@ let test6 (li:list ref) (removed:list ref) =
 
 exception Return
 
-let test7 (s:list) (e:element_t) (c:cursor ref) =
-    c:= first s;
+(* the usual implementation of contains indeed computes the awaited result *)
+let my_contain (s:list) (e:element_t) =
+    let c = ref first s in
     let res = ref false in
     try
       while has_element s !c do
@@ -399,8 +395,9 @@ let test7 (s:list) (e:element_t) (c:cursor ref) =
       done
     with Return -> res := true end;
     ! res
-    { (result=true <-> contains_(s,e)) and find_(s,e,first_(s))=c and false }
+    { (result=true <-> contains_(s,e)) and false }
 
+(* the usual implementation of find indeed computes the awaited result *)
 let my_find (s : list) (e : element_t) (f : cursor) =
   { has_element_ (s, f) }
   let c = ref f in
@@ -420,6 +417,7 @@ let my_find (s : list) (e : element_t) (f : cursor) =
 
 logic f : element_t -> element_t
 
+(* after map l s, every element in s has been transformed through f *)
 let map_f (s : list ref) =
   init :
   let c = ref first !s in
@@ -435,30 +433,7 @@ let map_f (s : list ref) =
   done
   { forall cu : cursor. has_element_(s,cu) -> element_(s,cu)=f(element_(s@,cu)) }
 
-let map_f2 (s : list ref) =
-  init :
-  let c = ref first !s in
-  if not (curs_equal !c no_element) then
-  try
-  while true do
-    { invariant
-     (has_element_(s,c) and has_element_(s@init,c)) and
-     (forall cu : cursor. has_element_(s,cu) -> has_element_(s@init,cu) and next_(s,cu)=next_(s@init,cu)) and
-     (forall cu : cursor. has_element_(left_(s,c),cu) ->
-                                       element_(s,cu) = f(element_(s@init,cu))) and
-     equal_(right_(s@init,c), right_(s,c))
-    }
-    replace_element s !c (f(element !s !c));
-    c := next !s !c;
-    if curs_equal !c no_element then
-      raise Return     
-  done
-  with Return -> void end
-  { forall cu : cursor. has_element_(s,cu) -> has_element_(s@,cu) and next_(s,cu)=next_(s@,cu)
-   and element_(s,cu)=f(element_(s@,cu)) }
-
 (*** MAX TESTS ***)
-
 
 logic compare_ : element_t, element_t -> int
 
