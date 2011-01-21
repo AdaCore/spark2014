@@ -66,7 +66,12 @@ package body Gnat2Why.Subprograms is
       end;
    end Map_Node_List_to_Array;
 
-   function From_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+   function From_Why_Int_Prog (Expr : Node_Id; Why_Expr : W_Prog_Id)
+      return W_Prog_Id;
+   --  convert the program Why_Expr, which is expected to be of "int" type, to
+   --  the type in Why that corresponds to the type of the Ada Node Expr
+
+   function From_Why_Int_Term (Expr : Node_Id; Why_Expr : W_Term_Id)
       return W_Term_Id;
    --  convert the term Why_Expr, which is expected to be of "int" type, to
    --  the type in Why that corresponds to the type of the Ada Node Expr
@@ -82,11 +87,29 @@ package body Gnat2Why.Subprograms is
    function Why_Op_Of_Ada_Op (Op : N_Op_Compare) return W_Relation_Id;
    --  convert an Ada comparison operator to a Why one
 
-   ------------------
-   -- From_Why_Int --
-   ------------------
+   -----------------------
+   -- From_Why_Int_Prog --
+   -----------------------
 
-   function From_Why_Int (Expr : Node_Id; Why_Expr : W_Term_Id)
+   function From_Why_Int_Prog (Expr : Node_Id; Why_Expr : W_Prog_Id)
+      return W_Prog_Id
+   is
+      Conv_Id : constant W_Identifier_Id :=
+         New_Conversion_From_Int (Get_Name_String (Chars (Etype (Expr))));
+   begin
+      return
+        New_Prog_Call
+          (Ada_Node => Expr,
+           Progs =>
+             (1 => New_Prog_Identifier (Def => Conv_Id),
+              2 => Why_Expr));
+   end From_Why_Int_Prog;
+
+   -----------------------
+   -- From_Why_Int_Term --
+   -----------------------
+
+   function From_Why_Int_Term (Expr : Node_Id; Why_Expr : W_Term_Id)
       return W_Term_Id is
    begin
       return New_Operation
@@ -94,7 +117,7 @@ package body Gnat2Why.Subprograms is
           Name => New_Conversion_From_Int
             (Get_Name_String (Chars (Etype (Expr)))),
           Parameters => (1 => Why_Expr));
-   end From_Why_Int;
+   end From_Why_Int_Term;
 
    ------------------
    -- To_Why_Int --
@@ -254,12 +277,15 @@ package body Gnat2Why.Subprograms is
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
+            --  ??? For now, assume that we never want "ints" in Why programs
             return
-              New_Prog_Constant
-                (Ada_Node => Expr,
-                 Def => New_Integer_Constant
+              From_Why_Int_Prog
+                (Expr,
+                 New_Prog_Constant
                    (Ada_Node => Expr,
-                    Value => Intval (Expr)));
+                    Def => New_Integer_Constant
+                      (Ada_Node => Expr,
+                       Value => Intval (Expr))));
          when N_Identifier =>
             return
               New_Deref
@@ -267,6 +293,23 @@ package body Gnat2Why.Subprograms is
                  Ref => New_Identifier
                    (Ada_Node => Expr,
                     Symbol => Chars (Expr)));
+         when N_Op_Eq =>
+            --  We are in a program, so we have to use boolean functions
+            --  instead of predicates
+            declare
+               Left    : constant Node_Id := Left_Opnd (Expr);
+               Cmp_Fun : constant W_Prog_Id :=
+                  New_Prog_Identifier (Def =>
+                    Eq_Param_Name (Get_Name_String (Chars (Etype (Left)))));
+            begin
+               return
+                 New_Prog_Call
+                      (Ada_Node => Expr,
+                       Progs =>
+                         (1 => Cmp_Fun,
+                          2 => Why_Expr_of_Ada_Expr (Left),
+                          3 =>  Why_Expr_of_Ada_Expr (Right_Opnd (Expr))));
+            end;
          when others => raise Program_Error;
       end case;
    end Why_Expr_of_Ada_Expr;
@@ -397,7 +440,7 @@ package body Gnat2Why.Subprograms is
             if Expect_Int then
                return T;
             else
-               return From_Why_Int (Expr, T);
+               return From_Why_Int_Term (Expr, T);
             end if;
          when N_Identifier =>
             --  The corresponding Why type of the identifier may be of
@@ -430,7 +473,7 @@ package body Gnat2Why.Subprograms is
             if Expect_Int then
                return T;
             else
-               return From_Why_Int (Expr, T);
+               return From_Why_Int_Term (Expr, T);
             end if;
          when N_Op_Gt =>
             --  ??? TBD The treatment of N_Op_Gt is incorrect: we need to use
