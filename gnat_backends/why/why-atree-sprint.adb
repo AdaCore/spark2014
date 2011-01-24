@@ -1993,13 +1993,13 @@ package body Why.Atree.Sprint is
    begin
       P (O, "if ");
       Traverse (State, Condition);
-      PL (O, " then");
+      PL (O, " then (");
       Relative_Indent (O, 1);
       Traverse (State, Then_Part);
       Relative_Indent (O, -1);
 
       if Has_Else then
-         P (O, " else");
+         P (O, ") else (");
 
          if not Has_Elsif then
             NL (O);
@@ -2011,6 +2011,7 @@ package body Why.Atree.Sprint is
          if not Has_Elsif then
             Relative_Indent (O, -1);
          end if;
+         P (O, ")");
       end if;
 
       State.Control := Abandon_Children;
