@@ -31,6 +31,7 @@ with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
@@ -401,10 +402,10 @@ package body Gnat2Why.Subprograms is
    end Why_Expr_Of_Ada_Expr;
 
    --------------------------
-   -- Why_Expr_of_Ada_Stmt --
+   -- Why_Expr_Of_Ada_Stmt --
    --------------------------
 
-   function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
+   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
       function Expr_Expr (Expr : Node_Id) return W_Prog_Id;
       --  This is a copy of the function Why_Expr_Of_Ada_Expr without the
@@ -446,7 +447,7 @@ package body Gnat2Why.Subprograms is
                  New_Prog_Constant (Ada_Node => Stmt, Def => New_Void_Literal);
             end if;
          when N_Procedure_Call_Statement =>
-            --  Do not process calls to introduced "postcondition functions
+            --  Do not process calls to introduced "postcondition" functions
             if Get_Name_String (Chars (Name (Stmt))) = "_postconditions" then
                return New_Prog_Constant (Stmt, New_Void_Literal);
             end if;
@@ -464,16 +465,23 @@ package body Gnat2Why.Subprograms is
                  Else_Part => Why_Expr_of_Ada_Stmts (Else_Statements (Stmt)));
          when N_Raise_Constraint_Error =>
             --  Currently, we assume that this is a check inserted by the
-            --  compiler, we transform it into an assert
+            --  compiler, we transform it into an assert;
+            --  we have to negate the condition
             return
                New_Assert
                  (Ada_Node => Stmt,
                   Assertions => (1 => New_Assertion
-                    (Pred => Why_Predicate_Of_Ada_Expr (Condition (Stmt)))),
+                    (Pred =>
+                      New_Negation
+                        (Operand =>
+                           Why_Predicate_Of_Ada_Expr (Condition (Stmt))))),
                   Prog => New_Prog_Constant (Stmt, New_Void_Literal));
+         when N_Object_Declaration =>
+            --  This has been dealt with at a higher level
+            raise Program_Error;
          when others => raise Program_Error;
       end case;
-   end Why_Expr_of_Ada_Stmt;
+   end Why_Expr_Of_Ada_Stmt;
 
    ---------------------------
    -- Why_Expr_of_Ada_Stmts --
@@ -481,14 +489,65 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id
    is
-      function Expr_Stmt_Map is new Map_Node_List_to_Array
-         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_of_Ada_Stmt);
+      Result   : W_Prog_Id := New_Prog_Constant (Def => New_Void_Literal);
+      Cur_Stmt : Node_Or_Entity_Id := Nlists.Last (Stmts);
+      Len      : Nat := 0;
    begin
       if List_Length (Stmts) = 0 then
-         return New_Prog_Constant (Def => New_Void_Literal);
+         --  We return the default value, ie void
+         return Result;
       else
-         return New_Statement_Sequence (Statements => Expr_Stmt_Map (Stmts));
+         while Nkind (Cur_Stmt) /= N_Empty loop
+            case Nkind (Cur_Stmt) is
+               when N_Object_Declaration =>
+                  if Len /= 0 then
+                     Result :=
+                        New_Binding_Ref
+                          (Ada_Node => Cur_Stmt,
+                           Name =>
+                             New_Identifier
+                               (Symbol =>
+                                 Chars (Defining_Identifier (Cur_Stmt))),
+                           Def => Why_Expr_Of_Ada_Expr (Expression (Cur_Stmt)),
+                           Context => Result);
+                     Len := 1;
+                  else
+                     --  we currently do not have a statement.
+                     --  this means that an object declaration is the last
+                     --  statement; we can simply ignore it
+                     null;
+                  end if;
+               when others =>
+                  --  For all other statements, we call Why_Expr_Of_Ada_Stmt
+                  --  to obtain a stmt, and if necessary we build a statement
+                  --  sequence
+                  case Len is
+                     when 0 =>
+                        Result := Why_Expr_Of_Ada_Stmt (Cur_Stmt);
+                     when 1 =>
+                        declare
+                           Seq : constant W_Prog_Id :=
+                              New_Unchecked_Statement_Sequence;
+                        begin
+                           Statement_Sequence_Prepend_To_Statements
+                             (Seq,
+                              Result);
+                           Statement_Sequence_Prepend_To_Statements
+                             (Seq,
+                              Why_Expr_Of_Ada_Stmt (Cur_Stmt));
+                           Result := Seq;
+                        end;
+                     when others =>
+                        Statement_Sequence_Prepend_To_Statements
+                          (Result,
+                           Why_Expr_Of_Ada_Stmt (Cur_Stmt));
+                  end case;
+                  Len := Len + 1;
+            end case;
+            Cur_Stmt := Prev (Cur_Stmt);
+         end loop;
       end if;
+      return Result;
    end Why_Expr_of_Ada_Stmts;
 
    ------------------------------
@@ -675,7 +734,12 @@ package body Gnat2Why.Subprograms is
             --  Special variables, for example "result" and "old", are
             --  represented as N_Attribute_Reference
             if Get_Name_String (Attribute_Name (Expr)) = "result" then
-               return New_Result_Identifier;
+               T := New_Result_Identifier;
+               if Expect_Int then
+                  return To_Why_Int_Term (Expr, T);
+               else
+                  return T;
+               end if;
             end if;
             raise Program_Error;
          when others => raise Program_Error;

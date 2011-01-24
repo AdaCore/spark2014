@@ -95,7 +95,7 @@ package Gnat2Why.Subprograms is
    --  here for which there is something else to do.
    --  * Read access: We need to add a dereferencing operator in Why
 
-   function Why_Expr_of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
+   function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
    function Why_Expr_of_Ada_Stmts (Stmts : List_Id) return W_Prog_Id;
