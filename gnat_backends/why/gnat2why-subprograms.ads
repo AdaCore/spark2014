@@ -86,7 +86,9 @@ package Gnat2Why.Subprograms is
    --  * The types of arguments have to be references
    --  * The pre/postconditions need special treatment (TCC)
 
-   function Why_Expr_of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
+   function Why_Expr_Of_Ada_Expr
+     (Expr       : Node_Id;
+      Expect_Int : Boolean := False) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression
    --
    --  The translation is pretty direct for many constructs. We list the ones
@@ -100,7 +102,7 @@ package Gnat2Why.Subprograms is
    --  Translate a list of Ada statements into a single Why expression
    --  An empty list is translated to "void"
 
-   function Why_Predicate_of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id;
+   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id;
    --  Translate an Ada Expression to a Why predicate
 
    function Why_Term_Of_Ada_Expr
