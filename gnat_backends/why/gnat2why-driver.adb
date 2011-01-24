@@ -154,6 +154,11 @@ package body Gnat2Why.Driver is
          else
             case Nkind (Unit (GNAT_Root)) is
                when N_Package_Body =>
+                  --  First translate the spec of the package, if any
+                  Translate_List_Of_Decls
+                    (File,
+                     Visible_Declarations
+                        (Parent (Corresponding_Spec (Unit (GNAT_Root)))));
                   Translate_List_Of_Decls
                     (File,
                      Declarations (Unit (GNAT_Root)));
