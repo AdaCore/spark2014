@@ -221,6 +221,10 @@ package body Gnat2Why.Subprograms is
       --  use argument (x : void) if the Ada procedure / function has no
       --  arguments
 
+      function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id;
+      --  Add a "let" binding to WhyBody for each local variable of the
+      --  procedure
+
       function Compute_Spec (Kind : Name_Id) return W_Assertion_Id;
       --  Compute the precondition of the generated Why functions
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
@@ -263,6 +267,52 @@ package body Gnat2Why.Subprograms is
          end if;
       end Compute_Binders;
 
+      ---------------------
+      -- Compute_Context --
+      ---------------------
+
+      function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id
+      is
+         Cur_Decl : Node_Id := Last (Declarations (Node));
+         R : W_Prog_Id := Initial_Body;
+      begin
+         while Nkind (Cur_Decl) /= N_Empty loop
+            case Nkind (Cur_Decl) is
+               when N_Object_Declaration =>
+                  declare
+                     Init : W_Prog_Id;
+                  begin
+                     if Nkind (Expression (Cur_Decl)) /= N_Empty then
+                        Init := Why_Expr_Of_Ada_Expr (Expression (Cur_Decl));
+                     else
+                        Init :=
+                           New_Prog_Call
+                           (Progs =>
+                             (1 =>
+                                New_Prog_Identifier
+                                  (Def => Allocator_Name
+                                    (Type_Of_Node
+                                      (Object_Definition (Cur_Decl)))),
+                              2 =>
+                                New_Prog_Constant (Def => New_Void_Literal)));
+                     end if;
+                     R :=
+                        New_Binding_Ref
+                          (Ada_Node => Cur_Decl,
+                           Name =>
+                             New_Identifier
+                               (Symbol =>
+                                 Chars (Defining_Identifier (Cur_Decl))),
+                           Def => Init,
+                           Context => R);
+                  end;
+               when others => null;
+            end case;
+            Cur_Decl := Prev (Cur_Decl);
+         end loop;
+         return R;
+      end Compute_Context;
+
       ------------------
       -- Compute_Spec --
       ------------------
@@ -295,6 +345,11 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Compute_Spec;
 
+      WhyBody : constant W_Prog_Id :=
+         Compute_Context (Why_Expr_of_Ada_Stmts (Stmts));
+
+      --  Start of processing for Why_Decl_of_Ada_Subprogram
+
    begin
       --  ??? TBD deal with expression functions : transform into Why
       --  'function'
@@ -309,7 +364,7 @@ package body Gnat2Why.Subprograms is
                Binders => Compute_Binders,
                Pre => Compute_Spec (Name_Precondition),
                Post => Compute_Spec (Name_Postcondition),
-               Def => Why_Expr_of_Ada_Stmts (Stmts));
+               Def => WhyBody);
          when others => raise Program_Error;
       end case;
 
