@@ -2092,7 +2092,7 @@ package body Why.Atree.Sprint is
    begin
       P (O, "assert { ");
       Print_List (State, Assert_Get_Assertions (Node), " } { ");
-      P (O, ";");
+      P (O, "};");
       NL (O);
       Traverse
         (State,
