@@ -101,10 +101,12 @@ package body Gnat2Why.Types is
                      Name_Str,
                      Base_Type);
                end;
-            when others => null;
+            when others =>
+               raise Program_Error with "Gnat2Why: Not implemented";
             end case;
          --  ??? TBD Complete This code
-         when others => raise Program_Error;
+         when others =>
+            raise Program_Error with "Gnat2Why: Not implemented";
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
 

@@ -166,7 +166,8 @@ package body Gnat2Why.Driver is
                   Translate_List_Of_Decls
                     (File,
                      Visible_Declarations (Specification (Unit (GNAT_Root))));
-               when others => raise Program_Error;
+               when others =>
+                  raise Program_Error with "Gnat2Why: Not implemented";
             end case;
          end if;
          --  ??? TBD: create a file that has a meaningful name, depending on

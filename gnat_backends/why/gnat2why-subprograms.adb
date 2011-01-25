@@ -416,7 +416,7 @@ package body Gnat2Why.Subprograms is
                Def     => Why_Body);
 
          when others =>
-            raise Program_Error;
+            raise Program_Error with "Gnat2Why: Not implemented";
       end case;
    end Why_Decl_of_Ada_Subprogram;
 
@@ -512,7 +512,7 @@ package body Gnat2Why.Subprograms is
                   Expression (Expr),
                   Why_Expr_Of_Ada_Expr (Expression (Expr), Expect_Int));
          when others =>
-            raise Program_Error;
+            raise Program_Error with "Gnat2Why: Not implemented";
       end case;
    end Why_Expr_Of_Ada_Expr;
 
