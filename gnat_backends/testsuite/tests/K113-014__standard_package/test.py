@@ -1,4 +1,4 @@
 from test_support import *
 
 gnat2why("empty.ads")
-cat("out.why")
+why("out.why",opt="--type-only")
