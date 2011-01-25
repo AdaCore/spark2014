@@ -70,7 +70,7 @@ package body Why.Gen.Funcs is
       File_Append_To_Declarations (
          File,
          New_Logic_Declaration (Decl =>
-            New_Axiom (Name => New_Identifier ("toto"),
+            New_Axiom (Name => New_Conversion_Axiom (Sub_Type, Base_Type),
             Def =>
                New_Universal_Quantif
                   (Variables => (1 => New_Identifier (Var)),

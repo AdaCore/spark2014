@@ -95,6 +95,18 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (To & "__of__" & From);
    end New_Conversion;
+
+   --------------------------
+   -- New_Conversion_Axiom --
+   --------------------------
+
+   function New_Conversion_Axiom (From : String; To : String)
+      return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (To & "__of__" & From & "__in_range");
+   end New_Conversion_Axiom;
+
    -----------------------------
    -- New_Conversion_From_Int --
    -----------------------------
