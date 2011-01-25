@@ -42,7 +42,8 @@ package body Gnat2Why.Subprograms is
       type A is array (Positive range <>) of T;
       with function F (N : Node_Id) return T;
    function Map_Node_List_to_Array (List : List_Id) return A;
-   --  ??? Missing doc
+   --  Take a list of GNAT Node_Ids and apply the function F to each of them.
+   --  Return the array that contains all the results, in the same order.
 
    function From_Why_Int_Prog
      (Expr     : Node_Id;

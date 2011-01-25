@@ -41,7 +41,16 @@ package body Why.Gen.Enums is
      (File         : W_File_Id;
       Name         : String;
       Constructors : String_Lists.List);
-   --  ??? Missing doc
+   --  define conversion function from enum type to integer
+   --  using pattern matching
+   --  example: for a type definition
+   --     type T is (A, B, C)
+   --  define a Why function
+   --    function t__to_integer (x : t) =
+   --     match x with
+   --     | a -> 1
+   --     | b -> 1
+   --     | c -> 1
 
    -----------------------------------
    -- Declare_Abstract_Boolean_Type --
@@ -63,8 +72,6 @@ package body Why.Gen.Enums is
       (File         : W_File_Id;
        Name         : String;
        Constructors : String_Lists.List)
-      --  define conversion function from enum type to integer
-      --  using pattern matching
       --  ??? Not fully implemented yet
    is
       use String_Lists;

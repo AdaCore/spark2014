@@ -44,7 +44,7 @@ package body Gnat2Why.Driver is
    --   This is the main driver for the Ada-to-Why back-end
 
    procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id);
-   --  ??? Missing doc
+   --  Take a list of Ada declarations and translate them to Why declarations
 
    ------------------------
    -- Is_Back_End_Switch --
