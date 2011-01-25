@@ -49,8 +49,8 @@ package body Why.Gen.Enums is
    --    function t__to_integer (x : t) =
    --     match x with
    --     | a -> 1
-   --     | b -> 1
-   --     | c -> 1
+   --     | b -> 2
+   --     | c -> 3
 
    -----------------------------------
    -- Declare_Abstract_Boolean_Type --
