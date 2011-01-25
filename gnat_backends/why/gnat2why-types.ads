@@ -28,13 +28,13 @@ with Why.Ids;    use Why.Ids;
 
 package Gnat2Why.Types is
    procedure Why_Type_Decl_of_Gnat_Type_Decl
-      (File : W_File_Id;
-       Node : Node_Id);
+     (File : W_File_Id;
+      Node : Node_Id);
    --  Take an Ada type declaration and transform it into a Why type
-   --  declaration, including conversion functions and axioms
+   --  declaration, including conversion functions and axioms.
 
-   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id)
-      return W_Computation_Type_Id;
+   function Why_Prog_Type_of_Ada_Type
+     (Ty : Node_Id) return W_Computation_Type_Id;
    --  Take an Ada Type and transform it into a Why program type
    --  ie add a reference constructor on top
    --  example: Integer => integer ref

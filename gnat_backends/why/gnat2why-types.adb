@@ -35,9 +35,13 @@ with Why.Gen.Enums;      use Why.Gen.Enums;
 
 package body Gnat2Why.Types is
 
+   -------------------------------------
+   -- Why_Type_Decl_of_Gnat_Type_Decl --
+   -------------------------------------
+
    procedure Why_Type_Decl_of_Gnat_Type_Decl
       (File : W_File_Id;
-         Node : Node_Id)
+       Node : Node_Id)
    is
       Name                : constant Name_Id :=
                               Chars (Defining_Identifier (Node));
@@ -51,43 +55,57 @@ package body Gnat2Why.Types is
             case Nkind (Def_Node) is
                when N_Enumeration_Type_Definition =>
                   declare
-                     Cursor : Node_Or_Entity_Id :=
-                        Nlists.First (Literals (Def_Node));
-                     Constructors : String_Lists.List
-                        := String_Lists.Empty_List;
+                     Cursor       : Node_Or_Entity_Id :=
+                                      Nlists.First (Literals (Def_Node));
+                     Constructors : String_Lists.List :=
+                                      String_Lists.Empty_List;
                   begin
                      while Nkind (Cursor) /= N_Empty loop
                         Constructors.Append (
-                           Get_Name_String (Chars (Cursor)));
+                          Get_Name_String (Chars (Cursor)));
                         Cursor := Next (Cursor);
                      end loop;
                      Declare_Ada_Enum_Type (File, Name_Str, Constructors);
                   end;
+
                when N_Signed_Integer_Type_Definition =>
-                  Declare_Ada_Abstract_Signed_Int (
-                     File,
+                  Declare_Ada_Abstract_Signed_Int
+                    (File,
                      Name_Str,
                      Expr_Value (Low_Bound (Def_Node)),
                      Expr_Value (High_Bound (Def_Node)));
-               when others => null;
+
+               when others =>
+                  null;
             end case;
+
          when N_Subtype_Declaration =>
             --  ??? TBD Complete This code
             null;
-         when others => raise Program_Error;
+
+         when others =>
+            raise Program_Error;
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
 
-   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id)
-      return W_Computation_Type_Id
+   -------------------------------
+   -- Why_Prog_Type_of_Ada_Type --
+   -------------------------------
+
+   function Why_Prog_Type_of_Ada_Type
+     (Ty : Node_Id) return W_Computation_Type_Id
    is
       Name : constant Name_Id := Chars (Etype (Ty));
    begin
       --  We have to use the full name of the type
-      return New_Ref_Type
-        (Ada_Node => Ty,
-         Aliased_Type => New_Abstract_Type
-           (Ada_Node => Ty,
-            Name => New_Identifier (Ada_Node => Ty, Symbol => Name)));
+      return
+        New_Ref_Type
+          (Ada_Node     => Ty,
+           Aliased_Type => New_Abstract_Type
+                             (Ada_Node => Ty,
+                              Name => New_Identifier
+                                        (Ada_Node => Ty,
+                                         Symbol => Name)));
    end  Why_Prog_Type_of_Ada_Type;
+
 end Gnat2Why.Types;
