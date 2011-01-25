@@ -147,7 +147,22 @@ package Why.Gen.Funcs is
       Base_Type : String;
       Low       : Uint;
       High      : Uint);
-   --  create a conversion function from type Sub_Type to type Base_Type
+   --  We realize the subtype relation as follows:
+   --  * A conversion function from type Sub_Type to type Base_Type
+   --  * An axiom that states that the image of that function is always in
+   --    range
+   --  * A parameter in the opposite sense, with a precondition that the
+   --    argument is in range, and a postcondition that links the result and
+   --    the argument
+   --  logic Sub_Type__to__Base_type : Sub_Type -> Base_Type
+   --  axiom Sub_Type__to__Base_type__in_range :
+   --     forall (x) :
+   --        Sub_Type__in_range
+   --           (Base_Type__to_integer (Sub_Type__to__Base_type (x))
+   --  parameter Base_Type__to__Sub_type : (x : Base_Type) ->
+   --        { Sub_Type__in_range x }
+   --        returns Sub_Type
+   --        { Sub_Type__to__Base_type (result) = x}
 
    procedure Declare_Global_Binding
      (File    : W_File_Id;

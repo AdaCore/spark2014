@@ -61,6 +61,8 @@ package body Why.Gen.Funcs is
                            (Name => New_Identifier (Var)))))),
             Op2 => New_Rel_Le,
             Right2 => New_Integer_Constant (Value => High));
+      Arrows      : W_Arrow_Type_Unchecked_Id :=
+                      New_Arrow_Stack (New_Abstract_Type (Sub_Type));
    begin
       Declare_Logic
        (File => File,
@@ -76,6 +78,22 @@ package body Why.Gen.Funcs is
                   (Variables => (1 => New_Identifier (Var)),
                    Var_Type => New_Abstract_Type (Sub_Type),
                    Pred => Pred))));
+
+      Arrows := Push_Arg
+                  (Arrows,
+                   New_Identifier (Var),
+                   New_Abstract_Type (Base_Type));
+      Declare_Logic_And_Parameters
+        (File => File,
+         Name => New_Conversion (Base_Type, Sub_Type),
+         Arrows => Arrows,
+         Pre =>
+           New_Operation
+             (Name => Range_Pred_Name (Sub_Type),
+              Parameters =>
+               (1 => New_Operation
+                       (Name => New_Conversion_To_Int (Base_Type),
+                        Parameters => (1 => New_Term (Var))))));
    end Declare_Ada_Range_Subtype_Relation;
 
    -----------------------
