@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Uintp;                use Uintp;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Ids;              use Why.Ids;
@@ -139,6 +140,14 @@ package Why.Gen.Funcs is
    --  an abstract type of the given name. i.e.
    --
    --     parameter any___<name> : unit -> { } <name> { true }
+
+   procedure Declare_Ada_Range_Subtype_Relation
+     (File     : W_File_Id;
+      Sub_Type  : String;
+      Base_Type : String;
+      Low       : Uint;
+      High      : Uint);
+   --  create a conversion function from type Sub_Type to type Base_Type
 
    procedure Declare_Global_Binding
      (File    : W_File_Id;

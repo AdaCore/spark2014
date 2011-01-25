@@ -56,6 +56,13 @@ package body Gnat2Why.Subprograms is
    --  Convert the term Why_Expr, which is expected to be of "int" type, to
    --  the type in Why that corresponds to the type of the Ada Node Expr.
 
+   function Insert_Conversion
+      (To : Node_Id;
+       From : Node_Id;
+       Why_Expr : W_Prog_Id) return W_Prog_Id;
+   --  We expect Why_Expr to be of the type that corresponds to the type of
+   --  "From". We insert a conversion so that its type corresponds to "To"
+
    function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
    --  Build a program that consists of only one identifier
 
@@ -116,6 +123,32 @@ package body Gnat2Why.Subprograms is
            Name => New_Conversion_From_Int (Type_Of_Node (Expr)),
            Parameters => (1 => Why_Expr));
    end From_Why_Int_Term;
+
+   -----------------------
+   -- Insert_Conversion --
+   -----------------------
+
+   function Insert_Conversion
+      (To : Node_Id;
+       From : Node_Id;
+       Why_Expr : W_Prog_Id) return W_Prog_Id
+   is
+      To_Type : constant String := Type_Of_Node (To);
+      From_Type : constant String := Type_Of_Node (From);
+   begin
+      if To_Type = From_Type then
+         return Why_Expr;
+      else
+         return
+           New_Prog_Call
+           (Ada_Node => To,
+           Progs =>
+             (1 =>
+               New_Prog_Identifier
+                  (Def => New_Conversion (From => From_Type, To => To_Type)),
+             2 => Why_Expr));
+      end if;
+   end Insert_Conversion;
 
    ----------------------------
    -- Map_Node_List_to_Array --
@@ -472,10 +505,11 @@ package body Gnat2Why.Subprograms is
                  Operand  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Type_Conversion =>
-            --  ??? TBD Treat this. Sometimes this seems to be inserted but
-            --  there actually is no type conversion to do
-            return Why_Expr_Of_Ada_Expr (Expression (Expr), Expect_Int);
-
+            return
+               Insert_Conversion
+                 (Expr,
+                  Expression (Expr),
+                  Why_Expr_Of_Ada_Expr (Expression (Expr), Expect_Int));
          when others =>
             raise Program_Error;
       end case;

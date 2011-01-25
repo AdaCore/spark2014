@@ -86,6 +86,15 @@ package body Why.Gen.Names is
       return Eq_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Eq_Pred_Name;
 
+   --------------------
+   -- New_Conversion --
+   --------------------
+   --
+   function New_Conversion (From : String; To : String) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (To & "__of__" & From);
+   end New_Conversion;
    -----------------------------
    -- New_Conversion_From_Int --
    -----------------------------

@@ -28,10 +28,55 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 
-with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Arrows;      use Why.Gen.Arrows;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Types;      use Why.Gen.Types;
 
 package body Why.Gen.Funcs is
+
+   -------------------
+   -- Declare_Ada_Subtype_Relation --
+   -------------------
+
+   procedure Declare_Ada_Range_Subtype_Relation
+     (File     : W_File_Id;
+      Sub_Type  : String;
+      Base_Type : String;
+      Low       : Uint;
+      High      : Uint)
+   is
+      Var  : constant String := "x";
+      Pred : constant W_Predicate_Id :=
+         New_Related_Terms
+           (Left => New_Integer_Constant (Value => Low),
+            Op => New_Rel_Le,
+            Right =>
+              New_Operation
+                 (Name => New_Conversion_To_Int (Base_Type),
+                  Parameters =>
+                    (1 => New_Operation
+                      (Name => New_Conversion (Sub_Type, Base_Type),
+                       Parameters => (1 =>
+                         New_Term_Identifier
+                           (Name => New_Identifier (Var)))))),
+            Op2 => New_Rel_Le,
+            Right2 => New_Integer_Constant (Value => High));
+   begin
+      Declare_Logic
+       (File => File,
+        Name => New_Conversion (Sub_Type, Base_Type),
+        Args => (1 => New_Abstract_Type (Sub_Type)),
+        Return_Type => New_Abstract_Type (Base_Type));
+      File_Append_To_Declarations (
+         File,
+         New_Logic_Declaration (Decl =>
+            New_Axiom (Name => New_Identifier ("toto"),
+            Def =>
+               New_Universal_Quantif
+                  (Variables => (1 => New_Identifier (Var)),
+                   Var_Type => New_Abstract_Type (Sub_Type),
+                   Pred => Pred))));
+   end Declare_Ada_Range_Subtype_Relation;
 
    -----------------------
    -- Declare_Allocator --

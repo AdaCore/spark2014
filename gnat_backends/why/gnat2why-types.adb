@@ -24,14 +24,17 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
+with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with String_Utils;       use String_Utils;
+with Uintp;              use Uintp;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Enums;      use Why.Gen.Enums;
+with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Types is
 
@@ -46,13 +49,14 @@ package body Gnat2Why.Types is
       Name                : constant Name_Id :=
                               Chars (Defining_Identifier (Node));
       Name_Str            : constant String := Get_Name_String (Name);
-      Def_Node            : Node_Id;
    begin
       --  Types_Table.Insert (Name, Why_Type_Id);
       case Nkind (Node) is
          when N_Full_Type_Declaration =>
-            Def_Node := Type_Definition (Node);
-            case Nkind (Def_Node) is
+            declare
+               Def_Node : constant Node_Id := Type_Definition (Node);
+            begin
+               case Nkind (Def_Node) is
                when N_Enumeration_Type_Definition =>
                   declare
                      Cursor       : Node_Or_Entity_Id :=
@@ -74,17 +78,31 @@ package body Gnat2Why.Types is
                      Name_Str,
                      Expr_Value (Low_Bound (Def_Node)),
                      Expr_Value (High_Bound (Def_Node)));
-
-               when others =>
-                  null;
-            end case;
-
+               when others => null;
+               end case;
+            end;
          when N_Subtype_Declaration =>
-            --  ??? TBD Complete This code
-            null;
+            case Nkind (Subtype_Indication (Node)) is
+            when N_Identifier =>
+               declare
+                  Sc_Range   : constant Node_Id :=
+                     Scalar_Range (Defining_Identifier (Node));
+                  Base_Type : constant String :=
+                     Get_Name_String (Chars (Subtype_Indication (Node)));
+                  Low       : constant Uint :=
+                     Expr_Value (Low_Bound (Sc_Range));
+                  High       : constant Uint :=
+                     Expr_Value (High_Bound (Sc_Range));
 
-         when others =>
-            raise Program_Error;
+               begin
+                  Declare_Ada_Abstract_Signed_Int (File, Name_Str, Low, High);
+                  Declare_Ada_Range_Subtype_Relation
+                     (File, Name_Str, Base_Type, Low, High);
+               end;
+            when others => null;
+            end case;
+         --  ??? TBD Complete This code
+         when others => raise Program_Error;
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
 
