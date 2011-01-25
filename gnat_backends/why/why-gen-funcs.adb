@@ -41,26 +41,20 @@ package body Why.Gen.Funcs is
    procedure Declare_Ada_Range_Subtype_Relation
      (File     : W_File_Id;
       Sub_Type  : String;
-      Base_Type : String;
-      Low       : Uint;
-      High      : Uint)
+      Base_Type : String)
    is
       Var  : constant String := "x";
       Pred : constant W_Predicate_Id :=
-         New_Related_Terms
-           (Left => New_Integer_Constant (Value => Low),
-            Op => New_Rel_Le,
-            Right =>
-              New_Operation
-                 (Name => New_Conversion_To_Int (Base_Type),
-                  Parameters =>
-                    (1 => New_Operation
-                      (Name => New_Conversion (Sub_Type, Base_Type),
-                       Parameters => (1 =>
-                         New_Term_Identifier
-                           (Name => New_Identifier (Var)))))),
-            Op2 => New_Rel_Le,
-            Right2 => New_Integer_Constant (Value => High));
+         New_Predicate_Instance
+           (Name => Range_Pred_Name (Sub_Type),
+            Parameters =>
+              (1 =>
+                New_Operation
+                  (Name => New_Conversion_To_Int (Base_Type),
+                   Parameters =>
+                     (1 => New_Operation
+                       (Name => New_Conversion (Sub_Type, Base_Type),
+                        Parameters => (1 => New_Term (Var)))))));
       Arrows      : W_Arrow_Type_Unchecked_Id :=
                       New_Arrow_Stack (New_Abstract_Type (Sub_Type));
    begin
@@ -69,6 +63,7 @@ package body Why.Gen.Funcs is
         Name => New_Conversion (Sub_Type, Base_Type),
         Args => (1 => New_Abstract_Type (Sub_Type)),
         Return_Type => New_Abstract_Type (Base_Type));
+
       File_Append_To_Declarations (
          File,
          New_Logic_Declaration (Decl =>
@@ -83,6 +78,7 @@ package body Why.Gen.Funcs is
                   (Arrows,
                    New_Identifier (Var),
                    New_Abstract_Type (Base_Type));
+
       Declare_Logic_And_Parameters
         (File => File,
          Name => New_Conversion (Base_Type, Sub_Type),

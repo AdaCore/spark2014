@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;                use Uintp;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Ids;              use Why.Ids;
@@ -144,9 +143,7 @@ package Why.Gen.Funcs is
    procedure Declare_Ada_Range_Subtype_Relation
      (File     : W_File_Id;
       Sub_Type  : String;
-      Base_Type : String;
-      Low       : Uint;
-      High      : Uint);
+      Base_Type : String);
    --  We realize the subtype relation as follows:
    --  * A conversion function from type Sub_Type to type Base_Type
    --  * An axiom that states that the image of that function is always in

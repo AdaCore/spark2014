@@ -97,7 +97,9 @@ package body Gnat2Why.Types is
                begin
                   Declare_Ada_Abstract_Signed_Int (File, Name_Str, Low, High);
                   Declare_Ada_Range_Subtype_Relation
-                     (File, Name_Str, Base_Type, Low, High);
+                    (File,
+                     Name_Str,
+                     Base_Type);
                end;
             when others => null;
             end case;
