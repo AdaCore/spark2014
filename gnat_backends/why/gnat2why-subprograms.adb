@@ -46,7 +46,7 @@ package body Gnat2Why.Subprograms is
    --  Return the array that contains all the results, in the same order.
 
    type Exp_Type_Enum is (Why_Int, Ada_Type_Node);
-   type Exp_Type (Kind : Exp_Type_Enum) is
+   type Exp_Type (Kind : Exp_Type_Enum := Why_Int) is
       record
          case Kind is
             when Why_Int =>
@@ -56,12 +56,6 @@ package body Gnat2Why.Subprograms is
          end case;
       end record;
 
-   function From_Why_Int_Prog
-     (Expr     : Node_Id;
-      Why_Expr : W_Prog_Id) return W_Prog_Id;
-   --  Convert the program Why_Expr, which is expected to be of "int" type, to
-   --  the type in Why that corresponds to the type of the Ada Node Expr.
-
    function From_Why_Int_Term
      (Expr     : Node_Id;
       Why_Expr : W_Term_Id) return W_Term_Id;
@@ -69,20 +63,22 @@ package body Gnat2Why.Subprograms is
    --  the type in Why that corresponds to the type of the Ada Node Expr.
 
    function Insert_Conversion
-      (To : Node_Id;
-       From : Node_Id;
-       Why_Expr : W_Prog_Id) return W_Prog_Id;
-   --  We expect Why_Expr to be of the type that corresponds to the type of
-   --  "From". We insert a conversion so that its type corresponds to "To"
+      (Ada_Node  : Node_Id := Empty;
+       To        : Name_Id;
+       From      : Name_Id;
+       Why_Expr  : W_Prog_Id) return W_Prog_Id;
+   --  We expect Why_Expr to be of the type that corresponds to the type
+   --  "From". We insert a conversion so that its type corresponds to "To".
+
+   --  function Insert_Conversion
+   --     (To       : Node_Id;
+   --      From     : Node_Id;
+   --      Why_Expr : W_Prog_Id) return W_Prog_Id;
+   --  --  Same as above, but obtain the types of the conversion from GNAT
+   --  --  expression nodes.
 
    function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
    --  Build a program that consists of only one identifier
-
-   function To_Why_Int_Prog
-     (Expr     : Node_Id;
-      Why_Expr : W_Prog_Id) return W_Prog_Id;
-   --  Convert the program Why_Expr, which is expected to be of some type which
-   --  possesses a conversion function to int, to "int" type in Why.
 
    function To_Why_Int_Term
      (Expr     : Node_Id;
@@ -119,25 +115,6 @@ package body Gnat2Why.Subprograms is
    --  Convert an Ada binary operator to a Why term symbol
 
    -----------------------
-   -- From_Why_Int_Prog --
-   -----------------------
-
-   function From_Why_Int_Prog
-     (Expr     : Node_Id;
-      Why_Expr : W_Prog_Id) return W_Prog_Id
-   is
-      Conv_Id : constant W_Identifier_Id :=
-                  New_Conversion_From_Int (Type_Of_Node (Expr));
-   begin
-      return
-        New_Prog_Call
-          (Ada_Node => Expr,
-           Progs =>
-             (1 => New_Prog_Identifier (Def => Conv_Id),
-              2 => Why_Expr));
-   end From_Why_Int_Prog;
-
-   -----------------------
    -- From_Why_Int_Term --
    -----------------------
 
@@ -157,26 +134,43 @@ package body Gnat2Why.Subprograms is
    -----------------------
 
    function Insert_Conversion
-      (To : Node_Id;
-       From : Node_Id;
+      (Ada_Node : Node_Id := Empty;
+       To : Name_Id;
+       From : Name_Id;
        Why_Expr : W_Prog_Id) return W_Prog_Id
    is
-      To_Type : constant String := Type_Of_Node (To);
-      From_Type : constant String := Type_Of_Node (From);
    begin
-      if To_Type = From_Type then
+      if To = From then
          return Why_Expr;
-      else
+      end if;
+      declare
+         To_Type : constant String := Get_Name_String (To);
+         From_Type : constant String := Get_Name_String (From);
+      begin
          return
            New_Prog_Call
-           (Ada_Node => To,
-           Progs =>
-             (1 =>
-               New_Prog_Identifier
-                  (Def => New_Conversion (From => From_Type, To => To_Type)),
-             2 => Why_Expr));
-      end if;
+             (Ada_Node => Ada_Node,
+              Progs =>
+                (1 =>
+                  New_Prog_Identifier
+                    (Def => New_Conversion (From => From_Type, To => To_Type)),
+                 2 => Why_Expr));
+      end;
    end Insert_Conversion;
+
+   --  function Insert_Conversion
+   --     (To : Node_Id;
+   --      From : Node_Id;
+   --      Why_Expr : W_Prog_Id) return W_Prog_Id
+   --  is
+   --  begin
+   --     return
+   --       Insert_Conversion
+   --         (To,
+   --          Type_Of_Node (To),
+   --          Type_Of_Node (From),
+   --          Why_Expr);
+   --  end Insert_Conversion;
 
    ----------------------------
    -- Map_Node_List_to_Array --
@@ -213,25 +207,6 @@ package body Gnat2Why.Subprograms is
           (Ada_Node => Id,
            Def => New_Identifier (Ada_Node => Id, Symbol => Chars (Id)));
    end New_Prog_Ident;
-
-   ---------------------
-   -- To_Why_Int_Prog --
-   ---------------------
-
-   function To_Why_Int_Prog
-     (Expr     : Node_Id;
-      Why_Expr : W_Prog_Id) return W_Prog_Id
-   is
-      Conv_Id : constant W_Identifier_Id :=
-                  New_Conversion_To_Int (Type_Of_Node (Expr));
-   begin
-      return
-        New_Prog_Call
-          (Ada_Node => Expr,
-           Progs =>
-             (1 => New_Prog_Identifier (Def => Conv_Id),
-              2 => Why_Expr));
-   end To_Why_Int_Prog;
 
    ---------------------
    -- To_Why_Int_Term --
@@ -459,6 +434,96 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Exp_Type) return W_Prog_Id
    is
       T : W_Prog_Id;
+      Current_Type : Exp_Type;
+
+      function From_Why_Int_Prog
+        (Ada_Type : Name_Id;
+         Why_Expr : W_Prog_Id) return W_Prog_Id;
+      --  Convert the program Why_Expr, which is expected to be of "int" type,
+      --  to the type in Why that corresponds to the type of the Ada Node
+      --  Expr.
+
+      function Insert_Conversion_Expr (W_Expr : W_Prog_Id) return W_Prog_Id;
+      --  Insert a conversion, if Current_Type and Expected_Type differ.
+
+      function To_Why_Int_Prog
+        (Ada_Type : Name_Id;
+         Why_Expr : W_Prog_Id) return W_Prog_Id;
+      --  Convert the program Why_Expr, which is expected to be of some type
+      --  which possesses a conversion function to int, to "int" type in Why.
+
+      -----------------------
+      -- From_Why_Int_Prog --
+      -----------------------
+
+      function From_Why_Int_Prog
+        (Ada_Type : Name_Id;
+         Why_Expr : W_Prog_Id) return W_Prog_Id
+      is
+         Conv_Id : constant W_Identifier_Id :=
+            New_Conversion_From_Int (Get_Name_String (Ada_Type));
+      begin
+         return
+           New_Prog_Call
+             (Ada_Node => Expr,
+              Progs =>
+                (1 => New_Prog_Identifier (Def => Conv_Id),
+                 2 => Why_Expr));
+      end From_Why_Int_Prog;
+
+      ----------------------------
+      -- Insert_Conversion_Expr --
+      ----------------------------
+
+      function Insert_Conversion_Expr (W_Expr : W_Prog_Id) return W_Prog_Id
+      is
+         T : W_Prog_Id;
+      begin
+         if Expected_Type = Current_Type then
+            return W_Expr;
+         else
+            case Expected_Type.Kind is
+               when Why_Int =>
+                  return To_Why_Int_Prog (Current_Type.Ada_Type, W_Expr);
+               when Ada_Type_Node =>
+                  case Current_Type.Kind is
+                     when Why_Int =>
+                        return
+                          From_Why_Int_Prog (Expected_Type.Ada_Type, W_Expr);
+                     when Ada_Type_Node =>
+                        T :=
+                          Insert_Conversion
+                            (Ada_Node => Expr,
+                             From     => Current_Type.Ada_Type,
+                             To       => Expected_Type.Ada_Type,
+                             Why_Expr => W_Expr);
+                        return T;
+                  end case;
+            end case;
+         end if;
+      end Insert_Conversion_Expr;
+
+      ---------------------
+      -- To_Why_Int_Prog --
+      ---------------------
+
+      function To_Why_Int_Prog
+        (Ada_Type : Name_Id;
+         Why_Expr : W_Prog_Id) return W_Prog_Id
+      is
+         Conv_Id : constant W_Identifier_Id :=
+                     New_Conversion_To_Int (Get_Name_String (Ada_Type));
+      begin
+         return
+           New_Prog_Call
+             (Ada_Node => Expr,
+              Progs =>
+                (1 => New_Prog_Identifier (Def => Conv_Id),
+                 2 => Why_Expr));
+      end To_Why_Int_Prog;
+
+      --  Start of processing for Why_Expr_Of_Ada_Expr
+
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
@@ -468,12 +533,7 @@ package body Gnat2Why.Subprograms is
                     Def      => New_Integer_Constant
                                   (Ada_Node => Expr,
                                    Value    => Intval (Expr)));
-            case Expected_Type.Kind is
-               when Why_Int =>
-                  return T;
-               when Ada_Type_Node =>
-                  return From_Why_Int_Prog (Expr, T);
-            end case;
+            Current_Type := (Kind => Why_Int);
 
          when N_Identifier =>
             T := New_Deref
@@ -481,13 +541,7 @@ package body Gnat2Why.Subprograms is
                     Ref      => New_Identifier
                                   (Ada_Node => Expr,
                                    Symbol   => Chars (Expr)));
-
-            case Expected_Type.Kind is
-               when Why_Int =>
-                  return To_Why_Int_Prog (Expr, T);
-               when Ada_Type_Node =>
-                  return T;
-            end case;
+            Current_Type := (Ada_Type_Node, Type_Of_Node (Expr));
 
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
@@ -518,13 +572,7 @@ package body Gnat2Why.Subprograms is
                    Why_Expr_Of_Ada_Expr
                       (Right_Opnd (Expr),
                        (Kind => Why_Int)));
-
-            case Expected_Type.Kind is
-               when Why_Int =>
-                  return T;
-               when Ada_Type_Node =>
-                  return From_Why_Int_Prog (Expr, T);
-            end case;
+            Current_Type := (Kind => Why_Int);
 
          when N_Op_Lt =>
             return
@@ -546,14 +594,11 @@ package body Gnat2Why.Subprograms is
                  Operand  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Type_Conversion =>
-            return
-               Insert_Conversion
-                 (Expr,
-                  Expression (Expr),
-                  Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
+            return Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
          when others =>
             raise Program_Error with "Gnat2Why: Not implemented";
       end case;
+      return Insert_Conversion_Expr (T);
    end Why_Expr_Of_Ada_Expr;
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id)
@@ -584,7 +629,10 @@ package body Gnat2Why.Subprograms is
               New_Assignment
                 (Ada_Node => Stmt,
                  Name     => New_Identifier (Symbol => Chars (Name (Stmt))),
-                 Value    => Why_Expr_Of_Ada_Expr (Expression (Stmt)));
+                 Value    =>
+                    Why_Expr_Of_Ada_Expr
+                      (Expression (Stmt),
+                       (Ada_Type_Node, Type_Of_Node (Name (Stmt)))));
 
          when N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
@@ -666,7 +714,11 @@ package body Gnat2Why.Subprograms is
                           New_Identifier
                             (Symbol =>
                                Chars (Defining_Identifier (Cur_Stmt))),
-                        Def => Why_Expr_Of_Ada_Expr (Expression (Cur_Stmt)),
+                        Def =>
+                           Why_Expr_Of_Ada_Expr
+                             (Expression (Cur_Stmt),
+                              (Ada_Type_Node,
+                               Type_Of_Node (Object_Definition (Cur_Stmt)))),
                         Context => Result);
                      Len := 1;
                   else
