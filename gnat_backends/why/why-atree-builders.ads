@@ -2516,10 +2516,14 @@ package Why.Atree.Builders is
 
    function New_Prog_Call
      (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
       Progs    : W_Prog_Array)
      return W_Prog_Call_Id with
      Pre =>
-       (True),
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)
+        and then True),
      Post =>
        (Get_Kind
          (New_Prog_Call'Result)
@@ -2528,6 +2532,10 @@ package Why.Atree.Builders is
           Get_Ada_Node
           (New_Prog_Call'Result)
           = Ada_Node
+        and then
+          Prog_Call_Get_Name
+          (New_Prog_Call'Result)
+          = Name
         and then
         True);
 

@@ -2675,6 +2675,7 @@ package body Why.Atree.Builders is
 
    function New_Prog_Call
      (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id;
       Progs    : W_Prog_Array)
      return W_Prog_Call_Id
    is
@@ -2683,6 +2684,8 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Prog_Call);
    begin
       Result.Ada_Node := Ada_Node;
+      Result.PS_Name := Name;
+      Set_Link (Result.PS_Name, New_Id);
       pragma Assert (Progs'Length > 0);
       Result.PS_Progs := New_List;
       for J in Progs'Range loop
@@ -5595,6 +5598,8 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Prog_Call);
    begin
       Result.Ada_Node := Empty;
+      Result.PS_Name := Why_Empty;
+      Set_Link (Result.PS_Name, New_Id);
       Result.PS_Progs := New_List;
       Set_Link (Result.PS_Progs, New_Id);
       Result.Link := Why_Empty;
@@ -10291,10 +10296,16 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Prog_Call);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Prog_Call);
+         Name  : constant W_Identifier_Id :=
+            Prog_Call_Get_Name (Id);
          Progs : constant W_Prog_List :=
             Prog_Call_Get_Progs (Id);
       begin
          Result.Ada_Node := Ada_Node;
+         Result.PS_Name :=
+           Duplicate_Identifier
+           (Id => Name);
+         Set_Link (Result.PS_Name, New_Id);
          declare
             use Node_Lists;
 

@@ -1533,6 +1533,14 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Context)
         and then Is_Root (Context));
 
+   procedure Prog_Call_Set_Name
+     (Id   : W_Prog_Call_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name));
+
    procedure Prog_Call_Append_To_Progs
      (Id       : W_Prog_Call_Unchecked_Id;
       New_Item : W_Prog_Id) with

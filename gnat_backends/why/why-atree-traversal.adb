@@ -3164,6 +3164,9 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
+            Traverse
+              (State,
+               Prog_Call_Get_Name (Node));
             Traverse_List
               (State,
                Prog_Call_Get_Progs (Node));

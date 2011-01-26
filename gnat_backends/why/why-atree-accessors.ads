@@ -691,6 +691,10 @@ package Why.Atree.Accessors is
      (Id : W_Binding_Rec_Id)
      return W_Prog_Id;
 
+   function Prog_Call_Get_Name
+     (Id : W_Prog_Call_Id)
+     return W_Identifier_Id;
+
    function Prog_Call_Get_Progs
      (Id : W_Prog_Call_Id)
      return W_Prog_List;
@@ -1669,6 +1673,11 @@ private
      (Id : W_Binding_Rec_Id)
      return W_Prog_Id is
      (Get_Node (Id).BR_Context);
+
+   function Prog_Call_Get_Name
+     (Id : W_Prog_Call_Id)
+     return W_Identifier_Id is
+     (Get_Node (Id).PS_Name);
 
    function Prog_Call_Get_Progs
      (Id : W_Prog_Call_Id)

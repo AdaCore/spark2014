@@ -3378,6 +3378,24 @@ package body Why.Atree.Mutators is
          Binding_Rec_Id_Valid (Id));
    end Binding_Rec_Set_Context;
 
+   ------------------------
+   -- Prog_Call_Set_Name --
+   ------------------------
+
+   procedure Prog_Call_Set_Name
+     (Id   : W_Prog_Call_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.PS_Name := Name;
+      Set_Node (Id, Node);
+      Set_Link (Name, Id);
+      Update_Validity_Status
+        (Id,
+         Prog_Call_Id_Valid (Id));
+   end Prog_Call_Set_Name;
+
    -------------------------------
    -- Prog_Call_Append_To_Progs --
    -------------------------------

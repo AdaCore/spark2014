@@ -2230,10 +2230,13 @@ package body Why.Atree.Sprint is
       Node  : W_Prog_Call_Id)
    is
       use Node_Lists;
+      Name     : constant W_Identifier_Id := Prog_Call_Get_Name (Node);
       Progs    : constant W_Prog_List := Prog_Call_Get_Progs (Node);
       Nodes    : constant List := Get_List (Progs);
       Position : Cursor := First (Nodes);
    begin
+      Traverse (State, Name);
+      P (O, " ");
       while Position /= No_Element loop
          declare
             Node : constant W_Identifier_Id := Element (Position);

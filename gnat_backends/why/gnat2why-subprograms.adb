@@ -77,9 +77,6 @@ package body Gnat2Why.Subprograms is
    --  --  Same as above, but obtain the types of the conversion from GNAT
    --  --  expression nodes.
 
-   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id;
-   --  Build a program that consists of only one identifier
-
    function To_Why_Int_Term
      (Expr     : Node_Id;
       Why_Expr : W_Term_Id) return W_Term_Id;
@@ -150,11 +147,8 @@ package body Gnat2Why.Subprograms is
          return
            New_Prog_Call
              (Ada_Node => Ada_Node,
-              Progs =>
-                (1 =>
-                  New_Prog_Identifier
-                    (Def => New_Conversion (From => From_Type, To => To_Type)),
-                 2 => Why_Expr));
+              Name => New_Conversion (From => From_Type, To => To_Type),
+              Progs => (1 => Why_Expr));
       end;
    end Insert_Conversion;
 
@@ -194,19 +188,6 @@ package body Gnat2Why.Subprograms is
          return Ret;
       end;
    end Map_Node_List_to_Array;
-
-   --------------------
-   -- New_Prog_Ident --
-   --------------------
-
-   function New_Prog_Ident (Id : Node_Id) return W_Prog_Id
-   is
-   begin
-      return
-        New_Prog_Identifier
-          (Ada_Node => Id,
-           Def => New_Identifier (Ada_Node => Id, Symbol => Chars (Id)));
-   end New_Prog_Ident;
 
    ---------------------
    -- To_Why_Int_Term --
@@ -336,13 +317,13 @@ package body Gnat2Why.Subprograms is
                      if Nkind (Expression (Cur_Decl)) /= N_Empty then
                         Init := Why_Expr_Of_Ada_Expr (Expression (Cur_Decl));
                      else
-                        Init := New_Prog_Call
-                          (Progs =>
-                             (1 => New_Prog_Identifier
-                                     (Def => Allocator_Name
-                                      (Type_Of_Node
-                                       (Object_Definition (Cur_Decl)))),
-                              2 =>
+                        Init :=
+                          New_Prog_Call
+                           (Name =>
+                             Allocator_Name
+                               (Type_Of_Node (Object_Definition (Cur_Decl))),
+                            Progs =>
+                              (1 =>
                                 New_Prog_Constant (Def => New_Void_Literal)));
                      end if;
 
@@ -466,9 +447,8 @@ package body Gnat2Why.Subprograms is
          return
            New_Prog_Call
              (Ada_Node => Expr,
-              Progs =>
-                (1 => New_Prog_Identifier (Def => Conv_Id),
-                 2 => Why_Expr));
+              Name => Conv_Id,
+              Progs => (1 => Why_Expr));
       end From_Why_Int_Prog;
 
       ----------------------------
@@ -517,9 +497,8 @@ package body Gnat2Why.Subprograms is
          return
            New_Prog_Call
              (Ada_Node => Expr,
-              Progs =>
-                (1 => New_Prog_Identifier (Def => Conv_Id),
-                 2 => Why_Expr));
+              Name => Conv_Id,
+              Progs => (1 => Why_Expr));
       end To_Why_Int_Prog;
 
       --  Start of processing for Why_Expr_Of_Ada_Expr
@@ -548,17 +527,14 @@ package body Gnat2Why.Subprograms is
             --  instead of predicates
             declare
                Left    : constant Node_Id := Left_Opnd (Expr);
-               Cmp_Fun : constant W_Prog_Id :=
-                           New_Prog_Identifier
-                             (Def => Eq_Param_Name (Type_Of_Node (Left)));
             begin
                return
                  New_Prog_Call
                    (Ada_Node => Expr,
+                    Name     => Eq_Param_Name (Type_Of_Node (Left)),
                     Progs    =>
-                      (1 => Cmp_Fun,
-                       2 => Why_Expr_Of_Ada_Expr (Left),
-                       3 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
+                      (1 => Why_Expr_Of_Ada_Expr (Left),
+                       2 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
             end;
 
          when N_Op_Add | N_Op_Multiply =>
@@ -654,8 +630,8 @@ package body Gnat2Why.Subprograms is
             return
               New_Prog_Call
                 (Ada_Node => Stmt,
-                 Progs => (1 => New_Prog_Ident (Name (Stmt))) &
-                   Expr_Expr_Map (Parameter_Associations (Stmt)));
+                 Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+                 Progs => Expr_Expr_Map (Parameter_Associations (Stmt)));
 
          when N_If_Statement =>
             return

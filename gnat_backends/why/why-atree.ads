@@ -427,6 +427,7 @@ package Why.Atree is
             BR_Context : W_Prog_Opaque_Id;
 
          when W_Prog_Call =>
+            PS_Name : W_Identifier_Opaque_Id;
             PS_Progs : W_Prog_Opaque_List;
 
          when W_Raise_Statement =>

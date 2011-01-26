@@ -11402,8 +11402,11 @@ private
    function Prog_Call_Id_Children_Valid
      (Id : W_Prog_Call_Unchecked_Id)
      return Boolean is
-     (List_Cache_Valid
-       (Prog_Call_Get_Progs (Id)));
+     (Id_Cache_Valid
+       (Prog_Call_Get_Name (Id))
+     and then
+       List_Cache_Valid
+         (Prog_Call_Get_Progs (Id)));
 
    function Prog_Call_OId_Children_Valid
      (Id : W_Prog_Call_Unchecked_OId)
