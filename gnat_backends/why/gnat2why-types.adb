@@ -82,28 +82,45 @@ package body Gnat2Why.Types is
                end case;
             end;
          when N_Subtype_Declaration =>
-            case Nkind (Subtype_Indication (Node)) is
-            when N_Identifier =>
-               declare
-                  Sc_Range   : constant Node_Id :=
-                     Scalar_Range (Defining_Identifier (Node));
-                  Base_Type : constant String :=
-                     Get_Name_String (Chars (Subtype_Indication (Node)));
-                  Low       : constant Uint :=
-                     Expr_Value (Low_Bound (Sc_Range));
-                  High       : constant Uint :=
-                     Expr_Value (High_Bound (Sc_Range));
+            declare
+               Sub_Ind : constant Node_Id := Subtype_Indication (Node);
+            begin
+               case Nkind (Sub_Ind) is
+               when N_Identifier =>
+                  declare
+                     Sc_Range   : constant Node_Id :=
+                        Scalar_Range (Defining_Identifier (Node));
+                     Base_Type : constant String :=
+                        Get_Name_String (Chars (Sub_Ind));
+                     Low       : constant Uint :=
+                        Expr_Value (Low_Bound (Sc_Range));
+                     High       : constant Uint :=
+                        Expr_Value (High_Bound (Sc_Range));
 
-               begin
-                  Declare_Ada_Abstract_Signed_Int (File, Name_Str, Low, High);
-                  Declare_Ada_Range_Subtype_Relation
-                    (File,
-                     Name_Str,
-                     Base_Type);
-               end;
-            when others =>
-               raise Program_Error with "Gnat2Why: Not implemented";
-            end case;
+                  begin
+                     Declare_Ada_Abstract_Signed_Int
+                       (File,
+                        Name_Str,
+                        Low,
+                        High);
+                     Declare_Ada_Range_Subtype_Relation
+                       (File,
+                        Name_Str,
+                        Base_Type);
+                  end;
+               when N_Subtype_Indication =>
+                  case Nkind (Constraint (Sub_Ind)) is
+                  when N_Index_Or_Discriminant_Constraint =>
+                     --  ??? In at least one case (generated code for
+                     --  'Image of enums) we should not treat this case
+                     null;
+                  when others =>
+                     raise Program_Error with "Gnat2Why: Not implemented";
+                  end case;
+               when others =>
+                  raise Program_Error with "Gnat2Why: Not implemented";
+               end case;
+            end;
          --  ??? TBD Complete This code
          when others =>
             raise Program_Error with "Gnat2Why: Not implemented";
