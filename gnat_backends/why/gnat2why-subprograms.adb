@@ -70,13 +70,6 @@ package body Gnat2Why.Subprograms is
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
-   --  function Insert_Conversion
-   --     (To       : Node_Id;
-   --      From     : Node_Id;
-   --      Why_Expr : W_Prog_Id) return W_Prog_Id;
-   --  --  Same as above, but obtain the types of the conversion from GNAT
-   --  --  expression nodes.
-
    function To_Why_Int_Term
      (Expr     : Node_Id;
       Why_Expr : W_Term_Id) return W_Term_Id;
@@ -90,9 +83,9 @@ package body Gnat2Why.Subprograms is
    --  Get the name of the type of an Ada node, as a Name_Id
 
    function Why_Expr_Of_Ada_Expr
-     (Expr       : Node_Id;
+     (Expr          : Node_Id;
       Expected_Type : Exp_Type) return W_Prog_Id;
-   --  Translate a single Ada expression into a Why expression
+   --  Translate a single Ada expression into a Why expression.
    --
    --  The translation is pretty direct for many constructs. We list the ones
    --  here for which there is something else to do.
@@ -131,10 +124,10 @@ package body Gnat2Why.Subprograms is
    -----------------------
 
    function Insert_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To : Name_Id;
-       From : Name_Id;
-       Why_Expr : W_Prog_Id) return W_Prog_Id
+      (Ada_Node  : Node_Id := Empty;
+       To        : Name_Id;
+       From      : Name_Id;
+       Why_Expr  : W_Prog_Id) return W_Prog_Id
    is
    begin
       if To = From then
@@ -151,20 +144,6 @@ package body Gnat2Why.Subprograms is
               Progs => (1 => Why_Expr));
       end;
    end Insert_Conversion;
-
-   --  function Insert_Conversion
-   --     (To : Node_Id;
-   --      From : Node_Id;
-   --      Why_Expr : W_Prog_Id) return W_Prog_Id
-   --  is
-   --  begin
-   --     return
-   --       Insert_Conversion
-   --         (To,
-   --          Type_Of_Node (To),
-   --          Type_Of_Node (From),
-   --          Why_Expr);
-   --  end Insert_Conversion;
 
    ----------------------------
    -- Map_Node_List_to_Array --
@@ -411,7 +390,7 @@ package body Gnat2Why.Subprograms is
    --------------------------
 
    function Why_Expr_Of_Ada_Expr
-     (Expr       : Node_Id;
+     (Expr          : Node_Id;
       Expected_Type : Exp_Type) return W_Prog_Id
    is
       T : W_Prog_Id;

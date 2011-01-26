@@ -114,11 +114,11 @@ package body Gnat2Why.Types is
                      declare
                         Base_Type : constant String :=
                            Get_Name_String (Chars ((Subtype_Mark (Sub_Ind))));
-                        Sc_Range : constant Node_Id :=
+                        Sc_Range  : constant Node_Id :=
                            Range_Expression (Constraint (Sub_Ind));
                         Low       : constant Uint :=
                            Expr_Value (Low_Bound (Sc_Range));
-                        High       : constant Uint :=
+                        High      : constant Uint :=
                            Expr_Value (High_Bound (Sc_Range));
                      begin
                         Declare_Ada_Abstract_Signed_Int
