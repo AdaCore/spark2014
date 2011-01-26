@@ -110,6 +110,27 @@ package body Gnat2Why.Types is
                   end;
                when N_Subtype_Indication =>
                   case Nkind (Constraint (Sub_Ind)) is
+                  when N_Range_Constraint =>
+                     declare
+                        Base_Type : constant String :=
+                           Get_Name_String (Chars ((Subtype_Mark (Sub_Ind))));
+                        Sc_Range : constant Node_Id :=
+                           Range_Expression (Constraint (Sub_Ind));
+                        Low       : constant Uint :=
+                           Expr_Value (Low_Bound (Sc_Range));
+                        High       : constant Uint :=
+                           Expr_Value (High_Bound (Sc_Range));
+                     begin
+                        Declare_Ada_Abstract_Signed_Int
+                          (File,
+                           Name_Str,
+                           Low,
+                           High);
+                        Declare_Ada_Range_Subtype_Relation
+                          (File,
+                           Name_Str,
+                           Base_Type);
+                     end;
                   when N_Index_Or_Discriminant_Constraint =>
                      --  ??? In at least one case (generated code for
                      --  'Image of enums) we should not treat this case
