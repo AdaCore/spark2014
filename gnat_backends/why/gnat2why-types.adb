@@ -50,7 +50,8 @@ package body Gnat2Why.Types is
                               Chars (Defining_Identifier (Node));
       Name_Str            : constant String := Get_Name_String (Name);
    begin
-      --  Types_Table.Insert (Name, Why_Type_Id);
+      --  We case split on the type of the type declaration, and mostly use
+      --  the intelligent functions in other modules
       case Nkind (Node) is
          when N_Full_Type_Declaration =>
             declare

@@ -60,7 +60,6 @@ package body Gnat2Why.Subprograms is
       (From : Exp_Type;
        To   : Exp_Type) return W_Identifier_Id
       with Pre => (not (From = To));
-
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion
@@ -88,7 +87,8 @@ package body Gnat2Why.Subprograms is
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
       Expected_Type : Exp_Type) return W_Prog_Id;
-   --  Translate a single Ada expression into a Why expression.
+   --  Translate a single Ada expression into a Why expression of the
+   --  Expected_Type.
    --
    --  The translation is pretty direct for many constructs. We list the ones
    --  here for which there is something else to do.
@@ -129,6 +129,7 @@ package body Gnat2Why.Subprograms is
          when Why_Int =>
             case To.Kind is
                when Why_Int =>
+                  --  We have assumed the two arguments to be different
                   raise Program_Error;
                when Ada_Type_Node =>
                   return
@@ -203,7 +204,7 @@ package body Gnat2Why.Subprograms is
          while Nkind (Cursor) /= N_Empty loop
             Cnt := Cnt + 1;
             Ret (Cnt) := F (Cursor);
-            Cursor := Next (Cursor);
+            Next (Cursor);
          end loop;
          return Ret;
       end;
@@ -422,6 +423,16 @@ package body Gnat2Why.Subprograms is
       T : W_Prog_Id;
       Current_Type : Exp_Type;
    begin
+      --  Here, we simply analyze the structure of Expr and build the
+      --  corresponding Why expression. When necessary, we update the
+      --  variable Current_Type, which is compared at the very end of this
+      --  function with the argument Expected_Type. If they are different, a
+      --  conversion is inserted.
+      --
+      --  This function translates all arithmetic operations on Ada integer
+      --  types to '+' in Why. This means that conversions must be added. The
+      --  Expected_Type is adjusted accordingly for recursive calls.
+
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Expr) is
          when N_Integer_Literal =>
@@ -488,6 +499,8 @@ package body Gnat2Why.Subprograms is
                  Operand  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Type_Conversion =>
+            --  Nothing is to do here, because we insert type conversions
+            --  ourselves.
             return Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
          when others =>
             raise Program_Error with "Gnat2Why: Not implemented";
@@ -599,12 +612,45 @@ package body Gnat2Why.Subprograms is
       Cur_Stmt : Node_Or_Entity_Id := Nlists.Last (Stmts);
       Len      : Nat := 0;
    begin
+      --  Traverse the list of statements backwards, chaining the current
+      --  statement in front of the already treated statements.
+      --
+      --  The reason to do it backwards is because statements can contain
+      --  object declarations, such as:
+      --    X : Integer := ...;
+      --    <rest of statements>
+      --  where x is visible in the rest of the list. In Why, this is
+      --  translated as
+      --    let x = ... in
+      --      <rest of statements>
+      --
+      --  Therefore we go backwards, to have the <rest of statements> already
+      --  translated.
+      --
+      --  The variable Result contains the already translated part. This can
+      --  be one of
+      --  * nothing (void), namely at the beginning of the process
+      --  * a single statement, in one of the following situations:
+      --    * we only have treated a single statement up to now
+      --    * the last statement was an object declaration, so we grouped
+      --      everything together in a <let>
+      --  * a sequence of statements, in all other cases.
+      --  These situations are distinguished with the variable Len. Naturally,
+      --  we distinguish
+      --  * Len = 0 (no statement)
+      --  * Len = 1 (a single statement)
+      --  * Len > 1 (a sequence of statements)
+
+      --  The code uses the Len information to avoid building sequences of
+      --  length 1.
       if List_Length (Stmts) = 0 then
          --  We return the default value, ie void
          return Result;
       else
          while Nkind (Cur_Stmt) /= N_Empty loop
             case Nkind (Cur_Stmt) is
+               when N_Null_Statement =>
+                  null;
                when N_Object_Declaration =>
                   if Len /= 0 then
                      Result := New_Binding_Ref
@@ -794,6 +840,13 @@ package body Gnat2Why.Subprograms is
      (Expr          : Node_Id;
       Expected_Type : Exp_Type) return W_Term_Id
    is
+      --  Here we simply analyze the structure of the Ada expression and build
+      --  a corresponding Why term.
+      --
+      --  As for Why expressions, we may need to insert conversions, when the
+      --  generated term does not have the Expected_Type. We use the local
+      --  variable Current_Type to contain the type of the generated term.
+      --
       --  ??? TBD: complete this function for the remaining cases
       T : W_Term_Id;
       --  T contains the term that has been constructed before a possible
@@ -810,9 +863,6 @@ package body Gnat2Why.Subprograms is
             --  The corresponding Why type of the identifier may be of
             --  reference type; but here we do not care, as Why, in
             --  annotations, happily converts a reference to its base type.
-            --  Also, we expect the identifier to be of a type in Why that
-            --  corresponds to an Ada type, so if we want an "int", we have to
-            --  convert
             T :=
               New_Term_Identifier
                 (Ada_Node => Expr,
@@ -820,9 +870,7 @@ package body Gnat2Why.Subprograms is
             Current_Type := (Ada_Type_Node, Type_Of_Node (Expr));
 
          when N_Op_Add | N_Op_Multiply =>
-            --  In any case, we want to use the builtin Why addition function,
-            --  so here we go
-            --  The arguments of "+" are of type int as well
+            --  The arguments of arithmetic functions have to be of type int
             T :=
               New_Arith_Operation
                 (Ada_Node => Expr,
@@ -831,14 +879,12 @@ package body Gnat2Why.Subprograms is
                  Right    =>
                    Why_Term_Of_Ada_Expr (Right_Opnd (Expr), (Kind => Why_Int)),
                  Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
-            --  If we expect an int, we are done, otherwise we must insert
-            --  a conversion
             Current_Type := (Kind =>  Why_Int);
 
          when N_Op_Gt =>
             --  ??? TBD The treatment of N_Op_Gt is incorrect: we need to use
             --  a comparison function that returns bool
-            --  ??? TBD respect the Expect_Int setting
+            --  ??? TBD respect the Expected_Type
             return
               New_Related_Terms
                 (Ada_Node => Expr,
