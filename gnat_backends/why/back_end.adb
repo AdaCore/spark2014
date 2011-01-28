@@ -38,6 +38,31 @@ package body Back_End is
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
+   -------------------
+   -- Call_Back_End --
+   -------------------
+
+   procedure Call_Back_End (Mode : Back_End_Mode_Type) is
+      pragma Unreferenced (Mode);
+   begin
+      --  Since the back end is called with all tables locked,
+      --  first unlock any tables that we need to change.
+
+      Stringt.Unlock;
+      Namet.Unlock;
+
+      GNAT2Why.Call_Back_End;
+
+      --  Make sure to lock any unlocked tables again before returning
+
+      Namet.Lock;
+      Stringt.Lock;
+   end Call_Back_End;
+
+   -----------------------------
+   -- Register_Back_End_Types --
+   -----------------------------
+
    procedure Register_Back_End_Types (Call_Back : Register_Type_Proc) is
       Float  : C_String := (others => ASCII.NUL);
       Double : C_String := (others => ASCII.NUL);
@@ -62,26 +87,5 @@ package body Back_End is
    begin
       GNAT2Why.Scan_Compiler_Arguments;
    end Scan_Compiler_Arguments;
-
-   -------------------
-   -- Call_Back_End --
-   -------------------
-
-   procedure Call_Back_End (Mode : Back_End_Mode_Type) is
-      pragma Unreferenced (Mode);
-   begin
-      --  Since the back end is called with all tables locked,
-      --  first unlock any tables that we need to change.
-
-      Stringt.Unlock;
-      Namet.Unlock;
-
-      GNAT2Why.Call_Back_End;
-
-      --  Make sure to lock any unlocked tables again before returning
-
-      Namet.Lock;
-      Stringt.Lock;
-   end Call_Back_End;
 
 end Back_End;
