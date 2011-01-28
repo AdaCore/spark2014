@@ -36,7 +36,7 @@ package Why.Gen.Axioms is
        Component_Type : W_Primitive_Type_Id);
    --  Generate an axiom of the form
    --    forall a : <Type_Name>, i : <Index_Type>, v : <Component_Type>.
-   --       access i (update i a v) = v
+   --       access i (update a i v) = v
 
    procedure Define_Range_Axiom
      (File       : W_File_Id;
