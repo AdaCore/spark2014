@@ -105,4 +105,13 @@ package Why.Gen.Names is
    function New_Term (Name : String) return W_Term_Identifier_Id;
    --  Return a term identified by the given name
 
+   function Array_Access_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of its access function
+   --
+   function Array_Update_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of its update function
+
+   function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom of
+   --  access/update equality
 end Why.Gen.Names;

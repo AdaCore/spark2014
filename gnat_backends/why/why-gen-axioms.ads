@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,15 @@ with Why.Atree.Properties; use Why.Atree.Properties;
 
 package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
+
+   procedure Define_Array_Eq_Axiom
+      (File           : W_File_Id;
+       Type_Name      : String;
+       Index_Type     : W_Primitive_Type_Id;
+       Component_Type : W_Primitive_Type_Id);
+   --  Generate an axiom of the form
+   --    forall a : <Type_Name>, i : <Index_Type>, v : <Component_Type>.
+   --       access i (update i a v) = v
 
    procedure Define_Range_Axiom
      (File       : W_File_Id;

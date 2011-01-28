@@ -32,6 +32,7 @@ with Sinfo;              use Sinfo;
 with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
@@ -79,7 +80,39 @@ package body Gnat2Why.Types is
                      Name_Str,
                      Expr_Value (Low_Bound (Def_Node)),
                      Expr_Value (High_Bound (Def_Node)));
-               when others => null;
+               when N_Floating_Point_Definition
+                  | N_Ordinary_Fixed_Point_Definition
+                  | N_Unconstrained_Array_Definition
+                  | N_Record_Definition
+                  =>
+                  --  ??? We do nothing here for now
+                  null;
+               when N_Constrained_Array_Definition =>
+                  declare
+                     Sc_Range       : constant Node_Id :=
+                        First (Discrete_Subtype_Definitions (Def_Node));
+                     Component_Type : constant String :=
+                        Get_Name_String
+                          (Chars (Subtype_Indication
+                             (Component_Definition (Def_Node))));
+                     Low            : constant Uint :=
+                        Expr_Value (Low_Bound (Sc_Range));
+                     High           : constant Uint :=
+                        Expr_Value (High_Bound (Sc_Range));
+                     Int_Name       : constant String :=
+                        Get_Name_String (Chars (Etype (Sc_Range)));
+                  begin
+                     Declare_Ada_Constrained_Array
+                        (File,
+                         Name_Str,
+                         Int_Name,
+                         Component_Type,
+                         Low,
+                         High);
+                  end;
+
+               when others =>
+                  raise Program_Error with "Gnat2Why: Not implemented";
                end case;
             end;
          when N_Subtype_Declaration =>

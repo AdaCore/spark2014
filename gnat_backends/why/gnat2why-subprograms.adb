@@ -32,6 +32,7 @@ with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
@@ -218,11 +219,7 @@ package body Gnat2Why.Subprograms is
    is
       Ent : constant Entity_Id := Etype (N);
    begin
-      if Nkind (Associated_Node_For_Itype (Ent)) = N_Empty then
-         return Chars (Ent);
-      else
-         return Chars (Defining_Identifier (Associated_Node_For_Itype (Ent)));
-      end if;
+      return Chars (Ent);
    end Type_Of_Node;
 
    function Type_Of_Node (N : Node_Id) return String
@@ -421,7 +418,7 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Exp_Type) return W_Prog_Id
    is
       T : W_Prog_Id;
-      Current_Type : Exp_Type;
+      Current_Type : Exp_Type := (Ada_Type_Node, Type_Of_Node (Expr));
    begin
       --  Here, we simply analyze the structure of Expr and build the
       --  corresponding Why expression. When necessary, we update the
@@ -449,7 +446,6 @@ package body Gnat2Why.Subprograms is
                     Ref      => New_Identifier
                                   (Ada_Node => Expr,
                                    Symbol   => Chars (Expr)));
-            Current_Type := (Ada_Type_Node, Type_Of_Node (Expr));
 
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
@@ -502,6 +498,15 @@ package body Gnat2Why.Subprograms is
             --  Nothing is to do here, because we insert type conversions
             --  ourselves.
             return Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
+         when N_Indexed_Component =>
+            --  ??? We work with single dimensional arrays for the time being
+            T :=
+              New_Array_Access_Prog
+               (Type_Name => (Get_Name_String (Type_Of_Node (Prefix (Expr)))),
+                Ar        => Why_Expr_Of_Ada_Expr (Prefix (Expr)),
+                Index     =>
+                  Why_Expr_Of_Ada_Expr (First (Expressions (Expr))));
+
          when others =>
             raise Program_Error with "Gnat2Why: Not implemented";
       end case;
@@ -535,16 +540,39 @@ package body Gnat2Why.Subprograms is
             return New_Prog_Constant (Stmt, New_Void_Literal);
 
          when N_Assignment_Statement =>
-            --  ??? TBD: Here we have to be more careful if the left hand side
-            --  is not a simple variable
-            return
-              New_Assignment
-                (Ada_Node => Stmt,
-                 Name     => New_Identifier (Symbol => Chars (Name (Stmt))),
-                 Value    =>
-                    Why_Expr_Of_Ada_Expr
-                      (Expression (Stmt),
-                       (Ada_Type_Node, Type_Of_Node (Name (Stmt)))));
+            declare
+               Lvalue : constant Node_Id := Name (Stmt);
+            begin
+            --  We need to differentiate the following cases
+            --  * arrays
+            --  * records (TBD)
+            --  * simple variables
+               case Nkind (Lvalue) is
+               when N_Identifier =>
+                  return
+                    New_Assignment
+                      (Ada_Node => Stmt,
+                       Name     => New_Identifier (Symbol => Chars (Lvalue)),
+                       Value    =>
+                          Why_Expr_Of_Ada_Expr
+                            (Expression (Stmt),
+                             (Ada_Type_Node, Type_Of_Node (Lvalue))));
+
+               when N_Indexed_Component =>
+                  return
+                    New_Array_Update_Prog
+                      (Type_Name =>
+                         Get_Name_String (Type_Of_Node (Prefix (Lvalue))),
+                       Ar        =>
+                         New_Identifier (Symbol => Chars (Prefix (Lvalue))),
+                       Index     =>
+                         Why_Expr_Of_Ada_Expr (First (Expressions (Lvalue))),
+                       Value     =>
+                         Why_Expr_Of_Ada_Expr (Expression (Stmt)));
+               when others =>
+                  raise Program_Error with "Gnat2Why: Not implemented";
+               end case;
+            end;
 
          when N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
@@ -851,7 +879,7 @@ package body Gnat2Why.Subprograms is
       T : W_Term_Id;
       --  T contains the term that has been constructed before a possible
       --  conversion to or from Int
-      Current_Type : Exp_Type;
+      Current_Type : Exp_Type := (Ada_Type_Node, Type_Of_Node (Expr));
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
@@ -867,7 +895,6 @@ package body Gnat2Why.Subprograms is
               New_Term_Identifier
                 (Ada_Node => Expr,
                  Name     => New_Identifier (Symbol => Chars (Expr)));
-            Current_Type := (Ada_Type_Node, Type_Of_Node (Expr));
 
          when N_Op_Add | N_Op_Multiply =>
             --  The arguments of arithmetic functions have to be of type int
@@ -895,12 +922,20 @@ package body Gnat2Why.Subprograms is
          when N_Type_Conversion =>
             return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
 
+         when N_Indexed_Component =>
+            --  ??? We work with single dimensional arrays for the time being
+            T :=
+              New_Array_Access_Term
+               (Type_Name => (Get_Name_String (Type_Of_Node (Prefix (Expr)))),
+                Ar        => Why_Term_Of_Ada_Expr (Prefix (Expr)),
+                Index     =>
+                  Why_Term_Of_Ada_Expr (First (Expressions (Expr))));
+
          when N_Attribute_Reference =>
             --  Special variables, for example "result" and "old", are
             --  represented as N_Attribute_Reference
             if Get_Name_String (Attribute_Name (Expr)) = "result" then
                T := New_Result_Identifier;
-               Current_Type := (Ada_Type_Node, Type_Of_Node (Expr));
             else
                raise Program_Error with "Gnat2Why: Not implemented";
             end if;

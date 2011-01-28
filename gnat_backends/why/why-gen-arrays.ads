@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        W H Y - G E N - T Y P E S                         --
+--                        W H Y - G E N - A R R A Y S                       --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,26 +23,53 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Uintp;        use Uintp;
 with Why.Ids;      use Why.Ids;
-with String_Utils; use String_Utils;
 
-package Why.Gen.Types is
-   --  This package provides ways to create Why types
+package Why.Gen.Arrays is
+   --  This package encapsulates the encoding of Ada arrays into Why.
 
-   procedure Declare_Abstract_Type (File : W_File_Id; Name : String);
-   --  Add an abstract type declaration to a file.
+   --  For an Ada array type declaration with range constraints, we introduce
+   --  an abstract type in Why, with access/update functions. This allows
+   --  getting for free the range properties of arrays in Why.
 
-   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
-   --  Create an abstract type identifier with name Name
+   --  We are limited to constrained arrays with static bounds for now.
 
-   function New_Abstract_Type_Declaration (Name : String) return W_Type_Id;
-   --  Create the declaration of an abstract type whose name is Name
+   procedure Declare_Ada_Constrained_Array
+     (File      : W_File_Id;
+      Name      : String;
+      Int_Name  : String;
+      Component : String;
+      Low       : Uint;
+      High      : Uint);
+   --  Introduce all the necessary declarations for an Ada array declaration
+   --  of the form
+   --  type A is Array (low..high) of Component
 
-   function New_Enum_Type_Declaration (
-      Name         : String;
-      Constructors : String_Lists.List) return W_Type_Id;
-   --  Create the declaration of an enumeration type with name [Name] and list
-   --  of constructors [Constructors]. The constructors do not have arguments.
-   --  In the case of an empty constructor list, generate an abstract type.
+   function New_Array_Access_Prog
+      (Type_Name : String;
+       Ar        : W_Prog_Id;
+       Index     : W_Prog_Id) return W_Prog_Id;
+   --  Generate a Program that corresponds to an array access.
 
-end Why.Gen.Types;
+   function New_Array_Access_Term
+      (Type_Name : String;
+       Ar        : W_Term_Id;
+       Index     : W_Term_Id) return W_Term_Id;
+   --  Generate a Term that corresponds to an array access.
+
+   function New_Array_Update_Prog
+      (Type_Name : String;
+       Ar        : W_Prog_Id;
+       Index     : W_Prog_Id;
+       Value     : W_Prog_Id) return W_Prog_Id;
+   --  Generate an assignment that corresponds to an array update in Why
+   --  programs.
+
+   function New_Array_Update_Term
+      (Type_Name : String;
+       Ar        : W_Term_Id;
+       Index     : W_Term_Id;
+       Value     : W_Term_Id) return W_Term_Id;
+   --  Generate a Program that corresponds to an array update.
+end Why.Gen.Arrays;

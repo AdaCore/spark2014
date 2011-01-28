@@ -41,6 +41,39 @@ package body Why.Gen.Names is
       return New_Identifier (Prefix & Name);
    end Allocator_Name;
 
+   -----------------------
+   -- Array_Access_Name --
+   -----------------------
+
+   function Array_Access_Name (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__access";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Access_Name;
+
+   ---------------------------
+   -- Array_Accupd_Eq_Axiom --
+   ---------------------------
+
+   function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__accupd_eq";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Accupd_Eq_Axiom;
+
+   -----------------------
+   -- Array_Update_Name --
+   -----------------------
+
+   function Array_Update_Name (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__update";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Update_Name;
+
    ------------------
    -- Coerce_Axiom --
    ------------------

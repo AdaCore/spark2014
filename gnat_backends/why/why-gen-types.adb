@@ -25,6 +25,7 @@
 
 with Ada.Containers;     use Ada.Containers;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Types is
@@ -32,6 +33,19 @@ package body Why.Gen.Types is
    ---------------------------
    -- Declare_Abstract_Type --
    ---------------------------
+
+   procedure Declare_Abstract_Type (File : W_File_Id; Name : String)
+   is
+   begin
+      File_Append_To_Declarations
+        (File,
+         New_Logic_Declaration
+           (Decl => New_Abstract_Type_Declaration (Name)));
+   end Declare_Abstract_Type;
+
+   -----------------------------------
+   -- New_Abstract_Type_Declaration --
+   -----------------------------------
 
    function New_Abstract_Type_Declaration (Name : String) return W_Type_Id is
       I : W_Identifier_Id;
