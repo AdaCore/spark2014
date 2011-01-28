@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                     Copyright (C) 2010-2011, AdaCore                     --
 --                                                                          --
 
 -- gnat2spark is  free  software;  you can redistribute it and/or modify it --
@@ -39,15 +39,6 @@ package body Back_End is
       Driver             => Gnat2SPARK.Driver.GNAT_To_SPARK,
       Is_Back_End_Switch => Gnat2SPARK.Driver.Is_Back_End_Switch);
 
-   -----------------------------
-   -- Scan_Compiler_Arguments --
-   -----------------------------
-
-   procedure Scan_Compiler_Arguments is
-   begin
-      GNAT2SPARK.Scan_Compiler_Arguments;
-   end Scan_Compiler_Arguments;
-
    -------------------
    -- Call_Back_End --
    -------------------
@@ -68,5 +59,34 @@ package body Back_End is
       Namet.Lock;
       Stringt.Lock;
    end Call_Back_End;
+
+   -----------------------------
+   -- Register_Back_End_Types --
+   -----------------------------
+
+   procedure Register_Back_End_Types (Call_Back : Register_Type_Proc) is
+      Float  : C_String := (others => ASCII.NUL);
+      Double : C_String := (others => ASCII.NUL);
+
+   begin
+      Float (Float'First .. Float'First + 4) := "float";
+      Call_Back
+        (C_Name => Float, Digs => 6, Complex => False, Count  => 0,
+         Float_Rep => IEEE_Binary, Size => 32, Alignment => 32);
+
+      Double (Double'First .. Double'First + 5) := "double";
+      Call_Back
+        (C_Name => Double, Digs => 15, Complex => False, Count  => 0,
+         Float_Rep => IEEE_Binary, Size => 64, Alignment => 64);
+   end Register_Back_End_Types;
+
+   -----------------------------
+   -- Scan_Compiler_Arguments --
+   -----------------------------
+
+   procedure Scan_Compiler_Arguments is
+   begin
+      GNAT2SPARK.Scan_Compiler_Arguments;
+   end Scan_Compiler_Arguments;
 
 end Back_End;
