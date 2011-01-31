@@ -34,6 +34,7 @@ package body Xtree_Traversal is
    Node_Param  : constant Wide_String := "Node";
    State_Param : constant Wide_String := "State";
    Control     : constant Wide_String := State_Param & "." & "Control";
+   Depth       : constant Wide_String := State_Param & "." & "Depth";
 
    Terminate_Immediately : constant Wide_String := "Terminate_Immediately";
    Abandon_Children      : constant Wide_String := "Abandon_Children";
@@ -48,35 +49,43 @@ package body Xtree_Traversal is
      (O          : in out Output_Record;
       State_Type : Wide_String;
       Is_Null    : Boolean := False);
-   --  ??? Missing doc
+   --  Print the declaration of traversal operations for the given state type;
+   --  if Is_Null, then this will be a null procedure declaration.
 
    procedure Print_Traversal_Op_Specification
      (O          : in out Output_Record;
       Op_Name    : Wide_String;
       State_Type : Wide_String;
       Kind       : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print the subprogram specification of a traversal operation for the
+   --  given node kind, state type, and the name of this subprogram
+   --  (e.g. "Identifier_Post_Op").
 
    procedure Print_Kind_Traversal_Implementation
      (O       : in out Output_Record;
       Kind    : Why_Node_Kind;
       In_Stub : Boolean := False);
-   --  ??? Missing doc
+   --  Print the implementation of a traversal op for the given node kind.
+   --  if In_Stub, the body is null and a comment gives the underlying calls
+   --  to Traverse.
 
    procedure Print_Treepr_Pre_Decl
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print the declarative part of a pre-op for tree printing the
+   --  given node kind.
 
    procedure Print_Treepr_Pre_Impl
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print the implementation part (handled sequence of statements)
+   --  of a pre-op for tree printing the given node kind.
 
    procedure Print_Treepr_Post_Impl
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print the implementation part (handled sequence of statements)
+   --  of a post-op for tree printing the given node kind.
 
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
@@ -84,7 +93,9 @@ package body Xtree_Traversal is
       Kind           : Why_Node_Kind;
       FI             : Field_Info;
       Commented_Out  : Boolean := False);
-   --  ??? Missing doc
+   --  Print a call to the traversal procedure (whose name is given in
+   --  parameter) on the child of a node. If Commented_Out, this call
+   --  is commented out.
 
    procedure Print_Traversal_Op_Bodies
      (O          : in out Output_Record;
@@ -93,43 +104,48 @@ package body Xtree_Traversal is
       Post_Decl  : Kind_Gen_Access;
       Pre_Impl   : Kind_Gen_Access;
       Post_Impl  : Kind_Gen_Access);
-   --  ??? Missing doc
+   --  Print the bodies of pre/post ops for the given state type
 
    procedure Print_Traversal_Op_Stub_Implementation
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print the implementation of a stub of traversal op for the given
+   --  kind; underlying calls to Traverse are commented out.
 
    procedure Start_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
-   --  ??? Missing doc
+   --  Open an if statement that tests if traversal control equals Value
 
    procedure End_If (O     : in out Output_Record);
-   --  ??? Missing doc
+   --  Close an if statement
 
    procedure Reset_Control (O : in out Output_Record);
-   --  ??? Missing doc
+   --  Print an statement that sets traversal control back to its initial value
 
    procedure Reset_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
-   --  ??? Missing doc
+   --  Print an if statement that resets traversal control if it equals Value
 
    procedure Reset_Return_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
-   --  ??? Missing doc
+   --  Print an if statement that:
+   --  *  resets traversal control;
+   --  * returns;
+   --  ... if the traversal control equals Value,
 
    procedure Return_If_Control
      (O     : in out Output_Record;
       Value : Wide_String);
-   --  ??? Missing doc
+   --  Print an if statement that returns if traversal control equals Value
 
    procedure Print_Traversal_Params_Unref
      (O    : in out Output_Record;
       Kind : Why_Node_Kind);
-   --  ??? Missing doc
+   --  Print an declarative part that declares no local variable and
+   --  marks traversal op params as unreferenced.
 
    ------------
    -- End_If --
@@ -153,6 +169,8 @@ package body Xtree_Traversal is
       Commented_Out  : Boolean := False)
    is
       procedure PL_C (O : in out Output_Record; S : Wide_String);
+      --  Same as PL, but prefix the line with "--  " if Commented_Out
+      --  is True.
 
       --------
       -- PC --
@@ -166,6 +184,8 @@ package body Xtree_Traversal is
 
          PL (O, S);
       end PL_C;
+
+   --  Start of processing for Print_Call_To_Traversal_Proc
 
    begin
       PL_C (O, Traversal_Proc);
@@ -187,6 +207,7 @@ package body Xtree_Traversal is
       First_Child : Boolean := True;
 
       procedure Print_Sub_Traversal (Position : Cursor);
+      --  Print the calls to traversal for child at Position
 
       -------------------------
       -- Print_Sub_Traversal --
@@ -210,6 +231,8 @@ package body Xtree_Traversal is
             end if;
          end if;
       end Print_Sub_Traversal;
+
+   --  Start of processing for Print_Kind_Traversal_Implementation
 
    begin
       if not In_Stub then
@@ -456,6 +479,7 @@ package body Xtree_Traversal is
       use Node_Lists;
 
       procedure Print_Sub_Traversal (Position : Cursor);
+      --  Print calls to traversals for child at Position
 
       -------------------------
       -- Print_Sub_Traversal --
@@ -502,6 +526,8 @@ package body Xtree_Traversal is
          end if;
       end Print_Sub_Traversal;
 
+   --  Start of processing for Print_Treepr_Pre_Impl
+
    begin
       PL (O, "P (O, """ & Mixed_Case_Name (Kind) & """);");
       PL (O, "P (O, "" (Node_Id="" & Img (Why_Node_Id ("
@@ -509,7 +535,7 @@ package body Xtree_Traversal is
       PL (O, "NL (O);");
       PL (O, "if State.Depth /= 0 then");
       Relative_Indent (O, 3);
-      PL (O, "State.Depth := State.Depth - 1;");
+      PL (O, Depth & " := " & Depth & " - 1;");
 
       if Has_Variant_Part (Kind) then
          PL (O, "Relative_Indent (O, 1);");
@@ -517,10 +543,10 @@ package body Xtree_Traversal is
          PL (O, "Relative_Indent (O, -1);");
       end if;
 
-      PL (O, "State.Depth := State.Depth + 1;");
+      PL (O, Depth & " := " & Depth & " + 1;");
       Relative_Indent (O, -3);
       PL (O, "end if;");
-      PL (O, "State.Control := Abandon_Children;");
+      PL (O, Control & " := Abandon_Children;");
    end Print_Treepr_Pre_Impl;
 
    ----------------------------

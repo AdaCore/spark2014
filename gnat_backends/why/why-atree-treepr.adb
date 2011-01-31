@@ -4468,6 +4468,12 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PS_Name);
+         Relative_Indent (O, -1);
          P (O, "Progs: ");
          Relative_Indent (O, 1);
          Traverse_List
