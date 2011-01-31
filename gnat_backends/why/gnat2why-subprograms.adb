@@ -48,8 +48,8 @@ package body Gnat2Why.Subprograms is
    --  Take a list of GNAT Node_Ids and apply the function F to each of them.
    --  Return the array that contains all the results, in the same order.
 
-   type Exp_Type_Enum is (Why_Int, Ada_Type_Node);
-   type Exp_Type (Kind : Exp_Type_Enum := Why_Int) is
+   type Why_Type_Enum is (Why_Int, Ada_Type_Node);
+   type Why_Type (Kind : Why_Type_Enum := Why_Int) is
       record
          case Kind is
             when Why_Int =>
@@ -58,11 +58,13 @@ package body Gnat2Why.Subprograms is
                Ada_Type : Name_Id;
          end case;
       end record;
-   --  ??? Missing doc
+   --  The type of Why types, as used by the translation process; A type in
+   --  Why is either the builtin "int" type or a named type that corresponds
+   --  to an Ada type of the same name.
 
    function Conversion_Name
-      (From : Exp_Type;
-       To   : Exp_Type) return W_Identifier_Id
+      (From : Why_Type;
+       To   : Why_Type) return W_Identifier_Id
       with Pre =>
         (not (From = To) and then
          (From.Kind = Why_Int or else To.Kind = Why_Int));
@@ -70,16 +72,16 @@ package body Gnat2Why.Subprograms is
 
    function Insert_Conversion
       (Ada_Node : Node_Id := Empty;
-       To       : Exp_Type;
-       From     : Exp_Type;
+       To       : Why_Type;
+       From     : Why_Type;
        Why_Expr : W_Prog_Id) return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
-       To       : Exp_Type;
-       From     : Exp_Type;
+       To       : Why_Type;
+       From     : Why_Type;
        Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
@@ -92,7 +94,7 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Exp_Type) return W_Prog_Id;
+      Expected_Type : Why_Type) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression of the
    --  Expected_Type.
    --
@@ -118,7 +120,7 @@ package body Gnat2Why.Subprograms is
 
    function Why_Term_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Exp_Type) return W_Term_Id;
+      Expected_Type : Why_Type) return W_Term_Id;
    --  Translate an Ada Expression to a Why Term of the Expected_Type.
 
    function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
@@ -130,8 +132,8 @@ package body Gnat2Why.Subprograms is
    ---------------------
 
    function Conversion_Name
-      (From : Exp_Type;
-       To   : Exp_Type) return W_Identifier_Id
+      (From : Why_Type;
+       To   : Why_Type) return W_Identifier_Id
    is
    begin
       case From.Kind is
@@ -162,8 +164,8 @@ package body Gnat2Why.Subprograms is
 
    function Insert_Conversion
       (Ada_Node : Node_Id := Empty;
-       To       : Exp_Type;
-       From     : Exp_Type;
+       To       : Why_Type;
+       From     : Why_Type;
        Why_Expr : W_Prog_Id) return W_Prog_Id
    is
    begin
@@ -198,8 +200,8 @@ package body Gnat2Why.Subprograms is
 
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
-       To       : Exp_Type;
-       From     : Exp_Type;
+       To       : Why_Type;
+       From     : Why_Type;
        Why_Term : W_Term_Id) return W_Term_Id
    is
    begin
@@ -455,10 +457,10 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Exp_Type) return W_Prog_Id
+      Expected_Type : Why_Type) return W_Prog_Id
    is
       T            : W_Prog_Id;
-      Current_Type : Exp_Type := (Ada_Type_Node, Type_Of_Node (Expr));
+      Current_Type : Why_Type := (Ada_Type_Node, Type_Of_Node (Expr));
    begin
       --  Here, we simply analyze the structure of Expr and build the
       --  corresponding Why expression. When necessary, we update the
@@ -922,7 +924,7 @@ package body Gnat2Why.Subprograms is
 
    function Why_Term_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Exp_Type) return W_Term_Id
+      Expected_Type : Why_Type) return W_Term_Id
    is
       --  Here we simply analyze the structure of the Ada expression and build
       --  a corresponding Why term.
@@ -935,7 +937,7 @@ package body Gnat2Why.Subprograms is
       T : W_Term_Id;
       --  T contains the term that has been constructed before a possible
       --  conversion to or from Int
-      Current_Type : Exp_Type := (Ada_Type_Node, Type_Of_Node (Expr));
+      Current_Type : Why_Type := (Ada_Type_Node, Type_Of_Node (Expr));
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
