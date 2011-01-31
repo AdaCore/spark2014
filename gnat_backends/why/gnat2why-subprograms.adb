@@ -104,6 +104,9 @@ package body Gnat2Why.Subprograms is
    --  Same as the previous function, but use the type of Expr as the expected
    --  type.
 
+   function Why_Ident_of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
+   --  Build a Why identifier out of an Ada Node.
+
    function Why_Prog_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Infix_Id;
    --  Convert an Ada binary operator to a Why term symbol
 
@@ -480,9 +483,7 @@ package body Gnat2Why.Subprograms is
          when N_Identifier =>
             T := New_Deref
                    (Ada_Node => Expr,
-                    Ref      => New_Identifier
-                                  (Ada_Node => Expr,
-                                   Symbol   => Chars (Expr)));
+                    Ref      => Why_Ident_of_Ada_Ident (Expr));
 
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
@@ -590,7 +591,7 @@ package body Gnat2Why.Subprograms is
                   return
                     New_Assignment
                       (Ada_Node => Stmt,
-                       Name     => New_Identifier (Symbol => Chars (Lvalue)),
+                       Name     => Why_Ident_of_Ada_Ident (Lvalue),
                        Value    =>
                           Why_Expr_Of_Ada_Expr
                             (Expression (Stmt),
@@ -781,6 +782,18 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Why_Expr_of_Ada_Stmts;
 
+   ----------------------------
+   -- Why_Ident_of_Ada_Ident --
+   ----------------------------
+
+   function Why_Ident_of_Ada_Ident (Id : Node_Id) return W_Identifier_Id
+   is
+   begin
+      return
+        New_Identifier
+          (Ada_Node => Id,
+           Symbol   => Chars (Entity (Id)));
+   end Why_Ident_of_Ada_Ident;
    ------------------------------
    -- Why_Prog_Binop_Of_Ada_Op --
    ------------------------------
@@ -937,7 +950,7 @@ package body Gnat2Why.Subprograms is
             T :=
               New_Term_Identifier
                 (Ada_Node => Expr,
-                 Name     => New_Identifier (Symbol => Chars (Expr)));
+                 Name     => Why_Ident_of_Ada_Ident (Expr));
 
          when N_Op_Add | N_Op_Multiply =>
             --  The arguments of arithmetic functions have to be of type int
@@ -996,10 +1009,8 @@ package body Gnat2Why.Subprograms is
                   T := New_Result_Identifier;
                elsif Attr_Name = "old" then
                   T := New_Term_Identifier
-                         (Name =>
-                            New_Identifier (Symbol => Chars (Prefix (Expr))),
-                          Label =>
-                            New_Identifier (Attr_Name));
+                         (Name => Why_Ident_of_Ada_Ident (Prefix (Expr)),
+                          Label => New_Identifier (""));
                else
                   raise Not_Implemented;
                end if;
