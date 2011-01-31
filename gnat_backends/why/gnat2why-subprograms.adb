@@ -169,19 +169,19 @@ package body Gnat2Why.Subprograms is
          return
            New_Prog_Call
              (Ada_Node => Ada_Node,
-              Name => Conversion_Name (From => From, To => To),
-              Progs => (1 => Why_Expr));
+              Name     => Conversion_Name (From => From, To => To),
+              Progs    => (1 => Why_Expr));
       else
          return
             Insert_Conversion
                (Ada_Node => Ada_Node,
-                To => To,
-                From => (Kind => Why_Int),
+                To       => To,
+                From     => (Kind => Why_Int),
                 Why_Expr =>
                   Insert_Conversion
                     (Ada_Node => Ada_Node,
-                     To => (Kind => Why_Int),
-                     From => From,
+                     To       => (Kind => Why_Int),
+                     From     => From,
                      Why_Expr => Why_Expr));
       end if;
    end Insert_Conversion;
@@ -199,20 +199,20 @@ package body Gnat2Why.Subprograms is
       if To.Kind = Why_Int or else From.Kind = Why_Int then
          return
            New_Operation
-             (Ada_Node => Ada_Node,
-              Name => Conversion_Name (From => From, To => To),
+             (Ada_Node   => Ada_Node,
+              Name       => Conversion_Name (From => From, To => To),
               Parameters => (1 => Why_Term));
       else
          return
             Insert_Conversion_Term
                (Ada_Node => Ada_Node,
-                To => To,
-                From => (Kind => Why_Int),
+                To       => To,
+                From     => (Kind => Why_Int),
                 Why_Term =>
                   Insert_Conversion_Term
                     (Ada_Node => Ada_Node,
-                     To => (Kind => Why_Int),
-                     From => From,
+                     To       => (Kind => Why_Int),
+                     From     => From,
                      Why_Term => Why_Term));
       end if;
    end Insert_Conversion_Term;
@@ -351,7 +351,7 @@ package body Gnat2Why.Subprograms is
                      else
                         Init :=
                           New_Prog_Call
-                           (Name =>
+                           (Name  =>
                              Allocator_Name
                                (Type_Of_Node (Object_Definition (Cur_Decl))),
                             Progs =>
@@ -383,7 +383,7 @@ package body Gnat2Why.Subprograms is
       is
          Corr_Spec : constant Node_Id := Corresponding_Spec (Node);
          PPCs      : Node_Id;
-         Cur_Spec : W_Predicate_Id := New_True_Literal_Pred;
+         Cur_Spec  : W_Predicate_Id := New_True_Literal_Pred;
       begin
          if Nkind (Corr_Spec) = N_Empty then
             return New_Assertion (Pred => Cur_Spec);
@@ -401,8 +401,8 @@ package body Gnat2Why.Subprograms is
                   Cur_Spec :=
                      New_Conjonction
                        (Ada_Node => Ada_Spec,
-                        Left => Why_Predicate_Of_Ada_Expr (Ada_Spec),
-                        Right => Cur_Spec);
+                        Left     => Why_Predicate_Of_Ada_Expr (Ada_Spec),
+                        Right    => Cur_Spec);
                end;
             end if;
 
@@ -542,8 +542,8 @@ package body Gnat2Why.Subprograms is
       return
         Insert_Conversion
           (Ada_Node => Expr,
-           From => Current_Type,
-           To => Expected_Type,
+           From     => Current_Type,
+           To       => Expected_Type,
            Why_Expr => T);
    end Why_Expr_Of_Ada_Expr;
 
