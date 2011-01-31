@@ -3146,13 +3146,13 @@ package Why.Atree.Builders is
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
-      External       : W_External_Id;
+      External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
       Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id with
      Pre =>
-       (External_Id_Kind_Valid (External)
-        and then External_Id_Valid (External)
+       (External_OId_Kind_Valid (External)
+        and then External_OId_Valid (External)
         and then Is_Root (External)
         and then True
         and then Value_Type_Id_Kind_Valid (Parameter_Type)

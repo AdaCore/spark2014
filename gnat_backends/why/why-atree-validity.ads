@@ -12161,7 +12161,7 @@ private
    function Parameter_Declaration_Id_Children_Valid
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return Boolean is
-     (Id_Cache_Valid
+     (OId_Cache_Valid
        (Parameter_Declaration_Get_External (Id))
      and then
        List_Cache_Valid

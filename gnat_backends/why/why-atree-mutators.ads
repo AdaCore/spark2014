@@ -1847,10 +1847,10 @@ package Why.Atree.Mutators is
 
    procedure Parameter_Declaration_Set_External
      (Id       : W_Parameter_Declaration_Unchecked_Id;
-      External : W_External_Unchecked_Id) with
+      External : W_External_Unchecked_OId) with
      Pre =>
-       (External_Id_Kind_Valid (External)
-        and then External_Id_Valid (External)
+       (External_OId_Kind_Valid (External)
+        and then External_OId_Valid (External)
         and then Is_Root (External));
 
    procedure Parameter_Declaration_Append_To_Names

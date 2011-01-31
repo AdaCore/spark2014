@@ -825,7 +825,7 @@ package Why.Atree.Accessors is
 
    function Parameter_Declaration_Get_External
      (Id : W_Parameter_Declaration_Id)
-     return W_External_Id;
+     return W_External_OId;
 
    function Parameter_Declaration_Get_Names
      (Id : W_Parameter_Declaration_Id)
@@ -1841,7 +1841,7 @@ private
 
    function Parameter_Declaration_Get_External
      (Id : W_Parameter_Declaration_Id)
-     return W_External_Id is
+     return W_External_OId is
      (Get_Node (Id).PD_External);
 
    function Parameter_Declaration_Get_Names

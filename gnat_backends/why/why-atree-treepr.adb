@@ -5704,12 +5704,14 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "External: ");
-         Relative_Indent (O, 1);
-         Traverse
-           (State,
-            Get_Node (Node).PD_External);
-         Relative_Indent (O, -1);
+         if Get_Node (Node).PD_External /= Why_Empty then
+            P (O, "External: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).PD_External);
+            Relative_Indent (O, -1);
+         end if;
          P (O, "Names: ");
          Relative_Indent (O, 1);
          Traverse_List

@@ -4074,7 +4074,7 @@ package body Why.Atree.Mutators is
 
    procedure Parameter_Declaration_Set_External
      (Id       : W_Parameter_Declaration_Unchecked_Id;
-      External : W_External_Unchecked_Id)
+      External : W_External_Unchecked_OId)
    is
       Node : Why_Node := Get_Node (Id);
    begin

@@ -3414,7 +3414,7 @@ package body Why.Atree.Builders is
 
    function New_Parameter_Declaration
      (Ada_Node       : Node_Id := Empty;
-      External       : W_External_Id;
+      External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
       Parameter_Type : W_Value_Type_Id)
      return W_Parameter_Declaration_Id
@@ -11416,7 +11416,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Parameter_Declaration);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Parameter_Declaration);
-         External       : constant W_External_Id :=
+         External       : constant W_External_OId :=
             Parameter_Declaration_Get_External (Id);
          Names          : constant W_Identifier_List :=
             Parameter_Declaration_Get_Names (Id);
@@ -11424,9 +11424,13 @@ package body Why.Atree.Builders is
             Parameter_Declaration_Get_Parameter_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PD_External :=
-           Duplicate_External
-           (Id => External);
+         if External = Why_Empty then
+            Result.PD_External := Why_Empty;
+         else
+            Result.PD_External :=
+              Duplicate_External
+              (Id => External);
+         end if;
          Set_Link (Result.PD_External, New_Id);
          declare
             use Node_Lists;

@@ -490,7 +490,7 @@ package Why.Atree is
             GRB_Name : W_Recfun_Opaque_Id;
 
          when W_Parameter_Declaration =>
-            PD_External       : W_External_Opaque_Id;
+            PD_External       : W_External_Opaque_OId;
             PD_Names          : W_Identifier_Opaque_List;
             PD_Parameter_Type : W_Value_Type_Opaque_Id;
 
