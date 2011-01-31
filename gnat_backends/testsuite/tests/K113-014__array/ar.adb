@@ -6,9 +6,9 @@ package body Ar is
       return X (1);
    end Get;
 
-   procedure Set (X : in out A)
+   procedure Set (X : in out A; Y : Integer)
    is
    begin
-      X (1) := 5;
+      X (Y) := 5;
    end Set;
 end Ar;
