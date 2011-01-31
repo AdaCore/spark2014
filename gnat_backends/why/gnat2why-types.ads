@@ -28,6 +28,32 @@ with Why.Ids;    use Why.Ids;
 with Namet;      use Namet;
 
 package Gnat2Why.Types is
+
+   --  This package deals with translations of types.
+   --  A single type declaration in Ada is usually translated to a list of
+   --  declarations in Why. Depending on the type in Ada, this list contains
+   --  at least an abstract type that has the same name as the Ada type, and
+   --  several function declarations for conversions (usually to and from
+   --  int).
+   --
+   --  Enumeration types:
+   --    We declare an Algebraic data type in Why, along with conversion
+   --    from/to int with conversion axioms
+   --
+   --  Integer types:
+   --    We declare an abstract type in Why, along with conversion from/to int
+   --    + axioms
+   --
+   --  Subtypes of Integers:
+   --    There is nothing special to do for subtypes: we treat them just as
+   --    integer types. This means that sometimes we have to insert
+   --    conversions when Ada coerces automatically.
+   --
+   --  Array types:
+   --   We first declare an abstract type for the index type, just as we do
+   --   for integer types. We then declare an abstract type for arrays, and
+   --   access/update functions with axioms.
+   --
    procedure Why_Type_Decl_of_Gnat_Type_Decl
      (File : W_File_Id;
       Node : Node_Id);
