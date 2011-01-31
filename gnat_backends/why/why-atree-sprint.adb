@@ -29,14 +29,12 @@ with Namet;  use Namet;
 with Uintp;  use Uintp;
 with Urealp; use Urealp;
 
+with Why.Images;          use Why.Images;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
-
-   function Img (Value : Uint) return String;
-   --  Helper function that return the Why image of a Uint
 
    procedure Print_List
      (State     : in out Printer_State'Class;
@@ -44,16 +42,6 @@ package body Why.Atree.Sprint is
       Separator : String := ", ");
    --  Print a node list on current output, separating each element
    --  by a given separator.
-
-   ---------
-   -- Img --
-   ---------
-
-   function Img (Value : Uint) return String is
-   begin
-      UI_Image (Value, Decimal);
-      return UI_Image_Buffer (1 .. UI_Image_Length);
-   end Img;
 
    ----------------
    -- Print_List --

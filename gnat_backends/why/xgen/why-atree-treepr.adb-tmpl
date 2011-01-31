@@ -26,6 +26,7 @@
 
 with Outputs;          use Outputs;
 with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Images;       use Why.Images;
 
 package body Why.Atree.Treepr is
 
@@ -36,10 +37,19 @@ package body Why.Atree.Treepr is
    ---------
 
    procedure wpn (Node : Why_Node_Id) is
-      TPS : Tree_Printer_State;
+   begin
+      wpt (Node, 1);
+   end wpn;
+
+   ---------
+   -- wpt --
+   ---------
+
+   procedure wpt (Node : Why_Node_Id; Depth : Nat) is
+      TPS : Tree_Printer_State := (Control => Continue, Depth => Depth);
    begin
       Traverse (TPS, Node);
-   end wpn;
+   end wpt;
 
    _@Implement_Treepr_Traversals@_
 

@@ -442,11 +442,7 @@ package body Xtree_Traversal is
       Kind : Why_Node_Kind)
    is
    begin
-      PL (O, "pragma Unreferenced (State);");
-
-      if Kind /= W_Identifier then
-         PL (O, "pragma Unreferenced (Node);");
-      end if;
+      null;
    end Print_Treepr_Pre_Decl;
 
    ---------------------------
@@ -454,19 +450,77 @@ package body Xtree_Traversal is
    ---------------------------
 
    procedure Print_Treepr_Pre_Impl
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind)
+     (O       : in out Output_Record;
+      Kind    : Why_Node_Kind)
    is
-   begin
-      PL (O, "P (O, """ & Why_Node_Kind'Wide_Image (Kind) & """);");
+      use Node_Lists;
 
-      if Kind = W_Identifier then
-         PL (O, "P (O, "" : "");");
-         PL (O, "P (O, Get_Name_String (Get_Node (Node).Symbol));");
+      procedure Print_Sub_Traversal (Position : Cursor);
+
+      -------------------------
+      -- Print_Sub_Traversal --
+      -------------------------
+
+      procedure Print_Sub_Traversal (Position : Cursor) is
+         FI    : constant Field_Info := Element (Position);
+         Field : constant Wide_String :=
+                   "Get_Node (" & Node_Param & ")." & Field_Name (FI);
+      begin
+         if Is_Why_Id (FI) and Maybe_Null (FI) then
+            if Is_List (FI) then
+               PL (O, "if not Is_Empty (" & Field & ") then");
+            else
+               PL (O, "if " & Field & " /= Why_Empty then");
+            end if;
+
+            Relative_Indent (O, 3);
+         end if;
+
+         PL (O, "P (O, """ & Param_Name (FI) & ": "");");
+         PL (O, "Relative_Indent (O, 1);");
+
+         if Is_Why_Id (FI) then
+            declare
+               Traversal_Proc : constant Wide_String :=
+                                  (if Is_List (FI) then "Traverse_List"
+                                   else "Traverse");
+            begin
+               PL (O, Traversal_Proc);
+               PL (O, "  (" & State_Param & ",");
+               PL (O, "   " & Field & ");");
+            end;
+
+         else
+            PL (O, "PL (O, Img (" & Field & "));");
+         end if;
+
+         PL (O, "Relative_Indent (O, -1);");
+
+         if Is_Why_Id (FI) and Maybe_Null (FI) then
+            Relative_Indent (O, -3);
+            PL (O, "end if;");
+         end if;
+      end Print_Sub_Traversal;
+
+   begin
+      PL (O, "P (O, """ & Mixed_Case_Name (Kind) & """);");
+      PL (O, "P (O, "" (Node_Id="" & Img (Why_Node_Id ("
+          & Node_Param & ")) & "")"");");
+      PL (O, "NL (O);");
+      PL (O, "if State.Depth /= 0 then");
+      Relative_Indent (O, 3);
+      PL (O, "State.Depth := State.Depth - 1;");
+
+      if Has_Variant_Part (Kind) then
+         PL (O, "Relative_Indent (O, 1);");
+         Why_Tree_Info (Kind).Fields.Iterate (Print_Sub_Traversal'Access);
+         PL (O, "Relative_Indent (O, -1);");
       end if;
 
-      PL (O, "NL (O);");
-      PL (O, "Relative_Indent (O, 1);");
+      PL (O, "State.Depth := State.Depth + 1;");
+      Relative_Indent (O, -3);
+      PL (O, "end if;");
+      PL (O, "State.Control := Abandon_Children;");
    end Print_Treepr_Pre_Impl;
 
    ----------------------------
@@ -479,7 +533,7 @@ package body Xtree_Traversal is
    is
       pragma Unreferenced (Kind);
    begin
-      PL (O, "Relative_Indent (O, -1);");
+      PL (O, "null;");
    end Print_Treepr_Post_Impl;
 
    --------------------------------------

@@ -26,6 +26,7 @@
 
 with Outputs;          use Outputs;
 with Why.Atree.Tables; use Why.Atree.Tables;
+with Why.Images;       use Why.Images;
 
 package body Why.Atree.Treepr is
 
@@ -36,10 +37,19 @@ package body Why.Atree.Treepr is
    ---------
 
    procedure wpn (Node : Why_Node_Id) is
-      TPS : Tree_Printer_State;
+   begin
+      wpt (Node, 1);
+   end wpn;
+
+   ---------
+   -- wpt --
+   ---------
+
+   procedure wpt (Node : Why_Node_Id; Depth : Nat) is
+      TPS : Tree_Printer_State := (Control => Continue, Depth => Depth);
    begin
       Traverse (TPS, Node);
-   end wpn;
+   end wpt;
 
    -----------------------
    -- Identifier_Pre_Op --
@@ -49,13 +59,25 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Identifier_Id)
    is
-      pragma Unreferenced (State);
    begin
-      P (O, "W_IDENTIFIER");
-      P (O, " : ");
-      P (O, Get_Name_String (Get_Node (Node).Symbol));
+      P (O, "W_Identifier");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Symbol: ");
+         Relative_Indent (O, 1);
+         PL (O, Img (Get_Node (Node).Symbol));
+         Relative_Indent (O, -1);
+         P (O, "Entity: ");
+         Relative_Indent (O, 1);
+         PL (O, Img (Get_Node (Node).Entity));
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Identifier_Pre_Op;
 
    ------------------------
@@ -69,7 +91,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Identifier_Post_Op;
 
    ----------------------
@@ -80,12 +102,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Prop_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE_PROP");
+      P (O, "W_Type_Prop");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Prop_Pre_Op;
 
    -----------------------
@@ -99,7 +124,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Prop_Post_Op;
 
    ---------------------
@@ -110,12 +135,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Int_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE_INT");
+      P (O, "W_Type_Int");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Int_Pre_Op;
 
    ----------------------
@@ -129,7 +157,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Int_Post_Op;
 
    ----------------------
@@ -140,12 +168,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Bool_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE_BOOL");
+      P (O, "W_Type_Bool");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Bool_Pre_Op;
 
    -----------------------
@@ -159,7 +190,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Bool_Post_Op;
 
    ----------------------
@@ -170,12 +201,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Real_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE_REAL");
+      P (O, "W_Type_Real");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Real_Pre_Op;
 
    -----------------------
@@ -189,7 +223,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Real_Post_Op;
 
    ----------------------
@@ -200,12 +234,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Unit_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE_UNIT");
+      P (O, "W_Type_Unit");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Unit_Pre_Op;
 
    -----------------------
@@ -219,7 +256,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Unit_Post_Op;
 
    --------------------------
@@ -230,12 +267,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Abstract_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ABSTRACT_TYPE");
+      P (O, "W_Abstract_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AT_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Abstract_Type_Pre_Op;
 
    ---------------------------
@@ -249,7 +297,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Abstract_Type_Post_Op;
 
    --------------------------------
@@ -260,12 +308,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Generic_Formal_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_GENERIC_FORMAL_TYPE");
+      P (O, "W_Generic_Formal_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GFT_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Generic_Formal_Type_Pre_Op;
 
    ---------------------------------
@@ -279,7 +338,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Generic_Formal_Type_Post_Op;
 
    --------------------------------------
@@ -290,12 +349,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Generic_Actual_Type_Chain_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_GENERIC_ACTUAL_TYPE_CHAIN");
+      P (O, "W_Generic_Actual_Type_Chain");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Type_Chain: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).GATC_Type_Chain);
+         Relative_Indent (O, -1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GATC_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Generic_Actual_Type_Chain_Pre_Op;
 
    ---------------------------------------
@@ -309,7 +385,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Generic_Actual_Type_Chain_Post_Op;
 
    -----------------------
@@ -320,12 +396,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Array_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ARRAY_TYPE");
+      P (O, "W_Array_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Component_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AT_Component_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Array_Type_Pre_Op;
 
    ------------------------
@@ -339,7 +426,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Array_Type_Post_Op;
 
    ---------------------
@@ -350,12 +437,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Ref_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REF_TYPE");
+      P (O, "W_Ref_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Aliased_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RT_Aliased_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Ref_Type_Pre_Op;
 
    ----------------------
@@ -369,7 +467,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Ref_Type_Post_Op;
 
    ---------------------------------
@@ -380,12 +478,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Protected_Value_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROTECTED_VALUE_TYPE");
+      P (O, "W_Protected_Value_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Value_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PVT_Value_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Protected_Value_Type_Pre_Op;
 
    ----------------------------------
@@ -399,7 +508,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Protected_Value_Type_Post_Op;
 
    -----------------------
@@ -410,12 +519,37 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Arrow_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ARROW_TYPE");
+      P (O, "W_Arrow_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).NA_Name /= Why_Empty then
+            P (O, "Name: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).NA_Name);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NA_Left);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NA_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Arrow_Type_Pre_Op;
 
    ------------------------
@@ -429,7 +563,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Arrow_Type_Post_Op;
 
    -----------------------------
@@ -440,12 +574,53 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Computation_Spec_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_COMPUTATION_SPEC");
+      P (O, "W_Computation_Spec");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).CS_Precondition /= Why_Empty then
+            P (O, "Precondition: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).CS_Precondition);
+            Relative_Indent (O, -1);
+         end if;
+         if Get_Node (Node).CS_Result_Name /= Why_Empty then
+            P (O, "Result_Name: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).CS_Result_Name);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Return_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CS_Return_Type);
+         Relative_Indent (O, -1);
+         P (O, "Effects: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CS_Effects);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).CS_Postcondition /= Why_Empty then
+            P (O, "Postcondition: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).CS_Postcondition);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Computation_Spec_Pre_Op;
 
    ------------------------------
@@ -459,7 +634,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Computation_Spec_Post_Op;
 
    -----------------------------
@@ -470,12 +645,21 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Integer_Constant_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_INTEGER_CONSTANT");
+      P (O, "W_Integer_Constant");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Value: ");
+         Relative_Indent (O, 1);
+         PL (O, Img (Get_Node (Node).IC_Value));
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Integer_Constant_Pre_Op;
 
    ------------------------------
@@ -489,7 +673,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Integer_Constant_Post_Op;
 
    --------------------------
@@ -500,12 +684,21 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Real_Constant_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REAL_CONSTANT");
+      P (O, "W_Real_Constant");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Value: ");
+         Relative_Indent (O, 1);
+         PL (O, Img (Get_Node (Node).RC_Value));
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Real_Constant_Pre_Op;
 
    ---------------------------
@@ -519,7 +712,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Real_Constant_Post_Op;
 
    -------------------------
@@ -530,12 +723,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_True_Literal_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRUE_LITERAL");
+      P (O, "W_True_Literal");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end True_Literal_Pre_Op;
 
    --------------------------
@@ -549,7 +745,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end True_Literal_Post_Op;
 
    --------------------------
@@ -560,12 +756,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_False_Literal_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_FALSE_LITERAL");
+      P (O, "W_False_Literal");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end False_Literal_Pre_Op;
 
    ---------------------------
@@ -579,7 +778,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end False_Literal_Post_Op;
 
    -------------------------
@@ -590,12 +789,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Void_Literal_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_VOID_LITERAL");
+      P (O, "W_Void_Literal");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Void_Literal_Pre_Op;
 
    --------------------------
@@ -609,7 +811,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Void_Literal_Post_Op;
 
    ----------------------------
@@ -620,12 +822,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Arith_Operation_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ARITH_OPERATION");
+      P (O, "W_Arith_Operation");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AO_Left);
+         Relative_Indent (O, -1);
+         P (O, "Op: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AO_Op);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AO_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Arith_Operation_Pre_Op;
 
    -----------------------------
@@ -639,7 +864,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Arith_Operation_Post_Op;
 
    --------------------------
@@ -650,12 +875,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Negative_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_NEGATIVE_TERM");
+      P (O, "W_Negative_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Operand: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NT_Operand);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Negative_Term_Pre_Op;
 
    ---------------------------
@@ -669,7 +905,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Negative_Term_Post_Op;
 
    ----------------------------
@@ -680,12 +916,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Term_Identifier_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TERM_IDENTIFIER");
+      P (O, "W_Term_Identifier");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).TIL_Name);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).TIL_Label /= Why_Empty then
+            P (O, "Label: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).TIL_Label);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Term_Identifier_Pre_Op;
 
    -----------------------------
@@ -699,7 +954,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Term_Identifier_Post_Op;
 
    ----------------------
@@ -710,12 +965,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Operation_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OPERATION");
+      P (O, "W_Operation");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).O_Name);
+         Relative_Indent (O, -1);
+         P (O, "Parameters: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).O_Parameters);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Operation_Pre_Op;
 
    -----------------------
@@ -729,7 +1001,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Operation_Post_Op;
 
    -----------------------
@@ -740,12 +1012,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Named_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_NAMED_TERM");
+      P (O, "W_Named_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NT_Name);
+         Relative_Indent (O, -1);
+         P (O, "Term: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NT_Term);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Named_Term_Pre_Op;
 
    ------------------------
@@ -759,7 +1048,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Named_Term_Post_Op;
 
    -----------------------------
@@ -770,12 +1059,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Conditional_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_CONDITIONAL_TERM");
+      P (O, "W_Conditional_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Condition: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CT_Condition);
+         Relative_Indent (O, -1);
+         P (O, "Then_Part: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CT_Then_Part);
+         Relative_Indent (O, -1);
+         P (O, "Else_Part: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CT_Else_Part);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Conditional_Term_Pre_Op;
 
    ------------------------------
@@ -789,7 +1101,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Conditional_Term_Post_Op;
 
    --------------------------
@@ -800,12 +1112,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Matching_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_MATCHING_TERM");
+      P (O, "W_Matching_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Term: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).MT_Term);
+         Relative_Indent (O, -1);
+         P (O, "Branches: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).MT_Branches);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Matching_Term_Pre_Op;
 
    ---------------------------
@@ -819,7 +1148,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Matching_Term_Post_Op;
 
    -------------------------
@@ -830,12 +1159,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_TERM");
+      P (O, "W_Binding_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BT_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BT_Def);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BT_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Term_Pre_Op;
 
    --------------------------
@@ -849,7 +1201,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Term_Post_Op;
 
    ---------------------------
@@ -860,12 +1212,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Protected_Term_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROTECTED_TERM");
+      P (O, "W_Protected_Term");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Term: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BT_Term);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Protected_Term_Pre_Op;
 
    ----------------------------
@@ -879,7 +1242,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Protected_Term_Post_Op;
 
    -------------------
@@ -890,12 +1253,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Add_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_ADD");
+      P (O, "W_Op_Add");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Add_Pre_Op;
 
    --------------------
@@ -909,7 +1275,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Add_Post_Op;
 
    -------------------------
@@ -920,12 +1286,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Substract_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_SUBSTRACT");
+      P (O, "W_Op_Substract");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Substract_Pre_Op;
 
    --------------------------
@@ -939,7 +1308,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Substract_Post_Op;
 
    ------------------------
@@ -950,12 +1319,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Multiply_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_MULTIPLY");
+      P (O, "W_Op_Multiply");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Multiply_Pre_Op;
 
    -------------------------
@@ -969,7 +1341,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Multiply_Post_Op;
 
    ----------------------
@@ -980,12 +1352,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Divide_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_DIVIDE");
+      P (O, "W_Op_Divide");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Divide_Pre_Op;
 
    -----------------------
@@ -999,7 +1374,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Divide_Post_Op;
 
    ----------------------
@@ -1010,12 +1385,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Modulo_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_MODULO");
+      P (O, "W_Op_Modulo");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Modulo_Pre_Op;
 
    -----------------------
@@ -1029,7 +1407,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Modulo_Post_Op;
 
    ------------------------------
@@ -1040,12 +1418,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_True_Literal_Pred_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRUE_LITERAL_PRED");
+      P (O, "W_True_Literal_Pred");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end True_Literal_Pred_Pre_Op;
 
    -------------------------------
@@ -1059,7 +1440,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end True_Literal_Pred_Post_Op;
 
    -------------------------------
@@ -1070,12 +1451,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_False_Literal_Pred_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_FALSE_LITERAL_PRED");
+      P (O, "W_False_Literal_Pred");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end False_Literal_Pred_Pre_Op;
 
    --------------------------------
@@ -1089,7 +1473,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end False_Literal_Pred_Post_Op;
 
    ---------------------------------
@@ -1100,12 +1484,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Predicate_Identifier_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PREDICATE_IDENTIFIER");
+      P (O, "W_Predicate_Identifier");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PID_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Predicate_Identifier_Pre_Op;
 
    ----------------------------------
@@ -1119,7 +1514,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Predicate_Identifier_Post_Op;
 
    -------------------------------
@@ -1130,12 +1525,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Predicate_Instance_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PREDICATE_INSTANCE");
+      P (O, "W_Predicate_Instance");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PIN_Name);
+         Relative_Indent (O, -1);
+         P (O, "Parameters: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).PIN_Parameters);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Predicate_Instance_Pre_Op;
 
    --------------------------------
@@ -1149,7 +1561,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Predicate_Instance_Post_Op;
 
    --------------------------
@@ -1160,12 +1572,51 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Related_Terms_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_RELATED_TERMS");
+      P (O, "W_Related_Terms");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RT_Left);
+         Relative_Indent (O, -1);
+         P (O, "Op: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RT_Op);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RT_Right);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).RT_Op2 /= Why_Empty then
+            P (O, "Op2: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).RT_Op2);
+            Relative_Indent (O, -1);
+         end if;
+         if Get_Node (Node).RT_Right2 /= Why_Empty then
+            P (O, "Right2: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).RT_Right2);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Related_Terms_Pre_Op;
 
    ---------------------------
@@ -1179,7 +1630,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Related_Terms_Post_Op;
 
    ------------------------
@@ -1190,12 +1641,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Implication_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_IMPLICATION");
+      P (O, "W_Implication");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Left);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Implication_Pre_Op;
 
    -------------------------
@@ -1209,7 +1677,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Implication_Post_Op;
 
    ------------------------
@@ -1220,12 +1688,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Equivalence_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EQUIVALENCE");
+      P (O, "W_Equivalence");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Left);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Equivalence_Pre_Op;
 
    -------------------------
@@ -1239,7 +1724,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Equivalence_Post_Op;
 
    ------------------------
@@ -1250,12 +1735,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Disjonction_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_DISJONCTION");
+      P (O, "W_Disjonction");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Left);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Disjonction_Pre_Op;
 
    -------------------------
@@ -1269,7 +1771,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Disjonction_Post_Op;
 
    ------------------------
@@ -1280,12 +1782,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Conjonction_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_CONJONCTION");
+      P (O, "W_Conjonction");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Left);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ITOC_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Conjonction_Pre_Op;
 
    -------------------------
@@ -1299,7 +1818,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Conjonction_Post_Op;
 
    ---------------------
@@ -1310,12 +1829,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Negation_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_NEGATION");
+      P (O, "W_Negation");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Operand: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).N_Operand);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Negation_Pre_Op;
 
    ----------------------
@@ -1329,7 +1859,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Negation_Post_Op;
 
    -----------------------------
@@ -1340,12 +1870,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Conditional_Pred_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_CONDITIONAL_PRED");
+      P (O, "W_Conditional_Pred");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Condition: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CPD_Condition);
+         Relative_Indent (O, -1);
+         P (O, "Then_Part: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CPD_Then_Part);
+         Relative_Indent (O, -1);
+         P (O, "Else_Part: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CPD_Else_Part);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Conditional_Pred_Pre_Op;
 
    ------------------------------
@@ -1359,7 +1912,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Conditional_Pred_Post_Op;
 
    -------------------------
@@ -1370,12 +1923,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Pred_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_PRED");
+      P (O, "W_Binding_Pred");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPD_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPD_Def);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPD_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Pred_Pre_Op;
 
    --------------------------
@@ -1389,7 +1965,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Pred_Post_Op;
 
    ------------------------------
@@ -1400,12 +1976,43 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Universal_Quantif_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_UNIVERSAL_QUANTIF");
+      P (O, "W_Universal_Quantif");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Variables: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).UQ_Variables);
+         Relative_Indent (O, -1);
+         P (O, "Var_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).UQ_Var_Type);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).UQ_Triggers /= Why_Empty then
+            P (O, "Triggers: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).UQ_Triggers);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).UQ_Pred);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Universal_Quantif_Pre_Op;
 
    -------------------------------
@@ -1419,7 +2026,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Universal_Quantif_Post_Op;
 
    --------------------------------
@@ -1430,12 +2037,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Existential_Quantif_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EXISTENTIAL_QUANTIF");
+      P (O, "W_Existential_Quantif");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Variables: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).EQ_Variables);
+         Relative_Indent (O, -1);
+         P (O, "Var_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).EQ_Var_Type);
+         Relative_Indent (O, -1);
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).EQ_Pred);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Existential_Quantif_Pre_Op;
 
    ---------------------------------
@@ -1449,7 +2079,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Existential_Quantif_Post_Op;
 
    ----------------------------
@@ -1460,12 +2090,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Named_Predicate_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_NAMED_PREDICATE");
+      P (O, "W_Named_Predicate");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NP_Name);
+         Relative_Indent (O, -1);
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).NP_Pred);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Named_Predicate_Pre_Op;
 
    -----------------------------
@@ -1479,7 +2126,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Named_Predicate_Post_Op;
 
    --------------------------------
@@ -1490,12 +2137,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Protected_Predicate_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROTECTED_PREDICATE");
+      P (O, "W_Protected_Predicate");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PP_Pred);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Protected_Predicate_Pre_Op;
 
    ---------------------------------
@@ -1509,7 +2167,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Protected_Predicate_Post_Op;
 
    --------------------
@@ -1520,12 +2178,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Pattern_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PATTERN");
+      P (O, "W_Pattern");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Constr: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PAT_Constr);
+         Relative_Indent (O, -1);
+         if not Is_Empty (Get_Node (Node).PAT_Args) then
+            P (O, "Args: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).PAT_Args);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Pattern_Pre_Op;
 
    ---------------------
@@ -1539,7 +2216,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Pattern_Post_Op;
 
    -----------------------
@@ -1550,12 +2227,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Match_Case_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_MATCH_CASE");
+      P (O, "W_Match_Case");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Pattern: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).MC_Pattern);
+         Relative_Indent (O, -1);
+         P (O, "Term: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).MC_Term);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Match_Case_Pre_Op;
 
    ------------------------
@@ -1569,7 +2263,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Match_Case_Post_Op;
 
    ---------------------
@@ -1580,12 +2274,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Triggers_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRIGGERS");
+      P (O, "W_Triggers");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Triggers: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).TRS_Triggers);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Triggers_Pre_Op;
 
    ----------------------
@@ -1599,7 +2304,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Triggers_Post_Op;
 
    --------------------
@@ -1610,12 +2315,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Trigger_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRIGGER");
+      P (O, "W_Trigger");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Terms: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).TRI_Terms);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Trigger_Pre_Op;
 
    ---------------------
@@ -1629,7 +2345,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Trigger_Post_Op;
 
    -------------------
@@ -1640,12 +2356,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Eq_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_EQ");
+      P (O, "W_Rel_Eq");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Eq_Pre_Op;
 
    --------------------
@@ -1659,7 +2378,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Eq_Post_Op;
 
    -------------------
@@ -1670,12 +2389,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Ne_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_NE");
+      P (O, "W_Rel_Ne");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Ne_Pre_Op;
 
    --------------------
@@ -1689,7 +2411,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Ne_Post_Op;
 
    -------------------
@@ -1700,12 +2422,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Lt_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_LT");
+      P (O, "W_Rel_Lt");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Lt_Pre_Op;
 
    --------------------
@@ -1719,7 +2444,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Lt_Post_Op;
 
    -------------------
@@ -1730,12 +2455,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Le_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_LE");
+      P (O, "W_Rel_Le");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Le_Pre_Op;
 
    --------------------
@@ -1749,7 +2477,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Le_Post_Op;
 
    -------------------
@@ -1760,12 +2488,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Gt_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_GT");
+      P (O, "W_Rel_Gt");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Gt_Pre_Op;
 
    --------------------
@@ -1779,7 +2510,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Gt_Post_Op;
 
    -------------------
@@ -1790,12 +2521,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Rel_Ge_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_REL_GE");
+      P (O, "W_Rel_Ge");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Rel_Ge_Pre_Op;
 
    --------------------
@@ -1809,7 +2543,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Rel_Ge_Post_Op;
 
    -----------------
@@ -1820,12 +2554,47 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TYPE");
+      P (O, "W_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).T_External /= Why_Empty then
+            P (O, "External: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).T_External);
+            Relative_Indent (O, -1);
+         end if;
+         if not Is_Empty (Get_Node (Node).T_Type_Parameters) then
+            P (O, "Type_Parameters: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).T_Type_Parameters);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).T_Name);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).T_Definition /= Why_Empty then
+            P (O, "Definition: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).T_Definition);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Type_Pre_Op;
 
    ------------------
@@ -1839,7 +2608,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Type_Post_Op;
 
    ------------------
@@ -1850,12 +2619,37 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Logic_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LOGIC");
+      P (O, "W_Logic");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).L_External /= Why_Empty then
+            P (O, "External: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).L_External);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Names: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).L_Names);
+         Relative_Indent (O, -1);
+         P (O, "Logic_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).L_Logic_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Logic_Pre_Op;
 
    -------------------
@@ -1869,7 +2663,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Logic_Post_Op;
 
    ---------------------
@@ -1880,12 +2674,41 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Function_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_FUNCTION");
+      P (O, "W_Function");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).F_Name);
+         Relative_Indent (O, -1);
+         P (O, "Binders: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).F_Binders);
+         Relative_Indent (O, -1);
+         P (O, "Return_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).F_Return_Type);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).F_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Function_Pre_Op;
 
    ----------------------
@@ -1899,7 +2722,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Function_Post_Op;
 
    ---------------------------------
@@ -1910,12 +2733,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Predicate_Definition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PREDICATE_DEFINITION");
+      P (O, "W_Predicate_Definition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).P_Name);
+         Relative_Indent (O, -1);
+         P (O, "Binders: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).P_Binders);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).P_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Predicate_Definition_Pre_Op;
 
    ----------------------------------
@@ -1929,7 +2775,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Predicate_Definition_Post_Op;
 
    ----------------------
@@ -1940,12 +2786,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Inductive_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_INDUCTIVE");
+      P (O, "W_Inductive");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).I_Name);
+         Relative_Indent (O, -1);
+         P (O, "Logic_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).I_Logic_Type);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).I_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Inductive_Pre_Op;
 
    -----------------------
@@ -1959,7 +2828,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Inductive_Post_Op;
 
    ------------------
@@ -1970,12 +2839,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Axiom_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_AXIOM");
+      P (O, "W_Axiom");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AX_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AX_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Axiom_Pre_Op;
 
    -------------------
@@ -1989,7 +2875,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Axiom_Post_Op;
 
    -----------------
@@ -2000,12 +2886,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Goal_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_GOAL");
+      P (O, "W_Goal");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).G_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).G_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Goal_Pre_Op;
 
    ------------------
@@ -2019,7 +2922,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Goal_Post_Op;
 
    ---------------------
@@ -2030,12 +2933,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_External_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EXTERNAL");
+      P (O, "W_External");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end External_Pre_Op;
 
    ----------------------
@@ -2049,7 +2955,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end External_Post_Op;
 
    -----------------------
@@ -2060,12 +2966,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Logic_Type_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LOGIC_TYPE");
+      P (O, "W_Logic_Type");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Arg_Types: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).LT_Arg_Types);
+         Relative_Indent (O, -1);
+         P (O, "Return_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).LT_Return_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Logic_Type_Pre_Op;
 
    ------------------------
@@ -2079,7 +3002,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Logic_Type_Post_Op;
 
    -------------------------
@@ -2090,12 +3013,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Logic_Binder_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LOGIC_BINDER");
+      P (O, "W_Logic_Binder");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).LB_Name);
+         Relative_Indent (O, -1);
+         P (O, "Param_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).LB_Param_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Logic_Binder_Pre_Op;
 
    --------------------------
@@ -2109,7 +3049,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Logic_Binder_Post_Op;
 
    ---------------------------
@@ -2120,12 +3060,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Inductive_Case_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_INDUCTIVE_CASE");
+      P (O, "W_Inductive_Case");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).IC_Name);
+         Relative_Indent (O, -1);
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).IC_Pred);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Inductive_Case_Pre_Op;
 
    ----------------------------
@@ -2139,7 +3096,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Inductive_Case_Post_Op;
 
    ----------------------------------------
@@ -2150,12 +3107,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Transparent_Type_Definition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRANSPARENT_TYPE_DEFINITION");
+      P (O, "W_Transparent_Type_Definition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Type_Definition: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).Tr_Type_Definition);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Transparent_Type_Definition_Pre_Op;
 
    -----------------------------------------
@@ -2169,7 +3137,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Transparent_Type_Definition_Post_Op;
 
    ---------------------------
@@ -2180,12 +3148,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Adt_Definition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ADT_DEFINITION");
+      P (O, "W_Adt_Definition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Constructors: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).Adt_Constructors);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Adt_Definition_Pre_Op;
 
    ----------------------------
@@ -2199,7 +3178,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Adt_Definition_Post_Op;
 
    ------------------------
@@ -2210,12 +3189,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Constr_Decl_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_CONSTR_DECL");
+      P (O, "W_Constr_Decl");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).C_Name);
+         Relative_Indent (O, -1);
+         if not Is_Empty (Get_Node (Node).C_Arg_List) then
+            P (O, "Arg_List: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).C_Arg_List);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Constr_Decl_Pre_Op;
 
    -------------------------
@@ -2229,7 +3227,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Constr_Decl_Post_Op;
 
    --------------------
@@ -2240,12 +3238,41 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Effects_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EFFECTS");
+      P (O, "W_Effects");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if not Is_Empty (Get_Node (Node).E_Reads) then
+            P (O, "Reads: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).E_Reads);
+            Relative_Indent (O, -1);
+         end if;
+         if not Is_Empty (Get_Node (Node).E_Writes) then
+            P (O, "Writes: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).E_Writes);
+            Relative_Indent (O, -1);
+         end if;
+         if not Is_Empty (Get_Node (Node).E_Raises) then
+            P (O, "Raises: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).E_Raises);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Effects_Pre_Op;
 
    ---------------------
@@ -2259,7 +3286,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Effects_Post_Op;
 
    -------------------------
@@ -2270,12 +3297,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Precondition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PRECONDITION");
+      P (O, "W_Precondition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Assertion: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PRE_Assertion);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Precondition_Pre_Op;
 
    --------------------------
@@ -2289,7 +3327,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Precondition_Post_Op;
 
    --------------------------
@@ -2300,12 +3338,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Postcondition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_POSTCONDITION");
+      P (O, "W_Postcondition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Assertion: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).POST_Assertion);
+         Relative_Indent (O, -1);
+         if not Is_Empty (Get_Node (Node).POST_Handlers) then
+            P (O, "Handlers: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).POST_Handlers);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Postcondition_Pre_Op;
 
    ---------------------------
@@ -2319,7 +3376,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Postcondition_Post_Op;
 
    --------------------------
@@ -2330,12 +3387,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Exn_Condition_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EXN_CONDITION");
+      P (O, "W_Exn_Condition");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Exn_Case: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).EC_Exn_Case);
+         Relative_Indent (O, -1);
+         P (O, "Assertion: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).EC_Assertion);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Exn_Condition_Pre_Op;
 
    ---------------------------
@@ -2349,7 +3423,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Exn_Condition_Post_Op;
 
    ----------------------
@@ -2360,12 +3434,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Assertion_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ASSERTION");
+      P (O, "W_Assertion");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Pred: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).A_Pred);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).A_As /= Why_Empty then
+            P (O, "As: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).A_As);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Assertion_Pre_Op;
 
    -----------------------
@@ -2379,7 +3472,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Assertion_Post_Op;
 
    --------------------------
@@ -2390,12 +3483,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Prog_Constant_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROG_CONSTANT");
+      P (O, "W_Prog_Constant");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PC_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Prog_Constant_Pre_Op;
 
    ---------------------------
@@ -2409,7 +3513,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Prog_Constant_Post_Op;
 
    ----------------------------
@@ -2420,12 +3524,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Prog_Identifier_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROG_IDENTIFIER");
+      P (O, "W_Prog_Identifier");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PI_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Prog_Identifier_Pre_Op;
 
    -----------------------------
@@ -2439,7 +3554,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Prog_Identifier_Post_Op;
 
    ------------------
@@ -2450,12 +3565,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Deref_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_DEREF");
+      P (O, "W_Deref");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Ref: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).D_Ref);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Deref_Pre_Op;
 
    -------------------
@@ -2469,7 +3595,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Deref_Post_Op;
 
    -----------------------
@@ -2480,12 +3606,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Assignment_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ASSIGNMENT");
+      P (O, "W_Assignment");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).A_Name);
+         Relative_Indent (O, -1);
+         P (O, "Value: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).A_Value);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Assignment_Pre_Op;
 
    ------------------------
@@ -2499,7 +3642,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Assignment_Post_Op;
 
    -------------------------
@@ -2510,12 +3653,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Array_Access_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ARRAY_ACCESS");
+      P (O, "W_Array_Access");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AA_Name);
+         Relative_Indent (O, -1);
+         P (O, "Index: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AA_Index);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Array_Access_Pre_Op;
 
    --------------------------
@@ -2529,7 +3689,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Array_Access_Post_Op;
 
    -------------------------
@@ -2540,12 +3700,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Array_Update_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ARRAY_UPDATE");
+      P (O, "W_Array_Update");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AU_Name);
+         Relative_Indent (O, -1);
+         P (O, "Index: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AU_Index);
+         Relative_Indent (O, -1);
+         P (O, "Value: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AU_Value);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Array_Update_Pre_Op;
 
    --------------------------
@@ -2559,7 +3742,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Array_Update_Post_Op;
 
    -----------------------
@@ -2570,12 +3753,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Infix_Call_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_INFIX_CALL");
+      P (O, "W_Infix_Call");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Left: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).IC_Left);
+         Relative_Indent (O, -1);
+         P (O, "Infix: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).IC_Infix);
+         Relative_Indent (O, -1);
+         P (O, "Right: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).IC_Right);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Infix_Call_Pre_Op;
 
    ------------------------
@@ -2589,7 +3795,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Infix_Call_Post_Op;
 
    ------------------------
@@ -2600,12 +3806,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Prefix_Call_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PREFIX_CALL");
+      P (O, "W_Prefix_Call");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prefix: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PC_Prefix);
+         Relative_Indent (O, -1);
+         P (O, "Operand: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PC_Operand);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Prefix_Call_Pre_Op;
 
    -------------------------
@@ -2619,7 +3842,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Prefix_Call_Post_Op;
 
    -------------------------
@@ -2630,12 +3853,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_PROG");
+      P (O, "W_Binding_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Def);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Prog_Pre_Op;
 
    --------------------------
@@ -2649,7 +3895,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Prog_Post_Op;
 
    ------------------------
@@ -2660,12 +3906,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Ref_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_REF");
+      P (O, "W_Binding_Ref");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Def);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BPG_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Ref_Pre_Op;
 
    -------------------------
@@ -2679,7 +3948,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Ref_Post_Op;
 
    -----------------------------
@@ -2690,12 +3959,37 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Conditional_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_CONDITIONAL_PROG");
+      P (O, "W_Conditional_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Condition: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CPG_Condition);
+         Relative_Indent (O, -1);
+         P (O, "Then_Part: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).CPG_Then_Part);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).CPG_Else_Part /= Why_Empty then
+            P (O, "Else_Part: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).CPG_Else_Part);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Conditional_Prog_Pre_Op;
 
    ------------------------------
@@ -2709,7 +4003,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Conditional_Prog_Post_Op;
 
    -----------------------
@@ -2720,12 +4014,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_While_Loop_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_WHILE_LOOP");
+      P (O, "W_While_Loop");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Condition: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).WL_Condition);
+         Relative_Indent (O, -1);
+         P (O, "Annotation: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).WL_Annotation);
+         Relative_Indent (O, -1);
+         P (O, "Loop_Content: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).WL_Loop_Content);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end While_Loop_Pre_Op;
 
    ------------------------
@@ -2739,7 +4056,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end While_Loop_Post_Op;
 
    -------------------------------
@@ -2750,12 +4067,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Statement_Sequence_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_STATEMENT_SEQUENCE");
+      P (O, "W_Statement_Sequence");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Statements: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).SS_Statements);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Statement_Sequence_Pre_Op;
 
    --------------------------------
@@ -2769,7 +4097,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Statement_Sequence_Post_Op;
 
    ------------------
@@ -2780,12 +4108,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Label_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LABEL");
+      P (O, "W_Label");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).L_Name);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).L_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Label_Pre_Op;
 
    -------------------
@@ -2799,7 +4144,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Label_Post_Op;
 
    -------------------
@@ -2810,12 +4155,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Assert_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_ASSERT");
+      P (O, "W_Assert");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Assertions: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).AS_Assertions);
+         Relative_Indent (O, -1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AS_Prog);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Assert_Pre_Op;
 
    --------------------
@@ -2829,7 +4191,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Assert_Post_Op;
 
    ---------------------------
@@ -2840,12 +4202,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Post_Assertion_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_POST_ASSERTION");
+      P (O, "W_Post_Assertion");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PA_Prog);
+         Relative_Indent (O, -1);
+         P (O, "Post: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PA_Post);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Post_Assertion_Pre_Op;
 
    ----------------------------
@@ -2859,7 +4238,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Post_Assertion_Post_Op;
 
    -----------------------------
@@ -2870,12 +4249,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Opaque_Assertion_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OPAQUE_ASSERTION");
+      P (O, "W_Opaque_Assertion");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PA_Prog);
+         Relative_Indent (O, -1);
+         P (O, "Post: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PA_Post);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Opaque_Assertion_Pre_Op;
 
    ------------------------------
@@ -2889,7 +4285,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Opaque_Assertion_Post_Op;
 
    --------------------
@@ -2900,12 +4296,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Fun_Def_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_FUN_DEF");
+      P (O, "W_Fun_Def");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Binders: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).FD_Binders);
+         Relative_Indent (O, -1);
+         P (O, "Pre: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).FD_Pre);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).FD_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Fun_Def_Pre_Op;
 
    ---------------------
@@ -2919,7 +4338,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Fun_Def_Post_Op;
 
    ------------------------
@@ -2930,12 +4349,47 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Fun_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_FUN");
+      P (O, "W_Binding_Fun");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BF_Name);
+         Relative_Indent (O, -1);
+         P (O, "Binders: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).BF_Binders);
+         Relative_Indent (O, -1);
+         P (O, "Pre: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BF_Pre);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BF_Def);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BF_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Fun_Pre_Op;
 
    -------------------------
@@ -2949,7 +4403,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Fun_Post_Op;
 
    ------------------------
@@ -2960,12 +4414,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binding_Rec_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDING_REC");
+      P (O, "W_Binding_Rec");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Recfun: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BR_Recfun);
+         Relative_Indent (O, -1);
+         P (O, "Context: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BR_Context);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binding_Rec_Pre_Op;
 
    -------------------------
@@ -2979,7 +4450,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binding_Rec_Post_Op;
 
    ----------------------
@@ -2990,12 +4461,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Prog_Call_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROG_CALL");
+      P (O, "W_Prog_Call");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Progs: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).PS_Progs);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Prog_Call_Pre_Op;
 
    -----------------------
@@ -3009,7 +4491,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Prog_Call_Post_Op;
 
    ----------------------------
@@ -3020,12 +4502,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Raise_Statement_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_RAISE_STATEMENT");
+      P (O, "W_Raise_Statement");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RS_Name);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).RS_Exn_Type /= Why_Empty then
+            P (O, "Exn_Type: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).RS_Exn_Type);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Raise_Statement_Pre_Op;
 
    -----------------------------
@@ -3039,7 +4540,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Raise_Statement_Post_Op;
 
    --------------------------------------------
@@ -3050,12 +4551,37 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Raise_Statement_With_Parameters_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_RAISE_STATEMENT_WITH_PARAMETERS");
+      P (O, "W_Raise_Statement_With_Parameters");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RSWP_Name);
+         Relative_Indent (O, -1);
+         P (O, "Parameter: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RSWP_Parameter);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).RSWP_Exn_Type /= Why_Empty then
+            P (O, "Exn_Type: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).RSWP_Exn_Type);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Raise_Statement_With_Parameters_Pre_Op;
 
    ---------------------------------------------
@@ -3069,7 +4595,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Raise_Statement_With_Parameters_Post_Op;
 
    ----------------------
@@ -3080,12 +4606,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Try_Block_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_TRY_BLOCK");
+      P (O, "W_Try_Block");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).TB_Prog);
+         Relative_Indent (O, -1);
+         P (O, "Handler: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).TB_Handler);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Try_Block_Pre_Op;
 
    -----------------------
@@ -3099,7 +4642,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Try_Block_Post_Op;
 
    -----------------------------
@@ -3110,12 +4653,25 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Unreachable_Code_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_UNREACHABLE_CODE");
+      P (O, "W_Unreachable_Code");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).UC_Exn_Type /= Why_Empty then
+            P (O, "Exn_Type: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).UC_Exn_Type);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Unreachable_Code_Pre_Op;
 
    ------------------------------
@@ -3129,7 +4685,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Unreachable_Code_Post_Op;
 
    ------------------------
@@ -3140,12 +4696,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Begin_Block_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BEGIN_BLOCK");
+      P (O, "W_Begin_Block");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BB_Prog);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Begin_Block_Pre_Op;
 
    -------------------------
@@ -3159,7 +4726,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Begin_Block_Post_Op;
 
    ---------------------------
@@ -3170,12 +4737,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Protected_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PROTECTED_PROG");
+      P (O, "W_Protected_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Prog: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).BB_Prog);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Protected_Prog_Pre_Op;
 
    ----------------------------
@@ -3189,7 +4767,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Protected_Prog_Post_Op;
 
    ------------------------
@@ -3200,12 +4778,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Add_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_ADD_PROG");
+      P (O, "W_Op_Add_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Add_Prog_Pre_Op;
 
    -------------------------
@@ -3219,7 +4800,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Add_Prog_Post_Op;
 
    ------------------------------
@@ -3230,12 +4811,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Substract_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_SUBSTRACT_PROG");
+      P (O, "W_Op_Substract_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Substract_Prog_Pre_Op;
 
    -------------------------------
@@ -3249,7 +4833,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Substract_Prog_Post_Op;
 
    -----------------------------
@@ -3260,12 +4844,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Multiply_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_MULTIPLY_PROG");
+      P (O, "W_Op_Multiply_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Multiply_Prog_Pre_Op;
 
    ------------------------------
@@ -3279,7 +4866,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Multiply_Prog_Post_Op;
 
    ---------------------------
@@ -3290,12 +4877,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Divide_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_DIVIDE_PROG");
+      P (O, "W_Op_Divide_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Divide_Prog_Pre_Op;
 
    ----------------------------
@@ -3309,7 +4899,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Divide_Prog_Post_Op;
 
    ------------------------
@@ -3320,12 +4910,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Mod_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_MOD_PROG");
+      P (O, "W_Op_Mod_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Mod_Prog_Pre_Op;
 
    -------------------------
@@ -3339,7 +4932,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Mod_Prog_Post_Op;
 
    -----------------------
@@ -3350,12 +4943,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Eq_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_EQ_PROG");
+      P (O, "W_Op_Eq_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Eq_Prog_Pre_Op;
 
    ------------------------
@@ -3369,7 +4965,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Eq_Prog_Post_Op;
 
    -----------------------
@@ -3380,12 +4976,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Ne_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_NE_PROG");
+      P (O, "W_Op_Ne_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Ne_Prog_Pre_Op;
 
    ------------------------
@@ -3399,7 +4998,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Ne_Prog_Post_Op;
 
    -----------------------
@@ -3410,12 +5009,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Lt_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_LT_PROG");
+      P (O, "W_Op_Lt_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Lt_Prog_Pre_Op;
 
    ------------------------
@@ -3429,7 +5031,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Lt_Prog_Post_Op;
 
    -----------------------
@@ -3440,12 +5042,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Le_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_LE_PROG");
+      P (O, "W_Op_Le_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Le_Prog_Pre_Op;
 
    ------------------------
@@ -3459,7 +5064,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Le_Prog_Post_Op;
 
    -----------------------
@@ -3470,12 +5075,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Gt_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_GT_PROG");
+      P (O, "W_Op_Gt_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Gt_Prog_Pre_Op;
 
    ------------------------
@@ -3489,7 +5097,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Gt_Prog_Post_Op;
 
    -----------------------
@@ -3500,12 +5108,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Ge_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_GE_PROG");
+      P (O, "W_Op_Ge_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Ge_Prog_Pre_Op;
 
    ------------------------
@@ -3519,7 +5130,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Ge_Prog_Post_Op;
 
    ----------------------------
@@ -3530,12 +5141,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Or_Else_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_OR_ELSE_PROG");
+      P (O, "W_Op_Or_Else_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Or_Else_Prog_Pre_Op;
 
    -----------------------------
@@ -3549,7 +5163,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Or_Else_Prog_Post_Op;
 
    -----------------------------
@@ -3560,12 +5174,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_And_Then_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_AND_THEN_PROG");
+      P (O, "W_Op_And_Then_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_And_Then_Prog_Pre_Op;
 
    ------------------------------
@@ -3579,7 +5196,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_And_Then_Prog_Post_Op;
 
    --------------------------
@@ -3590,12 +5207,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Minus_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_MINUS_PROG");
+      P (O, "W_Op_Minus_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Minus_Prog_Pre_Op;
 
    ---------------------------
@@ -3609,7 +5229,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Minus_Prog_Post_Op;
 
    ------------------------
@@ -3620,12 +5240,15 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Op_Not_Prog_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_OP_NOT_PROG");
+      P (O, "W_Op_Not_Prog");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Op_Not_Prog_Pre_Op;
 
    -------------------------
@@ -3639,7 +5262,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Op_Not_Prog_Post_Op;
 
    -------------------
@@ -3650,12 +5273,29 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Binder_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_BINDER");
+      P (O, "W_Binder");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Names: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).B_Names);
+         Relative_Indent (O, -1);
+         P (O, "Arg_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).B_Arg_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Binder_Pre_Op;
 
    --------------------
@@ -3669,7 +5309,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Binder_Post_Op;
 
    -------------------
@@ -3680,12 +5320,53 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Recfun_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_RECFUN");
+      P (O, "W_Recfun");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RF_Name);
+         Relative_Indent (O, -1);
+         P (O, "Binders: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).RF_Binders);
+         Relative_Indent (O, -1);
+         P (O, "Return_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RF_Return_Type);
+         Relative_Indent (O, -1);
+         P (O, "Variant: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RF_Variant);
+         Relative_Indent (O, -1);
+         P (O, "Pre: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RF_Pre);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).RF_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Recfun_Pre_Op;
 
    --------------------
@@ -3699,7 +5380,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Recfun_Post_Op;
 
    -----------------------
@@ -3710,12 +5391,33 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Loop_Annot_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LOOP_ANNOT");
+      P (O, "W_Loop_Annot");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if Get_Node (Node).LA_Invariant /= Why_Empty then
+            P (O, "Invariant: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).LA_Invariant);
+            Relative_Indent (O, -1);
+         end if;
+         if Get_Node (Node).LA_Variant /= Why_Empty then
+            P (O, "Variant: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).LA_Variant);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Loop_Annot_Pre_Op;
 
    ------------------------
@@ -3729,7 +5431,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Loop_Annot_Post_Op;
 
    -------------------
@@ -3740,12 +5442,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Wf_Arg_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_WF_ARG");
+      P (O, "W_Wf_Arg");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).WA_Def);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).WA_For_Id /= Why_Empty then
+            P (O, "For_Id: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).WA_For_Id);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Wf_Arg_Pre_Op;
 
    --------------------
@@ -3759,7 +5480,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Wf_Arg_Post_Op;
 
    --------------------
@@ -3770,12 +5491,37 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Handler_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_HANDLER");
+      P (O, "W_Handler");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).H_Name);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).H_Parameter /= Why_Empty then
+            P (O, "Parameter: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).H_Parameter);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).H_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Handler_Pre_Op;
 
    ---------------------
@@ -3789,7 +5535,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Handler_Post_Op;
 
    -----------------
@@ -3800,12 +5546,25 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_File_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_FILE");
+      P (O, "W_File");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         if not Is_Empty (Get_Node (Node).F_Declarations) then
+            P (O, "Declarations: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).F_Declarations);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end File_Pre_Op;
 
    ------------------
@@ -3819,7 +5578,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end File_Post_Op;
 
    ---------------------------
@@ -3830,12 +5589,43 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Global_Binding_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_GLOBAL_BINDING");
+      P (O, "W_Global_Binding");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GB_Name);
+         Relative_Indent (O, -1);
+         if not Is_Empty (Get_Node (Node).GB_Binders) then
+            P (O, "Binders: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).GB_Binders);
+            Relative_Indent (O, -1);
+         end if;
+         P (O, "Pre: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GB_Pre);
+         Relative_Indent (O, -1);
+         P (O, "Def: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GB_Def);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Global_Binding_Pre_Op;
 
    ----------------------------
@@ -3849,7 +5639,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Global_Binding_Post_Op;
 
    -------------------------------
@@ -3860,12 +5650,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Global_Rec_Binding_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_GLOBAL_REC_BINDING");
+      P (O, "W_Global_Rec_Binding");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GRB_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Global_Rec_Binding_Pre_Op;
 
    --------------------------------
@@ -3879,7 +5680,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Global_Rec_Binding_Post_Op;
 
    ----------------------------------
@@ -3890,12 +5691,35 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Parameter_Declaration_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_PARAMETER_DECLARATION");
+      P (O, "W_Parameter_Declaration");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "External: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PD_External);
+         Relative_Indent (O, -1);
+         P (O, "Names: ");
+         Relative_Indent (O, 1);
+         Traverse_List
+           (State,
+            Get_Node (Node).PD_Names);
+         Relative_Indent (O, -1);
+         P (O, "Parameter_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).PD_Parameter_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Parameter_Declaration_Pre_Op;
 
    -----------------------------------
@@ -3909,7 +5733,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Parameter_Declaration_Post_Op;
 
    ----------------------------------
@@ -3920,12 +5744,31 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Exception_Declaration_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_EXCEPTION_DECLARATION");
+      P (O, "W_Exception_Declaration");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ED_Name);
+         Relative_Indent (O, -1);
+         if Get_Node (Node).ED_Parameter /= Why_Empty then
+            P (O, "Parameter: ");
+            Relative_Indent (O, 1);
+            Traverse
+              (State,
+               Get_Node (Node).ED_Parameter);
+            Relative_Indent (O, -1);
+         end if;
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Exception_Declaration_Pre_Op;
 
    -----------------------------------
@@ -3939,7 +5782,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Exception_Declaration_Post_Op;
 
    ------------------------------
@@ -3950,12 +5793,23 @@ package body Why.Atree.Treepr is
      (State : in out Tree_Printer_State;
       Node  : W_Logic_Declaration_Id)
    is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
    begin
-      P (O, "W_LOGIC_DECLARATION");
+      P (O, "W_Logic_Declaration");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
-      Relative_Indent (O, 1);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Decl: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).LD_Decl);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
    end Logic_Declaration_Pre_Op;
 
    -------------------------------
@@ -3969,7 +5823,7 @@ package body Why.Atree.Treepr is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
-      Relative_Indent (O, -1);
+      null;
    end Logic_Declaration_Post_Op;
 
 end Why.Atree.Treepr;

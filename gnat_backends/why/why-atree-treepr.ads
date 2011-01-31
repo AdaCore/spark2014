@@ -31,10 +31,17 @@ package Why.Atree.Treepr is
 
    procedure wpn (Node : Why_Node_Id);
    pragma Export (Ada, wpn);
+   --  Print a single node, without printing the descendants
+
+   procedure wpt (Node : Why_Node_Id; Depth : Nat);
+   pragma Export (Ada, wpt);
+   --  Print the subtree routed at a specified tree node up to a given depth
 
 private
 
-   type Tree_Printer_State is new Traversal_State with null record;
+   type Tree_Printer_State is new Traversal_State with record
+      Depth : Nat;
+   end record;
 
    procedure Identifier_Pre_Op
      (State : in out Tree_Printer_State;
