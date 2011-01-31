@@ -25,7 +25,6 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
@@ -38,6 +37,16 @@ with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Types is
+
+   -------------------------
+   -- Type_Of_Array_Index --
+   -------------------------
+
+   function Type_Of_Array_Index (N : Node_Id) return Name_Id
+   is
+   begin
+      return Chars (Etype (First (Discrete_Subtype_Definitions (N))));
+   end Type_Of_Array_Index;
 
    -------------------------------------
    -- Why_Type_Decl_of_Gnat_Type_Decl --
@@ -100,7 +109,7 @@ package body Gnat2Why.Types is
                      High           : constant Uint :=
                         Expr_Value (High_Bound (Sc_Range));
                      Int_Name       : constant String :=
-                        Get_Name_String (Chars (Etype (Sc_Range)));
+                        Get_Name_String (Type_Of_Array_Index (Def_Node));
                   begin
                      Declare_Ada_Constrained_Array
                         (File,
@@ -146,8 +155,6 @@ package body Gnat2Why.Types is
                   case Nkind (Constraint (Sub_Ind)) is
                   when N_Range_Constraint =>
                      declare
-                        Base_Type : constant String :=
-                           Get_Name_String (Chars ((Subtype_Mark (Sub_Ind))));
                         Sc_Range  : constant Node_Id :=
                            Range_Expression (Constraint (Sub_Ind));
                         Low       : constant Uint :=
@@ -160,10 +167,6 @@ package body Gnat2Why.Types is
                            Name_Str,
                            Low,
                            High);
-                        Declare_Ada_Range_Subtype_Relation
-                          (File,
-                           Name_Str,
-                           Base_Type);
                      end;
                   when N_Index_Or_Discriminant_Constraint =>
                      --  ??? In at least one case (generated code for

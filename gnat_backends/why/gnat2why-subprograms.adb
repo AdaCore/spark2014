@@ -30,6 +30,7 @@ with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
+with Uintp;              use Uintp;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
@@ -60,7 +61,9 @@ package body Gnat2Why.Subprograms is
    function Conversion_Name
       (From : Exp_Type;
        To   : Exp_Type) return W_Identifier_Id
-      with Pre => (not (From = To));
+      with Pre =>
+        (not (From = To) and then
+         (From.Kind = Why_Int or else To.Kind = Why_Int));
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion
@@ -142,10 +145,8 @@ package body Gnat2Why.Subprograms is
                   return
                     New_Conversion_To_Int (Get_Name_String (From.Ada_Type));
                when Ada_Type_Node =>
-                  return
-                    New_Conversion
-                       (From => Get_Name_String (From.Ada_Type),
-                        To => Get_Name_String (To.Ada_Type));
+                  raise Program_Error
+                     with "Conversion between arbitrary types attempted";
             end case;
       end case;
    end Conversion_Name;
@@ -164,11 +165,25 @@ package body Gnat2Why.Subprograms is
       if To = From then
          return Why_Expr;
       end if;
-      return
-        New_Prog_Call
-          (Ada_Node => Ada_Node,
-           Name => Conversion_Name (From => From, To => To),
-           Progs => (1 => Why_Expr));
+      if To.Kind = Why_Int or else From.Kind = Why_Int then
+         return
+           New_Prog_Call
+             (Ada_Node => Ada_Node,
+              Name => Conversion_Name (From => From, To => To),
+              Progs => (1 => Why_Expr));
+      else
+         return
+            Insert_Conversion
+               (Ada_Node => Ada_Node,
+                To => To,
+                From => (Kind => Why_Int),
+                Why_Expr =>
+                  Insert_Conversion
+                    (Ada_Node => Ada_Node,
+                     To => (Kind => Why_Int),
+                     From => From,
+                     Why_Expr => Why_Expr));
+      end if;
    end Insert_Conversion;
 
    function Insert_Conversion_Term
@@ -181,11 +196,25 @@ package body Gnat2Why.Subprograms is
       if To = From then
          return Why_Term;
       end if;
-      return
-        New_Operation
-          (Ada_Node => Ada_Node,
-           Name => Conversion_Name (From => From, To => To),
-           Parameters => (1 => Why_Term));
+      if To.Kind = Why_Int or else From.Kind = Why_Int then
+         return
+           New_Operation
+             (Ada_Node => Ada_Node,
+              Name => Conversion_Name (From => From, To => To),
+              Parameters => (1 => Why_Term));
+      else
+         return
+            Insert_Conversion_Term
+               (Ada_Node => Ada_Node,
+                To => To,
+                From => (Kind => Why_Int),
+                Why_Term =>
+                  Insert_Conversion_Term
+                    (Ada_Node => Ada_Node,
+                     To => (Kind => Why_Int),
+                     From => From,
+                     Why_Term => Why_Term));
+      end if;
    end Insert_Conversion_Term;
 
    ----------------------------
@@ -354,33 +383,33 @@ package body Gnat2Why.Subprograms is
       is
          Corr_Spec : constant Node_Id := Corresponding_Spec (Node);
          PPCs      : Node_Id;
+         Cur_Spec : W_Predicate_Id := New_True_Literal_Pred;
       begin
          if Nkind (Corr_Spec) = N_Empty then
-            return New_Assertion (Pred => New_True_Literal_Pred);
+            return New_Assertion (Pred => Cur_Spec);
          end if;
 
          PPCs := Spec_PPC_List (Corr_Spec);
-         loop
-            if not Present (PPCs) then
-               return New_Assertion (Pred => New_True_Literal_Pred);
-            end if;
-
+         while Present (PPCs) loop
             if Pragma_Name (PPCs) = Kind then
                declare
-                  Ada_Pre : constant Node_Id :=
+                  Ada_Spec : constant Node_Id :=
                               Expression (First
                                           (Pragma_Argument_Associations
                                            (PPCs)));
                begin
-                  return
-                    New_Assertion
-                      (Ada_Node => Ada_Pre,
-                       Pred     => Why_Predicate_Of_Ada_Expr (Ada_Pre));
+                  Cur_Spec :=
+                     New_Conjonction
+                       (Ada_Node => Ada_Spec,
+                        Left => Why_Predicate_Of_Ada_Expr (Ada_Spec),
+                        Right => Cur_Spec);
                end;
             end if;
 
             PPCs := Next_Pragma (PPCs);
          end loop;
+
+         return New_Assertion (Pred => Cur_Spec);
       end Compute_Spec;
 
       Why_Body : constant W_Prog_Id :=
@@ -566,7 +595,11 @@ package body Gnat2Why.Subprograms is
                        Ar        =>
                          New_Identifier (Symbol => Chars (Prefix (Lvalue))),
                        Index     =>
-                         Why_Expr_Of_Ada_Expr (First (Expressions (Lvalue))),
+                         Why_Expr_Of_Ada_Expr
+                           (First (Expressions (Lvalue)),
+                            (Ada_Type_Node,
+                             Type_Of_Node
+                               (First_Index (Etype (Prefix (Lvalue)))))),
                        Value     =>
                          Why_Expr_Of_Ada_Expr (Expression (Stmt)));
                when others =>
@@ -929,7 +962,18 @@ package body Gnat2Why.Subprograms is
                (Type_Name => (Get_Name_String (Type_Of_Node (Prefix (Expr)))),
                 Ar        => Why_Term_Of_Ada_Expr (Prefix (Expr)),
                 Index     =>
-                  Why_Term_Of_Ada_Expr (First (Expressions (Expr))));
+                  Why_Term_Of_Ada_Expr
+                    (First (Expressions (Expr)),
+                     (Ada_Type_Node,
+                      Type_Of_Node (First_Index (Etype (Prefix (Expr))))))
+                  );
+
+         when N_Raise_Constraint_Error =>
+            --  This means the program contains some obvious constraint error
+            --  This should not happen.
+            --  ??? Or maybe it can happen, and we should generate an
+            --  unprovable VC?
+               raise Program_Error with "Gnat2Why: Not implemented";
 
          when N_Attribute_Reference =>
             --  Special variables, for example "result" and "old", are

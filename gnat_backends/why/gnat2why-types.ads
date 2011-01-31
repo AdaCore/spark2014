@@ -25,6 +25,7 @@
 
 with Types;      use Types;
 with Why.Ids;    use Why.Ids;
+with Namet;      use Namet;
 
 package Gnat2Why.Types is
    procedure Why_Type_Decl_of_Gnat_Type_Decl
@@ -38,4 +39,8 @@ package Gnat2Why.Types is
    --  Take an Ada Type and transform it into a Why program type
    --  ie add a reference constructor on top
    --  example: Integer => integer ref
+
+   function Type_Of_Array_Index (N : Node_Id) return Name_Id;
+   --  Given a type definition for arrays, return the type of the array index
+
 end Gnat2Why.Types;
