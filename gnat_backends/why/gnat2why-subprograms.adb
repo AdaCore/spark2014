@@ -986,13 +986,24 @@ package body Gnat2Why.Subprograms is
                raise Not_Implemented;
 
          when N_Attribute_Reference =>
-            --  Special variables, for example "result" and "old", are
-            --  represented as N_Attribute_Reference
-            if Get_Name_String (Attribute_Name (Expr)) = "result" then
-               T := New_Result_Identifier;
-            else
-               raise Not_Implemented;
-            end if;
+            declare
+               Attr_Name : constant String :=
+                  Get_Name_String (Attribute_Name (Expr));
+            begin
+               --  Special variables, for example "result" and "old", are
+               --  represented as N_Attribute_Reference
+               if  Attr_Name = "result" then
+                  T := New_Result_Identifier;
+               elsif Attr_Name = "old" then
+                  T := New_Term_Identifier
+                         (Name =>
+                            New_Identifier (Symbol => Chars (Prefix (Expr))),
+                          Label =>
+                            New_Identifier (Attr_Name));
+               else
+                  raise Not_Implemented;
+               end if;
+            end;
 
          when others =>
             raise Not_Implemented;
