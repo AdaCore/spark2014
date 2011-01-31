@@ -135,7 +135,7 @@ package body Why.Gen.Names is
    -----------------------------
 
    function New_Conversion_From_Int (Name : String) return W_Identifier_Id is
-      Suffix : constant String := "___of_integer";
+      Suffix : constant String := "___of_int";
    begin
       return New_Identifier (Name & Suffix);
    end New_Conversion_From_Int;
@@ -145,7 +145,7 @@ package body Why.Gen.Names is
    ---------------------------
 
    function New_Conversion_To_Int (Name : String) return W_Identifier_Id is
-      Prefix : constant String := "integer_of___";
+      Prefix : constant String := "int_of___";
    begin
       return New_Identifier (Prefix & Name);
    end New_Conversion_To_Int;
