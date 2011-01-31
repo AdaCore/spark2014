@@ -252,6 +252,8 @@ package body Why.Gen.Funcs is
          end if;
       end Append_Arg;
 
+   --  Start of processing for New_Call_To_Logic
+
    begin
       Operation_Set_Name (Operation, Name);
       Append_Arg (Arrows);

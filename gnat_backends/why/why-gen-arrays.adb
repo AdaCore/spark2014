@@ -74,7 +74,6 @@ package body Why.Gen.Arrays is
           Type_Name => Name,
           Index_Type => New_Abstract_Type (Int_Name),
           Component_Type => New_Abstract_Type (Component));
-
    end Declare_Ada_Constrained_Array;
 
    ---------------------------

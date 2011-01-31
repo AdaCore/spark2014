@@ -56,9 +56,9 @@ package body Gnat2Why.Types is
       (File : W_File_Id;
        Node : Node_Id)
    is
-      Name                : constant Name_Id :=
-                              Chars (Defining_Identifier (Node));
-      Name_Str            : constant String := Get_Name_String (Name);
+      Name     : constant Name_Id :=
+                   Chars (Defining_Identifier (Node));
+      Name_Str : constant String := Get_Name_String (Name);
    begin
       --  We case split on the type of the type declaration, and mostly use
       --  the intelligent functions in other modules

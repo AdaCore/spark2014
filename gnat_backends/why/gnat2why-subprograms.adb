@@ -58,6 +58,7 @@ package body Gnat2Why.Subprograms is
                Ada_Type : Name_Id;
          end case;
       end record;
+   --  ??? Missing doc
 
    function Conversion_Name
       (From : Exp_Type;
@@ -68,18 +69,18 @@ package body Gnat2Why.Subprograms is
    --  Return the name of the conversion function between the two types
 
    function Insert_Conversion
-      (Ada_Node  : Node_Id := Empty;
-       To        : Exp_Type;
-       From      : Exp_Type;
-       Why_Expr  : W_Prog_Id) return W_Prog_Id;
+      (Ada_Node : Node_Id := Empty;
+       To       : Exp_Type;
+       From     : Exp_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
    function Insert_Conversion_Term
-      (Ada_Node  : Node_Id := Empty;
-       To        : Exp_Type;
-       From      : Exp_Type;
-       Why_Term  : W_Term_Id) return W_Term_Id;
+      (Ada_Node : Node_Id := Empty;
+       To       : Exp_Type;
+       From     : Exp_Type;
+       Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
@@ -157,15 +158,16 @@ package body Gnat2Why.Subprograms is
    -----------------------
 
    function Insert_Conversion
-      (Ada_Node  : Node_Id := Empty;
-       To        : Exp_Type;
-       From      : Exp_Type;
-       Why_Expr  : W_Prog_Id) return W_Prog_Id
+      (Ada_Node : Node_Id := Empty;
+       To       : Exp_Type;
+       From     : Exp_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id
    is
    begin
       if To = From then
          return Why_Expr;
       end if;
+
       if To.Kind = Why_Int or else From.Kind = Why_Int then
          return
            New_Prog_Call
@@ -187,16 +189,21 @@ package body Gnat2Why.Subprograms is
       end if;
    end Insert_Conversion;
 
+   ----------------------------
+   -- Insert_Conversion_Term --
+   ----------------------------
+
    function Insert_Conversion_Term
-      (Ada_Node  : Node_Id := Empty;
-       To        : Exp_Type;
-       From      : Exp_Type;
-       Why_Term  : W_Term_Id) return W_Term_Id
+      (Ada_Node : Node_Id := Empty;
+       To       : Exp_Type;
+       From     : Exp_Type;
+       Why_Term : W_Term_Id) return W_Term_Id
    is
    begin
       if To = From then
          return Why_Term;
       end if;
+
       if To.Kind = Why_Int or else From.Kind = Why_Int then
          return
            New_Operation
@@ -267,9 +274,9 @@ package body Gnat2Why.Subprograms is
       Node : Node_Id)
    is
       --  ??? This function has to be expanded to deal with:
-      --  * both functions and procedures
-      --  * procedure arguments
-      --  * return types
+      --  * both functions and procedures;
+      --  * procedure arguments;
+      --  * return types.
       Spec        : constant Node_Id := Specification (Node);
       Stmts       : constant List_Id :=
                       Statements (Handled_Statement_Sequence (Node));
@@ -278,21 +285,21 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Binder (Arg : Node_Id) return W_Binder_Id;
       --  Compute a single Why function argument from a single Ada function /
-      --  procedure argument; all result types are reference types
+      --  procedure argument; all result types are reference types.
 
       function Compute_Binders return W_Binder_Array;
-      --  Compute the arguments of the generated Why function
+      --  Compute the arguments of the generated Why function;
       --  use argument (x : void) if the Ada procedure / function has no
-      --  arguments
+      --  arguments.
 
       function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id;
       --  Add a "let" binding to Why body for each local variable of the
-      --  procedure
+      --  procedure.
 
       function Compute_Spec (Kind : Name_Id) return W_Assertion_Id;
-      --  Compute the precondition of the generated Why functions
+      --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
-      --  you want the pre- or postcondition
+      --  you want the pre- or postcondition.
 
       ---------------------
       -- Compute_Binder --
@@ -416,7 +423,7 @@ package body Gnat2Why.Subprograms is
       Why_Body : constant W_Prog_Id :=
                    Compute_Context (Why_Expr_of_Ada_Stmts (Stmts));
 
-      --  Start of processing for Why_Decl_of_Ada_Subprogram
+   --  Start of processing for Why_Decl_of_Ada_Subprogram
 
    begin
       --  ??? TBD deal with expression functions : transform into Why
@@ -447,7 +454,7 @@ package body Gnat2Why.Subprograms is
      (Expr          : Node_Id;
       Expected_Type : Exp_Type) return W_Prog_Id
    is
-      T : W_Prog_Id;
+      T            : W_Prog_Id;
       Current_Type : Exp_Type := (Ada_Type_Node, Type_Of_Node (Expr));
    begin
       --  Here, we simply analyze the structure of Expr and build the
@@ -528,6 +535,7 @@ package body Gnat2Why.Subprograms is
             --  Nothing is to do here, because we insert type conversions
             --  ourselves.
             return Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
+
          when N_Indexed_Component =>
             --  ??? We work with single dimensional arrays for the time being
             T :=
@@ -713,6 +721,7 @@ package body Gnat2Why.Subprograms is
             case Nkind (Cur_Stmt) is
                when N_Null_Statement =>
                   null;
+
                when N_Object_Declaration =>
                   if Len /= 0 then
                      Result := New_Binding_Ref
