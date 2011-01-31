@@ -30,6 +30,7 @@ with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
+with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Ints;       use Why.Gen.Ints;
@@ -120,7 +121,7 @@ package body Gnat2Why.Types is
                   end;
 
                when others =>
-                  raise Program_Error with "Gnat2Why: Not implemented";
+                  raise Not_Implemented;
                end case;
             end;
          when N_Subtype_Declaration =>
@@ -166,15 +167,15 @@ package body Gnat2Why.Types is
                      --  'Image of enums) we should not treat this case
                      null;
                   when others =>
-                     raise Program_Error with "Gnat2Why: Not implemented";
+                     raise Not_Implemented;
                   end case;
                when others =>
-                  raise Program_Error with "Gnat2Why: Not implemented";
+                  raise Not_Implemented;
                end case;
             end;
          --  ??? TBD Complete This code
          when others =>
-            raise Program_Error with "Gnat2Why: Not implemented";
+            raise Not_Implemented;
       end case;
    end Why_Type_Decl_of_Gnat_Type_Decl;
 

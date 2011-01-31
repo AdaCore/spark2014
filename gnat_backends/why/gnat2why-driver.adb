@@ -34,6 +34,7 @@ with Sprint;               use Sprint;
 with Switch;               use Switch;
 with Stand;                use Stand;
 with Treepr;
+with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
@@ -167,7 +168,7 @@ package body Gnat2Why.Driver is
                     (File,
                      Visible_Declarations (Specification (Unit (GNAT_Root))));
                when others =>
-                  raise Program_Error with "Gnat2Why: Not implemented";
+                  raise Not_Implemented;
             end case;
          end if;
          --  ??? TBD: create a file that has a meaningful name, depending on

@@ -31,6 +31,7 @@ with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Uintp;              use Uintp;
+with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
@@ -434,7 +435,7 @@ package body Gnat2Why.Subprograms is
                Def     => Why_Body);
 
          when others =>
-            raise Program_Error with "Gnat2Why: Not implemented";
+            raise Not_Implemented;
       end case;
    end Why_Decl_of_Ada_Subprogram;
 
@@ -537,7 +538,7 @@ package body Gnat2Why.Subprograms is
                   Why_Expr_Of_Ada_Expr (First (Expressions (Expr))));
 
          when others =>
-            raise Program_Error with "Gnat2Why: Not implemented";
+            raise Not_Implemented;
       end case;
       return
         Insert_Conversion
@@ -603,7 +604,7 @@ package body Gnat2Why.Subprograms is
                        Value     =>
                          Why_Expr_Of_Ada_Expr (Expression (Stmt)));
                when others =>
-                  raise Program_Error with "Gnat2Why: Not implemented";
+                  raise Not_Implemented;
                end case;
             end;
 
@@ -885,11 +886,11 @@ package body Gnat2Why.Subprograms is
                         (High_Bound (Right_Opnd (Expr)),
                          (Kind => Why_Int)));
             else
-               raise Program_Error with "Gnat2Why: Not implemented";
+               raise Not_Implemented;
             end if;
 
          when others =>
-            raise Program_Error with "Gnat2Why: Not implemented";
+            raise Not_Implemented;
       end case;
    end Why_Predicate_Of_Ada_Expr;
 
@@ -973,7 +974,7 @@ package body Gnat2Why.Subprograms is
             --  This should not happen.
             --  ??? Or maybe it can happen, and we should generate an
             --  unprovable VC?
-               raise Program_Error with "Gnat2Why: Not implemented";
+               raise Not_Implemented;
 
          when N_Attribute_Reference =>
             --  Special variables, for example "result" and "old", are
@@ -981,11 +982,11 @@ package body Gnat2Why.Subprograms is
             if Get_Name_String (Attribute_Name (Expr)) = "result" then
                T := New_Result_Identifier;
             else
-               raise Program_Error with "Gnat2Why: Not implemented";
+               raise Not_Implemented;
             end if;
 
          when others =>
-            raise Program_Error with "Gnat2Why: Not implemented";
+            raise Not_Implemented;
       end case;
 
       return
