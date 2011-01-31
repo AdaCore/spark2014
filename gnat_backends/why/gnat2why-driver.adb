@@ -36,6 +36,7 @@ with Stand;                use Stand;
 with Treepr;
 with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
 with Why.Ids;              use Why.Ids;
@@ -84,49 +85,45 @@ package body Gnat2Why.Driver is
    procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id)
    is
       Decl  : Node_Id;
-
-      function Is_Type_Node (N : Node_Id) return Boolean;
-      --  Detect if a node of an Ada Tree is a typing declaration
-
-      function Is_Func_Or_Proc_Node (N : Node_Id) return Boolean;
-      --  Detect if a node is a function or procedure declaration
-
-      ------------------
-      -- Is_Type_Node --
-      ------------------
-
-      function Is_Type_Node (N : Node_Id) return Boolean is
-      begin
-         case Nkind (N) is
-            when N_Full_Type_Declaration | N_Subtype_Declaration =>
-               return True;
-            when others => return False;
-         end case;
-      end Is_Type_Node;
-
-      --------------------------
-      -- Is_Func_Or_Proc_Node --
-      --------------------------
-
-      function Is_Func_Or_Proc_Node (N : Node_Id) return Boolean is
-      begin
-         case Nkind (N) is
-            when N_Subprogram_Body =>
-               return True;
-            when others => return False;
-         end case;
-      end Is_Func_Or_Proc_Node;
-
    begin
       Decl := First (Decls);
       while Present (Decl) loop
-         if Is_Type_Node (Decl) then
-            Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
-         end if;
+         case Nkind (Decl) is
+            when N_Full_Type_Declaration | N_Subtype_Declaration =>
+               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
 
-         if Is_Func_Or_Proc_Node (Decl) then
-            Why_Decl_of_Ada_Subprogram (File, Decl);
-         end if;
+            when N_Subprogram_Body =>
+               Why_Decl_of_Ada_Subprogram (File, Decl);
+
+            when N_Object_Declaration =>
+               case Nkind (Object_Definition (Decl)) is
+               when N_Identifier =>
+                  File_Append_To_Declarations
+                    (File,
+                     New_Parameter_Declaration
+                       (Ada_Node => Decl,
+                        Names =>
+                          (1 =>
+                            New_Identifier (Symbol =>
+                              Chars (Defining_Identifier (Decl)))),
+                        Parameter_Type =>
+                           Why_Prog_Type_of_Ada_Type
+                             (Object_Definition (Decl))));
+               when N_Constrained_Array_Definition | N_Subtype_Indication =>
+                  null;
+               when others =>
+                  raise Not_Implemented;
+               end case;
+
+            --  The following declarations are ignored for now:
+            when N_Pragma | N_Package_Declaration | N_Exception_Declaration
+               | N_Exception_Renaming_Declaration | N_Subprogram_Declaration
+               | N_Freeze_Entity | N_Itype_Reference =>
+               null;
+
+            when others =>
+                  raise Not_Implemented;
+         end case;
 
          Next (Decl);
       end loop;
