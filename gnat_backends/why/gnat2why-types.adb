@@ -34,7 +34,6 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Enums;      use Why.Gen.Enums;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
 
 package body Gnat2Why.Types is
 
@@ -133,8 +132,6 @@ package body Gnat2Why.Types is
                   declare
                      Sc_Range   : constant Node_Id :=
                         Scalar_Range (Defining_Identifier (Node));
-                     Base_Type : constant String :=
-                        Get_Name_String (Chars (Sub_Ind));
                      Low       : constant Uint :=
                         Expr_Value (Low_Bound (Sc_Range));
                      High       : constant Uint :=
@@ -146,10 +143,6 @@ package body Gnat2Why.Types is
                         Name_Str,
                         Low,
                         High);
-                     Declare_Ada_Range_Subtype_Relation
-                       (File,
-                        Name_Str,
-                        Base_Type);
                   end;
                when N_Subtype_Indication =>
                   case Nkind (Constraint (Sub_Ind)) is

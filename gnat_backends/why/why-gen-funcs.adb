@@ -30,67 +30,8 @@ with Why.Atree.Tables;    use Why.Atree.Tables;
 
 with Why.Gen.Arrows;      use Why.Gen.Arrows;
 with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Types;      use Why.Gen.Types;
 
 package body Why.Gen.Funcs is
-
-   -------------------
-   -- Declare_Ada_Subtype_Relation --
-   -------------------
-
-   procedure Declare_Ada_Range_Subtype_Relation
-     (File     : W_File_Id;
-      Sub_Type  : String;
-      Base_Type : String)
-   is
-      Var  : constant String := "x";
-      Pred : constant W_Predicate_Id :=
-         New_Predicate_Instance
-           (Name => Range_Pred_Name (Sub_Type),
-            Parameters =>
-              (1 =>
-                New_Operation
-                  (Name => New_Conversion_To_Int (Base_Type),
-                   Parameters =>
-                     (1 => New_Operation
-                       (Name => New_Conversion (Sub_Type, Base_Type),
-                        Parameters => (1 => New_Term (Var)))))));
-      Arrows      : W_Arrow_Type_Unchecked_Id :=
-                      New_Arrow_Stack (New_Abstract_Type (Sub_Type));
-   begin
-      Declare_Logic
-       (File => File,
-        Name => New_Conversion (Sub_Type, Base_Type),
-        Args => (1 => New_Abstract_Type (Sub_Type)),
-        Return_Type => New_Abstract_Type (Base_Type));
-
-      File_Append_To_Declarations (
-         File,
-         New_Logic_Declaration (Decl =>
-            New_Axiom (Name => New_Conversion_Axiom (Sub_Type, Base_Type),
-            Def =>
-               New_Universal_Quantif
-                  (Variables => (1 => New_Identifier (Var)),
-                   Var_Type => New_Abstract_Type (Sub_Type),
-                   Pred => Pred))));
-
-      Arrows := Push_Arg
-                  (Arrows,
-                   New_Identifier (Var),
-                   New_Abstract_Type (Base_Type));
-
-      Declare_Logic_And_Parameters
-        (File => File,
-         Name => New_Conversion (Base_Type, Sub_Type),
-         Arrows => Arrows,
-         Pre =>
-           New_Operation
-             (Name => Range_Pred_Name (Sub_Type),
-              Parameters =>
-               (1 => New_Operation
-                       (Name => New_Conversion_To_Int (Base_Type),
-                        Parameters => (1 => New_Term (Var))))));
-   end Declare_Ada_Range_Subtype_Relation;
 
    -----------------------
    -- Declare_Allocator --

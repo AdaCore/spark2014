@@ -32,9 +32,6 @@ package Why.Gen.Names is
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
-   function New_Conversion (From : String; To : String) return W_Identifier_Id;
-   --  Create a new identifier for a conversion between to abstract types
-
    function New_Conversion_Axiom (From : String; To : String)
       return W_Identifier_Id;
    --  Create a new identifier for a conversion between to abstract types
