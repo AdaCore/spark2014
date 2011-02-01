@@ -2032,6 +2032,7 @@ package body Why.Atree.Sprint is
 
       Traverse (State, Loop_Content);
       Relative_Indent (O, 1);
+      NL (O);
       P (O, "done");
       State.Control := Abandon_Children;
    end While_Loop_Pre_Op;
