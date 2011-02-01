@@ -6,6 +6,8 @@ This module contains support functions for all test.py
 import os
 import sys
 import re
+import glob
+import shutil
 
 #  Change directory
 
@@ -24,6 +26,19 @@ def cat(filename):
     """
     with open(filename, 'r') as f:
         print f.read()
+
+def concat(file1, file2, out):
+   """Concatenate two files
+
+    PARAMETERS
+      file1: name of the first file
+      file2: name of the second file
+      out: name of the target file
+   """
+   destination = open(out, 'wb')
+   shutil.copyfileobj(open(file1, 'rb'), destination)
+   shutil.copyfileobj(open(file2, 'rb'), destination)
+   destination.close()
 
 def gnat2why(src, opt=None):
     """Invoke gnat2why
@@ -61,7 +76,7 @@ def altergo(src, opt=None):
       src: source file to process
       opt: additional options to pass to alt-ergo
     """
-    cmd = ["alt-ergo"]
+    cmd = ["why-cpulimit","10","alt-ergo"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
@@ -73,6 +88,26 @@ def altergo(src, opt=None):
           print m.group(1)
        else:
           print line
+    if process.status:
+        # We assume that a timeout happened, but we actually don't know
+         print "Timeout"
+
+def prove(src):
+   """Prove all obligations from an Ada file
+
+   PARAMETERS
+     src: source file .adb or .adb to process
+
+   Call gnat2why on source file, then why on the resulting file. Alt-Ergo is
+   run on each generated VC independently.
+   """
+   gnat2why(src, opt=["-gnat2012", "-gnata"])
+   why("out.why", opt=["--multi-why"])
+   for f in glob.glob("out_po*.why"):
+      concat("out_ctx.why", f, "out_cur.why")
+      altergo("out_cur.why")
+
+
 
 def to_list(arg):
     """Convert to list
