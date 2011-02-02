@@ -88,29 +88,29 @@ def altergo(src, opt=None):
     # Remove Filename, linenumber and time of proof, just keep status
     res = re.compile(".*:(.*)\(.*")
     for line in str.splitlines(process.out):
-       m = re.search(res, line)
-       if m:
-          print m.group(1)
-       else:
-          print line
+        m = re.search(res, line)
+        if m:
+            print m.group(1)
+        else:
+           print line
     if process.status:
         # We assume that a timeout happened, but we actually don't know
-         print "Timeout"
+        print "Timeout"
 
 def prove(src):
-   """Prove all obligations from an Ada file
+    """Prove all obligations from an Ada file
 
-   PARAMETERS
-     src: source file .adb or .adb to process
+    PARAMETERS
+      src: source file .adb or .adb to process
 
-   Call gnat2why on source file, then why on the resulting file. Alt-Ergo is
-   run on each generated VC independently.
-   """
-   gnat2why(src, opt=["-gnat2012", "-gnata"])
-   why("out.why", opt=["--multi-why", "--locs", "out.loc"])
-   for f in glob.glob("out_po*.why"):
-      concat("out_ctx.why", f, "out_cur.why")
-      altergo("out_cur.why")
+    Call gnat2why on source file, then why on the resulting file. Alt-Ergo is
+    run on each generated VC independently.
+    """
+    gnat2why(src, opt=["-gnat2012", "-gnata"])
+    why("out.why", opt=["--multi-why", "--locs", "out.loc"])
+    for f in glob.glob("out_po*.why"):
+        concat("out_ctx.why", f, "out_cur.why")
+        altergo("out_cur.why")
 
 
 
