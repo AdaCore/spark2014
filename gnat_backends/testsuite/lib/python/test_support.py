@@ -102,7 +102,7 @@ def prove(src):
    run on each generated VC independently.
    """
    gnat2why(src, opt=["-gnat2012", "-gnata"])
-   why("out.why", opt=["--multi-why"])
+   why("out.why", opt=["--multi-why", "--locs", "out.loc"])
    for f in glob.glob("out_po*.why"):
       concat("out_ctx.why", f, "out_cur.why")
       altergo("out_cur.why")
