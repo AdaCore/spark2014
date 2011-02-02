@@ -58,6 +58,7 @@ package ALFA.Frame_Conditions is
       Line : Nat;
       Col  : Nat;
    end record;
+   --  Representative of an entity
 
    Null_Entity : constant Entity_Rep := Entity_Rep'(File => 0,
                                                     Line => 0,
@@ -65,6 +66,7 @@ package ALFA.Frame_Conditions is
 
    function Entity_Hash (E : Entity_Rep) return Hash_Type is
      (Hash_Type (E.File * 53 + E.Line * 17 + E.Col));
+   --  Hash function for hashed-maps
 
    package Entity_Set is new Hashed_Sets
      (Element_Type        => Entity_Rep,

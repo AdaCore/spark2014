@@ -260,35 +260,53 @@ package body ALFA.Frame_Conditions is
       Get_ALFA_From_ALI;
       Close (ALI_File);
 
-      --  Walk low-level ALFA table for this unit and populate high-level maps
+      --  Walk low-level ALFA tables for this unit and populate high-level maps
 
-      declare
+      Walk_ALFA_Tables : declare
+
          subtype File_Idx is File_Index range
            ALFA_File_Table.First .. ALFA_File_Table.Last;
+         --  Range of indexes in ALFA_File_Table
+
          type File_Corresp_Array is array (File_Idx) of Nat;
+         --  Map each source file to a representative across ALI files
 
          type Scope_Rep is record
             File_Num  : Nat;
             Scope_Num : Nat;
          end record;
+         --  Representative of a scope
 
          function Scope_Hash (S : Scope_Rep) return Hash_Type is
            (Hash_Type (S.File_Num * 17 + S.Scope_Num));
+         --  Hash function for hashed-maps
 
-         package Scope_Map is new Hashed_Maps
+         package Scope_Entity is new Hashed_Maps
            (Key_Type        => Scope_Rep,
             Element_Type    => Entity_Rep,
             Hash            => Scope_Hash,
             Equivalent_Keys => "=",
             "="             => "=");
+         --  Map each scope to its entity representative
+
+         package Scope_Spec is new Hashed_Maps
+           (Key_Type        => Scope_Rep,
+            Element_Type    => Scope_Rep,
+            Hash            => Scope_Hash,
+            Equivalent_Keys => "=",
+            "="             => "=");
+         --  Map body scopes to their spec scope, when different
 
          File_Corresp   : File_Corresp_Array;
-         Scope_Entities : Scope_Map.Map;
+         Scope_Entities : Scope_Entity.Map;
+         Scope_Specs    : Scope_Spec.Map;
          Current_Entity : Entity_Rep;
 
+      --  Start of processing for Walk_ALFA_Tables
+
       begin
-         --  Build a table of correspondance between files in this particular
-         --  ALI file and numbers across ALI files.
+         --  Fill File_Corresp : build a table of correspondance between files
+         --  in this particular ALI file and numbers across ALI files.
 
          for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
             declare
@@ -298,7 +316,11 @@ package body ALFA.Frame_Conditions is
             end;
          end loop;
 
-         --  Build entity representatives for all scopes in this ALI file
+         --  Fill Scope_Entities : build entity representatives for all scopes
+         --  in this ALI file.
+
+         --  Fill Scope_Specs : build a correspondance table between body and
+         --  spec scope for the same entity.
 
          for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
             for S in ALFA_File_Table.Table (F).From_Scope
@@ -306,13 +328,23 @@ package body ALFA.Frame_Conditions is
             loop
                declare
                   Srec : ALFA_Scope_Record renames ALFA_Scope_Table.Table (S);
+                  Sco  : constant Scope_Rep :=
+                           Scope_Rep'(File_Num  => Srec.File_Num,
+                                      Scope_Num => Srec.Scope_Num);
+                  Ent  : constant Entity_Rep :=
+                           Entity_Rep'(File => File_Corresp (F),
+                                       Line => Srec.Line,
+                                       Col  => Srec.Col);
                begin
-                  Scope_Entities.Insert (
-                    Scope_Rep'(File_Num  => Srec.File_Num,
-                               Scope_Num => Srec.Scope_Num),
-                    Entity_Rep'(File => File_Corresp (F),
-                                Line => Srec.Line,
-                                Col  => Srec.Col));
+                  Scope_Entities.Insert (Sco, Ent);
+
+                  --  If present, use the body-to-spec information
+
+                  if Srec.Spec_File_Num /= 0 then
+                     Scope_Specs.Insert (Sco,
+                       Scope_Rep'(File_Num  => Srec.Spec_File_Num,
+                                  Scope_Num => Srec.Spec_Scope_Num));
+                  end if;
                end;
             end loop;
          end loop;
@@ -327,7 +359,7 @@ package body ALFA.Frame_Conditions is
                for X in ALFA_Scope_Table.Table (S).From_Xref
                  .. ALFA_Scope_Table.Table (S).To_Xref
                loop
-                  declare
+                  Do_One_Xref : declare
                      Srec : ALFA_Scope_Record renames
                               ALFA_Scope_Table.Table (S);
                      Xref : ALFA_Xref_Record renames ALFA_Xref_Table.Table (X);
@@ -336,35 +368,57 @@ package body ALFA.Frame_Conditions is
                                     Entity_Rep'(File => File_Corresp (F),
                                                 Line => Xref.Entity_Line,
                                                 Col  => Xref.Entity_Col);
-                     Ref_Scope  : constant Entity_Rep :=
-                                    Scope_Entities.Element
-                                      (Scope_Rep'(File_Num => Xref.File_Num,
-                                                 Scope_Num => Xref.Scope_Num));
-                     Def_Scope  : constant Entity_Rep :=
-                                    Scope_Entities.Element
-                                      (Scope_Rep'(File_Num => Srec.File_Num,
-                                                 Scope_Num => Srec.Scope_Num));
+
+                     Ref_Scope     : Scope_Rep;
+                     Def_Scope     : Scope_Rep;
+                     Ref_Scope_Ent : Entity_Rep;
+                     Def_Scope_Ent : Entity_Rep;
+
+                  --  Start of processing for Do_One_Xref
+
                   begin
-                     if Current_Entity /= Ref_Entity then
-                        Add_To_Map (Defines, Def_Scope, Ref_Entity);
+                     --  Compute the entity for the scope being referenced
+
+                     Ref_Scope := Scope_Rep'(File_Num  => Xref.File_Num,
+                                             Scope_Num => Xref.Scope_Num);
+                     if Scope_Specs.Contains (Ref_Scope) then
+                        Ref_Scope := Scope_Specs.Element (Ref_Scope);
                      end if;
+                     Ref_Scope_Ent := Scope_Entities.Element (Ref_Scope);
+
+                     --  Compute the entity for the scope of the definition
+
+                     Def_Scope := Scope_Rep'(File_Num  => Srec.File_Num,
+                                             Scope_Num => Srec.Scope_Num);
+                     if Scope_Specs.Contains (Def_Scope) then
+                        Def_Scope := Scope_Specs.Element (Def_Scope);
+                     end if;
+                     Def_Scope_Ent := Scope_Entities.Element (Def_Scope);
+
+                     --  Register the definition on first occurence
+
+                     if Current_Entity /= Ref_Entity then
+                        Add_To_Map (Defines, Def_Scope_Ent, Ref_Entity);
+                     end if;
+
+                     --  Register xref according to type
 
                      case Xref.Rtype is
                         when 'r' =>
-                           Add_To_Map (Reads, Ref_Scope, Ref_Entity);
+                           Add_To_Map (Reads, Ref_Scope_Ent, Ref_Entity);
                         when 'm' =>
-                           Add_To_Map (Writes, Ref_Scope, Ref_Entity);
+                           Add_To_Map (Writes, Ref_Scope_Ent, Ref_Entity);
                         when 's' =>
-                           Add_To_Map (Calls, Ref_Scope, Ref_Entity);
-                           Add_To_Map (Callers, Ref_Entity, Ref_Scope);
+                           Add_To_Map (Calls, Ref_Scope_Ent, Ref_Entity);
+                           Add_To_Map (Callers, Ref_Entity, Ref_Scope_Ent);
                         when others =>
                            raise Program_Error;
                      end case;
-                  end;
+                  end Do_One_Xref;
                end loop;
             end loop;
          end loop;
-      end;
+      end Walk_ALFA_Tables;
    end Load_ALFA;
 
 end ALFA.Frame_Conditions;
