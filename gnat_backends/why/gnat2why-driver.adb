@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;                use Atree;
+with Gnat2Why.Locs;        use Gnat2Why.Locs;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Gnat2Why.Types;       use Gnat2Why.Types;
 with Nlists;               use Nlists;
@@ -173,6 +174,14 @@ package body Gnat2Why.Driver is
          Open_Current_File ("out.why");
          Sprint_Why_Node (File, Current_File);
          Close_Current_File;
+
+         Open_Current_File ("out.loc");
+         Print_Locations_Table (Current_File);
+         Close_Current_File;
+
+         --  ??? TBD Do we really want to write the generated locations to
+         --  stdout?
+         Print_Label_List;
 
          if Print_Generated_Code then
             wpn (File);
