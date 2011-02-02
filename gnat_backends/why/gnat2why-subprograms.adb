@@ -26,6 +26,7 @@
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Gnat2Why.Types;     use Gnat2Why.Types;
+with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
@@ -96,6 +97,20 @@ package body Gnat2Why.Subprograms is
        Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
+
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Prog_Id;
+   --  Build a named assert (in programs) of a predicate
+
+   function New_Located_Assertion
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Assertion_Id;
+   --  Build a named assertion (ie formula) of a predicate
+
+   function New_Located_Predicate
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Predicate_Id;
 
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
@@ -188,6 +203,12 @@ package body Gnat2Why.Subprograms is
          Split_Node := Cur_Stmt;
          Nlists.Next (Cur_Stmt);
       end loop;
+      if Nkind (Split_Node) /= N_Empty then
+         Pred :=
+            New_Located_Predicate
+              (Ada_Node => Split_Node,
+               Pred     => Pred);
+      end if;
    end Compute_Invariant;
 
    ---------------------
@@ -315,6 +336,59 @@ package body Gnat2Why.Subprograms is
          return Ret;
       end;
    end Map_Node_List_to_Array;
+
+   ------------------------
+   -- New_Located_Assert --
+   ------------------------
+
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Prog_Id
+   is
+   begin
+      return
+         New_Assert
+           (Ada_Node   => Ada_Node,
+            Assertions =>
+              (1 =>
+                New_Located_Assertion
+                  (Ada_Node => Ada_Node,
+                   Pred     => Pred)),
+            Prog       => New_Prog_Constant (Ada_Node, New_Void_Literal));
+   end New_Located_Assert;
+
+   ---------------------------
+   -- New_Located_Assertion --
+   ---------------------------
+
+   function New_Located_Assertion
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Assertion_Id
+   is
+   begin
+      return
+        New_Assertion
+          (Ada_Node => Ada_Node,
+           Pred => New_Located_Predicate
+              (Ada_Node => Ada_Node,
+               Pred     => Pred));
+   end New_Located_Assertion;
+
+   ---------------------------
+   -- New_Located_Predicate --
+   ---------------------------
+
+   function New_Located_Predicate
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Predicate_Id
+   is
+   begin
+      return
+         New_Named_Predicate
+           (Ada_Node => Ada_Node,
+            Name     => New_Located_Label (Ada_Node),
+            Pred     => Pred);
+   end New_Located_Predicate;
 
    ------------------
    -- Type_Of_Node --
@@ -457,15 +531,19 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec (Kind : Name_Id) return W_Assertion_Id
       is
-         Corr_Spec : constant Node_Id := Corresponding_Spec (Node);
-         PPCs      : Node_Id;
-         Cur_Spec  : W_Predicate_Id := New_True_Literal_Pred;
+         Corr_Spec     : constant Node_Id :=
+               Corresponding_Spec (Node);
+         Cur_Spec      : W_Predicate_Id :=
+               New_True_Literal_Pred;
+         Located_Node : Node_Id := Empty;
+         PPCs          : Node_Id;
       begin
          if Nkind (Corr_Spec) = N_Empty then
             return New_Assertion (Pred => Cur_Spec);
          end if;
 
          PPCs := Spec_PPC_List (Corr_Spec);
+         Located_Node := PPCs;
          while Present (PPCs) loop
             if Pragma_Name (PPCs) = Kind then
                declare
@@ -485,7 +563,14 @@ package body Gnat2Why.Subprograms is
             PPCs := Next_Pragma (PPCs);
          end loop;
 
-         return New_Assertion (Pred => Cur_Spec);
+         if Nkind (Located_Node) /= N_Empty then
+            return
+              New_Located_Assertion
+                (Ada_Node => Located_Node,
+                 Pred     => Cur_Spec);
+         else
+            return New_Assertion (Pred => Cur_Spec);
+         end if;
       end Compute_Spec;
 
       Why_Body : constant W_Prog_Id :=
@@ -718,16 +803,13 @@ package body Gnat2Why.Subprograms is
             --  compiler, we transform it into an assert;
             --  we have to negate the condition
             return
-              New_Assert
-                (Ada_Node   => Stmt,
-                 Assertions => (1 =>
-                                  New_Assertion
-                                    (Pred =>
-                                       New_Negation
-                                         (Operand =>
-                                            Why_Predicate_Of_Ada_Expr
-                                            (Condition (Stmt))))),
-                 Prog       => New_Prog_Constant (Stmt, New_Void_Literal));
+            New_Located_Assert
+              (Ada_Node => Stmt,
+               Pred =>
+                  New_Negation
+                    (Operand =>
+                       Why_Predicate_Of_Ada_Expr
+                         (Condition (Stmt))));
 
          when N_Object_Declaration =>
             --  This has been dealt with at a higher level
