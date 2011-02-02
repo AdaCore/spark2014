@@ -73,6 +73,7 @@ package ALFA.Frame_Conditions is
       Hash                => Entity_Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
+   use Entity_Set;
 
    package Entity_Map is new Hashed_Maps
      (Key_Type        => Entity_Rep,
@@ -80,6 +81,7 @@ package ALFA.Frame_Conditions is
       Hash            => Entity_Hash,
       Equivalent_Keys => "=",
       "="             => Entity_Set."=");
+   use Entity_Map;
 
    Defines : Entity_Map.Map;
    Writes  : Entity_Map.Map;
@@ -90,10 +92,26 @@ package ALFA.Frame_Conditions is
    procedure Add_To_Map (Map : in out Entity_Map.Map; From, To : Entity_Rep);
    --  Add the relation From -> To in map Map
 
+   function Count_In_Map
+     (Map : Entity_Map.Map;
+      Ent : Entity_Rep) return Nat;
+   --  Return the number of elements in the set associated to Ent in Map, or
+   --  else 0.
+
+   function Defines_Of (Ent : Entity_Rep) return Entity_Set.Set;
+   function Reads_Of (Ent : Entity_Rep) return Entity_Set.Set;
+   function Writes_Of (Ent : Entity_Rep) return Entity_Set.Set;
+   function Callers_Of (Ent : Entity_Rep) return Entity_Set.Set;
+   function Calls_Of (Ent : Entity_Rep) return Entity_Set.Set;
+
    procedure Display_Maps;
    --  Send maps to output for debug
 
    procedure Load_ALFA (ALI_Filename : String);
    --  Extract xref information from an ALI file
+
+   procedure Propagate_Through_Call_Graph;
+   --  Propagate reads and writes through the call-graph defined by calls and
+   --  callers.
 
 end ALFA.Frame_Conditions;

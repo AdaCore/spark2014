@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line;      use Ada.Command_Line;
-with Ada.Text_IO;
+with Ada.Text_IO;           use Ada.Text_IO;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 procedure ALFA.Compute_Frame_Conditions is
@@ -34,7 +34,7 @@ procedure ALFA.Compute_Frame_Conditions is
 
 begin
    if Argument_Count = 0 then
-      Ada.Text_IO.Put_Line ("Usage: compute_fc FILE1.ali FILE2.ali ...");
+      Put_Line ("Usage: compute_fc FILE1.ali FILE2.ali ...");
       raise Stop;
    end if;
 
@@ -42,5 +42,15 @@ begin
       Load_ALFA (Argument (J));
    end loop;
 
+   Put_Line ("");
+   Put_Line ("## Before propagation ##");
+   Put_Line ("");
+   Display_Maps;
+
+   Propagate_Through_Call_Graph;
+
+   Put_Line ("");
+   Put_Line ("## After propagation ##");
+   Put_Line ("");
    Display_Maps;
 end ALFA.Compute_Frame_Conditions;
