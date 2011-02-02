@@ -535,6 +535,7 @@ package body Gnat2Why.Subprograms is
                Corresponding_Spec (Node);
          Cur_Spec      : W_Predicate_Id :=
                New_True_Literal_Pred;
+         Found_Location : Boolean := False;
          Located_Node : Node_Id := Empty;
          PPCs          : Node_Id;
       begin
@@ -543,7 +544,6 @@ package body Gnat2Why.Subprograms is
          end if;
 
          PPCs := Spec_PPC_List (Corr_Spec);
-         Located_Node := PPCs;
          while Present (PPCs) loop
             if Pragma_Name (PPCs) = Kind then
                declare
@@ -552,6 +552,10 @@ package body Gnat2Why.Subprograms is
                                           (Pragma_Argument_Associations
                                            (PPCs)));
                begin
+                  if not Found_Location then
+                     Located_Node := Ada_Spec;
+                     Found_Location := True;
+                  end if;
                   Cur_Spec :=
                      New_Conjonction
                        (Ada_Node => Ada_Spec,
