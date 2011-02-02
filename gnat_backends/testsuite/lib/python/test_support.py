@@ -46,6 +46,8 @@ def gnat2why(src, opt=None):
     PARAMETERS
       src: source file to process
       opt: additional options to pass to gnat2why
+    RETURN
+      the list of VC names that we want to prove
     """
     cmd = ["gnat2why",
            "-I" + get_path_to_adainclude()]
@@ -54,6 +56,9 @@ def gnat2why(src, opt=None):
     process = Run(cmd)
     if process.status:
         print process.out
+        return []
+    else:
+        return str.splitlines(process.out)
 
 def why(src, opt=None):
     """Invoke why
