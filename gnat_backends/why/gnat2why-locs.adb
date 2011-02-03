@@ -82,13 +82,13 @@ package body Gnat2Why.Locs is
       (O : Output_Id;
        I : W_Identifier_Id)
    is
-      N   : constant Node_Id := Get_Ada_Node (I);
-      Loc : constant Source_Ptr := Sloc (N);
+      N    : constant Node_Id := Get_Ada_Node (I);
+      Loc  : constant Source_Ptr := Sloc (N);
+      Name : constant String := Get_Name_String (Get_Node (I).Symbol);
    begin
       P (O, "[");
-      P (O, Get_Name_String (Get_Node (I).Symbol));
+      P (O, Name);
       P (O, "]");
-      --  file, line, begin, end, name (optional)
       NL (O);
       P (O, "file = """);
       P (O, Get_Name_String (Full_File_Name (Get_Source_File_Index (Loc))));
