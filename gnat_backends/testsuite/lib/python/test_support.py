@@ -114,9 +114,9 @@ def prove(src):
     Collect results on a per-label basis and generate report
     """
     gnat2why(src, opt=["-gnat2012", "-gnata"])
-    why("out.why", opt=["--multi-why", "--locs", "out.loc", "--explain"])
+    why(base+".why", opt=["--multi-why", "--locs", base+".loc", "--explain"])
     result = {}
-    for vc in open("out.labels"):
+    for vc in open(base+".labels"):
         vc = str.strip(vc,"\n ")
         result[vc] = { True : [] , False: [] }
     for f in glob.glob("*.xpl"):
@@ -127,8 +127,8 @@ def prove(src):
             return
         basename, ext = os.path.splitext(f)
         vc_fn = basename + ".why"
-        concat("out_ctx.why", vc_fn, "out_cur.why")
-        cur_result = altergo("out_cur.why",verbose=False)[0]
+        concat(base+"_ctx.why", vc_fn, base+"_cur.why")
+        cur_result = altergo(base+"_cur.why",verbose=False)[0]
         result[curname][cur_result].append(dic["po_name"])
     print(json.dumps(result, sort_keys = True,indent=4))
 

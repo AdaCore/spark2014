@@ -23,24 +23,29 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with AA_Util;              use AA_Util;
 with Atree;                use Atree;
-with Gnat2Why.Locs;        use Gnat2Why.Locs;
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
-with Gnat2Why.Types;       use Gnat2Why.Types;
+with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
 with Outputs;              use Outputs;
 with Sinfo;                use Sinfo;
-with Sprint;               use Sprint;
-with Switch;               use Switch;
 with Stand;                use Stand;
-with Treepr;
+with Switch;               use Switch;
+
+with ALFA.Filter;          use ALFA.Filter;
+
 with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
+with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Ids;              use Why.Ids;
+
+with Gnat2Why.Locs;        use Gnat2Why.Locs;
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with Gnat2Why.Types;       use Gnat2Why.Types;
 
 package body Gnat2Why.Driver is
 
@@ -48,6 +53,33 @@ package body Gnat2Why.Driver is
 
    procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id);
    --  Take a list of Ada declarations and translate them to Why declarations
+
+   procedure Translate_Context (File : W_File_Id; L : List_Id);
+   procedure Translate_CUnit (GNAT_Root : Node_Id);
+
+   procedure Translate_Package (File : W_File_Id; N : Node_Id);
+   procedure Translate_Standard_Package;
+
+   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id);
+
+   -----------------
+   -- GNAT_To_Why --
+   -----------------
+
+   procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+   begin
+      --  Allow the generation of new nodes and lists
+
+      Atree.Unlock;
+      Nlists.Unlock;
+
+      Translate_Standard_Package;
+      Filter_Package (Unit (GNAT_Root));
+
+      for CU of ALFA_Compilation_Units loop
+         Translate_CUnit (CU);
+      end loop;
+   end GNAT_To_Why;
 
    ------------------------
    -- Is_Back_End_Switch --
@@ -93,7 +125,8 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration | N_Subtype_Declaration =>
                Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
 
-            when N_Subprogram_Body =>
+            when N_Subprogram_Body        |
+                 N_Subprogram_Declaration =>
                Why_Decl_of_Ada_Subprogram (File, Decl);
 
             when N_Object_Declaration =>
@@ -118,7 +151,7 @@ package body Gnat2Why.Driver is
 
             --  The following declarations are ignored for now:
             when N_Pragma | N_Package_Declaration | N_Exception_Declaration
-               | N_Exception_Renaming_Declaration | N_Subprogram_Declaration
+               | N_Exception_Renaming_Declaration
                | N_Freeze_Entity | N_Itype_Reference =>
                null;
 
@@ -130,64 +163,126 @@ package body Gnat2Why.Driver is
       end loop;
    end Translate_List_Of_Decls;
 
-   -----------------
-   -- GNAT_To_Why --
-   -----------------
+   -----------------------
+   -- Translate_Context --
+   -----------------------
 
-   procedure GNAT_To_Why (GNAT_Root : Node_Id)
+   procedure Translate_Context (File : W_File_Id; L : List_Id) is
+      Cur : Node_Id;
+   begin
+      Cur := First (L);
+      while Present (Cur) loop
+         case Nkind (Cur) is
+            when N_With_Clause =>
+               Why_Include_Of_Ada_With_Clause (File, Cur);
+            when others =>
+               null;  --  ??? raise Program_Error when cases completed
+         end case;
+         Next (Cur);
+      end loop;
+   end Translate_Context;
+
+   ---------------------
+   -- Translate_CUnit --
+   ---------------------
+
+   procedure Translate_CUnit (GNAT_Root : Node_Id)
    is
       File : constant W_File_Id := New_File;
-   begin
-      if Print_Generated_Code then
-         Treepr.Print_Node_Subtree (GNAT_Root);
-         Sprint_Node (GNAT_Root);
-      end if;
+      N    : constant Node_Id   := Unit (GNAT_Root);
+      Name : Name_Id;
 
-      Translate_List_Of_Decls
-        (File,
-         Visible_Declarations (Specification (Standard_Package_Node)));
+   begin
+      Name := Chars (Defining_Unit_Name (Specification (N)));
 
       if Nkind (GNAT_Root) = N_Compilation_Unit then
-         if Nkind (Unit (GNAT_Root)) = N_Subprogram_Body then
-            Why_Decl_of_Ada_Subprogram (File, Unit (GNAT_Root));
+
+         Translate_Context (File, Context_Items (GNAT_Root));
+
+         if Nkind (N) = N_Subprogram_Body then
+            Why_Decl_of_Ada_Subprogram (File, N);
          else
-            case Nkind (Unit (GNAT_Root)) is
-               when N_Package_Body =>
-                  --  First translate the spec of the package, if any
-                  Translate_List_Of_Decls
-                    (File,
-                     Visible_Declarations
-                        (Parent (Corresponding_Spec (Unit (GNAT_Root)))));
-                  Translate_List_Of_Decls
-                    (File,
-                     Declarations (Unit (GNAT_Root)));
-               when N_Package_Declaration =>
-                  Translate_List_Of_Decls
-                    (File,
-                     Visible_Declarations (Specification (Unit (GNAT_Root))));
-               when others =>
-                  raise Not_Implemented;
-            end case;
+            Translate_Package (File, N);
          end if;
          --  ??? TBD: create a file that has a meaningful name, depending on
          --  the input file
-         Open_Current_File ("out.why");
+         Open_Current_File (Name_String (Name) & ".why");
          Sprint_Why_Node (File, Current_File);
          Close_Current_File;
 
-         Open_Current_File ("out.loc");
+         Open_Current_File (Name_String (Name) & ".loc");
          Print_Locations_Table (Current_File);
          Close_Current_File;
 
          --  ??? TBD Do we really want to write the generated locations to
          --  stdout?
-         Open_Current_File ("out.labels");
+         Open_Current_File (Name_String (Name) & ".labels");
          Print_Label_List (Current_File);
+         Close_Current_File;
 
          if Print_Generated_Code then
             wpn (File);
          end if;
       end if;
-   end GNAT_To_Why;
+   end Translate_CUnit;
+
+   -----------------------
+   -- Translate_Package --
+   -----------------------
+
+   procedure Translate_Package (File : W_File_Id; N : Node_Id) is
+   begin
+      case Nkind (N) is
+         when N_Package_Body =>
+            --  First translate the spec of the package, if any
+            Translate_List_Of_Decls
+              (File,
+               Visible_Declarations
+                 (Parent (Corresponding_Spec (N))));
+            Translate_List_Of_Decls
+              (File,
+               Declarations (N));
+         when N_Package_Declaration =>
+            Translate_List_Of_Decls
+              (File,
+               Visible_Declarations (Specification (N)));
+         when others =>
+            raise Not_Implemented;
+      end case;
+   end Translate_Package;
+
+   --------------------------------
+   -- Translate_Standard_Package --
+   --------------------------------
+
+   procedure Translate_Standard_Package is
+      File : constant W_File_Id := New_File;
+
+   begin
+      Translate_Package (File, Standard_Package_Node);
+      Open_Current_File ("standard.why");
+      Sprint_Why_Node (File, Current_File);
+      Close_Current_File;
+
+      if Print_Generated_Code then
+         wpn (File);
+      end if;
+   end Translate_Standard_Package;
+
+   ------------------------------------
+   -- Why_Include_Of_Ada_With_Clause --
+   ------------------------------------
+
+   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id)
+   is
+      Id : constant Node_Id := Name (N);
+   begin
+      File_Append_To_Declarations
+        (File,
+         New_Include_Declaration
+           (Ada_Node => N,
+            Name     =>
+              New_Identifier (Name_String (Chars (Id)) & ".why")));
+   end Why_Include_Of_Ada_With_Clause;
 
 end Gnat2Why.Driver;

@@ -29,6 +29,10 @@ package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
+   function New_Definition_Name (Name : String) return String;
+   --  Create a new identifier for the "definition only" version of a
+   --  subprogram, which is not meant to be called.
+
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 

@@ -151,6 +151,16 @@ package body Why.Gen.Names is
    end New_Conversion_To_Int;
 
    -------------------------
+   -- New_Definition_Name --
+   -------------------------
+
+   function New_Definition_Name (Name : String) return String is
+      Prefix : constant String  := "def___";
+   begin
+      return Prefix & Name;
+   end New_Definition_Name;
+
+   -------------------------
    -- New_Exit_Identifier --
    -------------------------
 

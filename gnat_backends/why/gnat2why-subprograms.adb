@@ -25,19 +25,23 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
-with Gnat2Why.Types;     use Gnat2Why.Types;
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Uintp;              use Uintp;
+
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
+
+with Gnat2Why.Locs;      use Gnat2Why.Locs;
+with Gnat2Why.Types;     use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -469,10 +473,11 @@ package body Gnat2Why.Subprograms is
       --  * procedure arguments;
       --  * return types.
       Spec        : constant Node_Id := Specification (Node);
-      Stmts       : constant List_Id :=
-                      Statements (Handled_Statement_Sequence (Node));
       Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
+
+      function Compute_Arrows return W_Arrow_Type_Id;
+      --  Compute the argument types of the generated Why parameter
 
       function Compute_Binder (Arg : Node_Id) return W_Binder_Id;
       --  Compute a single Why function argument from a single Ada function /
@@ -487,10 +492,48 @@ package body Gnat2Why.Subprograms is
       --  Add a "let" binding to Why body for each local variable of the
       --  procedure.
 
-      function Compute_Spec (Kind : Name_Id) return W_Assertion_Id;
+      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id;
       --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
+
+      --------------------
+      -- Compute_Arrows --
+      --------------------
+
+      function Compute_Arrows return W_Arrow_Type_Id is
+         Res : W_Arrow_Type_Unchecked_Id;
+         Arg : Node_Id;
+         Id  : Node_Id;
+
+      begin
+         if Nkind (Specification (Node)) = N_Procedure_Specification then
+            Res := New_Arrow_Stack (New_Type_Unit);
+         else
+            Res := New_Arrow_Stack (Why_Prog_Type_of_Ada_Type
+                                   (Result_Definition (Specification (Node))));
+         end if;
+
+         if Is_Empty_List (Ada_Binders) then
+            Res := Push_Arg (Arrow    => Res,
+                             Arg_Type => New_Type_Unit);
+
+         else
+            Arg := Last (Ada_Binders);
+            while Present (Arg) loop
+               Id := Defining_Identifier (Arg);
+               Res := Push_Arg
+                 (Arrow    => Res,
+                  Name     =>
+                    New_Identifier (Ada_Node => Id, Symbol => Chars (Id)),
+                  Arg_Type =>
+                    Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
+               Prev (Arg);
+            end loop;
+         end if;
+
+         return Res;
+      end Compute_Arrows;
 
       ---------------------
       -- Compute_Binder --
@@ -578,18 +621,23 @@ package body Gnat2Why.Subprograms is
       -- Compute_Spec --
       ------------------
 
-      function Compute_Spec (Kind : Name_Id) return W_Assertion_Id
+      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id
       is
-         Corr_Spec     : constant Node_Id :=
-               Corresponding_Spec (Node);
+         Corr_Spec     : Node_Id;
          Cur_Spec      : W_Predicate_Id :=
                New_True_Literal_Pred;
          Found_Location : Boolean := False;
          Located_Node : Node_Id := Empty;
          PPCs          : Node_Id;
       begin
+         if Nkind (Node) = N_Subprogram_Declaration then
+            Corr_Spec := Defining_Unit_Name (Specification (Node));
+         else
+            Corr_Spec := Corresponding_Spec (Node);
+         end if;
+
          if Nkind (Corr_Spec) = N_Empty then
-            return New_Assertion (Pred => Cur_Spec);
+            return Cur_Spec;
          end if;
 
          PPCs := Spec_PPC_List (Corr_Spec);
@@ -618,34 +666,50 @@ package body Gnat2Why.Subprograms is
 
          if Nkind (Located_Node) /= N_Empty then
             return
-              New_Located_Assertion
+              New_Located_Predicate
                 (Ada_Node => Located_Node,
                  Pred     => Cur_Spec);
          else
-            return New_Assertion (Pred => Cur_Spec);
+            return Cur_Spec;
          end if;
       end Compute_Spec;
-
-      Why_Body : constant W_Prog_Id :=
-                   Compute_Context (Why_Expr_of_Ada_Stmts (Stmts));
 
    --  Start of processing for Why_Decl_of_Ada_Subprogram
 
    begin
-      --  ??? TBD deal with expression functions : transform into Why
-      --  'function'
-      --  ??? TBD compute a VC for the TCC of the Precondition
-      case Nkind (Spec) is
-         when N_Procedure_Specification | N_Function_Specification =>
-            --  There really is no difference between functions and procedures
-            --  from the point of view of Why
-            Declare_Global_Binding
-              (File    => File,
-               Name    => Get_Name_String (Name),
-               Binders => Compute_Binders,
-               Pre     => Compute_Spec (Name_Precondition),
-               Post    => Compute_Spec (Name_Postcondition),
-               Def     => Why_Body);
+      case Nkind (Node) is
+         when N_Subprogram_Body =>
+            declare
+               Stmts   : constant List_Id :=
+                           Statements (Handled_Statement_Sequence (Node));
+               Why_Body : constant W_Prog_Id :=
+                            Compute_Context (Why_Expr_of_Ada_Stmts (Stmts));
+            begin
+               --  ??? TBD deal with expression functions : transform into Why
+               --  'function'
+               --  ??? TBD compute a VC for the TCC of the Precondition
+
+               --  There really is no difference between functions and
+               --  procedures from the point of view of Why
+               Declare_Global_Binding
+                 (File    => File,
+                  Name    =>
+                    New_Definition_Name (Get_Name_String (Name)),
+                  Binders => Compute_Binders,
+                  Pre     =>
+                    New_Assertion (Pred => Compute_Spec (Name_Precondition)),
+                  Post    =>
+                    New_Assertion (Pred => Compute_Spec (Name_Postcondition)),
+                  Def     => Why_Body);
+            end;
+
+         when N_Subprogram_Declaration =>
+            Declare_Parameter
+              (File   => File,
+               Name   => New_Identifier (Get_Name_String (Name)),
+               Arrows => Compute_Arrows,
+               Pre    => Compute_Spec (Name_Precondition),
+               Post   => Compute_Spec (Name_Postcondition));
 
          when others =>
             raise Not_Implemented;
@@ -840,7 +904,7 @@ package body Gnat2Why.Subprograms is
             return
               New_Located_Call
                 (Ada_Node => Stmt,
-                 Name => New_Identifier (Symbol => Chars (Name (Stmt))),
+                 Name     => New_Identifier (Symbol => Chars (Name (Stmt))),
                  Progs => Expr_Expr_Map (Parameter_Associations (Stmt)));
 
          when N_If_Statement =>
