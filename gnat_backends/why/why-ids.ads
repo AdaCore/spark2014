@@ -2597,6 +2597,25 @@ package Why.Ids is
      W_Logic_Declaration_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Include_Declaration_Id is
+     W_Include_Declaration_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   type W_Include_Declaration_Array is array (Positive range <>)
+     of W_Include_Declaration_Id;
+
+   subtype W_Include_Declaration_OId is
+     W_Include_Declaration_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Include_Declaration_List is
+     W_Include_Declaration_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Include_Declaration_OList is
+     W_Include_Declaration_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Term_Id is
      W_Term_Unchecked_Id;
    --  ??? subtype predicate not generated yet

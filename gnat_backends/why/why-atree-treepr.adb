@@ -5834,4 +5834,45 @@ package body Why.Atree.Treepr is
       null;
    end Logic_Declaration_Post_Op;
 
+   --------------------------------
+   -- Include_Declaration_Pre_Op --
+   --------------------------------
+
+   procedure Include_Declaration_Pre_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Include_Declaration_Id)
+   is
+   begin
+      P (O, "W_Include_Declaration");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
+      NL (O);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).ID_Name);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
+   end Include_Declaration_Pre_Op;
+
+   ---------------------------------
+   -- Include_Declaration_Post_Op --
+   ---------------------------------
+
+   procedure Include_Declaration_Post_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Include_Declaration_Id)
+   is
+      pragma Unreferenced (Node);
+      pragma Unreferenced (State);
+   begin
+      null;
+   end Include_Declaration_Post_Op;
+
 end Why.Atree.Treepr;

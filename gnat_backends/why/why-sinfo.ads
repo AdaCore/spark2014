@@ -643,7 +643,10 @@ package Why.Sinfo is
       --  <exception_declaration> ::=
       --     'exception' <identifier> [ 'of' <primitive_type> ]
 
-      W_Logic_Declaration
+      W_Logic_Declaration,
+
+      W_Include_Declaration
+      --  <include_declaration> ::= 'include' '"' <identifier> '"'
       );
 
    ----------------------------
@@ -712,11 +715,11 @@ package Why.Sinfo is
 
    subtype W_Declaration is Why_Node_Kind range
      W_Global_Binding ..
-     W_Logic_Declaration;
+     W_Include_Declaration;
 
    subtype W_Any_Node is Why_Node_Kind range
      W_Identifier ..
-     W_Logic_Declaration;
+     W_Include_Declaration;
 
    subtype W_Type_Definition is Why_Node_Kind range
      W_Transparent_Type_Definition ..

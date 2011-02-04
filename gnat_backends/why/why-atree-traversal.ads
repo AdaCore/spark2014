@@ -1365,4 +1365,14 @@ package Why.Atree.Traversal is
       Node  : W_Logic_Declaration_Id)
      is null;
 
+   procedure Include_Declaration_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Include_Declaration_Id)
+     is null;
+
+   procedure Include_Declaration_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Include_Declaration_Id)
+     is null;
+
 end Why.Atree.Traversal;

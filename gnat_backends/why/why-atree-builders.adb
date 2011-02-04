@@ -3495,6 +3495,28 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Logic_Declaration;
 
+   -----------------------------
+   -- New_Include_Declaration --
+   -----------------------------
+
+   function New_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id)
+     return W_Include_Declaration_Id
+   is
+      Result : Why_Node (W_Include_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Include_Declaration);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ID_Name := Name;
+      Set_Link (Result.ID_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Include_Declaration;
+
    ------------------------------
    -- New_Unchecked_Identifier --
    ------------------------------
@@ -6257,6 +6279,26 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Unchecked_Logic_Declaration;
+
+   ---------------------------------------
+   -- New_Unchecked_Include_Declaration --
+   ---------------------------------------
+
+   function New_Unchecked_Include_Declaration
+     return W_Include_Declaration_Unchecked_Id
+   is
+      Result : Why_Node (W_Include_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Include_Declaration);
+   begin
+      Result.Ada_Node := Empty;
+      Result.ID_Name := Why_Empty;
+      Set_Link (Result.ID_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Include_Declaration;
 
    --------------------------
    -- Duplicate_Identifier --
@@ -11536,5 +11578,38 @@ package body Why.Atree.Builders is
          return New_Id;
       end;
    end Duplicate_Logic_Declaration;
+
+   -----------------------------------
+   -- Duplicate_Include_Declaration --
+   -----------------------------------
+
+   function Duplicate_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Include_Declaration_OId)
+     return W_Include_Declaration_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Include_Declaration);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Include_Declaration);
+         Name : constant W_Identifier_Id :=
+            Include_Declaration_Get_Name (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.ID_Name :=
+           Duplicate_Identifier
+           (Id => Name);
+         Set_Link (Result.ID_Name, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Include_Declaration;
 
 end Why.Atree.Builders;

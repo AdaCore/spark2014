@@ -2873,4 +2873,22 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Exception_Declaration_Pre_Op;
 
+   --------------------------------
+   -- Include_Declaration_Pre_Op --
+   --------------------------------
+
+   procedure Include_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Include_Declaration_Id)
+   is
+   begin
+      P (O, "include """);
+      Traverse
+        (State,
+         Include_Declaration_Get_Name (Node));
+      P (O, """");
+      NL (O);
+      State.Control := Abandon_Children;
+   end Include_Declaration_Pre_Op;
+
 end Why.Atree.Sprint;

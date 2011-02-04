@@ -1094,6 +1094,14 @@ package Why.Opaque_Ids is
 
    subtype W_Logic_Declaration_Opaque_OList is Why_Node_List;
 
+   subtype W_Include_Declaration_Opaque_Id is Why_Node_Id;
+
+   subtype W_Include_Declaration_Opaque_OId is Why_Node_Id;
+
+   subtype W_Include_Declaration_Opaque_List is Why_Node_List;
+
+   subtype W_Include_Declaration_Opaque_OList is Why_Node_List;
+
    subtype W_Term_Opaque_Id is Why_Node_Id;
 
    subtype W_Term_Opaque_OId is Why_Node_Id;

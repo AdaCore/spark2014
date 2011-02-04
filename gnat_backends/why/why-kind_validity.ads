@@ -2144,6 +2144,22 @@ package Why.Kind_Validity is
      (Id : W_Logic_Declaration_Opaque_OList)
      return Boolean;
 
+   function Include_Declaration_Id_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_Id)
+     return Boolean;
+
+   function Include_Declaration_OId_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_OId)
+     return Boolean;
+
+   function Include_Declaration_List_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_List)
+     return Boolean;
+
+   function Include_Declaration_OList_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_OList)
+     return Boolean;
+
    function Term_Id_Kind_Valid
      (Id : W_Term_Opaque_Id)
      return Boolean;
@@ -5733,6 +5749,31 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Logic_Declaration_List_Kind_Valid (Id));
+
+   function Include_Declaration_Id_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Include_Declaration);
+
+   function Include_Declaration_OId_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Include_Declaration_Id_Kind_Valid (Id));
+
+   function Include_Declaration_List_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Include_Declaration_OList_Kind_Valid
+     (Id : W_Include_Declaration_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Include_Declaration_List_Kind_Valid (Id));
 
    function Term_Id_Kind_Valid
      (Id : W_Term_Opaque_Id)

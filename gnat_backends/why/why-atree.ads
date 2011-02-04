@@ -501,6 +501,9 @@ package Why.Atree is
          when W_Logic_Declaration =>
             LD_Decl : W_Logic_Declaration_Class_Opaque_Id;
 
+         when W_Include_Declaration =>
+            ID_Name : W_Identifier_Opaque_Id;
+
       end case;
    end record;
 

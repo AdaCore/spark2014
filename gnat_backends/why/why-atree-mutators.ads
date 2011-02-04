@@ -1901,4 +1901,12 @@ package Why.Atree.Mutators is
         and then Logic_Declaration_Class_Id_Valid (Decl)
         and then Is_Root (Decl));
 
+   procedure Include_Declaration_Set_Name
+     (Id   : W_Include_Declaration_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name));
+
 end Why.Atree.Mutators;

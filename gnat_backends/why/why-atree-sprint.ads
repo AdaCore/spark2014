@@ -562,4 +562,8 @@ private
      (State : in out Printer_State;
       Node  : W_Exception_Declaration_Id);
 
+   procedure Include_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Include_Declaration_Id);
+
 end Why.Atree.Sprint;

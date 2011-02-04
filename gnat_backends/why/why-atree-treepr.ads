@@ -1091,4 +1091,12 @@ private
      (State : in out Tree_Printer_State;
       Node  : W_Logic_Declaration_Id);
 
+   procedure Include_Declaration_Pre_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Include_Declaration_Id);
+
+   procedure Include_Declaration_Post_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Include_Declaration_Id);
+
 end Why.Atree.Treepr;

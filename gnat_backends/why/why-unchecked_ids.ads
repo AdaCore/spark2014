@@ -2148,6 +2148,22 @@ package Why.Unchecked_Ids is
      W_Logic_Declaration_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Include_Declaration_Unchecked_Id is
+     W_Include_Declaration_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Include_Declaration_Unchecked_OId is
+     W_Include_Declaration_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Include_Declaration_Unchecked_List is
+     W_Include_Declaration_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Include_Declaration_Unchecked_OList is
+     W_Include_Declaration_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Term_Unchecked_Id is
      W_Term_Opaque_Id;
    --  ??? subtype predicate not generated yet

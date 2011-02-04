@@ -4145,6 +4145,36 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
+         when W_Include_Declaration =>
+            Include_Declaration_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Include_Declaration_Get_Name (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Include_Declaration_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
          when others =>
             pragma Assert (False);
       end case;

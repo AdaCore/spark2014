@@ -847,6 +847,10 @@ package Why.Atree.Accessors is
      (Id : W_Logic_Declaration_Id)
      return W_Logic_Declaration_Class_Id;
 
+   function Include_Declaration_Get_Name
+     (Id : W_Include_Declaration_Id)
+     return W_Identifier_Id;
+
 private
 
    function Get_Ada_Node
@@ -1868,5 +1872,10 @@ private
      (Id : W_Logic_Declaration_Id)
      return W_Logic_Declaration_Class_Id is
      (Get_Node (Id).LD_Decl);
+
+   function Include_Declaration_Get_Name
+     (Id : W_Include_Declaration_Id)
+     return W_Identifier_Id is
+     (Get_Node (Id).ID_Name);
 
 end Why.Atree.Accessors;

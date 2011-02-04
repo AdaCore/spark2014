@@ -4192,4 +4192,22 @@ package body Why.Atree.Mutators is
          Logic_Declaration_Id_Valid (Id));
    end Logic_Declaration_Set_Decl;
 
+   ----------------------------------
+   -- Include_Declaration_Set_Name --
+   ----------------------------------
+
+   procedure Include_Declaration_Set_Name
+     (Id   : W_Include_Declaration_Unchecked_Id;
+      Name : W_Identifier_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.ID_Name := Name;
+      Set_Node (Id, Node);
+      Set_Link (Name, Id);
+      Update_Validity_Status
+        (Id,
+         Include_Declaration_Id_Valid (Id));
+   end Include_Declaration_Set_Name;
+
 end Why.Atree.Mutators;

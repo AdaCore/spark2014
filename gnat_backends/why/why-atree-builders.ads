@@ -3227,6 +3227,27 @@ package Why.Atree.Builders is
           (New_Logic_Declaration'Result)
           = Decl);
 
+   function New_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Identifier_Id)
+     return W_Include_Declaration_Id with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Name)
+        and then Identifier_Id_Valid (Name)
+        and then Is_Root (Name)),
+     Post =>
+       (Get_Kind
+         (New_Include_Declaration'Result)
+         = W_Include_Declaration
+        and then
+          Get_Ada_Node
+          (New_Include_Declaration'Result)
+          = Ada_Node
+        and then
+          Include_Declaration_Get_Name
+          (New_Include_Declaration'Result)
+          = Name);
+
    function New_Unchecked_Identifier
      (Symbol : Name_Id)
      return W_Identifier_Unchecked_Id with
@@ -4407,6 +4428,15 @@ package Why.Atree.Builders is
        (Get_Kind
          (New_Unchecked_Logic_Declaration'Result)
          = W_Logic_Declaration
+       );
+
+   function New_Unchecked_Include_Declaration
+     return W_Include_Declaration_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Include_Declaration'Result)
+         = W_Include_Declaration
        );
 
    function Duplicate_Identifier
@@ -6374,6 +6404,21 @@ package Why.Atree.Builders is
           (Duplicate_Logic_Declaration'Result)
           = Ada_Node);
 
+   function Duplicate_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Include_Declaration_OId)
+     return W_Include_Declaration_Id with
+     Pre =>
+       (Include_Declaration_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Include_Declaration'Result)
+         = W_Include_Declaration
+        and then
+          Get_Ada_Node
+          (Duplicate_Include_Declaration'Result)
+          = Ada_Node);
+
    function Duplicate_Term
      (Ada_Node : Node_Id := Empty;
       Id       : W_Term_Id)
@@ -7283,6 +7328,10 @@ private
            Duplicate_Logic_Declaration
             (Ada_Node  => Ada_Node,
              Id        => Id),
+        when W_Include_Declaration =>
+           Duplicate_Include_Declaration
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
         when others =>
            Why_Empty);
 
@@ -7813,6 +7862,10 @@ private
              Id        => Id),
         when W_Logic_Declaration =>
            Duplicate_Logic_Declaration
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Include_Declaration =>
+           Duplicate_Include_Declaration
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when others =>
