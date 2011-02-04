@@ -1,2 +1,10 @@
-Valid
-Valid
+Gnat2why__1
+valid:
+odometer__zero_trip_po_1
+invalid:
+Gnat2why__2
+valid:
+odometer__inc_po_1
+invalid:
+Gnat2why__3
+no proof obligation

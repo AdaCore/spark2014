@@ -1,3 +1,10 @@
-Valid
-Valid
-Timeout
+Gnat2why__1
+valid:
+divide__divide_po_1
+invalid:   divide__divide_po_2
+Gnat2why__2
+valid:
+divide__divide_po_3
+invalid:
+Gnat2why__3
+no proof obligation

@@ -74,28 +74,38 @@ def why(src, opt=None):
     if process.status:
         print process.out
 
-def altergo(src, opt=None):
+def altergo(src, opt=None, verbose=True):
     """Invoke alt-ergo
 
     PARAMETERS
       src: source file to process
       opt: additional options to pass to alt-ergo
+    Return: list of booleans
     """
     cmd = ["why-cpulimit","10","alt-ergo"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
     # Remove Filename, linenumber and time of proof, just keep status
-    res = re.compile(".*:(.*)\(.*")
+    res = re.compile(".*:([^ ]*) *\(.*")
+    status = []
     for line in str.splitlines(process.out):
         m = re.search(res, line)
         if m:
-            print m.group(1)
+            s = m.group(1)
+            if verbose:
+                print s
+            status.append(s == "Valid")
         else:
-           print line
+            if verbose:
+                print line
+            status.append(False)
     if process.status:
-        # We assume that a timeout happened, but we actually don't know
-        print "Timeout"
+        # ??? We assume that a timeout happened
+        if verbose:
+            print "Timeout"
+        status.append(False)
+    return status
 
 def prove(src):
     """Prove all obligations from an Ada file
@@ -105,14 +115,56 @@ def prove(src):
 
     Call gnat2why on source file, then why on the resulting file. Alt-Ergo is
     run on each generated VC independently.
+    Collect results on a per-label basis and generate report
     """
-    gnat2why(src, opt=["-gnat2012", "-gnata"])
-    why("out.why", opt=["--multi-why", "--locs", "out.loc"])
-    for f in glob.glob("out_po*.why"):
-        concat("out_ctx.why", f, "out_cur.why")
-        altergo("out_cur.why")
+    vcs = gnat2why(src, opt=["-gnat2012", "-gnata"])
+    why("out.why", opt=["--multi-why", "--locs", "out.loc", "--explain"])
+    success = {}
+    for f in glob.glob("*.xpl"):
+        dic = read_dict_from_file(f)
+        curname = dic['source_label']
+        if not success.has_key(curname):
+            success[curname] = { True : [] , False: [] }
+        basename, ext = os.path.splitext(f)
+        vc_fn = basename + ".why"
+        concat("out_ctx.why", vc_fn, "out_cur.why")
+        cur_success = altergo("out_cur.why",verbose=False)[0]
+        success[curname][cur_success].append(dic["po_name"])
+    for vc in vcs:
+        print vc
+        if success.has_key(vc):
+            print("  valid:")
+            for po in success[vc][True]:
+                print "  ", po
+            sys.stdout.write("  invalid:")
+            for po in success[vc][False]:
+                print "  ", po
+        else:
+            sys.stdout.write("no proof obligation")
+        sys.stdout.write("\n")
 
 
+def read_dict_from_file(fn):
+    """Fill a dictionary with keys from a file of the form
+    key1 = val1
+    key2 = val2
+
+    PARAMETERS
+        fn - input file name
+    """
+    keymap = {}
+    for line in open(fn):
+        ls = str.split(line, "=",1)
+        if len(ls) > 1:
+            key = str.strip(ls[0])
+            val = str.strip(ls[1],"\"\n ")
+            keymap[key] = val
+        else:
+            # only set po_name once
+            if not keymap.has_key("po_name"):
+                name = str.strip(line, "[] \n")
+                keymap["po_name"] = name
+    return keymap
 
 def to_list(arg):
     """Convert to list
