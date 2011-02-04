@@ -181,7 +181,8 @@ package body Gnat2Why.Driver is
 
          --  ??? TBD Do we really want to write the generated locations to
          --  stdout?
-         Print_Label_List;
+         Open_Current_File ("out.labels");
+         Print_Label_List (Current_File);
 
          if Print_Generated_Code then
             wpn (File);
