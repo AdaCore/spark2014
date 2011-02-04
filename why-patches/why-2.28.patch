@@ -1,0 +1,94 @@
+diff --git src/explain.ml src/explain.ml
+index a5ac119..7b4f968 100644
+--- src/explain.ml
++++ src/explain.ml
+@@ -75,9 +75,9 @@ let print_formula fmt s =
+   if String.length s > 0 then
+     fprintf fmt "formula = \"%s\"@\n" s
+ 
+-let print_kind ?(quote=false) fmt (loc,k) =
+-  (* 
+-     Option_misc.iter (fun lab ->  fprintf fmt "label = %s@\n" lab) labopt; 
++let print_kind ?(quote=false) fmt (loc,k,lab) =
++  (*
++     Option_misc.iter (fun lab ->  fprintf fmt "label = %s@\n" lab) labopt;
+   *)
+   if quote then
+     begin
+@@ -101,6 +101,11 @@ let print_kind ?(quote=false) fmt (loc,k) =
+   else
+     begin
+       raw_loc fmt loc;
++      begin match lab with
++      | None -> ()
++      | Some s ->
++            fprintf fmt "source_label = \"%s\"@\n" s
++      end;
+       match k with
+ 	| EKOther s -> fprintf fmt "kind = Other@\ntext = \"%s\"@\n" s
+ 	| EKAbsurd -> fprintf fmt "kind = Absurd@\n"
+@@ -120,8 +125,8 @@ let print_kind ?(quote=false) fmt (loc,k) =
+     end
+ 
+ 
+-let print ?(quote=false) fmt  ((*loc,*)e) = 
+-  print_kind ~quote fmt (e.vc_loc,e.vc_kind)
++let print ?(quote=false) fmt e =
++  print_kind ~quote fmt (e.vc_loc,e.vc_kind,e.vc_label)
+ 
+ let msg_of_loopinv = function
+   | "" -> "loop invariant"
+diff --git src/logic_decl.mli src/logic_decl.mli
+index bc11023..9b55ae7 100644
+--- src/logic_decl.mli
++++ src/logic_decl.mli
+@@ -58,7 +58,9 @@ type vc_expl =
+     { lemma_or_fun_name : string;
+       behavior : string;
+       vc_loc : Loc.floc;
+-      vc_kind : expl_kind }
++      vc_kind : expl_kind;
++      vc_label : string option
++    }
+ 
+ type obligation = Loc.floc * vc_expl * string * sequent
+     (* loc, explanation, id, sequent *) 
+diff --git src/main.ml src/main.ml
+index 3afa104..f118f9c 100644
+--- src/main.ml
++++ src/main.ml
+@@ -580,6 +580,7 @@ let rec interp_decl ?(_prelude=false) d =
+ 	    behavior = "";
+ 	    vc_loc = l;
+ 	    vc_kind = EKLemma;
++            vc_label = None;
+ 	  }
+ 	in
+ 	let (l,xpl,id,s) = 
+diff --git src/project.ml src/project.ml
+index c19ef69..e2f6963 100644
+--- src/project.ml
++++ src/project.ml
+@@ -321,6 +321,7 @@ let rec get_goal lf beh e =
+ 	    Logic_decl.behavior = beh;
+ 	    Logic_decl.vc_loc = loc;
+ 	    Logic_decl.vc_kind = k;
++            Logic_decl.vc_label = None;
+ 	  }
+ 	in
+ 	let (proofs,elements) = get_proof (List.tl elements) in
+diff --git src/vcg.ml src/vcg.ml
+index 45e5a6e..f682f65 100644
+--- src/vcg.ml
++++ src/vcg.ml
+@@ -899,7 +899,9 @@ let vcg_from_wp _loc ids name beh w =
+       { Logic_decl.lemma_or_fun_name = name ;
+ 	Logic_decl.behavior = beh;
+ 	Logic_decl.vc_loc = loc ;
+-	Logic_decl.vc_kind = kind }
++        Logic_decl.vc_kind = kind ;
++        Logic_decl.vc_label = formula_userlab;
++      }
+     in
+     try
+       discharge loc ctx concl
