@@ -29,6 +29,7 @@ with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
+with Stand;              use Stand;
 with Uintp;              use Uintp;
 
 with Why;                use Why;
@@ -52,6 +53,17 @@ package body Gnat2Why.Subprograms is
    function Map_Node_List_to_Array (List : List_Id) return A;
    --  Take a list of GNAT Node_Ids and apply the function F to each of them.
    --  Return the array that contains all the results, in the same order.
+
+   generic
+      type T is private;
+      Default : T;
+      type A is array (Positive range <>) of T;
+      with function F (N : Node_Id) return T;
+   function Map_Node_List_To_Non_Empty_Array (List : List_Id) return A;
+   --  Take a list of GNAT Node_Ids and apply the function F to each of them.
+   --  Return the array that contains all the results, in the same order.
+   --  If the argument list is empty, return a singleton list with the default
+   --  element.
 
    type Why_Type_Enum is (Why_Int, Ada_Type_Node);
    type Why_Type (Kind : Why_Type_Enum := Why_Int) is
@@ -334,24 +346,40 @@ package body Gnat2Why.Subprograms is
    -- Map_Node_List_to_Array --
    ----------------------------
 
-   function Map_Node_List_to_Array (List : List_Id) return A
-   is
-      --  The argument list should be non-empty
-      Len : constant Pos := List_Length (List);
+   function Map_Node_List_to_Array (List : List_Id) return A is
    begin
-      declare
-         Cursor : Node_Or_Entity_Id := Nlists.First (List);
-         Ret    : A (1 .. Integer (Len));
-         Cnt    : Integer range 0 .. Integer (Len) := 0;
-      begin
-         while Nkind (Cursor) /= N_Empty loop
-            Cnt := Cnt + 1;
-            Ret (Cnt) := F (Cursor);
-            Next (Cursor);
-         end loop;
-         return Ret;
-      end;
+      if No (List) then
+         return A'(1 .. 0 => F (Empty));
+      else
+         declare
+            Len    : constant Pos := List_Length (List);
+            Cursor : Node_Or_Entity_Id := Nlists.First (List);
+            Ret    : A (1 .. Integer (Len));
+            Cnt    : Integer range 0 .. Integer (Len) := 0;
+         begin
+            while Nkind (Cursor) /= N_Empty loop
+               Cnt := Cnt + 1;
+               Ret (Cnt) := F (Cursor);
+               Next (Cursor);
+            end loop;
+            return Ret;
+         end;
+      end if;
    end Map_Node_List_to_Array;
+
+   --------------------------------------
+   -- Map_Node_List_To_Non_Empty_Array --
+   --------------------------------------
+
+   function Map_Node_List_To_Non_Empty_Array (List : List_Id) return A is
+      function Map_Simple is new Map_Node_List_To_Array (T, A, F);
+   begin
+      if No (List) or else List_Length (List) = 0 then
+         return A'(1 => Default);
+      else
+         return Map_Simple (List);
+      end if;
+   end Map_Node_List_To_Non_Empty_Array;
 
    ------------------------
    -- New_Located_Assert --
@@ -748,9 +776,24 @@ package body Gnat2Why.Subprograms is
             Current_Type := (Kind => Why_Int);
 
          when N_Identifier =>
-            T := New_Deref
-                   (Ada_Node => Expr,
-                    Ref      => Why_Ident_of_Ada_Ident (Expr));
+            case Ekind (Entity (Expr)) is
+               when E_Enumeration_Literal =>
+                  if Entity (Expr) = Standard_True then
+                     T := New_Prog_Constant (Def => New_True_Literal);
+                  elsif Entity (Expr) = Standard_False then
+                     T := New_Prog_Constant (Def => New_False_Literal);
+                  else
+                     raise Not_Implemented;
+                  end if;
+
+               when Object_Kind =>
+                  T := New_Deref
+                    (Ada_Node => Expr,
+                     Ref      => Why_Ident_of_Ada_Ident (Expr));
+
+               when others =>
+                  raise Not_Implemented;
+            end case;
 
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
@@ -837,8 +880,11 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
-      function Expr_Expr_Map is new Map_Node_List_to_Array
-         (T => W_Prog_Id, A => W_Prog_Array, F => Why_Expr_Of_Ada_Expr);
+      function Expr_Expr_Map is new Map_Node_List_To_Non_Empty_Array
+        (T       => W_Prog_Id,
+         Default => New_Prog_Constant (Def => New_Void_Literal),
+         A       => W_Prog_Array,
+         F       => Why_Expr_Of_Ada_Expr);
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
@@ -904,8 +950,9 @@ package body Gnat2Why.Subprograms is
             return
               New_Located_Call
                 (Ada_Node => Stmt,
-                 Name     => New_Identifier (Symbol => Chars (Name (Stmt))),
-                 Progs => Expr_Expr_Map (Parameter_Associations (Stmt)));
+                 Name     => New_Identifier
+                   (Symbol => Chars (Entity (Name (Stmt)))),
+                 Progs    => Expr_Expr_Map (Parameter_Associations (Stmt)));
 
          when N_If_Statement =>
             return
@@ -1188,20 +1235,23 @@ package body Gnat2Why.Subprograms is
    -- Why_Predicate_Of_Ada_Expr --
    -------------------------------
 
-   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id
-   is
+   function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id is
    begin
       case Nkind (Expr) is
-         when N_Op_Compare =>
-            --  In Why, the builtin comparison function works on type "int"
-            --  only
+         when N_Identifier =>
             return
               New_Related_Terms
                 (Ada_Node => Expr,
-                 Left     =>
-                   Why_Term_Of_Ada_Expr (Left_Opnd (Expr), (Kind => Why_Int)),
-                 Right    =>
-                   Why_Term_Of_Ada_Expr (Right_Opnd (Expr), (Kind => Why_Int)),
+                 Left     => Why_Term_Of_Ada_Expr (Expr),
+                 Right    => New_True_Literal,
+                 Op       => New_Rel_Eq);
+
+         when N_Op_Compare =>
+            return
+              New_Related_Terms
+                (Ada_Node => Expr,
+                 Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                 Right    => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
                  Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
 
          when N_Op_Not =>

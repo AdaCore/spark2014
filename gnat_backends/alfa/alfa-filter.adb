@@ -103,7 +103,13 @@ package body ALFA.Filter is
                end if;
 
             when N_Subprogram_Body =>
-               if Body_Is_In_ALFA (Corresponding_Spec (N)) then
+               if (Acts_As_Spec (N)
+                    and then Body_Is_In_ALFA
+                      (Defining_Unit_Name (Specification (N))))
+                 or else
+                   (not Acts_As_Spec (N)
+                     and then Body_Is_In_ALFA (Corresponding_Spec (N)))
+               then
                   Subp_Def_List.Append (N);
                end if;
 

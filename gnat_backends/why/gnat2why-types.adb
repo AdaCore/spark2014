@@ -187,16 +187,24 @@ package body Gnat2Why.Types is
      (Ty : Node_Id) return W_Computation_Type_Id
    is
       Name : constant Name_Id := Chars (Etype (Ty));
+      Base_Type : W_Primitive_Type_Id;
+
    begin
+      Base_Type :=
+        (if Is_Boolean_Type (Entity (Ty)) then
+           New_Type_Bool
+         else
+           New_Abstract_Type
+             (Ada_Node => Ty,
+              Name     => New_Identifier
+                (Ada_Node => Ty,
+                 Symbol   => Name)));
+
       --  We have to use the full name of the type
       return
         New_Ref_Type
           (Ada_Node     => Ty,
-           Aliased_Type => New_Abstract_Type
-                             (Ada_Node => Ty,
-                              Name => New_Identifier
-                                        (Ada_Node => Ty,
-                                         Symbol => Name)));
+           Aliased_Type => Base_Type);
    end  Why_Prog_Type_of_Ada_Type;
 
 end Gnat2Why.Types;
