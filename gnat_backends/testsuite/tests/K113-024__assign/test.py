@@ -1,4 +1,4 @@
 from test_support import *
 
 gnat2why("assign.adb")
-why("out.why",opt="--type-only")
+why("assign.why",opt="--type-only")
