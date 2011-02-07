@@ -1248,11 +1248,14 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_Eq |
               N_Op_Ne =>
+            --  ??? Select left type as more general type for now
             return
               New_Related_Terms
                 (Ada_Node => Expr,
                  Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+                 Right    =>
+                   Why_Term_Of_Ada_Expr (Right_Opnd (Expr),
+                    (Ada_Type_Node, Type_Of_Node (Left_Opnd (Expr)))),
                  Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
 
          when N_Op_Ge |
