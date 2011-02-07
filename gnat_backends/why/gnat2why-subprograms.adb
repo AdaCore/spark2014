@@ -1246,12 +1246,27 @@ package body Gnat2Why.Subprograms is
                  Right    => New_True_Literal,
                  Op       => New_Rel_Eq);
 
-         when N_Op_Compare =>
+         when N_Op_Eq |
+              N_Op_Ne =>
             return
               New_Related_Terms
                 (Ada_Node => Expr,
                  Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
+                 Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
+
+         when N_Op_Ge |
+              N_Op_Gt |
+              N_Op_Le |
+              N_Op_Lt =>
+            --  In Why, the builtin comparison functions expect type "int"
+            return
+              New_Related_Terms
+                (Ada_Node => Expr,
+                 Left     =>
+                   Why_Term_Of_Ada_Expr (Left_Opnd (Expr), (Kind => Why_Int)),
+                 Right    =>
+                   Why_Term_Of_Ada_Expr (Right_Opnd (Expr), (Kind => Why_Int)),
                  Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
 
          when N_Op_Not =>
