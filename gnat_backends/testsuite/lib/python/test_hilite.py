@@ -21,8 +21,6 @@ from glob import glob
 import os
 
 class TestGnat2Why(TestRunner):
-    def set_output_filter(self):
-        pass
 
     def apply_output_filter(self, str_list):
         return str_list
@@ -80,8 +78,6 @@ class TestGnat2Why(TestRunner):
                 result = self.compare_dicts(expdict, outdict)
                 self.result['result'] = result
             except ValueError:
-                # Retrieve expected output
-
                 # Process output and expected output with registered filters
                 expected = self.apply_output_filter(expected)
                 output = self.apply_output_filter(output)
@@ -102,17 +98,17 @@ class TestGnat2Why(TestRunner):
                                    'msg': '',
                                    'is_failure': False}
 
-            self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
+        self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
 
-            # self.opt_results['XFAIL'] contains the XFAIL comment or False
-            # The status should be set to XFAIL even if the comment is empty
-            if self.opt_results['XFAIL'] != False:
-                if self.result['result'] in ['DIFF', 'CRASH']:
-                    self.result.update({'result': 'XFAIL',
-                                        'msg': self.opt_results['XFAIL']})
-                elif self.result['result'] == 'OK':
-                    self.result.update({'result': 'UOK',
-                                        'msg': self.opt_results['XFAIL']})
+        # self.opt_results['XFAIL'] contains the XFAIL comment or False
+        # The status should be set to XFAIL even if the comment is empty
+        if self.opt_results['XFAIL'] != False:
+            if self.result['result'] in ['DIFF', 'CRASH']:
+                self.result.update({'result': 'XFAIL',
+                                    'msg': self.opt_results['XFAIL']})
+            elif self.result['result'] == 'OK':
+                self.result.update({'result': 'UOK',
+                                    'msg': self.opt_results['XFAIL']})
 
 
 def run_testsuite(test_driver):

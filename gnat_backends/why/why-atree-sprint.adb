@@ -952,6 +952,7 @@ package body Why.Atree.Sprint is
       Node  : W_Implication_Id)
    is
    begin
+      P (O, "( ");
       Traverse
         (State,
          Implication_Get_Left (Node));
@@ -959,6 +960,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Implication_Get_Right (Node));
+      P (O, " )");
       State.Control := Abandon_Children;
    end Implication_Pre_Op;
 
