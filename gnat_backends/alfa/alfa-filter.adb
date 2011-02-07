@@ -125,7 +125,8 @@ package body ALFA.Filter is
       procedure Get_Types (N : Node_Id) is
       begin
          case Nkind (N) is
-            when N_Full_Type_Declaration =>
+            when N_Subtype_Declaration   |
+                 N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
                   Type_List.Append (N);
                end if;
