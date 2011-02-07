@@ -3,6 +3,7 @@ package body Count is
       Res : Integer := 0;
    begin
       loop
+         Pragma Assert (Res <= Max);
          Res := Res + Step;
          if Res > Max then
             exit;
