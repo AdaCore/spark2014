@@ -911,7 +911,7 @@ package body Gnat2Why.Subprograms is
             end;
 
          when others =>
-            raise Program_Error;
+            raise Not_Implemented;
       end case;
    end Why_Expr_Of_Ada_Stmt;
 
