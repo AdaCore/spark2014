@@ -114,6 +114,7 @@ def prove(src):
     Collect results on a per-label basis and generate report
     """
     gnat2why(src, opt=["-gnat2012", "-gnata"])
+    base, ext = os.path.splitext(src)
     why(base+".why", opt=["--multi-why", "--locs", base+".loc", "--explain"])
     result = {}
     for vc in open(base+".labels"):
