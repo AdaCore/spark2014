@@ -8,6 +8,7 @@ import sys
 import re
 import glob
 import shutil
+import json
 
 #  Change directory
 
@@ -114,31 +115,22 @@ def prove(src):
     """
     gnat2why(src, opt=["-gnat2012", "-gnata"])
     why("out.why", opt=["--multi-why", "--locs", "out.loc", "--explain"])
-    success = {}
+    result = {}
+    for vc in open("out.labels"):
+        vc = str.strip(vc,"\n ")
+        result[vc] = { True : [] , False: [] }
     for f in glob.glob("*.xpl"):
         dic = read_dict_from_file(f)
         curname = dic['source_label']
-        if not success.has_key(curname):
-            success[curname] = { True : [] , False: [] }
+        if not result.has_key(curname):
+            print "missing label name:", curname
+            return
         basename, ext = os.path.splitext(f)
         vc_fn = basename + ".why"
         concat("out_ctx.why", vc_fn, "out_cur.why")
-        cur_success = altergo("out_cur.why",verbose=False)[0]
-        success[curname][cur_success].append(dic["po_name"])
-    for vc in open("out.labels"):
-        vc = str.strip(vc,"\n ")
-        print vc
-        if success.has_key(vc):
-            print("  valid:")
-            for po in success[vc][True]:
-                print "  ", po
-            sys.stdout.write("  invalid:")
-            for po in success[vc][False]:
-                print "  ", po
-        else:
-            sys.stdout.write("no proof obligation")
-        sys.stdout.write("\n")
-
+        cur_result = altergo("out_cur.why",verbose=False)[0]
+        result[curname][cur_result].append(dic["po_name"])
+    print(json.dumps(result, sort_keys = True,indent=4))
 
 def read_dict_from_file(fn):
     """Fill a dictionary with keys from a file of the form

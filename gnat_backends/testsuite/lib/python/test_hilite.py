@@ -14,6 +14,7 @@ from gnatpython.reports import ReportDiff
 from gnatpython.fileutils import (split_file, diff)
 import re
 import logging
+import json
 
 from glob import glob
 
@@ -26,6 +27,32 @@ class TestGnat2Why(TestRunner):
     def apply_output_filter(self, str_list):
         return str_list
 
+    def compare_dicts(self, expected, current):
+        """Compare two result dictionaries
+
+        PARAMETERS
+            expected: the dictionary that represents the reference
+            current: the dictionary that represents the current test result
+        RETURNS
+            the result of the comparison, one of
+            DIFF
+            UOK
+            OK
+        """
+        if expected == current:
+            return "OK"
+        else:
+            for label, expresults in expected.iteritems():
+                if not current.haskey(label):
+                    return "DIFF"
+                for vc in expresults[True]:
+                    if not (vc in current[label][True]):
+                        return "DIFF"
+                for vc in expresults[False]:
+                    if not (vc in current[label][False]):
+                        return "UOK"
+
+
     def analyze(self):
         """Compute test status
 
@@ -35,50 +62,57 @@ class TestGnat2Why(TestRunner):
         # Retrieve the outputs and see if we match some of the CRASH or DEAD
         # patterns
         output = split_file(self.output, ignore_errors=True)
+        entire_output = "\n".join(output)
         if output:
-            tmp = "\n".join(output)
             for pattern in self.get_status_filter():
-                if re.search(pattern[0], tmp):
+                if re.search(pattern[0], entire_output):
                     self.result.update(pattern[1])
                     break
 
         # If the test status has not been updated compare output with the
         # baseline
         if self.result['result'] == 'UNKNOWN':
-            # Retrieve expected output
-            expected = split_file(self.opt_results['OUT'], ignore_errors=True)
+            expected =  split_file(self.opt_results['OUT'], ignore_errors=True)
+            try:
+                entire_expected = "\n".join(expected)
+                outdict = json.loads(entire_output)
+                expdict = json.loads(entire_expected)
+                result = self.compare_dicts(expdict, outdict)
+                self.result['result'] = result
+            except ValueError:
+                # Retrieve expected output
 
-            # Process output and expected output with registered filters
-            expected = self.apply_output_filter(expected)
-            output = self.apply_output_filter(output)
+                # Process output and expected output with registered filters
+                expected = self.apply_output_filter(expected)
+                output = self.apply_output_filter(output)
 
-            d = diff(expected, output)
-            if d:
-                logging.debug(d)
-                self.result['result'] = 'DIFF'
-                if len(expected) == 0:
-                    self.result['msg'] = 'unexpected output'
+                d = diff(expected, output)
+                if d:
+                    logging.debug(d)
+                    self.result['result'] = 'DIFF'
+                    if len(expected) == 0:
+                        self.result['msg'] = 'unexpected output'
+                    else:
+                        self.result['msg'] = 'output'
+                    diff_file = open(self.diff_output, 'w')
+                    diff_file.write(d)
+                    diff_file.close()
                 else:
-                    self.result['msg'] = 'output'
-                diff_file = open(self.diff_output, 'w')
-                diff_file.write(d)
-                diff_file.close()
-            else:
-                self.result = {'result': 'OK',
-                               'msg': '',
-                               'is_failure': False}
+                    self.result = {'result': 'OK',
+                                   'msg': '',
+                                   'is_failure': False}
 
-        self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
+            self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
 
-        # self.opt_results['XFAIL'] contains the XFAIL comment or False
-        # The status should be set to XFAIL even if the comment is empty
-        if self.opt_results['XFAIL'] != False:
-            if self.result['result'] in ['DIFF', 'CRASH']:
-                self.result.update({'result': 'XFAIL',
-                                    'msg': self.opt_results['XFAIL']})
-            elif self.result['result'] == 'OK':
-                self.result.update({'result': 'UOK',
-                                    'msg': self.opt_results['XFAIL']})
+            # self.opt_results['XFAIL'] contains the XFAIL comment or False
+            # The status should be set to XFAIL even if the comment is empty
+            if self.opt_results['XFAIL'] != False:
+                if self.result['result'] in ['DIFF', 'CRASH']:
+                    self.result.update({'result': 'XFAIL',
+                                        'msg': self.opt_results['XFAIL']})
+                elif self.result['result'] == 'OK':
+                    self.result.update({'result': 'UOK',
+                                        'msg': self.opt_results['XFAIL']})
 
 
 def run_testsuite(test_driver):
