@@ -94,6 +94,9 @@ package Why.Gen.Names is
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.
 
+   function New_Exit_Identifier return W_Identifier_Id;
+   --  Return an new identifier for the exception "Exit".
+
    function To_Term_Identifier
      (Name : W_Identifier_Id)
      return W_Term_Identifier_Id;

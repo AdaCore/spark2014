@@ -910,6 +910,25 @@ package body Gnat2Why.Subprograms is
                            Start_from => Split_Node));
             end;
 
+         when N_Exit_Statement =>
+            declare
+               Raise_Stmt : constant W_Prog_Id :=
+                 New_Raise_Statement
+                   (Ada_Node => Stmt,
+                    Name => New_Exit_Identifier);
+            begin
+               if Nkind (Condition (Stmt)) = N_Empty then
+                  return Raise_Stmt;
+               else
+                  return
+                    New_Conditional_Prog
+                      (Ada_Node  => Stmt,
+                       Condition =>
+                          Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+                       Then_Part => Raise_Stmt);
+               end if;
+            end;
+
          when others =>
             raise Not_Implemented;
       end case;

@@ -150,6 +150,16 @@ package body Why.Gen.Names is
       return New_Identifier (Prefix & Name);
    end New_Conversion_To_Int;
 
+   -------------------------
+   -- New_Exit_Identifier --
+   -------------------------
+
+   function New_Exit_Identifier return W_Identifier_Id is
+      Exit_Name : constant String := "Exit";
+   begin
+      return New_Identifier (Exit_Name);
+   end New_Exit_Identifier;
+
    --------------------
    -- New_Identifier --
    --------------------
