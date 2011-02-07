@@ -43,7 +43,7 @@ class TestGnat2Why(TestRunner):
             return "OK"
         else:
             for label, expresults in expected.iteritems():
-                if not current.haskey(label):
+                if not current.has_key(label):
                     return "DIFF"
                 for vc in expresults[True]:
                     if not (vc in current[label][True]):
