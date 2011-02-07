@@ -55,12 +55,19 @@ package body Gnat2Why.Driver is
    --  Take a list of Ada declarations and translate them to Why declarations
 
    procedure Translate_Context (File : W_File_Id; L : List_Id);
+   --  Translate the context of an Ada unit into Why includes
+
    procedure Translate_CUnit (GNAT_Root : Node_Id);
+   --  Translate an Ada unit into Why declarations
 
    procedure Translate_Package (File : W_File_Id; N : Node_Id);
+   --  Translate the declarations of a package into Why declarations
+
    procedure Translate_Standard_Package;
+   --  Translate the Ada Standard package
 
    procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id);
+   --  Translate a node N corresponding to a with clause into a Why include
 
    -----------------
    -- GNAT_To_Why --
@@ -110,58 +117,6 @@ package body Gnat2Why.Driver is
             return False;
       end case;
    end Is_Back_End_Switch;
-
-   -----------------------------
-   -- Translate_List_Of_Decls --
-   -----------------------------
-
-   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id)
-   is
-      Decl  : Node_Id;
-   begin
-      Decl := First (Decls);
-      while Present (Decl) loop
-         case Nkind (Decl) is
-            when N_Full_Type_Declaration | N_Subtype_Declaration =>
-               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
-
-            when N_Subprogram_Body        |
-                 N_Subprogram_Declaration =>
-               Why_Decl_of_Ada_Subprogram (File, Decl);
-
-            when N_Object_Declaration =>
-               case Nkind (Object_Definition (Decl)) is
-               when N_Identifier =>
-                  File_Append_To_Declarations
-                    (File,
-                     New_Parameter_Declaration
-                       (Ada_Node => Decl,
-                        Names =>
-                          (1 =>
-                            New_Identifier (Symbol =>
-                              Chars (Defining_Identifier (Decl)))),
-                        Parameter_Type =>
-                           Why_Prog_Type_of_Ada_Type
-                             (Object_Definition (Decl))));
-               when N_Constrained_Array_Definition | N_Subtype_Indication =>
-                  null;
-               when others =>
-                  raise Not_Implemented;
-               end case;
-
-            --  The following declarations are ignored for now:
-            when N_Pragma | N_Package_Declaration | N_Exception_Declaration
-               | N_Exception_Renaming_Declaration
-               | N_Freeze_Entity | N_Itype_Reference =>
-               null;
-
-            when others =>
-                  raise Not_Implemented;
-         end case;
-
-         Next (Decl);
-      end loop;
-   end Translate_List_Of_Decls;
 
    -----------------------
    -- Translate_Context --
@@ -225,6 +180,58 @@ package body Gnat2Why.Driver is
          end if;
       end if;
    end Translate_CUnit;
+
+   -----------------------------
+   -- Translate_List_Of_Decls --
+   -----------------------------
+
+   procedure Translate_List_Of_Decls (File : W_File_Id; Decls : List_Id)
+   is
+      Decl  : Node_Id;
+   begin
+      Decl := First (Decls);
+      while Present (Decl) loop
+         case Nkind (Decl) is
+            when N_Full_Type_Declaration | N_Subtype_Declaration =>
+               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
+
+            when N_Subprogram_Body        |
+                 N_Subprogram_Declaration =>
+               Why_Decl_of_Ada_Subprogram (File, Decl);
+
+            when N_Object_Declaration =>
+               case Nkind (Object_Definition (Decl)) is
+               when N_Identifier =>
+                  File_Append_To_Declarations
+                    (File,
+                     New_Parameter_Declaration
+                       (Ada_Node => Decl,
+                        Names =>
+                          (1 =>
+                            New_Identifier (Symbol =>
+                              Chars (Defining_Identifier (Decl)))),
+                        Parameter_Type =>
+                           Why_Prog_Type_of_Ada_Type
+                             (Object_Definition (Decl))));
+               when N_Constrained_Array_Definition | N_Subtype_Indication =>
+                  null;
+               when others =>
+                  raise Not_Implemented;
+               end case;
+
+            --  The following declarations are ignored for now:
+            when N_Pragma | N_Package_Declaration | N_Exception_Declaration
+               | N_Exception_Renaming_Declaration
+               | N_Freeze_Entity | N_Itype_Reference =>
+               null;
+
+            when others =>
+                  raise Not_Implemented;
+         end case;
+
+         Next (Decl);
+      end loop;
+   end Translate_List_Of_Decls;
 
    -----------------------
    -- Translate_Package --
