@@ -994,65 +994,136 @@ package body Gnat2Why.Subprograms is
 
          when N_Loop_Statement =>
             declare
-               Loop_Body  : constant List_Id := Statements (Stmt);
-               Split_Node : Node_Id;
-               Invariant  : W_Predicate_Id;
-               Loop_Stmt  : W_Prog_Id;
-               Scheme     : constant Node_Id := Iteration_Scheme (Stmt);
+               Loop_Body    : constant List_Id := Statements (Stmt);
+               Split_Node   : Node_Id;
+               Invariant    : W_Predicate_Id;
+               Loop_Content : W_Prog_Id;
+               Annot        : W_Loop_Annot_Id;
+               Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
             begin
                Compute_Invariant (Loop_Body, Invariant, Split_Node);
-               --  We first create the loop with condition "true"
-               Loop_Stmt :=
-                 New_While_Loop
-                   (Ada_Node     => Stmt,
-                    Condition    =>
-                       New_Prog_Constant (Def => New_True_Literal),
-                    Annotation   =>
-                       New_Loop_Annot
-                         (Ada_Node  => Stmt,
-                          Invariant =>
-                             New_Assertion (Pred => Invariant)),
-                    Loop_Content =>
-                       Why_Expr_of_Ada_Stmts
-                         (Stmts      => Loop_Body,
-                          Start_from => Split_Node));
-               --  Depending on the loop kind, we change the loop definition a
-               --  bit
+               Loop_Content :=
+                  Why_Expr_of_Ada_Stmts
+                    (Stmts      => Loop_Body,
+                     Start_from => Split_Node);
+               Annot :=
+                 New_Loop_Annot
+                   (Ada_Node  => Stmt,
+                    Invariant => New_Assertion (Pred => Invariant));
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop
-                  null;
+                  return
+                    New_While_Loop
+                      (Ada_Node     => Stmt,
+                       Condition    =>
+                         New_Prog_Constant (Def => New_True_Literal),
+                       Annotation   => Annot,
+                       Loop_Content => Loop_Content);
+               --  Depending on the loop kind, we change the loop definition a
+               --  bit
                elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
                   --  We are in a While loop
-                  While_Loop_Set_Condition
-                    (Loop_Stmt,
-                     Why_Expr_Of_Ada_Expr (Condition (Scheme)));
+                  return
+                    New_While_Loop
+                      (Ada_Node     => Stmt,
+                       Condition    =>
+                         Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                       Annotation   => Annot,
+                       Loop_Content => Loop_Content);
                elsif Nkind (Condition (Scheme)) = N_Empty then
                   --  We are in a For loop
+                  --  ??? Only increasing loops for now
                   declare
                      LParam_Spec : constant Node_Id :=
                         Loop_Parameter_Specification (Scheme);
                      Low : constant Node_Id :=
                         Low_Bound (Discrete_Subtype_Definition (LParam_Spec));
+                     High : constant Node_Id :=
+                        High_Bound (Discrete_Subtype_Definition (LParam_Spec));
                      Loop_Index : constant Name_Id :=
                         Chars (Defining_Identifier (LParam_Spec));
+                     Index_Deref : constant W_Prog_Id :=
+                        New_Deref
+                          (Ada_Node => Stmt,
+                           Ref      => New_Identifier (Symbol => Loop_Index));
+                     Index_Type : constant Name_Id := Type_Of_Node (Low);
+                     Int_Of_Index : constant W_Prog_Id :=
+                       Insert_Conversion
+                          (Ada_Node => Stmt,
+                           To       => (Kind => Why_Int),
+                           From     => (Ada_Type_Node, Index_Type),
+                           Why_Expr => Index_Deref);
+                     Addition : constant W_Prog_Id :=
+                        New_Infix_Call
+                           (Ada_Node => Stmt,
+                            Infix    => New_Op_Add_Prog,
+                            Left     => Int_Of_Index,
+                            Right    =>
+                              New_Prog_Constant
+                                (Ada_Node => Stmt,
+                                 Def      =>
+                                   New_Integer_Constant
+                                     (Ada_Node => Stmt,
+                                     Value     => Uint_1)));
+                     Incr_Stmt : constant W_Prog_Id :=
+                        New_Assignment
+                           (Ada_Node => Stmt,
+                            Name     =>
+                              New_Identifier (Symbol => Loop_Index),
+                            Value    =>
+                              Insert_Conversion
+                                 (Ada_Node => Stmt,
+                                  To       => (Ada_Type_Node, Index_Type),
+                                  From     => (Kind => Why_Int),
+                                  Why_Expr => Addition));
+                     In_Range_Expression : constant W_Prog_Id  :=
+                        New_Infix_Call
+                          (Ada_Node => Stmt,
+                           Infix    => New_Op_And_Then_Prog,
+                           Left     =>
+                              New_Infix_Call
+                                (Ada_Node => Stmt,
+                                 Infix    => New_Op_Le_Prog,
+                                 Left     =>
+                                    Why_Expr_Of_Ada_Expr
+                                       (Low,
+                                        (Kind => Why_Int)),
+                                 Right    =>
+                                   Duplicate_Any_Node (Id => Int_Of_Index)),
+                           Right    =>
+                              New_Infix_Call
+                                (Ada_Node => Stmt,
+                                 Infix    => New_Op_Le_Prog,
+                                 Left     =>
+                                   Duplicate_Any_Node (Id => Int_Of_Index),
+                                 Right    =>
+                                    Why_Expr_Of_Ada_Expr
+                                       (High,
+                                        (Kind => Why_Int))));
                   begin
-                     --  While_Loop_Set_Condition
-                     --     (Loop_Stmt,
-                     Loop_Stmt :=
-                        New_Binding_Ref
+                     Loop_Content :=
+                        New_Statement_Sequence
+                           (Ada_Node   => Stmt,
+                            Statements => (1 => Loop_Content, 2 => Incr_Stmt));
+                     return
+                       New_Binding_Ref
                           (Ada_Node => Stmt,
                            Name     => New_Identifier (Symbol => Loop_Index),
                            Def      => Why_Expr_Of_Ada_Expr (Low),
-                           Context  => Loop_Stmt);
+                           Context  =>
+                             New_While_Loop
+                               (Ada_Node     => Stmt,
+                                Condition    => In_Range_Expression,
+                                Annotation   => Annot,
+                                Loop_Content => Loop_Content));
                   end;
                else
                   --  Some other kind of loop
                   raise Not_Implemented;
                end if;
-               return Loop_Stmt;
             end;
 
          when N_Exit_Statement =>
@@ -1361,7 +1432,7 @@ package body Gnat2Why.Subprograms is
                --  Given
                --    if C then P else Q
                --  We generate
-               --    C => P and not C => Q
+               --    (C => P) and (not C => Q)
                return
                   New_Conjonction
                      (Ada_Node => Expr,
