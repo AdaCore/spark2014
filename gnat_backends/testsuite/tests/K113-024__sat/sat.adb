@@ -1,12 +1,14 @@
 package body Sat is
 
    function Add (X , Y : My_Int) return My_Int is
+      Res : My_Int;
    begin
       if X + Y < 10_000 then
-         return X + Y;
+         Res := X + Y;
       else
-         return 10_000;
+         Res := 10_000;
       end if;
+      return Res;
    end Add;
 
 end Sat;
