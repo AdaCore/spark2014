@@ -40,6 +40,7 @@ with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
@@ -76,22 +77,6 @@ package body Gnat2Why.Subprograms is
    --  an assertion.
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
-
-   function Conversion_Name
-      (From : Why_Type;
-       To   : Why_Type) return W_Identifier_Id
-      with Pre =>
-        (not (From = To) and then
-         (From.Kind = Why_Int or else To.Kind = Why_Int));
-   --  Return the name of the conversion function between the two types
-
-   function Insert_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
-       Why_Expr : W_Prog_Id) return W_Prog_Id;
-   --  We expect Why_Expr to be of the type that corresponds to the type
-   --  "From". We insert a conversion so that its type corresponds to "To".
 
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
@@ -225,74 +210,6 @@ package body Gnat2Why.Subprograms is
                Pred     => Pred);
       end if;
    end Compute_Invariant;
-
-   ---------------------
-   -- Conversion_Name --
-   ---------------------
-
-   function Conversion_Name
-      (From : Why_Type;
-       To   : Why_Type) return W_Identifier_Id
-   is
-   begin
-      case From.Kind is
-         when Why_Int =>
-            case To.Kind is
-               when Why_Int =>
-                  --  We have assumed the two arguments to be different
-                  raise Program_Error;
-               when Why_Abstract =>
-                  return
-                     New_Conversion_From_Int
-                       (Get_Name_String (To.Wh_Abstract));
-            end case;
-         when Why_Abstract =>
-            case To.Kind is
-               when Why_Int =>
-                  return
-                    New_Conversion_To_Int (Get_Name_String (From.Wh_Abstract));
-               when Why_Abstract =>
-                  raise Program_Error
-                     with "Conversion between arbitrary types attempted";
-            end case;
-      end case;
-   end Conversion_Name;
-
-   -----------------------
-   -- Insert_Conversion --
-   -----------------------
-
-   function Insert_Conversion
-      (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
-       Why_Expr : W_Prog_Id) return W_Prog_Id
-   is
-   begin
-      if To = From then
-         return Why_Expr;
-      end if;
-
-      if To.Kind = Why_Int or else From.Kind = Why_Int then
-         return
-           New_Prog_Call
-             (Ada_Node => Ada_Node,
-              Name     => Conversion_Name (From => From, To => To),
-              Progs    => (1 => Why_Expr));
-      else
-         return
-            Insert_Conversion
-               (Ada_Node => Ada_Node,
-                To       => To,
-                From     => (Kind => Why_Int),
-                Why_Expr =>
-                  Insert_Conversion
-                    (Ada_Node => Ada_Node,
-                     To       => (Kind => Why_Int),
-                     From     => From,
-                     Why_Expr => Why_Expr));
-      end if;
-   end Insert_Conversion;
 
    ----------------------------
    -- Insert_Conversion_Term --
@@ -1042,80 +959,19 @@ package body Gnat2Why.Subprograms is
                         High_Bound (Discrete_Subtype_Definition (LParam_Spec));
                      Loop_Index : constant Name_Id :=
                         Chars (Defining_Identifier (LParam_Spec));
-                     Index_Deref : constant W_Prog_Id :=
-                        New_Deref
-                          (Ada_Node => Stmt,
-                           Ref      => New_Identifier (Symbol => Loop_Index));
                      Index_Type : constant Name_Id := Type_Of_Node (Low);
-                     Int_Of_Index : constant W_Prog_Id :=
-                       Insert_Conversion
-                          (Ada_Node => Stmt,
-                           To       => (Kind => Why_Int),
-                           From     => (Why_Abstract, Index_Type),
-                           Why_Expr => Index_Deref);
-                     Addition : constant W_Prog_Id :=
-                        New_Infix_Call
-                           (Ada_Node => Stmt,
-                            Infix    => New_Op_Add_Prog,
-                            Left     => Int_Of_Index,
-                            Right    =>
-                              New_Prog_Constant
-                                (Ada_Node => Stmt,
-                                 Def      =>
-                                   New_Integer_Constant
-                                     (Ada_Node => Stmt,
-                                     Value     => Uint_1)));
-                     Incr_Stmt : constant W_Prog_Id :=
-                        New_Assignment
-                           (Ada_Node => Stmt,
-                            Name     =>
-                              New_Identifier (Symbol => Loop_Index),
-                            Value    =>
-                              Insert_Conversion
-                                 (Ada_Node => Stmt,
-                                  To       => (Why_Abstract, Index_Type),
-                                  From     => (Kind => Why_Int),
-                                  Why_Expr => Addition));
-                     In_Range_Expression : constant W_Prog_Id  :=
-                        New_Infix_Call
-                          (Ada_Node => Stmt,
-                           Infix    => New_Op_And_Then_Prog,
-                           Left     =>
-                              New_Infix_Call
-                                (Ada_Node => Stmt,
-                                 Infix    => New_Op_Le_Prog,
-                                 Left     =>
-                                    Why_Expr_Of_Ada_Expr
-                                       (Low,
-                                        (Kind => Why_Int)),
-                                 Right    =>
-                                   Duplicate_Any_Node (Id => Int_Of_Index)),
-                           Right    =>
-                              New_Infix_Call
-                                (Ada_Node => Stmt,
-                                 Infix    => New_Op_Le_Prog,
-                                 Left     =>
-                                   Duplicate_Any_Node (Id => Int_Of_Index),
-                                 Right    =>
-                                    Why_Expr_Of_Ada_Expr
-                                       (High,
-                                        (Kind => Why_Int))));
                   begin
-                     Loop_Content :=
-                        New_Statement_Sequence
-                           (Ada_Node   => Stmt,
-                            Statements => (1 => Loop_Content, 2 => Incr_Stmt));
                      return
-                       New_Binding_Ref
-                          (Ada_Node => Stmt,
-                           Name     => New_Identifier (Symbol => Loop_Index),
-                           Def      => Why_Expr_Of_Ada_Expr (Low),
-                           Context  =>
-                             New_While_Loop
-                               (Ada_Node     => Stmt,
-                                Condition    => In_Range_Expression,
-                                Annotation   => Annot,
-                                Loop_Content => Loop_Content));
+                        New_For_Loop
+                        (Ada_Node  => Stmt,
+                        Loop_Index => Loop_Index,
+                        Index_Type => (Why_Abstract, Index_Type),
+                        Low        =>
+                           Why_Expr_Of_Ada_Expr (Low, (Kind => Why_Int)),
+                        High       =>
+                           Why_Expr_Of_Ada_Expr (High, (Kind => Why_Int)),
+                        Invariant  => Annot,
+                        Loop_Body  => Loop_Content);
                   end;
                else
                   --  Some other kind of loop
