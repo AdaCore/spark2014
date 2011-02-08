@@ -64,13 +64,13 @@ package ALFA.Frame_Conditions is
                                                     Line => 0,
                                                     Col  => 0);
 
-   function Entity_Hash (E : Entity_Rep) return Hash_Type is
+   function Rep_Hash (E : Entity_Rep) return Hash_Type is
      (Hash_Type (E.File * 53 + E.Line * 17 + E.Col));
    --  Hash function for hashed-maps
 
    package Entity_Set is new Hashed_Sets
      (Element_Type        => Entity_Rep,
-      Hash                => Entity_Hash,
+      Hash                => Rep_Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
    use Entity_Set;
@@ -78,7 +78,7 @@ package ALFA.Frame_Conditions is
    package Entity_Map is new Hashed_Maps
      (Key_Type        => Entity_Rep,
       Element_Type    => Entity_Set.Set,
-      Hash            => Entity_Hash,
+      Hash            => Rep_Hash,
       Equivalent_Keys => "=",
       "="             => Entity_Set."=");
    use Entity_Map;
@@ -113,5 +113,35 @@ package ALFA.Frame_Conditions is
    procedure Propagate_Through_Call_Graph;
    --  Propagate reads and writes through the call-graph defined by calls and
    --  callers.
+
+   ----------------------------
+   -- Link with AST Entities --
+   ----------------------------
+
+   function Id_Hash (X : Entity_Id) return Hash_Type is (Hash_Type (X));
+
+   package Entity_Id_To_Rep is new Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Entity_Rep,
+      Hash            => Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   use Entity_Id_To_Rep;
+
+   To_AST : Entity_Id_To_Rep.Map;
+
+   package Entity_Rep_To_Id is new Hashed_Maps
+     (Key_Type        => Entity_Rep,
+      Element_Type    => Entity_Id,
+      Hash            => Rep_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   use Entity_Rep_To_Id;
+
+   From_AST : Entity_Rep_To_Id.Map;
+
+   procedure Declare_Entity (E : Entity_Id);
+   --  Create a representative for E and enter the match in tables To_AST and
+   --  From_AST.
 
 end ALFA.Frame_Conditions;

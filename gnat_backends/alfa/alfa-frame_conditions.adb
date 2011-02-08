@@ -23,8 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;       use Ada.Text_IO;
+with AA_Util; use AA_Util;
+with Ada.Text_IO; use Ada.Text_IO;
+with Atree; use Atree;
 with Get_ALFA;
+with Namet; use Namet;
+with Sinput;      use Sinput;
 
 package body ALFA.Frame_Conditions is
 
@@ -132,6 +136,30 @@ package body ALFA.Frame_Conditions is
       end if;
    end Count_In_Map;
 
+   --------------------
+   -- Declare_Entity --
+   --------------------
+
+   procedure Declare_Entity (E : Entity_Id) is
+      function Get_File_Num_From_Loc (S : Source_Ptr) return Nat;
+
+      function Get_File_Num_From_Loc (S : Source_Ptr) return Nat is
+         Index : constant SFI := Get_Source_File_Index (S);
+      begin
+         return File_Nums.Element
+           (To_Unbounded_String (Name_String (Name_Id (File_Name (Index)))));
+      end Get_File_Num_From_Loc;
+
+      Loc : constant Source_Ptr := Sloc (E);
+      Rep : constant Entity_Rep :=
+              Entity_Rep'(File => Get_File_Num_From_Loc (Loc),
+                          Line => Nat (Get_Logical_Line_Number (Loc)),
+                          Col  => Nat (Get_Column_Number (Loc)));
+   begin
+      To_AST.Insert (E, Rep);
+      From_AST.Insert (Rep, E);
+   end Declare_Entity;
+
    ----------------
    -- Defines_Of --
    ----------------
@@ -235,7 +263,7 @@ package body ALFA.Frame_Conditions is
    ---------------
 
    procedure Load_ALFA (ALI_Filename : String) is
-      ALI_File : File_Type;
+      ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
       Index    : Natural;
