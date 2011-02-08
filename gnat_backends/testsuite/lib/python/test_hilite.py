@@ -75,6 +75,13 @@ class TestGnat2Why(TestRunner):
                 expdict = json.loads(entire_expected)
                 result = self.compare_dicts(expdict, outdict)
                 self.result['result'] = result
+                if result == 'DIFF':
+                    diff_file = open(self.diff_output, 'w')
+                    diff_file.write("expected:\n")
+                    diff_file.write(json.dumps(expdict, sort_keys = True,indent=4))
+                    diff_file.write("\nfound:\n")
+                    diff_file.write(json.dumps(outdict, sort_keys = True,indent=4))
+                    diff_file.close()
             except ValueError:
                 # Process output and expected output with registered filters
                 expected = self.apply_output_filter(expected)
@@ -96,7 +103,10 @@ class TestGnat2Why(TestRunner):
                                    'msg': '',
                                    'is_failure': False}
 
-        self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
+        if self.result['result'] == 'UOK':
+            self.result['is_failure'] = False
+        else:
+            self.result['is_failure'] = IS_STATUS_FAILURE[self.result['result']]
 
         # self.opt_results['XFAIL'] contains the XFAIL comment or False
         # The status should be set to XFAIL even if the comment is empty
