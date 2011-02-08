@@ -134,6 +134,9 @@ def prove(src):
         else:
             cur_result = 'invalid'
         result[curname][cur_result].append(dic["po_name"])
+    for label,dic in result.iteritems():
+        dic['valid'].sort()
+        dic['invalid'].sort()
     print(json.dumps(result, sort_keys = True,indent=4))
 
 def read_dict_from_file(fn):

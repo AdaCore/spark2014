@@ -8,8 +8,8 @@
     "Gnat2why__2": {
         "invalid": [], 
         "valid": [
-            "def___sat__add_po_3", 
-            "def___sat__add_po_2"
+            "def___sat__add_po_2",
+            "def___sat__add_po_3"
         ]
     }
 }

@@ -1,8 +1,8 @@
 {
     "Gnat2why__1": {
         "invalid": [
-            "def___divide__divide_po_2", 
-            "def___divide__divide_po_1"
+            "def___divide__divide_po_1",
+            "def___divide__divide_po_2"
         ], 
         "valid": []
     }, 
