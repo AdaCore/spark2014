@@ -520,10 +520,13 @@ package body Gnat2Why.Subprograms is
       --  Add a "let" binding to Why body for each local variable of the
       --  procedure.
 
-      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id;
+      function Compute_Spec
+         (Kind       : Name_Id;
+          With_Label : Boolean := False) return W_Predicate_Id;
       --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
+      --  Generate a label only if With_Label is True.
 
       --------------------
       -- Compute_Arrows --
@@ -649,7 +652,9 @@ package body Gnat2Why.Subprograms is
       -- Compute_Spec --
       ------------------
 
-      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id
+      function Compute_Spec
+         (Kind       : Name_Id;
+          With_Label : Boolean := False) return W_Predicate_Id
       is
          Corr_Spec     : Node_Id;
          Cur_Spec      : W_Predicate_Id :=
@@ -692,7 +697,7 @@ package body Gnat2Why.Subprograms is
             PPCs := Next_Pragma (PPCs);
          end loop;
 
-         if Nkind (Located_Node) /= N_Empty then
+         if With_Label and then Nkind (Located_Node) /= N_Empty then
             return
               New_Located_Predicate
                 (Ada_Node => Located_Node,
@@ -727,7 +732,11 @@ package body Gnat2Why.Subprograms is
                   Pre     =>
                     New_Assertion (Pred => Compute_Spec (Name_Precondition)),
                   Post    =>
-                    New_Assertion (Pred => Compute_Spec (Name_Postcondition)),
+                    New_Assertion
+                       (Pred =>
+                        Compute_Spec
+                           (Kind       => Name_Postcondition,
+                            With_Label => True)),
                   Def     => Why_Body);
             end;
 
