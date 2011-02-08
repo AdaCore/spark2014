@@ -119,7 +119,7 @@ def prove(src):
     result = {}
     for vc in open(base+".labels"):
         vc = str.strip(vc,"\n ")
-        result[vc] = { True : [] , False: [] }
+        result[vc] = { 'valid' : [] , 'invalid': [] }
     for f in glob.glob("*.xpl"):
         dic = read_dict_from_file(f)
         curname = dic['source_label']
@@ -129,7 +129,10 @@ def prove(src):
         basename, ext = os.path.splitext(f)
         vc_fn = basename + ".why"
         concat(base+"_ctx.why", vc_fn, base+"_cur.why")
-        cur_result = altergo(base+"_cur.why",verbose=False)[0]
+        if altergo(base+"_cur.why",verbose=False)[0]:
+            cur_result = 'valid'
+        else:
+            cur_result = 'invalid'
         result[curname][cur_result].append(dic["po_name"])
     print(json.dumps(result, sort_keys = True,indent=4))
 

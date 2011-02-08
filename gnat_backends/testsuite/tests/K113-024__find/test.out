@@ -1,11 +1,11 @@
 {
     "Gnat2why__1": {
-        "false": [], 
-        "true": []
+        "invalid": [], 
+        "valid": []
     }, 
     "Gnat2why__2": {
-        "false": [], 
-        "true": [
+        "invalid": [], 
+        "valid": [
             "def___find__find_po_1"
         ]
     }
