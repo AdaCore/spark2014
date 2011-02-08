@@ -1,0 +1,778 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage{listings}
+\usepackage{mathpartir}
+\usepackage{amsmath}
+\usepackage{xspace}
+
+\newcommand{\eg}{\textit{e.g.,}\xspace}
+\newcommand{\etal}{\textit{et al.}\xspace}
+
+\newcommand{\prog}{\ensuremath{\mathcal{P}}\xspace}
+\newcommand{\idx}{\ensuremath{i}\xspace}
+\newcommand{\idxinitial}{\ensuremath{\mathit{initial}}\xspace}
+\newcommand{\idxfinal}{\ensuremath{\mathit{final}}\xspace}
+\newcommand{\at}[1]{{(#1)}}
+\newcommand{\N}{\ensuremath{N}\xspace}
+\newcommand{\KWloop}{\ensuremath{\mathrm{loop}~}}
+\newcommand{\KWend}{\ensuremath{\mathrm{end}~}}
+\newcommand{\KWover}{\ensuremath{\mathrm{over}~}}
+\newcommand{\KWin}{\ensuremath{~\mathrm{in}~}}
+\newcommand{\KWexit}{\ensuremath{\mathrm{exit}}}
+\newcommand{\true}{\ensuremath{\mathit{true}}}
+\newcommand{\impl}{\ensuremath{\Longrightarrow}}
+\newcommand{\inbounds}[2]{\ensuremath{\mathit{inbounds}_{#1}(#2)}\xspace}
+\newcommand{\Pinbounds}[1]{\ensuremath{\mathit{inbounds}_{#1}}\xspace}
+\newcommand{\seen}[1]{\ensuremath{\mathit{seen}(#1)}\xspace}
+\newcommand{\Pseen}{\ensuremath{\mathit{seen}}\xspace}
+\newcommand{\tocount}[1]{\ensuremath{\mathit{tocount}(#1)}\xspace}
+\newcommand{\Ftocount}{\ensuremath{\mathit{tocount}}\xspace}
+\newcommand{\between}[3]{\ensuremath{\mathit{between}{(#1,#2,#3)}}\xspace}
+\newcommand{\Pbetween}{\ensuremath{\mathit{between}}\xspace}
+\newcommand{\loopinvariant}{\noindent\textit{Loop invariant:}\xspace}
+\newcommand{\patterndef}{\noindent\textit{Definition:}\xspace}
+\newcommand{\patternnote}{\noindent\textit{Note:}\xspace}
+
+\newcommand{\translatable}{translatable}
+
+\lstset{language=Ada}
+
+\sloppy
+
+\begin{document}
+
+% Title Page
+\title{Simple Loop Patterns and Rich Loop Invariants}
+\author{Marc Sango and Yannick Moy}
+\date{}
+
+\maketitle
+
+\begin{abstract}
+  Most works in automatic generation of loop invariants are limited to simple
+  forms of invariants without quantifiers. In this paper, we describe patterns
+  of loops for which it is possible to generate rich loop invariants with
+  quantifiers.
+\end{abstract}
+
+\section{Introduction}
+
+In the following, we only consider techniques that generate loop invariants for
+programs with scalar and array variables. There is a wealth of different
+techniques that generate invariants regarding the shape of
+dynamically-allocated data structures (shape analysis, separation logic) that
+are irrelevant in our context. We also ignore all techniques for generating
+invariants for hybrid programs, in which a program implements a control part
+which is related to an outside world obeying continuous differential equations.
+
+There have been two approaches to loop invariant generation: a
+\textit{template} approach which takes only code as input and generates the
+best loop invariants in some predefined template family; a \textit{directed}
+approach which also takes as input a goal or some hint formulas, and generates
+either a sufficient loop invariant to prove the goal or a loop invariant based
+on the hints provided. Typically, template approaches are based on abstract
+interpretation or algebraic techniques while lazy approaches are based on
+theorem proving or model checking techniques.
+
+\subsection{Simple Loop Invariants}
+
+Most techniques generate loop invariants in the form of conjunctions of
+(dis)equalities between polynomials in the program variables. The form of an
+individual (dis)equality ranges from constant variable bounds for a variable
+(sign, interval) to polynomial linear (dis)equalities of various complexity (2
+or 3 variables, templates of polynomials) and non-linear polynomials.
+
+Abstract interpretation~\cite{cousot:1978:popl, mine:2006:hosc} works on an
+abstraction of the program using predefined domains which restrict the kind of
+(dis)equalities we are aiming at. Non-relational domains such as intervals
+define (dis)equalities between a single program variable and
+constants. Relational domains such as octagons or polyhedra define
+(dis)equalities between program variables. An abstract state represents all
+known (dis)equalities in the abstract domain. Abstract interpretation simulates
+execution over this abstract state to reach a fixpoint which defines invariants
+at each program point.
+
+Predicate abstraction~\cite{graf:1997:cav} applies abstract interpretation to a
+domain of predefined base formulas, typically collected from guards present in
+the program (tests in branch and loop statements). A theorem prover is used to
+compute the transition function for each statement of the program. The final
+invariants are conjunctions over the initial base formulas.
+
+An obvious limitation of predicate abstraction is its dependency on the initial
+base formulas. In a goal-directed approach where the invariant computed by
+predicate abstraction is not sufficient to prove the goal, Craig's
+interpolation~\cite{mcmillan:2003:cav, mcmillan:2006:cav} allows to generate
+intermediate formulas from two inconsistent formulas. In the CEGAR
+(Counter-Example Guided Abstraction Refinement) approach, these intermediate
+formulas can then be fed to predicate abstraction until a sufficient invariant
+is found.
+
+Algebraic techniques~\cite{colon:2003:cav, sankaranarayanan:2004:popl,
+  kovacs:2008:csr} first extract polynomial (dis)equalities over program
+variables and unknown constants from a template loop invariant defining these
+unknowns. Then, algebraic techniques such as Faskas lemma or Gröbner bases are
+used to solve these (dis)equations and give values to unknowns.
+
+\subsection{Richer Loop Invariants}
+
+\subsubsection*{Disjunctions}
+
+Various works have defined disjunctive abstract domains on top of base abstract
+domains. The implication domain only deals with one disjunction at a time,
+while disjunctive completion allows to treat larger disjuncts. The need to
+define converging operators for these domains means that they are not very
+precise.
+
+\subsubsection*{Quantifiers}
+
+A few works have targeted the generation of loop invariants with a richer
+Boolean structure and quantifiers, based on techniques for quantifier-free
+invariants.
+
+Halbwachs and Péron~\cite{halbwachs:2008:pldi} describe an abstract domain to
+reason about array contents over \textit{simple programs} that they describe as
+\textit{``one-dimensional arrays, traversed by simple for loops''}. They are
+able to represent facts like $(\forall i)(2 \leq i \leq n \impl A[i] \geq
+A[i−1]$, in which a pointwise relation is established between elements of array
+slices, where the relation is one supported by a quantifier-free base abstract
+domain.
+
+Gulwani \etal~\cite{gulwani:2008:popl} describe a general lifting procedure
+that creates a quantified disjunctive abstract domain from quantifier-free
+domains. They are able to represent facts like $(\forall i)(0 \leq i < n \impl
+a[i] = 0)$, in which the formula is universally quantified over an implication
+between quantifier-free formulas of the base domains.
+
+McMillan~\cite{mcmillan:2008:tacas} describes an instrumentation of a
+resolution-based prover that generates quantified invariants describing facts
+over simple arrays manipulating arrays. Using a similar technique, Kov\'acs and
+Voronkov~\cite{kovacs:2009:fli} generate invariants containing quantifier
+alternation.
+
+\section{Preliminaries}
+
+\subsection{Simple Loops}
+
+A program \prog consists in a loop over index \idx between \idxinitial and \idxfinal. 
+The constant \idxinitial and \idxfinal represent respectively the intial value and final
+value of iteration range.
+The loop body consists in a (possibly empty) unordered set of \textit{guarded exits},
+followed by a (possibly empty) unordered set of \textit{simultaneous guarded assignments}.
+
+\newcommand{\expr}{\ensuremath{\mathit{expr}}}
+\newcommand{\assign}{\ensuremath{\mathit{assign}}}
+\newcommand{\gexit}{\ensuremath{\mathit{guardexit}}}
+\newcommand{\gassign}{\ensuremath{\mathit{guardassign}}}
+\newcommand{\location}{\ensuremath{\mathit{location}}}
+
+\vspace{0.5cm}
+\begin{tabular}{rcl}
+\prog & ::= &  \KWloop \KWover \idx \KWin \idxinitial ..\idxfinal \gexit$*$ \gassign$*$ \KWend \\
+\gexit  & ::= & \expr ~$\rightarrow$ \KWexit \\
+\gassign  & ::= & \expr ~$\rightarrow$ \assign \\
+\assign  & ::= & \location ~$:=$  \expr\\
+\location  & ::= & $v ~|~ V[\expr]$ \\
+\expr  & ::= & $\location  ~|~ \expr \bullet \expr  ~|~ f(\expr) \qquad \bullet \in \{+, -, *, / , <, \leq, >, \geq \}$\\
+\end{tabular}
+\vspace{0.5cm}
+
+If the guard $t$ of a guarded exit evaluates to true, then control exits from
+the loop. If the guard $g$ of a guarded assignment evaluates to true, then the
+assignment is performed. The guard is implicitly \textit{true} if not present.
+A particularity of the loop bodies we consider is that assignments are
+performed in parallel, so all expressions in guards and assignments are
+evaluated before all assignments take place.
+
+As an example, here is a loop which rotates the values in an array $A$ of size
+$\N + 1$ to the left, so that the value at index 1 ends up at index $\N+1$, and
+all other values are moved down one index:
+
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ A[i]   := A[i+1]\\
+  ~~~~ A[i+1] := A[i]\\
+  \KWend
+\end{array}$$
+
+We assume that there are no conflicting writes in the simultaneous assigments,
+which amounts to the following conditions:
+
+\begin{enumerate}
+\item For any two assignments to scalar variable $a$, whose guards are $g_j$
+  and $g_k$, then $g_j \land g_k$ is unsatisfiable.
+\item For any two assignments to array variable $A$ at indexes $e_j$ and $e_k$,
+  with guards $g_j$ and $g_k$, then $(e_j = e_k) \land g_j \land g_k$ is
+  unsatisfiable.
+\end{enumerate}
+
+These conditions are essentially the same as the ones described by Kov\'acs and
+Voronkov with a slightly different formalism~\cite{kovacs:2009:fli}.
+
+\subsection{Naming Conventions}
+\label{sec:naming-conventions}
+
+We use the following conventions: lower-case letters $a$, $b$, $c$ are integer
+variables; \idx is the loop index, which is not a variable and cannot be
+assigned; upper-case letters $A$, $B$, $C$ are array variables; $e$ is an
+expression; $K$ is a constant expression; $f$ is a pure function (it does not
+write to variables). Tests and guards are expressions denoted by letter $t$ and
+$g$ respectively for readability. Subscripted variables $a_0$ and $A_0$ denote
+respectively the initial values before the loop of variables $a$ and
+$A$. Expression $e_0$ denotes the expression $e$ where all variables have been
+replaced by their initial counterparts (this does not apply to the loop index
+\idx).  The special expression $e^?$ denotes an unknown value, and expression.
+
+We denote $e^\at{\idx}$ an expression which only depends on the value of the
+loop index \idx and initial values of variables before the loop. We say that
+such an expression is \textit{\translatable}. Sufficient conditions for an
+expression $e$ to be translatable are the following:
+\begin{enumerate}
+\item $e$ does not refer to scalar variables that are assigned in the loop;
+\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
+\item $e$ may refer to an array variable $A$ that is modified in the loop,
+  provided it does so at index \idx or indexes that are known to be greater
+  than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
+  indexes that are known to be less than \idx (\eg $\idx - 1$). This ordering
+  can be more complex, and necessitate a special analysis, like in the case of
+  array filtering where the array is assigned at index $v$ where $v$ is
+  incremented less often than the loop index.
+\end{enumerate}
+
+\subsection{Rich Loop Invariants}
+
+We are interested in generating the most precise loop invariant for a given
+loop. The loop invariant we consider is not a Hoare-like loop invariant, which
+would hold before and after the loop and at the start of each run through the
+loop body. Instead, our loop invariant holds between guarded exits and guarded
+assignments in each run through the loop body, as shown on the general form of
+the loop below:
+
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin \idxinitial ..\idxfinal \\
+  ~~~~ t_1 \rightarrow \KWexit \\
+  ~~~~ ... \\
+  ~~~~ t_m \rightarrow \KWexit \\
+  ~~~~ < \textrm{loop invariand holds at this point} >\\
+  ~~~~ g_1 \rightarrow \alpha_1 \\
+  ~~~~ ... \\
+  ~~~~ g_n \rightarrow \alpha_n \\
+  \KWend
+\end{array}$$
+
+Given an array $A$ with index bounds $\mathit{low}$ and $\mathit{up}$, we
+define a predicate \Pinbounds{A} as follows:
+
+$$\inbounds{A}{j} \equiv \mathit{low} \leq j \leq \mathit{up}$$
+
+To treat the iteration monotonicity properties we define a predicate \Pbetween
+and a logical function \Ftocount which count the number of loop round.
+
+If the loop is strictly increasing then:
+\begin{eqnarray*}
+&\between{j}{k}{\idx} \equiv j < k < \idx\\
+\and
+&\tocount{i} = i - \idxinitial + 1
+\end{eqnarray*}
+
+If the loop is strictly decreasing then:
+\begin{eqnarray*}
+&\between{j}{k}{\idx} \equiv j > k > \idx\\
+\and
+&\tocount{i} = \idxinitial -i + 1
+\end{eqnarray*}
+
+We can now define a predicate \Pseen which characterizes indexes which have already
+been treated in the loop:
+
+$$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{k}{\idx}$$
+
+\section{Loop Patterns} 
+
+\subsection{Search Pattern}
+
+\patterndef The test of a guarded exit is \translatable.
+%
+$$t^\at{\idx} \rightarrow \KWexit$$
+%
+\loopinvariant
+%
+$$(\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})$$
+
+\subsection{Update Patterns}
+
+\subsubsection*{Certain Single Update Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is \textit{true}, and it receives a translatable value.
+%
+$$\mathit{true} \rightarrow a := e^\at{\idx}$$
+%
+\loopinvariant
+%
+$$(\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})$$
+%
+\patternnote This is the case for Boolean variables that identify the first run
+through the loop.
+
+\subsubsection*{Single Min/Max Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is a comparison between the variable and a translatable expression, and
+it receives this translatable value.
+%
+$$(a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}  \qquad \bullet \in \{<, \leq, >, \geq \}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg (a_0 \bullet e_0^\at{j}))\\
+\lor 
+& (\exists j)(\seen{j} \land a = e_0^\at{j} \land (\forall k)(\seen{k} \impl a \circ e_0^\at{k}))
+\end{eqnarray*}
+where $\circ$ can be deduced from $\bullet$ as follows:
+$\begin{array}{l|llll}
+\bullet & <    & \leq & >    & \geq \\ \hline
+\circ   & \geq & \geq & \leq & \leq
+\end{array}$
+
+\subsubsection*{Single Min/Max Index Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is a comparison between a translatable expression and the same expression
+where the loop index is replaced by the variable, and it receives the value of
+the loop index.
+%
+$$(e^\at{a} \bullet e^\at{\idx}) \rightarrow a := \idx  \qquad \bullet \in \{<, \leq, >, \geq \}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg (e_0^\at{a_0} \bullet e_0^\at{j}))\\
+\lor 
+& (\exists j)(\seen{j} \land a = j \land (\forall k)(\seen{k} \impl e_0^\at{a} \circ e_0^\at{k}))
+\end{eqnarray*}
+where $\circ$ can be deduced from $\bullet$ as follows:
+$\begin{array}{l|llll}
+\bullet & <    & \leq & >    & \geq \\ \hline
+\circ   & \geq & \geq & \leq & \leq
+\end{array}$
+
+\subsubsection*{Known Single Update Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is translatable, and it receives a translatable value.
+%
+$$g^\at{\idx} \rightarrow a := e^\at{\idx}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})\\
+\lor 
+& (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))
+\end{eqnarray*}
+
+\subsubsection*{Unknown Single Update Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is unknown, and it receives a translatable value.
+%
+$$g^? \rightarrow a := e^\at{\idx}$$
+%
+\loopinvariant
+%
+$$(a = a_0) \lor (\exists j)(\seen{j} \land a = e_0^\at{j})$$
+
+\subsubsection*{Known Multiple Update Pattern}
+
+\patterndef A scalar variable is modified in more than one assignment, all of
+whose guards are translatable, and it receives in each a translatable value.
+%
+\begin{eqnarray*}
+&g_1^\at{\idx} \rightarrow a := e_1^\at{\idx}\\
+&...\\
+&g_n^\at{\idx} \rightarrow a := e_n^\at{\idx}\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\forall r)(\seen{j} \impl \neg g_{r0}^\at{j})\\
+\lor 
+& (\exists j)
+\left(\begin{array}{cl}
+&(\exists r)(\seen{j} \land g_{r0}^\at{j} \land a = e_{r0}^\at{j})\\
+\land&  (\forall k)(\forall r) (\between{j}{k}{\idx} \impl \neg g_{r0}^\at{k})
+\end{array}\right)
+\end{eqnarray*}
+
+\patternnote In this invariant and others multiple invariants patterns, 
+existential and universal quantifier concern the implicit range of all 
+guarded assignment considered, i.e : $1 \leq r \leq n$.
+
+\subsection{Integrate Patterns}
+
+\subsubsection*{Certain Single Add-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is \textit{true}, and it receives its own previous value plus a constant.
+%
+$$\mathit{true} \rightarrow a := a + K$$
+%
+\loopinvariant
+%
+$$a = a_0 + K * (i-1)$$
+
+\subsubsection*{Known Single Add-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is translatable, and it receives its own previous value plus a constant.
+%
+$$g^\at{\idx} \rightarrow a := a + K$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})) \\
+\lor 
+& (\exists j)
+\left(\begin{array}{cl}
+&\seen{j} \land g_0^\at{j}\\
+ \land& (\exists k)(1 \leq k \leq \tocount{j} \land a = a_0 + K * k) \\
+\land& (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k})
+\end{array}\right)
+\end{eqnarray*}
+
+\subsubsection*{Known Multiple Add-Up Pattern}
+
+\patterndef A scalar variable is modified in more than one assignment, all of
+whose guards are translatable, and it receives in each its own previous value
+plus a constant.
+%
+\begin{eqnarray*}
+&g_1^\at{\idx} \rightarrow a := a + K_1\\
+&...\\
+&g_n^\at{\idx} \rightarrow a := a + K_n\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\forall r)( \seen{j} \impl \neg g_{r0}^\at{j})) \\
+\lor 
+& (\exists j)
+\left(\begin{array}{cl}
+&(\exists r)(\seen{j} \land g_{r0}^\at{j}) \\
+\land& (\exists k)(1 \leq k \leq \tocount{j} \land a_0 + \mathit{min}(K_r) * k \leq a \leq a_0 + \mathit{max}(K_r) * k) \\
+\land& (\forall k)(\forall r)(\between{j}{k}{\idx} \impl \neg g_{r0}^\at{k})
+\end{array}\right)
+\end{eqnarray*}
+
+\subsubsection*{Unknown Single Add-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is unknown, and it receives its own previous value plus a constant.
+%
+$$g^? \rightarrow a := a + K$$
+%
+\loopinvariant
+%
+$$(a = a_0) \lor (\exists j)(\seen{j} \land a = a_0 + K * j)$$
+
+\subsubsection*{Unknown Multiple Add-Up Pattern}
+
+\patterndef A scalar variable is modified in more than one assignment, all of
+whose guards are unknown, and it receives in each its own previous value
+plus a constant.
+%
+\begin{eqnarray*}
+&g^? \rightarrow a := a + K_1\\
+&...\\
+&g^? \rightarrow a := a + K_n\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+$$(a = a_0) \lor (\exists j)(\seen{j} \land a_0 + \mathit{min}(K_r) * j \leq a \leq a_0 + \mathit{max}(K_r) * j)$$
+
+\subsubsection*{Certain Single Mult-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is \textit{true}, and it receives its own previous value times
+(resp. divided by) a constant.
+
+$$\mathit{true} \rightarrow a := a \bullet K \qquad \bullet \in \{*, / \}$$
+
+\loopinvariant
+
+$$(a = a_0) \bullet K^{i-1}$$
+
+\subsubsection*{Known Single Mult-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is translatable, and it receives its own previous value times
+(resp. divided by) a constant.
+
+$$g^\at{\idx} \rightarrow a := a \bullet K  \qquad \bullet \in \{*, / \}$$
+
+\loopinvariant
+
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})) \\
+\lor 
+& (\exists j)
+\left(\begin{array}{cl}
+& \seen{j} \land g_0^\at{j} \\
+\land& (\exists k)(1 \leq k \leq \tocount{j} \land a = a_0 \bullet K^k)\\
+\land& (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k})
+\end{array}\right)
+\end{eqnarray*}
+
+\subsubsection*{Unknown Single Mult-Up Pattern}
+
+\patterndef A scalar variable is only modified in a single assignment, whose
+guard is unknown, and it receives its own previous value times
+(resp. divided by) a constant.
+
+$$g^? \rightarrow a := a \bullet K  \qquad \bullet \in \{*, / \}$$
+
+\loopinvariant
+
+$$(a = a_0) \lor (\exists j)(\seen{j} \land a = a_0 \bullet K^j)$$
+
+\subsection{Map Patterns}
+
+\subsubsection*{Certain Single Map Pattern}
+
+\patterndef An array variable is only modified in a single assignment, whose
+guard is \textit{true}, at index \idx, and it receives a translatable value.
+%
+$$\mathit{true} \rightarrow A[\idx] := e^\at{\idx}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl A[j] = e_0^\at{j}) \\
+\land& (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])
+\end{eqnarray*}
+%
+\patternnote This pattern corresponds in particular to an array copy.
+
+\subsubsection*{Certain Shifted Single Map Pattern}
+
+\patterndef An array variable is only modified in a single assignment, whose
+guard is \textit{true}, at index \idx plus a constant, and it receives a
+translatable value.
+%
+$$\mathit{true} \rightarrow A[\idx + K] := e^\at{\idx}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl A[j + K] = e_0^\at{j}) \\
+\land& (\forall j)(\neg \seen{j} \land \inbounds{A}{j + K} \impl A[j + K] = A_0[j + K])
+\end{eqnarray*}
+%
+\patternnote All map patterns can be shifted like the above.
+
+\subsubsection*{Known Single Map Pattern}
+
+\patterndef An array variable is only modified in a single assignment, whose
+guard is translatable, at index \idx, and it receives a translatable value.
+%
+$$g^\at{\idx} \rightarrow A[\idx] := e^\at{\idx}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \land g_0^\at{j} \impl A[j] = e_0^\at{j}) \\
+\land&(\forall j)(\seen{j} \land \neg g_0^\at{j} \impl A[j] = A_0[j]) \\
+\land&
+ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+\end{eqnarray*}
+
+\subsubsection*{Known Multiple Map Pattern}
+
+\patterndef An array variable is modified in more than one assignment, all
+of whose guards are translatable, at index \idx, and it receives in each a
+translatable value.
+%
+\begin{eqnarray*}
+&g_1^\at{\idx} \rightarrow A[\idx] := e_1^\at{\idx}\\
+&...\\
+&g_n^\at{\idx} \rightarrow A[\idx] := e_n^\at{\idx}\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\forall r)(\seen{j} \land g_{r0}^\at{j} \impl A[j] = e_{r0}^\at{j}) \\
+\land&(\forall j)(\seen{j} \land (\forall r) (\neg g_{r0}^\at{j})) \impl A[j] = A_0[j]) \\
+\land&
+ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+\end{eqnarray*}
+
+\subsubsection*{Unknown Single Map Pattern}
+
+\patterndef An array variable is only modified in a single assignment, whose
+guard is unknown, at index \idx, and it receives a translatable value.
+%
+$$g^? \rightarrow A[\idx] := e^\at{\idx}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl A[j] = e_0^\at{j} \lor A[j] = A_0[j]) \\
+\land&
+ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+\end{eqnarray*}
+
+\subsubsection*{Unknown Multiple Map Pattern}
+
+\patterndef An array variable is modified in more than one assignment, all
+of whose guards are unknown, at index \idx, and it receives in each a
+translatable value.
+%
+\begin{eqnarray*}
+&g^? \rightarrow A[\idx] := e_1^\at{\idx}\\
+&...\\
+&g^? \rightarrow A[\idx] := e_n^\at{\idx}\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl (\exists r)(A[j] = e_{r0}^\at{j}) \lor A[j] = A_0[j]) \\
+\land&
+ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+\end{eqnarray*}
+
+\subsubsection*{Filter Pattern}
+
+\patterndef An array variable is only modified in a single assignment, whose
+guard is translatable, at index $v$, and it receives in each a translatable
+value. Scalar variable $v$ is incremented in a single assignment, whose guard
+is the same as the one above.
+%
+\begin{eqnarray*}
+g^\at{\idx} &\rightarrow& A[v] := e^\at{\idx}\\
+g^\at{\idx} &\rightarrow& v := v + 1\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \land g_0^\at{j} \impl (\exists k)(v_0 \leq k < v \land A[k] = e_0^\at{j}))  \\
+\land&
+(\forall k)(v_0 \leq k < v \impl (\exists j)(\seen{j} \land g_0^\at{j} \land A[k] = e_0^\at{j}))  \\
+\land&
+(\forall k)(k > v \land \inbounds{A}{k} \impl A[k] = A_0[k])
+\end{eqnarray*}
+%
+\patternnote This pattern corresponds in particular to an array filter, in
+which elements satisfying a certain condition are copied to the front of the
+array.
+
+\subsection{Exchange Patterns}
+
+\subsubsection*{Known Exchange Pattern}
+
+\patterndef An array variable is only modified in a single assignment,
+whose guard is translatable, at some unkown index, and it receives a translatable value.
+%
+\begin{eqnarray*}
+g^\at{\idx} \rightarrow A[e^?] := e^\at{\idx}\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+$$(\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land g_0^\at{k} \land A[j] = e_0^\at{k}))$$
+
+\subsubsection*{Unknown Exchange Pattern}
+
+\patterndef An array variable is only modified in a single assignment,
+whose guard is unknown, at some unkown index, and it receives a translatable value.
+%
+\begin{eqnarray*}
+&g^? \rightarrow A[e^?] := e^\at{\idx}\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+$$(\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land A[j] = e_0^\at{k}))$$
+
+\subsubsection*{Known Interchange Pattern}
+
+\patterndef An array variable is modified in possibly more than one assignment,
+all of whose guards are unknown, at index \idx, and it receives in each
+its own value at some unknown index.
+%
+\begin{eqnarray*}
+&g^? \rightarrow A[\idx] := A[e^?]\\
+&...\\
+&g^? \rightarrow A[\idx] := A[e^?]\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k]))  \\
+\land&
+(\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])
+\end{eqnarray*}
+
+\subsubsection*{Unknown Interchange Pattern}
+
+\patterndef An array variable is modified in possibly more than one assignment,
+all of whose guards are unknown, at some unkown index, and it receives in each
+its own value at some unknown index.
+%
+\begin{eqnarray*}
+&g^? \rightarrow A[e^?] := A[e^?]\\
+&...\\
+&g^? \rightarrow A[e^?] := A[e^?]\\
+\end{eqnarray*}
+%
+\loopinvariant
+%
+$$(\forall j)(\inbounds{A}{j} \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k])) $$
+
+\section{Pre-Transformation Tactic}
+When our code fall into the above patterns nothing to do, just apply the corresponding invariant patterns. 
+Contrariwise, in some cases we will need a pre-processing them to bring into our patterns. 
+This pre-processing mainly to reorganize our code in order to transform the expression 
+which used others variables updates in the loop to a \textit{\translatable}  expression 
+define in section~\ref{sec:naming-conventions}. For example in the following code 
+
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ True \rightarrow A[i] := B[Index]\\
+  ~~~~ True \rightarrow Index := Index + 1\\
+  \KWend
+\end{array}$$
+
+The last statement is Certain Single Add-Up Pattern but the first statement is not Certain Single Map Pattern
+because $B[Index]$ use a update variable $Index$ (therefore it's not translatable). But if we transform it as below we have 
+Certain Single Map Pattern and Certain Single Add-Up Pattern. Thus, the full invariant is the conjonction of the
+two corresponding invariants.
+
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ True \rightarrow A[i]   := B[Index0 + I-1]\\
+  ~~~~ True \rightarrow Index := Index + 1\\
+  \KWend
+\end{array}$$
+%
+\loopinvariant
+%
+\begin{eqnarray*}
+&(\forall j)(\seen{j} \impl A[j] = B_0[Index0 + j-1]) \\
+\land& (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+&\land& \\
+&Index = Index_0 + 1 * (i-1)&
+\end{eqnarray*}
+
+\bibliographystyle{abbrv}
+\bibliography{loop_patterns}
+\end{document}          
