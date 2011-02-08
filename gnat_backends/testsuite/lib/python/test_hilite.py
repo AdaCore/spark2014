@@ -46,10 +46,7 @@ class TestGnat2Why(TestRunner):
                 for vc in expresults['valid']:
                     if not (vc in current[label]['valid']):
                         return "DIFF"
-                for vc in expresults['invalid']:
-                    if not (vc in current[label]['invalid']):
-                        return "UOK"
-            return "OK"
+                return "UOK"
 
 
     def analyze(self):
