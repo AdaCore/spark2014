@@ -1,0 +1,15 @@
+{
+    "Gnat2why__1": {
+        "invalid": [], 
+        "valid": [
+            "def___max__max_po_1", 
+            "def___max__max_po_2"
+        ]
+    }, 
+    "Gnat2why__2": {
+        "invalid": [], 
+        "valid": [
+            "def___max__max_po_3"
+        ]
+    }
+}
