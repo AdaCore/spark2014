@@ -5,7 +5,8 @@ package body Divide is
       Q := 0;
       R := M;
       while R >= N loop
-         pragma Assert (M = Q * N + R and then R >= 0);
+         pragma Assert (M = Q * N + R);
+         pragma Assert (R >= 0);
          Q := Q + 1;
          R := R - N;
       end loop;
