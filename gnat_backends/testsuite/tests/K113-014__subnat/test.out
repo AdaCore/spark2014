@@ -1,26 +1,14 @@
 {
     "Gnat2why__1": {
-        "false": [], 
-        "true": []
-    }, 
-    "Gnat2why__2": {
-        "false": [], 
-        "true": []
-    }, 
-    "Gnat2why__3": {
-        "false": [], 
-        "true": [
+        "invalid": [], 
+        "valid": [
             "def___subnat__f_po_1"
         ]
     }, 
-    "Gnat2why__4": {
-        "false": [], 
-        "true": [
+    "Gnat2why__2": {
+        "invalid": [], 
+        "valid": [
             "def___subnat__g_po_1"
         ]
-    }, 
-    "Gnat2why__5": {
-        "false": [], 
-        "true": []
     }
 }

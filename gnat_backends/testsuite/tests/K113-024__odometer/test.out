@@ -1,18 +1,14 @@
 {
-"Gnat2why__1": {
-"false": [],
-"true": [
-"odometer__zero_trip_po_1"
-]
-},
-"Gnat2why__2": {
-"false": [],
-"true": [
-"odometer__inc_po_1"
-]
-},
-"Gnat2why__3": {
-"false": [],
-"true": []
-}
+    "Gnat2why__1": {
+        "invalid": [], 
+        "valid": [
+            "def___odometer__zero_trip_po_1"
+        ]
+    }, 
+    "Gnat2why__2": {
+        "invalid": [], 
+        "valid": [
+            "def___odometer__inc_po_1"
+        ]
+    }
 }

@@ -1,11 +1,7 @@
 {
     "Gnat2why__1": {
-        "false": [], 
-        "true": []
-    }, 
-    "Gnat2why__2": {
-        "false": [], 
-        "true": [
+        "invalid": [], 
+        "valid": [
             "def___ite__not_null_po_1", 
             "def___ite__not_null_po_2"
         ]

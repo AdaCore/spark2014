@@ -75,7 +75,7 @@ class TestGnat2Why(TestRunner):
                 expdict = json.loads(entire_expected)
                 result = self.compare_dicts(expdict, outdict)
                 self.result['result'] = result
-                if result == 'DIFF':
+                if result != 'OK':
                     diff_file = open(self.diff_output, 'w')
                     diff_file.write("expected:\n")
                     diff_file.write(json.dumps(expdict, sort_keys = True,indent=4))
