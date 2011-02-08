@@ -23,10 +23,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Namet;        use Namet;
 with Why.Ids;      use Why.Ids;
 with String_Utils; use String_Utils;
 
 package Why.Gen.Types is
+
+   type Why_Type_Enum is (Why_Int, Why_Abstract);
+   type Why_Type (Kind : Why_Type_Enum := Why_Int) is
+      record
+         case Kind is
+            when Why_Int =>
+               null;
+            when Why_Abstract =>
+               Wh_Abstract : Name_Id;
+         end case;
+      end record;
+
+   --  The type of Why types, as used by the translation process; A type in
+   --  Why is either the builtin "int" type or a named type that corresponds
+   --  to an Ada type of the same name.
+
    --  This package provides ways to create Why types
 
    procedure Declare_Abstract_Type (File : W_File_Id; Name : String);
