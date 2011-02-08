@@ -1,4 +1,4 @@
 from test_support import *
 
 gnat2why("enum.ads")
-why("out.why",opt="--type-only")
+why("enum.why",opt="--type-only")

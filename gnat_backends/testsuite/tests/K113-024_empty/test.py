@@ -1,4 +1,4 @@
 from test_support import *
 
 gnat2why("empty_proc.adb")
-why("out.why",opt="--type-only")
+why("empty_proc.why",opt="--type-only")

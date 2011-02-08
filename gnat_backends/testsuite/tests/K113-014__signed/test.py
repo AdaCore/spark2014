@@ -1,4 +1,4 @@
 from test_support import *
 
 gnat2why("signed.ads")
-why("out.why",opt="--type-only")
+why("signed.why",opt="--type-only")
