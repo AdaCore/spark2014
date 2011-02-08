@@ -78,6 +78,10 @@ package body Gnat2Why.Subprograms is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
+   function Get_Range (N : Node_Id) return Node_Id;
+   --  Get the range of a range constraint or subtype definition.
+   --  The return node is of kind N_Range
+
    function Insert_Conversion_Term
       (Ada_Node : Node_Id := Empty;
        To       : Why_Type;
@@ -210,6 +214,23 @@ package body Gnat2Why.Subprograms is
                Pred     => Pred);
       end if;
    end Compute_Invariant;
+
+   ---------------
+   -- Get_Range --
+   ---------------
+
+   function Get_Range (N : Node_Id) return Node_Id
+   is
+   begin
+      case Nkind (N) is
+         when N_Range =>
+            return N;
+         when N_Subtype_Indication =>
+            return Range_Expression (Constraint (N));
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Range;
 
    ----------------------------
    -- Insert_Conversion_Term --
@@ -954,9 +975,13 @@ package body Gnat2Why.Subprograms is
                      LParam_Spec : constant Node_Id :=
                         Loop_Parameter_Specification (Scheme);
                      Low : constant Node_Id :=
-                        Low_Bound (Discrete_Subtype_Definition (LParam_Spec));
+                        Low_Bound
+                          (Get_Range
+                            (Discrete_Subtype_Definition (LParam_Spec)));
                      High : constant Node_Id :=
-                        High_Bound (Discrete_Subtype_Definition (LParam_Spec));
+                        High_Bound
+                          (Get_Range
+                            (Discrete_Subtype_Definition (LParam_Spec)));
                      Loop_Index : constant Name_Id :=
                         Chars (Defining_Identifier (LParam_Spec));
                      Index_Type : constant Name_Id := Type_Of_Node (Low);
