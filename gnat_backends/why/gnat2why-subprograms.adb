@@ -100,21 +100,10 @@ package body Gnat2Why.Subprograms is
        Pred     : W_Predicate_Id) return W_Assertion_Id;
    --  Build a named assertion (ie formula) of a predicate
 
-   function New_Located_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Prog_Array) return W_Prog_Id;
-   --  Build a program call with a fresh label corresponding to the Ada_Node.
-
    function New_Located_Predicate
       (Ada_Node : Node_Id;
        Pred     : W_Predicate_Id) return W_Predicate_Id;
    --  Build a predicate with a fresh label corresponding to the Ada_Node.
-
-   function New_Located_Prog
-      (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id) return W_Prog_Id;
-   --  Build a program with a fresh label corresponding to the Ada_Node.
 
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
@@ -345,26 +334,6 @@ package body Gnat2Why.Subprograms is
                 Pred     => Pred));
    end New_Located_Assertion;
 
-   ----------------------
-   -- New_Located_Call --
-   ----------------------
-
-   function New_Located_Call
-      (Ada_Node : Node_Id;
-       Name     : W_Identifier_Id;
-       Progs    : W_Prog_Array) return W_Prog_Id
-   is
-   begin
-      return
-        New_Located_Prog
-          (Ada_Node => Ada_Node,
-           Prog =>
-             New_Prog_Call
-               (Ada_Node => Ada_Node,
-                Name => Name,
-                Progs => Progs));
-   end New_Located_Call;
-
    ---------------------------
    -- New_Located_Predicate --
    ---------------------------
@@ -380,22 +349,6 @@ package body Gnat2Why.Subprograms is
             Name     => New_Located_Label (Ada_Node),
             Pred     => Pred);
    end New_Located_Predicate;
-
-   ----------------------
-   -- New_Located_Prog --
-   ----------------------
-
-   function New_Located_Prog
-      (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id) return W_Prog_Id
-   is
-   begin
-      return
-        New_Label
-          (Ada_Node => Ada_Node,
-           Name     => New_Located_Label (Ada_Node),
-           Def      => Prog);
-   end New_Located_Prog;
 
    ------------------
    -- Type_Of_Node --

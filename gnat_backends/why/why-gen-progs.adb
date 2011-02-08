@@ -24,10 +24,18 @@
 ------------------------------------------------------------------------------
 
 with Uintp;              use Uintp;
+
+with Gnat2Why.Locs;      use Gnat2Why.Locs;
+
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Progs is
+
+   function New_Located_Prog
+      (Ada_Node : Node_Id;
+       Prog     : W_Prog_Id) return W_Prog_Id;
+   --  Build a program with a fresh label corresponding to the Ada_Node.
 
    ---------------------
    -- Conversion_Name --
@@ -76,11 +84,18 @@ package body Why.Gen.Progs is
          return Why_Expr;
       end if;
 
-      if To.Kind = Why_Int or else From.Kind = Why_Int then
+      if To.Kind = Why_Int then
          return
            New_Prog_Call
              (Ada_Node => Ada_Node,
               Name     => Conversion_Name (From => From, To => To),
+              Progs    => (1 => Why_Expr));
+      elsif From.Kind = Why_Int then
+         return
+           New_Located_Call
+             (Ada_Node => Ada_Node,
+              Name     =>
+               To_Program_Space (Conversion_Name (From => From, To => To)),
               Progs    => (1 => Why_Expr));
       else
          return
@@ -183,5 +198,41 @@ package body Why.Gen.Progs is
                  Annotation   => Invariant,
                  Loop_Content => Loop_Content));
    end New_For_Loop;
+
+   ----------------------
+   -- New_Located_Call --
+   ----------------------
+
+   function New_Located_Call
+      (Ada_Node : Node_Id;
+       Name     : W_Identifier_Id;
+       Progs    : W_Prog_Array) return W_Prog_Id
+   is
+   begin
+      return
+        New_Located_Prog
+          (Ada_Node => Ada_Node,
+           Prog =>
+             New_Prog_Call
+               (Ada_Node => Ada_Node,
+                Name => Name,
+                Progs => Progs));
+   end New_Located_Call;
+
+   ----------------------
+   -- New_Located_Prog --
+   ----------------------
+
+   function New_Located_Prog
+      (Ada_Node : Node_Id;
+       Prog     : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      return
+        New_Label
+          (Ada_Node => Ada_Node,
+           Name     => New_Located_Label (Ada_Node),
+           Def      => Prog);
+   end New_Located_Prog;
 
 end Why.Gen.Progs;

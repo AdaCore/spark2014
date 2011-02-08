@@ -2063,6 +2063,7 @@ package body Why.Atree.Sprint is
       Node  : W_Label_Id)
    is
    begin
+      P (O, "( ");
       Traverse
         (State,
          Label_Get_Name (Node));
@@ -2070,6 +2071,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Label_Get_Def (Node));
+      P (O, " )");
       State.Control := Abandon_Children;
    end Label_Pre_Op;
 

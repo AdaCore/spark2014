@@ -62,4 +62,10 @@ package Why.Gen.Progs is
    --  done
    --  Low and High should be of type Why_Int
 
+   function New_Located_Call
+      (Ada_Node : Node_Id;
+       Name     : W_Identifier_Id;
+       Progs    : W_Prog_Array) return W_Prog_Id;
+   --  Build a program call with a fresh label corresponding to the Ada_Node.
+
 end Why.Gen.Progs;
