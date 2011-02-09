@@ -7,10 +7,10 @@
         ]
     }, 
     "Gnat2why__2": {
-        "invalid": [
+        "invalid": [], 
+        "valid": [
             "def___count__count_po_3"
-        ], 
-        "valid": []
+        ]
     }, 
     "Gnat2why__3": {
         "invalid": [], 
