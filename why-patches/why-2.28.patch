@@ -77,17 +77,115 @@ index c19ef69..e2f6963 100644
  	  }
  	in
  	let (proofs,elements) = get_proof (List.tl elements) in
+diff --git src/util.ml src/util.ml
+index fdaeade..a916333 100644
+--- src/util.ml
++++ src/util.ml
+@@ -1185,14 +1185,14 @@ let cook_loop_invariant _internal_lab (userlab : string option) p =
+    refined explanation.
+ *)
+ let cook_explanation (userlab : string option) e =
+-  let e,l =
++  let e,l, maylab =
+     match e with
+-      | VCEexternal s -> EKOther s, dummy_reloc 
+-      | VCEabsurd -> EKAbsurd, dummy_reloc
++      | VCEexternal s -> EKOther s, dummy_reloc, None
++      | VCEabsurd -> EKAbsurd, dummy_reloc, None
+       | VCEassert (k,p) -> 
+           (match k with 
+             | `ASSERT -> EKAssert
+-            | `CHECK -> EKCheck), (reloc_xpl (List.hd p))      
++            | `CHECK -> EKCheck), (reloc_xpl (List.hd p)), None
+       | VCEpre(lab,loc,_p) -> 
+ 	  begin
+ 	    if debug then eprintf "Util.cook_explanation: label,loc for pre = %s,%a@." lab
+@@ -1206,37 +1206,39 @@ let cook_explanation (userlab : string option) e =
+ 		    | _ -> raise Not_found		  
+ 		in
+ 		if debug then eprintf "Util: kind for '%s' is '%s'@." lab k;
+-		EKPre k, (f,l,b,e)
++		EKPre k, (f,l,b,e), Some lab
+ 	      with Not_found ->
+ 		if debug then eprintf "Util: cannot find a kind for '%s'@." lab;
+-		EKPre "", (f,l,b,e)
++		EKPre "", (f,l,b,e), Some lab
+ 	    with Not_found -> 
+ 	      if debug then eprintf "Util: cannot find a loc for '%s'@." lab;
+-	      EKPre "", Loc.extract loc
++	      EKPre "", Loc.extract loc, Some lab
+ 	  end
+ 
+-      | VCEpost p -> EKPost, (reloc_xpl p)
+-      | VCEwfrel -> EKWfRel, dummy_reloc 
+-      | VCEvardecr p -> EKVarDecr, (reloc_xpl_term p)
++      | VCEpost p -> EKPost, (reloc_xpl p), None
++      | VCEwfrel -> EKWfRel, dummy_reloc, None
++      | VCEvardecr p -> EKVarDecr, (reloc_xpl_term p), None
+       | VCEinvinit(internal_lab,p) -> 
+ 	  let s,loc  = cook_loop_invariant internal_lab userlab p in
+-	  EKLoopInvInit s, loc 
++	  EKLoopInvInit s, loc, None
+       | VCEinvpreserv(internal_lab,p) -> 
+ 	  let s,loc  = cook_loop_invariant internal_lab userlab p in
+-	  EKLoopInvPreserv s, loc
+-  in 
++	  EKLoopInvPreserv s, loc, None
++  in
++  let new_lab = if userlab = None then maylab else userlab in
+   match e with
+     | EKPre _ -> 
+ 	(* for pre-conditions, we want to focus on the call, not an the formula to prove *)
+-	e,l
++	e,l, new_lab
+     | _ -> e, 
+-	match userlab with
++	(match new_lab with
+ 	  | None -> l
+ 	  | Some lab -> 
+-	      (try loc_of_label lab with Not_found -> 
++	      try loc_of_label lab with Not_found -> 
+ 		if debug then
+ 		  eprintf "Warning: no loc found for user label %s@." lab;
+-		l)
++		l),
++         new_lab
+ 
+     
+ let explanation_table = Hashtbl.create 97
+diff --git src/util.mli src/util.mli
+index c3c9b35..1a57468 100644
+--- src/util.mli
++++ src/util.mli
+@@ -172,7 +172,8 @@ val create_post : predicate -> (assertion * 'b list) option
+ val loc_of_label: string -> Loc.floc
+ 
+ val cook_explanation : 
+-    string option -> raw_vc_explain -> Logic_decl.expl_kind * Loc.floc 
++    string option -> raw_vc_explain ->
++       Logic_decl.expl_kind * Loc.floc * string option
+ 
+ val program_locs : (string,(string * string * Loc.floc)) Hashtbl.t
+ 
 diff --git src/vcg.ml src/vcg.ml
-index 45e5a6e..f682f65 100644
+index 45e5a6e..b14b77d 100644
 --- src/vcg.ml
 +++ src/vcg.ml
-@@ -899,7 +899,9 @@ let vcg_from_wp _loc ids name beh w =
+@@ -894,12 +894,16 @@ let vcg_from_wp _loc ids name beh w =
+   let cpt = ref 0 in
+   let push_one (ctx, concl) = 
+     let formula_userlab, raw_explain = explain_for_pred None None concl in	
+-    let kind,loc =  Util.cook_explanation formula_userlab raw_explain in
++    let kind,loc, lab =  Util.cook_explanation formula_userlab raw_explain in
++    if formula_userlab = None then
++       Format.printf "formula_userlab unset: %s@." name;
+     let explain = (*Logic_decl.ExplVC*)
        { Logic_decl.lemma_or_fun_name = name ;
  	Logic_decl.behavior = beh;
  	Logic_decl.vc_loc = loc ;
 -	Logic_decl.vc_kind = kind }
 +        Logic_decl.vc_kind = kind ;
-+        Logic_decl.vc_label = formula_userlab;
++        Logic_decl.vc_label = lab;
 +      }
      in
      try

@@ -2,14 +2,26 @@
     "Gnat2why__1": {
         "invalid": [], 
         "valid": [
-            "def___count__count_po_1", 
-            "def___count__count_po_3"
+            "def___count__count_po_2", 
+            "def___count__count_po_5"
         ]
     }, 
     "Gnat2why__2": {
+        "invalid": [
+            "def___count__count_po_3"
+        ], 
+        "valid": []
+    }, 
+    "Gnat2why__3": {
         "invalid": [], 
         "valid": [
-            "def___count__count_po_2"
+            "def___count__count_po_1"
+        ]
+    }, 
+    "Gnat2why__4": {
+        "invalid": [], 
+        "valid": [
+            "def___count__count_po_4"
         ]
     }
 }

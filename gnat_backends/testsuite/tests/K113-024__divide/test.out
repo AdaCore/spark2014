@@ -1,15 +1,33 @@
 {
     "Gnat2why__1": {
+        "invalid": [], 
+        "valid": [
+            "def___divide__divide_po_2", 
+            "def___divide__divide_po_5"
+        ]
+    }, 
+    "Gnat2why__2": {
         "invalid": [
-            "def___divide__divide_po_1",
-            "def___divide__divide_po_2"
+            "def___divide__divide_po_4"
         ], 
         "valid": []
     }, 
-    "Gnat2why__2": {
+    "Gnat2why__3": {
+        "invalid": [
+            "def___divide__divide_po_3"
+        ], 
+        "valid": []
+    }, 
+    "Gnat2why__4": {
         "invalid": [], 
         "valid": [
-            "def___divide__divide_po_3"
+            "def___divide__divide_po_1"
+        ]
+    }, 
+    "Gnat2why__5": {
+        "invalid": [], 
+        "valid": [
+            "def___divide__divide_po_6"
         ]
     }
 }

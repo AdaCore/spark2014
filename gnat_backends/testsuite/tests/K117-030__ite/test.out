@@ -2,8 +2,20 @@
     "Gnat2why__1": {
         "invalid": [], 
         "valid": [
-            "def___ite__not_null_po_1", 
             "def___ite__not_null_po_2"
+        ]
+    }, 
+    "Gnat2why__2": {
+        "invalid": [], 
+        "valid": [
+            "def___ite__not_null_po_1"
+        ]
+    }, 
+    "Gnat2why__3": {
+        "invalid": [], 
+        "valid": [
+            "def___ite__not_null_po_3", 
+            "def___ite__not_null_po_4"
         ]
     }
 }

@@ -8,7 +8,25 @@
     "Gnat2why__2": {
         "invalid": [], 
         "valid": [
+            "def___odometer__zero_trip_po_2"
+        ]
+    }, 
+    "Gnat2why__3": {
+        "invalid": [], 
+        "valid": [
+            "def___odometer__inc_po_2"
+        ]
+    }, 
+    "Gnat2why__4": {
+        "invalid": [], 
+        "valid": [
             "def___odometer__inc_po_1"
+        ]
+    }, 
+    "Gnat2why__5": {
+        "invalid": [], 
+        "valid": [
+            "def___odometer__inc_po_3"
         ]
     }
 }

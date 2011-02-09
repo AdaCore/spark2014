@@ -8,13 +8,31 @@
     "Gnat2why__2": {
         "invalid": [], 
         "valid": [
-            "def___ar__set_po_1"
+            "def___ar__get_po_2"
         ]
     }, 
     "Gnat2why__3": {
         "invalid": [], 
         "valid": [
+            "def___ar__set_po_3"
+        ]
+    }, 
+    "Gnat2why__4": {
+        "invalid": [], 
+        "valid": [
             "def___ar__set_po_2"
+        ]
+    }, 
+    "Gnat2why__5": {
+        "invalid": [], 
+        "valid": [
+            "def___ar__set_po_1"
+        ]
+    }, 
+    "Gnat2why__6": {
+        "invalid": [], 
+        "valid": [
+            "def___ar__set_po_4"
         ]
     }
 }
