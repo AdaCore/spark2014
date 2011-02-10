@@ -84,13 +84,30 @@ def parse_altergo_result(output):
             status.append(False)
     return status
 
+def gcc(src, opt=None):
+    """Invoke gcc
+
+    PARAMETERS
+      src: source file to process
+      opt: additional options to pass to gcc
+    """
+    cmd = ["gcc", "-c"]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    if process.status:
+        print process.out
+
 def gnat2why(src, opt=None):
     """Invoke gnat2why
 
     PARAMETERS
       src: source file to process
       opt: additional options to pass to gnat2why
+
+    First call gcc on source file to produce ALI file.
     """
+    gcc(src, opt=["-gnat2012", "-gnata", "-gnatd.F", "-gnatc"])
     cmd = ["gnat2why",
            "-I" + get_path_to_adainclude()]
     cmd += to_list(opt)
@@ -158,7 +175,13 @@ def prove(src):
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
+<<<<<<< HEAD
     gnatprove()
+=======
+    gnat2why(src, opt=["-gnat2012", "-gnata", "-gnatd.F"])
+    base, ext = os.path.splitext(src)
+    why(base+".why", opt=["--multi-why", "--locs", base+".loc", "--explain"])
+>>>>>>> Generate ALI file before calling gnat2why
     result = {}
     base, ext = os.path.splitext(src)
     for vc in open(base+".labels"):
