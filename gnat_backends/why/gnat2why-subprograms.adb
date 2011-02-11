@@ -1174,7 +1174,7 @@ package body Gnat2Why.Subprograms is
    function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id is
    begin
       case Nkind (Expr) is
-         when N_Identifier =>
+         when N_Identifier | N_Indexed_Component =>
             return
               New_Related_Terms
                 (Ada_Node => Expr,
