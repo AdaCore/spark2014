@@ -1690,7 +1690,7 @@ package body Why.Atree.Sprint is
       end if;
 
       if not Is_Empty (Writes) then
-         P (O, "write ");
+         P (O, "writes ");
          Print_List (State, Writes);
          NL (O);
       end if;
