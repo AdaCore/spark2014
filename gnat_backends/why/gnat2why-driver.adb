@@ -159,8 +159,6 @@ package body Gnat2Why.Driver is
          else
             Translate_Package (File, N);
          end if;
-         --  ??? TBD: create a file that has a meaningful name, depending on
-         --  the input file
          Open_Current_File (Name_String (Name) & ".why");
          Sprint_Why_Node (File, Current_File);
          Close_Current_File;
@@ -169,8 +167,6 @@ package body Gnat2Why.Driver is
          Print_Locations_Table (Current_File);
          Close_Current_File;
 
-         --  ??? TBD Do we really want to write the generated locations to
-         --  stdout?
          Open_Current_File (Name_String (Name) & ".labels");
          Print_Label_List (Current_File);
          Close_Current_File;
