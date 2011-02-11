@@ -28,6 +28,7 @@ with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sinfo;              use Sinfo;
+with Sem_Eval;           use Sem_Eval;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
@@ -1378,17 +1379,31 @@ package body Gnat2Why.Subprograms is
 
          when N_Attribute_Reference =>
             declare
-               Attr_Name : constant String :=
-                  Get_Name_String (Attribute_Name (Expr));
+               Attr_Name : constant Name_Id := Attribute_Name (Expr);
+               Var : constant Node_Id      := Prefix (Expr);
             begin
-               --  Special variables, for example "result" and "old", are
-               --  represented as N_Attribute_Reference
-               if  Attr_Name = "result" then
+               if  Attr_Name = Name_Result then
                   T := New_Result_Identifier;
-               elsif Attr_Name = "old" then
+               elsif Attr_Name = Name_Old then
                   T := New_Term_Identifier
-                         (Name => Why_Ident_Of_Ada_Ident (Prefix (Expr)),
+                         (Name => Why_Ident_Of_Ada_Ident (Var),
                           Label => New_Identifier (""));
+               elsif Attr_Name = Name_First then
+                  --  ??? Not sure about this
+                  T :=
+                     New_Integer_Constant
+                        (Ada_Node => Expr,
+                         Value =>
+                           Expr_Value
+                              (Low_Bound (First_Index (Etype (Var)))));
+               elsif Attr_Name = Name_Last then
+                  --  ??? Not sure about this
+                  T :=
+                     New_Integer_Constant
+                        (Ada_Node => Expr,
+                         Value =>
+                           Expr_Value
+                              (High_Bound (First_Index (Etype (Var)))));
                else
                   raise Not_Implemented;
                end if;
