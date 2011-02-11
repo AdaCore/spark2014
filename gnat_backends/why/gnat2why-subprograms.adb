@@ -23,30 +23,33 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with ALFA;               use ALFA;
 with Atree;              use Atree;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
-with Sinfo;              use Sinfo;
 with Sem_Eval;           use Sem_Eval;
+with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
 
-with Why;                use Why;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Arrows;     use Why.Gen.Arrows;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Gen.Types;      use Why.Gen.Types;
-with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
+with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
-with Gnat2Why.Types;      use Gnat2Why.Types;
+with Why;                   use Why;
+with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Mutators;    use Why.Atree.Mutators;
+with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Gen.Arrays;        use Why.Gen.Arrays;
+with Why.Gen.Arrows;        use Why.Gen.Arrows;
+with Why.Gen.Funcs;         use Why.Gen.Funcs;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Progs;         use Why.Gen.Progs;
+with Why.Gen.Types;         use Why.Gen.Types;
+with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
+
+with Gnat2Why.Locs;         use Gnat2Why.Locs;
+with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -401,6 +404,9 @@ package body Gnat2Why.Subprograms is
       --  Add a "let" binding to Why body for each local variable of the
       --  procedure.
 
+      function Compute_Effects return W_Effects_Id;
+      --  Compute the effects of the generated Why function
+
       function Compute_Spec
          (Kind       : Name_Id;
           With_Label : Boolean := False) return W_Predicate_Id;
@@ -420,10 +426,11 @@ package body Gnat2Why.Subprograms is
 
       begin
          if Nkind (Specification (Node)) = N_Procedure_Specification then
-            Res := New_Arrow_Stack (New_Type_Unit);
+            Res := New_Arrow_Stack (New_Type_Unit, Compute_Effects);
          else
             Res := New_Arrow_Stack (Why_Prog_Type_of_Ada_Type
-                                   (Result_Definition (Specification (Node))));
+                                    (Result_Definition (Specification (Node))),
+                                    Compute_Effects);
          end if;
 
          if Is_Empty_List (Ada_Binders) then
@@ -529,6 +536,46 @@ package body Gnat2Why.Subprograms is
          return R;
       end Compute_Context;
 
+      ---------------------
+      -- Compute_Effects --
+      ---------------------
+
+      function Compute_Effects return W_Effects_Id is
+         E          : constant Entity_Id := Get_Unique_Entity_For_Decl (Node);
+         Read_Ids   : Id_Set.Set;
+         Read_Reps  : Rep_Set.Set;
+         Write_Ids  : Id_Set.Set;
+         Write_Reps : Rep_Set.Set;
+
+      begin
+         Get_Reads (E, Read_Ids, Read_Reps);
+         Get_Writes (E, Write_Ids, Write_Reps);
+
+         declare
+            Read_A  :
+              W_Identifier_Array (1 .. Integer (Id_Set.Length (Read_Ids)));
+            Write_A :
+              W_Identifier_Array (1 .. Integer (Id_Set.Length (Write_Ids)));
+            J       : Positive;
+
+         begin
+            J := 1;
+            for Id of Read_Ids loop
+               Read_A (J) := New_Identifier (Symbol => Chars (Id));
+               J := J + 1;
+            end loop;
+
+            J := 1;
+            for Id of Write_Ids loop
+               Write_A (J) := New_Identifier (Symbol => Chars (Id));
+               J := J + 1;
+            end loop;
+
+            return New_Effects (Reads  => Read_A,
+                                Writes => Write_A);
+         end;
+      end Compute_Effects;
+
       ------------------
       -- Compute_Spec --
       ------------------
@@ -537,12 +584,12 @@ package body Gnat2Why.Subprograms is
          (Kind       : Name_Id;
           With_Label : Boolean := False) return W_Predicate_Id
       is
-         Corr_Spec     : Node_Id;
-         Cur_Spec      : W_Predicate_Id :=
-               New_True_Literal_Pred;
+         Corr_Spec      : Node_Id;
+         Cur_Spec       : W_Predicate_Id := New_True_Literal_Pred;
          Found_Location : Boolean := False;
-         Located_Node : Node_Id := Empty;
-         PPCs          : Node_Id;
+         Located_Node   : Node_Id := Empty;
+         PPCs           : Node_Id;
+
       begin
          if Nkind (Node) = N_Subprogram_Declaration then
             Corr_Spec := Defining_Unit_Name (Specification (Node));
@@ -594,8 +641,8 @@ package body Gnat2Why.Subprograms is
       case Nkind (Node) is
          when N_Subprogram_Body =>
             declare
-               Stmts   : constant List_Id :=
-                           Statements (Handled_Statement_Sequence (Node));
+               Stmts    : constant List_Id :=
+                            Statements (Handled_Statement_Sequence (Node));
                Why_Body : constant W_Prog_Id :=
                             Compute_Context (Why_Expr_of_Ada_Stmts (Stmts));
             begin
@@ -865,7 +912,7 @@ package body Gnat2Why.Subprograms is
                  Then_Part => Why_Expr_of_Ada_Stmts (Then_Statements (Stmt)),
                  Else_Part => Why_Expr_of_Ada_Stmts (Else_Statements (Stmt)));
 
-         when N_Raise_Constraint_Error =>
+         when N_Raise_xxx_Error =>
             --  Currently, we assume that this is a check inserted by the
             --  compiler, we transform it into an assert;
             --  we have to negate the condition

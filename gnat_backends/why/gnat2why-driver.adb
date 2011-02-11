@@ -28,19 +28,21 @@ with Atree;                use Atree;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
+with Osint.C;               use Osint.C;
 with Outputs;              use Outputs;
 with Sinfo;                use Sinfo;
 with Stand;                use Stand;
 with Switch;               use Switch;
 
-with ALFA.Filter;          use ALFA.Filter;
+with ALFA.Filter;           use ALFA.Filter;
+with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
-with Why.Gen.Ints;        use Why.Gen.Ints;
+with Why.Gen.Ints;         use Why.Gen.Ints;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Ids;              use Why.Ids;
 
@@ -75,11 +77,25 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+      Name : File_Name_Type;
+      Text : Text_Buffer_Ptr;
+
    begin
       --  Allow the generation of new nodes and lists
 
       Atree.Unlock;
       Nlists.Unlock;
+
+      --  ??? Compute the frame condition. Currently only the ALI file for the
+      --  current unit is read. This should be changed to read all dependent
+      --  ALI files.
+
+      Read_Library_Info (Name, Text);
+      Load_ALFA (Name_String (Name_Id (Name)));
+      Propagate_Through_Call_Graph;
+      Declare_All_Entities;
+
+      --  Start the translation to Why
 
       Translate_Standard_Package;
       Filter_Package (Unit (GNAT_Root));

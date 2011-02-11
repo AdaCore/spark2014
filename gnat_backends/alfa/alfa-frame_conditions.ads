@@ -68,41 +68,43 @@ package ALFA.Frame_Conditions is
      (Hash_Type (E.File * 53 + E.Line * 17 + E.Col));
    --  Hash function for hashed-maps
 
-   package Entity_Set is new Hashed_Sets
+   package Rep_Set is new Hashed_Sets
      (Element_Type        => Entity_Rep,
       Hash                => Rep_Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
-   use Entity_Set;
+   use Rep_Set;
 
-   package Entity_Map is new Hashed_Maps
+   package Rep_Map is new Hashed_Maps
      (Key_Type        => Entity_Rep,
-      Element_Type    => Entity_Set.Set,
+      Element_Type    => Rep_Set.Set,
       Hash            => Rep_Hash,
       Equivalent_Keys => "=",
-      "="             => Entity_Set."=");
-   use Entity_Map;
+      "="             => Rep_Set."=");
+   use Rep_Map;
 
-   Defines : Entity_Map.Map;
-   Writes  : Entity_Map.Map;
-   Reads   : Entity_Map.Map;
-   Callers : Entity_Map.Map;
-   Calls   : Entity_Map.Map;
+   Defines : Rep_Map.Map;
+   Writes  : Rep_Map.Map;
+   Reads   : Rep_Map.Map;
+   Callers : Rep_Map.Map;
+   Calls   : Rep_Map.Map;
 
-   procedure Add_To_Map (Map : in out Entity_Map.Map; From, To : Entity_Rep);
+   procedure Add_To_Map (Map : in out Rep_Map.Map; From, To : Entity_Rep);
    --  Add the relation From -> To in map Map
 
    function Count_In_Map
-     (Map : Entity_Map.Map;
+     (Map : Rep_Map.Map;
       Ent : Entity_Rep) return Nat;
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
 
-   function Defines_Of (Ent : Entity_Rep) return Entity_Set.Set;
-   function Reads_Of (Ent : Entity_Rep) return Entity_Set.Set;
-   function Writes_Of (Ent : Entity_Rep) return Entity_Set.Set;
-   function Callers_Of (Ent : Entity_Rep) return Entity_Set.Set;
-   function Calls_Of (Ent : Entity_Rep) return Entity_Set.Set;
+   function Defines_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Global_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Writes_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Global_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Callers_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Calls_Of (Ent : Entity_Rep) return Rep_Set.Set;
 
    procedure Display_Maps;
    --  Send maps to output for debug
@@ -120,6 +122,13 @@ package ALFA.Frame_Conditions is
 
    function Id_Hash (X : Entity_Id) return Hash_Type is (Hash_Type (X));
 
+   package Id_Set is new Hashed_Sets
+     (Element_Type        => Entity_Id,
+      Hash                => Id_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+   use Id_Set;
+
    package Entity_Id_To_Rep is new Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Entity_Rep,
@@ -128,7 +137,7 @@ package ALFA.Frame_Conditions is
       "="             => "=");
    use Entity_Id_To_Rep;
 
-   To_AST : Entity_Id_To_Rep.Map;
+   From_AST : Entity_Id_To_Rep.Map;
 
    package Entity_Rep_To_Id is new Hashed_Maps
      (Key_Type        => Entity_Rep,
@@ -138,10 +147,27 @@ package ALFA.Frame_Conditions is
       "="             => "=");
    use Entity_Rep_To_Id;
 
-   From_AST : Entity_Rep_To_Id.Map;
+   To_AST : Entity_Rep_To_Id.Map;
 
    procedure Declare_Entity (E : Entity_Id);
    --  Create a representative for E and enter the match in tables To_AST and
    --  From_AST.
+
+   procedure Declare_All_Entities;
+   --  Declare all entities by traversing all units
+
+   procedure Get_Reads
+     (E    : Entity_Id;
+      Ids  : out Id_Set.Set;
+      Reps : out Rep_Set.Set);
+   --  Get the variables read by subprogram E, either as an Entity_Id in Ids if
+   --  one is known, or as an Entity_Rep in Reps otherwise.
+
+   procedure Get_Writes
+     (E    : Entity_Id;
+      Ids  : out Id_Set.Set;
+      Reps : out Rep_Set.Set);
+   --  Get the variables written by subprogram E, either as an Entity_Id in Ids
+   --  if one is known, or as an Entity_Rep in Reps otherwise.
 
 end ALFA.Frame_Conditions;
