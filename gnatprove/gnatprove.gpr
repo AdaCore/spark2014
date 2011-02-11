@@ -1,0 +1,20 @@
+with "gnatcoll";
+
+project GNATprove is
+
+   for Object_Dir use "obj";
+   for Exec_Dir use "../bin";
+
+   for Source_Dirs use (".", "../gnat_backends/alfa", "obj");
+
+   for Main use ("gnatprove.adb");
+
+   package Builder is
+      for Executable ("gnatprove.adb") use "gnatprove";
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-O0", "-gnata", "-gnat12", "-gnatg");
+   end Compiler;
+
+end GNATprove;
