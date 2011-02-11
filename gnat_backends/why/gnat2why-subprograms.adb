@@ -676,7 +676,7 @@ package body Gnat2Why.Subprograms is
                   elsif Entity (Expr) = Standard_False then
                      T := New_Prog_Constant (Def => New_False_Literal);
                   else
-                     raise Not_Implemented;
+                     T := Why_Ident_Of_Ada_Ident (Expr);
                   end if;
 
                when Object_Kind =>
