@@ -3,5 +3,5 @@ package Glob is
    procedure Sub;
    procedure P with
      Pre  => not G,
-     Post => G;
+     Post => not G;
 end;
