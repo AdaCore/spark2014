@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids; use Why.Ids;
+with Why.Ids;   use Why.Ids;
+with Why.Sinfo; use Why.Sinfo;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -118,4 +119,12 @@ package Why.Gen.Names is
    function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of the axiom of
    --  access/update equality
+
+   function New_Bool_Int_Axiom (Rel : W_Relation) return W_Identifier_Id;
+   --  Return the name of the boolean comparison axiom for Why ints that
+   --  corresponds to the comparison operator in argument.
+
+   function New_Bool_Int_Cmp (Rel : W_Relation) return W_Identifier_Id;
+   --  Return the name of the boolean comparison operator for Why ints that
+   --  corresponds to the comparison operator in argument.
 end Why.Gen.Names;

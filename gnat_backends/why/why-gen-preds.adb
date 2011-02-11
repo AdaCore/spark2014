@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -186,6 +186,36 @@ package body Why.Gen.Preds is
       Binding_Pred_Set_Def (Result, New_Constant (Value));
       return Result;
    end New_Binding_Pred;
+
+   ---------------
+   -- New_Equal --
+   ---------------
+
+   function New_Equal
+     (Left : W_Term_Id;
+      Right : W_Term_Id) return W_Predicate_Id
+   is
+   begin
+      return New_Related_Terms
+         (Left => Left,
+          Right => Right,
+          Op => New_Rel_Eq);
+   end New_Equal;
+
+   ----------------
+   -- New_NEqual --
+   ----------------
+
+   function New_NEqual
+     (Left : W_Term_Id;
+      Right : W_Term_Id) return W_Predicate_Id
+   is
+   begin
+      return New_Related_Terms
+         (Left => Left,
+          Right => Right,
+          Op => New_Rel_Eq);
+   end New_NEqual;
 
    ------------------------
    -- New_Predicate_Body --

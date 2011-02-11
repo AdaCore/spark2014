@@ -40,6 +40,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
+with Why.Gen.Ints;        use Why.Gen.Ints;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Ids;              use Why.Ids;
 
@@ -264,6 +265,7 @@ package body Gnat2Why.Driver is
    begin
       Translate_Package (File, Standard_Package_Node);
       Open_Current_File ("standard.why");
+      Declare_Boolean_Integer_Comparison (File);
       Sprint_Why_Node (File, Current_File);
       Close_Current_File;
 

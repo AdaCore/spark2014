@@ -31,6 +31,9 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 
 package body Why.Gen.Names is
 
+   function Bool_Int_Cmp_String (Rel : W_Relation) return String;
+   --  Return the name of a boolean integer comparison operator
+
    --------------------
    -- Allocator_Name --
    --------------------
@@ -118,6 +121,47 @@ package body Why.Gen.Names is
    begin
       return Eq_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Eq_Pred_Name;
+
+   -------------------------
+   -- Bool_Int_Cmp_String --
+   -------------------------
+
+   function Bool_Int_Cmp_String (Rel : W_Relation) return String
+   is
+   begin
+      case Rel is
+         when W_Rel_Eq =>
+            return "bool_int__eq";
+         when W_Rel_Ne =>
+            return "bool_int__ne";
+         when W_Rel_Lt =>
+            return "bool_int__lt";
+         when W_Rel_Le =>
+            return "bool_int__le";
+         when W_Rel_Gt =>
+            return "bool_int__gt";
+         when W_Rel_Ge =>
+            return "bool_int__ge";
+      end case;
+   end Bool_Int_Cmp_String;
+
+   ----------------------
+   -- New_Bool_Int_Cmp --
+   ----------------------
+
+   function New_Bool_Int_Cmp (Rel : W_Relation) return W_Identifier_Id is
+   begin
+      return New_Identifier (Bool_Int_Cmp_String (Rel));
+   end New_Bool_Int_Cmp;
+
+   ------------------------
+   -- New_Bool_Int_Axiom --
+   ------------------------
+
+   function New_Bool_Int_Axiom (Rel : W_Relation) return W_Identifier_Id is
+   begin
+      return New_Identifier (Bool_Int_Cmp_String (Rel) & "_axiom");
+   end New_Bool_Int_Axiom;
 
    --------------------------
    -- New_Conversion_Axiom --

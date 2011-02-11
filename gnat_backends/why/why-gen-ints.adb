@@ -26,12 +26,13 @@
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Gen.Types;      use Why.Gen.Types;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
-with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
+with Why.Gen.Funcs;      use Why.Gen.Funcs;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Types;      use Why.Gen.Types;
+with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Ints is
 
@@ -172,4 +173,55 @@ package body Why.Gen.Ints is
       end;
    end Define_Signed_Int_Conversions;
 
+   ----------------------------------------
+   -- Declare_Boolean_Integer_Comparison --
+   ----------------------------------------
+
+   procedure Declare_Boolean_Integer_Comparison
+     (File : W_File_Id)
+   is
+   begin
+      for Rel_Symbol in W_Relation'Range loop
+         Declare_Logic
+           (File => File,
+            Name => New_Bool_Int_Cmp (Rel_Symbol),
+            Args =>
+               (1 => New_Type_Int,
+                2 => New_Type_Int),
+            Return_Type => New_Type_Bool);
+         declare
+            X_S        : constant String := "x";
+            Y_S        : constant String := "y";
+            Equal_Pred : constant W_Predicate_Id :=
+               New_Equal
+                 (Left  => New_Term (Name => X_S),
+                  Right => New_Term (Name => Y_S));
+            NEqual_Pred : constant W_Predicate_Id :=
+               New_NEqual
+                 (Left  => New_Term (Name => X_S),
+                  Right => New_Term (Name => Y_S));
+            Axiom_Body : constant W_Predicate_Id :=
+               New_Universal_Quantif
+                 (Variables =>
+                     (1 => New_Identifier (X_S),
+                      2 => New_Identifier (Y_S)),
+                  Var_Type => New_Type_Int,
+                  Pred =>
+                     New_Conditional_Pred
+                        (Condition =>
+                           New_Operation
+                             (Name => New_Bool_Int_Cmp (Rel_Symbol),
+                              Parameters =>
+                                 (1 => New_Term (Name => X_S),
+                                  2 => New_Term (Name => Y_S))),
+                         Then_Part => Equal_Pred,
+                         Else_Part => NEqual_Pred));
+         begin
+            Declare_Axiom
+               (File => File,
+                Name => New_Bool_Int_Axiom (Rel_Symbol),
+                Axiom_Body => Axiom_Body);
+         end;
+      end loop;
+   end Declare_Boolean_Integer_Comparison;
 end Why.Gen.Ints;

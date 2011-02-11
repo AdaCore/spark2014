@@ -35,12 +35,13 @@ with Uintp;              use Uintp;
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
-with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
+with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
@@ -1337,16 +1338,20 @@ package body Gnat2Why.Subprograms is
                  Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
             Current_Type := (Kind =>  Why_Int);
 
-         when N_Op_Gt =>
-            --  ??? TBD The treatment of N_Op_Gt is incorrect: we need to use
-            --  a comparison function that returns bool
-            --  ??? TBD respect the Expected_Type
+         when N_Op_Compare =>
             return
-              New_Related_Terms
-                (Ada_Node => Expr,
-                 Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
-                 Right    => Why_Term_Of_Ada_Expr (Right_Opnd (Expr)),
-                 Op       => New_Rel_Gt);
+               New_Operation
+                 (Ada_Node => Expr,
+                  Name =>
+                    New_Bool_Int_Cmp
+                      (Get_Kind (Why_Rel_Of_Ada_Op (Nkind (Expr)))),
+                  Parameters =>
+                     (1 =>
+                        Why_Term_Of_Ada_Expr
+                          (Left_Opnd (Expr), (Kind => Why_Int)),
+                      2 =>
+                        Why_Term_Of_Ada_Expr
+                          (Right_Opnd (Expr), (Kind => Why_Int))));
 
          when N_Type_Conversion =>
             return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);

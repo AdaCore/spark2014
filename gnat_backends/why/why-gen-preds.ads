@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -52,6 +52,16 @@ package Why.Gen.Preds is
      return W_Binding_Pred_Unchecked_Id;
    --  Create a new binding for a predicate; the context is left empty.
    --  e.g. let <name> = <value> in <empty>
+
+   function New_Equal
+     (Left : W_Term_Id;
+      Right : W_Term_Id) return W_Predicate_Id;
+   --  Create the predicate "Left = Right"
+
+   function New_NEqual
+     (Left : W_Term_Id;
+      Right : W_Term_Id) return W_Predicate_Id;
+   --  Create the predicate "Left <> Right"
 
    type Binding_Pred_Chain is array (Positive range <>)
      of W_Binding_Pred_Unchecked_Id;
