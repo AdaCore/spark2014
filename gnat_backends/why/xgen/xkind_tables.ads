@@ -53,8 +53,15 @@ package Xkind_Tables is
    --  List of node classes; extracted from the syntax tree of Why.Sinfo
    --  by the ASIS traversal.
 
-   type Id_Kind is (Opaque, Unchecked, Regular);
-   --  Three sort of Ids, as documented in Why.Ids
+   type Id_Kind is (Opaque, Unchecked, Regular, Derived);
+   --  Three sort of Ids, as documented in Why.Ids... + Derived.
+   --  ??? Derived is a derived type of Why_Node_Id, not a subtype;
+   --  this is an experiment to check if we would possible/easy to
+   --  use derived types and (generated) conversions instead of subtypes.
+   --  If it is indeed easy to use, then it would allow us to check at
+   --  at compile time an accidental use of a wrong node kind. If so,
+   --  Derived would replace Regular at some point. And some more cleanup
+   --  may follow.
 
    type Id_Multiplicity is (Id_One, Id_Lone, Id_Some, Id_Set);
    --  Four multiplicity for Id subtype that matches as follows:

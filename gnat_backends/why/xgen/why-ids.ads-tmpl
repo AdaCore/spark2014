@@ -91,4 +91,6 @@ package Why.Ids is
 
    _@Declare_Node_Ids@_
 
+   _@Declare_Derived_Ids@_
+
 end Why.Ids;

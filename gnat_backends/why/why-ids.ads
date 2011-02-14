@@ -2977,4 +2977,2436 @@ package Why.Ids is
      W_Type_Definition_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   type Unused_At_Start_Id is new
+     W_Unused_At_Start_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Unused_At_Start_OId is new
+     W_Unused_At_Start_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Unused_At_Start_List is new
+     W_Unused_At_Start_List;
+   --  ??? subtype predicate not generated yet
+
+   type Unused_At_Start_OList is new
+     W_Unused_At_Start_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Identifier_Id is new
+     W_Identifier_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Identifier_OId is new
+     W_Identifier_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Identifier_List is new
+     W_Identifier_List;
+   --  ??? subtype predicate not generated yet
+
+   type Identifier_OList is new
+     W_Identifier_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Prop_Id is new
+     W_Type_Prop_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Prop_OId is new
+     W_Type_Prop_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Prop_List is new
+     W_Type_Prop_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Prop_OList is new
+     W_Type_Prop_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Int_Id is new
+     W_Type_Int_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Int_OId is new
+     W_Type_Int_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Int_List is new
+     W_Type_Int_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Int_OList is new
+     W_Type_Int_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Bool_Id is new
+     W_Type_Bool_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Bool_OId is new
+     W_Type_Bool_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Bool_List is new
+     W_Type_Bool_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Bool_OList is new
+     W_Type_Bool_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Real_Id is new
+     W_Type_Real_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Real_OId is new
+     W_Type_Real_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Real_List is new
+     W_Type_Real_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Real_OList is new
+     W_Type_Real_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Unit_Id is new
+     W_Type_Unit_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Unit_OId is new
+     W_Type_Unit_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Unit_List is new
+     W_Type_Unit_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Unit_OList is new
+     W_Type_Unit_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Abstract_Type_Id is new
+     W_Abstract_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Abstract_Type_OId is new
+     W_Abstract_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Abstract_Type_List is new
+     W_Abstract_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Abstract_Type_OList is new
+     W_Abstract_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Formal_Type_Id is new
+     W_Generic_Formal_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Formal_Type_OId is new
+     W_Generic_Formal_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Formal_Type_List is new
+     W_Generic_Formal_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Formal_Type_OList is new
+     W_Generic_Formal_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Actual_Type_Chain_Id is new
+     W_Generic_Actual_Type_Chain_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Actual_Type_Chain_OId is new
+     W_Generic_Actual_Type_Chain_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Actual_Type_Chain_List is new
+     W_Generic_Actual_Type_Chain_List;
+   --  ??? subtype predicate not generated yet
+
+   type Generic_Actual_Type_Chain_OList is new
+     W_Generic_Actual_Type_Chain_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Type_Id is new
+     W_Array_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Type_OId is new
+     W_Array_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Type_List is new
+     W_Array_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Type_OList is new
+     W_Array_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Ref_Type_Id is new
+     W_Ref_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Ref_Type_OId is new
+     W_Ref_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Ref_Type_List is new
+     W_Ref_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Ref_Type_OList is new
+     W_Ref_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Value_Type_Id is new
+     W_Protected_Value_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Value_Type_OId is new
+     W_Protected_Value_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Value_Type_List is new
+     W_Protected_Value_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Value_Type_OList is new
+     W_Protected_Value_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Arrow_Type_Id is new
+     W_Arrow_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Arrow_Type_OId is new
+     W_Arrow_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Arrow_Type_List is new
+     W_Arrow_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Arrow_Type_OList is new
+     W_Arrow_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Spec_Id is new
+     W_Computation_Spec_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Spec_OId is new
+     W_Computation_Spec_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Spec_List is new
+     W_Computation_Spec_List;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Spec_OList is new
+     W_Computation_Spec_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Integer_Constant_Id is new
+     W_Integer_Constant_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Integer_Constant_OId is new
+     W_Integer_Constant_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Integer_Constant_List is new
+     W_Integer_Constant_List;
+   --  ??? subtype predicate not generated yet
+
+   type Integer_Constant_OList is new
+     W_Integer_Constant_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Real_Constant_Id is new
+     W_Real_Constant_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Real_Constant_OId is new
+     W_Real_Constant_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Real_Constant_List is new
+     W_Real_Constant_List;
+   --  ??? subtype predicate not generated yet
+
+   type Real_Constant_OList is new
+     W_Real_Constant_OList;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_Id is new
+     W_True_Literal_Id;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_OId is new
+     W_True_Literal_OId;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_List is new
+     W_True_Literal_List;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_OList is new
+     W_True_Literal_OList;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_Id is new
+     W_False_Literal_Id;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_OId is new
+     W_False_Literal_OId;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_List is new
+     W_False_Literal_List;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_OList is new
+     W_False_Literal_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Void_Literal_Id is new
+     W_Void_Literal_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Void_Literal_OId is new
+     W_Void_Literal_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Void_Literal_List is new
+     W_Void_Literal_List;
+   --  ??? subtype predicate not generated yet
+
+   type Void_Literal_OList is new
+     W_Void_Literal_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Operation_Id is new
+     W_Arith_Operation_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Operation_OId is new
+     W_Arith_Operation_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Operation_List is new
+     W_Arith_Operation_List;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Operation_OList is new
+     W_Arith_Operation_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Negative_Term_Id is new
+     W_Negative_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Negative_Term_OId is new
+     W_Negative_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Negative_Term_List is new
+     W_Negative_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Negative_Term_OList is new
+     W_Negative_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Term_Identifier_Id is new
+     W_Term_Identifier_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Term_Identifier_OId is new
+     W_Term_Identifier_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Term_Identifier_List is new
+     W_Term_Identifier_List;
+   --  ??? subtype predicate not generated yet
+
+   type Term_Identifier_OList is new
+     W_Term_Identifier_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Operation_Id is new
+     W_Operation_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Operation_OId is new
+     W_Operation_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Operation_List is new
+     W_Operation_List;
+   --  ??? subtype predicate not generated yet
+
+   type Operation_OList is new
+     W_Operation_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Term_Id is new
+     W_Named_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Term_OId is new
+     W_Named_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Term_List is new
+     W_Named_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Term_OList is new
+     W_Named_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Term_Id is new
+     W_Conditional_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Term_OId is new
+     W_Conditional_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Term_List is new
+     W_Conditional_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Term_OList is new
+     W_Conditional_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Matching_Term_Id is new
+     W_Matching_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Matching_Term_OId is new
+     W_Matching_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Matching_Term_List is new
+     W_Matching_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Matching_Term_OList is new
+     W_Matching_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Term_Id is new
+     W_Binding_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Term_OId is new
+     W_Binding_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Term_List is new
+     W_Binding_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Term_OList is new
+     W_Binding_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Term_Id is new
+     W_Protected_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Term_OId is new
+     W_Protected_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Term_List is new
+     W_Protected_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Term_OList is new
+     W_Protected_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_Id is new
+     W_Op_Add_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_OId is new
+     W_Op_Add_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_List is new
+     W_Op_Add_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_OList is new
+     W_Op_Add_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_Id is new
+     W_Op_Substract_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_OId is new
+     W_Op_Substract_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_List is new
+     W_Op_Substract_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_OList is new
+     W_Op_Substract_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Id is new
+     W_Op_Multiply_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_OId is new
+     W_Op_Multiply_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_List is new
+     W_Op_Multiply_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_OList is new
+     W_Op_Multiply_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_Id is new
+     W_Op_Divide_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_OId is new
+     W_Op_Divide_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_List is new
+     W_Op_Divide_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_OList is new
+     W_Op_Divide_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Modulo_Id is new
+     W_Op_Modulo_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Modulo_OId is new
+     W_Op_Modulo_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Modulo_List is new
+     W_Op_Modulo_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Modulo_OList is new
+     W_Op_Modulo_OList;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_Pred_Id is new
+     W_True_Literal_Pred_Id;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_Pred_OId is new
+     W_True_Literal_Pred_OId;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_Pred_List is new
+     W_True_Literal_Pred_List;
+   --  ??? subtype predicate not generated yet
+
+   type True_Literal_Pred_OList is new
+     W_True_Literal_Pred_OList;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_Pred_Id is new
+     W_False_Literal_Pred_Id;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_Pred_OId is new
+     W_False_Literal_Pred_OId;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_Pred_List is new
+     W_False_Literal_Pred_List;
+   --  ??? subtype predicate not generated yet
+
+   type False_Literal_Pred_OList is new
+     W_False_Literal_Pred_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Identifier_Id is new
+     W_Predicate_Identifier_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Identifier_OId is new
+     W_Predicate_Identifier_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Identifier_List is new
+     W_Predicate_Identifier_List;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Identifier_OList is new
+     W_Predicate_Identifier_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Instance_Id is new
+     W_Predicate_Instance_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Instance_OId is new
+     W_Predicate_Instance_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Instance_List is new
+     W_Predicate_Instance_List;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Instance_OList is new
+     W_Predicate_Instance_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Related_Terms_Id is new
+     W_Related_Terms_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Related_Terms_OId is new
+     W_Related_Terms_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Related_Terms_List is new
+     W_Related_Terms_List;
+   --  ??? subtype predicate not generated yet
+
+   type Related_Terms_OList is new
+     W_Related_Terms_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Implication_Id is new
+     W_Implication_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Implication_OId is new
+     W_Implication_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Implication_List is new
+     W_Implication_List;
+   --  ??? subtype predicate not generated yet
+
+   type Implication_OList is new
+     W_Implication_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Equivalence_Id is new
+     W_Equivalence_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Equivalence_OId is new
+     W_Equivalence_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Equivalence_List is new
+     W_Equivalence_List;
+   --  ??? subtype predicate not generated yet
+
+   type Equivalence_OList is new
+     W_Equivalence_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Disjonction_Id is new
+     W_Disjonction_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Disjonction_OId is new
+     W_Disjonction_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Disjonction_List is new
+     W_Disjonction_List;
+   --  ??? subtype predicate not generated yet
+
+   type Disjonction_OList is new
+     W_Disjonction_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Conjonction_Id is new
+     W_Conjonction_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Conjonction_OId is new
+     W_Conjonction_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Conjonction_List is new
+     W_Conjonction_List;
+   --  ??? subtype predicate not generated yet
+
+   type Conjonction_OList is new
+     W_Conjonction_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Negation_Id is new
+     W_Negation_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Negation_OId is new
+     W_Negation_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Negation_List is new
+     W_Negation_List;
+   --  ??? subtype predicate not generated yet
+
+   type Negation_OList is new
+     W_Negation_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Pred_Id is new
+     W_Conditional_Pred_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Pred_OId is new
+     W_Conditional_Pred_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Pred_List is new
+     W_Conditional_Pred_List;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Pred_OList is new
+     W_Conditional_Pred_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Pred_Id is new
+     W_Binding_Pred_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Pred_OId is new
+     W_Binding_Pred_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Pred_List is new
+     W_Binding_Pred_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Pred_OList is new
+     W_Binding_Pred_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Universal_Quantif_Id is new
+     W_Universal_Quantif_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Universal_Quantif_OId is new
+     W_Universal_Quantif_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Universal_Quantif_List is new
+     W_Universal_Quantif_List;
+   --  ??? subtype predicate not generated yet
+
+   type Universal_Quantif_OList is new
+     W_Universal_Quantif_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Existential_Quantif_Id is new
+     W_Existential_Quantif_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Existential_Quantif_OId is new
+     W_Existential_Quantif_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Existential_Quantif_List is new
+     W_Existential_Quantif_List;
+   --  ??? subtype predicate not generated yet
+
+   type Existential_Quantif_OList is new
+     W_Existential_Quantif_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Predicate_Id is new
+     W_Named_Predicate_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Predicate_OId is new
+     W_Named_Predicate_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Predicate_List is new
+     W_Named_Predicate_List;
+   --  ??? subtype predicate not generated yet
+
+   type Named_Predicate_OList is new
+     W_Named_Predicate_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Predicate_Id is new
+     W_Protected_Predicate_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Predicate_OId is new
+     W_Protected_Predicate_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Predicate_List is new
+     W_Protected_Predicate_List;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Predicate_OList is new
+     W_Protected_Predicate_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Pattern_Id is new
+     W_Pattern_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Pattern_OId is new
+     W_Pattern_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Pattern_List is new
+     W_Pattern_List;
+   --  ??? subtype predicate not generated yet
+
+   type Pattern_OList is new
+     W_Pattern_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Match_Case_Id is new
+     W_Match_Case_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Match_Case_OId is new
+     W_Match_Case_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Match_Case_List is new
+     W_Match_Case_List;
+   --  ??? subtype predicate not generated yet
+
+   type Match_Case_OList is new
+     W_Match_Case_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Triggers_Id is new
+     W_Triggers_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Triggers_OId is new
+     W_Triggers_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Triggers_List is new
+     W_Triggers_List;
+   --  ??? subtype predicate not generated yet
+
+   type Triggers_OList is new
+     W_Triggers_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Trigger_Id is new
+     W_Trigger_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Trigger_OId is new
+     W_Trigger_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Trigger_List is new
+     W_Trigger_List;
+   --  ??? subtype predicate not generated yet
+
+   type Trigger_OList is new
+     W_Trigger_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Eq_Id is new
+     W_Rel_Eq_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Eq_OId is new
+     W_Rel_Eq_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Eq_List is new
+     W_Rel_Eq_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Eq_OList is new
+     W_Rel_Eq_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ne_Id is new
+     W_Rel_Ne_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ne_OId is new
+     W_Rel_Ne_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ne_List is new
+     W_Rel_Ne_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ne_OList is new
+     W_Rel_Ne_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Lt_Id is new
+     W_Rel_Lt_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Lt_OId is new
+     W_Rel_Lt_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Lt_List is new
+     W_Rel_Lt_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Lt_OList is new
+     W_Rel_Lt_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Le_Id is new
+     W_Rel_Le_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Le_OId is new
+     W_Rel_Le_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Le_List is new
+     W_Rel_Le_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Le_OList is new
+     W_Rel_Le_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Gt_Id is new
+     W_Rel_Gt_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Gt_OId is new
+     W_Rel_Gt_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Gt_List is new
+     W_Rel_Gt_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Gt_OList is new
+     W_Rel_Gt_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ge_Id is new
+     W_Rel_Ge_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ge_OId is new
+     W_Rel_Ge_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ge_List is new
+     W_Rel_Ge_List;
+   --  ??? subtype predicate not generated yet
+
+   type Rel_Ge_OList is new
+     W_Rel_Ge_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Id is new
+     W_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_OId is new
+     W_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_List is new
+     W_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_OList is new
+     W_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Id is new
+     W_Logic_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_OId is new
+     W_Logic_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_List is new
+     W_Logic_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_OList is new
+     W_Logic_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Function_Id is new
+     W_Function_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Function_OId is new
+     W_Function_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Function_List is new
+     W_Function_List;
+   --  ??? subtype predicate not generated yet
+
+   type Function_OList is new
+     W_Function_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Definition_Id is new
+     W_Predicate_Definition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Definition_OId is new
+     W_Predicate_Definition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Definition_List is new
+     W_Predicate_Definition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Definition_OList is new
+     W_Predicate_Definition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_Id is new
+     W_Inductive_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_OId is new
+     W_Inductive_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_List is new
+     W_Inductive_List;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_OList is new
+     W_Inductive_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Axiom_Id is new
+     W_Axiom_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Axiom_OId is new
+     W_Axiom_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Axiom_List is new
+     W_Axiom_List;
+   --  ??? subtype predicate not generated yet
+
+   type Axiom_OList is new
+     W_Axiom_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Goal_Id is new
+     W_Goal_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Goal_OId is new
+     W_Goal_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Goal_List is new
+     W_Goal_List;
+   --  ??? subtype predicate not generated yet
+
+   type Goal_OList is new
+     W_Goal_OList;
+   --  ??? subtype predicate not generated yet
+
+   type External_Id is new
+     W_External_Id;
+   --  ??? subtype predicate not generated yet
+
+   type External_OId is new
+     W_External_OId;
+   --  ??? subtype predicate not generated yet
+
+   type External_List is new
+     W_External_List;
+   --  ??? subtype predicate not generated yet
+
+   type External_OList is new
+     W_External_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Type_Id is new
+     W_Logic_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Type_OId is new
+     W_Logic_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Type_List is new
+     W_Logic_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Type_OList is new
+     W_Logic_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Binder_Id is new
+     W_Logic_Binder_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Binder_OId is new
+     W_Logic_Binder_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Binder_List is new
+     W_Logic_Binder_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Binder_OList is new
+     W_Logic_Binder_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_Case_Id is new
+     W_Inductive_Case_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_Case_OId is new
+     W_Inductive_Case_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_Case_List is new
+     W_Inductive_Case_List;
+   --  ??? subtype predicate not generated yet
+
+   type Inductive_Case_OList is new
+     W_Inductive_Case_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Transparent_Type_Definition_Id is new
+     W_Transparent_Type_Definition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Transparent_Type_Definition_OId is new
+     W_Transparent_Type_Definition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Transparent_Type_Definition_List is new
+     W_Transparent_Type_Definition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Transparent_Type_Definition_OList is new
+     W_Transparent_Type_Definition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Adt_Definition_Id is new
+     W_Adt_Definition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Adt_Definition_OId is new
+     W_Adt_Definition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Adt_Definition_List is new
+     W_Adt_Definition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Adt_Definition_OList is new
+     W_Adt_Definition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Constr_Decl_Id is new
+     W_Constr_Decl_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Constr_Decl_OId is new
+     W_Constr_Decl_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Constr_Decl_List is new
+     W_Constr_Decl_List;
+   --  ??? subtype predicate not generated yet
+
+   type Constr_Decl_OList is new
+     W_Constr_Decl_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Effects_Id is new
+     W_Effects_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Effects_OId is new
+     W_Effects_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Effects_List is new
+     W_Effects_List;
+   --  ??? subtype predicate not generated yet
+
+   type Effects_OList is new
+     W_Effects_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Precondition_Id is new
+     W_Precondition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Precondition_OId is new
+     W_Precondition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Precondition_List is new
+     W_Precondition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Precondition_OList is new
+     W_Precondition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Postcondition_Id is new
+     W_Postcondition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Postcondition_OId is new
+     W_Postcondition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Postcondition_List is new
+     W_Postcondition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Postcondition_OList is new
+     W_Postcondition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Exn_Condition_Id is new
+     W_Exn_Condition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Exn_Condition_OId is new
+     W_Exn_Condition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Exn_Condition_List is new
+     W_Exn_Condition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Exn_Condition_OList is new
+     W_Exn_Condition_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Assertion_Id is new
+     W_Assertion_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Assertion_OId is new
+     W_Assertion_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Assertion_List is new
+     W_Assertion_List;
+   --  ??? subtype predicate not generated yet
+
+   type Assertion_OList is new
+     W_Assertion_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Constant_Id is new
+     W_Prog_Constant_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Constant_OId is new
+     W_Prog_Constant_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Constant_List is new
+     W_Prog_Constant_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Constant_OList is new
+     W_Prog_Constant_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Identifier_Id is new
+     W_Prog_Identifier_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Identifier_OId is new
+     W_Prog_Identifier_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Identifier_List is new
+     W_Prog_Identifier_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Identifier_OList is new
+     W_Prog_Identifier_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Expr_Id is new
+     W_Any_Expr_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Expr_OId is new
+     W_Any_Expr_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Expr_List is new
+     W_Any_Expr_List;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Expr_OList is new
+     W_Any_Expr_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Deref_Id is new
+     W_Deref_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Deref_OId is new
+     W_Deref_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Deref_List is new
+     W_Deref_List;
+   --  ??? subtype predicate not generated yet
+
+   type Deref_OList is new
+     W_Deref_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Assignment_Id is new
+     W_Assignment_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Assignment_OId is new
+     W_Assignment_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Assignment_List is new
+     W_Assignment_List;
+   --  ??? subtype predicate not generated yet
+
+   type Assignment_OList is new
+     W_Assignment_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Access_Id is new
+     W_Array_Access_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Access_OId is new
+     W_Array_Access_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Access_List is new
+     W_Array_Access_List;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Access_OList is new
+     W_Array_Access_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Update_Id is new
+     W_Array_Update_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Update_OId is new
+     W_Array_Update_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Update_List is new
+     W_Array_Update_List;
+   --  ??? subtype predicate not generated yet
+
+   type Array_Update_OList is new
+     W_Array_Update_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_Call_Id is new
+     W_Infix_Call_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_Call_OId is new
+     W_Infix_Call_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_Call_List is new
+     W_Infix_Call_List;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_Call_OList is new
+     W_Infix_Call_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_Call_Id is new
+     W_Prefix_Call_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_Call_OId is new
+     W_Prefix_Call_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_Call_List is new
+     W_Prefix_Call_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_Call_OList is new
+     W_Prefix_Call_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Prog_Id is new
+     W_Binding_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Prog_OId is new
+     W_Binding_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Prog_List is new
+     W_Binding_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Prog_OList is new
+     W_Binding_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Ref_Id is new
+     W_Binding_Ref_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Ref_OId is new
+     W_Binding_Ref_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Ref_List is new
+     W_Binding_Ref_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Ref_OList is new
+     W_Binding_Ref_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Prog_Id is new
+     W_Conditional_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Prog_OId is new
+     W_Conditional_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Prog_List is new
+     W_Conditional_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Conditional_Prog_OList is new
+     W_Conditional_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type While_Loop_Id is new
+     W_While_Loop_Id;
+   --  ??? subtype predicate not generated yet
+
+   type While_Loop_OId is new
+     W_While_Loop_OId;
+   --  ??? subtype predicate not generated yet
+
+   type While_Loop_List is new
+     W_While_Loop_List;
+   --  ??? subtype predicate not generated yet
+
+   type While_Loop_OList is new
+     W_While_Loop_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Statement_Sequence_Id is new
+     W_Statement_Sequence_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Statement_Sequence_OId is new
+     W_Statement_Sequence_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Statement_Sequence_List is new
+     W_Statement_Sequence_List;
+   --  ??? subtype predicate not generated yet
+
+   type Statement_Sequence_OList is new
+     W_Statement_Sequence_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Label_Id is new
+     W_Label_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Label_OId is new
+     W_Label_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Label_List is new
+     W_Label_List;
+   --  ??? subtype predicate not generated yet
+
+   type Label_OList is new
+     W_Label_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Assert_Id is new
+     W_Assert_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Assert_OId is new
+     W_Assert_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Assert_List is new
+     W_Assert_List;
+   --  ??? subtype predicate not generated yet
+
+   type Assert_OList is new
+     W_Assert_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Post_Assertion_Id is new
+     W_Post_Assertion_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Post_Assertion_OId is new
+     W_Post_Assertion_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Post_Assertion_List is new
+     W_Post_Assertion_List;
+   --  ??? subtype predicate not generated yet
+
+   type Post_Assertion_OList is new
+     W_Post_Assertion_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Opaque_Assertion_Id is new
+     W_Opaque_Assertion_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Opaque_Assertion_OId is new
+     W_Opaque_Assertion_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Opaque_Assertion_List is new
+     W_Opaque_Assertion_List;
+   --  ??? subtype predicate not generated yet
+
+   type Opaque_Assertion_OList is new
+     W_Opaque_Assertion_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Fun_Def_Id is new
+     W_Fun_Def_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Fun_Def_OId is new
+     W_Fun_Def_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Fun_Def_List is new
+     W_Fun_Def_List;
+   --  ??? subtype predicate not generated yet
+
+   type Fun_Def_OList is new
+     W_Fun_Def_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Fun_Id is new
+     W_Binding_Fun_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Fun_OId is new
+     W_Binding_Fun_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Fun_List is new
+     W_Binding_Fun_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Fun_OList is new
+     W_Binding_Fun_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Rec_Id is new
+     W_Binding_Rec_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Rec_OId is new
+     W_Binding_Rec_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Rec_List is new
+     W_Binding_Rec_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binding_Rec_OList is new
+     W_Binding_Rec_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Call_Id is new
+     W_Prog_Call_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Call_OId is new
+     W_Prog_Call_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Call_List is new
+     W_Prog_Call_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Call_OList is new
+     W_Prog_Call_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_Id is new
+     W_Raise_Statement_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_OId is new
+     W_Raise_Statement_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_List is new
+     W_Raise_Statement_List;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_OList is new
+     W_Raise_Statement_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_With_Parameters_Id is new
+     W_Raise_Statement_With_Parameters_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_With_Parameters_OId is new
+     W_Raise_Statement_With_Parameters_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_With_Parameters_List is new
+     W_Raise_Statement_With_Parameters_List;
+   --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_With_Parameters_OList is new
+     W_Raise_Statement_With_Parameters_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Try_Block_Id is new
+     W_Try_Block_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Try_Block_OId is new
+     W_Try_Block_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Try_Block_List is new
+     W_Try_Block_List;
+   --  ??? subtype predicate not generated yet
+
+   type Try_Block_OList is new
+     W_Try_Block_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Unreachable_Code_Id is new
+     W_Unreachable_Code_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Unreachable_Code_OId is new
+     W_Unreachable_Code_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Unreachable_Code_List is new
+     W_Unreachable_Code_List;
+   --  ??? subtype predicate not generated yet
+
+   type Unreachable_Code_OList is new
+     W_Unreachable_Code_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Begin_Block_Id is new
+     W_Begin_Block_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Begin_Block_OId is new
+     W_Begin_Block_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Begin_Block_List is new
+     W_Begin_Block_List;
+   --  ??? subtype predicate not generated yet
+
+   type Begin_Block_OList is new
+     W_Begin_Block_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Prog_Id is new
+     W_Protected_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Prog_OId is new
+     W_Protected_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Prog_List is new
+     W_Protected_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Protected_Prog_OList is new
+     W_Protected_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_Prog_Id is new
+     W_Op_Add_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_Prog_OId is new
+     W_Op_Add_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_Prog_List is new
+     W_Op_Add_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Add_Prog_OList is new
+     W_Op_Add_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_Prog_Id is new
+     W_Op_Substract_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_Prog_OId is new
+     W_Op_Substract_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_Prog_List is new
+     W_Op_Substract_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Substract_Prog_OList is new
+     W_Op_Substract_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Prog_Id is new
+     W_Op_Multiply_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Prog_OId is new
+     W_Op_Multiply_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Prog_List is new
+     W_Op_Multiply_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Prog_OList is new
+     W_Op_Multiply_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_Prog_Id is new
+     W_Op_Divide_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_Prog_OId is new
+     W_Op_Divide_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_Prog_List is new
+     W_Op_Divide_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Divide_Prog_OList is new
+     W_Op_Divide_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Mod_Prog_Id is new
+     W_Op_Mod_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Mod_Prog_OId is new
+     W_Op_Mod_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Mod_Prog_List is new
+     W_Op_Mod_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Mod_Prog_OList is new
+     W_Op_Mod_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Eq_Prog_Id is new
+     W_Op_Eq_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Eq_Prog_OId is new
+     W_Op_Eq_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Eq_Prog_List is new
+     W_Op_Eq_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Eq_Prog_OList is new
+     W_Op_Eq_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ne_Prog_Id is new
+     W_Op_Ne_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ne_Prog_OId is new
+     W_Op_Ne_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ne_Prog_List is new
+     W_Op_Ne_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ne_Prog_OList is new
+     W_Op_Ne_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Lt_Prog_Id is new
+     W_Op_Lt_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Lt_Prog_OId is new
+     W_Op_Lt_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Lt_Prog_List is new
+     W_Op_Lt_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Lt_Prog_OList is new
+     W_Op_Lt_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Le_Prog_Id is new
+     W_Op_Le_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Le_Prog_OId is new
+     W_Op_Le_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Le_Prog_List is new
+     W_Op_Le_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Le_Prog_OList is new
+     W_Op_Le_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Gt_Prog_Id is new
+     W_Op_Gt_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Gt_Prog_OId is new
+     W_Op_Gt_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Gt_Prog_List is new
+     W_Op_Gt_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Gt_Prog_OList is new
+     W_Op_Gt_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ge_Prog_Id is new
+     W_Op_Ge_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ge_Prog_OId is new
+     W_Op_Ge_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ge_Prog_List is new
+     W_Op_Ge_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Ge_Prog_OList is new
+     W_Op_Ge_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Or_Else_Prog_Id is new
+     W_Op_Or_Else_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Or_Else_Prog_OId is new
+     W_Op_Or_Else_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Or_Else_Prog_List is new
+     W_Op_Or_Else_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Or_Else_Prog_OList is new
+     W_Op_Or_Else_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_And_Then_Prog_Id is new
+     W_Op_And_Then_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_And_Then_Prog_OId is new
+     W_Op_And_Then_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_And_Then_Prog_List is new
+     W_Op_And_Then_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_And_Then_Prog_OList is new
+     W_Op_And_Then_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Minus_Prog_Id is new
+     W_Op_Minus_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Minus_Prog_OId is new
+     W_Op_Minus_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Minus_Prog_List is new
+     W_Op_Minus_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Minus_Prog_OList is new
+     W_Op_Minus_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Not_Prog_Id is new
+     W_Op_Not_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Not_Prog_OId is new
+     W_Op_Not_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Not_Prog_List is new
+     W_Op_Not_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Op_Not_Prog_OList is new
+     W_Op_Not_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Binder_Id is new
+     W_Binder_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Binder_OId is new
+     W_Binder_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Binder_List is new
+     W_Binder_List;
+   --  ??? subtype predicate not generated yet
+
+   type Binder_OList is new
+     W_Binder_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Recfun_Id is new
+     W_Recfun_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Recfun_OId is new
+     W_Recfun_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Recfun_List is new
+     W_Recfun_List;
+   --  ??? subtype predicate not generated yet
+
+   type Recfun_OList is new
+     W_Recfun_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Loop_Annot_Id is new
+     W_Loop_Annot_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Loop_Annot_OId is new
+     W_Loop_Annot_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Loop_Annot_List is new
+     W_Loop_Annot_List;
+   --  ??? subtype predicate not generated yet
+
+   type Loop_Annot_OList is new
+     W_Loop_Annot_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Wf_Arg_Id is new
+     W_Wf_Arg_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Wf_Arg_OId is new
+     W_Wf_Arg_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Wf_Arg_List is new
+     W_Wf_Arg_List;
+   --  ??? subtype predicate not generated yet
+
+   type Wf_Arg_OList is new
+     W_Wf_Arg_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Handler_Id is new
+     W_Handler_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Handler_OId is new
+     W_Handler_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Handler_List is new
+     W_Handler_List;
+   --  ??? subtype predicate not generated yet
+
+   type Handler_OList is new
+     W_Handler_OList;
+   --  ??? subtype predicate not generated yet
+
+   type File_Id is new
+     W_File_Id;
+   --  ??? subtype predicate not generated yet
+
+   type File_OId is new
+     W_File_OId;
+   --  ??? subtype predicate not generated yet
+
+   type File_List is new
+     W_File_List;
+   --  ??? subtype predicate not generated yet
+
+   type File_OList is new
+     W_File_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Binding_Id is new
+     W_Global_Binding_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Binding_OId is new
+     W_Global_Binding_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Binding_List is new
+     W_Global_Binding_List;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Binding_OList is new
+     W_Global_Binding_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Rec_Binding_Id is new
+     W_Global_Rec_Binding_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Rec_Binding_OId is new
+     W_Global_Rec_Binding_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Rec_Binding_List is new
+     W_Global_Rec_Binding_List;
+   --  ??? subtype predicate not generated yet
+
+   type Global_Rec_Binding_OList is new
+     W_Global_Rec_Binding_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Parameter_Declaration_Id is new
+     W_Parameter_Declaration_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Parameter_Declaration_OId is new
+     W_Parameter_Declaration_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Parameter_Declaration_List is new
+     W_Parameter_Declaration_List;
+   --  ??? subtype predicate not generated yet
+
+   type Parameter_Declaration_OList is new
+     W_Parameter_Declaration_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Exception_Declaration_Id is new
+     W_Exception_Declaration_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Exception_Declaration_OId is new
+     W_Exception_Declaration_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Exception_Declaration_List is new
+     W_Exception_Declaration_List;
+   --  ??? subtype predicate not generated yet
+
+   type Exception_Declaration_OList is new
+     W_Exception_Declaration_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_Id is new
+     W_Logic_Declaration_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_OId is new
+     W_Logic_Declaration_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_List is new
+     W_Logic_Declaration_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_OList is new
+     W_Logic_Declaration_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Include_Declaration_Id is new
+     W_Include_Declaration_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Include_Declaration_OId is new
+     W_Include_Declaration_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Include_Declaration_List is new
+     W_Include_Declaration_List;
+   --  ??? subtype predicate not generated yet
+
+   type Include_Declaration_OList is new
+     W_Include_Declaration_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Term_Id is new
+     W_Term_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Term_OId is new
+     W_Term_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Term_List is new
+     W_Term_List;
+   --  ??? subtype predicate not generated yet
+
+   type Term_OList is new
+     W_Term_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Constant_Id is new
+     W_Constant_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Constant_OId is new
+     W_Constant_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Constant_List is new
+     W_Constant_List;
+   --  ??? subtype predicate not generated yet
+
+   type Constant_OList is new
+     W_Constant_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Op_Id is new
+     W_Arith_Op_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Op_OId is new
+     W_Arith_Op_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Op_List is new
+     W_Arith_Op_List;
+   --  ??? subtype predicate not generated yet
+
+   type Arith_Op_OList is new
+     W_Arith_Op_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_Id is new
+     W_Predicate_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_OId is new
+     W_Predicate_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_List is new
+     W_Predicate_List;
+   --  ??? subtype predicate not generated yet
+
+   type Predicate_OList is new
+     W_Predicate_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Primitive_Type_Id is new
+     W_Primitive_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Primitive_Type_OId is new
+     W_Primitive_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Primitive_Type_List is new
+     W_Primitive_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Primitive_Type_OList is new
+     W_Primitive_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Relation_Id is new
+     W_Relation_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Relation_OId is new
+     W_Relation_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Relation_List is new
+     W_Relation_List;
+   --  ??? subtype predicate not generated yet
+
+   type Relation_OList is new
+     W_Relation_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_Class_Id is new
+     W_Logic_Declaration_Class_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_Class_OId is new
+     W_Logic_Declaration_Class_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_Class_List is new
+     W_Logic_Declaration_Class_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Declaration_Class_OList is new
+     W_Logic_Declaration_Class_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Return_Type_Id is new
+     W_Logic_Return_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Return_Type_OId is new
+     W_Logic_Return_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Return_Type_List is new
+     W_Logic_Return_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Return_Type_OList is new
+     W_Logic_Return_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Arg_Type_Id is new
+     W_Logic_Arg_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Arg_Type_OId is new
+     W_Logic_Arg_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Arg_Type_List is new
+     W_Logic_Arg_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Logic_Arg_Type_OList is new
+     W_Logic_Arg_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Simple_Value_Type_Id is new
+     W_Simple_Value_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Simple_Value_Type_OId is new
+     W_Simple_Value_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Simple_Value_Type_List is new
+     W_Simple_Value_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Simple_Value_Type_OList is new
+     W_Simple_Value_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Value_Type_Id is new
+     W_Value_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Value_Type_OId is new
+     W_Value_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Value_Type_List is new
+     W_Value_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Value_Type_OList is new
+     W_Value_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Type_Id is new
+     W_Computation_Type_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Type_OId is new
+     W_Computation_Type_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Type_List is new
+     W_Computation_Type_List;
+   --  ??? subtype predicate not generated yet
+
+   type Computation_Type_OList is new
+     W_Computation_Type_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_Id is new
+     W_Prog_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_OId is new
+     W_Prog_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_List is new
+     W_Prog_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prog_OList is new
+     W_Prog_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_Id is new
+     W_Infix_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_OId is new
+     W_Infix_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_List is new
+     W_Infix_List;
+   --  ??? subtype predicate not generated yet
+
+   type Infix_OList is new
+     W_Infix_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_Id is new
+     W_Prefix_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_OId is new
+     W_Prefix_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_List is new
+     W_Prefix_List;
+   --  ??? subtype predicate not generated yet
+
+   type Prefix_OList is new
+     W_Prefix_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Declaration_Id is new
+     W_Declaration_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Declaration_OId is new
+     W_Declaration_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Declaration_List is new
+     W_Declaration_List;
+   --  ??? subtype predicate not generated yet
+
+   type Declaration_OList is new
+     W_Declaration_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Node_Id is new
+     W_Any_Node_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Node_OId is new
+     W_Any_Node_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Node_List is new
+     W_Any_Node_List;
+   --  ??? subtype predicate not generated yet
+
+   type Any_Node_OList is new
+     W_Any_Node_OList;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Definition_Id is new
+     W_Type_Definition_Id;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Definition_OId is new
+     W_Type_Definition_OId;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Definition_List is new
+     W_Type_Definition_List;
+   --  ??? subtype predicate not generated yet
+
+   type Type_Definition_OList is new
+     W_Type_Definition_OList;
+   --  ??? subtype predicate not generated yet
+
 end Why.Ids;

@@ -26,6 +26,7 @@
 with Xkind_Load;            use Xkind_Load;
 with Xkind_Ids;             use Xkind_Ids;
 with Xkind_Checks;          use Xkind_Checks;
+with Xkind_Conversions;     use Xkind_Conversions;
 with Xtree_Load;            use Xtree_Load;
 with Xtree_Builders;        use Xtree_Builders;
 with Xtree_Accessors;       use Xtree_Accessors;
@@ -48,10 +49,16 @@ begin
    Add ("Declare_Node_Ids", Print_Regular_Subtypes'Access);
    Add ("Declare_Unchecked_Ids", Print_Unchecked_Subtypes'Access);
    Add ("Declare_Opaque_Ids", Print_Opaque_Subtypes'Access);
+   Add ("Declare_Derived_Ids", Print_Derived_Types'Access);
 
    Process ("why-ids.ads");
    Process ("why-unchecked_ids.ads");
    Process ("why-opaque_ids.ads");
+
+   Add ("Declare_Conversions", Print_Conversion_Declarations'Access);
+   Add ("Implement_Conversions", Print_Conversion_Bodies'Access);
+
+   Process ("why-conversions.ads");
 
    --  Production of packages for builders, accessors, mutators
 

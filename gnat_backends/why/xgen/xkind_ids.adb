@@ -31,6 +31,15 @@ package body Xkind_Ids is
    --  Same as the three Print_*_Subtypes method, Kind being the
    --  Id Kind of the subtypes to generate.
 
+   -------------------------
+   -- Print_Derived_Types --
+   -------------------------
+
+   procedure Print_Derived_Types (O : in out Output_Record) is
+   begin
+      Print_Subtypes (O, Derived);
+   end Print_Derived_Types;
+
    ---------------------------
    -- Print_Opaque_Subtypes --
    ---------------------------
@@ -104,9 +113,15 @@ package body Xkind_Ids is
       procedure Print_Subtypes (Prefix : Wide_String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
-            P (O, "subtype "
-                & Id_Subtype (Prefix, Kind, Multiplicity)
-                & " is");
+            if Kind = Derived then
+               P (O, "type "
+                  & Id_Subtype (Prefix, Kind, Multiplicity)
+                  & " is new");
+            else
+               P (O, "subtype "
+                  & Id_Subtype (Prefix, Kind, Multiplicity)
+                  & " is");
+            end if;
 
             if Kind = Opaque then
                P (O, " ");

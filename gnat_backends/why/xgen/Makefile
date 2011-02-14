@@ -12,6 +12,7 @@ GENERATED_FILES= \
  why-atree-treepr.ads         \
  why-atree-treepr.adb         \
  why-atree-validity.ads       \
+ why-conversions.ads          \
  why-ids.ads                  \
  why-kind_validity.ads        \
  why-opaque_ids.ads           \

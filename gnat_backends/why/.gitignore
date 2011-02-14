@@ -11,6 +11,7 @@ xgen/why-atree-treepr.adb
 xgen/why-atree-treepr.ads
 xgen/why-atree-validity.ads
 xgen/why-atree.adt
+xgen/why-conversions.ads
 xgen/why-ids.ads
 xgen/why-kind_validity.ads
 xgen/why-opaque_ids.ads

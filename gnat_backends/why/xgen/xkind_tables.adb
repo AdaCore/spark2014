@@ -59,6 +59,8 @@ package body Xkind_Tables is
             return Id_Subtype (Prefix, Opaque, Multiplicity);
          when Regular =>
             return Id_Subtype (Prefix, Unchecked, Multiplicity);
+         when Derived =>
+            return Id_Subtype (Prefix, Regular, Multiplicity);
       end case;
    end Base_Id_Subtype;
 
@@ -137,13 +139,21 @@ package body Xkind_Tables is
                return "_Opaque";
             when Unchecked =>
                return "_Unchecked";
-            when Regular =>
+            when Regular | Derived =>
                return "";
          end case;
       end Kind_Suffix;
 
    begin
-      return Prefix & Kind_Suffix & Multiplicity_Suffix (Multiplicity);
+      if Kind = Derived then
+         return Strip_Prefix (Prefix)
+           & Kind_Suffix
+           & Multiplicity_Suffix (Multiplicity);
+      else
+         return Prefix
+           & Kind_Suffix
+           & Multiplicity_Suffix (Multiplicity);
+      end if;
    end Id_Subtype;
 
    ----------------
