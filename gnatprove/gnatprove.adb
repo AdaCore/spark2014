@@ -23,20 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Command_Line;
 with Ada.Directories;
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Expect; use GNAT.Expect;
-with GNAT.Strings;
+with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations.Iteration;
+with GNAT.Expect;       use GNAT.Expect;
+with GNAT.OS_Lib;       use GNAT.OS_Lib;
+with GNAT.Strings;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
-with GNATCOLL.VFS;  use GNATCOLL.VFS;
+with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
 with Text_IO;
 
 procedure Gnatprove is
+
+   --  Variables for command line parsing
+   Config       : Command_Line_Configuration;
+   Verbose      : aliased Boolean;
+   Project_File : aliased GNAT.Strings.String_Access;
 
    procedure Call_Altergo (Proj : Project_Tree);
    --  Call Alt-Ergo on all generated PO files of the project.
@@ -57,13 +62,13 @@ procedure Gnatprove is
    procedure Call_Why (Proj : Project_Tree);
    --  Call why on all generated why files of the project.
 
-   procedure Cat (Files : Argument_List; Target : String);
+   procedure Cat
+      (Files   : Argument_List;
+       Target  : String;
+       Success : out Boolean);
    --  Cat all the files together into the target
 
    function Get_Ada_Include return String;
-
-   function Load_Project_Filename return String;
-   --  Get the Project Filename from the command line.
 
    ------------------
    -- Call_Altergo --
@@ -122,15 +127,19 @@ procedure Gnatprove is
                      Quit : in out Boolean)
                   is
                      Target : constant String := "new.why";
+                     Success : aliased Boolean;
                   begin
+                     Delete_File (Target, Success);
                      Cat (Files =>
                            (1 => new String'(Base & "_ctx.why"),
                             2 => new String'(Item)),
-                          Target => Target);
+                          Target => Target,
+                          Success => Success);
                      Call_AltErgo_OnFile (Target);
                      if Index > 1 then
                         Quit := False;
                      end if;
+                     Delete_File (Target, Success);
                   end Call_AltErgo_On_Vc;
 
                   procedure Iterate is new
@@ -153,15 +162,16 @@ procedure Gnatprove is
        Arguments : Argument_List)
    is
       Status : aliased Integer;
-      S      : constant String :=
-         GNAT.Expect.Get_Command_Output
-           (Command   => Command,
-            Arguments => Arguments,
-            Input     => "",
-            Status    => Status'Access,
-            Err_To_Out => True);
-   begin
-      if Status /= 0 then
+      procedure Print_Command_Line;
+      --  print the command line for debug purposes
+
+      ------------------------
+      -- Print_Command_Line --
+      ------------------------
+
+      procedure Print_Command_Line
+      is
+      begin
          Text_IO.Put (Command);
          for Index in Arguments'Range loop
             declare
@@ -171,17 +181,35 @@ procedure Gnatprove is
                Text_IO.Put (S.all);
             end;
          end loop;
-         Text_IO.Put_Line (" failed.");
-         Text_IO.Put (S);
-         GNAT.OS_Lib.OS_Exit (1);
+      end Print_Command_Line;
+   begin
+      if Verbose then
+         Print_Command_Line;
+         Text_IO.Put_Line ("");
       end if;
-      for Index in Arguments'Range loop
-         declare
-            S : String_Access := Arguments (Index);
-         begin
-            Free (S);
-         end;
-      end loop;
+      declare
+         S : constant String :=
+            GNAT.Expect.Get_Command_Output
+              (Command   => Command,
+               Arguments => Arguments,
+               Input     => "",
+               Status    => Status'Access,
+               Err_To_Out => True);
+      begin
+         if Status /= 0 then
+            Print_Command_Line;
+            Text_IO.Put_Line (" failed.");
+            Text_IO.Put (S);
+            GNAT.OS_Lib.OS_Exit (1);
+         end if;
+         for Index in Arguments'Range loop
+            declare
+               S : String_Access := Arguments (Index);
+            begin
+               Free (S);
+            end;
+         end loop;
+      end;
    end Call_Exit_On_Failure;
 
    -------------------
@@ -273,10 +301,25 @@ procedure Gnatprove is
    -- Cat --
    ---------
 
-   procedure Cat (Files : Argument_List; Target : String)
+   procedure Cat
+      (Files   : Argument_List;
+       Target  : String;
+       Success : out Boolean)
    is
-      Success : Boolean;
    begin
+      if Verbose then
+         Text_IO.Put ("cat ");
+         for Index in Files'Range loop
+            declare
+               Cur_File : constant String_Access := Files (Index);
+            begin
+               Text_IO.Put (Cur_File.all);
+               Text_IO.Put (" ");
+            end;
+         end loop;
+         Text_IO.Put ("> ");
+         Text_IO.Put_Line (Target);
+      end if;
       for Index in Files'Range loop
          declare
             Cur_File : constant String_Access := Files (Index);
@@ -287,6 +330,7 @@ procedure Gnatprove is
                Success  => Success,
                Mode     => Append,
                Preserve => None);
+            exit when not Success;
          end;
       end loop;
    end Cat;
@@ -311,29 +355,24 @@ procedure Gnatprove is
       return Expect_Out_Match (D);
    end Get_Ada_Include;
 
-   ---------------------------
-   -- Load_Project_Filename --
-   ---------------------------
-
-   function Load_Project_Filename return String
-   is
-      use Ada.Command_Line;
-   begin
-      if Argument_Count >= 1 then
-         return Argument (1);
-      else
-         Text_IO.Put_Line ("No project file given.");
-         GNAT.OS_Lib.OS_Exit (1);
-      end if;
-   end Load_Project_Filename;
    Tree         : Project_Tree;
-   Project_File : constant String := Load_Project_Filename;
 
    --  begin processing for Gnatprove
 begin
-   Call_Gnatmake (Project_File);
+   --  Install command line config
+   Define_Switch (Config, Verbose'Access,
+                  "-v", Long_Switch => "--verbose",
+                  Help => "Output extra verbose information");
 
-   Tree.Load (GNATCOLL.VFS.Create (+Project_File));
+   Define_Switch (Config, Project_File'Access,
+                  "-P:",
+                  Help => "The name of the project file");
+
+   Getopt (Config);
+
+   Call_Gnatmake (Project_File.all);
+
+   Tree.Load (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)));
 
    Call_Gnat2Why (Tree);
 
