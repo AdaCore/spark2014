@@ -136,6 +136,7 @@ procedure Gnatprove is
                           Target => Target,
                           Success => Success);
                      Call_AltErgo_OnFile (Target);
+                     Quit := not Success;
                      if Index > 1 then
                         Quit := False;
                      end if;
@@ -278,7 +279,7 @@ procedure Gnatprove is
          declare
             Cur_File : constant Virtual_File := File_List (Index);
             Base : constant String :=
-               Ada.Directories.Base_Name (+Base_Name (Cur_File));
+               Ada.Directories.Base_Name (+Full_Name (Cur_File));
          begin
             --  assuming 'base' to be the filename without suffix, call the
             --  command
@@ -355,7 +356,8 @@ procedure Gnatprove is
       return Expect_Out_Match (D);
    end Get_Ada_Include;
 
-   Tree         : Project_Tree;
+   Tree      : Project_Tree;
+   Proj_Type : Project_Type;
 
    --  begin processing for Gnatprove
 begin
@@ -373,6 +375,9 @@ begin
    Call_Gnatmake (Project_File.all);
 
    Tree.Load (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)));
+   Proj_Type := Root_Project (Tree);
+   Ada.Directories.Set_Directory
+     (Attribute_Value (Proj_Type, Obj_Dir_Attribute));
 
    Call_Gnat2Why (Tree);
 
