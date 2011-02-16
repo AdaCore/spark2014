@@ -23,17 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Command_Line;
+with Ada.Directories;
+
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.Strings;
+with GNAT.Directory_Operations.Iteration;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.VFS;  use GNATCOLL.VFS;
 
-with Ada.Command_Line;
 with Text_IO;
 
 procedure Gnatprove is
+
+   procedure Call_Altergo (Proj : Project_Tree);
+   --  Call Alt-Ergo on all generated PO files of the project.
 
    procedure Call_Exit_On_Failure
       (Command : String;
@@ -48,10 +54,95 @@ procedure Gnatprove is
    procedure Call_Gnat2Why (Proj : Project_Tree);
    --  Call gnat2why on all source files of the project.
 
+   procedure Call_Why (Proj : Project_Tree);
+   --  Call why on all generated why files of the project.
+
+   procedure Cat (Files : Argument_List; Target : String);
+   --  Cat all the files together into the target
+
    function Get_Ada_Include return String;
 
    function Load_Project_Filename return String;
    --  Get the Project Filename from the command line.
+
+   ------------------
+   -- Call_Altergo --
+   ------------------
+
+   procedure Call_Altergo (Proj : Project_Tree)
+   is
+      Proj_Type : constant Project_Type := Root_Project (Proj);
+      File_List : constant File_Array_Access := Source_Files (Proj_Type);
+   begin
+      for Index in File_List'Range loop
+         declare
+            Cur_File : constant Virtual_File := File_List (Index);
+            Base : constant String :=
+               Ada.Directories.Base_Name (+Base_Name (Cur_File));
+         begin
+            --  assuming 'base' to be the filename without suffix,
+            --  call the command
+            --    why-cpulimit <timeout> alt-ergo <file>
+            --  for each 'file' of the form
+            --    <base_po*.why>
+            if Unit_Part (Info (Proj, Cur_File)) = Unit_Body then
+               declare
+                  procedure Call_AltErgo_OnFile (Item  : String);
+
+                  procedure Call_AltErgo_On_Vc
+                    (Item  : String;
+                     Index : Positive;
+                     Quit : in out Boolean);
+                  --  Call Altergo on the VC that corresponds to the file
+                  --  'Item'; take into account the context file.
+
+                  -------------------------
+                  -- Call_AltErgo_OnFile --
+                  -------------------------
+
+                  procedure Call_AltErgo_OnFile (Item  : String)
+                  is
+                  begin
+                     --  ??? use 10 as timeout for now
+                     Call_Exit_On_Failure
+                       (Command   => "why-cpulimit",
+                        Arguments =>
+                          ((1 => new String'("10"),
+                            2 => new String'("alt-ergo"),
+                            3 => new String'(Item))));
+                  end Call_AltErgo_OnFile;
+
+                  ------------------------
+                  -- Call_AltErgo_On_Vc --
+                  ------------------------
+
+                  procedure Call_AltErgo_On_Vc
+                    (Item  : String;
+                     Index : Positive;
+                     Quit : in out Boolean)
+                  is
+                     Target : constant String := "new.why";
+                  begin
+                     Cat (Files =>
+                           (1 => new String'(Base & "_ctx.why"),
+                            2 => new String'(Item)),
+                          Target => Target);
+                     Call_AltErgo_OnFile (Target);
+                     if Index > 1 then
+                        Quit := False;
+                     end if;
+                  end Call_AltErgo_On_Vc;
+
+                  procedure Iterate is new
+                     GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+                       (Action => Call_AltErgo_On_Vc);
+               begin
+                  Iterate (Path => Base & "_po*.why");
+               end;
+            end if;
+         end;
+      end loop;
+   end Call_Altergo;
 
    --------------------------
    -- Call_Exit_On_Failure --
@@ -70,6 +161,20 @@ procedure Gnatprove is
             Status    => Status'Access,
             Err_To_Out => True);
    begin
+      if Status /= 0 then
+         Text_IO.Put (Command);
+         for Index in Arguments'Range loop
+            declare
+               S : constant String_Access := Arguments (Index);
+            begin
+               Text_IO.Put (" ");
+               Text_IO.Put (S.all);
+            end;
+         end loop;
+         Text_IO.Put_Line (" failed.");
+         Text_IO.Put (S);
+         GNAT.OS_Lib.OS_Exit (1);
+      end if;
       for Index in Arguments'Range loop
          declare
             S : String_Access := Arguments (Index);
@@ -77,12 +182,6 @@ procedure Gnatprove is
             Free (S);
          end;
       end loop;
-      if Status /= 0 then
-         Text_IO.Put (Command);
-         Text_IO.Put_Line (" failed.");
-         Text_IO.Put (S);
-         GNAT.OS_Lib.OS_Exit (1);
-      end if;
    end Call_Exit_On_Failure;
 
    -------------------
@@ -138,6 +237,60 @@ procedure Gnatprove is
       end loop;
    end Call_Gnat2Why;
 
+   --------------
+   -- Call_Why --
+   --------------
+
+   procedure Call_Why (Proj : Project_Tree)
+   is
+      Proj_Type : constant Project_Type := Root_Project (Proj);
+      File_List : constant File_Array_Access := Source_Files (Proj_Type);
+   begin
+      for Index in File_List'Range loop
+         declare
+            Cur_File : constant Virtual_File := File_List (Index);
+            Base : constant String :=
+               Ada.Directories.Base_Name (+Base_Name (Cur_File));
+         begin
+            --  assuming 'base' to be the filename without suffix, call the
+            --  command
+            --  why --multiwhy --explain --locs <base>.locs <base>.why
+            if Unit_Part (Info (Proj, Cur_File)) = Unit_Body then
+               Call_Exit_On_Failure
+                 (Command   => "why",
+                  Arguments =>
+                    ((1 => new String'("--multi-why"),
+                      2 => new String'("--explain"),
+                      3 => new String'("--locs"),
+                      4 => new String'(Base & ".loc"),
+                      5 => new String'(Base & ".why"))));
+            end if;
+         end;
+      end loop;
+   end Call_Why;
+
+   ---------
+   -- Cat --
+   ---------
+
+   procedure Cat (Files : Argument_List; Target : String)
+   is
+      Success : Boolean;
+   begin
+      for Index in Files'Range loop
+         declare
+            Cur_File : constant String_Access := Files (Index);
+         begin
+            Copy_File
+              (Name     => Cur_File.all,
+               Pathname => Target,
+               Success  => Success,
+               Mode     => Append,
+               Preserve => None);
+         end;
+      end loop;
+   end Cat;
+
    ---------------------
    -- Get_Ada_Include --
    ---------------------
@@ -183,4 +336,8 @@ begin
    Tree.Load (GNATCOLL.VFS.Create (+Project_File));
 
    Call_Gnat2Why (Tree);
+
+   Call_Why (Tree);
+
+   Call_Altergo (Tree);
 end Gnatprove;
