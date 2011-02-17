@@ -413,9 +413,12 @@ begin
    Call_Gnatmake (Project_File.all);
 
    Tree.Load (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)));
+   Text_IO.Put_Line ("here");
    Proj_Type := Root_Project (Tree);
-   Ada.Directories.Set_Directory
-     (Attribute_Value (Proj_Type, Obj_Dir_Attribute));
+   if Has_Attribute (Proj_Type, Obj_Dir_Attribute) then
+      Ada.Directories.Set_Directory
+        (Attribute_Value (Proj_Type, Obj_Dir_Attribute));
+   end if;
 
    Iterate_Gnat2Why (Tree);
 
