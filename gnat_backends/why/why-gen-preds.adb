@@ -25,8 +25,9 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Consts;     use Why.Gen.Consts;
+with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Preds is
 
@@ -85,21 +86,15 @@ package body Why.Gen.Preds is
       Operation_Append_To_Parameters (Y_To_Base_Type_Op, New_Term (Y_S));
 
       --  ...now set the pieces together:
-      declare
-         Pred_Body : constant W_Predicate_Id :=
-                       New_Related_Terms (Left  => X_To_Base_Type_Op,
-                                          Op    => New_Rel_Eq,
-                                          Right => Y_To_Base_Type_Op);
-         Result    : constant W_Predicate_Definition_Unchecked_Id :=
-                       New_Unchecked_Predicate_Definition;
-      begin
-         Predicate_Definition_Set_Name (Result, Pred_Name);
-         Predicate_Definition_Append_To_Binders (Result, X_Binder);
-         Predicate_Definition_Append_To_Binders (Result, Y_Binder);
-         Predicate_Definition_Set_Def (Result, Pred_Body);
-         File_Append_To_Declarations (File,
-                                      New_Logic_Declaration (Decl => Result));
-      end;
+      New_Predicate_Definition
+         (File    => File,
+          Name    => Pred_Name,
+          Binders => (1 => X_Binder, 2 => Y_Binder),
+          Def     =>
+            New_Related_Terms
+              (Left  => X_To_Base_Type_Op,
+               Op    => New_Rel_Eq,
+               Right => Y_To_Base_Type_Op));
    end Define_Eq_Predicate;
 
    ----------------------------
@@ -139,15 +134,12 @@ package body Why.Gen.Preds is
                                         Right2 => New_Term (Last_S));
       Pred_Body  : constant W_Predicate_Id :=
                      New_Predicate_Body ((Decl_First, Decl_Last), Context);
-      Result     : constant W_Predicate_Definition_Unchecked_Id :=
-                     New_Unchecked_Predicate_Definition;
    begin
-      --  ...now set the pieces together:
-      Predicate_Definition_Set_Name (Result, Pred_Name);
-      Predicate_Definition_Append_To_Binders (Result, Binder);
-      Predicate_Definition_Set_Def (Result, Pred_Body);
-      File_Append_To_Declarations (File,
-                                   New_Logic_Declaration (Decl => Result));
+      New_Predicate_Definition
+         (File    => File,
+          Name    => Pred_Name,
+          Binders => (1 => Binder),
+          Def     => Pred_Body);
    end Define_Range_Predicate;
 
    --------------------

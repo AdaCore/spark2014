@@ -29,12 +29,6 @@ with Why.Atree.Properties; use Why.Atree.Properties;
 package Why.Gen.Axioms is
    --  This package provides facilities to generate some standard axioms
 
-   procedure Declare_Axiom
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Axiom_Body : W_Predicate_Id);
-   --  Declare an axiom with the given name and the given body.
-
    procedure Define_Array_Eq_Axiom
       (File           : W_File_Id;
        Type_Name      : String;

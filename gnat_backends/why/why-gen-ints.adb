@@ -28,6 +28,7 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
@@ -217,7 +218,7 @@ package body Why.Gen.Ints is
                          Then_Part => Equal_Pred,
                          Else_Part => NEqual_Pred));
          begin
-            Declare_Axiom
+            New_Axiom
                (File => File,
                 Name => New_Bool_Int_Axiom (Rel_Symbol),
                 Axiom_Body => Axiom_Body);

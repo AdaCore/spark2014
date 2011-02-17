@@ -33,10 +33,23 @@ package Why.Gen.Decl is
    --  Overloaded procedures with a W_File_Id Argument add the built
    --  declaration to that context instead of returning it
 
+   procedure New_Axiom
+      (File       : W_File_Id;
+       Name       : W_Identifier_Id;
+       Axiom_Body : W_Predicate_Id);
+   --  Declare an axiom with the given name and the given body.
+
    procedure New_Include_Declaration
      (File : W_File_Id;
       Name : W_Identifier_Id;
       Ada_Node : Node_Id := Empty);
    --  Include declarations, of the form
    --    include "name.why"
+
+   procedure New_Predicate_Definition
+     (File     : W_File_Id;
+      Name     : W_Identifier_Id;
+      Binders  : W_Logic_Binder_Array;
+      Def      : W_Predicate_Id);
+
 end Why.Gen.Decl;

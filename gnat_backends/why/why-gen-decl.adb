@@ -28,6 +28,22 @@ with Why.Atree.Mutators; use Why.Atree.Mutators;
 
 package body Why.Gen.Decl is
 
+   ---------------
+   -- New_Axiom --
+   ---------------
+
+   procedure New_Axiom
+      (File       : W_File_Id;
+       Name       : W_Identifier_Id;
+       Axiom_Body : W_Predicate_Id)
+   is
+   begin
+      File_Append_To_Declarations
+        (File,
+         New_Logic_Declaration
+            (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
+   end New_Axiom;
+
    -----------------------------
    -- New_Include_Declaration --
    -----------------------------
@@ -46,4 +62,25 @@ package body Why.Gen.Decl is
               Name     => Name));
    end New_Include_Declaration;
 
+   ------------------------------
+   -- New_Predicate_Definition --
+   ------------------------------
+
+   procedure New_Predicate_Definition
+     (File     : W_File_Id;
+      Name     : W_Identifier_Id;
+      Binders  : W_Logic_Binder_Array;
+      Def      : W_Predicate_Id)
+   is
+   begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item =>
+           New_Logic_Declaration
+             (Decl =>
+               New_Predicate_Definition
+                 (Name    => Name,
+                  Binders => Binders,
+                  Def     => Def)));
+   end New_Predicate_Definition;
 end Why.Gen.Decl;
