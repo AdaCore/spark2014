@@ -44,9 +44,16 @@ procedure Gnatprove is
    Project_File : aliased GNAT.Strings.String_Access;
 
    procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File);
-   --  Call Alt-Ergo on all generated PO files of the project.
-   --  Call Alt-Ergo on all PO files that correspond to a given source file of
+   --  Call Alt-Ergo on all VC files that correspond to a given source file of
    --  a project
+
+   procedure Call_AltErgo_On_File
+      (File : String;
+       Result_File : String;
+       Timeout : Natural);
+   --  Call Altergo on a single File. Produce a file containing the result of
+   --  the run with name Result_File. Don't take more time than the given
+   --  Timeout in seconds.
 
    procedure Call_Exit_On_Failure
       (Command : String;
@@ -88,25 +95,6 @@ procedure Gnatprove is
       Base : constant String :=
          Ada.Directories.Base_Name (+Base_Name (File));
 
-      procedure Call_AltErgo_On_File (Item  : String);
-      --  Call Altergo on a single file
-
-      -------------------------
-      -- Call_AltErgo_On_File --
-      -------------------------
-
-      procedure Call_AltErgo_On_File (Item  : String)
-      is
-      begin
-         --  ??? use 10 as timeout for now
-         Call_Exit_On_Failure
-           (Command   => "why-cpulimit",
-            Arguments =>
-              ((1 => new String'("10"),
-                2 => new String'("alt-ergo"),
-                3 => new String'(Item))));
-      end Call_AltErgo_On_File;
-
       procedure Call_AltErgo_On_Vc
         (Item  : String;
          Index : Positive;
@@ -126,6 +114,8 @@ procedure Gnatprove is
          pragma Unreferenced (Index);
          Target : constant String := "new.why";
          Success : aliased Boolean;
+         Base_Of_VC : constant String :=
+            Ada.Directories.Base_Name (Item);
       begin
          Delete_File (Target, Success);
          Cat (Files =>
@@ -133,7 +123,8 @@ procedure Gnatprove is
                 2 => new String'(Item)),
               Target => Target,
               Success => Success);
-         Call_AltErgo_On_File (Target);
+         --  ??? use 10 as timeout for now
+         Call_AltErgo_On_File (Target, Base_Of_VC & ".rgo", 10);
          Quit := not Success;
          Delete_File (Target, Success);
       end Call_AltErgo_On_Vc;
@@ -149,6 +140,47 @@ procedure Gnatprove is
          Iterate (Path => Base & "_po*.why");
       end if;
    end Call_Altergo;
+
+   --------------------------
+   -- Call_AltErgo_On_File --
+   --------------------------
+
+   procedure Call_AltErgo_On_File
+      (File : String;
+       Result_File : String;
+       Timeout : Natural)
+   is
+   begin
+      if Verbose then
+         Text_IO.Put ("calling Alt-ergo on ");
+         Text_IO.Put_Line (File);
+      end if;
+      declare
+         Status : aliased Integer;
+         S  : constant String :=
+            GNAT.Expect.Get_Command_Output
+              (Command   => "why-cpulimit",
+               Arguments =>
+                 ((1 => new String'(Natural'Image (Timeout)),
+                   2 => new String'("alt-ergo"),
+                   3 => new String'(File))),
+               Input     => "",
+               Status    => Status'Access,
+               Err_To_Out => True);
+         FT : Text_IO.File_Type;
+      begin
+         Text_IO.Create (FT, Text_IO.Out_File, Result_File);
+         if Status /= 0 or else S'Length = 0 then
+            --  When there is an error an a prover call, we still continue
+            Text_IO.Put (FT, "File """);
+            Text_IO.Put (FT, File);
+            Text_IO.Put_Line (FT, """:Failure or Timeout");
+         else
+            Text_IO.Put (FT, S);
+         end if;
+         Text_IO.Close (FT);
+      end;
+   end Call_AltErgo_On_File;
 
    --------------------------
    -- Call_Exit_On_Failure --
@@ -356,14 +388,14 @@ procedure Gnatprove is
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
 
+   procedure Iterate_Altergo is
+      new Iter_Project_Source_Files (Call_Altergo);
+
    procedure Iterate_Gnat2Why is
       new Iter_Project_Source_Files (Call_Gnat2Why);
 
    procedure Iterate_Why is
       new Iter_Project_Source_Files (Call_Why);
-
-   procedure Iterate_Altergo is
-      new Iter_Project_Source_Files (Call_Altergo);
 
    --  begin processing for Gnatprove
 begin
