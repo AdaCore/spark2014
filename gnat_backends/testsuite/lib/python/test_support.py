@@ -175,13 +175,7 @@ def prove(src):
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
-<<<<<<< HEAD
     gnatprove()
-=======
-    gnat2why(src, opt=["-gnat2012", "-gnata", "-gnatd.F"])
-    base, ext = os.path.splitext(src)
-    why(base+".why", opt=["--multi-why", "--locs", base+".loc", "--explain"])
->>>>>>> Generate ALI file before calling gnat2why
     result = {}
     base, ext = os.path.splitext(src)
     for vc in open(base+".labels"):
