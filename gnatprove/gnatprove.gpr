@@ -3,7 +3,7 @@ with "gnatcoll";
 project GNATprove is
 
    for Object_Dir use "obj";
-   for Exec_Dir use "../bin";
+   for Exec_Dir use "../gnat_backends/install/bin";
 
    for Source_Dirs use (".", "../gnat_backends/alfa", "obj");
 
