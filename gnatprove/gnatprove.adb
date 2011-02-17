@@ -288,7 +288,8 @@ procedure Gnatprove is
                    2 => new String'(Get_Ada_Include),
                    3 => new String'("-gnata"),
                    4 => new String'("-gnat2012"),
-                   5 => new String'(+Full_Name (File))) &
+                   5 => new String'("-gnatd.F"),  --  ALFA marks in AST
+                   6 => new String'(+Full_Name (File))) &
                    Switch.all));
          end;
       end if;
