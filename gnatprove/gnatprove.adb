@@ -171,7 +171,6 @@ procedure Gnatprove is
       begin
          Text_IO.Create (FT, Text_IO.Out_File, Result_File);
          if Status /= 0 or else S'Length = 0 then
-            --  When there is an error an a prover call, we still continue
             Text_IO.Put (FT, "File """);
             Text_IO.Put (FT, File);
             Text_IO.Put_Line (FT, """:Failure or Timeout");
@@ -252,7 +251,9 @@ procedure Gnatprove is
         (Command => "gnatmake",
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
-                       3 => new String'("-gnatc")));
+                       3 => new String'("-gnata"),
+                       4 => new String'("-gnat2012"),
+                       5 => new String'("-gnatc")));
 
    end Call_Gnatmake;
 
@@ -276,12 +277,16 @@ procedure Gnatprove is
                 Language => "Ada",
                 Value    => Switch,
                 Is_Default_Value => Default);
+            --  We force the use of switch -gnata, because gnat2why may be
+            --  incorrect otherwise
             Call_Exit_On_Failure
               (Command   => "gnat2why",
                Arguments =>
                  ((1 => new String'("-I"),
                    2 => new String'(Get_Ada_Include),
-                   3 => new String'(+Full_Name (File))) &
+                   3 => new String'("-gnata"),
+                   4 => new String'("-gnat2012"),
+                   5 => new String'(+Full_Name (File))) &
                    Switch.all));
          end;
       end if;
@@ -413,7 +418,6 @@ begin
    Call_Gnatmake (Project_File.all);
 
    Tree.Load (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)));
-   Text_IO.Put_Line ("here");
    Proj_Type := Root_Project (Tree);
    if Has_Attribute (Proj_Type, Obj_Dir_Attribute) then
       Ada.Directories.Set_Directory
