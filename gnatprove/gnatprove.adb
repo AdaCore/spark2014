@@ -253,7 +253,9 @@ procedure Gnatprove is
                        2 => new String'(Project_File),
                        3 => new String'("-gnata"),
                        4 => new String'("-gnat2012"),
-                       5 => new String'("-gnatc")));
+                       5 => new String'("-gnatc"),
+                       6 => new String'("-f"),  --  Force recompilation
+                       7 => new String'("-gnatd.F")));  --  ALFA section in ALI
 
    end Call_Gnatmake;
 
