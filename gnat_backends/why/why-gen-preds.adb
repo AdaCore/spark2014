@@ -91,10 +91,7 @@ package body Why.Gen.Preds is
           Name    => Pred_Name,
           Binders => (1 => X_Binder, 2 => Y_Binder),
           Def     =>
-            New_Related_Terms
-              (Left  => X_To_Base_Type_Op,
-               Op    => New_Rel_Eq,
-               Right => Y_To_Base_Type_Op));
+            New_Equal (X_To_Base_Type_Op, Y_To_Base_Type_Op));
    end Define_Eq_Predicate;
 
    ----------------------------
