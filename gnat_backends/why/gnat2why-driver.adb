@@ -42,6 +42,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
+with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Ints;         use Why.Gen.Ints;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Ids;              use Why.Ids;
@@ -68,9 +69,6 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Standard_Package;
    --  Translate the Ada Standard package
-
-   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id);
-   --  Translate a node N corresponding to a with clause into a Why include
 
    -----------------
    -- GNAT_To_Why --
@@ -146,7 +144,9 @@ package body Gnat2Why.Driver is
       while Present (Cur) loop
          case Nkind (Cur) is
             when N_With_Clause =>
-               Why_Include_Of_Ada_With_Clause (File, Cur);
+               New_Include_Declaration
+                 (File,
+                  New_Identifier (Symbol => Chars (Name (Cur))));
             when others =>
                null;  --  ??? raise Program_Error when cases completed
          end case;
@@ -282,6 +282,9 @@ package body Gnat2Why.Driver is
       Translate_Package (File, Standard_Package_Node);
       Open_Current_File ("standard.why");
       Declare_Boolean_Integer_Comparison (File);
+      New_Include_Declaration
+        (File => File,
+         Name => New_Identifier ("divisions"));
       Sprint_Why_Node (File, Current_File);
       Close_Current_File;
 
@@ -289,21 +292,5 @@ package body Gnat2Why.Driver is
          wpn (File);
       end if;
    end Translate_Standard_Package;
-
-   ------------------------------------
-   -- Why_Include_Of_Ada_With_Clause --
-   ------------------------------------
-
-   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id)
-   is
-      Id : constant Node_Id := Name (N);
-   begin
-      File_Append_To_Declarations
-        (File,
-         New_Include_Declaration
-           (Ada_Node => N,
-            Name     =>
-              New_Identifier (Name_String (Chars (Id)) & ".why")));
-   end Why_Include_Of_Ada_With_Clause;
 
 end Gnat2Why.Driver;

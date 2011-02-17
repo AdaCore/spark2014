@@ -2890,7 +2890,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Include_Declaration_Get_Name (Node));
-      P (O, """");
+      P (O, ".why""");
       NL (O);
       State.Control := Abandon_Children;
    end Include_Declaration_Pre_Op;

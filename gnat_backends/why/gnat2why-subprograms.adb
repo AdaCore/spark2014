@@ -756,7 +756,7 @@ package body Gnat2Why.Subprograms is
                        2 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
             end;
 
-         when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
+         when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
             T :=
               New_Infix_Call
                 (Ada_Node => Expr,
@@ -767,6 +767,22 @@ package body Gnat2Why.Subprograms is
                    Why_Expr_Of_Ada_Expr
                       (Right_Opnd (Expr),
                        (Kind => Why_Int)));
+            Current_Type := (Kind => Why_Int);
+
+         when N_Op_Divide =>
+            T :=
+               New_Located_Call
+                 (Ada_Node => Expr,
+                  Name     => To_Program_Space (New_Integer_Division),
+                  Progs =>
+                     (1 =>
+                        Why_Expr_Of_Ada_Expr
+                           (Left_Opnd (Expr),
+                            (Kind => Why_Int)),
+                      2 =>
+                        Why_Expr_Of_Ada_Expr
+                           (Right_Opnd (Expr),
+                            (Kind => Why_Int))));
             Current_Type := (Kind => Why_Int);
 
          when N_Op_Ge .. N_Op_Ne =>
@@ -1385,7 +1401,21 @@ package body Gnat2Why.Subprograms is
                    Why_Term_Of_Ada_Expr (Right_Opnd (Expr), (Kind => Why_Int)),
                  Op       => Why_Term_Binop_Of_Ada_Op (Nkind (Expr)));
             Current_Type := (Kind =>  Why_Int);
-
+         when N_Op_Divide =>
+            T :=
+               New_Operation
+                 (Ada_Node   => Expr,
+                  Name       => New_Integer_Division,
+                  Parameters =>
+                    (1 =>
+                       Why_Term_Of_Ada_Expr
+                         (Left_Opnd (Expr),
+                           (Kind => Why_Int)),
+                     2 =>
+                       Why_Term_Of_Ada_Expr
+                         (Right_Opnd (Expr),
+                          (Kind => Why_Int))));
+            Current_Type := (Kind =>  Why_Int);
          when N_Op_Compare =>
             return
                New_Operation

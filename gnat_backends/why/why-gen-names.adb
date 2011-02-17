@@ -225,6 +225,16 @@ package body Why.Gen.Names is
       return New_Identifier (Symbol => Name_Find);
    end New_Identifier;
 
+   --------------------------
+   -- New_Integer_Division --
+   --------------------------
+
+   function New_Integer_Division return W_Identifier_Id is
+      Name : constant String := "computer_div";
+   begin
+      return New_Identifier (Name);
+   end New_Integer_Division;
+
    ---------------------------
    -- New_Result_Identifier --
    ---------------------------
