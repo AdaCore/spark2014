@@ -205,8 +205,17 @@ package body Gnat2Why.Driver is
       Decl := First (Decls);
       while Present (Decl) loop
          case Nkind (Decl) is
-            when N_Full_Type_Declaration | N_Subtype_Declaration =>
-               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
+            when N_Full_Type_Declaration =>
+               Why_Type_Decl_of_Full_Type_Decl
+                  (File,
+                   Defining_Identifier (Decl),
+                   Type_Definition (Decl));
+
+            when N_Subtype_Declaration =>
+               Why_Type_Decl_of_Subtype_Decl
+                  (File,
+                   Defining_Identifier (Decl),
+                   Subtype_Indication (Decl));
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>

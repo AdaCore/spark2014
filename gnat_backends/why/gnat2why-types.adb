@@ -49,135 +49,132 @@ package body Gnat2Why.Types is
    end Type_Of_Array_Index;
 
    -------------------------------------
-   -- Why_Type_Decl_of_Gnat_Type_Decl --
+   -- Why_Type_Decl_of_Full_Type_Decl --
    -------------------------------------
 
-   procedure Why_Type_Decl_of_Gnat_Type_Decl
-      (File : W_File_Id;
-       Node : Node_Id)
+   procedure Why_Type_Decl_of_Full_Type_Decl
+      (File       : W_File_Id;
+       Ident_Node : Node_Id;
+       Def_Node   : Node_Id)
    is
-      Name     : constant Name_Id :=
-                   Chars (Defining_Identifier (Node));
+      Name     : constant Name_Id := Chars (Ident_Node);
       Name_Str : constant String := Get_Name_String (Name);
    begin
-      --  We case split on the type of the type declaration, and mostly use
-      --  the intelligent functions in other modules
-      case Nkind (Node) is
-         when N_Full_Type_Declaration =>
+      case Nkind (Def_Node) is
+         when N_Enumeration_Type_Definition =>
             declare
-               Def_Node : constant Node_Id := Type_Definition (Node);
+               Cursor       : Node_Or_Entity_Id :=
+                                Nlists.First (Literals (Def_Node));
+               Constructors : String_Lists.List :=
+                                String_Lists.Empty_List;
             begin
-               case Nkind (Def_Node) is
-               when N_Enumeration_Type_Definition =>
-                  declare
-                     Cursor       : Node_Or_Entity_Id :=
-                                      Nlists.First (Literals (Def_Node));
-                     Constructors : String_Lists.List :=
-                                      String_Lists.Empty_List;
-                  begin
-                     while Nkind (Cursor) /= N_Empty loop
-                        Constructors.Append (
-                          Get_Name_String (Chars (Cursor)));
-                        Cursor := Next (Cursor);
-                     end loop;
-                     Declare_Ada_Enum_Type (File, Name_Str, Constructors);
-                  end;
-
-               when N_Signed_Integer_Type_Definition =>
-                  Declare_Ada_Abstract_Signed_Int
-                    (File,
-                     Name_Str,
-                     Expr_Value (Low_Bound (Def_Node)),
-                     Expr_Value (High_Bound (Def_Node)));
-               when N_Floating_Point_Definition
-                  | N_Ordinary_Fixed_Point_Definition
-                  | N_Unconstrained_Array_Definition
-                  | N_Record_Definition
-                  =>
-                  --  ??? We do nothing here for now
-                  null;
-               when N_Constrained_Array_Definition =>
-                  declare
-                     Sc_Range       : constant Node_Id :=
-                        First (Discrete_Subtype_Definitions (Def_Node));
-                     Component_Type : constant String :=
-                        Get_Name_String
-                          (Chars (Subtype_Indication
-                             (Component_Definition (Def_Node))));
-                     Low            : constant Uint :=
-                        Expr_Value (Low_Bound (Sc_Range));
-                     High           : constant Uint :=
-                        Expr_Value (High_Bound (Sc_Range));
-                     Int_Name       : constant String :=
-                        Get_Name_String (Type_Of_Array_Index (Def_Node));
-                  begin
-                     Declare_Ada_Constrained_Array
-                        (File,
-                         Name_Str,
-                         Int_Name,
-                         Component_Type,
-                         Low,
-                         High);
-                  end;
-
-               when others =>
-                  raise Not_Implemented;
-               end case;
+               while Nkind (Cursor) /= N_Empty loop
+                  Constructors.Append (
+                    Get_Name_String (Chars (Cursor)));
+                  Cursor := Next (Cursor);
+               end loop;
+               Declare_Ada_Enum_Type (File, Name_Str, Constructors);
             end;
-         when N_Subtype_Declaration =>
+
+         when N_Signed_Integer_Type_Definition =>
+            Declare_Ada_Abstract_Signed_Int
+              (File,
+               Name_Str,
+               Expr_Value (Low_Bound (Def_Node)),
+               Expr_Value (High_Bound (Def_Node)));
+         when N_Floating_Point_Definition
+            | N_Ordinary_Fixed_Point_Definition
+            | N_Unconstrained_Array_Definition
+            | N_Record_Definition
+            =>
+            --  ??? We do nothing here for now
+            null;
+         when N_Constrained_Array_Definition =>
             declare
-               Sub_Ind : constant Node_Id := Subtype_Indication (Node);
+               Sc_Range       : constant Node_Id :=
+                  First (Discrete_Subtype_Definitions (Def_Node));
+               Component_Type : constant String :=
+                  Get_Name_String
+                    (Chars (Subtype_Indication
+                       (Component_Definition (Def_Node))));
+               Low            : constant Uint :=
+                  Expr_Value (Low_Bound (Sc_Range));
+               High           : constant Uint :=
+                  Expr_Value (High_Bound (Sc_Range));
+               Int_Name       : constant String :=
+                  Get_Name_String (Type_Of_Array_Index (Def_Node));
             begin
-               case Nkind (Sub_Ind) is
-               when N_Identifier =>
-                  declare
-                     Sc_Range   : constant Node_Id :=
-                        Scalar_Range (Defining_Identifier (Node));
-                     Low       : constant Uint :=
-                        Expr_Value (Low_Bound (Sc_Range));
-                     High       : constant Uint :=
-                        Expr_Value (High_Bound (Sc_Range));
-
-                  begin
-                     Declare_Ada_Abstract_Signed_Int
-                       (File,
-                        Name_Str,
-                        Low,
-                        High);
-                  end;
-               when N_Subtype_Indication =>
-                  case Nkind (Constraint (Sub_Ind)) is
-                  when N_Range_Constraint =>
-                     declare
-                        Sc_Range  : constant Node_Id :=
-                           Range_Expression (Constraint (Sub_Ind));
-                        Low       : constant Uint :=
-                           Expr_Value (Low_Bound (Sc_Range));
-                        High      : constant Uint :=
-                           Expr_Value (High_Bound (Sc_Range));
-                     begin
-                        Declare_Ada_Abstract_Signed_Int
-                          (File,
-                           Name_Str,
-                           Low,
-                           High);
-                     end;
-                  when N_Index_Or_Discriminant_Constraint =>
-                     --  ??? In at least one case (generated code for
-                     --  'Image of enums) we should not treat this case
-                     null;
-                  when others =>
-                     raise Not_Implemented;
-                  end case;
-               when others =>
-                  raise Not_Implemented;
-               end case;
+               Declare_Ada_Constrained_Array
+                  (File,
+                   Name_Str,
+                   Int_Name,
+                   Component_Type,
+                   Low,
+                   High);
             end;
-         --  ??? TBD Complete This code
+
          when others =>
             raise Not_Implemented;
       end case;
-   end Why_Type_Decl_of_Gnat_Type_Decl;
+   end Why_Type_Decl_of_Full_Type_Decl;
+
+   -----------------------------------
+   -- Why_Type_Decl_of_Subtype_Decl --
+   -----------------------------------
+
+   procedure Why_Type_Decl_of_Subtype_Decl
+      (File       : W_File_Id;
+       Ident_Node : Node_Id;
+       Sub_Ind    : Node_Id)
+   is
+      Name     : constant Name_Id := Chars (Ident_Node);
+      Name_Str : constant String := Get_Name_String (Name);
+   begin
+      case Nkind (Sub_Ind) is
+         when N_Identifier =>
+            declare
+               Sc_Range   : constant Node_Id :=
+                  Scalar_Range (Ident_Node);
+               Low       : constant Uint :=
+                  Expr_Value (Low_Bound (Sc_Range));
+               High       : constant Uint :=
+                  Expr_Value (High_Bound (Sc_Range));
+
+            begin
+               Declare_Ada_Abstract_Signed_Int
+                 (File,
+                  Name_Str,
+                  Low,
+                  High);
+            end;
+         when N_Subtype_Indication =>
+            case Nkind (Constraint (Sub_Ind)) is
+            when N_Range_Constraint =>
+               declare
+                  Sc_Range  : constant Node_Id :=
+                     Range_Expression (Constraint (Sub_Ind));
+                  Low       : constant Uint :=
+                     Expr_Value (Low_Bound (Sc_Range));
+                  High      : constant Uint :=
+                     Expr_Value (High_Bound (Sc_Range));
+               begin
+                  Declare_Ada_Abstract_Signed_Int
+                    (File,
+                     Name_Str,
+                     Low,
+                     High);
+               end;
+            when N_Index_Or_Discriminant_Constraint =>
+               --  ??? In at least one case (generated code for
+               --  'Image of enums) we should not treat this case
+               null;
+            when others =>
+               raise Not_Implemented;
+            end case;
+         when others =>
+            raise Not_Implemented;
+      end case;
+   end Why_Type_Decl_of_Subtype_Decl;
 
    -------------------------------
    -- Why_Prog_Type_of_Ada_Type --
