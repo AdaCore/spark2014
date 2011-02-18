@@ -25,56 +25,19 @@
 
 with Ada.Containers;     use Ada.Containers;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Types is
 
-   ---------------------------
-   -- Declare_Abstract_Type --
-   ---------------------------
+   -------------------------------
+   -- New_Enum_Type_Declaration --
+   -------------------------------
 
-   procedure Declare_Abstract_Type (File : W_File_Id; Name : String)
-   is
-   begin
-      File_Append_To_Declarations
-        (File,
-         New_Logic_Declaration
-           (Decl => New_Abstract_Type_Declaration (Name)));
-   end Declare_Abstract_Type;
-
-   -----------------------------------
-   -- New_Abstract_Type_Declaration --
-   -----------------------------------
-
-   function New_Abstract_Type_Declaration (Name : String) return W_Type_Id is
-      I : W_Identifier_Id;
-      T : W_Type_Id;
-   begin
-      I := New_Identifier (Name);
-      T := New_Type (Name => I);
-      return T;
-   end New_Abstract_Type_Declaration;
-
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
-
-   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id
-   is
-      I : constant W_Identifier_Id := New_Identifier (Name);
-      T : constant W_Abstract_Type_Id := New_Abstract_Type (Name => I);
-   begin
-      return T;
-   end New_Abstract_Type;
-
-   -----------------------
-   -- Declare_Enum_Type --
-   -----------------------
-
-   function New_Enum_Type_Declaration
-     (Name         : String;
-      Constructors : String_Lists.List) return W_Type_Id
+   procedure New_Enum_Type_Declaration
+     (File         : W_File_Id;
+      Name         : String;
+      Constructors : String_Lists.List)
    is
       use String_Lists;
 
@@ -85,7 +48,7 @@ package body Why.Gen.Types is
       Cnt     : Integer range 0 .. Integer (Len) := 0;
    begin
       if Len = 0 then
-         return New_Abstract_Type_Declaration (Name);
+         New_Abstract_Type (File, Name);
       else
          while Has_Element (Cursor) loop
             Cnt := Cnt + 1;
@@ -93,9 +56,10 @@ package body Why.Gen.Types is
               New_Constr_Decl (Name => New_Identifier (Element (Cursor)));
             Next (Cursor);
          end loop;
-         return New_Type
-           (Name => New_Identifier (Name),
-            Definition => New_Adt_Definition (Constructors => Constrs));
+         New_Adt_Definition
+           (File       => File,
+            Name       => New_Identifier (Name),
+            Constructors => Constrs);
       end if;
    end New_Enum_Type_Declaration;
 

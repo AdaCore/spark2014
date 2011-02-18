@@ -24,10 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 
 package body Why.Gen.Arrays is
@@ -50,30 +50,32 @@ package body Why.Gen.Arrays is
          Low,
          High);
 
-      Declare_Abstract_Type (File, Name);
+      New_Abstract_Type (File, Name);
 
       Declare_Logic
         (File => File,
          Name => Array_Access_Name (Name),
          Args =>
-            (1 => New_Abstract_Type (Int_Name),
-             2 => New_Abstract_Type (Name)),
-         Return_Type => New_Abstract_Type (Component));
+            (1 => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+             2 => New_Abstract_Type (Name => New_Identifier (Name))),
+         Return_Type =>
+            New_Abstract_Type (Name => New_Identifier (Component)));
 
       Declare_Logic
         (File => File,
          Name => Array_Update_Name (Name),
          Args =>
-            (1 => New_Abstract_Type (Int_Name),
-             2 => New_Abstract_Type (Name),
-             3 => New_Abstract_Type (Component)),
-         Return_Type => New_Abstract_Type (Name));
+            (1 => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+             2 => New_Abstract_Type (Name => New_Identifier (Name)),
+             3 => New_Abstract_Type (Name => New_Identifier (Component))),
+         Return_Type => New_Abstract_Type (Name => New_Identifier (Name)));
 
       Define_Array_Eq_Axiom
          (File => File,
           Type_Name => Name,
-          Index_Type => New_Abstract_Type (Int_Name),
-          Component_Type => New_Abstract_Type (Component));
+          Index_Type => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+          Component_Type =>
+            New_Abstract_Type (Name => New_Identifier (Component)));
    end Declare_Ada_Constrained_Array;
 
    ---------------------------

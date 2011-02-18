@@ -33,6 +33,14 @@ package Why.Gen.Decl is
    --  Overloaded procedures with a W_File_Id Argument add the built
    --  declaration to that context instead of returning it
 
+   procedure New_Abstract_Type (File : W_File_Id; Name : String);
+   procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id);
+
+   procedure New_Adt_Definition
+     (File : W_Type_Id;
+      Name : W_Identifier_Id;
+      Constructors : W_Constr_Decl_Array);
+
    procedure New_Axiom
       (File       : W_File_Id;
        Name       : W_Identifier_Id;

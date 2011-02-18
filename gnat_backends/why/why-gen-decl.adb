@@ -25,8 +25,51 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Decl is
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   procedure New_Abstract_Type (File : W_File_Id; Name : String)
+   is
+   begin
+      File_Append_To_Declarations
+        (File,
+         New_Logic_Declaration
+           (Decl => New_Type (Name => New_Identifier (Name))));
+   end New_Abstract_Type;
+
+   procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id)
+   is
+   begin
+      File_Append_To_Declarations
+        (File,
+         New_Logic_Declaration
+           (Decl => New_Type (Name => Name)));
+   end New_Abstract_Type;
+
+   ------------------------
+   -- New_Adt_Definition --
+   ------------------------
+
+   procedure New_Adt_Definition
+     (File : W_Type_Id;
+      Name : W_Identifier_Id;
+      Constructors : W_Constr_Decl_Array)
+   is
+   begin
+      File_Append_To_Declarations
+         (File,
+          New_Logic_Declaration
+            (Decl =>
+               New_Type
+                 (Name => Name,
+                  Definition =>
+                     New_Adt_Definition (Constructors => Constructors))));
+   end New_Adt_Definition;
 
    ---------------
    -- New_Axiom --
@@ -83,4 +126,5 @@ package body Why.Gen.Decl is
                   Binders => Binders,
                   Def     => Def)));
    end New_Predicate_Definition;
+
 end Why.Gen.Decl;

@@ -25,14 +25,12 @@
 
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Ints is
@@ -65,9 +63,8 @@ package body Why.Gen.Ints is
       First : Uint;
       Last  : Uint)
    is
-      T : constant W_Type_Id := New_Abstract_Type_Declaration (Name);
    begin
-      File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
+      New_Abstract_Type (File, Name);
       Declare_Allocator (File, Name);
       Define_Signed_Int_Conversions (File, Name, First, Last);
    end Declare_Ada_Abstract_Signed_Int;
@@ -91,13 +88,13 @@ package body Why.Gen.Ints is
       --  to int:
       Declare_Logic (File,
                      New_Conversion_To_Int (Name),
-                     (1 => New_Abstract_Type (Name)),
+                     (1 => New_Abstract_Type (Name => New_Identifier (Name))),
                      New_Type_Int);
 
       --  from int:
       declare
          Return_Type : constant W_Primitive_Type_Id :=
-                         New_Abstract_Type (Name);
+                         New_Abstract_Type (Name => New_Identifier (Name));
          Arrows      : W_Arrow_Type_Unchecked_Id :=
                          New_Arrow_Stack (Return_Type);
          --  precondition: { <name>___in_range (n) }
@@ -160,12 +157,12 @@ package body Why.Gen.Ints is
          Comp_Type :=
             New_Arrow_Type
               (Name => New_Identifier (Arg_S),
-               Left => New_Abstract_Type (Name),
+               Left => New_Abstract_Type (Name => New_Identifier (Name)),
                Right => Comp_Type);
          Comp_Type :=
             New_Arrow_Type
               (Name => New_Identifier (Arg_T),
-               Left => New_Abstract_Type (Name),
+               Left => New_Abstract_Type (Name => New_Identifier (Name)),
                Right => Comp_Type);
          Declare_Parameter
            (File => File,

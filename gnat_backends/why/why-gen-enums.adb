@@ -52,18 +52,6 @@ package body Why.Gen.Enums is
    --     | b -> 2
    --     | c -> 3
 
-   -----------------------------------
-   -- Declare_Abstract_Boolean_Type --
-   -----------------------------------
-
-   procedure Declare_Abstract_Boolean_Type (File : W_File_Id; Name : String)
-   is
-      T : constant W_Type_Id := New_Abstract_Type_Declaration (Name);
-      --  ??? Not fully implemented yet
-   begin
-      File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
-   end Declare_Abstract_Boolean_Type;
-
    ---------------------------------
    -- Define_Enum_To_Int_Function --
    ---------------------------------
@@ -89,7 +77,7 @@ package body Why.Gen.Enums is
         (Func,
          New_Logic_Binder
          (Name => New_Identifier (Arg_Name),
-          Param_Type => New_Abstract_Type (Name)));
+          Param_Type => New_Abstract_Type (Name => New_Identifier (Name))));
       Matching_Term_Set_Term (Match, New_Term (Arg_Name));
       while Has_Element (Cur) loop
          declare
@@ -127,14 +115,11 @@ package body Why.Gen.Enums is
       --  higher up in the chain
 
       if Name /= "boolean" then
-         File_Append_To_Declarations
-           (File,
-            New_Logic_Declaration
-            (Decl => New_Enum_Type_Declaration (Name, Constructors)));
+         New_Enum_Type_Declaration (File, Name, Constructors);
          Declare_Logic (File,
                         New_Conversion_From_Int (Name),
                         (1 => New_Type_Int),
-                        New_Abstract_Type (Name));
+                        New_Abstract_Type (Name => New_Identifier (Name)));
          Define_Range_Predicate
            (File,
             Name,
