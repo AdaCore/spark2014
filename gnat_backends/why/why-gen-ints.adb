@@ -86,10 +86,10 @@ package body Why.Gen.Ints is
       Define_Range_Predicate (File, Name, First, Last);
 
       --  to int:
-      Declare_Logic (File,
-                     New_Conversion_To_Int (Name),
-                     (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-                     New_Type_Int);
+      New_Logic (File,
+                 New_Conversion_To_Int (Name),
+                 (1 => New_Abstract_Type (Name => New_Identifier (Name))),
+                 New_Type_Int);
 
       --  from int:
       declare
@@ -180,7 +180,7 @@ package body Why.Gen.Ints is
    is
    begin
       for Rel_Symbol in W_Relation'Range loop
-         Declare_Logic
+         New_Logic
            (File => File,
             Name => New_Bool_Int_Cmp (Rel_Symbol),
             Args =>

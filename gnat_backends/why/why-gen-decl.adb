@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Names;      use Why.Gen.Names;
 
@@ -87,6 +86,33 @@ package body Why.Gen.Decl is
             (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
    end New_Axiom;
 
+   ------------------------
+   -- New_Global_Binding --
+   ------------------------
+
+   procedure New_Global_Binding
+      (File    : W_File_Id;
+       Name    : String;
+       Binders : W_Binder_Array;
+       Pre     : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred);
+       Def     : W_Prog_Id;
+       Post    : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred))
+   is
+   begin
+      File_Append_To_Declarations
+         (File,
+          New_Global_Binding
+          (Name => New_Identifier (Name),
+           Pre => New_Precondition (Assertion => Pre),
+           Binders => Binders,
+           Def =>
+             New_Post_Assertion
+               (Prog => Def,
+                Post => New_Postcondition (Assertion => Post))));
+   end New_Global_Binding;
+
    -----------------------------
    -- New_Include_Declaration --
    -----------------------------
@@ -104,6 +130,29 @@ package body Why.Gen.Decl is
              (Ada_Node => Ada_Node,
               Name     => Name));
    end New_Include_Declaration;
+
+   ---------------
+   -- New_Logic --
+   ---------------
+
+   procedure New_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Args        : W_Logic_Arg_Type_Array;
+      Return_Type : W_Logic_Return_Type_Id)
+   is
+   begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item =>
+           New_Logic_Declaration (Decl =>
+              New_Logic
+                (Names => (1 => Name),
+                 Logic_Type =>
+                   New_Logic_Type
+                     (Arg_Types   => Args,
+                      Return_Type => Return_Type))));
+   end New_Logic;
 
    ------------------------------
    -- New_Predicate_Definition --

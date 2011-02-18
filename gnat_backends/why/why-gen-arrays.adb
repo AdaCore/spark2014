@@ -25,7 +25,6 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
@@ -52,7 +51,7 @@ package body Why.Gen.Arrays is
 
       New_Abstract_Type (File, Name);
 
-      Declare_Logic
+      New_Logic
         (File => File,
          Name => Array_Access_Name (Name),
          Args =>
@@ -61,7 +60,7 @@ package body Why.Gen.Arrays is
          Return_Type =>
             New_Abstract_Type (Name => New_Identifier (Component)));
 
-      Declare_Logic
+      New_Logic
         (File => File,
          Name => Array_Update_Name (Name),
          Args =>

@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Types;   use Types;
+with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Decl is
@@ -47,12 +48,28 @@ package Why.Gen.Decl is
        Axiom_Body : W_Predicate_Id);
    --  Declare an axiom with the given name and the given body.
 
+   procedure New_Global_Binding
+      (File    : W_File_Id;
+       Name    : String;
+       Binders : W_Binder_Array;
+       Pre     : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred);
+       Def     : W_Prog_Id;
+       Post    : W_Assertion_Id
+                   := New_Assertion (Pred => New_True_Literal_Pred));
+
    procedure New_Include_Declaration
      (File : W_File_Id;
       Name : W_Identifier_Id;
       Ada_Node : Node_Id := Empty);
    --  Include declarations, of the form
    --    include "name.why"
+
+   procedure New_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Args        : W_Logic_Arg_Type_Array;
+      Return_Type : W_Logic_Return_Type_Id);
 
    procedure New_Predicate_Definition
      (File     : W_File_Id;

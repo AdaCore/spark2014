@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Ids;              use Why.Ids;
 with Why.Types;            use Why.Types;
@@ -48,16 +47,6 @@ package Why.Gen.Funcs is
    --  Representation of a list of argument types for a logic function,
    --  in an array; say, for an array (type1, type2), represents the
    --  arrow chain type1 -> type2.
-
-   procedure Declare_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Args        : Logic_Arg_Chain;
-      Return_Type : W_Logic_Return_Type_Id) with
-     Pre => (Is_Root (Name));
-   --  Create a logic declaration from Name and Args and append it tp
-   --  File. Name and all elements in the arg chain are inserted into the
-   --  resulting syntax tree.
 
    procedure Declare_Logic_And_Parameters
      (File   : W_File_Id;
@@ -139,17 +128,5 @@ package Why.Gen.Funcs is
    --  an abstract type of the given name. i.e.
    --
    --     parameter any___<name> : unit -> { } <name> { true }
-
-   procedure Declare_Global_Binding
-     (File    : W_File_Id;
-      Name    : String;
-      Binders : W_Binder_Array;
-      Pre     : W_Assertion_Id
-                  := New_Assertion (Pred => New_True_Literal_Pred);
-      Def     : W_Prog_Id;
-      Post    : W_Assertion_Id
-                  := New_Assertion (Pred => New_True_Literal_Pred));
-   --  declare a global function binding of the form:
-   --  let <name> <binders> = { <pre> } <def> {<post>}
 
 end Why.Gen.Funcs;

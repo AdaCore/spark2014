@@ -29,7 +29,7 @@ with Types;              use Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
-with Why.Gen.Funcs;      use Why.Gen.Funcs;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Types;      use Why.Gen.Types;
@@ -116,10 +116,10 @@ package body Why.Gen.Enums is
 
       if Name /= "boolean" then
          New_Enum_Type_Declaration (File, Name, Constructors);
-         Declare_Logic (File,
-                        New_Conversion_From_Int (Name),
-                        (1 => New_Type_Int),
-                        New_Abstract_Type (Name => New_Identifier (Name)));
+         New_Logic (File,
+                    New_Conversion_From_Int (Name),
+                    (1 => New_Type_Int),
+                    New_Abstract_Type (Name => New_Identifier (Name)));
          Define_Range_Predicate
            (File,
             Name,

@@ -42,6 +42,7 @@ with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Arrows;        use Why.Gen.Arrows;
+with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Funcs;         use Why.Gen.Funcs;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
@@ -652,7 +653,7 @@ package body Gnat2Why.Subprograms is
 
                --  There really is no difference between functions and
                --  procedures from the point of view of Why
-               Declare_Global_Binding
+               New_Global_Binding
                  (File    => File,
                   Name    =>
                     New_Definition_Name (Get_Name_String (Name)),
