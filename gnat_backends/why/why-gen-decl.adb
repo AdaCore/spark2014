@@ -23,8 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Decl is
 
@@ -153,6 +155,57 @@ package body Why.Gen.Decl is
                      (Arg_Types   => Args,
                       Return_Type => Return_Type))));
    end New_Logic;
+
+   -------------------
+   -- New_Parameter --
+   -------------------
+
+   procedure New_Parameter
+      (File        : W_File_Id;
+       Name        : W_Identifier_Id;
+       Binders     : W_Binder_Array;
+       Return_Type : W_Value_Type_Id;
+       Effects     : W_Effects_Id := New_Effects;
+       Pre         : W_Assertion_Id
+           := New_Assertion (Pred => New_True_Literal_Pred);
+       Post        : W_Assertion_Id
+           := New_Assertion (Pred => New_True_Literal_Pred))
+   is
+      Param_Type : W_Computation_Type_Id :=
+         New_Computation_Spec
+           (Return_Type   => Return_Type,
+            Effects       => Effects,
+            Precondition  => New_Precondition (Assertion => Pre),
+            Postcondition => New_Postcondition (Assertion => Post));
+   begin
+      for Index in Binders'Range loop
+         declare
+            use Node_Lists;
+
+            Cur_Binder : constant W_Binder_Id := Binders (Index);
+            Arg_Ty     : constant W_Simple_Value_Type_Id :=
+               Binder_Get_Arg_Type (Cur_Binder);
+            Names      : constant Node_Lists.List :=
+               Get_List (Binder_Get_Names (Cur_Binder));
+            Cur        : Node_Lists.Cursor := First (Names);
+         begin
+            while Has_Element (Cur) loop
+               Param_Type :=
+                  New_Arrow_Type
+                     (Name  => Duplicate_Any_Node (Id => Element (Cur)),
+                      Left  => Duplicate_Any_Node (Id => Arg_Ty),
+                      Right => Param_Type);
+               Node_Lists.Next (Cur);
+            end loop;
+         end;
+      end loop;
+      File_Append_To_Declarations
+        (Id       => File,
+         New_Item =>
+           New_Parameter_Declaration
+            (Names => (1 => Name),
+             Parameter_Type => Param_Type));
+   end New_Parameter;
 
    ------------------------------
    -- New_Predicate_Definition --

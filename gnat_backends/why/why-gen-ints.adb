@@ -139,35 +139,23 @@ package body Why.Gen.Ints is
             New_Conditional_Pred
               (Condition => New_Result_Identifier,
                Then_Part =>
-                 New_Related_Terms (Left => New_Term (Arg_S),
-                                    Right => New_Term (Arg_T),
-                                    Op => New_Rel_Eq),
+                 New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
                Else_Part =>
-                 New_Related_Terms (Left => New_Term (Arg_S),
-                                    Right => New_Term (Arg_T),
-                                    Op => New_Rel_Ne));
-         Comp_Type : W_Computation_Type_Id :=
-            New_Computation_Spec
-              (Return_Type => New_Type_Bool,
-               Effects => New_Effects,
-               Postcondition =>
-                 New_Postcondition
-                   (Assertion => New_Assertion (Pred => Post)));
+                 New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
       begin
-         Comp_Type :=
-            New_Arrow_Type
-              (Name => New_Identifier (Arg_S),
-               Left => New_Abstract_Type (Name => New_Identifier (Name)),
-               Right => Comp_Type);
-         Comp_Type :=
-            New_Arrow_Type
-              (Name => New_Identifier (Arg_T),
-               Left => New_Abstract_Type (Name => New_Identifier (Name)),
-               Right => Comp_Type);
-         Declare_Parameter
+         New_Parameter
            (File => File,
             Name => Eq_Param_Name (Name),
-            Arrows => Comp_Type);
+            Binders =>
+               (1 =>
+                  New_Binder
+                     (Names => (1 => New_Identifier (Arg_S),
+                                2 => New_Identifier (Arg_T)),
+                      Arg_Type =>
+                        New_Abstract_Type (Name => New_Identifier (Name)))),
+            Return_Type => New_Type_Bool,
+            Post        => New_Assertion (Pred => Post));
+
       end;
    end Define_Signed_Int_Conversions;
 
@@ -190,14 +178,13 @@ package body Why.Gen.Ints is
          declare
             X_S        : constant String := "x";
             Y_S        : constant String := "y";
-            Equal_Pred : constant W_Predicate_Id :=
-               New_Equal
-                 (Left  => New_Term (Name => X_S),
-                  Right => New_Term (Name => Y_S));
-            NEqual_Pred : constant W_Predicate_Id :=
-               New_NEqual
-                 (Left  => New_Term (Name => X_S),
-                  Right => New_Term (Name => Y_S));
+            True_Pred : constant W_Predicate_Id :=
+               New_Related_Terms
+                  (Left  => New_Term (X_S),
+                   Op    => New_Rel_Symbol (Rel_Symbol),
+                   Right => New_Term (Y_S));
+            False_Pred : constant W_Predicate_Id :=
+               New_Negation (Operand => Duplicate_Any_Node (Id => True_Pred));
             Axiom_Body : constant W_Predicate_Id :=
                New_Universal_Quantif
                  (Variables =>
@@ -212,8 +199,8 @@ package body Why.Gen.Ints is
                               Parameters =>
                                  (1 => New_Term (Name => X_S),
                                   2 => New_Term (Name => Y_S))),
-                         Then_Part => Equal_Pred,
-                         Else_Part => NEqual_Pred));
+                         Then_Part => True_Pred,
+                         Else_Part => False_Pred));
          begin
             New_Axiom
                (File => File,

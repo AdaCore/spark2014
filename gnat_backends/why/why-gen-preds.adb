@@ -226,6 +226,23 @@ package body Why.Gen.Preds is
       return Finalize_Binding_Chain (Bindings, Context);
    end New_Predicate_Body;
 
+   --------------------
+   -- New_Rel_Symbol --
+   --------------------
+
+   function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id
+   is
+   begin
+      case Symbol is
+         when W_Rel_Gt => return New_Rel_Gt;
+         when W_Rel_Lt => return New_Rel_Lt;
+         when W_Rel_Eq => return New_Rel_Eq;
+         when W_Rel_Ge => return New_Rel_Ge;
+         when W_Rel_Le => return New_Rel_Le;
+         when W_Rel_Ne => return New_Rel_Ne;
+      end case;
+   end New_Rel_Symbol;
+
    ----------------------------------
    -- New_Universal_Predicate_Body --
    ----------------------------------

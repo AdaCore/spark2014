@@ -25,6 +25,7 @@
 
 with Uintp;                use Uintp;
 with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 with Why.Atree.Properties; use Why.Atree.Properties;
 
@@ -62,6 +63,9 @@ package Why.Gen.Preds is
      (Left : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left <> Right"
+
+   function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id;
+   --  Return a fresh relation node, given a relation symbol
 
    type Binding_Pred_Chain is array (Positive range <>)
      of W_Binding_Pred_Unchecked_Id;

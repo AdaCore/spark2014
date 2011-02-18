@@ -71,6 +71,17 @@ package Why.Gen.Decl is
       Args        : W_Logic_Arg_Type_Array;
       Return_Type : W_Logic_Return_Type_Id);
 
+   procedure New_Parameter
+      (File        : W_File_Id;
+       Name        : W_Identifier_Id;
+       Binders     : W_Binder_Array;
+       Return_Type : W_Value_Type_Id;
+       Effects     : W_Effects_Id := New_Effects;
+       Pre         : W_Precondition_Id
+           := New_Assertion (Pred => New_True_Literal_Pred);
+       Post        : W_Postcondition_Id
+           := New_Assertion (Pred => New_True_Literal_Pred));
+
    procedure New_Predicate_Definition
      (File     : W_File_Id;
       Name     : W_Identifier_Id;
