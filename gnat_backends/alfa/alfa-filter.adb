@@ -26,6 +26,7 @@
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
 with Einfo;   use Einfo;
+with Lib.Xref;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
 with Nmake;   use Nmake;
@@ -76,11 +77,11 @@ package body ALFA.Filter is
       return Copy;
    end Copy_List;
 
-   --------------------
-   -- Filter_Package --
-   --------------------
+   -----------------------------
+   -- Filter_Compilation_Unit --
+   -----------------------------
 
-   procedure Filter_Package (N : Node_Id) is
+   procedure Filter_Compilation_Unit (N : Node_Id) is
       Type_List      : List;
       Var_List       : List;
       Subp_Spec_List : List;
@@ -149,7 +150,14 @@ package body ALFA.Filter is
                end if;
 
             when N_Object_Declaration =>
-               if Is_In_ALFA (Defining_Identifier (N)) then
+               --  Local variables introduced by the compiler should remain
+               --  local.
+
+               if (Comes_From_Source (Original_Node (N))
+                   or else Nkind_In (Parent (N), N_Package_Specification,
+                                     N_Package_Body))
+                 and then Is_In_ALFA (Defining_Identifier (N))
+               then
                   Var_List.Append (N);
                end if;
 
@@ -192,17 +200,25 @@ package body ALFA.Filter is
 
       Ent_Name     : Name_Id;
       Context_List : constant List_Id := New_List;
+      Spec_Unit    : Node_Id := Empty;
 
-   --  Start of processing for Filter_Package
+   --  Start of processing for Filter_Compilation_Unit
 
    begin
-      if Nkind (N) = N_Package_Body then
-         Ent_Name := Chars (Corresponding_Spec (N));
+      if Nkind (Unit (N)) = N_Package_Body then
+         Ent_Name  := Chars (Corresponding_Spec (Unit (N)));
+         Spec_Unit := Parent (Parent (Parent (Corresponding_Spec (Unit (N)))));
       else
-         Ent_Name := Chars (Defining_Unit_Name (Specification (N)));
+         Ent_Name := Chars (Defining_Unit_Name (Specification (Unit (N))));
       end if;
 
-      Traverse_Subtree (N, Bucket_Dispatch'Access);
+      if Present (Spec_Unit) then
+         Lib.Xref.ALFA.Traverse_Compilation_Unit
+           (Spec_Unit, Bucket_Dispatch'Unrestricted_Access);
+      end if;
+
+      Lib.Xref.ALFA.Traverse_Compilation_Unit
+        (N, Bucket_Dispatch'Unrestricted_Access);
 
       declare
          Types_P : Node_Id;
@@ -250,7 +266,7 @@ package body ALFA.Filter is
          Make_Compilation_Unit_From_Decl (Decl    => Defs_P,
                                           Context => Context_List);
       end;
-   end Filter_Package;
+   end Filter_Compilation_Unit;
 
    -------------------------------------
    -- Make_Compilation_Unit_From_Decl --

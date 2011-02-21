@@ -96,7 +96,7 @@ package body Gnat2Why.Driver is
       --  Start the translation to Why
 
       Translate_Standard_Package;
-      Filter_Package (Unit (GNAT_Root));
+      Filter_Compilation_Unit (GNAT_Root);
 
       for CU of ALFA_Compilation_Units loop
          Translate_CUnit (CU);
