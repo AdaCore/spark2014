@@ -91,26 +91,18 @@ package body Gnat2Why.Types is
             null;
          when N_Constrained_Array_Definition =>
             declare
-               Sc_Range       : constant Node_Id :=
-                  First (Discrete_Subtype_Definitions (Def_Node));
                Component_Type : constant String :=
                   Get_Name_String
                     (Chars (Subtype_Indication
                        (Component_Definition (Def_Node))));
-               Low            : constant Uint :=
-                  Expr_Value (Low_Bound (Sc_Range));
-               High           : constant Uint :=
-                  Expr_Value (High_Bound (Sc_Range));
-               Int_Name       : constant String :=
+               Index          : constant String :=
                   Get_Name_String (Type_Of_Array_Index (Def_Node));
             begin
                Declare_Ada_Constrained_Array
                   (File,
                    Name_Str,
-                   Int_Name,
-                   Component_Type,
-                   Low,
-                   High);
+                   Index,
+                   Component_Type);
             end;
 
          when others =>

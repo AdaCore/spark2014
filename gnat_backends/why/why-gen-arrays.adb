@@ -25,7 +25,6 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 
@@ -38,24 +37,17 @@ package body Why.Gen.Arrays is
    procedure Declare_Ada_Constrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Int_Name  : String;
-      Component : String;
-      Low       : Uint;
-      High      : Uint) is
+      Index     : String;
+      Component : String)
+   is
    begin
-      Declare_Ada_Abstract_Signed_Int
-        (File,
-         Int_Name,
-         Low,
-         High);
-
       New_Abstract_Type (File, Name);
 
       New_Logic
         (File => File,
          Name => Array_Access_Name (Name),
          Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+            (1 => New_Abstract_Type (Name => New_Identifier (Index)),
              2 => New_Abstract_Type (Name => New_Identifier (Name))),
          Return_Type =>
             New_Abstract_Type (Name => New_Identifier (Component)));
@@ -64,7 +56,7 @@ package body Why.Gen.Arrays is
         (File => File,
          Name => Array_Update_Name (Name),
          Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+            (1 => New_Abstract_Type (Name => New_Identifier (Index)),
              2 => New_Abstract_Type (Name => New_Identifier (Name)),
              3 => New_Abstract_Type (Name => New_Identifier (Component))),
          Return_Type => New_Abstract_Type (Name => New_Identifier (Name)));
@@ -72,7 +64,7 @@ package body Why.Gen.Arrays is
       Define_Array_Eq_Axiom
          (File => File,
           Type_Name => Name,
-          Index_Type => New_Abstract_Type (Name => New_Identifier (Int_Name)),
+          Index_Type => New_Abstract_Type (Name => New_Identifier (Index)),
           Component_Type =>
             New_Abstract_Type (Name => New_Identifier (Component)));
    end Declare_Ada_Constrained_Array;
