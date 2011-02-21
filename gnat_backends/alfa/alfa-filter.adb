@@ -92,6 +92,10 @@ package body ALFA.Filter is
       --  ??? TBD Also, introduce explicit type declarations for anonymous
       --  types.
 
+      procedure Transform_Subtype_Indication (N : Node_Id);
+      --  Generate a type definition that corresponds to the given subtype
+      --  indication.
+
       procedure Bucket_Dispatch (N : Node_Id)
       is
       begin
@@ -115,6 +119,32 @@ package body ALFA.Filter is
             when N_Subtype_Declaration   |
                  N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
+                  declare
+                     Def : constant Node_Id := Type_Definition (N);
+                  begin
+                  --  We need to check for anonymous types and subtypes here
+                     case Nkind (Def) is
+                        when N_Unconstrained_Array_Definition =>
+                           --  only check for the component type
+                           Transform_Subtype_Indication
+                             (Subtype_Indication (Component_Definition (Def)));
+                        when N_Constrained_Array_Definition =>
+                           declare
+                              Cur_Indexed : Node_Id :=
+                                 First (Discrete_Subtype_Definitions (Def));
+                           begin
+                              while Nkind (Cur_Indexed) /= N_Empty loop
+                                 Transform_Subtype_Indication (Cur_Indexed);
+                                 Next (Cur_Indexed);
+                              end loop;
+                              Transform_Subtype_Indication
+                                (Subtype_Indication
+                                   (Component_Definition (Def)));
+                           end;
+                        when others =>
+                           null;
+                     end case;
+                  end;
                   Type_List.Append (N);
                end if;
 
@@ -129,6 +159,36 @@ package body ALFA.Filter is
          end case;
 
       end Bucket_Dispatch;
+
+      procedure Transform_Subtype_Indication (N : Node_Id)
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier =>
+               --  The type is already a simple name, do nothing
+               null;
+            when N_Subtype_Indication =>
+               declare
+                  --  assume an integer subtype for now
+                  --  Rng     : constant Node_Id :=
+                  --     Range_Expression (Constraint (N));
+                  --  New_Def : constant Node_Id :=
+                  --     Make_Signed_Integer_Type_Definition
+                  --       (Sloc => Sloc (N),
+                  --        Low_Bound => Low_Bound (Rng),
+                  --        High_Bound => Low_Bound (Rng));
+               begin
+                  Type_List.Append
+                    (Make_Subtype_Declaration
+                       (Sloc (N),
+                        New_Copy (Etype (N)),
+                        False,
+                        New_Copy (N)));
+               end;
+            when others =>
+               null;
+         end case;
+      end Transform_Subtype_Indication;
 
       Ent_Name     : Name_Id;
       Context_List : constant List_Id := New_List;

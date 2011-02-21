@@ -172,7 +172,7 @@ package body Gnat2Why.Types is
                raise Not_Implemented;
             end case;
          when others =>
-            raise Not_Implemented;
+            raise Unexpected_Node;
       end case;
    end Why_Type_Decl_of_Subtype_Decl;
 
