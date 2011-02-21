@@ -30,11 +30,6 @@ package Why.Gen.Enums is
 
    --  This package provides ways to declare enumeration types
 
-   procedure Declare_Abstract_Boolean_Type (File : W_File_Id; Name : String);
-   --  This creates a new boolean type with the given name; it generates
-   --  an abstract type for it, conversions from/to int and from/to bool
-   --  and the corresponding axioms.
-
    procedure Declare_Ada_Enum_Type
      (File         : W_File_Id;
       Name         : String;

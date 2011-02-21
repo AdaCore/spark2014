@@ -46,18 +46,10 @@ package Why.Gen.Types is
 
    --  This package provides ways to create Why types
 
-   procedure Declare_Abstract_Type (File : W_File_Id; Name : String);
-   --  Add an abstract type declaration to a file.
-
-   function New_Abstract_Type (Name : String) return W_Abstract_Type_Id;
-   --  Create an abstract type identifier with name Name
-
-   function New_Abstract_Type_Declaration (Name : String) return W_Type_Id;
-   --  Create the declaration of an abstract type whose name is Name
-
-   function New_Enum_Type_Declaration (
+   procedure New_Enum_Type_Declaration
+     (File         : W_File_Id;
       Name         : String;
-      Constructors : String_Lists.List) return W_Type_Id;
+      Constructors : String_Lists.List);
    --  Create the declaration of an enumeration type with name [Name] and list
    --  of constructors [Constructors]. The constructors do not have arguments.
    --  In the case of an empty constructor list, generate an abstract type.

@@ -26,6 +26,7 @@
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
 with Einfo;   use Einfo;
+with Lib.Xref;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
 with Nmake;   use Nmake;
@@ -76,25 +77,28 @@ package body ALFA.Filter is
       return Copy;
    end Copy_List;
 
-   --------------------
-   -- Filter_Package --
-   --------------------
+   -----------------------------
+   -- Filter_Compilation_Unit --
+   -----------------------------
 
-   procedure Filter_Package (N : Node_Id) is
+   procedure Filter_Compilation_Unit (N : Node_Id) is
       Type_List      : List;
       Var_List       : List;
       Subp_Spec_List : List;
       Subp_Def_List  : List;
 
-      procedure Get_Subprograms (N : Node_Id);
-      procedure Get_Types (N : Node_Id);
-      procedure Get_Variables (N : Node_Id);
+      procedure Bucket_Dispatch (N : Node_Id);
+      --  If the Node belongs to the ALFA language, put it in one of the
+      --  corresponding buckets (types, variables, subprograms).
+      --  ??? TBD Also, introduce explicit type declarations for anonymous
+      --  types.
 
-      ---------------------
-      -- Get_Subprograms --
-      ---------------------
+      procedure Transform_Subtype_Indication (N : Node_Id);
+      --  Generate a type definition that corresponds to the given subtype
+      --  indication.
 
-      procedure Get_Subprograms (N : Node_Id) is
+      procedure Bucket_Dispatch (N : Node_Id)
+      is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
@@ -113,61 +117,112 @@ package body ALFA.Filter is
                   Subp_Def_List.Append (N);
                end if;
 
-            when others =>
-               null;
-         end case;
-      end Get_Subprograms;
+            when N_Full_Type_Declaration =>
+               if Is_In_ALFA (Defining_Identifier (N)) then
+                  declare
+                     Def : constant Node_Id := Type_Definition (N);
+                  begin
+                  --  We need to check for anonymous types and subtypes here
+                     case Nkind (Def) is
+                        when N_Unconstrained_Array_Definition =>
+                           --  only check for the component type
+                           Transform_Subtype_Indication
+                             (Subtype_Indication (Component_Definition (Def)));
+                        when N_Constrained_Array_Definition =>
+                           declare
+                              Cur_Indexed : Node_Id :=
+                                 First (Discrete_Subtype_Definitions (Def));
+                           begin
+                              while Nkind (Cur_Indexed) /= N_Empty loop
+                                 Transform_Subtype_Indication (Cur_Indexed);
+                                 Next (Cur_Indexed);
+                              end loop;
+                              Transform_Subtype_Indication
+                                (Subtype_Indication
+                                   (Component_Definition (Def)));
+                           end;
+                        when others =>
+                           null;
+                     end case;
+                  end;
+                  Type_List.Append (N);
+               end if;
 
-      ---------------
-      -- Get_Types --
-      ---------------
-
-      procedure Get_Types (N : Node_Id) is
-      begin
-         case Nkind (N) is
-            when N_Subtype_Declaration   |
-                 N_Full_Type_Declaration =>
+            when N_Subtype_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
                   Type_List.Append (N);
                end if;
 
-            when others =>
-               null;
-         end case;
-      end Get_Types;
-
-      -------------------
-      -- Get_Variables --
-      -------------------
-
-      procedure Get_Variables (N : Node_Id) is
-      begin
-         case Nkind (N) is
             when N_Object_Declaration =>
-               if Is_In_ALFA (Defining_Identifier (N)) then
+               --  Local variables introduced by the compiler should remain
+               --  local.
+
+               if (Comes_From_Source (Original_Node (N))
+                   or else Nkind_In (Parent (N), N_Package_Specification,
+                                     N_Package_Body))
+                 and then Is_In_ALFA (Defining_Identifier (N))
+               then
                   Var_List.Append (N);
                end if;
 
             when others =>
                null;
+
          end case;
-      end Get_Variables;
+
+      end Bucket_Dispatch;
+
+      procedure Transform_Subtype_Indication (N : Node_Id)
+      is
+      begin
+         case Nkind (N) is
+            when N_Identifier =>
+               --  The type is already a simple name, do nothing
+               null;
+            when N_Subtype_Indication | N_Range =>
+               declare
+                  --  assume an integer subtype for now
+                  --  Rng     : constant Node_Id :=
+                  --     Range_Expression (Constraint (N));
+                  --  New_Def : constant Node_Id :=
+                  --     Make_Signed_Integer_Type_Definition
+                  --       (Sloc => Sloc (N),
+                  --        Low_Bound => Low_Bound (Rng),
+                  --        High_Bound => Low_Bound (Rng));
+               begin
+                  Type_List.Append
+                    (Make_Subtype_Declaration
+                       (Sloc (N),
+                        New_Copy (Etype (N)),
+                        False,
+                        New_Copy (N)));
+               end;
+            when others =>
+               null;
+         end case;
+      end Transform_Subtype_Indication;
 
       Ent_Name     : Name_Id;
       Context_List : constant List_Id := New_List;
+      Spec_Unit    : Node_Id := Empty;
 
-   --  Start of processing for Filter_Package
+   --  Start of processing for Filter_Compilation_Unit
 
    begin
-      if Nkind (N) = N_Package_Body then
-         Ent_Name := Chars (Corresponding_Spec (N));
+      if Nkind (Unit (N)) = N_Package_Body then
+         Ent_Name  := Chars (Corresponding_Spec (Unit (N)));
+         Spec_Unit := Parent (Parent (Parent (Corresponding_Spec (Unit (N)))));
       else
-         Ent_Name := Chars (Defining_Unit_Name (Specification (N)));
+         Ent_Name := Chars (Defining_Unit_Name (Specification (Unit (N))));
       end if;
 
-      Traverse_Subtree (N, Get_Types'Access);
-      Traverse_Subtree (N, Get_Variables'Access);
-      Traverse_Subtree (N, Get_Subprograms'Access);
+      if Present (Spec_Unit) then
+         Lib.Xref.ALFA.Traverse_Compilation_Unit
+           (Spec_Unit, Bucket_Dispatch'Unrestricted_Access);
+      end if;
+
+      Lib.Xref.ALFA.Traverse_Compilation_Unit
+        (N, Bucket_Dispatch'Unrestricted_Access);
 
       declare
          Types_P : Node_Id;
@@ -215,7 +270,7 @@ package body ALFA.Filter is
          Make_Compilation_Unit_From_Decl (Decl    => Defs_P,
                                           Context => Context_List);
       end;
-   end Filter_Package;
+   end Filter_Compilation_Unit;
 
    -------------------------------------
    -- Make_Compilation_Unit_From_Decl --

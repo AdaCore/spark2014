@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                   Copyright (C) 2010-2011, AdaCore                       --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,13 +26,15 @@
 with Why.Types;            use Why.Types;
 with Why.Ids;              use Why.Ids;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
+with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Properties; use Why.Atree.Properties;
 
 package Why.Gen.Arrows is
    --  This package provides ways to create arrow types
 
    function New_Arrow_Stack
-     (Return_Type : W_Primitive_Type_Id)
+     (Return_Type : W_Primitive_Type_Id;
+      Effects     : W_Effects_Id := New_Effects)
      return W_Arrow_Type_Unchecked_Id with
      Pre => (Is_Root (Return_Type));
    --  This creates an invalid arrow type where only the return type

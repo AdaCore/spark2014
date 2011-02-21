@@ -41,13 +41,73 @@ def concat(file1, file2, out):
    shutil.copyfileobj(open(file2, 'rb'), destination)
    destination.close()
 
+def read_dict_from_file(fn):
+    """Fill a dictionary with keys from a file of the form
+    key1 = val1
+    key2 = val2
+
+    PARAMETERS
+        fn - input file name
+    """
+    keymap = {}
+    for line in open(fn):
+        ls = str.split(line, "=",1)
+        if len(ls) > 1:
+            key = str.strip(ls[0])
+            val = str.strip(ls[1],"\"\n ")
+            keymap[key] = val
+        else:
+            # only set po_name once
+            if not keymap.has_key("po_name"):
+                name = str.strip(line, "[] \n")
+                keymap["po_name"] = name
+    return keymap
+
+
+def parse_altergo_result(output):
+    """Transform the string, supposed to be an output of Alt-Ergo,
+       into a list of booleans encoding success or failure of the VCs
+
+    PARAMETERS
+        output: the output of Alt-Ergo as string
+    RETURNS
+        a list of booleans
+    """
+    res = re.compile(".*:([^ ]*) *\(.*")
+    status = []
+    for line in str.splitlines(output):
+        m = re.search(res, line)
+        if m:
+            s = m.group(1)
+            status.append(s == "Valid")
+        else:
+            status.append(False)
+    return status
+
+def gcc(src, opt=None):
+    """Invoke gcc
+
+    PARAMETERS
+      src: source file to process
+      opt: additional options to pass to gcc
+    """
+    cmd = ["gcc", "-c"]
+    cmd += to_list(opt)
+    cmd += [src]
+    process = Run(cmd)
+    if process.status:
+        print process.out
+
 def gnat2why(src, opt=None):
     """Invoke gnat2why
 
     PARAMETERS
       src: source file to process
       opt: additional options to pass to gnat2why
+
+    First call gcc on source file to produce ALI file.
     """
+    gcc(src, opt=["-gnat2012", "-gnata", "-gnatd.F", "-gnatc"])
     cmd = ["gnat2why",
            "-I" + get_path_to_adainclude()]
     cmd += to_list(opt)
@@ -84,24 +144,26 @@ def altergo(src, opt=None, verbose=True):
     process = Run(cmd)
     # Remove Filename, linenumber and time of proof, just keep status
     res = re.compile(".*:([^ ]*) *\(.*")
-    status = []
-    for line in str.splitlines(process.out):
-        m = re.search(res, line)
-        if m:
-            s = m.group(1)
-            if verbose:
-                print s
-            status.append(s == "Valid")
-        else:
-            if verbose:
-                print line
-            status.append(False)
-    if process.status:
-        # ??? We assume that a timeout happened
-        if verbose:
-            print "Timeout"
-        status.append(False)
+    status = parse_altergo_result (process.out)
+    if verbose:
+        for b in status:
+            if b:
+                print "Valid"
+            else:
+                print "Failure"
     return status
+
+def gnatprove(opt=["-P", "test.gpr", "-v"]):
+    """Invoke gnatprove
+
+    PARAMETERS
+    opt: options to give to gnatprove
+    """
+    cmd = ["gnatprove"]
+    cmd += to_list(opt)
+    process = Run(cmd)
+    if process.status:
+        print process.out
 
 def prove(src):
     """Prove all obligations from an Ada file
@@ -113,10 +175,9 @@ def prove(src):
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
-    gnat2why(src, opt=["-gnat2012", "-gnata"])
-    base, ext = os.path.splitext(src)
-    why(base+".why", opt=["--multi-why", "--locs", base+".loc", "--explain"])
+    gnatprove()
     result = {}
+    base, ext = os.path.splitext(src)
     for vc in open(base+".labels"):
         vc = str.strip(vc,"\n ")
         result[vc] = { 'valid' : [] , 'invalid': [] }
@@ -127,9 +188,9 @@ def prove(src):
             print "missing label name:", curname
             return
         basename, ext = os.path.splitext(f)
-        vc_fn = basename + ".why"
-        concat(base+"_ctx.why", vc_fn, base+"_cur.why")
-        if altergo(base+"_cur.why",verbose=False)[0]:
+        vc_result = basename + ".rgo"
+        file_object = open(vc_result,"r")
+        if parse_altergo_result(file_object.read())[0]:
             cur_result = 'valid'
         else:
             cur_result = 'invalid'
@@ -138,28 +199,6 @@ def prove(src):
         dic['valid'].sort()
         dic['invalid'].sort()
     print(json.dumps(result, sort_keys = True,indent=4))
-
-def read_dict_from_file(fn):
-    """Fill a dictionary with keys from a file of the form
-    key1 = val1
-    key2 = val2
-
-    PARAMETERS
-        fn - input file name
-    """
-    keymap = {}
-    for line in open(fn):
-        ls = str.split(line, "=",1)
-        if len(ls) > 1:
-            key = str.strip(ls[0])
-            val = str.strip(ls[1],"\"\n ")
-            keymap[key] = val
-        else:
-            # only set po_name once
-            if not keymap.has_key("po_name"):
-                name = str.strip(line, "[] \n")
-                keymap["po_name"] = name
-    return keymap
 
 def to_list(arg):
     """Convert to list

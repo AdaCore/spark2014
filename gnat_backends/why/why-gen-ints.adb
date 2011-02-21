@@ -25,13 +25,12 @@
 
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Types;      use Why.Gen.Types;
 with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Ints is
@@ -64,9 +63,8 @@ package body Why.Gen.Ints is
       First : Uint;
       Last  : Uint)
    is
-      T : constant W_Type_Id := New_Abstract_Type_Declaration (Name);
    begin
-      File_Append_To_Declarations (File, New_Logic_Declaration (Decl => T));
+      New_Abstract_Type (File, Name);
       Declare_Allocator (File, Name);
       Define_Signed_Int_Conversions (File, Name, First, Last);
    end Declare_Ada_Abstract_Signed_Int;
@@ -88,15 +86,15 @@ package body Why.Gen.Ints is
       Define_Range_Predicate (File, Name, First, Last);
 
       --  to int:
-      Declare_Logic (File,
-                     New_Conversion_To_Int (Name),
-                     (1 => New_Abstract_Type (Name)),
-                     New_Type_Int);
+      New_Logic (File,
+                 New_Conversion_To_Int (Name),
+                 (1 => New_Abstract_Type (Name => New_Identifier (Name))),
+                 New_Type_Int);
 
       --  from int:
       declare
          Return_Type : constant W_Primitive_Type_Id :=
-                         New_Abstract_Type (Name);
+                         New_Abstract_Type (Name => New_Identifier (Name));
          Arrows      : W_Arrow_Type_Unchecked_Id :=
                          New_Arrow_Stack (Return_Type);
          --  precondition: { <name>___in_range (n) }
@@ -141,35 +139,23 @@ package body Why.Gen.Ints is
             New_Conditional_Pred
               (Condition => New_Result_Identifier,
                Then_Part =>
-                 New_Related_Terms (Left => New_Term (Arg_S),
-                                    Right => New_Term (Arg_T),
-                                    Op => New_Rel_Eq),
+                 New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
                Else_Part =>
-                 New_Related_Terms (Left => New_Term (Arg_S),
-                                    Right => New_Term (Arg_T),
-                                    Op => New_Rel_Ne));
-         Comp_Type : W_Computation_Type_Id :=
-            New_Computation_Spec
-              (Return_Type => New_Type_Bool,
-               Effects => New_Effects,
-               Postcondition =>
-                 New_Postcondition
-                   (Assertion => New_Assertion (Pred => Post)));
+                 New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
       begin
-         Comp_Type :=
-            New_Arrow_Type
-              (Name => New_Identifier (Arg_S),
-               Left => New_Abstract_Type (Name),
-               Right => Comp_Type);
-         Comp_Type :=
-            New_Arrow_Type
-              (Name => New_Identifier (Arg_T),
-               Left => New_Abstract_Type (Name),
-               Right => Comp_Type);
-         Declare_Parameter
+         New_Parameter
            (File => File,
             Name => Eq_Param_Name (Name),
-            Arrows => Comp_Type);
+            Binders =>
+               (1 =>
+                  New_Binder
+                     (Names => (1 => New_Identifier (Arg_S),
+                                2 => New_Identifier (Arg_T)),
+                      Arg_Type =>
+                        New_Abstract_Type (Name => New_Identifier (Name)))),
+            Return_Type => New_Type_Bool,
+            Post        => New_Assertion (Pred => Post));
+
       end;
    end Define_Signed_Int_Conversions;
 
@@ -182,7 +168,7 @@ package body Why.Gen.Ints is
    is
    begin
       for Rel_Symbol in W_Relation'Range loop
-         Declare_Logic
+         New_Logic
            (File => File,
             Name => New_Bool_Int_Cmp (Rel_Symbol),
             Args =>
@@ -192,14 +178,13 @@ package body Why.Gen.Ints is
          declare
             X_S        : constant String := "x";
             Y_S        : constant String := "y";
-            Equal_Pred : constant W_Predicate_Id :=
-               New_Equal
-                 (Left  => New_Term (Name => X_S),
-                  Right => New_Term (Name => Y_S));
-            NEqual_Pred : constant W_Predicate_Id :=
-               New_NEqual
-                 (Left  => New_Term (Name => X_S),
-                  Right => New_Term (Name => Y_S));
+            True_Pred : constant W_Predicate_Id :=
+               New_Related_Terms
+                  (Left  => New_Term (X_S),
+                   Op    => New_Rel_Symbol (Rel_Symbol),
+                   Right => New_Term (Y_S));
+            False_Pred : constant W_Predicate_Id :=
+               New_Negation (Operand => Duplicate_Any_Node (Id => True_Pred));
             Axiom_Body : constant W_Predicate_Id :=
                New_Universal_Quantif
                  (Variables =>
@@ -214,10 +199,10 @@ package body Why.Gen.Ints is
                               Parameters =>
                                  (1 => New_Term (Name => X_S),
                                   2 => New_Term (Name => Y_S))),
-                         Then_Part => Equal_Pred,
-                         Else_Part => NEqual_Pred));
+                         Then_Part => True_Pred,
+                         Else_Part => False_Pred));
          begin
-            Declare_Axiom
+            New_Axiom
                (File => File,
                 Name => New_Bool_Int_Axiom (Rel_Symbol),
                 Axiom_Body => Axiom_Body);

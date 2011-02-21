@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;        use Uintp;
 with Why.Ids;      use Why.Ids;
 
 package Why.Gen.Arrays is
@@ -38,13 +37,11 @@ package Why.Gen.Arrays is
    procedure Declare_Ada_Constrained_Array
      (File      : W_File_Id;
       Name      : String;
-      Int_Name  : String;
-      Component : String;
-      Low       : Uint;
-      High      : Uint);
+      Index     : String;
+      Component : String);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
-   --  type A is Array (low..high) of Component
+   --  type A is Array (index) of Component
 
    function New_Array_Access_Prog
       (Type_Name : String;

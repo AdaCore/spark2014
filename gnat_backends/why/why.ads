@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,5 +30,15 @@ package Why is
    --  tree of a Why program and to generate some Why code out of it.
 
    Not_Implemented : exception;
+   --  Use this exception for cases where an implementation is intended, but
+   --  not done yet
+
+   Not_Alfa        : exception;
+   --  Use this exception for cases that are outside the subset defined by
+   --  ALFA
+
+   Unexpected_Node  : exception;
+   --  Use this exception for cases that are not expected at this place in the
+   --  Ada AST
 
 end Why;

@@ -27,27 +27,11 @@ with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
+with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Types;      use Why.Gen.Types;
 
 package body Why.Gen.Axioms is
-
-   -------------------
-   -- Declare_Axiom --
-   -------------------
-
-   procedure Declare_Axiom
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Axiom_Body : W_Predicate_Id)
-   is
-   begin
-      File_Append_To_Declarations
-        (File,
-         New_Logic_Declaration
-            (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
-   end Declare_Axiom;
 
    ---------------------------
    -- Define_Array_Eq_Axiom --
@@ -80,7 +64,8 @@ package body Why.Gen.Axioms is
       Quantified_Body : constant W_Predicate_Id :=
          New_Universal_Quantif
             (Variables => (1 => New_Identifier (Ar_Name)),
-             Var_Type => New_Abstract_Type (Name => Type_Name),
+             Var_Type =>
+               New_Abstract_Type (Name => New_Identifier (Type_Name)),
              Pred =>
                New_Universal_Quantif
                  (Variables => (1 => New_Identifier (Index_Name)),
@@ -91,7 +76,7 @@ package body Why.Gen.Axioms is
                         Var_Type => Component_Type,
                         Pred => Axiom_Body)));
    begin
-      Declare_Axiom
+      New_Axiom
          (File       => File,
           Name       => Array_Accupd_Eq_Axiom (Type_Name),
           Axiom_Body => Quantified_Body);
@@ -140,7 +125,7 @@ package body Why.Gen.Axioms is
       Universal_Quantif_Append_To_Variables (Quantif_On_X,
                                              New_Identifier (Arg_S));
 
-      Declare_Axiom
+      New_Axiom
         (File       => File,
          Name       => Coerce_Axiom (Type_Name),
          Axiom_Body =>
@@ -170,12 +155,14 @@ package body Why.Gen.Axioms is
       Operation_Set_Name (Formula, Range_Pred_Name (Type_Name));
       Operation_Append_To_Parameters (Formula, Call_To_Conversion);
 
-      Universal_Quantif_Set_Var_Type (Quantif_On_X,
-                                      New_Abstract_Type (Name => Type_Name));
-      Universal_Quantif_Append_To_Variables (Quantif_On_X,
-                                             New_Identifier (Arg_S));
+      Universal_Quantif_Set_Var_Type
+        (Quantif_On_X,
+         New_Abstract_Type (Name => Type_Name));
+      Universal_Quantif_Append_To_Variables
+        (Quantif_On_X,
+         New_Identifier (Arg_S));
 
-      Declare_Axiom
+      New_Axiom
         (File       => File,
          Name       => Range_Axiom (Type_Name),
          Axiom_Body =>
@@ -219,14 +206,15 @@ package body Why.Gen.Axioms is
                                                 Op    => New_Rel_Eq,
                                                 Right => New_Term (Y_S)));
 
-      Universal_Quantif_Set_Var_Type (Quantif_On_XY,
-                                      New_Abstract_Type (Name => Type_Name));
+      Universal_Quantif_Set_Var_Type
+        (Quantif_On_XY,
+         New_Abstract_Type (Name => Type_Name));
       Universal_Quantif_Append_To_Variables (Quantif_On_XY,
                                              New_Identifier (X_S));
       Universal_Quantif_Append_To_Variables (Quantif_On_XY,
                                              New_Identifier (Y_S));
 
-      Declare_Axiom
+      New_Axiom
         (File       => File,
          Name       => Unicity_Axiom (Type_Name),
          Axiom_Body =>

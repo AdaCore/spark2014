@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                   Copyright (C) 2010-2011, AdaCore                       --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -54,12 +53,13 @@ package body Why.Gen.Arrows is
    ---------------------
 
    function New_Arrow_Stack
-     (Return_Type : W_Primitive_Type_Id)
+     (Return_Type : W_Primitive_Type_Id;
+      Effects     : W_Effects_Id := New_Effects)
      return W_Arrow_Type_Unchecked_Id
    is
       Contract : constant W_Computation_Spec_Id :=
                    New_Computation_Spec (Return_Type => Return_Type,
-                                         Effects => New_Effects);
+                                         Effects => Effects);
       Result   : constant W_Arrow_Type_Unchecked_Id :=
                    New_Unchecked_Arrow_Type;
    begin

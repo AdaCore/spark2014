@@ -28,19 +28,22 @@ with Atree;                use Atree;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
+with Osint.C;               use Osint.C;
 with Outputs;              use Outputs;
 with Sinfo;                use Sinfo;
 with Stand;                use Stand;
 with Switch;               use Switch;
 
-with ALFA.Filter;          use ALFA.Filter;
+with ALFA.Filter;           use ALFA.Filter;
+with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
-with Why.Gen.Ints;        use Why.Gen.Ints;
+with Why.Gen.Decl;         use Why.Gen.Decl;
+with Why.Gen.Ints;         use Why.Gen.Ints;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Ids;              use Why.Ids;
 
@@ -67,22 +70,33 @@ package body Gnat2Why.Driver is
    procedure Translate_Standard_Package;
    --  Translate the Ada Standard package
 
-   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id);
-   --  Translate a node N corresponding to a with clause into a Why include
-
    -----------------
    -- GNAT_To_Why --
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
+      Name : File_Name_Type;
+      Text : Text_Buffer_Ptr;
+
    begin
       --  Allow the generation of new nodes and lists
 
       Atree.Unlock;
       Nlists.Unlock;
 
+      --  ??? Compute the frame condition. Currently only the ALI file for the
+      --  current unit is read. This should be changed to read all dependent
+      --  ALI files.
+
+      Read_Library_Info (Name, Text);
+      Load_ALFA (Name_String (Name_Id (Name)));
+      Propagate_Through_Call_Graph;
+      Declare_All_Entities;
+
+      --  Start the translation to Why
+
       Translate_Standard_Package;
-      Filter_Package (Unit (GNAT_Root));
+      Filter_Compilation_Unit (GNAT_Root);
 
       for CU of ALFA_Compilation_Units loop
          Translate_CUnit (CU);
@@ -130,7 +144,9 @@ package body Gnat2Why.Driver is
       while Present (Cur) loop
          case Nkind (Cur) is
             when N_With_Clause =>
-               Why_Include_Of_Ada_With_Clause (File, Cur);
+               New_Include_Declaration
+                 (File,
+                  New_Identifier (Symbol => Chars (Name (Cur))));
             when others =>
                null;  --  ??? raise Program_Error when cases completed
          end case;
@@ -189,8 +205,17 @@ package body Gnat2Why.Driver is
       Decl := First (Decls);
       while Present (Decl) loop
          case Nkind (Decl) is
-            when N_Full_Type_Declaration | N_Subtype_Declaration =>
-               Why_Type_Decl_of_Gnat_Type_Decl (File, Decl);
+            when N_Full_Type_Declaration =>
+               Why_Type_Decl_of_Full_Type_Decl
+                  (File,
+                   Defining_Identifier (Decl),
+                   Type_Definition (Decl));
+
+            when N_Subtype_Declaration =>
+               Why_Type_Decl_of_Subtype_Decl
+                  (File,
+                   Defining_Identifier (Decl),
+                   Subtype_Indication (Decl));
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
@@ -266,6 +291,9 @@ package body Gnat2Why.Driver is
       Translate_Package (File, Standard_Package_Node);
       Open_Current_File ("standard.why");
       Declare_Boolean_Integer_Comparison (File);
+      New_Include_Declaration
+        (File => File,
+         Name => New_Identifier ("divisions"));
       Sprint_Why_Node (File, Current_File);
       Close_Current_File;
 
@@ -273,21 +301,5 @@ package body Gnat2Why.Driver is
          wpn (File);
       end if;
    end Translate_Standard_Package;
-
-   ------------------------------------
-   -- Why_Include_Of_Ada_With_Clause --
-   ------------------------------------
-
-   procedure Why_Include_Of_Ada_With_Clause (File : W_File_Id; N : Node_Id)
-   is
-      Id : constant Node_Id := Name (N);
-   begin
-      File_Append_To_Declarations
-        (File,
-         New_Include_Declaration
-           (Ada_Node => N,
-            Name     =>
-              New_Identifier (Name_String (Chars (Id)) & ".why")));
-   end Why_Include_Of_Ada_With_Clause;
 
 end Gnat2Why.Driver;

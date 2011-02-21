@@ -53,11 +53,19 @@ package Gnat2Why.Types is
    --   We first declare an abstract type for the index type, just as we do
    --   for integer types. We then declare an abstract type for arrays, and
    --   access/update functions with axioms.
-   --
-   procedure Why_Type_Decl_of_Gnat_Type_Decl
-     (File : W_File_Id;
-      Node : Node_Id);
-   --  Take an Ada type declaration and transform it into a Why type
+
+   procedure Why_Type_Decl_of_Full_Type_Decl
+      (File       : W_File_Id;
+       Ident_Node : Node_Id;
+       Def_Node   : Node_Id);
+   --  Take an Ada full type declaration and transform it into a Why type
+   --  declaration, including conversion functions and axioms.
+
+   procedure Why_Type_Decl_of_Subtype_Decl
+      (File       : W_File_Id;
+       Ident_Node : Node_Id;
+       Sub_Ind    : Node_Id);
+   --  Take an Ada subtype declaration and transform it into a Why type
    --  declaration, including conversion functions and axioms.
 
    function Why_Prog_Type_of_Ada_Type

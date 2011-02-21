@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Sinfo;           use Why.Sinfo;
+with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -103,27 +104,6 @@ package body Why.Gen.Funcs is
 
    begin
       Append_To_Spec (Arrows);
-      Logic_Append_To_Names (Logic, Name);
-      Logic_Set_Logic_Type (Logic, Spec);
-      File_Append_To_Declarations (File,
-                                   New_Logic_Declaration (Decl => Logic));
-   end Declare_Logic;
-
-   procedure Declare_Logic
-     (File        : W_File_Id;
-      Name        : W_Identifier_Id;
-      Args        : Logic_Arg_Chain;
-      Return_Type : W_Logic_Return_Type_Id)
-   is
-      Logic : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
-      Spec  : constant W_Logic_Type_Unchecked_Id :=
-                New_Unchecked_Logic_Type;
-   begin
-      for J in Args'Range loop
-         Logic_Type_Append_To_Arg_Types (Spec, Args (J));
-      end loop;
-
-      Logic_Type_Set_Return_Type (Spec, Return_Type);
       Logic_Append_To_Names (Logic, Name);
       Logic_Set_Logic_Type (Logic, Spec);
       File_Append_To_Declarations (File,
@@ -259,32 +239,5 @@ package body Why.Gen.Funcs is
       Append_Arg (Arrows);
       return Operation;
    end New_Call_To_Logic;
-
-   ----------------------------
-   -- Declare_Global_Binding --
-   ----------------------------
-
-   procedure Declare_Global_Binding
-      (File    : W_File_Id;
-       Name    : String;
-       Binders : W_Binder_Array;
-       Pre     : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred);
-       Def     : W_Prog_Id;
-       Post    : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred))
-   is
-   begin
-      File_Append_To_Declarations
-         (File,
-          New_Global_Binding
-          (Name => New_Identifier (Name),
-           Pre => New_Precondition (Assertion => Pre),
-           Binders => Binders,
-           Def =>
-             New_Post_Assertion
-               (Prog => Def,
-                Post => New_Postcondition (Assertion => Post))));
-   end Declare_Global_Binding;
 
 end Why.Gen.Funcs;

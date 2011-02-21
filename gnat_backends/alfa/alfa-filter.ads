@@ -36,8 +36,8 @@ package ALFA.Filter is
 
    ALFA_Compilation_Units : List;
 
-   procedure Filter_Package (N : Node_Id);
-   --  Filter declarations in package N and generate compilation units which
-   --  are appended to Compilation_Units.
+   procedure Filter_Compilation_Unit (N : Node_Id);
+   --  Filter declarations in compilation unit N and generate compilation units
+   --  which are appended to Compilation_Units.
 
 end ALFA.Filter;

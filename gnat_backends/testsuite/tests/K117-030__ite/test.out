@@ -12,10 +12,11 @@
         ]
     }, 
     "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___ite__not_null_po_3", 
+        "invalid": [
             "def___ite__not_null_po_4"
+        ], 
+        "valid": [
+            "def___ite__not_null_po_3"
         ]
     }
 }
