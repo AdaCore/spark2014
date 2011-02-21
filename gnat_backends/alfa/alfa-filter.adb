@@ -86,15 +86,14 @@ package body ALFA.Filter is
       Subp_Spec_List : List;
       Subp_Def_List  : List;
 
-      procedure Get_Subprograms (N : Node_Id);
-      procedure Get_Types (N : Node_Id);
-      procedure Get_Variables (N : Node_Id);
+      procedure Bucket_Dispatch (N : Node_Id);
+      --  If the Node belongs to the ALFA language, put it in one of the
+      --  corresponding buckets (types, variables, subprograms).
+      --  ??? TBD Also, introduce explicit type declarations for anonymous
+      --  types.
 
-      ---------------------
-      -- Get_Subprograms --
-      ---------------------
-
-      procedure Get_Subprograms (N : Node_Id) is
+      procedure Bucket_Dispatch (N : Node_Id)
+      is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
@@ -113,36 +112,12 @@ package body ALFA.Filter is
                   Subp_Def_List.Append (N);
                end if;
 
-            when others =>
-               null;
-         end case;
-      end Get_Subprograms;
-
-      ---------------
-      -- Get_Types --
-      ---------------
-
-      procedure Get_Types (N : Node_Id) is
-      begin
-         case Nkind (N) is
             when N_Subtype_Declaration   |
                  N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
                   Type_List.Append (N);
                end if;
 
-            when others =>
-               null;
-         end case;
-      end Get_Types;
-
-      -------------------
-      -- Get_Variables --
-      -------------------
-
-      procedure Get_Variables (N : Node_Id) is
-      begin
-         case Nkind (N) is
             when N_Object_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
                   Var_List.Append (N);
@@ -150,8 +125,10 @@ package body ALFA.Filter is
 
             when others =>
                null;
+
          end case;
-      end Get_Variables;
+
+      end Bucket_Dispatch;
 
       Ent_Name     : Name_Id;
       Context_List : constant List_Id := New_List;
@@ -165,9 +142,7 @@ package body ALFA.Filter is
          Ent_Name := Chars (Defining_Unit_Name (Specification (N)));
       end if;
 
-      Traverse_Subtree (N, Get_Types'Access);
-      Traverse_Subtree (N, Get_Variables'Access);
-      Traverse_Subtree (N, Get_Subprograms'Access);
+      Traverse_Subtree (N, Bucket_Dispatch'Access);
 
       declare
          Types_P : Node_Id;
