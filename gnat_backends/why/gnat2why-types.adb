@@ -163,7 +163,17 @@ package body Gnat2Why.Types is
             when others =>
                raise Not_Implemented;
             end case;
-         when others =>
+         when N_Range =>
+            declare
+               Low  : constant Uint :=
+                  Expr_Value (Low_Bound (Sub_Ind));
+               High : constant Uint :=
+                  Expr_Value (High_Bound (Sub_Ind));
+            begin
+               Declare_Ada_Abstract_Signed_Int (File, Name_Str, Low, High);
+            end;
+
+         when others  =>
             raise Unexpected_Node;
       end case;
    end Why_Type_Decl_of_Subtype_Decl;

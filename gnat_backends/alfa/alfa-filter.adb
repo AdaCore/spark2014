@@ -117,8 +117,7 @@ package body ALFA.Filter is
                   Subp_Def_List.Append (N);
                end if;
 
-            when N_Subtype_Declaration   |
-                 N_Full_Type_Declaration =>
+            when N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
                   declare
                      Def : constant Node_Id := Type_Definition (N);
@@ -149,6 +148,11 @@ package body ALFA.Filter is
                   Type_List.Append (N);
                end if;
 
+            when N_Subtype_Declaration =>
+               if Is_In_ALFA (Defining_Identifier (N)) then
+                  Type_List.Append (N);
+               end if;
+
             when N_Object_Declaration =>
                --  Local variables introduced by the compiler should remain
                --  local.
@@ -175,7 +179,7 @@ package body ALFA.Filter is
             when N_Identifier =>
                --  The type is already a simple name, do nothing
                null;
-            when N_Subtype_Indication =>
+            when N_Subtype_Indication | N_Range =>
                declare
                   --  assume an integer subtype for now
                   --  Rng     : constant Node_Id :=
