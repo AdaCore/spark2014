@@ -505,47 +505,49 @@ package body Gnat2Why.Subprograms is
          while Nkind (Cur_Decl) /= N_Empty loop
             case Nkind (Cur_Decl) is
                when N_Object_Declaration =>
-                  declare
-                     Init : W_Prog_Id;
-                  begin
-                     if Nkind (Expression (Cur_Decl)) /= N_Empty then
-                        Init := Why_Expr_Of_Ada_Expr (Expression (Cur_Decl));
-                     else
-                        Init :=
-                          New_Prog_Call
-                           (Name  =>
-                             Allocator_Name
-                               (Type_Of_Node (Object_Definition (Cur_Decl))),
-                            Progs =>
-                              (1 =>
-                                New_Prog_Constant (Def => New_Void_Literal)));
+                  if Comes_From_Source (Original_Node (Cur_Decl)) then
+                     if Present (Expression (Cur_Decl)) then
+                        declare
+                           Lvalue : constant Node_Id :=
+                                      Defining_Identifier (Cur_Decl);
+                           Assign : W_Prog_Id;
+                        begin
+                           Assign :=
+                             New_Assignment
+                               (Ada_Node => Cur_Decl,
+                                Name     =>
+                                  New_Identifier
+                                    (Ada_Node => Lvalue,
+                                     Symbol   => Chars (Lvalue)),
+                                Value    =>
+                                  Why_Expr_Of_Ada_Expr
+                                    (Expression (Cur_Decl),
+                                     (Why_Abstract,
+                                      Type_Of_Node (Lvalue))));
+                           R := New_Statement_Sequence
+                             (Ada_Node => Cur_Decl,
+                              Statements => (1 => Assign, 2 => R));
+                        end;
                      end if;
-
-                     if Comes_From_Source (Original_Node (Cur_Decl)) then
-                        if Present (Expression (Cur_Decl)) then
-                           declare
-                              Lvalue : constant Node_Id :=
-                                         Defining_Identifier (Cur_Decl);
-                              Assign : W_Prog_Id;
-                           begin
-                              Assign :=
-                                New_Assignment
-                                  (Ada_Node => Cur_Decl,
-                                   Name     =>
-                                     New_Identifier
-                                       (Ada_Node => Lvalue,
-                                        Symbol   => Chars (Lvalue)),
-                                   Value    =>
-                                     Why_Expr_Of_Ada_Expr
-                                       (Expression (Cur_Decl),
-                                        (Why_Abstract,
-                                         Type_Of_Node (Lvalue))));
-                              R := New_Statement_Sequence
-                                (Ada_Node => Cur_Decl,
-                                 Statements => (1 => Assign, 2 => R));
-                           end;
+                  else
+                     declare
+                        Init : W_Prog_Id;
+                     begin
+                        if Nkind (Expression (Cur_Decl)) /= N_Empty then
+                           Init :=
+                              Why_Expr_Of_Ada_Expr (Expression (Cur_Decl));
+                        else
+                           Init :=
+                             New_Prog_Call
+                              (Name  =>
+                                Allocator_Name
+                                  (Type_Of_Node
+                                     (Object_Definition (Cur_Decl))),
+                               Progs =>
+                                 (1 =>
+                                   New_Prog_Constant
+                                     (Def => New_Void_Literal)));
                         end if;
-                     else
                         R := New_Binding_Ref
                           (Ada_Node => Cur_Decl,
                            Name     =>
@@ -554,8 +556,8 @@ package body Gnat2Why.Subprograms is
                                     Chars (Defining_Identifier (Cur_Decl))),
                            Def      => Init,
                            Context  => R);
-                     end if;
-                  end;
+                     end;
+                  end if;
                when others => null;
             end case;
             Cur_Decl := Prev (Cur_Decl);
