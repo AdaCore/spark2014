@@ -94,7 +94,8 @@ package Xkind_Tables is
      return Wide_String;
    --  Ditto
 
-   function Arr_Type (Prefix : Wide_String) return Wide_String;
+   function Arr_Type (Prefix : Wide_String; Kind : Id_Kind) return Wide_String
+     with Pre => (Kind in Regular .. Derived);
    --  Return the name of an array type for the elements of the given Prefix
    --  (e.g. of type W_Type_Id is Prefix is "W_Type").
 

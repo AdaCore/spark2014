@@ -33,9 +33,16 @@ package body Xkind_Tables is
    -- Arr_Type --
    --------------
 
-   function Arr_Type (Prefix : Wide_String) return Wide_String is
+   function Arr_Type
+     (Prefix : Wide_String;
+      Kind   : Id_Kind)
+     return Wide_String is
    begin
-      return Prefix & "_Array";
+      if Kind = Derived then
+         return Strip_Prefix (Arr_Type (Prefix, Regular));
+      else
+         return Prefix & "_Array";
+      end if;
    end Arr_Type;
 
    ---------------------

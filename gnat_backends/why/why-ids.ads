@@ -2981,6 +2981,9 @@ package Why.Ids is
      W_Unused_At_Start_Id;
    --  ??? subtype predicate not generated yet
 
+   type Unused_At_Start_Array is array (Positive range <>)
+     of Unused_At_Start_Id;
+
    type Unused_At_Start_OId is new
      W_Unused_At_Start_OId;
    --  ??? subtype predicate not generated yet
@@ -2996,6 +2999,9 @@ package Why.Ids is
    type Identifier_Id is new
      W_Identifier_Id;
    --  ??? subtype predicate not generated yet
+
+   type Identifier_Array is array (Positive range <>)
+     of Identifier_Id;
 
    type Identifier_OId is new
      W_Identifier_OId;
@@ -3013,6 +3019,9 @@ package Why.Ids is
      W_Type_Prop_Id;
    --  ??? subtype predicate not generated yet
 
+   type Type_Prop_Array is array (Positive range <>)
+     of Type_Prop_Id;
+
    type Type_Prop_OId is new
      W_Type_Prop_OId;
    --  ??? subtype predicate not generated yet
@@ -3028,6 +3037,9 @@ package Why.Ids is
    type Type_Int_Id is new
      W_Type_Int_Id;
    --  ??? subtype predicate not generated yet
+
+   type Type_Int_Array is array (Positive range <>)
+     of Type_Int_Id;
 
    type Type_Int_OId is new
      W_Type_Int_OId;
@@ -3045,6 +3057,9 @@ package Why.Ids is
      W_Type_Bool_Id;
    --  ??? subtype predicate not generated yet
 
+   type Type_Bool_Array is array (Positive range <>)
+     of Type_Bool_Id;
+
    type Type_Bool_OId is new
      W_Type_Bool_OId;
    --  ??? subtype predicate not generated yet
@@ -3060,6 +3075,9 @@ package Why.Ids is
    type Type_Real_Id is new
      W_Type_Real_Id;
    --  ??? subtype predicate not generated yet
+
+   type Type_Real_Array is array (Positive range <>)
+     of Type_Real_Id;
 
    type Type_Real_OId is new
      W_Type_Real_OId;
@@ -3077,6 +3095,9 @@ package Why.Ids is
      W_Type_Unit_Id;
    --  ??? subtype predicate not generated yet
 
+   type Type_Unit_Array is array (Positive range <>)
+     of Type_Unit_Id;
+
    type Type_Unit_OId is new
      W_Type_Unit_OId;
    --  ??? subtype predicate not generated yet
@@ -3092,6 +3113,9 @@ package Why.Ids is
    type Abstract_Type_Id is new
      W_Abstract_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Abstract_Type_Array is array (Positive range <>)
+     of Abstract_Type_Id;
 
    type Abstract_Type_OId is new
      W_Abstract_Type_OId;
@@ -3109,6 +3133,9 @@ package Why.Ids is
      W_Generic_Formal_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Generic_Formal_Type_Array is array (Positive range <>)
+     of Generic_Formal_Type_Id;
+
    type Generic_Formal_Type_OId is new
      W_Generic_Formal_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -3124,6 +3151,9 @@ package Why.Ids is
    type Generic_Actual_Type_Chain_Id is new
      W_Generic_Actual_Type_Chain_Id;
    --  ??? subtype predicate not generated yet
+
+   type Generic_Actual_Type_Chain_Array is array (Positive range <>)
+     of Generic_Actual_Type_Chain_Id;
 
    type Generic_Actual_Type_Chain_OId is new
      W_Generic_Actual_Type_Chain_OId;
@@ -3141,6 +3171,9 @@ package Why.Ids is
      W_Array_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Array_Type_Array is array (Positive range <>)
+     of Array_Type_Id;
+
    type Array_Type_OId is new
      W_Array_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -3156,6 +3189,9 @@ package Why.Ids is
    type Ref_Type_Id is new
      W_Ref_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Ref_Type_Array is array (Positive range <>)
+     of Ref_Type_Id;
 
    type Ref_Type_OId is new
      W_Ref_Type_OId;
@@ -3173,6 +3209,9 @@ package Why.Ids is
      W_Protected_Value_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Protected_Value_Type_Array is array (Positive range <>)
+     of Protected_Value_Type_Id;
+
    type Protected_Value_Type_OId is new
      W_Protected_Value_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -3188,6 +3227,9 @@ package Why.Ids is
    type Arrow_Type_Id is new
      W_Arrow_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Arrow_Type_Array is array (Positive range <>)
+     of Arrow_Type_Id;
 
    type Arrow_Type_OId is new
      W_Arrow_Type_OId;
@@ -3205,6 +3247,9 @@ package Why.Ids is
      W_Computation_Spec_Id;
    --  ??? subtype predicate not generated yet
 
+   type Computation_Spec_Array is array (Positive range <>)
+     of Computation_Spec_Id;
+
    type Computation_Spec_OId is new
      W_Computation_Spec_OId;
    --  ??? subtype predicate not generated yet
@@ -3220,6 +3265,9 @@ package Why.Ids is
    type Integer_Constant_Id is new
      W_Integer_Constant_Id;
    --  ??? subtype predicate not generated yet
+
+   type Integer_Constant_Array is array (Positive range <>)
+     of Integer_Constant_Id;
 
    type Integer_Constant_OId is new
      W_Integer_Constant_OId;
@@ -3237,6 +3285,9 @@ package Why.Ids is
      W_Real_Constant_Id;
    --  ??? subtype predicate not generated yet
 
+   type Real_Constant_Array is array (Positive range <>)
+     of Real_Constant_Id;
+
    type Real_Constant_OId is new
      W_Real_Constant_OId;
    --  ??? subtype predicate not generated yet
@@ -3252,6 +3303,9 @@ package Why.Ids is
    type True_Literal_Id is new
      W_True_Literal_Id;
    --  ??? subtype predicate not generated yet
+
+   type True_Literal_Array is array (Positive range <>)
+     of True_Literal_Id;
 
    type True_Literal_OId is new
      W_True_Literal_OId;
@@ -3269,6 +3323,9 @@ package Why.Ids is
      W_False_Literal_Id;
    --  ??? subtype predicate not generated yet
 
+   type False_Literal_Array is array (Positive range <>)
+     of False_Literal_Id;
+
    type False_Literal_OId is new
      W_False_Literal_OId;
    --  ??? subtype predicate not generated yet
@@ -3284,6 +3341,9 @@ package Why.Ids is
    type Void_Literal_Id is new
      W_Void_Literal_Id;
    --  ??? subtype predicate not generated yet
+
+   type Void_Literal_Array is array (Positive range <>)
+     of Void_Literal_Id;
 
    type Void_Literal_OId is new
      W_Void_Literal_OId;
@@ -3301,6 +3361,9 @@ package Why.Ids is
      W_Arith_Operation_Id;
    --  ??? subtype predicate not generated yet
 
+   type Arith_Operation_Array is array (Positive range <>)
+     of Arith_Operation_Id;
+
    type Arith_Operation_OId is new
      W_Arith_Operation_OId;
    --  ??? subtype predicate not generated yet
@@ -3316,6 +3379,9 @@ package Why.Ids is
    type Negative_Term_Id is new
      W_Negative_Term_Id;
    --  ??? subtype predicate not generated yet
+
+   type Negative_Term_Array is array (Positive range <>)
+     of Negative_Term_Id;
 
    type Negative_Term_OId is new
      W_Negative_Term_OId;
@@ -3333,6 +3399,9 @@ package Why.Ids is
      W_Term_Identifier_Id;
    --  ??? subtype predicate not generated yet
 
+   type Term_Identifier_Array is array (Positive range <>)
+     of Term_Identifier_Id;
+
    type Term_Identifier_OId is new
      W_Term_Identifier_OId;
    --  ??? subtype predicate not generated yet
@@ -3348,6 +3417,9 @@ package Why.Ids is
    type Operation_Id is new
      W_Operation_Id;
    --  ??? subtype predicate not generated yet
+
+   type Operation_Array is array (Positive range <>)
+     of Operation_Id;
 
    type Operation_OId is new
      W_Operation_OId;
@@ -3365,6 +3437,9 @@ package Why.Ids is
      W_Named_Term_Id;
    --  ??? subtype predicate not generated yet
 
+   type Named_Term_Array is array (Positive range <>)
+     of Named_Term_Id;
+
    type Named_Term_OId is new
      W_Named_Term_OId;
    --  ??? subtype predicate not generated yet
@@ -3380,6 +3455,9 @@ package Why.Ids is
    type Conditional_Term_Id is new
      W_Conditional_Term_Id;
    --  ??? subtype predicate not generated yet
+
+   type Conditional_Term_Array is array (Positive range <>)
+     of Conditional_Term_Id;
 
    type Conditional_Term_OId is new
      W_Conditional_Term_OId;
@@ -3397,6 +3475,9 @@ package Why.Ids is
      W_Matching_Term_Id;
    --  ??? subtype predicate not generated yet
 
+   type Matching_Term_Array is array (Positive range <>)
+     of Matching_Term_Id;
+
    type Matching_Term_OId is new
      W_Matching_Term_OId;
    --  ??? subtype predicate not generated yet
@@ -3412,6 +3493,9 @@ package Why.Ids is
    type Binding_Term_Id is new
      W_Binding_Term_Id;
    --  ??? subtype predicate not generated yet
+
+   type Binding_Term_Array is array (Positive range <>)
+     of Binding_Term_Id;
 
    type Binding_Term_OId is new
      W_Binding_Term_OId;
@@ -3429,6 +3513,9 @@ package Why.Ids is
      W_Protected_Term_Id;
    --  ??? subtype predicate not generated yet
 
+   type Protected_Term_Array is array (Positive range <>)
+     of Protected_Term_Id;
+
    type Protected_Term_OId is new
      W_Protected_Term_OId;
    --  ??? subtype predicate not generated yet
@@ -3444,6 +3531,9 @@ package Why.Ids is
    type Op_Add_Id is new
      W_Op_Add_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Add_Array is array (Positive range <>)
+     of Op_Add_Id;
 
    type Op_Add_OId is new
      W_Op_Add_OId;
@@ -3461,6 +3551,9 @@ package Why.Ids is
      W_Op_Substract_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Substract_Array is array (Positive range <>)
+     of Op_Substract_Id;
+
    type Op_Substract_OId is new
      W_Op_Substract_OId;
    --  ??? subtype predicate not generated yet
@@ -3476,6 +3569,9 @@ package Why.Ids is
    type Op_Multiply_Id is new
      W_Op_Multiply_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Array is array (Positive range <>)
+     of Op_Multiply_Id;
 
    type Op_Multiply_OId is new
      W_Op_Multiply_OId;
@@ -3493,6 +3589,9 @@ package Why.Ids is
      W_Op_Divide_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Divide_Array is array (Positive range <>)
+     of Op_Divide_Id;
+
    type Op_Divide_OId is new
      W_Op_Divide_OId;
    --  ??? subtype predicate not generated yet
@@ -3508,6 +3607,9 @@ package Why.Ids is
    type Op_Modulo_Id is new
      W_Op_Modulo_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Modulo_Array is array (Positive range <>)
+     of Op_Modulo_Id;
 
    type Op_Modulo_OId is new
      W_Op_Modulo_OId;
@@ -3525,6 +3627,9 @@ package Why.Ids is
      W_True_Literal_Pred_Id;
    --  ??? subtype predicate not generated yet
 
+   type True_Literal_Pred_Array is array (Positive range <>)
+     of True_Literal_Pred_Id;
+
    type True_Literal_Pred_OId is new
      W_True_Literal_Pred_OId;
    --  ??? subtype predicate not generated yet
@@ -3540,6 +3645,9 @@ package Why.Ids is
    type False_Literal_Pred_Id is new
      W_False_Literal_Pred_Id;
    --  ??? subtype predicate not generated yet
+
+   type False_Literal_Pred_Array is array (Positive range <>)
+     of False_Literal_Pred_Id;
 
    type False_Literal_Pred_OId is new
      W_False_Literal_Pred_OId;
@@ -3557,6 +3665,9 @@ package Why.Ids is
      W_Predicate_Identifier_Id;
    --  ??? subtype predicate not generated yet
 
+   type Predicate_Identifier_Array is array (Positive range <>)
+     of Predicate_Identifier_Id;
+
    type Predicate_Identifier_OId is new
      W_Predicate_Identifier_OId;
    --  ??? subtype predicate not generated yet
@@ -3572,6 +3683,9 @@ package Why.Ids is
    type Predicate_Instance_Id is new
      W_Predicate_Instance_Id;
    --  ??? subtype predicate not generated yet
+
+   type Predicate_Instance_Array is array (Positive range <>)
+     of Predicate_Instance_Id;
 
    type Predicate_Instance_OId is new
      W_Predicate_Instance_OId;
@@ -3589,6 +3703,9 @@ package Why.Ids is
      W_Related_Terms_Id;
    --  ??? subtype predicate not generated yet
 
+   type Related_Terms_Array is array (Positive range <>)
+     of Related_Terms_Id;
+
    type Related_Terms_OId is new
      W_Related_Terms_OId;
    --  ??? subtype predicate not generated yet
@@ -3604,6 +3721,9 @@ package Why.Ids is
    type Implication_Id is new
      W_Implication_Id;
    --  ??? subtype predicate not generated yet
+
+   type Implication_Array is array (Positive range <>)
+     of Implication_Id;
 
    type Implication_OId is new
      W_Implication_OId;
@@ -3621,6 +3741,9 @@ package Why.Ids is
      W_Equivalence_Id;
    --  ??? subtype predicate not generated yet
 
+   type Equivalence_Array is array (Positive range <>)
+     of Equivalence_Id;
+
    type Equivalence_OId is new
      W_Equivalence_OId;
    --  ??? subtype predicate not generated yet
@@ -3636,6 +3759,9 @@ package Why.Ids is
    type Disjonction_Id is new
      W_Disjonction_Id;
    --  ??? subtype predicate not generated yet
+
+   type Disjonction_Array is array (Positive range <>)
+     of Disjonction_Id;
 
    type Disjonction_OId is new
      W_Disjonction_OId;
@@ -3653,6 +3779,9 @@ package Why.Ids is
      W_Conjonction_Id;
    --  ??? subtype predicate not generated yet
 
+   type Conjonction_Array is array (Positive range <>)
+     of Conjonction_Id;
+
    type Conjonction_OId is new
      W_Conjonction_OId;
    --  ??? subtype predicate not generated yet
@@ -3668,6 +3797,9 @@ package Why.Ids is
    type Negation_Id is new
      W_Negation_Id;
    --  ??? subtype predicate not generated yet
+
+   type Negation_Array is array (Positive range <>)
+     of Negation_Id;
 
    type Negation_OId is new
      W_Negation_OId;
@@ -3685,6 +3817,9 @@ package Why.Ids is
      W_Conditional_Pred_Id;
    --  ??? subtype predicate not generated yet
 
+   type Conditional_Pred_Array is array (Positive range <>)
+     of Conditional_Pred_Id;
+
    type Conditional_Pred_OId is new
      W_Conditional_Pred_OId;
    --  ??? subtype predicate not generated yet
@@ -3700,6 +3835,9 @@ package Why.Ids is
    type Binding_Pred_Id is new
      W_Binding_Pred_Id;
    --  ??? subtype predicate not generated yet
+
+   type Binding_Pred_Array is array (Positive range <>)
+     of Binding_Pred_Id;
 
    type Binding_Pred_OId is new
      W_Binding_Pred_OId;
@@ -3717,6 +3855,9 @@ package Why.Ids is
      W_Universal_Quantif_Id;
    --  ??? subtype predicate not generated yet
 
+   type Universal_Quantif_Array is array (Positive range <>)
+     of Universal_Quantif_Id;
+
    type Universal_Quantif_OId is new
      W_Universal_Quantif_OId;
    --  ??? subtype predicate not generated yet
@@ -3732,6 +3873,9 @@ package Why.Ids is
    type Existential_Quantif_Id is new
      W_Existential_Quantif_Id;
    --  ??? subtype predicate not generated yet
+
+   type Existential_Quantif_Array is array (Positive range <>)
+     of Existential_Quantif_Id;
 
    type Existential_Quantif_OId is new
      W_Existential_Quantif_OId;
@@ -3749,6 +3893,9 @@ package Why.Ids is
      W_Named_Predicate_Id;
    --  ??? subtype predicate not generated yet
 
+   type Named_Predicate_Array is array (Positive range <>)
+     of Named_Predicate_Id;
+
    type Named_Predicate_OId is new
      W_Named_Predicate_OId;
    --  ??? subtype predicate not generated yet
@@ -3764,6 +3911,9 @@ package Why.Ids is
    type Protected_Predicate_Id is new
      W_Protected_Predicate_Id;
    --  ??? subtype predicate not generated yet
+
+   type Protected_Predicate_Array is array (Positive range <>)
+     of Protected_Predicate_Id;
 
    type Protected_Predicate_OId is new
      W_Protected_Predicate_OId;
@@ -3781,6 +3931,9 @@ package Why.Ids is
      W_Pattern_Id;
    --  ??? subtype predicate not generated yet
 
+   type Pattern_Array is array (Positive range <>)
+     of Pattern_Id;
+
    type Pattern_OId is new
      W_Pattern_OId;
    --  ??? subtype predicate not generated yet
@@ -3796,6 +3949,9 @@ package Why.Ids is
    type Match_Case_Id is new
      W_Match_Case_Id;
    --  ??? subtype predicate not generated yet
+
+   type Match_Case_Array is array (Positive range <>)
+     of Match_Case_Id;
 
    type Match_Case_OId is new
      W_Match_Case_OId;
@@ -3813,6 +3969,9 @@ package Why.Ids is
      W_Triggers_Id;
    --  ??? subtype predicate not generated yet
 
+   type Triggers_Array is array (Positive range <>)
+     of Triggers_Id;
+
    type Triggers_OId is new
      W_Triggers_OId;
    --  ??? subtype predicate not generated yet
@@ -3828,6 +3987,9 @@ package Why.Ids is
    type Trigger_Id is new
      W_Trigger_Id;
    --  ??? subtype predicate not generated yet
+
+   type Trigger_Array is array (Positive range <>)
+     of Trigger_Id;
 
    type Trigger_OId is new
      W_Trigger_OId;
@@ -3845,6 +4007,9 @@ package Why.Ids is
      W_Rel_Eq_Id;
    --  ??? subtype predicate not generated yet
 
+   type Rel_Eq_Array is array (Positive range <>)
+     of Rel_Eq_Id;
+
    type Rel_Eq_OId is new
      W_Rel_Eq_OId;
    --  ??? subtype predicate not generated yet
@@ -3860,6 +4025,9 @@ package Why.Ids is
    type Rel_Ne_Id is new
      W_Rel_Ne_Id;
    --  ??? subtype predicate not generated yet
+
+   type Rel_Ne_Array is array (Positive range <>)
+     of Rel_Ne_Id;
 
    type Rel_Ne_OId is new
      W_Rel_Ne_OId;
@@ -3877,6 +4045,9 @@ package Why.Ids is
      W_Rel_Lt_Id;
    --  ??? subtype predicate not generated yet
 
+   type Rel_Lt_Array is array (Positive range <>)
+     of Rel_Lt_Id;
+
    type Rel_Lt_OId is new
      W_Rel_Lt_OId;
    --  ??? subtype predicate not generated yet
@@ -3892,6 +4063,9 @@ package Why.Ids is
    type Rel_Le_Id is new
      W_Rel_Le_Id;
    --  ??? subtype predicate not generated yet
+
+   type Rel_Le_Array is array (Positive range <>)
+     of Rel_Le_Id;
 
    type Rel_Le_OId is new
      W_Rel_Le_OId;
@@ -3909,6 +4083,9 @@ package Why.Ids is
      W_Rel_Gt_Id;
    --  ??? subtype predicate not generated yet
 
+   type Rel_Gt_Array is array (Positive range <>)
+     of Rel_Gt_Id;
+
    type Rel_Gt_OId is new
      W_Rel_Gt_OId;
    --  ??? subtype predicate not generated yet
@@ -3924,6 +4101,9 @@ package Why.Ids is
    type Rel_Ge_Id is new
      W_Rel_Ge_Id;
    --  ??? subtype predicate not generated yet
+
+   type Rel_Ge_Array is array (Positive range <>)
+     of Rel_Ge_Id;
 
    type Rel_Ge_OId is new
      W_Rel_Ge_OId;
@@ -3941,6 +4121,9 @@ package Why.Ids is
      W_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Type_Array is array (Positive range <>)
+     of Type_Id;
+
    type Type_OId is new
      W_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -3956,6 +4139,9 @@ package Why.Ids is
    type Logic_Id is new
      W_Logic_Id;
    --  ??? subtype predicate not generated yet
+
+   type Logic_Array is array (Positive range <>)
+     of Logic_Id;
 
    type Logic_OId is new
      W_Logic_OId;
@@ -3973,6 +4159,9 @@ package Why.Ids is
      W_Function_Id;
    --  ??? subtype predicate not generated yet
 
+   type Function_Array is array (Positive range <>)
+     of Function_Id;
+
    type Function_OId is new
      W_Function_OId;
    --  ??? subtype predicate not generated yet
@@ -3988,6 +4177,9 @@ package Why.Ids is
    type Predicate_Definition_Id is new
      W_Predicate_Definition_Id;
    --  ??? subtype predicate not generated yet
+
+   type Predicate_Definition_Array is array (Positive range <>)
+     of Predicate_Definition_Id;
 
    type Predicate_Definition_OId is new
      W_Predicate_Definition_OId;
@@ -4005,6 +4197,9 @@ package Why.Ids is
      W_Inductive_Id;
    --  ??? subtype predicate not generated yet
 
+   type Inductive_Array is array (Positive range <>)
+     of Inductive_Id;
+
    type Inductive_OId is new
      W_Inductive_OId;
    --  ??? subtype predicate not generated yet
@@ -4020,6 +4215,9 @@ package Why.Ids is
    type Axiom_Id is new
      W_Axiom_Id;
    --  ??? subtype predicate not generated yet
+
+   type Axiom_Array is array (Positive range <>)
+     of Axiom_Id;
 
    type Axiom_OId is new
      W_Axiom_OId;
@@ -4037,6 +4235,9 @@ package Why.Ids is
      W_Goal_Id;
    --  ??? subtype predicate not generated yet
 
+   type Goal_Array is array (Positive range <>)
+     of Goal_Id;
+
    type Goal_OId is new
      W_Goal_OId;
    --  ??? subtype predicate not generated yet
@@ -4052,6 +4253,9 @@ package Why.Ids is
    type External_Id is new
      W_External_Id;
    --  ??? subtype predicate not generated yet
+
+   type External_Array is array (Positive range <>)
+     of External_Id;
 
    type External_OId is new
      W_External_OId;
@@ -4069,6 +4273,9 @@ package Why.Ids is
      W_Logic_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Logic_Type_Array is array (Positive range <>)
+     of Logic_Type_Id;
+
    type Logic_Type_OId is new
      W_Logic_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -4084,6 +4291,9 @@ package Why.Ids is
    type Logic_Binder_Id is new
      W_Logic_Binder_Id;
    --  ??? subtype predicate not generated yet
+
+   type Logic_Binder_Array is array (Positive range <>)
+     of Logic_Binder_Id;
 
    type Logic_Binder_OId is new
      W_Logic_Binder_OId;
@@ -4101,6 +4311,9 @@ package Why.Ids is
      W_Inductive_Case_Id;
    --  ??? subtype predicate not generated yet
 
+   type Inductive_Case_Array is array (Positive range <>)
+     of Inductive_Case_Id;
+
    type Inductive_Case_OId is new
      W_Inductive_Case_OId;
    --  ??? subtype predicate not generated yet
@@ -4116,6 +4329,9 @@ package Why.Ids is
    type Transparent_Type_Definition_Id is new
      W_Transparent_Type_Definition_Id;
    --  ??? subtype predicate not generated yet
+
+   type Transparent_Type_Definition_Array is array (Positive range <>)
+     of Transparent_Type_Definition_Id;
 
    type Transparent_Type_Definition_OId is new
      W_Transparent_Type_Definition_OId;
@@ -4133,6 +4349,9 @@ package Why.Ids is
      W_Adt_Definition_Id;
    --  ??? subtype predicate not generated yet
 
+   type Adt_Definition_Array is array (Positive range <>)
+     of Adt_Definition_Id;
+
    type Adt_Definition_OId is new
      W_Adt_Definition_OId;
    --  ??? subtype predicate not generated yet
@@ -4148,6 +4367,9 @@ package Why.Ids is
    type Constr_Decl_Id is new
      W_Constr_Decl_Id;
    --  ??? subtype predicate not generated yet
+
+   type Constr_Decl_Array is array (Positive range <>)
+     of Constr_Decl_Id;
 
    type Constr_Decl_OId is new
      W_Constr_Decl_OId;
@@ -4165,6 +4387,9 @@ package Why.Ids is
      W_Effects_Id;
    --  ??? subtype predicate not generated yet
 
+   type Effects_Array is array (Positive range <>)
+     of Effects_Id;
+
    type Effects_OId is new
      W_Effects_OId;
    --  ??? subtype predicate not generated yet
@@ -4180,6 +4405,9 @@ package Why.Ids is
    type Precondition_Id is new
      W_Precondition_Id;
    --  ??? subtype predicate not generated yet
+
+   type Precondition_Array is array (Positive range <>)
+     of Precondition_Id;
 
    type Precondition_OId is new
      W_Precondition_OId;
@@ -4197,6 +4425,9 @@ package Why.Ids is
      W_Postcondition_Id;
    --  ??? subtype predicate not generated yet
 
+   type Postcondition_Array is array (Positive range <>)
+     of Postcondition_Id;
+
    type Postcondition_OId is new
      W_Postcondition_OId;
    --  ??? subtype predicate not generated yet
@@ -4212,6 +4443,9 @@ package Why.Ids is
    type Exn_Condition_Id is new
      W_Exn_Condition_Id;
    --  ??? subtype predicate not generated yet
+
+   type Exn_Condition_Array is array (Positive range <>)
+     of Exn_Condition_Id;
 
    type Exn_Condition_OId is new
      W_Exn_Condition_OId;
@@ -4229,6 +4463,9 @@ package Why.Ids is
      W_Assertion_Id;
    --  ??? subtype predicate not generated yet
 
+   type Assertion_Array is array (Positive range <>)
+     of Assertion_Id;
+
    type Assertion_OId is new
      W_Assertion_OId;
    --  ??? subtype predicate not generated yet
@@ -4244,6 +4481,9 @@ package Why.Ids is
    type Prog_Constant_Id is new
      W_Prog_Constant_Id;
    --  ??? subtype predicate not generated yet
+
+   type Prog_Constant_Array is array (Positive range <>)
+     of Prog_Constant_Id;
 
    type Prog_Constant_OId is new
      W_Prog_Constant_OId;
@@ -4261,6 +4501,9 @@ package Why.Ids is
      W_Prog_Identifier_Id;
    --  ??? subtype predicate not generated yet
 
+   type Prog_Identifier_Array is array (Positive range <>)
+     of Prog_Identifier_Id;
+
    type Prog_Identifier_OId is new
      W_Prog_Identifier_OId;
    --  ??? subtype predicate not generated yet
@@ -4276,6 +4519,9 @@ package Why.Ids is
    type Any_Expr_Id is new
      W_Any_Expr_Id;
    --  ??? subtype predicate not generated yet
+
+   type Any_Expr_Array is array (Positive range <>)
+     of Any_Expr_Id;
 
    type Any_Expr_OId is new
      W_Any_Expr_OId;
@@ -4293,6 +4539,9 @@ package Why.Ids is
      W_Deref_Id;
    --  ??? subtype predicate not generated yet
 
+   type Deref_Array is array (Positive range <>)
+     of Deref_Id;
+
    type Deref_OId is new
      W_Deref_OId;
    --  ??? subtype predicate not generated yet
@@ -4308,6 +4557,9 @@ package Why.Ids is
    type Assignment_Id is new
      W_Assignment_Id;
    --  ??? subtype predicate not generated yet
+
+   type Assignment_Array is array (Positive range <>)
+     of Assignment_Id;
 
    type Assignment_OId is new
      W_Assignment_OId;
@@ -4325,6 +4577,9 @@ package Why.Ids is
      W_Array_Access_Id;
    --  ??? subtype predicate not generated yet
 
+   type Array_Access_Array is array (Positive range <>)
+     of Array_Access_Id;
+
    type Array_Access_OId is new
      W_Array_Access_OId;
    --  ??? subtype predicate not generated yet
@@ -4340,6 +4595,9 @@ package Why.Ids is
    type Array_Update_Id is new
      W_Array_Update_Id;
    --  ??? subtype predicate not generated yet
+
+   type Array_Update_Array is array (Positive range <>)
+     of Array_Update_Id;
 
    type Array_Update_OId is new
      W_Array_Update_OId;
@@ -4357,6 +4615,9 @@ package Why.Ids is
      W_Infix_Call_Id;
    --  ??? subtype predicate not generated yet
 
+   type Infix_Call_Array is array (Positive range <>)
+     of Infix_Call_Id;
+
    type Infix_Call_OId is new
      W_Infix_Call_OId;
    --  ??? subtype predicate not generated yet
@@ -4372,6 +4633,9 @@ package Why.Ids is
    type Prefix_Call_Id is new
      W_Prefix_Call_Id;
    --  ??? subtype predicate not generated yet
+
+   type Prefix_Call_Array is array (Positive range <>)
+     of Prefix_Call_Id;
 
    type Prefix_Call_OId is new
      W_Prefix_Call_OId;
@@ -4389,6 +4653,9 @@ package Why.Ids is
      W_Binding_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Binding_Prog_Array is array (Positive range <>)
+     of Binding_Prog_Id;
+
    type Binding_Prog_OId is new
      W_Binding_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4404,6 +4671,9 @@ package Why.Ids is
    type Binding_Ref_Id is new
      W_Binding_Ref_Id;
    --  ??? subtype predicate not generated yet
+
+   type Binding_Ref_Array is array (Positive range <>)
+     of Binding_Ref_Id;
 
    type Binding_Ref_OId is new
      W_Binding_Ref_OId;
@@ -4421,6 +4691,9 @@ package Why.Ids is
      W_Conditional_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Conditional_Prog_Array is array (Positive range <>)
+     of Conditional_Prog_Id;
+
    type Conditional_Prog_OId is new
      W_Conditional_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4436,6 +4709,9 @@ package Why.Ids is
    type While_Loop_Id is new
      W_While_Loop_Id;
    --  ??? subtype predicate not generated yet
+
+   type While_Loop_Array is array (Positive range <>)
+     of While_Loop_Id;
 
    type While_Loop_OId is new
      W_While_Loop_OId;
@@ -4453,6 +4729,9 @@ package Why.Ids is
      W_Statement_Sequence_Id;
    --  ??? subtype predicate not generated yet
 
+   type Statement_Sequence_Array is array (Positive range <>)
+     of Statement_Sequence_Id;
+
    type Statement_Sequence_OId is new
      W_Statement_Sequence_OId;
    --  ??? subtype predicate not generated yet
@@ -4468,6 +4747,9 @@ package Why.Ids is
    type Label_Id is new
      W_Label_Id;
    --  ??? subtype predicate not generated yet
+
+   type Label_Array is array (Positive range <>)
+     of Label_Id;
 
    type Label_OId is new
      W_Label_OId;
@@ -4485,6 +4767,9 @@ package Why.Ids is
      W_Assert_Id;
    --  ??? subtype predicate not generated yet
 
+   type Assert_Array is array (Positive range <>)
+     of Assert_Id;
+
    type Assert_OId is new
      W_Assert_OId;
    --  ??? subtype predicate not generated yet
@@ -4500,6 +4785,9 @@ package Why.Ids is
    type Post_Assertion_Id is new
      W_Post_Assertion_Id;
    --  ??? subtype predicate not generated yet
+
+   type Post_Assertion_Array is array (Positive range <>)
+     of Post_Assertion_Id;
 
    type Post_Assertion_OId is new
      W_Post_Assertion_OId;
@@ -4517,6 +4805,9 @@ package Why.Ids is
      W_Opaque_Assertion_Id;
    --  ??? subtype predicate not generated yet
 
+   type Opaque_Assertion_Array is array (Positive range <>)
+     of Opaque_Assertion_Id;
+
    type Opaque_Assertion_OId is new
      W_Opaque_Assertion_OId;
    --  ??? subtype predicate not generated yet
@@ -4532,6 +4823,9 @@ package Why.Ids is
    type Fun_Def_Id is new
      W_Fun_Def_Id;
    --  ??? subtype predicate not generated yet
+
+   type Fun_Def_Array is array (Positive range <>)
+     of Fun_Def_Id;
 
    type Fun_Def_OId is new
      W_Fun_Def_OId;
@@ -4549,6 +4843,9 @@ package Why.Ids is
      W_Binding_Fun_Id;
    --  ??? subtype predicate not generated yet
 
+   type Binding_Fun_Array is array (Positive range <>)
+     of Binding_Fun_Id;
+
    type Binding_Fun_OId is new
      W_Binding_Fun_OId;
    --  ??? subtype predicate not generated yet
@@ -4564,6 +4861,9 @@ package Why.Ids is
    type Binding_Rec_Id is new
      W_Binding_Rec_Id;
    --  ??? subtype predicate not generated yet
+
+   type Binding_Rec_Array is array (Positive range <>)
+     of Binding_Rec_Id;
 
    type Binding_Rec_OId is new
      W_Binding_Rec_OId;
@@ -4581,6 +4881,9 @@ package Why.Ids is
      W_Prog_Call_Id;
    --  ??? subtype predicate not generated yet
 
+   type Prog_Call_Array is array (Positive range <>)
+     of Prog_Call_Id;
+
    type Prog_Call_OId is new
      W_Prog_Call_OId;
    --  ??? subtype predicate not generated yet
@@ -4596,6 +4899,9 @@ package Why.Ids is
    type Raise_Statement_Id is new
      W_Raise_Statement_Id;
    --  ??? subtype predicate not generated yet
+
+   type Raise_Statement_Array is array (Positive range <>)
+     of Raise_Statement_Id;
 
    type Raise_Statement_OId is new
      W_Raise_Statement_OId;
@@ -4613,6 +4919,9 @@ package Why.Ids is
      W_Raise_Statement_With_Parameters_Id;
    --  ??? subtype predicate not generated yet
 
+   type Raise_Statement_With_Parameters_Array is array (Positive range <>)
+     of Raise_Statement_With_Parameters_Id;
+
    type Raise_Statement_With_Parameters_OId is new
      W_Raise_Statement_With_Parameters_OId;
    --  ??? subtype predicate not generated yet
@@ -4628,6 +4937,9 @@ package Why.Ids is
    type Try_Block_Id is new
      W_Try_Block_Id;
    --  ??? subtype predicate not generated yet
+
+   type Try_Block_Array is array (Positive range <>)
+     of Try_Block_Id;
 
    type Try_Block_OId is new
      W_Try_Block_OId;
@@ -4645,6 +4957,9 @@ package Why.Ids is
      W_Unreachable_Code_Id;
    --  ??? subtype predicate not generated yet
 
+   type Unreachable_Code_Array is array (Positive range <>)
+     of Unreachable_Code_Id;
+
    type Unreachable_Code_OId is new
      W_Unreachable_Code_OId;
    --  ??? subtype predicate not generated yet
@@ -4660,6 +4975,9 @@ package Why.Ids is
    type Begin_Block_Id is new
      W_Begin_Block_Id;
    --  ??? subtype predicate not generated yet
+
+   type Begin_Block_Array is array (Positive range <>)
+     of Begin_Block_Id;
 
    type Begin_Block_OId is new
      W_Begin_Block_OId;
@@ -4677,6 +4995,9 @@ package Why.Ids is
      W_Protected_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Protected_Prog_Array is array (Positive range <>)
+     of Protected_Prog_Id;
+
    type Protected_Prog_OId is new
      W_Protected_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4692,6 +5013,9 @@ package Why.Ids is
    type Op_Add_Prog_Id is new
      W_Op_Add_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Add_Prog_Array is array (Positive range <>)
+     of Op_Add_Prog_Id;
 
    type Op_Add_Prog_OId is new
      W_Op_Add_Prog_OId;
@@ -4709,6 +5033,9 @@ package Why.Ids is
      W_Op_Substract_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Substract_Prog_Array is array (Positive range <>)
+     of Op_Substract_Prog_Id;
+
    type Op_Substract_Prog_OId is new
      W_Op_Substract_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4724,6 +5051,9 @@ package Why.Ids is
    type Op_Multiply_Prog_Id is new
      W_Op_Multiply_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Multiply_Prog_Array is array (Positive range <>)
+     of Op_Multiply_Prog_Id;
 
    type Op_Multiply_Prog_OId is new
      W_Op_Multiply_Prog_OId;
@@ -4741,6 +5071,9 @@ package Why.Ids is
      W_Op_Divide_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Divide_Prog_Array is array (Positive range <>)
+     of Op_Divide_Prog_Id;
+
    type Op_Divide_Prog_OId is new
      W_Op_Divide_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4756,6 +5089,9 @@ package Why.Ids is
    type Op_Mod_Prog_Id is new
      W_Op_Mod_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Mod_Prog_Array is array (Positive range <>)
+     of Op_Mod_Prog_Id;
 
    type Op_Mod_Prog_OId is new
      W_Op_Mod_Prog_OId;
@@ -4773,6 +5109,9 @@ package Why.Ids is
      W_Op_Eq_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Eq_Prog_Array is array (Positive range <>)
+     of Op_Eq_Prog_Id;
+
    type Op_Eq_Prog_OId is new
      W_Op_Eq_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4788,6 +5127,9 @@ package Why.Ids is
    type Op_Ne_Prog_Id is new
      W_Op_Ne_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Ne_Prog_Array is array (Positive range <>)
+     of Op_Ne_Prog_Id;
 
    type Op_Ne_Prog_OId is new
      W_Op_Ne_Prog_OId;
@@ -4805,6 +5147,9 @@ package Why.Ids is
      W_Op_Lt_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Lt_Prog_Array is array (Positive range <>)
+     of Op_Lt_Prog_Id;
+
    type Op_Lt_Prog_OId is new
      W_Op_Lt_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4820,6 +5165,9 @@ package Why.Ids is
    type Op_Le_Prog_Id is new
      W_Op_Le_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Le_Prog_Array is array (Positive range <>)
+     of Op_Le_Prog_Id;
 
    type Op_Le_Prog_OId is new
      W_Op_Le_Prog_OId;
@@ -4837,6 +5185,9 @@ package Why.Ids is
      W_Op_Gt_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Gt_Prog_Array is array (Positive range <>)
+     of Op_Gt_Prog_Id;
+
    type Op_Gt_Prog_OId is new
      W_Op_Gt_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4852,6 +5203,9 @@ package Why.Ids is
    type Op_Ge_Prog_Id is new
      W_Op_Ge_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Ge_Prog_Array is array (Positive range <>)
+     of Op_Ge_Prog_Id;
 
    type Op_Ge_Prog_OId is new
      W_Op_Ge_Prog_OId;
@@ -4869,6 +5223,9 @@ package Why.Ids is
      W_Op_Or_Else_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Or_Else_Prog_Array is array (Positive range <>)
+     of Op_Or_Else_Prog_Id;
+
    type Op_Or_Else_Prog_OId is new
      W_Op_Or_Else_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4884,6 +5241,9 @@ package Why.Ids is
    type Op_And_Then_Prog_Id is new
      W_Op_And_Then_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_And_Then_Prog_Array is array (Positive range <>)
+     of Op_And_Then_Prog_Id;
 
    type Op_And_Then_Prog_OId is new
      W_Op_And_Then_Prog_OId;
@@ -4901,6 +5261,9 @@ package Why.Ids is
      W_Op_Minus_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Op_Minus_Prog_Array is array (Positive range <>)
+     of Op_Minus_Prog_Id;
+
    type Op_Minus_Prog_OId is new
      W_Op_Minus_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -4916,6 +5279,9 @@ package Why.Ids is
    type Op_Not_Prog_Id is new
      W_Op_Not_Prog_Id;
    --  ??? subtype predicate not generated yet
+
+   type Op_Not_Prog_Array is array (Positive range <>)
+     of Op_Not_Prog_Id;
 
    type Op_Not_Prog_OId is new
      W_Op_Not_Prog_OId;
@@ -4933,6 +5299,9 @@ package Why.Ids is
      W_Binder_Id;
    --  ??? subtype predicate not generated yet
 
+   type Binder_Array is array (Positive range <>)
+     of Binder_Id;
+
    type Binder_OId is new
      W_Binder_OId;
    --  ??? subtype predicate not generated yet
@@ -4948,6 +5317,9 @@ package Why.Ids is
    type Recfun_Id is new
      W_Recfun_Id;
    --  ??? subtype predicate not generated yet
+
+   type Recfun_Array is array (Positive range <>)
+     of Recfun_Id;
 
    type Recfun_OId is new
      W_Recfun_OId;
@@ -4965,6 +5337,9 @@ package Why.Ids is
      W_Loop_Annot_Id;
    --  ??? subtype predicate not generated yet
 
+   type Loop_Annot_Array is array (Positive range <>)
+     of Loop_Annot_Id;
+
    type Loop_Annot_OId is new
      W_Loop_Annot_OId;
    --  ??? subtype predicate not generated yet
@@ -4980,6 +5355,9 @@ package Why.Ids is
    type Wf_Arg_Id is new
      W_Wf_Arg_Id;
    --  ??? subtype predicate not generated yet
+
+   type Wf_Arg_Array is array (Positive range <>)
+     of Wf_Arg_Id;
 
    type Wf_Arg_OId is new
      W_Wf_Arg_OId;
@@ -4997,6 +5375,9 @@ package Why.Ids is
      W_Handler_Id;
    --  ??? subtype predicate not generated yet
 
+   type Handler_Array is array (Positive range <>)
+     of Handler_Id;
+
    type Handler_OId is new
      W_Handler_OId;
    --  ??? subtype predicate not generated yet
@@ -5012,6 +5393,9 @@ package Why.Ids is
    type File_Id is new
      W_File_Id;
    --  ??? subtype predicate not generated yet
+
+   type File_Array is array (Positive range <>)
+     of File_Id;
 
    type File_OId is new
      W_File_OId;
@@ -5029,6 +5413,9 @@ package Why.Ids is
      W_Global_Binding_Id;
    --  ??? subtype predicate not generated yet
 
+   type Global_Binding_Array is array (Positive range <>)
+     of Global_Binding_Id;
+
    type Global_Binding_OId is new
      W_Global_Binding_OId;
    --  ??? subtype predicate not generated yet
@@ -5044,6 +5431,9 @@ package Why.Ids is
    type Global_Rec_Binding_Id is new
      W_Global_Rec_Binding_Id;
    --  ??? subtype predicate not generated yet
+
+   type Global_Rec_Binding_Array is array (Positive range <>)
+     of Global_Rec_Binding_Id;
 
    type Global_Rec_Binding_OId is new
      W_Global_Rec_Binding_OId;
@@ -5061,6 +5451,9 @@ package Why.Ids is
      W_Parameter_Declaration_Id;
    --  ??? subtype predicate not generated yet
 
+   type Parameter_Declaration_Array is array (Positive range <>)
+     of Parameter_Declaration_Id;
+
    type Parameter_Declaration_OId is new
      W_Parameter_Declaration_OId;
    --  ??? subtype predicate not generated yet
@@ -5076,6 +5469,9 @@ package Why.Ids is
    type Exception_Declaration_Id is new
      W_Exception_Declaration_Id;
    --  ??? subtype predicate not generated yet
+
+   type Exception_Declaration_Array is array (Positive range <>)
+     of Exception_Declaration_Id;
 
    type Exception_Declaration_OId is new
      W_Exception_Declaration_OId;
@@ -5093,6 +5489,9 @@ package Why.Ids is
      W_Logic_Declaration_Id;
    --  ??? subtype predicate not generated yet
 
+   type Logic_Declaration_Array is array (Positive range <>)
+     of Logic_Declaration_Id;
+
    type Logic_Declaration_OId is new
      W_Logic_Declaration_OId;
    --  ??? subtype predicate not generated yet
@@ -5108,6 +5507,9 @@ package Why.Ids is
    type Include_Declaration_Id is new
      W_Include_Declaration_Id;
    --  ??? subtype predicate not generated yet
+
+   type Include_Declaration_Array is array (Positive range <>)
+     of Include_Declaration_Id;
 
    type Include_Declaration_OId is new
      W_Include_Declaration_OId;
@@ -5125,6 +5527,9 @@ package Why.Ids is
      W_Term_Id;
    --  ??? subtype predicate not generated yet
 
+   type Term_Array is array (Positive range <>)
+     of Term_Id;
+
    type Term_OId is new
      W_Term_OId;
    --  ??? subtype predicate not generated yet
@@ -5140,6 +5545,9 @@ package Why.Ids is
    type Constant_Id is new
      W_Constant_Id;
    --  ??? subtype predicate not generated yet
+
+   type Constant_Array is array (Positive range <>)
+     of Constant_Id;
 
    type Constant_OId is new
      W_Constant_OId;
@@ -5157,6 +5565,9 @@ package Why.Ids is
      W_Arith_Op_Id;
    --  ??? subtype predicate not generated yet
 
+   type Arith_Op_Array is array (Positive range <>)
+     of Arith_Op_Id;
+
    type Arith_Op_OId is new
      W_Arith_Op_OId;
    --  ??? subtype predicate not generated yet
@@ -5172,6 +5583,9 @@ package Why.Ids is
    type Predicate_Id is new
      W_Predicate_Id;
    --  ??? subtype predicate not generated yet
+
+   type Predicate_Array is array (Positive range <>)
+     of Predicate_Id;
 
    type Predicate_OId is new
      W_Predicate_OId;
@@ -5189,6 +5603,9 @@ package Why.Ids is
      W_Primitive_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Primitive_Type_Array is array (Positive range <>)
+     of Primitive_Type_Id;
+
    type Primitive_Type_OId is new
      W_Primitive_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -5204,6 +5621,9 @@ package Why.Ids is
    type Relation_Id is new
      W_Relation_Id;
    --  ??? subtype predicate not generated yet
+
+   type Relation_Array is array (Positive range <>)
+     of Relation_Id;
 
    type Relation_OId is new
      W_Relation_OId;
@@ -5221,6 +5641,9 @@ package Why.Ids is
      W_Logic_Declaration_Class_Id;
    --  ??? subtype predicate not generated yet
 
+   type Logic_Declaration_Class_Array is array (Positive range <>)
+     of Logic_Declaration_Class_Id;
+
    type Logic_Declaration_Class_OId is new
      W_Logic_Declaration_Class_OId;
    --  ??? subtype predicate not generated yet
@@ -5236,6 +5659,9 @@ package Why.Ids is
    type Logic_Return_Type_Id is new
      W_Logic_Return_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Logic_Return_Type_Array is array (Positive range <>)
+     of Logic_Return_Type_Id;
 
    type Logic_Return_Type_OId is new
      W_Logic_Return_Type_OId;
@@ -5253,6 +5679,9 @@ package Why.Ids is
      W_Logic_Arg_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Logic_Arg_Type_Array is array (Positive range <>)
+     of Logic_Arg_Type_Id;
+
    type Logic_Arg_Type_OId is new
      W_Logic_Arg_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -5268,6 +5697,9 @@ package Why.Ids is
    type Simple_Value_Type_Id is new
      W_Simple_Value_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Simple_Value_Type_Array is array (Positive range <>)
+     of Simple_Value_Type_Id;
 
    type Simple_Value_Type_OId is new
      W_Simple_Value_Type_OId;
@@ -5285,6 +5717,9 @@ package Why.Ids is
      W_Value_Type_Id;
    --  ??? subtype predicate not generated yet
 
+   type Value_Type_Array is array (Positive range <>)
+     of Value_Type_Id;
+
    type Value_Type_OId is new
      W_Value_Type_OId;
    --  ??? subtype predicate not generated yet
@@ -5300,6 +5735,9 @@ package Why.Ids is
    type Computation_Type_Id is new
      W_Computation_Type_Id;
    --  ??? subtype predicate not generated yet
+
+   type Computation_Type_Array is array (Positive range <>)
+     of Computation_Type_Id;
 
    type Computation_Type_OId is new
      W_Computation_Type_OId;
@@ -5317,6 +5755,9 @@ package Why.Ids is
      W_Prog_Id;
    --  ??? subtype predicate not generated yet
 
+   type Prog_Array is array (Positive range <>)
+     of Prog_Id;
+
    type Prog_OId is new
      W_Prog_OId;
    --  ??? subtype predicate not generated yet
@@ -5332,6 +5773,9 @@ package Why.Ids is
    type Infix_Id is new
      W_Infix_Id;
    --  ??? subtype predicate not generated yet
+
+   type Infix_Array is array (Positive range <>)
+     of Infix_Id;
 
    type Infix_OId is new
      W_Infix_OId;
@@ -5349,6 +5793,9 @@ package Why.Ids is
      W_Prefix_Id;
    --  ??? subtype predicate not generated yet
 
+   type Prefix_Array is array (Positive range <>)
+     of Prefix_Id;
+
    type Prefix_OId is new
      W_Prefix_OId;
    --  ??? subtype predicate not generated yet
@@ -5364,6 +5811,9 @@ package Why.Ids is
    type Declaration_Id is new
      W_Declaration_Id;
    --  ??? subtype predicate not generated yet
+
+   type Declaration_Array is array (Positive range <>)
+     of Declaration_Id;
 
    type Declaration_OId is new
      W_Declaration_OId;
@@ -5381,6 +5831,9 @@ package Why.Ids is
      W_Any_Node_Id;
    --  ??? subtype predicate not generated yet
 
+   type Any_Node_Array is array (Positive range <>)
+     of Any_Node_Id;
+
    type Any_Node_OId is new
      W_Any_Node_OId;
    --  ??? subtype predicate not generated yet
@@ -5396,6 +5849,9 @@ package Why.Ids is
    type Type_Definition_Id is new
      W_Type_Definition_Id;
    --  ??? subtype predicate not generated yet
+
+   type Type_Definition_Array is array (Positive range <>)
+     of Type_Definition_Id;
 
    type Type_Definition_OId is new
      W_Type_Definition_OId;

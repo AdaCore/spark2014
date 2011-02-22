@@ -136,9 +136,9 @@ package body Xkind_Ids is
                PL (O, "--  ??? subtype predicate not generated yet");
             end if;
 
-            if Kind = Regular and then Multiplicity = Id_One then
+            if Kind in Regular .. Derived and then Multiplicity = Id_One then
                NL (O);
-               PL (O, "type " & Arr_Type (Prefix)
+               PL (O, "type " & Arr_Type (Prefix, Kind)
                    & " is array (Positive range <>)");
                PL (O, "  of " & Id_Subtype (Prefix, Kind, Multiplicity) & ";");
             end if;
