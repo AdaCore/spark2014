@@ -286,7 +286,7 @@ package body Xtree_Builders is
 
                PL (O, "declare");
                Relative_Indent (O, 3);
-               PL (O, "Node : constant " & Unchecked_Element_Type_Name (FI)
+               PL (O, "Node : constant " & Element_Type_Name (FI, Regular)
                    & " := Element (Position);");
                Relative_Indent (O, -3);
                PL (O, "begin");
@@ -401,7 +401,7 @@ package body Xtree_Builders is
          end if;
 
          P (O, ": constant ");
-         P (O, Id_Type_Name (FI));
+         P (O, Type_Name (FI, Regular));
 
          PL (O, " :=");
          Relative_Indent (O, 3);
@@ -529,9 +529,9 @@ package body Xtree_Builders is
       end if;
 
       if BK = Builder_Unchecked then
-         P (O, "return " & Unchecked_Id_Type_Name (Kind));
+         P (O, "return " & Id_Subtype (Kind, Unchecked));
       else
-         P (O, "return " & Id_Type_Name (Kind));
+         P (O, "return " & Id_Subtype (Kind));
       end if;
 
       Relative_Indent (O, -2);
@@ -852,7 +852,7 @@ package body Xtree_Builders is
          P (O, Node_Id_Param);
          Adjust_Columns (O, Node_Id_Param'Length, Max_Param_Len);
          P (O, ": ");
-         P (O, Id_Type_Name (Prefix));
+         P (O, Id_Subtype (Prefix));
       end Print_Id_Parameter_Specification;
 
       -----------------------------------
@@ -870,7 +870,7 @@ package body Xtree_Builders is
          Adjust_Columns (O, Name_Len, Max_Param_Len);
 
          P (O, ": ");
-         P (O, Id_Type_Name (FI));
+         P (O, Type_Name (FI, Regular));
 
          if Has_Default_Value (FI, Builder_Regular, In_Builder_Spec) then
             P (O, " := ");
@@ -894,7 +894,7 @@ package body Xtree_Builders is
       Print_Id_Parameter_Specification;
       PL (O, ")");
       Relative_Indent (O, -1);
-      P (O, "return " & Id_Type_Name (Prefix));
+      P (O, "return " & Id_Subtype (Prefix));
       Relative_Indent (O, -2);
    end Print_Class_Copy_Builder_Specification;
 

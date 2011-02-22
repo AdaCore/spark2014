@@ -154,9 +154,9 @@ package body Xtree_Mutators is
       Print_Mutator_Specification
         (O           => O,
          Name        => List_Op_Name (Kind, FI, List_Op),
-         Param_Type  => Unchecked_Id_Type_Name (Kind),
+         Param_Type  => Id_Subtype (Kind, Unchecked),
          Field_Param => Element_Param,
-         Field_Type  => Unchecked_Element_Type_Name (FI));
+         Field_Type  => Element_Type_Name (FI, Regular));
    end Print_List_Op_Specification;
 
    --------------------------
@@ -186,7 +186,7 @@ package body Xtree_Mutators is
             Name        => MN,
             Param_Type  => "Why_Node_Id",
             Field_Param => Param_Name (FI),
-            Field_Type  => Id_Type_Name (FI));
+            Field_Type  => Type_Name (FI, Regular));
          NL (O);
          PL (O, "is");
          Print_Setter_Implementation (O, W_Unused_At_Start, FI);
@@ -238,7 +238,7 @@ package body Xtree_Mutators is
             Name        => Mutator_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
             Field_Param => Param_Name (FI),
-            Field_Type  => Id_Type_Name (FI));
+            Field_Type  => Type_Name (FI, Regular));
          PL (O, ";");
 
          if Next (Position) /= No_Element then
@@ -484,9 +484,9 @@ package body Xtree_Mutators is
       Print_Mutator_Specification
         (O           => O,
          Name        => Mutator_Name (Kind, FI),
-         Param_Type  => Unchecked_Id_Type_Name (Kind),
+         Param_Type  => Id_Subtype (Kind, Unchecked),
          Field_Param => Param_Name (FI),
-         Field_Type  => Unchecked_Id_Type_Name (FI));
+         Field_Type  => Type_Name (FI, Unchecked));
    end Print_Setter_Specification;
 
    ----------------------------------

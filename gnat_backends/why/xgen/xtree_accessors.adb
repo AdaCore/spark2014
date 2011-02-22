@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;      use Why.Sinfo;
-with Xtree_Tables;   use Xtree_Tables;
+with Why.Sinfo;    use Why.Sinfo;
+with Xtree_Tables; use Xtree_Tables;
+with Xkind_Tables; use Xkind_Tables;
 
 package body Xtree_Accessors is
 
@@ -84,7 +85,7 @@ package body Xtree_Accessors is
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
-            Return_Type => Id_Type_Name (FI));
+            Return_Type => Type_Name (FI, Regular));
          PL (O, " is");
          Relative_Indent (O, 2);
          Print_Accessor_Expression (O, FI);
@@ -136,7 +137,7 @@ package body Xtree_Accessors is
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
-            Return_Type => Id_Type_Name (FI));
+            Return_Type => Type_Name (FI, Regular));
          PL (O, ";");
 
          if Next (Position) /= No_Element then
@@ -265,8 +266,8 @@ package body Xtree_Accessors is
       Print_Accessor_Specification
         (O           => O,
          Name        => Accessor_Name (Kind, FI),
-         Param_Type  => Id_Type_Name (Kind),
-         Return_Type => Id_Type_Name (FI));
+         Param_Type  => Id_Subtype (Kind),
+         Return_Type => Type_Name (FI, Regular));
    end Print_Accessor_Specification;
 
    procedure Print_Accessor_Specification

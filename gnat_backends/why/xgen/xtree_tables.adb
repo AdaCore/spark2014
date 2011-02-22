@@ -24,9 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Conversions; use Ada.Characters.Conversions;
-with Ada.Containers; use Ada.Containers;
-with GNAT.Case_Util; use GNAT.Case_Util;
-with Utils;          use Utils;
+with Ada.Containers;             use Ada.Containers;
+with GNAT.Case_Util;             use GNAT.Case_Util;
+with Utils;                      use Utils;
 
 package body Xtree_Tables is
 
@@ -96,9 +96,9 @@ package body Xtree_Tables is
       if Context = In_Builder_Spec
         and then Is_List (FI)
       then
-         return Strip_Suffix (Id_Type_Name (FI)) & "_Array";
+         return Strip_Suffix (Type_Name (FI, Regular)) & "_Array";
       else
-         return Id_Type_Name (FI);
+         return Type_Name (FI, Regular);
       end if;
    end Builder_Param_Type;
 
@@ -111,13 +111,13 @@ package body Xtree_Tables is
       BK      : Builder_Kind := Builder_Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String is
-      Type_Name : constant Wide_String := Id_Type_Name (FI);
+      TN : constant Wide_String := Type_Name (FI, Regular);
    begin
-      if Type_Name = "Why_Node_Id" then
+      if TN = "Why_Node_Id" then
          return "Why_Empty";
-      elsif Type_Name = "Node_Id" then
+      elsif TN = "Node_Id" then
          return "Empty";
-      elsif Type_Name = "Why_Node_Set" then
+      elsif TN = "Why_Node_Set" then
          return "Why_Empty";
       elsif Is_List (FI)
         and then (BK = Builder_Unchecked or else Maybe_Null (FI))
@@ -134,6 +134,27 @@ package body Xtree_Tables is
          return "";
       end if;
    end Default_Value;
+
+   -----------------------
+   -- Element_Type_Name --
+   -----------------------
+
+   function Element_Type_Name
+     (FI   : Field_Info;
+      Kind : Id_Kind)
+     return Wide_String is
+   begin
+      case Kind is
+         when Opaque =>
+            return Strip_Suffix (FI.Id_Type.all) & "_Opaque_Id";
+         when Unchecked =>
+            return Strip_Suffix (FI.Id_Type.all) & "_Unchecked_Id";
+         when Regular =>
+            return Strip_Suffix (FI.Id_Type.all) & "_Id";
+         when Derived =>
+            return Strip_Prefix (Element_Type_Name (FI, Regular));
+      end case;
+   end Element_Type_Name;
 
    ----------------
    -- Field_Kind --
@@ -185,25 +206,6 @@ package body Xtree_Tables is
    begin
       return Why_Tree_Info (Kind).Fields.Length > 0;
    end Has_Variant_Part;
-
-   ------------------
-   -- Id_Type_Name --
-   ------------------
-
-   function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String is
-   begin
-      return Id_Type_Name (Mixed_Case_Name (Kind));
-   end Id_Type_Name;
-
-   function Id_Type_Name (Prefix : Wide_String) return Wide_String is
-   begin
-      return Prefix & "_Id";
-   end Id_Type_Name;
-
-   function Id_Type_Name (FI : Field_Info) return Wide_String is
-   begin
-      return FI.Id_Type.all;
-   end Id_Type_Name;
 
    ----------------
    -- In_Variant --
@@ -456,17 +458,6 @@ package body Xtree_Tables is
       end if;
    end Max_Param_Length;
 
-   ---------------------
-   -- Mixed_Case_Name --
-   ---------------------
-
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String is
-      Name : String := Why_Node_Kind'Image (Kind);
-   begin
-      To_Mixed (Name);
-      return To_Wide_String (Name);
-   end Mixed_Case_Name;
-
    ---------------------------
    -- To_Special_Field_Kind --
    ---------------------------
@@ -514,32 +505,19 @@ package body Xtree_Tables is
       return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Pre_Op";
    end Traversal_Pre_Op;
 
-   ---------------------------------
-   -- Unchecked_Element_Type_Name --
-   ---------------------------------
+   ---------------
+   -- Type_Name --
+   ---------------
 
-   function Unchecked_Element_Type_Name (FI : Field_Info) return Wide_String is
+   function Type_Name (FI   : Field_Info; Kind : Id_Kind) return Wide_String is
    begin
-      return Strip_Suffix (FI.Id_Type.all) & "_Id";
-   end Unchecked_Element_Type_Name;
-
-   ----------------------------
-   -- Unchecked_Id_Type_Name --
-   ----------------------------
-
-   function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String is
-   begin
-      return Mixed_Case_Name (Kind) & "_Unchecked_Id";
-   end Unchecked_Id_Type_Name;
-
-   function Unchecked_Id_Type_Name (FI : Field_Info) return Wide_String is
-      Sx : constant Wide_String := Suffix (FI.Id_Type.all);
-   begin
-      if FI.Is_Why_Id then
-         return Strip_Suffix (FI.Id_Type.all) & "_Unchecked_" & Sx;
+      if Is_Why_Id (FI) then
+         return Id_Subtype (Strip_Suffix (FI.Id_Type.all),
+                            Kind,
+                            Multiplicity (FI));
       else
-         return FI.Id_Type.all;
+         return FI.Field_Type.all;
       end if;
-   end Unchecked_Id_Type_Name;
+   end Type_Name;
 
 end Xtree_Tables;

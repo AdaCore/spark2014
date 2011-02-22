@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Utils; use Utils;
+with Ada.Characters.Conversions; use Ada.Characters.Conversions;
+with GNAT.Case_Util;             use GNAT.Case_Util;
+with Utils;                      use Utils;
 
 package body Xkind_Tables is
 
@@ -120,9 +122,18 @@ package body Xkind_Tables is
    ----------------
 
    function Id_Subtype
+     (N_Kind       : Why_Node_Kind;
+      I_Kind       : Id_Kind := Regular;
+      Multiplicity : Id_Multiplicity := Id_One)
+     return Wide_String is
+   begin
+      return Id_Subtype (Mixed_Case_Name (N_Kind), I_Kind, Multiplicity);
+   end Id_Subtype;
+
+   function Id_Subtype
      (Prefix       : Wide_String;
-      Kind         : Id_Kind;
-      Multiplicity : Id_Multiplicity)
+      Kind         : Id_Kind := Regular;
+      Multiplicity : Id_Multiplicity := Id_One)
      return Wide_String
    is
       function Kind_Suffix return Wide_String;
@@ -169,6 +180,17 @@ package body Xkind_Tables is
         & Multiplicity_Suffix (M)
         & "_Kind_Valid";
    end Kind_Check;
+
+   ---------------------
+   -- Mixed_Case_Name --
+   ---------------------
+
+   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String is
+      Name : String := Why_Node_Kind'Image (Kind);
+   begin
+      To_Mixed (Name);
+      return To_Wide_String (Name);
+   end Mixed_Case_Name;
 
    -------------------------
    -- Multiplicity_Suffix --

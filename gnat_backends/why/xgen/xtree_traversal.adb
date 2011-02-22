@@ -25,6 +25,7 @@
 
 with Why.Sinfo;      use Why.Sinfo;
 with Xtree_Tables;   use Xtree_Tables;
+with Xkind_Tables;   use Xkind_Tables;
 
 package body Xtree_Traversal is
 
@@ -319,7 +320,7 @@ package body Xtree_Traversal is
    begin
       PL (O, "procedure " & Op_Name);
       PL (O, "  (State : in out " & State_Type & ";");
-      P  (O, "   Node  : " & Id_Type_Name (Kind) & ")");
+      P  (O, "   Node  : " & Id_Subtype (Kind) & ")");
    end Print_Traversal_Op_Specification;
 
    ------------------------------------------

@@ -177,9 +177,6 @@ package Xtree_Tables is
    --  Return the maximum length of a parameter for the given node kind;
    --  this is meant to be used to have proper indentation of these parameters.
 
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
-   --  Return the mixed case name of the given node kind
-
    function Accessor_Name
      (Kind : Why_Node_Kind;
       FI   : Field_Info)
@@ -267,15 +264,20 @@ package Xtree_Tables is
    pragma Precondition (Is_Why_Id (FI));
    --  For a node field, return its kind
 
-   function Id_Type_Name (Prefix : Wide_String) return Wide_String;
-   function Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Id_Type_Name (FI : Field_Info) return Wide_String;
-   function Unchecked_Id_Type_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Unchecked_Id_Type_Name (FI : Field_Info) return Wide_String;
-   --  Return the kind-specific id subtype name
+   function Type_Name
+     (FI   : Field_Info;
+      Kind : Id_Kind)
+     return Wide_String;
+   --  Return the kind-specific id subtype name if FI is a node;
+   --  otherwise, return the type of this field (e.g. Name_Id, Uint, Ureal),
+   --  ignoring Kind parameter.
 
-   function Unchecked_Element_Type_Name (FI : Field_Info) return Wide_String;
+   function Element_Type_Name
+     (FI   : Field_Info;
+      Kind : Id_Kind)
+     return Wide_String;
    pragma Precondition (Is_List (FI));
+   --  Return the id type of elements of FI, assuming that FI is a list
 
    function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
    --  Return the kind-specific list subtype name

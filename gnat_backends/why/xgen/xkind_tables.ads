@@ -70,6 +70,9 @@ package Xkind_Tables is
    --  * Id_Some is "List",  representing at least one node;
    --  * Id_Set  is "OList", representing any number of nodes.
 
+   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
+   --  Return the mixed case name of the given node kind
+
    function Multiplicity_Suffix
      (Multiplicity : Id_Multiplicity)
      return Wide_String;
@@ -77,12 +80,19 @@ package Xkind_Tables is
 
    function Id_Subtype
      (Prefix       : Wide_String;
-      Kind         : Id_Kind;
-      Multiplicity : Id_Multiplicity)
+      Kind         : Id_Kind := Regular;
+      Multiplicity : Id_Multiplicity := Id_One)
      return Wide_String;
    --  Return the subtype for the given Kind and the given Multiplicity.
    --  e.g. Id_Subtype ("W_Type", Opaque, Lone) would return
    --  "W_Type_Opaque_OId".
+
+   function Id_Subtype
+     (N_Kind       : Why_Node_Kind;
+      I_Kind       : Id_Kind := Regular;
+      Multiplicity : Id_Multiplicity := Id_One)
+     return Wide_String;
+   --  Ditto
 
    function Arr_Type (Prefix : Wide_String) return Wide_String;
    --  Return the name of an array type for the elements of the given Prefix
