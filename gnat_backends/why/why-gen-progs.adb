@@ -112,6 +112,10 @@ package body Why.Gen.Progs is
       end if;
    end Insert_Conversion;
 
+   --------------------------
+   -- New_Assume_Statement --
+   --------------------------
+
    function New_Assume_Statement
       (Ada_Node : Node_Id;
        Pred     : W_Predicate_Id)
