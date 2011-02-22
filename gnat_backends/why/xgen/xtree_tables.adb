@@ -58,14 +58,18 @@ package body Xtree_Tables is
 
    function Builder_Name
      (Prefix : Wide_String;
-      BK     : Builder_Kind := Builder_Regular)
+      IK     : Id_Kind := Regular;
+      BK     : Builder_Kind := Builder_Children)
      return Wide_String is
    begin
       case BK is
-         when Builder_Regular =>
-            return "New_" & Strip_Prefix (Prefix);
-         when Builder_Unchecked =>
-            return "New_Unchecked_" & Strip_Prefix (Prefix);
+         when Builder_Children =>
+            if IK = Unchecked then
+               return "New_Unchecked_" & Strip_Prefix (Prefix);
+            else
+               return "New_" & Strip_Prefix (Prefix);
+            end if;
+
          when Builder_Copy =>
             return "Duplicate_" & Strip_Prefix (Prefix);
       end case;
@@ -77,10 +81,11 @@ package body Xtree_Tables is
 
    function Builder_Name
      (Kind : Why_Node_Kind;
-      BK   : Builder_Kind := Builder_Regular)
+      IK   : Id_Kind := Regular;
+      BK   : Builder_Kind := Builder_Children)
      return Wide_String is
    begin
-      return Builder_Name (Mixed_Case_Name (Kind), BK);
+      return Builder_Name (Mixed_Case_Name (Kind), IK, BK);
    end Builder_Name;
 
    ------------------------
@@ -108,7 +113,7 @@ package body Xtree_Tables is
 
    function Default_Value
      (FI      : Field_Info;
-      BK      : Builder_Kind := Builder_Regular;
+      IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String is
       TN : constant Wide_String := Type_Name (FI, Regular);
@@ -120,7 +125,7 @@ package body Xtree_Tables is
       elsif TN = "Why_Node_Set" then
          return "Why_Empty";
       elsif Is_List (FI)
-        and then (BK = Builder_Unchecked or else Maybe_Null (FI))
+        and then (IK = Unchecked or else Maybe_Null (FI))
       then
          if Context = In_Builder_Body then
             return "New_List";
@@ -128,7 +133,7 @@ package body Xtree_Tables is
             return "(2 .. 1 => <>)";
          end if;
       elsif Is_Why_Id (FI)
-        and then (BK = Builder_Unchecked or else Maybe_Null (FI)) then
+        and then (IK = Unchecked or else Maybe_Null (FI)) then
          return "Why_Empty";
       else
          return "";
@@ -190,11 +195,11 @@ package body Xtree_Tables is
 
    function Has_Default_Value
      (FI      : Field_Info;
-      BK      : Builder_Kind := Builder_Regular;
+      IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Boolean is
    begin
-      return Default_Value (FI, BK, Context) /= "";
+      return Default_Value (FI, IK, Context) /= "";
    end Has_Default_Value;
 
    ----------------------

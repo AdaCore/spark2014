@@ -204,12 +204,9 @@ package Xtree_Tables is
      return Wide_String;
    --  Return the mutator name for the given field of the given node kind
 
-   type Builder_Kind is (Builder_Regular, Builder_Unchecked, Builder_Copy);
-   --  Type of builder. Builder_Regular for building builders
-   --  that return regular ids (to valid nodes); Builder_Unchecked
-   --  for builders that returns unchecked ids (to kind-valid nodes).
-   --  Builder_Copy for builders that duplicate the subtree given in
-   --  parameter.
+   type Builder_Kind is (Builder_Children, Builder_Copy);
+   --  Type of builder. Builder_Children for building a node from its
+   --  chilbren; Builder_Copy for building a node by duplicating a subtree.
 
    type Builder_Context is (In_Builder_Spec, In_Builder_Body);
    --  Context in which we are emitting a construct. This is mainly use
@@ -219,13 +216,15 @@ package Xtree_Tables is
 
    function Builder_Name
      (Kind : Why_Node_Kind;
-      BK   : Builder_Kind := Builder_Regular)
+      IK   : Id_Kind := Regular;
+      BK   : Builder_Kind := Builder_Children)
      return Wide_String;
    --  Return the builder name for the given node kind
 
    function Builder_Name
      (Prefix : Wide_String;
-      BK     : Builder_Kind := Builder_Regular)
+      IK     : Id_Kind := Regular;
+      BK     : Builder_Kind := Builder_Children)
      return Wide_String;
 
    function Builder_Param_Type
@@ -235,14 +234,14 @@ package Xtree_Tables is
 
    function Has_Default_Value
      (FI      : Field_Info;
-      BK      : Builder_Kind := Builder_Regular;
+      IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Boolean;
    --  Return True if the given field has an appropriate default value
 
    function Default_Value
      (FI      : Field_Info;
-      BK      : Builder_Kind := Builder_Regular;
+      IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
      return Wide_String;
    --  Return a default value for the given field if one exists, "" otherwise
