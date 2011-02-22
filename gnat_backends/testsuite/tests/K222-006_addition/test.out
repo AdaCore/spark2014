@@ -1,0 +1,14 @@
+{
+"Gnat2why__1": {
+"invalid": [
+   "def___add__addtwo_po_1"
+],
+"valid": []
+},
+"Gnat2why__2": {
+"invalid": [],
+"valid": [
+"def___add__addtwo_po_2"
+]
+}
+}
