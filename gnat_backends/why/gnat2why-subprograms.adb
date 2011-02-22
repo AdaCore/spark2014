@@ -402,8 +402,12 @@ package body Gnat2Why.Subprograms is
       --  arguments.
 
       function Compute_Context (Initial_Body : W_Prog_Id) return W_Prog_Id;
-      --  Add a "let" binding to Why body for each local variable of the
-      --  procedure.
+      --  Deal with object declarations at the beginning of the function.
+      --  For local variables that originate from the source, simply assign
+      --  the new value to the variable; Such variables have been declared
+      --  globally.
+      --  For local variables that are introduced by the compiler, add a "let"
+      --  binding to Why body for each local variable of the procedure.
 
       function Compute_Effects return W_Effects_Id;
       --  Compute the effects of the generated Why function
@@ -415,6 +419,18 @@ package body Gnat2Why.Subprograms is
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
       --  Generate a label only if With_Label is True.
+
+      function Initial_Assertions
+        (Initial_Body : W_Prog_Id;
+         Pre          : W_Predicate_Id)
+         return W_Prog_Id;
+      --  Add a "precondition of precondition" to the body of the subprogram,
+      --  as follows. Given Ada subprogram F with Pre P and Post Q, and
+      --  translation of body B, generate the new body
+      --    <asserts corresponding to precondition P>
+      --    <assume P>
+      --    <B>
+      --    <asserts corresponding to postcondition Q>
 
       --------------------
       -- Compute_Arrows --
@@ -664,6 +680,49 @@ package body Gnat2Why.Subprograms is
          end if;
       end Compute_Spec;
 
+      ------------------------
+      -- Initial_Assertions --
+      ------------------------
+
+      function Initial_Assertions
+        (Initial_Body : W_Prog_Id;
+         Pre          : W_Predicate_Id)
+         return W_Prog_Id
+      is
+         Cur_Decl : Node_Id := Last (Declarations (Node));
+         Cur_Body : W_Prog_Id :=
+            New_Statement_Sequence
+               (Ada_Node => Cur_Decl,
+                Statements =>
+                  (1 =>
+                     New_Assume_Statement
+                        (Ada_Node => Cur_Decl,
+                         Pred => Pre),
+                   2 => Initial_Body));
+      begin
+         while Nkind (Cur_Decl) /= N_Empty loop
+            if Nkind (Cur_Decl) = N_Raise_Constraint_Error then
+               declare
+                  Pred : constant W_Predicate_Id :=
+                     New_Negation (Operand =>
+                        Why_Predicate_Of_Ada_Expr (Condition (Cur_Decl)));
+               begin
+                  Cur_Body :=
+                     New_Statement_Sequence
+                       (Ada_Node => Cur_Decl,
+                        Statements =>
+                           (1 =>
+                              New_Located_Assert
+                                 (Ada_Node => Cur_Decl,
+                                  Pred => Pred),
+                           2 => Cur_Body));
+               end;
+            end if;
+            Prev (Cur_Decl);
+         end loop;
+         return Cur_Body;
+      end Initial_Assertions;
+
       Ent : constant Entity_Id := Get_Unique_Entity_For_Decl (Node);
 
    --  Start of processing for Why_Decl_of_Ada_Subprogram
@@ -680,22 +739,25 @@ package body Gnat2Why.Subprograms is
             declare
                Stmts    : constant List_Id :=
                             Statements (Handled_Statement_Sequence (Node));
+               Why_Stmt : constant W_Prog_Id :=
+                           Why_Expr_Of_Ada_Stmts (Stmts);
+               Pre      : constant W_Predicate_Id :=
+                  Compute_Spec (Name_Precondition);
                Why_Body : constant W_Prog_Id :=
-                            Compute_Context (Why_Expr_Of_Ada_Stmts (Stmts));
+                            Initial_Assertions
+                              (Compute_Context (Why_Stmt),
+                               Pre);
             begin
                --  ??? TBD deal with expression functions : transform into Why
                --  'function'
                --  ??? TBD compute a VC for the TCC of the Precondition
-
-               --  There really is no difference between functions and
-               --  procedures from the point of view of Why
+               --  We fix "true" as precondition and assume the precondition
+               --  in the subprogram body
                New_Global_Binding
                  (File    => File,
                   Name    =>
                     New_Definition_Name (Get_Name_String (Name)),
                   Binders => Compute_Binders,
-                  Pre     =>
-                    New_Assertion (Pred => Compute_Spec (Name_Precondition)),
                   Post    =>
                     New_Assertion
                        (Pred =>
