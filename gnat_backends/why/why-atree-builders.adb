@@ -11687,4 +11687,4327 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Include_Declaration;
 
+   -------------------
+   -- New_Type_Prop --
+   -------------------
+
+   function New_Type_Prop
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Type_Prop);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Prop);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Type_Prop;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Type_Int;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Type_Int;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Type_Int;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Type_Int;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Type_Int;
+
+   ------------------
+   -- New_Type_Int --
+   ------------------
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Type_Int);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Int);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Type_Int;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Bool --
+   -------------------
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Type_Bool);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Bool);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Type_Bool;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Real --
+   -------------------
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Type_Real);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Real);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Type_Real;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -------------------
+   -- New_Type_Unit --
+   -------------------
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Type_Unit);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type_Unit);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Type_Unit;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------
+   -- New_Abstract_Type --
+   -----------------------
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Abstract_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Abstract_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Abstract_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------
+   -- New_Generic_Formal_Type --
+   -----------------------------
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Generic_Formal_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Formal_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GFT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GFT_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Generic_Formal_Type;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Primitive_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Primitive_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Logic_Return_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Return_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   -----------------------------------
+   -- New_Generic_Actual_Type_Chain --
+   -----------------------------------
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Generic_Actual_Type_Chain);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Type_Chain'Length > 0);
+      Result.GATC_Type_Chain := New_List;
+      for J in Type_Chain'Range loop
+         pragma Assert
+           (Primitive_Type_Id_Kind_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         pragma Assert
+           (Primitive_Type_Id_Valid
+            (+(W_Primitive_Type_Id (Type_Chain (J)))));
+         Append
+           (Result.GATC_Type_Chain,
+            +(W_Primitive_Type_Id (Type_Chain (J))));
+      end loop;
+      Set_Link (Result.GATC_Type_Chain, New_Id);
+      Result.GATC_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GATC_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Generic_Actual_Type_Chain;
+
+   --------------------
+   -- New_Array_Type --
+   --------------------
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Logic_Arg_Type_Id
+   is
+      Result : Why_Node (W_Array_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Component_Type := +(W_Primitive_Type_Id (Component_Type));
+      Set_Link (Result.AT_Component_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Arg_Type_Id (New_Id);
+   end New_Array_Type;
+
+   --------------------
+   -- New_Array_Type --
+   --------------------
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Array_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Component_Type := +(W_Primitive_Type_Id (Component_Type));
+      Set_Link (Result.AT_Component_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Array_Type;
+
+   --------------------
+   -- New_Array_Type --
+   --------------------
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Array_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Component_Type := +(W_Primitive_Type_Id (Component_Type));
+      Set_Link (Result.AT_Component_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Array_Type;
+
+   --------------------
+   -- New_Array_Type --
+   --------------------
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Array_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AT_Component_Type := +(W_Primitive_Type_Id (Component_Type));
+      Set_Link (Result.AT_Component_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Array_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Ref_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Ref_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RT_Aliased_Type := +(W_Primitive_Type_Id (Aliased_Type));
+      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Ref_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Ref_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Ref_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RT_Aliased_Type := +(W_Primitive_Type_Id (Aliased_Type));
+      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Ref_Type;
+
+   ------------------
+   -- New_Ref_Type --
+   ------------------
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Ref_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Ref_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RT_Aliased_Type := +(W_Primitive_Type_Id (Aliased_Type));
+      Set_Link (Result.RT_Aliased_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Ref_Type;
+
+   ------------------------------
+   -- New_Protected_Value_Type --
+   ------------------------------
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Simple_Value_Type_Id
+   is
+      Result : Why_Node (W_Protected_Value_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Value_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PVT_Value_Type := +(W_Value_Type_Id (Value_Type));
+      Set_Link (Result.PVT_Value_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Simple_Value_Type_Id (New_Id);
+   end New_Protected_Value_Type;
+
+   ------------------------------
+   -- New_Protected_Value_Type --
+   ------------------------------
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Protected_Value_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Value_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PVT_Value_Type := +(W_Value_Type_Id (Value_Type));
+      Set_Link (Result.PVT_Value_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Protected_Value_Type;
+
+   ------------------------------
+   -- New_Protected_Value_Type --
+   ------------------------------
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Protected_Value_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Value_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PVT_Value_Type := +(W_Value_Type_Id (Value_Type));
+      Set_Link (Result.PVT_Value_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Protected_Value_Type;
+
+   --------------------
+   -- New_Arrow_Type --
+   --------------------
+
+   function New_Arrow_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_OId := Why_Empty;
+      Left     : Simple_Value_Type_Id;
+      Right    : Computation_Type_Id)
+     return Value_Type_Id
+   is
+      Result : Why_Node (W_Arrow_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Arrow_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NA_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.NA_Name, New_Id);
+      Result.NA_Left := +(W_Simple_Value_Type_Id (Left));
+      Set_Link (Result.NA_Left, New_Id);
+      Result.NA_Right := +(W_Computation_Type_Id (Right));
+      Set_Link (Result.NA_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Value_Type_Id (New_Id);
+   end New_Arrow_Type;
+
+   --------------------
+   -- New_Arrow_Type --
+   --------------------
+
+   function New_Arrow_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_OId := Why_Empty;
+      Left     : Simple_Value_Type_Id;
+      Right    : Computation_Type_Id)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Arrow_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Arrow_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NA_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.NA_Name, New_Id);
+      Result.NA_Left := +(W_Simple_Value_Type_Id (Left));
+      Set_Link (Result.NA_Left, New_Id);
+      Result.NA_Right := +(W_Computation_Type_Id (Right));
+      Set_Link (Result.NA_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Arrow_Type;
+
+   --------------------------
+   -- New_Computation_Spec --
+   --------------------------
+
+   function New_Computation_Spec
+     (Ada_Node      : Node_Id := Empty;
+      Precondition  : Precondition_OId := Why_Empty;
+      Result_Name   : Identifier_OId := Why_Empty;
+      Return_Type   : Value_Type_Id;
+      Effects       : Effects_Id;
+      Postcondition : Postcondition_OId := Why_Empty)
+     return Computation_Type_Id
+   is
+      Result : Why_Node (W_Computation_Spec);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Computation_Spec);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.CS_Precondition := +(W_Precondition_Id (Precondition));
+      Set_Link (Result.CS_Precondition, New_Id);
+      Result.CS_Result_Name := +(W_Identifier_Id (Result_Name));
+      Set_Link (Result.CS_Result_Name, New_Id);
+      Result.CS_Return_Type := +(W_Value_Type_Id (Return_Type));
+      Set_Link (Result.CS_Return_Type, New_Id);
+      Result.CS_Effects := +(W_Effects_Id (Effects));
+      Set_Link (Result.CS_Effects, New_Id);
+      Result.CS_Postcondition := +(W_Postcondition_Id (Postcondition));
+      Set_Link (Result.CS_Postcondition, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Computation_Type_Id (New_Id);
+   end New_Computation_Spec;
+
+   --------------------------
+   -- New_Integer_Constant --
+   --------------------------
+
+   function New_Integer_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint)
+     return Term_Id
+   is
+      Result : Why_Node (W_Integer_Constant);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Integer_Constant);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.IC_Value := Value;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Integer_Constant;
+
+   --------------------------
+   -- New_Integer_Constant --
+   --------------------------
+
+   function New_Integer_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint)
+     return Constant_Id
+   is
+      Result : Why_Node (W_Integer_Constant);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Integer_Constant);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.IC_Value := Value;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Constant_Id (New_Id);
+   end New_Integer_Constant;
+
+   -----------------------
+   -- New_Real_Constant --
+   -----------------------
+
+   function New_Real_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Ureal)
+     return Term_Id
+   is
+      Result : Why_Node (W_Real_Constant);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Real_Constant);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RC_Value := Value;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Real_Constant;
+
+   -----------------------
+   -- New_Real_Constant --
+   -----------------------
+
+   function New_Real_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Ureal)
+     return Constant_Id
+   is
+      Result : Why_Node (W_Real_Constant);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Real_Constant);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RC_Value := Value;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Constant_Id (New_Id);
+   end New_Real_Constant;
+
+   ----------------------
+   -- New_True_Literal --
+   ----------------------
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id
+   is
+      Result : Why_Node (W_True_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_True_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_True_Literal;
+
+   ----------------------
+   -- New_True_Literal --
+   ----------------------
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id
+   is
+      Result : Why_Node (W_True_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_True_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Constant_Id (New_Id);
+   end New_True_Literal;
+
+   ----------------------
+   -- New_True_Literal --
+   ----------------------
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_True_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_True_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_True_Literal;
+
+   -----------------------
+   -- New_False_Literal --
+   -----------------------
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id
+   is
+      Result : Why_Node (W_False_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_False_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_False_Literal;
+
+   -----------------------
+   -- New_False_Literal --
+   -----------------------
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id
+   is
+      Result : Why_Node (W_False_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_False_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Constant_Id (New_Id);
+   end New_False_Literal;
+
+   -----------------------
+   -- New_False_Literal --
+   -----------------------
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_False_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_False_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_False_Literal;
+
+   ----------------------
+   -- New_Void_Literal --
+   ----------------------
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id
+   is
+      Result : Why_Node (W_Void_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Void_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Void_Literal;
+
+   ----------------------
+   -- New_Void_Literal --
+   ----------------------
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id
+   is
+      Result : Why_Node (W_Void_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Void_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Constant_Id (New_Id);
+   end New_Void_Literal;
+
+   ----------------------
+   -- New_Void_Literal --
+   ----------------------
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Void_Literal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Void_Literal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Void_Literal;
+
+   -------------------------
+   -- New_Arith_Operation --
+   -------------------------
+
+   function New_Arith_Operation
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Arith_Op_Id;
+      Right    : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Arith_Operation);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Arith_Operation);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AO_Left := +(W_Term_Id (Left));
+      Set_Link (Result.AO_Left, New_Id);
+      Result.AO_Op := +(W_Arith_Op_Id (Op));
+      Set_Link (Result.AO_Op, New_Id);
+      Result.AO_Right := +(W_Term_Id (Right));
+      Set_Link (Result.AO_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Arith_Operation;
+
+   -------------------------
+   -- New_Arith_Operation --
+   -------------------------
+
+   function New_Arith_Operation
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Arith_Op_Id;
+      Right    : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Arith_Operation);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Arith_Operation);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AO_Left := +(W_Term_Id (Left));
+      Set_Link (Result.AO_Left, New_Id);
+      Result.AO_Op := +(W_Arith_Op_Id (Op));
+      Set_Link (Result.AO_Op, New_Id);
+      Result.AO_Right := +(W_Term_Id (Right));
+      Set_Link (Result.AO_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Arith_Operation;
+
+   -----------------------
+   -- New_Negative_Term --
+   -----------------------
+
+   function New_Negative_Term
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Negative_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Negative_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NT_Operand := +(W_Term_Id (Operand));
+      Set_Link (Result.NT_Operand, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Negative_Term;
+
+   -----------------------
+   -- New_Negative_Term --
+   -----------------------
+
+   function New_Negative_Term
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Negative_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Negative_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NT_Operand := +(W_Term_Id (Operand));
+      Set_Link (Result.NT_Operand, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Negative_Term;
+
+   -------------------------
+   -- New_Term_Identifier --
+   -------------------------
+
+   function New_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Label    : Identifier_OId := Why_Empty)
+     return Term_Id
+   is
+      Result : Why_Node (W_Term_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Term_Identifier);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.TIL_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.TIL_Name, New_Id);
+      Result.TIL_Label := +(W_Identifier_Id (Label));
+      Set_Link (Result.TIL_Label, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Term_Identifier;
+
+   -------------------------
+   -- New_Term_Identifier --
+   -------------------------
+
+   function New_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Label    : Identifier_OId := Why_Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Term_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Term_Identifier);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.TIL_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.TIL_Name, New_Id);
+      Result.TIL_Label := +(W_Identifier_Id (Label));
+      Set_Link (Result.TIL_Label, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Term_Identifier;
+
+   -------------------
+   -- New_Operation --
+   -------------------
+
+   function New_Operation
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Term_Id
+   is
+      Result : Why_Node (W_Operation);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Operation);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.O_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.O_Name, New_Id);
+      pragma Assert (Parameters'Length > 0);
+      Result.O_Parameters := New_List;
+      for J in Parameters'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         pragma Assert
+           (Term_Id_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         Append
+           (Result.O_Parameters,
+            +(W_Term_Id (Parameters (J))));
+      end loop;
+      Set_Link (Result.O_Parameters, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Operation;
+
+   -------------------
+   -- New_Operation --
+   -------------------
+
+   function New_Operation
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Operation);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Operation);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.O_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.O_Name, New_Id);
+      pragma Assert (Parameters'Length > 0);
+      Result.O_Parameters := New_List;
+      for J in Parameters'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         pragma Assert
+           (Term_Id_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         Append
+           (Result.O_Parameters,
+            +(W_Term_Id (Parameters (J))));
+      end loop;
+      Set_Link (Result.O_Parameters, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Operation;
+
+   --------------------
+   -- New_Named_Term --
+   --------------------
+
+   function New_Named_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Term     : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Named_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Named_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.NT_Name, New_Id);
+      Result.NT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.NT_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Named_Term;
+
+   --------------------
+   -- New_Named_Term --
+   --------------------
+
+   function New_Named_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Term     : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Named_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Named_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.NT_Name, New_Id);
+      Result.NT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.NT_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Named_Term;
+
+   --------------------------
+   -- New_Conditional_Term --
+   --------------------------
+
+   function New_Conditional_Term
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Term_Id;
+      Else_Part : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Conditional_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Conditional_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.CT_Condition := +(W_Term_Id (Condition));
+      Set_Link (Result.CT_Condition, New_Id);
+      Result.CT_Then_Part := +(W_Term_Id (Then_Part));
+      Set_Link (Result.CT_Then_Part, New_Id);
+      Result.CT_Else_Part := +(W_Term_Id (Else_Part));
+      Set_Link (Result.CT_Else_Part, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Conditional_Term;
+
+   --------------------------
+   -- New_Conditional_Term --
+   --------------------------
+
+   function New_Conditional_Term
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Term_Id;
+      Else_Part : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Conditional_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Conditional_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.CT_Condition := +(W_Term_Id (Condition));
+      Set_Link (Result.CT_Condition, New_Id);
+      Result.CT_Then_Part := +(W_Term_Id (Then_Part));
+      Set_Link (Result.CT_Then_Part, New_Id);
+      Result.CT_Else_Part := +(W_Term_Id (Else_Part));
+      Set_Link (Result.CT_Else_Part, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Conditional_Term;
+
+   -----------------------
+   -- New_Matching_Term --
+   -----------------------
+
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id;
+      Branches : Match_Case_Array)
+     return Term_Id
+   is
+      Result : Why_Node (W_Matching_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Matching_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.MT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.MT_Term, New_Id);
+      pragma Assert (Branches'Length > 0);
+      Result.MT_Branches := New_List;
+      for J in Branches'Range loop
+         pragma Assert
+           (Match_Case_Id_Kind_Valid
+            (+(W_Match_Case_Id (Branches (J)))));
+         pragma Assert
+           (Match_Case_Id_Valid
+            (+(W_Match_Case_Id (Branches (J)))));
+         Append
+           (Result.MT_Branches,
+            +(W_Match_Case_Id (Branches (J))));
+      end loop;
+      Set_Link (Result.MT_Branches, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Matching_Term;
+
+   -----------------------
+   -- New_Matching_Term --
+   -----------------------
+
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id;
+      Branches : Match_Case_Array)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Matching_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Matching_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.MT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.MT_Term, New_Id);
+      pragma Assert (Branches'Length > 0);
+      Result.MT_Branches := New_List;
+      for J in Branches'Range loop
+         pragma Assert
+           (Match_Case_Id_Kind_Valid
+            (+(W_Match_Case_Id (Branches (J)))));
+         pragma Assert
+           (Match_Case_Id_Valid
+            (+(W_Match_Case_Id (Branches (J)))));
+         Append
+           (Result.MT_Branches,
+            +(W_Match_Case_Id (Branches (J))));
+      end loop;
+      Set_Link (Result.MT_Branches, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Matching_Term;
+
+   ----------------------
+   -- New_Binding_Term --
+   ----------------------
+
+   function New_Binding_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Binding_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BT_Name, New_Id);
+      Result.BT_Def := +(W_Term_Id (Def));
+      Set_Link (Result.BT_Def, New_Id);
+      Result.BT_Context := +(W_Term_Id (Context));
+      Set_Link (Result.BT_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Binding_Term;
+
+   ----------------------
+   -- New_Binding_Term --
+   ----------------------
+
+   function New_Binding_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Binding_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BT_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BT_Name, New_Id);
+      Result.BT_Def := +(W_Term_Id (Def));
+      Set_Link (Result.BT_Def, New_Id);
+      Result.BT_Context := +(W_Term_Id (Context));
+      Set_Link (Result.BT_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Binding_Term;
+
+   ------------------------
+   -- New_Protected_Term --
+   ------------------------
+
+   function New_Protected_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id)
+     return Term_Id
+   is
+      Result : Why_Node (W_Protected_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.BT_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Term_Id (New_Id);
+   end New_Protected_Term;
+
+   ------------------------
+   -- New_Protected_Term --
+   ------------------------
+
+   function New_Protected_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Protected_Term);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Term);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BT_Term := +(W_Term_Id (Term));
+      Set_Link (Result.BT_Term, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Protected_Term;
+
+   ----------------
+   -- New_Op_Add --
+   ----------------
+
+   function New_Op_Add
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id
+   is
+      Result : Why_Node (W_Op_Add);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Add);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Arith_Op_Id (New_Id);
+   end New_Op_Add;
+
+   ----------------
+   -- New_Op_Add --
+   ----------------
+
+   function New_Op_Add
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Op_Add);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Add);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Op_Add;
+
+   ----------------------
+   -- New_Op_Substract --
+   ----------------------
+
+   function New_Op_Substract
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id
+   is
+      Result : Why_Node (W_Op_Substract);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Substract);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Arith_Op_Id (New_Id);
+   end New_Op_Substract;
+
+   ----------------------
+   -- New_Op_Substract --
+   ----------------------
+
+   function New_Op_Substract
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Op_Substract);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Substract);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Op_Substract;
+
+   ---------------------
+   -- New_Op_Multiply --
+   ---------------------
+
+   function New_Op_Multiply
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id
+   is
+      Result : Why_Node (W_Op_Multiply);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Multiply);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Arith_Op_Id (New_Id);
+   end New_Op_Multiply;
+
+   ---------------------
+   -- New_Op_Multiply --
+   ---------------------
+
+   function New_Op_Multiply
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Op_Multiply);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Multiply);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Op_Multiply;
+
+   -------------------
+   -- New_Op_Divide --
+   -------------------
+
+   function New_Op_Divide
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id
+   is
+      Result : Why_Node (W_Op_Divide);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Divide);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Arith_Op_Id (New_Id);
+   end New_Op_Divide;
+
+   -------------------
+   -- New_Op_Divide --
+   -------------------
+
+   function New_Op_Divide
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Op_Divide);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Divide);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Op_Divide;
+
+   -------------------
+   -- New_Op_Modulo --
+   -------------------
+
+   function New_Op_Modulo
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id
+   is
+      Result : Why_Node (W_Op_Modulo);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Modulo);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Arith_Op_Id (New_Id);
+   end New_Op_Modulo;
+
+   -------------------
+   -- New_Op_Modulo --
+   -------------------
+
+   function New_Op_Modulo
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Op_Modulo);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Modulo);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Op_Modulo;
+
+   ---------------------------
+   -- New_True_Literal_Pred --
+   ---------------------------
+
+   function New_True_Literal_Pred
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_True_Literal_Pred);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_True_Literal_Pred);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_True_Literal_Pred;
+
+   ----------------------------
+   -- New_False_Literal_Pred --
+   ----------------------------
+
+   function New_False_Literal_Pred
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_False_Literal_Pred);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_False_Literal_Pred);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_False_Literal_Pred;
+
+   ------------------------------
+   -- New_Predicate_Identifier --
+   ------------------------------
+
+   function New_Predicate_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Predicate_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Predicate_Identifier);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PID_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.PID_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Predicate_Identifier;
+
+   ----------------------------
+   -- New_Predicate_Instance --
+   ----------------------------
+
+   function New_Predicate_Instance
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Predicate_Instance);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Predicate_Instance);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PIN_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.PIN_Name, New_Id);
+      pragma Assert (Parameters'Length > 0);
+      Result.PIN_Parameters := New_List;
+      for J in Parameters'Range loop
+         pragma Assert
+           (Term_Id_Kind_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         pragma Assert
+           (Term_Id_Valid
+            (+(W_Term_Id (Parameters (J)))));
+         Append
+           (Result.PIN_Parameters,
+            +(W_Term_Id (Parameters (J))));
+      end loop;
+      Set_Link (Result.PIN_Parameters, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Predicate_Instance;
+
+   -----------------------
+   -- New_Related_Terms --
+   -----------------------
+
+   function New_Related_Terms
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Relation_Id;
+      Right    : Term_Id;
+      Op2      : Relation_OId := Why_Empty;
+      Right2   : Term_OId := Why_Empty)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Related_Terms);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Related_Terms);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RT_Left := +(W_Term_Id (Left));
+      Set_Link (Result.RT_Left, New_Id);
+      Result.RT_Op := +(W_Relation_Id (Op));
+      Set_Link (Result.RT_Op, New_Id);
+      Result.RT_Right := +(W_Term_Id (Right));
+      Set_Link (Result.RT_Right, New_Id);
+      Result.RT_Op2 := +(W_Relation_Id (Op2));
+      Set_Link (Result.RT_Op2, New_Id);
+      Result.RT_Right2 := +(W_Term_Id (Right2));
+      Set_Link (Result.RT_Right2, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Related_Terms;
+
+   ---------------------
+   -- New_Implication --
+   ---------------------
+
+   function New_Implication
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Implication);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Implication);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ITOC_Left := +(W_Predicate_Id (Left));
+      Set_Link (Result.ITOC_Left, New_Id);
+      Result.ITOC_Right := +(W_Predicate_Id (Right));
+      Set_Link (Result.ITOC_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Implication;
+
+   ---------------------
+   -- New_Equivalence --
+   ---------------------
+
+   function New_Equivalence
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Equivalence);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Equivalence);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ITOC_Left := +(W_Predicate_Id (Left));
+      Set_Link (Result.ITOC_Left, New_Id);
+      Result.ITOC_Right := +(W_Predicate_Id (Right));
+      Set_Link (Result.ITOC_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Equivalence;
+
+   ---------------------
+   -- New_Disjonction --
+   ---------------------
+
+   function New_Disjonction
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Disjonction);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Disjonction);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ITOC_Left := +(W_Predicate_Id (Left));
+      Set_Link (Result.ITOC_Left, New_Id);
+      Result.ITOC_Right := +(W_Predicate_Id (Right));
+      Set_Link (Result.ITOC_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Disjonction;
+
+   ---------------------
+   -- New_Conjonction --
+   ---------------------
+
+   function New_Conjonction
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Conjonction);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Conjonction);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ITOC_Left := +(W_Predicate_Id (Left));
+      Set_Link (Result.ITOC_Left, New_Id);
+      Result.ITOC_Right := +(W_Predicate_Id (Right));
+      Set_Link (Result.ITOC_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Conjonction;
+
+   ------------------
+   -- New_Negation --
+   ------------------
+
+   function New_Negation
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Negation);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Negation);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.N_Operand := +(W_Predicate_Id (Operand));
+      Set_Link (Result.N_Operand, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Negation;
+
+   --------------------------
+   -- New_Conditional_Pred --
+   --------------------------
+
+   function New_Conditional_Pred
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Predicate_Id;
+      Else_Part : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Conditional_Pred);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Conditional_Pred);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.CPD_Condition := +(W_Term_Id (Condition));
+      Set_Link (Result.CPD_Condition, New_Id);
+      Result.CPD_Then_Part := +(W_Predicate_Id (Then_Part));
+      Set_Link (Result.CPD_Then_Part, New_Id);
+      Result.CPD_Else_Part := +(W_Predicate_Id (Else_Part));
+      Set_Link (Result.CPD_Else_Part, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Conditional_Pred;
+
+   ----------------------
+   -- New_Binding_Pred --
+   ----------------------
+
+   function New_Binding_Pred
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Binding_Pred);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Pred);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BPD_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BPD_Name, New_Id);
+      Result.BPD_Def := +(W_Term_Id (Def));
+      Set_Link (Result.BPD_Def, New_Id);
+      Result.BPD_Context := +(W_Predicate_Id (Context));
+      Set_Link (Result.BPD_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Binding_Pred;
+
+   ---------------------------
+   -- New_Universal_Quantif --
+   ---------------------------
+
+   function New_Universal_Quantif
+     (Ada_Node  : Node_Id := Empty;
+      Variables : Identifier_Array;
+      Var_Type  : Primitive_Type_Id;
+      Triggers  : Triggers_OId := Why_Empty;
+      Pred      : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Universal_Quantif);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Universal_Quantif);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Variables'Length > 0);
+      Result.UQ_Variables := New_List;
+      for J in Variables'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (+(W_Identifier_Id (Variables (J)))));
+         pragma Assert
+           (Identifier_Id_Valid
+            (+(W_Identifier_Id (Variables (J)))));
+         Append
+           (Result.UQ_Variables,
+            +(W_Identifier_Id (Variables (J))));
+      end loop;
+      Set_Link (Result.UQ_Variables, New_Id);
+      Result.UQ_Var_Type := +(W_Primitive_Type_Id (Var_Type));
+      Set_Link (Result.UQ_Var_Type, New_Id);
+      Result.UQ_Triggers := +(W_Triggers_Id (Triggers));
+      Set_Link (Result.UQ_Triggers, New_Id);
+      Result.UQ_Pred := +(W_Predicate_Id (Pred));
+      Set_Link (Result.UQ_Pred, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Universal_Quantif;
+
+   -----------------------------
+   -- New_Existential_Quantif --
+   -----------------------------
+
+   function New_Existential_Quantif
+     (Ada_Node  : Node_Id := Empty;
+      Variables : Identifier_Array;
+      Var_Type  : Primitive_Type_Id;
+      Pred      : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Existential_Quantif);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Existential_Quantif);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Variables'Length > 0);
+      Result.EQ_Variables := New_List;
+      for J in Variables'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (+(W_Identifier_Id (Variables (J)))));
+         pragma Assert
+           (Identifier_Id_Valid
+            (+(W_Identifier_Id (Variables (J)))));
+         Append
+           (Result.EQ_Variables,
+            +(W_Identifier_Id (Variables (J))));
+      end loop;
+      Set_Link (Result.EQ_Variables, New_Id);
+      Result.EQ_Var_Type := +(W_Primitive_Type_Id (Var_Type));
+      Set_Link (Result.EQ_Var_Type, New_Id);
+      Result.EQ_Pred := +(W_Predicate_Id (Pred));
+      Set_Link (Result.EQ_Pred, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Existential_Quantif;
+
+   -------------------------
+   -- New_Named_Predicate --
+   -------------------------
+
+   function New_Named_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Pred     : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Named_Predicate);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Named_Predicate);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.NP_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.NP_Name, New_Id);
+      Result.NP_Pred := +(W_Predicate_Id (Pred));
+      Set_Link (Result.NP_Pred, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Named_Predicate;
+
+   -----------------------------
+   -- New_Protected_Predicate --
+   -----------------------------
+
+   function New_Protected_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Pred     : Predicate_Id)
+     return Predicate_Id
+   is
+      Result : Why_Node (W_Protected_Predicate);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Predicate);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PP_Pred := +(W_Predicate_Id (Pred));
+      Set_Link (Result.PP_Pred, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Predicate_Id (New_Id);
+   end New_Protected_Predicate;
+
+   ----------------
+   -- New_Rel_Eq --
+   ----------------
+
+   function New_Rel_Eq
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Eq);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Eq);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Eq;
+
+   ----------------
+   -- New_Rel_Ne --
+   ----------------
+
+   function New_Rel_Ne
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Ne);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Ne);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Ne;
+
+   ----------------
+   -- New_Rel_Lt --
+   ----------------
+
+   function New_Rel_Lt
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Lt);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Lt);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Lt;
+
+   ----------------
+   -- New_Rel_Le --
+   ----------------
+
+   function New_Rel_Le
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Le);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Le);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Le;
+
+   ----------------
+   -- New_Rel_Gt --
+   ----------------
+
+   function New_Rel_Gt
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Gt);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Gt);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Gt;
+
+   ----------------
+   -- New_Rel_Ge --
+   ----------------
+
+   function New_Rel_Ge
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id
+   is
+      Result : Why_Node (W_Rel_Ge);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Rel_Ge);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Relation_Id (New_Id);
+   end New_Rel_Ge;
+
+   --------------
+   -- New_Type --
+   --------------
+
+   function New_Type
+     (Ada_Node        : Node_Id := Empty;
+      External        : External_OId := Why_Empty;
+      Type_Parameters : Identifier_Array := (2 .. 1 => <>);
+      Name            : Identifier_Id;
+      Definition      : Type_Definition_OId := Why_Empty)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Type);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Type);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.T_External := +(W_External_Id (External));
+      Set_Link (Result.T_External, New_Id);
+      Result.T_Type_Parameters := New_List;
+      for J in Type_Parameters'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (+(W_Identifier_Id (Type_Parameters (J)))));
+         pragma Assert
+           (Identifier_Id_Valid
+            (+(W_Identifier_Id (Type_Parameters (J)))));
+         Append
+           (Result.T_Type_Parameters,
+            +(W_Identifier_Id (Type_Parameters (J))));
+      end loop;
+      Set_Link (Result.T_Type_Parameters, New_Id);
+      Result.T_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.T_Name, New_Id);
+      Result.T_Definition := +(W_Type_Definition_Id (Definition));
+      Set_Link (Result.T_Definition, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Type;
+
+   ---------------
+   -- New_Logic --
+   ---------------
+
+   function New_Logic
+     (Ada_Node   : Node_Id := Empty;
+      External   : External_OId := Why_Empty;
+      Names      : Identifier_Array;
+      Logic_Type : Logic_Type_Id)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Logic);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Logic);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.L_External := +(W_External_Id (External));
+      Set_Link (Result.L_External, New_Id);
+      pragma Assert (Names'Length > 0);
+      Result.L_Names := New_List;
+      for J in Names'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (+(W_Identifier_Id (Names (J)))));
+         pragma Assert
+           (Identifier_Id_Valid
+            (+(W_Identifier_Id (Names (J)))));
+         Append
+           (Result.L_Names,
+            +(W_Identifier_Id (Names (J))));
+      end loop;
+      Set_Link (Result.L_Names, New_Id);
+      Result.L_Logic_Type := +(W_Logic_Type_Id (Logic_Type));
+      Set_Link (Result.L_Logic_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Logic;
+
+   ------------------
+   -- New_Function --
+   ------------------
+
+   function New_Function
+     (Ada_Node    : Node_Id := Empty;
+      Name        : Identifier_Id;
+      Binders     : Logic_Binder_Array;
+      Return_Type : Primitive_Type_Id;
+      Def         : Term_Id)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Function);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Function);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.F_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.F_Name, New_Id);
+      pragma Assert (Binders'Length > 0);
+      Result.F_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Logic_Binder_Id_Kind_Valid
+            (+(W_Logic_Binder_Id (Binders (J)))));
+         pragma Assert
+           (Logic_Binder_Id_Valid
+            (+(W_Logic_Binder_Id (Binders (J)))));
+         Append
+           (Result.F_Binders,
+            +(W_Logic_Binder_Id (Binders (J))));
+      end loop;
+      Set_Link (Result.F_Binders, New_Id);
+      Result.F_Return_Type := +(W_Primitive_Type_Id (Return_Type));
+      Set_Link (Result.F_Return_Type, New_Id);
+      Result.F_Def := +(W_Term_Id (Def));
+      Set_Link (Result.F_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Function;
+
+   ------------------------------
+   -- New_Predicate_Definition --
+   ------------------------------
+
+   function New_Predicate_Definition
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Logic_Binder_Array;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Predicate_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Predicate_Definition);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.P_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.P_Name, New_Id);
+      pragma Assert (Binders'Length > 0);
+      Result.P_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Logic_Binder_Id_Kind_Valid
+            (+(W_Logic_Binder_Id (Binders (J)))));
+         pragma Assert
+           (Logic_Binder_Id_Valid
+            (+(W_Logic_Binder_Id (Binders (J)))));
+         Append
+           (Result.P_Binders,
+            +(W_Logic_Binder_Id (Binders (J))));
+      end loop;
+      Set_Link (Result.P_Binders, New_Id);
+      Result.P_Def := +(W_Predicate_Id (Def));
+      Set_Link (Result.P_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Predicate_Definition;
+
+   -------------------
+   -- New_Inductive --
+   -------------------
+
+   function New_Inductive
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Logic_Type : Logic_Type_Id;
+      Def        : Inductive_Case_Array)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Inductive);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Inductive);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.I_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.I_Name, New_Id);
+      Result.I_Logic_Type := +(W_Logic_Type_Id (Logic_Type));
+      Set_Link (Result.I_Logic_Type, New_Id);
+      pragma Assert (Def'Length > 0);
+      Result.I_Def := New_List;
+      for J in Def'Range loop
+         pragma Assert
+           (Inductive_Case_Id_Kind_Valid
+            (+(W_Inductive_Case_Id (Def (J)))));
+         pragma Assert
+           (Inductive_Case_Id_Valid
+            (+(W_Inductive_Case_Id (Def (J)))));
+         Append
+           (Result.I_Def,
+            +(W_Inductive_Case_Id (Def (J))));
+      end loop;
+      Set_Link (Result.I_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Inductive;
+
+   ---------------
+   -- New_Axiom --
+   ---------------
+
+   function New_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Axiom);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Axiom);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AX_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AX_Name, New_Id);
+      Result.AX_Def := +(W_Predicate_Id (Def));
+      Set_Link (Result.AX_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Axiom;
+
+   --------------
+   -- New_Goal --
+   --------------
+
+   function New_Goal
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id
+   is
+      Result : Why_Node (W_Goal);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Goal);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.G_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.G_Name, New_Id);
+      Result.G_Def := +(W_Predicate_Id (Def));
+      Set_Link (Result.G_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Logic_Declaration_Class_Id (New_Id);
+   end New_Goal;
+
+   -------------------------------------
+   -- New_Transparent_Type_Definition --
+   -------------------------------------
+
+   function New_Transparent_Type_Definition
+     (Ada_Node        : Node_Id := Empty;
+      Type_Definition : Primitive_Type_Id)
+     return Type_Definition_Id
+   is
+      Result : Why_Node (W_Transparent_Type_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Transparent_Type_Definition);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Tr_Type_Definition := +(W_Primitive_Type_Id (Type_Definition));
+      Set_Link (Result.Tr_Type_Definition, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Type_Definition_Id (New_Id);
+   end New_Transparent_Type_Definition;
+
+   ------------------------
+   -- New_Adt_Definition --
+   ------------------------
+
+   function New_Adt_Definition
+     (Ada_Node     : Node_Id := Empty;
+      Constructors : Constr_Decl_Array)
+     return Type_Definition_Id
+   is
+      Result : Why_Node (W_Adt_Definition);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Adt_Definition);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Constructors'Length > 0);
+      Result.Adt_Constructors := New_List;
+      for J in Constructors'Range loop
+         pragma Assert
+           (Constr_Decl_Id_Kind_Valid
+            (+(W_Constr_Decl_Id (Constructors (J)))));
+         pragma Assert
+           (Constr_Decl_Id_Valid
+            (+(W_Constr_Decl_Id (Constructors (J)))));
+         Append
+           (Result.Adt_Constructors,
+            +(W_Constr_Decl_Id (Constructors (J))));
+      end loop;
+      Set_Link (Result.Adt_Constructors, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Type_Definition_Id (New_Id);
+   end New_Adt_Definition;
+
+   -----------------------
+   -- New_Prog_Constant --
+   -----------------------
+
+   function New_Prog_Constant
+     (Ada_Node : Node_Id := Empty;
+      Def      : Constant_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Prog_Constant);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Prog_Constant);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PC_Def := +(W_Constant_Id (Def));
+      Set_Link (Result.PC_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Prog_Constant;
+
+   -------------------------
+   -- New_Prog_Identifier --
+   -------------------------
+
+   function New_Prog_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Def      : Identifier_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Prog_Identifier);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Prog_Identifier);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PI_Def := +(W_Identifier_Id (Def));
+      Set_Link (Result.PI_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Prog_Identifier;
+
+   ------------------
+   -- New_Any_Expr --
+   ------------------
+
+   function New_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Any_Type : Computation_Type_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Any_Expr);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Any_Expr);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AE_Any_Type := +(W_Computation_Type_Id (Any_Type));
+      Set_Link (Result.AE_Any_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Any_Expr;
+
+   ---------------
+   -- New_Deref --
+   ---------------
+
+   function New_Deref
+     (Ada_Node : Node_Id := Empty;
+      Ref      : Identifier_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Deref);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Deref);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.D_Ref := +(W_Identifier_Id (Ref));
+      Set_Link (Result.D_Ref, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Deref;
+
+   --------------------
+   -- New_Assignment --
+   --------------------
+
+   function New_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Value    : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Assignment);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Assignment);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.A_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.A_Name, New_Id);
+      Result.A_Value := +(W_Prog_Id (Value));
+      Set_Link (Result.A_Value, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Assignment;
+
+   ----------------------
+   -- New_Array_Access --
+   ----------------------
+
+   function New_Array_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Index    : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Array_Access);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Access);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AA_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AA_Name, New_Id);
+      Result.AA_Index := +(W_Prog_Id (Index));
+      Set_Link (Result.AA_Index, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Array_Access;
+
+   ----------------------
+   -- New_Array_Update --
+   ----------------------
+
+   function New_Array_Update
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Index    : Prog_Id;
+      Value    : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Array_Update);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Array_Update);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AU_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.AU_Name, New_Id);
+      Result.AU_Index := +(W_Prog_Id (Index));
+      Set_Link (Result.AU_Index, New_Id);
+      Result.AU_Value := +(W_Prog_Id (Value));
+      Set_Link (Result.AU_Value, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Array_Update;
+
+   --------------------
+   -- New_Infix_Call --
+   --------------------
+
+   function New_Infix_Call
+     (Ada_Node : Node_Id := Empty;
+      Left     : Prog_Id;
+      Infix    : Infix_Id;
+      Right    : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Infix_Call);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Infix_Call);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.IC_Left := +(W_Prog_Id (Left));
+      Set_Link (Result.IC_Left, New_Id);
+      Result.IC_Infix := +(W_Infix_Id (Infix));
+      Set_Link (Result.IC_Infix, New_Id);
+      Result.IC_Right := +(W_Prog_Id (Right));
+      Set_Link (Result.IC_Right, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Infix_Call;
+
+   ---------------------
+   -- New_Prefix_Call --
+   ---------------------
+
+   function New_Prefix_Call
+     (Ada_Node : Node_Id := Empty;
+      Prefix   : Prefix_Id;
+      Operand  : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Prefix_Call);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Prefix_Call);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PC_Prefix := +(W_Prefix_Id (Prefix));
+      Set_Link (Result.PC_Prefix, New_Id);
+      Result.PC_Operand := +(W_Prog_Id (Operand));
+      Set_Link (Result.PC_Operand, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Prefix_Call;
+
+   ----------------------
+   -- New_Binding_Prog --
+   ----------------------
+
+   function New_Binding_Prog
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Binding_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BPG_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BPG_Name, New_Id);
+      Result.BPG_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.BPG_Def, New_Id);
+      Result.BPG_Context := +(W_Prog_Id (Context));
+      Set_Link (Result.BPG_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Binding_Prog;
+
+   ---------------------
+   -- New_Binding_Ref --
+   ---------------------
+
+   function New_Binding_Ref
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Binding_Ref);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Ref);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BPG_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BPG_Name, New_Id);
+      Result.BPG_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.BPG_Def, New_Id);
+      Result.BPG_Context := +(W_Prog_Id (Context));
+      Set_Link (Result.BPG_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Binding_Ref;
+
+   --------------------------
+   -- New_Conditional_Prog --
+   --------------------------
+
+   function New_Conditional_Prog
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Prog_Id;
+      Then_Part : Prog_Id;
+      Else_Part : Prog_OId := Why_Empty)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Conditional_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Conditional_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.CPG_Condition := +(W_Prog_Id (Condition));
+      Set_Link (Result.CPG_Condition, New_Id);
+      Result.CPG_Then_Part := +(W_Prog_Id (Then_Part));
+      Set_Link (Result.CPG_Then_Part, New_Id);
+      Result.CPG_Else_Part := +(W_Prog_Id (Else_Part));
+      Set_Link (Result.CPG_Else_Part, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Conditional_Prog;
+
+   --------------------
+   -- New_While_Loop --
+   --------------------
+
+   function New_While_Loop
+     (Ada_Node     : Node_Id := Empty;
+      Condition    : Prog_Id;
+      Annotation   : Loop_Annot_Id;
+      Loop_Content : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_While_Loop);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_While_Loop);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.WL_Condition := +(W_Prog_Id (Condition));
+      Set_Link (Result.WL_Condition, New_Id);
+      Result.WL_Annotation := +(W_Loop_Annot_Id (Annotation));
+      Set_Link (Result.WL_Annotation, New_Id);
+      Result.WL_Loop_Content := +(W_Prog_Id (Loop_Content));
+      Set_Link (Result.WL_Loop_Content, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_While_Loop;
+
+   ----------------------------
+   -- New_Statement_Sequence --
+   ----------------------------
+
+   function New_Statement_Sequence
+     (Ada_Node   : Node_Id := Empty;
+      Statements : Prog_Array)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Statement_Sequence);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Statement_Sequence);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Statements'Length > 0);
+      Result.SS_Statements := New_List;
+      for J in Statements'Range loop
+         pragma Assert
+           (Prog_Id_Kind_Valid
+            (+(W_Prog_Id (Statements (J)))));
+         pragma Assert
+           (Prog_Id_Valid
+            (+(W_Prog_Id (Statements (J)))));
+         Append
+           (Result.SS_Statements,
+            +(W_Prog_Id (Statements (J))));
+      end loop;
+      Set_Link (Result.SS_Statements, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Statement_Sequence;
+
+   ---------------
+   -- New_Label --
+   ---------------
+
+   function New_Label
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Label);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Label);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.L_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.L_Name, New_Id);
+      Result.L_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.L_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Label;
+
+   ----------------
+   -- New_Assert --
+   ----------------
+
+   function New_Assert
+     (Ada_Node   : Node_Id := Empty;
+      Assertions : Assertion_Array;
+      Prog       : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Assert);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Assert);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Assertions'Length > 0);
+      Result.AS_Assertions := New_List;
+      for J in Assertions'Range loop
+         pragma Assert
+           (Assertion_Id_Kind_Valid
+            (+(W_Assertion_Id (Assertions (J)))));
+         pragma Assert
+           (Assertion_Id_Valid
+            (+(W_Assertion_Id (Assertions (J)))));
+         Append
+           (Result.AS_Assertions,
+            +(W_Assertion_Id (Assertions (J))));
+      end loop;
+      Set_Link (Result.AS_Assertions, New_Id);
+      Result.AS_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.AS_Prog, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Assert;
+
+   ------------------------
+   -- New_Post_Assertion --
+   ------------------------
+
+   function New_Post_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Post     : Postcondition_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Post_Assertion);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Post_Assertion);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PA_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.PA_Prog, New_Id);
+      Result.PA_Post := +(W_Postcondition_Id (Post));
+      Set_Link (Result.PA_Post, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Post_Assertion;
+
+   --------------------------
+   -- New_Opaque_Assertion --
+   --------------------------
+
+   function New_Opaque_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Post     : Postcondition_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Opaque_Assertion);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Opaque_Assertion);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PA_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.PA_Prog, New_Id);
+      Result.PA_Post := +(W_Postcondition_Id (Post));
+      Set_Link (Result.PA_Post, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Opaque_Assertion;
+
+   -----------------
+   -- New_Fun_Def --
+   -----------------
+
+   function New_Fun_Def
+     (Ada_Node : Node_Id := Empty;
+      Binders  : Binder_Array;
+      Pre      : Precondition_Id;
+      Def      : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Fun_Def);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Fun_Def);
+   begin
+      Result.Ada_Node := Ada_Node;
+      pragma Assert (Binders'Length > 0);
+      Result.FD_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         pragma Assert
+           (Binder_Id_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         Append
+           (Result.FD_Binders,
+            +(W_Binder_Id (Binders (J))));
+      end loop;
+      Set_Link (Result.FD_Binders, New_Id);
+      Result.FD_Pre := +(W_Precondition_Id (Pre));
+      Set_Link (Result.FD_Pre, New_Id);
+      Result.FD_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.FD_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Fun_Def;
+
+   ---------------------
+   -- New_Binding_Fun --
+   ---------------------
+
+   function New_Binding_Fun
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : Precondition_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Binding_Fun);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Fun);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BF_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.BF_Name, New_Id);
+      pragma Assert (Binders'Length > 0);
+      Result.BF_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         pragma Assert
+           (Binder_Id_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         Append
+           (Result.BF_Binders,
+            +(W_Binder_Id (Binders (J))));
+      end loop;
+      Set_Link (Result.BF_Binders, New_Id);
+      Result.BF_Pre := +(W_Precondition_Id (Pre));
+      Set_Link (Result.BF_Pre, New_Id);
+      Result.BF_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.BF_Def, New_Id);
+      Result.BF_Context := +(W_Prog_Id (Context));
+      Set_Link (Result.BF_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Binding_Fun;
+
+   ---------------------
+   -- New_Binding_Rec --
+   ---------------------
+
+   function New_Binding_Rec
+     (Ada_Node : Node_Id := Empty;
+      Recfun   : Recfun_Id;
+      Context  : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Binding_Rec);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Binding_Rec);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BR_Recfun := +(W_Recfun_Id (Recfun));
+      Set_Link (Result.BR_Recfun, New_Id);
+      Result.BR_Context := +(W_Prog_Id (Context));
+      Set_Link (Result.BR_Context, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Binding_Rec;
+
+   -------------------
+   -- New_Prog_Call --
+   -------------------
+
+   function New_Prog_Call
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Progs    : Prog_Array)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Prog_Call);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Prog_Call);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PS_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.PS_Name, New_Id);
+      pragma Assert (Progs'Length > 0);
+      Result.PS_Progs := New_List;
+      for J in Progs'Range loop
+         pragma Assert
+           (Prog_Id_Kind_Valid
+            (+(W_Prog_Id (Progs (J)))));
+         pragma Assert
+           (Prog_Id_Valid
+            (+(W_Prog_Id (Progs (J)))));
+         Append
+           (Result.PS_Progs,
+            +(W_Prog_Id (Progs (J))));
+      end loop;
+      Set_Link (Result.PS_Progs, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Prog_Call;
+
+   -------------------------
+   -- New_Raise_Statement --
+   -------------------------
+
+   function New_Raise_Statement
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Exn_Type : Value_Type_OId := Why_Empty)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Raise_Statement);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Raise_Statement);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RS_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.RS_Name, New_Id);
+      Result.RS_Exn_Type := +(W_Value_Type_Id (Exn_Type));
+      Set_Link (Result.RS_Exn_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Raise_Statement;
+
+   -----------------------------------------
+   -- New_Raise_Statement_With_Parameters --
+   -----------------------------------------
+
+   function New_Raise_Statement_With_Parameters
+     (Ada_Node  : Node_Id := Empty;
+      Name      : Identifier_Id;
+      Parameter : Term_Id;
+      Exn_Type  : Value_Type_OId := Why_Empty)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Raise_Statement_With_Parameters);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Raise_Statement_With_Parameters);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.RSWP_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.RSWP_Name, New_Id);
+      Result.RSWP_Parameter := +(W_Term_Id (Parameter));
+      Set_Link (Result.RSWP_Parameter, New_Id);
+      Result.RSWP_Exn_Type := +(W_Value_Type_Id (Exn_Type));
+      Set_Link (Result.RSWP_Exn_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Raise_Statement_With_Parameters;
+
+   -------------------
+   -- New_Try_Block --
+   -------------------
+
+   function New_Try_Block
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Handler  : Handler_Array)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Try_Block);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Try_Block);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.TB_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.TB_Prog, New_Id);
+      pragma Assert (Handler'Length > 0);
+      Result.TB_Handler := New_List;
+      for J in Handler'Range loop
+         pragma Assert
+           (Handler_Id_Kind_Valid
+            (+(W_Handler_Id (Handler (J)))));
+         pragma Assert
+           (Handler_Id_Valid
+            (+(W_Handler_Id (Handler (J)))));
+         Append
+           (Result.TB_Handler,
+            +(W_Handler_Id (Handler (J))));
+      end loop;
+      Set_Link (Result.TB_Handler, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Try_Block;
+
+   --------------------------
+   -- New_Unreachable_Code --
+   --------------------------
+
+   function New_Unreachable_Code
+     (Ada_Node : Node_Id := Empty;
+      Exn_Type : Value_Type_OId := Why_Empty)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Unreachable_Code);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Unreachable_Code);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.UC_Exn_Type := +(W_Value_Type_Id (Exn_Type));
+      Set_Link (Result.UC_Exn_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Unreachable_Code;
+
+   ---------------------
+   -- New_Begin_Block --
+   ---------------------
+
+   function New_Begin_Block
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Begin_Block);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Begin_Block);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BB_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.BB_Prog, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Begin_Block;
+
+   ------------------------
+   -- New_Protected_Prog --
+   ------------------------
+
+   function New_Protected_Prog
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id)
+     return Prog_Id
+   is
+      Result : Why_Node (W_Protected_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Protected_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.BB_Prog := +(W_Prog_Id (Prog));
+      Set_Link (Result.BB_Prog, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prog_Id (New_Id);
+   end New_Protected_Prog;
+
+   ---------------------
+   -- New_Op_Add_Prog --
+   ---------------------
+
+   function New_Op_Add_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Add_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Add_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Add_Prog;
+
+   ---------------------------
+   -- New_Op_Substract_Prog --
+   ---------------------------
+
+   function New_Op_Substract_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Substract_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Substract_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Substract_Prog;
+
+   --------------------------
+   -- New_Op_Multiply_Prog --
+   --------------------------
+
+   function New_Op_Multiply_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Multiply_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Multiply_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Multiply_Prog;
+
+   ------------------------
+   -- New_Op_Divide_Prog --
+   ------------------------
+
+   function New_Op_Divide_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Divide_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Divide_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Divide_Prog;
+
+   ---------------------
+   -- New_Op_Mod_Prog --
+   ---------------------
+
+   function New_Op_Mod_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Mod_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Mod_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Mod_Prog;
+
+   --------------------
+   -- New_Op_Eq_Prog --
+   --------------------
+
+   function New_Op_Eq_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Eq_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Eq_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Eq_Prog;
+
+   --------------------
+   -- New_Op_Ne_Prog --
+   --------------------
+
+   function New_Op_Ne_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Ne_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Ne_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Ne_Prog;
+
+   --------------------
+   -- New_Op_Lt_Prog --
+   --------------------
+
+   function New_Op_Lt_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Lt_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Lt_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Lt_Prog;
+
+   --------------------
+   -- New_Op_Le_Prog --
+   --------------------
+
+   function New_Op_Le_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Le_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Le_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Le_Prog;
+
+   --------------------
+   -- New_Op_Gt_Prog --
+   --------------------
+
+   function New_Op_Gt_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Gt_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Gt_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Gt_Prog;
+
+   --------------------
+   -- New_Op_Ge_Prog --
+   --------------------
+
+   function New_Op_Ge_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Ge_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Ge_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Ge_Prog;
+
+   -------------------------
+   -- New_Op_Or_Else_Prog --
+   -------------------------
+
+   function New_Op_Or_Else_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_Or_Else_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Or_Else_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_Or_Else_Prog;
+
+   --------------------------
+   -- New_Op_And_Then_Prog --
+   --------------------------
+
+   function New_Op_And_Then_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id
+   is
+      Result : Why_Node (W_Op_And_Then_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_And_Then_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Infix_Id (New_Id);
+   end New_Op_And_Then_Prog;
+
+   -----------------------
+   -- New_Op_Minus_Prog --
+   -----------------------
+
+   function New_Op_Minus_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Prefix_Id
+   is
+      Result : Why_Node (W_Op_Minus_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Minus_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prefix_Id (New_Id);
+   end New_Op_Minus_Prog;
+
+   ---------------------
+   -- New_Op_Not_Prog --
+   ---------------------
+
+   function New_Op_Not_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Prefix_Id
+   is
+      Result : Why_Node (W_Op_Not_Prog);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Op_Not_Prog);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Prefix_Id (New_Id);
+   end New_Op_Not_Prog;
+
+   ------------------------
+   -- New_Global_Binding --
+   ------------------------
+
+   function New_Global_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Binder_Array := (2 .. 1 => <>);
+      Pre      : Precondition_Id;
+      Def      : Prog_Id)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Global_Binding);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Binding);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GB_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.GB_Name, New_Id);
+      Result.GB_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         pragma Assert
+           (Binder_Id_Valid
+            (+(W_Binder_Id (Binders (J)))));
+         Append
+           (Result.GB_Binders,
+            +(W_Binder_Id (Binders (J))));
+      end loop;
+      Set_Link (Result.GB_Binders, New_Id);
+      Result.GB_Pre := +(W_Precondition_Id (Pre));
+      Set_Link (Result.GB_Pre, New_Id);
+      Result.GB_Def := +(W_Prog_Id (Def));
+      Set_Link (Result.GB_Def, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Global_Binding;
+
+   ----------------------------
+   -- New_Global_Rec_Binding --
+   ----------------------------
+
+   function New_Global_Rec_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : Recfun_Id)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Global_Rec_Binding);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Rec_Binding);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.GRB_Name := +(W_Recfun_Id (Name));
+      Set_Link (Result.GRB_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Global_Rec_Binding;
+
+   -------------------------------
+   -- New_Parameter_Declaration --
+   -------------------------------
+
+   function New_Parameter_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      External       : External_OId := Why_Empty;
+      Names          : Identifier_Array;
+      Parameter_Type : Value_Type_Id)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Parameter_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Parameter_Declaration);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.PD_External := +(W_External_Id (External));
+      Set_Link (Result.PD_External, New_Id);
+      pragma Assert (Names'Length > 0);
+      Result.PD_Names := New_List;
+      for J in Names'Range loop
+         pragma Assert
+           (Identifier_Id_Kind_Valid
+            (+(W_Identifier_Id (Names (J)))));
+         pragma Assert
+           (Identifier_Id_Valid
+            (+(W_Identifier_Id (Names (J)))));
+         Append
+           (Result.PD_Names,
+            +(W_Identifier_Id (Names (J))));
+      end loop;
+      Set_Link (Result.PD_Names, New_Id);
+      Result.PD_Parameter_Type := +(W_Value_Type_Id (Parameter_Type));
+      Set_Link (Result.PD_Parameter_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Parameter_Declaration;
+
+   -------------------------------
+   -- New_Exception_Declaration --
+   -------------------------------
+
+   function New_Exception_Declaration
+     (Ada_Node  : Node_Id := Empty;
+      Name      : Identifier_Id;
+      Parameter : Primitive_Type_OId := Why_Empty)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Exception_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Exception_Declaration);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ED_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.ED_Name, New_Id);
+      Result.ED_Parameter := +(W_Primitive_Type_Id (Parameter));
+      Set_Link (Result.ED_Parameter, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Exception_Declaration;
+
+   ---------------------------
+   -- New_Logic_Declaration --
+   ---------------------------
+
+   function New_Logic_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Decl     : Logic_Declaration_Class_Id)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Logic_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Logic_Declaration);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.LD_Decl := +(W_Logic_Declaration_Class_Id (Decl));
+      Set_Link (Result.LD_Decl, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Logic_Declaration;
+
+   -----------------------------
+   -- New_Include_Declaration --
+   -----------------------------
+
+   function New_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Declaration_Id
+   is
+      Result : Why_Node (W_Include_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Include_Declaration);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.ID_Name := +(W_Identifier_Id (Name));
+      Set_Link (Result.ID_Name, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return Declaration_Id (New_Id);
+   end New_Include_Declaration;
+
 end Why.Atree.Builders;

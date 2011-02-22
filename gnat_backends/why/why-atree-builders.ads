@@ -3269,6 +3269,928 @@ package Why.Atree.Builders is
           (New_Include_Declaration'Result)
           = Name);
 
+   function New_Type_Prop
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id;
+
+   function New_Type_Int
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id;
+
+   function New_Type_Bool
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id;
+
+   function New_Type_Real
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Primitive_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Return_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Logic_Arg_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Simple_Value_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Value_Type_Id;
+
+   function New_Type_Unit
+     (Ada_Node : Node_Id := Empty)
+     return Computation_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Primitive_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Return_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Arg_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Value_Type_Id;
+
+   function New_Abstract_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Computation_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Primitive_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Return_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Logic_Arg_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Value_Type_Id;
+
+   function New_Generic_Formal_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Computation_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Primitive_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Logic_Return_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Logic_Arg_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Value_Type_Id;
+
+   function New_Generic_Actual_Type_Chain
+     (Ada_Node   : Node_Id := Empty;
+      Type_Chain : Primitive_Type_Array;
+      Name       : Identifier_Id)
+     return Computation_Type_Id;
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Logic_Arg_Type_Id;
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Value_Type_Id;
+
+   function New_Array_Type
+     (Ada_Node       : Node_Id := Empty;
+      Component_Type : Primitive_Type_Id)
+     return Computation_Type_Id;
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Value_Type_Id;
+
+   function New_Ref_Type
+     (Ada_Node     : Node_Id := Empty;
+      Aliased_Type : Primitive_Type_Id)
+     return Computation_Type_Id;
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Simple_Value_Type_Id;
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Value_Type_Id;
+
+   function New_Protected_Value_Type
+     (Ada_Node   : Node_Id := Empty;
+      Value_Type : Value_Type_Id)
+     return Computation_Type_Id;
+
+   function New_Arrow_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_OId := Why_Empty;
+      Left     : Simple_Value_Type_Id;
+      Right    : Computation_Type_Id)
+     return Value_Type_Id;
+
+   function New_Arrow_Type
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_OId := Why_Empty;
+      Left     : Simple_Value_Type_Id;
+      Right    : Computation_Type_Id)
+     return Computation_Type_Id;
+
+   function New_Computation_Spec
+     (Ada_Node      : Node_Id := Empty;
+      Precondition  : Precondition_OId := Why_Empty;
+      Result_Name   : Identifier_OId := Why_Empty;
+      Return_Type   : Value_Type_Id;
+      Effects       : Effects_Id;
+      Postcondition : Postcondition_OId := Why_Empty)
+     return Computation_Type_Id;
+
+   function New_Integer_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint)
+     return Term_Id;
+
+   function New_Integer_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Uint)
+     return Constant_Id;
+
+   function New_Real_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Ureal)
+     return Term_Id;
+
+   function New_Real_Constant
+     (Ada_Node : Node_Id := Empty;
+      Value    : Ureal)
+     return Constant_Id;
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id;
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id;
+
+   function New_True_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id;
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id;
+
+   function New_False_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Term_Id;
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Constant_Id;
+
+   function New_Void_Literal
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Arith_Operation
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Arith_Op_Id;
+      Right    : Term_Id)
+     return Term_Id;
+
+   function New_Arith_Operation
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Arith_Op_Id;
+      Right    : Term_Id)
+     return Predicate_Id;
+
+   function New_Negative_Term
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Term_Id)
+     return Term_Id;
+
+   function New_Negative_Term
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Term_Id)
+     return Predicate_Id;
+
+   function New_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Label    : Identifier_OId := Why_Empty)
+     return Term_Id;
+
+   function New_Term_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Label    : Identifier_OId := Why_Empty)
+     return Predicate_Id;
+
+   function New_Operation
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Term_Id;
+
+   function New_Operation
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Predicate_Id;
+
+   function New_Named_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Term     : Term_Id)
+     return Term_Id;
+
+   function New_Named_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Term     : Term_Id)
+     return Predicate_Id;
+
+   function New_Conditional_Term
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Term_Id;
+      Else_Part : Term_Id)
+     return Term_Id;
+
+   function New_Conditional_Term
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Term_Id;
+      Else_Part : Term_Id)
+     return Predicate_Id;
+
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id;
+      Branches : Match_Case_Array)
+     return Term_Id;
+
+   function New_Matching_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id;
+      Branches : Match_Case_Array)
+     return Predicate_Id;
+
+   function New_Binding_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Term_Id)
+     return Term_Id;
+
+   function New_Binding_Term
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Term_Id)
+     return Predicate_Id;
+
+   function New_Protected_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id)
+     return Term_Id;
+
+   function New_Protected_Term
+     (Ada_Node : Node_Id := Empty;
+      Term     : Term_Id)
+     return Predicate_Id;
+
+   function New_Op_Add
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id;
+
+   function New_Op_Add
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Op_Substract
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id;
+
+   function New_Op_Substract
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Op_Multiply
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id;
+
+   function New_Op_Multiply
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Op_Divide
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id;
+
+   function New_Op_Divide
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Op_Modulo
+     (Ada_Node : Node_Id := Empty)
+     return Arith_Op_Id;
+
+   function New_Op_Modulo
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_True_Literal_Pred
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_False_Literal_Pred
+     (Ada_Node : Node_Id := Empty)
+     return Predicate_Id;
+
+   function New_Predicate_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Predicate_Id;
+
+   function New_Predicate_Instance
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Parameters : Term_Array)
+     return Predicate_Id;
+
+   function New_Related_Terms
+     (Ada_Node : Node_Id := Empty;
+      Left     : Term_Id;
+      Op       : Relation_Id;
+      Right    : Term_Id;
+      Op2      : Relation_OId := Why_Empty;
+      Right2   : Term_OId := Why_Empty)
+     return Predicate_Id;
+
+   function New_Implication
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Equivalence
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Disjonction
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Conjonction
+     (Ada_Node : Node_Id := Empty;
+      Left     : Predicate_Id;
+      Right    : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Negation
+     (Ada_Node : Node_Id := Empty;
+      Operand  : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Conditional_Pred
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Term_Id;
+      Then_Part : Predicate_Id;
+      Else_Part : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Binding_Pred
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Term_Id;
+      Context  : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Universal_Quantif
+     (Ada_Node  : Node_Id := Empty;
+      Variables : Identifier_Array;
+      Var_Type  : Primitive_Type_Id;
+      Triggers  : Triggers_OId := Why_Empty;
+      Pred      : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Existential_Quantif
+     (Ada_Node  : Node_Id := Empty;
+      Variables : Identifier_Array;
+      Var_Type  : Primitive_Type_Id;
+      Pred      : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Named_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Pred     : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Protected_Predicate
+     (Ada_Node : Node_Id := Empty;
+      Pred     : Predicate_Id)
+     return Predicate_Id;
+
+   function New_Rel_Eq
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Rel_Ne
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Rel_Lt
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Rel_Le
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Rel_Gt
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Rel_Ge
+     (Ada_Node : Node_Id := Empty)
+     return Relation_Id;
+
+   function New_Type
+     (Ada_Node        : Node_Id := Empty;
+      External        : External_OId := Why_Empty;
+      Type_Parameters : Identifier_Array := (2 .. 1 => <>);
+      Name            : Identifier_Id;
+      Definition      : Type_Definition_OId := Why_Empty)
+     return Logic_Declaration_Class_Id;
+
+   function New_Logic
+     (Ada_Node   : Node_Id := Empty;
+      External   : External_OId := Why_Empty;
+      Names      : Identifier_Array;
+      Logic_Type : Logic_Type_Id)
+     return Logic_Declaration_Class_Id;
+
+   function New_Function
+     (Ada_Node    : Node_Id := Empty;
+      Name        : Identifier_Id;
+      Binders     : Logic_Binder_Array;
+      Return_Type : Primitive_Type_Id;
+      Def         : Term_Id)
+     return Logic_Declaration_Class_Id;
+
+   function New_Predicate_Definition
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Logic_Binder_Array;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id;
+
+   function New_Inductive
+     (Ada_Node   : Node_Id := Empty;
+      Name       : Identifier_Id;
+      Logic_Type : Logic_Type_Id;
+      Def        : Inductive_Case_Array)
+     return Logic_Declaration_Class_Id;
+
+   function New_Axiom
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id;
+
+   function New_Goal
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Predicate_Id)
+     return Logic_Declaration_Class_Id;
+
+   function New_Transparent_Type_Definition
+     (Ada_Node        : Node_Id := Empty;
+      Type_Definition : Primitive_Type_Id)
+     return Type_Definition_Id;
+
+   function New_Adt_Definition
+     (Ada_Node     : Node_Id := Empty;
+      Constructors : Constr_Decl_Array)
+     return Type_Definition_Id;
+
+   function New_Prog_Constant
+     (Ada_Node : Node_Id := Empty;
+      Def      : Constant_Id)
+     return Prog_Id;
+
+   function New_Prog_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Def      : Identifier_Id)
+     return Prog_Id;
+
+   function New_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Any_Type : Computation_Type_Id)
+     return Prog_Id;
+
+   function New_Deref
+     (Ada_Node : Node_Id := Empty;
+      Ref      : Identifier_Id)
+     return Prog_Id;
+
+   function New_Assignment
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Value    : Prog_Id)
+     return Prog_Id;
+
+   function New_Array_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Index    : Prog_Id)
+     return Prog_Id;
+
+   function New_Array_Update
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Index    : Prog_Id;
+      Value    : Prog_Id)
+     return Prog_Id;
+
+   function New_Infix_Call
+     (Ada_Node : Node_Id := Empty;
+      Left     : Prog_Id;
+      Infix    : Infix_Id;
+      Right    : Prog_Id)
+     return Prog_Id;
+
+   function New_Prefix_Call
+     (Ada_Node : Node_Id := Empty;
+      Prefix   : Prefix_Id;
+      Operand  : Prog_Id)
+     return Prog_Id;
+
+   function New_Binding_Prog
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id;
+
+   function New_Binding_Ref
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id;
+
+   function New_Conditional_Prog
+     (Ada_Node  : Node_Id := Empty;
+      Condition : Prog_Id;
+      Then_Part : Prog_Id;
+      Else_Part : Prog_OId := Why_Empty)
+     return Prog_Id;
+
+   function New_While_Loop
+     (Ada_Node     : Node_Id := Empty;
+      Condition    : Prog_Id;
+      Annotation   : Loop_Annot_Id;
+      Loop_Content : Prog_Id)
+     return Prog_Id;
+
+   function New_Statement_Sequence
+     (Ada_Node   : Node_Id := Empty;
+      Statements : Prog_Array)
+     return Prog_Id;
+
+   function New_Label
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Def      : Prog_Id)
+     return Prog_Id;
+
+   function New_Assert
+     (Ada_Node   : Node_Id := Empty;
+      Assertions : Assertion_Array;
+      Prog       : Prog_Id)
+     return Prog_Id;
+
+   function New_Post_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Post     : Postcondition_Id)
+     return Prog_Id;
+
+   function New_Opaque_Assertion
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Post     : Postcondition_Id)
+     return Prog_Id;
+
+   function New_Fun_Def
+     (Ada_Node : Node_Id := Empty;
+      Binders  : Binder_Array;
+      Pre      : Precondition_Id;
+      Def      : Prog_Id)
+     return Prog_Id;
+
+   function New_Binding_Fun
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Binder_Array;
+      Pre      : Precondition_Id;
+      Def      : Prog_Id;
+      Context  : Prog_Id)
+     return Prog_Id;
+
+   function New_Binding_Rec
+     (Ada_Node : Node_Id := Empty;
+      Recfun   : Recfun_Id;
+      Context  : Prog_Id)
+     return Prog_Id;
+
+   function New_Prog_Call
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Progs    : Prog_Array)
+     return Prog_Id;
+
+   function New_Raise_Statement
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Exn_Type : Value_Type_OId := Why_Empty)
+     return Prog_Id;
+
+   function New_Raise_Statement_With_Parameters
+     (Ada_Node  : Node_Id := Empty;
+      Name      : Identifier_Id;
+      Parameter : Term_Id;
+      Exn_Type  : Value_Type_OId := Why_Empty)
+     return Prog_Id;
+
+   function New_Try_Block
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id;
+      Handler  : Handler_Array)
+     return Prog_Id;
+
+   function New_Unreachable_Code
+     (Ada_Node : Node_Id := Empty;
+      Exn_Type : Value_Type_OId := Why_Empty)
+     return Prog_Id;
+
+   function New_Begin_Block
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id)
+     return Prog_Id;
+
+   function New_Protected_Prog
+     (Ada_Node : Node_Id := Empty;
+      Prog     : Prog_Id)
+     return Prog_Id;
+
+   function New_Op_Add_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Substract_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Multiply_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Divide_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Mod_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Eq_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Ne_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Lt_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Le_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Gt_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Ge_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Or_Else_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_And_Then_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Infix_Id;
+
+   function New_Op_Minus_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Prefix_Id;
+
+   function New_Op_Not_Prog
+     (Ada_Node : Node_Id := Empty)
+     return Prefix_Id;
+
+   function New_Global_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id;
+      Binders  : Binder_Array := (2 .. 1 => <>);
+      Pre      : Precondition_Id;
+      Def      : Prog_Id)
+     return Declaration_Id;
+
+   function New_Global_Rec_Binding
+     (Ada_Node : Node_Id := Empty;
+      Name     : Recfun_Id)
+     return Declaration_Id;
+
+   function New_Parameter_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      External       : External_OId := Why_Empty;
+      Names          : Identifier_Array;
+      Parameter_Type : Value_Type_Id)
+     return Declaration_Id;
+
+   function New_Exception_Declaration
+     (Ada_Node  : Node_Id := Empty;
+      Name      : Identifier_Id;
+      Parameter : Primitive_Type_OId := Why_Empty)
+     return Declaration_Id;
+
+   function New_Logic_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Decl     : Logic_Declaration_Class_Id)
+     return Declaration_Id;
+
+   function New_Include_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Name     : Identifier_Id)
+     return Declaration_Id;
+
    function New_Unchecked_Identifier
      (Symbol : Name_Id)
      return W_Identifier_Unchecked_Id with

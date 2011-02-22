@@ -229,6 +229,7 @@ package Xtree_Tables is
 
    function Builder_Param_Type
      (FI      : Field_Info;
+      IK      : Id_Kind;
       Context : Builder_Context)
      return Wide_String;
 

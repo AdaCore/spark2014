@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -33,6 +33,12 @@ package Xtree_Builders is
 
    procedure Print_Builder_Bodies (O : in out Output_Record);
    --  Print builder bodies for Why nodes
+
+   procedure Print_Class_Wide_Builder_Declarations (O : in out Output_Record);
+   --  Print builder declarations for class-wide ids
+
+   procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record);
+   --  Print builder bodies for class-wide ids
 
    procedure Print_Unchecked_Builder_Declarations (O : in out Output_Record);
    --  Print builder declarations for unchecked Why nodes

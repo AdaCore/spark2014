@@ -82,11 +82,21 @@ package body Xtree_Builders is
       BK   : Builder_Kind);
    --  Print builder body for the given node kind
 
+   procedure Print_Builder_Body
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String);
+   --  Ditto, but with a return type that is different from the
+   --  default one.
+
    procedure Print_Builder_Implementation
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind);
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String := "");
    --  Print the handled sequence of statements that implements this builder
 
    procedure Print_Builder_Local_Declarations
@@ -150,14 +160,24 @@ package body Xtree_Builders is
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
       IK   : Id_Kind;
-      BK   : Builder_Kind)
+      BK   : Builder_Kind) is
+   begin
+      Print_Builder_Body (O, Kind, IK, BK, Id_Subtype (Kind, IK));
+   end Print_Builder_Body;
+
+   procedure Print_Builder_Body
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String)
    is
       BN : constant Wide_String := Builder_Name (Kind, IK, BK);
    begin
       Print_Box (O, BN);
       NL (O);
 
-      Print_Builder_Specification (O, Kind, IK, BK);
+      Print_Builder_Specification (O, Kind, IK, BK, Return_Type);
       NL (O);
       PL (O, "is");
 
@@ -176,7 +196,7 @@ package body Xtree_Builders is
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
-      Print_Builder_Implementation (O, Kind, IK, BK);
+      Print_Builder_Implementation (O, Kind, IK, BK, Return_Type);
       Relative_Indent (O, -3);
 
       if BK = Builder_Copy then
@@ -212,7 +232,8 @@ package body Xtree_Builders is
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
       IK   : Id_Kind;
-      BK   : Builder_Kind) is
+      BK   : Builder_Kind)
+   is
    begin
       Print_Builder_Specification (O, Kind, IK, BK);
       PL (O, " with");
@@ -229,16 +250,34 @@ package body Xtree_Builders is
    ----------------------------------
 
    procedure Print_Builder_Implementation
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind)
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String := "")
    is
       use Node_Lists;
 
       Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
 
+      function K (S : Wide_String) return Wide_String;
+      --  If IK /= Derived, return S. Otherwise, prefix S by a call to
+      --  a conversion.
+
       procedure Print_Record_Initialization (Position : Cursor);
+
+      -------
+      -- K --
+      -------
+
+      function K (S : Wide_String) return Wide_String is
+      begin
+         if IK = Derived then
+            return Return_Type & " (" & S & ")";
+         else
+            return S;
+         end if;
+      end K;
 
       ---------------------------------
       -- Print_Record_Initialization --
@@ -247,6 +286,26 @@ package body Xtree_Builders is
       procedure Print_Record_Initialization (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
          FN : constant Wide_String := Field_Name (FI);
+
+         function K (S : Wide_String) return Wide_String;
+         --  If IK is Derived or FI is a Why Id, prefix S by a call to a
+         --  conversion operator ("+").
+
+         -------
+         -- K --
+         -------
+
+         function K (S : Wide_String) return Wide_String is
+         begin
+            if IK = Derived and Is_Why_Id (FI) then
+               return "+("
+                 & Id_Subtype (Field_Kind (FI), Regular)
+                 & " (" & S & "))";
+            else
+               return S;
+            end if;
+         end K;
+
       begin
          if BK = Builder_Children then
             if IK = Unchecked then
@@ -272,18 +331,18 @@ package body Xtree_Builders is
                   Relative_Indent (O, 3);
                   PL (O, "pragma Assert");
                   PL (O, "  (" & Kind_Check (Field_Kind (FI), Id_One));
-                  PL (O, "   (" & Param_Name (FI)  & " (J)));");
+                  PL (O, "   (" & K (Param_Name (FI)  & " (J)") & "));");
                   PL (O, "pragma Assert");
                   PL (O, "  (" & Tree_Check (Field_Kind (FI), Id_One));
-                  PL (O, "   (" & Param_Name (FI)  & " (J)));");
+                  PL (O, "   (" & K (Param_Name (FI)  & " (J)") & "));");
                   PL (O, List_Op_Name (Op_Append));
                   PL (O, "  (" & New_Node & "." & FN & ",");
-                  PL (O, "   " & Param_Name (FI) & " (J));");
+                  PL (O, "   " & K (Param_Name (FI) & " (J)") & ");");
                   Relative_Indent (O, -3);
                   PL (O, "end loop;");
                else
                   P (O, New_Node & "." & FN & " := ");
-                  P (O, Param_Name (FI));
+                  P (O, K (Param_Name (FI)));
                   PL (O, ";");
                end if;
             end if;
@@ -382,7 +441,7 @@ package body Xtree_Builders is
       end loop;
 
       PL (O, "Set_Node (" & New_Node_Id & ", " & New_Node & ");");
-      PL (O, "return " & New_Node_Id & ";");
+      PL (O, "return " & K (New_Node_Id) & ";");
    end Print_Builder_Implementation;
 
    --------------------------------------
@@ -491,7 +550,7 @@ package body Xtree_Builders is
          P (O, Node_Id_Param);
          Adjust_Columns (O, Node_Id_Param'Length, Max_Param_Len);
          P (O, ": ");
-         P (O, Id_Subtype (Mixed_Case_Name (Kind), Regular, Id_Lone));
+         P (O, Id_Subtype (Mixed_Case_Name (Kind), IK, Id_Lone));
       end Print_Id_Parameter_Specification;
 
       -----------------------------------
@@ -529,11 +588,16 @@ package body Xtree_Builders is
          end if;
 
          P (O, ": ");
-         P (O, Builder_Param_Type (FI, In_Builder_Spec));
 
-         if Has_Default_Value (FI, Regular, In_Builder_Spec) then
+         if IK = Unchecked then
+            P (O, Builder_Param_Type (FI, Regular, In_Builder_Spec));
+         else
+            P (O, Builder_Param_Type (FI, IK, In_Builder_Spec));
+         end if;
+
+         if Has_Default_Value (FI, IK, In_Builder_Spec) then
             P (O, " := ");
-            P (O, Default_Value (FI, Regular, In_Builder_Spec));
+            P (O, Default_Value (FI, IK, In_Builder_Spec));
          end if;
 
          Field_Number := Field_Number + 1;
@@ -938,6 +1002,62 @@ package body Xtree_Builders is
       P (O, "return " & Id_Subtype (Prefix));
       Relative_Indent (O, -2);
    end Print_Class_Copy_Builder_Specification;
+
+   -------------------------------------------
+   -- Print_Class_Wide_Builder_Declarations --
+   -------------------------------------------
+
+   procedure Print_Class_Wide_Builder_Declarations (O : in out Output_Record)
+   is
+      use Class_Lists;
+
+      First_Print : Boolean := True;
+   begin
+      for Kind in Valid_Kind'Range loop
+         for CI of Classes loop
+            if Kind in Class_First (CI) .. Class_Last (CI)
+              and Class_Name (CI) /= "W_Any_Node" then
+               if First_Print then
+                  First_Print := False;
+               else
+                  NL (O);
+               end if;
+
+               Print_Builder_Specification (O, Kind, Derived, Builder_Children,
+                                            Id_Subtype (Class_Name (CI),
+                                                        Derived));
+               PL (O, ";");
+            end if;
+         end loop;
+      end loop;
+   end Print_Class_Wide_Builder_Declarations;
+
+   -------------------------------------
+   -- Print_Class_Wide_Builder_Bodies --
+   -------------------------------------
+
+   procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record) is
+      use Class_Lists;
+      use Node_Lists;
+
+      First_Print : Boolean := True;
+   begin
+      for Kind in Valid_Kind'Range loop
+         for CI of Classes loop
+            if Kind in Class_First (CI) .. Class_Last (CI)
+              and Class_Name (CI) /= "W_Any_Node" then
+               if First_Print then
+                  First_Print := False;
+               else
+                  NL (O);
+               end if;
+
+               Print_Builder_Body (O, Kind, Derived, Builder_Children,
+                                   Id_Subtype (Class_Name (CI), Derived));
+            end if;
+         end loop;
+      end loop;
+   end Print_Class_Wide_Builder_Bodies;
 
    -------------------------------
    -- Print_Copy_Builder_Bodies --

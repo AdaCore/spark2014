@@ -94,6 +94,7 @@ package body Xtree_Tables is
 
    function Builder_Param_Type
      (FI      : Field_Info;
+      IK      : Id_Kind;
       Context : Builder_Context)
      return Wide_String
    is
@@ -101,9 +102,9 @@ package body Xtree_Tables is
       if Context = In_Builder_Spec
         and then Is_List (FI)
       then
-         return Strip_Suffix (Type_Name (FI, Regular)) & "_Array";
+         return Strip_Suffix (Type_Name (FI, IK)) & "_Array";
       else
-         return Type_Name (FI, Regular);
+         return Type_Name (FI, IK);
       end if;
    end Builder_Param_Type;
 

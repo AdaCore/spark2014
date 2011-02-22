@@ -38,6 +38,8 @@ package Why.Atree.Builders is
 
    _@Declare_Builders@_
 
+   _@Declare_Class_Wide_Builders@_
+
    _@Declare_Unchecked_Builders@_
 
    _@Declare_Copy_Builders@_

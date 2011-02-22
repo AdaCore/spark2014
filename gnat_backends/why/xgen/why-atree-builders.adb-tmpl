@@ -32,4 +32,6 @@ package body Why.Atree.Builders is
 
    _@Implement_Copy_Builders@_
 
+   _@Implement_Class_Wide_Builders@_
+
 end Why.Atree.Builders;
