@@ -3557,6 +3557,47 @@ package body Why.Atree.Treepr is
       null;
    end Prog_Identifier_Post_Op;
 
+   ---------------------
+   -- Any_Expr_Pre_Op --
+   ---------------------
+
+   procedure Any_Expr_Pre_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Any_Expr_Id)
+   is
+   begin
+      P (O, "W_Any_Expr");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
+      NL (O);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Any_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).AE_Any_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
+   end Any_Expr_Pre_Op;
+
+   ----------------------
+   -- Any_Expr_Post_Op --
+   ----------------------
+
+   procedure Any_Expr_Post_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Any_Expr_Id)
+   is
+      pragma Unreferenced (Node);
+      pragma Unreferenced (State);
+   begin
+      null;
+   end Any_Expr_Post_Op;
+
    ------------------
    -- Deref_Pre_Op --
    ------------------

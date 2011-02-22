@@ -1628,6 +1628,25 @@ package Why.Ids is
      W_Prog_Identifier_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Any_Expr_Id is
+     W_Any_Expr_Unchecked_Id;
+   --  ??? subtype predicate not generated yet
+
+   type W_Any_Expr_Array is array (Positive range <>)
+     of W_Any_Expr_Id;
+
+   subtype W_Any_Expr_OId is
+     W_Any_Expr_Unchecked_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Expr_List is
+     W_Any_Expr_Unchecked_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Expr_OList is
+     W_Any_Expr_Unchecked_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Deref_Id is
      W_Deref_Unchecked_Id;
    --  ??? subtype predicate not generated yet

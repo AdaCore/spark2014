@@ -515,6 +515,10 @@ package Why.Atree.Accessors is
      (Id : W_Prog_Identifier_Id)
      return W_Identifier_Id;
 
+   function Any_Expr_Get_Any_Type
+     (Id : W_Any_Expr_Id)
+     return W_Computation_Type_Id;
+
    function Deref_Get_Ref
      (Id : W_Deref_Id)
      return W_Identifier_Id;
@@ -1457,6 +1461,11 @@ private
      (Id : W_Prog_Identifier_Id)
      return W_Identifier_Id is
      (Get_Node (Id).PI_Def);
+
+   function Any_Expr_Get_Any_Type
+     (Id : W_Any_Expr_Id)
+     return W_Computation_Type_Id is
+     (Get_Node (Id).AE_Any_Type);
 
    function Deref_Get_Ref
      (Id : W_Deref_Id)

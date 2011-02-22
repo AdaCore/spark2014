@@ -1149,6 +1149,14 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Def)
         and then Is_Root (Def));
 
+   procedure Any_Expr_Set_Any_Type
+     (Id       : W_Any_Expr_Unchecked_Id;
+      Any_Type : W_Computation_Type_Unchecked_Id) with
+     Pre =>
+       (Computation_Type_Id_Kind_Valid (Any_Type)
+        and then Computation_Type_Id_Valid (Any_Type)
+        and then Is_Root (Any_Type));
+
    procedure Deref_Set_Ref
      (Id  : W_Deref_Unchecked_Id;
       Ref : W_Identifier_Unchecked_Id) with

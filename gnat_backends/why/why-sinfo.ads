@@ -427,6 +427,7 @@ package Why.Sinfo is
 
       --  <prog> ::= <prog_constant>
       --             | <prog_identifier>
+      --             | <any_expr>
       --             | <deref>
       --             | <assignment>
       --             | <array_access>
@@ -458,6 +459,9 @@ package Why.Sinfo is
 
       W_Prog_Identifier,
       --  <prog_identifier> ::= <identifier>
+
+      W_Any_Expr,
+      --  <deref> ::= '!' <identifier>
 
       W_Deref,
       --  <deref> ::= '!' <identifier>

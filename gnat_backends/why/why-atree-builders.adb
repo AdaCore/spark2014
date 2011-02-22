@@ -2147,6 +2147,28 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Prog_Identifier;
 
+   ------------------
+   -- New_Any_Expr --
+   ------------------
+
+   function New_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Any_Type : W_Computation_Type_Id)
+     return W_Any_Expr_Id
+   is
+      Result : Why_Node (W_Any_Expr);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Any_Expr);
+   begin
+      Result.Ada_Node := Ada_Node;
+      Result.AE_Any_Type := Any_Type;
+      Set_Link (Result.AE_Any_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Any_Expr;
+
    ---------------
    -- New_Deref --
    ---------------
@@ -5195,6 +5217,26 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Unchecked_Prog_Identifier;
+
+   ----------------------------
+   -- New_Unchecked_Any_Expr --
+   ----------------------------
+
+   function New_Unchecked_Any_Expr
+     return W_Any_Expr_Unchecked_Id
+   is
+      Result : Why_Node (W_Any_Expr);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Any_Expr);
+   begin
+      Result.Ada_Node := Empty;
+      Result.AE_Any_Type := Why_Empty;
+      Set_Link (Result.AE_Any_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Any_Expr;
 
    -------------------------
    -- New_Unchecked_Deref --
@@ -9509,6 +9551,39 @@ package body Why.Atree.Builders is
          return New_Id;
       end;
    end Duplicate_Prog_Identifier;
+
+   ------------------------
+   -- Duplicate_Any_Expr --
+   ------------------------
+
+   function Duplicate_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Any_Expr_OId)
+     return W_Any_Expr_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Any_Expr);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Any_Expr);
+         Any_Type : constant W_Computation_Type_Id :=
+            Any_Expr_Get_Any_Type (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.AE_Any_Type :=
+           Duplicate_Computation_Type
+           (Id => Any_Type);
+         Set_Link (Result.AE_Any_Type, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Any_Expr;
 
    ---------------------
    -- Duplicate_Deref --

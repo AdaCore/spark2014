@@ -355,6 +355,9 @@ package Why.Atree is
          when W_Prog_Identifier =>
             PI_Def : W_Identifier_Opaque_Id;
 
+         when W_Any_Expr =>
+            AE_Any_Type : W_Computation_Type_Opaque_Id;
+
          when W_Deref =>
             D_Ref : W_Identifier_Opaque_Id;
 

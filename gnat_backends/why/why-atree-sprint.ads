@@ -354,6 +354,10 @@ private
      (State : in out Printer_State;
       Node  : W_Assertion_Id);
 
+   procedure Any_Expr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Any_Expr_Id);
+
    procedure Deref_Pre_Op
      (State : in out Printer_State;
       Node  : W_Deref_Id);

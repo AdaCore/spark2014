@@ -2534,6 +2534,36 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
+         when W_Any_Expr =>
+            Any_Expr_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Any_Expr_Get_Any_Type (Node));
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Any_Expr_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
          when W_Deref =>
             Deref_Pre_Op (State, Node);
 

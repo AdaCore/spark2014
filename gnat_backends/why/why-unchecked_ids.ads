@@ -1332,6 +1332,22 @@ package Why.Unchecked_Ids is
      W_Prog_Identifier_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
+   subtype W_Any_Expr_Unchecked_Id is
+     W_Any_Expr_Opaque_Id;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Expr_Unchecked_OId is
+     W_Any_Expr_Opaque_OId;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Expr_Unchecked_List is
+     W_Any_Expr_Opaque_List;
+   --  ??? subtype predicate not generated yet
+
+   subtype W_Any_Expr_Unchecked_OList is
+     W_Any_Expr_Opaque_OList;
+   --  ??? subtype predicate not generated yet
+
    subtype W_Deref_Unchecked_Id is
      W_Deref_Opaque_Id;
    --  ??? subtype predicate not generated yet

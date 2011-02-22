@@ -84,9 +84,9 @@ xtree: force
 	gnatmake -Phelpers xtree
 
 clean:
-	-rm *~
-	-rm *.o
-	-rm *.ali
-	-rm b~*
-	-rm *.adt
-	-rm xtree
+	-rm -f *~
+	-rm -f *.o
+	-rm -f *.ali
+	-rm -f b~*
+	-rm -f *.adt
+	-rm -f xtree

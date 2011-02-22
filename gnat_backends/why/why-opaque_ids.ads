@@ -686,6 +686,14 @@ package Why.Opaque_Ids is
 
    subtype W_Prog_Identifier_Opaque_OList is Why_Node_List;
 
+   subtype W_Any_Expr_Opaque_Id is Why_Node_Id;
+
+   subtype W_Any_Expr_Opaque_OId is Why_Node_Id;
+
+   subtype W_Any_Expr_Opaque_List is Why_Node_List;
+
+   subtype W_Any_Expr_Opaque_OList is Why_Node_List;
+
    subtype W_Deref_Opaque_Id is Why_Node_Id;
 
    subtype W_Deref_Opaque_OId is Why_Node_Id;

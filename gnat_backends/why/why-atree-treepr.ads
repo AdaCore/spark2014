@@ -683,6 +683,14 @@ private
      (State : in out Tree_Printer_State;
       Node  : W_Prog_Identifier_Id);
 
+   procedure Any_Expr_Pre_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Any_Expr_Id);
+
+   procedure Any_Expr_Post_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Any_Expr_Id);
+
    procedure Deref_Pre_Op
      (State : in out Tree_Printer_State;
       Node  : W_Deref_Id);

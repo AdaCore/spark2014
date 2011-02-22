@@ -1328,6 +1328,22 @@ package Why.Kind_Validity is
      (Id : W_Prog_Identifier_Opaque_OList)
      return Boolean;
 
+   function Any_Expr_Id_Kind_Valid
+     (Id : W_Any_Expr_Opaque_Id)
+     return Boolean;
+
+   function Any_Expr_OId_Kind_Valid
+     (Id : W_Any_Expr_Opaque_OId)
+     return Boolean;
+
+   function Any_Expr_List_Kind_Valid
+     (Id : W_Any_Expr_Opaque_List)
+     return Boolean;
+
+   function Any_Expr_OList_Kind_Valid
+     (Id : W_Any_Expr_Opaque_OList)
+     return Boolean;
+
    function Deref_Id_Kind_Valid
      (Id : W_Deref_Opaque_Id)
      return Boolean;
@@ -4474,6 +4490,31 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Prog_Identifier_List_Kind_Valid (Id));
+
+   function Any_Expr_Id_Kind_Valid
+     (Id : W_Any_Expr_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Any_Expr);
+
+   function Any_Expr_OId_Kind_Valid
+     (Id : W_Any_Expr_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Expr_Id_Kind_Valid (Id));
+
+   function Any_Expr_List_Kind_Valid
+     (Id : W_Any_Expr_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Any_Expr_OList_Kind_Valid
+     (Id : W_Any_Expr_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Expr_List_Kind_Valid (Id));
 
    function Deref_Id_Kind_Valid
      (Id : W_Deref_Opaque_Id)

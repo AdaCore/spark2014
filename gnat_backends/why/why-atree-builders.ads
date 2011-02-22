@@ -1944,6 +1944,27 @@ package Why.Atree.Builders is
           (New_Prog_Identifier'Result)
           = Def);
 
+   function New_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Any_Type : W_Computation_Type_Id)
+     return W_Any_Expr_Id with
+     Pre =>
+       (Computation_Type_Id_Kind_Valid (Any_Type)
+        and then Computation_Type_Id_Valid (Any_Type)
+        and then Is_Root (Any_Type)),
+     Post =>
+       (Get_Kind
+         (New_Any_Expr'Result)
+         = W_Any_Expr
+        and then
+          Get_Ada_Node
+          (New_Any_Expr'Result)
+          = Ada_Node
+        and then
+          Any_Expr_Get_Any_Type
+          (New_Any_Expr'Result)
+          = Any_Type);
+
    function New_Deref
      (Ada_Node : Node_Id := Empty;
       Ref      : W_Identifier_Id)
@@ -3971,6 +3992,15 @@ package Why.Atree.Builders is
          = W_Prog_Identifier
        );
 
+   function New_Unchecked_Any_Expr
+     return W_Any_Expr_Unchecked_Id with
+     Pre => True,
+     Post =>
+       (Get_Kind
+         (New_Unchecked_Any_Expr'Result)
+         = W_Any_Expr
+       );
+
    function New_Unchecked_Deref
      return W_Deref_Unchecked_Id with
      Pre => True,
@@ -5639,6 +5669,21 @@ package Why.Atree.Builders is
           (Duplicate_Prog_Identifier'Result)
           = Ada_Node);
 
+   function Duplicate_Any_Expr
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Any_Expr_OId)
+     return W_Any_Expr_Id with
+     Pre =>
+       (Any_Expr_Id_Valid (Id)),
+     Post =>
+       (Get_Kind
+         (Duplicate_Any_Expr'Result)
+         = W_Any_Expr
+        and then
+          Get_Ada_Node
+          (Duplicate_Any_Expr'Result)
+          = Ada_Node);
+
    function Duplicate_Deref
      (Ada_Node : Node_Id := Empty;
       Id       : W_Deref_OId)
@@ -7124,6 +7169,10 @@ private
            Duplicate_Prog_Identifier
             (Ada_Node  => Ada_Node,
              Id        => Id),
+        when W_Any_Expr =>
+           Duplicate_Any_Expr
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
         when W_Deref =>
            Duplicate_Deref
             (Ada_Node  => Ada_Node,
@@ -7658,6 +7707,10 @@ private
              Id        => Id),
         when W_Prog_Identifier =>
            Duplicate_Prog_Identifier
+            (Ada_Node  => Ada_Node,
+             Id        => Id),
+        when W_Any_Expr =>
+           Duplicate_Any_Expr
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Deref =>

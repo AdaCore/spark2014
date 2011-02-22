@@ -855,6 +855,16 @@ package Why.Atree.Traversal is
       Node  : W_Prog_Identifier_Id)
      is null;
 
+   procedure Any_Expr_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Any_Expr_Id)
+     is null;
+
+   procedure Any_Expr_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Any_Expr_Id)
+     is null;
+
    procedure Deref_Pre_Op
      (State : in out Traversal_State;
       Node  : W_Deref_Id)

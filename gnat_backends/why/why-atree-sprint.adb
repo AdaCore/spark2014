@@ -1772,6 +1772,22 @@ package body Why.Atree.Sprint is
       State.Control := Abandon_Children;
    end Assertion_Pre_Op;
 
+   ---------------------
+   -- Any_Expr_Pre_Op --
+   ---------------------
+
+   procedure Any_Expr_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Any_Expr_Id)
+   is
+      Ty : constant W_Computation_Type_Id := Any_Expr_Get_Any_Type (Node);
+   begin
+      P (O, "[ ");
+      Traverse (State, Ty);
+      P (O, " ]");
+      State.Control := Abandon_Children;
+   end Any_Expr_Pre_Op;
+
    ------------------
    -- Deref_Pre_Op --
    ------------------

@@ -2522,6 +2522,24 @@ package body Why.Atree.Mutators is
          Prog_Identifier_Id_Valid (Id));
    end Prog_Identifier_Set_Def;
 
+   ---------------------------
+   -- Any_Expr_Set_Any_Type --
+   ---------------------------
+
+   procedure Any_Expr_Set_Any_Type
+     (Id       : W_Any_Expr_Unchecked_Id;
+      Any_Type : W_Computation_Type_Unchecked_Id)
+   is
+      Node : Why_Node := Get_Node (Id);
+   begin
+      Node.AE_Any_Type := Any_Type;
+      Set_Node (Id, Node);
+      Set_Link (Any_Type, Id);
+      Update_Validity_Status
+        (Id,
+         Any_Expr_Id_Valid (Id));
+   end Any_Expr_Set_Any_Type;
+
    -------------------
    -- Deref_Set_Ref --
    -------------------

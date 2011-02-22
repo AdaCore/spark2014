@@ -1358,6 +1358,22 @@ package Why.Atree.Validity is
      (Id : W_Prog_Identifier_Unchecked_OList)
      return Boolean;
 
+   function Any_Expr_Id_Valid
+     (Id : W_Any_Expr_Unchecked_Id)
+     return Boolean;
+
+   function Any_Expr_OId_Valid
+     (Id : W_Any_Expr_Unchecked_OId)
+     return Boolean;
+
+   function Any_Expr_List_Valid
+     (Id : W_Any_Expr_Unchecked_List)
+     return Boolean;
+
+   function Any_Expr_OList_Valid
+     (Id : W_Any_Expr_Unchecked_OList)
+     return Boolean;
+
    function Deref_Id_Valid
      (Id : W_Deref_Unchecked_Id)
      return Boolean;
@@ -3782,6 +3798,22 @@ private
 
    function Prog_Identifier_OList_Children_Valid
      (Id : W_Prog_Identifier_Unchecked_OList)
+     return Boolean;
+
+   function Any_Expr_Id_Children_Valid
+     (Id : W_Any_Expr_Unchecked_Id)
+     return Boolean;
+
+   function Any_Expr_OId_Children_Valid
+     (Id : W_Any_Expr_Unchecked_OId)
+     return Boolean;
+
+   function Any_Expr_List_Children_Valid
+     (Id : W_Any_Expr_Unchecked_List)
+     return Boolean;
+
+   function Any_Expr_OList_Children_Valid
+     (Id : W_Any_Expr_Unchecked_OList)
      return Boolean;
 
    function Deref_Id_Children_Valid
@@ -7011,6 +7043,32 @@ private
      return Boolean is
      (Is_Empty (Id)
       or else Prog_Identifier_List_Valid (Id));
+
+   function Any_Expr_Id_Valid
+     (Id : W_Any_Expr_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Any_Expr_Id_Children_Valid (Id));
+
+   function Any_Expr_OId_Valid
+     (Id : W_Any_Expr_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Expr_Id_Valid (Id));
+
+   function Any_Expr_List_Valid
+     (Id : W_Any_Expr_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
+   function Any_Expr_OList_Valid
+     (Id : W_Any_Expr_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Expr_List_Valid (Id));
 
    function Deref_Id_Valid
      (Id : W_Deref_Unchecked_Id)
@@ -10947,6 +11005,30 @@ private
      (Is_Empty (Id)
       or else Prog_Identifier_List_Children_Valid (Id));
 
+   function Any_Expr_Id_Children_Valid
+     (Id : W_Any_Expr_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Any_Expr_Get_Any_Type (Id)));
+
+   function Any_Expr_OId_Children_Valid
+     (Id : W_Any_Expr_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Any_Expr_Id_Children_Valid (Id));
+
+   function Any_Expr_List_Children_Valid
+     (Id : W_Any_Expr_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
+   function Any_Expr_OList_Children_Valid
+     (Id : W_Any_Expr_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Any_Expr_List_Children_Valid (Id));
+
    function Deref_Id_Children_Valid
      (Id : W_Deref_Unchecked_Id)
      return Boolean is
@@ -12881,6 +12963,8 @@ private
            Prog_Constant_Id_Children_Valid (Id),
         when W_Prog_Identifier =>
            Prog_Identifier_Id_Children_Valid (Id),
+        when W_Any_Expr =>
+           Any_Expr_Id_Children_Valid (Id),
         when W_Deref =>
            Deref_Id_Children_Valid (Id),
         when W_Assignment =>
@@ -13233,6 +13317,8 @@ private
            Prog_Constant_Id_Children_Valid (Id),
         when W_Prog_Identifier =>
            Prog_Identifier_Id_Children_Valid (Id),
+        when W_Any_Expr =>
+           Any_Expr_Id_Children_Valid (Id),
         when W_Deref =>
            Deref_Id_Children_Valid (Id),
         when W_Assignment =>
