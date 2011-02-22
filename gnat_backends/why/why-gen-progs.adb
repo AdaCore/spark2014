@@ -118,7 +118,6 @@ package body Why.Gen.Progs is
        return W_Prog_Id
    is
    begin
-      --  ??? TBD
       return
          New_Any_Expr
             (Ada_Node => Ada_Node,
