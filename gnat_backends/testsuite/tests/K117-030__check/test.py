@@ -1,4 +1,4 @@
 from test_support import *
 import glob
 
-prove("divide.adb")
+prove("check.adb")
