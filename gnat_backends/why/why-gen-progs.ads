@@ -46,6 +46,14 @@ package Why.Gen.Progs is
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
+   function New_Assume_Statement
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id)
+       return W_Prog_Id;
+   --  Generate an assumption statement. There is no such thing in Why2, so it
+   --  is encoded as follows:
+   --    [ unit -> { true } unit { P} ] void
+
    function New_For_Loop
      (Ada_Node   : Node_Id;
       Loop_Index : Name_Id;

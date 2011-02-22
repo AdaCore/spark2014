@@ -112,6 +112,27 @@ package body Why.Gen.Progs is
       end if;
    end Insert_Conversion;
 
+   function New_Assume_Statement
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id)
+       return W_Prog_Id
+   is
+   begin
+      --  ??? TBD
+      return
+         New_Any_Expr
+            (Ada_Node => Ada_Node,
+             Any_Type =>
+               New_Computation_Spec
+                 (Ada_Node => Ada_Node,
+                  Return_Type => New_Type_Unit,
+                  Effects => New_Effects,
+                  Postcondition =>
+                     New_Postcondition
+                       (Ada_Node => Ada_Node,
+                        Assertion => New_Assertion (Pred => Pred))));
+   end New_Assume_Statement;
+
    ------------------
    -- New_For_Loop --
    ------------------
