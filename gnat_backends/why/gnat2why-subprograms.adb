@@ -814,8 +814,7 @@ package body Gnat2Why.Subprograms is
          when N_Identifier =>
             --  We need to distinguish the following cases:
             --  * usual program variables: generate !x
-            --  * loop index: We can safely assume the variable to be of its
-            --    base type, and thus skip a conversion
+            --  * loop index: A loop index is always of type "int"
             --  * boolean constants true/false
             case Ekind (Entity (Expr)) is
                when E_Enumeration_Literal =>
@@ -832,8 +831,7 @@ package body Gnat2Why.Subprograms is
                     (Ada_Node => Expr,
                      Ref      => Why_Ident_Of_Ada_Ident (Expr));
                   if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                     Current_Type :=
-                       (Why_Abstract, Type_Of_Node (Etype (Entity (Expr))));
+                     Current_Type := (Kind => Why_Int);
                   end if;
 
                when others =>
@@ -1072,8 +1070,6 @@ package body Gnat2Why.Subprograms is
                          New_Prog_Constant (Def => New_True_Literal),
                        Annotation   => Annot,
                        Loop_Content => Loop_Content);
-               --  Depending on the loop kind, we change the loop definition a
-               --  bit
                elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
@@ -1102,13 +1098,11 @@ package body Gnat2Why.Subprograms is
                             (Discrete_Subtype_Definition (LParam_Spec)));
                      Loop_Index : constant Name_Id :=
                         Chars (Defining_Identifier (LParam_Spec));
-                     Index_Type : constant Name_Id := Type_Of_Node (Low);
                   begin
                      return
                         New_For_Loop
                         (Ada_Node  => Stmt,
                         Loop_Index => Loop_Index,
-                        Index_Type => (Why_Abstract, Index_Type),
                         Low        =>
                            Why_Expr_Of_Ada_Expr (Low, (Kind => Why_Int)),
                         High       =>

@@ -57,7 +57,6 @@ package Why.Gen.Progs is
    function New_For_Loop
      (Ada_Node   : Node_Id;
       Loop_Index : Name_Id;
-      Index_Type : Why_Type;
       Low        : W_Prog_Id;
       High       : W_Prog_Id;
       Invariant  : W_Loop_Annot_Id;
