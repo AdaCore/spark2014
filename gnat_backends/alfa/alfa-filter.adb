@@ -174,32 +174,39 @@ package body ALFA.Filter is
 
       procedure Transform_Subtype_Indication (N : Node_Id)
       is
+         Orig : constant Node_Id := Original_Node (N);
       begin
-         case Nkind (N) is
-            when N_Identifier =>
-               --  The type is already a simple name, do nothing
-               null;
-            when N_Subtype_Indication | N_Range =>
-               declare
-                  --  assume an integer subtype for now
-                  --  Rng     : constant Node_Id :=
-                  --     Range_Expression (Constraint (N));
-                  --  New_Def : constant Node_Id :=
-                  --     Make_Signed_Integer_Type_Definition
-                  --       (Sloc => Sloc (N),
-                  --        Low_Bound => Low_Bound (Rng),
-                  --        High_Bound => Low_Bound (Rng));
-               begin
-                  Type_List.Append
-                    (Make_Subtype_Declaration
-                       (Sloc (N),
-                        New_Copy (Etype (N)),
-                        False,
-                        New_Copy (N)));
-               end;
-            when others =>
-               null;
-         end case;
+         --  If the node has been rewritten, and the original node
+         --  is an ident, do nothing
+         if  Orig /= N and then Nkind (Orig) = N_Identifier then
+            null;
+         else
+            case Nkind (N) is
+               when N_Identifier =>
+                  --  The type is already a simple name, do nothing
+                  null;
+               when N_Subtype_Indication | N_Range =>
+                  declare
+                     --  assume an integer subtype for now
+                     --  Rng     : constant Node_Id :=
+                     --     Range_Expression (Constraint (N));
+                     --  New_Def : constant Node_Id :=
+                     --     Make_Signed_Integer_Type_Definition
+                     --       (Sloc => Sloc (N),
+                     --        Low_Bound => Low_Bound (Rng),
+                     --        High_Bound => Low_Bound (Rng));
+                  begin
+                     Type_List.Append
+                       (Make_Subtype_Declaration
+                          (Sloc (N),
+                           New_Copy (Etype (N)),
+                           False,
+                           New_Copy (N)));
+                  end;
+               when others =>
+                  null;
+            end case;
+         end if;
       end Transform_Subtype_Indication;
 
       Ent_Name     : Name_Id;
