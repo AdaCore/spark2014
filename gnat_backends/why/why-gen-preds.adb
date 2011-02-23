@@ -203,7 +203,7 @@ package body Why.Gen.Preds is
       return New_Related_Terms
          (Left => Left,
           Right => Right,
-          Op => New_Rel_Eq);
+          Op => New_Rel_Ne);
    end New_NEqual;
 
    ------------------------
