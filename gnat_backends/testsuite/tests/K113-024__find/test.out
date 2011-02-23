@@ -2,7 +2,7 @@
     "Gnat2why__1": {
         "invalid": [], 
         "valid": [
-            "def___find__find_po_3"
+            "def___find__find_po_2"
         ]
     }, 
     "Gnat2why__2": {
@@ -14,26 +14,20 @@
     "Gnat2why__3": {
         "invalid": [], 
         "valid": [
-            "def___find__find_po_6"
+            "def___find__find_po_3"
         ]
     }, 
     "Gnat2why__4": {
         "invalid": [], 
         "valid": [
-            "def___find__find_po_2"
+            "def___find__find_po_1"
         ]
     }, 
     "Gnat2why__5": {
         "invalid": [], 
         "valid": [
-            "def___find__find_po_1"
-        ]
-    }, 
-    "Gnat2why__6": {
-        "invalid": [], 
-        "valid": [
             "def___find__find_po_5", 
-            "def___find__find_po_7"
+            "def___find__find_po_6"
         ]
     }
 }
