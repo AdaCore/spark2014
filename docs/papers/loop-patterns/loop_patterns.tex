@@ -174,7 +174,7 @@ followed by a (possibly empty) unordered set of \textit{simultaneous guarded ass
 \gassign  & ::= & \expr ~$\rightarrow$ \assign \\
 \assign  & ::= & \location ~$:=$  \expr\\
 \location  & ::= & $v ~|~ V[\expr]$ \\
-\expr  & ::= & $\location  ~|~ \expr \bullet \expr  ~|~ f(\expr) \qquad \bullet \in \{+, -, *, / , <, \leq, >, \geq \}$\\
+\expr  & ::= & $\location  ~|~ \expr \bullet \expr  ~|~ f(\expr) ~~\bullet \in \{+, -, *, / , <, \leq, >, \geq \}$\\
 \end{tabular}
 \vspace{0.5cm}
 
@@ -224,10 +224,22 @@ $A$. Expression $e_0$ denotes the expression $e$ where all variables have been
 replaced by their initial counterparts (this does not apply to the loop index
 \idx).  The special expression $e^?$ denotes an unknown value, and expression.
 
-We denote $e^\at{\idx}$ an expression which only depends on the value of the
-loop index \idx and initial values of variables before the loop. We say that
-such an expression is \textit{\translatable}. Sufficient conditions for an
-expression $e$ to be translatable are the following:
+We define \textit{value-preserving expressions} as those expressions such that 
+($e=e_0$) is a loop-invariant. We denote $e^\at{\idx}$ a \textit{value-preserving expression} 
+where the loop index is $\idx$, so that we can express the same expression for differents
+values of loop index (\eg $e^\at{j}$, $e^\at{k}$, etc). A such expression only depends on 
+the value of the loop index or and initial values of variables before the loop.
+Notice that, for all $j$, ($e^\at{j} = e_0^\at{j}$) is not necessarily a loop invariant . 
+For instance in the following example:
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ true \rightarrow A[i] := 0\\
+  \KWend
+\end{array}$$
+$e^\at{i} \equiv A[i]$ (with $i$ index no yet visited) is a \textit{value-preserving expression}, because ($A[i]=A_0[i]$) is a loop 
+invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
+
+Sufficient conditions for an expression $e$ to be translatable are the following:
 \begin{enumerate}
 \item $e$ does not refer to scalar variables that are assigned in the loop;
 \item $e$ may refer to (array or scalar) variables that are not modified in the loop;
@@ -239,6 +251,11 @@ expression $e$ to be translatable are the following:
   array filtering where the array is assigned at index $v$ where $v$ is
   incremented less often than the loop index.
 \end{enumerate}
+
+For simplicity, if we have an array A that is never updated in the loop
+i.e: $(\forall i)(A^\at{i}=A_0)$, we treat such array A as a constant and simply
+use $A$ instead of $A^\at{i}$. Thus, to refer to old element of such array A at any 
+position $p$ we will simply write $A[p]$ instead of $A_0[p]$.
 
 \subsection{Rich Loop Invariants}
 
@@ -299,14 +316,17 @@ $$t^\at{\idx} \rightarrow \KWexit$$
 \loopinvariant
 %
 $$(\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ A[i]=0 \rightarrow \KWexit \\
-  ~~~~ \textit{invariant}:(\forall j)(1\leq j\leq i \impl A_{0}[j] \neq 0)\\
+  ~~~~ \textit{invariant}:(\forall j)(1\leq j\leq i \impl A[j] \neq 0)\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsection{Update Patterns}
 
@@ -322,17 +342,18 @@ $$\mathit{true} \rightarrow a := e^\at{\idx}$$
 $$(\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})$$
 %
 \patternnote This is the case for Boolean variables that identify the first run
-through the loop.\\
-%
+through the loop.
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\idx = 1 \impl flag = flag_0 \land a = a_0) \land \\
-  ~~~~~~~~~~~~~~~~~~~ (\idx \neq 1 \impl flag = true \land a = i)\\
-  ~~~~ true \rightarrow flag := true\\
-  ~~~~ flag \rightarrow a := i+1\\
+  ~~~~ \textit{invariant}: (\idx = 1 \impl \mathit{flag} = \mathit{flag}_0) \land (\idx \neq 1 \impl flag = true)\\
+  ~~~~ true \rightarrow \mathit{flag} := true\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Single Min/Max Pattern}
 
@@ -347,23 +368,34 @@ $$(a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}  \qquad \bullet \in \{<, 
 \begin{eqnarray*}
 &(a = a_0) \land (\forall j)(\seen{j} \impl \neg (a_0 \bullet e_0^\at{j}))\\
 \lor 
-& (\exists j)(\seen{j} \land a = e_0^\at{j} \land (\forall k)(\seen{k} \impl a \circ e_0^\at{k}))
+& ((\exists j)(\seen{j} \land a = e_0^\at{j}) \land (\forall k)(\seen{k} \impl a \circ e_0^\at{k}))
 \end{eqnarray*}
 where $\circ$ can be deduced from $\bullet$ as follows:
 $\begin{array}{l|llll}
 \bullet & <    & \leq & >    & \geq \\ \hline
 \circ   & \geq & \geq & \leq & \leq
-\end{array}$\\
-%
+\end{array}$
+
+\bigskip
+\patternnote Above invariant is equivalent to its complex form:
+\begin{eqnarray*}
+&(a = a_0) \land (\forall j)(\seen{j} \impl \neg (a_0 \bullet e_0^\at{j}))\\
+\lor 
+& ((\exists j)(\seen{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{i} \impl \neg (a_0 \bullet e_0^\at{k}))) \land \\
+&(\forall k)(\seen{k} \impl a \circ e_0^\at{k}))\\
+\end{eqnarray*}
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl \neg (m_0 < A_0[j]))\\
-  ~~~~~~~~~~~~~~~~~~~ \lor \\ 
-  ~~~~~~~~~~~~~~~~~~~ (\exists j)(\seen{j} \land m = A_0[j] \land (\forall k)(\seen{k} \impl m \geq A_0[k]))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl \neg (m_0 < A[j]))\\
+  ~~~~~~~~~~~~~ \lor ((\exists j)(1\leq j < i \land m = A[j]) \land (\forall k)(1\leq k < i \impl m \geq A[k]))\\
   ~~~~ m < A(i) \rightarrow m := A(i)\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Single Min/Max Index Pattern}
 
@@ -379,23 +411,25 @@ $$(e^\at{a} \bullet e^\at{\idx}) \rightarrow a := \idx  \qquad \bullet \in \{<, 
 \begin{eqnarray*}
 &(a = a_0) \land (\forall j)(\seen{j} \impl \neg (e_0^\at{a_0} \bullet e_0^\at{j}))\\
 \lor 
-& (\exists j)(\seen{j} \land a = j \land (\forall k)(\seen{k} \impl e_0^\at{a} \circ e_0^\at{k}))
+& ((\exists j)(\seen{j} \land a = j) \land (\forall k)(\seen{k} \impl e_0^\at{a} \circ e_0^\at{k}))
 \end{eqnarray*}
 where $\circ$ can be deduced from $\bullet$ as follows:
 $\begin{array}{l|llll}
 \bullet & <    & \leq & >    & \geq \\ \hline
 \circ   & \geq & \geq & \leq & \leq
-\end{array}$\\
-%
+\end{array}$
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl \neg (A_0(m_0) < A_0[j]))\\
-  ~~~~~~~~~~~~~~~~~~~ \lor \\ 
-  ~~~~~~~~~~~~~~~~~~~ (\exists j)(\seen{j} \land m = j \land (\forall k)(\seen{k} \impl A_0(m_0) \geq A_0[k]))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl \neg (A(m_0) < A[j]))\\
+  ~~~~~~~~~~ \lor ((\exists j)(1\leq j < i \land m = j) \land (\forall k)(1\leq k < i \impl A(m) \geq A[k]))\\
   ~~~~ A(m) < A(i) \rightarrow m := i\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Single Update Pattern}
 
@@ -411,17 +445,19 @@ $$g^\at{\idx} \rightarrow a := e^\at{\idx}$$
 \lor 
 & (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl A_0(j)-B_0(j)\neq0)\\
-  ~~~~~~~~~~~~~~~~~~~ \lor \\ 
-  ~~~~~~~~~~~~~~~~~~~ (\exists j)(\seen{j} \land A_0(j)-B_0(j)= 0 \land m = B_0(j) \land \\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(\between{j}{k}{\idx} \impl A_0(k)-B_0(k)\neq0))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j)\neq0)\\
+  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(1\leq j < i \land A(j)-B(j)= 0 \land m = B(j) \land \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(j < k < i \impl A(k)-B(k)\neq0))\\
   ~~~~ A(i)-B(i)=0 \rightarrow m := B(i)\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Single Update Pattern}
 
@@ -433,14 +469,17 @@ $$g^? \rightarrow a := e^\at{\idx}$$
 \loopinvariant
 %
 $$(a = a_0) \lor (\exists j)(\seen{j} \land a = e_0^\at{j})$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(\seen{j} \land m = B(j))\\
-  ~~~~ A(x)-B(x)=0 \rightarrow m := B(i)\\
+  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(1\leq j < i \land m = B_0(j))\\
+  ~~~~ A(m)-B(m)=0 \rightarrow m := B(i)\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Multiple Update Pattern}
 
@@ -467,19 +506,22 @@ whose guards are translatable, and it receives in each a translatable value.
 %
 \patternnote In this invariant and others multiple invariants patterns, 
 existential and universal quantifier concern the implicit range of all 
-guarded assignment considered, i.e : $1 \leq r \leq n$.\\
-%
+guarded assignment considered, i.e : $1 \leq r \leq n$.
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl A_0(j)-B_0(j) \geq 0 \land A_0(j)-B_0(j) \leq 0)\\
-  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land ((A_0(j)-B_0(j) < 0 \land m = B_0(j)) \lor\\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (A_0(j)-B_0(j) > 0 \land m = A_0(j)))\\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\forall k)(\between{j}{k}{\idx} \impl (A_0(k)-B_0(k) \geq 0) \land (A_0(k)-B_0(k) \leq 0))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j)=0)\\
+  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land ((A(j)-B(j) < 0 \land m = B_0(j)) \lor\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (A(j)-B(j) > 0 \land m = A_0(j)))\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\forall k)(j < k < i \impl (A(k)-B(k) = 0)))\\
   ~~~~ A(i)-B(i) < 0 \rightarrow m := B(i)\\
   ~~~~ A(i)-B(i) > 0 \rightarrow m := A(i)\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsection{Integrate Patterns}
 
@@ -493,14 +535,17 @@ $$\mathit{true} \rightarrow a := a + K$$
 \loopinvariant
 %
 $$a = a_0 + K * (i-1)$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: m = m_0 + (i-1)\\
   ~~~~ true \rightarrow m := m+1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Single Add-Up Pattern}
 
@@ -521,17 +566,20 @@ $$g^\at{\idx} \rightarrow a := a + K$$
 \land& (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k})
 \end{array}\right)
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl A_0(j)-B_0(j)\neq0)\\
-  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land (A_0(j)-B_0(j)= 0 \land \\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k \leq \tocount{j} \land m = m_0 + k) \land\\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(\between{j}{k}{\idx} \impl A_0(k)-B_0(k)\neq0))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j)\neq0)\\
+  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land A(j)-B(j)= 0 \land \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k \leq j \land m = m_0 + k) \land\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(j < k < i \impl A(k)-B(k)\neq0))\\
   ~~~~ A(i)-B(i)=0 \rightarrow m := m+1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Multiple Add-Up Pattern}
 
@@ -557,18 +605,21 @@ plus a constant.
 \land& (\forall k)(\forall r)(\between{j}{k}{\idx} \impl \neg g_{r0}^\at{k})
 \end{array}\right)
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl A_0(j)-B_0(j) \geq 0 \land A_0(j)-B_0(j) \leq 0)\\
-  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land (A_0(j)-B_0(j < 0 \lor A_0(j)-B_0(j > 0) \\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\exists k)(1 \leq k \leq \tocount{j} \land m_0-k \leq m \leq m_0 +k) \\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\forall k)(\between{j}{k}{\idx} \impl A_0(j)-B_0(j) \geq 0 \land A_0(j)-B_0(j) \leq 0))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j) = 0)\\
+  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land (A(j)-B(j) < 0 \lor A(j)-B(j) > 0) \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\exists k)(1 \leq k \leq j \land m_0-k \leq m \leq m_0 +k) \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (\forall k)(j < k < i \impl A(j)-B(j) = 0))\\
   ~~~~ A(i)-B(i) < 0 \rightarrow m := m+1\\
   ~~~~ A(i)-B(i) > 0 \rightarrow m := m-1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Single Add-Up Pattern}
 
@@ -579,15 +630,19 @@ $$g^? \rightarrow a := a + K$$
 %
 \loopinvariant
 %
-$$(a = a_0) \lor (\exists j)(\seen{j} \land a = a_0 + K * j)$$
-%
+$$(a = a_0) \lor (\exists j)(\seen{j} \land (\exists k)(1 \leq k \leq \tocount{j} \land a = a_0 + K * k))$$
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(\seen{j} \land m = m_0+10*j)\\
-  ~~~~ F(x)=0 \rightarrow m := m+10\\
+  ~~~~ \textit{invariant}: (m = m_0) \lor \\
+  ~~~~~~~~~~~~~~~~~~ (\exists j)(1 \leq j < i \land (\exists k)(1 \leq k \leq j \land m = m_0+10*k))\\
+  ~~~~ F(m)=0 \rightarrow m := m+10\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Multiple Add-Up Pattern}
 
@@ -603,16 +658,23 @@ plus a constant.
 %
 \loopinvariant
 %
-$$(a = a_0) \lor (\exists j)(\seen{j} \land a_0 + \mathit{min}(K_r) * j \leq a \leq a_0 + \mathit{max}(K_r) * j)$$
-%
+\begin{eqnarray*}
+&(a = a_0) \lor\\
+&(\exists j)(\seen{j} \land (\exists k)(1 \leq k \leq \tocount{j} \land a_0 + \mathit{min}(K_r)*k \leq a \leq a_0 + \mathit{max}(K_r)*k))\\
+\end{eqnarray*}
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(\seen{j} \land m_0+10*j \leq m \leq m_0 +20*j)\\
-  ~~~~ F(x)=0 \rightarrow m := m+10\\
-  ~~~~ G(x)=0 \rightarrow m := m+20\\
+  ~~~~ \textit{invariant}: (m = m_0) \lor \\
+  ~~~~~~~ (\exists j)(1 \leq j < i \land (\exists k)(1 \leq k \leq j \land m_0+10*k \leq m \leq m_0 +20*k))\\
+  ~~~~ F(m)=0 \rightarrow m := m+10\\
+  ~~~~ G(m)=0 \rightarrow m := m+20\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Certain Single Mult-Up Pattern}
 
@@ -625,14 +687,17 @@ $$\mathit{true} \rightarrow a := a \bullet K \qquad \bullet \in \{*, / \}$$
 \loopinvariant
 %
 $$a = a_0 \bullet K^{i-1}$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: m = m_0 * 2^{i-1}\\
   ~~~~ true \rightarrow m := m*2\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Single Mult-Up Pattern}
 
@@ -654,17 +719,20 @@ $$g^\at{\idx} \rightarrow a := a \bullet K  \qquad \bullet \in \{*, / \}$$
 \land& (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k})
 \end{array}\right)
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(\seen{j} \impl A_0(j)-B_0(j)\neq0)\\
-  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land (A_0(j)-B_0(j)= 0 \land \\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k \leq \tocount{j} \land m = m_0 * 2^k) \land\\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(\between{j}{k}{\idx} \impl A_0(k)-B_0(k)\neq0))\\
+  ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1 \leq j < i \impl A(j)-B(j)\neq0)\\
+  ~~~~~~~~~~~~~~~~~~~ \lor (\exists j)(\seen{j} \land (A(j)-B(j)= 0 \land \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k \leq j \land m = m_0 * 2^k) \land\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\forall k)(j < k < i \impl A(k)-B(k)\neq0))\\
   ~~~~ A(i)-B(i)=0 \rightarrow m := m*2\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Single Mult-Up Pattern}
 
@@ -676,15 +744,19 @@ $$g^? \rightarrow a := a \bullet K  \qquad \bullet \in \{*, / \}$$
 %
 \loopinvariant
 %
-$$(a = a_0) \lor (\exists j)(\seen{j} \land a = a_0 \bullet K^j)$$
-%
+$$(a = a_0) \lor (\exists j)(\seen{j} \land (\exists k)(1 \leq k \leq \tocount{j} \land a = a_0 \bullet K^k))$$
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(\seen{j} \land m = m_0+10^j)\\
-  ~~~~ F(x)=0 \rightarrow m := m*10\\
+  ~~~~ \textit{invariant}: (m = m_0) \lor \\
+  ~~~~~~~~~~~~~~~~~~~ (\exists j)(1 \leq j < i \land (\exists k)(1 \leq k \leq j \land m = m_0+10^k))\\
+  ~~~~ F(m)=0 \rightarrow m := m*10\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsection{Map Patterns}
 
@@ -702,16 +774,19 @@ $$\mathit{true} \rightarrow A[\idx] := e^\at{\idx}$$
 \land& (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])
 \end{eqnarray*}
 %
-\patternnote This pattern corresponds in particular to an array copy.\\
-%
+\patternnote This pattern corresponds in particular to an array copy.
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \impl A[j] = B_0[j]) \land\\
-  ~~~~~~~~~~~~~~~~~~~ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+  ~~~~ \textit{invariant}: (\forall j)(1\leq j< i \impl A[j] = B[j]) \land\\
+  ~~~~~~~~~~~~~~~~~~~ (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
   ~~~~ true \rightarrow A[i] := B[i]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Certain Shifted Single Map Pattern}
 
@@ -728,16 +803,19 @@ $$\mathit{true} \rightarrow A[\idx + K] := e^\at{\idx}$$
 \land& (\forall j)(\neg \seen{j} \land \inbounds{A}{j + K} \impl A[j + K] = A_0[j + K])
 \end{eqnarray*}
 %
-\patternnote All map patterns can be shifted like the above.\\
-%
+\patternnote All map patterns can be shifted like the above.
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \impl A[j+1] = B_0[j]) \land\\
-  ~~~~~~~~~~~~~~~~~~~ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j+1] = A_0[j+1])\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \impl A[j+1] = B[j]) \land\\
+  ~~~~~~~~~~~~ (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j+1} \impl A[j+1] = A_0[j+1])\\
   ~~~~ true \rightarrow A[i+1] := B[i]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Single Map Pattern}
 
@@ -754,16 +832,19 @@ $$g^\at{\idx} \rightarrow A[\idx] := e^\at{\idx}$$
 \land&
  (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \land A_0[j] \neq 0 \impl A[j] = 0) \land\\
-  ~~~~~~~~~~~~~~~~~~~ (\forall j)(\seen{j} \land A_0 = 0 \impl A[j] = A_0[j]) \land\\
-  ~~~~~~~~~~~~~~~~~~~ (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \land A_0[j] \neq 0 \impl A[j] = 0) \land\\
+  ~~~~~~~~~~~~~~~~~~~ (\forall j)(1 \leq j < i \land A_0[j] = 0 \impl A[j] = A_0[j]) \land\\
+  ~~~~~~~~~~~~~~~~~~~ (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
   ~~~~ A[i] \neq 0 \rightarrow A[i] := 0\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Multiple Map Pattern}
 
@@ -785,18 +866,21 @@ translatable value.
 \land&
  (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \land (A_0[j] < 0 \impl A[j] = -1\\
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \lor (A_0[j] > 0 \impl A[j] = +1)\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(\seen{j} \land A_0[j] = 0 \impl A[j] = A_0[j])\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \land (A_0[j] < 0 \impl A[j] = -1\\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \land (A_0[j] > 0 \impl A[j] = +1)\\
+  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(1 \leq j < i \land A_0[j] = 0 \impl A[j] = A_0[j])\\
+  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
   ~~~~ A[i] < 0 \rightarrow A[i] := -1\\
   ~~~~ A[i] > 0 \rightarrow A[i] := +1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Single Map Pattern}
 
@@ -812,15 +896,18 @@ $$g^? \rightarrow A[\idx] := e^\at{\idx}$$
 \land&
  (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \impl A[j] = 0 \lor A[j]=A_0[j])\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
-  ~~~~ F(A[i]) \rightarrow A[i] := 0\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \impl A[j] = 0 \lor A[j]=A_0[j])\\
+  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+  ~~~~ A[i/2] \rightarrow A[i] := 0\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Multiple Map Pattern}
 
@@ -841,16 +928,19 @@ translatable value.
 \land&
  (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \impl (A[j] = -1 \lor A[j] = +1 \lor A[j] = A_0[j])\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
-  ~~~~ F(A[i]) < 0 \rightarrow A[i] := -1\\
-  ~~~~ F(A[i]) > 0 \rightarrow A[i] := +1\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \impl (A[j] = -1 \lor A[j] = +1 \lor A[j] = A_0[j])\\
+  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j}\impl A[j] = A_0[j])\\
+  ~~~~ A[i-1] < A[i-2] \rightarrow A[i] := -1\\
+  ~~~~ A[i-1] > A[i-2] \rightarrow A[i] := +1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Filter Pattern}
 
@@ -876,18 +966,21 @@ g^\at{\idx} &\rightarrow& v := v + 1\\
 %
 \patternnote This pattern corresponds in particular to an array filter, in
 which elements satisfying a certain condition are copied to the front of the
-array.\\
-%
+array.
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \land A_0[j] > 0 \impl (\exists k)(\upsilon_0 \leq k < \upsilon \land B[k] = A_0[j]))\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall k)(\upsilon_0 \leq k < \upsilon \impl (\exists j)(\seen{j} \land  A_0[j] > 0 \land B[k] = A_0[j]))\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall k)(k > \upsilon \land \inbounds{A}{k} \impl B[k] = A_0[k])\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \land A_0[j] > 0 \impl (\exists k)(\upsilon_0 \leq k < \upsilon \land B[k] = A_0[j]))\\
+  ~~~~~~~~~~~~~~~ \land (\forall k)(\upsilon_0 \leq k < \upsilon \impl (\exists j)(1 \leq j < i \land  A_0[j] > 0 \land B[k] = A_0[j]))\\
+  ~~~~~~~~~~~~~~~ \land (\forall k)(k > \upsilon \land \inbounds{A}{k} \impl B[k] = B_0[k])\\
   ~~~~ A[i] > 0 \rightarrow B[\upsilon] := A[i]\\
   ~~~~ A[i] > 0 \rightarrow \upsilon := \upsilon + 1\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsection{Exchange Patterns}
 
@@ -899,18 +992,27 @@ whose guard is translatable, at some unkown index, and it receives a translatabl
 \begin{eqnarray*}
 g^\at{\idx} \rightarrow A[e^?] := e^\at{\idx}\\
 \end{eqnarray*}
+
+%
+\patternnote This pattern includes the case where the index of A is value-preserving but different from $i$.
+
+\medskip
 %
 \loopinvariant
 %
 $$(\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land g_0^\at{k} \land A[j] = e_0^\at{k}))$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land B_0[k] > 0 \land A[j] = B_0[k]))\\
-  ~~~~ B[i] > 0 \rightarrow A[x] := B[i]\\
+  ~~~~ \textit{invariant}: (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor \\ 
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k < i \land B[k] > 0 \land A[j] = B[k]))\\
+  ~~~~ B[i] > 0 \rightarrow A[B[i]] := B[i]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Exchange Pattern}
 
@@ -924,14 +1026,18 @@ whose guard is unknown, at some unkown index, and it receives a translatable val
 \loopinvariant
 %
 $$(\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land A[j] = e_0^\at{k}))$$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor (\exists k)(\seen{k} \land A[j] = B_0[k]))\\
-  ~~~~ B[x] > 0 \rightarrow A[x] := B[i]\\
+  ~~~~ \textit{invariant}: (\forall j)(\inbounds{A}{j} \impl A[j] = A_0[j] \lor \\
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ (\exists k)(1 \leq k < i \land A[j] = B_0[k]))\\
+  ~~~~ B[i/2] > 0 \rightarrow A[i/2] := B[i]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Known Interchange Pattern}
 
@@ -944,7 +1050,10 @@ its own value at some unknown index.
 &...\\
 &g^? \rightarrow A[\idx] := A[e^?]\\
 \end{eqnarray*}
-%
+
+\patternnote Also for guard value-preserving.
+
+\medskip
 \loopinvariant
 %
 \begin{eqnarray*}
@@ -952,16 +1061,19 @@ its own value at some unknown index.
 \land&
 (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])
 \end{eqnarray*}
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (\forall j)(\seen{j} \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k]))\\
-  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(\neg \seen{j} \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
-  ~~~~ B[x] > 0 \rightarrow A[i] := A[x]\\
-  ~~~~ B[x] < 0 \rightarrow A[i] := A[x+1]\\
+  ~~~~ \textit{invariant}: (\forall j)(1 \leq j < i \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k]))\\
+  ~~~~~~~~~~~~~~~~~~~ \land (\forall j)(1 > j \land j \geq i \land \inbounds{A}{j} \impl A[j] = A_0[j])\\
+  ~~~~ B[i] > 0 \rightarrow A[i] := A[i/2]\\
+  ~~~~ B[i] < 0 \rightarrow A[i] := A[i/2+1]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \subsubsection*{Unknown Interchange Pattern}
 
@@ -974,19 +1086,25 @@ its own value at some unknown index.
 &...\\
 &g^? \rightarrow A[e^?] := A[e^?]\\
 \end{eqnarray*}
-%
+
+\patternnote Also for guard value-preserving and index in right-hand-side value-preserving.
+
+\medskip
 \loopinvariant
 %
 $$(\forall j)(\inbounds{A}{j} \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k])) $$
-%
+
+\bigskip
 \patternexample
-$$\begin{array}{l}
+
+\medskip
+$\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: (\forall j)(\inbounds{A}{k} \impl (\exists k)(\inbounds{A}{k} \land A[j] = A_0[k]))\\
-  ~~~~ B[x] > 0 \rightarrow A[y] := A[x]\\
-  ~~~~ B[x] < 0 \rightarrow A[y] := A[x+1]\\
+  ~~~~ B[i] > 0 \rightarrow A[i\%3] := A[A[i]]\\
+  ~~~~ B[i] < 0 \rightarrow A[i\%3] := A[-A[y]]\\
   \KWend
-\end{array}$$
+\end{array}$
 
 \section{Pre-Transformation Tactic}
 When our code fall into the above patterns nothing to do, just apply the corresponding invariant patterns. 
@@ -1003,7 +1121,7 @@ $$\begin{array}{l}
 \end{array}$$
 
 The last statement is Certain Single Add-Up Pattern but the first statement is not Certain Single Map Pattern
-because $B[Index]$ use a update variable $Index$ (therefore it's not translatable). But if we transform it as below we have 
+because $B[Index]$ use a update variable $Index$ (therefore it's not translatable). If we transform it as below we have 
 Certain Single Map Pattern and Certain Single Add-Up Pattern. Thus, the full invariant is the conjonction of the
 two corresponding invariants.
 
