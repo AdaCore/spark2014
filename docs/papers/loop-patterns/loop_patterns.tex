@@ -35,8 +35,6 @@
 \newcommand{\patternexample}{\noindent\textit{Example:}\xspace}
 \newcommand{\patternnote}{\noindent\textit{Note:}\xspace}
 
-\newcommand{\translatable}{translatable}
-
 \lstset{language=Ada}
 
 \sloppy
@@ -239,7 +237,7 @@ $$\begin{array}{l}
 $e^\at{i} \equiv A[i]$ (with $i$ index no yet visited) is a \textit{value-preserving expression}, because ($A[i]=A_0[i]$) is a loop 
 invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
 
-Sufficient conditions for an expression $e$ to be translatable are the following:
+Sufficient conditions for an expression $e$ to be a \textit{value-preserving expression} are the following:
 \begin{enumerate}
 \item $e$ does not refer to scalar variables that are assigned in the loop;
 \item $e$ may refer to (array or scalar) variables that are not modified in the loop;
@@ -303,13 +301,13 @@ If the loop is strictly decreasing then:
 We can now define a predicate \Pseen which characterizes indexes which have already
 been treated in the loop:
 
-$$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{k}{\idx}$$
+$$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{j}{\idx}$$
 
 \section{Loop Patterns} 
 
 \subsection{Search Pattern}
 
-\patterndef The test of a guarded exit is \translatable.
+\patterndef The test of a guarded exit is a value-preserving expression.
 %
 $$t^\at{\idx} \rightarrow \KWexit$$
 %
@@ -332,8 +330,8 @@ $\begin{array}{l}
 
 \subsubsection*{Certain Single Update Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is \textit{true}, and it receives a translatable value.
+\patterndef A scalar variable $a$ is modified in at most exactly a single assignment, whose
+guard is \textit{true}, and it receives a value-preserving expression.
 %
 $$\mathit{true} \rightarrow a := e^\at{\idx}$$
 %
@@ -357,9 +355,9 @@ $\begin{array}{l}
 
 \subsubsection*{Single Min/Max Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is a comparison between the variable and a translatable expression, and
-it receives this translatable value.
+\patterndef A scalar variable $a$ is only modified in a single assignment, whose
+guard is a comparison between the variable and a value-preserving expression, and
+it receives the same value-preserving expression.
 %
 $$(a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}  \qquad \bullet \in \{<, \leq, >, \geq \}$$
 %
@@ -400,7 +398,7 @@ $\begin{array}{l}
 \subsubsection*{Single Min/Max Index Pattern}
 
 \patterndef A scalar variable is only modified in a single assignment, whose
-guard is a comparison between a translatable expression and the same expression
+guard is a comparison between a value-preserving expression and the same expression
 where the loop index is replaced by the variable, and it receives the value of
 the loop index.
 %
@@ -434,7 +432,7 @@ $\begin{array}{l}
 \subsubsection*{Known Single Update Pattern}
 
 \patterndef A scalar variable is only modified in a single assignment, whose
-guard is translatable, and it receives a translatable value.
+guard is a value-preserving expression, and it receives a value-preserving expression.
 %
 $$g^\at{\idx} \rightarrow a := e^\at{\idx}$$
 %
@@ -461,8 +459,8 @@ $\begin{array}{l}
 
 \subsubsection*{Unknown Single Update Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is unknown, and it receives a translatable value.
+\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
+guard is unknown, and it receives a value-preserving expression.
 %
 $$g^? \rightarrow a := e^\at{\idx}$$
 %
@@ -484,7 +482,7 @@ $\begin{array}{l}
 \subsubsection*{Known Multiple Update Pattern}
 
 \patterndef A scalar variable is modified in more than one assignment, all of
-whose guards are translatable, and it receives in each a translatable value.
+whose guards are value-preserved, and it receives in each a value-preserving expression.
 %
 \begin{eqnarray*}
 &g_1^\at{\idx} \rightarrow a := e_1^\at{\idx}\\
@@ -527,7 +525,7 @@ $\begin{array}{l}
 
 \subsubsection*{Certain Single Add-Up Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
+\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
 guard is \textit{true}, and it receives its own previous value plus a constant.
 %
 $$\mathit{true} \rightarrow a := a + K$$
@@ -549,8 +547,8 @@ $\begin{array}{l}
 
 \subsubsection*{Known Single Add-Up Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is translatable, and it receives its own previous value plus a constant.
+\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
+guard is a value-preserving expression, and it receives its own previous value plus a constant $k$.
 %
 $$g^\at{\idx} \rightarrow a := a + K$$
 %
@@ -584,7 +582,7 @@ $\begin{array}{l}
 \subsubsection*{Known Multiple Add-Up Pattern}
 
 \patterndef A scalar variable is modified in more than one assignment, all of
-whose guards are translatable, and it receives in each its own previous value
+whose guards are value-preserved, and it receives in each its own previous value
 plus a constant.
 %
 \begin{eqnarray*}
@@ -623,7 +621,7 @@ $\begin{array}{l}
 
 \subsubsection*{Unknown Single Add-Up Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
+\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
 guard is unknown, and it receives its own previous value plus a constant.
 %
 $$g^? \rightarrow a := a + K$$
@@ -702,7 +700,7 @@ $\begin{array}{l}
 \subsubsection*{Known Single Mult-Up Pattern}
 
 \patterndef A scalar variable is only modified in a single assignment, whose
-guard is translatable, and it receives its own previous value times
+guard is a value-preserving expression, and it receives its own previous value times
 (resp. divided by) a constant.
 
 $$g^\at{\idx} \rightarrow a := a \bullet K  \qquad \bullet \in \{*, / \}$$
@@ -736,7 +734,7 @@ $\begin{array}{l}
 
 \subsubsection*{Unknown Single Mult-Up Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
+\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
 guard is unknown, and it receives its own previous value times
 (resp. divided by) a constant.
 %
@@ -762,8 +760,8 @@ $\begin{array}{l}
 
 \subsubsection*{Certain Single Map Pattern}
 
-\patterndef An array variable is only modified in a single assignment, whose
-guard is \textit{true}, at index \idx, and it receives a translatable value.
+\patterndef An array variable is modified at index \idx, in at most single assignment, whose
+guard is \textit{true} and it receives a value-preserving expression.
 %
 $$\mathit{true} \rightarrow A[\idx] := e^\at{\idx}$$
 %
@@ -790,9 +788,8 @@ $\begin{array}{l}
 
 \subsubsection*{Certain Shifted Single Map Pattern}
 
-\patterndef An array variable is only modified in a single assignment, whose
-guard is \textit{true}, at index \idx plus a constant, and it receives a
-translatable value.
+\patterndef An array variable is modified at index \idx plus a constant $k$, in at most single assignment, 
+whose guard is \textit{true}, and it receives a value-preserving expression.
 %
 $$\mathit{true} \rightarrow A[\idx + K] := e^\at{\idx}$$
 %
@@ -819,8 +816,8 @@ $\begin{array}{l}
 
 \subsubsection*{Known Single Map Pattern}
 
-\patterndef An array variable is only modified in a single assignment, whose
-guard is translatable, at index \idx, and it receives a translatable value.
+\patterndef An array variable is modified at index \idx in at most single assignment, whose
+guard is a value-preserving expression, and it receives a value-preserving expression.
 %
 $$g^\at{\idx} \rightarrow A[\idx] := e^\at{\idx}$$
 %
@@ -849,8 +846,8 @@ $\begin{array}{l}
 \subsubsection*{Known Multiple Map Pattern}
 
 \patterndef An array variable is modified in more than one assignment, all
-of whose guards are translatable, at index \idx, and it receives in each a
-translatable value.
+of whose guards are value-preserving expressions, at index \idx, and it receives in each a
+value-preserving expression.
 %
 \begin{eqnarray*}
 &g_1^\at{\idx} \rightarrow A[\idx] := e_1^\at{\idx}\\
@@ -885,7 +882,7 @@ $\begin{array}{l}
 \subsubsection*{Unknown Single Map Pattern}
 
 \patterndef An array variable is only modified in a single assignment, whose
-guard is unknown, at index \idx, and it receives a translatable value.
+guard is unknown, at index \idx, and it receives a value-preserving expression.
 %
 $$g^? \rightarrow A[\idx] := e^\at{\idx}$$
 %
@@ -913,7 +910,7 @@ $\begin{array}{l}
 
 \patterndef An array variable is modified in more than one assignment, all
 of whose guards are unknown, at index \idx, and it receives in each a
-translatable value.
+value-preserving expression.
 %
 \begin{eqnarray*}
 &g^? \rightarrow A[\idx] := e_1^\at{\idx}\\
@@ -945,9 +942,9 @@ $\begin{array}{l}
 \subsubsection*{Filter Pattern}
 
 \patterndef An array variable is only modified in a single assignment, whose
-guard is translatable, at index $v$, and it receives in each a translatable
-value. Scalar variable $v$ is incremented in a single assignment, whose guard
-is the same as the one above.
+guard is a value-preserving expression, at index $v$, and it receives in each a 
+value-preserving expression. Scalar variable $v$ is incremented in a single assignment, 
+whose guard is the same as the one above.
 %
 \begin{eqnarray*}
 g^\at{\idx} &\rightarrow& A[v] := e^\at{\idx}\\
@@ -987,7 +984,8 @@ $\begin{array}{l}
 \subsubsection*{Known Exchange Pattern}
 
 \patterndef An array variable is only modified in a single assignment,
-whose guard is translatable, at some unkown index, and it receives a translatable value.
+whose guard is a value-preserving expression, at some unkown index, 
+and it receives a value-preserving expression.
 %
 \begin{eqnarray*}
 g^\at{\idx} \rightarrow A[e^?] := e^\at{\idx}\\
@@ -1017,7 +1015,7 @@ $\begin{array}{l}
 \subsubsection*{Unknown Exchange Pattern}
 
 \patterndef An array variable is only modified in a single assignment,
-whose guard is unknown, at some unkown index, and it receives a translatable value.
+whose guard is unknown, at some unkown index, and it receives a value-preserving expression.
 %
 \begin{eqnarray*}
 &g^? \rightarrow A[e^?] := e^\at{\idx}\\
@@ -1110,7 +1108,7 @@ $\begin{array}{l}
 When our code fall into the above patterns nothing to do, just apply the corresponding invariant patterns. 
 Contrariwise, in some cases we will need a pre-processing them to bring into our patterns. 
 This pre-processing mainly to reorganize our code in order to transform the expression 
-which used others variables updates in the loop to a \textit{\translatable}  expression 
+which used others variables updates in the loop to a \textit{value-preserving expression}  
 define in section~\ref{sec:naming-conventions}. For example in the following code 
 
 $$\begin{array}{l}
@@ -1121,9 +1119,9 @@ $$\begin{array}{l}
 \end{array}$$
 
 The last statement is Certain Single Add-Up Pattern but the first statement is not Certain Single Map Pattern
-because $B[Index]$ use a update variable $Index$ (therefore it's not translatable). If we transform it as below we have 
-Certain Single Map Pattern and Certain Single Add-Up Pattern. Thus, the full invariant is the conjonction of the
-two corresponding invariants.
+because $B[Index]$ use a update variable $Index$ (therefore it's not value-preserving expression). 
+If we transform it as below we have Certain Single Map Pattern and Certain Single Add-Up Pattern. 
+Thus, the full invariant is the conjonction of the two corresponding invariants.
 
 $$\begin{array}{l}
   \KWloop \KWover i \KWin 1 .. N \\
