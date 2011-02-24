@@ -82,28 +82,43 @@ package body ALFA.Filter is
    -----------------------------
 
    procedure Filter_Compilation_Unit (N : Node_Id) is
-      Type_List      : List;
-      Var_List       : List;
-      Subp_Spec_List : List;
-      Subp_Def_List  : List;
+      Types_Vars_Spec_List : List;
+      Types_Vars_Body_List : List;
+      Subp_Spec_List       : List;
+      Subp_Body_List       : List;
 
-      procedure Bucket_Dispatch (N : Node_Id);
+      procedure Bucket_Dispatch
+         (N         : Node_Id;
+         Types_Vars : in out List;
+         Subp       : in out List);
       --  If the Node belongs to the ALFA language, put it in one of the
-      --  corresponding buckets (types, variables, subprograms).
-      --  ??? TBD Also, introduce explicit type declarations for anonymous
-      --  types.
+      --  corresponding buckets (types or variables, subprograms) in argument.
+      --  Also, introduce explicit type declarations for anonymous types.
 
-      procedure Transform_Subtype_Indication (N : Node_Id);
+      procedure Dispatch_Spec (N : Node_Id);
+      --  Dispatch types, vars, subprogram decls to the corresponding buckets
+      --  for specifications.
+
+      procedure Dispatch_Body (N : Node_Id);
+      --  Dispatch types, vars, subprograms to the corresponding buckets
+      --  for bodies.
+
+      procedure Transform_Subtype_Indication
+         (N         : Node_Id;
+          Type_List : in out List);
       --  Generate a type definition that corresponds to the given subtype
       --  indication.
 
-      procedure Bucket_Dispatch (N : Node_Id)
+      procedure Bucket_Dispatch
+         (N         : Node_Id;
+         Types_Vars : in out List;
+         Subp       : in out List)
       is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
                if Is_In_ALFA (Defining_Unit_Name (Specification (N))) then
-                  Subp_Spec_List.Append (N);
+                  Subp.Append (N);
                end if;
 
             when N_Subprogram_Body =>
@@ -114,7 +129,7 @@ package body ALFA.Filter is
                    (not Acts_As_Spec (N)
                      and then Body_Is_In_ALFA (Corresponding_Spec (N)))
                then
-                  Subp_Def_List.Append (N);
+                  Subp.Append (N);
                end if;
 
             when N_Full_Type_Declaration =>
@@ -127,30 +142,34 @@ package body ALFA.Filter is
                         when N_Unconstrained_Array_Definition =>
                            --  only check for the component type
                            Transform_Subtype_Indication
-                             (Subtype_Indication (Component_Definition (Def)));
+                             (Subtype_Indication (Component_Definition (Def)),
+                              Types_Vars);
                         when N_Constrained_Array_Definition =>
                            declare
                               Cur_Indexed : Node_Id :=
                                  First (Discrete_Subtype_Definitions (Def));
                            begin
                               while Nkind (Cur_Indexed) /= N_Empty loop
-                                 Transform_Subtype_Indication (Cur_Indexed);
+                                 Transform_Subtype_Indication
+                                    (Cur_Indexed,
+                                     Types_Vars);
                                  Next (Cur_Indexed);
                               end loop;
                               Transform_Subtype_Indication
                                 (Subtype_Indication
-                                   (Component_Definition (Def)));
+                                   (Component_Definition (Def)),
+                                    Types_Vars);
                            end;
                         when others =>
                            null;
                      end case;
                   end;
-                  Type_List.Append (N);
+                  Types_Vars.Append (N);
                end if;
 
             when N_Subtype_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
-                  Type_List.Append (N);
+                  Types_Vars.Append (N);
                end if;
 
             when N_Object_Declaration =>
@@ -162,7 +181,7 @@ package body ALFA.Filter is
                                      N_Package_Body))
                  and then Is_In_ALFA (Defining_Identifier (N))
                then
-                  Var_List.Append (N);
+                  Types_Vars.Append (N);
                end if;
 
             when others =>
@@ -172,7 +191,9 @@ package body ALFA.Filter is
 
       end Bucket_Dispatch;
 
-      procedure Transform_Subtype_Indication (N : Node_Id)
+      procedure Transform_Subtype_Indication
+         (N         : Node_Id;
+          Type_List : in out List)
       is
          Orig : constant Node_Id := Original_Node (N);
       begin
@@ -213,6 +234,16 @@ package body ALFA.Filter is
       Context_List : constant List_Id := New_List;
       Spec_Unit    : Node_Id := Empty;
 
+      procedure Dispatch_Spec (N : Node_Id) is
+      begin
+         Bucket_Dispatch (N, Types_Vars_Spec_List, Subp_Spec_List);
+      end Dispatch_Spec;
+
+      procedure Dispatch_Body (N : Node_Id) is
+      begin
+         Bucket_Dispatch (N, Types_Vars_Body_List, Subp_Body_List);
+      end Dispatch_Body;
+
    --  Start of processing for Filter_Compilation_Unit
 
    begin
@@ -225,17 +256,17 @@ package body ALFA.Filter is
 
       if Present (Spec_Unit) then
          Lib.Xref.ALFA.Traverse_Compilation_Unit
-           (Spec_Unit, Bucket_Dispatch'Unrestricted_Access);
+           (Spec_Unit, Dispatch_Spec'Unrestricted_Access);
       end if;
 
       Lib.Xref.ALFA.Traverse_Compilation_Unit
-        (N, Bucket_Dispatch'Unrestricted_Access);
+        (N, Dispatch_Body'Unrestricted_Access);
 
       declare
-         Types_P : Node_Id;
-         Vars_P  : Node_Id;
-         Subp_P  : Node_Id;
-         Defs_P  : Node_Id;
+         Types_Vars_Spec_P : Node_Id;
+         Types_Vars_Body_P : Node_Id;
+         Subp_Spec_P       : Node_Id;
+         Subp_Body_P       : Node_Id;
 
          procedure Add_Package_Decl_To_Context (N : Node_Id);
 
@@ -247,34 +278,34 @@ package body ALFA.Filter is
          end Add_Package_Decl_To_Context;
 
       begin
-         Types_P :=
+         Types_Vars_Spec_P :=
            Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Type_List),
-              Name  => Name_String (Ent_Name) & "_types");
-         Vars_P :=
+             (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Spec_List),
+              Name  => Name_String (Ent_Name) & "__types_vars_spec");
+         Types_Vars_Body_P :=
            Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Var_List),
-              Name  => Name_String (Ent_Name) & "_vars");
-         Subp_P :=
+             (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Body_List),
+              Name  => Name_String (Ent_Name) & "__types_vars_body");
+         Subp_Spec_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Spec_List),
-              Name  => Name_String (Ent_Name) & "_subp");
-         Defs_P :=
+              Name  => Name_String (Ent_Name) & "__subp_spec");
+         Subp_Body_P :=
            Make_Package_Spec_From_Decls
-             (Decls => Node_List_From_List_Of_Nodes (Subp_Def_List),
+             (Decls => Node_List_From_List_Of_Nodes (Subp_Body_List),
               Name  => Name_String (Ent_Name));
 
          Add_Package_Decl_To_Context (Standard_Package_Node);
-         Make_Compilation_Unit_From_Decl (Decl    => Types_P,
+         Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Spec_P,
                                           Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Types_P);
-         Make_Compilation_Unit_From_Decl (Decl    => Vars_P,
+         Add_Package_Decl_To_Context (Types_Vars_Spec_P);
+         Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Body_P,
                                           Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Vars_P);
-         Make_Compilation_Unit_From_Decl (Decl    => Subp_P,
+         Add_Package_Decl_To_Context (Types_Vars_Body_P);
+         Make_Compilation_Unit_From_Decl (Decl    => Subp_Spec_P,
                                           Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Subp_P);
-         Make_Compilation_Unit_From_Decl (Decl    => Defs_P,
+         Add_Package_Decl_To_Context (Subp_Spec_P);
+         Make_Compilation_Unit_From_Decl (Decl    => Subp_Body_P,
                                           Context => Context_List);
       end;
    end Filter_Compilation_Unit;
