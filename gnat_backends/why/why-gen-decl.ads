@@ -82,6 +82,11 @@ package Why.Gen.Decl is
        Post        : W_Postcondition_Id
            := New_Assertion (Pred => New_True_Literal_Pred));
 
+   procedure New_Parameter
+      (File       : W_File_Id;
+       Name       : W_Identifier_Id;
+       Value_Type : W_Simple_Value_Type_Id);
+
    procedure New_Predicate_Definition
      (File     : W_File_Id;
       Name     : W_Identifier_Id;

@@ -39,7 +39,6 @@ with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                  use Why;
 with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Mutators;   use Why.Atree.Mutators;
 with Why.Atree.Sprint;     use Why.Atree.Sprint;
 with Why.Atree.Treepr;     use Why.Atree.Treepr;
 with Why.Gen.Decl;         use Why.Gen.Decl;
@@ -224,17 +223,23 @@ package body Gnat2Why.Driver is
             when N_Object_Declaration =>
                case Nkind (Object_Definition (Decl)) is
                when N_Identifier =>
-                  File_Append_To_Declarations
-                    (File,
-                     New_Parameter_Declaration
-                       (Ada_Node => Decl,
-                        Names =>
-                          (1 =>
-                            New_Identifier (Symbol =>
-                              Chars (Defining_Identifier (Decl)))),
-                        Parameter_Type =>
-                           Why_Prog_Type_of_Ada_Type
-                             (Object_Definition (Decl))));
+                  Why.Gen.Decl.New_Parameter
+                     (File => File,
+                      Name =>
+                        New_Identifier
+                          (Symbol => Chars (Defining_Identifier (Decl))),
+                      Value_Type =>
+                        Why_Prog_Type_of_Ada_Type
+                          (Object_Definition (Decl)));
+               when N_Expanded_Name =>
+                  New_Parameter
+                     (File => File,
+                      Name =>
+                        New_Identifier
+                          (Symbol => Chars (Defining_Identifier (Decl))),
+                      Value_Type =>
+                        Why_Prog_Type_of_Ada_Type
+                          (Object_Definition (Decl)));
                when N_Constrained_Array_Definition | N_Subtype_Indication =>
                   null;
                when others =>

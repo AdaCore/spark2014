@@ -105,6 +105,13 @@ package body Gnat2Why.Types is
                    Component_Type);
             end;
 
+         when N_Derived_Type_Definition =>
+            --  ??? Is this correct?
+            Why_Type_Decl_of_Subtype_Decl
+               (File,
+                Ident_Node,
+                Subtype_Indication (Def_Node));
+
          when others =>
             raise Not_Implemented;
       end case;
@@ -183,9 +190,9 @@ package body Gnat2Why.Types is
    -------------------------------
 
    function Why_Prog_Type_of_Ada_Type
-     (Ty : Node_Id) return W_Computation_Type_Id
+     (Ty : Node_Id) return W_Simple_Value_Type_Id
    is
-      Name : constant Name_Id := Chars (Etype (Ty));
+      Name      : constant Name_Id := Chars (Etype (Ty));
       Base_Type : W_Primitive_Type_Id;
 
    begin
@@ -198,8 +205,6 @@ package body Gnat2Why.Types is
               Name     => New_Identifier
                 (Ada_Node => Ty,
                  Symbol   => Name)));
-
-      --  We have to use the full name of the type
       return
         New_Ref_Type
           (Ada_Node     => Ty,

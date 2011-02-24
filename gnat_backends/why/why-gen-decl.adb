@@ -207,6 +207,20 @@ package body Why.Gen.Decl is
              Parameter_Type => Param_Type));
    end New_Parameter;
 
+   procedure New_Parameter
+      (File       : W_File_Id;
+       Name       : W_Identifier_Id;
+       Value_Type : W_Simple_Value_Type_Id)
+   is
+   begin
+      File_Append_To_Declarations
+        (Id => File,
+         New_Item =>
+            New_Parameter_Declaration
+              (Names => (1 => Name),
+               Parameter_Type => Value_Type));
+   end New_Parameter;
+
    ------------------------------
    -- New_Predicate_Definition --
    ------------------------------

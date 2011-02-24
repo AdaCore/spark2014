@@ -69,7 +69,7 @@ package Gnat2Why.Types is
    --  declaration, including conversion functions and axioms.
 
    function Why_Prog_Type_of_Ada_Type
-     (Ty : Node_Id) return W_Computation_Type_Id;
+     (Ty : Node_Id) return W_Simple_Value_Type_Id;
    --  Take an Ada Type and transform it into a Why program type
    --  ie add a reference constructor on top
    --  example: Integer => integer ref
