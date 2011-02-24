@@ -1,0 +1,1 @@
+ALL XFAIL until treatment of forall in preconditions
