@@ -13,8 +13,9 @@
 },
 "Gnat2why__3": {
 "invalid": [
-"def___const__incr_po_3"
 ],
-"valid": []
+"valid": [
+"def___const__incr_po_3"
+]
 }
 }
