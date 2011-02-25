@@ -242,4 +242,14 @@ package body Why.Gen.Progs is
            Def      => Prog);
    end New_Located_Prog;
 
+   --------------
+   -- New_Void --
+   --------------
+
+   function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id
+   is
+   begin
+      return New_Prog_Constant (Ada_Node => Ada_Node, Def => New_Void_Literal);
+   end New_Void;
+
 end Why.Gen.Progs;

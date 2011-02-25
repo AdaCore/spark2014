@@ -285,7 +285,7 @@ package body Gnat2Why.Subprograms is
                 New_Located_Assertion
                   (Ada_Node => Ada_Node,
                    Pred     => Pred)),
-            Prog       => New_Prog_Constant (Ada_Node, New_Void_Literal));
+            Prog       => New_Void (Ada_Node));
    end New_Located_Assert;
 
    ---------------------------
@@ -533,10 +533,7 @@ package body Gnat2Why.Subprograms is
                                 Allocator_Name
                                   (Type_Of_Node
                                      (Object_Definition (Cur_Decl))),
-                               Progs =>
-                                 (1 =>
-                                   New_Prog_Constant
-                                     (Def => New_Void_Literal)));
+                               Progs => (1 => New_Void));
                         end if;
                         R := New_Binding_Ref
                           (Ada_Node => Cur_Decl,
@@ -931,7 +928,7 @@ package body Gnat2Why.Subprograms is
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
          when N_Null_Statement =>
-            return New_Prog_Constant (Stmt, New_Void_Literal);
+            return New_Void (Stmt);
 
          when N_Assignment_Statement =>
             declare
@@ -979,15 +976,14 @@ package body Gnat2Why.Subprograms is
             if Expression (Stmt) /= Empty then
                return Why_Expr_Of_Ada_Expr (Expression (Stmt));
             else
-               return
-                 New_Prog_Constant (Ada_Node => Stmt, Def => New_Void_Literal);
+               return New_Void (Stmt);
             end if;
 
          when N_Procedure_Call_Statement =>
             --  Ignore calls to procedures generated for postconditions
 
             if Is_Postcondition_Proc (Entity (Name (Stmt))) then
-               return New_Prog_Constant (Stmt, New_Void_Literal);
+               return New_Void (Stmt);
             end if;
 
             declare
@@ -1001,8 +997,7 @@ package body Gnat2Why.Subprograms is
                      New_Located_Call
                         (Ada_Node => Stmt,
                          Name     => Proc_Name,
-                         Progs    =>
-                           (1 => New_Prog_Constant (Stmt, New_Void_Literal)));
+                         Progs    => (1 => New_Void (Stmt)));
                else
                   declare
                      Cur_Formal : Node_Id :=
@@ -1174,7 +1169,7 @@ package body Gnat2Why.Subprograms is
       Start_from : Node_Id := Empty)
      return W_Prog_Id
    is
-      Result   : W_Prog_Id := New_Prog_Constant (Def => New_Void_Literal);
+      Result   : W_Prog_Id := New_Void;
       Cur_Stmt : Node_Or_Entity_Id;
       Len      : Nat := 0;
    begin

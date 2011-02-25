@@ -75,4 +75,6 @@ package Why.Gen.Progs is
        Progs    : W_Prog_Array) return W_Prog_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
+   function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
+   --  The program "void"
 end Why.Gen.Progs;
