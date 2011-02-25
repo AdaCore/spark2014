@@ -1,1 +1,1 @@
-ALL XFAIL deal with proper inclusion
+ALL XFAIL deal correctly with function calls
