@@ -47,6 +47,7 @@ with Why.Gen.Funcs;         use Why.Gen.Funcs;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Types;         use Why.Gen.Types;
+with Why.Types;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Locs;         use Gnat2Why.Locs;
@@ -61,17 +62,6 @@ package body Gnat2Why.Subprograms is
    function Map_Node_List_to_Array (List : List_Id) return A;
    --  Take a list of GNAT Node_Ids and apply the function F to each of them.
    --  Return the array that contains all the results, in the same order.
-
-   generic
-      type T is private;
-      Default : T;
-      type A is array (Positive range <>) of T;
-      with function F (N : Node_Id) return T;
-   function Map_Node_List_To_Non_Empty_Array (List : List_Id) return A;
-   --  Take a list of GNAT Node_Ids and apply the function F to each of them.
-   --  Return the array that contains all the results, in the same order.
-   --  If the argument list is empty, return a singleton list with the default
-   --  element.
 
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
@@ -287,20 +277,6 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
    end Map_Node_List_to_Array;
-
-   --------------------------------------
-   -- Map_Node_List_To_Non_Empty_Array --
-   --------------------------------------
-
-   function Map_Node_List_To_Non_Empty_Array (List : List_Id) return A is
-      function Map_Simple is new Map_Node_List_To_Array (T, A, F);
-   begin
-      if No (List) or else List_Length (List) = 0 then
-         return A'(1 => Default);
-      else
-         return Map_Simple (List);
-      end if;
-   end Map_Node_List_To_Non_Empty_Array;
 
    ------------------------
    -- New_Located_Assert --
@@ -961,11 +937,6 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmt (Stmt : Node_Id) return W_Prog_Id
    is
-      function Expr_Expr_Map is new Map_Node_List_To_Non_Empty_Array
-        (T       => W_Prog_Id,
-         Default => New_Prog_Constant (Def => New_Void_Literal),
-         A       => W_Prog_Array,
-         F       => Why_Expr_Of_Ada_Expr);
    begin
       --  ??? TBD: complete this function for the remaining cases
       case Nkind (Stmt) is
@@ -1029,12 +1000,58 @@ package body Gnat2Why.Subprograms is
                return New_Prog_Constant (Stmt, New_Void_Literal);
             end if;
 
-            return
-              New_Located_Call
-                (Ada_Node => Stmt,
-                 Name     => New_Identifier
-                   (Symbol => Chars (Entity (Name (Stmt)))),
-                 Progs    => Expr_Expr_Map (Parameter_Associations (Stmt)));
+            declare
+               Proc_Name : constant W_Identifier_Id :=
+                  New_Identifier (Symbol => Chars (Entity (Name (Stmt))));
+               Len       : constant Nat :=
+                  List_Length (Parameter_Associations (Stmt));
+            begin
+               if Len = 0 then
+                  return
+                     New_Located_Call
+                        (Ada_Node => Stmt,
+                         Name     => Proc_Name,
+                         Progs    =>
+                           (1 => New_Prog_Constant (Stmt, New_Void_Literal)));
+               else
+                  declare
+                     Cur_Formal : Node_Id :=
+                        First_Entity (Entity (Name (Stmt)));
+                     Cur_Actual : Node_Id :=
+                        First (Parameter_Associations (Stmt));
+                     Why_Args : W_Prog_Array :=
+                        (1 .. Integer (Len) => Why.Types.Why_Empty);
+                     Cnt      : Positive := 1;
+                  begin
+                     while Present (Cur_Formal) loop
+                        case Ekind (Cur_Formal) is
+                           when E_In_Out_Parameter | E_Out_Parameter =>
+                              --  Parameters that are "out" must be variables
+                              --  They are translated "as is"
+                              Why_Args (Cnt) :=
+                                 New_Prog_Identifier
+                                    (Ada_Node => Cur_Actual,
+                                     Def      =>
+                                       Why_Ident_Of_Ada_Ident (Cur_Actual));
+
+                           when others =>
+                              --  No special treatment for parameters that are
+                              --  not "out"
+                              Why_Args (Cnt) :=
+                                 Why_Expr_Of_Ada_Expr (Cur_Actual);
+                        end case;
+                        Cur_Formal := Next_Entity (Cur_Formal);
+                        Next (Cur_Actual);
+                        Cnt := Cnt + 1;
+                     end loop;
+                     return
+                        New_Located_Call
+                          (Ada_Node => Stmt,
+                           Name     => Proc_Name,
+                           Progs    => Why_Args);
+                  end;
+               end if;
+            end;
 
          when N_If_Statement =>
             return
