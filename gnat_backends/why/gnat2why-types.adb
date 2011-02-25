@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
-with Einfo;              use Einfo;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
@@ -190,7 +189,9 @@ package body Gnat2Why.Types is
    -------------------------------
 
    function Why_Prog_Type_of_Ada_Type
-     (Ty : Node_Id) return W_Simple_Value_Type_Id
+     (Ty   : Node_Id;
+      Kind : Entity_Kind)
+      return W_Simple_Value_Type_Id
    is
       Name      : constant Name_Id := Chars (Etype (Ty));
       Base_Type : W_Primitive_Type_Id;
@@ -205,10 +206,15 @@ package body Gnat2Why.Types is
               Name     => New_Identifier
                 (Ada_Node => Ty,
                  Symbol   => Name)));
-      return
-        New_Ref_Type
-          (Ada_Node     => Ty,
-           Aliased_Type => Base_Type);
+      case Kind is
+         when E_In_Parameter | E_Constant =>
+            return Base_Type;
+         when others =>
+            return
+              New_Ref_Type
+                (Ada_Node     => Ty,
+                 Aliased_Type => Base_Type);
+      end case;
    end  Why_Prog_Type_of_Ada_Type;
 
 end Gnat2Why.Types;

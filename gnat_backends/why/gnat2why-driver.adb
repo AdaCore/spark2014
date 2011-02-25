@@ -25,6 +25,7 @@
 
 with AA_Util;              use AA_Util;
 with Atree;                use Atree;
+with Einfo;                use Einfo;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
@@ -222,24 +223,36 @@ package body Gnat2Why.Driver is
 
             when N_Object_Declaration =>
                case Nkind (Object_Definition (Decl)) is
-               when N_Identifier =>
-                  Why.Gen.Decl.New_Parameter
-                     (File => File,
-                      Name =>
-                        New_Identifier
-                          (Symbol => Chars (Defining_Identifier (Decl))),
-                      Value_Type =>
-                        Why_Prog_Type_of_Ada_Type
-                          (Object_Definition (Decl)));
-               when N_Expanded_Name =>
-                  New_Parameter
-                     (File => File,
-                      Name =>
-                        New_Identifier
-                          (Symbol => Chars (Defining_Identifier (Decl))),
-                      Value_Type =>
-                        Why_Prog_Type_of_Ada_Type
-                          (Object_Definition (Decl)));
+               when N_Identifier | N_Expanded_Name =>
+                  case Ekind (Defining_Identifier (Decl)) is
+                     when E_Constant =>
+                        New_Logic
+                           (File        => File,
+                            Name        =>
+                              New_Identifier
+                                (Symbol => Chars (Defining_Identifier (Decl))),
+                            Args        => (1 .. 0 => <>),
+                            Return_Type =>
+                              Why_Prog_Type_of_Ada_Type
+                                (Object_Definition (Decl),
+                                 Ekind (Defining_Identifier (Decl))));
+
+                     when E_Variable =>
+                        New_Parameter
+                           (File        => File,
+                            Name        =>
+                              New_Identifier
+                                (Symbol => Chars (Defining_Identifier (Decl))),
+                            Binders        => (1 .. 0 => <>),
+                            Return_Type =>
+                              Why_Prog_Type_of_Ada_Type
+                                (Object_Definition (Decl),
+                                 Ekind (Defining_Identifier (Decl))));
+
+                     when others =>
+                        raise Not_Implemented;
+                  end case;
+
                when N_Constrained_Array_Definition | N_Subtype_Indication =>
                   null;
                when others =>

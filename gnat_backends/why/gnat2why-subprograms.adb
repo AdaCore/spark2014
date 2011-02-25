@@ -445,9 +445,12 @@ package body Gnat2Why.Subprograms is
          if Nkind (Specification (Node)) = N_Procedure_Specification then
             Res := New_Arrow_Stack (New_Type_Unit, Compute_Effects);
          else
-            Res := New_Arrow_Stack (Why_Prog_Type_of_Ada_Type
-                                    (Result_Definition (Specification (Node))),
-                                    Compute_Effects);
+            Res :=
+               New_Arrow_Stack
+                  (Why_Prog_Type_of_Ada_Type
+                    (Result_Definition (Specification (Node)),
+                     E_In_Parameter),
+                   Compute_Effects);
          end if;
 
          if Is_Empty_List (Ada_Binders) then
@@ -463,7 +466,9 @@ package body Gnat2Why.Subprograms is
                   Name     =>
                     New_Identifier (Ada_Node => Id, Symbol => Chars (Id)),
                   Arg_Type =>
-                    Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
+                    Why_Prog_Type_of_Ada_Type
+                       (Parameter_Type (Arg),
+                        Ekind (Id)));
                Prev (Arg);
             end loop;
          end if;
@@ -484,7 +489,10 @@ package body Gnat2Why.Subprograms is
              (Ada_Node => Arg,
               Names =>
                 (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
-              Arg_Type => Why_Prog_Type_of_Ada_Type (Parameter_Type (Arg)));
+              Arg_Type =>
+                Why_Prog_Type_of_Ada_Type
+                  (Parameter_Type (Arg),
+                   Ekind (Id)));
       end Compute_Binder;
 
       ---------------------
@@ -823,16 +831,26 @@ package body Gnat2Why.Subprograms is
                   elsif Entity (Expr) = Standard_False then
                      T := New_Prog_Constant (Def => New_False_Literal);
                   else
-                     T := Why_Ident_Of_Ada_Ident (Expr);
+                     T := New_Prog_Identifier
+                           (Ada_Node => Expr,
+                            Def      => Why_Ident_Of_Ada_Ident (Expr));
                   end if;
 
-               when Object_Kind =>
+               when E_Loop_Parameter =>
+                  T := New_Deref
+                        (Ada_Node => Expr,
+                         Ref      => Why_Ident_Of_Ada_Ident (Expr));
+                  Current_Type := (Kind => Why_Int);
+
+               when E_In_Parameter | E_Constant =>
+                  T := New_Prog_Identifier
+                        (Ada_Node => Expr,
+                         Def      => Why_Ident_Of_Ada_Ident (Expr));
+
+               when E_In_Out_Parameter | E_Variable | E_Out_Parameter =>
                   T := New_Deref
                     (Ada_Node => Expr,
                      Ref      => Why_Ident_Of_Ada_Ident (Expr));
-                  if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                     Current_Type := (Kind => Why_Int);
-                  end if;
 
                when others =>
                   raise Not_Implemented;
@@ -1201,18 +1219,36 @@ package body Gnat2Why.Subprograms is
 
                if not Comes_From_Source (Original_Node (Cur_Stmt)) then
                   if Len /= 0 then
-                     Result := New_Binding_Ref
-                       (Ada_Node => Cur_Stmt,
-                        Name     =>
-                          New_Identifier
-                            (Symbol =>
-                                 Chars (Defining_Identifier (Cur_Stmt))),
-                        Def      =>
-                          Why_Expr_Of_Ada_Expr
-                            (Expression (Cur_Stmt),
-                             (Why_Abstract,
-                              Type_Of_Node (Object_Definition (Cur_Stmt)))),
-                        Context  => Result);
+                     declare
+                        Id       : constant Node_Id :=
+                           Defining_Identifier (Cur_Stmt);
+                        W_Id     : constant W_Identifier_Id :=
+                           New_Identifier (Symbol => Chars (Id));
+                        Exp_Type : constant Why_Type :=
+                           (Why_Abstract,
+                            Type_Of_Node (Object_Definition (Cur_Stmt)));
+                     begin
+                        case Ekind (Id) is
+                           when E_Constant =>
+                              Result := New_Binding_Prog
+                                (Ada_Node => Cur_Stmt,
+                                 Name     => W_Id,
+                                 Def      =>
+                                   Why_Expr_Of_Ada_Expr
+                                     (Expression (Cur_Stmt),
+                                      Exp_Type),
+                                 Context  => Result);
+                           when others =>
+                              Result := New_Binding_Ref
+                                (Ada_Node => Cur_Stmt,
+                                 Name     => W_Id,
+                                 Def      =>
+                                   Why_Expr_Of_Ada_Expr
+                                     (Expression (Cur_Stmt),
+                                      Exp_Type),
+                                 Context  => Result);
+                        end case;
+                     end;
                      Len := 1;
                   else
                      --  we currently do not have a statement.
