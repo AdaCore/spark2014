@@ -1340,31 +1340,13 @@ package body Gnat2Why.Subprograms is
                Cond      : constant Node_Id := First (Expressions (Expr));
                Then_Part : constant Node_Id := Next (Cond);
                Else_Part : constant Node_Id := Next (Then_Part);
-               Why_Cond  : constant W_Predicate_Id :=
-                     Why_Predicate_Of_Ada_Expr (Cond);
             begin
-               --  Given
-               --    if C then P else Q
-               --  We generate
-               --    (C => P) and (not C => Q)
                return
-                  New_Conjonction
+                  New_Conditional_Prop
                      (Ada_Node => Expr,
-                      Left     =>
-                        New_Implication
-                           (Ada_Node => Expr,
-                            Left     => Why_Cond,
-                            Right    => Why_Predicate_Of_Ada_Expr (Then_Part)),
-                      Right    =>
-                        New_Implication
-                           (Ada_Node => Expr,
-                            Left     =>
-                              New_Negation
-                                 (Ada_Node => Expr,
-                                  Operand  =>
-                                    Duplicate_Predicate (Id => Why_Cond)),
-                            Right    =>
-                               Why_Predicate_Of_Ada_Expr (Else_Part)));
+                      Condition => Why_Predicate_Of_Ada_Expr (Cond),
+                      Then_Part => Why_Predicate_Of_Ada_Expr (Then_Part),
+                      Else_Part => Why_Predicate_Of_Ada_Expr (Else_Part));
             end;
 
          when others =>

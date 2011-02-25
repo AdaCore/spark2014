@@ -177,6 +177,31 @@ package body Why.Gen.Preds is
       return Result;
    end New_Binding_Pred;
 
+   function New_Conditional_Prop
+      (Ada_Node : Node_Id := Empty;
+       Condition : W_Predicate_Id;
+       Then_Part : W_Predicate_Id;
+       Else_Part : W_Predicate_Id) return W_Predicate_Id
+   is
+   begin
+      return
+         New_Conjonction
+            (Ada_Node => Ada_Node,
+             Left     =>
+               New_Implication
+                  (Ada_Node => Ada_Node,
+                   Left     => Condition,
+                   Right    => Then_Part),
+             Right    =>
+               New_Implication
+                  (Ada_Node => Ada_Node,
+                   Left     =>
+                     New_Negation
+                        (Ada_Node => Ada_Node,
+                         Operand  => Duplicate_Predicate (Id => Condition)),
+                   Right    => Else_Part));
+   end New_Conditional_Prop;
+
    ---------------
    -- New_Equal --
    ---------------
