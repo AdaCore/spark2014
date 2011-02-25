@@ -1,7 +1,7 @@
 with Callee;
 package body Caller is
-   procedure MyAdd(i1 : in out Integer; i2: Integer) is
+   procedure MyAdd(i1 : in out Integer) is
    begin
-      Callee.Add(i1, i2);
+      Callee.Add(i1, 1);
    end MyAdd;
 end Caller;

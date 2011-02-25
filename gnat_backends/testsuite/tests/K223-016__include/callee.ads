@@ -1,3 +1,3 @@
 package Callee is
-   procedure Add(i1 : in out Integer; i2: Integer);
+   procedure Add(A : in out Integer; B: Integer);
 end Callee;

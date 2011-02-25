@@ -1,0 +1,15 @@
+{
+"Gnat2why__1": {
+"invalid": [
+"def___callee__add_po_1"
+],
+"valid": [
+"def___caller__myadd_po_1"
+]
+},
+"Gnat2why__2": {
+"invalid": [],
+"valid": []
+}
+}
+

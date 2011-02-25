@@ -1,6 +1,6 @@
 package body Callee is
-   procedure Add(i1 : in out Integer; i2: Integer) is
+   procedure Add(A : in out Integer; B : Integer) is
    begin
-      i1 := i1 + i2;
+      A := A + B;
    end Add;
 end Callee;
