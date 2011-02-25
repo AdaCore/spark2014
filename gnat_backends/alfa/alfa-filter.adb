@@ -40,9 +40,6 @@ package body ALFA.Filter is
    -- Local Subprograms --
    -----------------------
 
-   function Copy_List (L : List_Id) return List_Id;
-   --  Copy list L and its underlying elements using New_Copy
-
    procedure Make_Compilation_Unit_From_Decl
      (Decl    : Node_Id;
       Context : List_Id);
@@ -61,21 +58,6 @@ package body ALFA.Filter is
      (N       : Node_Id;
       Process : access procedure (N : Node_Id));
    --  Traverse the subtree of N and call Process on selected nodes
-
-   ---------------
-   -- Copy_List --
-   ---------------
-
-   function Copy_List (L : List_Id) return List_Id is
-      Copy : constant List_Id := New_List;
-      Cur  : Node_Id := First (L);
-   begin
-      while Present (Cur) loop
-         Append (New_Copy (Cur), Copy);
-         Next (Cur);
-      end loop;
-      return Copy;
-   end Copy_List;
 
    -----------------------------
    -- Filter_Compilation_Unit --
@@ -108,6 +90,10 @@ package body ALFA.Filter is
           Type_List : in out List);
       --  Generate a type definition that corresponds to the given subtype
       --  indication.
+
+      ---------------------
+      -- Bucket_Dispatch --
+      ---------------------
 
       procedure Bucket_Dispatch
          (N         : Node_Id;
@@ -191,6 +177,10 @@ package body ALFA.Filter is
 
       end Bucket_Dispatch;
 
+      ----------------------------------
+      -- Transform_Subtype_Indication --
+      ----------------------------------
+
       procedure Transform_Subtype_Indication
          (N         : Node_Id;
           Type_List : in out List)
@@ -231,13 +221,20 @@ package body ALFA.Filter is
       end Transform_Subtype_Indication;
 
       Ent_Name     : Name_Id;
-      Context_List : constant List_Id := New_List;
       Spec_Unit    : Node_Id := Empty;
+
+      -------------------
+      -- Dispatch_Spec --
+      -------------------
 
       procedure Dispatch_Spec (N : Node_Id) is
       begin
          Bucket_Dispatch (N, Types_Vars_Spec_List, Subp_Spec_List);
       end Dispatch_Spec;
+
+      -------------------
+      -- Dispatch_Body --
+      -------------------
 
       procedure Dispatch_Body (N : Node_Id) is
       begin
@@ -263,50 +260,125 @@ package body ALFA.Filter is
         (N, Dispatch_Body'Unrestricted_Access);
 
       declare
-         Types_Vars_Spec_P : Node_Id;
-         Types_Vars_Body_P : Node_Id;
-         Subp_Spec_P       : Node_Id;
-         Subp_Body_P       : Node_Id;
+         Types_Vars_Spec_P       : Node_Id;
+         Types_Vars_Body_P       : Node_Id;
+         Subp_Spec_P             : Node_Id;
+         Subp_Body_P             : Node_Id;
+         Context_Types_Vars_Spec : constant List_Id := New_List;
+         Context_Types_Vars_Body : constant List_Id := New_List;
+         Context_Subp_Spec       : constant List_Id := New_List;
+         Context_Subp_Body       : constant List_Id := New_List;
+         Types_Vars_Spec_Suffix  : constant String := "__types_vars_spec";
+         Types_Vars_Body_Suffix  : constant String := "__types_vars_body";
+         Subp_Spec_Suffix        : constant String := "__subp_spec";
 
-         procedure Add_Package_Decl_To_Context (N : Node_Id);
+         procedure Add_Package_Decl (L : List_Id; N : Node_Id);
+         procedure Add_Package_Decl (L : List_Id; Name : String);
 
-         procedure Add_Package_Decl_To_Context (N : Node_Id) is
+         ----------------------
+         -- Add_Package_Decl --
+         ----------------------
+
+         procedure Add_Package_Decl (L : List_Id; N : Node_Id)
+         is
          begin
             Append (Make_With_Clause
                     (No_Location, Defining_Unit_Name (Specification (N))),
-                    Context_List);
-         end Add_Package_Decl_To_Context;
+                    L);
+         end Add_Package_Decl;
+
+         procedure Add_Package_Decl (L : List_Id; Name : String)
+         is
+         begin
+            Append (
+               Make_With_Clause
+                  (No_Location,
+                   Make_Identifier (No_Location, New_Name_Id (Name))),
+               L);
+         end Add_Package_Decl;
 
       begin
          Types_Vars_Spec_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Spec_List),
-              Name  => Name_String (Ent_Name) & "__types_vars_spec");
+              Name  => Name_String (Ent_Name) & Types_Vars_Spec_Suffix);
          Types_Vars_Body_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Body_List),
-              Name  => Name_String (Ent_Name) & "__types_vars_body");
+              Name  => Name_String (Ent_Name) & Types_Vars_Body_Suffix);
          Subp_Spec_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Spec_List),
-              Name  => Name_String (Ent_Name) & "__subp_spec");
+              Name  => Name_String (Ent_Name) & Subp_Spec_Suffix);
          Subp_Body_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Body_List),
               Name  => Name_String (Ent_Name));
 
-         Add_Package_Decl_To_Context (Standard_Package_Node);
+         --  Take into account dependencies
+         --  Add standard package only to types_vars for spec
+         Add_Package_Decl (Context_Types_Vars_Spec, Standard_Package_Node);
+         --  Add "vertical" dependencies for a single package
+         Add_Package_Decl (Context_Types_Vars_Body, Types_Vars_Spec_P);
+         Add_Package_Decl (Context_Subp_Spec, Types_Vars_Body_P);
+         Add_Package_Decl (Context_Subp_Body, Subp_Spec_P);
+
+         --  for each with clause in the package spec, add horizontal
+         --  dependencies between spec packages
+         if Present (Spec_Unit) then
+            declare
+               Cursor : Node_Id := First (Context_Items (Spec_Unit));
+            begin
+               while Present (Cursor) loop
+                  declare
+                     Pkg_Name : constant Name_Id := Chars (Name (Cursor));
+                  begin
+                     if not Implicit_With (Cursor) then
+                        Add_Package_Decl
+                          (Context_Types_Vars_Spec,
+                           Name_String (Pkg_Name) & Types_Vars_Spec_Suffix);
+                        Add_Package_Decl
+                          (Context_Subp_Spec,
+                           Name_String (Pkg_Name) & Subp_Spec_Suffix);
+                     end if;
+                     Next (Cursor);
+                  end;
+               end loop;
+            end;
+         end if;
+
+         --  Add diagonal dependencies for spec -> body dependencies
+         declare
+            Cursor : Node_Id := First (Context_Items (N));
+         begin
+            while Present (Cursor) loop
+               declare
+                  Pkg_Name : constant Name_Id := Chars (Name (Cursor));
+               begin
+                  if not Implicit_With (Cursor) then
+                     Add_Package_Decl
+                       (Context_Types_Vars_Body,
+                        Name_String (Pkg_Name) & Types_Vars_Spec_Suffix);
+                     Add_Package_Decl
+                       (Context_Subp_Spec,
+                        Name_String (Pkg_Name) & Types_Vars_Body_Suffix);
+                     Add_Package_Decl
+                       (Context_Subp_Body,
+                        Name_String (Pkg_Name) & Subp_Spec_Suffix);
+                  end if;
+                  Next (Cursor);
+               end;
+            end loop;
+         end;
+
          Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Spec_P,
-                                          Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Types_Vars_Spec_P);
+                                          Context => Context_Types_Vars_Spec);
          Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Body_P,
-                                          Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Types_Vars_Body_P);
+                                          Context => Context_Types_Vars_Body);
          Make_Compilation_Unit_From_Decl (Decl    => Subp_Spec_P,
-                                          Context => Copy_List (Context_List));
-         Add_Package_Decl_To_Context (Subp_Spec_P);
+                                          Context => Context_Subp_Spec);
          Make_Compilation_Unit_From_Decl (Decl    => Subp_Body_P,
-                                          Context => Context_List);
+                                          Context => Context_Subp_Body);
       end;
    end Filter_Compilation_Unit;
 
