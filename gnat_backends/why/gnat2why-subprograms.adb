@@ -38,7 +38,6 @@ with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Arrows;        use Why.Gen.Arrows;
@@ -1090,9 +1089,9 @@ package body Gnat2Why.Subprograms is
       Start_from : Node_Id := Empty)
      return W_Prog_Id
    is
-      Result   : W_Prog_Id := New_Void;
-      Cur_Stmt : Node_Or_Entity_Id;
-      Len      : Nat := 0;
+      Result          : W_Prog_Id := New_Void;
+      Cur_Stmt        : Node_Or_Entity_Id;
+      Seen_Statements : Boolean := False;
    begin
       --  Traverse the list of statements backwards, chaining the current
       --  statement in front of the already treated statements.
@@ -1109,22 +1108,9 @@ package body Gnat2Why.Subprograms is
       --  Therefore we go backwards, to have the <rest of statements> already
       --  translated.
       --
-      --  The variable Result contains the already translated part. This can
-      --  be one of
-      --  * nothing (void), namely at the beginning of the process
-      --  * a single statement, in one of the following situations:
-      --    * we only have treated a single statement up to now
-      --    * the last statement was an object declaration, so we grouped
-      --      everything together in a <let>
-      --  * a sequence of statements, in all other cases.
-      --  These situations are distinguished with the variable Len. Naturally,
-      --  we distinguish
-      --  * Len = 0 (no statement)
-      --  * Len = 1 (a single statement)
-      --  * Len > 1 (a sequence of statements)
-
-      --  The code uses the Len information to avoid building sequences of
-      --  length 1.
+      --  The variable Result contains the already translated part. The
+      --  boolean Seen_Statements stores if Result contains something else
+      --  than the default value (void)
       if List_Length (Stmts) = 0 then
          --  We return the default value, ie void
          return Result;
@@ -1140,76 +1126,51 @@ package body Gnat2Why.Subprograms is
             when N_Object_Declaration =>
                --  Source objects should be defined at a global level
 
-               if not Comes_From_Source (Original_Node (Cur_Stmt)) then
-                  if Len /= 0 then
-                     declare
-                        Id       : constant Node_Id :=
-                           Defining_Identifier (Cur_Stmt);
-                        W_Id     : constant W_Identifier_Id :=
-                           New_Identifier (Symbol => Chars (Id));
-                        Exp_Type : constant Why_Type :=
-                           (Why_Abstract,
-                            Type_Of_Node (Object_Definition (Cur_Stmt)));
-                     begin
-                        case Ekind (Id) is
-                           when E_Constant =>
-                              Result := New_Binding_Prog
-                                (Ada_Node => Cur_Stmt,
-                                 Name     => W_Id,
-                                 Def      =>
-                                   Why_Expr_Of_Ada_Expr
-                                     (Expression (Cur_Stmt),
-                                      Exp_Type),
-                                 Context  => Result);
-                           when others =>
-                              Result := New_Binding_Ref
-                                (Ada_Node => Cur_Stmt,
-                                 Name     => W_Id,
-                                 Def      =>
-                                   Why_Expr_Of_Ada_Expr
-                                     (Expression (Cur_Stmt),
-                                      Exp_Type),
-                                 Context  => Result);
-                        end case;
-                     end;
-                     Len := 1;
-                  else
-                     --  we currently do not have a statement.
-                     --  this means that an object declaration is the last
-                     --  statement; we can simply ignore it
-                     null;
-                  end if;
+               if Seen_Statements and then
+                  not Comes_From_Source (Original_Node (Cur_Stmt))
+               then
+                  declare
+                     Id       : constant Node_Id :=
+                        Defining_Identifier (Cur_Stmt);
+                     W_Id     : constant W_Identifier_Id :=
+                        New_Identifier (Symbol => Chars (Id));
+                     Exp_Type : constant Why_Type :=
+                        (Why_Abstract,
+                         Type_Of_Node (Object_Definition (Cur_Stmt)));
+                  begin
+                     case Ekind (Id) is
+                        when E_Constant =>
+                           Result := New_Binding_Prog
+                             (Ada_Node => Cur_Stmt,
+                              Name     => W_Id,
+                              Def      =>
+                                Why_Expr_Of_Ada_Expr
+                                  (Expression (Cur_Stmt),
+                                   Exp_Type),
+                              Context  => Result);
+                        when others =>
+                           Result := New_Binding_Ref
+                             (Ada_Node => Cur_Stmt,
+                              Name     => W_Id,
+                              Def      =>
+                                Why_Expr_Of_Ada_Expr
+                                  (Expression (Cur_Stmt),
+                                   Exp_Type),
+                              Context  => Result);
+                     end case;
+                  end;
                end if;
 
             when others =>
                --  For all other statements, we call Why_Expr_Of_Ada_Stmt
                --  to obtain a stmt, and if necessary we build a statement
                --  sequence
-               case Len is
-                  when 0 =>
-                     Result := Why_Expr_Of_Ada_Stmt (Cur_Stmt);
-
-                  when 1 =>
-                     declare
-                        Seq : constant W_Prog_Id :=
-                                New_Unchecked_Statement_Sequence;
-                     begin
-                        Statement_Sequence_Prepend_To_Statements
-                          (Seq,
-                           Result);
-                        Statement_Sequence_Prepend_To_Statements
-                          (Seq,
-                           Why_Expr_Of_Ada_Stmt (Cur_Stmt));
-                        Result := Seq;
-                     end;
-
-                  when others =>
-                     Statement_Sequence_Prepend_To_Statements
-                       (Result,
-                        Why_Expr_Of_Ada_Stmt (Cur_Stmt));
-               end case;
-               Len := Len + 1;
-
+               if not Seen_Statements then
+                  Result := Why_Expr_Of_Ada_Stmt (Cur_Stmt);
+                  Seen_Statements := True;
+               else
+                  Result := Sequence (Why_Expr_Of_Ada_Stmt (Cur_Stmt), Result);
+               end if;
          end case;
          Cur_Stmt := Prev (Cur_Stmt);
       end loop;
