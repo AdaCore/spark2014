@@ -984,42 +984,42 @@ package body Why.Atree.Sprint is
    end Equivalence_Pre_Op;
 
    ------------------------
-   -- Disjonction_Pre_Op --
+   -- Disjunction_Pre_Op --
    ------------------------
 
-   procedure Disjonction_Pre_Op
+   procedure Disjunction_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Disjonction_Id)
+      Node  : W_Disjunction_Id)
    is
    begin
       Traverse
         (State,
-         Disjonction_Get_Left (Node));
+         Disjunction_Get_Left (Node));
       P (O, " or ");
       Traverse
         (State,
-         Disjonction_Get_Right (Node));
+         Disjunction_Get_Right (Node));
       State.Control := Abandon_Children;
-   end Disjonction_Pre_Op;
+   end Disjunction_Pre_Op;
 
    ------------------------
-   -- Conjonction_Pre_Op --
+   -- Conjunction_Pre_Op --
    ------------------------
 
-   procedure Conjonction_Pre_Op
+   procedure Conjunction_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Conjonction_Id)
+      Node  : W_Conjunction_Id)
    is
    begin
       Traverse
         (State,
-         Conjonction_Get_Left (Node));
+         Conjunction_Get_Left (Node));
       P (O, " and ");
       Traverse
         (State,
-         Conjonction_Get_Right (Node));
+         Conjunction_Get_Right (Node));
       State.Control := Abandon_Children;
-   end Conjonction_Pre_Op;
+   end Conjunction_Pre_Op;
 
    ---------------------
    -- Negation_Pre_Op --

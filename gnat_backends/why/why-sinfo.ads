@@ -203,7 +203,7 @@ package Why.Sinfo is
       --                  | <implication>
       --                  | <equivalence>
       --                  | <disjunction>
-      --                  | <conjonction>
+      --                  | <conjunction>
       --                  | <negation>
       --                  | <conditional_pred>
       --                  | <binding_pred>
@@ -233,11 +233,11 @@ package Why.Sinfo is
       W_Equivalence,
       --  <predicate> '<->' <predicate>
 
-      W_Disjonction,
-      --  <disjonction> ::= <predicate> 'or' <predicate>
+      W_Disjunction,
+      --  <disjunction> ::= <predicate> 'or' <predicate>
 
-      W_Conjonction,
-      --  <conjonction> ::= <predicate> 'and' <predicate>
+      W_Conjunction,
+      --  <conjunction> ::= <predicate> 'and' <predicate>
 
       W_Negation,
       --  <negation> ::= 'not' <predicate>

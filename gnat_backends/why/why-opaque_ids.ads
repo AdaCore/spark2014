@@ -366,21 +366,21 @@ package Why.Opaque_Ids is
 
    subtype W_Equivalence_Opaque_OList is Why_Node_List;
 
-   subtype W_Disjonction_Opaque_Id is Why_Node_Id;
+   subtype W_Disjunction_Opaque_Id is Why_Node_Id;
 
-   subtype W_Disjonction_Opaque_OId is Why_Node_Id;
+   subtype W_Disjunction_Opaque_OId is Why_Node_Id;
 
-   subtype W_Disjonction_Opaque_List is Why_Node_List;
+   subtype W_Disjunction_Opaque_List is Why_Node_List;
 
-   subtype W_Disjonction_Opaque_OList is Why_Node_List;
+   subtype W_Disjunction_Opaque_OList is Why_Node_List;
 
-   subtype W_Conjonction_Opaque_Id is Why_Node_Id;
+   subtype W_Conjunction_Opaque_Id is Why_Node_Id;
 
-   subtype W_Conjonction_Opaque_OId is Why_Node_Id;
+   subtype W_Conjunction_Opaque_OId is Why_Node_Id;
 
-   subtype W_Conjonction_Opaque_List is Why_Node_List;
+   subtype W_Conjunction_Opaque_List is Why_Node_List;
 
-   subtype W_Conjonction_Opaque_OList is Why_Node_List;
+   subtype W_Conjunction_Opaque_OList is Why_Node_List;
 
    subtype W_Negation_Opaque_Id is Why_Node_Id;
 

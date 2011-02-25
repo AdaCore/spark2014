@@ -455,24 +455,24 @@ package Why.Atree.Traversal is
       Node  : W_Equivalence_Id)
      is null;
 
-   procedure Disjonction_Pre_Op
+   procedure Disjunction_Pre_Op
      (State : in out Traversal_State;
-      Node  : W_Disjonction_Id)
+      Node  : W_Disjunction_Id)
      is null;
 
-   procedure Disjonction_Post_Op
+   procedure Disjunction_Post_Op
      (State : in out Traversal_State;
-      Node  : W_Disjonction_Id)
+      Node  : W_Disjunction_Id)
      is null;
 
-   procedure Conjonction_Pre_Op
+   procedure Conjunction_Pre_Op
      (State : in out Traversal_State;
-      Node  : W_Conjonction_Id)
+      Node  : W_Conjunction_Id)
      is null;
 
-   procedure Conjonction_Post_Op
+   procedure Conjunction_Post_Op
      (State : in out Traversal_State;
-      Node  : W_Conjonction_Id)
+      Node  : W_Conjunction_Id)
      is null;
 
    procedure Negation_Pre_Op

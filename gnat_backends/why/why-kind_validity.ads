@@ -688,36 +688,36 @@ package Why.Kind_Validity is
      (Id : W_Equivalence_Opaque_OList)
      return Boolean;
 
-   function Disjonction_Id_Kind_Valid
-     (Id : W_Disjonction_Opaque_Id)
+   function Disjunction_Id_Kind_Valid
+     (Id : W_Disjunction_Opaque_Id)
      return Boolean;
 
-   function Disjonction_OId_Kind_Valid
-     (Id : W_Disjonction_Opaque_OId)
+   function Disjunction_OId_Kind_Valid
+     (Id : W_Disjunction_Opaque_OId)
      return Boolean;
 
-   function Disjonction_List_Kind_Valid
-     (Id : W_Disjonction_Opaque_List)
+   function Disjunction_List_Kind_Valid
+     (Id : W_Disjunction_Opaque_List)
      return Boolean;
 
-   function Disjonction_OList_Kind_Valid
-     (Id : W_Disjonction_Opaque_OList)
+   function Disjunction_OList_Kind_Valid
+     (Id : W_Disjunction_Opaque_OList)
      return Boolean;
 
-   function Conjonction_Id_Kind_Valid
-     (Id : W_Conjonction_Opaque_Id)
+   function Conjunction_Id_Kind_Valid
+     (Id : W_Conjunction_Opaque_Id)
      return Boolean;
 
-   function Conjonction_OId_Kind_Valid
-     (Id : W_Conjonction_Opaque_OId)
+   function Conjunction_OId_Kind_Valid
+     (Id : W_Conjunction_Opaque_OId)
      return Boolean;
 
-   function Conjonction_List_Kind_Valid
-     (Id : W_Conjonction_Opaque_List)
+   function Conjunction_List_Kind_Valid
+     (Id : W_Conjunction_Opaque_List)
      return Boolean;
 
-   function Conjonction_OList_Kind_Valid
-     (Id : W_Conjonction_Opaque_OList)
+   function Conjunction_OList_Kind_Valid
+     (Id : W_Conjunction_Opaque_OList)
      return Boolean;
 
    function Negation_Id_Kind_Valid
@@ -3491,55 +3491,55 @@ private
      (Is_Empty (Id)
       or else Equivalence_List_Kind_Valid (Id));
 
-   function Disjonction_Id_Kind_Valid
-     (Id : W_Disjonction_Opaque_Id)
+   function Disjunction_Id_Kind_Valid
+     (Id : W_Disjunction_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Disjonction);
+     (Get_Kind (Id) = W_Disjunction);
 
-   function Disjonction_OId_Kind_Valid
-     (Id : W_Disjonction_Opaque_OId)
+   function Disjunction_OId_Kind_Valid
+     (Id : W_Disjunction_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Disjonction_Id_Kind_Valid (Id));
+      or else Disjunction_Id_Kind_Valid (Id));
 
-   function Disjonction_List_Kind_Valid
-     (Id : W_Disjonction_Opaque_List)
+   function Disjunction_List_Kind_Valid
+     (Id : W_Disjunction_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Disjonction_OList_Kind_Valid
-     (Id : W_Disjonction_Opaque_OList)
+   function Disjunction_OList_Kind_Valid
+     (Id : W_Disjunction_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Disjonction_List_Kind_Valid (Id));
+      or else Disjunction_List_Kind_Valid (Id));
 
-   function Conjonction_Id_Kind_Valid
-     (Id : W_Conjonction_Opaque_Id)
+   function Conjunction_Id_Kind_Valid
+     (Id : W_Conjunction_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Conjonction);
+     (Get_Kind (Id) = W_Conjunction);
 
-   function Conjonction_OId_Kind_Valid
-     (Id : W_Conjonction_Opaque_OId)
+   function Conjunction_OId_Kind_Valid
+     (Id : W_Conjunction_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Conjonction_Id_Kind_Valid (Id));
+      or else Conjunction_Id_Kind_Valid (Id));
 
-   function Conjonction_List_Kind_Valid
-     (Id : W_Conjonction_Opaque_List)
+   function Conjunction_List_Kind_Valid
+     (Id : W_Conjunction_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Conjonction_OList_Kind_Valid
-     (Id : W_Conjonction_Opaque_OList)
+   function Conjunction_OList_Kind_Valid
+     (Id : W_Conjunction_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Conjonction_List_Kind_Valid (Id));
+      or else Conjunction_List_Kind_Valid (Id));
 
    function Negation_Id_Kind_Valid
      (Id : W_Negation_Opaque_Id)

@@ -1728,15 +1728,15 @@ package body Why.Atree.Treepr is
    end Equivalence_Post_Op;
 
    ------------------------
-   -- Disjonction_Pre_Op --
+   -- Disjunction_Pre_Op --
    ------------------------
 
-   procedure Disjonction_Pre_Op
+   procedure Disjunction_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Disjonction_Id)
+      Node  : W_Disjunction_Id)
    is
    begin
-      P (O, "W_Disjonction");
+      P (O, "W_Disjunction");
       P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
       if State.Depth /= 0 then
@@ -1758,32 +1758,32 @@ package body Why.Atree.Treepr is
          State.Depth := State.Depth + 1;
       end if;
       State.Control := Abandon_Children;
-   end Disjonction_Pre_Op;
+   end Disjunction_Pre_Op;
 
    -------------------------
-   -- Disjonction_Post_Op --
+   -- Disjunction_Post_Op --
    -------------------------
 
-   procedure Disjonction_Post_Op
+   procedure Disjunction_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Disjonction_Id)
+      Node  : W_Disjunction_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
       null;
-   end Disjonction_Post_Op;
+   end Disjunction_Post_Op;
 
    ------------------------
-   -- Conjonction_Pre_Op --
+   -- Conjunction_Pre_Op --
    ------------------------
 
-   procedure Conjonction_Pre_Op
+   procedure Conjunction_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conjonction_Id)
+      Node  : W_Conjunction_Id)
    is
    begin
-      P (O, "W_Conjonction");
+      P (O, "W_Conjunction");
       P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
       if State.Depth /= 0 then
@@ -1805,21 +1805,21 @@ package body Why.Atree.Treepr is
          State.Depth := State.Depth + 1;
       end if;
       State.Control := Abandon_Children;
-   end Conjonction_Pre_Op;
+   end Conjunction_Pre_Op;
 
    -------------------------
-   -- Conjonction_Post_Op --
+   -- Conjunction_Post_Op --
    -------------------------
 
-   procedure Conjonction_Post_Op
+   procedure Conjunction_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conjonction_Id)
+      Node  : W_Conjunction_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
       null;
-   end Conjonction_Post_Op;
+   end Conjunction_Post_Op;
 
    ---------------------
    -- Negation_Pre_Op --

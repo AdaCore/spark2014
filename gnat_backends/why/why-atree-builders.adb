@@ -981,18 +981,18 @@ package body Why.Atree.Builders is
    end New_Equivalence;
 
    ---------------------
-   -- New_Disjonction --
+   -- New_Disjunction --
    ---------------------
 
-   function New_Disjonction
+   function New_Disjunction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Disjonction_Id
+     return W_Disjunction_Id
    is
-      Result : Why_Node (W_Disjonction);
+      Result : Why_Node (W_Disjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Disjonction);
+        New_Why_Node_Id (W_Disjunction);
    begin
       Result.Ada_Node := Ada_Node;
       Result.ITOC_Left := Left;
@@ -1003,21 +1003,21 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Disjonction;
+   end New_Disjunction;
 
    ---------------------
-   -- New_Conjonction --
+   -- New_Conjunction --
    ---------------------
 
-   function New_Conjonction
+   function New_Conjunction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Conjonction_Id
+     return W_Conjunction_Id
    is
-      Result : Why_Node (W_Conjonction);
+      Result : Why_Node (W_Conjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Conjonction);
+        New_Why_Node_Id (W_Conjunction);
    begin
       Result.Ada_Node := Ada_Node;
       Result.ITOC_Left := Left;
@@ -1028,7 +1028,7 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Conjonction;
+   end New_Conjunction;
 
    ------------------
    -- New_Negation --
@@ -4358,15 +4358,15 @@ package body Why.Atree.Builders is
    end New_Unchecked_Equivalence;
 
    -------------------------------
-   -- New_Unchecked_Disjonction --
+   -- New_Unchecked_Disjunction --
    -------------------------------
 
-   function New_Unchecked_Disjonction
-     return W_Disjonction_Unchecked_Id
+   function New_Unchecked_Disjunction
+     return W_Disjunction_Unchecked_Id
    is
-      Result : Why_Node (W_Disjonction);
+      Result : Why_Node (W_Disjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Disjonction);
+        New_Why_Node_Id (W_Disjunction);
    begin
       Result.Ada_Node := Empty;
       Result.ITOC_Left := Why_Empty;
@@ -4377,18 +4377,18 @@ package body Why.Atree.Builders is
       Result.Checked := False;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Unchecked_Disjonction;
+   end New_Unchecked_Disjunction;
 
    -------------------------------
-   -- New_Unchecked_Conjonction --
+   -- New_Unchecked_Conjunction --
    -------------------------------
 
-   function New_Unchecked_Conjonction
-     return W_Conjonction_Unchecked_Id
+   function New_Unchecked_Conjunction
+     return W_Conjunction_Unchecked_Id
    is
-      Result : Why_Node (W_Conjonction);
+      Result : Why_Node (W_Conjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Conjonction);
+        New_Why_Node_Id (W_Conjunction);
    begin
       Result.Ada_Node := Empty;
       Result.ITOC_Left := Why_Empty;
@@ -4399,7 +4399,7 @@ package body Why.Atree.Builders is
       Result.Checked := False;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Unchecked_Conjonction;
+   end New_Unchecked_Conjunction;
 
    ----------------------------
    -- New_Unchecked_Negation --
@@ -7794,13 +7794,13 @@ package body Why.Atree.Builders is
    end Duplicate_Equivalence;
 
    ---------------------------
-   -- Duplicate_Disjonction --
+   -- Duplicate_Disjunction --
    ---------------------------
 
-   function Duplicate_Disjonction
+   function Duplicate_Disjunction
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Disjonction_OId)
-     return W_Disjonction_Id
+      Id       : W_Disjunction_OId)
+     return W_Disjunction_Id
    is
    begin
       if Id = Why_Empty then
@@ -7808,13 +7808,13 @@ package body Why.Atree.Builders is
       end if;
 
       declare
-         Result : Why_Node (W_Disjonction);
+         Result : Why_Node (W_Disjunction);
          New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Disjonction);
+           New_Why_Node_Id (W_Disjunction);
          Left  : constant W_Predicate_Id :=
-            Disjonction_Get_Left (Id);
+            Disjunction_Get_Left (Id);
          Right : constant W_Predicate_Id :=
-            Disjonction_Get_Right (Id);
+            Disjunction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
          Result.ITOC_Left :=
@@ -7830,16 +7830,16 @@ package body Why.Atree.Builders is
          Set_Node (New_Id, Result);
          return New_Id;
       end;
-   end Duplicate_Disjonction;
+   end Duplicate_Disjunction;
 
    ---------------------------
-   -- Duplicate_Conjonction --
+   -- Duplicate_Conjunction --
    ---------------------------
 
-   function Duplicate_Conjonction
+   function Duplicate_Conjunction
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Conjonction_OId)
-     return W_Conjonction_Id
+      Id       : W_Conjunction_OId)
+     return W_Conjunction_Id
    is
    begin
       if Id = Why_Empty then
@@ -7847,13 +7847,13 @@ package body Why.Atree.Builders is
       end if;
 
       declare
-         Result : Why_Node (W_Conjonction);
+         Result : Why_Node (W_Conjunction);
          New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Conjonction);
+           New_Why_Node_Id (W_Conjunction);
          Left  : constant W_Predicate_Id :=
-            Conjonction_Get_Left (Id);
+            Conjunction_Get_Left (Id);
          Right : constant W_Predicate_Id :=
-            Conjonction_Get_Right (Id);
+            Conjunction_Get_Right (Id);
       begin
          Result.Ada_Node := Ada_Node;
          Result.ITOC_Left :=
@@ -7869,7 +7869,7 @@ package body Why.Atree.Builders is
          Set_Node (New_Id, Result);
          return New_Id;
       end;
-   end Duplicate_Conjonction;
+   end Duplicate_Conjunction;
 
    ------------------------
    -- Duplicate_Negation --
@@ -14088,18 +14088,18 @@ package body Why.Atree.Builders is
    end New_Equivalence;
 
    ---------------------
-   -- New_Disjonction --
+   -- New_Disjunction --
    ---------------------
 
-   function New_Disjonction
+   function New_Disjunction
      (Ada_Node : Node_Id := Empty;
       Left     : Predicate_Id;
       Right    : Predicate_Id)
      return Predicate_Id
    is
-      Result : Why_Node (W_Disjonction);
+      Result : Why_Node (W_Disjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Disjonction);
+        New_Why_Node_Id (W_Disjunction);
    begin
       Result.Ada_Node := Ada_Node;
       Result.ITOC_Left := +(W_Predicate_Id (Left));
@@ -14110,21 +14110,21 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return Predicate_Id (New_Id);
-   end New_Disjonction;
+   end New_Disjunction;
 
    ---------------------
-   -- New_Conjonction --
+   -- New_Conjunction --
    ---------------------
 
-   function New_Conjonction
+   function New_Conjunction
      (Ada_Node : Node_Id := Empty;
       Left     : Predicate_Id;
       Right    : Predicate_Id)
      return Predicate_Id
    is
-      Result : Why_Node (W_Conjonction);
+      Result : Why_Node (W_Conjunction);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Conjonction);
+        New_Why_Node_Id (W_Conjunction);
    begin
       Result.Ada_Node := Ada_Node;
       Result.ITOC_Left := +(W_Predicate_Id (Left));
@@ -14135,7 +14135,7 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return Predicate_Id (New_Id);
-   end New_Conjonction;
+   end New_Conjunction;
 
    ------------------
    -- New_Negation --

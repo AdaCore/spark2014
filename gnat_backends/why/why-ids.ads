@@ -868,42 +868,42 @@ package Why.Ids is
      W_Equivalence_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_Id is
-     W_Disjonction_Unchecked_Id;
+   subtype W_Disjunction_Id is
+     W_Disjunction_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
-   type W_Disjonction_Array is array (Positive range <>)
-     of W_Disjonction_Id;
+   type W_Disjunction_Array is array (Positive range <>)
+     of W_Disjunction_Id;
 
-   subtype W_Disjonction_OId is
-     W_Disjonction_Unchecked_OId;
+   subtype W_Disjunction_OId is
+     W_Disjunction_Unchecked_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_List is
-     W_Disjonction_Unchecked_List;
+   subtype W_Disjunction_List is
+     W_Disjunction_Unchecked_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_OList is
-     W_Disjonction_Unchecked_OList;
+   subtype W_Disjunction_OList is
+     W_Disjunction_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_Id is
-     W_Conjonction_Unchecked_Id;
+   subtype W_Conjunction_Id is
+     W_Conjunction_Unchecked_Id;
    --  ??? subtype predicate not generated yet
 
-   type W_Conjonction_Array is array (Positive range <>)
-     of W_Conjonction_Id;
+   type W_Conjunction_Array is array (Positive range <>)
+     of W_Conjunction_Id;
 
-   subtype W_Conjonction_OId is
-     W_Conjonction_Unchecked_OId;
+   subtype W_Conjunction_OId is
+     W_Conjunction_Unchecked_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_List is
-     W_Conjonction_Unchecked_List;
+   subtype W_Conjunction_List is
+     W_Conjunction_Unchecked_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_OList is
-     W_Conjonction_Unchecked_OList;
+   subtype W_Conjunction_OList is
+     W_Conjunction_Unchecked_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Negation_Id is
@@ -3756,42 +3756,42 @@ package Why.Ids is
      W_Equivalence_OList;
    --  ??? subtype predicate not generated yet
 
-   type Disjonction_Id is new
-     W_Disjonction_Id;
+   type Disjunction_Id is new
+     W_Disjunction_Id;
    --  ??? subtype predicate not generated yet
 
-   type Disjonction_Array is array (Positive range <>)
-     of Disjonction_Id;
+   type Disjunction_Array is array (Positive range <>)
+     of Disjunction_Id;
 
-   type Disjonction_OId is new
-     W_Disjonction_OId;
+   type Disjunction_OId is new
+     W_Disjunction_OId;
    --  ??? subtype predicate not generated yet
 
-   type Disjonction_List is new
-     W_Disjonction_List;
+   type Disjunction_List is new
+     W_Disjunction_List;
    --  ??? subtype predicate not generated yet
 
-   type Disjonction_OList is new
-     W_Disjonction_OList;
+   type Disjunction_OList is new
+     W_Disjunction_OList;
    --  ??? subtype predicate not generated yet
 
-   type Conjonction_Id is new
-     W_Conjonction_Id;
+   type Conjunction_Id is new
+     W_Conjunction_Id;
    --  ??? subtype predicate not generated yet
 
-   type Conjonction_Array is array (Positive range <>)
-     of Conjonction_Id;
+   type Conjunction_Array is array (Positive range <>)
+     of Conjunction_Id;
 
-   type Conjonction_OId is new
-     W_Conjonction_OId;
+   type Conjunction_OId is new
+     W_Conjunction_OId;
    --  ??? subtype predicate not generated yet
 
-   type Conjonction_List is new
-     W_Conjonction_List;
+   type Conjunction_List is new
+     W_Conjunction_List;
    --  ??? subtype predicate not generated yet
 
-   type Conjonction_OList is new
-     W_Conjonction_OList;
+   type Conjunction_OList is new
+     W_Conjunction_OList;
    --  ??? subtype predicate not generated yet
 
    type Negation_Id is new

@@ -991,11 +991,11 @@ package body Why.Atree.Mutators is
    end Equivalence_Set_Right;
 
    --------------------------
-   -- Disjonction_Set_Left --
+   -- Disjunction_Set_Left --
    --------------------------
 
-   procedure Disjonction_Set_Left
-     (Id   : W_Disjonction_Unchecked_Id;
+   procedure Disjunction_Set_Left
+     (Id   : W_Disjunction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -1005,15 +1005,15 @@ package body Why.Atree.Mutators is
       Set_Link (Left, Id);
       Update_Validity_Status
         (Id,
-         Disjonction_Id_Valid (Id));
-   end Disjonction_Set_Left;
+         Disjunction_Id_Valid (Id));
+   end Disjunction_Set_Left;
 
    ---------------------------
-   -- Disjonction_Set_Right --
+   -- Disjunction_Set_Right --
    ---------------------------
 
-   procedure Disjonction_Set_Right
-     (Id    : W_Disjonction_Unchecked_Id;
+   procedure Disjunction_Set_Right
+     (Id    : W_Disjunction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -1023,15 +1023,15 @@ package body Why.Atree.Mutators is
       Set_Link (Right, Id);
       Update_Validity_Status
         (Id,
-         Disjonction_Id_Valid (Id));
-   end Disjonction_Set_Right;
+         Disjunction_Id_Valid (Id));
+   end Disjunction_Set_Right;
 
    --------------------------
-   -- Conjonction_Set_Left --
+   -- Conjunction_Set_Left --
    --------------------------
 
-   procedure Conjonction_Set_Left
-     (Id   : W_Conjonction_Unchecked_Id;
+   procedure Conjunction_Set_Left
+     (Id   : W_Conjunction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -1041,15 +1041,15 @@ package body Why.Atree.Mutators is
       Set_Link (Left, Id);
       Update_Validity_Status
         (Id,
-         Conjonction_Id_Valid (Id));
-   end Conjonction_Set_Left;
+         Conjunction_Id_Valid (Id));
+   end Conjunction_Set_Left;
 
    ---------------------------
-   -- Conjonction_Set_Right --
+   -- Conjunction_Set_Right --
    ---------------------------
 
-   procedure Conjonction_Set_Right
-     (Id    : W_Conjonction_Unchecked_Id;
+   procedure Conjunction_Set_Right
+     (Id    : W_Conjunction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id)
    is
       Node : Why_Node := Get_Node (Id);
@@ -1059,8 +1059,8 @@ package body Why.Atree.Mutators is
       Set_Link (Right, Id);
       Update_Validity_Status
         (Id,
-         Conjonction_Id_Valid (Id));
-   end Conjonction_Set_Right;
+         Conjunction_Id_Valid (Id));
+   end Conjunction_Set_Right;
 
    --------------------------
    -- Negation_Set_Operand --

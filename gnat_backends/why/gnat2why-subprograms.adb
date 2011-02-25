@@ -148,7 +148,7 @@ package body Gnat2Why.Subprograms is
                       (Pragma_Identifier (Original_Node (Cur_Stmt))))
                      = "assert" then
                   Pred :=
-                    New_Conjonction
+                    New_Conjunction
                       (Ada_Node => Cur_Stmt,
                        Left => Pred,
                        Right =>
@@ -559,7 +559,7 @@ package body Gnat2Why.Subprograms is
                      Found_Location := True;
                   end if;
                   Cur_Spec :=
-                     New_Conjonction
+                     New_Conjunction
                        (Ada_Node => Ada_Spec,
                         Left     => Why_Predicate_Of_Ada_Expr (Ada_Spec),
                         Right    => Cur_Spec);
@@ -1299,14 +1299,14 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_And | N_And_Then =>
             return
-              New_Conjonction
+              New_Conjunction
                 (Ada_Node => Expr,
                  Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_Or | N_Or_Else =>
             return
-              New_Disjonction
+              New_Disjunction
                 (Ada_Node => Expr,
                  Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));

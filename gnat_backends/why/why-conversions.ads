@@ -1341,68 +1341,68 @@ package Why.Conversions is
      return Equivalence_OList;
 
    function "+"
-     (Id : Disjonction_Id)
-     return W_Disjonction_Id;
+     (Id : Disjunction_Id)
+     return W_Disjunction_Id;
 
    function "+"
-     (Id : W_Disjonction_Id)
-     return Disjonction_Id;
+     (Id : W_Disjunction_Id)
+     return Disjunction_Id;
 
    function "+"
-     (Id : Disjonction_OId)
-     return W_Disjonction_OId;
+     (Id : Disjunction_OId)
+     return W_Disjunction_OId;
 
    function "+"
-     (Id : W_Disjonction_OId)
-     return Disjonction_OId;
+     (Id : W_Disjunction_OId)
+     return Disjunction_OId;
 
    function "+"
-     (Id : Disjonction_List)
-     return W_Disjonction_List;
+     (Id : Disjunction_List)
+     return W_Disjunction_List;
 
    function "+"
-     (Id : W_Disjonction_List)
-     return Disjonction_List;
+     (Id : W_Disjunction_List)
+     return Disjunction_List;
 
    function "+"
-     (Id : Disjonction_OList)
-     return W_Disjonction_OList;
+     (Id : Disjunction_OList)
+     return W_Disjunction_OList;
 
    function "+"
-     (Id : W_Disjonction_OList)
-     return Disjonction_OList;
+     (Id : W_Disjunction_OList)
+     return Disjunction_OList;
 
    function "+"
-     (Id : Conjonction_Id)
-     return W_Conjonction_Id;
+     (Id : Conjunction_Id)
+     return W_Conjunction_Id;
 
    function "+"
-     (Id : W_Conjonction_Id)
-     return Conjonction_Id;
+     (Id : W_Conjunction_Id)
+     return Conjunction_Id;
 
    function "+"
-     (Id : Conjonction_OId)
-     return W_Conjonction_OId;
+     (Id : Conjunction_OId)
+     return W_Conjunction_OId;
 
    function "+"
-     (Id : W_Conjonction_OId)
-     return Conjonction_OId;
+     (Id : W_Conjunction_OId)
+     return Conjunction_OId;
 
    function "+"
-     (Id : Conjonction_List)
-     return W_Conjonction_List;
+     (Id : Conjunction_List)
+     return W_Conjunction_List;
 
    function "+"
-     (Id : W_Conjonction_List)
-     return Conjonction_List;
+     (Id : W_Conjunction_List)
+     return Conjunction_List;
 
    function "+"
-     (Id : Conjonction_OList)
-     return W_Conjonction_OList;
+     (Id : Conjunction_OList)
+     return W_Conjunction_OList;
 
    function "+"
-     (Id : W_Conjonction_OList)
-     return Conjonction_OList;
+     (Id : W_Conjunction_OList)
+     return Conjunction_OList;
 
    function "+"
      (Id : Negation_Id)
@@ -5542,18 +5542,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Predicate_Id)
-     return Disjonction_Id;
+     return Disjunction_Id;
 
    function "+"
-     (Id : Disjonction_Id)
+     (Id : Disjunction_Id)
      return Predicate_Id;
 
    function "+"
      (Id : Predicate_Id)
-     return Conjonction_Id;
+     return Conjunction_Id;
 
    function "+"
-     (Id : Conjonction_Id)
+     (Id : Conjunction_Id)
      return Predicate_Id;
 
    function "+"
@@ -5822,18 +5822,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Predicate_OId)
-     return Disjonction_OId;
+     return Disjunction_OId;
 
    function "+"
-     (Id : Disjonction_OId)
+     (Id : Disjunction_OId)
      return Predicate_OId;
 
    function "+"
      (Id : Predicate_OId)
-     return Conjonction_OId;
+     return Conjunction_OId;
 
    function "+"
-     (Id : Conjonction_OId)
+     (Id : Conjunction_OId)
      return Predicate_OId;
 
    function "+"
@@ -6102,18 +6102,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Predicate_List)
-     return Disjonction_List;
+     return Disjunction_List;
 
    function "+"
-     (Id : Disjonction_List)
+     (Id : Disjunction_List)
      return Predicate_List;
 
    function "+"
      (Id : Predicate_List)
-     return Conjonction_List;
+     return Conjunction_List;
 
    function "+"
-     (Id : Conjonction_List)
+     (Id : Conjunction_List)
      return Predicate_List;
 
    function "+"
@@ -6382,18 +6382,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Predicate_OList)
-     return Disjonction_OList;
+     return Disjunction_OList;
 
    function "+"
-     (Id : Disjonction_OList)
+     (Id : Disjunction_OList)
      return Predicate_OList;
 
    function "+"
      (Id : Predicate_OList)
-     return Conjonction_OList;
+     return Conjunction_OList;
 
    function "+"
-     (Id : Conjonction_OList)
+     (Id : Conjunction_OList)
      return Predicate_OList;
 
    function "+"
@@ -11686,18 +11686,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Any_Node_Id)
-     return Disjonction_Id;
+     return Disjunction_Id;
 
    function "+"
-     (Id : Disjonction_Id)
+     (Id : Disjunction_Id)
      return Any_Node_Id;
 
    function "+"
      (Id : Any_Node_Id)
-     return Conjonction_Id;
+     return Conjunction_Id;
 
    function "+"
-     (Id : Conjonction_Id)
+     (Id : Conjunction_Id)
      return Any_Node_Id;
 
    function "+"
@@ -12758,18 +12758,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Any_Node_OId)
-     return Disjonction_OId;
+     return Disjunction_OId;
 
    function "+"
-     (Id : Disjonction_OId)
+     (Id : Disjunction_OId)
      return Any_Node_OId;
 
    function "+"
      (Id : Any_Node_OId)
-     return Conjonction_OId;
+     return Conjunction_OId;
 
    function "+"
-     (Id : Conjonction_OId)
+     (Id : Conjunction_OId)
      return Any_Node_OId;
 
    function "+"
@@ -13830,18 +13830,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Any_Node_List)
-     return Disjonction_List;
+     return Disjunction_List;
 
    function "+"
-     (Id : Disjonction_List)
+     (Id : Disjunction_List)
      return Any_Node_List;
 
    function "+"
      (Id : Any_Node_List)
-     return Conjonction_List;
+     return Conjunction_List;
 
    function "+"
-     (Id : Conjonction_List)
+     (Id : Conjunction_List)
      return Any_Node_List;
 
    function "+"
@@ -14902,18 +14902,18 @@ package Why.Conversions is
 
    function "+"
      (Id : Any_Node_OList)
-     return Disjonction_OList;
+     return Disjunction_OList;
 
    function "+"
-     (Id : Disjonction_OList)
+     (Id : Disjunction_OList)
      return Any_Node_OList;
 
    function "+"
      (Id : Any_Node_OList)
-     return Conjonction_OList;
+     return Conjunction_OList;
 
    function "+"
-     (Id : Conjonction_OList)
+     (Id : Conjunction_OList)
      return Any_Node_OList;
 
    function "+"
@@ -17415,84 +17415,84 @@ private
      (Equivalence_OList (Id));
 
    function "+"
-     (Id : Disjonction_Id)
-     return W_Disjonction_Id is
-     (W_Disjonction_Id (Id));
+     (Id : Disjunction_Id)
+     return W_Disjunction_Id is
+     (W_Disjunction_Id (Id));
 
    function "+"
-     (Id : W_Disjonction_Id)
-     return Disjonction_Id is
-     (Disjonction_Id (Id));
+     (Id : W_Disjunction_Id)
+     return Disjunction_Id is
+     (Disjunction_Id (Id));
 
    function "+"
-     (Id : Disjonction_OId)
-     return W_Disjonction_OId is
-     (W_Disjonction_OId (Id));
+     (Id : Disjunction_OId)
+     return W_Disjunction_OId is
+     (W_Disjunction_OId (Id));
 
    function "+"
-     (Id : W_Disjonction_OId)
-     return Disjonction_OId is
-     (Disjonction_OId (Id));
+     (Id : W_Disjunction_OId)
+     return Disjunction_OId is
+     (Disjunction_OId (Id));
 
    function "+"
-     (Id : Disjonction_List)
-     return W_Disjonction_List is
-     (W_Disjonction_List (Id));
+     (Id : Disjunction_List)
+     return W_Disjunction_List is
+     (W_Disjunction_List (Id));
 
    function "+"
-     (Id : W_Disjonction_List)
-     return Disjonction_List is
-     (Disjonction_List (Id));
+     (Id : W_Disjunction_List)
+     return Disjunction_List is
+     (Disjunction_List (Id));
 
    function "+"
-     (Id : Disjonction_OList)
-     return W_Disjonction_OList is
-     (W_Disjonction_OList (Id));
+     (Id : Disjunction_OList)
+     return W_Disjunction_OList is
+     (W_Disjunction_OList (Id));
 
    function "+"
-     (Id : W_Disjonction_OList)
-     return Disjonction_OList is
-     (Disjonction_OList (Id));
+     (Id : W_Disjunction_OList)
+     return Disjunction_OList is
+     (Disjunction_OList (Id));
 
    function "+"
-     (Id : Conjonction_Id)
-     return W_Conjonction_Id is
-     (W_Conjonction_Id (Id));
+     (Id : Conjunction_Id)
+     return W_Conjunction_Id is
+     (W_Conjunction_Id (Id));
 
    function "+"
-     (Id : W_Conjonction_Id)
-     return Conjonction_Id is
-     (Conjonction_Id (Id));
+     (Id : W_Conjunction_Id)
+     return Conjunction_Id is
+     (Conjunction_Id (Id));
 
    function "+"
-     (Id : Conjonction_OId)
-     return W_Conjonction_OId is
-     (W_Conjonction_OId (Id));
+     (Id : Conjunction_OId)
+     return W_Conjunction_OId is
+     (W_Conjunction_OId (Id));
 
    function "+"
-     (Id : W_Conjonction_OId)
-     return Conjonction_OId is
-     (Conjonction_OId (Id));
+     (Id : W_Conjunction_OId)
+     return Conjunction_OId is
+     (Conjunction_OId (Id));
 
    function "+"
-     (Id : Conjonction_List)
-     return W_Conjonction_List is
-     (W_Conjonction_List (Id));
+     (Id : Conjunction_List)
+     return W_Conjunction_List is
+     (W_Conjunction_List (Id));
 
    function "+"
-     (Id : W_Conjonction_List)
-     return Conjonction_List is
-     (Conjonction_List (Id));
+     (Id : W_Conjunction_List)
+     return Conjunction_List is
+     (Conjunction_List (Id));
 
    function "+"
-     (Id : Conjonction_OList)
-     return W_Conjonction_OList is
-     (W_Conjonction_OList (Id));
+     (Id : Conjunction_OList)
+     return W_Conjunction_OList is
+     (W_Conjunction_OList (Id));
 
    function "+"
-     (Id : W_Conjonction_OList)
-     return Conjonction_OList is
-     (Conjonction_OList (Id));
+     (Id : W_Conjunction_OList)
+     return Conjunction_OList is
+     (Conjunction_OList (Id));
 
    function "+"
      (Id : Negation_Id)
@@ -22666,21 +22666,21 @@ private
 
    function "+"
      (Id : Predicate_Id)
-     return Disjonction_Id is
-     (Disjonction_Id (Id));
+     return Disjunction_Id is
+     (Disjunction_Id (Id));
 
    function "+"
-     (Id : Disjonction_Id)
+     (Id : Disjunction_Id)
      return Predicate_Id is
      (Predicate_Id (Id));
 
    function "+"
      (Id : Predicate_Id)
-     return Conjonction_Id is
-     (Conjonction_Id (Id));
+     return Conjunction_Id is
+     (Conjunction_Id (Id));
 
    function "+"
-     (Id : Conjonction_Id)
+     (Id : Conjunction_Id)
      return Predicate_Id is
      (Predicate_Id (Id));
 
@@ -23016,21 +23016,21 @@ private
 
    function "+"
      (Id : Predicate_OId)
-     return Disjonction_OId is
-     (Disjonction_OId (Id));
+     return Disjunction_OId is
+     (Disjunction_OId (Id));
 
    function "+"
-     (Id : Disjonction_OId)
+     (Id : Disjunction_OId)
      return Predicate_OId is
      (Predicate_OId (Id));
 
    function "+"
      (Id : Predicate_OId)
-     return Conjonction_OId is
-     (Conjonction_OId (Id));
+     return Conjunction_OId is
+     (Conjunction_OId (Id));
 
    function "+"
-     (Id : Conjonction_OId)
+     (Id : Conjunction_OId)
      return Predicate_OId is
      (Predicate_OId (Id));
 
@@ -23366,21 +23366,21 @@ private
 
    function "+"
      (Id : Predicate_List)
-     return Disjonction_List is
-     (Disjonction_List (Id));
+     return Disjunction_List is
+     (Disjunction_List (Id));
 
    function "+"
-     (Id : Disjonction_List)
+     (Id : Disjunction_List)
      return Predicate_List is
      (Predicate_List (Id));
 
    function "+"
      (Id : Predicate_List)
-     return Conjonction_List is
-     (Conjonction_List (Id));
+     return Conjunction_List is
+     (Conjunction_List (Id));
 
    function "+"
-     (Id : Conjonction_List)
+     (Id : Conjunction_List)
      return Predicate_List is
      (Predicate_List (Id));
 
@@ -23716,21 +23716,21 @@ private
 
    function "+"
      (Id : Predicate_OList)
-     return Disjonction_OList is
-     (Disjonction_OList (Id));
+     return Disjunction_OList is
+     (Disjunction_OList (Id));
 
    function "+"
-     (Id : Disjonction_OList)
+     (Id : Disjunction_OList)
      return Predicate_OList is
      (Predicate_OList (Id));
 
    function "+"
      (Id : Predicate_OList)
-     return Conjonction_OList is
-     (Conjonction_OList (Id));
+     return Conjunction_OList is
+     (Conjunction_OList (Id));
 
    function "+"
-     (Id : Conjonction_OList)
+     (Id : Conjunction_OList)
      return Predicate_OList is
      (Predicate_OList (Id));
 
@@ -30346,21 +30346,21 @@ private
 
    function "+"
      (Id : Any_Node_Id)
-     return Disjonction_Id is
-     (Disjonction_Id (Id));
+     return Disjunction_Id is
+     (Disjunction_Id (Id));
 
    function "+"
-     (Id : Disjonction_Id)
+     (Id : Disjunction_Id)
      return Any_Node_Id is
      (Any_Node_Id (Id));
 
    function "+"
      (Id : Any_Node_Id)
-     return Conjonction_Id is
-     (Conjonction_Id (Id));
+     return Conjunction_Id is
+     (Conjunction_Id (Id));
 
    function "+"
-     (Id : Conjonction_Id)
+     (Id : Conjunction_Id)
      return Any_Node_Id is
      (Any_Node_Id (Id));
 
@@ -31686,21 +31686,21 @@ private
 
    function "+"
      (Id : Any_Node_OId)
-     return Disjonction_OId is
-     (Disjonction_OId (Id));
+     return Disjunction_OId is
+     (Disjunction_OId (Id));
 
    function "+"
-     (Id : Disjonction_OId)
+     (Id : Disjunction_OId)
      return Any_Node_OId is
      (Any_Node_OId (Id));
 
    function "+"
      (Id : Any_Node_OId)
-     return Conjonction_OId is
-     (Conjonction_OId (Id));
+     return Conjunction_OId is
+     (Conjunction_OId (Id));
 
    function "+"
-     (Id : Conjonction_OId)
+     (Id : Conjunction_OId)
      return Any_Node_OId is
      (Any_Node_OId (Id));
 
@@ -33026,21 +33026,21 @@ private
 
    function "+"
      (Id : Any_Node_List)
-     return Disjonction_List is
-     (Disjonction_List (Id));
+     return Disjunction_List is
+     (Disjunction_List (Id));
 
    function "+"
-     (Id : Disjonction_List)
+     (Id : Disjunction_List)
      return Any_Node_List is
      (Any_Node_List (Id));
 
    function "+"
      (Id : Any_Node_List)
-     return Conjonction_List is
-     (Conjonction_List (Id));
+     return Conjunction_List is
+     (Conjunction_List (Id));
 
    function "+"
-     (Id : Conjonction_List)
+     (Id : Conjunction_List)
      return Any_Node_List is
      (Any_Node_List (Id));
 
@@ -34366,21 +34366,21 @@ private
 
    function "+"
      (Id : Any_Node_OList)
-     return Disjonction_OList is
-     (Disjonction_OList (Id));
+     return Disjunction_OList is
+     (Disjunction_OList (Id));
 
    function "+"
-     (Id : Disjonction_OList)
+     (Id : Disjunction_OList)
      return Any_Node_OList is
      (Any_Node_OList (Id));
 
    function "+"
      (Id : Any_Node_OList)
-     return Conjonction_OList is
-     (Conjonction_OList (Id));
+     return Conjunction_OList is
+     (Conjunction_OList (Id));
 
    function "+"
-     (Id : Conjonction_OList)
+     (Id : Conjunction_OList)
      return Any_Node_OList is
      (Any_Node_OList (Id));
 

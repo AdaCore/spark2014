@@ -692,36 +692,36 @@ package Why.Unchecked_Ids is
      W_Equivalence_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_Unchecked_Id is
-     W_Disjonction_Opaque_Id;
+   subtype W_Disjunction_Unchecked_Id is
+     W_Disjunction_Opaque_Id;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_Unchecked_OId is
-     W_Disjonction_Opaque_OId;
+   subtype W_Disjunction_Unchecked_OId is
+     W_Disjunction_Opaque_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_Unchecked_List is
-     W_Disjonction_Opaque_List;
+   subtype W_Disjunction_Unchecked_List is
+     W_Disjunction_Opaque_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Disjonction_Unchecked_OList is
-     W_Disjonction_Opaque_OList;
+   subtype W_Disjunction_Unchecked_OList is
+     W_Disjunction_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_Unchecked_Id is
-     W_Conjonction_Opaque_Id;
+   subtype W_Conjunction_Unchecked_Id is
+     W_Conjunction_Opaque_Id;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_Unchecked_OId is
-     W_Conjonction_Opaque_OId;
+   subtype W_Conjunction_Unchecked_OId is
+     W_Conjunction_Opaque_OId;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_Unchecked_List is
-     W_Conjonction_Opaque_List;
+   subtype W_Conjunction_Unchecked_List is
+     W_Conjunction_Opaque_List;
    --  ??? subtype predicate not generated yet
 
-   subtype W_Conjonction_Unchecked_OList is
-     W_Conjonction_Opaque_OList;
+   subtype W_Conjunction_Unchecked_OList is
+     W_Conjunction_Opaque_OList;
    --  ??? subtype predicate not generated yet
 
    subtype W_Negation_Unchecked_Id is

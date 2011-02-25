@@ -218,13 +218,13 @@ private
      (State : in out Printer_State;
       Node  : W_Equivalence_Id);
 
-   procedure Disjonction_Pre_Op
+   procedure Disjunction_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Disjonction_Id);
+      Node  : W_Disjunction_Id);
 
-   procedure Conjonction_Pre_Op
+   procedure Conjunction_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Conjonction_Id);
+      Node  : W_Conjunction_Id);
 
    procedure Negation_Pre_Op
      (State : in out Printer_State;

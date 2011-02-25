@@ -453,32 +453,32 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Right)
         and then Is_Root (Right));
 
-   procedure Disjonction_Set_Left
-     (Id   : W_Disjonction_Unchecked_Id;
+   procedure Disjunction_Set_Left
+     (Id   : W_Disjunction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Left)
         and then Predicate_Id_Valid (Left)
         and then Is_Root (Left));
 
-   procedure Disjonction_Set_Right
-     (Id    : W_Disjonction_Unchecked_Id;
+   procedure Disjunction_Set_Right
+     (Id    : W_Disjunction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Right)
         and then Predicate_Id_Valid (Right)
         and then Is_Root (Right));
 
-   procedure Conjonction_Set_Left
-     (Id   : W_Conjonction_Unchecked_Id;
+   procedure Conjunction_Set_Left
+     (Id   : W_Conjunction_Unchecked_Id;
       Left : W_Predicate_Unchecked_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Left)
         and then Predicate_Id_Valid (Left)
         and then Is_Root (Left));
 
-   procedure Conjonction_Set_Right
-     (Id    : W_Conjonction_Unchecked_Id;
+   procedure Conjunction_Set_Right
+     (Id    : W_Conjunction_Unchecked_Id;
       Right : W_Predicate_Unchecked_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Right)

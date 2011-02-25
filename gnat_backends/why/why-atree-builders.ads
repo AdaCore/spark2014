@@ -932,11 +932,11 @@ package Why.Atree.Builders is
           (New_Equivalence'Result)
           = Right);
 
-   function New_Disjonction
+   function New_Disjunction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Disjonction_Id with
+     return W_Disjunction_Id with
      Pre =>
        (Predicate_Id_Kind_Valid (Left)
         and then Predicate_Id_Valid (Left)
@@ -946,26 +946,26 @@ package Why.Atree.Builders is
         and then Is_Root (Right)),
      Post =>
        (Get_Kind
-         (New_Disjonction'Result)
-         = W_Disjonction
+         (New_Disjunction'Result)
+         = W_Disjunction
         and then
           Get_Ada_Node
-          (New_Disjonction'Result)
+          (New_Disjunction'Result)
           = Ada_Node
         and then
-          Disjonction_Get_Left
-          (New_Disjonction'Result)
+          Disjunction_Get_Left
+          (New_Disjunction'Result)
           = Left
         and then
-          Disjonction_Get_Right
-          (New_Disjonction'Result)
+          Disjunction_Get_Right
+          (New_Disjunction'Result)
           = Right);
 
-   function New_Conjonction
+   function New_Conjunction
      (Ada_Node : Node_Id := Empty;
       Left     : W_Predicate_Id;
       Right    : W_Predicate_Id)
-     return W_Conjonction_Id with
+     return W_Conjunction_Id with
      Pre =>
        (Predicate_Id_Kind_Valid (Left)
         and then Predicate_Id_Valid (Left)
@@ -975,19 +975,19 @@ package Why.Atree.Builders is
         and then Is_Root (Right)),
      Post =>
        (Get_Kind
-         (New_Conjonction'Result)
-         = W_Conjonction
+         (New_Conjunction'Result)
+         = W_Conjunction
         and then
           Get_Ada_Node
-          (New_Conjonction'Result)
+          (New_Conjunction'Result)
           = Ada_Node
         and then
-          Conjonction_Get_Left
-          (New_Conjonction'Result)
+          Conjunction_Get_Left
+          (New_Conjunction'Result)
           = Left
         and then
-          Conjonction_Get_Right
-          (New_Conjonction'Result)
+          Conjunction_Get_Right
+          (New_Conjunction'Result)
           = Right);
 
    function New_Negation
@@ -3784,13 +3784,13 @@ package Why.Atree.Builders is
       Right    : Predicate_Id)
      return Predicate_Id;
 
-   function New_Disjonction
+   function New_Disjunction
      (Ada_Node : Node_Id := Empty;
       Left     : Predicate_Id;
       Right    : Predicate_Id)
      return Predicate_Id;
 
-   function New_Conjonction
+   function New_Conjunction
      (Ada_Node : Node_Id := Empty;
       Left     : Predicate_Id;
       Right    : Predicate_Id)
@@ -4554,22 +4554,22 @@ package Why.Atree.Builders is
          = W_Equivalence
        );
 
-   function New_Unchecked_Disjonction
-     return W_Disjonction_Unchecked_Id with
+   function New_Unchecked_Disjunction
+     return W_Disjunction_Unchecked_Id with
      Pre => True,
      Post =>
        (Get_Kind
-         (New_Unchecked_Disjonction'Result)
-         = W_Disjonction
+         (New_Unchecked_Disjunction'Result)
+         = W_Disjunction
        );
 
-   function New_Unchecked_Conjonction
-     return W_Conjonction_Unchecked_Id with
+   function New_Unchecked_Conjunction
+     return W_Conjunction_Unchecked_Id with
      Pre => True,
      Post =>
        (Get_Kind
-         (New_Unchecked_Conjonction'Result)
-         = W_Conjonction
+         (New_Unchecked_Conjunction'Result)
+         = W_Conjunction
        );
 
    function New_Unchecked_Negation
@@ -5991,34 +5991,34 @@ package Why.Atree.Builders is
           (Duplicate_Equivalence'Result)
           = Ada_Node);
 
-   function Duplicate_Disjonction
+   function Duplicate_Disjunction
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Disjonction_OId)
-     return W_Disjonction_Id with
+      Id       : W_Disjunction_OId)
+     return W_Disjunction_Id with
      Pre =>
-       (Disjonction_Id_Valid (Id)),
+       (Disjunction_Id_Valid (Id)),
      Post =>
        (Get_Kind
-         (Duplicate_Disjonction'Result)
-         = W_Disjonction
+         (Duplicate_Disjunction'Result)
+         = W_Disjunction
         and then
           Get_Ada_Node
-          (Duplicate_Disjonction'Result)
+          (Duplicate_Disjunction'Result)
           = Ada_Node);
 
-   function Duplicate_Conjonction
+   function Duplicate_Conjunction
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Conjonction_OId)
-     return W_Conjonction_Id with
+      Id       : W_Conjunction_OId)
+     return W_Conjunction_Id with
      Pre =>
-       (Conjonction_Id_Valid (Id)),
+       (Conjunction_Id_Valid (Id)),
      Post =>
        (Get_Kind
-         (Duplicate_Conjonction'Result)
-         = W_Conjonction
+         (Duplicate_Conjunction'Result)
+         = W_Conjunction
         and then
           Get_Ada_Node
-          (Duplicate_Conjonction'Result)
+          (Duplicate_Conjunction'Result)
           = Ada_Node);
 
    function Duplicate_Negation
@@ -7699,12 +7699,12 @@ private
            Duplicate_Equivalence
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Disjonction =>
-           Duplicate_Disjonction
+        when W_Disjunction =>
+           Duplicate_Disjunction
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Conjonction =>
-           Duplicate_Conjonction
+        when W_Conjunction =>
+           Duplicate_Conjunction
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Negation =>
@@ -8471,12 +8471,12 @@ private
            Duplicate_Equivalence
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Disjonction =>
-           Duplicate_Disjonction
+        when W_Disjunction =>
+           Duplicate_Disjunction
             (Ada_Node  => Ada_Node,
              Id        => Id),
-        when W_Conjonction =>
-           Duplicate_Conjonction
+        when W_Conjunction =>
+           Duplicate_Conjunction
             (Ada_Node  => Ada_Node,
              Id        => Id),
         when W_Negation =>

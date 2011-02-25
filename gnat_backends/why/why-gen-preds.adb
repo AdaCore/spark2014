@@ -185,7 +185,7 @@ package body Why.Gen.Preds is
    is
    begin
       return
-         New_Conjonction
+         New_Conjunction
             (Ada_Node => Ada_Node,
              Left     =>
                New_Implication

@@ -217,7 +217,7 @@ package Why.Atree is
             RT_Op2    : W_Relation_Opaque_OId;
             RT_Right2 : W_Term_Opaque_OId;
 
-         when W_Implication .. W_Conjonction =>
+         when W_Implication .. W_Conjunction =>
             ITOC_Left  : W_Predicate_Opaque_Id;
             ITOC_Right : W_Predicate_Opaque_Id;
 

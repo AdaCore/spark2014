@@ -235,20 +235,20 @@ package Why.Atree.Accessors is
      (Id : W_Equivalence_Id)
      return W_Predicate_Id;
 
-   function Disjonction_Get_Left
-     (Id : W_Disjonction_Id)
+   function Disjunction_Get_Left
+     (Id : W_Disjunction_Id)
      return W_Predicate_Id;
 
-   function Disjonction_Get_Right
-     (Id : W_Disjonction_Id)
+   function Disjunction_Get_Right
+     (Id : W_Disjunction_Id)
      return W_Predicate_Id;
 
-   function Conjonction_Get_Left
-     (Id : W_Conjonction_Id)
+   function Conjunction_Get_Left
+     (Id : W_Conjunction_Id)
      return W_Predicate_Id;
 
-   function Conjonction_Get_Right
-     (Id : W_Conjonction_Id)
+   function Conjunction_Get_Right
+     (Id : W_Conjunction_Id)
      return W_Predicate_Id;
 
    function Negation_Get_Operand
@@ -1112,23 +1112,23 @@ private
      return W_Predicate_Id is
      (Get_Node (Id).ITOC_Right);
 
-   function Disjonction_Get_Left
-     (Id : W_Disjonction_Id)
+   function Disjunction_Get_Left
+     (Id : W_Disjunction_Id)
      return W_Predicate_Id is
      (Get_Node (Id).ITOC_Left);
 
-   function Disjonction_Get_Right
-     (Id : W_Disjonction_Id)
+   function Disjunction_Get_Right
+     (Id : W_Disjunction_Id)
      return W_Predicate_Id is
      (Get_Node (Id).ITOC_Right);
 
-   function Conjonction_Get_Left
-     (Id : W_Conjonction_Id)
+   function Conjunction_Get_Left
+     (Id : W_Conjunction_Id)
      return W_Predicate_Id is
      (Get_Node (Id).ITOC_Left);
 
-   function Conjonction_Get_Right
-     (Id : W_Conjonction_Id)
+   function Conjunction_Get_Right
+     (Id : W_Conjunction_Id)
      return W_Predicate_Id is
      (Get_Node (Id).ITOC_Right);
 

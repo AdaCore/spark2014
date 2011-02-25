@@ -1251,8 +1251,8 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Disjonction =>
-            Disjonction_Pre_Op (State, Node);
+         when W_Disjunction =>
+            Disjunction_Pre_Op (State, Node);
 
             if State.Control = Abandon_Children then
                State.Control := Continue;
@@ -1265,16 +1265,16 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Disjonction_Get_Left (Node));
+               Disjunction_Get_Left (Node));
             Traverse
               (State,
-               Disjonction_Get_Right (Node));
+               Disjunction_Get_Right (Node));
 
             if State.Control = Terminate_Immediately then
                return;
             end if;
 
-            Disjonction_Post_Op (State, Node);
+            Disjunction_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;
@@ -1284,8 +1284,8 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Conjonction =>
-            Conjonction_Pre_Op (State, Node);
+         when W_Conjunction =>
+            Conjunction_Pre_Op (State, Node);
 
             if State.Control = Abandon_Children then
                State.Control := Continue;
@@ -1298,16 +1298,16 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Conjonction_Get_Left (Node));
+               Conjunction_Get_Left (Node));
             Traverse
               (State,
-               Conjonction_Get_Right (Node));
+               Conjunction_Get_Right (Node));
 
             if State.Control = Terminate_Immediately then
                return;
             end if;
 
-            Conjonction_Post_Op (State, Node);
+            Conjunction_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;
