@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;      use Types;
-with Why.Ids;    use Why.Ids;
+with Types;         use Types;
+with Why.Gen.Types; use Why.Gen.Types;
+with Why.Ids;       use Why.Ids;
 
 package Gnat2Why.Subprograms is
 
@@ -91,5 +92,12 @@ package Gnat2Why.Subprograms is
 
    function Why_Predicate_Of_Ada_Expr (Expr : Node_Id) return W_Predicate_Id;
    --  Translate an Ada Expression to a Why predicate
+
+   function Why_Term_Of_Ada_Expr
+     (Expr          : Node_Id;
+      Expected_Type : Why_Type) return W_Term_Id;
+   --  Translate an Ada Expression to a Why Term of the Expected_Type.
+
+   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
 
 end Gnat2Why.Subprograms;

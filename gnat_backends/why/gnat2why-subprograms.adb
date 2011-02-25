@@ -46,7 +46,6 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Funcs;         use Why.Gen.Funcs;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Progs;         use Why.Gen.Progs;
-with Why.Gen.Types;         use Why.Gen.Types;
 with Why.Types;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
@@ -142,15 +141,6 @@ package body Gnat2Why.Subprograms is
 
    function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id;
    --  Convert an Ada binary operator to a Why term symbol
-
-   function Why_Term_Of_Ada_Expr
-     (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Term_Id;
-   --  Translate an Ada Expression to a Why Term of the Expected_Type.
-
-   function Why_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
-   --  Same as the previous function, but use the type of Expr as the expected
-   --  type.
 
    -----------------------
    -- Compute_Invariant --
