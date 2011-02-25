@@ -28,8 +28,11 @@ with Uintp;              use Uintp;
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Progs is
 
@@ -273,4 +276,35 @@ package body Why.Gen.Progs is
       return New_Prog_Constant (Ada_Node => Ada_Node, Def => New_Void_Literal);
    end New_Void;
 
+   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      --  We only optimize the case where at least one of (Left, Right) is not
+      --  a sequence; in this case we append the not-sequence statement to the
+      --  sequence statement.
+      --  If both are sequences, or both are non-sequences, we use
+      --  New_Statement_Sequence.
+      case Get_Kind (Left) is
+         when W_Statement_Sequence =>
+            case Get_Kind (Right) is
+               when W_Statement_Sequence =>
+                  return New_Statement_Sequence
+                     (Statements => (1 => Left, 2 => Right));
+               when others =>
+                  Statement_Sequence_Append_To_Statements
+                     (Id => Left, New_Item => Right);
+                  return Left;
+            end case;
+         when others =>
+            case Get_Kind (Right) is
+               when W_Statement_Sequence =>
+                  Statement_Sequence_Prepend_To_Statements
+                     (Id => Right, New_Item => Left);
+                  return Right;
+               when others =>
+                  return New_Statement_Sequence
+                     (Statements => (1 => Left, 2 => Right));
+            end case;
+      end case;
+   end Sequence;
 end Why.Gen.Progs;

@@ -445,9 +445,7 @@ package body Gnat2Why.Subprograms is
                                     (Expression (Cur_Decl),
                                      (Why_Abstract,
                                       Type_Of_Node (Lvalue))));
-                           R := New_Statement_Sequence
-                             (Ada_Node => Cur_Decl,
-                              Statements => (1 => Assign, 2 => R));
+                           R := Sequence (Assign, R);
                         end;
                      end if;
                   else
@@ -593,14 +591,9 @@ package body Gnat2Why.Subprograms is
       is
          Cur_Decl : Node_Id := Last (Declarations (Node));
          Cur_Body : W_Prog_Id :=
-            New_Statement_Sequence
-               (Ada_Node => Cur_Decl,
-                Statements =>
-                  (1 =>
-                     New_Assume_Statement
-                        (Ada_Node => Cur_Decl,
-                         Pred => Pre),
-                   2 => Initial_Body));
+            Sequence
+               (New_Assume_Statement (Ada_Node => Cur_Decl, Pred => Pre),
+                Initial_Body);
       begin
          while Nkind (Cur_Decl) /= N_Empty loop
             if Nkind (Cur_Decl) = N_Raise_Constraint_Error then
@@ -610,14 +603,11 @@ package body Gnat2Why.Subprograms is
                         Why_Predicate_Of_Ada_Expr (Condition (Cur_Decl)));
                begin
                   Cur_Body :=
-                     New_Statement_Sequence
-                       (Ada_Node => Cur_Decl,
-                        Statements =>
-                           (1 =>
-                              New_Located_Assert
-                                 (Ada_Node => Cur_Decl,
-                                  Pred => Pred),
-                           2 => Cur_Body));
+                     Sequence
+                        (New_Located_Assert
+                           (Ada_Node => Cur_Decl,
+                            Pred => Pred),
+                         Cur_Body);
                end;
             end if;
             Prev (Cur_Decl);

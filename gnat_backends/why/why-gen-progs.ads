@@ -82,4 +82,8 @@ package Why.Gen.Progs is
 
    function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
    --  The program "void"
+   --
+   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
+   --  Build a statement sequence of the two arguments, but try to minimize
+   --  nesting of W_Statement_Sequence constructors.
 end Why.Gen.Progs;
