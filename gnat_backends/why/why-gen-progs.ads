@@ -69,6 +69,11 @@ package Why.Gen.Progs is
    --  done
    --  Low and High should be of type Why_Int
 
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Prog_Id;
+   --  Build a named assert (in programs) of a predicate
+
    function New_Located_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;

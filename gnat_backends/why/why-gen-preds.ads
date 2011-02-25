@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;                use Types;
 with Uintp;                use Uintp;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -63,6 +64,16 @@ package Why.Gen.Preds is
      (Left : W_Term_Id;
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left <> Right"
+
+   function New_Located_Assertion
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Assertion_Id;
+   --  Build a named assertion (ie formula) of a predicate
+
+   function New_Located_Predicate
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Predicate_Id;
+   --  Build a predicate with a fresh label corresponding to the Ada_Node.
 
    function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id;
    --  Return a fresh relation node, given a relation symbol

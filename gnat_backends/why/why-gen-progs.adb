@@ -29,6 +29,7 @@ with Gnat2Why.Locs;      use Gnat2Why.Locs;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Preds;      use Why.Gen.Preds;
 
 package body Why.Gen.Progs is
 
@@ -205,6 +206,26 @@ package body Why.Gen.Progs is
                  Annotation   => Invariant,
                  Loop_Content => Loop_Content));
    end New_For_Loop;
+
+   ------------------------
+   -- New_Located_Assert --
+   ------------------------
+
+   function New_Located_Assert
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Prog_Id
+   is
+   begin
+      return
+         New_Assert
+           (Ada_Node   => Ada_Node,
+            Assertions =>
+              (1 =>
+                New_Located_Assertion
+                  (Ada_Node => Ada_Node,
+                   Pred     => Pred)),
+            Prog       => New_Void (Ada_Node));
+   end New_Located_Assert;
 
    ----------------------
    -- New_Located_Call --

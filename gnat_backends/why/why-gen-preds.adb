@@ -27,6 +27,7 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Gen.Decl;       use Why.Gen.Decl;
+with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Preds is
@@ -190,6 +191,40 @@ package body Why.Gen.Preds is
           Right => Right,
           Op => New_Rel_Eq);
    end New_Equal;
+
+   ---------------------------
+   -- New_Located_Assertion --
+   ---------------------------
+
+   function New_Located_Assertion
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Assertion_Id
+   is
+   begin
+      return
+        New_Assertion
+          (Ada_Node => Ada_Node,
+           Pred     =>
+             New_Located_Predicate
+               (Ada_Node => Ada_Node,
+                Pred     => Pred));
+   end New_Located_Assertion;
+
+   ---------------------------
+   -- New_Located_Predicate --
+   ---------------------------
+
+   function New_Located_Predicate
+      (Ada_Node : Node_Id;
+       Pred     : W_Predicate_Id) return W_Predicate_Id
+   is
+   begin
+      return
+         New_Named_Predicate
+           (Ada_Node => Ada_Node,
+            Name     => New_Located_Label (Ada_Node),
+            Pred     => Pred);
+   end New_Located_Predicate;
 
    ----------------
    -- New_NEqual --

@@ -45,11 +45,11 @@ with Why.Gen.Arrows;        use Why.Gen.Arrows;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Funcs;         use Why.Gen.Funcs;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Types;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
-with Gnat2Why.Locs;         use Gnat2Why.Locs;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
@@ -84,21 +84,6 @@ package body Gnat2Why.Subprograms is
        Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
-
-   function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Prog_Id;
-   --  Build a named assert (in programs) of a predicate
-
-   function New_Located_Assertion
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Assertion_Id;
-   --  Build a named assertion (ie formula) of a predicate
-
-   function New_Located_Predicate
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Predicate_Id;
-   --  Build a predicate with a fresh label corresponding to the Ada_Node.
 
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
@@ -267,60 +252,6 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
    end Map_Node_List_to_Array;
-
-   ------------------------
-   -- New_Located_Assert --
-   ------------------------
-
-   function New_Located_Assert
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Prog_Id
-   is
-   begin
-      return
-         New_Assert
-           (Ada_Node   => Ada_Node,
-            Assertions =>
-              (1 =>
-                New_Located_Assertion
-                  (Ada_Node => Ada_Node,
-                   Pred     => Pred)),
-            Prog       => New_Void (Ada_Node));
-   end New_Located_Assert;
-
-   ---------------------------
-   -- New_Located_Assertion --
-   ---------------------------
-
-   function New_Located_Assertion
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Assertion_Id
-   is
-   begin
-      return
-        New_Assertion
-          (Ada_Node => Ada_Node,
-           Pred     =>
-             New_Located_Predicate
-               (Ada_Node => Ada_Node,
-                Pred     => Pred));
-   end New_Located_Assertion;
-
-   ---------------------------
-   -- New_Located_Predicate --
-   ---------------------------
-
-   function New_Located_Predicate
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Predicate_Id
-   is
-   begin
-      return
-         New_Named_Predicate
-           (Ada_Node => Ada_Node,
-            Name     => New_Located_Label (Ada_Node),
-            Pred     => Pred);
-   end New_Located_Predicate;
 
    ------------------
    -- Type_Of_Node --
