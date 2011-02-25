@@ -2973,12 +2973,14 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "Arg_Types: ");
-         Relative_Indent (O, 1);
-         Traverse_List
-           (State,
-            Get_Node (Node).LT_Arg_Types);
-         Relative_Indent (O, -1);
+         if not Is_Empty (Get_Node (Node).LT_Arg_Types) then
+            P (O, "Arg_Types: ");
+            Relative_Indent (O, 1);
+            Traverse_List
+              (State,
+               Get_Node (Node).LT_Arg_Types);
+            Relative_Indent (O, -1);
+         end if;
          P (O, "Return_Type: ");
          Relative_Indent (O, 1);
          Traverse

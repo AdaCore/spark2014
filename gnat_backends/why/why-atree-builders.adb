@@ -1761,7 +1761,7 @@ package body Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Arg_Types   : W_Logic_Arg_Type_Array;
+      Arg_Types   : W_Logic_Arg_Type_Array := (2 .. 1 => <>);
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id
    is
@@ -1770,7 +1770,6 @@ package body Why.Atree.Builders is
         New_Why_Node_Id (W_Logic_Type);
    begin
       Result.Ada_Node := Ada_Node;
-      pragma Assert (Arg_Types'Length > 0);
       Result.LT_Arg_Types := New_List;
       for J in Arg_Types'Range loop
          pragma Assert
@@ -8985,7 +8984,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Logic_Type);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Logic_Type);
-         Arg_Types   : constant W_Logic_Arg_Type_List :=
+         Arg_Types   : constant W_Logic_Arg_Type_OList :=
             Logic_Type_Get_Arg_Types (Id);
          Return_Type : constant W_Logic_Return_Type_Id :=
             Logic_Type_Get_Return_Type (Id);

@@ -1629,7 +1629,7 @@ package Why.Atree.Builders is
 
    function New_Logic_Type
      (Ada_Node    : Node_Id := Empty;
-      Arg_Types   : W_Logic_Arg_Type_Array;
+      Arg_Types   : W_Logic_Arg_Type_Array := (2 .. 1 => <>);
       Return_Type : W_Logic_Return_Type_Id)
      return W_Logic_Type_Id with
      Pre =>

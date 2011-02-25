@@ -429,7 +429,7 @@ package Why.Atree.Accessors is
 
    function Logic_Type_Get_Arg_Types
      (Id : W_Logic_Type_Id)
-     return W_Logic_Arg_Type_List;
+     return W_Logic_Arg_Type_OList;
 
    function Logic_Type_Get_Return_Type
      (Id : W_Logic_Type_Id)
@@ -1354,7 +1354,7 @@ private
 
    function Logic_Type_Get_Arg_Types
      (Id : W_Logic_Type_Id)
-     return W_Logic_Arg_Type_List is
+     return W_Logic_Arg_Type_OList is
      (Get_Node (Id).LT_Arg_Types);
 
    function Logic_Type_Get_Return_Type

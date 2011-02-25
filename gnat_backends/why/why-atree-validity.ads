@@ -10669,7 +10669,7 @@ private
    function Logic_Type_Id_Children_Valid
      (Id : W_Logic_Type_Unchecked_Id)
      return Boolean is
-     (List_Cache_Valid
+     (OList_Cache_Valid
        (Logic_Type_Get_Arg_Types (Id))
      and then
        Id_Cache_Valid
