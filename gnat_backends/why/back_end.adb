@@ -59,6 +59,15 @@ package body Back_End is
       Stringt.Lock;
    end Call_Back_End;
 
+   -------------------------------
+   -- Gen_Or_Update_Object_File --
+   -------------------------------
+
+   procedure Gen_Or_Update_Object_File is
+   begin
+      null;
+   end Gen_Or_Update_Object_File;
+
    -----------------------------
    -- Register_Back_End_Types --
    -----------------------------
