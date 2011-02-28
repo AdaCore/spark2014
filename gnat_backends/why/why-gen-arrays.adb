@@ -67,6 +67,12 @@ package body Why.Gen.Arrays is
           Index_Type => New_Abstract_Type (Name => New_Identifier (Index)),
           Component_Type =>
             New_Abstract_Type (Name => New_Identifier (Component)));
+      Define_Array_Neq_Axiom
+         (File => File,
+          Type_Name => Name,
+          Index_Type => New_Abstract_Type (Name => New_Identifier (Index)),
+          Component_Type =>
+            New_Abstract_Type (Name => New_Identifier (Component)));
    end Declare_Ada_Constrained_Array;
 
    ---------------------------

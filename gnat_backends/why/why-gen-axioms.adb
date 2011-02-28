@@ -47,19 +47,73 @@ package body Why.Gen.Axioms is
       Index_Name      : constant String := "i";
       Component_Name  : constant String := "v";
       Axiom_Body      : constant W_Predicate_Id :=
-           New_Related_Terms
-              (Left  =>
-                 New_Array_Access_Term
-                   (Type_Name => Type_Name,
-                    Index => New_Term (Index_Name),
-                    Ar =>
-                      New_Array_Update_Term
-                        (Type_Name => Type_Name,
-                         Ar => New_Term (Ar_Name),
-                         Index => New_Term (Index_Name),
-                         Value => New_Term (Component_Name))),
-               Op    => New_Rel_Eq,
-               Right => New_Term (Component_Name));
+         New_Equal
+           (Left => New_Array_Access_Term
+                      (Type_Name => Type_Name,
+                       Index => New_Term (Index_Name),
+                       Ar =>
+                         New_Array_Update_Term
+                           (Type_Name => Type_Name,
+                            Ar => New_Term (Ar_Name),
+                            Index => New_Term (Index_Name),
+                            Value => New_Term (Component_Name))),
+            Right => New_Term (Component_Name));
+
+      Quantified_Body : constant W_Predicate_Id :=
+         New_Universal_Quantif
+            (Variables => (1 => New_Identifier (Ar_Name)),
+             Var_Type  =>
+               New_Abstract_Type (Name => New_Identifier (Type_Name)),
+             Pred      =>
+               New_Universal_Quantif
+                 (Variables => (1 => New_Identifier (Index_Name)),
+                  Var_Type  => Index_Type,
+                  Pred      =>
+                     New_Universal_Quantif
+                       (Variables => (1 => New_Identifier (Component_Name)),
+                        Var_Type  => Component_Type,
+                        Pred      => Axiom_Body)));
+
+   begin
+      New_Axiom
+         (File       => File,
+          Name       => Array_Accupd_Eq_Axiom (Type_Name),
+          Axiom_Body => Quantified_Body);
+   end Define_Array_Eq_Axiom;
+
+   procedure Define_Array_Neq_Axiom
+      (File           : W_File_Id;
+       Type_Name      : String;
+       Index_Type     : W_Primitive_Type_Id;
+       Component_Type : W_Primitive_Type_Id)
+   is
+      Ar_Name         : constant String := "a";
+      Index1          : constant String := "i";
+      Index2          : constant String := "j";
+      Component_Name  : constant String := "v";
+      Conclusion      : constant W_Predicate_Id :=
+         New_Equal
+           (Left =>
+              New_Array_Access_Term
+                (Type_Name => Type_Name,
+                 Index => New_Term (Index1),
+                 Ar =>
+                   New_Array_Update_Term
+                     (Type_Name => Type_Name,
+                      Ar => New_Term (Ar_Name),
+                      Index => New_Term (Index2),
+                      Value => New_Term (Component_Name))),
+            Right =>
+               New_Array_Access_Term
+                 (Type_Name => Type_Name,
+                  Index => New_Term (Index1),
+                  Ar => New_Term (Ar_Name)));
+
+      Hypothesis     : constant W_Predicate_Id :=
+            New_NEqual (New_Term (Index1), New_Term (Index2));
+
+      Axiom_Body     : constant W_Predicate_Id :=
+            New_Implication (Left => Conclusion, Right =>  Hypothesis);
 
       Quantified_Body : constant W_Predicate_Id :=
          New_Universal_Quantif
@@ -68,7 +122,9 @@ package body Why.Gen.Axioms is
                New_Abstract_Type (Name => New_Identifier (Type_Name)),
              Pred =>
                New_Universal_Quantif
-                 (Variables => (1 => New_Identifier (Index_Name)),
+                 (Variables =>
+                     (1 => New_Identifier (Index1),
+                      2 => New_Identifier (Index2)),
                   Var_Type => Index_Type,
                   Pred =>
                      New_Universal_Quantif
@@ -80,7 +136,7 @@ package body Why.Gen.Axioms is
          (File       => File,
           Name       => Array_Accupd_Eq_Axiom (Type_Name),
           Axiom_Body => Quantified_Body);
-   end Define_Array_Eq_Axiom;
+   end Define_Array_Neq_Axiom;
 
    -------------------------
    -- Define_Coerce_Axiom --
