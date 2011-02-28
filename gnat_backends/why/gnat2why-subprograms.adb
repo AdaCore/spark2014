@@ -38,6 +38,7 @@ with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
 with Why.Gen.Arrows;        use Why.Gen.Arrows;
@@ -50,6 +51,7 @@ with Why.Types;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Types;        use Gnat2Why.Types;
+with Gnat2Why.Decls;        use Gnat2Why.Decls;
 
 package body Gnat2Why.Subprograms is
 
@@ -344,8 +346,7 @@ package body Gnat2Why.Subprograms is
             Res :=
                New_Arrow_Stack
                   (Why_Prog_Type_of_Ada_Type
-                    (Result_Definition (Specification (Node)),
-                     E_In_Parameter),
+                    (Entity (Result_Definition (Specification (Node))), False),
                    Compute_Effects);
          end if;
 
@@ -362,9 +363,7 @@ package body Gnat2Why.Subprograms is
                   Name     =>
                     New_Identifier (Ada_Node => Id, Symbol => Chars (Id)),
                   Arg_Type =>
-                    Why_Prog_Type_of_Ada_Type
-                       (Parameter_Type (Arg),
-                        Ekind (Id)));
+                    Why_Prog_Type_of_Ada_Type (Id));
                Prev (Arg);
             end loop;
          end if;
@@ -386,9 +385,7 @@ package body Gnat2Why.Subprograms is
               Names =>
                 (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
               Arg_Type =>
-                Why_Prog_Type_of_Ada_Type
-                  (Parameter_Type (Arg),
-                   Ekind (Id)));
+                Why_Prog_Type_of_Ada_Type (Id));
       end Compute_Binder;
 
       ---------------------
@@ -436,9 +433,7 @@ package body Gnat2Why.Subprograms is
                              New_Assignment
                                (Ada_Node => Cur_Decl,
                                 Name     =>
-                                  New_Identifier
-                                    (Ada_Node => Lvalue,
-                                     Symbol   => Chars (Lvalue)),
+                                  New_Identifier (Full_Name (Lvalue)),
                                 Value    =>
                                   Why_Expr_Of_Ada_Expr
                                     (Expression (Cur_Decl),
@@ -490,34 +485,26 @@ package body Gnat2Why.Subprograms is
          Read_Reps  : Rep_Set.Set;
          Write_Ids  : Id_Set.Set;
          Write_Reps : Rep_Set.Set;
-
+         Eff        : constant W_Effects_Unchecked_Id :=
+            New_Unchecked_Effects;
       begin
          Get_Reads (E, Read_Ids, Read_Reps);
          Get_Writes (E, Write_Ids, Write_Reps);
+         for Id of Read_Ids loop
+            if Ekind (Id) /= E_Constant then
+               Effects_Append_To_Reads
+                  (Eff,
+                   New_Identifier (Symbol => Chars (Id)));
+            end if;
+         end loop;
 
-         declare
-            Read_A  :
-              W_Identifier_Array (1 .. Integer (Id_Set.Length (Read_Ids)));
-            Write_A :
-              W_Identifier_Array (1 .. Integer (Id_Set.Length (Write_Ids)));
-            J       : Positive;
+         for Id of Write_Ids loop
+            Effects_Append_To_Writes
+               (Eff,
+                New_Identifier (Symbol => Chars (Id)));
+         end loop;
 
-         begin
-            J := 1;
-            for Id of Read_Ids loop
-               Read_A (J) := New_Identifier (Symbol => Chars (Id));
-               J := J + 1;
-            end loop;
-
-            J := 1;
-            for Id of Write_Ids loop
-               Write_A (J) := New_Identifier (Symbol => Chars (Id));
-               J := J + 1;
-            end loop;
-
-            return New_Effects (Reads  => Read_A,
-                                Writes => Write_A);
-         end;
+         return Eff;
       end Compute_Effects;
 
       ------------------
@@ -703,11 +690,15 @@ package body Gnat2Why.Subprograms is
             Current_Type := (Kind => Why_Int);
 
          when N_Identifier =>
-            --  We need to distinguish the following cases:
-            --  * usual program variables: generate !x
-            --  * loop index: A loop index is always of type "int"
-            --  * boolean constants true/false
+            --  Deal with identifiers:
+            --  * Enumeration literals: deal with special cases True and
+            --    False, otherwise such literals are just constants
+            --  * local variables are always references
+            --  * global constants are logics in Why
+            --  * global mutable variables are references
+            --  * loop parameters are always mutable, and of type int
             case Ekind (Entity (Expr)) is
+               --  First treat special cases
                when E_Enumeration_Literal =>
                   if Entity (Expr) = Standard_True then
                      T := New_Prog_Constant (Def => New_True_Literal);
@@ -719,24 +710,29 @@ package body Gnat2Why.Subprograms is
                             Def      => Why_Ident_Of_Ada_Ident (Expr));
                   end if;
 
-               when E_Loop_Parameter =>
-                  T := New_Deref
-                        (Ada_Node => Expr,
-                         Ref      => Why_Ident_Of_Ada_Ident (Expr));
-                  Current_Type := (Kind => Why_Int);
-
-               when E_In_Parameter | E_Constant =>
-                  T := New_Prog_Identifier
-                        (Ada_Node => Expr,
-                         Def      => Why_Ident_Of_Ada_Ident (Expr));
-
-               when E_In_Out_Parameter | E_Variable | E_Out_Parameter =>
-                  T := New_Deref
-                    (Ada_Node => Expr,
-                     Ref      => Why_Ident_Of_Ada_Ident (Expr));
-
                when others =>
-                  raise Not_Implemented;
+                  --  There is a special case for constants introduced by the
+                  --  frontend
+                  if Ekind (Entity (Expr)) = E_Constant and then not
+                     (Comes_From_Source (Original_Node (Entity (Expr)))) then
+                     T := New_Prog_Identifier
+                           (Ada_Node => Expr,
+                            Def      =>
+                              New_Identifier
+                                 (Symbol => Chars (Entity (Expr))));
+                  elsif Is_Mutable (Entity (Expr)) then
+                     T := New_Deref
+                           (Ada_Node => Expr,
+                            Ref      => Why_Ident_Of_Ada_Ident (Expr));
+                  else
+                     T := New_Prog_Identifier
+                           (Ada_Node => Expr,
+                            Def      => Why_Ident_Of_Ada_Ident (Expr));
+                  end if;
+                  if Ekind (Entity (Expr)) = E_Loop_Parameter then
+                     Current_Type := (Kind => Why_Int);
+                  end if;
+
             end case;
 
          when N_Op_Eq =>
@@ -1186,9 +1182,7 @@ package body Gnat2Why.Subprograms is
    is
    begin
       return
-        New_Identifier
-          (Ada_Node => Id,
-           Symbol   => Chars (Entity (Id)));
+         New_Identifier (Full_Name (Entity (Id)));
    end Why_Ident_Of_Ada_Ident;
 
    ------------------------------

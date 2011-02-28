@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
+with Einfo;              use Einfo;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
@@ -34,6 +35,8 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Enums;      use Why.Gen.Enums;
+
+with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
 package body Gnat2Why.Types is
 
@@ -188,33 +191,30 @@ package body Gnat2Why.Types is
    -- Why_Prog_Type_of_Ada_Type --
    -------------------------------
 
-   function Why_Prog_Type_of_Ada_Type
-     (Ty   : Node_Id;
-      Kind : Entity_Kind)
+   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
       return W_Simple_Value_Type_Id
    is
-      Name      : constant Name_Id := Chars (Etype (Ty));
-      Base_Type : W_Primitive_Type_Id;
-
+      Name : constant Name_Id := Chars (Ty);
+      Base : constant W_Primitive_Type_Id :=
+         (if Is_Boolean_Type (Ty) then New_Type_Bool
+          else
+            New_Abstract_Type
+              (Ada_Node => Ty,
+               Name     => New_Identifier
+                 (Ada_Node => Ty,
+                  Symbol   => Name)));
    begin
-      Base_Type :=
-        (if Is_Boolean_Type (Entity (Ty)) then
-           New_Type_Bool
-         else
-           New_Abstract_Type
-             (Ada_Node => Ty,
-              Name     => New_Identifier
-                (Ada_Node => Ty,
-                 Symbol   => Name)));
-      case Kind is
-         when E_In_Parameter | E_Constant =>
-            return Base_Type;
-         when others =>
-            return
-              New_Ref_Type
-                (Ada_Node     => Ty,
-                 Aliased_Type => Base_Type);
-      end case;
+      if Is_Mutable then
+         return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
+      else
+         return Base;
+      end if;
    end  Why_Prog_Type_of_Ada_Type;
 
+   function Why_Prog_Type_of_Ada_Type (N : Node_Id)
+      return W_Simple_Value_Type_Id
+   is
+   begin
+      return Why_Prog_Type_of_Ada_Type (Etype (N), Is_Mutable (N));
+   end  Why_Prog_Type_of_Ada_Type;
 end Gnat2Why.Types;

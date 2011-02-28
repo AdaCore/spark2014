@@ -25,7 +25,6 @@
 
 with AA_Util;              use AA_Util;
 with Atree;                use Atree;
-with Einfo;                use Einfo;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
 with Opt;                  use Opt;
@@ -45,9 +44,9 @@ with Why.Atree.Treepr;     use Why.Atree.Treepr;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Ints;         use Why.Gen.Ints;
 with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Preds;        use Why.Gen.Preds;
 with Why.Ids;              use Why.Ids;
 
+with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Locs;        use Gnat2Why.Locs;
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Gnat2Why.Types;       use Gnat2Why.Types;
@@ -223,62 +222,7 @@ package body Gnat2Why.Driver is
                Why_Decl_of_Ada_Subprogram (File, Decl);
 
             when N_Object_Declaration =>
-               case Nkind (Object_Definition (Decl)) is
-               when N_Identifier | N_Expanded_Name =>
-                  declare
-                     Obj_Id   : constant Node_Id := Defining_Identifier (Decl);
-                     Obj_Name : constant Name_Id := Chars (Obj_Id);
-                  begin
-                     case Ekind (Defining_Identifier (Decl)) is
-                        when E_Constant =>
-                           New_Logic
-                              (File        => File,
-                               Name        =>
-                                 New_Identifier (Symbol => Obj_Name),
-                               Args        => (1 .. 0 => <>),
-                               Return_Type =>
-                                 Why_Prog_Type_of_Ada_Type
-                                   (Object_Definition (Decl), Ekind (Obj_Id)));
-                           if Present (Expression (Decl)) then
-                              declare
-                                 Ax_Name : constant String :=
-                                    Get_Name_String (Obj_Name) & "__def_axiom";
-                                 Id : constant W_Identifier_Id :=
-                                    New_Identifier (Symbol => Obj_Name);
-                              begin
-                                 New_Axiom
-                                    (File       => File,
-                                     Name       => New_Identifier (Ax_Name),
-                                     Axiom_Body =>
-                                       New_Equal
-                                          (Left  =>
-                                             New_Term_Identifier (Name => Id),
-                                           Right =>
-                                             Why_Term_Of_Ada_Expr
-                                                (Expression (Decl))));
-                              end;
-                           end if;
-
-                        when E_Variable =>
-                           New_Parameter
-                              (File        => File,
-                               Name        =>
-                                 New_Identifier (Symbol => Chars (Obj_Id)),
-                               Binders     => (1 .. 0 => <>),
-                               Return_Type =>
-                                 Why_Prog_Type_of_Ada_Type
-                                   (Object_Definition (Decl), Ekind (Obj_Id)));
-
-                        when others =>
-                           raise Not_Implemented;
-                     end case;
-                  end;
-
-               when N_Constrained_Array_Definition | N_Subtype_Indication =>
-                  null;
-               when others =>
-                  raise Not_Implemented;
-               end case;
+               Why_Decl_Of_Ada_Object_Decl (File, Decl);
 
             --  The following declarations are ignored for now:
             when N_Pragma | N_Package_Declaration | N_Exception_Declaration

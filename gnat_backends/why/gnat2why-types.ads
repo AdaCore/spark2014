@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;      use Einfo;
 with Namet;      use Namet;
 with Types;      use Types;
 with Why.Ids;    use Why.Ids;
@@ -69,13 +68,16 @@ package Gnat2Why.Types is
    --  Take an Ada subtype declaration and transform it into a Why type
    --  declaration, including conversion functions and axioms.
 
-   function Why_Prog_Type_of_Ada_Type
-     (Ty   : Node_Id;
-      Kind : Entity_Kind)
+   function Why_Prog_Type_of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id;
-   --  Take an Ada Type and transform it into a Why program type
-   --  ie add a reference constructor on top
-   --  example: Integer => integer ref
+   --  Take an Ada Node and transform it into a Why program type. The Ada Node
+   --  is expected to be a Defining_Identifier for a program variable.
+
+   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
+      return W_Simple_Value_Type_Id;
+   --  Take an Ada Node and transform it into a Why program type. The Ada Node
+   --  is expected to be a Defining_Identifier for a type. The Boolean
+   --  argument decides if a "ref" constructor is built on top.
 
    function Type_Of_Array_Index (N : Node_Id) return Name_Id;
    --  Given a type definition for arrays, return the type of the array index
