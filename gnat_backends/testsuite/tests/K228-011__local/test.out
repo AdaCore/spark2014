@@ -1,0 +1,24 @@
+{
+"Gnat2why__1": {
+"invalid": [],
+"valid": [
+"def___localcst__cst_po_1"
+]
+},
+"Gnat2why__2": {
+"invalid": [],
+"valid": [
+"def___localcst__cst_po_2"
+]
+},
+"Gnat2why__3": {
+"invalid": [],
+"valid": []
+},
+"Gnat2why__4": {
+"invalid": [],
+"valid": [
+"def___localcst__glob_po_1"
+]
+}
+}

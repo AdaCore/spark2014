@@ -1,5 +1,7 @@
 package body LocalCst is
 
+   X : constant Integer := 1000;
+
    function Cst return Integer
    is
       X : constant Integer := 5000;
@@ -13,4 +15,10 @@ package body LocalCst is
    begin
       return X;
    end Id;
+
+   function Glob return Integer
+   is
+   begin
+      return X;
+   end Glob;
 end LocalCst;
