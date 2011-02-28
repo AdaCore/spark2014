@@ -34,6 +34,8 @@
 \newcommand{\patterndef}{\noindent\textit{Definition:}\xspace}
 \newcommand{\patternexample}{\noindent\textit{Example:}\xspace}
 \newcommand{\patternnote}{\noindent\textit{Note:}\xspace}
+\newcommand{\patternproof}{\noindent\textit{Proof:}\xspace}
+\newcommand{\update}[3]{\ensuremath{\mathit{update}{(#1,#2,#3)}}\xspace}
 
 \lstset{language=Ada}
 
@@ -118,7 +120,7 @@ used to solve these (dis)equations and give values to unknowns.
 \subsubsection*{Disjunctions}
 
 Various works have defined disjunctive abstract domains on top of base abstract
-domains. The implication domain only deals with one disjunction at a time,
+domains. The implication domain only deals with one disjunction at a time,\newcommand{\Pupdate}[1]{\ensuremath{\mathit{update}_{#1}}\xspace}
 while disjunctive completion allows to treat larger disjuncts. The need to
 define converging operators for these domains means that they are not very
 precise.
@@ -223,7 +225,13 @@ replaced by their initial counterparts (this does not apply to the loop index
 \idx).  The special expression $e^?$ denotes an unknown value, and expression.
 
 We define \textit{value-preserving expressions} as those expressions such that 
-($e=e_0$) is a loop-invariant. We denote $e^\at{\idx}$ a \textit{value-preserving expression} 
+($e=e_0$) is a loop-invariant. Let us call the corresponding property 
+\textit{value-preserving expressions} ($vpp$) :  
+\begin{equation}
+ e=e_0
+\label{eq:vpp}
+\end{equation}
+We denote $e^\at{\idx}$ a \textit{value-preserving expression} 
 where the loop index is $\idx$, so that we can express the same expression for differents
 values of loop index (\eg $e^\at{j}$, $e^\at{k}$, etc). A such expression only depends on 
 the value of the loop index or and initial values of variables before the loop.
@@ -303,6 +311,43 @@ been treated in the loop:
 
 $$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{j}{\idx}$$
 
+\subsection{Proof Environments}
+We use the strongest postconditions calculations to prove that our invariants are precis
+We recall here the rules of Strongest Postconditions for statements ("guarded exit" and 
+"guarded assign" that we are interested in our loop modelisation.  
+
+Strongest Postcondition for "guarded exit":
+\begin{equation}
+sp(t \rightarrow \KWexit,P) = \neg t \land P
+\label{eq:exit_sp}
+\end{equation}
+
+Strongest Postcondition for "guarded assign" in scalar variable:
+\begin{equation}
+sp(g \rightarrow a:=e,P) = (\exists b) (g[a \leftarrow b] \land a = e[a \leftarrow b] \land P[a \leftarrow b])
+\label{eq:scalar_sp}
+\end{equation}
+
+Strongest Postcondition for "guarded assign" in array variable:
+\begin{equation}
+sp(g \rightarrow A[e_1]:=e_2,P) = (\exists B) (g[A \leftarrow B] \land A = \update{B}{e_1[A \leftarrow B]}{e_2[A \leftarrow B]} \land P[A \leftarrow B])\\
+\label{eq:array_sp}
+\end{equation}
+
+\patternnote Notice that the rule in an array affectation is similar to a simple scalar affectation with:
+$A := \update{A}{e_1}{e_2}$
+
+The $update$ predicat verifie the following McCarthy axioms:
+\begin{equation}
+i \neq j \impl A(\update{A}{i}{v},j) = A(j)
+\label{eq:McCarthy_axiom_1}
+\end{equation}
+
+\begin{equation}
+A(\update{A}{i}{v},i) = v
+\label{eq:McCarthy_axiom_1}
+\end{equation}
+
 \section{Loop Patterns} 
 
 \subsection{Search Pattern}
@@ -314,6 +359,25 @@ $$t^\at{\idx} \rightarrow \KWexit$$
 \loopinvariant
 %
 $$(\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})$$
+%
+\patternproof
+%
+%\newcommand{\eqref}[1]{Eq.~(\ref{eq:#1})}
+
+\begin{align*}
+sp(t^\at{initial} \rightarrow \KWexit,true) &= \neg t^\at{initial} && \text{by \eqref{eq:exit_sp}}\\
+                                            &= \neg t_0^\at{initial} && \text{by \eqref{eq:vpp}}\\
+                                            &= \neg Inv(initial)
+\end{align*}
+
+
+We assume $Inv(i)$ in loop iteration $i$.
+\begin{align*}
+sp(t^\at{i+1} \rightarrow \KWexit,Inv(i))   &= \neg t^\at{i+1} \land Inv(i) && \text{by \eqref{eq:exit_sp}}\\
+                                            &= \neg t_0^\at{i+1} \land Inv(i) && \text{by \eqref{eq:vpp}}\\
+                                            &= Inv(i+1) && \text{by symbolic manipulation}
+\end{align*}
+
 
 \bigskip
 \patternexample
@@ -338,6 +402,22 @@ $$\mathit{true} \rightarrow a := e^\at{\idx}$$
 \loopinvariant
 %
 $$(\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})$$
+%
+\patternproof\\
+%
+\begin{align*}
+sp(\mathit{true} \rightarrow a := e^\at{initial},a = a_0) &= Inv(initial)
+\end{align*}
+
+
+We assume $Inv(i)$ in loop iteration $i$.
+\begin{align*}
+sp(\mathit{true} \rightarrow a := e^\at{i},Inv(i))  &= sp(\mathit{true} \rightarrow a := e_0^\at{i},Inv(i))  && \text{by \eqref{eq:vpp}}\\
+                                                    &= (\exists b) ( a = e_0^\at{i}[a \leftarrow b] \land Inv(i)[a \leftarrow b]) && \text{by \eqref{eq:scalar_sp}}\\
+                                                    &= a = e_0^\at{i} (\exists b) (Inv(i)[a \leftarrow b]) && \text{a not in $e_0^\at{i}$}\\
+                                                    &= a = e_0^\at{i} && \text{exists trivially true}\\
+                                                    &= Inv(i+1)
+\end{align*}
 %
 \patternnote This is the case for Boolean variables that identify the first run
 through the loop.
