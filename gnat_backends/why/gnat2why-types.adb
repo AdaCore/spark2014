@@ -188,10 +188,10 @@ package body Gnat2Why.Types is
    end Why_Type_Decl_of_Subtype_Decl;
 
    -------------------------------
-   -- Why_Prog_Type_of_Ada_Type --
+   -- Why_Prog_Type_Of_Ada_Type --
    -------------------------------
 
-   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
+   function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
       return W_Simple_Value_Type_Id
    is
       Name : constant Name_Id := Chars (Ty);
@@ -209,12 +209,12 @@ package body Gnat2Why.Types is
       else
          return Base;
       end if;
-   end  Why_Prog_Type_of_Ada_Type;
+   end  Why_Prog_Type_Of_Ada_Type;
 
-   function Why_Prog_Type_of_Ada_Type (N : Node_Id)
+   function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id
    is
    begin
-      return Why_Prog_Type_of_Ada_Type (Etype (N), Is_Mutable (N));
-   end  Why_Prog_Type_of_Ada_Type;
+      return Why_Prog_Type_Of_Ada_Type (Etype (N), Is_Mutable (N));
+   end  Why_Prog_Type_Of_Ada_Type;
 end Gnat2Why.Types;

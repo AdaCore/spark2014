@@ -68,12 +68,12 @@ package Gnat2Why.Types is
    --  Take an Ada subtype declaration and transform it into a Why type
    --  declaration, including conversion functions and axioms.
 
-   function Why_Prog_Type_of_Ada_Type (N : Node_Id)
+   function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id;
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
    --  is expected to be a Defining_Identifier for a program variable.
 
-   function Why_Prog_Type_of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
+   function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
       return W_Simple_Value_Type_Id;
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
    --  is expected to be a Defining_Identifier for a type. The Boolean

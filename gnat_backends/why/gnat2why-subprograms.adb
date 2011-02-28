@@ -345,7 +345,7 @@ package body Gnat2Why.Subprograms is
          else
             Res :=
                New_Arrow_Stack
-                  (Why_Prog_Type_of_Ada_Type
+                  (Why_Prog_Type_Of_Ada_Type
                     (Entity (Result_Definition (Specification (Node))), False),
                    Compute_Effects);
          end if;
@@ -363,7 +363,7 @@ package body Gnat2Why.Subprograms is
                   Name     =>
                     New_Identifier (Ada_Node => Id, Symbol => Chars (Id)),
                   Arg_Type =>
-                    Why_Prog_Type_of_Ada_Type (Id));
+                    Why_Prog_Type_Of_Ada_Type (Id));
                Prev (Arg);
             end loop;
          end if;
@@ -385,7 +385,7 @@ package body Gnat2Why.Subprograms is
               Names =>
                 (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
               Arg_Type =>
-                Why_Prog_Type_of_Ada_Type (Id));
+                Why_Prog_Type_Of_Ada_Type (Id));
       end Compute_Binder;
 
       ---------------------
