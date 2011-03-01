@@ -91,6 +91,13 @@ package body ALFA.Filter is
       --  Generate a type definition that corresponds to the given subtype
       --  indication.
 
+      procedure Traverse_Constr_Array_Def
+         (N         : Node_Id;
+          Type_List : in out List);
+      --  Traverse a constrained array definition and generate necessary type
+      --  definitions for the component and index types. Do not generate a
+      --  type definition for the constrained array itself.
+
       ---------------------
       -- Bucket_Dispatch --
       ---------------------
@@ -130,22 +137,10 @@ package body ALFA.Filter is
                            Transform_Subtype_Indication
                              (Subtype_Indication (Component_Definition (Def)),
                               Types_Vars);
+
                         when N_Constrained_Array_Definition =>
-                           declare
-                              Cur_Indexed : Node_Id :=
-                                 First (Discrete_Subtype_Definitions (Def));
-                           begin
-                              while Nkind (Cur_Indexed) /= N_Empty loop
-                                 Transform_Subtype_Indication
-                                    (Cur_Indexed,
-                                     Types_Vars);
-                                 Next (Cur_Indexed);
-                              end loop;
-                              Transform_Subtype_Indication
-                                (Subtype_Indication
-                                   (Component_Definition (Def)),
-                                    Types_Vars);
-                           end;
+                           Traverse_Constr_Array_Def (Def, Types_Vars);
+
                         when others =>
                            null;
                      end case;
@@ -167,6 +162,26 @@ package body ALFA.Filter is
                                      N_Package_Body))
                  and then Is_In_ALFA (Defining_Identifier (N))
                then
+                  case Nkind (Object_Definition (N)) is
+                     when N_Identifier | N_Expanded_Name =>
+                        null;
+
+                     when N_Constrained_Array_Definition =>
+                        declare
+                           TyDef : constant Node_Id := Object_Definition (N);
+                        begin
+                           Traverse_Constr_Array_Def (TyDef, Types_Vars);
+                           Types_Vars.Append
+                             (Make_Full_Type_Declaration
+                                (Sloc (N),
+                                 New_Copy (Etype (Defining_Identifier (N))),
+                                 Type_Definition => New_Copy (TyDef)));
+                        end;
+
+                     when others =>
+                        null;
+
+                  end case;
                   Types_Vars.Append (N);
                end if;
 
@@ -176,6 +191,24 @@ package body ALFA.Filter is
          end case;
 
       end Bucket_Dispatch;
+
+      -------------------------------
+      -- Traverse_Constr_Array_Def --
+      -------------------------------
+
+      procedure Traverse_Constr_Array_Def
+         (N         : Node_Id;
+          Type_List : in out List)
+      is
+         Cur_Indexed : Node_Id := First (Discrete_Subtype_Definitions (N));
+      begin
+         while Nkind (Cur_Indexed) /= N_Empty loop
+            Transform_Subtype_Indication (Cur_Indexed, Type_List);
+            Next (Cur_Indexed);
+         end loop;
+         Transform_Subtype_Indication
+           (Subtype_Indication (Component_Definition (N)), Type_List);
+      end Traverse_Constr_Array_Def;
 
       ----------------------------------
       -- Transform_Subtype_Indication --
