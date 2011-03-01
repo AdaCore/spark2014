@@ -870,8 +870,7 @@ package body Gnat2Why.Subprograms is
                     New_Array_Update_Prog
                       (Type_Name =>
                          Get_Name_String (Type_Of_Node (Prefix (Lvalue))),
-                       Ar        =>
-                         New_Identifier (Symbol => Chars (Prefix (Lvalue))),
+                       Ar        => Why_Ident_Of_Ada_Ident (Prefix (Lvalue)),
                        Index     =>
                          Why_Expr_Of_Ada_Expr
                            (First (Expressions (Lvalue)),
