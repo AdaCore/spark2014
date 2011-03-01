@@ -45,10 +45,14 @@ package body Gnat2Why.Decls is
    is
       Short_Name  : constant String  := Get_Name_String (Chars (N));
    begin
-      if Is_Local_Lifted (N) then
-         return (Get_Name_String (Chars (Scope (N))) & "__" & Short_Name);
-      else
+      --  We expand all names except parameters
+      if Has_Fully_Qualified_Name (N) or else
+         Ekind (N) in E_Out_Parameter ..  E_In_Parameter or else
+         Ekind (N) = E_Loop_Parameter
+      then
          return Short_Name;
+      else
+         return (Get_Name_String (Chars (Scope (N))) & "__" & Short_Name);
       end if;
    end Full_Name;
 
