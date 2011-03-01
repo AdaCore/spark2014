@@ -5,9 +5,13 @@
 \usepackage{mathpartir}
 \usepackage{amsmath}
 \usepackage{xspace}
+\usepackage{xcolor}
+
+\newcommand{\yannick}[1]{{\color{red} #1}}
 
 \newcommand{\eg}{\textit{e.g.,}\xspace}
 \newcommand{\etal}{\textit{et al.}\xspace}
+\newcommand{\etc}{\textit{etc.}\xspace}
 
 \newcommand{\prog}{\ensuremath{\mathcal{P}}\xspace}
 \newcommand{\idx}{\ensuremath{i}\xspace}
@@ -36,6 +40,33 @@
 \newcommand{\patternnote}{\noindent\textit{Note:}\xspace}
 \newcommand{\patternproof}{\noindent\textit{Proof:}\xspace}
 \newcommand{\update}[3]{\ensuremath{\mathit{update}{(#1,#2,#3)}}\xspace}
+\newcommand{\symdef}{\ensuremath{\overset{\mathit{def}}{=}}}
+\newcommand{\Inv}[1]{\ensuremath{\mathit{Inv}(#1)\xspace}}
+
+\newcommand{\vpp}{\textsc{vpp}\xspace}
+\newcommand{\spexit}{\textsc{sp-exit}\xspace}
+\newcommand{\spscalar}{\textsc{sp-scalar}\xspace}
+\newcommand{\sparray}{\textsc{sp-array}\xspace}
+\newcommand{\mcdiff}{\textsc{mc-diff}\xspace}
+\newcommand{\mcsame}{\textsc{mc-same}\xspace}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{proof}[1][Proof.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\qed}{\nobreak \ifvmode \relax \else
+      \ifdim\lastskip<1.5em \hskip-\lastskip
+      \hskip1.5em plus0em minus0.5em \fi \nobreak
+      \vrule height0.75em width0.5em depth0.25em\fi}
 
 \lstset{language=Ada}
 
@@ -210,6 +241,25 @@ which amounts to the following conditions:
 These conditions are essentially the same as the ones described by Kov\'acs and
 Voronkov with a slightly different formalism~\cite{kovacs:2009:fli}.
 
+We are interested in generating the most precise loop invariant \Inv{\idx} for
+a given loop. The loop invariant we consider is not a Hoare-like loop
+invariant, which would hold before and after the loop and at the start of each
+run through the loop body. Instead, our loop invariant holds between guarded
+exits and guarded assignments in each run through the loop body, as shown on
+the general form of the loop below:
+
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin \idxinitial ..\idxfinal \\
+  ~~~~ t_1 \rightarrow \KWexit \\
+  ~~~~ ... \\
+  ~~~~ t_m \rightarrow \KWexit \\
+  ~~~~ < \textrm{\Inv{\idx} holds at this point} >\\
+  ~~~~ g_1 \rightarrow \alpha_1 \\
+  ~~~~ ... \\
+  ~~~~ g_n \rightarrow \alpha_n \\
+  \KWend
+\end{array}$$
+
 \subsection{Naming Conventions}
 \label{sec:naming-conventions}
 
@@ -223,66 +273,8 @@ respectively the initial values before the loop of variables $a$ and
 $A$. Expression $e_0$ denotes the expression $e$ where all variables have been
 replaced by their initial counterparts (this does not apply to the loop index
 \idx).  The special expression $e^?$ denotes an unknown value, and expression.
-
-We define \textit{value-preserving expressions} as those expressions such that 
-($e=e_0$) is a loop-invariant. Let us call the corresponding property 
-\textit{value-preserving property} ($vpp$) :  
-\begin{equation}
- e=e_0
-\label{eq:vpp}
-\end{equation}
-We denote $e^\at{\idx}$ a \textit{value-preserving expression} 
-where the loop index is $\idx$, so that we can express the same expression for differents
-values of loop index (\eg $e^\at{j}$, $e^\at{k}$, etc). A such expression only depends on 
-the value of the loop index or and initial values of variables before the loop.
-Notice that, for all $j$, ($e^\at{j} = e_0^\at{j}$) is not necessarily a loop invariant . 
-For instance in the following example:
-$$\begin{array}{l}
-  \KWloop \KWover i \KWin 1 .. N \\
-  ~~~~ true \rightarrow A[i] := 0\\
-  \KWend
-\end{array}$$
-$e^\at{i} \equiv A[i]$ (with $i$ index no yet visited) is a \textit{value-preserving expression}, because ($A[i]=A_0[i]$) is a loop 
-invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
-
-Sufficient conditions for an expression $e$ to be a \textit{value-preserving expression} are the following:
-\begin{enumerate}
-\item $e$ does not refer to scalar variables that are assigned in the loop;
-\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
-\item $e$ may refer to an array variable $A$ that is modified in the loop,
-  provided it does so at index \idx or indexes that are known to be greater
-  than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
-  indexes that are known to be less than \idx (\eg $\idx - 1$). This ordering
-  can be more complex, and necessitate a special analysis, like in the case of
-  array filtering where the array is assigned at index $v$ where $v$ is
-  incremented less often than the loop index.
-\end{enumerate}
-
-For simplicity, if we have an array A that is never updated in the loop
-i.e: $(\forall i)(A^\at{i}=A_0)$, we treat such array A as a constant and simply
-use $A$ instead of $A^\at{i}$. Thus, to refer to old element of such array A at any 
-position $p$ we will simply write $A[p]$ instead of $A_0[p]$.
-
-\subsection{Rich Loop Invariants}
-\label{sec:rich_loop_invariants}
-We are interested in generating the most precise loop invariant for a given
-loop. The loop invariant we consider is not a Hoare-like loop invariant, which
-would hold before and after the loop and at the start of each run through the
-loop body. Instead, our loop invariant holds between guarded exits and guarded
-assignments in each run through the loop body, as shown on the general form of
-the loop below:
-
-$$\begin{array}{l}
-  \KWloop \KWover i \KWin \idxinitial ..\idxfinal \\
-  ~~~~ t_1 \rightarrow \KWexit \\
-  ~~~~ ... \\
-  ~~~~ t_m \rightarrow \KWexit \\
-  ~~~~ < \textrm{loop invariant holds at this point} >\\
-  ~~~~ g_1 \rightarrow \alpha_1 \\
-  ~~~~ ... \\
-  ~~~~ g_n \rightarrow \alpha_n \\
-  \KWend
-\end{array}$$
+For simplicity, if we have an array A that is never updated in the loop, we
+treat such an array A as a constant and simply use $A$ instead of $A_0$.
 
 Given an array $A$ with index bounds $\mathit{low}$ and $\mathit{up}$, we
 define a predicate \Pinbounds{A} as follows:
@@ -311,72 +303,155 @@ been treated in the loop:
 
 $$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{j}{\idx}$$
 
-\subsection{Proof Environments}
-We use the strongest postcondition calculation to prove that our invariants are precise.
-We recall, here, the rules of Strongest Postcondition for statements ("guarded exit" and 
-"guarded assign") which we are interested in our loop modelisation define in 
-section~\ref{sec:simple-loops}.  
+\subsection{Value-preserving Expressions}
 
-Strongest Postcondition for "guarded exit":
+We define \textit{value-preserving expressions} as those expressions whose
+value at the program point between guarded exits and guarded assignments is
+such that ($e=e_0$) is a loop invariant. Let us call the corresponding property
+\textit{value-preserving property}:
 \begin{equation}
-sp(t \rightarrow \KWexit,P) = \neg t \land P
-\label{eq:exit_sp}
+ e=e_0 \tag{\vpp}
 \end{equation}
+Given a loop index \idx, we denote a \textit{value-preserving expression} $e$
+as $e^\at{\idx}$, so that we can express the same expression for differents
+values of the loop index (\eg $e^\at{j}$, $e^\at{k}$, \etc). Such an expression
+only depends on the value of the loop index and initial values of variables
+before the loop. Notice that ($e^\at{j} = e_0^\at{j}$) is not necessarily a
+loop invariant for $j \neq i$.  For instance in the following example:
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ \mathit{true} \rightarrow A[i] := 0\\
+  \KWend
+\end{array}$$
+$e^\at{\idx} \symdef A[\idx]$ (with current index \idx) is a 
+value-preserving expression, because ($A[\idx]=A_0[\idx]$) is a loop 
+invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
 
-Strongest Postcondition for "guarded assign" in scalar variable:
+Sufficient conditions for an expression $e$ to be a value-preserving expression
+are the following:
+\begin{enumerate}
+\item $e$ does not refer to scalar variables that are assigned in the loop;
+\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
+\item $e$ may refer to an array variable $A$ that is modified in the loop,
+  provided it does so at index \idx or indexes that are known to be greater
+  than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
+  indexes that are known to be less than \idx (\eg $\idx - 1$). This ordering
+  can be more complex, and necessitate a special analysis, like in the case of
+  array filtering where the array is assigned at index $v$ where $v$ is
+  incremented less often than the loop index.
+\end{enumerate}
+
+\subsection{Proof Preliminaries}
+
+\newcommand{\spost}[2]{\ensuremath{\mathcal{S}(#1,#2)}}
+\newcommand{\subst}[3]{\ensuremath{#1[#2 \leftarrow #3]}}
+
+We define an operator \spost{s}{P} which computes the strongest postcondition of
+property $P$ over statement $s$, where $s$ is either a guarded
+exit or a guarded assignment.
+
+\begin{align*}
+\spost{t \rightarrow \KWexit}{P} &\symdef \neg t \land P \tag{\spexit}\\
+\spost{g \rightarrow a:=e}{P} &\symdef (\exists b) (\subst{g}{a}{b} 
+    \land a = \subst{e}{a}{b} \land \subst{P}{a}{b}) \tag{\spscalar}\\
+\spost{g \rightarrow A[e_1]:=e_2}{P} &\symdef (\exists B)
+\left(\begin{array}{cl}
+&\subst{g}{A}{B}\\
+\land& A = \update{B}{\subst{e_1}{A}{B}}{\subst{e_2}{A}{B}}\\
+\land& \subst{P}{A}{B}\\
+\end{array}\right)
+ \tag{\sparray}\\
+\end{align*}
+
+\patternnote Notice that the rule \sparray is simply a special case of
+\spscalar for an array variable, with an assignment of the form $A :=
+\update{A}{e_1}{e_2}$, where $\mathit{update}$ is the functional update of
+array $A$ at index $e_1$ with value $e_2$.
+
+We recall McCarthy's axioms:
 \begin{equation}
-sp(g \rightarrow a:=e,P) = (\exists b) (g[a \leftarrow b] \land a = e[a \leftarrow b] \land P[a \leftarrow b])
-\label{eq:scalar_sp}
+(\forall i)(\forall j)(\forall v)(i \neq j \impl \update{A}{i}{v}[j] = A[j])
+\tag{\mcdiff}
 \end{equation}
-
-Strongest Postcondition for "guarded assign" in array variable:
 \begin{equation}
-sp(g \rightarrow A[e_1]:=e_2,P) = (\exists B) (g[A \leftarrow B] \land A = \update{B}{e_1[A \leftarrow B]}{e_2[A \leftarrow B]} \land P[A \leftarrow B])\\
-\label{eq:array_sp}
-\end{equation}
-
-\patternnote Notice that the rule in an array affectation is similar to a simple scalar affectation with:
-$A := \update{A}{e_1}{e_2}$
-
-The $update$ predicat verifie the following McCarthy axioms:
-\begin{equation}
-i \neq j \impl A(\update{A}{i}{v},j) = A(j)
-\label{eq:McCarthy_axiom_different}
-\end{equation}
-
-\begin{equation}
-A(\update{A}{i}{v},i) = v
-\label{eq:McCarthy_axiom_same}
+(\forall i)(\forall v)(\update{A}{i}{v}[i] = v) \tag{\mcsame}
 \end{equation}
 
 \section{Loop Patterns} 
 
-\subsection{Search Pattern}
+\newcounter{pc} % pattern counter
+\newcommand{\curpattern}{\ensuremath{\textsc{pat}\mathrm{\arabic{pc}}}\xspace}
+\newcommand{\curinv}{\ensuremath{\textsc{inv}\mathrm{\arabic{pc}}}\xspace}
 
-\patterndef The test of a guarded exit is a value-preserving expression.
+\newcommand{\pattern}[3]{%
+\refstepcounter{pc}
+\patterndef #1
 %
-$$t^\at{\idx} \rightarrow \KWexit$$
+\begin{equation}
+  #2 \tag{\curpattern}
+\end{equation}
 %
 \loopinvariant
 %
-$$(\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})$$
-%
-\patternproof The demonstration of the invariant of this pattern as those of others patterns 
-will be done by induction. We denote $Inv(i)$ the loop invariant at iteration $i$.
-%
-\begin{align*}
-sp(t^\at{initial} \rightarrow \KWexit,true) &= \neg t^\at{initial} && \text{by \eqref{eq:exit_sp}}\\
-                                            &= \neg t_0^\at{initial} && \text{by \eqref{eq:vpp}}\\
-                                            &= \neg Inv(initial)
-\end{align*}
+\begin{equation}
+  \Inv{\idx} \symdef #3 \tag{\curinv}
+\end{equation}
+}
+
+\subsection{Search Pattern}
+
+\pattern{
+  The test of a guarded exit is a value-preserving expression.
+}{
+  t^\at{\idx} \rightarrow \KWexit
+}{
+  (\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})
+}
+
+\begin{theorem}
+  \emph{(Search Pattern Invariant)} \Inv{\idx} given by \curinv is a loop
+  invariant for a loop containing pattern \curpattern, and it completely
+  captures the effect of pattern \curpattern.
+\end{theorem}
+
+\begin{proof}
+  We start with proving by induction that \Inv{\idx} is a loop
+  invariant. Initially, all variables take their initial values, which can be
+  over-approximated with \textit{true}.  To reach the program point for the
+  loop invariant for the first time, execution must step over the guarded exit.
+  %
+  \begin{align*}
+    \spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}} 
+    &= \neg t^\at{\idxinitial} && \text{by \spexit}\\
+    &= \neg t_0^\at{initial}   && \text{by \vpp}\\
+    &= \Inv{\idxinitial}      && \text{by \curinv}
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
+  \Inv{\idx+1} holds at loop iteration $\idx+1$.
+  %
+  \begin{align*}
+    \spost{t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}}  
+    &= \neg t^\at{\idx+1} \land \Inv{\idx}   && \text{by \spexit}\\
+    &= \neg t_0^\at{\idx+1} \land \Inv{\idx} && \text{by \vpp}\\
+    &= Inv(i+1)                             && \text{by \curinv}
+  \end{align*}
+  % 
+  This proves that \Inv{\idx} is a loop invariant.
+  
+  \yannick{Marc, the above is not correct yet. Indeed, the loop may contain
+    other guarded exits and guarded assignments. Still, the proof above can be
+    augmented to be correct, by proving that an invariant like \Inv{\idx} over 
+    the current loop index and initial values of variables can be carried over
+    all other guarded exits and guarded assigns. Probably something that should
+    be proved in the preliminaries.}
+  
+  \yannick{Marc, I let you think about the proof that \Inv{\idx} completely 
+  captures the effect of the pattern.}
+\end{proof}
 
 
-We assume $Inv(i)$ in loop iteration $i$.
-\begin{align*}
-sp(t^\at{i+1} \rightarrow \KWexit,Inv(i))   &= \neg t^\at{i+1} \land Inv(i) && \text{by \eqref{eq:exit_sp}}\\
-                                            &= \neg t_0^\at{i+1} \land Inv(i) && \text{by \eqref{eq:vpp}}\\
-                                            &= Inv(i+1)
-\end{align*}
+
 
 
 \bigskip
