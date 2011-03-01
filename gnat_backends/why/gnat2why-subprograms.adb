@@ -1379,10 +1379,16 @@ package body Gnat2Why.Subprograms is
             --  The corresponding Why type of the identifier may be of
             --  reference type; but here we do not care, as Why, in
             --  annotations, happily converts a reference to its base type.
-            T :=
-              New_Term_Identifier
-                (Ada_Node => Expr,
-                 Name     => Why_Ident_Of_Ada_Ident (Expr));
+            if Entity (Expr) = Standard_True then
+               T := New_True_Literal;
+            elsif Entity (Expr) = Standard_False then
+               T := New_False_Literal;
+            else
+               T :=
+                 New_Term_Identifier
+                   (Ada_Node => Expr,
+                    Name     => Why_Ident_Of_Ada_Ident (Expr));
+            end if;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
             --  The arguments of arithmetic functions have to be of type int
