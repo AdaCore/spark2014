@@ -43,6 +43,7 @@
 \newcommand{\symdef}{\ensuremath{\overset{\mathit{def}}{=}}}
 \newcommand{\Inv}[1]{\ensuremath{\mathit{Inv}(#1)\xspace}}
 
+\newcommand{\loopmodel}{\textsc{loop-model}\xspace}
 \newcommand{\vpp}{\textsc{vpp}\xspace}
 \newcommand{\spexit}{\textsc{sp-exit}\xspace}
 \newcommand{\spscalar}{\textsc{sp-scalar}\xspace}
@@ -248,7 +249,8 @@ run through the loop body. Instead, our loop invariant holds between guarded
 exits and guarded assignments in each run through the loop body, as shown on
 the general form of the loop below:
 
-$$\begin{array}{l}
+\begin{align*}
+\begin{array}{l}
   \KWloop \KWover i \KWin \idxinitial ..\idxfinal \\
   ~~~~ t_1 \rightarrow \KWexit \\
   ~~~~ ... \\
@@ -258,7 +260,9 @@ $$\begin{array}{l}
   ~~~~ ... \\
   ~~~~ g_n \rightarrow \alpha_n \\
   \KWend
-\end{array}$$
+\end{array}
+ \tag{\loopmodel}\\
+\end{align*}
 
 \subsection{Naming Conventions}
 \label{sec:naming-conventions}
@@ -398,6 +402,21 @@ We recall McCarthy's axioms:
 \end{equation}
 }
 
+\newcommand{\allpattern}{\ensuremath{\textsc{pat}\mathrm{\{1,2,...P\}}}\xspace}
+\newcommand{\allinv}{\ensuremath{\textsc{inv}\mathrm{\{1,2,...P\}}}\xspace}
+
+From a loop given in our \loopmodel we can extract automatically different patterns (\allpattern) 
+in order to give a precise invariants \allinv (presented in the following sub-sections).
+
+\begin{theorem}
+  \emph{(Loop Invariant)} \Inv{\idx} is a conjonction of different patterns invariants (\allinv)
+  for a different patterns \allpattern contained in the \loopmodel.
+\end{theorem}
+
+\begin{proof}
+  We assume that each \Inv{\idx} in \allinv completely captures the effect of each pattern in \allpattern.
+\end{proof}
+
 \subsection{Search Pattern}
 
 \pattern{
@@ -450,10 +469,6 @@ We recall McCarthy's axioms:
   captures the effect of the pattern.}
 \end{proof}
 
-
-
-
-
 \bigskip
 \patternexample
 
@@ -469,14 +484,14 @@ $\begin{array}{l}
 
 \subsubsection*{Certain Single Update Pattern}
 
-\patterndef A scalar variable $a$ is modified in at most exactly a single assignment, whose
+\pattern{
+  A scalar variable $a$ is modified in at most exactly a single assignment, whose
 guard is \textit{true}, and it receives a value-preserving expression.
-%
-$$\mathit{true} \rightarrow a := e^\at{\idx}$$
-%
-\loopinvariant
-%
-$$(\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})$$
+}{
+  \mathit{true} \rightarrow a := e^\at{\idx}
+}{
+  (\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})
+}
 %
 \patternproof\\
 %
