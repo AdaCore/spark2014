@@ -48,6 +48,7 @@
 \newcommand{\spexit}{\textsc{sp-exit}\xspace}
 \newcommand{\spscalar}{\textsc{sp-scalar}\xspace}
 \newcommand{\sparray}{\textsc{sp-array}\xspace}
+\newcommand{\spseq}{\textsc{sp-seq}\xspace}
 \newcommand{\mcdiff}{\textsc{mc-diff}\xspace}
 \newcommand{\mcsame}{\textsc{mc-same}\xspace}
 \newtheorem{theorem}{Theorem}[section]
@@ -187,11 +188,12 @@ alternation.
 
 \subsection{Simple Loops}
 \label{sec:simple-loops}
-A program \prog consists in a loop over index \idx between \idxinitial and \idxfinal. 
-The constant \idxinitial and \idxfinal represent respectively the intial value and final
-value of iteration range.
-The loop body consists in a (possibly empty) unordered set of \textit{guarded exits},
-followed by a (possibly empty) unordered set of \textit{simultaneous guarded assignments}.
+A program \prog consists in a loop over index \idx between \idxinitial and
+\idxfinal.  The constant \idxinitial and \idxfinal represent respectively the
+intial value and final value of iteration range.  The loop body consists in a
+(possibly empty) unordered set of simultaneous \textit{guarded exits}, followed
+by a (possibly empty) unordered set of \textit{simultaneous guarded
+  assignments}.
 
 \newcommand{\expr}{\ensuremath{\mathit{expr}}}
 \newcommand{\assign}{\ensuremath{\mathit{assign}}}
@@ -347,7 +349,8 @@ are the following:
 
 \subsection{Proof Preliminaries}
 
-\newcommand{\spost}[2]{\ensuremath{\mathcal{S}(#1,#2)}}
+\newcommand{\spostsym}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\spost}[2]{\ensuremath{\spostsym(#1,#2)}}
 \newcommand{\subst}[3]{\ensuremath{#1[#2 \leftarrow #3]}}
 
 We define an operator \spost{s}{P} which computes the strongest postcondition of
@@ -365,12 +368,13 @@ exit or a guarded assignment.
 \land& \subst{P}{A}{B}\\
 \end{array}\right)
  \tag{\sparray}\\
+\spost{s_1; s_2}{P} &\symdef \spost{s_2}{\spost{s_1}{P}} \tag{\spseq}
 \end{align*}
 
-\patternnote Notice that the rule \sparray is simply a special case of
-\spscalar for an array variable, with an assignment of the form $A :=
-\update{A}{e_1}{e_2}$, where $\mathit{update}$ is the functional update of
-array $A$ at index $e_1$ with value $e_2$.
+Notice that the rule \sparray is simply a special case of \spscalar for an
+array variable, with an assignment of the form $A := \update{A}{e_1}{e_2}$,
+where $\mathit{update}$ is the functional update of array $A$ at index $e_1$
+with value $e_2$.
 
 We recall McCarthy's axioms:
 \begin{equation}
@@ -380,6 +384,87 @@ We recall McCarthy's axioms:
 \begin{equation}
 (\forall i)(\forall v)(\update{A}{i}{v}[i] = v) \tag{\mcsame}
 \end{equation}
+
+Notice also that the rule \spseq for seqential composition of statements is the
+usual rule associated with a sequential execution semantics for statements. As
+our semantics of guarded exits and guarded assignments is parallel, we should
+start with proving that rule \spseq indeed computes the desired strongest
+postcondition. We recall that the loop body consists in a (possibly empty)
+unordered set of simultaneous guarded exits, followed by a (possibly empty)
+unordered set of simultaneous guarded assignments. There are thus only three
+actual program points of interest: before the loop body, at the loop invariant
+program point, after the loop body.
+
+\begin{lemma}
+  \emph{(\spostsym Correctness)} Operator \spostsym as defined in \spexit,
+  \spscalar, \sparray and \spseq computes the strongest postcondition over
+  parallel guarded exits and parallel guarded assigns.
+\end{lemma}
+
+\begin{proof}
+  \yannick{To be completed.}
+\end{proof}
+
+\begin{lemma}
+  \emph{(\spostsym over Guarded Exits)} The strongest postcondition only
+  strengthens a property $P$ over guarded exits.
+\end{lemma}
+
+\begin{proof}
+  The proof proceeds by induction on the number of guarded exits. Suppose there
+  is a single guarded exit $s \symdef t \rightarrow \KWexit$.
+  \begin{align*}
+    \spost{t \rightarrow \KWexit}{P} 
+    &= \neg t \land P && \text{by \spexit}\\
+    &\impl P
+  \end{align*}
+  Suppose that the property holds over all sets of guarded exits of size $n$,
+  and consider a set of guarded exits $s_{1..n+1}$ of size $n+1$.
+  \begin{align*}
+    \spost{s_{1..n+1}}{P} 
+    &= \spost{s_1}{\spost{s_{2..n+1}}{P}}  && \text{by \spseq}\\
+    &\impl \spost{s_{2..n+1}}{P}           && \text{by the proof above}\\
+    &\impl P                             && \text{by induction hypothesis}\\
+  \end{align*}
+\end{proof}
+
+\begin{lemma}
+  \emph{(\spostsym over Guarded Assignments)} The strongest postcondition of a
+  property $P$ over guarded assignments which do not assign to variables in $P$
+  only strengthens $P$.
+\end{lemma}
+
+\begin{proof}
+  \yannick{To be completed.}
+\end{proof}
+
+\begin{definition}
+  \emph{(Pattern)} A pattern is a set of guarded exits and guarded assigments
+  from a loop body.
+\end{definition}
+
+\begin{definition}
+  \emph{(Pattern Erasing)} A pattern is erased from a loop body if every test
+  of a guarded exit in the pattern is replaced by $e^?$, every guard from a
+  guarded assignment in the pattern is replaced by $e^?$, every right-hand-side
+  expression and every left-hand-side array index expression is replaced by
+  $e^?$.
+\end{definition}
+
+\begin{lemma}
+  \emph{(Pattern Erasing and Loop Invariant)} A loop invariant $P$ of a loop
+  body in which a pattern was erased is also a loop invariant of the original
+  loop body.
+\end{lemma}
+
+\begin{definition}
+  \emph{(Pattern Capture)} A formula $P$ captures a pattern if (1) $P$ is a
+  loop invariant of every loop where the pattern occurs and (2) for every loop
+  invariant $Q$ of a loop where the pattern occurs, there exists a loop
+  invariant $R$ of the loop where the pattern is erased, such that
+  $Q \Leftrightarrow P \land R$.
+\end{definition}
+
 
 \section{Loop Patterns} 
 
@@ -428,9 +513,8 @@ in order to give a precise invariants \allinv (presented in the following sub-se
 }
 
 \begin{theorem}
-  \emph{(Search Pattern Invariant)} \Inv{\idx} given by \curinv is a loop
-  invariant for a loop containing pattern \curpattern, and it completely
-  captures the effect of pattern \curpattern.
+  \emph{(Search Pattern Invariant Capture)} \Inv{\idx} given by \curinv
+  captures pattern \curpattern.
 \end{theorem}
 
 \begin{proof}
@@ -453,7 +537,7 @@ in order to give a precise invariants \allinv (presented in the following sub-se
     \spost{t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}}  
     &= \neg t^\at{\idx+1} \land \Inv{\idx}   && \text{by \spexit}\\
     &= \neg t_0^\at{\idx+1} \land \Inv{\idx} && \text{by \vpp}\\
-    &= Inv(i+1)                             && \text{by \curinv}
+    &= \Inv{i+1}                            && \text{by \curinv}
   \end{align*}
   % 
   This proves that \Inv{\idx} is a loop invariant.
