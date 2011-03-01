@@ -1467,6 +1467,7 @@ package body Gnat2Why.Subprograms is
                          Value =>
                            Expr_Value
                               (Low_Bound (First_Index (Etype (Var)))));
+                  Current_Type := (Kind => Why_Int);
                elsif Attr_Name = Name_Last then
                   --  ??? Not sure about this
                   T :=
@@ -1475,6 +1476,7 @@ package body Gnat2Why.Subprograms is
                          Value =>
                            Expr_Value
                               (High_Bound (First_Index (Etype (Var)))));
+                  Current_Type := (Kind => Why_Int);
                else
                   raise Not_Implemented;
                end if;
