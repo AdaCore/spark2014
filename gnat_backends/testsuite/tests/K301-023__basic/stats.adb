@@ -31,6 +31,7 @@ is
    procedure Init(TheStats :    out T)
    is
    begin
+      TheStats.FailEntry := StatsCount'Last;
       TheStats := T'(SuccessEntry => StatsCount'First,
                      FailEntry    => StatsCount'First,
                      SuccessBio   => StatsCount'First,
