@@ -441,9 +441,9 @@ in order to give a precise invariants \allinv (presented in the following sub-se
   %
   \begin{align*}
     \spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}} 
-    &= \neg t^\at{\idxinitial} && \text{by \spexit}\\
-    &= \neg t_0^\at{initial}   && \text{by \vpp}\\
-    &= \Inv{\idxinitial}      && \text{by \curinv}
+    &\Leftrightarrow \neg t^\at{\idxinitial} && \text{by \spexit}\\
+    &\Leftrightarrow \neg t_0^\at{initial}   && \text{by \vpp}\\
+    &\Leftrightarrow \Inv{\idxinitial}      && \text{by \curinv}
   \end{align*}
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
@@ -451,9 +451,9 @@ in order to give a precise invariants \allinv (presented in the following sub-se
   %
   \begin{align*}
     \spost{t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}}  
-    &= \neg t^\at{\idx+1} \land \Inv{\idx}   && \text{by \spexit}\\
-    &= \neg t_0^\at{\idx+1} \land \Inv{\idx} && \text{by \vpp}\\
-    &= Inv(i+1)                             && \text{by \curinv}
+    &\Leftrightarrow \neg t^\at{\idx+1} \land \Inv{\idx}   && \text{by \spexit}\\
+    &\Leftrightarrow \neg t_0^\at{\idx+1} \land \Inv{\idx} && \text{by \vpp}\\
+    &\Leftrightarrow Inv(i+1)                             && \text{by \curinv}
   \end{align*}
   % 
   This proves that \Inv{\idx} is a loop invariant.
