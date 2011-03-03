@@ -94,6 +94,7 @@ procedure Gnatprove is
 
    procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File)
    is
+      pragma Unreferenced (Proj);
       Base : constant String :=
          Ada.Directories.Base_Name (+Base_Name (File));
 
@@ -138,9 +139,7 @@ procedure Gnatprove is
       --  beginning of processing for Call_Altergo
 
    begin
-      if Unit_Part (Info (Proj, File)) = Unit_Body then
-         Iterate (Path => Base & "_po*.why");
-      end if;
+      Iterate (Path => Base & "_po*.why");
    end Call_Altergo;
 
    --------------------------
@@ -268,35 +267,30 @@ procedure Gnatprove is
 
    procedure Call_Gnat2Why (Proj : Project_Tree; File : Virtual_File)
    is
+      Switch : GNAT.Strings.String_List_Access;
+      Default : Boolean;
+      Proj_Type : constant Project_Type := Root_Project (Proj);
    begin
-      if Unit_Part (Info (Proj, File)) = Unit_Body then
-         declare
-            Switch : GNAT.Strings.String_List_Access;
-            Default : Boolean;
-            Proj_Type : constant Project_Type := Root_Project (Proj);
-         begin
-            Switches
-               (Project  => Proj_Type,
-                In_Pkg   => "compiler",
-                File     => File,
-                Language => "Ada",
-                Value    => Switch,
-                Is_Default_Value => Default);
-            --  We force the use of switch -gnata, because gnat2why may be
-            --  incorrect otherwise
-            Call_Exit_On_Failure
-              (Command   => "gnat2why",
-               Arguments =>
-                 ((1 => new String'("-I"),
-                   2 => new String'(Get_Ada_Include),
-                   3 => new String'("-gnata"),
-                   4 => new String'("-gnat2012"),
-                   5 => new String'("-gnato"),
-                   6 => new String'("-gnatd.F"),  --  ALFA marks in AST
-                   7 => new String'(+Full_Name (File))) &
-                   Switch.all));
-         end;
-      end if;
+      Switches
+         (Project  => Proj_Type,
+          In_Pkg   => "compiler",
+          File     => File,
+          Language => "Ada",
+          Value    => Switch,
+          Is_Default_Value => Default);
+      --  We force the use of switch -gnata, because gnat2why may be
+      --  incorrect otherwise
+      Call_Exit_On_Failure
+        (Command   => "gnat2why",
+         Arguments =>
+           ((1 => new String'("-I"),
+             2 => new String'(Get_Ada_Include),
+             3 => new String'("-gnata"),
+             4 => new String'("-gnat2012"),
+             5 => new String'("-gnato"),
+             6 => new String'("-gnatd.F"),  --  ALFA marks in AST
+             7 => new String'(+Full_Name (File))) &
+             Switch.all));
    end Call_Gnat2Why;
 
    --------------
@@ -305,22 +299,21 @@ procedure Gnatprove is
 
    procedure Call_Why (Proj : Project_Tree; File : Virtual_File)
    is
-      Base      : constant String :=
-               Ada.Directories.Base_Name (+Full_Name (File));
+      pragma Unreferenced (Proj);
+      Base : constant String :=
+           Ada.Directories.Base_Name (+Full_Name (File));
    begin
       --  assuming 'base' to be the filename without suffix, call the
       --  command
       --  why --multiwhy --explain --locs <base>.locs <base>.why
-      if Unit_Part (Info (Proj, File)) = Unit_Body then
-         Call_Exit_On_Failure
-           (Command   => "why",
-            Arguments =>
-              ((1 => new String'("--multi-why"),
-                2 => new String'("--explain"),
-                3 => new String'("--locs"),
-                4 => new String'(Base & ".loc"),
-                5 => new String'(Base & ".why"))));
-      end if;
+      Call_Exit_On_Failure
+        (Command   => "why",
+         Arguments =>
+           ((1 => new String'("--multi-why"),
+             2 => new String'("--explain"),
+             3 => new String'("--locs"),
+             4 => new String'(Base & ".loc"),
+             5 => new String'(Base & ".why"))));
    end Call_Why;
 
    ---------
@@ -387,12 +380,31 @@ procedure Gnatprove is
 
    procedure Iter_Project_Source_Files (Proj : Project_Tree)
    is
-      File_List : constant File_Array_Access :=
-         Source_Files (Root_Project (Proj));
+      Proj_Type : constant Project_Type := Root_Project (Proj);
+      File_List : constant File_Array_Access := Source_Files (Proj_Type);
    begin
       for Index in File_List'Range loop
+         declare
+            Inf : constant File_Info := Info (Proj, File_List (Index));
          begin
-            Action (Proj, File_List (Index));
+            case Unit_Part (Inf) is
+               when Unit_Body =>
+                  Action (Proj, File_List (Index));
+
+               when Unit_Spec =>
+                  if File_From_Unit
+                     (Proj_Type,
+                      Unit_Name (Inf),
+                      Unit_Body,
+                      "ada") = "" then
+                     Action (Proj, File_List (Index));
+                  end if;
+
+               when others =>
+                  null;
+
+            end case;
+
          end;
       end loop;
    end Iter_Project_Source_Files;
