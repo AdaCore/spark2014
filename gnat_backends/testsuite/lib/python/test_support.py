@@ -178,17 +178,17 @@ def prove(src):
     gnatprove()
     result = {}
     base, ext = os.path.splitext(src)
-    for vc in open(base+".labels"):
+    for vc in open(os.path.join("gnatprove",base+".labels")):
         vc = str.strip(vc,"\n ")
         result[vc] = { 'valid' : [] , 'invalid': [] }
-    for f in glob.glob("*.xpl"):
+    for f in glob.glob(os.path.join("gnatprove", "*.xpl")):
         dic = read_dict_from_file(f)
         curname = dic['source_label']
         if not result.has_key(curname):
             print "missing label name:", curname
             return
         basename, ext = os.path.splitext(f)
-        vc_result = basename + ".rgo"
+        vc_result = os.path.join(basename + ".rgo")
         file_object = open(vc_result,"r")
         if parse_altergo_result(file_object.read())[0]:
             cur_result = 'valid'
