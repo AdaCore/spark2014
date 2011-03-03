@@ -43,6 +43,8 @@ procedure Gnatprove is
    Verbose      : aliased Boolean;
    Project_File : aliased GNAT.Strings.String_Access;
 
+   Subdir_Name  : constant Filesystem_String := "gnatprove";
+
    procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File);
    --  Call Alt-Ergo on all VC files that correspond to a given source file of
    --  a project
@@ -251,11 +253,12 @@ procedure Gnatprove is
         (Command => "gnatmake",
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
-                       3 => new String'("-gnata"),
-                       4 => new String'("-gnat2012"),
-                       5 => new String'("-gnatc"),
-                       6 => new String'("-f"),  --  Force recompilation
-                       7 => new String'("-gnatd.F")));  --  ALFA section in ALI
+                       3 => new String'("--subdirs=" & String (Subdir_Name)),
+                       4 => new String'("-gnata"),      --  generate assertions
+                       5 => new String'("-gnat2012"),   --  enable Ada 2012
+                       6 => new String'("-gnatc"),      --  only generate ALI
+                       7 => new String'("-f"),          --  Force recompilation
+                       8 => new String'("-gnatd.F")));  --  ALFA section in ALI
 
    end Call_Gnatmake;
 
@@ -396,6 +399,7 @@ procedure Gnatprove is
 
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
+   Proj_Env  : Project_Environment_Access;
 
    procedure Iterate_Altergo is
       new Iter_Project_Source_Files (Call_Altergo);
@@ -419,18 +423,27 @@ begin
 
    Getopt (Config);
 
-   Call_Gnatmake (Project_File.all);
-
-   Tree.Load (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)));
+   Initialize (Proj_Env);
+   Set_Object_Subdir (Proj_Env.all, Subdir_Name);
+   Tree.Load
+      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+       Proj_Env);
    Proj_Type := Root_Project (Tree);
-   if Has_Attribute (Proj_Type, Obj_Dir_Attribute) then
-      Ada.Directories.Set_Directory
-        (Attribute_Value (Proj_Type, Obj_Dir_Attribute));
-   end if;
+   declare
+      Working_Dir : constant String :=
+         String (Full_Name (Object_Dir (Proj_Type)).all);
+   begin
+      --  Call gnatmake before changing the directory, for the project file to
+      --  be in the path
+      Call_Gnatmake (Project_File.all);
 
-   Iterate_Gnat2Why (Tree);
+      Ada.Directories.Set_Directory (Working_Dir);
 
-   Iterate_Why (Tree);
+      Iterate_Gnat2Why (Tree);
 
-   Iterate_Altergo (Tree);
+      Iterate_Why (Tree);
+
+      Iterate_Altergo (Tree);
+   end;
+
 end Gnatprove;
