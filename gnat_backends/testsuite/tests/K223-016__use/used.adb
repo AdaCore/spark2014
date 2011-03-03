@@ -1,9 +1,12 @@
 package body Used is
    function Absolu (x : Integer) return Integer is
+      Res : Integer;
    begin
       if x < 0 then
-         return -x;
+         Res := -x;
+      else
+         Res := x;
       end if;
-      return x;
+      return Res;
    end Absolu;
 end Used;
