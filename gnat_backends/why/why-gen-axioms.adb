@@ -113,7 +113,7 @@ package body Why.Gen.Axioms is
             New_NEqual (New_Term (Index1), New_Term (Index2));
 
       Axiom_Body     : constant W_Predicate_Id :=
-            New_Implication (Left => Conclusion, Right =>  Hypothesis);
+            New_Implication (Left => Hypothesis, Right =>  Conclusion);
 
       Quantified_Body : constant W_Predicate_Id :=
          New_Universal_Quantif
