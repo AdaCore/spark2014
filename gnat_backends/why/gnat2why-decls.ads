@@ -28,7 +28,7 @@ with Why.Ids; use Why.Ids;
 package Gnat2Why.Decls is
 
    function Full_Name (N : Node_Id) return String;
-   --  Given an N_Defining_Identifier, return its Full Name, as used in Why
+   --  Given an N_Defining_Identifier, return its Full Name, as used in Why.
 
    function Is_Local_Lifted (N : Node_Id) return Boolean;
    --  Given an N_Defining_Identifier, decide if the variable is local or

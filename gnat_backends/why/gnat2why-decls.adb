@@ -27,6 +27,7 @@ with Atree;                use Atree;
 with Einfo;                use Einfo;
 with Namet;                use Namet;
 with Sinfo;                use Sinfo;
+with Stand;                use Stand;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
@@ -45,6 +46,9 @@ package body Gnat2Why.Decls is
    is
       Short_Name  : constant String  := Get_Name_String (Chars (N));
    begin
+      if N = Standard_Boolean then
+         return "bool";
+      end if;
       --  We expand all names except parameters
       if Has_Fully_Qualified_Name (N) or else
          Ekind (N) in E_Out_Parameter ..  E_In_Parameter or else

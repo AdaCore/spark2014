@@ -201,11 +201,7 @@ package body Gnat2Why.Types is
    is
       Name : constant String := Full_Name (Ty);
       Base : constant W_Primitive_Type_Id :=
-         (if Is_Boolean_Type (Ty) then New_Type_Bool
-          else
-            New_Abstract_Type
-              (Ada_Node => Ty,
-               Name     => New_Identifier (Name)));
+            New_Abstract_Type (Ty, New_Identifier (Name));
    begin
       if Is_Mutable then
          return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
