@@ -497,8 +497,7 @@ package body Gnat2Why.Subprograms is
                                 Value    =>
                                   Why_Expr_Of_Ada_Expr
                                     (Expression (Cur_Decl),
-                                     (Why_Abstract,
-                                      Type_Of_Node (Lvalue))));
+                                     Type_Of_Node (Lvalue)));
                            R := Sequence (Assign, R);
                         end;
                      end if;
@@ -727,7 +726,7 @@ package body Gnat2Why.Subprograms is
       Expected_Type : Why_Type) return W_Prog_Id
    is
       T            : W_Prog_Id;
-      Current_Type : Why_Type := (Why_Abstract, Type_Of_Node (Expr));
+      Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       --  Here, we simply analyze the structure of Expr and build the
       --  corresponding Why expression. When necessary, we update the
@@ -884,9 +883,7 @@ package body Gnat2Why.Subprograms is
                 Index     =>
                    Why_Expr_Of_Ada_Expr
                      (First (Expressions (Expr)),
-                      (Why_Abstract,
-                       Type_Of_Node
-                         (First_Index (Etype (Prefix (Expr)))))));
+                      Type_Of_Node (First_Index (Etype (Prefix (Expr))))));
 
          when N_Function_Call =>
             return
@@ -910,7 +907,7 @@ package body Gnat2Why.Subprograms is
       return W_Prog_Id
    is
    begin
-      return Why_Expr_Of_Ada_Expr (Expr, (Why_Abstract, Type_Of_Node (Expr)));
+      return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Expr_Of_Ada_Expr;
 
    --------------------------
@@ -941,8 +938,7 @@ package body Gnat2Why.Subprograms is
                        Name     => Why_Ident_Of_Ada_Ident (Lvalue),
                        Value    =>
                           Why_Expr_Of_Ada_Expr
-                            (Expression (Stmt),
-                             (Why_Abstract, Type_Of_Node (Lvalue))));
+                            (Expression (Stmt), Type_Of_Node (Lvalue)));
 
                when N_Indexed_Component =>
                   return
@@ -1161,8 +1157,7 @@ package body Gnat2Why.Subprograms is
                      W_Id     : constant W_Identifier_Id :=
                         New_Identifier (Symbol => Chars (Id));
                      Exp_Type : constant Why_Type :=
-                        (Why_Abstract,
-                         Type_Of_Node (Object_Definition (Cur_Stmt)));
+                        Type_Of_Node (Object_Definition (Cur_Stmt));
                   begin
                      case Ekind (Id) is
                         when E_Constant =>
@@ -1297,8 +1292,9 @@ package body Gnat2Why.Subprograms is
                 (Ada_Node => Expr,
                  Left     => Why_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    =>
-                   Why_Term_Of_Ada_Expr (Right_Opnd (Expr),
-                    (Why_Abstract, Type_Of_Node (Left_Opnd (Expr)))),
+                   Why_Term_Of_Ada_Expr
+                     (Right_Opnd (Expr),
+                      Type_Of_Node (Left_Opnd (Expr))),
                  Op       => Why_Rel_Of_Ada_Op (Nkind (Expr)));
 
          when N_Op_Ge |
@@ -1397,7 +1393,7 @@ package body Gnat2Why.Subprograms is
       T : W_Term_Id;
       --  T contains the term that has been constructed before a possible
       --  conversion to or from Int
-      Current_Type : Why_Type := (Why_Abstract, Type_Of_Node (Expr));
+      Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
       case Nkind (Expr) is
          when N_Integer_Literal =>
@@ -1533,7 +1529,7 @@ package body Gnat2Why.Subprograms is
       return W_Term_Id
    is
    begin
-      return Why_Term_Of_Ada_Expr (Expr, (Why_Abstract, Type_Of_Node (Expr)));
+      return Why_Term_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Term_Of_Ada_Expr;
 
 end Gnat2Why.Subprograms;
