@@ -349,7 +349,7 @@ are the following:
 
 \subsection{Proof Preliminaries}
 
-\newcommand{\spostsym}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\spostsym}{\ensuremath{\mathcal{SP}}\xspace}
 \newcommand{\spost}[2]{\ensuremath{\spostsym(#1,#2)}}
 \newcommand{\subst}[3]{\ensuremath{#1[#2 \leftarrow #3]}}
 
@@ -396,9 +396,10 @@ actual program points of interest: before the loop body, at the loop invariant
 program point, after the loop body.
 
 \begin{lemma}
-  \emph{(\spostsym Correctness)} Operator \spostsym as defined in \spexit,
+  \emph{(\spostsym Correctness over \loopmodel)} Operator \spostsym as defined in \spexit,
   \spscalar, \sparray and \spseq computes the strongest postcondition over
   parallel guarded exits and parallel guarded assigns.
+\label{lemma:sp-correctness}
 \end{lemma}
 
 \begin{proof}
@@ -408,6 +409,7 @@ program point, after the loop body.
 \begin{lemma}
   \emph{(\spostsym over Guarded Exits)} The strongest postcondition only
   strengthens a property $P$ over guarded exits.
+\label{lemma:sp-guarded-exists}
 \end{lemma}
 
 \begin{proof}
@@ -432,6 +434,7 @@ program point, after the loop body.
   \emph{(\spostsym over Guarded Assignments)} The strongest postcondition of a
   property $P$ over guarded assignments which do not assign to variables in $P$
   only strengthens $P$.
+\label{lemma:sp-guarded-assignments}
 \end{lemma}
 
 \begin{proof}
@@ -462,7 +465,8 @@ program point, after the loop body.
   loop invariant of every loop where the pattern occurs and (2) for every loop
   invariant $Q$ of a loop where the pattern occurs, there exists a loop
   invariant $R$ of the loop where the pattern is erased, such that
-  $Q \Leftrightarrow P \land R$.
+  $P \land R \impl Q$.
+\label{def:pattern-capture}
 \end{definition}
 
 
@@ -471,6 +475,7 @@ program point, after the loop body.
 \newcounter{pc} % pattern counter
 \newcommand{\curpattern}{\ensuremath{\textsc{pat}\mathrm{\arabic{pc}}}\xspace}
 \newcommand{\curinv}{\ensuremath{\textsc{inv}\mathrm{\arabic{pc}}}\xspace}
+\newcommand{\anyinv}{\ensuremath{\textsc{inv}\mathrm{x}}\xspace}
 
 \newcommand{\pattern}[3]{%
 \refstepcounter{pc}
@@ -513,8 +518,9 @@ in order to give a precise invariants \allinv (presented in the following sub-se
 }
 
 \begin{theorem}
-  \emph{(Search Pattern Invariant Capture)} \Inv{\idx} given by \curinv
+  \emph{(Search Pattern Invariant Capture the Pattern)} \Inv{\idx} given by \curinv
   captures pattern \curpattern.
+\label{theo:capture-search-pattern}
 \end{theorem}
 
 \begin{proof}
@@ -525,9 +531,9 @@ in order to give a precise invariants \allinv (presented in the following sub-se
   %
   \begin{align*}
     \spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}} 
-    &\Leftrightarrow \neg t^\at{\idxinitial} && \text{by \spexit}\\
-    &\Leftrightarrow \neg t_0^\at{initial}   && \text{by \vpp}\\
-    &\Leftrightarrow \Inv{\idxinitial}      && \text{by \curinv}
+    &= \neg t^\at{\idxinitial} && \text{by \spexit}\\
+    &= \neg t_0^\at{initial}   && \text{by \vpp}\\
+    &= \Inv{\idxinitial}      && \text{by \curinv}
   \end{align*}
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
@@ -540,17 +546,41 @@ in order to give a precise invariants \allinv (presented in the following sub-se
     &= \Inv{i+1}                            && \text{by \curinv}
   \end{align*}
   % 
-  This proves that \Inv{\idx} is a loop invariant.
+  This proves that \Inv{\idx} capture \curpattern.
+
+  \curinv is a \textit{precis} loop invariant if only \curpattern is 
+  a only statement in the loop. Proof by  contradiction (trough Definition 
+  Pattern Capture: erasing by Yannick) the precis invariant is the strongest postcondition 
+ (definition by Johannes) .
   
-  \yannick{Marc, the above is not correct yet. Indeed, the loop may contain
-    other guarded exits and guarded assignments. Still, the proof above can be
-    augmented to be correct, by proving that an invariant like \Inv{\idx} over 
-    the current loop index and initial values of variables can be carried over
-    all other guarded exits and guarded assigns. Probably something that should
-    be proved in the preliminaries.}
-  
-  \yannick{Marc, I let you think about the proof that \Inv{\idx} completely 
-  captures the effect of the pattern.}
+\end{proof}
+
+\begin{theorem}
+  \emph{(Search Pattern Invariant Capture the Loop)} \curinv given in \loopmodel
+  is a Loop Invariant and it preserves any Loop Invariant.  
+\label{theo:preserve-search-in-loop}
+\end{theorem}
+
+\begin{proof}
+  We assume for the moment lemma \ref{lemma:sp-correctness}.  
+  The proof proceeds by induction on the number of one or more unordered
+  set of simultaneous guarded exits statements $es_{1..n}$, followed by a (possibly empty) 
+  unordered set of simultaneous guarded assignments statements $as_{0..n}$.
+  Initially we assume an invariant \anyinv with capture a loop \prog 
+  and the pattern \curpattern. \anyinv is an approximated invariant wich must be $true$.
+  %
+  \begin{align*}
+    \spost{es_{1..n}}{as_{0..m}}
+    &= \spost{as_{0..m}}{\spost{es_{1..n}}{\anyinv}} && \text{by \spseq}\\
+    &= \spost{as_{0..m}}{\spost{es_1}{\spost{es_{2..n}}{\anyinv}}} && \text{by \spseq}\\
+    &= (\exists j) (1\leq j\leq n \land es_j=\curpattern \land \\
+    &\spost{as_{0..m}}{\spost{es_{2..n}}{\spost{es_j}{\anyinv}}}) && \text{by unordered hypothèse}\\
+    &\impl \spost{as_{0..m}}{\spost{es_{2..n}}{\curinv}}) && \text{by theorem \ref{theo:capture-search-pattern}}\\
+    &\impl \spost{as_{0..m}}{\curinv}) && \text{by lemma \ref{lemma:sp-guarded-exists}}\\
+    &\impl \curinv && \text{by lemma \ref{lemma:sp-guarded-assignments}}
+  \end{align*}
+  %
+  This proves that \curinv capture \curpattern and a loop \prog.
 \end{proof}
 
 \bigskip
