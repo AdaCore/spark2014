@@ -801,6 +801,18 @@ package body Gnat2Why.Subprograms is
                        2 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
             end;
 
+         when N_Op_Minus =>
+            --  unary minus
+            T :=
+               New_Prefix_Call
+                  (Ada_Node => Expr,
+                   Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
+                   Operand  =>
+                     Why_Expr_Of_Ada_Expr
+                        (Right_Opnd (Expr),
+                         (Kind => Why_Int)));
+            Current_Type := (Kind => Why_Int);
+
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
             T :=
               New_Infix_Call
