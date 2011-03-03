@@ -63,6 +63,10 @@ package body Gnat2Why.Subprograms is
    --  Take a list of GNAT Node_Ids and apply the function F to each of them.
    --  Return the array that contains all the results, in the same order.
 
+   function Compute_Call_Args (Call : Node_Id) return W_Prog_Array;
+   --  Compute arguments for a function call or procedure call. The node in
+   --  argument must have a "Name" field and a "Parameter_Associations" field.
+
    procedure Compute_Invariant
       (Loop_Body  : List_Id;
        Pred       : out W_Predicate_Id;
@@ -127,6 +131,53 @@ package body Gnat2Why.Subprograms is
 
    function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id;
    --  Convert an Ada binary operator to a Why term symbol
+
+   -----------------------
+   -- Compute_Call_Args --
+   -----------------------
+
+   function Compute_Call_Args (Call : Node_Id) return W_Prog_Array
+   is
+      Params : constant List_Id := Parameter_Associations (Call);
+      Len    : constant Nat := List_Length (Params);
+   begin
+      if Len = 0 then
+         return (1 => New_Void (Call));
+      else
+         declare
+            Cur_Formal : Node_Id :=
+               First_Entity (Entity (Name (Call)));
+            Cur_Actual : Node_Id :=
+               First (Params);
+            Why_Args : W_Prog_Array :=
+               (1 .. Integer (Len) => Why.Types.Why_Empty);
+            Cnt      : Positive := 1;
+         begin
+            while Present (Cur_Formal) loop
+               case Ekind (Cur_Formal) is
+                  when E_In_Out_Parameter | E_Out_Parameter =>
+                     --  Parameters that are "out" must be variables
+                     --  They are translated "as is"
+                     Why_Args (Cnt) :=
+                        New_Prog_Identifier
+                           (Ada_Node => Cur_Actual,
+                            Def      =>
+                              Why_Ident_Of_Ada_Ident (Cur_Actual));
+
+                  when others =>
+                     --  No special treatment for parameters that are
+                     --  not "out"
+                     Why_Args (Cnt) :=
+                        Why_Expr_Of_Ada_Expr (Cur_Actual);
+               end case;
+               Cur_Formal := Next_Entity (Cur_Formal);
+               Next (Cur_Actual);
+               Cnt := Cnt + 1;
+            end loop;
+            return Why_Args;
+         end;
+      end if;
+   end Compute_Call_Args;
 
    -----------------------
    -- Compute_Invariant --
@@ -750,6 +801,18 @@ package body Gnat2Why.Subprograms is
                        2 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
             end;
 
+         when N_Op_Minus =>
+            --  unary minus
+            T :=
+               New_Prefix_Call
+                  (Ada_Node => Expr,
+                   Prefix   => New_Op_Minus_Prog (Ada_Node => Expr),
+                   Operand  =>
+                     Why_Expr_Of_Ada_Expr
+                        (Right_Opnd (Expr),
+                         (Kind => Why_Int)));
+            Current_Type := (Kind => Why_Int);
+
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract  =>
             T :=
               New_Infix_Call
@@ -815,6 +878,13 @@ package body Gnat2Why.Subprograms is
                       (Why_Abstract,
                        Type_Of_Node
                          (First_Index (Etype (Prefix (Expr)))))));
+
+         when N_Function_Call =>
+            return
+              New_Located_Call
+                 (Name     => Why_Ident_Of_Ada_Ident (Name (Expr)),
+                  Progs    => Compute_Call_Args (Expr),
+                  Ada_Node => Expr);
 
          when others =>
             raise Not_Implemented;
@@ -901,57 +971,11 @@ package body Gnat2Why.Subprograms is
                return New_Void (Stmt);
             end if;
 
-            declare
-               Proc_Name : constant W_Identifier_Id :=
-                  New_Identifier (Symbol => Chars (Entity (Name (Stmt))));
-               Len       : constant Nat :=
-                  List_Length (Parameter_Associations (Stmt));
-            begin
-               if Len = 0 then
-                  return
-                     New_Located_Call
-                        (Ada_Node => Stmt,
-                         Name     => Proc_Name,
-                         Progs    => (1 => New_Void (Stmt)));
-               else
-                  declare
-                     Cur_Formal : Node_Id :=
-                        First_Entity (Entity (Name (Stmt)));
-                     Cur_Actual : Node_Id :=
-                        First (Parameter_Associations (Stmt));
-                     Why_Args : W_Prog_Array :=
-                        (1 .. Integer (Len) => Why.Types.Why_Empty);
-                     Cnt      : Positive := 1;
-                  begin
-                     while Present (Cur_Formal) loop
-                        case Ekind (Cur_Formal) is
-                           when E_In_Out_Parameter | E_Out_Parameter =>
-                              --  Parameters that are "out" must be variables
-                              --  They are translated "as is"
-                              Why_Args (Cnt) :=
-                                 New_Prog_Identifier
-                                    (Ada_Node => Cur_Actual,
-                                     Def      =>
-                                       Why_Ident_Of_Ada_Ident (Cur_Actual));
-
-                           when others =>
-                              --  No special treatment for parameters that are
-                              --  not "out"
-                              Why_Args (Cnt) :=
-                                 Why_Expr_Of_Ada_Expr (Cur_Actual);
-                        end case;
-                        Cur_Formal := Next_Entity (Cur_Formal);
-                        Next (Cur_Actual);
-                        Cnt := Cnt + 1;
-                     end loop;
-                     return
-                        New_Located_Call
-                          (Ada_Node => Stmt,
-                           Name     => Proc_Name,
-                           Progs    => Why_Args);
-                  end;
-               end if;
-            end;
+            return
+               New_Located_Call
+                  (Ada_Node => Stmt,
+                   Name     => Why_Ident_Of_Ada_Ident (Name (Stmt)),
+                   Progs    => Compute_Call_Args (Stmt));
 
          when N_If_Statement =>
             return
