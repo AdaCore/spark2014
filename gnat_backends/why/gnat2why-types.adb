@@ -28,13 +28,15 @@ with Einfo;              use Einfo;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
+with Stand;              use Stand;
 with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Enums;      use Why.Gen.Enums;
+with Why.Gen.Ints;       use Why.Gen.Ints;
+with Why.Gen.Names;      use Why.Gen.Names;
 
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
@@ -59,24 +61,27 @@ package body Gnat2Why.Types is
        Ident_Node : Node_Id;
        Def_Node   : Node_Id)
    is
-      Name     : constant Name_Id := Chars (Ident_Node);
-      Name_Str : constant String := Get_Name_String (Name);
+      Name_Str : constant String := Full_Name (Ident_Node);
    begin
       case Nkind (Def_Node) is
          when N_Enumeration_Type_Definition =>
-            declare
-               Cursor       : Node_Or_Entity_Id :=
-                                Nlists.First (Literals (Def_Node));
-               Constructors : String_Lists.List :=
-                                String_Lists.Empty_List;
-            begin
-               while Nkind (Cursor) /= N_Empty loop
-                  Constructors.Append (
-                    Get_Name_String (Chars (Cursor)));
-                  Cursor := Next (Cursor);
-               end loop;
-               Declare_Ada_Enum_Type (File, Name_Str, Constructors);
-            end;
+            if Ident_Node = Standard_Boolean then
+               null;
+            else
+               declare
+                  Cursor       : Node_Or_Entity_Id :=
+                                   Nlists.First (Literals (Def_Node));
+                  Constructors : String_Lists.List :=
+                                   String_Lists.Empty_List;
+               begin
+                  while Nkind (Cursor) /= N_Empty loop
+                     Constructors.Append (
+                       Get_Name_String (Chars (Cursor)));
+                     Cursor := Next (Cursor);
+                  end loop;
+                  Declare_Ada_Enum_Type (File, Name_Str, Constructors);
+               end;
+            end if;
 
          when N_Signed_Integer_Type_Definition =>
             Declare_Ada_Abstract_Signed_Int
@@ -94,9 +99,10 @@ package body Gnat2Why.Types is
          when N_Constrained_Array_Definition =>
             declare
                Component_Type : constant String :=
-                  Get_Name_String
-                    (Chars (Subtype_Indication
-                       (Component_Definition (Def_Node))));
+                  Full_Name
+                     (Entity
+                        (Subtype_Indication (Component_Definition
+                           (Def_Node))));
                Index          : constant String :=
                   Get_Name_String (Type_Of_Array_Index (Def_Node));
             begin
@@ -128,8 +134,7 @@ package body Gnat2Why.Types is
        Ident_Node : Node_Id;
        Sub_Ind    : Node_Id)
    is
-      Name     : constant Name_Id := Chars (Ident_Node);
-      Name_Str : constant String := Get_Name_String (Name);
+      Name_Str : constant String := Full_Name (Ident_Node);
    begin
       case Nkind (Sub_Ind) is
          when N_Identifier =>
@@ -194,15 +199,13 @@ package body Gnat2Why.Types is
    function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)
       return W_Simple_Value_Type_Id
    is
-      Name : constant Name_Id := Chars (Ty);
+      Name : constant String := Full_Name (Ty);
       Base : constant W_Primitive_Type_Id :=
          (if Is_Boolean_Type (Ty) then New_Type_Bool
           else
             New_Abstract_Type
               (Ada_Node => Ty,
-               Name     => New_Identifier
-                 (Ada_Node => Ty,
-                  Symbol   => Name)));
+               Name     => New_Identifier (Name)));
    begin
       if Is_Mutable then
          return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);

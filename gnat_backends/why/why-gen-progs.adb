@@ -26,6 +26,7 @@
 with Uintp;              use Uintp;
 
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
+with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
@@ -59,13 +60,13 @@ package body Why.Gen.Progs is
                when Why_Abstract =>
                   return
                      New_Conversion_From_Int
-                       (Get_Name_String (To.Wh_Abstract));
+                       (Full_Name (To.Wh_Abstract));
             end case;
          when Why_Abstract =>
             case To.Kind is
                when Why_Int =>
                   return
-                    New_Conversion_To_Int (Get_Name_String (From.Wh_Abstract));
+                    New_Conversion_To_Int (Full_Name (From.Wh_Abstract));
                when Why_Abstract =>
                   raise Program_Error
                      with "Conversion between arbitrary types attempted";

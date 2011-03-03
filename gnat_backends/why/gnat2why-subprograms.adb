@@ -93,8 +93,12 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
 
-   function Type_Of_Node (N : Node_Id) return Name_Id;
-   --  Get the name of the type of an Ada node, as a Name_Id
+   function Type_Of_Node (N : Node_Id) return Node_Id;
+   --  Get the name of the type of an Ada node, as a Node_Id of Kind
+   --  N_Defining_Identifier
+
+   function Type_Of_Node (N : Node_Id) return Why_Type;
+   --  Get the name of the type of an Ada node, as a Why Type
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
@@ -309,17 +313,22 @@ package body Gnat2Why.Subprograms is
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return Name_Id
+   function Type_Of_Node (N : Node_Id) return Node_Id
    is
-      Ent : constant Entity_Id := Etype (N);
    begin
-      return Chars (Ent);
+      return Etype (N);
    end Type_Of_Node;
 
    function Type_Of_Node (N : Node_Id) return String
    is
    begin
-      return Get_Name_String (Type_Of_Node (N));
+      return Full_Name (Type_Of_Node (N));
+   end Type_Of_Node;
+
+   function Type_Of_Node (N : Node_Id) return Why_Type
+   is
+   begin
+      return (Why_Abstract, Type_Of_Node (N));
    end Type_Of_Node;
 
    --------------------------------
@@ -870,7 +879,7 @@ package body Gnat2Why.Subprograms is
             --  ??? We work with single dimensional arrays for the time being
             T :=
               New_Array_Access_Prog
-               (Type_Name => (Get_Name_String (Type_Of_Node (Prefix (Expr)))),
+               (Type_Name => Type_Of_Node (Prefix (Expr)),
                 Ar        => Why_Expr_Of_Ada_Expr (Prefix (Expr)),
                 Index     =>
                    Why_Expr_Of_Ada_Expr
@@ -938,15 +947,13 @@ package body Gnat2Why.Subprograms is
                when N_Indexed_Component =>
                   return
                     New_Array_Update_Prog
-                      (Type_Name =>
-                         Get_Name_String (Type_Of_Node (Prefix (Lvalue))),
+                      (Type_Name => Type_Of_Node (Prefix (Lvalue)),
                        Ar        => Why_Ident_Of_Ada_Ident (Prefix (Lvalue)),
                        Index     =>
                          Why_Expr_Of_Ada_Expr
                            (First (Expressions (Lvalue)),
-                            (Why_Abstract,
-                             Type_Of_Node
-                               (First_Index (Etype (Prefix (Lvalue)))))),
+                            Type_Of_Node
+                              (First_Index (Etype (Prefix (Lvalue))))),
                        Value     =>
                          Why_Expr_Of_Ada_Expr (Expression (Stmt)));
                when others =>
@@ -1461,13 +1468,12 @@ package body Gnat2Why.Subprograms is
             --  ??? We work with single dimensional arrays for the time being
             T :=
               New_Array_Access_Term
-               (Type_Name => (Get_Name_String (Type_Of_Node (Prefix (Expr)))),
+               (Type_Name => Type_Of_Node (Prefix (Expr)),
                 Ar        => Why_Term_Of_Ada_Expr (Prefix (Expr)),
                 Index     =>
                   Why_Term_Of_Ada_Expr
                     (First (Expressions (Expr)),
-                     (Why_Abstract,
-                      Type_Of_Node (First_Index (Etype (Prefix (Expr))))))
+                     Type_Of_Node (First_Index (Etype (Prefix (Expr)))))
                   );
 
          when N_Raise_Constraint_Error =>

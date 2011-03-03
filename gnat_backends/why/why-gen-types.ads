@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;        use Namet;
+with Types;        use Types;
 with Why.Ids;      use Why.Ids;
 with String_Utils; use String_Utils;
 
@@ -36,13 +36,13 @@ package Why.Gen.Types is
             when Why_Int =>
                null;
             when Why_Abstract =>
-               Wh_Abstract : Name_Id;
+               Wh_Abstract : Node_Id;
          end case;
       end record;
 
    --  The type of Why types, as used by the translation process; A type in
-   --  Why is either the builtin "int" type or a named type that corresponds
-   --  to an Ada type of the same name.
+   --  Why is either the builtin "int" type or a node that corresponds to a
+   --  N_Defining_Identifier of an Ada type
 
    --  This package provides ways to create Why types
 
