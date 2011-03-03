@@ -255,6 +255,7 @@ package body ALFA.Filter is
 
       Ent_Name     : Name_Id;
       Spec_Unit    : Node_Id := Empty;
+      Body_Unit    : Node_Id := Empty;
 
       -------------------
       -- Dispatch_Spec --
@@ -280,7 +281,9 @@ package body ALFA.Filter is
       if Nkind (Unit (N)) = N_Package_Body then
          Ent_Name  := Chars (Corresponding_Spec (Unit (N)));
          Spec_Unit := Parent (Parent (Parent (Corresponding_Spec (Unit (N)))));
+         Body_Unit := N;
       else
+         Spec_Unit := N;
          Ent_Name := Chars (Defining_Unit_Name (Specification (Unit (N))));
       end if;
 
@@ -289,8 +292,10 @@ package body ALFA.Filter is
            (Spec_Unit, Dispatch_Spec'Unrestricted_Access);
       end if;
 
-      Lib.Xref.ALFA.Traverse_Compilation_Unit
-        (N, Dispatch_Body'Unrestricted_Access);
+      if Present (Body_Unit) then
+         Lib.Xref.ALFA.Traverse_Compilation_Unit
+           (Body_Unit, Dispatch_Body'Unrestricted_Access);
+      end if;
 
       declare
          Types_Vars_Spec_P       : Node_Id;
@@ -381,36 +386,38 @@ package body ALFA.Filter is
          end if;
 
          --  Add diagonal dependencies for spec -> body dependencies
-         declare
-            Cursor : Node_Id := First (Context_Items (N));
-         begin
-            while Present (Cursor) loop
-               case Nkind (Cursor) is
-                  when N_With_Clause =>
-                     declare
-                        Pkg_Name : constant String :=
-                           Name_String (Chars (Name (Cursor)));
-                     begin
-                        if not Implicit_With (Cursor) then
-                           Add_Package_Decl
-                             (Context_Types_Vars_Body,
-                              Pkg_Name & Types_Vars_Spec_Suffix);
-                           Add_Package_Decl
-                             (Context_Subp_Spec,
-                              Pkg_Name & Types_Vars_Body_Suffix);
-                           Add_Package_Decl
-                             (Context_Subp_Body,
-                              Pkg_Name & Subp_Spec_Suffix);
-                        end if;
-                     end;
+         if Present (Body_Unit) then
+            declare
+               Cursor : Node_Id := First (Context_Items (Body_Unit));
+            begin
+               while Present (Cursor) loop
+                  case Nkind (Cursor) is
+                     when N_With_Clause =>
+                        declare
+                           Pkg_Name : constant String :=
+                              Name_String (Chars (Name (Cursor)));
+                        begin
+                           if not Implicit_With (Cursor) then
+                              Add_Package_Decl
+                                (Context_Types_Vars_Body,
+                                 Pkg_Name & Types_Vars_Spec_Suffix);
+                              Add_Package_Decl
+                                (Context_Subp_Spec,
+                                 Pkg_Name & Types_Vars_Body_Suffix);
+                              Add_Package_Decl
+                                (Context_Subp_Body,
+                                 Pkg_Name & Subp_Spec_Suffix);
+                           end if;
+                        end;
 
-                  when others =>
-                     null;
+                     when others =>
+                        null;
 
-               end case;
-               Next (Cursor);
-            end loop;
-         end;
+                  end case;
+                  Next (Cursor);
+               end loop;
+            end;
+         end if;
 
          Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Spec_P,
                                           Context => Context_Types_Vars_Spec);
