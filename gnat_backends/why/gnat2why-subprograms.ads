@@ -75,7 +75,7 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
-   procedure Why_Decl_of_Ada_Subprogram
+   procedure Why_Decl_Of_Ada_Subprogram
      (File : W_File_Id;
       Node : Node_Id);
    --  Generate a Why declaration that corresponds to an Ada subprogram

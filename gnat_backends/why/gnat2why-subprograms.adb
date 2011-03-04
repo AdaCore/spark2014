@@ -362,10 +362,10 @@ package body Gnat2Why.Subprograms is
    end Type_Of_Node;
 
    --------------------------------
-   -- Why_Decl_of_Ada_Subprogram --
+   -- Why_Decl_Of_Ada_Subprogram --
    --------------------------------
 
-   procedure Why_Decl_of_Ada_Subprogram
+   procedure Why_Decl_Of_Ada_Subprogram
      (File : W_File_Id;
       Node : Node_Id)
    is
@@ -692,7 +692,7 @@ package body Gnat2Why.Subprograms is
 
       Ent : constant Entity_Id := Get_Unique_Entity_For_Decl (Node);
 
-   --  Start of processing for Why_Decl_of_Ada_Subprogram
+   --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
    begin
       --  Ignore procedures generated for postconditions
@@ -745,7 +745,7 @@ package body Gnat2Why.Subprograms is
          when others =>
             raise Not_Implemented;
       end case;
-   end Why_Decl_of_Ada_Subprogram;
+   end Why_Decl_Of_Ada_Subprogram;
 
    --------------------------
    -- Why_Expr_Of_Ada_Expr --

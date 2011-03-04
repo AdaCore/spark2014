@@ -172,7 +172,7 @@ package body Gnat2Why.Driver is
          Translate_Context (File, Context_Items (GNAT_Root));
 
          if Nkind (N) = N_Subprogram_Body then
-            Why_Decl_of_Ada_Subprogram (File, N);
+            Why_Decl_Of_Ada_Subprogram (File, N);
          else
             Translate_Package (File, N);
          end if;
@@ -219,7 +219,7 @@ package body Gnat2Why.Driver is
 
             when N_Subprogram_Body        |
                  N_Subprogram_Declaration =>
-               Why_Decl_of_Ada_Subprogram (File, Decl);
+               Why_Decl_Of_Ada_Subprogram (File, Decl);
 
             when N_Object_Declaration =>
                Why_Decl_Of_Ada_Object_Decl (File, Decl);
