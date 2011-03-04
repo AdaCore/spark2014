@@ -37,6 +37,7 @@ with Uintp;              use Uintp;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                   use Why;
+with Why.Sinfo;             use Why.Sinfo;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
@@ -402,11 +403,14 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec
          (Kind       : Name_Id;
-          With_Label : Boolean := False) return W_Predicate_Id;
+          Located_Node : out Node_Id) return W_Predicate_Id;
       --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
-      --  Generate a label only if With_Label is True.
+      --  Also output a suitable location node, if available.
+
+      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id;
+      --  Same as above, without the location node
 
       function Initial_Assertions
         (Initial_Body : W_Prog_Id;
@@ -602,12 +606,11 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec
          (Kind       : Name_Id;
-          With_Label : Boolean := False) return W_Predicate_Id
+          Located_Node : out Node_Id) return W_Predicate_Id
       is
          Corr_Spec      : Node_Id;
          Cur_Spec       : W_Predicate_Id := New_True_Literal_Pred;
          Found_Location : Boolean := False;
-         Located_Node   : Node_Id := Empty;
          PPCs           : Node_Id;
 
       begin
@@ -645,14 +648,15 @@ package body Gnat2Why.Subprograms is
             PPCs := Next_Pragma (PPCs);
          end loop;
 
-         if With_Label and then Nkind (Located_Node) /= N_Empty then
-            return
-              New_Located_Predicate
-                (Ada_Node => Located_Node,
-                 Pred     => Cur_Spec);
-         else
-            return Cur_Spec;
-         end if;
+         return Cur_Spec;
+
+      end Compute_Spec;
+
+      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id
+      is
+         N : Node_Id;
+      begin
+         return Compute_Spec (Kind, N);
       end Compute_Spec;
 
       ------------------------
@@ -714,23 +718,25 @@ package body Gnat2Why.Subprograms is
                             Initial_Assertions
                               (Compute_Context (Why_Stmt),
                                Pre);
+               Loc_Node : Node_Id := Empty;
+               Post     : constant W_Predicate_Id :=
+                  Compute_Spec (Name_Postcondition, Loc_Node);
+               Loc_Post : constant W_Predicate_Id :=
+                  (if Present (Loc_Node) and then
+                     Get_Kind (Post) /= W_True_Literal_Pred then
+                      New_Located_Predicate
+                        (Ada_Node => Loc_Node,
+                         Pred     => Post)
+                   else
+                      Post);
             begin
-               --  ??? TBD deal with expression functions : transform into Why
-               --  'function'
-               --  ??? TBD compute a VC for the TCC of the Precondition
-               --  We fix "true" as precondition and assume the precondition
-               --  in the subprogram body
+
                New_Global_Binding
                  (File    => File,
                   Name    =>
                     New_Definition_Name (Get_Name_String (Name)),
                   Binders => Compute_Binders,
-                  Post    =>
-                    New_Assertion
-                       (Pred =>
-                        Compute_Spec
-                           (Kind       => Name_Postcondition,
-                            With_Label => True)),
+                  Post    => New_Assertion (Pred => Loc_Post),
                   Def     => Why_Body);
             end;
 
