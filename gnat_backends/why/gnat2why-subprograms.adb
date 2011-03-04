@@ -156,8 +156,30 @@ package body Gnat2Why.Subprograms is
             Why_Args : W_Prog_Array :=
                (1 .. Integer (Len) => Why.Types.Why_Empty);
             Cnt      : Positive := 1;
+            In_Named : Boolean := False;
          begin
-            while Present (Cur_Formal) loop
+            --  We have to deal with named arguments, but the frontend has
+            --  done some work for us. All unnamed arguments come first and
+            --  are given as-is, while named arguments are wrapped into a
+            --  N_Parameter_Association. The field First_Named_Actual of the
+            --  function or procedure call points to the first named argument,
+            --  that should be inserted after the last unnamed one. Each
+            --  Named Actual then points to a Next_Named_Actual. These
+            --  pointers point directly to the actual, but Next_Named_Actual
+            --  pointers are attached to the N_Parameter_Association, so to
+            --  get the next actual from the current one, we need to follow
+            --  the Parent pointer.
+            --
+            --  The Boolean In_Named states how to obtain the next actual:
+            --  either follow the Next pointer, or the Next_Named_Actual of
+            --  the parent.
+            --  We start by updating the Cur_Actual and In_Named variables for
+            --  the first parameter.
+            if Nkind (Cur_Actual) = N_Parameter_Association then
+               In_Named := True;
+               Cur_Actual := First_Named_Actual (Call);
+            end if;
+            while Present (Cur_Formal) and then Present (Cur_Actual) loop
                case Ekind (Cur_Formal) is
                   when E_In_Out_Parameter | E_Out_Parameter =>
                      --  Parameters that are "out" must be variables
@@ -175,7 +197,15 @@ package body Gnat2Why.Subprograms is
                         Why_Expr_Of_Ada_Expr (Cur_Actual);
                end case;
                Cur_Formal := Next_Entity (Cur_Formal);
-               Next (Cur_Actual);
+               if In_Named then
+                  Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
+               else
+                  Next (Cur_Actual);
+                  if Nkind (Cur_Actual) = N_Parameter_Association then
+                     In_Named := True;
+                     Cur_Actual := First_Named_Actual (Call);
+                  end if;
+               end if;
                Cnt := Cnt + 1;
             end loop;
             return Why_Args;
