@@ -731,6 +731,15 @@ package body Gnat2Why.Subprograms is
                       Post);
             begin
 
+               if Acts_As_Spec (Node) then
+                  Declare_Parameter
+                    (File   => File,
+                     Name   => New_Identifier (Get_Name_String (Name)),
+                     Arrows => Compute_Arrows,
+                     Pre    => Duplicate_Any_Node (Id => Pre),
+                     Post   => Duplicate_Any_Node (Id => Post));
+               end if;
+
                New_Global_Binding
                  (File    => File,
                   Name    =>
