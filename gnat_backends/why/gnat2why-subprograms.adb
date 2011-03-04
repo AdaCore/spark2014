@@ -916,7 +916,7 @@ package body Gnat2Why.Subprograms is
                       Type_Of_Node (First_Index (Etype (Prefix (Expr))))));
 
          when N_Function_Call =>
-            return
+            T :=
               New_Located_Call
                  (Name     => Why_Ident_Of_Ada_Ident (Name (Expr)),
                   Progs    => Compute_Call_Args (Expr),
