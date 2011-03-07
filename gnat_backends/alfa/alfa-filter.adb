@@ -368,19 +368,27 @@ package body ALFA.Filter is
                Cursor : Node_Id := First (Context_Items (Spec_Unit));
             begin
                while Present (Cursor) loop
-                  declare
-                     Pkg_Name : constant Name_Id := Chars (Name (Cursor));
-                  begin
-                     if not Implicit_With (Cursor) then
-                        Add_Package_Decl
-                          (Context_Types_Vars_Spec,
-                           Name_String (Pkg_Name) & Types_Vars_Spec_Suffix);
-                        Add_Package_Decl
-                          (Context_Subp_Spec,
-                           Name_String (Pkg_Name) & Subp_Spec_Suffix);
-                     end if;
-                     Next (Cursor);
-                  end;
+                  case Nkind (Cursor) is
+                     when N_With_Clause =>
+                        if not Implicit_With (Cursor) then
+                           declare
+                              Pkg_Name : constant Name_Id :=
+                                 Chars (Name (Cursor));
+                           begin
+                              Add_Package_Decl
+                                (Context_Types_Vars_Spec,
+                                 Name_String (Pkg_Name) &
+                                    Types_Vars_Spec_Suffix);
+                              Add_Package_Decl
+                                (Context_Subp_Spec,
+                                 Name_String (Pkg_Name) & Subp_Spec_Suffix);
+                           end;
+                        end if;
+
+                     when others =>
+                        null;
+                  end case;
+                  Next (Cursor);
                end loop;
             end;
          end if;
