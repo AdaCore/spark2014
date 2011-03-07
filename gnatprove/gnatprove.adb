@@ -397,8 +397,8 @@ procedure Gnatprove is
 
    procedure Iter_Project_Source_Files (Proj : Project_Tree)
    is
-      Proj_Type : constant Project_Type := Root_Project (Proj);
-      File_List : constant File_Array_Access := Source_Files (Proj_Type);
+      Proj_Type : constant Project_Type := Proj.Root_Project;
+      File_List : constant File_Array_Access := Proj_Type.Source_Files;
    begin
       for Index in File_List'Range loop
          declare
@@ -470,21 +470,16 @@ begin
       (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
        Proj_Env);
    Proj_Type := Root_Project (Tree);
-   declare
-      Working_Dir : constant String :=
-         String (Dir_Name (Object_Dir (Proj_Type)));
-   begin
-      --  Call gnatmake before changing the directory, for the project file to
-      --  be in the path
-      Call_Gnatmake (Project_File.all);
+   --  Call gnatmake before changing the directory, for the project file to
+   --  be in the path
+   Call_Gnatmake (Project_File.all);
 
-      Ada.Directories.Set_Directory (Working_Dir);
+   Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
 
-      Iterate_Gnat2Why (Tree);
+   Iterate_Gnat2Why (Tree);
 
-      Iterate_Why (Tree);
+   Iterate_Why (Tree);
 
-      Iterate_Altergo (Tree);
-   end;
+   Iterate_Altergo (Tree);
 
 end Gnatprove;
