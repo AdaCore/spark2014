@@ -5,4 +5,6 @@ package aggregate is
    NullTemplatePad : constant TemplatePadT
      := TemplatePadT'(others => 0);
 
+   procedure A ( X : Integer);
+
 end aggregate;
