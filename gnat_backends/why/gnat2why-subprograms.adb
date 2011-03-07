@@ -818,7 +818,7 @@ package body Gnat2Why.Subprograms is
                                    Value    => Intval (Expr)));
             Current_Type := (Kind => Why_Int);
 
-         when N_Identifier =>
+         when N_Identifier | N_Expanded_Name =>
             --  Deal with identifiers:
             --  * Enumeration literals: deal with special cases True and
             --    False, otherwise such literals are just constants
@@ -826,43 +826,45 @@ package body Gnat2Why.Subprograms is
             --  * global constants are logics in Why
             --  * global mutable variables are references
             --  * loop parameters are always mutable, and of type int
-            case Ekind (Entity (Expr)) is
-               --  First treat special cases
-               when E_Enumeration_Literal =>
-                  if Entity (Expr) = Standard_True then
-                     T := New_Prog_Constant (Def => New_True_Literal);
-                  elsif Entity (Expr) = Standard_False then
-                     T := New_Prog_Constant (Def => New_False_Literal);
-                  else
-                     T := New_Prog_Identifier
-                           (Ada_Node => Expr,
-                            Def      => Why_Ident_Of_Ada_Ident (Expr));
-                  end if;
+            declare
+               Id : constant W_Identifier_Id :=
+                  Why_Ident_Of_Ada_Ident (Expr);
+            begin
+               case Ekind (Entity (Expr)) is
+                  --  First treat special cases
+                  when E_Enumeration_Literal =>
+                     if Entity (Expr) = Standard_True then
+                        T := New_Prog_Constant (Def => New_True_Literal);
+                     elsif Entity (Expr) = Standard_False then
+                        T := New_Prog_Constant (Def => New_False_Literal);
+                     else
+                        T := New_Prog_Identifier
+                              (Ada_Node => Expr,
+                               Def      => Id);
+                     end if;
 
-               when others =>
-                  --  There is a special case for constants introduced by the
-                  --  frontend
-                  if Ekind (Entity (Expr)) = E_Constant and then not
-                     (Comes_From_Source (Original_Node (Entity (Expr)))) then
-                     T := New_Prog_Identifier
-                           (Ada_Node => Expr,
-                            Def      =>
-                              New_Identifier
-                                 (Symbol => Chars (Entity (Expr))));
-                  elsif Is_Mutable (Entity (Expr)) then
-                     T := New_Deref
-                           (Ada_Node => Expr,
-                            Ref      => Why_Ident_Of_Ada_Ident (Expr));
-                  else
-                     T := New_Prog_Identifier
-                           (Ada_Node => Expr,
-                            Def      => Why_Ident_Of_Ada_Ident (Expr));
-                  end if;
-                  if Ekind (Entity (Expr)) = E_Loop_Parameter then
-                     Current_Type := (Kind => Why_Int);
-                  end if;
+                  when others =>
+                     --  There is a special case for constants introduced by
+                     --  the frontend
+                     if Ekind (Entity (Expr)) = E_Constant and then not
+                        (Comes_From_Source (Original_Node (Entity (Expr))))
+                     then
+                        T := New_Prog_Identifier
+                              (Ada_Node => Expr,
+                               Def      =>
+                                 New_Identifier
+                                    (Symbol => Chars (Entity (Expr))));
+                     elsif Is_Mutable (Entity (Expr)) then
+                        T := New_Deref (Ada_Node => Expr, Ref => Id);
+                     else
+                        T := New_Prog_Identifier (Ada_Node => Expr, Def => Id);
+                     end if;
+                     if Ekind (Entity (Expr)) = E_Loop_Parameter then
+                        Current_Type := (Kind => Why_Int);
+                     end if;
 
-            end case;
+               end case;
+            end;
 
          when N_Op_Eq =>
             --  We are in a program, so we have to use boolean functions
@@ -1494,7 +1496,7 @@ package body Gnat2Why.Subprograms is
               New_Integer_Constant (Ada_Node => Expr, Value => Intval (Expr));
             Current_Type := (Kind => Why_Int);
 
-         when N_Identifier =>
+         when N_Identifier | N_Expanded_Name =>
             --  The corresponding Why type of the identifier may be of
             --  reference type; but here we do not care, as Why, in
             --  annotations, happily converts a reference to its base type.
