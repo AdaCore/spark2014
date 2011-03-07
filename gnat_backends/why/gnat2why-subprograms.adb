@@ -91,6 +91,12 @@ package body Gnat2Why.Subprograms is
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
 
+   function Range_Predicate (N : Node_Id; T : W_Term_Id)
+      return W_Predicate_Id;
+   --  Generate a predicate of the form
+   --    low_bound < int_of_type (x) < high_bound
+   --  from an N_Range node
+
    function Type_Of_Node (N : Node_Id) return String;
    --  Get the name of the type of an Ada node, as a string
 
@@ -278,6 +284,25 @@ package body Gnat2Why.Subprograms is
             raise Program_Error;
       end case;
    end Get_Range;
+
+   ---------------------
+   -- Range_Predicate --
+   ---------------------
+
+   function Range_Predicate (N : Node_Id; T : W_Term_Id) return W_Predicate_Id
+   --  Compute a range predicate from a N_Range node.
+   is
+   begin
+      return
+        New_Related_Terms
+          (Left =>
+             Why_Term_Of_Ada_Expr (Low_Bound (N), (Kind => Why_Int)),
+           Op => New_Rel_Le,
+           Right => T,
+           Op2 => New_Rel_Le,
+           Right2 =>
+             Why_Term_Of_Ada_Expr (High_Bound (N), (Kind => Why_Int)));
+   end Range_Predicate;
 
    ----------------------------
    -- Insert_Conversion_Term --
@@ -1378,24 +1403,12 @@ package body Gnat2Why.Subprograms is
 
          when N_In =>
             if Nkind (Right_Opnd (Expr)) = N_Range then
-               --  Generate a predicate of the form
-               --  low_bound < int_of_type (x) < high_bound
                return
-                 New_Related_Terms
-                   (Left =>
+                  Range_Predicate
+                     (Right_Opnd (Expr),
                       Why_Term_Of_Ada_Expr
-                        (Low_Bound (Right_Opnd (Expr)),
-                         (Kind => Why_Int)),
-                    Op => New_Rel_Le,
-                    Right =>
-                      Why_Term_Of_Ada_Expr
-                        (Left_Opnd (Expr),
-                         (Kind => Why_Int)),
-                    Op2 => New_Rel_Le,
-                    Right2 =>
-                      Why_Term_Of_Ada_Expr
-                        (High_Bound (Right_Opnd (Expr)),
-                         (Kind => Why_Int)));
+                         (Left_Opnd (Expr),
+                          (Kind => Why_Int)));
             else
                raise Not_Implemented;
             end if;
@@ -1412,6 +1425,41 @@ package body Gnat2Why.Subprograms is
                       Condition => Why_Predicate_Of_Ada_Expr (Cond),
                       Then_Part => Why_Predicate_Of_Ada_Expr (Then_Part),
                       Else_Part => Why_Predicate_Of_Ada_Expr (Else_Part));
+            end;
+
+         when N_Quantified_Expression =>
+            declare
+               Quant_Spec : constant Node_Id :=
+                  Loop_Parameter_Specification (Expr);
+               I          : constant W_Identifier_Id :=
+                  New_Identifier (Symbol =>
+                     Chars (Defining_Identifier (Quant_Spec)));
+               Conclusion : constant W_Predicate_Id :=
+                  Why_Predicate_Of_Ada_Expr (Condition (Expr));
+               Hypothesis : constant W_Predicate_Id :=
+                  Range_Predicate
+                     (Discrete_Subtype_Definition (Quant_Spec),
+                      New_Term_Identifier (Name => I));
+               Quant_Body : constant W_Predicate_Id :=
+                  New_Implication
+                     (Left => Hypothesis,
+                      Right => Conclusion);
+            begin
+               if All_Present (Expr) then
+                  return
+                     New_Universal_Quantif
+                        (Ada_Node  => Expr,
+                         Variables => (1 => I),
+                         Var_Type  => New_Type_Int,
+                         Pred      => Quant_Body);
+               else
+                  return
+                     New_Existential_Quantif
+                        (Ada_Node  => Expr,
+                         Variables => (1 => I),
+                         Var_Type  => New_Type_Int,
+                         Pred      => Quant_Body);
+               end if;
             end;
 
          when others =>
@@ -1459,6 +1507,9 @@ package body Gnat2Why.Subprograms is
                  New_Term_Identifier
                    (Ada_Node => Expr,
                     Name     => Why_Ident_Of_Ada_Ident (Expr));
+            end if;
+            if Ekind (Entity (Expr)) = E_Loop_Parameter then
+               Current_Type := (Kind => Why_Int);
             end if;
 
          when N_Op_Add | N_Op_Multiply | N_Op_Subtract =>
