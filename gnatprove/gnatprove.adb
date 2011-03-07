@@ -38,7 +38,7 @@ with Sinput.C;
 with Sinput.P;
 with Types;
 
-with Text_IO;
+with Ada.Text_IO;
 
 procedure Gnatprove is
 
@@ -159,8 +159,8 @@ procedure Gnatprove is
    is
    begin
       if Verbose then
-         Text_IO.Put ("calling Alt-ergo on ");
-         Text_IO.Put_Line (File);
+         Ada.Text_IO.Put ("calling Alt-ergo on ");
+         Ada.Text_IO.Put_Line (File);
       end if;
       declare
          Status : aliased Integer;
@@ -174,17 +174,17 @@ procedure Gnatprove is
                Input     => "",
                Status    => Status'Access,
                Err_To_Out => True);
-         FT : Text_IO.File_Type;
+         FT : Ada.Text_IO.File_Type;
       begin
-         Text_IO.Create (FT, Text_IO.Out_File, Result_File);
+         Ada.Text_IO.Create (FT, Ada.Text_IO.Out_File, Result_File);
          if Status /= 0 or else S'Length = 0 then
-            Text_IO.Put (FT, "File """);
-            Text_IO.Put (FT, File);
-            Text_IO.Put_Line (FT, """:Failure or Timeout");
+            Ada.Text_IO.Put (FT, "File """);
+            Ada.Text_IO.Put (FT, File);
+            Ada.Text_IO.Put_Line (FT, """:Failure or Timeout");
          else
-            Text_IO.Put (FT, S);
+            Ada.Text_IO.Put (FT, S);
          end if;
-         Text_IO.Close (FT);
+         Ada.Text_IO.Close (FT);
       end;
    end Call_AltErgo_On_File;
 
@@ -207,20 +207,20 @@ procedure Gnatprove is
       procedure Print_Command_Line
       is
       begin
-         Text_IO.Put (Command);
+         Ada.Text_IO.Put (Command);
          for Index in Arguments'Range loop
             declare
                S : constant String_Access := Arguments (Index);
             begin
-               Text_IO.Put (" ");
-               Text_IO.Put (S.all);
+               Ada.Text_IO.Put (" ");
+               Ada.Text_IO.Put (S.all);
             end;
          end loop;
       end Print_Command_Line;
    begin
       if Verbose then
          Print_Command_Line;
-         Text_IO.Put_Line ("");
+         Ada.Text_IO.Put_Line ("");
       end if;
       declare
          S : constant String :=
@@ -233,8 +233,8 @@ procedure Gnatprove is
       begin
          if Status /= 0 then
             Print_Command_Line;
-            Text_IO.Put_Line (" failed.");
-            Text_IO.Put (S);
+            Ada.Text_IO.Put_Line (" failed.");
+            Ada.Text_IO.Put (S);
             GNAT.OS_Lib.OS_Exit (1);
          end if;
          for Index in Arguments'Range loop
@@ -333,17 +333,17 @@ procedure Gnatprove is
    is
    begin
       if Verbose then
-         Text_IO.Put ("cat ");
+         Ada.Text_IO.Put ("cat ");
          for Index in Files'Range loop
             declare
                Cur_File : constant String_Access := Files (Index);
             begin
-               Text_IO.Put (Cur_File.all);
-               Text_IO.Put (" ");
+               Ada.Text_IO.Put (Cur_File.all);
+               Ada.Text_IO.Put (" ");
             end;
          end loop;
-         Text_IO.Put ("> ");
-         Text_IO.Put_Line (Target);
+         Ada.Text_IO.Put ("> ");
+         Ada.Text_IO.Put_Line (Target);
       end if;
       for Index in Files'Range loop
          declare
