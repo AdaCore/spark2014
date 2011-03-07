@@ -34,10 +34,6 @@ with GNAT.Strings;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
-with Sinput.C;
-with Sinput.P;
-with Types;
-
 with Ada.Text_IO;
 
 procedure Gnatprove is
@@ -84,8 +80,6 @@ procedure Gnatprove is
        Target  : String;
        Success : out Boolean);
    --  Cat all the Files together into the Target.
-
-   function File_Is_Subunit (File : Virtual_File) return Boolean;
 
    function Get_Ada_Include return String;
 
@@ -361,17 +355,6 @@ procedure Gnatprove is
    end Cat;
 
    ---------------------
-   -- File_Is_Subunit --
-   ---------------------
-
-   function File_Is_Subunit (File : Virtual_File) return Boolean is
-      X : constant Types.Source_File_Index :=
-         Sinput.C.Load_File (+Full_Name (File));
-   begin
-      return Sinput.P.Source_File_Is_Subunit (X);
-   end File_Is_Subunit;
-
-   ---------------------
    -- Get_Ada_Include --
    ---------------------
 
@@ -406,18 +389,7 @@ procedure Gnatprove is
          begin
             case Unit_Part (Inf) is
                when Unit_Body =>
-                  if File_From_Unit
-                       (Proj_Type,
-                        Unit_Name (Inf),
-                        Unit_Spec,
-                        "ada") = ""
-                        and then
-                     File_Is_Subunit (File_List (Index))
-                  then
-                     null;
-                  else
-                     Action (Proj, File_List (Index));
-                  end if;
+                  Action (Proj, File_List (Index));
 
                when Unit_Spec =>
                   if File_From_Unit
