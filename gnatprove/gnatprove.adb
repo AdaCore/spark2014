@@ -472,7 +472,7 @@ begin
    Proj_Type := Root_Project (Tree);
    declare
       Working_Dir : constant String :=
-         String (Full_Name (Object_Dir (Proj_Type)).all);
+         String (Dir_Name (Object_Dir (Proj_Type)));
    begin
       --  Call gnatmake before changing the directory, for the project file to
       --  be in the path
