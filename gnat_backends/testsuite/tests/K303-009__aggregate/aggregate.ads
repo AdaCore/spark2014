@@ -3,8 +3,10 @@ package aggregate is
    type TemplatePadT is array(TemplatePadI) of Integer;
 
    NullTemplatePad : constant TemplatePadT
-     := TemplatePadT'(others => 0);
+     := (others => 0);
 
-   procedure A ( X : Integer);
+   procedure A (X : Integer; K : out TemplatePadT)
+      with Pre  => (X = 1),
+           Post => (K (1) = 1 and then K (11) = 2 and then K (12) = 0);
 
 end aggregate;
