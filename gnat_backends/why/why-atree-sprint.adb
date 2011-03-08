@@ -77,7 +77,7 @@ package body Why.Atree.Sprint is
    ---------------------
 
    procedure Sprint_Why_Node (Node : Why_Node_Id; To : Output_Id := Stdout) is
-      PS : Printer_State;
+      PS : Printer_State := (Control => Continue);
    begin
       O := To;
       Traverse (PS, Node);
