@@ -476,7 +476,7 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
   \emph{(Pattern Capture)} A formula $P$ captures a pattern if (1) $P$ is a
   loop invariant of every loop where the pattern occurs and (2) P is the 
   strongest loop invariant on the loop reduced to the pattern only, starting
-  from state true.
+  from state $\mathit{true}$.
 \label{def:pattern-capture}
 \end{definition}
 
@@ -514,34 +514,24 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 }
 
 \begin{theorem}
-  \emph{(Search Pattern Invariant Capture the Pattern)} \Inv{\idx} given by \curinv
-  captures pattern \curpattern.
+  \Inv{\idx} given by \curinv captures pattern \curpattern.
 \label{theo:capture-search-pattern}
 \end{theorem}
 
 \begin{proof}
-  We assume for the moment lemma \ref{lemma:sp-correctness}.  
-  The proof proceeds by induction on the number of one or more unordered
-  set of simultaneous guarded exits statements \gstatement{exit}{1..n-1} (possibly empty) 
-  and target guarded exit which we denoted with $s \symdef t^\at{\idxinitial} \rightarrow \KWexit$,
-  followed by a unordered set of simultaneous guarded assignments statements \gstatement{assign}{1..m} 
-  (possibly empty).
-  %
-\bigskip
-  
-  1. case : $\gstatement{exit}{1..n-1} = \o{} \land \gstatement{assign}{1..m} = \o{}$ \\
-\medskip
+  The proof proceeds by induction on the value of the loop index \idx. Without
+  loss of generality, we assume the loop is centered on the pattern, with
+  preceding guarded exits \gstatement{exit}{1..n} and following guarded
+  assignments \gstatement{assign}{1..m}.
 
-   Initially we can assume that an invariant is $\mathit{true}$ because before reaching 
-   the invariant state \state{inv} for the first time, the invariant processing execution is 
-   in the virtual state of the targeted guarded exit (\vstate{exit}{s}) and therefore there is 
-   no invariants processed by our method except user invariants. In addition our method require
-   no user guidance to generate automatically the invariant. 
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$ \\
+
+  \noindent
+  We start from invariant $\mathit{true}$ before the loop.
   %
   \begin{align*}
-    \spost{
-      & ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\
-      &t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}
+    \spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}
     }\\   
     &= \neg t^\at{initial}    && \text{by \spexit}\\
     &= \neg t_0^\at{initial}  && \text{by \vpp}\\
@@ -549,55 +539,49 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
   \end{align*}
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
-  \Inv{\idx+1} holds at loop iteration $\idx+1$.
+  \Inv{\idx+1} is the strongest postcondition of \Inv{\idx} through the loop
+  body at loop iteration $\idx+1$.
   %
   \begin{align*}
-    \spost{
-      & ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\\
-      &t^\at{\idxinitial} \rightarrow \KWexit}{\Inv{\idx}
+    \spost{t^\at{\idx} \rightarrow \KWexit}{\Inv{\idx}
     }\\   
     &= \neg t^\at{\idx+1} \land \Inv{\idx}    && \text{by \spexit}\\
     &=\neg t_0^\at{\idx+1} \land \Inv{\idx}  && \text{by \vpp}\\
     &= \Inv{\idx+1}          && \text{by \curinv}
   \end{align*}
   %
-  This proves that \Inv{\idx} is the stronguest loop invariant on the 
-  loop reduced only to the pattern. 
+  This proves that \Inv{\idx} is the strongest loop invariant on the 
+  loop reduced to the pattern. 
+
+\bigskip
+2. general case \\
+
+  \noindent
+  We start from invariant $\mathit{true}$ before the loop.
   %
-\bigskip
-
-  2. case : $ \gstatement{exit}{1..n-1} \neq \o{} \land \gstatement{assign}{1..m} = \o{}$ 
-
-   \yannick{To be completed. after complete definition of Pattern Capture (for precision)}
-%
-\bigskip
-
-  3. case : $\gstatement{assign}{1..m} \neq \o{} \land \gstatement{exit}{1..n-1} \neq \o{}$ 
-
   \begin{align*}
     \spost{
-      &\gstatement{assign}{1..m};\\
-      &\gstatement{exit}{1..n-1};\\
+      &\gstatement{exit}{1..n};\\
       &t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}
     }\\   
     &= \spost{t^\at{\idxinitial} \rightarrow \KWexit}
-       {\spost{\gstatement{exit}{1..n-1}}{\spost{\gstatement{assign}{1..m}}{\mathit{true}}}} && \text{by \spseq} \\ 
-    &\Rightarrow \spost{t^\at{\idxinitial} \rightarrow \KWexit}
-       {\spost{\gstatement{exit}{1..n-1}}{\mathit{true}}} && \text{by lemma \ref{lemma:sp-g-assignments}}\\
+       {\spost{\gstatement{exit}{1..n}}{\mathit{true}}} && \text{by \spseq} \\ 
     &\Rightarrow \spost{t^\at{\idxinitial} \rightarrow \KWexit}
        {\mathit{true}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &= \neg t^\at{initial}    && \text{by \spexit}\\
-    &= \neg t_0^\at{initial}  && \text{by \vpp}\\
+    &= \neg t^\at{\idxinitial}    && \text{by \spexit}\\
+    &= \neg t_0^\at{\idxinitial}  && \text{by \vpp}\\
     &= \Inv{\idxinitial}      && \text{by \curinv}
   \end{align*}
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
-  \Inv{\idx+1} holds at loop iteration $\idx+1$.
+  \Inv{\idx+1} holds at loop iteration $\idx+1$. Notice that \Inv{\idx} does
+  not mention any variable, only initial values of variables and current
+  value of the loop index.
   %
   \begin{align*}
     \spost{
       &\gstatement{assign}{1..m};\\
-      &\gstatement{exit}{1..n-1};\\
+      &\gstatement{exit}{1..n};\\
       &t^\at{\idxinitial} \rightarrow \KWexit}{\Inv{\idx}
     }\\
     &= \spost{t^\at{\idx+1} \rightarrow \KWexit}
@@ -606,15 +590,13 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
        {\spost{\gstatement{exit}{1..n-1}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-assignments}}\\
     &\Rightarrow \spost{t^\at{\idx+1} \rightarrow \KWexit}
        {\Inv{\idx}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &= \neg t^\at{\idx+1}    && \text{by \spexit}\\
-    &=\neg t_0^\at{\idx+1}   && \text{by \vpp}\\
+    &= \neg t^\at{\idx+1} \land \Inv{\idx}    && \text{by \spexit}\\
+    &=\neg t_0^\at{\idx+1} \land \Inv{\idx}   && \text{by \vpp}\\
     &= \Inv{\idx+1}          && \text{by \curinv}
   \end{align*}
   % 
-  This proves that \Inv{\idx} is a loop invariant of every loop where the \curpattern occurs 
-
-  \yannick{For the moment 1+3 prove that \Inv{\idx} capture \curpattern.}
-
+  This proves that \Inv{\idx} is a loop invariant of every loop where pattern
+  \curpattern occurs.
 \end{proof}
 
 
