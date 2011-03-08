@@ -5,10 +5,10 @@ General description
 -------------------
 
 Gnatprove is the driver for the Hi-Lite tools. It is project aware. Gnatprove
-covers the way from the Ada code to the discharging of the proof obligations.
-More precisely, its input is an Ada project, defined by a project file, and
-its output are the results of the proof attempts for each verification
-conditions.
+covers the way from the Ada code to the discharging of the verification
+conditions. More precisely, its input is an Ada project, defined by a project
+file, and its output are the results of the proof attempts for each
+verification conditions.
 
 More precise description of the tool
 ------------------------------------
