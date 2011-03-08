@@ -160,13 +160,12 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit (GNAT_Root : Node_Id)
    is
-      File : constant W_File_Id := New_File;
-      N    : constant Node_Id   := Unit (GNAT_Root);
-      Name : Name_Id;
+      File      : constant W_File_Id := New_File;
+      N         : constant Node_Id   := Unit (GNAT_Root);
+      Unit_Name : constant String :=
+         Name_String (Chars (Defining_Unit_Name (Specification (N))));
 
    begin
-      Name := Chars (Defining_Unit_Name (Specification (N)));
-
       if Nkind (GNAT_Root) = N_Compilation_Unit then
 
          Translate_Context (File, Context_Items (GNAT_Root));
@@ -176,20 +175,20 @@ package body Gnat2Why.Driver is
          else
             Translate_Package (File, N);
          end if;
-         Open_Current_File (Name_String (Name) & ".why");
+         Open_Current_File (Unit_Name & ".why");
          Sprint_Why_Node (File, Current_File);
          Close_Current_File;
 
-         Open_Current_File (Name_String (Name) & ".loc");
+         Open_Current_File (Unit_Name & ".loc");
          Print_Locations_Table (Current_File);
          Close_Current_File;
 
-         Open_Current_File (Name_String (Name) & ".labels");
+         Open_Current_File (Unit_Name & ".labels");
          Print_Label_List (Current_File);
          Close_Current_File;
 
          if Print_Generated_Code then
-            wpn (File);
+            wpg (File);
          end if;
       end if;
    end Translate_CUnit;
