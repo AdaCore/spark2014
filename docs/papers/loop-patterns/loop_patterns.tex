@@ -558,6 +558,8 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 
   \noindent
   We start from invariant $\mathit{true}$ before the loop.
+  In this case, only guarded exit statements \gstatement{exit}{1..n} 
+  occur before the current pattern \curpattern. 
   %
   \begin{align*}
     \spost{
@@ -574,15 +576,17 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
   \end{align*}
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
-  \Inv{\idx+1} holds at loop iteration $\idx+1$. Notice that \Inv{\idx} does
-  not mention any variable, only initial values of variables and current
-  value of the loop index.
+  \Inv{\idx+1} holds at loop iteration $\idx+1$ after executing first 
+  the guarded assignments of loop iteration \idx, then the guarded exits 
+  of loop iteration $\idx+1$ and finally the search pattern of loop iteration
+  $\idx+1$. Notice that \Inv{\idx} does not mention any variable, only initial 
+  values of variables and current value of the loop index.
   %
   \begin{align*}
     \spost{
       &\gstatement{assign}{1..m};\\
       &\gstatement{exit}{1..n};\\
-      &t^\at{\idxinitial} \rightarrow \KWexit}{\Inv{\idx}
+      &t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}
     }\\
     &= \spost{t^\at{\idx+1} \rightarrow \KWexit}
        {\spost{\gstatement{exit}{1..n-1}}{\spost{\gstatement{assign}{1..m}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
