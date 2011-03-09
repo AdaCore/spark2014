@@ -43,10 +43,9 @@ subprogram definitions in the body.
 ``gnat2why`` also generates a file ``standard.why``, which is a translation of
 the GNAT standard package.
 
-FIXME ``gnat2why`` should have a special option which lets it generate *only*
-the file ``standard.why``. The ``gnatprove`` tool would call ``gnat2why`` only
-*once* using this option, and all other invocations of ``gnat2why`` would not
-regenerate this file.
+FIXME ``gnat2why`` should not generate the file ``standard.why``. This file,
+and the translation of the entire Ada runtime, should be provided by us, as a
+"standard library" for gnat2why.
 
 ``gnat2why`` generates two other files, both of which are helpful for the
 source location of verification conditions. The file ``<file>.labels``
@@ -54,3 +53,16 @@ contains a list of labels (simply character strings) that correspond to Ada
 program points that should provoke verification conditions. The file
 ``<file>.locs`` maps each of these labels to a source location in the Ada
 file.
+
+Generated Why files import other Why files (an import in Why corresponds to a
+textual inclusion). The inclusion of Why files depends on the ``with`` clauses
+of the corresponding Ada units, and is explained in the following figure:
+
+.. figure:: include.png
+
+   Black arrows represent inclusion due to the splitting of a single unit during
+   the translation process. Green arrows correspond to ``with`` clauses appearing
+   in Ada specs. Red arrows correspond to ``with`` clauses appearing in Ada
+   bodies.
+
+

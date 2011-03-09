@@ -16,6 +16,11 @@ More precise description of the tool
 The input of gnatprove is an Ada project, which comprises the project file and
 all source files.
 
+.. figure:: gnatprove.png
+   :scale: 80%
+
+   The process of ``gnatprove``.
+
 Gnatprove operates in four main steps:
 
 #. Call ``gnatmake`` to generate ``.ali`` files for all compilation units of the
