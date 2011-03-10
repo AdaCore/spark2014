@@ -1,1 +1,1 @@
-ALL XFAIL until treatment of case statements and expressions
+ALL XFAIL test is not in ALFA but should be
