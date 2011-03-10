@@ -25,7 +25,6 @@
 
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
-with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Opt;                   use Opt;
@@ -116,7 +115,6 @@ package body Gnat2Why.Driver is
       Load_ALFA (Name_String (Name_Id (Name)));
       Propagate_Through_Call_Graph;
       Declare_All_Entities;
-      Errout.Output_Messages;
 
       --  Start the translation to Why
 

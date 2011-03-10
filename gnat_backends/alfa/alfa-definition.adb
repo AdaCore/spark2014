@@ -77,8 +77,14 @@ package body ALFA.Definition is
    -- Pragma Formal_Proof --
    -------------------------
 
-   Subp_Force  : Id_Set.Set;
-   Subp_Ignore : Id_Set.Set;
+   Formal_Proof_On  : Id_Set.Set;
+   Formal_Proof_Off : Id_Set.Set;
+
+   function Formal_Proof_Currently_Forced return Boolean;
+   --  Determine the most top-level scope to have formal proof forced or
+   --  disabled, and return True if formal proof is forced. Return False in all
+   --  other cases. This is useful to notify the user about ALFA violations in
+   --  a scope where formal proof is forced.
 
    ----------------
    -- ALFA Marks --
@@ -117,24 +123,13 @@ package body ALFA.Definition is
      Table_Increment      => Alloc.Scope_Stack_Increment,
      Table_Name           => "ALFA.Definition.Scope_Stack");
 
-   function Current_Scope return Entity_Id;
-   --  Return the entity on top of the scope stack
-
-   function Current_Subprogram return Entity_Id;
-   --  Return the closest enclosing subprogram in the scope stack, or Empty if
-   --  there is a closest enclosing package instead.
-
-   function Current_Subprogram_Index return Int;
-   --  Return the index in the scope stack of the closest enclosing subprogram
+   function Current_Scope return Scope_Record;
+   --  Return the top-most scope that is not a loop
 
    function Has_Loop_In_Inner_Open_Scopes (S : Entity_Id) return Boolean;
    --  S is the entity of an open scope. This function determines if there is
    --  an inner scope of S which is a loop (i.e. it appears somewhere in the
    --  scope stack after S).
-
-   function In_Current_Subprogram_Body return Boolean;
-   --  Given that Current_Subprogram does not returns Empty, return the value
-   --  of the Is_Body component of the corresponding scope.
 
    procedure Pop_Scope;
    --  Remove the top scope in the stack
@@ -242,54 +237,40 @@ package body ALFA.Definition is
    -- Current_Scope --
    -------------------
 
-   function Current_Scope return Entity_Id is
-      Idx : constant Int := Scope_Stack.Last;
-   begin
-      if Idx /= -1 then
-         return Scope_Stack.Table (Idx).Entity;
-      else
-         return Empty;
-      end if;
-   end Current_Scope;
-
-   ------------------------
-   -- Current_Subprogram --
-   ------------------------
-
-   function Current_Subprogram return Entity_Id is
-      Idx : constant Int := Current_Subprogram_Index;
-   begin
-      if Idx /= -1 then
-         return Scope_Stack.Table (Idx).Entity;
-      else
-         return Empty;
-      end if;
-   end Current_Subprogram;
-
-   ------------------------------
-   -- Current_Subprogram_Index --
-   ------------------------------
-
-   function Current_Subprogram_Index return Int is
+   function Current_Scope return Scope_Record is
       Idx : Int := Scope_Stack.Last;
 
    begin
       while Idx /= -1
-        and then not (Is_Subprogram (Scope_Stack.Table (Idx).Entity)
-                       or else
-                         Ekind (Scope_Stack.Table (Idx).Entity) = E_Package)
+        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
       loop
          Idx := Idx - 1;
       end loop;
 
-      if Idx /= -1
-        and then Is_Subprogram (Scope_Stack.Table (Idx).Entity)
-      then
-         return Idx;
-      else
-         return -1;
-      end if;
-   end Current_Subprogram_Index;
+      pragma Assert (Idx /= -1);
+
+      return Scope_Stack.Table (Idx);
+   end Current_Scope;
+
+   -----------------------------------
+   -- Formal_Proof_Currently_Forced --
+   -----------------------------------
+
+   function Formal_Proof_Currently_Forced return Boolean is
+   begin
+      for Idx in reverse Scope_Stack.First .. Scope_Stack.Last loop
+         declare
+            E : constant Entity_Id := Scope_Stack.Table (Idx).Entity;
+         begin
+            if Formal_Proof_On.Contains (E) then
+               return True;
+            elsif Formal_Proof_Off.Contains (E) then
+               return False;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Formal_Proof_Currently_Forced;
 
    -----------------------------------
    -- Has_Loop_In_Inner_Open_Scopes --
@@ -313,17 +294,6 @@ package body ALFA.Definition is
 
       raise Program_Error;    --  unreachable
    end Has_Loop_In_Inner_Open_Scopes;
-
-   --------------------------------
-   -- In_Current_Subprogram_Body --
-   --------------------------------
-
-   function In_Current_Subprogram_Body return Boolean is
-      Idx : constant Int := Current_Subprogram_Index;
-   begin
-      pragma Assert (Idx /= -1);
-      return Scope_Stack.Table (Idx).Is_Body;
-   end In_Current_Subprogram_Body;
 
    ------------------------
    -- Inherit_Violations --
@@ -351,7 +321,10 @@ package body ALFA.Definition is
 
    function Is_In_ALFA (Id : Entity_Id) return Boolean is
    begin
-      if Scope (Id) = Standard_Standard then
+      if Scope (Id) = Standard_Standard
+        and then not (Is_Subprogram (Id)
+                       or else Ekind (Id) = E_Package)
+      then
          return Standard_In_ALFA.Contains (Id);
       else
          return (for all S of Spec_Violations => not S.Contains (Id));
@@ -847,7 +820,9 @@ package body ALFA.Definition is
       --  Separately mark declarations from Standard as in ALFA or not
 
       if Defining_Entity (N) /= Standard_Standard then
+         Push_Scope (Standard_Standard);
          Mark (N);
+         Pop_Scope;
       end if;
    end Mark_Compilation_Unit;
 
@@ -876,8 +851,7 @@ package body ALFA.Definition is
       --          and (NOT Condition AND THEN Then_Expr)
 
       if Present (Else_Expr)
-        and then Present (Current_Subprogram)
-        and then In_Current_Subprogram_Body
+        and then Current_Scope.Is_Body
       then
          Mark_In_Non_ALFA_Subprogram ("form of conditional expression", N);
       end if;
@@ -1080,27 +1054,27 @@ package body ALFA.Definition is
       N   : Node_Id;
       V   : Violation_Kind := V_Other)
    is
-      Cur_Scop : constant Entity_Id := Current_Scope;
-      Cur_Subp : constant Entity_Id := Current_Subprogram;
+      Cur_Scop : constant Scope_Record := Current_Scope;
+      Cur_Ent  : constant Entity_Id    := Cur_Scop.Entity;
 
    begin
-      --  Detect violation in initialization of package-level object
+      --  If formal proof is forced, then notify the user about the violation
 
-      if Present (Cur_Scop)
-        and then Ekind (Cur_Scop) in Object_Kind
-      then
-         Body_Violations (V).Include (Cur_Scop);
+      if Formal_Proof_Currently_Forced then
+         Error_Msg_F (Complete_Error_Msg (Msg, Implem => V = V_Implem), N);
+      end if;
 
-      elsif Present (Cur_Subp)
-        and then Is_Subprogram (Cur_Subp)
-      then
-         --  If the subprogram has been annotated with Formal_Proof being On,
-         --  then an error must be issued to notify the user that this
-         --  subprogram unexpectedly falls outside the ALFA subset.
+      case Ekind (Cur_Ent) is
 
-         if Subp_Force.Contains (Cur_Subp) then
-            Error_Msg_F (Complete_Error_Msg (Msg, Implem => V = V_Implem), N);
-         end if;
+         --  Detect violation in initialization of package-level object
+
+         when Object_Kind =>
+            Body_Violations (V).Include (Cur_Ent);
+
+         when E_Package =>
+            null;
+
+         --  Detect violation in subprogram declarations and subprogram bodies
 
          --  If the non-ALFA construct is in a precondition or postcondition,
          --  then mark the subprogram as not in ALFA, because neither the
@@ -1111,12 +1085,16 @@ package body ALFA.Definition is
          --  ALFA, because the subprogram cannot be proved formally, but its
          --  callers could.
 
-         if In_Current_Subprogram_Body then
-            Body_Violations (V).Include (Cur_Subp);
-         else
-            Spec_Violations (V).Include (Cur_Subp);
-         end if;
-      end if;
+         when Subprogram_Kind =>
+            if Cur_Scop.Is_Body then
+               Body_Violations (V).Include (Cur_Ent);
+            else
+               Spec_Violations (V).Include (Cur_Ent);
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
    end Mark_In_Non_ALFA_Subprogram;
 
    procedure Mark_In_Non_ALFA_Subprogram
@@ -1124,34 +1102,58 @@ package body ALFA.Definition is
       N    : Node_Id;
       From : Entity_Id)
    is
-      Cur_Subp : constant Entity_Id := Current_Subprogram;
+      Cur_Scop : constant Scope_Record := Current_Scope;
+      Cur_Ent  : constant Entity_Id    := Cur_Scop.Entity;
 
    begin
-      if Present (Cur_Subp)
-        and then Is_Subprogram (Cur_Subp)
-      then
-         --  If the subprogram has been annotated with Formal_Proof being On,
-         --  then an error must be issued to notify the user that this
-         --  subprogram unexpectedly falls outside the ALFA subset.
+      --  If formal proof is forced, then notify the user about the violation
 
-         if Subp_Force.Contains (Cur_Subp) then
-            if (for some V in V_Design =>
-                  Spec_Violations (V).Contains (From))
-            then
-               Error_Msg_F (Complete_Error_Msg (Msg, Implem => False), N);
-            else
-               Error_Msg_F (Complete_Error_Msg (Msg, Implem => True), N);
-            end if;
-         end if;
-
-         --  Inherit the violations of entity From
-
-         if In_Current_Subprogram_Body then
-            Inherit_Violations (Body_Violations, From => From, To => Cur_Subp);
+      if Formal_Proof_Currently_Forced then
+         if (for some V in V_Design =>
+               Spec_Violations (V).Contains (From))
+         then
+            Error_Msg_F (Complete_Error_Msg (Msg, Implem => False), N);
          else
-            Inherit_Violations (Spec_Violations, From => From, To => Cur_Subp);
+            Error_Msg_F (Complete_Error_Msg (Msg, Implem => True), N);
          end if;
       end if;
+
+      case Ekind (Cur_Ent) is
+
+         --  Detect violation in initialization of package-level object
+
+         when Object_Kind =>
+            Inherit_Violations
+              (Body_Violations, From => From, To => Cur_Ent);
+
+         when E_Package =>
+            null;
+
+         --  Detect violation in subprogram declarations and subprogram bodies
+
+         --  If the non-ALFA construct is in a precondition or postcondition,
+         --  then mark the subprogram as not in ALFA, because neither the
+         --  subprogram nor its callers can be proved formally.
+
+         --  If the non-ALFA construct is in a regular piece of code inside the
+         --  body of the subprogram, then mark the subprogram body as not in
+         --  ALFA, because the subprogram cannot be proved formally, but its
+         --  callers could.
+
+         when Subprogram_Kind =>
+            --  Inherit the violations of entity From
+
+            if Cur_Scop.Is_Body then
+               Inherit_Violations
+                 (Body_Violations, From => From, To => Cur_Ent);
+            else
+               Inherit_Violations
+                 (Spec_Violations, From => From, To => Cur_Ent);
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
    end Mark_In_Non_ALFA_Subprogram;
 
    ---------------------------
@@ -1210,7 +1212,7 @@ package body ALFA.Definition is
 
       else
          Ent :=
-           New_Internal_Entity (E_Loop, Current_Subprogram, Sloc (N), 'L');
+           New_Internal_Entity (E_Loop, Current_Scope.Entity, Sloc (N), 'L');
          Set_Etype (Ent, Standard_Void_Type);
          Set_Parent (Ent, N);
       end if;
@@ -1401,49 +1403,43 @@ package body ALFA.Definition is
                end if;
 
                declare
-                  Cur_Subp : constant Entity_Id := Current_Subprogram;
+                  Cur_Ent : constant Entity_Id := Current_Scope.Entity;
 
                begin
-                  if Present (Cur_Subp)
-                    and then Is_Subprogram (Cur_Subp)
+                  pragma Assert (Is_Subprogram (Cur_Ent)
+                                  or else Ekind (Cur_Ent) = E_Package);
+
+                  --  Check that this is the first occurrence of this pragma
+                  --  on the current entity.
+
+                  if Formal_Proof_On.Contains (Cur_Ent)
+                    or else Formal_Proof_Off.Contains (Cur_Ent)
                   then
-                     --  Check that this is the first occurrence of this pragma
-                     --  on the current subprogram.
+                     Error_Msg_N ("pragma% already given for entity", N);
+                     return;
+                  end if;
 
-                     if Subp_Force.Contains (Cur_Subp)
-                       or else Subp_Ignore.Contains (Cur_Subp)
-                     then
-                        Error_Msg_N
-                          ("pragma% already given for subprogram", N);
-                        return;
-                     end if;
-
-                     if Chars (Arg) = Name_On then
-                        Subp_Force.Insert (Cur_Subp);
-                     elsif Chars (Arg) = Name_Off then
-                        Subp_Ignore.Insert (Cur_Subp);
-                     else
-                        Error_Msg_N
-                          ("argument for pragma% must be ON or OFF", Arg2);
-                        return;
-                     end if;
-
-                     --  Notify user if some ALFA violation occurred before
-                     --  this point in Cur_Subp. These violations are not
-                     --  precisly located, but this is better than ignoring
-                     --  these violations.
-
-                     if Chars (Arg) = Name_On
-                       and then (not Is_In_ALFA (Cur_Subp)
-                                  or else not Body_Is_In_ALFA (Cur_Subp))
-                     then
-                        Error_Msg_N
-                          ("pragma% is placed after violation of ALFA", N);
-                        return;
-                     end if;
-
+                  if Chars (Arg) = Name_On then
+                     Formal_Proof_On.Insert (Cur_Ent);
+                  elsif Chars (Arg) = Name_Off then
+                     Formal_Proof_Off.Insert (Cur_Ent);
                   else
-                     Error_Msg_N ("wrong placement for pragma%", N);
+                     Error_Msg_N
+                       ("argument for pragma% must be ON or OFF", Arg2);
+                        return;
+                  end if;
+
+                  --  Notify user if some ALFA violation occurred before this
+                  --  point in Cur_Ent. These violations are not precisly
+                  --  located, but this is better than ignoring these
+                  --  violations.
+
+                  if Chars (Arg) = Name_On
+                    and then (not Is_In_ALFA (Cur_Ent)
+                               or else not Body_Is_In_ALFA (Cur_Ent))
+                  then
+                     Error_Msg_N
+                       ("pragma% is placed after violation of ALFA", N);
                      return;
                   end if;
                end;
