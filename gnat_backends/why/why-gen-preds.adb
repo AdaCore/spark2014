@@ -25,6 +25,7 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
+with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
@@ -302,6 +303,25 @@ package body Why.Gen.Preds is
          when W_Rel_Ne => return New_Rel_Ne;
       end case;
    end New_Rel_Symbol;
+
+   ---------------------------
+   -- New_Simpl_Conjunction --
+   ---------------------------
+
+   function New_Simpl_Conjunction
+      (Ada_Node    : Node_Id := Empty;
+       Left, Right : W_Predicate_Id)
+      return W_Predicate_Id
+   is
+   begin
+      if Get_Kind (Left) = W_True_Literal_Pred then
+         return Right;
+      elsif Get_Kind (Right) = W_True_Literal_Pred then
+         return Left;
+      else
+         return New_Conjunction (Ada_Node, Left, Right);
+      end if;
+   end New_Simpl_Conjunction;
 
    ----------------------------------
    -- New_Universal_Predicate_Body --

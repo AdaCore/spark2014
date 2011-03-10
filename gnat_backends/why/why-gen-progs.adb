@@ -28,14 +28,20 @@ with Uintp;              use Uintp;
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Sinfo;          use Why.Sinfo;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
 
 package body Why.Gen.Progs is
+
+   function Is_False_Boolean (P : W_Prog_Id) return Boolean;
+   --  Check if the given program is the program "false"
+
+   function Is_True_Boolean (P : W_Prog_Id) return Boolean;
+   --  Check if the given program is the program "true"
 
    function New_Located_Prog
       (Ada_Node : Node_Id;
@@ -116,6 +122,30 @@ package body Why.Gen.Progs is
                      Why_Expr => Why_Expr));
       end if;
    end Insert_Conversion;
+
+   ----------------------
+   -- Is_False_Boolean --
+   ----------------------
+
+   function Is_False_Boolean (P : W_Prog_Id) return Boolean
+   is
+   begin
+      return
+         (Get_Kind (P) = W_Prog_Constant and then
+          Get_Kind (Prog_Constant_Get_Def (P)) = W_False_Literal);
+   end Is_False_Boolean;
+
+   ---------------------
+   -- Is_True_Boolean --
+   ---------------------
+
+   function Is_True_Boolean (P : W_Prog_Id) return Boolean
+   is
+   begin
+      return
+         (Get_Kind (P) = W_Prog_Constant and then
+          Get_Kind (Prog_Constant_Get_Def (P)) = W_True_Literal);
+   end Is_True_Boolean;
 
    --------------------------
    -- New_Assume_Statement --
@@ -267,6 +297,59 @@ package body Why.Gen.Progs is
            Def      => Prog);
    end New_Located_Prog;
 
+   -------------------
+   -- New_Prog_Andb --
+   -------------------
+
+   function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      if Is_True_Boolean (Left) then
+         return Right;
+      elsif Is_True_Boolean (Right) then
+         return Left;
+      else
+         return
+            New_Prog_Call
+               (Name => New_Identifier ("bool_and"),
+                Progs => (1 => Left, 2 => Right));
+      end if;
+   end New_Prog_Andb;
+
+   --------------------------
+   -- New_Prog_Boolean_Cmp --
+   --------------------------
+
+   function New_Prog_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Prog_Id)
+      return W_Prog_Id
+   is
+   begin
+      return
+         New_Prog_Call
+           (Name => New_Bool_Int_Cmp (Cmp),
+            Progs => (1 => Left, 2 => Right));
+
+   end New_Prog_Boolean_Cmp;
+
+   ------------------
+   -- New_Prog_Orb --
+   ------------------
+
+   function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      if Is_False_Boolean (Left) then
+         return Right;
+      elsif Is_False_Boolean (Right) then
+         return Left;
+      else
+         return
+            New_Prog_Call
+               (Name => New_Identifier ("bool_or"),
+                Progs => (1 => Left, 2 => Right));
+      end if;
+   end New_Prog_Orb;
+
    --------------
    -- New_Void --
    --------------
@@ -308,4 +391,5 @@ package body Why.Gen.Progs is
             end case;
       end case;
    end Sequence;
+
 end Why.Gen.Progs;

@@ -27,6 +27,7 @@ with Namet;         use Namet;
 with Types;         use Types;
 with Why.Gen.Types; use Why.Gen.Types;
 with Why.Ids;       use Why.Ids;
+with Why.Sinfo;     use Why.Sinfo;
 
 package Why.Gen.Progs is
 
@@ -79,6 +80,16 @@ package Why.Gen.Progs is
        Name     : W_Identifier_Id;
        Progs    : W_Prog_Array) return W_Prog_Id;
    --  Build a program call with a fresh label corresponding to the Ada_Node.
+
+   function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id;
+   --  Build a boolean disjunction as program.
+
+   function New_Prog_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Prog_Id)
+      return W_Prog_Id;
+   --  Build a boolean comparison for programs of "int" type.
+
+   function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
+   --  Build a boolean disjunction as program.
 
    function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
    --  The program "void"

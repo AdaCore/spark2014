@@ -323,6 +323,9 @@ package body Gnat2Why.Driver is
       New_Include_Declaration
         (File => File,
          Name => New_Identifier ("divisions"));
+      New_Include_Declaration
+        (File => File,
+         Name => New_Identifier ("bool"));
       Sprint_Why_Node (File, Current_File);
       Close_Current_File;
 

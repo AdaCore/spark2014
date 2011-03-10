@@ -105,6 +105,13 @@ package Why.Gen.Preds is
    --  Create a predicate by linking together the bindings and
    --  associating the context to them.
 
+   function New_Simpl_Conjunction
+      (Ada_Node    : Node_Id := Empty;
+       Left, Right : W_Predicate_Id)
+      return W_Predicate_Id;
+   --  Build a conjunction, but check if we can simplify it  - one of the
+   --  arguments may be "true".
+
    type Universal_Quantif_Chain is array (Positive range <>)
      of W_Universal_Quantif_Unchecked_Id;
    --  Array of universal quantifiers with an empty context. Those are meant
