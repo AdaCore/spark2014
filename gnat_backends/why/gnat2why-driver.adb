@@ -23,33 +23,36 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;              use AA_Util;
-with Atree;                use Atree;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Opt;                  use Opt;
+with AA_Util;               use AA_Util;
+with Atree;                 use Atree;
+with Errout;                use Errout;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Opt;                   use Opt;
 with Osint.C;               use Osint.C;
-with Outputs;              use Outputs;
-with Sinfo;                use Sinfo;
-with Stand;                use Stand;
-with Switch;               use Switch;
+with Outputs;               use Outputs;
+with Sem;
+with Sinfo;                 use Sinfo;
+with Stand;                 use Stand;
+with Switch;                use Switch;
 
+with ALFA.Definition;       use ALFA.Definition;
 with ALFA.Filter;           use ALFA.Filter;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
-with Why;                  use Why;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Sprint;     use Why.Atree.Sprint;
-with Why.Atree.Treepr;     use Why.Atree.Treepr;
-with Why.Gen.Decl;         use Why.Gen.Decl;
-with Why.Gen.Ints;         use Why.Gen.Ints;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Ids;              use Why.Ids;
+with Why;                   use Why;
+with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Sprint;      use Why.Atree.Sprint;
+with Why.Atree.Treepr;      use Why.Atree.Treepr;
+with Why.Gen.Decl;          use Why.Gen.Decl;
+with Why.Gen.Ints;          use Why.Gen.Ints;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Ids;               use Why.Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Locs;        use Gnat2Why.Locs;
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
-with Gnat2Why.Types;       use Gnat2Why.Types;
+with Gnat2Why.Locs;         use Gnat2Why.Locs;
+with Gnat2Why.Subprograms;  use Gnat2Why.Subprograms;
+with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Driver is
 
@@ -78,11 +81,32 @@ package body Gnat2Why.Driver is
       Name : File_Name_Type;
       Text : Text_Buffer_Ptr;
 
+      --  Note that this use of Sem.Walk_Library_Items to see units in an order
+      --  which avoids forward references has caused problems in the past with
+      --  the combination of generics and inlining, as well as child units
+      --  referenced in parent units. To be checked.
+
+      procedure Mark_All_Compilation_Units is new Sem.Walk_Library_Items
+        (Action => Mark_Compilation_Unit);
+
    begin
+      --  Prevent use of formal proof on code with tasking altogether
+
+      if Tasking_Used then
+         raise Program_Error;
+      end if;
+
       --  Allow the generation of new nodes and lists
 
       Atree.Unlock;
       Nlists.Unlock;
+
+      --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the
+      --  same order that they were processed by the frontend. Bodies are not
+      --  included, except for the main unit itself, which always comes last.
+
+      Mark_Standard_Package;
+      Mark_All_Compilation_Units;
 
       --  ??? Compute the frame condition. Currently only the ALI file for the
       --  current unit is read. This should be changed to read all dependent
@@ -92,6 +116,7 @@ package body Gnat2Why.Driver is
       Load_ALFA (Name_String (Name_Id (Name)));
       Propagate_Through_Call_Graph;
       Declare_All_Entities;
+      Errout.Output_Messages;
 
       --  Start the translation to Why
 
@@ -223,14 +248,21 @@ package body Gnat2Why.Driver is
             when N_Object_Declaration =>
                Why_Decl_Of_Ada_Object_Decl (File, Decl);
 
+            when N_Itype_Reference =>
+               null;  --  Nothing to do
+
+            --  The freeze point should be replaced by the declarations and
+            --  and statements listed in Actions (Decl), if present.
+            when N_Freeze_Entity =>
+               null;
+
             --  The following declarations are ignored for now:
             when N_Pragma | N_Package_Declaration | N_Exception_Declaration
-               | N_Exception_Renaming_Declaration
-               | N_Freeze_Entity | N_Itype_Reference =>
+               | N_Exception_Renaming_Declaration =>
                null;
 
             when others =>
-                  raise Not_Implemented;
+               raise Not_Implemented;
          end case;
 
          Next (Decl);
@@ -269,8 +301,23 @@ package body Gnat2Why.Driver is
    procedure Translate_Standard_Package is
       File : constant W_File_Id := New_File;
 
+      procedure Add_Standard_Type (T : Entity_Id);
+      --  Add declaration for type in Standard not declared in Standard
+
+      procedure Add_Standard_Type (T : Entity_Id) is
+      begin
+         Why_Type_Decl_of_Full_Type_Decl
+           (File, T, Type_Definition (Parent (T)));
+      end Add_Standard_Type;
+
    begin
       Translate_Package (File, Standard_Package_Node);
+
+      Add_Standard_Type (Standard_Integer_8);
+      Add_Standard_Type (Standard_Integer_16);
+      Add_Standard_Type (Standard_Integer_32);
+      Add_Standard_Type (Standard_Integer_64);
+
       Open_Current_File ("standard.why");
       Declare_Boolean_Integer_Comparison (File);
       New_Include_Declaration

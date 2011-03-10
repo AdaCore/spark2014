@@ -29,6 +29,8 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 
+with ALFA.Common;                use ALFA.Common;
+
 package ALFA.Frame_Conditions is
 
    function Nat_Hash (X : Nat) return Hash_Type is (Hash_Type (X));
@@ -120,13 +122,6 @@ package ALFA.Frame_Conditions is
    -- Link with AST Entities --
    ----------------------------
 
-   function Id_Hash (X : Entity_Id) return Hash_Type is (Hash_Type (X));
-
-   package Id_Set is new Hashed_Sets
-     (Element_Type        => Entity_Id,
-      Hash                => Id_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
    use Id_Set;
 
    package Entity_Id_To_Rep is new Hashed_Maps

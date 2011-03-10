@@ -28,9 +28,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Atree;       use Atree;
 with Einfo;       use Einfo;
 with Get_ALFA;
-with Namet;       use Namet;
-with Sinput;      use Sinput;
 with Lib.Xref;
+with Namet;       use Namet;
+with Sem_Util;    use Sem_Util;
+with Sinput;      use Sinput;
 
 package body ALFA.Frame_Conditions is
 
@@ -187,7 +188,7 @@ package body ALFA.Frame_Conditions is
    procedure Declare_Relevant_Entities (N : Node_Id) is
       E : Entity_Id;
    begin
-      E := Get_Entity_For_Decl (N);
+      E := Defining_Entity (N);
 
       --  Ignore postcondition procedures which do not define valid
       --  source entities for cross-references.

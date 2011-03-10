@@ -25,14 +25,17 @@
 
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
-with Einfo;   use Einfo;
 with Lib.Xref;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
 with Nmake;   use Nmake;
+with Sem_Util; use Sem_Util;
 with Sinfo;   use Sinfo;
 with Stand;   use Stand;
 with Tbuild;  use Tbuild;
+
+with ALFA.Common;     use ALFA.Common;
+with ALFA.Definition; use ALFA.Definition;
 
 package body ALFA.Filter is
 
@@ -158,10 +161,15 @@ package body ALFA.Filter is
                --  local.
 
                if (Comes_From_Source (Original_Node (N))
-                   or else Nkind_In (Parent (N), N_Package_Specification,
-                                     N_Package_Body))
-                 and then Is_In_ALFA (Defining_Identifier (N))
+                    or else Is_Package_Level_Entity (Defining_Entity (N)))
+                 and then Is_In_ALFA (Defining_Entity (N))
                then
+                  --  If the initializing expression is not in ALFA, remove it
+
+                  if not Body_Is_In_ALFA (Defining_Entity (N)) then
+                     Set_Expression (N, Empty);
+                  end if;
+
                   case Nkind (Object_Definition (N)) is
                      when N_Identifier | N_Expanded_Name =>
                         null;

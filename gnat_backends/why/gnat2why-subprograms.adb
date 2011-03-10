@@ -34,6 +34,7 @@ with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
 
+with ALFA.Common;           use ALFA.Common;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                   use Why;
@@ -598,7 +599,7 @@ package body Gnat2Why.Subprograms is
       ---------------------
 
       function Compute_Effects return W_Effects_Id is
-         E          : constant Entity_Id := Get_Unique_Entity_For_Decl (Node);
+         E          : constant Entity_Id := Unique_Defining_Entity (Node);
          Read_Ids   : Id_Set.Set;
          Read_Reps  : Rep_Set.Set;
          Write_Ids  : Id_Set.Set;
@@ -719,7 +720,7 @@ package body Gnat2Why.Subprograms is
          return Cur_Body;
       end Initial_Assertions;
 
-      Ent : constant Entity_Id := Get_Unique_Entity_For_Decl (Node);
+      Ent : constant Entity_Id := Unique_Defining_Entity (Node);
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
