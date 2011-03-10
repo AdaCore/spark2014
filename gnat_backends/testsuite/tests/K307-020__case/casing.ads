@@ -9,4 +9,13 @@ package Casing is
                when B => 1,
                when C | D => 2,
                when others => 3));
+
+   type Two is (M, N);
+
+   function G (X : Two) return Integer
+      with Post =>
+         (F'Result =
+            (case X is
+               when M => 0,
+               when N => 1));
 end Casing;

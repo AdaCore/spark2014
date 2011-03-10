@@ -1,5 +1,15 @@
 package body Casing is
 
+   function G (X : Two) return Integer is
+      Res : Integer;
+   begin
+      case X is
+         when M => Res := 0;
+         when N => Res := 1;
+      end case;
+      return Res;
+   end F;
+
    function F (X : En) return Integer is
       Res : Integer;
    begin
