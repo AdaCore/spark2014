@@ -385,13 +385,14 @@ package body Gnat2Why.Subprograms is
    is
    begin
       case Nkind (N) is
-         when N_Identifier =>
+         when N_Identifier | N_Integer_Literal =>
             return
                New_Prog_Boolean_Cmp
                   (Cmp   => W_Rel_Eq,
                    Left  => E,
                    Right =>
                      Why_Expr_Of_Ada_Expr (N, (Kind => Why_Int)));
+
          when N_Range =>
             return
                New_Prog_Andb
@@ -410,6 +411,7 @@ package body Gnat2Why.Subprograms is
                            Why_Expr_Of_Ada_Expr
                              (Low_Bound (N),
                               (Kind => Why_Int))));
+
          when N_Others_Choice =>
             return New_Prog_Constant (Def => New_True_Literal);
 
@@ -427,7 +429,7 @@ package body Gnat2Why.Subprograms is
    is
    begin
       case Nkind (N) is
-         when N_Identifier =>
+         when N_Identifier | N_Integer_Literal =>
             return
                New_Boolean_Cmp
                   (Cmp   => W_Rel_Eq,
