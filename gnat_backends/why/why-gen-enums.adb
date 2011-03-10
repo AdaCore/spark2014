@@ -30,6 +30,7 @@ with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
+with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
 with Why.Gen.Types;      use Why.Gen.Types;
@@ -133,6 +134,7 @@ package body Why.Gen.Enums is
             New_Conversion_From_Int (Name),
             New_Conversion_To_Int (Name));
       end if;
+      New_Boolean_Equality_Parameter (File, Name);
    end Declare_Ada_Enum_Type;
 
 end Why.Gen.Enums;
