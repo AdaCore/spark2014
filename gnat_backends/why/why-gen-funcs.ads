@@ -105,6 +105,13 @@ package Why.Gen.Funcs is
    --  "parameter") from its name (Name) and its signature (Arrows). All
    --  parameters will be inserted as is into the resulting syntax tree.
 
+   procedure New_Boolean_Equality_Parameter
+      (File          : W_File_Id;
+       Type_Name     : String);
+      --  Create a parameter of the form
+      --     parameter <eq_param_name> : (m : type) -> (n : type) ->
+      --        {} bool { if result then m = n else m <> n }
+
    function New_Call_To_Logic
      (Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
