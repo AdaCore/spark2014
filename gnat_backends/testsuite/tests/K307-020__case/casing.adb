@@ -8,7 +8,7 @@ package body Casing is
          when N => Res := 1;
       end case;
       return Res;
-   end F;
+   end G;
 
    function F (X : En) return Integer is
       Res : Integer;

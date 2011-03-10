@@ -14,7 +14,7 @@ package Casing is
 
    function G (X : Two) return Integer
       with Post =>
-         (F'Result =
+         (G'Result =
             (case X is
                when M => 0,
                when N => 1));
