@@ -1,0 +1,24 @@
+diff --git src/vcg.ml src/vcg.ml
+index 97ed725..25470c8 100644
+--- src/vcg.ml
++++ src/vcg.ml
+@@ -864,6 +864,10 @@ let rec explain_for_pred internal user = function
+   | Pimplies (_,_,p)  -> explain_for_pred internal user p
+   | Pnamed(Internal n,p) -> explain_for_pred (Some n) user p
+   | Pnamed(User n,p) -> explain_for_pred internal (Some n) p
++  | Pif (_,p1,p2) ->
++        let lab, raw = explain_for_pred internal user p1 in
++        if lab = None then explain_for_pred internal user p2
++        else lab, raw
+   | _p ->
+       (if debug then
+ 	 eprintf "User label for explanation: `%a'@." (Pp.print_option pp_print_string)user;
+@@ -895,8 +899,6 @@ let vcg_from_wp _loc ids name beh w =
+   let push_one (ctx, concl) = 
+     let formula_userlab, raw_explain = explain_for_pred None None concl in	
+     let kind,loc, lab =  Util.cook_explanation formula_userlab raw_explain in
+-    if formula_userlab = None then
+-       Format.printf "formula_userlab unset: %s@." name;
+     let explain = (*Logic_decl.ExplVC*)
+       { Logic_decl.lemma_or_fun_name = name ;
+ 	Logic_decl.behavior = beh;
