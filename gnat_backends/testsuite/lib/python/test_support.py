@@ -74,6 +74,7 @@ def parse_altergo_result(output):
         a list of booleans
     """
     res = re.compile(".*:([^ ]*) *\(.*")
+    incons = re.compile("Inconsistent assumption");
     status = []
     for line in str.splitlines(output):
         m = re.search(res, line)
@@ -81,7 +82,10 @@ def parse_altergo_result(output):
             s = m.group(1)
             status.append(s == "Valid")
         else:
-            status.append(False)
+            if re.search(incons, line):
+                pass
+            else:
+                status.append(False)
     return status
 
 def gcc(src, opt=None):
