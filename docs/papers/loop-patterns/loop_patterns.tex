@@ -194,10 +194,10 @@ alternation.
 \label{sec:simple-loops}
 A program \prog consists in a loop over index \idx between \idxinitial and
 \idxfinal.  The constant \idxinitial and \idxfinal represent respectively the
-intial value and final value of iteration range.  The loop body consists in a
-(possibly empty) unordered set of simultaneous \textit{guarded exits}, followed
-by a (possibly empty) unordered set of \textit{simultaneous guarded
-  assignments}.
+intial value and final value of iteration range. The loop body consists in a
+(possibly empty) unordered set of simultaneous \textit{guarded exit} statements,
+followed by a (possibly empty) unordered set of simultaneous \textit{guarded
+assignment} statements.
 
 \newcommand{\expr}{\ensuremath{\mathit{expr}}}
 \newcommand{\assign}{\ensuremath{\mathit{assign}}}
@@ -251,17 +251,20 @@ Voronkov with a slightly different formalism~\cite{kovacs:2009:fli}.
 We are interested in generating the most precise loop invariant \Inv{\idx} for
 a given loop. The loop invariant we consider is not a Hoare-like loop
 invariant, which would hold before and after the loop and at the start of each
-run through the loop body. Instead, our loop invariant holds between guarded
-exits and guarded assignments in each run through the loop body, as shown on
-the general form of the loop below:
+run through the loop body. Instead, our loop invariant placed before all statements
+describes the loop behavior but it is not necessarily true at the end of the loop.
+This is because we treat the exit statements, hardly captured by Hoare-like loop. 
+Thus, our invariant holds before loop and at each run through the loop body, 
+keeping guarded assignments safe as long as we fall on the first guarded exit statment,
+The loop below represents the general form of our loop model.
 
 \begin{align*}
 \begin{array}{l}
   \KWloop \KWover i \KWin \idxinitial ..\idxfinal \\
+  ~~~~ < \textrm{\Inv{\idx} holds at this point} >\\
   ~~~~ t_1 \rightarrow \KWexit \\
   ~~~~ ... \\
   ~~~~ t_m \rightarrow \KWexit \\
-  ~~~~ < \textrm{\Inv{\idx} holds at this point} >\\
   ~~~~ g_1 \rightarrow \alpha_1 \\
   ~~~~ ... \\
   ~~~~ g_n \rightarrow \alpha_n \\
@@ -357,6 +360,11 @@ are the following:
 \newcommand{\spost}[2]{\ensuremath{\spostsym(#1,#2)}}
 \newcommand{\subst}[3]{\ensuremath{#1[#2 \leftarrow #3]}}
 
+\begin{definition}
+  \emph{(Pattern)} A pattern is a subset of guarded exits or guarded assignments
+  from a loop body.
+\end{definition}
+
 We define an operator \spost{s}{P} which computes the strongest postcondition of
 property $P$ over statement $s$, where $s$ is either a guarded
 exit or a guarded assignment.
@@ -393,15 +401,17 @@ Notice also that the rule \spseq for seqential composition of statements is the
 usual rule associated with a sequential execution semantics for statements. As
 our semantics of guarded exits and guarded assignments is parallel, we should
 start with proving that rule \spseq indeed computes the desired strongest
-postcondition. We recall that the loop body consists in a (possibly empty)
-unordered set of simultaneous guarded exits, followed by a 
-(possibly empty) unordered set of simultaneous guarded assignments. 
-There are thus only three actual program points of interest: before the loop body, 
-at the loop invariant program point, after the loop body. Let us denote the invariant 
-point or state \state{inv}. In order to point to some sub sets of an unordered set 
-of simultaneous guarded exits (respectively unordered set of simultaneous guarded 
-assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the invariant point 
-(respectively (\vstate{assign}{1..m}) just after the invariant point).
+postcondition. 
+
+We recall that the loop body consists in a (possibly empty) unordered set of 
+simultaneous guarded exits, followed by a (possibly empty) unordered set of 
+simultaneous guarded assignments. There are thus only three actual program points 
+of interest: before the loop body, at the loop invariant program point, after the loop body. 
+Let us denote the invariant point \state{inv}. Since the guarded exits set is unordered and 
+simultaneous, we can put a pattern (extacted in this set) before any others guarded exits, 
+and denote this virtual point \vstate{exit}{1..n}. The same way, we define a virtual point 
+\vstate{assign}{1..m} for a pattern extracted in the set of simultaneous guarded assignments. 
+
 
 \begin{lemma}
   \emph{(\spostsym Correctness over \loopmodel)} Operator \spostsym as defined in \spexit,
@@ -468,11 +478,6 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 \end{proof}
 
 \begin{definition}
-  \emph{(Pattern)} A pattern is a subset of guarded exits and guarded assignments
-  from a loop body.
-\end{definition}
-
-\begin{definition}
   \emph{(Pattern Capture)} A formula $P$ captures a pattern if (1) $P$ is a
   loop invariant of every loop where the pattern occurs and (2) P is the 
   strongest loop invariant on the loop reduced to the pattern only, starting
@@ -510,8 +515,21 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 }{
   t^\at{\idx} \rightarrow \KWexit
 }{
-  (\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})
+  (\forall j)(\seen{j} \impl \neg t_{0}^\at{j})
 }
+
+\patternnote There are a more precis invariant than \curinv if \curpattern occurs 
+only in the loop and if the invariant point \state{\Inv{\idx}} is placed after the pattern:
+$$(\forall j)(\seen{j} \lor j = i \impl \neg t_{0}^\at{j})$$
+
+\patternexample
+
+$\begin{array}{l}
+  \KWloop \KWover i \KWin 1~..~N \\
+  ~~~~ \textit{invariant}: (\forall j)(1\leq j < i \impl A[j] \neq 0)\\
+  ~~~~ A[\idx] = 0 \rightarrow \KWexit\\
+  \KWend
+\end{array}$
 
 \begin{theorem}
   \Inv{\idx} given by \curinv captures pattern \curpattern.
@@ -519,13 +537,7 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 \end{theorem}
 
 \begin{proof}
-  The proof proceeds by induction on the value of the loop index \idx. Without
-  loss of generality, we assume the loop is centered on the pattern, with
-  preceding guarded exits \gstatement{exit}{1..n} and following guarded
-  assignments \gstatement{assign}{1..m}.
-
-\bigskip
-1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$ \\
+  The proof proceeds by induction on the value of the loop index \idx.\\ 
 
   \noindent
   We start from invariant $\mathit{true}$ before the loop.
@@ -540,7 +552,12 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
   %
   Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
   \Inv{\idx+1} is the strongest postcondition of \Inv{\idx} through the loop
-  body at loop iteration $\idx+1$.
+  body at loop iteration $\idx+1$. Notice that \Inv{\idx} does not mention 
+  any variable, only initial values of variables and current value of the loop index.
+  %
+
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
   %
   \begin{align*}
     \spost{t^\at{\idx} \rightarrow \KWexit}{\Inv{\idx}
@@ -554,55 +571,25 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
   loop reduced to the pattern. 
 
 \bigskip
-2. general case \\
-
-  \noindent
-  We start from invariant $\mathit{true}$ before the loop.
-  In this case, only guarded exit statements \gstatement{exit}{1..n} 
-  occur before the current pattern \curpattern. 
+2. general case
   %
   \begin{align*}
     \spost{
+      &t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx};\\
       &\gstatement{exit}{1..n};\\
-      &t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}
-    }\\   
-    &= \spost{t^\at{\idxinitial} \rightarrow \KWexit}
-       {\spost{\gstatement{exit}{1..n}}{\mathit{true}}} && \text{by \spseq} \\ 
-    &\Rightarrow \spost{t^\at{\idxinitial} \rightarrow \KWexit}
-       {\mathit{true}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &= \neg t^\at{\idxinitial}    && \text{by \spexit}\\
-    &= \neg t_0^\at{\idxinitial}  && \text{by \vpp}\\
-    &= \Inv{\idxinitial}      && \text{by \curinv}
-  \end{align*}
-  %
-  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
-  \Inv{\idx+1} holds at loop iteration $\idx+1$ after executing first 
-  the guarded assignments of loop iteration \idx, then the guarded exits 
-  of loop iteration $\idx+1$ and finally the search pattern of loop iteration
-  $\idx+1$. Notice that \Inv{\idx} does not mention any variable, only initial 
-  values of variables and current value of the loop index.
-  %
-  \begin{align*}
-    \spost{
-      &\gstatement{assign}{1..m};\\
-      &\gstatement{exit}{1..n};\\
-      &t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}
+      &\gstatement{assign}{1..m}\\
     }\\
-    &= \spost{t^\at{\idx+1} \rightarrow \KWexit}
-       {\spost{\gstatement{exit}{1..n-1}}{\spost{\gstatement{assign}{1..m}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
-    &\Rightarrow \spost{t^\at{\idx+1} \rightarrow \KWexit}
-       {\spost{\gstatement{exit}{1..n-1}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-assignments}}\\
-    &\Rightarrow \spost{t^\at{\idx+1} \rightarrow \KWexit}
-       {\Inv{\idx}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &= \neg t^\at{\idx+1} \land \Inv{\idx}    && \text{by \spexit}\\
-    &=\neg t_0^\at{\idx+1} \land \Inv{\idx}   && \text{by \vpp}\\
-    &= \Inv{\idx+1}          && \text{by \curinv}
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
+              {\spost{t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}}}} && \text{by \spseq} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}{\Inv{\idx+1}}} 
+              && \text{by 1. reduced case}\\
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
+    &\Rightarrow \Inv{\idx+1}          && \text{by lemma \ref{lemma:sp-g-assignments}}
   \end{align*}
   % 
   This proves that \Inv{\idx} is a loop invariant of every loop where pattern
   \curpattern occurs.
 \end{proof}
-
 
 \subsection{Update Patterns}
 
@@ -610,85 +597,82 @@ assignments) we define a virtual state (\vstate{exit}{1..n}) juste before the in
 
 \pattern{
   A scalar variable $a$ is modified in at most exactly a single assignment, whose
-guard is \textit{true}, and it receives a value-preserving expression.
+  guard is \textit{true}, and it receives a value-preserving expression.
 }{
   \mathit{true} \rightarrow a := e^\at{\idx}
 }{
   (\idx = \idxinitial \impl a = a_0) \land (\idx \neq \idxinitial \impl a = e_0^\at{\idx - 1})
 }
-%
-\begin{theorem}
-  \emph{(Certain Single Update Pattern Invariant Capture the Pattern)} \Inv{\idx} given by \curinv
-  captures pattern \curpattern.
-\label{theo:capture-search-pattern}
-\end{theorem}
 
-\begin{proof}
-  We assume for the moment lemma \ref{lemma:sp-correctness}.  
-  The proof proceeds by induction on the number of one or more unordered
-  set of simultaneous guarded exits statements $s^{assign}_{1..m}$, followed
-  over the loop by a (possibly empty) 
-  unordered set of simultaneous guarded assignments statements $s^{exit}_{0..n}$.
-  To reach the program point for the loop invariant for the first time, 
-  execution must step over the guarded exit. 
-  Initially, all variables take their initial values.  
-  %
-  \begin{align*}
-    \spost{
-      &\gstatement{exit}{1..n};\\
-      &\gstatement{assign}{1..m-1};\\
-      &\mathit{true} \rightarrow a := e^\at{\idxinitial}}{a = a_0
-    }\\
-    &= \spost{\mathit{true} \rightarrow a := e^\at{\idxinitial}}
-       {\spost{\gstatement{assign}{1..m-1}}{\spost{\gstatement{exit}{1..n}}{a = a_0}}} && \text{by \spseq} \\ 
-    &\Rightarrow \spost{\mathit{true} \rightarrow a := e^\at{\idxinitial}}
-       {\spost{\gstatement{assign}{1..m-1}}{a = a_0}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &\Rightarrow \spost{\mathit{true} \rightarrow a := e^\at{\idxinitial}}
-       {a = a_0} && \text{by lemma \ref{lemma:sp-g-assignments}}\\
-    &= (\exists b) ( a = e^\at{\idxinitial}[a \leftarrow b] \land a=a_0[a \leftarrow b])   && \text{by \spscalar}\\
-    &= ( a = e_0^\at{\idxinitial}[a \leftarrow b] \land a=a_0[a \leftarrow b])   && \text{by \vpp}\\ 
-    &= (a=a_0) \land (\exists b) ( a = e_0^\at{\idxinitial}[a \leftarrow b])   && \text{a not in $a_0$}\\
-    &= (a = a_0)                 && \text{exists trivially true}\\
-    &= \Inv{\idxinitial}       && \text{by \curinv}
-  \end{align*}
-  %
-  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
-  \Inv{\idx+1} holds at loop iteration $\idx+1$.
-  %
-  \begin{align*}
-    \spost{
-      &\gstatement{exit}{1..n};\\
-      &s^{exit}_{1..m-1};\\
-      &\mathit{true} \rightarrow a := e^\at{\idx+1}}{\Inv{\idx}
-    }\\
-    &= \spost{\mathit{true} \rightarrow a := e^\at{\idx+1}}
-       {\spost{\gstatement{assign}{1..m-1}}{\spost{\gstatement{exit}{1..n}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
-    &\Rightarrow \spost{\mathit{true} \rightarrow a := e^\at{\idx+1}}
-       {\spost{\gstatement{assign}{1..m-1}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
-    &\Rightarrow \spost{\mathit{true} \rightarrow a := e^\at{\idx+1}}
-       {\Inv{\idx}} && \text{by lemma \ref{lemma:sp-g-assignments}}\\
-    &= (\exists b) ( a = e^\at{\idx+1}[a \leftarrow b] \land \Inv{\idx}[a \leftarrow b])   && \text{by \spscalar}\\
-    &= ( a = e_0^\at{\idx+1}[a \leftarrow b] \land \Inv{\idx}[a \leftarrow b])   && \text{by \vpp}\\ 
-    &= \Inv{\idx} \land (\exists b) ( a = e_0^\at{\idx+1}[a \leftarrow b])   && \text{a not in $\Inv{\idx}$}\\
-    &= \Inv{\idx}             &&\text{by \curinv}\\
-  \end{align*}
-  % 
-  This proves that \Inv{\idx} capture \curpattern. 
-\end{proof}
-
-\patternnote This is the case for Boolean variables that identify the first run
-through the loop.
-
-\bigskip
 \patternexample
 
-\medskip
 $\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: (\idx = 1 \impl \mathit{flag} = \mathit{flag}_0) \land (\idx \neq 1 \impl flag = true)\\
   ~~~~ true \rightarrow \mathit{flag} := true\\
   \KWend
 \end{array}$
+
+\begin{theorem}
+  \Inv{\idx} given by \curinv captures pattern \curpattern.
+\end{theorem}
+
+\begin{proof}
+  The proof proceeds by induction on the value of the loop index \idx.\\
+
+  \noindent
+  We start from invariant $(a = a_0)$ before the loop, because
+  initially, the variable $a$ take it initial value $(a = a_0)$.
+  Note that the pattern is not yet reached.
+  %
+  \begin{align*}
+     (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
+  \Inv{\idx+1} is the strongest postcondition of \Inv{\idx} through 
+  the loop body at loop iteration $\idx+1$. Notice that \Inv{\idx} does 
+  not mention any variable, only initial values of variables and current 
+  value of the loop index.
+  %
+
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
+  %
+  \begin{align*}
+    \spost{
+    &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}
+    }\\   
+    &= (\exists b) (a = e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])  && \text{by \spscalar}\\
+    &= (\exists b) (a = e_0^\at{\idx}[a \leftarrow b] \land \Inv{\idx}[a\leftarrow b]) && \text{by \vpp}\\ 
+    &= (a = e_0^\at{\idx}) \land (\exists b) (\Inv{\idx}[a\leftarrow b])  && \text{$a$ not in $e_0^\at{\idx}$}\\
+    &= (a = e_0^\at{\idx}) \land \mathit{true} \\                                                          
+    &= \Inv{\idx+1}        && \text{by \curinv}
+  \end{align*}
+  %
+  This proves that \Inv{\idx} is the strongest loop invariant on the 
+  loop reduced to the pattern. 
+
+\bigskip
+2. general case
+  %
+  \begin{align*}
+    \spost{
+      &\gstatement{exit}{1..n};\\
+      &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx};\\
+      &\gstatement{assign}{1..m}\\
+    }\\
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\mathit{true} \rightarrow a := e^\at{\idx}}
+        {\spost{\gstatement{exit}{1..n}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}
+        {\spost{\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-exits}} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}} && \text{by reduce case} \\ 
+    &\Rightarrow \Inv{\idx+1} && \text{by lemma \ref{lemma:sp-g-assignments}}
+  \end{align*}
+  % 
+  This proves that \Inv{\idx} is a loop invariant of every loop where pattern
+  \curpattern occurs.
+\end{proof}
 
 \subsubsection*{Single Min/Max Pattern}
 
