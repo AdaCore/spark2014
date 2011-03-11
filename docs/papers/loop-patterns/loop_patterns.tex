@@ -328,7 +328,7 @@ such that ($e=e_0$) is a loop invariant. Let us call the corresponding property
 Given a loop index \idx, we denote a \textit{value-preserving expression} $e$
 as $e^\at{\idx}$, so that we can express the same expression for differents
 values of the loop index (\eg $e^\at{j}$, $e^\at{k}$, \etc). Such an expression
-only depends on the value of the loop index and initial values of variables
+only depends on the number of iterations and initial values of variables
 before the loop. Notice that ($e^\at{j} = e_0^\at{j}$) is not necessarily a
 loop invariant for $j \neq i$.  For instance in the following example:
 $$\begin{array}{l}
@@ -537,16 +537,18 @@ $\begin{array}{l}
 \end{theorem}
 
 \begin{proof}
-  The proof proceeds by induction on the value of the loop index \idx.\\ 
+  The proof proceeds by induction on the number of iterations \idx.\\ 
+
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$\\
 
   \noindent
   We start from invariant $\mathit{true}$ before the loop.
   %
   \begin{align*}
     \spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}
-    }\\   
-    &= \neg t^\at{initial}    && \text{by \spexit}\\
-    &= \neg t_0^\at{initial}  && \text{by \vpp}\\
+    }  
+    &= \neg t^\at{\idxinitial}    && \text{by \spexit}\\
+    &= \neg t_0^\at{\idxinitial}  && \text{by \vpp}\\
     &= \Inv{\idxinitial}      && \text{by \curinv}
   \end{align*}
   %
@@ -555,13 +557,9 @@ $\begin{array}{l}
   body at loop iteration $\idx+1$. Notice that \Inv{\idx} does not mention 
   any variable, only initial values of variables and current value of the loop index.
   %
-
-\bigskip
-1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
-  %
   \begin{align*}
     \spost{t^\at{\idx} \rightarrow \KWexit}{\Inv{\idx}
-    }\\   
+    }  
     &= \neg t^\at{\idx+1} \land \Inv{\idx}    && \text{by \spexit}\\
     &=\neg t_0^\at{\idx+1} \land \Inv{\idx}  && \text{by \vpp}\\
     &= \Inv{\idx+1}          && \text{by \curinv}
@@ -571,14 +569,38 @@ $\begin{array}{l}
   loop reduced to the pattern. 
 
 \bigskip
-2. general case
+2. general case : in addition to the current pattern \curpattern, there 
+  may be others guarded exit and guarded assignment statements.\\
+
+  \noindent
+  We start from invariant $\mathit{true}$ before the loop.
+  %
+  \begin{align*}
+    \spost{
+      &t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true};\\
+      &\gstatement{exit}{1..n};\\
+      &\gstatement{assign}{1..m}\\
+    }
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
+              {\spost{t^\at{\idxinitial} \rightarrow \KWexit}{\mathit{true}}}} && \text{by \spseq} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
+              {\neg t_0^\at{initial}}} && \text{by \spexit \& \vpp} \\ 
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}{\neg t_0^\at{initial}} && \text{by lemma \ref{lemma:sp-g-exits}}\\
+    &\Rightarrow \neg t_0^\at{initial}          && \text{by lemma \ref{lemma:sp-g-assignments}} \\
+    &= \Inv{\idxinitial}      && \text{by \curinv}
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that
+  \Inv{\idx+1} is the strongest postcondition of \Inv{\idx} through the loop
+  body at loop iteration $\idx+1$. Notice that \Inv{\idx} does not mention 
+  any variable, only initial values of variables and current value of the loop index.
   %
   \begin{align*}
     \spost{
       &t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx};\\
       &\gstatement{exit}{1..n};\\
       &\gstatement{assign}{1..m}\\
-    }\\
+    }
     &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
               {\spost{t^\at{\idx+1} \rightarrow \KWexit}{\Inv{\idx}}}} && \text{by \spseq} \\ 
     &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}{\Inv{\idx+1}}} 
@@ -596,7 +618,7 @@ $\begin{array}{l}
 \subsubsection*{Certain Single Update Pattern}
 
 \pattern{
-  A scalar variable $a$ is modified in at most exactly a single assignment, whose
+  A scalar variable $a$ is modified in exactly a single assignment, whose
   guard is \textit{true}, and it receives a value-preserving expression.
 }{
   \mathit{true} \rightarrow a := e^\at{\idx}
@@ -618,11 +640,11 @@ $\begin{array}{l}
 \end{theorem}
 
 \begin{proof}
-  The proof proceeds by induction on the value of the loop index \idx.\\
+  The proof proceeds by induction on the number of iterations \idx.\\
 
   \noindent
   We start from invariant $(a = a_0)$ before the loop, because
-  initially, the variable $a$ take it initial value $(a = a_0)$.
+  initially, the variable $a$ take it initial value $a_0$.
   Note that the pattern is not yet reached.
   %
   \begin{align*}
@@ -654,7 +676,8 @@ $\begin{array}{l}
   loop reduced to the pattern. 
 
 \bigskip
-2. general case
+2. general case : in addition to the current pattern \curpattern, there 
+  may be others guarded exit and guarded assignment statements.\\
   %
   \begin{align*}
     \spost{
