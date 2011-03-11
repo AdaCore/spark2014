@@ -135,13 +135,17 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
-      Start_from : Node_Id := Empty)
+      Start_from : Node_Id := Empty;
+      Inner_Expr : W_Prog_Id := New_Void)
      return W_Prog_Id;
    --  Translate a list of Ada statements into a single Why expression.
    --  An empty list is translated to "void".
    --  The parameter Start_from indicates a node in the list from which the
    --  translation process is to be started. All nodes before and including
    --  Start_from are ignored.
+   --  The parameter Inner_Expr represents an expression that is put at the
+   --  very inner end of the statement list, in the scope of all object
+   --  declarations.
 
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id;
    --  Build a Why identifier out of an Ada Node.
@@ -947,9 +951,7 @@ package body Gnat2Why.Subprograms is
                      then
                         T := New_Prog_Identifier
                               (Ada_Node => Expr,
-                               Def      =>
-                                 New_Identifier
-                                    (Symbol => Chars (Entity (Expr))));
+                               Def      => Id);
                      elsif Is_Mutable (Entity (Expr)) then
                         T := New_Deref (Ada_Node => Expr, Ref => Id);
                      else
@@ -1060,8 +1062,16 @@ package body Gnat2Why.Subprograms is
                   Progs    => Compute_Call_Args (Expr),
                   Ada_Node => Expr);
 
+         when N_Expression_With_Actions =>
+            return
+               Why_Expr_Of_Ada_Stmts
+                  (Actions (Expr),
+                   Inner_Expr =>
+                     Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
+
          when others =>
             raise Not_Implemented;
+
       end case;
       return
         Insert_Conversion
@@ -1150,9 +1160,8 @@ package body Gnat2Why.Subprograms is
 
          when N_If_Statement =>
             return
-              New_Conditional_Prog
-                (Ada_Node  => Stmt,
-                 Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt)),
+              New_Simpl_Conditional_Prog
+                (Condition => Why_Expr_Of_Ada_Expr (Condition (Stmt)),
                  Then_Part => Why_Expr_Of_Ada_Stmts (Then_Statements (Stmt)),
                  Else_Part => Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt)));
 
@@ -1289,9 +1298,8 @@ package body Gnat2Why.Subprograms is
                         Next (Cur_Choice);
                      end loop;
                      T :=
-                        New_Conditional_Prog
-                           (Ada_Node  => Cur_Case,
-                            Condition => C,
+                        New_Simpl_Conditional_Prog
+                           (Condition => C,
                             Then_Part =>
                               Why_Expr_Of_Ada_Stmts (Statements (Cur_Case)),
                             Else_Part => T);
@@ -1312,12 +1320,12 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Stmts
      (Stmts      : List_Id;
-      Start_from : Node_Id := Empty)
+      Start_from : Node_Id := Empty;
+      Inner_Expr : W_Prog_Id := New_Void)
      return W_Prog_Id
    is
-      Result          : W_Prog_Id := New_Void;
+      Result          : W_Prog_Id := Inner_Expr;
       Cur_Stmt        : Node_Or_Entity_Id;
-      Seen_Statements : Boolean := False;
    begin
       --  Traverse the list of statements backwards, chaining the current
       --  statement in front of the already treated statements.
@@ -1334,11 +1342,9 @@ package body Gnat2Why.Subprograms is
       --  Therefore we go backwards, to have the <rest of statements> already
       --  translated.
       --
-      --  The variable Result contains the already translated part. The
-      --  boolean Seen_Statements stores if Result contains something else
-      --  than the default value (void)
+      --  The variable Result contains the already translated part.
       if List_Length (Stmts) = 0 then
-         --  We return the default value, ie void
+         --  We return the default value
          return Result;
       end if;
 
@@ -1352,35 +1358,40 @@ package body Gnat2Why.Subprograms is
             when N_Object_Declaration =>
                --  Source objects should be defined at a global level
 
-               if Seen_Statements and then
-                  not Comes_From_Source (Original_Node (Cur_Stmt))
-               then
+               if not Comes_From_Source (Original_Node (Cur_Stmt)) then
                   declare
                      Id       : constant Node_Id :=
                         Defining_Identifier (Cur_Stmt);
                      W_Id     : constant W_Identifier_Id :=
-                        New_Identifier (Symbol => Chars (Id));
+                        New_Identifier (Full_Name (Id));
                      Exp_Type : constant Why_Type :=
                         Type_Of_Node (Object_Definition (Cur_Stmt));
+                     Def : constant W_Prog_Id :=
+                        (if Present (Expression (Cur_Stmt)) then
+                           Why_Expr_Of_Ada_Expr
+                              (Expression (Cur_Stmt),
+                               Exp_Type)
+                        else
+                           New_Any_Expr
+                              (Any_Type =>
+                                 New_Abstract_Type
+                                    (Name =>
+                                       New_Identifier
+                                       (Type_Of_Node
+                                          (Object_Definition (Cur_Stmt))))));
                   begin
                      case Ekind (Id) is
                         when E_Constant =>
                            Result := New_Binding_Prog
                              (Ada_Node => Cur_Stmt,
                               Name     => W_Id,
-                              Def      =>
-                                Why_Expr_Of_Ada_Expr
-                                  (Expression (Cur_Stmt),
-                                   Exp_Type),
+                              Def      => Def,
                               Context  => Result);
                         when others =>
                            Result := New_Binding_Ref
                              (Ada_Node => Cur_Stmt,
                               Name     => W_Id,
-                              Def      =>
-                                Why_Expr_Of_Ada_Expr
-                                  (Expression (Cur_Stmt),
-                                   Exp_Type),
+                              Def      => Def,
                               Context  => Result);
                      end case;
                   end;
@@ -1388,14 +1399,8 @@ package body Gnat2Why.Subprograms is
 
             when others =>
                --  For all other statements, we call Why_Expr_Of_Ada_Stmt
-               --  to obtain a stmt, and if necessary we build a statement
-               --  sequence
-               if not Seen_Statements then
-                  Result := Why_Expr_Of_Ada_Stmt (Cur_Stmt);
-                  Seen_Statements := True;
-               else
-                  Result := Sequence (Why_Expr_Of_Ada_Stmt (Cur_Stmt), Result);
-               end if;
+               --  to obtain a stmt, and build a statement sequence
+               Result := Sequence (Why_Expr_Of_Ada_Stmt (Cur_Stmt), Result);
          end case;
          Cur_Stmt := Prev (Cur_Stmt);
       end loop;

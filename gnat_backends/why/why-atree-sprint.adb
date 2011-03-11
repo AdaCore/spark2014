@@ -1811,13 +1811,10 @@ package body Why.Atree.Sprint is
       Node  : W_Assignment_Id)
    is
    begin
-      Traverse
-        (State,
-         Assignment_Get_Name (Node));
-      P (O, " := ");
-      Traverse
-        (State,
-         Assignment_Get_Value (Node));
+      Traverse (State, Assignment_Get_Name (Node));
+      P (O, " := ( ");
+      Traverse (State, Assignment_Get_Value (Node));
+      P (O, " )");
       State.Control := Abandon_Children;
    end Assignment_Pre_Op;
 

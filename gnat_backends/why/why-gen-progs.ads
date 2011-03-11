@@ -91,6 +91,12 @@ package Why.Gen.Progs is
    function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean disjunction as program.
 
+   function New_Simpl_Conditional_Prog
+      (Condition : W_Prog_Id;
+       Then_Part : W_Prog_Id;
+       Else_Part : W_Prog_Id) return W_Prog_Id;
+   --  Conditional program, simplify if condition is true/false.
+
    function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
    --  The program "void"
    --

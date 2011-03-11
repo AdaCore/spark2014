@@ -350,6 +350,29 @@ package body Why.Gen.Progs is
       end if;
    end New_Prog_Orb;
 
+   --------------------------------
+   -- New_Simpl_Conditional_Prog --
+   --------------------------------
+
+   function New_Simpl_Conditional_Prog
+      (Condition : W_Prog_Id;
+       Then_Part : W_Prog_Id;
+       Else_Part : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      if Is_True_Boolean (Condition) then
+         return Then_Part;
+      elsif Is_False_Boolean (Condition) then
+         return Else_Part;
+      else
+         return
+            New_Conditional_Prog
+               (Condition => Condition,
+                Then_Part => Then_Part,
+                Else_Part => Else_Part);
+      end if;
+   end New_Simpl_Conditional_Prog;
+
    --------------
    -- New_Void --
    --------------
@@ -362,12 +385,34 @@ package body Why.Gen.Progs is
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id
    is
+      function Is_Void (N : W_Prog_Id) return Boolean;
+      --  Detect if the node represents the Void Literal
+
+      --------------
+      -- Is_Void --
+      --------------
+
+      function Is_Void (N : W_Prog_Id) return Boolean
+      is
+      begin
+         return
+           (Get_Kind (N) = W_Prog_Constant and then
+            Get_Kind (Prog_Constant_Get_Def (N)) = W_Void_Literal);
+      end Is_Void;
+
+      --  begin processing for Sequence
    begin
       --  We only optimize the case where at least one of (Left, Right) is not
       --  a sequence; in this case we append the not-sequence statement to the
       --  sequence statement.
       --  If both are sequences, or both are non-sequences, we use
       --  New_Statement_Sequence.
+      if Is_Void (Left) then
+         return Right;
+      elsif Is_Void (Right) then
+         return Left;
+      end if;
+
       case Get_Kind (Left) is
          when W_Statement_Sequence =>
             case Get_Kind (Right) is
