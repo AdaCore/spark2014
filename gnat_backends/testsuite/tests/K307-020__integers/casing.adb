@@ -11,4 +11,14 @@ package body Casing is
       return Res;
    end F;
 
+   function G (X : Integer) return Integer is
+      Res : Integer;
+   begin
+      Res :=
+         (case X is
+            when 0 => 1,
+            when 1 => 2,
+            when others => X + 1);
+      return Res;
+   end G;
 end Casing;
