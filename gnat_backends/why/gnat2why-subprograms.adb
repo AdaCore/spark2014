@@ -29,6 +29,7 @@ with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
+with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Stand;              use Stand;
@@ -1135,7 +1136,7 @@ package body Gnat2Why.Subprograms is
                end case;
             end;
 
-         when N_Return_Statement =>
+         when Sinfo.N_Return_Statement =>
             --  ??? what to do in this case? We would need to know if we are
             --  in a procedure (translate to void or even omit) or function
             --  (just compile the returned expression)
