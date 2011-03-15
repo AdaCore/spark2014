@@ -1214,14 +1214,17 @@ package body Gnat2Why.Subprograms is
                Invariant    : W_Predicate_Id;
                Loop_Content : W_Prog_Id;
                Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
-               Loop_Name    : constant String :=
-                  Full_Name (Entity (Identifier (Stmt)));
+               Loop_Entity  : constant Entity_Id :=
+                  Entity (Identifier (Stmt));
+               Loop_Name    : constant String := Full_Name (Loop_Entity);
                Entire_Loop  : W_Prog_Id;
             begin
-               New_Exception
-                  (Current_Why_Output_File,
-                   New_Identifier (Loop_Name),
-                   Why.Types.Why_Empty);
+               if Has_Exit (Loop_Entity) then
+                  New_Exception
+                     (Current_Why_Output_File,
+                      New_Identifier (Loop_Name),
+                      Why.Types.Why_Empty);
+               end if;
 
                Compute_Invariant (Loop_Body, Invariant, Split_Node);
                Loop_Content :=
@@ -1306,22 +1309,25 @@ package body Gnat2Why.Subprograms is
                   --  Some other kind of loop
                   raise Not_Implemented;
                end if;
-
-               return
-                  New_Try_Block
-                    (Ada_Node => Stmt,
-                     Prog     =>
-                        Sequence
-                           (Entire_Loop,
-                            New_Raise_Statement
-                              (Ada_Node => Stmt,
-                               Name     => New_Identifier (Loop_Name))),
-                     Handler  =>
-                        (1 =>
-                           New_Handler
-                             (Ada_Node => Stmt,
-                              Name     => New_Identifier (Loop_Name),
-                              Def      => New_Void)));
+               if Has_Exit (Loop_Entity) then
+                  return
+                     New_Try_Block
+                       (Ada_Node => Stmt,
+                        Prog     =>
+                           Sequence
+                              (Entire_Loop,
+                               New_Raise_Statement
+                                 (Ada_Node => Stmt,
+                                  Name     => New_Identifier (Loop_Name))),
+                        Handler  =>
+                           (1 =>
+                              New_Handler
+                                (Ada_Node => Stmt,
+                                 Name     => New_Identifier (Loop_Name),
+                                 Def      => New_Void)));
+               else
+                  return Entire_Loop;
+               end if;
 
             end;
 
