@@ -2015,6 +2015,8 @@ package body Why.Atree.Sprint is
             Relative_Indent (O, -1);
          end if;
          P (O, ")");
+      else
+         P (O, ")");
       end if;
 
       State.Control := Abandon_Children;
