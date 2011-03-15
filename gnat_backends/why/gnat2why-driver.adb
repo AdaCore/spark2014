@@ -46,7 +46,6 @@ with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Ids;               use Why.Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Locs;         use Gnat2Why.Locs;
@@ -189,6 +188,8 @@ package body Gnat2Why.Driver is
          Name_String (Chars (Defining_Unit_Name (Specification (N))));
 
    begin
+      Current_Why_Output_File := File;
+
       if Nkind (GNAT_Root) = N_Compilation_Unit then
 
          Translate_Context (File, Context_Items (GNAT_Root));

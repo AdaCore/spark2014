@@ -54,8 +54,9 @@ with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Types;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
-with Gnat2Why.Types;        use Gnat2Why.Types;
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
+with Gnat2Why.Driver;       use Gnat2Why.Driver;
+with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -93,6 +94,10 @@ package body Gnat2Why.Subprograms is
        Why_Term : W_Term_Id) return W_Term_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
+   --  Return the Defining_Identifier of the loop that belongs to an exit
+   --  statement.
 
    function Prog_Equal_To (E : W_Prog_Id; N : Node_Id) return W_Prog_Id;
    --  For an expression E of type "int" and a Node that represents a
@@ -277,12 +282,6 @@ package body Gnat2Why.Subprograms is
          Split_Node := Cur_Stmt;
          Nlists.Next (Cur_Stmt);
       end loop;
-      if Nkind (Split_Node) /= N_Empty then
-         Pred :=
-            New_Located_Predicate
-              (Ada_Node => Split_Node,
-               Pred     => Pred);
-      end if;
    end Compute_Invariant;
 
    ---------------
@@ -381,6 +380,31 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
    end Map_Node_List_to_Array;
+
+   -----------------------------------
+   -- Loop_Entity_Of_Exit_Statement --
+   -----------------------------------
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
+   is
+   begin
+      --  If the name is directly in the given node, return that name
+      if Present (Name (N)) then
+         return Entity (Name (N));
+      else
+         --  Otherwise the exit statement belongs to the innermost loop, so
+         --  simply go upwards (follow parent nodes) until we encounter the
+         --  loop
+         declare
+            Cur_Node : Node_Id := N;
+         begin
+            while Nkind (Cur_Node) /= N_Loop_Statement loop
+               Cur_Node := Parent (Cur_Node);
+            end loop;
+            return Entity (Identifier (Cur_Node));
+         end;
+      end if;
+   end Loop_Entity_Of_Exit_Statement;
 
    -------------------
    -- Prog_Equal_To --
@@ -1189,38 +1213,50 @@ package body Gnat2Why.Subprograms is
                Split_Node   : Node_Id;
                Invariant    : W_Predicate_Id;
                Loop_Content : W_Prog_Id;
-               Annot        : W_Loop_Annot_Id;
                Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
+               Loop_Name    : constant String :=
+                  Full_Name (Entity (Identifier (Stmt)));
+               Entire_Loop  : W_Prog_Id;
             begin
+               New_Exception
+                  (Current_Why_Output_File,
+                   New_Identifier (Loop_Name),
+                   Why.Types.Why_Empty);
+
                Compute_Invariant (Loop_Body, Invariant, Split_Node);
                Loop_Content :=
                   Why_Expr_Of_Ada_Stmts
                     (Stmts      => Loop_Body,
                      Start_from => Split_Node);
-               Annot :=
-                 New_Loop_Annot
-                   (Ada_Node  => Stmt,
-                    Invariant => New_Assertion (Pred => Invariant));
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop
-                  return
-                    New_While_Loop
-                      (Ada_Node     => Stmt,
-                       Condition    =>
-                         New_Prog_Constant (Def => New_True_Literal),
-                       Annotation   => Annot,
-                       Loop_Content => Loop_Content);
+                  Entire_Loop :=
+                       New_While_Loop
+                         (Ada_Node     => Stmt,
+                          Condition    =>
+                            New_Prog_Constant (Def => New_True_Literal),
+                          Annotation   =>
+                            New_Loop_Annot
+                               (Invariant =>
+                                 New_Located_Assertion
+                                    (Ada_Node => Split_Node,
+                                     Pred => Invariant)),
+                          Loop_Content => Loop_Content);
                elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
                   --  We are in a While loop
-                  return
+                  Entire_Loop :=
                     New_While_Loop
                       (Ada_Node     => Stmt,
                        Condition    =>
                          Why_Expr_Of_Ada_Expr (Condition (Scheme)),
-                       Annotation   => Annot,
+                       Annotation   =>
+                         New_Loop_Annot
+                            (Invariant =>
+                              New_Located_Assertion
+                                 (Ada_Node => Split_Node, Pred => Invariant)),
                        Loop_Content => Loop_Content);
                elsif Nkind (Condition (Scheme)) = N_Empty then
                   --  We are in a For loop
@@ -1228,40 +1264,76 @@ package body Gnat2Why.Subprograms is
                   declare
                      LParam_Spec : constant Node_Id :=
                         Loop_Parameter_Specification (Scheme);
-                     Low : constant Node_Id :=
+                     Low         : constant Node_Id :=
                         Low_Bound
                           (Get_Range
                             (Discrete_Subtype_Definition (LParam_Spec)));
-                     High : constant Node_Id :=
+                     High        : constant Node_Id :=
                         High_Bound
                           (Get_Range
                             (Discrete_Subtype_Definition (LParam_Spec)));
-                     Loop_Index : constant Name_Id :=
+                     Loop_Index  : constant Name_Id :=
                         Chars (Defining_Identifier (LParam_Spec));
+                     Low_Name    : constant String :=
+                        Loop_Name & "___low";
+                     High_Name    : constant String :=
+                        Loop_Name & "___high";
                   begin
-                     return
-                        New_For_Loop
-                        (Ada_Node  => Stmt,
-                        Loop_Index => Loop_Index,
-                        Low        =>
-                           Why_Expr_Of_Ada_Expr (Low, (Kind => Why_Int)),
-                        High       =>
-                           Why_Expr_Of_Ada_Expr (High, (Kind => Why_Int)),
-                        Invariant  => Annot,
-                        Loop_Body  => Loop_Content);
+                     Entire_Loop :=
+                        New_Binding_Prog
+                          (Name => New_Identifier (Low_Name),
+                           Def  =>
+                              Why_Expr_Of_Ada_Expr
+                                 (Low,
+                                  (Kind => Why_Int)),
+                           Context =>
+                             New_Binding_Prog
+                               (Name => New_Identifier (High_Name),
+                                Def  =>
+                                 Why_Expr_Of_Ada_Expr
+                                    (High,
+                                     (Kind => Why_Int)),
+                                Context =>
+                                   New_For_Loop
+                                   (Ada_Node  => Stmt,
+                                   Loop_Index => Loop_Index,
+                                   Low        => New_Identifier (Low_Name),
+                                   High       => New_Identifier (High_Name),
+                                   Invariant  => Invariant,
+                                   Loop_Body  => Loop_Content)));
                   end;
                else
                   --  Some other kind of loop
                   raise Not_Implemented;
                end if;
+
+               return
+                  New_Try_Block
+                    (Ada_Node => Stmt,
+                     Prog     =>
+                        Sequence
+                           (Entire_Loop,
+                            New_Raise_Statement
+                              (Ada_Node => Stmt,
+                               Name     => New_Identifier (Loop_Name))),
+                     Handler  =>
+                        (1 =>
+                           New_Handler
+                             (Ada_Node => Stmt,
+                              Name     => New_Identifier (Loop_Name),
+                              Def      => New_Void)));
+
             end;
 
          when N_Exit_Statement =>
             declare
+               Loop_Entity : constant Entity_Id :=
+                  Loop_Entity_Of_Exit_Statement (Stmt);
+               Exc_Name : constant String := Full_Name (Loop_Entity);
                Raise_Stmt : constant W_Prog_Id :=
                  New_Raise_Statement
                    (Ada_Node => Stmt,
-                    Name => New_Exit_Identifier);
+                    Name => New_Identifier (Exc_Name));
             begin
                if Nkind (Condition (Stmt)) = N_Empty then
                   return Raise_Stmt;

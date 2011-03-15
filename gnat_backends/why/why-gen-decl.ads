@@ -93,4 +93,9 @@ package Why.Gen.Decl is
       Binders  : W_Logic_Binder_Array;
       Def      : W_Predicate_Id);
 
+   procedure New_Exception
+      (File      : W_File_Id;
+       Name      : W_Identifier_Id;
+       Parameter : W_Primitive_Type_Id);
+
 end Why.Gen.Decl;

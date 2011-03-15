@@ -58,9 +58,9 @@ package Why.Gen.Progs is
    function New_For_Loop
      (Ada_Node   : Node_Id;
       Loop_Index : Name_Id;
-      Low        : W_Prog_Id;
-      High       : W_Prog_Id;
-      Invariant  : W_Loop_Annot_Id;
+      Low        : W_Identifier_Id;
+      High       : W_Identifier_Id;
+      Invariant  : W_Predicate_Id;
       Loop_Body  : W_Prog_Id) return W_Prog_Id;
    --  Generate a for loop in Why. Use an encoding of the following form:
    --  let i = ref start in
@@ -68,7 +68,7 @@ package Why.Gen.Progs is
    --    ..
    --    i := !i + 1;
    --  done
-   --  Low and High should be of type Why_Int
+   --  Low and High are identifiers that represent the bounds of the range
 
    function New_Located_Assert
       (Ada_Node : Node_Id;

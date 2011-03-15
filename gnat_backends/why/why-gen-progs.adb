@@ -178,9 +178,9 @@ package body Why.Gen.Progs is
    function New_For_Loop
      (Ada_Node   : Node_Id;
       Loop_Index : Name_Id;
-      Low        : W_Prog_Id;
-      High       : W_Prog_Id;
-      Invariant  : W_Loop_Annot_Id;
+      Low        : W_Identifier_Id;
+      High       : W_Identifier_Id;
+      Invariant  : W_Predicate_Id;
       Loop_Body  : W_Prog_Id) return W_Prog_Id
    is
       Index_Deref : constant W_Prog_Id :=
@@ -205,39 +205,53 @@ package body Why.Gen.Progs is
              Name     =>
                New_Identifier (Symbol => Loop_Index),
              Value    => Addition);
-      In_Range_Expression : constant W_Prog_Id  :=
+      Loop_Cond : constant W_Prog_Id  :=
          New_Infix_Call
            (Ada_Node => Ada_Node,
-            Infix    => New_Op_And_Then_Prog,
+            Infix    => New_Op_Le_Prog,
             Left     =>
-               New_Infix_Call
-                 (Ada_Node => Ada_Node,
-                  Infix    => New_Op_Le_Prog,
-                  Left     => Low,
-                  Right    =>
-                    Duplicate_Any_Node (Id => Index_Deref)),
-            Right    =>
-               New_Infix_Call
-                 (Ada_Node => Ada_Node,
-                  Infix    => New_Op_Le_Prog,
-                  Left     =>
-                    Duplicate_Any_Node (Id => Index_Deref),
-                  Right    => High));
+              Duplicate_Any_Node (Id => Index_Deref),
+            Right    => New_Prog_Identifier (Def => High));
       Loop_Content : constant W_Prog_Id :=
          New_Statement_Sequence
             (Ada_Node   => Ada_Node,
              Statements => (1 => Loop_Body, 2 => Incr_Stmt));
+      Enriched_Inv : constant W_Predicate_Id :=
+         New_Conjunction
+            (Left => Invariant,
+             Right =>
+               New_Related_Terms
+                 (Left   => New_Term_Identifier (Name => Low),
+                  Op     => New_Rel_Le,
+                  Right  =>
+                     New_Term_Identifier
+                        (Name => New_Identifier (Symbol => Loop_Index)),
+                  Op2    => New_Rel_Le,
+                  Right2 =>
+                     New_Arith_Operation
+                        (Op => New_Op_Add,
+                         Left =>
+                           New_Term_Identifier
+                              (Name => Duplicate_Any_Node (Id => High)),
+                         Right =>
+                           New_Integer_Constant (Value => Uint_1))));
    begin
       return
         New_Binding_Ref
            (Ada_Node => Ada_Node,
             Name     => New_Identifier (Symbol => Loop_Index),
-            Def      => Duplicate_Any_Node (Id => Low),
+            Def      =>
+               New_Prog_Identifier (Def => Duplicate_Any_Node (Id => Low)),
             Context  =>
               New_While_Loop
                 (Ada_Node     => Ada_Node,
-                 Condition    => In_Range_Expression,
-                 Annotation   => Invariant,
+                 Condition    => Loop_Cond,
+                 Annotation   =>
+                   New_Loop_Annot
+                      (Invariant =>
+                        New_Located_Assertion
+                           (Ada_Node => Ada_Node,
+                            Pred => Enriched_Inv)),
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 

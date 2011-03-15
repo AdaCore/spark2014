@@ -544,6 +544,7 @@ package body Why.Atree.Sprint is
       Node  : W_Arith_Operation_Id)
    is
    begin
+      P (O, "( ");
       Traverse
         (State,
          Arith_Operation_Get_Left (Node));
@@ -555,6 +556,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Arith_Operation_Get_Right (Node));
+      P (O, " )");
 
       State.Control := Abandon_Children;
    end Arith_Operation_Pre_Op;
@@ -1870,6 +1872,7 @@ package body Why.Atree.Sprint is
       Node  : W_Infix_Call_Id)
    is
    begin
+      P (O, "( ");
       Traverse
         (State,
          Infix_Call_Get_Left (Node));
@@ -1881,6 +1884,7 @@ package body Why.Atree.Sprint is
       Traverse
         (State,
          Infix_Call_Get_Right (Node));
+      P (O, " )");
       State.Control := Abandon_Children;
    end Infix_Call_Pre_Op;
 

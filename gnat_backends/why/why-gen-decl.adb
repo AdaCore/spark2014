@@ -88,6 +88,21 @@ package body Why.Gen.Decl is
             (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
    end New_Axiom;
 
+   -------------------
+   -- New_Exception --
+   -------------------
+
+   procedure New_Exception
+      (File      : W_File_Id;
+       Name      : W_Identifier_Id;
+       Parameter : W_Primitive_Type_Id)
+   is
+   begin
+      File_Append_To_Declarations
+         (File,
+            New_Exception_Declaration (Name => Name, Parameter => Parameter));
+   end New_Exception;
+
    ------------------------
    -- New_Global_Binding --
    ------------------------
