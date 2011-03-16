@@ -564,18 +564,6 @@ package body Gnat2Why.Subprograms is
       function Compute_Spec (Kind : Name_Id) return W_Predicate_Id;
       --  Same as above, without the location node
 
-      function Initial_Assertions
-        (Initial_Body : W_Prog_Id;
-         Pre          : W_Predicate_Id)
-         return W_Prog_Id;
-      --  Add a "precondition of precondition" to the body of the subprogram,
-      --  as follows. Given Ada subprogram F with Pre P and Post Q, and
-      --  translation of body B, generate the new body
-      --    <asserts corresponding to precondition P>
-      --    <assume P>
-      --    <B>
-      --    <asserts corresponding to postcondition Q>
-
       --------------------
       -- Compute_Arrows --
       --------------------
@@ -713,7 +701,40 @@ package body Gnat2Why.Subprograms is
                            Context  => R);
                      end;
                   end if;
-               when others => null;
+
+               when N_Raise_Constraint_Error =>
+                  --  This is a check, we transform it into an assert
+                  declare
+                     Pred : constant W_Predicate_Id :=
+                        New_Negation (Operand =>
+                           Why_Predicate_Of_Ada_Expr (Condition (Cur_Decl)));
+                  begin
+                     R :=
+                        Sequence
+                           (New_Located_Assert
+                              (Ada_Node => Cur_Decl,
+                               Pred => Pred),
+                            R);
+                  end;
+               when N_If_Statement =>
+                  if Nkind (Original_Node (Cur_Decl)) = N_Pragma and then
+                     From_Aspect_Specification (Original_Node (Cur_Decl)) then
+                     --  This is a precondition, we transform it into an
+                     --  assume
+                     R :=
+                        Sequence
+                           (New_Assume_Statement
+                              (Ada_Node => Cur_Decl,
+                               Pred =>
+                                 New_Negation (Operand =>
+                                   Why_Predicate_Of_Ada_Expr
+                                     (Condition (Cur_Decl)))),
+                            R);
+                  end if;
+
+               when others =>
+                  null;
+
             end case;
             Cur_Decl := Prev (Cur_Decl);
          end loop;
@@ -811,41 +832,6 @@ package body Gnat2Why.Subprograms is
          return Compute_Spec (Kind, N);
       end Compute_Spec;
 
-      ------------------------
-      -- Initial_Assertions --
-      ------------------------
-
-      function Initial_Assertions
-        (Initial_Body : W_Prog_Id;
-         Pre          : W_Predicate_Id)
-         return W_Prog_Id
-      is
-         Cur_Decl : Node_Id := Last (Declarations (Node));
-         Cur_Body : W_Prog_Id :=
-            Sequence
-               (New_Assume_Statement (Ada_Node => Cur_Decl, Pred => Pre),
-                Initial_Body);
-      begin
-         while Nkind (Cur_Decl) /= N_Empty loop
-            if Nkind (Cur_Decl) = N_Raise_Constraint_Error then
-               declare
-                  Pred : constant W_Predicate_Id :=
-                     New_Negation (Operand =>
-                        Why_Predicate_Of_Ada_Expr (Condition (Cur_Decl)));
-               begin
-                  Cur_Body :=
-                     Sequence
-                        (New_Located_Assert
-                           (Ada_Node => Cur_Decl,
-                            Pred => Pred),
-                         Cur_Body);
-               end;
-            end if;
-            Prev (Cur_Decl);
-         end loop;
-         return Cur_Body;
-      end Initial_Assertions;
-
       Ent : constant Entity_Id := Unique_Defining_Entity (Node);
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
@@ -866,10 +852,7 @@ package body Gnat2Why.Subprograms is
                            Why_Expr_Of_Ada_Stmts (Stmts);
                Pre      : constant W_Predicate_Id :=
                   Compute_Spec (Name_Precondition);
-               Why_Body : constant W_Prog_Id :=
-                            Initial_Assertions
-                              (Compute_Context (Why_Stmt),
-                               Pre);
+               Why_Body : constant W_Prog_Id := Compute_Context (Why_Stmt);
                Loc_Node : Node_Id := Empty;
                Post     : constant W_Predicate_Id :=
                   Compute_Spec (Name_Postcondition, Loc_Node);
@@ -888,7 +871,7 @@ package body Gnat2Why.Subprograms is
                     (File   => File,
                      Name   => New_Identifier (Get_Name_String (Name)),
                      Arrows => Compute_Arrows,
-                     Pre    => Duplicate_Any_Node (Id => Pre),
+                     Pre    => Pre,
                      Post   => Duplicate_Any_Node (Id => Post));
                end if;
 
