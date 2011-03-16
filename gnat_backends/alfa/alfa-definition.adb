@@ -884,43 +884,43 @@ package body ALFA.Definition is
 
          if Has_Loop_In_Inner_Open_Scopes (U_Name) then
             Mark_In_Non_ALFA_Subprogram
-              ("exit label naming some outter loop", N);
+              ("exit label naming some outter loop", N, V_Any_Exit);
          end if;
       end if;
 
       if Present (Cond) then
          if Nkind (Parent (N)) /= N_Loop_Statement then
             Mark_In_Non_ALFA_Subprogram
-              ("exit with when clause not directly in loop", N);
+              ("exit with when clause not directly in loop", N, V_Any_Exit);
          end if;
 
       else
          if Nkind (Parent (N)) /= N_If_Statement then
             if Nkind (Parent (N)) = N_Elsif_Part then
                Mark_In_Non_ALFA_Subprogram
-                 ("exit in IF with ELSIF", N);
+                 ("exit in IF with ELSIF", N, V_Any_Exit);
             else
                Mark_In_Non_ALFA_Subprogram
-                 ("exit not directly in IF", N);
+                 ("exit not directly in IF", N, V_Any_Exit);
             end if;
 
          elsif Nkind (Parent (Parent (N))) /= N_Loop_Statement then
             Mark_In_Non_ALFA_Subprogram
-              ("exit not in IF directly in loop", N);
+              ("exit not in IF directly in loop", N, V_Any_Exit);
 
          --  First test the presence of ELSE, so that an exit in an ELSE leads
          --  to an error mentioning the ELSE.
 
          elsif Present (Else_Statements (Parent (N))) then
             Mark_In_Non_ALFA_Subprogram
-              ("exit in IF with ELSE", N);
+              ("exit in IF with ELSE", N, V_Any_Exit);
 
          --  An exit in an ELSIF does not reach here, as it would have been
          --  detected in the case (Nkind (Parent (N)) /= N_If_Statement).
 
          elsif Present (Elsif_Parts (Parent (N))) then
             Mark_In_Non_ALFA_Subprogram
-              ("exit in IF with ELSIF", N);
+              ("exit in IF with ELSIF", N, V_Any_Exit);
          end if;
       end if;
    end Mark_Exit_Statement;
@@ -1467,7 +1467,8 @@ package body ALFA.Definition is
           (Nkind (Parent (Parent (N))) /= N_Subprogram_Body
             or else Present (Next (N)))
       then
-         Mark_In_Non_ALFA_Subprogram ("RETURN not in last position", N);
+         Mark_In_Non_ALFA_Subprogram
+           ("RETURN not in last position", N, V_Any_Return);
       end if;
    end Mark_Simple_Return_Statement;
 
@@ -1521,7 +1522,7 @@ package body ALFA.Definition is
                                      N_Extended_Return_Statement)
             then
                Mark_In_Non_ALFA_Subprogram
-                 ("no RETURN at end of function", Stat);
+                 ("no RETURN at end of function", Stat, V_Any_Return);
             end if;
          end;
 
@@ -1532,7 +1533,8 @@ package body ALFA.Definition is
          --  borrow the Check_Returns procedure here ???
 
          if Return_Present (Id) then
-            Mark_In_Non_ALFA_Subprogram ("RETURN in procedure", N);
+            Mark_In_Non_ALFA_Subprogram
+              ("RETURN in procedure", N, V_Any_Return);
          end if;
       end if;
 

@@ -30,6 +30,8 @@ package ALFA.Definition is
                            V_Discr,            --  discriminant record
                            V_Dispatch,         --  dispatching
                            V_Block_Statement,  --  block declare statement
+                           V_Any_Return,       --  return statements
+                           V_Any_Exit,         --  exit statements
                            V_Other);           --  other violations of ALFA
 
    subtype V_Design is Violation_Kind range V_Slice .. V_Other;
