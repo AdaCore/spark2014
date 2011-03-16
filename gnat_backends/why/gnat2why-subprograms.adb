@@ -1663,6 +1663,11 @@ package body Gnat2Why.Subprograms is
                end if;
             end;
 
+         when N_Expression_With_Actions =>
+            --  This is probably a quantifier
+            return
+               Why_Predicate_Of_Ada_Expr (Original_Node (Expr));
+
          when others =>
             raise Not_Implemented;
       end case;
