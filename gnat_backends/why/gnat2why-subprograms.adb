@@ -1191,6 +1191,21 @@ package body Gnat2Why.Subprograms is
             raise Program_Error;
 
          when N_Loop_Statement =>
+            --  In general, we wrap loops in a try .. with Statement as
+            --  follows:
+            --
+            --  (at toplevel)
+            --    exception Loop_Name
+            --  (in statement sequence)
+            --    try
+            --      loop
+            --        <loop_body>
+            --      done
+            --    with Loop_Name -> void
+            --
+            --  The exception is necessary to deal with N_Exit_Statements (see
+            --  also the corresponding case). The exception has to be declared
+            --  at the toplevel.
             declare
                Loop_Body    : constant List_Id := Statements (Stmt);
                Split_Node   : Node_Id;
@@ -1202,6 +1217,8 @@ package body Gnat2Why.Subprograms is
                Loop_Name    : constant String := Full_Name (Loop_Entity);
                Entire_Loop  : W_Prog_Id;
             begin
+               --  If the loop has no exit statement, we can skip the
+               --  declaration of the exception.
                if Has_Exit (Loop_Entity) then
                   New_Exception
                      (Current_Why_Output_File,
@@ -1214,8 +1231,13 @@ package body Gnat2Why.Subprograms is
                   Why_Expr_Of_Ada_Stmts
                     (Stmts      => Loop_Body,
                      Start_from => Split_Node);
+
+               --  We now have computed the loop invariant and the loop body.
+               --  Depending on the kind of the loop (while, for, simple
+               --  loop), we build a different loop in Why
                if Nkind (Scheme) = N_Empty then
-                  --  No iteration scheme, we have a simple loop
+                  --  No iteration scheme, we have a simple loop. Generate
+                  --    while true do { <inv> } <body> done
                   Entire_Loop :=
                        New_While_Loop
                          (Ada_Node     => Stmt,
@@ -1232,7 +1254,8 @@ package body Gnat2Why.Subprograms is
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
-                  --  We are in a While loop
+                  --  We are in a While loop. Generate
+                  --    while <Cond> do { <inv> } <body> done
                   Entire_Loop :=
                     New_While_Loop
                       (Ada_Node     => Stmt,
@@ -1245,7 +1268,10 @@ package body Gnat2Why.Subprograms is
                                  (Ada_Node => Split_Node, Pred => Invariant)),
                        Loop_Content => Loop_Content);
                elsif Nkind (Condition (Scheme)) = N_Empty then
-                  --  We are in a For loop
+                  --  We are in a For loop. Generate
+                  --    let low = <low_value> in
+                  --    let high = <high_value> in
+                  --    <for-loop>
                   --  ??? Only increasing loops for now
                   declare
                      LParam_Spec : constant Node_Id :=
@@ -1296,12 +1322,7 @@ package body Gnat2Why.Subprograms is
                   return
                      New_Try_Block
                        (Ada_Node => Stmt,
-                        Prog     =>
-                           Sequence
-                              (Entire_Loop,
-                               New_Raise_Statement
-                                 (Ada_Node => Stmt,
-                                  Name     => New_Identifier (Loop_Name))),
+                        Prog     => Entire_Loop,
                         Handler  =>
                            (1 =>
                               New_Handler
@@ -1343,6 +1364,20 @@ package body Gnat2Why.Subprograms is
                   Why_Expr_Of_Ada_Expr (Expression (Stmt), (Kind => Why_Int));
                T            : W_Prog_Id := New_Void;
             begin
+               --  For a given case expression
+               --
+               --    case X is
+               --       when Case_1 => S1
+               --       ...
+               --       when Case_n => Sn
+               --       when others => S
+               --    end case;
+               --
+               --  We generate nested if expressions:
+               --    if X = Case_1 then S1
+               --    else if ...
+               --    else if X = Case_N then Sn
+               --    else S
                pragma Assert (Present (Cur_Case));
                while Present (Cur_Case) loop
                   pragma Assert
