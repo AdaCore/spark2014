@@ -1,5 +1,5 @@
 package body Check is
-   function Div (X : Integer) return Integer
+   function Div (X, Y : Integer) return Integer
    is
    begin
       return X;
