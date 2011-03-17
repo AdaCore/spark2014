@@ -1047,6 +1047,22 @@ package body Gnat2Why.Subprograms is
                  Prefix   => New_Op_Not_Prog,
                  Operand  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
+         when N_Op_And =>
+            return
+               New_Infix_Call
+                 (Ada_Node => Expr,
+                  Infix    => New_Op_And_Then_Prog,
+                  Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+
+         when N_Op_Or =>
+            return
+               New_Infix_Call
+                 (Ada_Node => Expr,
+                  Infix    => New_Op_Or_Else_Prog,
+                  Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+
          when N_Type_Conversion =>
             --  Nothing is to do here, because we insert type conversions
             --  ourselves.
