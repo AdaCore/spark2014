@@ -353,7 +353,8 @@ package body ALFA.Definition is
    begin
       if Scope (Id) = Standard_Standard
         and then not (Is_Subprogram (Id)
-                       or else Ekind (Id) = E_Package)
+                       or else Ekind (Id) = E_Package
+                       or else Ekind (Id) = E_Package_Body)
       then
          return Standard_In_ALFA.Contains (Id);
       else
@@ -1297,9 +1298,13 @@ package body ALFA.Definition is
 
    procedure Mark_Package_Body (N : Node_Id) is
       HSS : constant Node_Id := Handled_Statement_Sequence (N);
-      Id  : constant Entity_Id := Unique_Defining_Entity (N);
+      Id  : constant Entity_Id := Defining_Entity (N);
 
    begin
+      --  The scope entity for a package body is not the same as the scope
+      --  entity for a package declaration, which allow separately forcing
+      --  Formal_Proof on either the declaration or the body.
+
       Push_Scope (Id);
       Mark_List (Declarations (N));
 
@@ -1405,7 +1410,8 @@ package body ALFA.Definition is
 
                begin
                   pragma Assert (Is_Subprogram (Cur_Ent)
-                                  or else Ekind (Cur_Ent) = E_Package);
+                                  or else Ekind (Cur_Ent) = E_Package
+                                  or else Ekind (Cur_Ent) = E_Package_Body);
 
                   --  Check that this is the first occurrence of this pragma
                   --  on the current entity.
@@ -1551,15 +1557,17 @@ package body ALFA.Definition is
    ---------------------------------
 
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
-      PPC : Node_Id;
-      Id  : constant Entity_Id := Defining_Entity (N);
+      PPC  : Node_Id;
+      Expr : Node_Id;
+      Id   : constant Entity_Id := Defining_Entity (N);
    begin
       Push_Scope (Id);
       Mark_Subprogram_Specification (Specification (N));
 
-      PPC := Spec_PPC_List (Defining_Entity (N));
+      PPC := Spec_PPC_List (Id);
       while Present (PPC) loop
-         Mark (PPC);
+         Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (PPC)));
+         Mark (Expr);
          PPC := Next_Pragma (PPC);
       end loop;
 
