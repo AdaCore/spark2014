@@ -9,6 +9,7 @@
 \usepackage{xspace}
 \usepackage{mathpartir}
 \usepackage{xcolor}
+\usepackage{listings}
 
 \usepackage{url}
 \newcommand{\resp}{resp.\xspace}
@@ -125,9 +126,12 @@ CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
 \section{Introduction}
 \aftersec
 
-Containers\footnote{We use the word container as a synonym for a homogeneous
-  collection, not to mean an aggregate containing heterogeneous objects as in
-  component architectures.} are generic data structures offering a high-level
+Containers
+%REVIEW 1
+%\footnote{We use the word container as a synonym for a homogeneous
+%  collection, not to mean an aggregate containing heterogeneous objects as in
+%  component architectures.}
+are generic data structures offering a high-level
 view of collections of objects, while guaranteeing fast access to their content
 to retrieve or modify it. The most common containers are lists, vectors, sets
 and maps, which are usually defined in the standard library of languages, like
@@ -163,7 +167,7 @@ source of evidence today would benefit from an integration of formal
 verification with existing testing practice. At the simplest, this
 combination should be provably sound and it should guarantee a coverage of
 atomic verifications through formal verification and testing. This is the goal
-of project Hi-Lite, a project aiming at combined unit testing and unit proof of
+of project Hi-Lite~\cite{hilite}, a project aiming at combined unit testing and unit proof of
 C and Ada programs.
 % The core feature enabling this combination is a common
 % language of specification (different in C and Ada) that can be both executed
@@ -205,6 +209,11 @@ Section~\ref{sec:axiomatization}, formal proof of correctness in Coq in
 Section~\ref{sec:validation}. We finally give a survey of related works in
 Section~\ref{sec:related-works}.
 
+%REVIEW 3
+There is a longer version of this article which can be download through~\cite{dross:2011:fc-long}.
+There is also a web page~\cite{dross:2011:fc-code} where some code extracts can be found as
+well as the address of a git repository with anonymous access where are stored all the source codes.
+
 % This paper focuses on containers, ie complex mutable data-structures such as
 % lists, vectors, sets or maps. It describes the way these containers,
 % described in the Ada API, have been adapted to be usable for formal proof and
@@ -217,10 +226,14 @@ Section~\ref{sec:related-works}.
 \aftersec
 
 We will use the following Ada code as a running example throughout the
-section. Procedure \verb|Map_F| modifies a list in place, by replacing each
+section. Procedure \verb|Map_F|
+%REVIEW 2
+\footnote{Note that \texttt{Map\_F} is client code, not a part of the API.}
+%
+modifies a list in place, by replacing each
 element initially contained in the list by its image through function \verb|F|.
-
-\begin{verbatim}
+\lstset{language=Ada, basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
 procedure Map_F (L : in out List) is
    Current : Cursor := First (L);
 begin
@@ -229,7 +242,7 @@ begin
       Next (Current);
    end loop;
 end Map_F;
-\end{verbatim}
+\end{lstlisting}
 
 \beforesub
 \subsection{Contracts in Ada 2012}
@@ -256,11 +269,11 @@ the pre-state (before the call) of any variable \verb|V| as
 For example, a simple contract on function \verb|Map_F| could specify that its
 parameter list should not be empty, and that the call does not modify its
 length:
-\begin{verbatim}
+\begin{lstlisting}
 procedure Map_F (L : in out List) with 
   Pre  => Length (L) /= 0,
   Post => Length (L) = Length (L'Old);
-\end{verbatim}
+\end{lstlisting}
 
 Notice that, in the precondition, \verb|L| refers to the list in the pre-state
 while, in the postcondition, \verb|L| refers to the list in the post-state, hence
@@ -307,11 +320,7 @@ dependent data structures: containers proper which hold the data, and iterators
 implicitly associated with a container (implemented as a pointer field in the
 cursor structure), in which it designates an element. An important feature of Ada
 containers is that cursors remain valid as long as the container
-exists and the element referenced is not deleted
-% \footnote{This is true for
-%   lists, sets and maps. Cursors of vectors behave slightly differently, but
-%   they are much less used, as vectors are best accessed through indexes.}
-, like
+exists and the element referenced is not deleted, like
 many iterators in other languages (for example those in C++ STL and Java JCL).
 This allows modifying a container while iterating over its content with
 cursors, without risk of invalidating these cursors.
@@ -340,16 +349,20 @@ element in a list. Thus, for every cursor \verb|Cu| that designates an element
 \verb|E| in \verb|L| before the call, \verb|Cu| designates \verb|F (E)| in
 \verb|L| after the call. It seems like we could express it with a
 quantified-expression:
-\begin{verbatim}
+\begin{lstlisting}
 procedure Map_F (L : in out List) with 
   Post => (for all Cu in L => Element (Cu) = ???);
-\end{verbatim}
+\end{lstlisting}
 
-The expression denoted \verb|???| should designate the value obtained by calling
+The expression denoted by \verb|???| should designate the value obtained by calling
 \verb|F (Element (Cu))| in the pre-state, which could be intuitively written as
 \verb|F (Element (Cu))'Old|. Unfortunately, this expression is not valid
 because it refers to the value in the pre-state of \verb|Cu|, which is not
-defined in the pre-state. As a side note, notice that, even for a cursor
+defined in the pre-state
+%REVIEW 2
+since it is quantified
+%
+. As a side note, notice that, even for a cursor
 \verb|Cu| defined outside of the \verb|Map_F| function, \verb|Cu'Old| would be the same as
 \verb|Cu| in our example, because the semantics of attribute \verb|'Old| is to
 perform a shallow copy, so it does not copy the implicit container in a cursor.
@@ -363,11 +376,12 @@ To solve the previous two problems,
 we break the implicit link between cursors and containers, so that the same cursor can be used both in
 the pre-state and in the post-state. Then, the previous postcondition can be
 expressed easily:
-\begin{verbatim}
+\begin{lstlisting}
 procedure Map_F (L : in out List) with 
   Post => 
-   (for all Cu in L => Element (L, Cu) = F (Element (L'Old, Cu)));
-\end{verbatim}
+   (for all Cu in L =>
+      Element (L, Cu) = F (Element (L'Old, Cu)));
+\end{lstlisting}
 
 Notice that we passed an additional argument to function \verb|Element|, to
 indicate the container from which the element at cursor \verb|Cu| should be
@@ -439,18 +453,20 @@ We introduce two new functions, called \verb|Left| and \verb|Right|, which
 return the containers holding respectively the elements preceding (exclusively) or
 following (inclusively) a given cursor in the container. With these functions, the effect of
 the loop on the elements already scanned resembles the postcondition:
-\begin{verbatim}
+\begin{lstlisting}
 pragma Assert 
   (for all Cu in Left (L, Current) => 
     Element (L, Cu) = F (Element (L'Old, Cu)));
-\end{verbatim}
+\end{lstlisting}
 The effect of the loop on the elements not yet scanned is not simply the
 equality of right containers. Indeed, equality of lists \verb|L1| and \verb|L2|
 only implies that, while iterating separately through each of the lists, the
 same elements are encountered in the same order. Here, we also need to be able
 to iterate on both lists with the same cursor, so that the first cursors of
 \verb|L1| and \verb|L2| should be equal and then each call to \verb|Next|
-should return the same cursor on both lists.
+should return the same cursor on both lists
+%REVIEW 2
+which is not implied by equality.
 % which would be expressed as:
 % \begin{verbatim}
 % pragma Assert (Right (L, Current) = Right (L'Old, Current));
@@ -460,10 +476,10 @@ should return the same cursor on both lists.
 % same elements \emph{and the same cursors}.
 This is expressed with a new
 function, called \verb|Strict_Equal|:
-\begin{verbatim}
+\begin{lstlisting}
 pragma Assert 
   (Strict_Equal (Right (L, Current), Right (L'Old, Current)));
-\end{verbatim}
+\end{lstlisting}
 
 % Notice that the operations \verb|Left| and \verb|Right| need to copy the argument
 % container, so they should be used only in annotations for efficiency reasons.
@@ -593,8 +609,26 @@ expression $b$ in \texttt{BExpr} and an integer expression $i$ in
 \qquad \eval b \Rightarrow\Bool
 \qquad \eval i \Rightarrow\Int
 \end{eqnarray*}
+%REVIEW 1
+If $\mathit{expr}$ is an expression, $\eval \mathit{expr} \Rightarrow \mathit{val}$
+means that $\mathit{expr}$ evaluates in environments $\envL$ and $\envC$ to a
+value represented by $\mathit{val}$ in the semantic. 
+If $\mathit{instr}$ is an instruction, $\eval \mathit{instr} \Rightarrow \envL',\envC'$
+means that $instr$ change the environments $\envL$ and $\envC$ into $\envL'$ and $\envC'$.
 
-\vspace{-0.5cm}
+Below are the description of the semantics of integer, element and boolean expressions.
+The result of function \Length on a list evaluating to \typL
+is \Len. Similarly, function \Element returns the value of \Fe on $d$,
+where cursor argument $c$ evaluates to $d$. Notice that $\Element(l,c)$ is
+defined only when $d\in \ImFc$, which is expressed in the informal semantics as
+\emph{$c$ designates an element in $l$}. Indeed, the associated Ada function
+will raise a run-time error otherwise. $\HasElement(l,c)$ checks if $c$
+effectively designates an element in $l$. Equality over lists ($=$) is the
+structural equality. It only implies that the elements in its two list
+arguments appear in the same order, \ie the equality of $\Fe\circ\Fc :
+[1..\Len] \rightarrow \TypE$. \StrictEqual is stronger than $=$, as expected,
+since it also implies the equality of \Fc and \Fe. Equality
+of cursors is simply equality of their evaluations.
 {\small
 \begin{eqnarray*}
 &
@@ -638,7 +672,19 @@ d\in \ImFc
 \eval c_2 \Rightarrow d_2 \\
 }{
 \eval c_1=c_2\Rightarrow d_1=d_2
-}\\
+}
+\end{eqnarray*}
+}
+Below are the description of the semantics of cursor expressions. The special
+invalid cursor \NoElement evaluates to $\bot$. This is possible because $\bot$ cannot
+appear in \ImFc, as $\Fc : [1..\Len] \rightarrow \TypD$. Therefore $\bot$ is
+not a \emph{valid} cursor, \ie it designates no element, in any list. Function \Next is defined
+for both valid cursors and \NoElement. It returns \NoElement when applied to a
+cursor which has no valid successor (\ie for \NoElement and the last
+cursor). \Previous is similar. Function \First is defined on every list. It
+returns \NoElement when called on an empty list. \Last is similar.
+{\small
+\begin{eqnarray*}
 &
 \inferrule{
 }{
@@ -677,16 +723,23 @@ d_1\in \ImFc\cup \{\bot\}
 }{
 \eval \Last(l) \Rightarrow d \\
 \where d = \{\Len = 0 \rightarrow \bot, \Len > 0 \rightarrow \Fc(\Len)\}
-}\\
+}
+\end{eqnarray*}
+}
+Below are the description of the semantics of list expressions.  The empty
+list, returned by $\Empty$, is the only list whose length is null
+($\Fv$ is the only function that is defined on the empty set
+$\varnothing$).  $\Left$ is defined for both valid cursors and
+$\NoElement$. Its evaluation yields a list whose valid cursors are the valid
+cursors of the list argument which precede cursor argument $c$ (when $c$ is
+\NoElement, that means all cursors). \Right is similar.
+{\small
+\begin{eqnarray*}
 &
 \inferrule{
 }{
 \eval \Empty \Rightarrow \{0,\Fv,\Fv\}
-}
-\end{eqnarray*}
-}
-{\small
-\begin{eqnarray*}
+}\\
 &
 \inferrule{
 \eval l \Rightarrow \typL \\
@@ -711,38 +764,6 @@ n=\FcInv_+(d)-1
 }
 \end{eqnarray*}
 }
-
-Above are the description of the semantics of expressions.
-The result of function \Length on a list evaluating to \typL
-is \Len. Similarly, function \Element returns the value of \Fe on $d$,
-where cursor argument $c$ evaluates to $d$. Notice that $\Element(l,c)$ is
-defined only when $d\in \ImFc$, which is expressed in the informal semantics as
-\emph{$c$ designates an element in $l$}. Indeed, the associated Ada function
-will raise a run-time error otherwise. $\HasElement(l,c)$ checks if $c$
-effectively designates an element in $l$. Equality over lists ($=$) is the
-structural equality. It only implies that the elements in its two list
-arguments appear in the same order, \ie the equality of $\Fe\circ\Fc :
-[1..\Len] \rightarrow \TypE$. \StrictEqual is stronger than $=$, as expected,
-since it also implies the equality of \Fc and \Fe. Equality
-of cursors is simply equality of their evaluations.
-
-The five following rules describe the semantics of cursor expressions. The special
-invalid cursor \NoElement evaluates to $\bot$. This is possible because $\bot$ cannot
-appear in \ImFc, as $\Fc : [1..\Len] \rightarrow \TypD$. Therefore $\bot$ is
-not a \emph{valid} cursor, \ie it designates no element, in any list. Function \Next is defined
-for both valid cursors and \NoElement. It returns \NoElement when applied to a
-cursor which has no valid successor (\ie for \NoElement and the last
-cursor). \Previous is similar. Function \First is defined on every list. It
-returns \NoElement when called on an empty list. \Last is similar.
-
-The last three rules describe the semantics of list expressions.  The empty
-list, returned by $\Empty$, is the only list whose length is null
-($\Fv$ is the only function that is defined on the empty set
-$\varnothing$).  $\Left$ is defined for both valid cursors and
-$\NoElement$. Its evaluation yields a list whose valid cursors are the valid
-cursors of the list argument which precede cursor argument $c$ (when $c$ is
-\NoElement, that means all cursors). \Right is similar.
-
 The rules below describe the semantics of instructions.  Rules concerning reads
 or assignment of variables are omitted (they are the usual ones). \Insert
 modifies the environment so that its list variable argument designates, after
@@ -757,7 +778,6 @@ variable references the special invalid cursor \NoElement after the call.
 \Replace modifies the environment so that, after the call, its cursor argument
 (which must be valid) designates its element argument in the list referenced by
 its list variable argument.
-
 {\small
 \begin{eqnarray*}
 &
@@ -938,12 +958,15 @@ Z3~\cite{Z3} and Simplify~\cite{Simplify}.
 %
 For example, here is some Why syntax that declares a
 modulo operation over integers, together with some possible axiomatization:
-\begin{verbatim}
-  logic mod_ : int, int -> int
-  axiom mod__ : forall a, b : int. 0 < b -> 
-    exists q : int. a = b * q + mod_(a,b) and 0 <= mod_(a,b) < b 
-  goal test : mod_(7,2) = 1
-\end{verbatim}
+\lstset{language={}, morekeywords={logic, axiom, goal, parameter, forall, exists},
+ basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
+logic mod_ : int, int -> int
+axiom mod__ : forall a, b : int. 0 < b -> 
+  exists q : int. a = b * q + mod_(a, b)
+    and 0 <= mod_(a, b) < b 
+goal test : mod_(7, 2) = 1
+\end{lstlisting}
 The second feature of Why we use here is to provide a
 verification condition generator for an idealized, alias-free,
 Hoare-logic-like programming language. The user declares and
@@ -951,12 +974,13 @@ implements programs, which are annotated with pre- and postconditions,
 and local assertions such as loop invariants. Verification conditions
 are then generated and transmitted to the theorem provers.
 Here is for instance the declaration of a program function
-\begin{verbatim}
-  parameter mod : a:int -> b:int -> {0<b} int {result=mod_(a,b)}
-\end{verbatim}
+\begin{lstlisting}
+parameter mod : a : int -> b : int ->
+  {0 < b} int {result = mod_(a, b)}
+\end{lstlisting}
 which takes two integers \texttt{a} and \texttt{b} as arguments, has
-precondition \texttt{0<b}, returns a result of type \texttt{int} and
-has postcondition \verb|result=mod_(a,b)|. When used inside programs,
+precondition \texttt{0 < b}, returns a result of type \texttt{int} and
+has postcondition \verb|result = mod_(a, b)|. When used inside programs,
 this function will trigger verification conditions (namely, that
 its second argument is positive). This is one way to express that
 modulo is a partial operation.
@@ -982,11 +1006,11 @@ type \verb|element_t|. Cursors and lists are described respectively with abstrac
 
 To encode the semantics defined in Section~\ref{sec:description}, we introduce
 three logic functions:
-\begin{verbatim}
+\begin{lstlisting}
 logic length_   : list -> int
 logic position_ : list, cursor -> int
 logic element_  : list, cursor -> element_t
-\end{verbatim}
+\end{lstlisting}
 Logic functions \verb|length_| and \verb|element_| define accessors to the
 fields \Len and \Fe of a list. The encoding is more complex for the field \Fc,
 due to the fact that \Fc is used in three different ways in the specification:
@@ -1000,7 +1024,6 @@ can be rewritten as $\FcInv(d_2)=\FcInv(d_1)+1$. The only rule that cannot be
 translated that way is $=$. For this one rule, we can use an
 existential quantification, $\forall~ d_1 : \Img(\Fc_1). \exists~ d_2 :
 \Img(\Fc_2). \Fc_1^{-1}(d_1)=\Fc_2^{-1}(d_2) \And \Fe_1(d_1)=\Fe_2(d_2)$.
-\ifdefined\longversion
 Why functions \verb|length_|, \verb|element_| and \verb|position_|
 are related to the semantics as follows:
 {\small
@@ -1014,14 +1037,10 @@ are related to the semantics as follows:
   \forall\ \verb|l|,\ \verb|c|,\ \verb|e|, \ \verb|position_(l, c) > 0| & \rightarrow &\\
 \verb|element_(l, c) = e| &~\Leftrightarrow~&\exists\ \Len,\ \Fc,\ \Fe,\ d,\ \Elt,\\
  && \eval \verb|l| \Rightarrow \typL \And \eval \verb|c| \Rightarrow d\\
- &&  \And \eval \verb|e| \Rightarrow \Elt \And (d\in\ImFc\rightarrow\Fe(d)=\Elt)
+ &&  \And \eval \verb|e| \Rightarrow \Elt\\
+ && \And (d\in\ImFc\rightarrow\Fe(d)=\Elt)
 \end{eqnarray*}
 }
-\else
-In a longer version of this article~\cite{dross:2011:fc-long}, Why functions
-\verb|length_|, \verb|element_| and \verb|position_| are formally related to
-the semantics.  
-\fi
 
 \subsubsection{Axioms.}
 
@@ -1100,13 +1119,13 @@ the Why program, so that $\Pre_A \Rightarrow \Pre_S$ and $\Post_S \Rightarrow
 \Post_A$. In fact, since preconditions are quite simple, we usually have
 $\Pre_A = \Pre_S$. We illustrate the general pattern that we applied with function
 \Next, which we translate into program \verb|next| in Why:
-\begin{verbatim}
+\begin{lstlisting}
 parameter next :
   l:list -> c:cursor ->
   { c = no_element or position_(l, c) > 0 }
   cursor 
   { result = next_(l, c) }
-\end{verbatim}
+\end{lstlisting}
 
 The precondition of this function states that either the argument cursor
 \verb|c| is valid in the argument list \verb|l| (because
@@ -1119,7 +1138,7 @@ over the allowed cases only, leaving the
 value of other applications of \verb|next_| unspecified, as
 seen in Section~\ref{subsec:why}:
 
-\begin{verbatim}
+\begin{lstlisting}
 axiom next__ :
   forall l:list. forall c:cursor. forall nxt:cursor.
     (length_(l) > position_(l,c) > 0 ->
@@ -1127,7 +1146,7 @@ axiom next__ :
     and (length_(l) > 0 and position_(l, c) = length_(l)
       or c = no_element ->
         nxt = no_element)
-\end{verbatim}
+\end{lstlisting}
 
 Axiom \verb|next__| is defined as two implications: in the first case, the next
 cursor of the cursor argument is valid and we define its position; in the
@@ -1189,9 +1208,27 @@ rather quickly (less than 1s per VC). To facilitate proofs, which impacts both
 provability and speed, we defined 15 lemmas. These are not a burden in the
 maintainability of the axiomatic and cannot introduce inconsistencies since
 they are also automatically proved.
-% either with Alt-Ergo or another SMT prover:
-% we used both Z3~\cite{Z3} and Simplify~\cite{Simplify}.
-% (deja explique plus haut)
+
+%REVIEW 3
+% In Section 4.3 (and Section 4.4) I would like to suggest to add a
+%   brief description of the properties that you used as test cases for
+%   your axiomatization and, if possible, a brief motivation why you
+%   have choosen them. 
+They are different kind of tests. Unit-tests validate the specific properties
+of expressions (at least the complex ones, such as $\Left$) and instructions.
+For example, there is a test to check that it is possible to prove that the value
+of the replaced element in a list is indeed equal to the expected value after
+the call :
+\lstset{language=Ada, basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
+let test_replace_element
+  (co : list ref) (cu : cursor) (e : element_t) =
+    { has_element_ (co, cu) }
+    replace_element co cu e
+    { element_ (co, cu) = e }
+\end{lstlisting}
+More constructed tests, such as our running example, validate the fact that these properties of expressions
+and instructions can be combined by an automated theorem prover.
 
 \beforesub
 \subsection{Vectors, Sets and Maps}
@@ -1200,7 +1237,7 @@ they are also automatically proved.
 Here is a table referencing the work done for each container. It contains the
 size of its Why file (its number of lines), the number of lemmas given and the
 number of tests passed. The code and tests are available
-on-line~\cite{dross:2011:fc-long}.\\
+on-line.\\
 ~\\
 \begin{tabular}{|l|c|c|c||}
 \hline
@@ -1252,13 +1289,15 @@ and \verb|snd a| to the element). The field $\Len$ is the length of the
 functional list, the field $\Fc$ is the function that, for an integer $i\in[1..\Len]$, returns the cursor of the pair at the $i^{th}$ position
 in the list and $\Fe$ returns, for each cursor in $\ImFc$, its first association in the list. Therefore, a list of this kind always defines one and only one
 tuple $\typL$.
-\begin{verbatim}
+\lstset{language={}, morekeywords={Definition, Fixpoint, Record, match, end, if, then, else, with},
+basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+\begin{lstlisting}
 Definition cursor : Set := nat.
 Definition Rlist : Set := List.list (cursor*element_t).
-\end{verbatim}
+\end{lstlisting}
 To keep only tuples where $\Fc$ is injective and has value in $\TypD$, we constrain the functional lists with a predicate.
 This predicate states that every cursor that appears in a list is different from $\bot$ (positive) and does not appear again in the same list. 
-\begin{verbatim}
+\begin{lstlisting}
 Fixpoint well_formed (l : Rlist) : Prop :=
    match l with
         nil => True
@@ -1267,7 +1306,7 @@ Fixpoint well_formed (l : Rlist) : Prop :=
                    /\ well_formed (ls)
    end.
 Record list := {this :> Rlist; wf : well_formed this}.
-\end{verbatim}
+\end{lstlisting}
 The property of well formedness has to be preserved through every modification of the list. With the Coq lists restricted that
 way, there is one and only one list per tuple $\{\Len: \Nat, \Fc : [1 .. \Len] \hookrightarrow \TypD, \Fe : \ImFc
 \rightarrow \TypE\}$. The two representations are equivalent.
@@ -1289,14 +1328,15 @@ cursor that designates the element to be replaced is valid in the list or equal
 to \NoElement\footnote{Using it elsewhere reflects a mistake and is reported as
 an error when executed.}. In the Coq implementation below, it returns \NoElement if we are
 not in that case (we could have chosen any other return value).
-\begin{verbatim}
+\begin{lstlisting}
 Fixpoint next (l : Rlist) (cu : cursor) :=
    match l with
         nil => no_element
       | a :: ls =>
-          if beq_nat (fst a) cu then first ls else next ls cu
+          if beq_nat (fst a) cu then first ls
+          else next ls cu
    end.
-\end{verbatim}
+\end{lstlisting}
 The result of the semantic rule for $\Next$ is completely defined. It is easy
 to be convinced that, when the cursor given as a parameter is indeed valid in
 the list or equal to $\NoElement$, the Coq function \texttt{next}
@@ -1319,17 +1359,22 @@ enforcing it thanks to Coq's module system.
 All containers have the same Coq representation. Therefore, some parts of the
 proofs are shared. Sets and maps (ordered or not) share the same lemmas and
 heavily rely on those of lists. Vectors also rely on the lemmas of lists but
-less heavily (they are quite different). Here are the size of the files
+less heavily (they are quite different).
+%REVIEW 1
+To make the proofs more reliable, general lemmas, which will not be affected
+by a slight change in the API, are collected in a separate file named ``Raw''.
+%
+Here are the size of the files
 (the number of lemmas in each file) and the architecture.
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{6}{|c|}{Raw Lists: 154 lemmas}\\
+\multicolumn{6}{|c|}{Raw Lists (154)}\\
 \hline
-& ~Raw Vectors: 108 lemmas~ & \multicolumn{4}{|c|}{Raw Sets: 139 lemmas}\\
+& ~Raw Vectors (108)~ & \multicolumn{4}{|c|}{Raw Sets (139)}\\
 \cline{2-6}
-~Lists~ & Vectors & ~Hashed~ & ~Ordered~ & ~Hashed~ & ~Ordered~ \\
- &  & Sets & Sets & Maps & Maps \\
+~Lists~ & Vectors & Hashed & Ordered & Hashed & Ordered \\
+(21) & (29) & ~Sets (64)~ & ~Sets (69)~ & ~Maps (64)~ & ~Maps (70)~\\
 \hline
 \end{tabular}
 \end{center}
@@ -1337,7 +1382,7 @@ Like for the $\Insert$ rule for lists, every unspecified part of the semantic
 of every container is kept as general as possible thanks to a sealed Coq module
 that only allows proofs to use the specified parts. The whole proof is 16,000+
 lines of Coq. All of it plus commented excerpts can be found
-on-line~\cite{dross:2011:fc-long}.
+on-line.
 
 \beforesec
 \section{Related Work}
@@ -1431,11 +1476,20 @@ proofs, which are a sour point of formal methods in industry.
 
 Formal containers have been implemented in Ada, and could be included in any Ada
 compiler's library.
-% Formal containers have been included in the standard library of GNAT Ada
-% compiler.
+%REVIEW 3
+They have been included in the standard library of GNAT Ada compiler.
+%REVIEW 1
+Theoretically, the Why axiomatization could be reuse to model other languages'
+containers, with a few modification to comply with the particularities of
+their APIs.
+%
 This implementation in Ada should be correct \wrt the formal
 semantics in Coq, but we have not proved it formally. This is an interesting
 (but difficult) problem for the future.
+
+\subsubsection*{Acknowledgement}
+We would like to thank Ed Schonberg, David Lesens and the anonymous referees for
+their useful reviews of this paper.
 
 \beforesec
 \bibliographystyle{plain}
