@@ -1,6 +1,7 @@
 package body Count is
-   function Count (Max : Integer; Step : Integer) return Integer is
-      Res : Integer := 0;
+   pragma Annotate (Formal_Proof, On);
+   function Count (Max : Integer; Step : Natural) return Natural is
+      Res : Natural := 0;
    begin
       loop
          Pragma Assert (Res <= Max);
