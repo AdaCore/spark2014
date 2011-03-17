@@ -1443,6 +1443,10 @@ package body ALFA.Definition is
                end;
             end if;
 
+         when Pragma_Precondition  |
+              Pragma_Postcondition =>
+            null;  --  Ignored, treated directly through Spec_PPC_List
+
          when others =>
             Mark_Non_ALFA ("pragma is not in ALFA", N);
       end case;
