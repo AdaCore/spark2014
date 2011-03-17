@@ -1489,6 +1489,7 @@ package body ALFA.Definition is
       for S in S_Types loop
          if Standard_Type_Is_In_ALFA (S) then
             Standard_In_ALFA.Insert (Standard_Entity (S));
+            Standard_In_ALFA.Include (Etype (Standard_Entity (S)));
          end if;
       end loop;
 
