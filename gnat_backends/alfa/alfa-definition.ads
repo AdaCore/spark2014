@@ -36,6 +36,8 @@ package ALFA.Definition is
 
    subtype V_Design is Violation_Kind range V_Slice .. V_Other;
 
+   subtype V_Extensions is Violation_Kind range V_Slice .. V_Any_Exit;
+
    function Is_In_ALFA (Id : Entity_Id) return Boolean;
    --  Return whether a given entity is in ALFA
 

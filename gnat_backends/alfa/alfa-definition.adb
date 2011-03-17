@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with Alloc;       use Alloc;
 with Atree;       use Atree;
 with Einfo;       use Einfo;
@@ -73,6 +75,14 @@ package body ALFA.Definition is
 
       S_Duration            => False);
 
+   Violation_Msg : constant array (V_Extensions) of Unbounded_String :=
+     (V_Slice           => To_Unbounded_String ("slice"),
+      V_Discr           => To_Unbounded_String ("discriminant"),
+      V_Dispatch        => To_Unbounded_String ("dispatch"),
+      V_Block_Statement => To_Unbounded_String ("block statement"),
+      V_Any_Return      => To_Unbounded_String ("any return"),
+      V_Any_Exit        => To_Unbounded_String ("any exit"));
+
    -------------------------
    -- Pragma Formal_Proof --
    -------------------------
@@ -102,7 +112,9 @@ package body ALFA.Definition is
    --  Sets of subprogram entities whose body violate ALFA restrictions, per
    --  violation kind.
 
-   function Complete_Error_Msg (Msg : String; Implem : Boolean) return String;
+   function Complete_Error_Msg
+     (Msg : String;
+      V   : Violation_Kind) return String;
 
    procedure Inherit_Violations (A : in out Violations; To, From : Entity_Id);
 
@@ -126,13 +138,19 @@ package body ALFA.Definition is
    function Current_Scope return Scope_Record;
    --  Return the top-most scope that is not a loop
 
+   function Previous_Scope return Scope_Record;
+   pragma Unreferenced (Previous_Scope);
+   --  Return the top-most scope that is not a loop after skipping the current
+   --  scope.
+
    function Has_Loop_In_Inner_Open_Scopes (S : Entity_Id) return Boolean;
    --  S is the entity of an open scope. This function determines if there is
    --  an inner scope of S which is a loop (i.e. it appears somewhere in the
    --  scope stack after S).
 
-   procedure Pop_Scope;
-   --  Remove the top scope in the stack
+   procedure Pop_Scope (E : Entity_Id; Is_Body : Boolean := False);
+   --  Remove the top scope in the stack, which should match with entity E and
+   --  Boolean Id_Body.
 
    procedure Push_Scope (E : Entity_Id; Is_Body : Boolean := False);
    --  Set entity S as the top scope in the stack
@@ -159,7 +177,7 @@ package body ALFA.Definition is
       N    : Node_Id;
       From : Entity_Id);
 
-   procedure Mark_In_Non_ALFA_Subprogram
+   procedure Mark_Non_ALFA
      (Msg : String;
       N   : Node_Id;
       V   : Violation_Kind := V_Other);
@@ -180,10 +198,16 @@ package body ALFA.Definition is
    --  If the subprogram being marked as not in ALFA is annotated with
    --  Formal_Proof On, then an error is issued with message Msg on node N.
 
-   procedure Mark_In_Non_ALFA_Subprogram
+   procedure Mark_Non_ALFA
      (Msg  : String;
       N    : Node_Id;
       From : Entity_Id);
+
+   generic
+      with procedure Mark_Body_Violations (E : Entity_Id) is <>;
+      with procedure Mark_Spec_Violations (E : Entity_Id) is <>;
+
+   procedure Mark_Violations (Scop : Scope_Record);
 
    --  Special treatment for marking some kinds of nodes
 
@@ -207,8 +231,9 @@ package body ALFA.Definition is
    procedure Mark_Subprogram_Body             (N : Node_Id);
    procedure Mark_Subprogram_Declaration      (N : Node_Id);
    procedure Mark_Subprogram_Specification    (N : Node_Id);
-   procedure Mark_Subtype_Indication_In_Decl  (N : Node_Id);
+   procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Type_Conversion             (N : Node_Id);
+   procedure Mark_Type_Definition             (Id : Entity_Id; N : Node_Id);
 
    ---------------------
    -- Body_Is_In_ALFA --
@@ -223,14 +248,19 @@ package body ALFA.Definition is
    -- Complete_Error_Msg --
    ------------------------
 
-   function Complete_Error_Msg (Msg : String; Implem : Boolean) return String
-   is
+   function Complete_Error_Msg
+     (Msg : String;
+      V   : Violation_Kind) return String is
    begin
-      if Implem then
-         return Msg & " is in ALFA but not yet supported";
-      else
-         return Msg & " is not in ALFA";
-      end if;
+      case V is
+         when V_Implem =>
+            return Msg & " is in ALFA but not yet supported";
+         when V_Other =>
+            return Msg & " is not in ALFA";
+         when V_Extensions =>
+            return Msg & " is not yet in ALFA ("
+              & To_String (Violation_Msg (V)) & ")";
+      end case;
    end Complete_Error_Msg;
 
    -------------------
@@ -339,40 +369,39 @@ package body ALFA.Definition is
    begin
       case Nkind (N) is
          when N_Abstract_Subprogram_Declaration =>  --  TO DO
-            Mark_In_Non_ALFA_Subprogram ("abstract subprogram", N);
+            Mark_Non_ALFA ("abstract subprogram", N);
 
          when N_Aggregate =>  --  TO DO
-            Mark_In_Non_ALFA_Subprogram ("aggregate", N, V_Implem);
+            Mark_Non_ALFA ("aggregate", N, V_Implem);
 
          when N_Allocator =>
-            Mark_In_Non_ALFA_Subprogram ("allocator", N);
+            Mark_Non_ALFA ("allocator", N);
 
          when N_Assignment_Statement =>
             Mark (Name (N));
             Mark (Expression (N));
 
          when N_At_Clause =>  -- TO DO
-            Mark_In_Non_ALFA_Subprogram ("at clause", N);
+            Mark_Non_ALFA ("at clause", N);
 
          when N_Attribute_Reference =>
             Mark_Attribute_Reference (N);
 
          when N_Attribute_Definition_Clause   =>
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("attribute definition clause", N);
 
          when N_Binary_Op =>
             Mark_Binary_And_Short_Circuit_Op (N);
 
          when N_Block_Statement =>
-            Mark_In_Non_ALFA_Subprogram
-              ("block statement", N, V_Block_Statement);
+            Mark_Non_ALFA ("block statement", N, V_Block_Statement);
 
             Mark_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
          when N_Case_Expression =>
-            Mark_In_Non_ALFA_Subprogram ("case expression", N, V_Implem);
+            Mark_Non_ALFA ("case expression", N, V_Implem);
 
          when N_Case_Statement =>
             Mark (Expression (N));
@@ -391,7 +420,7 @@ package body ALFA.Definition is
             null;
 
          when N_Code_Statement =>
-            Mark_In_Non_ALFA_Subprogram ("code statement", N);
+            Mark_Non_ALFA ("code statement", N);
 
          when N_Compilation_Unit =>
             Mark (N);  --  useful???
@@ -403,7 +432,7 @@ package body ALFA.Definition is
             Mark_Conditional_Expression (N);
 
          when N_Enumeration_Representation_Clause =>
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("enumeration representation clause", N);
 
          when N_Exception_Declaration          |
@@ -417,10 +446,10 @@ package body ALFA.Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            Mark_In_Non_ALFA_Subprogram ("explicit dereference", N);
+            Mark_Non_ALFA ("explicit dereference", N);
 
          when N_Expression_Function =>  --  TO DO
-            Mark_In_Non_ALFA_Subprogram ("expression function", N, V_Implem);
+            Mark_Non_ALFA ("expression function", N, V_Implem);
 
          when N_Expression_With_Actions =>  --  TO DO
 
@@ -428,10 +457,10 @@ package body ALFA.Definition is
             null;
 
          when N_Extended_Return_Statement =>
-            Mark_In_Non_ALFA_Subprogram ("extended RETURN", N);
+            Mark_Non_ALFA ("extended RETURN", N);
 
          when N_Extension_Aggregate =>
-            Mark_In_Non_ALFA_Subprogram ("extension aggregate", N, V_Implem);
+            Mark_Non_ALFA ("extension aggregate", N, V_Implem);
 
          when N_Formal_Object_Declaration |
               N_Formal_Package_Declaration |
@@ -440,7 +469,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA_Declaration ("formal generic parameter", N);
 
          when N_Free_Statement =>
-            Mark_In_Non_ALFA_Subprogram ("free statement", N);
+            Mark_Non_ALFA ("free statement", N);
 
          when N_Freeze_Entity =>
             if Present (Actions (N)) then
@@ -454,17 +483,17 @@ package body ALFA.Definition is
             Mark_Call (N);
 
          when N_Function_Instantiation =>
-            Mark_In_Non_ALFA_Subprogram ("function instantiation", N);
+            Mark_Non_ALFA ("function instantiation", N);
 
          when N_Generic_Function_Renaming_Declaration |
               N_Generic_Package_Declaration |
               N_Generic_Package_Renaming_Declaration |
               N_Generic_Procedure_Renaming_Declaration |
               N_Generic_Subprogram_Declaration =>
-            Mark_In_Non_ALFA_Subprogram ("generic declaration", N);
+            Mark_Non_ALFA ("generic declaration", N);
 
          when N_Goto_Statement =>
-            Mark_In_Non_ALFA_Subprogram ("goto statement", N);
+            Mark_Non_ALFA ("goto statement", N);
 
          when N_Handled_Sequence_Of_Statements =>
             Mark_Handled_Statements (N);
@@ -531,7 +560,7 @@ package body ALFA.Definition is
             null;
 
          when N_Iterator_Specification =>
-            Mark_In_Non_ALFA_Subprogram ("iterator specification", N);
+            Mark_Non_ALFA ("iterator specification", N);
 
          when N_Itype_Reference =>
             null;
@@ -546,7 +575,7 @@ package body ALFA.Definition is
             null;
 
          when N_Null =>
-            Mark_In_Non_ALFA_Subprogram ("null", N);
+            Mark_Non_ALFA ("null", N);
 
          when N_Null_Statement =>
             null;
@@ -579,7 +608,7 @@ package body ALFA.Definition is
             Mark_Package_Declaration (N);
 
          when N_Package_Instantiation =>
-            Mark_In_Non_ALFA_Subprogram ("package instantiation", N);
+            Mark_Non_ALFA ("package instantiation", N);
 
          when N_Package_Renaming_Declaration =>
             null;
@@ -614,16 +643,16 @@ package body ALFA.Definition is
             Mark_Call (N);
 
          when N_Procedure_Instantiation =>
-            Mark_In_Non_ALFA_Subprogram ("procedure instantiation", N);
+            Mark_Non_ALFA ("procedure instantiation", N);
 
          when N_Qualified_Expression =>
-            Mark_In_Non_ALFA_Subprogram ("qualified expression", N, V_Implem);
+            Mark_Non_ALFA ("qualified expression", N, V_Implem);
 
          when N_Quantified_Expression =>
-            Mark_In_Non_ALFA_Subprogram ("quantified expression", N, V_Implem);
+            Mark_Non_ALFA ("quantified expression", N, V_Implem);
 
          when N_Raise_Statement =>
-            Mark_In_Non_ALFA_Subprogram ("raise statement", N);
+            Mark_Non_ALFA ("raise statement", N);
 
          when N_Raise_xxx_Error =>
 
@@ -643,7 +672,7 @@ package body ALFA.Definition is
             null;
 
          when N_Record_Representation_Clause =>
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("record representation clause", N);
 
          when N_Reference =>
@@ -656,11 +685,11 @@ package body ALFA.Definition is
             Mark_Simple_Return_Statement (N);
 
          when N_Selected_Component =>  --  TO DO when treating records
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("selected component", N, V_Implem);
 
          when N_Slice =>
-            Mark_In_Non_ALFA_Subprogram ("slice", N, V_Slice);
+            Mark_Non_ALFA ("slice", N, V_Slice);
 
          when N_String_Literal =>
             null;
@@ -681,10 +710,16 @@ package body ALFA.Definition is
             null;
 
          when N_Subtype_Declaration =>
-            Mark_Subtype_Indication_In_Decl (N);
+            declare
+               Id : constant Entity_Id := Defining_Entity (N);
+            begin
+               Push_Scope (Id);
+               Mark (Subtype_Indication (N));
+               Pop_Scope (Id);
+            end;
 
          when N_Subtype_Indication =>
-            raise Program_Error;  --  TO DO???
+            Mark_Subtype_Indication (N);
 
          when N_Subunit =>
             raise Program_Error;  --  TO DO???
@@ -693,10 +728,10 @@ package body ALFA.Definition is
             Mark_Type_Conversion (N);
 
          when N_Unchecked_Expression =>
-            Mark_In_Non_ALFA_Subprogram ("unchecked expression", N);
+            Mark_Non_ALFA ("unchecked expression", N);
 
          when N_Unchecked_Type_Conversion =>
-            Mark_In_Non_ALFA_Subprogram ("unchecked type conversion", N);
+            Mark_Non_ALFA ("unchecked type conversion", N);
 
          when N_Use_Package_Clause =>
             null;
@@ -705,10 +740,10 @@ package body ALFA.Definition is
             null;
 
          when N_Validate_Unchecked_Conversion =>
-            Mark_In_Non_ALFA_Subprogram ("unchecked conversion", N);
+            Mark_Non_ALFA ("unchecked conversion", N);
 
          when N_Variant_Part =>
-            Mark_In_Non_ALFA_Subprogram ("variant part", N, V_Discr);
+            Mark_Non_ALFA ("variant part", N, V_Discr);
 
          when N_With_Clause =>
             null;
@@ -733,7 +768,7 @@ package body ALFA.Definition is
          when Attribute_Result | Attribute_Old =>
             null;
          when others =>
-            Mark_In_Non_ALFA_Subprogram ("attribute", N, V_Implem);
+            Mark_Non_ALFA ("attribute", N, V_Implem);
       end case;
 
       Mark (P);
@@ -752,21 +787,21 @@ package body ALFA.Definition is
    begin
       case Nkind (N) is
          when N_Op_Concat =>
-            Mark_In_Non_ALFA_Subprogram ("concatenation", N, V_Implem);
+            Mark_Non_ALFA ("concatenation", N, V_Implem);
 
          when N_Op_Lt | N_Op_Le | N_Op_Gt | N_Op_Ge =>
             if Is_Boolean_Type (Left_T) then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("ordering operator on boolean type", N);
 
             elsif Is_Array_Type (Left_T) then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("ordering operator on array type", N);
             end if;
 
          when N_Op_Eq | N_Op_Ne =>
             if Is_Array_Type (Left_T) then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("equality operator on array type", N);
             end if;
 
@@ -774,7 +809,7 @@ package body ALFA.Definition is
             if Is_Array_Type (Left_T)
               and then Nkind (N) in N_Binary_Op
             then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("binary operator on array type", N);
             end if;
 
@@ -804,9 +839,9 @@ package body ALFA.Definition is
       --  not in ALFA.
 
       if not Is_Entity_Name (Nam) then
-         Mark_In_Non_ALFA_Subprogram ("call", N);
+         Mark_Non_ALFA ("call", N);
       elsif not Is_In_ALFA (Entity (Nam)) then
-         Mark_In_Non_ALFA_Subprogram
+         Mark_Non_ALFA
            ("subprogram called", N, From => Entity (Nam));
       end if;
    end Mark_Call;
@@ -822,7 +857,7 @@ package body ALFA.Definition is
       if Defining_Entity (N) /= Standard_Standard then
          Push_Scope (Standard_Standard);
          Mark (N);
-         Pop_Scope;
+         Pop_Scope (Standard_Standard);
       end if;
    end Mark_Compilation_Unit;
 
@@ -853,11 +888,11 @@ package body ALFA.Definition is
       if Present (Else_Expr)
         and then Current_Scope.Is_Body
       then
-         Mark_In_Non_ALFA_Subprogram ("form of conditional expression", N);
+         Mark_Non_ALFA ("form of conditional expression", N);
       end if;
 
       if Root_Type (Etype (N)) /= Standard_Boolean then
-         Mark_In_Non_ALFA_Subprogram
+         Mark_Non_ALFA
            ("non-boolean conditional expression", N);
       end if;
 
@@ -883,43 +918,43 @@ package body ALFA.Definition is
          U_Name := Entity (Target);
 
          if Has_Loop_In_Inner_Open_Scopes (U_Name) then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("exit label naming some outter loop", N, V_Any_Exit);
          end if;
       end if;
 
       if Present (Cond) then
          if Nkind (Parent (N)) /= N_Loop_Statement then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("exit with when clause not directly in loop", N, V_Any_Exit);
          end if;
 
       else
          if Nkind (Parent (N)) /= N_If_Statement then
             if Nkind (Parent (N)) = N_Elsif_Part then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("exit in IF with ELSIF", N, V_Any_Exit);
             else
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("exit not directly in IF", N, V_Any_Exit);
             end if;
 
          elsif Nkind (Parent (Parent (N))) /= N_Loop_Statement then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("exit not in IF directly in loop", N, V_Any_Exit);
 
          --  First test the presence of ELSE, so that an exit in an ELSE leads
          --  to an error mentioning the ELSE.
 
          elsif Present (Else_Statements (Parent (N))) then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("exit in IF with ELSE", N, V_Any_Exit);
 
          --  An exit in an ELSIF does not reach here, as it would have been
          --  detected in the case (Nkind (Parent (N)) /= N_If_Statement).
 
          elsif Present (Elsif_Parts (Parent (N))) then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("exit in IF with ELSIF", N, V_Any_Exit);
          end if;
       end if;
@@ -932,89 +967,10 @@ package body ALFA.Definition is
    procedure Mark_Full_Type_Declaration (N : Node_Id) is
       Id  : constant Entity_Id := Defining_Identifier (N);
       Def : constant Node_Id   := Type_Definition (N);
-
    begin
-      case Nkind (Def) is
-         when N_Array_Type_Definition =>
-            declare
-               Component_Def : constant Node_Id := Component_Definition (Def);
-               Component_Typ : constant Node_Id :=
-                                 Subtype_Indication (Component_Def);
-               Index         : Node_Id;
-
-            begin
-               if Nkind (Def) = N_Constrained_Array_Definition then
-                  Index := First (Discrete_Subtype_Definitions (Def));
-               else
-                  Index := First (Subtype_Marks (Def));
-               end if;
-
-               --  Check that all index types are in ALFA
-
-               while Present (Index) loop
-                  if not Is_In_ALFA (Etype (Index)) then
-                     Mark_Non_ALFA_Declaration
-                       ("index type", N, From => Etype (Index));
-                  end if;
-                  Next_Index (Index);
-               end loop;
-
-               --  Access definition for component type is not in ALFA
-
-               if No (Component_Typ) then
-                  Mark_Non_ALFA_Declaration ("access type", N);
-               end if;
-
-               --  Check that component type is in ALFA
-
-               if not Is_In_ALFA (Etype (Component_Typ)) then
-                  Mark_Non_ALFA_Declaration
-                    ("component type", N, From => Etype (Component_Typ));
-               end if;
-
-               --  Check that array bounds are static
-
-               if Nkind (Def) = N_Constrained_Array_Definition
-                 and then not Has_Static_Array_Bounds (Id)
-               then
-                  Mark_Non_ALFA_Declaration
-                    ("array type with non-static bounds", N);
-               end if;
-            end;
-
-         when N_Enumeration_Type_Definition =>
-            --  Enumeration type is in ALFA only if it is not a character type
-
-            if Is_Character_Type (Id) then
-               Mark_Non_ALFA_Declaration ("character enumeration type", N);
-            end if;
-
-         when N_Signed_Integer_Type_Definition =>
-            null;
-
-         when N_Derived_Type_Definition =>
-            if Present (Interface_List (Def)) then
-               Mark_Non_ALFA_Declaration ("interface", N);
-            elsif Present (Record_Extension_Part (Def)) then
-               Mark_Non_ALFA_Declaration ("record extension", N, V_Implem);
-            else
-               Mark_Subtype_Indication_In_Decl (N);
-            end if;
-
-         when N_Modular_Type_Definition |
-              N_Record_Definition |
-              N_Floating_Point_Definition |
-              N_Decimal_Fixed_Point_Definition |
-              N_Ordinary_Fixed_Point_Definition =>
-            Mark_Non_ALFA_Declaration ("type definition", N, V_Implem);
-
-         when N_Access_To_Subprogram_Definition |
-              N_Access_To_Object_Definition =>
-            Mark_Non_ALFA_Declaration ("access type", N);
-
-         when others =>
-            raise Program_Error;
-      end case;
+      Push_Scope (Id);
+      Mark_Type_Definition (Id, Def);
+      Pop_Scope (Id);
    end Mark_Full_Type_Declaration;
 
    -----------------------------
@@ -1026,7 +982,7 @@ package body ALFA.Definition is
 
    begin
       if Present (Handlers) then
-         Mark_In_Non_ALFA_Subprogram ("handler", First (Handlers));
+         Mark_Non_ALFA ("handler", First (Handlers));
       end if;
 
       Mark_List (Statements (N));
@@ -1041,7 +997,7 @@ package body ALFA.Definition is
       if Is_Entity_Name (N)
         and then not Is_In_ALFA (Entity (N))
       then
-         Mark_In_Non_ALFA_Subprogram ("entity", N, From => Entity (N));
+         Mark_Non_ALFA ("entity", N, From => Entity (N));
       end if;
    end Mark_Identifier_Or_Expanded_Name;
 
@@ -1049,82 +1005,111 @@ package body ALFA.Definition is
    -- Mark_In_Non_ALFA_Subprogram --
    ---------------------------------
 
-   procedure Mark_In_Non_ALFA_Subprogram
+   procedure Mark_Non_ALFA
      (Msg : String;
       N   : Node_Id;
       V   : Violation_Kind := V_Other)
    is
-      Cur_Scop : constant Scope_Record := Current_Scope;
-      Cur_Ent  : constant Entity_Id    := Cur_Scop.Entity;
+      procedure Mark_Body_Violations (E : Entity_Id);
+      procedure Mark_Spec_Violations (E : Entity_Id);
+
+      procedure Mark_Body_Violations (E : Entity_Id) is
+      begin
+         Body_Violations (V).Include (E);
+      end Mark_Body_Violations;
+
+      procedure Mark_Spec_Violations (E : Entity_Id) is
+      begin
+         Spec_Violations (V).Include (E);
+      end Mark_Spec_Violations;
+
+      procedure Mark_Scope is new Mark_Violations;
 
    begin
-      --  If formal proof is forced, then notify the user about the violation
+      --  If formal proof is forced and node N is not compiler-generated, then
+      --  notify the user about the violation.
 
-      if Formal_Proof_Currently_Forced then
-         Error_Msg_F (Complete_Error_Msg (Msg, Implem => V = V_Implem), N);
+      if Formal_Proof_Currently_Forced
+        and then Comes_From_Source (N)
+      then
+         Error_Msg_F (Complete_Error_Msg (Msg, V), N);
       end if;
 
-      case Ekind (Cur_Ent) is
+      Mark_Scope (Current_Scope);
+   end Mark_Non_ALFA;
 
-         --  Detect violation in initialization of package-level object
-
-         when Object_Kind =>
-            Body_Violations (V).Include (Cur_Ent);
-
-         when E_Package =>
-            null;
-
-         --  Detect violation in subprogram declarations and subprogram bodies
-
-         --  If the non-ALFA construct is in a precondition or postcondition,
-         --  then mark the subprogram as not in ALFA, because neither the
-         --  subprogram nor its callers can be proved formally.
-
-         --  If the non-ALFA construct is in a regular piece of code inside the
-         --  body of the subprogram, then mark the subprogram body as not in
-         --  ALFA, because the subprogram cannot be proved formally, but its
-         --  callers could.
-
-         when Subprogram_Kind =>
-            if Cur_Scop.Is_Body then
-               Body_Violations (V).Include (Cur_Ent);
-            else
-               Spec_Violations (V).Include (Cur_Ent);
-            end if;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Mark_In_Non_ALFA_Subprogram;
-
-   procedure Mark_In_Non_ALFA_Subprogram
+   procedure Mark_Non_ALFA
      (Msg  : String;
       N    : Node_Id;
       From : Entity_Id)
    is
-      Cur_Scop : constant Scope_Record := Current_Scope;
-      Cur_Ent  : constant Entity_Id    := Cur_Scop.Entity;
+      procedure Mark_Body_Violations (E : Entity_Id);
+      procedure Mark_Spec_Violations (E : Entity_Id);
+
+      procedure Mark_Body_Violations (E : Entity_Id) is
+      begin
+         Inherit_Violations (Body_Violations, From => From, To => E);
+      end Mark_Body_Violations;
+
+      procedure Mark_Spec_Violations (E : Entity_Id) is
+      begin
+         Inherit_Violations (Spec_Violations, From => From, To => E);
+      end Mark_Spec_Violations;
+
+      procedure Mark_Scope is new Mark_Violations;
 
    begin
-      --  If formal proof is forced, then notify the user about the violation
+      --  If formal proof is forced and node N is not compiler-generated, then
+      --  notify the user about the violation.
 
-      if Formal_Proof_Currently_Forced then
-         if (for some V in V_Design =>
-               Spec_Violations (V).Contains (From))
+      if Formal_Proof_Currently_Forced
+        and then Comes_From_Source (N)
+      then
+         if Scope (From) = Standard_Standard
+           or else Spec_Violations (V_Other).Contains (From)
          then
-            Error_Msg_F (Complete_Error_Msg (Msg, Implem => False), N);
+            Error_Msg_F (Complete_Error_Msg (Msg, V_Other), N);
+
+         elsif (for some V in V_Extensions =>
+                  Spec_Violations (V).Contains (From))
+         then
+            for V in V_Extensions loop
+               if Spec_Violations (V).Contains (From) then
+                  Error_Msg_F (Complete_Error_Msg (Msg, V), N);
+               end if;
+            end loop;
+
          else
-            Error_Msg_F (Complete_Error_Msg (Msg, Implem => True), N);
+            pragma Assert (Spec_Violations (V_Implem).Contains (From));
+            Error_Msg_F (Complete_Error_Msg (Msg, V_Implem), N);
          end if;
       end if;
 
-      case Ekind (Cur_Ent) is
+      Mark_Scope (Current_Scope);
+   end Mark_Non_ALFA;
+
+   ---------------------
+   -- Mark_Violations --
+   ---------------------
+
+   procedure Mark_Violations (Scop : Scope_Record) is
+      Ent : constant Entity_Id := Scop.Entity;
+
+   begin
+      case Ekind (Ent) is
 
          --  Detect violation in initialization of package-level object
 
          when Object_Kind =>
-            Inherit_Violations
-              (Body_Violations, From => From, To => Cur_Ent);
+            if Scop.Is_Body then
+               Mark_Body_Violations (Ent);
+            else
+               Mark_Spec_Violations (Ent);
+            end if;
+
+         when Type_Kind =>
+            pragma Assert (not Scop.Is_Body);
+            Mark_Spec_Violations (Ent);
 
          when E_Package =>
             null;
@@ -1134,27 +1119,23 @@ package body ALFA.Definition is
          --  If the non-ALFA construct is in a precondition or postcondition,
          --  then mark the subprogram as not in ALFA, because neither the
          --  subprogram nor its callers can be proved formally.
-
-         --  If the non-ALFA construct is in a regular piece of code inside the
-         --  body of the subprogram, then mark the subprogram body as not in
-         --  ALFA, because the subprogram cannot be proved formally, but its
+         --
+         --   If the non-ALFA construct is in a regular piece of code inside
+         --  the body of the subprogram, then mark the subprogram body as not
+         --  in ALFA, because the subprogram cannot be proved formally, but its
          --  callers could.
 
          when Subprogram_Kind =>
-            --  Inherit the violations of entity From
-
-            if Cur_Scop.Is_Body then
-               Inherit_Violations
-                 (Body_Violations, From => From, To => Cur_Ent);
+            if Scop.Is_Body then
+               Mark_Body_Violations (Ent);
             else
-               Inherit_Violations
-                 (Spec_Violations, From => From, To => Cur_Ent);
+               Mark_Spec_Violations (Ent);
             end if;
 
          when others =>
             raise Program_Error;
       end case;
-   end Mark_In_Non_ALFA_Subprogram;
+   end Mark_Violations;
 
    ---------------------------
    -- Mark_Iteration_Scheme --
@@ -1220,7 +1201,7 @@ package body ALFA.Definition is
       Push_Scope (Ent);
       Mark_Iteration_Scheme (Iteration_Scheme (N));
       Mark_List (Statements (N));
-      Pop_Scope;
+      Pop_Scope (Ent);
    end Mark_Loop_Statement;
 
    -------------------------------
@@ -1233,7 +1214,7 @@ package body ALFA.Definition is
       V   : Violation_Kind := V_Other) is
    begin
       Spec_Violations (V).Include (Defining_Entity (N));
-      Mark_In_Non_ALFA_Subprogram (Msg, N, V);
+      Mark_Non_ALFA (Msg, N, V);
    end Mark_Non_ALFA_Declaration;
 
    procedure Mark_Non_ALFA_Declaration
@@ -1243,7 +1224,7 @@ package body ALFA.Definition is
    begin
       Inherit_Violations
         (Spec_Violations, From => From, To => Defining_Entity (N));
-      Mark_In_Non_ALFA_Subprogram (Msg, N, From);
+      Mark_Non_ALFA (Msg, N, From);
    end Mark_Non_ALFA_Declaration;
 
    -----------------------------
@@ -1253,17 +1234,32 @@ package body ALFA.Definition is
    procedure Mark_Object_Declaration (N : Node_Id) is
       Id   : constant Entity_Id := Defining_Entity (N);
       Expr : constant Node_Id   := Expression (N);
+      Def  : constant Node_Id   := Object_Definition (N);
    begin
       --  The object is in ALFA if-and-only-if its type is in ALFA and it is
       --  not aliased.
 
-      if not Is_In_ALFA (Etype (Id)) then
-         Mark_Non_ALFA_Declaration ("type of object", N, From => Etype (Id));
-      end if;
+      Push_Scope (Id);
+
+      case Nkind (Def) is
+         when N_Array_Type_Definition |
+              N_Access_Definition     =>
+            Mark_Type_Definition (Etype (Id), Def);
+
+         when N_Identifier         |
+              N_Expanded_Name      |
+              N_Subtype_Indication =>
+            Mark (Def);
+
+         when others =>
+            raise Program_Error;
+      end case;
 
       if Aliased_Present (N) then
          Mark_Non_ALFA_Declaration ("ALIASED", N);
       end if;
+
+      Pop_Scope (Id);
 
       if Present (Expr) then
 
@@ -1278,7 +1274,7 @@ package body ALFA.Definition is
          Mark (Expr);
 
          if Is_Package_Level_Entity (Id) then
-            Pop_Scope;
+            Pop_Scope (Id, Is_Body => True);
          end if;
       end if;
    end Mark_Object_Declaration;
@@ -1301,16 +1297,17 @@ package body ALFA.Definition is
 
    procedure Mark_Package_Body (N : Node_Id) is
       HSS : constant Node_Id := Handled_Statement_Sequence (N);
+      Id  : constant Entity_Id := Unique_Defining_Entity (N);
 
    begin
-      Push_Scope (Unique_Defining_Entity (N));
+      Push_Scope (Id);
       Mark_List (Declarations (N));
 
       if Present (HSS) then
          Mark (HSS);
       end if;
 
-      Pop_Scope;
+      Pop_Scope (Id);
    end Mark_Package_Body;
 
    ------------------------------
@@ -1318,10 +1315,11 @@ package body ALFA.Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
+      Id : constant Entity_Id := Unique_Defining_Entity (N);
    begin
-      Push_Scope (Unique_Defining_Entity (N));
+      Push_Scope (Id);
       Mark (Specification (N));
-      Pop_Scope;
+      Pop_Scope (Id);
    end Mark_Package_Declaration;
 
    --------------------------------
@@ -1446,7 +1444,7 @@ package body ALFA.Definition is
             end if;
 
          when others =>
-            Mark_In_Non_ALFA_Subprogram ("pragma is not in ALFA", N);
+            Mark_Non_ALFA ("pragma is not in ALFA", N);
       end case;
    end Mark_Pragma;
 
@@ -1467,8 +1465,8 @@ package body ALFA.Definition is
           (Nkind (Parent (Parent (N))) /= N_Subprogram_Body
             or else Present (Next (N)))
       then
-         Mark_In_Non_ALFA_Subprogram
-           ("RETURN not in last position", N, V_Any_Return);
+         Mark_Non_ALFA
+           ("RETURN in the middle of subprogram", N, V_Any_Return);
       end if;
    end Mark_Simple_Return_Statement;
 
@@ -1483,6 +1481,9 @@ package body ALFA.Definition is
             Standard_In_ALFA.Insert (Standard_Entity (S));
          end if;
       end loop;
+
+      Standard_In_ALFA.Insert (Standard_False);
+      Standard_In_ALFA.Insert (Standard_True);
 
       Standard_In_ALFA.Insert (Universal_Integer);
 
@@ -1503,7 +1504,7 @@ package body ALFA.Definition is
    begin
       Push_Scope (Id);
       Mark_Subprogram_Specification (Specification (N));
-      Pop_Scope;
+      Pop_Scope (Id);
 
       Push_Scope (Id, Is_Body => True);
 
@@ -1521,7 +1522,7 @@ package body ALFA.Definition is
               and then not Nkind_In (Stat, N_Simple_Return_Statement,
                                      N_Extended_Return_Statement)
             then
-               Mark_In_Non_ALFA_Subprogram
+               Mark_Non_ALFA
                  ("no RETURN at end of function", Stat, V_Any_Return);
             end if;
          end;
@@ -1533,12 +1534,12 @@ package body ALFA.Definition is
          --  borrow the Check_Returns procedure here ???
 
          if Return_Present (Id) then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("RETURN in procedure", N, V_Any_Return);
          end if;
       end if;
 
-      Pop_Scope;
+      Pop_Scope (Id, Is_Body => True);
    end Mark_Subprogram_Body;
 
    ---------------------------------
@@ -1547,8 +1548,9 @@ package body ALFA.Definition is
 
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
       PPC : Node_Id;
+      Id  : constant Entity_Id := Defining_Entity (N);
    begin
-      Push_Scope (Defining_Entity (N));
+      Push_Scope (Id);
       Mark_Subprogram_Specification (Specification (N));
 
       PPC := Spec_PPC_List (Defining_Entity (N));
@@ -1557,7 +1559,7 @@ package body ALFA.Definition is
          PPC := Next_Pragma (PPC);
       end loop;
 
-      Pop_Scope;
+      Pop_Scope (Id);
    end Mark_Subprogram_Declaration;
 
    -----------------------------------
@@ -1592,48 +1594,41 @@ package body ALFA.Definition is
          if Nkind (N) = N_Function_Specification
            and then not Is_In_ALFA (Etype (Designator))
          then
-            Mark_In_Non_ALFA_Subprogram
+            Mark_Non_ALFA
               ("return type", Result_Definition (N),
                From => Etype (Designator));
          end if;
       end if;
    end Mark_Subprogram_Specification;
 
-   -------------------------------------
-   -- Mark_Subtype_Indication_In_Decl --
-   -------------------------------------
+   -----------------------------
+   -- Mark_Subtype_Indication --
+   -----------------------------
 
-   procedure Mark_Subtype_Indication_In_Decl (N : Node_Id) is
-      Sub_Ind : Node_Id;
+   procedure Mark_Subtype_Indication (N : Node_Id) is
       T       : Entity_Id;
       Cstr    : Node_Id;
 
    begin
-      if Nkind (N) = N_Subtype_Declaration then
-         Sub_Ind := Subtype_Indication (N);
+      if Nkind (N) = N_Subtype_Indication then
+         T := Etype (Subtype_Mark (N));
       else
-         Sub_Ind := Subtype_Indication (Type_Definition (N));
-      end if;
-
-      if Nkind (Sub_Ind) = N_Subtype_Indication then
-         T := Etype (Subtype_Mark (Sub_Ind));
-      else
-         T := Etype (Sub_Ind);
+         T := Etype (N);
       end if;
 
       --  Check that the base type is in ALFA
 
       if not Is_In_ALFA (T) then
-         Mark_Non_ALFA_Declaration ("base type", N, From => T);
+         Mark_Non_ALFA ("base type", N, From => T);
       end if;
 
-      if Nkind (Sub_Ind) = N_Subtype_Indication then
+      if Nkind (N) = N_Subtype_Indication then
 
-         Cstr := Constraint (Sub_Ind);
+         Cstr := Constraint (N);
          case Nkind (Cstr) is
             when N_Range_Constraint =>
                if not Is_Static_Range (Range_Expression (Cstr)) then
-                  Mark_Non_ALFA_Declaration ("non-static range", N);
+                  Mark_Non_ALFA ("non-static range", N);
                end if;
 
             when N_Index_Or_Discriminant_Constraint =>
@@ -1644,20 +1639,21 @@ package body ALFA.Definition is
                   case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
                         if not Is_In_ALFA (Entity (Cstr)) then
-                           Mark_Non_ALFA_Declaration
+                           Mark_Non_ALFA
                              ("index type", N, From => Entity (Cstr));
                         end if;
 
                      when N_Subtype_Indication =>  --  TO DO
-                        Mark_Non_ALFA_Declaration ("index type", N, V_Implem);
+                        Mark_Non_ALFA
+                          ("index type", N, V_Implem);
 
                      when N_Range =>
                         if not Is_Static_Range (Cstr) then
-                           Mark_Non_ALFA_Declaration ("non-static range", N);
+                           Mark_Non_ALFA ("non-static range", N);
                         end if;
 
                      when N_Discriminant_Association =>
-                        Mark_Non_ALFA_Declaration ("discriminant", N);
+                        Mark_Non_ALFA ("discriminant", N);
 
                      when others =>
                         raise Program_Error;
@@ -1669,7 +1665,7 @@ package body ALFA.Definition is
                raise Program_Error;
          end case;
       end if;
-   end Mark_Subtype_Indication_In_Decl;
+   end Mark_Subtype_Indication;
 
    --------------------------
    -- Mark_Type_Conversion --
@@ -1685,21 +1681,140 @@ package body ALFA.Definition is
       if not (Is_Scalar_Type (Etype (Expr))
                and then Is_Scalar_Type (Etype (N)))
       then
-         Mark_In_Non_ALFA_Subprogram
+         Mark_Non_ALFA
            ("type conversion not between scalar types", N);
       end if;
 
       Mark (Expr);
    end Mark_Type_Conversion;
 
+   --------------------------
+   -- Mark_Type_Definition --
+   --------------------------
+
+   procedure Mark_Type_Definition (Id : Entity_Id; N : Node_Id) is
+   begin
+      case Nkind (N) is
+         when N_Array_Type_Definition =>
+            declare
+               Component_Def : constant Node_Id := Component_Definition (N);
+               Component_Typ : constant Node_Id :=
+                                 Subtype_Indication (Component_Def);
+               Index         : Node_Id;
+
+            begin
+               if Nkind (N) = N_Constrained_Array_Definition then
+                  Index := First (Discrete_Subtype_Definitions (N));
+               else
+                  Index := First (Subtype_Marks (N));
+               end if;
+
+               --  Check that all index types are in ALFA
+
+               while Present (Index) loop
+                  if not Is_In_ALFA (Etype (Index)) then
+                     Mark_Non_ALFA
+                       ("index type", N, From => Etype (Index));
+                  end if;
+                  Next_Index (Index);
+               end loop;
+
+               --  Access definition for component type is not in ALFA
+
+               if No (Component_Typ) then
+                  Mark_Non_ALFA ("access type", N);
+               end if;
+
+               --  Check that component type is in ALFA
+
+               if not Is_In_ALFA (Etype (Component_Typ)) then
+                  Mark_Non_ALFA
+                    ("component type", N, From => Etype (Component_Typ));
+               end if;
+
+               --  Check that array bounds are static
+
+               if Nkind (N) = N_Constrained_Array_Definition
+                 and then not Has_Static_Array_Bounds (Id)
+               then
+                  Mark_Non_ALFA
+                    ("array type with non-static bounds", N);
+               end if;
+            end;
+
+         when N_Enumeration_Type_Definition =>
+            --  Enumeration type is in ALFA only if it is not a character type
+
+            if Is_Character_Type (Id) then
+               Mark_Non_ALFA ("character enumeration type", N);
+            end if;
+
+         when N_Signed_Integer_Type_Definition =>
+            null;
+
+         when N_Derived_Type_Definition =>
+            if Present (Interface_List (N)) then
+               Mark_Non_ALFA ("interface", N);
+            elsif Present (Record_Extension_Part (N)) then
+               Mark_Non_ALFA ("record extension", N, V_Implem);
+            else
+               Mark (Subtype_Indication (N));
+            end if;
+
+         when N_Modular_Type_Definition |
+              N_Record_Definition |
+              N_Floating_Point_Definition |
+              N_Decimal_Fixed_Point_Definition |
+              N_Ordinary_Fixed_Point_Definition =>
+            Mark_Non_ALFA ("type definition", N, V_Implem);
+
+         when N_Access_To_Subprogram_Definition |
+              N_Access_To_Object_Definition     |
+              N_Access_Definition               =>
+            Mark_Non_ALFA ("access type", N);
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Mark_Type_Definition;
+
    ---------------
    -- Pop_Scope --
    ---------------
 
-   procedure Pop_Scope is
+   procedure Pop_Scope (E : Entity_Id; Is_Body : Boolean := False) is
+      Cur_Scop : Scope_Record renames Scope_Stack.Table (Scope_Stack.Last);
    begin
+      pragma Assert (Cur_Scop.Entity = E and then Cur_Scop.Is_Body = Is_Body);
       Scope_Stack.Decrement_Last;
    end Pop_Scope;
+
+   --------------------
+   -- Previous_Scope --
+   --------------------
+
+   function Previous_Scope return Scope_Record is
+      Idx : Int := Scope_Stack.Last;
+
+   begin
+      while Idx /= -1
+        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
+      loop
+         Idx := Idx - 1;
+      end loop;
+
+      Idx := Idx - 1;
+
+      while Idx /= -1
+        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
+      loop
+         Idx := Idx - 1;
+      end loop;
+
+      pragma Assert (Idx /= -1);
+
+      return Scope_Stack.Table (Idx);
+   end Previous_Scope;
 
    ----------------
    -- Push_Scope --
