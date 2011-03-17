@@ -86,21 +86,40 @@ package body Why.Gen.Progs is
 
    function Insert_Conversion
       (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
-       Why_Expr : W_Prog_Id) return W_Prog_Id
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id;
+       Base_Type              : Why_Type := (Kind => Why_Int)) return W_Prog_Id
    is
    begin
-      if To = From then
+      if Base_Type.Kind = Why_Int and then To = From then
          return Why_Expr;
       end if;
 
       if To.Kind = Why_Int then
-         return
-           New_Prog_Call
-             (Ada_Node => Ada_Node,
-              Name     => Conversion_Name (From => From, To => To),
-              Progs    => (1 => Why_Expr));
+         --  We convert to "int"
+         if not (Base_Type.Kind = Why_Int) and then From.Kind = Why_Int then
+            --  If both types are "int", and we have a Base_Type, insert a
+            --  conversion
+            return
+              Insert_Conversion
+                (Ada_Node => Ada_Node,
+                 From     => Base_Type,
+                 To       => (Kind => Why_Int),
+                 Why_Expr =>
+                  Insert_Conversion
+                    (Ada_Node => Ada_Node,
+                     From     => (Kind => Why_Int),
+                     To       => Base_Type,
+                     Why_Expr => Why_Expr));
+         else
+            return
+              New_Prog_Call
+                (Ada_Node => Ada_Node,
+                 Name     => Conversion_Name (From => From, To => To),
+                 Progs    => (1 => Why_Expr));
+         end if;
+
       elsif From.Kind = Why_Int then
          return
            New_Located_Call

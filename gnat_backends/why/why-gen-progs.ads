@@ -41,11 +41,16 @@ package Why.Gen.Progs is
 
    function Insert_Conversion
       (Ada_Node : Node_Id := Empty;
-       To       : Why_Type;
-       From     : Why_Type;
-       Why_Expr : W_Prog_Id) return W_Prog_Id;
+       To                    : Why_Type;
+       From                  : Why_Type;
+       Why_Expr              : W_Prog_Id;
+       Base_Type             : Why_Type := (Kind => Why_Int))
+       return W_Prog_Id;
    --  We expect Why_Expr to be of the type that corresponds to the type
    --  "From". We insert a conversion so that its type corresponds to "To".
+   --  If Base_Type is set to "int", nothing else happens. Otherwise, if
+   --  From and to are set to "int", we insert a check that the result belongs
+   --  to the range of the Base_Type.
 
    function New_Assume_Statement
       (Ada_Node : Node_Id;
