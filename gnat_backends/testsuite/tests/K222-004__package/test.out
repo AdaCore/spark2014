@@ -1,0 +1,5 @@
+pack.adb:5:11: access type is not in ALFA
+pack.adb:7:07: entity is not in ALFA
+pack.adb:7:12: allocator is not in ALFA
+pack.adb:8:07: explicit dereference is not in ALFA
+pack.adb:9:14: explicit dereference is not in ALFA
