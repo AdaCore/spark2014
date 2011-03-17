@@ -89,6 +89,8 @@ package Why.Gen.Names is
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
+   function New_Ignore_Name return W_Identifier_Id;
+
    function New_Integer_Division return W_Identifier_Id;
    --  Return an identifier that corresponds to integer division in Why
 

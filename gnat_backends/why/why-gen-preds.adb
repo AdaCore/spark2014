@@ -308,9 +308,7 @@ package body Why.Gen.Preds is
    -- New_Simpl_Conjunction --
    ---------------------------
 
-   function New_Simpl_Conjunction
-      (Ada_Node    : Node_Id := Empty;
-       Left, Right : W_Predicate_Id)
+   function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
       return W_Predicate_Id
    is
    begin
@@ -319,7 +317,7 @@ package body Why.Gen.Preds is
       elsif Get_Kind (Right) = W_True_Literal_Pred then
          return Left;
       else
-         return New_Conjunction (Ada_Node, Left, Right);
+         return New_Conjunction (Left => Left, Right => Right);
       end if;
    end New_Simpl_Conjunction;
 

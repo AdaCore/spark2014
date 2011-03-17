@@ -274,6 +274,21 @@ package body Why.Gen.Progs is
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 
+   ----------------
+   -- New_Ignore --
+   ----------------
+
+   function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
+      return W_Prog_Id
+   is
+   begin
+      return
+         New_Prog_Call
+           (Ada_Node => Ada_Node,
+            Name     => New_Ignore_Name,
+            Progs    => (1 => Prog));
+   end New_Ignore;
+
    ------------------------
    -- New_Located_Assert --
    ------------------------
@@ -405,6 +420,20 @@ package body Why.Gen.Progs is
                 Else_Part => Else_Part);
       end if;
    end New_Simpl_Conditional_Prog;
+
+   ---------------------------
+   -- New_True_Literal_Prog --
+   ---------------------------
+
+   function New_True_Literal_Prog (Ada_Node : Node_Id := Empty)
+      return W_Prog_Id
+   is
+   begin
+      return
+        New_Prog_Constant
+          (Ada_Node => Ada_Node,
+           Def => New_True_Literal);
+   end New_True_Literal_Prog;
 
    --------------
    -- New_Void --

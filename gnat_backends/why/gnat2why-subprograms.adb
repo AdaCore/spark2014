@@ -118,7 +118,11 @@ package body Gnat2Why.Subprograms is
       return W_Predicate_Id;
    --  Generate a predicate of the form
    --    low_bound < int_of_type (x) < high_bound
-   --  from an N_Range node
+   --  from an N_Range node.
+
+   function Range_Prog (N : Node_Id; T : W_Prog_Id)
+      return W_Prog_Id;
+   --  Same as Range_Predicate, but for programs.
 
    function Term_Equal_To (T : W_Term_Id; N : Node_Id) return W_Term_Id;
    --  For a term T of type "int" and a Node that represents a
@@ -275,8 +279,7 @@ package body Gnat2Why.Subprograms is
                      = "assert" then
                   Pred :=
                     New_Simpl_Conjunction
-                      (Ada_Node => Cur_Stmt,
-                       Left => Pred,
+                      (Left => Pred,
                        Right =>
                          New_Negation
                            (Ada_Node => Cur_Stmt,
@@ -327,6 +330,27 @@ package body Gnat2Why.Subprograms is
            Op2 => New_Rel_Le,
            Right2 => Int_Term_Of_Ada_Expr (High_Bound (N)));
    end Range_Predicate;
+
+   ----------------
+   -- Range_Prog --
+   ----------------
+
+   function Range_Prog (N : Node_Id; T : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      return
+         New_Prog_Andb
+            (Left =>
+              New_Infix_Call
+                (Infix    => New_Op_Le_Prog,
+                 Left     => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
+                 Right     => Duplicate_Any_Node (Id => T)),
+             Right =>
+              New_Infix_Call
+                (Infix    => New_Op_Le_Prog,
+                 Left     => T,
+                 Right    => Int_Expr_Of_Ada_Expr (High_Bound (N))));
+   end Range_Prog;
 
    ----------------------------
    -- Insert_Conversion_Term --
@@ -445,7 +469,7 @@ package body Gnat2Why.Subprograms is
                            Int_Expr_Of_Ada_Expr (Low_Bound (N))));
 
          when N_Others_Choice =>
-            return New_Prog_Constant (Def => New_True_Literal);
+            return New_True_Literal_Prog;
 
          when others =>
             raise Not_Implemented;
@@ -550,16 +574,18 @@ package body Gnat2Why.Subprograms is
       function Compute_Effects return W_Effects_Id;
       --  Compute the effects of the generated Why function
 
+      generic
+         type T is private;
+         with function Basic_Value (Ada_Node : Node_Id := Empty) return T;
+         with function Mapping (N : Node_Id) return T;
+         with function Combine (Left, Right : T) return T;
       function Compute_Spec
          (Kind       : Name_Id;
-          Located_Node : out Node_Id) return W_Predicate_Id;
+          Located_Node : out Node_Id) return T;
       --  Compute the precondition of the generated Why functions.
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
       --  Also output a suitable location node, if available.
-
-      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id;
-      --  Same as above, without the location node
 
       --------------------
       -- Compute_Arrows --
@@ -699,36 +725,6 @@ package body Gnat2Why.Subprograms is
                      end;
                   end if;
 
-               when N_Raise_Constraint_Error =>
-                  --  This is a check, we transform it into an assert
-                  declare
-                     Pred : constant W_Predicate_Id :=
-                        New_Negation (Operand =>
-                           Why_Predicate_Of_Ada_Expr (Condition (Cur_Decl)));
-                  begin
-                     R :=
-                        Sequence
-                           (New_Located_Assert
-                              (Ada_Node => Cur_Decl,
-                               Pred => Pred),
-                            R);
-                  end;
-               when N_If_Statement =>
-                  if Nkind (Original_Node (Cur_Decl)) = N_Pragma and then
-                     From_Aspect_Specification (Original_Node (Cur_Decl)) then
-                     --  This is a precondition, we transform it into an
-                     --  assume
-                     R :=
-                        Sequence
-                           (New_Assume_Statement
-                              (Ada_Node => Cur_Decl,
-                               Pred =>
-                                 New_Negation (Operand =>
-                                   Why_Predicate_Of_Ada_Expr
-                                     (Condition (Cur_Decl)))),
-                            R);
-                  end if;
-
                when others =>
                   null;
 
@@ -776,10 +772,10 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Spec
          (Kind       : Name_Id;
-          Located_Node : out Node_Id) return W_Predicate_Id
+          Located_Node : out Node_Id) return T
       is
          Corr_Spec      : Node_Id;
-         Cur_Spec       : W_Predicate_Id := New_True_Literal_Pred;
+         Cur_Spec       : T := Basic_Value;
          Found_Location : Boolean := False;
          PPCs           : Node_Id;
 
@@ -808,9 +804,8 @@ package body Gnat2Why.Subprograms is
                      Found_Location := True;
                   end if;
                   Cur_Spec :=
-                     New_Simpl_Conjunction
-                       (Ada_Node => Ada_Spec,
-                        Left     => Why_Predicate_Of_Ada_Expr (Ada_Spec),
+                     Combine
+                       (Left     => Mapping (Ada_Spec),
                         Right    => Cur_Spec);
                end;
             end if;
@@ -822,17 +817,24 @@ package body Gnat2Why.Subprograms is
 
       end Compute_Spec;
 
-      function Compute_Spec (Kind : Name_Id) return W_Predicate_Id
-      is
-         N : Node_Id;
-      begin
-         return Compute_Spec (Kind, N);
-      end Compute_Spec;
-
       Ent : constant Entity_Id := Unique_Defining_Entity (Node);
 
+      function Compute_Spec_Pred is new
+         Compute_Spec
+            (W_Predicate_Id,
+             New_True_Literal_Pred,
+             Why_Predicate_Of_Ada_Expr,
+             New_Simpl_Conjunction);
+
+      function Compute_Spec_Prog is new
+         Compute_Spec
+            (W_Prog_Id,
+             New_True_Literal_Prog,
+             Why_Expr_Of_Ada_Expr,
+             New_Prog_Andb);
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
+      Dummy_Node : Node_Id;
    begin
       --  Ignore procedures generated for postconditions
 
@@ -848,11 +850,18 @@ package body Gnat2Why.Subprograms is
                Why_Stmt : constant W_Prog_Id :=
                            Why_Expr_Of_Ada_Stmts (Stmts);
                Pre      : constant W_Predicate_Id :=
-                  Compute_Spec (Name_Precondition);
-               Why_Body : constant W_Prog_Id := Compute_Context (Why_Stmt);
+                  Compute_Spec_Pred (Name_Precondition, Dummy_Node);
+               Why_Body : constant W_Prog_Id :=
+                  Sequence
+                     (New_Ignore
+                        (Prog =>
+                           Compute_Spec_Prog (Name_Precondition, Dummy_Node)),
+                      Sequence
+                        (New_Assume_Statement (Node, Pred => Pre),
+                         Compute_Context (Why_Stmt)));
                Loc_Node : Node_Id := Empty;
                Post     : constant W_Predicate_Id :=
-                  Compute_Spec (Name_Postcondition, Loc_Node);
+                  Compute_Spec_Pred (Name_Postcondition, Loc_Node);
                Loc_Post : constant W_Predicate_Id :=
                   (if Present (Loc_Node) and then
                      Get_Kind (Post) /= W_True_Literal_Pred then
@@ -868,7 +877,7 @@ package body Gnat2Why.Subprograms is
                     (File   => File,
                      Name   => New_Identifier (Get_Name_String (Name)),
                      Arrows => Compute_Arrows,
-                     Pre    => Pre,
+                     Pre    => Duplicate_Any_Node (Id => Pre),
                      Post   => Duplicate_Any_Node (Id => Post));
                end if;
 
@@ -886,8 +895,8 @@ package body Gnat2Why.Subprograms is
               (File   => File,
                Name   => New_Identifier (Get_Name_String (Name)),
                Arrows => Compute_Arrows,
-               Pre    => Compute_Spec (Name_Precondition),
-               Post   => Compute_Spec (Name_Postcondition));
+               Pre    => Compute_Spec_Pred (Name_Precondition, Dummy_Node),
+               Post   => Compute_Spec_Pred (Name_Postcondition, Dummy_Node));
 
          when others =>
             raise Not_Implemented;
@@ -942,7 +951,7 @@ package body Gnat2Why.Subprograms is
                   --  First treat special cases
                   when E_Enumeration_Literal =>
                      if Entity (Expr) = Standard_True then
-                        T := New_Prog_Constant (Def => New_True_Literal);
+                        T := New_True_Literal_Prog;
                      elsif Entity (Expr) = Standard_False then
                         T := New_Prog_Constant (Def => New_False_Literal);
                      else
@@ -1075,6 +1084,53 @@ package body Gnat2Why.Subprograms is
                   (Actions (Expr),
                    Inner_Expr =>
                      Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
+
+         when N_Quantified_Expression =>
+            --  Quantified expressions in programs are expanded, so here we
+            --  are generating code that belongs to a pre-/postcondition. We
+            --  are not interested in the return value, and Why is not strong
+            --  enough to reason about it. So here we generate a loop (of type
+            --  unit) that simply executes the expression, and at the end
+            --  return an arbitrary boolean value.
+            --  We generate Why code of the form
+            --    let i = [ int] in
+            --    while condition do { true }
+            --       expression
+            --    done ;
+            --    [ bool ]
+            --  A consequence is that we are less precise than dynamic
+            --  execution; we always assume that the entire range of
+            --  quantification is executed. In practice, this should not be a
+            --  problem.
+            declare
+               Loop_Spec : constant Node_Id :=
+                  Loop_Parameter_Specification (Expr);
+               Index : constant W_Identifier_Id :=
+                  New_Identifier (Full_Name (Defining_Identifier (Loop_Spec)));
+               Loop_Inv : constant W_Loop_Annot_Id :=
+                   New_Loop_Annot
+                      (Invariant =>
+                        New_Assertion (Pred => New_True_Literal_Pred));
+               Loop_Body : constant W_Prog_Id :=
+                  New_Ignore (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
+               Loop_Condition : constant W_Prog_Id :=
+                  Range_Prog
+                    (Discrete_Subtype_Definition (Loop_Spec),
+                     New_Deref
+                       (Ref => Duplicate_Any_Node (Id => Index)));
+            begin
+               return
+                  New_Binding_Ref
+                    (Name => Index,
+                     Def  => New_Any_Expr (Any_Type => New_Type_Int),
+                     Context =>
+                        Sequence
+                           (New_While_Loop
+                              (Condition  => Loop_Condition,
+                               Annotation => Loop_Inv,
+                               Loop_Content => Loop_Body),
+                            New_Any_Expr (Any_Type => New_Type_Bool)));
+            end;
 
          when others =>
             raise Not_Implemented;
@@ -1269,8 +1325,7 @@ package body Gnat2Why.Subprograms is
                   Entire_Loop :=
                        New_While_Loop
                          (Ada_Node     => Stmt,
-                          Condition    =>
-                            New_Prog_Constant (Def => New_True_Literal),
+                          Condition    => New_True_Literal_Prog,
                           Annotation   =>
                             New_Loop_Annot
                                (Invariant =>
@@ -1646,8 +1701,7 @@ package body Gnat2Why.Subprograms is
          when N_Op_And | N_And_Then =>
             return
               New_Simpl_Conjunction
-                (Ada_Node => Expr,
-                 Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
+                (Left     => Why_Predicate_Of_Ada_Expr (Left_Opnd (Expr)),
                  Right    => Why_Predicate_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_Or | N_Or_Else =>

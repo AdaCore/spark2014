@@ -225,6 +225,16 @@ package body Why.Gen.Names is
       return New_Identifier (Symbol => Name_Find);
    end New_Identifier;
 
+   ---------------------
+   -- New_Ignore_Name --
+   ---------------------
+
+   function New_Ignore_Name return W_Identifier_Id
+   is
+   begin
+      return New_Identifier ("___ignore");
+   end New_Ignore_Name;
+
    --------------------------
    -- New_Integer_Division --
    --------------------------

@@ -75,6 +75,10 @@ package Why.Gen.Progs is
    --  done
    --  Low and High are identifiers that represent the bounds of the range
 
+   function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
+      return W_Prog_Id;
+   --   Build the program "ignore(prog)" of return type "unit".
+
    function New_Located_Assert
       (Ada_Node : Node_Id;
        Pred     : W_Predicate_Id) return W_Prog_Id;
@@ -101,6 +105,10 @@ package Why.Gen.Progs is
        Then_Part : W_Prog_Id;
        Else_Part : W_Prog_Id) return W_Prog_Id;
    --  Conditional program, simplify if condition is true/false.
+
+   function New_True_Literal_Prog (Ada_Node : Node_Id := Empty)
+      return W_Prog_Id;
+   --  Return the program consisting of the boolean constant "true".
 
    function New_Void (Ada_Node : Node_Id := Empty) return W_Prog_Id;
    --  The program "void"

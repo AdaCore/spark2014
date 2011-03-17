@@ -105,9 +105,7 @@ package Why.Gen.Preds is
    --  Create a predicate by linking together the bindings and
    --  associating the context to them.
 
-   function New_Simpl_Conjunction
-      (Ada_Node    : Node_Id := Empty;
-       Left, Right : W_Predicate_Id)
+   function New_Simpl_Conjunction (Left, Right : W_Predicate_Id)
       return W_Predicate_Id;
    --  Build a conjunction, but check if we can simplify it  - one of the
    --  arguments may be "true".
