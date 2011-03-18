@@ -210,9 +210,11 @@ Section~\ref{sec:validation}. We finally give a survey of related works in
 Section~\ref{sec:related-works}.
 
 %REVIEW 3
-There is a longer version of this article which can be download through~\cite{dross:2011:fc-long}.
-There is also a web page~\cite{dross:2011:fc-code} where some code extracts can be found as
-well as the address of a git repository with anonymous access where are stored all the source codes.
+A longer version of this article with more details and proofs is available on
+the web~\cite{dross:2011:fc-long}.  A web page gives an introduction to the
+code for containers' implementation and proofs~\cite{dross:2011:fc-code}, and
+instructions to anonymously access the git repository where all the source code
+is stored.
 
 % This paper focuses on containers, ie complex mutable data-structures such as
 % lists, vectors, sets or maps. It describes the way these containers,
@@ -360,9 +362,9 @@ The expression denoted by \verb|???| should designate the value obtained by call
 because it refers to the value in the pre-state of \verb|Cu|, which is not
 defined in the pre-state
 %REVIEW 2
-since it is quantified
+since it is quantified.
 %
-. As a side note, notice that, even for a cursor
+As a side note, notice that, even for a cursor
 \verb|Cu| defined outside of the \verb|Map_F| function, \verb|Cu'Old| would be the same as
 \verb|Cu| in our example, because the semantics of attribute \verb|'Old| is to
 perform a shallow copy, so it does not copy the implicit container in a cursor.
@@ -958,7 +960,7 @@ Z3~\cite{Z3} and Simplify~\cite{Simplify}.
 %
 For example, here is some Why syntax that declares a
 modulo operation over integers, together with some possible axiomatization:
-\lstset{language={}, morekeywords={logic, axiom, goal, parameter, forall, exists},
+\lstset{language={}, morekeywords={let, logic, axiom, goal, parameter, forall, exists},
  basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
 \begin{lstlisting}
 logic mod_ : int, int -> int
@@ -1214,12 +1216,11 @@ they are also automatically proved.
 %   brief description of the properties that you used as test cases for
 %   your axiomatization and, if possible, a brief motivation why you
 %   have choosen them. 
-They are different kind of tests. Unit-tests validate the specific properties
-of expressions (at least the complex ones, such as $\Left$) and instructions.
-For example, there is a test to check that it is possible to prove that the value
-of the replaced element in a list is indeed equal to the expected value after
-the call :
-\lstset{language=Ada, basicstyle=\small\tt, keywordstyle=\normalfont\textbf}
+Most of the tests correspond to unit-tests for specific properties of list
+expressions (especially for complex ones, such as $\Left$) and instructions.
+For example, there is a test to check that after replacing the value of an
+element in the list, the list indeed contains this value at this position after
+the call:
 \begin{lstlisting}
 let test_replace_element
   (co : list ref) (cu : cursor) (e : element_t) =
@@ -1227,8 +1228,9 @@ let test_replace_element
     replace_element co cu e
     { element_ (co, cu) = e }
 \end{lstlisting}
-More constructed tests, such as our running example, validate the fact that these properties of expressions
-and instructions can be combined by an automated theorem prover.
+A few tests, such as our running example, combine expressions and instructions
+to validate more complex behaviors of the API. All tests were proved
+automatically.
 
 \beforesub
 \subsection{Vectors, Sets and Maps}
@@ -1237,7 +1239,7 @@ and instructions can be combined by an automated theorem prover.
 Here is a table referencing the work done for each container. It contains the
 size of its Why file (its number of lines), the number of lemmas given and the
 number of tests passed. The code and tests are available
-on-line.\\
+on the web.\\
 ~\\
 \begin{tabular}{|l|c|c|c||}
 \hline
@@ -1382,7 +1384,7 @@ Like for the $\Insert$ rule for lists, every unspecified part of the semantic
 of every container is kept as general as possible thanks to a sealed Coq module
 that only allows proofs to use the specified parts. The whole proof is 16,000+
 lines of Coq. All of it plus commented excerpts can be found
-on-line.
+on the web.
 
 \beforesec
 \section{Related Work}
@@ -1477,19 +1479,20 @@ proofs, which are a sour point of formal methods in industry.
 Formal containers have been implemented in Ada, and could be included in any Ada
 compiler's library.
 %REVIEW 3
-They have been included in the standard library of GNAT Ada compiler.
+They have been included in the standard library of the not yet released GNAT
+6.5 Ada compiler.
 %REVIEW 1
-Theoretically, the Why axiomatization could be reuse to model other languages'
-containers, with a few modification to comply with the particularities of
-their APIs.
+Theoretically, the Why axiomatization could be reused to model containers in
+other languages, with a few modifications to comply with the particularities of
+their respective APIs.
 %
-This implementation in Ada should be correct \wrt the formal
-semantics in Coq, but we have not proved it formally. This is an interesting
-(but difficult) problem for the future.
+The implementation we provide for Ada containers should be correct \wrt the
+formal semantics in Coq, but we have not proved it formally. This is an
+interesting (but difficult) problem for the future.
 
 \subsubsection*{Acknowledgement}
-We would like to thank Ed Schonberg, David Lesens and the anonymous referees for
-their useful reviews of this paper.
+We would like to thank Ed Schonberg, David Lesens and the anonymous referees
+for their useful reviews of this paper.
 
 \beforesec
 \bibliographystyle{plain}
