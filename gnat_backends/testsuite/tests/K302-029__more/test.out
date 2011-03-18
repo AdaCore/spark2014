@@ -1,0 +1,9 @@
+-p3 pack.adb:4
++p0_ok pack.adb:10
+-p0 pack.adb:3 (not implemented)
+-p4 pack.adb:19 (any exit)
++p1_ok pack.adb:25
+-p1 pack.adb:18 (any return)
+-p5 pack.adb:38 (not implemented)
++p2_ok pack.adb:47
+-p2 pack.adb:35 (block statement, any return)
