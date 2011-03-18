@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 
 with Alloc;       use Alloc;
 with Atree;       use Atree;
@@ -35,12 +36,17 @@ with Snames;      use Snames;
 with Sem_Eval;    use Sem_Eval;
 with Sem_Util;    use Sem_Util;
 with Sinfo;       use Sinfo;
+with Sinput;      use Sinput;
 with Stand;       use Stand;
 with Table;
+
+with AA_Util;     use AA_Util;
 
 with ALFA.Common; use ALFA.Common;
 
 package body ALFA.Definition is
+
+   Output_File : Ada.Text_IO.File_Type;
 
    ---------------------
    -- Local Constants --
@@ -248,6 +254,15 @@ package body ALFA.Definition is
    begin
       return (for all S of Body_Violations => not S.Contains (Id));
    end Body_Is_In_ALFA;
+
+   ----------------------------
+   -- Close_ALFA_Output_File --
+   ----------------------------
+
+   procedure Close_ALFA_Output_File is
+   begin
+      Close (Output_File);
+   end Close_ALFA_Output_File;
 
    ------------------------
    -- Complete_Error_Msg --
@@ -1586,6 +1601,56 @@ package body ALFA.Definition is
       end if;
 
       Pop_Scope (Id, Is_Body => True);
+
+      --  Postprocessing: indicate in output file if subprogram is in ALFA or
+      --  not, for debug and verifications.
+
+      if Comes_From_Source (Id) then
+         declare
+            function Collect_Extension_Violations
+              (E : Entity_Id) return String;
+
+            function Collect_Extension_Violations
+              (E : Entity_Id) return String
+            is
+               Msg : Unbounded_String;
+            begin
+               for V in V_Extensions loop
+                  if Body_Violations (V).Contains (E) then
+                     if Msg = "" then
+                        Msg := Msg & Violation_Msg (V);
+                     else
+                        Msg := Msg & ", " & Violation_Msg (V);
+                     end if;
+                  end if;
+               end loop;
+               return "(" & To_String (Msg) & ")";
+            end Collect_Extension_Violations;
+
+            S : constant String :=
+                  Name_String (Chars (Id)) & " "
+                    & Build_Location_String (Sloc (Defining_Entity (N)));
+            --  Location string points to source location for entity. Use the
+            --  location of the body (Defining_Entity) rather than the location
+            --  of the spec (Id).
+
+            C : constant Character :=
+                  (if Body_Is_In_ALFA (Id) then '+' else '-');
+            --  Prefix character indicates whether entity is in ALFA (+) or not
+            --  in ALFA (-).
+
+            Suffix : constant String :=
+                       (if Body_Is_In_ALFA (Id) then ""
+                        elsif Body_Violations (V_Other).Contains (Id) then ""
+                        elsif (for some V in V_Extensions =>
+                                 Body_Violations (V).Contains (Id))
+                        then " " & Collect_Extension_Violations (Id)
+                        else " (implementation)");
+            --  Suffix string indicates why entity is not in ALFA
+         begin
+            Put_Line (Output_File, C & S & Suffix);
+         end;
+      end if;
    end Mark_Subprogram_Body;
 
    ---------------------------------
@@ -1874,5 +1939,14 @@ package body ALFA.Definition is
       Scope_Stack.Table (Scope_Stack.Last) :=
         Scope_Record'(Entity => E, Is_Body => Is_Body);
    end Push_Scope;
+
+   -----------------------------
+   -- Create_ALFA_Output_File --
+   -----------------------------
+
+   procedure Create_ALFA_Output_File (Filename : String) is
+   begin
+      Create (Output_File, Out_File, Filename);
+   end Create_ALFA_Output_File;
 
 end ALFA.Definition;

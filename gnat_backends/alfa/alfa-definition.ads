@@ -51,4 +51,10 @@ package ALFA.Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
+   procedure Close_ALFA_Output_File;
+
+   procedure Create_ALFA_Output_File (Filename : String);
+   --  Create the file in which to generate output about subprogram in/out of
+   --  the ALFA subset.
+
 end ALFA.Definition;

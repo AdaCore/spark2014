@@ -26,12 +26,14 @@
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
 with Errout;                use Errout;
+with Exp_Dbug;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Opt;                   use Opt;
 with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Stand;                 use Stand;
 with Switch;                use Switch;
@@ -80,6 +82,9 @@ package body Gnat2Why.Driver is
       Name : File_Name_Type;
       Text : Text_Buffer_Ptr;
 
+      N         : constant Node_Id := Unit (GNAT_Root);
+      Unit_Name : constant String := Name_String (Chars (Defining_Entity (N)));
+
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
       --  the combination of generics and inlining, as well as child units
@@ -104,8 +109,12 @@ package body Gnat2Why.Driver is
       --  same order that they were processed by the frontend. Bodies are not
       --  included, except for the main unit itself, which always comes last.
 
+      Create_ALFA_Output_File (Unit_Name & ".alfa");
       Mark_Standard_Package;
       Mark_All_Compilation_Units;
+      Close_ALFA_Output_File;
+
+      Exp_Dbug.Qualify_All_Entity_Names;
 
       if Compilation_Errors then
          return;
