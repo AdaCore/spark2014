@@ -339,7 +339,7 @@ package body Gnat2Why.Subprograms is
    is
    begin
       return
-         New_Prog_Andb
+         New_Prog_Andb_Then
             (Left =>
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
@@ -679,51 +679,40 @@ package body Gnat2Why.Subprograms is
          while Nkind (Cur_Decl) /= N_Empty loop
             case Nkind (Cur_Decl) is
                when N_Object_Declaration =>
-                  if Comes_From_Source (Original_Node (Cur_Decl)) then
-                     if Present (Expression (Cur_Decl)) then
-                        declare
-                           Lvalue : constant Node_Id :=
-                                      Defining_Identifier (Cur_Decl);
-                           Assign : W_Prog_Id;
-                        begin
-                           Assign :=
-                             New_Assignment
-                               (Ada_Node => Cur_Decl,
-                                Name     =>
-                                  New_Identifier (Full_Name (Lvalue)),
-                                Value    =>
-                                  Why_Expr_Of_Ada_Expr
-                                    (Expression (Cur_Decl),
-                                     Type_Of_Node (Lvalue)));
-                           R := Sequence (Assign, R);
-                        end;
-                     end if;
-                  else
-                     declare
-                        Init : W_Prog_Id;
-                     begin
-                        if Nkind (Expression (Cur_Decl)) /= N_Empty then
-                           Init :=
-                              Why_Expr_Of_Ada_Expr (Expression (Cur_Decl));
+                  declare
+                     Lvalue    : constant Node_Id :=
+                        Defining_Identifier (Cur_Decl);
+                     Rexpr     : constant Node_Id := Expression (Cur_Decl);
+                     Ident     : constant W_Identifier_Id :=
+                        New_Identifier (Full_Name (Lvalue));
+                     Rvalue    : constant W_Prog_Id :=
+                        (if Present (Rexpr) then
+                           Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue))
                         else
-                           Init :=
-                             New_Prog_Call
-                              (Name  =>
-                                Allocator_Name
-                                  (Type_Of_Node
-                                     (Object_Definition (Cur_Decl))),
-                               Progs => (1 => New_Void));
+                           New_Any_Expr
+                              (Any_Type => New_Abstract_Type
+                                 (Name =>
+                                    New_Identifier (Type_Of_Node (Lvalue)))));
+                  begin
+                     if Comes_From_Source (Original_Node (Cur_Decl)) then
+                        if Present (Rexpr) then
+                           R :=
+                             Sequence
+                               (New_Assignment
+                                  (Ada_Node => Cur_Decl,
+                                   Name     => Ident,
+                                   Value    => Rvalue),
+                                R);
                         end if;
-                        R := New_Binding_Ref
-                          (Ada_Node => Cur_Decl,
-                           Name     =>
-                             New_Identifier
-                               (Symbol =>
-                                    Chars (Defining_Identifier (Cur_Decl))),
-                           Def      => Init,
-                           Context  => R);
-                     end;
-                  end if;
+                     else
+                        R :=
+                          New_Binding_Ref
+                            (Ada_Node => Cur_Decl,
+                             Name     => Ident,
+                             Def      => Rvalue,
+                             Context  => R);
+                     end if;
+                  end;
 
                when others =>
                   null;
