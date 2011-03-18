@@ -364,6 +364,26 @@ package body Why.Gen.Progs is
       end if;
    end New_Prog_Andb;
 
+   ------------------------
+   -- New_Prog_Andb_Then --
+   ------------------------
+
+   function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      if Is_True_Boolean (Left) then
+         return Right;
+      elsif Is_True_Boolean (Right) then
+         return Left;
+      else
+         return
+            New_Infix_Call
+              (Infix    => New_Op_And_Then_Prog,
+               Left     => Left,
+               Right    => Right);
+      end if;
+   end New_Prog_Andb_Then;
+
    --------------------------
    -- New_Prog_Boolean_Cmp --
    --------------------------
@@ -397,6 +417,26 @@ package body Why.Gen.Progs is
                 Progs => (1 => Left, 2 => Right));
       end if;
    end New_Prog_Orb;
+
+   -----------------------
+   -- New_Prog_Orb_Else --
+   -----------------------
+
+   function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      if Is_False_Boolean (Left) then
+         return Right;
+      elsif Is_False_Boolean (Right) then
+         return Left;
+      else
+         return
+            New_Infix_Call
+              (Infix    => New_Op_Or_Else_Prog,
+               Left     => Left,
+               Right    => Right);
+      end if;
+   end New_Prog_Orb_Else;
 
    --------------------------------
    -- New_Simpl_Conditional_Prog --

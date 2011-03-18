@@ -344,7 +344,7 @@ package body Gnat2Why.Subprograms is
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
                  Left     => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                 Right     => Duplicate_Any_Node (Id => T)),
+                 Right    => Duplicate_Any_Node (Id => T)),
              Right =>
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
@@ -831,7 +831,7 @@ package body Gnat2Why.Subprograms is
             (W_Prog_Id,
              New_True_Literal_Prog,
              Why_Expr_Of_Ada_Expr,
-             New_Prog_Andb);
+             New_Prog_Andb_Then);
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
       Dummy_Node : Node_Id;
@@ -1041,18 +1041,26 @@ package body Gnat2Why.Subprograms is
 
          when N_Op_And =>
             return
-               New_Infix_Call
-                 (Ada_Node => Expr,
-                  Infix    => New_Op_And_Then_Prog,
-                  Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+               New_Prog_Andb
+                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
                   Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_Or =>
             return
-               New_Infix_Call
-                 (Ada_Node => Expr,
-                  Infix    => New_Op_Or_Else_Prog,
-                  Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+               New_Prog_Orb
+                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+
+         when N_And_Then =>
+            return
+               New_Prog_Andb_Then
+                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
+                  Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+
+         when N_Or_Else =>
+            return
+               New_Prog_Orb_Else
+                 (Left     => Why_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
                   Right    => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Type_Conversion =>

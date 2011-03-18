@@ -91,13 +91,19 @@ package Why.Gen.Progs is
    --  Build a program call with a fresh label corresponding to the Ada_Node.
 
    function New_Prog_Andb (Left, Right : W_Prog_Id) return W_Prog_Id;
-   --  Build a boolean disjunction as program.
+   --  Build a boolean conjunction as program.
+
+   function New_Prog_Andb_Then (Left, Right : W_Prog_Id) return W_Prog_Id;
+   --  Build a boolean conjunction as program.
 
    function New_Prog_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Prog_Id)
       return W_Prog_Id;
    --  Build a boolean comparison for programs of "int" type.
 
    function New_Prog_Orb (Left, Right : W_Prog_Id) return W_Prog_Id;
+   --  Build a boolean disjunction as program.
+
+   function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean disjunction as program.
 
    function New_Simpl_Conditional_Prog
