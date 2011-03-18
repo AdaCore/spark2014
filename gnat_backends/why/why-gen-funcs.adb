@@ -53,7 +53,7 @@ package body Why.Gen.Funcs is
                          Allocator_Name (Name),
                          Arrows,
                          Why_Empty,
-                         New_True_Literal);
+                         New_True_Literal_Pred);
    end Declare_Allocator;
 
    -------------------
