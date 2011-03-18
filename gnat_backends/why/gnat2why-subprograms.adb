@@ -1099,7 +1099,7 @@ package body Gnat2Why.Subprograms is
             --  are not interested in the return value, and Why is not strong
             --  enough to reason about it. So here we generate a loop (of type
             --  unit) that simply executes the expression, and at the end
-            --  return an arbitrary boolean value.
+            --  we return an arbitrary boolean value.
             --  We generate Why code of the form
             --    let i = [ int] in
             --    while condition do { true }
