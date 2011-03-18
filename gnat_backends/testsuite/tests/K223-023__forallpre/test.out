@@ -1,0 +1,39 @@
+{
+"Gnat2why__1": {
+"invalid": [],
+"valid": [
+"def___forall__get_one_po_5"
+]
+},
+"Gnat2why__2": {
+"invalid": [],
+"valid": [
+"def___forall__get_one_po_1"
+]
+},
+"Gnat2why__3": {
+"invalid": [
+"def___forall__get_one_po_2"
+],
+"valid": []
+},
+"Gnat2why__4": {
+"invalid": [
+"def___forall__get_one_po_3"
+],
+"valid": []
+},
+"Gnat2why__5": {
+"invalid": [],
+"valid": [
+"def___forall__get_one_po_4"
+]
+},
+"Gnat2why__6": {
+"invalid": [
+"def___forall__get_one_po_6"
+],
+"valid": []
+}
+}
+
