@@ -90,6 +90,11 @@ package body ALFA.Definition is
    Formal_Proof_On  : Id_Set.Set;
    Formal_Proof_Off : Id_Set.Set;
 
+   function Formal_Proof_Currently_Disabled return Boolean;
+   --  Determine the most top-level scope to have formal proof forced or
+   --  disabled, and return True if formal proof is disabled. Return False in
+   --  all other cases.
+
    function Formal_Proof_Currently_Forced return Boolean;
    --  Determine the most top-level scope to have formal proof forced or
    --  disabled, and return True if formal proof is forced. Return False in all
@@ -281,6 +286,26 @@ package body ALFA.Definition is
 
       return Scope_Stack.Table (Idx);
    end Current_Scope;
+
+   -------------------------------------
+   -- Formal_Proof_Currently_Disabled --
+   -------------------------------------
+
+   function Formal_Proof_Currently_Disabled return Boolean is
+   begin
+      for Idx in reverse Scope_Stack.First .. Scope_Stack.Last loop
+         declare
+            E : constant Entity_Id := Scope_Stack.Table (Idx).Entity;
+         begin
+            if Formal_Proof_Off.Contains (E) then
+               return True;
+            elsif Formal_Proof_On.Contains (E) then
+               return False;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Formal_Proof_Currently_Disabled;
 
    -----------------------------------
    -- Formal_Proof_Currently_Forced --
@@ -1394,14 +1419,14 @@ package body ALFA.Definition is
          when Pragma_Annotate =>
             if Chars (Get_Pragma_Arg (Arg1)) = Name_Formal_Proof then
                if List_Length (Pragma_Argument_Associations (N)) /= 2 then
-                  Error_Msg_N ("wrong number of arguments for pragma%", N);
+                  Error_Msg_N ("wrong number of arguments for annotation", N);
                   return;
                end if;
 
                Arg := Get_Pragma_Arg (Arg2);
                if Nkind (Arg) /= N_Identifier then
                   Error_Msg_N
-                    ("argument for pragma% must be an identifier", Arg2);
+                    ("argument for pragma must be an identifier", Arg2);
                   return;
                end if;
 
@@ -1416,20 +1441,30 @@ package body ALFA.Definition is
                   --  Check that this is the first occurrence of this pragma
                   --  on the current entity.
 
-                  if Formal_Proof_On.Contains (Cur_Ent)
-                    or else Formal_Proof_Off.Contains (Cur_Ent)
-                  then
-                     Error_Msg_N ("pragma% already given for entity", N);
+                  if Formal_Proof_On.Contains (Cur_Ent) then
+                     Error_Msg_N ("formal proof already forced for entity", N);
+                     return;
+
+                  elsif Formal_Proof_Off.Contains (Cur_Ent) then
+                     Error_Msg_N
+                       ("formal proof already disabled for entity", N);
                      return;
                   end if;
 
                   if Chars (Arg) = Name_On then
+                     if Formal_Proof_Currently_Forced then
+                        Error_Msg_N ("?formal proof already forced", N);
+                     end if;
                      Formal_Proof_On.Insert (Cur_Ent);
                   elsif Chars (Arg) = Name_Off then
+                     if Formal_Proof_Currently_Disabled then
+                        Error_Msg_N ("?formal proof already disabled", N);
+                     end if;
                      Formal_Proof_Off.Insert (Cur_Ent);
                   else
                      Error_Msg_N
-                       ("argument for pragma% must be ON or OFF", Arg2);
+                       ("second argument for annotation must be On or Off",
+                        Arg2);
                         return;
                   end if;
 
@@ -1443,7 +1478,7 @@ package body ALFA.Definition is
                                or else not Body_Is_In_ALFA (Cur_Ent))
                   then
                      Error_Msg_N
-                       ("pragma% is placed after violation of ALFA", N);
+                       ("annotation is placed after violation of ALFA", N);
                      return;
                   end if;
                end;
