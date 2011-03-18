@@ -118,15 +118,13 @@ package body ALFA.Filter is
                end if;
 
             when N_Subprogram_Body =>
-               if (Acts_As_Spec (N)
-                    and then Body_Is_In_ALFA
-                      (Defining_Unit_Name (Specification (N))))
-                 or else
-                   (not Acts_As_Spec (N)
-                     and then Body_Is_In_ALFA (Corresponding_Spec (N)))
-               then
-                  Subp.Append (N);
-               end if;
+               declare
+                  Id : constant Entity_Id := Unique_Defining_Entity (N);
+               begin
+                  if Body_Is_In_ALFA (Id) and then Is_In_ALFA (Id) then
+                     Subp.Append (N);
+                  end if;
+               end;
 
             when N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then

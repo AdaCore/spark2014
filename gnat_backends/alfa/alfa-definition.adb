@@ -914,29 +914,6 @@ package body ALFA.Definition is
    begin
       Else_Expr := Next (Then_Expr);
 
-      --  In ALFA, boolean conditional expressions are allowed:
-      --    * if they have no ELSE part, in which case the expression is
-      --      equivalent to
-      --
-      --        NOT Condition OR ELSE Then_Expr
-      --
-      --    * in pre- and postconditions, where the Condition cannot have side-
-      --      effects (in ALFA) and thus the expression is equivalent to
-      --
-      --        (Condition AND THEN Then_Expr)
-      --          and (NOT Condition AND THEN Then_Expr)
-
-      if Present (Else_Expr)
-        and then Current_Scope.Is_Body
-      then
-         Mark_Non_ALFA ("form of conditional expression", N);
-      end if;
-
-      if Root_Type (Etype (N)) /= Standard_Boolean then
-         Mark_Non_ALFA
-           ("non-boolean conditional expression", N);
-      end if;
-
       Mark (Condition);
       Mark (Then_Expr);
 
@@ -1645,7 +1622,7 @@ package body ALFA.Definition is
                         elsif (for some V in V_Extensions =>
                                  Body_Violations (V).Contains (Id))
                         then " " & Collect_Extension_Violations (Id)
-                        else " (implementation)");
+                        else " (not implemented)");
             --  Suffix string indicates why entity is not in ALFA
          begin
             Put_Line (Output_File, C & S & Suffix);
