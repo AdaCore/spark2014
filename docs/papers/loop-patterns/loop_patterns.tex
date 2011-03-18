@@ -336,7 +336,7 @@ $$\seen{j} \equiv (j = \idxinitial) \lor \between{\idxinitial}{j}{\idx}$$
 \subsection{Value-preserving Expressions}
 
 We define \textit{value-preserving expressions} as those expressions whose
-value at the program point between guarded exits and guarded assignments is
+value at the program point before guarded exits and guarded assignments is
 such that ($e=e_0$) is a loop invariant. Let us call the corresponding property
 \textit{value-preserving property}:
 \begin{equation}
@@ -453,7 +453,7 @@ assignments and we denote this virtual point \vstate{assign}{1..m}.
   It argues that for all $s_1 .. sk$ element either of the guarded exits or the guarded assignments
   we have $\spost{s_1||s_2|| .. ||s_{k-1}||s_k}{P}=\spost{s_k||s_{k-1}|| .. ||s_2||s_1}{P}$. 
 
-1. Case of guarded exits : without losing information on the generality, 
+1. Case of guarded exits : without loss of generality, 
    we prove that if $s_1 \in \vstate{exit}{1..n}$ and $s_2 \in \vstate{exit}{1..n}$ then  
    $\spost{s_1||s_2}{P}=\spost{s_2||s_1}{P}$.
   \begin{align*}
@@ -469,7 +469,7 @@ assignments and we denote this virtual point \vstate{assign}{1..m}.
     &=\spost{s_2||s_1}{P}
   \end{align*}
 
-1. Case of guarded assignments : without losing information on the generality, 
+1. Case of guarded assignments : without loss of generality, 
    we prove that if $s_1 \in \vstate{assign}{1..m}$ and $s_2 \in \vstate{assign}{1..m}$ then  
    $\spost{s_1||s_2}{P}=\spost{s_2||s_1}{P}$, and this only for guarded assignments with 
    scalar variables because we have already seen that the array variables case can be reported 
@@ -584,7 +584,7 @@ assignments and we denote this virtual point \vstate{assign}{1..m}.
 }{
   t^\at{\idx} \rightarrow \KWexit
 }{
-  (\forall j)(\seen{j} \impl \neg t_{0}^\at{j-1})
+  (\forall j)(\seen{j} \impl \neg t_{0}^\at{j})
 }
 
 \patternexample
@@ -626,7 +626,8 @@ $\begin{array}{l}
     \spost{t^\at{\idx} \rightarrow \KWexit}{\Inv{\idx}
     }  
     &= \neg t^\at{\idx} \land \Inv{\idx}  && \text{by \spexit}\\
-    &=\neg t_0^\at{\idx} \land \Inv{\idx} && \text{by \vpp}\\
+    &= \neg t_0^\at{\idx} \land (\forall j)(\idxinitial \leq j < \idx \impl \neg t_{0}^\at{j}) && \text{by \vpp}\\
+    &= (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg t_{0}^\at{j})\\
     &= \Inv{\idx+1}                       && \text{by \curinv}
   \end{align*}
   %
@@ -669,9 +670,9 @@ $\begin{array}{l}
       &\gstatement{assign}{1..m}\\
     }
     &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n} 
-              || t^\at{\idx} \rightarrow \KWexit}{\mathit{true}}}       && \text{by \spseq} \\ 
+              || t^\at{\idx} \rightarrow \KWexit}{\mathit{true}}}         && \text{by \spseq} \\ 
     &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
-              {\spost{t^\at{\idx} \rightarrow \KWexit}{\mathit{true}}}} && \text{by \sppar} \\
+              {\spost{t^\at{\idx} \rightarrow \KWexit}{\mathit{true}}}}   && \text{by \sppar} \\
     &= \spost{\gstatement{assign}{1..m}}{\spost{\gstatement{exit}{1..n}}
               {\Inv{\idx+1}}}                                             && \text{by reduced case}\\
     &\Rightarrow \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}}          && \text{by lemma \ref{lemma:sp-g-exits}}\\
@@ -774,8 +775,6 @@ $\begin{array}{l}
 %==================================================================================
 \subsubsection*{Single Min/Max Pattern}
 
-\patterndef 
-
 \pattern{
   A scalar variable $a$ is only modified in a single assignment, whose
   guard is a comparison between the variable and a value-preserving expression, and
@@ -837,7 +836,7 @@ $\begin{array}{l}
   %
 
 \bigskip
-1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
+  1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
   %
   \begin{align*}
     \spost{
@@ -852,29 +851,204 @@ $\begin{array}{l}
     &= (\neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx}) \lor \\
        & \quad (a = e_0^\at{\idx} \land (\exists b) ((b \bullet e_0^\at{\idx}) 
        \land \Inv{\idx}[a\leftarrow b]))  &&\\
-    &= A \lor B  &&\text{with:}
   \end{align*}
   %
-  1.1 When $\bullet \in \{<, >\}$ then $\neg (a \bullet e_0^\at{\idx}) = a \circ e_0^\at{k}$
+  Let denote :
+  %
+  \begin{align*}
+    &A= \neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
+    &B= (a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}[a\leftarrow b])) \\
+  \end{align*}
+  % 
+  1.1 We deal first the case $\bullet \in \{<, >\}$.\\
+  Notice that in this case $\neg (a \bullet e_0^\at{\idx}) = a \circ e_0^\at{\idx}$\\
+  %
+  \\
+  By Unfolding $\Inv{\idx}$ in $A$ we have:
+  %
+  \begin{align*}
+    &A= \neg (a \bullet e_0^\at{\idx}) \land ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
+    &\phantom{A= \neg (a \bullet e_0^\at{\idx}) \land (}
+       \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land\\
+    &\phantom{A= \neg (a \bullet e_0^\at{\idx}) \land  (( \lor (}
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})))
+  \end{align*}
+  %
+  By ditributing $a \bullet e_0^\at{\idx}$ we have :
+  %
+  \begin{align*}
+    &A= (\neg (a \bullet e_0^\at{\idx}) \land (a = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j}))) \\
+    &\phantom{A=} 
+       \lor (\neg (a \bullet e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land\\ 
+    &\phantom{A= \lor (} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\              
+  \end{align*}
+  %
+  By using $\neg (a \bullet e_0^\at{\idx}) = a \circ e_0^\at{\idx}$ we have :
+  %
+  \begin{align*}
+    &A\Leftrightarrow ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg (a_0 \bullet e_0^\at{j}))) \\
+    &\phantom{A=} 
+       \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\           
+  \end{align*}
+  %
+  Let denote :
+  %
+  \begin{align*}
+    &A_1= ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg (a_0 \bullet e_0^\at{j})))\\
+    &A_2= ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k}))\\
+  \end{align*}
+  %
+  By Unfolding $\Inv{\idx}$ in $B$ we have:
+  \begin{align*}
+    &B= (a = e_0^\at{\idx}) \land \\
+    &\phantom{B=} 
+       (\exists b) ((b \bullet e_0^\at{\idx}) \land ((b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
+    &\phantom{B= (a = e_0^\at{\idx}) \land (\exists b) (} 
+       \lor ((\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}) \land ((b \bullet e_0\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k})))) \\
+  \end{align*}
+  %
+  By distributing $(b \bullet e_0^\at{\idx})$ and by replacing $b$ by $a$ in the first conjonction we have
+  %
+  \begin{align*}
+    &B= (\exists b) ((a = e_0^\at{\idx}) \land (a_0 \bullet e_0^\at{\idx}) \land (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl a_0 \circ e_0^\at{j}) \\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land  (b \bullet e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k}))) \\
+  \end{align*}
+  %
+  By symobolic manipulation between $a_0$ and $a$ and between $b$ and $a$
+  %
+  \begin{align*}
+    &B\Leftrightarrow (\exists b) ((a = e_0^\at{\idx}) \land (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j})) \land\\
+    &\phantom{(a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}} 
+       (\forall j)(\idxinitial \leq j < \idx \impl b \circ e_0^\at{j})\\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k} \land a \neq e_0^\at{k})) \land\\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k})) \\
+  \end{align*}
+  %
+  By distributing the existential 
+  %
+  \begin{align*}
+    &B\Leftrightarrow (a = e_0^\at{\idx})  \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j}) \land (\exists b) (b = a_0) \land \\
+    &\phantom{(a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}} 
+       (\forall j)(\idxinitial \leq j < \idx \impl (\exists b) b \circ e_0^\at{j})\\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land (\exists b) (b = e_0^\at{j})) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k} \land a \neq e_0^\at{k})) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl (\exists b) b \circ e_0^\at{k})) \\
+  \end{align*}
+  %
+  Existantial is trivually true ??? 
+  %
+  \begin{align*}
+    &B\Leftrightarrow (a = e_0^\at{\idx})  \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j}) \\
+    &\phantom{B=} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx ) \land (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k} \land a \neq e_0^\at{k})) \\
+    &B\Leftrightarrow (a = e_0^\at{\idx})  \land (\forall k)(\idxinitial \leq k < \idx \impl (a \circ e_0^\at{k} \land a \neq e_0^\at{k}) \\
+  \end{align*}
+  %
+  \begin{align*}
+    &A_2= ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\ 
+    &\phantom{A_2}\Leftrightarrow A_2 \land ((a = e_0^\at{\idx}) \lor (a \neq e_0^\at{\idx})) \\
+    &\phantom{A_2}\Leftrightarrow  (A_2 \land a = e_0^\at{\idx}) \lor (A_2 \land a \neq e_0^\at{\idx})
+  \end{align*}
+  %
+  \begin{align*}
+   &(A_2 \land a = e_0^\at{\idx}) \lor B = (a = e_0^\at{\idx}) \land \\
+   &\phantom{(A_2 \land a = e_0^\at{\idx}) \lor B =}
+      ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\
+   &\phantom{(A_2 \land a = e_0^\at{\idx}) \lor B =}
+      \lor (\forall k)(\idxinitial \leq k < \idx \impl (a \circ e_0^\at{k} \land a \neq e_0^\at{k}))\\
+   &\Leftrightarrow (a = e_0^\at{\idx}) \land (\forall k)(\idxinitial \leq k < \idx \impl (a \circ e_0^\at{k}))\\
+  \end{align*}
+  %
+  \begin{align*}
+   &A_2 \lor B \Leftrightarrow (A_2 \land a \neq e_0^\at{\idx}) \lor (A_2 \land a = e_0^\at{\idx}) \lor B\\
+   &\Leftrightarrow (a \neq e_0^\at{\idx}) \land \\
+   &\phantom {\Leftrightarrow (a \neq e_0^\at{\idx})}
+     ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\ 
+   &\phantom {\Leftrightarrow} \lor (a = e_0^\at{\idx}) \land\\
+   &\phantom {\Leftrightarrow (a \neq e_0^\at{\idx})}
+     ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\ 
+   &\Leftrightarrow\\
+   &((\exists j)(\idxinitial \leq j < \idx+1 \land a = e_0^\at{j}) \land (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\ 
+  \end{align*}
+  In the end:
+  \begin{align*}
+    &A_1 \lor A_2 \lor B = \Inv{\idx+1} 
+  \end{align*}
+  %
+  1.2 When $\bullet \in \{\leq, \geq\}$ 
+  %
   \begin{align*}
     &A= \neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
     &~~= \neg (a \bullet e_0^\at{\idx}) \land ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
-    &\quad \quad \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land 
-                      (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k}))) \\
-    &~~= \neg (a \bullet e_0^\at{\idx}) \land (a = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
-    &\quad \quad \lor \neg (a \bullet e_0^\at{\idx}) \land ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land 
-                      (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\    
-    &~~= (a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg (a_0 \bullet e_0^\at{j})) \\
-    &\quad \quad \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land 
-                      (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\          
+    &\phantom{A= \neg (a \bullet e_0^\at{\idx}) \land (}
+       \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land\\
+    &\phantom{A= \neg (a \bullet e_0^\at{\idx}) \land  (( \lor (}
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k}))) \\
+    &~~= (\neg (a \bullet e_0^\at{\idx}) \land (a = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j}))) \\
+    &\phantom{A=} 
+       \lor (\neg (a \bullet e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land\\ 
+    &\phantom{A= \lor (} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\    
+    &~~=\Leftrightarrow ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg (a_0 \bullet e_0^\at{j}))) \\
+    &\phantom{A=} 
+       \lor ((a \neq e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land 
+        (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\           
   \end{align*}
   %
   \begin{align*}
-    & B= (a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}[a\leftarrow b])) \\
-    &~~= (a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land ((b = a_0 \land 
-                                                (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
-    &\quad \quad \lor ((\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land 
-                                   (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k}))) \\
+    &B= (a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}[a\leftarrow b])) \\
+    &~~= (a = e_0^\at{\idx}) \land \\
+    &\phantom{B=} 
+       (\exists b) ((b \bullet e_0^\at{\idx}) \land ((b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
+    &\phantom{B= (a = e_0^\at{\idx}) \land (\exists b) (} 
+       \lor ((\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}) \land ((b \bullet e_0\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k})))) \\
+    &~~= (\exists b) ((a = e_0^\at{\idx}) \land (a_0 \bullet e_0^\at{\idx}) \land (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land  (b \bullet e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl b \circ e_0^\at{k}))) \\
+    &~~= (\exists b) ((a = e_0^\at{\idx}) \land (a =a_0) \land (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j})) \\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j}) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\
+    &~~= (a = e_0^\at{\idx}) \land (a =a_0) \land  (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j}) \land (\exists b) (b = a_0) \\
+    &\phantom{B= (a =} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land (\exists b) (b = e_0^\at{j})) \land \\
+    &\phantom{B= (a = e_0^\at{\idx}} 
+       (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\
+    &~~= (a = e_0^\at{\idx}) \land (a =a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j}) \\
+    &\phantom{B=} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx ) \land (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\
+  \end{align*}
+  %
+  \begin{align*}
+    &A= ((a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg (a_0 \bullet e_0^\at{j}))) \\
+    &\phantom{A=} 
+       \lor ((a \neq e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land 
+        (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k})) \\           
+    &B= (a = e_0^\at{\idx}) \land (a =a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl (a \circ e_0^\at{j} \land a \neq e_0^\at{j}) \\
+    &\phantom{B=} 
+       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx ) \land (\forall k)(\idxinitial \leq k < \idx \impl a \circ e_0^\at{k})) \\
+  \end{align*}
+  %
+  \begin{align*}
+    A \lor B  = \Inv{\idx+1} ???
   \end{align*}
   %
   This proves that \Inv{\idx} is the strongest loop invariant on the 
@@ -939,25 +1113,24 @@ $\begin{array}{l}
   \KWend
 \end{array}$
 
+%==================================================================================
+%==================================================================================
 \subsubsection*{Known Single Update Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is a value-preserving expression, and it receives a value-preserving expression.
+\pattern{
+  A scalar variable is only modified in a single assignment, whose guard is
+  a value-preserving expression, and it receives a value-preserving expression.
+}{
+  g^\at{\idx} \rightarrow a := e^\at{\idx}
+}{
+  &(a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})\\
+  \lor 
+  & (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))
+}
 %
-$$g^\at{\idx} \rightarrow a := e^\at{\idx}$$
-%
-\loopinvariant
-%
-\begin{eqnarray*}
-&(a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})\\
-\lor 
-& (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))
-\end{eqnarray*}
 
-\bigskip
 \patternexample
 
-\medskip
 $\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j)\neq0)\\
@@ -966,6 +1139,92 @@ $\begin{array}{l}
   ~~~~ A(i)-B(i)=0 \rightarrow m := B(i)\\
   \KWend
 \end{array}$
+
+\begin{theorem}
+  \Inv{\idx} given by \curinv captures pattern \curpattern.
+\end{theorem}
+
+\begin{proof}
+  The proof proceeds by induction on the number of iterations \idx.\\
+
+  \noindent
+  We start from invariant $(a = a_0)$ before the loop, because
+  initially, the variable $a$ take it initial value $a_0$.
+  Notice that the pattern is not yet reached.
+  %
+  \begin{align*}
+     (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
+  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
+  the loop body at iteration \idx. Notice that \Inv{\idx} does not mention any variable, 
+  only initial values of variables and current value of the loop index.
+  %
+
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
+  %
+  \begin{align*}
+    \spost{
+    & g^\at{\idx} \rightarrow a := e^\at{\idx}}{\Inv{\idx}\\
+    }
+    &= (\neg g^\at{\idx} \land \Inv{\idx}) \\
+    & \quad \lor (\exists b) (g^\at{\idx}[a\leftarrow b] \land 
+       a = e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])   && \text{by \spscalar}\\
+    &= (\neg g_0^\at{\idx} \land \Inv{\idx}) \\
+    & \quad \lor (\exists b) (g_0^\at{\idx}[a\leftarrow b] \land 
+       a = e_0^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])   && \text{by \vpp}\\
+    &= (\neg g_0^\at{\idx} \land \Inv{\idx}) \\
+    & \quad \lor ( a = e_0^\at{\idx} \land  (\exists b) (g_0^\at{\idx}[a\leftarrow b] \land 
+        \Inv{\idx}[a\leftarrow b]))   &&\\
+  \end{align*}
+  %
+  \begin{align*}
+    &A= \neg g_0^\at{\idx} \land \Inv{\idx} \\
+    &~~= \neg g_0^\at{\idx} \land ((a = a_0) \land (\forall j)(\seen{j} \impl \neg g_0^\at{j})\\
+    &\phantom{A= g_0^\at{\idx} \land}
+       \lor (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))\\
+    &~~= (a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg g_0^\at{j+1})\\
+    &\phantom{A=}
+       \lor (\exists j)(\idxinitial \leq j < \idx+1 \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(j < k < \idx+1 \impl \neg g_0^\at{k}))
+  \end{align*}
+  %
+  \begin{align*}
+    &B=(a = e_0^\at{\idx}) \land  (\exists b) (g_0^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])\\
+    &~~=(a = e_0^\at{\idx}) \land  (\exists b) (g_0^\at{\idx}[a\leftarrow b] (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg g_0^\at{j}[a\leftarrow b])\\ 
+    &\phantom{A= g_0^\at{\idx} \land} 
+      (b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg g_0^\at{j}[a\leftarrow b])\\
+    &\phantom{A= g_0^\at{\idx} \land}
+       \lor (\exists j)(\seen{j} \land g_0^\at{j}[a\leftarrow b] \land b = e_0^\at{j}[a\leftarrow b] \land \\
+    &\phantom{A= g_0^\at{\idx} \land}
+       (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))\\
+  \end{align*}
+  %
+  This proves that \Inv{\idx} is the strongest loop invariant on the 
+  loop reduced to the pattern. 
+
+\bigskip
+2. general case : there may be others guarded exit and guarded assignment statements
+                  in addition to the current pattern \curpattern.\\
+  %
+  \begin{align*}
+    \spost{
+      &\gstatement{exit}{1..n};\\
+      &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx};\\
+      &\gstatement{assign}{1..m}\\
+    }
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\mathit{true} \rightarrow a := e^\at{\idx}}
+        {\spost{\gstatement{exit}{1..n}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}
+        {\spost{\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-exits}} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}} && \text{by reduce case} \\ 
+    &\Rightarrow \Inv{\idx+1} && \text{by lemma \ref{lemma:sp-g-assignments}}
+  \end{align*}
+  % 
+  This proves that \Inv{\idx} is a loop invariant of every loop where pattern
+  \curpattern occurs.
+\end{proof}
 
 \subsubsection*{Unknown Single Update Pattern}
 
