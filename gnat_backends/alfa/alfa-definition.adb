@@ -1544,6 +1544,11 @@ package body ALFA.Definition is
       Mark_Subprogram_Specification (Specification (N));
       Pop_Scope (Id);
 
+      --  Inherit violations from spec to body
+      if not Is_In_ALFA (Id) then
+         Inherit_Violations (Body_Violations, From => Id, To => Id);
+      end if;
+
       Push_Scope (Id, Is_Body => True);
 
       Mark_List (Declarations (N));

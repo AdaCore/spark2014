@@ -121,7 +121,7 @@ package body ALFA.Filter is
                declare
                   Id : constant Entity_Id := Unique_Defining_Entity (N);
                begin
-                  if Body_Is_In_ALFA (Id) and then Is_In_ALFA (Id) then
+                  if Body_Is_In_ALFA (Id) then
                      Subp.Append (N);
                   end if;
                end;
