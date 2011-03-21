@@ -441,21 +441,15 @@ package body ALFA.Definition is
             Mark_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
-         when N_Case_Expression =>
-            Mark_Non_ALFA ("case expression", N, V_Implem);
+         when N_Case_Expression | N_Case_Statement =>
+            Mark (Expression (N));
+            Mark_List (Alternatives (N));
 
-         when N_Case_Statement =>
+         when N_Case_Expression_Alternative =>
             Mark (Expression (N));
 
-            declare
-               Alt : Node_Id;
-            begin
-               Alt := First (Alternatives (N));
-               while Present (Alt) loop
-                  Mark_List (Statements (Alt));
-                  Next (Alt);
-               end loop;
-            end;
+         when N_Case_Statement_Alternative =>
+            Mark_List (Statements (N));
 
          when N_Character_Literal =>
             null;
@@ -690,7 +684,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("qualified expression", N, V_Implem);
 
          when N_Quantified_Expression =>
-            Mark_Non_ALFA ("quantified expression", N, V_Implem);
+            Mark (Condition (N));
 
          when N_Raise_Statement =>
             Mark_Non_ALFA ("raise statement", N);
