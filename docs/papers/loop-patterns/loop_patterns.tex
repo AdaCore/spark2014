@@ -572,7 +572,7 @@ assignments and we denote this virtual point \vstate{assign}{1..m}.
 \patterndef #1
 %
 \begin{equation}
-  #2 \tag{\curpattern}
+  \begin{array}{cccc} #2 \end{array} \tag{\curpattern}
 \end{equation}
 %
 \loopinvariant
@@ -1038,7 +1038,7 @@ $\begin{array}{l}
   \begin{align*}
     &A_1 \lor A_2 \lor B = \Inv{\idx+1} 
   \end{align*}
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
   \subsubproof{Case $\bullet \in \{\leq, \geq\}$}
 
   By Unfolding $\Inv{\idx}$ in $A$ and by distributing $\neg (a \bullet e_0^\at{\idx})$ we have:
@@ -1082,7 +1082,6 @@ $\begin{array}{l}
     &\phantom{A\Leftrightarrow ((a} 
         (\forall k)(\idxinitial \leq k < \idx+1 \impl a \circ e_0^\at{k}) \\    
   \end{align*}
-  %
   %
   By Unfolding $\Inv{\idx}$ in $B$ we have:
   \begin{align*}
@@ -1221,30 +1220,27 @@ $\begin{array}{l}
 %==================================================================================
 \subsubsection*{Single Min/Max Index Pattern}
 
-\patterndef A scalar variable is only modified in a single assignment, whose
-guard is a comparison between a value-preserving expression and the same expression
-where the loop index is replaced by the variable, and it receives the value of
-the loop index.
+\pattern{
+  A scalar variable $a$ is only modified in a single assignment, whose
+  guard is a comparison between a value-preserving expression and the same expression
+  where the loop index is replaced by the variable, and it receives the value of
+  the loop index.
+}{
+  (e^\at{a} \bullet e^\at{\idx}) \rightarrow a := \idx  \qquad \bullet \in \{<, \leq, >, \geq \}
+}{
+  &(a = a_0) \land (\forall j)(\seen{j} \impl \neg (e_0^\at{a_0} \bullet e_0^\at{j})) \\
+  \lor 
+  & ((\exists j)(\seen{j} \land a = j) \land (\forall k)(\seen{k} \impl e_0^\at{a} \circ e_0^\at{k}))
+}
 %
-$$(e^\at{a} \bullet e^\at{\idx}) \rightarrow a := \idx  \qquad \bullet \in \{<, \leq, >, \geq \}$$
-%
-\loopinvariant
-%
-\begin{eqnarray*}
-&(a = a_0) \land (\forall j)(\seen{j} \impl \neg (e_0^\at{a_0} \bullet e_0^\at{j}))\\
-\lor 
-& ((\exists j)(\seen{j} \land a = j) \land (\forall k)(\seen{k} \impl e_0^\at{a} \circ e_0^\at{k}))
-\end{eqnarray*}
 where $\circ$ can be deduced from $\bullet$ as follows:
 $\begin{array}{l|llll}
 \bullet & <    & \leq & >    & \geq \\ \hline
 \circ   & \geq & \geq & \leq & \leq
 \end{array}$
 
-\bigskip
 \patternexample
 
-\medskip
 $\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl \neg (A(m_0) < A[j]))\\
@@ -1267,7 +1263,6 @@ $\begin{array}{l}
   \lor 
   & (\exists j)(\seen{j} \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(\between{j}{k}{\idx} \impl \neg g_0^\at{k}))
 }
-%
 
 \patternexample
 
@@ -1336,6 +1331,13 @@ $\begin{array}{l}
        \lor (\exists j)(\idxinitial \leq j < \idx \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(j < k < \idx+1 \impl \neg g_0^\at{k}))
   \end{align*}
   %
+  Let denote :
+  %
+  \begin{align*}
+    &A_1=(a = a_0) \land (\forall j)(\idxinitial \leq j < \idx+1 \impl \neg g_0^\at{j+1})\\
+    &A_2=(\exists j)(\idxinitial \leq j < \idx \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(j < k < \idx+1 \impl \neg g_0^\at{k}) \\    
+  \end{align*}
+  %
   \begin{align*}
     &B=(a = e_0^\at{\idx}) \land g_0^\at{\idx} \land (\exists b) (\Inv{\idx}[a\leftarrow b])\\
     &~~=(a = e_0^\at{\idx}) \land g_0^\at{\idx} \land (\exists b) ((b = a_0) \land (\forall j)(\idxinitial \leq j < \idx \impl \neg g_0^\at{j})\\ 
@@ -1353,8 +1355,24 @@ $\begin{array}{l}
   \begin{align*}
     &B=(a = e_0^\at{\idx}) \land g_0^\at{\idx} \land  ((\forall j)(\idxinitial \leq j < \idx \impl \neg g_0^\at{j})\\ 
     &\phantom{B}
-       \lor (a = e_0^\at{\idx}) \land (\exists j)(\idxinitial \leq j < \idx+1 \land g_0^\at{j} \land 
-       (\forall k)(j < k < \idx+1 \impl \neg g_0^\at{k}))\\
+       \lor (a = e_0^\at{\idx}) \land g_0^\at{\idx} \land (\exists j)(\idxinitial \leq j < \idx \land g_0^\at{j} \land 
+       (\forall k)(j < k < \idx \impl \neg g_0^\at{k}))\\
+    &B\Leftrightarrow (a = e_0^\at{\idx}) \land g_0^\at{\idx} \land (\exists j)(\idxinitial \leq j < \idx \land g_0^\at{j} 
+       \land (\forall k)(j < k < \idx \impl \neg g_0^\at{k}))\\
+  \end{align*}
+  %
+  \begin{align*}
+    &A_2 \lor B = (\exists j)(\idxinitial \leq j < \idx \land g_0^\at{j} \land a = e_0^\at{j} \land (\forall k)(j < k < \idx+1 \impl \neg g_0^\at{k})\\
+    &\phantom{A_2 \lor B} 
+       \lor (a = e_0^\at{\idx}) \land g_0^\at{\idx} \land (\exists j)((\idxinitial \leq j < \idx \land g_0^\at{j}) \land
+       (\forall k)(j < k < \idx \impl \neg g_0^\at{k}))\\
+    &\phantom{A_2 \lor B} 
+       \Leftrightarrow ???
+  \end{align*}
+  %
+  In the end:
+  \begin{align*}
+    &A_1 \lor A_2 \lor B = \Inv{\idx+1}  
   \end{align*}
   %
   This proves that \Inv{\idx} is the strongest loop invariant on the 
@@ -1382,59 +1400,31 @@ $\begin{array}{l}
   \curpattern occurs.
 \end{proof}
 
-\subsubsection*{Unknown Single Update Pattern}
-
-\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
-guard is unknown, and it receives a value-preserving expression.
-%
-$$g^? \rightarrow a := e^\at{\idx}$$
-%
-\loopinvariant
-%
-$$(a = a_0) \lor (\exists j)(\seen{j} \land a = e_0^\at{j})$$
-
-\bigskip
-\patternexample
-
-\medskip
-$\begin{array}{l}
-  \KWloop \KWover i \KWin 1~..~N \\
-  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(1\leq j < i \land m = B_0(j))\\
-  ~~~~ A(m)-B(m)=0 \rightarrow m := B(i)\\
-  \KWend
-\end{array}$
-
 \subsubsection*{Known Multiple Update Pattern}
 
-\patterndef A scalar variable is modified in more than one assignment, all of
-whose guards are value-preserved, and it receives in each a value-preserving expression.
-%
-\begin{eqnarray*}
-&g_1^\at{\idx} \rightarrow a := e_1^\at{\idx}\\
-&...\\
-&g_n^\at{\idx} \rightarrow a := e_n^\at{\idx}\\
-\end{eqnarray*}
-%
-\loopinvariant
-%
-\begin{eqnarray*}
-&(a = a_0) \land (\forall j)(\forall r)(\seen{j} \impl \neg g_{r0}^\at{j})\\
-\lor 
-& (\exists j)
-\left(\begin{array}{cl}
-&(\exists r)(\seen{j} \land g_{r0}^\at{j} \land a = e_{r0}^\at{j})\\
-\land&  (\forall k)(\forall r) (\between{j}{k}{\idx} \impl \neg g_{r0}^\at{k})
-\end{array}\right)
-\end{eqnarray*}
+\pattern{
+  A scalar variable is modified in more than one assignment, all of
+  whose guards are value-preserved, and it receives in each a value-preserving expression.
+}{
+  &g_1^\at{\idx} \rightarrow a := e_1^\at{\idx}\\
+  &...\\
+  &g_n^\at{\idx} \rightarrow a := e_n^\at{\idx}\\
+}{
+  &(a = a_0) \land (\forall j)(\forall r)(\seen{j} \impl \neg g_{r0}^\at{j})\\
+  \lor 
+  & (\exists j)
+   \left(\begin{array}{cl}
+  &(\exists r)(\seen{j} \land g_{r0}^\at{j} \land a = e_{r0}^\at{j})\\
+   \land&  (\forall k)(\forall r) (\between{j}{k}{\idx} \impl \neg g_{r0}^\at{k})
+   \end{array}\right)
+}
 %
 \patternnote In this invariant and others multiple invariants patterns, 
 existential and universal quantifier concern the implicit range of all 
 guarded assignment considered, i.e : $1 \leq r \leq n$.
 
-\bigskip
 \patternexample
 
-\medskip
 $\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: (m = m_0) \land (\forall j)(1\leq j < i \impl A(j)-B(j)=0)\\
@@ -1446,29 +1436,177 @@ $\begin{array}{l}
   \KWend
 \end{array}$
 
+\begin{proof}
+  The proof proceeds by induction on the number of iterations \idx.
+  It's the generalizing of above proof. ???
+ 
+\end{proof}
+
+
+\subsubsection*{Unknown Single Update Pattern}
+
+\pattern{
+  A scalar variable $a$ is modified at most in a single assignment, whose
+  guard is unknown, and it receives a value-preserving expression.
+}{
+  g^? \rightarrow a := e^\at{\idx}
+}{
+  (a = a_0) \lor (\exists j)(\seen{j} \land a = e_0^\at{j})\\
+}
+
+\patternexample
+
+$\begin{array}{l}
+  \KWloop \KWover i \KWin 1~..~N \\
+  ~~~~ \textit{invariant}: (m = m_0) \lor (\exists j)(1\leq j < i \land m = B_0(j))\\
+  ~~~~ A(m)-B(m)=0 \rightarrow m := B(i)\\
+  \KWend
+\end{array}$
+
+\begin{theorem}
+  \Inv{\idx} given by \curinv captures pattern \curpattern.
+\end{theorem}
+
+\begin{proof}
+  The proof proceeds by induction on the number of iterations \idx.\\
+
+  \noindent
+  We start from invariant $(a = a_0)$ before the loop, because
+  initially, the variable $a$ take it initial value $a_0$.
+  Notice that the pattern is not yet reached.
+  %
+  \begin{align*}
+     (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
+  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
+  the loop body at iteration \idx. Notice that \Inv{\idx} does not mention any variable, 
+  only initial values of variables and current value of the loop index.
+  %
+
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
+  %
+  \begin{align*}
+    \spost{
+    & g^? \rightarrow a := e^\at{\idx}}{\Inv{\idx}\\
+    }
+    &=\Inv{\idx} \lor (\exists b) (a = e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])   && \text{by \spscalar}\\
+    &=\Inv{\idx} \lor (\exists b) (a = e_0^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])   && \text{by \vpp}\\
+    &=((a = a_0) \lor (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j})) \lor ( a = e_0^\at{\idx} \land  \\
+    &\phantom{B}
+     (\exists b)(b = a_0) \lor (\exists j)(\idxinitial \leq j < \idx \land b = e_0^\at{j})) && \text{by unfolding $\Inv{\idx}$} \\
+    &=((a = a_0) \lor (\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j})) \lor (a = e_0^\at{\idx} \land \mathit{true}) && \text{by taking $b=a_0$}\\
+    &=((a = a_0) \lor (\exists j)(\idxinitial \leq j < \idx+1 \land a = e_0^\at{j}))\\
+    &=\Inv{\idx+1} && \text{by \curinv}
+  \end{align*}
+  %
+  This proves that \Inv{\idx} is the strongest loop invariant on the 
+  loop reduced to the pattern. 
+
+\bigskip
+2. general case : there may be others guarded exit and guarded assignment statements
+                  in addition to the current pattern \curpattern.\\
+  %
+  \begin{align*}
+    \spost{
+      &\gstatement{exit}{1..n};\\
+      &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx};\\
+      &\gstatement{assign}{1..m}\\
+    }
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\mathit{true} \rightarrow a := e^\at{\idx}}
+        {\spost{\gstatement{exit}{1..n}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}
+        {\spost{\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-exits}} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}} && \text{by reduce case} \\ 
+    &\Rightarrow \Inv{\idx+1} && \text{by lemma \ref{lemma:sp-g-assignments}}
+  \end{align*}
+  % 
+  This proves that \Inv{\idx} is a loop invariant of every loop where pattern
+  \curpattern occurs.
+\end{proof}
+
 \subsection{Integrate Patterns}
 
 \subsubsection*{Certain Single Add-Up Pattern}
 
-\patterndef A scalar variable $a$ is modified at most in a single assignment, whose
-guard is \textit{true}, and it receives its own previous value plus a constant.
+\pattern{
+  A scalar variable $a$ is modified at most in a single assignment, whose
+  guard is \textit{true}, and it receives its own previous value plus a constant.
+}{
+  \mathit{true} \rightarrow a := a + K
+}{
+  a = a_0 + K * (i-1)
+}
 %
-$$\mathit{true} \rightarrow a := a + K$$
-%
-\loopinvariant
-%
-$$a = a_0 + K * (i-1)$$
+\patternnote The change of $a$ follows a geometric serie because by reason of $K$ 
+             and the first term $a_0$\\
 
-\bigskip
 \patternexample
 
-\medskip
 $\begin{array}{l}
   \KWloop \KWover i \KWin 1~..~N \\
   ~~~~ \textit{invariant}: m = m_0 + (i-1)\\
   ~~~~ true \rightarrow m := m+1\\
   \KWend
 \end{array}$
+
+\begin{proof}
+  The proof proceeds by induction on the number of iterations \idx.\\
+  
+
+  \noindent
+  We start from invariant $(a = a_0)$ before the loop, because
+  initially, the variable $a$ take it initial value $a_0$.
+  Notice that the pattern is not yet reached.
+  %
+  \begin{align*}
+     (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
+  \end{align*}
+  %
+  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
+  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
+  the loop body at iteration \idx. Notice that \Inv{\idx} does not mention any variable, 
+  only initial values of variables and current value of the loop index.
+  %
+
+\bigskip
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$   
+  %
+  \begin{align*}
+    \spost{
+    & \mathit{true} \rightarrow a := a + K}{\Inv{\idx}\\
+    }
+    &=\Inv{\idx} \lor (\exists b) (b = b + K \land \Inv{\idx}[a\leftarrow b])   && \text{by \spscalar}\\
+    &=\Inv{\idx} \lor (\exists b) (b = b + K \land b = a_0 + K * (i-1))   && \text{by \spscalar}\\
+    &=\Inv{\idx} \lor (\exists b) (b = b + K \land b + K = a_0 + K * (i-1))   && \text{by \spscalar}\\
+  \end{align*}
+  %
+  This proves that \Inv{\idx} is the strongest loop invariant on the 
+  loop reduced to the pattern. 
+
+\bigskip
+2. general case : there may be others guarded exit and guarded assignment statements
+                  in addition to the current pattern \curpattern.\\
+  %
+  \begin{align*}
+    \spost{
+      &\gstatement{exit}{1..n};\\
+      &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx};\\
+      &\gstatement{assign}{1..m}\\
+    }
+    &= \spost{\gstatement{assign}{1..m}}{\spost{\mathit{true} \rightarrow a := e^\at{\idx}}
+        {\spost{\gstatement{exit}{1..n}}{\Inv{\idx}}}} && \text{by \spseq} \\ 
+    &\Rightarrow \spost{\gstatement{assign}{1..m}}
+        {\spost{\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}}} && \text{by lemma \ref{lemma:sp-g-exits}} \\ 
+    &= \spost{\gstatement{assign}{1..m}}{\Inv{\idx+1}} && \text{by reduce case} \\ 
+    &\Rightarrow \Inv{\idx+1} && \text{by lemma \ref{lemma:sp-g-assignments}}
+  \end{align*}
+  % 
+  This proves that \Inv{\idx} is a loop invariant of every loop where pattern
+  \curpattern occurs.
+\end{proof}
 
 \subsubsection*{Known Single Add-Up Pattern}
 
