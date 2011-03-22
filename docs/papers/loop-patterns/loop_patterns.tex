@@ -791,9 +791,8 @@ postcondition of \Inv{\idx} through the loop body at iteration \idx.
 }{
   (a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}  \qquad \bullet \in \{<, \leq, >, \geq \}
 }{
-  & (a = a_0) \land (\forall j)(\seen{j} \impl \neg (a_0 \bullet e_0^\at{j})) \\
-  \lor 
-  & ((\exists j)(\seen{j} \land a = e_0^\at{j}) \land (\forall k)(\seen{k} \impl a \circ e_0^\at{k}))
+  & (a \circ a_0) \land (\forall k)(\seen{k} \impl a \circ e_0^\at{k})\\
+  \land & ((a = a_0) \lor (\exists j)(\seen{j} \land a = e_0^\at{j})) 
 }
 %
 where $\circ$ can be deduced from $\bullet$ as follows:
