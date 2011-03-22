@@ -237,7 +237,9 @@ package body Gnat2Why.Subprograms is
                      --  No special treatment for parameters that are
                      --  not "out"
                      Why_Args (Cnt) :=
-                        Why_Expr_Of_Ada_Expr (Cur_Actual);
+                        Why_Expr_Of_Ada_Expr
+                          (Cur_Actual,
+                           Type_Of_Node (Cur_Formal));
                end case;
                Cur_Formal := Next_Entity (Cur_Formal);
                if In_Named then
