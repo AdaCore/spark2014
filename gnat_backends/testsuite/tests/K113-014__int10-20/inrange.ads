@@ -8,4 +8,12 @@ package InRange is
 
    function Add (i : int20; j : int10) return Integer
    with Post => Add'Result <= 40;
+
+   procedure Add_Out (I : in out int20; J : int10)
+      with Pre => (I <= 10),
+           Post => (I = I'Old + J);
+
+   function Do_It return int10
+      with Post => (Do_It'Result <= 10);
+
 end inRange;

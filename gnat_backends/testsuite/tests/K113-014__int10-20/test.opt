@@ -1,1 +1,1 @@
-ALL XFAIL waiting for an test.opt file
+ALL XFAIL missing write annotation for out parameter
