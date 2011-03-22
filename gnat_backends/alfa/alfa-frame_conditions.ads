@@ -86,6 +86,7 @@ package ALFA.Frame_Conditions is
    use Rep_Map;
 
    Defines : Rep_Map.Map;
+   Params  : Rep_Map.Map;  --  only OUT and IN OUT parameters
    Writes  : Rep_Map.Map;
    Reads   : Rep_Map.Map;
    Callers : Rep_Map.Map;
@@ -101,6 +102,8 @@ package ALFA.Frame_Conditions is
    --  else 0.
 
    function Defines_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   function Params_Of (Ent : Entity_Rep) return Rep_Set.Set is
+     (Params.Element (Ent));
    function Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
    function Global_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
    function Writes_Of (Ent : Entity_Rep) return Rep_Set.Set;

@@ -30,7 +30,9 @@ with Einfo;       use Einfo;
 with Get_ALFA;
 with Lib.Xref;
 with Namet;       use Namet;
+with Nlists;      use Nlists;
 with Sem_Util;    use Sem_Util;
+with Sinfo;       use Sinfo;
 with Sinput;      use Sinput;
 
 package body ALFA.Frame_Conditions is
@@ -45,6 +47,12 @@ package body ALFA.Frame_Conditions is
 
    function Get_Num_For_File (Filename : String) return Nat;
    --  Return a unique number identifying input file Filename
+
+   function Param_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set is
+     (Reads_Of (Ent) and Params_Of (Ent));
+
+   function Param_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
+     (Writes_Of (Ent) and Params_Of (Ent));
 
    procedure Set_Default_To_Empty
      (Map : in out Rep_Map.Map;
@@ -190,8 +198,8 @@ package body ALFA.Frame_Conditions is
    begin
       E := Defining_Entity (N);
 
-      --  Ignore postcondition procedures which do not define valid
-      --  source entities for cross-references.
+      --  Ignore postcondition procedures which do not define valid source
+      --  entities for cross-references.
 
       if Present (E)
         and then Ekind (E) = E_Procedure
@@ -205,6 +213,28 @@ package body ALFA.Frame_Conditions is
 
       if Present (E) and then Comes_From_Source (E) then
          Declare_Entity (E);
+
+         --  Declare entities corresponding to subprogram parameters
+
+         case Nkind (N) is
+            when N_Subprogram_Declaration |
+                 N_Subprogram_Body        =>
+               declare
+                  Params : constant List_Id :=
+                             Parameter_Specifications (Specification (N));
+                  Param  : Node_Id;
+               begin
+                  if Is_Non_Empty_List (Params) then
+                     Param := First (Params);
+                     while Present (Param) loop
+                        Declare_Entity (Defining_Entity (Param));
+                        Next (Param);
+                     end loop;
+                  end if;
+               end;
+            when others =>
+               null;
+         end case;
       end if;
    end Declare_Relevant_Entities;
 
@@ -313,9 +343,11 @@ package body ALFA.Frame_Conditions is
    procedure Get_Reads
      (E    : Entity_Id;
       Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set) is
+      Reps : out Rep_Set.Set)
+   is
+      Rep : constant Entity_Rep := From_AST.Element (E);
    begin
-      Reps := Global_Reads_Of (From_AST.Element (E));
+      Reps := Global_Reads_Of (Rep) or Param_Reads_Of (Rep);
 
       for C in Reps loop
          if To_AST.Contains (Rep_Set.Element (C)) then
@@ -332,9 +364,11 @@ package body ALFA.Frame_Conditions is
    procedure Get_Writes
      (E    : Entity_Id;
       Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set) is
+      Reps : out Rep_Set.Set)
+   is
+      Rep : constant Entity_Rep := From_AST.Element (E);
    begin
-      Reps := Global_Writes_Of (From_AST.Element (E));
+      Reps := Global_Writes_Of (Rep) or Param_Writes_Of (Rep);
 
       for C in Reps loop
          if To_AST.Contains (Rep_Set.Element (C)) then
@@ -596,6 +630,19 @@ package body ALFA.Frame_Conditions is
                         Add_To_Map (Defines, Def_Scope_Ent, Ref_Entity);
                      end if;
 
+                     --  Register OUT and IN OUT parameters on first occurence
+
+                     if Current_Entity /= Ref_Entity then
+                        case Xref.Etype is
+                           when '<' | '=' =>
+                              Add_To_Map (Params, Def_Scope_Ent, Ref_Entity);
+                           when '>' | '*' =>
+                              null;
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end if;
+
                      --  Register xref according to type
 
                      case Xref.Rtype is
@@ -609,6 +656,8 @@ package body ALFA.Frame_Conditions is
                         when others =>
                            raise Program_Error;
                      end case;
+
+                     Current_Entity := Ref_Entity;
                   end Do_One_Xref;
                end loop;
             end loop;
@@ -757,6 +806,7 @@ package body ALFA.Frame_Conditions is
       All_Subp.Union (Work_Set);
 
       Set_Default_To_Empty (Defines, All_Subp);
+      Set_Default_To_Empty (Params, All_Subp);
       Set_Default_To_Empty (Writes, All_Subp);
       Set_Default_To_Empty (Reads, All_Subp);
       Set_Default_To_Empty (Callers, All_Subp);

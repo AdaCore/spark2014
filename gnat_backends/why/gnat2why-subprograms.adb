@@ -106,6 +106,11 @@ package body Gnat2Why.Subprograms is
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
    --  set to (Kind => Why_Int).
 
+   function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
+   --  Translate the given Ada expression to a Why term of type "bool".
+   --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
+   --  set to New_Type_Bool.
+
    function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
    --  Translate the given Ada expression to a Why term of type "int".
    --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
@@ -1325,6 +1330,15 @@ package body Gnat2Why.Subprograms is
       return Why_Expr_Of_Ada_Expr (Expr, (Kind => Why_Int));
    end Int_Expr_Of_Ada_Expr;
 
+   ---------------------------
+   -- Bool_Term_Of_Ada_Expr --
+   ---------------------------
+
+   function Bool_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id is
+   begin
+      return Why_Term_Of_Ada_Expr (Expr, (Why_Abstract, Standard_Boolean));
+   end Bool_Term_Of_Ada_Expr;
+
    --------------------------
    -- Int_Term_Of_Ada_Expr --
    --------------------------
@@ -1956,6 +1970,32 @@ package body Gnat2Why.Subprograms is
                   (Cmp   => Get_Kind (Why_Rel_Of_Ada_Op (Nkind (Expr))),
                    Left  => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                    Right => Int_Term_Of_Ada_Expr (Right_Opnd (Expr)));
+
+         when N_Op_Not =>
+            return
+              New_Operation
+                (Ada_Node   => Expr,
+                 Name       => New_Identifier ("bool_not"),
+                 Parameters =>
+                   (1 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
+
+         when N_Op_And =>
+            return
+               New_Operation
+                (Ada_Node => Expr,
+                 Name     => New_Identifier ("bool_and"),
+                 Parameters =>
+                   (1 => Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                    2 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
+
+         when N_Op_Or =>
+            return
+               New_Operation
+                (Ada_Node => Expr,
+                 Name     => New_Identifier ("bool_or"),
+                 Parameters =>
+                   (1 => Bool_Term_Of_Ada_Expr (Left_Opnd (Expr)),
+                    2 => Bool_Term_Of_Ada_Expr (Right_Opnd (Expr))));
 
          when N_Type_Conversion =>
             return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
