@@ -60,6 +60,9 @@ with Gnat2Why.Types;        use Gnat2Why.Types;
 
 package body Gnat2Why.Subprograms is
 
+   Result_String : constant String := "___result";
+   --  The internal name for the result of an expression
+
    generic
       type T is private;
       type A is array (Positive range <>) of T;
@@ -67,6 +70,9 @@ package body Gnat2Why.Subprograms is
    function Map_Node_List_to_Array (List : List_Id) return A;
    --  Take a list of GNAT Node_Ids and apply the function F to each of them.
    --  Return the array that contains all the results, in the same order.
+
+   function Case_Expr_Of_Ada_Node (N : Node_Id) return W_Prog_Id;
+   --  Build Case expression of Ada Node.
 
    function Compute_Call_Args (Call : Node_Id) return W_Prog_Array;
    --  Compute arguments for a function call or procedure call. The node in
@@ -178,6 +184,101 @@ package body Gnat2Why.Subprograms is
 
    function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id;
    --  Convert an Ada binary operator to a Why term symbol
+
+   ---------------------------
+   -- Case_Expr_Of_Ada_Node --
+   ---------------------------
+
+   function Case_Expr_Of_Ada_Node (N : Node_Id) return W_Prog_Id
+   is
+      --  For a given case expression
+      --
+      --    case X is
+      --       when Case_1 => S1
+      --       ...
+      --       when Case_n => Sn
+      --       when others => S
+      --    end case;
+      --
+      --  We generate nested if expressions:
+      --    if X = Case_1 then S1
+      --    else if ...
+      --    else if X = Case_N then Sn
+      --    else S
+
+      -----------------
+      -- Branch_Expr --
+      -----------------
+
+      function Branch_Expr (N : Node_Id) return W_Prog_Id;
+      --  Return the expression that corresponds to a branch; decide which
+      --  function to call depending on the type of the branch.
+
+      function Branch_Expr (N : Node_Id) return W_Prog_Id
+      is
+      begin
+         case Nkind (N) is
+            when N_Case_Expression_Alternative =>
+               return Why_Expr_Of_Ada_Expr (Expression (N));
+
+            when N_Case_Statement_Alternative =>
+               return Why_Expr_Of_Ada_Stmts (Statements (N));
+
+            when others =>
+               raise Unexpected_Node;
+
+         end  case;
+      end Branch_Expr;
+
+      Cur_Case     : Node_Id := Last (Alternatives (N));
+      Matched_Expr : constant W_Term_Id :=
+         Int_Expr_Of_Ada_Expr (Expression (N));
+
+      --  We always take the last branch as the default value
+      T            : W_Prog_Id := Branch_Expr (Cur_Case);
+
+      --  beginning of processing for Case_Expr_Of_Ada_Node
+   begin
+      Cur_Case := Prev (Cur_Case);
+
+      while Present (Cur_Case) loop
+         declare
+            Cur_Choice : Node_Id := First (Discrete_Choices (Cur_Case));
+            C : W_Prog_Id := New_Prog_Constant (Def => New_False_Literal);
+         begin
+            while Present (Cur_Choice) loop
+               C := New_Prog_Orb_Else
+                      (C,
+                       Prog_Equal_To (Matched_Expr, Cur_Choice));
+               Next (Cur_Choice);
+            end loop;
+            declare
+               Then_Part : W_Prog_Id;
+            begin
+               case Nkind (Cur_Case) is
+                  when N_Case_Expression_Alternative =>
+                     Then_Part :=
+                        Why_Expr_Of_Ada_Expr (Expression (Cur_Case));
+
+                  when N_Case_Statement_Alternative =>
+                     Then_Part :=
+                        Why_Expr_Of_Ada_Stmts (Statements (Cur_Case));
+
+                  when others =>
+                     raise Unexpected_Node;
+
+               end  case;
+               T :=
+                  New_Simpl_Conditional_Prog
+                     (Condition => C,
+                      Then_Part => Then_Part,
+                      Else_Part => T);
+            end;
+         end;
+         Prev (Cur_Case);
+      end loop;
+      return T;
+   end Case_Expr_Of_Ada_Node;
 
    -----------------------
    -- Compute_Call_Args --
@@ -974,7 +1075,7 @@ package body Gnat2Why.Subprograms is
             --  We are in a program, so we have to use boolean functions
             --  instead of predicates
             declare
-               Left    : constant Node_Id := Left_Opnd (Expr);
+               Left : constant Node_Id := Left_Opnd (Expr);
             begin
                return
                  New_Prog_Call
@@ -982,7 +1083,9 @@ package body Gnat2Why.Subprograms is
                     Name     => Eq_Param_Name (Type_Of_Node (Left)),
                     Progs    =>
                       (1 => Why_Expr_Of_Ada_Expr (Left),
-                       2 => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
+                       2 => Why_Expr_Of_Ada_Expr
+                              (Right_Opnd (Expr),
+                               Type_Of_Node (Left))));
             end;
 
          when N_Op_Minus =>
@@ -1130,6 +1233,59 @@ package body Gnat2Why.Subprograms is
                                Loop_Content => Loop_Body),
                             New_Any_Expr (Any_Type => New_Type_Bool)));
             end;
+
+         when N_Attribute_Reference =>
+            declare
+               Attr_Name : constant Name_Id := Attribute_Name (Expr);
+               Var : constant Node_Id      := Prefix (Expr);
+            begin
+               if  Attr_Name = Name_Result then
+                  T :=
+                     New_Prog_Identifier
+                        (Def => New_Identifier (Result_String));
+               elsif Attr_Name = Name_Old then
+                  raise Not_Implemented;
+               elsif Attr_Name = Name_First then
+                  T :=
+                     New_Prog_Identifier
+                        (Def =>
+                           New_Integer_Constant
+                              (Ada_Node => Expr,
+                               Value =>
+                                 Expr_Value
+                                    (Low_Bound (First_Index (Etype (Var))))));
+                  Current_Type := (Kind => Why_Int);
+               elsif Attr_Name = Name_Last then
+                  T :=
+                     New_Prog_Identifier
+                        (Def =>
+                           New_Integer_Constant
+                              (Ada_Node => Expr,
+                               Value =>
+                                 Expr_Value
+                                    (High_Bound (First_Index (Etype (Var))))));
+                  Current_Type := (Kind => Why_Int);
+               else
+                  raise Not_Implemented;
+               end if;
+            end;
+
+         when N_Conditional_Expression =>
+            declare
+               Cond      : constant Node_Id := First (Expressions (Expr));
+               Then_Part : constant Node_Id := Next (Cond);
+               Else_Part : constant Node_Id := Next (Then_Part);
+            begin
+               T :=
+                  New_Conditional_Prog
+                     (Ada_Node => Expr,
+                      Condition => Why_Expr_Of_Ada_Expr (Cond),
+                      Then_Part => Why_Expr_Of_Ada_Expr (Then_Part),
+                      Else_Part => Why_Expr_Of_Ada_Expr (Else_Part));
+            end;
+
+         when N_Case_Expression =>
+            T := Case_Expr_Of_Ada_Node (Expr);
 
          when others =>
             raise Not_Implemented;
@@ -1434,56 +1590,11 @@ package body Gnat2Why.Subprograms is
             end;
 
          when N_Case_Statement =>
-            declare
-               Cur_Case     : Node_Id := Last (Alternatives (Stmt));
-               Matched_Expr : constant W_Term_Id :=
-                  Int_Expr_Of_Ada_Expr (Expression (Stmt));
-               T            : W_Prog_Id := New_Void;
-            begin
-               --  For a given case expression
-               --
-               --    case X is
-               --       when Case_1 => S1
-               --       ...
-               --       when Case_n => Sn
-               --       when others => S
-               --    end case;
-               --
-               --  We generate nested if expressions:
-               --    if X = Case_1 then S1
-               --    else if ...
-               --    else if X = Case_N then Sn
-               --    else S
-               pragma Assert (Present (Cur_Case));
-               while Present (Cur_Case) loop
-                  pragma Assert
-                     (Nkind (Cur_Case) = N_Case_Statement_Alternative);
-                  declare
-                     Cur_Choice : Node_Id :=
-                        First (Discrete_Choices (Cur_Case));
-                     C : W_Prog_Id :=
-                        New_Prog_Constant (Def => New_False_Literal);
-                  begin
-                     while Present (Cur_Choice) loop
-                        C := New_Prog_Orb
-                               (C,
-                                Prog_Equal_To (Matched_Expr, Cur_Choice));
-                        Next (Cur_Choice);
-                     end loop;
-                     T :=
-                        New_Simpl_Conditional_Prog
-                           (Condition => C,
-                            Then_Part =>
-                              Why_Expr_Of_Ada_Stmts (Statements (Cur_Case)),
-                            Else_Part => T);
-                  end;
-                  Prev (Cur_Case);
-               end loop;
-               return T;
-            end;
+            return Case_Expr_Of_Ada_Node (Stmt);
 
          when others =>
             raise Not_Implemented;
+
       end case;
    end Why_Expr_Of_Ada_Stmt;
 
@@ -1775,6 +1886,7 @@ package body Gnat2Why.Subprograms is
                  Op       => New_Rel_Eq);
       end case;
    end Why_Predicate_Of_Ada_Expr;
+
    --------------------------
    -- Why_Term_Of_Ada_Expr --
    --------------------------
