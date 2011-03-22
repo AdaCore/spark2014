@@ -61,7 +61,18 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{hypothesis}[theorem]{Hypothesis}
 
-\newenvironment{proof}[1][Proof.]{\begin{trivlist}
+\newcounter{proofnum} % proof numbering
+\newcounter{subproofnum}[proofnum] % subproof numbering
+\newcommand{\subproof}[1]{\refstepcounter{subproofnum}~\\\noindent\arabic{subproofnum}. #1\\}
+\newcounter{subsubproofnum}[subproofnum] % subsubproof numbering
+\newcommand{\subsubproof}[1]{\refstepcounter{subsubproofnum}~\\\noindent\arabic{subproofnum}.\arabic{subsubproofnum}. #1\\}
+
+\newcounter{pc} % pattern counter
+\newcommand{\curpattern}{\ensuremath{\textsc{pat}\mathrm{\arabic{pc}}}\xspace}
+\newcommand{\curinv}{\ensuremath{\textsc{inv}\mathrm{\arabic{pc}}}\xspace}
+\newcommand{\anyinv}{\ensuremath{\textsc{inv}\mathrm{x}}\xspace}
+
+\newenvironment{proof}[1][Proof.]{\refstepcounter{proofnum}\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 \newenvironment{definition}[1][Definition]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
@@ -556,11 +567,6 @@ assignments and we denote this virtual point \vstate{assign}{1..m}.
 %==================================================================================
 \section{Loop Patterns} 
 
-\newcounter{pc} % pattern counter
-\newcommand{\curpattern}{\ensuremath{\textsc{pat}\mathrm{\arabic{pc}}}\xspace}
-\newcommand{\curinv}{\ensuremath{\textsc{inv}\mathrm{\arabic{pc}}}\xspace}
-\newcommand{\anyinv}{\ensuremath{\textsc{inv}\mathrm{x}}\xspace}
-
 \newcommand{\pattern}[3]{%
 \refstepcounter{pc}
 \patterndef #1
@@ -605,7 +611,7 @@ $\begin{array}{l}
 \begin{proof}
   The proof proceeds by induction on the number of iterations \idx.\\ 
 
-1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$\\
+\subproof{reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$}
 
   \noindent
   We start from invariant $\mathit{true}$ before the loop.
@@ -635,9 +641,10 @@ $\begin{array}{l}
   This proves that \Inv{\idx} is the strongest loop invariant on the 
   loop reduced to the pattern. 
 
-\bigskip
-2. general case : there may be others guarded exit and guarded assignment statements
-                  in addition to the current pattern \curpattern.\\
+\subproof{general case}
+
+There may be others guarded exit and guarded assignment statements
+in addition to the current pattern \curpattern.\\
 
   \noindent
   We start from invariant $\mathit{true}$ before the loop.
@@ -718,26 +725,27 @@ $\begin{array}{l}
 
   \noindent
   We start from invariant $(a = a_0)$ before the loop, because
-  initially, the variable $a$ take it initial value $a_0$.
+  initially, the variable $a$ takes its initial value $a_0$.
   Notice that the pattern is not yet reached.
   %
   \begin{align*}
      (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
   \end{align*}
   %
-  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
-  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
-  the loop body at iteration \idx. Notice that \Inv{\idx} does not mention any variable, 
-  only initial values of variables and current value of the loop index.
+  Now assume \Inv{\idx} at loop iteration \idx. Notice that \Inv{\idx} does not
+  mention any variable, only initial values of variables and current value of
+  the loop index.
   %
 
 \bigskip
-1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
+1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$\\
   %
+Let us prove that \Inv{\idx+1} at loop iteration $\idx+1$ is the strongest
+postcondition of \Inv{\idx} through the loop body at iteration \idx.
+%
   \begin{align*}
     \spost{
-    &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}\\
-    }
+    &\mathit{true} \rightarrow a := e^\at{\idx}}{\Inv{\idx}}\\
     &=(\exists b) (a = e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])    && \text{by \spscalar}\\
     &=(\exists b) (a = e_0^\at{\idx}[a \leftarrow b] \land \Inv{\idx}[a\leftarrow b]) && \text{by \vpp}\\ 
     &=(a = e_0^\at{\idx}) \land (\exists b) (\Inv{\idx}[a\leftarrow b])               && \text{$a$ not in $e_0^\at{\idx}$}\\
@@ -830,45 +838,52 @@ $\begin{array}{l}
      (a = a_0) = \Inv{\idxinitial}      && \text{by \curinv}\\
   \end{align*}
   %
-  Now assume \Inv{\idx} at loop iteration \idx, and let us prove that \Inv{\idx+1} 
-  at loop iteration $\idx+1$ is the strongest postcondition of \Inv{\idx} through 
-  the loop body at iteration \idx. Notice that \Inv{\idx} does not mention any variable, 
-  only initial values of variables and current value of the loop index.
-  %
+  Now assume \Inv{\idx} at loop iteration \idx. Notice that \Inv{\idx} does not
+  mention any variable, only initial values of variables and current value of
+  the loop index.
 
-\bigskip
-  1. reduced case: $\gstatement{exit}{1..n} = \o{} \land \gstatement{assign}{1..m} = \o{}$
-  %
+  \subproof{reduced case: $\gstatement{exit}{1..n} = \o{} \land
+    \gstatement{assign}{1..m} = \o{}$}
+
+  Let us prove that \Inv{\idx+1} at loop iteration $\idx+1$ is the strongest
+  postcondition of \Inv{\idx} through the loop body at iteration \idx.
+  % 
   \begin{align*}
     \spost{
-    &(a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}}{\Inv{\idx}\\
-    }
-    &=(\neg (a \bullet e^\at{\idx}) \land \Inv{\idx}) \lor \\
-      & \quad (\exists b) ((a \bullet e^\at{\idx})[a\leftarrow b] \land 
-      a := e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])   && \text{by \spscalar}\\
-    &=(\neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx}) \lor \\
-      & \quad (\exists b) ((a \bullet e_0^\at{\idx})[a\leftarrow b] \land 
-      a := e_0^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])  && \text{by \vpp}\\
-    &=(\neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx}) \lor \\
-      & \quad (a = e_0^\at{\idx} \land (\exists b) ((b \bullet e_0^\at{\idx}) 
-      \land \Inv{\idx}[a\leftarrow b]))  &&\\
+    &(a \bullet e^\at{\idx}) \rightarrow a := e^\at{\idx}}{\Inv{\idx}}\\
+    &=\begin{array}{ll}
+           & \neg (a \bullet e^\at{\idx}) \land \Inv{\idx} \\
+      \lor & (\exists b) ((a \bullet e^\at{\idx})[a\leftarrow b] \land 
+      a = e^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])
+      \end{array} && \text{by \spscalar}\\
+    &=\begin{array}{ll}
+           & \neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
+      \lor & (\exists b) ((a \bullet e_0^\at{\idx})[a\leftarrow b] \land 
+      a = e_0^\at{\idx}[a\leftarrow b] \land \Inv{\idx}[a\leftarrow b])
+      \end{array}  && \text{by \vpp}\\
+    &=\begin{array}{ll}
+           & \neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
+      \lor & (a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) 
+      \land \Inv{\idx}[a\leftarrow b])
+      \end{array}
   \end{align*}
   %
-  Let denote :
+  Let us denote:
   %
   \begin{align*}
-    &A=\neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
-    &B=(a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}[a\leftarrow b])) \\
+    A &\symdef\neg (a \bullet e_0^\at{\idx}) \land \Inv{\idx} \\
+    A &\symdef(a = e_0^\at{\idx}) \land (\exists b) ((b \bullet e_0^\at{\idx}) \land \Inv{\idx}[a\leftarrow b])) \\
   \end{align*}
-  % 
-  1.1 Case $\bullet \in \{<, >\}$.\\
+
+  \subsubproof{Case $\bullet \in \{<, >\}$}
+
   Notice that in this case $\neg (a \bullet e_0^\at{\idx}) = a \circ e_0^\at{\idx}$\\
   %
   \\
   By Unfolding $\Inv{\idx}$ in $A$ we have:
   %
   \begin{align*}
-    &A=\neg (a \bullet e_0^\at{\idx}) \land ((a = a_0) \land 
+    A &=\neg (a \bullet e_0^\at{\idx}) \land ((a = a_0) \land 
        (\forall j)(\idxinitial \leq j < \idx \impl \neg (a_0 \bullet e_0^\at{j})) \\
     &\phantom{A= \neg (a \bullet e_0^\at{\idx}) \land (}
        \lor ((\exists j)(\idxinitial \leq j < \idx \land a = e_0^\at{j}) \land\\
@@ -1024,8 +1039,8 @@ $\begin{array}{l}
     &A_1 \lor A_2 \lor B = \Inv{\idx+1} 
   \end{align*}
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  1.2 Case $\bullet \in \{\leq, \geq\}$ \\
-  % 
+  \subsubproof{Case $\bullet \in \{\leq, \geq\}$}
+
   By Unfolding $\Inv{\idx}$ in $A$ and by distributing $\neg (a \bullet e_0^\at{\idx})$ we have:
   %
   \begin{align*}
@@ -1179,8 +1194,8 @@ $\begin{array}{l}
   This proves that \Inv{\idx} is the strongest loop invariant on the 
   loop reduced to the pattern. 
 
-\bigskip
-2. general case : there may be others guarded exit and guarded assignment statements
+  \subproof{general case}
+ There may be others guarded exit and guarded assignment statements
                   in addition to the current pattern \curpattern.\\
   %
   \begin{align*}
