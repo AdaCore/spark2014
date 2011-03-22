@@ -48,9 +48,6 @@ package body ALFA.Frame_Conditions is
    function Get_Num_For_File (Filename : String) return Nat;
    --  Return a unique number identifying input file Filename
 
-   function Param_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set is
-     (Reads_Of (Ent) and Params_Of (Ent));
-
    function Param_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
      (Writes_Of (Ent) and Params_Of (Ent));
 
@@ -347,7 +344,7 @@ package body ALFA.Frame_Conditions is
    is
       Rep : constant Entity_Rep := From_AST.Element (E);
    begin
-      Reps := Global_Reads_Of (Rep) or Param_Reads_Of (Rep);
+      Reps := Global_Reads_Of (Rep);
 
       for C in Reps loop
          if To_AST.Contains (Rep_Set.Element (C)) then
