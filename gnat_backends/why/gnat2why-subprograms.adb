@@ -1627,9 +1627,44 @@ package body Gnat2Why.Subprograms is
          when N_Case_Statement =>
             return Case_Expr_Of_Ada_Node (Stmt);
 
+         when N_Pragma =>
+            declare
+               Pname   : constant Name_Id   := Pragma_Name (Stmt);
+               Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+
+               Arg1 : Node_Id;
+               Arg2 : Node_Id;
+               --  First two pragma arguments (pragma argument association
+               --  nodes, or Empty if the corresponding argument does not
+               --  exist).
+
+            begin
+               if Present (Pragma_Argument_Associations (Stmt)) then
+                  Arg1 := First (Pragma_Argument_Associations (Stmt));
+
+                  if Present (Arg1) then
+                     Arg2 := Next (Arg1);
+                  end if;
+               end if;
+
+               case Prag_Id is
+                  when Pragma_Annotate =>
+                     return New_Void (Stmt);
+
+                  when Pragma_Check =>
+                     return
+                       New_Located_Assert
+                         (Ada_Node => Stmt,
+                          Pred     =>
+                            Why_Predicate_Of_Ada_Expr (Get_Pragma_Arg (Arg2)));
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end;
+
          when others =>
             raise Not_Implemented;
-
       end case;
    end Why_Expr_Of_Ada_Stmt;
 

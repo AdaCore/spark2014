@@ -1125,7 +1125,7 @@ package body ALFA.Definition is
             pragma Assert (not Scop.Is_Body);
             Mark_Spec_Violations (Ent);
 
-         when E_Package =>
+         when E_Package | E_Package_Body =>
             null;
 
          --  Detect violation in subprogram declarations and subprogram bodies
@@ -1472,9 +1472,12 @@ package body ALFA.Definition is
                end;
             end if;
 
-         when Pragma_Precondition  |
-              Pragma_Postcondition =>
-            null;  --  Ignored, treated directly through Spec_PPC_List
+         --  pragma Check ([Name    =>] Identifier,
+         --                [Check   =>] Boolean_Expression
+         --              [,[Message =>] String_Expression]);
+
+         when Pragma_Check =>
+            Mark (Get_Pragma_Arg (Arg2));
 
          when others =>
             Mark_Non_ALFA ("pragma is not in ALFA", N);
