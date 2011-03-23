@@ -847,17 +847,14 @@ package body Gnat2Why.Subprograms is
          Get_Reads (E, Read_Ids, Read_Reps);
          Get_Writes (E, Write_Ids, Write_Reps);
          for Id of Read_Ids loop
-            if Ekind (Id) /= E_Constant then
-               Effects_Append_To_Reads
-                  (Eff,
-                   New_Identifier (Symbol => Chars (Id)));
+            if Ekind (Id) /= E_Constant and then
+               Ekind (Id) /= E_In_Parameter then
+               Effects_Append_To_Reads (Eff, New_Identifier (Full_Name (Id)));
             end if;
          end loop;
 
          for Id of Write_Ids loop
-            Effects_Append_To_Writes
-               (Eff,
-                New_Identifier (Symbol => Chars (Id)));
+            Effects_Append_To_Writes (Eff, New_Identifier (Full_Name (Id)));
          end loop;
 
          return Eff;
