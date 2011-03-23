@@ -842,10 +842,34 @@ package body Gnat2Why.Subprograms is
          Write_Ids  : Id_Set.Set;
          Write_Reps : Rep_Set.Set;
          Eff        : constant W_Effects_Unchecked_Id :=
-            New_Unchecked_Effects;
+                        New_Unchecked_Effects;
+
       begin
+         --  Collect global variables potentially read and written
+
          Get_Reads (E, Read_Ids, Read_Reps);
          Get_Writes (E, Write_Ids, Write_Reps);
+
+         --  Add all OUT and IN OUT parameters as potential writes
+
+         declare
+            Arg : Node_Id;
+            Id  : Entity_Id;
+         begin
+            if Is_Non_Empty_List (Ada_Binders) then
+               Arg := First (Ada_Binders);
+               while Present (Arg) loop
+                  Id := Defining_Identifier (Arg);
+
+                  if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
+                     Write_Ids.Insert (Id);
+                  end if;
+
+                  Next (Arg);
+               end loop;
+            end if;
+         end;
+
          for Id of Read_Ids loop
             if Ekind (Id) /= E_Constant and then
                Ekind (Id) /= E_In_Parameter then

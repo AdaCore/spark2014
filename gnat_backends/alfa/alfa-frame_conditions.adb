@@ -48,10 +48,6 @@ package body ALFA.Frame_Conditions is
    function Get_Num_For_File (Filename : String) return Nat;
    --  Return a unique number identifying input file Filename
 
-   function Param_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
-     (Writes_Of (Ent) and Params_Of (Ent));
-   pragma Unreferenced (Param_Writes_Of);
-
    procedure Set_Default_To_Empty
      (Map : in out Rep_Map.Map;
       Set : Rep_Set.Set);
@@ -366,8 +362,7 @@ package body ALFA.Frame_Conditions is
    is
       Rep : constant Entity_Rep := From_AST.Element (E);
    begin
-      --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED
-      Reps := Global_Writes_Of (Rep); -- or Param_Writes_Of (Rep);
+      Reps := Global_Writes_Of (Rep);
 
       for C in Reps loop
          if To_AST.Contains (Rep_Set.Element (C)) then
@@ -629,22 +624,6 @@ package body ALFA.Frame_Conditions is
                         Add_To_Map (Defines, Def_Scope_Ent, Ref_Entity);
                      end if;
 
-                     --  Register OUT and IN OUT parameters on first occurence
-
-                     if Current_Entity /= Ref_Entity then
-                        case Xref.Etype is
-                           when '<' | '=' =>
-                              Add_To_Map (Params, Def_Scope_Ent, Ref_Entity);
-                           when '>' | '*' =>
-                              null;
-                           when ' ' =>
-                              --  TEMPORARY FIX FOR K323-005, TO BE REMOVED
-                              null;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end if;
-
                      --  Register xref according to type
 
                      case Xref.Rtype is
@@ -659,7 +638,8 @@ package body ALFA.Frame_Conditions is
                            raise Program_Error;
                      end case;
 
-                     --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED
+                     --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED AFTER
+                     --  ALL HAVE TAKEN A GCC BUILT ON 2011-03-23 OR LATER
                      --  Current_Entity := Ref_Entity;
                   end Do_One_Xref;
                end loop;
@@ -809,7 +789,6 @@ package body ALFA.Frame_Conditions is
       All_Subp.Union (Work_Set);
 
       Set_Default_To_Empty (Defines, All_Subp);
-      Set_Default_To_Empty (Params, All_Subp);
       Set_Default_To_Empty (Writes, All_Subp);
       Set_Default_To_Empty (Reads, All_Subp);
       Set_Default_To_Empty (Callers, All_Subp);

@@ -275,7 +275,7 @@ package body ALFA.Definition is
    begin
       case V is
          when V_Implem =>
-            return Msg & " is in ALFA but not yet supported";
+            return Msg & " is in ALFA but not yet implemented";
          when V_Other =>
             return Msg & " is not in ALFA";
          when V_Extensions =>
