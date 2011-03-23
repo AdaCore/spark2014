@@ -87,6 +87,7 @@ package body ALFA.Definition is
       V_Dispatch        => To_Unbounded_String ("dispatch"),
       V_Block_Statement => To_Unbounded_String ("block statement"),
       V_Any_Return      => To_Unbounded_String ("any return"),
+      V_Generic         => To_Unbounded_String ("generics"),
       V_Any_Exit        => To_Unbounded_String ("any exit"));
 
    -------------------------
@@ -501,7 +502,8 @@ package body ALFA.Definition is
               N_Formal_Package_Declaration |
               N_Formal_Subprogram_Declaration |
               N_Formal_Type_Declaration =>
-            Mark_Non_ALFA_Declaration ("formal generic parameter", N);
+            Mark_Non_ALFA_Declaration
+              ("formal generic parameter", N, V_Generic);
 
          when N_Free_Statement =>
             Mark_Non_ALFA ("free statement", N);
@@ -518,14 +520,14 @@ package body ALFA.Definition is
             Mark_Call (N);
 
          when N_Function_Instantiation =>
-            Mark_Non_ALFA ("function instantiation", N);
+            Mark_Non_ALFA ("function instantiation", N, V_Generic);
 
          when N_Generic_Function_Renaming_Declaration |
               N_Generic_Package_Declaration |
               N_Generic_Package_Renaming_Declaration |
               N_Generic_Procedure_Renaming_Declaration |
               N_Generic_Subprogram_Declaration =>
-            Mark_Non_ALFA ("generic declaration", N);
+            Mark_Non_ALFA ("generic declaration", N, V_Generic);
 
          when N_Goto_Statement =>
             Mark_Non_ALFA ("goto statement", N);
@@ -643,7 +645,7 @@ package body ALFA.Definition is
             Mark_Package_Declaration (N);
 
          when N_Package_Instantiation =>
-            Mark_Non_ALFA ("package instantiation", N);
+            Mark_Non_ALFA ("package instantiation", N, V_Generic);
 
          when N_Package_Renaming_Declaration =>
             null;
@@ -678,7 +680,7 @@ package body ALFA.Definition is
             Mark_Call (N);
 
          when N_Procedure_Instantiation =>
-            Mark_Non_ALFA ("procedure instantiation", N);
+            Mark_Non_ALFA ("procedure instantiation", N, V_Generic);
 
          when N_Qualified_Expression =>
             Mark_Non_ALFA ("qualified expression", N, V_Implem);
