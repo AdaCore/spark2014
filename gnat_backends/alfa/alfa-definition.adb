@@ -541,20 +541,6 @@ package body ALFA.Definition is
          when N_If_Statement =>
             Mark (Condition (N));
 
-            --  ??? Currently recognize specially the code generated for a
-            --  pragma assert, to avoid marking the call to
-            --  Raise_Assert_Failure as not in ALFA. To be removed asap.
-
-            if Nkind (Original_Node (N)) = N_Pragma and then
-              (Get_Name_String
-                 (Chars (Pragma_Identifier (Original_Node (N)))) = "assert"
-               or else
-                 Get_Name_String
-                   (Chars (Pragma_Identifier (Original_Node (N)))) = "check")
-            then
-               return;
-            end if;
-
             Mark_List (Then_Statements (N));
 
             if Present (Elsif_Parts (N)) then

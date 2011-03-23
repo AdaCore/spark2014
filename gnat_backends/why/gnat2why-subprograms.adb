@@ -120,6 +120,10 @@ package body Gnat2Why.Subprograms is
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id;
+   --  Compute a Why predicate from a node of kind Pragma Check. Raise
+   --  Not_Implemented if it is not a Pragma Check.
+
    function Prog_Equal_To (E : W_Prog_Id; N : Node_Id) return W_Prog_Id;
    --  For an expression E of type "int" and a Node that represents a
    --  Discrete_Choice, build an expression that expresses that T belongs to
@@ -379,24 +383,12 @@ package body Gnat2Why.Subprograms is
       Split_Node := Empty;
       while Nkind (Cur_Stmt) /= N_Empty loop
          case Nkind (Cur_Stmt) is
-            when N_If_Statement =>
-               if Nkind (Original_Node (Cur_Stmt)) = N_Pragma and then
-                  Get_Name_String
-                    (Chars
-                      (Pragma_Identifier (Original_Node (Cur_Stmt))))
-                     = "assert" then
-                  Pred :=
-                    New_Simpl_Conjunction
-                      (Left => Pred,
-                       Right =>
-                         New_Negation
-                           (Ada_Node => Cur_Stmt,
-                            Operand  =>
-                              Why_Predicate_Of_Ada_Expr
-                                (Condition (Cur_Stmt))));
-               else
-                  exit;
-               end if;
+            when N_Pragma =>
+               Pred :=
+                 New_Simpl_Conjunction
+                   (Left => Pred,
+                    Right => Predicate_Of_Pragma_Check (Cur_Stmt));
+
             when others =>
                exit;
          end case;
@@ -545,6 +537,35 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
    end Loop_Entity_Of_Exit_Statement;
+
+   -------------------------------
+   -- Predicate_Of_Pragma_Check --
+   -------------------------------
+
+   function Predicate_Of_Pragma_Check (N : Node_Id) return W_Predicate_Id
+   is
+   begin
+      if Get_Pragma_Id (Pragma_Name (N)) = Pragma_Check then
+         declare
+            Arg1 : Node_Id;
+            Arg2 : Node_Id;
+         begin
+            if Present (Pragma_Argument_Associations (N)) then
+               Arg1 := First (Pragma_Argument_Associations (N));
+               if Present (Arg1) then
+                  Arg2 := Next (Arg1);
+               end if;
+            end if;
+            if Present (Expression (Arg2)) then
+               return Why_Predicate_Of_Ada_Expr (Expression (Arg2));
+            else
+               raise Program_Error;
+            end if;
+         end;
+      else
+         raise Not_Implemented;
+      end if;
+   end Predicate_Of_Pragma_Check;
 
    -------------------
    -- Prog_Equal_To --
@@ -1448,17 +1469,7 @@ package body Gnat2Why.Subprograms is
                  Else_Part => Why_Expr_Of_Ada_Stmts (Else_Statements (Stmt)));
 
          when N_Raise_xxx_Error =>
-            --  Currently, we assume that this is a check inserted by the
-            --  compiler, we transform it into an assert;
-            --  we have to negate the condition
-            return
-            New_Located_Assert
-              (Ada_Node => Stmt,
-               Pred =>
-                  New_Negation
-                    (Operand =>
-                       Why_Predicate_Of_Ada_Expr
-                         (Condition (Stmt))));
+            raise Not_Implemented;
 
          when N_Object_Declaration =>
             --  This has been dealt with at a higher level
@@ -1512,34 +1523,47 @@ package body Gnat2Why.Subprograms is
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop. Generate
                   --    while true do { <inv> } <body> done
-                  Entire_Loop :=
+                  declare
+                     Loop_Assert : constant W_Assertion_Id :=
+                        (if Present (Split_Node) then
+                           New_Located_Assertion
+                              (Ada_Node => Split_Node,
+                               Pred     => Invariant)
+                         else
+                            New_Assertion (Pred => Invariant));
+                  begin
+                     Entire_Loop :=
                        New_While_Loop
                          (Ada_Node     => Stmt,
                           Condition    => New_True_Literal_Prog,
                           Annotation   =>
-                            New_Loop_Annot
-                               (Invariant =>
-                                 New_Located_Assertion
-                                    (Ada_Node => Split_Node,
-                                     Pred => Invariant)),
+                            New_Loop_Annot (Invariant => Loop_Assert),
                           Loop_Content => Loop_Content);
+                  end;
                elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
                   --  We are in a While loop. Generate
                   --    while <Cond> do { <inv> } <body> done
-                  Entire_Loop :=
-                    New_While_Loop
-                      (Ada_Node     => Stmt,
-                       Condition    =>
-                         Why_Expr_Of_Ada_Expr (Condition (Scheme)),
-                       Annotation   =>
-                         New_Loop_Annot
-                            (Invariant =>
-                              New_Located_Assertion
-                                 (Ada_Node => Split_Node, Pred => Invariant)),
-                       Loop_Content => Loop_Content);
+                  declare
+                     Loop_Assert : constant W_Assertion_Id :=
+                        (if Present (Split_Node) then
+                           New_Located_Assertion
+                              (Ada_Node => Split_Node,
+                               Pred     => Invariant)
+                         else
+                            New_Assertion (Pred => Invariant));
+                  begin
+                     Entire_Loop :=
+                       New_While_Loop
+                         (Ada_Node     => Stmt,
+                          Condition    =>
+                            Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                          Annotation   =>
+                            New_Loop_Annot (Invariant => Loop_Assert),
+                          Loop_Content => Loop_Content);
+                  end;
                elsif Nkind (Condition (Scheme)) = N_Empty then
                   --  We are in a For loop. Generate
                   --    let low = <low_value> in
@@ -1628,40 +1652,20 @@ package body Gnat2Why.Subprograms is
             return Case_Expr_Of_Ada_Node (Stmt);
 
          when N_Pragma =>
-            declare
-               Pname   : constant Name_Id   := Pragma_Name (Stmt);
-               Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+            case Get_Pragma_Id (Pragma_Name (Stmt)) is
+               when Pragma_Annotate =>
+                  return New_Void (Stmt);
 
-               Arg1 : Node_Id;
-               Arg2 : Node_Id;
-               --  First two pragma arguments (pragma argument association
-               --  nodes, or Empty if the corresponding argument does not
-               --  exist).
+               when Pragma_Check =>
+                  return
+                     New_Located_Assert
+                        (Ada_Node => Stmt,
+                         Pred     => Predicate_Of_Pragma_Check (Stmt));
 
-            begin
-               if Present (Pragma_Argument_Associations (Stmt)) then
-                  Arg1 := First (Pragma_Argument_Associations (Stmt));
+               when others =>
+                  raise Not_Implemented;
 
-                  if Present (Arg1) then
-                     Arg2 := Next (Arg1);
-                  end if;
-               end if;
-
-               case Prag_Id is
-                  when Pragma_Annotate =>
-                     return New_Void (Stmt);
-
-                  when Pragma_Check =>
-                     return
-                       New_Located_Assert
-                         (Ada_Node => Stmt,
-                          Pred     =>
-                            Why_Predicate_Of_Ada_Expr (Get_Pragma_Arg (Arg2)));
-
-                  when others =>
-                     raise Program_Error;
-               end case;
-            end;
+            end case;
 
          when others =>
             raise Not_Implemented;

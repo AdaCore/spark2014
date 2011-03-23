@@ -253,11 +253,10 @@ procedure Gnatprove is
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
-                       4 => new String'("-gnata"),      --  generate assertions
-                       5 => new String'("-gnat2012"),   --  enable Ada 2012
-                       6 => new String'("-gnatc"),      --  only generate ALI
-                       7 => new String'("-f"),          --  Force recompilation
-                       8 => new String'("-gnatd.F")));  --  ALFA section in ALI
+                       4 => new String'("-gnat2012"),   --  enable Ada 2012
+                       5 => new String'("-gnatc"),      --  only generate ALI
+                       6 => new String'("-f"),          --  Force recompilation
+                       7 => new String'("-gnatd.F")));  --  ALFA section in ALI
 
    end Call_Gnatmake;
 
@@ -278,16 +277,14 @@ procedure Gnatprove is
           Language => "Ada",
           Value    => Switch,
           Is_Default_Value => Default);
-      --  We force the use of switch -gnata, because gnat2why may be
-      --  incorrect otherwise
       Call_Exit_On_Failure
         (Command   => "gnat2why",
          Arguments =>
            ((1 => new String'("-I"),
              2 => new String'(Get_Ada_Include),
-             3 => new String'("-gnata"),
-             4 => new String'("-gnat2012"),
-             5 => new String'("-gnato"),
+             3 => new String'("-gnatp"),    --  do not generate checks
+             4 => new String'("-gnata"),    --  but keep user given assertions
+             5 => new String'("-gnat2012"),
              6 => new String'("-gnatd.F"),  --  ALFA marks in AST
              7 => new String'(+Full_Name (File))) &
              Switch.all));
