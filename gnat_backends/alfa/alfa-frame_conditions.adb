@@ -50,6 +50,7 @@ package body ALFA.Frame_Conditions is
 
    function Param_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
      (Writes_Of (Ent) and Params_Of (Ent));
+   pragma Unreferenced (Param_Writes_Of);
 
    procedure Set_Default_To_Empty
      (Map : in out Rep_Map.Map;
@@ -365,7 +366,8 @@ package body ALFA.Frame_Conditions is
    is
       Rep : constant Entity_Rep := From_AST.Element (E);
    begin
-      Reps := Global_Writes_Of (Rep) or Param_Writes_Of (Rep);
+      --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED
+      Reps := Global_Writes_Of (Rep); -- or Param_Writes_Of (Rep);
 
       for C in Reps loop
          if To_AST.Contains (Rep_Set.Element (C)) then
@@ -635,6 +637,9 @@ package body ALFA.Frame_Conditions is
                               Add_To_Map (Params, Def_Scope_Ent, Ref_Entity);
                            when '>' | '*' =>
                               null;
+                           when ' ' =>
+                              --  TEMPORARY FIX FOR K323-005, TO BE REMOVED
+                              null;
                            when others =>
                               raise Program_Error;
                         end case;
@@ -654,7 +659,8 @@ package body ALFA.Frame_Conditions is
                            raise Program_Error;
                      end case;
 
-                     Current_Entity := Ref_Entity;
+                     --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED
+                     --  Current_Entity := Ref_Entity;
                   end Do_One_Xref;
                end loop;
             end loop;
