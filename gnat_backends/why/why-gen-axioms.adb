@@ -81,6 +81,10 @@ package body Why.Gen.Axioms is
           Axiom_Body => Quantified_Body);
    end Define_Array_Eq_Axiom;
 
+   ----------------------------
+   -- Define_Array_Neq_Axiom --
+   ----------------------------
+
    procedure Define_Array_Neq_Axiom
       (File           : W_File_Id;
        Type_Name      : String;
