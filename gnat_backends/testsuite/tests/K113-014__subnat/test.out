@@ -14,12 +14,6 @@
     "Gnat2why__3": {
         "invalid": [], 
         "valid": [
-            "def___subnat__g_po_2"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [], 
-        "valid": [
             "def___subnat__g_po_1"
         ]
     }

@@ -25,9 +25,7 @@
     }, 
     "Gnat2why__5": {
         "invalid": [], 
-        "valid": [
-            "def___max__max_po_6"
-        ]
+        "valid": []
     }
 }
 

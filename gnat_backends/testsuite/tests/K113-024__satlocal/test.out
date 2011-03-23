@@ -2,33 +2,28 @@
     "Gnat2why__1": {
         "invalid": [], 
         "valid": [
-            "def___sat__add_po_5"
+            "def___sat__add_po_4"
         ]
     }, 
     "Gnat2why__2": {
         "invalid": [], 
         "valid": [
-            "def___sat__add_po_3"
+            "def___sat__add_po_2"
         ]
     }, 
     "Gnat2why__3": {
         "invalid": [], 
         "valid": [
-            "def___sat__add_po_2"
+            "def___sat__add_po_1"
         ]
     }, 
     "Gnat2why__4": {
         "invalid": [], 
         "valid": [
-            "def___sat__add_po_1"
-        ]
-    }, 
-    "Gnat2why__5": {
-        "invalid": [], 
-        "valid": [
-            "def___sat__add_po_4", 
-            "def___sat__add_po_6"
+            "def___sat__add_po_3", 
+            "def___sat__add_po_5"
         ]
     }
 }
+
 
