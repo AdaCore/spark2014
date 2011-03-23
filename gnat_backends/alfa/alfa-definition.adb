@@ -43,6 +43,7 @@ with Table;
 with AA_Util;     use AA_Util;
 
 with ALFA.Common; use ALFA.Common;
+with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 package body ALFA.Definition is
 
@@ -87,8 +88,9 @@ package body ALFA.Definition is
       V_Dispatch        => To_Unbounded_String ("dispatch"),
       V_Block_Statement => To_Unbounded_String ("block statement"),
       V_Any_Return      => To_Unbounded_String ("any return"),
-      V_Generic         => To_Unbounded_String ("generics"),
-      V_Any_Exit        => To_Unbounded_String ("any exit"));
+      V_Any_Exit        => To_Unbounded_String ("any exit"),
+      V_Generic         => To_Unbounded_String ("generic"),
+      V_Impure_Function => To_Unbounded_String ("impure function"));
 
    -------------------------
    -- Pragma Formal_Proof --
@@ -229,6 +231,7 @@ package body ALFA.Definition is
    procedure Mark_Conditional_Expression      (N : Node_Id);
    procedure Mark_Exit_Statement              (N : Node_Id);
    procedure Mark_Full_Type_Declaration       (N : Node_Id);
+   procedure Mark_Function_Specification      (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
    procedure Mark_Iteration_Scheme            (N : Node_Id);
@@ -973,6 +976,45 @@ package body ALFA.Definition is
       Pop_Scope (Id);
    end Mark_Full_Type_Declaration;
 
+   ---------------------------------
+   -- Mark_Function_Specification --
+   ---------------------------------
+
+   procedure Mark_Function_Specification (N : Node_Id) is
+      Id       : constant Entity_Id := Unique_Defining_Entity (N);
+      Params   : constant List_Id := Parameter_Specifications (N);
+      Param    : Node_Id;
+      Param_Id : Entity_Id;
+
+   begin
+      if Has_Global_Writes (Id) then
+         Mark_Non_ALFA ("function with side-effect", Id, V_Impure_Function);
+         return;
+      end if;
+
+      if Is_Non_Empty_List (Params) then
+         Param := First (Params);
+         while Present (Param) loop
+            Param_Id := Defining_Identifier (Param);
+
+            case Ekind (Param_Id) is
+               when E_Out_Parameter =>
+                  Mark_Non_ALFA ("function with OUT parameter", Id,
+                                 V_Impure_Function);
+                  return;
+               when E_In_Out_Parameter =>
+                  Mark_Non_ALFA ("function with IN OUT parameter", Id,
+                                 V_Impure_Function);
+                  return;
+               when others =>
+                  null;
+            end case;
+
+            Next (Param);
+         end loop;
+      end if;
+   end Mark_Function_Specification;
+
    -----------------------------
    -- Mark_Handled_Statements --
    -----------------------------
@@ -1647,12 +1689,16 @@ package body ALFA.Definition is
    -----------------------------------
 
    procedure Mark_Subprogram_Specification (N : Node_Id) is
-      Designator : constant Entity_Id := Defining_Entity (N);
+      Id         : constant Entity_Id := Unique_Defining_Entity (N);
       Formals    : constant List_Id   := Parameter_Specifications (N);
       Param_Spec : Node_Id;
       Formal     : Entity_Id;
 
    begin
+      if Ekind (Id) = E_Function then
+         Mark_Function_Specification (N);
+      end if;
+
       if Present (Formals) then
          Param_Spec := First (Formals);
          while Present (Param_Spec) loop
@@ -1672,11 +1718,11 @@ package body ALFA.Definition is
          --  subprogram is not in ALFA.
 
          if Nkind (N) = N_Function_Specification
-           and then not Is_In_ALFA (Etype (Designator))
+           and then not Is_In_ALFA (Etype (Id))
          then
             Mark_Non_ALFA
               ("return type", Result_Definition (N),
-               From => Etype (Designator));
+               From => Etype (Id));
          end if;
       end if;
    end Mark_Subprogram_Specification;

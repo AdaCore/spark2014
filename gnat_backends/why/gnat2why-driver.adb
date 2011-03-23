@@ -105,6 +105,15 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
+      --  ??? Compute the frame condition. Currently only the ALI file for the
+      --  current unit is read. This should be changed to read all dependent
+      --  ALI files.
+
+      Read_Library_Info (Name, Text);
+      Load_ALFA (Name_String (Name_Id (Name)));
+      Propagate_Through_Call_Graph;
+      Declare_All_Entities;
+
       --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the
       --  same order that they were processed by the frontend. Bodies are not
       --  included, except for the main unit itself, which always comes last.
@@ -119,15 +128,6 @@ package body Gnat2Why.Driver is
       if Compilation_Errors then
          return;
       end if;
-
-      --  ??? Compute the frame condition. Currently only the ALI file for the
-      --  current unit is read. This should be changed to read all dependent
-      --  ALI files.
-
-      Read_Library_Info (Name, Text);
-      Load_ALFA (Name_String (Name_Id (Name)));
-      Propagate_Through_Call_Graph;
-      Declare_All_Entities;
 
       --  Start the translation to Why
 

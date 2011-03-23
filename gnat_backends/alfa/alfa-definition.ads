@@ -33,11 +33,12 @@ package ALFA.Definition is
                            V_Any_Return,       --  return statements
                            V_Any_Exit,         --  exit statements
                            V_Generic,          --  generics
+                           V_Impure_Function,  --  impure functions
                            V_Other);           --  other violations of ALFA
 
    subtype V_Design is Violation_Kind range V_Slice .. V_Other;
 
-   subtype V_Extensions is Violation_Kind range V_Slice .. V_Generic;
+   subtype V_Extensions is Violation_Kind range V_Slice .. V_Impure_Function;
 
    function Is_In_ALFA (Id : Entity_Id) return Boolean;
    --  Return whether a given entity is in ALFA

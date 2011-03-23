@@ -165,4 +165,7 @@ package ALFA.Frame_Conditions is
    --  Get the variables written by subprogram E, either as an Entity_Id in Ids
    --  if one is known, or as an Entity_Rep in Reps otherwise.
 
+   function Has_Global_Writes (E : Entity_Id) return Boolean is
+     (not Global_Writes_Of (From_AST.Element (E)).Is_Empty);
+
 end ALFA.Frame_Conditions;
