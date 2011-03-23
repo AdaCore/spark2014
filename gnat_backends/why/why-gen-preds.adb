@@ -75,18 +75,16 @@ package body Why.Gen.Preds is
       --  integer_of___<name> (x) = integer_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
                             New_Conversion_To_Int (Name);
-      X_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
-                            New_Unchecked_Operation;
-      Y_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
-                            New_Unchecked_Operation;
+      X_To_Base_Type_Op : constant W_Operation_Id :=
+                            New_Operation
+                              (Name       => Conversion,
+                               Parameters => (1 => New_Term (X_S)));
+      Y_To_Base_Type_Op : constant W_Operation_Id :=
+                            New_Operation
+                              (Name =>
+                                 Duplicate_Any_Node (Id => Conversion),
+                               Parameters => (1 => New_Term (Y_S)));
    begin
-      Operation_Set_Name (X_To_Base_Type_Op, Conversion);
-      Operation_Append_To_Parameters (X_To_Base_Type_Op, New_Term (X_S));
-
-      Operation_Set_Name (Y_To_Base_Type_Op,
-                          Duplicate_Any_Node (Id => Conversion));
-      Operation_Append_To_Parameters (Y_To_Base_Type_Op, New_Term (Y_S));
-
       --  ...now set the pieces together:
       New_Predicate_Definition
          (File    => File,

@@ -23,9 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -154,42 +152,36 @@ package body Why.Gen.Axioms is
       To_Base_Type   : W_Identifier_Id)
    is
       Arg_S                : constant String := "x";
-      X_To_Type_Op         : constant W_Operation_Unchecked_Id :=
-                               New_Unchecked_Operation;
-      Back_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
-                               New_Unchecked_Operation;
-      In_Range             : constant W_Operation_Unchecked_Id :=
-                               New_Unchecked_Operation;
-      Formula              : constant W_Implication_Unchecked_Id :=
-                               New_Unchecked_Implication;
-      Quantif_On_X         : constant W_Universal_Quantif_Unchecked_Id :=
-                               New_Unchecked_Universal_Quantif;
+      X_To_Type_Op         : constant W_Operation_Id :=
+                               New_Operation
+                                 (Name       => From_Base_Type,
+                                  Parameters => (1 => New_Term (Arg_S)));
+      Back_To_Base_Type_Op : constant W_Operation_Id :=
+                               New_Operation
+                                 (Name       => To_Base_Type,
+                                  Parameters => (1 => X_To_Type_Op));
+      In_Range             : constant W_Operation_Id :=
+                               New_Operation
+                                  (Name       => Range_Pred_Name (Type_Name),
+                                   Parameters => (1 => New_Term (Arg_S)));
+      Formula              : constant W_Implication_Id :=
+                               New_Implication
+                                 (Left  => In_Range,
+                                  Right =>
+                                    New_Related_Terms
+                                      (Left  => Back_To_Base_Type_Op,
+                                       Op    => New_Rel_Eq,
+                                       Right => New_Term (Arg_S)));
+      Quantif_On_X         : constant W_Universal_Quantif_Id :=
+                               New_Universal_Quantif
+                                 (Var_Type  => Base_Type,
+                                  Variables => (1 => New_Identifier (Arg_S)),
+                                  Pred      => Formula);
    begin
-      Operation_Set_Name (X_To_Type_Op, From_Base_Type);
-      Operation_Append_To_Parameters (X_To_Type_Op,
-                                      New_Term (Arg_S));
-
-      Operation_Set_Name (Back_To_Base_Type_Op, To_Base_Type);
-      Operation_Append_To_Parameters (Back_To_Base_Type_Op, X_To_Type_Op);
-
-      Operation_Set_Name (In_Range, Range_Pred_Name (Type_Name));
-      Operation_Append_To_Parameters (In_Range, New_Term (Arg_S));
-
-      Implication_Set_Left (Formula, In_Range);
-      Implication_Set_Right (Formula,
-                             New_Related_Terms (Left  => Back_To_Base_Type_Op,
-                                                Op    => New_Rel_Eq,
-                                                Right => New_Term (Arg_S)));
-
-      Universal_Quantif_Set_Var_Type (Quantif_On_X, Base_Type);
-      Universal_Quantif_Append_To_Variables (Quantif_On_X,
-                                             New_Identifier (Arg_S));
-
       New_Axiom
         (File       => File,
          Name       => Coerce_Axiom (Type_Name),
-         Axiom_Body =>
-            New_Universal_Predicate_Body ((1 => Quantif_On_X), Formula));
+         Axiom_Body => Quantif_On_X);
    end Define_Coerce_Axiom;
 
    ------------------------
@@ -202,32 +194,27 @@ package body Why.Gen.Axioms is
       Conversion : W_Identifier_Id)
    is
       Arg_S              : constant String := "x";
-      Call_To_Conversion : constant W_Operation_Unchecked_Id :=
-                             New_Unchecked_Operation;
-      Formula            : constant W_Operation_Unchecked_Id :=
-                             New_Unchecked_Operation;
-      Quantif_On_X       : constant W_Universal_Quantif_Unchecked_Id :=
-                             New_Unchecked_Universal_Quantif;
+      Call_To_Conversion : constant W_Operation_Id :=
+                             New_Operation
+                               (Name       => Conversion,
+                                Parameters => (1 => New_Term (Arg_S)));
+      Formula            : constant W_Operation_Id :=
+                             New_Operation
+                               (Name       => Range_Pred_Name (Type_Name),
+                                Parameters => (1 => Call_To_Conversion));
+      Quantif_On_X       : constant W_Universal_Quantif_Id :=
+                             New_Universal_Quantif
+                               (Var_Type =>
+                                  New_Abstract_Type (Name => Type_Name),
+                                Variables =>
+                                  (1 => New_Identifier (Arg_S)),
+                                Pred =>
+                                  Formula);
    begin
-      Operation_Set_Name (Call_To_Conversion, Conversion);
-      Operation_Append_To_Parameters (Call_To_Conversion, New_Term (Arg_S));
-
-      Operation_Set_Name (Formula, Range_Pred_Name (Type_Name));
-      Operation_Append_To_Parameters (Formula, Call_To_Conversion);
-
-      Universal_Quantif_Set_Var_Type
-        (Quantif_On_X,
-         New_Abstract_Type (Name => Type_Name));
-      Universal_Quantif_Append_To_Variables
-        (Quantif_On_X,
-         New_Identifier (Arg_S));
-
       New_Axiom
         (File       => File,
          Name       => Range_Axiom (Type_Name),
-         Axiom_Body =>
-            New_Universal_Predicate_Body ((1 => Quantif_On_X),
-                                          Formula));
+         Axiom_Body => Quantif_On_X);
    end Define_Range_Axiom;
 
    --------------------------
@@ -241,45 +228,42 @@ package body Why.Gen.Axioms is
    is
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
-      X_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
-                            New_Unchecked_Operation;
-      Y_To_Base_Type_Op : constant W_Operation_Unchecked_Id :=
-                            New_Unchecked_Operation;
-      Formula           : constant W_Implication_Unchecked_Id :=
-                            New_Unchecked_Implication;
-      Quantif_On_XY     : constant W_Universal_Quantif_Unchecked_Id :=
-                            New_Unchecked_Universal_Quantif;
+      X_To_Base_Type_Op : constant W_Operation_Id :=
+                            New_Operation (Name =>
+                                             Conversion,
+                                           Parameters =>
+                                             (1 => New_Term (X_S)));
+      Y_To_Base_Type_Op : constant W_Operation_Id :=
+                            New_Operation (Name =>
+                                             Duplicate_Any_Node (Id =>
+                                                                   Conversion),
+                                           Parameters =>
+                                             (1 => New_Term (Y_S)));
+      Formula           : constant W_Implication_Id :=
+                            New_Implication
+                              (Left =>
+                                 New_Related_Terms
+                                   (Left  => X_To_Base_Type_Op,
+                                    Op    => New_Rel_Eq,
+                                    Right => Y_To_Base_Type_Op),
+                               Right =>
+                                 New_Related_Terms (Left  => New_Term (X_S),
+                                                    Op    => New_Rel_Eq,
+                                                    Right => New_Term (Y_S)));
+      Quantif_On_XY     : constant W_Universal_Quantif_Id :=
+                            New_Universal_Quantif
+                              (Var_Type =>
+                                 New_Abstract_Type (Name => Type_Name),
+                               Variables =>
+                                 (New_Identifier (X_S),
+                                  New_Identifier (Y_S)),
+                               Pred =>
+                                 Formula);
    begin
-      Operation_Set_Name (X_To_Base_Type_Op, Conversion);
-      Operation_Append_To_Parameters (X_To_Base_Type_Op, New_Term (X_S));
-
-      Operation_Set_Name (Y_To_Base_Type_Op,
-                          Duplicate_Any_Node (Id => Conversion));
-      Operation_Append_To_Parameters (Y_To_Base_Type_Op, New_Term (Y_S));
-
-      Implication_Set_Left (Formula,
-                            New_Related_Terms (Left  => X_To_Base_Type_Op,
-                                               Op    => New_Rel_Eq,
-                                               Right => Y_To_Base_Type_Op));
-      Implication_Set_Right (Formula,
-                             New_Related_Terms (Left  => New_Term (X_S),
-                                                Op    => New_Rel_Eq,
-                                                Right => New_Term (Y_S)));
-
-      Universal_Quantif_Set_Var_Type
-        (Quantif_On_XY,
-         New_Abstract_Type (Name => Type_Name));
-      Universal_Quantif_Append_To_Variables (Quantif_On_XY,
-                                             New_Identifier (X_S));
-      Universal_Quantif_Append_To_Variables (Quantif_On_XY,
-                                             New_Identifier (Y_S));
-
       New_Axiom
         (File       => File,
          Name       => Unicity_Axiom (Type_Name),
-         Axiom_Body =>
-            New_Universal_Predicate_Body ((1 => Quantif_On_XY),
-                                          Formula));
+         Axiom_Body => Quantif_On_XY);
    end Define_Unicity_Axiom;
 
 end Why.Gen.Axioms;

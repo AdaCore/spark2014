@@ -66,19 +66,11 @@ package body Why.Gen.Enums is
       use String_Lists;
 
       Arg_Name : constant String := "x";
-      Func     : constant W_Function_Unchecked_Id := New_Unchecked_Function;
       Match    : constant W_Matching_Term_Unchecked_Id :=
                    New_Unchecked_Matching_Term;
       Cur      : Cursor := First (Constructors);
       Cnt      : Uint := Uint_1;
    begin
-      Function_Set_Name (Func, New_Conversion_To_Int (Name));
-      Function_Set_Return_Type (Func, New_Type_Int);
-      Function_Append_To_Binders
-        (Func,
-         New_Logic_Binder
-         (Name => New_Identifier (Arg_Name),
-          Param_Type => New_Abstract_Type (Name => New_Identifier (Name))));
       Matching_Term_Set_Term (Match, New_Term (Arg_Name));
       while Has_Element (Cur) loop
          declare
@@ -93,10 +85,25 @@ package body Why.Gen.Enums is
             Cnt := Cnt + Uint_1;
          end;
       end loop;
-      Function_Set_Def (Func, Match);
-      File_Append_To_Declarations
-        (File,
-         New_Logic_Declaration (Decl => Func));
+
+      declare
+         Func : constant W_Function_Id :=
+                  New_Function
+                    (Name        => New_Conversion_To_Int (Name),
+                     Return_Type => New_Type_Int,
+                     Binders     =>
+                       (1 =>
+                          New_Logic_Binder
+                            (Name => New_Identifier (Arg_Name),
+                             Param_Type =>
+                               New_Abstract_Type
+                                 (Name => New_Identifier (Name)))),
+                     Def         => Match);
+      begin
+         File_Append_To_Declarations
+           (File,
+            New_Logic_Declaration (Decl => Func));
+      end;
    end Define_Enum_To_Int_Function;
 
    ---------------------------
