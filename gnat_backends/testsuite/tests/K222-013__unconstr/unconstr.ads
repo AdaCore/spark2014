@@ -3,4 +3,6 @@ package Unconstr is
    type Vec is array(Integer range <>) of MyInt;
    type Vec_10 is new Vec (0 .. 10);
 
+   procedure P (X : out Vec)
+      with Post => (X (X'First) = 0);
 end Unconstr;
