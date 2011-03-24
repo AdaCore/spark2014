@@ -1283,7 +1283,7 @@ package body Gnat2Why.Subprograms is
                   raise Not_Implemented;
                elsif Attr_Name = Name_First then
                   T :=
-                     New_Prog_Identifier
+                     New_Prog_Constant
                         (Def =>
                            New_Integer_Constant
                               (Ada_Node => Expr,
@@ -1293,7 +1293,7 @@ package body Gnat2Why.Subprograms is
                   Current_Type := (Kind => Why_Int);
                elsif Attr_Name = Name_Last then
                   T :=
-                     New_Prog_Identifier
+                     New_Prog_Constant
                         (Def =>
                            New_Integer_Constant
                               (Ada_Node => Expr,
