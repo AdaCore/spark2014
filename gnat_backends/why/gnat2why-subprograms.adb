@@ -746,10 +746,8 @@ package body Gnat2Why.Subprograms is
                Id := Defining_Identifier (Arg);
                Res := Push_Arg
                  (Arrow    => Res,
-                  Name     =>
-                    New_Identifier (Ada_Node => Id, Symbol => Chars (Id)),
-                  Arg_Type =>
-                    Why_Prog_Type_Of_Ada_Type (Id));
+                  Name     => New_Identifier (Full_Name (Id)),
+                  Arg_Type => Why_Prog_Type_Of_Ada_Type (Id));
                Prev (Arg);
             end loop;
          end if;
@@ -769,7 +767,7 @@ package body Gnat2Why.Subprograms is
            New_Binder
              (Ada_Node => Arg,
               Names =>
-                (1 => New_Identifier (Ada_Node => Id, Symbol => Chars (Id))),
+                (1 => New_Identifier (Full_Name (Id))),
               Arg_Type =>
                 Why_Prog_Type_Of_Ada_Type (Id));
       end Compute_Binder;
@@ -1010,15 +1008,6 @@ package body Gnat2Why.Subprograms is
                    else
                       Post);
             begin
-
-               if Acts_As_Spec (Node) then
-                  Declare_Parameter
-                    (File   => File,
-                     Name   => New_Identifier (Get_Name_String (Name)),
-                     Arrows => Compute_Arrows,
-                     Pre    => Duplicate_Any_Node (Id => Pre),
-                     Post   => Duplicate_Any_Node (Id => Post));
-               end if;
 
                New_Global_Binding
                  (File    => File,
@@ -1581,8 +1570,8 @@ package body Gnat2Why.Subprograms is
                         High_Bound
                           (Get_Range
                             (Discrete_Subtype_Definition (LParam_Spec)));
-                     Loop_Index  : constant Name_Id :=
-                        Chars (Defining_Identifier (LParam_Spec));
+                     Loop_Index  : constant String :=
+                        Full_Name (Defining_Identifier (LParam_Spec));
                      Low_Name    : constant String :=
                         Loop_Name & "___low";
                      High_Name    : constant String :=
@@ -1599,7 +1588,7 @@ package body Gnat2Why.Subprograms is
                                 Context =>
                                    New_For_Loop
                                    (Ada_Node  => Stmt,
-                                   Loop_Index => Loop_Index,
+                                   Loop_Index => New_Identifier (Loop_Index),
                                    Low        => New_Identifier (Low_Name),
                                    High       => New_Identifier (High_Name),
                                    Invariant  => Invariant,
@@ -1916,8 +1905,7 @@ package body Gnat2Why.Subprograms is
                Quant_Spec : constant Node_Id :=
                   Loop_Parameter_Specification (Expr);
                I          : constant W_Identifier_Id :=
-                  New_Identifier (Symbol =>
-                     Chars (Defining_Identifier (Quant_Spec)));
+                 New_Identifier (Full_Name (Defining_Identifier (Quant_Spec)));
                Conclusion : constant W_Predicate_Id :=
                   Why_Predicate_Of_Ada_Expr (Condition (Expr));
                Hypothesis : constant W_Predicate_Id :=

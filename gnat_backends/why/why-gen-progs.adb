@@ -196,7 +196,7 @@ package body Why.Gen.Progs is
 
    function New_For_Loop
      (Ada_Node   : Node_Id;
-      Loop_Index : Name_Id;
+      Loop_Index : W_Identifier_Id;
       Low        : W_Identifier_Id;
       High       : W_Identifier_Id;
       Invariant  : W_Predicate_Id;
@@ -205,7 +205,7 @@ package body Why.Gen.Progs is
       Index_Deref : constant W_Prog_Id :=
          New_Deref
            (Ada_Node => Ada_Node,
-            Ref      => New_Identifier (Symbol => Loop_Index));
+            Ref      => Loop_Index);
       Addition : constant W_Prog_Id :=
          New_Infix_Call
             (Ada_Node => Ada_Node,
@@ -221,8 +221,7 @@ package body Why.Gen.Progs is
       Incr_Stmt : constant W_Prog_Id :=
          New_Assignment
             (Ada_Node => Ada_Node,
-             Name     =>
-               New_Identifier (Symbol => Loop_Index),
+             Name     => Duplicate_Any_Node (Id => Loop_Index),
              Value    => Addition);
       Loop_Cond : constant W_Prog_Id  :=
          New_Infix_Call
@@ -243,8 +242,8 @@ package body Why.Gen.Progs is
                  (Left   => New_Term_Identifier (Name => Low),
                   Op     => New_Rel_Le,
                   Right  =>
-                     New_Term_Identifier
-                        (Name => New_Identifier (Symbol => Loop_Index)),
+                    New_Term_Identifier
+                      (Name => Duplicate_Any_Node (Id => Loop_Index)),
                   Op2    => New_Rel_Le,
                   Right2 =>
                      New_Arith_Operation
@@ -258,7 +257,7 @@ package body Why.Gen.Progs is
       return
         New_Binding_Ref
            (Ada_Node => Ada_Node,
-            Name     => New_Identifier (Symbol => Loop_Index),
+            Name     => Duplicate_Any_Node (Id => Loop_Index),
             Def      =>
                New_Prog_Identifier (Def => Duplicate_Any_Node (Id => Low)),
             Context  =>

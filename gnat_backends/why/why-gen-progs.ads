@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;         use Namet;
 with Types;         use Types;
 with Why.Gen.Types; use Why.Gen.Types;
 with Why.Ids;       use Why.Ids;
@@ -62,7 +61,7 @@ package Why.Gen.Progs is
 
    function New_For_Loop
      (Ada_Node   : Node_Id;
-      Loop_Index : Name_Id;
+      Loop_Index : W_Identifier_Id;
       Low        : W_Identifier_Id;
       High       : W_Identifier_Id;
       Invariant  : W_Predicate_Id;

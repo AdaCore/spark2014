@@ -120,7 +120,21 @@ package body ALFA.Filter is
             when N_Subprogram_Body =>
                declare
                   Id : constant Entity_Id := Unique_Defining_Entity (N);
+
                begin
+                  --  Create a subprogram declaration if not already present,
+                  --  in order to generate a corresponding forward declaration.
+                  --  Share specification between declaration and body, as
+                  --  creating a specification after frontend analysis is bound
+                  --  to be incomplete. Thus, the "Parent" field of the
+                  --  specification now points only to the spec, not the body.
+
+                  if Acts_As_Spec (N) then
+                     Subp.Append
+                       (Make_Subprogram_Declaration
+                          (Sloc (N), Specification (N)));
+                  end if;
+
                   if Body_Is_In_ALFA (Id) then
                      Subp.Append (N);
                   end if;
@@ -301,6 +315,25 @@ package body ALFA.Filter is
       if Present (Body_Unit) then
          Lib.Xref.ALFA.Traverse_Compilation_Unit
            (Body_Unit, Dispatch_Body'Unrestricted_Access);
+
+         --  Sort the declarations just listed so that subprogram declarations
+         --  precede subprogram bodies.
+
+         declare
+            function "<" (Left, Right : Node_Id) return Boolean;
+            --  Ordering in which subprogram specs are first
+
+            function "<" (Left, Right : Node_Id) return Boolean is
+            begin
+               return (Nkind (Left) = N_Subprogram_Declaration
+                        and then Nkind (Right) /= N_Subprogram_Declaration);
+            end "<";
+
+            package Put_Spec_First is new Generic_Sorting ("<");
+
+         begin
+            Put_Spec_First.Sort (Subp_Body_List);
+         end;
       end if;
 
       declare

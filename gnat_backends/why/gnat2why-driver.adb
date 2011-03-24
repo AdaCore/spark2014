@@ -26,7 +26,6 @@
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
 with Errout;                use Errout;
-with Exp_Dbug;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Opt;                   use Opt;
@@ -122,8 +121,6 @@ package body Gnat2Why.Driver is
       Mark_Standard_Package;
       Mark_All_Compilation_Units;
       Close_ALFA_Output_File;
-
-      Exp_Dbug.Qualify_All_Entity_Names;
 
       if Compilation_Errors then
          return;

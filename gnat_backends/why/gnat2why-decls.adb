@@ -25,7 +25,7 @@
 
 with Atree;                use Atree;
 with Einfo;                use Einfo;
-with Namet;                use Namet;
+with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Stand;                use Stand;
 with Why.Atree.Builders;   use Why.Atree.Builders;
@@ -42,21 +42,12 @@ package body Gnat2Why.Decls is
    -- Full_Name --
    ---------------
 
-   function Full_Name (N : Node_Id) return String
-   is
-      Short_Name  : constant String  := Get_Name_String (Chars (N));
+   function Full_Name (N : Node_Id) return String is
    begin
       if N = Standard_Boolean then
          return "bool";
-      end if;
-      --  We expand all names except parameters
-      if Has_Fully_Qualified_Name (N) or else
-         Ekind (N) in E_Out_Parameter ..  E_In_Parameter or else
-         Ekind (N) = E_Loop_Parameter
-      then
-         return Short_Name;
       else
-         return (Get_Name_String (Chars (Scope (N))) & "__" & Short_Name);
+         return Unique_Name (N);
       end if;
    end Full_Name;
 
