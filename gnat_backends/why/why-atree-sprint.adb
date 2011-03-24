@@ -376,6 +376,7 @@ package body Why.Atree.Sprint is
       Node  : W_Integer_Constant_Id)
    is
       pragma Unreferenced (State);
+      Value : constant Uint := Integer_Constant_Get_Value (Node);
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
@@ -423,8 +424,13 @@ package body Why.Atree.Sprint is
       --  OctalDigit ::=  { 01234567 }
       --
       --  BinaryDigit ::=  { 01 }
-
-      P (O, Img (Integer_Constant_Get_Value (Node)));
+      if Value < Uint_0 then
+         P (O, "( ");
+         P (O, Img (Value));
+         P (O, " )");
+      else
+         P (O, Img (Value));
+      end if;
    end Integer_Constant_Pre_Op;
 
    --------------------------

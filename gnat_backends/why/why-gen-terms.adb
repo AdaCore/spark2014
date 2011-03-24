@@ -24,10 +24,47 @@
 ------------------------------------------------------------------------------
 
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Atree.Tables;   use Why.Atree.Tables;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Progs;      use Why.Gen.Progs;
 
 package body Why.Gen.Terms is
+
+   ----------------------------
+   -- Insert_Conversion_Term --
+   ----------------------------
+
+   function Insert_Conversion_Term
+      (Ada_Node : Node_Id := Empty;
+       To       : Why_Type;
+       From     : Why_Type;
+       Why_Term : W_Term_Id) return W_Term_Id
+   is
+   begin
+      if To = From then
+         return Why_Term;
+      end if;
+
+      if To.Kind = Why_Int or else From.Kind = Why_Int then
+         return
+           New_Operation
+             (Ada_Node   => Ada_Node,
+              Name       => Conversion_Name (From => From, To => To),
+              Parameters => (1 => Why_Term));
+      else
+         return
+            Insert_Conversion_Term
+               (Ada_Node => Ada_Node,
+                To       => To,
+                From     => (Kind => Why_Int),
+                Why_Term =>
+                  Insert_Conversion_Term
+                    (Ada_Node => Ada_Node,
+                     To       => (Kind => Why_Int),
+                     From     => From,
+                     Why_Term => Why_Term));
+      end if;
+   end Insert_Conversion_Term;
 
    --------------
    -- New_Andb --
@@ -91,6 +128,17 @@ package body Why.Gen.Terms is
                    Parameters => (1 => Condition, 2 => Left, 3 => Right));
       end case;
    end New_Ifb;
+
+   -------------------
+   -- New_Old_Ident --
+   -------------------
+
+   function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id
+   is
+   begin
+      return
+         New_Term_Identifier (Name => Ident, Label => New_Identifier (""));
+   end New_Old_Ident;
 
    --------------
    -- New_Orb --
