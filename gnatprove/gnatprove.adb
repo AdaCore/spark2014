@@ -50,16 +50,16 @@ procedure Gnatprove is
    --  a project
 
    procedure Call_AltErgo_On_File
-      (File : String;
-       Result_File : String;
-       Timeout : Natural);
+     (File        : String;
+      Result_File : String;
+      Timeout     : Natural);
    --  Call Altergo on a single File. Produce a file containing the result of
    --  the run with name Result_File. Don't take more time than the given
    --  Timeout in seconds.
 
    procedure Call_Exit_On_Failure
-      (Command : String;
-       Arguments : Argument_List);
+     (Command : String;
+      Arguments : Argument_List);
    --  Call the given command using the given argument list.
    --  Free all argument access values
    --  If the command exit status is not 0, print its output and exit.
@@ -92,11 +92,10 @@ procedure Gnatprove is
    -- Call_Altergo --
    ------------------
 
-   procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File)
-   is
+   procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File) is
       pragma Unreferenced (Proj);
-      Base : constant String :=
-         Ada.Directories.Base_Name (+Base_Name (File));
+
+      Base : constant String := Ada.Directories.Base_Name (+Base_Name (File));
 
       procedure Call_AltErgo_On_Vc
         (Item  : String;
@@ -147,15 +146,14 @@ procedure Gnatprove is
    --------------------------
 
    procedure Call_AltErgo_On_File
-      (File : String;
-       Result_File : String;
-       Timeout : Natural)
-   is
+     (File        : String;
+      Result_File : String;
+      Timeout     : Natural) is
    begin
       if Verbose then
-         Ada.Text_IO.Put ("calling Alt-ergo on ");
-         Ada.Text_IO.Put_Line (File);
+         Ada.Text_IO.Put_Line ("calling Alt-ergo on " & File);
       end if;
+
       declare
          Status : aliased Integer;
          S  : constant String :=
@@ -169,15 +167,19 @@ procedure Gnatprove is
                Status    => Status'Access,
                Err_To_Out => True);
          FT : Ada.Text_IO.File_Type;
+
       begin
          Ada.Text_IO.Create (FT, Ada.Text_IO.Out_File, Result_File);
+
          if Status /= 0 or else S'Length = 0 then
             Ada.Text_IO.Put (FT, "File """);
             Ada.Text_IO.Put (FT, File);
             Ada.Text_IO.Put_Line (FT, """:Failure or Timeout");
+
          else
             Ada.Text_IO.Put (FT, S);
          end if;
+
          Ada.Text_IO.Close (FT);
       end;
    end Call_AltErgo_On_File;
@@ -187,10 +189,11 @@ procedure Gnatprove is
    --------------------------
 
    procedure Call_Exit_On_Failure
-      (Command : String;
-       Arguments : Argument_List)
+     (Command   : String;
+      Arguments : Argument_List)
    is
       Status : aliased Integer;
+
       procedure Print_Command_Line;
       --  print the command line for debug purposes
 
@@ -198,10 +201,10 @@ procedure Gnatprove is
       -- Print_Command_Line --
       ------------------------
 
-      procedure Print_Command_Line
-      is
+      procedure Print_Command_Line is
       begin
          Ada.Text_IO.Put (Command);
+
          for Index in Arguments'Range loop
             declare
                S : constant String_Access := Arguments (Index);
@@ -211,11 +214,13 @@ procedure Gnatprove is
             end;
          end loop;
       end Print_Command_Line;
+
    begin
       if Verbose then
          Print_Command_Line;
          Ada.Text_IO.Put_Line ("");
       end if;
+
       declare
          S : constant String :=
             GNAT.Expect.Get_Command_Output
@@ -231,6 +236,7 @@ procedure Gnatprove is
             Ada.Text_IO.Put (S);
             GNAT.OS_Lib.OS_Exit (1);
          end if;
+
          for Index in Arguments'Range loop
             declare
                S : String_Access := Arguments (Index);
@@ -245,8 +251,7 @@ procedure Gnatprove is
    -- Call_Gnatmake --
    -------------------
 
-   procedure Call_Gnatmake (Project_File : String)
-   is
+   procedure Call_Gnatmake (Project_File : String) is
    begin
       Call_Exit_On_Failure
         (Command => "gnatmake",
@@ -255,28 +260,26 @@ procedure Gnatprove is
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
                        4 => new String'("-gnat2012"),   --  enable Ada 2012
                        5 => new String'("-gnatc"),      --  only generate ALI
-                       6 => new String'("-f"),          --  Force recompilation
-                       7 => new String'("-gnatd.F")));  --  ALFA section in ALI
-
+                       6 => new String'("-gnatd.F")));  --  ALFA section in ALI
    end Call_Gnatmake;
 
    -------------------
    -- Call_Gnat2Why --
    -------------------
 
-   procedure Call_Gnat2Why (Proj : Project_Tree; File : Virtual_File)
-   is
-      Switch : GNAT.Strings.String_List_Access;
-      Default : Boolean;
+   procedure Call_Gnat2Why (Proj : Project_Tree; File : Virtual_File) is
+      Switch    : GNAT.Strings.String_List_Access;
+      Default   : Boolean;
       Proj_Type : constant Project_Type := Root_Project (Proj);
+
    begin
       Switches
-         (Project  => Proj_Type,
-          In_Pkg   => "compiler",
-          File     => File,
-          Language => "Ada",
-          Value    => Switch,
-          Is_Default_Value => Default);
+        (Project  => Proj_Type,
+         In_Pkg   => "compiler",
+         File     => File,
+         Language => "Ada",
+         Value    => Switch,
+         Is_Default_Value => Default);
       Call_Exit_On_Failure
         (Command   => "gnat2why",
          Arguments =>
@@ -294,15 +297,17 @@ procedure Gnatprove is
    -- Call_Why --
    --------------
 
-   procedure Call_Why (Proj : Project_Tree; File : Virtual_File)
-   is
+   procedure Call_Why (Proj : Project_Tree; File : Virtual_File) is
       pragma Unreferenced (Proj);
+
       Base : constant String :=
            Ada.Directories.Base_Name (+Full_Name (File));
+
    begin
-      --  assuming 'base' to be the filename without suffix, call the
+      --  Assuming 'base' to be the filename without suffix, call the
       --  command
       --  why --multiwhy --explain --locs <base>.locs <base>.why
+
       Call_Exit_On_Failure
         (Command   => "why",
          Arguments =>
@@ -318,36 +323,30 @@ procedure Gnatprove is
    ---------
 
    procedure Cat
-      (Files   : Argument_List;
-       Target  : String;
-       Success : out Boolean)
-   is
+     (Files   : Argument_List;
+      Target  : String;
+      Success : out Boolean) is
    begin
       if Verbose then
          Ada.Text_IO.Put ("cat ");
+
          for Index in Files'Range loop
-            declare
-               Cur_File : constant String_Access := Files (Index);
-            begin
-               Ada.Text_IO.Put (Cur_File.all);
-               Ada.Text_IO.Put (" ");
-            end;
+            Ada.Text_IO.Put (Files (Index).all);
+            Ada.Text_IO.Put (" ");
          end loop;
+
          Ada.Text_IO.Put ("> ");
          Ada.Text_IO.Put_Line (Target);
       end if;
+
       for Index in Files'Range loop
-         declare
-            Cur_File : constant String_Access := Files (Index);
-         begin
-            Copy_File
-              (Name     => Cur_File.all,
-               Pathname => Target,
-               Success  => Success,
-               Mode     => Append,
-               Preserve => None);
-            exit when not Success;
-         end;
+         Copy_File
+           (Name     => Files (Index).all,
+            Pathname => Target,
+            Success  => Success,
+            Mode     => Append,
+            Preserve => None);
+         exit when not Success;
       end loop;
    end Cat;
 
@@ -355,8 +354,7 @@ procedure Gnatprove is
    -- Get_Ada_Include --
    ---------------------
 
-   function Get_Ada_Include return String
-   is
+   function Get_Ada_Include return String is
       D : Process_Descriptor;
       A : Expect_Match;
    begin
@@ -375,8 +373,7 @@ procedure Gnatprove is
    -- Iter_Project_Source_Files --
    -------------------------------
 
-   procedure Iter_Project_Source_Files (Proj : Project_Tree)
-   is
+   procedure Iter_Project_Source_Files (Proj : Project_Tree) is
       Proj_Type : constant Project_Type := Proj.Root_Project;
       File_List : constant File_Array_Access := Proj_Type.Source_Files;
    begin
@@ -412,17 +409,19 @@ procedure Gnatprove is
    Proj_Env  : Project_Environment_Access;
 
    procedure Iterate_Altergo is
-      new Iter_Project_Source_Files (Call_Altergo);
+     new Iter_Project_Source_Files (Call_Altergo);
 
    procedure Iterate_Gnat2Why is
-      new Iter_Project_Source_Files (Call_Gnat2Why);
+     new Iter_Project_Source_Files (Call_Gnat2Why);
 
    procedure Iterate_Why is
-      new Iter_Project_Source_Files (Call_Why);
+     new Iter_Project_Source_Files (Call_Why);
 
    --  begin processing for Gnatprove
+
 begin
    --  Install command line config
+
    Define_Switch (Config, Verbose'Access,
                   "-v", Long_Switch => "--verbose",
                   Help => "Output extra verbose information");
@@ -436,8 +435,8 @@ begin
    Initialize (Proj_Env);
    Set_Object_Subdir (Proj_Env.all, Subdir_Name);
    Tree.Load
-      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
-       Proj_Env);
+     (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+      Proj_Env);
    Proj_Type := Root_Project (Tree);
    --  Call gnatmake before changing the directory, for the project file to
    --  be in the path
@@ -446,9 +445,6 @@ begin
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
 
    Iterate_Gnat2Why (Tree);
-
    Iterate_Why (Tree);
-
    Iterate_Altergo (Tree);
-
 end Gnatprove;
