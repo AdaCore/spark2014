@@ -2,7 +2,7 @@
 # This makefile assumes that it executed from the backend directory.
 
 # number of processors
-PROCS=1
+PROCS=0
 
 # for debugging/development
 CFLAGS=-O0 -gnata -gnat12 -gnatg
@@ -32,7 +32,7 @@ setup:
 	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
 	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
 
-INCLUDES=-I.. -I../.. -I../../alfa
+INCLUDES=-I.. -I../.. -I../../alfa -I../../utils
 
 build: obj/smissing.o force
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
