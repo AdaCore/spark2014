@@ -1,2 +1,3 @@
--f1 pack.adb:3 (impure function)
--f2 pack.adb:9 (impure function)
+-pack__f1 pack.adb:3 (impure function)
+-pack__f2 pack.adb:9 (impure function)
+
