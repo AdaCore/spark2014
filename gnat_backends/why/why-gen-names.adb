@@ -66,6 +66,28 @@ package body Why.Gen.Names is
       return New_Identifier (Name & Suffix);
    end Array_Accupd_Eq_Axiom;
 
+   ----------------------
+   -- Array_First_Name --
+   ----------------------
+
+   function Array_First_Name (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__first";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_First_Name;
+
+   ---------------------
+   -- Array_Last_Name --
+   ---------------------
+
+   function Array_Last_Name (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__last";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Last_Name;
+
    -----------------------
    -- Array_Update_Name --
    -----------------------

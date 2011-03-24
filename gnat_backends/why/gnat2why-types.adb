@@ -25,6 +25,7 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
@@ -42,14 +43,32 @@ with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
 package body Gnat2Why.Types is
 
+   function Type_Of_Array_Index (N : Node_Id) return String;
+   --  Given a type definition for arrays, return the type of the array index
+
    -------------------------
    -- Type_Of_Array_Index --
    -------------------------
 
-   function Type_Of_Array_Index (N : Node_Id) return Name_Id
+   function Type_Of_Array_Index (N : Node_Id) return String
    is
    begin
-      return Chars (Etype (First (Discrete_Subtype_Definitions (N))));
+      declare
+         Index_List : List_Id;
+      begin
+         case Nkind (N) is
+            when N_Unconstrained_Array_Definition =>
+               Index_List := Subtype_Marks (N);
+
+            when N_Constrained_Array_Definition =>
+               Index_List := Discrete_Subtype_Definitions (N);
+
+            when others =>
+               raise Not_Implemented;
+
+         end case;
+         return Full_Name (Etype (First (Index_List)));
+      end;
    end Type_Of_Array_Index;
 
    -------------------------------------
@@ -89,9 +108,26 @@ package body Gnat2Why.Types is
                Name_Str,
                Expr_Value (Low_Bound (Def_Node)),
                Expr_Value (High_Bound (Def_Node)));
+
+         when N_Unconstrained_Array_Definition =>
+            declare
+               Component_Type : constant String :=
+                  Full_Name
+                     (Entity
+                        (Subtype_Indication
+                           (Component_Definition (Def_Node))));
+               Index          : constant String :=
+                  Type_Of_Array_Index (Def_Node);
+            begin
+               Declare_Ada_Unconstrained_Array
+                 (File,
+                  Name_Str,
+                  Index,
+                  Component_Type);
+            end;
+
          when N_Floating_Point_Definition
             | N_Ordinary_Fixed_Point_Definition
-            | N_Unconstrained_Array_Definition
             | N_Record_Definition
             =>
             --  ??? We do nothing here for now
@@ -104,7 +140,7 @@ package body Gnat2Why.Types is
                         (Subtype_Indication (Component_Definition
                            (Def_Node))));
                Index          : constant String :=
-                  Get_Name_String (Type_Of_Array_Index (Def_Node));
+                  Type_Of_Array_Index (Def_Node);
             begin
                Declare_Ada_Constrained_Array
                   (File,

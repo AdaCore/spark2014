@@ -197,7 +197,7 @@ package body Why.Gen.Decl is
                Effects       => Effects,
                Precondition  => New_Precondition (Assertion => Pre),
                Postcondition => New_Postcondition (Assertion => Post));
-         for Index in Binders'Range loop
+         for Index in reverse Binders'Range loop
             declare
                use Node_Lists;
 

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;      use Namet;
 with Types;      use Types;
 with Why.Ids;    use Why.Ids;
 
@@ -78,8 +77,5 @@ package Gnat2Why.Types is
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
    --  is expected to be a Defining_Identifier for a type. The Boolean
    --  argument decides if a "ref" constructor is built on top.
-
-   function Type_Of_Array_Index (N : Node_Id) return Name_Id;
-   --  Given a type definition for arrays, return the type of the array index
 
 end Gnat2Why.Types;

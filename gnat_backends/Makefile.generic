@@ -42,6 +42,60 @@ build: obj/smissing.o force
 obj/smissing.o: ../smissing.c
 	gcc -c ../smissing.c -o obj/smissing.o
 
+# This target builds a combined gnat1+TOOLS executable.
+# It requires a GNAT_BUILD_DIR env variable which should point to
+# a directory containing the following subdirs:
+#    src: GCC/GNAT source tree
+#    obj: GCC/GNAT object tree
+##   libmpfr/install: libmpfr/gmp install dir
+
+# MPFR_LIB_DIR=$(GNAT_BUILD_DIR)/libmpfr/install/lib
+# GMP_LIB_DIR=$(MPFR_LIB_DIR)
+
+# Optional environment variables:
+# ADAFLAGS: additional gnat switches to pass to gnatmake
+# GCCFLAGS: additional gcc switches to pass to gnatmake
+ADAFLAGS=-gnata
+GCCFLAGS=-g -O2
+
+OBJ=$(GNAT_BUILD_DIR)/obj/gcc/ada
+SRC=$(GNAT_BUILD_DIR)/src/gcc/ada
+GNAT1_INCLUDES=-I. -I$(OBJ) -I$(SRC) $(INCLUDES)
+GNAT_RTS=$(shell if [ -d $(OBJ)/rts-native ]; then echo $(OBJ)/rts-native; else echo $(OBJ)/rts; fi)
+
+GNAT1_C_OBJS=$(OBJ)/adadecode.o $(OBJ)/adaint.o $(OBJ)/cstreams.o \
+ $(OBJ)/cio.o $(OBJ)/targtyps.o $(OBJ)/decl.o $(OBJ)/misc.o $(OBJ)/utils.o \
+ $(OBJ)/utils2.o $(OBJ)/trans.o $(OBJ)/cuintp.o $(OBJ)/argv.o $(OBJ)/raise.o \
+ $(OBJ)/init.o $(OBJ)/tracebak.o $(OBJ)/initialize.o $(OBJ)/env.o \
+ $(OBJ)/targext.o $(OBJ)/seh_init.o $(OBJ)/final.o \
+ $(OBJ)/../attribs.o $(OBJ)/../prefix.o $(OBJ)/../main.o
+
+RTS:=$(GNAT_RTS)
+
+GNAT1_RTS_OBJS=$(RTS)/mkdir.o $(RTS)/errno.o $(RTS)/ctrl_c.o \
+  $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o
+
+GNAT1_LIBS=$(OBJ)/../libbackend.a $(OBJ)/../../libcpp/libcpp.a \
+   $(OBJ)/../../libdecnumber/libdecnumber.a $(OBJ)/../../libiberty/libiberty.a
+
+#   -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
+#   $(OBJ)/../../zlib/libz.a
+
+ifeq ($(filter-out CYGWIN%,$(uname)),)
+  LDFLAGS=-Wl,--stack=0x2000000
+endif
+
+gnat1:
+	mkdir -p $(LOCAL_OBJ) ../install/bin
+	cp -p gnat.adc $(LOCAL_OBJ)
+	# $(RM) $(OBJ)/back_end.*
+	cd $(LOCAL_OBJ) && gnatmake -a -j$(PROCS) $(GNAT1_INCLUDES) \
+	  -o ../../install/bin/gnat1why gnat1drv \
+	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
+	  -bargs -n -nostdlib \
+	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
+		$(GNAT1_RTS_OBJS) $(GNAT1_LIBS) $(LDFLAGS)
+
 force:
 
 clean:

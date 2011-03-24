@@ -37,6 +37,12 @@ package Why.Gen.Names is
    function Array_Access_Name (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of its access function
    --
+   function Array_First_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of its "first" function
+
+   function Array_Last_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of its "last" function
+
    function Array_Update_Name (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of its update function
 

@@ -23,14 +23,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
+with Types;         use Types;
+with Why.Gen.Types; use Why.Gen.Types;
+with Why.Ids;       use Why.Ids;
+with Why.Sinfo;     use Why.Sinfo;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms
 
+   function Insert_Conversion_Term
+      (Ada_Node : Node_Id := Empty;
+       To       : Why_Type;
+       From     : Why_Type;
+       Why_Term : W_Term_Id) return W_Term_Id;
+   --  We expect Why_Expr to be of the type that corresponds to the type
+   --  "From". We insert a conversion so that its type corresponds to "To".
+
    function New_Andb (Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a boolean conjunction.
+
+   function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id;
+   --  Build an identifier with "old" label
 
    function New_Orb (Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a boolean disjunction.
