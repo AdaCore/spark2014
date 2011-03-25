@@ -1182,7 +1182,8 @@ package body Gnat2Why.Subprograms is
             begin
                T :=
                  New_Array_Access_Prog
-                  (Type_Name     => Type_Of_Node (Pre),
+                  (Ada_Node      => Expr,
+                   Type_Name     => Type_Of_Node (Pre),
                    Ar            => Why_Expr_Of_Ada_Expr (Pre),
                    Index         =>
                       Why_Expr_Of_Ada_Expr
@@ -1267,17 +1268,19 @@ package body Gnat2Why.Subprograms is
                   when Attribute_Old =>
                      raise Not_Implemented;
 
-                  when Attribute_First | Attribute_Last =>
+                  when Attribute_First | Attribute_Last | Attribute_Length =>
                      if Is_Unconstrained_Array (Var) then
                         declare
                            Name : constant String := Full_Name (Etype (Var));
                            Op_Name : constant W_Identifier_Id :=
                               (if Attr_Id = Attribute_First then
                                  Array_First_Name (Name)
-                              else
-                                 Array_Last_Name (Name));
+                               elsif Attr_Id = Attribute_Last then
+                                 Array_Last_Name (Name)
+                               else
+                                 Array_Length_Name (Name));
                         begin
-                           return
+                           T :=
                               New_Prog_Call
                                  (Ada_Node   => Expr,
                                   Name       => Op_Name,
@@ -1286,6 +1289,10 @@ package body Gnat2Why.Subprograms is
                                        New_Deref
                                           (Ref =>
                                              Why_Ident_Of_Ada_Ident (Var))));
+                           Current_Type :=
+                              (Why_Abstract,
+                                 Etype (First (Subtype_Marks (Type_Definition
+                                 (Parent (Etype (Var)))))));
                         end;
                      else
                         declare
@@ -1424,7 +1431,8 @@ package body Gnat2Why.Subprograms is
                   begin
                      return
                        New_Array_Update_Prog
-                         (Type_Name => Type_Of_Node (Pre),
+                         (Ada_Node  => Stmt,
+                          Type_Name => Type_Of_Node (Pre),
                           Ar        => Why_Ident_Of_Ada_Ident (Pre),
                           Index     =>
                             Why_Expr_Of_Ada_Expr
@@ -2093,25 +2101,34 @@ package body Gnat2Why.Subprograms is
                   when Attribute_Old =>
                      T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));
 
-                  when Attribute_First | Attribute_Last =>
+                  when Attribute_First | Attribute_Last | Attribute_Length =>
                      if Is_Unconstrained_Array (Var) then
                         declare
                            Name : constant String := Full_Name (Etype (Var));
                            Op_Name : constant W_Identifier_Id :=
                               (if Attr_Id = Attribute_First then
-                                 Array_First_Name (Name)
-                              else
-                                 Array_Last_Name (Name));
+                                  Array_First_Name (Name)
+                               elsif Attr_Id = Attribute_Last then
+                                  Array_Last_Name (Name)
+                               else
+                                  Array_Length_Name (Name));
                         begin
-                           return
+                           T :=
                               New_Operation
-                                 (Ada_Node   => Expr,
-                                  Name       => Op_Name,
-                                  Parameters =>
-                                    (1 =>
-                                       New_Term_Identifier
-                                          (Name =>
-                                             Why_Ident_Of_Ada_Ident (Var))));
+                                (Ada_Node   => Expr,
+                                 Name       => Op_Name,
+                                 Parameters =>
+                                   (1 =>
+                                      New_Term_Identifier
+                                         (Name =>
+                                            Why_Ident_Of_Ada_Ident (Var))));
+                           --  ??? We assume the attribute to of the type
+                           --  of the array index, but this is incorrect for
+                           --  superflat arrays
+                           Current_Type :=
+                              (Why_Abstract,
+                                 Etype (First (Subtype_Marks (Type_Definition
+                                 (Parent (Etype (Var)))))));
                         end;
                      else
                         declare

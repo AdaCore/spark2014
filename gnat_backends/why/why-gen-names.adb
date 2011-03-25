@@ -66,6 +66,17 @@ package body Why.Gen.Names is
       return New_Identifier (Name & Suffix);
    end Array_Accupd_Eq_Axiom;
 
+   ---------------------------
+   -- Array_Accupd_Neq_Axiom --
+   ---------------------------
+
+   function Array_Accupd_Neq_Axiom (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__accupd_neq";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Accupd_Neq_Axiom;
+
    ----------------------
    -- Array_First_Name --
    ----------------------
@@ -77,6 +88,17 @@ package body Why.Gen.Names is
       return New_Identifier (Name & Suffix);
    end Array_First_Name;
 
+   ------------------------
+   -- Array_First_Update --
+   ------------------------
+
+   function Array_First_Update (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__first_update";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_First_Update;
+
    ---------------------
    -- Array_Last_Name --
    ---------------------
@@ -87,6 +109,61 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Name & Suffix);
    end Array_Last_Name;
+
+   ---------------------
+   -- Array_Last_Update --
+   ---------------------
+
+   function Array_Last_Update (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__last_update";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Last_Update;
+
+   -----------------------
+   -- Array_Length_Name --
+   -----------------------
+
+   function Array_Length_Name (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__length";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Length_Name;
+
+   ---------------------------
+   -- Array_Length_Non_Zero --
+   ---------------------------
+
+   function Array_Length_Non_Zero (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__length_non_zero";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Length_Non_Zero;
+
+   -------------------------
+   -- Array_Length_Update --
+   -------------------------
+
+   function Array_Length_Update (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__length_update";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Length_Update;
+
+   -----------------------
+   -- Array_Length_Zero --
+   -----------------------
+
+   function Array_Length_Zero (Name : String) return W_Identifier_Id
+   is
+      Suffix : constant String := "__length_zero";
+   begin
+      return New_Identifier (Name & Suffix);
+   end Array_Length_Zero;
 
    -----------------------
    -- Array_Update_Name --

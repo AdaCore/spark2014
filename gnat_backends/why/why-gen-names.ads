@@ -35,13 +35,38 @@ package Why.Gen.Names is
    --  its allocator.
 
    function Array_Access_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its access function
+   --  From the name of an array type, return the name of its access function.
    --
    function Array_First_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its "first" function
+   --  From the name of an array type, return the name of its "first"
+   --  function.
+
+   function Array_First_Update (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "first" is constant
 
    function Array_Last_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an array type, return the name of its "last" function
+   --  From the name of an array type, return the name of its "last" function.
+
+   function Array_Last_Update (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "last" is constant
+
+   function Array_Length_Name (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of its "length"
+   --  function.
+
+   function Array_Length_Non_Zero (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  defines the properties when Length is positive.
+
+   function Array_Length_Update (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that "length" is constant
+
+   function Array_Length_Zero (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  defines the properties when Length Zero.
 
    function Array_Update_Name (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of its update function
@@ -49,6 +74,10 @@ package Why.Gen.Names is
    function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of the axiom of
    --  access/update equality
+
+   function Array_Accupd_Neq_Axiom (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom of
+   --  access/update with disequality
 
    function Coerce_Axiom (Name : String) return  W_Identifier_Id;
    function Coerce_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;

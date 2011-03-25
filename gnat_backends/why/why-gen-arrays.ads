@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Types;        use Types;
 with Why.Ids;      use Why.Ids;
 
 package Why.Gen.Arrays is
@@ -53,7 +54,8 @@ package Why.Gen.Arrays is
    --  type A is Array (basetype range <>) of Component
 
    function New_Array_Access_Prog
-     (Type_Name     : String;
+     (Ada_Node      : Node_Id;
+      Type_Name     : String;
       Ar            : W_Prog_Id;
       Index         : W_Prog_Id;
       Unconstrained : Boolean) return W_Prog_Id;
@@ -66,7 +68,8 @@ package Why.Gen.Arrays is
    --  Generate a Term that corresponds to an array access.
 
    function New_Array_Update_Prog
-      (Type_Name     : String;
+      (Ada_Node      : Node_Id;
+       Type_Name     : String;
        Ar            : W_Identifier_Id;
        Index         : W_Prog_Id;
        Value         : W_Prog_Id;

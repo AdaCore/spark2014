@@ -44,7 +44,7 @@ with Gnat2Why.Decls;     use Gnat2Why.Decls;
 package body Gnat2Why.Types is
 
    function Type_Of_Array_Index (N : Node_Id) return String;
-   --  Given a type definition for arrays, return the type of the array index
+   --  Given a type definition for arrays, return the type of the array index.
 
    -------------------------
    -- Type_Of_Array_Index --

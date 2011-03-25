@@ -136,7 +136,7 @@ package body Why.Gen.Axioms is
    begin
       New_Axiom
          (File       => File,
-          Name       => Array_Accupd_Eq_Axiom (Type_Name),
+          Name       => Array_Accupd_Neq_Axiom (Type_Name),
           Axiom_Body => Quantified_Body);
    end Define_Array_Neq_Axiom;
 

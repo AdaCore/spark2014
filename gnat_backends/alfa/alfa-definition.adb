@@ -793,7 +793,7 @@ package body ALFA.Definition is
       case Attr_Id is
          when Attribute_Result | Attribute_Old =>
             null;
-         when Attribute_First =>
+         when Attribute_First | Attribute_Last | Attribute_Length =>
             Mark (Prefix (N));
          when others =>
             Mark_Non_ALFA ("attribute", N, V_Implem);
