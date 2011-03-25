@@ -32,7 +32,8 @@ setup:
 	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
 	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
 
-INCLUDES=-I.. -I../.. -I../../alfa -I../../utils
+COMMON_INCLUDES=-I.. -I../../alfa -I../../utils
+INCLUDES=$(COMMON_INCLUDES) -I../..
 
 build: obj/smissing.o force
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
@@ -60,7 +61,7 @@ GCCFLAGS=-g -O2
 
 OBJ=$(GNAT_BUILD_DIR)/obj/gcc/ada
 SRC=$(GNAT_BUILD_DIR)/src/gcc/ada
-GNAT1_INCLUDES=-I. -I$(OBJ) -I$(SRC) $(INCLUDES)
+GNAT1_INCLUDES=-I. -I$(OBJ) -I$(SRC) $(COMMON_INCLUDES)
 GNAT_RTS=$(shell if [ -d $(OBJ)/rts-native ]; then echo $(OBJ)/rts-native; else echo $(OBJ)/rts; fi)
 
 GNAT1_C_OBJS=$(OBJ)/adadecode.o $(OBJ)/adaint.o $(OBJ)/cstreams.o \
