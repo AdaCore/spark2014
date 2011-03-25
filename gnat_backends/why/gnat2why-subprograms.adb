@@ -454,10 +454,18 @@ package body Gnat2Why.Subprograms is
 
    function Is_Unconstrained_Array (N : Node_Id) return Boolean
    is
+      Ty : constant Entity_Id := Etype (N);
    begin
-      case Nkind (Type_Definition (Parent (Etype (N)))) is
-         when N_Unconstrained_Array_Definition =>
-            return True;
+      case Ekind (Ty) is
+         when E_Array_Type =>
+            case Nkind (Type_Definition (Parent (Ty))) is
+               when N_Unconstrained_Array_Definition =>
+                  return True;
+
+               when others =>
+                  return False;
+
+            end case;
 
          when others =>
             return False;
