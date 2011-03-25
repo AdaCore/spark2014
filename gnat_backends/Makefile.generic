@@ -101,7 +101,8 @@ GNAT1_LIBS=$(OBJ)/../libbackend.a $(OBJ)/../../libcpp/libcpp.a \
 gnat1:
 	mkdir -p $(LOCAL_OBJ) ../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
-	sed -e 's/pragma Restrictions.*/--/' $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
+	sed -e 's/Always_Compatible_Rep.*/Always_Compatible_Rep     : constant Boolean := False;/' \
+	    $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
 	cd $(LOCAL_OBJ) && gnatmake -m -a -j$(PROCS) $(GNAT1_INCLUDES) \
 	  -o ../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
 	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
