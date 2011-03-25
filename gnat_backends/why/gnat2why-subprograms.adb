@@ -1397,7 +1397,7 @@ package body Gnat2Why.Subprograms is
    -- Int_Term_Of_Ada_Expr --
    --------------------------
 
-   function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id
+   function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id
    is
    begin
       return Why_Term_Of_Ada_Expr (Expr, (Kind => Why_Int));
