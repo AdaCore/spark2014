@@ -78,18 +78,7 @@ package body ALFA.Frame_Conditions is
 
    begin
       if Map.Contains (From) then
-         --  To reactivate when using a different System package than the one
-         --  for the compiler, which has a restriction forbidding taking
-         --  'Access attribute.
-
-         --  Map.Update_Element (Map.Find (From), Add_To_Set'Access);
-
-         declare
-            S : Rep_Set.Set := Map.Element (From);
-         begin
-            Add_To_Set (From, S);
-            Map.Include (From, S);
-         end;
+         Map.Update_Element (Map.Find (From), Add_To_Set'Access);
       else
          declare
             S : Rep_Set.Set;

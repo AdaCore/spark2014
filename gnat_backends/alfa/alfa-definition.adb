@@ -655,17 +655,6 @@ package body ALFA.Definition is
             null;
 
          when N_Procedure_Call_Statement =>
-
-            --  ??? Currently recognize specially the code generated for a
-            --  postcondition, to avoid marking this call as not in ALFA. To be
-            --  removed asap.
-
-            if Is_Entity_Name (Name (N))
-              and then Is_Postcondition_Proc (Entity (Name (N)))
-            then
-               return;
-            end if;
-
             Mark_Call (N);
 
          when N_Procedure_Instantiation =>
@@ -677,15 +666,9 @@ package body ALFA.Definition is
          when N_Quantified_Expression =>
             Mark (Condition (N));
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement |
+              N_Raise_xxx_Error =>
             Mark_Non_ALFA ("raise statement", N);
-
-         when N_Raise_xxx_Error =>
-
-            --  ??? Currently consider specially these as checks inserted by
-            --  by the compiler. To be removed asap.
-
-            null;
 
          when N_Range =>
             Mark (Low_Bound (N));
@@ -1164,7 +1147,7 @@ package body ALFA.Definition is
          --  then mark the subprogram as not in ALFA, because neither the
          --  subprogram nor its callers can be proved formally.
          --
-         --   If the non-ALFA construct is in a regular piece of code inside
+         --  If the non-ALFA construct is in a regular piece of code inside
          --  the body of the subprogram, then mark the subprogram body as not
          --  in ALFA, because the subprogram cannot be proved formally, but its
          --  callers could.
