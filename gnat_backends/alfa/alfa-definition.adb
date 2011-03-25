@@ -1676,7 +1676,7 @@ package body ALFA.Definition is
       Push_Scope (Id);
       Mark_Subprogram_Specification (Specification (N));
 
-      PPC := Spec_PPC_List (Id);
+      PPC := Spec_PPC_List (Contract (Id));
       while Present (PPC) loop
          Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (PPC)));
          Mark (Expr);

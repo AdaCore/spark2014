@@ -904,7 +904,7 @@ package body Gnat2Why.Subprograms is
             return Cur_Spec;
          end if;
 
-         PPCs := Spec_PPC_List (Corr_Spec);
+         PPCs := Spec_PPC_List (Contract (Corr_Spec));
          while Present (PPCs) loop
             if Pragma_Name (PPCs) = Kind then
                declare
