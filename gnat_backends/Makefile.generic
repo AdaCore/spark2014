@@ -77,23 +77,19 @@ GNAT1_RTS_OBJS=$(RTS)/mkdir.o $(RTS)/errno.o $(RTS)/ctrl_c.o \
   $(RTS)/sysdep.o $(RTS)/exit.o $(RTS)/cal.o
 
 ifeq ($(filter-out Linux,$(uname)),)
-  INCLUDES=-I../../utils/Linux -I../../utils/Unix $(COMMON_INCLUDES)
   EXTRA_LIBS=-rdynamic -ldl -lelf
 endif
 
 ifeq ($(filter-out Darwin,$(uname)),)
-  INCLUDES=-I../../utils/Darwin-GNAT -I../../utils/Unix $(COMMON_INCLUDES)
   LDFLAGS=-liconv
 endif
 
 ifeq ($(filter-out SunOS,$(uname)),)
-  INCLUDES=-I../../utils/Unix $(COMMON_INCLUDES)
   EXTRA_LIBS=-ldl -lelf
   LDFLAGS=
 endif
 
 ifeq ($(filter-out CYGWIN%,$(uname)),)
-  INCLUDES=-I../../utils/Windows_NT $(COMMON_INCLUDES)
   LDFLAGS=-Wl,--stack=0x2000000
 endif
 
