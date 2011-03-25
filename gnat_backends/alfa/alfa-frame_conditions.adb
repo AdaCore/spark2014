@@ -712,28 +712,10 @@ package body ALFA.Frame_Conditions is
          Prop_Reads  := Reads_Of (Callee) - Defines_Of (Callee);
          Prop_Writes := Writes_Of (Callee) - Defines_Of (Callee);
 
-         --  To reactivate when using a different System package than the one
-         --  for the compiler, which has a restriction forbidding taking
-         --  'Access attribute.
-
---           Reads.Update_Element
---             (Reads.Find (Caller), Union_With_Reads'Access);
---           Writes.Update_Element
---             (Writes.Find (Caller), Union_With_Writes'Access);
-
-         declare
-            S : Rep_Set.Set := Reads.Element (Caller);
-         begin
-            Union_With_Reads (Caller, S);
-            Reads.Include (Caller, S);
-         end;
-
-         declare
-            S : Rep_Set.Set := Writes.Element (Caller);
-         begin
-            Union_With_Writes (Caller, S);
-            Writes.Include (Caller, S);
-         end;
+         Reads.Update_Element
+           (Reads.Find (Caller), Union_With_Reads'Access);
+         Writes.Update_Element
+           (Writes.Find (Caller), Union_With_Writes'Access);
       end Propagate_On_Call;
 
       -----------------------
