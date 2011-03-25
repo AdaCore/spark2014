@@ -43,7 +43,7 @@ build: obj/smissing.o force
 obj/smissing.o: ../smissing.c
 	gcc -c ../smissing.c -o obj/smissing.o
 
-# This target builds a combined gnat1+TOOLS executable.
+# This target builds a combined gnat1+TOOL_NAME executable.
 # It requires a GNAT_BUILD_DIR env variable which should point to
 # a directory containing the following subdirs:
 #    src: GCC/GNAT source tree
@@ -107,7 +107,7 @@ gnat1:
 	cp -p ../gnat.adc $(LOCAL_OBJ)
 	sed -e 's/pragma Restrictions.*/--/' $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
 	cd $(LOCAL_OBJ) && gnatmake -m -a -j$(PROCS) $(GNAT1_INCLUDES) \
-	  -o ../../install/bin/gnat1why gnat1drv \
+	  -o ../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
 	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
 	  -bargs -n -nostdlib \
 	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
