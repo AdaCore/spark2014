@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+--  with Ada.Text_IO; use Ada.Text_IO; (debugging only)
+
 with ALI;                   use ALI;
 with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
@@ -133,12 +135,23 @@ package body Gnat2Why.Driver is
       --  Load ALFA information from ALIs for all dependent units
 
       for Index in ALIs.First .. ALIs.Last loop
-         Load_ALFA (Index);
+         Load_ALFA (Name_String (Name_Id (ALIs.Table (Index).Afile)));
       end loop;
 
       --  Compute the frame condition from raw ALFA information
 
+--        Put_Line ("");
+--        Put_Line ("## Before propagation ##");
+--        Put_Line ("");
+--        Display_Maps;
+
       Propagate_Through_Call_Graph;
+
+--        Put_Line ("");
+--        Put_Line ("## After propagation ##");
+--        Put_Line ("");
+--        Display_Maps;
+
       Declare_All_Entities;
 
       --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the

@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with ALI; use ALI;
-
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
@@ -58,13 +56,20 @@ package ALFA.Frame_Conditions is
    --  Mapping from file names to file numbers
 
    type Entity_Rep is record
+      Name : String_Ptr;
       File : Nat;
       Line : Nat;
       Col  : Nat;
    end record;
    --  Representative of an entity
 
-   Null_Entity : constant Entity_Rep := Entity_Rep'(File => 0,
+   function "=" (Left, Right : Entity_Rep) return Boolean is
+     (Left.File = Right.File
+       and Left.Line = Right.Line
+       and Left.Col = Right.Col);
+
+   Null_Entity : constant Entity_Rep := Entity_Rep'(Name => null,
+                                                    File => 0,
                                                     Line => 0,
                                                     Col  => 0);
 
@@ -113,7 +118,7 @@ package ALFA.Frame_Conditions is
    procedure Display_Maps;
    --  Send maps to output for debug
 
-   procedure Load_ALFA (Id : ALI_Id);
+   procedure Load_ALFA (ALI_Filename : String);
    --  Extract xref information from an ALI file
 
    procedure Propagate_Through_Call_Graph;

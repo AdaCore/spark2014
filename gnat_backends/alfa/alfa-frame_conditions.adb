@@ -164,7 +164,8 @@ package body ALFA.Frame_Conditions is
          return;
       end if;
 
-      Rep := Entity_Rep'(File => File_Nums.Element (Name),
+      Rep := Entity_Rep'(Name => null,
+                         File => File_Nums.Element (Name),
                          Line => Nat (Get_Logical_Line_Number (Loc)),
                          Col  => Nat (Get_Column_Number (Loc)));
 
@@ -249,10 +250,12 @@ package body ALFA.Frame_Conditions is
       --------------------
 
       procedure Display_Entity (E : Entity_Rep) is
+         File_Str : constant String := Nat'Image (E.File);
          Line_Str : constant String := Nat'Image (E.Line);
          Col_Str  : constant String := Nat'Image (E.Col);
       begin
          Put ("entity @" & To_String (File_Names.Element (E.File))
+               & "(" & File_Str (2 .. File_Str'Last) & ")"
                & ":" & Line_Str (2 .. Line_Str'Last)
                & ":" & Col_Str (2 .. Col_Str'Last));
       end Display_Entity;
@@ -383,9 +386,7 @@ package body ALFA.Frame_Conditions is
    -- Load_ALFA --
    ---------------
 
-   procedure Load_ALFA (Id : ALI_Id) is
-      ALI_Filename : constant String :=
-                       Name_String (Name_Id (ALIs.Table (Id).Afile));
+   procedure Load_ALFA (ALI_Filename : String) is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
@@ -546,7 +547,8 @@ package body ALFA.Frame_Conditions is
                            Scope_Rep'(File_Num  => Srec.File_Num,
                                       Scope_Num => Srec.Scope_Num);
                   Ent  : constant Entity_Rep :=
-                           Entity_Rep'(File => File_Corresp (F),
+                           Entity_Rep'(Name => null,
+                                       File => File_Corresp (F),
                                        Line => Srec.Line,
                                        Col  => Srec.Col);
                begin
@@ -579,7 +581,8 @@ package body ALFA.Frame_Conditions is
                      Xref : ALFA_Xref_Record renames ALFA_Xref_Table.Table (X);
 
                      Ref_Entity : constant Entity_Rep :=
-                                    Entity_Rep'(File => File_Corresp (F),
+                                    Entity_Rep'(Name => Xref.Entity_Name,
+                                                File => File_Corresp (F),
                                                 Line => Xref.Entity_Line,
                                                 Col  => Xref.Entity_Col);
 
