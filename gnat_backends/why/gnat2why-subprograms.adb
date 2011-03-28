@@ -972,24 +972,19 @@ package body Gnat2Why.Subprograms is
       case Nkind (Node) is
          when N_Subprogram_Body =>
             declare
-               Stmts    : constant List_Id :=
+               Stmts     : constant List_Id :=
                             Statements (Handled_Statement_Sequence (Node));
-               Why_Stmt : constant W_Prog_Id :=
+               Why_Stmt  : constant W_Prog_Id :=
                            Why_Expr_Of_Ada_Stmts (Stmts);
-               Pre      : constant W_Predicate_Id :=
+               Pre       : constant W_Predicate_Id :=
                   Compute_Spec_Pred (Name_Precondition, Dummy_Node);
-               Why_Body : constant W_Prog_Id :=
-                  Sequence
-                     (New_Ignore
-                        (Prog =>
-                           Compute_Spec_Prog (Name_Precondition, Dummy_Node)),
-                      Sequence
-                        (New_Assume_Statement (Node, Pred => Pre),
-                         Compute_Context (Why_Stmt)));
-               Loc_Node : Node_Id := Empty;
-               Post     : constant W_Predicate_Id :=
+               Pre_Check : constant W_Prog_Id :=
+                  Compute_Spec_Prog (Name_Precondition, Dummy_Node);
+               Why_Body  : constant W_Prog_Id := Compute_Context (Why_Stmt);
+               Loc_Node  : Node_Id := Empty;
+               Post      : constant W_Predicate_Id :=
                   Compute_Spec_Pred (Name_Postcondition, Loc_Node);
-               Loc_Post : constant W_Predicate_Id :=
+               Loc_Post  : constant W_Predicate_Id :=
                   (if Present (Loc_Node) and then
                      Get_Kind (Post) /= W_True_Literal_Pred then
                       New_Located_Predicate
@@ -1001,8 +996,15 @@ package body Gnat2Why.Subprograms is
 
                New_Global_Binding
                  (File    => File,
+                  Name    => New_Pre_Check_Name (Get_Name_String (Name)),
+                  Binders => Compute_Binders,
+                  Def     => Pre_Check);
+
+               New_Global_Binding
+                 (File    => File,
                   Name    => New_Definition_Name (Get_Name_String (Name)),
                   Binders => Compute_Binders,
+                  Pre     => New_Assertion (Pred => Pre),
                   Post    => New_Assertion (Pred => Loc_Post),
                   Def     => Why_Body);
             end;

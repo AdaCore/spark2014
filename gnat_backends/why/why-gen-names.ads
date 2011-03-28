@@ -125,6 +125,10 @@ package Why.Gen.Names is
    function New_Integer_Division return W_Identifier_Id;
    --  Return an identifier that corresponds to integer division in Why
 
+   function New_Pre_Check_Name (Name : String) return W_Identifier_Id;
+   --  Return an identifier for the subprogram that checks whether a
+   --  precondition is properly guarded
+
    function New_Result_Identifier return W_Term_Identifier_Id;
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.

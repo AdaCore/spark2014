@@ -60,6 +60,7 @@ package body Why.Gen.Names is
    Of_Int             : constant String := "of_int";
    Int_Of             : constant String := "to_int";
    Definition         : constant String := "def";
+   Pre_Check          : constant String := "pre_check";
    Range_Name         : constant String := "range";
    In_Range           : constant String := "in_range";
    Unicity            : constant String := "unicity";
@@ -237,6 +238,10 @@ package body Why.Gen.Names is
    function Definition_Gen is new Generate_Prefix (Definition);
    function New_Definition_Name (Name : String) return W_Identifier_Id
       renames Definition_Gen;
+
+   function Pre_Check_Gen is new Generate_Prefix (Pre_Check);
+   function New_Pre_Check_Name (Name : String) return W_Identifier_Id
+      renames Pre_Check_Gen;
 
    -------------------------
    -- New_Exit_Identifier --
