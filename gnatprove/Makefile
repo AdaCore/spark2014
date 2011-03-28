@@ -2,7 +2,7 @@ all: build
 
 build: force
 	mkdir -p obj
-	gnatmake -P gnatprove.gpr
+	gnatmake -j0 -P gnatprove.gpr
 
 force:
 
