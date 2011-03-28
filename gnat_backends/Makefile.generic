@@ -36,6 +36,7 @@ COMMON_INCLUDES=-I.. -I../../alfa -I../../utils
 INCLUDES=$(COMMON_INCLUDES) -I../..
 
 build: obj/smissing.o force
+	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
 	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
 	  -o ../../install/bin/$(TOOL_NAME) -largs smissing.o
