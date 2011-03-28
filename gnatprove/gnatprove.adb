@@ -409,6 +409,13 @@ begin
 
    Getopt (Config);
 
+   if Project_File.all = "" then
+      Ada.Text_IO.Put_Line
+        (Ada.Text_IO.Standard_Error,
+         "No project file given, aborting.");
+      GNAT.OS_Lib.OS_Exit (1);
+   end if;
+
    Initialize (Proj_Env);
    Set_Object_Subdir (Proj_Env.all, Subdir_Name);
    Tree.Load
@@ -424,4 +431,10 @@ begin
    Iterate_Gnat2Why (Tree);
    Iterate_Why (Tree);
    Iterate_Altergo (Tree);
+exception
+   when Invalid_Project =>
+      Ada.Text_IO.Put
+        (Ada.Text_IO.Standard_Error,
+         "Error: could not find project file: ");
+      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Project_File.all);
 end Gnatprove;
