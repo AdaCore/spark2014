@@ -740,7 +740,11 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("unchecked expression", N);
 
          when N_Unchecked_Type_Conversion =>
-            Mark_Non_ALFA ("unchecked type conversion", N);
+            if Comes_From_Source (N) then
+               Mark_Non_ALFA ("unchecked type conversion", N);
+            else
+               Mark (Expression (N));
+            end if;
 
          when N_Use_Package_Clause =>
             null;
@@ -1485,6 +1489,11 @@ package body ALFA.Definition is
                end;
             end if;
 
+         --  Pragma Pre/Postconditions are not removed from the tree, but can
+         --  be ignored
+         when Pragma_Precondition | Pragma_Postcondition =>
+            null;
+
          --  pragma Check ([Name    =>] Identifier,
          --                [Check   =>] Boolean_Expression
          --              [,[Message =>] String_Expression]);
@@ -1759,7 +1768,8 @@ package body ALFA.Definition is
                           ("index type", N, V_Implem);
 
                      when N_Range =>
-                        if not Is_Static_Range (Cstr) then
+                        if Comes_From_Source (N) and then
+                           not Is_Static_Range (Cstr) then
                            Mark_Non_ALFA ("non-static range", N);
                         end if;
 

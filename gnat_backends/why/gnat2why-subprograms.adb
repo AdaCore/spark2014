@@ -1289,18 +1289,14 @@ package body Gnat2Why.Subprograms is
                                  Array_Length_Name (Name));
                         begin
                            T :=
-                              New_Prog_Call
-                                 (Ada_Node   => Expr,
-                                  Name       => Op_Name,
-                                  Progs =>
-                                    (1 =>
-                                       New_Deref
-                                          (Ref =>
-                                             Why_Ident_Of_Ada_Ident (Var))));
+                             New_Prog_Call
+                               (Ada_Node   => Expr,
+                                Name       => Op_Name,
+                                Progs => (1 => Why_Expr_Of_Ada_Expr (Var)));
                            Current_Type :=
-                              (Why_Abstract,
-                                 Etype (First (Subtype_Marks (Type_Definition
-                                 (Parent (Etype (Var)))))));
+                             (Why_Abstract,
+                                Etype (First (Subtype_Marks (Type_Definition
+                                (Parent (Etype (Var)))))));
                         end;
                      else
                         declare
@@ -1346,6 +1342,11 @@ package body Gnat2Why.Subprograms is
          when N_Case_Expression =>
             T := Case_Expr_Of_Ada_Node (Expr);
 
+         when N_Unchecked_Type_Conversion =>
+            --  ??? Compiler inserted conversions are trusted
+            pragma Assert (not Comes_From_Source (Expr));
+            return
+               Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
          when others =>
             raise Not_Implemented;
 
