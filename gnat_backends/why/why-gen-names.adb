@@ -320,18 +320,6 @@ package body Why.Gen.Names is
       return Range_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Range_Pred_Name;
 
-   ------------------
-   -- Safe_Version --
-   ------------------
-
-   function Safe_Version (Name : W_Identifier_Id) return W_Identifier_Id is
-      Prefix : constant String := "safe___";
-      N_Id   : constant Name_Id := Identifier_Get_Symbol (Name);
-      Img    : constant String := Get_Name_String (N_Id);
-   begin
-      return New_Identifier (Prefix & Img);
-   end Safe_Version;
-
    --------------
    -- Set_Name --
    --------------

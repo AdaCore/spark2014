@@ -81,15 +81,6 @@ package Why.Gen.Funcs is
    --     { some_precondition }
    --      type3
    --     { my_func (x1, x2) = result }
-   --
-   --  ...along with a "safe" version of this declaration, with no pre:
-   --
-   --     parameter safe___my_func_ :
-   --      x1 : type1 -> x2 : type2 ->
-   --     { }
-   --      type3
-   --     { my_func (x1, x2) = result }
-   --
 
    procedure Declare_Parameter
      (File   : W_File_Id;
@@ -111,21 +102,5 @@ package Why.Gen.Funcs is
       --  Create a parameter of the form
       --     parameter <eq_param_name> : (m : type) -> (n : type) ->
       --        {} bool { if result then m = n else m <> n }
-
-   function New_Call_To_Logic
-     (Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id)
-     return W_Operation_Id with
-     Pre => (Is_Root (Name));
-   --  Create a call to an operation in the logical space with parameters
-   --  taken from Arrows. Typically, from:
-   --
-   --     x1 : type1 -> x2 : type2 -> {} type3 {}
-   --
-   --  ...it would produce:
-   --
-   --     operation_name (x1, x2)
-   --
-   --  Name would be inserted as is into the resulting syntax tree.
 
 end Why.Gen.Funcs;

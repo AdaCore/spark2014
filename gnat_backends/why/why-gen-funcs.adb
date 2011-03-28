@@ -36,6 +36,22 @@ with Why.Gen.Preds;       use Why.Gen.Preds;
 
 package body Why.Gen.Funcs is
 
+   function New_Call_To_Logic
+     (Name   : W_Identifier_Id;
+      Arrows : W_Arrow_Type_Id)
+     return W_Operation_Id with
+     Pre => (Is_Root (Name));
+   --  Create a call to an operation in the logical space with parameters
+   --  taken from Arrows. Typically, from:
+   --
+   --     x1 : type1 -> x2 : type2 -> {} type3 {}
+   --
+   --  ...it would produce:
+   --
+   --     operation_name (x1, x2)
+   --
+   --  Name would be inserted as is into the resulting syntax tree.
+
    -------------------
    -- Declare_Logic --
    -------------------
@@ -105,10 +121,6 @@ package body Why.Gen.Funcs is
    is
       Program_Space_Name : constant W_Identifier_Id :=
                              To_Program_Space (Name);
-      Safe_Version_Name  : constant W_Identifier_Id :=
-                             Safe_Version (Program_Space_Name);
-      Safe_Arrows        : constant W_Arrow_Type_Id :=
-                             Duplicate_Any_Node (Id => Arrows);
       Final_Post         : W_Predicate_OId := Post;
    begin
       Declare_Logic (File, Name, Arrows);
@@ -126,11 +138,6 @@ package body Why.Gen.Funcs is
       end if;
 
       Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Final_Post);
-      Declare_Parameter (File,
-                         Safe_Version_Name,
-                         Safe_Arrows,
-                         Why_Empty,
-                         Duplicate_Any_Node (Id => Final_Post));
    end Declare_Logic_And_Parameters;
 
    -----------------------

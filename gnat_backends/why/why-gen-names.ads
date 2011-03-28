@@ -142,11 +142,6 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its range axiom.
 
-   function Safe_Version (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  Create a new identifier for the "safe" version (no precondition
-   --  for run-time checks) of a program-space subprogram (a so-called
-   --  "parameter").
-
    procedure Set_Name (Id : W_Identifier_Id; Name : String);
    --  Change the name of the given identifier
 
