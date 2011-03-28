@@ -96,7 +96,7 @@
 \texttt{\{dross,moy\}@adacore.com}
 \and 
 CNRS, INRIA Saclay Île-de-France, Université Paris-Sud 11\\
-\texttt{filliatre@lri.fr}}
+\texttt{filliatr@lri.fr}}
 
 \maketitle
 
@@ -230,7 +230,7 @@ is stored.
 We will use the following Ada code as a running example throughout the
 section. Procedure \verb|Map_F|
 %REVIEW 2
-\footnote{Note that \texttt{Map\_F} is client code, not a part of the API.}
+\footnote{Note that \texttt{Map\_F} is client code, not part of the API.}
 %
 modifies a list in place, by replacing each
 element initially contained in the list by its image through function \verb|F|.
@@ -614,7 +614,7 @@ expression $b$ in \texttt{BExpr} and an integer expression $i$ in
 %REVIEW 1
 If $\mathit{expr}$ is an expression, $\eval \mathit{expr} \Rightarrow \mathit{val}$
 means that $\mathit{expr}$ evaluates in environments $\envL$ and $\envC$ to a
-value represented by $\mathit{val}$ in the semantic. 
+value represented by $\mathit{val}$ in the semantics. 
 If $\mathit{instr}$ is an instruction, $\eval \mathit{instr} \Rightarrow \envL',\envC'$
 means that $instr$ change the environments $\envL$ and $\envC$ into $\envL'$ and $\envC'$.
 
@@ -676,7 +676,7 @@ d\in \ImFc
 \eval c_1=c_2\Rightarrow d_1=d_2
 }
 \end{eqnarray*}
-}
+}%
 Below are the description of the semantics of cursor expressions. The special
 invalid cursor \NoElement evaluates to $\bot$. This is possible because $\bot$ cannot
 appear in \ImFc, as $\Fc : [1..\Len] \rightarrow \TypD$. Therefore $\bot$ is
@@ -727,7 +727,7 @@ d_1\in \ImFc\cup \{\bot\}
 \where d = \{\Len = 0 \rightarrow \bot, \Len > 0 \rightarrow \Fc(\Len)\}
 }
 \end{eqnarray*}
-}
+}%
 Below are the description of the semantics of list expressions.  The empty
 list, returned by $\Empty$, is the only list whose length is null
 ($\Fv$ is the only function that is defined on the empty set
@@ -765,7 +765,7 @@ n=\FcInv_+(d)-1
        \Fe'=\Fe|_{\ImFcPrime}
 }
 \end{eqnarray*}
-}
+}%
 The rules below describe the semantics of instructions.  Rules concerning reads
 or assignment of variables are omitted (they are the usual ones). \Insert
 modifies the environment so that its list variable argument designates, after
@@ -822,7 +822,7 @@ d_1\in \ImFc \\
 \{ d=d_1 \rightarrow \Elt, d\neq d_1 \rightarrow \Fe(d)\}
 }
 \end{eqnarray*}
-}
+}%
 
 % Yannick: I commented the 2 lines below, as I don't think they add much.
 
