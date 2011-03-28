@@ -23,12 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with ALI;                   use ALI;
+with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
+with Debug;                 use Debug;
 with Errout;                use Errout;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Opt;                   use Opt;
+with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
@@ -78,8 +82,9 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      Name : File_Name_Type;
-      Text : Text_Buffer_Ptr;
+      Main_Lib_File : File_Name_Type;
+      Text          : Text_Buffer_Ptr;
+      Main_Lib_Id   : ALI_Id;
 
       N         : constant Node_Id := Unit (GNAT_Root);
       Unit_Name : constant String := Name_String (Chars (Defining_Entity (N)));
@@ -104,12 +109,35 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      --  ??? Compute the frame condition. Currently only the ALI file for the
-      --  current unit is read. This should be changed to read all dependent
-      --  ALI files.
+      --  Compute the frame condition. This starts with identifying ALI files
+      --  for the current unit and all dependent (with'ed) units. Then ALFA
+      --  information is loaded from all these files. Finally the local ALFA
+      --  information is propagated to get the frame condition.
 
-      Read_Library_Info (Name, Text);
-      Load_ALFA (Name_String (Name_Id (Name)));
+      Initialize_ALI;
+      Initialize_ALI_Source;
+
+      --  Fill in table ALIs with all dependent units
+
+      Read_Library_Info (Main_Lib_File, Text);
+      Main_Lib_Id := Scan_ALI
+        (F                => Main_Lib_File,
+         T                => Text,
+         Ignore_ED        => False,
+         Err              => False,
+         Ignore_Errors    => Debug_Flag_I,
+         Directly_Scanned => True);
+      Free (Text);
+      Read_Withed_ALIs (Main_Lib_Id);
+
+      --  Load ALFA information from ALIs for all dependent units
+
+      for Index in ALIs.First .. ALIs.Last loop
+         Load_ALFA (Index);
+      end loop;
+
+      --  Compute the frame condition from raw ALFA information
+
       Propagate_Through_Call_Graph;
       Declare_All_Entities;
 

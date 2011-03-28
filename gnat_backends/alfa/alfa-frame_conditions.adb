@@ -383,7 +383,9 @@ package body ALFA.Frame_Conditions is
    -- Load_ALFA --
    ---------------
 
-   procedure Load_ALFA (ALI_Filename : String) is
+   procedure Load_ALFA (Id : ALI_Id) is
+      ALI_Filename : constant String :=
+                       Name_String (Name_Id (ALIs.Table (Id).Afile));
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
       Last     : Natural;
