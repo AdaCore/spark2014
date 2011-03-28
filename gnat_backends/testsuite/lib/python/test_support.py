@@ -112,8 +112,7 @@ def gnat2why(src, opt=None):
     First call gcc on source file to produce ALI file.
     """
     gcc(src, opt=["-gnatd.F", "-gnat2012", "-gnata", "-gnatp", "-gnatc"])
-    cmd = ["gnat2why", "-gnatd.F", "-gnat2012", "-gnata", "-gnatp",
-           "-I" + get_path_to_adainclude()]
+    cmd = ["gnat2why", "-gnatd.F", "-gnat2012", "-gnata", "-gnatp"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
@@ -175,7 +174,7 @@ def prove(src):
     PARAMETERS
       src: source file .adb or .adb to process
 
-    Call gnat2why on source file, then why on the resulting file. Alt-Ergo is
+    Call gnatprove on source file, then why on the resulting file. Alt-Ergo is
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
@@ -217,11 +216,4 @@ def to_list(arg):
         return arg
     else:
         return [arg]
-
-def get_path_to_adainclude():
-    """Return path to adainclude
-    """
-    cmd=[["gnatls", "-v"], ["grep", "adainclude"]]
-    process = Run(cmd)
-    return process.out.strip()
 
