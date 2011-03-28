@@ -25,201 +25,120 @@
 
 with Namet; use Namet;
 
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Builders;      use Why.Atree.Builders;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Mutators;      use Why.Atree.Mutators;
 
 package body Why.Gen.Names is
+
+   generic
+      Suffix : String;
+   function Generate_Suffix (Name : String) return W_Identifier_Id;
+   --  Generic for name generation functions, depending on the suffix.
+
+   generic
+      Prefix : String;
+   function Generate_Prefix (Name : String) return W_Identifier_Id;
+   --  Generic for name generation functions, depending on the prefix.
+
+   --  Define all string constants that are used as suffixes.
+   Allocator          : constant String := "any";
+   Array_Access       : constant String := "access";
+   Array_Update       : constant String := "update";
+   Array_First        : constant String := "first";
+   Array_Last         : constant String := "last";
+   Array_Length       : constant String := "length";
+   Array_Accupd_Eq    : constant String := "accupd_eq";
+   Array_Accupd_Neq   : constant String := "accupd_neq";
+   Array_First_Upd    : constant String := "first_update";
+   Array_Last_Upd     : constant String := "last_update";
+   Array_Len_Upd      : constant String := "length_update";
+   Array_Len_Nzero    : constant String := "length_non_zero";
+   Array_Len_Zero     : constant String := "length_zero";
+   Coerce             : constant String := "coerce";
+   Boolean_Eq         : constant String := "eq_bool";
+   Eq_Pred            : constant String := "eq";
+   Of_Int             : constant String := "of_int";
+   Int_Of             : constant String := "to_int";
+   Definition         : constant String := "def";
+   Range_Name         : constant String := "range";
+   In_Range           : constant String := "in_range";
+   Unicity            : constant String := "unicity";
+
+   ---------------------
+   -- Generate_Prefix --
+   ---------------------
+
+   function Generate_Prefix (Name : String) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (Prefix & "___" & Name);
+   end Generate_Prefix;
+
+   ---------------------
+   -- Generate_Suffix --
+   ---------------------
+
+   function Generate_Suffix (Name : String) return W_Identifier_Id
+   is
+   begin
+      return New_Identifier (Name & "___" & Suffix);
+   end Generate_Suffix;
 
    function Bool_Int_Cmp_String (Rel : W_Relation) return String;
    --  Return the name of a boolean integer comparison operator
 
-   --------------------
-   -- Allocator_Name --
-   --------------------
+   function Allocator_Name_Gen is new Generate_Suffix (Allocator);
+   function Allocator_Name (Name : String) return W_Identifier_Id
+      renames Allocator_Name_Gen;
 
-   function Allocator_Name (Name : String) return W_Identifier_Id is
-      Prefix : constant String := "any___";
-   begin
-      return New_Identifier (Prefix & Name);
-   end Allocator_Name;
-
-   -----------------------
-   -- Array_Access_Name --
-   -----------------------
-
+   function Array_Access_Name_Gen is new Generate_Suffix (Array_Access);
    function Array_Access_Name (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__access";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Access_Name;
+      renames Array_Access_Name_Gen;
 
-   ---------------------------
-   -- Array_Accupd_Eq_Axiom --
-   ---------------------------
-
+   function Array_Accupd_Eq_Gen is new Generate_Suffix (Array_Accupd_Eq);
    function Array_Accupd_Eq_Axiom (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__accupd_eq";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Accupd_Eq_Axiom;
+      renames Array_Accupd_Eq_Gen;
 
-   ---------------------------
-   -- Array_Accupd_Neq_Axiom --
-   ---------------------------
-
+   function Array_Accupd_Neq_Gen is new Generate_Suffix (Array_Accupd_Neq);
    function Array_Accupd_Neq_Axiom (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__accupd_neq";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Accupd_Neq_Axiom;
+      renames Array_Accupd_Neq_Gen;
 
-   ----------------------
-   -- Array_First_Name --
-   ----------------------
-
+   function Array_First_Gen is new Generate_Suffix (Array_First);
    function Array_First_Name (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__first";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_First_Name;
+      renames Array_First_Gen;
 
-   ------------------------
-   -- Array_First_Update --
-   ------------------------
-
+   function Array_First_Update_Gen is new Generate_Suffix (Array_First_Upd);
    function Array_First_Update (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__first_update";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_First_Update;
+      renames Array_First_Update_Gen;
 
-   ---------------------
-   -- Array_Last_Name --
-   ---------------------
-
+   function Array_Last_Gen is new Generate_Suffix (Array_Last);
    function Array_Last_Name (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__last";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Last_Name;
+      renames Array_Last_Gen;
 
-   ---------------------
-   -- Array_Last_Update --
-   ---------------------
-
+   function Array_Last_Update_Gen is new Generate_Suffix (Array_Last_Upd);
    function Array_Last_Update (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__last_update";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Last_Update;
+      renames Array_Last_Update_Gen;
 
-   -----------------------
-   -- Array_Length_Name --
-   -----------------------
-
+   function Array_Length_Gen is new Generate_Suffix (Array_Length);
    function Array_Length_Name (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__length";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Length_Name;
+      renames Array_Length_Gen;
 
-   ---------------------------
-   -- Array_Length_Non_Zero --
-   ---------------------------
-
+   function Array_Len_Nzero_Gen is new Generate_Suffix (Array_Len_Nzero);
    function Array_Length_Non_Zero (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__length_non_zero";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Length_Non_Zero;
+      renames Array_Len_Nzero_Gen;
 
-   -------------------------
-   -- Array_Length_Update --
-   -------------------------
-
+   function Array_Len_Upd_Gen is new Generate_Suffix (Array_Len_Upd);
    function Array_Length_Update (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__length_update";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Length_Update;
+      renames Array_Len_Upd_Gen;
 
-   -----------------------
-   -- Array_Length_Zero --
-   -----------------------
-
+   function Array_Len_Zero_Gen is new Generate_Suffix (Array_Len_Zero);
    function Array_Length_Zero (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__length_zero";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Length_Zero;
+      renames Array_Len_Zero_Gen;
 
-   -----------------------
-   -- Array_Update_Name --
-   -----------------------
-
+   function Array_Update_Gen is new Generate_Suffix (Array_Update);
    function Array_Update_Name (Name : String) return W_Identifier_Id
-   is
-      Suffix : constant String := "__update";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Array_Update_Name;
-
-   ------------------
-   -- Coerce_Axiom --
-   ------------------
-
-   function Coerce_Axiom (Name : String) return  W_Identifier_Id is
-      Suffix : constant String := "___coerce";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Coerce_Axiom;
-
-   function Coerce_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
-   begin
-      return Coerce_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
-   end Coerce_Axiom;
-
-   ------------------
-   -- Eq_Param_Name --
-   ------------------
-
-   function Eq_Param_Name (Name : String) return W_Identifier_Id is
-      Prefix : constant String := "eq_bool___";
-   begin
-      return New_Identifier (Prefix & Name);
-   end Eq_Param_Name;
-
-   function Eq_Param_Name (Name : W_Identifier_Id) return W_Identifier_Id is
-   begin
-      return Eq_Param_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
-   end Eq_Param_Name;
-
-   ------------------
-   -- Eq_Pred_Name --
-   ------------------
-
-   function Eq_Pred_Name (Name : String) return W_Identifier_Id is
-      Prefix : constant String := "eq___";
-   begin
-      return New_Identifier (Prefix & Name);
-   end Eq_Pred_Name;
-
-   function Eq_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id is
-   begin
-      return Eq_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
-   end Eq_Pred_Name;
+      renames Array_Update_Gen;
 
    -------------------------
    -- Bool_Int_Cmp_String --
@@ -243,6 +162,45 @@ package body Why.Gen.Names is
             return "bool_int__ge";
       end case;
    end Bool_Int_Cmp_String;
+
+   ------------------
+   -- Coerce_Axiom --
+   ------------------
+
+   function Coerce_Gen is new Generate_Suffix (Coerce);
+   function Coerce_Axiom (Name : String) return  W_Identifier_Id
+      renames Coerce_Gen;
+
+   function Coerce_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Coerce_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Coerce_Axiom;
+
+   ------------------
+   -- Eq_Param_Name --
+   ------------------
+
+   function Eq_Param_Gen is new Generate_Suffix (Boolean_Eq);
+   function Eq_Param_Name (Name : String) return W_Identifier_Id
+      renames Eq_Param_Gen;
+
+   function Eq_Param_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Eq_Param_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Eq_Param_Name;
+
+   ------------------
+   -- Eq_Pred_Name --
+   ------------------
+
+   function Eq_Pred_Gen is new Generate_Suffix (Eq_Pred);
+   function Eq_Pred_Name (Name : String) return W_Identifier_Id
+      renames Eq_Pred_Gen;
+
+   function Eq_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+   begin
+      return Eq_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Eq_Pred_Name;
 
    ----------------------
    -- New_Bool_Int_Cmp --
@@ -273,35 +231,17 @@ package body Why.Gen.Names is
       return New_Identifier (To & "__of__" & From & "__in_range");
    end New_Conversion_Axiom;
 
-   -----------------------------
-   -- New_Conversion_From_Int --
-   -----------------------------
+   function Of_Int_Gen is new Generate_Suffix (Of_Int);
+   function New_Conversion_From_Int (Name : String) return W_Identifier_Id
+      renames Of_Int_Gen;
 
-   function New_Conversion_From_Int (Name : String) return W_Identifier_Id is
-      Suffix : constant String := "___of_int";
-   begin
-      return New_Identifier (Name & Suffix);
-   end New_Conversion_From_Int;
+   function Int_Of_Gen is new Generate_Suffix (Int_Of);
+   function New_Conversion_To_Int (Name : String) return W_Identifier_Id
+      renames Int_Of_Gen;
 
-   ---------------------------
-   -- New_Conversion_To_Int --
-   ---------------------------
-
-   function New_Conversion_To_Int (Name : String) return W_Identifier_Id is
-      Prefix : constant String := "int_of___";
-   begin
-      return New_Identifier (Prefix & Name);
-   end New_Conversion_To_Int;
-
-   -------------------------
-   -- New_Definition_Name --
-   -------------------------
-
-   function New_Definition_Name (Name : String) return String is
-      Prefix : constant String  := "def___";
-   begin
-      return Prefix & Name;
-   end New_Definition_Name;
+   function Definition_Gen is new Generate_Prefix (Definition);
+   function New_Definition_Name (Name : String) return W_Identifier_Id
+      renames Definition_Gen;
 
    -------------------------
    -- New_Exit_Identifier --
@@ -367,26 +307,18 @@ package body Why.Gen.Names is
    -- Range_Axiom --
    -----------------
 
-   function Range_Axiom (Name : String) return  W_Identifier_Id is
-      Suffix : constant String := "___range";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Range_Axiom;
+   function Range_Axiom_Gen is new Generate_Suffix (Range_Name);
+   function Range_Axiom (Name : String) return  W_Identifier_Id
+      renames Range_Axiom_Gen;
 
    function Range_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
    begin
       return Range_Axiom (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Range_Axiom;
 
-   ---------------------
-   -- Range_Pred_Name --
-   ---------------------
-
-   function Range_Pred_Name (Name : String) return W_Identifier_Id is
-      Suffix : constant String := "___in_range";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Range_Pred_Name;
+   function In_Range_Gen is new Generate_Suffix (In_Range);
+   function Range_Pred_Name (Name : String) return W_Identifier_Id
+      renames In_Range_Gen;
 
    function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id is
    begin
@@ -443,11 +375,9 @@ package body Why.Gen.Names is
    -- Unicity_Axiom --
    -------------------
 
-   function Unicity_Axiom (Name : String) return  W_Identifier_Id is
-      Suffix : constant String := "___unicity";
-   begin
-      return New_Identifier (Name & Suffix);
-   end Unicity_Axiom;
+   function Unicity_Gen is new Generate_Suffix (Unicity);
+   function Unicity_Axiom (Name : String) return  W_Identifier_Id
+      renames Unicity_Gen;
 
    function Unicity_Axiom (Name : W_Identifier_Id) return W_Identifier_Id is
    begin

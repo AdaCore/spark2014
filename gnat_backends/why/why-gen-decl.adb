@@ -109,7 +109,7 @@ package body Why.Gen.Decl is
 
    procedure New_Global_Binding
       (File    : W_File_Id;
-       Name    : String;
+       Name    : W_Identifier_Id;
        Binders : W_Binder_Array;
        Pre     : W_Assertion_Id
                    := New_Assertion (Pred => New_True_Literal_Pred);
@@ -121,7 +121,7 @@ package body Why.Gen.Decl is
       File_Append_To_Declarations
          (File,
           New_Global_Binding
-          (Name => New_Identifier (Name),
+          (Name => Name,
            Pre => New_Precondition (Assertion => Pre),
            Binders => Binders,
            Def =>

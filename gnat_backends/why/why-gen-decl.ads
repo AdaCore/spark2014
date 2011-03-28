@@ -50,7 +50,7 @@ package Why.Gen.Decl is
 
    procedure New_Global_Binding
       (File    : W_File_Id;
-       Name    : String;
+       Name    : W_Identifier_Id;
        Binders : W_Binder_Array;
        Pre     : W_Assertion_Id
                    := New_Assertion (Pred => New_True_Literal_Pred);

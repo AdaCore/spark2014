@@ -996,8 +996,7 @@ package body Gnat2Why.Subprograms is
 
                New_Global_Binding
                  (File    => File,
-                  Name    =>
-                    New_Definition_Name (Get_Name_String (Name)),
+                  Name    => New_Definition_Name (Get_Name_String (Name)),
                   Binders => Compute_Binders,
                   Post    => New_Assertion (Pred => Loc_Post),
                   Def     => Why_Body);

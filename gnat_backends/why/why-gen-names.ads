@@ -31,8 +31,6 @@ package Why.Gen.Names is
    --  to create identifiers from their string representation
 
    function Allocator_Name (Name : String) return W_Identifier_Id;
-   --  From the name of an abstract type, return the name of
-   --  its allocator.
 
    function Array_Access_Name (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of its access function.
@@ -114,7 +112,7 @@ package Why.Gen.Names is
    --  Create a new identifier for a conversion from int to an abstract type.
    --  The name of the abstract type is given in parameter.
 
-   function New_Definition_Name (Name : String) return String;
+   function New_Definition_Name (Name : String) return W_Identifier_Id;
    --  Create a new identifier for the "definition only" version of a
    --  subprogram, which is not meant to be called.
 
