@@ -81,8 +81,6 @@ procedure Gnatprove is
        Success : out Boolean);
    --  Cat all the Files together into the Target.
 
-   function Get_Ada_Include return String;
-
    generic
       with procedure Action (Proj : Project_Tree; File : Virtual_File);
    procedure Iter_Project_Source_Files (Proj : Project_Tree);
@@ -283,13 +281,11 @@ procedure Gnatprove is
       Call_Exit_On_Failure
         (Command   => "gnat2why",
          Arguments =>
-           ((1 => new String'("-I"),
-             2 => new String'(Get_Ada_Include),
-             3 => new String'("-gnatp"),    --  do not generate checks
-             4 => new String'("-gnata"),    --  but keep user given assertions
-             5 => new String'("-gnat2012"),
-             6 => new String'("-gnatd.F"),  --  ALFA marks in AST
-             7 => new String'(+Full_Name (File))) &
+           ((1 => new String'("-gnatp"),    --  do not generate checks
+             2 => new String'("-gnata"),    --  but keep user given assertions
+             3 => new String'("-gnat2012"),
+             4 => new String'("-gnatd.F"),  --  ALFA marks in AST
+             5 => new String'(+Full_Name (File))) &
              Switch.all));
    end Call_Gnat2Why;
 
@@ -349,25 +345,6 @@ procedure Gnatprove is
          exit when not Success;
       end loop;
    end Cat;
-
-   ---------------------
-   -- Get_Ada_Include --
-   ---------------------
-
-   function Get_Ada_Include return String is
-      D : Process_Descriptor;
-      A : Expect_Match;
-   begin
-      GNAT.Expect.Non_Blocking_Spawn
-        (Descriptor => D,
-         Command    => "gnatls",
-         Args       => (1 => new String'("-v")));
-      GNAT.Expect.Expect
-        (Descriptor => D,
-         Result => A,
-         Regexp => "[^ \n].*adainclude[^\n ]*");
-      return Expect_Out_Match (D);
-   end Get_Ada_Include;
 
    -------------------------------
    -- Iter_Project_Source_Files --
