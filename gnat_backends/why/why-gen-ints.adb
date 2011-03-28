@@ -65,7 +65,6 @@ package body Why.Gen.Ints is
    is
    begin
       New_Abstract_Type (File, Name);
-      Declare_Allocator (File, Name);
       Define_Signed_Int_Conversions (File, Name, First, Last);
    end Declare_Ada_Abstract_Signed_Int;
 

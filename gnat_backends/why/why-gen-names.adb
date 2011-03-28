@@ -42,7 +42,6 @@ package body Why.Gen.Names is
    --  Generic for name generation functions, depending on the prefix.
 
    --  Define all string constants that are used as suffixes.
-   Allocator          : constant String := "any";
    Array_Access       : constant String := "access";
    Array_Update       : constant String := "update";
    Array_First        : constant String := "first";
@@ -87,10 +86,6 @@ package body Why.Gen.Names is
 
    function Bool_Int_Cmp_String (Rel : W_Relation) return String;
    --  Return the name of a boolean integer comparison operator
-
-   function Allocator_Name_Gen is new Generate_Suffix (Allocator);
-   function Allocator_Name (Name : String) return W_Identifier_Id
-      renames Allocator_Name_Gen;
 
    function Array_Access_Name_Gen is new Generate_Suffix (Array_Access);
    function Array_Access_Name (Name : String) return W_Identifier_Id

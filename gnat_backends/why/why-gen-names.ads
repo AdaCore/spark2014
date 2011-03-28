@@ -30,8 +30,6 @@ package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
-   function Allocator_Name (Name : String) return W_Identifier_Id;
-
    function Array_Access_Name (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of its access function.
    --
