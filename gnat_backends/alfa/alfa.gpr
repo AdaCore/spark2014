@@ -13,7 +13,7 @@ project ALFA is
    end Builder;
 
    for Main use ("alfa-compute_frame_conditions.adb");
-   for Exec_Dir use "../install/bin/";
+   for Exec_Dir use "../../install/bin";
 
 end ALFA;
 

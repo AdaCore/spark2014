@@ -21,7 +21,7 @@ uname:=$(shell uname)
 all: setup build
 
 setup:
-	mkdir -p $(LOCAL_OBJ) ../install/bin
+	mkdir -p $(LOCAL_OBJ) ../../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
 	for f in `cd ../gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
 	do \
@@ -39,7 +39,7 @@ build: obj/smissing.o force
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
 	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
-	  -o ../../install/bin/$(TOOL_NAME) -largs smissing.o
+	  -o ../../../install/bin/$(TOOL_NAME) -largs smissing.o
 
 obj/smissing.o: ../smissing.c
 	gcc -c ../smissing.c -o obj/smissing.o
@@ -100,12 +100,12 @@ GNAT1_LIBS=$(OBJ)/../libbackend.a $(OBJ)/../../libcpp/libcpp.a \
    $(OBJ)/../../zlib/libz.a
 
 gnat1:
-	mkdir -p $(LOCAL_OBJ) ../install/bin
+	mkdir -p $(LOCAL_OBJ) ../../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
 	sed -e 's/Always_Compatible_Rep.*/Always_Compatible_Rep     : constant Boolean := False;/' \
 	    $(SRC)/system.ads > $(LOCAL_OBJ)/system.ads
 	cd $(LOCAL_OBJ) && gnatmake -m -a -j$(PROCS) $(GNAT1_INCLUDES) \
-	  -o ../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
+	  -o ../../../install/bin/$(GNAT1_NAME) $(MAIN_FILE) \
 	  -cargs $(ADAFLAGS) -gnatg $(GCCFLAGS) -gnat12 -gnatyN -gnatws \
 	  -bargs -n -nostdlib \
 	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
