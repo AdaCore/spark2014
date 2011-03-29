@@ -261,9 +261,8 @@ procedure Gnatprove is
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
-                       4 => new String'("-gnat2012"),   --  enable Ada 2012
-                       5 => new String'("-gnatc"),      --  only generate ALI
-                       6 => new String'("-gnatd.F")));  --  ALFA section in ALI
+                       4 => new String'("-gnatc"),      --  only generate ALI
+                       5 => new String'("-gnatd.F")));  --  ALFA section in ALI
    end Call_Gnatmake;
 
    -------------------
@@ -297,9 +296,8 @@ procedure Gnatprove is
          Arguments =>
            ((1 => new String'("-gnatp"),    --  do not generate checks
              2 => new String'("-gnata"),    --  but keep user given assertions
-             3 => new String'("-gnat2012"),
-             4 => new String'("-gnatd.F"),  --  ALFA marks in AST
-             5 => new String'(+Full_Name (File))) &
+             3 => new String'("-gnatd.F"),  --  ALFA marks in AST
+             4 => new String'(+Full_Name (File))) &
              Switch.all &
              Local_Inc_Args));
    end Call_Gnat2Why;

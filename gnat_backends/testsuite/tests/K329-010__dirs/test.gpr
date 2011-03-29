@@ -1,3 +1,6 @@
 project Test is
-   for Source_Dirs use (".", "a", "b");
+   for Source_Dirs Use Use (".", "aA", "bB");
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat12");
+   end Compiler;
 end Test;
