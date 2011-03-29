@@ -67,8 +67,13 @@ procedure Gnatprove is
    procedure Call_Gnatmake (Project_File : String);
    --  Call gnatmake using the given project file.
 
-   procedure Call_Gnat2Why (Proj : Project_Tree; File : Virtual_File);
-   --  Call gnat2why on a single source file of a project.
+   procedure Call_Gnat2Why
+      (Proj     : Project_Tree;
+       File     : Virtual_File;
+       Inc_Args : Argument_List);
+   --  Call gnat2why on a single source file of a project. The Inc_Args is an
+   --  array that contains the include arguments that are necessary for the
+   --  call to gnat2why
 
    procedure Call_Why (Proj : Project_Tree; File : Virtual_File);
    --  Call why on all the generated files that belong to a certain file
@@ -265,12 +270,21 @@ procedure Gnatprove is
    -- Call_Gnat2Why --
    -------------------
 
-   procedure Call_Gnat2Why (Proj : Project_Tree; File : Virtual_File) is
-      Switch    : GNAT.Strings.String_List_Access;
-      Default   : Boolean;
-      Proj_Type : constant Project_Type := Root_Project (Proj);
-
+   procedure Call_Gnat2Why
+      (Proj     : Project_Tree;
+       File     : Virtual_File;
+       Inc_Args : Argument_List) is
+      Switch         : GNAT.Strings.String_List_Access;
+      Default        : Boolean;
+      Proj_Type      : constant Project_Type := Root_Project (Proj);
+      Local_Inc_Args : Argument_List (Inc_Args'First .. Inc_Args'Last);
    begin
+      --  We need to copy the Inc_Args argument because it is used across all
+      --  gnat2why calls
+      for Index in Inc_Args'Range loop
+         Local_Inc_Args (Index) := new String'(Inc_Args (Index).all);
+      end loop;
+
       Switches
         (Project  => Proj_Type,
          In_Pkg   => "compiler",
@@ -286,7 +300,8 @@ procedure Gnatprove is
              3 => new String'("-gnat2012"),
              4 => new String'("-gnatd.F"),  --  ALFA marks in AST
              5 => new String'(+Full_Name (File))) &
-             Switch.all));
+             Switch.all &
+             Local_Inc_Args));
    end Call_Gnat2Why;
 
    --------------
@@ -388,9 +403,6 @@ procedure Gnatprove is
    procedure Iterate_Altergo is
      new Iter_Project_Source_Files (Call_Altergo);
 
-   procedure Iterate_Gnat2Why is
-     new Iter_Project_Source_Files (Call_Gnat2Why);
-
    procedure Iterate_Why is
      new Iter_Project_Source_Files (Call_Why);
 
@@ -428,7 +440,37 @@ begin
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
 
-   Iterate_Gnat2Why (Tree);
+   declare
+      Src_Dirs      : constant File_Array :=
+         Source_Dirs (Proj_Type, Recursive => True);
+      Include_Args  : aliased Argument_List (1 .. 2 * Src_Dirs'Length);
+      Cnt           : Integer range 1 .. 2 * (Src_Dirs'Length + 1) := 1;
+
+      procedure Call_Gnat2why_Gen (Proj : Project_Tree; File : Virtual_File);
+      --  Wrapper for Call_Gnat2Why, fix the Inc_Args argument to the
+      --  precomputed one.
+
+      -----------------------
+      -- Call_Gnat2why_Gen --
+      -----------------------
+
+      procedure Call_Gnat2why_Gen (Proj : Project_Tree; File : Virtual_File)
+      is
+      begin
+         Call_Gnat2Why (Proj, File, Include_Args);
+      end Call_Gnat2why_Gen;
+
+      procedure Iterate_Gnat2Why is
+        new Iter_Project_Source_Files (Call_Gnat2Why_Gen);
+   begin
+      for Index in Src_Dirs'Range loop
+         Include_Args (Cnt) := new String'("-I");
+         Include_Args (Cnt + 1) := new String'(+Full_Name (Src_Dirs (Index)));
+         Cnt := Cnt + 2;
+      end loop;
+      Iterate_Gnat2Why (Tree);
+   end;
+
    Iterate_Why (Tree);
    Iterate_Altergo (Tree);
 exception
