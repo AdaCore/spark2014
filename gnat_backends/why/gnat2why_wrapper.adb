@@ -29,7 +29,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 procedure GNAT2Why_Wrapper is
 
-   Debug : constant Boolean := True;
+   Debug : constant Boolean := False;
 
    function Locate_Exec (Exec : String) return String_Access;
    --  Locate Exec either from argv(0) or from the PATH.
