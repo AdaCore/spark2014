@@ -23,6 +23,7 @@ all: setup build
 setup:
 	mkdir -p $(LOCAL_OBJ) ../../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
+	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
 	for f in `cd ../gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
 	do \
 		cp -p ../gnat_src/$$f $(LOCAL_OBJ); \
@@ -36,7 +37,6 @@ COMMON_INCLUDES=-I.. -I../../alfa -I../../utils
 INCLUDES=$(COMMON_INCLUDES) -I../..
 
 build: obj/smissing.o force
-	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
 	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -m -g $(CFLAGS) $(INCLUDES) \
 	  -I$(adainclude)  -I../../gnat_src $(MAIN_FILE) \
 	  -o ../../../install/bin/$(TOOL_NAME) -largs smissing.o
