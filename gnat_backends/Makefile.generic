@@ -99,7 +99,7 @@ GNAT1_LIBS=$(OBJ)/../libbackend.a $(OBJ)/../../libcpp/libcpp.a \
    -L$(MPFR_LIB_DIR) -L$(GMP_LIB_DIR) -lmpc -lmpfr -lgmp $(EXTRA_LIBS) \
    $(OBJ)/../../zlib/libz.a
 
-gnat1:
+gnat1: force
 	mkdir -p $(LOCAL_OBJ) ../../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
 	sed -e 's/Always_Compatible_Rep.*/Always_Compatible_Rep     : constant Boolean := False;/' \
@@ -110,6 +110,10 @@ gnat1:
 	  -bargs -n -nostdlib \
 	  -largs --GCC="gcc $(GNAT1_INCLUDES)" $(GNAT1_C_OBJS) \
 		$(GNAT1_RTS_OBJS) $(GNAT1_LIBS) $(LDFLAGS)
+
+gnat2why: force
+	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -gnat12 $(GCCFLAGS) \
+	  ../$(TOOL_NAME)_wrapper -o ../../../install/bin/$(TOOL_NAME)
 
 force:
 

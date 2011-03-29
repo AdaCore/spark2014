@@ -3,7 +3,7 @@ all:
 	make -C gnatprove
 
 all-nightly:
-	make -C gnat_backends/why gnat1
+	make -C gnat_backends/why gnat1 gnat2why
 	make -C gnatprove
 
 clean:
