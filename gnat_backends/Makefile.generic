@@ -112,7 +112,8 @@ gnat1: force
 		$(GNAT1_RTS_OBJS) $(GNAT1_LIBS) $(LDFLAGS)
 
 $(TOOL_NAME): force
-	cd $(LOCAL_OBJ) && gnatmake -j$(PROCS) -gnat12 $(GCCFLAGS) \
+	mkdir -p obj-tools ../../install/bin
+	cd obj-tools && gnatmake -j$(PROCS) -gnat12 $(GCCFLAGS) \
 	  ../$(TOOL_NAME)_wrapper -o ../../../install/bin/$(TOOL_NAME)
 
 force:
