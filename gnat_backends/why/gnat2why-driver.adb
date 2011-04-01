@@ -106,6 +106,12 @@ package body Gnat2Why.Driver is
          raise Program_Error;
       end if;
 
+      --  Authorize warnings now, since regular compiler warnings should
+      --  already have been issued, e.g. to generate warnings related to
+      --  misuse of ALFA specific pragmas.
+
+      Warning_Mode := Normal;
+
       --  Allow the generation of new nodes and lists
 
       Atree.Unlock;

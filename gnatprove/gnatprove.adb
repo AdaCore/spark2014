@@ -294,10 +294,8 @@ procedure Gnatprove is
       Call_Exit_On_Failure
         (Command   => "gnat2why",
          Arguments =>
-           ((1 => new String'("-gnatp"),    --  do not generate checks
-             2 => new String'("-gnata"),    --  but keep user given assertions
-             3 => new String'("-gnatd.F"),  --  ALFA marks in AST
-             4 => new String'(+Full_Name (File))) &
+           ((1 => new String'("-gnatd.F"),  --  ALFA marks in AST
+             2 => new String'(+Full_Name (File))) &
              Switch.all &
              Local_Inc_Args));
    end Call_Gnat2Why;

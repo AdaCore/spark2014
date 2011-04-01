@@ -111,8 +111,8 @@ def gnat2why(src, opt=None):
 
     First call gcc on source file to produce ALI file.
     """
-    gcc(src, opt=["-gnatd.F", "-gnat2012", "-gnata", "-gnatp", "-gnatc"])
-    cmd = ["gnat2why", "-gnatd.F", "-gnat2012", "-gnata", "-gnatp"]
+    gcc(src, opt=["-gnatd.F", "-gnat2012", "-gnatc"])
+    cmd = ["gnat2why", "-gnatd.F", "-gnat2012"]
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
