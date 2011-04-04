@@ -40,6 +40,7 @@ with Outputs;               use Outputs;
 with Sem;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Switch;                use Switch;
 
@@ -90,6 +91,10 @@ package body Gnat2Why.Driver is
 
       N         : constant Node_Id := Unit (GNAT_Root);
       Unit_Name : constant String := Name_String (Chars (Defining_Entity (N)));
+      File_Name : constant String :=
+         File_Name_Without_Suffix
+           (Get_Name_String
+              (Full_File_Name (Get_Source_File_Index (Sloc (N)))));
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -143,6 +148,16 @@ package body Gnat2Why.Driver is
       for Index in ALIs.First .. ALIs.Last loop
          Load_ALFA (Name_String (Name_Id (ALIs.Table (Index).Afile)));
       end loop;
+
+      --  Write Dependency file
+      Open_Current_File (File_Name & ".d");
+      P (Current_File, Unit_Name & ".why: ");
+      for Index in ALIs.First .. ALIs.Last loop
+         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
+         P (Current_File, " ");
+      end loop;
+         NL (Current_File);
+      Close_Current_File;
 
       --  Compute the frame condition from raw ALFA information
 
