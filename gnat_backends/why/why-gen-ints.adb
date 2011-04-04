@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
+with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
@@ -94,29 +95,29 @@ package body Why.Gen.Ints is
          Return_Type : constant W_Primitive_Type_Id :=
                          New_Abstract_Type (Name => New_Identifier (Name));
          Arrows      : W_Arrow_Type_Unchecked_Id :=
-                         New_Arrow_Stack (Return_Type);
+                         New_Arrow_Stack (+Return_Type);
          --  precondition: { <name>___in_range (n) }
-         Range_Check : constant W_Operation_Id :=
-                         New_Operation (Name =>
-                                          Range_Pred_Name (Name),
-                                        Parameters =>
-                                          (1 => New_Term (Arg_S)));
+         Range_Check : constant W_Predicate_Id :=
+                         New_Predicate_Instance (Name =>
+                                                   Range_Pred_Name (Name),
+                                                 Parameters =>
+                                                   (1 => +New_Term (Arg_S)));
          --  postcondition: { <name>___of_integer (result) = n }
          Int_Result  : constant W_Operation_Id :=
                          New_Operation (Name =>
                                           New_Conversion_To_Int (Name),
                                         Parameters =>
-                                          (1 => New_Result_Identifier));
+                                          (1 => +New_Result_Identifier));
          Post        : constant W_Predicate_Id :=
-                         New_Related_Terms (Left  => Int_Result,
+                         New_Related_Terms (Left  => +Int_Result,
                                             Op    => New_Rel_Eq,
-                                            Right => New_Term (Arg_S));
+                                            Right => +New_Term (Arg_S));
       begin
-         Arrows := Push_Arg (Arrows, New_Identifier (Arg_S), New_Type_Int);
+         Arrows := +Push_Arg (Arrows, New_Identifier (Arg_S), New_Type_Int);
 
          Declare_Logic_And_Parameters (File,
                                        New_Conversion_From_Int (Name),
-                                       Arrows,
+                                       +Arrows,
                                        Range_Check,
                                        Post);
          Define_Eq_Predicate (File, Name);
@@ -156,11 +157,13 @@ package body Why.Gen.Ints is
             Y_S        : constant String := "y";
             True_Pred : constant W_Predicate_Id :=
                New_Related_Terms
-                  (Left  => New_Term (X_S),
+                  (Left  => +New_Term (X_S),
                    Op    => New_Rel_Symbol (Rel_Symbol),
-                   Right => New_Term (Y_S));
+                   Right => +New_Term (Y_S));
             False_Pred : constant W_Predicate_Id :=
-               New_Negation (Operand => Duplicate_Any_Node (Id => True_Pred));
+                           New_Negation (Operand =>
+                                           +Duplicate_Any_Node (Id =>
+                                                                  +True_Pred));
             Axiom_Body : constant W_Predicate_Id :=
                New_Universal_Quantif
                  (Variables =>
@@ -173,8 +176,8 @@ package body Why.Gen.Ints is
                            New_Operation
                              (Name => New_Bool_Int_Cmp (Rel_Symbol),
                               Parameters =>
-                                 (1 => New_Term (Name => X_S),
-                                  2 => New_Term (Name => Y_S))),
+                                 (1 => +New_Term (Name => X_S),
+                                  2 => +New_Term (Name => Y_S))),
                          Then_Part => True_Pred,
                          Else_Part => False_Pred));
          begin

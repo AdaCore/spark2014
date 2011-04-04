@@ -52,6 +52,7 @@ with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Types;
+with Why.Conversions;       use Why.Conversions;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
@@ -238,8 +239,8 @@ package body Gnat2Why.Subprograms is
       end Branch_Expr;
 
       Cur_Case     : Node_Id := Last (Alternatives (N));
-      Matched_Expr : constant W_Term_Id :=
-         Int_Expr_Of_Ada_Expr (Expression (N));
+      Matched_Expr : constant W_Prog_Id :=
+                       Int_Expr_Of_Ada_Expr (Expression (N));
 
       --  We always take the last branch as the default value
       T            : W_Prog_Id := Branch_Expr (Cur_Case);
@@ -442,7 +443,7 @@ package body Gnat2Why.Subprograms is
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
                  Left     => Int_Expr_Of_Ada_Expr (Low_Bound (N)),
-                 Right    => Duplicate_Any_Node (Id => T)),
+                 Right    => +Duplicate_Any_Node (Id => +T)),
              Right =>
               New_Infix_Call
                 (Infix    => New_Op_Le_Prog,
@@ -708,23 +709,24 @@ package body Gnat2Why.Subprograms is
       --------------------
 
       function Compute_Arrows return W_Arrow_Type_Id is
-         Res : W_Arrow_Type_Unchecked_Id;
+         Unc : W_Arrow_Type_Unchecked_Id;
+         Res : W_Arrow_Type_Id;
          Arg : Node_Id;
          Id  : Node_Id;
 
       begin
          if Nkind (Specification (Node)) = N_Procedure_Specification then
-            Res := New_Arrow_Stack (New_Type_Unit, Compute_Effects);
+            Unc := New_Arrow_Stack (New_Type_Unit, Compute_Effects);
          else
-            Res :=
+            Unc :=
                New_Arrow_Stack
-                  (Why_Prog_Type_Of_Ada_Type
+                  (+Why_Prog_Type_Of_Ada_Type
                     (Entity (Result_Definition (Specification (Node))), False),
                    Compute_Effects);
          end if;
 
          if Is_Empty_List (Ada_Binders) then
-            Res := Push_Arg (Arrow    => Res,
+            Res := Push_Arg (Arrow    => Unc,
                              Arg_Type => New_Type_Unit);
 
          else
@@ -732,9 +734,10 @@ package body Gnat2Why.Subprograms is
             while Present (Arg) loop
                Id := Defining_Identifier (Arg);
                Res := Push_Arg
-                 (Arrow    => Res,
+                 (Arrow    => Unc,
                   Name     => New_Identifier (Full_Name (Id)),
                   Arg_Type => Why_Prog_Type_Of_Ada_Type (Id));
+               Unc := +Res;
                Prev (Arg);
             end loop;
          end if;
@@ -756,7 +759,7 @@ package body Gnat2Why.Subprograms is
               Names =>
                 (1 => New_Identifier (Full_Name (Id))),
               Arg_Type =>
-                Why_Prog_Type_Of_Ada_Type (Id));
+                +Why_Prog_Type_Of_Ada_Type (Id));
       end Compute_Binder;
 
       ---------------------
@@ -892,7 +895,7 @@ package body Gnat2Why.Subprograms is
             Effects_Append_To_Writes (Eff, New_Identifier (Rep.Name.all));
          end loop;
 
-         return Eff;
+         return +Eff;
       end Compute_Effects;
 
       ------------------
@@ -988,7 +991,7 @@ package body Gnat2Why.Subprograms is
                   Compute_Spec_Pred (Name_Postcondition, Loc_Node);
                Loc_Post  : constant W_Predicate_Id :=
                   (if Present (Loc_Node) and then
-                     Get_Kind (Post) /= W_True_Literal_Pred then
+                     Get_Kind (+Post) /= W_True_Literal_Pred then
                       New_Located_Predicate
                         (Ada_Node => Loc_Node,
                          Pred     => Post)
@@ -1248,7 +1251,7 @@ package body Gnat2Why.Subprograms is
                      Range_Prog
                        (Discrete_Subtype_Definition (Quant_Spec),
                         New_Deref
-                          (Ref => Duplicate_Any_Node (Id => Index)));
+                          (Ref => +Duplicate_Any_Node (Id => +Index)));
                begin
                   return
                      New_Binding_Ref
@@ -2060,7 +2063,7 @@ package body Gnat2Why.Subprograms is
          when N_Op_Compare =>
             return
                New_Boolean_Cmp
-                  (Cmp   => Get_Kind (Why_Rel_Of_Ada_Op (Nkind (Expr))),
+                  (Cmp   => Get_Kind (+Why_Rel_Of_Ada_Op (Nkind (Expr))),
                    Left  => Int_Term_Of_Ada_Expr (Left_Opnd (Expr)),
                    Right => Int_Term_Of_Ada_Expr (Right_Opnd (Expr)));
 
@@ -2120,7 +2123,7 @@ package body Gnat2Why.Subprograms is
             begin
                case Attr_Id is
                   when Attribute_Result =>
-                     T := New_Result_Identifier;
+                     T := +New_Result_Identifier;
 
                   when Attribute_Old =>
                      T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));

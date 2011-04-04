@@ -38,7 +38,7 @@ package Why.Gen.Decl is
    procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id);
 
    procedure New_Adt_Definition
-     (File : W_Type_Id;
+     (File : W_File_Id;
       Name : W_Identifier_Id;
       Constructors : W_Constr_Decl_Array);
 
@@ -77,15 +77,15 @@ package Why.Gen.Decl is
        Binders     : W_Binder_Array;
        Return_Type : W_Value_Type_Id;
        Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Precondition_Id
+       Pre         : W_Assertion_Id
            := New_Assertion (Pred => New_True_Literal_Pred);
-       Post        : W_Postcondition_Id
+       Post        : W_Assertion_Id
            := New_Assertion (Pred => New_True_Literal_Pred));
 
    procedure New_Parameter
       (File       : W_File_Id;
        Name       : W_Identifier_Id;
-       Value_Type : W_Simple_Value_Type_Id);
+       Value_Type : W_Value_Type_Id);
 
    procedure New_Predicate_Definition
      (File     : W_File_Id;

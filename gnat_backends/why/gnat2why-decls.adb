@@ -32,6 +32,7 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Gen.Decl;         use Why.Gen.Decl;
 with Why.Gen.Names;        use Why.Gen.Names;
 with Why.Gen.Preds;        use Why.Gen.Preds;
+with Why.Conversions;      use Why.Conversions;
 
 with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
 with Gnat2Why.Types;       use Gnat2Why.Types;
@@ -98,7 +99,7 @@ package body Gnat2Why.Decls is
             (File        => File,
              Name        => New_Identifier (Name),
              Binders     => (1 .. 0 => <>),
-             Return_Type => Why_Prog_Type_Of_Ada_Type (Obj_Id));
+             Return_Type => +Why_Prog_Type_Of_Ada_Type (Obj_Id));
       else
          --  the case of a global constant
 
@@ -106,7 +107,7 @@ package body Gnat2Why.Decls is
             (File        => File,
              Name        => New_Identifier (Name),
              Args        => (1 .. 0 => <>),
-             Return_Type => Why_Prog_Type_Of_Ada_Type (Obj_Id));
+             Return_Type => +Why_Logic_Type_Of_Ada_Type (Obj_Id));
          if Present (Expression (Decl)) then
             declare
                Ax_Name : constant String := Name & "__def_axiom";

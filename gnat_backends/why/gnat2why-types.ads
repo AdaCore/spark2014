@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;      use Types;
-with Why.Ids;    use Why.Ids;
+with Types;          use Types;
+with Why.Ids;        use Why.Ids;
+with Gnat2Why.Decls; use Gnat2Why.Decls;
 
 package Gnat2Why.Types is
 
@@ -70,6 +71,12 @@ package Gnat2Why.Types is
    function Why_Prog_Type_Of_Ada_Type (N : Node_Id)
       return W_Simple_Value_Type_Id;
    --  Take an Ada Node and transform it into a Why program type. The Ada Node
+   --  is expected to be a Defining_Identifier for a program variable.
+
+   function Why_Logic_Type_Of_Ada_Type (N : Node_Id)
+     return W_Primitive_Type_Id
+     with Pre => (not Is_Mutable (N));
+   --  Take an Ada Node and transform it into a Why logic type. The Ada Node
    --  is expected to be a Defining_Identifier for a program variable.
 
    function Why_Prog_Type_Of_Ada_Type (Ty : Node_Id; Is_Mutable : Boolean)

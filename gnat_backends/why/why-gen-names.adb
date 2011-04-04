@@ -25,6 +25,7 @@
 
 with Namet; use Namet;
 
+with Why.Conversions;         use Why.Conversions;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
@@ -288,7 +289,7 @@ package body Why.Gen.Names is
    -- New_Result_Identifier --
    ---------------------------
 
-   function New_Result_Identifier return W_Identifier_Id is
+   function New_Result_Identifier return W_Term_Identifier_Id is
       Result_Name : constant String := "result";
    begin
       return New_Term_Identifier (Name => New_Identifier (Result_Name));
@@ -333,7 +334,7 @@ package body Why.Gen.Names is
    begin
       Name_Len := 0;
       Add_Str_To_Name_Buffer (Name);
-      Identifier_Set_Symbol (Id, Name_Find);
+      Identifier_Set_Symbol (+Id, Name_Find);
    end Set_Name;
 
    ----------------------
@@ -356,7 +357,7 @@ package body Why.Gen.Names is
      (Name : W_Identifier_Id)
      return W_Term_Identifier_Id is
    begin
-      return New_Term_Identifier (Name => Duplicate_Any_Node (Id => Name));
+      return New_Term_Identifier (Name => +Duplicate_Any_Node (Id => +Name));
    end To_Term_Identifier;
 
    -------------------

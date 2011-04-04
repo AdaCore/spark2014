@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Tables;    use Why.Atree.Tables;
@@ -38,7 +39,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (File,
+        (+File,
          New_Logic_Declaration
            (Decl => New_Type (Name => New_Identifier (Name))));
    end New_Abstract_Type;
@@ -47,7 +48,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (File,
+        (+File,
          New_Logic_Declaration
            (Decl => New_Type (Name => Name)));
    end New_Abstract_Type;
@@ -57,13 +58,13 @@ package body Why.Gen.Decl is
    ------------------------
 
    procedure New_Adt_Definition
-     (File : W_Type_Id;
+     (File : W_File_Id;
       Name : W_Identifier_Id;
       Constructors : W_Constr_Decl_Array)
    is
    begin
       File_Append_To_Declarations
-         (File,
+         (+File,
           New_Logic_Declaration
             (Decl =>
                New_Type
@@ -83,7 +84,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (File,
+        (+File,
          New_Logic_Declaration
             (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
    end New_Axiom;
@@ -99,8 +100,8 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-         (File,
-            New_Exception_Declaration (Name => Name, Parameter => Parameter));
+         (+File,
+          New_Exception_Declaration (Name => Name, Parameter => Parameter));
    end New_Exception;
 
    ------------------------
@@ -119,7 +120,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-         (File,
+         (+File,
           New_Global_Binding
           (Name => Name,
            Pre => New_Precondition (Assertion => Pre),
@@ -141,7 +142,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => File,
+        (Id => +File,
          New_Item =>
            New_Include_Declaration
              (Ada_Node => Ada_Node,
@@ -160,7 +161,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => File,
+        (Id => +File,
          New_Item =>
            New_Logic_Declaration (Decl =>
               New_Logic
@@ -189,7 +190,7 @@ package body Why.Gen.Decl is
       Param_Type : W_Computation_Type_Id;
    begin
       if Binders'Length = 0 then
-         Param_Type := Return_Type;
+         Param_Type := +Return_Type;
       else
          Param_Type :=
             New_Computation_Spec
@@ -202,17 +203,17 @@ package body Why.Gen.Decl is
                use Node_Lists;
 
                Cur_Binder : constant W_Binder_Id := Binders (Index);
-               Arg_Ty     : constant W_Simple_Value_Type_Id :=
+               Arg_Ty     : constant W_Value_Type_Id :=
                   Binder_Get_Arg_Type (Cur_Binder);
                Names      : constant Node_Lists.List :=
-                  Get_List (Binder_Get_Names (Cur_Binder));
+                  Get_List (+Binder_Get_Names (Cur_Binder));
                Cur        : Node_Lists.Cursor := First (Names);
             begin
                while Has_Element (Cur) loop
                   Param_Type :=
                      New_Arrow_Type
-                        (Name  => Duplicate_Any_Node (Id => Element (Cur)),
-                         Left  => Duplicate_Any_Node (Id => Arg_Ty),
+                        (Name  => +Duplicate_Any_Node (Id => Element (Cur)),
+                         Left  => +Duplicate_Any_Node (Id => +Arg_Ty),
                          Right => Param_Type);
                   Node_Lists.Next (Cur);
                end loop;
@@ -220,21 +221,21 @@ package body Why.Gen.Decl is
          end loop;
       end if;
       File_Append_To_Declarations
-        (Id       => File,
+        (Id       => +File,
          New_Item =>
            New_Parameter_Declaration
             (Names => (1 => Name),
-             Parameter_Type => Param_Type));
+             Parameter_Type => +Param_Type));
    end New_Parameter;
 
    procedure New_Parameter
       (File       : W_File_Id;
        Name       : W_Identifier_Id;
-       Value_Type : W_Simple_Value_Type_Id)
+       Value_Type : W_Value_Type_Id)
    is
    begin
       File_Append_To_Declarations
-        (Id => File,
+        (Id => +File,
          New_Item =>
             New_Parameter_Declaration
               (Names => (1 => Name),
@@ -253,7 +254,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => File,
+        (Id => +File,
          New_Item =>
            New_Logic_Declaration
              (Decl =>

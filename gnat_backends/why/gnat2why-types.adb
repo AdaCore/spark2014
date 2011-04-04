@@ -33,13 +33,12 @@ with Stand;              use Stand;
 with String_Utils;       use String_Utils;
 with Uintp;              use Uintp;
 with Why;                use Why;
+with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
-
-with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
 package body Gnat2Why.Types is
 
@@ -70,6 +69,17 @@ package body Gnat2Why.Types is
          return Full_Name (Etype (First (Index_List)));
       end;
    end Type_Of_Array_Index;
+
+   --------------------------------
+   -- Why_Logic_Type_Of_Ada_Type --
+   --------------------------------
+
+   function Why_Logic_Type_Of_Ada_Type (N : Node_Id)
+      return W_Primitive_Type_Id is
+      Ty : constant Node_Id := Etype (N);
+   begin
+      return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
+   end  Why_Logic_Type_Of_Ada_Type;
 
    -------------------------------------
    -- Why_Type_Decl_of_Full_Type_Decl --
@@ -242,7 +252,7 @@ package body Gnat2Why.Types is
       if Is_Mutable then
          return New_Ref_Type (Ada_Node => Ty, Aliased_Type => Base);
       else
-         return Base;
+         return +Base;
       end if;
    end  Why_Prog_Type_Of_Ada_Type;
 

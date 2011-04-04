@@ -25,6 +25,7 @@
 
 with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Ids;              use Why.Ids;
+with Why.Conversions;      use Why.Conversions;
 with Why.Types;            use Why.Types;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 
@@ -36,7 +37,7 @@ package Why.Gen.Funcs is
      (File   : W_File_Id;
       Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id) with
-     Pre => (Is_Root (Name));
+     Pre => (Is_Root (+Name));
    --  Create a logic declaration from Name and Arrows and append it
    --  to File. Name is inserted into the resulting syntax tree,
    --  Arrows is not; the spec of the logic declaration is created
@@ -54,10 +55,10 @@ package Why.Gen.Funcs is
       Arrows : W_Arrow_Type_Id;
       Pre    : W_Predicate_OId := Why_Empty;
       Post   : W_Predicate_OId := Why_Empty) with
-     Pre => (Is_Root (Name)
-             and then Is_Root (Arrows)
-             and then Is_Root (Pre)
-             and then Is_Root (Post));
+     Pre => (Is_Root (+Name)
+             and then Is_Root (+Arrows)
+             and then Is_Root (+Pre)
+             and then Is_Root (+Post));
    --  Create a logic declaration and it corresponding declaration in
    --  the program space (safe and default) and append it to File. Name
    --  is the name of the logic function declaration, Arrows is the
@@ -88,10 +89,10 @@ package Why.Gen.Funcs is
       Arrows : W_Arrow_Type_Id;
       Pre    : W_Predicate_OId := Why_Empty;
       Post   : W_Predicate_OId := Why_Empty) with
-     Pre => (Is_Root (Name)
-             and then Is_Root (Arrows)
-             and then Is_Root (Pre)
-             and then Is_Root (Post));
+     Pre => (Is_Root (+Name)
+             and then Is_Root (+Arrows)
+             and then Is_Root (+Pre)
+             and then Is_Root (+Post));
    --  Create a subprogram declaration in the program space (a so called
    --  "parameter") from its name (Name) and its signature (Arrows). All
    --  parameters will be inserted as is into the resulting syntax tree.

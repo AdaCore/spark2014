@@ -48,14 +48,14 @@ package body Why.Gen.Axioms is
          New_Equal
            (Left => New_Array_Access_Term
                       (Type_Name => Type_Name,
-                       Index => New_Term (Index_Name),
+                       Index => +New_Term (Index_Name),
                        Ar =>
                          New_Array_Update_Term
                            (Type_Name => Type_Name,
-                            Ar => New_Term (Ar_Name),
-                            Index => New_Term (Index_Name),
-                            Value => New_Term (Component_Name))),
-            Right => New_Term (Component_Name));
+                            Ar => +New_Term (Ar_Name),
+                            Index => +New_Term (Index_Name),
+                            Value => +New_Term (Component_Name))),
+            Right => +New_Term (Component_Name));
 
       Quantified_Body : constant W_Predicate_Id :=
          New_Universal_Quantif
@@ -98,21 +98,21 @@ package body Why.Gen.Axioms is
            (Left =>
               New_Array_Access_Term
                 (Type_Name => Type_Name,
-                 Index => New_Term (Index1),
+                 Index => +New_Term (Index1),
                  Ar =>
                    New_Array_Update_Term
                      (Type_Name => Type_Name,
-                      Ar => New_Term (Ar_Name),
-                      Index => New_Term (Index2),
-                      Value => New_Term (Component_Name))),
+                      Ar => +New_Term (Ar_Name),
+                      Index => +New_Term (Index2),
+                      Value => +New_Term (Component_Name))),
             Right =>
                New_Array_Access_Term
                  (Type_Name => Type_Name,
-                  Index => New_Term (Index1),
-                  Ar => New_Term (Ar_Name)));
+                  Index => +New_Term (Index1),
+                  Ar => +New_Term (Ar_Name)));
 
       Hypothesis     : constant W_Predicate_Id :=
-            New_NEqual (New_Term (Index1), New_Term (Index2));
+            New_NEqual (+New_Term (Index1), +New_Term (Index2));
 
       Axiom_Body     : constant W_Predicate_Id :=
             New_Implication (Left => Hypothesis, Right =>  Conclusion);
@@ -152,27 +152,27 @@ package body Why.Gen.Axioms is
       To_Base_Type   : W_Identifier_Id)
    is
       Arg_S                : constant String := "x";
-      X_To_Type_Op         : constant W_Operation_Id :=
+      X_To_Type_Op         : constant W_Term_Id :=
                                New_Operation
                                  (Name       => From_Base_Type,
-                                  Parameters => (1 => New_Term (Arg_S)));
-      Back_To_Base_Type_Op : constant W_Operation_Id :=
+                                  Parameters => (1 => +New_Term (Arg_S)));
+      Back_To_Base_Type_Op : constant W_Term_Id :=
                                New_Operation
                                  (Name       => To_Base_Type,
                                   Parameters => (1 => X_To_Type_Op));
-      In_Range             : constant W_Operation_Id :=
-                               New_Operation
+      In_Range             : constant W_Predicate_Id :=
+                               New_Predicate_Instance
                                   (Name       => Range_Pred_Name (Type_Name),
-                                   Parameters => (1 => New_Term (Arg_S)));
-      Formula              : constant W_Implication_Id :=
+                                   Parameters => (1 => +New_Term (Arg_S)));
+      Formula              : constant W_Predicate_Id :=
                                New_Implication
                                  (Left  => In_Range,
                                   Right =>
                                     New_Related_Terms
                                       (Left  => Back_To_Base_Type_Op,
                                        Op    => New_Rel_Eq,
-                                       Right => New_Term (Arg_S)));
-      Quantif_On_X         : constant W_Universal_Quantif_Id :=
+                                       Right => +New_Term (Arg_S)));
+      Quantif_On_X         : constant W_Predicate_Id :=
                                New_Universal_Quantif
                                  (Var_Type  => Base_Type,
                                   Variables => (1 => New_Identifier (Arg_S)),
@@ -194,15 +194,15 @@ package body Why.Gen.Axioms is
       Conversion : W_Identifier_Id)
    is
       Arg_S              : constant String := "x";
-      Call_To_Conversion : constant W_Operation_Id :=
+      Call_To_Conversion : constant W_Term_Id :=
                              New_Operation
                                (Name       => Conversion,
-                                Parameters => (1 => New_Term (Arg_S)));
-      Formula            : constant W_Operation_Id :=
-                             New_Operation
+                                Parameters => (1 => +New_Term (Arg_S)));
+      Formula            : constant W_Predicate_Id :=
+                             New_Predicate_Instance
                                (Name       => Range_Pred_Name (Type_Name),
                                 Parameters => (1 => Call_To_Conversion));
-      Quantif_On_X       : constant W_Universal_Quantif_Id :=
+      Quantif_On_X       : constant W_Predicate_Id :=
                              New_Universal_Quantif
                                (Var_Type =>
                                   New_Abstract_Type (Name => Type_Name),
@@ -228,18 +228,18 @@ package body Why.Gen.Axioms is
    is
       X_S               : constant String := "x";
       Y_S               : constant String := "y";
-      X_To_Base_Type_Op : constant W_Operation_Id :=
+      X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation (Name =>
                                              Conversion,
                                            Parameters =>
-                                             (1 => New_Term (X_S)));
-      Y_To_Base_Type_Op : constant W_Operation_Id :=
+                                             (1 => +New_Term (X_S)));
+      Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation (Name =>
-                                             Duplicate_Any_Node (Id =>
-                                                                   Conversion),
+                                             +Duplicate_Any_Node
+                                               (Id => +Conversion),
                                            Parameters =>
-                                             (1 => New_Term (Y_S)));
-      Formula           : constant W_Implication_Id :=
+                                             (1 => +New_Term (Y_S)));
+      Formula           : constant W_Predicate_Id :=
                             New_Implication
                               (Left =>
                                  New_Related_Terms
@@ -247,10 +247,10 @@ package body Why.Gen.Axioms is
                                     Op    => New_Rel_Eq,
                                     Right => Y_To_Base_Type_Op),
                                Right =>
-                                 New_Related_Terms (Left  => New_Term (X_S),
+                                 New_Related_Terms (Left  => +New_Term (X_S),
                                                     Op    => New_Rel_Eq,
-                                                    Right => New_Term (Y_S)));
-      Quantif_On_XY     : constant W_Universal_Quantif_Id :=
+                                                    Right => +New_Term (Y_S)));
+      Quantif_On_XY     : constant W_Predicate_Id :=
                             New_Universal_Quantif
                               (Var_Type =>
                                  New_Abstract_Type (Name => Type_Name),

@@ -26,6 +26,7 @@
 with Types;                use Types;
 with Uintp;                use Uintp;
 with Why.Ids;              use Why.Ids;
+with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 with Why.Atree.Properties; use Why.Atree.Properties;
@@ -101,7 +102,7 @@ package Why.Gen.Preds is
      (Bindings : Binding_Pred_Chain;
       Context  : W_Predicate_Id)
      return W_Predicate_Id with
-     Pre => (Is_Root (Context));
+     Pre => (Is_Root (+Context));
    --  Create a predicate by linking together the bindings and
    --  associating the context to them.
 
@@ -125,7 +126,7 @@ package Why.Gen.Preds is
      (Foralls : Universal_Quantif_Chain;
       Context : W_Predicate_Id)
      return W_Predicate_Id with
-     Pre => (Is_Root (Context));
+     Pre => (Is_Root (+Context));
    --  Create a predicate by linking together the universal quantifiers and
    --  associating the context to them.
 

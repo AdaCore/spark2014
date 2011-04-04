@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Names;      use Why.Gen.Names;
@@ -73,12 +74,12 @@ package body Why.Gen.Terms is
    function New_Andb (Left, Right : W_Term_Id) return W_Term_Id
    is
    begin
-      case Get_Kind (Left) is
+      case Get_Kind (+Left) is
          when W_True_Literal =>
             return Right;
 
          when others =>
-            case Get_Kind (Right) is
+            case Get_Kind (+Right) is
                when W_True_Literal =>
                   return Left;
 
@@ -114,7 +115,7 @@ package body Why.Gen.Terms is
    function New_Ifb (Condition, Left, Right : W_Term_Id) return W_Term_Id
    is
    begin
-      case Get_Kind (Condition) is
+      case Get_Kind (+Condition) is
          when W_True_Literal =>
             return Left;
 
@@ -147,12 +148,12 @@ package body Why.Gen.Terms is
    function New_Orb (Left, Right : W_Term_Id) return W_Term_Id
    is
    begin
-      case Get_Kind (Left) is
+      case Get_Kind (+Left) is
          when W_False_Literal =>
             return Right;
 
          when others =>
-            case Get_Kind (Right) is
+            case Get_Kind (+Right) is
                when W_False_Literal =>
                   return Left;
 

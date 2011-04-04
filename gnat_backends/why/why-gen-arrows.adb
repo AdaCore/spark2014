@@ -41,10 +41,10 @@ package body Why.Gen.Arrows is
       Right : constant W_Computation_Type_Id :=
                 Arrow_Type_Get_Right (Arrow);
    begin
-      if Get_Kind (Right) = W_Computation_Spec then
-         return Right;
+      if Get_Kind (+Right) = W_Computation_Spec then
+         return +Right;
       else
-         return Get_Computation_Spec (Right);
+         return Get_Computation_Spec (+Right);
       end if;
    end Get_Computation_Spec;
 
@@ -53,7 +53,7 @@ package body Why.Gen.Arrows is
    ---------------------
 
    function New_Arrow_Stack
-     (Return_Type : W_Primitive_Type_Id;
+     (Return_Type : W_Value_Type_Id;
       Effects     : W_Effects_Id := New_Effects)
      return W_Arrow_Type_Unchecked_Id
    is
@@ -63,7 +63,7 @@ package body Why.Gen.Arrows is
       Result   : constant W_Arrow_Type_Unchecked_Id :=
                    New_Unchecked_Arrow_Type;
    begin
-      Arrow_Type_Set_Right (Result, Contract);
+      Arrow_Type_Set_Right (Result, +Contract);
       return Result;
    end New_Arrow_Stack;
 
@@ -78,18 +78,18 @@ package body Why.Gen.Arrows is
      return W_Arrow_Type_Id
    is
       Left : constant W_Simple_Value_Type_Unchecked_Id :=
-               Arrow_Type_Get_Left (Arrow);
+               +Arrow_Type_Get_Left (+Arrow);
    begin
       if Left = Why_Empty then
          Arrow_Type_Set_Left (Arrow, Arg_Type);
          Arrow_Type_Set_Name (Arrow, Name);
-         return Arrow;
+         return +Arrow;
       else
          declare
             Result : constant W_Arrow_Type_Id :=
                        New_Arrow_Type (Name => Name,
                                        Left => Arg_Type,
-                                       Right => Arrow);
+                                       Right => +Arrow);
          begin
             return Result;
          end;

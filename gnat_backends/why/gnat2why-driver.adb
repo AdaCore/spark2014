@@ -55,6 +55,7 @@ with Why.Atree.Treepr;      use Why.Atree.Treepr;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Conversions;       use Why.Conversions;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Locs;         use Gnat2Why.Locs;
@@ -273,7 +274,7 @@ package body Gnat2Why.Driver is
             Translate_Package (File, N);
          end if;
          Open_Current_File (Unit_Name & ".why");
-         Sprint_Why_Node (File, Current_File);
+         Sprint_Why_Node (+File, Current_File);
          Close_Current_File;
 
          Open_Current_File (Unit_Name & ".loc");
@@ -285,7 +286,7 @@ package body Gnat2Why.Driver is
          Close_Current_File;
 
          if Print_Generated_Code then
-            wpg (File);
+            wpg (+File);
          end if;
       end if;
    end Translate_CUnit;
@@ -398,8 +399,8 @@ package body Gnat2Why.Driver is
           Name => New_Ignore_Name,
           Value_Type =>
             New_Arrow_Type
-               (Left => New_Generic_Formal_Type (Name => New_Identifier ("a")),
-                Right => New_Type_Unit));
+              (Left => New_Generic_Formal_Type (Name => New_Identifier ("a")),
+               Right => New_Type_Unit));
 
       New_Include_Declaration
         (File => File,
@@ -407,11 +408,11 @@ package body Gnat2Why.Driver is
       New_Include_Declaration
         (File => File,
          Name => New_Identifier ("bool"));
-      Sprint_Why_Node (File, Current_File);
+      Sprint_Why_Node (+File, Current_File);
       Close_Current_File;
 
       if Print_Generated_Code then
-         wpn (File);
+         wpn (+File);
       end if;
    end Translate_Standard_Package;
 

@@ -26,9 +26,11 @@
 with Atree;                use Atree;
 with Namet;                use Namet;
 with Sinput;               use Sinput;
+with Why.Types;            use Why.Types;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Tables;     use Why.Atree.Tables;
+with Why.Conversions;      use Why.Conversions;
 
 package body Gnat2Why.Locs is
 
@@ -38,7 +40,7 @@ package body Gnat2Why.Locs is
    Counter : Positive := 1;
    --  The counter used to generate fresh names
 
-   Located_Labels : constant W_Identifier_List := New_List;
+   Located_Labels : constant Why_Node_List := New_List;
 
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.
@@ -73,18 +75,21 @@ package body Gnat2Why.Locs is
       Name_Len := 0;
       Add_Str_To_Name_Buffer (Prefix & Int_Image (Counter));
       Result := New_Identifier (Ada_Node => N, Symbol => Name_Find);
-      Append (Located_Labels, Result);
+      Append (Located_Labels, +Result);
       Counter := Counter + 1;
-      return Duplicate_Identifier (Ada_Node => N, Id => Result);
+      return W_Identifier_Id
+        (Duplicate_Identifier (Ada_Node => N,
+                               Id => W_Identifier_Valid_Id (Result)));
    end New_Located_Label;
 
    procedure Print_Located_Label
       (O : Output_Id;
        I : W_Identifier_Id)
    is
-      N    : constant Node_Id := Get_Ada_Node (I);
+      N    : constant Node_Id := Get_Ada_Node (+I);
       Loc  : constant Source_Ptr := Sloc (N);
-      Name : constant String := Get_Name_String (Get_Node (I).Symbol);
+      Name : constant String :=
+               Get_Name_String (Get_Node (+I).Symbol);
    begin
       P (O, "[");
       P (O, Name);
@@ -115,7 +120,7 @@ package body Gnat2Why.Locs is
       Position : Cursor := First (Labels);
    begin
       while Position /= No_Element loop
-         Print_Located_Label (O, Element (Position));
+         Print_Located_Label (O, W_Identifier_Id (Element (Position)));
          Next (Position);
       end loop;
    end Print_Locations_Table;
@@ -128,9 +133,10 @@ package body Gnat2Why.Locs is
    begin
       while Position /= No_Element loop
          declare
-            Cur_Elt : constant W_Identifier_Id := Element (Position);
+            Cur_Elt : constant W_Identifier_Id :=
+                        W_Identifier_Id (Element (Position));
          begin
-            P (O, Get_Name_String (Get_Node (Cur_Elt).Symbol));
+            P (O, Get_Name_String (Get_Node (+Cur_Elt).Symbol));
             NL (O);
             Next (Position);
          end;

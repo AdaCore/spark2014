@@ -26,6 +26,7 @@
 with Ada.Containers;     use Ada.Containers;
 with Uintp;              use Uintp;
 with Types;              use Types;
+with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
@@ -71,7 +72,7 @@ package body Why.Gen.Enums is
       Cur      : Cursor := First (Constructors);
       Cnt      : Uint := Uint_1;
    begin
-      Matching_Term_Set_Term (Match, New_Term (Arg_Name));
+      Matching_Term_Set_Term (Match, +New_Term (Arg_Name));
       while Has_Element (Cur) loop
          declare
             Result : constant W_Term_Id := New_Integer_Constant (Value => Cnt);
@@ -98,11 +99,11 @@ package body Why.Gen.Enums is
                              Param_Type =>
                                New_Abstract_Type
                                  (Name => New_Identifier (Name)))),
-                     Def         => Match);
+                     Def         => +Match);
       begin
          File_Append_To_Declarations
-           (File,
-            New_Logic_Declaration (Decl => Func));
+           (+File,
+            New_Logic_Declaration (Decl => +Func));
       end;
    end Define_Enum_To_Int_Function;
 

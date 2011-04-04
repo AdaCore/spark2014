@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Types;          use Why.Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Tables;   use Why.Atree.Tables;
@@ -61,12 +62,12 @@ package body Why.Gen.Preds is
 
       --  predicate eq___<name> (x : <name>, y : <name>) = [...]
       Pred_Name         : constant W_Identifier_Id := Eq_Pred_Name (Name);
-      X_Binder          : constant W_Binder_Id :=
+      X_Binder          : constant W_Logic_Binder_Id :=
                             New_Logic_Binder
                             (Name       => New_Identifier (X_S),
                              Param_Type => New_Abstract_Type
                              (Name => New_Identifier (Name)));
-      Y_Binder          : constant W_Binder_Id :=
+      Y_Binder          : constant W_Logic_Binder_Id :=
                             New_Logic_Binder
                             (Name       => New_Identifier (Y_S),
                              Param_Type => New_Abstract_Type
@@ -75,15 +76,15 @@ package body Why.Gen.Preds is
       --  integer_of___<name> (x) = integer_of___<name> (y)
       Conversion        : constant W_Identifier_Id :=
                             New_Conversion_To_Int (Name);
-      X_To_Base_Type_Op : constant W_Operation_Id :=
+      X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name       => Conversion,
-                               Parameters => (1 => New_Term (X_S)));
-      Y_To_Base_Type_Op : constant W_Operation_Id :=
+                               Parameters => (1 => +New_Term (X_S)));
+      Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name =>
-                                 Duplicate_Any_Node (Id => Conversion),
-                               Parameters => (1 => New_Term (Y_S)));
+                                 +Duplicate_Any_Node (Id => +Conversion),
+                               Parameters => (1 => +New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
       New_Predicate_Definition
@@ -111,7 +112,7 @@ package body Why.Gen.Preds is
 
       --  predicate <name>___in_range (x : int) = [...]
       Pred_Name  : constant W_Identifier_Id := Range_Pred_Name (Name);
-      Binder     : constant W_Binder_Id :=
+      Binder     : constant W_Logic_Binder_Id :=
                      New_Logic_Binder (Name       => New_Identifier (Arg_S),
                                        Param_Type => New_Type_Int);
 
@@ -124,11 +125,11 @@ package body Why.Gen.Preds is
 
       --  first <= x <= last
       Context    : constant W_Predicate_Id :=
-                     New_Related_Terms (Left   => New_Term (First_S),
+                     New_Related_Terms (Left   => +New_Term (First_S),
                                         Op     => New_Rel_Le,
-                                        Right  => New_Term (Arg_S),
+                                        Right  => +New_Term (Arg_S),
                                         Op2    => New_Rel_Le,
-                                        Right2 => New_Term (Last_S));
+                                        Right2 => +New_Term (Last_S));
       Pred_Body  : constant W_Predicate_Id :=
                      New_Predicate_Body ((Decl_First, Decl_Last), Context);
    begin
@@ -171,8 +172,8 @@ package body Why.Gen.Preds is
       Result : constant W_Binding_Pred_Unchecked_Id :=
                  New_Unchecked_Binding_Pred;
    begin
-      Binding_Pred_Set_Name (Result, New_Identifier (Name));
-      Binding_Pred_Set_Def (Result, New_Constant (Value));
+      Binding_Pred_Set_Name (+Result, +New_Identifier (Name));
+      Binding_Pred_Set_Def (+Result, +New_Constant (Value));
       return Result;
    end New_Binding_Pred;
 
@@ -197,7 +198,7 @@ package body Why.Gen.Preds is
                    Left     =>
                      New_Negation
                         (Ada_Node => Ada_Node,
-                         Operand  => Duplicate_Predicate (Id => Condition)),
+                         Operand  => +Duplicate_Predicate (Id => +Condition)),
                    Right    => Else_Part));
    end New_Conditional_Prop;
 
@@ -274,15 +275,27 @@ package body Why.Gen.Preds is
       Context  : W_Predicate_Id)
      return W_Predicate_Id
    is
+      procedure Set_Context
+        (Root, Element : W_Predicate_Unchecked_Id);
 
       function Finalize_Binding_Chain is
         new Finalize_Chain
         (Element_Type => W_Predicate_Unchecked_Id,
          Chain_Type   => Binding_Pred_Chain,
-         Chain_Set    => Binding_Pred_Set_Context);
+         Chain_Set    => Set_Context);
+
+      -----------------
+      -- Set_Context --
+      -----------------
+
+      procedure Set_Context
+        (Root, Element : W_Predicate_Unchecked_Id) is
+      begin
+         Binding_Pred_Set_Context (Root, +Element);
+      end Set_Context;
 
    begin
-      return Finalize_Binding_Chain (Bindings, Context);
+      return +Finalize_Binding_Chain (Bindings, +Context);
    end New_Predicate_Body;
 
    --------------------
@@ -310,9 +323,9 @@ package body Why.Gen.Preds is
       return W_Predicate_Id
    is
    begin
-      if Get_Kind (Left) = W_True_Literal_Pred then
+      if Get_Kind (+Left) = W_True_Literal_Pred then
          return Right;
-      elsif Get_Kind (Right) = W_True_Literal_Pred then
+      elsif Get_Kind (+Right) = W_True_Literal_Pred then
          return Left;
       else
          return New_Conjunction (Left => Left, Right => Right);
@@ -328,15 +341,25 @@ package body Why.Gen.Preds is
       Context : W_Predicate_Id)
      return W_Predicate_Id
    is
+      procedure Set_Pred (Root, Element : W_Universal_Quantif_Unchecked_Id);
 
       function Finalize_Univ_Chain is
         new Finalize_Chain
         (Element_Type => W_Universal_Quantif_Unchecked_Id,
          Chain_Type   => Universal_Quantif_Chain,
-         Chain_Set    => Universal_Quantif_Set_Pred);
+         Chain_Set    => Set_Pred);
+
+      --------------
+      -- Set_Pred --
+      --------------
+
+      procedure Set_Pred (Root, Element : W_Universal_Quantif_Unchecked_Id) is
+      begin
+         Universal_Quantif_Set_Pred (Root, +Element);
+      end Set_Pred;
 
    begin
-      return Finalize_Univ_Chain (Foralls, Context);
+      return +Finalize_Univ_Chain (Foralls, +Context);
    end New_Universal_Predicate_Body;
 
 end Why.Gen.Preds;

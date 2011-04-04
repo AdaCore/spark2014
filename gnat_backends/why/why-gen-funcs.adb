@@ -39,8 +39,8 @@ package body Why.Gen.Funcs is
    function New_Call_To_Logic
      (Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
-     return W_Operation_Id with
-     Pre => (Is_Root (Name));
+     return W_Term_Id with
+     Pre => (Is_Root (+Name));
    --  Create a call to an operation in the logical space with parameters
    --  taken from Arrows. Typically, from:
    --
@@ -86,15 +86,15 @@ package body Why.Gen.Funcs is
       begin
          Logic_Type_Append_To_Arg_Types
            (Spec,
-            Duplicate_Any_Node (Id => Arrow_Type_Get_Left (Arrow)));
+            +Duplicate_Any_Node (Id => +Arrow_Type_Get_Left (Arrow)));
 
-         if Get_Kind (Right) = W_Computation_Spec then
+         if Get_Kind (+Right) = W_Computation_Spec then
             Logic_Type_Set_Return_Type
               (Spec,
-               Duplicate_Any_Node
-               (Id => Computation_Spec_Get_Return_Type (Right)));
+               +Duplicate_Any_Node
+               (Id => +Computation_Spec_Get_Return_Type (+Right)));
          else
-            Append_To_Spec (Right);
+            Append_To_Spec (+Right);
          end if;
       end Append_To_Spec;
 
@@ -102,10 +102,10 @@ package body Why.Gen.Funcs is
 
    begin
       Append_To_Spec (Arrows);
-      Logic_Append_To_Names (Logic, Name);
-      Logic_Set_Logic_Type (Logic, Spec);
-      File_Append_To_Declarations (File,
-                                   New_Logic_Declaration (Decl => Logic));
+      Logic_Append_To_Names (+Logic, Name);
+      Logic_Set_Logic_Type (+Logic, +Spec);
+      File_Append_To_Declarations (+File,
+                                   New_Logic_Declaration (Decl => +Logic));
    end Declare_Logic;
 
    ----------------------------------
@@ -128,12 +128,12 @@ package body Why.Gen.Funcs is
       if Final_Post = Why_Empty then
          declare
             Logic_Name : constant W_Identifier_Id :=
-                           Duplicate_Any_Node (Id => Name);
+                           +Duplicate_Any_Node (Id => +Name);
          begin
             Final_Post := New_Related_Terms
               (Left  => New_Call_To_Logic (Logic_Name, Arrows),
                Op    => New_Rel_Eq,
-               Right => New_Result_Identifier);
+               Right => +New_Result_Identifier);
          end;
       end if;
 
@@ -151,8 +151,6 @@ package body Why.Gen.Funcs is
       Pre    : W_Predicate_OId := Why_Empty;
       Post   : W_Predicate_OId := Why_Empty)
    is
-      Parameter : constant W_Parameter_Declaration_Unchecked_Id :=
-                    New_Unchecked_Parameter_Declaration;
    begin
       declare
          Contract : constant W_Computation_Spec_Id :=
@@ -162,11 +160,11 @@ package body Why.Gen.Funcs is
             declare
                Assertion    : constant W_Assertion_Id :=
                                 New_Assertion (Pred => Pre);
-               Precondition : constant W_Postcondition_Id :=
+               Precondition : constant W_Precondition_Id :=
                                 New_Precondition (Assertion => Assertion);
             begin
                Computation_Spec_Set_Precondition
-                 (Contract, Precondition);
+                 (+Contract, +Precondition);
             end;
          end if;
 
@@ -178,14 +176,15 @@ package body Why.Gen.Funcs is
                                  New_Postcondition (Assertion => Assertion);
             begin
                Computation_Spec_Set_Postcondition
-                 (Contract, Postcondition);
+                 (+Contract, +Postcondition);
             end;
          end if;
       end;
 
-      Parameter_Declaration_Append_To_Names (Parameter, Name);
-      Parameter_Declaration_Set_Parameter_Type (Parameter, Arrows);
-      File_Append_To_Declarations (File, Parameter);
+      File_Append_To_Declarations (+File,
+                                   New_Parameter_Declaration
+                                   (Names          => (1 => Name),
+                                    Parameter_Type => +Arrows));
    end Declare_Parameter;
 
    -----------------------
@@ -195,7 +194,7 @@ package body Why.Gen.Funcs is
    function New_Call_To_Logic
      (Name   : W_Identifier_Id;
       Arrows : W_Arrow_Type_Id)
-     return W_Operation_Id
+     return W_Term_Id
    is
       Operation : constant W_Operation_Unchecked_Id :=
                     New_Unchecked_Operation;
@@ -214,10 +213,10 @@ package body Why.Gen.Funcs is
       begin
          Operation_Append_To_Parameters
            (Operation,
-            To_Term_Identifier (Arrow_Type_Get_Name (Arrows)));
+            +To_Term_Identifier (Arrow_Type_Get_Name (Arrows)));
 
-         if Get_Kind (Right) /= W_Computation_Spec then
-            Append_Arg (Right);
+         if Get_Kind (+Right) /= W_Computation_Spec then
+            Append_Arg (+Right);
          end if;
       end Append_Arg;
 
@@ -226,7 +225,7 @@ package body Why.Gen.Funcs is
    begin
       Operation_Set_Name (Operation, Name);
       Append_Arg (Arrows);
-      return Operation;
+      return +Operation;
    end New_Call_To_Logic;
 
    procedure New_Boolean_Equality_Parameter
@@ -237,11 +236,11 @@ package body Why.Gen.Funcs is
       Arg_T : constant String := "m";
       Post  : constant W_Predicate_Id :=
          New_Conditional_Pred
-           (Condition => New_Result_Identifier,
+           (Condition => +New_Result_Identifier,
             Then_Part =>
-              New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
+              New_Equal (+New_Term (Arg_S), +New_Term (Arg_T)),
             Else_Part =>
-              New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
+              New_NEqual (+New_Term (Arg_S), +New_Term (Arg_T)));
    begin
       New_Parameter
         (File => File,
@@ -249,10 +248,10 @@ package body Why.Gen.Funcs is
          Binders =>
             (1 =>
                New_Binder
-                  (Names => (1 => New_Identifier (Arg_S),
-                             2 => New_Identifier (Arg_T)),
+                  (Names => (1 => +New_Identifier (Arg_S),
+                             2 => +New_Identifier (Arg_T)),
                    Arg_Type =>
-                     New_Abstract_Type (Name => New_Identifier (Type_Name)))),
+                     New_Abstract_Type (Name => +New_Identifier (Type_Name)))),
          Return_Type => New_Type_Bool,
          Post        => New_Assertion (Pred => Post));
    end New_Boolean_Equality_Parameter;

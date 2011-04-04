@@ -28,6 +28,7 @@ with Uintp;              use Uintp;
 with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
+with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -150,8 +151,8 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         (Get_Kind (P) = W_Prog_Constant and then
-          Get_Kind (Prog_Constant_Get_Def (P)) = W_False_Literal);
+         (Get_Kind (+P) = W_Prog_Constant and then
+          Get_Kind (+Prog_Constant_Get_Def (+P)) = W_False_Literal);
    end Is_False_Boolean;
 
    ---------------------
@@ -162,8 +163,8 @@ package body Why.Gen.Progs is
    is
    begin
       return
-         (Get_Kind (P) = W_Prog_Constant and then
-          Get_Kind (Prog_Constant_Get_Def (P)) = W_True_Literal);
+         (Get_Kind (+P) = W_Prog_Constant and then
+          Get_Kind (+Prog_Constant_Get_Def (+P)) = W_True_Literal);
    end Is_True_Boolean;
 
    --------------------------
@@ -221,14 +222,14 @@ package body Why.Gen.Progs is
       Incr_Stmt : constant W_Prog_Id :=
          New_Assignment
             (Ada_Node => Ada_Node,
-             Name     => Duplicate_Any_Node (Id => Loop_Index),
+             Name     => +Duplicate_Any_Node (Id => +Loop_Index),
              Value    => Addition);
       Loop_Cond : constant W_Prog_Id  :=
          New_Infix_Call
            (Ada_Node => Ada_Node,
             Infix    => New_Op_Le_Prog,
             Left     =>
-              Duplicate_Any_Node (Id => Index_Deref),
+              +Duplicate_Any_Node (Id => +Index_Deref),
             Right    => New_Prog_Identifier (Def => High));
       Loop_Content : constant W_Prog_Id :=
          New_Statement_Sequence
@@ -243,23 +244,23 @@ package body Why.Gen.Progs is
                   Op     => New_Rel_Le,
                   Right  =>
                     New_Term_Identifier
-                      (Name => Duplicate_Any_Node (Id => Loop_Index)),
+                      (Name => +Duplicate_Any_Node (Id => +Loop_Index)),
                   Op2    => New_Rel_Le,
                   Right2 =>
                      New_Arith_Operation
                         (Op => New_Op_Add,
                          Left =>
                            New_Term_Identifier
-                              (Name => Duplicate_Any_Node (Id => High)),
+                              (Name => +Duplicate_Any_Node (Id => +High)),
                          Right =>
                            New_Integer_Constant (Value => Uint_1))));
    begin
       return
         New_Binding_Ref
            (Ada_Node => Ada_Node,
-            Name     => Duplicate_Any_Node (Id => Loop_Index),
+            Name     => +Duplicate_Any_Node (Id => +Loop_Index),
             Def      =>
-               New_Prog_Identifier (Def => Duplicate_Any_Node (Id => Low)),
+               New_Prog_Identifier (Def => +Duplicate_Any_Node (Id => +Low)),
             Context  =>
               New_While_Loop
                 (Ada_Node     => Ada_Node,
@@ -497,8 +498,8 @@ package body Why.Gen.Progs is
       is
       begin
          return
-           (Get_Kind (N) = W_Prog_Constant and then
-            Get_Kind (Prog_Constant_Get_Def (N)) = W_Void_Literal);
+           (Get_Kind (+N) = W_Prog_Constant and then
+            Get_Kind (+Prog_Constant_Get_Def (+N)) = W_Void_Literal);
       end Is_Void;
 
       --  begin processing for Sequence
@@ -514,22 +515,22 @@ package body Why.Gen.Progs is
          return Left;
       end if;
 
-      case Get_Kind (Left) is
+      case Get_Kind (+Left) is
          when W_Statement_Sequence =>
-            case Get_Kind (Right) is
+            case Get_Kind (+Right) is
                when W_Statement_Sequence =>
                   return New_Statement_Sequence
                      (Statements => (1 => Left, 2 => Right));
                when others =>
                   Statement_Sequence_Append_To_Statements
-                     (Id => Left, New_Item => Right);
+                     (Id => +Left, New_Item => Right);
                   return Left;
             end case;
          when others =>
-            case Get_Kind (Right) is
+            case Get_Kind (+Right) is
                when W_Statement_Sequence =>
                   Statement_Sequence_Prepend_To_Statements
-                     (Id => Right, New_Item => Left);
+                     (Id => +Right, New_Item => Left);
                   return Right;
                when others =>
                   return New_Statement_Sequence
