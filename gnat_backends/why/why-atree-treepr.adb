@@ -57,7 +57,7 @@ package body Why.Atree.Treepr is
 
    procedure Identifier_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Identifier_Id)
+      Node  : W_Identifier_Valid_Id)
    is
    begin
       P (O, "W_Identifier");
@@ -86,7 +86,7 @@ package body Why.Atree.Treepr is
 
    procedure Identifier_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Identifier_Id)
+      Node  : W_Identifier_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -100,7 +100,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Prop_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Prop_Id)
+      Node  : W_Type_Prop_Valid_Id)
    is
    begin
       P (O, "W_Type_Prop");
@@ -119,7 +119,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Prop_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Prop_Id)
+      Node  : W_Type_Prop_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -133,7 +133,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Int_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Int_Id)
+      Node  : W_Type_Int_Valid_Id)
    is
    begin
       P (O, "W_Type_Int");
@@ -152,7 +152,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Int_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Int_Id)
+      Node  : W_Type_Int_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -166,7 +166,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Bool_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Bool_Id)
+      Node  : W_Type_Bool_Valid_Id)
    is
    begin
       P (O, "W_Type_Bool");
@@ -185,7 +185,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Bool_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Bool_Id)
+      Node  : W_Type_Bool_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -199,7 +199,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Real_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Real_Id)
+      Node  : W_Type_Real_Valid_Id)
    is
    begin
       P (O, "W_Type_Real");
@@ -218,7 +218,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Real_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Real_Id)
+      Node  : W_Type_Real_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -232,7 +232,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Unit_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Unit_Id)
+      Node  : W_Type_Unit_Valid_Id)
    is
    begin
       P (O, "W_Type_Unit");
@@ -251,7 +251,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Unit_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Unit_Id)
+      Node  : W_Type_Unit_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -265,7 +265,7 @@ package body Why.Atree.Treepr is
 
    procedure Abstract_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Abstract_Type_Id)
+      Node  : W_Abstract_Type_Valid_Id)
    is
    begin
       P (O, "W_Abstract_Type");
@@ -292,7 +292,7 @@ package body Why.Atree.Treepr is
 
    procedure Abstract_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Abstract_Type_Id)
+      Node  : W_Abstract_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -306,7 +306,7 @@ package body Why.Atree.Treepr is
 
    procedure Generic_Formal_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Generic_Formal_Type_Id)
+      Node  : W_Generic_Formal_Type_Valid_Id)
    is
    begin
       P (O, "W_Generic_Formal_Type");
@@ -333,7 +333,7 @@ package body Why.Atree.Treepr is
 
    procedure Generic_Formal_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Generic_Formal_Type_Id)
+      Node  : W_Generic_Formal_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -347,7 +347,7 @@ package body Why.Atree.Treepr is
 
    procedure Generic_Actual_Type_Chain_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Id)
+      Node  : W_Generic_Actual_Type_Chain_Valid_Id)
    is
    begin
       P (O, "W_Generic_Actual_Type_Chain");
@@ -380,7 +380,7 @@ package body Why.Atree.Treepr is
 
    procedure Generic_Actual_Type_Chain_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Generic_Actual_Type_Chain_Id)
+      Node  : W_Generic_Actual_Type_Chain_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -394,7 +394,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Type_Id)
+      Node  : W_Array_Type_Valid_Id)
    is
    begin
       P (O, "W_Array_Type");
@@ -421,7 +421,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Type_Id)
+      Node  : W_Array_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -435,7 +435,7 @@ package body Why.Atree.Treepr is
 
    procedure Ref_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Ref_Type_Id)
+      Node  : W_Ref_Type_Valid_Id)
    is
    begin
       P (O, "W_Ref_Type");
@@ -462,7 +462,7 @@ package body Why.Atree.Treepr is
 
    procedure Ref_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Ref_Type_Id)
+      Node  : W_Ref_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -476,7 +476,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Value_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Value_Type_Id)
+      Node  : W_Protected_Value_Type_Valid_Id)
    is
    begin
       P (O, "W_Protected_Value_Type");
@@ -503,7 +503,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Value_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Value_Type_Id)
+      Node  : W_Protected_Value_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -517,7 +517,7 @@ package body Why.Atree.Treepr is
 
    procedure Arrow_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Arrow_Type_Id)
+      Node  : W_Arrow_Type_Valid_Id)
    is
    begin
       P (O, "W_Arrow_Type");
@@ -558,7 +558,7 @@ package body Why.Atree.Treepr is
 
    procedure Arrow_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Arrow_Type_Id)
+      Node  : W_Arrow_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -572,7 +572,7 @@ package body Why.Atree.Treepr is
 
    procedure Computation_Spec_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Computation_Spec_Id)
+      Node  : W_Computation_Spec_Valid_Id)
    is
    begin
       P (O, "W_Computation_Spec");
@@ -629,7 +629,7 @@ package body Why.Atree.Treepr is
 
    procedure Computation_Spec_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Computation_Spec_Id)
+      Node  : W_Computation_Spec_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -643,7 +643,7 @@ package body Why.Atree.Treepr is
 
    procedure Integer_Constant_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Integer_Constant_Id)
+      Node  : W_Integer_Constant_Valid_Id)
    is
    begin
       P (O, "W_Integer_Constant");
@@ -668,7 +668,7 @@ package body Why.Atree.Treepr is
 
    procedure Integer_Constant_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Integer_Constant_Id)
+      Node  : W_Integer_Constant_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -682,7 +682,7 @@ package body Why.Atree.Treepr is
 
    procedure Real_Constant_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Real_Constant_Id)
+      Node  : W_Real_Constant_Valid_Id)
    is
    begin
       P (O, "W_Real_Constant");
@@ -707,7 +707,7 @@ package body Why.Atree.Treepr is
 
    procedure Real_Constant_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Real_Constant_Id)
+      Node  : W_Real_Constant_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -721,7 +721,7 @@ package body Why.Atree.Treepr is
 
    procedure True_Literal_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_True_Literal_Id)
+      Node  : W_True_Literal_Valid_Id)
    is
    begin
       P (O, "W_True_Literal");
@@ -740,7 +740,7 @@ package body Why.Atree.Treepr is
 
    procedure True_Literal_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_True_Literal_Id)
+      Node  : W_True_Literal_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -754,7 +754,7 @@ package body Why.Atree.Treepr is
 
    procedure False_Literal_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_False_Literal_Id)
+      Node  : W_False_Literal_Valid_Id)
    is
    begin
       P (O, "W_False_Literal");
@@ -773,7 +773,7 @@ package body Why.Atree.Treepr is
 
    procedure False_Literal_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_False_Literal_Id)
+      Node  : W_False_Literal_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -787,7 +787,7 @@ package body Why.Atree.Treepr is
 
    procedure Void_Literal_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Void_Literal_Id)
+      Node  : W_Void_Literal_Valid_Id)
    is
    begin
       P (O, "W_Void_Literal");
@@ -806,7 +806,7 @@ package body Why.Atree.Treepr is
 
    procedure Void_Literal_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Void_Literal_Id)
+      Node  : W_Void_Literal_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -820,7 +820,7 @@ package body Why.Atree.Treepr is
 
    procedure Arith_Operation_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Arith_Operation_Id)
+      Node  : W_Arith_Operation_Valid_Id)
    is
    begin
       P (O, "W_Arith_Operation");
@@ -859,7 +859,7 @@ package body Why.Atree.Treepr is
 
    procedure Arith_Operation_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Arith_Operation_Id)
+      Node  : W_Arith_Operation_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -873,7 +873,7 @@ package body Why.Atree.Treepr is
 
    procedure Negative_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Negative_Term_Id)
+      Node  : W_Negative_Term_Valid_Id)
    is
    begin
       P (O, "W_Negative_Term");
@@ -900,7 +900,7 @@ package body Why.Atree.Treepr is
 
    procedure Negative_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Negative_Term_Id)
+      Node  : W_Negative_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -914,7 +914,7 @@ package body Why.Atree.Treepr is
 
    procedure Term_Identifier_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Term_Identifier_Id)
+      Node  : W_Term_Identifier_Valid_Id)
    is
    begin
       P (O, "W_Term_Identifier");
@@ -949,7 +949,7 @@ package body Why.Atree.Treepr is
 
    procedure Term_Identifier_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Term_Identifier_Id)
+      Node  : W_Term_Identifier_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -963,7 +963,7 @@ package body Why.Atree.Treepr is
 
    procedure Operation_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Operation_Id)
+      Node  : W_Operation_Valid_Id)
    is
    begin
       P (O, "W_Operation");
@@ -996,7 +996,7 @@ package body Why.Atree.Treepr is
 
    procedure Operation_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Operation_Id)
+      Node  : W_Operation_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1010,7 +1010,7 @@ package body Why.Atree.Treepr is
 
    procedure Named_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Named_Term_Id)
+      Node  : W_Named_Term_Valid_Id)
    is
    begin
       P (O, "W_Named_Term");
@@ -1043,7 +1043,7 @@ package body Why.Atree.Treepr is
 
    procedure Named_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Named_Term_Id)
+      Node  : W_Named_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1057,7 +1057,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Term_Id)
+      Node  : W_Conditional_Term_Valid_Id)
    is
    begin
       P (O, "W_Conditional_Term");
@@ -1096,7 +1096,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Term_Id)
+      Node  : W_Conditional_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1110,7 +1110,7 @@ package body Why.Atree.Treepr is
 
    procedure Matching_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Matching_Term_Id)
+      Node  : W_Matching_Term_Valid_Id)
    is
    begin
       P (O, "W_Matching_Term");
@@ -1143,7 +1143,7 @@ package body Why.Atree.Treepr is
 
    procedure Matching_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Matching_Term_Id)
+      Node  : W_Matching_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1157,7 +1157,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Term_Id)
+      Node  : W_Binding_Term_Valid_Id)
    is
    begin
       P (O, "W_Binding_Term");
@@ -1196,7 +1196,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Term_Id)
+      Node  : W_Binding_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1210,7 +1210,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Term_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Term_Id)
+      Node  : W_Protected_Term_Valid_Id)
    is
    begin
       P (O, "W_Protected_Term");
@@ -1237,7 +1237,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Term_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Term_Id)
+      Node  : W_Protected_Term_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1251,7 +1251,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Add_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Add_Id)
+      Node  : W_Op_Add_Valid_Id)
    is
    begin
       P (O, "W_Op_Add");
@@ -1270,7 +1270,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Add_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Add_Id)
+      Node  : W_Op_Add_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1284,7 +1284,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Substract_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Substract_Id)
+      Node  : W_Op_Substract_Valid_Id)
    is
    begin
       P (O, "W_Op_Substract");
@@ -1303,7 +1303,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Substract_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Substract_Id)
+      Node  : W_Op_Substract_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1317,7 +1317,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Multiply_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Multiply_Id)
+      Node  : W_Op_Multiply_Valid_Id)
    is
    begin
       P (O, "W_Op_Multiply");
@@ -1336,7 +1336,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Multiply_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Multiply_Id)
+      Node  : W_Op_Multiply_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1350,7 +1350,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Divide_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Divide_Id)
+      Node  : W_Op_Divide_Valid_Id)
    is
    begin
       P (O, "W_Op_Divide");
@@ -1369,7 +1369,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Divide_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Divide_Id)
+      Node  : W_Op_Divide_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1383,7 +1383,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Modulo_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Modulo_Id)
+      Node  : W_Op_Modulo_Valid_Id)
    is
    begin
       P (O, "W_Op_Modulo");
@@ -1402,7 +1402,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Modulo_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Modulo_Id)
+      Node  : W_Op_Modulo_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1416,7 +1416,7 @@ package body Why.Atree.Treepr is
 
    procedure True_Literal_Pred_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_True_Literal_Pred_Id)
+      Node  : W_True_Literal_Pred_Valid_Id)
    is
    begin
       P (O, "W_True_Literal_Pred");
@@ -1435,7 +1435,7 @@ package body Why.Atree.Treepr is
 
    procedure True_Literal_Pred_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_True_Literal_Pred_Id)
+      Node  : W_True_Literal_Pred_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1449,7 +1449,7 @@ package body Why.Atree.Treepr is
 
    procedure False_Literal_Pred_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_False_Literal_Pred_Id)
+      Node  : W_False_Literal_Pred_Valid_Id)
    is
    begin
       P (O, "W_False_Literal_Pred");
@@ -1468,7 +1468,7 @@ package body Why.Atree.Treepr is
 
    procedure False_Literal_Pred_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_False_Literal_Pred_Id)
+      Node  : W_False_Literal_Pred_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1482,7 +1482,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Identifier_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Identifier_Id)
+      Node  : W_Predicate_Identifier_Valid_Id)
    is
    begin
       P (O, "W_Predicate_Identifier");
@@ -1509,7 +1509,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Identifier_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Identifier_Id)
+      Node  : W_Predicate_Identifier_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1523,7 +1523,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Instance_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Instance_Id)
+      Node  : W_Predicate_Instance_Valid_Id)
    is
    begin
       P (O, "W_Predicate_Instance");
@@ -1556,7 +1556,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Instance_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Instance_Id)
+      Node  : W_Predicate_Instance_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1570,7 +1570,7 @@ package body Why.Atree.Treepr is
 
    procedure Related_Terms_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Related_Terms_Id)
+      Node  : W_Related_Terms_Valid_Id)
    is
    begin
       P (O, "W_Related_Terms");
@@ -1625,7 +1625,7 @@ package body Why.Atree.Treepr is
 
    procedure Related_Terms_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Related_Terms_Id)
+      Node  : W_Related_Terms_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1639,7 +1639,7 @@ package body Why.Atree.Treepr is
 
    procedure Implication_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Implication_Id)
+      Node  : W_Implication_Valid_Id)
    is
    begin
       P (O, "W_Implication");
@@ -1672,7 +1672,7 @@ package body Why.Atree.Treepr is
 
    procedure Implication_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Implication_Id)
+      Node  : W_Implication_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1686,7 +1686,7 @@ package body Why.Atree.Treepr is
 
    procedure Equivalence_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Equivalence_Id)
+      Node  : W_Equivalence_Valid_Id)
    is
    begin
       P (O, "W_Equivalence");
@@ -1719,7 +1719,7 @@ package body Why.Atree.Treepr is
 
    procedure Equivalence_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Equivalence_Id)
+      Node  : W_Equivalence_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1733,7 +1733,7 @@ package body Why.Atree.Treepr is
 
    procedure Disjunction_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Disjunction_Id)
+      Node  : W_Disjunction_Valid_Id)
    is
    begin
       P (O, "W_Disjunction");
@@ -1766,7 +1766,7 @@ package body Why.Atree.Treepr is
 
    procedure Disjunction_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Disjunction_Id)
+      Node  : W_Disjunction_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1780,7 +1780,7 @@ package body Why.Atree.Treepr is
 
    procedure Conjunction_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conjunction_Id)
+      Node  : W_Conjunction_Valid_Id)
    is
    begin
       P (O, "W_Conjunction");
@@ -1813,7 +1813,7 @@ package body Why.Atree.Treepr is
 
    procedure Conjunction_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conjunction_Id)
+      Node  : W_Conjunction_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1827,7 +1827,7 @@ package body Why.Atree.Treepr is
 
    procedure Negation_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Negation_Id)
+      Node  : W_Negation_Valid_Id)
    is
    begin
       P (O, "W_Negation");
@@ -1854,7 +1854,7 @@ package body Why.Atree.Treepr is
 
    procedure Negation_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Negation_Id)
+      Node  : W_Negation_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1868,7 +1868,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Pred_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Pred_Id)
+      Node  : W_Conditional_Pred_Valid_Id)
    is
    begin
       P (O, "W_Conditional_Pred");
@@ -1907,7 +1907,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Pred_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Pred_Id)
+      Node  : W_Conditional_Pred_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1921,7 +1921,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Pred_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Pred_Id)
+      Node  : W_Binding_Pred_Valid_Id)
    is
    begin
       P (O, "W_Binding_Pred");
@@ -1960,7 +1960,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Pred_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Pred_Id)
+      Node  : W_Binding_Pred_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -1974,7 +1974,7 @@ package body Why.Atree.Treepr is
 
    procedure Universal_Quantif_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Universal_Quantif_Id)
+      Node  : W_Universal_Quantif_Valid_Id)
    is
    begin
       P (O, "W_Universal_Quantif");
@@ -2021,7 +2021,7 @@ package body Why.Atree.Treepr is
 
    procedure Universal_Quantif_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Universal_Quantif_Id)
+      Node  : W_Universal_Quantif_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2035,7 +2035,7 @@ package body Why.Atree.Treepr is
 
    procedure Existential_Quantif_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Existential_Quantif_Id)
+      Node  : W_Existential_Quantif_Valid_Id)
    is
    begin
       P (O, "W_Existential_Quantif");
@@ -2074,7 +2074,7 @@ package body Why.Atree.Treepr is
 
    procedure Existential_Quantif_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Existential_Quantif_Id)
+      Node  : W_Existential_Quantif_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2088,7 +2088,7 @@ package body Why.Atree.Treepr is
 
    procedure Named_Predicate_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Named_Predicate_Id)
+      Node  : W_Named_Predicate_Valid_Id)
    is
    begin
       P (O, "W_Named_Predicate");
@@ -2121,7 +2121,7 @@ package body Why.Atree.Treepr is
 
    procedure Named_Predicate_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Named_Predicate_Id)
+      Node  : W_Named_Predicate_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2135,7 +2135,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Predicate_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Predicate_Id)
+      Node  : W_Protected_Predicate_Valid_Id)
    is
    begin
       P (O, "W_Protected_Predicate");
@@ -2162,7 +2162,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Predicate_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Predicate_Id)
+      Node  : W_Protected_Predicate_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2176,7 +2176,7 @@ package body Why.Atree.Treepr is
 
    procedure Pattern_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Pattern_Id)
+      Node  : W_Pattern_Valid_Id)
    is
    begin
       P (O, "W_Pattern");
@@ -2211,7 +2211,7 @@ package body Why.Atree.Treepr is
 
    procedure Pattern_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Pattern_Id)
+      Node  : W_Pattern_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2225,7 +2225,7 @@ package body Why.Atree.Treepr is
 
    procedure Match_Case_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Match_Case_Id)
+      Node  : W_Match_Case_Valid_Id)
    is
    begin
       P (O, "W_Match_Case");
@@ -2258,7 +2258,7 @@ package body Why.Atree.Treepr is
 
    procedure Match_Case_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Match_Case_Id)
+      Node  : W_Match_Case_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2272,7 +2272,7 @@ package body Why.Atree.Treepr is
 
    procedure Triggers_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Triggers_Id)
+      Node  : W_Triggers_Valid_Id)
    is
    begin
       P (O, "W_Triggers");
@@ -2299,7 +2299,7 @@ package body Why.Atree.Treepr is
 
    procedure Triggers_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Triggers_Id)
+      Node  : W_Triggers_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2313,7 +2313,7 @@ package body Why.Atree.Treepr is
 
    procedure Trigger_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Trigger_Id)
+      Node  : W_Trigger_Valid_Id)
    is
    begin
       P (O, "W_Trigger");
@@ -2340,7 +2340,7 @@ package body Why.Atree.Treepr is
 
    procedure Trigger_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Trigger_Id)
+      Node  : W_Trigger_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2354,7 +2354,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Eq_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Eq_Id)
+      Node  : W_Rel_Eq_Valid_Id)
    is
    begin
       P (O, "W_Rel_Eq");
@@ -2373,7 +2373,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Eq_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Eq_Id)
+      Node  : W_Rel_Eq_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2387,7 +2387,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Ne_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Ne_Id)
+      Node  : W_Rel_Ne_Valid_Id)
    is
    begin
       P (O, "W_Rel_Ne");
@@ -2406,7 +2406,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Ne_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Ne_Id)
+      Node  : W_Rel_Ne_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2420,7 +2420,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Lt_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Lt_Id)
+      Node  : W_Rel_Lt_Valid_Id)
    is
    begin
       P (O, "W_Rel_Lt");
@@ -2439,7 +2439,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Lt_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Lt_Id)
+      Node  : W_Rel_Lt_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2453,7 +2453,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Le_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Le_Id)
+      Node  : W_Rel_Le_Valid_Id)
    is
    begin
       P (O, "W_Rel_Le");
@@ -2472,7 +2472,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Le_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Le_Id)
+      Node  : W_Rel_Le_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2486,7 +2486,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Gt_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Gt_Id)
+      Node  : W_Rel_Gt_Valid_Id)
    is
    begin
       P (O, "W_Rel_Gt");
@@ -2505,7 +2505,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Gt_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Gt_Id)
+      Node  : W_Rel_Gt_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2519,7 +2519,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Ge_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Ge_Id)
+      Node  : W_Rel_Ge_Valid_Id)
    is
    begin
       P (O, "W_Rel_Ge");
@@ -2538,7 +2538,7 @@ package body Why.Atree.Treepr is
 
    procedure Rel_Ge_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Rel_Ge_Id)
+      Node  : W_Rel_Ge_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2552,7 +2552,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Id)
+      Node  : W_Type_Valid_Id)
    is
    begin
       P (O, "W_Type");
@@ -2603,7 +2603,7 @@ package body Why.Atree.Treepr is
 
    procedure Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Type_Id)
+      Node  : W_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2617,7 +2617,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Id)
+      Node  : W_Logic_Valid_Id)
    is
    begin
       P (O, "W_Logic");
@@ -2658,7 +2658,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Id)
+      Node  : W_Logic_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2672,7 +2672,7 @@ package body Why.Atree.Treepr is
 
    procedure Function_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Function_Id)
+      Node  : W_Function_Valid_Id)
    is
    begin
       P (O, "W_Function");
@@ -2717,7 +2717,7 @@ package body Why.Atree.Treepr is
 
    procedure Function_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Function_Id)
+      Node  : W_Function_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2731,7 +2731,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Definition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Definition_Id)
+      Node  : W_Predicate_Definition_Valid_Id)
    is
    begin
       P (O, "W_Predicate_Definition");
@@ -2770,7 +2770,7 @@ package body Why.Atree.Treepr is
 
    procedure Predicate_Definition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Predicate_Definition_Id)
+      Node  : W_Predicate_Definition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2784,7 +2784,7 @@ package body Why.Atree.Treepr is
 
    procedure Inductive_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Inductive_Id)
+      Node  : W_Inductive_Valid_Id)
    is
    begin
       P (O, "W_Inductive");
@@ -2823,7 +2823,7 @@ package body Why.Atree.Treepr is
 
    procedure Inductive_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Inductive_Id)
+      Node  : W_Inductive_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2837,7 +2837,7 @@ package body Why.Atree.Treepr is
 
    procedure Axiom_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Axiom_Id)
+      Node  : W_Axiom_Valid_Id)
    is
    begin
       P (O, "W_Axiom");
@@ -2870,7 +2870,7 @@ package body Why.Atree.Treepr is
 
    procedure Axiom_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Axiom_Id)
+      Node  : W_Axiom_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2884,7 +2884,7 @@ package body Why.Atree.Treepr is
 
    procedure Goal_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Goal_Id)
+      Node  : W_Goal_Valid_Id)
    is
    begin
       P (O, "W_Goal");
@@ -2917,7 +2917,7 @@ package body Why.Atree.Treepr is
 
    procedure Goal_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Goal_Id)
+      Node  : W_Goal_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2931,7 +2931,7 @@ package body Why.Atree.Treepr is
 
    procedure External_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_External_Id)
+      Node  : W_External_Valid_Id)
    is
    begin
       P (O, "W_External");
@@ -2950,7 +2950,7 @@ package body Why.Atree.Treepr is
 
    procedure External_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_External_Id)
+      Node  : W_External_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -2964,7 +2964,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Type_Id)
+      Node  : W_Logic_Type_Valid_Id)
    is
    begin
       P (O, "W_Logic_Type");
@@ -2999,7 +2999,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Type_Id)
+      Node  : W_Logic_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3013,7 +3013,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Binder_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Binder_Id)
+      Node  : W_Logic_Binder_Valid_Id)
    is
    begin
       P (O, "W_Logic_Binder");
@@ -3046,7 +3046,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Binder_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Binder_Id)
+      Node  : W_Logic_Binder_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3060,7 +3060,7 @@ package body Why.Atree.Treepr is
 
    procedure Inductive_Case_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Inductive_Case_Id)
+      Node  : W_Inductive_Case_Valid_Id)
    is
    begin
       P (O, "W_Inductive_Case");
@@ -3093,7 +3093,7 @@ package body Why.Atree.Treepr is
 
    procedure Inductive_Case_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Inductive_Case_Id)
+      Node  : W_Inductive_Case_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3107,7 +3107,7 @@ package body Why.Atree.Treepr is
 
    procedure Transparent_Type_Definition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Transparent_Type_Definition_Id)
+      Node  : W_Transparent_Type_Definition_Valid_Id)
    is
    begin
       P (O, "W_Transparent_Type_Definition");
@@ -3134,7 +3134,7 @@ package body Why.Atree.Treepr is
 
    procedure Transparent_Type_Definition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Transparent_Type_Definition_Id)
+      Node  : W_Transparent_Type_Definition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3148,7 +3148,7 @@ package body Why.Atree.Treepr is
 
    procedure Adt_Definition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Adt_Definition_Id)
+      Node  : W_Adt_Definition_Valid_Id)
    is
    begin
       P (O, "W_Adt_Definition");
@@ -3175,7 +3175,7 @@ package body Why.Atree.Treepr is
 
    procedure Adt_Definition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Adt_Definition_Id)
+      Node  : W_Adt_Definition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3189,7 +3189,7 @@ package body Why.Atree.Treepr is
 
    procedure Constr_Decl_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Constr_Decl_Id)
+      Node  : W_Constr_Decl_Valid_Id)
    is
    begin
       P (O, "W_Constr_Decl");
@@ -3224,7 +3224,7 @@ package body Why.Atree.Treepr is
 
    procedure Constr_Decl_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Constr_Decl_Id)
+      Node  : W_Constr_Decl_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3238,7 +3238,7 @@ package body Why.Atree.Treepr is
 
    procedure Effects_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Effects_Id)
+      Node  : W_Effects_Valid_Id)
    is
    begin
       P (O, "W_Effects");
@@ -3283,7 +3283,7 @@ package body Why.Atree.Treepr is
 
    procedure Effects_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Effects_Id)
+      Node  : W_Effects_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3297,7 +3297,7 @@ package body Why.Atree.Treepr is
 
    procedure Precondition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Precondition_Id)
+      Node  : W_Precondition_Valid_Id)
    is
    begin
       P (O, "W_Precondition");
@@ -3324,7 +3324,7 @@ package body Why.Atree.Treepr is
 
    procedure Precondition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Precondition_Id)
+      Node  : W_Precondition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3338,7 +3338,7 @@ package body Why.Atree.Treepr is
 
    procedure Postcondition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Postcondition_Id)
+      Node  : W_Postcondition_Valid_Id)
    is
    begin
       P (O, "W_Postcondition");
@@ -3373,7 +3373,7 @@ package body Why.Atree.Treepr is
 
    procedure Postcondition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Postcondition_Id)
+      Node  : W_Postcondition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3387,7 +3387,7 @@ package body Why.Atree.Treepr is
 
    procedure Exn_Condition_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Exn_Condition_Id)
+      Node  : W_Exn_Condition_Valid_Id)
    is
    begin
       P (O, "W_Exn_Condition");
@@ -3420,7 +3420,7 @@ package body Why.Atree.Treepr is
 
    procedure Exn_Condition_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Exn_Condition_Id)
+      Node  : W_Exn_Condition_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3434,7 +3434,7 @@ package body Why.Atree.Treepr is
 
    procedure Assertion_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Id)
+      Node  : W_Assertion_Valid_Id)
    is
    begin
       P (O, "W_Assertion");
@@ -3469,7 +3469,7 @@ package body Why.Atree.Treepr is
 
    procedure Assertion_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Id)
+      Node  : W_Assertion_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3483,7 +3483,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Constant_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Constant_Id)
+      Node  : W_Prog_Constant_Valid_Id)
    is
    begin
       P (O, "W_Prog_Constant");
@@ -3510,7 +3510,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Constant_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Constant_Id)
+      Node  : W_Prog_Constant_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3524,7 +3524,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Identifier_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Identifier_Id)
+      Node  : W_Prog_Identifier_Valid_Id)
    is
    begin
       P (O, "W_Prog_Identifier");
@@ -3551,7 +3551,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Identifier_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Identifier_Id)
+      Node  : W_Prog_Identifier_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3565,7 +3565,7 @@ package body Why.Atree.Treepr is
 
    procedure Any_Expr_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Any_Expr_Id)
+      Node  : W_Any_Expr_Valid_Id)
    is
    begin
       P (O, "W_Any_Expr");
@@ -3592,7 +3592,7 @@ package body Why.Atree.Treepr is
 
    procedure Any_Expr_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Any_Expr_Id)
+      Node  : W_Any_Expr_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3606,7 +3606,7 @@ package body Why.Atree.Treepr is
 
    procedure Deref_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Deref_Id)
+      Node  : W_Deref_Valid_Id)
    is
    begin
       P (O, "W_Deref");
@@ -3633,7 +3633,7 @@ package body Why.Atree.Treepr is
 
    procedure Deref_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Deref_Id)
+      Node  : W_Deref_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3647,7 +3647,7 @@ package body Why.Atree.Treepr is
 
    procedure Assignment_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assignment_Id)
+      Node  : W_Assignment_Valid_Id)
    is
    begin
       P (O, "W_Assignment");
@@ -3680,7 +3680,7 @@ package body Why.Atree.Treepr is
 
    procedure Assignment_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assignment_Id)
+      Node  : W_Assignment_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3694,7 +3694,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Access_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Access_Id)
+      Node  : W_Array_Access_Valid_Id)
    is
    begin
       P (O, "W_Array_Access");
@@ -3727,7 +3727,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Access_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Access_Id)
+      Node  : W_Array_Access_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3741,7 +3741,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Update_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Update_Id)
+      Node  : W_Array_Update_Valid_Id)
    is
    begin
       P (O, "W_Array_Update");
@@ -3780,7 +3780,7 @@ package body Why.Atree.Treepr is
 
    procedure Array_Update_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Array_Update_Id)
+      Node  : W_Array_Update_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3794,7 +3794,7 @@ package body Why.Atree.Treepr is
 
    procedure Infix_Call_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Infix_Call_Id)
+      Node  : W_Infix_Call_Valid_Id)
    is
    begin
       P (O, "W_Infix_Call");
@@ -3833,7 +3833,7 @@ package body Why.Atree.Treepr is
 
    procedure Infix_Call_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Infix_Call_Id)
+      Node  : W_Infix_Call_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3847,7 +3847,7 @@ package body Why.Atree.Treepr is
 
    procedure Prefix_Call_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prefix_Call_Id)
+      Node  : W_Prefix_Call_Valid_Id)
    is
    begin
       P (O, "W_Prefix_Call");
@@ -3880,7 +3880,7 @@ package body Why.Atree.Treepr is
 
    procedure Prefix_Call_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prefix_Call_Id)
+      Node  : W_Prefix_Call_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3894,7 +3894,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Prog_Id)
+      Node  : W_Binding_Prog_Valid_Id)
    is
    begin
       P (O, "W_Binding_Prog");
@@ -3933,7 +3933,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Prog_Id)
+      Node  : W_Binding_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -3947,7 +3947,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Ref_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Ref_Id)
+      Node  : W_Binding_Ref_Valid_Id)
    is
    begin
       P (O, "W_Binding_Ref");
@@ -3986,7 +3986,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Ref_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Ref_Id)
+      Node  : W_Binding_Ref_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4000,7 +4000,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Prog_Id)
+      Node  : W_Conditional_Prog_Valid_Id)
    is
    begin
       P (O, "W_Conditional_Prog");
@@ -4041,7 +4041,7 @@ package body Why.Atree.Treepr is
 
    procedure Conditional_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Conditional_Prog_Id)
+      Node  : W_Conditional_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4055,7 +4055,7 @@ package body Why.Atree.Treepr is
 
    procedure While_Loop_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_While_Loop_Id)
+      Node  : W_While_Loop_Valid_Id)
    is
    begin
       P (O, "W_While_Loop");
@@ -4094,7 +4094,7 @@ package body Why.Atree.Treepr is
 
    procedure While_Loop_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_While_Loop_Id)
+      Node  : W_While_Loop_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4108,7 +4108,7 @@ package body Why.Atree.Treepr is
 
    procedure Statement_Sequence_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Statement_Sequence_Id)
+      Node  : W_Statement_Sequence_Valid_Id)
    is
    begin
       P (O, "W_Statement_Sequence");
@@ -4135,7 +4135,7 @@ package body Why.Atree.Treepr is
 
    procedure Statement_Sequence_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Statement_Sequence_Id)
+      Node  : W_Statement_Sequence_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4149,7 +4149,7 @@ package body Why.Atree.Treepr is
 
    procedure Label_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Label_Id)
+      Node  : W_Label_Valid_Id)
    is
    begin
       P (O, "W_Label");
@@ -4182,7 +4182,7 @@ package body Why.Atree.Treepr is
 
    procedure Label_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Label_Id)
+      Node  : W_Label_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4196,7 +4196,7 @@ package body Why.Atree.Treepr is
 
    procedure Assert_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assert_Id)
+      Node  : W_Assert_Valid_Id)
    is
    begin
       P (O, "W_Assert");
@@ -4229,7 +4229,7 @@ package body Why.Atree.Treepr is
 
    procedure Assert_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Assert_Id)
+      Node  : W_Assert_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4243,7 +4243,7 @@ package body Why.Atree.Treepr is
 
    procedure Post_Assertion_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Post_Assertion_Id)
+      Node  : W_Post_Assertion_Valid_Id)
    is
    begin
       P (O, "W_Post_Assertion");
@@ -4276,7 +4276,7 @@ package body Why.Atree.Treepr is
 
    procedure Post_Assertion_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Post_Assertion_Id)
+      Node  : W_Post_Assertion_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4290,7 +4290,7 @@ package body Why.Atree.Treepr is
 
    procedure Opaque_Assertion_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Opaque_Assertion_Id)
+      Node  : W_Opaque_Assertion_Valid_Id)
    is
    begin
       P (O, "W_Opaque_Assertion");
@@ -4323,7 +4323,7 @@ package body Why.Atree.Treepr is
 
    procedure Opaque_Assertion_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Opaque_Assertion_Id)
+      Node  : W_Opaque_Assertion_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4337,7 +4337,7 @@ package body Why.Atree.Treepr is
 
    procedure Fun_Def_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Fun_Def_Id)
+      Node  : W_Fun_Def_Valid_Id)
    is
    begin
       P (O, "W_Fun_Def");
@@ -4376,7 +4376,7 @@ package body Why.Atree.Treepr is
 
    procedure Fun_Def_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Fun_Def_Id)
+      Node  : W_Fun_Def_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4390,7 +4390,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Fun_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Fun_Id)
+      Node  : W_Binding_Fun_Valid_Id)
    is
    begin
       P (O, "W_Binding_Fun");
@@ -4441,7 +4441,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Fun_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Fun_Id)
+      Node  : W_Binding_Fun_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4455,7 +4455,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Rec_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Rec_Id)
+      Node  : W_Binding_Rec_Valid_Id)
    is
    begin
       P (O, "W_Binding_Rec");
@@ -4488,7 +4488,7 @@ package body Why.Atree.Treepr is
 
    procedure Binding_Rec_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binding_Rec_Id)
+      Node  : W_Binding_Rec_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4502,7 +4502,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Call_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Call_Id)
+      Node  : W_Prog_Call_Valid_Id)
    is
    begin
       P (O, "W_Prog_Call");
@@ -4535,7 +4535,7 @@ package body Why.Atree.Treepr is
 
    procedure Prog_Call_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Prog_Call_Id)
+      Node  : W_Prog_Call_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4549,7 +4549,7 @@ package body Why.Atree.Treepr is
 
    procedure Raise_Statement_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Raise_Statement_Id)
+      Node  : W_Raise_Statement_Valid_Id)
    is
    begin
       P (O, "W_Raise_Statement");
@@ -4584,7 +4584,7 @@ package body Why.Atree.Treepr is
 
    procedure Raise_Statement_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Raise_Statement_Id)
+      Node  : W_Raise_Statement_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4598,7 +4598,7 @@ package body Why.Atree.Treepr is
 
    procedure Raise_Statement_With_Parameters_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Raise_Statement_With_Parameters_Id)
+      Node  : W_Raise_Statement_With_Parameters_Valid_Id)
    is
    begin
       P (O, "W_Raise_Statement_With_Parameters");
@@ -4639,7 +4639,7 @@ package body Why.Atree.Treepr is
 
    procedure Raise_Statement_With_Parameters_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Raise_Statement_With_Parameters_Id)
+      Node  : W_Raise_Statement_With_Parameters_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4653,7 +4653,7 @@ package body Why.Atree.Treepr is
 
    procedure Try_Block_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Try_Block_Id)
+      Node  : W_Try_Block_Valid_Id)
    is
    begin
       P (O, "W_Try_Block");
@@ -4686,7 +4686,7 @@ package body Why.Atree.Treepr is
 
    procedure Try_Block_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Try_Block_Id)
+      Node  : W_Try_Block_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4700,7 +4700,7 @@ package body Why.Atree.Treepr is
 
    procedure Unreachable_Code_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Unreachable_Code_Id)
+      Node  : W_Unreachable_Code_Valid_Id)
    is
    begin
       P (O, "W_Unreachable_Code");
@@ -4729,7 +4729,7 @@ package body Why.Atree.Treepr is
 
    procedure Unreachable_Code_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Unreachable_Code_Id)
+      Node  : W_Unreachable_Code_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4743,7 +4743,7 @@ package body Why.Atree.Treepr is
 
    procedure Begin_Block_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Begin_Block_Id)
+      Node  : W_Begin_Block_Valid_Id)
    is
    begin
       P (O, "W_Begin_Block");
@@ -4770,7 +4770,7 @@ package body Why.Atree.Treepr is
 
    procedure Begin_Block_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Begin_Block_Id)
+      Node  : W_Begin_Block_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4784,7 +4784,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Prog_Id)
+      Node  : W_Protected_Prog_Valid_Id)
    is
    begin
       P (O, "W_Protected_Prog");
@@ -4811,7 +4811,7 @@ package body Why.Atree.Treepr is
 
    procedure Protected_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Prog_Id)
+      Node  : W_Protected_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4825,7 +4825,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Add_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Add_Prog_Id)
+      Node  : W_Op_Add_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Add_Prog");
@@ -4844,7 +4844,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Add_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Add_Prog_Id)
+      Node  : W_Op_Add_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4858,7 +4858,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Substract_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Substract_Prog_Id)
+      Node  : W_Op_Substract_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Substract_Prog");
@@ -4877,7 +4877,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Substract_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Substract_Prog_Id)
+      Node  : W_Op_Substract_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4891,7 +4891,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Multiply_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Multiply_Prog_Id)
+      Node  : W_Op_Multiply_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Multiply_Prog");
@@ -4910,7 +4910,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Multiply_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Multiply_Prog_Id)
+      Node  : W_Op_Multiply_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4924,7 +4924,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Divide_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Divide_Prog_Id)
+      Node  : W_Op_Divide_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Divide_Prog");
@@ -4943,7 +4943,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Divide_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Divide_Prog_Id)
+      Node  : W_Op_Divide_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4957,7 +4957,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Mod_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Mod_Prog_Id)
+      Node  : W_Op_Mod_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Mod_Prog");
@@ -4976,7 +4976,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Mod_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Mod_Prog_Id)
+      Node  : W_Op_Mod_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -4990,7 +4990,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Eq_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Eq_Prog_Id)
+      Node  : W_Op_Eq_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Eq_Prog");
@@ -5009,7 +5009,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Eq_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Eq_Prog_Id)
+      Node  : W_Op_Eq_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5023,7 +5023,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Ne_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Ne_Prog_Id)
+      Node  : W_Op_Ne_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Ne_Prog");
@@ -5042,7 +5042,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Ne_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Ne_Prog_Id)
+      Node  : W_Op_Ne_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5056,7 +5056,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Lt_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Lt_Prog_Id)
+      Node  : W_Op_Lt_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Lt_Prog");
@@ -5075,7 +5075,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Lt_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Lt_Prog_Id)
+      Node  : W_Op_Lt_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5089,7 +5089,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Le_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Le_Prog_Id)
+      Node  : W_Op_Le_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Le_Prog");
@@ -5108,7 +5108,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Le_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Le_Prog_Id)
+      Node  : W_Op_Le_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5122,7 +5122,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Gt_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Gt_Prog_Id)
+      Node  : W_Op_Gt_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Gt_Prog");
@@ -5141,7 +5141,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Gt_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Gt_Prog_Id)
+      Node  : W_Op_Gt_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5155,7 +5155,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Ge_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Ge_Prog_Id)
+      Node  : W_Op_Ge_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Ge_Prog");
@@ -5174,7 +5174,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Ge_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Ge_Prog_Id)
+      Node  : W_Op_Ge_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5188,7 +5188,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Or_Else_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Or_Else_Prog_Id)
+      Node  : W_Op_Or_Else_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Or_Else_Prog");
@@ -5207,7 +5207,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Or_Else_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Or_Else_Prog_Id)
+      Node  : W_Op_Or_Else_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5221,7 +5221,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_And_Then_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_And_Then_Prog_Id)
+      Node  : W_Op_And_Then_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_And_Then_Prog");
@@ -5240,7 +5240,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_And_Then_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_And_Then_Prog_Id)
+      Node  : W_Op_And_Then_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5254,7 +5254,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Minus_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Minus_Prog_Id)
+      Node  : W_Op_Minus_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Minus_Prog");
@@ -5273,7 +5273,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Minus_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Minus_Prog_Id)
+      Node  : W_Op_Minus_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5287,7 +5287,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Not_Prog_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Not_Prog_Id)
+      Node  : W_Op_Not_Prog_Valid_Id)
    is
    begin
       P (O, "W_Op_Not_Prog");
@@ -5306,7 +5306,7 @@ package body Why.Atree.Treepr is
 
    procedure Op_Not_Prog_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Op_Not_Prog_Id)
+      Node  : W_Op_Not_Prog_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5320,7 +5320,7 @@ package body Why.Atree.Treepr is
 
    procedure Binder_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binder_Id)
+      Node  : W_Binder_Valid_Id)
    is
    begin
       P (O, "W_Binder");
@@ -5353,7 +5353,7 @@ package body Why.Atree.Treepr is
 
    procedure Binder_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Binder_Id)
+      Node  : W_Binder_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5367,7 +5367,7 @@ package body Why.Atree.Treepr is
 
    procedure Recfun_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Recfun_Id)
+      Node  : W_Recfun_Valid_Id)
    is
    begin
       P (O, "W_Recfun");
@@ -5424,7 +5424,7 @@ package body Why.Atree.Treepr is
 
    procedure Recfun_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Recfun_Id)
+      Node  : W_Recfun_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5438,7 +5438,7 @@ package body Why.Atree.Treepr is
 
    procedure Loop_Annot_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Loop_Annot_Id)
+      Node  : W_Loop_Annot_Valid_Id)
    is
    begin
       P (O, "W_Loop_Annot");
@@ -5475,7 +5475,7 @@ package body Why.Atree.Treepr is
 
    procedure Loop_Annot_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Loop_Annot_Id)
+      Node  : W_Loop_Annot_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5489,7 +5489,7 @@ package body Why.Atree.Treepr is
 
    procedure Wf_Arg_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Wf_Arg_Id)
+      Node  : W_Wf_Arg_Valid_Id)
    is
    begin
       P (O, "W_Wf_Arg");
@@ -5524,7 +5524,7 @@ package body Why.Atree.Treepr is
 
    procedure Wf_Arg_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Wf_Arg_Id)
+      Node  : W_Wf_Arg_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5538,7 +5538,7 @@ package body Why.Atree.Treepr is
 
    procedure Handler_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Handler_Id)
+      Node  : W_Handler_Valid_Id)
    is
    begin
       P (O, "W_Handler");
@@ -5579,7 +5579,7 @@ package body Why.Atree.Treepr is
 
    procedure Handler_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Handler_Id)
+      Node  : W_Handler_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5593,7 +5593,7 @@ package body Why.Atree.Treepr is
 
    procedure File_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_File_Id)
+      Node  : W_File_Valid_Id)
    is
    begin
       P (O, "W_File");
@@ -5622,7 +5622,7 @@ package body Why.Atree.Treepr is
 
    procedure File_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_File_Id)
+      Node  : W_File_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5636,7 +5636,7 @@ package body Why.Atree.Treepr is
 
    procedure Global_Binding_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Global_Binding_Id)
+      Node  : W_Global_Binding_Valid_Id)
    is
    begin
       P (O, "W_Global_Binding");
@@ -5683,7 +5683,7 @@ package body Why.Atree.Treepr is
 
    procedure Global_Binding_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Global_Binding_Id)
+      Node  : W_Global_Binding_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5697,7 +5697,7 @@ package body Why.Atree.Treepr is
 
    procedure Global_Rec_Binding_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Global_Rec_Binding_Id)
+      Node  : W_Global_Rec_Binding_Valid_Id)
    is
    begin
       P (O, "W_Global_Rec_Binding");
@@ -5724,7 +5724,7 @@ package body Why.Atree.Treepr is
 
    procedure Global_Rec_Binding_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Global_Rec_Binding_Id)
+      Node  : W_Global_Rec_Binding_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5738,7 +5738,7 @@ package body Why.Atree.Treepr is
 
    procedure Parameter_Declaration_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Parameter_Declaration_Id)
+      Node  : W_Parameter_Declaration_Valid_Id)
    is
    begin
       P (O, "W_Parameter_Declaration");
@@ -5779,7 +5779,7 @@ package body Why.Atree.Treepr is
 
    procedure Parameter_Declaration_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Parameter_Declaration_Id)
+      Node  : W_Parameter_Declaration_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5793,7 +5793,7 @@ package body Why.Atree.Treepr is
 
    procedure Exception_Declaration_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Exception_Declaration_Id)
+      Node  : W_Exception_Declaration_Valid_Id)
    is
    begin
       P (O, "W_Exception_Declaration");
@@ -5828,7 +5828,7 @@ package body Why.Atree.Treepr is
 
    procedure Exception_Declaration_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Exception_Declaration_Id)
+      Node  : W_Exception_Declaration_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5842,7 +5842,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Declaration_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Declaration_Id)
+      Node  : W_Logic_Declaration_Valid_Id)
    is
    begin
       P (O, "W_Logic_Declaration");
@@ -5869,7 +5869,7 @@ package body Why.Atree.Treepr is
 
    procedure Logic_Declaration_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Logic_Declaration_Id)
+      Node  : W_Logic_Declaration_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
@@ -5883,7 +5883,7 @@ package body Why.Atree.Treepr is
 
    procedure Include_Declaration_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Include_Declaration_Id)
+      Node  : W_Include_Declaration_Valid_Id)
    is
    begin
       P (O, "W_Include_Declaration");
@@ -5910,7 +5910,7 @@ package body Why.Atree.Treepr is
 
    procedure Include_Declaration_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Include_Declaration_Id)
+      Node  : W_Include_Declaration_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
