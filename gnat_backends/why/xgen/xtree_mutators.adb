@@ -156,7 +156,7 @@ package body Xtree_Mutators is
          Name        => List_Op_Name (Kind, FI, List_Op),
          Param_Type  => Id_Subtype (Kind, Unchecked),
          Field_Param => Element_Param,
-         Field_Type  => Element_Type_Name (FI, Regular));
+         Field_Type  => Element_Type_Name (FI, Derived));
    end Print_List_Op_Specification;
 
    --------------------------

@@ -102,7 +102,7 @@ package body Xtree_Tables is
       if Context = In_Builder_Spec
         and then Is_List (FI)
       then
-         return Strip_Suffix (Type_Name (FI, IK)) & "_Array";
+         return Arr_Type (Field_Kind (FI), IK);
       else
          return Type_Name (FI, IK);
       end if;
@@ -156,9 +156,9 @@ package body Xtree_Tables is
          when Unchecked =>
             return Strip_Suffix (FI.Id_Type.all) & "_Unchecked_Id";
          when Regular =>
-            return Strip_Suffix (FI.Id_Type.all) & "_Id";
+            return Strip_Suffix (FI.Id_Type.all) & "_Valid_Id";
          when Derived =>
-            return Strip_Prefix (Element_Type_Name (FI, Regular));
+            return Strip_Suffix (FI.Id_Type.all) & "_Id";
       end case;
    end Element_Type_Name;
 
@@ -174,6 +174,7 @@ package body Xtree_Tables is
    begin
       if Visibility_Info = "Opaque"
         or else Visibility_Info = "Unchecked"
+        or else Visibility_Info = "Valid"
       then
          return Strip_Suffix (Type_With_Visibility_Info);
       else

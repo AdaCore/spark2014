@@ -39,9 +39,9 @@ package body Xkind_Tables is
      return Wide_String is
    begin
       if Kind = Derived then
-         return Strip_Prefix (Arr_Type (Prefix, Regular));
-      else
          return Prefix & "_Array";
+      else
+         return Prefix & "_V_Array";
       end if;
    end Arr_Type;
 
@@ -157,21 +157,17 @@ package body Xkind_Tables is
                return "_Opaque";
             when Unchecked =>
                return "_Unchecked";
-            when Regular | Derived =>
+            when Regular =>
+               return "_Valid";
+            when Derived =>
                return "";
          end case;
       end Kind_Suffix;
 
    begin
-      if Kind = Derived then
-         return Strip_Prefix (Prefix)
-           & Kind_Suffix
-           & Multiplicity_Suffix (Multiplicity);
-      else
-         return Prefix
-           & Kind_Suffix
-           & Multiplicity_Suffix (Multiplicity);
-      end if;
+      return Prefix
+        & Kind_Suffix
+        & Multiplicity_Suffix (Multiplicity);
    end Id_Subtype;
 
    ----------------
