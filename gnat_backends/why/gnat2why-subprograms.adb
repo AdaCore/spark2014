@@ -1224,33 +1224,26 @@ package body Gnat2Why.Subprograms is
             --  Quantified expressions in programs are expanded, so here we
             --  are generating code that belongs to a pre-/postcondition. We
             --  are not interested in the return value, and Why is not strong
-            --  enough to reason about it. So here we generate a loop (of type
-            --  unit) that simply executes the expression, and at the end
-            --  we return an arbitrary boolean value.
-            --  We generate Why code of the form
-            --    let i = [ int] in
-            --    while condition do { true }
-            --       expression
-            --    done ;
-            --    [ bool ]
-            --  A consequence is that we are less precise than dynamic
-            --  execution; we always assume that the entire range of
-            --  quantification is executed. In practice, this should not be a
-            --  problem.
+            --  enough to reason about it. So it is enough to evaluate the
+            --  expression in the context of *some* variable. Here is what we
+            --  do:
+            --    (let i = [ int ] in
+            --       if <condition> then ignore (expression);
+            --       [ bool ]
+            --    );
+            --  The condition is a formula that expresses that i is in the
+            --  range given by the quantification.
             declare
-               Loop_Spec : constant Node_Id :=
+               Quant_Spec : constant Node_Id :=
                   Loop_Parameter_Specification (Expr);
-               Index : constant W_Identifier_Id :=
-                  New_Identifier (Full_Name (Defining_Identifier (Loop_Spec)));
-               Loop_Inv : constant W_Loop_Annot_Id :=
-                   New_Loop_Annot
-                      (Invariant =>
-                        New_Assertion (Pred => New_True_Literal_Pred));
-               Loop_Body : constant W_Prog_Id :=
+               Index      : constant W_Identifier_Id :=
+                  New_Identifier
+                    (Full_Name (Defining_Identifier (Quant_Spec)));
+               Why_Expr   : constant W_Prog_Id :=
                   New_Ignore (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
-               Loop_Condition : constant W_Prog_Id :=
+               Range_Cond : constant W_Prog_Id :=
                   Range_Prog
-                    (Discrete_Subtype_Definition (Loop_Spec),
+                    (Discrete_Subtype_Definition (Quant_Spec),
                      New_Deref
                        (Ref => Duplicate_Any_Node (Id => Index)));
             begin
@@ -1260,10 +1253,9 @@ package body Gnat2Why.Subprograms is
                      Def  => New_Any_Expr (Any_Type => New_Type_Int),
                      Context =>
                         Sequence
-                           (New_While_Loop
-                              (Condition  => Loop_Condition,
-                               Annotation => Loop_Inv,
-                               Loop_Content => Loop_Body),
+                           (New_Conditional_Prog
+                              (Condition => Range_Cond,
+                               Then_Part => Why_Expr),
                             New_Any_Expr (Any_Type => New_Type_Bool)));
             end;
 
