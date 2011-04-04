@@ -1010,18 +1010,16 @@ package body Xtree_Builders is
    procedure Print_Class_Wide_Builder_Declarations (O : in out Output_Record)
    is
       use Class_Lists;
-
-      First_Print : Boolean := True;
    begin
       for Kind in Valid_Kind'Range loop
+         Print_Builder_Specification (O, Kind, Derived, Builder_Children,
+                                      Id_Subtype (Kind, Derived));
+         PL (O, ";");
+
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
               and Class_Name (CI) /= "W_Any_Node" then
-               if First_Print then
-                  First_Print := False;
-               else
-                  NL (O);
-               end if;
+               NL (O);
 
                Print_Builder_Specification (O, Kind, Derived, Builder_Children,
                                             Id_Subtype (Class_Name (CI),
@@ -1039,19 +1037,15 @@ package body Xtree_Builders is
    procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record) is
       use Class_Lists;
       use Node_Lists;
-
-      First_Print : Boolean := True;
    begin
       for Kind in Valid_Kind'Range loop
+         Print_Builder_Body (O, Kind, Derived, Builder_Children,
+                             Id_Subtype (Kind, Derived));
+
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
               and Class_Name (CI) /= "W_Any_Node" then
-               if First_Print then
-                  First_Print := False;
-               else
-                  NL (O);
-               end if;
-
+               NL (O);
                Print_Builder_Body (O, Kind, Derived, Builder_Children,
                                    Id_Subtype (Class_Name (CI), Derived));
             end if;
