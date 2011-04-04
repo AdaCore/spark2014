@@ -88,7 +88,7 @@ package body Xkind_Conversions is
                     String_Lists.Element (Position);
          Prefix : constant Wide_String := S.all;
       begin
-         for Multiplicity in Id_Multiplicity'Range loop
+         for Multiplicity in Id_Lone .. Id_Set loop
 
             --  Conversion between a kind id and its base type
 
@@ -98,7 +98,7 @@ package body Xkind_Conversions is
                Base_Id_Subtype (Prefix, Derived, Multiplicity),
                E);
 
-            if Multiplicity /= Id_Multiplicity'Last
+            if Multiplicity /= Id_Set
               or else Position /= Kinds.Last
             then
                NL (O);
@@ -116,7 +116,7 @@ package body Xkind_Conversions is
          F1     : constant Why_Node_Kind := Class_First (CI1);
          L1     : constant Why_Node_Kind := Class_Last (CI1);
       begin
-         for Multiplicity in Id_Multiplicity'Range loop
+         for Multiplicity in Id_Lone .. Id_Set loop
 
             --  Conversion between a class id and its base type
 
@@ -159,7 +159,7 @@ package body Xkind_Conversions is
                end;
             end loop;
 
-            if Multiplicity /= Id_Multiplicity'Last
+            if Multiplicity /= Id_Set
               or else Position /= Classes.Last
             then
                NL (O);

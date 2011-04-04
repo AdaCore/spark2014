@@ -63,7 +63,7 @@ package Xkind_Tables is
    --  Derived would replace Regular at some point. And some more cleanup
    --  may follow.
 
-   type Id_Multiplicity is (Id_One, Id_Lone, Id_Some, Id_Set);
+   type Id_Multiplicity is (Id_Lone, Id_Set, Id_One, Id_Some);
    --  Four multiplicity for Id subtype that matches as follows:
    --  * Id_One  is "Id",    representing exactly one node;
    --  * Id_Lone is "OId",   representing either zero (empty) or one node;

@@ -113,34 +113,47 @@ package body Xkind_Ids is
       procedure Print_Subtypes (Prefix : Wide_String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
-            if Kind = Derived then
-               P (O, "type "
-                  & Id_Subtype (Prefix, Kind, Multiplicity)
-                  & " is new");
+            if Kind = Derived and then Multiplicity = Id_One then
+               PL (O, "subtype " & Id_Subtype (Prefix, Kind, Multiplicity)
+                   & " is");
+               PL (O, "  " & Id_Subtype (Prefix, Kind, Id_Lone) & ";");
+
+            elsif Kind = Derived and then Multiplicity = Id_Some then
+               PL (O, "subtype " & Id_Subtype (Prefix, Kind, Multiplicity)
+                   & " is");
+               PL (O, "  " & Id_Subtype (Prefix, Kind, Id_Set) & ";");
+
             else
-               P (O, "subtype "
-                  & Id_Subtype (Prefix, Kind, Multiplicity)
-                  & " is");
-            end if;
+               if Kind = Derived then
+                  P (O, "type "
+                     & Id_Subtype (Prefix, Kind, Multiplicity)
+                     & " is new");
+               else
+                  P (O, "subtype "
+                     & Id_Subtype (Prefix, Kind, Multiplicity)
+                     & " is");
+               end if;
 
-            if Kind = Opaque then
-               P (O, " ");
-            else
-               NL (O);
-               P (O, "  ");
-            end if;
+               if Kind = Opaque then
+                  P (O, " ");
+               else
+                  NL (O);
+                  P (O, "  ");
+               end if;
 
-            PL (O, Base_Id_Subtype (Prefix, Kind, Multiplicity) & ";");
+               PL (O, Base_Id_Subtype (Prefix, Kind, Multiplicity) & ";");
 
-            if Kind /= Opaque then
-               PL (O, "--  ??? subtype predicate not generated yet");
+               if Kind /= Opaque then
+                  PL (O, "--  ??? subtype predicate not generated yet");
+               end if;
             end if;
 
             if Kind in Regular .. Derived and then Multiplicity = Id_One then
                NL (O);
                PL (O, "type " & Arr_Type (Prefix, Kind)
                    & " is array (Positive range <>)");
-               PL (O, "  of " & Id_Subtype (Prefix, Kind, Multiplicity) & ";");
+               PL (O, "  of " & Id_Subtype (Prefix, Kind, Multiplicity)
+                   & ";");
             end if;
 
             if Multiplicity /= Id_Multiplicity'Last then
