@@ -150,15 +150,17 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type;
    --  Get the name of the type of an Ada node, as a Why Type
 
+   function VC_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
+   --  Call Why_Expr_Of_Ada_Expr in VC_Mode.
+
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id;
+      Expected_Type : Why_Type;
+      VC_Mode       : Boolean := False) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression of the
    --  Expected_Type.
-   --
-   --  The translation is pretty direct for many constructs. We list the ones
-   --  here for which there is something else to do.
-   --  * Read access: We need to add a dereferencing operator in Why
+   --  When VC_Mode is true, allow a translation to Why code that will only
+   --  trigger safety VCs, but is not equivalent.
 
    function Why_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Same as the previous function, but use the type of Expr as the expected
@@ -957,7 +959,7 @@ package body Gnat2Why.Subprograms is
          Compute_Spec
             (W_Prog_Id,
              New_True_Literal_Prog,
-             Why_Expr_Of_Ada_Expr,
+             VC_Expr_Of_Ada_Expr,
              New_Prog_Andb_Then);
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
@@ -1028,7 +1030,8 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type) return W_Prog_Id
+      Expected_Type : Why_Type;
+      VC_Mode       : Boolean := False) return W_Prog_Id
    is
       T            : W_Prog_Id;
       Current_Type : Why_Type := Type_Of_Node (Expr);
@@ -1221,43 +1224,48 @@ package body Gnat2Why.Subprograms is
                      Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
 
          when N_Quantified_Expression =>
-            --  Quantified expressions in programs are expanded, so here we
-            --  are generating code that belongs to a pre-/postcondition. We
-            --  are not interested in the return value, and Why is not strong
-            --  enough to reason about it. So it is enough to evaluate the
-            --  expression in the context of *some* variable. Here is what we
-            --  do:
-            --    (let i = [ int ] in
-            --       if <condition> then ignore (expression);
-            --       [ bool ]
-            --    );
-            --  The condition is a formula that expresses that i is in the
-            --  range given by the quantification.
-            declare
-               Quant_Spec : constant Node_Id :=
-                  Loop_Parameter_Specification (Expr);
-               Index      : constant W_Identifier_Id :=
-                  New_Identifier
-                    (Full_Name (Defining_Identifier (Quant_Spec)));
-               Why_Expr   : constant W_Prog_Id :=
-                  New_Ignore (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
-               Range_Cond : constant W_Prog_Id :=
-                  Range_Prog
-                    (Discrete_Subtype_Definition (Quant_Spec),
-                     New_Deref
-                       (Ref => Duplicate_Any_Node (Id => Index)));
-            begin
-               return
-                  New_Binding_Ref
-                    (Name => Index,
-                     Def  => New_Any_Expr (Any_Type => New_Type_Int),
-                     Context =>
-                        Sequence
-                           (New_Conditional_Prog
-                              (Condition => Range_Cond,
-                               Then_Part => Why_Expr),
-                            New_Any_Expr (Any_Type => New_Type_Bool)));
-            end;
+            if VC_Mode then
+               --  Quantified expressions in programs are expanded, so here we
+               --  are generating code that belongs to a pre-/postcondition.
+               --  We are not interested in the return value, and Why is not
+               --  strong enough to reason about it. So it is enough to
+               --  evaluate the expression in the context of *some* variable.
+               --  Here is what we do:
+               --    (let i = [ int ] in
+               --       if <condition> then ignore (expression);
+               --       [ bool ]
+               --    );
+               --  The condition is a formula that expresses that i is in the
+               --  range given by the quantification.
+               declare
+                  Quant_Spec : constant Node_Id :=
+                     Loop_Parameter_Specification (Expr);
+                  Index      : constant W_Identifier_Id :=
+                     New_Identifier
+                       (Full_Name (Defining_Identifier (Quant_Spec)));
+                  Why_Expr   : constant W_Prog_Id :=
+                     New_Ignore
+                       (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
+                  Range_Cond : constant W_Prog_Id :=
+                     Range_Prog
+                       (Discrete_Subtype_Definition (Quant_Spec),
+                        New_Deref
+                          (Ref => Duplicate_Any_Node (Id => Index)));
+               begin
+                  return
+                     New_Binding_Ref
+                       (Name => Index,
+                        Def  => New_Any_Expr (Any_Type => New_Type_Int),
+                        Context =>
+                           Sequence
+                              (New_Conditional_Prog
+                                 (Condition => Range_Cond,
+                                  Then_Part => Why_Expr),
+                               New_Any_Expr (Any_Type => New_Type_Bool)));
+               end;
+            else
+               raise Not_Implemented;
+            end if;
 
          when N_Attribute_Reference =>
             declare
@@ -1382,6 +1390,17 @@ package body Gnat2Why.Subprograms is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, (Kind => Why_Int));
    end Int_Expr_Of_Ada_Expr;
+
+   --------------------------
+   -- VC_Expr_Of_Ada_Expr --
+   --------------------------
+
+   function VC_Expr_Of_Ada_Expr (Expr : Node_Id)
+      return W_Prog_Id
+   is
+   begin
+      return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr), True);
+   end VC_Expr_Of_Ada_Expr;
 
    ---------------------------
    -- Bool_Term_Of_Ada_Expr --
