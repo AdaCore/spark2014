@@ -1,5 +1,5 @@
 project Test is
-   for Source_Dirs Use Use (".", "aA", "bB");
+   for Source_Dirs Use (".", "a", "b");
    package Compiler is
       for Default_Switches ("Ada") use ("-gnat12");
    end Compiler;
