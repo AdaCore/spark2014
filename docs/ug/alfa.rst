@@ -167,7 +167,10 @@ the same.
 
 Sources of ambiguity in sequential Ada programs are:
 
-* order of evaluation of sub-expressions with writes to globals through calls;
+* order of evaluation of sub-expressions, which may interact with writes to
+  globals through calls;
+* evaluation strategy for arithmetic expressions, which may result in an
+  overflow check passing or failing;
 * sizes of base scalar types;
 * compiler permissions, such as the permission for the compiler to compute the
   right result of an arithmetic expression even if a naive computation would
@@ -184,6 +187,14 @@ of an arithmetic operation or arguments of a call) is not specified in Ada, the
 time of this write may have an influence on the value of the expression. In
 ALFA, functions cannot write to globals, which removes this source of
 ambiguity.
+
+Parenthesized Arithmetic Operations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In Ada, non-parenthesized arithmetic operations can be re-ordered by the
+compiler, which may result in a failing computation (due to overflow checking)
+becoming a successful one, and vice-versa. In ALFA, all such operations should
+be parenthesized, like in SPARK.
 
 Known Sizes for Scalar Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
