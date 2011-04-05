@@ -85,7 +85,7 @@ package body Xtree_Accessors is
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
-            Return_Type => Type_Name (FI, Regular));
+            Return_Type => Type_Name (FI, Derived));
          PL (O, " is");
          Relative_Indent (O, 2);
          Print_Accessor_Expression (O, FI);
@@ -137,7 +137,7 @@ package body Xtree_Accessors is
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
-            Return_Type => Type_Name (FI, Regular));
+            Return_Type => Type_Name (FI, Derived));
          PL (O, ";");
 
          if Next (Position) /= No_Element then
@@ -170,7 +170,9 @@ package body Xtree_Accessors is
      (O    : in out Output_Record;
       FI   : Field_Info) is
    begin
-      P (O, "(Get_Node (" & Node_Id_Param & ")." & Field_Name (FI) & ")");
+      P (O,
+         "(" & Type_Name (FI, Derived)
+         & " (Get_Node (-" & Node_Id_Param & ")." & Field_Name (FI) & "))");
    end Print_Accessor_Expression;
 
    ----------------------------------------------
@@ -266,8 +268,8 @@ package body Xtree_Accessors is
       Print_Accessor_Specification
         (O           => O,
          Name        => Accessor_Name (Kind, FI),
-         Param_Type  => Id_Subtype (Kind),
-         Return_Type => Type_Name (FI, Regular));
+         Param_Type  => Id_Subtype (Kind, Derived),
+         Return_Type => Type_Name (FI, Derived));
    end Print_Accessor_Specification;
 
    procedure Print_Accessor_Specification
