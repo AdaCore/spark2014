@@ -313,12 +313,12 @@ package body Xtree_Builders is
       begin
          if BK = Builder_Children then
             if IK = Unchecked then
-               P (O, New_Node & "." & FN & " := ");
+               PL (O, New_Node & "." & FN & " :=");
 
                if Has_Default_Value (FI, IK, In_Builder_Body) then
-                  P (O, Default_Value (FI, IK, In_Builder_Body));
+                  P (O, "  " & Default_Value (FI, IK, In_Builder_Body));
                else
-                  P (O, Param_Name (FI));
+                  P (O, "  " & Param_Name (FI));
                end if;
 
                PL (O, ";");
@@ -345,8 +345,8 @@ package body Xtree_Builders is
                   Relative_Indent (O, -3);
                   PL (O, "end loop;");
                else
-                  P (O, New_Node & "." & FN & " := ");
-                  P (O, K (Param_Name (FI)));
+                  PL (O, New_Node & "." & FN & " :=");
+                  P (O, "  " & K (Param_Name (FI)));
                   PL (O, ";");
                end if;
             end if;
@@ -371,7 +371,8 @@ package body Xtree_Builders is
                PL (O, "declare");
                Relative_Indent (O, 3);
                PL (O, "Node : constant " & Element_Type_Name (FI, Regular)
-                   & " := Element (Position);");
+                   & " :=");
+               PL (O, "         Element (Position);");
                Relative_Indent (O, -3);
                PL (O, "begin");
                Relative_Indent (O, 3);
