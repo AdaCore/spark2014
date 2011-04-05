@@ -299,4 +299,8 @@ package Xtree_Tables is
    pragma Precondition (Is_Why_Id (FI));
    --  For a node child, return corresponding multiplicity
 
+   Generate_Contracts : Boolean := False;
+   --  ??? To disable Pre/Post on builders for now. They shall be
+   --  replaced by type checks + subtype predicates soon enough.
+
 end Xtree_Tables;

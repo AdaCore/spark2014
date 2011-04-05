@@ -236,13 +236,17 @@ package body Xtree_Builders is
    is
    begin
       Print_Builder_Specification (O, Kind, IK, BK);
-      PL (O, " with");
-      Relative_Indent (O, 2);
-      Print_Builder_Precondition (O, Kind, IK, BK);
-      PL (O, ",");
-      Print_Builder_Postcondition (O, Kind, IK, BK);
+
+      if Generate_Contracts then
+         PL (O, " with");
+         Relative_Indent (O, 2);
+         Print_Builder_Precondition (O, Kind, IK, BK);
+         PL (O, ",");
+         Print_Builder_Postcondition (O, Kind, IK, BK);
+         Relative_Indent (O, -2);
+      end if;
+
       PL (O, ";");
-      Relative_Indent (O, -2);
    end Print_Builder_Declaration;
 
    ----------------------------------
