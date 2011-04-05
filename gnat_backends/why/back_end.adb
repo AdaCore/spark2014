@@ -29,6 +29,7 @@ with Gnat2Why.Driver;
 with Adabkend;
 with Stringt;
 with Namet;
+with Opt;             use Opt;
 
 package body Back_End is
 
@@ -94,6 +95,11 @@ package body Back_End is
 
    procedure Scan_Compiler_Arguments is
    begin
+      --  Disable the generation of ALI files, as the overall workflow in
+      --  gnatprove depends on their timestamp staying the same.
+
+      Opt.Disable_ALI_File := True;
+
       GNAT2Why.Scan_Compiler_Arguments;
    end Scan_Compiler_Arguments;
 
