@@ -151,15 +151,70 @@ GNATprove outputs the following errors::
     p.adb:21:13: "return" in the middle of subprogram is not yet in ALFA (any return)
     p.ads:3:08: access type is not in ALFA
 
-Notice that no error is given for the dereference in P.P0.Get, as another
-pragma Annotate specifies that formal proof should not be done on this
-subprogram.
+The error messages distinguish constructs not in ALFA (like a pointer
+dereference) from constructs not yet in ALFA (like returns anywhere in a
+procedure). Notice that no error is given for the dereference in P.P0.Get, as
+another pragma Annotate in that subprogram specifies that formal proof should
+not be done on this subprogram.
 
 A Non-ambiguous Subset of Ada
 -----------------------------
 
+The behaviour of a program in ALFA should be unique, both in order to
+facilitate formal verification of properties over these programs, and to get
+the additional guarantee that a formally verified ALFA program always behaves
+the same.
+
+Sources of ambiguity in sequential Ada programs are:
+
+* order of evaluation of sub-expressions with writes to globals through calls;
+* sizes of base scalar types;
+* compiler permissions, such as the permission for the compiler to compute the
+  right result of an arithmetic expression even if a naive computation would
+  raise an exception due to overflow.
+
+In ALFA, none of these sources of ambiguity is possible.
+
+No Writes to Globals in Functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In Ada, a sub-expression can write to a global variable through a call. As the
+order of evaluation of sub-expressions in an expression (for example, operands
+of an arithmetic operation or arguments of a call) is not specified in Ada, the
+time of this write may have an influence on the value of the expression. In
+ALFA, functions cannot write to globals, which removes this source of
+ambiguity.
+
+Known Sizes for Scalar Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The size of base types for user-defined types may vary depending on the
+compiler and host/target architectures. In ALFA, all sizes should be set to
+their minimum guaranteed by the Ada standard (worst case). For example, the
+following type should have a base type ranging from -10 to 10 (standard
+requires a symmetric range)::
+
+    type T is 1 .. 10;
+
+The size of standard scalar types is defined by the GNAT compiler for every
+host/target architecture.
+
+No Compiler Permissions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Ada standard defines various ways in which a compiler is allowed to compute a
+correct result for a computation instead of raising a run-time error. In ALFA,
+we reject all such permissions and interpret all computations with the
+strictest meaning.
+
 Pure Specifications
 -------------------
+
+Specifications should have a pure logical meaning and no visible effect on the
+computation, aside from possibly raising an exception at run-time when
+ill-defined (run-time error) or invalid (assertion violation). This is
+guaranteed in ALFA by the restriction that functions should not perform writes
+to global variables.
 
 Current Definition of ALFA
 --------------------------
