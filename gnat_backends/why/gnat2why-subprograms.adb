@@ -1225,8 +1225,6 @@ package body Gnat2Why.Subprograms is
 
          when N_Quantified_Expression =>
             if VC_Mode then
-               --  Quantified expressions in programs are expanded, so here we
-               --  are generating code that belongs to a pre-/postcondition.
                --  We are not interested in the return value, and Why is not
                --  strong enough to reason about it. So it is enough to
                --  evaluate the expression in the context of *some* variable.
