@@ -151,10 +151,10 @@ package body Gnat2Why.Driver is
 
       --  Write Dependency file
       Open_Current_File (File_Name & ".d");
-      P (Current_File, Unit_Name & ".why: ");
+      P (Current_File, Unit_Name & ".why:");
       for Index in ALIs.First .. ALIs.Last loop
-         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
          P (Current_File, " ");
+         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
       end loop;
          NL (Current_File);
       Close_Current_File;
