@@ -670,7 +670,7 @@ package Why.Sinfo is
      W_Op_Modulo;
 
    subtype W_Predicate is Why_Node_Kind range
-     W_True_Literal ..
+     W_True_Literal_Pred ..
      W_Protected_Predicate;
 
    subtype W_Primitive_Type is Why_Node_Kind range
