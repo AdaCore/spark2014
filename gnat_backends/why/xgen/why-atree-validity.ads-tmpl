@@ -26,7 +26,6 @@
 
 with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Tables;    use Why.Atree.Tables;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package Why.Atree.Validity is
    --  Validity checks

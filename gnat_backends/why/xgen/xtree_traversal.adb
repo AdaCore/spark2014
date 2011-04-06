@@ -91,7 +91,6 @@ package body Xtree_Traversal is
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
       Traversal_Proc : Wide_String;
-      Kind           : Why_Node_Kind;
       FI             : Field_Info;
       Commented_Out  : Boolean := False);
    --  Print a call to the traversal procedure (whose name is given in
@@ -165,7 +164,6 @@ package body Xtree_Traversal is
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
       Traversal_Proc : Wide_String;
-      Kind           : Why_Node_Kind;
       FI             : Field_Info;
       Commented_Out  : Boolean := False)
    is
@@ -191,7 +189,7 @@ package body Xtree_Traversal is
    begin
       PL_C (O, Traversal_Proc);
       PL_C (O, "  (" & State_Param & ",");
-      PL_C (O, "   " & Accessor_Name (Kind, FI) & " (" & Node_Param & "));");
+      PL_C (O, "   Get_Node  (" & Node_Param & ")." & Field_Name (FI) & ");");
    end Print_Call_To_Traversal_Proc;
 
    -----------------------------------------
@@ -225,10 +223,10 @@ package body Xtree_Traversal is
 
             if Is_List (FI) then
                Print_Call_To_Traversal_Proc
-                 (O, "Traverse_List", Kind, FI, In_Stub);
+                 (O, "Traverse_List", FI, In_Stub);
             else
                Print_Call_To_Traversal_Proc
-                 (O, "Traverse", Kind, FI, In_Stub);
+                 (O, "Traverse", FI, In_Stub);
             end if;
          end if;
       end Print_Sub_Traversal;

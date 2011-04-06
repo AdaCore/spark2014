@@ -493,8 +493,13 @@ package body Xtree_Builders is
 
          PL (O, " :=");
          Relative_Indent (O, 3);
+
+         if Is_Why_Id (FI) then
+            P (O, "+");
+         end if;
+
          P (O, Accessor_Name (Kind, FI));
-         PL (O, " (" & Node_Id_Param & ");");
+         PL (O, " (+" & Node_Id_Param & ");");
          Relative_Indent (O, -3);
       end Print_Variable_Declaration;
 

@@ -136,7 +136,7 @@ package body Xtree_Mutators is
       Relative_Indent (O, 3);
       PL (O, List_Op_Name (List_Op)
           & " (Node." & Field_Name (FI)
-          & ", " & Element_Param & ");");
+          & ", +" & Element_Param & ");");
       Print_Update_Validity_Status (O, Kind);
       Relative_Indent (O, -3);
    end Print_List_Op_Implementation;
@@ -412,10 +412,10 @@ package body Xtree_Mutators is
       if Is_Why_Id (FI) then
          PL (O, "Pre =>");
          PL (O, "  (" & Kind_Check (Field_Kind (FI), M)
-             & " (" & PN  & ")");
+             & " (Why_Node_Id (" & PN  & "))");
          PL (O, "   and then " & Tree_Check (Field_Kind (FI), M)
-             & " (" & PN  & ")");
-         P (O, "   and then Is_Root (" & PN  & "))");
+             & " (Why_Node_Id (" & PN  & "))");
+         P (O, "   and then Is_Root (+" & PN  & "))");
       end if;
    end Print_Mutator_Precondition;
 
@@ -461,11 +461,19 @@ package body Xtree_Mutators is
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
-      PL (O, "Node." & Field_Name (FI) & " := " & Param_Name (FI) & ";");
+      P (O, "Node." & Field_Name (FI) & " := ");
+
+      if Is_Why_Id (FI) then
+         P (O, "+");
+      end if;
+
+      PL (O, Param_Name (FI) & ";");
       PL (O, "Set_Node (" & Node_Id_Param &", Node);");
 
       if Is_Why_Id (FI) then
-         PL (O, "Set_Link (" & Param_Name (FI) &", " & Node_Id_Param & ");");
+         PL (O,
+             "Set_Link (Why_Node_Id (" & Param_Name (FI) & "), "
+             & Node_Id_Param & ");");
          Print_Update_Validity_Status (O, Kind);
       end if;
 
@@ -486,7 +494,7 @@ package body Xtree_Mutators is
          Name        => Mutator_Name (Kind, FI),
          Param_Type  => Id_Subtype (Kind, Unchecked),
          Field_Param => Param_Name (FI),
-         Field_Type  => Type_Name (FI, Unchecked));
+         Field_Type  => Type_Name (FI, Derived));
    end Print_Setter_Specification;
 
    ----------------------------------
@@ -499,8 +507,8 @@ package body Xtree_Mutators is
    begin
       PL (O, "Update_Validity_Status");
       PL (O, "  (" & Node_Id_Param & ",");
-      PL (O, "   " &Tree_Check (Mixed_Case_Name (Kind), Id_One)
-          & " (" & Node_Id_Param &"));");
+      PL (O, "   " & Tree_Check (Mixed_Case_Name (Kind), Id_One)
+          & " (Why_Node_Id (" & Node_Id_Param & ")));");
    end Print_Update_Validity_Status;
 
 end Xtree_Mutators;

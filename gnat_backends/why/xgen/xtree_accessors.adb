@@ -170,9 +170,15 @@ package body Xtree_Accessors is
      (O    : in out Output_Record;
       FI   : Field_Info) is
    begin
-      P (O,
-         "(" & Type_Name (FI, Derived)
-         & " (Get_Node (-" & Node_Id_Param & ")." & Field_Name (FI) & "))");
+      if Is_Why_Id (FI) then
+         P (O,
+            "(" & Type_Name (FI, Derived)
+            & " (Get_Node (+" & Node_Id_Param & ")."
+            & Field_Name (FI) & "))");
+      else
+         P (O, "(Get_Node (+" & Node_Id_Param & ")."
+            & Field_Name (FI) & ")");
+      end if;
    end Print_Accessor_Expression;
 
    ----------------------------------------------

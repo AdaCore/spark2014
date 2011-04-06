@@ -26,7 +26,6 @@
 
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Atree.Tables;    use Why.Atree.Tables;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
 
 package body Why.Atree.Traversal is
 
