@@ -141,10 +141,16 @@ package body Xkind_Ids is
                   P (O, "  ");
                end if;
 
-               PL (O, Base_Id_Subtype (Prefix, Kind, Multiplicity) & ";");
+               P (O, Base_Id_Subtype (Prefix, Kind, Multiplicity));
 
-               if Kind /= Opaque then
-                  PL (O, "--  ??? subtype predicate not generated yet");
+               if Kind = Unchecked then
+                  PL (O, " with");
+                  PL (O, "Predicate =>");
+                  PL (O, "  (" & Kind_Check (Prefix, Multiplicity));
+                  PL (O, "   (" & Id_Subtype (Prefix, Kind, Multiplicity)
+                      & "));");
+               else
+                  PL (O, ";");
                end if;
             end if;
 

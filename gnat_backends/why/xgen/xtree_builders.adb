@@ -302,9 +302,19 @@ package body Xtree_Builders is
          function K (S : Wide_String) return Wide_String is
          begin
             if IK = Derived and Is_Why_Id (FI) then
-               return "+("
-                 & Id_Subtype (Field_Kind (FI), Regular)
-                 & " (" & S & "))";
+               declare
+                  M : constant Id_Multiplicity :=
+                        (if Multiplicity (FI) = Id_One
+                           or else Multiplicity (FI) = Id_Some
+                         then
+                           Id_One
+                         else
+                           Id_Lone);
+               begin
+                  return "+("
+                    & Id_Subtype (Field_Kind (FI), Regular, M)
+                    & " (" & S & "))";
+               end;
             else
                return S;
             end if;

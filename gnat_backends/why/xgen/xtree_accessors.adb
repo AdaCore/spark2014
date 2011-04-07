@@ -173,10 +173,23 @@ package body Xtree_Accessors is
       IK   : Id_Kind) is
    begin
       if Is_Why_Id (FI) then
-         P (O,
-            "(" & Type_Name (FI, IK)
-            & " (Get_Node (+" & Node_Id_Param & ")."
-            & Field_Name (FI) & "))");
+         declare
+            M : constant Id_Multiplicity :=
+                  (if IK in Regular .. Derived then
+                     Multiplicity (FI)
+                   else
+                     (if Multiplicity (FI) = Id_Some
+                        or else Multiplicity (FI) = Id_Set
+                      then
+                        Id_Set
+                      else
+                        Id_Lone));
+         begin
+            P (O,
+               "(" & Id_Subtype (Field_Kind (FI), IK, M)
+               & " (Get_Node (+" & Node_Id_Param & ")."
+               & Field_Name (FI) & "))");
+         end;
       else
          P (O, "(Get_Node (+" & Node_Id_Param & ")."
             & Field_Name (FI) & ")");
