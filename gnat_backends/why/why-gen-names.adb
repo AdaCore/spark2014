@@ -289,7 +289,7 @@ package body Why.Gen.Names is
    -- New_Result_Identifier --
    ---------------------------
 
-   function New_Result_Identifier return W_Term_Identifier_Id is
+   function New_Result_Identifier return W_Term_Id is
       Result_Name : constant String := "result";
    begin
       return New_Term_Identifier (Name => New_Identifier (Result_Name));
@@ -299,7 +299,7 @@ package body Why.Gen.Names is
    -- New_Term --
    --------------
 
-   function New_Term (Name : String) return W_Term_Identifier_Id is
+   function New_Term (Name : String) return W_Term_Id is
    begin
       return New_Term_Identifier (Name => New_Identifier (Name));
    end New_Term;
@@ -355,7 +355,7 @@ package body Why.Gen.Names is
 
    function To_Term_Identifier
      (Name : W_Identifier_Id)
-     return W_Term_Identifier_Id is
+     return W_Term_Id is
    begin
       return New_Term_Identifier (Name => +Duplicate_Any_Node (Id => +Name));
    end To_Term_Identifier;

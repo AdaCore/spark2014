@@ -2123,7 +2123,7 @@ package body Gnat2Why.Subprograms is
             begin
                case Attr_Id is
                   when Attribute_Result =>
-                     T := +New_Result_Identifier;
+                     T := New_Result_Identifier;
 
                   when Attribute_Old =>
                      T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));

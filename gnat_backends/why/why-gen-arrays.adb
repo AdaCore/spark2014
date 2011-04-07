@@ -186,24 +186,24 @@ package body Why.Gen.Arrays is
          First         : constant W_Term_Id :=
             New_Operation
               (Name => Array_First_Name (Name),
-               Parameters => (1 => +New_Term (Arg_A)));
+               Parameters => (1 => New_Term (Arg_A)));
          First_Int     : constant W_Term_Id := To_Int (First);
          Last          : constant W_Term_Id :=
             New_Operation
               (Name => Array_Last_Name (Name),
-               Parameters => (1 => +New_Term (Arg_A)));
+               Parameters => (1 => New_Term (Arg_A)));
          Last_Int      : constant W_Term_Id := To_Int (Last);
          Length         : constant W_Term_Id :=
             New_Operation
               (Name => Array_Length_Name (Name),
-               Parameters => (1 => +New_Term (Arg_A)));
+               Parameters => (1 => New_Term (Arg_A)));
          Length_Int     : constant W_Term_Id := To_Int (Length);
          Pre : constant W_Predicate_Id :=
             New_Related_Terms
                (Left   => First_Int,
                 Op     => New_Rel_Le,
                 Right  =>
-                  To_Int (+New_Term (Arg_I)),
+                  To_Int (New_Term (Arg_I)),
                 Op2    => New_Rel_Le,
                 Right2 => Last_Int);
          Binders_Update : constant W_Binder_Array :=
@@ -222,18 +222,18 @@ package body Why.Gen.Arrays is
             New_Array_Update_Term
                (Type_Name => Name,
                 Ar        => New_Old_Ident (New_Identifier (Arg_A)),
-                Index     => +New_Term (Arg_I),
-                Value     => +New_Term (Arg_V));
+                Index     => New_Term (Arg_I),
+                Value     => New_Term (Arg_V));
          Post_Update : constant W_Predicate_Id :=
-            New_Equal (+New_Term (Arg_A), Logic_Update_Term);
+            New_Equal (New_Term (Arg_A), Logic_Update_Term);
          Post_Access : constant W_Predicate_Id :=
             New_Equal
-               (Left => +New_Result_Identifier,
+               (Left => New_Result_Identifier,
                 Right =>
                   New_Array_Access_Term
                      (Type_Name => Name,
                       Ar        => New_Old_Ident (New_Identifier (Arg_A)),
-                      Index     => +New_Term (Arg_I)));
+                      Index     => New_Term (Arg_I)));
          Normal_Length : constant W_Term_Id :=
             --  'last - 'first + 1
             New_Arith_Operation
@@ -290,9 +290,9 @@ package body Why.Gen.Arrays is
                      (1 =>
                         New_Array_Update_Term
                            (Type_Name => Name,
-                            Ar        => +New_Term (Arg_A),
-                            Index     => +New_Term (Arg_I),
-                            Value     => +New_Term (Arg_V))));
+                            Ar        => New_Term (Arg_A),
+                            Index     => New_Term (Arg_I),
+                            Value     => New_Term (Arg_V))));
          begin
             New_Axiom
                (File => File,

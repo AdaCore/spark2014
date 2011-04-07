@@ -79,12 +79,12 @@ package body Why.Gen.Preds is
       X_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name       => Conversion,
-                               Parameters => (1 => +New_Term (X_S)));
+                               Parameters => (1 => New_Term (X_S)));
       Y_To_Base_Type_Op : constant W_Term_Id :=
                             New_Operation
                               (Name =>
                                  +Duplicate_Any_Node (Id => +Conversion),
-                               Parameters => (1 => +New_Term (Y_S)));
+                               Parameters => (1 => New_Term (Y_S)));
    begin
       --  ...now set the pieces together:
       New_Predicate_Definition
@@ -125,11 +125,11 @@ package body Why.Gen.Preds is
 
       --  first <= x <= last
       Context    : constant W_Predicate_Id :=
-                     New_Related_Terms (Left   => +New_Term (First_S),
+                     New_Related_Terms (Left   => New_Term (First_S),
                                         Op     => New_Rel_Le,
-                                        Right  => +New_Term (Arg_S),
+                                        Right  => New_Term (Arg_S),
                                         Op2    => New_Rel_Le,
-                                        Right2 => +New_Term (Last_S));
+                                        Right2 => New_Term (Last_S));
       Pred_Body  : constant W_Predicate_Id :=
                      New_Predicate_Body ((Decl_First, Decl_Last), Context);
    begin

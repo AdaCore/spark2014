@@ -133,7 +133,7 @@ package body Why.Gen.Funcs is
             Final_Post := New_Related_Terms
               (Left  => New_Call_To_Logic (Logic_Name, Arrows),
                Op    => New_Rel_Eq,
-               Right => +New_Result_Identifier);
+               Right => New_Result_Identifier);
          end;
       end if;
 
@@ -213,7 +213,7 @@ package body Why.Gen.Funcs is
       begin
          Operation_Append_To_Parameters
            (Operation,
-            +To_Term_Identifier (Arrow_Type_Get_Name (Arrows)));
+            To_Term_Identifier (Arrow_Type_Get_Name (Arrows)));
 
          if Get_Kind (+Right) /= W_Computation_Spec then
             Append_Arg (+Right);
@@ -236,11 +236,11 @@ package body Why.Gen.Funcs is
       Arg_T : constant String := "m";
       Post  : constant W_Predicate_Id :=
          New_Conditional_Pred
-           (Condition => +New_Result_Identifier,
+           (Condition => New_Result_Identifier,
             Then_Part =>
-              New_Equal (+New_Term (Arg_S), +New_Term (Arg_T)),
+              New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
             Else_Part =>
-              New_NEqual (+New_Term (Arg_S), +New_Term (Arg_T)));
+              New_NEqual (New_Term (Arg_S), New_Term (Arg_T)));
    begin
       New_Parameter
         (File => File,

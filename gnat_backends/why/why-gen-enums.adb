@@ -72,7 +72,7 @@ package body Why.Gen.Enums is
       Cur      : Cursor := First (Constructors);
       Cnt      : Uint := Uint_1;
    begin
-      Matching_Term_Set_Term (Match, +New_Term (Arg_Name));
+      Matching_Term_Set_Term (Match, New_Term (Arg_Name));
       while Has_Element (Cur) loop
          declare
             Result : constant W_Term_Id := New_Integer_Constant (Value => Cnt);

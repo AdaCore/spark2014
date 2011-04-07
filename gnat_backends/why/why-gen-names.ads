@@ -129,11 +129,11 @@ package Why.Gen.Names is
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
-   function New_Result_Identifier return W_Term_Identifier_Id;
+   function New_Result_Identifier return W_Term_Id;
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.
 
-   function New_Term (Name : String) return W_Term_Identifier_Id;
+   function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name
 
    function Range_Pred_Name (Name : String) return W_Identifier_Id;
@@ -155,7 +155,7 @@ package Why.Gen.Names is
 
    function To_Term_Identifier
      (Name : W_Identifier_Id)
-     return W_Term_Identifier_Id;
+     return W_Term_Id;
    --  Create a label identifier from Name. Name is duplicated.
 
    function Unicity_Axiom (Name : String) return  W_Identifier_Id;
