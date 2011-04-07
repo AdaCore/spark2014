@@ -42,8 +42,16 @@ package Why.Atree.Mutators is
      (Id     : W_Identifier_Unchecked_Id;
       Symbol : Name_Id);
 
+   procedure Identifier_Set_Symbol
+     (Id     : W_Identifier_Id;
+      Symbol : Name_Id);
+
    procedure Identifier_Set_Entity
      (Id     : W_Identifier_Unchecked_Id;
+      Entity : Why_Node_Id);
+
+   procedure Identifier_Set_Entity
+     (Id     : W_Identifier_Id;
       Entity : Why_Node_Id);
 
    procedure Abstract_Type_Set_Name
@@ -54,8 +62,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Abstract_Type_Set_Name
+     (Id   : W_Abstract_Type_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Generic_Formal_Type_Set_Name
      (Id   : W_Generic_Formal_Type_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Generic_Formal_Type_Set_Name
+     (Id   : W_Generic_Formal_Type_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -78,8 +102,32 @@ package Why.Atree.Mutators is
         and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Generic_Actual_Type_Chain_Append_To_Type_Chain
+     (Id       : W_Generic_Actual_Type_Chain_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Generic_Actual_Type_Chain_Prepend_To_Type_Chain
+     (Id       : W_Generic_Actual_Type_Chain_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Generic_Actual_Type_Chain_Set_Name
      (Id   : W_Generic_Actual_Type_Chain_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Generic_Actual_Type_Chain_Set_Name
+     (Id   : W_Generic_Actual_Type_Chain_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -94,8 +142,24 @@ package Why.Atree.Mutators is
         and then Primitive_Type_Id_Valid (Why_Node_Id (Component_Type))
         and then Is_Root (+Component_Type));
 
+   procedure Array_Type_Set_Component_Type
+     (Id             : W_Array_Type_Id;
+      Component_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Component_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Component_Type))
+        and then Is_Root (+Component_Type));
+
    procedure Ref_Type_Set_Aliased_Type
      (Id           : W_Ref_Type_Unchecked_Id;
+      Aliased_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Aliased_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Aliased_Type))
+        and then Is_Root (+Aliased_Type));
+
+   procedure Ref_Type_Set_Aliased_Type
+     (Id           : W_Ref_Type_Id;
       Aliased_Type : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Aliased_Type))
@@ -110,8 +174,24 @@ package Why.Atree.Mutators is
         and then Value_Type_Id_Valid (Why_Node_Id (Value_Type))
         and then Is_Root (+Value_Type));
 
+   procedure Protected_Value_Type_Set_Value_Type
+     (Id         : W_Protected_Value_Type_Id;
+      Value_Type : W_Value_Type_Id) with
+     Pre =>
+       (Value_Type_Id_Kind_Valid (Why_Node_Id (Value_Type))
+        and then Value_Type_Id_Valid (Why_Node_Id (Value_Type))
+        and then Is_Root (+Value_Type));
+
    procedure Arrow_Type_Set_Name
      (Id   : W_Arrow_Type_Unchecked_Id;
+      Name : W_Identifier_OId) with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_OId_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Arrow_Type_Set_Name
+     (Id   : W_Arrow_Type_Id;
       Name : W_Identifier_OId) with
      Pre =>
        (Identifier_OId_Kind_Valid (Why_Node_Id (Name))
@@ -126,8 +206,24 @@ package Why.Atree.Mutators is
         and then Simple_Value_Type_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Arrow_Type_Set_Left
+     (Id   : W_Arrow_Type_Id;
+      Left : W_Simple_Value_Type_Id) with
+     Pre =>
+       (Simple_Value_Type_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Simple_Value_Type_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Arrow_Type_Set_Right
      (Id    : W_Arrow_Type_Unchecked_Id;
+      Right : W_Computation_Type_Id) with
+     Pre =>
+       (Computation_Type_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Computation_Type_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Arrow_Type_Set_Right
+     (Id    : W_Arrow_Type_Id;
       Right : W_Computation_Type_Id) with
      Pre =>
        (Computation_Type_Id_Kind_Valid (Why_Node_Id (Right))
@@ -142,8 +238,24 @@ package Why.Atree.Mutators is
         and then Precondition_OId_Valid (Why_Node_Id (Precondition))
         and then Is_Root (+Precondition));
 
+   procedure Computation_Spec_Set_Precondition
+     (Id           : W_Computation_Spec_Id;
+      Precondition : W_Precondition_OId) with
+     Pre =>
+       (Precondition_OId_Kind_Valid (Why_Node_Id (Precondition))
+        and then Precondition_OId_Valid (Why_Node_Id (Precondition))
+        and then Is_Root (+Precondition));
+
    procedure Computation_Spec_Set_Result_Name
      (Id          : W_Computation_Spec_Unchecked_Id;
+      Result_Name : W_Identifier_OId) with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Why_Node_Id (Result_Name))
+        and then Identifier_OId_Valid (Why_Node_Id (Result_Name))
+        and then Is_Root (+Result_Name));
+
+   procedure Computation_Spec_Set_Result_Name
+     (Id          : W_Computation_Spec_Id;
       Result_Name : W_Identifier_OId) with
      Pre =>
        (Identifier_OId_Kind_Valid (Why_Node_Id (Result_Name))
@@ -158,8 +270,24 @@ package Why.Atree.Mutators is
         and then Value_Type_Id_Valid (Why_Node_Id (Return_Type))
         and then Is_Root (+Return_Type));
 
+   procedure Computation_Spec_Set_Return_Type
+     (Id          : W_Computation_Spec_Id;
+      Return_Type : W_Value_Type_Id) with
+     Pre =>
+       (Value_Type_Id_Kind_Valid (Why_Node_Id (Return_Type))
+        and then Value_Type_Id_Valid (Why_Node_Id (Return_Type))
+        and then Is_Root (+Return_Type));
+
    procedure Computation_Spec_Set_Effects
      (Id      : W_Computation_Spec_Unchecked_Id;
+      Effects : W_Effects_Id) with
+     Pre =>
+       (Effects_Id_Kind_Valid (Why_Node_Id (Effects))
+        and then Effects_Id_Valid (Why_Node_Id (Effects))
+        and then Is_Root (+Effects));
+
+   procedure Computation_Spec_Set_Effects
+     (Id      : W_Computation_Spec_Id;
       Effects : W_Effects_Id) with
      Pre =>
        (Effects_Id_Kind_Valid (Why_Node_Id (Effects))
@@ -174,16 +302,40 @@ package Why.Atree.Mutators is
         and then Postcondition_OId_Valid (Why_Node_Id (Postcondition))
         and then Is_Root (+Postcondition));
 
+   procedure Computation_Spec_Set_Postcondition
+     (Id            : W_Computation_Spec_Id;
+      Postcondition : W_Postcondition_OId) with
+     Pre =>
+       (Postcondition_OId_Kind_Valid (Why_Node_Id (Postcondition))
+        and then Postcondition_OId_Valid (Why_Node_Id (Postcondition))
+        and then Is_Root (+Postcondition));
+
    procedure Integer_Constant_Set_Value
      (Id    : W_Integer_Constant_Unchecked_Id;
+      Value : Uint);
+
+   procedure Integer_Constant_Set_Value
+     (Id    : W_Integer_Constant_Id;
       Value : Uint);
 
    procedure Real_Constant_Set_Value
      (Id    : W_Real_Constant_Unchecked_Id;
       Value : Ureal);
 
+   procedure Real_Constant_Set_Value
+     (Id    : W_Real_Constant_Id;
+      Value : Ureal);
+
    procedure Arith_Operation_Set_Left
      (Id   : W_Arith_Operation_Unchecked_Id;
+      Left : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Term_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
+   procedure Arith_Operation_Set_Left
+     (Id   : W_Arith_Operation_Id;
       Left : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Left))
@@ -198,8 +350,24 @@ package Why.Atree.Mutators is
         and then Arith_Op_Id_Valid (Why_Node_Id (Op))
         and then Is_Root (+Op));
 
+   procedure Arith_Operation_Set_Op
+     (Id : W_Arith_Operation_Id;
+      Op : W_Arith_Op_Id) with
+     Pre =>
+       (Arith_Op_Id_Kind_Valid (Why_Node_Id (Op))
+        and then Arith_Op_Id_Valid (Why_Node_Id (Op))
+        and then Is_Root (+Op));
+
    procedure Arith_Operation_Set_Right
      (Id    : W_Arith_Operation_Unchecked_Id;
+      Right : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Term_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Arith_Operation_Set_Right
+     (Id    : W_Arith_Operation_Id;
       Right : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Right))
@@ -214,8 +382,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Operand))
         and then Is_Root (+Operand));
 
+   procedure Negative_Term_Set_Operand
+     (Id      : W_Negative_Term_Id;
+      Operand : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Operand))
+        and then Term_Id_Valid (Why_Node_Id (Operand))
+        and then Is_Root (+Operand));
+
    procedure Term_Identifier_Set_Name
      (Id   : W_Term_Identifier_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Term_Identifier_Set_Name
+     (Id   : W_Term_Identifier_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -230,8 +414,24 @@ package Why.Atree.Mutators is
         and then Identifier_OId_Valid (Why_Node_Id (Label))
         and then Is_Root (+Label));
 
+   procedure Term_Identifier_Set_Label
+     (Id    : W_Term_Identifier_Id;
+      Label : W_Identifier_OId) with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Why_Node_Id (Label))
+        and then Identifier_OId_Valid (Why_Node_Id (Label))
+        and then Is_Root (+Label));
+
    procedure Operation_Set_Name
      (Id   : W_Operation_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Operation_Set_Name
+     (Id   : W_Operation_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -254,8 +454,32 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Operation_Append_To_Parameters
+     (Id       : W_Operation_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Operation_Prepend_To_Parameters
+     (Id       : W_Operation_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Named_Term_Set_Name
      (Id   : W_Named_Term_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Named_Term_Set_Name
+     (Id   : W_Named_Term_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -270,8 +494,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Term))
         and then Is_Root (+Term));
 
+   procedure Named_Term_Set_Term
+     (Id   : W_Named_Term_Id;
+      Term : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Term))
+        and then Term_Id_Valid (Why_Node_Id (Term))
+        and then Is_Root (+Term));
+
    procedure Conditional_Term_Set_Condition
      (Id        : W_Conditional_Term_Unchecked_Id;
+      Condition : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Condition))
+        and then Term_Id_Valid (Why_Node_Id (Condition))
+        and then Is_Root (+Condition));
+
+   procedure Conditional_Term_Set_Condition
+     (Id        : W_Conditional_Term_Id;
       Condition : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Condition))
@@ -286,6 +526,14 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Then_Part))
         and then Is_Root (+Then_Part));
 
+   procedure Conditional_Term_Set_Then_Part
+     (Id        : W_Conditional_Term_Id;
+      Then_Part : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Then_Part))
+        and then Term_Id_Valid (Why_Node_Id (Then_Part))
+        and then Is_Root (+Then_Part));
+
    procedure Conditional_Term_Set_Else_Part
      (Id        : W_Conditional_Term_Unchecked_Id;
       Else_Part : W_Term_Id) with
@@ -294,8 +542,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Else_Part))
         and then Is_Root (+Else_Part));
 
+   procedure Conditional_Term_Set_Else_Part
+     (Id        : W_Conditional_Term_Id;
+      Else_Part : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Else_Part))
+        and then Term_Id_Valid (Why_Node_Id (Else_Part))
+        and then Is_Root (+Else_Part));
+
    procedure Matching_Term_Set_Term
      (Id   : W_Matching_Term_Unchecked_Id;
+      Term : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Term))
+        and then Term_Id_Valid (Why_Node_Id (Term))
+        and then Is_Root (+Term));
+
+   procedure Matching_Term_Set_Term
+     (Id   : W_Matching_Term_Id;
       Term : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Term))
@@ -318,8 +582,32 @@ package Why.Atree.Mutators is
         and then Match_Case_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Matching_Term_Append_To_Branches
+     (Id       : W_Matching_Term_Id;
+      New_Item : W_Match_Case_Id) with
+     Pre =>
+       (Match_Case_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Match_Case_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Matching_Term_Prepend_To_Branches
+     (Id       : W_Matching_Term_Id;
+      New_Item : W_Match_Case_Id) with
+     Pre =>
+       (Match_Case_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Match_Case_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Binding_Term_Set_Name
      (Id   : W_Binding_Term_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Binding_Term_Set_Name
+     (Id   : W_Binding_Term_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -334,8 +622,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Binding_Term_Set_Def
+     (Id  : W_Binding_Term_Id;
+      Def : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Term_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Binding_Term_Set_Context
      (Id      : W_Binding_Term_Unchecked_Id;
+      Context : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Term_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
+   procedure Binding_Term_Set_Context
+     (Id      : W_Binding_Term_Id;
       Context : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Context))
@@ -350,6 +654,14 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Term))
         and then Is_Root (+Term));
 
+   procedure Protected_Term_Set_Term
+     (Id   : W_Protected_Term_Id;
+      Term : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Term))
+        and then Term_Id_Valid (Why_Node_Id (Term))
+        and then Is_Root (+Term));
+
    procedure Predicate_Identifier_Set_Name
      (Id   : W_Predicate_Identifier_Unchecked_Id;
       Name : W_Identifier_Id) with
@@ -358,8 +670,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Predicate_Identifier_Set_Name
+     (Id   : W_Predicate_Identifier_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Predicate_Instance_Set_Name
      (Id   : W_Predicate_Instance_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Predicate_Instance_Set_Name
+     (Id   : W_Predicate_Instance_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -382,8 +710,32 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Predicate_Instance_Append_To_Parameters
+     (Id       : W_Predicate_Instance_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Predicate_Instance_Prepend_To_Parameters
+     (Id       : W_Predicate_Instance_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Related_Terms_Set_Left
      (Id   : W_Related_Terms_Unchecked_Id;
+      Left : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Term_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
+   procedure Related_Terms_Set_Left
+     (Id   : W_Related_Terms_Id;
       Left : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Left))
@@ -398,8 +750,24 @@ package Why.Atree.Mutators is
         and then Relation_Id_Valid (Why_Node_Id (Op))
         and then Is_Root (+Op));
 
+   procedure Related_Terms_Set_Op
+     (Id : W_Related_Terms_Id;
+      Op : W_Relation_Id) with
+     Pre =>
+       (Relation_Id_Kind_Valid (Why_Node_Id (Op))
+        and then Relation_Id_Valid (Why_Node_Id (Op))
+        and then Is_Root (+Op));
+
    procedure Related_Terms_Set_Right
      (Id    : W_Related_Terms_Unchecked_Id;
+      Right : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Term_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Related_Terms_Set_Right
+     (Id    : W_Related_Terms_Id;
       Right : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Right))
@@ -414,8 +782,24 @@ package Why.Atree.Mutators is
         and then Relation_OId_Valid (Why_Node_Id (Op2))
         and then Is_Root (+Op2));
 
+   procedure Related_Terms_Set_Op2
+     (Id  : W_Related_Terms_Id;
+      Op2 : W_Relation_OId) with
+     Pre =>
+       (Relation_OId_Kind_Valid (Why_Node_Id (Op2))
+        and then Relation_OId_Valid (Why_Node_Id (Op2))
+        and then Is_Root (+Op2));
+
    procedure Related_Terms_Set_Right2
      (Id     : W_Related_Terms_Unchecked_Id;
+      Right2 : W_Term_OId) with
+     Pre =>
+       (Term_OId_Kind_Valid (Why_Node_Id (Right2))
+        and then Term_OId_Valid (Why_Node_Id (Right2))
+        and then Is_Root (+Right2));
+
+   procedure Related_Terms_Set_Right2
+     (Id     : W_Related_Terms_Id;
       Right2 : W_Term_OId) with
      Pre =>
        (Term_OId_Kind_Valid (Why_Node_Id (Right2))
@@ -430,8 +814,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Implication_Set_Left
+     (Id   : W_Implication_Id;
+      Left : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Predicate_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Implication_Set_Right
      (Id    : W_Implication_Unchecked_Id;
+      Right : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Predicate_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Implication_Set_Right
+     (Id    : W_Implication_Id;
       Right : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
@@ -446,8 +846,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Equivalence_Set_Left
+     (Id   : W_Equivalence_Id;
+      Left : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Predicate_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Equivalence_Set_Right
      (Id    : W_Equivalence_Unchecked_Id;
+      Right : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Predicate_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Equivalence_Set_Right
+     (Id    : W_Equivalence_Id;
       Right : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
@@ -462,8 +878,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Disjunction_Set_Left
+     (Id   : W_Disjunction_Id;
+      Left : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Predicate_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Disjunction_Set_Right
      (Id    : W_Disjunction_Unchecked_Id;
+      Right : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Predicate_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Disjunction_Set_Right
+     (Id    : W_Disjunction_Id;
       Right : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
@@ -478,8 +910,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Conjunction_Set_Left
+     (Id   : W_Conjunction_Id;
+      Left : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Predicate_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Conjunction_Set_Right
      (Id    : W_Conjunction_Unchecked_Id;
+      Right : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Predicate_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
+   procedure Conjunction_Set_Right
+     (Id    : W_Conjunction_Id;
       Right : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Right))
@@ -494,8 +942,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Operand))
         and then Is_Root (+Operand));
 
+   procedure Negation_Set_Operand
+     (Id      : W_Negation_Id;
+      Operand : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Operand))
+        and then Predicate_Id_Valid (Why_Node_Id (Operand))
+        and then Is_Root (+Operand));
+
    procedure Conditional_Pred_Set_Condition
      (Id        : W_Conditional_Pred_Unchecked_Id;
+      Condition : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Condition))
+        and then Term_Id_Valid (Why_Node_Id (Condition))
+        and then Is_Root (+Condition));
+
+   procedure Conditional_Pred_Set_Condition
+     (Id        : W_Conditional_Pred_Id;
       Condition : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Condition))
@@ -510,8 +974,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Then_Part))
         and then Is_Root (+Then_Part));
 
+   procedure Conditional_Pred_Set_Then_Part
+     (Id        : W_Conditional_Pred_Id;
+      Then_Part : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Then_Part))
+        and then Predicate_Id_Valid (Why_Node_Id (Then_Part))
+        and then Is_Root (+Then_Part));
+
    procedure Conditional_Pred_Set_Else_Part
      (Id        : W_Conditional_Pred_Unchecked_Id;
+      Else_Part : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Else_Part))
+        and then Predicate_Id_Valid (Why_Node_Id (Else_Part))
+        and then Is_Root (+Else_Part));
+
+   procedure Conditional_Pred_Set_Else_Part
+     (Id        : W_Conditional_Pred_Id;
       Else_Part : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Else_Part))
@@ -526,6 +1006,14 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Binding_Pred_Set_Name
+     (Id   : W_Binding_Pred_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Binding_Pred_Set_Def
      (Id  : W_Binding_Pred_Unchecked_Id;
       Def : W_Term_Id) with
@@ -534,8 +1022,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Binding_Pred_Set_Def
+     (Id  : W_Binding_Pred_Id;
+      Def : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Term_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Binding_Pred_Set_Context
      (Id      : W_Binding_Pred_Unchecked_Id;
+      Context : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Predicate_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
+   procedure Binding_Pred_Set_Context
+     (Id      : W_Binding_Pred_Id;
       Context : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Context))
@@ -558,8 +1062,32 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Universal_Quantif_Append_To_Variables
+     (Id       : W_Universal_Quantif_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Universal_Quantif_Prepend_To_Variables
+     (Id       : W_Universal_Quantif_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Universal_Quantif_Set_Var_Type
      (Id       : W_Universal_Quantif_Unchecked_Id;
+      Var_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Var_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Var_Type))
+        and then Is_Root (+Var_Type));
+
+   procedure Universal_Quantif_Set_Var_Type
+     (Id       : W_Universal_Quantif_Id;
       Var_Type : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Var_Type))
@@ -574,8 +1102,24 @@ package Why.Atree.Mutators is
         and then Triggers_OId_Valid (Why_Node_Id (Triggers))
         and then Is_Root (+Triggers));
 
+   procedure Universal_Quantif_Set_Triggers
+     (Id       : W_Universal_Quantif_Id;
+      Triggers : W_Triggers_OId) with
+     Pre =>
+       (Triggers_OId_Kind_Valid (Why_Node_Id (Triggers))
+        and then Triggers_OId_Valid (Why_Node_Id (Triggers))
+        and then Is_Root (+Triggers));
+
    procedure Universal_Quantif_Set_Pred
      (Id   : W_Universal_Quantif_Unchecked_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
+   procedure Universal_Quantif_Set_Pred
+     (Id   : W_Universal_Quantif_Id;
       Pred : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
@@ -598,8 +1142,32 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Existential_Quantif_Append_To_Variables
+     (Id       : W_Existential_Quantif_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Existential_Quantif_Prepend_To_Variables
+     (Id       : W_Existential_Quantif_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Existential_Quantif_Set_Var_Type
      (Id       : W_Existential_Quantif_Unchecked_Id;
+      Var_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Var_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Var_Type))
+        and then Is_Root (+Var_Type));
+
+   procedure Existential_Quantif_Set_Var_Type
+     (Id       : W_Existential_Quantif_Id;
       Var_Type : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Var_Type))
@@ -614,8 +1182,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Pred))
         and then Is_Root (+Pred));
 
+   procedure Existential_Quantif_Set_Pred
+     (Id   : W_Existential_Quantif_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
    procedure Named_Predicate_Set_Name
      (Id   : W_Named_Predicate_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Named_Predicate_Set_Name
+     (Id   : W_Named_Predicate_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -630,6 +1214,14 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Pred))
         and then Is_Root (+Pred));
 
+   procedure Named_Predicate_Set_Pred
+     (Id   : W_Named_Predicate_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
    procedure Protected_Predicate_Set_Pred
      (Id   : W_Protected_Predicate_Unchecked_Id;
       Pred : W_Predicate_Id) with
@@ -638,8 +1230,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Pred))
         and then Is_Root (+Pred));
 
+   procedure Protected_Predicate_Set_Pred
+     (Id   : W_Protected_Predicate_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
    procedure Pattern_Set_Constr
      (Id     : W_Pattern_Unchecked_Id;
+      Constr : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Constr))
+        and then Identifier_Id_Valid (Why_Node_Id (Constr))
+        and then Is_Root (+Constr));
+
+   procedure Pattern_Set_Constr
+     (Id     : W_Pattern_Id;
       Constr : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Constr))
@@ -662,6 +1270,22 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Pattern_Append_To_Args
+     (Id       : W_Pattern_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Pattern_Prepend_To_Args
+     (Id       : W_Pattern_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Match_Case_Set_Pattern
      (Id      : W_Match_Case_Unchecked_Id;
       Pattern : W_Pattern_Id) with
@@ -670,8 +1294,24 @@ package Why.Atree.Mutators is
         and then Pattern_Id_Valid (Why_Node_Id (Pattern))
         and then Is_Root (+Pattern));
 
+   procedure Match_Case_Set_Pattern
+     (Id      : W_Match_Case_Id;
+      Pattern : W_Pattern_Id) with
+     Pre =>
+       (Pattern_Id_Kind_Valid (Why_Node_Id (Pattern))
+        and then Pattern_Id_Valid (Why_Node_Id (Pattern))
+        and then Is_Root (+Pattern));
+
    procedure Match_Case_Set_Term
      (Id   : W_Match_Case_Unchecked_Id;
+      Term : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Term))
+        and then Term_Id_Valid (Why_Node_Id (Term))
+        and then Is_Root (+Term));
+
+   procedure Match_Case_Set_Term
+     (Id   : W_Match_Case_Id;
       Term : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Term))
@@ -694,6 +1334,22 @@ package Why.Atree.Mutators is
         and then Trigger_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Triggers_Append_To_Triggers
+     (Id       : W_Triggers_Id;
+      New_Item : W_Trigger_Id) with
+     Pre =>
+       (Trigger_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Trigger_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Triggers_Prepend_To_Triggers
+     (Id       : W_Triggers_Id;
+      New_Item : W_Trigger_Id) with
+     Pre =>
+       (Trigger_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Trigger_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Trigger_Append_To_Terms
      (Id       : W_Trigger_Unchecked_Id;
       New_Item : W_Term_Id) with
@@ -710,8 +1366,32 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Trigger_Append_To_Terms
+     (Id       : W_Trigger_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Trigger_Prepend_To_Terms
+     (Id       : W_Trigger_Id;
+      New_Item : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Term_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Type_Set_External
      (Id       : W_Type_Unchecked_Id;
+      External : W_External_OId) with
+     Pre =>
+       (External_OId_Kind_Valid (Why_Node_Id (External))
+        and then External_OId_Valid (Why_Node_Id (External))
+        and then Is_Root (+External));
+
+   procedure Type_Set_External
+     (Id       : W_Type_Id;
       External : W_External_OId) with
      Pre =>
        (External_OId_Kind_Valid (Why_Node_Id (External))
@@ -734,8 +1414,32 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Type_Append_To_Type_Parameters
+     (Id       : W_Type_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Type_Prepend_To_Type_Parameters
+     (Id       : W_Type_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Type_Set_Name
      (Id   : W_Type_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Type_Set_Name
+     (Id   : W_Type_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -750,8 +1454,24 @@ package Why.Atree.Mutators is
         and then Type_Definition_OId_Valid (Why_Node_Id (Definition))
         and then Is_Root (+Definition));
 
+   procedure Type_Set_Definition
+     (Id         : W_Type_Id;
+      Definition : W_Type_Definition_OId) with
+     Pre =>
+       (Type_Definition_OId_Kind_Valid (Why_Node_Id (Definition))
+        and then Type_Definition_OId_Valid (Why_Node_Id (Definition))
+        and then Is_Root (+Definition));
+
    procedure Logic_Set_External
      (Id       : W_Logic_Unchecked_Id;
+      External : W_External_OId) with
+     Pre =>
+       (External_OId_Kind_Valid (Why_Node_Id (External))
+        and then External_OId_Valid (Why_Node_Id (External))
+        and then Is_Root (+External));
+
+   procedure Logic_Set_External
+     (Id       : W_Logic_Id;
       External : W_External_OId) with
      Pre =>
        (External_OId_Kind_Valid (Why_Node_Id (External))
@@ -774,6 +1494,22 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Logic_Append_To_Names
+     (Id       : W_Logic_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Logic_Prepend_To_Names
+     (Id       : W_Logic_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Logic_Set_Logic_Type
      (Id         : W_Logic_Unchecked_Id;
       Logic_Type : W_Logic_Type_Id) with
@@ -782,8 +1518,24 @@ package Why.Atree.Mutators is
         and then Logic_Type_Id_Valid (Why_Node_Id (Logic_Type))
         and then Is_Root (+Logic_Type));
 
+   procedure Logic_Set_Logic_Type
+     (Id         : W_Logic_Id;
+      Logic_Type : W_Logic_Type_Id) with
+     Pre =>
+       (Logic_Type_Id_Kind_Valid (Why_Node_Id (Logic_Type))
+        and then Logic_Type_Id_Valid (Why_Node_Id (Logic_Type))
+        and then Is_Root (+Logic_Type));
+
    procedure Function_Set_Name
      (Id   : W_Function_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Function_Set_Name
+     (Id   : W_Function_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -806,8 +1558,32 @@ package Why.Atree.Mutators is
         and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Function_Append_To_Binders
+     (Id       : W_Function_Id;
+      New_Item : W_Logic_Binder_Id) with
+     Pre =>
+       (Logic_Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Function_Prepend_To_Binders
+     (Id       : W_Function_Id;
+      New_Item : W_Logic_Binder_Id) with
+     Pre =>
+       (Logic_Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Function_Set_Return_Type
      (Id          : W_Function_Unchecked_Id;
+      Return_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Return_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Return_Type))
+        and then Is_Root (+Return_Type));
+
+   procedure Function_Set_Return_Type
+     (Id          : W_Function_Id;
       Return_Type : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Return_Type))
@@ -822,8 +1598,24 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Function_Set_Def
+     (Id  : W_Function_Id;
+      Def : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Term_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Predicate_Definition_Set_Name
      (Id   : W_Predicate_Definition_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Predicate_Definition_Set_Name
+     (Id   : W_Predicate_Definition_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -846,8 +1638,32 @@ package Why.Atree.Mutators is
         and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Predicate_Definition_Append_To_Binders
+     (Id       : W_Predicate_Definition_Id;
+      New_Item : W_Logic_Binder_Id) with
+     Pre =>
+       (Logic_Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Predicate_Definition_Prepend_To_Binders
+     (Id       : W_Predicate_Definition_Id;
+      New_Item : W_Logic_Binder_Id) with
+     Pre =>
+       (Logic_Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Predicate_Definition_Set_Def
      (Id  : W_Predicate_Definition_Unchecked_Id;
+      Def : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Predicate_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Predicate_Definition_Set_Def
+     (Id  : W_Predicate_Definition_Id;
       Def : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Def))
@@ -862,8 +1678,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Inductive_Set_Name
+     (Id   : W_Inductive_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Inductive_Set_Logic_Type
      (Id         : W_Inductive_Unchecked_Id;
+      Logic_Type : W_Logic_Type_Id) with
+     Pre =>
+       (Logic_Type_Id_Kind_Valid (Why_Node_Id (Logic_Type))
+        and then Logic_Type_Id_Valid (Why_Node_Id (Logic_Type))
+        and then Is_Root (+Logic_Type));
+
+   procedure Inductive_Set_Logic_Type
+     (Id         : W_Inductive_Id;
       Logic_Type : W_Logic_Type_Id) with
      Pre =>
        (Logic_Type_Id_Kind_Valid (Why_Node_Id (Logic_Type))
@@ -886,8 +1718,32 @@ package Why.Atree.Mutators is
         and then Inductive_Case_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Inductive_Append_To_Def
+     (Id       : W_Inductive_Id;
+      New_Item : W_Inductive_Case_Id) with
+     Pre =>
+       (Inductive_Case_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Inductive_Case_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Inductive_Prepend_To_Def
+     (Id       : W_Inductive_Id;
+      New_Item : W_Inductive_Case_Id) with
+     Pre =>
+       (Inductive_Case_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Inductive_Case_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Axiom_Set_Name
      (Id   : W_Axiom_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Axiom_Set_Name
+     (Id   : W_Axiom_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -902,6 +1758,14 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Axiom_Set_Def
+     (Id  : W_Axiom_Id;
+      Def : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Predicate_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Goal_Set_Name
      (Id   : W_Goal_Unchecked_Id;
       Name : W_Identifier_Id) with
@@ -910,8 +1774,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Goal_Set_Name
+     (Id   : W_Goal_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Goal_Set_Def
      (Id  : W_Goal_Unchecked_Id;
+      Def : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Predicate_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Goal_Set_Def
+     (Id  : W_Goal_Id;
       Def : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Def))
@@ -934,8 +1814,32 @@ package Why.Atree.Mutators is
         and then Logic_Arg_Type_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Logic_Type_Append_To_Arg_Types
+     (Id       : W_Logic_Type_Id;
+      New_Item : W_Logic_Arg_Type_Id) with
+     Pre =>
+       (Logic_Arg_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Arg_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Logic_Type_Prepend_To_Arg_Types
+     (Id       : W_Logic_Type_Id;
+      New_Item : W_Logic_Arg_Type_Id) with
+     Pre =>
+       (Logic_Arg_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Logic_Arg_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Logic_Type_Set_Return_Type
      (Id          : W_Logic_Type_Unchecked_Id;
+      Return_Type : W_Logic_Return_Type_Id) with
+     Pre =>
+       (Logic_Return_Type_Id_Kind_Valid (Why_Node_Id (Return_Type))
+        and then Logic_Return_Type_Id_Valid (Why_Node_Id (Return_Type))
+        and then Is_Root (+Return_Type));
+
+   procedure Logic_Type_Set_Return_Type
+     (Id          : W_Logic_Type_Id;
       Return_Type : W_Logic_Return_Type_Id) with
      Pre =>
        (Logic_Return_Type_Id_Kind_Valid (Why_Node_Id (Return_Type))
@@ -950,8 +1854,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Logic_Binder_Set_Name
+     (Id   : W_Logic_Binder_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Logic_Binder_Set_Param_Type
      (Id         : W_Logic_Binder_Unchecked_Id;
+      Param_Type : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Param_Type))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Param_Type))
+        and then Is_Root (+Param_Type));
+
+   procedure Logic_Binder_Set_Param_Type
+     (Id         : W_Logic_Binder_Id;
       Param_Type : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Param_Type))
@@ -966,6 +1886,14 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Inductive_Case_Set_Name
+     (Id   : W_Inductive_Case_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Inductive_Case_Set_Pred
      (Id   : W_Inductive_Case_Unchecked_Id;
       Pred : W_Predicate_Id) with
@@ -974,8 +1902,24 @@ package Why.Atree.Mutators is
         and then Predicate_Id_Valid (Why_Node_Id (Pred))
         and then Is_Root (+Pred));
 
+   procedure Inductive_Case_Set_Pred
+     (Id   : W_Inductive_Case_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
    procedure Transparent_Type_Definition_Set_Type_Definition
      (Id              : W_Transparent_Type_Definition_Unchecked_Id;
+      Type_Definition : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Type_Definition))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (Type_Definition))
+        and then Is_Root (+Type_Definition));
+
+   procedure Transparent_Type_Definition_Set_Type_Definition
+     (Id              : W_Transparent_Type_Definition_Id;
       Type_Definition : W_Primitive_Type_Id) with
      Pre =>
        (Primitive_Type_Id_Kind_Valid (Why_Node_Id (Type_Definition))
@@ -998,8 +1942,32 @@ package Why.Atree.Mutators is
         and then Constr_Decl_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Adt_Definition_Append_To_Constructors
+     (Id       : W_Adt_Definition_Id;
+      New_Item : W_Constr_Decl_Id) with
+     Pre =>
+       (Constr_Decl_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Constr_Decl_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Adt_Definition_Prepend_To_Constructors
+     (Id       : W_Adt_Definition_Id;
+      New_Item : W_Constr_Decl_Id) with
+     Pre =>
+       (Constr_Decl_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Constr_Decl_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Constr_Decl_Set_Name
      (Id   : W_Constr_Decl_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Constr_Decl_Set_Name
+     (Id   : W_Constr_Decl_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1022,6 +1990,22 @@ package Why.Atree.Mutators is
         and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Constr_Decl_Append_To_Arg_List
+     (Id       : W_Constr_Decl_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Constr_Decl_Prepend_To_Arg_List
+     (Id       : W_Constr_Decl_Id;
+      New_Item : W_Primitive_Type_Id) with
+     Pre =>
+       (Primitive_Type_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Primitive_Type_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Effects_Append_To_Reads
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id) with
@@ -1032,6 +2016,22 @@ package Why.Atree.Mutators is
 
    procedure Effects_Prepend_To_Reads
      (Id       : W_Effects_Unchecked_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Effects_Append_To_Reads
+     (Id       : W_Effects_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Effects_Prepend_To_Reads
+     (Id       : W_Effects_Id;
       New_Item : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
@@ -1054,6 +2054,22 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Effects_Append_To_Writes
+     (Id       : W_Effects_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Effects_Prepend_To_Writes
+     (Id       : W_Effects_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Effects_Append_To_Raises
      (Id       : W_Effects_Unchecked_Id;
       New_Item : W_Identifier_Id) with
@@ -1070,6 +2086,22 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Effects_Append_To_Raises
+     (Id       : W_Effects_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Effects_Prepend_To_Raises
+     (Id       : W_Effects_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Precondition_Set_Assertion
      (Id        : W_Precondition_Unchecked_Id;
       Assertion : W_Assertion_Id) with
@@ -1078,8 +2110,24 @@ package Why.Atree.Mutators is
         and then Assertion_Id_Valid (Why_Node_Id (Assertion))
         and then Is_Root (+Assertion));
 
+   procedure Precondition_Set_Assertion
+     (Id        : W_Precondition_Id;
+      Assertion : W_Assertion_Id) with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Why_Node_Id (Assertion))
+        and then Assertion_Id_Valid (Why_Node_Id (Assertion))
+        and then Is_Root (+Assertion));
+
    procedure Postcondition_Set_Assertion
      (Id        : W_Postcondition_Unchecked_Id;
+      Assertion : W_Assertion_Id) with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Why_Node_Id (Assertion))
+        and then Assertion_Id_Valid (Why_Node_Id (Assertion))
+        and then Is_Root (+Assertion));
+
+   procedure Postcondition_Set_Assertion
+     (Id        : W_Postcondition_Id;
       Assertion : W_Assertion_Id) with
      Pre =>
        (Assertion_Id_Kind_Valid (Why_Node_Id (Assertion))
@@ -1102,8 +2150,32 @@ package Why.Atree.Mutators is
         and then Exn_Condition_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Postcondition_Append_To_Handlers
+     (Id       : W_Postcondition_Id;
+      New_Item : W_Exn_Condition_Id) with
+     Pre =>
+       (Exn_Condition_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Exn_Condition_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Postcondition_Prepend_To_Handlers
+     (Id       : W_Postcondition_Id;
+      New_Item : W_Exn_Condition_Id) with
+     Pre =>
+       (Exn_Condition_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Exn_Condition_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Exn_Condition_Set_Exn_Case
      (Id       : W_Exn_Condition_Unchecked_Id;
+      Exn_Case : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Exn_Case))
+        and then Identifier_Id_Valid (Why_Node_Id (Exn_Case))
+        and then Is_Root (+Exn_Case));
+
+   procedure Exn_Condition_Set_Exn_Case
+     (Id       : W_Exn_Condition_Id;
       Exn_Case : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Exn_Case))
@@ -1118,8 +2190,24 @@ package Why.Atree.Mutators is
         and then Assertion_Id_Valid (Why_Node_Id (Assertion))
         and then Is_Root (+Assertion));
 
+   procedure Exn_Condition_Set_Assertion
+     (Id        : W_Exn_Condition_Id;
+      Assertion : W_Assertion_Id) with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Why_Node_Id (Assertion))
+        and then Assertion_Id_Valid (Why_Node_Id (Assertion))
+        and then Is_Root (+Assertion));
+
    procedure Assertion_Set_Pred
      (Id   : W_Assertion_Unchecked_Id;
+      Pred : W_Predicate_Id) with
+     Pre =>
+       (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
+        and then Predicate_Id_Valid (Why_Node_Id (Pred))
+        and then Is_Root (+Pred));
+
+   procedure Assertion_Set_Pred
+     (Id   : W_Assertion_Id;
       Pred : W_Predicate_Id) with
      Pre =>
        (Predicate_Id_Kind_Valid (Why_Node_Id (Pred))
@@ -1134,8 +2222,24 @@ package Why.Atree.Mutators is
         and then Identifier_OId_Valid (Why_Node_Id (As))
         and then Is_Root (+As));
 
+   procedure Assertion_Set_As
+     (Id : W_Assertion_Id;
+      As : W_Identifier_OId) with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Why_Node_Id (As))
+        and then Identifier_OId_Valid (Why_Node_Id (As))
+        and then Is_Root (+As));
+
    procedure Prog_Constant_Set_Def
      (Id  : W_Prog_Constant_Unchecked_Id;
+      Def : W_Constant_Id) with
+     Pre =>
+       (Constant_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Constant_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Prog_Constant_Set_Def
+     (Id  : W_Prog_Constant_Id;
       Def : W_Constant_Id) with
      Pre =>
        (Constant_Id_Kind_Valid (Why_Node_Id (Def))
@@ -1150,8 +2254,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Prog_Identifier_Set_Def
+     (Id  : W_Prog_Identifier_Id;
+      Def : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Identifier_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Any_Expr_Set_Any_Type
      (Id       : W_Any_Expr_Unchecked_Id;
+      Any_Type : W_Computation_Type_Id) with
+     Pre =>
+       (Computation_Type_Id_Kind_Valid (Why_Node_Id (Any_Type))
+        and then Computation_Type_Id_Valid (Why_Node_Id (Any_Type))
+        and then Is_Root (+Any_Type));
+
+   procedure Any_Expr_Set_Any_Type
+     (Id       : W_Any_Expr_Id;
       Any_Type : W_Computation_Type_Id) with
      Pre =>
        (Computation_Type_Id_Kind_Valid (Why_Node_Id (Any_Type))
@@ -1166,8 +2286,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Ref))
         and then Is_Root (+Ref));
 
+   procedure Deref_Set_Ref
+     (Id  : W_Deref_Id;
+      Ref : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Ref))
+        and then Identifier_Id_Valid (Why_Node_Id (Ref))
+        and then Is_Root (+Ref));
+
    procedure Assignment_Set_Name
      (Id   : W_Assignment_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Assignment_Set_Name
+     (Id   : W_Assignment_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1182,8 +2318,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Value))
         and then Is_Root (+Value));
 
+   procedure Assignment_Set_Value
+     (Id    : W_Assignment_Id;
+      Value : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Value))
+        and then Prog_Id_Valid (Why_Node_Id (Value))
+        and then Is_Root (+Value));
+
    procedure Array_Access_Set_Name
      (Id   : W_Array_Access_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Array_Access_Set_Name
+     (Id   : W_Array_Access_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1198,8 +2350,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Index))
         and then Is_Root (+Index));
 
+   procedure Array_Access_Set_Index
+     (Id    : W_Array_Access_Id;
+      Index : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Index))
+        and then Prog_Id_Valid (Why_Node_Id (Index))
+        and then Is_Root (+Index));
+
    procedure Array_Update_Set_Name
      (Id   : W_Array_Update_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Array_Update_Set_Name
+     (Id   : W_Array_Update_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1214,8 +2382,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Index))
         and then Is_Root (+Index));
 
+   procedure Array_Update_Set_Index
+     (Id    : W_Array_Update_Id;
+      Index : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Index))
+        and then Prog_Id_Valid (Why_Node_Id (Index))
+        and then Is_Root (+Index));
+
    procedure Array_Update_Set_Value
      (Id    : W_Array_Update_Unchecked_Id;
+      Value : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Value))
+        and then Prog_Id_Valid (Why_Node_Id (Value))
+        and then Is_Root (+Value));
+
+   procedure Array_Update_Set_Value
+     (Id    : W_Array_Update_Id;
       Value : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Value))
@@ -1230,8 +2414,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Left))
         and then Is_Root (+Left));
 
+   procedure Infix_Call_Set_Left
+     (Id   : W_Infix_Call_Id;
+      Left : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Left))
+        and then Prog_Id_Valid (Why_Node_Id (Left))
+        and then Is_Root (+Left));
+
    procedure Infix_Call_Set_Infix
      (Id    : W_Infix_Call_Unchecked_Id;
+      Infix : W_Infix_Id) with
+     Pre =>
+       (Infix_Id_Kind_Valid (Why_Node_Id (Infix))
+        and then Infix_Id_Valid (Why_Node_Id (Infix))
+        and then Is_Root (+Infix));
+
+   procedure Infix_Call_Set_Infix
+     (Id    : W_Infix_Call_Id;
       Infix : W_Infix_Id) with
      Pre =>
        (Infix_Id_Kind_Valid (Why_Node_Id (Infix))
@@ -1246,8 +2446,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Right))
         and then Is_Root (+Right));
 
+   procedure Infix_Call_Set_Right
+     (Id    : W_Infix_Call_Id;
+      Right : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Right))
+        and then Prog_Id_Valid (Why_Node_Id (Right))
+        and then Is_Root (+Right));
+
    procedure Prefix_Call_Set_Prefix
      (Id     : W_Prefix_Call_Unchecked_Id;
+      Prefix : W_Prefix_Id) with
+     Pre =>
+       (Prefix_Id_Kind_Valid (Why_Node_Id (Prefix))
+        and then Prefix_Id_Valid (Why_Node_Id (Prefix))
+        and then Is_Root (+Prefix));
+
+   procedure Prefix_Call_Set_Prefix
+     (Id     : W_Prefix_Call_Id;
       Prefix : W_Prefix_Id) with
      Pre =>
        (Prefix_Id_Kind_Valid (Why_Node_Id (Prefix))
@@ -1262,8 +2478,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Operand))
         and then Is_Root (+Operand));
 
+   procedure Prefix_Call_Set_Operand
+     (Id      : W_Prefix_Call_Id;
+      Operand : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Operand))
+        and then Prog_Id_Valid (Why_Node_Id (Operand))
+        and then Is_Root (+Operand));
+
    procedure Binding_Prog_Set_Name
      (Id   : W_Binding_Prog_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Binding_Prog_Set_Name
+     (Id   : W_Binding_Prog_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1278,8 +2510,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Binding_Prog_Set_Def
+     (Id  : W_Binding_Prog_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Binding_Prog_Set_Context
      (Id      : W_Binding_Prog_Unchecked_Id;
+      Context : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Prog_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
+   procedure Binding_Prog_Set_Context
+     (Id      : W_Binding_Prog_Id;
       Context : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Context))
@@ -1294,8 +2542,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Binding_Ref_Set_Name
+     (Id   : W_Binding_Ref_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Binding_Ref_Set_Def
      (Id  : W_Binding_Ref_Unchecked_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Binding_Ref_Set_Def
+     (Id  : W_Binding_Ref_Id;
       Def : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Def))
@@ -1310,8 +2574,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Context))
         and then Is_Root (+Context));
 
+   procedure Binding_Ref_Set_Context
+     (Id      : W_Binding_Ref_Id;
+      Context : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Prog_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
    procedure Conditional_Prog_Set_Condition
      (Id        : W_Conditional_Prog_Unchecked_Id;
+      Condition : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Condition))
+        and then Prog_Id_Valid (Why_Node_Id (Condition))
+        and then Is_Root (+Condition));
+
+   procedure Conditional_Prog_Set_Condition
+     (Id        : W_Conditional_Prog_Id;
       Condition : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Condition))
@@ -1326,8 +2606,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Then_Part))
         and then Is_Root (+Then_Part));
 
+   procedure Conditional_Prog_Set_Then_Part
+     (Id        : W_Conditional_Prog_Id;
+      Then_Part : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Then_Part))
+        and then Prog_Id_Valid (Why_Node_Id (Then_Part))
+        and then Is_Root (+Then_Part));
+
    procedure Conditional_Prog_Set_Else_Part
      (Id        : W_Conditional_Prog_Unchecked_Id;
+      Else_Part : W_Prog_OId) with
+     Pre =>
+       (Prog_OId_Kind_Valid (Why_Node_Id (Else_Part))
+        and then Prog_OId_Valid (Why_Node_Id (Else_Part))
+        and then Is_Root (+Else_Part));
+
+   procedure Conditional_Prog_Set_Else_Part
+     (Id        : W_Conditional_Prog_Id;
       Else_Part : W_Prog_OId) with
      Pre =>
        (Prog_OId_Kind_Valid (Why_Node_Id (Else_Part))
@@ -1342,6 +2638,14 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Condition))
         and then Is_Root (+Condition));
 
+   procedure While_Loop_Set_Condition
+     (Id        : W_While_Loop_Id;
+      Condition : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Condition))
+        and then Prog_Id_Valid (Why_Node_Id (Condition))
+        and then Is_Root (+Condition));
+
    procedure While_Loop_Set_Annotation
      (Id         : W_While_Loop_Unchecked_Id;
       Annotation : W_Loop_Annot_Id) with
@@ -1350,8 +2654,24 @@ package Why.Atree.Mutators is
         and then Loop_Annot_Id_Valid (Why_Node_Id (Annotation))
         and then Is_Root (+Annotation));
 
+   procedure While_Loop_Set_Annotation
+     (Id         : W_While_Loop_Id;
+      Annotation : W_Loop_Annot_Id) with
+     Pre =>
+       (Loop_Annot_Id_Kind_Valid (Why_Node_Id (Annotation))
+        and then Loop_Annot_Id_Valid (Why_Node_Id (Annotation))
+        and then Is_Root (+Annotation));
+
    procedure While_Loop_Set_Loop_Content
      (Id           : W_While_Loop_Unchecked_Id;
+      Loop_Content : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Loop_Content))
+        and then Prog_Id_Valid (Why_Node_Id (Loop_Content))
+        and then Is_Root (+Loop_Content));
+
+   procedure While_Loop_Set_Loop_Content
+     (Id           : W_While_Loop_Id;
       Loop_Content : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Loop_Content))
@@ -1374,6 +2694,22 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Statement_Sequence_Append_To_Statements
+     (Id       : W_Statement_Sequence_Id;
+      New_Item : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Prog_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Statement_Sequence_Prepend_To_Statements
+     (Id       : W_Statement_Sequence_Id;
+      New_Item : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Prog_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Label_Set_Name
      (Id   : W_Label_Unchecked_Id;
       Name : W_Identifier_Id) with
@@ -1382,8 +2718,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Label_Set_Name
+     (Id   : W_Label_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Label_Set_Def
      (Id  : W_Label_Unchecked_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Label_Set_Def
+     (Id  : W_Label_Id;
       Def : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Def))
@@ -1406,8 +2758,32 @@ package Why.Atree.Mutators is
         and then Assertion_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Assert_Append_To_Assertions
+     (Id       : W_Assert_Id;
+      New_Item : W_Assertion_Id) with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Assertion_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Assert_Prepend_To_Assertions
+     (Id       : W_Assert_Id;
+      New_Item : W_Assertion_Id) with
+     Pre =>
+       (Assertion_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Assertion_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Assert_Set_Prog
      (Id   : W_Assert_Unchecked_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
+   procedure Assert_Set_Prog
+     (Id   : W_Assert_Id;
       Prog : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
@@ -1422,8 +2798,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Prog))
         and then Is_Root (+Prog));
 
+   procedure Post_Assertion_Set_Prog
+     (Id   : W_Post_Assertion_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
    procedure Post_Assertion_Set_Post
      (Id   : W_Post_Assertion_Unchecked_Id;
+      Post : W_Postcondition_Id) with
+     Pre =>
+       (Postcondition_Id_Kind_Valid (Why_Node_Id (Post))
+        and then Postcondition_Id_Valid (Why_Node_Id (Post))
+        and then Is_Root (+Post));
+
+   procedure Post_Assertion_Set_Post
+     (Id   : W_Post_Assertion_Id;
       Post : W_Postcondition_Id) with
      Pre =>
        (Postcondition_Id_Kind_Valid (Why_Node_Id (Post))
@@ -1438,8 +2830,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Prog))
         and then Is_Root (+Prog));
 
+   procedure Opaque_Assertion_Set_Prog
+     (Id   : W_Opaque_Assertion_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
    procedure Opaque_Assertion_Set_Post
      (Id   : W_Opaque_Assertion_Unchecked_Id;
+      Post : W_Postcondition_Id) with
+     Pre =>
+       (Postcondition_Id_Kind_Valid (Why_Node_Id (Post))
+        and then Postcondition_Id_Valid (Why_Node_Id (Post))
+        and then Is_Root (+Post));
+
+   procedure Opaque_Assertion_Set_Post
+     (Id   : W_Opaque_Assertion_Id;
       Post : W_Postcondition_Id) with
      Pre =>
        (Postcondition_Id_Kind_Valid (Why_Node_Id (Post))
@@ -1462,8 +2870,32 @@ package Why.Atree.Mutators is
         and then Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Fun_Def_Append_To_Binders
+     (Id       : W_Fun_Def_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Fun_Def_Prepend_To_Binders
+     (Id       : W_Fun_Def_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Unchecked_Id;
+      Pre : W_Precondition_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
+        and then Precondition_Id_Valid (Why_Node_Id (Pre))
+        and then Is_Root (+Pre));
+
+   procedure Fun_Def_Set_Pre
+     (Id  : W_Fun_Def_Id;
       Pre : W_Precondition_Id) with
      Pre =>
        (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
@@ -1478,8 +2910,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Fun_Def_Set_Def
+     (Id  : W_Fun_Def_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Binding_Fun_Set_Name
      (Id   : W_Binding_Fun_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Binding_Fun_Set_Name
+     (Id   : W_Binding_Fun_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1502,8 +2950,32 @@ package Why.Atree.Mutators is
         and then Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Binding_Fun_Append_To_Binders
+     (Id       : W_Binding_Fun_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Binding_Fun_Prepend_To_Binders
+     (Id       : W_Binding_Fun_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Unchecked_Id;
+      Pre : W_Precondition_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
+        and then Precondition_Id_Valid (Why_Node_Id (Pre))
+        and then Is_Root (+Pre));
+
+   procedure Binding_Fun_Set_Pre
+     (Id  : W_Binding_Fun_Id;
       Pre : W_Precondition_Id) with
      Pre =>
        (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
@@ -1518,8 +2990,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Binding_Fun_Set_Def
+     (Id  : W_Binding_Fun_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Binding_Fun_Set_Context
      (Id      : W_Binding_Fun_Unchecked_Id;
+      Context : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Prog_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
+   procedure Binding_Fun_Set_Context
+     (Id      : W_Binding_Fun_Id;
       Context : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Context))
@@ -1534,6 +3022,14 @@ package Why.Atree.Mutators is
         and then Recfun_Id_Valid (Why_Node_Id (Recfun))
         and then Is_Root (+Recfun));
 
+   procedure Binding_Rec_Set_Recfun
+     (Id     : W_Binding_Rec_Id;
+      Recfun : W_Recfun_Id) with
+     Pre =>
+       (Recfun_Id_Kind_Valid (Why_Node_Id (Recfun))
+        and then Recfun_Id_Valid (Why_Node_Id (Recfun))
+        and then Is_Root (+Recfun));
+
    procedure Binding_Rec_Set_Context
      (Id      : W_Binding_Rec_Unchecked_Id;
       Context : W_Prog_Id) with
@@ -1542,8 +3038,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Context))
         and then Is_Root (+Context));
 
+   procedure Binding_Rec_Set_Context
+     (Id      : W_Binding_Rec_Id;
+      Context : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Context))
+        and then Prog_Id_Valid (Why_Node_Id (Context))
+        and then Is_Root (+Context));
+
    procedure Prog_Call_Set_Name
      (Id   : W_Prog_Call_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Prog_Call_Set_Name
+     (Id   : W_Prog_Call_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1566,8 +3078,32 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Prog_Call_Append_To_Progs
+     (Id       : W_Prog_Call_Id;
+      New_Item : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Prog_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Prog_Call_Prepend_To_Progs
+     (Id       : W_Prog_Call_Id;
+      New_Item : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Prog_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Raise_Statement_Set_Name
      (Id   : W_Raise_Statement_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Raise_Statement_Set_Name
+     (Id   : W_Raise_Statement_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1582,8 +3118,24 @@ package Why.Atree.Mutators is
         and then Value_Type_OId_Valid (Why_Node_Id (Exn_Type))
         and then Is_Root (+Exn_Type));
 
+   procedure Raise_Statement_Set_Exn_Type
+     (Id       : W_Raise_Statement_Id;
+      Exn_Type : W_Value_Type_OId) with
+     Pre =>
+       (Value_Type_OId_Kind_Valid (Why_Node_Id (Exn_Type))
+        and then Value_Type_OId_Valid (Why_Node_Id (Exn_Type))
+        and then Is_Root (+Exn_Type));
+
    procedure Raise_Statement_With_Parameters_Set_Name
      (Id   : W_Raise_Statement_With_Parameters_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Raise_Statement_With_Parameters_Set_Name
+     (Id   : W_Raise_Statement_With_Parameters_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1598,6 +3150,14 @@ package Why.Atree.Mutators is
         and then Term_Id_Valid (Why_Node_Id (Parameter))
         and then Is_Root (+Parameter));
 
+   procedure Raise_Statement_With_Parameters_Set_Parameter
+     (Id        : W_Raise_Statement_With_Parameters_Id;
+      Parameter : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Parameter))
+        and then Term_Id_Valid (Why_Node_Id (Parameter))
+        and then Is_Root (+Parameter));
+
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Unchecked_Id;
       Exn_Type : W_Value_Type_OId) with
@@ -1606,8 +3166,24 @@ package Why.Atree.Mutators is
         and then Value_Type_OId_Valid (Why_Node_Id (Exn_Type))
         and then Is_Root (+Exn_Type));
 
+   procedure Raise_Statement_With_Parameters_Set_Exn_Type
+     (Id       : W_Raise_Statement_With_Parameters_Id;
+      Exn_Type : W_Value_Type_OId) with
+     Pre =>
+       (Value_Type_OId_Kind_Valid (Why_Node_Id (Exn_Type))
+        and then Value_Type_OId_Valid (Why_Node_Id (Exn_Type))
+        and then Is_Root (+Exn_Type));
+
    procedure Try_Block_Set_Prog
      (Id   : W_Try_Block_Unchecked_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
+   procedure Try_Block_Set_Prog
+     (Id   : W_Try_Block_Id;
       Prog : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
@@ -1630,8 +3206,32 @@ package Why.Atree.Mutators is
         and then Handler_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Try_Block_Append_To_Handler
+     (Id       : W_Try_Block_Id;
+      New_Item : W_Handler_Id) with
+     Pre =>
+       (Handler_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Handler_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Try_Block_Prepend_To_Handler
+     (Id       : W_Try_Block_Id;
+      New_Item : W_Handler_Id) with
+     Pre =>
+       (Handler_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Handler_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Unchecked_Id;
+      Exn_Type : W_Value_Type_OId) with
+     Pre =>
+       (Value_Type_OId_Kind_Valid (Why_Node_Id (Exn_Type))
+        and then Value_Type_OId_Valid (Why_Node_Id (Exn_Type))
+        and then Is_Root (+Exn_Type));
+
+   procedure Unreachable_Code_Set_Exn_Type
+     (Id       : W_Unreachable_Code_Id;
       Exn_Type : W_Value_Type_OId) with
      Pre =>
        (Value_Type_OId_Kind_Valid (Why_Node_Id (Exn_Type))
@@ -1646,8 +3246,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Prog))
         and then Is_Root (+Prog));
 
+   procedure Begin_Block_Set_Prog
+     (Id   : W_Begin_Block_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
    procedure Protected_Prog_Set_Prog
      (Id   : W_Protected_Prog_Unchecked_Id;
+      Prog : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
+        and then Prog_Id_Valid (Why_Node_Id (Prog))
+        and then Is_Root (+Prog));
+
+   procedure Protected_Prog_Set_Prog
+     (Id   : W_Protected_Prog_Id;
       Prog : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Prog))
@@ -1670,6 +3286,22 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Binder_Append_To_Names
+     (Id       : W_Binder_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Binder_Prepend_To_Names
+     (Id       : W_Binder_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Unchecked_Id;
       Arg_Type : W_Value_Type_Id) with
@@ -1678,8 +3310,24 @@ package Why.Atree.Mutators is
         and then Value_Type_Id_Valid (Why_Node_Id (Arg_Type))
         and then Is_Root (+Arg_Type));
 
+   procedure Binder_Set_Arg_Type
+     (Id       : W_Binder_Id;
+      Arg_Type : W_Value_Type_Id) with
+     Pre =>
+       (Value_Type_Id_Kind_Valid (Why_Node_Id (Arg_Type))
+        and then Value_Type_Id_Valid (Why_Node_Id (Arg_Type))
+        and then Is_Root (+Arg_Type));
+
    procedure Recfun_Set_Name
      (Id   : W_Recfun_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Recfun_Set_Name
+     (Id   : W_Recfun_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1702,8 +3350,32 @@ package Why.Atree.Mutators is
         and then Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Recfun_Append_To_Binders
+     (Id       : W_Recfun_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Recfun_Prepend_To_Binders
+     (Id       : W_Recfun_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Recfun_Set_Return_Type
      (Id          : W_Recfun_Unchecked_Id;
+      Return_Type : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Return_Type))
+        and then Prog_Id_Valid (Why_Node_Id (Return_Type))
+        and then Is_Root (+Return_Type));
+
+   procedure Recfun_Set_Return_Type
+     (Id          : W_Recfun_Id;
       Return_Type : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Return_Type))
@@ -1718,8 +3390,24 @@ package Why.Atree.Mutators is
         and then Wf_Arg_Id_Valid (Why_Node_Id (Variant))
         and then Is_Root (+Variant));
 
+   procedure Recfun_Set_Variant
+     (Id      : W_Recfun_Id;
+      Variant : W_Wf_Arg_Id) with
+     Pre =>
+       (Wf_Arg_Id_Kind_Valid (Why_Node_Id (Variant))
+        and then Wf_Arg_Id_Valid (Why_Node_Id (Variant))
+        and then Is_Root (+Variant));
+
    procedure Recfun_Set_Pre
      (Id  : W_Recfun_Unchecked_Id;
+      Pre : W_Precondition_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
+        and then Precondition_Id_Valid (Why_Node_Id (Pre))
+        and then Is_Root (+Pre));
+
+   procedure Recfun_Set_Pre
+     (Id  : W_Recfun_Id;
       Pre : W_Precondition_Id) with
      Pre =>
        (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
@@ -1734,8 +3422,24 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Recfun_Set_Def
+     (Id  : W_Recfun_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Unchecked_Id;
+      Invariant : W_Assertion_OId) with
+     Pre =>
+       (Assertion_OId_Kind_Valid (Why_Node_Id (Invariant))
+        and then Assertion_OId_Valid (Why_Node_Id (Invariant))
+        and then Is_Root (+Invariant));
+
+   procedure Loop_Annot_Set_Invariant
+     (Id        : W_Loop_Annot_Id;
       Invariant : W_Assertion_OId) with
      Pre =>
        (Assertion_OId_Kind_Valid (Why_Node_Id (Invariant))
@@ -1750,8 +3454,24 @@ package Why.Atree.Mutators is
         and then Wf_Arg_OId_Valid (Why_Node_Id (Variant))
         and then Is_Root (+Variant));
 
+   procedure Loop_Annot_Set_Variant
+     (Id      : W_Loop_Annot_Id;
+      Variant : W_Wf_Arg_OId) with
+     Pre =>
+       (Wf_Arg_OId_Kind_Valid (Why_Node_Id (Variant))
+        and then Wf_Arg_OId_Valid (Why_Node_Id (Variant))
+        and then Is_Root (+Variant));
+
    procedure Wf_Arg_Set_Def
      (Id  : W_Wf_Arg_Unchecked_Id;
+      Def : W_Term_Id) with
+     Pre =>
+       (Term_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Term_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Wf_Arg_Set_Def
+     (Id  : W_Wf_Arg_Id;
       Def : W_Term_Id) with
      Pre =>
        (Term_Id_Kind_Valid (Why_Node_Id (Def))
@@ -1766,8 +3486,24 @@ package Why.Atree.Mutators is
         and then Identifier_OId_Valid (Why_Node_Id (For_Id))
         and then Is_Root (+For_Id));
 
+   procedure Wf_Arg_Set_For_Id
+     (Id     : W_Wf_Arg_Id;
+      For_Id : W_Identifier_OId) with
+     Pre =>
+       (Identifier_OId_Kind_Valid (Why_Node_Id (For_Id))
+        and then Identifier_OId_Valid (Why_Node_Id (For_Id))
+        and then Is_Root (+For_Id));
+
    procedure Handler_Set_Name
      (Id   : W_Handler_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Handler_Set_Name
+     (Id   : W_Handler_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1782,8 +3518,24 @@ package Why.Atree.Mutators is
         and then Prog_OId_Valid (Why_Node_Id (Parameter))
         and then Is_Root (+Parameter));
 
+   procedure Handler_Set_Parameter
+     (Id        : W_Handler_Id;
+      Parameter : W_Prog_OId) with
+     Pre =>
+       (Prog_OId_Kind_Valid (Why_Node_Id (Parameter))
+        and then Prog_OId_Valid (Why_Node_Id (Parameter))
+        and then Is_Root (+Parameter));
+
    procedure Handler_Set_Def
      (Id  : W_Handler_Unchecked_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
+   procedure Handler_Set_Def
+     (Id  : W_Handler_Id;
       Def : W_Prog_Id) with
      Pre =>
        (Prog_Id_Kind_Valid (Why_Node_Id (Def))
@@ -1806,8 +3558,32 @@ package Why.Atree.Mutators is
         and then Declaration_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure File_Append_To_Declarations
+     (Id       : W_File_Id;
+      New_Item : W_Declaration_Id) with
+     Pre =>
+       (Declaration_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Declaration_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure File_Prepend_To_Declarations
+     (Id       : W_File_Id;
+      New_Item : W_Declaration_Id) with
+     Pre =>
+       (Declaration_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Declaration_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Global_Binding_Set_Name
      (Id   : W_Global_Binding_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Global_Binding_Set_Name
+     (Id   : W_Global_Binding_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
@@ -1830,8 +3606,32 @@ package Why.Atree.Mutators is
         and then Binder_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Global_Binding_Append_To_Binders
+     (Id       : W_Global_Binding_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Global_Binding_Prepend_To_Binders
+     (Id       : W_Global_Binding_Id;
+      New_Item : W_Binder_Id) with
+     Pre =>
+       (Binder_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Binder_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Unchecked_Id;
+      Pre : W_Precondition_Id) with
+     Pre =>
+       (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
+        and then Precondition_Id_Valid (Why_Node_Id (Pre))
+        and then Is_Root (+Pre));
+
+   procedure Global_Binding_Set_Pre
+     (Id  : W_Global_Binding_Id;
       Pre : W_Precondition_Id) with
      Pre =>
        (Precondition_Id_Kind_Valid (Why_Node_Id (Pre))
@@ -1846,6 +3646,14 @@ package Why.Atree.Mutators is
         and then Prog_Id_Valid (Why_Node_Id (Def))
         and then Is_Root (+Def));
 
+   procedure Global_Binding_Set_Def
+     (Id  : W_Global_Binding_Id;
+      Def : W_Prog_Id) with
+     Pre =>
+       (Prog_Id_Kind_Valid (Why_Node_Id (Def))
+        and then Prog_Id_Valid (Why_Node_Id (Def))
+        and then Is_Root (+Def));
+
    procedure Global_Rec_Binding_Set_Name
      (Id   : W_Global_Rec_Binding_Unchecked_Id;
       Name : W_Recfun_Id) with
@@ -1854,8 +3662,24 @@ package Why.Atree.Mutators is
         and then Recfun_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Global_Rec_Binding_Set_Name
+     (Id   : W_Global_Rec_Binding_Id;
+      Name : W_Recfun_Id) with
+     Pre =>
+       (Recfun_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Recfun_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Parameter_Declaration_Set_External
      (Id       : W_Parameter_Declaration_Unchecked_Id;
+      External : W_External_OId) with
+     Pre =>
+       (External_OId_Kind_Valid (Why_Node_Id (External))
+        and then External_OId_Valid (Why_Node_Id (External))
+        and then Is_Root (+External));
+
+   procedure Parameter_Declaration_Set_External
+     (Id       : W_Parameter_Declaration_Id;
       External : W_External_OId) with
      Pre =>
        (External_OId_Kind_Valid (Why_Node_Id (External))
@@ -1878,8 +3702,32 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (New_Item))
         and then Is_Root (+New_Item));
 
+   procedure Parameter_Declaration_Append_To_Names
+     (Id       : W_Parameter_Declaration_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
+   procedure Parameter_Declaration_Prepend_To_Names
+     (Id       : W_Parameter_Declaration_Id;
+      New_Item : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (New_Item))
+        and then Identifier_Id_Valid (Why_Node_Id (New_Item))
+        and then Is_Root (+New_Item));
+
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Unchecked_Id;
+      Parameter_Type : W_Value_Type_Id) with
+     Pre =>
+       (Value_Type_Id_Kind_Valid (Why_Node_Id (Parameter_Type))
+        and then Value_Type_Id_Valid (Why_Node_Id (Parameter_Type))
+        and then Is_Root (+Parameter_Type));
+
+   procedure Parameter_Declaration_Set_Parameter_Type
+     (Id             : W_Parameter_Declaration_Id;
       Parameter_Type : W_Value_Type_Id) with
      Pre =>
        (Value_Type_Id_Kind_Valid (Why_Node_Id (Parameter_Type))
@@ -1894,8 +3742,24 @@ package Why.Atree.Mutators is
         and then Identifier_Id_Valid (Why_Node_Id (Name))
         and then Is_Root (+Name));
 
+   procedure Exception_Declaration_Set_Name
+     (Id   : W_Exception_Declaration_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
    procedure Exception_Declaration_Set_Parameter
      (Id        : W_Exception_Declaration_Unchecked_Id;
+      Parameter : W_Primitive_Type_OId) with
+     Pre =>
+       (Primitive_Type_OId_Kind_Valid (Why_Node_Id (Parameter))
+        and then Primitive_Type_OId_Valid (Why_Node_Id (Parameter))
+        and then Is_Root (+Parameter));
+
+   procedure Exception_Declaration_Set_Parameter
+     (Id        : W_Exception_Declaration_Id;
       Parameter : W_Primitive_Type_OId) with
      Pre =>
        (Primitive_Type_OId_Kind_Valid (Why_Node_Id (Parameter))
@@ -1910,8 +3774,24 @@ package Why.Atree.Mutators is
         and then Logic_Declaration_Class_Id_Valid (Why_Node_Id (Decl))
         and then Is_Root (+Decl));
 
+   procedure Logic_Declaration_Set_Decl
+     (Id   : W_Logic_Declaration_Id;
+      Decl : W_Logic_Declaration_Class_Id) with
+     Pre =>
+       (Logic_Declaration_Class_Id_Kind_Valid (Why_Node_Id (Decl))
+        and then Logic_Declaration_Class_Id_Valid (Why_Node_Id (Decl))
+        and then Is_Root (+Decl));
+
    procedure Include_Declaration_Set_Name
      (Id   : W_Include_Declaration_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre =>
+       (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
+        and then Identifier_Id_Valid (Why_Node_Id (Name))
+        and then Is_Root (+Name));
+
+   procedure Include_Declaration_Set_Name
+     (Id   : W_Include_Declaration_Id;
       Name : W_Identifier_Id) with
      Pre =>
        (Identifier_Id_Kind_Valid (Why_Node_Id (Name))
