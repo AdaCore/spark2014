@@ -4,7 +4,7 @@ package body Over is
       Res : T;
    begin
       if X > 50 and then Y > 50 then
-         Res := X + Y - 100;
+         Res := (X + Y) - 100;
       else
          Res := X;
       end if;
