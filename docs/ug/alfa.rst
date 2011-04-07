@@ -194,7 +194,14 @@ Parenthesized Arithmetic Operations
 In Ada, non-parenthesized arithmetic operations can be re-ordered by the
 compiler, which may result in a failing computation (due to overflow checking)
 becoming a successful one, and vice-versa. In ALFA, all such operations should
-be parenthesized, like in SPARK.
+be parenthesized. (SPARK issues a warning on such cases.)
+
+More specifically:
+
+* any operand of a binary adding operation (+,-) that is itself a binary adding
+  operation must be parenthesized;
+* any operand of a binary multiplying operation (*,/,mod,rem) that is itself a
+  binary multiplying operation must be parenthesized.
 
 Known Sizes for Scalar Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

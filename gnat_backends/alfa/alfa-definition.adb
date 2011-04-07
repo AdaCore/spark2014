@@ -828,6 +828,44 @@ package body ALFA.Definition is
                  ("binary operator on array type", N);
             end if;
 
+         --  Do not allow arithmetic operations which could be reordered by the
+         --  compiler, like "A + B - C", as a given ordering may overflow and
+         --  another may not.
+
+         when N_Op_Add | N_Op_Subtract =>
+            if Nkind_In (Left_Opnd (N), N_Op_Add, N_Op_Subtract)
+              and then Paren_Count (Left_Opnd (N)) = 0
+            then
+               Mark_Non_ALFA
+                 ("possible re-ordering due to missing parentheses",
+                  Left_Opnd (N));
+            end if;
+
+            if Nkind_In (Right_Opnd (N), N_Op_Add, N_Op_Subtract)
+              and then Paren_Count (Right_Opnd (N)) = 0
+            then
+               Mark_Non_ALFA
+                 ("possible re-ordering due to missing parentheses",
+                  Right_Opnd (N));
+            end if;
+
+         when N_Op_Multiply | N_Op_Divide | N_Op_Rem | N_Op_Mod =>
+            if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
+              and then Paren_Count (Left_Opnd (N)) = 0
+            then
+               Mark_Non_ALFA
+                 ("possible re-ordering due to missing parentheses",
+                  Left_Opnd (N));
+            end if;
+
+            if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
+              and then Paren_Count (Right_Opnd (N)) = 0
+            then
+               Mark_Non_ALFA
+                 ("possible re-ordering due to missing parentheses",
+                  Right_Opnd (N));
+            end if;
+
          when others =>
             null;
       end case;
@@ -1489,8 +1527,8 @@ package body ALFA.Definition is
                end;
             end if;
 
-         --  Pragma Pre/Postconditions are not removed from the tree, but can
-         --  be ignored
+         --  Pragma Pre/Postconditions are ignored
+
          when Pragma_Precondition | Pragma_Postcondition =>
             null;
 
@@ -1499,7 +1537,14 @@ package body ALFA.Definition is
          --              [,[Message =>] String_Expression]);
 
          when Pragma_Check =>
-            Mark (Get_Pragma_Arg (Arg2));
+
+            --  Pragma Check generated for Pre/Postconditions are ignored
+
+            if Chars (Get_Pragma_Arg (Arg1)) /= Name_Precondition
+              and then Chars (Get_Pragma_Arg (Arg1)) /= Name_Postcondition
+            then
+               Mark (Get_Pragma_Arg (Arg2));
+            end if;
 
          when others =>
             Mark_Non_ALFA ("pragma is not in ALFA", N);

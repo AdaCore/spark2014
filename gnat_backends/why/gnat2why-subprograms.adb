@@ -1694,10 +1694,25 @@ package body Gnat2Why.Subprograms is
                   return New_Void (Stmt);
 
                when Pragma_Check =>
-                  return
-                     New_Located_Assert
-                        (Ada_Node => Stmt,
-                         Pred     => Predicate_Of_Pragma_Check (Stmt));
+                  declare
+                     Arg1 : constant Node_Id :=
+                              First (Pragma_Argument_Associations (Stmt));
+                  begin
+                     --  Pragma Check generated for Pre/Postconditions are
+                     --  ignored.
+
+                     if Chars (Get_Pragma_Arg (Arg1)) = Name_Precondition
+                       or else
+                         Chars (Get_Pragma_Arg (Arg1)) = Name_Postcondition
+                     then
+                        return New_Void (Stmt);
+                     else
+                        return
+                          New_Located_Assert
+                            (Ada_Node => Stmt,
+                             Pred     => Predicate_Of_Pragma_Check (Stmt));
+                     end if;
+                  end;
 
                when others =>
                   raise Not_Implemented;
