@@ -36,13 +36,15 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Parameterized_Expressions
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind);
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind);
    --  Print the parameterized expressions defining node accessors
 
    procedure Print_Accessor_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
-      FI   : Field_Info);
+      FI   : Field_Info;
+      IK   : Id_Kind);
    --  Print the accessor spec for the given node child
 
    procedure Print_Accessor_Specification
@@ -54,33 +56,49 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Expression
      (O    : in out Output_Record;
-      FI   : Field_Info);
+      FI   : Field_Info;
+      IK   : Id_Kind);
    --  Print the accessor expression for the given node child
 
    procedure Print_Accessor_Kind_Declarations
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind);
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind);
    --  Print accessor declarations for the given node kind
 
    ---------------------------
    -- Print_Accessor_Bodies --
    ---------------------------
 
-   procedure Print_Accessor_Bodies  (O : in out Output_Record)
+   procedure Print_Accessor_Bodies
+     (O : in out Output_Record)
    is
       use Node_Lists;
 
-      procedure Print_Common_Field_Accessor (Position : Cursor);
-      --  Print accessor body for the common field whose
-      --  descriptor in at Position.
+      procedure Print_Accessor_Bodies (IK : Id_Kind);
+      --  Print accessor bodies for the given id kind
 
-      ---------------------------------
-      -- Print_Common_Field_Accessor --
-      ---------------------------------
+      ---------------------------
+      -- Print_Accessor_Bodies --
+      ---------------------------
 
-      procedure Print_Common_Field_Accessor (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
+      procedure Print_Accessor_Bodies (IK : Id_Kind) is
       begin
+         for J in Valid_Kind'Range loop
+            if Has_Variant_Part (J) then
+               Print_Accessor_Parameterized_Expressions (O, J, IK);
+
+               if J /= Why_Tree_Info'Last then
+                  NL (O);
+               end if;
+            end if;
+         end loop;
+      end Print_Accessor_Bodies;
+
+   --  Start of Processing for Print_Accessor_Bodies
+
+   begin
+      for FI of Common_Fields.Fields loop
          Print_Accessor_Specification
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
@@ -88,30 +106,15 @@ package body Xtree_Accessors is
             Return_Type => Type_Name (FI, Derived));
          PL (O, " is");
          Relative_Indent (O, 2);
-         Print_Accessor_Expression (O, FI);
+         Print_Accessor_Expression (O, FI, Derived);
          PL (O, ";");
          Relative_Indent (O, -2);
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
-      end Print_Common_Field_Accessor;
-
-   --  Start of Processing for Print_Accessor_Bodies
-
-   begin
-      Common_Fields.Fields.Iterate (Print_Common_Field_Accessor'Access);
-      NL (O);
-
-      for J in Valid_Kind'Range loop
-         if Has_Variant_Part (J) then
-            Print_Accessor_Parameterized_Expressions (O, J);
-
-            if J /= Why_Tree_Info'Last then
-               NL (O);
-            end if;
-         end if;
+         NL (O);
       end loop;
+
+      Print_Accessor_Bodies (Unchecked);
+      NL (O);
+      Print_Accessor_Bodies (Derived);
    end Print_Accessor_Bodies;
 
    ---------------------------------
@@ -122,44 +125,42 @@ package body Xtree_Accessors is
    is
       use Node_Lists;
 
-      procedure Print_Common_Field_Accessor (Position : Cursor);
-      --  Print accessor declaration for the common field whose
-      --  descriptor in at Position.
+      procedure Print_Accessor_Declarations (IK : Id_Kind);
+      --  Print accessor declarations for the given id kind
 
       ---------------------------------
-      -- Print_Common_Field_Accessor --
+      -- Print_Accessor_Declarations --
       ---------------------------------
 
-      procedure Print_Common_Field_Accessor (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
+      procedure Print_Accessor_Declarations (IK : Id_Kind) is
       begin
+         for J in Valid_Kind'Range loop
+            if Has_Variant_Part (J) then
+               Print_Accessor_Kind_Declarations (O, J, IK);
+
+               if J /= Why_Tree_Info'Last then
+                  NL (O);
+               end if;
+            end if;
+         end loop;
+      end Print_Accessor_Declarations;
+
+   --  Start of Processing for Print_Accessor_Declarations
+
+   begin
+      for FI of Common_Fields.Fields loop
          Print_Accessor_Specification
            (O           => O,
             Name        => Accessor_Name (W_Unused_At_Start, FI),
             Param_Type  => "Why_Node_Id",
             Return_Type => Type_Name (FI, Derived));
          PL (O, ";");
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
-      end Print_Common_Field_Accessor;
-
-   --  Start of Processing for Print_Accessor_Declarations
-
-   begin
-      Common_Fields.Fields.Iterate (Print_Common_Field_Accessor'Access);
-      NL (O);
-
-      for J in Valid_Kind'Range loop
-         if Has_Variant_Part (J) then
-            Print_Accessor_Kind_Declarations (O, J);
-
-            if J /= Why_Tree_Info'Last then
-               NL (O);
-            end if;
-         end if;
+         NL (O);
       end loop;
+
+      Print_Accessor_Declarations (Unchecked);
+      NL (O);
+      Print_Accessor_Declarations (Derived);
    end Print_Accessor_Declarations;
 
    --------------------------------
@@ -168,11 +169,12 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Expression
      (O    : in out Output_Record;
-      FI   : Field_Info) is
+      FI   : Field_Info;
+      IK   : Id_Kind) is
    begin
       if Is_Why_Id (FI) then
          P (O,
-            "(" & Type_Name (FI, Derived)
+            "(" & Type_Name (FI, IK)
             & " (Get_Node (+" & Node_Id_Param & ")."
             & Field_Name (FI) & "))");
       else
@@ -187,7 +189,8 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Parameterized_Expressions
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind)
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind)
    is
       use Node_Lists;
 
@@ -203,10 +206,10 @@ package body Xtree_Accessors is
       procedure Print_Accessor_Parameterized_Expression (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
       begin
-         Print_Accessor_Specification (O, Kind, FI);
+         Print_Accessor_Specification (O, Kind, FI, IK);
          PL (O, " is");
          Relative_Indent (O, 2);
-         Print_Accessor_Expression (O, FI);
+         Print_Accessor_Expression (O, FI, IK);
          PL (O, ";");
          Relative_Indent (O, -2);
 
@@ -230,7 +233,8 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Kind_Declarations
      (O    : in out Output_Record;
-      Kind : Why_Node_Kind)
+      Kind : Why_Node_Kind;
+      IK   : Id_Kind)
    is
       use Node_Lists;
 
@@ -245,7 +249,7 @@ package body Xtree_Accessors is
       procedure Print_Accessor_Kind_Declaration (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
       begin
-         Print_Accessor_Specification (O, Kind, FI);
+         Print_Accessor_Specification (O, Kind, FI, IK);
          PL (O, ";");
 
          if Next (Position) /= No_Element then
@@ -269,13 +273,14 @@ package body Xtree_Accessors is
    procedure Print_Accessor_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
-      FI   : Field_Info) is
+      FI   : Field_Info;
+      IK   : Id_Kind) is
    begin
       Print_Accessor_Specification
         (O           => O,
          Name        => Accessor_Name (Kind, FI),
-         Param_Type  => Id_Subtype (Kind, Derived),
-         Return_Type => Type_Name (FI, Derived));
+         Param_Type  => Id_Subtype (Kind, IK),
+         Return_Type => Type_Name (FI, IK));
    end Print_Accessor_Specification;
 
    procedure Print_Accessor_Specification

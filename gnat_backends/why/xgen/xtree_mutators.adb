@@ -62,7 +62,8 @@ package body Xtree_Mutators is
    procedure Print_Setter_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
-      FI   : Field_Info);
+      FI   : Field_Info;
+      IK   : Id_Kind);
    pragma Precondition (not Is_List (FI));
    --  Print setter specification for the given node child
 
@@ -93,6 +94,7 @@ package body Xtree_Mutators is
      (O       : in out Output_Record;
       Kind    : Why_Node_Kind;
       FI      : Field_Info;
+      IK      : Id_Kind;
       List_Op : List_Op_Kind);
    pragma Precondition (Is_List (FI));
    --  Print specification of the given operation on node lists,
@@ -130,7 +132,7 @@ package body Xtree_Mutators is
    begin
       Relative_Indent (O, 3);
       PL (O, "Node : constant Why_Node :=");
-      PL (O, "         Get_Node (" & Node_Id_Param & ");");
+      PL (O, "         Get_Node (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
@@ -149,12 +151,13 @@ package body Xtree_Mutators is
      (O       : in out Output_Record;
       Kind    : Why_Node_Kind;
       FI      : Field_Info;
+      IK      : Id_Kind;
       List_Op : List_Op_Kind) is
    begin
       Print_Mutator_Specification
         (O           => O,
          Name        => List_Op_Name (Kind, FI, List_Op),
-         Param_Type  => Id_Subtype (Kind, Unchecked),
+         Param_Type  => Id_Subtype (Kind, IK),
          Field_Param => Element_Param,
          Field_Type  => Element_Type_Name (FI, Derived));
    end Print_List_Op_Specification;
@@ -273,16 +276,19 @@ package body Xtree_Mutators is
    is
       use Node_Lists;
 
-      procedure Print_Mutator_Body (Position : Cursor);
-      --  Print mutator body for node child whose descriptor
-      --  is at Position (and whose father has kind Kind).
+      procedure Print_Mutator_Body
+        (FI : Field_Info;
+         IK : Id_Kind);
+      --  Print mutator body for node child for the given descriptor
+      --  (and the given id kind for the father node).
 
       ------------------------
       -- Print_Mutator_Body --
       ------------------------
 
-      procedure Print_Mutator_Body (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
+      procedure Print_Mutator_Body
+        (FI : Field_Info;
+         IK : Id_Kind) is
       begin
          if not Is_List (FI) then
             declare
@@ -291,7 +297,7 @@ package body Xtree_Mutators is
                Print_Box (O, MN);
                NL (O);
 
-               Print_Setter_Specification (O, Kind, FI);
+               Print_Setter_Specification (O, Kind, FI, IK);
                NL (O);
                PL (O, "is");
                Print_Setter_Implementation (O, Kind, FI);
@@ -306,7 +312,7 @@ package body Xtree_Mutators is
                   Print_Box (O, LON);
                   NL (O);
 
-                  Print_List_Op_Specification (O, Kind, FI, List_Op);
+                  Print_List_Op_Specification (O, Kind, FI, IK, List_Op);
                   NL (O);
                   PL (O, "is");
                   Print_List_Op_Implementation (O, Kind, FI, List_Op);
@@ -318,18 +324,25 @@ package body Xtree_Mutators is
                end;
             end loop;
          end if;
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
       end Print_Mutator_Body;
+
+      First_Iteration : Boolean := True;
 
    --  Start of Processing for Print_Mutator_Kind_Bodies
 
    begin
       if Has_Variant_Part (Kind) then
-         Why_Tree_Info (Kind).Fields.Iterate
-           (Print_Mutator_Body'Access);
+         for FI of Why_Tree_Info (Kind).Fields loop
+            if First_Iteration then
+               First_Iteration := False;
+            else
+               NL (O);
+            end if;
+
+            Print_Mutator_Body (FI, Unchecked);
+            NL (O);
+            Print_Mutator_Body (FI, Derived);
+         end loop;
       end if;
    end Print_Mutator_Kind_Bodies;
 
@@ -343,7 +356,9 @@ package body Xtree_Mutators is
    is
       use Node_Lists;
 
-      procedure Print_Mutator_Kind_Declaration (Position : Cursor);
+      procedure Print_Mutator_Kind_Declaration
+        (FI : Field_Info;
+         IK : Id_Kind);
       --  Print mutator declaration for node child whose descriptor
       --  is at Position (and whose father has kind Kind).
 
@@ -351,11 +366,12 @@ package body Xtree_Mutators is
       -- Print_Mutator_Kind_Declaration --
       -------------------------------------
 
-      procedure Print_Mutator_Kind_Declaration (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
+      procedure Print_Mutator_Kind_Declaration
+        (FI : Field_Info;
+         IK : Id_Kind) is
       begin
          if not Is_List (FI) then
-            Print_Setter_Specification (O, Kind, FI);
+            Print_Setter_Specification (O, Kind, FI, IK);
 
             if Is_Why_Id (FI) then
                PL (O, " with");
@@ -367,7 +383,7 @@ package body Xtree_Mutators is
             PL (O, ";");
          else
             for List_Op in List_Op_Kind'Range loop
-               Print_List_Op_Specification (O, Kind, FI, List_Op);
+               Print_List_Op_Specification (O, Kind, FI, IK, List_Op);
                PL (O, " with");
                Relative_Indent (O, 2);
                Print_Mutator_Precondition (O, FI);
@@ -379,18 +395,25 @@ package body Xtree_Mutators is
                end if;
             end loop;
          end if;
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
       end Print_Mutator_Kind_Declaration;
+
+      First_Iteration : Boolean := True;
 
    --  Start of Processing for Print_Mutator_Kind_Declarations
 
    begin
       if Has_Variant_Part (Kind) then
-         Why_Tree_Info (Kind).Fields.Iterate
-           (Print_Mutator_Kind_Declaration'Access);
+         for FI of Why_Tree_Info (Kind).Fields loop
+            if First_Iteration then
+               First_Iteration := False;
+            else
+               NL (O);
+            end if;
+
+            Print_Mutator_Kind_Declaration (FI, Unchecked);
+            NL (O);
+            Print_Mutator_Kind_Declaration (FI, Derived);
+         end loop;
       end if;
    end Print_Mutator_Kind_Declarations;
 
@@ -457,7 +480,7 @@ package body Xtree_Mutators is
       FI   : Field_Info) is
    begin
       Relative_Indent (O, 3);
-      PL (O, "Node : Why_Node := Get_Node (" & Node_Id_Param & ");");
+      PL (O, "Node : Why_Node := Get_Node (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
@@ -468,11 +491,11 @@ package body Xtree_Mutators is
       end if;
 
       PL (O, Param_Name (FI) & ";");
-      PL (O, "Set_Node (" & Node_Id_Param &", Node);");
+      PL (O, "Set_Node (+" & Node_Id_Param &", Node);");
 
       if Is_Why_Id (FI) then
          PL (O,
-             "Set_Link (Why_Node_Id (" & Param_Name (FI) & "), "
+             "Set_Link (Why_Node_Id (" & Param_Name (FI) & "), +"
              & Node_Id_Param & ");");
          Print_Update_Validity_Status (O, Kind);
       end if;
@@ -487,12 +510,13 @@ package body Xtree_Mutators is
    procedure Print_Setter_Specification
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
-      FI   : Field_Info) is
+      FI   : Field_Info;
+      IK   : Id_Kind) is
    begin
       Print_Mutator_Specification
         (O           => O,
          Name        => Mutator_Name (Kind, FI),
-         Param_Type  => Id_Subtype (Kind, Unchecked),
+         Param_Type  => Id_Subtype (Kind, IK),
          Field_Param => Param_Name (FI),
          Field_Type  => Type_Name (FI, Derived));
    end Print_Setter_Specification;
@@ -506,7 +530,7 @@ package body Xtree_Mutators is
       Kind    : Why_Node_Kind) is
    begin
       PL (O, "Update_Validity_Status");
-      PL (O, "  (" & Node_Id_Param & ",");
+      PL (O, "  (+" & Node_Id_Param & ",");
       PL (O, "   " & Tree_Check (Mixed_Case_Name (Kind), Id_One)
           & " (Why_Node_Id (" & Node_Id_Param & ")));");
    end Print_Update_Validity_Status;
