@@ -39,7 +39,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (+File,
+        (File,
          New_Logic_Declaration
            (Decl => New_Type (Name => New_Identifier (Name))));
    end New_Abstract_Type;
@@ -48,7 +48,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (+File,
+        (File,
          New_Logic_Declaration
            (Decl => New_Type (Name => Name)));
    end New_Abstract_Type;
@@ -64,7 +64,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-         (+File,
+         (File,
           New_Logic_Declaration
             (Decl =>
                New_Type
@@ -84,7 +84,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (+File,
+        (File,
          New_Logic_Declaration
             (Decl => New_Axiom (Name => Name, Def => Axiom_Body)));
    end New_Axiom;
@@ -100,7 +100,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-         (+File,
+         (File,
           New_Exception_Declaration (Name => Name, Parameter => Parameter));
    end New_Exception;
 
@@ -120,7 +120,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-         (+File,
+         (File,
           New_Global_Binding
           (Name => Name,
            Pre => New_Precondition (Assertion => Pre),
@@ -142,7 +142,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => +File,
+        (Id => File,
          New_Item =>
            New_Include_Declaration
              (Ada_Node => Ada_Node,
@@ -161,7 +161,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => +File,
+        (Id => File,
          New_Item =>
            New_Logic_Declaration (Decl =>
               New_Logic
@@ -221,7 +221,7 @@ package body Why.Gen.Decl is
          end loop;
       end if;
       File_Append_To_Declarations
-        (Id       => +File,
+        (Id       => File,
          New_Item =>
            New_Parameter_Declaration
             (Names => (1 => Name),
@@ -235,7 +235,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => +File,
+        (Id => File,
          New_Item =>
             New_Parameter_Declaration
               (Names => (1 => Name),
@@ -254,7 +254,7 @@ package body Why.Gen.Decl is
    is
    begin
       File_Append_To_Declarations
-        (Id => +File,
+        (Id => File,
          New_Item =>
            New_Logic_Declaration
              (Decl =>

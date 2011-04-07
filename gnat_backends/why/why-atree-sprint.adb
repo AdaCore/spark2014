@@ -112,7 +112,7 @@ package body Why.Atree.Sprint is
    is
       pragma Unreferenced (State);
    begin
-      P (O, Get_Name_String (Identifier_Get_Symbol (+Node)));
+      P (O, Get_Name_String (Identifier_Get_Symbol (Node)));
    end Identifier_Pre_Op;
 
    ----------------------
@@ -209,12 +209,12 @@ package body Why.Atree.Sprint is
    is
    begin
       Print_List (State,
-                  +Generic_Actual_Type_Chain_Get_Type_Chain (+Node), " ");
+                  Generic_Actual_Type_Chain_Get_Type_Chain (Node), " ");
       P (O, " ");
 
       Traverse
         (State,
-         +Generic_Actual_Type_Chain_Get_Name (+Node));
+         Generic_Actual_Type_Chain_Get_Name (Node));
 
       State.Control := Abandon_Children;
    end Generic_Actual_Type_Chain_Pre_Op;
@@ -293,7 +293,7 @@ package body Why.Atree.Sprint is
 
       Traverse
         (State,
-         +Arrow_Type_Get_Left (+Node));
+         Arrow_Type_Get_Left (Node));
       P (O, " ->");
 
       if Get_Kind (+Right) = W_Computation_Spec then
@@ -317,7 +317,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "{ ");
-      Traverse (State, +Precondition_Get_Assertion (+Node));
+      Traverse (State, Precondition_Get_Assertion (Node));
       PL (O, " }");
       State.Control := Abandon_Children;
    end Precondition_Pre_Op;
@@ -347,24 +347,24 @@ package body Why.Atree.Sprint is
          P (O, "returns ");
          Traverse
            (State,
-            +Computation_Spec_Get_Result_Name (+Node));
+            Computation_Spec_Get_Result_Name (Node));
          P (O, " : ");
       end if;
 
       Traverse
         (State,
-         +Computation_Spec_Get_Return_Type (+Node));
+         Computation_Spec_Get_Return_Type (Node));
       NL (O);
 
       Traverse
         (State,
-         +Computation_Spec_Get_Effects (+Node));
+         Computation_Spec_Get_Effects (Node));
 
       Relative_Indent (O, -1);
       P (O, "{ ");
       Traverse
         (State,
-         +Computation_Spec_Get_Postcondition (+Node));
+         Computation_Spec_Get_Postcondition (Node));
       P (O, " }");
 
       State.Control := Abandon_Children;
@@ -379,7 +379,7 @@ package body Why.Atree.Sprint is
       Node  : W_Integer_Constant_Valid_Id)
    is
       pragma Unreferenced (State);
-      Value : constant Uint := Integer_Constant_Get_Value (+Node);
+      Value : constant Uint := Integer_Constant_Get_Value (Node);
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
@@ -445,7 +445,7 @@ package body Why.Atree.Sprint is
       Node  : W_Real_Constant_Valid_Id)
    is
       pragma Unreferenced (State);
-      UR   : constant Ureal := Real_Constant_Get_Value (+Node);
+      UR   : constant Ureal := Real_Constant_Get_Value (Node);
       Num  : constant Uint := Numerator (UR);
       Den  : constant Uint := Denominator (UR);
       Base : constant Nat := Rbase (UR);
@@ -556,15 +556,15 @@ package body Why.Atree.Sprint is
       P (O, "( ");
       Traverse
         (State,
-         +Arith_Operation_Get_Left (+Node));
+         Arith_Operation_Get_Left (Node));
       P (O, " ");
       Traverse
         (State,
-         +Arith_Operation_Get_Op (+Node));
+         Arith_Operation_Get_Op (Node));
       P (O, " ");
       Traverse
         (State,
-         +Arith_Operation_Get_Right (+Node));
+         Arith_Operation_Get_Right (Node));
       P (O, " )");
 
       State.Control := Abandon_Children;
@@ -596,7 +596,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Term_Identifier_Get_Name (+Node));
+         Term_Identifier_Get_Name (Node));
 
       if Label /= Why_Empty then
          P (O, "@");
@@ -617,11 +617,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Operation_Get_Name (+Node));
+         Operation_Get_Name (Node));
       P (O, " (");
       Print_List
         (State,
-         +Operation_Get_Parameters (+Node));
+         Operation_Get_Parameters (Node));
       P (O, ")");
       State.Control := Abandon_Children;
    end Operation_Pre_Op;
@@ -637,11 +637,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Named_Term_Get_Name (+Node));
+         Named_Term_Get_Name (Node));
       P (O, " [");
       Traverse
         (State,
-         +Named_Term_Get_Term (+Node));
+         Named_Term_Get_Term (Node));
       P (O, "]");
       State.Control := Abandon_Children;
    end Named_Term_Pre_Op;
@@ -656,11 +656,11 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "match ");
-      Traverse (State, +Matching_Term_Get_Term (+Node));
+      Traverse (State, Matching_Term_Get_Term (Node));
       P (O, " with ");
       NL (O);
       Relative_Indent (O, 1);
-      Traverse_List (State, +Matching_Term_Get_Branches (+Node));
+      Traverse_List (State, Matching_Term_Get_Branches (Node));
       Relative_Indent (O, -1);
       P (O, "end");
       NL (O);
@@ -677,11 +677,11 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "| ");
-      Traverse (State, +Match_Case_Get_Pattern (+Node));
+      Traverse (State, Match_Case_Get_Pattern (Node));
       P (O, " -> ");
       NL (O);
       Relative_Indent (O, 1);
-      Traverse (State, +Match_Case_Get_Term (+Node));
+      Traverse (State, Match_Case_Get_Term (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -693,7 +693,7 @@ package body Why.Atree.Sprint is
    is
       Args : constant W_Identifier_OList := Pattern_Get_Args (+Node);
    begin
-      Traverse (State, +Pattern_Get_Constr (+Node));
+      Traverse (State, Pattern_Get_Constr (Node));
       if not (Is_Empty (+Args)) then
          P (O, "(");
          Print_List (State, +Args);
@@ -915,11 +915,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Predicate_Instance_Get_Name (+Node));
+         Predicate_Instance_Get_Name (Node));
       P (O, " (");
       Print_List
         (State,
-         +Predicate_Instance_Get_Parameters (+Node));
+         Predicate_Instance_Get_Parameters (Node));
       P (O, ")");
       State.Control := Abandon_Children;
    end Predicate_Instance_Pre_Op;
@@ -966,11 +966,11 @@ package body Why.Atree.Sprint is
       P (O, "( ");
       Traverse
         (State,
-         +Implication_Get_Left (+Node));
+         Implication_Get_Left (Node));
       P (O, " -> ");
       Traverse
         (State,
-         +Implication_Get_Right (+Node));
+         Implication_Get_Right (Node));
       P (O, " )");
       State.Control := Abandon_Children;
    end Implication_Pre_Op;
@@ -986,11 +986,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Equivalence_Get_Left (+Node));
+         Equivalence_Get_Left (Node));
       P (O, " <-> ");
       Traverse
         (State,
-         +Equivalence_Get_Right (+Node));
+         Equivalence_Get_Right (Node));
       State.Control := Abandon_Children;
    end Equivalence_Pre_Op;
 
@@ -1005,11 +1005,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Disjunction_Get_Left (+Node));
+         Disjunction_Get_Left (Node));
       P (O, " or ");
       Traverse
         (State,
-         +Disjunction_Get_Right (+Node));
+         Disjunction_Get_Right (Node));
       State.Control := Abandon_Children;
    end Disjunction_Pre_Op;
 
@@ -1024,11 +1024,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Conjunction_Get_Left (+Node));
+         Conjunction_Get_Left (Node));
       P (O, " and ");
       Traverse
         (State,
-         +Conjunction_Get_Right (+Node));
+         Conjunction_Get_Right (Node));
       State.Control := Abandon_Children;
    end Conjunction_Pre_Op;
 
@@ -1212,11 +1212,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Named_Predicate_Get_Name (+Node));
+         Named_Predicate_Get_Name (Node));
       P (O, " : ");
       Traverse
         (State,
-         +Named_Predicate_Get_Pred (+Node));
+         Named_Predicate_Get_Pred (Node));
       State.Control := Abandon_Children;
    end Named_Predicate_Pre_Op;
 
@@ -1377,7 +1377,7 @@ package body Why.Atree.Sprint is
 
       External   : constant W_External_OId := Type_Get_External (+Node);
       Params     : constant List :=
-                     Get_List (+Type_Get_Type_Parameters (+Node));
+                     Get_List (Type_Get_Type_Parameters (Node));
       Nb_Params  : constant Count_Type := Length (Params);
       Position   : Cursor := First (Params);
       Name       : constant W_Identifier_Id := Type_Get_Name (+Node);
@@ -1492,18 +1492,18 @@ package body Why.Atree.Sprint is
       P (O, "function ");
       Traverse
         (State,
-         +Function_Get_Name (+Node));
+         Function_Get_Name (Node));
       P (O, " (");
       Print_List (State, +Binders);
       P (O, ") : ");
       Traverse
         (State,
-         +Function_Get_Return_Type (+Node));
+         Function_Get_Return_Type (Node));
       PL (O, " =");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Function_Get_Def (+Node));
+         Function_Get_Def (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -1523,14 +1523,14 @@ package body Why.Atree.Sprint is
       P (O, "predicate ");
       Traverse
         (State,
-         +Predicate_Definition_Get_Name (+Node));
+         Predicate_Definition_Get_Name (Node));
       P (O, " (");
       Print_List (State, +Binders);
       PL (O, ") =");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Predicate_Definition_Get_Def (+Node));
+         Predicate_Definition_Get_Def (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -1548,16 +1548,16 @@ package body Why.Atree.Sprint is
       P (O, "inductive ");
       Traverse
         (State,
-         +Inductive_Get_Name (+Node));
+         Inductive_Get_Name (Node));
       P (O, " : ");
       Traverse
         (State,
-         +Inductive_Get_Logic_Type (+Node));
+         Inductive_Get_Logic_Type (Node));
       PL (O, " =");
       Relative_Indent (O, 1);
       Traverse_List
         (State,
-         +Inductive_Get_Def (+Node));
+         Inductive_Get_Def (Node));
       Relative_Indent (O, -1);
       State.Control := Abandon_Children;
    end Inductive_Pre_Op;
@@ -1574,12 +1574,12 @@ package body Why.Atree.Sprint is
       P (O, "axiom ");
       Traverse
         (State,
-         +Axiom_Get_Name (+Node));
+         Axiom_Get_Name (Node));
       PL (O, " :");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Axiom_Get_Def (+Node));
+         Axiom_Get_Def (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -1597,12 +1597,12 @@ package body Why.Atree.Sprint is
       P (O, "goal ");
       Traverse
         (State,
-         +Goal_Get_Name (+Node));
+         +Goal_Get_Name (Node));
       PL (O, " :");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Goal_Get_Def (+Node));
+         Goal_Get_Def (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -1637,7 +1637,7 @@ package body Why.Atree.Sprint is
       P (O, " -> ");
       Traverse
         (State,
-         +Logic_Type_Get_Return_Type (+Node));
+         Logic_Type_Get_Return_Type (Node));
       State.Control := Abandon_Children;
    end Logic_Type_Pre_Op;
 
@@ -1652,11 +1652,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Logic_Binder_Get_Name (+Node));
+         Logic_Binder_Get_Name (Node));
       P (O, " : ");
       Traverse
         (State,
-         +Logic_Binder_Get_Param_Type (+Node));
+         Logic_Binder_Get_Param_Type (Node));
       State.Control := Abandon_Children;
    end Logic_Binder_Pre_Op;
 
@@ -1672,11 +1672,11 @@ package body Why.Atree.Sprint is
       P (O, " | ");
       Traverse
         (State,
-         +Inductive_Case_Get_Name (+Node));
+         Inductive_Case_Get_Name (Node));
       P (O, " : ");
       Traverse
         (State,
-         +Inductive_Case_Get_Pred (+Node));
+         Inductive_Case_Get_Pred (Node));
       NL (O);
       State.Control := Abandon_Children;
    end Inductive_Case_Pre_Op;
@@ -1730,7 +1730,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Postcondition_Get_Assertion (+Node));
+         Postcondition_Get_Assertion (Node));
 
       if not Is_Empty (+Handlers) then
          NL (O);
@@ -1754,11 +1754,11 @@ package body Why.Atree.Sprint is
       P (O, "| ");
       Traverse
         (State,
-         +Exn_Condition_Get_Exn_Case (+Node));
+         Exn_Condition_Get_Exn_Case (Node));
       P (O, " => ");
       Traverse
         (State,
-         +Exn_Condition_Get_Assertion (+Node));
+         Exn_Condition_Get_Assertion (Node));
       State.Control := Abandon_Children;
    end Exn_Condition_Pre_Op;
 
@@ -1775,7 +1775,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Assertion_Get_Pred (+Node));
+         Assertion_Get_Pred (Node));
 
       if As /= Why_Empty then
          P (O, " as ");
@@ -1824,9 +1824,9 @@ package body Why.Atree.Sprint is
       Node  : W_Assignment_Valid_Id)
    is
    begin
-      Traverse (State, +Assignment_Get_Name (+Node));
+      Traverse (State, Assignment_Get_Name (Node));
       P (O, " := ( ");
-      Traverse (State, +Assignment_Get_Value (+Node));
+      Traverse (State, Assignment_Get_Value (Node));
       P (O, " )");
       State.Control := Abandon_Children;
    end Assignment_Pre_Op;
@@ -1842,11 +1842,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Array_Access_Get_Name (+Node));
+         Array_Access_Get_Name (Node));
       P (O, " [");
       Traverse
         (State,
-         +Array_Access_Get_Index (+Node));
+         Array_Access_Get_Index (Node));
       P (O, "]");
       State.Control := Abandon_Children;
    end Array_Access_Pre_Op;
@@ -1862,15 +1862,15 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Array_Update_Get_Name (+Node));
+         Array_Update_Get_Name (Node));
       P (O, " [");
       Traverse
         (State,
-         +Array_Update_Get_Index (+Node));
+         Array_Update_Get_Index (Node));
       P (O, "] := ");
       Traverse
         (State,
-         +Array_Update_Get_Value (+Node));
+         Array_Update_Get_Value (Node));
       State.Control := Abandon_Children;
    end Array_Update_Pre_Op;
 
@@ -1886,15 +1886,15 @@ package body Why.Atree.Sprint is
       P (O, "( ");
       Traverse
         (State,
-         +Infix_Call_Get_Left (+Node));
+         Infix_Call_Get_Left (Node));
       P (O, " ");
       Traverse
         (State,
-         +Infix_Call_Get_Infix (+Node));
+         Infix_Call_Get_Infix (Node));
       P (O, " ");
       Traverse
         (State,
-         +Infix_Call_Get_Right (+Node));
+         Infix_Call_Get_Right (Node));
       P (O, " )");
       State.Control := Abandon_Children;
    end Infix_Call_Pre_Op;
@@ -1910,11 +1910,11 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Prefix_Call_Get_Prefix (+Node));
+         Prefix_Call_Get_Prefix (Node));
       P (O, " ");
       Traverse
         (State,
-         +Prefix_Call_Get_Operand (+Node));
+         Prefix_Call_Get_Operand (Node));
       State.Control := Abandon_Children;
    end Prefix_Call_Pre_Op;
 
@@ -1934,11 +1934,11 @@ package body Why.Atree.Sprint is
       P (O, "let ");
       Traverse
         (State,
-         +Binding_Prog_Get_Name (+Node));
+         Binding_Prog_Get_Name (Node));
       P (O, " = ");
       Traverse
         (State,
-         +Binding_Prog_Get_Def (+Node));
+         Binding_Prog_Get_Def (Node));
       PL (O, " in ");
 
       if not Binding_Sequence then
@@ -1970,11 +1970,11 @@ package body Why.Atree.Sprint is
       P (O, "let ");
       Traverse
         (State,
-         +Binding_Ref_Get_Name (+Node));
+         Binding_Ref_Get_Name (Node));
       P (O, " = ref ");
       Traverse
         (State,
-         +Binding_Ref_Get_Def (+Node));
+         Binding_Ref_Get_Def (Node));
       PL (O, " in ");
 
       if not Binding_Sequence then
@@ -2079,7 +2079,7 @@ package body Why.Atree.Sprint is
    is
    begin
       Print_List (State,
-                  +Statement_Sequence_Get_Statements (+Node),
+                  Statement_Sequence_Get_Statements (Node),
                   ";" & ASCII.LF);
       State.Control := Abandon_Children;
    end Statement_Sequence_Pre_Op;
@@ -2096,11 +2096,11 @@ package body Why.Atree.Sprint is
       P (O, "( ");
       Traverse
         (State,
-         +Label_Get_Name (+Node));
+         Label_Get_Name (Node));
       P (O, " : ");
       Traverse
         (State,
-         +Label_Get_Def (+Node));
+         Label_Get_Def (Node));
       P (O, " )");
       State.Control := Abandon_Children;
    end Label_Pre_Op;
@@ -2115,12 +2115,12 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "assert { ");
-      Print_List (State, +Assert_Get_Assertions (+Node), " } { ");
+      Print_List (State, Assert_Get_Assertions (Node), " } { ");
       P (O, "};");
       NL (O);
       Traverse
         (State,
-         +Assert_Get_Prog (+Node));
+         Assert_Get_Prog (Node));
       State.Control := Abandon_Children;
    end Assert_Pre_Op;
 
@@ -2135,12 +2135,12 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Post_Assertion_Get_Prog (+Node));
+         Post_Assertion_Get_Prog (Node));
       NL (O);
       P (O, "{ ");
       Traverse
         (State,
-         +Post_Assertion_Get_Post (+Node));
+         Post_Assertion_Get_Post (Node));
       P (O, " }");
       State.Control := Abandon_Children;
    end Post_Assertion_Pre_Op;
@@ -2156,12 +2156,12 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Opaque_Assertion_Get_Prog (+Node));
+         Opaque_Assertion_Get_Prog (Node));
       NL (O);
       P (O, "{{ ");
       Traverse
         (State,
-         +Opaque_Assertion_Get_Post (+Node));
+         Opaque_Assertion_Get_Post (Node));
       P (O, " }}");
       State.Control := Abandon_Children;
    end Opaque_Assertion_Pre_Op;
@@ -2176,13 +2176,13 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "fun ");
-      Print_List (State, +Fun_Def_Get_Binders (+Node), " ");
+      Print_List (State, Fun_Def_Get_Binders (Node), " ");
       P (O, " ->");
       NL (O);
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Fun_Def_Get_Def (+Node));
+         Fun_Def_Get_Def (Node));
       Relative_Indent (O, -1);
       State.Control := Abandon_Children;
    end Fun_Def_Pre_Op;
@@ -2199,21 +2199,21 @@ package body Why.Atree.Sprint is
       P (O, "let ");
       Traverse
         (State,
-         +Binding_Fun_Get_Name (+Node));
+         Binding_Fun_Get_Name (Node));
       P (O, " ");
-      Print_List (State, +Binding_Fun_Get_Binders (+Node), " ");
+      Print_List (State, +Binding_Fun_Get_Binders (Node), " ");
       PL (O, " =");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Binding_Fun_Get_Def (+Node));
+         Binding_Fun_Get_Def (Node));
       Relative_Indent (O, -1);
       NL (O);
       PL (O, "in");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Binding_Fun_Get_Context (+Node));
+         Binding_Fun_Get_Context (Node));
       Relative_Indent (O, -1);
       State.Control := Abandon_Children;
    end Binding_Fun_Pre_Op;
@@ -2232,7 +2232,7 @@ package body Why.Atree.Sprint is
       P (O, "let rec ");
       Traverse
         (State,
-         +Binding_Rec_Get_Recfun (+Node));
+         Binding_Rec_Get_Recfun (Node));
 
       if Context /= Why_Empty then
          P (O, " in");
@@ -2297,7 +2297,7 @@ package body Why.Atree.Sprint is
       P (O, "raise ");
       Traverse
         (State,
-         +Raise_Statement_Get_Name (+Node));
+         Raise_Statement_Get_Name (Node));
 
       if Exn_Type /= Why_Empty then
          P (O, " : ");
@@ -2321,11 +2321,11 @@ package body Why.Atree.Sprint is
       P (O, "raise ");
       Traverse
         (State,
-         +Raise_Statement_With_Parameters_Get_Name (+Node));
+         Raise_Statement_With_Parameters_Get_Name (Node));
       P (O, " ");
       Traverse
         (State,
-         +Raise_Statement_With_Parameters_Get_Parameter (+Node));
+         Raise_Statement_With_Parameters_Get_Parameter (Node));
 
       if Exn_Type /= Why_Empty then
          P (O, " : ");
@@ -2348,14 +2348,14 @@ package body Why.Atree.Sprint is
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Try_Block_Get_Prog (+Node));
+         Try_Block_Get_Prog (Node));
       Relative_Indent (O, -1);
       NL (O);
       PL (O, "with");
       Relative_Indent (O, 1);
       Print_List
         (State,
-         +Try_Block_Get_Handler (+Node),
+         Try_Block_Get_Handler (Node),
          "," & ASCII.LF);
       Relative_Indent (O, -1);
       NL (O);
@@ -2665,12 +2665,12 @@ package body Why.Atree.Sprint is
       P (O, "(");
       Print_List
         (State,
-         +Binder_Get_Names (+Node),
+         Binder_Get_Names (Node),
          ", ");
       P (O, " : ");
       Traverse
         (State,
-         +Binder_Get_Arg_Type (+Node));
+         Binder_Get_Arg_Type (Node));
       P (O, ")");
       State.Control := Abandon_Children;
    end Binder_Pre_Op;
@@ -2686,23 +2686,23 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Recfun_Get_Name (+Node));
+         Recfun_Get_Name (Node));
       P (O, " ");
-      Print_List (State, +Recfun_Get_Binders (+Node), " ");
+      Print_List (State, Recfun_Get_Binders (Node), " ");
       P (O, " : ");
       Traverse
         (State,
-         +Recfun_Get_Return_Type (+Node));
+         Recfun_Get_Return_Type (Node));
       NL (O);
       P (O, "{ variant ");
       Traverse
         (State,
-         +Recfun_Get_Variant (+Node));
+         Recfun_Get_Variant (Node));
       PL (O, " } =");
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Recfun_Get_Def (+Node));
+         Recfun_Get_Def (Node));
       Relative_Indent (O, -1);
       State.Control := Abandon_Children;
    end Recfun_Pre_Op;
@@ -2753,7 +2753,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Wf_Arg_Get_Def (+Node));
+         Wf_Arg_Get_Def (Node));
 
       if For_Id /= Why_Empty then
          P (O, " for ");
@@ -2776,7 +2776,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         +Handler_Get_Name (+Node));
+         Handler_Get_Name (Node));
 
       if Parameter /= Why_Empty then
          P (O, " ");
@@ -2786,7 +2786,7 @@ package body Why.Atree.Sprint is
       P (O, " -> ");
       Traverse
         (State,
-         +Handler_Get_Def (+Node));
+         Handler_Get_Def (Node));
       State.Control := Abandon_Children;
    end Handler_Pre_Op;
 
@@ -2801,7 +2801,7 @@ package body Why.Atree.Sprint is
    begin
       Print_List
         (State,
-         +File_Get_Declarations (+Node),
+         File_Get_Declarations (Node),
          "" & ASCII.LF);
       State.Control := Abandon_Children;
    end File_Pre_Op;
@@ -2820,7 +2820,7 @@ package body Why.Atree.Sprint is
       P (O, "let ");
       Traverse
         (State,
-         +Global_Binding_Get_Name (+Node));
+         Global_Binding_Get_Name (Node));
 
       if not Is_Empty (+Binders) then
          P (O, " ");
@@ -2828,11 +2828,11 @@ package body Why.Atree.Sprint is
       end if;
 
       PL (O, " =");
-      Traverse (State, +Global_Binding_Get_Pre (+Node));
+      Traverse (State, Global_Binding_Get_Pre (Node));
       Relative_Indent (O, 1);
       Traverse
         (State,
-         +Global_Binding_Get_Def (+Node));
+         Global_Binding_Get_Def (Node));
       Relative_Indent (O, -1);
       State.Control := Abandon_Children;
    end Global_Binding_Pre_Op;
@@ -2869,14 +2869,14 @@ package body Why.Atree.Sprint is
       P (O, "parameter ");
       Print_List
         (State,
-         +Parameter_Declaration_Get_Names (+Node));
+         Parameter_Declaration_Get_Names (Node));
       P (O, " :");
 
       Relative_Indent (O, 1);
       NL (O);
       Traverse
         (State,
-         +Parameter_Declaration_Get_Parameter_Type (+Node));
+         Parameter_Declaration_Get_Parameter_Type (Node));
       Relative_Indent (O, -1);
       NL (O);
       State.Control := Abandon_Children;
@@ -2896,7 +2896,7 @@ package body Why.Atree.Sprint is
       P (O, "exception ");
       Traverse
         (State,
-         +Exception_Declaration_Get_Name (+Node));
+         Exception_Declaration_Get_Name (Node));
 
       if Param /= Why_Empty then
          P (O, "of ");
@@ -2918,7 +2918,7 @@ package body Why.Atree.Sprint is
       P (O, "include """);
       Traverse
         (State,
-         +Include_Declaration_Get_Name (+Node));
+         Include_Declaration_Get_Name (Node));
       P (O, ".why""");
       NL (O);
       State.Control := Abandon_Children;

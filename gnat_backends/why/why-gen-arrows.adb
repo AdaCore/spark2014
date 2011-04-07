@@ -78,7 +78,7 @@ package body Why.Gen.Arrows is
      return W_Arrow_Type_Id
    is
       Left : constant W_Simple_Value_Type_Unchecked_Id :=
-               +Arrow_Type_Get_Left (+Arrow);
+               Arrow_Type_Get_Left (Arrow);
    begin
       if Left = Why_Empty then
          Arrow_Type_Set_Left (Arrow, Arg_Type);

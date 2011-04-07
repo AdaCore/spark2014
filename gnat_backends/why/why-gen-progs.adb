@@ -152,7 +152,7 @@ package body Why.Gen.Progs is
    begin
       return
          (Get_Kind (+P) = W_Prog_Constant and then
-          Get_Kind (+Prog_Constant_Get_Def (+P)) = W_False_Literal);
+          Get_Kind (Prog_Constant_Get_Def (+P)) = W_False_Literal);
    end Is_False_Boolean;
 
    ---------------------
@@ -164,7 +164,7 @@ package body Why.Gen.Progs is
    begin
       return
          (Get_Kind (+P) = W_Prog_Constant and then
-          Get_Kind (+Prog_Constant_Get_Def (+P)) = W_True_Literal);
+          Get_Kind (Prog_Constant_Get_Def (+P)) = W_True_Literal);
    end Is_True_Boolean;
 
    --------------------------
@@ -499,7 +499,7 @@ package body Why.Gen.Progs is
       begin
          return
            (Get_Kind (+N) = W_Prog_Constant and then
-            Get_Kind (+Prog_Constant_Get_Def (+N)) = W_Void_Literal);
+            Get_Kind (Prog_Constant_Get_Def (+N)) = W_Void_Literal);
       end Is_Void;
 
       --  begin processing for Sequence
@@ -523,14 +523,14 @@ package body Why.Gen.Progs is
                      (Statements => (1 => Left, 2 => Right));
                when others =>
                   Statement_Sequence_Append_To_Statements
-                     (Id => +Left, New_Item => Right);
+                     (Id => W_Statement_Sequence_Id (Left), New_Item => Right);
                   return Left;
             end case;
          when others =>
             case Get_Kind (+Right) is
                when W_Statement_Sequence =>
                   Statement_Sequence_Prepend_To_Statements
-                     (Id => +Right, New_Item => Left);
+                     (Id => W_Statement_Sequence_Id (Right), New_Item => Left);
                   return Right;
                when others =>
                   return New_Statement_Sequence

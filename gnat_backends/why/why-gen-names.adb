@@ -334,7 +334,7 @@ package body Why.Gen.Names is
    begin
       Name_Len := 0;
       Add_Str_To_Name_Buffer (Name);
-      Identifier_Set_Symbol (+Id, Name_Find);
+      Identifier_Set_Symbol (Id, Name_Find);
    end Set_Name;
 
    ----------------------

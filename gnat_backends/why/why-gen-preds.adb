@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Types;          use Why.Types;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Tables;   use Why.Atree.Tables;
@@ -172,8 +171,8 @@ package body Why.Gen.Preds is
       Result : constant W_Binding_Pred_Unchecked_Id :=
                  New_Unchecked_Binding_Pred;
    begin
-      Binding_Pred_Set_Name (+Result, +New_Identifier (Name));
-      Binding_Pred_Set_Def (+Result, +New_Constant (Value));
+      Binding_Pred_Set_Name (Result, +New_Identifier (Name));
+      Binding_Pred_Set_Def (Result, +New_Constant (Value));
       return Result;
    end New_Binding_Pred;
 

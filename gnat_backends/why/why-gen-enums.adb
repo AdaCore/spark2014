@@ -102,7 +102,7 @@ package body Why.Gen.Enums is
                      Def         => +Match);
       begin
          File_Append_To_Declarations
-           (+File,
+           (File,
             New_Logic_Declaration (Decl => +Func));
       end;
    end Define_Enum_To_Int_Function;

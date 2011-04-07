@@ -92,7 +92,7 @@ package body Why.Gen.Funcs is
             Logic_Type_Set_Return_Type
               (Spec,
                +Duplicate_Any_Node
-               (Id => +Computation_Spec_Get_Return_Type (+Right)));
+               (Id => Computation_Spec_Get_Return_Type (+Right)));
          else
             Append_To_Spec (+Right);
          end if;
@@ -102,9 +102,9 @@ package body Why.Gen.Funcs is
 
    begin
       Append_To_Spec (Arrows);
-      Logic_Append_To_Names (+Logic, Name);
-      Logic_Set_Logic_Type (+Logic, +Spec);
-      File_Append_To_Declarations (+File,
+      Logic_Append_To_Names (Logic, Name);
+      Logic_Set_Logic_Type (Logic, +Spec);
+      File_Append_To_Declarations (File,
                                    New_Logic_Declaration (Decl => +Logic));
    end Declare_Logic;
 
@@ -164,7 +164,7 @@ package body Why.Gen.Funcs is
                                 New_Precondition (Assertion => Assertion);
             begin
                Computation_Spec_Set_Precondition
-                 (+Contract, +Precondition);
+                 (Contract, Precondition);
             end;
          end if;
 
@@ -176,12 +176,12 @@ package body Why.Gen.Funcs is
                                  New_Postcondition (Assertion => Assertion);
             begin
                Computation_Spec_Set_Postcondition
-                 (+Contract, +Postcondition);
+                 (Contract, Postcondition);
             end;
          end if;
       end;
 
-      File_Append_To_Declarations (+File,
+      File_Append_To_Declarations (File,
                                    New_Parameter_Declaration
                                    (Names          => (1 => Name),
                                     Parameter_Type => +Arrows));
