@@ -917,10 +917,10 @@ package body Why.Atree.Sprint is
         (State,
          +Predicate_Instance_Get_Name (+Node));
       P (O, " (");
-      Traverse_List
+      Print_List
         (State,
          +Predicate_Instance_Get_Parameters (+Node));
-      P (O, " )");
+      P (O, ")");
       State.Control := Abandon_Children;
    end Predicate_Instance_Pre_Op;
 
