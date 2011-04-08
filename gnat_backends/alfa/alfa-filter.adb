@@ -348,6 +348,7 @@ package body ALFA.Filter is
          Types_Vars_Spec_Suffix  : constant String := "__types_vars_spec";
          Types_Vars_Body_Suffix  : constant String := "__types_vars_body";
          Subp_Spec_Suffix        : constant String := "__subp_spec";
+         Main_Suffix             : constant String := "__package";
 
          procedure Add_Package_Decl (L : List_Id; N : Node_Id);
          procedure Add_Package_Decl (L : List_Id; Name : String);
@@ -390,7 +391,7 @@ package body ALFA.Filter is
          Subp_Body_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Body_List),
-              Name  => Name_String (Ent_Name));
+              Name  => Name_String (Ent_Name) & Main_Suffix);
 
          --  Take into account dependencies
          --  Add standard package only to types_vars for spec

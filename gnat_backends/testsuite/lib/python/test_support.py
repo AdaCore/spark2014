@@ -181,7 +181,7 @@ def prove(src):
     gnatprove()
     result = {}
     base, ext = os.path.splitext(src)
-    for vc in open(os.path.join("gnatprove",base+".labels")):
+    for vc in open(os.path.join("gnatprove",base+"__package.labels")):
         vc = str.strip(vc,"\n ")
         result[vc] = { 'valid' : [] , 'invalid': [] }
     for f in glob.glob(os.path.join("gnatprove", "*.xpl")):

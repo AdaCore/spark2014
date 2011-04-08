@@ -48,6 +48,7 @@ procedure Gnatprove is
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    WHYLIB       : constant String := "WHYLIB";
    Why_Lib_Dir  : constant String := "lib/why";
+   Main_Suffix  : constant String := "__package";
 
    procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File);
    --  Call Alt-Ergo on all VC files that correspond to a given source file of
@@ -82,7 +83,8 @@ procedure Gnatprove is
    procedure Call_Why (Proj : Project_Tree; File : Virtual_File);
    --  Call why on all the generated files that belong to a certain file
    --  in a project.
-   --  example: if File is "example.adb", we call why on file "example.why".
+   --  example: if File is "example.adb", we call why on file
+   --  "example__package.why".
 
    procedure Cat
       (Files   : Argument_List;
@@ -128,7 +130,7 @@ procedure Gnatprove is
       begin
          Delete_File (Target, Success);
          Cat (Files =>
-               (1 => new String'(Base & "_ctx.why"),
+               (1 => new String'(Base & Main_Suffix & "_ctx.why"),
                 2 => new String'(Item)),
               Target => Target,
               Success => Success);
@@ -145,7 +147,7 @@ procedure Gnatprove is
       --  beginning of processing for Call_Altergo
 
    begin
-      Iterate (Path => Base & "_po*.why");
+      Iterate (Path => Base & Main_Suffix & "_po*.why");
    end Call_Altergo;
 
    --------------------------
@@ -325,8 +327,8 @@ procedure Gnatprove is
            ((1 => new String'("--multi-why"),
              2 => new String'("--explain"),
              3 => new String'("--locs"),
-             4 => new String'(Base & ".loc"),
-             5 => new String'(Base & ".why"))));
+             4 => new String'(Base & Main_Suffix & ".loc"),
+             5 => new String'(Base & Main_Suffix & ".why"))));
    end Call_Why;
 
    ---------
