@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
+with Ada.Environment_Variables;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations.Iteration;
@@ -32,6 +33,7 @@ with GNAT.OS_Lib;       use GNAT.OS_Lib;
 with GNAT.Strings;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
+with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 
 with Ada.Text_IO;
@@ -44,6 +46,8 @@ procedure Gnatprove is
    Project_File : aliased GNAT.Strings.String_Access;
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
+   WHYLIB       : constant String := "WHYLIB";
+   Why_Lib_Dir  : constant String := "lib/why";
 
    procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File);
    --  Call Alt-Ergo on all VC files that correspond to a given source file of
@@ -466,6 +470,14 @@ begin
       end loop;
       Iterate_Gnat2Why (Tree);
    end;
+
+   --  Set the environment variable WHYLIB, if necessary, to indicate the
+   --  placement for Why
+   if not Ada.Environment_Variables.Exists (WHYLIB) then
+      Ada.Environment_Variables.Set
+        (WHYLIB,
+         Executable_Location & Why_Lib_Dir);
+   end if;
 
    Iterate_Why (Tree);
    Iterate_Altergo (Tree);
