@@ -171,7 +171,7 @@ Sources of ambiguity in sequential Ada programs are:
   globals through calls;
 * evaluation strategy for arithmetic expressions, which may result in an
   overflow check passing or failing;
-* sizes of base scalar types;
+* bounds of base scalar types;
 * compiler permissions, such as the permission for the compiler to compute the
   right result of an arithmetic expression even if a naive computation would
   raise an exception due to overflow.
@@ -203,18 +203,23 @@ More specifically:
 * any operand of a binary multiplying operation (*,/,mod,rem) that is itself a
   binary multiplying operation must be parenthesized.
 
-Known Sizes for Scalar Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Known Bounds for Scalar Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The size of base types for user-defined types may vary depending on the
-compiler and host/target architectures. In ALFA, all sizes should be set to
-their minimum guaranteed by the Ada standard (worst case). For example, the
-following type should have a base type ranging from -10 to 10 (standard
-requires a symmetric range)::
+The bounds of base types for user-defined types, which define which
+computations overflow, may vary depending on the compiler and host/target
+architectures. In ALFA, all bounds should be set to their minimum range
+guaranteed by the Ada standard (worst case). For example, the following type
+should have a base type ranging from -10 to 10 (standard requires a symmetric
+range with a possible extra negative value)::
 
     type T is 1 .. 10;
 
-The size of standard scalar types is defined by the GNAT compiler for every
+This other type should have a base type ranging from -10 to 9::
+
+    type T is -10 .. 1;
+
+The bounds of standard scalar types are defined by the GNAT compiler for every
 host/target architecture.
 
 No Compiler Permissions
