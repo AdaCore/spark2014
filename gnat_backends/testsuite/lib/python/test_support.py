@@ -168,7 +168,7 @@ def gnatprove(opt=["-P", "test.gpr", "-v"]):
     if process.status:
         print process.out
 
-def prove(src):
+def prove(src,opt=["-P", "test.gpr", "-v"]):
     """Prove all obligations from an Ada file
 
     PARAMETERS
@@ -178,7 +178,7 @@ def prove(src):
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
-    gnatprove()
+    gnatprove(opt)
     result = {}
     base, ext = os.path.splitext(src)
     for vc in open(os.path.join("gnatprove",base+"__package.labels")):

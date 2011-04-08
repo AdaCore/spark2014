@@ -1,3 +1,3 @@
 from test_support import *
 
-prove("count.adb")
+prove("count.adb",opt=["-P", "test.gpr", "--all-vcs"])

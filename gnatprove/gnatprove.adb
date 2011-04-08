@@ -43,6 +43,7 @@ procedure Gnatprove is
    --  Variables for command line parsing
    Config       : Command_Line_Configuration;
    Verbose      : aliased Boolean;
+   All_VCs      : aliased Boolean;
    Project_File : aliased GNAT.Strings.String_Access;
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
@@ -297,13 +298,23 @@ procedure Gnatprove is
          Language => "Ada",
          Value    => Switch,
          Is_Default_Value => Default);
-      Call_Exit_On_Failure
-        (Command   => "gnat2why",
-         Arguments =>
-           ((1 => new String'("-gnatd.F"),  --  ALFA marks in AST
-             2 => new String'(+Full_Name (File))) &
+      declare
+         Arguments : constant Argument_List :=
+         ((1 => new String'("-gnatd.F"),  --  ALFA marks in AST
+           2 => new String'(+Full_Name (File))) &
              Switch.all &
-             Local_Inc_Args));
+             Local_Inc_Args);
+      begin
+         if All_VCs then
+            Call_Exit_On_Failure
+              (Command   => "gnat2why",
+               Arguments => Arguments);
+         else
+            Call_Exit_On_Failure
+              (Command   => "gnat2why",
+               Arguments => Arguments & (1 => new String'("-gnatd.G")));
+         end if;
+      end;
    end Call_Gnat2Why;
 
    --------------
@@ -416,6 +427,10 @@ begin
    Define_Switch (Config, Verbose'Access,
                   "-v", Long_Switch => "--verbose",
                   Help => "Output extra verbose information");
+
+   Define_Switch (Config, All_VCs'Access,
+                  Long_Switch => "--all-vcs",
+                  Help => "Activate generation of VCs for subprograms");
 
    Define_Switch (Config, Project_File'Access,
                   "-P:",

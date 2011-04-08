@@ -1,3 +1,3 @@
 from test_support import *
 
-prove("pack.adb")
+prove("pack.adb",opt=["-P", "test.gpr", "--all-vcs"])

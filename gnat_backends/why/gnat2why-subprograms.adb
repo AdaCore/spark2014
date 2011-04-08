@@ -25,6 +25,7 @@
 
 with ALFA;               use ALFA;
 with Atree;              use Atree;
+with Debug;
 with Einfo;              use Einfo;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
@@ -1005,13 +1006,15 @@ package body Gnat2Why.Subprograms is
                   Binders => Compute_Binders,
                   Def     => Pre_Check);
 
-               New_Global_Binding
-                 (File    => File,
-                  Name    => New_Definition_Name (Get_Name_String (Name)),
-                  Binders => Compute_Binders,
-                  Pre     => New_Assertion (Pred => Pre),
-                  Post    => New_Assertion (Pred => Loc_Post),
-                  Def     => Why_Body);
+               if not Debug.Debug_Flag_Dot_GG then
+                  New_Global_Binding
+                    (File    => File,
+                     Name    => New_Definition_Name (Get_Name_String (Name)),
+                     Binders => Compute_Binders,
+                     Pre     => New_Assertion (Pred => Pre),
+                     Post    => New_Assertion (Pred => Loc_Post),
+                     Def     => Why_Body);
+               end if;
             end;
 
          when N_Subprogram_Declaration =>
