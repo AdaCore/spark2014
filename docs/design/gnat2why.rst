@@ -7,10 +7,10 @@ General description
 Gnat2why is the tool that translates an Ada compilation unit into Why. Similar
 to a compiler, Gnat2why is called on a single Ada input file. It will generate
 a number of Why files, with a main Why file that has the same name as the Ada
-file, but with the extension ``.why``. In this section, we do not describe the
-translation itself, only the parts of the design of gnat2why which are
-relevant for the interaction with other tools, in particular ``gnatprove`` and
-``why``.
+file, but with the extension ``__package.why``. In this section, we do not
+describe the translation itself, only the parts of the design of gnat2why
+which are relevant for the interaction with other tools, in particular
+``gnatprove`` and ``why``.
 
 More precise description
 ------------------------
@@ -35,7 +35,7 @@ the basename of the Ada unit):
 * <file>__types_vars_spec.why
 * <file>__types_vars_body.why
 * <file>__subp_spec.why
-* <file>.why
+* <file>__package.why
 
 The suffixes are self explaining, and the last file corresponds to the
 subprogram definitions in the body.
