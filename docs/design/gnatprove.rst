@@ -26,12 +26,10 @@ Gnatprove operates in four main steps:
 #. Call ``gnatmake`` to generate ``.ali`` files for all compilation units of the
    project. The exact command line is::
 
-      gnatmake -P <project file> --subdirs gnatprove -gnat2012 -gnata -gnatc -gnatd.F
+      gnatmake -P <project file> --subdirs gnatprove -gnatc -gnatd.F
 
    *  ``-P <project file>`` to give the project file to gnatmake
    *  ``--subdirs gnatprove`` all work by gnatprove is done in a subdirectory of the object directory of the project,
-   *  ``-gnat2012`` to enable Ada 2012 features
-   *  ``-gnata`` to enable assertions
    *  ``-gnatc`` to disable code generation (we only need the .ali files)
    *  ``-gnatd.F`` to enable the effects section of ``.ali`` files
 
@@ -49,12 +47,7 @@ Gnatprove operates in four main steps:
    the description of the ``gnat2why`` tool), among which is the principal Why
    file, ``file.why``. The exact command line is::
 
-      gnat2why -I <ada-include-dir> -gnata -gnato -gnatd.F <file>
-
-   * ``-I <ada-include-dir>`` to find the runtime of the Ada compiler
-   * ``-gnata`` to enable assertions
-   * ``-gnato`` to enable overflow checks
-   *  ``-gnatd.F`` to enable the effects section of ``.ali`` files
+      gnat2why <file>
 
 #. Call ``why`` on all main files that have been generated in the previous
    step, to obtain verification conditions (VCs)::
@@ -74,6 +67,11 @@ Gnatprove operates in four main steps:
    the actual VCs. For each VC, there is a companion file ``file_po<n>.xpl``
    that contains the label and source location that has been associated to
    that VC by Why.
+
+   Gnatprove tells Why where to find its library files, using the environment
+   variable WHYLIB. This variable is set to ``prefix>/lib/why``, where <prefix>
+   is the location of the gnatprove executable. If the variable WHYLIB is
+   already set when calling gnatprove, we do not change its value.
 
 #. Call ``alt-ergo`` on all VCs. To do this, we first concatenate the files
    ``file_ctx.why`` and ``file_po<n>.why`` for a given n to obtain a file ``new.why`` that
