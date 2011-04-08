@@ -37,6 +37,6 @@ package body Base_Type is
 
    function Add8 (X, Y : W) return W is
    begin
-      return (X + Y) + 1;  --  not ok
+      return (X + Y) + 1;  --  ok
    end;
 end;
