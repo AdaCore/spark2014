@@ -90,12 +90,13 @@ package body Gnat2Why.Driver is
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
 
-      N         : constant Node_Id := Unit (GNAT_Root);
-      Unit_Name : constant String := Name_String (Chars (Defining_Entity (N)));
-      File_Name : constant String :=
-         File_Name_Without_Suffix
-           (Get_Name_String
-              (Full_File_Name (Get_Source_File_Index (Sloc (N)))));
+      N          : constant Node_Id := Unit (GNAT_Root);
+      Unit_Name  : constant String :=
+         Name_String (Chars (Defining_Entity (N)));
+      FName      : constant String :=
+         Get_Name_String (File_Name (Get_Source_File_Index (Sloc (N))));
+      Base_Name : constant String :=
+         File_Name_Without_Suffix (FName);
 
       --  Note that this use of Sem.Walk_Library_Items to see units in an order
       --  which avoids forward references has caused problems in the past with
@@ -151,8 +152,9 @@ package body Gnat2Why.Driver is
       end loop;
 
       --  Write Dependency file
-      Open_Current_File (File_Name & ".d");
-      P (Current_File, Unit_Name & ".why:");
+      Open_Current_File (Base_Name & ".d");
+      P (Current_File, Unit_Name & ".why: ");
+      P (Current_File, FName);
       for Index in ALIs.First .. ALIs.Last loop
          P (Current_File, " ");
          P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
