@@ -60,10 +60,9 @@ package body Why.Atree.Sprint is
    begin
       while Position /= No_Element loop
          declare
-            Node : constant W_Identifier_Id :=
-                     W_Identifier_Id (Element (Position));
+            Node : constant Why_Node_Id := Element (Position);
          begin
-            Traverse (State, +Node);
+            Traverse (State, Node);
          end;
 
          Position := Next (Position);
