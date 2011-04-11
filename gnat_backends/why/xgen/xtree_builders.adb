@@ -35,18 +35,12 @@ package body Xtree_Builders is
    New_Node_Id   : constant Wide_String := "New_Id";
 
    procedure Print_Builder_Declaration
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind);
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String);
    --  Print builder declaration for the given node kind
-
-   procedure Print_Builder_Specification
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind);
-   --  Print builder specification for the given node kind
 
    procedure Print_Builder_Specification
      (O           : in out Output_Record;
@@ -56,13 +50,6 @@ package body Xtree_Builders is
       Return_Type : Wide_String);
    --  Ditto, but with a return type that is different from the
    --  default one.
-
-   procedure Print_Builder_Postcondition
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind);
-   --  Print builder postcondition for the given node kind
 
    procedure Print_Builder_Precondition
      (O    : in out Output_Record;
@@ -216,7 +203,8 @@ package body Xtree_Builders is
    is
    begin
       for J in Valid_Kind'Range loop
-         Print_Builder_Declaration (O, J, Regular, Builder_Children);
+         Print_Builder_Declaration (O, J, Regular, Builder_Children,
+                                    Id_Subtype (J, Regular));
 
          if J /= Why_Tree_Info'Last then
             NL (O);
@@ -229,23 +217,18 @@ package body Xtree_Builders is
    -------------------------------
 
    procedure Print_Builder_Declaration
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind)
+     (O           : in out Output_Record;
+      Kind        : Why_Node_Kind;
+      IK          : Id_Kind;
+      BK          : Builder_Kind;
+      Return_Type : Wide_String)
    is
    begin
-      Print_Builder_Specification (O, Kind, IK, BK);
-
-      if Generate_Contracts then
-         PL (O, " with");
-         Relative_Indent (O, 2);
-         Print_Builder_Precondition (O, Kind, IK, BK);
-         PL (O, ",");
-         Print_Builder_Postcondition (O, Kind, IK, BK);
-         Relative_Indent (O, -2);
-      end if;
-
+      Print_Builder_Specification (O, Kind, IK, BK, Return_Type);
+      PL (O, " with");
+      Relative_Indent (O, 2);
+      Print_Builder_Precondition (O, Kind, IK, BK);
+      Relative_Indent (O, -2);
       PL (O, ";");
    end Print_Builder_Declaration;
 
@@ -533,16 +516,6 @@ package body Xtree_Builders is
    ---------------------------------
 
    procedure Print_Builder_Specification
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind)
-   is
-   begin
-      Print_Builder_Specification (O, Kind, IK, BK, Id_Subtype (Kind, IK));
-   end Print_Builder_Specification;
-
-   procedure Print_Builder_Specification
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
@@ -652,70 +625,6 @@ package body Xtree_Builders is
       Relative_Indent (O, -2);
    end Print_Builder_Specification;
 
-   ---------------------------------
-   -- Print_Builder_Postcondition --
-   ---------------------------------
-
-   procedure Print_Builder_Postcondition
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind;
-      BK   : Builder_Kind)
-   is
-      use Node_Lists;
-
-      Variant_Part  : constant Why_Node_Info :=
-                        Why_Tree_Info (Kind);
-
-      procedure Print_Parameter_Postcondition (Position : Cursor);
-
-      -----------------------------------
-      -- Print_Parameter_Postcondition --
-      -----------------------------------
-
-      procedure Print_Parameter_Postcondition (Position : Cursor) is
-         FI : constant Field_Info := Element (Position);
-         PN : constant Wide_String := Param_Name (FI);
-      begin
-         PL (O, "and then");
-         if Is_List (FI) then
-            --  ??? Not implemented for lists
-            P (O, "True");
-         else
-            PL (O, "  " &  Accessor_Name (Kind, FI));
-            PL (O, "  (" & Builder_Name (Kind, IK, BK)
-                & "'Result)");
-            P  (O, "  = " & PN);
-         end if;
-
-         if Next (Position) /= No_Element then
-            NL (O);
-         end if;
-      end Print_Parameter_Postcondition;
-
-   begin
-      PL (O, "Post =>");
-      Relative_Indent (O, 2);
-      PL (O, "(Get_Kind");
-      PL (O, "  (" & Builder_Name (Kind, IK, BK) & "'Result)");
-      PL (O, "  = " & Mixed_Case_Name (Kind));
-
-      if IK /= Unchecked then
-         Relative_Indent (O, 1);
-         Common_Fields.Fields.Iterate (Print_Parameter_Postcondition'Access);
-
-         if Has_Variant_Part (Kind) and then BK = Builder_Children then
-            NL (O);
-            Variant_Part.Fields.Iterate (Print_Parameter_Postcondition'Access);
-         end if;
-
-         Relative_Indent (O, -1);
-      end if;
-
-      P (O, ")");
-      Relative_Indent (O, -2);
-   end Print_Builder_Postcondition;
-
    --------------------------------
    -- Print_Builder_Precondition --
    --------------------------------
@@ -733,18 +642,6 @@ package body Xtree_Builders is
 
       procedure Print_Parameter_Precondition (Position : Cursor);
 
-      procedure Print_Id_Parameter_Precondition;
-
-      -------------------------------------
-      -- Print_Id_Parameter_Precondition --
-      -------------------------------------
-
-      procedure Print_Id_Parameter_Precondition is
-      begin
-         P (O, Tree_Check (Mixed_Case_Name (Kind), Id_One));
-         P (O, " (" & Node_Id_Param & ")");
-      end Print_Id_Parameter_Precondition;
-
       ----------------------------------
       -- Print_Parameter_Precondition --
       ----------------------------------
@@ -753,24 +650,14 @@ package body Xtree_Builders is
          FI : constant Field_Info := Element (Position);
          PN : constant Wide_String := Param_Name (FI);
       begin
-         if Is_Why_Id (FI) and then not Is_List (FI) then
-            P (O, Kind_Check (Field_Kind (FI), Multiplicity (FI)));
-            P (O, " (" & PN & ")");
-         else
-            P (O, "True");
-         end if;
-
          if Previous (Position) = No_Element then
             Relative_Indent (O, 1);
          end if;
 
          if Is_Why_Id (FI) and then not Is_List (FI) then
-            NL (O);
-            P (O, "and then ");
-            P (O, Tree_Check (Field_Kind (FI), Multiplicity (FI)));
-            P (O, " (" & PN & ")");
-            NL (O);
-            P (O, "and then Is_Root (" & PN & ")");
+            P (O, "Is_Root (+" & PN & ")");
+         else
+            P (O, "True");
          end if;
 
          if Next (Position) /= No_Element then
@@ -784,20 +671,14 @@ package body Xtree_Builders is
    --  Start of processing for Print_Builder_Precondition
 
    begin
-      if (Has_Variant_Part (Kind)
-          and then IK /= Unchecked)
-        or else BK = Builder_Copy
+      if Has_Variant_Part (Kind)
+        and then IK /= Unchecked
+        and then BK = Builder_Children
       then
          PL (O, "Pre =>");
          Relative_Indent (O, 2);
          P (O, "(");
-
-         if BK = Builder_Children then
-            Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
-         else
-            Print_Id_Parameter_Precondition;
-         end if;
-
+         Variant_Part.Fields.Iterate (Print_Parameter_Precondition'Access);
          P (O, ")");
          Relative_Indent (O, -2);
       else
@@ -1039,19 +920,17 @@ package body Xtree_Builders is
       use Class_Lists;
    begin
       for Kind in Valid_Kind'Range loop
-         Print_Builder_Specification (O, Kind, Derived, Builder_Children,
-                                      Id_Subtype (Kind, Derived));
-         PL (O, ";");
+         Print_Builder_Declaration (O, Kind, Derived, Builder_Children,
+                                    Id_Subtype (Kind, Derived));
 
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
               and Class_Name (CI) /= "W_Any_Node" then
                NL (O);
 
-               Print_Builder_Specification (O, Kind, Derived, Builder_Children,
-                                            Id_Subtype (Class_Name (CI),
-                                                        Derived));
-               PL (O, ";");
+               Print_Builder_Declaration (O, Kind, Derived, Builder_Children,
+                                          Id_Subtype (Class_Name (CI),
+                                                      Derived));
             end if;
          end loop;
       end loop;
@@ -1104,7 +983,8 @@ package body Xtree_Builders is
    is
    begin
       for J in Valid_Kind'Range loop
-         Print_Builder_Declaration (O, J, Regular, Builder_Copy);
+         Print_Builder_Declaration (O, J, Regular, Builder_Copy,
+                                    Id_Subtype (J, Regular));
 
          if J /= Why_Tree_Info'Last then
             NL (O);
@@ -1136,7 +1016,8 @@ package body Xtree_Builders is
    is
    begin
       for J in Valid_Kind'Range loop
-         Print_Builder_Declaration (O, J, Unchecked, Builder_Children);
+         Print_Builder_Declaration (O, J, Unchecked, Builder_Children,
+                                    Id_Subtype (J, Unchecked));
 
          if J /= Why_Tree_Info'Last then
             NL (O);

@@ -27,8 +27,6 @@
 with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;
-with Why.Kind_Validity;    use Why.Kind_Validity;
-with Why.Atree.Validity;   use Why.Atree.Validity;
 with Why.Atree.Properties; use Why.Atree.Properties;
 
 package Why.Atree.Mutators is

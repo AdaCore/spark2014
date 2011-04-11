@@ -428,17 +428,9 @@ package body Xtree_Mutators is
       PN : constant Wide_String :=
              (if Is_List (FI) then Element_Param
               else Param_Name (FI));
-      M  : constant Id_Multiplicity :=
-             (if Is_List (FI) then Id_One
-              else Multiplicity (FI));
    begin
       if Is_Why_Id (FI) then
-         PL (O, "Pre =>");
-         PL (O, "  (" & Kind_Check (Field_Kind (FI), M)
-             & " (Why_Node_Id (" & PN  & "))");
-         PL (O, "   and then " & Tree_Check (Field_Kind (FI), M)
-             & " (Why_Node_Id (" & PN  & "))");
-         P (O, "   and then Is_Root (+" & PN  & "))");
+         P (O, "Pre => (Is_Root (+" & PN  & "))");
       end if;
    end Print_Mutator_Precondition;
 
