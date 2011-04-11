@@ -40,3649 +40,3649 @@ package Why.Unchecked_Ids is
    subtype W_Unused_At_Start_Unchecked_OId is
      W_Unused_At_Start_Opaque_OId with
    Predicate =>
-     (Unused_At_Start_OId_Kind_Valid
+   (Unused_At_Start_OId_Kind_Valid
       (W_Unused_At_Start_Unchecked_OId));
 
    subtype W_Unused_At_Start_Unchecked_OList is
      W_Unused_At_Start_Opaque_OList with
    Predicate =>
-     (Unused_At_Start_OList_Kind_Valid
+   (Unused_At_Start_OList_Kind_Valid
       (W_Unused_At_Start_Unchecked_OList));
 
    subtype W_Unused_At_Start_Unchecked_Id is
      W_Unused_At_Start_Opaque_Id with
    Predicate =>
-     (Unused_At_Start_Id_Kind_Valid
+   (Unused_At_Start_Id_Kind_Valid
       (W_Unused_At_Start_Unchecked_Id));
 
    subtype W_Unused_At_Start_Unchecked_List is
      W_Unused_At_Start_Opaque_List with
    Predicate =>
-     (Unused_At_Start_List_Kind_Valid
+   (Unused_At_Start_List_Kind_Valid
       (W_Unused_At_Start_Unchecked_List));
 
    subtype W_Identifier_Unchecked_OId is
      W_Identifier_Opaque_OId with
    Predicate =>
-     (Identifier_OId_Kind_Valid
+   (Identifier_OId_Kind_Valid
       (W_Identifier_Unchecked_OId));
 
    subtype W_Identifier_Unchecked_OList is
      W_Identifier_Opaque_OList with
    Predicate =>
-     (Identifier_OList_Kind_Valid
+   (Identifier_OList_Kind_Valid
       (W_Identifier_Unchecked_OList));
 
    subtype W_Identifier_Unchecked_Id is
      W_Identifier_Opaque_Id with
    Predicate =>
-     (Identifier_Id_Kind_Valid
+   (Identifier_Id_Kind_Valid
       (W_Identifier_Unchecked_Id));
 
    subtype W_Identifier_Unchecked_List is
      W_Identifier_Opaque_List with
    Predicate =>
-     (Identifier_List_Kind_Valid
+   (Identifier_List_Kind_Valid
       (W_Identifier_Unchecked_List));
 
    subtype W_Type_Prop_Unchecked_OId is
      W_Type_Prop_Opaque_OId with
    Predicate =>
-     (Type_Prop_OId_Kind_Valid
+   (Type_Prop_OId_Kind_Valid
       (W_Type_Prop_Unchecked_OId));
 
    subtype W_Type_Prop_Unchecked_OList is
      W_Type_Prop_Opaque_OList with
    Predicate =>
-     (Type_Prop_OList_Kind_Valid
+   (Type_Prop_OList_Kind_Valid
       (W_Type_Prop_Unchecked_OList));
 
    subtype W_Type_Prop_Unchecked_Id is
      W_Type_Prop_Opaque_Id with
    Predicate =>
-     (Type_Prop_Id_Kind_Valid
+   (Type_Prop_Id_Kind_Valid
       (W_Type_Prop_Unchecked_Id));
 
    subtype W_Type_Prop_Unchecked_List is
      W_Type_Prop_Opaque_List with
    Predicate =>
-     (Type_Prop_List_Kind_Valid
+   (Type_Prop_List_Kind_Valid
       (W_Type_Prop_Unchecked_List));
 
    subtype W_Type_Int_Unchecked_OId is
      W_Type_Int_Opaque_OId with
    Predicate =>
-     (Type_Int_OId_Kind_Valid
+   (Type_Int_OId_Kind_Valid
       (W_Type_Int_Unchecked_OId));
 
    subtype W_Type_Int_Unchecked_OList is
      W_Type_Int_Opaque_OList with
    Predicate =>
-     (Type_Int_OList_Kind_Valid
+   (Type_Int_OList_Kind_Valid
       (W_Type_Int_Unchecked_OList));
 
    subtype W_Type_Int_Unchecked_Id is
      W_Type_Int_Opaque_Id with
    Predicate =>
-     (Type_Int_Id_Kind_Valid
+   (Type_Int_Id_Kind_Valid
       (W_Type_Int_Unchecked_Id));
 
    subtype W_Type_Int_Unchecked_List is
      W_Type_Int_Opaque_List with
    Predicate =>
-     (Type_Int_List_Kind_Valid
+   (Type_Int_List_Kind_Valid
       (W_Type_Int_Unchecked_List));
 
    subtype W_Type_Bool_Unchecked_OId is
      W_Type_Bool_Opaque_OId with
    Predicate =>
-     (Type_Bool_OId_Kind_Valid
+   (Type_Bool_OId_Kind_Valid
       (W_Type_Bool_Unchecked_OId));
 
    subtype W_Type_Bool_Unchecked_OList is
      W_Type_Bool_Opaque_OList with
    Predicate =>
-     (Type_Bool_OList_Kind_Valid
+   (Type_Bool_OList_Kind_Valid
       (W_Type_Bool_Unchecked_OList));
 
    subtype W_Type_Bool_Unchecked_Id is
      W_Type_Bool_Opaque_Id with
    Predicate =>
-     (Type_Bool_Id_Kind_Valid
+   (Type_Bool_Id_Kind_Valid
       (W_Type_Bool_Unchecked_Id));
 
    subtype W_Type_Bool_Unchecked_List is
      W_Type_Bool_Opaque_List with
    Predicate =>
-     (Type_Bool_List_Kind_Valid
+   (Type_Bool_List_Kind_Valid
       (W_Type_Bool_Unchecked_List));
 
    subtype W_Type_Real_Unchecked_OId is
      W_Type_Real_Opaque_OId with
    Predicate =>
-     (Type_Real_OId_Kind_Valid
+   (Type_Real_OId_Kind_Valid
       (W_Type_Real_Unchecked_OId));
 
    subtype W_Type_Real_Unchecked_OList is
      W_Type_Real_Opaque_OList with
    Predicate =>
-     (Type_Real_OList_Kind_Valid
+   (Type_Real_OList_Kind_Valid
       (W_Type_Real_Unchecked_OList));
 
    subtype W_Type_Real_Unchecked_Id is
      W_Type_Real_Opaque_Id with
    Predicate =>
-     (Type_Real_Id_Kind_Valid
+   (Type_Real_Id_Kind_Valid
       (W_Type_Real_Unchecked_Id));
 
    subtype W_Type_Real_Unchecked_List is
      W_Type_Real_Opaque_List with
    Predicate =>
-     (Type_Real_List_Kind_Valid
+   (Type_Real_List_Kind_Valid
       (W_Type_Real_Unchecked_List));
 
    subtype W_Type_Unit_Unchecked_OId is
      W_Type_Unit_Opaque_OId with
    Predicate =>
-     (Type_Unit_OId_Kind_Valid
+   (Type_Unit_OId_Kind_Valid
       (W_Type_Unit_Unchecked_OId));
 
    subtype W_Type_Unit_Unchecked_OList is
      W_Type_Unit_Opaque_OList with
    Predicate =>
-     (Type_Unit_OList_Kind_Valid
+   (Type_Unit_OList_Kind_Valid
       (W_Type_Unit_Unchecked_OList));
 
    subtype W_Type_Unit_Unchecked_Id is
      W_Type_Unit_Opaque_Id with
    Predicate =>
-     (Type_Unit_Id_Kind_Valid
+   (Type_Unit_Id_Kind_Valid
       (W_Type_Unit_Unchecked_Id));
 
    subtype W_Type_Unit_Unchecked_List is
      W_Type_Unit_Opaque_List with
    Predicate =>
-     (Type_Unit_List_Kind_Valid
+   (Type_Unit_List_Kind_Valid
       (W_Type_Unit_Unchecked_List));
 
    subtype W_Abstract_Type_Unchecked_OId is
      W_Abstract_Type_Opaque_OId with
    Predicate =>
-     (Abstract_Type_OId_Kind_Valid
+   (Abstract_Type_OId_Kind_Valid
       (W_Abstract_Type_Unchecked_OId));
 
    subtype W_Abstract_Type_Unchecked_OList is
      W_Abstract_Type_Opaque_OList with
    Predicate =>
-     (Abstract_Type_OList_Kind_Valid
+   (Abstract_Type_OList_Kind_Valid
       (W_Abstract_Type_Unchecked_OList));
 
    subtype W_Abstract_Type_Unchecked_Id is
      W_Abstract_Type_Opaque_Id with
    Predicate =>
-     (Abstract_Type_Id_Kind_Valid
+   (Abstract_Type_Id_Kind_Valid
       (W_Abstract_Type_Unchecked_Id));
 
    subtype W_Abstract_Type_Unchecked_List is
      W_Abstract_Type_Opaque_List with
    Predicate =>
-     (Abstract_Type_List_Kind_Valid
+   (Abstract_Type_List_Kind_Valid
       (W_Abstract_Type_Unchecked_List));
 
    subtype W_Generic_Formal_Type_Unchecked_OId is
      W_Generic_Formal_Type_Opaque_OId with
    Predicate =>
-     (Generic_Formal_Type_OId_Kind_Valid
+   (Generic_Formal_Type_OId_Kind_Valid
       (W_Generic_Formal_Type_Unchecked_OId));
 
    subtype W_Generic_Formal_Type_Unchecked_OList is
      W_Generic_Formal_Type_Opaque_OList with
    Predicate =>
-     (Generic_Formal_Type_OList_Kind_Valid
+   (Generic_Formal_Type_OList_Kind_Valid
       (W_Generic_Formal_Type_Unchecked_OList));
 
    subtype W_Generic_Formal_Type_Unchecked_Id is
      W_Generic_Formal_Type_Opaque_Id with
    Predicate =>
-     (Generic_Formal_Type_Id_Kind_Valid
+   (Generic_Formal_Type_Id_Kind_Valid
       (W_Generic_Formal_Type_Unchecked_Id));
 
    subtype W_Generic_Formal_Type_Unchecked_List is
      W_Generic_Formal_Type_Opaque_List with
    Predicate =>
-     (Generic_Formal_Type_List_Kind_Valid
+   (Generic_Formal_Type_List_Kind_Valid
       (W_Generic_Formal_Type_Unchecked_List));
 
    subtype W_Generic_Actual_Type_Chain_Unchecked_OId is
      W_Generic_Actual_Type_Chain_Opaque_OId with
    Predicate =>
-     (Generic_Actual_Type_Chain_OId_Kind_Valid
+   (Generic_Actual_Type_Chain_OId_Kind_Valid
       (W_Generic_Actual_Type_Chain_Unchecked_OId));
 
    subtype W_Generic_Actual_Type_Chain_Unchecked_OList is
      W_Generic_Actual_Type_Chain_Opaque_OList with
    Predicate =>
-     (Generic_Actual_Type_Chain_OList_Kind_Valid
+   (Generic_Actual_Type_Chain_OList_Kind_Valid
       (W_Generic_Actual_Type_Chain_Unchecked_OList));
 
    subtype W_Generic_Actual_Type_Chain_Unchecked_Id is
      W_Generic_Actual_Type_Chain_Opaque_Id with
    Predicate =>
-     (Generic_Actual_Type_Chain_Id_Kind_Valid
+   (Generic_Actual_Type_Chain_Id_Kind_Valid
       (W_Generic_Actual_Type_Chain_Unchecked_Id));
 
    subtype W_Generic_Actual_Type_Chain_Unchecked_List is
      W_Generic_Actual_Type_Chain_Opaque_List with
    Predicate =>
-     (Generic_Actual_Type_Chain_List_Kind_Valid
+   (Generic_Actual_Type_Chain_List_Kind_Valid
       (W_Generic_Actual_Type_Chain_Unchecked_List));
 
    subtype W_Array_Type_Unchecked_OId is
      W_Array_Type_Opaque_OId with
    Predicate =>
-     (Array_Type_OId_Kind_Valid
+   (Array_Type_OId_Kind_Valid
       (W_Array_Type_Unchecked_OId));
 
    subtype W_Array_Type_Unchecked_OList is
      W_Array_Type_Opaque_OList with
    Predicate =>
-     (Array_Type_OList_Kind_Valid
+   (Array_Type_OList_Kind_Valid
       (W_Array_Type_Unchecked_OList));
 
    subtype W_Array_Type_Unchecked_Id is
      W_Array_Type_Opaque_Id with
    Predicate =>
-     (Array_Type_Id_Kind_Valid
+   (Array_Type_Id_Kind_Valid
       (W_Array_Type_Unchecked_Id));
 
    subtype W_Array_Type_Unchecked_List is
      W_Array_Type_Opaque_List with
    Predicate =>
-     (Array_Type_List_Kind_Valid
+   (Array_Type_List_Kind_Valid
       (W_Array_Type_Unchecked_List));
 
    subtype W_Ref_Type_Unchecked_OId is
      W_Ref_Type_Opaque_OId with
    Predicate =>
-     (Ref_Type_OId_Kind_Valid
+   (Ref_Type_OId_Kind_Valid
       (W_Ref_Type_Unchecked_OId));
 
    subtype W_Ref_Type_Unchecked_OList is
      W_Ref_Type_Opaque_OList with
    Predicate =>
-     (Ref_Type_OList_Kind_Valid
+   (Ref_Type_OList_Kind_Valid
       (W_Ref_Type_Unchecked_OList));
 
    subtype W_Ref_Type_Unchecked_Id is
      W_Ref_Type_Opaque_Id with
    Predicate =>
-     (Ref_Type_Id_Kind_Valid
+   (Ref_Type_Id_Kind_Valid
       (W_Ref_Type_Unchecked_Id));
 
    subtype W_Ref_Type_Unchecked_List is
      W_Ref_Type_Opaque_List with
    Predicate =>
-     (Ref_Type_List_Kind_Valid
+   (Ref_Type_List_Kind_Valid
       (W_Ref_Type_Unchecked_List));
 
    subtype W_Protected_Value_Type_Unchecked_OId is
      W_Protected_Value_Type_Opaque_OId with
    Predicate =>
-     (Protected_Value_Type_OId_Kind_Valid
+   (Protected_Value_Type_OId_Kind_Valid
       (W_Protected_Value_Type_Unchecked_OId));
 
    subtype W_Protected_Value_Type_Unchecked_OList is
      W_Protected_Value_Type_Opaque_OList with
    Predicate =>
-     (Protected_Value_Type_OList_Kind_Valid
+   (Protected_Value_Type_OList_Kind_Valid
       (W_Protected_Value_Type_Unchecked_OList));
 
    subtype W_Protected_Value_Type_Unchecked_Id is
      W_Protected_Value_Type_Opaque_Id with
    Predicate =>
-     (Protected_Value_Type_Id_Kind_Valid
+   (Protected_Value_Type_Id_Kind_Valid
       (W_Protected_Value_Type_Unchecked_Id));
 
    subtype W_Protected_Value_Type_Unchecked_List is
      W_Protected_Value_Type_Opaque_List with
    Predicate =>
-     (Protected_Value_Type_List_Kind_Valid
+   (Protected_Value_Type_List_Kind_Valid
       (W_Protected_Value_Type_Unchecked_List));
 
    subtype W_Arrow_Type_Unchecked_OId is
      W_Arrow_Type_Opaque_OId with
    Predicate =>
-     (Arrow_Type_OId_Kind_Valid
+   (Arrow_Type_OId_Kind_Valid
       (W_Arrow_Type_Unchecked_OId));
 
    subtype W_Arrow_Type_Unchecked_OList is
      W_Arrow_Type_Opaque_OList with
    Predicate =>
-     (Arrow_Type_OList_Kind_Valid
+   (Arrow_Type_OList_Kind_Valid
       (W_Arrow_Type_Unchecked_OList));
 
    subtype W_Arrow_Type_Unchecked_Id is
      W_Arrow_Type_Opaque_Id with
    Predicate =>
-     (Arrow_Type_Id_Kind_Valid
+   (Arrow_Type_Id_Kind_Valid
       (W_Arrow_Type_Unchecked_Id));
 
    subtype W_Arrow_Type_Unchecked_List is
      W_Arrow_Type_Opaque_List with
    Predicate =>
-     (Arrow_Type_List_Kind_Valid
+   (Arrow_Type_List_Kind_Valid
       (W_Arrow_Type_Unchecked_List));
 
    subtype W_Computation_Spec_Unchecked_OId is
      W_Computation_Spec_Opaque_OId with
    Predicate =>
-     (Computation_Spec_OId_Kind_Valid
+   (Computation_Spec_OId_Kind_Valid
       (W_Computation_Spec_Unchecked_OId));
 
    subtype W_Computation_Spec_Unchecked_OList is
      W_Computation_Spec_Opaque_OList with
    Predicate =>
-     (Computation_Spec_OList_Kind_Valid
+   (Computation_Spec_OList_Kind_Valid
       (W_Computation_Spec_Unchecked_OList));
 
    subtype W_Computation_Spec_Unchecked_Id is
      W_Computation_Spec_Opaque_Id with
    Predicate =>
-     (Computation_Spec_Id_Kind_Valid
+   (Computation_Spec_Id_Kind_Valid
       (W_Computation_Spec_Unchecked_Id));
 
    subtype W_Computation_Spec_Unchecked_List is
      W_Computation_Spec_Opaque_List with
    Predicate =>
-     (Computation_Spec_List_Kind_Valid
+   (Computation_Spec_List_Kind_Valid
       (W_Computation_Spec_Unchecked_List));
 
    subtype W_Integer_Constant_Unchecked_OId is
      W_Integer_Constant_Opaque_OId with
    Predicate =>
-     (Integer_Constant_OId_Kind_Valid
+   (Integer_Constant_OId_Kind_Valid
       (W_Integer_Constant_Unchecked_OId));
 
    subtype W_Integer_Constant_Unchecked_OList is
      W_Integer_Constant_Opaque_OList with
    Predicate =>
-     (Integer_Constant_OList_Kind_Valid
+   (Integer_Constant_OList_Kind_Valid
       (W_Integer_Constant_Unchecked_OList));
 
    subtype W_Integer_Constant_Unchecked_Id is
      W_Integer_Constant_Opaque_Id with
    Predicate =>
-     (Integer_Constant_Id_Kind_Valid
+   (Integer_Constant_Id_Kind_Valid
       (W_Integer_Constant_Unchecked_Id));
 
    subtype W_Integer_Constant_Unchecked_List is
      W_Integer_Constant_Opaque_List with
    Predicate =>
-     (Integer_Constant_List_Kind_Valid
+   (Integer_Constant_List_Kind_Valid
       (W_Integer_Constant_Unchecked_List));
 
    subtype W_Real_Constant_Unchecked_OId is
      W_Real_Constant_Opaque_OId with
    Predicate =>
-     (Real_Constant_OId_Kind_Valid
+   (Real_Constant_OId_Kind_Valid
       (W_Real_Constant_Unchecked_OId));
 
    subtype W_Real_Constant_Unchecked_OList is
      W_Real_Constant_Opaque_OList with
    Predicate =>
-     (Real_Constant_OList_Kind_Valid
+   (Real_Constant_OList_Kind_Valid
       (W_Real_Constant_Unchecked_OList));
 
    subtype W_Real_Constant_Unchecked_Id is
      W_Real_Constant_Opaque_Id with
    Predicate =>
-     (Real_Constant_Id_Kind_Valid
+   (Real_Constant_Id_Kind_Valid
       (W_Real_Constant_Unchecked_Id));
 
    subtype W_Real_Constant_Unchecked_List is
      W_Real_Constant_Opaque_List with
    Predicate =>
-     (Real_Constant_List_Kind_Valid
+   (Real_Constant_List_Kind_Valid
       (W_Real_Constant_Unchecked_List));
 
    subtype W_True_Literal_Unchecked_OId is
      W_True_Literal_Opaque_OId with
    Predicate =>
-     (True_Literal_OId_Kind_Valid
+   (True_Literal_OId_Kind_Valid
       (W_True_Literal_Unchecked_OId));
 
    subtype W_True_Literal_Unchecked_OList is
      W_True_Literal_Opaque_OList with
    Predicate =>
-     (True_Literal_OList_Kind_Valid
+   (True_Literal_OList_Kind_Valid
       (W_True_Literal_Unchecked_OList));
 
    subtype W_True_Literal_Unchecked_Id is
      W_True_Literal_Opaque_Id with
    Predicate =>
-     (True_Literal_Id_Kind_Valid
+   (True_Literal_Id_Kind_Valid
       (W_True_Literal_Unchecked_Id));
 
    subtype W_True_Literal_Unchecked_List is
      W_True_Literal_Opaque_List with
    Predicate =>
-     (True_Literal_List_Kind_Valid
+   (True_Literal_List_Kind_Valid
       (W_True_Literal_Unchecked_List));
 
    subtype W_False_Literal_Unchecked_OId is
      W_False_Literal_Opaque_OId with
    Predicate =>
-     (False_Literal_OId_Kind_Valid
+   (False_Literal_OId_Kind_Valid
       (W_False_Literal_Unchecked_OId));
 
    subtype W_False_Literal_Unchecked_OList is
      W_False_Literal_Opaque_OList with
    Predicate =>
-     (False_Literal_OList_Kind_Valid
+   (False_Literal_OList_Kind_Valid
       (W_False_Literal_Unchecked_OList));
 
    subtype W_False_Literal_Unchecked_Id is
      W_False_Literal_Opaque_Id with
    Predicate =>
-     (False_Literal_Id_Kind_Valid
+   (False_Literal_Id_Kind_Valid
       (W_False_Literal_Unchecked_Id));
 
    subtype W_False_Literal_Unchecked_List is
      W_False_Literal_Opaque_List with
    Predicate =>
-     (False_Literal_List_Kind_Valid
+   (False_Literal_List_Kind_Valid
       (W_False_Literal_Unchecked_List));
 
    subtype W_Void_Literal_Unchecked_OId is
      W_Void_Literal_Opaque_OId with
    Predicate =>
-     (Void_Literal_OId_Kind_Valid
+   (Void_Literal_OId_Kind_Valid
       (W_Void_Literal_Unchecked_OId));
 
    subtype W_Void_Literal_Unchecked_OList is
      W_Void_Literal_Opaque_OList with
    Predicate =>
-     (Void_Literal_OList_Kind_Valid
+   (Void_Literal_OList_Kind_Valid
       (W_Void_Literal_Unchecked_OList));
 
    subtype W_Void_Literal_Unchecked_Id is
      W_Void_Literal_Opaque_Id with
    Predicate =>
-     (Void_Literal_Id_Kind_Valid
+   (Void_Literal_Id_Kind_Valid
       (W_Void_Literal_Unchecked_Id));
 
    subtype W_Void_Literal_Unchecked_List is
      W_Void_Literal_Opaque_List with
    Predicate =>
-     (Void_Literal_List_Kind_Valid
+   (Void_Literal_List_Kind_Valid
       (W_Void_Literal_Unchecked_List));
 
    subtype W_Arith_Operation_Unchecked_OId is
      W_Arith_Operation_Opaque_OId with
    Predicate =>
-     (Arith_Operation_OId_Kind_Valid
+   (Arith_Operation_OId_Kind_Valid
       (W_Arith_Operation_Unchecked_OId));
 
    subtype W_Arith_Operation_Unchecked_OList is
      W_Arith_Operation_Opaque_OList with
    Predicate =>
-     (Arith_Operation_OList_Kind_Valid
+   (Arith_Operation_OList_Kind_Valid
       (W_Arith_Operation_Unchecked_OList));
 
    subtype W_Arith_Operation_Unchecked_Id is
      W_Arith_Operation_Opaque_Id with
    Predicate =>
-     (Arith_Operation_Id_Kind_Valid
+   (Arith_Operation_Id_Kind_Valid
       (W_Arith_Operation_Unchecked_Id));
 
    subtype W_Arith_Operation_Unchecked_List is
      W_Arith_Operation_Opaque_List with
    Predicate =>
-     (Arith_Operation_List_Kind_Valid
+   (Arith_Operation_List_Kind_Valid
       (W_Arith_Operation_Unchecked_List));
 
    subtype W_Negative_Term_Unchecked_OId is
      W_Negative_Term_Opaque_OId with
    Predicate =>
-     (Negative_Term_OId_Kind_Valid
+   (Negative_Term_OId_Kind_Valid
       (W_Negative_Term_Unchecked_OId));
 
    subtype W_Negative_Term_Unchecked_OList is
      W_Negative_Term_Opaque_OList with
    Predicate =>
-     (Negative_Term_OList_Kind_Valid
+   (Negative_Term_OList_Kind_Valid
       (W_Negative_Term_Unchecked_OList));
 
    subtype W_Negative_Term_Unchecked_Id is
      W_Negative_Term_Opaque_Id with
    Predicate =>
-     (Negative_Term_Id_Kind_Valid
+   (Negative_Term_Id_Kind_Valid
       (W_Negative_Term_Unchecked_Id));
 
    subtype W_Negative_Term_Unchecked_List is
      W_Negative_Term_Opaque_List with
    Predicate =>
-     (Negative_Term_List_Kind_Valid
+   (Negative_Term_List_Kind_Valid
       (W_Negative_Term_Unchecked_List));
 
    subtype W_Term_Identifier_Unchecked_OId is
      W_Term_Identifier_Opaque_OId with
    Predicate =>
-     (Term_Identifier_OId_Kind_Valid
+   (Term_Identifier_OId_Kind_Valid
       (W_Term_Identifier_Unchecked_OId));
 
    subtype W_Term_Identifier_Unchecked_OList is
      W_Term_Identifier_Opaque_OList with
    Predicate =>
-     (Term_Identifier_OList_Kind_Valid
+   (Term_Identifier_OList_Kind_Valid
       (W_Term_Identifier_Unchecked_OList));
 
    subtype W_Term_Identifier_Unchecked_Id is
      W_Term_Identifier_Opaque_Id with
    Predicate =>
-     (Term_Identifier_Id_Kind_Valid
+   (Term_Identifier_Id_Kind_Valid
       (W_Term_Identifier_Unchecked_Id));
 
    subtype W_Term_Identifier_Unchecked_List is
      W_Term_Identifier_Opaque_List with
    Predicate =>
-     (Term_Identifier_List_Kind_Valid
+   (Term_Identifier_List_Kind_Valid
       (W_Term_Identifier_Unchecked_List));
 
    subtype W_Operation_Unchecked_OId is
      W_Operation_Opaque_OId with
    Predicate =>
-     (Operation_OId_Kind_Valid
+   (Operation_OId_Kind_Valid
       (W_Operation_Unchecked_OId));
 
    subtype W_Operation_Unchecked_OList is
      W_Operation_Opaque_OList with
    Predicate =>
-     (Operation_OList_Kind_Valid
+   (Operation_OList_Kind_Valid
       (W_Operation_Unchecked_OList));
 
    subtype W_Operation_Unchecked_Id is
      W_Operation_Opaque_Id with
    Predicate =>
-     (Operation_Id_Kind_Valid
+   (Operation_Id_Kind_Valid
       (W_Operation_Unchecked_Id));
 
    subtype W_Operation_Unchecked_List is
      W_Operation_Opaque_List with
    Predicate =>
-     (Operation_List_Kind_Valid
+   (Operation_List_Kind_Valid
       (W_Operation_Unchecked_List));
 
    subtype W_Named_Term_Unchecked_OId is
      W_Named_Term_Opaque_OId with
    Predicate =>
-     (Named_Term_OId_Kind_Valid
+   (Named_Term_OId_Kind_Valid
       (W_Named_Term_Unchecked_OId));
 
    subtype W_Named_Term_Unchecked_OList is
      W_Named_Term_Opaque_OList with
    Predicate =>
-     (Named_Term_OList_Kind_Valid
+   (Named_Term_OList_Kind_Valid
       (W_Named_Term_Unchecked_OList));
 
    subtype W_Named_Term_Unchecked_Id is
      W_Named_Term_Opaque_Id with
    Predicate =>
-     (Named_Term_Id_Kind_Valid
+   (Named_Term_Id_Kind_Valid
       (W_Named_Term_Unchecked_Id));
 
    subtype W_Named_Term_Unchecked_List is
      W_Named_Term_Opaque_List with
    Predicate =>
-     (Named_Term_List_Kind_Valid
+   (Named_Term_List_Kind_Valid
       (W_Named_Term_Unchecked_List));
 
    subtype W_Conditional_Term_Unchecked_OId is
      W_Conditional_Term_Opaque_OId with
    Predicate =>
-     (Conditional_Term_OId_Kind_Valid
+   (Conditional_Term_OId_Kind_Valid
       (W_Conditional_Term_Unchecked_OId));
 
    subtype W_Conditional_Term_Unchecked_OList is
      W_Conditional_Term_Opaque_OList with
    Predicate =>
-     (Conditional_Term_OList_Kind_Valid
+   (Conditional_Term_OList_Kind_Valid
       (W_Conditional_Term_Unchecked_OList));
 
    subtype W_Conditional_Term_Unchecked_Id is
      W_Conditional_Term_Opaque_Id with
    Predicate =>
-     (Conditional_Term_Id_Kind_Valid
+   (Conditional_Term_Id_Kind_Valid
       (W_Conditional_Term_Unchecked_Id));
 
    subtype W_Conditional_Term_Unchecked_List is
      W_Conditional_Term_Opaque_List with
    Predicate =>
-     (Conditional_Term_List_Kind_Valid
+   (Conditional_Term_List_Kind_Valid
       (W_Conditional_Term_Unchecked_List));
 
    subtype W_Matching_Term_Unchecked_OId is
      W_Matching_Term_Opaque_OId with
    Predicate =>
-     (Matching_Term_OId_Kind_Valid
+   (Matching_Term_OId_Kind_Valid
       (W_Matching_Term_Unchecked_OId));
 
    subtype W_Matching_Term_Unchecked_OList is
      W_Matching_Term_Opaque_OList with
    Predicate =>
-     (Matching_Term_OList_Kind_Valid
+   (Matching_Term_OList_Kind_Valid
       (W_Matching_Term_Unchecked_OList));
 
    subtype W_Matching_Term_Unchecked_Id is
      W_Matching_Term_Opaque_Id with
    Predicate =>
-     (Matching_Term_Id_Kind_Valid
+   (Matching_Term_Id_Kind_Valid
       (W_Matching_Term_Unchecked_Id));
 
    subtype W_Matching_Term_Unchecked_List is
      W_Matching_Term_Opaque_List with
    Predicate =>
-     (Matching_Term_List_Kind_Valid
+   (Matching_Term_List_Kind_Valid
       (W_Matching_Term_Unchecked_List));
 
    subtype W_Binding_Term_Unchecked_OId is
      W_Binding_Term_Opaque_OId with
    Predicate =>
-     (Binding_Term_OId_Kind_Valid
+   (Binding_Term_OId_Kind_Valid
       (W_Binding_Term_Unchecked_OId));
 
    subtype W_Binding_Term_Unchecked_OList is
      W_Binding_Term_Opaque_OList with
    Predicate =>
-     (Binding_Term_OList_Kind_Valid
+   (Binding_Term_OList_Kind_Valid
       (W_Binding_Term_Unchecked_OList));
 
    subtype W_Binding_Term_Unchecked_Id is
      W_Binding_Term_Opaque_Id with
    Predicate =>
-     (Binding_Term_Id_Kind_Valid
+   (Binding_Term_Id_Kind_Valid
       (W_Binding_Term_Unchecked_Id));
 
    subtype W_Binding_Term_Unchecked_List is
      W_Binding_Term_Opaque_List with
    Predicate =>
-     (Binding_Term_List_Kind_Valid
+   (Binding_Term_List_Kind_Valid
       (W_Binding_Term_Unchecked_List));
 
    subtype W_Protected_Term_Unchecked_OId is
      W_Protected_Term_Opaque_OId with
    Predicate =>
-     (Protected_Term_OId_Kind_Valid
+   (Protected_Term_OId_Kind_Valid
       (W_Protected_Term_Unchecked_OId));
 
    subtype W_Protected_Term_Unchecked_OList is
      W_Protected_Term_Opaque_OList with
    Predicate =>
-     (Protected_Term_OList_Kind_Valid
+   (Protected_Term_OList_Kind_Valid
       (W_Protected_Term_Unchecked_OList));
 
    subtype W_Protected_Term_Unchecked_Id is
      W_Protected_Term_Opaque_Id with
    Predicate =>
-     (Protected_Term_Id_Kind_Valid
+   (Protected_Term_Id_Kind_Valid
       (W_Protected_Term_Unchecked_Id));
 
    subtype W_Protected_Term_Unchecked_List is
      W_Protected_Term_Opaque_List with
    Predicate =>
-     (Protected_Term_List_Kind_Valid
+   (Protected_Term_List_Kind_Valid
       (W_Protected_Term_Unchecked_List));
 
    subtype W_Op_Add_Unchecked_OId is
      W_Op_Add_Opaque_OId with
    Predicate =>
-     (Op_Add_OId_Kind_Valid
+   (Op_Add_OId_Kind_Valid
       (W_Op_Add_Unchecked_OId));
 
    subtype W_Op_Add_Unchecked_OList is
      W_Op_Add_Opaque_OList with
    Predicate =>
-     (Op_Add_OList_Kind_Valid
+   (Op_Add_OList_Kind_Valid
       (W_Op_Add_Unchecked_OList));
 
    subtype W_Op_Add_Unchecked_Id is
      W_Op_Add_Opaque_Id with
    Predicate =>
-     (Op_Add_Id_Kind_Valid
+   (Op_Add_Id_Kind_Valid
       (W_Op_Add_Unchecked_Id));
 
    subtype W_Op_Add_Unchecked_List is
      W_Op_Add_Opaque_List with
    Predicate =>
-     (Op_Add_List_Kind_Valid
+   (Op_Add_List_Kind_Valid
       (W_Op_Add_Unchecked_List));
 
    subtype W_Op_Substract_Unchecked_OId is
      W_Op_Substract_Opaque_OId with
    Predicate =>
-     (Op_Substract_OId_Kind_Valid
+   (Op_Substract_OId_Kind_Valid
       (W_Op_Substract_Unchecked_OId));
 
    subtype W_Op_Substract_Unchecked_OList is
      W_Op_Substract_Opaque_OList with
    Predicate =>
-     (Op_Substract_OList_Kind_Valid
+   (Op_Substract_OList_Kind_Valid
       (W_Op_Substract_Unchecked_OList));
 
    subtype W_Op_Substract_Unchecked_Id is
      W_Op_Substract_Opaque_Id with
    Predicate =>
-     (Op_Substract_Id_Kind_Valid
+   (Op_Substract_Id_Kind_Valid
       (W_Op_Substract_Unchecked_Id));
 
    subtype W_Op_Substract_Unchecked_List is
      W_Op_Substract_Opaque_List with
    Predicate =>
-     (Op_Substract_List_Kind_Valid
+   (Op_Substract_List_Kind_Valid
       (W_Op_Substract_Unchecked_List));
 
    subtype W_Op_Multiply_Unchecked_OId is
      W_Op_Multiply_Opaque_OId with
    Predicate =>
-     (Op_Multiply_OId_Kind_Valid
+   (Op_Multiply_OId_Kind_Valid
       (W_Op_Multiply_Unchecked_OId));
 
    subtype W_Op_Multiply_Unchecked_OList is
      W_Op_Multiply_Opaque_OList with
    Predicate =>
-     (Op_Multiply_OList_Kind_Valid
+   (Op_Multiply_OList_Kind_Valid
       (W_Op_Multiply_Unchecked_OList));
 
    subtype W_Op_Multiply_Unchecked_Id is
      W_Op_Multiply_Opaque_Id with
    Predicate =>
-     (Op_Multiply_Id_Kind_Valid
+   (Op_Multiply_Id_Kind_Valid
       (W_Op_Multiply_Unchecked_Id));
 
    subtype W_Op_Multiply_Unchecked_List is
      W_Op_Multiply_Opaque_List with
    Predicate =>
-     (Op_Multiply_List_Kind_Valid
+   (Op_Multiply_List_Kind_Valid
       (W_Op_Multiply_Unchecked_List));
 
    subtype W_Op_Divide_Unchecked_OId is
      W_Op_Divide_Opaque_OId with
    Predicate =>
-     (Op_Divide_OId_Kind_Valid
+   (Op_Divide_OId_Kind_Valid
       (W_Op_Divide_Unchecked_OId));
 
    subtype W_Op_Divide_Unchecked_OList is
      W_Op_Divide_Opaque_OList with
    Predicate =>
-     (Op_Divide_OList_Kind_Valid
+   (Op_Divide_OList_Kind_Valid
       (W_Op_Divide_Unchecked_OList));
 
    subtype W_Op_Divide_Unchecked_Id is
      W_Op_Divide_Opaque_Id with
    Predicate =>
-     (Op_Divide_Id_Kind_Valid
+   (Op_Divide_Id_Kind_Valid
       (W_Op_Divide_Unchecked_Id));
 
    subtype W_Op_Divide_Unchecked_List is
      W_Op_Divide_Opaque_List with
    Predicate =>
-     (Op_Divide_List_Kind_Valid
+   (Op_Divide_List_Kind_Valid
       (W_Op_Divide_Unchecked_List));
 
    subtype W_Op_Modulo_Unchecked_OId is
      W_Op_Modulo_Opaque_OId with
    Predicate =>
-     (Op_Modulo_OId_Kind_Valid
+   (Op_Modulo_OId_Kind_Valid
       (W_Op_Modulo_Unchecked_OId));
 
    subtype W_Op_Modulo_Unchecked_OList is
      W_Op_Modulo_Opaque_OList with
    Predicate =>
-     (Op_Modulo_OList_Kind_Valid
+   (Op_Modulo_OList_Kind_Valid
       (W_Op_Modulo_Unchecked_OList));
 
    subtype W_Op_Modulo_Unchecked_Id is
      W_Op_Modulo_Opaque_Id with
    Predicate =>
-     (Op_Modulo_Id_Kind_Valid
+   (Op_Modulo_Id_Kind_Valid
       (W_Op_Modulo_Unchecked_Id));
 
    subtype W_Op_Modulo_Unchecked_List is
      W_Op_Modulo_Opaque_List with
    Predicate =>
-     (Op_Modulo_List_Kind_Valid
+   (Op_Modulo_List_Kind_Valid
       (W_Op_Modulo_Unchecked_List));
 
    subtype W_True_Literal_Pred_Unchecked_OId is
      W_True_Literal_Pred_Opaque_OId with
    Predicate =>
-     (True_Literal_Pred_OId_Kind_Valid
+   (True_Literal_Pred_OId_Kind_Valid
       (W_True_Literal_Pred_Unchecked_OId));
 
    subtype W_True_Literal_Pred_Unchecked_OList is
      W_True_Literal_Pred_Opaque_OList with
    Predicate =>
-     (True_Literal_Pred_OList_Kind_Valid
+   (True_Literal_Pred_OList_Kind_Valid
       (W_True_Literal_Pred_Unchecked_OList));
 
    subtype W_True_Literal_Pred_Unchecked_Id is
      W_True_Literal_Pred_Opaque_Id with
    Predicate =>
-     (True_Literal_Pred_Id_Kind_Valid
+   (True_Literal_Pred_Id_Kind_Valid
       (W_True_Literal_Pred_Unchecked_Id));
 
    subtype W_True_Literal_Pred_Unchecked_List is
      W_True_Literal_Pred_Opaque_List with
    Predicate =>
-     (True_Literal_Pred_List_Kind_Valid
+   (True_Literal_Pred_List_Kind_Valid
       (W_True_Literal_Pred_Unchecked_List));
 
    subtype W_False_Literal_Pred_Unchecked_OId is
      W_False_Literal_Pred_Opaque_OId with
    Predicate =>
-     (False_Literal_Pred_OId_Kind_Valid
+   (False_Literal_Pred_OId_Kind_Valid
       (W_False_Literal_Pred_Unchecked_OId));
 
    subtype W_False_Literal_Pred_Unchecked_OList is
      W_False_Literal_Pred_Opaque_OList with
    Predicate =>
-     (False_Literal_Pred_OList_Kind_Valid
+   (False_Literal_Pred_OList_Kind_Valid
       (W_False_Literal_Pred_Unchecked_OList));
 
    subtype W_False_Literal_Pred_Unchecked_Id is
      W_False_Literal_Pred_Opaque_Id with
    Predicate =>
-     (False_Literal_Pred_Id_Kind_Valid
+   (False_Literal_Pred_Id_Kind_Valid
       (W_False_Literal_Pred_Unchecked_Id));
 
    subtype W_False_Literal_Pred_Unchecked_List is
      W_False_Literal_Pred_Opaque_List with
    Predicate =>
-     (False_Literal_Pred_List_Kind_Valid
+   (False_Literal_Pred_List_Kind_Valid
       (W_False_Literal_Pred_Unchecked_List));
 
    subtype W_Predicate_Identifier_Unchecked_OId is
      W_Predicate_Identifier_Opaque_OId with
    Predicate =>
-     (Predicate_Identifier_OId_Kind_Valid
+   (Predicate_Identifier_OId_Kind_Valid
       (W_Predicate_Identifier_Unchecked_OId));
 
    subtype W_Predicate_Identifier_Unchecked_OList is
      W_Predicate_Identifier_Opaque_OList with
    Predicate =>
-     (Predicate_Identifier_OList_Kind_Valid
+   (Predicate_Identifier_OList_Kind_Valid
       (W_Predicate_Identifier_Unchecked_OList));
 
    subtype W_Predicate_Identifier_Unchecked_Id is
      W_Predicate_Identifier_Opaque_Id with
    Predicate =>
-     (Predicate_Identifier_Id_Kind_Valid
+   (Predicate_Identifier_Id_Kind_Valid
       (W_Predicate_Identifier_Unchecked_Id));
 
    subtype W_Predicate_Identifier_Unchecked_List is
      W_Predicate_Identifier_Opaque_List with
    Predicate =>
-     (Predicate_Identifier_List_Kind_Valid
+   (Predicate_Identifier_List_Kind_Valid
       (W_Predicate_Identifier_Unchecked_List));
 
    subtype W_Predicate_Instance_Unchecked_OId is
      W_Predicate_Instance_Opaque_OId with
    Predicate =>
-     (Predicate_Instance_OId_Kind_Valid
+   (Predicate_Instance_OId_Kind_Valid
       (W_Predicate_Instance_Unchecked_OId));
 
    subtype W_Predicate_Instance_Unchecked_OList is
      W_Predicate_Instance_Opaque_OList with
    Predicate =>
-     (Predicate_Instance_OList_Kind_Valid
+   (Predicate_Instance_OList_Kind_Valid
       (W_Predicate_Instance_Unchecked_OList));
 
    subtype W_Predicate_Instance_Unchecked_Id is
      W_Predicate_Instance_Opaque_Id with
    Predicate =>
-     (Predicate_Instance_Id_Kind_Valid
+   (Predicate_Instance_Id_Kind_Valid
       (W_Predicate_Instance_Unchecked_Id));
 
    subtype W_Predicate_Instance_Unchecked_List is
      W_Predicate_Instance_Opaque_List with
    Predicate =>
-     (Predicate_Instance_List_Kind_Valid
+   (Predicate_Instance_List_Kind_Valid
       (W_Predicate_Instance_Unchecked_List));
 
    subtype W_Related_Terms_Unchecked_OId is
      W_Related_Terms_Opaque_OId with
    Predicate =>
-     (Related_Terms_OId_Kind_Valid
+   (Related_Terms_OId_Kind_Valid
       (W_Related_Terms_Unchecked_OId));
 
    subtype W_Related_Terms_Unchecked_OList is
      W_Related_Terms_Opaque_OList with
    Predicate =>
-     (Related_Terms_OList_Kind_Valid
+   (Related_Terms_OList_Kind_Valid
       (W_Related_Terms_Unchecked_OList));
 
    subtype W_Related_Terms_Unchecked_Id is
      W_Related_Terms_Opaque_Id with
    Predicate =>
-     (Related_Terms_Id_Kind_Valid
+   (Related_Terms_Id_Kind_Valid
       (W_Related_Terms_Unchecked_Id));
 
    subtype W_Related_Terms_Unchecked_List is
      W_Related_Terms_Opaque_List with
    Predicate =>
-     (Related_Terms_List_Kind_Valid
+   (Related_Terms_List_Kind_Valid
       (W_Related_Terms_Unchecked_List));
 
    subtype W_Implication_Unchecked_OId is
      W_Implication_Opaque_OId with
    Predicate =>
-     (Implication_OId_Kind_Valid
+   (Implication_OId_Kind_Valid
       (W_Implication_Unchecked_OId));
 
    subtype W_Implication_Unchecked_OList is
      W_Implication_Opaque_OList with
    Predicate =>
-     (Implication_OList_Kind_Valid
+   (Implication_OList_Kind_Valid
       (W_Implication_Unchecked_OList));
 
    subtype W_Implication_Unchecked_Id is
      W_Implication_Opaque_Id with
    Predicate =>
-     (Implication_Id_Kind_Valid
+   (Implication_Id_Kind_Valid
       (W_Implication_Unchecked_Id));
 
    subtype W_Implication_Unchecked_List is
      W_Implication_Opaque_List with
    Predicate =>
-     (Implication_List_Kind_Valid
+   (Implication_List_Kind_Valid
       (W_Implication_Unchecked_List));
 
    subtype W_Equivalence_Unchecked_OId is
      W_Equivalence_Opaque_OId with
    Predicate =>
-     (Equivalence_OId_Kind_Valid
+   (Equivalence_OId_Kind_Valid
       (W_Equivalence_Unchecked_OId));
 
    subtype W_Equivalence_Unchecked_OList is
      W_Equivalence_Opaque_OList with
    Predicate =>
-     (Equivalence_OList_Kind_Valid
+   (Equivalence_OList_Kind_Valid
       (W_Equivalence_Unchecked_OList));
 
    subtype W_Equivalence_Unchecked_Id is
      W_Equivalence_Opaque_Id with
    Predicate =>
-     (Equivalence_Id_Kind_Valid
+   (Equivalence_Id_Kind_Valid
       (W_Equivalence_Unchecked_Id));
 
    subtype W_Equivalence_Unchecked_List is
      W_Equivalence_Opaque_List with
    Predicate =>
-     (Equivalence_List_Kind_Valid
+   (Equivalence_List_Kind_Valid
       (W_Equivalence_Unchecked_List));
 
    subtype W_Disjunction_Unchecked_OId is
      W_Disjunction_Opaque_OId with
    Predicate =>
-     (Disjunction_OId_Kind_Valid
+   (Disjunction_OId_Kind_Valid
       (W_Disjunction_Unchecked_OId));
 
    subtype W_Disjunction_Unchecked_OList is
      W_Disjunction_Opaque_OList with
    Predicate =>
-     (Disjunction_OList_Kind_Valid
+   (Disjunction_OList_Kind_Valid
       (W_Disjunction_Unchecked_OList));
 
    subtype W_Disjunction_Unchecked_Id is
      W_Disjunction_Opaque_Id with
    Predicate =>
-     (Disjunction_Id_Kind_Valid
+   (Disjunction_Id_Kind_Valid
       (W_Disjunction_Unchecked_Id));
 
    subtype W_Disjunction_Unchecked_List is
      W_Disjunction_Opaque_List with
    Predicate =>
-     (Disjunction_List_Kind_Valid
+   (Disjunction_List_Kind_Valid
       (W_Disjunction_Unchecked_List));
 
    subtype W_Conjunction_Unchecked_OId is
      W_Conjunction_Opaque_OId with
    Predicate =>
-     (Conjunction_OId_Kind_Valid
+   (Conjunction_OId_Kind_Valid
       (W_Conjunction_Unchecked_OId));
 
    subtype W_Conjunction_Unchecked_OList is
      W_Conjunction_Opaque_OList with
    Predicate =>
-     (Conjunction_OList_Kind_Valid
+   (Conjunction_OList_Kind_Valid
       (W_Conjunction_Unchecked_OList));
 
    subtype W_Conjunction_Unchecked_Id is
      W_Conjunction_Opaque_Id with
    Predicate =>
-     (Conjunction_Id_Kind_Valid
+   (Conjunction_Id_Kind_Valid
       (W_Conjunction_Unchecked_Id));
 
    subtype W_Conjunction_Unchecked_List is
      W_Conjunction_Opaque_List with
    Predicate =>
-     (Conjunction_List_Kind_Valid
+   (Conjunction_List_Kind_Valid
       (W_Conjunction_Unchecked_List));
 
    subtype W_Negation_Unchecked_OId is
      W_Negation_Opaque_OId with
    Predicate =>
-     (Negation_OId_Kind_Valid
+   (Negation_OId_Kind_Valid
       (W_Negation_Unchecked_OId));
 
    subtype W_Negation_Unchecked_OList is
      W_Negation_Opaque_OList with
    Predicate =>
-     (Negation_OList_Kind_Valid
+   (Negation_OList_Kind_Valid
       (W_Negation_Unchecked_OList));
 
    subtype W_Negation_Unchecked_Id is
      W_Negation_Opaque_Id with
    Predicate =>
-     (Negation_Id_Kind_Valid
+   (Negation_Id_Kind_Valid
       (W_Negation_Unchecked_Id));
 
    subtype W_Negation_Unchecked_List is
      W_Negation_Opaque_List with
    Predicate =>
-     (Negation_List_Kind_Valid
+   (Negation_List_Kind_Valid
       (W_Negation_Unchecked_List));
 
    subtype W_Conditional_Pred_Unchecked_OId is
      W_Conditional_Pred_Opaque_OId with
    Predicate =>
-     (Conditional_Pred_OId_Kind_Valid
+   (Conditional_Pred_OId_Kind_Valid
       (W_Conditional_Pred_Unchecked_OId));
 
    subtype W_Conditional_Pred_Unchecked_OList is
      W_Conditional_Pred_Opaque_OList with
    Predicate =>
-     (Conditional_Pred_OList_Kind_Valid
+   (Conditional_Pred_OList_Kind_Valid
       (W_Conditional_Pred_Unchecked_OList));
 
    subtype W_Conditional_Pred_Unchecked_Id is
      W_Conditional_Pred_Opaque_Id with
    Predicate =>
-     (Conditional_Pred_Id_Kind_Valid
+   (Conditional_Pred_Id_Kind_Valid
       (W_Conditional_Pred_Unchecked_Id));
 
    subtype W_Conditional_Pred_Unchecked_List is
      W_Conditional_Pred_Opaque_List with
    Predicate =>
-     (Conditional_Pred_List_Kind_Valid
+   (Conditional_Pred_List_Kind_Valid
       (W_Conditional_Pred_Unchecked_List));
 
    subtype W_Binding_Pred_Unchecked_OId is
      W_Binding_Pred_Opaque_OId with
    Predicate =>
-     (Binding_Pred_OId_Kind_Valid
+   (Binding_Pred_OId_Kind_Valid
       (W_Binding_Pred_Unchecked_OId));
 
    subtype W_Binding_Pred_Unchecked_OList is
      W_Binding_Pred_Opaque_OList with
    Predicate =>
-     (Binding_Pred_OList_Kind_Valid
+   (Binding_Pred_OList_Kind_Valid
       (W_Binding_Pred_Unchecked_OList));
 
    subtype W_Binding_Pred_Unchecked_Id is
      W_Binding_Pred_Opaque_Id with
    Predicate =>
-     (Binding_Pred_Id_Kind_Valid
+   (Binding_Pred_Id_Kind_Valid
       (W_Binding_Pred_Unchecked_Id));
 
    subtype W_Binding_Pred_Unchecked_List is
      W_Binding_Pred_Opaque_List with
    Predicate =>
-     (Binding_Pred_List_Kind_Valid
+   (Binding_Pred_List_Kind_Valid
       (W_Binding_Pred_Unchecked_List));
 
    subtype W_Universal_Quantif_Unchecked_OId is
      W_Universal_Quantif_Opaque_OId with
    Predicate =>
-     (Universal_Quantif_OId_Kind_Valid
+   (Universal_Quantif_OId_Kind_Valid
       (W_Universal_Quantif_Unchecked_OId));
 
    subtype W_Universal_Quantif_Unchecked_OList is
      W_Universal_Quantif_Opaque_OList with
    Predicate =>
-     (Universal_Quantif_OList_Kind_Valid
+   (Universal_Quantif_OList_Kind_Valid
       (W_Universal_Quantif_Unchecked_OList));
 
    subtype W_Universal_Quantif_Unchecked_Id is
      W_Universal_Quantif_Opaque_Id with
    Predicate =>
-     (Universal_Quantif_Id_Kind_Valid
+   (Universal_Quantif_Id_Kind_Valid
       (W_Universal_Quantif_Unchecked_Id));
 
    subtype W_Universal_Quantif_Unchecked_List is
      W_Universal_Quantif_Opaque_List with
    Predicate =>
-     (Universal_Quantif_List_Kind_Valid
+   (Universal_Quantif_List_Kind_Valid
       (W_Universal_Quantif_Unchecked_List));
 
    subtype W_Existential_Quantif_Unchecked_OId is
      W_Existential_Quantif_Opaque_OId with
    Predicate =>
-     (Existential_Quantif_OId_Kind_Valid
+   (Existential_Quantif_OId_Kind_Valid
       (W_Existential_Quantif_Unchecked_OId));
 
    subtype W_Existential_Quantif_Unchecked_OList is
      W_Existential_Quantif_Opaque_OList with
    Predicate =>
-     (Existential_Quantif_OList_Kind_Valid
+   (Existential_Quantif_OList_Kind_Valid
       (W_Existential_Quantif_Unchecked_OList));
 
    subtype W_Existential_Quantif_Unchecked_Id is
      W_Existential_Quantif_Opaque_Id with
    Predicate =>
-     (Existential_Quantif_Id_Kind_Valid
+   (Existential_Quantif_Id_Kind_Valid
       (W_Existential_Quantif_Unchecked_Id));
 
    subtype W_Existential_Quantif_Unchecked_List is
      W_Existential_Quantif_Opaque_List with
    Predicate =>
-     (Existential_Quantif_List_Kind_Valid
+   (Existential_Quantif_List_Kind_Valid
       (W_Existential_Quantif_Unchecked_List));
 
    subtype W_Named_Predicate_Unchecked_OId is
      W_Named_Predicate_Opaque_OId with
    Predicate =>
-     (Named_Predicate_OId_Kind_Valid
+   (Named_Predicate_OId_Kind_Valid
       (W_Named_Predicate_Unchecked_OId));
 
    subtype W_Named_Predicate_Unchecked_OList is
      W_Named_Predicate_Opaque_OList with
    Predicate =>
-     (Named_Predicate_OList_Kind_Valid
+   (Named_Predicate_OList_Kind_Valid
       (W_Named_Predicate_Unchecked_OList));
 
    subtype W_Named_Predicate_Unchecked_Id is
      W_Named_Predicate_Opaque_Id with
    Predicate =>
-     (Named_Predicate_Id_Kind_Valid
+   (Named_Predicate_Id_Kind_Valid
       (W_Named_Predicate_Unchecked_Id));
 
    subtype W_Named_Predicate_Unchecked_List is
      W_Named_Predicate_Opaque_List with
    Predicate =>
-     (Named_Predicate_List_Kind_Valid
+   (Named_Predicate_List_Kind_Valid
       (W_Named_Predicate_Unchecked_List));
 
    subtype W_Protected_Predicate_Unchecked_OId is
      W_Protected_Predicate_Opaque_OId with
    Predicate =>
-     (Protected_Predicate_OId_Kind_Valid
+   (Protected_Predicate_OId_Kind_Valid
       (W_Protected_Predicate_Unchecked_OId));
 
    subtype W_Protected_Predicate_Unchecked_OList is
      W_Protected_Predicate_Opaque_OList with
    Predicate =>
-     (Protected_Predicate_OList_Kind_Valid
+   (Protected_Predicate_OList_Kind_Valid
       (W_Protected_Predicate_Unchecked_OList));
 
    subtype W_Protected_Predicate_Unchecked_Id is
      W_Protected_Predicate_Opaque_Id with
    Predicate =>
-     (Protected_Predicate_Id_Kind_Valid
+   (Protected_Predicate_Id_Kind_Valid
       (W_Protected_Predicate_Unchecked_Id));
 
    subtype W_Protected_Predicate_Unchecked_List is
      W_Protected_Predicate_Opaque_List with
    Predicate =>
-     (Protected_Predicate_List_Kind_Valid
+   (Protected_Predicate_List_Kind_Valid
       (W_Protected_Predicate_Unchecked_List));
 
    subtype W_Pattern_Unchecked_OId is
      W_Pattern_Opaque_OId with
    Predicate =>
-     (Pattern_OId_Kind_Valid
+   (Pattern_OId_Kind_Valid
       (W_Pattern_Unchecked_OId));
 
    subtype W_Pattern_Unchecked_OList is
      W_Pattern_Opaque_OList with
    Predicate =>
-     (Pattern_OList_Kind_Valid
+   (Pattern_OList_Kind_Valid
       (W_Pattern_Unchecked_OList));
 
    subtype W_Pattern_Unchecked_Id is
      W_Pattern_Opaque_Id with
    Predicate =>
-     (Pattern_Id_Kind_Valid
+   (Pattern_Id_Kind_Valid
       (W_Pattern_Unchecked_Id));
 
    subtype W_Pattern_Unchecked_List is
      W_Pattern_Opaque_List with
    Predicate =>
-     (Pattern_List_Kind_Valid
+   (Pattern_List_Kind_Valid
       (W_Pattern_Unchecked_List));
 
    subtype W_Match_Case_Unchecked_OId is
      W_Match_Case_Opaque_OId with
    Predicate =>
-     (Match_Case_OId_Kind_Valid
+   (Match_Case_OId_Kind_Valid
       (W_Match_Case_Unchecked_OId));
 
    subtype W_Match_Case_Unchecked_OList is
      W_Match_Case_Opaque_OList with
    Predicate =>
-     (Match_Case_OList_Kind_Valid
+   (Match_Case_OList_Kind_Valid
       (W_Match_Case_Unchecked_OList));
 
    subtype W_Match_Case_Unchecked_Id is
      W_Match_Case_Opaque_Id with
    Predicate =>
-     (Match_Case_Id_Kind_Valid
+   (Match_Case_Id_Kind_Valid
       (W_Match_Case_Unchecked_Id));
 
    subtype W_Match_Case_Unchecked_List is
      W_Match_Case_Opaque_List with
    Predicate =>
-     (Match_Case_List_Kind_Valid
+   (Match_Case_List_Kind_Valid
       (W_Match_Case_Unchecked_List));
 
    subtype W_Triggers_Unchecked_OId is
      W_Triggers_Opaque_OId with
    Predicate =>
-     (Triggers_OId_Kind_Valid
+   (Triggers_OId_Kind_Valid
       (W_Triggers_Unchecked_OId));
 
    subtype W_Triggers_Unchecked_OList is
      W_Triggers_Opaque_OList with
    Predicate =>
-     (Triggers_OList_Kind_Valid
+   (Triggers_OList_Kind_Valid
       (W_Triggers_Unchecked_OList));
 
    subtype W_Triggers_Unchecked_Id is
      W_Triggers_Opaque_Id with
    Predicate =>
-     (Triggers_Id_Kind_Valid
+   (Triggers_Id_Kind_Valid
       (W_Triggers_Unchecked_Id));
 
    subtype W_Triggers_Unchecked_List is
      W_Triggers_Opaque_List with
    Predicate =>
-     (Triggers_List_Kind_Valid
+   (Triggers_List_Kind_Valid
       (W_Triggers_Unchecked_List));
 
    subtype W_Trigger_Unchecked_OId is
      W_Trigger_Opaque_OId with
    Predicate =>
-     (Trigger_OId_Kind_Valid
+   (Trigger_OId_Kind_Valid
       (W_Trigger_Unchecked_OId));
 
    subtype W_Trigger_Unchecked_OList is
      W_Trigger_Opaque_OList with
    Predicate =>
-     (Trigger_OList_Kind_Valid
+   (Trigger_OList_Kind_Valid
       (W_Trigger_Unchecked_OList));
 
    subtype W_Trigger_Unchecked_Id is
      W_Trigger_Opaque_Id with
    Predicate =>
-     (Trigger_Id_Kind_Valid
+   (Trigger_Id_Kind_Valid
       (W_Trigger_Unchecked_Id));
 
    subtype W_Trigger_Unchecked_List is
      W_Trigger_Opaque_List with
    Predicate =>
-     (Trigger_List_Kind_Valid
+   (Trigger_List_Kind_Valid
       (W_Trigger_Unchecked_List));
 
    subtype W_Rel_Eq_Unchecked_OId is
      W_Rel_Eq_Opaque_OId with
    Predicate =>
-     (Rel_Eq_OId_Kind_Valid
+   (Rel_Eq_OId_Kind_Valid
       (W_Rel_Eq_Unchecked_OId));
 
    subtype W_Rel_Eq_Unchecked_OList is
      W_Rel_Eq_Opaque_OList with
    Predicate =>
-     (Rel_Eq_OList_Kind_Valid
+   (Rel_Eq_OList_Kind_Valid
       (W_Rel_Eq_Unchecked_OList));
 
    subtype W_Rel_Eq_Unchecked_Id is
      W_Rel_Eq_Opaque_Id with
    Predicate =>
-     (Rel_Eq_Id_Kind_Valid
+   (Rel_Eq_Id_Kind_Valid
       (W_Rel_Eq_Unchecked_Id));
 
    subtype W_Rel_Eq_Unchecked_List is
      W_Rel_Eq_Opaque_List with
    Predicate =>
-     (Rel_Eq_List_Kind_Valid
+   (Rel_Eq_List_Kind_Valid
       (W_Rel_Eq_Unchecked_List));
 
    subtype W_Rel_Ne_Unchecked_OId is
      W_Rel_Ne_Opaque_OId with
    Predicate =>
-     (Rel_Ne_OId_Kind_Valid
+   (Rel_Ne_OId_Kind_Valid
       (W_Rel_Ne_Unchecked_OId));
 
    subtype W_Rel_Ne_Unchecked_OList is
      W_Rel_Ne_Opaque_OList with
    Predicate =>
-     (Rel_Ne_OList_Kind_Valid
+   (Rel_Ne_OList_Kind_Valid
       (W_Rel_Ne_Unchecked_OList));
 
    subtype W_Rel_Ne_Unchecked_Id is
      W_Rel_Ne_Opaque_Id with
    Predicate =>
-     (Rel_Ne_Id_Kind_Valid
+   (Rel_Ne_Id_Kind_Valid
       (W_Rel_Ne_Unchecked_Id));
 
    subtype W_Rel_Ne_Unchecked_List is
      W_Rel_Ne_Opaque_List with
    Predicate =>
-     (Rel_Ne_List_Kind_Valid
+   (Rel_Ne_List_Kind_Valid
       (W_Rel_Ne_Unchecked_List));
 
    subtype W_Rel_Lt_Unchecked_OId is
      W_Rel_Lt_Opaque_OId with
    Predicate =>
-     (Rel_Lt_OId_Kind_Valid
+   (Rel_Lt_OId_Kind_Valid
       (W_Rel_Lt_Unchecked_OId));
 
    subtype W_Rel_Lt_Unchecked_OList is
      W_Rel_Lt_Opaque_OList with
    Predicate =>
-     (Rel_Lt_OList_Kind_Valid
+   (Rel_Lt_OList_Kind_Valid
       (W_Rel_Lt_Unchecked_OList));
 
    subtype W_Rel_Lt_Unchecked_Id is
      W_Rel_Lt_Opaque_Id with
    Predicate =>
-     (Rel_Lt_Id_Kind_Valid
+   (Rel_Lt_Id_Kind_Valid
       (W_Rel_Lt_Unchecked_Id));
 
    subtype W_Rel_Lt_Unchecked_List is
      W_Rel_Lt_Opaque_List with
    Predicate =>
-     (Rel_Lt_List_Kind_Valid
+   (Rel_Lt_List_Kind_Valid
       (W_Rel_Lt_Unchecked_List));
 
    subtype W_Rel_Le_Unchecked_OId is
      W_Rel_Le_Opaque_OId with
    Predicate =>
-     (Rel_Le_OId_Kind_Valid
+   (Rel_Le_OId_Kind_Valid
       (W_Rel_Le_Unchecked_OId));
 
    subtype W_Rel_Le_Unchecked_OList is
      W_Rel_Le_Opaque_OList with
    Predicate =>
-     (Rel_Le_OList_Kind_Valid
+   (Rel_Le_OList_Kind_Valid
       (W_Rel_Le_Unchecked_OList));
 
    subtype W_Rel_Le_Unchecked_Id is
      W_Rel_Le_Opaque_Id with
    Predicate =>
-     (Rel_Le_Id_Kind_Valid
+   (Rel_Le_Id_Kind_Valid
       (W_Rel_Le_Unchecked_Id));
 
    subtype W_Rel_Le_Unchecked_List is
      W_Rel_Le_Opaque_List with
    Predicate =>
-     (Rel_Le_List_Kind_Valid
+   (Rel_Le_List_Kind_Valid
       (W_Rel_Le_Unchecked_List));
 
    subtype W_Rel_Gt_Unchecked_OId is
      W_Rel_Gt_Opaque_OId with
    Predicate =>
-     (Rel_Gt_OId_Kind_Valid
+   (Rel_Gt_OId_Kind_Valid
       (W_Rel_Gt_Unchecked_OId));
 
    subtype W_Rel_Gt_Unchecked_OList is
      W_Rel_Gt_Opaque_OList with
    Predicate =>
-     (Rel_Gt_OList_Kind_Valid
+   (Rel_Gt_OList_Kind_Valid
       (W_Rel_Gt_Unchecked_OList));
 
    subtype W_Rel_Gt_Unchecked_Id is
      W_Rel_Gt_Opaque_Id with
    Predicate =>
-     (Rel_Gt_Id_Kind_Valid
+   (Rel_Gt_Id_Kind_Valid
       (W_Rel_Gt_Unchecked_Id));
 
    subtype W_Rel_Gt_Unchecked_List is
      W_Rel_Gt_Opaque_List with
    Predicate =>
-     (Rel_Gt_List_Kind_Valid
+   (Rel_Gt_List_Kind_Valid
       (W_Rel_Gt_Unchecked_List));
 
    subtype W_Rel_Ge_Unchecked_OId is
      W_Rel_Ge_Opaque_OId with
    Predicate =>
-     (Rel_Ge_OId_Kind_Valid
+   (Rel_Ge_OId_Kind_Valid
       (W_Rel_Ge_Unchecked_OId));
 
    subtype W_Rel_Ge_Unchecked_OList is
      W_Rel_Ge_Opaque_OList with
    Predicate =>
-     (Rel_Ge_OList_Kind_Valid
+   (Rel_Ge_OList_Kind_Valid
       (W_Rel_Ge_Unchecked_OList));
 
    subtype W_Rel_Ge_Unchecked_Id is
      W_Rel_Ge_Opaque_Id with
    Predicate =>
-     (Rel_Ge_Id_Kind_Valid
+   (Rel_Ge_Id_Kind_Valid
       (W_Rel_Ge_Unchecked_Id));
 
    subtype W_Rel_Ge_Unchecked_List is
      W_Rel_Ge_Opaque_List with
    Predicate =>
-     (Rel_Ge_List_Kind_Valid
+   (Rel_Ge_List_Kind_Valid
       (W_Rel_Ge_Unchecked_List));
 
    subtype W_Type_Unchecked_OId is
      W_Type_Opaque_OId with
    Predicate =>
-     (Type_OId_Kind_Valid
+   (Type_OId_Kind_Valid
       (W_Type_Unchecked_OId));
 
    subtype W_Type_Unchecked_OList is
      W_Type_Opaque_OList with
    Predicate =>
-     (Type_OList_Kind_Valid
+   (Type_OList_Kind_Valid
       (W_Type_Unchecked_OList));
 
    subtype W_Type_Unchecked_Id is
      W_Type_Opaque_Id with
    Predicate =>
-     (Type_Id_Kind_Valid
+   (Type_Id_Kind_Valid
       (W_Type_Unchecked_Id));
 
    subtype W_Type_Unchecked_List is
      W_Type_Opaque_List with
    Predicate =>
-     (Type_List_Kind_Valid
+   (Type_List_Kind_Valid
       (W_Type_Unchecked_List));
 
    subtype W_Logic_Unchecked_OId is
      W_Logic_Opaque_OId with
    Predicate =>
-     (Logic_OId_Kind_Valid
+   (Logic_OId_Kind_Valid
       (W_Logic_Unchecked_OId));
 
    subtype W_Logic_Unchecked_OList is
      W_Logic_Opaque_OList with
    Predicate =>
-     (Logic_OList_Kind_Valid
+   (Logic_OList_Kind_Valid
       (W_Logic_Unchecked_OList));
 
    subtype W_Logic_Unchecked_Id is
      W_Logic_Opaque_Id with
    Predicate =>
-     (Logic_Id_Kind_Valid
+   (Logic_Id_Kind_Valid
       (W_Logic_Unchecked_Id));
 
    subtype W_Logic_Unchecked_List is
      W_Logic_Opaque_List with
    Predicate =>
-     (Logic_List_Kind_Valid
+   (Logic_List_Kind_Valid
       (W_Logic_Unchecked_List));
 
    subtype W_Function_Unchecked_OId is
      W_Function_Opaque_OId with
    Predicate =>
-     (Function_OId_Kind_Valid
+   (Function_OId_Kind_Valid
       (W_Function_Unchecked_OId));
 
    subtype W_Function_Unchecked_OList is
      W_Function_Opaque_OList with
    Predicate =>
-     (Function_OList_Kind_Valid
+   (Function_OList_Kind_Valid
       (W_Function_Unchecked_OList));
 
    subtype W_Function_Unchecked_Id is
      W_Function_Opaque_Id with
    Predicate =>
-     (Function_Id_Kind_Valid
+   (Function_Id_Kind_Valid
       (W_Function_Unchecked_Id));
 
    subtype W_Function_Unchecked_List is
      W_Function_Opaque_List with
    Predicate =>
-     (Function_List_Kind_Valid
+   (Function_List_Kind_Valid
       (W_Function_Unchecked_List));
 
    subtype W_Predicate_Definition_Unchecked_OId is
      W_Predicate_Definition_Opaque_OId with
    Predicate =>
-     (Predicate_Definition_OId_Kind_Valid
+   (Predicate_Definition_OId_Kind_Valid
       (W_Predicate_Definition_Unchecked_OId));
 
    subtype W_Predicate_Definition_Unchecked_OList is
      W_Predicate_Definition_Opaque_OList with
    Predicate =>
-     (Predicate_Definition_OList_Kind_Valid
+   (Predicate_Definition_OList_Kind_Valid
       (W_Predicate_Definition_Unchecked_OList));
 
    subtype W_Predicate_Definition_Unchecked_Id is
      W_Predicate_Definition_Opaque_Id with
    Predicate =>
-     (Predicate_Definition_Id_Kind_Valid
+   (Predicate_Definition_Id_Kind_Valid
       (W_Predicate_Definition_Unchecked_Id));
 
    subtype W_Predicate_Definition_Unchecked_List is
      W_Predicate_Definition_Opaque_List with
    Predicate =>
-     (Predicate_Definition_List_Kind_Valid
+   (Predicate_Definition_List_Kind_Valid
       (W_Predicate_Definition_Unchecked_List));
 
    subtype W_Inductive_Unchecked_OId is
      W_Inductive_Opaque_OId with
    Predicate =>
-     (Inductive_OId_Kind_Valid
+   (Inductive_OId_Kind_Valid
       (W_Inductive_Unchecked_OId));
 
    subtype W_Inductive_Unchecked_OList is
      W_Inductive_Opaque_OList with
    Predicate =>
-     (Inductive_OList_Kind_Valid
+   (Inductive_OList_Kind_Valid
       (W_Inductive_Unchecked_OList));
 
    subtype W_Inductive_Unchecked_Id is
      W_Inductive_Opaque_Id with
    Predicate =>
-     (Inductive_Id_Kind_Valid
+   (Inductive_Id_Kind_Valid
       (W_Inductive_Unchecked_Id));
 
    subtype W_Inductive_Unchecked_List is
      W_Inductive_Opaque_List with
    Predicate =>
-     (Inductive_List_Kind_Valid
+   (Inductive_List_Kind_Valid
       (W_Inductive_Unchecked_List));
 
    subtype W_Axiom_Unchecked_OId is
      W_Axiom_Opaque_OId with
    Predicate =>
-     (Axiom_OId_Kind_Valid
+   (Axiom_OId_Kind_Valid
       (W_Axiom_Unchecked_OId));
 
    subtype W_Axiom_Unchecked_OList is
      W_Axiom_Opaque_OList with
    Predicate =>
-     (Axiom_OList_Kind_Valid
+   (Axiom_OList_Kind_Valid
       (W_Axiom_Unchecked_OList));
 
    subtype W_Axiom_Unchecked_Id is
      W_Axiom_Opaque_Id with
    Predicate =>
-     (Axiom_Id_Kind_Valid
+   (Axiom_Id_Kind_Valid
       (W_Axiom_Unchecked_Id));
 
    subtype W_Axiom_Unchecked_List is
      W_Axiom_Opaque_List with
    Predicate =>
-     (Axiom_List_Kind_Valid
+   (Axiom_List_Kind_Valid
       (W_Axiom_Unchecked_List));
 
    subtype W_Goal_Unchecked_OId is
      W_Goal_Opaque_OId with
    Predicate =>
-     (Goal_OId_Kind_Valid
+   (Goal_OId_Kind_Valid
       (W_Goal_Unchecked_OId));
 
    subtype W_Goal_Unchecked_OList is
      W_Goal_Opaque_OList with
    Predicate =>
-     (Goal_OList_Kind_Valid
+   (Goal_OList_Kind_Valid
       (W_Goal_Unchecked_OList));
 
    subtype W_Goal_Unchecked_Id is
      W_Goal_Opaque_Id with
    Predicate =>
-     (Goal_Id_Kind_Valid
+   (Goal_Id_Kind_Valid
       (W_Goal_Unchecked_Id));
 
    subtype W_Goal_Unchecked_List is
      W_Goal_Opaque_List with
    Predicate =>
-     (Goal_List_Kind_Valid
+   (Goal_List_Kind_Valid
       (W_Goal_Unchecked_List));
 
    subtype W_External_Unchecked_OId is
      W_External_Opaque_OId with
    Predicate =>
-     (External_OId_Kind_Valid
+   (External_OId_Kind_Valid
       (W_External_Unchecked_OId));
 
    subtype W_External_Unchecked_OList is
      W_External_Opaque_OList with
    Predicate =>
-     (External_OList_Kind_Valid
+   (External_OList_Kind_Valid
       (W_External_Unchecked_OList));
 
    subtype W_External_Unchecked_Id is
      W_External_Opaque_Id with
    Predicate =>
-     (External_Id_Kind_Valid
+   (External_Id_Kind_Valid
       (W_External_Unchecked_Id));
 
    subtype W_External_Unchecked_List is
      W_External_Opaque_List with
    Predicate =>
-     (External_List_Kind_Valid
+   (External_List_Kind_Valid
       (W_External_Unchecked_List));
 
    subtype W_Logic_Type_Unchecked_OId is
      W_Logic_Type_Opaque_OId with
    Predicate =>
-     (Logic_Type_OId_Kind_Valid
+   (Logic_Type_OId_Kind_Valid
       (W_Logic_Type_Unchecked_OId));
 
    subtype W_Logic_Type_Unchecked_OList is
      W_Logic_Type_Opaque_OList with
    Predicate =>
-     (Logic_Type_OList_Kind_Valid
+   (Logic_Type_OList_Kind_Valid
       (W_Logic_Type_Unchecked_OList));
 
    subtype W_Logic_Type_Unchecked_Id is
      W_Logic_Type_Opaque_Id with
    Predicate =>
-     (Logic_Type_Id_Kind_Valid
+   (Logic_Type_Id_Kind_Valid
       (W_Logic_Type_Unchecked_Id));
 
    subtype W_Logic_Type_Unchecked_List is
      W_Logic_Type_Opaque_List with
    Predicate =>
-     (Logic_Type_List_Kind_Valid
+   (Logic_Type_List_Kind_Valid
       (W_Logic_Type_Unchecked_List));
 
    subtype W_Logic_Binder_Unchecked_OId is
      W_Logic_Binder_Opaque_OId with
    Predicate =>
-     (Logic_Binder_OId_Kind_Valid
+   (Logic_Binder_OId_Kind_Valid
       (W_Logic_Binder_Unchecked_OId));
 
    subtype W_Logic_Binder_Unchecked_OList is
      W_Logic_Binder_Opaque_OList with
    Predicate =>
-     (Logic_Binder_OList_Kind_Valid
+   (Logic_Binder_OList_Kind_Valid
       (W_Logic_Binder_Unchecked_OList));
 
    subtype W_Logic_Binder_Unchecked_Id is
      W_Logic_Binder_Opaque_Id with
    Predicate =>
-     (Logic_Binder_Id_Kind_Valid
+   (Logic_Binder_Id_Kind_Valid
       (W_Logic_Binder_Unchecked_Id));
 
    subtype W_Logic_Binder_Unchecked_List is
      W_Logic_Binder_Opaque_List with
    Predicate =>
-     (Logic_Binder_List_Kind_Valid
+   (Logic_Binder_List_Kind_Valid
       (W_Logic_Binder_Unchecked_List));
 
    subtype W_Inductive_Case_Unchecked_OId is
      W_Inductive_Case_Opaque_OId with
    Predicate =>
-     (Inductive_Case_OId_Kind_Valid
+   (Inductive_Case_OId_Kind_Valid
       (W_Inductive_Case_Unchecked_OId));
 
    subtype W_Inductive_Case_Unchecked_OList is
      W_Inductive_Case_Opaque_OList with
    Predicate =>
-     (Inductive_Case_OList_Kind_Valid
+   (Inductive_Case_OList_Kind_Valid
       (W_Inductive_Case_Unchecked_OList));
 
    subtype W_Inductive_Case_Unchecked_Id is
      W_Inductive_Case_Opaque_Id with
    Predicate =>
-     (Inductive_Case_Id_Kind_Valid
+   (Inductive_Case_Id_Kind_Valid
       (W_Inductive_Case_Unchecked_Id));
 
    subtype W_Inductive_Case_Unchecked_List is
      W_Inductive_Case_Opaque_List with
    Predicate =>
-     (Inductive_Case_List_Kind_Valid
+   (Inductive_Case_List_Kind_Valid
       (W_Inductive_Case_Unchecked_List));
 
    subtype W_Transparent_Type_Definition_Unchecked_OId is
      W_Transparent_Type_Definition_Opaque_OId with
    Predicate =>
-     (Transparent_Type_Definition_OId_Kind_Valid
+   (Transparent_Type_Definition_OId_Kind_Valid
       (W_Transparent_Type_Definition_Unchecked_OId));
 
    subtype W_Transparent_Type_Definition_Unchecked_OList is
      W_Transparent_Type_Definition_Opaque_OList with
    Predicate =>
-     (Transparent_Type_Definition_OList_Kind_Valid
+   (Transparent_Type_Definition_OList_Kind_Valid
       (W_Transparent_Type_Definition_Unchecked_OList));
 
    subtype W_Transparent_Type_Definition_Unchecked_Id is
      W_Transparent_Type_Definition_Opaque_Id with
    Predicate =>
-     (Transparent_Type_Definition_Id_Kind_Valid
+   (Transparent_Type_Definition_Id_Kind_Valid
       (W_Transparent_Type_Definition_Unchecked_Id));
 
    subtype W_Transparent_Type_Definition_Unchecked_List is
      W_Transparent_Type_Definition_Opaque_List with
    Predicate =>
-     (Transparent_Type_Definition_List_Kind_Valid
+   (Transparent_Type_Definition_List_Kind_Valid
       (W_Transparent_Type_Definition_Unchecked_List));
 
    subtype W_Adt_Definition_Unchecked_OId is
      W_Adt_Definition_Opaque_OId with
    Predicate =>
-     (Adt_Definition_OId_Kind_Valid
+   (Adt_Definition_OId_Kind_Valid
       (W_Adt_Definition_Unchecked_OId));
 
    subtype W_Adt_Definition_Unchecked_OList is
      W_Adt_Definition_Opaque_OList with
    Predicate =>
-     (Adt_Definition_OList_Kind_Valid
+   (Adt_Definition_OList_Kind_Valid
       (W_Adt_Definition_Unchecked_OList));
 
    subtype W_Adt_Definition_Unchecked_Id is
      W_Adt_Definition_Opaque_Id with
    Predicate =>
-     (Adt_Definition_Id_Kind_Valid
+   (Adt_Definition_Id_Kind_Valid
       (W_Adt_Definition_Unchecked_Id));
 
    subtype W_Adt_Definition_Unchecked_List is
      W_Adt_Definition_Opaque_List with
    Predicate =>
-     (Adt_Definition_List_Kind_Valid
+   (Adt_Definition_List_Kind_Valid
       (W_Adt_Definition_Unchecked_List));
 
    subtype W_Constr_Decl_Unchecked_OId is
      W_Constr_Decl_Opaque_OId with
    Predicate =>
-     (Constr_Decl_OId_Kind_Valid
+   (Constr_Decl_OId_Kind_Valid
       (W_Constr_Decl_Unchecked_OId));
 
    subtype W_Constr_Decl_Unchecked_OList is
      W_Constr_Decl_Opaque_OList with
    Predicate =>
-     (Constr_Decl_OList_Kind_Valid
+   (Constr_Decl_OList_Kind_Valid
       (W_Constr_Decl_Unchecked_OList));
 
    subtype W_Constr_Decl_Unchecked_Id is
      W_Constr_Decl_Opaque_Id with
    Predicate =>
-     (Constr_Decl_Id_Kind_Valid
+   (Constr_Decl_Id_Kind_Valid
       (W_Constr_Decl_Unchecked_Id));
 
    subtype W_Constr_Decl_Unchecked_List is
      W_Constr_Decl_Opaque_List with
    Predicate =>
-     (Constr_Decl_List_Kind_Valid
+   (Constr_Decl_List_Kind_Valid
       (W_Constr_Decl_Unchecked_List));
 
    subtype W_Effects_Unchecked_OId is
      W_Effects_Opaque_OId with
    Predicate =>
-     (Effects_OId_Kind_Valid
+   (Effects_OId_Kind_Valid
       (W_Effects_Unchecked_OId));
 
    subtype W_Effects_Unchecked_OList is
      W_Effects_Opaque_OList with
    Predicate =>
-     (Effects_OList_Kind_Valid
+   (Effects_OList_Kind_Valid
       (W_Effects_Unchecked_OList));
 
    subtype W_Effects_Unchecked_Id is
      W_Effects_Opaque_Id with
    Predicate =>
-     (Effects_Id_Kind_Valid
+   (Effects_Id_Kind_Valid
       (W_Effects_Unchecked_Id));
 
    subtype W_Effects_Unchecked_List is
      W_Effects_Opaque_List with
    Predicate =>
-     (Effects_List_Kind_Valid
+   (Effects_List_Kind_Valid
       (W_Effects_Unchecked_List));
 
    subtype W_Precondition_Unchecked_OId is
      W_Precondition_Opaque_OId with
    Predicate =>
-     (Precondition_OId_Kind_Valid
+   (Precondition_OId_Kind_Valid
       (W_Precondition_Unchecked_OId));
 
    subtype W_Precondition_Unchecked_OList is
      W_Precondition_Opaque_OList with
    Predicate =>
-     (Precondition_OList_Kind_Valid
+   (Precondition_OList_Kind_Valid
       (W_Precondition_Unchecked_OList));
 
    subtype W_Precondition_Unchecked_Id is
      W_Precondition_Opaque_Id with
    Predicate =>
-     (Precondition_Id_Kind_Valid
+   (Precondition_Id_Kind_Valid
       (W_Precondition_Unchecked_Id));
 
    subtype W_Precondition_Unchecked_List is
      W_Precondition_Opaque_List with
    Predicate =>
-     (Precondition_List_Kind_Valid
+   (Precondition_List_Kind_Valid
       (W_Precondition_Unchecked_List));
 
    subtype W_Postcondition_Unchecked_OId is
      W_Postcondition_Opaque_OId with
    Predicate =>
-     (Postcondition_OId_Kind_Valid
+   (Postcondition_OId_Kind_Valid
       (W_Postcondition_Unchecked_OId));
 
    subtype W_Postcondition_Unchecked_OList is
      W_Postcondition_Opaque_OList with
    Predicate =>
-     (Postcondition_OList_Kind_Valid
+   (Postcondition_OList_Kind_Valid
       (W_Postcondition_Unchecked_OList));
 
    subtype W_Postcondition_Unchecked_Id is
      W_Postcondition_Opaque_Id with
    Predicate =>
-     (Postcondition_Id_Kind_Valid
+   (Postcondition_Id_Kind_Valid
       (W_Postcondition_Unchecked_Id));
 
    subtype W_Postcondition_Unchecked_List is
      W_Postcondition_Opaque_List with
    Predicate =>
-     (Postcondition_List_Kind_Valid
+   (Postcondition_List_Kind_Valid
       (W_Postcondition_Unchecked_List));
 
    subtype W_Exn_Condition_Unchecked_OId is
      W_Exn_Condition_Opaque_OId with
    Predicate =>
-     (Exn_Condition_OId_Kind_Valid
+   (Exn_Condition_OId_Kind_Valid
       (W_Exn_Condition_Unchecked_OId));
 
    subtype W_Exn_Condition_Unchecked_OList is
      W_Exn_Condition_Opaque_OList with
    Predicate =>
-     (Exn_Condition_OList_Kind_Valid
+   (Exn_Condition_OList_Kind_Valid
       (W_Exn_Condition_Unchecked_OList));
 
    subtype W_Exn_Condition_Unchecked_Id is
      W_Exn_Condition_Opaque_Id with
    Predicate =>
-     (Exn_Condition_Id_Kind_Valid
+   (Exn_Condition_Id_Kind_Valid
       (W_Exn_Condition_Unchecked_Id));
 
    subtype W_Exn_Condition_Unchecked_List is
      W_Exn_Condition_Opaque_List with
    Predicate =>
-     (Exn_Condition_List_Kind_Valid
+   (Exn_Condition_List_Kind_Valid
       (W_Exn_Condition_Unchecked_List));
 
    subtype W_Assertion_Unchecked_OId is
      W_Assertion_Opaque_OId with
    Predicate =>
-     (Assertion_OId_Kind_Valid
+   (Assertion_OId_Kind_Valid
       (W_Assertion_Unchecked_OId));
 
    subtype W_Assertion_Unchecked_OList is
      W_Assertion_Opaque_OList with
    Predicate =>
-     (Assertion_OList_Kind_Valid
+   (Assertion_OList_Kind_Valid
       (W_Assertion_Unchecked_OList));
 
    subtype W_Assertion_Unchecked_Id is
      W_Assertion_Opaque_Id with
    Predicate =>
-     (Assertion_Id_Kind_Valid
+   (Assertion_Id_Kind_Valid
       (W_Assertion_Unchecked_Id));
 
    subtype W_Assertion_Unchecked_List is
      W_Assertion_Opaque_List with
    Predicate =>
-     (Assertion_List_Kind_Valid
+   (Assertion_List_Kind_Valid
       (W_Assertion_Unchecked_List));
 
    subtype W_Prog_Constant_Unchecked_OId is
      W_Prog_Constant_Opaque_OId with
    Predicate =>
-     (Prog_Constant_OId_Kind_Valid
+   (Prog_Constant_OId_Kind_Valid
       (W_Prog_Constant_Unchecked_OId));
 
    subtype W_Prog_Constant_Unchecked_OList is
      W_Prog_Constant_Opaque_OList with
    Predicate =>
-     (Prog_Constant_OList_Kind_Valid
+   (Prog_Constant_OList_Kind_Valid
       (W_Prog_Constant_Unchecked_OList));
 
    subtype W_Prog_Constant_Unchecked_Id is
      W_Prog_Constant_Opaque_Id with
    Predicate =>
-     (Prog_Constant_Id_Kind_Valid
+   (Prog_Constant_Id_Kind_Valid
       (W_Prog_Constant_Unchecked_Id));
 
    subtype W_Prog_Constant_Unchecked_List is
      W_Prog_Constant_Opaque_List with
    Predicate =>
-     (Prog_Constant_List_Kind_Valid
+   (Prog_Constant_List_Kind_Valid
       (W_Prog_Constant_Unchecked_List));
 
    subtype W_Prog_Identifier_Unchecked_OId is
      W_Prog_Identifier_Opaque_OId with
    Predicate =>
-     (Prog_Identifier_OId_Kind_Valid
+   (Prog_Identifier_OId_Kind_Valid
       (W_Prog_Identifier_Unchecked_OId));
 
    subtype W_Prog_Identifier_Unchecked_OList is
      W_Prog_Identifier_Opaque_OList with
    Predicate =>
-     (Prog_Identifier_OList_Kind_Valid
+   (Prog_Identifier_OList_Kind_Valid
       (W_Prog_Identifier_Unchecked_OList));
 
    subtype W_Prog_Identifier_Unchecked_Id is
      W_Prog_Identifier_Opaque_Id with
    Predicate =>
-     (Prog_Identifier_Id_Kind_Valid
+   (Prog_Identifier_Id_Kind_Valid
       (W_Prog_Identifier_Unchecked_Id));
 
    subtype W_Prog_Identifier_Unchecked_List is
      W_Prog_Identifier_Opaque_List with
    Predicate =>
-     (Prog_Identifier_List_Kind_Valid
+   (Prog_Identifier_List_Kind_Valid
       (W_Prog_Identifier_Unchecked_List));
 
    subtype W_Any_Expr_Unchecked_OId is
      W_Any_Expr_Opaque_OId with
    Predicate =>
-     (Any_Expr_OId_Kind_Valid
+   (Any_Expr_OId_Kind_Valid
       (W_Any_Expr_Unchecked_OId));
 
    subtype W_Any_Expr_Unchecked_OList is
      W_Any_Expr_Opaque_OList with
    Predicate =>
-     (Any_Expr_OList_Kind_Valid
+   (Any_Expr_OList_Kind_Valid
       (W_Any_Expr_Unchecked_OList));
 
    subtype W_Any_Expr_Unchecked_Id is
      W_Any_Expr_Opaque_Id with
    Predicate =>
-     (Any_Expr_Id_Kind_Valid
+   (Any_Expr_Id_Kind_Valid
       (W_Any_Expr_Unchecked_Id));
 
    subtype W_Any_Expr_Unchecked_List is
      W_Any_Expr_Opaque_List with
    Predicate =>
-     (Any_Expr_List_Kind_Valid
+   (Any_Expr_List_Kind_Valid
       (W_Any_Expr_Unchecked_List));
 
    subtype W_Deref_Unchecked_OId is
      W_Deref_Opaque_OId with
    Predicate =>
-     (Deref_OId_Kind_Valid
+   (Deref_OId_Kind_Valid
       (W_Deref_Unchecked_OId));
 
    subtype W_Deref_Unchecked_OList is
      W_Deref_Opaque_OList with
    Predicate =>
-     (Deref_OList_Kind_Valid
+   (Deref_OList_Kind_Valid
       (W_Deref_Unchecked_OList));
 
    subtype W_Deref_Unchecked_Id is
      W_Deref_Opaque_Id with
    Predicate =>
-     (Deref_Id_Kind_Valid
+   (Deref_Id_Kind_Valid
       (W_Deref_Unchecked_Id));
 
    subtype W_Deref_Unchecked_List is
      W_Deref_Opaque_List with
    Predicate =>
-     (Deref_List_Kind_Valid
+   (Deref_List_Kind_Valid
       (W_Deref_Unchecked_List));
 
    subtype W_Assignment_Unchecked_OId is
      W_Assignment_Opaque_OId with
    Predicate =>
-     (Assignment_OId_Kind_Valid
+   (Assignment_OId_Kind_Valid
       (W_Assignment_Unchecked_OId));
 
    subtype W_Assignment_Unchecked_OList is
      W_Assignment_Opaque_OList with
    Predicate =>
-     (Assignment_OList_Kind_Valid
+   (Assignment_OList_Kind_Valid
       (W_Assignment_Unchecked_OList));
 
    subtype W_Assignment_Unchecked_Id is
      W_Assignment_Opaque_Id with
    Predicate =>
-     (Assignment_Id_Kind_Valid
+   (Assignment_Id_Kind_Valid
       (W_Assignment_Unchecked_Id));
 
    subtype W_Assignment_Unchecked_List is
      W_Assignment_Opaque_List with
    Predicate =>
-     (Assignment_List_Kind_Valid
+   (Assignment_List_Kind_Valid
       (W_Assignment_Unchecked_List));
 
    subtype W_Array_Access_Unchecked_OId is
      W_Array_Access_Opaque_OId with
    Predicate =>
-     (Array_Access_OId_Kind_Valid
+   (Array_Access_OId_Kind_Valid
       (W_Array_Access_Unchecked_OId));
 
    subtype W_Array_Access_Unchecked_OList is
      W_Array_Access_Opaque_OList with
    Predicate =>
-     (Array_Access_OList_Kind_Valid
+   (Array_Access_OList_Kind_Valid
       (W_Array_Access_Unchecked_OList));
 
    subtype W_Array_Access_Unchecked_Id is
      W_Array_Access_Opaque_Id with
    Predicate =>
-     (Array_Access_Id_Kind_Valid
+   (Array_Access_Id_Kind_Valid
       (W_Array_Access_Unchecked_Id));
 
    subtype W_Array_Access_Unchecked_List is
      W_Array_Access_Opaque_List with
    Predicate =>
-     (Array_Access_List_Kind_Valid
+   (Array_Access_List_Kind_Valid
       (W_Array_Access_Unchecked_List));
 
    subtype W_Array_Update_Unchecked_OId is
      W_Array_Update_Opaque_OId with
    Predicate =>
-     (Array_Update_OId_Kind_Valid
+   (Array_Update_OId_Kind_Valid
       (W_Array_Update_Unchecked_OId));
 
    subtype W_Array_Update_Unchecked_OList is
      W_Array_Update_Opaque_OList with
    Predicate =>
-     (Array_Update_OList_Kind_Valid
+   (Array_Update_OList_Kind_Valid
       (W_Array_Update_Unchecked_OList));
 
    subtype W_Array_Update_Unchecked_Id is
      W_Array_Update_Opaque_Id with
    Predicate =>
-     (Array_Update_Id_Kind_Valid
+   (Array_Update_Id_Kind_Valid
       (W_Array_Update_Unchecked_Id));
 
    subtype W_Array_Update_Unchecked_List is
      W_Array_Update_Opaque_List with
    Predicate =>
-     (Array_Update_List_Kind_Valid
+   (Array_Update_List_Kind_Valid
       (W_Array_Update_Unchecked_List));
 
    subtype W_Infix_Call_Unchecked_OId is
      W_Infix_Call_Opaque_OId with
    Predicate =>
-     (Infix_Call_OId_Kind_Valid
+   (Infix_Call_OId_Kind_Valid
       (W_Infix_Call_Unchecked_OId));
 
    subtype W_Infix_Call_Unchecked_OList is
      W_Infix_Call_Opaque_OList with
    Predicate =>
-     (Infix_Call_OList_Kind_Valid
+   (Infix_Call_OList_Kind_Valid
       (W_Infix_Call_Unchecked_OList));
 
    subtype W_Infix_Call_Unchecked_Id is
      W_Infix_Call_Opaque_Id with
    Predicate =>
-     (Infix_Call_Id_Kind_Valid
+   (Infix_Call_Id_Kind_Valid
       (W_Infix_Call_Unchecked_Id));
 
    subtype W_Infix_Call_Unchecked_List is
      W_Infix_Call_Opaque_List with
    Predicate =>
-     (Infix_Call_List_Kind_Valid
+   (Infix_Call_List_Kind_Valid
       (W_Infix_Call_Unchecked_List));
 
    subtype W_Prefix_Call_Unchecked_OId is
      W_Prefix_Call_Opaque_OId with
    Predicate =>
-     (Prefix_Call_OId_Kind_Valid
+   (Prefix_Call_OId_Kind_Valid
       (W_Prefix_Call_Unchecked_OId));
 
    subtype W_Prefix_Call_Unchecked_OList is
      W_Prefix_Call_Opaque_OList with
    Predicate =>
-     (Prefix_Call_OList_Kind_Valid
+   (Prefix_Call_OList_Kind_Valid
       (W_Prefix_Call_Unchecked_OList));
 
    subtype W_Prefix_Call_Unchecked_Id is
      W_Prefix_Call_Opaque_Id with
    Predicate =>
-     (Prefix_Call_Id_Kind_Valid
+   (Prefix_Call_Id_Kind_Valid
       (W_Prefix_Call_Unchecked_Id));
 
    subtype W_Prefix_Call_Unchecked_List is
      W_Prefix_Call_Opaque_List with
    Predicate =>
-     (Prefix_Call_List_Kind_Valid
+   (Prefix_Call_List_Kind_Valid
       (W_Prefix_Call_Unchecked_List));
 
    subtype W_Binding_Prog_Unchecked_OId is
      W_Binding_Prog_Opaque_OId with
    Predicate =>
-     (Binding_Prog_OId_Kind_Valid
+   (Binding_Prog_OId_Kind_Valid
       (W_Binding_Prog_Unchecked_OId));
 
    subtype W_Binding_Prog_Unchecked_OList is
      W_Binding_Prog_Opaque_OList with
    Predicate =>
-     (Binding_Prog_OList_Kind_Valid
+   (Binding_Prog_OList_Kind_Valid
       (W_Binding_Prog_Unchecked_OList));
 
    subtype W_Binding_Prog_Unchecked_Id is
      W_Binding_Prog_Opaque_Id with
    Predicate =>
-     (Binding_Prog_Id_Kind_Valid
+   (Binding_Prog_Id_Kind_Valid
       (W_Binding_Prog_Unchecked_Id));
 
    subtype W_Binding_Prog_Unchecked_List is
      W_Binding_Prog_Opaque_List with
    Predicate =>
-     (Binding_Prog_List_Kind_Valid
+   (Binding_Prog_List_Kind_Valid
       (W_Binding_Prog_Unchecked_List));
 
    subtype W_Binding_Ref_Unchecked_OId is
      W_Binding_Ref_Opaque_OId with
    Predicate =>
-     (Binding_Ref_OId_Kind_Valid
+   (Binding_Ref_OId_Kind_Valid
       (W_Binding_Ref_Unchecked_OId));
 
    subtype W_Binding_Ref_Unchecked_OList is
      W_Binding_Ref_Opaque_OList with
    Predicate =>
-     (Binding_Ref_OList_Kind_Valid
+   (Binding_Ref_OList_Kind_Valid
       (W_Binding_Ref_Unchecked_OList));
 
    subtype W_Binding_Ref_Unchecked_Id is
      W_Binding_Ref_Opaque_Id with
    Predicate =>
-     (Binding_Ref_Id_Kind_Valid
+   (Binding_Ref_Id_Kind_Valid
       (W_Binding_Ref_Unchecked_Id));
 
    subtype W_Binding_Ref_Unchecked_List is
      W_Binding_Ref_Opaque_List with
    Predicate =>
-     (Binding_Ref_List_Kind_Valid
+   (Binding_Ref_List_Kind_Valid
       (W_Binding_Ref_Unchecked_List));
 
    subtype W_Conditional_Prog_Unchecked_OId is
      W_Conditional_Prog_Opaque_OId with
    Predicate =>
-     (Conditional_Prog_OId_Kind_Valid
+   (Conditional_Prog_OId_Kind_Valid
       (W_Conditional_Prog_Unchecked_OId));
 
    subtype W_Conditional_Prog_Unchecked_OList is
      W_Conditional_Prog_Opaque_OList with
    Predicate =>
-     (Conditional_Prog_OList_Kind_Valid
+   (Conditional_Prog_OList_Kind_Valid
       (W_Conditional_Prog_Unchecked_OList));
 
    subtype W_Conditional_Prog_Unchecked_Id is
      W_Conditional_Prog_Opaque_Id with
    Predicate =>
-     (Conditional_Prog_Id_Kind_Valid
+   (Conditional_Prog_Id_Kind_Valid
       (W_Conditional_Prog_Unchecked_Id));
 
    subtype W_Conditional_Prog_Unchecked_List is
      W_Conditional_Prog_Opaque_List with
    Predicate =>
-     (Conditional_Prog_List_Kind_Valid
+   (Conditional_Prog_List_Kind_Valid
       (W_Conditional_Prog_Unchecked_List));
 
    subtype W_While_Loop_Unchecked_OId is
      W_While_Loop_Opaque_OId with
    Predicate =>
-     (While_Loop_OId_Kind_Valid
+   (While_Loop_OId_Kind_Valid
       (W_While_Loop_Unchecked_OId));
 
    subtype W_While_Loop_Unchecked_OList is
      W_While_Loop_Opaque_OList with
    Predicate =>
-     (While_Loop_OList_Kind_Valid
+   (While_Loop_OList_Kind_Valid
       (W_While_Loop_Unchecked_OList));
 
    subtype W_While_Loop_Unchecked_Id is
      W_While_Loop_Opaque_Id with
    Predicate =>
-     (While_Loop_Id_Kind_Valid
+   (While_Loop_Id_Kind_Valid
       (W_While_Loop_Unchecked_Id));
 
    subtype W_While_Loop_Unchecked_List is
      W_While_Loop_Opaque_List with
    Predicate =>
-     (While_Loop_List_Kind_Valid
+   (While_Loop_List_Kind_Valid
       (W_While_Loop_Unchecked_List));
 
    subtype W_Statement_Sequence_Unchecked_OId is
      W_Statement_Sequence_Opaque_OId with
    Predicate =>
-     (Statement_Sequence_OId_Kind_Valid
+   (Statement_Sequence_OId_Kind_Valid
       (W_Statement_Sequence_Unchecked_OId));
 
    subtype W_Statement_Sequence_Unchecked_OList is
      W_Statement_Sequence_Opaque_OList with
    Predicate =>
-     (Statement_Sequence_OList_Kind_Valid
+   (Statement_Sequence_OList_Kind_Valid
       (W_Statement_Sequence_Unchecked_OList));
 
    subtype W_Statement_Sequence_Unchecked_Id is
      W_Statement_Sequence_Opaque_Id with
    Predicate =>
-     (Statement_Sequence_Id_Kind_Valid
+   (Statement_Sequence_Id_Kind_Valid
       (W_Statement_Sequence_Unchecked_Id));
 
    subtype W_Statement_Sequence_Unchecked_List is
      W_Statement_Sequence_Opaque_List with
    Predicate =>
-     (Statement_Sequence_List_Kind_Valid
+   (Statement_Sequence_List_Kind_Valid
       (W_Statement_Sequence_Unchecked_List));
 
    subtype W_Label_Unchecked_OId is
      W_Label_Opaque_OId with
    Predicate =>
-     (Label_OId_Kind_Valid
+   (Label_OId_Kind_Valid
       (W_Label_Unchecked_OId));
 
    subtype W_Label_Unchecked_OList is
      W_Label_Opaque_OList with
    Predicate =>
-     (Label_OList_Kind_Valid
+   (Label_OList_Kind_Valid
       (W_Label_Unchecked_OList));
 
    subtype W_Label_Unchecked_Id is
      W_Label_Opaque_Id with
    Predicate =>
-     (Label_Id_Kind_Valid
+   (Label_Id_Kind_Valid
       (W_Label_Unchecked_Id));
 
    subtype W_Label_Unchecked_List is
      W_Label_Opaque_List with
    Predicate =>
-     (Label_List_Kind_Valid
+   (Label_List_Kind_Valid
       (W_Label_Unchecked_List));
 
    subtype W_Assert_Unchecked_OId is
      W_Assert_Opaque_OId with
    Predicate =>
-     (Assert_OId_Kind_Valid
+   (Assert_OId_Kind_Valid
       (W_Assert_Unchecked_OId));
 
    subtype W_Assert_Unchecked_OList is
      W_Assert_Opaque_OList with
    Predicate =>
-     (Assert_OList_Kind_Valid
+   (Assert_OList_Kind_Valid
       (W_Assert_Unchecked_OList));
 
    subtype W_Assert_Unchecked_Id is
      W_Assert_Opaque_Id with
    Predicate =>
-     (Assert_Id_Kind_Valid
+   (Assert_Id_Kind_Valid
       (W_Assert_Unchecked_Id));
 
    subtype W_Assert_Unchecked_List is
      W_Assert_Opaque_List with
    Predicate =>
-     (Assert_List_Kind_Valid
+   (Assert_List_Kind_Valid
       (W_Assert_Unchecked_List));
 
    subtype W_Post_Assertion_Unchecked_OId is
      W_Post_Assertion_Opaque_OId with
    Predicate =>
-     (Post_Assertion_OId_Kind_Valid
+   (Post_Assertion_OId_Kind_Valid
       (W_Post_Assertion_Unchecked_OId));
 
    subtype W_Post_Assertion_Unchecked_OList is
      W_Post_Assertion_Opaque_OList with
    Predicate =>
-     (Post_Assertion_OList_Kind_Valid
+   (Post_Assertion_OList_Kind_Valid
       (W_Post_Assertion_Unchecked_OList));
 
    subtype W_Post_Assertion_Unchecked_Id is
      W_Post_Assertion_Opaque_Id with
    Predicate =>
-     (Post_Assertion_Id_Kind_Valid
+   (Post_Assertion_Id_Kind_Valid
       (W_Post_Assertion_Unchecked_Id));
 
    subtype W_Post_Assertion_Unchecked_List is
      W_Post_Assertion_Opaque_List with
    Predicate =>
-     (Post_Assertion_List_Kind_Valid
+   (Post_Assertion_List_Kind_Valid
       (W_Post_Assertion_Unchecked_List));
 
    subtype W_Opaque_Assertion_Unchecked_OId is
      W_Opaque_Assertion_Opaque_OId with
    Predicate =>
-     (Opaque_Assertion_OId_Kind_Valid
+   (Opaque_Assertion_OId_Kind_Valid
       (W_Opaque_Assertion_Unchecked_OId));
 
    subtype W_Opaque_Assertion_Unchecked_OList is
      W_Opaque_Assertion_Opaque_OList with
    Predicate =>
-     (Opaque_Assertion_OList_Kind_Valid
+   (Opaque_Assertion_OList_Kind_Valid
       (W_Opaque_Assertion_Unchecked_OList));
 
    subtype W_Opaque_Assertion_Unchecked_Id is
      W_Opaque_Assertion_Opaque_Id with
    Predicate =>
-     (Opaque_Assertion_Id_Kind_Valid
+   (Opaque_Assertion_Id_Kind_Valid
       (W_Opaque_Assertion_Unchecked_Id));
 
    subtype W_Opaque_Assertion_Unchecked_List is
      W_Opaque_Assertion_Opaque_List with
    Predicate =>
-     (Opaque_Assertion_List_Kind_Valid
+   (Opaque_Assertion_List_Kind_Valid
       (W_Opaque_Assertion_Unchecked_List));
 
    subtype W_Fun_Def_Unchecked_OId is
      W_Fun_Def_Opaque_OId with
    Predicate =>
-     (Fun_Def_OId_Kind_Valid
+   (Fun_Def_OId_Kind_Valid
       (W_Fun_Def_Unchecked_OId));
 
    subtype W_Fun_Def_Unchecked_OList is
      W_Fun_Def_Opaque_OList with
    Predicate =>
-     (Fun_Def_OList_Kind_Valid
+   (Fun_Def_OList_Kind_Valid
       (W_Fun_Def_Unchecked_OList));
 
    subtype W_Fun_Def_Unchecked_Id is
      W_Fun_Def_Opaque_Id with
    Predicate =>
-     (Fun_Def_Id_Kind_Valid
+   (Fun_Def_Id_Kind_Valid
       (W_Fun_Def_Unchecked_Id));
 
    subtype W_Fun_Def_Unchecked_List is
      W_Fun_Def_Opaque_List with
    Predicate =>
-     (Fun_Def_List_Kind_Valid
+   (Fun_Def_List_Kind_Valid
       (W_Fun_Def_Unchecked_List));
 
    subtype W_Binding_Fun_Unchecked_OId is
      W_Binding_Fun_Opaque_OId with
    Predicate =>
-     (Binding_Fun_OId_Kind_Valid
+   (Binding_Fun_OId_Kind_Valid
       (W_Binding_Fun_Unchecked_OId));
 
    subtype W_Binding_Fun_Unchecked_OList is
      W_Binding_Fun_Opaque_OList with
    Predicate =>
-     (Binding_Fun_OList_Kind_Valid
+   (Binding_Fun_OList_Kind_Valid
       (W_Binding_Fun_Unchecked_OList));
 
    subtype W_Binding_Fun_Unchecked_Id is
      W_Binding_Fun_Opaque_Id with
    Predicate =>
-     (Binding_Fun_Id_Kind_Valid
+   (Binding_Fun_Id_Kind_Valid
       (W_Binding_Fun_Unchecked_Id));
 
    subtype W_Binding_Fun_Unchecked_List is
      W_Binding_Fun_Opaque_List with
    Predicate =>
-     (Binding_Fun_List_Kind_Valid
+   (Binding_Fun_List_Kind_Valid
       (W_Binding_Fun_Unchecked_List));
 
    subtype W_Binding_Rec_Unchecked_OId is
      W_Binding_Rec_Opaque_OId with
    Predicate =>
-     (Binding_Rec_OId_Kind_Valid
+   (Binding_Rec_OId_Kind_Valid
       (W_Binding_Rec_Unchecked_OId));
 
    subtype W_Binding_Rec_Unchecked_OList is
      W_Binding_Rec_Opaque_OList with
    Predicate =>
-     (Binding_Rec_OList_Kind_Valid
+   (Binding_Rec_OList_Kind_Valid
       (W_Binding_Rec_Unchecked_OList));
 
    subtype W_Binding_Rec_Unchecked_Id is
      W_Binding_Rec_Opaque_Id with
    Predicate =>
-     (Binding_Rec_Id_Kind_Valid
+   (Binding_Rec_Id_Kind_Valid
       (W_Binding_Rec_Unchecked_Id));
 
    subtype W_Binding_Rec_Unchecked_List is
      W_Binding_Rec_Opaque_List with
    Predicate =>
-     (Binding_Rec_List_Kind_Valid
+   (Binding_Rec_List_Kind_Valid
       (W_Binding_Rec_Unchecked_List));
 
    subtype W_Prog_Call_Unchecked_OId is
      W_Prog_Call_Opaque_OId with
    Predicate =>
-     (Prog_Call_OId_Kind_Valid
+   (Prog_Call_OId_Kind_Valid
       (W_Prog_Call_Unchecked_OId));
 
    subtype W_Prog_Call_Unchecked_OList is
      W_Prog_Call_Opaque_OList with
    Predicate =>
-     (Prog_Call_OList_Kind_Valid
+   (Prog_Call_OList_Kind_Valid
       (W_Prog_Call_Unchecked_OList));
 
    subtype W_Prog_Call_Unchecked_Id is
      W_Prog_Call_Opaque_Id with
    Predicate =>
-     (Prog_Call_Id_Kind_Valid
+   (Prog_Call_Id_Kind_Valid
       (W_Prog_Call_Unchecked_Id));
 
    subtype W_Prog_Call_Unchecked_List is
      W_Prog_Call_Opaque_List with
    Predicate =>
-     (Prog_Call_List_Kind_Valid
+   (Prog_Call_List_Kind_Valid
       (W_Prog_Call_Unchecked_List));
 
    subtype W_Raise_Statement_Unchecked_OId is
      W_Raise_Statement_Opaque_OId with
    Predicate =>
-     (Raise_Statement_OId_Kind_Valid
+   (Raise_Statement_OId_Kind_Valid
       (W_Raise_Statement_Unchecked_OId));
 
    subtype W_Raise_Statement_Unchecked_OList is
      W_Raise_Statement_Opaque_OList with
    Predicate =>
-     (Raise_Statement_OList_Kind_Valid
+   (Raise_Statement_OList_Kind_Valid
       (W_Raise_Statement_Unchecked_OList));
 
    subtype W_Raise_Statement_Unchecked_Id is
      W_Raise_Statement_Opaque_Id with
    Predicate =>
-     (Raise_Statement_Id_Kind_Valid
+   (Raise_Statement_Id_Kind_Valid
       (W_Raise_Statement_Unchecked_Id));
 
    subtype W_Raise_Statement_Unchecked_List is
      W_Raise_Statement_Opaque_List with
    Predicate =>
-     (Raise_Statement_List_Kind_Valid
+   (Raise_Statement_List_Kind_Valid
       (W_Raise_Statement_Unchecked_List));
 
    subtype W_Raise_Statement_With_Parameters_Unchecked_OId is
      W_Raise_Statement_With_Parameters_Opaque_OId with
    Predicate =>
-     (Raise_Statement_With_Parameters_OId_Kind_Valid
+   (Raise_Statement_With_Parameters_OId_Kind_Valid
       (W_Raise_Statement_With_Parameters_Unchecked_OId));
 
    subtype W_Raise_Statement_With_Parameters_Unchecked_OList is
      W_Raise_Statement_With_Parameters_Opaque_OList with
    Predicate =>
-     (Raise_Statement_With_Parameters_OList_Kind_Valid
+   (Raise_Statement_With_Parameters_OList_Kind_Valid
       (W_Raise_Statement_With_Parameters_Unchecked_OList));
 
    subtype W_Raise_Statement_With_Parameters_Unchecked_Id is
      W_Raise_Statement_With_Parameters_Opaque_Id with
    Predicate =>
-     (Raise_Statement_With_Parameters_Id_Kind_Valid
+   (Raise_Statement_With_Parameters_Id_Kind_Valid
       (W_Raise_Statement_With_Parameters_Unchecked_Id));
 
    subtype W_Raise_Statement_With_Parameters_Unchecked_List is
      W_Raise_Statement_With_Parameters_Opaque_List with
    Predicate =>
-     (Raise_Statement_With_Parameters_List_Kind_Valid
+   (Raise_Statement_With_Parameters_List_Kind_Valid
       (W_Raise_Statement_With_Parameters_Unchecked_List));
 
    subtype W_Try_Block_Unchecked_OId is
      W_Try_Block_Opaque_OId with
    Predicate =>
-     (Try_Block_OId_Kind_Valid
+   (Try_Block_OId_Kind_Valid
       (W_Try_Block_Unchecked_OId));
 
    subtype W_Try_Block_Unchecked_OList is
      W_Try_Block_Opaque_OList with
    Predicate =>
-     (Try_Block_OList_Kind_Valid
+   (Try_Block_OList_Kind_Valid
       (W_Try_Block_Unchecked_OList));
 
    subtype W_Try_Block_Unchecked_Id is
      W_Try_Block_Opaque_Id with
    Predicate =>
-     (Try_Block_Id_Kind_Valid
+   (Try_Block_Id_Kind_Valid
       (W_Try_Block_Unchecked_Id));
 
    subtype W_Try_Block_Unchecked_List is
      W_Try_Block_Opaque_List with
    Predicate =>
-     (Try_Block_List_Kind_Valid
+   (Try_Block_List_Kind_Valid
       (W_Try_Block_Unchecked_List));
 
    subtype W_Unreachable_Code_Unchecked_OId is
      W_Unreachable_Code_Opaque_OId with
    Predicate =>
-     (Unreachable_Code_OId_Kind_Valid
+   (Unreachable_Code_OId_Kind_Valid
       (W_Unreachable_Code_Unchecked_OId));
 
    subtype W_Unreachable_Code_Unchecked_OList is
      W_Unreachable_Code_Opaque_OList with
    Predicate =>
-     (Unreachable_Code_OList_Kind_Valid
+   (Unreachable_Code_OList_Kind_Valid
       (W_Unreachable_Code_Unchecked_OList));
 
    subtype W_Unreachable_Code_Unchecked_Id is
      W_Unreachable_Code_Opaque_Id with
    Predicate =>
-     (Unreachable_Code_Id_Kind_Valid
+   (Unreachable_Code_Id_Kind_Valid
       (W_Unreachable_Code_Unchecked_Id));
 
    subtype W_Unreachable_Code_Unchecked_List is
      W_Unreachable_Code_Opaque_List with
    Predicate =>
-     (Unreachable_Code_List_Kind_Valid
+   (Unreachable_Code_List_Kind_Valid
       (W_Unreachable_Code_Unchecked_List));
 
    subtype W_Begin_Block_Unchecked_OId is
      W_Begin_Block_Opaque_OId with
    Predicate =>
-     (Begin_Block_OId_Kind_Valid
+   (Begin_Block_OId_Kind_Valid
       (W_Begin_Block_Unchecked_OId));
 
    subtype W_Begin_Block_Unchecked_OList is
      W_Begin_Block_Opaque_OList with
    Predicate =>
-     (Begin_Block_OList_Kind_Valid
+   (Begin_Block_OList_Kind_Valid
       (W_Begin_Block_Unchecked_OList));
 
    subtype W_Begin_Block_Unchecked_Id is
      W_Begin_Block_Opaque_Id with
    Predicate =>
-     (Begin_Block_Id_Kind_Valid
+   (Begin_Block_Id_Kind_Valid
       (W_Begin_Block_Unchecked_Id));
 
    subtype W_Begin_Block_Unchecked_List is
      W_Begin_Block_Opaque_List with
    Predicate =>
-     (Begin_Block_List_Kind_Valid
+   (Begin_Block_List_Kind_Valid
       (W_Begin_Block_Unchecked_List));
 
    subtype W_Protected_Prog_Unchecked_OId is
      W_Protected_Prog_Opaque_OId with
    Predicate =>
-     (Protected_Prog_OId_Kind_Valid
+   (Protected_Prog_OId_Kind_Valid
       (W_Protected_Prog_Unchecked_OId));
 
    subtype W_Protected_Prog_Unchecked_OList is
      W_Protected_Prog_Opaque_OList with
    Predicate =>
-     (Protected_Prog_OList_Kind_Valid
+   (Protected_Prog_OList_Kind_Valid
       (W_Protected_Prog_Unchecked_OList));
 
    subtype W_Protected_Prog_Unchecked_Id is
      W_Protected_Prog_Opaque_Id with
    Predicate =>
-     (Protected_Prog_Id_Kind_Valid
+   (Protected_Prog_Id_Kind_Valid
       (W_Protected_Prog_Unchecked_Id));
 
    subtype W_Protected_Prog_Unchecked_List is
      W_Protected_Prog_Opaque_List with
    Predicate =>
-     (Protected_Prog_List_Kind_Valid
+   (Protected_Prog_List_Kind_Valid
       (W_Protected_Prog_Unchecked_List));
 
    subtype W_Op_Add_Prog_Unchecked_OId is
      W_Op_Add_Prog_Opaque_OId with
    Predicate =>
-     (Op_Add_Prog_OId_Kind_Valid
+   (Op_Add_Prog_OId_Kind_Valid
       (W_Op_Add_Prog_Unchecked_OId));
 
    subtype W_Op_Add_Prog_Unchecked_OList is
      W_Op_Add_Prog_Opaque_OList with
    Predicate =>
-     (Op_Add_Prog_OList_Kind_Valid
+   (Op_Add_Prog_OList_Kind_Valid
       (W_Op_Add_Prog_Unchecked_OList));
 
    subtype W_Op_Add_Prog_Unchecked_Id is
      W_Op_Add_Prog_Opaque_Id with
    Predicate =>
-     (Op_Add_Prog_Id_Kind_Valid
+   (Op_Add_Prog_Id_Kind_Valid
       (W_Op_Add_Prog_Unchecked_Id));
 
    subtype W_Op_Add_Prog_Unchecked_List is
      W_Op_Add_Prog_Opaque_List with
    Predicate =>
-     (Op_Add_Prog_List_Kind_Valid
+   (Op_Add_Prog_List_Kind_Valid
       (W_Op_Add_Prog_Unchecked_List));
 
    subtype W_Op_Substract_Prog_Unchecked_OId is
      W_Op_Substract_Prog_Opaque_OId with
    Predicate =>
-     (Op_Substract_Prog_OId_Kind_Valid
+   (Op_Substract_Prog_OId_Kind_Valid
       (W_Op_Substract_Prog_Unchecked_OId));
 
    subtype W_Op_Substract_Prog_Unchecked_OList is
      W_Op_Substract_Prog_Opaque_OList with
    Predicate =>
-     (Op_Substract_Prog_OList_Kind_Valid
+   (Op_Substract_Prog_OList_Kind_Valid
       (W_Op_Substract_Prog_Unchecked_OList));
 
    subtype W_Op_Substract_Prog_Unchecked_Id is
      W_Op_Substract_Prog_Opaque_Id with
    Predicate =>
-     (Op_Substract_Prog_Id_Kind_Valid
+   (Op_Substract_Prog_Id_Kind_Valid
       (W_Op_Substract_Prog_Unchecked_Id));
 
    subtype W_Op_Substract_Prog_Unchecked_List is
      W_Op_Substract_Prog_Opaque_List with
    Predicate =>
-     (Op_Substract_Prog_List_Kind_Valid
+   (Op_Substract_Prog_List_Kind_Valid
       (W_Op_Substract_Prog_Unchecked_List));
 
    subtype W_Op_Multiply_Prog_Unchecked_OId is
      W_Op_Multiply_Prog_Opaque_OId with
    Predicate =>
-     (Op_Multiply_Prog_OId_Kind_Valid
+   (Op_Multiply_Prog_OId_Kind_Valid
       (W_Op_Multiply_Prog_Unchecked_OId));
 
    subtype W_Op_Multiply_Prog_Unchecked_OList is
      W_Op_Multiply_Prog_Opaque_OList with
    Predicate =>
-     (Op_Multiply_Prog_OList_Kind_Valid
+   (Op_Multiply_Prog_OList_Kind_Valid
       (W_Op_Multiply_Prog_Unchecked_OList));
 
    subtype W_Op_Multiply_Prog_Unchecked_Id is
      W_Op_Multiply_Prog_Opaque_Id with
    Predicate =>
-     (Op_Multiply_Prog_Id_Kind_Valid
+   (Op_Multiply_Prog_Id_Kind_Valid
       (W_Op_Multiply_Prog_Unchecked_Id));
 
    subtype W_Op_Multiply_Prog_Unchecked_List is
      W_Op_Multiply_Prog_Opaque_List with
    Predicate =>
-     (Op_Multiply_Prog_List_Kind_Valid
+   (Op_Multiply_Prog_List_Kind_Valid
       (W_Op_Multiply_Prog_Unchecked_List));
 
    subtype W_Op_Divide_Prog_Unchecked_OId is
      W_Op_Divide_Prog_Opaque_OId with
    Predicate =>
-     (Op_Divide_Prog_OId_Kind_Valid
+   (Op_Divide_Prog_OId_Kind_Valid
       (W_Op_Divide_Prog_Unchecked_OId));
 
    subtype W_Op_Divide_Prog_Unchecked_OList is
      W_Op_Divide_Prog_Opaque_OList with
    Predicate =>
-     (Op_Divide_Prog_OList_Kind_Valid
+   (Op_Divide_Prog_OList_Kind_Valid
       (W_Op_Divide_Prog_Unchecked_OList));
 
    subtype W_Op_Divide_Prog_Unchecked_Id is
      W_Op_Divide_Prog_Opaque_Id with
    Predicate =>
-     (Op_Divide_Prog_Id_Kind_Valid
+   (Op_Divide_Prog_Id_Kind_Valid
       (W_Op_Divide_Prog_Unchecked_Id));
 
    subtype W_Op_Divide_Prog_Unchecked_List is
      W_Op_Divide_Prog_Opaque_List with
    Predicate =>
-     (Op_Divide_Prog_List_Kind_Valid
+   (Op_Divide_Prog_List_Kind_Valid
       (W_Op_Divide_Prog_Unchecked_List));
 
    subtype W_Op_Mod_Prog_Unchecked_OId is
      W_Op_Mod_Prog_Opaque_OId with
    Predicate =>
-     (Op_Mod_Prog_OId_Kind_Valid
+   (Op_Mod_Prog_OId_Kind_Valid
       (W_Op_Mod_Prog_Unchecked_OId));
 
    subtype W_Op_Mod_Prog_Unchecked_OList is
      W_Op_Mod_Prog_Opaque_OList with
    Predicate =>
-     (Op_Mod_Prog_OList_Kind_Valid
+   (Op_Mod_Prog_OList_Kind_Valid
       (W_Op_Mod_Prog_Unchecked_OList));
 
    subtype W_Op_Mod_Prog_Unchecked_Id is
      W_Op_Mod_Prog_Opaque_Id with
    Predicate =>
-     (Op_Mod_Prog_Id_Kind_Valid
+   (Op_Mod_Prog_Id_Kind_Valid
       (W_Op_Mod_Prog_Unchecked_Id));
 
    subtype W_Op_Mod_Prog_Unchecked_List is
      W_Op_Mod_Prog_Opaque_List with
    Predicate =>
-     (Op_Mod_Prog_List_Kind_Valid
+   (Op_Mod_Prog_List_Kind_Valid
       (W_Op_Mod_Prog_Unchecked_List));
 
    subtype W_Op_Eq_Prog_Unchecked_OId is
      W_Op_Eq_Prog_Opaque_OId with
    Predicate =>
-     (Op_Eq_Prog_OId_Kind_Valid
+   (Op_Eq_Prog_OId_Kind_Valid
       (W_Op_Eq_Prog_Unchecked_OId));
 
    subtype W_Op_Eq_Prog_Unchecked_OList is
      W_Op_Eq_Prog_Opaque_OList with
    Predicate =>
-     (Op_Eq_Prog_OList_Kind_Valid
+   (Op_Eq_Prog_OList_Kind_Valid
       (W_Op_Eq_Prog_Unchecked_OList));
 
    subtype W_Op_Eq_Prog_Unchecked_Id is
      W_Op_Eq_Prog_Opaque_Id with
    Predicate =>
-     (Op_Eq_Prog_Id_Kind_Valid
+   (Op_Eq_Prog_Id_Kind_Valid
       (W_Op_Eq_Prog_Unchecked_Id));
 
    subtype W_Op_Eq_Prog_Unchecked_List is
      W_Op_Eq_Prog_Opaque_List with
    Predicate =>
-     (Op_Eq_Prog_List_Kind_Valid
+   (Op_Eq_Prog_List_Kind_Valid
       (W_Op_Eq_Prog_Unchecked_List));
 
    subtype W_Op_Ne_Prog_Unchecked_OId is
      W_Op_Ne_Prog_Opaque_OId with
    Predicate =>
-     (Op_Ne_Prog_OId_Kind_Valid
+   (Op_Ne_Prog_OId_Kind_Valid
       (W_Op_Ne_Prog_Unchecked_OId));
 
    subtype W_Op_Ne_Prog_Unchecked_OList is
      W_Op_Ne_Prog_Opaque_OList with
    Predicate =>
-     (Op_Ne_Prog_OList_Kind_Valid
+   (Op_Ne_Prog_OList_Kind_Valid
       (W_Op_Ne_Prog_Unchecked_OList));
 
    subtype W_Op_Ne_Prog_Unchecked_Id is
      W_Op_Ne_Prog_Opaque_Id with
    Predicate =>
-     (Op_Ne_Prog_Id_Kind_Valid
+   (Op_Ne_Prog_Id_Kind_Valid
       (W_Op_Ne_Prog_Unchecked_Id));
 
    subtype W_Op_Ne_Prog_Unchecked_List is
      W_Op_Ne_Prog_Opaque_List with
    Predicate =>
-     (Op_Ne_Prog_List_Kind_Valid
+   (Op_Ne_Prog_List_Kind_Valid
       (W_Op_Ne_Prog_Unchecked_List));
 
    subtype W_Op_Lt_Prog_Unchecked_OId is
      W_Op_Lt_Prog_Opaque_OId with
    Predicate =>
-     (Op_Lt_Prog_OId_Kind_Valid
+   (Op_Lt_Prog_OId_Kind_Valid
       (W_Op_Lt_Prog_Unchecked_OId));
 
    subtype W_Op_Lt_Prog_Unchecked_OList is
      W_Op_Lt_Prog_Opaque_OList with
    Predicate =>
-     (Op_Lt_Prog_OList_Kind_Valid
+   (Op_Lt_Prog_OList_Kind_Valid
       (W_Op_Lt_Prog_Unchecked_OList));
 
    subtype W_Op_Lt_Prog_Unchecked_Id is
      W_Op_Lt_Prog_Opaque_Id with
    Predicate =>
-     (Op_Lt_Prog_Id_Kind_Valid
+   (Op_Lt_Prog_Id_Kind_Valid
       (W_Op_Lt_Prog_Unchecked_Id));
 
    subtype W_Op_Lt_Prog_Unchecked_List is
      W_Op_Lt_Prog_Opaque_List with
    Predicate =>
-     (Op_Lt_Prog_List_Kind_Valid
+   (Op_Lt_Prog_List_Kind_Valid
       (W_Op_Lt_Prog_Unchecked_List));
 
    subtype W_Op_Le_Prog_Unchecked_OId is
      W_Op_Le_Prog_Opaque_OId with
    Predicate =>
-     (Op_Le_Prog_OId_Kind_Valid
+   (Op_Le_Prog_OId_Kind_Valid
       (W_Op_Le_Prog_Unchecked_OId));
 
    subtype W_Op_Le_Prog_Unchecked_OList is
      W_Op_Le_Prog_Opaque_OList with
    Predicate =>
-     (Op_Le_Prog_OList_Kind_Valid
+   (Op_Le_Prog_OList_Kind_Valid
       (W_Op_Le_Prog_Unchecked_OList));
 
    subtype W_Op_Le_Prog_Unchecked_Id is
      W_Op_Le_Prog_Opaque_Id with
    Predicate =>
-     (Op_Le_Prog_Id_Kind_Valid
+   (Op_Le_Prog_Id_Kind_Valid
       (W_Op_Le_Prog_Unchecked_Id));
 
    subtype W_Op_Le_Prog_Unchecked_List is
      W_Op_Le_Prog_Opaque_List with
    Predicate =>
-     (Op_Le_Prog_List_Kind_Valid
+   (Op_Le_Prog_List_Kind_Valid
       (W_Op_Le_Prog_Unchecked_List));
 
    subtype W_Op_Gt_Prog_Unchecked_OId is
      W_Op_Gt_Prog_Opaque_OId with
    Predicate =>
-     (Op_Gt_Prog_OId_Kind_Valid
+   (Op_Gt_Prog_OId_Kind_Valid
       (W_Op_Gt_Prog_Unchecked_OId));
 
    subtype W_Op_Gt_Prog_Unchecked_OList is
      W_Op_Gt_Prog_Opaque_OList with
    Predicate =>
-     (Op_Gt_Prog_OList_Kind_Valid
+   (Op_Gt_Prog_OList_Kind_Valid
       (W_Op_Gt_Prog_Unchecked_OList));
 
    subtype W_Op_Gt_Prog_Unchecked_Id is
      W_Op_Gt_Prog_Opaque_Id with
    Predicate =>
-     (Op_Gt_Prog_Id_Kind_Valid
+   (Op_Gt_Prog_Id_Kind_Valid
       (W_Op_Gt_Prog_Unchecked_Id));
 
    subtype W_Op_Gt_Prog_Unchecked_List is
      W_Op_Gt_Prog_Opaque_List with
    Predicate =>
-     (Op_Gt_Prog_List_Kind_Valid
+   (Op_Gt_Prog_List_Kind_Valid
       (W_Op_Gt_Prog_Unchecked_List));
 
    subtype W_Op_Ge_Prog_Unchecked_OId is
      W_Op_Ge_Prog_Opaque_OId with
    Predicate =>
-     (Op_Ge_Prog_OId_Kind_Valid
+   (Op_Ge_Prog_OId_Kind_Valid
       (W_Op_Ge_Prog_Unchecked_OId));
 
    subtype W_Op_Ge_Prog_Unchecked_OList is
      W_Op_Ge_Prog_Opaque_OList with
    Predicate =>
-     (Op_Ge_Prog_OList_Kind_Valid
+   (Op_Ge_Prog_OList_Kind_Valid
       (W_Op_Ge_Prog_Unchecked_OList));
 
    subtype W_Op_Ge_Prog_Unchecked_Id is
      W_Op_Ge_Prog_Opaque_Id with
    Predicate =>
-     (Op_Ge_Prog_Id_Kind_Valid
+   (Op_Ge_Prog_Id_Kind_Valid
       (W_Op_Ge_Prog_Unchecked_Id));
 
    subtype W_Op_Ge_Prog_Unchecked_List is
      W_Op_Ge_Prog_Opaque_List with
    Predicate =>
-     (Op_Ge_Prog_List_Kind_Valid
+   (Op_Ge_Prog_List_Kind_Valid
       (W_Op_Ge_Prog_Unchecked_List));
 
    subtype W_Op_Or_Else_Prog_Unchecked_OId is
      W_Op_Or_Else_Prog_Opaque_OId with
    Predicate =>
-     (Op_Or_Else_Prog_OId_Kind_Valid
+   (Op_Or_Else_Prog_OId_Kind_Valid
       (W_Op_Or_Else_Prog_Unchecked_OId));
 
    subtype W_Op_Or_Else_Prog_Unchecked_OList is
      W_Op_Or_Else_Prog_Opaque_OList with
    Predicate =>
-     (Op_Or_Else_Prog_OList_Kind_Valid
+   (Op_Or_Else_Prog_OList_Kind_Valid
       (W_Op_Or_Else_Prog_Unchecked_OList));
 
    subtype W_Op_Or_Else_Prog_Unchecked_Id is
      W_Op_Or_Else_Prog_Opaque_Id with
    Predicate =>
-     (Op_Or_Else_Prog_Id_Kind_Valid
+   (Op_Or_Else_Prog_Id_Kind_Valid
       (W_Op_Or_Else_Prog_Unchecked_Id));
 
    subtype W_Op_Or_Else_Prog_Unchecked_List is
      W_Op_Or_Else_Prog_Opaque_List with
    Predicate =>
-     (Op_Or_Else_Prog_List_Kind_Valid
+   (Op_Or_Else_Prog_List_Kind_Valid
       (W_Op_Or_Else_Prog_Unchecked_List));
 
    subtype W_Op_And_Then_Prog_Unchecked_OId is
      W_Op_And_Then_Prog_Opaque_OId with
    Predicate =>
-     (Op_And_Then_Prog_OId_Kind_Valid
+   (Op_And_Then_Prog_OId_Kind_Valid
       (W_Op_And_Then_Prog_Unchecked_OId));
 
    subtype W_Op_And_Then_Prog_Unchecked_OList is
      W_Op_And_Then_Prog_Opaque_OList with
    Predicate =>
-     (Op_And_Then_Prog_OList_Kind_Valid
+   (Op_And_Then_Prog_OList_Kind_Valid
       (W_Op_And_Then_Prog_Unchecked_OList));
 
    subtype W_Op_And_Then_Prog_Unchecked_Id is
      W_Op_And_Then_Prog_Opaque_Id with
    Predicate =>
-     (Op_And_Then_Prog_Id_Kind_Valid
+   (Op_And_Then_Prog_Id_Kind_Valid
       (W_Op_And_Then_Prog_Unchecked_Id));
 
    subtype W_Op_And_Then_Prog_Unchecked_List is
      W_Op_And_Then_Prog_Opaque_List with
    Predicate =>
-     (Op_And_Then_Prog_List_Kind_Valid
+   (Op_And_Then_Prog_List_Kind_Valid
       (W_Op_And_Then_Prog_Unchecked_List));
 
    subtype W_Op_Minus_Prog_Unchecked_OId is
      W_Op_Minus_Prog_Opaque_OId with
    Predicate =>
-     (Op_Minus_Prog_OId_Kind_Valid
+   (Op_Minus_Prog_OId_Kind_Valid
       (W_Op_Minus_Prog_Unchecked_OId));
 
    subtype W_Op_Minus_Prog_Unchecked_OList is
      W_Op_Minus_Prog_Opaque_OList with
    Predicate =>
-     (Op_Minus_Prog_OList_Kind_Valid
+   (Op_Minus_Prog_OList_Kind_Valid
       (W_Op_Minus_Prog_Unchecked_OList));
 
    subtype W_Op_Minus_Prog_Unchecked_Id is
      W_Op_Minus_Prog_Opaque_Id with
    Predicate =>
-     (Op_Minus_Prog_Id_Kind_Valid
+   (Op_Minus_Prog_Id_Kind_Valid
       (W_Op_Minus_Prog_Unchecked_Id));
 
    subtype W_Op_Minus_Prog_Unchecked_List is
      W_Op_Minus_Prog_Opaque_List with
    Predicate =>
-     (Op_Minus_Prog_List_Kind_Valid
+   (Op_Minus_Prog_List_Kind_Valid
       (W_Op_Minus_Prog_Unchecked_List));
 
    subtype W_Op_Not_Prog_Unchecked_OId is
      W_Op_Not_Prog_Opaque_OId with
    Predicate =>
-     (Op_Not_Prog_OId_Kind_Valid
+   (Op_Not_Prog_OId_Kind_Valid
       (W_Op_Not_Prog_Unchecked_OId));
 
    subtype W_Op_Not_Prog_Unchecked_OList is
      W_Op_Not_Prog_Opaque_OList with
    Predicate =>
-     (Op_Not_Prog_OList_Kind_Valid
+   (Op_Not_Prog_OList_Kind_Valid
       (W_Op_Not_Prog_Unchecked_OList));
 
    subtype W_Op_Not_Prog_Unchecked_Id is
      W_Op_Not_Prog_Opaque_Id with
    Predicate =>
-     (Op_Not_Prog_Id_Kind_Valid
+   (Op_Not_Prog_Id_Kind_Valid
       (W_Op_Not_Prog_Unchecked_Id));
 
    subtype W_Op_Not_Prog_Unchecked_List is
      W_Op_Not_Prog_Opaque_List with
    Predicate =>
-     (Op_Not_Prog_List_Kind_Valid
+   (Op_Not_Prog_List_Kind_Valid
       (W_Op_Not_Prog_Unchecked_List));
 
    subtype W_Binder_Unchecked_OId is
      W_Binder_Opaque_OId with
    Predicate =>
-     (Binder_OId_Kind_Valid
+   (Binder_OId_Kind_Valid
       (W_Binder_Unchecked_OId));
 
    subtype W_Binder_Unchecked_OList is
      W_Binder_Opaque_OList with
    Predicate =>
-     (Binder_OList_Kind_Valid
+   (Binder_OList_Kind_Valid
       (W_Binder_Unchecked_OList));
 
    subtype W_Binder_Unchecked_Id is
      W_Binder_Opaque_Id with
    Predicate =>
-     (Binder_Id_Kind_Valid
+   (Binder_Id_Kind_Valid
       (W_Binder_Unchecked_Id));
 
    subtype W_Binder_Unchecked_List is
      W_Binder_Opaque_List with
    Predicate =>
-     (Binder_List_Kind_Valid
+   (Binder_List_Kind_Valid
       (W_Binder_Unchecked_List));
 
    subtype W_Recfun_Unchecked_OId is
      W_Recfun_Opaque_OId with
    Predicate =>
-     (Recfun_OId_Kind_Valid
+   (Recfun_OId_Kind_Valid
       (W_Recfun_Unchecked_OId));
 
    subtype W_Recfun_Unchecked_OList is
      W_Recfun_Opaque_OList with
    Predicate =>
-     (Recfun_OList_Kind_Valid
+   (Recfun_OList_Kind_Valid
       (W_Recfun_Unchecked_OList));
 
    subtype W_Recfun_Unchecked_Id is
      W_Recfun_Opaque_Id with
    Predicate =>
-     (Recfun_Id_Kind_Valid
+   (Recfun_Id_Kind_Valid
       (W_Recfun_Unchecked_Id));
 
    subtype W_Recfun_Unchecked_List is
      W_Recfun_Opaque_List with
    Predicate =>
-     (Recfun_List_Kind_Valid
+   (Recfun_List_Kind_Valid
       (W_Recfun_Unchecked_List));
 
    subtype W_Loop_Annot_Unchecked_OId is
      W_Loop_Annot_Opaque_OId with
    Predicate =>
-     (Loop_Annot_OId_Kind_Valid
+   (Loop_Annot_OId_Kind_Valid
       (W_Loop_Annot_Unchecked_OId));
 
    subtype W_Loop_Annot_Unchecked_OList is
      W_Loop_Annot_Opaque_OList with
    Predicate =>
-     (Loop_Annot_OList_Kind_Valid
+   (Loop_Annot_OList_Kind_Valid
       (W_Loop_Annot_Unchecked_OList));
 
    subtype W_Loop_Annot_Unchecked_Id is
      W_Loop_Annot_Opaque_Id with
    Predicate =>
-     (Loop_Annot_Id_Kind_Valid
+   (Loop_Annot_Id_Kind_Valid
       (W_Loop_Annot_Unchecked_Id));
 
    subtype W_Loop_Annot_Unchecked_List is
      W_Loop_Annot_Opaque_List with
    Predicate =>
-     (Loop_Annot_List_Kind_Valid
+   (Loop_Annot_List_Kind_Valid
       (W_Loop_Annot_Unchecked_List));
 
    subtype W_Wf_Arg_Unchecked_OId is
      W_Wf_Arg_Opaque_OId with
    Predicate =>
-     (Wf_Arg_OId_Kind_Valid
+   (Wf_Arg_OId_Kind_Valid
       (W_Wf_Arg_Unchecked_OId));
 
    subtype W_Wf_Arg_Unchecked_OList is
      W_Wf_Arg_Opaque_OList with
    Predicate =>
-     (Wf_Arg_OList_Kind_Valid
+   (Wf_Arg_OList_Kind_Valid
       (W_Wf_Arg_Unchecked_OList));
 
    subtype W_Wf_Arg_Unchecked_Id is
      W_Wf_Arg_Opaque_Id with
    Predicate =>
-     (Wf_Arg_Id_Kind_Valid
+   (Wf_Arg_Id_Kind_Valid
       (W_Wf_Arg_Unchecked_Id));
 
    subtype W_Wf_Arg_Unchecked_List is
      W_Wf_Arg_Opaque_List with
    Predicate =>
-     (Wf_Arg_List_Kind_Valid
+   (Wf_Arg_List_Kind_Valid
       (W_Wf_Arg_Unchecked_List));
 
    subtype W_Handler_Unchecked_OId is
      W_Handler_Opaque_OId with
    Predicate =>
-     (Handler_OId_Kind_Valid
+   (Handler_OId_Kind_Valid
       (W_Handler_Unchecked_OId));
 
    subtype W_Handler_Unchecked_OList is
      W_Handler_Opaque_OList with
    Predicate =>
-     (Handler_OList_Kind_Valid
+   (Handler_OList_Kind_Valid
       (W_Handler_Unchecked_OList));
 
    subtype W_Handler_Unchecked_Id is
      W_Handler_Opaque_Id with
    Predicate =>
-     (Handler_Id_Kind_Valid
+   (Handler_Id_Kind_Valid
       (W_Handler_Unchecked_Id));
 
    subtype W_Handler_Unchecked_List is
      W_Handler_Opaque_List with
    Predicate =>
-     (Handler_List_Kind_Valid
+   (Handler_List_Kind_Valid
       (W_Handler_Unchecked_List));
 
    subtype W_File_Unchecked_OId is
      W_File_Opaque_OId with
    Predicate =>
-     (File_OId_Kind_Valid
+   (File_OId_Kind_Valid
       (W_File_Unchecked_OId));
 
    subtype W_File_Unchecked_OList is
      W_File_Opaque_OList with
    Predicate =>
-     (File_OList_Kind_Valid
+   (File_OList_Kind_Valid
       (W_File_Unchecked_OList));
 
    subtype W_File_Unchecked_Id is
      W_File_Opaque_Id with
    Predicate =>
-     (File_Id_Kind_Valid
+   (File_Id_Kind_Valid
       (W_File_Unchecked_Id));
 
    subtype W_File_Unchecked_List is
      W_File_Opaque_List with
    Predicate =>
-     (File_List_Kind_Valid
+   (File_List_Kind_Valid
       (W_File_Unchecked_List));
 
    subtype W_Global_Binding_Unchecked_OId is
      W_Global_Binding_Opaque_OId with
    Predicate =>
-     (Global_Binding_OId_Kind_Valid
+   (Global_Binding_OId_Kind_Valid
       (W_Global_Binding_Unchecked_OId));
 
    subtype W_Global_Binding_Unchecked_OList is
      W_Global_Binding_Opaque_OList with
    Predicate =>
-     (Global_Binding_OList_Kind_Valid
+   (Global_Binding_OList_Kind_Valid
       (W_Global_Binding_Unchecked_OList));
 
    subtype W_Global_Binding_Unchecked_Id is
      W_Global_Binding_Opaque_Id with
    Predicate =>
-     (Global_Binding_Id_Kind_Valid
+   (Global_Binding_Id_Kind_Valid
       (W_Global_Binding_Unchecked_Id));
 
    subtype W_Global_Binding_Unchecked_List is
      W_Global_Binding_Opaque_List with
    Predicate =>
-     (Global_Binding_List_Kind_Valid
+   (Global_Binding_List_Kind_Valid
       (W_Global_Binding_Unchecked_List));
 
    subtype W_Global_Rec_Binding_Unchecked_OId is
      W_Global_Rec_Binding_Opaque_OId with
    Predicate =>
-     (Global_Rec_Binding_OId_Kind_Valid
+   (Global_Rec_Binding_OId_Kind_Valid
       (W_Global_Rec_Binding_Unchecked_OId));
 
    subtype W_Global_Rec_Binding_Unchecked_OList is
      W_Global_Rec_Binding_Opaque_OList with
    Predicate =>
-     (Global_Rec_Binding_OList_Kind_Valid
+   (Global_Rec_Binding_OList_Kind_Valid
       (W_Global_Rec_Binding_Unchecked_OList));
 
    subtype W_Global_Rec_Binding_Unchecked_Id is
      W_Global_Rec_Binding_Opaque_Id with
    Predicate =>
-     (Global_Rec_Binding_Id_Kind_Valid
+   (Global_Rec_Binding_Id_Kind_Valid
       (W_Global_Rec_Binding_Unchecked_Id));
 
    subtype W_Global_Rec_Binding_Unchecked_List is
      W_Global_Rec_Binding_Opaque_List with
    Predicate =>
-     (Global_Rec_Binding_List_Kind_Valid
+   (Global_Rec_Binding_List_Kind_Valid
       (W_Global_Rec_Binding_Unchecked_List));
 
    subtype W_Parameter_Declaration_Unchecked_OId is
      W_Parameter_Declaration_Opaque_OId with
    Predicate =>
-     (Parameter_Declaration_OId_Kind_Valid
+   (Parameter_Declaration_OId_Kind_Valid
       (W_Parameter_Declaration_Unchecked_OId));
 
    subtype W_Parameter_Declaration_Unchecked_OList is
      W_Parameter_Declaration_Opaque_OList with
    Predicate =>
-     (Parameter_Declaration_OList_Kind_Valid
+   (Parameter_Declaration_OList_Kind_Valid
       (W_Parameter_Declaration_Unchecked_OList));
 
    subtype W_Parameter_Declaration_Unchecked_Id is
      W_Parameter_Declaration_Opaque_Id with
    Predicate =>
-     (Parameter_Declaration_Id_Kind_Valid
+   (Parameter_Declaration_Id_Kind_Valid
       (W_Parameter_Declaration_Unchecked_Id));
 
    subtype W_Parameter_Declaration_Unchecked_List is
      W_Parameter_Declaration_Opaque_List with
    Predicate =>
-     (Parameter_Declaration_List_Kind_Valid
+   (Parameter_Declaration_List_Kind_Valid
       (W_Parameter_Declaration_Unchecked_List));
 
    subtype W_Exception_Declaration_Unchecked_OId is
      W_Exception_Declaration_Opaque_OId with
    Predicate =>
-     (Exception_Declaration_OId_Kind_Valid
+   (Exception_Declaration_OId_Kind_Valid
       (W_Exception_Declaration_Unchecked_OId));
 
    subtype W_Exception_Declaration_Unchecked_OList is
      W_Exception_Declaration_Opaque_OList with
    Predicate =>
-     (Exception_Declaration_OList_Kind_Valid
+   (Exception_Declaration_OList_Kind_Valid
       (W_Exception_Declaration_Unchecked_OList));
 
    subtype W_Exception_Declaration_Unchecked_Id is
      W_Exception_Declaration_Opaque_Id with
    Predicate =>
-     (Exception_Declaration_Id_Kind_Valid
+   (Exception_Declaration_Id_Kind_Valid
       (W_Exception_Declaration_Unchecked_Id));
 
    subtype W_Exception_Declaration_Unchecked_List is
      W_Exception_Declaration_Opaque_List with
    Predicate =>
-     (Exception_Declaration_List_Kind_Valid
+   (Exception_Declaration_List_Kind_Valid
       (W_Exception_Declaration_Unchecked_List));
 
    subtype W_Logic_Declaration_Unchecked_OId is
      W_Logic_Declaration_Opaque_OId with
    Predicate =>
-     (Logic_Declaration_OId_Kind_Valid
+   (Logic_Declaration_OId_Kind_Valid
       (W_Logic_Declaration_Unchecked_OId));
 
    subtype W_Logic_Declaration_Unchecked_OList is
      W_Logic_Declaration_Opaque_OList with
    Predicate =>
-     (Logic_Declaration_OList_Kind_Valid
+   (Logic_Declaration_OList_Kind_Valid
       (W_Logic_Declaration_Unchecked_OList));
 
    subtype W_Logic_Declaration_Unchecked_Id is
      W_Logic_Declaration_Opaque_Id with
    Predicate =>
-     (Logic_Declaration_Id_Kind_Valid
+   (Logic_Declaration_Id_Kind_Valid
       (W_Logic_Declaration_Unchecked_Id));
 
    subtype W_Logic_Declaration_Unchecked_List is
      W_Logic_Declaration_Opaque_List with
    Predicate =>
-     (Logic_Declaration_List_Kind_Valid
+   (Logic_Declaration_List_Kind_Valid
       (W_Logic_Declaration_Unchecked_List));
 
    subtype W_Include_Declaration_Unchecked_OId is
      W_Include_Declaration_Opaque_OId with
    Predicate =>
-     (Include_Declaration_OId_Kind_Valid
+   (Include_Declaration_OId_Kind_Valid
       (W_Include_Declaration_Unchecked_OId));
 
    subtype W_Include_Declaration_Unchecked_OList is
      W_Include_Declaration_Opaque_OList with
    Predicate =>
-     (Include_Declaration_OList_Kind_Valid
+   (Include_Declaration_OList_Kind_Valid
       (W_Include_Declaration_Unchecked_OList));
 
    subtype W_Include_Declaration_Unchecked_Id is
      W_Include_Declaration_Opaque_Id with
    Predicate =>
-     (Include_Declaration_Id_Kind_Valid
+   (Include_Declaration_Id_Kind_Valid
       (W_Include_Declaration_Unchecked_Id));
 
    subtype W_Include_Declaration_Unchecked_List is
      W_Include_Declaration_Opaque_List with
    Predicate =>
-     (Include_Declaration_List_Kind_Valid
+   (Include_Declaration_List_Kind_Valid
       (W_Include_Declaration_Unchecked_List));
 
    subtype W_Term_Unchecked_OId is
      W_Term_Opaque_OId with
    Predicate =>
-     (Term_OId_Kind_Valid
+   (Term_OId_Kind_Valid
       (W_Term_Unchecked_OId));
 
    subtype W_Term_Unchecked_OList is
      W_Term_Opaque_OList with
    Predicate =>
-     (Term_OList_Kind_Valid
+   (Term_OList_Kind_Valid
       (W_Term_Unchecked_OList));
 
    subtype W_Term_Unchecked_Id is
      W_Term_Opaque_Id with
    Predicate =>
-     (Term_Id_Kind_Valid
+   (Term_Id_Kind_Valid
       (W_Term_Unchecked_Id));
 
    subtype W_Term_Unchecked_List is
      W_Term_Opaque_List with
    Predicate =>
-     (Term_List_Kind_Valid
+   (Term_List_Kind_Valid
       (W_Term_Unchecked_List));
 
    subtype W_Constant_Unchecked_OId is
      W_Constant_Opaque_OId with
    Predicate =>
-     (Constant_OId_Kind_Valid
+   (Constant_OId_Kind_Valid
       (W_Constant_Unchecked_OId));
 
    subtype W_Constant_Unchecked_OList is
      W_Constant_Opaque_OList with
    Predicate =>
-     (Constant_OList_Kind_Valid
+   (Constant_OList_Kind_Valid
       (W_Constant_Unchecked_OList));
 
    subtype W_Constant_Unchecked_Id is
      W_Constant_Opaque_Id with
    Predicate =>
-     (Constant_Id_Kind_Valid
+   (Constant_Id_Kind_Valid
       (W_Constant_Unchecked_Id));
 
    subtype W_Constant_Unchecked_List is
      W_Constant_Opaque_List with
    Predicate =>
-     (Constant_List_Kind_Valid
+   (Constant_List_Kind_Valid
       (W_Constant_Unchecked_List));
 
    subtype W_Arith_Op_Unchecked_OId is
      W_Arith_Op_Opaque_OId with
    Predicate =>
-     (Arith_Op_OId_Kind_Valid
+   (Arith_Op_OId_Kind_Valid
       (W_Arith_Op_Unchecked_OId));
 
    subtype W_Arith_Op_Unchecked_OList is
      W_Arith_Op_Opaque_OList with
    Predicate =>
-     (Arith_Op_OList_Kind_Valid
+   (Arith_Op_OList_Kind_Valid
       (W_Arith_Op_Unchecked_OList));
 
    subtype W_Arith_Op_Unchecked_Id is
      W_Arith_Op_Opaque_Id with
    Predicate =>
-     (Arith_Op_Id_Kind_Valid
+   (Arith_Op_Id_Kind_Valid
       (W_Arith_Op_Unchecked_Id));
 
    subtype W_Arith_Op_Unchecked_List is
      W_Arith_Op_Opaque_List with
    Predicate =>
-     (Arith_Op_List_Kind_Valid
+   (Arith_Op_List_Kind_Valid
       (W_Arith_Op_Unchecked_List));
 
    subtype W_Predicate_Unchecked_OId is
      W_Predicate_Opaque_OId with
    Predicate =>
-     (Predicate_OId_Kind_Valid
+   (Predicate_OId_Kind_Valid
       (W_Predicate_Unchecked_OId));
 
    subtype W_Predicate_Unchecked_OList is
      W_Predicate_Opaque_OList with
    Predicate =>
-     (Predicate_OList_Kind_Valid
+   (Predicate_OList_Kind_Valid
       (W_Predicate_Unchecked_OList));
 
    subtype W_Predicate_Unchecked_Id is
      W_Predicate_Opaque_Id with
    Predicate =>
-     (Predicate_Id_Kind_Valid
+   (Predicate_Id_Kind_Valid
       (W_Predicate_Unchecked_Id));
 
    subtype W_Predicate_Unchecked_List is
      W_Predicate_Opaque_List with
    Predicate =>
-     (Predicate_List_Kind_Valid
+   (Predicate_List_Kind_Valid
       (W_Predicate_Unchecked_List));
 
    subtype W_Primitive_Type_Unchecked_OId is
      W_Primitive_Type_Opaque_OId with
    Predicate =>
-     (Primitive_Type_OId_Kind_Valid
+   (Primitive_Type_OId_Kind_Valid
       (W_Primitive_Type_Unchecked_OId));
 
    subtype W_Primitive_Type_Unchecked_OList is
      W_Primitive_Type_Opaque_OList with
    Predicate =>
-     (Primitive_Type_OList_Kind_Valid
+   (Primitive_Type_OList_Kind_Valid
       (W_Primitive_Type_Unchecked_OList));
 
    subtype W_Primitive_Type_Unchecked_Id is
      W_Primitive_Type_Opaque_Id with
    Predicate =>
-     (Primitive_Type_Id_Kind_Valid
+   (Primitive_Type_Id_Kind_Valid
       (W_Primitive_Type_Unchecked_Id));
 
    subtype W_Primitive_Type_Unchecked_List is
      W_Primitive_Type_Opaque_List with
    Predicate =>
-     (Primitive_Type_List_Kind_Valid
+   (Primitive_Type_List_Kind_Valid
       (W_Primitive_Type_Unchecked_List));
 
    subtype W_Relation_Unchecked_OId is
      W_Relation_Opaque_OId with
    Predicate =>
-     (Relation_OId_Kind_Valid
+   (Relation_OId_Kind_Valid
       (W_Relation_Unchecked_OId));
 
    subtype W_Relation_Unchecked_OList is
      W_Relation_Opaque_OList with
    Predicate =>
-     (Relation_OList_Kind_Valid
+   (Relation_OList_Kind_Valid
       (W_Relation_Unchecked_OList));
 
    subtype W_Relation_Unchecked_Id is
      W_Relation_Opaque_Id with
    Predicate =>
-     (Relation_Id_Kind_Valid
+   (Relation_Id_Kind_Valid
       (W_Relation_Unchecked_Id));
 
    subtype W_Relation_Unchecked_List is
      W_Relation_Opaque_List with
    Predicate =>
-     (Relation_List_Kind_Valid
+   (Relation_List_Kind_Valid
       (W_Relation_Unchecked_List));
 
    subtype W_Logic_Declaration_Class_Unchecked_OId is
      W_Logic_Declaration_Class_Opaque_OId with
    Predicate =>
-     (Logic_Declaration_Class_OId_Kind_Valid
+   (Logic_Declaration_Class_OId_Kind_Valid
       (W_Logic_Declaration_Class_Unchecked_OId));
 
    subtype W_Logic_Declaration_Class_Unchecked_OList is
      W_Logic_Declaration_Class_Opaque_OList with
    Predicate =>
-     (Logic_Declaration_Class_OList_Kind_Valid
+   (Logic_Declaration_Class_OList_Kind_Valid
       (W_Logic_Declaration_Class_Unchecked_OList));
 
    subtype W_Logic_Declaration_Class_Unchecked_Id is
      W_Logic_Declaration_Class_Opaque_Id with
    Predicate =>
-     (Logic_Declaration_Class_Id_Kind_Valid
+   (Logic_Declaration_Class_Id_Kind_Valid
       (W_Logic_Declaration_Class_Unchecked_Id));
 
    subtype W_Logic_Declaration_Class_Unchecked_List is
      W_Logic_Declaration_Class_Opaque_List with
    Predicate =>
-     (Logic_Declaration_Class_List_Kind_Valid
+   (Logic_Declaration_Class_List_Kind_Valid
       (W_Logic_Declaration_Class_Unchecked_List));
 
    subtype W_Logic_Return_Type_Unchecked_OId is
      W_Logic_Return_Type_Opaque_OId with
    Predicate =>
-     (Logic_Return_Type_OId_Kind_Valid
+   (Logic_Return_Type_OId_Kind_Valid
       (W_Logic_Return_Type_Unchecked_OId));
 
    subtype W_Logic_Return_Type_Unchecked_OList is
      W_Logic_Return_Type_Opaque_OList with
    Predicate =>
-     (Logic_Return_Type_OList_Kind_Valid
+   (Logic_Return_Type_OList_Kind_Valid
       (W_Logic_Return_Type_Unchecked_OList));
 
    subtype W_Logic_Return_Type_Unchecked_Id is
      W_Logic_Return_Type_Opaque_Id with
    Predicate =>
-     (Logic_Return_Type_Id_Kind_Valid
+   (Logic_Return_Type_Id_Kind_Valid
       (W_Logic_Return_Type_Unchecked_Id));
 
    subtype W_Logic_Return_Type_Unchecked_List is
      W_Logic_Return_Type_Opaque_List with
    Predicate =>
-     (Logic_Return_Type_List_Kind_Valid
+   (Logic_Return_Type_List_Kind_Valid
       (W_Logic_Return_Type_Unchecked_List));
 
    subtype W_Logic_Arg_Type_Unchecked_OId is
      W_Logic_Arg_Type_Opaque_OId with
    Predicate =>
-     (Logic_Arg_Type_OId_Kind_Valid
+   (Logic_Arg_Type_OId_Kind_Valid
       (W_Logic_Arg_Type_Unchecked_OId));
 
    subtype W_Logic_Arg_Type_Unchecked_OList is
      W_Logic_Arg_Type_Opaque_OList with
    Predicate =>
-     (Logic_Arg_Type_OList_Kind_Valid
+   (Logic_Arg_Type_OList_Kind_Valid
       (W_Logic_Arg_Type_Unchecked_OList));
 
    subtype W_Logic_Arg_Type_Unchecked_Id is
      W_Logic_Arg_Type_Opaque_Id with
    Predicate =>
-     (Logic_Arg_Type_Id_Kind_Valid
+   (Logic_Arg_Type_Id_Kind_Valid
       (W_Logic_Arg_Type_Unchecked_Id));
 
    subtype W_Logic_Arg_Type_Unchecked_List is
      W_Logic_Arg_Type_Opaque_List with
    Predicate =>
-     (Logic_Arg_Type_List_Kind_Valid
+   (Logic_Arg_Type_List_Kind_Valid
       (W_Logic_Arg_Type_Unchecked_List));
 
    subtype W_Simple_Value_Type_Unchecked_OId is
      W_Simple_Value_Type_Opaque_OId with
    Predicate =>
-     (Simple_Value_Type_OId_Kind_Valid
+   (Simple_Value_Type_OId_Kind_Valid
       (W_Simple_Value_Type_Unchecked_OId));
 
    subtype W_Simple_Value_Type_Unchecked_OList is
      W_Simple_Value_Type_Opaque_OList with
    Predicate =>
-     (Simple_Value_Type_OList_Kind_Valid
+   (Simple_Value_Type_OList_Kind_Valid
       (W_Simple_Value_Type_Unchecked_OList));
 
    subtype W_Simple_Value_Type_Unchecked_Id is
      W_Simple_Value_Type_Opaque_Id with
    Predicate =>
-     (Simple_Value_Type_Id_Kind_Valid
+   (Simple_Value_Type_Id_Kind_Valid
       (W_Simple_Value_Type_Unchecked_Id));
 
    subtype W_Simple_Value_Type_Unchecked_List is
      W_Simple_Value_Type_Opaque_List with
    Predicate =>
-     (Simple_Value_Type_List_Kind_Valid
+   (Simple_Value_Type_List_Kind_Valid
       (W_Simple_Value_Type_Unchecked_List));
 
    subtype W_Value_Type_Unchecked_OId is
      W_Value_Type_Opaque_OId with
    Predicate =>
-     (Value_Type_OId_Kind_Valid
+   (Value_Type_OId_Kind_Valid
       (W_Value_Type_Unchecked_OId));
 
    subtype W_Value_Type_Unchecked_OList is
      W_Value_Type_Opaque_OList with
    Predicate =>
-     (Value_Type_OList_Kind_Valid
+   (Value_Type_OList_Kind_Valid
       (W_Value_Type_Unchecked_OList));
 
    subtype W_Value_Type_Unchecked_Id is
      W_Value_Type_Opaque_Id with
    Predicate =>
-     (Value_Type_Id_Kind_Valid
+   (Value_Type_Id_Kind_Valid
       (W_Value_Type_Unchecked_Id));
 
    subtype W_Value_Type_Unchecked_List is
      W_Value_Type_Opaque_List with
    Predicate =>
-     (Value_Type_List_Kind_Valid
+   (Value_Type_List_Kind_Valid
       (W_Value_Type_Unchecked_List));
 
    subtype W_Computation_Type_Unchecked_OId is
      W_Computation_Type_Opaque_OId with
    Predicate =>
-     (Computation_Type_OId_Kind_Valid
+   (Computation_Type_OId_Kind_Valid
       (W_Computation_Type_Unchecked_OId));
 
    subtype W_Computation_Type_Unchecked_OList is
      W_Computation_Type_Opaque_OList with
    Predicate =>
-     (Computation_Type_OList_Kind_Valid
+   (Computation_Type_OList_Kind_Valid
       (W_Computation_Type_Unchecked_OList));
 
    subtype W_Computation_Type_Unchecked_Id is
      W_Computation_Type_Opaque_Id with
    Predicate =>
-     (Computation_Type_Id_Kind_Valid
+   (Computation_Type_Id_Kind_Valid
       (W_Computation_Type_Unchecked_Id));
 
    subtype W_Computation_Type_Unchecked_List is
      W_Computation_Type_Opaque_List with
    Predicate =>
-     (Computation_Type_List_Kind_Valid
+   (Computation_Type_List_Kind_Valid
       (W_Computation_Type_Unchecked_List));
 
    subtype W_Prog_Unchecked_OId is
      W_Prog_Opaque_OId with
    Predicate =>
-     (Prog_OId_Kind_Valid
+   (Prog_OId_Kind_Valid
       (W_Prog_Unchecked_OId));
 
    subtype W_Prog_Unchecked_OList is
      W_Prog_Opaque_OList with
    Predicate =>
-     (Prog_OList_Kind_Valid
+   (Prog_OList_Kind_Valid
       (W_Prog_Unchecked_OList));
 
    subtype W_Prog_Unchecked_Id is
      W_Prog_Opaque_Id with
    Predicate =>
-     (Prog_Id_Kind_Valid
+   (Prog_Id_Kind_Valid
       (W_Prog_Unchecked_Id));
 
    subtype W_Prog_Unchecked_List is
      W_Prog_Opaque_List with
    Predicate =>
-     (Prog_List_Kind_Valid
+   (Prog_List_Kind_Valid
       (W_Prog_Unchecked_List));
 
    subtype W_Infix_Unchecked_OId is
      W_Infix_Opaque_OId with
    Predicate =>
-     (Infix_OId_Kind_Valid
+   (Infix_OId_Kind_Valid
       (W_Infix_Unchecked_OId));
 
    subtype W_Infix_Unchecked_OList is
      W_Infix_Opaque_OList with
    Predicate =>
-     (Infix_OList_Kind_Valid
+   (Infix_OList_Kind_Valid
       (W_Infix_Unchecked_OList));
 
    subtype W_Infix_Unchecked_Id is
      W_Infix_Opaque_Id with
    Predicate =>
-     (Infix_Id_Kind_Valid
+   (Infix_Id_Kind_Valid
       (W_Infix_Unchecked_Id));
 
    subtype W_Infix_Unchecked_List is
      W_Infix_Opaque_List with
    Predicate =>
-     (Infix_List_Kind_Valid
+   (Infix_List_Kind_Valid
       (W_Infix_Unchecked_List));
 
    subtype W_Prefix_Unchecked_OId is
      W_Prefix_Opaque_OId with
    Predicate =>
-     (Prefix_OId_Kind_Valid
+   (Prefix_OId_Kind_Valid
       (W_Prefix_Unchecked_OId));
 
    subtype W_Prefix_Unchecked_OList is
      W_Prefix_Opaque_OList with
    Predicate =>
-     (Prefix_OList_Kind_Valid
+   (Prefix_OList_Kind_Valid
       (W_Prefix_Unchecked_OList));
 
    subtype W_Prefix_Unchecked_Id is
      W_Prefix_Opaque_Id with
    Predicate =>
-     (Prefix_Id_Kind_Valid
+   (Prefix_Id_Kind_Valid
       (W_Prefix_Unchecked_Id));
 
    subtype W_Prefix_Unchecked_List is
      W_Prefix_Opaque_List with
    Predicate =>
-     (Prefix_List_Kind_Valid
+   (Prefix_List_Kind_Valid
       (W_Prefix_Unchecked_List));
 
    subtype W_Declaration_Unchecked_OId is
      W_Declaration_Opaque_OId with
    Predicate =>
-     (Declaration_OId_Kind_Valid
+   (Declaration_OId_Kind_Valid
       (W_Declaration_Unchecked_OId));
 
    subtype W_Declaration_Unchecked_OList is
      W_Declaration_Opaque_OList with
    Predicate =>
-     (Declaration_OList_Kind_Valid
+   (Declaration_OList_Kind_Valid
       (W_Declaration_Unchecked_OList));
 
    subtype W_Declaration_Unchecked_Id is
      W_Declaration_Opaque_Id with
    Predicate =>
-     (Declaration_Id_Kind_Valid
+   (Declaration_Id_Kind_Valid
       (W_Declaration_Unchecked_Id));
 
    subtype W_Declaration_Unchecked_List is
      W_Declaration_Opaque_List with
    Predicate =>
-     (Declaration_List_Kind_Valid
+   (Declaration_List_Kind_Valid
       (W_Declaration_Unchecked_List));
 
    subtype W_Any_Node_Unchecked_OId is
      W_Any_Node_Opaque_OId with
    Predicate =>
-     (Any_Node_OId_Kind_Valid
+   (Any_Node_OId_Kind_Valid
       (W_Any_Node_Unchecked_OId));
 
    subtype W_Any_Node_Unchecked_OList is
      W_Any_Node_Opaque_OList with
    Predicate =>
-     (Any_Node_OList_Kind_Valid
+   (Any_Node_OList_Kind_Valid
       (W_Any_Node_Unchecked_OList));
 
    subtype W_Any_Node_Unchecked_Id is
      W_Any_Node_Opaque_Id with
    Predicate =>
-     (Any_Node_Id_Kind_Valid
+   (Any_Node_Id_Kind_Valid
       (W_Any_Node_Unchecked_Id));
 
    subtype W_Any_Node_Unchecked_List is
      W_Any_Node_Opaque_List with
    Predicate =>
-     (Any_Node_List_Kind_Valid
+   (Any_Node_List_Kind_Valid
       (W_Any_Node_Unchecked_List));
 
    subtype W_Type_Definition_Unchecked_OId is
      W_Type_Definition_Opaque_OId with
    Predicate =>
-     (Type_Definition_OId_Kind_Valid
+   (Type_Definition_OId_Kind_Valid
       (W_Type_Definition_Unchecked_OId));
 
    subtype W_Type_Definition_Unchecked_OList is
      W_Type_Definition_Opaque_OList with
    Predicate =>
-     (Type_Definition_OList_Kind_Valid
+   (Type_Definition_OList_Kind_Valid
       (W_Type_Definition_Unchecked_OList));
 
    subtype W_Type_Definition_Unchecked_Id is
      W_Type_Definition_Opaque_Id with
    Predicate =>
-     (Type_Definition_Id_Kind_Valid
+   (Type_Definition_Id_Kind_Valid
       (W_Type_Definition_Unchecked_Id));
 
    subtype W_Type_Definition_Unchecked_List is
      W_Type_Definition_Opaque_List with
    Predicate =>
-     (Type_Definition_List_Kind_Valid
+   (Type_Definition_List_Kind_Valid
       (W_Type_Definition_Unchecked_List));
 
 end Why.Unchecked_Ids;
