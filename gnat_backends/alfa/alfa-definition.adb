@@ -72,9 +72,9 @@ package body ALFA.Definition is
       S_Long_Float          => False,
       S_Long_Long_Float     => False,
 
-      S_Character           => False,  --  TO DO: set to True
-      S_Wide_Character      => False,
-      S_Wide_Wide_Character => False,
+      S_Character           => True,
+      S_Wide_Character      => True,
+      S_Wide_Wide_Character => True,
 
       S_String              => False,  --  TO DO: set to True
       S_Wide_String         => False,

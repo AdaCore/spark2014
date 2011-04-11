@@ -1357,6 +1357,16 @@ package body Gnat2Why.Subprograms is
             pragma Assert (not Comes_From_Source (Expr));
             return
                Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type);
+
+         when N_Character_Literal =>
+            --  For characters, we use their integer value
+            T := New_Prog_Constant
+                   (Ada_Node => Expr,
+                    Def      => New_Integer_Constant
+                                  (Ada_Node => Expr,
+                                   Value    => Char_Literal_Value (Expr)));
+            Current_Type := (Kind => Why_Int);
+
          when others =>
             raise Not_Implemented;
 

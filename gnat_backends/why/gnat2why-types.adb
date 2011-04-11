@@ -96,7 +96,16 @@ package body Gnat2Why.Types is
          when N_Enumeration_Type_Definition =>
             if Ident_Node = Standard_Boolean then
                null;
+            elsif Ident_Node = Standard_Character or else
+                    Ident_Node = Standard_Wide_Character or else
+                    Ident_Node = Standard_Wide_Wide_Character then
+               Declare_Ada_Abstract_Signed_Int
+                 (File,
+                  Name_Str,
+                  Char_Literal_Value (Low_Bound (Scalar_Range (Ident_Node))),
+                  Char_Literal_Value (High_Bound (Scalar_Range (Ident_Node))));
             else
+               --  A normal enumeration type
                declare
                   Cursor       : Node_Or_Entity_Id :=
                                    Nlists.First (Literals (Def_Node));

@@ -118,30 +118,24 @@ package body Why.Gen.Enums is
    is
       Len : constant Count_Type := String_Lists.Length (Constructors);
    begin
+      pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
       New_Logic (File,
                  New_Conversion_From_Int (Name),
                  (1 => New_Type_Int),
                  New_Abstract_Type (Name => New_Identifier (Name)));
+      Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Range_Predicate
         (File,
          Name,
          First => Uint_1,
          Last => UI_From_Int (Int (Len)));
-      --  ??? TBD in the case of empty enumerations, we are probably
-      --  dealing with a type from the standard package, e.g. "char".
-      --  A special treatment would probably be better, in particular the
-      --  range predicate currently makes no sense
-
-      if Len /= 0 then
-         Define_Enum_To_Int_Function (File, Name, Constructors);
-         Define_Coerce_Axiom
-           (File,
-            New_Identifier (Name),
-            New_Type_Int,
-            New_Conversion_From_Int (Name),
-            New_Conversion_To_Int (Name));
-      end if;
+      Define_Coerce_Axiom
+        (File,
+         New_Identifier (Name),
+         New_Type_Int,
+         New_Conversion_From_Int (Name),
+         New_Conversion_To_Int (Name));
       New_Boolean_Equality_Parameter (File, Name);
    end Declare_Ada_Enum_Type;
 
