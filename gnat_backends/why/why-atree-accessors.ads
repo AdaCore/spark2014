@@ -1697,37 +1697,37 @@ private
    function Abstract_Type_Get_Name
      (Id : W_Abstract_Type_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).AT_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).AT_Name));
 
    function Generic_Formal_Type_Get_Name
      (Id : W_Generic_Formal_Type_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).GFT_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).GFT_Name));
 
    function Generic_Actual_Type_Chain_Get_Type_Chain
      (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
      return W_Primitive_Type_Unchecked_List is
-     (W_Primitive_Type_Unchecked_List (Get_Node (+Id).GATC_Type_Chain));
+     (W_Primitive_Type_Unchecked_OList (Get_Node (+Id).GATC_Type_Chain));
 
    function Generic_Actual_Type_Chain_Get_Name
      (Id : W_Generic_Actual_Type_Chain_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).GATC_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).GATC_Name));
 
    function Array_Type_Get_Component_Type
      (Id : W_Array_Type_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).AT_Component_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).AT_Component_Type));
 
    function Ref_Type_Get_Aliased_Type
      (Id : W_Ref_Type_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).RT_Aliased_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).RT_Aliased_Type));
 
    function Protected_Value_Type_Get_Value_Type
      (Id : W_Protected_Value_Type_Unchecked_Id)
      return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_Id (Get_Node (+Id).PVT_Value_Type));
+     (W_Value_Type_Unchecked_OId (Get_Node (+Id).PVT_Value_Type));
 
    function Arrow_Type_Get_Name
      (Id : W_Arrow_Type_Unchecked_Id)
@@ -1737,12 +1737,12 @@ private
    function Arrow_Type_Get_Left
      (Id : W_Arrow_Type_Unchecked_Id)
      return W_Simple_Value_Type_Unchecked_Id is
-     (W_Simple_Value_Type_Unchecked_Id (Get_Node (+Id).NA_Left));
+     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).NA_Left));
 
    function Arrow_Type_Get_Right
      (Id : W_Arrow_Type_Unchecked_Id)
      return W_Computation_Type_Unchecked_Id is
-     (W_Computation_Type_Unchecked_Id (Get_Node (+Id).NA_Right));
+     (W_Computation_Type_Unchecked_OId (Get_Node (+Id).NA_Right));
 
    function Computation_Spec_Get_Precondition
      (Id : W_Computation_Spec_Unchecked_Id)
@@ -1757,12 +1757,12 @@ private
    function Computation_Spec_Get_Return_Type
      (Id : W_Computation_Spec_Unchecked_Id)
      return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_Id (Get_Node (+Id).CS_Return_Type));
+     (W_Value_Type_Unchecked_OId (Get_Node (+Id).CS_Return_Type));
 
    function Computation_Spec_Get_Effects
      (Id : W_Computation_Spec_Unchecked_Id)
      return W_Effects_Unchecked_Id is
-     (W_Effects_Unchecked_Id (Get_Node (+Id).CS_Effects));
+     (W_Effects_Unchecked_OId (Get_Node (+Id).CS_Effects));
 
    function Computation_Spec_Get_Postcondition
      (Id : W_Computation_Spec_Unchecked_Id)
@@ -1782,27 +1782,27 @@ private
    function Arith_Operation_Get_Left
      (Id : W_Arith_Operation_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).AO_Left));
+     (W_Term_Unchecked_OId (Get_Node (+Id).AO_Left));
 
    function Arith_Operation_Get_Op
      (Id : W_Arith_Operation_Unchecked_Id)
      return W_Arith_Op_Unchecked_Id is
-     (W_Arith_Op_Unchecked_Id (Get_Node (+Id).AO_Op));
+     (W_Arith_Op_Unchecked_OId (Get_Node (+Id).AO_Op));
 
    function Arith_Operation_Get_Right
      (Id : W_Arith_Operation_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).AO_Right));
+     (W_Term_Unchecked_OId (Get_Node (+Id).AO_Right));
 
    function Negative_Term_Get_Operand
      (Id : W_Negative_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).NT_Operand));
+     (W_Term_Unchecked_OId (Get_Node (+Id).NT_Operand));
 
    function Term_Identifier_Get_Name
      (Id : W_Term_Identifier_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).TIL_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).TIL_Name));
 
    function Term_Identifier_Get_Label
      (Id : W_Term_Identifier_Unchecked_Id)
@@ -1812,97 +1812,97 @@ private
    function Operation_Get_Name
      (Id : W_Operation_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).O_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).O_Name));
 
    function Operation_Get_Parameters
      (Id : W_Operation_Unchecked_Id)
      return W_Term_Unchecked_List is
-     (W_Term_Unchecked_List (Get_Node (+Id).O_Parameters));
+     (W_Term_Unchecked_OList (Get_Node (+Id).O_Parameters));
 
    function Named_Term_Get_Name
      (Id : W_Named_Term_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).NT_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).NT_Name));
 
    function Named_Term_Get_Term
      (Id : W_Named_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).NT_Term));
+     (W_Term_Unchecked_OId (Get_Node (+Id).NT_Term));
 
    function Conditional_Term_Get_Condition
      (Id : W_Conditional_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).CT_Condition));
+     (W_Term_Unchecked_OId (Get_Node (+Id).CT_Condition));
 
    function Conditional_Term_Get_Then_Part
      (Id : W_Conditional_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).CT_Then_Part));
+     (W_Term_Unchecked_OId (Get_Node (+Id).CT_Then_Part));
 
    function Conditional_Term_Get_Else_Part
      (Id : W_Conditional_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).CT_Else_Part));
+     (W_Term_Unchecked_OId (Get_Node (+Id).CT_Else_Part));
 
    function Matching_Term_Get_Term
      (Id : W_Matching_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).MT_Term));
+     (W_Term_Unchecked_OId (Get_Node (+Id).MT_Term));
 
    function Matching_Term_Get_Branches
      (Id : W_Matching_Term_Unchecked_Id)
      return W_Match_Case_Unchecked_List is
-     (W_Match_Case_Unchecked_List (Get_Node (+Id).MT_Branches));
+     (W_Match_Case_Unchecked_OList (Get_Node (+Id).MT_Branches));
 
    function Binding_Term_Get_Name
      (Id : W_Binding_Term_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).BT_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).BT_Name));
 
    function Binding_Term_Get_Def
      (Id : W_Binding_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).BT_Def));
+     (W_Term_Unchecked_OId (Get_Node (+Id).BT_Def));
 
    function Binding_Term_Get_Context
      (Id : W_Binding_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).BT_Context));
+     (W_Term_Unchecked_OId (Get_Node (+Id).BT_Context));
 
    function Protected_Term_Get_Term
      (Id : W_Protected_Term_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).BT_Term));
+     (W_Term_Unchecked_OId (Get_Node (+Id).BT_Term));
 
    function Predicate_Identifier_Get_Name
      (Id : W_Predicate_Identifier_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).PID_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).PID_Name));
 
    function Predicate_Instance_Get_Name
      (Id : W_Predicate_Instance_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).PIN_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).PIN_Name));
 
    function Predicate_Instance_Get_Parameters
      (Id : W_Predicate_Instance_Unchecked_Id)
      return W_Term_Unchecked_List is
-     (W_Term_Unchecked_List (Get_Node (+Id).PIN_Parameters));
+     (W_Term_Unchecked_OList (Get_Node (+Id).PIN_Parameters));
 
    function Related_Terms_Get_Left
      (Id : W_Related_Terms_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).RT_Left));
+     (W_Term_Unchecked_OId (Get_Node (+Id).RT_Left));
 
    function Related_Terms_Get_Op
      (Id : W_Related_Terms_Unchecked_Id)
      return W_Relation_Unchecked_Id is
-     (W_Relation_Unchecked_Id (Get_Node (+Id).RT_Op));
+     (W_Relation_Unchecked_OId (Get_Node (+Id).RT_Op));
 
    function Related_Terms_Get_Right
      (Id : W_Related_Terms_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).RT_Right));
+     (W_Term_Unchecked_OId (Get_Node (+Id).RT_Right));
 
    function Related_Terms_Get_Op2
      (Id : W_Related_Terms_Unchecked_Id)
@@ -1917,87 +1917,87 @@ private
    function Implication_Get_Left
      (Id : W_Implication_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Left));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Left));
 
    function Implication_Get_Right
      (Id : W_Implication_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Right));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Right));
 
    function Equivalence_Get_Left
      (Id : W_Equivalence_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Left));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Left));
 
    function Equivalence_Get_Right
      (Id : W_Equivalence_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Right));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Right));
 
    function Disjunction_Get_Left
      (Id : W_Disjunction_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Left));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Left));
 
    function Disjunction_Get_Right
      (Id : W_Disjunction_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Right));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Right));
 
    function Conjunction_Get_Left
      (Id : W_Conjunction_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Left));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Left));
 
    function Conjunction_Get_Right
      (Id : W_Conjunction_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).ITOC_Right));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).ITOC_Right));
 
    function Negation_Get_Operand
      (Id : W_Negation_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).N_Operand));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).N_Operand));
 
    function Conditional_Pred_Get_Condition
      (Id : W_Conditional_Pred_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).CPD_Condition));
+     (W_Term_Unchecked_OId (Get_Node (+Id).CPD_Condition));
 
    function Conditional_Pred_Get_Then_Part
      (Id : W_Conditional_Pred_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).CPD_Then_Part));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).CPD_Then_Part));
 
    function Conditional_Pred_Get_Else_Part
      (Id : W_Conditional_Pred_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).CPD_Else_Part));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).CPD_Else_Part));
 
    function Binding_Pred_Get_Name
      (Id : W_Binding_Pred_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).BPD_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).BPD_Name));
 
    function Binding_Pred_Get_Def
      (Id : W_Binding_Pred_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).BPD_Def));
+     (W_Term_Unchecked_OId (Get_Node (+Id).BPD_Def));
 
    function Binding_Pred_Get_Context
      (Id : W_Binding_Pred_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).BPD_Context));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).BPD_Context));
 
    function Universal_Quantif_Get_Variables
      (Id : W_Universal_Quantif_Unchecked_Id)
      return W_Identifier_Unchecked_List is
-     (W_Identifier_Unchecked_List (Get_Node (+Id).UQ_Variables));
+     (W_Identifier_Unchecked_OList (Get_Node (+Id).UQ_Variables));
 
    function Universal_Quantif_Get_Var_Type
      (Id : W_Universal_Quantif_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).UQ_Var_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).UQ_Var_Type));
 
    function Universal_Quantif_Get_Triggers
      (Id : W_Universal_Quantif_Unchecked_Id)
@@ -2007,42 +2007,42 @@ private
    function Universal_Quantif_Get_Pred
      (Id : W_Universal_Quantif_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).UQ_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).UQ_Pred));
 
    function Existential_Quantif_Get_Variables
      (Id : W_Existential_Quantif_Unchecked_Id)
      return W_Identifier_Unchecked_List is
-     (W_Identifier_Unchecked_List (Get_Node (+Id).EQ_Variables));
+     (W_Identifier_Unchecked_OList (Get_Node (+Id).EQ_Variables));
 
    function Existential_Quantif_Get_Var_Type
      (Id : W_Existential_Quantif_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).EQ_Var_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).EQ_Var_Type));
 
    function Existential_Quantif_Get_Pred
      (Id : W_Existential_Quantif_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).EQ_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).EQ_Pred));
 
    function Named_Predicate_Get_Name
      (Id : W_Named_Predicate_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).NP_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).NP_Name));
 
    function Named_Predicate_Get_Pred
      (Id : W_Named_Predicate_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).NP_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).NP_Pred));
 
    function Protected_Predicate_Get_Pred
      (Id : W_Protected_Predicate_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).PP_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).PP_Pred));
 
    function Pattern_Get_Constr
      (Id : W_Pattern_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).PAT_Constr));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).PAT_Constr));
 
    function Pattern_Get_Args
      (Id : W_Pattern_Unchecked_Id)
@@ -2052,22 +2052,22 @@ private
    function Match_Case_Get_Pattern
      (Id : W_Match_Case_Unchecked_Id)
      return W_Pattern_Unchecked_Id is
-     (W_Pattern_Unchecked_Id (Get_Node (+Id).MC_Pattern));
+     (W_Pattern_Unchecked_OId (Get_Node (+Id).MC_Pattern));
 
    function Match_Case_Get_Term
      (Id : W_Match_Case_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).MC_Term));
+     (W_Term_Unchecked_OId (Get_Node (+Id).MC_Term));
 
    function Triggers_Get_Triggers
      (Id : W_Triggers_Unchecked_Id)
      return W_Trigger_Unchecked_List is
-     (W_Trigger_Unchecked_List (Get_Node (+Id).TRS_Triggers));
+     (W_Trigger_Unchecked_OList (Get_Node (+Id).TRS_Triggers));
 
    function Trigger_Get_Terms
      (Id : W_Trigger_Unchecked_Id)
      return W_Term_Unchecked_List is
-     (W_Term_Unchecked_List (Get_Node (+Id).TRI_Terms));
+     (W_Term_Unchecked_OList (Get_Node (+Id).TRI_Terms));
 
    function Type_Get_External
      (Id : W_Type_Unchecked_Id)
@@ -2082,7 +2082,7 @@ private
    function Type_Get_Name
      (Id : W_Type_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).T_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).T_Name));
 
    function Type_Get_Definition
      (Id : W_Type_Unchecked_Id)
@@ -2097,82 +2097,82 @@ private
    function Logic_Get_Names
      (Id : W_Logic_Unchecked_Id)
      return W_Identifier_Unchecked_List is
-     (W_Identifier_Unchecked_List (Get_Node (+Id).L_Names));
+     (W_Identifier_Unchecked_OList (Get_Node (+Id).L_Names));
 
    function Logic_Get_Logic_Type
      (Id : W_Logic_Unchecked_Id)
      return W_Logic_Type_Unchecked_Id is
-     (W_Logic_Type_Unchecked_Id (Get_Node (+Id).L_Logic_Type));
+     (W_Logic_Type_Unchecked_OId (Get_Node (+Id).L_Logic_Type));
 
    function Function_Get_Name
      (Id : W_Function_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).F_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).F_Name));
 
    function Function_Get_Binders
      (Id : W_Function_Unchecked_Id)
      return W_Logic_Binder_Unchecked_List is
-     (W_Logic_Binder_Unchecked_List (Get_Node (+Id).F_Binders));
+     (W_Logic_Binder_Unchecked_OList (Get_Node (+Id).F_Binders));
 
    function Function_Get_Return_Type
      (Id : W_Function_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).F_Return_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).F_Return_Type));
 
    function Function_Get_Def
      (Id : W_Function_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).F_Def));
+     (W_Term_Unchecked_OId (Get_Node (+Id).F_Def));
 
    function Predicate_Definition_Get_Name
      (Id : W_Predicate_Definition_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).P_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).P_Name));
 
    function Predicate_Definition_Get_Binders
      (Id : W_Predicate_Definition_Unchecked_Id)
      return W_Logic_Binder_Unchecked_List is
-     (W_Logic_Binder_Unchecked_List (Get_Node (+Id).P_Binders));
+     (W_Logic_Binder_Unchecked_OList (Get_Node (+Id).P_Binders));
 
    function Predicate_Definition_Get_Def
      (Id : W_Predicate_Definition_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).P_Def));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).P_Def));
 
    function Inductive_Get_Name
      (Id : W_Inductive_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).I_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).I_Name));
 
    function Inductive_Get_Logic_Type
      (Id : W_Inductive_Unchecked_Id)
      return W_Logic_Type_Unchecked_Id is
-     (W_Logic_Type_Unchecked_Id (Get_Node (+Id).I_Logic_Type));
+     (W_Logic_Type_Unchecked_OId (Get_Node (+Id).I_Logic_Type));
 
    function Inductive_Get_Def
      (Id : W_Inductive_Unchecked_Id)
      return W_Inductive_Case_Unchecked_List is
-     (W_Inductive_Case_Unchecked_List (Get_Node (+Id).I_Def));
+     (W_Inductive_Case_Unchecked_OList (Get_Node (+Id).I_Def));
 
    function Axiom_Get_Name
      (Id : W_Axiom_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).AX_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).AX_Name));
 
    function Axiom_Get_Def
      (Id : W_Axiom_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).AX_Def));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).AX_Def));
 
    function Goal_Get_Name
      (Id : W_Goal_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).G_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).G_Name));
 
    function Goal_Get_Def
      (Id : W_Goal_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).G_Def));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).G_Def));
 
    function Logic_Type_Get_Arg_Types
      (Id : W_Logic_Type_Unchecked_Id)
@@ -2182,42 +2182,42 @@ private
    function Logic_Type_Get_Return_Type
      (Id : W_Logic_Type_Unchecked_Id)
      return W_Logic_Return_Type_Unchecked_Id is
-     (W_Logic_Return_Type_Unchecked_Id (Get_Node (+Id).LT_Return_Type));
+     (W_Logic_Return_Type_Unchecked_OId (Get_Node (+Id).LT_Return_Type));
 
    function Logic_Binder_Get_Name
      (Id : W_Logic_Binder_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).LB_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).LB_Name));
 
    function Logic_Binder_Get_Param_Type
      (Id : W_Logic_Binder_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).LB_Param_Type));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).LB_Param_Type));
 
    function Inductive_Case_Get_Name
      (Id : W_Inductive_Case_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).IC_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).IC_Name));
 
    function Inductive_Case_Get_Pred
      (Id : W_Inductive_Case_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).IC_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).IC_Pred));
 
    function Transparent_Type_Definition_Get_Type_Definition
      (Id : W_Transparent_Type_Definition_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id is
-     (W_Primitive_Type_Unchecked_Id (Get_Node (+Id).Tr_Type_Definition));
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).Tr_Type_Definition));
 
    function Adt_Definition_Get_Constructors
      (Id : W_Adt_Definition_Unchecked_Id)
      return W_Constr_Decl_Unchecked_List is
-     (W_Constr_Decl_Unchecked_List (Get_Node (+Id).Adt_Constructors));
+     (W_Constr_Decl_Unchecked_OList (Get_Node (+Id).Adt_Constructors));
 
    function Constr_Decl_Get_Name
      (Id : W_Constr_Decl_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).C_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).C_Name));
 
    function Constr_Decl_Get_Arg_List
      (Id : W_Constr_Decl_Unchecked_Id)
@@ -2242,12 +2242,12 @@ private
    function Precondition_Get_Assertion
      (Id : W_Precondition_Unchecked_Id)
      return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_Id (Get_Node (+Id).PRE_Assertion));
+     (W_Assertion_Unchecked_OId (Get_Node (+Id).PRE_Assertion));
 
    function Postcondition_Get_Assertion
      (Id : W_Postcondition_Unchecked_Id)
      return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_Id (Get_Node (+Id).POST_Assertion));
+     (W_Assertion_Unchecked_OId (Get_Node (+Id).POST_Assertion));
 
    function Postcondition_Get_Handlers
      (Id : W_Postcondition_Unchecked_Id)
@@ -2257,17 +2257,17 @@ private
    function Exn_Condition_Get_Exn_Case
      (Id : W_Exn_Condition_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).EC_Exn_Case));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).EC_Exn_Case));
 
    function Exn_Condition_Get_Assertion
      (Id : W_Exn_Condition_Unchecked_Id)
      return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_Id (Get_Node (+Id).EC_Assertion));
+     (W_Assertion_Unchecked_OId (Get_Node (+Id).EC_Assertion));
 
    function Assertion_Get_Pred
      (Id : W_Assertion_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_Id (Get_Node (+Id).A_Pred));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).A_Pred));
 
    function Assertion_Get_As
      (Id : W_Assertion_Unchecked_Id)
@@ -2277,122 +2277,122 @@ private
    function Prog_Constant_Get_Def
      (Id : W_Prog_Constant_Unchecked_Id)
      return W_Constant_Unchecked_Id is
-     (W_Constant_Unchecked_Id (Get_Node (+Id).PC_Def));
+     (W_Constant_Unchecked_OId (Get_Node (+Id).PC_Def));
 
    function Prog_Identifier_Get_Def
      (Id : W_Prog_Identifier_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).PI_Def));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).PI_Def));
 
    function Any_Expr_Get_Any_Type
      (Id : W_Any_Expr_Unchecked_Id)
      return W_Computation_Type_Unchecked_Id is
-     (W_Computation_Type_Unchecked_Id (Get_Node (+Id).AE_Any_Type));
+     (W_Computation_Type_Unchecked_OId (Get_Node (+Id).AE_Any_Type));
 
    function Deref_Get_Ref
      (Id : W_Deref_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).D_Ref));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).D_Ref));
 
    function Assignment_Get_Name
      (Id : W_Assignment_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).A_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).A_Name));
 
    function Assignment_Get_Value
      (Id : W_Assignment_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).A_Value));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).A_Value));
 
    function Array_Access_Get_Name
      (Id : W_Array_Access_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).AA_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).AA_Name));
 
    function Array_Access_Get_Index
      (Id : W_Array_Access_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).AA_Index));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).AA_Index));
 
    function Array_Update_Get_Name
      (Id : W_Array_Update_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).AU_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).AU_Name));
 
    function Array_Update_Get_Index
      (Id : W_Array_Update_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).AU_Index));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).AU_Index));
 
    function Array_Update_Get_Value
      (Id : W_Array_Update_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).AU_Value));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).AU_Value));
 
    function Infix_Call_Get_Left
      (Id : W_Infix_Call_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).IC_Left));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).IC_Left));
 
    function Infix_Call_Get_Infix
      (Id : W_Infix_Call_Unchecked_Id)
      return W_Infix_Unchecked_Id is
-     (W_Infix_Unchecked_Id (Get_Node (+Id).IC_Infix));
+     (W_Infix_Unchecked_OId (Get_Node (+Id).IC_Infix));
 
    function Infix_Call_Get_Right
      (Id : W_Infix_Call_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).IC_Right));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).IC_Right));
 
    function Prefix_Call_Get_Prefix
      (Id : W_Prefix_Call_Unchecked_Id)
      return W_Prefix_Unchecked_Id is
-     (W_Prefix_Unchecked_Id (Get_Node (+Id).PC_Prefix));
+     (W_Prefix_Unchecked_OId (Get_Node (+Id).PC_Prefix));
 
    function Prefix_Call_Get_Operand
      (Id : W_Prefix_Call_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).PC_Operand));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).PC_Operand));
 
    function Binding_Prog_Get_Name
      (Id : W_Binding_Prog_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).BPG_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).BPG_Name));
 
    function Binding_Prog_Get_Def
      (Id : W_Binding_Prog_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BPG_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BPG_Def));
 
    function Binding_Prog_Get_Context
      (Id : W_Binding_Prog_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BPG_Context));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BPG_Context));
 
    function Binding_Ref_Get_Name
      (Id : W_Binding_Ref_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).BPG_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).BPG_Name));
 
    function Binding_Ref_Get_Def
      (Id : W_Binding_Ref_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BPG_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BPG_Def));
 
    function Binding_Ref_Get_Context
      (Id : W_Binding_Ref_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BPG_Context));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BPG_Context));
 
    function Conditional_Prog_Get_Condition
      (Id : W_Conditional_Prog_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).CPG_Condition));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).CPG_Condition));
 
    function Conditional_Prog_Get_Then_Part
      (Id : W_Conditional_Prog_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).CPG_Then_Part));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).CPG_Then_Part));
 
    function Conditional_Prog_Get_Else_Part
      (Id : W_Conditional_Prog_Unchecked_Id)
@@ -2402,127 +2402,127 @@ private
    function While_Loop_Get_Condition
      (Id : W_While_Loop_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).WL_Condition));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).WL_Condition));
 
    function While_Loop_Get_Annotation
      (Id : W_While_Loop_Unchecked_Id)
      return W_Loop_Annot_Unchecked_Id is
-     (W_Loop_Annot_Unchecked_Id (Get_Node (+Id).WL_Annotation));
+     (W_Loop_Annot_Unchecked_OId (Get_Node (+Id).WL_Annotation));
 
    function While_Loop_Get_Loop_Content
      (Id : W_While_Loop_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).WL_Loop_Content));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).WL_Loop_Content));
 
    function Statement_Sequence_Get_Statements
      (Id : W_Statement_Sequence_Unchecked_Id)
      return W_Prog_Unchecked_List is
-     (W_Prog_Unchecked_List (Get_Node (+Id).SS_Statements));
+     (W_Prog_Unchecked_OList (Get_Node (+Id).SS_Statements));
 
    function Label_Get_Name
      (Id : W_Label_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).L_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).L_Name));
 
    function Label_Get_Def
      (Id : W_Label_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).L_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).L_Def));
 
    function Assert_Get_Assertions
      (Id : W_Assert_Unchecked_Id)
      return W_Assertion_Unchecked_List is
-     (W_Assertion_Unchecked_List (Get_Node (+Id).AS_Assertions));
+     (W_Assertion_Unchecked_OList (Get_Node (+Id).AS_Assertions));
 
    function Assert_Get_Prog
      (Id : W_Assert_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).AS_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).AS_Prog));
 
    function Post_Assertion_Get_Prog
      (Id : W_Post_Assertion_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).PA_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).PA_Prog));
 
    function Post_Assertion_Get_Post
      (Id : W_Post_Assertion_Unchecked_Id)
      return W_Postcondition_Unchecked_Id is
-     (W_Postcondition_Unchecked_Id (Get_Node (+Id).PA_Post));
+     (W_Postcondition_Unchecked_OId (Get_Node (+Id).PA_Post));
 
    function Opaque_Assertion_Get_Prog
      (Id : W_Opaque_Assertion_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).PA_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).PA_Prog));
 
    function Opaque_Assertion_Get_Post
      (Id : W_Opaque_Assertion_Unchecked_Id)
      return W_Postcondition_Unchecked_Id is
-     (W_Postcondition_Unchecked_Id (Get_Node (+Id).PA_Post));
+     (W_Postcondition_Unchecked_OId (Get_Node (+Id).PA_Post));
 
    function Fun_Def_Get_Binders
      (Id : W_Fun_Def_Unchecked_Id)
      return W_Binder_Unchecked_List is
-     (W_Binder_Unchecked_List (Get_Node (+Id).FD_Binders));
+     (W_Binder_Unchecked_OList (Get_Node (+Id).FD_Binders));
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Unchecked_Id)
      return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_Id (Get_Node (+Id).FD_Pre));
+     (W_Precondition_Unchecked_OId (Get_Node (+Id).FD_Pre));
 
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).FD_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).FD_Def));
 
    function Binding_Fun_Get_Name
      (Id : W_Binding_Fun_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).BF_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).BF_Name));
 
    function Binding_Fun_Get_Binders
      (Id : W_Binding_Fun_Unchecked_Id)
      return W_Binder_Unchecked_List is
-     (W_Binder_Unchecked_List (Get_Node (+Id).BF_Binders));
+     (W_Binder_Unchecked_OList (Get_Node (+Id).BF_Binders));
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Unchecked_Id)
      return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_Id (Get_Node (+Id).BF_Pre));
+     (W_Precondition_Unchecked_OId (Get_Node (+Id).BF_Pre));
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BF_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BF_Def));
 
    function Binding_Fun_Get_Context
      (Id : W_Binding_Fun_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BF_Context));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BF_Context));
 
    function Binding_Rec_Get_Recfun
      (Id : W_Binding_Rec_Unchecked_Id)
      return W_Recfun_Unchecked_Id is
-     (W_Recfun_Unchecked_Id (Get_Node (+Id).BR_Recfun));
+     (W_Recfun_Unchecked_OId (Get_Node (+Id).BR_Recfun));
 
    function Binding_Rec_Get_Context
      (Id : W_Binding_Rec_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BR_Context));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BR_Context));
 
    function Prog_Call_Get_Name
      (Id : W_Prog_Call_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).PS_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).PS_Name));
 
    function Prog_Call_Get_Progs
      (Id : W_Prog_Call_Unchecked_Id)
      return W_Prog_Unchecked_List is
-     (W_Prog_Unchecked_List (Get_Node (+Id).PS_Progs));
+     (W_Prog_Unchecked_OList (Get_Node (+Id).PS_Progs));
 
    function Raise_Statement_Get_Name
      (Id : W_Raise_Statement_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).RS_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).RS_Name));
 
    function Raise_Statement_Get_Exn_Type
      (Id : W_Raise_Statement_Unchecked_Id)
@@ -2532,12 +2532,12 @@ private
    function Raise_Statement_With_Parameters_Get_Name
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).RSWP_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).RSWP_Name));
 
    function Raise_Statement_With_Parameters_Get_Parameter
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).RSWP_Parameter));
+     (W_Term_Unchecked_OId (Get_Node (+Id).RSWP_Parameter));
 
    function Raise_Statement_With_Parameters_Get_Exn_Type
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
@@ -2547,12 +2547,12 @@ private
    function Try_Block_Get_Prog
      (Id : W_Try_Block_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).TB_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).TB_Prog));
 
    function Try_Block_Get_Handler
      (Id : W_Try_Block_Unchecked_Id)
      return W_Handler_Unchecked_List is
-     (W_Handler_Unchecked_List (Get_Node (+Id).TB_Handler));
+     (W_Handler_Unchecked_OList (Get_Node (+Id).TB_Handler));
 
    function Unreachable_Code_Get_Exn_Type
      (Id : W_Unreachable_Code_Unchecked_Id)
@@ -2562,52 +2562,52 @@ private
    function Begin_Block_Get_Prog
      (Id : W_Begin_Block_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BB_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BB_Prog));
 
    function Protected_Prog_Get_Prog
      (Id : W_Protected_Prog_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).BB_Prog));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).BB_Prog));
 
    function Binder_Get_Names
      (Id : W_Binder_Unchecked_Id)
      return W_Identifier_Unchecked_List is
-     (W_Identifier_Unchecked_List (Get_Node (+Id).B_Names));
+     (W_Identifier_Unchecked_OList (Get_Node (+Id).B_Names));
 
    function Binder_Get_Arg_Type
      (Id : W_Binder_Unchecked_Id)
      return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_Id (Get_Node (+Id).B_Arg_Type));
+     (W_Value_Type_Unchecked_OId (Get_Node (+Id).B_Arg_Type));
 
    function Recfun_Get_Name
      (Id : W_Recfun_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).RF_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).RF_Name));
 
    function Recfun_Get_Binders
      (Id : W_Recfun_Unchecked_Id)
      return W_Binder_Unchecked_List is
-     (W_Binder_Unchecked_List (Get_Node (+Id).RF_Binders));
+     (W_Binder_Unchecked_OList (Get_Node (+Id).RF_Binders));
 
    function Recfun_Get_Return_Type
      (Id : W_Recfun_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).RF_Return_Type));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).RF_Return_Type));
 
    function Recfun_Get_Variant
      (Id : W_Recfun_Unchecked_Id)
      return W_Wf_Arg_Unchecked_Id is
-     (W_Wf_Arg_Unchecked_Id (Get_Node (+Id).RF_Variant));
+     (W_Wf_Arg_Unchecked_OId (Get_Node (+Id).RF_Variant));
 
    function Recfun_Get_Pre
      (Id : W_Recfun_Unchecked_Id)
      return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_Id (Get_Node (+Id).RF_Pre));
+     (W_Precondition_Unchecked_OId (Get_Node (+Id).RF_Pre));
 
    function Recfun_Get_Def
      (Id : W_Recfun_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).RF_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).RF_Def));
 
    function Loop_Annot_Get_Invariant
      (Id : W_Loop_Annot_Unchecked_Id)
@@ -2622,7 +2622,7 @@ private
    function Wf_Arg_Get_Def
      (Id : W_Wf_Arg_Unchecked_Id)
      return W_Term_Unchecked_Id is
-     (W_Term_Unchecked_Id (Get_Node (+Id).WA_Def));
+     (W_Term_Unchecked_OId (Get_Node (+Id).WA_Def));
 
    function Wf_Arg_Get_For_Id
      (Id : W_Wf_Arg_Unchecked_Id)
@@ -2632,7 +2632,7 @@ private
    function Handler_Get_Name
      (Id : W_Handler_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).H_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).H_Name));
 
    function Handler_Get_Parameter
      (Id : W_Handler_Unchecked_Id)
@@ -2642,7 +2642,7 @@ private
    function Handler_Get_Def
      (Id : W_Handler_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).H_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).H_Def));
 
    function File_Get_Declarations
      (Id : W_File_Unchecked_Id)
@@ -2652,7 +2652,7 @@ private
    function Global_Binding_Get_Name
      (Id : W_Global_Binding_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).GB_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).GB_Name));
 
    function Global_Binding_Get_Binders
      (Id : W_Global_Binding_Unchecked_Id)
@@ -2662,17 +2662,17 @@ private
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Unchecked_Id)
      return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_Id (Get_Node (+Id).GB_Pre));
+     (W_Precondition_Unchecked_OId (Get_Node (+Id).GB_Pre));
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Unchecked_Id)
      return W_Prog_Unchecked_Id is
-     (W_Prog_Unchecked_Id (Get_Node (+Id).GB_Def));
+     (W_Prog_Unchecked_OId (Get_Node (+Id).GB_Def));
 
    function Global_Rec_Binding_Get_Name
      (Id : W_Global_Rec_Binding_Unchecked_Id)
      return W_Recfun_Unchecked_Id is
-     (W_Recfun_Unchecked_Id (Get_Node (+Id).GRB_Name));
+     (W_Recfun_Unchecked_OId (Get_Node (+Id).GRB_Name));
 
    function Parameter_Declaration_Get_External
      (Id : W_Parameter_Declaration_Unchecked_Id)
@@ -2682,17 +2682,17 @@ private
    function Parameter_Declaration_Get_Names
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return W_Identifier_Unchecked_List is
-     (W_Identifier_Unchecked_List (Get_Node (+Id).PD_Names));
+     (W_Identifier_Unchecked_OList (Get_Node (+Id).PD_Names));
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Unchecked_Id)
      return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_Id (Get_Node (+Id).PD_Parameter_Type));
+     (W_Value_Type_Unchecked_OId (Get_Node (+Id).PD_Parameter_Type));
 
    function Exception_Declaration_Get_Name
      (Id : W_Exception_Declaration_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).ED_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).ED_Name));
 
    function Exception_Declaration_Get_Parameter
      (Id : W_Exception_Declaration_Unchecked_Id)
@@ -2702,12 +2702,12 @@ private
    function Logic_Declaration_Get_Decl
      (Id : W_Logic_Declaration_Unchecked_Id)
      return W_Logic_Declaration_Class_Unchecked_Id is
-     (W_Logic_Declaration_Class_Unchecked_Id (Get_Node (+Id).LD_Decl));
+     (W_Logic_Declaration_Class_Unchecked_OId (Get_Node (+Id).LD_Decl));
 
    function Include_Declaration_Get_Name
      (Id : W_Include_Declaration_Unchecked_Id)
      return W_Identifier_Unchecked_Id is
-     (W_Identifier_Unchecked_Id (Get_Node (+Id).ID_Name));
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).ID_Name));
 
    function Identifier_Get_Symbol
      (Id : W_Identifier_Id)
