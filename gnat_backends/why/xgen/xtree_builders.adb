@@ -877,7 +877,7 @@ package body Xtree_Builders is
          end Print_Field_Component_Choice;
 
       begin
-         PL (O, Builder_Name (Kind, Regular, Builder_Copy));
+         PL (O, "return " & Builder_Name (Kind, Regular, Builder_Copy));
          P (O, " (");
          Relative_Indent (O, 2);
          Common_Fields.Fields.Iterate (Print_Field_Component_Choice'Access);
@@ -888,14 +888,21 @@ package body Xtree_Builders is
 
    --  Start of processing for Print_Class_Copy_Builder_Body
 
+      BN : constant Wide_String :=
+             Builder_Name (Class_Name (CI), Regular, Builder_Copy);
    begin
+      Print_Box (O, BN);
+      NL (O);
+
       Print_Class_Copy_Builder_Specification (O, Class_Name (CI));
       PL (O, " is");
-      Relative_Indent (O, 2);
-      Print_Class_Case_Expression (O, CI, Node_Id_Param, "Why_Empty",
-                                   Print_Kind_Expression'Access);
-      Relative_Indent (O, -2);
-      NL (O);
+      PL (O, "begin");
+      Relative_Indent (O, 3);
+      Print_Class_Case_Expression (O, CI, Node_Id_Param, "return Why_Empty",
+                                   Print_Kind_Expression'Access,
+                                   False);
+      Relative_Indent (O, -3);
+      PL (O, "end " & BN & ";");
    end Print_Class_Copy_Builder_Body;
 
    -------------------------------------------

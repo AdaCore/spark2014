@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -36,6 +36,9 @@ package Xtree_Classes is
       Default      : Wide_String;
       Process_Kind : not null access procedure
                        (O    : in out Output_Record;
-                        Kind : Why_Node_Kind));
+                        Kind : Why_Node_Kind);
+      Case_Expr    : Boolean := True);
+   --  Generate a case statement or a case expression (depending on Case_Expr)
+   --  that dispatch over Param's kind, and call Process_Kind for each kind.
 
 end Xtree_Classes;

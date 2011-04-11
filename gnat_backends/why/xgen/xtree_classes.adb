@@ -36,20 +36,33 @@ package body Xtree_Classes is
       Default      : Wide_String;
       Process_Kind : not null access procedure
                        (O    : in out Output_Record;
-                        Kind : Why_Node_Kind))
+                        Kind : Why_Node_Kind);
+      Case_Expr    : Boolean := True)
    is
+      Sep : constant Wide_String := (if Case_Expr then "," else ";");
    begin
-      PL (O, "(case Get_Kind (" & Param & ") is");
+      if Case_Expr then
+         P (O, "(");
+      end if;
+
+      PL (O, "case Get_Kind (" & Param & ") is");
       for Kind in Class_First (CI) .. Class_Last (CI) loop
          Relative_Indent (O, 3);
          PL (O, "when " & Mixed_Case_Name (Kind) & " =>");
          Relative_Indent (O, 3);
          Process_Kind (O, Kind);
-         PL (O, ",");
+         PL (O, Sep);
          Relative_Indent (O, -6);
       end loop;
       PL (O, "   when others =>");
-      P  (O, "      " & Default & ");");
+      P  (O, "      " & Default);
+
+      if Case_Expr then
+         P (O, ");");
+      else
+         PL (O, ";");
+         PL (O, "end case;");
+      end if;
    end Print_Class_Case_Expression;
 
 end Xtree_Classes;
