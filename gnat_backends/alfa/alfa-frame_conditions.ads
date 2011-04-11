@@ -24,99 +24,41 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;             use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
-
-with ALFA.Common;                use ALFA.Common;
+with Ada.Strings.Hash;
 
 package ALFA.Frame_Conditions is
 
-   function Nat_Hash (X : Nat) return Hash_Type is (Hash_Type (X));
+   type Entity_Name is new String_Ptr;
+   --  Unique name representing an entity
 
-   package Nat_To_String is new Hashed_Maps
-     (Key_Type        => Nat,
-      Element_Type    => Unbounded_String,
-      Hash            => Nat_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   function Name_Equal (Left, Right : Entity_Name) return Boolean is
+      (Left.all = Right.all);
 
-   package String_To_Nat is new Hashed_Maps
-     (Key_Type        => Unbounded_String,
-      Element_Type    => Nat,
-      Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   Null_Entity_Name : constant Entity_Name := null;
 
-   File_Names : Nat_To_String.Map;
-   --  Mapping from file numbers to file names
+   function Name_Hash (E : Entity_Name) return Hash_Type is
+      (Ada.Strings.Hash (E.all));
 
-   File_Nums  : String_To_Nat.Map;
-   --  Mapping from file names to file numbers
-
-   type Entity_Rep is record
-      Name : String_Ptr;
-      File : Nat;
-      Line : Nat;
-      Col  : Nat;
-   end record;
-   --  Representative of an entity
-
-   function "=" (Left, Right : Entity_Rep) return Boolean is
-     (Left.File = Right.File
-       and Left.Line = Right.Line
-       and Left.Col = Right.Col);
-
-   Null_Entity : constant Entity_Rep := Entity_Rep'(Name => null,
-                                                    File => 0,
-                                                    Line => 0,
-                                                    Col  => 0);
-
-   function Rep_Hash (E : Entity_Rep) return Hash_Type is
-     (Hash_Type (E.File * 53 + E.Line * 17 + E.Col));
-   --  Hash function for hashed-maps
-
-   package Rep_Set is new Hashed_Sets
-     (Element_Type        => Entity_Rep,
-      Hash                => Rep_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-   use Rep_Set;
-
-   package Rep_Map is new Hashed_Maps
-     (Key_Type        => Entity_Rep,
-      Element_Type    => Rep_Set.Set,
-      Hash            => Rep_Hash,
-      Equivalent_Keys => "=",
-      "="             => Rep_Set."=");
-   use Rep_Map;
-
-   Defines : Rep_Map.Map;
-   Writes  : Rep_Map.Map;
-   Reads   : Rep_Map.Map;
-   Callers : Rep_Map.Map;
-   Calls   : Rep_Map.Map;
-
-   procedure Add_To_Map (Map : in out Rep_Map.Map; From, To : Entity_Rep);
-   --  Add the relation From -> To in map Map
-
-   function Count_In_Map
-     (Map : Rep_Map.Map;
-      Ent : Entity_Rep) return Nat;
-   --  Return the number of elements in the set associated to Ent in Map, or
-   --  else 0.
-
-   function Defines_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Global_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Writes_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Global_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Callers_Of (Ent : Entity_Rep) return Rep_Set.Set;
-   function Calls_Of (Ent : Entity_Rep) return Rep_Set.Set;
+   package Name_Set is new Hashed_Sets
+     (Element_Type        => Entity_Name,
+      Hash                => Name_Hash,
+      Equivalent_Elements => Name_Equal,
+      "="                 => Name_Equal);
+   use Name_Set;
 
    procedure Display_Maps;
    --  Send maps to output for debug
+
+   function Get_Reads (E : Entity_Id) return Name_Set.Set;
+   --  Get the variables read by subprogram E
+
+   function Get_Writes (E : Entity_Id) return Name_Set.Set;
+   --  Get the variables written by subprogram E
+
+   function Has_Global_Writes (E : Entity_Id) return Boolean is
+     (not Get_Writes (E).Is_Empty);
+   --  Return True if subprogram E writes to global variables
 
    procedure Load_ALFA (ALI_Filename : String);
    --  Extract xref information from an ALI file
@@ -124,55 +66,5 @@ package ALFA.Frame_Conditions is
    procedure Propagate_Through_Call_Graph;
    --  Propagate reads and writes through the call-graph defined by calls and
    --  callers.
-
-   ----------------------------
-   -- Link with AST Entities --
-   ----------------------------
-
-   use Id_Set;
-
-   package Entity_Id_To_Rep is new Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Entity_Rep,
-      Hash            => Id_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   use Entity_Id_To_Rep;
-
-   From_AST : Entity_Id_To_Rep.Map;
-
-   package Entity_Rep_To_Id is new Hashed_Maps
-     (Key_Type        => Entity_Rep,
-      Element_Type    => Entity_Id,
-      Hash            => Rep_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   use Entity_Rep_To_Id;
-
-   To_AST : Entity_Rep_To_Id.Map;
-
-   procedure Declare_Entity (E : Entity_Id);
-   --  Create a representative for E and enter the match in tables To_AST and
-   --  From_AST.
-
-   procedure Declare_All_Entities;
-   --  Declare all entities by traversing all units
-
-   procedure Get_Reads
-     (E    : Entity_Id;
-      Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set);
-   --  Get the variables read by subprogram E, either as an Entity_Id in Ids if
-   --  one is known, or as an Entity_Rep in Reps otherwise.
-
-   procedure Get_Writes
-     (E    : Entity_Id;
-      Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set);
-   --  Get the variables written by subprogram E, either as an Entity_Id in Ids
-   --  if one is known, or as an Entity_Rep in Reps otherwise.
-
-   function Has_Global_Writes (E : Entity_Id) return Boolean is
-     (not Global_Writes_Of (From_AST.Element (E)).Is_Empty);
 
 end ALFA.Frame_Conditions;

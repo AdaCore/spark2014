@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 with ALFA;               use ALFA;
 with Atree;              use Atree;
 with Debug;
@@ -846,19 +848,22 @@ package body Gnat2Why.Subprograms is
       ---------------------
 
       function Compute_Effects return W_Effects_Id is
-         E          : constant Entity_Id := Unique_Defining_Entity (Node);
-         Read_Ids   : Id_Set.Set;
-         Read_Reps  : Rep_Set.Set;
-         Write_Ids  : Id_Set.Set;
-         Write_Reps : Rep_Set.Set;
-         Eff        : constant W_Effects_Unchecked_Id :=
-                        New_Unchecked_Effects;
+         E               : constant Entity_Id := Unique_Defining_Entity (Node);
+         Read_Names      : Name_Set.Set;
+         Write_Names     : Name_Set.Set;
+         Write_All_Names : UString_Set.Set;
+         Eff             : constant W_Effects_Unchecked_Id :=
+                             New_Unchecked_Effects;
 
       begin
          --  Collect global variables potentially read and written
 
-         Get_Reads (E, Read_Ids, Read_Reps);
-         Get_Writes (E, Write_Ids, Write_Reps);
+         Read_Names  := Get_Reads (E);
+         Write_Names := Get_Writes (E);
+
+         for Name of Write_Names loop
+            Write_All_Names.Include (To_Unbounded_String (Name.all));
+         end loop;
 
          --  Add all OUT and IN OUT parameters as potential writes
 
@@ -872,7 +877,8 @@ package body Gnat2Why.Subprograms is
                   Id := Defining_Identifier (Arg);
 
                   if Ekind_In (Id, E_Out_Parameter, E_In_Out_Parameter) then
-                     Write_Ids.Insert (Id);
+                     Write_All_Names.Include
+                       (To_Unbounded_String (Full_Name (Id)));
                   end if;
 
                   Next (Arg);
@@ -880,20 +886,12 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-         for Id of Read_Ids loop
-            Effects_Append_To_Reads (Eff, New_Identifier (Full_Name (Id)));
+         for Name of Read_Names loop
+            Effects_Append_To_Reads (Eff, New_Identifier (Name.all));
          end loop;
 
-         for Rep of Read_Reps loop
-            Effects_Append_To_Reads (Eff, New_Identifier (Rep.Name.all));
-         end loop;
-
-         for Id of Write_Ids loop
-            Effects_Append_To_Writes (Eff, New_Identifier (Full_Name (Id)));
-         end loop;
-
-         for Rep of Write_Reps loop
-            Effects_Append_To_Writes (Eff, New_Identifier (Rep.Name.all));
+         for Name of Write_All_Names loop
+            Effects_Append_To_Writes (Eff, New_Identifier (To_String (Name)));
          end loop;
 
          return +Eff;

@@ -25,6 +25,8 @@
 
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
+with Ada.Strings.Hash;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
 with Sinfo; use Sinfo;
 with Atree; use Atree;
@@ -40,6 +42,16 @@ package ALFA.Common is
       Equivalent_Elements => "=",
       "="                 => "=");
    use Id_Set;
+
+   function UString_Hash (X : Unbounded_String) return Hash_Type is
+     (Ada.Strings.Hash (To_String (X)));
+
+   package UString_Set is new Hashed_Sets
+     (Element_Type        => Unbounded_String,
+      Hash                => UString_Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+   use UString_Set;
 
    function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
      (Ekind (Scope (E)) = E_Package);

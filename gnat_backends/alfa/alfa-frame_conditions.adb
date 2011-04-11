@@ -23,34 +23,61 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;     use AA_Util;
-with Ada.Text_IO; use Ada.Text_IO;
-with Atree;       use Atree;
-with Einfo;       use Einfo;
+with Ada.Containers.Hashed_Maps;
+with Ada.Text_IO;                use Ada.Text_IO;
+
 with Get_ALFA;
-with Lib.Xref;
-with Namet;       use Namet;
-with Nlists;      use Nlists;
-with Sem_Util;    use Sem_Util;
-with Sinfo;       use Sinfo;
-with Sinput;      use Sinput;
+with Sem_Util;                   use Sem_Util;
 
 package body ALFA.Frame_Conditions is
+
+   -----------------
+   -- Local Types --
+   -----------------
+
+   package Name_Map is new Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Name_Set.Set,
+      Hash            => Name_Hash,
+      Equivalent_Keys => Name_Equal,
+      "="             => Name_Set."=");
+   --  Stores a correspondance between an entity and a set of entities,
+   --  where entities are uniquely represented by their name.
+
+   use Name_Map;
+
+   ---------------------
+   -- Local Variables --
+   ---------------------
+
+   Scopes  : Name_Set.Set;  --  All scope entities
+
+   Defines : Name_Map.Map;  --  Entities defined by each scope
+   Writes  : Name_Map.Map;  --  Entities written in each scope
+   Reads   : Name_Map.Map;  --  Entities read in each scope
+   Callers : Name_Map.Map;  --  Callers for each subprogram
+   Calls   : Name_Map.Map;  --  Subprograms called in each subprogram
 
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Declare_Relevant_Entities (N : Node_Id);
-   --  Declare entity corresponding to N if relevant, as well as entities
-   --  depending on N that would not otherwise be traversed.
+   procedure Add_To_Map (Map : in out Name_Map.Map; From, To : Entity_Name);
+   --  Add the relation From -> To in map Map
 
-   function Get_Num_For_File (Filename : String) return Nat;
-   --  Return a unique number identifying input file Filename
+   function Count_In_Map
+     (Map : Name_Map.Map;
+      Ent : Entity_Name) return Nat;
+   --  Return the number of elements in the set associated to Ent in Map, or
+   --  else 0.
+
+   function Make_Entity_Name (Name : String_Ptr) return Entity_Name
+   with Pre => Name /= null and then Name.all /= "";
+   --  Build a name for an entity, making sure the name is not empty
 
    procedure Set_Default_To_Empty
-     (Map : in out Rep_Map.Map;
-      Set : Rep_Set.Set);
+     (Map : in out Name_Map.Map;
+      Set : Name_Set.Set);
    --  Make sure each element in Set has an entry in Map. If not already
    --  present, add one which maps the element to the empty set.
 
@@ -58,16 +85,16 @@ package body ALFA.Frame_Conditions is
    -- Add_To_Map --
    ----------------
 
-   procedure Add_To_Map (Map : in out Rep_Map.Map; From, To : Entity_Rep) is
+   procedure Add_To_Map (Map : in out Name_Map.Map; From, To : Entity_Name) is
 
-      procedure Add_To_Set (Ignored : Entity_Rep; Set : in out Rep_Set.Set);
+      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Set.Set);
       --  Add entity representative To to set Set
 
       ----------------
       -- Add_To_Set --
       ----------------
 
-      procedure Add_To_Set (Ignored : Entity_Rep; Set : in out Rep_Set.Set)
+      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Set.Set)
       is
          pragma Unreferenced (Ignored);
       begin
@@ -81,7 +108,7 @@ package body ALFA.Frame_Conditions is
          Map.Update_Element (Map.Find (From), Add_To_Set'Access);
       else
          declare
-            S : Rep_Set.Set;
+            S : Name_Set.Set;
          begin
             S.Include (To);
             Map.Insert (From, S);
@@ -89,43 +116,17 @@ package body ALFA.Frame_Conditions is
       end if;
    end Add_To_Map;
 
-   ----------------
-   -- Callers_Of --
-   ----------------
-
-   function Callers_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      if Callers.Contains (Ent) then
-         return Callers.Element (Ent);
-      else
-         return Rep_Set.Empty_Set;
-      end if;
-   end Callers_Of;
-
-   --------------
-   -- Calls_Of --
-   --------------
-
-   function Calls_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      if Calls.Contains (Ent) then
-         return Calls.Element (Ent);
-      else
-         return Rep_Set.Empty_Set;
-      end if;
-   end Calls_Of;
-
    ------------------
    -- Count_In_Map --
    ------------------
 
    function Count_In_Map
-     (Map : Rep_Map.Map;
-      Ent : Entity_Rep) return Nat is
+     (Map : Name_Map.Map;
+      Ent : Entity_Name) return Nat is
    begin
       if Map.Contains (Ent) then
          declare
-            Set : constant Rep_Set.Set := Map.Element (Ent);
+            Set : constant Name_Set.Set := Map.Element (Ent);
          begin
             return Nat (Set.Length);
          end;
@@ -134,148 +135,41 @@ package body ALFA.Frame_Conditions is
       end if;
    end Count_In_Map;
 
-   --------------------------
-   -- Declare_All_Entities --
-   --------------------------
-
-   procedure Declare_All_Entities is
-   begin
-      Lib.Xref.ALFA.Traverse_All_Compilation_Units
-        (Declare_Relevant_Entities'Access);
-   end Declare_All_Entities;
-
-   --------------------
-   -- Declare_Entity --
-   --------------------
-
-   procedure Declare_Entity (E : Entity_Id) is
-      Loc   : constant Source_Ptr := Sloc (E);
-      Index : constant SFI := Get_Source_File_Index (Loc);
-      Name  : constant Unbounded_String :=
-                To_Unbounded_String
-                  (Name_String (Name_Id (File_Name (Index))));
-      Rep   : Entity_Rep;
-
-   begin
-      --  ??? Remove the following test when all ALI files are read, in
-      --  particular for System.
-
-      if not File_Nums.Contains (Name) then
-         return;
-      end if;
-
-      Rep := Entity_Rep'(Name => null,
-                         File => File_Nums.Element (Name),
-                         Line => Nat (Get_Logical_Line_Number (Loc)),
-                         Col  => Nat (Get_Column_Number (Loc)));
-
-      To_AST.Insert (Rep, E);
-      From_AST.Insert (E, Rep);
-   end Declare_Entity;
-
-   -------------------------------
-   -- Declare_Relevant_Entities --
-   -------------------------------
-
-   procedure Declare_Relevant_Entities (N : Node_Id) is
-      E : Entity_Id;
-   begin
-      E := Defining_Entity (N);
-
-      --  Ignore postcondition procedures which do not define valid source
-      --  entities for cross-references.
-
-      if Present (E)
-        and then Ekind (E) = E_Procedure
-        and then Is_Postcondition_Proc (E)
-      then
-         return;
-      end if;
-
-      --  Ignore entities generated by the compiler, such as objects created
-      --  for exceptions declarations.
-
-      if Present (E) and then Comes_From_Source (E) then
-         Declare_Entity (E);
-
-         --  Declare entities corresponding to subprogram parameters
-
-         case Nkind (N) is
-            when N_Subprogram_Declaration |
-                 N_Subprogram_Body        =>
-               declare
-                  Params : constant List_Id :=
-                             Parameter_Specifications (Specification (N));
-                  Param  : Node_Id;
-               begin
-                  if Is_Non_Empty_List (Params) then
-                     Param := First (Params);
-                     while Present (Param) loop
-                        Declare_Entity (Defining_Entity (Param));
-                        Next (Param);
-                     end loop;
-                  end if;
-               end;
-            when others =>
-               null;
-         end case;
-      end if;
-   end Declare_Relevant_Entities;
-
-   ----------------
-   -- Defines_Of --
-   ----------------
-
-   function Defines_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      if Defines.Contains (Ent) then
-         return Defines.Element (Ent);
-      else
-         return Rep_Set.Empty_Set;
-      end if;
-   end Defines_Of;
-
    ------------------
    -- Display_Maps --
    ------------------
 
    procedure Display_Maps is
 
-      procedure Display_Entity (E : Entity_Rep);
-      procedure Display_One_Map (Map : Rep_Map.Map; Name, Action : String);
-      procedure Display_One_Set (Set : Rep_Set.Set);
+      procedure Display_Entity (E : Entity_Name);
+      procedure Display_One_Map (Map : Name_Map.Map; Name, Action : String);
+      procedure Display_One_Set (Set : Name_Set.Set);
 
       --------------------
       -- Display_Entity --
       --------------------
 
-      procedure Display_Entity (E : Entity_Rep) is
-         File_Str : constant String := Nat'Image (E.File);
-         Line_Str : constant String := Nat'Image (E.Line);
-         Col_Str  : constant String := Nat'Image (E.Col);
+      procedure Display_Entity (E : Entity_Name) is
       begin
-         Put ("entity @" & To_String (File_Names.Element (E.File))
-               & "(" & File_Str (2 .. File_Str'Last) & ")"
-               & ":" & Line_Str (2 .. Line_Str'Last)
-               & ":" & Col_Str (2 .. Col_Str'Last));
+         Put ("entity " & E.all);
       end Display_Entity;
 
       ---------------------
       -- Display_One_Map --
       ---------------------
 
-      procedure Display_One_Map (Map : Rep_Map.Map; Name, Action : String)
+      procedure Display_One_Map (Map : Name_Map.Map; Name, Action : String)
       is
-         Cu : Rep_Map.Cursor;
+         Cu : Name_Map.Cursor;
       begin
          Put_Line ("-- " & Name & " --");
 
          Cu := Map.First;
          while Has_Element (Cu) loop
-            Display_Entity (Rep_Map.Key (Cu));
+            Display_Entity (Name_Map.Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Rep_Map.Element (Cu));
-            Rep_Map.Next (Cu);
+            Display_One_Set (Name_Map.Element (Cu));
+            Name_Map.Next (Cu);
          end loop;
       end Display_One_Map;
 
@@ -283,7 +177,7 @@ package body ALFA.Frame_Conditions is
       -- Display_One_Set --
       ---------------------
 
-      procedure Display_One_Set (Set : Rep_Set.Set) is
+      procedure Display_One_Set (Set : Name_Set.Set) is
       begin
          for Ent of Set loop
             Put ("  "); Display_Entity (Ent); Put_Line ("");
@@ -304,83 +198,29 @@ package body ALFA.Frame_Conditions is
       Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
-   ----------------------
-   -- Get_Num_For_File --
-   ----------------------
-
-   function Get_Num_For_File (Filename : String) return Nat is
-      Fname : constant Unbounded_String := To_Unbounded_String (Filename);
-      Num   : Nat;
-   begin
-      if File_Nums.Contains (Fname) then
-         return File_Nums.Element (Fname);
-      else
-         Num := Int (File_Nums.Length) + 1;
-         File_Nums.Insert (Fname, Num);
-         File_Names.Insert (Num, Fname);
-         return Num;
-      end if;
-   end Get_Num_For_File;
-
    ---------------
    -- Get_Reads --
    ---------------
 
-   procedure Get_Reads
-     (E    : Entity_Id;
-      Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set)
-   is
-      Rep : constant Entity_Rep := From_AST.Element (E);
+   function Get_Reads (E : Entity_Id) return Name_Set.Set is
+      Name   : aliased constant String := Unique_Name (E);
+      E_Name : constant Entity_Name    :=
+                 Make_Entity_Name (Name'Unrestricted_Access);
    begin
-      Reps := Global_Reads_Of (Rep);
-
-      for C in Reps loop
-         if To_AST.Contains (Rep_Set.Element (C)) then
-            Ids.Insert (To_AST.Element (Rep_Set.Element (C)));
-            Reps.Delete (C);
-         end if;
-      end loop;
+      return Reads.Element (E_Name) - Defines.Element (E_Name);
    end Get_Reads;
 
    ----------------
    -- Get_Writes --
    ----------------
 
-   procedure Get_Writes
-     (E    : Entity_Id;
-      Ids  : out Id_Set.Set;
-      Reps : out Rep_Set.Set)
-   is
-      Rep : constant Entity_Rep := From_AST.Element (E);
+   function Get_Writes (E : Entity_Id) return Name_Set.Set is
+      Name   : aliased constant String := Unique_Name (E);
+      E_Name : constant Entity_Name    :=
+                 Make_Entity_Name (Name'Unrestricted_Access);
    begin
-      Reps := Global_Writes_Of (Rep);
-
-      for C in Reps loop
-         if To_AST.Contains (Rep_Set.Element (C)) then
-            Ids.Insert (To_AST.Element (Rep_Set.Element (C)));
-            Reps.Delete (C);
-         end if;
-      end loop;
+      return Writes.Element (E_Name) - Defines.Element (E_Name);
    end Get_Writes;
-
-   ---------------------
-   -- Global_Reads_Of --
-   ---------------------
-
-   function Global_Reads_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      return Reads_Of (Ent) - Defines_Of (Ent);
-   end Global_Reads_Of;
-
-   ----------------------
-   -- Global_Writes_Of --
-   ----------------------
-
-   function Global_Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      return Writes_Of (Ent) - Defines_Of (Ent);
-   end Global_Writes_Of;
 
    ---------------
    -- Load_ALFA --
@@ -479,58 +319,39 @@ package body ALFA.Frame_Conditions is
 
       Walk_ALFA_Tables : declare
 
-         subtype File_Idx is File_Index range
-           ALFA_File_Table.First .. ALFA_File_Table.Last;
-         --  Range of indexes in ALFA_File_Table
-
-         type File_Corresp_Array is array (File_Idx) of Nat;
-         --  Map each source file to a representative across ALI files
-
-         type Scope_Rep is record
+         type Scope_Name is record
             File_Num  : Nat;
             Scope_Num : Nat;
          end record;
-         --  Representative of a scope
+         --  Nameresentative of a scope
 
-         function Scope_Hash (S : Scope_Rep) return Hash_Type is
+         function Scope_Hash (S : Scope_Name) return Hash_Type is
            (Hash_Type (S.File_Num * 17 + S.Scope_Num));
          --  Hash function for hashed-maps
 
          package Scope_Entity is new Hashed_Maps
-           (Key_Type        => Scope_Rep,
-            Element_Type    => Entity_Rep,
+           (Key_Type        => Scope_Name,
+            Element_Type    => Entity_Name,
             Hash            => Scope_Hash,
             Equivalent_Keys => "=",
             "="             => "=");
          --  Map each scope to its entity representative
 
          package Scope_Spec is new Hashed_Maps
-           (Key_Type        => Scope_Rep,
-            Element_Type    => Scope_Rep,
+           (Key_Type        => Scope_Name,
+            Element_Type    => Scope_Name,
             Hash            => Scope_Hash,
             Equivalent_Keys => "=",
             "="             => "=");
          --  Map body scopes to their spec scope, when different
 
-         File_Corresp   : File_Corresp_Array;
          Scope_Entities : Scope_Entity.Map;
          Scope_Specs    : Scope_Spec.Map;
-         Current_Entity : Entity_Rep;
+         Current_Entity : Entity_Name;
 
       --  Start of processing for Walk_ALFA_Tables
 
       begin
-         --  Fill File_Corresp : build a table of correspondance between files
-         --  in this particular ALI file and numbers across ALI files.
-
-         for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
-            declare
-               Frec : ALFA_File_Record renames ALFA_File_Table.Table (F);
-            begin
-               File_Corresp (F) := Get_Num_For_File (Frec.File_Name.all);
-            end;
-         end loop;
-
          --  Fill Scope_Entities : build entity representatives for all scopes
          --  in this ALI file.
 
@@ -543,22 +364,24 @@ package body ALFA.Frame_Conditions is
             loop
                declare
                   Srec : ALFA_Scope_Record renames ALFA_Scope_Table.Table (S);
-                  Sco  : constant Scope_Rep :=
-                           Scope_Rep'(File_Num  => Srec.File_Num,
+                  Sco  : constant Scope_Name :=
+                           Scope_Name'(File_Num  => Srec.File_Num,
                                       Scope_Num => Srec.Scope_Num);
-                  Ent  : constant Entity_Rep :=
-                           Entity_Rep'(Name => null,
-                                       File => File_Corresp (F),
-                                       Line => Srec.Line,
-                                       Col  => Srec.Col);
+                  Ent  : constant Entity_Name :=
+                           Make_Entity_Name (Srec.Scope_Name);
                begin
                   Scope_Entities.Insert (Sco, Ent);
+
+                  --  Record which entities are scopes, for default
+                  --  initializing maps in Propagate_Through_Call_Graph.
+
+                  Scopes.Include (Ent);
 
                   --  If present, use the body-to-spec information
 
                   if Srec.Spec_File_Num /= 0 then
                      Scope_Specs.Insert (Sco,
-                       Scope_Rep'(File_Num  => Srec.Spec_File_Num,
+                       Scope_Name'(File_Num  => Srec.Spec_File_Num,
                                   Scope_Num => Srec.Spec_Scope_Num));
                   end if;
                end;
@@ -567,7 +390,7 @@ package body ALFA.Frame_Conditions is
 
          --  Fill in high-level tables from xrefs
 
-         Current_Entity := Null_Entity;
+         Current_Entity := Null_Entity_Name;
          for F in ALFA_File_Table.First .. ALFA_File_Table.Last loop
             for S in ALFA_File_Table.Table (F).From_Scope
               .. ALFA_File_Table.Table (F).To_Scope
@@ -580,23 +403,20 @@ package body ALFA.Frame_Conditions is
                               ALFA_Scope_Table.Table (S);
                      Xref : ALFA_Xref_Record renames ALFA_Xref_Table.Table (X);
 
-                     Ref_Entity : constant Entity_Rep :=
-                                    Entity_Rep'(Name => Xref.Entity_Name,
-                                                File => File_Corresp (F),
-                                                Line => Xref.Entity_Line,
-                                                Col  => Xref.Entity_Col);
+                     Ref_Entity : constant Entity_Name :=
+                                    Make_Entity_Name (Xref.Entity_Name);
 
-                     Ref_Scope     : Scope_Rep;
-                     Def_Scope     : Scope_Rep;
-                     Ref_Scope_Ent : Entity_Rep;
-                     Def_Scope_Ent : Entity_Rep;
+                     Ref_Scope     : Scope_Name;
+                     Def_Scope     : Scope_Name;
+                     Ref_Scope_Ent : Entity_Name;
+                     Def_Scope_Ent : Entity_Name;
 
                   --  Start of processing for Do_One_Xref
 
                   begin
                      --  Compute the entity for the scope being referenced
 
-                     Ref_Scope := Scope_Rep'(File_Num  => Xref.File_Num,
+                     Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
                                              Scope_Num => Xref.Scope_Num);
                      if Scope_Specs.Contains (Ref_Scope) then
                         Ref_Scope := Scope_Specs.Element (Ref_Scope);
@@ -605,7 +425,7 @@ package body ALFA.Frame_Conditions is
 
                      --  Compute the entity for the scope of the definition
 
-                     Def_Scope := Scope_Rep'(File_Num  => Srec.File_Num,
+                     Def_Scope := Scope_Name'(File_Num  => Srec.File_Num,
                                              Scope_Num => Srec.Scope_Num);
                      if Scope_Specs.Contains (Def_Scope) then
                         Def_Scope := Scope_Specs.Element (Def_Scope);
@@ -632,9 +452,7 @@ package body ALFA.Frame_Conditions is
                            raise Program_Error;
                      end case;
 
-                     --  TEMPORARY FIX FOR K323-005, TO BE DECOMMENTED AFTER
-                     --  ALL HAVE TAKEN A GCC BUILT ON 2011-03-23 OR LATER
-                     --  Current_Entity := Ref_Entity;
+                     Current_Entity := Ref_Entity;
                   end Do_One_Xref;
                end loop;
             end loop;
@@ -642,35 +460,42 @@ package body ALFA.Frame_Conditions is
       end Walk_ALFA_Tables;
    end Load_ALFA;
 
+   ----------------------
+   -- Make_Entity_Name --
+   ----------------------
+
+   function Make_Entity_Name (Name : String_Ptr) return Entity_Name is
+     (Entity_Name (Name));
+
    ----------------------------------
    -- Propagate_Through_Call_Graph --
    ----------------------------------
 
    procedure Propagate_Through_Call_Graph is
 
-      procedure Propagate_On_Call (Caller, Callee : Entity_Rep);
+      procedure Propagate_On_Call (Caller, Callee : Entity_Name);
       --  Update reads and writes of subprogram Caller from Callee
 
-      procedure Update_Subprogram (Subp : Entity_Rep; Updated : out Boolean);
+      procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean);
       --  Update reads and writes of subprogram Subp from its callees
 
       -----------------------
       -- Propagate_On_Call --
       -----------------------
 
-      procedure Propagate_On_Call (Caller, Callee : Entity_Rep) is
-         Prop_Reads  : Rep_Set.Set;
-         Prop_Writes : Rep_Set.Set;
+      procedure Propagate_On_Call (Caller, Callee : Entity_Name) is
+         Prop_Reads  : Name_Set.Set;
+         Prop_Writes : Name_Set.Set;
 
          procedure Union_With_Reads
-           (Ignored : Entity_Rep;
-            Set     : in out Rep_Set.Set);
+           (Ignored : Entity_Name;
+            Set     : in out Name_Set.Set);
          --  In place union of caller's reads with the set propagated from
          --  callee.
 
          procedure Union_With_Writes
-           (Ignored : Entity_Rep;
-            Set     : in out Rep_Set.Set);
+           (Ignored : Entity_Name;
+            Set     : in out Name_Set.Set);
          --  In place union of caller's writes with the set propagated from
          --  callee.
 
@@ -679,8 +504,8 @@ package body ALFA.Frame_Conditions is
          ----------------------
 
          procedure Union_With_Reads
-           (Ignored : Entity_Rep;
-            Set     : in out Rep_Set.Set)
+           (Ignored : Entity_Name;
+            Set     : in out Name_Set.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -692,8 +517,8 @@ package body ALFA.Frame_Conditions is
          -----------------------
 
          procedure Union_With_Writes
-           (Ignored : Entity_Rep;
-            Set     : in out Rep_Set.Set)
+           (Ignored : Entity_Name;
+            Set     : in out Name_Set.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -703,8 +528,8 @@ package body ALFA.Frame_Conditions is
       --  Start of processing for Propagate_On_Call
 
       begin
-         Prop_Reads  := Reads_Of (Callee) - Defines_Of (Callee);
-         Prop_Writes := Writes_Of (Callee) - Defines_Of (Callee);
+         Prop_Reads  := Reads.Element (Callee) - Defines.Element (Callee);
+         Prop_Writes := Writes.Element (Callee) - Defines.Element (Callee);
 
          Reads.Update_Element
            (Reads.Find (Caller), Union_With_Reads'Access);
@@ -716,10 +541,11 @@ package body ALFA.Frame_Conditions is
       -- Update_Subprogram --
       -----------------------
 
-      procedure Update_Subprogram (Subp : Entity_Rep; Updated : out Boolean) is
+      procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean)
+      is
          Num_Reads   : Nat;
          Num_Writes  : Nat;
-         Called_Subp : Rep_Set.Set;
+         Called_Subp : Name_Set.Set;
 
       begin
          Num_Reads  := Count_In_Map (Reads, Subp);
@@ -740,9 +566,8 @@ package body ALFA.Frame_Conditions is
          end if;
       end Update_Subprogram;
 
-      Work_Set : Rep_Set.Set;
-      All_Subp : Rep_Set.Set;
-      Cu       : Rep_Map.Cursor;
+      Work_Set : Name_Set.Set;
+      Cu       : Name_Map.Cursor;
 
    --  Start of processing for Propagate_Through_Call_Graph
 
@@ -757,24 +582,17 @@ package body ALFA.Frame_Conditions is
 
       --  Initialize all maps so that each subprogram has an entry in each map
 
-      Cu := Callers.First;
-      while Has_Element (Cu) loop
-         All_Subp.Insert (Key (Cu));
-         Next (Cu);
-      end loop;
-      All_Subp.Union (Work_Set);
-
-      Set_Default_To_Empty (Defines, All_Subp);
-      Set_Default_To_Empty (Writes, All_Subp);
-      Set_Default_To_Empty (Reads, All_Subp);
-      Set_Default_To_Empty (Callers, All_Subp);
-      Set_Default_To_Empty (Calls, All_Subp);
+      Set_Default_To_Empty (Defines, Scopes);
+      Set_Default_To_Empty (Writes,  Scopes);
+      Set_Default_To_Empty (Reads,   Scopes);
+      Set_Default_To_Empty (Callers, Scopes);
+      Set_Default_To_Empty (Calls,   Scopes);
 
       --  Iterate through work-set
 
       while Has_Element (Work_Set.First) loop
          declare
-            Cur_Subp : constant Entity_Rep := Element (Work_Set.First);
+            Cur_Subp : constant Entity_Name := Element (Work_Set.First);
             Updated  : Boolean;
          begin
             Work_Set.Delete (Cur_Subp);
@@ -788,46 +606,20 @@ package body ALFA.Frame_Conditions is
 
    end Propagate_Through_Call_Graph;
 
-   --------------
-   -- Reads_Of --
-   --------------
-
-   function Reads_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      if Reads.Contains (Ent) then
-         return Reads.Element (Ent);
-      else
-         return Rep_Set.Empty_Set;
-      end if;
-   end Reads_Of;
-
    --------------------------
    -- Set_Default_To_Empty --
    --------------------------
 
    procedure Set_Default_To_Empty
-     (Map : in out Rep_Map.Map;
-      Set : Rep_Set.Set)
+     (Map : in out Name_Map.Map;
+      Set : Name_Set.Set)
    is
    begin
       for Ent of Set loop
          if not Map.Contains (Ent) then
-            Map.Insert (Ent, Rep_Set.Empty_Set);
+            Map.Insert (Ent, Name_Set.Empty_Set);
          end if;
       end loop;
    end Set_Default_To_Empty;
-
-   ---------------
-   -- Writes_Of --
-   ---------------
-
-   function Writes_Of (Ent : Entity_Rep) return Rep_Set.Set is
-   begin
-      if Writes.Contains (Ent) then
-         return Writes.Element (Ent);
-      else
-         return Rep_Set.Empty_Set;
-      end if;
-   end Writes_Of;
 
 end ALFA.Frame_Conditions;

@@ -176,7 +176,7 @@ package body Gnat2Why.Driver is
 --        Put_Line ("");
 --        Display_Maps;
 
-      Declare_All_Entities;
+--      Declare_All_Entities;
 
       --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the
       --  same order that they were processed by the frontend. Bodies are not
