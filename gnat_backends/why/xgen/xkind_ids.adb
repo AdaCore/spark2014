@@ -143,10 +143,16 @@ package body Xkind_Ids is
 
                P (O, Base_Id_Subtype (Prefix, Kind, Multiplicity));
 
-               if Kind = Unchecked then
+               if Kind in Unchecked .. Regular then
                   PL (O, " with");
                   PL (O, "Predicate =>");
-                  PL (O, "  (" & Kind_Check (Prefix, Multiplicity));
+
+                  if Kind = Unchecked then
+                     PL (O, "(" & Kind_Check (Prefix, Multiplicity));
+                  else
+                     PL (O, "(" & Tree_Check (Prefix, Multiplicity));
+                  end if;
+
                   PL (O, "   (" & Id_Subtype (Prefix, Kind, Multiplicity)
                       & "));");
                else
