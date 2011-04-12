@@ -1,0 +1,327 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{mathpartir}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{xcolor}
+
+\newcommand{\atoms}{\mathit{atoms}}
+\newcommand{\atom}{\mathit{atom}}
+\newcommand{\gen}{\vdash_\mathit{gen}}
+\newcommand{\pos}{\vdash_\mathit{pos}}
+\newcommand{\dett}{\vdash_\mathit{det}}
+\newcommand{\ngen}{\nvdash_\mathit{gen}}
+\newcommand{\npos}{\nvdash_\mathit{pos}}
+\newcommand{\ndett}{\nvdash_\mathit{det}}
+\newcommand{\nnot}{\mathit{not}}
+
+
+%opening
+\title{A propositional model of the trigger mechanism in SMT Solvers}
+\author{Claire Dross}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+SMT Solvers aim at solving ground formulas containing symbols from different theories.
+One way to extend them to first order formulas is the trigger mechanism. It consists in
+adding a bunch of terms, called triggers, to every universally quantified formula.
+When a literal is assumed in the SAT mechanism, its sub-terms are added to a set of
+ground terms $M$. When a universally quantified formula is assumed, it is added to a set
+of formulas $K$. If there is a ground substitution $\sigma$ that match every trigger of a formula
+$F$ of $K$ to a ground term of $M$, then $\sigma F$ can be assumed by the solver.
+
+In this paper, we describe a propositional model for this trigger mechanism. We only focus
+on the restriction induced by the trigger mechanism. 
+\section{A Propositional Model for the SAT Mechanism}
+We introduce a labeled propositional logic. A formula in this logic is a classical propositional
+formula over atoms and labeled formulas. A labeled formula is a couple $[a]F$ where $F$ is a
+formula and $a$ a set of atoms. It means that the formula $F$ can only be used by the solver if
+all atoms in $a$ have been encountered. A labeled formula is a model of a universally quantified
+formula protected by a trigger. For example, $[A]B\rightarrow C$ is a formula which states that
+if we have $B$ triggered by the set of atom $\{A\}$ then we have $C$. This could be a model of
+the first order formula $(\forall x [A(x)]. B(x))\rightarrow C$.
+
+As in a solver that uses the trigger mechanism, two different sets are maintained through a
+proof of unsatisfiability of a bunched of formulas $R$ :
+\begin{itemize}
+ \item $G$, the set of assumed literals
+ \item $K$, the set of assumed labeled formulas.
+\end{itemize}
+We do not assume that formulas in $R$ are in CNF, rather that they are in some sort of simple clausal
+form over literals and labeled formulas. We introduce a function $\downarrow$ that puts formulas
+into this clausal form. To handle $\neg[a]F$, we introduce a function named $\nnot$ which takes
+a labeled formula $[a]F$ and returns a formula that should be such that, if $F'$ and $nF'$ are the 	propositional formulas obtained by erasing every label in $[a]F$ and $\nnot([a]F)$,
+$\neg F'\Leftrightarrow nF'$. The choice we make for $\nnot$ will be explained in next section.
+
+The expression $K,\ G,\ R\gen\Box$ means that the set of formulas $R$ together with the two sets
+of assumed literals and formulas $G$ and $K$ is unsatisfiable. We model the solver by the following
+rules :
+
+\begin{eqnarray*}
+&
+\inferrule [Base-R]{
+\Box\in R
+}{
+K,\ G,\ R\gen\Box
+}\qquad
+\inferrule [Base-G]{
+G\vDash \Box
+}{
+K,\ G,\ R\gen\Box
+}\\
+&
+\inferrule [Instantiation]{
+[a]F \in K  \\ a \subseteq \atoms(G) \\ K,\ G,\ R\cup\downarrow F\gen\Box
+}{
+K,\ G,\ R\gen\Box
+}\\
+&
+\inferrule [Sat-Formula]{
+K\cup\{[a]F\},\ G,\ R\gen\Box\\ K,\ G,\ R\cup\{C'\}\cup \downarrow\neg([a]F)\gen\Box
+}{
+K,\ G,\ R\cup\{[a]F\vee C'\}\gen\Box
+}\\
+&
+\inferrule [Sat-Literal]{
+K,\ G\cup\{L\},\ R\gen\Box\\ K,\ G\cup\{\overline{L}\},\ R\cup\{C'\}\gen\Box
+}{
+K,\ G,\ R\cup\{L\vee C'\}\gen\Box
+}
+\end{eqnarray*}
+The rules {\sc Base-R} and {\sc Base-G} are introduce to keep the rules for the assumption of
+literals and labeled formulas as simple as possible. The rule {\sc Base-R} states that if $R$
+contains the empty clause $\Box$, $R$ is unsatisfiable with any set $K$ and $G$. The rule {\sc Base-G}
+states that if the set of assumed ground literals is inconsistent, $K$, $G$, $R$ is unsatisfiable.
+It could model the action of theories over ground terms. Here, since we do not consider theories,
+$G\vDash \Box\Leftrightarrow\exists L\in G.\ \overline L\in G$.
+
+The rule {\sc Instantiation} models the mechanism of instantiation using the atoms contained in
+assumed literals (returned by $\atoms(G)$) to unlabel an assumed labeled formula of $K$.
+To preserve the fact that $R$ only contains formulas in clausal form, we use $\downarrow$
+to transform $F$.
+
+The rules {\sc Sat-Formula} and {\sc Sat-Literal} model a really simple version of a SAT. It assume
+any element of any clause of $R$. The constraint propagation is done a posteriori thanks to the rule
+{\sc Base-G}.
+
+We are only interested in strategies that only halt in two states :
+\begin{itemize}
+ \item $K,\ G,\ R\gen\Box$
+ \item the triplet $K$, $G$, $R$ is saturated :
+\begin{itemize}
+ \item $G\nvDash\Box$
+ \item $K\cup G\vDash R$
+ \item $\forall [a]F\in K.\ a\subseteq\atoms(G)\Rightarrow K\cup G\vDash F$.
+\end{itemize}
+\end{itemize}
+Intuitively, if $K$, $G$, $R$ is saturated, then nothing more can be deduced through the application
+of any rule and there can be no proof of $K,\ G,\ R\gen\Box$.
+
+\section{The Negation of Labeled Formulas}
+To decide a value for $\nnot$, we encode the intuitive meaning of triggers thanks to new atoms
+$pA$, one per atom $A$, that encode the presence of $A$ in the atoms of the set of assumed literals.
+A labeled formula $[A_1,\ \dots,\ A_n]F$ should behave as $(pA_1\wedge\dots\wedge pA_n)\rightarrow F$.
+As a consequence, we would like to choose $\nnot$ such that the intuitive meaning of
+$\nnot([A_1,\ \dots,\ A_n]F)$ is $pA_1\wedge\dots\wedge pA_n\wedge\neg F$. To express that,
+we introduce a new kind of labels, called positive and written $\langle a\rangle$ where $a$ is a set
+of atoms (in opposition, $[a]$ is called a negative label). Assuming $\langle a\rangle F$
+means adding $a$ to the set of encountered atoms and then assuming $F$. We then define $\nnot$ to be
+$\nnot([a]F)=\langle a\rangle\neg F$ and $\nnot(\langle a\rangle F)=[a]\neg F$.
+
+Bellow are the new rules that model the solver. They maintain a set $M$ of atoms that were explicitly
+added to the set of encountered atoms by the assumption of a positively labeled formula.
+To denote either a positively or a negatively labeled formula, we write $a:F$.
+\begin{eqnarray*}
+&
+\inferrule [Base-R]{
+\Box\in R
+}{
+K,\ G,\ M,\ R\pos\Box
+}\qquad
+\inferrule [Base-G]{
+G\vDash\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Positive-Instantiation]{
+\langle a\rangle F \in K \\ K,\ G,\ M\cup a,\ R\cup\downarrow F\pos\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Negative-Instantiation]{
+[a]F \in K  \\ a \subseteq \atoms(G)\cup M \\ K,\ G,\ M,\ R\cup\downarrow F\pos\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Sat-Formula]{
+K\cup\{a:F\},\ G,\ M,\ R\pos\Box\\ K\cup \downarrow\neg(a:F),\ G,\ M,\ R\cup\{C'\}\pos\Box
+}{
+K,\ G,\ R\cup\{a:F\vee C'\}\pos\Box
+}\\
+&
+\inferrule [Sat-Literal]{
+K,\ G\cup\{L\},\ M,\ R\pos\Box\\ K,\ G\cup\{\overline{L}\},\ M,\ R\cup\{C'\}\pos\Box
+}{
+K,\ G,\ M,\ R\cup\{L\vee C'\}\pos\Box
+}
+\end{eqnarray*}
+The rule {\sc Positive-Instantiation} handles positively labeled formulas as explained above. It adds
+the label to the set $M$ and then adds $F$ to the set of clauses $R$.
+The rule {\sc Negative-Instantiation} has been modified to use the set $M$ of explicitly added
+encountered atoms as well as $\atoms(G)$ to match negative labels.
+
+The notion of saturation from $\gen$ extended to $\pos$ as :
+\begin{itemize}
+ \item $G\nvDash\Box$
+ \item $K\cup G\vDash R$
+ \item $\forall [a]F\in K.\ a\subseteq\atoms(G)\cup M\Rightarrow K\cup G\vDash F$.
+ \item $\forall\langle a\rangle F\in K.\ a\subseteq M\wedge K\cup G\vDash F$.
+\end{itemize}
+
+\paragraph{Property :}
+$\pos$ is not deterministic, which means that there are some sets of formulas $R$ such that
+there exist both a proof of $\varnothing,\ \varnothing,\ \varnothing,\ R\pos\Box$ and a derivation
+stuck in a saturated state. For example, let's consider
+$R=\{A_1\vee A_2,\ [A_1]B_1,\ \neg B_1\}$.
+{\small
+\begin{eqnarray*}
+\inferrule* [Right=Sat]{
+  \inferrule* [Left=Inst]{
+      \inferrule* {G\vDash\Box}
+      {\dots,\ \{\neg B_1,\ A_1,\ B_1\},\ \varnothing\pos\Box}
+  }
+  {\{[A_1]B_1\},\ \{\neg B_1,\ A_1\},\ \varnothing\pos\Box} \\
+  \inferrule* [Right=Inst]{
+      \inferrule* {G\vDash\Box}
+      {\dots,\ \{\neg B_1,\ \neg A_1,\ B_1\},\ \dots\pos\Box}
+  }
+  {\{[A_1]B_1\},\ \{\neg B_1,\ \neg A_1\},\ \dots\pos\Box}
+}{
+\{[A_1]B_1\},\ \{\neg B_1\},\ \{A_1\vee A_2\}\pos\Box
+}
+\end{eqnarray*}
+}%
+is a proof of $\varnothing,\ \varnothing,\ \varnothing,\ R\pos\Box$.
+
+But if the solver assumes $A_2$ before $A_1$, it will never end up with a proof of
+$\varnothing,\ \varnothing,\ \varnothing,\ R\pos\Box$ :
+{\small
+\begin{eqnarray*}
+\inferrule* [Right=Sat]{
+  \inferrule* {
+  \textsc{Saturated}
+  }{\{[A_1]B_1\},\ \{\neg B_1,\ A_2\},\ \varnothing\npos\Box} \\
+  \inferrule* [Right=Inst]{
+    \inferrule* {G\vDash\Box}
+    {\dots,\ \{\neg B_1,\ \dots, \ B_1\},\ \varnothing\pos\Box}
+  }
+  {\{[A_1]B_1\},\ \{\neg B_1,\ \neg A_2,\ A_1\},\ \varnothing\pos\Box}
+}{
+\{[A_1]B_1\},\ \{\neg B_1\},\ \{A_1\vee A_2\}\npos\Box
+}
+\end{eqnarray*}
+}
+
+\section{A Deterministic Set of Rules}
+Since positive labels make it possible to state explicitly what should be added to the set of
+encountered atoms $M$, we would like to consider formulas where every atom that should be added
+to $M$ is explicitly stated. For example, for a clause $A_1\vee\neg A_2$, we could write
+$\langle A_1\rangle A_1\vee \langle A_2\rangle\neg A_2$, where the fact that the corresponding atom
+should be added to $M$ when assuming a literal is stated explicitly.
+
+Since the set of encountered axioms is maintained explicitly, there is no need to keep literals
+in a separate set anymore. They can be stored in $K$ with labeled formulas. Here is the new set
+of rules :
+\begin{eqnarray*}
+&
+\inferrule [Base-R]{
+\Box\in R
+}{
+K,\ M,\ R\dett\Box
+}\qquad
+\inferrule [Base-K]{
+K\vDash\Box
+}{
+K,\ M,\ R\dett\Box
+}\\
+&
+\inferrule [Positive-Instantiation]{
+\langle a\rangle F \in K \\ K,\ M\cup a,\ R\cup\downarrow F\dett\Box
+}{
+K,\ M,\ R\dett\Box
+}\\
+&
+\inferrule [Negative-Instantiation]{
+[a]F \in K  \\ a \subseteq M \\ K,\ M,\ R\cup\downarrow F\dett\Box
+}{
+K,\ M,\ R\dett\Box
+}\\
+&
+\inferrule [Sat]{
+K\cup\{D\},\ M,\ R\dett\Box\\ K\cup\downarrow\neg D,\ M,\ R\cup\{D\}\dett\Box
+}{
+K,\ M,\ R\cup\{D\vee C\}\dett\Box
+}
+\end{eqnarray*}
+The notion of saturation becomes :
+\begin{itemize}
+ \item $K\nvDash\Box$
+ \item $K\vDash R$
+ \item $\forall [a]F\in K.\ a\subseteq M\Rightarrow K\vDash F$.
+ \item $\forall\langle a\rangle F\in K.\ a\subseteq M\wedge K\vDash F$.
+\end{itemize}
+\paragraph{Property :}
+$\dett$ is deterministic and can be encoded as the validity of a propositional formula.
+If $F$ is a formula, let's define its encoding $F_F$ as :
+\begin{itemize}
+ \item $A\rightsquigarrow A$,
+ \item $F\rightsquigarrow F_F\Rightarrow
+[A_1,\ \dots,\ A_n]F\rightsquigarrow pA_1\wedge\dots\wedge pA_n\rightarrow F_F$,
+ \item $F\rightsquigarrow F_F\Rightarrow
+\langle A_1,\ \dots,\ A_n\rangle F\rightsquigarrow pA_1\wedge\dots\wedge pA_n\wedge F_F$,
+ \item $F_1\rightsquigarrow F_{F_1},\ F_2\rightsquigarrow F_{F_2} \Rightarrow
+F_1\wedge F_2\rightsquigarrow F_{F_1}\wedge F_{F_2}$,
+ \item $F_1\rightsquigarrow F_{F_1},\ F_2\rightsquigarrow F_{F_2} \Rightarrow
+F_1\vee F_2\rightsquigarrow F_{F_1}\vee F_{F_2}$,
+ \item $F\rightsquigarrow F_F\Rightarrow
+\neg F \rightsquigarrow \neg F_F$.
+\end{itemize}
+\paragraph{Proof :}
+
+\section{The Explicit Positive Labelization}
+We have a deterministic set of rules for explicitly labeled formulas. We would like to have a 
+systematic way of adding labels to a set of formulas $R$ so that we have, for the resulting set of
+explicitly labeled formulas $R'$ that $\varnothing,\ \varnothing,\ R'\dett\Box$ if and only if
+there is no derivation from $\varnothing,\ \varnothing,\ \varnothing,\ R\pos\Box$ that get stuck
+in a saturated state.
+\begin{itemize}
+ \item $A\hookrightarrow_\bullet\langle A\rangle A$,
+ \item $A\hookrightarrow_\circ[A]A$,
+ \item $F\hookrightarrow_\cdot F'\Rightarrow [a]F\hookrightarrow_\cdot[a]F'$,
+ \item $F\hookrightarrow_\cdot F'\Rightarrow\langle a\rangle F\hookrightarrow_\cdot\langle a\rangle F'$,
+ \item $F_1\hookrightarrow_\cdot F_1',\ F_2\hookrightarrow_\cdot F_2' \Rightarrow
+F_1\wedge F_2\hookrightarrow_\cdot F_1'\wedge F_2'$,
+ \item $F_1\hookrightarrow_\cdot F_1',\ F_2\hookrightarrow_\cdot F_2' \Rightarrow
+F_1\vee F_2\hookrightarrow_\cdot F_1'\vee F_2'$,
+ \item $F\hookrightarrow_\bullet F'\Rightarrow
+\neg F \hookrightarrow_\circ \neg F'$,
+ \item $F\hookrightarrow_\circ F'\Rightarrow
+\neg F \hookrightarrow_\bullet \neg F'$.
+\end{itemize}
+This transformation is made so that if $F\hookrightarrow_\cdot F'$ et
+$\downarrow F\hookrightarrow_\cdot dF'$ then $dF'\Leftrightarrow F'$.
+\paragraph{Proof :}
+
+\end{document}
