@@ -107,7 +107,7 @@ package body Gnat2Why.Decls is
             (File        => File,
              Name        => New_Identifier (Name),
              Args        => (1 .. 0 => <>),
-             Return_Type => +Why_Logic_Type_Of_Ada_Type (Obj_Id));
+             Return_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
          if Present (Expression (Decl)) then
             declare
                Ax_Name : constant String := Name & "__def_axiom";

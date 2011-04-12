@@ -70,13 +70,23 @@ package body Gnat2Why.Types is
       end;
    end Type_Of_Array_Index;
 
+   -------------------------------
+   -- Why_Logic_Type_Of_Ada_Obj --
+   -------------------------------
+
+   function Why_Logic_Type_Of_Ada_Obj (N : Node_Id)
+      return W_Primitive_Type_Id is
+      Ty : constant Node_Id := Etype (N);
+   begin
+      return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
+   end  Why_Logic_Type_Of_Ada_Obj;
+
    --------------------------------
    -- Why_Logic_Type_Of_Ada_Type --
    --------------------------------
 
-   function Why_Logic_Type_Of_Ada_Type (N : Node_Id)
+   function Why_Logic_Type_Of_Ada_Type (Ty : Node_Id)
       return W_Primitive_Type_Id is
-      Ty : constant Node_Id := Etype (N);
    begin
       return New_Abstract_Type (Ty, New_Identifier (Full_Name (Ty)));
    end  Why_Logic_Type_Of_Ada_Type;
