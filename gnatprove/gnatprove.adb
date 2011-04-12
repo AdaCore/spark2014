@@ -25,10 +25,9 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Altergo;           use Altergo;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
-with GNAT.Directory_Operations.Iteration;
-with GNAT.Expect;       use GNAT.Expect;
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
 with GNAT.Strings;
 
@@ -51,25 +50,6 @@ procedure Gnatprove is
    Why_Lib_Dir  : constant String := "lib/why";
    Main_Suffix  : constant String := "__package";
 
-   procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File);
-   --  Call Alt-Ergo on all VC files that correspond to a given source file of
-   --  a project
-
-   procedure Call_AltErgo_On_File
-     (File        : String;
-      Result_File : String;
-      Timeout     : Natural);
-   --  Call Altergo on a single File. Produce a file containing the result of
-   --  the run with name Result_File. Don't take more time than the given
-   --  Timeout in seconds.
-
-   procedure Call_Exit_On_Failure
-     (Command : String;
-      Arguments : Argument_List);
-   --  Call the given command using the given argument list.
-   --  Free all argument access values
-   --  If the command exit status is not 0, print its output and exit.
-
    procedure Call_Gnatmake (Project_File : String);
    --  Call gnatmake using the given project file.
 
@@ -87,175 +67,10 @@ procedure Gnatprove is
    --  example: if File is "example.adb", we call why on file
    --  "example__package.why".
 
-   procedure Cat
-      (Files   : Argument_List;
-       Target  : String;
-       Success : out Boolean);
-   --  Cat all the Files together into the Target.
-
    generic
       with procedure Action (Proj : Project_Tree; File : Virtual_File);
    procedure Iter_Project_Source_Files (Proj : Project_Tree);
    --  Iterate over all source files of a project.
-
-   ------------------
-   -- Call_Altergo --
-   ------------------
-
-   procedure Call_Altergo (Proj : Project_Tree; File : Virtual_File) is
-      pragma Unreferenced (Proj);
-
-      Base : constant String := Ada.Directories.Base_Name (+Base_Name (File));
-
-      procedure Call_AltErgo_On_Vc
-        (Item  : String;
-         Index : Positive;
-         Quit : in out Boolean);
-      --  Call Altergo on the VC that corresponds to the file
-      --  'Item'; take into account the context file.
-
-      ------------------------
-      -- Call_AltErgo_On_Vc --
-      ------------------------
-
-      procedure Call_AltErgo_On_Vc
-        (Item  : String;
-         Index : Positive;
-         Quit : in out Boolean)
-      is
-         pragma Unreferenced (Index);
-         Target : constant String := "new.why";
-         Success : aliased Boolean;
-         Base_Of_VC : constant String :=
-            Ada.Directories.Base_Name (Item);
-      begin
-         Delete_File (Target, Success);
-         Cat (Files =>
-               (1 => new String'(Base & Main_Suffix & "_ctx.why"),
-                2 => new String'(Item)),
-              Target => Target,
-              Success => Success);
-         --  ??? use 10 as timeout for now
-         Call_AltErgo_On_File (Target, Base_Of_VC & ".rgo", 10);
-         Quit := not Success;
-         Delete_File (Target, Success);
-      end Call_AltErgo_On_Vc;
-
-      procedure Iterate is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-           (Action => Call_AltErgo_On_Vc);
-
-      --  beginning of processing for Call_Altergo
-
-   begin
-      Iterate (Path => Base & Main_Suffix & "_po*.why");
-   end Call_Altergo;
-
-   --------------------------
-   -- Call_AltErgo_On_File --
-   --------------------------
-
-   procedure Call_AltErgo_On_File
-     (File        : String;
-      Result_File : String;
-      Timeout     : Natural) is
-   begin
-      if Verbose then
-         Ada.Text_IO.Put_Line ("calling Alt-ergo on " & File);
-      end if;
-
-      declare
-         Status : aliased Integer;
-         S  : constant String :=
-            GNAT.Expect.Get_Command_Output
-              (Command   => "why-cpulimit",
-               Arguments =>
-                 ((1 => new String'(Natural'Image (Timeout)),
-                   2 => new String'("alt-ergo"),
-                   3 => new String'(File))),
-               Input     => "",
-               Status    => Status'Access,
-               Err_To_Out => True);
-         FT : Ada.Text_IO.File_Type;
-
-      begin
-         Ada.Text_IO.Create (FT, Ada.Text_IO.Out_File, Result_File);
-
-         if Status /= 0 or else S'Length = 0 then
-            Ada.Text_IO.Put (FT, "File """);
-            Ada.Text_IO.Put (FT, File);
-            Ada.Text_IO.Put_Line (FT, """:Failure or Timeout");
-
-         else
-            Ada.Text_IO.Put (FT, S);
-         end if;
-
-         Ada.Text_IO.Close (FT);
-      end;
-   end Call_AltErgo_On_File;
-
-   --------------------------
-   -- Call_Exit_On_Failure --
-   --------------------------
-
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List)
-   is
-      Status : aliased Integer;
-
-      procedure Print_Command_Line;
-      --  print the command line for debug purposes
-
-      ------------------------
-      -- Print_Command_Line --
-      ------------------------
-
-      procedure Print_Command_Line is
-      begin
-         Ada.Text_IO.Put (Command);
-
-         for Index in Arguments'Range loop
-            declare
-               S : constant String_Access := Arguments (Index);
-            begin
-               Ada.Text_IO.Put (" ");
-               Ada.Text_IO.Put (S.all);
-            end;
-         end loop;
-      end Print_Command_Line;
-
-   begin
-      if Verbose then
-         Print_Command_Line;
-         Ada.Text_IO.Put_Line ("");
-      end if;
-
-      declare
-         S : constant String :=
-            GNAT.Expect.Get_Command_Output
-              (Command   => Command,
-               Arguments => Arguments,
-               Input     => "",
-               Status    => Status'Access,
-               Err_To_Out => True);
-      begin
-         if Status /= 0 then
-            Print_Command_Line;
-            Ada.Text_IO.Put_Line (" failed.");
-            Ada.Text_IO.Put (S);
-            GNAT.OS_Lib.OS_Exit (1);
-         end if;
-
-         for Index in Arguments'Range loop
-            declare
-               S : String_Access := Arguments (Index);
-            begin
-               Free (S);
-            end;
-         end loop;
-      end;
-   end Call_Exit_On_Failure;
 
    -------------------
    -- Call_Gnatmake --
@@ -342,38 +157,6 @@ procedure Gnatprove is
              5 => new String'(Base & Main_Suffix & ".why"))));
    end Call_Why;
 
-   ---------
-   -- Cat --
-   ---------
-
-   procedure Cat
-     (Files   : Argument_List;
-      Target  : String;
-      Success : out Boolean) is
-   begin
-      if Verbose then
-         Ada.Text_IO.Put ("cat ");
-
-         for Index in Files'Range loop
-            Ada.Text_IO.Put (Files (Index).all);
-            Ada.Text_IO.Put (" ");
-         end loop;
-
-         Ada.Text_IO.Put ("> ");
-         Ada.Text_IO.Put_Line (Target);
-      end if;
-
-      for Index in Files'Range loop
-         Copy_File
-           (Name     => Files (Index).all,
-            Pathname => Target,
-            Success  => Success,
-            Mode     => Append,
-            Preserve => None);
-         exit when not Success;
-      end loop;
-   end Cat;
-
    -------------------------------
    -- Iter_Project_Source_Files --
    -------------------------------
@@ -413,8 +196,15 @@ procedure Gnatprove is
    Proj_Type : Project_Type;
    Proj_Env  : Project_Environment_Access;
 
+   procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File);
+
+   procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File) is
+   begin
+      Call_Altergo (Proj, File, Verbose);
+   end Call_Altergo_Wrap;
+
    procedure Iterate_Altergo is
-     new Iter_Project_Source_Files (Call_Altergo);
+     new Iter_Project_Source_Files (Call_Altergo_Wrap);
 
    procedure Iterate_Why is
      new Iter_Project_Source_Files (Call_Why);
