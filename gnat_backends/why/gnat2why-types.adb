@@ -39,6 +39,7 @@ with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Gen.Enums;      use Why.Gen.Enums;
 with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Gen.Records;    use Why.Gen.Records;
 
 package body Gnat2Why.Types is
 
@@ -155,9 +156,50 @@ package body Gnat2Why.Types is
                   Component_Type);
             end;
 
+         when N_Record_Definition =>
+            if not Null_Present (Def_Node) then
+               declare
+                  Builder : W_Logic_Type_Id;
+               begin
+                  Start_Ada_Record_Declaration (File,
+                                                Name_Str,
+                                                Builder);
+                  declare
+                     use String_Lists;
+
+                     Comps   : constant List_Id :=
+                                 Component_Items (Component_List (Def_Node));
+                     Item    : Node_Id := First (Comps);
+                     C_Names : List;
+                  begin
+                     while Present (Item) loop
+                        declare
+                           C_Ident : constant Node_Id :=
+                                       Defining_Identifier (Item);
+                           C_Name  : constant String :=
+                                       Full_Name (C_Ident);
+                           C_Type  : constant Node_Id :=
+                                       Etype
+                                         (Subtype_Indication
+                                          (Component_Definition (Item)));
+                        begin
+                           Add_Component
+                             (File,
+                              C_Name,
+                              Why_Logic_Type_Of_Ada_Type (C_Type),
+                              Builder);
+                           C_Names.Append (C_Name);
+                           Next (Item);
+                        end;
+                     end loop;
+
+                     Freeze_Ada_Record (File, Name_Str, C_Names, Builder);
+                  end;
+               end;
+            end if;
+
          when N_Floating_Point_Definition
             | N_Ordinary_Fixed_Point_Definition
-            | N_Record_Definition
             =>
             --  ??? We do nothing here for now
             null;

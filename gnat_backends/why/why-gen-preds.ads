@@ -27,6 +27,7 @@ with Types;                use Types;
 with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
 
+with String_Utils;         use String_Utils;
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
@@ -133,5 +134,26 @@ package Why.Gen.Preds is
      Pre => (Is_Root (+Context));
    --  Create a predicate by linking together the universal quantifiers and
    --  associating the context to them.
+
+   function New_Universal_Predicate
+     (Arg_Names : String_Lists.List;
+      Logic     : W_Logic_Type_Id;
+      Pred      : W_Predicate_Id)
+     return W_Predicate_Id;
+   --  Given a predicate, a logic of the form
+   --
+   --   t1, t2, ..., tn -> t
+   --
+   --  and a list of arg names
+   --
+   --   N1, N2, ..., Nn
+   --
+   --  create an universal quantification of the form:
+   --
+   --   forall N1 : t1.
+   --   forall N2 : t2.
+   --   [...]
+   --   forall Nn : tn.
+   --    <Pred>
 
 end Why.Gen.Preds;

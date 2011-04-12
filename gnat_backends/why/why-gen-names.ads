@@ -153,6 +153,21 @@ package Why.Gen.Names is
    --  From the name of an abstract type, return the name of
    --  its range axiom.
 
+   function Record_Getter_Name (Name : String) return W_Identifier_Id;
+   function Record_Getter_Name (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  From the full name of a record component, return the getter for
+   --  this component.
+
+   function Record_Getter_Axiom (Name : String) return W_Identifier_Id;
+   --  From the full name of a record component, return the name of
+   --  its getter axiom.
+
+   function Record_Builder_Name (Name : String) return W_Identifier_Id;
+   function Record_Builder_Name
+     (Name : W_Identifier_Id)
+     return W_Identifier_Id;
+   --  From the name of a record type, return the name of its builder.
+
    procedure Set_Name (Id : W_Identifier_Id; Name : String);
    --  Change the name of the given identifier
 

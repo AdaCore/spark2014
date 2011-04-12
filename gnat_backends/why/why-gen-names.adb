@@ -58,6 +58,9 @@ package body Why.Gen.Names is
    Coerce             : constant String := "coerce";
    Boolean_Eq         : constant String := "eq_bool";
    Eq_Pred            : constant String := "eq";
+   Record_Get         : constant String := "get";
+   Record_Get_Axiom   : constant String := "getter";
+   Record_Make        : constant String := "make";
    Of_Int             : constant String := "of_int";
    Int_Of             : constant String := "to_int";
    Definition         : constant String := "def";
@@ -360,6 +363,45 @@ package body Why.Gen.Names is
    begin
       return Range_Pred_Name (Get_Name_String (Identifier_Get_Symbol (Name)));
    end Range_Pred_Name;
+
+   -------------------------
+   -- Record_Builder_Name --
+   -------------------------
+
+   function Record_Builder_Name_Gen is new Generate_Prefix (Record_Make);
+   function Record_Builder_Name (Name : String) return W_Identifier_Id
+      renames Record_Builder_Name_Gen;
+
+   function Record_Builder_Name (Name : W_Identifier_Id) return W_Identifier_Id
+   is
+   begin
+      return Record_Builder_Name
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Record_Builder_Name;
+
+   -------------------------
+   -- Record_Getter_Axiom --
+   -------------------------
+
+   function Record_Getter_Axiom_Gen is
+     new Generate_Suffix (Record_Get_Axiom);
+   function Record_Getter_Axiom (Name : String) return W_Identifier_Id
+     renames Record_Getter_Axiom_Gen;
+
+   -------------------------
+   -- Record_Getter_Name --
+   -------------------------
+
+   function Record_Getter_Name_Gen is new Generate_Prefix (Record_Get);
+   function Record_Getter_Name (Name : String) return W_Identifier_Id
+     renames Record_Getter_Name_Gen;
+
+   function Record_Getter_Name (Name : W_Identifier_Id) return W_Identifier_Id
+   is
+   begin
+      return Record_Getter_Name
+        (Get_Name_String (Identifier_Get_Symbol (Name)));
+   end Record_Getter_Name;
 
    --------------
    -- Set_Name --

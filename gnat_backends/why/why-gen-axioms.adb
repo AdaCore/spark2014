@@ -184,6 +184,41 @@ package body Why.Gen.Axioms is
          Axiom_Body => Quantif_On_X);
    end Define_Coerce_Axiom;
 
+   -------------------------
+   -- Define_Getter_Axiom --
+   -------------------------
+
+   procedure Define_Getter_Axiom
+     (File      : W_File_Id;
+      Type_Name : String;
+      C_Name    : String;
+      C_Names   : String_Lists.List;
+      Builder   : W_Logic_Type_Id)
+   is
+      use String_Lists;
+
+      Call_To_Builder : constant W_Term_Id :=
+                          New_Operation
+                            (Name       => Record_Builder_Name (Type_Name),
+                             Parameters => New_Terms (C_Names));
+      Call_To_Getter  : constant W_Term_Id :=
+                          New_Operation
+                           (Name       => Record_Getter_Name (C_Name),
+                            Parameters => (1 => Call_To_Builder));
+      Context         : constant W_Predicate_Id :=
+                          New_Equal (Call_To_Getter,
+                                     New_Term (C_Name));
+      UPB             : constant W_Predicate_Id :=
+                          New_Universal_Predicate (C_Names,
+                                                   Builder,
+                                                   Context);
+   begin
+      New_Axiom
+        (File       => File,
+         Name       => Record_Getter_Axiom (C_Name),
+         Axiom_Body => UPB);
+   end Define_Getter_Axiom;
+
    ------------------------
    -- Define_Range_Axiom --
    ------------------------

@@ -23,13 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Gen.Consts;     use Why.Gen.Consts;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Gnat2Why.Locs;       use Gnat2Why.Locs;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Tables;    use Why.Atree.Tables;
+with Why.Gen.Consts;      use Why.Gen.Consts;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Preds is
 
@@ -334,6 +335,39 @@ package body Why.Gen.Preds is
          return New_Conjunction (Left => Left, Right => Right);
       end if;
    end New_Simpl_Conjunction;
+
+   -----------------------------
+   -- New_Universal_Predicate --
+   -----------------------------
+
+   function New_Universal_Predicate
+     (Arg_Names : String_Lists.List;
+      Logic     : W_Logic_Type_Id;
+      Pred      : W_Predicate_Id)
+     return W_Predicate_Id
+   is
+      use Node_Lists;
+      use String_Lists;
+
+      C_Types : constant Node_Lists.List :=
+                  Get_List (+Logic_Type_Get_Arg_Types (Logic));
+      Foralls : Universal_Quantif_Chain
+                  (1 .. Integer (Length (C_Types)));
+      Index   : Positive := 1;
+      Arg_Ids : constant W_Identifier_Array :=
+                  New_Identifiers (Arg_Names);
+   begin
+      for N of C_Types loop
+         Foralls (Index) := New_Unchecked_Universal_Quantif;
+         Universal_Quantif_Append_To_Variables
+           (Foralls (Index),
+            Arg_Ids (Index));
+         Universal_Quantif_Set_Var_Type (Foralls (Index),
+                                         +Duplicate_Any_Node (Id => N));
+         Index := Index + 1;
+      end loop;
+      return New_Universal_Predicate_Body (Foralls, Pred);
+   end New_Universal_Predicate;
 
    ----------------------------------
    -- New_Universal_Predicate_Body --

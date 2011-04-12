@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with String_Utils;         use String_Utils;
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;
 with Why.Atree.Properties; use Why.Atree.Properties;
@@ -92,5 +93,20 @@ package Why.Gen.Axioms is
    --  axiom standard__integer___unicity :
    --   forall x, y : <type_name>.
    --    <conversion> (x) = <conversion> (y) -> x = y
+
+   procedure Define_Getter_Axiom
+     (File      : W_File_Id;
+      Type_Name : String;
+      C_Name    : String;
+      C_Names   : String_Lists.List;
+      Builder   : W_Logic_Type_Id);
+   --  Define a record getter axiom: its asserts that for a record of type t,
+   --  built with a function make___t, get__t_a returns field a.
+   --  The axiom is of the form:
+   --
+   --  axiom ar__my_record__a___getter:
+   --   forall a : <type_a>.
+   --   forall b : <type_b>.
+   --    get___ar__my_record__a(make___ar__my_record(a, b)) = a
 
 end Why.Gen.Axioms;
