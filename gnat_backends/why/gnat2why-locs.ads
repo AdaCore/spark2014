@@ -56,7 +56,12 @@ package Gnat2Why.Locs is
    --    * LoopInvPreserv
    --    * Lemma
 
-   function New_Located_Label (N : Node_Id) return W_Identifier_Id;
+   type VC_Kind is (Overflow_Check, Range_Check);
+
+   function New_Located_Label
+     (N : Node_Id;
+      Reason : VC_Kind := Overflow_Check)
+      return W_Identifier_Id;
    --  Generate a label for the given Ada node.
    --
    --  This means: associate a fresh Why Identifier to the source location of

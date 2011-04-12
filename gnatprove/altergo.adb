@@ -308,6 +308,9 @@ package body Altergo is
             elsif Starts_With (S, "begin") then
                Expl.EX_Col :=
                   new String'(Trim (S (8 .. S'Last), Char_Set, Char_Set));
+            elsif Starts_With (S, "text") then
+               Expl.EX_Kind :=
+                  new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
             end if;
          end;
       end loop;
