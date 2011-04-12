@@ -1,25 +1,4 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": []
-    }, 
-    "Gnat2why__2": {
-        "invalid": [
-            "def___arraydef__incr_ar_po_3"
-        ], 
-        "valid": []
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___arraydef__incr_ar_po_2"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [], 
-        "valid": [
-            "def___arraydef__incr_ar_po_1", 
-            "def___arraydef__incr_ar_po_4"
-        ]
-    }
-}
+arraydef.adb:5:24: Proved - LoopInvPreserv
+arraydef.adb:5:24: Proved - LoopInvInit
+arraydef.adb:6:24: Range Check
+arraydef.adb:6:13: Proved - Range Check

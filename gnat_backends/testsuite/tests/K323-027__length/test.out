@@ -1,38 +1,6 @@
-{
-"Gnat2why__1": {
-"invalid": [],
-"valid": [
-"def___length__f_po_1"
-]
-},
-"Gnat2why__2": {
-"invalid": [],
-"valid": [
-"def___length__g_po_1"
-]
-},
-"Gnat2why__3": {
-"invalid": [],
-"valid": [
-"def___length__g_po_2"
-]
-},
-"Gnat2why__4": {
-"invalid": [],
-"valid": [
-"def___length__uf_po_1"
-]
-},
-"Gnat2why__5": {
-"invalid": [],
-"valid": [
-"def___length__uf_po_2"
-]
-},
-"Gnat2why__6": {
-"invalid": [
-"def___length__uf_po_3"
-],
-"valid": []
-}
-}
+length.adb:24:22: Proved - Range Check
+length.adb:24:22: Proved - Range Check
+length.adb:18:15: Proved - Range Check
+length.ads:6:22: Proved - Post
+length.ads:16:23: Post
+length.ads:9:30: Proved - Post

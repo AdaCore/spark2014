@@ -1,28 +1,3 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": []
-    }, 
-    "Gnat2why__2": {
-        "invalid": [
-            "pre_check___check__div_po_2"
-        ], 
-        "valid": []
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": []
-    }, 
-    "Gnat2why__4": {
-        "invalid": [
-            "pre_check___check__div_po_1"
-        ], 
-        "valid": []
-    }, 
-    "Gnat2why__5": {
-        "invalid": [
-            "def___check__div_po_1"
-        ], 
-        "valid": []
-    }
-}
+check.ads:4:32: Post
+check.ads:3:70: Range Check
+check.ads:3:37: Range Check

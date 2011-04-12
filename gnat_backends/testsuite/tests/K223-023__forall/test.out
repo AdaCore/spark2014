@@ -1,50 +1,8 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___forall__get_zero_po_1"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___forall__get_zero_po_1"
-        ]
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___forall__get_zero_po_2"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [
-            "def___forall__get_zero_po_2"
-        ], 
-        "valid": []
-    }, 
-    "Gnat2why__5": {
-        "invalid": [], 
-        "valid": [
-            "def___forall__has_zero_po_1"
-        ]
-    }, 
-    "Gnat2why__6": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___forall__has_zero_po_1"
-        ]
-    }, 
-    "Gnat2why__7": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___forall__has_zero_po_2"
-        ]
-    }, 
-    "Gnat2why__8": {
-        "invalid": [
-            "def___forall__has_zero_po_2"
-        ], 
-        "valid": []
-    }
-}
+forall.ads:5:46: Proved - Range Check
+forall.ads:9:47: Proved - Range Check
+forall.ads:10:37: Post
+forall.ads:6:37: Post
+forall.ads:5:51: Proved - Range Check
+forall.adb:6:17: Proved - Range Check
+forall.adb:12:17: Proved - Range Check
+forall.ads:9:52: Proved - Range Check

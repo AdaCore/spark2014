@@ -289,7 +289,7 @@ package body Altergo is
       Expl : Explanation;
 
       Char_Set : constant Ada.Strings.Maps.Character_Set :=
-         Ada.Strings.Maps.To_Set (""" \n");
+         Ada.Strings.Maps.To_Set (""" ");
    begin
       Open (File, In_File, Expl_File);
       while True loop

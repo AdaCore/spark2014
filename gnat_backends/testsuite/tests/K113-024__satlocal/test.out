@@ -1,29 +1,7 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___sat__add_po_4"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "def___sat__add_po_2"
-        ]
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___sat__add_po_1"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [], 
-        "valid": [
-            "def___sat__add_po_3", 
-            "def___sat__add_po_5"
-        ]
-    }
-}
+sat.adb:7:19: Proved - Range Check
+sat.adb:6:12: Proved - Range Check
+sat.ads:8:56: Proved - Post
+sat.adb:9:17: Proved - Range Check
+sat.ads:8:56: Proved - Post
 
 

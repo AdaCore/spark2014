@@ -1,12 +1,1 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": []
-    }, 
-    "Gnat2why__2": {
-        "invalid": [
-            "def___glob__p_po_1"
-        ], 
-        "valid": []
-    }
-}
+glob.ads:6:14: Post

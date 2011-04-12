@@ -1,8 +1,1 @@
-{
-    "Gnat2why__1": {
-        "invalid": [
-            "def___pack__f_po_1"
-        ], 
-        "valid": []
-    }
-}
+pack.ads:3:19: Post

@@ -1,8 +1,1 @@
-{
-"Gnat2why__1": {
-"invalid": [
-"def___prepost__f_po_1"
-],
-"valid": []
-}
-}
+prepost.ads:4:23: Post

@@ -1,21 +1,3 @@
-{
-"Gnat2why__1": {
-"invalid": [],
-"valid": [
-"def___unconstr__p_po_1"
-]
-},
-"Gnat2why__2": {
-"invalid": [],
-"valid": [
-"def___unconstr__p_po_2"
-]
-},
-"Gnat2why__3": {
-"invalid": [],
-"valid": [
-"def___unconstr__p_po_3"
-]
-}
-}
-
+unconstr.adb:5:19: Proved - Array Bounds Check
+unconstr.adb:5:22: Proved - Range Check
+unconstr.ads:9:33: Proved - Post

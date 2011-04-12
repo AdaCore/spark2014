@@ -1,15 +1,2 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___const__incr_po_1"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "def___const__incr_po_2"
-        ]
-    }
-}
-
+const.adb:5:17: Proved - Range Check
+const.ads:7:23: Proved - Post

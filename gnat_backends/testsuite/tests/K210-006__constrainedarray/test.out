@@ -1,44 +1,7 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": []
-    }, 
-    "Gnat2why__2": {
-        "invalid": [
-            "def___constr__incr_ar_po_3"
-        ], 
-        "valid": []
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___constr__incr_ar_po_2"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [], 
-        "valid": [
-            "def___constr__incr_ar_po_1", 
-            "def___constr__incr_ar_po_4"
-        ]
-    }, 
-    "Gnat2why__5": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___constr__incr_ar_po_1"
-        ]
-    }, 
-    "Gnat2why__6": {
-        "invalid": [], 
-        "valid": [
-            "pre_check___constr__incr_ar_po_2"
-        ]
-    }, 
-    "Gnat2why__7": {
-        "invalid": [
-            "def___constr__incr_ar_po_5"
-        ], 
-        "valid": []
-    }
-}
-
+constr.adb:6:13: Proved - Range Check
+constr.adb:5:24: Proved - LoopInvInit
+constr.adb:5:24: Proved - LoopInvPreserv
+constr.adb:6:24: Range Check
+constr.ads:6:26: Post
+constr.ads:5:22: Proved - Range Check
+constr.ads:5:27: Proved - Range Check

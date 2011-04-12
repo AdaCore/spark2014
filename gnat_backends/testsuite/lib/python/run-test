@@ -5,8 +5,7 @@ Run a test located in test_dir
 """
 
 from gnatpython.main import Main
-from gnatpython.testdriver import add_run_test_options
-from test_hilite import TestGnat2Why
+from gnatpython.testdriver import TestRunner, add_run_test_options
 
 import sys
 
@@ -20,7 +19,7 @@ def main():
 
     if m.options.restricted_discs is not None:
         m.options.restricted_discs = m.options.restricted_discs.split(',')
-    t = TestGnat2Why(m.args[0],
+    t = TestRunner(m.args[0],
                    m.options.discs,
                    m.options.output_dir,
                    m.options.tmp,

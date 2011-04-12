@@ -1,33 +1,5 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___ar__get_po_1"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "def___ar__get_po_2"
-        ]
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___ar__set_po_2"
-        ]
-    }, 
-    "Gnat2why__4": {
-        "invalid": [], 
-        "valid": [
-            "def___ar__set_po_1"
-        ]
-    }, 
-    "Gnat2why__5": {
-        "invalid": [], 
-        "valid": [
-            "def___ar__set_po_3"
-        ]
-    }
-}
-
+ar.ads:10:27: Proved - Post
+ar.adb:12:16: Proved - Range Check
+ar.ads:6:22: Proved - Post
+ar.adb:12:10: Proved - Range Check
+ar.adb:6:17: Proved - Range Check

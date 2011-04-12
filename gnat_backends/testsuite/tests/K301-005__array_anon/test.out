@@ -1,14 +1,2 @@
-{
-"Gnat2why__1": {
-"invalid": [],
-"valid": [
-"def___named__l_po_1"
-]
-},
-"Gnat2why__2": {
-"invalid": [],
-"valid": [
-"def___named__l_po_2"
-]
-}
-}
+named.ads:5:28: Proved - Post
+named.adb:4:15: Proved - Range Check

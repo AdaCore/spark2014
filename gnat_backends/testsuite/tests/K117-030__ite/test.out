@@ -1,21 +1,4 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___ite__not_null_po_2"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "def___ite__not_null_po_1"
-        ]
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___ite__not_null_po_3", 
-            "def___ite__not_null_po_4"
-        ]
-    }
-}
+ite.adb:6:17: Proved - Range Check
+ite.adb:5:14: Proved - Range Check
+ite.ads:3:23: Proved - Post
+ite.ads:3:23: Proved - Post

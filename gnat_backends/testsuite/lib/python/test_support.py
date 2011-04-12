@@ -165,8 +165,7 @@ def gnatprove(opt=["-P", "test.gpr", "-v"]):
     cmd = ["gnatprove"]
     cmd += to_list(opt)
     process = Run(cmd)
-    if process.status:
-        print process.out
+    print process.out
 
 def prove(src,opt=["-P", "test.gpr", "-v"]):
     """Prove all obligations from an Ada file
@@ -178,30 +177,8 @@ def prove(src,opt=["-P", "test.gpr", "-v"]):
     run on each generated VC independently.
     Collect results on a per-label basis and generate report
     """
+    opt += ["--report"]
     gnatprove(opt)
-    result = {}
-    base, ext = os.path.splitext(src)
-    for vc in open(os.path.join("gnatprove",base+"__package.labels")):
-        vc = str.strip(vc,"\n ")
-        result[vc] = { 'valid' : [] , 'invalid': [] }
-    for f in glob.glob(os.path.join("gnatprove", "*.xpl")):
-        dic = read_dict_from_file(f)
-        curname = dic['source_label']
-        if not result.has_key(curname):
-            print "missing label name:", curname
-            return
-        basename, ext = os.path.splitext(f)
-        vc_result = os.path.join(basename + ".rgo")
-        file_object = open(vc_result,"r")
-        if parse_altergo_result(file_object.read())[0]:
-            cur_result = 'valid'
-        else:
-            cur_result = 'invalid'
-        result[curname][cur_result].append(dic["po_name"])
-    for label,dic in result.iteritems():
-        dic['valid'].sort()
-        dic['invalid'].sort()
-    print(json.dumps(result, sort_keys = True,indent=4))
 
 def to_list(arg):
     """Convert to list

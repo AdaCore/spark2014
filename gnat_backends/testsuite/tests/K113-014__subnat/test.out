@@ -1,20 +1,3 @@
-{
-    "Gnat2why__1": {
-        "invalid": [], 
-        "valid": [
-            "def___subnat__f_po_1"
-        ]
-    }, 
-    "Gnat2why__2": {
-        "invalid": [], 
-        "valid": [
-            "def___subnat__f_po_2"
-        ]
-    }, 
-    "Gnat2why__3": {
-        "invalid": [], 
-        "valid": [
-            "def___subnat__g_po_1"
-        ]
-    }
-}
+subnat.adb:11:14: Proved - Range Check
+subnat.adb:5:14: Proved - Range Check
+subnat.ads:3:30: Proved - Post

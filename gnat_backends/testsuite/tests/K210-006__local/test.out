@@ -1,14 +1,2 @@
-{
-"Gnat2why__1": {
-"invalid": [],
-"valid": [
-"def___anon_po_2"
-]
-},
-"Gnat2why__2": {
-"invalid": [],
-"valid": [
-"def___anon_po_1"
-]
-}
-}
+anon.adb:4:10: Proved - Range Check
+anon.adb:4:16: Proved - Range Check
