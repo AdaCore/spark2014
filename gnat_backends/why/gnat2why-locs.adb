@@ -70,11 +70,29 @@ package body Gnat2Why.Locs is
    is
    begin
       case V is
-         when Overflow_Check =>
+         when VC_Overflow_Check =>
             return "Overflow Check";
 
-         when Range_Check =>
+         when VC_Range_Check =>
             return "Range Check";
+
+         when VC_Array_Bounds_Check =>
+            return "Array Bounds Check";
+
+         when VC_Division_By_Zero =>
+            return "Division by Zero";
+
+         when VC_Precondition =>
+            return "Precondition";
+
+         when VC_Postcondition =>
+            return "Postcondition";
+
+         when VC_Loop_Invariant =>
+            return "Loop Invariant";
+
+         when VC_Assert =>
+            return "Loop Invariant";
       end case;
    end Explanation_Of_VC_Kind;
 
@@ -96,9 +114,7 @@ package body Gnat2Why.Locs is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label
-     (N : Node_Id;
-      Reason : VC_Kind := Overflow_Check)
+   function New_Located_Label (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Id
    is
       use Label_Lists;

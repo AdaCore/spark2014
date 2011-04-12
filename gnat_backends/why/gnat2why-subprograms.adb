@@ -59,6 +59,7 @@ with Why.Conversions;       use Why.Conversions;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
+with Gnat2Why.Locs;         use Gnat2Why.Locs;
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 
@@ -993,7 +994,8 @@ package body Gnat2Why.Subprograms is
                      Get_Kind (+Post) /= W_True_Literal_Pred then
                       New_Located_Predicate
                         (Ada_Node => Loc_Node,
-                         Pred     => Post)
+                         Pred     => Post,
+                         Reason   => VC_Postcondition)
                    else
                       Post);
             begin
@@ -1146,9 +1148,10 @@ package body Gnat2Why.Subprograms is
                New_Located_Call
                  (Ada_Node => Expr,
                   Name     => To_Program_Space (New_Integer_Division),
-                  Progs =>
+                  Progs    =>
                      (1 => Int_Expr_Of_Ada_Expr (Left_Opnd (Expr)),
-                      2 => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr))));
+                      2 => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr))),
+                  Reason   => VC_Division_By_Zero);
             Current_Type := (Kind => Why_Int);
             Overflow_Check_Needed := True;
 
@@ -1218,7 +1221,8 @@ package body Gnat2Why.Subprograms is
               New_Located_Call
                  (Name     => Why_Ident_Of_Ada_Ident (Name (Expr)),
                   Progs    => Compute_Call_Args (Expr),
-                  Ada_Node => Expr);
+                  Ada_Node => Expr,
+                  Reason   => VC_Precondition);
 
          when N_Expression_With_Actions =>
             return
@@ -1507,7 +1511,8 @@ package body Gnat2Why.Subprograms is
                New_Located_Call
                   (Ada_Node => Stmt,
                    Name     => Why_Ident_Of_Ada_Ident (Name (Stmt)),
-                   Progs    => Compute_Call_Args (Stmt));
+                   Progs    => Compute_Call_Args (Stmt),
+                   Reason   => VC_Precondition);
 
          when N_If_Statement =>
             return
@@ -1576,7 +1581,8 @@ package body Gnat2Why.Subprograms is
                         (if Present (Split_Node) then
                            New_Located_Assertion
                               (Ada_Node => Split_Node,
-                               Pred     => Invariant)
+                               Pred     => Invariant,
+                               Reason   => VC_Loop_Invariant)
                          else
                             New_Assertion (Pred => Invariant));
                   begin
@@ -1599,7 +1605,8 @@ package body Gnat2Why.Subprograms is
                         (if Present (Split_Node) then
                            New_Located_Assertion
                               (Ada_Node => Split_Node,
-                               Pred     => Invariant)
+                               Pred     => Invariant,
+                               Reason   => VC_Loop_Invariant)
                          else
                             New_Assertion (Pred => Invariant));
                   begin

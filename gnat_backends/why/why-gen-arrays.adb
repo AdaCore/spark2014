@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Uintp;              use Uintp;
+with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
@@ -391,8 +392,9 @@ package body Why.Gen.Arrays is
          return
            New_Located_Call
              (Ada_Node => Ada_Node,
-              Name => To_Program_Space (Name),
-              Progs => (1 => Index, 2 => Ar));
+              Name     => To_Program_Space (Name),
+              Progs    => (1 => Index, 2 => Ar),
+              Reason   => VC_Array_Bounds_Check);
       else
          return
            New_Prog_Call
@@ -438,7 +440,8 @@ package body Why.Gen.Arrays is
                 Progs    =>
                   (1 => Index,
                    2 => New_Prog_Identifier (Def => Ar),
-                   3 => Value));
+                   3 => Value),
+                Reason   => VC_Array_Bounds_Check);
       else
          return
             New_Assignment

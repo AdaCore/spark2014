@@ -25,6 +25,9 @@
 
 with Types;                use Types;
 with Uintp;                use Uintp;
+
+with Gnat2Why.Locs;        use Gnat2Why.Locs;
+
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
@@ -76,12 +79,14 @@ package Why.Gen.Preds is
 
    function New_Located_Assertion
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Assertion_Id;
+       Pred     : W_Predicate_Id;
+       Reason   : VC_Kind) return W_Assertion_Id;
    --  Build a named assertion (ie formula) of a predicate
 
    function New_Located_Predicate
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Predicate_Id;
+       Pred     : W_Predicate_Id;
+       Reason   : VC_Kind) return W_Predicate_Id;
    --  Build a predicate with a fresh label corresponding to the Ada_Node.
 
    function New_Rel_Symbol (Symbol : W_Relation) return W_Relation_Id;

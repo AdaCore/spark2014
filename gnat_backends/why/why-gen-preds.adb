@@ -28,7 +28,6 @@ with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Gen.Consts;     use Why.Gen.Consts;
 with Why.Gen.Decl;       use Why.Gen.Decl;
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Why.Gen.Names;      use Why.Gen.Names;
 
 package body Why.Gen.Preds is
@@ -222,16 +221,15 @@ package body Why.Gen.Preds is
 
    function New_Located_Assertion
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Assertion_Id
+       Pred     : W_Predicate_Id;
+       Reason   : VC_Kind) return W_Assertion_Id
    is
    begin
       return
         New_Assertion
           (Ada_Node => Ada_Node,
            Pred     =>
-             New_Located_Predicate
-               (Ada_Node => Ada_Node,
-                Pred     => Pred));
+             New_Located_Predicate (Ada_Node, Pred, Reason));
    end New_Located_Assertion;
 
    ---------------------------
@@ -240,13 +238,14 @@ package body Why.Gen.Preds is
 
    function New_Located_Predicate
       (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id) return W_Predicate_Id
+       Pred     : W_Predicate_Id;
+       Reason   : VC_Kind) return W_Predicate_Id
    is
    begin
       return
          New_Named_Predicate
            (Ada_Node => Ada_Node,
-            Name     => New_Located_Label (Ada_Node),
+            Name     => New_Located_Label (Ada_Node, Reason),
             Pred     => Pred);
    end New_Located_Predicate;
 

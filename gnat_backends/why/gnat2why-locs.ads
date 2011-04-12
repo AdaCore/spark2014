@@ -56,11 +56,18 @@ package Gnat2Why.Locs is
    --    * LoopInvPreserv
    --    * Lemma
 
-   type VC_Kind is (Overflow_Check, Range_Check);
+   type VC_Kind is
+      (VC_Overflow_Check,
+       VC_Range_Check,
+       VC_Array_Bounds_Check,
+       VC_Division_By_Zero,
+       VC_Precondition,
+       VC_Postcondition,
+       VC_Loop_Invariant,
+       VC_Assert
+       );
 
-   function New_Located_Label
-     (N : Node_Id;
-      Reason : VC_Kind := Overflow_Check)
+   function New_Located_Label (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Id;
    --  Generate a label for the given Ada node.
    --

@@ -25,7 +25,6 @@
 
 with Uintp;              use Uintp;
 
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 
 with Why.Conversions;     use Why.Conversions;
@@ -46,7 +45,8 @@ package body Why.Gen.Progs is
 
    function New_Located_Prog
       (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id) return W_Prog_Id;
+       Prog     : W_Prog_Id;
+       Reason   : VC_Kind) return W_Prog_Id;
    --  Build a program with a fresh label corresponding to the Ada_Node.
 
    ---------------------
@@ -127,7 +127,8 @@ package body Why.Gen.Progs is
              (Ada_Node => Ada_Node,
               Name     =>
                To_Program_Space (Conversion_Name (From => From, To => To)),
-              Progs    => (1 => Why_Expr));
+              Progs    => (1 => Why_Expr),
+              Reason   => VC_Range_Check);
       else
          return
             Insert_Conversion
@@ -270,7 +271,8 @@ package body Why.Gen.Progs is
                       (Invariant =>
                         New_Located_Assertion
                            (Ada_Node => Ada_Node,
-                            Pred => Enriched_Inv)),
+                            Pred     => Enriched_Inv,
+                            Reason   => VC_Loop_Invariant)),
                  Loop_Content => Loop_Content));
    end New_For_Loop;
 
@@ -305,7 +307,8 @@ package body Why.Gen.Progs is
               (1 =>
                 New_Located_Assertion
                   (Ada_Node => Ada_Node,
-                   Pred     => Pred)),
+                   Pred     => Pred,
+                   Reason   => VC_Assert)),
             Prog       => New_Void (Ada_Node));
    end New_Located_Assert;
 
@@ -316,12 +319,14 @@ package body Why.Gen.Progs is
    function New_Located_Call
       (Ada_Node : Node_Id;
        Name     : W_Identifier_Id;
-       Progs    : W_Prog_Array) return W_Prog_Id
+       Progs    : W_Prog_Array;
+       Reason   : VC_Kind) return W_Prog_Id
    is
    begin
       return
         New_Located_Prog
           (Ada_Node => Ada_Node,
+           Reason   => Reason,
            Prog =>
              New_Prog_Call
                (Ada_Node => Ada_Node,
@@ -335,13 +340,14 @@ package body Why.Gen.Progs is
 
    function New_Located_Prog
       (Ada_Node : Node_Id;
-       Prog     : W_Prog_Id) return W_Prog_Id
+       Prog     : W_Prog_Id;
+       Reason   : VC_Kind) return W_Prog_Id
    is
    begin
       return
         New_Label
           (Ada_Node => Ada_Node,
-           Name     => New_Located_Label (Ada_Node),
+           Name     => New_Located_Label (Ada_Node, Reason),
            Def      => Prog);
    end New_Located_Prog;
 
