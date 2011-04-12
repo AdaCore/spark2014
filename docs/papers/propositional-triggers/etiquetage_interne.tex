@@ -17,6 +17,8 @@
 \newcommand{\npos}{\nvdash_\mathit{pos}}
 \newcommand{\ndett}{\nvdash_\mathit{det}}
 \newcommand{\nnot}{\mathit{not}}
+\newcommand{\F}{\mathit{form}}
+\newcommand{\T}{\mathit{lab}}
 
 
 %opening
@@ -31,16 +33,6 @@
 
 \end{abstract}
 
-SMT Solvers aim at solving ground formulas containing symbols from different theories.
-One way to extend them to first order formulas is the trigger mechanism. It consists in
-adding a bunch of terms, called triggers, to every universally quantified formula.
-When a literal is assumed in the SAT mechanism, its sub-terms are added to a set of
-ground terms $M$. When a universally quantified formula is assumed, it is added to a set
-of formulas $K$. If there is a ground substitution $\sigma$ that match every trigger of a formula
-$F$ of $K$ to a ground term of $M$, then $\sigma F$ can be assumed by the solver.
-
-In this paper, we describe a propositional model for this trigger mechanism. We only focus
-on the restriction induced by the trigger mechanism. 
 \section{A Propositional Model for the SAT Mechanism}
 We introduce a labeled propositional logic. A formula in this logic is a classical propositional
 formula over atoms and labeled formulas. A labeled formula is a couple $[a]F$ where $F$ is a
@@ -282,46 +274,120 @@ The notion of saturation becomes :
  \item $\forall [a]F\in K.\ a\subseteq M\Rightarrow K\vDash F$.
  \item $\forall\langle a\rangle F\in K.\ a\subseteq M\wedge K\vDash F$.
 \end{itemize}
-\paragraph{Property :}
+\subsection{Property :}
 $\dett$ is deterministic and can be encoded as the validity of a propositional formula.
-If $F$ is a formula, let's define its encoding $F_F$ as :
+If $F$ is a formula, let's define its encoding $\F(F)$ as :
 \begin{itemize}
- \item $A\rightsquigarrow A$,
- \item $F\rightsquigarrow F_F\Rightarrow
-[A_1,\ \dots,\ A_n]F\rightsquigarrow pA_1\wedge\dots\wedge pA_n\rightarrow F_F$,
- \item $F\rightsquigarrow F_F\Rightarrow
-\langle A_1,\ \dots,\ A_n\rangle F\rightsquigarrow pA_1\wedge\dots\wedge pA_n\wedge F_F$,
- \item $F_1\rightsquigarrow F_{F_1},\ F_2\rightsquigarrow F_{F_2} \Rightarrow
-F_1\wedge F_2\rightsquigarrow F_{F_1}\wedge F_{F_2}$,
- \item $F_1\rightsquigarrow F_{F_1},\ F_2\rightsquigarrow F_{F_2} \Rightarrow
-F_1\vee F_2\rightsquigarrow F_{F_1}\vee F_{F_2}$,
- \item $F\rightsquigarrow F_F\Rightarrow
-\neg F \rightsquigarrow \neg F_F$.
+ \item $\F(A)= A$,
+ \item $\F([A_1,\ \dots,\ A_n]F)=pA_1\wedge\dots\wedge pA_n\rightarrow \F(F)$,
+ \item $\F(\langle A_1,\ \dots,\ A_n\rangle F)= pA_1\wedge\dots\wedge pA_n\wedge \F(F)$,
+ \item $\F(F_1\wedge F_2)= \F(F_1)\wedge \F(F_2)$,
+ \item $\F(F_1\wedge F_2)= \F(F_1)\wedge \F(F_2)$,
+ \item $\F(\neg F) = \neg \F(F)$.
 \end{itemize}
-\paragraph{Proof :}
+Since $\F$ distribute over $\wedge$, $\vee$ and $\neg$, for all formula $F$, we have that
+$\F(\downarrow F)\Leftrightarrow\F(F)$.
+\subsubsection*{Proof of $\varnothing,\ \varnothing,\ R\dett\Box\Rightarrow\F(R)\vDash\Box$}
+We want to prove that, for all sets $K$, $M$ and $R$, $K,\ M,\ R\dett\Box\Rightarrow
+\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$. We proceed by structural induction over the proof of
+$K,\ M,\ R\dett\Box$.
+\begin{itemize}
+ \item The last rule of the proof is {\sc Base-R}. Since $\Box\in R$,
+$\Box\in\F(R)$ and $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+ \item The last rule of the proof is {\sc Base-K}. Since $L\in K$ and $\overline L\in K$,
+$L\in \F(K)$ and $\overline L\in\F(K)$. As a consequence, $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+ \item The last rule of the proof is {\sc Instanciation-Positive} with the labeled formula
+$\langle A_1,\ \dots,\ A_n\rangle F$. By induction hypothesis,
+$\F(R)\cup \F(\downarrow F)\cup \{pA|A\in M\}\cup\{pA_1,\ \dots,\ pA_n\}\cup \F(K)\vDash\Box$.
+Since $\langle A_1,\ \dots,\ A_n\rangle F\in K$, $\F(\langle A_1,\ \dots,\ A_n\rangle F)=
+pA_1\wedge\dots\wedge pA_n\wedge\F(F)\in \F(K)$. Since $\F(F)\Leftrightarrow\F(\downarrow F)$,
+$\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+ \item The last rule of the proof is {\sc Instanciation-Negative} with the labeled formula
+$[A_1,\ \dots,\ A_n]F$ such that $\{A_1,\ \dots,\ A_n\}\subseteq M$. By induction hypothesis,
+$\F(R)\cup \F(\downarrow F)\cup \{pA|A\in M\}\cup \F(K)\vDash\Box$.
+Since $[A_1,\ \dots,\ A_n]F\in K$,
+$\F([A_1,\ \dots,\ A_n]F)=pA_1\wedge\dots\wedge pA_n\rightarrow \F(F)\in \F(K)$ and since
+$\{A_1,\ \dots,\ A_n\}\subseteq M$, $\{pA_1,\ \dots,\ pA_n\}\subseteq\{pA|A\in M\}$.
+As a consequence, since $\F(F)\Leftrightarrow\F(\downarrow F)$,
+we have that $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+ \item The last rule of the proof is {\sc Sat} with a clause $D\vee C$.
+By induction hypothesis,
+$\F(R)\cup\{pA|A\in M\}\cup\F(K)\cup\F(D)\vDash\Box$ and
+$\F(R)\cup\F(C)\cup\{pA|A\in M\}\cup\F(K)\cup\F(\neg D)\vDash\Box$. Since
+$\F(\neg D)=\neg\F(D)$,  $\F(R\cup\F(C))\cup\{pA|A\in M\}\cup\F(K)\cup\neg\F(D)\vDash\Box$ and,
+as a consequence, $\F(R)\cup(\F(D)\vee\F(C))\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+Since $\F(D\vee C)=\F(D)\vee\F(C)$, we have that
+$\F(R)\cup\F(D\vee C)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
+\end{itemize}
+
+\subsubsection*{Proof of $\F(R)\vDash\Box\Rightarrow\varnothing,\ \varnothing,\ R\dett\Box$}
+Inversement, supposons que $F_M\cup F_R\cup F_K\vDash\Box$. Montrons que l'algorithme
+fournit toujours une preuve de $K,\ M,\ R\dett\Box$, quelque soit la stratégie du SAT-Solver.
+
+Pour cela, montrons que tout au long de l'algorithme on a $F_M\cup F_K\vDash\Box$ et qu'il n'existe pas de couple $K,\ M$ saturé tel que $F_M\cup F_K\vDash\Box$.\\
+Il n'existe pas de couple $K,\ M$ saturé tel que $F_M\cup F_K\vDash\Box$. En effet, considérons
+$I$ associant les élément de $\{A|A\in K\}\cup\{pA|A\in M\}$ à vrai et les autres à faux
+et montrons que $I\vDash F_M\cup F_K$. Par définition de $F_M$, $I\vDash F_M$.
+Montrons par induction sur la taille de la forme normale\footnote{La taille de la forme normale de $F$ est
+définie récursivement. La taille de $L$ est 1 et celle de $a:F$ 1 plus la somme des tailles des formes normales de
+tous les éléments de $\downarrow F$.} de $F\in K$ que $I\vDash F_F$.
+\begin{itemize}
+ \item Par construction de $I$, si $A\in K$ alors $I\vDash A$ et si $\neg A\in K$,
+$A\notin K$ et $I\vDash \neg A$.
+ \item Si $\langle a\rangle F\in K$ et $\langle a\rangle F\rightsquigarrow F_F$,
+pour tout $E\in\downarrow F$,
+il existe $D$ tel que $E=D\vee C,\ D\in K$ par définition de la saturation.
+Soient $F_D$ et $F_C$ tels que $D\rightsquigarrow F_D$ et $C\rightsquigarrow F_C$.
+Comme $D\in K$ a une forme normale de taille strictement inférieure à celle de $\langle a\rangle F$,
+on a, par hypothèse de récurrence, que $I\vDash F_D$. Comme $E\rightsquigarrow F_D\vee F_C$,
+$F_F\Leftrightarrow \{pA|A\in a\}\cup\{F_D\vee F_C| E=D\vee C\in\downarrow F\}$.
+Comme $K,\ M$ est saturé, $a\subseteq M$ et $I\vDash F_F$. 
+ \item Si $[A_1,\ \dots,\ A_n]F\in K$, $F\rightsquigarrow F_F$ et $\{A_1,\ \dots,\ A_n\}\nsubseteq M$, alors
+$[A_1,\ \dots,\ A_n]F\rightsquigarrow (pA_1\wedge\dots\wedge pA_n)\rightarrow F_F$.
+Comme $I\nvDash pA_1\wedge\dots\wedge pA_n$, $I\vDash(pA_1\wedge\dots\wedge pA_n)\rightarrow F_F$.
+ \item Si $[A_1,\ \dots,\ A_n]F\in K$, $F\rightsquigarrow F_F$ et $\{A_1,\ \dots,\ A_n\}\subseteq M$, alors
+$[A_1,\ \dots,\ A_n]F\rightsquigarrow (pA_1\wedge\dots\wedge pA_n)\rightarrow F_F$. 
+Comme $K,\ M$ est saturé, pour tout $E\in\downarrow F$, il existe $D$ tel que $E=D\vee C,\ D\in K$.
+Soient $F_D$ et $F_C$ tels que $D\rightsquigarrow F_D$ et $C\rightsquigarrow F_C$.
+Comme $D\in K$ a une forme normale de taille strictement inférieure à celle de $[A_1,\ \dots,\ A_n]F$,
+on a, par hypothèse de récurrence, que $I\vDash F_D$. Comme $E\rightsquigarrow F_D\vee F_C$,
+$F_F\Leftrightarrow \{F_D\vee F_C|E=D\vee C\in\downarrow F\}$ et on a donc 
+bien $I\vDash F_F\vDash \{(pA_1\wedge\dots\wedge pA_n)\rightarrow F_F\}$.
+\end{itemize}
+Montrons que $F_M\cup F_K\cup F_R\vDash\Box$ par induction sur la dérivation de preuve.
+La seule règle non triviale est {\sc Sat}, en effet, les deux règles d'instanciation font croitre
+l'ensemble $F_M\cup F_K\cup F_R$. Pour la règle {\sc Sat}, on sait que
+$F_M\cup F_K\cup F_R\cup\{F_D\vee F_C\}\vDash\Box$. On a alors que
+$F_M\cup F_K\cup\{F_D\}\cup F_R\vDash\Box$ et $F_M\cup F_K\cup\{\neg F_D\}\cup F_R\cup\{F_C\}\vDash\Box$.
 
 \section{The Explicit Positive Labelization}
 We have a deterministic set of rules for explicitly labeled formulas. We would like to have a 
 systematic way of adding labels to a set of formulas $R$ so that we have, for the resulting set of
-explicitly labeled formulas $R'$ that $\varnothing,\ \varnothing,\ R'\dett\Box$ if and only if
+explicitly labeled formulas $\T_\bullet(R)$ that
+$\varnothing,\ \varnothing,\ \T_\bullet(R)\dett\Box$ if and only if
 there is no derivation from $\varnothing,\ \varnothing,\ \varnothing,\ R\pos\Box$ that get stuck
 in a saturated state.
+
+$\pos$ adds $\atom(L)$ to the set of encountered axioms whenever $L$ is assumed. We would like to
+keep this semantics, which means that a clause $A_1\vee\neg A_2$ should be labeled as
+$\langle A_1\rangle A_1\vee\langle A_2\rangle\neg A_2=\langle A_1\rangle A_1\vee\neg [A_2]A_2$.
+We define an explicitely labeled formula $F'$ inductively over the form of $F$. This definition
+depends on the polarity of $F$, so that a positive occurance of atom $A$ is labelled by
+$\langle A\rangle A$ and a negative occurance of $A$ by $[A]A$. In the rules below,
+$T_\bullet(F)$ (resp. $T_\circ(F)$) is the translation of a positive (resp.
+negative) occurence of $F$. $\T$ denotes either $\T_\circ$ or $\T_\bullet$.
 \begin{itemize}
- \item $A\hookrightarrow_\bullet\langle A\rangle A$,
- \item $A\hookrightarrow_\circ[A]A$,
- \item $F\hookrightarrow_\cdot F'\Rightarrow [a]F\hookrightarrow_\cdot[a]F'$,
- \item $F\hookrightarrow_\cdot F'\Rightarrow\langle a\rangle F\hookrightarrow_\cdot\langle a\rangle F'$,
- \item $F_1\hookrightarrow_\cdot F_1',\ F_2\hookrightarrow_\cdot F_2' \Rightarrow
-F_1\wedge F_2\hookrightarrow_\cdot F_1'\wedge F_2'$,
- \item $F_1\hookrightarrow_\cdot F_1',\ F_2\hookrightarrow_\cdot F_2' \Rightarrow
-F_1\vee F_2\hookrightarrow_\cdot F_1'\vee F_2'$,
- \item $F\hookrightarrow_\bullet F'\Rightarrow
-\neg F \hookrightarrow_\circ \neg F'$,
- \item $F\hookrightarrow_\circ F'\Rightarrow
-\neg F \hookrightarrow_\bullet \neg F'$.
+ \item $\T_\bullet(A)=\langle A\rangle A$,
+ \item $\T_\circ(A)=[A]A$,
+ \item $\T([a]F)=[a]\T(F)$,
+ \item $\T(\langle a\rangle F)=\langle a\rangle\T(F)$,
+ \item $\T(F_1\wedge F_2)=\T(F_1)\wedge\T(F_2)$,
+ \item $\T(F_1\vee F_2)=\T(F_1)\vee\T(F_2)$,
+ \item $\T_\bullet(\neg F)= \neg\T_\circ(F)$,
+ \item $\T_\circ(\neg F)= \neg\T_\bullet(F)$.
 \end{itemize}
-This transformation is made so that if $F\hookrightarrow_\cdot F'$ et
-$\downarrow F\hookrightarrow_\cdot dF'$ then $dF'\Leftrightarrow F'$.
+It is easy to check that whenever $F_1\Leftrightarrow F_2$, $\T(F_1)\Leftrightarrow \T(F_2)$.
+
 \paragraph{Proof :}
 
 \end{document}
