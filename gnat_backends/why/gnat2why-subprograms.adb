@@ -2002,14 +2002,14 @@ package body Gnat2Why.Subprograms is
                   return
                      New_Universal_Quantif
                         (Ada_Node  => Expr,
-                         Variables => (1 => I),
+                         Variables => (1 => +Duplicate_Any_Node (Id => +I)),
                          Var_Type  => New_Type_Int,
                          Pred      => Quant_Body);
                else
                   return
                      New_Existential_Quantif
                         (Ada_Node  => Expr,
-                         Variables => (1 => I),
+                         Variables => (1 => +Duplicate_Any_Node (Id => +I)),
                          Var_Type  => New_Type_Int,
                          Pred      => Quant_Body);
                end if;
