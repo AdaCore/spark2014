@@ -42,8 +42,15 @@ procedure Gnatprove is
    --  Variables for command line parsing
    Config       : Command_Line_Configuration;
    Verbose      : aliased Boolean;
+   --  True if -v switch is present. All executed commands are printed.
+   Report       : aliased Boolean;
+   --  True if --report switch is present. A message is printed for all VCs.
    All_VCs      : aliased Boolean;
+   --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
+   --  gnat2why
+
    Project_File : aliased GNAT.Strings.String_Access;
+   --  The project file name, given with option -P
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    WHYLIB       : constant String := "WHYLIB";
@@ -200,7 +207,7 @@ procedure Gnatprove is
 
    procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File) is
    begin
-      Call_Altergo (Proj, File, Verbose);
+      Call_Altergo (Proj, File, Verbose, Report);
    end Call_Altergo_Wrap;
 
    procedure Iterate_Altergo is
@@ -221,6 +228,10 @@ begin
    Define_Switch (Config, All_VCs'Access,
                   Long_Switch => "--all-vcs",
                   Help => "Activate generation of VCs for subprograms");
+
+   Define_Switch (Config, Report'Access,
+                  Long_Switch => "--report",
+                  Help => "Print messages for all generated VCs");
 
    Define_Switch (Config, Project_File'Access,
                   "-P:",

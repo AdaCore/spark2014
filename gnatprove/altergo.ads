@@ -32,9 +32,11 @@ package Altergo is
    procedure Call_Altergo
       (Proj : Project_Tree;
        File : Virtual_File;
-       Verbose : Boolean := False);
+       Verbose : Boolean := False;
+       Report  : Boolean := False);
    --  Call Alt-Ergo on all VC files that correspond to a given source file of
-   --  a project
+   --  a project. Print messages for unproved VCs. If Report is "True", print
+   --  messages for all VCs.
 
    procedure Call_Exit_On_Failure
      (Command   : String;
