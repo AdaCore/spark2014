@@ -1,3 +1,3 @@
 from test_support import *
 
-prove("anon_type.adb")
+prove("odometer.adb",opt=["-P", "test.gpr", "--all-vcs"])

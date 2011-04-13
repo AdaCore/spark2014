@@ -23,12 +23,13 @@ package body Anon_Type is
       --  Examples of subtype_indication with multiple definition:
       A, B           : Integer range -Limit .. +Limit;
       --  Examples of subtype_indication with An_Index_Constraint:
-      Ten_Characters : String(1 .. 10);
+      Ten_Characters : String(1 .. 10) := (others => ' ');
       Board          : Vector(1 .. 5);
       --  Examples of array_type_definition
       My_Array1      : array (1.. 10) of Integer;
       My_Array2      : array (1.. 20) of Integer;
    begin
+      Board := (others => 1.0);
       Var_Out  := Var_In + (Var_Out + 1);
       return Var_Out;
    end Increment;
