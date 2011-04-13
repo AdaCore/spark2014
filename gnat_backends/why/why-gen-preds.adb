@@ -176,6 +176,10 @@ package body Why.Gen.Preds is
       return Result;
    end New_Binding_Pred;
 
+   --------------------------
+   -- New_Conditional_Prop --
+   --------------------------
+
    function New_Conditional_Prop
       (Ada_Node : Node_Id := Empty;
        Condition : W_Predicate_Id;
