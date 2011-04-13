@@ -25,6 +25,7 @@
 
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
+with Lib;
 with Lib.Xref;
 with Namet;   use Namet;
 with Nlists;  use Nlists;
@@ -273,7 +274,6 @@ package body ALFA.Filter is
          end if;
       end Transform_Subtype_Indication;
 
-      Ent_Name     : Name_Id;
       Spec_Unit    : Node_Id := Empty;
       Body_Unit    : Node_Id := Empty;
 
@@ -299,12 +299,10 @@ package body ALFA.Filter is
 
    begin
       if Nkind (Unit (N)) = N_Package_Body then
-         Ent_Name  := Chars (Corresponding_Spec (Unit (N)));
-         Spec_Unit := Parent (Parent (Parent (Corresponding_Spec (Unit (N)))));
+         Spec_Unit := Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
          Body_Unit := N;
       else
          Spec_Unit := N;
-         Ent_Name := Chars (Defining_Unit_Name (Specification (Unit (N))));
       end if;
 
       if Present (Spec_Unit) then
@@ -375,23 +373,24 @@ package body ALFA.Filter is
                L);
          end Add_Package_Decl;
 
+         Prefix : constant String := File_Name_Without_Suffix (Sloc (N));
       begin
          Types_Vars_Spec_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Spec_List),
-              Name  => Name_String (Ent_Name) & Types_Vars_Spec_Suffix);
+              Name  => Prefix & Types_Vars_Spec_Suffix);
          Types_Vars_Body_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Types_Vars_Body_List),
-              Name  => Name_String (Ent_Name) & Types_Vars_Body_Suffix);
+              Name  => Prefix & Types_Vars_Body_Suffix);
          Subp_Spec_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Spec_List),
-              Name  => Name_String (Ent_Name) & Subp_Spec_Suffix);
+              Name  => Prefix & Subp_Spec_Suffix);
          Subp_Body_P :=
            Make_Package_Spec_From_Decls
              (Decls => Node_List_From_List_Of_Nodes (Subp_Body_List),
-              Name  => Name_String (Ent_Name) & Main_Suffix);
+              Name  => Prefix & Main_Suffix);
 
          --  Take into account dependencies
          --  Add standard package only to types_vars for spec
@@ -412,16 +411,17 @@ package body ALFA.Filter is
                      when N_With_Clause =>
                         if not Implicit_With (Cursor) then
                            declare
-                              Pkg_Name : constant Name_Id :=
-                                 Chars (Name (Cursor));
+                              Pkg_Name : constant String :=
+                                           File_Name_Without_Suffix
+                                             (Sloc (Library_Unit (Cursor)));
                            begin
                               Add_Package_Decl
                                 (Context_Types_Vars_Spec,
-                                 Name_String (Pkg_Name) &
+                                 Pkg_Name &
                                     Types_Vars_Spec_Suffix);
                               Add_Package_Decl
                                 (Context_Subp_Spec,
-                                 Name_String (Pkg_Name) & Subp_Spec_Suffix);
+                                 Pkg_Name & Subp_Spec_Suffix);
                            end;
                         end if;
 
@@ -443,7 +443,8 @@ package body ALFA.Filter is
                      when N_With_Clause =>
                         declare
                            Pkg_Name : constant String :=
-                              Name_String (Chars (Name (Cursor)));
+                                        File_Name_Without_Suffix
+                                          (Sloc (Library_Unit (Cursor)));
                         begin
                            if not Implicit_With (Cursor) then
                               Add_Package_Decl

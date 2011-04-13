@@ -28,9 +28,12 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Hash;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
-with Sinfo; use Sinfo;
+with AA_Util;               use AA_Util;
 with Atree; use Atree;
 with Einfo; use Einfo;
+with Namet; use Namet;
+with Sinfo; use Sinfo;
+with Sinput; use Sinput;
 
 package ALFA.Common is
 
@@ -55,5 +58,9 @@ package ALFA.Common is
 
    function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
      (Ekind (Scope (E)) = E_Package);
+
+   function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
+      (File_Name_Without_Suffix
+         (Get_Name_String (File_Name (Get_Source_File_Index (Loc)))));
 
 end ALFA.Common;
