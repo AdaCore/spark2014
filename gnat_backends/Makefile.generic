@@ -33,7 +33,7 @@ setup:
 	mv $(LOCAL_OBJ)/snames.ns $(LOCAL_OBJ)/snames.ads
 	mv $(LOCAL_OBJ)/snames.nb $(LOCAL_OBJ)/snames.adb
 
-COMMON_INCLUDES=-I.. -I../../alfa -I../../utils
+COMMON_INCLUDES=-I.. -I../../alfa -I../../utils -I../../../common
 INCLUDES=$(COMMON_INCLUDES) -I../..
 
 build: obj/smissing.o force

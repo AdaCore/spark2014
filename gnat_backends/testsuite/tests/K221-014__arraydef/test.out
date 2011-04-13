@@ -1,4 +1,4 @@
-arraydef.adb:5:24: Proved - LoopInvPreserv
-arraydef.adb:5:24: Proved - LoopInvInit
-arraydef.adb:6:24: Range Check
-arraydef.adb:6:13: Proved - Range Check
+arraydef.adb:5:24: Proved - proof of loop invariant preservation
+arraydef.adb:5:24: Proved - proof of loop invariant initalization
+arraydef.adb:6:24: range check failed
+arraydef.adb:6:13: Proved - range check

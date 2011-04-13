@@ -1,7 +1,7 @@
-find.ads:5:11: Proved - Post
-find.adb:7:16: Proved - Range Check
-find.ads:5:11: Proved - Post
-find.adb:8:20: Proved - Range Check
-find.adb:3:24: Proved - Range Check
-find.adb:5:24: Proved - LoopInvInit
-find.adb:5:24: Proved - LoopInvPreserv
+find.ads:5:11: Proved - proof of postcondition
+find.adb:7:16: Proved - range check
+find.ads:5:11: Proved - proof of postcondition
+find.adb:8:20: Proved - range check
+find.adb:3:24: Proved - range check
+find.adb:5:24: Proved - proof of loop invariant initalization
+find.adb:5:24: Proved - proof of loop invariant preservation

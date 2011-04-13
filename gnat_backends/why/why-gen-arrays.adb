@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Uintp;              use Uintp;
-with Gnat2Why.Locs;      use Gnat2Why.Locs;
+with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;

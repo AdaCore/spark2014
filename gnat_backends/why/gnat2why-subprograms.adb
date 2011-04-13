@@ -37,6 +37,7 @@ with Sinfo;              use Sinfo;
 with Snames;             use Snames;
 with Stand;              use Stand;
 with Uintp;              use Uintp;
+with VC_Kinds;           use VC_Kinds;
 
 with ALFA.Common;           use ALFA.Common;
 with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
@@ -59,7 +60,6 @@ with Why.Conversions;       use Why.Conversions;
 with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
-with Gnat2Why.Locs;         use Gnat2Why.Locs;
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 

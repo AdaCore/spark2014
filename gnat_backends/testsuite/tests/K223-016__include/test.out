@@ -1,2 +1,2 @@
-callee.adb:4:14: Range Check
-caller.adb:5:22: Proved - Range Check
+callee.adb:4:14: range check failed
+caller.adb:5:22: Proved - range check

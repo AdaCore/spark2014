@@ -25,8 +25,7 @@
 
 with Types;                use Types;
 with Uintp;                use Uintp;
-
-with Gnat2Why.Locs;        use Gnat2Why.Locs;
+with VC_Kinds;             use VC_Kinds;
 
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;

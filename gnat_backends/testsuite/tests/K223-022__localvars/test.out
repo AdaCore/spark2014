@@ -1,7 +1,7 @@
-loc.ads:4:34: Proved - Post
-loc.adb:5:24: Proved - Range Check
-loc.adb:4:24: Proved - Division by Zero
-loc.ads:3:24: Proved - Range Check
-loc.adb:4:24: Proved - Range Check
-loc.adb:5:24: Division by Zero
-loc.adb:8:12: Proved - Range Check
+loc.ads:4:34: Proved - proof of postcondition
+loc.adb:5:24: Proved - range check
+loc.adb:4:24: Proved - division by zero
+loc.ads:3:24: Proved - range check
+loc.adb:4:24: Proved - range check
+loc.adb:5:24: division by zero failed
+loc.adb:8:12: Proved - range check

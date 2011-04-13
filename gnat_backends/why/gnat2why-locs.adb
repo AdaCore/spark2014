@@ -51,9 +51,6 @@ package body Gnat2Why.Locs is
 
    Located_Labels : Label_Lists.List := Label_Lists.Empty_List;
 
-   function Explanation_Of_VC_Kind (V : VC_Kind) return String;
-   --  Transform a VC_Kind into a string.
-
    function Int_Image (N : Integer) return String;
    --  Generate a string from an Integer, without the leading space.
 
@@ -61,40 +58,6 @@ package body Gnat2Why.Locs is
       (O : Output_Id;
        L : Label);
    --  Print a single entry of a located label
-
-   ----------------------------
-   -- Explanation_Of_VC_Kind --
-   ----------------------------
-
-   function Explanation_Of_VC_Kind (V : VC_Kind) return String
-   is
-   begin
-      case V is
-         when VC_Overflow_Check =>
-            return "Overflow Check";
-
-         when VC_Range_Check =>
-            return "Range Check";
-
-         when VC_Array_Bounds_Check =>
-            return "Array Bounds Check";
-
-         when VC_Division_By_Zero =>
-            return "Division by Zero";
-
-         when VC_Precondition =>
-            return "Precondition";
-
-         when VC_Postcondition =>
-            return "Postcondition";
-
-         when VC_Loop_Invariant =>
-            return "Loop Invariant";
-
-         when VC_Assert =>
-            return "Loop Invariant";
-      end case;
-   end Explanation_Of_VC_Kind;
 
    ---------------
    -- Int_Image --
@@ -172,7 +135,7 @@ package body Gnat2Why.Locs is
       Write_Field ("begin", Column_Number'Image (Get_Column_Number (Loc)));
       Write_Field
         ("kind",
-         Explanation_Of_VC_Kind (L.Label_Reason),
+         VC_Kind'Image (L.Label_Reason),
          True);
    end Print_Located_Label;
 

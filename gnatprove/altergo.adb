@@ -32,6 +32,7 @@ with Ada.Text_IO;
 
 with GNAT.Directory_Operations.Iteration;
 with GNAT.Expect;       use GNAT.Expect;
+with VC_Kinds;          use VC_Kinds;
 
 package body Altergo is
 
@@ -42,11 +43,14 @@ package body Altergo is
          EX_Filename : String_Access;
          EX_Line     : String_Access;
          EX_Col      : String_Access;
-         EX_Kind     : String_Access;
+         EX_Kind     : VC_Kind := VC_Unused;
       end record;
 
    function Get_VC_Explanation (Expl_File : String) return Explanation;
    --  Parse an explanation file to return an explanation record
+
+   function Interpret_Why_VC_Kind (S : String) return VC_Kind;
+   --  Parse a Why explanation string and transform it into a VC_Kind.
 
    function Call_AltErgo_On_File
      (File        : String;
@@ -67,6 +71,9 @@ package body Altergo is
 
    procedure Print_Error_Msg (X : Explanation; Proved : Boolean := False);
    --  Print an error message corresponding to the explanation in argument.
+
+   procedure Print_VC_Msg (V : VC_Kind);
+   --  Print an explanation for the VC kind
 
    function Starts_With (S, Prefix : String) return Boolean;
    --  Check if S starts with Prefix
@@ -302,15 +309,16 @@ package body Altergo is
             elsif Starts_With (S, "line") then
                Expl.EX_Line :=
                   new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
-            elsif Starts_With (S, "kind") then
-               Expl.EX_Kind :=
-                  new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
             elsif Starts_With (S, "begin") then
                Expl.EX_Col :=
                   new String'(Trim (S (8 .. S'Last), Char_Set, Char_Set));
+            elsif Starts_With (S, "kind") then
+               Expl.EX_Kind :=
+                  Interpret_Why_VC_Kind
+                    (Trim (S (7 .. S'Last), Char_Set, Char_Set));
             elsif Starts_With (S, "text") then
                Expl.EX_Kind :=
-                  new String'(Trim (S (7 .. S'Last), Char_Set, Char_Set));
+                 VC_Kind'Value (Trim (S (7 .. S'Last), Char_Set, Char_Set));
             end if;
          end;
       end loop;
@@ -319,6 +327,28 @@ package body Altergo is
       when Ada.IO_Exceptions.End_Error =>
          return Expl;
    end Get_VC_Explanation;
+
+   ---------------------------
+   -- Interpret_Why_VC_Kind --
+   ---------------------------
+
+   function Interpret_Why_VC_Kind (S : String) return VC_Kind
+   is
+   begin
+      if S = "Lemma" or else S = "Assert" or else S = "Check" then
+         return VC_Assert;
+      elsif S = "Pre" then
+         return VC_Precondition;
+      elsif S = "Post" then
+         return VC_Postcondition;
+      elsif S = "LoopInvInit" then
+         return VC_Loop_Invariant_Init;
+      elsif S = "LoopInvPreserv" then
+         return VC_Loop_Invariant_Preserv;
+      else
+         raise Program_Error;
+      end if;
+   end Interpret_Why_VC_Kind;
 
    ---------------------
    -- Print_Error_Msg --
@@ -338,8 +368,57 @@ package body Altergo is
       else
          Put (" ");
       end if;
-      Put_Line (X.EX_Kind.all);
+      Print_VC_Msg (X.EX_Kind);
+      if Proved then
+         Put_Line ("");
+      else
+         Put_Line (" failed");
+      end if;
    end Print_Error_Msg;
+
+   ------------------
+   -- Print_VC_Msg --
+   ------------------
+
+   procedure Print_VC_Msg (V : VC_Kind)
+   is
+      use Ada.Text_IO;
+   begin
+      case V is
+         when VC_Unused =>
+            raise Program_Error;
+
+         when VC_Overflow_Check =>
+            Put ("overflow check");
+
+         when VC_Range_Check =>
+            Put ("range check");
+
+         when VC_Array_Bounds_Check =>
+            Put ("array bounds check");
+
+         when VC_Division_By_Zero =>
+            Put ("division by zero");
+
+         when VC_Precondition =>
+            Put ("proof of precondition");
+
+         when VC_Postcondition =>
+            Put ("proof of postcondition");
+
+         when VC_Loop_Invariant =>
+            Put ("proof of loop invariant");
+
+         when VC_Loop_Invariant_Init =>
+            Put ("proof of loop invariant initalization");
+
+         when VC_Loop_Invariant_Preserv =>
+            Put ("proof of loop invariant preservation");
+
+         when VC_Assert =>
+            Put ("proof of assertion");
+      end case;
+   end Print_VC_Msg;
 
    -----------------
    -- Starts_With --

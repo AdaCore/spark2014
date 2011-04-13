@@ -1,6 +1,6 @@
-length.adb:24:22: Proved - Range Check
-length.adb:24:22: Proved - Range Check
-length.adb:18:15: Proved - Range Check
-length.ads:6:22: Proved - Post
-length.ads:16:23: Post
-length.ads:9:30: Proved - Post
+length.adb:24:22: Proved - range check
+length.adb:24:22: Proved - range check
+length.adb:18:15: Proved - range check
+length.ads:6:22: Proved - proof of postcondition
+length.ads:16:23: proof of postcondition failed
+length.ads:9:30: Proved - proof of postcondition

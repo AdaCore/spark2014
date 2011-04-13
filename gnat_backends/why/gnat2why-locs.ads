@@ -26,6 +26,7 @@
 with Outputs;   use Outputs;
 with Types;     use Types;
 with Why.Ids;   use Why.Ids;
+with VC_Kinds;  use VC_Kinds;
 
 package Gnat2Why.Locs is
 
@@ -55,17 +56,6 @@ package Gnat2Why.Locs is
    --    * LoopInvInit
    --    * LoopInvPreserv
    --    * Lemma
-
-   type VC_Kind is
-      (VC_Overflow_Check,
-       VC_Range_Check,
-       VC_Array_Bounds_Check,
-       VC_Division_By_Zero,
-       VC_Precondition,
-       VC_Postcondition,
-       VC_Loop_Invariant,
-       VC_Assert
-       );
 
    function New_Located_Label (N : Node_Id; Reason : VC_Kind)
       return W_Identifier_Id;

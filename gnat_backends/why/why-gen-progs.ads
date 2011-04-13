@@ -24,10 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Types;         use Types;
+with VC_Kinds;      use VC_Kinds;
 with Why.Gen.Types; use Why.Gen.Types;
 with Why.Ids;       use Why.Ids;
 with Why.Sinfo;     use Why.Sinfo;
-with Gnat2Why.Locs; use Gnat2Why.Locs;
 
 package Why.Gen.Progs is
 

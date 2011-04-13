@@ -1,2 +1,2 @@
-const.adb:5:17: Proved - Range Check
-const.ads:7:23: Proved - Post
+const.adb:5:17: Proved - range check
+const.ads:7:23: Proved - proof of postcondition

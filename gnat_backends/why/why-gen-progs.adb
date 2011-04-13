@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;              use Uintp;
+with Uintp;               use Uintp;
 
-with Gnat2Why.Decls;     use Gnat2Why.Decls;
+with Gnat2Why.Decls;      use Gnat2Why.Decls;
+with Gnat2Why.Locs;       use Gnat2Why.Locs;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

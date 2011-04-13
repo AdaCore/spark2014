@@ -1,4 +1,4 @@
-pack.ads:9:25: Post
-pack.adb:6:7: Assert
-pack.ads:13:25: Post
-pack.adb:16:7: Assert
+pack.ads:9:25: proof of postcondition failed
+pack.adb:6:7: proof of assertion failed
+pack.ads:13:25: proof of postcondition failed
+pack.adb:16:7: proof of assertion failed

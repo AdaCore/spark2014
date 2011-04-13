@@ -1,5 +1,5 @@
-ar.ads:10:27: Proved - Post
-ar.adb:12:16: Proved - Range Check
-ar.ads:6:22: Proved - Post
-ar.adb:12:10: Proved - Range Check
-ar.adb:6:17: Proved - Range Check
+ar.ads:10:27: Proved - proof of postcondition
+ar.adb:12:16: Proved - range check
+ar.ads:6:22: Proved - proof of postcondition
+ar.adb:12:10: Proved - range check
+ar.adb:6:17: Proved - range check

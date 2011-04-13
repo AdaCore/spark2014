@@ -1,8 +1,8 @@
-forall.ads:5:46: Proved - Range Check
-forall.ads:9:47: Proved - Range Check
-forall.ads:10:37: Post
-forall.ads:6:37: Post
-forall.ads:5:51: Proved - Range Check
-forall.adb:6:17: Proved - Range Check
-forall.adb:12:17: Proved - Range Check
-forall.ads:9:52: Proved - Range Check
+forall.ads:5:46: Proved - range check
+forall.ads:9:47: Proved - range check
+forall.ads:10:37: proof of postcondition failed
+forall.ads:6:37: proof of postcondition failed
+forall.ads:5:51: Proved - range check
+forall.adb:6:17: Proved - range check
+forall.adb:12:17: Proved - range check
+forall.ads:9:52: Proved - range check
