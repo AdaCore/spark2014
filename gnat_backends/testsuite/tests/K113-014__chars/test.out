@@ -1,10 +1,10 @@
+chars.adb:13:33: Proved - range check
 chars.adb:14:44: Proved - range check
 chars.adb:15:55: Proved - range check
-chars.adb:9:36: Proved - range check
-chars.adb:13:33: Proved - range check
-chars.adb:8:36: Proved - range check
-chars.ads:3:25: Proved - proof of postcondition
-chars.adb:5:24: Proved - range check
 chars.adb:4:24: Proved - range check
+chars.adb:5:24: Proved - range check
 chars.adb:6:30: Proved - range check
 chars.adb:7:30: Proved - range check
+chars.adb:8:36: Proved - range check
+chars.adb:9:36: Proved - range check
+chars.ads:3:25: Proved - proof of postcondition

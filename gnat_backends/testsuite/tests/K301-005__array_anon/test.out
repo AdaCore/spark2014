@@ -1,2 +1,2 @@
-named.ads:5:28: Proved - proof of postcondition
 named.adb:4:15: Proved - range check
+named.ads:5:28: Proved - proof of postcondition

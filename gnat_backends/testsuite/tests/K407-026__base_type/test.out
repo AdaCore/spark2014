@@ -1,18 +1,18 @@
-base_type.adb:25:23: range check failed
+base_type.adb:10:17: Proved - range check
+base_type.adb:10:22: Proved - range check
+base_type.adb:15:17: range check failed
+base_type.adb:15:22: Proved - range check
+base_type.adb:20:17: Proved - range check
+base_type.adb:20:22: Proved - range check
 base_type.adb:25:18: Proved - range check
+base_type.adb:25:23: range check failed
+base_type.adb:25:28: Proved - range check
+base_type.adb:30:17: Proved - range check
+base_type.adb:30:22: Proved - range check
+base_type.adb:35:17: Proved - range check
 base_type.adb:35:22: Proved - range check
 base_type.adb:40:17: Proved - range check
-base_type.adb:25:28: Proved - range check
-base_type.adb:10:17: Proved - range check
-base_type.adb:35:17: Proved - range check
 base_type.adb:40:22: Proved - range check
-base_type.adb:30:22: Proved - range check
-base_type.adb:30:17: Proved - range check
-base_type.adb:15:17: range check failed
-base_type.adb:10:22: Proved - range check
-base_type.adb:20:17: Proved - range check
-base_type.adb:15:22: Proved - range check
-base_type.adb:5:22: Proved - range check
 base_type.adb:5:17: range check failed
-base_type.adb:20:22: Proved - range check
+base_type.adb:5:22: Proved - range check
 base_type.ads:32:22: Proved - range check

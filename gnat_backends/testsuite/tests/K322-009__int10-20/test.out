@@ -1,13 +1,13 @@
-inrange.adb:8:18: Proved - proof of precondition
-inrange.ads:10:28: Proved - proof of postcondition
 inrange.adb:14:14: Proved - range check
-inrange.ads:17:34: Proved - proof of postcondition
-inrange.adb:8:16: Proved - range check
-inrange.adb:21:7: Proved - range check
-inrange.adb:8:23: Proved - range check
-inrange.adb:21:7: range check failed
-inrange.adb:4:16: Proved - range check
 inrange.adb:19:23: Proved - range check
 inrange.adb:21:7: Proved - proof of precondition
-inrange.ads:7:24: Proved - proof of postcondition
+inrange.adb:21:7: Proved - range check
+inrange.adb:21:7: range check failed
+inrange.adb:4:16: Proved - range check
+inrange.adb:8:16: Proved - range check
+inrange.adb:8:18: Proved - proof of precondition
+inrange.adb:8:23: Proved - range check
+inrange.ads:10:28: Proved - proof of postcondition
 inrange.ads:14:23: Proved - proof of postcondition
+inrange.ads:17:34: Proved - proof of postcondition
+inrange.ads:7:24: Proved - proof of postcondition

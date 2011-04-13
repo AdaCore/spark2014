@@ -1,6 +1,6 @@
-divide.ads:4:61: Proved - proof of postcondition
-divide.adb:5:12: Proved - range check
-divide.adb:11:17: range check failed
 divide.adb:10:17: range check failed
-divide.adb:9:10: Proved - proof of loop invariant preservation
+divide.adb:11:17: range check failed
+divide.adb:5:12: Proved - range check
 divide.adb:9:10: Proved - proof of loop invariant initalization
+divide.adb:9:10: Proved - proof of loop invariant preservation
+divide.ads:4:61: Proved - proof of postcondition

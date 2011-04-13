@@ -1,2 +1,2 @@
-add.ads:4:43: Proved - proof of postcondition
 add.adb:5:16: range check failed
+add.ads:4:43: Proved - proof of postcondition

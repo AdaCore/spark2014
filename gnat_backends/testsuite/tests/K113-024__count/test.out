@@ -1,5 +1,5 @@
 count.adb:4:24: Proved - range check
-count.ads:5:62: Proved - proof of postcondition
+count.adb:7:10: Proved - proof of loop invariant initalization
 count.adb:8:21: Proved - range check
 count.ads:4:63: Proved - range check
-count.adb:7:10: Proved - proof of loop invariant initalization
+count.ads:5:62: Proved - proof of postcondition

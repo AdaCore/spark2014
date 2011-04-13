@@ -1,5 +1,5 @@
-odometer.adb:22:40: Proved - range check
-odometer.ads:7:26: Proved - proof of postcondition
-odometer.adb:5:15: Proved - range check
 odometer.adb:22:20: Proved - range check
+odometer.adb:22:40: Proved - range check
+odometer.adb:5:15: Proved - range check
 odometer.ads:14:56: Proved - proof of postcondition
+odometer.ads:7:26: Proved - proof of postcondition
