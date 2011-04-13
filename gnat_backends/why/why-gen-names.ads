@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;   use Why.Ids;
-with Why.Sinfo; use Why.Sinfo;
+with String_Utils; use String_Utils;
+with Why.Ids;      use Why.Ids;
+with Why.Sinfo;    use Why.Sinfo;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -120,6 +121,9 @@ package Why.Gen.Names is
    function New_Identifier (Name : String) return W_Identifier_Id;
    --  Create a new identifier for Name and return the result
 
+   function New_Identifiers (SL : String_Lists.List) return W_Identifier_Array;
+   --  Return an array of identifiers
+
    function New_Ignore_Name return W_Identifier_Id;
 
    function New_Integer_Division return W_Identifier_Id;
@@ -135,6 +139,9 @@ package Why.Gen.Names is
 
    function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name
+
+   function New_Terms (SL : String_Lists.List) return W_Term_Array;
+   --  Return an array of term identifiers
 
    function Range_Pred_Name (Name : String) return W_Identifier_Id;
    function Range_Pred_Name (Name : W_Identifier_Id) return W_Identifier_Id;

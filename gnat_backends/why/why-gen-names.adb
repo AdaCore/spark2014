@@ -266,6 +266,24 @@ package body Why.Gen.Names is
    end New_Identifier;
 
    ---------------------
+   -- New_Identifiers --
+   ---------------------
+
+   function New_Identifiers
+     (SL : String_Lists.List) return W_Identifier_Array is
+      use String_Utils.String_Lists;
+
+      Result : W_Identifier_Array (1 .. Integer (Length (SL)));
+      Index  : Positive := 1;
+   begin
+      for E of SL loop
+         Result (Index) := New_Identifier (E);
+         Index := Index + 1;
+      end loop;
+      return Result;
+   end New_Identifiers;
+
+   ---------------------
    -- New_Ignore_Name --
    ---------------------
 
@@ -303,6 +321,23 @@ package body Why.Gen.Names is
    begin
       return New_Term_Identifier (Name => New_Identifier (Name));
    end New_Term;
+
+   ---------------
+   -- New_Terms --
+   ---------------
+
+   function New_Terms (SL : String_Lists.List) return W_Term_Array is
+      use String_Utils.String_Lists;
+
+      Result : W_Term_Array (1 .. Integer (Length (SL)));
+      Index  : Positive := 1;
+   begin
+      for E of SL loop
+         Result (Index) := New_Term (E);
+         Index := Index + 1;
+      end loop;
+      return Result;
+   end New_Terms;
 
    -----------------
    -- Range_Axiom --
