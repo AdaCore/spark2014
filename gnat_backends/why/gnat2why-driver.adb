@@ -29,6 +29,7 @@ with ALI;                   use ALI;
 with ALI.Util;              use ALI.Util;
 with AA_Util;               use AA_Util;
 with Atree;                 use Atree;
+with Binderr;
 with Debug;                 use Debug;
 with Errout;                use Errout;
 with Namet;                 use Namet;
@@ -145,6 +146,12 @@ package body Gnat2Why.Driver is
       Free (Text);
       Read_Withed_ALIs (Main_Lib_Id);
 
+      --  Quit if some ALI files are missing
+
+      if Binderr.Errors_Detected > 0 then
+         raise Unrecoverable_Error;
+      end if;
+
       --  Load ALFA information from ALIs for all dependent units
 
       for Index in ALIs.First .. ALIs.Last loop
@@ -175,8 +182,6 @@ package body Gnat2Why.Driver is
 --        Put_Line ("## After propagation ##");
 --        Put_Line ("");
 --        Display_Maps;
-
---      Declare_All_Entities;
 
       --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the
       --  same order that they were processed by the frontend. Bodies are not
