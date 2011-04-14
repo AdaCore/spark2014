@@ -155,7 +155,8 @@ package body Gnat2Why.Driver is
       --  Load ALFA information from ALIs for all dependent units
 
       for Index in ALIs.First .. ALIs.Last loop
-         Load_ALFA (Name_String (Name_Id (ALIs.Table (Index).Afile)));
+         Load_ALFA (Name_String (Name_Id
+           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
       end loop;
 
       --  Write Dependency file

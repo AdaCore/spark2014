@@ -25,10 +25,9 @@
 --  This package body provides the Hi-Lite implementation of the routines
 --  that locate the Ada library source and object directories.
 
---  In the case of Hi-Lite, we only care about the location of the adainclude
---  directory, so generate it from Makefile.common, using the native compiler.
-
---  ??? gnat2why also cares of location of ali files
+--  In the case of Hi-Lite, we care both about the location of the adainclude
+--  and adalib directories, so generate them from Makefile.generic, using the
+--  native compiler.
 
 package body Sdefault is
    pragma Style_Checks (Off);
@@ -54,7 +53,7 @@ package body Sdefault is
 
    function Object_Dir_Default_Name return String_Ptr is
    begin
-      return new String'("unknown");
+      return new String'("@ADALIB@");
    end Object_Dir_Default_Name;
 
    -----------------

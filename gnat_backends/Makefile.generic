@@ -14,6 +14,7 @@ LOCAL_OBJ=obj
 RM=rm -rf
 MV=mv -f
 adainclude:=$(strip $(shell gnatls -v | grep adainclude))
+adalib:=$(strip $(shell gnatls -v | grep adalib))
 uname:=$(shell uname)
 
 .PHONY: setup force clean
@@ -23,7 +24,8 @@ all: setup build
 setup:
 	mkdir -p $(LOCAL_OBJ) ../../install/bin
 	cp -p ../gnat.adc $(LOCAL_OBJ)
-	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in > $(LOCAL_OBJ)/sdefault.adb
+	sed -e "s^@ADAINCLUDE@^$(adainclude)^" ../sdefault.adb.in \
+          | sed -e "s^@ADALIB@^$(adalib)^" > $(LOCAL_OBJ)/sdefault.adb
 	for f in `cd ../gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl xsnamest.adb sinfo.ads treeprs.adt nmake.adt`; \
 	do \
 		cp -p ../gnat_src/$$f $(LOCAL_OBJ); \
