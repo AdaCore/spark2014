@@ -1762,6 +1762,11 @@ package body ALFA.Definition is
       Formal     : Entity_Id;
 
    begin
+      if Is_From_Standard_Library (Sloc (N)) then
+         Mark_Non_ALFA_Declaration ("standard library", Parent (N), V_Implem);
+         return;
+      end if;
+
       if Ekind (Id) = E_Function then
          Mark_Function_Specification (N);
       end if;

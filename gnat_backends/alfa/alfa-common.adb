@@ -4,7 +4,7 @@
 --                                                                          --
 --                           A L F A . C O M M O N                          --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
 --             Copyright (C) 2011, Free Software Foundation, Inc.           --
 --                                                                          --
@@ -23,46 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;             use Ada.Containers;
-with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Sdefault; use Sdefault;
 
-with AA_Util;               use AA_Util;
-with Atree; use Atree;
-with Einfo; use Einfo;
-with Namet; use Namet;
-with Sinfo; use Sinfo;
-with Sinput; use Sinput;
+package body ALFA.Common is
 
-package ALFA.Common is
-
-   function Id_Hash (X : Entity_Id) return Hash_Type is (Hash_Type (X));
-
-   package Id_Set is new Hashed_Sets
-     (Element_Type        => Entity_Id,
-      Hash                => Id_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-   use Id_Set;
-
-   function UString_Hash (X : Unbounded_String) return Hash_Type is
-     (Ada.Strings.Hash (To_String (X)));
-
-   package UString_Set is new Hashed_Sets
-     (Element_Type        => Unbounded_String,
-      Hash                => UString_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-   use UString_Set;
-
-   function Is_Package_Level_Entity (E : Entity_Id) return Boolean is
-     (Ekind (Scope (E)) = E_Package);
-
-   function File_Name_Without_Suffix (Loc : Source_Ptr) return String is
-      (File_Name_Without_Suffix
-         (Get_Name_String (File_Name (Get_Source_File_Index (Loc)))));
-
-   function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean;
+   function Is_From_Standard_Library (Loc : Source_Ptr) return Boolean is
+      Dir_Name  : constant String := Include_Dir_Default_Name.all;
+      File_Name : constant String :=
+        Get_Name_String (Full_File_Name (Get_Source_File_Index (Loc)));
+   begin
+      return Dir_Name'Length <= File_Name'Length
+        and then
+          File_Name (File_Name'First .. File_Name'First + Dir_Name'Length - 1)
+          = Dir_Name;
+   end Is_From_Standard_Library;
 
 end ALFA.Common;
