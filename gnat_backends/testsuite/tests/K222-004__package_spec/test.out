@@ -1,11 +1,12 @@
-pack.adb:10:04: "return" in procedure is not yet in ALFA (any return)
-pack.adb:13:07: block statement is not yet in ALFA (block statement)
+pack.adb:10:04: "return" in procedure is not yet implemented in ALFA (any return)
+pack.adb:13:07: block statement is not yet implemented in ALFA (block statement)
 pack.adb:14:14: access type is not in ALFA
 pack.adb:16:10: entity is not in ALFA
 pack.adb:16:15: allocator is not in ALFA
 pack.adb:17:10: explicit dereference is not in ALFA
 pack.adb:18:13: explicit dereference is not in ALFA
-pack.adb:19:13: "return" in the middle of subprogram is not yet in ALFA (any return)
+pack.adb:19:13: "return" in the middle of subprogram is not yet implemented in ALFA (any return)
 pack.ads:4:08: access type is not in ALFA
 pack.ads:4:26: allocator is not in ALFA
 pack.ads:7:18: explicit dereference is not in ALFA
+

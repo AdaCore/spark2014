@@ -3,11 +3,12 @@ sub.adb:6:07: entity is not in ALFA
 sub.adb:6:12: allocator is not in ALFA
 sub.adb:7:07: explicit dereference is not in ALFA
 sub.adb:8:14: explicit dereference is not in ALFA
-sub.adb:11:04: "return" in procedure is not yet in ALFA (any return)
-sub.adb:14:07: block statement is not yet in ALFA (block statement)
+sub.adb:11:04: "return" in procedure is not yet implemented in ALFA (any return)
+sub.adb:14:07: block statement is not yet implemented in ALFA (block statement)
 sub.adb:15:14: access type is not in ALFA
 sub.adb:17:10: entity is not in ALFA
 sub.adb:17:15: allocator is not in ALFA
 sub.adb:18:10: explicit dereference is not in ALFA
 sub.adb:19:13: explicit dereference is not in ALFA
-sub.adb:20:13: "return" in the middle of subprogram is not yet in ALFA (any return)
+sub.adb:20:13: "return" in the middle of subprogram is not yet implemented in ALFA (any return)
+
