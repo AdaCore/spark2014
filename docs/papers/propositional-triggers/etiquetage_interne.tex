@@ -1,15 +1,17 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8x]{inputenc}
+\usepackage[english,francais]{babel}
 \usepackage{mathpartir}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \setcounter{tocdepth}{3}
 \usepackage{graphicx}
 \usepackage{xspace}
-\usepackage{xcolor}
 \usepackage{fullpage}
+\usepackage{xcolor}
 
 \newcommand{\atoms}{\mathit{atoms}}
+\newcommand{\terms}{\mathit{terms}}
 \newcommand{\atom}{\mathit{atom}}
 \newcommand{\gen}{\vdash}
 \newcommand{\pos}{\vdash_\mathit{pos}}
@@ -338,13 +340,13 @@ $K,\ M,\ R\dett\Box$.
 $\Box\in\F(R)$ and $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
  \item The last rule of the proof is {\sc Base-K}. Since $L\in K$ and $\overline L\in K$,
 $L\in \F(K)$ and $\overline L\in\F(K)$. As a consequence, $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
- \item The last rule of the proof is {\sc Instantiation-Positive} with the labeled formula
+ \item The last rule of the proof is {\sc Positive-Instantiation} with the labeled formula
 $\langle A_1,\ \dots,\ A_n\rangle F$. By induction hypothesis,
 $\F(R)\cup \F(\downarrow F)\cup \{pA|A\in M\}\cup\{pA_1,\ \dots,\ pA_n\}\cup \F(K)\vDash\Box$.
 Since $\langle A_1,\ \dots,\ A_n\rangle F\in K$, $\F(\langle A_1,\ \dots,\ A_n\rangle F)=
 pA_1\wedge\dots\wedge pA_n\wedge\F(F)\in \F(K)$. Since $\F(F)\Leftrightarrow\F(\downarrow F)$,
 $\F(R)\cup\{pA|A\in M\}\cup\F(K)\vDash\Box$.
- \item The last rule of the proof is {\sc Instantiation-Negative} with the labeled formula
+ \item The last rule of the proof is {\sc Negative-Instantiation} with the labeled formula
 $[A_1,\ \dots,\ A_n]F$ such that $\{A_1,\ \dots,\ A_n\}\subseteq M$. By induction hypothesis,
 $\F(R)\cup \F(\downarrow F)\cup \{pA|A\in M\}\cup \F(K)\vDash\Box$.
 Since $[A_1,\ \dots,\ A_n]F\in K$,
@@ -611,5 +613,52 @@ By induction hypothesis, $\T_\bullet(K_1\cup K_2)\cup G,\ M\cup\atoms(G),\
 \T_\bullet(R')\dett\Box$, we can use the rule {\sc Sat} to get
 $\T_\bullet(K_1\cup K_2)\cup G,\ M\cup\atoms(G),\ \T_\bullet(R'\cup\{C\})\dett\Box$.
 \end{itemize} 
+
+\section{With quantifyers}
+Labelled formula can be :
+\begin{itemize}
+ \item Positive : $\langle\overline x,a, F,\sigma\rangle$
+ \item Negative : $[\overline x,a,F,\sigma]$
+\end{itemize}
+where $\sigma$ maps variables from $\overline x$ to terms.
+\begin{eqnarray*}
+&
+\inferrule [Base-R]{
+\Box\in R
+}{
+K,\ G,\ M,\ R\pos\Box
+}\qquad
+\inferrule [Base-G]{
+G\vDash\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Positive-Instantiation]{
+\langle\overline x,a, F,\sigma\rangle \in K \\
+K,\ G,\ M\cup\sigma a,\ R\cup\downarrow\sigma F\pos\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Negative-Instantiation]{
+[\overline x,a,F,\_]\in K  \\ \sigma a \subseteq \terms(G)\cup M \\
+K,\ G,\ M,\ R\cup\downarrow \sigma F\pos\Box
+}{
+K,\ G,\ M,\ R\pos\Box
+}\\
+&
+\inferrule [Sat-Formula]{
+K\cup\{a:F\},\ G,\ M,\ R\pos\Box\\ K\cup \downarrow\neg(a:F),\ G,\ M,\ R\cup\{C'\}\pos\Box
+}{
+K,\ G,\ R\cup\{a:F\vee C'\}\pos\Box
+}\\
+&
+\inferrule [Sat-Literal]{
+K,\ G\cup\{L\},\ M,\ R\pos\Box\\ K,\ G\cup\{\overline{L}\},\ M,\ R\cup\{C'\}\pos\Box
+}{
+K,\ G,\ M,\ R\cup\{L\vee C'\}\pos\Box
+}
+\end{eqnarray*}
 
 \end{document}
