@@ -27,6 +27,7 @@ package ALFA.Definition is
 
    type Violation_Kind is (V_Implem,           --  not yet implemented
                            V_Slice,            --  array slice
+                           V_Container,        --  formal containers
                            V_Discr,            --  discriminant record
                            V_Dispatch,         --  dispatching
                            V_Block_Statement,  --  block declare statement
@@ -34,11 +35,12 @@ package ALFA.Definition is
                            V_Any_Exit,         --  exit statements
                            V_Generic,          --  generics
                            V_Impure_Function,  --  impure functions
+                           V_Tagged,           --  tagged type
                            V_Other);           --  other violations of ALFA
 
    subtype V_Design is Violation_Kind range V_Slice .. V_Other;
 
-   subtype V_Extensions is Violation_Kind range V_Slice .. V_Impure_Function;
+   subtype V_Extensions is Violation_Kind range V_Slice .. V_Tagged;
 
    function Is_In_ALFA (Id : Entity_Id) return Boolean;
    --  Return whether a given entity is in ALFA
