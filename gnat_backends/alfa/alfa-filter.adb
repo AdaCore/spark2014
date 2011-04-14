@@ -25,6 +25,7 @@
 
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
+with Einfo; use Einfo;
 with Lib;
 with Lib.Xref;
 with Namet;   use Namet;
@@ -118,6 +119,8 @@ package body ALFA.Filter is
                   Subp.Append (N);
                end if;
 
+            --  When seeing a stub, forward to the actual body
+
             when N_Subprogram_Body =>
                declare
                   Id : constant Entity_Id := Unique_Defining_Entity (N);
@@ -138,6 +141,24 @@ package body ALFA.Filter is
 
                   if Body_Is_In_ALFA (Id) then
                      Subp.Append (N);
+                  end if;
+               end;
+
+            when N_Subprogram_Body_Stub =>
+               declare
+                  Body_N : constant Node_Id :=
+                             Proper_Body (Unit (Library_Unit (N)));
+                  Id : constant Entity_Id := Unique_Defining_Entity (Body_N);
+
+               begin
+                  if Ekind (Defining_Entity (N)) /= E_Subprogram_Body then
+                     Subp.Append
+                       (Make_Subprogram_Declaration
+                          (Sloc (Body_N), Specification (N)));
+                  end if;
+
+                  if Body_Is_In_ALFA (Id) then
+                     Subp.Append (Body_N);
                   end if;
                end;
 
@@ -274,9 +295,6 @@ package body ALFA.Filter is
          end if;
       end Transform_Subtype_Indication;
 
-      Spec_Unit    : Node_Id := Empty;
-      Body_Unit    : Node_Id := Empty;
-
       -------------------
       -- Dispatch_Spec --
       -------------------
@@ -295,15 +313,31 @@ package body ALFA.Filter is
          Bucket_Dispatch (N, Types_Vars_Body_List, Subp_Body_List);
       end Dispatch_Body;
 
+      Spec_Unit : Node_Id := Empty;
+      Body_Unit : Node_Id := Empty;
+
    --  Start of processing for Filter_Compilation_Unit
 
    begin
-      if Nkind (Unit (N)) = N_Package_Body then
-         Spec_Unit := Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
-         Body_Unit := N;
-      else
-         Spec_Unit := N;
-      end if;
+      case Nkind (Unit (N)) is
+         when N_Package_Body =>
+            Spec_Unit :=
+              Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
+            Body_Unit := N;
+
+         when N_Package_Declaration =>
+            Spec_Unit := N;
+
+         when N_Subprogram_Body =>
+            if not Acts_As_Spec (Unit (N)) then
+               Spec_Unit :=
+                 Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
+            end if;
+            Body_Unit := N;
+
+         when others =>
+            raise Program_Error;
+      end case;
 
       if Present (Spec_Unit) then
          Lib.Xref.ALFA.Traverse_Compilation_Unit
