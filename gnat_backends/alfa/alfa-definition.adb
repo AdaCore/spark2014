@@ -521,7 +521,8 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("explicit dereference", N);
 
          when N_Expression_With_Actions =>
-            Mark_Non_ALFA ("expression with action", N, V_Implem);
+            Mark_List (Actions (N));
+            Mark (Expression (N));
 
          when N_Extended_Return_Statement =>
             Mark_Non_ALFA ("extended RETURN", N);
