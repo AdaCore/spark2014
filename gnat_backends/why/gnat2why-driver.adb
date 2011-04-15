@@ -392,7 +392,7 @@ package body Gnat2Why.Driver is
       end Add_Standard_Type;
 
    begin
-      Translate_Package (File, Standard_Package_Node);
+      Translate_Package (File, Filter_Standard_Package);
 
       Add_Standard_Type (Standard_Integer_8);
       Add_Standard_Type (Standard_Integer_16);

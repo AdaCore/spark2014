@@ -41,6 +41,9 @@ with ALFA.Definition; use ALFA.Definition;
 
 package body ALFA.Filter is
 
+   Standard_Why_Package      : Node_Id := Empty;
+   Standard_Why_Package_Name : constant String := "_standard";
+
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -526,6 +529,46 @@ package body ALFA.Filter is
                                           Context => Context_Subp_Body);
       end;
    end Filter_Compilation_Unit;
+
+   -----------------------------
+   -- Filter_Standard_Package --
+   -----------------------------
+
+   function Filter_Standard_Package return Node_Id is
+   begin
+      if Standard_Why_Package = Empty then
+         declare
+            Decls_In_ALFA : constant List_Id := New_List;
+            Decl          : Node_Id;
+         begin
+            Decl := First (Visible_Declarations
+                           (Specification
+                            (Standard_Package_Node)));
+
+            while Present (Decl) loop
+               case Nkind (Decl) is
+                  when N_Full_Type_Declaration
+                    | N_Subtype_Declaration
+                    | N_Object_Declaration =>
+                     if Is_In_ALFA (Defining_Identifier (Decl)) then
+                        Append (New_Copy (Decl), Decls_In_ALFA);
+                     end if;
+
+                  when others =>
+                     null;
+               end case;
+
+               Next (Decl);
+            end loop;
+
+            Standard_Why_Package :=
+              Make_Package_Spec_From_Decls (Decls_In_ALFA,
+                                            Standard_Why_Package_Name);
+         end;
+      end if;
+
+      return Standard_Why_Package;
+   end Filter_Standard_Package;
 
    -------------------------------------
    -- Make_Compilation_Unit_From_Decl --

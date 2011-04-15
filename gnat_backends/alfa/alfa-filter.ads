@@ -40,4 +40,7 @@ package ALFA.Filter is
    --  Filter declarations in compilation unit N and generate compilation units
    --  which are appended to Compilation_Units.
 
+   function Filter_Standard_Package return Node_Id;
+   --  Return filtered standard package node
+
 end ALFA.Filter;
