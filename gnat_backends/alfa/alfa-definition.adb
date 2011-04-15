@@ -715,19 +715,13 @@ package body ALFA.Definition is
               N_With_Clause                     =>
             null;
 
-         when N_Range_Constraint =>
-            raise Program_Error;  --  TO DO???
-
-         --  Mark should not be called recursively on a compilation unit
-
-         when N_Compilation_Unit =>
-            raise Program_Error;
-
          --  The following kinds are rewritten by expansion
 
          when N_Expression_Function |
               N_Subunit             =>
             raise Program_Error;
+
+         --  Mark should not be called on other kinds
 
          when others =>
             raise Program_Error;

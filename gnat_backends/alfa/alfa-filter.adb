@@ -72,12 +72,19 @@ package body ALFA.Filter is
       Types_Vars_Spec_List : List;
       Types_Vars_Body_List : List;
       Subp_Spec_List       : List;
-      Subp_Body_List       : List;
+
+      Subp_Body_List : List;
+      --  All subprogram definitions should end up in this list, as it
+      --  corresponds to the only Why file which is not included by other Why
+      --  files, so that we will not redo the same proof more than once. In
+      --  particular, subprogram bodies for expression functions, which may be
+      --  originally declared in the package spec, should end up here.
 
       procedure Bucket_Dispatch
-         (N         : Node_Id;
+        (N          : Node_Id;
          Types_Vars : in out List;
-         Subp       : in out List);
+         Subp_Spec  : in out List;
+         Subp_Body  : in out List);
       --  If the Node belongs to the ALFA language, put it in one of the
       --  corresponding buckets (types or variables, subprograms) in argument.
       --  Also, introduce explicit type declarations for anonymous types.
@@ -108,15 +115,16 @@ package body ALFA.Filter is
       ---------------------
 
       procedure Bucket_Dispatch
-         (N         : Node_Id;
+        (N          : Node_Id;
          Types_Vars : in out List;
-         Subp       : in out List)
+         Subp_Spec  : in out List;
+         Subp_Body  : in out List)
       is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
                if Is_In_ALFA (Defining_Unit_Name (Specification (N))) then
-                  Subp.Append (N);
+                  Subp_Spec.Append (N);
                end if;
 
             --  When seeing a stub, forward to the actual body
@@ -134,13 +142,13 @@ package body ALFA.Filter is
                   --  specification now points only to the spec, not the body.
 
                   if Acts_As_Spec (N) then
-                     Subp.Append
+                     Subp_Spec.Append
                        (Make_Subprogram_Declaration
                           (Sloc (N), Specification (N)));
                   end if;
 
                   if Body_Is_In_ALFA (Id) then
-                     Subp.Append (N);
+                     Subp_Body.Append (N);
                   end if;
                end;
 
@@ -152,13 +160,13 @@ package body ALFA.Filter is
 
                begin
                   if Ekind (Defining_Entity (N)) /= E_Subprogram_Body then
-                     Subp.Append
+                     Subp_Spec.Append
                        (Make_Subprogram_Declaration
                           (Sloc (Body_N), Specification (N)));
                   end if;
 
                   if Body_Is_In_ALFA (Id) then
-                     Subp.Append (Body_N);
+                     Subp_Body.Append (Body_N);
                   end if;
                end;
 
@@ -301,7 +309,10 @@ package body ALFA.Filter is
 
       procedure Dispatch_Spec (N : Node_Id) is
       begin
-         Bucket_Dispatch (N, Types_Vars_Spec_List, Subp_Spec_List);
+         Bucket_Dispatch (N          => N,
+                          Types_Vars => Types_Vars_Spec_List,
+                          Subp_Spec  => Subp_Spec_List,
+                          Subp_Body  => Subp_Body_List);
       end Dispatch_Spec;
 
       -------------------
@@ -310,7 +321,10 @@ package body ALFA.Filter is
 
       procedure Dispatch_Body (N : Node_Id) is
       begin
-         Bucket_Dispatch (N, Types_Vars_Body_List, Subp_Body_List);
+         Bucket_Dispatch (N          => N,
+                          Types_Vars => Types_Vars_Body_List,
+                          Subp_Spec  => Subp_Body_List,
+                          Subp_Body  => Subp_Body_List);
       end Dispatch_Body;
 
       Spec_Unit : Node_Id := Empty;
