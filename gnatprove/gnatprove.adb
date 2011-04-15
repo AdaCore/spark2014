@@ -154,14 +154,20 @@ procedure Gnatprove is
       --  command
       --  why --multiwhy --explain --locs <base>.locs <base>.why
 
+      --  ??? It would be good to generate VCs for all objectives, as --all-vc
+      --  would permit, but currently this generates VCs which we cannot match
+      --  back to user source code. (e.g. for a trivially True pre- or
+      --  postcondition introduced by gnat2why)
+
       Call_Exit_On_Failure
         (Command   => "why",
          Arguments =>
            ((1 => new String'("--multi-why"),
-             2 => new String'("--explain"),
-             3 => new String'("--locs"),
-             4 => new String'(Base & Main_Suffix & ".loc"),
-             5 => new String'(Base & Main_Suffix & ".why"))));
+             2 => new String'("--fast-wp"),
+             3 => new String'("--explain"),
+             4 => new String'("--locs"),
+             5 => new String'(Base & Main_Suffix & ".loc"),
+             6 => new String'(Base & Main_Suffix & ".why"))));
    end Call_Why;
 
    -------------------------------
