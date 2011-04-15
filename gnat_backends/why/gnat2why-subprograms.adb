@@ -79,6 +79,13 @@ package body Gnat2Why.Subprograms is
    function Case_Expr_Of_Ada_Node (N : Node_Id) return W_Prog_Id;
    --  Build Case expression of Ada Node.
 
+   generic
+      with procedure Handle_Argument (Formal, Actual : Node_Id);
+   procedure Iterate_Call_Arguments (Call : Node_Id);
+   --  Call "Handle_Argument" for each pair Formal/Actual of a function or
+   --  procedure call. The node in argument must have a "Name" field and a
+   --  "Parameter_Associations" field.
+
    function Compute_Call_Args (Call : Node_Id) return W_Prog_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
@@ -292,6 +299,55 @@ package body Gnat2Why.Subprograms is
       return T;
    end Case_Expr_Of_Ada_Node;
 
+   ----------------------------
+   -- Iterate_Call_Arguments --
+   ----------------------------
+
+   procedure Iterate_Call_Arguments (Call : Node_Id)
+   is
+      Params : constant List_Id := Parameter_Associations (Call);
+      Cur_Formal : Node_Id :=
+         First_Entity (Entity (Name (Call)));
+      Cur_Actual : Node_Id :=
+         First (Params);
+      In_Named : Boolean := False;
+   begin
+      --  We have to deal with named arguments, but the frontend has
+      --  done some work for us. All unnamed arguments come first and
+      --  are given as-is, while named arguments are wrapped into a
+      --  N_Parameter_Association. The field First_Named_Actual of the
+      --  function or procedure call points to the first named argument,
+      --  that should be inserted after the last unnamed one. Each
+      --  Named Actual then points to a Next_Named_Actual. These
+      --  pointers point directly to the actual, but Next_Named_Actual
+      --  pointers are attached to the N_Parameter_Association, so to
+      --  get the next actual from the current one, we need to follow
+      --  the Parent pointer.
+      --
+      --  The Boolean In_Named states how to obtain the next actual:
+      --  either follow the Next pointer, or the Next_Named_Actual of
+      --  the parent.
+      --  We start by updating the Cur_Actual and In_Named variables for
+      --  the first parameter.
+      if Nkind (Cur_Actual) = N_Parameter_Association then
+         In_Named := True;
+         Cur_Actual := First_Named_Actual (Call);
+      end if;
+      while Present (Cur_Formal) and then Present (Cur_Actual) loop
+         Handle_Argument (Cur_Formal, Cur_Actual);
+         Cur_Formal := Next_Entity (Cur_Formal);
+         if In_Named then
+            Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
+         else
+            Next (Cur_Actual);
+            if Nkind (Cur_Actual) = N_Parameter_Association then
+               In_Named := True;
+               Cur_Actual := First_Named_Actual (Call);
+            end if;
+         end if;
+      end loop;
+   end Iterate_Call_Arguments;
+
    -----------------------
    -- Compute_Call_Args --
    -----------------------
@@ -303,72 +359,46 @@ package body Gnat2Why.Subprograms is
    begin
       if Len = 0 then
          return (1 => New_Void (Call));
-      else
-         declare
-            Cur_Formal : Node_Id :=
-               First_Entity (Entity (Name (Call)));
-            Cur_Actual : Node_Id :=
-               First (Params);
-            Why_Args : W_Prog_Array :=
-               (1 .. Integer (Len) => Why.Types.Why_Empty);
-            Cnt      : Positive := 1;
-            In_Named : Boolean := False;
-         begin
-            --  We have to deal with named arguments, but the frontend has
-            --  done some work for us. All unnamed arguments come first and
-            --  are given as-is, while named arguments are wrapped into a
-            --  N_Parameter_Association. The field First_Named_Actual of the
-            --  function or procedure call points to the first named argument,
-            --  that should be inserted after the last unnamed one. Each
-            --  Named Actual then points to a Next_Named_Actual. These
-            --  pointers point directly to the actual, but Next_Named_Actual
-            --  pointers are attached to the N_Parameter_Association, so to
-            --  get the next actual from the current one, we need to follow
-            --  the Parent pointer.
-            --
-            --  The Boolean In_Named states how to obtain the next actual:
-            --  either follow the Next pointer, or the Next_Named_Actual of
-            --  the parent.
-            --  We start by updating the Cur_Actual and In_Named variables for
-            --  the first parameter.
-            if Nkind (Cur_Actual) = N_Parameter_Association then
-               In_Named := True;
-               Cur_Actual := First_Named_Actual (Call);
-            end if;
-            while Present (Cur_Formal) and then Present (Cur_Actual) loop
-               case Ekind (Cur_Formal) is
-                  when E_In_Out_Parameter | E_Out_Parameter =>
-                     --  Parameters that are "out" must be variables
-                     --  They are translated "as is"
-                     Why_Args (Cnt) :=
-                        New_Prog_Identifier
-                           (Ada_Node => Cur_Actual,
-                            Def      =>
-                              Why_Ident_Of_Ada_Ident (Cur_Actual));
-
-                  when others =>
-                     --  No special treatment for parameters that are
-                     --  not "out"
-                     Why_Args (Cnt) :=
-                        Why_Expr_Of_Ada_Expr
-                          (Cur_Actual,
-                           Type_Of_Node (Cur_Formal));
-               end case;
-               Cur_Formal := Next_Entity (Cur_Formal);
-               if In_Named then
-                  Cur_Actual := Next_Named_Actual (Parent (Cur_Actual));
-               else
-                  Next (Cur_Actual);
-                  if Nkind (Cur_Actual) = N_Parameter_Association then
-                     In_Named := True;
-                     Cur_Actual := First_Named_Actual (Call);
-                  end if;
-               end if;
-               Cnt := Cnt + 1;
-            end loop;
-            return Why_Args;
-         end;
       end if;
+      declare
+         Why_Args : W_Prog_Array :=
+            (1 .. Integer (Len) => <>);
+         Cnt      : Positive := 1;
+
+         procedure Compute_Arg (Formal, Actual : Node_Id);
+         --  Compute a Why expression for each parameter
+
+         -----------------
+         -- Compute_Arg --
+         -----------------
+
+         procedure Compute_Arg (Formal, Actual : Node_Id)
+         is
+         begin
+            case Ekind (Formal) is
+               when E_In_Out_Parameter | E_Out_Parameter =>
+                  --  Parameters that are "out" must be variables
+                  --  They are translated "as is"
+                  Why_Args (Cnt) :=
+                     New_Prog_Identifier
+                        (Ada_Node => Actual,
+                         Def      => Why_Ident_Of_Ada_Ident (Actual));
+
+               when others =>
+                  --  No special treatment for parameters that are
+                  --  not "out"
+                  Why_Args (Cnt) :=
+                     Why_Expr_Of_Ada_Expr (Actual, Type_Of_Node (Formal));
+            end case;
+            Cnt := Cnt + 1;
+         end Compute_Arg;
+
+         procedure Iterate_Prog_Call is new
+            Iterate_Call_Arguments (Compute_Arg);
+      begin
+         Iterate_Prog_Call (Call);
+         return Why_Args;
+      end;
    end Compute_Call_Args;
 
    -----------------------
@@ -2269,6 +2299,13 @@ package body Gnat2Why.Subprograms is
             else
                return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
             end if;
+
+         when N_Function_Call =>
+            T := New_True_Literal;
+            --  T :=
+            --    New_Operation
+            --       (Name => Why_Ident_Of_Ada_Ident (Name (Expr)),
+            --        Parameters => Compute_Term_Args (Expr));
          when others =>
             raise Not_Implemented;
       end case;
