@@ -1,2 +1,8 @@
-casing.adb:21:30: range check failed
-casing.adb:9:34: range check failed
+casing.adb:19:23: Proved - range check
+casing.adb:20:23: Proved - range check
+casing.adb:21:30: Proved - range check
+casing.adb:7:27: Proved - range check
+casing.adb:8:27: Proved - range check
+casing.adb:9:34: Proved - range check
+casing.ads:5:30: proof of postcondition failed
+casing.ads:9:30: proof of postcondition failed

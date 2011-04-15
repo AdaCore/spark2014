@@ -1,7 +1,7 @@
-
 constr.adb:5:24: Proved - proof of loop invariant initalization
 constr.adb:5:24: Proved - proof of loop invariant preservation
 constr.adb:6:13: Proved - range check
+constr.adb:6:21: Proved - range check
 constr.adb:6:24: range check failed
 constr.ads:5:22: Proved - range check
 constr.ads:5:27: Proved - range check

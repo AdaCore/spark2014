@@ -2,4 +2,3 @@ sat.adb:6:12: Proved - range check
 sat.adb:7:19: Proved - range check
 sat.adb:9:17: Proved - range check
 sat.ads:8:56: Proved - proof of postcondition
-sat.ads:8:56: Proved - proof of postcondition

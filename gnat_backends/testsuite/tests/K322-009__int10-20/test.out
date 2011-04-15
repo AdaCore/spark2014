@@ -1,5 +1,7 @@
 inrange.adb:14:14: Proved - range check
 inrange.adb:19:23: Proved - range check
+inrange.adb:19:23: Proved - range check
+inrange.adb:21:19: Proved - range check
 inrange.adb:21:7: Proved - proof of precondition
 inrange.adb:21:7: Proved - range check
 inrange.adb:21:7: range check failed
