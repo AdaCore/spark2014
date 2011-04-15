@@ -255,7 +255,7 @@ package body ALFA.Definition is
    --  Special treatment for marking some kinds of nodes
 
    procedure Mark_Attribute_Reference         (N : Node_Id);
-   procedure Mark_Binary_And_Short_Circuit_Op (N : Node_Id);
+   procedure Mark_Binary_Op                   (N : Node_Id);
    procedure Mark_Call                        (N : Node_Id);
    procedure Mark_Conditional_Expression      (N : Node_Id);
    procedure Mark_Exit_Statement              (N : Node_Id);
@@ -478,7 +478,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("attribute definition clause", N);
 
          when N_Binary_Op =>
-            Mark_Binary_And_Short_Circuit_Op (N);
+            Mark_Binary_Op (N);
 
          when N_Block_Statement =>
             Mark_Non_ALFA ("block statement", N, V_Block_Statement);
@@ -647,7 +647,8 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("reference", N);
 
          when N_Short_Circuit =>
-            Mark_Binary_And_Short_Circuit_Op (N);
+            Mark (Left_Opnd (N));
+            Mark (Right_Opnd (N));
 
          when N_Simple_Return_Statement =>
             Mark_Simple_Return_Statement (N);
@@ -754,15 +755,15 @@ package body ALFA.Definition is
       end if;
    end Mark_Attribute_Reference;
 
-   --------------------------------------
-   -- Mark_Binary_And_Short_Circuit_Op --
-   --------------------------------------
+   --------------------
+   -- Mark_Binary_Op --
+   --------------------
 
-   procedure Mark_Binary_And_Short_Circuit_Op (N : Node_Id) is
+   procedure Mark_Binary_Op (N : Node_Id) is
       Left_T : constant Entity_Id := Etype (Left_Opnd (N));
 
    begin
-      case Nkind (N) is
+      case N_Binary_Op'(Nkind (N)) is
          when N_Op_Concat =>
             Mark_Non_ALFA ("concatenation", N, V_Implem);
 
@@ -782,7 +783,7 @@ package body ALFA.Definition is
                  ("equality operator on array type", N);
             end if;
 
-         when N_Op_And | N_Op_Or | N_Op_Xor =>
+         when N_Op_And | N_Op_Or =>
             if Is_Array_Type (Left_T)
               and then Nkind (N) in N_Binary_Op
             then
@@ -828,13 +829,15 @@ package body ALFA.Definition is
                   Right_Opnd (N));
             end if;
 
-         when others =>
-            null;
+         when N_Op_Expon |
+              N_Op_Xor   |
+              N_Op_Shift =>
+            Mark_Non_ALFA ("operator", N, V_Implem);
       end case;
 
       Mark (Left_Opnd (N));
       Mark (Right_Opnd (N));
-   end Mark_Binary_And_Short_Circuit_Op;
+   end Mark_Binary_Op;
 
    ---------------
    -- Mark_Call --
@@ -856,8 +859,7 @@ package body ALFA.Definition is
       if not Is_Entity_Name (Nam) then
          Mark_Non_ALFA ("call", N);
       elsif not Is_In_ALFA (Entity (Nam)) then
-         Mark_Non_ALFA
-           ("subprogram called", N, From => Entity (Nam));
+         Mark_Non_ALFA ("subprogram called", N, From => Entity (Nam));
       end if;
    end Mark_Call;
 
@@ -903,13 +905,10 @@ package body ALFA.Definition is
    procedure Mark_Exit_Statement (N : Node_Id) is
       Target : constant Node_Id := Name (N);
       Cond   : constant Node_Id := Condition (N);
-      U_Name : Entity_Id;
 
    begin
       if Present (Target) then
-         U_Name := Entity (Target);
-
-         if Has_Loop_In_Inner_Open_Scopes (U_Name) then
+         if Has_Loop_In_Inner_Open_Scopes (Entity (Target)) then
             Mark_Non_ALFA
               ("exit label naming some outter loop", N, V_Any_Exit);
          end if;
