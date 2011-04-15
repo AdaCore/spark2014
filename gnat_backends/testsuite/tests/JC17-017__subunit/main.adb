@@ -1,6 +1,14 @@
 procedure Main is
    B : Boolean;
 
+   procedure Sub0 (X : out Boolean)
+     with Post => X;
+
+   procedure Sub0 (X : out Boolean) is
+   begin
+      X := True;
+   end;
+
    procedure Sub (X : out Boolean)
      with Post => X;
 
@@ -8,6 +16,8 @@ procedure Main is
 
    procedure Sub2 (X : out Boolean) is separate;
 begin
+   Sub0 (B);
+   pragma Assert (B);
    Sub (B);
    pragma Assert (B);
    Sub2 (B);
