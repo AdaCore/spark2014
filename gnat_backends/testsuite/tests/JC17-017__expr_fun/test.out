@@ -1,0 +1,7 @@
+p.adb:22:22: Proved - proof of postcondition
+p.adb:32:7: proof of assertion failed
+p.adb:34:7: proof of assertion failed
+p.adb:36:7: Proved - proof of assertion
+p.adb:38:7: Proved - proof of assertion
+p.adb:7:19: Proved - proof of postcondition
+p.ads:9:19: Proved - proof of postcondition
