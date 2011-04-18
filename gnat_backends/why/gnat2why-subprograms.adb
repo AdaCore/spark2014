@@ -932,8 +932,7 @@ package body Gnat2Why.Subprograms is
          Read_Names      : Name_Set.Set;
          Write_Names     : Name_Set.Set;
          Write_All_Names : UString_Set.Set;
-         Eff             : constant W_Effects_Unchecked_Id :=
-                             New_Unchecked_Effects;
+         Eff             : constant W_Effects_Id := New_Effects;
 
       begin
          --  Collect global variables potentially read and written
