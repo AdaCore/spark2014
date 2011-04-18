@@ -25,6 +25,7 @@
 
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Eval;           use Sem_Eval;

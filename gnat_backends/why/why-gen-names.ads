@@ -115,6 +115,10 @@ package Why.Gen.Names is
    --  Create a new identifier for the "definition only" version of a
    --  subprogram, which is not meant to be called.
 
+   function Logic_Func_Name (Name : String) return W_Identifier_Id;
+   --  Create a new identifier for the logic version of a
+   --  subprogram, which is used in annotations.
+
    function New_Exit_Identifier return W_Identifier_Id;
    --  Return an new identifier for the exception "Exit".
 
