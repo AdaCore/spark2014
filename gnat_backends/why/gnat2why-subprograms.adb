@@ -988,7 +988,7 @@ package body Gnat2Why.Subprograms is
       begin
          while Present (Arg) loop
             Result (Cnt) :=
-               +Why_Logic_Type_Of_Ada_Type (Defining_Identifier (Arg));
+               +Why_Logic_Type_Of_Ada_Obj (Defining_Identifier (Arg));
             Next (Arg);
             Cnt := Cnt + 1;
          end loop;
