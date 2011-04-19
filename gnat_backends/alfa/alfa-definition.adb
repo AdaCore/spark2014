@@ -84,8 +84,7 @@ package body ALFA.Definition is
       S_Duration            => False);
 
    Violation_Msg : constant array (V_Extensions) of Unbounded_String :=
-     (V_Any_Exit        => To_Unbounded_String ("any exit"),
-      V_Any_Return      => To_Unbounded_String ("any return"),
+     (V_Any_Return      => To_Unbounded_String ("any return"),
       V_Block_Statement => To_Unbounded_String ("block statement"),
       V_Container       => To_Unbounded_String ("container"),
       V_Discr           => To_Unbounded_String ("discriminant"),
@@ -171,11 +170,6 @@ package body ALFA.Definition is
    --  Return the top-most scope that is not a loop after skipping the current
    --  scope.
 
-   function Has_Loop_In_Inner_Open_Scopes (S : Entity_Id) return Boolean;
-   --  S is the entity of an open scope. This function determines if there is
-   --  an inner scope of S which is a loop (i.e. it appears somewhere in the
-   --  scope stack after S).
-
    function In_Generic_Scope return Boolean is
      (for some S in First_Scope_Index .. Scope_Stack.Last =>
         Scope_Stack.Table (S).Is_Generic);
@@ -258,14 +252,12 @@ package body ALFA.Definition is
    procedure Mark_Binary_Op                   (N : Node_Id);
    procedure Mark_Call                        (N : Node_Id);
    procedure Mark_Conditional_Expression      (N : Node_Id);
-   procedure Mark_Exit_Statement              (N : Node_Id);
    procedure Mark_Full_Type_Declaration       (N : Node_Id);
    procedure Mark_Function_Specification      (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
    procedure Mark_If_Statement                (N : Node_Id);
    procedure Mark_Iteration_Scheme            (N : Node_Id);
-   procedure Mark_Loop_Statement              (N : Node_Id);
    procedure Mark_Object_Declaration          (N : Node_Id);
    procedure Mark_Object_Renaming_Declaration (N : Node_Id);
    procedure Mark_Package_Body                (N : Node_Id);
@@ -376,29 +368,6 @@ package body ALFA.Definition is
       end loop;
       return False;
    end Formal_Proof_Currently_Forced;
-
-   -----------------------------------
-   -- Has_Loop_In_Inner_Open_Scopes --
-   -----------------------------------
-
-   function Has_Loop_In_Inner_Open_Scopes (S : Entity_Id) return Boolean is
-   begin
-      for J in reverse 0 .. Scope_Stack.Last loop
-
-         --  S was reached without seing a loop scope first
-
-         if Scope_Stack.Table (J).Entity = S then
-            return False;
-
-         --  S was not yet reached, so it contains at least one inner loop
-
-         elsif Ekind (Scope_Stack.Table (J).Entity) = E_Loop then
-            return True;
-         end if;
-      end loop;
-
-      raise Program_Error;    --  unreachable
-   end Has_Loop_In_Inner_Open_Scopes;
 
    ------------------------
    -- Inherit_Violations --
@@ -512,7 +481,9 @@ package body ALFA.Definition is
             Mark_Non_ALFA_Declaration ("exception", N);
 
          when N_Exit_Statement =>
-            Mark_Exit_Statement (N);
+            if Present (Condition (N)) then
+               Mark (Condition (N));
+            end if;
 
          when N_Expanded_Name =>
             Mark_Identifier_Or_Expanded_Name (N);
@@ -588,7 +559,8 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("iterator specification", N, V_Container);
 
          when N_Loop_Statement =>
-            Mark_Loop_Statement (N);
+            Mark_Iteration_Scheme (Iteration_Scheme (N));
+            Mark_List (Statements (N));
 
          when N_Null =>
             Mark_Non_ALFA ("null", N);
@@ -898,59 +870,6 @@ package body ALFA.Definition is
       end if;
    end Mark_Conditional_Expression;
 
-   -------------------------
-   -- Mark_Exit_Statement --
-   -------------------------
-
-   procedure Mark_Exit_Statement (N : Node_Id) is
-      Target : constant Node_Id := Name (N);
-      Cond   : constant Node_Id := Condition (N);
-
-   begin
-      if Present (Target) then
-         if Has_Loop_In_Inner_Open_Scopes (Entity (Target)) then
-            Mark_Non_ALFA
-              ("exit label naming some outter loop", N, V_Any_Exit);
-         end if;
-      end if;
-
-      if Present (Cond) then
-         if Nkind (Parent (N)) /= N_Loop_Statement then
-            Mark_Non_ALFA
-              ("exit with when clause not directly in loop", N, V_Any_Exit);
-         end if;
-
-      else
-         if Nkind (Parent (N)) /= N_If_Statement then
-            if Nkind (Parent (N)) = N_Elsif_Part then
-               Mark_Non_ALFA
-                 ("exit in IF with ELSIF", N, V_Any_Exit);
-            else
-               Mark_Non_ALFA
-                 ("exit not directly in IF", N, V_Any_Exit);
-            end if;
-
-         elsif Nkind (Parent (Parent (N))) /= N_Loop_Statement then
-            Mark_Non_ALFA
-              ("exit not in IF directly in loop", N, V_Any_Exit);
-
-         --  First test the presence of ELSE, so that an exit in an ELSE leads
-         --  to an error mentioning the ELSE.
-
-         elsif Present (Else_Statements (Parent (N))) then
-            Mark_Non_ALFA
-              ("exit in IF with ELSE", N, V_Any_Exit);
-
-         --  An exit in an ELSIF does not reach here, as it would have been
-         --  detected in the case (Nkind (Parent (N)) /= N_If_Statement).
-
-         elsif Present (Elsif_Parts (Parent (N))) then
-            Mark_Non_ALFA
-              ("exit in IF with ELSIF", N, V_Any_Exit);
-         end if;
-      end if;
-   end Mark_Exit_Statement;
-
    --------------------------------
    -- Mark_Full_Type_Declaration --
    --------------------------------
@@ -1152,34 +1071,6 @@ package body ALFA.Definition is
          Next (N);
       end loop;
    end Mark_List;
-
-   -------------------------
-   -- Mark_Loop_Statement --
-   -------------------------
-
-   procedure Mark_Loop_Statement (N : Node_Id) is
-      Id  : constant Node_Id := Identifier (N);
-      Ent : Entity_Id;
-
-   begin
-      if Present (Id) then
-         Ent := Entity (Id);
-
-      --  Case of no identifier present. Create a dummy entity for the loop,
-      --  so that exits to outter loops are correctly detected as not in ALFA.
-
-      else
-         Ent :=
-           New_Internal_Entity (E_Loop, Current_Scope.Entity, Sloc (N), 'L');
-         Set_Etype (Ent, Standard_Void_Type);
-         Set_Parent (Ent, N);
-      end if;
-
-      Push_Scope (Ent);
-      Mark_Iteration_Scheme (Iteration_Scheme (N));
-      Mark_List (Statements (N));
-      Pop_Scope (Ent);
-   end Mark_Loop_Statement;
 
    -------------------
    -- Mark_Non_ALFA --

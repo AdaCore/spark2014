@@ -32,7 +32,6 @@ package ALFA.Definition is
                            V_Dispatch,         --  dispatching
                            V_Block_Statement,  --  block declare statement
                            V_Any_Return,       --  return statements
-                           V_Any_Exit,         --  exit statements
                            V_Generic,          --  generics
                            V_Impure_Function,  --  impure functions
                            V_Tagged,           --  tagged type
