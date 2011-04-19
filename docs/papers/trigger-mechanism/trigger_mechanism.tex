@@ -1,0 +1,229 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage{mathpartir}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\newcommand{\atoms}{\mathit{atoms}}
+\newcommand{\terms}{\mathit{terms}}
+\newcommand{\atom}{\mathit{atom}}
+\newcommand{\F}{\mathit{form}}
+\newcommand{\T}{\mathit{lab}}
+\newcommand{\A}{\mathit{assume}}
+\newcommand{\B}{\mathit{bcp}}
+
+%opening
+\title{A model of the trigger mechanism in SMT Solvers}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+\section{A Propositional Model}
+\subsection{Formulas}
+\subsubsection{Description}
+A label is a set of atoms.
+A labeled formula is a classical formula over elements:
+\begin{itemize}
+ \item literals: $L$,
+ \item positively labeled formulas: $\langle a\rangle F$,
+ \item negatively labeled formulas: $[a]F$.
+\end{itemize}
+where $a$ is a label and $F$ a labeled formula. A labeled clause is a clause over
+elements.
+\subsubsection{Negation}
+We define the negation over elements as:
+\begin{itemize}
+ \item $\neg L=\overline L$,
+ \item $\neg(\langle a\rangle F)=[a]\neg F$,
+ \item $\neg([a]F)=\langle a\rangle\neg F$.
+\end{itemize}
+\subsubsection{Explicit Labelization}
+\subsubsection{Environment}
+Environments are records containing four fields:
+\begin{itemize}
+ \item $K$ is a set of negatively labeled formulas,
+ \item $\Delta$ is a set of labeled clauses,
+ \item $G$ is a set of literals,
+ \item $M$ is a set of atoms.
+\end{itemize}
+\subsection{Derivation}
+
+\subsubsection{Auxiliary Functions}
+The function $\downarrow$ puts formulas into clausal form. We request that $\downarrow F$
+returns a set of labeled clauses, the cunjunction of which is equivalent (considering
+labeled formulas as literals) to $F$.\\
+The $\A$ function properly handles the way elements are added to the environment when assumed
+by the Sat-solver:
+\begin{itemize}
+ \item $\A(\{K,\Delta,G,M\},L)=\{K,\Delta,G\cup L,M\}$,
+ \item $\A(\{K,\Delta,G,M\},\langle a\rangle F)=\{K,\Delta\cup\downarrow F,G,M\cup a\}$,
+ \item $\A(\{K,\Delta,G,M\},[a]F)=\{K\cup([a]F),\Delta,G,M\}$.
+\end{itemize}
+\subsubsection{Shallow Implication}
+The shallow inplication is an implication that does not take into account the trigger
+mechanism. It is defined over elements as:
+\begin{itemize}
+ \item $K,G,M\vDash L$ if and only if $L\in G$,
+ \item $K,G,M\vDash\langle a\rangle F$ if and only if $K,G,M\vDash\downarrow F$
+and $a\subseteq M$,
+ \item $K,G,M\vDash[a]F$ if and only if $[a]F\in K$.
+\end{itemize}
+and if $C$ is a labeled clauses, $K,G,M\vDash C$ if and only if there is an element $D\in C$
+such that $K,G,M\vDash D$.
+\subsubsection{Rule System}
+\begin{eqnarray*}
+&
+\inferrule [Unsat]{
+\Box\in \Delta
+}{
+\{K,\Delta,G,M\}\vdash\Box
+}\qquad
+\inferrule [Base]{
+G\vDash\Box
+}{
+\{K,\Delta,G,M\}\vdash\Box
+}\\
+&
+\inferrule [Instantiation]{
+[a]F \in K  \\ a \subseteq M \\ \{K,\Delta\cup\downarrow F,G,M\}\vdash\Box
+}{
+\{K,\Delta,G,M\}\vdash\Box
+}\\
+&
+\inferrule [Sat]{
+\A(\{K,\Delta,G,M\},D)\vdash\Box\\ \A(\{K,\Delta\cup C,G,M\},\neg D)\vdash\Box
+}{
+\{K,\Delta\cup(D\vee C),G,M\}\vdash\Box
+}
+\end{eqnarray*}
+\subsubsection{Saturation}
+\begin{itemize}
+ \item $G\nvDash\Box$
+ \item $K,G,M\vDash \Delta$
+ \item $\forall [a]F\in K.\ a\subseteq M\Rightarrow K,G,M\vDash\downarrow F$.
+\end{itemize}
+\subsection{Encoding}
+\begin{itemize}
+ \item $\F(A)= A$,
+ \item $\F([A_1,\ \dots,\ A_n]F)=p(A_1)\wedge\dots\wedge p(A_n)\rightarrow \F(F)$,
+ \item $\F(\langle A_1,\ \dots,\ A_n\rangle F)= p(A_1)\wedge\dots\wedge p(A_n)\wedge \F(F)$,
+ \item $\F(F_1\vee F_2)= \F(F_1)\vee \F(F_2)$,
+ \item $\F(F_1\wedge F_2)= \F(F_1)\wedge \F(F_2)$,
+ \item $\F(\neg F) = \neg \F(F)$.
+\end{itemize}
+$\F(\{K,\Delta,G,M\})=\{\F(F)|F\in K\}\cup\{\F(F)|F\in\Delta\}\cup G\cup\{p(A)|A\in M\}$
+\section{Adaptation to First-Order Logic}
+\subsection{Formulas}
+\subsubsection{Description}
+Formula are in lazy normal form. As a consequence, a formula can be:
+\begin{itemize}
+ \item a literal: $L$,
+ \item a unit: $F_1\wedge F_2$,
+ \item a clause: $F_1\vee F_2$,
+ \item a skolem: $\langle\overline x,a,\sigma\rangle F$,
+ \item a lemma: $[\overline x,a,\sigma]F$.
+\end{itemize}
+\subsubsection{Negation}
+We define the negation over formulas as expected:
+\begin{itemize}
+ \item $\neg L=\overline L$,
+ \item $\neg(F_1\wedge F_2)=\neg F_1\vee\neg F_2$,
+ \item $\neg(F_1\vee F_2)=\neg F_1\wedge\neg F_2$,
+ \item $\neg(\langle\overline x,a,\sigma\rangle F)=[\overline x,a,\sigma]\neg F$,
+ \item $\neg([\overline x,a,\sigma]F)=\langle\overline x,a,\sigma\rangle\neg F$.
+\end{itemize}
+\subsubsection{Explicit Labelization}
+\subsubsection{Environment}
+Environments are records containing four fields:
+\begin{itemize}
+ \item $K$ is a set of lemmas,
+ \item $\Delta$ is a set of clauses,
+ \item $G$ is a set of ground literals,
+ \item $M$ is a set of ground terms.
+\end{itemize}
+\subsection{Derivation}
+\subsubsection{Auxiliary Functions}
+The $\A$ function properly handles the way formulas are added to the environment when assumed
+by the Sat-solver:
+\begin{itemize}
+ \item $\A(\{K,\Delta,G,M\},L)=\{K,\Delta,G\cup L,M\}$,
+ \item $\A(e,F_1\wedge F_2)=\A(\A(e,F_1),F_2)$,
+ \item $\A(\{K,\Delta,G,M\},\langle\_,a,\sigma\rangle F)=
+\A(\{K,\Delta,G,M\cup a\sigma\},F\sigma)$,
+ \item $\A(\{K,\Delta,G,M\},[\overline x,a,\_]F)=\{K\cup([\overline x,a,\_]F),\Delta,G,M\}$,
+ \item $\A(\{K,\Delta,G,M\},F_1\vee F_2)=\{K,\Delta\cup(F_1\vee F_2),G,M\}$.
+\end{itemize}
+The $\B$ function abstract away the cases where a boolean constraint propagation can be applied:
+\begin{itemize}
+ \item if $K,G,M\vDash F_i$, $\{K,\Delta,G,M\}\in\B(\{K,\Delta\cup(F_1,F_2),G,M\})$,
+ \item if $K,G,M\vDash\neg F_i$, $\A(\{K,\Delta,G,M\},F_i)\in
+\B(\{K,\Delta\cup(F_1\vee F_2),G,M\})$.
+\end{itemize}
+\subsubsection{Shallow Implication}
+The shallow inplication is an implication that does not take into account the trigger
+mechanism. It is defined over formulas as:
+\begin{itemize}
+ \item $K,G,M\vDash L$ if and only if $L\in G$,
+ \item $K,G,M\vDash F_1\wedge F_2$ if and only if $K,G,M\vDash F_1$
+and $K,G,M\vDash F_2$,
+ \item $K,G,M\vDash F_1\vee F_2$ if and only if $K,G,M\vDash F_1$ or
+$K,G,M\vDash F_2$,
+ \item $K,G,M\vDash\langle\_,a,\sigma\rangle F$ if and only if $K,G,M\vDash F\sigma$
+and $a\sigma\subseteq M$,
+ \item $K,G,M\vDash[\overline x,a,\sigma]F$ if and only if $[\overline x,a,\sigma]F\in K$.
+\end{itemize}
+\subsubsection{Rule System}
+\begin{eqnarray*}
+&
+\inferrule [Base]{
+G\vDash\Box
+}{
+\{K,\Delta,G,M\}\vdash\Box
+}\qquad
+\inferrule [Bcp]{
+e'\vdash\Box\\ e'\in\B(e)
+}{
+e\vdash\Box
+}\\
+&
+\inferrule [Instantiation]{
+(\overline x,a,F)\in K\\ dom(\sigma)=\overline x\\ a\sigma\subseteq M\\
+\A(\{K,\Delta,G,M\},F\sigma)\vdash\Box
+}{
+\{K,\Delta,G,M\}\vdash\Box
+}\\
+&
+\inferrule [Sat]{
+\A(\{K,\Delta,G,M\},F_i)\vdash\Box\\ \A(\A(\{K,\Delta,G,M\},F_j),\neg F_i)\vdash\Box
+}{
+\{K,\Delta\cup(F_1\vee F_2),G,M\}\vdash\Box
+}
+\end{eqnarray*}
+\subsubsection{Saturation}
+\begin{itemize}
+ \item $G\nvDash\Box$,
+ \item for all $(F_1\vee F_2)\in\Delta$, exists $i\in[1..2]$ such that
+$K,G,M\vDash F_i$,
+ \item for all $(\overline x,a,F)\in K$ and all $\sigma$ such that
+$dom(\sigma)=\overline x$ and $a\sigma\subseteq M$,
+$K,G,M\vDash F\sigma$.
+\end{itemize}
+\subsection{Encoding}
+\begin{itemize}
+ \item $\F(L)=L$,
+ \item $\F(F_1\wedge F_2)=\F(F_1)\wedge\F(F_2)$,
+ \item $\F(F_1\vee F_2)=\F(F_1)\vee\F(F_2)$,
+ \item $\F(\langle\overline x,a,\_\rangle F)=\exists\overline x.\bigwedge_{t\in a} p(t)\wedge\F(F)$,
+ \item $\F([\overline x,a,\_]F)=\forall \overline x.\bigwedge_{t\in a} p(t)\rightarrow\F(F)$.
+\end{itemize}
+$\F(\{K,\Delta,G,M\})=\{\F(F)|F\in K\}\cup\{\F(F)|F\in\Delta\}\cup G\cup\{p(t)|t\in M\}$
+
+\end{document}

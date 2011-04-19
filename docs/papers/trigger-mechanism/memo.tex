@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[a4paper,10pt]{report}
 \usepackage[utf8x]{inputenc}
 \usepackage[english,francais]{babel}
 \usepackage{mathpartir}
@@ -22,21 +22,21 @@
 \newcommand{\nnot}{\mathit{not}}
 \newcommand{\F}{\mathit{form}}
 \newcommand{\T}{\mathit{lab}}
+\newcommand{\A}{\mathit{assume}}
+\newcommand{\B}{\mathit{bcp}}
 
 
 %opening
-\title{A propositional model of the trigger mechanism in SMT Solvers}
+\title{A model of the trigger mechanism in SMT Solvers}
 \author{Claire Dross}
 
 \begin{document}
 
 \maketitle
+\tableofcontents
 
-\begin{abstract}
-
-\end{abstract}
-
-\section{A Propositional Model for the Trigger Mechanism in a Simplified SAT Solver}
+\chapter{A Propositional Model for the Trigger Mechanism}
+\section{A Simplified Sat-Solver}
 We introduce a labeled propositional logic. A formula in this logic is a classical propositional
 formula over atoms and labeled formulas. A labeled formula is a couple $[a]F$ where $F$ is a
 formula and $a$ a set of atoms. It means that the formula $F$ can only be used by the solver if
@@ -614,51 +614,312 @@ By induction hypothesis, $\T_\bullet(K_1\cup K_2)\cup G,\ M\cup\atoms(G),\
 $\T_\bullet(K_1\cup K_2)\cup G,\ M\cup\atoms(G),\ \T_\bullet(R'\cup\{C\})\dett\Box$.
 \end{itemize} 
 
-\section{With quantifyers}
-Labelled formula can be :
+\chapter{A First-Order Model for the Trigger Mechanism}
+\section{The ideal trigger mechanism}
+\subsection{Formulas}
+\noindent
+A label $a$ is a set of terms. A formula can be either :
 \begin{itemize}
- \item Positive : $\langle\overline x,a, F,\sigma\rangle$
- \item Negative : $[\overline x,a,F,\sigma]$
+ \item a literal : $L$,
+ \item a unit : $F_1\wedge F_2$,
+ \item a clause : $F_1\vee F_2$,
+ \item a skolem : $\langle\overline x,a,\sigma\rangle F$,
+ \item a lemma : $[\overline x,a,\sigma]F$.
 \end{itemize}
-where $\sigma$ maps variables from $\overline x$ to terms.
+In formulas, each literal $L$ that occurs positively is replaced by a skolem
+$\langle\varnothing,\terms(L),\sigma_\varnothing\rangle L$ and each literal $L$ that occurs
+negatively by a lemma $[\varnothing,\terms(L),\sigma_\varnothing]L$ where $\sigma_\varnothing$ is the
+only mapping defined on $\varnothing$. This transformation from formulas to formulas is called
+$\T$. It makes the mechanism that stores subterms of an assumed literals explicit. In the rest of
+this chapter, we work on $\T(F)$.
+
+\subsection{Functions}
+\noindent
+The function $\neg$ represents the negation over formulas. It is defined as :
+\begin{itemize}
+ \item $\neg L=\overline L$,
+ \item $\neg(F_1\wedge F_2)=\neg F_1\vee\neg F_2$,
+ \item $\neg(F_1\vee F_2)=\neg F_1\wedge\neg F_2$,
+ \item $\neg(\langle\overline x,a,\sigma\rangle F)=[\overline x,a,\sigma]\neg F$,
+ \item $\neg([\overline x,a,\sigma]F)=\langle\overline x,a,\sigma\rangle\neg F$.
+\end{itemize}
+An environment is a record $\{\Lambda,\Delta,T,M\}$ where $\Lambda$ is a set of lemmas,
+$\Delta$ a set of pairs of formulas, $T$ a set of ground literals and
+$M$ a set of ground terms. The function $\A$ modifies its environment by assuming a formula
+$F$. It does the following :
+\begin{itemize}
+ \item $\A(\{\Lambda,\Delta,T,M\},L)=\{\Lambda,\Delta,T\cup L,M\}$,
+ \item $\A(e,F_1\wedge F_2)=\A(\A(e,F_1),F_2)$,
+ \item $\A(\{\Lambda,\Delta,T,M\},\langle\_,a,\sigma\rangle F)=
+\A(\{\Lambda,\Delta,T,M\cup a\sigma\},F\sigma)$,
+ \item $\A(\{\Lambda,\Delta,T,M\},[\overline x,a,\_]F)=\{\Lambda\cup([\overline x,a,\_]F),\Delta,T,M\}$,
+ \item $\A(\{\Lambda,\Delta,T,M\},F_1\vee F_2)=\{\Lambda,\Delta\cup(F_1,F_2),T,M\}$.
+\end{itemize}
+The predicate $\vDash$ determine if a formula $F$ is implied by a set of lemmas $\Lambda$ and
+a set of literals $T$. It is defined as :
+\begin{itemize}
+ \item $\Lambda,T,M\vDash L$ if and only if $L\in T$,
+ \item $\Lambda,T,M\vDash F_1\wedge F_2$ if and only if $\Lambda,T,M\vDash F_1$
+and $\Lambda,T,M\vDash F_2$,
+ \item $\Lambda,T,M\vDash F_1\vee F_2$ if and only if $\Lambda,T,M\vDash F_1$ or
+$\Lambda,T,M\vDash F_2$,
+ \item $\Lambda,T,M\vDash\langle\_,a,\sigma\rangle F$ if and only if $\Lambda,T,M\vDash F\sigma$
+and $a\sigma\subseteq M$,
+ \item $\Lambda,T,M\vDash[\overline x,a,\sigma]F$ if and only if $[\overline x,a,\sigma]F\in\Lambda$.
+\end{itemize}
+The function $\B$ returns the set of candidates for a boolean constraint propagation.
+It is defined as the smallest set such that:
+\begin{itemize}
+ \item if $\Lambda,T,M\vDash F_i$, $\{\Lambda,\Delta,T,M\}\in\B(\{\Lambda,\Delta\cup(F_1,F_2),T,M\})$,
+ \item if $\Lambda,T,M\vDash\neg F_i$, $\A(\{\Lambda,\Delta,T,M\},F_i)\in
+\B(\{\Lambda,\Delta\cup(F_1,F_2),T,M\})$.
+\end{itemize}
+
+\subsection{Rule system}
+\noindent
+Satisfiability of environments is handled by the following rules :
 \begin{eqnarray*}
 &
-\inferrule [Base-R]{
-\Box\in R
+\inferrule [Base]{
+T\vDash\Box
 }{
-K,\ G,\ M,\ R\pos\Box
+\{\Lambda,\Delta,T,M\}\vdash\Box
 }\qquad
-\inferrule [Base-G]{
-G\vDash\Box
+\inferrule [Bcp]{
+e'\vdash\Box\\ e'\in\B(e)
 }{
-K,\ G,\ M,\ R\pos\Box
+e\vdash\Box
 }\\
 &
-\inferrule [Positive-Instantiation]{
-\langle\overline x,a, F,\sigma\rangle \in K \\
-K,\ G,\ M\cup\sigma a,\ R\cup\downarrow\sigma F\pos\Box
+\inferrule [Instantiation]{
+(\overline x,a,F)\in\Lambda\\ dom(\sigma)=\overline x\\ a\sigma\subseteq M\\
+\A(\{\Lambda,\Delta,T,M\},F\sigma)\vdash\Box
 }{
-K,\ G,\ M,\ R\pos\Box
+\{\Lambda,\Delta,T,M\}\vdash\Box
 }\\
 &
-\inferrule [Negative-Instantiation]{
-[\overline x,a,F,\_]\in K  \\ \sigma a \subseteq \terms(G)\cup M \\
-K,\ G,\ M,\ R\cup\downarrow \sigma F\pos\Box
+\inferrule [Sat]{
+\A(\{\Lambda,\Delta,T,M\},F_i)\vdash\Box\\ \A(\A(\{\Lambda,\Delta,T,M\},F_j),\neg F_i)\vdash\Box
 }{
-K,\ G,\ M,\ R\pos\Box
-}\\
-&
-\inferrule [Sat-Formula]{
-K\cup\{a:F\},\ G,\ M,\ R\pos\Box\\ K\cup \downarrow\neg(a:F),\ G,\ M,\ R\cup\{C'\}\pos\Box
-}{
-K,\ G,\ R\cup\{a:F\vee C'\}\pos\Box
-}\\
-&
-\inferrule [Sat-Literal]{
-K,\ G\cup\{L\},\ M,\ R\pos\Box\\ K,\ G\cup\{\overline{L}\},\ M,\ R\cup\{C'\}\pos\Box
-}{
-K,\ G,\ M,\ R\cup\{L\vee C'\}\pos\Box
+\{\Lambda,\Delta\cup(F_1,F_2),T,M\}\vdash\Box
 }
 \end{eqnarray*}
+The solver can return \emph{UNSAT} when a proof of $\{\Lambda,\Delta,T,M\}\vdash\Box$ has
+been found.
+\subsection{Saturation}
+\noindent
+We say that an environment $\{\Lambda,\Delta,T,M\}$ is saturated when :
+\begin{itemize}
+ \item $T\nvDash\Box$,
+ \item for all $(F_1,F_2)\in\Delta$, exists $i\in[1..2]$ such that
+$\Lambda,T,M\vDash F_i$,
+ \item for all $(\overline x,a,F)\in\Lambda$ and all $\sigma$ such that
+$dom(\sigma)=\overline x$ and $a\sigma\subseteq M$,
+$\Lambda,T,M\vDash F\sigma$.
+\end{itemize}
+The solver can return \emph{SAT} whenever a saturated environment is encountered.
+
+\section{The encoding}
+\subsection{Definition}
+\noindent
+$\F$ is defined over formulas as :
+\begin{itemize}
+ \item $\F(L)=L$,
+ \item $\F(F_1\wedge F_2)=\F(F_1)\wedge\F(F_2)$,
+ \item $\F(F_1\vee F_2)=\F(F_1)\vee\F(F_2)$,
+ \item $\F(\langle\overline x,a,\_\rangle F)=\exists\overline x.\bigwedge_{t\in a} p(t)\wedge\F(F)$,
+ \item $\F([\overline x,a,\_]F)=\forall \overline x.\bigwedge_{t\in a} p(t)\rightarrow\F(F)$.
+\end{itemize}
+We can extend it to environments :\\
+$\F(\{\Lambda,\Delta,T,M\})=\{\F(F)|F\in\Lambda\}
+ \cup\{\F(F_1\vee F_2)|(F_1,F_2)\in\Delta\}\cup T\cup\{p(t)|t\in M\}$.
+Notice that $\F(\neg F)=\neg\F(F)$.
+\subsection{Properties}
+\subsubsection*{$\F(\A(e,F))$ and $\F(e)\cup\F(F)$ are equisatisfiable.}
+\noindent
+We proceed by structural induction over $F$:
+\begin{itemize}
+ \item $\A(\{\Lambda,\Delta,T,M\},L)=\{\Lambda,\Delta,T\cup L,M\}$.
+Since $\F(\{\Lambda,\Delta,T\cup L,M\})=\F(\{\Lambda,\Delta,T,M\})\cup L$,
+$\F(\A(\{\Lambda,\Delta,T\cup L,M\}))=\F(\{\Lambda,\Delta,T,M\})\cup\F(L)$.
+ \item $\A(e,F_1\wedge F_2)=\A(\A(e,F_1),F_2)$. Since $F_1$ and $F_2$ have a smaller size than
+$F_1\wedge F_2$, we have, by induction hypothesis,
+$\F(\A(\A(e,F_1),F_2))=\F(\A(e,F_1))\cup\F(F_2)$ and $\F(\A(e,F_1))=\F(e)\cup\F(F_1)$.
+As a consequence, $\F(\A(e,F_1\wedge F_2))=\F(e)\cup\F(F_1)\cup\F(F_2)=\F(e)\cup\F(F_1\wedge F_2)$.
+ \item $\A(\{\Lambda,\Delta,T,M\},F_1\vee F_2)=\{\Lambda,\Delta\cup(F_1,F_2),T,M\}$.
+By construction of $\F$, we have that
+$\F(\{\Lambda,\Delta\cup(F_1,F_2),T,M\})=\F(\{\Lambda,\Delta,T,M\})\cup\F(F_1\vee F_2)$.
+As a consequence, we have $\F(\A(\{\Lambda,\Delta,T,M\},F_1\vee F_2))=
+\F(\{\Lambda,\Delta,T,M\})\cup\F(F_1\vee F_2)$.
+ \item $\A(\{\Lambda,\Delta,T,M\},\langle\_,a,\sigma\rangle F)=
+\A(\{\Lambda,\Delta,T,M\cup a\sigma\},F\sigma)$. Since $F\sigma$ is strictly smaller than $F$,
+we have, by induction hypothesis, $\F(\A(\{\Lambda,\Delta,T,M\cup a\sigma\},F\sigma))=
+\F(\{\Lambda,\Delta,T,M\cup a\sigma\})\cup\F(F\sigma)$. Consequently,
+$\F(\A(\{\Lambda,\Delta,T,M\},\langle\_,a,\sigma\rangle F))=
+\F(\{\Lambda,\Delta,T,M\})\cup(\bigwedge_{t\in a} p(t)\wedge\F(F))\sigma$.
+Since $\sigma$ maps $\overline x$ to Skolem functions,
+$\F(\A(\{\Lambda,\Delta,T,M\},\langle\_,a,\sigma\rangle F))$ is indeed equisatisfiable with
+$\F(\{\Lambda,\Delta,T,M\})\cup\exists\overline x.\bigwedge_{t\in a} p(t)\wedge\F(F)=
+\F(\{\Lambda,\Delta,T,M\})\cup\F(\langle\overline x,a,\_\rangle F)$
+ \item $\A(\{\Lambda,\Delta,T,M\},[\overline x,a,\_]F)=\{\Lambda\cup(\overline x,a,F),\Delta,T,M\}$.
+By construction of $\F$, we have
+$\F(\{\Lambda\cup(\overline x,a,F),\Delta,T,M\})=\F(\{\Lambda,\Delta,T,M\})\cup
+\F([\overline x,a,\_]F)$. As a consequence, we have 
+$\F(\A(\{\Lambda,\Delta,T,M\},[\overline x,a,\_]F))=
+\F(\{\Lambda,\Delta,T,M\})\cup\F([\overline x,a,\_]F)$.
+\end{itemize}
+
+\subsubsection*{If $\Lambda, T,M\vDash F$ then $\{\F(F)|F\in\Lambda\}\cup T
+\cup\{p(t)|t\in M\}\vDash\F(F)$.}
+\noindent
+We proceed by structural induction over $F$:
+\begin{itemize}
+ \item $\Lambda,T,M\vDash L$. By definition, $L\in T$ and $T\vDash L=\F(L)$.
+ \item $\Lambda,T,M\vDash F_1\wedge F_2$. By definition, $\Lambda,T,M\vDash F_1$ and
+$\Lambda,T,M\vDash F_2$. By induction hypothesis, $\{\F(F)|F\in\Lambda\}\cup T
+\cup\{p(t)|t\in M\}\vDash\F(F_1)$
+and $\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F_2)$. As a consequence,
+$\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F_1)\wedge\F(F_2)=\F(F_1\wedge F_2)$.
+ \item $\Lambda,T,M\vDash F_1\vee F_2$. By definition, $\Lambda\cup T\vDash F_1$ or
+$\Lambda\cup T\vDash F_2$. By induction hypothesis, $\{\F(F)|F\in\Lambda\}\cup T
+\cup\{p(t)|t\in M\}\vDash\F(F_1)$
+or $\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F_2)$. As a consequence,
+$\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F_1)\vee\F(F_2)=\F(F_1\vee F_2)$.
+ \item $\Lambda,T,M\vDash[\overline x,a,\sigma]F$. By definition,
+$[\overline x,a,\sigma]F\in\Lambda$ and
+$\{\F(F)|F\in\Lambda\}\vDash\F([\overline x,a,\sigma]F)$.
+ \item $\Lambda,T,M\vDash\langle\overline x,a,\sigma\rangle F$. By definition,
+$\Lambda,T,M\vDash F\sigma$ and $a\sigma\subseteq M$. By induction hypothesis, we know that
+$\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F\sigma)$.
+Since $\sigma$ maps $\overline x$ to Skolem functions,
+$\{\F(F)|F\in\Lambda\}\cup T\vDash\exists\overline x.\bigwedge_{t\in a} p(t)\wedge\F(F)=
+\F(\langle\overline x,a,\sigma\rangle F)$
+\end{itemize}
+
+\subsubsection*{If $e'\in\B(e)$ then $\F(e')$ and $\F(e)$ are equisatisfiable.}
+\noindent
+If $e'\in\B(e)$, then:
+\begin{itemize}
+ \item $e=\{\Lambda,\Delta\cup(F_1,F_2),T,M\}$, $e'=\{\Lambda,\Delta,T,M\}$ and
+$\Lambda,T,M\vDash F_i$. Since $\F(e)=\F(e')\cup(\F(F_1)\vee\F(F_2))$,
+$\F(e')\vDash\{\F(F)|F\in\Lambda\}\cup T\vDash\F(F)\cup\{p(t)|t\in M\}\vDash\F(F_i)$.
+Consequently, $\F(e')\vDash\F(F_1)\vee\F(F_2)$ and $\F(e)\Leftrightarrow\F(e')$.
+ \item $e=\{\Lambda,\Delta\cup(F_1,F_2),T,M\}$, $e'=\A(\{\Lambda,\Delta,T,M\},\F_i)$ and
+$\Lambda,T,M\vDash\neg F_j$. Since $\F(e)=\F(\{\Lambda,\Delta,T,M\})\cup(\F(F_1)\vee\F(F_2))$
+and $\F(\{\Lambda,\Delta,T,M\})\vDash\{\F(F)|F\in\Lambda\}\cup T\vDash\F(F)\cup
+\{p(t)|t\in M\}\vDash\neg\F(F_j)$, $\F(e)\Leftrightarrow\F(\{\Lambda,\Delta,T,M\})\cup\F(F_i)$.
+As a consequence, $\F(e)$ and $\F(e')$ are equisatisfiable.
+\end{itemize}
+
+\subsection{The ideal trigger mechanism is deterministic
+ and the solver returns \emph{UNSAT} if and only if $\F(e)\vDash\Box$.}
+\noindent
+A rule system is said to be deterministic if a solver can not return both \emph{SAT} and
+\emph{UNSAT} on any environment.
+\subsubsection*{If there is a finite proof of $e\vdash\Box$, $\F(e)\vDash\Box$.}
+We proceed by structural induction over the proof of $\{\Lambda,\Delta,T,M\}\vdash\Box$ :
+\begin{itemize}
+ \item The first applied rule is \textsc{Base}. As a consequence, $T\vDash\Box$. Since
+$\F(\{\Lambda,\Delta,T,M\})\vDash T$, we have $\F(\{\Lambda,\Delta,T,M\})\vDash\Box$.
+ \item The first applied rule is \textsc{Instantiation}. By induction hypothesis,
+we have a substitution $\sigma$ such that $\F(\A(\{\Lambda,\Delta,T,M\},F\sigma))\vDash\Box$
+and $a\sigma\subseteq M$. Since $(\overline x,a,F)\in\Lambda$,
+$\F(\{\Lambda,\Delta,T,M\})\vDash\forall \overline x.\bigwedge_{t\in a} p(t)\rightarrow\F(F)$.
+As a consequence, $\F(\{\Lambda,\Delta,T,M\})\vDash(\bigwedge_{t\in a} p(t)\rightarrow\F(F))\sigma$.
+What is more, since $a\sigma\subseteq M$, $\F(\{\Lambda,\Delta,T,M\})\vDash\{p(t)|t\in a\sigma\}$.
+Thus, $\F(\{\Lambda,\Delta,T,M\})\vDash\F(F)\sigma$ and
+$\F(\{\Lambda,\Delta,T,M\})\vDash\F(\A(\{\Lambda,\Delta,T,M\},F\sigma))\vDash\Box$.
+ \item The first applied rule is \textsc{Sat}. By induction hypothesis,
+$\F(\A(\{\Lambda,\Delta,T,M\},F_i))\vDash\Box$ and
+$\F(\A(\A(\{\Lambda,\Delta,T,M\},F_j),\neg F_i))\vDash\Box$.
+Since, for all environment, $\F(\A(e,F))$ and $\F(e)\cup\F(F)$ are equisatisfiable
+and $\F(\neg F)=\neg\F(F)$, $\F(\{\Lambda,\Delta,T,M\})\cup\F(F_i)\vDash\Box$ and
+$\F(\{\Lambda,\Delta,T,M\})\cup\F(F_j)\cup\neg\F(F_i)\vDash\Box$. As a consequence,
+we have indeed that $\F(\{\Lambda,\Delta,T,M\})\cup\F(F_1\vee F_2)\vDash\Box$.
+ \item The first applied rule is \textsc{Bcp}. There is a $e'\in\B(e)$ such that
+$e'\vdash\Box$. By induction hypothesis, $\F(e')\vDash\Box$. Since $\F(e)$ and $\F(e')$
+are equisatisfiable, $\F(e)\vDash\Box$.
+\end{itemize}
+
+\subsubsection*{If $\F(e)\vDash\Box$, the solver can not reach a saturated state.}
+The fact that if $\F(e)\vDash\Box$ in the conclusion of a rule, $\F(e)\vDash\Box$ in the premises
+is obvious. As a consequence, we only need to show that if $e$ is saturated, there is a model $I$
+for $\F(e)$. For a saturated environment $\{\Lambda,\Delta,T,M\}$, let's consider the model $I$
+that associates true to elements of $\{A|A\in T\}\cup\{p(t)|t\in M\}$ and false to everything else.
+\begin{itemize}
+ \item By construction, $I\vDash\{p(t)|t\in M\}$ and $I\vDash T$.
+ \item Let's show that, for all $[\overline x,a,\sigma]F\in\Lambda$, 
+$I\vDash\F([\overline x,a,\sigma]F)$ by structural induction over $F$.
+Since $\{\Lambda,\Delta,T,M\}$ is saturated, for all $\sigma$ such that
+$dom(\sigma)=\overline x$ and $a\sigma\subseteq M$, $\Lambda,T,M\vDash F\sigma$.
+By construction of $\vDash$, we also have $\Lambda|F\sigma,T,M\vDash F\sigma$ where
+$\Lambda|F\sigma=\{F|F\in\Lambda,\ F\in F\sigma\}$.
+As a consequence, $\{\F(F)|F\in\Lambda|F\sigma\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F\sigma)$.
+Since every element in $\Lambda|F\sigma$ is smaller than $[\overline x,a,\sigma]F$, 
+we have, by induction hypothesis,
+$I\vDash\{\F(F)|F\in\Lambda|F\sigma\}\cup T\cup\{p(t)|t\in M\}\vDash\F(F\sigma)$.
+As a consequence, for all ground substitution $\sigma$ such that $dom(\sigma)=\overline x$,
+either $a\sigma\subseteq M$ and $I\vDash\F(F\sigma)$ or $I\nvDash\{p(t)|t\in a\}$.
+Thus, we always have $I\vDash(\bigwedge_{t\in a} p(t)\rightarrow\F(F))\sigma$ and
+$I\vDash\forall \overline x.\bigwedge_{t\in a} p(t)\rightarrow\F(F)$.
+ \item Let's show that for all $(F_1,F_2)\in\Delta$, $I\vDash\F(F_1\vee F_2)$. Since
+$\{\Lambda,\Delta,T,M\}$ is saturated, exists $i\in[1..2]$ such that $\Lambda,T,M\vDash F_i$.
+As a consequence, $I\vDash\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash
+\F(F_i)\vDash\F(F_1)\vee\F(F_2)=\F(F_1\vee F_2)$.
+\end{itemize}
+
+\chapter{Labeled Resolution}
+\section{Presentation}
+\subsection{Labeled Clauses}
+We put our formulas in prenexe normal form, push negative labels externally (they are disjunctions) and
+separate positive labels (they are cunjunctions). We consequently work on negatively labeled clauses 
+containing positive labels and literals. For example, $(P(c)\wedge[x,P(x),d](P(x)\rightarrow Q(x))$
+$[a]L_1\vee\langle b\rangle\vee L_3$ is one of
+these clauses.
+\subsection{Resolution Rules}
+\begin{eqnarray*}
+&
+\inferrule [Labeled Resolution]{
+[a]L\vee C\\ [a']L'\vee C'\\ \overline L\sigma=L'\sigma
+}{
+[a\sigma\cup a'\sigma](C\vee C')\sigma
+}\\
+&
+\inferrule [Simple-Literal]{
+[a]C\\ [a']L\vee C'\\ a\sigma\cap\terms(L)\sigma\neq\varnothing
+}{
+[(a\sigma\setminus\terms(L)\sigma)\cup a'\sigma](C \vee C')\sigma
+}\\
+&
+\inferrule [Simple-Label]{
+[a]C\\ [a']\langle b\rangle\vee C'\\ a\sigma\cap b\sigma\neq\varnothing
+}{
+[(a\sigma\setminus b\sigma)\cup a'\sigma](C \vee C')\sigma
+}
+\end{eqnarray*}
+\paragraph{They are sound:}
+\begin{itemize}
+ \item \textsc{Labeled Resolution}:
+ if we have both $(\bigvee_{t\in a}\neg p(t))\vee(\bigwedge_{t\in\terms(L)}p(t)\wedge L)\vee C$ and
+$(\bigvee_{t\in a'}\neg p(t))\vee(\bigwedge_{t\in\terms(L')}p(t)\wedge L')\vee C'$ then
+we have $(\bigvee_{t\in a\sigma\cup a'\sigma}\neg p(t))\vee(C\vee C')\sigma$.
+ \item \textsc{Simple-Literal}:
+ if we have both $(\bigvee_{t\in a}\neg p(t))\vee C$ and $(\bigvee_{t\in a'}\neg p(t))\vee
+(\bigwedge_{t\in\terms(L)}p(t)\wedge L)\vee C'$ then
+we have $(\bigvee_{t\in (a\sigma\setminus\terms(L)\sigma)\cup a'\sigma}\neg p(t))(C\vee C')\sigma$.
+ \item \textsc{Simple-Label}:
+ if we have both $(\bigvee_{t\in a}\neg p(t))\vee C$ and $(\bigvee_{t\in a'}\neg p(t))\vee
+(\bigwedge_{t\in b}p(t))\vee C'$ then
+we have $(\bigvee_{t\in (a\sigma\setminus b\sigma)\cup a'\sigma}\neg p(t))(C\vee C')\sigma$.
+\end{itemize}
+\paragraph{They are complete:}
+Indeed, if we have a proof by resolution of $\Box$ over a set of standard clause derived from
+a set of labeled clauses, then we can construct a derivation of $[\varnothing]\Box$ by the
+three rules above. Indeed, each step that resolves over standard literals can be translated
+as a step of \textsc{Labeled Resolution} over the labeled clauses from which the standard
+clauses envolved were derived. In the same way, each step that resolves over a presence
+predicate coming from a literal can be translated as a step of \textsc{Simple-Literal} and
+each step that resolves over a presence predicate coming from a positive label can be
+translated as a step of \textsc{Simple-Label}.
 
 \end{document}
