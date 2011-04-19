@@ -55,4 +55,7 @@ package Why.Gen.Terms is
    function New_Boolean_Cmp (Cmp : W_Relation; Left, Right : W_Term_Id)
       return W_Term_Id;
    --  build a boolean comparison for terms of "int" type.
+
+   function New_Result_Term return W_Term_Id;
+   --  return the term containing the ident "result"
 end Why.Gen.Terms;

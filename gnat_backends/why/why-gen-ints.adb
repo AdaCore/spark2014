@@ -32,6 +32,7 @@ with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Sinfo;          use Why.Sinfo;
 
 package body Why.Gen.Ints is
@@ -107,7 +108,7 @@ package body Why.Gen.Ints is
                          New_Operation (Name =>
                                           New_Conversion_To_Int (Name),
                                         Parameters =>
-                                          (1 => New_Result_Identifier));
+                                          (1 => New_Result_Term));
          Post        : constant W_Predicate_Id :=
                          New_Related_Terms (Left  => +Int_Result,
                                             Op    => New_Rel_Eq,

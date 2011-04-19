@@ -44,6 +44,7 @@ with ALFA.Frame_Conditions; use ALFA.Frame_Conditions;
 
 with Why;                   use Why;
 with Why.Sinfo;             use Why.Sinfo;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
@@ -121,6 +122,9 @@ package body Gnat2Why.Subprograms is
    --  Translate the given Ada expression to a Why term of type "bool".
    --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
    --  set to New_Type_Bool.
+
+   function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
+   --  Test if the effect in argument is empty.
 
    function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
    --  Translate the given Ada expression to a Why term of type "int".
@@ -474,6 +478,13 @@ package body Gnat2Why.Subprograms is
       end loop;
    end Compute_Invariant;
 
+   function Effect_Is_Empty (E : W_Effects_Id) return Boolean is
+   begin
+      return
+        (Is_Empty (+Effects_Get_Reads (E)) and then
+         Is_Empty (+Effects_Get_Writes (E)));
+   end Effect_Is_Empty;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -744,6 +755,7 @@ package body Gnat2Why.Subprograms is
       --  * return types.
       Spec        : constant Node_Id := Specification (Node);
       Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
+      Name_Str    : constant String  := Get_Name_String (Name);
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
@@ -1099,14 +1111,14 @@ package body Gnat2Why.Subprograms is
 
                New_Global_Binding
                  (File    => File,
-                  Name    => New_Pre_Check_Name (Get_Name_String (Name)),
+                  Name    => New_Pre_Check_Name (Name_Str),
                   Binders => Compute_Binders,
                   Def     => Pre_Check);
 
                if not Debug.Debug_Flag_Dot_GG then
                   New_Global_Binding
                     (File    => File,
-                     Name    => New_Definition_Name (Get_Name_String (Name)),
+                     Name    => New_Definition_Name (Name_Str),
                      Binders => Compute_Binders,
                      Pre     => New_Assertion (Pred => Pre),
                      Post    => New_Assertion (Pred => Loc_Post),
@@ -1116,26 +1128,96 @@ package body Gnat2Why.Subprograms is
 
          when N_Subprogram_Declaration =>
             declare
+               Pre     : constant W_Predicate_Id :=
+                  Compute_Spec_Pred (Name_Precondition, Dummy_Node);
                Post    : constant W_Predicate_Id :=
                   Compute_Spec_Pred (Name_Postcondition, Dummy_Node);
                Effects : constant W_Effects_Id := Compute_Effects;
             begin
                Declare_Parameter
                  (File   => File,
-                  Name   => New_Identifier (Get_Name_String (Name)),
+                  Name   => New_Identifier (Name_Str),
                   Arrows => Compute_Arrows (Effects),
-                  Pre    => Compute_Spec_Pred (Name_Precondition, Dummy_Node),
+                  Pre    => Pre,
                   Post   => Post);
-               --  If the function has no write effects, generate a logic
-               --  declaration
-               if Nkind (Specification (Node)) = N_Function_Specification then
+
+               if Nkind (Specification (Node)) = N_Function_Specification and
+                  then Effect_Is_Empty (Effects) then
                   New_Logic
                      (File        => File,
-                      Name        => Logic_Func_Name (Get_Name_String (Name)),
+                      Name        => Logic_Func_Name (Name_Str),
                       Args        => Compute_Logic_Args,
                       Return_Type =>
                         +Why_Logic_Type_Of_Ada_Type
                           (Entity (Result_Definition (Specification (Node)))));
+
+                  --  generate axiom of the form
+                  --    forall x1 ... xn, result.
+                  --       (pre and result = logic__f (x1 .. xn)) -> post
+                  declare
+                     function Compute_Logic_Call_Args return W_Term_Array;
+
+                     function Compute_Logic_Call_Args return W_Term_Array is
+                        Result : W_Term_Array :=
+                           (1 .. Integer (Arg_Length) => <>);
+                        Arg    : Node_Id := First (Ada_Binders);
+                        Cnt    : Integer := 1;
+                     begin
+                        while Present (Arg) loop
+                           Result (Cnt) :=
+                              New_Term
+                                 (Full_Name (Defining_Identifier (Arg)));
+                           Next (Arg);
+                           Cnt := Cnt + 1;
+                        end loop;
+                        return Result;
+                     end Compute_Logic_Call_Args;
+
+                     Logic_Call : constant W_Term_Id :=
+                        (if Arg_Length > 0 then
+                            New_Operation
+                              (Name => Logic_Func_Name (Name_Str),
+                               Parameters => Compute_Logic_Call_Args)
+                         else
+                            New_Term_Identifier
+                               (Name => Logic_Func_Name (Name_Str)));
+                     Ax_Body : W_Predicate_Id :=
+                          New_Implication
+                            (Left  => New_Simpl_Conjunction
+                               (Left  => +Duplicate_Any_Node (Id => +Pre),
+                                Right =>
+                                 New_Equal
+                                    (Left => New_Result_Term,
+                                     Right => Logic_Call)),
+                             Right => +Duplicate_Any_Node (Id => +Post));
+                     Arg : Node_Id := First (Ada_Binders);
+                  begin
+                     Ax_Body :=
+                        New_Universal_Quantif
+                          (Variables => (1 => New_Result_Identifier),
+                           Var_Type  =>
+                              +Why_Logic_Type_Of_Ada_Type
+                                (Entity
+                                   (Result_Definition (Specification
+                                      (Node)))),
+                           Pred     => Ax_Body);
+                     while Present (Arg) loop
+                        Ax_Body :=
+                           New_Universal_Quantif
+                              (Variables =>
+                                 (1 => New_Identifier
+                                    (Full_Name (Defining_Identifier (Arg)))),
+                               Var_Type  =>
+                                 Why_Logic_Type_Of_Ada_Obj
+                                    (Defining_Identifier (Arg)),
+                              Pred       => Ax_Body);
+                        Next (Arg);
+                     end loop;
+                     New_Axiom
+                       (File       => File,
+                        Name       => Logic_Func_Axiom (Name_Str),
+                        Axiom_Body => Ax_Body);
+                  end;
                end if;
             end;
 
@@ -2270,7 +2352,7 @@ package body Gnat2Why.Subprograms is
             begin
                case Attr_Id is
                   when Attribute_Result =>
-                     T := New_Result_Identifier;
+                     T := New_Result_Term;
 
                   when Attribute_Old =>
                      T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));

@@ -167,4 +167,14 @@ package body Why.Gen.Terms is
       end case;
    end New_Orb;
 
+   ---------------------
+   -- New_Result_Term --
+   ---------------------
+
+   function New_Result_Term return W_Term_Id
+   is
+   begin
+      return New_Term_Identifier (Name => New_Result_Identifier);
+   end New_Result_Term;
+
 end Why.Gen.Terms;

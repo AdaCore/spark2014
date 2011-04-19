@@ -33,6 +33,7 @@ with Why.Gen.Arrows;      use Why.Gen.Arrows;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Terms;       use Why.Gen.Terms;
 
 package body Why.Gen.Funcs is
 
@@ -133,7 +134,7 @@ package body Why.Gen.Funcs is
             Final_Post := New_Related_Terms
               (Left  => New_Call_To_Logic (Logic_Name, Arrows),
                Op    => New_Rel_Eq,
-               Right => New_Result_Identifier);
+               Right => New_Result_Term);
          end;
       end if;
 
@@ -236,7 +237,7 @@ package body Why.Gen.Funcs is
       Arg_T : constant String := "m";
       Post  : constant W_Predicate_Id :=
          New_Conditional_Pred
-           (Condition => New_Result_Identifier,
+           (Condition => New_Result_Term,
             Then_Part =>
               New_Equal (New_Term (Arg_S), New_Term (Arg_T)),
             Else_Part =>

@@ -119,6 +119,10 @@ package Why.Gen.Names is
    --  Create a new identifier for the logic version of a
    --  subprogram, which is used in annotations.
 
+   function Logic_Func_Axiom (Name : String) return W_Identifier_Id;
+   --  Create a new name for the axiom that states equivalence of
+   --  a subprogram and its logic definition.
+
    function New_Exit_Identifier return W_Identifier_Id;
    --  Return an new identifier for the exception "Exit".
 
@@ -137,7 +141,7 @@ package Why.Gen.Names is
    --  Return an identifier for the subprogram that checks whether a
    --  precondition is properly guarded
 
-   function New_Result_Identifier return W_Term_Id;
+   function New_Result_Identifier return W_Identifier_Id;
    --  Return an new identifier for a function result as it
    --  would be used into a postcondition.
 

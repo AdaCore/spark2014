@@ -229,7 +229,7 @@ package body Why.Gen.Arrays is
             New_Equal (New_Term (Arg_A), Logic_Update_Term);
          Post_Access : constant W_Predicate_Id :=
             New_Equal
-               (Left => New_Result_Identifier,
+               (Left => New_Result_Term,
                 Right =>
                   New_Array_Access_Term
                      (Type_Name => Name,

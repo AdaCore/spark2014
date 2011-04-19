@@ -29,6 +29,7 @@ with Why.Conversions;         use Why.Conversions;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
+with Why.Gen.Names;           use Why.Gen.Names;
 
 package body Why.Gen.Names is
 
@@ -65,6 +66,7 @@ package body Why.Gen.Names is
    Int_Of             : constant String := "to_int";
    Definition         : constant String := "def";
    Logic_Def          : constant String := "logic";
+   Logic_Def_Axiom    : constant String := "logic_def_axiom";
    Pre_Check          : constant String := "pre_check";
    Range_Name         : constant String := "range";
    In_Range           : constant String := "in_range";
@@ -248,6 +250,10 @@ package body Why.Gen.Names is
    function Logic_Func_Name (Name : String) return W_Identifier_Id
       renames Logic_Def_Gen;
 
+   function Logic_Def_Axiom_Gen is new Generate_Suffix (Logic_Def_Axiom);
+   function Logic_Func_Axiom (Name : String) return W_Identifier_Id
+      renames Logic_Def_Axiom_Gen;
+
    function Pre_Check_Gen is new Generate_Prefix (Pre_Check);
    function New_Pre_Check_Name (Name : String) return W_Identifier_Id
       renames Pre_Check_Gen;
@@ -315,10 +321,10 @@ package body Why.Gen.Names is
    -- New_Result_Identifier --
    ---------------------------
 
-   function New_Result_Identifier return W_Term_Id is
+   function New_Result_Identifier return W_Identifier_Id is
       Result_Name : constant String := "result";
    begin
-      return New_Term_Identifier (Name => New_Identifier (Result_Name));
+      return New_Identifier (Result_Name);
    end New_Result_Identifier;
 
    --------------
