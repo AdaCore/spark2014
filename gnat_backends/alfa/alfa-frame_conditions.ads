@@ -56,6 +56,10 @@ package ALFA.Frame_Conditions is
    function Get_Writes (E : Entity_Id) return Name_Set.Set;
    --  Get the variables written by subprogram E
 
+   function Has_Global_Reads (E : Entity_Id) return Boolean is
+     (not Get_Reads (E).Is_Empty);
+   --  Return True if subprogram E reads to global variables
+
    function Has_Global_Writes (E : Entity_Id) return Boolean is
      (not Get_Writes (E).Is_Empty);
    --  Return True if subprogram E writes to global variables

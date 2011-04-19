@@ -144,12 +144,13 @@ package body ALFA.Definition is
    --    . a package body
    --    . a subprogram spec (even when treating the subprogram body)
    --    . a variable (when treating initializing expression)
-   --    . a loop
+   --    . null (for a logical scope)
 
    type Scope_Record is record
       Entity     : Entity_Id;
       Is_Body    : Boolean;  --  True when treating a package/subprogram body
       Is_Generic : Boolean;  --  True for generic declaration or instantiation
+      Is_Logic   : Boolean;  --  True for assertions, pre- and postconditions
    end record;
 
    First_Scope_Index : constant := 0;
@@ -163,17 +164,22 @@ package body ALFA.Definition is
      Table_Name           => "ALFA.Definition.Scope_Stack");
 
    function Current_Scope return Scope_Record;
-   --  Return the top-most scope that is not a loop
+   --  Return the top-most scope that is not null
 
    function Previous_Scope return Scope_Record;
    pragma Unreferenced (Previous_Scope);
-   --  Return the top-most scope that is not a loop after skipping the current
+   --  Return the top-most scope that is not null after skipping the current
    --  scope.
 
    function In_Generic_Scope return Boolean is
      (for some S in First_Scope_Index .. Scope_Stack.Last =>
         Scope_Stack.Table (S).Is_Generic);
    --  Return True if there is a generic scope in the current scope stack
+
+   function In_Logic_Scope return Boolean is
+     (for some S in First_Scope_Index .. Scope_Stack.Last =>
+        Scope_Stack.Table (S).Is_Logic);
+   --  Return True if there is a logic scope in the current scope stack
 
    procedure Pop_Scope (E : Entity_Id);
    --  Remove the top scope in the stack, which should match with entity E
@@ -183,6 +189,12 @@ package body ALFA.Definition is
       Is_Body    : Boolean := False;
       Is_Generic : Boolean := False);
    --  Set entity S as the top scope in the stack
+
+   procedure Push_Logic_Scope;
+   --  Push a logic scope as the top scope in the stack
+
+   procedure Pop_Logic_Scope;
+   --  Remove the top scope in the stack, which should be a logic scope
 
    -----------------------
    -- Local Subprograms --
@@ -319,7 +331,7 @@ package body ALFA.Definition is
 
    begin
       while Idx /= First_Scope_Index - 1
-        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
+        and then No (Scope_Stack.Table (Idx).Entity)
       loop
          Idx := Idx - 1;
       end loop;
@@ -830,8 +842,22 @@ package body ALFA.Definition is
 
       if not Is_Entity_Name (Nam) then
          Mark_Non_ALFA ("call", N);
+
       elsif not Is_In_ALFA (Entity (Nam)) then
          Mark_Non_ALFA ("subprogram called", N, From => Entity (Nam));
+
+      elsif In_Logic_Scope then
+
+         if Has_Global_Reads (Entity (Nam)) then
+            Mark_Non_ALFA ("global read in subprogram called in logic",
+                           N, V_Implem);
+
+         elsif Nkind (Original_Node (Parent (Parent (Entity (Nam)))))
+           /= N_Expression_Function
+         then
+            Mark_Non_ALFA ("regular function called in logic", N, V_Implem);
+         end if;
+
       end if;
    end Mark_Call;
 
@@ -1440,7 +1466,9 @@ package body ALFA.Definition is
             if Chars (Get_Pragma_Arg (Arg1)) /= Name_Precondition
               and then Chars (Get_Pragma_Arg (Arg1)) /= Name_Postcondition
             then
+               Push_Logic_Scope;
                Mark (Get_Pragma_Arg (Arg2));
+               Pop_Logic_Scope;
             end if;
 
          when others =>
@@ -1612,12 +1640,14 @@ package body ALFA.Definition is
       Push_Scope (Id, Is_Generic => Is_Generic);
       Mark_Subprogram_Specification (Specification (N));
 
+      Push_Logic_Scope;
       PPC := Spec_PPC_List (Contract (Id));
       while Present (PPC) loop
          Expr := Get_Pragma_Arg (First (Pragma_Argument_Associations (PPC)));
          Mark (Expr);
          PPC := Next_Pragma (PPC);
       end loop;
+      Pop_Logic_Scope;
 
       Pop_Scope (Id);
    end Mark_Subprogram_Declaration;
@@ -1860,6 +1890,17 @@ package body ALFA.Definition is
       end case;
    end Mark_Type_Definition;
 
+   ---------------------
+   -- Pop_Logic_Scope --
+   ---------------------
+
+   procedure Pop_Logic_Scope is
+      Cur_Scop : Scope_Record renames Scope_Stack.Table (Scope_Stack.Last);
+   begin
+      pragma Assert (Cur_Scop.Is_Logic);
+      Scope_Stack.Decrement_Last;
+   end Pop_Logic_Scope;
+
    ---------------
    -- Pop_Scope --
    ---------------
@@ -1880,7 +1921,7 @@ package body ALFA.Definition is
 
    begin
       while Idx /= -1
-        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
+        and then No (Scope_Stack.Table (Idx).Entity)
       loop
          Idx := Idx - 1;
       end loop;
@@ -1888,7 +1929,7 @@ package body ALFA.Definition is
       Idx := Idx - 1;
 
       while Idx /= -1
-        and then Ekind (Scope_Stack.Table (Idx).Entity) = E_Loop
+        and then No (Scope_Stack.Table (Idx).Entity)
       loop
          Idx := Idx - 1;
       end loop;
@@ -1897,6 +1938,20 @@ package body ALFA.Definition is
 
       return Scope_Stack.Table (Idx);
    end Previous_Scope;
+
+   ----------------------
+   -- Push_Logic_Scope --
+   ----------------------
+
+   procedure Push_Logic_Scope is
+   begin
+      Scope_Stack.Increment_Last;
+      Scope_Stack.Table (Scope_Stack.Last) :=
+        Scope_Record'(Entity     => Empty,
+                      Is_Body    => False,
+                      Is_Generic => False,
+                      Is_Logic   => True);
+   end Push_Logic_Scope;
 
    ----------------
    -- Push_Scope --
@@ -1911,7 +1966,8 @@ package body ALFA.Definition is
       Scope_Stack.Table (Scope_Stack.Last) :=
         Scope_Record'(Entity     => E,
                       Is_Body    => Is_Body,
-                      Is_Generic => Is_Generic);
+                      Is_Generic => Is_Generic,
+                      Is_Logic   => False);
    end Push_Scope;
 
    -----------------------------
