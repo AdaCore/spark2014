@@ -1,0 +1,6 @@
+p.adb:4:15: range check failed
+p.adb:9:15: range check failed
+p.ads:11:54: range check failed
+p.ads:16:54: range check failed
+p.ads:3:27: range check failed
+p.ads:9:27: range check failed
