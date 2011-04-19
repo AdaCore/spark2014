@@ -1,7 +1,7 @@
-+pack__p0 pack.adb:3
--pack__p1 pack.adb:8 (any return)
--pack__p2 pack.adb:15 (block statement, any return)
--pack__p3 pack.adb:26
--pack__p4 pack.adb:33 (any exit)
--pack__p5 pack.adb:40 (not implemented)
-
+--- expected
++++ output
+@@ -4,3 +4,3 @@
+ -pack__p3 pack.adb:26
+--pack__p4 pack.adb:33 (any exit)
+++pack__p4 pack.adb:33
+ -pack__p5 pack.adb:40 (not implemented)

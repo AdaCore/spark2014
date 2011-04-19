@@ -1,0 +1,13 @@
+p.adb:15:9: Proved - range check
+p.adb:17:7: proof of assertion failed
+p.adb:20:21: Proved - proof of loop invariant initalization
+p.adb:20:21: proof of loop invariant preservation failed
+p.adb:28:21: Proved - proof of loop invariant initalization
+p.adb:28:21: proof of loop invariant preservation failed
+p.adb:37:30: Proved - proof of loop invariant initalization
+p.adb:37:30: Proved - proof of loop invariant preservation
+p.adb:38:24: Proved - proof of loop invariant initalization
+p.adb:38:24: Proved - proof of loop invariant preservation
+p.adb:48:13: Proved - range check
+p.adb:48:18: Proved - range check
+p.adb:4:33: Proved - proof of postcondition
