@@ -1796,14 +1796,27 @@ package body Gnat2Why.Subprograms is
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
                   --  A while loop
-                  return
-                     Wrap_Loop
-                        (Loop_Body => Loop_Content,
-                         Condition    =>
-                           Why_Expr_Of_Ada_Expr (Condition (Scheme)),
-                         Loop_Name    => Loop_Name,
-                         Invariant    => Invariant,
-                         Inv_Node     => Split_Node);
+                  declare
+                     Enriched_Inv : constant W_Predicate_Id :=
+                        New_Simpl_Conjunction
+                           (Left  => Invariant,
+                            Right =>
+                              Why_Predicate_Of_Ada_Expr (Condition (Scheme)));
+                     --  We have enriched the invariant, so even if there was
+                     --  none at the beginning, we need to put a location here.
+                     Inv_Node : constant Node_Id :=
+                        (if Present (Split_Node) then Split_Node
+                         else Stmt);
+                  begin
+                     return
+                        Wrap_Loop
+                           (Loop_Body => Loop_Content,
+                            Condition    =>
+                              Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                            Loop_Name    => Loop_Name,
+                            Invariant    => Enriched_Inv,
+                            Inv_Node     => Inv_Node);
+                  end;
                elsif Nkind (Condition (Scheme)) = N_Empty then
                   --  A for loop
                   declare
