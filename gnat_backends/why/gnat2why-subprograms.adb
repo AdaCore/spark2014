@@ -1719,12 +1719,6 @@ package body Gnat2Why.Subprograms is
             end;
 
          when N_Procedure_Call_Statement =>
-            --  Ignore calls to procedures generated for postconditions
-
-            if Is_Postcondition_Proc (Entity (Name (Stmt))) then
-               return New_Void (Stmt);
-            end if;
-
             return
                New_Located_Call
                   (Ada_Node => Stmt,
