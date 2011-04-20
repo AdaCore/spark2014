@@ -31,6 +31,41 @@ with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Decl is
 
+   generic
+      with procedure Handle_Binder
+         (Name : W_Identifier_Id;
+          Ty   : W_Simple_Value_Type_Id);
+   procedure
+      Iter_Binder_Array (Binders : W_Binder_Array);
+
+   -----------------------
+   -- Iter_Binder_Array --
+   -----------------------
+
+   procedure Iter_Binder_Array (Binders : W_Binder_Array)
+   is
+   begin
+      for Index in reverse Binders'Range loop
+         declare
+            use Node_Lists;
+
+            Cur_Binder : constant W_Binder_Id := Binders (Index);
+            Arg_Ty     : constant W_Value_Type_Id :=
+               Binder_Get_Arg_Type (Cur_Binder);
+            Names      : constant Node_Lists.List :=
+               Get_List (+Binder_Get_Names (Cur_Binder));
+            Cur        : Node_Lists.Cursor := First (Names);
+         begin
+            while Has_Element (Cur) loop
+               Handle_Binder
+                  (Name  => +Duplicate_Any_Node (Id => Element (Cur)),
+                   Ty    => +Duplicate_Any_Node (Id => +Arg_Ty));
+               Node_Lists.Next (Cur);
+            end loop;
+         end;
+      end loop;
+   end Iter_Binder_Array;
+
    -----------------------
    -- New_Abstract_Type --
    -----------------------
@@ -188,6 +223,28 @@ package body Why.Gen.Decl is
            := New_Assertion (Pred => New_True_Literal_Pred))
    is
       Param_Type : W_Computation_Type_Id;
+
+      procedure Handle_Binder
+         (Name : W_Identifier_Id;
+          Ty   : W_Simple_Value_Type_Id);
+
+      -------------------
+      -- Handle_Binder --
+      -------------------
+
+      procedure Handle_Binder
+         (Name : W_Identifier_Id;
+          Ty   : W_Simple_Value_Type_Id) is
+      begin
+         Param_Type :=
+            New_Arrow_Type
+               (Name  => Name,
+                Left  => Ty,
+                Right => Param_Type);
+      end Handle_Binder;
+
+      procedure Iter_Binders is new Iter_Binder_Array (Handle_Binder);
+
    begin
       if Binders'Length = 0 then
          Param_Type := +Return_Type;
@@ -198,27 +255,7 @@ package body Why.Gen.Decl is
                Effects       => Effects,
                Precondition  => New_Precondition (Assertion => Pre),
                Postcondition => New_Postcondition (Assertion => Post));
-         for Index in reverse Binders'Range loop
-            declare
-               use Node_Lists;
-
-               Cur_Binder : constant W_Binder_Id := Binders (Index);
-               Arg_Ty     : constant W_Value_Type_Id :=
-                  Binder_Get_Arg_Type (Cur_Binder);
-               Names      : constant Node_Lists.List :=
-                  Get_List (+Binder_Get_Names (Cur_Binder));
-               Cur        : Node_Lists.Cursor := First (Names);
-            begin
-               while Has_Element (Cur) loop
-                  Param_Type :=
-                     New_Arrow_Type
-                        (Name  => +Duplicate_Any_Node (Id => Element (Cur)),
-                         Left  => +Duplicate_Any_Node (Id => +Arg_Ty),
-                         Right => Param_Type);
-                  Node_Lists.Next (Cur);
-               end loop;
-            end;
-         end loop;
+         Iter_Binders (Binders);
       end if;
       File_Append_To_Declarations
         (Id       => File,
