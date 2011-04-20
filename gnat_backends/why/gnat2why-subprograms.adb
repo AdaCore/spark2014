@@ -828,13 +828,13 @@ package body Gnat2Why.Subprograms is
          Id  : Node_Id;
 
       begin
-         if Nkind (Specification (Node)) = N_Procedure_Specification then
+         if Nkind (Spec) = N_Procedure_Specification then
             Unc := New_Arrow_Stack (New_Type_Unit, Effects);
          else
             Unc :=
                New_Arrow_Stack
                   (+Why_Prog_Type_Of_Ada_Type
-                    (Entity (Result_Definition (Specification (Node))), False),
+                    (Entity (Result_Definition (Spec)), False),
                    +Duplicate_Any_Node (Id => +Effects));
          end if;
 
@@ -1039,7 +1039,7 @@ package body Gnat2Why.Subprograms is
 
       begin
          if Nkind (Node) = N_Subprogram_Declaration then
-            Corr_Spec := Defining_Unit_Name (Specification (Node));
+            Corr_Spec := Defining_Unit_Name (Spec);
          else
             Corr_Spec := Corresponding_Spec (Node);
          end if;
@@ -1145,11 +1145,12 @@ package body Gnat2Why.Subprograms is
 
          when N_Subprogram_Declaration =>
             declare
-               Pre     : constant W_Predicate_Id :=
+               Pre       : constant W_Predicate_Id :=
                   Compute_Spec_Pred (Name_Precondition, Dummy_Node);
-               Post    : constant W_Predicate_Id :=
+               Post      : constant W_Predicate_Id :=
                   Compute_Spec_Pred (Name_Postcondition, Dummy_Node);
-               Effects : constant W_Effects_Id := Compute_Effects;
+               Effects   : constant W_Effects_Id := Compute_Effects;
+               Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
             begin
                Declare_Parameter
                  (File   => File,
@@ -1158,19 +1159,21 @@ package body Gnat2Why.Subprograms is
                   Pre    => Pre,
                   Post   => Post);
 
-               if Nkind (Specification (Node)) = N_Function_Specification and
-                  then Effect_Is_Empty (Effects) then
+               if Nkind (Spec) = N_Function_Specification
+                  and then Effect_Is_Empty (Effects)
+                  and then Nkind (Orig_Node) = N_Expression_Function
+               then
                   New_Logic
                      (File        => File,
                       Name        => Logic_Func_Name (Name_Str),
                       Args        => Compute_Logic_Args,
                       Return_Type =>
                         +Why_Logic_Type_Of_Ada_Type
-                          (Entity (Result_Definition (Specification (Node)))));
+                          (Entity (Result_Definition (Spec))));
 
                   --  generate axiom of the form
-                  --    forall x1 ... xn, result.
-                  --       (pre and result = logic__f (x1 .. xn)) -> post
+                  --    forall x1 ... xn.
+                  --       (pre -> logic__f (x1 .. xn)) = expr
                   declare
                      function Compute_Logic_Call_Args return W_Term_Array;
 
@@ -1200,24 +1203,15 @@ package body Gnat2Why.Subprograms is
                                (Name => Logic_Func_Name (Name_Str)));
                      Ax_Body : W_Predicate_Id :=
                           New_Implication
-                            (Left  => New_Simpl_Conjunction
-                               (Left  => +Duplicate_Any_Node (Id => +Pre),
-                                Right =>
-                                 New_Equal
-                                    (Left => New_Result_Term,
-                                     Right => Logic_Call)),
-                             Right => +Duplicate_Any_Node (Id => +Post));
+                            (Left  => +Duplicate_Any_Node (Id => +Pre),
+                             Right =>
+                               New_Equal
+                                 (Left => Logic_Call,
+                                  Right =>
+                                    Why_Term_Of_Ada_Expr
+                                       (Expression (Orig_Node))));
                      Arg : Node_Id := First (Ada_Binders);
                   begin
-                     Ax_Body :=
-                        New_Universal_Quantif
-                          (Variables => (1 => New_Result_Identifier),
-                           Var_Type  =>
-                              +Why_Logic_Type_Of_Ada_Type
-                                (Entity
-                                   (Result_Definition (Specification
-                                      (Node)))),
-                           Pred     => Ax_Body);
                      while Present (Arg) loop
                         Ax_Body :=
                            New_Universal_Quantif
