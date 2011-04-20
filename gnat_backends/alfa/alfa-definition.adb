@@ -84,8 +84,7 @@ package body ALFA.Definition is
       S_Duration            => False);
 
    Violation_Msg : constant array (V_Extensions) of Unbounded_String :=
-     (V_Any_Return      => To_Unbounded_String ("any return"),
-      V_Block_Statement => To_Unbounded_String ("block statement"),
+     (V_Block_Statement => To_Unbounded_String ("block statement"),
       V_Container       => To_Unbounded_String ("container"),
       V_Discr           => To_Unbounded_String ("discriminant"),
       V_Dispatch        => To_Unbounded_String ("dispatch"),
@@ -508,7 +507,7 @@ package body ALFA.Definition is
             Mark (Expression (N));
 
          when N_Extended_Return_Statement =>
-            Mark_Non_ALFA ("extended RETURN", N);
+            Mark_Non_ALFA ("extended RETURN", N, V_Implem);
 
          when N_Extension_Aggregate =>
             Mark_Non_ALFA ("extension aggregate", N, V_Implem);
@@ -1485,17 +1484,6 @@ package body ALFA.Definition is
       if Present (Expression (N)) then
          Mark (Expression (N));
       end if;
-
-      --  RETURN only allowed in ALFA as the last statement in function
-
-      if Nkind (Parent (N)) /= N_Handled_Sequence_Of_Statements
-        and then
-          (Nkind (Parent (Parent (N))) /= N_Subprogram_Body
-            or else Present (Next (N)))
-      then
-         Mark_Non_ALFA
-           ("RETURN in the middle of subprogram", N, V_Any_Return);
-      end if;
    end Mark_Simple_Return_Statement;
 
    ---------------------------
@@ -1544,34 +1532,6 @@ package body ALFA.Definition is
 
       Mark_List (Declarations (N));
       Mark (HSS);
-
-      if Nkind (Specification (N)) = N_Function_Specification then
-
-         --  In ALFA, last statement of a function should be a return
-
-         declare
-            Stat : constant Node_Id := Last_Source_Statement (HSS);
-         begin
-            if Present (Stat)
-              and then not Nkind_In (Stat, N_Simple_Return_Statement,
-                                     N_Extended_Return_Statement)
-            then
-               Mark_Non_ALFA
-                 ("no RETURN at end of function", Stat, V_Any_Return);
-            end if;
-         end;
-
-      --  In ALFA, verify that a procedure has no return
-
-      else
-         --  Would be nice to point to return statement here, can we
-         --  borrow the Check_Returns procedure here ???
-
-         if Return_Present (Id) then
-            Mark_Non_ALFA
-              ("RETURN in procedure", N, V_Any_Return);
-         end if;
-      end if;
 
       Pop_Scope (Id);
 

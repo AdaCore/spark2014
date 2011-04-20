@@ -900,6 +900,52 @@ package body Gnat2Why.Subprograms is
             end case;
             Cur_Decl := Prev (Cur_Decl);
          end loop;
+
+         --  Enclose the subprogram body in a try-block, so that return
+         --  statements can be translated as raising exceptions.
+
+         declare
+            Raise_Stmt : constant W_Prog_Id :=
+                           New_Raise_Statement
+                             (Ada_Node => Node,
+                              Name     => New_Result_Exc_Identifier);
+            Result_Var : constant W_Prog_Id :=
+                           (if Nkind (Spec) = N_Function_Specification then
+                              New_Deref
+                                (Ada_Node => Node,
+                                 Ref      => New_Result_Temp_Identifier)
+                            else New_Void);
+         begin
+            R :=
+              New_Try_Block
+                (Prog    => Sequence (R, Raise_Stmt),
+                 Handler =>
+                   (1 =>
+                      New_Handler
+                        (Name => New_Result_Exc_Identifier,
+                         Def  => Result_Var)));
+         end;
+
+         --  Declare a local variable to hold the result of a function
+
+         if Nkind (Spec) = N_Function_Specification then
+            declare
+               Rvalue : constant W_Prog_Id :=
+                          New_Any_Expr
+                            (Any_Type => New_Abstract_Type
+                               (Name =>
+                                  New_Identifier (Type_Of_Node
+                                    (Entity (Result_Definition (Spec))))));
+            begin
+               R :=
+                 New_Binding_Ref
+                   (Ada_Node => Cur_Decl,
+                    Name     => New_Result_Temp_Identifier,
+                    Def      => Rvalue,
+                    Context  => R);
+            end;
+         end if;
+
          return R;
       end Compute_Context;
 
@@ -1026,8 +1072,6 @@ package body Gnat2Why.Subprograms is
 
       end Compute_Spec;
 
-      Ent : constant Entity_Id := Unique_Defining_Entity (Node);
-
       function Compute_Spec_Pred is new
          Compute_Spec
             (W_Predicate_Id,
@@ -1041,17 +1085,13 @@ package body Gnat2Why.Subprograms is
              New_True_Literal_Prog,
              VC_Expr_Of_Ada_Expr,
              New_Prog_Andb_Then);
-   --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
       Func_Binders : constant W_Binder_Array := Compute_Binders;
       Dummy_Node : Node_Id;
+
+   --  Start of processing for Why_Decl_Of_Ada_Subprogram
+
    begin
-      --  Ignore procedures generated for postconditions
-
-      if Ekind (Ent) = E_Procedure and then Is_Postcondition_Proc (Ent) then
-         return;
-      end if;
-
       case Nkind (Node) is
          when N_Subprogram_Body =>
             declare
@@ -1653,15 +1693,30 @@ package body Gnat2Why.Subprograms is
                end case;
             end;
 
+         --  Translate a return statement by raising the predefined exception
+         --  for returns, which is caught at the end of the subprogram. For
+         --  functions, store the value returned in the local special variable
+         --  for returned values, prior to raising the exception.
+
          when Sinfo.N_Return_Statement =>
-            --  ??? what to do in this case? We would need to know if we are
-            --  in a procedure (translate to void or even omit) or function
-            --  (just compile the returned expression)
-            if Expression (Stmt) /= Empty then
-               return Why_Expr_Of_Ada_Expr (Expression (Stmt));
-            else
-               return New_Void (Stmt);
-            end if;
+            declare
+               Raise_Stmt : constant W_Prog_Id :=
+                              New_Raise_Statement
+                                (Ada_Node => Stmt,
+                                 Name     => New_Result_Exc_Identifier);
+               Result_Stmt : W_Prog_Id;
+            begin
+               if Expression (Stmt) /= Empty then
+                  Result_Stmt :=
+                    New_Assignment
+                      (Ada_Node => Stmt,
+                       Name     => New_Result_Temp_Identifier,
+                       Value    => Why_Expr_Of_Ada_Expr (Expression (Stmt)));
+                  return Sequence (Result_Stmt, Raise_Stmt);
+               else
+                  return Raise_Stmt;
+               end if;
+            end;
 
          when N_Procedure_Call_Statement =>
             --  Ignore calls to procedures generated for postconditions
@@ -1699,7 +1754,7 @@ package body Gnat2Why.Subprograms is
             --      loop.
             --      This means that we have to protect the loop to avoid
             --      encountering it if the condition is false; also we exit
-            --      the loop at the end instead of the beginning) when the
+            --      the loop at the end (instead of the beginning) when the
             --      condition becomes false:
             --      if cond then
             --          loop

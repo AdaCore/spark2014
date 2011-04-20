@@ -327,6 +327,26 @@ package body Why.Gen.Names is
       return New_Identifier (Result_Name);
    end New_Result_Identifier;
 
+   -------------------------------
+   -- New_Result_Exc_Identifier --
+   -------------------------------
+
+   function New_Result_Exc_Identifier return W_Identifier_Id is
+      Result_Name : constant String := "_result_exc";
+   begin
+      return New_Identifier (Result_Name);
+   end New_Result_Exc_Identifier;
+
+   --------------------------------
+   -- New_Result_Temp_Identifier --
+   --------------------------------
+
+   function New_Result_Temp_Identifier return W_Identifier_Id is
+      Result_Name : constant String := "_result";
+   begin
+      return New_Identifier (Result_Name);
+   end New_Result_Temp_Identifier;
+
    --------------
    -- New_Term --
    --------------

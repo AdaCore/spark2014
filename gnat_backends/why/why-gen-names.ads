@@ -142,8 +142,16 @@ package Why.Gen.Names is
    --  precondition is properly guarded
 
    function New_Result_Identifier return W_Identifier_Id;
-   --  Return an new identifier for a function result as it
+   --  Return a new identifier for a function result as it
    --  would be used into a postcondition.
+
+   function New_Result_Exc_Identifier return W_Identifier_Id;
+   --  Return a new identifier for the exception used for returning from a
+   --  subprogram.
+
+   function New_Result_Temp_Identifier return W_Identifier_Id;
+   --  Return a new identifier for the temporary used to store a function's
+   --  result.
 
    function New_Term (Name : String) return W_Term_Id;
    --  Return a term identified by the given name

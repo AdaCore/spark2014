@@ -57,6 +57,7 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Ints;          use Why.Gen.Ints;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Conversions;       use Why.Conversions;
+with Why.Types;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Locs;         use Gnat2Why.Locs;
@@ -416,6 +417,14 @@ package body Gnat2Why.Driver is
       New_Include_Declaration
         (File => File,
          Name => New_Identifier ("bool"));
+
+      --  Declare a global exception for returning from subprograms
+
+      New_Exception
+        (File,
+         New_Result_Exc_Identifier,
+         Why.Types.Why_Empty);
+
       Sprint_Why_Node (+File, Current_File);
       Close_Current_File;
 
