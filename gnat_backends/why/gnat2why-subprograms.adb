@@ -1088,6 +1088,11 @@ package body Gnat2Why.Subprograms is
 
       Func_Binders : constant W_Binder_Array := Compute_Binders;
       Dummy_Node : Node_Id;
+      Pre          : constant W_Predicate_Id :=
+         Compute_Spec_Pred (Name_Precondition, Dummy_Node);
+      Loc_Node     : Node_Id := Empty;
+      Post         : constant W_Predicate_Id :=
+         Compute_Spec_Pred (Name_Postcondition, Loc_Node);
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
@@ -1099,23 +1104,11 @@ package body Gnat2Why.Subprograms is
                             Statements (Handled_Statement_Sequence (Node));
                Why_Stmt  : constant W_Prog_Id :=
                            Why_Expr_Of_Ada_Stmts (Stmts);
-               Pre       : constant W_Predicate_Id :=
-                  Compute_Spec_Pred (Name_Precondition, Dummy_Node);
                Pre_Check : constant W_Prog_Id :=
                   Compute_Spec_Prog (Name_Precondition, Dummy_Node);
                Why_Body  : constant W_Prog_Id := Compute_Context (Why_Stmt);
-               Loc_Node  : Node_Id := Empty;
-               Post      : constant W_Predicate_Id :=
-                  Compute_Spec_Pred (Name_Postcondition, Loc_Node);
                Loc_Post  : constant W_Predicate_Id :=
-                  (if Present (Loc_Node) and then
-                     Get_Kind (+Post) /= W_True_Literal_Pred then
-                      New_Located_Predicate
-                        (Ada_Node => Loc_Node,
-                         Pred     => Post,
-                         Reason   => VC_Postcondition)
-                   else
-                      Post);
+                  New_Located_Predicate (Loc_Node, Post, VC_Postcondition);
             begin
 
                New_Global_Binding
@@ -1137,10 +1130,6 @@ package body Gnat2Why.Subprograms is
 
          when N_Subprogram_Declaration =>
             declare
-               Pre       : constant W_Predicate_Id :=
-                  Compute_Spec_Pred (Name_Precondition, Dummy_Node);
-               Post      : constant W_Predicate_Id :=
-                  Compute_Spec_Pred (Name_Postcondition, Dummy_Node);
                Effects   : constant W_Effects_Id := Compute_Effects;
                Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
                Ret_Type  : constant W_Value_Type_Id :=

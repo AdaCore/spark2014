@@ -249,7 +249,8 @@ package body Why.Gen.Preds is
        Reason   : VC_Kind) return W_Predicate_Id
    is
    begin
-      if Present (Ada_Node) then
+      if Present (Ada_Node)
+         and then Get_Kind (+Pred) /= W_True_Literal_Pred then
          return
             New_Named_Predicate
               (Ada_Node => Ada_Node,
