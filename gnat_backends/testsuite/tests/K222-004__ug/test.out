@@ -1,5 +1,3 @@
 p.adb:6:07: explicit dereference is not in ALFA
-p.adb:18:07: "return" in procedure is not yet implemented in ALFA (any return)
-p.adb:21:13: "return" in the middle of subprogram is not yet implemented in ALFA (any return)
 p.ads:3:08: access type is not in ALFA
 
