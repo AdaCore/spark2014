@@ -935,7 +935,7 @@ package body Gnat2Why.Subprograms is
                             (Any_Type => New_Abstract_Type
                                (Name =>
                                   New_Identifier (Type_Of_Node
-                                    (Entity (Result_Definition (Spec))))));
+                                    (Defining_Entity (Spec)))));
             begin
                R :=
                  New_Binding_Ref
@@ -1169,7 +1169,7 @@ package body Gnat2Why.Subprograms is
                       Args        => Compute_Logic_Args,
                       Return_Type =>
                         +Why_Logic_Type_Of_Ada_Type
-                          (Entity (Result_Definition (Spec))));
+                          (Etype (Defining_Entity (Spec))));
 
                   --  generate axiom of the form
                   --    forall x1 ... xn.
