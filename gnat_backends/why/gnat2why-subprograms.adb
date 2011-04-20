@@ -49,16 +49,13 @@ with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Mutators;    use Why.Atree.Mutators;
 with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Arrays;        use Why.Gen.Arrays;
-with Why.Gen.Arrows;        use Why.Gen.Arrows;
 with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Funcs;         use Why.Gen.Funcs;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Progs;         use Why.Gen.Progs;
 with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Types;
 with Why.Conversions;       use Why.Conversions;
-with Why.Unchecked_Ids;     use Why.Unchecked_Ids;
 
 with Gnat2Why.Decls;        use Gnat2Why.Decls;
 with Gnat2Why.Driver;       use Gnat2Why.Driver;
@@ -776,9 +773,6 @@ package body Gnat2Why.Subprograms is
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
-      function Compute_Arrows (Effects : W_Effects_Id) return W_Arrow_Type_Id;
-      --  Compute the argument types of the generated Why parameter
-
       function Compute_Binder (Arg : Node_Id) return W_Binder_Id;
       --  Compute a single Why function argument from a single Ada function /
       --  procedure argument; all result types are reference types.
@@ -814,49 +808,6 @@ package body Gnat2Why.Subprograms is
       --  Pass the Kind Name_Precondition or Name_Postcondition to decide if
       --  you want the pre- or postcondition.
       --  Also output a suitable location node, if available.
-
-      --------------------
-      -- Compute_Arrows --
-      --------------------
-
-      function Compute_Arrows (Effects : W_Effects_Id)
-         return W_Arrow_Type_Id
-      is
-         Unc : W_Arrow_Type_Unchecked_Id;
-         Res : W_Arrow_Type_Id;
-         Arg : Node_Id;
-         Id  : Node_Id;
-
-      begin
-         if Nkind (Spec) = N_Procedure_Specification then
-            Unc := New_Arrow_Stack (New_Type_Unit, Effects);
-         else
-            Unc :=
-               New_Arrow_Stack
-                  (+Why_Prog_Type_Of_Ada_Type
-                    (Entity (Result_Definition (Spec)), False),
-                   +Duplicate_Any_Node (Id => +Effects));
-         end if;
-
-         if Is_Empty_List (Ada_Binders) then
-            Res := Push_Arg (Arrow    => Unc,
-                             Arg_Type => New_Type_Unit);
-
-         else
-            Arg := Last (Ada_Binders);
-            while Present (Arg) loop
-               Id := Defining_Identifier (Arg);
-               Res := Push_Arg
-                 (Arrow    => Unc,
-                  Name     => New_Identifier (Full_Name (Id)),
-                  Arg_Type => Why_Prog_Type_Of_Ada_Type (Id));
-               Unc := +Res;
-               Prev (Arg);
-            end loop;
-         end if;
-
-         return Res;
-      end Compute_Arrows;
 
       ---------------------
       -- Compute_Binder --
@@ -1092,6 +1043,7 @@ package body Gnat2Why.Subprograms is
              New_Prog_Andb_Then);
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
+      Func_Binders : constant W_Binder_Array := Compute_Binders;
       Dummy_Node : Node_Id;
    begin
       --  Ignore procedures generated for postconditions
@@ -1129,14 +1081,14 @@ package body Gnat2Why.Subprograms is
                New_Global_Binding
                  (File    => File,
                   Name    => New_Pre_Check_Name (Name_Str),
-                  Binders => Compute_Binders,
+                  Binders => Func_Binders,
                   Def     => Pre_Check);
 
                if not Debug.Debug_Flag_Dot_GG then
                   New_Global_Binding
                     (File    => File,
                      Name    => New_Definition_Name (Name_Str),
-                     Binders => Compute_Binders,
+                     Binders => Func_Binders,
                      Pre     => New_Assertion (Pred => Pre),
                      Post    => New_Assertion (Pred => Loc_Post),
                      Def     => Why_Body);
@@ -1151,13 +1103,21 @@ package body Gnat2Why.Subprograms is
                   Compute_Spec_Pred (Name_Postcondition, Dummy_Node);
                Effects   : constant W_Effects_Id := Compute_Effects;
                Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
+               Ret_Type  : constant W_Value_Type_Id :=
+                  (if Nkind (Spec) = N_Function_Specification then
+                    +Why_Logic_Type_Of_Ada_Type
+                       (Entity (Result_Definition (Spec)))
+                  else
+                     New_Type_Unit);
             begin
-               Declare_Parameter
-                 (File   => File,
-                  Name   => New_Identifier (Name_Str),
-                  Arrows => Compute_Arrows (Effects),
-                  Pre    => Pre,
-                  Post   => Post);
+               New_Parameter
+                 (File        => File,
+                  Name        => New_Identifier (Name_Str),
+                  Binders     => Compute_Binders,
+                  Effects     => Effects,
+                  Return_Type => Ret_Type,
+                  Pre         => New_Assertion (Pred => Pre),
+                  Post        => New_Assertion (Pred => Post));
 
                if Nkind (Spec) = N_Function_Specification
                   and then Effect_Is_Empty (Effects)
