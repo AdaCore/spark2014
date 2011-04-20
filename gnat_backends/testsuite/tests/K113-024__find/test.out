@@ -1,6 +1,6 @@
 find.adb:3:24: Proved - range check
-find.adb:5:24: Proved - proof of loop invariant initalization
-find.adb:5:24: Proved - proof of loop invariant preservation
+find.adb:6:10: Proved - proof of loop invariant initalization
+find.adb:6:10: Proved - proof of loop invariant preservation
 find.adb:7:16: Proved - range check
 find.adb:8:20: Proved - range check
 find.ads:5:11: Proved - proof of postcondition

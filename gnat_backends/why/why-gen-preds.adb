@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
 with Gnat2Why.Locs;       use Gnat2Why.Locs;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
@@ -248,11 +249,15 @@ package body Why.Gen.Preds is
        Reason   : VC_Kind) return W_Predicate_Id
    is
    begin
-      return
-         New_Named_Predicate
-           (Ada_Node => Ada_Node,
-            Name     => New_Located_Label (Ada_Node, Reason),
-            Pred     => Pred);
+      if Present (Ada_Node) then
+         return
+            New_Named_Predicate
+              (Ada_Node => Ada_Node,
+               Name     => New_Located_Label (Ada_Node, Reason),
+               Pred     => Pred);
+      else
+         return Pred;
+      end if;
    end New_Located_Predicate;
 
    ----------------

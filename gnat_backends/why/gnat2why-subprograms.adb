@@ -211,6 +211,23 @@ package body Gnat2Why.Subprograms is
    function Why_Term_Binop_Of_Ada_Op (Op : N_Binary_Op) return W_Arith_Op_Id;
    --  Convert an Ada binary operator to a Why term symbol
 
+   function Wrap_Loop
+      (Loop_Body : W_Prog_Id;
+       Condition : W_Prog_Id;
+       Loop_Name : String;
+       Invariant : W_Predicate_Id;
+       Inv_Node  : Node_Id)
+      return W_Prog_Id;
+   --  Given a loop body and condition, generate the expression
+   --  if <condition> then
+   --    try
+   --      loop {inv}
+   --         <loop body>
+   --         if not <condition> then raise <loop_name>;
+   --      end loop
+   --    with <loop_name> -> void
+   --  end if
+
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
    ---------------------------
@@ -1360,11 +1377,7 @@ package body Gnat2Why.Subprograms is
                  Right     => Int_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_Not =>
-            return
-              New_Prefix_Call
-                (Ada_Node => Expr,
-                 Prefix   => New_Op_Not_Prog,
-                 Operand  => Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
+            return New_Prog_Notb (Why_Expr_Of_Ada_Expr (Right_Opnd (Expr)));
 
          when N_Op_And =>
             return
@@ -1725,156 +1738,139 @@ package body Gnat2Why.Subprograms is
             raise Program_Error;
 
          when N_Loop_Statement =>
-            --  In general, we wrap loops in a try .. with Statement as
-            --  follows:
+            --  We have to take into consideration
+            --    * We simulate loop *assertions* by Hoare loop *invariants*;
+            --      A Hoare invariant must be initially true whether we enter
+            --      the loop or not; it must also be true at the exit of the
+            --      loop.
+            --      This means that we have to protect the loop to avoid
+            --      encountering it if the condition is false; also we exit
+            --      the loop at the end instead of the beginning) when the
+            --      condition becomes false:
+            --      if cond then
+            --          loop
+            --             <loop body>
+            --             exit when not cond
+            --          end loop
+            --       end if
+            --    * We need to model exit statements; we use Why exceptions
+            --      for this:
+            --       (at toplevel)
+            --         exception Loop_Name
+            --       (in statement sequence)
+            --         try
+            --           loop
+            --             <loop_body>
+            --           done
+            --         with Loop_Name -> void
             --
-            --  (at toplevel)
-            --    exception Loop_Name
-            --  (in statement sequence)
-            --    try
-            --      loop
-            --        <loop_body>
-            --      done
-            --    with Loop_Name -> void
-            --
-            --  The exception is necessary to deal with N_Exit_Statements (see
-            --  also the corresponding case). The exception has to be declared
-            --  at the toplevel.
+            --     The exception is necessary to deal with N_Exit_Statements
+            --     (see also the corresponding case). The exception has to be
+            --     declared at the toplevel.
             declare
                Loop_Body    : constant List_Id := Statements (Stmt);
                Split_Node   : Node_Id;
                Invariant    : W_Predicate_Id;
                Loop_Content : W_Prog_Id;
                Scheme       : constant Node_Id := Iteration_Scheme (Stmt);
-               Loop_Entity  : constant Entity_Id :=
-                  Entity (Identifier (Stmt));
+               Loop_Entity  : constant Entity_Id := Entity (Identifier (Stmt));
                Loop_Name    : constant String := Full_Name (Loop_Entity);
-               Entire_Loop  : W_Prog_Id;
             begin
-               --  If the loop has no exit statement, we can skip the
-               --  declaration of the exception.
-               if Has_Exit (Loop_Entity) then
-                  New_Exception
-                     (Current_Why_Output_File,
-                      New_Identifier (Loop_Name),
-                      Why.Types.Why_Empty);
-               end if;
-
                Compute_Invariant (Loop_Body, Invariant, Split_Node);
                Loop_Content :=
                   Why_Expr_Of_Ada_Stmts
                     (Stmts      => Loop_Body,
                      Start_from => Split_Node);
-
-               --  We now have computed the loop invariant and the loop body.
-               --  Depending on the kind of the loop (while, for, simple
-               --  loop), we build a different loop in Why
                if Nkind (Scheme) = N_Empty then
                   --  No iteration scheme, we have a simple loop. Generate
-                  --    while true do { <inv> } <body> done
-                  declare
-                     Loop_Assert : constant W_Assertion_Id :=
-                        (if Present (Split_Node) then
-                           New_Located_Assertion
-                              (Ada_Node => Split_Node,
-                               Pred     => Invariant,
-                               Reason   => VC_Loop_Invariant)
-                         else
-                            New_Assertion (Pred => Invariant));
-                  begin
-                     Entire_Loop :=
-                       New_While_Loop
-                         (Ada_Node     => Stmt,
-                          Condition    => New_True_Literal_Prog,
-                          Annotation   =>
-                            New_Loop_Annot (Invariant => Loop_Assert),
-                          Loop_Content => Loop_Content);
-                  end;
+                  --  condition "true".
+                  return
+                     Wrap_Loop
+                        (Loop_Body => Loop_Content,
+                         Condition    => New_True_Literal_Prog,
+                         Loop_Name    => Loop_Name,
+                         Invariant    => Invariant,
+                         Inv_Node     => Split_Node);
                elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
                   and then
                      Nkind (Loop_Parameter_Specification (Scheme)) = N_Empty
                then
-                  --  We are in a While loop. Generate
-                  --    while <Cond> do { <inv> } <body> done
-                  declare
-                     Loop_Assert : constant W_Assertion_Id :=
-                        (if Present (Split_Node) then
-                           New_Located_Assertion
-                              (Ada_Node => Split_Node,
-                               Pred     => Invariant,
-                               Reason   => VC_Loop_Invariant)
-                         else
-                            New_Assertion (Pred => Invariant));
-                  begin
-                     Entire_Loop :=
-                       New_While_Loop
-                         (Ada_Node     => Stmt,
-                          Condition    =>
-                            Why_Expr_Of_Ada_Expr (Condition (Scheme)),
-                          Annotation   =>
-                            New_Loop_Annot (Invariant => Loop_Assert),
-                          Loop_Content => Loop_Content);
-                  end;
+                  --  A while loop
+                  return
+                     Wrap_Loop
+                        (Loop_Body => Loop_Content,
+                         Condition    =>
+                           Why_Expr_Of_Ada_Expr (Condition (Scheme)),
+                         Loop_Name    => Loop_Name,
+                         Invariant    => Invariant,
+                         Inv_Node     => Split_Node);
                elsif Nkind (Condition (Scheme)) = N_Empty then
-                  --  We are in a For loop. Generate
-                  --    let low = <low_value> in
-                  --    let high = <high_value> in
-                  --    <for-loop>
-                  --  ??? Only increasing loops for now
+                  --  A for loop
                   declare
                      LParam_Spec : constant Node_Id :=
                         Loop_Parameter_Specification (Scheme);
-                     Low         : constant Node_Id :=
+                     Loop_Range : constant Node_Id :=
+                        Get_Range (Discrete_Subtype_Definition (LParam_Spec));
+                     Loop_Index  : constant String :=
+                        Full_Name (Defining_Identifier (LParam_Spec));
+                     Index_Deref : constant W_Prog_Id :=
+                        New_Deref
+                          (Ada_Node => Stmt,
+                           Ref      => New_Identifier (Loop_Index));
+                     Addition : constant W_Prog_Id :=
+                        New_Infix_Call
+                           (Ada_Node => Stmt,
+                            Infix    => New_Op_Add_Prog,
+                            Left     => Index_Deref,
+                            Right    =>
+                              New_Prog_Constant
+                                (Ada_Node => Stmt,
+                                 Def      =>
+                                   New_Integer_Constant
+                                     (Ada_Node => Stmt,
+                                     Value     => Uint_1)));
+                     Incr_Stmt : constant W_Prog_Id :=
+                        New_Assignment
+                           (Ada_Node => Stmt,
+                            Name     => New_Identifier (Loop_Index),
+                            Value    => Addition);
+                     Enriched_Inv : constant W_Predicate_Id :=
+                        New_Simpl_Conjunction
+                           (Left  => Invariant,
+                            Right =>
+                              Range_Predicate
+                                 (Loop_Range,
+                                  New_Term (Loop_Index)));
+                     --  We have enriched the invariant, so even if there was
+                     --  none at the beginning, we need to put a location here.
+                     Inv_Node : constant Node_Id :=
+                        (if Present (Split_Node) then Split_Node
+                         else Stmt);
+                     Entire_Loop : constant W_Prog_Id :=
+                        Wrap_Loop
+                           (Loop_Body    => Sequence (Loop_Content, Incr_Stmt),
+                            Condition    =>
+                              Range_Prog
+                                (Loop_Range,
+                                 +Duplicate_Any_Node (Id => +Index_Deref)),
+                            Loop_Name    => Loop_Name,
+                            Invariant    => Enriched_Inv,
+                            Inv_Node     => Inv_Node);
+                     Low : constant Node_Id :=
                         Low_Bound
                           (Get_Range
                             (Discrete_Subtype_Definition (LParam_Spec)));
-                     High        : constant Node_Id :=
-                        High_Bound
-                          (Get_Range
-                            (Discrete_Subtype_Definition (LParam_Spec)));
-                     Loop_Index  : constant String :=
-                        Full_Name (Defining_Identifier (LParam_Spec));
-                     Low_Name    : constant String :=
-                        Loop_Name & "___low";
-                     High_Name    : constant String :=
-                        Loop_Name & "___high";
                   begin
-                     Entire_Loop :=
-                        New_Binding_Prog
-                          (Name => New_Identifier (Low_Name),
-                           Def  => Int_Expr_Of_Ada_Expr (Low),
-                           Context =>
-                             New_Binding_Prog
-                               (Name => New_Identifier (High_Name),
-                                Def  => Int_Expr_Of_Ada_Expr (High),
-                                Context =>
-                                   New_For_Loop
-                                   (Ada_Node  => Stmt,
-                                   Loop_Index => New_Identifier (Loop_Index),
-                                   Low        => New_Identifier (Low_Name),
-                                   High       => New_Identifier (High_Name),
-                                   Invariant  => Invariant,
-                                   Loop_Body  => Loop_Content)));
+                     return
+                        New_Binding_Ref
+                           (Name    => New_Identifier (Loop_Index),
+                            Def     => Int_Expr_Of_Ada_Expr (Low),
+                            Context => Entire_Loop);
                   end;
                else
                   --  Some other kind of loop
                   raise Not_Implemented;
                end if;
-               if Has_Exit (Loop_Entity) then
-                  return
-                     New_Try_Block
-                       (Ada_Node => Stmt,
-                        Prog     => Entire_Loop,
-                        Handler  =>
-                           (1 =>
-                              New_Handler
-                                (Ada_Node => Stmt,
-                                 Name     => New_Identifier (Loop_Name),
-                                 Def      => New_Void)));
-               else
-                  return Entire_Loop;
-               end if;
-
             end;
 
          when N_Exit_Statement =>
@@ -2489,5 +2485,51 @@ package body Gnat2Why.Subprograms is
    begin
       return Why_Term_Of_Ada_Expr (Expr, Type_Of_Node (Expr));
    end Why_Term_Of_Ada_Expr;
+
+   function Wrap_Loop
+      (Loop_Body : W_Prog_Id;
+       Condition : W_Prog_Id;
+       Loop_Name : String;
+       Invariant : W_Predicate_Id;
+       Inv_Node  : Node_Id)
+      return W_Prog_Id
+   is
+      Entire_Body : constant W_Prog_Id :=
+        Sequence
+          (Loop_Body,
+            New_Conditional_Prog
+               (Condition =>
+                  New_Prog_Notb (+Duplicate_Any_Node (Id => +Condition)),
+                Then_Part =>
+                  New_Raise_Statement (Name => New_Identifier (Loop_Name))));
+      Loop_Stmt   : constant W_Prog_Id :=
+         New_While_Loop
+            (Condition   => New_True_Literal_Prog,
+             Annotation  =>
+               New_Loop_Annot
+                  (Invariant =>
+                     New_Located_Assertion
+                        (Ada_Node => Inv_Node,
+                         Pred     => Invariant,
+                         Reason   => VC_Loop_Invariant)),
+             Loop_Content => Entire_Body);
+   begin
+      New_Exception
+         (Current_Why_Output_File,
+          New_Identifier (Loop_Name),
+          Why.Types.Why_Empty);
+
+      return
+         New_Conditional_Prog
+           (Condition => Condition,
+            Then_Part =>
+              New_Try_Block
+                (Prog     => Loop_Stmt,
+                 Handler  =>
+                   (1 =>
+                      New_Handler
+                        (Name     => New_Identifier (Loop_Name),
+                         Def      => New_Void))));
+   end Wrap_Loop;
 
 end Gnat2Why.Subprograms;

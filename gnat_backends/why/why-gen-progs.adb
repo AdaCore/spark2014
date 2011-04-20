@@ -406,6 +406,19 @@ package body Why.Gen.Progs is
 
    end New_Prog_Boolean_Cmp;
 
+   -------------------
+   -- New_Prog_Notb --
+   -------------------
+
+   function New_Prog_Notb (Left : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      return
+        New_Prefix_Call
+          (Prefix   => New_Op_Not_Prog,
+           Operand  => Left);
+   end New_Prog_Notb;
+
    ------------------
    -- New_Prog_Orb --
    ------------------
