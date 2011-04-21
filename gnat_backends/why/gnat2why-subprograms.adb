@@ -778,36 +778,26 @@ package body Gnat2Why.Subprograms is
 
       function Compute_Binders return W_Binder_Array
       is
+         Cur_Binder : Node_Id := First (Ada_Binders);
+         Cnt        : Integer := 1;
+         Result     : W_Binder_Array :=
+            (1 .. Integer (Arg_Length) => <>);
       begin
-         if Arg_Length = 0 then
-            return
-              (1 => New_Binder
-                      (Names    => (1 => New_Identifier ("__void_param")),
-                       Arg_Type => New_Type_Unit));
-         else
+         while Present (Cur_Binder) loop
             declare
-               Cur_Binder : Node_Id := First (Ada_Binders);
-               Cnt        : Integer := 1;
-               Result     : W_Binder_Array :=
-                  (1 .. Integer (Arg_Length) => <>);
+               Id : constant Node_Id :=
+                  Defining_Identifier (Cur_Binder);
             begin
-               while Present (Cur_Binder) loop
-                  declare
-                     Id : constant Node_Id :=
-                        Defining_Identifier (Cur_Binder);
-                  begin
-                     Result (Cnt) :=
-                       New_Binder
-                         (Ada_Node => Cur_Binder,
-                          Names    => (1 => New_Identifier (Full_Name (Id))),
-                          Arg_Type => +Why_Prog_Type_Of_Ada_Type (Id));
-                     Next (Cur_Binder);
-                     Cnt := Cnt + 1;
-                  end;
-               end loop;
-               return Result;
+               Result (Cnt) :=
+                 New_Binder
+                   (Ada_Node => Cur_Binder,
+                    Names    => (1 => New_Identifier (Full_Name (Id))),
+                    Arg_Type => +Why_Prog_Type_Of_Ada_Type (Id));
+               Next (Cur_Binder);
+               Cnt := Cnt + 1;
             end;
-         end if;
+         end loop;
+         return Result;
       end Compute_Binders;
 
       ---------------------
@@ -1042,6 +1032,14 @@ package body Gnat2Why.Subprograms is
              New_Prog_Andb_Then);
 
       Func_Binders : constant W_Binder_Array := Compute_Binders;
+      Ext_Binders  : constant W_Binder_Array :=
+         (if Arg_Length = 0 then
+            (1 =>
+               New_Binder
+                 (Names => (1 => New_Identifier ("__void_param")),
+                  Arg_Type => New_Type_Unit))
+          else
+            Func_Binders);
       Dummy_Node : Node_Id;
       Pre          : constant W_Predicate_Id :=
          Compute_Spec_Pred (Name_Precondition, Dummy_Node);
@@ -1058,7 +1056,7 @@ package body Gnat2Why.Subprograms is
             New_Global_Binding
               (File    => File,
                Name    => New_Pre_Check_Name (Name_Str),
-               Binders => Func_Binders,
+               Binders => Ext_Binders,
                Def     =>
                   Compute_Spec_Prog (Name_Precondition, Dummy_Node));
 
@@ -1066,7 +1064,7 @@ package body Gnat2Why.Subprograms is
                New_Global_Binding
                  (File    => File,
                   Name    => New_Definition_Name (Name_Str),
-                  Binders => Func_Binders,
+                  Binders => Ext_Binders,
                   Pre     => New_Assertion (Pred => Pre),
                   Post    =>
                      New_Assertion
@@ -1095,7 +1093,7 @@ package body Gnat2Why.Subprograms is
                New_Parameter
                  (File        => File,
                   Name        => New_Identifier (Name_Str),
-                  Binders     => Func_Binders,
+                  Binders     => Ext_Binders,
                   Effects     => Effects,
                   Return_Type => Ret_Type,
                   Pre         => New_Assertion (Pred => Pre),

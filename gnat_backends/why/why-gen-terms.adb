@@ -146,9 +146,13 @@ package body Why.Gen.Terms is
    --  Start of processing for New_Call_To_Logic
 
    begin
-      Operation_Set_Name (Operation, Name);
-      Build_Call (Binders);
-      return +Operation;
+      if Binders'Length = 0 then
+         return New_Term_Identifier (Name => Name);
+      else
+         Operation_Set_Name (Operation, Name);
+         Build_Call (Binders);
+         return +Operation;
+      end if;
    end New_Call_To_Logic;
 
    -------------
