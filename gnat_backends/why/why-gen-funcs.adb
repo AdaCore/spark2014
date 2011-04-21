@@ -24,9 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Why.Conversions;     use Why.Conversions;
-with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
 with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
 
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -79,45 +77,9 @@ package body Why.Gen.Funcs is
           Effects     => New_Effects);
    end Declare_Logic_And_Parameters;
 
-   -----------------------
-   -- New_Call_To_Logic --
-   -----------------------
-
-   function New_Call_To_Logic
-     (Name   : W_Identifier_Id;
-      Binders : W_Binder_Array)
-     return W_Term_Id
-   is
-      Operation : constant W_Operation_Unchecked_Id :=
-                    New_Unchecked_Operation;
-
-      procedure Append_Arg
-         (Name : W_Identifier_Id;
-          Ty : W_Simple_Value_Type_Id);
-
-      ----------------
-      -- Append_Arg --
-      ----------------
-
-      procedure Append_Arg
-         (Name : W_Identifier_Id;
-          Ty : W_Simple_Value_Type_Id) is
-      begin
-         pragma Unreferenced (Ty);
-         Operation_Append_To_Parameters
-           (Operation,
-            New_Term_Identifier (Name => Name));
-      end Append_Arg;
-
-      procedure Build_Call is new Iter_Binder_Array (Append_Arg);
-
-   --  Start of processing for New_Call_To_Logic
-
-   begin
-      Operation_Set_Name (Operation, Name);
-      Build_Call (Binders);
-      return +Operation;
-   end New_Call_To_Logic;
+   ------------------------------------
+   -- New_Boolean_Equality_Parameter --
+   ------------------------------------
 
    procedure New_Boolean_Equality_Parameter
       (File          : W_File_Id;

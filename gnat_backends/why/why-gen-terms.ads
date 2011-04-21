@@ -42,6 +42,19 @@ package Why.Gen.Terms is
    function New_Andb (Left, Right : W_Term_Id) return W_Term_Id;
    --  Build a boolean conjunction.
 
+   function New_Call_To_Logic
+     (Name    : W_Identifier_Id;
+      Binders : W_Binder_Array)
+     return W_Term_Id;
+   --  Create a call to an operation in the logical space with parameters
+   --  taken from Binders. Typically, from:
+   --
+   --     (x1 : type1) (x2 : type2)
+   --
+   --  ...it produces:
+   --
+   --     operation_name (x1, x2)
+
    function New_Old_Ident (Ident : W_Identifier_Id) return W_Term_Id;
    --  Build an identifier with "old" label
 

@@ -1117,38 +1117,15 @@ package body Gnat2Why.Subprograms is
                   --    forall x1 ... xn.
                   --       (pre -> logic__f (x1 .. xn)) = expr
                   declare
-                     function Compute_Logic_Call_Args return W_Term_Array;
-
-                     function Compute_Logic_Call_Args return W_Term_Array is
-                        Result : W_Term_Array :=
-                           (1 .. Integer (Arg_Length) => <>);
-                        Arg    : Node_Id := First (Ada_Binders);
-                        Cnt    : Integer := 1;
-                     begin
-                        while Present (Arg) loop
-                           Result (Cnt) :=
-                              New_Term
-                                 (Full_Name (Defining_Identifier (Arg)));
-                           Next (Arg);
-                           Cnt := Cnt + 1;
-                        end loop;
-                        return Result;
-                     end Compute_Logic_Call_Args;
-
-                     Logic_Call : constant W_Term_Id :=
-                        (if Arg_Length > 0 then
-                            New_Operation
-                              (Name => Logic_Func_Name (Name_Str),
-                               Parameters => Compute_Logic_Call_Args)
-                         else
-                            New_Term_Identifier
-                               (Name => Logic_Func_Name (Name_Str)));
                      Ax_Body : W_Predicate_Id :=
                           New_Implication
                             (Left  => +Duplicate_Any_Node (Id => +Pre),
                              Right =>
                                New_Equal
-                                 (Left => Logic_Call,
+                                 (Left =>
+                                    New_Call_To_Logic
+                                       (Name => Logic_Func_Name (Name_Str),
+                                        Binders => Func_Binders),
                                   Right =>
                                     Why_Term_Of_Ada_Expr
                                        (Expression (Orig_Node))));
