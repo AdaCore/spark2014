@@ -1,3 +1,0 @@
-unconstr.adb:5:19: Proved - array bounds check
-unconstr.adb:5:22: Proved - range check
-unconstr.ads:9:33: Proved - proof of postcondition

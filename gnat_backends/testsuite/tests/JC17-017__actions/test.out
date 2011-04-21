@@ -1,0 +1,15 @@
+p.adb:22:20: range check failed
+p.adb:23:22: Proved - range check
+p.adb:24:22: Proved - range check
+p.adb:26:16: range check failed
+p.adb:27:18: Proved - range check
+p.adb:28:18: Proved - range check
+p.adb:30:18: range check failed
+p.adb:31:20: Proved - range check
+p.adb:32:20: Proved - range check
+p.adb:34:18: Proved - division by zero
+p.adb:34:18: range check failed
+p.adb:35:20: Proved - division by zero
+p.adb:35:20: Proved - range check
+p.adb:36:20: Proved - division by zero
+p.adb:36:20: Proved - range check
