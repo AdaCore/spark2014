@@ -28,6 +28,7 @@ with Ada.Environment_Variables;
 with Altergo;           use Altergo;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.Expect;       use GNAT.Expect;
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
 with GNAT.Strings;
 
@@ -74,10 +75,16 @@ procedure Gnatprove is
    --  example: if File is "example.adb", we call why on file
    --  "example__package.why".
 
+   function Get_Ada_Include return String;
+   --  Return the Ada include directory, using "gnatls".
+
    generic
       with procedure Action (Proj : Project_Tree; File : Virtual_File);
    procedure Iter_Project_Source_Files (Proj : Project_Tree);
    --  Iterate over all source files of a project.
+
+   procedure Make_Standard_Package (Proj : Project_Tree);
+   --  Produce the file "_standard.why".
 
    -------------------
    -- Call_Gnatmake --
@@ -170,6 +177,25 @@ procedure Gnatprove is
              6 => new String'(Base & Main_Suffix & ".why"))));
    end Call_Why;
 
+   ---------------------
+   -- Get_Ada_Include --
+   ---------------------
+
+   function Get_Ada_Include return String is
+      D : Process_Descriptor;
+      A : Expect_Match;
+   begin
+      GNAT.Expect.Non_Blocking_Spawn
+        (Descriptor => D,
+         Command    => "gnatls",
+         Args       => (1 => new String'("-v")));
+      GNAT.Expect.Expect
+        (Descriptor => D,
+         Result => A,
+         Regexp => "[^ \n].*adainclude[^\n ]*");
+      return Expect_Out_Match (D);
+   end Get_Ada_Include;
+
    -------------------------------
    -- Iter_Project_Source_Files --
    -------------------------------
@@ -204,6 +230,20 @@ procedure Gnatprove is
          end;
       end loop;
    end Iter_Project_Source_Files;
+
+   procedure Make_Standard_Package (Proj : Project_Tree)
+   is
+      Ada_Ads : constant String :=
+         Ada.Directories.Compose (Get_Ada_Include, "ada.ads");
+   begin
+      pragma Unreferenced (Proj);
+      Call_Exit_On_Failure
+        (Command   => "gnat2why",
+         Arguments =>
+            (1 => new String'("-gnatd.H"),
+             2 => new String'("-gnatg"),
+             3 => new String'(Ada_Ads)));
+   end Make_Standard_Package;
 
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
@@ -264,6 +304,7 @@ begin
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
 
+   Make_Standard_Package (Tree);
    declare
       Src_Dirs      : constant File_Array :=
          Source_Dirs (Proj_Type, Recursive => True);
