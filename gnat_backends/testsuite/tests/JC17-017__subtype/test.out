@@ -1,28 +1,10 @@
---- expected
-+++ output
-@@ -1,15 +1,10 @@
--p.adb:22:20: range check failed
--p.adb:23:22: Proved - range check
--p.adb:24:22: Proved - range check
--p.adb:26:16: range check failed
--p.adb:27:18: Proved - range check
--p.adb:28:18: Proved - range check
--p.adb:30:18: range check failed
--p.adb:31:20: Proved - range check
--p.adb:32:20: Proved - range check
--p.adb:34:18: Proved - division by zero
--p.adb:34:18: range check failed
--p.adb:35:20: Proved - division by zero
--p.adb:35:20: Proved - range check
--p.adb:36:20: Proved - division by zero
--p.adb:36:20: Proved - range check
-+p.adb:16:34: Proved - range check
-+p.adb:16:34: range check failed
-+p.adb:16:38: Proved - proof of loop invariant initalization
-+p.adb:16:38: Proved - proof of loop invariant preservation
-+p.adb:17:28: range check failed
-+p.adb:33:37: Proved - range check
-+p.adb:33:37: range check failed
-+p.adb:33:41: Proved - proof of loop invariant initalization
-+p.adb:33:41: Proved - proof of loop invariant preservation
-+p.adb:34:25: range check failed
+p.adb:16:34: Proved - range check
+p.adb:16:34: range check failed
+p.adb:16:38: Proved - proof of loop invariant initalization
+p.adb:16:38: Proved - proof of loop invariant preservation
+p.adb:17:28: range check failed
+p.adb:33:37: Proved - range check
+p.adb:33:37: range check failed
+p.adb:33:41: Proved - proof of loop invariant initalization
+p.adb:33:41: Proved - proof of loop invariant preservation
+p.adb:34:25: range check failed
