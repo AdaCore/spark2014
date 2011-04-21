@@ -143,6 +143,7 @@ package body ALFA.Definition is
    --    . a package body
    --    . a subprogram spec (even when treating the subprogram body)
    --    . a variable (when treating initializing expression)
+   --    . a type (when treating a type declaration)
    --    . null (for a logical scope)
 
    type Scope_Record is record
@@ -166,7 +167,6 @@ package body ALFA.Definition is
    --  Return the top-most scope that is not null
 
    function Previous_Scope return Scope_Record;
-   pragma Unreferenced (Previous_Scope);
    --  Return the top-most scope that is not null after skipping the current
    --  scope.
 
@@ -283,6 +283,7 @@ package body ALFA.Definition is
    procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Type_Conversion             (N : Node_Id);
    procedure Mark_Type_Definition             (Id : Entity_Id; N : Node_Id);
+   procedure Mark_Unary_Op                    (N : Node_Id);
 
    ---------------------
    -- Body_Is_In_ALFA --
@@ -470,6 +471,7 @@ package body ALFA.Definition is
             Mark_List (Alternatives (N));
 
          when N_Case_Expression_Alternative =>
+            pragma Assert (No (Actions (N)));
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
@@ -570,7 +572,9 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("iterator specification", N, V_Container);
 
          when N_Loop_Statement =>
-            Mark_Iteration_Scheme (Iteration_Scheme (N));
+            if Present (Iteration_Scheme (N)) then
+               Mark_Iteration_Scheme (Iteration_Scheme (N));
+            end if;
             Mark_List (Statements (N));
 
          when N_Null =>
@@ -583,7 +587,7 @@ package body ALFA.Definition is
             Mark_Object_Renaming_Declaration (N);
 
          when N_Unary_Op =>
-            Mark (Right_Opnd (N));
+            Mark_Unary_Op (N);
 
          when N_Package_Body =>
             Mark_Package_Body (N);
@@ -630,6 +634,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("reference", N);
 
          when N_Short_Circuit =>
+            pragma Assert (No (Actions (N)));
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
 
@@ -885,6 +890,9 @@ package body ALFA.Definition is
       Else_Expr : Node_Id;
 
    begin
+      pragma Assert (No (Then_Actions (N)));
+      pragma Assert (No (Else_Actions (N)));
+
       Else_Expr := Next (Then_Expr);
 
       Mark (Condition);
@@ -914,7 +922,7 @@ package body ALFA.Definition is
 
    procedure Mark_Function_Specification (N : Node_Id) is
       Id       : constant Entity_Id := Unique_Defining_Entity (N);
-      Params   : constant List_Id := Parameter_Specifications (N);
+      Params   : constant List_Id   := Parameter_Specifications (N);
       Param    : Node_Id;
       Param_Id : Entity_Id;
 
@@ -994,11 +1002,7 @@ package body ALFA.Definition is
             while Present (Part) loop
                Mark (Condition (Part));
                Mark_List (Then_Statements (Part));
-
-               if Present (Condition_Actions (Part)) then
-                  raise Program_Error;  --  TO DO
-               end if;
-
+               pragma Assert (No (Condition_Actions (Part)));
                Next (Part);
             end loop;
          end;
@@ -1009,64 +1013,18 @@ package body ALFA.Definition is
       end if;
    end Mark_If_Statement;
 
-   ---------------------
-   -- Mark_Violations --
-   ---------------------
-
-   procedure Mark_Violations (Scop : Scope_Record) is
-      Ent : constant Entity_Id := Scop.Entity;
-
-   begin
-      case Ekind (Ent) is
-
-         --  Detect violation in initialization of package-level object
-
-         when Object_Kind =>
-            if Scop.Is_Body then
-               Mark_Body_Violations (Ent);
-            else
-               Mark_Spec_Violations (Ent);
-            end if;
-
-         when Type_Kind =>
-            pragma Assert (not Scop.Is_Body);
-            Mark_Spec_Violations (Ent);
-
-         when E_Package | E_Package_Body =>
-            null;
-
-         --  Detect violation in subprogram declarations and subprogram bodies
-
-         --  If the non-ALFA construct is in a precondition or postcondition,
-         --  then mark the subprogram as not in ALFA, because neither the
-         --  subprogram nor its callers can be proved formally.
-         --
-         --  If the non-ALFA construct is in a regular piece of code inside
-         --  the body of the subprogram, then mark the subprogram body as not
-         --  in ALFA, because the subprogram cannot be proved formally, but its
-         --  callers could.
-
-         when Subprogram_Kind =>
-            if Scop.Is_Body then
-               Mark_Body_Violations (Ent);
-            else
-               Mark_Spec_Violations (Ent);
-            end if;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Mark_Violations;
-
    ---------------------------
    -- Mark_Iteration_Scheme --
    ---------------------------
 
    procedure Mark_Iteration_Scheme (N : Node_Id) is
    begin
-      if Present (N)  --  not an infinite loop
-        and then Present (Loop_Parameter_Specification (N))
-      then
+      pragma Assert (No (Condition_Actions (N)));
+
+      if Present (Condition (N)) then
+         Mark (Condition (N));
+
+      elsif Present (Loop_Parameter_Specification (N)) then
          declare
             LP : constant Node_Id   := Loop_Parameter_Specification (N);
             Id : constant Entity_Id := Defining_Identifier (LP);
@@ -1080,6 +1038,10 @@ package body ALFA.Definition is
                  ("type of loop index", LP, From => Etype (Id));
             end if;
          end;
+
+      else
+         pragma Assert (Present (Iterator_Specification (N)));
+         Mark_Non_ALFA ("loop with iterator", N, V_Implem);
       end if;
    end Mark_Iteration_Scheme;
 
@@ -1134,6 +1096,9 @@ package body ALFA.Definition is
       end if;
 
       Mark_Scope (Current_Scope);
+      if Ekind (Current_Scope.Entity) in Type_Kind then
+         Mark_Scope (Previous_Scope);
+      end if;
    end Mark_Non_ALFA;
 
    procedure Mark_Non_ALFA
@@ -1184,6 +1149,9 @@ package body ALFA.Definition is
       end if;
 
       Mark_Scope (Current_Scope);
+      if Ekind (Current_Scope.Entity) in Type_Kind then
+         Mark_Scope (Previous_Scope);
+      end if;
    end Mark_Non_ALFA;
 
    -------------------------------
@@ -1691,6 +1659,8 @@ package body ALFA.Definition is
 
       if not Is_In_ALFA (T) then
          Mark_Non_ALFA ("base type", N, From => T);
+      elsif Is_Array_Type (T) then
+         Mark_Non_ALFA ("array subtype", N, V_Implem);
       end if;
 
       if Nkind (N) = N_Subtype_Indication then
@@ -1699,7 +1669,7 @@ package body ALFA.Definition is
          case Nkind (Cstr) is
             when N_Range_Constraint =>
                if not Is_Static_Range (Range_Expression (Cstr)) then
-                  Mark_Non_ALFA ("non-static range", N);
+                  Mark_Non_ALFA ("non-static range", N, V_Implem);
                end if;
 
             when N_Index_Or_Discriminant_Constraint =>
@@ -1721,7 +1691,7 @@ package body ALFA.Definition is
                      when N_Range =>
                         if Comes_From_Source (N) and then
                            not Is_Static_Range (Cstr) then
-                           Mark_Non_ALFA ("non-static range", N);
+                           Mark_Non_ALFA ("non-static range", N, V_Implem);
                         end if;
 
                      when N_Discriminant_Association =>
@@ -1810,7 +1780,7 @@ package body ALFA.Definition is
                  and then not Has_Static_Array_Bounds (Id)
                then
                   Mark_Non_ALFA
-                    ("array type with non-static bounds", N);
+                    ("array type with non-static bounds", N, V_Implem);
                end if;
             end;
 
@@ -1849,6 +1819,79 @@ package body ALFA.Definition is
             raise Program_Error;
       end case;
    end Mark_Type_Definition;
+
+   -------------------
+   -- Mark_Unary_Op --
+   -------------------
+
+   procedure Mark_Unary_Op (N : Node_Id) is
+      T : constant Entity_Id := Etype (Right_Opnd (N));
+
+   begin
+      case N_Unary_Op'(Nkind (N)) is
+         when N_Op_Not =>
+            if Is_Array_Type (T) then
+               Mark_Non_ALFA ("not operator on array type", N);
+            end if;
+
+         when N_Op_Abs =>
+            Mark_Non_ALFA ("abs operator", N, V_Implem);
+
+         when N_Op_Plus | N_Op_Minus =>
+            null;
+      end case;
+
+      Mark (Right_Opnd (N));
+   end Mark_Unary_Op;
+
+   ---------------------
+   -- Mark_Violations --
+   ---------------------
+
+   procedure Mark_Violations (Scop : Scope_Record) is
+      Ent : constant Entity_Id := Scop.Entity;
+
+   begin
+      case Ekind (Ent) is
+
+         --  Detect violation in initialization of package-level object
+
+         when Object_Kind =>
+            if Scop.Is_Body then
+               Mark_Body_Violations (Ent);
+            else
+               Mark_Spec_Violations (Ent);
+            end if;
+
+         when Type_Kind =>
+            pragma Assert (not Scop.Is_Body);
+            Mark_Spec_Violations (Ent);
+
+         when E_Package | E_Package_Body =>
+            null;
+
+         --  Detect violation in subprogram declarations and subprogram bodies
+
+         --  If the non-ALFA construct is in a precondition or postcondition,
+         --  then mark the subprogram as not in ALFA, because neither the
+         --  subprogram nor its callers can be proved formally.
+         --
+         --  If the non-ALFA construct is in a regular piece of code inside
+         --  the body of the subprogram, then mark the subprogram body as not
+         --  in ALFA, because the subprogram cannot be proved formally, but its
+         --  callers could.
+
+         when Subprogram_Kind =>
+            if Scop.Is_Body then
+               Mark_Body_Violations (Ent);
+            else
+               Mark_Spec_Violations (Ent);
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Mark_Violations;
 
    ---------------------
    -- Pop_Logic_Scope --
