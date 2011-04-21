@@ -30,6 +30,19 @@ package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
    --  in the program space and in the logic space.
 
+   function New_Call_To_Logic
+     (Name    : W_Identifier_Id;
+      Binders : W_Binder_Array)
+     return W_Term_Id;
+   --  Create a call to an operation in the logical space with parameters
+   --  taken from Binders. Typically, from:
+   --
+   --     (x1 : type1) (x2 : type2)
+   --
+   --  ...it produces:
+   --
+   --     operation_name (x1, x2)
+
    procedure Declare_Logic_And_Parameters
      (File        : W_File_Id;
       Name        : W_Identifier_Id;
@@ -39,14 +52,14 @@ package Why.Gen.Funcs is
       Post        : W_Predicate_OId := Why_Empty);
    --  Create a logic declaration and it corresponding declaration in
    --  the program space (safe and default) and append it to File. Name
-   --  is the name of the logic function declaration, Arrows is the
+   --  is the name of the logic function declaration, Binders is the
    --  spec of the default program declaration; all params will be merged
    --  as is into the resulting syntax tree.
    --
    --  If no postcondition is given, one will be generated that will use the
-   --  logic function. e.g. if Name is "my_func" and Arrows is:
+   --  logic function. e.g. if Name is "my_func" and Binders is:
    --
-   --     x1 : type1 -> x2 : type2 -> {} type3 {}
+   --     (x1 : type1) -> (x2 : type2)
    --
    --  ...then the logic declaration will be:
    --

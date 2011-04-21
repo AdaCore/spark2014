@@ -84,16 +84,10 @@ package body Gnat2Why.Decls is
      (File : W_File_Id;
       Decl : Node_Id)
    is
-      --  For global object declarations we distinguish:
-      --  * Really global variables: we can use the name of the
-      --    variable as-is, also we can transform it into a logic +
-      --    axiom if it is constant
-      --  * Lifted local variables: we need to prefix the variable
-      --    name with a scope, and we always translate to reference
-      --    parameters
       Obj_Id : constant Node_Id := Defining_Identifier (Decl);
       Name   : constant String := Full_Name (Obj_Id);
    begin
+      --  If the object is mutable, we generate a global ref
       if Is_Mutable (Obj_Id) then
          New_Global_Ref_Declaration
             (File     => File,
@@ -101,8 +95,8 @@ package body Gnat2Why.Decls is
              Obj_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
 
       else
-         --  the case of a global constant
-
+         --  otherwise we can generate a "logic", with a defining axiom if
+         --  necessary.
          New_Logic
             (File        => File,
              Name        => New_Identifier (Name),

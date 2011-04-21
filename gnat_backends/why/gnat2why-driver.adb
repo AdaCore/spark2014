@@ -403,16 +403,11 @@ package body Gnat2Why.Driver is
       Open_Current_File ("standard.why");
       Declare_Boolean_Integer_Comparison (File);
 
-      New_Parameter
+      New_Logic
          (File => File,
           Name => New_Ignore_Name,
-          Effects => New_Effects,
-          Binders =>
-            (1 =>
-               New_Binder
-                 (Names    => (1 => New_Identifier ("z")),
-                  Arg_Type =>
-                    New_Generic_Formal_Type (Name => New_Identifier ("a")))),
+          Args =>
+            (1 => New_Generic_Formal_Type (Name => New_Identifier ("a"))),
          Return_Type => New_Type_Unit);
 
       New_Include_Declaration

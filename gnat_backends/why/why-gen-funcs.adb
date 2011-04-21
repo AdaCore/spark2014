@@ -35,21 +35,6 @@ with Why.Gen.Terms;       use Why.Gen.Terms;
 
 package body Why.Gen.Funcs is
 
-   function New_Call_To_Logic
-     (Name    : W_Identifier_Id;
-      Binders : W_Binder_Array)
-     return W_Term_Id;
-   --  Create a call to an operation in the logical space with parameters
-   --  taken from Arrows. Typically, from:
-   --
-   --     x1 : type1 -> x2 : type2 -> {} type3 {}
-   --
-   --  ...it would produce:
-   --
-   --     operation_name (x1, x2)
-   --
-   --  Name would be inserted as is into the resulting syntax tree.
-
    ----------------------------------
    -- Declare_Logic_And_Parameters --
    ----------------------------------
