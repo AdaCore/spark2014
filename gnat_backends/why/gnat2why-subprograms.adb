@@ -886,8 +886,8 @@ package body Gnat2Why.Subprograms is
          if Nkind (Spec) = N_Function_Specification then
             declare
                Rvalue : constant W_Prog_Id :=
-                          New_Any_Expr
-                            (Any_Type => New_Abstract_Type
+                          New_Simpl_Any_Expr
+                            (New_Abstract_Type
                                (Name =>
                                   New_Identifier (Type_Of_Node
                                     (Defining_Entity (Spec)))));
