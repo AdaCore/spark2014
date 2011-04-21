@@ -136,18 +136,11 @@ package Why.Atree is
          when W_Ref_Type =>
             RT_Aliased_Type : W_Primitive_Type_Opaque_Id;
 
-         when W_Protected_Value_Type =>
-            PVT_Value_Type : W_Value_Type_Opaque_Id;
-
-         when W_Arrow_Type =>
-            NA_Name  : W_Identifier_Opaque_OId;
-            NA_Left  : W_Simple_Value_Type_Opaque_Id;
-            NA_Right : W_Computation_Type_Opaque_Id;
-
-         when W_Computation_Spec =>
+         when W_Computation_Type =>
+            CS_Binders       : W_Binder_Opaque_OList;
             CS_Precondition  : W_Precondition_Opaque_OId;
             CS_Result_Name   : W_Identifier_Opaque_OId;
-            CS_Return_Type   : W_Value_Type_Opaque_Id;
+            CS_Return_Type   : W_Primitive_Type_Opaque_Id;
             CS_Effects       : W_Effects_Opaque_Id;
             CS_Postcondition : W_Postcondition_Opaque_OId;
 
@@ -435,19 +428,19 @@ package Why.Atree is
 
          when W_Raise_Statement =>
             RS_Name     : W_Identifier_Opaque_Id;
-            RS_Exn_Type : W_Value_Type_Opaque_OId;
+            RS_Exn_Type : W_Simple_Value_Type_Opaque_OId;
 
          when W_Raise_Statement_With_Parameters =>
             RSWP_Name      : W_Identifier_Opaque_Id;
             RSWP_Parameter : W_Term_Opaque_Id;
-            RSWP_Exn_Type  : W_Value_Type_Opaque_OId;
+            RSWP_Exn_Type  : W_Simple_Value_Type_Opaque_OId;
 
          when W_Try_Block =>
             TB_Prog    : W_Prog_Opaque_Id;
             TB_Handler : W_Handler_Opaque_List;
 
          when W_Unreachable_Code =>
-            UC_Exn_Type : W_Value_Type_Opaque_OId;
+            UC_Exn_Type : W_Simple_Value_Type_Opaque_OId;
 
          when W_Begin_Block .. W_Protected_Prog =>
             BB_Prog : W_Prog_Opaque_Id;
@@ -457,7 +450,7 @@ package Why.Atree is
 
          when W_Binder =>
             B_Names     : W_Identifier_Opaque_List;
-            B_Arg_Type  : W_Value_Type_Opaque_Id;
+            B_Arg_Type  : W_Simple_Value_Type_Opaque_Id;
 
          when W_Recfun =>
             RF_Name        : W_Identifier_Opaque_Id;
@@ -495,7 +488,11 @@ package Why.Atree is
          when W_Parameter_Declaration =>
             PD_External       : W_External_Opaque_OId;
             PD_Names          : W_Identifier_Opaque_List;
-            PD_Parameter_Type : W_Value_Type_Opaque_Id;
+            PD_Parameter_Type : W_Computation_Type_Opaque_Id;
+
+         when W_Global_Ref_Declaration =>
+            GR_Name           : W_Identifier_Opaque_Id;
+            GR_Parameter_Type : W_Primitive_Type_Opaque_Id;
 
          when W_Exception_Declaration =>
             ED_Name      : W_Identifier_Opaque_Id;

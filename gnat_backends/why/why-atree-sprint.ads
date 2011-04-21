@@ -86,25 +86,13 @@ private
      (State : in out Printer_State;
       Node  : W_Ref_Type_Valid_Id);
 
-   procedure Protected_Value_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id);
-
-   procedure Protected_Value_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id);
-
-   procedure Arrow_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Arrow_Type_Valid_Id);
-
    procedure Precondition_Pre_Op
      (State : in out Printer_State;
       Node  : W_Precondition_Valid_Id);
 
-   procedure Computation_Spec_Pre_Op
+   procedure Computation_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Computation_Spec_Valid_Id);
+      Node  : W_Computation_Type_Valid_Id);
 
    procedure Integer_Constant_Pre_Op
      (State : in out Printer_State;
@@ -561,6 +549,10 @@ private
    procedure Parameter_Declaration_Pre_Op
      (State : in out Printer_State;
       Node  : W_Parameter_Declaration_Valid_Id);
+
+   procedure Global_Ref_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id);
 
    procedure Exception_Declaration_Pre_Op
      (State : in out Printer_State;

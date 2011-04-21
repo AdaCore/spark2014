@@ -104,34 +104,18 @@ package Why.Atree.Builders is
      Pre =>
        (Is_Root (+Aliased_Type));
 
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Valid_Id)
-     return W_Protected_Value_Type_Valid_Id with
-     Pre =>
-       (Is_Root (+Value_Type));
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Valid_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Valid_Id;
-      Right    : W_Computation_Type_Valid_Id)
-     return W_Arrow_Type_Valid_Id with
-     Pre =>
-       (Is_Root (+Name)
-        and then Is_Root (+Left)
-        and then Is_Root (+Right));
-
-   function New_Computation_Spec
+   function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
+      Binders       : W_Binder_V_Array := (2 .. 1 => <>);
       Precondition  : W_Precondition_Valid_OId := Why_Empty;
       Result_Name   : W_Identifier_Valid_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Valid_Id;
+      Return_Type   : W_Primitive_Type_Valid_Id;
       Effects       : W_Effects_Valid_Id;
       Postcondition : W_Postcondition_Valid_OId := Why_Empty)
-     return W_Computation_Spec_Valid_Id with
+     return W_Computation_Type_Valid_Id with
      Pre =>
-       (Is_Root (+Precondition)
+       (True
+        and then Is_Root (+Precondition)
         and then Is_Root (+Result_Name)
         and then Is_Root (+Return_Type)
         and then Is_Root (+Effects)
@@ -870,7 +854,7 @@ package Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Valid_Id;
-      Exn_Type : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Raise_Statement_Valid_Id with
      Pre =>
        (Is_Root (+Name)
@@ -880,7 +864,7 @@ package Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Valid_Id;
       Parameter : W_Term_Valid_Id;
-      Exn_Type  : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Raise_Statement_With_Parameters_Valid_Id with
      Pre =>
        (Is_Root (+Name)
@@ -898,7 +882,7 @@ package Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Unreachable_Code_Valid_Id with
      Pre =>
        (Is_Root (+Exn_Type));
@@ -995,7 +979,7 @@ package Why.Atree.Builders is
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_V_Array;
-      Arg_Type : W_Value_Type_Valid_Id)
+      Arg_Type : W_Simple_Value_Type_Valid_Id)
      return W_Binder_Valid_Id with
      Pre =>
        (True
@@ -1078,11 +1062,20 @@ package Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_Valid_OId := Why_Empty;
       Names          : W_Identifier_V_Array;
-      Parameter_Type : W_Value_Type_Valid_Id)
+      Parameter_Type : W_Computation_Type_Valid_Id)
      return W_Parameter_Declaration_Valid_Id with
      Pre =>
        (Is_Root (+External)
         and then True
+        and then Is_Root (+Parameter_Type));
+
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Valid_Id;
+      Parameter_Type : W_Primitive_Type_Valid_Id)
+     return W_Global_Ref_Declaration_Valid_Id with
+     Pre =>
+       (Is_Root (+Name)
         and then Is_Root (+Parameter_Type));
 
    function New_Exception_Declaration
@@ -1149,16 +1142,6 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty)
      return W_Simple_Value_Type_Id with
      Pre => True;
-
-   function New_Type_Int
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Int
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id with
-     Pre => True;
    function New_Type_Bool
      (Ada_Node : Node_Id := Empty)
      return W_Type_Bool_Id with
@@ -1182,16 +1165,6 @@ package Why.Atree.Builders is
    function New_Type_Bool
      (Ada_Node : Node_Id := Empty)
      return W_Simple_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Bool
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Bool
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id with
      Pre => True;
    function New_Type_Real
      (Ada_Node : Node_Id := Empty)
@@ -1217,16 +1190,6 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty)
      return W_Simple_Value_Type_Id with
      Pre => True;
-
-   function New_Type_Real
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Real
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id with
-     Pre => True;
    function New_Type_Unit
      (Ada_Node : Node_Id := Empty)
      return W_Type_Unit_Id with
@@ -1250,16 +1213,6 @@ package Why.Atree.Builders is
    function New_Type_Unit
      (Ada_Node : Node_Id := Empty)
      return W_Simple_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Unit
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id with
-     Pre => True;
-
-   function New_Type_Unit
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id with
      Pre => True;
    function New_Abstract_Type
      (Ada_Node : Node_Id := Empty;
@@ -1295,20 +1248,6 @@ package Why.Atree.Builders is
      return W_Simple_Value_Type_Id with
      Pre =>
        (Is_Root (+Name));
-
-   function New_Abstract_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Name));
-
-   function New_Abstract_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (Is_Root (+Name));
    function New_Generic_Formal_Type
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id)
@@ -1341,20 +1280,6 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id)
      return W_Simple_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Name));
-
-   function New_Generic_Formal_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Name));
-
-   function New_Generic_Formal_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Computation_Type_Id with
      Pre =>
        (Is_Root (+Name));
    function New_Generic_Actual_Type_Chain
@@ -1401,24 +1326,6 @@ package Why.Atree.Builders is
      Pre =>
        (True
         and then Is_Root (+Name));
-
-   function New_Generic_Actual_Type_Chain
-     (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_Array;
-      Name       : W_Identifier_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (True
-        and then Is_Root (+Name));
-
-   function New_Generic_Actual_Type_Chain
-     (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_Array;
-      Name       : W_Identifier_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (True
-        and then Is_Root (+Name));
    function New_Array_Type
      (Ada_Node       : Node_Id := Empty;
       Component_Type : W_Primitive_Type_Id)
@@ -1439,20 +1346,6 @@ package Why.Atree.Builders is
      return W_Simple_Value_Type_Id with
      Pre =>
        (Is_Root (+Component_Type));
-
-   function New_Array_Type
-     (Ada_Node       : Node_Id := Empty;
-      Component_Type : W_Primitive_Type_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Component_Type));
-
-   function New_Array_Type
-     (Ada_Node       : Node_Id := Empty;
-      Component_Type : W_Primitive_Type_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (Is_Root (+Component_Type));
    function New_Ref_Type
      (Ada_Node     : Node_Id := Empty;
       Aliased_Type : W_Primitive_Type_Id)
@@ -1466,104 +1359,18 @@ package Why.Atree.Builders is
      return W_Simple_Value_Type_Id with
      Pre =>
        (Is_Root (+Aliased_Type));
-
-   function New_Ref_Type
-     (Ada_Node     : Node_Id := Empty;
-      Aliased_Type : W_Primitive_Type_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Aliased_Type));
-
-   function New_Ref_Type
-     (Ada_Node     : Node_Id := Empty;
-      Aliased_Type : W_Primitive_Type_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (Is_Root (+Aliased_Type));
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Protected_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Value_Type));
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Simple_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Value_Type));
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Value_Type));
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (Is_Root (+Value_Type));
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Arrow_Type_Id with
-     Pre =>
-       (Is_Root (+Name)
-        and then Is_Root (+Left)
-        and then Is_Root (+Right));
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Value_Type_Id with
-     Pre =>
-       (Is_Root (+Name)
-        and then Is_Root (+Left)
-        and then Is_Root (+Right));
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Computation_Type_Id with
-     Pre =>
-       (Is_Root (+Name)
-        and then Is_Root (+Left)
-        and then Is_Root (+Right));
-   function New_Computation_Spec
+   function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
+      Binders       : W_Binder_Array := (2 .. 1 => <>);
       Precondition  : W_Precondition_OId := Why_Empty;
       Result_Name   : W_Identifier_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Id;
-      Effects       : W_Effects_Id;
-      Postcondition : W_Postcondition_OId := Why_Empty)
-     return W_Computation_Spec_Id with
-     Pre =>
-       (Is_Root (+Precondition)
-        and then Is_Root (+Result_Name)
-        and then Is_Root (+Return_Type)
-        and then Is_Root (+Effects)
-        and then Is_Root (+Postcondition));
-
-   function New_Computation_Spec
-     (Ada_Node      : Node_Id := Empty;
-      Precondition  : W_Precondition_OId := Why_Empty;
-      Result_Name   : W_Identifier_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Id;
+      Return_Type   : W_Primitive_Type_Id;
       Effects       : W_Effects_Id;
       Postcondition : W_Postcondition_OId := Why_Empty)
      return W_Computation_Type_Id with
      Pre =>
-       (Is_Root (+Precondition)
+       (True
+        and then Is_Root (+Precondition)
         and then Is_Root (+Result_Name)
         and then Is_Root (+Return_Type)
         and then Is_Root (+Effects)
@@ -2856,7 +2663,7 @@ package Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_Id with
      Pre =>
        (Is_Root (+Name)
@@ -2865,7 +2672,7 @@ package Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id with
      Pre =>
        (Is_Root (+Name)
@@ -2874,7 +2681,7 @@ package Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
-      Exn_Type  : W_Value_Type_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_With_Parameters_Id with
      Pre =>
        (Is_Root (+Name)
@@ -2885,7 +2692,7 @@ package Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
-      Exn_Type  : W_Value_Type_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id with
      Pre =>
        (Is_Root (+Name)
@@ -2910,14 +2717,14 @@ package Why.Atree.Builders is
         and then True);
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Unreachable_Code_Id with
      Pre =>
        (Is_Root (+Exn_Type));
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id with
      Pre =>
        (Is_Root (+Exn_Type));
@@ -3085,7 +2892,7 @@ package Why.Atree.Builders is
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_Array;
-      Arg_Type : W_Value_Type_Id)
+      Arg_Type : W_Simple_Value_Type_Id)
      return W_Binder_Id with
      Pre =>
        (True
@@ -3180,7 +2987,7 @@ package Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
      return W_Parameter_Declaration_Id with
      Pre =>
        (Is_Root (+External)
@@ -3191,11 +2998,28 @@ package Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
      return W_Declaration_Id with
      Pre =>
        (Is_Root (+External)
         and then True
+        and then Is_Root (+Parameter_Type));
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+     return W_Global_Ref_Declaration_Id with
+     Pre =>
+       (Is_Root (+Name)
+        and then Is_Root (+Parameter_Type));
+
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+     return W_Declaration_Id with
+     Pre =>
+       (Is_Root (+Name)
         and then Is_Root (+Parameter_Type));
    function New_Exception_Declaration
      (Ada_Node  : Node_Id := Empty;
@@ -3286,16 +3110,8 @@ package Why.Atree.Builders is
      return W_Ref_Type_Unchecked_Id with
      Pre => True;
 
-   function New_Unchecked_Protected_Value_Type
-     return W_Protected_Value_Type_Unchecked_Id with
-     Pre => True;
-
-   function New_Unchecked_Arrow_Type
-     return W_Arrow_Type_Unchecked_Id with
-     Pre => True;
-
-   function New_Unchecked_Computation_Spec
-     return W_Computation_Spec_Unchecked_Id with
+   function New_Unchecked_Computation_Type
+     return W_Computation_Type_Unchecked_Id with
      Pre => True;
 
    function New_Unchecked_Integer_Constant
@@ -3764,6 +3580,10 @@ package Why.Atree.Builders is
      return W_Parameter_Declaration_Unchecked_Id with
      Pre => True;
 
+   function New_Unchecked_Global_Ref_Declaration
+     return W_Global_Ref_Declaration_Unchecked_Id with
+     Pre => True;
+
    function New_Unchecked_Exception_Declaration
      return W_Exception_Declaration_Unchecked_Id with
      Pre => True;
@@ -3842,22 +3662,10 @@ package Why.Atree.Builders is
      return W_Ref_Type_Valid_Id with
      Pre => True;
 
-   function Duplicate_Protected_Value_Type
+   function Duplicate_Computation_Type
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Protected_Value_Type_Valid_OId)
-     return W_Protected_Value_Type_Valid_Id with
-     Pre => True;
-
-   function Duplicate_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Arrow_Type_Valid_OId)
-     return W_Arrow_Type_Valid_Id with
-     Pre => True;
-
-   function Duplicate_Computation_Spec
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Computation_Spec_Valid_OId)
-     return W_Computation_Spec_Valid_Id with
+      Id       : W_Computation_Type_Valid_OId)
+     return W_Computation_Type_Valid_Id with
      Pre => True;
 
    function Duplicate_Integer_Constant
@@ -4556,6 +4364,12 @@ package Why.Atree.Builders is
      return W_Parameter_Declaration_Valid_Id with
      Pre => True;
 
+   function Duplicate_Global_Ref_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Global_Ref_Declaration_Valid_OId)
+     return W_Global_Ref_Declaration_Valid_Id with
+     Pre => True;
+
    function Duplicate_Exception_Declaration
      (Ada_Node : Node_Id := Empty;
       Id       : W_Exception_Declaration_Valid_OId)
@@ -4623,16 +4437,6 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Id       : W_Simple_Value_Type_Valid_Id)
      return W_Simple_Value_Type_Valid_Id;
-
-   function Duplicate_Value_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Value_Type_Valid_Id)
-     return W_Value_Type_Valid_Id;
-
-   function Duplicate_Computation_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Computation_Type_Valid_Id)
-     return W_Computation_Type_Valid_Id;
 
    function Duplicate_Prog
      (Ada_Node : Node_Id := Empty;

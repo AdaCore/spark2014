@@ -292,81 +292,39 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Ref_Type;
 
-   ------------------------------
-   -- New_Protected_Value_Type --
-   ------------------------------
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Valid_Id)
-     return W_Protected_Value_Type_Valid_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PVT_Value_Type :=
-        Value_Type;
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Protected_Value_Type;
-
-   --------------------
-   -- New_Arrow_Type --
-   --------------------
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Valid_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Valid_Id;
-      Right    : W_Computation_Type_Valid_Id)
-     return W_Arrow_Type_Valid_Id
-   is
-      Result : Why_Node (W_Arrow_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Arrow_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.NA_Name :=
-        Name;
-      Set_Link (Result.NA_Name, New_Id);
-      Result.NA_Left :=
-        Left;
-      Set_Link (Result.NA_Left, New_Id);
-      Result.NA_Right :=
-        Right;
-      Set_Link (Result.NA_Right, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Arrow_Type;
-
    --------------------------
-   -- New_Computation_Spec --
+   -- New_Computation_Type --
    --------------------------
 
-   function New_Computation_Spec
+   function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
+      Binders       : W_Binder_V_Array := (2 .. 1 => <>);
       Precondition  : W_Precondition_Valid_OId := Why_Empty;
       Result_Name   : W_Identifier_Valid_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Valid_Id;
+      Return_Type   : W_Primitive_Type_Valid_Id;
       Effects       : W_Effects_Valid_Id;
       Postcondition : W_Postcondition_Valid_OId := Why_Empty)
-     return W_Computation_Spec_Valid_Id
+     return W_Computation_Type_Valid_Id
    is
-      Result : Why_Node (W_Computation_Spec);
+      Result : Why_Node (W_Computation_Type);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Computation_Spec);
+        New_Why_Node_Id (W_Computation_Type);
    begin
       Result.Ada_Node :=
         Ada_Node;
+      Result.CS_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (Binders (J)));
+         pragma Assert
+           (Binder_Id_Valid
+            (Binders (J)));
+         Append
+           (Result.CS_Binders,
+            Binders (J));
+      end loop;
+      Set_Link (Result.CS_Binders, New_Id);
       Result.CS_Precondition :=
         Precondition;
       Set_Link (Result.CS_Precondition, New_Id);
@@ -386,7 +344,7 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Computation_Spec;
+   end New_Computation_Type;
 
    --------------------------
    -- New_Integer_Constant --
@@ -2980,7 +2938,7 @@ package body Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Valid_Id;
-      Exn_Type : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Raise_Statement_Valid_Id
    is
       Result : Why_Node (W_Raise_Statement);
@@ -3009,7 +2967,7 @@ package body Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Valid_Id;
       Parameter : W_Term_Valid_Id;
-      Exn_Type  : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Raise_Statement_With_Parameters_Valid_Id
    is
       Result : Why_Node (W_Raise_Statement_With_Parameters);
@@ -3078,7 +3036,7 @@ package body Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_Valid_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_Valid_OId := Why_Empty)
      return W_Unreachable_Code_Valid_Id
    is
       Result : Why_Node (W_Unreachable_Code);
@@ -3451,7 +3409,7 @@ package body Why.Atree.Builders is
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_V_Array;
-      Arg_Type : W_Value_Type_Valid_Id)
+      Arg_Type : W_Simple_Value_Type_Valid_Id)
      return W_Binder_Valid_Id
    is
       Result : Why_Node (W_Binder);
@@ -3738,7 +3696,7 @@ package body Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_Valid_OId := Why_Empty;
       Names          : W_Identifier_V_Array;
-      Parameter_Type : W_Value_Type_Valid_Id)
+      Parameter_Type : W_Computation_Type_Valid_Id)
      return W_Parameter_Declaration_Valid_Id
    is
       Result : Why_Node (W_Parameter_Declaration);
@@ -3772,6 +3730,34 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Parameter_Declaration;
+
+   --------------------------------
+   -- New_Global_Ref_Declaration --
+   --------------------------------
+
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Valid_Id;
+      Parameter_Type : W_Primitive_Type_Valid_Id)
+     return W_Global_Ref_Declaration_Valid_Id
+   is
+      Result : Why_Node (W_Global_Ref_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Ref_Declaration);
+   begin
+      Result.Ada_Node :=
+        Ada_Node;
+      Result.GR_Name :=
+        Name;
+      Set_Link (Result.GR_Name, New_Id);
+      Result.GR_Parameter_Type :=
+        Parameter_Type;
+      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Global_Ref_Declaration;
 
    -------------------------------
    -- New_Exception_Declaration --
@@ -4081,69 +4067,22 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Ref_Type;
 
-   ----------------------------------------
-   -- New_Unchecked_Protected_Value_Type --
-   ----------------------------------------
-
-   function New_Unchecked_Protected_Value_Type
-     return W_Protected_Value_Type_Unchecked_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Empty;
-      Result.PVT_Value_Type :=
-        Why_Empty;
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := False;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Unchecked_Protected_Value_Type;
-
-   ------------------------------
-   -- New_Unchecked_Arrow_Type --
-   ------------------------------
-
-   function New_Unchecked_Arrow_Type
-     return W_Arrow_Type_Unchecked_Id
-   is
-      Result : Why_Node (W_Arrow_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Arrow_Type);
-   begin
-      Result.Ada_Node :=
-        Empty;
-      Result.NA_Name :=
-        Why_Empty;
-      Set_Link (Result.NA_Name, New_Id);
-      Result.NA_Left :=
-        Why_Empty;
-      Set_Link (Result.NA_Left, New_Id);
-      Result.NA_Right :=
-        Why_Empty;
-      Set_Link (Result.NA_Right, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := False;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Unchecked_Arrow_Type;
-
    ------------------------------------
-   -- New_Unchecked_Computation_Spec --
+   -- New_Unchecked_Computation_Type --
    ------------------------------------
 
-   function New_Unchecked_Computation_Spec
-     return W_Computation_Spec_Unchecked_Id
+   function New_Unchecked_Computation_Type
+     return W_Computation_Type_Unchecked_Id
    is
-      Result : Why_Node (W_Computation_Spec);
+      Result : Why_Node (W_Computation_Type);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Computation_Spec);
+        New_Why_Node_Id (W_Computation_Type);
    begin
       Result.Ada_Node :=
         Empty;
+      Result.CS_Binders :=
+        New_List;
+      Set_Link (Result.CS_Binders, New_Id);
       Result.CS_Precondition :=
         Why_Empty;
       Set_Link (Result.CS_Precondition, New_Id);
@@ -4163,7 +4102,7 @@ package body Why.Atree.Builders is
       Result.Checked := False;
       Set_Node (New_Id, Result);
       return New_Id;
-   end New_Unchecked_Computation_Spec;
+   end New_Unchecked_Computation_Type;
 
    ------------------------------------
    -- New_Unchecked_Integer_Constant --
@@ -6921,6 +6860,31 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Parameter_Declaration;
 
+   ------------------------------------------
+   -- New_Unchecked_Global_Ref_Declaration --
+   ------------------------------------------
+
+   function New_Unchecked_Global_Ref_Declaration
+     return W_Global_Ref_Declaration_Unchecked_Id
+   is
+      Result : Why_Node (W_Global_Ref_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Ref_Declaration);
+   begin
+      Result.Ada_Node :=
+        Empty;
+      Result.GR_Name :=
+        Why_Empty;
+      Set_Link (Result.GR_Name, New_Id);
+      Result.GR_Parameter_Type :=
+        Why_Empty;
+      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := False;
+      Set_Node (New_Id, Result);
+      return New_Id;
+   end New_Unchecked_Global_Ref_Declaration;
+
    -----------------------------------------
    -- New_Unchecked_Exception_Declaration --
    -----------------------------------------
@@ -7344,96 +7308,14 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Ref_Type;
 
-   ------------------------------------
-   -- Duplicate_Protected_Value_Type --
-   ------------------------------------
-
-   function Duplicate_Protected_Value_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Protected_Value_Type_Valid_OId)
-     return W_Protected_Value_Type_Valid_Id
-   is
-   begin
-      if Id = Why_Empty then
-         return Why_Empty;
-      end if;
-
-      declare
-         Result : Why_Node (W_Protected_Value_Type);
-         New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Protected_Value_Type);
-         Value_Type : constant W_Value_Type_Valid_Id :=
-            +Protected_Value_Type_Get_Value_Type (Id);
-      begin
-         Result.Ada_Node := Ada_Node;
-         Result.PVT_Value_Type :=
-           Duplicate_Value_Type
-           (Id => Value_Type);
-         Set_Link (Result.PVT_Value_Type, New_Id);
-         Result.Link := Why_Empty;
-         Result.Checked := True;
-         Set_Node (New_Id, Result);
-         return New_Id;
-      end;
-   end Duplicate_Protected_Value_Type;
-
-   --------------------------
-   -- Duplicate_Arrow_Type --
-   --------------------------
-
-   function Duplicate_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Arrow_Type_Valid_OId)
-     return W_Arrow_Type_Valid_Id
-   is
-   begin
-      if Id = Why_Empty then
-         return Why_Empty;
-      end if;
-
-      declare
-         Result : Why_Node (W_Arrow_Type);
-         New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Arrow_Type);
-         Name  : constant W_Identifier_Valid_OId :=
-            +Arrow_Type_Get_Name (Id);
-         Left  : constant W_Simple_Value_Type_Valid_Id :=
-            +Arrow_Type_Get_Left (Id);
-         Right : constant W_Computation_Type_Valid_Id :=
-            +Arrow_Type_Get_Right (Id);
-      begin
-         Result.Ada_Node := Ada_Node;
-         if Name = Why_Empty then
-            Result.NA_Name := Why_Empty;
-         else
-            Result.NA_Name :=
-              Duplicate_Identifier
-              (Id => Name);
-         end if;
-         Set_Link (Result.NA_Name, New_Id);
-         Result.NA_Left :=
-           Duplicate_Simple_Value_Type
-           (Id => Left);
-         Set_Link (Result.NA_Left, New_Id);
-         Result.NA_Right :=
-           Duplicate_Computation_Type
-           (Id => Right);
-         Set_Link (Result.NA_Right, New_Id);
-         Result.Link := Why_Empty;
-         Result.Checked := True;
-         Set_Node (New_Id, Result);
-         return New_Id;
-      end;
-   end Duplicate_Arrow_Type;
-
    --------------------------------
-   -- Duplicate_Computation_Spec --
+   -- Duplicate_Computation_Type --
    --------------------------------
 
-   function Duplicate_Computation_Spec
+   function Duplicate_Computation_Type
      (Ada_Node : Node_Id := Empty;
-      Id       : W_Computation_Spec_Valid_OId)
-     return W_Computation_Spec_Valid_Id
+      Id       : W_Computation_Type_Valid_OId)
+     return W_Computation_Type_Valid_Id
    is
    begin
       if Id = Why_Empty then
@@ -7441,21 +7323,42 @@ package body Why.Atree.Builders is
       end if;
 
       declare
-         Result : Why_Node (W_Computation_Spec);
+         Result : Why_Node (W_Computation_Type);
          New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Computation_Spec);
+           New_Why_Node_Id (W_Computation_Type);
+         Binders       : constant W_Binder_Valid_OList :=
+            +Computation_Type_Get_Binders (Id);
          Precondition  : constant W_Precondition_Valid_OId :=
-            +Computation_Spec_Get_Precondition (Id);
+            +Computation_Type_Get_Precondition (Id);
          Result_Name   : constant W_Identifier_Valid_OId :=
-            +Computation_Spec_Get_Result_Name (Id);
-         Return_Type   : constant W_Value_Type_Valid_Id :=
-            +Computation_Spec_Get_Return_Type (Id);
+            +Computation_Type_Get_Result_Name (Id);
+         Return_Type   : constant W_Primitive_Type_Valid_Id :=
+            +Computation_Type_Get_Return_Type (Id);
          Effects       : constant W_Effects_Valid_Id :=
-            +Computation_Spec_Get_Effects (Id);
+            +Computation_Type_Get_Effects (Id);
          Postcondition : constant W_Postcondition_Valid_OId :=
-            +Computation_Spec_Get_Postcondition (Id);
+            +Computation_Type_Get_Postcondition (Id);
       begin
          Result.Ada_Node := Ada_Node;
+         declare
+            use Node_Lists;
+
+            Nodes    : constant List := Get_List (Binders);
+            Position : Cursor := First (Nodes);
+            NL       : constant Why_Node_List := New_List;
+         begin
+            while Position /= No_Element loop
+               declare
+                  Node : constant W_Binder_Valid_Id :=
+                           Element (Position);
+               begin
+                  Append (NL,  Node);
+               end;
+               Position := Next (Position);
+            end loop;
+            Result.CS_Binders := NL;
+         end;
+         Set_Link (Result.CS_Binders, New_Id);
          if Precondition = Why_Empty then
             Result.CS_Precondition := Why_Empty;
          else
@@ -7473,7 +7376,7 @@ package body Why.Atree.Builders is
          end if;
          Set_Link (Result.CS_Result_Name, New_Id);
          Result.CS_Return_Type :=
-           Duplicate_Value_Type
+           Duplicate_Primitive_Type
            (Id => Return_Type);
          Set_Link (Result.CS_Return_Type, New_Id);
          Result.CS_Effects :=
@@ -7493,7 +7396,7 @@ package body Why.Atree.Builders is
          Set_Node (New_Id, Result);
          return New_Id;
       end;
-   end Duplicate_Computation_Spec;
+   end Duplicate_Computation_Type;
 
    --------------------------------
    -- Duplicate_Integer_Constant --
@@ -11142,7 +11045,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Raise_Statement);
          Name     : constant W_Identifier_Valid_Id :=
             +Raise_Statement_Get_Name (Id);
-         Exn_Type : constant W_Value_Type_Valid_OId :=
+         Exn_Type : constant W_Simple_Value_Type_Valid_OId :=
             +Raise_Statement_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
@@ -11154,7 +11057,7 @@ package body Why.Atree.Builders is
             Result.RS_Exn_Type := Why_Empty;
          else
             Result.RS_Exn_Type :=
-              Duplicate_Value_Type
+              Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
          Set_Link (Result.RS_Exn_Type, New_Id);
@@ -11187,7 +11090,7 @@ package body Why.Atree.Builders is
             +Raise_Statement_With_Parameters_Get_Name (Id);
          Parameter : constant W_Term_Valid_Id :=
             +Raise_Statement_With_Parameters_Get_Parameter (Id);
-         Exn_Type  : constant W_Value_Type_Valid_OId :=
+         Exn_Type  : constant W_Simple_Value_Type_Valid_OId :=
             +Raise_Statement_With_Parameters_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
@@ -11203,7 +11106,7 @@ package body Why.Atree.Builders is
             Result.RSWP_Exn_Type := Why_Empty;
          else
             Result.RSWP_Exn_Type :=
-              Duplicate_Value_Type
+              Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
          Set_Link (Result.RSWP_Exn_Type, New_Id);
@@ -11286,7 +11189,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Unreachable_Code);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Unreachable_Code);
-         Exn_Type : constant W_Value_Type_Valid_OId :=
+         Exn_Type : constant W_Simple_Value_Type_Valid_OId :=
             +Unreachable_Code_Get_Exn_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
@@ -11294,7 +11197,7 @@ package body Why.Atree.Builders is
             Result.UC_Exn_Type := Why_Empty;
          else
             Result.UC_Exn_Type :=
-              Duplicate_Value_Type
+              Duplicate_Simple_Value_Type
               (Id => Exn_Type);
          end if;
          Set_Link (Result.UC_Exn_Type, New_Id);
@@ -11796,7 +11699,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Binder);
          Names    : constant W_Identifier_Valid_List :=
             +Binder_Get_Names (Id);
-         Arg_Type : constant W_Value_Type_Valid_Id :=
+         Arg_Type : constant W_Simple_Value_Type_Valid_Id :=
             +Binder_Get_Arg_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
@@ -11820,7 +11723,7 @@ package body Why.Atree.Builders is
          end;
          Set_Link (Result.B_Names, New_Id);
          Result.B_Arg_Type :=
-           Duplicate_Value_Type
+           Duplicate_Simple_Value_Type
            (Id => Arg_Type);
          Set_Link (Result.B_Arg_Type, New_Id);
          Result.Link := Why_Empty;
@@ -12216,7 +12119,7 @@ package body Why.Atree.Builders is
             +Parameter_Declaration_Get_External (Id);
          Names          : constant W_Identifier_Valid_List :=
             +Parameter_Declaration_Get_Names (Id);
-         Parameter_Type : constant W_Value_Type_Valid_Id :=
+         Parameter_Type : constant W_Computation_Type_Valid_Id :=
             +Parameter_Declaration_Get_Parameter_Type (Id);
       begin
          Result.Ada_Node := Ada_Node;
@@ -12248,7 +12151,7 @@ package body Why.Atree.Builders is
          end;
          Set_Link (Result.PD_Names, New_Id);
          Result.PD_Parameter_Type :=
-           Duplicate_Value_Type
+           Duplicate_Computation_Type
            (Id => Parameter_Type);
          Set_Link (Result.PD_Parameter_Type, New_Id);
          Result.Link := Why_Empty;
@@ -12257,6 +12160,45 @@ package body Why.Atree.Builders is
          return New_Id;
       end;
    end Duplicate_Parameter_Declaration;
+
+   --------------------------------------
+   -- Duplicate_Global_Ref_Declaration --
+   --------------------------------------
+
+   function Duplicate_Global_Ref_Declaration
+     (Ada_Node : Node_Id := Empty;
+      Id       : W_Global_Ref_Declaration_Valid_OId)
+     return W_Global_Ref_Declaration_Valid_Id
+   is
+   begin
+      if Id = Why_Empty then
+         return Why_Empty;
+      end if;
+
+      declare
+         Result : Why_Node (W_Global_Ref_Declaration);
+         New_Id : constant Why_Node_Id :=
+           New_Why_Node_Id (W_Global_Ref_Declaration);
+         Name           : constant W_Identifier_Valid_Id :=
+            +Global_Ref_Declaration_Get_Name (Id);
+         Parameter_Type : constant W_Primitive_Type_Valid_Id :=
+            +Global_Ref_Declaration_Get_Parameter_Type (Id);
+      begin
+         Result.Ada_Node := Ada_Node;
+         Result.GR_Name :=
+           Duplicate_Identifier
+           (Id => Name);
+         Set_Link (Result.GR_Name, New_Id);
+         Result.GR_Parameter_Type :=
+           Duplicate_Primitive_Type
+           (Id => Parameter_Type);
+         Set_Link (Result.GR_Parameter_Type, New_Id);
+         Result.Link := Why_Empty;
+         Result.Checked := True;
+         Set_Node (New_Id, Result);
+         return New_Id;
+      end;
+   end Duplicate_Global_Ref_Declaration;
 
    -------------------------------------
    -- Duplicate_Exception_Declaration --
@@ -12530,46 +12472,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Type_Int;
-
-   ------------------
-   -- New_Type_Int --
-   ------------------
-
-   function New_Type_Int
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Type_Int);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Int);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Type_Int;
-
-   ------------------
-   -- New_Type_Int --
-   ------------------
-
-   function New_Type_Int
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Type_Int);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Int);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Type_Int;
    -------------------
    -- New_Type_Bool --
    -------------------
@@ -12668,46 +12570,6 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
-   end New_Type_Bool;
-
-   -------------------
-   -- New_Type_Bool --
-   -------------------
-
-   function New_Type_Bool
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Type_Bool);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Bool);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Type_Bool;
-
-   -------------------
-   -- New_Type_Bool --
-   -------------------
-
-   function New_Type_Bool
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Type_Bool);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Bool);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
    end New_Type_Bool;
    -------------------
    -- New_Type_Real --
@@ -12808,46 +12670,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Type_Real;
-
-   -------------------
-   -- New_Type_Real --
-   -------------------
-
-   function New_Type_Real
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Type_Real);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Real);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Type_Real;
-
-   -------------------
-   -- New_Type_Real --
-   -------------------
-
-   function New_Type_Real
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Type_Real);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Real);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Type_Real;
    -------------------
    -- New_Type_Unit --
    -------------------
@@ -12946,46 +12768,6 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
-   end New_Type_Unit;
-
-   -------------------
-   -- New_Type_Unit --
-   -------------------
-
-   function New_Type_Unit
-     (Ada_Node : Node_Id := Empty)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Type_Unit);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Unit);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Type_Unit;
-
-   -------------------
-   -- New_Type_Unit --
-   -------------------
-
-   function New_Type_Unit
-     (Ada_Node : Node_Id := Empty)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Type_Unit);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Type_Unit);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
    end New_Type_Unit;
    -----------------------
    -- New_Abstract_Type --
@@ -13106,54 +12888,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Abstract_Type;
-
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
-
-   function New_Abstract_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Abstract_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Abstract_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.AT_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Abstract_Type;
-
-   -----------------------
-   -- New_Abstract_Type --
-   -----------------------
-
-   function New_Abstract_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Abstract_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Abstract_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.AT_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.AT_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Abstract_Type;
    -----------------------------
    -- New_Generic_Formal_Type --
    -----------------------------
@@ -13272,54 +13006,6 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
-   end New_Generic_Formal_Type;
-
-   -----------------------------
-   -- New_Generic_Formal_Type --
-   -----------------------------
-
-   function New_Generic_Formal_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Generic_Formal_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Generic_Formal_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.GFT_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Generic_Formal_Type;
-
-   -----------------------------
-   -- New_Generic_Formal_Type --
-   -----------------------------
-
-   function New_Generic_Formal_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Generic_Formal_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Generic_Formal_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.GFT_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GFT_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
    end New_Generic_Formal_Type;
    -----------------------------------
    -- New_Generic_Actual_Type_Chain --
@@ -13515,84 +13201,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Generic_Actual_Type_Chain;
-
-   -----------------------------------
-   -- New_Generic_Actual_Type_Chain --
-   -----------------------------------
-
-   function New_Generic_Actual_Type_Chain
-     (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_Array;
-      Name       : W_Identifier_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Generic_Actual_Type_Chain);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
-      for J in Type_Chain'Range loop
-         pragma Assert
-           (Primitive_Type_Id_Kind_Valid
-            (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
-         pragma Assert
-           (Primitive_Type_Id_Valid
-            (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
-         Append
-           (Result.GATC_Type_Chain,
-            +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
-      end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Generic_Actual_Type_Chain;
-
-   -----------------------------------
-   -- New_Generic_Actual_Type_Chain --
-   -----------------------------------
-
-   function New_Generic_Actual_Type_Chain
-     (Ada_Node   : Node_Id := Empty;
-      Type_Chain : W_Primitive_Type_Array;
-      Name       : W_Identifier_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Generic_Actual_Type_Chain);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Generic_Actual_Type_Chain);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      pragma Assert (Type_Chain'Length > 0);
-      Result.GATC_Type_Chain := New_List;
-      for J in Type_Chain'Range loop
-         pragma Assert
-           (Primitive_Type_Id_Kind_Valid
-            (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
-         pragma Assert
-           (Primitive_Type_Id_Valid
-            (+(W_Primitive_Type_Valid_Id (Type_Chain (J)))));
-         Append
-           (Result.GATC_Type_Chain,
-            +(W_Primitive_Type_Valid_Id (Type_Chain (J))));
-      end loop;
-      Set_Link (Result.GATC_Type_Chain, New_Id);
-      Result.GATC_Name :=
-        +(W_Identifier_Valid_Id (Name));
-      Set_Link (Result.GATC_Name, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Generic_Actual_Type_Chain;
    --------------------
    -- New_Array_Type --
    --------------------
@@ -13664,54 +13272,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Array_Type;
-
-   --------------------
-   -- New_Array_Type --
-   --------------------
-
-   function New_Array_Type
-     (Ada_Node       : Node_Id := Empty;
-      Component_Type : W_Primitive_Type_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Array_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Array_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.AT_Component_Type :=
-        +(W_Primitive_Type_Valid_Id (Component_Type));
-      Set_Link (Result.AT_Component_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Array_Type;
-
-   --------------------
-   -- New_Array_Type --
-   --------------------
-
-   function New_Array_Type
-     (Ada_Node       : Node_Id := Empty;
-      Component_Type : W_Primitive_Type_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Array_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Array_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.AT_Component_Type :=
-        +(W_Primitive_Type_Valid_Id (Component_Type));
-      Set_Link (Result.AT_Component_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Array_Type;
    ------------------
    -- New_Ref_Type --
    ------------------
@@ -13759,263 +13319,39 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Simple_Value_Type_Id (New_Id);
    end New_Ref_Type;
-
-   ------------------
-   -- New_Ref_Type --
-   ------------------
-
-   function New_Ref_Type
-     (Ada_Node     : Node_Id := Empty;
-      Aliased_Type : W_Primitive_Type_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Ref_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Ref_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.RT_Aliased_Type :=
-        +(W_Primitive_Type_Valid_Id (Aliased_Type));
-      Set_Link (Result.RT_Aliased_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Ref_Type;
-
-   ------------------
-   -- New_Ref_Type --
-   ------------------
-
-   function New_Ref_Type
-     (Ada_Node     : Node_Id := Empty;
-      Aliased_Type : W_Primitive_Type_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Ref_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Ref_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.RT_Aliased_Type :=
-        +(W_Primitive_Type_Valid_Id (Aliased_Type));
-      Set_Link (Result.RT_Aliased_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Ref_Type;
-   ------------------------------
-   -- New_Protected_Value_Type --
-   ------------------------------
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Protected_Value_Type_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PVT_Value_Type :=
-        +(W_Value_Type_Valid_Id (Value_Type));
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Protected_Value_Type_Id (New_Id);
-   end New_Protected_Value_Type;
-
-   ------------------------------
-   -- New_Protected_Value_Type --
-   ------------------------------
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Simple_Value_Type_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PVT_Value_Type :=
-        +(W_Value_Type_Valid_Id (Value_Type));
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Simple_Value_Type_Id (New_Id);
-   end New_Protected_Value_Type;
-
-   ------------------------------
-   -- New_Protected_Value_Type --
-   ------------------------------
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PVT_Value_Type :=
-        +(W_Value_Type_Valid_Id (Value_Type));
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Protected_Value_Type;
-
-   ------------------------------
-   -- New_Protected_Value_Type --
-   ------------------------------
-
-   function New_Protected_Value_Type
-     (Ada_Node   : Node_Id := Empty;
-      Value_Type : W_Value_Type_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Protected_Value_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Protected_Value_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PVT_Value_Type :=
-        +(W_Value_Type_Valid_Id (Value_Type));
-      Set_Link (Result.PVT_Value_Type, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Protected_Value_Type;
-   --------------------
-   -- New_Arrow_Type --
-   --------------------
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Arrow_Type_Id
-   is
-      Result : Why_Node (W_Arrow_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Arrow_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.NA_Name :=
-        +(W_Identifier_Valid_OId (Name));
-      Set_Link (Result.NA_Name, New_Id);
-      Result.NA_Left :=
-        +(W_Simple_Value_Type_Valid_Id (Left));
-      Set_Link (Result.NA_Left, New_Id);
-      Result.NA_Right :=
-        +(W_Computation_Type_Valid_Id (Right));
-      Set_Link (Result.NA_Right, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Arrow_Type_Id (New_Id);
-   end New_Arrow_Type;
-
-   --------------------
-   -- New_Arrow_Type --
-   --------------------
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Value_Type_Id
-   is
-      Result : Why_Node (W_Arrow_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Arrow_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.NA_Name :=
-        +(W_Identifier_Valid_OId (Name));
-      Set_Link (Result.NA_Name, New_Id);
-      Result.NA_Left :=
-        +(W_Simple_Value_Type_Valid_Id (Left));
-      Set_Link (Result.NA_Left, New_Id);
-      Result.NA_Right :=
-        +(W_Computation_Type_Valid_Id (Right));
-      Set_Link (Result.NA_Right, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Value_Type_Id (New_Id);
-   end New_Arrow_Type;
-
-   --------------------
-   -- New_Arrow_Type --
-   --------------------
-
-   function New_Arrow_Type
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Identifier_OId := Why_Empty;
-      Left     : W_Simple_Value_Type_Id;
-      Right    : W_Computation_Type_Id)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Arrow_Type);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Arrow_Type);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.NA_Name :=
-        +(W_Identifier_Valid_OId (Name));
-      Set_Link (Result.NA_Name, New_Id);
-      Result.NA_Left :=
-        +(W_Simple_Value_Type_Valid_Id (Left));
-      Set_Link (Result.NA_Left, New_Id);
-      Result.NA_Right :=
-        +(W_Computation_Type_Valid_Id (Right));
-      Set_Link (Result.NA_Right, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Type_Id (New_Id);
-   end New_Arrow_Type;
    --------------------------
-   -- New_Computation_Spec --
+   -- New_Computation_Type --
    --------------------------
 
-   function New_Computation_Spec
+   function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
+      Binders       : W_Binder_Array := (2 .. 1 => <>);
       Precondition  : W_Precondition_OId := Why_Empty;
       Result_Name   : W_Identifier_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Id;
+      Return_Type   : W_Primitive_Type_Id;
       Effects       : W_Effects_Id;
       Postcondition : W_Postcondition_OId := Why_Empty)
-     return W_Computation_Spec_Id
+     return W_Computation_Type_Id
    is
-      Result : Why_Node (W_Computation_Spec);
+      Result : Why_Node (W_Computation_Type);
       New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Computation_Spec);
+        New_Why_Node_Id (W_Computation_Type);
    begin
       Result.Ada_Node :=
         Ada_Node;
+      Result.CS_Binders := New_List;
+      for J in Binders'Range loop
+         pragma Assert
+           (Binder_Id_Kind_Valid
+            (+(W_Binder_Valid_OId (Binders (J)))));
+         pragma Assert
+           (Binder_Id_Valid
+            (+(W_Binder_Valid_OId (Binders (J)))));
+         Append
+           (Result.CS_Binders,
+            +(W_Binder_Valid_OId (Binders (J))));
+      end loop;
+      Set_Link (Result.CS_Binders, New_Id);
       Result.CS_Precondition :=
         +(W_Precondition_Valid_OId (Precondition));
       Set_Link (Result.CS_Precondition, New_Id);
@@ -14023,47 +13359,7 @@ package body Why.Atree.Builders is
         +(W_Identifier_Valid_OId (Result_Name));
       Set_Link (Result.CS_Result_Name, New_Id);
       Result.CS_Return_Type :=
-        +(W_Value_Type_Valid_Id (Return_Type));
-      Set_Link (Result.CS_Return_Type, New_Id);
-      Result.CS_Effects :=
-        +(W_Effects_Valid_Id (Effects));
-      Set_Link (Result.CS_Effects, New_Id);
-      Result.CS_Postcondition :=
-        +(W_Postcondition_Valid_OId (Postcondition));
-      Set_Link (Result.CS_Postcondition, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Computation_Spec_Id (New_Id);
-   end New_Computation_Spec;
-
-   --------------------------
-   -- New_Computation_Spec --
-   --------------------------
-
-   function New_Computation_Spec
-     (Ada_Node      : Node_Id := Empty;
-      Precondition  : W_Precondition_OId := Why_Empty;
-      Result_Name   : W_Identifier_OId := Why_Empty;
-      Return_Type   : W_Value_Type_Id;
-      Effects       : W_Effects_Id;
-      Postcondition : W_Postcondition_OId := Why_Empty)
-     return W_Computation_Type_Id
-   is
-      Result : Why_Node (W_Computation_Spec);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Computation_Spec);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.CS_Precondition :=
-        +(W_Precondition_Valid_OId (Precondition));
-      Set_Link (Result.CS_Precondition, New_Id);
-      Result.CS_Result_Name :=
-        +(W_Identifier_Valid_OId (Result_Name));
-      Set_Link (Result.CS_Result_Name, New_Id);
-      Result.CS_Return_Type :=
-        +(W_Value_Type_Valid_Id (Return_Type));
+        +(W_Primitive_Type_Valid_Id (Return_Type));
       Set_Link (Result.CS_Return_Type, New_Id);
       Result.CS_Effects :=
         +(W_Effects_Valid_Id (Effects));
@@ -14075,7 +13371,7 @@ package body Why.Atree.Builders is
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Computation_Type_Id (New_Id);
-   end New_Computation_Spec;
+   end New_Computation_Type;
    --------------------------
    -- New_Integer_Constant --
    --------------------------
@@ -18805,7 +18101,7 @@ package body Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_Id
    is
       Result : Why_Node (W_Raise_Statement);
@@ -18818,7 +18114,7 @@ package body Why.Atree.Builders is
         +(W_Identifier_Valid_Id (Name));
       Set_Link (Result.RS_Name, New_Id);
       Result.RS_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.RS_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -18833,7 +18129,7 @@ package body Why.Atree.Builders is
    function New_Raise_Statement
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id
    is
       Result : Why_Node (W_Raise_Statement);
@@ -18846,7 +18142,7 @@ package body Why.Atree.Builders is
         +(W_Identifier_Valid_Id (Name));
       Set_Link (Result.RS_Name, New_Id);
       Result.RS_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.RS_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -18861,7 +18157,7 @@ package body Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
-      Exn_Type  : W_Value_Type_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_OId := Why_Empty)
      return W_Raise_Statement_With_Parameters_Id
    is
       Result : Why_Node (W_Raise_Statement_With_Parameters);
@@ -18877,7 +18173,7 @@ package body Why.Atree.Builders is
         +(W_Term_Valid_Id (Parameter));
       Set_Link (Result.RSWP_Parameter, New_Id);
       Result.RSWP_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.RSWP_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -18893,7 +18189,7 @@ package body Why.Atree.Builders is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Identifier_Id;
       Parameter : W_Term_Id;
-      Exn_Type  : W_Value_Type_OId := Why_Empty)
+      Exn_Type  : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id
    is
       Result : Why_Node (W_Raise_Statement_With_Parameters);
@@ -18909,7 +18205,7 @@ package body Why.Atree.Builders is
         +(W_Term_Valid_Id (Parameter));
       Set_Link (Result.RSWP_Parameter, New_Id);
       Result.RSWP_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.RSWP_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -18999,7 +18295,7 @@ package body Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Unreachable_Code_Id
    is
       Result : Why_Node (W_Unreachable_Code);
@@ -19009,7 +18305,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       Result.UC_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.UC_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -19023,7 +18319,7 @@ package body Why.Atree.Builders is
 
    function New_Unreachable_Code
      (Ada_Node : Node_Id := Empty;
-      Exn_Type : W_Value_Type_OId := Why_Empty)
+      Exn_Type : W_Simple_Value_Type_OId := Why_Empty)
      return W_Prog_Id
    is
       Result : Why_Node (W_Unreachable_Code);
@@ -19033,7 +18329,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       Result.UC_Exn_Type :=
-        +(W_Value_Type_Valid_OId (Exn_Type));
+        +(W_Simple_Value_Type_Valid_OId (Exn_Type));
       Set_Link (Result.UC_Exn_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -19726,7 +19022,7 @@ package body Why.Atree.Builders is
    function New_Binder
      (Ada_Node : Node_Id := Empty;
       Names    : W_Identifier_Array;
-      Arg_Type : W_Value_Type_Id)
+      Arg_Type : W_Simple_Value_Type_Id)
      return W_Binder_Id
    is
       Result : Why_Node (W_Binder);
@@ -19750,7 +19046,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.B_Names, New_Id);
       Result.B_Arg_Type :=
-        +(W_Value_Type_Valid_Id (Arg_Type));
+        +(W_Simple_Value_Type_Valid_Id (Arg_Type));
       Set_Link (Result.B_Arg_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -20075,7 +19371,7 @@ package body Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
      return W_Parameter_Declaration_Id
    is
       Result : Why_Node (W_Parameter_Declaration);
@@ -20102,7 +19398,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.PD_Names, New_Id);
       Result.PD_Parameter_Type :=
-        +(W_Value_Type_Valid_Id (Parameter_Type));
+        +(W_Computation_Type_Valid_Id (Parameter_Type));
       Set_Link (Result.PD_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
@@ -20118,7 +19414,7 @@ package body Why.Atree.Builders is
      (Ada_Node       : Node_Id := Empty;
       External       : W_External_OId := Why_Empty;
       Names          : W_Identifier_Array;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
      return W_Declaration_Id
    is
       Result : Why_Node (W_Parameter_Declaration);
@@ -20145,13 +19441,68 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.PD_Names, New_Id);
       Result.PD_Parameter_Type :=
-        +(W_Value_Type_Valid_Id (Parameter_Type));
+        +(W_Computation_Type_Valid_Id (Parameter_Type));
       Set_Link (Result.PD_Parameter_Type, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Declaration_Id (New_Id);
    end New_Parameter_Declaration;
+   --------------------------------
+   -- New_Global_Ref_Declaration --
+   --------------------------------
+
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+     return W_Global_Ref_Declaration_Id
+   is
+      Result : Why_Node (W_Global_Ref_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Ref_Declaration);
+   begin
+      Result.Ada_Node :=
+        Ada_Node;
+      Result.GR_Name :=
+        +(W_Identifier_Valid_Id (Name));
+      Set_Link (Result.GR_Name, New_Id);
+      Result.GR_Parameter_Type :=
+        +(W_Primitive_Type_Valid_Id (Parameter_Type));
+      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return W_Global_Ref_Declaration_Id (New_Id);
+   end New_Global_Ref_Declaration;
+
+   --------------------------------
+   -- New_Global_Ref_Declaration --
+   --------------------------------
+
+   function New_Global_Ref_Declaration
+     (Ada_Node       : Node_Id := Empty;
+      Name           : W_Identifier_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+     return W_Declaration_Id
+   is
+      Result : Why_Node (W_Global_Ref_Declaration);
+      New_Id : constant Why_Node_Id :=
+        New_Why_Node_Id (W_Global_Ref_Declaration);
+   begin
+      Result.Ada_Node :=
+        Ada_Node;
+      Result.GR_Name :=
+        +(W_Identifier_Valid_Id (Name));
+      Set_Link (Result.GR_Name, New_Id);
+      Result.GR_Parameter_Type :=
+        +(W_Primitive_Type_Valid_Id (Parameter_Type));
+      Set_Link (Result.GR_Parameter_Type, New_Id);
+      Result.Link := Why_Empty;
+      Result.Checked := True;
+      Set_Node (New_Id, Result);
+      return W_Declaration_Id (New_Id);
+   end New_Global_Ref_Declaration;
    -------------------------------
    -- New_Exception_Declaration --
    -------------------------------
@@ -20787,136 +20138,10 @@ package body Why.Atree.Builders is
             return Duplicate_Ref_Type
              (Ada_Node  => Ada_Node,
               Id        => Id);
-         when W_Protected_Value_Type =>
-            return Duplicate_Protected_Value_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
          when others =>
             return Why_Empty;
       end case;
    end Duplicate_Simple_Value_Type;
-
-   --------------------------
-   -- Duplicate_Value_Type --
-   --------------------------
-
-   function Duplicate_Value_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Value_Type_Valid_Id)
-     return W_Value_Type_Valid_Id is
-   begin
-      case Get_Kind (Id) is
-         when W_Type_Int =>
-            return Duplicate_Type_Int
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Bool =>
-            return Duplicate_Type_Bool
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Real =>
-            return Duplicate_Type_Real
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Unit =>
-            return Duplicate_Type_Unit
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Abstract_Type =>
-            return Duplicate_Abstract_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Generic_Formal_Type =>
-            return Duplicate_Generic_Formal_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Generic_Actual_Type_Chain =>
-            return Duplicate_Generic_Actual_Type_Chain
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Array_Type =>
-            return Duplicate_Array_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Ref_Type =>
-            return Duplicate_Ref_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Protected_Value_Type =>
-            return Duplicate_Protected_Value_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Arrow_Type =>
-            return Duplicate_Arrow_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when others =>
-            return Why_Empty;
-      end case;
-   end Duplicate_Value_Type;
-
-   --------------------------------
-   -- Duplicate_Computation_Type --
-   --------------------------------
-
-   function Duplicate_Computation_Type
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Computation_Type_Valid_Id)
-     return W_Computation_Type_Valid_Id is
-   begin
-      case Get_Kind (Id) is
-         when W_Type_Int =>
-            return Duplicate_Type_Int
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Bool =>
-            return Duplicate_Type_Bool
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Real =>
-            return Duplicate_Type_Real
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Type_Unit =>
-            return Duplicate_Type_Unit
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Abstract_Type =>
-            return Duplicate_Abstract_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Generic_Formal_Type =>
-            return Duplicate_Generic_Formal_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Generic_Actual_Type_Chain =>
-            return Duplicate_Generic_Actual_Type_Chain
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Array_Type =>
-            return Duplicate_Array_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Ref_Type =>
-            return Duplicate_Ref_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Protected_Value_Type =>
-            return Duplicate_Protected_Value_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Arrow_Type =>
-            return Duplicate_Arrow_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Computation_Spec =>
-            return Duplicate_Computation_Spec
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when others =>
-            return Why_Empty;
-      end case;
-   end Duplicate_Computation_Type;
 
    --------------------
    -- Duplicate_Prog --
@@ -21157,6 +20382,10 @@ package body Why.Atree.Builders is
             return Duplicate_Parameter_Declaration
              (Ada_Node  => Ada_Node,
               Id        => Id);
+         when W_Global_Ref_Declaration =>
+            return Duplicate_Global_Ref_Declaration
+             (Ada_Node  => Ada_Node,
+              Id        => Id);
          when W_Exception_Declaration =>
             return Duplicate_Exception_Declaration
              (Ada_Node  => Ada_Node,
@@ -21228,16 +20457,8 @@ package body Why.Atree.Builders is
             return Duplicate_Ref_Type
              (Ada_Node  => Ada_Node,
               Id        => Id);
-         when W_Protected_Value_Type =>
-            return Duplicate_Protected_Value_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Arrow_Type =>
-            return Duplicate_Arrow_Type
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Computation_Spec =>
-            return Duplicate_Computation_Spec
+         when W_Computation_Type =>
+            return Duplicate_Computation_Type
              (Ada_Node  => Ada_Node,
               Id        => Id);
          when W_Integer_Constant =>
@@ -21702,6 +20923,10 @@ package body Why.Atree.Builders is
               Id        => Id);
          when W_Parameter_Declaration =>
             return Duplicate_Parameter_Declaration
+             (Ada_Node  => Ada_Node,
+              Id        => Id);
+         when W_Global_Ref_Declaration =>
+            return Duplicate_Global_Ref_Declaration
              (Ada_Node  => Ada_Node,
               Id        => Id);
          when W_Exception_Declaration =>

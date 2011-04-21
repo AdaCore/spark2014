@@ -183,7 +183,7 @@ package body Why.Gen.Progs is
          New_Any_Expr
             (Ada_Node => Ada_Node,
              Any_Type =>
-               New_Computation_Spec
+               New_Computation_Type
                  (Ada_Node => Ada_Node,
                   Return_Type => New_Type_Unit,
                   Effects => New_Effects,
@@ -457,6 +457,21 @@ package body Why.Gen.Progs is
                Right    => Right);
       end if;
    end New_Prog_Orb_Else;
+
+   ------------------------
+   -- New_Simpl_Any_Expr --
+   ------------------------
+
+   function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id
+   is
+   begin
+      return
+         New_Any_Expr
+            (Any_Type =>
+               New_Computation_Type
+                  (Return_Type => T,
+                   Effects     => New_Effects));
+   end New_Simpl_Any_Expr;
 
    --------------------------------
    -- New_Simpl_Conditional_Prog --

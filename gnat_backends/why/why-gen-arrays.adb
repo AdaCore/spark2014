@@ -94,7 +94,7 @@ package body Why.Gen.Arrays is
       function New_Binder (Arg, Arg_Type : String) return W_Binder_Id;
       --  Return a binder with the given argument name and argument type.
 
-      function New_Binder (Arg : String; Arg_Type : W_Value_Type_Id)
+      function New_Binder (Arg : String; Arg_Type : W_Simple_Value_Type_Id)
          return W_Binder_Id;
       --  Return a binder with the given argument name and argument type.
 
@@ -120,9 +120,8 @@ package body Why.Gen.Arrays is
                   New_Abstract_Type (Name => New_Identifier (Arg_Type)));
       end New_Binder;
 
-      function New_Binder (Arg : String; Arg_Type : W_Value_Type_Id)
-         return W_Binder_Id
-      is
+      function New_Binder (Arg : String; Arg_Type : W_Simple_Value_Type_Id)
+         return W_Binder_Id is
       begin
          return
             New_Binder

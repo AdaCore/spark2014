@@ -253,52 +253,20 @@ package Why.Atree.Validity is
      (Id : W_Ref_Type_Unchecked_List)
      return Boolean;
 
-   function Protected_Value_Type_OId_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
+   function Computation_Type_OId_Valid
+     (Id : W_Computation_Type_Unchecked_OId)
      return Boolean;
 
-   function Protected_Value_Type_OList_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
+   function Computation_Type_OList_Valid
+     (Id : W_Computation_Type_Unchecked_OList)
      return Boolean;
 
-   function Protected_Value_Type_Id_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
+   function Computation_Type_Id_Valid
+     (Id : W_Computation_Type_Unchecked_Id)
      return Boolean;
 
-   function Protected_Value_Type_List_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Arrow_Type_OId_Valid
-     (Id : W_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Arrow_Type_OList_Valid
-     (Id : W_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Arrow_Type_Id_Valid
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Arrow_Type_List_Valid
-     (Id : W_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Computation_Spec_OId_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Spec_OList_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Spec_Id_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Spec_List_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
+   function Computation_Type_List_Valid
+     (Id : W_Computation_Type_Unchecked_List)
      return Boolean;
 
    function Integer_Constant_OId_Valid
@@ -2157,6 +2125,22 @@ package Why.Atree.Validity is
      (Id : W_Parameter_Declaration_Unchecked_List)
      return Boolean;
 
+   function Global_Ref_Declaration_OId_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OId)
+     return Boolean;
+
+   function Global_Ref_Declaration_OList_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OList)
+     return Boolean;
+
+   function Global_Ref_Declaration_Id_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return Boolean;
+
+   function Global_Ref_Declaration_List_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_List)
+     return Boolean;
+
    function Exception_Declaration_OId_Valid
      (Id : W_Exception_Declaration_Unchecked_OId)
      return Boolean;
@@ -2363,38 +2347,6 @@ package Why.Atree.Validity is
 
    function Simple_Value_Type_List_Valid
      (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Value_Type_OId_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean;
-
-   function Value_Type_OList_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean;
-
-   function Value_Type_Id_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean;
-
-   function Value_Type_List_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Computation_Type_OId_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Type_OList_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Type_Id_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Type_List_Valid
-     (Id : W_Computation_Type_Unchecked_List)
      return Boolean;
 
    function Prog_OId_Valid
@@ -2695,52 +2647,20 @@ private
      (Id : W_Ref_Type_Unchecked_List)
      return Boolean;
 
-   function Protected_Value_Type_OId_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
+   function Computation_Type_OId_Children_Valid
+     (Id : W_Computation_Type_Unchecked_OId)
      return Boolean;
 
-   function Protected_Value_Type_OList_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
+   function Computation_Type_OList_Children_Valid
+     (Id : W_Computation_Type_Unchecked_OList)
      return Boolean;
 
-   function Protected_Value_Type_Id_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
+   function Computation_Type_Id_Children_Valid
+     (Id : W_Computation_Type_Unchecked_Id)
      return Boolean;
 
-   function Protected_Value_Type_List_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Arrow_Type_OId_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_OId)
-     return Boolean;
-
-   function Arrow_Type_OList_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_OList)
-     return Boolean;
-
-   function Arrow_Type_Id_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return Boolean;
-
-   function Arrow_Type_List_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_List)
-     return Boolean;
-
-   function Computation_Spec_OId_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Spec_OList_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Spec_Id_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Spec_List_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
+   function Computation_Type_List_Children_Valid
+     (Id : W_Computation_Type_Unchecked_List)
      return Boolean;
 
    function Integer_Constant_OId_Children_Valid
@@ -4599,6 +4519,22 @@ private
      (Id : W_Parameter_Declaration_Unchecked_List)
      return Boolean;
 
+   function Global_Ref_Declaration_OId_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OId)
+     return Boolean;
+
+   function Global_Ref_Declaration_OList_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OList)
+     return Boolean;
+
+   function Global_Ref_Declaration_Id_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return Boolean;
+
+   function Global_Ref_Declaration_List_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_List)
+     return Boolean;
+
    function Exception_Declaration_OId_Children_Valid
      (Id : W_Exception_Declaration_Unchecked_OId)
      return Boolean;
@@ -4805,38 +4741,6 @@ private
 
    function Simple_Value_Type_List_Children_Valid
      (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Value_Type_OId_Children_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean;
-
-   function Value_Type_OList_Children_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean;
-
-   function Value_Type_Id_Children_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean;
-
-   function Value_Type_List_Children_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean;
-
-   function Computation_Type_OId_Children_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean;
-
-   function Computation_Type_OList_Children_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean;
-
-   function Computation_Type_Id_Children_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean;
-
-   function Computation_Type_List_Children_Valid
-     (Id : W_Computation_Type_Unchecked_List)
      return Boolean;
 
    function Prog_OId_Children_Valid
@@ -5249,78 +5153,26 @@ private
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Protected_Value_Type_OId_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
+   function Computation_Type_OId_Valid
+     (Id : W_Computation_Type_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Protected_Value_Type_Id_Valid (Id));
+      or else Computation_Type_Id_Valid (Id));
 
-   function Protected_Value_Type_OList_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
+   function Computation_Type_OList_Valid
+     (Id : W_Computation_Type_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Protected_Value_Type_List_Valid (Id));
+      or else Computation_Type_List_Valid (Id));
 
-   function Protected_Value_Type_Id_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
+   function Computation_Type_Id_Valid
+     (Id : W_Computation_Type_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid (Id)
-      or else Protected_Value_Type_Id_Children_Valid (Id));
+      or else Computation_Type_Id_Children_Valid (Id));
 
-   function Protected_Value_Type_List_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Arrow_Type_OId_Valid
-     (Id : W_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Arrow_Type_Id_Valid (Id));
-
-   function Arrow_Type_OList_Valid
-     (Id : W_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Arrow_Type_List_Valid (Id));
-
-   function Arrow_Type_Id_Valid
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Arrow_Type_Id_Children_Valid (Id));
-
-   function Arrow_Type_List_Valid
-     (Id : W_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Spec_OId_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Spec_Id_Valid (Id));
-
-   function Computation_Spec_OList_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Spec_List_Valid (Id));
-
-   function Computation_Spec_Id_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Computation_Spec_Id_Children_Valid (Id));
-
-   function Computation_Spec_List_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
+   function Computation_Type_List_Valid
+     (Id : W_Computation_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
@@ -8343,6 +8195,32 @@ private
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
+   function Global_Ref_Declaration_OId_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Global_Ref_Declaration_Id_Valid (Id));
+
+   function Global_Ref_Declaration_OList_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Global_Ref_Declaration_List_Valid (Id));
+
+   function Global_Ref_Declaration_Id_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid (Id)
+      or else Global_Ref_Declaration_Id_Children_Valid (Id));
+
+   function Global_Ref_Declaration_List_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
    function Exception_Declaration_OId_Valid
      (Id : W_Exception_Declaration_Unchecked_OId)
      return Boolean is
@@ -8675,58 +8553,6 @@ private
 
    function Simple_Value_Type_List_Valid
      (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Value_Type_OId_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Value_Type_Id_Valid (Id));
-
-   function Value_Type_OList_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Value_Type_List_Valid (Id));
-
-   function Value_Type_Id_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Value_Type_Id_Children_Valid (Id));
-
-   function Value_Type_List_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Type_OId_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Type_Id_Valid (Id));
-
-   function Computation_Type_OList_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Type_List_Valid (Id));
-
-   function Computation_Type_Id_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Computation_Type_Id_Children_Valid (Id));
-
-   function Computation_Type_List_Valid
-     (Id : W_Computation_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
@@ -9187,77 +9013,26 @@ private
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
 
-   function Protected_Value_Type_OId_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OId)
+   function Computation_Type_OId_Children_Valid
+     (Id : W_Computation_Type_Unchecked_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Protected_Value_Type_Id_Children_Valid (Id));
+      or else Computation_Type_Id_Children_Valid (Id));
 
-   function Protected_Value_Type_OList_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_OList)
+   function Computation_Type_OList_Children_Valid
+     (Id : W_Computation_Type_Unchecked_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Protected_Value_Type_List_Children_Valid (Id));
+      or else Computation_Type_List_Children_Valid (Id));
 
-   function Protected_Value_Type_Id_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_Id)
+   function Computation_Type_Id_Children_Valid
+     (Id : W_Computation_Type_Unchecked_Id)
      return Boolean is
-     (Id_Cache_Valid
-       (Get_Node (Id).PVT_Value_Type));
-
-   function Protected_Value_Type_List_Children_Valid
-     (Id : W_Protected_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Arrow_Type_OId_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Arrow_Type_Id_Children_Valid (Id));
-
-   function Arrow_Type_OList_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Arrow_Type_List_Children_Valid (Id));
-
-   function Arrow_Type_Id_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return Boolean is
-     (OId_Cache_Valid
-       (Get_Node (Id).NA_Name)
+     (OList_Cache_Valid
+       (Get_Node (Id).CS_Binders)
      and then
-       Id_Cache_Valid
-         (Get_Node (Id).NA_Left)
-     and then
-       Id_Cache_Valid
-         (Get_Node (Id).NA_Right));
-
-   function Arrow_Type_List_Children_Valid
-     (Id : W_Arrow_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Computation_Spec_OId_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Spec_Id_Children_Valid (Id));
-
-   function Computation_Spec_OList_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Spec_List_Children_Valid (Id));
-
-   function Computation_Spec_Id_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return Boolean is
-     (OId_Cache_Valid
-       (Get_Node (Id).CS_Precondition)
+       OId_Cache_Valid
+         (Get_Node (Id).CS_Precondition)
      and then
        OId_Cache_Valid
          (Get_Node (Id).CS_Result_Name)
@@ -9271,8 +9046,8 @@ private
        OId_Cache_Valid
          (Get_Node (Id).CS_Postcondition));
 
-   function Computation_Spec_List_Children_Valid
-     (Id : W_Computation_Spec_Unchecked_List)
+   function Computation_Type_List_Children_Valid
+     (Id : W_Computation_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
@@ -12327,6 +12102,33 @@ private
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
 
+   function Global_Ref_Declaration_OId_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Global_Ref_Declaration_Id_Children_Valid (Id));
+
+   function Global_Ref_Declaration_OList_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Global_Ref_Declaration_List_Children_Valid (Id));
+
+   function Global_Ref_Declaration_Id_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return Boolean is
+     (Id_Cache_Valid
+       (Get_Node (Id).GR_Name)
+     and then
+       Id_Cache_Valid
+         (Get_Node (Id).GR_Parameter_Type));
+
+   function Global_Ref_Declaration_List_Children_Valid
+     (Id : W_Global_Ref_Declaration_Unchecked_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then List_Cache_Valid (Id));
+
    function Exception_Declaration_OId_Children_Valid
      (Id : W_Exception_Declaration_Unchecked_OId)
      return Boolean is
@@ -12813,109 +12615,11 @@ private
            Array_Type_Id_Children_Valid (Id),
         when W_Ref_Type =>
            Ref_Type_Id_Children_Valid (Id),
-        when W_Protected_Value_Type =>
-           Protected_Value_Type_Id_Children_Valid (Id),
         when others =>
            False);
 
    function Simple_Value_Type_List_Children_Valid
      (Id : W_Simple_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Value_Type_OId_Children_Valid
-     (Id : W_Value_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Value_Type_Id_Children_Valid (Id));
-
-   function Value_Type_OList_Children_Valid
-     (Id : W_Value_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Value_Type_List_Children_Valid (Id));
-
-   function Value_Type_Id_Children_Valid
-     (Id : W_Value_Type_Unchecked_Id)
-     return Boolean is
-     (case Get_Kind (Id) is
-        when W_Type_Int =>
-           Type_Int_Id_Children_Valid (Id),
-        when W_Type_Bool =>
-           Type_Bool_Id_Children_Valid (Id),
-        when W_Type_Real =>
-           Type_Real_Id_Children_Valid (Id),
-        when W_Type_Unit =>
-           Type_Unit_Id_Children_Valid (Id),
-        when W_Abstract_Type =>
-           Abstract_Type_Id_Children_Valid (Id),
-        when W_Generic_Formal_Type =>
-           Generic_Formal_Type_Id_Children_Valid (Id),
-        when W_Generic_Actual_Type_Chain =>
-           Generic_Actual_Type_Chain_Id_Children_Valid (Id),
-        when W_Array_Type =>
-           Array_Type_Id_Children_Valid (Id),
-        when W_Ref_Type =>
-           Ref_Type_Id_Children_Valid (Id),
-        when W_Protected_Value_Type =>
-           Protected_Value_Type_Id_Children_Valid (Id),
-        when W_Arrow_Type =>
-           Arrow_Type_Id_Children_Valid (Id),
-        when others =>
-           False);
-
-   function Value_Type_List_Children_Valid
-     (Id : W_Value_Type_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Computation_Type_OId_Children_Valid
-     (Id : W_Computation_Type_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Type_Id_Children_Valid (Id));
-
-   function Computation_Type_OList_Children_Valid
-     (Id : W_Computation_Type_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Type_List_Children_Valid (Id));
-
-   function Computation_Type_Id_Children_Valid
-     (Id : W_Computation_Type_Unchecked_Id)
-     return Boolean is
-     (case Get_Kind (Id) is
-        when W_Type_Int =>
-           Type_Int_Id_Children_Valid (Id),
-        when W_Type_Bool =>
-           Type_Bool_Id_Children_Valid (Id),
-        when W_Type_Real =>
-           Type_Real_Id_Children_Valid (Id),
-        when W_Type_Unit =>
-           Type_Unit_Id_Children_Valid (Id),
-        when W_Abstract_Type =>
-           Abstract_Type_Id_Children_Valid (Id),
-        when W_Generic_Formal_Type =>
-           Generic_Formal_Type_Id_Children_Valid (Id),
-        when W_Generic_Actual_Type_Chain =>
-           Generic_Actual_Type_Chain_Id_Children_Valid (Id),
-        when W_Array_Type =>
-           Array_Type_Id_Children_Valid (Id),
-        when W_Ref_Type =>
-           Ref_Type_Id_Children_Valid (Id),
-        when W_Protected_Value_Type =>
-           Protected_Value_Type_Id_Children_Valid (Id),
-        when W_Arrow_Type =>
-           Arrow_Type_Id_Children_Valid (Id),
-        when W_Computation_Spec =>
-           Computation_Spec_Id_Children_Valid (Id),
-        when others =>
-           False);
-
-   function Computation_Type_List_Children_Valid
-     (Id : W_Computation_Type_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
@@ -13103,6 +12807,8 @@ private
            Global_Rec_Binding_Id_Children_Valid (Id),
         when W_Parameter_Declaration =>
            Parameter_Declaration_Id_Children_Valid (Id),
+        when W_Global_Ref_Declaration =>
+           Global_Ref_Declaration_Id_Children_Valid (Id),
         when W_Exception_Declaration =>
            Exception_Declaration_Id_Children_Valid (Id),
         when W_Logic_Declaration =>
@@ -13156,12 +12862,8 @@ private
            Array_Type_Id_Children_Valid (Id),
         when W_Ref_Type =>
            Ref_Type_Id_Children_Valid (Id),
-        when W_Protected_Value_Type =>
-           Protected_Value_Type_Id_Children_Valid (Id),
-        when W_Arrow_Type =>
-           Arrow_Type_Id_Children_Valid (Id),
-        when W_Computation_Spec =>
-           Computation_Spec_Id_Children_Valid (Id),
+        when W_Computation_Type =>
+           Computation_Type_Id_Children_Valid (Id),
         when W_Integer_Constant =>
            Integer_Constant_Id_Children_Valid (Id),
         when W_Real_Constant =>
@@ -13394,6 +13096,8 @@ private
            Global_Rec_Binding_Id_Children_Valid (Id),
         when W_Parameter_Declaration =>
            Parameter_Declaration_Id_Children_Valid (Id),
+        when W_Global_Ref_Declaration =>
+           Global_Ref_Declaration_Id_Children_Valid (Id),
         when W_Exception_Declaration =>
            Exception_Declaration_Id_Children_Valid (Id),
         when W_Logic_Declaration =>

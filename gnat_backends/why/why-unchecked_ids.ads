@@ -325,77 +325,29 @@ package Why.Unchecked_Ids is
    (Ref_Type_List_Kind_Valid
       (W_Ref_Type_Unchecked_List));
 
-   subtype W_Protected_Value_Type_Unchecked_OId is
-     W_Protected_Value_Type_Opaque_OId with
+   subtype W_Computation_Type_Unchecked_OId is
+     W_Computation_Type_Opaque_OId with
    Predicate =>
-   (Protected_Value_Type_OId_Kind_Valid
-      (W_Protected_Value_Type_Unchecked_OId));
+   (Computation_Type_OId_Kind_Valid
+      (W_Computation_Type_Unchecked_OId));
 
-   subtype W_Protected_Value_Type_Unchecked_OList is
-     W_Protected_Value_Type_Opaque_OList with
+   subtype W_Computation_Type_Unchecked_OList is
+     W_Computation_Type_Opaque_OList with
    Predicate =>
-   (Protected_Value_Type_OList_Kind_Valid
-      (W_Protected_Value_Type_Unchecked_OList));
+   (Computation_Type_OList_Kind_Valid
+      (W_Computation_Type_Unchecked_OList));
 
-   subtype W_Protected_Value_Type_Unchecked_Id is
-     W_Protected_Value_Type_Opaque_Id with
+   subtype W_Computation_Type_Unchecked_Id is
+     W_Computation_Type_Opaque_Id with
    Predicate =>
-   (Protected_Value_Type_Id_Kind_Valid
-      (W_Protected_Value_Type_Unchecked_Id));
+   (Computation_Type_Id_Kind_Valid
+      (W_Computation_Type_Unchecked_Id));
 
-   subtype W_Protected_Value_Type_Unchecked_List is
-     W_Protected_Value_Type_Opaque_List with
+   subtype W_Computation_Type_Unchecked_List is
+     W_Computation_Type_Opaque_List with
    Predicate =>
-   (Protected_Value_Type_List_Kind_Valid
-      (W_Protected_Value_Type_Unchecked_List));
-
-   subtype W_Arrow_Type_Unchecked_OId is
-     W_Arrow_Type_Opaque_OId with
-   Predicate =>
-   (Arrow_Type_OId_Kind_Valid
-      (W_Arrow_Type_Unchecked_OId));
-
-   subtype W_Arrow_Type_Unchecked_OList is
-     W_Arrow_Type_Opaque_OList with
-   Predicate =>
-   (Arrow_Type_OList_Kind_Valid
-      (W_Arrow_Type_Unchecked_OList));
-
-   subtype W_Arrow_Type_Unchecked_Id is
-     W_Arrow_Type_Opaque_Id with
-   Predicate =>
-   (Arrow_Type_Id_Kind_Valid
-      (W_Arrow_Type_Unchecked_Id));
-
-   subtype W_Arrow_Type_Unchecked_List is
-     W_Arrow_Type_Opaque_List with
-   Predicate =>
-   (Arrow_Type_List_Kind_Valid
-      (W_Arrow_Type_Unchecked_List));
-
-   subtype W_Computation_Spec_Unchecked_OId is
-     W_Computation_Spec_Opaque_OId with
-   Predicate =>
-   (Computation_Spec_OId_Kind_Valid
-      (W_Computation_Spec_Unchecked_OId));
-
-   subtype W_Computation_Spec_Unchecked_OList is
-     W_Computation_Spec_Opaque_OList with
-   Predicate =>
-   (Computation_Spec_OList_Kind_Valid
-      (W_Computation_Spec_Unchecked_OList));
-
-   subtype W_Computation_Spec_Unchecked_Id is
-     W_Computation_Spec_Opaque_Id with
-   Predicate =>
-   (Computation_Spec_Id_Kind_Valid
-      (W_Computation_Spec_Unchecked_Id));
-
-   subtype W_Computation_Spec_Unchecked_List is
-     W_Computation_Spec_Opaque_List with
-   Predicate =>
-   (Computation_Spec_List_Kind_Valid
-      (W_Computation_Spec_Unchecked_List));
+   (Computation_Type_List_Kind_Valid
+      (W_Computation_Type_Unchecked_List));
 
    subtype W_Integer_Constant_Unchecked_OId is
      W_Integer_Constant_Opaque_OId with
@@ -3181,6 +3133,30 @@ package Why.Unchecked_Ids is
    (Parameter_Declaration_List_Kind_Valid
       (W_Parameter_Declaration_Unchecked_List));
 
+   subtype W_Global_Ref_Declaration_Unchecked_OId is
+     W_Global_Ref_Declaration_Opaque_OId with
+   Predicate =>
+   (Global_Ref_Declaration_OId_Kind_Valid
+      (W_Global_Ref_Declaration_Unchecked_OId));
+
+   subtype W_Global_Ref_Declaration_Unchecked_OList is
+     W_Global_Ref_Declaration_Opaque_OList with
+   Predicate =>
+   (Global_Ref_Declaration_OList_Kind_Valid
+      (W_Global_Ref_Declaration_Unchecked_OList));
+
+   subtype W_Global_Ref_Declaration_Unchecked_Id is
+     W_Global_Ref_Declaration_Opaque_Id with
+   Predicate =>
+   (Global_Ref_Declaration_Id_Kind_Valid
+      (W_Global_Ref_Declaration_Unchecked_Id));
+
+   subtype W_Global_Ref_Declaration_Unchecked_List is
+     W_Global_Ref_Declaration_Opaque_List with
+   Predicate =>
+   (Global_Ref_Declaration_List_Kind_Valid
+      (W_Global_Ref_Declaration_Unchecked_List));
+
    subtype W_Exception_Declaration_Unchecked_OId is
      W_Exception_Declaration_Opaque_OId with
    Predicate =>
@@ -3492,54 +3468,6 @@ package Why.Unchecked_Ids is
    Predicate =>
    (Simple_Value_Type_List_Kind_Valid
       (W_Simple_Value_Type_Unchecked_List));
-
-   subtype W_Value_Type_Unchecked_OId is
-     W_Value_Type_Opaque_OId with
-   Predicate =>
-   (Value_Type_OId_Kind_Valid
-      (W_Value_Type_Unchecked_OId));
-
-   subtype W_Value_Type_Unchecked_OList is
-     W_Value_Type_Opaque_OList with
-   Predicate =>
-   (Value_Type_OList_Kind_Valid
-      (W_Value_Type_Unchecked_OList));
-
-   subtype W_Value_Type_Unchecked_Id is
-     W_Value_Type_Opaque_Id with
-   Predicate =>
-   (Value_Type_Id_Kind_Valid
-      (W_Value_Type_Unchecked_Id));
-
-   subtype W_Value_Type_Unchecked_List is
-     W_Value_Type_Opaque_List with
-   Predicate =>
-   (Value_Type_List_Kind_Valid
-      (W_Value_Type_Unchecked_List));
-
-   subtype W_Computation_Type_Unchecked_OId is
-     W_Computation_Type_Opaque_OId with
-   Predicate =>
-   (Computation_Type_OId_Kind_Valid
-      (W_Computation_Type_Unchecked_OId));
-
-   subtype W_Computation_Type_Unchecked_OList is
-     W_Computation_Type_Opaque_OList with
-   Predicate =>
-   (Computation_Type_OList_Kind_Valid
-      (W_Computation_Type_Unchecked_OList));
-
-   subtype W_Computation_Type_Unchecked_Id is
-     W_Computation_Type_Opaque_Id with
-   Predicate =>
-   (Computation_Type_Id_Kind_Valid
-      (W_Computation_Type_Unchecked_Id));
-
-   subtype W_Computation_Type_Unchecked_List is
-     W_Computation_Type_Opaque_List with
-   Predicate =>
-   (Computation_Type_List_Kind_Valid
-      (W_Computation_Type_Unchecked_List));
 
    subtype W_Prog_Unchecked_OId is
      W_Prog_Opaque_OId with

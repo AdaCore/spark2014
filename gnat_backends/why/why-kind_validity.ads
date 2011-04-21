@@ -224,52 +224,20 @@ package Why.Kind_Validity is
      (Id : W_Ref_Type_Opaque_List)
      return Boolean;
 
-   function Protected_Value_Type_OId_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_OId)
+   function Computation_Type_OId_Kind_Valid
+     (Id : W_Computation_Type_Opaque_OId)
      return Boolean;
 
-   function Protected_Value_Type_OList_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_OList)
+   function Computation_Type_OList_Kind_Valid
+     (Id : W_Computation_Type_Opaque_OList)
      return Boolean;
 
-   function Protected_Value_Type_Id_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_Id)
+   function Computation_Type_Id_Kind_Valid
+     (Id : W_Computation_Type_Opaque_Id)
      return Boolean;
 
-   function Protected_Value_Type_List_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_List)
-     return Boolean;
-
-   function Arrow_Type_OId_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_OId)
-     return Boolean;
-
-   function Arrow_Type_OList_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_OList)
-     return Boolean;
-
-   function Arrow_Type_Id_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_Id)
-     return Boolean;
-
-   function Arrow_Type_List_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_List)
-     return Boolean;
-
-   function Computation_Spec_OId_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_OId)
-     return Boolean;
-
-   function Computation_Spec_OList_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_OList)
-     return Boolean;
-
-   function Computation_Spec_Id_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_Id)
-     return Boolean;
-
-   function Computation_Spec_List_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_List)
+   function Computation_Type_List_Kind_Valid
+     (Id : W_Computation_Type_Opaque_List)
      return Boolean;
 
    function Integer_Constant_OId_Kind_Valid
@@ -2128,6 +2096,22 @@ package Why.Kind_Validity is
      (Id : W_Parameter_Declaration_Opaque_List)
      return Boolean;
 
+   function Global_Ref_Declaration_OId_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_OId)
+     return Boolean;
+
+   function Global_Ref_Declaration_OList_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_OList)
+     return Boolean;
+
+   function Global_Ref_Declaration_Id_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_Id)
+     return Boolean;
+
+   function Global_Ref_Declaration_List_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_List)
+     return Boolean;
+
    function Exception_Declaration_OId_Kind_Valid
      (Id : W_Exception_Declaration_Opaque_OId)
      return Boolean;
@@ -2334,38 +2318,6 @@ package Why.Kind_Validity is
 
    function Simple_Value_Type_List_Kind_Valid
      (Id : W_Simple_Value_Type_Opaque_List)
-     return Boolean;
-
-   function Value_Type_OId_Kind_Valid
-     (Id : W_Value_Type_Opaque_OId)
-     return Boolean;
-
-   function Value_Type_OList_Kind_Valid
-     (Id : W_Value_Type_Opaque_OList)
-     return Boolean;
-
-   function Value_Type_Id_Kind_Valid
-     (Id : W_Value_Type_Opaque_Id)
-     return Boolean;
-
-   function Value_Type_List_Kind_Valid
-     (Id : W_Value_Type_Opaque_List)
-     return Boolean;
-
-   function Computation_Type_OId_Kind_Valid
-     (Id : W_Computation_Type_Opaque_OId)
-     return Boolean;
-
-   function Computation_Type_OList_Kind_Valid
-     (Id : W_Computation_Type_Opaque_OList)
-     return Boolean;
-
-   function Computation_Type_Id_Kind_Valid
-     (Id : W_Computation_Type_Opaque_Id)
-     return Boolean;
-
-   function Computation_Type_List_Kind_Valid
-     (Id : W_Computation_Type_Opaque_List)
      return Boolean;
 
    function Prog_OId_Kind_Valid
@@ -2766,75 +2718,25 @@ private
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
-   function Protected_Value_Type_OId_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_OId)
+   function Computation_Type_OId_Kind_Valid
+     (Id : W_Computation_Type_Opaque_OId)
      return Boolean is
      (Id = Why_Empty
-      or else Protected_Value_Type_Id_Kind_Valid (Id));
+      or else Computation_Type_Id_Kind_Valid (Id));
 
-   function Protected_Value_Type_OList_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_OList)
+   function Computation_Type_OList_Kind_Valid
+     (Id : W_Computation_Type_Opaque_OList)
      return Boolean is
      (Is_Empty (Id)
-      or else Protected_Value_Type_List_Kind_Valid (Id));
+      or else Computation_Type_List_Kind_Valid (Id));
 
-   function Protected_Value_Type_Id_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_Id)
+   function Computation_Type_Id_Kind_Valid
+     (Id : W_Computation_Type_Opaque_Id)
      return Boolean is
-     (Get_Kind (Id) = W_Protected_Value_Type);
+     (Get_Kind (Id) = W_Computation_Type);
 
-   function Protected_Value_Type_List_Kind_Valid
-     (Id : W_Protected_Value_Type_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Arrow_Type_OId_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Arrow_Type_Id_Kind_Valid (Id));
-
-   function Arrow_Type_OList_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Arrow_Type_List_Kind_Valid (Id));
-
-   function Arrow_Type_Id_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Arrow_Type);
-
-   function Arrow_Type_List_Kind_Valid
-     (Id : W_Arrow_Type_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Spec_OId_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Spec_Id_Kind_Valid (Id));
-
-   function Computation_Spec_OList_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Spec_List_Kind_Valid (Id));
-
-   function Computation_Spec_Id_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Computation_Spec);
-
-   function Computation_Spec_List_Kind_Valid
-     (Id : W_Computation_Spec_Opaque_List)
+   function Computation_Type_List_Kind_Valid
+     (Id : W_Computation_Type_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
@@ -5741,6 +5643,31 @@ private
    --  ??? Partial implementation;
    --  ??? universal quantif on containers has not been implemented yet.
 
+   function Global_Ref_Declaration_OId_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_OId)
+     return Boolean is
+     (Id = Why_Empty
+      or else Global_Ref_Declaration_Id_Kind_Valid (Id));
+
+   function Global_Ref_Declaration_OList_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_OList)
+     return Boolean is
+     (Is_Empty (Id)
+      or else Global_Ref_Declaration_List_Kind_Valid (Id));
+
+   function Global_Ref_Declaration_Id_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_Id)
+     return Boolean is
+     (Get_Kind (Id) = W_Global_Ref_Declaration);
+
+   function Global_Ref_Declaration_List_Kind_Valid
+     (Id : W_Global_Ref_Declaration_Opaque_List)
+     return Boolean is
+     (not Is_Empty (Id)
+      and then True);
+   --  ??? Partial implementation;
+   --  ??? universal quantif on containers has not been implemented yet.
+
    function Exception_Declaration_OId_Kind_Valid
      (Id : W_Exception_Declaration_Opaque_OId)
      return Boolean is
@@ -6060,56 +5987,6 @@ private
 
    function Simple_Value_Type_List_Kind_Valid
      (Id : W_Simple_Value_Type_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Value_Type_OId_Kind_Valid
-     (Id : W_Value_Type_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Value_Type_Id_Kind_Valid (Id));
-
-   function Value_Type_OList_Kind_Valid
-     (Id : W_Value_Type_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Value_Type_List_Kind_Valid (Id));
-
-   function Value_Type_Id_Kind_Valid
-     (Id : W_Value_Type_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) in W_Value_Type'Range);
-
-   function Value_Type_List_Kind_Valid
-     (Id : W_Value_Type_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Computation_Type_OId_Kind_Valid
-     (Id : W_Computation_Type_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Computation_Type_Id_Kind_Valid (Id));
-
-   function Computation_Type_OList_Kind_Valid
-     (Id : W_Computation_Type_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Computation_Type_List_Kind_Valid (Id));
-
-   function Computation_Type_Id_Kind_Valid
-     (Id : W_Computation_Type_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) in W_Computation_Type'Range);
-
-   function Computation_Type_List_Kind_Valid
-     (Id : W_Computation_Type_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);

@@ -347,156 +347,80 @@ package body Why.Atree.Mutators is
          Ref_Type_Id_Valid (Why_Node_Id (Id)));
    end Ref_Type_Set_Aliased_Type;
 
+   ----------------------------------------
+   -- Computation_Type_Append_To_Binders --
+   ----------------------------------------
+
+   procedure Computation_Type_Append_To_Binders
+     (Id       : W_Computation_Type_Unchecked_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (+Id);
+   begin
+      Append (Node.CS_Binders, +New_Item);
+      Update_Validity_Status
+        (+Id,
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Append_To_Binders;
+
    -----------------------------------------
-   -- Protected_Value_Type_Set_Value_Type --
+   -- Computation_Type_Prepend_To_Binders --
    -----------------------------------------
 
-   procedure Protected_Value_Type_Set_Value_Type
-     (Id         : W_Protected_Value_Type_Unchecked_Id;
-      Value_Type : W_Value_Type_Id)
+   procedure Computation_Type_Prepend_To_Binders
+     (Id       : W_Computation_Type_Unchecked_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (+Id);
+      Node : constant Why_Node :=
+               Get_Node (+Id);
    begin
-      Node.PVT_Value_Type := +Value_Type;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Value_Type), +Id);
+      Prepend (Node.CS_Binders, +New_Item);
       Update_Validity_Status
         (+Id,
-         Protected_Value_Type_Id_Valid (Why_Node_Id (Id)));
-   end Protected_Value_Type_Set_Value_Type;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Prepend_To_Binders;
+
+   ----------------------------------------
+   -- Computation_Type_Append_To_Binders --
+   ----------------------------------------
+
+   procedure Computation_Type_Append_To_Binders
+     (Id       : W_Computation_Type_Id;
+      New_Item : W_Binder_Id)
+   is
+      Node : constant Why_Node :=
+               Get_Node (+Id);
+   begin
+      Append (Node.CS_Binders, +New_Item);
+      Update_Validity_Status
+        (+Id,
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Append_To_Binders;
 
    -----------------------------------------
-   -- Protected_Value_Type_Set_Value_Type --
+   -- Computation_Type_Prepend_To_Binders --
    -----------------------------------------
 
-   procedure Protected_Value_Type_Set_Value_Type
-     (Id         : W_Protected_Value_Type_Id;
-      Value_Type : W_Value_Type_Id)
+   procedure Computation_Type_Prepend_To_Binders
+     (Id       : W_Computation_Type_Id;
+      New_Item : W_Binder_Id)
    is
-      Node : Why_Node := Get_Node (+Id);
+      Node : constant Why_Node :=
+               Get_Node (+Id);
    begin
-      Node.PVT_Value_Type := +Value_Type;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Value_Type), +Id);
+      Prepend (Node.CS_Binders, +New_Item);
       Update_Validity_Status
         (+Id,
-         Protected_Value_Type_Id_Valid (Why_Node_Id (Id)));
-   end Protected_Value_Type_Set_Value_Type;
-
-   -------------------------
-   -- Arrow_Type_Set_Name --
-   -------------------------
-
-   procedure Arrow_Type_Set_Name
-     (Id   : W_Arrow_Type_Unchecked_Id;
-      Name : W_Identifier_OId)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Name := +Name;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Name), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Name;
-
-   -------------------------
-   -- Arrow_Type_Set_Name --
-   -------------------------
-
-   procedure Arrow_Type_Set_Name
-     (Id   : W_Arrow_Type_Id;
-      Name : W_Identifier_OId)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Name := +Name;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Name), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Name;
-
-   -------------------------
-   -- Arrow_Type_Set_Left --
-   -------------------------
-
-   procedure Arrow_Type_Set_Left
-     (Id   : W_Arrow_Type_Unchecked_Id;
-      Left : W_Simple_Value_Type_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Left := +Left;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Left), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Left;
-
-   -------------------------
-   -- Arrow_Type_Set_Left --
-   -------------------------
-
-   procedure Arrow_Type_Set_Left
-     (Id   : W_Arrow_Type_Id;
-      Left : W_Simple_Value_Type_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Left := +Left;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Left), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Left;
-
-   --------------------------
-   -- Arrow_Type_Set_Right --
-   --------------------------
-
-   procedure Arrow_Type_Set_Right
-     (Id    : W_Arrow_Type_Unchecked_Id;
-      Right : W_Computation_Type_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Right := +Right;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Right), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Right;
-
-   --------------------------
-   -- Arrow_Type_Set_Right --
-   --------------------------
-
-   procedure Arrow_Type_Set_Right
-     (Id    : W_Arrow_Type_Id;
-      Right : W_Computation_Type_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.NA_Right := +Right;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Right), +Id);
-      Update_Validity_Status
-        (+Id,
-         Arrow_Type_Id_Valid (Why_Node_Id (Id)));
-   end Arrow_Type_Set_Right;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Prepend_To_Binders;
 
    ---------------------------------------
-   -- Computation_Spec_Set_Precondition --
+   -- Computation_Type_Set_Precondition --
    ---------------------------------------
 
-   procedure Computation_Spec_Set_Precondition
-     (Id           : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Precondition
+     (Id           : W_Computation_Type_Unchecked_Id;
       Precondition : W_Precondition_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -506,15 +430,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Precondition), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Precondition;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Precondition;
 
    ---------------------------------------
-   -- Computation_Spec_Set_Precondition --
+   -- Computation_Type_Set_Precondition --
    ---------------------------------------
 
-   procedure Computation_Spec_Set_Precondition
-     (Id           : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Precondition
+     (Id           : W_Computation_Type_Id;
       Precondition : W_Precondition_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -524,15 +448,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Precondition), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Precondition;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Precondition;
 
    --------------------------------------
-   -- Computation_Spec_Set_Result_Name --
+   -- Computation_Type_Set_Result_Name --
    --------------------------------------
 
-   procedure Computation_Spec_Set_Result_Name
-     (Id          : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Result_Name
+     (Id          : W_Computation_Type_Unchecked_Id;
       Result_Name : W_Identifier_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -542,15 +466,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Result_Name), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Result_Name;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Result_Name;
 
    --------------------------------------
-   -- Computation_Spec_Set_Result_Name --
+   -- Computation_Type_Set_Result_Name --
    --------------------------------------
 
-   procedure Computation_Spec_Set_Result_Name
-     (Id          : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Result_Name
+     (Id          : W_Computation_Type_Id;
       Result_Name : W_Identifier_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -560,16 +484,16 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Result_Name), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Result_Name;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Result_Name;
 
    --------------------------------------
-   -- Computation_Spec_Set_Return_Type --
+   -- Computation_Type_Set_Return_Type --
    --------------------------------------
 
-   procedure Computation_Spec_Set_Return_Type
-     (Id          : W_Computation_Spec_Unchecked_Id;
-      Return_Type : W_Value_Type_Id)
+   procedure Computation_Type_Set_Return_Type
+     (Id          : W_Computation_Type_Unchecked_Id;
+      Return_Type : W_Primitive_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -578,16 +502,16 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Return_Type), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Return_Type;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Return_Type;
 
    --------------------------------------
-   -- Computation_Spec_Set_Return_Type --
+   -- Computation_Type_Set_Return_Type --
    --------------------------------------
 
-   procedure Computation_Spec_Set_Return_Type
-     (Id          : W_Computation_Spec_Id;
-      Return_Type : W_Value_Type_Id)
+   procedure Computation_Type_Set_Return_Type
+     (Id          : W_Computation_Type_Id;
+      Return_Type : W_Primitive_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -596,15 +520,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Return_Type), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Return_Type;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Return_Type;
 
    ----------------------------------
-   -- Computation_Spec_Set_Effects --
+   -- Computation_Type_Set_Effects --
    ----------------------------------
 
-   procedure Computation_Spec_Set_Effects
-     (Id      : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Effects
+     (Id      : W_Computation_Type_Unchecked_Id;
       Effects : W_Effects_Id)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -614,15 +538,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Effects), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Effects;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Effects;
 
    ----------------------------------
-   -- Computation_Spec_Set_Effects --
+   -- Computation_Type_Set_Effects --
    ----------------------------------
 
-   procedure Computation_Spec_Set_Effects
-     (Id      : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Effects
+     (Id      : W_Computation_Type_Id;
       Effects : W_Effects_Id)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -632,15 +556,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Effects), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Effects;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Effects;
 
    ----------------------------------------
-   -- Computation_Spec_Set_Postcondition --
+   -- Computation_Type_Set_Postcondition --
    ----------------------------------------
 
-   procedure Computation_Spec_Set_Postcondition
-     (Id            : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Postcondition
+     (Id            : W_Computation_Type_Unchecked_Id;
       Postcondition : W_Postcondition_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -650,15 +574,15 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Postcondition), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Postcondition;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Postcondition;
 
    ----------------------------------------
-   -- Computation_Spec_Set_Postcondition --
+   -- Computation_Type_Set_Postcondition --
    ----------------------------------------
 
-   procedure Computation_Spec_Set_Postcondition
-     (Id            : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Postcondition
+     (Id            : W_Computation_Type_Id;
       Postcondition : W_Postcondition_OId)
    is
       Node : Why_Node := Get_Node (+Id);
@@ -668,8 +592,8 @@ package body Why.Atree.Mutators is
       Set_Link (Why_Node_Id (Postcondition), +Id);
       Update_Validity_Status
         (+Id,
-         Computation_Spec_Id_Valid (Why_Node_Id (Id)));
-   end Computation_Spec_Set_Postcondition;
+         Computation_Type_Id_Valid (Why_Node_Id (Id)));
+   end Computation_Type_Set_Postcondition;
 
    --------------------------------
    -- Integer_Constant_Set_Value --
@@ -6897,7 +6821,7 @@ package body Why.Atree.Mutators is
 
    procedure Raise_Statement_Set_Exn_Type
      (Id       : W_Raise_Statement_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -6915,7 +6839,7 @@ package body Why.Atree.Mutators is
 
    procedure Raise_Statement_Set_Exn_Type
      (Id       : W_Raise_Statement_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7005,7 +6929,7 @@ package body Why.Atree.Mutators is
 
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7023,7 +6947,7 @@ package body Why.Atree.Mutators is
 
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7145,7 +7069,7 @@ package body Why.Atree.Mutators is
 
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7163,7 +7087,7 @@ package body Why.Atree.Mutators is
 
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Id;
-      Exn_Type : W_Value_Type_OId)
+      Exn_Type : W_Simple_Value_Type_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7321,7 +7245,7 @@ package body Why.Atree.Mutators is
 
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Unchecked_Id;
-      Arg_Type : W_Value_Type_Id)
+      Arg_Type : W_Simple_Value_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7339,7 +7263,7 @@ package body Why.Atree.Mutators is
 
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Id;
-      Arg_Type : W_Value_Type_Id)
+      Arg_Type : W_Simple_Value_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -8241,7 +8165,7 @@ package body Why.Atree.Mutators is
 
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Unchecked_Id;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -8259,7 +8183,7 @@ package body Why.Atree.Mutators is
 
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Id;
-      Parameter_Type : W_Value_Type_Id)
+      Parameter_Type : W_Computation_Type_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -8270,6 +8194,78 @@ package body Why.Atree.Mutators is
         (+Id,
          Parameter_Declaration_Id_Valid (Why_Node_Id (Id)));
    end Parameter_Declaration_Set_Parameter_Type;
+
+   -------------------------------------
+   -- Global_Ref_Declaration_Set_Name --
+   -------------------------------------
+
+   procedure Global_Ref_Declaration_Set_Name
+     (Id   : W_Global_Ref_Declaration_Unchecked_Id;
+      Name : W_Identifier_Id)
+   is
+      Node : Why_Node := Get_Node (+Id);
+   begin
+      Node.GR_Name := +Name;
+      Set_Node (+Id, Node);
+      Set_Link (Why_Node_Id (Name), +Id);
+      Update_Validity_Status
+        (+Id,
+         Global_Ref_Declaration_Id_Valid (Why_Node_Id (Id)));
+   end Global_Ref_Declaration_Set_Name;
+
+   -------------------------------------
+   -- Global_Ref_Declaration_Set_Name --
+   -------------------------------------
+
+   procedure Global_Ref_Declaration_Set_Name
+     (Id   : W_Global_Ref_Declaration_Id;
+      Name : W_Identifier_Id)
+   is
+      Node : Why_Node := Get_Node (+Id);
+   begin
+      Node.GR_Name := +Name;
+      Set_Node (+Id, Node);
+      Set_Link (Why_Node_Id (Name), +Id);
+      Update_Validity_Status
+        (+Id,
+         Global_Ref_Declaration_Id_Valid (Why_Node_Id (Id)));
+   end Global_Ref_Declaration_Set_Name;
+
+   -----------------------------------------------
+   -- Global_Ref_Declaration_Set_Parameter_Type --
+   -----------------------------------------------
+
+   procedure Global_Ref_Declaration_Set_Parameter_Type
+     (Id             : W_Global_Ref_Declaration_Unchecked_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+   is
+      Node : Why_Node := Get_Node (+Id);
+   begin
+      Node.GR_Parameter_Type := +Parameter_Type;
+      Set_Node (+Id, Node);
+      Set_Link (Why_Node_Id (Parameter_Type), +Id);
+      Update_Validity_Status
+        (+Id,
+         Global_Ref_Declaration_Id_Valid (Why_Node_Id (Id)));
+   end Global_Ref_Declaration_Set_Parameter_Type;
+
+   -----------------------------------------------
+   -- Global_Ref_Declaration_Set_Parameter_Type --
+   -----------------------------------------------
+
+   procedure Global_Ref_Declaration_Set_Parameter_Type
+     (Id             : W_Global_Ref_Declaration_Id;
+      Parameter_Type : W_Primitive_Type_Id)
+   is
+      Node : Why_Node := Get_Node (+Id);
+   begin
+      Node.GR_Parameter_Type := +Parameter_Type;
+      Set_Node (+Id, Node);
+      Set_Link (Why_Node_Id (Parameter_Type), +Id);
+      Update_Validity_Status
+        (+Id,
+         Global_Ref_Declaration_Id_Valid (Why_Node_Id (Id)));
+   end Global_Ref_Declaration_Set_Parameter_Type;
 
    ------------------------------------
    -- Exception_Declaration_Set_Name --

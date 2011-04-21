@@ -23,42 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Properties; use Why.Atree.Properties;
 with Why.Ids;              use Why.Ids;
-with Why.Conversions;      use Why.Conversions;
 with Why.Types;            use Why.Types;
-with Why.Unchecked_Ids;    use Why.Unchecked_Ids;
 
 package Why.Gen.Funcs is
    --  This package provides facilities to generate subprograms declarations
    --  in the program space and in the logic space.
 
-   procedure Declare_Logic
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id) with
-     Pre => (Is_Root (+Name));
-   --  Create a logic declaration from Name and Arrows and append it
-   --  to File. Name is inserted into the resulting syntax tree,
-   --  Arrows is not; the spec of the logic declaration is created
-   --  from it.
-
-   type Logic_Arg_Chain is array (Natural range <>)
-     of W_Logic_Arg_Type_Unchecked_Id;
-   --  Representation of a list of argument types for a logic function,
-   --  in an array; say, for an array (type1, type2), represents the
-   --  arrow chain type1 -> type2.
-
    procedure Declare_Logic_And_Parameters
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id;
-      Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty) with
-     Pre => (Is_Root (+Name)
-             and then Is_Root (+Arrows)
-             and then Is_Root (+Pre)
-             and then Is_Root (+Post));
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Binders     : W_Binder_Array;
+      Return_Type : W_Primitive_Type_Id;
+      Pre         : W_Predicate_OId := Why_Empty;
+      Post        : W_Predicate_OId := Why_Empty);
    --  Create a logic declaration and it corresponding declaration in
    --  the program space (safe and default) and append it to File. Name
    --  is the name of the logic function declaration, Arrows is the
@@ -82,20 +60,6 @@ package Why.Gen.Funcs is
    --     { some_precondition }
    --      type3
    --     { my_func (x1, x2) = result }
-
-   procedure Declare_Parameter
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id;
-      Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty) with
-     Pre => (Is_Root (+Name)
-             and then Is_Root (+Arrows)
-             and then Is_Root (+Pre)
-             and then Is_Root (+Post));
-   --  Create a subprogram declaration in the program space (a so called
-   --  "parameter") from its name (Name) and its signature (Arrows). All
-   --  parameters will be inserted as is into the resulting syntax tree.
 
    procedure New_Boolean_Equality_Parameter
       (File          : W_File_Id;

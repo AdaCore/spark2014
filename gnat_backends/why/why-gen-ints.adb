@@ -23,10 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Arrows;     use Why.Gen.Arrows;
 with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Funcs;      use Why.Gen.Funcs;
@@ -86,17 +84,17 @@ package body Why.Gen.Ints is
       Define_Range_Predicate (File, Name, First, Last);
 
       --  to int:
-      New_Logic (File,
-                 New_Conversion_To_Int (Name),
-                 (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-                 New_Type_Int);
+      New_Logic
+         (File        => File,
+          Name        => New_Conversion_To_Int (Name),
+          Args        =>
+            (1 => New_Abstract_Type (Name => New_Identifier (Name))),
+          Return_Type => New_Type_Int);
 
       --  from int:
       declare
-         Return_Type : constant W_Primitive_Type_Id :=
+         Return_Type : constant W_Logic_Return_Type_Id :=
                          New_Abstract_Type (Name => New_Identifier (Name));
-         Arrows      : W_Arrow_Type_Unchecked_Id :=
-                         New_Arrow_Stack (+Return_Type);
          --  precondition: { <name>___in_range (n) }
          Range_Check : constant W_Predicate_Id :=
                          New_Predicate_Instance (Name =>
@@ -114,13 +112,15 @@ package body Why.Gen.Ints is
                                             Op    => New_Rel_Eq,
                                             Right => New_Term (Arg_S));
       begin
-         Arrows := +Push_Arg (Arrows, New_Identifier (Arg_S), New_Type_Int);
-
-         Declare_Logic_And_Parameters (File,
-                                       New_Conversion_From_Int (Name),
-                                       +Arrows,
-                                       Range_Check,
-                                       Post);
+         Declare_Logic_And_Parameters
+           (File,
+            New_Conversion_From_Int (Name),
+              (1 => New_Binder
+                      (Names    => (1 => New_Identifier (Arg_S)),
+                       Arg_Type => New_Type_Int)),
+            +Return_Type,
+            Range_Check,
+            Post);
          Define_Eq_Predicate (File, Name);
          Define_Range_Axiom (File,
                              New_Identifier (Name),

@@ -406,10 +406,14 @@ package body Gnat2Why.Driver is
       New_Parameter
          (File => File,
           Name => New_Ignore_Name,
-          Value_Type =>
-            New_Arrow_Type
-              (Left => New_Generic_Formal_Type (Name => New_Identifier ("a")),
-               Right => New_Type_Unit));
+          Effects => New_Effects,
+          Binders =>
+            (1 =>
+               New_Binder
+                 (Names    => (1 => New_Identifier ("z")),
+                  Arg_Type =>
+                    New_Generic_Formal_Type (Name => New_Identifier ("a")))),
+         Return_Type => New_Type_Unit);
 
       New_Include_Declaration
         (File => File,

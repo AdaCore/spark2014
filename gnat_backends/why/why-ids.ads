@@ -414,86 +414,32 @@ package Why.Ids is
    (Ref_Type_List_Valid
       (W_Ref_Type_Valid_List));
 
-   subtype W_Protected_Value_Type_Valid_OId is
-     W_Protected_Value_Type_Unchecked_OId with
+   subtype W_Computation_Type_Valid_OId is
+     W_Computation_Type_Unchecked_OId with
    Predicate =>
-   (Protected_Value_Type_OId_Valid
-      (W_Protected_Value_Type_Valid_OId));
+   (Computation_Type_OId_Valid
+      (W_Computation_Type_Valid_OId));
 
-   subtype W_Protected_Value_Type_Valid_OList is
-     W_Protected_Value_Type_Unchecked_OList with
+   subtype W_Computation_Type_Valid_OList is
+     W_Computation_Type_Unchecked_OList with
    Predicate =>
-   (Protected_Value_Type_OList_Valid
-      (W_Protected_Value_Type_Valid_OList));
+   (Computation_Type_OList_Valid
+      (W_Computation_Type_Valid_OList));
 
-   subtype W_Protected_Value_Type_Valid_Id is
-     W_Protected_Value_Type_Unchecked_Id with
+   subtype W_Computation_Type_Valid_Id is
+     W_Computation_Type_Unchecked_Id with
    Predicate =>
-   (Protected_Value_Type_Id_Valid
-      (W_Protected_Value_Type_Valid_Id));
+   (Computation_Type_Id_Valid
+      (W_Computation_Type_Valid_Id));
 
-   type W_Protected_Value_Type_V_Array is array (Positive range <>)
-     of W_Protected_Value_Type_Valid_Id;
+   type W_Computation_Type_V_Array is array (Positive range <>)
+     of W_Computation_Type_Valid_Id;
 
-   subtype W_Protected_Value_Type_Valid_List is
-     W_Protected_Value_Type_Unchecked_List with
+   subtype W_Computation_Type_Valid_List is
+     W_Computation_Type_Unchecked_List with
    Predicate =>
-   (Protected_Value_Type_List_Valid
-      (W_Protected_Value_Type_Valid_List));
-
-   subtype W_Arrow_Type_Valid_OId is
-     W_Arrow_Type_Unchecked_OId with
-   Predicate =>
-   (Arrow_Type_OId_Valid
-      (W_Arrow_Type_Valid_OId));
-
-   subtype W_Arrow_Type_Valid_OList is
-     W_Arrow_Type_Unchecked_OList with
-   Predicate =>
-   (Arrow_Type_OList_Valid
-      (W_Arrow_Type_Valid_OList));
-
-   subtype W_Arrow_Type_Valid_Id is
-     W_Arrow_Type_Unchecked_Id with
-   Predicate =>
-   (Arrow_Type_Id_Valid
-      (W_Arrow_Type_Valid_Id));
-
-   type W_Arrow_Type_V_Array is array (Positive range <>)
-     of W_Arrow_Type_Valid_Id;
-
-   subtype W_Arrow_Type_Valid_List is
-     W_Arrow_Type_Unchecked_List with
-   Predicate =>
-   (Arrow_Type_List_Valid
-      (W_Arrow_Type_Valid_List));
-
-   subtype W_Computation_Spec_Valid_OId is
-     W_Computation_Spec_Unchecked_OId with
-   Predicate =>
-   (Computation_Spec_OId_Valid
-      (W_Computation_Spec_Valid_OId));
-
-   subtype W_Computation_Spec_Valid_OList is
-     W_Computation_Spec_Unchecked_OList with
-   Predicate =>
-   (Computation_Spec_OList_Valid
-      (W_Computation_Spec_Valid_OList));
-
-   subtype W_Computation_Spec_Valid_Id is
-     W_Computation_Spec_Unchecked_Id with
-   Predicate =>
-   (Computation_Spec_Id_Valid
-      (W_Computation_Spec_Valid_Id));
-
-   type W_Computation_Spec_V_Array is array (Positive range <>)
-     of W_Computation_Spec_Valid_Id;
-
-   subtype W_Computation_Spec_Valid_List is
-     W_Computation_Spec_Unchecked_List with
-   Predicate =>
-   (Computation_Spec_List_Valid
-      (W_Computation_Spec_Valid_List));
+   (Computation_Type_List_Valid
+      (W_Computation_Type_Valid_List));
 
    subtype W_Integer_Constant_Valid_OId is
      W_Integer_Constant_Unchecked_OId with
@@ -3627,6 +3573,33 @@ package Why.Ids is
    (Parameter_Declaration_List_Valid
       (W_Parameter_Declaration_Valid_List));
 
+   subtype W_Global_Ref_Declaration_Valid_OId is
+     W_Global_Ref_Declaration_Unchecked_OId with
+   Predicate =>
+   (Global_Ref_Declaration_OId_Valid
+      (W_Global_Ref_Declaration_Valid_OId));
+
+   subtype W_Global_Ref_Declaration_Valid_OList is
+     W_Global_Ref_Declaration_Unchecked_OList with
+   Predicate =>
+   (Global_Ref_Declaration_OList_Valid
+      (W_Global_Ref_Declaration_Valid_OList));
+
+   subtype W_Global_Ref_Declaration_Valid_Id is
+     W_Global_Ref_Declaration_Unchecked_Id with
+   Predicate =>
+   (Global_Ref_Declaration_Id_Valid
+      (W_Global_Ref_Declaration_Valid_Id));
+
+   type W_Global_Ref_Declaration_V_Array is array (Positive range <>)
+     of W_Global_Ref_Declaration_Valid_Id;
+
+   subtype W_Global_Ref_Declaration_Valid_List is
+     W_Global_Ref_Declaration_Unchecked_List with
+   Predicate =>
+   (Global_Ref_Declaration_List_Valid
+      (W_Global_Ref_Declaration_Valid_List));
+
    subtype W_Exception_Declaration_Valid_OId is
      W_Exception_Declaration_Unchecked_OId with
    Predicate =>
@@ -3978,60 +3951,6 @@ package Why.Ids is
    (Simple_Value_Type_List_Valid
       (W_Simple_Value_Type_Valid_List));
 
-   subtype W_Value_Type_Valid_OId is
-     W_Value_Type_Unchecked_OId with
-   Predicate =>
-   (Value_Type_OId_Valid
-      (W_Value_Type_Valid_OId));
-
-   subtype W_Value_Type_Valid_OList is
-     W_Value_Type_Unchecked_OList with
-   Predicate =>
-   (Value_Type_OList_Valid
-      (W_Value_Type_Valid_OList));
-
-   subtype W_Value_Type_Valid_Id is
-     W_Value_Type_Unchecked_Id with
-   Predicate =>
-   (Value_Type_Id_Valid
-      (W_Value_Type_Valid_Id));
-
-   type W_Value_Type_V_Array is array (Positive range <>)
-     of W_Value_Type_Valid_Id;
-
-   subtype W_Value_Type_Valid_List is
-     W_Value_Type_Unchecked_List with
-   Predicate =>
-   (Value_Type_List_Valid
-      (W_Value_Type_Valid_List));
-
-   subtype W_Computation_Type_Valid_OId is
-     W_Computation_Type_Unchecked_OId with
-   Predicate =>
-   (Computation_Type_OId_Valid
-      (W_Computation_Type_Valid_OId));
-
-   subtype W_Computation_Type_Valid_OList is
-     W_Computation_Type_Unchecked_OList with
-   Predicate =>
-   (Computation_Type_OList_Valid
-      (W_Computation_Type_Valid_OList));
-
-   subtype W_Computation_Type_Valid_Id is
-     W_Computation_Type_Unchecked_Id with
-   Predicate =>
-   (Computation_Type_Id_Valid
-      (W_Computation_Type_Valid_Id));
-
-   type W_Computation_Type_V_Array is array (Positive range <>)
-     of W_Computation_Type_Valid_Id;
-
-   subtype W_Computation_Type_Valid_List is
-     W_Computation_Type_Unchecked_List with
-   Predicate =>
-   (Computation_Type_List_Valid
-      (W_Computation_Type_Valid_List));
-
    subtype W_Prog_Valid_OId is
      W_Prog_Unchecked_OId with
    Predicate =>
@@ -4374,50 +4293,20 @@ package Why.Ids is
    subtype W_Ref_Type_List is
      W_Ref_Type_OList;
 
-   type W_Protected_Value_Type_OId is new
-     W_Protected_Value_Type_Valid_OId;
+   type W_Computation_Type_OId is new
+     W_Computation_Type_Valid_OId;
 
-   type W_Protected_Value_Type_OList is new
-     W_Protected_Value_Type_Valid_OList;
+   type W_Computation_Type_OList is new
+     W_Computation_Type_Valid_OList;
 
-   subtype W_Protected_Value_Type_Id is
-     W_Protected_Value_Type_OId;
+   subtype W_Computation_Type_Id is
+     W_Computation_Type_OId;
 
-   type W_Protected_Value_Type_Array is array (Positive range <>)
-     of W_Protected_Value_Type_Id;
+   type W_Computation_Type_Array is array (Positive range <>)
+     of W_Computation_Type_Id;
 
-   subtype W_Protected_Value_Type_List is
-     W_Protected_Value_Type_OList;
-
-   type W_Arrow_Type_OId is new
-     W_Arrow_Type_Valid_OId;
-
-   type W_Arrow_Type_OList is new
-     W_Arrow_Type_Valid_OList;
-
-   subtype W_Arrow_Type_Id is
-     W_Arrow_Type_OId;
-
-   type W_Arrow_Type_Array is array (Positive range <>)
-     of W_Arrow_Type_Id;
-
-   subtype W_Arrow_Type_List is
-     W_Arrow_Type_OList;
-
-   type W_Computation_Spec_OId is new
-     W_Computation_Spec_Valid_OId;
-
-   type W_Computation_Spec_OList is new
-     W_Computation_Spec_Valid_OList;
-
-   subtype W_Computation_Spec_Id is
-     W_Computation_Spec_OId;
-
-   type W_Computation_Spec_Array is array (Positive range <>)
-     of W_Computation_Spec_Id;
-
-   subtype W_Computation_Spec_List is
-     W_Computation_Spec_OList;
+   subtype W_Computation_Type_List is
+     W_Computation_Type_OList;
 
    type W_Integer_Constant_OId is new
      W_Integer_Constant_Valid_OId;
@@ -6159,6 +6048,21 @@ package Why.Ids is
    subtype W_Parameter_Declaration_List is
      W_Parameter_Declaration_OList;
 
+   type W_Global_Ref_Declaration_OId is new
+     W_Global_Ref_Declaration_Valid_OId;
+
+   type W_Global_Ref_Declaration_OList is new
+     W_Global_Ref_Declaration_Valid_OList;
+
+   subtype W_Global_Ref_Declaration_Id is
+     W_Global_Ref_Declaration_OId;
+
+   type W_Global_Ref_Declaration_Array is array (Positive range <>)
+     of W_Global_Ref_Declaration_Id;
+
+   subtype W_Global_Ref_Declaration_List is
+     W_Global_Ref_Declaration_OList;
+
    type W_Exception_Declaration_OId is new
      W_Exception_Declaration_Valid_OId;
 
@@ -6353,36 +6257,6 @@ package Why.Ids is
 
    subtype W_Simple_Value_Type_List is
      W_Simple_Value_Type_OList;
-
-   type W_Value_Type_OId is new
-     W_Value_Type_Valid_OId;
-
-   type W_Value_Type_OList is new
-     W_Value_Type_Valid_OList;
-
-   subtype W_Value_Type_Id is
-     W_Value_Type_OId;
-
-   type W_Value_Type_Array is array (Positive range <>)
-     of W_Value_Type_Id;
-
-   subtype W_Value_Type_List is
-     W_Value_Type_OList;
-
-   type W_Computation_Type_OId is new
-     W_Computation_Type_Valid_OId;
-
-   type W_Computation_Type_OList is new
-     W_Computation_Type_Valid_OList;
-
-   subtype W_Computation_Type_Id is
-     W_Computation_Type_OId;
-
-   type W_Computation_Type_Array is array (Positive range <>)
-     of W_Computation_Type_Id;
-
-   subtype W_Computation_Type_List is
-     W_Computation_Type_OList;
 
    type W_Prog_OId is new
      W_Prog_Valid_OId;

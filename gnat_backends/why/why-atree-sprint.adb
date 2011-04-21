@@ -246,66 +246,6 @@ package body Why.Atree.Sprint is
       P (O, " ref");
    end Ref_Type_Post_Op;
 
-   ---------------------------------
-   -- Protected_Value_Type_Pre_Op --
-   ---------------------------------
-
-   procedure Protected_Value_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      P (O, "(");
-   end Protected_Value_Type_Pre_Op;
-
-   ----------------------------------
-   -- Protected_Value_Type_Post_Op --
-   ----------------------------------
-
-   procedure Protected_Value_Type_Post_Op
-     (State : in out Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
-   is
-      pragma Unreferenced (State);
-      pragma Unreferenced (Node);
-   begin
-      P (O, ")");
-   end Protected_Value_Type_Post_Op;
-
-   -----------------------
-   -- Arrow_Type_Pre_Op --
-   -----------------------
-
-   procedure Arrow_Type_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Arrow_Type_Valid_Id)
-   is
-      Name  : constant W_Identifier_OId := Arrow_Type_Get_Name (+Node);
-      Right : constant W_Computation_Type_Id := Arrow_Type_Get_Right (+Node);
-   begin
-      if Name /= Why_Empty then
-         Traverse (State, +Name);
-         P (O, " : ");
-      end if;
-
-      Traverse
-        (State,
-         Arrow_Type_Get_Left (Node));
-      P (O, " ->");
-
-      if Get_Kind (+Right) = W_Computation_Spec then
-         NL (O);
-      else
-         P (O, " ");
-      end if;
-
-      Traverse (State, +Right);
-
-      State.Control := Abandon_Children;
-   end Arrow_Type_Pre_Op;
-
    -------------------------
    -- Precondition_Pre_Op --
    -------------------------
@@ -322,18 +262,45 @@ package body Why.Atree.Sprint is
    end Precondition_Pre_Op;
 
    -----------------------------
-   -- Computation_Spec_Pre_Op --
+   -- Computation_Type_Pre_Op --
    -----------------------------
 
-   procedure Computation_Spec_Pre_Op
+   procedure Computation_Type_Pre_Op
      (State : in out Printer_State;
-      Node  : W_Computation_Spec_Valid_Id)
+      Node  : W_Computation_Type_Valid_Id)
    is
-      Result : constant W_Identifier_OId :=
-                 Computation_Spec_Get_Result_Name (+Node);
-      Pre    : constant W_Precondition_OId :=
-                 Computation_Spec_Get_Precondition (+Node);
+      Binders : constant W_Binder_OList :=
+                  Computation_Type_Get_Binders (+Node);
+      Result  : constant W_Identifier_OId :=
+                 Computation_Type_Get_Result_Name (+Node);
+      Pre     : constant W_Precondition_OId :=
+                 Computation_Type_Get_Precondition (+Node);
    begin
+      if not (Is_Empty (+Binders)) then
+         declare
+            use Node_Lists;
+            Nodes    : constant List := Get_List (+Binders);
+            Position : Cursor := First (Nodes);
+         begin
+            while Position /= No_Element loop
+               declare
+                  Binder : constant W_Binder_Id := +Element (Position);
+                  Names  : constant List :=
+                     Get_List (+Binder_Get_Names (Binder));
+                  Name_Pos : Cursor := First (Names);
+               begin
+                  while Name_Pos /= No_Element loop
+                     Traverse (State, Element (Name_Pos));
+                     P (O, " : ");
+                     Traverse (State, +Binder_Get_Arg_Type (Binder));
+                     P (O, " -> ");
+                     Next (Name_Pos);
+                  end loop;
+               end;
+               Next (Position);
+            end loop;
+         end;
+      end if;
       if Pre = Why_Empty then
          P (O, " { } ");
       else
@@ -344,30 +311,22 @@ package body Why.Atree.Sprint is
 
       if  Result /= Why_Empty then
          P (O, "returns ");
-         Traverse
-           (State,
-            Computation_Spec_Get_Result_Name (Node));
+         Traverse (State, +Result);
          P (O, " : ");
       end if;
 
-      Traverse
-        (State,
-         Computation_Spec_Get_Return_Type (Node));
+      Traverse (State, Computation_Type_Get_Return_Type (Node));
       NL (O);
 
-      Traverse
-        (State,
-         Computation_Spec_Get_Effects (Node));
+      Traverse (State, Computation_Type_Get_Effects (Node));
 
       Relative_Indent (O, -1);
       P (O, "{ ");
-      Traverse
-        (State,
-         Computation_Spec_Get_Postcondition (Node));
+      Traverse (State, Computation_Type_Get_Postcondition (Node));
       P (O, " }");
 
       State.Control := Abandon_Children;
-   end Computation_Spec_Pre_Op;
+   end Computation_Type_Pre_Op;
 
    -----------------------------
    -- Integer_Constant_Pre_Op --
@@ -2290,7 +2249,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Raise_Statement_Valid_Id)
    is
-      Exn_Type : constant W_Value_Type_OId :=
+      Exn_Type : constant W_Simple_Value_Type_OId :=
                    Raise_Statement_Get_Exn_Type (+Node);
    begin
       P (O, "raise ");
@@ -2314,7 +2273,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Raise_Statement_With_Parameters_Valid_Id)
    is
-      Exn_Type : constant W_Value_Type_OId :=
+      Exn_Type : constant W_Simple_Value_Type_OId :=
                    Raise_Statement_With_Parameters_Get_Exn_Type (+Node);
    begin
       P (O, "raise ");
@@ -2370,7 +2329,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Unreachable_Code_Valid_Id)
    is
-      Exn_Type : constant W_Value_Type_OId :=
+      Exn_Type : constant W_Simple_Value_Type_OId :=
                    Unreachable_Code_Get_Exn_Type (+Node);
    begin
       P (O, "absurd");
@@ -2880,6 +2839,24 @@ package body Why.Atree.Sprint is
       NL (O);
       State.Control := Abandon_Children;
    end Parameter_Declaration_Pre_Op;
+
+   -----------------------------------
+   -- Global_Ref_Declaration_Pre_Op --
+   -----------------------------------
+
+   procedure Global_Ref_Declaration_Pre_Op
+     (State : in out Printer_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id)
+   is
+   begin
+      P (O, "parameter ");
+      Traverse (State, Global_Ref_Declaration_Get_Name (Node));
+      P (O, " : ");
+      Traverse (State, Global_Ref_Declaration_Get_Parameter_Type (Node));
+      P (O, " ref");
+      NL (O);
+      State.Control := Abandon_Children;
+   end Global_Ref_Declaration_Pre_Op;
 
    ----------------------------------
    -- Exception_Declaration_Pre_Op --

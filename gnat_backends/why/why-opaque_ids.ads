@@ -134,29 +134,13 @@ package Why.Opaque_Ids is
 
    subtype W_Ref_Type_Opaque_List is Why_Node_List;
 
-   subtype W_Protected_Value_Type_Opaque_OId is Why_Node_Id;
+   subtype W_Computation_Type_Opaque_OId is Why_Node_Id;
 
-   subtype W_Protected_Value_Type_Opaque_OList is Why_Node_List;
+   subtype W_Computation_Type_Opaque_OList is Why_Node_List;
 
-   subtype W_Protected_Value_Type_Opaque_Id is Why_Node_Id;
+   subtype W_Computation_Type_Opaque_Id is Why_Node_Id;
 
-   subtype W_Protected_Value_Type_Opaque_List is Why_Node_List;
-
-   subtype W_Arrow_Type_Opaque_OId is Why_Node_Id;
-
-   subtype W_Arrow_Type_Opaque_OList is Why_Node_List;
-
-   subtype W_Arrow_Type_Opaque_Id is Why_Node_Id;
-
-   subtype W_Arrow_Type_Opaque_List is Why_Node_List;
-
-   subtype W_Computation_Spec_Opaque_OId is Why_Node_Id;
-
-   subtype W_Computation_Spec_Opaque_OList is Why_Node_List;
-
-   subtype W_Computation_Spec_Opaque_Id is Why_Node_Id;
-
-   subtype W_Computation_Spec_Opaque_List is Why_Node_List;
+   subtype W_Computation_Type_Opaque_List is Why_Node_List;
 
    subtype W_Integer_Constant_Opaque_OId is Why_Node_Id;
 
@@ -1086,6 +1070,14 @@ package Why.Opaque_Ids is
 
    subtype W_Parameter_Declaration_Opaque_List is Why_Node_List;
 
+   subtype W_Global_Ref_Declaration_Opaque_OId is Why_Node_Id;
+
+   subtype W_Global_Ref_Declaration_Opaque_OList is Why_Node_List;
+
+   subtype W_Global_Ref_Declaration_Opaque_Id is Why_Node_Id;
+
+   subtype W_Global_Ref_Declaration_Opaque_List is Why_Node_List;
+
    subtype W_Exception_Declaration_Opaque_OId is Why_Node_Id;
 
    subtype W_Exception_Declaration_Opaque_OList is Why_Node_List;
@@ -1189,22 +1181,6 @@ package Why.Opaque_Ids is
    subtype W_Simple_Value_Type_Opaque_Id is Why_Node_Id;
 
    subtype W_Simple_Value_Type_Opaque_List is Why_Node_List;
-
-   subtype W_Value_Type_Opaque_OId is Why_Node_Id;
-
-   subtype W_Value_Type_Opaque_OList is Why_Node_List;
-
-   subtype W_Value_Type_Opaque_Id is Why_Node_Id;
-
-   subtype W_Value_Type_Opaque_List is Why_Node_List;
-
-   subtype W_Computation_Type_Opaque_OId is Why_Node_Id;
-
-   subtype W_Computation_Type_Opaque_OList is Why_Node_List;
-
-   subtype W_Computation_Type_Opaque_Id is Why_Node_Id;
-
-   subtype W_Computation_Type_Opaque_List is Why_Node_List;
 
    subtype W_Prog_Opaque_OId is Why_Node_Id;
 

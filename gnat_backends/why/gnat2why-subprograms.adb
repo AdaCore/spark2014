@@ -832,8 +832,8 @@ package body Gnat2Why.Subprograms is
                         (if Present (Rexpr) then
                            Why_Expr_Of_Ada_Expr (Rexpr, Type_Of_Node (Lvalue))
                         else
-                           New_Any_Expr
-                              (Any_Type => New_Abstract_Type
+                           New_Simpl_Any_Expr
+                              (New_Abstract_Type
                                  (Name =>
                                     New_Identifier (Type_Of_Node (Lvalue)))));
                   begin
@@ -1085,7 +1085,7 @@ package body Gnat2Why.Subprograms is
             declare
                Effects   : constant W_Effects_Id := Compute_Effects;
                Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
-               Ret_Type  : constant W_Value_Type_Id :=
+               Ret_Type  : constant W_Primitive_Type_Id :=
                   (if Nkind (Spec) = N_Function_Specification then
                     +Why_Logic_Type_Of_Ada_Type
                        (Entity (Result_Definition (Spec)))
@@ -1406,13 +1406,13 @@ package body Gnat2Why.Subprograms is
                   return
                      New_Binding_Ref
                        (Name => Index,
-                        Def  => New_Any_Expr (Any_Type => New_Type_Int),
+                        Def  => New_Simpl_Any_Expr (New_Type_Int),
                         Context =>
                            Sequence
                               (New_Conditional_Prog
                                  (Condition => Range_Cond,
                                   Then_Part => Why_Expr),
-                               New_Any_Expr (Any_Type => New_Type_Bool)));
+                               New_Simpl_Any_Expr (New_Type_Bool)));
                end;
             else
                raise Not_Implemented;
@@ -1950,13 +1950,12 @@ package body Gnat2Why.Subprograms is
                               (Expression (Cur_Stmt),
                                Exp_Type)
                         else
-                           New_Any_Expr
-                              (Any_Type =>
-                                 New_Abstract_Type
-                                    (Name =>
-                                       New_Identifier
-                                       (Type_Of_Node
-                                          (Object_Definition (Cur_Stmt))))));
+                           New_Simpl_Any_Expr
+                              (New_Abstract_Type
+                                 (Name =>
+                                    New_Identifier
+                                    (Type_Of_Node
+                                       (Object_Definition (Cur_Stmt))))));
                   begin
                      case Ekind (Id) is
                         when E_Constant =>

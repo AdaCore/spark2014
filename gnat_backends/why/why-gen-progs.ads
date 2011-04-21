@@ -110,6 +110,9 @@ package Why.Gen.Progs is
    function New_Prog_Orb_Else (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a boolean disjunction as program.
 
+   function New_Simpl_Any_Expr (T : W_Primitive_Type_Id) return W_Prog_Id;
+   --  Build a "any" expression whose type is a simple type.
+
    function New_Simpl_Conditional_Prog
       (Condition : W_Prog_Id;
        Then_Part : W_Prog_Id;
@@ -126,4 +129,5 @@ package Why.Gen.Progs is
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id;
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.
+
 end Why.Gen.Progs;

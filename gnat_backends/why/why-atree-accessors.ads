@@ -69,40 +69,28 @@ package Why.Atree.Accessors is
      (Id : W_Ref_Type_Unchecked_Id)
      return W_Primitive_Type_Unchecked_Id;
 
-   function Protected_Value_Type_Get_Value_Type
-     (Id : W_Protected_Value_Type_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id;
+   function Computation_Type_Get_Binders
+     (Id : W_Computation_Type_Unchecked_Id)
+     return W_Binder_Unchecked_OList;
 
-   function Arrow_Type_Get_Name
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Identifier_Unchecked_OId;
-
-   function Arrow_Type_Get_Left
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Simple_Value_Type_Unchecked_Id;
-
-   function Arrow_Type_Get_Right
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Computation_Type_Unchecked_Id;
-
-   function Computation_Spec_Get_Precondition
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Precondition
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Precondition_Unchecked_OId;
 
-   function Computation_Spec_Get_Result_Name
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Result_Name
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Identifier_Unchecked_OId;
 
-   function Computation_Spec_Get_Return_Type
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id;
+   function Computation_Type_Get_Return_Type
+     (Id : W_Computation_Type_Unchecked_Id)
+     return W_Primitive_Type_Unchecked_Id;
 
-   function Computation_Spec_Get_Effects
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Effects
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Effects_Unchecked_Id;
 
-   function Computation_Spec_Get_Postcondition
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Postcondition
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Postcondition_Unchecked_OId;
 
    function Integer_Constant_Get_Value
@@ -711,7 +699,7 @@ package Why.Atree.Accessors is
 
    function Raise_Statement_Get_Exn_Type
      (Id : W_Raise_Statement_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId;
+     return W_Simple_Value_Type_Unchecked_OId;
 
    function Raise_Statement_With_Parameters_Get_Name
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
@@ -723,7 +711,7 @@ package Why.Atree.Accessors is
 
    function Raise_Statement_With_Parameters_Get_Exn_Type
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId;
+     return W_Simple_Value_Type_Unchecked_OId;
 
    function Try_Block_Get_Prog
      (Id : W_Try_Block_Unchecked_Id)
@@ -735,7 +723,7 @@ package Why.Atree.Accessors is
 
    function Unreachable_Code_Get_Exn_Type
      (Id : W_Unreachable_Code_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId;
+     return W_Simple_Value_Type_Unchecked_OId;
 
    function Begin_Block_Get_Prog
      (Id : W_Begin_Block_Unchecked_Id)
@@ -751,7 +739,7 @@ package Why.Atree.Accessors is
 
    function Binder_Get_Arg_Type
      (Id : W_Binder_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id;
+     return W_Simple_Value_Type_Unchecked_Id;
 
    function Recfun_Get_Name
      (Id : W_Recfun_Unchecked_Id)
@@ -839,7 +827,15 @@ package Why.Atree.Accessors is
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id;
+     return W_Computation_Type_Unchecked_Id;
+
+   function Global_Ref_Declaration_Get_Name
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return W_Identifier_Unchecked_Id;
+
+   function Global_Ref_Declaration_Get_Parameter_Type
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return W_Primitive_Type_Unchecked_Id;
 
    function Exception_Declaration_Get_Name
      (Id : W_Exception_Declaration_Unchecked_Id)
@@ -889,40 +885,28 @@ package Why.Atree.Accessors is
      (Id : W_Ref_Type_Id)
      return W_Primitive_Type_Id;
 
-   function Protected_Value_Type_Get_Value_Type
-     (Id : W_Protected_Value_Type_Id)
-     return W_Value_Type_Id;
+   function Computation_Type_Get_Binders
+     (Id : W_Computation_Type_Id)
+     return W_Binder_OList;
 
-   function Arrow_Type_Get_Name
-     (Id : W_Arrow_Type_Id)
-     return W_Identifier_OId;
-
-   function Arrow_Type_Get_Left
-     (Id : W_Arrow_Type_Id)
-     return W_Simple_Value_Type_Id;
-
-   function Arrow_Type_Get_Right
-     (Id : W_Arrow_Type_Id)
-     return W_Computation_Type_Id;
-
-   function Computation_Spec_Get_Precondition
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Precondition
+     (Id : W_Computation_Type_Id)
      return W_Precondition_OId;
 
-   function Computation_Spec_Get_Result_Name
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Result_Name
+     (Id : W_Computation_Type_Id)
      return W_Identifier_OId;
 
-   function Computation_Spec_Get_Return_Type
-     (Id : W_Computation_Spec_Id)
-     return W_Value_Type_Id;
+   function Computation_Type_Get_Return_Type
+     (Id : W_Computation_Type_Id)
+     return W_Primitive_Type_Id;
 
-   function Computation_Spec_Get_Effects
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Effects
+     (Id : W_Computation_Type_Id)
      return W_Effects_Id;
 
-   function Computation_Spec_Get_Postcondition
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Postcondition
+     (Id : W_Computation_Type_Id)
      return W_Postcondition_OId;
 
    function Integer_Constant_Get_Value
@@ -1531,7 +1515,7 @@ package Why.Atree.Accessors is
 
    function Raise_Statement_Get_Exn_Type
      (Id : W_Raise_Statement_Id)
-     return W_Value_Type_OId;
+     return W_Simple_Value_Type_OId;
 
    function Raise_Statement_With_Parameters_Get_Name
      (Id : W_Raise_Statement_With_Parameters_Id)
@@ -1543,7 +1527,7 @@ package Why.Atree.Accessors is
 
    function Raise_Statement_With_Parameters_Get_Exn_Type
      (Id : W_Raise_Statement_With_Parameters_Id)
-     return W_Value_Type_OId;
+     return W_Simple_Value_Type_OId;
 
    function Try_Block_Get_Prog
      (Id : W_Try_Block_Id)
@@ -1555,7 +1539,7 @@ package Why.Atree.Accessors is
 
    function Unreachable_Code_Get_Exn_Type
      (Id : W_Unreachable_Code_Id)
-     return W_Value_Type_OId;
+     return W_Simple_Value_Type_OId;
 
    function Begin_Block_Get_Prog
      (Id : W_Begin_Block_Id)
@@ -1571,7 +1555,7 @@ package Why.Atree.Accessors is
 
    function Binder_Get_Arg_Type
      (Id : W_Binder_Id)
-     return W_Value_Type_Id;
+     return W_Simple_Value_Type_Id;
 
    function Recfun_Get_Name
      (Id : W_Recfun_Id)
@@ -1659,7 +1643,15 @@ package Why.Atree.Accessors is
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Id)
-     return W_Value_Type_Id;
+     return W_Computation_Type_Id;
+
+   function Global_Ref_Declaration_Get_Name
+     (Id : W_Global_Ref_Declaration_Id)
+     return W_Identifier_Id;
+
+   function Global_Ref_Declaration_Get_Parameter_Type
+     (Id : W_Global_Ref_Declaration_Id)
+     return W_Primitive_Type_Id;
 
    function Exception_Declaration_Get_Name
      (Id : W_Exception_Declaration_Id)
@@ -1724,48 +1716,33 @@ private
      return W_Primitive_Type_Unchecked_Id is
      (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).RT_Aliased_Type));
 
-   function Protected_Value_Type_Get_Value_Type
-     (Id : W_Protected_Value_Type_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).PVT_Value_Type));
+   function Computation_Type_Get_Binders
+     (Id : W_Computation_Type_Unchecked_Id)
+     return W_Binder_Unchecked_OList is
+     (W_Binder_Unchecked_OList (Get_Node (+Id).CS_Binders));
 
-   function Arrow_Type_Get_Name
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Identifier_Unchecked_OId is
-     (W_Identifier_Unchecked_OId (Get_Node (+Id).NA_Name));
-
-   function Arrow_Type_Get_Left
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Simple_Value_Type_Unchecked_Id is
-     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).NA_Left));
-
-   function Arrow_Type_Get_Right
-     (Id : W_Arrow_Type_Unchecked_Id)
-     return W_Computation_Type_Unchecked_Id is
-     (W_Computation_Type_Unchecked_OId (Get_Node (+Id).NA_Right));
-
-   function Computation_Spec_Get_Precondition
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Precondition
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Precondition_Unchecked_OId is
      (W_Precondition_Unchecked_OId (Get_Node (+Id).CS_Precondition));
 
-   function Computation_Spec_Get_Result_Name
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Result_Name
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Identifier_Unchecked_OId is
      (W_Identifier_Unchecked_OId (Get_Node (+Id).CS_Result_Name));
 
-   function Computation_Spec_Get_Return_Type
-     (Id : W_Computation_Spec_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).CS_Return_Type));
+   function Computation_Type_Get_Return_Type
+     (Id : W_Computation_Type_Unchecked_Id)
+     return W_Primitive_Type_Unchecked_Id is
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).CS_Return_Type));
 
-   function Computation_Spec_Get_Effects
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Effects
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Effects_Unchecked_Id is
      (W_Effects_Unchecked_OId (Get_Node (+Id).CS_Effects));
 
-   function Computation_Spec_Get_Postcondition
-     (Id : W_Computation_Spec_Unchecked_Id)
+   function Computation_Type_Get_Postcondition
+     (Id : W_Computation_Type_Unchecked_Id)
      return W_Postcondition_Unchecked_OId is
      (W_Postcondition_Unchecked_OId (Get_Node (+Id).CS_Postcondition));
 
@@ -2526,8 +2503,8 @@ private
 
    function Raise_Statement_Get_Exn_Type
      (Id : W_Raise_Statement_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).RS_Exn_Type));
+     return W_Simple_Value_Type_Unchecked_OId is
+     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).RS_Exn_Type));
 
    function Raise_Statement_With_Parameters_Get_Name
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
@@ -2541,8 +2518,8 @@ private
 
    function Raise_Statement_With_Parameters_Get_Exn_Type
      (Id : W_Raise_Statement_With_Parameters_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).RSWP_Exn_Type));
+     return W_Simple_Value_Type_Unchecked_OId is
+     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).RSWP_Exn_Type));
 
    function Try_Block_Get_Prog
      (Id : W_Try_Block_Unchecked_Id)
@@ -2556,8 +2533,8 @@ private
 
    function Unreachable_Code_Get_Exn_Type
      (Id : W_Unreachable_Code_Unchecked_Id)
-     return W_Value_Type_Unchecked_OId is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).UC_Exn_Type));
+     return W_Simple_Value_Type_Unchecked_OId is
+     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).UC_Exn_Type));
 
    function Begin_Block_Get_Prog
      (Id : W_Begin_Block_Unchecked_Id)
@@ -2576,8 +2553,8 @@ private
 
    function Binder_Get_Arg_Type
      (Id : W_Binder_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).B_Arg_Type));
+     return W_Simple_Value_Type_Unchecked_Id is
+     (W_Simple_Value_Type_Unchecked_OId (Get_Node (+Id).B_Arg_Type));
 
    function Recfun_Get_Name
      (Id : W_Recfun_Unchecked_Id)
@@ -2686,8 +2663,18 @@ private
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Unchecked_Id)
-     return W_Value_Type_Unchecked_Id is
-     (W_Value_Type_Unchecked_OId (Get_Node (+Id).PD_Parameter_Type));
+     return W_Computation_Type_Unchecked_Id is
+     (W_Computation_Type_Unchecked_OId (Get_Node (+Id).PD_Parameter_Type));
+
+   function Global_Ref_Declaration_Get_Name
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return W_Identifier_Unchecked_Id is
+     (W_Identifier_Unchecked_OId (Get_Node (+Id).GR_Name));
+
+   function Global_Ref_Declaration_Get_Parameter_Type
+     (Id : W_Global_Ref_Declaration_Unchecked_Id)
+     return W_Primitive_Type_Unchecked_Id is
+     (W_Primitive_Type_Unchecked_OId (Get_Node (+Id).GR_Parameter_Type));
 
    function Exception_Declaration_Get_Name
      (Id : W_Exception_Declaration_Unchecked_Id)
@@ -2749,48 +2736,33 @@ private
      return W_Primitive_Type_Id is
      (W_Primitive_Type_Id (Get_Node (+Id).RT_Aliased_Type));
 
-   function Protected_Value_Type_Get_Value_Type
-     (Id : W_Protected_Value_Type_Id)
-     return W_Value_Type_Id is
-     (W_Value_Type_Id (Get_Node (+Id).PVT_Value_Type));
+   function Computation_Type_Get_Binders
+     (Id : W_Computation_Type_Id)
+     return W_Binder_OList is
+     (W_Binder_OList (Get_Node (+Id).CS_Binders));
 
-   function Arrow_Type_Get_Name
-     (Id : W_Arrow_Type_Id)
-     return W_Identifier_OId is
-     (W_Identifier_OId (Get_Node (+Id).NA_Name));
-
-   function Arrow_Type_Get_Left
-     (Id : W_Arrow_Type_Id)
-     return W_Simple_Value_Type_Id is
-     (W_Simple_Value_Type_Id (Get_Node (+Id).NA_Left));
-
-   function Arrow_Type_Get_Right
-     (Id : W_Arrow_Type_Id)
-     return W_Computation_Type_Id is
-     (W_Computation_Type_Id (Get_Node (+Id).NA_Right));
-
-   function Computation_Spec_Get_Precondition
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Precondition
+     (Id : W_Computation_Type_Id)
      return W_Precondition_OId is
      (W_Precondition_OId (Get_Node (+Id).CS_Precondition));
 
-   function Computation_Spec_Get_Result_Name
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Result_Name
+     (Id : W_Computation_Type_Id)
      return W_Identifier_OId is
      (W_Identifier_OId (Get_Node (+Id).CS_Result_Name));
 
-   function Computation_Spec_Get_Return_Type
-     (Id : W_Computation_Spec_Id)
-     return W_Value_Type_Id is
-     (W_Value_Type_Id (Get_Node (+Id).CS_Return_Type));
+   function Computation_Type_Get_Return_Type
+     (Id : W_Computation_Type_Id)
+     return W_Primitive_Type_Id is
+     (W_Primitive_Type_Id (Get_Node (+Id).CS_Return_Type));
 
-   function Computation_Spec_Get_Effects
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Effects
+     (Id : W_Computation_Type_Id)
      return W_Effects_Id is
      (W_Effects_Id (Get_Node (+Id).CS_Effects));
 
-   function Computation_Spec_Get_Postcondition
-     (Id : W_Computation_Spec_Id)
+   function Computation_Type_Get_Postcondition
+     (Id : W_Computation_Type_Id)
      return W_Postcondition_OId is
      (W_Postcondition_OId (Get_Node (+Id).CS_Postcondition));
 
@@ -3551,8 +3523,8 @@ private
 
    function Raise_Statement_Get_Exn_Type
      (Id : W_Raise_Statement_Id)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Get_Node (+Id).RS_Exn_Type));
+     return W_Simple_Value_Type_OId is
+     (W_Simple_Value_Type_OId (Get_Node (+Id).RS_Exn_Type));
 
    function Raise_Statement_With_Parameters_Get_Name
      (Id : W_Raise_Statement_With_Parameters_Id)
@@ -3566,8 +3538,8 @@ private
 
    function Raise_Statement_With_Parameters_Get_Exn_Type
      (Id : W_Raise_Statement_With_Parameters_Id)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Get_Node (+Id).RSWP_Exn_Type));
+     return W_Simple_Value_Type_OId is
+     (W_Simple_Value_Type_OId (Get_Node (+Id).RSWP_Exn_Type));
 
    function Try_Block_Get_Prog
      (Id : W_Try_Block_Id)
@@ -3581,8 +3553,8 @@ private
 
    function Unreachable_Code_Get_Exn_Type
      (Id : W_Unreachable_Code_Id)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Get_Node (+Id).UC_Exn_Type));
+     return W_Simple_Value_Type_OId is
+     (W_Simple_Value_Type_OId (Get_Node (+Id).UC_Exn_Type));
 
    function Begin_Block_Get_Prog
      (Id : W_Begin_Block_Id)
@@ -3601,8 +3573,8 @@ private
 
    function Binder_Get_Arg_Type
      (Id : W_Binder_Id)
-     return W_Value_Type_Id is
-     (W_Value_Type_Id (Get_Node (+Id).B_Arg_Type));
+     return W_Simple_Value_Type_Id is
+     (W_Simple_Value_Type_Id (Get_Node (+Id).B_Arg_Type));
 
    function Recfun_Get_Name
      (Id : W_Recfun_Id)
@@ -3711,8 +3683,18 @@ private
 
    function Parameter_Declaration_Get_Parameter_Type
      (Id : W_Parameter_Declaration_Id)
-     return W_Value_Type_Id is
-     (W_Value_Type_Id (Get_Node (+Id).PD_Parameter_Type));
+     return W_Computation_Type_Id is
+     (W_Computation_Type_Id (Get_Node (+Id).PD_Parameter_Type));
+
+   function Global_Ref_Declaration_Get_Name
+     (Id : W_Global_Ref_Declaration_Id)
+     return W_Identifier_Id is
+     (W_Identifier_Id (Get_Node (+Id).GR_Name));
+
+   function Global_Ref_Declaration_Get_Parameter_Type
+     (Id : W_Global_Ref_Declaration_Id)
+     return W_Primitive_Type_Id is
+     (W_Primitive_Type_Id (Get_Node (+Id).GR_Parameter_Type));
 
    function Exception_Declaration_Get_Name
      (Id : W_Exception_Declaration_Id)

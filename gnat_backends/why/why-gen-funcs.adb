@@ -23,13 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Unchecked_Ids;   use Why.Unchecked_Ids;
+with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Tables;    use Why.Atree.Tables;
 
-with Why.Gen.Arrows;      use Why.Gen.Arrows;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
@@ -38,10 +36,9 @@ with Why.Gen.Terms;       use Why.Gen.Terms;
 package body Why.Gen.Funcs is
 
    function New_Call_To_Logic
-     (Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id)
-     return W_Term_Id with
-     Pre => (Is_Root (+Name));
+     (Name    : W_Identifier_Id;
+      Binders : W_Binder_Array)
+     return W_Term_Id;
    --  Create a call to an operation in the logical space with parameters
    --  taken from Arrows. Typically, from:
    --
@@ -53,78 +50,27 @@ package body Why.Gen.Funcs is
    --
    --  Name would be inserted as is into the resulting syntax tree.
 
-   -------------------
-   -- Declare_Logic --
-   -------------------
-
-   procedure Declare_Logic
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id)
-   is
-      Logic : constant W_Logic_Unchecked_Id := New_Unchecked_Logic;
-      Spec  : constant W_Logic_Type_Unchecked_Id :=
-                New_Unchecked_Logic_Type;
-
-      procedure Append_To_Spec (Arrow : W_Arrow_Type_Id);
-      --  Append the content of Arrow in the declaration of the
-      --  logic function; in other words, build a logic spec from
-      --  a program spec. e.g. transform:
-      --
-      --  x : type1 -> y : type2 -> {} type3 {}
-      --
-      --  ...into:
-      --
-      --  type1, type2 -> type3
-
-      --------------------
-      -- Append_To_Spec --
-      --------------------
-
-      procedure Append_To_Spec (Arrow : W_Arrow_Type_Id) is
-         Right : constant W_Computation_Type_Id :=
-                   Arrow_Type_Get_Right (Arrow);
-      begin
-         Logic_Type_Append_To_Arg_Types
-           (Spec,
-            +Duplicate_Any_Node (Id => +Arrow_Type_Get_Left (Arrow)));
-
-         if Get_Kind (+Right) = W_Computation_Spec then
-            Logic_Type_Set_Return_Type
-              (Spec,
-               +Duplicate_Any_Node
-               (Id => Computation_Spec_Get_Return_Type (+Right)));
-         else
-            Append_To_Spec (+Right);
-         end if;
-      end Append_To_Spec;
-
-   --  Start of processing for Declare_Logic
-
-   begin
-      Append_To_Spec (Arrows);
-      Logic_Append_To_Names (Logic, Name);
-      Logic_Set_Logic_Type (Logic, +Spec);
-      File_Append_To_Declarations (File,
-                                   New_Logic_Declaration (Decl => +Logic));
-   end Declare_Logic;
-
    ----------------------------------
    -- Declare_Logic_And_Parameters --
    ----------------------------------
 
    procedure Declare_Logic_And_Parameters
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id;
-      Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty)
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Binders     : W_Binder_Array;
+      Return_Type : W_Primitive_Type_Id;
+      Pre         : W_Predicate_OId := Why_Empty;
+      Post        : W_Predicate_OId := Why_Empty)
    is
       Program_Space_Name : constant W_Identifier_Id :=
                              To_Program_Space (Name);
       Final_Post         : W_Predicate_OId := Post;
    begin
-      Declare_Logic (File, Name, Arrows);
+      New_Logic
+        (File        => File,
+         Name        => Name,
+         Binders     => Binders,
+         Return_Type => W_Logic_Return_Type_Id (Return_Type));
 
       if Final_Post = Why_Empty then
          declare
@@ -132,61 +78,21 @@ package body Why.Gen.Funcs is
                            +Duplicate_Any_Node (Id => +Name);
          begin
             Final_Post := New_Related_Terms
-              (Left  => New_Call_To_Logic (Logic_Name, Arrows),
+              (Left  => New_Call_To_Logic (Logic_Name, Binders),
                Op    => New_Rel_Eq,
                Right => New_Result_Term);
          end;
       end if;
 
-      Declare_Parameter (File, Program_Space_Name, Arrows, Pre, Final_Post);
+      New_Parameter
+         (File        => File,
+          Name        => Program_Space_Name,
+          Binders     => Binders,
+          Return_Type => +Duplicate_Any_Node (Id => +Return_Type),
+          Pre         => New_Assertion (Pred => Pre),
+          Post        => New_Assertion (Pred => Final_Post),
+          Effects     => New_Effects);
    end Declare_Logic_And_Parameters;
-
-   -----------------------
-   -- Declare_Parameter --
-   -----------------------
-
-   procedure Declare_Parameter
-     (File   : W_File_Id;
-      Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id;
-      Pre    : W_Predicate_OId := Why_Empty;
-      Post   : W_Predicate_OId := Why_Empty)
-   is
-   begin
-      declare
-         Contract : constant W_Computation_Spec_Id :=
-                      Get_Computation_Spec (Arrows);
-      begin
-         if Pre /= Why_Empty then
-            declare
-               Assertion    : constant W_Assertion_Id :=
-                                New_Assertion (Pred => Pre);
-               Precondition : constant W_Precondition_Id :=
-                                New_Precondition (Assertion => Assertion);
-            begin
-               Computation_Spec_Set_Precondition
-                 (Contract, Precondition);
-            end;
-         end if;
-
-         if Post /= Why_Empty then
-            declare
-               Assertion     : constant W_Assertion_Id :=
-                                 New_Assertion (Pred => Post);
-               Postcondition : constant W_Postcondition_Id :=
-                                 New_Postcondition (Assertion => Assertion);
-            begin
-               Computation_Spec_Set_Postcondition
-                 (Contract, Postcondition);
-            end;
-         end if;
-      end;
-
-      File_Append_To_Declarations (File,
-                                   New_Parameter_Declaration
-                                   (Names          => (1 => Name),
-                                    Parameter_Type => +Arrows));
-   end Declare_Parameter;
 
    -----------------------
    -- New_Call_To_Logic --
@@ -194,38 +100,37 @@ package body Why.Gen.Funcs is
 
    function New_Call_To_Logic
      (Name   : W_Identifier_Id;
-      Arrows : W_Arrow_Type_Id)
+      Binders : W_Binder_Array)
      return W_Term_Id
    is
       Operation : constant W_Operation_Unchecked_Id :=
                     New_Unchecked_Operation;
 
-      procedure Append_Arg (Arrows : W_Arrow_Type_Id);
-      --  Duplicate arg names from arrow and append them
-      --  to Operation's arg lists.
+      procedure Append_Arg
+         (Name : W_Identifier_Id;
+          Ty : W_Simple_Value_Type_Id);
 
       ----------------
       -- Append_Arg --
       ----------------
 
-      procedure Append_Arg (Arrows : W_Arrow_Type_Id) is
-         Right : constant W_Computation_Type_Id :=
-                   Arrow_Type_Get_Right (Arrows);
+      procedure Append_Arg
+         (Name : W_Identifier_Id;
+          Ty : W_Simple_Value_Type_Id) is
       begin
+         pragma Unreferenced (Ty);
          Operation_Append_To_Parameters
            (Operation,
-            To_Term_Identifier (Arrow_Type_Get_Name (Arrows)));
-
-         if Get_Kind (+Right) /= W_Computation_Spec then
-            Append_Arg (+Right);
-         end if;
+            New_Term_Identifier (Name => Name));
       end Append_Arg;
+
+      procedure Build_Call is new Iter_Binder_Array (Append_Arg);
 
    --  Start of processing for New_Call_To_Logic
 
    begin
       Operation_Set_Name (Operation, Name);
-      Append_Arg (Arrows);
+      Build_Call (Binders);
       return +Operation;
    end New_Call_To_Logic;
 

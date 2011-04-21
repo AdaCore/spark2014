@@ -122,93 +122,73 @@ package Why.Atree.Mutators is
       Aliased_Type : W_Primitive_Type_Id) with
      Pre => (Is_Root (+Aliased_Type));
 
-   procedure Protected_Value_Type_Set_Value_Type
-     (Id         : W_Protected_Value_Type_Unchecked_Id;
-      Value_Type : W_Value_Type_Id) with
-     Pre => (Is_Root (+Value_Type));
+   procedure Computation_Type_Append_To_Binders
+     (Id       : W_Computation_Type_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre => (Is_Root (+New_Item));
 
-   procedure Protected_Value_Type_Set_Value_Type
-     (Id         : W_Protected_Value_Type_Id;
-      Value_Type : W_Value_Type_Id) with
-     Pre => (Is_Root (+Value_Type));
+   procedure Computation_Type_Prepend_To_Binders
+     (Id       : W_Computation_Type_Unchecked_Id;
+      New_Item : W_Binder_Id) with
+     Pre => (Is_Root (+New_Item));
 
-   procedure Arrow_Type_Set_Name
-     (Id   : W_Arrow_Type_Unchecked_Id;
-      Name : W_Identifier_OId) with
-     Pre => (Is_Root (+Name));
+   procedure Computation_Type_Append_To_Binders
+     (Id       : W_Computation_Type_Id;
+      New_Item : W_Binder_Id) with
+     Pre => (Is_Root (+New_Item));
 
-   procedure Arrow_Type_Set_Name
-     (Id   : W_Arrow_Type_Id;
-      Name : W_Identifier_OId) with
-     Pre => (Is_Root (+Name));
+   procedure Computation_Type_Prepend_To_Binders
+     (Id       : W_Computation_Type_Id;
+      New_Item : W_Binder_Id) with
+     Pre => (Is_Root (+New_Item));
 
-   procedure Arrow_Type_Set_Left
-     (Id   : W_Arrow_Type_Unchecked_Id;
-      Left : W_Simple_Value_Type_Id) with
-     Pre => (Is_Root (+Left));
-
-   procedure Arrow_Type_Set_Left
-     (Id   : W_Arrow_Type_Id;
-      Left : W_Simple_Value_Type_Id) with
-     Pre => (Is_Root (+Left));
-
-   procedure Arrow_Type_Set_Right
-     (Id    : W_Arrow_Type_Unchecked_Id;
-      Right : W_Computation_Type_Id) with
-     Pre => (Is_Root (+Right));
-
-   procedure Arrow_Type_Set_Right
-     (Id    : W_Arrow_Type_Id;
-      Right : W_Computation_Type_Id) with
-     Pre => (Is_Root (+Right));
-
-   procedure Computation_Spec_Set_Precondition
-     (Id           : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Precondition
+     (Id           : W_Computation_Type_Unchecked_Id;
       Precondition : W_Precondition_OId) with
      Pre => (Is_Root (+Precondition));
 
-   procedure Computation_Spec_Set_Precondition
-     (Id           : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Precondition
+     (Id           : W_Computation_Type_Id;
       Precondition : W_Precondition_OId) with
      Pre => (Is_Root (+Precondition));
 
-   procedure Computation_Spec_Set_Result_Name
-     (Id          : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Result_Name
+     (Id          : W_Computation_Type_Unchecked_Id;
       Result_Name : W_Identifier_OId) with
      Pre => (Is_Root (+Result_Name));
 
-   procedure Computation_Spec_Set_Result_Name
-     (Id          : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Result_Name
+     (Id          : W_Computation_Type_Id;
       Result_Name : W_Identifier_OId) with
      Pre => (Is_Root (+Result_Name));
 
-   procedure Computation_Spec_Set_Return_Type
-     (Id          : W_Computation_Spec_Unchecked_Id;
-      Return_Type : W_Value_Type_Id) with
+   procedure Computation_Type_Set_Return_Type
+     (Id          : W_Computation_Type_Unchecked_Id;
+      Return_Type : W_Primitive_Type_Id) with
      Pre => (Is_Root (+Return_Type));
 
-   procedure Computation_Spec_Set_Return_Type
-     (Id          : W_Computation_Spec_Id;
-      Return_Type : W_Value_Type_Id) with
+   procedure Computation_Type_Set_Return_Type
+     (Id          : W_Computation_Type_Id;
+      Return_Type : W_Primitive_Type_Id) with
      Pre => (Is_Root (+Return_Type));
 
-   procedure Computation_Spec_Set_Effects
-     (Id      : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Effects
+     (Id      : W_Computation_Type_Unchecked_Id;
       Effects : W_Effects_Id) with
      Pre => (Is_Root (+Effects));
 
-   procedure Computation_Spec_Set_Effects
-     (Id      : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Effects
+     (Id      : W_Computation_Type_Id;
       Effects : W_Effects_Id) with
      Pre => (Is_Root (+Effects));
 
-   procedure Computation_Spec_Set_Postcondition
-     (Id            : W_Computation_Spec_Unchecked_Id;
+   procedure Computation_Type_Set_Postcondition
+     (Id            : W_Computation_Type_Unchecked_Id;
       Postcondition : W_Postcondition_OId) with
      Pre => (Is_Root (+Postcondition));
 
-   procedure Computation_Spec_Set_Postcondition
-     (Id            : W_Computation_Spec_Id;
+   procedure Computation_Type_Set_Postcondition
+     (Id            : W_Computation_Type_Id;
       Postcondition : W_Postcondition_OId) with
      Pre => (Is_Root (+Postcondition));
 
@@ -1970,12 +1950,12 @@ package Why.Atree.Mutators is
 
    procedure Raise_Statement_Set_Exn_Type
      (Id       : W_Raise_Statement_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Raise_Statement_Set_Exn_Type
      (Id       : W_Raise_Statement_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Raise_Statement_With_Parameters_Set_Name
@@ -2000,12 +1980,12 @@ package Why.Atree.Mutators is
 
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Raise_Statement_With_Parameters_Set_Exn_Type
      (Id       : W_Raise_Statement_With_Parameters_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Try_Block_Set_Prog
@@ -2040,12 +2020,12 @@ package Why.Atree.Mutators is
 
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Unchecked_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Unreachable_Code_Set_Exn_Type
      (Id       : W_Unreachable_Code_Id;
-      Exn_Type : W_Value_Type_OId) with
+      Exn_Type : W_Simple_Value_Type_OId) with
      Pre => (Is_Root (+Exn_Type));
 
    procedure Begin_Block_Set_Prog
@@ -2090,12 +2070,12 @@ package Why.Atree.Mutators is
 
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Unchecked_Id;
-      Arg_Type : W_Value_Type_Id) with
+      Arg_Type : W_Simple_Value_Type_Id) with
      Pre => (Is_Root (+Arg_Type));
 
    procedure Binder_Set_Arg_Type
      (Id       : W_Binder_Id;
-      Arg_Type : W_Value_Type_Id) with
+      Arg_Type : W_Simple_Value_Type_Id) with
      Pre => (Is_Root (+Arg_Type));
 
    procedure Recfun_Set_Name
@@ -2350,12 +2330,32 @@ package Why.Atree.Mutators is
 
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Unchecked_Id;
-      Parameter_Type : W_Value_Type_Id) with
+      Parameter_Type : W_Computation_Type_Id) with
      Pre => (Is_Root (+Parameter_Type));
 
    procedure Parameter_Declaration_Set_Parameter_Type
      (Id             : W_Parameter_Declaration_Id;
-      Parameter_Type : W_Value_Type_Id) with
+      Parameter_Type : W_Computation_Type_Id) with
+     Pre => (Is_Root (+Parameter_Type));
+
+   procedure Global_Ref_Declaration_Set_Name
+     (Id   : W_Global_Ref_Declaration_Unchecked_Id;
+      Name : W_Identifier_Id) with
+     Pre => (Is_Root (+Name));
+
+   procedure Global_Ref_Declaration_Set_Name
+     (Id   : W_Global_Ref_Declaration_Id;
+      Name : W_Identifier_Id) with
+     Pre => (Is_Root (+Name));
+
+   procedure Global_Ref_Declaration_Set_Parameter_Type
+     (Id             : W_Global_Ref_Declaration_Unchecked_Id;
+      Parameter_Type : W_Primitive_Type_Id) with
+     Pre => (Is_Root (+Parameter_Type));
+
+   procedure Global_Ref_Declaration_Set_Parameter_Type
+     (Id             : W_Global_Ref_Declaration_Id;
+      Parameter_Type : W_Primitive_Type_Id) with
      Pre => (Is_Root (+Parameter_Type));
 
    procedure Exception_Declaration_Set_Name

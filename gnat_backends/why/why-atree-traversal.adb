@@ -359,8 +359,8 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-         when W_Protected_Value_Type =>
-            Protected_Value_Type_Pre_Op (State, Node);
+         when W_Computation_Type =>
+            Computation_Type_Pre_Op (State, Node);
 
             if State.Control = Abandon_Children then
                State.Control := Continue;
@@ -371,72 +371,9 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-            Traverse
+            Traverse_List
               (State,
-               Get_Node  (Node).PVT_Value_Type);
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-            Protected_Value_Type_Post_Op (State, Node);
-
-            if State.Control = Abandon_Siblings then
-               State.Control := Continue;
-            end if;
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-         when W_Arrow_Type =>
-            Arrow_Type_Pre_Op (State, Node);
-
-            if State.Control = Abandon_Children then
-               State.Control := Continue;
-               return;
-            end if;
-
-            if State.Control = Abandon_Siblings then
-               return;
-            end if;
-
-            Traverse
-              (State,
-               Get_Node  (Node).NA_Name);
-            Traverse
-              (State,
-               Get_Node  (Node).NA_Left);
-            Traverse
-              (State,
-               Get_Node  (Node).NA_Right);
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-            Arrow_Type_Post_Op (State, Node);
-
-            if State.Control = Abandon_Siblings then
-               State.Control := Continue;
-            end if;
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-         when W_Computation_Spec =>
-            Computation_Spec_Pre_Op (State, Node);
-
-            if State.Control = Abandon_Children then
-               State.Control := Continue;
-               return;
-            end if;
-
-            if State.Control = Abandon_Siblings then
-               return;
-            end if;
-
+               Get_Node  (Node).CS_Binders);
             Traverse
               (State,
                Get_Node  (Node).CS_Precondition);
@@ -457,7 +394,7 @@ package body Why.Atree.Traversal is
                return;
             end if;
 
-            Computation_Spec_Post_Op (State, Node);
+            Computation_Type_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;
@@ -4102,6 +4039,39 @@ package body Why.Atree.Traversal is
             end if;
 
             Parameter_Declaration_Post_Op (State, Node);
+
+            if State.Control = Abandon_Siblings then
+               State.Control := Continue;
+            end if;
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+         when W_Global_Ref_Declaration =>
+            Global_Ref_Declaration_Pre_Op (State, Node);
+
+            if State.Control = Abandon_Children then
+               State.Control := Continue;
+               return;
+            end if;
+
+            if State.Control = Abandon_Siblings then
+               return;
+            end if;
+
+            Traverse
+              (State,
+               Get_Node  (Node).GR_Name);
+            Traverse
+              (State,
+               Get_Node  (Node).GR_Parameter_Type);
+
+            if State.Control = Terminate_Immediately then
+               return;
+            end if;
+
+            Global_Ref_Declaration_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;

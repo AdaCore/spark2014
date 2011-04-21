@@ -165,34 +165,14 @@ package Why.Atree.Traversal is
       Node  : W_Ref_Type_Valid_Id)
      is null;
 
-   procedure Protected_Value_Type_Pre_Op
+   procedure Computation_Type_Pre_Op
      (State : in out Traversal_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
+      Node  : W_Computation_Type_Valid_Id)
      is null;
 
-   procedure Protected_Value_Type_Post_Op
+   procedure Computation_Type_Post_Op
      (State : in out Traversal_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
-     is null;
-
-   procedure Arrow_Type_Pre_Op
-     (State : in out Traversal_State;
-      Node  : W_Arrow_Type_Valid_Id)
-     is null;
-
-   procedure Arrow_Type_Post_Op
-     (State : in out Traversal_State;
-      Node  : W_Arrow_Type_Valid_Id)
-     is null;
-
-   procedure Computation_Spec_Pre_Op
-     (State : in out Traversal_State;
-      Node  : W_Computation_Spec_Valid_Id)
-     is null;
-
-   procedure Computation_Spec_Post_Op
-     (State : in out Traversal_State;
-      Node  : W_Computation_Spec_Valid_Id)
+      Node  : W_Computation_Type_Valid_Id)
      is null;
 
    procedure Integer_Constant_Pre_Op
@@ -1353,6 +1333,16 @@ package Why.Atree.Traversal is
    procedure Parameter_Declaration_Post_Op
      (State : in out Traversal_State;
       Node  : W_Parameter_Declaration_Valid_Id)
+     is null;
+
+   procedure Global_Ref_Declaration_Pre_Op
+     (State : in out Traversal_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id)
+     is null;
+
+   procedure Global_Ref_Declaration_Post_Op
+     (State : in out Traversal_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id)
      is null;
 
    procedure Exception_Declaration_Pre_Op

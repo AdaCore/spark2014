@@ -470,117 +470,29 @@ package body Why.Atree.Treepr is
       null;
    end Ref_Type_Post_Op;
 
-   ---------------------------------
-   -- Protected_Value_Type_Pre_Op --
-   ---------------------------------
+   -----------------------------
+   -- Computation_Type_Pre_Op --
+   -----------------------------
 
-   procedure Protected_Value_Type_Pre_Op
+   procedure Computation_Type_Pre_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
+      Node  : W_Computation_Type_Valid_Id)
    is
    begin
-      P (O, "W_Protected_Value_Type");
+      P (O, "W_Computation_Type");
       P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
       NL (O);
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "Value_Type: ");
-         Relative_Indent (O, 1);
-         Traverse
-           (State,
-            Get_Node (Node).PVT_Value_Type);
-         Relative_Indent (O, -1);
-         Relative_Indent (O, -1);
-         State.Depth := State.Depth + 1;
-      end if;
-      State.Control := Abandon_Children;
-   end Protected_Value_Type_Pre_Op;
-
-   ----------------------------------
-   -- Protected_Value_Type_Post_Op --
-   ----------------------------------
-
-   procedure Protected_Value_Type_Post_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Protected_Value_Type_Valid_Id)
-   is
-      pragma Unreferenced (Node);
-      pragma Unreferenced (State);
-   begin
-      null;
-   end Protected_Value_Type_Post_Op;
-
-   -----------------------
-   -- Arrow_Type_Pre_Op --
-   -----------------------
-
-   procedure Arrow_Type_Pre_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Arrow_Type_Valid_Id)
-   is
-   begin
-      P (O, "W_Arrow_Type");
-      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
-      NL (O);
-      if State.Depth /= 0 then
-         State.Depth := State.Depth - 1;
-         Relative_Indent (O, 1);
-         if Get_Node (Node).NA_Name /= Why_Empty then
-            P (O, "Name: ");
+         if not Is_Empty (Get_Node (Node).CS_Binders) then
+            P (O, "Binders: ");
             Relative_Indent (O, 1);
-            Traverse
+            Traverse_List
               (State,
-               Get_Node (Node).NA_Name);
+               Get_Node (Node).CS_Binders);
             Relative_Indent (O, -1);
          end if;
-         P (O, "Left: ");
-         Relative_Indent (O, 1);
-         Traverse
-           (State,
-            Get_Node (Node).NA_Left);
-         Relative_Indent (O, -1);
-         P (O, "Right: ");
-         Relative_Indent (O, 1);
-         Traverse
-           (State,
-            Get_Node (Node).NA_Right);
-         Relative_Indent (O, -1);
-         Relative_Indent (O, -1);
-         State.Depth := State.Depth + 1;
-      end if;
-      State.Control := Abandon_Children;
-   end Arrow_Type_Pre_Op;
-
-   ------------------------
-   -- Arrow_Type_Post_Op --
-   ------------------------
-
-   procedure Arrow_Type_Post_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Arrow_Type_Valid_Id)
-   is
-      pragma Unreferenced (Node);
-      pragma Unreferenced (State);
-   begin
-      null;
-   end Arrow_Type_Post_Op;
-
-   -----------------------------
-   -- Computation_Spec_Pre_Op --
-   -----------------------------
-
-   procedure Computation_Spec_Pre_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Computation_Spec_Valid_Id)
-   is
-   begin
-      P (O, "W_Computation_Spec");
-      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
-      NL (O);
-      if State.Depth /= 0 then
-         State.Depth := State.Depth - 1;
-         Relative_Indent (O, 1);
          if Get_Node (Node).CS_Precondition /= Why_Empty then
             P (O, "Precondition: ");
             Relative_Indent (O, 1);
@@ -621,21 +533,21 @@ package body Why.Atree.Treepr is
          State.Depth := State.Depth + 1;
       end if;
       State.Control := Abandon_Children;
-   end Computation_Spec_Pre_Op;
+   end Computation_Type_Pre_Op;
 
    ------------------------------
-   -- Computation_Spec_Post_Op --
+   -- Computation_Type_Post_Op --
    ------------------------------
 
-   procedure Computation_Spec_Post_Op
+   procedure Computation_Type_Post_Op
      (State : in out Tree_Printer_State;
-      Node  : W_Computation_Spec_Valid_Id)
+      Node  : W_Computation_Type_Valid_Id)
    is
       pragma Unreferenced (Node);
       pragma Unreferenced (State);
    begin
       null;
-   end Computation_Spec_Post_Op;
+   end Computation_Type_Post_Op;
 
    -----------------------------
    -- Integer_Constant_Pre_Op --
@@ -5786,6 +5698,53 @@ package body Why.Atree.Treepr is
    begin
       null;
    end Parameter_Declaration_Post_Op;
+
+   -----------------------------------
+   -- Global_Ref_Declaration_Pre_Op --
+   -----------------------------------
+
+   procedure Global_Ref_Declaration_Pre_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id)
+   is
+   begin
+      P (O, "W_Global_Ref_Declaration");
+      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
+      NL (O);
+      if State.Depth /= 0 then
+         State.Depth := State.Depth - 1;
+         Relative_Indent (O, 1);
+         P (O, "Name: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GR_Name);
+         Relative_Indent (O, -1);
+         P (O, "Parameter_Type: ");
+         Relative_Indent (O, 1);
+         Traverse
+           (State,
+            Get_Node (Node).GR_Parameter_Type);
+         Relative_Indent (O, -1);
+         Relative_Indent (O, -1);
+         State.Depth := State.Depth + 1;
+      end if;
+      State.Control := Abandon_Children;
+   end Global_Ref_Declaration_Pre_Op;
+
+   ------------------------------------
+   -- Global_Ref_Declaration_Post_Op --
+   ------------------------------------
+
+   procedure Global_Ref_Declaration_Post_Op
+     (State : in out Tree_Printer_State;
+      Node  : W_Global_Ref_Declaration_Valid_Id)
+   is
+      pragma Unreferenced (Node);
+      pragma Unreferenced (State);
+   begin
+      null;
+   end Global_Ref_Declaration_Post_Op;
 
    ----------------------------------
    -- Exception_Declaration_Pre_Op --

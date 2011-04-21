@@ -46,12 +46,14 @@ package body Why.Gen.Records is
       R_Type : constant W_Primitive_Type_Id :=
                  +Logic_Type_Get_Return_Type (Builder);
    begin
-      New_Logic (File,
-                 Record_Getter_Name (C_Name),
-                 (1 => +Duplicate_Any_Node (Id => +R_Type)),
-                 +C_Type);
-      Logic_Type_Append_To_Arg_Types (Builder,
-                                      +Duplicate_Any_Node (Id => +C_Type));
+      New_Logic
+         (File        => File,
+          Name        => Record_Getter_Name (C_Name),
+          Args        => (1 => +Duplicate_Any_Node (Id => +R_Type)),
+          Return_Type =>       +C_Type);
+      Logic_Type_Append_To_Arg_Types
+         (Builder,
+          +Duplicate_Any_Node (Id => +C_Type));
    end Add_Component;
 
    -----------------------

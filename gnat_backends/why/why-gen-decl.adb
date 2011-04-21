@@ -31,13 +31,6 @@ with Why.Gen.Names;       use Why.Gen.Names;
 
 package body Why.Gen.Decl is
 
-   generic
-      with procedure Handle_Binder
-         (Name : W_Identifier_Id;
-          Ty   : W_Simple_Value_Type_Id);
-   procedure
-      Iter_Binder_Array (Binders : W_Binder_Array);
-
    -----------------------
    -- Iter_Binder_Array --
    -----------------------
@@ -50,7 +43,7 @@ package body Why.Gen.Decl is
             use Node_Lists;
 
             Cur_Binder : constant W_Binder_Id := Binders (Index);
-            Arg_Ty     : constant W_Value_Type_Id :=
+            Arg_Ty     : constant W_Simple_Value_Type_Id :=
                Binder_Get_Arg_Type (Cur_Binder);
             Names      : constant Node_Lists.List :=
                Get_List (+Binder_Get_Names (Cur_Binder));
@@ -166,6 +159,21 @@ package body Why.Gen.Decl is
                 Post => New_Postcondition (Assertion => Post))));
    end New_Global_Binding;
 
+   --------------------------------
+   -- New_Global_Ref_Declaration --
+   --------------------------------
+
+   procedure New_Global_Ref_Declaration
+      (File     : W_File_Id;
+       Name     : W_Identifier_Id;
+       Obj_Type : W_Primitive_Type_Id) is
+   begin
+      File_Append_To_Declarations
+         (File,
+            New_Global_Ref_Declaration
+               (Name => Name, Parameter_Type => Obj_Type));
+   end New_Global_Ref_Declaration;
+
    -----------------------------
    -- New_Include_Declaration --
    -----------------------------
@@ -207,22 +215,14 @@ package body Why.Gen.Decl is
                       Return_Type => Return_Type))));
    end New_Logic;
 
-   -------------------
-   -- New_Parameter --
-   -------------------
-
-   procedure New_Parameter
-      (File        : W_File_Id;
-       Name        : W_Identifier_Id;
-       Binders     : W_Binder_Array;
-       Return_Type : W_Value_Type_Id;
-       Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred);
-       Post        : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred))
+   procedure New_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Binders     : W_Binder_Array;
+      Return_Type : W_Logic_Return_Type_Id)
    is
-      Param_Type : W_Computation_Type_Id;
+      Ar  : W_Logic_Arg_Type_Array := (1 .. Binders'Length => <>);
+      Cnt : Integer := 1;
 
       procedure Handle_Binder
          (Name : W_Identifier_Id;
@@ -236,47 +236,48 @@ package body Why.Gen.Decl is
          (Name : W_Identifier_Id;
           Ty   : W_Simple_Value_Type_Id) is
       begin
-         Param_Type :=
-            New_Arrow_Type
-               (Name  => Name,
-                Left  => Ty,
-                Right => Param_Type);
+         pragma Unreferenced (Name);
+         Ar (Cnt) := +Ty;
+         Cnt := Cnt + 1;
       end Handle_Binder;
 
       procedure Iter_Binders is new Iter_Binder_Array (Handle_Binder);
-
    begin
-      if Binders'Length = 0 then
-         Param_Type := +Return_Type;
-      else
-         Param_Type :=
-            New_Computation_Spec
-              (Return_Type   => Return_Type,
-               Effects       => Effects,
-               Precondition  => New_Precondition (Assertion => Pre),
-               Postcondition => New_Postcondition (Assertion => Post));
-         Iter_Binders (Binders);
-      end if;
+      Iter_Binders (Binders);
+      New_Logic
+         (File => File,
+          Name => Name,
+          Args => Ar,
+          Return_Type => Return_Type);
+   end New_Logic;
+   -------------------
+   -- New_Parameter --
+   -------------------
+
+   procedure New_Parameter
+      (File        : W_File_Id;
+       Name        : W_Identifier_Id;
+       Binders     : W_Binder_Array;
+       Return_Type : W_Primitive_Type_Id;
+       Effects     : W_Effects_Id := New_Effects;
+       Pre         : W_Assertion_Id
+           := New_Assertion (Pred => New_True_Literal_Pred);
+       Post        : W_Assertion_Id
+           := New_Assertion (Pred => New_True_Literal_Pred))
+   is
+   begin
       File_Append_To_Declarations
         (Id       => File,
          New_Item =>
            New_Parameter_Declaration
             (Names => (1 => Name),
-             Parameter_Type => +Param_Type));
-   end New_Parameter;
-
-   procedure New_Parameter
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Value_Type : W_Value_Type_Id)
-   is
-   begin
-      File_Append_To_Declarations
-        (Id => File,
-         New_Item =>
-            New_Parameter_Declaration
-              (Names => (1 => Name),
-               Parameter_Type => Value_Type));
+             Parameter_Type =>
+                New_Computation_Type
+                  (Binders => Binders,
+                   Precondition  => New_Precondition (Assertion => Pre),
+                   Postcondition => New_Postcondition (Assertion => Post),
+                   Effects       => Effects,
+                   Return_Type   => Return_Type)));
    end New_Parameter;
 
    ------------------------------

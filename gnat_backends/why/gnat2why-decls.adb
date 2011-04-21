@@ -95,11 +95,11 @@ package body Gnat2Why.Decls is
       Name   : constant String := Full_Name (Obj_Id);
    begin
       if Is_Mutable (Obj_Id) then
-         New_Parameter
-            (File        => File,
-             Name        => New_Identifier (Name),
-             Binders     => (1 .. 0 => <>),
-             Return_Type => +Why_Prog_Type_Of_Ada_Type (Obj_Id));
+         New_Global_Ref_Declaration
+            (File     => File,
+             Name     => New_Identifier (Name),
+             Obj_Type => +Why_Logic_Type_Of_Ada_Obj (Obj_Id));
+
       else
          --  the case of a global constant
 

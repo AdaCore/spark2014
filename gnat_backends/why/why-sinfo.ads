@@ -93,17 +93,12 @@ package Why.Sinfo is
       W_Ref_Type,
       --  <ref_type> ::= <primitive_type> 'ref'
 
-      W_Protected_Value_Type,
-      --  <protected_value_type> ::= '(' <value_type> ')'
+      W_Computation_Type,
 
-      W_Arrow_Type,
-      --  <arrow_type> ::= [<identifier> ':'] <simple_value_type>
-      --                          '->' <computation_type>
-
-      W_Computation_Spec,
-      --  <computation_spec> ::=
+      --  <computation_type>
+      --    [ <binders> ] ->
       --       '{' [ <precondition> ] '}'
-      --       [ 'returns' <identifier> ':' ] <value_type> <effects>
+      --       [ 'returns' <identifier> ':' ] <simple_value_type> <effects>
       --       '{' [ <postcondition> ] '}'
 
       ------------------
@@ -400,11 +395,6 @@ package Why.Sinfo is
       --                          | <array_type>
       --                          | <protected_value_type>
 
-      --  <value_type> ::= <simple_value_type>
-      --                   | <arrow_type>
-
-      --  <computation_type> ::= <computation_spec> | <value_type>
-
       W_Effects,
       --  <effects> ::= [ 'reads' <identifier> (',' <identifier>)* ]
       --                [ 'writes' <identifier> (',' <identifier>)* ]
@@ -523,17 +513,18 @@ package Why.Sinfo is
       --  <prog> <prog>+
 
       W_Raise_Statement,
-      --  <raise_statement> ::= 'raise' <identifier> [ ':' <value_type> ]
+      --  <raise_statement> ::=
+      --    'raise' <identifier> [ ':' <simple_value_type> ]
 
       W_Raise_Statement_With_Parameters,
       --  <raise_statement_with_parameters> ::=
-      --     'raise' '(' <identifier> <prog> ')' [ ':' <value_type> ]
+      --     'raise' '(' <identifier> <prog> ')' [ ':' <simple_value_type> ]
 
       W_Try_Block,
       --  <try_block> ::= 'try' <prog> 'with' <handler> (',' <handler>)* 'end'
 
       W_Unreachable_Code,
-      --  <unreachable_code> ::= 'absurd' [ ':' <value_type> ]
+      --  <unreachable_code> ::= 'absurd' [ ':' <simple_value_type> ]
 
       W_Begin_Block,
       --  <begin_block> ::= begin <prog> end
@@ -604,10 +595,10 @@ package Why.Sinfo is
 
       W_Binder,
       --  <binder> ::=
-      --     '(' <identifier> [',' <identifier>]+ ':' <value_type> ')'
+      --     '(' <identifier> [',' <identifier>]+ ':' <simple_value_type> ')'
 
       W_Recfun,
-      --  <recfun> ::= <identifier> <binders> ':' <value_type>
+      --  <recfun> ::= <identifier> <binders> ':' <simple_value_type>
       --     '{' 'variant' <wf_arg> '}' = '{' <precondition> '}' <prog>
 
       W_Loop_Annot,
@@ -641,7 +632,11 @@ package Why.Sinfo is
 
       W_Parameter_Declaration,
       --  <parameter_declaration> ::=
-      --     [ <external> ] parameter <identifier>,+ ':' <value_type>
+      --     [ <external> ] parameter <identifier>,+ ':' <computation_type>
+
+      W_Global_Ref_Declaration,
+      --  <global_ref_declaration> :=
+      --    parameter <identifier> ':' <primitive_type> 'ref'
 
       W_Exception_Declaration,
       --  <exception_declaration> ::=
@@ -695,15 +690,7 @@ package Why.Sinfo is
 
    subtype W_Simple_Value_Type is Why_Node_Kind range
      W_Type_Int ..
-     W_Protected_Value_Type;
-
-   subtype W_Value_Type is Why_Node_Kind range
-     W_Type_Int ..
-     W_Arrow_Type;
-
-   subtype W_Computation_Type is Why_Node_Kind range
-     W_Type_Int ..
-     W_Computation_Spec;
+     W_Ref_Type;
 
    subtype W_Prog is Why_Node_Kind range
      W_Prog_Constant ..

@@ -120,10 +120,11 @@ package body Why.Gen.Enums is
    begin
       pragma Assert (Len > 0);
       New_Enum_Type_Declaration (File, Name, Constructors);
-      New_Logic (File,
-                 New_Conversion_From_Int (Name),
-                 (1 => New_Type_Int),
-                 New_Abstract_Type (Name => New_Identifier (Name)));
+      New_Logic
+         (File        => File,
+          Name        => New_Conversion_From_Int (Name),
+          Args        => (1 => New_Type_Int),
+          Return_Type => New_Abstract_Type (Name => New_Identifier (Name)));
       Define_Enum_To_Int_Function (File, Name, Constructors);
       Define_Range_Predicate
         (File,

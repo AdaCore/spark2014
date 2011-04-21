@@ -221,52 +221,20 @@ package Why.Conversions is
      return W_Ref_Type_OList;
 
    function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Protected_Value_Type_Valid_OId;
+     (Id : W_Computation_Type_OId)
+     return W_Computation_Type_Valid_OId;
 
    function "+"
-     (Id : W_Protected_Value_Type_Valid_OId)
-     return W_Protected_Value_Type_OId;
+     (Id : W_Computation_Type_Valid_OId)
+     return W_Computation_Type_OId;
 
    function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Protected_Value_Type_Valid_OList;
+     (Id : W_Computation_Type_OList)
+     return W_Computation_Type_Valid_OList;
 
    function "+"
-     (Id : W_Protected_Value_Type_Valid_OList)
-     return W_Protected_Value_Type_OList;
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Arrow_Type_Valid_OId;
-
-   function "+"
-     (Id : W_Arrow_Type_Valid_OId)
-     return W_Arrow_Type_OId;
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Arrow_Type_Valid_OList;
-
-   function "+"
-     (Id : W_Arrow_Type_Valid_OList)
-     return W_Arrow_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
-     return W_Computation_Spec_Valid_OId;
-
-   function "+"
-     (Id : W_Computation_Spec_Valid_OId)
-     return W_Computation_Spec_OId;
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
-     return W_Computation_Spec_Valid_OList;
-
-   function "+"
-     (Id : W_Computation_Spec_Valid_OList)
-     return W_Computation_Spec_OList;
+     (Id : W_Computation_Type_Valid_OList)
+     return W_Computation_Type_OList;
 
    function "+"
      (Id : W_Integer_Constant_OId)
@@ -2125,6 +2093,22 @@ package Why.Conversions is
      return W_Parameter_Declaration_OList;
 
    function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Global_Ref_Declaration_Valid_OId;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_Valid_OId)
+     return W_Global_Ref_Declaration_OId;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
+     return W_Global_Ref_Declaration_Valid_OList;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_Valid_OList)
+     return W_Global_Ref_Declaration_OList;
+
+   function "+"
      (Id : W_Exception_Declaration_OId)
      return W_Exception_Declaration_Valid_OId;
 
@@ -3046,22 +3030,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Primitive_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Primitive_Type_OId;
-
-   function "+"
-     (Id : W_Primitive_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Primitive_Type_OId;
-
-   function "+"
-     (Id : W_Primitive_Type_OId)
      return W_Any_Node_OId;
 
    function "+"
@@ -3154,22 +3122,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Primitive_Type_OList;
-
-   function "+"
-     (Id : W_Primitive_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Primitive_Type_OList;
-
-   function "+"
-     (Id : W_Primitive_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
      return W_Primitive_Type_OList;
 
    function "+"
@@ -3694,22 +3646,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Logic_Arg_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Logic_Arg_Type_OId;
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Logic_Arg_Type_OId;
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OId)
      return W_Any_Node_OId;
 
    function "+"
@@ -3794,22 +3730,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Logic_Arg_Type_OList;
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Logic_Arg_Type_OList;
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
      return W_Logic_Arg_Type_OList;
 
    function "+"
@@ -3902,30 +3822,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Simple_Value_Type_OId)
-     return W_Protected_Value_Type_OId;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Simple_Value_Type_OId;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Simple_Value_Type_OId;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Simple_Value_Type_OId;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
      return W_Any_Node_OId;
 
    function "+"
@@ -4014,483 +3910,11 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Protected_Value_Type_OList;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Simple_Value_Type_OList;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Simple_Value_Type_OList;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Simple_Value_Type_OList;
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
      return W_Any_Node_OList;
 
    function "+"
      (Id : W_Any_Node_OList)
      return W_Simple_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Value_Type_Valid_OId;
-
-   function "+"
-     (Id : W_Value_Type_Valid_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Int_OId;
-
-   function "+"
-     (Id : W_Type_Int_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Bool_OId;
-
-   function "+"
-     (Id : W_Type_Bool_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Real_OId;
-
-   function "+"
-     (Id : W_Type_Real_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Unit_OId;
-
-   function "+"
-     (Id : W_Type_Unit_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Abstract_Type_OId;
-
-   function "+"
-     (Id : W_Abstract_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Generic_Formal_Type_OId;
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Generic_Actual_Type_Chain_OId;
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Array_Type_OId;
-
-   function "+"
-     (Id : W_Array_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Ref_Type_OId;
-
-   function "+"
-     (Id : W_Ref_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Protected_Value_Type_OId;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Arrow_Type_OId;
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Value_Type_OId;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Value_Type_Valid_OList;
-
-   function "+"
-     (Id : W_Value_Type_Valid_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Int_OList;
-
-   function "+"
-     (Id : W_Type_Int_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Bool_OList;
-
-   function "+"
-     (Id : W_Type_Bool_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Real_OList;
-
-   function "+"
-     (Id : W_Type_Real_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Unit_OList;
-
-   function "+"
-     (Id : W_Type_Unit_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Abstract_Type_OList;
-
-   function "+"
-     (Id : W_Abstract_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Generic_Formal_Type_OList;
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Generic_Actual_Type_Chain_OList;
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Array_Type_OList;
-
-   function "+"
-     (Id : W_Array_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Ref_Type_OList;
-
-   function "+"
-     (Id : W_Ref_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Protected_Value_Type_OList;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Arrow_Type_OList;
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Value_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Computation_Type_Valid_OId;
-
-   function "+"
-     (Id : W_Computation_Type_Valid_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Int_OId;
-
-   function "+"
-     (Id : W_Type_Int_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Bool_OId;
-
-   function "+"
-     (Id : W_Type_Bool_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Real_OId;
-
-   function "+"
-     (Id : W_Type_Real_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Unit_OId;
-
-   function "+"
-     (Id : W_Type_Unit_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Abstract_Type_OId;
-
-   function "+"
-     (Id : W_Abstract_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Generic_Formal_Type_OId;
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Generic_Actual_Type_Chain_OId;
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Array_Type_OId;
-
-   function "+"
-     (Id : W_Array_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Ref_Type_OId;
-
-   function "+"
-     (Id : W_Ref_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Protected_Value_Type_OId;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Arrow_Type_OId;
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Computation_Spec_OId;
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Computation_Type_OId;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Computation_Type_Valid_OList;
-
-   function "+"
-     (Id : W_Computation_Type_Valid_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Int_OList;
-
-   function "+"
-     (Id : W_Type_Int_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Bool_OList;
-
-   function "+"
-     (Id : W_Type_Bool_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Real_OList;
-
-   function "+"
-     (Id : W_Type_Real_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Unit_OList;
-
-   function "+"
-     (Id : W_Type_Unit_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Abstract_Type_OList;
-
-   function "+"
-     (Id : W_Abstract_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Generic_Formal_Type_OList;
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Generic_Actual_Type_Chain_OList;
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Array_Type_OList;
-
-   function "+"
-     (Id : W_Array_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Ref_Type_OList;
-
-   function "+"
-     (Id : W_Ref_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Protected_Value_Type_OList;
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Arrow_Type_OList;
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Computation_Spec_OList;
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
-     return W_Computation_Type_OList;
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Computation_Type_OList;
 
    function "+"
      (Id : W_Prog_OId)
@@ -5310,6 +4734,14 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Declaration_OId)
+     return W_Global_Ref_Declaration_OId;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Declaration_OId;
+
+   function "+"
+     (Id : W_Declaration_OId)
      return W_Exception_Declaration_OId;
 
    function "+"
@@ -5370,6 +4802,14 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Parameter_Declaration_OList)
+     return W_Declaration_OList;
+
+   function "+"
+     (Id : W_Declaration_OList)
+     return W_Global_Ref_Declaration_OList;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
      return W_Declaration_OList;
 
    function "+"
@@ -5502,26 +4942,10 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Protected_Value_Type_OId;
+     return W_Computation_Type_OId;
 
    function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Arrow_Type_OId;
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Computation_Spec_OId;
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
+     (Id : W_Computation_Type_OId)
      return W_Any_Node_OId;
 
    function "+"
@@ -6454,6 +5878,14 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OId)
+     return W_Global_Ref_Declaration_OId;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Any_Node_OId;
+
+   function "+"
+     (Id : W_Any_Node_OId)
      return W_Exception_Declaration_OId;
 
    function "+"
@@ -6574,26 +6006,10 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OList)
-     return W_Protected_Value_Type_OList;
+     return W_Computation_Type_OList;
 
    function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Arrow_Type_OList;
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Computation_Spec_OList;
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
+     (Id : W_Computation_Type_OList)
      return W_Any_Node_OList;
 
    function "+"
@@ -7526,6 +6942,14 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OList)
+     return W_Global_Ref_Declaration_OList;
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
+     return W_Any_Node_OList;
+
+   function "+"
+     (Id : W_Any_Node_OList)
      return W_Exception_Declaration_OList;
 
    function "+"
@@ -7855,64 +7279,24 @@ private
      (W_Ref_Type_OList (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Protected_Value_Type_Valid_OId is
-     (W_Protected_Value_Type_Valid_OId (Id));
+     (Id : W_Computation_Type_OId)
+     return W_Computation_Type_Valid_OId is
+     (W_Computation_Type_Valid_OId (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_Valid_OId)
-     return W_Protected_Value_Type_OId is
-     (W_Protected_Value_Type_OId (Id));
+     (Id : W_Computation_Type_Valid_OId)
+     return W_Computation_Type_OId is
+     (W_Computation_Type_OId (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Protected_Value_Type_Valid_OList is
-     (W_Protected_Value_Type_Valid_OList (Id));
+     (Id : W_Computation_Type_OList)
+     return W_Computation_Type_Valid_OList is
+     (W_Computation_Type_Valid_OList (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_Valid_OList)
-     return W_Protected_Value_Type_OList is
-     (W_Protected_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Arrow_Type_Valid_OId is
-     (W_Arrow_Type_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_Valid_OId)
-     return W_Arrow_Type_OId is
-     (W_Arrow_Type_OId (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Arrow_Type_Valid_OList is
-     (W_Arrow_Type_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_Valid_OList)
-     return W_Arrow_Type_OList is
-     (W_Arrow_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
-     return W_Computation_Spec_Valid_OId is
-     (W_Computation_Spec_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_Valid_OId)
-     return W_Computation_Spec_OId is
-     (W_Computation_Spec_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
-     return W_Computation_Spec_Valid_OList is
-     (W_Computation_Spec_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_Valid_OList)
-     return W_Computation_Spec_OList is
-     (W_Computation_Spec_OList (Id));
+     (Id : W_Computation_Type_Valid_OList)
+     return W_Computation_Type_OList is
+     (W_Computation_Type_OList (Id));
 
    function "+"
      (Id : W_Integer_Constant_OId)
@@ -10235,6 +9619,26 @@ private
      (W_Parameter_Declaration_OList (Id));
 
    function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Global_Ref_Declaration_Valid_OId is
+     (W_Global_Ref_Declaration_Valid_OId (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_Valid_OId)
+     return W_Global_Ref_Declaration_OId is
+     (W_Global_Ref_Declaration_OId (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
+     return W_Global_Ref_Declaration_Valid_OList is
+     (W_Global_Ref_Declaration_Valid_OList (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_Valid_OList)
+     return W_Global_Ref_Declaration_OList is
+     (W_Global_Ref_Declaration_OList (Id));
+
+   function "+"
      (Id : W_Exception_Declaration_OId)
      return W_Exception_Declaration_Valid_OId is
      (W_Exception_Declaration_Valid_OId (Id));
@@ -11386,26 +10790,6 @@ private
 
    function "+"
      (Id : W_Primitive_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Primitive_Type_OId is
-     (W_Primitive_Type_OId (Id));
-
-   function "+"
-     (Id : W_Primitive_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Primitive_Type_OId is
-     (W_Primitive_Type_OId (Id));
-
-   function "+"
-     (Id : W_Primitive_Type_OId)
      return W_Any_Node_OId is
      (W_Any_Node_OId (Id));
 
@@ -11521,26 +10905,6 @@ private
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Primitive_Type_OList is
-     (W_Primitive_Type_OList (Id));
-
-   function "+"
-     (Id : W_Primitive_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Primitive_Type_OList is
-     (W_Primitive_Type_OList (Id));
-
-   function "+"
-     (Id : W_Primitive_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
      return W_Primitive_Type_OList is
      (W_Primitive_Type_OList (Id));
 
@@ -12196,26 +11560,6 @@ private
 
    function "+"
      (Id : W_Logic_Arg_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Logic_Arg_Type_OId is
-     (W_Logic_Arg_Type_OId (Id));
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Logic_Arg_Type_OId is
-     (W_Logic_Arg_Type_OId (Id));
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OId)
      return W_Any_Node_OId is
      (W_Any_Node_OId (Id));
 
@@ -12321,26 +11665,6 @@ private
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Logic_Arg_Type_OList is
-     (W_Logic_Arg_Type_OList (Id));
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Logic_Arg_Type_OList is
-     (W_Logic_Arg_Type_OList (Id));
-
-   function "+"
-     (Id : W_Logic_Arg_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
      return W_Logic_Arg_Type_OList is
      (W_Logic_Arg_Type_OList (Id));
 
@@ -12456,36 +11780,6 @@ private
 
    function "+"
      (Id : W_Simple_Value_Type_OId)
-     return W_Protected_Value_Type_OId is
-     (W_Protected_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Simple_Value_Type_OId is
-     (W_Simple_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Simple_Value_Type_OId is
-     (W_Simple_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Simple_Value_Type_OId is
-     (W_Simple_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OId)
      return W_Any_Node_OId is
      (W_Any_Node_OId (Id));
 
@@ -12596,36 +11890,6 @@ private
 
    function "+"
      (Id : W_Simple_Value_Type_OList)
-     return W_Protected_Value_Type_OList is
-     (W_Protected_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Simple_Value_Type_OList is
-     (W_Simple_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Simple_Value_Type_OList is
-     (W_Simple_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Simple_Value_Type_OList is
-     (W_Simple_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Simple_Value_Type_OList)
      return W_Any_Node_OList is
      (W_Any_Node_OList (Id));
 
@@ -12633,566 +11897,6 @@ private
      (Id : W_Any_Node_OList)
      return W_Simple_Value_Type_OList is
      (W_Simple_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Value_Type_Valid_OId is
-     (W_Value_Type_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_Valid_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Int_OId is
-     (W_Type_Int_OId (Id));
-
-   function "+"
-     (Id : W_Type_Int_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Bool_OId is
-     (W_Type_Bool_OId (Id));
-
-   function "+"
-     (Id : W_Type_Bool_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Real_OId is
-     (W_Type_Real_OId (Id));
-
-   function "+"
-     (Id : W_Type_Real_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Type_Unit_OId is
-     (W_Type_Unit_OId (Id));
-
-   function "+"
-     (Id : W_Type_Unit_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Abstract_Type_OId is
-     (W_Abstract_Type_OId (Id));
-
-   function "+"
-     (Id : W_Abstract_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Generic_Formal_Type_OId is
-     (W_Generic_Formal_Type_OId (Id));
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Generic_Actual_Type_Chain_OId is
-     (W_Generic_Actual_Type_Chain_OId (Id));
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Array_Type_OId is
-     (W_Array_Type_OId (Id));
-
-   function "+"
-     (Id : W_Array_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Ref_Type_OId is
-     (W_Ref_Type_OId (Id));
-
-   function "+"
-     (Id : W_Ref_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Protected_Value_Type_OId is
-     (W_Protected_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Arrow_Type_OId is
-     (W_Arrow_Type_OId (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Value_Type_OId is
-     (W_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Value_Type_Valid_OList is
-     (W_Value_Type_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_Valid_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Int_OList is
-     (W_Type_Int_OList (Id));
-
-   function "+"
-     (Id : W_Type_Int_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Bool_OList is
-     (W_Type_Bool_OList (Id));
-
-   function "+"
-     (Id : W_Type_Bool_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Real_OList is
-     (W_Type_Real_OList (Id));
-
-   function "+"
-     (Id : W_Type_Real_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Type_Unit_OList is
-     (W_Type_Unit_OList (Id));
-
-   function "+"
-     (Id : W_Type_Unit_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Abstract_Type_OList is
-     (W_Abstract_Type_OList (Id));
-
-   function "+"
-     (Id : W_Abstract_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Generic_Formal_Type_OList is
-     (W_Generic_Formal_Type_OList (Id));
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Generic_Actual_Type_Chain_OList is
-     (W_Generic_Actual_Type_Chain_OList (Id));
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Array_Type_OList is
-     (W_Array_Type_OList (Id));
-
-   function "+"
-     (Id : W_Array_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Ref_Type_OList is
-     (W_Ref_Type_OList (Id));
-
-   function "+"
-     (Id : W_Ref_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Protected_Value_Type_OList is
-     (W_Protected_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Arrow_Type_OList is
-     (W_Arrow_Type_OList (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Value_Type_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Value_Type_OList is
-     (W_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Computation_Type_Valid_OId is
-     (W_Computation_Type_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_Valid_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Int_OId is
-     (W_Type_Int_OId (Id));
-
-   function "+"
-     (Id : W_Type_Int_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Bool_OId is
-     (W_Type_Bool_OId (Id));
-
-   function "+"
-     (Id : W_Type_Bool_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Real_OId is
-     (W_Type_Real_OId (Id));
-
-   function "+"
-     (Id : W_Type_Real_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Type_Unit_OId is
-     (W_Type_Unit_OId (Id));
-
-   function "+"
-     (Id : W_Type_Unit_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Abstract_Type_OId is
-     (W_Abstract_Type_OId (Id));
-
-   function "+"
-     (Id : W_Abstract_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Generic_Formal_Type_OId is
-     (W_Generic_Formal_Type_OId (Id));
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Generic_Actual_Type_Chain_OId is
-     (W_Generic_Actual_Type_Chain_OId (Id));
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Array_Type_OId is
-     (W_Array_Type_OId (Id));
-
-   function "+"
-     (Id : W_Array_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Ref_Type_OId is
-     (W_Ref_Type_OId (Id));
-
-   function "+"
-     (Id : W_Ref_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Protected_Value_Type_OId is
-     (W_Protected_Value_Type_OId (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Arrow_Type_OId is
-     (W_Arrow_Type_OId (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Computation_Spec_OId is
-     (W_Computation_Spec_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Computation_Type_OId is
-     (W_Computation_Type_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Computation_Type_Valid_OList is
-     (W_Computation_Type_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_Valid_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Int_OList is
-     (W_Type_Int_OList (Id));
-
-   function "+"
-     (Id : W_Type_Int_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Bool_OList is
-     (W_Type_Bool_OList (Id));
-
-   function "+"
-     (Id : W_Type_Bool_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Real_OList is
-     (W_Type_Real_OList (Id));
-
-   function "+"
-     (Id : W_Type_Real_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Type_Unit_OList is
-     (W_Type_Unit_OList (Id));
-
-   function "+"
-     (Id : W_Type_Unit_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Abstract_Type_OList is
-     (W_Abstract_Type_OList (Id));
-
-   function "+"
-     (Id : W_Abstract_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Generic_Formal_Type_OList is
-     (W_Generic_Formal_Type_OList (Id));
-
-   function "+"
-     (Id : W_Generic_Formal_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Generic_Actual_Type_Chain_OList is
-     (W_Generic_Actual_Type_Chain_OList (Id));
-
-   function "+"
-     (Id : W_Generic_Actual_Type_Chain_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Array_Type_OList is
-     (W_Array_Type_OList (Id));
-
-   function "+"
-     (Id : W_Array_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Ref_Type_OList is
-     (W_Ref_Type_OList (Id));
-
-   function "+"
-     (Id : W_Ref_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Protected_Value_Type_OList is
-     (W_Protected_Value_Type_OList (Id));
-
-   function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Arrow_Type_OList is
-     (W_Arrow_Type_OList (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Computation_Spec_OList is
-     (W_Computation_Spec_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Type_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Computation_Type_OList is
-     (W_Computation_Type_OList (Id));
 
    function "+"
      (Id : W_Prog_OId)
@@ -14216,6 +12920,16 @@ private
 
    function "+"
      (Id : W_Declaration_OId)
+     return W_Global_Ref_Declaration_OId is
+     (W_Global_Ref_Declaration_OId (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Declaration_OId is
+     (W_Declaration_OId (Id));
+
+   function "+"
+     (Id : W_Declaration_OId)
      return W_Exception_Declaration_OId is
      (W_Exception_Declaration_OId (Id));
 
@@ -14291,6 +13005,16 @@ private
 
    function "+"
      (Id : W_Parameter_Declaration_OList)
+     return W_Declaration_OList is
+     (W_Declaration_OList (Id));
+
+   function "+"
+     (Id : W_Declaration_OList)
+     return W_Global_Ref_Declaration_OList is
+     (W_Global_Ref_Declaration_OList (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
      return W_Declaration_OList is
      (W_Declaration_OList (Id));
 
@@ -14456,31 +13180,11 @@ private
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Protected_Value_Type_OId is
-     (W_Protected_Value_Type_OId (Id));
+     return W_Computation_Type_OId is
+     (W_Computation_Type_OId (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Arrow_Type_OId is
-     (W_Arrow_Type_OId (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
-     return W_Computation_Spec_OId is
-     (W_Computation_Spec_OId (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OId)
+     (Id : W_Computation_Type_OId)
      return W_Any_Node_OId is
      (W_Any_Node_OId (Id));
 
@@ -15646,6 +14350,16 @@ private
 
    function "+"
      (Id : W_Any_Node_OId)
+     return W_Global_Ref_Declaration_OId is
+     (W_Global_Ref_Declaration_OId (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OId)
+     return W_Any_Node_OId is
+     (W_Any_Node_OId (Id));
+
+   function "+"
+     (Id : W_Any_Node_OId)
      return W_Exception_Declaration_OId is
      (W_Exception_Declaration_OId (Id));
 
@@ -15796,31 +14510,11 @@ private
 
    function "+"
      (Id : W_Any_Node_OList)
-     return W_Protected_Value_Type_OList is
-     (W_Protected_Value_Type_OList (Id));
+     return W_Computation_Type_OList is
+     (W_Computation_Type_OList (Id));
 
    function "+"
-     (Id : W_Protected_Value_Type_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Arrow_Type_OList is
-     (W_Arrow_Type_OList (Id));
-
-   function "+"
-     (Id : W_Arrow_Type_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Computation_Spec_OList is
-     (W_Computation_Spec_OList (Id));
-
-   function "+"
-     (Id : W_Computation_Spec_OList)
+     (Id : W_Computation_Type_OList)
      return W_Any_Node_OList is
      (W_Any_Node_OList (Id));
 
@@ -16981,6 +15675,16 @@ private
 
    function "+"
      (Id : W_Parameter_Declaration_OList)
+     return W_Any_Node_OList is
+     (W_Any_Node_OList (Id));
+
+   function "+"
+     (Id : W_Any_Node_OList)
+     return W_Global_Ref_Declaration_OList is
+     (W_Global_Ref_Declaration_OList (Id));
+
+   function "+"
+     (Id : W_Global_Ref_Declaration_OList)
      return W_Any_Node_OList is
      (W_Any_Node_OList (Id));
 

@@ -31,6 +31,13 @@ package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
    --  toplevel declarations.
    --
+   generic
+      with procedure Handle_Binder
+         (Name : W_Identifier_Id;
+          Ty   : W_Simple_Value_Type_Id);
+   procedure
+      Iter_Binder_Array (Binders : W_Binder_Array);
+
    --  Overloaded procedures with a W_File_Id Argument add the built
    --  declaration to that context instead of returning it
 
@@ -58,6 +65,11 @@ package Why.Gen.Decl is
        Post    : W_Assertion_Id
                    := New_Assertion (Pred => New_True_Literal_Pred));
 
+   procedure New_Global_Ref_Declaration
+      (File     : W_File_Id;
+       Name     : W_Identifier_Id;
+       Obj_Type : W_Primitive_Type_Id);
+
    procedure New_Include_Declaration
      (File : W_File_Id;
       Name : W_Identifier_Id;
@@ -71,21 +83,22 @@ package Why.Gen.Decl is
       Args        : W_Logic_Arg_Type_Array;
       Return_Type : W_Logic_Return_Type_Id);
 
+   procedure New_Logic
+     (File        : W_File_Id;
+      Name        : W_Identifier_Id;
+      Binders     : W_Binder_Array;
+      Return_Type : W_Logic_Return_Type_Id);
+
    procedure New_Parameter
       (File        : W_File_Id;
        Name        : W_Identifier_Id;
        Binders     : W_Binder_Array;
-       Return_Type : W_Value_Type_Id;
+       Return_Type : W_Primitive_Type_Id;
        Effects     : W_Effects_Id := New_Effects;
        Pre         : W_Assertion_Id
            := New_Assertion (Pred => New_True_Literal_Pred);
        Post        : W_Assertion_Id
            := New_Assertion (Pred => New_True_Literal_Pred));
-
-   procedure New_Parameter
-      (File       : W_File_Id;
-       Name       : W_Identifier_Id;
-       Value_Type : W_Value_Type_Id);
 
    procedure New_Predicate_Definition
      (File     : W_File_Id;
