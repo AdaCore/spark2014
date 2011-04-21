@@ -111,9 +111,7 @@ package body Gnat2Why.Driver is
    begin
       --  Prevent use of formal proof on code with tasking altogether
 
-      if Tasking_Used then
-         raise Program_Error;
-      end if;
+      Mark_Standard_Package;
 
       --  Authorize warnings now, since regular compiler warnings should
       --  already have been issued, e.g. to generate warnings related to
@@ -126,86 +124,94 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      --  Compute the frame condition. This starts with identifying ALI files
-      --  for the current unit and all dependent (with'ed) units. Then ALFA
-      --  information is loaded from all these files. Finally the local ALFA
-      --  information is propagated to get the frame condition.
+      if Debug_Flag_Dot_HH then
+         Translate_Standard_Package;
+      else
 
-      Initialize_ALI;
-      Initialize_ALI_Source;
+         if Tasking_Used then
+            raise Program_Error;
+         end if;
 
-      --  Fill in table ALIs with all dependent units
+         --  Compute the frame condition. This starts with identifying ALI
+         --  files for the current unit and all dependent (with'ed) units.
+         --  Then ALFA information is loaded from all these files. Finally the
+         --  local ALFA information is propagated to get the frame condition.
 
-      Read_Library_Info (Main_Lib_File, Text);
-      Main_Lib_Id := Scan_ALI
-        (F                => Main_Lib_File,
-         T                => Text,
-         Ignore_ED        => False,
-         Err              => False,
-         Ignore_Errors    => Debug_Flag_I,
-         Directly_Scanned => True);
-      Free (Text);
-      Read_Withed_ALIs (Main_Lib_Id);
+         Initialize_ALI;
+         Initialize_ALI_Source;
 
-      --  Quit if some ALI files are missing
+         --  Fill in table ALIs with all dependent units
 
-      if Binderr.Errors_Detected > 0 then
-         raise Unrecoverable_Error;
-      end if;
+         Read_Library_Info (Main_Lib_File, Text);
+         Main_Lib_Id := Scan_ALI
+           (F                => Main_Lib_File,
+            T                => Text,
+            Ignore_ED        => False,
+            Err              => False,
+            Ignore_Errors    => Debug_Flag_I,
+            Directly_Scanned => True);
+         Free (Text);
+         Read_Withed_ALIs (Main_Lib_Id);
 
-      --  Load ALFA information from ALIs for all dependent units
+         --  Quit if some ALI files are missing
 
-      for Index in ALIs.First .. ALIs.Last loop
-         Load_ALFA (Name_String (Name_Id
-           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
-      end loop;
+         if Binderr.Errors_Detected > 0 then
+            raise Unrecoverable_Error;
+         end if;
 
-      --  Write Dependency file
-      Open_Current_File (Base_Name & ".d");
-      P (Current_File, Unit_Name & ".why: ");
-      P (Current_File, FName);
-      for Index in ALIs.First .. ALIs.Last loop
-         P (Current_File, " ");
-         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
-      end loop;
-         NL (Current_File);
-      Close_Current_File;
+         --  Load ALFA information from ALIs for all dependent units
 
-      --  Compute the frame condition from raw ALFA information
+         for Index in ALIs.First .. ALIs.Last loop
+            Load_ALFA (Name_String (Name_Id
+              (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
+         end loop;
 
---        Put_Line ("");
---        Put_Line ("## Before propagation ##");
---        Put_Line ("");
---        Display_Maps;
+         --  Write Dependency file
+         Open_Current_File (Base_Name & ".d");
+         P (Current_File, Unit_Name & ".why: ");
+         P (Current_File, FName);
+         for Index in ALIs.First .. ALIs.Last loop
+            P (Current_File, " ");
+            P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
+         end loop;
+            NL (Current_File);
+         Close_Current_File;
 
-      Propagate_Through_Call_Graph;
+         --  Compute the frame condition from raw ALFA information
 
---        Put_Line ("");
---        Put_Line ("## After propagation ##");
---        Put_Line ("");
---        Display_Maps;
+   --        Put_Line ("");
+   --        Put_Line ("## Before propagation ##");
+   --        Put_Line ("");
+   --        Display_Maps;
 
-      --  Mark all compilation units with "in ALFA / not in ALFA" marks, in the
-      --  same order that they were processed by the frontend. Bodies are not
-      --  included, except for the main unit itself, which always comes last.
+         Propagate_Through_Call_Graph;
 
-      Create_ALFA_Output_File (Unit_Name & ".alfa");
-      Mark_Standard_Package;
-      Mark_All_Compilation_Units;
-      Close_ALFA_Output_File;
+   --        Put_Line ("");
+   --        Put_Line ("## After propagation ##");
+   --        Put_Line ("");
+   --        Display_Maps;
 
-      if Compilation_Errors then
-         return;
-      end if;
+         --  Mark all compilation units with "in ALFA / not in ALFA" marks, in
+         --  the same order that they were processed by the frontend. Bodies
+         --  are not included, except for the main unit itself, which always
+         --  comes last.
+
+         Create_ALFA_Output_File (Unit_Name & ".alfa");
+         Mark_All_Compilation_Units;
+         Close_ALFA_Output_File;
+
+         if Compilation_Errors then
+            return;
+         end if;
 
       --  Start the translation to Why
 
-      Translate_Standard_Package;
-      Filter_Compilation_Unit (GNAT_Root);
+         Filter_Compilation_Unit (GNAT_Root);
 
-      for CU of ALFA_Compilation_Units loop
-         Translate_CUnit (CU);
-      end loop;
+         for CU of ALFA_Compilation_Units loop
+            Translate_CUnit (CU);
+         end loop;
+      end if;
    end GNAT_To_Why;
 
    ------------------------
