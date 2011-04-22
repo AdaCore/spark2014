@@ -93,12 +93,13 @@ procedure Gnatprove is
    procedure Call_Gnatmake (Project_File : String) is
    begin
       Call_Exit_On_Failure
-        (Command => "gnatmake",
+        (Command   => "gnatmake",
          Arguments => (1 => new String'("-P"),
                        2 => new String'(Project_File),
                        3 => new String'("--subdirs=" & String (Subdir_Name)),
                        4 => new String'("-gnatc"),      --  only generate ALI
-                       5 => new String'("-gnatd.F")));  --  ALFA section in ALI
+                       5 => new String'("-gnatd.F")),   --  ALFA section in ALI
+         Verbose   => Verbose);
    end Call_Gnatmake;
 
    -------------------
@@ -129,7 +130,7 @@ procedure Gnatprove is
          Is_Default_Value => Default);
       declare
          Arguments : constant Argument_List :=
-         ((1 => new String'("-gnatd.F"),  --  ALFA marks in AST
+         ((1 => new String'("-gnatd.F"),
            2 => new String'(+Full_Name (File))) &
              Switch.all &
              Local_Inc_Args);
@@ -137,11 +138,13 @@ procedure Gnatprove is
          if All_VCs then
             Call_Exit_On_Failure
               (Command   => "gnat2why",
-               Arguments => Arguments);
+               Arguments => Arguments,
+               Verbose   => Verbose);
          else
             Call_Exit_On_Failure
               (Command   => "gnat2why",
-               Arguments => Arguments & (1 => new String'("-gnatd.G")));
+               Arguments => Arguments & (1 => new String'("-gnatd.G")),
+               Verbose   => Verbose);
          end if;
       end;
    end Call_Gnat2Why;
@@ -174,7 +177,8 @@ procedure Gnatprove is
              3 => new String'("--explain"),
              4 => new String'("--locs"),
              5 => new String'(Base & Main_Suffix & ".loc"),
-             6 => new String'(Base & Main_Suffix & ".why"))));
+             6 => new String'(Base & Main_Suffix & ".why"))),
+         Verbose   => Verbose);
    end Call_Why;
 
    ---------------------
@@ -242,7 +246,8 @@ procedure Gnatprove is
          Arguments =>
             (1 => new String'("-gnatd.H"),
              2 => new String'("-gnatg"),
-             3 => new String'(Ada_Ads)));
+             3 => new String'(Ada_Ads)),
+         Verbose   => Verbose);
    end Make_Standard_Package;
 
    Tree      : Project_Tree;

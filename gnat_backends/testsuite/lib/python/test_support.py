@@ -156,7 +156,7 @@ def altergo(src, opt=None, verbose=True):
                 print "Failure"
     return status
 
-def gnatprove(opt=["-P", "test.gpr", "-v"]):
+def gnatprove(opt=["-P", "test.gpr"]):
     """Invoke gnatprove
 
     PARAMETERS
@@ -170,7 +170,7 @@ def gnatprove(opt=["-P", "test.gpr", "-v"]):
     for line in strlist:
         print line
 
-def prove(src,opt=["-P", "test.gpr", "-v"]):
+def prove(src,opt=["-P", "test.gpr"]):
     """Prove all obligations from an Ada file
 
     PARAMETERS
