@@ -1801,7 +1801,9 @@ package body ALFA.Definition is
             null;
 
          when N_Derived_Type_Definition =>
-            if Present (Interface_List (N)) then
+            if Is_Array_Type (Id) then
+               Mark_Non_ALFA ("array derived type", N, V_Implem);
+            elsif Present (Interface_List (N)) then
                Mark_Non_ALFA ("interface", N);
             elsif Present (Record_Extension_Part (N)) then
                Mark_Non_ALFA ("record extension", N, V_Implem);

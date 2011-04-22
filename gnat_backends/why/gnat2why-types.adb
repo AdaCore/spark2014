@@ -208,7 +208,7 @@ package body Gnat2Why.Types is
             declare
                Component_Type : constant String :=
                   Full_Name
-                     (Entity
+                     (Etype
                         (Subtype_Indication (Component_Definition
                            (Def_Node))));
                Index          : constant String :=

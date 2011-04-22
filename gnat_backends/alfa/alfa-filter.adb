@@ -100,19 +100,6 @@ package body ALFA.Filter is
       --  Dispatch types, vars, subprograms to the corresponding buckets
       --  for bodies.
 
-      procedure Transform_Subtype_Indication
-         (N         : Node_Id;
-          Type_List : in out List);
-      --  Generate a type definition that corresponds to the given subtype
-      --  indication.
-
-      procedure Traverse_Constr_Array_Def
-         (N         : Node_Id;
-          Type_List : in out List);
-      --  Traverse a constrained array definition and generate necessary type
-      --  definitions for the component and index types. Do not generate a
-      --  type definition for the constrained array itself.
-
       ---------------------
       -- Bucket_Dispatch --
       ---------------------
@@ -175,24 +162,6 @@ package body ALFA.Filter is
 
             when N_Full_Type_Declaration =>
                if Is_In_ALFA (Defining_Identifier (N)) then
-                  declare
-                     Def : constant Node_Id := Type_Definition (N);
-                  begin
-                  --  We need to check for anonymous types and subtypes here
-                     case Nkind (Def) is
-                        when N_Unconstrained_Array_Definition =>
-                           --  only check for the component type
-                           Transform_Subtype_Indication
-                             (Subtype_Indication (Component_Definition (Def)),
-                              Types_Vars);
-
-                        when N_Constrained_Array_Definition =>
-                           Traverse_Constr_Array_Def (Def, Types_Vars);
-
-                        when others =>
-                           null;
-                     end case;
-                  end;
                   Types_Vars.Append (N);
                end if;
 
@@ -223,7 +192,6 @@ package body ALFA.Filter is
                         declare
                            TyDef : constant Node_Id := Object_Definition (N);
                         begin
-                           Traverse_Constr_Array_Def (TyDef, Types_Vars);
                            Types_Vars.Append
                              (Make_Full_Type_Declaration
                                 (Sloc (N),
@@ -244,67 +212,6 @@ package body ALFA.Filter is
          end case;
 
       end Bucket_Dispatch;
-
-      -------------------------------
-      -- Traverse_Constr_Array_Def --
-      -------------------------------
-
-      procedure Traverse_Constr_Array_Def
-         (N         : Node_Id;
-          Type_List : in out List)
-      is
-         Cur_Indexed : Node_Id := First (Discrete_Subtype_Definitions (N));
-      begin
-         while Nkind (Cur_Indexed) /= N_Empty loop
-            Transform_Subtype_Indication (Cur_Indexed, Type_List);
-            Next (Cur_Indexed);
-         end loop;
-         Transform_Subtype_Indication
-           (Subtype_Indication (Component_Definition (N)), Type_List);
-      end Traverse_Constr_Array_Def;
-
-      ----------------------------------
-      -- Transform_Subtype_Indication --
-      ----------------------------------
-
-      procedure Transform_Subtype_Indication
-         (N         : Node_Id;
-          Type_List : in out List)
-      is
-         Orig : constant Node_Id := Original_Node (N);
-      begin
-         --  If the node has been rewritten, and the original node
-         --  is an ident, do nothing
-         if  Orig /= N and then Nkind (Orig) = N_Identifier then
-            null;
-         else
-            case Nkind (N) is
-               when N_Identifier =>
-                  --  The type is already a simple name, do nothing
-                  null;
-               when N_Subtype_Indication | N_Range =>
-                  declare
-                     --  assume an integer subtype for now
-                     --  Rng     : constant Node_Id :=
-                     --     Range_Expression (Constraint (N));
-                     --  New_Def : constant Node_Id :=
-                     --     Make_Signed_Integer_Type_Definition
-                     --       (Sloc => Sloc (N),
-                     --        Low_Bound => Low_Bound (Rng),
-                     --        High_Bound => Low_Bound (Rng));
-                  begin
-                     Type_List.Append
-                       (Make_Subtype_Declaration
-                          (Sloc (N),
-                           New_Copy (Etype (N)),
-                           False,
-                           New_Copy (N)));
-                  end;
-               when others =>
-                  null;
-            end case;
-         end if;
-      end Transform_Subtype_Indication;
 
       -------------------
       -- Dispatch_Spec --

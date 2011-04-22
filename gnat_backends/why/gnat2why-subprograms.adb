@@ -707,7 +707,13 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Node_Id
    is
    begin
-      return Etype (N);
+      if Nkind (N) in N_Entity
+        and then Ekind (N) in Type_Kind
+      then
+         return N;
+      else
+         return Etype (N);
+      end if;
    end Type_Of_Node;
 
    function Type_Of_Node (N : Node_Id) return String
@@ -1608,7 +1614,9 @@ package body Gnat2Why.Subprograms is
                               (First (Expressions (Lvalue)),
                                Type_Of_Node (First_Index (Etype (Pre)))),
                           Value     =>
-                            Why_Expr_Of_Ada_Expr (Expression (Stmt)),
+                            Why_Expr_Of_Ada_Expr
+                              (Expression (Stmt),
+                               Type_Of_Node (Component_Type (Etype (Pre)))),
                           Unconstrained => Is_Unconstrained_Array (Pre));
                   end;
 
