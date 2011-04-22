@@ -1861,30 +1861,6 @@ package Why.Unchecked_Ids is
    (Exn_Condition_List_Kind_Valid
       (W_Exn_Condition_Unchecked_List));
 
-   subtype W_Assertion_Unchecked_OId is
-     W_Assertion_Opaque_OId with
-   Predicate =>
-   (Assertion_OId_Kind_Valid
-      (W_Assertion_Unchecked_OId));
-
-   subtype W_Assertion_Unchecked_OList is
-     W_Assertion_Opaque_OList with
-   Predicate =>
-   (Assertion_OList_Kind_Valid
-      (W_Assertion_Unchecked_OList));
-
-   subtype W_Assertion_Unchecked_Id is
-     W_Assertion_Opaque_Id with
-   Predicate =>
-   (Assertion_Id_Kind_Valid
-      (W_Assertion_Unchecked_Id));
-
-   subtype W_Assertion_Unchecked_List is
-     W_Assertion_Opaque_List with
-   Predicate =>
-   (Assertion_List_Kind_Valid
-      (W_Assertion_Unchecked_List));
-
    subtype W_Prog_Constant_Unchecked_OId is
      W_Prog_Constant_Opaque_OId with
    Predicate =>

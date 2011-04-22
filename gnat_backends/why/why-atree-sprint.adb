@@ -256,7 +256,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "{ ");
-      Traverse (State, Precondition_Get_Assertion (Node));
+      Traverse (State, Precondition_Get_Pred (Node));
       PL (O, " }");
       State.Control := Abandon_Children;
    end Precondition_Pre_Op;
@@ -1688,7 +1688,7 @@ package body Why.Atree.Sprint is
    begin
       Traverse
         (State,
-         Postcondition_Get_Assertion (Node));
+         Postcondition_Get_Pred (Node));
 
       if not Is_Empty (+Handlers) then
          NL (O);
@@ -1716,32 +1716,9 @@ package body Why.Atree.Sprint is
       P (O, " => ");
       Traverse
         (State,
-         Exn_Condition_Get_Assertion (Node));
+         Exn_Condition_Get_Pred (Node));
       State.Control := Abandon_Children;
    end Exn_Condition_Pre_Op;
-
-   ----------------------
-   -- Assertion_Pre_Op --
-   ----------------------
-
-   procedure Assertion_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Assertion_Valid_Id)
-   is
-      As : constant W_Identifier_OId :=
-             Assertion_Get_As (+Node);
-   begin
-      Traverse
-        (State,
-         Assertion_Get_Pred (Node));
-
-      if As /= Why_Empty then
-         P (O, " as ");
-         Traverse (State, +As);
-      end if;
-
-      State.Control := Abandon_Children;
-   end Assertion_Pre_Op;
 
    ---------------------
    -- Any_Expr_Pre_Op --
@@ -2073,7 +2050,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "assert { ");
-      Print_List (State, Assert_Get_Assertions (Node), " } { ");
+      Print_List (State, Assert_Get_Preds (Node), " } { ");
       P (O, "};");
       NL (O);
       Traverse
@@ -2673,7 +2650,7 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Loop_Annot_Valid_Id)
    is
-      Invariant : constant W_Assertion_OId :=
+      Invariant : constant W_Predicate_OId :=
                     Loop_Annot_Get_Invariant (+Node);
       Variant   : constant W_Wf_Arg_OId :=
                     Loop_Annot_Get_Variant (+Node);

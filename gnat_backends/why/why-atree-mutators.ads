@@ -1318,25 +1318,25 @@ package Why.Atree.Mutators is
       New_Item : W_Identifier_Id) with
      Pre => (Is_Root (+New_Item));
 
-   procedure Precondition_Set_Assertion
-     (Id        : W_Precondition_Unchecked_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
+   procedure Precondition_Set_Pred
+     (Id   : W_Precondition_Unchecked_Id;
+      Pred : W_Predicate_Id) with
+     Pre => (Is_Root (+Pred));
 
-   procedure Precondition_Set_Assertion
-     (Id        : W_Precondition_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
+   procedure Precondition_Set_Pred
+     (Id   : W_Precondition_Id;
+      Pred : W_Predicate_Id) with
+     Pre => (Is_Root (+Pred));
 
-   procedure Postcondition_Set_Assertion
-     (Id        : W_Postcondition_Unchecked_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
+   procedure Postcondition_Set_Pred
+     (Id   : W_Postcondition_Unchecked_Id;
+      Pred : W_Predicate_Id) with
+     Pre => (Is_Root (+Pred));
 
-   procedure Postcondition_Set_Assertion
-     (Id        : W_Postcondition_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
+   procedure Postcondition_Set_Pred
+     (Id   : W_Postcondition_Id;
+      Pred : W_Predicate_Id) with
+     Pre => (Is_Root (+Pred));
 
    procedure Postcondition_Append_To_Handlers
      (Id       : W_Postcondition_Unchecked_Id;
@@ -1368,35 +1368,15 @@ package Why.Atree.Mutators is
       Exn_Case : W_Identifier_Id) with
      Pre => (Is_Root (+Exn_Case));
 
-   procedure Exn_Condition_Set_Assertion
-     (Id        : W_Exn_Condition_Unchecked_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
-
-   procedure Exn_Condition_Set_Assertion
-     (Id        : W_Exn_Condition_Id;
-      Assertion : W_Assertion_Id) with
-     Pre => (Is_Root (+Assertion));
-
-   procedure Assertion_Set_Pred
-     (Id   : W_Assertion_Unchecked_Id;
+   procedure Exn_Condition_Set_Pred
+     (Id   : W_Exn_Condition_Unchecked_Id;
       Pred : W_Predicate_Id) with
      Pre => (Is_Root (+Pred));
 
-   procedure Assertion_Set_Pred
-     (Id   : W_Assertion_Id;
+   procedure Exn_Condition_Set_Pred
+     (Id   : W_Exn_Condition_Id;
       Pred : W_Predicate_Id) with
      Pre => (Is_Root (+Pred));
-
-   procedure Assertion_Set_As
-     (Id : W_Assertion_Unchecked_Id;
-      As : W_Identifier_OId) with
-     Pre => (Is_Root (+As));
-
-   procedure Assertion_Set_As
-     (Id : W_Assertion_Id;
-      As : W_Identifier_OId) with
-     Pre => (Is_Root (+As));
 
    procedure Prog_Constant_Set_Def
      (Id  : W_Prog_Constant_Unchecked_Id;
@@ -1718,24 +1698,24 @@ package Why.Atree.Mutators is
       Def : W_Prog_Id) with
      Pre => (Is_Root (+Def));
 
-   procedure Assert_Append_To_Assertions
+   procedure Assert_Append_To_Preds
      (Id       : W_Assert_Unchecked_Id;
-      New_Item : W_Assertion_Id) with
+      New_Item : W_Predicate_Id) with
      Pre => (Is_Root (+New_Item));
 
-   procedure Assert_Prepend_To_Assertions
+   procedure Assert_Prepend_To_Preds
      (Id       : W_Assert_Unchecked_Id;
-      New_Item : W_Assertion_Id) with
+      New_Item : W_Predicate_Id) with
      Pre => (Is_Root (+New_Item));
 
-   procedure Assert_Append_To_Assertions
+   procedure Assert_Append_To_Preds
      (Id       : W_Assert_Id;
-      New_Item : W_Assertion_Id) with
+      New_Item : W_Predicate_Id) with
      Pre => (Is_Root (+New_Item));
 
-   procedure Assert_Prepend_To_Assertions
+   procedure Assert_Prepend_To_Preds
      (Id       : W_Assert_Id;
-      New_Item : W_Assertion_Id) with
+      New_Item : W_Predicate_Id) with
      Pre => (Is_Root (+New_Item));
 
    procedure Assert_Set_Prog
@@ -2150,12 +2130,12 @@ package Why.Atree.Mutators is
 
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Unchecked_Id;
-      Invariant : W_Assertion_OId) with
+      Invariant : W_Predicate_OId) with
      Pre => (Is_Root (+Invariant));
 
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Id;
-      Invariant : W_Assertion_OId) with
+      Invariant : W_Predicate_OId) with
      Pre => (Is_Root (+Invariant));
 
    procedure Loop_Annot_Set_Variant

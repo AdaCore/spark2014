@@ -188,9 +188,7 @@ package body Why.Gen.Progs is
                   Return_Type => New_Type_Unit,
                   Effects => New_Effects,
                   Postcondition =>
-                     New_Postcondition
-                       (Ada_Node => Ada_Node,
-                        Assertion => New_Assertion (Pred => Pred))));
+                     New_Postcondition (Ada_Node => Ada_Node, Pred => Pred)));
    end New_Assume_Statement;
 
    ------------------
@@ -270,7 +268,7 @@ package body Why.Gen.Progs is
                  Annotation   =>
                    New_Loop_Annot
                       (Invariant =>
-                        New_Located_Assertion
+                        New_Located_Predicate
                            (Ada_Node => Ada_Node,
                             Pred     => Enriched_Inv,
                             Reason   => VC_Loop_Invariant)),
@@ -304,9 +302,9 @@ package body Why.Gen.Progs is
       return
          New_Assert
            (Ada_Node   => Ada_Node,
-            Assertions =>
+            Preds =>
               (1 =>
-                New_Located_Assertion
+                New_Located_Predicate
                   (Ada_Node => Ada_Node,
                    Pred     => Pred,
                    Reason   => VC_Assert)),

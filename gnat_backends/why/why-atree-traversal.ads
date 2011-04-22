@@ -805,16 +805,6 @@ package Why.Atree.Traversal is
       Node  : W_Exn_Condition_Valid_Id)
      is null;
 
-   procedure Assertion_Pre_Op
-     (State : in out Traversal_State;
-      Node  : W_Assertion_Valid_Id)
-     is null;
-
-   procedure Assertion_Post_Op
-     (State : in out Traversal_State;
-      Node  : W_Assertion_Valid_Id)
-     is null;
-
    procedure Prog_Constant_Pre_Op
      (State : in out Traversal_State;
       Node  : W_Prog_Constant_Valid_Id)

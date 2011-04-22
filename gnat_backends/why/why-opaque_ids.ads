@@ -646,14 +646,6 @@ package Why.Opaque_Ids is
 
    subtype W_Exn_Condition_Opaque_List is Why_Node_List;
 
-   subtype W_Assertion_Opaque_OId is Why_Node_Id;
-
-   subtype W_Assertion_Opaque_OList is Why_Node_List;
-
-   subtype W_Assertion_Opaque_Id is Why_Node_Id;
-
-   subtype W_Assertion_Opaque_List is Why_Node_List;
-
    subtype W_Prog_Constant_Opaque_OId is Why_Node_Id;
 
    subtype W_Prog_Constant_Opaque_OList is Why_Node_List;

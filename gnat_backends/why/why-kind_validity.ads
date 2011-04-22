@@ -1248,22 +1248,6 @@ package Why.Kind_Validity is
      (Id : W_Exn_Condition_Opaque_List)
      return Boolean;
 
-   function Assertion_OId_Kind_Valid
-     (Id : W_Assertion_Opaque_OId)
-     return Boolean;
-
-   function Assertion_OList_Kind_Valid
-     (Id : W_Assertion_Opaque_OList)
-     return Boolean;
-
-   function Assertion_Id_Kind_Valid
-     (Id : W_Assertion_Opaque_Id)
-     return Boolean;
-
-   function Assertion_List_Kind_Valid
-     (Id : W_Assertion_Opaque_List)
-     return Boolean;
-
    function Prog_Constant_OId_Kind_Valid
      (Id : W_Prog_Constant_Opaque_OId)
      return Boolean;
@@ -4312,31 +4296,6 @@ private
 
    function Exn_Condition_List_Kind_Valid
      (Id : W_Exn_Condition_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Assertion_OId_Kind_Valid
-     (Id : W_Assertion_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assertion_Id_Kind_Valid (Id));
-
-   function Assertion_OList_Kind_Valid
-     (Id : W_Assertion_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assertion_List_Kind_Valid (Id));
-
-   function Assertion_Id_Kind_Valid
-     (Id : W_Assertion_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Assertion);
-
-   function Assertion_List_Kind_Valid
-     (Id : W_Assertion_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);

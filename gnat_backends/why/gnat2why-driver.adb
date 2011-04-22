@@ -39,7 +39,6 @@ with Osint;                 use Osint;
 with Osint.C;               use Osint.C;
 with Outputs;               use Outputs;
 with Sem;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;

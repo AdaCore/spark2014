@@ -72,8 +72,8 @@ package body Why.Gen.Funcs is
           Name        => Program_Space_Name,
           Binders     => Binders,
           Return_Type => +Duplicate_Any_Node (Id => +Return_Type),
-          Pre         => New_Assertion (Pred => Pre),
-          Post        => New_Assertion (Pred => Final_Post),
+          Pre         => Pre,
+          Post        => Final_Post,
           Effects     => New_Effects);
    end Declare_Logic_And_Parameters;
 
@@ -106,7 +106,7 @@ package body Why.Gen.Funcs is
                    Arg_Type =>
                      New_Abstract_Type (Name => +New_Identifier (Type_Name)))),
          Return_Type => New_Type_Bool,
-         Post        => New_Assertion (Pred => Post));
+         Post        => Post);
    end New_Boolean_Equality_Parameter;
 
 end Why.Gen.Funcs;

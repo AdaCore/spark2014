@@ -338,10 +338,6 @@ private
      (State : in out Printer_State;
       Node  : W_Exn_Condition_Valid_Id);
 
-   procedure Assertion_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Assertion_Valid_Id);
-
    procedure Any_Expr_Pre_Op
      (State : in out Printer_State;
       Node  : W_Any_Expr_Valid_Id);

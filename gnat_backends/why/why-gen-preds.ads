@@ -77,12 +77,6 @@ package Why.Gen.Preds is
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left <> Right"
 
-   function New_Located_Assertion
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id;
-       Reason   : VC_Kind) return W_Assertion_Id;
-   --  Build a named assertion (ie formula) of a predicate
-
    function New_Located_Predicate
       (Ada_Node : Node_Id;
        Pred     : W_Predicate_Id;

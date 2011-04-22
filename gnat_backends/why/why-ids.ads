@@ -2142,33 +2142,6 @@ package Why.Ids is
    (Exn_Condition_List_Valid
       (W_Exn_Condition_Valid_List));
 
-   subtype W_Assertion_Valid_OId is
-     W_Assertion_Unchecked_OId with
-   Predicate =>
-   (Assertion_OId_Valid
-      (W_Assertion_Valid_OId));
-
-   subtype W_Assertion_Valid_OList is
-     W_Assertion_Unchecked_OList with
-   Predicate =>
-   (Assertion_OList_Valid
-      (W_Assertion_Valid_OList));
-
-   subtype W_Assertion_Valid_Id is
-     W_Assertion_Unchecked_Id with
-   Predicate =>
-   (Assertion_Id_Valid
-      (W_Assertion_Valid_Id));
-
-   type W_Assertion_V_Array is array (Positive range <>)
-     of W_Assertion_Valid_Id;
-
-   subtype W_Assertion_Valid_List is
-     W_Assertion_Unchecked_List with
-   Predicate =>
-   (Assertion_List_Valid
-      (W_Assertion_Valid_List));
-
    subtype W_Prog_Constant_Valid_OId is
      W_Prog_Constant_Unchecked_OId with
    Predicate =>
@@ -5252,21 +5225,6 @@ package Why.Ids is
 
    subtype W_Exn_Condition_List is
      W_Exn_Condition_OList;
-
-   type W_Assertion_OId is new
-     W_Assertion_Valid_OId;
-
-   type W_Assertion_OList is new
-     W_Assertion_Valid_OList;
-
-   subtype W_Assertion_Id is
-     W_Assertion_OId;
-
-   type W_Assertion_Array is array (Positive range <>)
-     of W_Assertion_Id;
-
-   subtype W_Assertion_List is
-     W_Assertion_OList;
 
    type W_Prog_Constant_OId is new
      W_Prog_Constant_Valid_OId;

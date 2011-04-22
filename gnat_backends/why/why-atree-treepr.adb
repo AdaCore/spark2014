@@ -3218,11 +3218,11 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "Assertion: ");
+         P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).PRE_Assertion);
+            Get_Node (Node).PRE_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3259,11 +3259,11 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "Assertion: ");
+         P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).POST_Assertion);
+            Get_Node (Node).POST_Pred);
          Relative_Indent (O, -1);
          if not Is_Empty (Get_Node (Node).POST_Handlers) then
             P (O, "Handlers: ");
@@ -3314,11 +3314,11 @@ package body Why.Atree.Treepr is
            (State,
             Get_Node (Node).EC_Exn_Case);
          Relative_Indent (O, -1);
-         P (O, "Assertion: ");
+         P (O, "Pred: ");
          Relative_Indent (O, 1);
          Traverse
            (State,
-            Get_Node (Node).EC_Assertion);
+            Get_Node (Node).EC_Pred);
          Relative_Indent (O, -1);
          Relative_Indent (O, -1);
          State.Depth := State.Depth + 1;
@@ -3339,55 +3339,6 @@ package body Why.Atree.Treepr is
    begin
       null;
    end Exn_Condition_Post_Op;
-
-   ----------------------
-   -- Assertion_Pre_Op --
-   ----------------------
-
-   procedure Assertion_Pre_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Valid_Id)
-   is
-   begin
-      P (O, "W_Assertion");
-      P (O, " (Node_Id=" & Img (Why_Node_Id (Node)) & ")");
-      NL (O);
-      if State.Depth /= 0 then
-         State.Depth := State.Depth - 1;
-         Relative_Indent (O, 1);
-         P (O, "Pred: ");
-         Relative_Indent (O, 1);
-         Traverse
-           (State,
-            Get_Node (Node).A_Pred);
-         Relative_Indent (O, -1);
-         if Get_Node (Node).A_As /= Why_Empty then
-            P (O, "As: ");
-            Relative_Indent (O, 1);
-            Traverse
-              (State,
-               Get_Node (Node).A_As);
-            Relative_Indent (O, -1);
-         end if;
-         Relative_Indent (O, -1);
-         State.Depth := State.Depth + 1;
-      end if;
-      State.Control := Abandon_Children;
-   end Assertion_Pre_Op;
-
-   -----------------------
-   -- Assertion_Post_Op --
-   -----------------------
-
-   procedure Assertion_Post_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Valid_Id)
-   is
-      pragma Unreferenced (Node);
-      pragma Unreferenced (State);
-   begin
-      null;
-   end Assertion_Post_Op;
 
    --------------------------
    -- Prog_Constant_Pre_Op --
@@ -4117,11 +4068,11 @@ package body Why.Atree.Treepr is
       if State.Depth /= 0 then
          State.Depth := State.Depth - 1;
          Relative_Indent (O, 1);
-         P (O, "Assertions: ");
+         P (O, "Preds: ");
          Relative_Indent (O, 1);
          Traverse_List
            (State,
-            Get_Node (Node).AS_Assertions);
+            Get_Node (Node).AS_Preds);
          Relative_Indent (O, -1);
          P (O, "Prog: ");
          Relative_Indent (O, 1);

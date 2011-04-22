@@ -223,23 +223,6 @@ package body Why.Gen.Preds is
    end New_Equal;
 
    ---------------------------
-   -- New_Located_Assertion --
-   ---------------------------
-
-   function New_Located_Assertion
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id;
-       Reason   : VC_Kind) return W_Assertion_Id
-   is
-   begin
-      return
-        New_Assertion
-          (Ada_Node => Ada_Node,
-           Pred     =>
-             New_Located_Predicate (Ada_Node, Pred, Reason));
-   end New_Located_Assertion;
-
-   ---------------------------
    -- New_Located_Predicate --
    ---------------------------
 

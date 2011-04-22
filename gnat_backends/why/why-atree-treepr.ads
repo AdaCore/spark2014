@@ -643,14 +643,6 @@ private
      (State : in out Tree_Printer_State;
       Node  : W_Exn_Condition_Valid_Id);
 
-   procedure Assertion_Pre_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Valid_Id);
-
-   procedure Assertion_Post_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Assertion_Valid_Id);
-
    procedure Prog_Constant_Pre_Op
      (State : in out Tree_Printer_State;
       Node  : W_Prog_Constant_Valid_Id);

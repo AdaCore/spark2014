@@ -140,23 +140,21 @@ package body Why.Gen.Decl is
       (File    : W_File_Id;
        Name    : W_Identifier_Id;
        Binders : W_Binder_Array;
-       Pre     : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred);
+       Pre     : W_Predicate_Id := New_True_Literal_Pred;
        Def     : W_Prog_Id;
-       Post    : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred))
+       Post    : W_Predicate_Id := New_True_Literal_Pred)
    is
    begin
       File_Append_To_Declarations
          (File,
           New_Global_Binding
           (Name => Name,
-           Pre => New_Precondition (Assertion => Pre),
+           Pre => New_Precondition (Pred => Pre),
            Binders => Binders,
            Def =>
              New_Post_Assertion
                (Prog => Def,
-                Post => New_Postcondition (Assertion => Post))));
+                Post => New_Postcondition (Pred => Post))));
    end New_Global_Binding;
 
    --------------------------------
@@ -260,10 +258,8 @@ package body Why.Gen.Decl is
        Binders     : W_Binder_Array;
        Return_Type : W_Primitive_Type_Id;
        Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred);
-       Post        : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred))
+       Pre         : W_Predicate_Id := New_True_Literal_Pred;
+       Post        : W_Predicate_Id := New_True_Literal_Pred)
    is
    begin
       File_Append_To_Declarations
@@ -274,8 +270,8 @@ package body Why.Gen.Decl is
              Parameter_Type =>
                 New_Computation_Type
                   (Binders => Binders,
-                   Precondition  => New_Precondition (Assertion => Pre),
-                   Postcondition => New_Postcondition (Assertion => Post),
+                   Precondition  => New_Precondition (Pred => Pre),
+                   Postcondition => New_Postcondition (Pred => Post),
                    Effects       => Effects,
                    Return_Type   => Return_Type)));
    end New_Parameter;

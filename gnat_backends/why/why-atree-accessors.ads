@@ -469,13 +469,13 @@ package Why.Atree.Accessors is
      (Id : W_Effects_Unchecked_Id)
      return W_Identifier_Unchecked_OList;
 
-   function Precondition_Get_Assertion
+   function Precondition_Get_Pred
      (Id : W_Precondition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
-   function Postcondition_Get_Assertion
+   function Postcondition_Get_Pred
      (Id : W_Postcondition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
    function Postcondition_Get_Handlers
      (Id : W_Postcondition_Unchecked_Id)
@@ -485,17 +485,9 @@ package Why.Atree.Accessors is
      (Id : W_Exn_Condition_Unchecked_Id)
      return W_Identifier_Unchecked_Id;
 
-   function Exn_Condition_Get_Assertion
+   function Exn_Condition_Get_Pred
      (Id : W_Exn_Condition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id;
-
-   function Assertion_Get_Pred
-     (Id : W_Assertion_Unchecked_Id)
      return W_Predicate_Unchecked_Id;
-
-   function Assertion_Get_As
-     (Id : W_Assertion_Unchecked_Id)
-     return W_Identifier_Unchecked_OId;
 
    function Prog_Constant_Get_Def
      (Id : W_Prog_Constant_Unchecked_Id)
@@ -621,9 +613,9 @@ package Why.Atree.Accessors is
      (Id : W_Label_Unchecked_Id)
      return W_Prog_Unchecked_Id;
 
-   function Assert_Get_Assertions
+   function Assert_Get_Preds
      (Id : W_Assert_Unchecked_Id)
-     return W_Assertion_Unchecked_List;
+     return W_Predicate_Unchecked_List;
 
    function Assert_Get_Prog
      (Id : W_Assert_Unchecked_Id)
@@ -767,7 +759,7 @@ package Why.Atree.Accessors is
 
    function Loop_Annot_Get_Invariant
      (Id : W_Loop_Annot_Unchecked_Id)
-     return W_Assertion_Unchecked_OId;
+     return W_Predicate_Unchecked_OId;
 
    function Loop_Annot_Get_Variant
      (Id : W_Loop_Annot_Unchecked_Id)
@@ -1285,13 +1277,13 @@ package Why.Atree.Accessors is
      (Id : W_Effects_Id)
      return W_Identifier_OList;
 
-   function Precondition_Get_Assertion
+   function Precondition_Get_Pred
      (Id : W_Precondition_Id)
-     return W_Assertion_Id;
+     return W_Predicate_Id;
 
-   function Postcondition_Get_Assertion
+   function Postcondition_Get_Pred
      (Id : W_Postcondition_Id)
-     return W_Assertion_Id;
+     return W_Predicate_Id;
 
    function Postcondition_Get_Handlers
      (Id : W_Postcondition_Id)
@@ -1301,17 +1293,9 @@ package Why.Atree.Accessors is
      (Id : W_Exn_Condition_Id)
      return W_Identifier_Id;
 
-   function Exn_Condition_Get_Assertion
+   function Exn_Condition_Get_Pred
      (Id : W_Exn_Condition_Id)
-     return W_Assertion_Id;
-
-   function Assertion_Get_Pred
-     (Id : W_Assertion_Id)
      return W_Predicate_Id;
-
-   function Assertion_Get_As
-     (Id : W_Assertion_Id)
-     return W_Identifier_OId;
 
    function Prog_Constant_Get_Def
      (Id : W_Prog_Constant_Id)
@@ -1437,9 +1421,9 @@ package Why.Atree.Accessors is
      (Id : W_Label_Id)
      return W_Prog_Id;
 
-   function Assert_Get_Assertions
+   function Assert_Get_Preds
      (Id : W_Assert_Id)
-     return W_Assertion_List;
+     return W_Predicate_List;
 
    function Assert_Get_Prog
      (Id : W_Assert_Id)
@@ -1583,7 +1567,7 @@ package Why.Atree.Accessors is
 
    function Loop_Annot_Get_Invariant
      (Id : W_Loop_Annot_Id)
-     return W_Assertion_OId;
+     return W_Predicate_OId;
 
    function Loop_Annot_Get_Variant
      (Id : W_Loop_Annot_Id)
@@ -2216,15 +2200,15 @@ private
      return W_Identifier_Unchecked_OList is
      (W_Identifier_Unchecked_OList (Get_Node (+Id).E_Raises));
 
-   function Precondition_Get_Assertion
+   function Precondition_Get_Pred
      (Id : W_Precondition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_OId (Get_Node (+Id).PRE_Assertion));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).PRE_Pred));
 
-   function Postcondition_Get_Assertion
+   function Postcondition_Get_Pred
      (Id : W_Postcondition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_OId (Get_Node (+Id).POST_Assertion));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).POST_Pred));
 
    function Postcondition_Get_Handlers
      (Id : W_Postcondition_Unchecked_Id)
@@ -2236,20 +2220,10 @@ private
      return W_Identifier_Unchecked_Id is
      (W_Identifier_Unchecked_OId (Get_Node (+Id).EC_Exn_Case));
 
-   function Exn_Condition_Get_Assertion
+   function Exn_Condition_Get_Pred
      (Id : W_Exn_Condition_Unchecked_Id)
-     return W_Assertion_Unchecked_Id is
-     (W_Assertion_Unchecked_OId (Get_Node (+Id).EC_Assertion));
-
-   function Assertion_Get_Pred
-     (Id : W_Assertion_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_OId (Get_Node (+Id).A_Pred));
-
-   function Assertion_Get_As
-     (Id : W_Assertion_Unchecked_Id)
-     return W_Identifier_Unchecked_OId is
-     (W_Identifier_Unchecked_OId (Get_Node (+Id).A_As));
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).EC_Pred));
 
    function Prog_Constant_Get_Def
      (Id : W_Prog_Constant_Unchecked_Id)
@@ -2406,10 +2380,10 @@ private
      return W_Prog_Unchecked_Id is
      (W_Prog_Unchecked_OId (Get_Node (+Id).L_Def));
 
-   function Assert_Get_Assertions
+   function Assert_Get_Preds
      (Id : W_Assert_Unchecked_Id)
-     return W_Assertion_Unchecked_List is
-     (W_Assertion_Unchecked_OList (Get_Node (+Id).AS_Assertions));
+     return W_Predicate_Unchecked_List is
+     (W_Predicate_Unchecked_OList (Get_Node (+Id).AS_Preds));
 
    function Assert_Get_Prog
      (Id : W_Assert_Unchecked_Id)
@@ -2588,8 +2562,8 @@ private
 
    function Loop_Annot_Get_Invariant
      (Id : W_Loop_Annot_Unchecked_Id)
-     return W_Assertion_Unchecked_OId is
-     (W_Assertion_Unchecked_OId (Get_Node (+Id).LA_Invariant));
+     return W_Predicate_Unchecked_OId is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).LA_Invariant));
 
    function Loop_Annot_Get_Variant
      (Id : W_Loop_Annot_Unchecked_Id)
@@ -3236,15 +3210,15 @@ private
      return W_Identifier_OList is
      (W_Identifier_OList (Get_Node (+Id).E_Raises));
 
-   function Precondition_Get_Assertion
+   function Precondition_Get_Pred
      (Id : W_Precondition_Id)
-     return W_Assertion_Id is
-     (W_Assertion_Id (Get_Node (+Id).PRE_Assertion));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).PRE_Pred));
 
-   function Postcondition_Get_Assertion
+   function Postcondition_Get_Pred
      (Id : W_Postcondition_Id)
-     return W_Assertion_Id is
-     (W_Assertion_Id (Get_Node (+Id).POST_Assertion));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).POST_Pred));
 
    function Postcondition_Get_Handlers
      (Id : W_Postcondition_Id)
@@ -3256,20 +3230,10 @@ private
      return W_Identifier_Id is
      (W_Identifier_Id (Get_Node (+Id).EC_Exn_Case));
 
-   function Exn_Condition_Get_Assertion
+   function Exn_Condition_Get_Pred
      (Id : W_Exn_Condition_Id)
-     return W_Assertion_Id is
-     (W_Assertion_Id (Get_Node (+Id).EC_Assertion));
-
-   function Assertion_Get_Pred
-     (Id : W_Assertion_Id)
      return W_Predicate_Id is
-     (W_Predicate_Id (Get_Node (+Id).A_Pred));
-
-   function Assertion_Get_As
-     (Id : W_Assertion_Id)
-     return W_Identifier_OId is
-     (W_Identifier_OId (Get_Node (+Id).A_As));
+     (W_Predicate_Id (Get_Node (+Id).EC_Pred));
 
    function Prog_Constant_Get_Def
      (Id : W_Prog_Constant_Id)
@@ -3426,10 +3390,10 @@ private
      return W_Prog_Id is
      (W_Prog_Id (Get_Node (+Id).L_Def));
 
-   function Assert_Get_Assertions
+   function Assert_Get_Preds
      (Id : W_Assert_Id)
-     return W_Assertion_List is
-     (W_Assertion_List (Get_Node (+Id).AS_Assertions));
+     return W_Predicate_List is
+     (W_Predicate_List (Get_Node (+Id).AS_Preds));
 
    function Assert_Get_Prog
      (Id : W_Assert_Id)
@@ -3608,8 +3572,8 @@ private
 
    function Loop_Annot_Get_Invariant
      (Id : W_Loop_Annot_Id)
-     return W_Assertion_OId is
-     (W_Assertion_OId (Get_Node (+Id).LA_Invariant));
+     return W_Predicate_OId is
+     (W_Predicate_OId (Get_Node (+Id).LA_Invariant));
 
    function Loop_Annot_Get_Variant
      (Id : W_Loop_Annot_Id)

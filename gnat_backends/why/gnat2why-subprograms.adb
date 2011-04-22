@@ -1071,13 +1071,9 @@ package body Gnat2Why.Subprograms is
                  (File    => File,
                   Name    => New_Definition_Name (Name_Str),
                   Binders => Ext_Binders,
-                  Pre     => New_Assertion (Pred => Pre),
+                  Pre     => Pre,
                   Post    =>
-                     New_Assertion
-                        (Pred =>
-                           New_Located_Predicate
-                              (Loc_Node,
-                               Post, VC_Postcondition)),
+                     New_Located_Predicate (Loc_Node, Post, VC_Postcondition),
                   Def     =>
                      Compute_Context
                        (Why_Expr_Of_Ada_Stmts
@@ -1102,8 +1098,8 @@ package body Gnat2Why.Subprograms is
                   Binders     => Ext_Binders,
                   Effects     => Effects,
                   Return_Type => Ret_Type,
-                  Pre         => New_Assertion (Pred => Pre),
-                  Post        => New_Assertion (Pred => Post));
+                  Pre         => Pre,
+                  Post        => Post);
 
                if Nkind (Spec) = N_Function_Specification
                   and then Effect_Is_Empty (Effects)
@@ -2462,7 +2458,7 @@ package body Gnat2Why.Subprograms is
              Annotation  =>
                New_Loop_Annot
                   (Invariant =>
-                     New_Located_Assertion
+                     New_Located_Predicate
                         (Ada_Node => Inv_Node,
                          Pred     => Invariant,
                          Reason   => VC_Loop_Invariant)),

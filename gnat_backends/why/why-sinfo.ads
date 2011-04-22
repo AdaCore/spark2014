@@ -409,9 +409,6 @@ package Why.Sinfo is
       W_Exn_Condition,
       --  <exn_condition> ::= '|' <identifier> '=>' <assertion>
 
-      W_Assertion,
-      --  <assertion> ::= <predicate> [ 'as' <identifier> ]
-
       --  2.2. Annotated programs:
       ----------------------------
 

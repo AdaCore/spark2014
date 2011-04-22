@@ -1245,22 +1245,6 @@ package Why.Conversions is
      return W_Exn_Condition_OList;
 
    function "+"
-     (Id : W_Assertion_OId)
-     return W_Assertion_Valid_OId;
-
-   function "+"
-     (Id : W_Assertion_Valid_OId)
-     return W_Assertion_OId;
-
-   function "+"
-     (Id : W_Assertion_OList)
-     return W_Assertion_Valid_OList;
-
-   function "+"
-     (Id : W_Assertion_Valid_OList)
-     return W_Assertion_OList;
-
-   function "+"
      (Id : W_Prog_Constant_OId)
      return W_Prog_Constant_Valid_OId;
 
@@ -5454,14 +5438,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Assertion_OId;
-
-   function "+"
-     (Id : W_Assertion_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
      return W_Prog_Constant_OId;
 
    function "+"
@@ -6514,14 +6490,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Exn_Condition_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Assertion_OList;
-
-   function "+"
-     (Id : W_Assertion_OList)
      return W_Any_Node_OList;
 
    function "+"
@@ -8557,26 +8525,6 @@ private
      (Id : W_Exn_Condition_Valid_OList)
      return W_Exn_Condition_OList is
      (W_Exn_Condition_OList (Id));
-
-   function "+"
-     (Id : W_Assertion_OId)
-     return W_Assertion_Valid_OId is
-     (W_Assertion_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Assertion_Valid_OId)
-     return W_Assertion_OId is
-     (W_Assertion_OId (Id));
-
-   function "+"
-     (Id : W_Assertion_OList)
-     return W_Assertion_Valid_OList is
-     (W_Assertion_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Assertion_Valid_OList)
-     return W_Assertion_OList is
-     (W_Assertion_OList (Id));
 
    function "+"
      (Id : W_Prog_Constant_OId)
@@ -13820,16 +13768,6 @@ private
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Assertion_OId is
-     (W_Assertion_OId (Id));
-
-   function "+"
-     (Id : W_Assertion_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
      return W_Prog_Constant_OId is
      (W_Prog_Constant_OId (Id));
 
@@ -15145,16 +15083,6 @@ private
 
    function "+"
      (Id : W_Exn_Condition_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Assertion_OList is
-     (W_Assertion_OList (Id));
-
-   function "+"
-     (Id : W_Assertion_OList)
      return W_Any_Node_OList is
      (W_Any_Node_OList (Id));
 

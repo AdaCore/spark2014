@@ -328,19 +328,15 @@ package Why.Atree is
             E_Raises : W_Identifier_Opaque_OList;
 
          when W_Precondition =>
-            PRE_Assertion : W_Assertion_Opaque_Id;
+            PRE_Pred : W_Predicate_Opaque_Id;
 
          when W_Postcondition =>
-            POST_Assertion : W_Assertion_Opaque_Id;
+            POST_Pred      : W_Predicate_Opaque_Id;
             POST_Handlers  : W_Exn_Condition_Opaque_OList;
 
          when W_Exn_Condition =>
             EC_Exn_Case  : W_Identifier_Opaque_Id;
-            EC_Assertion : W_Assertion_Opaque_Id;
-
-         when W_Assertion =>
-            A_Pred : W_Predicate_Opaque_Id;
-            A_As   : W_Identifier_Opaque_OId;
+            EC_Pred : W_Predicate_Opaque_Id;
 
          when W_Prog_Constant =>
             PC_Def : W_Constant_Opaque_Id;
@@ -399,7 +395,7 @@ package Why.Atree is
             L_Def  : W_Prog_Opaque_Id;
 
          when W_Assert =>
-            AS_Assertions : W_Assertion_Opaque_List;
+            AS_Preds : W_Predicate_Opaque_List;
             AS_Prog       : W_Prog_Opaque_Id;
 
          when W_Post_Assertion .. W_Opaque_Assertion =>
@@ -461,7 +457,7 @@ package Why.Atree is
             RF_Def         : W_Prog_Opaque_Id;
 
          when W_Loop_Annot =>
-            LA_Invariant : W_Assertion_Opaque_OId;
+            LA_Invariant : W_Predicate_Opaque_OId;
             LA_Variant   : W_Wf_Arg_Opaque_OId;
 
          when W_Wf_Arg =>

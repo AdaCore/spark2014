@@ -610,38 +610,29 @@ package Why.Atree.Builders is
         and then True);
 
    function New_Precondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Valid_Id)
      return W_Precondition_Valid_Id with
      Pre =>
-       (Is_Root (+Assertion));
+       (Is_Root (+Pred));
 
    function New_Postcondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Valid_Id;
-      Handlers  : W_Exn_Condition_V_Array := (2 .. 1 => <>))
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Valid_Id;
+      Handlers : W_Exn_Condition_V_Array := (2 .. 1 => <>))
      return W_Postcondition_Valid_Id with
      Pre =>
-       (Is_Root (+Assertion)
+       (Is_Root (+Pred)
         and then True);
 
    function New_Exn_Condition
-     (Ada_Node  : Node_Id := Empty;
-      Exn_Case  : W_Identifier_Valid_Id;
-      Assertion : W_Assertion_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Exn_Case : W_Identifier_Valid_Id;
+      Pred     : W_Predicate_Valid_Id)
      return W_Exn_Condition_Valid_Id with
      Pre =>
        (Is_Root (+Exn_Case)
-        and then Is_Root (+Assertion));
-
-   function New_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Valid_Id;
-      As       : W_Identifier_Valid_OId := Why_Empty)
-     return W_Assertion_Valid_Id with
-     Pre =>
-       (Is_Root (+Pred)
-        and then Is_Root (+As));
+        and then Is_Root (+Pred));
 
    function New_Prog_Constant
      (Ada_Node : Node_Id := Empty;
@@ -781,9 +772,9 @@ package Why.Atree.Builders is
         and then Is_Root (+Def));
 
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_V_Array;
-      Prog       : W_Prog_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_V_Array;
+      Prog     : W_Prog_Valid_Id)
      return W_Assert_Valid_Id with
      Pre =>
        (True
@@ -1004,7 +995,7 @@ package Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Invariant : W_Assertion_Valid_OId := Why_Empty;
+      Invariant : W_Predicate_Valid_OId := Why_Empty;
       Variant   : W_Wf_Arg_Valid_OId := Why_Empty)
      return W_Loop_Annot_Valid_Id with
      Pre =>
@@ -2237,35 +2228,27 @@ package Why.Atree.Builders is
         and then True
         and then True);
    function New_Precondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Id)
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Id)
      return W_Precondition_Id with
      Pre =>
-       (Is_Root (+Assertion));
+       (Is_Root (+Pred));
    function New_Postcondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Id;
-      Handlers  : W_Exn_Condition_Array := (2 .. 1 => <>))
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Id;
+      Handlers : W_Exn_Condition_Array := (2 .. 1 => <>))
      return W_Postcondition_Id with
      Pre =>
-       (Is_Root (+Assertion)
+       (Is_Root (+Pred)
         and then True);
    function New_Exn_Condition
-     (Ada_Node  : Node_Id := Empty;
-      Exn_Case  : W_Identifier_Id;
-      Assertion : W_Assertion_Id)
+     (Ada_Node : Node_Id := Empty;
+      Exn_Case : W_Identifier_Id;
+      Pred     : W_Predicate_Id)
      return W_Exn_Condition_Id with
      Pre =>
        (Is_Root (+Exn_Case)
-        and then Is_Root (+Assertion));
-   function New_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Id;
-      As       : W_Identifier_OId := Why_Empty)
-     return W_Assertion_Id with
-     Pre =>
-       (Is_Root (+Pred)
-        and then Is_Root (+As));
+        and then Is_Root (+Pred));
    function New_Prog_Constant
      (Ada_Node : Node_Id := Empty;
       Def      : W_Constant_Id)
@@ -2526,18 +2509,18 @@ package Why.Atree.Builders is
        (Is_Root (+Name)
         and then Is_Root (+Def));
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_Array;
-      Prog       : W_Prog_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_Array;
+      Prog     : W_Prog_Id)
      return W_Assert_Id with
      Pre =>
        (True
         and then Is_Root (+Prog));
 
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_Array;
-      Prog       : W_Prog_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_Array;
+      Prog     : W_Prog_Id)
      return W_Prog_Id with
      Pre =>
        (True
@@ -2915,7 +2898,7 @@ package Why.Atree.Builders is
         and then Is_Root (+Def));
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Invariant : W_Assertion_OId := Why_Empty;
+      Invariant : W_Predicate_OId := Why_Empty;
       Variant   : W_Wf_Arg_OId := Why_Empty)
      return W_Loop_Annot_Id with
      Pre =>
@@ -3366,10 +3349,6 @@ package Why.Atree.Builders is
 
    function New_Unchecked_Exn_Condition
      return W_Exn_Condition_Unchecked_Id with
-     Pre => True;
-
-   function New_Unchecked_Assertion
-     return W_Assertion_Unchecked_Id with
      Pre => True;
 
    function New_Unchecked_Prog_Constant
@@ -4044,12 +4023,6 @@ package Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Id       : W_Exn_Condition_Valid_OId)
      return W_Exn_Condition_Valid_Id with
-     Pre => True;
-
-   function Duplicate_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Assertion_Valid_OId)
-     return W_Assertion_Valid_Id with
      Pre => True;
 
    function Duplicate_Prog_Constant

@@ -316,8 +316,8 @@ package body Why.Gen.Arrays is
              Return_Type => New_Type_Unit,
              Effects     =>
                New_Effects (Writes => (1 => New_Identifier (Arg_A))),
-             Pre         => New_Assertion (Pred => Pre),
-             Post        => New_Assertion (Pred => Post_Update));
+             Pre         => Pre,
+             Post        => Post_Update);
          --  Declaration for access parameter
          New_Parameter
             (File        => File,
@@ -325,9 +325,8 @@ package body Why.Gen.Arrays is
              Binders     => Binders_Access,
              Return_Type =>
                New_Abstract_Type (Name => New_Identifier (Component)),
-             Pre         =>
-               New_Assertion (Pred => +Duplicate_Any_Node (Id => +Pre)),
-             Post        => New_Assertion (Pred => Post_Access));
+             Pre         => +Duplicate_Any_Node (Id => +Pre),
+             Post        => Post_Access);
          --  Define accessor for 'Length, with axioms
          New_Logic
            (File => File,

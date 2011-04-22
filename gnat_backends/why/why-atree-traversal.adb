@@ -2295,7 +2295,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).PRE_Assertion);
+               Get_Node  (Node).PRE_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
@@ -2325,7 +2325,7 @@ package body Why.Atree.Traversal is
 
             Traverse
               (State,
-               Get_Node  (Node).POST_Assertion);
+               Get_Node  (Node).POST_Pred);
             Traverse_List
               (State,
                Get_Node  (Node).POST_Handlers);
@@ -2361,46 +2361,13 @@ package body Why.Atree.Traversal is
                Get_Node  (Node).EC_Exn_Case);
             Traverse
               (State,
-               Get_Node  (Node).EC_Assertion);
+               Get_Node  (Node).EC_Pred);
 
             if State.Control = Terminate_Immediately then
                return;
             end if;
 
             Exn_Condition_Post_Op (State, Node);
-
-            if State.Control = Abandon_Siblings then
-               State.Control := Continue;
-            end if;
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-         when W_Assertion =>
-            Assertion_Pre_Op (State, Node);
-
-            if State.Control = Abandon_Children then
-               State.Control := Continue;
-               return;
-            end if;
-
-            if State.Control = Abandon_Siblings then
-               return;
-            end if;
-
-            Traverse
-              (State,
-               Get_Node  (Node).A_Pred);
-            Traverse
-              (State,
-               Get_Node  (Node).A_As);
-
-            if State.Control = Terminate_Immediately then
-               return;
-            end if;
-
-            Assertion_Post_Op (State, Node);
 
             if State.Control = Abandon_Siblings then
                State.Control := Continue;
@@ -2922,7 +2889,7 @@ package body Why.Atree.Traversal is
 
             Traverse_List
               (State,
-               Get_Node  (Node).AS_Assertions);
+               Get_Node  (Node).AS_Preds);
             Traverse
               (State,
                Get_Node  (Node).AS_Prog);

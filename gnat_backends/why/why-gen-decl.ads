@@ -59,11 +59,9 @@ package Why.Gen.Decl is
       (File    : W_File_Id;
        Name    : W_Identifier_Id;
        Binders : W_Binder_Array;
-       Pre     : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred);
+       Pre     : W_Predicate_Id := New_True_Literal_Pred;
        Def     : W_Prog_Id;
-       Post    : W_Assertion_Id
-                   := New_Assertion (Pred => New_True_Literal_Pred));
+       Post    : W_Predicate_Id := New_True_Literal_Pred);
 
    procedure New_Global_Ref_Declaration
       (File     : W_File_Id;
@@ -95,10 +93,8 @@ package Why.Gen.Decl is
        Binders     : W_Binder_Array;
        Return_Type : W_Primitive_Type_Id;
        Effects     : W_Effects_Id := New_Effects;
-       Pre         : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred);
-       Post        : W_Assertion_Id
-           := New_Assertion (Pred => New_True_Literal_Pred));
+       Pre         : W_Predicate_Id := New_True_Literal_Pred;
+       Post        : W_Predicate_Id := New_True_Literal_Pred);
 
    procedure New_Predicate_Definition
      (File     : W_File_Id;

@@ -1277,22 +1277,6 @@ package Why.Atree.Validity is
      (Id : W_Exn_Condition_Unchecked_List)
      return Boolean;
 
-   function Assertion_OId_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean;
-
-   function Assertion_OList_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean;
-
-   function Assertion_Id_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean;
-
-   function Assertion_List_Valid
-     (Id : W_Assertion_Unchecked_List)
-     return Boolean;
-
    function Prog_Constant_OId_Valid
      (Id : W_Prog_Constant_Unchecked_OId)
      return Boolean;
@@ -3669,22 +3653,6 @@ private
 
    function Exn_Condition_List_Children_Valid
      (Id : W_Exn_Condition_Unchecked_List)
-     return Boolean;
-
-   function Assertion_OId_Children_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean;
-
-   function Assertion_OList_Children_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean;
-
-   function Assertion_Id_Children_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean;
-
-   function Assertion_List_Children_Valid
-     (Id : W_Assertion_Unchecked_List)
      return Boolean;
 
    function Prog_Constant_OId_Children_Valid
@@ -6811,32 +6779,6 @@ private
 
    function Exn_Condition_List_Valid
      (Id : W_Exn_Condition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Assertion_OId_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assertion_Id_Valid (Id));
-
-   function Assertion_OList_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assertion_List_Valid (Id));
-
-   function Assertion_Id_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Assertion_Id_Children_Valid (Id));
-
-   function Assertion_List_Valid
-     (Id : W_Assertion_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
@@ -10642,7 +10584,7 @@ private
      (Id : W_Precondition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).PRE_Assertion));
+       (Get_Node (Id).PRE_Pred));
 
    function Precondition_List_Children_Valid
      (Id : W_Precondition_Unchecked_List)
@@ -10666,7 +10608,7 @@ private
      (Id : W_Postcondition_Unchecked_Id)
      return Boolean is
      (Id_Cache_Valid
-       (Get_Node (Id).POST_Assertion)
+       (Get_Node (Id).POST_Pred)
      and then
        OList_Cache_Valid
          (Get_Node (Id).POST_Handlers));
@@ -10696,37 +10638,10 @@ private
        (Get_Node (Id).EC_Exn_Case)
      and then
        Id_Cache_Valid
-         (Get_Node (Id).EC_Assertion));
+         (Get_Node (Id).EC_Pred));
 
    function Exn_Condition_List_Children_Valid
      (Id : W_Exn_Condition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
-   function Assertion_OId_Children_Valid
-     (Id : W_Assertion_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Assertion_Id_Children_Valid (Id));
-
-   function Assertion_OList_Children_Valid
-     (Id : W_Assertion_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Assertion_List_Children_Valid (Id));
-
-   function Assertion_Id_Children_Valid
-     (Id : W_Assertion_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid
-       (Get_Node (Id).A_Pred)
-     and then
-       OId_Cache_Valid
-         (Get_Node (Id).A_As));
-
-   function Assertion_List_Children_Valid
-     (Id : W_Assertion_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
@@ -11155,7 +11070,7 @@ private
      (Id : W_Assert_Unchecked_Id)
      return Boolean is
      (List_Cache_Valid
-       (Get_Node (Id).AS_Assertions)
+       (Get_Node (Id).AS_Preds)
      and then
        Id_Cache_Valid
          (Get_Node (Id).AS_Prog));
@@ -12990,8 +12905,6 @@ private
            Postcondition_Id_Children_Valid (Id),
         when W_Exn_Condition =>
            Exn_Condition_Id_Children_Valid (Id),
-        when W_Assertion =>
-           Assertion_Id_Children_Valid (Id),
         when W_Prog_Constant =>
            Prog_Constant_Id_Children_Valid (Id),
         when W_Prog_Identifier =>

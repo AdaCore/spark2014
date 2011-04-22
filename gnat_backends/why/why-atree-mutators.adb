@@ -4571,77 +4571,77 @@ package body Why.Atree.Mutators is
          Effects_Id_Valid (Why_Node_Id (Id)));
    end Effects_Prepend_To_Raises;
 
-   --------------------------------
-   -- Precondition_Set_Assertion --
-   --------------------------------
+   ---------------------------
+   -- Precondition_Set_Pred --
+   ---------------------------
 
-   procedure Precondition_Set_Assertion
-     (Id        : W_Precondition_Unchecked_Id;
-      Assertion : W_Assertion_Id)
+   procedure Precondition_Set_Pred
+     (Id   : W_Precondition_Unchecked_Id;
+      Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.PRE_Assertion := +Assertion;
+      Node.PRE_Pred := +Pred;
       Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
+      Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
          Precondition_Id_Valid (Why_Node_Id (Id)));
-   end Precondition_Set_Assertion;
+   end Precondition_Set_Pred;
 
-   --------------------------------
-   -- Precondition_Set_Assertion --
-   --------------------------------
+   ---------------------------
+   -- Precondition_Set_Pred --
+   ---------------------------
 
-   procedure Precondition_Set_Assertion
-     (Id        : W_Precondition_Id;
-      Assertion : W_Assertion_Id)
+   procedure Precondition_Set_Pred
+     (Id   : W_Precondition_Id;
+      Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.PRE_Assertion := +Assertion;
+      Node.PRE_Pred := +Pred;
       Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
+      Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
          Precondition_Id_Valid (Why_Node_Id (Id)));
-   end Precondition_Set_Assertion;
+   end Precondition_Set_Pred;
 
-   ---------------------------------
-   -- Postcondition_Set_Assertion --
-   ---------------------------------
+   ----------------------------
+   -- Postcondition_Set_Pred --
+   ----------------------------
 
-   procedure Postcondition_Set_Assertion
-     (Id        : W_Postcondition_Unchecked_Id;
-      Assertion : W_Assertion_Id)
+   procedure Postcondition_Set_Pred
+     (Id   : W_Postcondition_Unchecked_Id;
+      Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.POST_Assertion := +Assertion;
+      Node.POST_Pred := +Pred;
       Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
+      Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
          Postcondition_Id_Valid (Why_Node_Id (Id)));
-   end Postcondition_Set_Assertion;
+   end Postcondition_Set_Pred;
 
-   ---------------------------------
-   -- Postcondition_Set_Assertion --
-   ---------------------------------
+   ----------------------------
+   -- Postcondition_Set_Pred --
+   ----------------------------
 
-   procedure Postcondition_Set_Assertion
-     (Id        : W_Postcondition_Id;
-      Assertion : W_Assertion_Id)
+   procedure Postcondition_Set_Pred
+     (Id   : W_Postcondition_Id;
+      Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.POST_Assertion := +Assertion;
+      Node.POST_Pred := +Pred;
       Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
+      Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
          Postcondition_Id_Valid (Why_Node_Id (Id)));
-   end Postcondition_Set_Assertion;
+   end Postcondition_Set_Pred;
 
    --------------------------------------
    -- Postcondition_Append_To_Handlers --
@@ -4747,113 +4747,41 @@ package body Why.Atree.Mutators is
          Exn_Condition_Id_Valid (Why_Node_Id (Id)));
    end Exn_Condition_Set_Exn_Case;
 
-   ---------------------------------
-   -- Exn_Condition_Set_Assertion --
-   ---------------------------------
+   ----------------------------
+   -- Exn_Condition_Set_Pred --
+   ----------------------------
 
-   procedure Exn_Condition_Set_Assertion
-     (Id        : W_Exn_Condition_Unchecked_Id;
-      Assertion : W_Assertion_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.EC_Assertion := +Assertion;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
-      Update_Validity_Status
-        (+Id,
-         Exn_Condition_Id_Valid (Why_Node_Id (Id)));
-   end Exn_Condition_Set_Assertion;
-
-   ---------------------------------
-   -- Exn_Condition_Set_Assertion --
-   ---------------------------------
-
-   procedure Exn_Condition_Set_Assertion
-     (Id        : W_Exn_Condition_Id;
-      Assertion : W_Assertion_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.EC_Assertion := +Assertion;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Assertion), +Id);
-      Update_Validity_Status
-        (+Id,
-         Exn_Condition_Id_Valid (Why_Node_Id (Id)));
-   end Exn_Condition_Set_Assertion;
-
-   ------------------------
-   -- Assertion_Set_Pred --
-   ------------------------
-
-   procedure Assertion_Set_Pred
-     (Id   : W_Assertion_Unchecked_Id;
+   procedure Exn_Condition_Set_Pred
+     (Id   : W_Exn_Condition_Unchecked_Id;
       Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.A_Pred := +Pred;
+      Node.EC_Pred := +Pred;
       Set_Node (+Id, Node);
       Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
-         Assertion_Id_Valid (Why_Node_Id (Id)));
-   end Assertion_Set_Pred;
+         Exn_Condition_Id_Valid (Why_Node_Id (Id)));
+   end Exn_Condition_Set_Pred;
 
-   ------------------------
-   -- Assertion_Set_Pred --
-   ------------------------
+   ----------------------------
+   -- Exn_Condition_Set_Pred --
+   ----------------------------
 
-   procedure Assertion_Set_Pred
-     (Id   : W_Assertion_Id;
+   procedure Exn_Condition_Set_Pred
+     (Id   : W_Exn_Condition_Id;
       Pred : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
-      Node.A_Pred := +Pred;
+      Node.EC_Pred := +Pred;
       Set_Node (+Id, Node);
       Set_Link (Why_Node_Id (Pred), +Id);
       Update_Validity_Status
         (+Id,
-         Assertion_Id_Valid (Why_Node_Id (Id)));
-   end Assertion_Set_Pred;
-
-   ----------------------
-   -- Assertion_Set_As --
-   ----------------------
-
-   procedure Assertion_Set_As
-     (Id : W_Assertion_Unchecked_Id;
-      As : W_Identifier_OId)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.A_As := +As;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (As), +Id);
-      Update_Validity_Status
-        (+Id,
-         Assertion_Id_Valid (Why_Node_Id (Id)));
-   end Assertion_Set_As;
-
-   ----------------------
-   -- Assertion_Set_As --
-   ----------------------
-
-   procedure Assertion_Set_As
-     (Id : W_Assertion_Id;
-      As : W_Identifier_OId)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.A_As := +As;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (As), +Id);
-      Update_Validity_Status
-        (+Id,
-         Assertion_Id_Valid (Why_Node_Id (Id)));
-   end Assertion_Set_As;
+         Exn_Condition_Id_Valid (Why_Node_Id (Id)));
+   end Exn_Condition_Set_Pred;
 
    ---------------------------
    -- Prog_Constant_Set_Def --
@@ -6003,73 +5931,73 @@ package body Why.Atree.Mutators is
          Label_Id_Valid (Why_Node_Id (Id)));
    end Label_Set_Def;
 
-   ---------------------------------
-   -- Assert_Append_To_Assertions --
-   ---------------------------------
+   ----------------------------
+   -- Assert_Append_To_Preds --
+   ----------------------------
 
-   procedure Assert_Append_To_Assertions
+   procedure Assert_Append_To_Preds
      (Id       : W_Assert_Unchecked_Id;
-      New_Item : W_Assertion_Id)
+      New_Item : W_Predicate_Id)
    is
       Node : constant Why_Node :=
                Get_Node (+Id);
    begin
-      Append (Node.AS_Assertions, +New_Item);
+      Append (Node.AS_Preds, +New_Item);
       Update_Validity_Status
         (+Id,
          Assert_Id_Valid (Why_Node_Id (Id)));
-   end Assert_Append_To_Assertions;
+   end Assert_Append_To_Preds;
 
-   ----------------------------------
-   -- Assert_Prepend_To_Assertions --
-   ----------------------------------
+   -----------------------------
+   -- Assert_Prepend_To_Preds --
+   -----------------------------
 
-   procedure Assert_Prepend_To_Assertions
+   procedure Assert_Prepend_To_Preds
      (Id       : W_Assert_Unchecked_Id;
-      New_Item : W_Assertion_Id)
+      New_Item : W_Predicate_Id)
    is
       Node : constant Why_Node :=
                Get_Node (+Id);
    begin
-      Prepend (Node.AS_Assertions, +New_Item);
+      Prepend (Node.AS_Preds, +New_Item);
       Update_Validity_Status
         (+Id,
          Assert_Id_Valid (Why_Node_Id (Id)));
-   end Assert_Prepend_To_Assertions;
+   end Assert_Prepend_To_Preds;
 
-   ---------------------------------
-   -- Assert_Append_To_Assertions --
-   ---------------------------------
+   ----------------------------
+   -- Assert_Append_To_Preds --
+   ----------------------------
 
-   procedure Assert_Append_To_Assertions
+   procedure Assert_Append_To_Preds
      (Id       : W_Assert_Id;
-      New_Item : W_Assertion_Id)
+      New_Item : W_Predicate_Id)
    is
       Node : constant Why_Node :=
                Get_Node (+Id);
    begin
-      Append (Node.AS_Assertions, +New_Item);
+      Append (Node.AS_Preds, +New_Item);
       Update_Validity_Status
         (+Id,
          Assert_Id_Valid (Why_Node_Id (Id)));
-   end Assert_Append_To_Assertions;
+   end Assert_Append_To_Preds;
 
-   ----------------------------------
-   -- Assert_Prepend_To_Assertions --
-   ----------------------------------
+   -----------------------------
+   -- Assert_Prepend_To_Preds --
+   -----------------------------
 
-   procedure Assert_Prepend_To_Assertions
+   procedure Assert_Prepend_To_Preds
      (Id       : W_Assert_Id;
-      New_Item : W_Assertion_Id)
+      New_Item : W_Predicate_Id)
    is
       Node : constant Why_Node :=
                Get_Node (+Id);
    begin
-      Prepend (Node.AS_Assertions, +New_Item);
+      Prepend (Node.AS_Preds, +New_Item);
       Update_Validity_Status
         (+Id,
          Assert_Id_Valid (Why_Node_Id (Id)));
-   end Assert_Prepend_To_Assertions;
+   end Assert_Prepend_To_Preds;
 
    ---------------------
    -- Assert_Set_Prog --
@@ -7529,7 +7457,7 @@ package body Why.Atree.Mutators is
 
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Unchecked_Id;
-      Invariant : W_Assertion_OId)
+      Invariant : W_Predicate_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7547,7 +7475,7 @@ package body Why.Atree.Mutators is
 
    procedure Loop_Annot_Set_Invariant
      (Id        : W_Loop_Annot_Id;
-      Invariant : W_Assertion_OId)
+      Invariant : W_Predicate_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin

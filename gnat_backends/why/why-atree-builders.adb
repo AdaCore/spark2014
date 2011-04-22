@@ -2127,8 +2127,8 @@ package body Why.Atree.Builders is
    ----------------------
 
    function New_Precondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Valid_Id)
      return W_Precondition_Valid_Id
    is
       Result : Why_Node (W_Precondition);
@@ -2137,9 +2137,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PRE_Assertion :=
-        Assertion;
-      Set_Link (Result.PRE_Assertion, New_Id);
+      Result.PRE_Pred :=
+        Pred;
+      Set_Link (Result.PRE_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -2151,9 +2151,9 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_Postcondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Valid_Id;
-      Handlers  : W_Exn_Condition_V_Array := (2 .. 1 => <>))
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Valid_Id;
+      Handlers : W_Exn_Condition_V_Array := (2 .. 1 => <>))
      return W_Postcondition_Valid_Id
    is
       Result : Why_Node (W_Postcondition);
@@ -2162,9 +2162,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.POST_Assertion :=
-        Assertion;
-      Set_Link (Result.POST_Assertion, New_Id);
+      Result.POST_Pred :=
+        Pred;
+      Set_Link (Result.POST_Pred, New_Id);
       Result.POST_Handlers := New_List;
       for J in Handlers'Range loop
          pragma Assert
@@ -2189,9 +2189,9 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_Exn_Condition
-     (Ada_Node  : Node_Id := Empty;
-      Exn_Case  : W_Identifier_Valid_Id;
-      Assertion : W_Assertion_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Exn_Case : W_Identifier_Valid_Id;
+      Pred     : W_Predicate_Valid_Id)
      return W_Exn_Condition_Valid_Id
    is
       Result : Why_Node (W_Exn_Condition);
@@ -2203,42 +2203,14 @@ package body Why.Atree.Builders is
       Result.EC_Exn_Case :=
         Exn_Case;
       Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Assertion :=
-        Assertion;
-      Set_Link (Result.EC_Assertion, New_Id);
+      Result.EC_Pred :=
+        Pred;
+      Set_Link (Result.EC_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Exn_Condition;
-
-   -------------------
-   -- New_Assertion --
-   -------------------
-
-   function New_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Valid_Id;
-      As       : W_Identifier_Valid_OId := Why_Empty)
-     return W_Assertion_Valid_Id
-   is
-      Result : Why_Node (W_Assertion);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Assertion);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.A_Pred :=
-        Pred;
-      Set_Link (Result.A_Pred, New_Id);
-      Result.A_As :=
-        As;
-      Set_Link (Result.A_As, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Assertion;
 
    -----------------------
    -- New_Prog_Constant --
@@ -2680,9 +2652,9 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_V_Array;
-      Prog       : W_Prog_Valid_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_V_Array;
+      Prog     : W_Prog_Valid_Id)
      return W_Assert_Valid_Id
    is
       Result : Why_Node (W_Assert);
@@ -2691,20 +2663,20 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      pragma Assert (Assertions'Length > 0);
-      Result.AS_Assertions := New_List;
-      for J in Assertions'Range loop
+      pragma Assert (Preds'Length > 0);
+      Result.AS_Preds := New_List;
+      for J in Preds'Range loop
          pragma Assert
-           (Assertion_Id_Kind_Valid
-            (Assertions (J)));
+           (Predicate_Id_Kind_Valid
+            (Preds (J)));
          pragma Assert
-           (Assertion_Id_Valid
-            (Assertions (J)));
+           (Predicate_Id_Valid
+            (Preds (J)));
          Append
-           (Result.AS_Assertions,
-            Assertions (J));
+           (Result.AS_Preds,
+            Preds (J));
       end loop;
-      Set_Link (Result.AS_Assertions, New_Id);
+      Set_Link (Result.AS_Preds, New_Id);
       Result.AS_Prog :=
         Prog;
       Set_Link (Result.AS_Prog, New_Id);
@@ -3502,7 +3474,7 @@ package body Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Invariant : W_Assertion_Valid_OId := Why_Empty;
+      Invariant : W_Predicate_Valid_OId := Why_Empty;
       Variant   : W_Wf_Arg_Valid_OId := Why_Empty)
      return W_Loop_Annot_Valid_Id
    is
@@ -5539,9 +5511,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.PRE_Assertion :=
+      Result.PRE_Pred :=
         Why_Empty;
-      Set_Link (Result.PRE_Assertion, New_Id);
+      Set_Link (Result.PRE_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
@@ -5561,9 +5533,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.POST_Assertion :=
+      Result.POST_Pred :=
         Why_Empty;
-      Set_Link (Result.POST_Assertion, New_Id);
+      Set_Link (Result.POST_Pred, New_Id);
       Result.POST_Handlers :=
         New_List;
       Set_Link (Result.POST_Handlers, New_Id);
@@ -5589,39 +5561,14 @@ package body Why.Atree.Builders is
       Result.EC_Exn_Case :=
         Why_Empty;
       Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Assertion :=
+      Result.EC_Pred :=
         Why_Empty;
-      Set_Link (Result.EC_Assertion, New_Id);
+      Set_Link (Result.EC_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := False;
       Set_Node (New_Id, Result);
       return New_Id;
    end New_Unchecked_Exn_Condition;
-
-   -----------------------------
-   -- New_Unchecked_Assertion --
-   -----------------------------
-
-   function New_Unchecked_Assertion
-     return W_Assertion_Unchecked_Id
-   is
-      Result : Why_Node (W_Assertion);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Assertion);
-   begin
-      Result.Ada_Node :=
-        Empty;
-      Result.A_Pred :=
-        Why_Empty;
-      Set_Link (Result.A_Pred, New_Id);
-      Result.A_As :=
-        Why_Empty;
-      Set_Link (Result.A_As, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := False;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Unchecked_Assertion;
 
    ---------------------------------
    -- New_Unchecked_Prog_Constant --
@@ -6014,9 +5961,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Empty;
-      Result.AS_Assertions :=
+      Result.AS_Preds :=
         New_List;
-      Set_Link (Result.AS_Assertions, New_Id);
+      Set_Link (Result.AS_Preds, New_Id);
       Result.AS_Prog :=
         Why_Empty;
       Set_Link (Result.AS_Prog, New_Id);
@@ -9907,14 +9854,14 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Precondition);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Precondition);
-         Assertion : constant W_Assertion_Valid_Id :=
-            +Precondition_Get_Assertion (Id);
+         Pred : constant W_Predicate_Valid_Id :=
+            +Precondition_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.PRE_Assertion :=
-           Duplicate_Assertion
-           (Id => Assertion);
-         Set_Link (Result.PRE_Assertion, New_Id);
+         Result.PRE_Pred :=
+           Duplicate_Predicate
+           (Id => Pred);
+         Set_Link (Result.PRE_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
@@ -9940,16 +9887,16 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Postcondition);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Postcondition);
-         Assertion : constant W_Assertion_Valid_Id :=
-            +Postcondition_Get_Assertion (Id);
-         Handlers  : constant W_Exn_Condition_Valid_OList :=
+         Pred     : constant W_Predicate_Valid_Id :=
+            +Postcondition_Get_Pred (Id);
+         Handlers : constant W_Exn_Condition_Valid_OList :=
             +Postcondition_Get_Handlers (Id);
       begin
          Result.Ada_Node := Ada_Node;
-         Result.POST_Assertion :=
-           Duplicate_Assertion
-           (Id => Assertion);
-         Set_Link (Result.POST_Assertion, New_Id);
+         Result.POST_Pred :=
+           Duplicate_Predicate
+           (Id => Pred);
+         Set_Link (Result.POST_Pred, New_Id);
          declare
             use Node_Lists;
 
@@ -9994,69 +9941,26 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Exn_Condition);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Exn_Condition);
-         Exn_Case  : constant W_Identifier_Valid_Id :=
+         Exn_Case : constant W_Identifier_Valid_Id :=
             +Exn_Condition_Get_Exn_Case (Id);
-         Assertion : constant W_Assertion_Valid_Id :=
-            +Exn_Condition_Get_Assertion (Id);
+         Pred     : constant W_Predicate_Valid_Id :=
+            +Exn_Condition_Get_Pred (Id);
       begin
          Result.Ada_Node := Ada_Node;
          Result.EC_Exn_Case :=
            Duplicate_Identifier
            (Id => Exn_Case);
          Set_Link (Result.EC_Exn_Case, New_Id);
-         Result.EC_Assertion :=
-           Duplicate_Assertion
-           (Id => Assertion);
-         Set_Link (Result.EC_Assertion, New_Id);
+         Result.EC_Pred :=
+           Duplicate_Predicate
+           (Id => Pred);
+         Set_Link (Result.EC_Pred, New_Id);
          Result.Link := Why_Empty;
          Result.Checked := True;
          Set_Node (New_Id, Result);
          return New_Id;
       end;
    end Duplicate_Exn_Condition;
-
-   -------------------------
-   -- Duplicate_Assertion --
-   -------------------------
-
-   function Duplicate_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Assertion_Valid_OId)
-     return W_Assertion_Valid_Id
-   is
-   begin
-      if Id = Why_Empty then
-         return Why_Empty;
-      end if;
-
-      declare
-         Result : Why_Node (W_Assertion);
-         New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Assertion);
-         Pred : constant W_Predicate_Valid_Id :=
-            +Assertion_Get_Pred (Id);
-         As   : constant W_Identifier_Valid_OId :=
-            +Assertion_Get_As (Id);
-      begin
-         Result.Ada_Node := Ada_Node;
-         Result.A_Pred :=
-           Duplicate_Predicate
-           (Id => Pred);
-         Set_Link (Result.A_Pred, New_Id);
-         if As = Why_Empty then
-            Result.A_As := Why_Empty;
-         else
-            Result.A_As :=
-              Duplicate_Identifier
-              (Id => As);
-         end if;
-         Set_Link (Result.A_As, New_Id);
-         Result.Link := Why_Empty;
-         Result.Checked := True;
-         Set_Node (New_Id, Result);
-         return New_Id;
-      end;
-   end Duplicate_Assertion;
 
    -----------------------------
    -- Duplicate_Prog_Constant --
@@ -10686,31 +10590,31 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Assert);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Assert);
-         Assertions : constant W_Assertion_Valid_List :=
-            +Assert_Get_Assertions (Id);
-         Prog       : constant W_Prog_Valid_Id :=
+         Preds : constant W_Predicate_Valid_List :=
+            +Assert_Get_Preds (Id);
+         Prog  : constant W_Prog_Valid_Id :=
             +Assert_Get_Prog (Id);
       begin
          Result.Ada_Node := Ada_Node;
          declare
             use Node_Lists;
 
-            Nodes    : constant List := Get_List (Assertions);
+            Nodes    : constant List := Get_List (Preds);
             Position : Cursor := First (Nodes);
             NL       : constant Why_Node_List := New_List;
          begin
             while Position /= No_Element loop
                declare
-                  Node : constant W_Assertion_Valid_Id :=
+                  Node : constant W_Predicate_Valid_Id :=
                            Element (Position);
                begin
                   Append (NL,  Node);
                end;
                Position := Next (Position);
             end loop;
-            Result.AS_Assertions := NL;
+            Result.AS_Preds := NL;
          end;
-         Set_Link (Result.AS_Assertions, New_Id);
+         Set_Link (Result.AS_Preds, New_Id);
          Result.AS_Prog :=
            Duplicate_Prog
            (Id => Prog);
@@ -11829,7 +11733,7 @@ package body Why.Atree.Builders is
          Result : Why_Node (W_Loop_Annot);
          New_Id : constant Why_Node_Id :=
            New_Why_Node_Id (W_Loop_Annot);
-         Invariant : constant W_Assertion_Valid_OId :=
+         Invariant : constant W_Predicate_Valid_OId :=
             +Loop_Annot_Get_Invariant (Id);
          Variant   : constant W_Wf_Arg_Valid_OId :=
             +Loop_Annot_Get_Variant (Id);
@@ -11839,7 +11743,7 @@ package body Why.Atree.Builders is
             Result.LA_Invariant := Why_Empty;
          else
             Result.LA_Invariant :=
-              Duplicate_Assertion
+              Duplicate_Predicate
               (Id => Invariant);
          end if;
          Set_Link (Result.LA_Invariant, New_Id);
@@ -16625,8 +16529,8 @@ package body Why.Atree.Builders is
    ----------------------
 
    function New_Precondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Id)
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Id)
      return W_Precondition_Id
    is
       Result : Why_Node (W_Precondition);
@@ -16635,9 +16539,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.PRE_Assertion :=
-        +(W_Assertion_Valid_Id (Assertion));
-      Set_Link (Result.PRE_Assertion, New_Id);
+      Result.PRE_Pred :=
+        +(W_Predicate_Valid_Id (Pred));
+      Set_Link (Result.PRE_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
@@ -16648,9 +16552,9 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_Postcondition
-     (Ada_Node  : Node_Id := Empty;
-      Assertion : W_Assertion_Id;
-      Handlers  : W_Exn_Condition_Array := (2 .. 1 => <>))
+     (Ada_Node : Node_Id := Empty;
+      Pred     : W_Predicate_Id;
+      Handlers : W_Exn_Condition_Array := (2 .. 1 => <>))
      return W_Postcondition_Id
    is
       Result : Why_Node (W_Postcondition);
@@ -16659,9 +16563,9 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      Result.POST_Assertion :=
-        +(W_Assertion_Valid_Id (Assertion));
-      Set_Link (Result.POST_Assertion, New_Id);
+      Result.POST_Pred :=
+        +(W_Predicate_Valid_Id (Pred));
+      Set_Link (Result.POST_Pred, New_Id);
       Result.POST_Handlers := New_List;
       for J in Handlers'Range loop
          pragma Assert
@@ -16685,9 +16589,9 @@ package body Why.Atree.Builders is
    -----------------------
 
    function New_Exn_Condition
-     (Ada_Node  : Node_Id := Empty;
-      Exn_Case  : W_Identifier_Id;
-      Assertion : W_Assertion_Id)
+     (Ada_Node : Node_Id := Empty;
+      Exn_Case : W_Identifier_Id;
+      Pred     : W_Predicate_Id)
      return W_Exn_Condition_Id
    is
       Result : Why_Node (W_Exn_Condition);
@@ -16699,41 +16603,14 @@ package body Why.Atree.Builders is
       Result.EC_Exn_Case :=
         +(W_Identifier_Valid_Id (Exn_Case));
       Set_Link (Result.EC_Exn_Case, New_Id);
-      Result.EC_Assertion :=
-        +(W_Assertion_Valid_Id (Assertion));
-      Set_Link (Result.EC_Assertion, New_Id);
+      Result.EC_Pred :=
+        +(W_Predicate_Valid_Id (Pred));
+      Set_Link (Result.EC_Pred, New_Id);
       Result.Link := Why_Empty;
       Result.Checked := True;
       Set_Node (New_Id, Result);
       return W_Exn_Condition_Id (New_Id);
    end New_Exn_Condition;
-   -------------------
-   -- New_Assertion --
-   -------------------
-
-   function New_Assertion
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Id;
-      As       : W_Identifier_OId := Why_Empty)
-     return W_Assertion_Id
-   is
-      Result : Why_Node (W_Assertion);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Assertion);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.A_Pred :=
-        +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.A_Pred, New_Id);
-      Result.A_As :=
-        +(W_Identifier_Valid_OId (As));
-      Set_Link (Result.A_As, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Assertion_Id (New_Id);
-   end New_Assertion;
    -----------------------
    -- New_Prog_Constant --
    -----------------------
@@ -17594,9 +17471,9 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_Array;
-      Prog       : W_Prog_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_Array;
+      Prog     : W_Prog_Id)
      return W_Assert_Id
    is
       Result : Why_Node (W_Assert);
@@ -17605,20 +17482,20 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      pragma Assert (Assertions'Length > 0);
-      Result.AS_Assertions := New_List;
-      for J in Assertions'Range loop
+      pragma Assert (Preds'Length > 0);
+      Result.AS_Preds := New_List;
+      for J in Preds'Range loop
          pragma Assert
-           (Assertion_Id_Kind_Valid
-            (+(W_Assertion_Valid_Id (Assertions (J)))));
+           (Predicate_Id_Kind_Valid
+            (+(W_Predicate_Valid_Id (Preds (J)))));
          pragma Assert
-           (Assertion_Id_Valid
-            (+(W_Assertion_Valid_Id (Assertions (J)))));
+           (Predicate_Id_Valid
+            (+(W_Predicate_Valid_Id (Preds (J)))));
          Append
-           (Result.AS_Assertions,
-            +(W_Assertion_Valid_Id (Assertions (J))));
+           (Result.AS_Preds,
+            +(W_Predicate_Valid_Id (Preds (J))));
       end loop;
-      Set_Link (Result.AS_Assertions, New_Id);
+      Set_Link (Result.AS_Preds, New_Id);
       Result.AS_Prog :=
         +(W_Prog_Valid_Id (Prog));
       Set_Link (Result.AS_Prog, New_Id);
@@ -17633,9 +17510,9 @@ package body Why.Atree.Builders is
    ----------------
 
    function New_Assert
-     (Ada_Node   : Node_Id := Empty;
-      Assertions : W_Assertion_Array;
-      Prog       : W_Prog_Id)
+     (Ada_Node : Node_Id := Empty;
+      Preds    : W_Predicate_Array;
+      Prog     : W_Prog_Id)
      return W_Prog_Id
    is
       Result : Why_Node (W_Assert);
@@ -17644,20 +17521,20 @@ package body Why.Atree.Builders is
    begin
       Result.Ada_Node :=
         Ada_Node;
-      pragma Assert (Assertions'Length > 0);
-      Result.AS_Assertions := New_List;
-      for J in Assertions'Range loop
+      pragma Assert (Preds'Length > 0);
+      Result.AS_Preds := New_List;
+      for J in Preds'Range loop
          pragma Assert
-           (Assertion_Id_Kind_Valid
-            (+(W_Assertion_Valid_Id (Assertions (J)))));
+           (Predicate_Id_Kind_Valid
+            (+(W_Predicate_Valid_Id (Preds (J)))));
          pragma Assert
-           (Assertion_Id_Valid
-            (+(W_Assertion_Valid_Id (Assertions (J)))));
+           (Predicate_Id_Valid
+            (+(W_Predicate_Valid_Id (Preds (J)))));
          Append
-           (Result.AS_Assertions,
-            +(W_Assertion_Valid_Id (Assertions (J))));
+           (Result.AS_Preds,
+            +(W_Predicate_Valid_Id (Preds (J))));
       end loop;
-      Set_Link (Result.AS_Assertions, New_Id);
+      Set_Link (Result.AS_Preds, New_Id);
       Result.AS_Prog :=
         +(W_Prog_Valid_Id (Prog));
       Set_Link (Result.AS_Prog, New_Id);
@@ -19113,7 +18990,7 @@ package body Why.Atree.Builders is
 
    function New_Loop_Annot
      (Ada_Node  : Node_Id := Empty;
-      Invariant : W_Assertion_OId := Why_Empty;
+      Invariant : W_Predicate_OId := Why_Empty;
       Variant   : W_Wf_Arg_OId := Why_Empty)
      return W_Loop_Annot_Id
    is
@@ -19124,7 +19001,7 @@ package body Why.Atree.Builders is
       Result.Ada_Node :=
         Ada_Node;
       Result.LA_Invariant :=
-        +(W_Assertion_Valid_OId (Invariant));
+        +(W_Predicate_Valid_OId (Invariant));
       Set_Link (Result.LA_Invariant, New_Id);
       Result.LA_Variant :=
         +(W_Wf_Arg_Valid_OId (Variant));
@@ -20711,10 +20588,6 @@ package body Why.Atree.Builders is
               Id        => Id);
          when W_Exn_Condition =>
             return Duplicate_Exn_Condition
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Assertion =>
-            return Duplicate_Assertion
              (Ada_Node  => Ada_Node,
               Id        => Id);
          when W_Prog_Constant =>
