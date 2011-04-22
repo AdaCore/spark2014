@@ -436,7 +436,7 @@ package Why.Sinfo is
       --             | <fun_def>
       --             | <binding_fun>
       --             | <binding_rec>
-      --             | <prog_sequence>
+      --             | <prog_call>
       --             | <raise_statement>
       --             | <raise_statement_with_parameters>
       --             | <try_block>
@@ -451,7 +451,7 @@ package Why.Sinfo is
       --  <prog_identifier> ::= <identifier>
 
       W_Any_Expr,
-      --  <deref> ::= '!' <identifier>
+      --  <any_expr> ::= '[' <identifier> ']'
 
       W_Deref,
       --  <deref> ::= '!' <identifier>
