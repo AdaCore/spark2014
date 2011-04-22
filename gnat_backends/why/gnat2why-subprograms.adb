@@ -1336,6 +1336,13 @@ package body Gnat2Why.Subprograms is
                    Unconstrained => Is_Unconstrained_Array (Pre));
             end;
 
+         when N_Selected_Component =>
+            T :=
+              New_Prog_Call
+                (Name => Record_Getter_Name
+                 (Full_Name (Entity (Selector_Name (Expr)))),
+                 Progs => (1 => Why_Expr_Of_Ada_Expr (Prefix (Expr))));
+
          when N_Function_Call =>
             T :=
               New_Located_Call
@@ -2393,6 +2400,13 @@ package body Gnat2Why.Subprograms is
             else
                return Why_Term_Of_Ada_Expr (Expression (Expr), Expected_Type);
             end if;
+
+         when N_Selected_Component =>
+            T :=
+              New_Operation
+                (Name => Record_Getter_Name
+                 (Full_Name (Entity (Selector_Name (Expr)))),
+                 Parameters => (1 => Why_Term_Of_Ada_Expr (Prefix (Expr))));
 
          when N_Function_Call =>
             T :=
