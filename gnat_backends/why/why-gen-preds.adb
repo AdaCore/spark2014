@@ -402,7 +402,15 @@ package body Why.Gen.Preds is
       end Set_Pred;
 
    begin
-      return +Finalize_Univ_Chain (Foralls, +Context);
+      Universal_Quantif_Set_Pred (Foralls (Foralls'Last), Context);
+
+      if Foralls'Length = 1 then
+         return +Foralls (Foralls'Last);
+      else
+         return +Finalize_Univ_Chain
+           (Foralls (Foralls'First .. Foralls'Last - 1),
+            Foralls (Foralls'Last));
+      end if;
    end New_Universal_Predicate_Body;
 
 end Why.Gen.Preds;
