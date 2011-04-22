@@ -93,8 +93,6 @@ package body Gnat2Why.Driver is
       Main_Lib_Id   : ALI_Id;
 
       N          : constant Node_Id := Unit (GNAT_Root);
-      Unit_Name  : constant String :=
-         Name_String (Chars (Defining_Entity (N)));
       FName      : constant String :=
          Get_Name_String (File_Name (Get_Source_File_Index (Sloc (N))));
       Full_FName : constant String :=
@@ -192,13 +190,12 @@ package body Gnat2Why.Driver is
    --        Put_Line ("## After propagation ##");
    --        Put_Line ("");
    --        Display_Maps;
-
          --  Mark all compilation units with "in ALFA / not in ALFA" marks, in
          --  the same order that they were processed by the frontend. Bodies
          --  are not included, except for the main unit itself, which always
          --  comes last.
 
-         Create_ALFA_Output_File (Unit_Name & ".alfa");
+         Create_ALFA_Output_File (Base_Name & ".alfa");
          Mark_All_Compilation_Units;
          Close_ALFA_Output_File;
 
@@ -213,6 +210,11 @@ package body Gnat2Why.Driver is
          for CU of ALFA_Compilation_Units loop
             Translate_CUnit (CU);
          end loop;
+
+         Open_Current_File (Base_Name & "__package.loc");
+         Print_Locations_Table (Current_File);
+         Close_Current_File;
+
       end if;
    end GNAT_To_Why;
 
@@ -292,14 +294,6 @@ package body Gnat2Why.Driver is
          end if;
          Open_Current_File (Unit_Name & ".why");
          Sprint_Why_Node (+File, Current_File);
-         Close_Current_File;
-
-         Open_Current_File (Unit_Name & ".loc");
-         Print_Locations_Table (Current_File);
-         Close_Current_File;
-
-         Open_Current_File (Unit_Name & ".labels");
-         Print_Label_List (Current_File);
          Close_Current_File;
 
          if Print_Generated_Code then
