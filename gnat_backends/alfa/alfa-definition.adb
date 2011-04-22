@@ -262,6 +262,7 @@ package body ALFA.Definition is
    procedure Mark_Attribute_Reference         (N : Node_Id);
    procedure Mark_Binary_Op                   (N : Node_Id);
    procedure Mark_Call                        (N : Node_Id);
+   procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Conditional_Expression      (N : Node_Id);
    procedure Mark_Full_Type_Declaration       (N : Node_Id);
    procedure Mark_Function_Specification      (N : Node_Id);
@@ -481,7 +482,7 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("code statement", N);
 
          when N_Component_Declaration =>
-            Mark_Non_ALFA ("component", N, V_Implem);
+            Mark_Component_Declaration (N);
 
          when N_Conditional_Expression =>
             Mark_Conditional_Expression (N);
@@ -881,6 +882,25 @@ package body ALFA.Definition is
          Pop_Scope (Standard_Standard);
       end if;
    end Mark_Compilation_Unit;
+
+   --------------------------------
+   -- Mark_Component_Declaration --
+   --------------------------------
+
+   procedure Mark_Component_Declaration (N : Node_Id) is
+      Def : constant Node_Id   := Component_Definition (N);
+
+   begin
+      if Aliased_Present (Def) then
+         Mark_Non_ALFA_Declaration ("ALIASED", N);
+      end if;
+
+      if Present (Access_Definition (Def)) then
+         Mark_Non_ALFA ("access type", Def);
+      else
+         Mark_Subtype_Indication (Subtype_Indication (Def));
+      end if;
+   end Mark_Component_Declaration;
 
    ---------------------------------
    -- Mark_Conditional_Expression --
@@ -1812,9 +1832,17 @@ package body ALFA.Definition is
             end if;
 
          when N_Record_Definition =>
-            --  ??? Go through the record components to check if
-            --  it is in ALFA
-            null;
+            if Present (Interface_List (N)) then
+               Mark_Non_ALFA ("interface", N);
+            elsif Present (Component_List (N))
+              and then not Null_Present (Component_List (N))
+            then
+               if Present (Variant_Part (Component_List (N))) then
+                  Mark_Non_ALFA ("variant", N, V_Implem);
+               else
+                  Mark_List (Component_Items (Component_List (N)));
+               end if;
+            end if;
 
          when N_Modular_Type_Definition |
               N_Floating_Point_Definition |
