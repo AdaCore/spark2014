@@ -235,11 +235,15 @@ package body Altergo is
                Status    => Status'Access,
                Err_To_Out => True);
       begin
-         if Status /= 0 then
-            Print_Command_Line;
-            Ada.Text_IO.Put_Line (" failed.");
+         if Verbose or else Status /= 0 then
             Ada.Text_IO.Put (S);
-            GNAT.OS_Lib.OS_Exit (1);
+            if Status /= 0 then
+               Print_Command_Line;
+               Ada.Text_IO.Put_Line (" failed.");
+               GNAT.OS_Lib.OS_Exit (1);
+            else
+               Ada.Text_IO.Put_Line ("");
+            end if;
          end if;
 
          for Index in Arguments'Range loop

@@ -97,6 +97,8 @@ package body Gnat2Why.Driver is
          Name_String (Chars (Defining_Entity (N)));
       FName      : constant String :=
          Get_Name_String (File_Name (Get_Source_File_Index (Sloc (N))));
+      Full_FName : constant String :=
+         Get_Name_String (Full_File_Name (Get_Source_File_Index (Sloc (N))));
       Base_Name : constant String :=
          File_Name_Without_Suffix (FName);
 
@@ -168,8 +170,8 @@ package body Gnat2Why.Driver is
 
          --  Write Dependency file
          Open_Current_File (Base_Name & ".d");
-         P (Current_File, Unit_Name & ".why: ");
-         P (Current_File, FName);
+         P (Current_File, Base_Name & "__package.why: ");
+         P (Current_File, Full_FName);
          for Index in ALIs.First .. ALIs.Last loop
             P (Current_File, " ");
             P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));

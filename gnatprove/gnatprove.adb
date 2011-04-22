@@ -55,19 +55,22 @@ procedure Gnatprove is
 
    Subdir_Name  : constant Filesystem_String := "gnatprove";
    WHYLIB       : constant String := "WHYLIB";
-   Why_Lib_Dir  : constant String := "lib/why";
+   Exec_Loc     : constant String := Executable_Location;
+   Why_Lib_Dir  : constant String :=
+      Ada.Directories.Compose ("lib", "why");
+   Gpr_Cnf_File : constant String :=
+      Ada.Directories.Compose
+         (Ada.Directories.Compose
+            (Ada.Directories.Compose (Exec_Loc, "share"),
+             "gprbuild"),
+          "gnat2why.cgpr");
    Main_Suffix  : constant String := "__package";
 
    procedure Call_Gnatmake (Project_File : String);
    --  Call gnatmake using the given project file.
 
-   procedure Call_Gnat2Why
-      (Proj     : Project_Tree;
-       File     : Virtual_File;
-       Inc_Args : Argument_List);
-   --  Call gnat2why on a single source file of a project. The Inc_Args is an
-   --  array that contains the include arguments that are necessary for the
-   --  call to gnat2why
+   procedure Call_Gprbuild (Project_File : String);
+   --  Call gnatmake using the given project file.
 
    procedure Call_Why (Proj : Project_Tree; File : Virtual_File);
    --  Call why on all the generated files that belong to a certain file
@@ -103,51 +106,37 @@ procedure Gnatprove is
    end Call_Gnatmake;
 
    -------------------
-   -- Call_Gnat2Why --
+   -- Call_Gprbuild --
    -------------------
 
-   procedure Call_Gnat2Why
-      (Proj     : Project_Tree;
-       File     : Virtual_File;
-       Inc_Args : Argument_List) is
-      Switch         : GNAT.Strings.String_List_Access;
-      Default        : Boolean;
-      Proj_Type      : constant Project_Type := Root_Project (Proj);
-      Local_Inc_Args : Argument_List (Inc_Args'First .. Inc_Args'Last);
+   procedure Call_Gprbuild (Project_File : String)
+   is
+      Arguments : Argument_List :=
+         (1 => new String'("-P"),
+          2 => new String'(Project_File),
+          3 => new String'("--subdirs=" & String (Subdir_Name)),
+          4 => new String'("--config=" & Gpr_Cnf_File));
    begin
-      --  We need to copy the Inc_Args argument because it is used across all
-      --  gnat2why calls
-      for Index in Inc_Args'Range loop
-         Local_Inc_Args (Index) := new String'(Inc_Args (Index).all);
-      end loop;
-
-      Switches
-        (Project  => Proj_Type,
-         In_Pkg   => "compiler",
-         File     => File,
-         Language => "Ada",
-         Value    => Switch,
-         Is_Default_Value => Default);
-      declare
-         Arguments : constant Argument_List :=
-         ((1 => new String'("-gnatd.F"),
-           2 => new String'(+Full_Name (File))) &
-             Switch.all &
-             Local_Inc_Args);
-      begin
-         if All_VCs then
-            Call_Exit_On_Failure
-              (Command   => "gnat2why",
-               Arguments => Arguments,
-               Verbose   => Verbose);
+      Arguments :=
+         (if Verbose then
+            Arguments & (1 => new String'("-v"))
          else
-            Call_Exit_On_Failure
-              (Command   => "gnat2why",
-               Arguments => Arguments & (1 => new String'("-gnatd.G")),
-               Verbose   => Verbose);
-         end if;
-      end;
-   end Call_Gnat2Why;
+            Arguments & (1 => new String'("-q")));
+      if All_VCs then
+         Call_Exit_On_Failure
+           (Command   => "gprbuild",
+            Arguments => Arguments,
+            Verbose   => Verbose);
+      else
+         Call_Exit_On_Failure
+           (Command   => "gprbuild",
+            Arguments =>
+               Arguments &
+                  (1 => new String'("-cargs:Ada"),
+                   2 => new String'("-gnatd.G")),
+            Verbose   => Verbose);
+      end if;
+   end Call_Gprbuild;
 
    --------------
    -- Call_Why --
@@ -307,46 +296,16 @@ begin
    --  be in the path
    Call_Gnatmake (Project_File.all);
 
+   Call_Gprbuild (Project_File.all);
+
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
-
    Make_Standard_Package (Tree);
-   declare
-      Src_Dirs      : constant File_Array :=
-         Source_Dirs (Proj_Type, Recursive => True);
-      Include_Args  : aliased Argument_List (1 .. 2 * Src_Dirs'Length);
-      Cnt           : Integer range 1 .. 2 * (Src_Dirs'Length + 1) := 1;
-
-      procedure Call_Gnat2why_Gen (Proj : Project_Tree; File : Virtual_File);
-      --  Wrapper for Call_Gnat2Why, fix the Inc_Args argument to the
-      --  precomputed one.
-
-      -----------------------
-      -- Call_Gnat2why_Gen --
-      -----------------------
-
-      procedure Call_Gnat2why_Gen (Proj : Project_Tree; File : Virtual_File)
-      is
-      begin
-         Call_Gnat2Why (Proj, File, Include_Args);
-      end Call_Gnat2why_Gen;
-
-      procedure Iterate_Gnat2Why is
-        new Iter_Project_Source_Files (Call_Gnat2Why_Gen);
-   begin
-      for Index in Src_Dirs'Range loop
-         Include_Args (Cnt) := new String'("-I");
-         Include_Args (Cnt + 1) := new String'(+Full_Name (Src_Dirs (Index)));
-         Cnt := Cnt + 2;
-      end loop;
-      Iterate_Gnat2Why (Tree);
-   end;
 
    --  Set the environment variable WHYLIB, if necessary, to indicate the
    --  placement for Why
    if not Ada.Environment_Variables.Exists (WHYLIB) then
-      Ada.Environment_Variables.Set
-        (WHYLIB,
-         Executable_Location & Why_Lib_Dir);
+      Ada.Environment_Variables.Set (WHYLIB,
+         Ada.Directories.Compose (Exec_Loc, Why_Lib_Dir));
    end if;
 
    Iterate_Why (Tree);

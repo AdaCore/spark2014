@@ -19,4 +19,4 @@ sparkified
 GNAT-*
 gnat_src
 gnat_backends/testsuite/out
-install
+install/bin
