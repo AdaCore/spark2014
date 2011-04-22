@@ -424,7 +424,12 @@ package body ALFA.Filter is
                L);
          end Add_Package_Decl;
 
-         Prefix : constant String := File_Name_Without_Suffix (Sloc (N));
+         Prefix           : constant String :=
+            File_Name_Without_Suffix (Sloc (N));
+         Standard_Dummy_P : constant Node_Id :=
+            Make_Package_Spec_From_Decls
+               (Name => "_standard",
+                Decls => Nlists.Empty_List);
       begin
          Types_Vars_Spec_P :=
            Make_Package_Spec_From_Decls
@@ -445,7 +450,7 @@ package body ALFA.Filter is
 
          --  Take into account dependencies
          --  Add standard package only to types_vars for spec
-         Add_Package_Decl (Context_Types_Vars_Spec, Standard_Package_Node);
+         Add_Package_Decl (Context_Types_Vars_Spec, Standard_Dummy_P);
          --  Add "vertical" dependencies for a single package
          Add_Package_Decl (Context_Types_Vars_Body, Types_Vars_Spec_P);
          Add_Package_Decl (Context_Subp_Spec, Types_Vars_Body_P);

@@ -168,7 +168,7 @@ package body Gnat2Why.Driver is
 
          --  Write Dependency file
          Open_Current_File (Base_Name & ".d");
-         P (Current_File, Base_Name & "__package.why: ");
+         P (Current_File, Base_Name & "__package.mlw: ");
          P (Current_File, Full_FName);
          for Index in ALIs.First .. ALIs.Last loop
             P (Current_File, " ");
@@ -261,7 +261,8 @@ package body Gnat2Why.Driver is
             when N_With_Clause =>
                New_Include_Declaration
                  (File,
-                  New_Identifier (Symbol => Chars (Name (Cur))));
+                  New_Identifier
+                     (Get_Name_String (Chars (Name (Cur))) & ".mlw"));
             when others =>
                null;  --  ??? raise Program_Error when cases completed
          end case;
@@ -292,7 +293,7 @@ package body Gnat2Why.Driver is
          else
             Translate_Package (File, N);
          end if;
-         Open_Current_File (Unit_Name & ".why");
+         Open_Current_File (Unit_Name & ".mlw");
          Sprint_Why_Node (+File, Current_File);
          Close_Current_File;
 
@@ -402,7 +403,7 @@ package body Gnat2Why.Driver is
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
 
-      Open_Current_File ("standard.why");
+      Open_Current_File ("_standard.mlw");
       Declare_Boolean_Integer_Comparison (File);
 
       New_Logic
@@ -414,10 +415,10 @@ package body Gnat2Why.Driver is
 
       New_Include_Declaration
         (File => File,
-         Name => New_Identifier ("divisions"));
+         Name => New_Identifier ("divisions.why"));
       New_Include_Declaration
         (File => File,
-         Name => New_Identifier ("bool"));
+         Name => New_Identifier ("bool.why"));
 
       --  Declare a global exception for returning from subprograms
 

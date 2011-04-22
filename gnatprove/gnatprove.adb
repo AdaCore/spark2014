@@ -87,7 +87,7 @@ procedure Gnatprove is
    --  Iterate over all source files of a project.
 
    procedure Make_Standard_Package (Proj : Project_Tree);
-   --  Produce the file "_standard.why".
+   --  Produce the file "_standard.mlw".
 
    -------------------
    -- Call_Gnatmake --
@@ -151,7 +151,7 @@ procedure Gnatprove is
    begin
       --  Assuming 'base' to be the filename without suffix, call the
       --  command
-      --  why --multiwhy --explain --locs <base>.locs <base>.why
+      --  why --multiwhy --explain --locs <base>.locs <base>.mlw
 
       --  ??? It would be good to generate VCs for all objectives, as --all-vc
       --  would permit, but currently this generates VCs which we cannot match
@@ -166,7 +166,7 @@ procedure Gnatprove is
              3 => new String'("--explain"),
              4 => new String'("--locs"),
              5 => new String'(Base & Main_Suffix & ".loc"),
-             6 => new String'(Base & Main_Suffix & ".why"))),
+             6 => new String'(Base & Main_Suffix & ".mlw"))),
          Verbose   => Verbose);
    end Call_Why;
 
