@@ -1,6 +1,3 @@
 length.adb:18:15: Proved - range check
-length.adb:24:22: Proved - range check
-length.adb:24:22: Proved - range check
-length.ads:16:23: proof of postcondition failed
 length.ads:6:22: Proved - proof of postcondition
 length.ads:9:30: Proved - proof of postcondition

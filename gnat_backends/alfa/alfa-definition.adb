@@ -1033,6 +1033,10 @@ package body ALFA.Definition is
             --  The entity for iterating over a loop is always in ALFA if its
             --  type is in ALFA.
 
+            --  ??? This assumes that the type is previously declared, which
+            --  should be inserted automatically by the front-end if not in
+            --  user code, see K421-020.
+
             if not Is_In_ALFA (Etype (Id)) then
                Mark_Non_ALFA_Declaration
                  ("type of loop index", LP, From => Etype (Id));
