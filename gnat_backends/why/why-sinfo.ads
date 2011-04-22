@@ -400,9 +400,6 @@ package Why.Sinfo is
       --                [ 'writes' <identifier> (',' <identifier>)* ]
       --                [ 'raises' <identifier> (',' <identifier>)* ]
 
-      W_Precondition,
-      --  <precondition> ::= <assertion>
-
       W_Postcondition,
       --  <postcondition> ::= <assertion> <exn_condition>*
 

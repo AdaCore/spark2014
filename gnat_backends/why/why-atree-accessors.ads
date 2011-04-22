@@ -75,7 +75,7 @@ package Why.Atree.Accessors is
 
    function Computation_Type_Get_Precondition
      (Id : W_Computation_Type_Unchecked_Id)
-     return W_Precondition_Unchecked_OId;
+     return W_Predicate_Unchecked_OId;
 
    function Computation_Type_Get_Result_Name
      (Id : W_Computation_Type_Unchecked_Id)
@@ -469,10 +469,6 @@ package Why.Atree.Accessors is
      (Id : W_Effects_Unchecked_Id)
      return W_Identifier_Unchecked_OList;
 
-   function Precondition_Get_Pred
-     (Id : W_Precondition_Unchecked_Id)
-     return W_Predicate_Unchecked_Id;
-
    function Postcondition_Get_Pred
      (Id : W_Postcondition_Unchecked_Id)
      return W_Predicate_Unchecked_Id;
@@ -643,7 +639,7 @@ package Why.Atree.Accessors is
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Unchecked_Id)
-     return W_Precondition_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Unchecked_Id)
@@ -659,7 +655,7 @@ package Why.Atree.Accessors is
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Unchecked_Id)
-     return W_Precondition_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Unchecked_Id)
@@ -751,7 +747,7 @@ package Why.Atree.Accessors is
 
    function Recfun_Get_Pre
      (Id : W_Recfun_Unchecked_Id)
-     return W_Precondition_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
    function Recfun_Get_Def
      (Id : W_Recfun_Unchecked_Id)
@@ -799,7 +795,7 @@ package Why.Atree.Accessors is
 
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Unchecked_Id)
-     return W_Precondition_Unchecked_Id;
+     return W_Predicate_Unchecked_Id;
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Unchecked_Id)
@@ -883,7 +879,7 @@ package Why.Atree.Accessors is
 
    function Computation_Type_Get_Precondition
      (Id : W_Computation_Type_Id)
-     return W_Precondition_OId;
+     return W_Predicate_OId;
 
    function Computation_Type_Get_Result_Name
      (Id : W_Computation_Type_Id)
@@ -1277,10 +1273,6 @@ package Why.Atree.Accessors is
      (Id : W_Effects_Id)
      return W_Identifier_OList;
 
-   function Precondition_Get_Pred
-     (Id : W_Precondition_Id)
-     return W_Predicate_Id;
-
    function Postcondition_Get_Pred
      (Id : W_Postcondition_Id)
      return W_Predicate_Id;
@@ -1451,7 +1443,7 @@ package Why.Atree.Accessors is
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Id)
-     return W_Precondition_Id;
+     return W_Predicate_Id;
 
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Id)
@@ -1467,7 +1459,7 @@ package Why.Atree.Accessors is
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Id)
-     return W_Precondition_Id;
+     return W_Predicate_Id;
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Id)
@@ -1559,7 +1551,7 @@ package Why.Atree.Accessors is
 
    function Recfun_Get_Pre
      (Id : W_Recfun_Id)
-     return W_Precondition_Id;
+     return W_Predicate_Id;
 
    function Recfun_Get_Def
      (Id : W_Recfun_Id)
@@ -1607,7 +1599,7 @@ package Why.Atree.Accessors is
 
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Id)
-     return W_Precondition_Id;
+     return W_Predicate_Id;
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Id)
@@ -1707,8 +1699,8 @@ private
 
    function Computation_Type_Get_Precondition
      (Id : W_Computation_Type_Unchecked_Id)
-     return W_Precondition_Unchecked_OId is
-     (W_Precondition_Unchecked_OId (Get_Node (+Id).CS_Precondition));
+     return W_Predicate_Unchecked_OId is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).CS_Precondition));
 
    function Computation_Type_Get_Result_Name
      (Id : W_Computation_Type_Unchecked_Id)
@@ -2200,11 +2192,6 @@ private
      return W_Identifier_Unchecked_OList is
      (W_Identifier_Unchecked_OList (Get_Node (+Id).E_Raises));
 
-   function Precondition_Get_Pred
-     (Id : W_Precondition_Unchecked_Id)
-     return W_Predicate_Unchecked_Id is
-     (W_Predicate_Unchecked_OId (Get_Node (+Id).PRE_Pred));
-
    function Postcondition_Get_Pred
      (Id : W_Postcondition_Unchecked_Id)
      return W_Predicate_Unchecked_Id is
@@ -2417,8 +2404,8 @@ private
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Unchecked_Id)
-     return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_OId (Get_Node (+Id).FD_Pre));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).FD_Pre));
 
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Unchecked_Id)
@@ -2437,8 +2424,8 @@ private
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Unchecked_Id)
-     return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_OId (Get_Node (+Id).BF_Pre));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).BF_Pre));
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Unchecked_Id)
@@ -2552,8 +2539,8 @@ private
 
    function Recfun_Get_Pre
      (Id : W_Recfun_Unchecked_Id)
-     return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_OId (Get_Node (+Id).RF_Pre));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).RF_Pre));
 
    function Recfun_Get_Def
      (Id : W_Recfun_Unchecked_Id)
@@ -2612,8 +2599,8 @@ private
 
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Unchecked_Id)
-     return W_Precondition_Unchecked_Id is
-     (W_Precondition_Unchecked_OId (Get_Node (+Id).GB_Pre));
+     return W_Predicate_Unchecked_Id is
+     (W_Predicate_Unchecked_OId (Get_Node (+Id).GB_Pre));
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Unchecked_Id)
@@ -2717,8 +2704,8 @@ private
 
    function Computation_Type_Get_Precondition
      (Id : W_Computation_Type_Id)
-     return W_Precondition_OId is
-     (W_Precondition_OId (Get_Node (+Id).CS_Precondition));
+     return W_Predicate_OId is
+     (W_Predicate_OId (Get_Node (+Id).CS_Precondition));
 
    function Computation_Type_Get_Result_Name
      (Id : W_Computation_Type_Id)
@@ -3210,11 +3197,6 @@ private
      return W_Identifier_OList is
      (W_Identifier_OList (Get_Node (+Id).E_Raises));
 
-   function Precondition_Get_Pred
-     (Id : W_Precondition_Id)
-     return W_Predicate_Id is
-     (W_Predicate_Id (Get_Node (+Id).PRE_Pred));
-
    function Postcondition_Get_Pred
      (Id : W_Postcondition_Id)
      return W_Predicate_Id is
@@ -3427,8 +3409,8 @@ private
 
    function Fun_Def_Get_Pre
      (Id : W_Fun_Def_Id)
-     return W_Precondition_Id is
-     (W_Precondition_Id (Get_Node (+Id).FD_Pre));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).FD_Pre));
 
    function Fun_Def_Get_Def
      (Id : W_Fun_Def_Id)
@@ -3447,8 +3429,8 @@ private
 
    function Binding_Fun_Get_Pre
      (Id : W_Binding_Fun_Id)
-     return W_Precondition_Id is
-     (W_Precondition_Id (Get_Node (+Id).BF_Pre));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).BF_Pre));
 
    function Binding_Fun_Get_Def
      (Id : W_Binding_Fun_Id)
@@ -3562,8 +3544,8 @@ private
 
    function Recfun_Get_Pre
      (Id : W_Recfun_Id)
-     return W_Precondition_Id is
-     (W_Precondition_Id (Get_Node (+Id).RF_Pre));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).RF_Pre));
 
    function Recfun_Get_Def
      (Id : W_Recfun_Id)
@@ -3622,8 +3604,8 @@ private
 
    function Global_Binding_Get_Pre
      (Id : W_Global_Binding_Id)
-     return W_Precondition_Id is
-     (W_Precondition_Id (Get_Node (+Id).GB_Pre));
+     return W_Predicate_Id is
+     (W_Predicate_Id (Get_Node (+Id).GB_Pre));
 
    function Global_Binding_Get_Def
      (Id : W_Global_Binding_Id)

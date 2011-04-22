@@ -775,16 +775,6 @@ package Why.Atree.Traversal is
       Node  : W_Effects_Valid_Id)
      is null;
 
-   procedure Precondition_Pre_Op
-     (State : in out Traversal_State;
-      Node  : W_Precondition_Valid_Id)
-     is null;
-
-   procedure Precondition_Post_Op
-     (State : in out Traversal_State;
-      Node  : W_Precondition_Valid_Id)
-     is null;
-
    procedure Postcondition_Pre_Op
      (State : in out Traversal_State;
       Node  : W_Postcondition_Valid_Id)

@@ -1197,22 +1197,6 @@ package Why.Conversions is
      return W_Effects_OList;
 
    function "+"
-     (Id : W_Precondition_OId)
-     return W_Precondition_Valid_OId;
-
-   function "+"
-     (Id : W_Precondition_Valid_OId)
-     return W_Precondition_OId;
-
-   function "+"
-     (Id : W_Precondition_OList)
-     return W_Precondition_Valid_OList;
-
-   function "+"
-     (Id : W_Precondition_Valid_OList)
-     return W_Precondition_OList;
-
-   function "+"
      (Id : W_Postcondition_OId)
      return W_Postcondition_Valid_OId;
 
@@ -5414,14 +5398,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Precondition_OId;
-
-   function "+"
-     (Id : W_Precondition_OId)
-     return W_Any_Node_OId;
-
-   function "+"
-     (Id : W_Any_Node_OId)
      return W_Postcondition_OId;
 
    function "+"
@@ -6466,14 +6442,6 @@ package Why.Conversions is
 
    function "+"
      (Id : W_Effects_OList)
-     return W_Any_Node_OList;
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Precondition_OList;
-
-   function "+"
-     (Id : W_Precondition_OList)
      return W_Any_Node_OList;
 
    function "+"
@@ -8465,26 +8433,6 @@ private
      (Id : W_Effects_Valid_OList)
      return W_Effects_OList is
      (W_Effects_OList (Id));
-
-   function "+"
-     (Id : W_Precondition_OId)
-     return W_Precondition_Valid_OId is
-     (W_Precondition_Valid_OId (Id));
-
-   function "+"
-     (Id : W_Precondition_Valid_OId)
-     return W_Precondition_OId is
-     (W_Precondition_OId (Id));
-
-   function "+"
-     (Id : W_Precondition_OList)
-     return W_Precondition_Valid_OList is
-     (W_Precondition_Valid_OList (Id));
-
-   function "+"
-     (Id : W_Precondition_Valid_OList)
-     return W_Precondition_OList is
-     (W_Precondition_OList (Id));
 
    function "+"
      (Id : W_Postcondition_OId)
@@ -13738,16 +13686,6 @@ private
 
    function "+"
      (Id : W_Any_Node_OId)
-     return W_Precondition_OId is
-     (W_Precondition_OId (Id));
-
-   function "+"
-     (Id : W_Precondition_OId)
-     return W_Any_Node_OId is
-     (W_Any_Node_OId (Id));
-
-   function "+"
-     (Id : W_Any_Node_OId)
      return W_Postcondition_OId is
      (W_Postcondition_OId (Id));
 
@@ -15053,16 +14991,6 @@ private
 
    function "+"
      (Id : W_Effects_OList)
-     return W_Any_Node_OList is
-     (W_Any_Node_OList (Id));
-
-   function "+"
-     (Id : W_Any_Node_OList)
-     return W_Precondition_OList is
-     (W_Precondition_OList (Id));
-
-   function "+"
-     (Id : W_Precondition_OList)
      return W_Any_Node_OList is
      (W_Any_Node_OList (Id));
 

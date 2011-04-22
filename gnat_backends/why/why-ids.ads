@@ -2061,33 +2061,6 @@ package Why.Ids is
    (Effects_List_Valid
       (W_Effects_Valid_List));
 
-   subtype W_Precondition_Valid_OId is
-     W_Precondition_Unchecked_OId with
-   Predicate =>
-   (Precondition_OId_Valid
-      (W_Precondition_Valid_OId));
-
-   subtype W_Precondition_Valid_OList is
-     W_Precondition_Unchecked_OList with
-   Predicate =>
-   (Precondition_OList_Valid
-      (W_Precondition_Valid_OList));
-
-   subtype W_Precondition_Valid_Id is
-     W_Precondition_Unchecked_Id with
-   Predicate =>
-   (Precondition_Id_Valid
-      (W_Precondition_Valid_Id));
-
-   type W_Precondition_V_Array is array (Positive range <>)
-     of W_Precondition_Valid_Id;
-
-   subtype W_Precondition_Valid_List is
-     W_Precondition_Unchecked_List with
-   Predicate =>
-   (Precondition_List_Valid
-      (W_Precondition_Valid_List));
-
    subtype W_Postcondition_Valid_OId is
      W_Postcondition_Unchecked_OId with
    Predicate =>
@@ -5180,21 +5153,6 @@ package Why.Ids is
 
    subtype W_Effects_List is
      W_Effects_OList;
-
-   type W_Precondition_OId is new
-     W_Precondition_Valid_OId;
-
-   type W_Precondition_OList is new
-     W_Precondition_Valid_OList;
-
-   subtype W_Precondition_Id is
-     W_Precondition_OId;
-
-   type W_Precondition_Array is array (Positive range <>)
-     of W_Precondition_Id;
-
-   subtype W_Precondition_List is
-     W_Precondition_OList;
 
    type W_Postcondition_OId is new
      W_Postcondition_Valid_OId;

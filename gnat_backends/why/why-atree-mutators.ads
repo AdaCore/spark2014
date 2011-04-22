@@ -144,12 +144,12 @@ package Why.Atree.Mutators is
 
    procedure Computation_Type_Set_Precondition
      (Id           : W_Computation_Type_Unchecked_Id;
-      Precondition : W_Precondition_OId) with
+      Precondition : W_Predicate_OId) with
      Pre => (Is_Root (+Precondition));
 
    procedure Computation_Type_Set_Precondition
      (Id           : W_Computation_Type_Id;
-      Precondition : W_Precondition_OId) with
+      Precondition : W_Predicate_OId) with
      Pre => (Is_Root (+Precondition));
 
    procedure Computation_Type_Set_Result_Name
@@ -1318,16 +1318,6 @@ package Why.Atree.Mutators is
       New_Item : W_Identifier_Id) with
      Pre => (Is_Root (+New_Item));
 
-   procedure Precondition_Set_Pred
-     (Id   : W_Precondition_Unchecked_Id;
-      Pred : W_Predicate_Id) with
-     Pre => (Is_Root (+Pred));
-
-   procedure Precondition_Set_Pred
-     (Id   : W_Precondition_Id;
-      Pred : W_Predicate_Id) with
-     Pre => (Is_Root (+Pred));
-
    procedure Postcondition_Set_Pred
      (Id   : W_Postcondition_Unchecked_Id;
       Pred : W_Predicate_Id) with
@@ -1790,12 +1780,12 @@ package Why.Atree.Mutators is
 
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Unchecked_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Fun_Def_Set_Def
@@ -1840,12 +1830,12 @@ package Why.Atree.Mutators is
 
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Unchecked_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Binding_Fun_Set_Def
@@ -2110,12 +2100,12 @@ package Why.Atree.Mutators is
 
    procedure Recfun_Set_Pre
      (Id  : W_Recfun_Unchecked_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Recfun_Set_Pre
      (Id  : W_Recfun_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Recfun_Set_Def
@@ -2250,12 +2240,12 @@ package Why.Atree.Mutators is
 
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Unchecked_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Id;
-      Pre : W_Precondition_Id) with
+      Pre : W_Predicate_Id) with
      Pre => (Is_Root (+Pre));
 
    procedure Global_Binding_Set_Def

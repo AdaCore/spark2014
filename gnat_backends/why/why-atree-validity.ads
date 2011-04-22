@@ -1229,22 +1229,6 @@ package Why.Atree.Validity is
      (Id : W_Effects_Unchecked_List)
      return Boolean;
 
-   function Precondition_OId_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean;
-
-   function Precondition_OList_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean;
-
-   function Precondition_Id_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean;
-
-   function Precondition_List_Valid
-     (Id : W_Precondition_Unchecked_List)
-     return Boolean;
-
    function Postcondition_OId_Valid
      (Id : W_Postcondition_Unchecked_OId)
      return Boolean;
@@ -3605,22 +3589,6 @@ private
 
    function Effects_List_Children_Valid
      (Id : W_Effects_Unchecked_List)
-     return Boolean;
-
-   function Precondition_OId_Children_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean;
-
-   function Precondition_OList_Children_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean;
-
-   function Precondition_Id_Children_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean;
-
-   function Precondition_List_Children_Valid
-     (Id : W_Precondition_Unchecked_List)
      return Boolean;
 
    function Postcondition_OId_Children_Valid
@@ -6701,32 +6669,6 @@ private
 
    function Effects_List_Valid
      (Id : W_Effects_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Precondition_OId_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Precondition_Id_Valid (Id));
-
-   function Precondition_OList_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Precondition_List_Valid (Id));
-
-   function Precondition_Id_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid (Id)
-      or else Precondition_Id_Children_Valid (Id));
-
-   function Precondition_List_Valid
-     (Id : W_Precondition_Unchecked_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);
@@ -10568,30 +10510,6 @@ private
      (not Is_Empty (Id)
       and then List_Cache_Valid (Id));
 
-   function Precondition_OId_Children_Valid
-     (Id : W_Precondition_Unchecked_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Precondition_Id_Children_Valid (Id));
-
-   function Precondition_OList_Children_Valid
-     (Id : W_Precondition_Unchecked_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Precondition_List_Children_Valid (Id));
-
-   function Precondition_Id_Children_Valid
-     (Id : W_Precondition_Unchecked_Id)
-     return Boolean is
-     (Id_Cache_Valid
-       (Get_Node (Id).PRE_Pred));
-
-   function Precondition_List_Children_Valid
-     (Id : W_Precondition_Unchecked_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then List_Cache_Valid (Id));
-
    function Postcondition_OId_Children_Valid
      (Id : W_Postcondition_Unchecked_OId)
      return Boolean is
@@ -12899,8 +12817,6 @@ private
            Constr_Decl_Id_Children_Valid (Id),
         when W_Effects =>
            Effects_Id_Children_Valid (Id),
-        when W_Precondition =>
-           Precondition_Id_Children_Valid (Id),
         when W_Postcondition =>
            Postcondition_Id_Children_Valid (Id),
         when W_Exn_Condition =>

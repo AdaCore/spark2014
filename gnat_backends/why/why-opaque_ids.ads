@@ -622,14 +622,6 @@ package Why.Opaque_Ids is
 
    subtype W_Effects_Opaque_List is Why_Node_List;
 
-   subtype W_Precondition_Opaque_OId is Why_Node_Id;
-
-   subtype W_Precondition_Opaque_OList is Why_Node_List;
-
-   subtype W_Precondition_Opaque_Id is Why_Node_Id;
-
-   subtype W_Precondition_Opaque_List is Why_Node_List;
-
    subtype W_Postcondition_Opaque_OId is Why_Node_Id;
 
    subtype W_Postcondition_Opaque_OList is Why_Node_List;

@@ -149,7 +149,7 @@ package body Why.Gen.Decl is
          (File,
           New_Global_Binding
           (Name => Name,
-           Pre => New_Precondition (Pred => Pre),
+           Pre => Pre,
            Binders => Binders,
            Def =>
              New_Post_Assertion
@@ -270,7 +270,7 @@ package body Why.Gen.Decl is
              Parameter_Type =>
                 New_Computation_Type
                   (Binders => Binders,
-                   Precondition  => New_Precondition (Pred => Pre),
+                   Precondition  => Pre,
                    Postcondition => New_Postcondition (Pred => Post),
                    Effects       => Effects,
                    Return_Type   => Return_Type)));

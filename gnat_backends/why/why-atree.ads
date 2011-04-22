@@ -138,7 +138,7 @@ package Why.Atree is
 
          when W_Computation_Type =>
             CS_Binders       : W_Binder_Opaque_OList;
-            CS_Precondition  : W_Precondition_Opaque_OId;
+            CS_Precondition  : W_Predicate_Opaque_OId;
             CS_Result_Name   : W_Identifier_Opaque_OId;
             CS_Return_Type   : W_Primitive_Type_Opaque_Id;
             CS_Effects       : W_Effects_Opaque_Id;
@@ -327,9 +327,6 @@ package Why.Atree is
             E_Writes : W_Identifier_Opaque_OList;
             E_Raises : W_Identifier_Opaque_OList;
 
-         when W_Precondition =>
-            PRE_Pred : W_Predicate_Opaque_Id;
-
          when W_Postcondition =>
             POST_Pred      : W_Predicate_Opaque_Id;
             POST_Handlers  : W_Exn_Condition_Opaque_OList;
@@ -404,13 +401,13 @@ package Why.Atree is
 
          when W_Fun_Def =>
             FD_Binders : W_Binder_Opaque_List;
-            FD_Pre     : W_Precondition_Opaque_Id;
+            FD_Pre     : W_Predicate_Opaque_Id;
             FD_Def     : W_Prog_Opaque_Id;
 
          when W_Binding_Fun =>
             BF_Name    : W_Identifier_Opaque_Id;
             BF_Binders : W_Binder_Opaque_List;
-            BF_Pre     : W_Precondition_Opaque_Id;
+            BF_Pre     : W_Predicate_Opaque_Id;
             BF_Def     : W_Prog_Opaque_Id;
             BF_Context : W_Prog_Opaque_Id;
 
@@ -453,7 +450,7 @@ package Why.Atree is
             RF_Binders     : W_Binder_Opaque_List;
             RF_Return_Type : W_Prog_Opaque_Id;
             RF_Variant     : W_Wf_Arg_Opaque_Id;
-            RF_Pre         : W_Precondition_Opaque_Id;
+            RF_Pre         : W_Predicate_Opaque_Id;
             RF_Def         : W_Prog_Opaque_Id;
 
          when W_Loop_Annot =>
@@ -475,7 +472,7 @@ package Why.Atree is
          when W_Global_Binding =>
             GB_Name    : W_Identifier_Opaque_Id;
             GB_Binders : W_Binder_Opaque_OList;
-            GB_Pre     : W_Precondition_Opaque_Id;
+            GB_Pre     : W_Predicate_Opaque_Id;
             GB_Def     : W_Prog_Opaque_Id;
 
          when W_Global_Rec_Binding =>

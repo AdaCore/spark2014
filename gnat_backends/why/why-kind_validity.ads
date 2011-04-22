@@ -1200,22 +1200,6 @@ package Why.Kind_Validity is
      (Id : W_Effects_Opaque_List)
      return Boolean;
 
-   function Precondition_OId_Kind_Valid
-     (Id : W_Precondition_Opaque_OId)
-     return Boolean;
-
-   function Precondition_OList_Kind_Valid
-     (Id : W_Precondition_Opaque_OList)
-     return Boolean;
-
-   function Precondition_Id_Kind_Valid
-     (Id : W_Precondition_Opaque_Id)
-     return Boolean;
-
-   function Precondition_List_Kind_Valid
-     (Id : W_Precondition_Opaque_List)
-     return Boolean;
-
    function Postcondition_OId_Kind_Valid
      (Id : W_Postcondition_Opaque_OId)
      return Boolean;
@@ -4221,31 +4205,6 @@ private
 
    function Effects_List_Kind_Valid
      (Id : W_Effects_Opaque_List)
-     return Boolean is
-     (not Is_Empty (Id)
-      and then True);
-   --  ??? Partial implementation;
-   --  ??? universal quantif on containers has not been implemented yet.
-
-   function Precondition_OId_Kind_Valid
-     (Id : W_Precondition_Opaque_OId)
-     return Boolean is
-     (Id = Why_Empty
-      or else Precondition_Id_Kind_Valid (Id));
-
-   function Precondition_OList_Kind_Valid
-     (Id : W_Precondition_Opaque_OList)
-     return Boolean is
-     (Is_Empty (Id)
-      or else Precondition_List_Kind_Valid (Id));
-
-   function Precondition_Id_Kind_Valid
-     (Id : W_Precondition_Opaque_Id)
-     return Boolean is
-     (Get_Kind (Id) = W_Precondition);
-
-   function Precondition_List_Kind_Valid
-     (Id : W_Precondition_Opaque_List)
      return Boolean is
      (not Is_Empty (Id)
       and then True);

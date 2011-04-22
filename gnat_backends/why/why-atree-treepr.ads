@@ -619,14 +619,6 @@ private
      (State : in out Tree_Printer_State;
       Node  : W_Effects_Valid_Id);
 
-   procedure Precondition_Pre_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Precondition_Valid_Id);
-
-   procedure Precondition_Post_Op
-     (State : in out Tree_Printer_State;
-      Node  : W_Precondition_Valid_Id);
-
    procedure Postcondition_Pre_Op
      (State : in out Tree_Printer_State;
       Node  : W_Postcondition_Valid_Id);

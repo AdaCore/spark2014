@@ -299,7 +299,7 @@ package body Why.Atree.Builders is
    function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
       Binders       : W_Binder_V_Array := (2 .. 1 => <>);
-      Precondition  : W_Precondition_Valid_OId := Why_Empty;
+      Precondition  : W_Predicate_Valid_OId := Why_Empty;
       Result_Name   : W_Identifier_Valid_OId := Why_Empty;
       Return_Type   : W_Primitive_Type_Valid_Id;
       Effects       : W_Effects_Valid_Id;
@@ -2122,30 +2122,6 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Effects;
 
-   ----------------------
-   -- New_Precondition --
-   ----------------------
-
-   function New_Precondition
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Valid_Id)
-     return W_Precondition_Valid_Id
-   is
-      Result : Why_Node (W_Precondition);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Precondition);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PRE_Pred :=
-        Pred;
-      Set_Link (Result.PRE_Pred, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Precondition;
-
    -----------------------
    -- New_Postcondition --
    -----------------------
@@ -2749,7 +2725,7 @@ package body Why.Atree.Builders is
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binder_V_Array;
-      Pre      : W_Precondition_Valid_Id;
+      Pre      : W_Predicate_Valid_Id;
       Def      : W_Prog_Valid_Id)
      return W_Fun_Def_Valid_Id
    is
@@ -2793,7 +2769,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Valid_Id;
       Binders  : W_Binder_V_Array;
-      Pre      : W_Precondition_Valid_Id;
+      Pre      : W_Predicate_Valid_Id;
       Def      : W_Prog_Valid_Id;
       Context  : W_Prog_Valid_Id)
      return W_Binding_Fun_Valid_Id
@@ -3423,7 +3399,7 @@ package body Why.Atree.Builders is
       Binders     : W_Binder_V_Array;
       Return_Type : W_Prog_Valid_Id;
       Variant     : W_Wf_Arg_Valid_Id;
-      Pre         : W_Precondition_Valid_Id;
+      Pre         : W_Predicate_Valid_Id;
       Def         : W_Prog_Valid_Id)
      return W_Recfun_Valid_Id
    is
@@ -3598,7 +3574,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Valid_Id;
       Binders  : W_Binder_V_Array := (2 .. 1 => <>);
-      Pre      : W_Precondition_Valid_Id;
+      Pre      : W_Predicate_Valid_Id;
       Def      : W_Prog_Valid_Id)
      return W_Global_Binding_Valid_Id
    is
@@ -5498,28 +5474,6 @@ package body Why.Atree.Builders is
       return New_Id;
    end New_Unchecked_Effects;
 
-   --------------------------------
-   -- New_Unchecked_Precondition --
-   --------------------------------
-
-   function New_Unchecked_Precondition
-     return W_Precondition_Unchecked_Id
-   is
-      Result : Why_Node (W_Precondition);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Precondition);
-   begin
-      Result.Ada_Node :=
-        Empty;
-      Result.PRE_Pred :=
-        Why_Empty;
-      Set_Link (Result.PRE_Pred, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := False;
-      Set_Node (New_Id, Result);
-      return New_Id;
-   end New_Unchecked_Precondition;
-
    ---------------------------------
    -- New_Unchecked_Postcondition --
    ---------------------------------
@@ -7275,7 +7229,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Computation_Type);
          Binders       : constant W_Binder_Valid_OList :=
             +Computation_Type_Get_Binders (Id);
-         Precondition  : constant W_Precondition_Valid_OId :=
+         Precondition  : constant W_Predicate_Valid_OId :=
             +Computation_Type_Get_Precondition (Id);
          Result_Name   : constant W_Identifier_Valid_OId :=
             +Computation_Type_Get_Result_Name (Id);
@@ -7310,7 +7264,7 @@ package body Why.Atree.Builders is
             Result.CS_Precondition := Why_Empty;
          else
             Result.CS_Precondition :=
-              Duplicate_Precondition
+              Duplicate_Predicate
               (Id => Precondition);
          end if;
          Set_Link (Result.CS_Precondition, New_Id);
@@ -9836,39 +9790,6 @@ package body Why.Atree.Builders is
       end;
    end Duplicate_Effects;
 
-   ----------------------------
-   -- Duplicate_Precondition --
-   ----------------------------
-
-   function Duplicate_Precondition
-     (Ada_Node : Node_Id := Empty;
-      Id       : W_Precondition_Valid_OId)
-     return W_Precondition_Valid_Id
-   is
-   begin
-      if Id = Why_Empty then
-         return Why_Empty;
-      end if;
-
-      declare
-         Result : Why_Node (W_Precondition);
-         New_Id : constant Why_Node_Id :=
-           New_Why_Node_Id (W_Precondition);
-         Pred : constant W_Predicate_Valid_Id :=
-            +Precondition_Get_Pred (Id);
-      begin
-         Result.Ada_Node := Ada_Node;
-         Result.PRE_Pred :=
-           Duplicate_Predicate
-           (Id => Pred);
-         Set_Link (Result.PRE_Pred, New_Id);
-         Result.Link := Why_Empty;
-         Result.Checked := True;
-         Set_Node (New_Id, Result);
-         return New_Id;
-      end;
-   end Duplicate_Precondition;
-
    -----------------------------
    -- Duplicate_Postcondition --
    -----------------------------
@@ -10724,7 +10645,7 @@ package body Why.Atree.Builders is
            New_Why_Node_Id (W_Fun_Def);
          Binders : constant W_Binder_Valid_List :=
             +Fun_Def_Get_Binders (Id);
-         Pre     : constant W_Precondition_Valid_Id :=
+         Pre     : constant W_Predicate_Valid_Id :=
             +Fun_Def_Get_Pre (Id);
          Def     : constant W_Prog_Valid_Id :=
             +Fun_Def_Get_Def (Id);
@@ -10750,7 +10671,7 @@ package body Why.Atree.Builders is
          end;
          Set_Link (Result.FD_Binders, New_Id);
          Result.FD_Pre :=
-           Duplicate_Precondition
+           Duplicate_Predicate
            (Id => Pre);
          Set_Link (Result.FD_Pre, New_Id);
          Result.FD_Def :=
@@ -10786,7 +10707,7 @@ package body Why.Atree.Builders is
             +Binding_Fun_Get_Name (Id);
          Binders : constant W_Binder_Valid_List :=
             +Binding_Fun_Get_Binders (Id);
-         Pre     : constant W_Precondition_Valid_Id :=
+         Pre     : constant W_Predicate_Valid_Id :=
             +Binding_Fun_Get_Pre (Id);
          Def     : constant W_Prog_Valid_Id :=
             +Binding_Fun_Get_Def (Id);
@@ -10818,7 +10739,7 @@ package body Why.Atree.Builders is
          end;
          Set_Link (Result.BF_Binders, New_Id);
          Result.BF_Pre :=
-           Duplicate_Precondition
+           Duplicate_Predicate
            (Id => Pre);
          Set_Link (Result.BF_Pre, New_Id);
          Result.BF_Def :=
@@ -11663,7 +11584,7 @@ package body Why.Atree.Builders is
             +Recfun_Get_Return_Type (Id);
          Variant     : constant W_Wf_Arg_Valid_Id :=
             +Recfun_Get_Variant (Id);
-         Pre         : constant W_Precondition_Valid_Id :=
+         Pre         : constant W_Predicate_Valid_Id :=
             +Recfun_Get_Pre (Id);
          Def         : constant W_Prog_Valid_Id :=
             +Recfun_Get_Def (Id);
@@ -11701,7 +11622,7 @@ package body Why.Atree.Builders is
            (Id => Variant);
          Set_Link (Result.RF_Variant, New_Id);
          Result.RF_Pre :=
-           Duplicate_Precondition
+           Duplicate_Predicate
            (Id => Pre);
          Set_Link (Result.RF_Pre, New_Id);
          Result.RF_Def :=
@@ -11924,7 +11845,7 @@ package body Why.Atree.Builders is
             +Global_Binding_Get_Name (Id);
          Binders : constant W_Binder_Valid_OList :=
             +Global_Binding_Get_Binders (Id);
-         Pre     : constant W_Precondition_Valid_Id :=
+         Pre     : constant W_Predicate_Valid_Id :=
             +Global_Binding_Get_Pre (Id);
          Def     : constant W_Prog_Valid_Id :=
             +Global_Binding_Get_Def (Id);
@@ -11954,7 +11875,7 @@ package body Why.Atree.Builders is
          end;
          Set_Link (Result.GB_Binders, New_Id);
          Result.GB_Pre :=
-           Duplicate_Precondition
+           Duplicate_Predicate
            (Id => Pre);
          Set_Link (Result.GB_Pre, New_Id);
          Result.GB_Def :=
@@ -13230,7 +13151,7 @@ package body Why.Atree.Builders is
    function New_Computation_Type
      (Ada_Node      : Node_Id := Empty;
       Binders       : W_Binder_Array := (2 .. 1 => <>);
-      Precondition  : W_Precondition_OId := Why_Empty;
+      Precondition  : W_Predicate_OId := Why_Empty;
       Result_Name   : W_Identifier_OId := Why_Empty;
       Return_Type   : W_Primitive_Type_Id;
       Effects       : W_Effects_Id;
@@ -13257,7 +13178,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.CS_Binders, New_Id);
       Result.CS_Precondition :=
-        +(W_Precondition_Valid_OId (Precondition));
+        +(W_Predicate_Valid_OId (Precondition));
       Set_Link (Result.CS_Precondition, New_Id);
       Result.CS_Result_Name :=
         +(W_Identifier_Valid_OId (Result_Name));
@@ -16524,29 +16445,6 @@ package body Why.Atree.Builders is
       Set_Node (New_Id, Result);
       return W_Effects_Id (New_Id);
    end New_Effects;
-   ----------------------
-   -- New_Precondition --
-   ----------------------
-
-   function New_Precondition
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Predicate_Id)
-     return W_Precondition_Id
-   is
-      Result : Why_Node (W_Precondition);
-      New_Id : constant Why_Node_Id :=
-        New_Why_Node_Id (W_Precondition);
-   begin
-      Result.Ada_Node :=
-        Ada_Node;
-      Result.PRE_Pred :=
-        +(W_Predicate_Valid_Id (Pred));
-      Set_Link (Result.PRE_Pred, New_Id);
-      Result.Link := Why_Empty;
-      Result.Checked := True;
-      Set_Node (New_Id, Result);
-      return W_Precondition_Id (New_Id);
-   end New_Precondition;
    -----------------------
    -- New_Postcondition --
    -----------------------
@@ -17660,7 +17558,7 @@ package body Why.Atree.Builders is
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binder_Array;
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id)
      return W_Fun_Def_Id
    is
@@ -17685,7 +17583,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.FD_Binders, New_Id);
       Result.FD_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.FD_Pre, New_Id);
       Result.FD_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -17703,7 +17601,7 @@ package body Why.Atree.Builders is
    function New_Fun_Def
      (Ada_Node : Node_Id := Empty;
       Binders  : W_Binder_Array;
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id)
      return W_Prog_Id
    is
@@ -17728,7 +17626,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.FD_Binders, New_Id);
       Result.FD_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.FD_Pre, New_Id);
       Result.FD_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -17746,7 +17644,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binder_Array;
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Binding_Fun_Id
@@ -17775,7 +17673,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.BF_Binders, New_Id);
       Result.BF_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.BF_Pre, New_Id);
       Result.BF_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -17797,7 +17695,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binder_Array;
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id;
       Context  : W_Prog_Id)
      return W_Prog_Id
@@ -17826,7 +17724,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.BF_Binders, New_Id);
       Result.BF_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.BF_Pre, New_Id);
       Result.BF_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -18940,7 +18838,7 @@ package body Why.Atree.Builders is
       Binders     : W_Binder_Array;
       Return_Type : W_Prog_Id;
       Variant     : W_Wf_Arg_Id;
-      Pre         : W_Precondition_Id;
+      Pre         : W_Predicate_Id;
       Def         : W_Prog_Id)
      return W_Recfun_Id
    is
@@ -18974,7 +18872,7 @@ package body Why.Atree.Builders is
         +(W_Wf_Arg_Valid_Id (Variant));
       Set_Link (Result.RF_Variant, New_Id);
       Result.RF_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.RF_Pre, New_Id);
       Result.RF_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -19110,7 +19008,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binder_Array := (2 .. 1 => <>);
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id)
      return W_Global_Binding_Id
    is
@@ -19137,7 +19035,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.GB_Binders, New_Id);
       Result.GB_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.GB_Pre, New_Id);
       Result.GB_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -19156,7 +19054,7 @@ package body Why.Atree.Builders is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Binders  : W_Binder_Array := (2 .. 1 => <>);
-      Pre      : W_Precondition_Id;
+      Pre      : W_Predicate_Id;
       Def      : W_Prog_Id)
      return W_Declaration_Id
    is
@@ -19183,7 +19081,7 @@ package body Why.Atree.Builders is
       end loop;
       Set_Link (Result.GB_Binders, New_Id);
       Result.GB_Pre :=
-        +(W_Precondition_Valid_Id (Pre));
+        +(W_Predicate_Valid_Id (Pre));
       Set_Link (Result.GB_Pre, New_Id);
       Result.GB_Def :=
         +(W_Prog_Valid_Id (Def));
@@ -20576,10 +20474,6 @@ package body Why.Atree.Builders is
               Id        => Id);
          when W_Effects =>
             return Duplicate_Effects
-             (Ada_Node  => Ada_Node,
-              Id        => Id);
-         when W_Precondition =>
-            return Duplicate_Precondition
              (Ada_Node  => Ada_Node,
               Id        => Id);
          when W_Postcondition =>

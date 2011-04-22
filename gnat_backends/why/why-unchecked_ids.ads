@@ -1789,30 +1789,6 @@ package Why.Unchecked_Ids is
    (Effects_List_Kind_Valid
       (W_Effects_Unchecked_List));
 
-   subtype W_Precondition_Unchecked_OId is
-     W_Precondition_Opaque_OId with
-   Predicate =>
-   (Precondition_OId_Kind_Valid
-      (W_Precondition_Unchecked_OId));
-
-   subtype W_Precondition_Unchecked_OList is
-     W_Precondition_Opaque_OList with
-   Predicate =>
-   (Precondition_OList_Kind_Valid
-      (W_Precondition_Unchecked_OList));
-
-   subtype W_Precondition_Unchecked_Id is
-     W_Precondition_Opaque_Id with
-   Predicate =>
-   (Precondition_Id_Kind_Valid
-      (W_Precondition_Unchecked_Id));
-
-   subtype W_Precondition_Unchecked_List is
-     W_Precondition_Opaque_List with
-   Predicate =>
-   (Precondition_List_Kind_Valid
-      (W_Precondition_Unchecked_List));
-
    subtype W_Postcondition_Unchecked_OId is
      W_Postcondition_Opaque_OId with
    Predicate =>

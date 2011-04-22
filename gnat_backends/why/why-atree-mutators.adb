@@ -421,7 +421,7 @@ package body Why.Atree.Mutators is
 
    procedure Computation_Type_Set_Precondition
      (Id           : W_Computation_Type_Unchecked_Id;
-      Precondition : W_Precondition_OId)
+      Precondition : W_Predicate_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -439,7 +439,7 @@ package body Why.Atree.Mutators is
 
    procedure Computation_Type_Set_Precondition
      (Id           : W_Computation_Type_Id;
-      Precondition : W_Precondition_OId)
+      Precondition : W_Predicate_OId)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -4571,42 +4571,6 @@ package body Why.Atree.Mutators is
          Effects_Id_Valid (Why_Node_Id (Id)));
    end Effects_Prepend_To_Raises;
 
-   ---------------------------
-   -- Precondition_Set_Pred --
-   ---------------------------
-
-   procedure Precondition_Set_Pred
-     (Id   : W_Precondition_Unchecked_Id;
-      Pred : W_Predicate_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.PRE_Pred := +Pred;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Pred), +Id);
-      Update_Validity_Status
-        (+Id,
-         Precondition_Id_Valid (Why_Node_Id (Id)));
-   end Precondition_Set_Pred;
-
-   ---------------------------
-   -- Precondition_Set_Pred --
-   ---------------------------
-
-   procedure Precondition_Set_Pred
-     (Id   : W_Precondition_Id;
-      Pred : W_Predicate_Id)
-   is
-      Node : Why_Node := Get_Node (+Id);
-   begin
-      Node.PRE_Pred := +Pred;
-      Set_Node (+Id, Node);
-      Set_Link (Why_Node_Id (Pred), +Id);
-      Update_Validity_Status
-        (+Id,
-         Precondition_Id_Valid (Why_Node_Id (Id)));
-   end Precondition_Set_Pred;
-
    ----------------------------
    -- Postcondition_Set_Pred --
    ----------------------------
@@ -6253,7 +6217,7 @@ package body Why.Atree.Mutators is
 
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Unchecked_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -6271,7 +6235,7 @@ package body Why.Atree.Mutators is
 
    procedure Fun_Def_Set_Pre
      (Id  : W_Fun_Def_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -6429,7 +6393,7 @@ package body Why.Atree.Mutators is
 
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Unchecked_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -6447,7 +6411,7 @@ package body Why.Atree.Mutators is
 
    procedure Binding_Fun_Set_Pre
      (Id  : W_Binding_Fun_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7385,7 +7349,7 @@ package body Why.Atree.Mutators is
 
    procedure Recfun_Set_Pre
      (Id  : W_Recfun_Unchecked_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7403,7 +7367,7 @@ package body Why.Atree.Mutators is
 
    procedure Recfun_Set_Pre
      (Id  : W_Recfun_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7881,7 +7845,7 @@ package body Why.Atree.Mutators is
 
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Unchecked_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin
@@ -7899,7 +7863,7 @@ package body Why.Atree.Mutators is
 
    procedure Global_Binding_Set_Pre
      (Id  : W_Global_Binding_Id;
-      Pre : W_Precondition_Id)
+      Pre : W_Predicate_Id)
    is
       Node : Why_Node := Get_Node (+Id);
    begin

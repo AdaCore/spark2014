@@ -246,21 +246,6 @@ package body Why.Atree.Sprint is
       P (O, " ref");
    end Ref_Type_Post_Op;
 
-   -------------------------
-   -- Precondition_Pre_Op --
-   -------------------------
-
-   procedure Precondition_Pre_Op
-     (State : in out Printer_State;
-      Node  : W_Precondition_Valid_Id)
-   is
-   begin
-      P (O, "{ ");
-      Traverse (State, Precondition_Get_Pred (Node));
-      PL (O, " }");
-      State.Control := Abandon_Children;
-   end Precondition_Pre_Op;
-
    -----------------------------
    -- Computation_Type_Pre_Op --
    -----------------------------
@@ -273,7 +258,7 @@ package body Why.Atree.Sprint is
                   Computation_Type_Get_Binders (+Node);
       Result  : constant W_Identifier_OId :=
                  Computation_Type_Get_Result_Name (+Node);
-      Pre     : constant W_Precondition_OId :=
+      Pre     : constant W_Predicate_Id :=
                  Computation_Type_Get_Precondition (+Node);
    begin
       if not (Is_Empty (+Binders)) then
@@ -300,12 +285,11 @@ package body Why.Atree.Sprint is
                Next (Position);
             end loop;
          end;
+
       end if;
-      if Pre = Why_Empty then
-         P (O, " { } ");
-      else
-         Traverse (State, +Pre);
-      end if;
+      P (O, "{ ");
+      Traverse (State, +Pre);
+      P (O, " }");
 
       Relative_Indent (O, 1);
 
@@ -2763,12 +2747,18 @@ package body Why.Atree.Sprint is
       end if;
 
       PL (O, " =");
+      NL (O);
+      Relative_Indent (O, 1);
+      PL (O, "{ ");
       Traverse (State, Global_Binding_Get_Pre (Node));
+      PL (O, " }");
+      NL (O);
       Relative_Indent (O, 1);
       Traverse
         (State,
          Global_Binding_Get_Def (Node));
       Relative_Indent (O, -1);
+      NL (O);
       State.Control := Abandon_Children;
    end Global_Binding_Pre_Op;
 
