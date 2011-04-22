@@ -1,0 +1,2 @@
+rec.adb:5:22: Proved - range check
+rec.ads:9:32: Proved - proof of postcondition
