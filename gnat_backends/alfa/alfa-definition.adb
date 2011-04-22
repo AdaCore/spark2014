@@ -642,7 +642,9 @@ package body ALFA.Definition is
             Mark_Simple_Return_Statement (N);
 
          when N_Selected_Component =>
-            Mark_Non_ALFA ("selected component", N, V_Implem);
+            --  ??? Check that selector and prefix are really in ALFA
+            Mark (Prefix (N));
+            Mark (Selector_Name (N));
 
          when N_Slice =>
             Mark_Non_ALFA ("slice", N, V_Slice);
@@ -1807,8 +1809,12 @@ package body ALFA.Definition is
                Mark (Subtype_Indication (N));
             end if;
 
+         when N_Record_Definition =>
+            --  ??? Go through the record components to check if
+            --  it is in ALFA
+            null;
+
          when N_Modular_Type_Definition |
-              N_Record_Definition |
               N_Floating_Point_Definition |
               N_Decimal_Fixed_Point_Definition |
               N_Ordinary_Fixed_Point_Definition =>
