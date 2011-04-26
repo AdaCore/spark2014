@@ -358,13 +358,13 @@ We say that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$ if, fo
 $a\in M$ and $\{K_1\cup K_2,\Delta,G,M\}\Vdash\downarrow F$.
 We assume that a solver cannot reach a saturated state from
 $\{K_1\cup K_2,\Delta,G,M\}$ and that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$.
-To show that a solver can deduce $\{\T(K_1\cup K_2),\T(\Delta),G,M\}\Vdash\Box$,
+To show that a solver can deduce $\{K_1\cup K_2,\Delta,G,M\}\Vdash\Box$,
 we proceed by well-founded induction based on the lexicographic order (size of $K_2\cup \Delta$,
 size of $\Delta$).
 \begin{itemize}
  \item If $G\nvDash\Box$, for all $[a]F\in K_2$, $a\nsubseteq M$ and $\Delta=\varnothing$,
 $\{K_1\cup K_2,\Delta,G,M\}$ is saturated which contradicts the hypothesis.
- \item If $G\vDash\Box$, $\{\T(K_1\cup K_2),\T(\Delta),G,M\}\vdash\Box$ can be deduced by \textsc{Base}.
+ \item If $G\vDash\Box$, $\{K_1\cup K_2,\Delta,G,M\}\vdash\Box$ can be deduced by \textsc{Base}.
  \item If there is $[a]F\in K_2$ such that $a\subseteq M$, then a solver
 cannot reach a saturated state from $\{K_1\cup K_2,\Delta\cup\downarrow F,G,M\}$ or it could
 reach it from $\{K_1\cup K_2,\Delta,G,M\}$ by \textsc{Instantiation}.
@@ -559,15 +559,29 @@ $\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vDash\Box$.}
 {\theorem If a solver can return \emph{Sat} on a set of formulas $R$ then we have
 $\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\nvDash\Box$.}
 
-{\corollary The solver is predictable.}\\
-We consider the solver without preprocessing were assume is modified so that
-assuming a literal adds its atom to the set of encountered atoms :
+{\corollary The solver is predictable.}
+{\theorem If, for a set of formulas $R$, there is a finite set of instances of
+$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})$ which is unsatisfiable,
+a solver can return \emph{Unsat} on $R$.}\\
+By compactness, it is always the case when there is no theory that goes
+beyond first-order logic.
+
+We consider the solver without preprocessing where $\A$ is modified so that
+assuming a literal adds its sub-terms to the set of encountered terms:
 \begin{itemize}
  \item $\A'(\{K,\Delta,G,M\},L) = \{K,\Delta,G\cup L, M\cup\atom(L)\}$
 \end{itemize}
 
 {\theorem If a solver with preprocessing can return \emph{Unsat} on $R$ then
 a solver without preprocessing can return \emph{Unsat} and cannot return \emph{Sat} on $R$.}
+
 \section{Conclusion and Future Work}
+We have produced a set of rules that models the trigger mechanism in first-order logic. We have checked
+that this set of rules induces a predictable behavior for the solver and how it can be related
+to the usual, non predictable, trigger mechanism.
+
+For future work, we would like to use this model to decide if triggers restrict the use of axioms.
+We could maybe come up with some strategies to determine which triggers are more restrictive and
+maybe also find some heuristics to generate them automatically.
 
 \end{document}
