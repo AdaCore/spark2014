@@ -24,6 +24,7 @@
 \newcommand{\T}{\mathit{lab}}
 \newcommand{\A}{\mathit{assume}}
 \newcommand{\B}{\mathit{bcp}}
+\newcommand{\unlab}{\mathit{unlab}}
 
 
 %opening
@@ -867,6 +868,131 @@ $\{\Lambda,\Delta,T,M\}$ is saturated, exists $i\in[1..2]$ such that $\Lambda,T,
 As a consequence, $I\vDash\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash
 \F(F_i)\vDash\F(F_1)\vee\F(F_2)=\F(F_1\vee F_2)$.
 \end{itemize}
+
+\subsubsection*{If $e$ is ground and $\F(e)\vDash\Box$, then there is a finite proof of $e\vdash\Box$.}
+Like in the propositional case, the solver can always return either \emph{Sat} or \emph{Unsat} on
+ground instances. Since $\F(e')\vDash\Box$, it cannot return \emph{Sat}.\\
+We say that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$ if, for all $[a]F\in K_1$,
+$a\in M$ and $\{K_1\cup K_2,\Delta,G,M\}\Vdash\downarrow F$.
+We assume that a solver cannot reach a saturated state from
+$\{K_1\cup K_2,\Delta,G,M\}$ and that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$.
+To show that a solver can deduce $\{\T(K_1\cup K_2),\T(\Delta),G,M\}\Vdash\Box$,
+we proceed by well-founded induction based on the lexicographic order (size of $K_2\cup\Delta$,
+size of $\Delta$).
+\begin{itemize}
+ \item If $G\nvDash\Box$, for all $[a]F\in K_2$, $a\nsubseteq M$ and $\Delta=\varnothing$,
+$\{K_1\cup K_2,\Delta,G,M\}$ is saturated which contradicts the hypothesis.
+ \item If $G\vDash\Box$, $\{\T(K_1\cup K_2),\T(\Delta),G,M\}\vdash\Box$ can be deduced by \textsc{Base}.
+ \item If there is $[a]F\in K_2$ such that $a\subseteq M$, then a solver
+cannot reach a saturated state from $\A(\{K_1\cup K_2,\Delta,G,M\},F)$ or it could
+reach it from $\{K_1\cup K_2,\Delta,G,M\}$ by \textsc{Instantiation}.
+$K_1\cup [a]F$ is saturated in respect to $K_2\setminus[a]F$, $G$, $M$ and $\Delta\cup\downarrow F$
+and $\A(\{(K_1\cup [a]F)\cup(K_2\setminus[a]F),\Delta,G,M\},F)$ is strictly smaller than
+$\{K_1\cup K_2,\Delta,G,M\}$. By induction hypothesis,
+a solver can deduce $\A(\{K_1\cup K_2,\Delta,G,M\},F)\vdash\Box$.
+It can also deduce $\{K_1\cup K_2,\Delta,G,M\}\vdash\Box$ by \textsc{Instantiation}.
+ \item If $\Delta$ can be written $\Delta\cup(F_1\vee F_2)$, then a solver
+cannot reach a saturated state from $\A(\{K_1\cup K_2,\Delta,G,M\},F_1)$ or
+$\A(\A(\{K_1\cup K_2,\Delta,G,M\},F_2),\neg F_1)$ or it could
+reach it from $\{K_1\cup K_2,\Delta,G,M\}$ by \textsc{Sat}.
+It is easy to check that $\A(\A(\{K_1\cup K_2,\Delta\cup C,G,M\},F_2),\neg F_1)$ and
+$\A(\{K_1\cup K_2,\Delta,G,M\}, F_1)$ are strictly smaller than
+$\{K_1\cup K_2,\Delta\cup (F_1\vee F_2),G,M\}$
+and that we can deduce that both $\A(\{K_1\cup K_2,\Delta,G,M\}, F_1)\vdash\Box$ and
+$\A(\A(\{K_1\cup K_2,\Delta\cup C,G,M\},F_2),\neg F_1)\vdash\Box$ by induction hypothesis.
+As a consequence, solver can deduce $\{K_1\cup K_2,\Delta\cup(F_1\vee F_2),G,M\}\vdash\Box$ by \textsc{Sat}.
+\end{itemize}
+
+\subsection{Justification of Explicit Labelization}
+For our rule system to work without the explicit labelization, we only need to modify assume so that
+assuming a literal adds its atom to the set of encountered atoms :
+\begin{itemize}
+ \item $\A'(\{K,\Delta,G,M\},L) = \{K,\Delta,G\cup L, M\cup\atom(L)\}$
+\end{itemize}
+
+\begin{enumerate}
+ \item If a solver with preprocessing can return \emph{Unsat} on $R$ then a solver without
+preprocessing cannot return \emph{Sat} on $R$.
+ \item If a solver with preprocessing can return \emph{Unsat} on $R$ then a solver without
+preprocessing can return \emph{Unsat} on $R$.
+\end{enumerate}
+\paragraph{1.} By definition, if a solver with preprocessing can return \emph{Sat} on $R$ there is a
+derivation from $\{\varnothing, \downarrow\T(R), \varnothing, \varnothing\}$ to a saturated state
+$\{K, \Delta, G, M\}$. Since, by immediate induction on the derivation, if
+$\F(\{\varnothing, \downarrow\T(R), \varnothing, \varnothing\})\vDash\Box$ then
+$\F(\{K, \Delta, G, M \})\vDash\Box$, it is enough that $\F(\{K, \Delta, G, M\})\vDash\Box$. Let
+us consider $I$ the model that maps $\{A|A\in G\}\cup\{p(t)|t\in M\}$ to true and the rest to false.
+We show that $I\vDash\F(e)$. Since $\{K,\Delta, G, M\}$ is saturated, $G\nvDash\Box$
+and $I\vDash G\cup\{p(t)|t\in M\}$. For all $[\overline x, a,\_]F\in K$, for
+each substitution $\sigma$ defined on $\overline x$, either $a\sigma\nsubseteq M$ ,
+$I\nvDash\{p(t)|t\in a\sigma\}$ and $I\vDash(\bigwedge_{t\in a} p(t)\rightarrow\F(F))\sigma$ or
+$a\sigma\subseteq M$ . Since $\{K,\Delta, G, M\}$ is saturated, $\{K, \varnothing, G, M\}\Vdash F\sigma$.
+By construction of $\Vdash$, $\{K|_{<F} ,\varnothing, G, M\}\Vdash F\sigma$ where $K|_{<F}$ is the
+restriction of $K$ to formulas of smaller size than $F$. Since $e\Vdash F\Rightarrow\F(e)\vDash\F(F)$,
+$\F(\{K|_{<F} ,\varnothing, G, M\})\vDash\F(F)\sigma$. Induction over the size of $F\in K$
+gives that $I\vDash(\bigwedge_{t\in a}p(t)\rightarrow\F(F))\sigma$ for all $\sigma$.
+As a consequence, $I\vDash\F([\overline x, a,\sigma]F )$. And since
+$\{K, \varnothing, G, M\}\Vdash\Delta$, $I\vDash\F(\Delta)$.
+\paragraph{2.}
+We say that a formula $F'$ is an unlabelization of a formula $F$, written $F'\in\unlab(F)$ if :
+\begin{itemize}
+ \item $F'= L$ and $F =\langle\terms(L)\rangle L$ or $F = [\terms(L)]L$,
+ \item $F'= F_1'\vee F_2'$, $F = F_1\vee F_2$, $F_1'\in\unlab(F_1)$ and $F_2'\in\unlab(F_2)$,
+ \item $F'= F_1'\wedge F_2'$, $F = F_1\wedge F_2$, $F_1'\in\unlab(F_1)$ and $F_2'\in\unlab(F_2)$,
+ \item $F'=\langle\overline x, a,\sigma\rangle F_1'$, $F =\langle\overline x, a,\sigma\rangle F_1$,
+and $F_1'\in\unlab(F_1)$,
+ \item $F' = [\overline x, a,\sigma]F_1'$, $F = [\overline x, a,\sigma]F_1$,
+and $F_1'\in\unlab(F_1)$.
+\end{itemize}
+
+We say that $\{K',\Delta', G', M'\}$ is an unlabelization of $\{K,\Delta, G, M\}$ if :
+\begin{itemize}
+ \item $M\subseteq M'$,
+ \item $G\subseteq G'$,
+ \item for all $F \in K$, there is $F'\in\unlab(F)$ such that $F'\in K'\cup G'$,
+ \item for all $F \in\Delta$, there is $F'\in\unlab(F)$ such that $F'\in\Delta'$.
+\end{itemize}
+\textbf{Lemma 1:} If $e'\in\unlab(e)$, $F'\in\unlab(F)$ and $e\Vdash F$, then $e'\Vdash F'$.
+\begin{itemize}
+ \item $F=\langle\terms(L)\rangle L$ and $F'=L$. Since $\{K,\Delta,G,M\}\Vdash\langle\terms(L)\rangle L$,
+$L\in G\subseteq G'$ and we have that  $\{K',\Delta',G',M'\}\Vdash L$.
+ \item $F=[\terms(L)]L$ and $F'=L$. Since $[\terms(L)]L\in K$, $L\in G'$ and $\{K',\Delta',G',M'\}\Vdash L$.
+ \item The others follow directly from the definition of $\unlab$ and an induction over the size of $F$ .
+\end{itemize}
+\textbf{Lemma 2:} If $e'\in\unlab(e)$ then $\A'(e',F')\in\unlab(\A(e, F))$.\\
+If $\{K',\Delta',G',M'\}\in\unlab(\{K,\Delta,G,M\})$ and a solver with preprocessing
+can deduce $\{K,\Delta,G,M\}\vdash\Box$
+then a solver without preprocessing can deduce $\{K',\Delta',G',M'\}\vdash\Box$. We proceed by
+induction over the proof of $\{K,\Delta,G,M\}\vdash\Box$.
+\begin{itemize}
+ \item The last applied rule is \textsc{Base}. Since $G\in G'$, $G'\vDash\Box$
+and a solver without preprocessing can deduce $\{K',\Delta',G',M'\}\vdash\Box$ by \textsc{Base}.
+ \item The last applied rule is \textsc{Bcp}.
+Since $\{K',\Delta',G',M'\}\in\unlab(\{K,\Delta\cup(F_1\vee F_2),G,M\})$, we have that
+$\{K',\Delta',G',M'\}\in\unlab(\{K,\Delta,G,M\})$.
+\begin{itemize}
+ \item $\{K,\Delta,G,M\}\Vdash F_i$.
+By induction hypothesis, a solver without preprocessing can deduce that $\{K',\Delta',G',M'\}\vdash\Box$.
+ \item $\{K,\Delta,G,M\}\Vdash\neg F_i$. $\{K',\Delta',G',M'\}\vdash\neg F_i'$ and
+$\A'(\A'(\{K',\Delta',G',M'\},F_j'),\neg F_i')\in\unlab(\A(\A(\{K,\Delta,G,M\}, F_j),\neg F_i))$.
+By induction hypothesis, a solver without preprocessing
+can deduce $\A'(\A'(\{K',\Delta',G',M'\},F_j'),F_i')\vdash\Box$.
+As a consequence, a solver without preprocessing
+can deduce $\{K',\Delta'\cup(F_1'\vee F_2')=\Delta',G',M'\}\vdash\Box$ by \textsc{Bcp}.
+\end{itemize}
+ \item The last applied rule is \textsc{Instanciation}. Since $[\overline x, a,\sigma]F\in K$,
+either $[\overline x, a,\sigma]F = [a]L$ and $L\in G'$ or $[\overline x, a,\sigma]F'\in K'$.
+In the first case, we do nothing, and we since we have $G\cup L\subseteq G'$,
+we get by induction hypothesis that $\{K',\Delta',G',M'\}\vdash\Box$. In the other case,
+$\A'(\{K',\Delta',G',M'\},F')\in\unlab(\A(\{K,\Delta,G,M\},F))$ and we can match the move.
+ \item The last applied rule is \textsc{Sat}. Since $F_1\vee F_2\in\Delta$,
+we have $F_1'\in\unlab(F_1)$ and $F_2'\in\unlab(F_2)$ such that $F_1'\vee F_2'\in\Delta'$.
+We have $\A'(\{K',\Delta',G',M'\},F_1')\in\unlab(\A(\{K,\Delta,G,M\},F_1))$ and
+$\A'(\A'(\{K',\Delta',G',M'\},F_2'),\neg F_1')\in\unlab(\A(\A(\{K,\Delta,G,M\},F_2),\neg F_1))$.
+A solver without preprocessing can thus deduce
+$\{K',\Delta'\cup(F_1'\vee F_2'),G',M'\}\vdash\Box$ by \textsc{Sat}.
+\end{itemize}
+
 
 \chapter{Labeled Resolution}
 \section{Presentation}
