@@ -25,11 +25,12 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
+with System;
 with Gnat2Why.Driver;
 with Adabkend;
 with Stringt;
 with Namet;
-with Opt;             use Opt;
+with Opt; use Opt;
 
 package body Back_End is
 
@@ -94,11 +95,30 @@ package body Back_End is
    -----------------------------
 
    procedure Scan_Compiler_Arguments is
+      gnat_argv, save_argv : System.Address;
+      pragma Import (C, gnat_argv, "gnat_argv");
+      pragma Import (C, save_argv, "save_argv");
+
+      gnat_argc, save_argc : Integer;
+      pragma Import (C, gnat_argc, "gnat_argc");
+      pragma Import (C, save_argc, "save_argc");
+
+      use type System.Address;
+
    begin
       --  Disable the generation of ALI files, as the overall workflow in
       --  gnatprove depends on their timestamp staying the same.
 
       Opt.Disable_ALI_File := True;
+
+      --  If save_argv is non null, it means we are part of gnat1+gnat2why
+      --  and need to set gnat_argv to save_argv so that Ada.Command_Line
+      --  has access to the command line.
+
+      if save_argv /= System.Null_Address then
+         gnat_argv := save_argv;
+         gnat_argc := save_argc;
+      end if;
 
       GNAT2Why.Scan_Compiler_Arguments;
    end Scan_Compiler_Arguments;
