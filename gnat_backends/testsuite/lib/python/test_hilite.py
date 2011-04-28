@@ -7,7 +7,8 @@ from gnatpython.env import Env
 from gnatpython.main import Main
 from gnatpython.mainloop import (MainLoop, add_mainloop_options,
                                  generate_collect_result,
-                                 generate_run_testcase)
+                                 generate_run_testcase,
+                                 setup_result_dir)
 from gnatpython.testdriver import add_run_test_options
 from gnatpython.testdriver import (TestRunner, IS_STATUS_FAILURE)
 from gnatpython.reports import ReportDiff
@@ -33,8 +34,7 @@ def run_testsuite(test_driver):
                  if os.path.isdir(t)]
 
     # Various files needed or created by the testsuite
-    result_dir = options.output_dir
-    results_file = result_dir + '/results'
+    setup_result_dir(options)
 
     discs = env.discriminants
 
@@ -43,14 +43,14 @@ def run_testsuite(test_driver):
 
     run_testcase = generate_run_testcase(test_driver, discs, options)
     collect_result = generate_collect_result(
-        result_dir, results_file, options.verbose)
+        options.output_dir, options.results_file, options.view_diffs)
 
     MainLoop(test_list, run_testcase, collect_result, options.mainloop_jobs)
 
     # Write report
-    with open(result_dir + '/discs', 'w') as discs_f:
+    with open(options.output_dir + '/discs', 'w') as discs_f:
         discs_f.write(" ".join(discs))
-    ReportDiff(result_dir).txt_image(result_dir + '/report')
+    ReportDiff(options.output_dir, options.old_output_dir).txt_image(options.report_file)
 
 def filter_list(pattern, run_test=""):
     """Compute the list of test matching pattern
@@ -67,8 +67,10 @@ def filter_list(pattern, run_test=""):
 def __parse_options():
     """Parse command lines options"""
     m = Main(add_targets_options=False)
-    add_mainloop_options(m)
+    add_mainloop_options(m,extended_options=True)
     add_run_test_options(m)
+    m.add_option("--diffs", dest="view_diffs", action="store_true",
+                 default=False, help="show diffs on stdout")
     m.parse_args()
 
     if m.args:
