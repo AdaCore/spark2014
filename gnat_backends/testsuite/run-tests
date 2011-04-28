@@ -14,10 +14,13 @@ import os
 
 root = os.getcwd()
 env = Env()
-python_lib = root + "/lib/python"
+python_lib = os.path.join(root,"lib","python")
 env.add_search_path("PYTHONPATH", python_lib)
+output_path = os.path.join(root, "out")
 
 if __name__ == "__main__":
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
     try:
         run_testsuite(python_lib + '/run-test')
     except AssertionError, e:
