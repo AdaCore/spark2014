@@ -1052,6 +1052,13 @@ package body Gnat2Why.Subprograms is
       Loc_Node     : Node_Id := Empty;
       Post         : constant W_Predicate_Id :=
          Compute_Spec_Pred (Name_Postcondition, Loc_Node);
+      Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
+      Effects      : constant W_Effects_Id := Compute_Effects;
+      Is_Expr_Func : constant Boolean :=
+         Nkind (Spec) = N_Function_Specification
+         and then Effect_Is_Empty (Effects)
+         and then Nkind (Orig_Node) = N_Expression_Function
+         and then Get_Kind (+Post) = W_True_Literal_Pred;
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
 
@@ -1063,34 +1070,80 @@ package body Gnat2Why.Subprograms is
               (File    => File,
                Name    => New_Pre_Check_Name (Name_Str),
                Binders => Ext_Binders,
-               Def     =>
-                  Compute_Spec_Prog (Name_Precondition, Dummy_Node));
+               Def     => Compute_Spec_Prog (Name_Precondition, Dummy_Node));
 
-            if not Debug.Debug_Flag_Dot_GG then
-               New_Global_Binding
-                 (File    => File,
-                  Name    => New_Definition_Name (Name_Str),
-                  Binders => Ext_Binders,
-                  Pre     => Pre,
-                  Post    =>
-                     New_Located_Predicate (Loc_Node, Post, VC_Postcondition),
-                  Def     =>
-                     Compute_Context
-                       (Why_Expr_Of_Ada_Stmts
-                          (Statements
-                             (Handled_Statement_Sequence (Node)))));
+            if Is_Expr_Func then
+               --  generate axiom of the form
+               --    forall x1 ... xn.
+               --       (pre -> logic__f (x1 .. xn)) = expr
+               declare
+                  Ax_Body : W_Predicate_Id :=
+                       New_Implication
+                         (Left  => +Duplicate_Any_Node (Id => +Pre),
+                          Right =>
+                            New_Equal
+                              (Left =>
+                                 New_Call_To_Logic
+                                    (Name => Logic_Func_Name (Name_Str),
+                                     Binders => Func_Binders),
+                               Right =>
+                                 Why_Term_Of_Ada_Expr
+                                    (Expression (Orig_Node))));
+                  Arg : Node_Id := First (Ada_Binders);
+               begin
+                  while Present (Arg) loop
+                     Ax_Body :=
+                        New_Universal_Quantif
+                           (Variables =>
+                              (1 => New_Identifier
+                                 (Full_Name (Defining_Identifier (Arg)))),
+                            Var_Type  =>
+                              Why_Logic_Type_Of_Ada_Obj
+                                 (Defining_Identifier (Arg)),
+                           Pred       => Ax_Body);
+                     Next (Arg);
+                  end loop;
+                  New_Axiom
+                    (File       => File,
+                     Name       => Logic_Func_Axiom (Name_Str),
+                     Axiom_Body => Ax_Body);
+               end;
+            else
+               if not Debug.Debug_Flag_Dot_GG then
+                  New_Global_Binding
+                    (File    => File,
+                     Name    => New_Definition_Name (Name_Str),
+                     Binders => Ext_Binders,
+                     Pre     => Pre,
+                     Post    =>
+                        New_Located_Predicate
+                          (Loc_Node,
+                           Post,
+                           VC_Postcondition),
+                     Def     =>
+                        Compute_Context
+                          (Why_Expr_Of_Ada_Stmts
+                             (Statements
+                                (Handled_Statement_Sequence (Node)))));
+               end if;
             end if;
 
          when N_Subprogram_Declaration =>
             declare
-               Effects   : constant W_Effects_Id := Compute_Effects;
-               Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
                Ret_Type  : constant W_Primitive_Type_Id :=
                   (if Nkind (Spec) = N_Function_Specification then
                     +Why_Logic_Type_Of_Ada_Type
                        (Entity (Result_Definition (Spec)))
                   else
                      New_Type_Unit);
+               Param_Post : constant W_Predicate_Id :=
+                  (if Is_Expr_Func then
+                     New_Equal
+                        (Left  => New_Result_Term,
+                         Right =>
+                           Why_Term_Of_Ada_Expr (Expression (Orig_Node)))
+                  else
+                     +Duplicate_Any_Node (Id => +Post));
             begin
                New_Parameter
                  (File        => File,
@@ -1099,12 +1152,9 @@ package body Gnat2Why.Subprograms is
                   Effects     => Effects,
                   Return_Type => Ret_Type,
                   Pre         => Pre,
-                  Post        => Post);
+                  Post        => Param_Post);
 
-               if Nkind (Spec) = N_Function_Specification
-                  and then Effect_Is_Empty (Effects)
-                  and then Nkind (Orig_Node) = N_Expression_Function
-               then
+               if Is_Expr_Func then
                   New_Logic
                      (File        => File,
                       Name        => Logic_Func_Name (Name_Str),
@@ -1112,43 +1162,8 @@ package body Gnat2Why.Subprograms is
                       Return_Type =>
                         +Why_Logic_Type_Of_Ada_Type
                           (Etype (Defining_Entity (Spec))));
-
-                  --  generate axiom of the form
-                  --    forall x1 ... xn.
-                  --       (pre -> logic__f (x1 .. xn)) = expr
-                  declare
-                     Ax_Body : W_Predicate_Id :=
-                          New_Implication
-                            (Left  => +Duplicate_Any_Node (Id => +Pre),
-                             Right =>
-                               New_Equal
-                                 (Left =>
-                                    New_Call_To_Logic
-                                       (Name => Logic_Func_Name (Name_Str),
-                                        Binders => Func_Binders),
-                                  Right =>
-                                    Why_Term_Of_Ada_Expr
-                                       (Expression (Orig_Node))));
-                     Arg : Node_Id := First (Ada_Binders);
-                  begin
-                     while Present (Arg) loop
-                        Ax_Body :=
-                           New_Universal_Quantif
-                              (Variables =>
-                                 (1 => New_Identifier
-                                    (Full_Name (Defining_Identifier (Arg)))),
-                               Var_Type  =>
-                                 Why_Logic_Type_Of_Ada_Obj
-                                    (Defining_Identifier (Arg)),
-                              Pred       => Ax_Body);
-                        Next (Arg);
-                     end loop;
-                     New_Axiom
-                       (File       => File,
-                        Name       => Logic_Func_Axiom (Name_Str),
-                        Axiom_Body => Ax_Body);
-                  end;
                end if;
+
             end;
 
          when others =>
