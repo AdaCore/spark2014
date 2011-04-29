@@ -872,17 +872,16 @@ As a consequence, $I\vDash\{\F(F)|F\in\Lambda\}\cup T\cup\{p(t)|t\in M\}\vDash
 \subsubsection*{If there are $n$ ground substitutions $\sigma_1\dots\sigma_n$ such that
 $\F(e)\sigma_1\cup\dots\cup\F(e)\sigma_n\vDash\Box$, then there is a finite proof of $e\vdash\Box$.}
 If $\overline x$ is the set of all universally quantified variables in $F$, a ground substitution is
-defined as a mapping from $\overline x$ to ground terms which may mention skolems. We extend this
-substitution to existentially quantified variables with their skolem substitution.
+defined as a mapping from $\overline x$ to ground terms which may mention skolems.
 We add a ground substitution to formulas in $K$ and $\Delta$. $\F$ becomes :
 \begin{itemize}
  \item $\F(\{K,\Delta,G,M\})=\{\F(F)\sigma|(F,\sigma)\in K\}\cup
 \{\F(F)\sigma|(F,\sigma)\in\Delta\}\cup G\cup\{p(t)|t\in M\}$
 \end{itemize}
-We initially have all formulas tagged with substitutions in $\sigma_1\dots\sigma_n$. As a consequence,
+We initially have all formulas tagged with each substitution in $\sigma_1\dots\sigma_n$. As a consequence,
 $\F(e)\vDash\Box$.\\
 We say that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$ if, for all
-$(\sigma,[\overline x,a,\_]F)\in K_1$, 
+$([\overline x,a,\_]F,\sigma)\in K_1$, 
 $a\sigma\in M$ and $\{K_1\cup K_2,\Delta,G,M\}\Vdash F\sigma$.\\
 \textbf{Lemma 1:} If $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$ and
 $([\overline x,a,\_]F,\sigma)\in K_2$ such that $a\sigma\subseteq M$, if
@@ -909,15 +908,15 @@ It can also deduce $\{K_1\cup K_2,\Delta,G,M\}\vdash\Box$ by \textsc{Instantiati
  \item If $\Delta$ can be written $\Delta\cup(F_1\vee F_2,\sigma)$,
 we have that $\F(\A(\{K_1\cup K_2,\Delta,G,M\},(F_1,\sigma)))\vDash
 \F(\{K_1\cup K_2,\Delta\cup(F_1\vee F_2,\sigma),G,M\})\vDash\Box$
-and that $\F(\A(\A(\{K_1\cup K_2,\Delta,G,M\},\linebreak (F_2,\sigma)),(\neg F_1,\sigma)))\vDash
+and that $\F(\A(\{K_1\cup K_2,\Delta,G,M\},(F_2,\sigma)))\vDash
 \F(\{K_1\cup K_2,\Delta\cup(F_1\vee F_2,\sigma),G,M\})\vDash\Box$.
-It is easy to check that $\A(\A(\{K_1\cup K_2,\Delta\cup C,G,M\},(F_2,\sigma)),(\neg F_1,\sigma))$ and
+It is easy to check that $\A(\{K_1\cup K_2,\Delta\cup C,G,M\},(F_2,\sigma))$ and
 $\A(\{K_1\cup K_2,\Delta,G,M\}, (F_1,\sigma))$ are strictly smaller than
 $\{K_1\cup K_2,\Delta\cup (F_1\vee F_2,\sigma),G,M\}$
 and that we can deduce that both
-$\A(\A(\{K_1\cup K_2,\Delta\cup C,G,M\},(F_2,\sigma)),(\neg F_1,\sigma))\vdash\Box$ and
-$\A(\{K_1\cup K_2,\Delta,G,M\},\linebreak (F_1,\sigma))\vdash\Box$ by induction hypothesis.
-As a consequence, solver can deduce $\{K_1\cup K_2,\Delta\cup(F_1\vee F_2,\sigma),G,M\}\vdash\Box$ by \textsc{Sat}.
+$\A(\{K_1\cup K_2,\Delta\cup C,G,M\},(F_2,\sigma))\vdash\Box$ and
+$\A(\{K_1\cup K_2,\Delta,G,M\},(F_1,\sigma))\vdash\Box$ by induction hypothesis.
+As a consequence, a solver can deduce $\{K_1\cup K_2,\Delta\cup(F_1\vee F_2,\sigma),G,M\}\vdash\Box$ by \textsc{Sat}.
 \end{itemize}
 
 \subsection{Justification of Explicit Labelization}

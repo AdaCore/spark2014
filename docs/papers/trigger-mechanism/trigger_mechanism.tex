@@ -199,7 +199,7 @@ encountered.
 We need a notion of implication to model the fact that a solver already knows that a labeled clause
 is true in its state. The shallow implication is an implication that does not take into account
 the trigger mechanism. If $C$ is a labeled clauses, $\{K,\Delta,G,M\}\Vdash C$ if and only if either
-$C\in\Delta$ or there is an element $D\in C$ such that $\{K,\Delta,G,M\}\Vdash D$ where shallow
+$C'\in\Delta$, $C'\in C$ or there is an element $D\in C$ such that $\{K,\Delta,G,M\}\Vdash D$ where shallow
 implication over elements is defined as:
 \begin{itemize}
  \item $\{K,\Delta,G,M\}\Vdash L$ if and only if $L\in G$,
@@ -538,7 +538,7 @@ $\{K,\varnothing,G,M\}\Vdash F\sigma$.
 \end{itemize}
 \subsection{Properties}
 As we did before, we define an encoding from labeled first-order formulas to classical
-first-order formulas. $p$ now maps terms to fresh terms.
+first-order formulas. $p$ now maps terms to fresh atoms.
 \begin{itemize}
  \item $\F(L)=L$,
  \item $\F(F_1\wedge F_2)=\F(F_1)\wedge\F(F_2)$,
