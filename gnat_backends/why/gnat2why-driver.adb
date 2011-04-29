@@ -235,11 +235,10 @@ package body Gnat2Why.Driver is
          return False;
       end if;
 
-      --  For now we just allow the -g and -O switches, even though they
-      --  will have no effect.
+      --  For now allow and ignore -g, -O, -m and -f switches
 
       case Switch (First) is
-         when 'g' | 'O' =>
+         when 'g' | 'O' | 'm' | 'f' =>
             return True;
 
          when others =>
