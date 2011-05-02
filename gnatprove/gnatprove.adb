@@ -59,25 +59,28 @@ procedure Gnatprove is
       Ada.Directories.Compose
          (Ada.Directories.Compose (Exec_Loc, "lib"),
           "why");
-   Gpr_Cnf_File : constant String :=
+   Gpr_Cnf_Dir  : constant String :=
       Ada.Directories.Compose
-         (Ada.Directories.Compose
-            (Ada.Directories.Compose (Exec_Loc, "share"),
-             "gprbuild"),
-          "gnat2why.cgpr");
-   Main_Suffix  : constant String := "__package";
+        (Ada.Directories.Compose (Exec_Loc, "share"),
+         "gprbuild");
+   Gpr_Ada_Cnf_File : constant String :=
+      Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
+   Gpr_Why_Cnf_File : constant String :=
+      Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
 
-   procedure Call_Gnatmake (Project_File : String);
-   --  Call gnatmake using the given project file.
+   procedure Compute_ALI_Information (Project_File : String);
+   --  Compute ALI information for all source units, using gnatmake.
 
-   procedure Call_Gprbuild (Project_File : String);
-   --  Call gnatmake using the given project file.
+   procedure Compute_VCs (Proj : Project_Tree);
+   --  Compute Verification conditions using Why, driven by gprbuild.
 
-   procedure Call_Why (Proj : Project_Tree; File : Virtual_File);
-   --  Call why on all the generated files that belong to a certain file
-   --  in a project.
-   --  example: if File is "example.adb", we call why on file
-   --  "example__package.why".
+   procedure Translate_To_Why (Project_File : String);
+   --  Translate all source units to Why, using gnat2why, driven by gprbuild.
+
+   function Generate_Why_Project_File (Source_Dir : String)
+       return String;
+   --  Extract the necessary information from the user project to generate a
+   --  Why project file; Write the file to disk and return the file name.
 
    generic
       with procedure Action (Proj : Project_Tree; File : Virtual_File);
@@ -87,11 +90,11 @@ procedure Gnatprove is
    procedure Make_Standard_Package (Proj : Project_Tree);
    --  Produce the file "_standard.mlw".
 
-   -------------------
-   -- Call_Gnatmake --
-   -------------------
+   -----------------------------
+   -- Compute_ALI_Information --
+   -----------------------------
 
-   procedure Call_Gnatmake (Project_File : String) is
+   procedure Compute_ALI_Information (Project_File : String) is
    begin
       Call_Exit_On_Failure
         (Command   => "gnatmake",
@@ -101,72 +104,58 @@ procedure Gnatprove is
                        4 => new String'("-gnatc"),      --  only generate ALI
                        5 => new String'("-gnatd.F")),   --  ALFA section in ALI
          Verbose   => Verbose);
-   end Call_Gnatmake;
+   end Compute_ALI_Information;
 
-   -------------------
-   -- Call_Gprbuild --
-   -------------------
+   -----------------
+   -- Compute_VCs --
+   -----------------
 
-   procedure Call_Gprbuild (Project_File : String)
+   procedure Compute_VCs (Proj : Project_Tree)
    is
-      Arguments : Argument_List :=
+      Proj_Type     : constant Project_Type := Proj.Root_Project;
+      Why_Proj_File : constant String :=
+         Generate_Why_Project_File (Proj_Type.Object_Dir.Display_Full_Name);
+      Arguments     : Argument_List :=
          (1 => new String'("-P"),
-          2 => new String'(Project_File),
-          3 => new String'("--subdirs=" & String (Subdir_Name)),
-          4 => new String'("--config=" & Gpr_Cnf_File));
+          2 => new String'(Why_Proj_File),
+          3 => new String'("--config=" & Gpr_Why_Cnf_File));
    begin
+      --  Set the environment variable WHYLIB, if necessary, to indicate the
+      --  placement for Why
+      if not Ada.Environment_Variables.Exists (WHYLIB) then
+         Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
+      end if;
+
       Arguments :=
          (if Verbose then
             Arguments & (1 => new String'("-v"))
          else
             Arguments & (1 => new String'("-q")));
-      if All_VCs then
-         Call_Exit_On_Failure
-           (Command   => "gprbuild",
-            Arguments => Arguments,
-            Verbose   => Verbose);
-      else
-         Call_Exit_On_Failure
-           (Command   => "gprbuild",
-            Arguments =>
-               Arguments &
-                  (1 => new String'("-cargs:Ada"),
-                   2 => new String'("-gnatd.G")),
-            Verbose   => Verbose);
-      end if;
-   end Call_Gprbuild;
-
-   --------------
-   -- Call_Why --
-   --------------
-
-   procedure Call_Why (Proj : Project_Tree; File : Virtual_File) is
-      pragma Unreferenced (Proj);
-
-      Base : constant String :=
-           Ada.Directories.Base_Name (+Full_Name (File));
-
-   begin
-      --  Assuming 'base' to be the filename without suffix, call the
-      --  command
-      --  why --multiwhy --explain --locs <base>.locs <base>.mlw
-
-      --  ??? It would be good to generate VCs for all objectives, as --all-vc
-      --  would permit, but currently this generates VCs which we cannot match
-      --  back to user source code. (e.g. for a trivially True pre- or
-      --  postcondition introduced by gnat2why)
-
       Call_Exit_On_Failure
-        (Command   => "why",
-         Arguments =>
-           ((1 => new String'("--multi-why"),
-             2 => new String'("--fast-wp"),
-             3 => new String'("--explain"),
-             4 => new String'("--locs"),
-             5 => new String'(Base & Main_Suffix & ".loc"),
-             6 => new String'(Base & Main_Suffix & ".mlw"))),
+        (Command   => "gprbuild",
+         Arguments => Arguments,
          Verbose   => Verbose);
-   end Call_Why;
+   end Compute_VCs;
+
+   -------------------------------
+   -- Generate_Why_Project_File --
+   -------------------------------
+
+   function Generate_Why_Project_File (Source_Dir : String)
+      return String
+   is
+      File : Ada.Text_IO.File_Type;
+      Why_File_Name : constant String := "why.gpr";
+   begin
+      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Why_File_Name);
+      Ada.Text_IO.Put_Line (File, "project Why is");
+      Ada.Text_IO.Put (File, "for Source_Dirs use (""");
+      Ada.Text_IO.Put (File, Source_Dir);
+      Ada.Text_IO.Put_Line (File, """);");
+      Ada.Text_IO.Put_Line (File, "end Why;");
+      Ada.Text_IO.Close (File);
+      return Why_File_Name;
+   end Generate_Why_Project_File;
 
    -------------------------------
    -- Iter_Project_Source_Files --
@@ -203,6 +192,10 @@ procedure Gnatprove is
       end loop;
    end Iter_Project_Source_Files;
 
+   ---------------------------
+   -- Make_Standard_Package --
+   ---------------------------
+
    procedure Make_Standard_Package (Proj : Project_Tree)
    is
    begin
@@ -219,6 +212,39 @@ procedure Gnatprove is
    Proj_Type : Project_Type;
    Proj_Env  : Project_Environment_Access;
 
+   ----------------------
+   -- Translate_To_Why --
+   ----------------------
+
+   procedure Translate_To_Why (Project_File : String)
+   is
+      Arguments : Argument_List :=
+         (1 => new String'("-P"),
+          2 => new String'(Project_File),
+          3 => new String'("--subdirs=" & String (Subdir_Name)),
+          4 => new String'("--config=" & Gpr_Ada_Cnf_File));
+   begin
+      Arguments :=
+         (if Verbose then
+            Arguments & (1 => new String'("-v"))
+         else
+            Arguments & (1 => new String'("-q")));
+      if All_VCs then
+         Call_Exit_On_Failure
+           (Command   => "gprbuild",
+            Arguments => Arguments,
+            Verbose   => Verbose);
+      else
+         Call_Exit_On_Failure
+           (Command   => "gprbuild",
+            Arguments =>
+               Arguments &
+                  (1 => new String'("-cargs:Ada"),
+                   2 => new String'("-gnatd.G")),
+            Verbose   => Verbose);
+      end if;
+   end Translate_To_Why;
+
    procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File);
 
    procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File) is
@@ -228,9 +254,6 @@ procedure Gnatprove is
 
    procedure Iterate_Altergo is
      new Iter_Project_Source_Files (Call_Altergo_Wrap);
-
-   procedure Iterate_Why is
-     new Iter_Project_Source_Files (Call_Why);
 
    --  begin processing for Gnatprove
 
@@ -270,20 +293,15 @@ begin
    Proj_Type := Root_Project (Tree);
    --  Call gnatmake before changing the directory, for the project file to
    --  be in the path
-   Call_Gnatmake (Project_File.all);
+   Compute_ALI_Information (Project_File.all);
 
-   Call_Gprbuild (Project_File.all);
+   Translate_To_Why (Project_File.all);
 
    Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+
    Make_Standard_Package (Tree);
 
-   --  Set the environment variable WHYLIB, if necessary, to indicate the
-   --  placement for Why
-   if not Ada.Environment_Variables.Exists (WHYLIB) then
-      Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
-   end if;
-
-   Iterate_Why (Tree);
+   Compute_VCs (Tree);
    Iterate_Altergo (Tree);
 exception
    when Invalid_Project =>
