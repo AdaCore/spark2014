@@ -57,7 +57,9 @@ procedure Gnatprove is
    WHYLIB       : constant String := "WHYLIB";
    Exec_Loc     : constant String := Executable_Location;
    Why_Lib_Dir  : constant String :=
-      Ada.Directories.Compose ("lib", "why");
+      Ada.Directories.Compose
+         (Ada.Directories.Compose (Exec_Loc, "lib"),
+          "why");
    Gpr_Cnf_File : constant String :=
       Ada.Directories.Compose
          (Ada.Directories.Compose
@@ -304,8 +306,7 @@ begin
    --  Set the environment variable WHYLIB, if necessary, to indicate the
    --  placement for Why
    if not Ada.Environment_Variables.Exists (WHYLIB) then
-      Ada.Environment_Variables.Set (WHYLIB,
-         Ada.Directories.Compose (Exec_Loc, Why_Lib_Dir));
+      Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
    end if;
 
    Iterate_Why (Tree);
