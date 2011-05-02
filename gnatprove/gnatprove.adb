@@ -62,7 +62,7 @@ procedure Gnatprove is
    Gpr_Cnf_Dir  : constant String :=
       Ada.Directories.Compose
         (Ada.Directories.Compose (Exec_Loc, "share"),
-         "gprbuild");
+         "gnatprove");
    Gpr_Ada_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
    Gpr_Why_Cnf_File : constant String :=
