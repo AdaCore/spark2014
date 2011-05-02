@@ -45,4 +45,7 @@ package Gnat2Why.Driver is
    function Is_Back_End_Switch (Switch : String) return Boolean;
    --  Returns True if and only if Switch denotes a back-end switch
 
+   procedure Translate_Standard_Package;
+   --  Translate the Ada Standard package
+
 end Gnat2Why.Driver;

@@ -79,9 +79,6 @@ package body Gnat2Why.Driver is
    procedure Translate_Package (File : W_File_Id; N : Node_Id);
    --  Translate the declarations of a package into Why declarations
 
-   procedure Translate_Standard_Package;
-   --  Translate the Ada Standard package
-
    -----------------
    -- GNAT_To_Why --
    -----------------
@@ -123,98 +120,92 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
-      if Debug_Flag_Dot_HH then
-         Translate_Standard_Package;
-      else
-
-         if Tasking_Used then
-            raise Program_Error;
-         end if;
-
-         --  Compute the frame condition. This starts with identifying ALI
-         --  files for the current unit and all dependent (with'ed) units.
-         --  Then ALFA information is loaded from all these files. Finally the
-         --  local ALFA information is propagated to get the frame condition.
-
-         Initialize_ALI;
-         Initialize_ALI_Source;
-
-         --  Fill in table ALIs with all dependent units
-
-         Read_Library_Info (Main_Lib_File, Text);
-         Main_Lib_Id := Scan_ALI
-           (F                => Main_Lib_File,
-            T                => Text,
-            Ignore_ED        => False,
-            Err              => False,
-            Ignore_Errors    => Debug_Flag_I,
-            Directly_Scanned => True);
-         Free (Text);
-         Read_Withed_ALIs (Main_Lib_Id);
-
-         --  Quit if some ALI files are missing
-
-         if Binderr.Errors_Detected > 0 then
-            raise Unrecoverable_Error;
-         end if;
-
-         --  Load ALFA information from ALIs for all dependent units
-
-         for Index in ALIs.First .. ALIs.Last loop
-            Load_ALFA (Name_String (Name_Id
-              (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
-         end loop;
-
-         --  Write Dependency file
-         Open_Current_File (Base_Name & ".d");
-         P (Current_File, Base_Name & "__package.mlw: ");
-         P (Current_File, Full_FName);
-         for Index in ALIs.First .. ALIs.Last loop
-            P (Current_File, " ");
-            P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
-         end loop;
-            NL (Current_File);
-         Close_Current_File;
-
-         --  Compute the frame condition from raw ALFA information
-
-   --        Put_Line ("");
-   --        Put_Line ("## Before propagation ##");
-   --        Put_Line ("");
-   --        Display_Maps;
-
-         Propagate_Through_Call_Graph;
-
-   --        Put_Line ("");
-   --        Put_Line ("## After propagation ##");
-   --        Put_Line ("");
-   --        Display_Maps;
-         --  Mark all compilation units with "in ALFA / not in ALFA" marks, in
-         --  the same order that they were processed by the frontend. Bodies
-         --  are not included, except for the main unit itself, which always
-         --  comes last.
-
-         Create_ALFA_Output_File (Base_Name & ".alfa");
-         Mark_All_Compilation_Units;
-         Close_ALFA_Output_File;
-
-         if Compilation_Errors then
-            return;
-         end if;
-
-      --  Start the translation to Why
-
-         Filter_Compilation_Unit (GNAT_Root);
-
-         for CU of ALFA_Compilation_Units loop
-            Translate_CUnit (CU);
-         end loop;
-
-         Open_Current_File (Base_Name & "__package.loc");
-         Print_Locations_Table (Current_File);
-         Close_Current_File;
-
+      if Tasking_Used then
+         raise Program_Error;
       end if;
+
+      --  Compute the frame condition. This starts with identifying ALI
+      --  files for the current unit and all dependent (with'ed) units.
+      --  Then ALFA information is loaded from all these files. Finally the
+      --  local ALFA information is propagated to get the frame condition.
+
+      Initialize_ALI;
+      Initialize_ALI_Source;
+
+      --  Fill in table ALIs with all dependent units
+
+      Read_Library_Info (Main_Lib_File, Text);
+      Main_Lib_Id := Scan_ALI
+        (F                => Main_Lib_File,
+         T                => Text,
+         Ignore_ED        => False,
+         Err              => False,
+         Ignore_Errors    => Debug_Flag_I,
+         Directly_Scanned => True);
+      Free (Text);
+      Read_Withed_ALIs (Main_Lib_Id);
+
+      --  Quit if some ALI files are missing
+
+      if Binderr.Errors_Detected > 0 then
+         raise Unrecoverable_Error;
+      end if;
+
+      --  Load ALFA information from ALIs for all dependent units
+
+      for Index in ALIs.First .. ALIs.Last loop
+         Load_ALFA (Name_String (Name_Id
+           (Full_Lib_File_Name (ALIs.Table (Index).Afile))));
+      end loop;
+
+      --  Write Dependency file
+      Open_Current_File (Base_Name & ".d");
+      P (Current_File, Base_Name & "__package.mlw: ");
+      P (Current_File, Full_FName);
+      for Index in ALIs.First .. ALIs.Last loop
+         P (Current_File, " ");
+         P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
+      end loop;
+         NL (Current_File);
+      Close_Current_File;
+
+      --  Compute the frame condition from raw ALFA information
+
+--        Put_Line ("");
+--        Put_Line ("## Before propagation ##");
+--        Put_Line ("");
+--        Display_Maps;
+
+      Propagate_Through_Call_Graph;
+
+--        Put_Line ("");
+--        Put_Line ("## After propagation ##");
+--        Put_Line ("");
+--        Display_Maps;
+      --  Mark all compilation units with "in ALFA / not in ALFA" marks, in
+      --  the same order that they were processed by the frontend. Bodies
+      --  are not included, except for the main unit itself, which always
+      --  comes last.
+
+      Create_ALFA_Output_File (Base_Name & ".alfa");
+      Mark_All_Compilation_Units;
+      Close_ALFA_Output_File;
+
+      if Compilation_Errors then
+         return;
+      end if;
+
+   --  Start the translation to Why
+
+      Filter_Compilation_Unit (GNAT_Root);
+
+      for CU of ALFA_Compilation_Units loop
+         Translate_CUnit (CU);
+      end loop;
+
+      Open_Current_File (Base_Name & "__package.loc");
+      Print_Locations_Table (Current_File);
+      Close_Current_File;
    end GNAT_To_Why;
 
    ------------------------
@@ -394,6 +385,19 @@ package body Gnat2Why.Driver is
       end Add_Standard_Type;
 
    begin
+      Mark_Standard_Package;
+
+      --  Authorize warnings now, since regular compiler warnings should
+      --  already have been issued, e.g. to generate warnings related to
+      --  misuse of ALFA specific pragmas.
+
+      Warning_Mode := Normal;
+
+      --  Allow the generation of new nodes and lists
+
+      Atree.Unlock;
+      Nlists.Unlock;
+
       Translate_Package (File, Filter_Standard_Package);
 
       Add_Standard_Type (Standard_Integer_8);
@@ -401,7 +405,6 @@ package body Gnat2Why.Driver is
       Add_Standard_Type (Standard_Integer_32);
       Add_Standard_Type (Standard_Integer_64);
 
-      Open_Current_File ("_standard.mlw");
       Declare_Boolean_Integer_Comparison (File);
 
       New_Logic
@@ -425,6 +428,7 @@ package body Gnat2Why.Driver is
          New_Result_Exc_Identifier,
          Why.Types.Why_Empty);
 
+      Open_Current_File ("_standard.mlw");
       Sprint_Why_Node (+File, Current_File);
       Close_Current_File;
 

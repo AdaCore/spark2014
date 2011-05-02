@@ -25,6 +25,8 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
+with Debug;
+with Osint;
 with System;
 with Gnat2Why.Driver;
 with Adabkend;
@@ -33,6 +35,9 @@ with Namet;
 with Opt; use Opt;
 
 package body Back_End is
+
+   procedure Translate_Standard renames
+      Gnat2Why.Driver.Translate_Standard_Package;
 
    package GNAT2Why is new Adabkend
      (Product_Name       => "GNAT2WHY",
@@ -49,11 +54,15 @@ package body Back_End is
    begin
       --  Since the back end is called with all tables locked,
       --  first unlock any tables that we need to change.
-
-      Stringt.Unlock;
       Namet.Unlock;
+      Stringt.Unlock;
 
-      GNAT2Why.Call_Back_End;
+      if Debug.Debug_Flag_Dot_HH then
+         Translate_Standard;
+         Osint.Exit_Program (Osint.E_Success);
+      else
+         GNAT2Why.Call_Back_End;
+      end if;
 
       --  Make sure to lock any unlocked tables again before returning
 
