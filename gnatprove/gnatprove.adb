@@ -291,8 +291,7 @@ begin
      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
       Proj_Env);
    Proj_Type := Root_Project (Tree);
-   --  Call gnatmake before changing the directory, for the project file to
-   --  be in the path
+
    Compute_ALI_Information (Project_File.all);
 
    Translate_To_Why (Project_File.all);
