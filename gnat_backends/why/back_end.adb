@@ -36,9 +36,6 @@ with Opt; use Opt;
 
 package body Back_End is
 
-   procedure Translate_Standard renames
-      Gnat2Why.Driver.Translate_Standard_Package;
-
    package GNAT2Why is new Adabkend
      (Product_Name       => "GNAT2WHY",
       Copyright_Years    => "2010-2011",
@@ -58,7 +55,7 @@ package body Back_End is
       Stringt.Unlock;
 
       if Debug.Debug_Flag_Dot_HH then
-         Translate_Standard;
+         Gnat2Why.Driver.Translate_Standard_Package;
          Osint.Exit_Program (Osint.E_Success);
       else
          GNAT2Why.Call_Back_End;
