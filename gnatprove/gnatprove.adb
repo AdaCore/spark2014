@@ -28,7 +28,6 @@ with Ada.Environment_Variables;
 with Altergo;           use Altergo;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
-with GNAT.Expect;       use GNAT.Expect;
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
 with GNAT.Strings;
 
@@ -79,9 +78,6 @@ procedure Gnatprove is
    --  in a project.
    --  example: if File is "example.adb", we call why on file
    --  "example__package.why".
-
-   function Get_Ada_Include return String;
-   --  Return the Ada include directory, using "gnatls".
 
    generic
       with procedure Action (Proj : Project_Tree; File : Virtual_File);
@@ -172,25 +168,6 @@ procedure Gnatprove is
          Verbose   => Verbose);
    end Call_Why;
 
-   ---------------------
-   -- Get_Ada_Include --
-   ---------------------
-
-   function Get_Ada_Include return String is
-      D : Process_Descriptor;
-      A : Expect_Match;
-   begin
-      GNAT.Expect.Non_Blocking_Spawn
-        (Descriptor => D,
-         Command    => "gnatls",
-         Args       => (1 => new String'("-v")));
-      GNAT.Expect.Expect
-        (Descriptor => D,
-         Result => A,
-         Regexp => "[^ \n].*adainclude[^\n ]*");
-      return Expect_Out_Match (D);
-   end Get_Ada_Include;
-
    -------------------------------
    -- Iter_Project_Source_Files --
    -------------------------------
@@ -228,16 +205,13 @@ procedure Gnatprove is
 
    procedure Make_Standard_Package (Proj : Project_Tree)
    is
-      Ada_Ads : constant String :=
-         Ada.Directories.Compose (Get_Ada_Include, "ada.ads");
    begin
       pragma Unreferenced (Proj);
       Call_Exit_On_Failure
         (Command   => "gnat2why",
          Arguments =>
             (1 => new String'("-gnatd.H"),
-             2 => new String'("-gnatg"),
-             3 => new String'(Ada_Ads)),
+             2 => new String'("dummy")),
          Verbose   => Verbose);
    end Make_Standard_Package;
 
