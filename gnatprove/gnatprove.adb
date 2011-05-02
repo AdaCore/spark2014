@@ -68,6 +68,9 @@ procedure Gnatprove is
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
 
+   procedure Call_Gprbuild (Arguments : Argument_List);
+   --  Call gprbuild with the given arguments
+
    procedure Compute_ALI_Information (Project_File : String);
    --  Compute ALI information for all source units, using gnatmake.
 
@@ -89,6 +92,24 @@ procedure Gnatprove is
 
    procedure Make_Standard_Package (Proj : Project_Tree);
    --  Produce the file "_standard.mlw".
+
+   -------------------
+   -- Call_Gprbuild --
+   -------------------
+
+   procedure Call_Gprbuild (Arguments : Argument_List)
+   is
+      Extra_Args : constant Argument_List :=
+         (if Verbose then
+            (1 => new String'("-v"))
+         else
+            (1 => new String'("-q")));
+   begin
+      Call_Exit_On_Failure
+        (Command   => "gprbuild",
+         Arguments => Extra_Args & Arguments,
+         Verbose   => Verbose);
+   end Call_Gprbuild;
 
    -----------------------------
    -- Compute_ALI_Information --
@@ -115,26 +136,16 @@ procedure Gnatprove is
       Proj_Type     : constant Project_Type := Proj.Root_Project;
       Why_Proj_File : constant String :=
          Generate_Why_Project_File (Proj_Type.Object_Dir.Display_Full_Name);
-      Arguments     : Argument_List :=
-         (1 => new String'("-P"),
-          2 => new String'(Why_Proj_File),
-          3 => new String'("--config=" & Gpr_Why_Cnf_File));
    begin
       --  Set the environment variable WHYLIB, if necessary, to indicate the
       --  placement for Why
       if not Ada.Environment_Variables.Exists (WHYLIB) then
          Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
       end if;
-
-      Arguments :=
-         (if Verbose then
-            Arguments & (1 => new String'("-v"))
-         else
-            Arguments & (1 => new String'("-q")));
-      Call_Exit_On_Failure
-        (Command   => "gprbuild",
-         Arguments => Arguments,
-         Verbose   => Verbose);
+      Call_Gprbuild (
+         (1 => new String'("-P"),
+          2 => new String'(Why_Proj_File),
+          3 => new String'("--config=" & Gpr_Why_Cnf_File)));
    end Compute_VCs;
 
    -------------------------------
@@ -218,30 +229,19 @@ procedure Gnatprove is
 
    procedure Translate_To_Why (Project_File : String)
    is
-      Arguments : Argument_List :=
+      Arguments : constant Argument_List :=
          (1 => new String'("-P"),
           2 => new String'(Project_File),
           3 => new String'("--subdirs=" & String (Subdir_Name)),
           4 => new String'("--config=" & Gpr_Ada_Cnf_File));
    begin
-      Arguments :=
-         (if Verbose then
-            Arguments & (1 => new String'("-v"))
-         else
-            Arguments & (1 => new String'("-q")));
       if All_VCs then
-         Call_Exit_On_Failure
-           (Command   => "gprbuild",
-            Arguments => Arguments,
-            Verbose   => Verbose);
+         Call_Gprbuild (Arguments);
       else
-         Call_Exit_On_Failure
-           (Command   => "gprbuild",
-            Arguments =>
-               Arguments &
-                  (1 => new String'("-cargs:Ada"),
-                   2 => new String'("-gnatd.G")),
-            Verbose   => Verbose);
+         Call_Gprbuild
+            (Arguments &
+               (1 => new String'("-cargs:Ada"),
+                2 => new String'("-gnatd.G")));
       end if;
    end Translate_To_Why;
 
