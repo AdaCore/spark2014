@@ -20,3 +20,10 @@ Integration in GNATbench
 ------------------------
 
 The current version is not integrated with GNATbench.
+
+Current Limitations
+-------------------
+
+The current version only accepts projects with a single object directory; it
+will stop with an error message if run on projects with more than one object
+directory.
