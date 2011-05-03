@@ -215,7 +215,7 @@ procedure Gnatprove is
         (Command   => "gnat2why",
          Arguments =>
             (1 => new String'("-gnatd.H"),
-             2 => new String'("dummy")),
+             2 => new String'(Gpr_Ada_Cnf_File)),
          Verbose   => Verbose);
    end Make_Standard_Package;
 
