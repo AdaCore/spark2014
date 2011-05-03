@@ -77,9 +77,6 @@ procedure Gnatprove is
    procedure Compute_VCs (Proj : Project_Tree);
    --  Compute Verification conditions using Why, driven by gprbuild.
 
-   procedure Translate_To_Why (Project_File : String);
-   --  Translate all source units to Why, using gnat2why, driven by gprbuild.
-
    function Generate_Why_Project_File (Source_Dir : String)
        return String;
    --  Extract the necessary information from the user project to generate a
@@ -92,6 +89,12 @@ procedure Gnatprove is
 
    procedure Make_Standard_Package (Proj : Project_Tree);
    --  Produce the file "_standard.mlw".
+
+   procedure Translate_To_Why (Project_File : String);
+   --  Translate all source units to Why, using gnat2why, driven by gprbuild.
+
+   procedure Read_Command_Line;
+   --  Parse command line and set up configuration.
 
    -------------------
    -- Call_Gprbuild --
@@ -223,6 +226,38 @@ procedure Gnatprove is
    Proj_Type : Project_Type;
    Proj_Env  : Project_Environment_Access;
 
+   procedure Read_Command_Line is
+   begin
+      --  Install command line config
+
+      Define_Switch (Config, Verbose'Access,
+                     "-v", Long_Switch => "--verbose",
+                     Help => "Output extra verbose information");
+
+      Define_Switch (Config, All_VCs'Access,
+                     Long_Switch => "--all-vcs",
+                     Help => "Activate generation of VCs for subprograms");
+
+      Define_Switch (Config, Report'Access,
+                     Long_Switch => "--report",
+                     Help => "Print messages for all generated VCs");
+
+      Define_Switch (Config, Project_File'Access,
+                     "-P:",
+                     Help => "The name of the project file");
+
+      Getopt (Config);
+      if Project_File.all = "" then
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "No project file given, aborting.");
+         GNAT.OS_Lib.OS_Exit (1);
+      end if;
+   exception
+      when Invalid_Switch | Exit_From_Command_Line =>
+         GNAT.OS_Lib.OS_Exit (1);
+   end Read_Command_Line;
+
    ----------------------
    -- Translate_To_Why --
    ----------------------
@@ -258,33 +293,7 @@ procedure Gnatprove is
    --  begin processing for Gnatprove
 
 begin
-   --  Install command line config
-
-   Define_Switch (Config, Verbose'Access,
-                  "-v", Long_Switch => "--verbose",
-                  Help => "Output extra verbose information");
-
-   Define_Switch (Config, All_VCs'Access,
-                  Long_Switch => "--all-vcs",
-                  Help => "Activate generation of VCs for subprograms");
-
-   Define_Switch (Config, Report'Access,
-                  Long_Switch => "--report",
-                  Help => "Print messages for all generated VCs");
-
-   Define_Switch (Config, Project_File'Access,
-                  "-P:",
-                  Help => "The name of the project file");
-
-   Getopt (Config);
-
-   if Project_File.all = "" then
-      Ada.Text_IO.Put_Line
-        (Ada.Text_IO.Standard_Error,
-         "No project file given, aborting.");
-      GNAT.OS_Lib.OS_Exit (1);
-   end if;
-
+   Read_Command_Line;
    Initialize (Proj_Env);
    Set_Object_Subdir (Proj_Env.all, Subdir_Name);
    Tree.Load
