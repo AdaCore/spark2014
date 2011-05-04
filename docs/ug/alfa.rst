@@ -366,6 +366,55 @@ they are not currently in Alfa. Note that this does not apply to procedures
 from the standard library. It will require a pre-analysis of the standard
 library to define proper contracts.
 
+Loop Invariants
+^^^^^^^^^^^^^^^
+
+In order for GNATprove to prove formally the properties of interest on
+subprograms with loops, the user should annotate these loops with loop
+invariants. A loop invariant gives information on the state at entry to the
+loop at each iteration. Loop invariants in Alfa consist in the conjunction of
+all assertions that appear at the beginning of the loop body. Loop invariants
+may have to be precise enough to prove the property of interest. For example,
+in order to prove the postcondition of function ``Contains`` below, one has to 
+write a precise loop invariant such as the one given below::
+
+  function Contains (Table : IntArray; Value : Integer) return Boolean with
+    Post => (for some J in Table'Range => Table(J) = Value);
+
+  function Contains (Table : IntArray; Value : Integer) return Boolean is
+  begin
+     for Index in Table'Range loop
+        pragma Assert (for all J in Table'First .. Index - 1 =>
+                         Table (J) /= Value);
+
+        if Table(Index) = Value then
+           return True;
+        end if;
+     end loop;
+
+     return False;
+  end Contains;
+
+When the loop involves modifying a variable, it may be necessary to refer to
+the value of the variable at loop entry. This can be done using the GNAT
+attribute ``'Loop_Entry``. For example, in order to prove the postcondition of
+function ``Move`` below, one has to write a loop invariant referring to
+``Src'Loop_Entry`` such as the one given below::
+
+  procedure Move (Dest, Src : out IntArray) with
+    Post => (for all J in Dest'Range => Dest (J) = Src'Old (J));
+
+  procedure Move (Dest, Src : out IntArray) is
+  begin
+     for Index in Dest'Range loop
+        pragma Assert (for all J in Dest'First .. Index - 1 =>
+                         Dest (J) = Src'Loop_Entry (J));
+
+        Dest (Index) := Src (Index);
+        Src (Index) := 0;
+     end loop;
+  end Move;
+
 Features Not Yet Implemented
 ----------------------------
 
@@ -383,3 +432,4 @@ Minor features not yet implemented are:
 * declare block statements
 * elaboration code
 * many corner cases in expressions
+* attribute ``'Loop_Entry``
