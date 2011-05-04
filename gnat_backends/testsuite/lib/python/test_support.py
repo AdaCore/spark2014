@@ -165,10 +165,13 @@ def gnatprove(opt=["-P", "test.gpr"]):
     cmd = ["gnatprove"]
     cmd += to_list(opt)
     process = Run(cmd)
-    strlist = str.splitlines(process.out)
-    strlist.sort()
-    for line in strlist:
-        print line
+    if process.status:
+        print process.out
+    else:
+        strlist = str.splitlines(process.out)
+        strlist.sort()
+        for line in strlist:
+            print line
 
 def prove(src,opt=["-P", "test.gpr"]):
     """Prove all obligations from an Ada file
