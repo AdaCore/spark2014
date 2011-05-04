@@ -1,12 +1,14 @@
 Usage
 =====
 
-The gnatprove tool is packaged as an executable called "gnatprove".
+The GNATprove tool is packaged as an executable called "gnatprove". Like other
+tools in GNAT Pro Toolsuite, GNATprove is based on the structure of GNAT
+projects, defined in ``.gpr`` files.
 
 Command-line Usage
 ------------------
 
-Gnatprove is executed with the following command line::
+GNATprove is executed with the following command line::
 
       gnatprove -P <project_file>.gpr
 
