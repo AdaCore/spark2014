@@ -778,6 +778,13 @@ package body Gnat2Why.Subprograms is
       --  you want the pre- or postcondition.
       --  Also output a suitable location node, if available.
 
+      function Is_Syntactic_Expr_Function return Node_Id;
+      --  Compute if Node is an expression function in the source, also works
+      --  for the declaration of an expression function.
+      --  If Is_Syntactic_Expr_Function'Result is equal to Node, Node is not
+      --  an expression function; otherwise, Is_Syntactic_Expr_Function'Result
+      --  is the original node of the expression function.
+
       ---------------------
       -- Compute_Binders --
       ---------------------
@@ -1037,6 +1044,33 @@ package body Gnat2Why.Subprograms is
              VC_Expr_Of_Ada_Expr,
              New_Prog_Andb_Then);
 
+      --------------------------------
+      -- Is_Syntactic_Expr_Function --
+      --------------------------------
+
+      function Is_Syntactic_Expr_Function return Node_Id
+      is
+         Tmp_Node : Node_Id := Original_Node (Parent (Spec));
+      begin
+         --  Usually, it is sufficient to check for the original node of the
+         --  function (but for some reason we have to descend to the spec and
+         --  move up to another parent).
+         if Nkind (Tmp_Node) = N_Expression_Function then
+            return Tmp_Node;
+         end if;
+         if Nkind (Node) = N_Subprogram_Declaration then
+            --  But if we are at the function declaration, it is possible that
+            --  the function definition is given later, using an expression
+            --  function. We check this second possibility here.
+            Tmp_Node :=
+               Original_Node (Parent (Parent (Corresponding_Body (Node))));
+            if Nkind (Tmp_Node) = N_Expression_Function then
+               return Tmp_Node;
+            end if;
+         end if;
+         return Node;
+      end Is_Syntactic_Expr_Function;
+
       Func_Binders : constant W_Binder_Array := Compute_Binders;
       Ext_Binders  : constant W_Binder_Array :=
          (if Arg_Length = 0 then
@@ -1052,12 +1086,12 @@ package body Gnat2Why.Subprograms is
       Loc_Node     : Node_Id := Empty;
       Post         : constant W_Predicate_Id :=
          Compute_Spec_Pred (Name_Postcondition, Loc_Node);
-      Orig_Node : constant Node_Id := Original_Node (Parent (Spec));
+      Orig_Node : constant Node_Id := Is_Syntactic_Expr_Function;
       Effects      : constant W_Effects_Id := Compute_Effects;
       Is_Expr_Func : constant Boolean :=
          Nkind (Spec) = N_Function_Specification
          and then Effect_Is_Empty (Effects)
-         and then Nkind (Orig_Node) = N_Expression_Function
+         and then Orig_Node /= Node
          and then Get_Kind (+Post) = W_True_Literal_Pred;
 
    --  Start of processing for Why_Decl_Of_Ada_Subprogram
@@ -1108,24 +1142,23 @@ package body Gnat2Why.Subprograms is
                      Name       => Logic_Func_Axiom (Name_Str),
                      Axiom_Body => Ax_Body);
                end;
-            else
-               if not Debug.Debug_Flag_Dot_GG then
-                  New_Global_Binding
-                    (File    => File,
-                     Name    => New_Definition_Name (Name_Str),
-                     Binders => Ext_Binders,
-                     Pre     => Pre,
-                     Post    =>
-                        New_Located_Predicate
-                          (Loc_Node,
-                           Post,
-                           VC_Postcondition),
-                     Def     =>
-                        Compute_Context
-                          (Why_Expr_Of_Ada_Stmts
-                             (Statements
-                                (Handled_Statement_Sequence (Node)))));
-               end if;
+            end if;
+            if not Debug.Debug_Flag_Dot_GG then
+               New_Global_Binding
+                 (File    => File,
+                  Name    => New_Definition_Name (Name_Str),
+                  Binders => Ext_Binders,
+                  Pre     => Pre,
+                  Post    =>
+                     New_Located_Predicate
+                       (Loc_Node,
+                        Post,
+                        VC_Postcondition),
+                  Def     =>
+                     Compute_Context
+                       (Why_Expr_Of_Ada_Stmts
+                          (Statements
+                             (Handled_Statement_Sequence (Node)))));
             end if;
 
          when N_Subprogram_Declaration =>
