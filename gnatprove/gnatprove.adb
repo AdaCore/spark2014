@@ -300,6 +300,16 @@ begin
      (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
       Proj_Env);
    Proj_Type := Root_Project (Tree);
+   --  ??? Why version 2 only reads files in the current directory. As Why
+   --  works in the object directory, this means that we only support a
+   --  single object directory.
+   --  Here we check that this is the case, and fail gracefully if not.
+   if Object_Path (Proj_Type, Recursive => True)'Length > 1 then
+      Ada.Text_IO.Put_Line
+        (Ada.Text_IO.Standard_Error,
+         "There is more than one object directory, aborting.");
+      GNAT.OS_Lib.OS_Exit (1);
+   end if;
 
    Compute_ALI_Information (Project_File.all);
 
