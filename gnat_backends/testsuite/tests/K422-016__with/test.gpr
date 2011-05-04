@@ -1,0 +1,5 @@
+with "first.gpr";
+project Test is
+   for Source_Files use ("b.adb");
+   for Object_Dir use "b";
+end Test;

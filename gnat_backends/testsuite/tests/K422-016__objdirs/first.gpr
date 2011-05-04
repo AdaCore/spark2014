@@ -1,0 +1,4 @@
+project First is
+   for Source_Files use ("a.adb");
+   for Object_Dir use "a";
+end First;
