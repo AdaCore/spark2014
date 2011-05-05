@@ -49,7 +49,7 @@ error::
    p.ads:4:15: overflow check failed
    p.ads:7:31: overflow check failed
    p.ads:10:31: overflow check failed
-   p.ads:13:15: (info) proved: range check
+   p.ads:13:15: (info) proved: overflow check
 
 Absence of Run-Time Errors *(In Progress)*
 --------------------------
