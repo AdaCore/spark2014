@@ -368,7 +368,7 @@ package body Altergo is
       Put (X.EX_Col.all);
       Put (":");
       if Proved then
-         Put (" Proved - ");
+         Put (" (info) proved: ");
       else
          Put (" ");
       end if;
