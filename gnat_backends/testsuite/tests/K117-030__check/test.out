@@ -1,5 +1,5 @@
 check.ads:3:37: (info) proved: division by zero
-check.ads:3:37: (info) proved: range check
+check.ads:3:37: range check failed
 check.ads:3:70: (info) proved: division by zero
-check.ads:3:70: (info) proved: range check
+check.ads:3:70: range check failed
 check.ads:4:32: proof of postcondition failed
