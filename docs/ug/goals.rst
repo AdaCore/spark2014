@@ -95,8 +95,8 @@ an abstraction of the subprogram's behavior. But if some code is useless to
 establish the subprogram's postcondition, the contract is either wrong or
 incomplete. To illustrate the issue, consider the following procedure sketch::
 
-   procedure P (X : Integer) with 
-     Pre => (...), 
+   procedure P (X : Integer) with
+     Pre => (...),
      Post => (if X = 0 then ...);
 
    procedure P (X : Integer) is
@@ -114,14 +114,11 @@ not the case. This means that the entire ``else`` branch does not
 contribute to establishing the postcondition. This introduces a semantic
 notion of *dead code*: the code in the ``else`` branch is *dead* in the
 sense that outside the procedure ``P``, no other part of the code should
-take advantage of the effects in that branch. 
+take advantage of the effects in that branch.
 
-If GNATprove could report this situation, indicating which portion of the code
-is *dead* in this sense, the programmer could then either correct the contract
-to reflect both situations or remove the offending portion of the code. This
-detection would rely on the automatic prover ability to record the set of
-hypotheses it uses to prove a VC. Such a feature is currently available for the
-Alt-Ergo prover.
+GNATprove will report this situation, indicating which portion of the code
+is *dead* in this sense. The programmer can then either correct the contract
+to reflect both situations or remove the offending portion of the code.
 
 Another case of incomplete specifications is illustrated by the following
 simple program::
@@ -139,13 +136,10 @@ simple program::
 In this example, the contract is again incomplete: it only mentions that the
 acceleration is set to zero, but not that the breaks are activated. Said
 otherwise, it only mentions the modification of the ``Accel`` variable,
-but not the one of ``Breaks``. Again, a warning could be issued to the
+but not the one of ``Breaks``. Again, a warning will be issued to the
 programmer, stating that a written variable is not mentioned in the contract,
 so no other part of the program can be aware of its new value, and this is
-probably a bug either in the code or in the contract. In this particular
-example, the previously mentioned warning about code that does not contribute
-to the postcondition would be issued as well, but other situations, that would
-only be detected by the analysis concerning effects, are possible.
+probably a bug either in the code or in the contract.
 
 Redundant Specifications *(Not Yet Implemented)*
 ------------------------
@@ -156,17 +150,5 @@ very useful. Worse, a *precondition* that is always false (or
 *inconsistent*) makes the corresponding subprogram trivially *correct*,
 because under this false hypothesis, everything can be proved.  Similarly, a
 postcondition that is always true can be proved correct, but it certainly does
-not express anything interesting about the subprogram. Moy and
-Wallenburg detected cases of such irrelevant annotations
-in the code of Tokeneer project which had been formally
-proved in SPARK.
-
-GNATprove could detect such undesirable annotations and issue a
-warning to the programmer. In practice, detecting an inconsistent precondition
-amounts to trying to proving ``False`` just after assuming the
-precondition. If the proof succeeds, anything can be proved at that place in
-the code, so the precondition must be inconsistent. A trivial postcondition
-that is always true can be detected by trying to prove it in the *empty
-context*, that is, without assuming the precondition to be true nor the
-subprogram body to execute correctly.
-
+not express anything interesting about the subprogram. GNATprove will detect
+such undesirable annotations and issue a warning to the programmer.
