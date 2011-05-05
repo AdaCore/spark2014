@@ -164,6 +164,10 @@ package body Why.Gen.Axioms is
                                New_Predicate_Instance
                                   (Name       => Range_Pred_Name (Type_Name),
                                    Parameters => (1 => New_Term (Arg_S)));
+      In_Range_t          : constant W_Term_Id :=
+                               New_Operation
+                                  (Name       => Range_Pred_Name (Type_Name),
+                                   Parameters => (1 => New_Term (Arg_S)));
       Formula              : constant W_Predicate_Id :=
                                New_Implication
                                  (Left  => In_Range,
@@ -176,6 +180,12 @@ package body Why.Gen.Axioms is
                                New_Universal_Quantif
                                  (Var_Type  => Base_Type,
                                   Variables => (1 => New_Identifier (Arg_S)),
+                                  Triggers  => New_Triggers (
+                                    Triggers =>
+                                      (1 => New_Trigger (
+                                         Terms => (1 => In_Range_t)),
+                                       2 => New_Trigger (
+                                         Terms => (1 => X_To_Type_Op)))),
                                   Pred      => Formula);
    begin
       New_Axiom
