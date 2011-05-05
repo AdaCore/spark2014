@@ -81,7 +81,7 @@ which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
-Absence of Unintended Functionality *(TO DO)*
+Absence of Unintended Functionality *(Not Yet Implemented)*
 -----------------------------------
 
 A general concern in safety and security standards is the absence of unintended
@@ -147,7 +147,7 @@ example, the previously mentioned warning about code that does not contribute
 to the postcondition would be issued as well, but other situations, that would
 only be detected by the analysis concerning effects, are possible.
 
-Redundant Specifications *(TO DO)*
+Redundant Specifications *(Not Yet Implemented)*
 ------------------------
 
 A common case of meaningless specifications is the case of trivial or
@@ -157,13 +157,9 @@ very useful. Worse, a *precondition* that is always false (or
 because under this false hypothesis, everything can be proved.  Similarly, a
 postcondition that is always true can be proved correct, but it certainly does
 not express anything interesting about the subprogram. Moy and
-Wallenburg [#moy:2010:erts2]_ detected cases of such irrelevant annotations
-in the code of Tokeneer project [#barnes:06:issse]_ which had been formally
+Wallenburg detected cases of such irrelevant annotations
+in the code of Tokeneer project which had been formally
 proved in SPARK.
-
-.. [#moy:2010:erts2] Yannick Moy and Angela Wallenburg, *Tokeneer: beyond formal program verification*, presented at Embedded Real Time Software and Systems, May 2010, Toulouse, France, http://www.open-do.org/wp-content/uploads/2010/04/ERTS2010_final.pdf
-
-.. [#barnes:06:issse] Janet Barnes, Rod Chapman, Randy Johnson, James Widmaier, David Cooper and Bill Everett, *Engineering the Tokeneer enclave protection software*, in Proceedings of the 1st IEEE International Symposium on Secure Software Engineering, March 2006, http://www.altran-praxis.com/downloads/SPARK/technicalReferences/issse2006tokeneer.pdf
 
 GNATprove could detect such undesirable annotations and issue a
 warning to the programmer. In practice, detecting an inconsistent precondition

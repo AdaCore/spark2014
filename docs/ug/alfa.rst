@@ -50,7 +50,7 @@ following principles:
 1. Annotations are read-only
 
 No writes to global variables are allowed in annotations (contracts,
-assertions, etc.) The possibility of run-time errors in annotations should be
+assertions, etc.). The possibility of run-time errors in annotations should be
 detected in formal proofs.
 
 2. Code is unambiguous

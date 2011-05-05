@@ -52,7 +52,7 @@ executed in a context where ``Requires`` holds, then ``Ensures``
 should hold when the subprogram returns. Mode ``Normal`` indicates
 that the input context should satisfy the normal precondition of the
 subprogram, and the output context should then satisfy its
-postcondition. More ``Robustness`` indicates that the normal pre- and
+postcondition. Mode ``Robustness`` indicates that the normal pre- and
 postcondition of the subprogram should be ignored for this test case.
 
 Functional Behavior
