@@ -1,6 +1,6 @@
-forall.adb:6:17: Proved - range check
+forall.adb:6:17: (info) proved: range check
 forall.ads:5:45: division by zero failed
 forall.ads:5:45: range check failed
-forall.ads:5:48: Proved - range check
-forall.ads:5:53: Proved - range check
+forall.ads:5:48: (info) proved: range check
+forall.ads:5:53: (info) proved: range check
 forall.ads:6:36: proof of postcondition failed

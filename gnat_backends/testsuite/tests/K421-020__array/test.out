@@ -1,12 +1,12 @@
-p.adb:15:10: Proved - range check
+p.adb:15:10: (info) proved: range check
 p.adb:15:16: range check failed
-p.adb:17:10: Proved - range check
-p.adb:17:16: Proved - range check
-p.adb:18:10: Proved - range check
-p.adb:18:16: Proved - range check
-p.adb:19:10: Proved - range check
-p.adb:19:16: Proved - range check
-p.adb:21:35: Proved - proof of loop invariant initalization
-p.adb:21:35: Proved - proof of loop invariant preservation
-p.adb:22:13: Proved - range check
-p.adb:22:19: Proved - range check
+p.adb:17:10: (info) proved: range check
+p.adb:17:16: (info) proved: range check
+p.adb:18:10: (info) proved: range check
+p.adb:18:16: (info) proved: range check
+p.adb:19:10: (info) proved: range check
+p.adb:19:16: (info) proved: range check
+p.adb:21:35: (info) proved: proof of loop invariant initalization
+p.adb:21:35: (info) proved: proof of loop invariant preservation
+p.adb:22:13: (info) proved: range check
+p.adb:22:19: (info) proved: range check

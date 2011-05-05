@@ -1,10 +1,10 @@
-p.adb:12:30: Proved - proof of postcondition
-p.adb:22:22: Proved - proof of postcondition
-p.adb:27:33: Proved - proof of postcondition
-p.adb:32:7: Proved - proof of assertion
+p.adb:12:30: (info) proved: proof of postcondition
+p.adb:22:22: (info) proved: proof of postcondition
+p.adb:27:33: (info) proved: proof of postcondition
+p.adb:32:7: (info) proved: proof of assertion
 p.adb:34:7: proof of assertion failed
-p.adb:36:7: Proved - proof of assertion
-p.adb:38:7: Proved - proof of assertion
-p.adb:7:19: Proved - proof of postcondition
-p.ads:14:30: Proved - proof of postcondition
-p.ads:9:19: Proved - proof of postcondition
+p.adb:36:7: (info) proved: proof of assertion
+p.adb:38:7: (info) proved: proof of assertion
+p.adb:7:19: (info) proved: proof of postcondition
+p.ads:14:30: (info) proved: proof of postcondition
+p.ads:9:19: (info) proved: proof of postcondition

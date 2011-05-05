@@ -1,4 +1,4 @@
-localcst.adb:7:31: Proved - range check
-localcst.ads:10:33: Proved - proof of postcondition
-localcst.ads:4:32: Proved - proof of postcondition
-localcst.ads:7:31: Proved - proof of postcondition
+localcst.adb:7:31: (info) proved: range check
+localcst.ads:10:33: (info) proved: proof of postcondition
+localcst.ads:4:32: (info) proved: proof of postcondition
+localcst.ads:7:31: (info) proved: proof of postcondition

@@ -1,2 +1,2 @@
-anon.adb:4:10: Proved - range check
-anon.adb:4:16: Proved - range check
+anon.adb:4:10: (info) proved: range check
+anon.adb:4:16: (info) proved: range check
