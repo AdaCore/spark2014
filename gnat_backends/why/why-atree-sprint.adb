@@ -1082,7 +1082,7 @@ package body Why.Atree.Sprint is
       Forall_Sequence : constant Boolean :=
                           Get_Kind (+Pred) = W_Universal_Quantif;
    begin
-      P (O, "forall ");
+      P (O, "(forall ");
       Print_List (State, +Variables);
       P (O, " : ");
       Traverse (State, +Var_Type);
@@ -1103,7 +1103,7 @@ package body Why.Atree.Sprint is
       if not Forall_Sequence then
          Relative_Indent (O, -1);
       end if;
-
+      P (O, ")");
       State.Control := Abandon_Children;
    end Universal_Quantif_Pre_Op;
 
