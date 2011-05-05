@@ -69,8 +69,8 @@ which specific VCs are generated, to prove that the loop invariant is initially
 valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
-Functional Properties *(In Progress)*
----------------------
+Functional Behavior *(In Progress)*
+-------------------
 
 GNATprove generates VCs to prove that all subprograms called in the code of a
 subprogram analyzed have their precondition satisfied at the point of call, and
