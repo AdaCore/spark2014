@@ -84,6 +84,93 @@ valid (*loop invariant initiation*) and that it is preserved through the loop
 Absence of Unintended Functionality *(TO DO)*
 -----------------------------------
 
+A general concern in safety and security standards is the absence of unintended
+functionality. When verification relies on testing, this is sometimes verified
+by showing that tests implementing the low-level requirements achieve complete
+code coverage. With formal verification, we can aim at a different,
+higher-level goal: show that all the code in a subprogram contributes to
+establishing its postcondition. This is not the same as saying that a contract
+entirely summarizes the purpose of a subprogram, as the contract might still be
+an abstraction of the subprogram's behavior. But if some code is useless to
+establish the subprogram's postcondition, the contract is either wrong or
+incomplete. To illustrate the issue, consider the following procedure sketch::
+
+   procedure P (X : Integer) with 
+     Pre => (...), 
+     Post => (if X = 0 then ...);
+
+   procedure P (X : Integer) is
+   begin
+      if X = 0 then
+         --  Do something when X = 0
+      else
+         --  Do something else otherwise
+      end if;
+   end P;
+
+Here, the problem is that the contract only states the behavior of the
+procedure when ``X`` is equal to zero, but not what happens when this is
+not the case. This means that the entire ``else`` branch does not
+contribute to establishing the postcondition. This introduces a semantic
+notion of *dead code*: the code in the ``else`` branch is *dead* in the
+sense that outside the procedure ``P``, no other part of the code should
+take advantage of the effects in that branch. 
+
+If GNATprove could report this situation, indicating which portion of the code
+is *dead* in this sense, the programmer could then either correct the contract
+to reflect both situations or remove the offending portion of the code. This
+detection would rely on the automatic prover ability to record the set of
+hypotheses it uses to prove a VC. Such a feature is currently available for the
+Alt-Ergo prover.
+
+Another case of incomplete specifications is illustrated by the following
+simple program::
+
+   procedure Full_Stop with
+     Pre  => (...),
+     Post => (Accel = 0);
+
+   procedure Full_Stop is
+   begin
+      Accel  := 0;
+      Breaks := On;
+   end Full_Stop;
+
+In this example, the contract is again incomplete: it only mentions that the
+acceleration is set to zero, but not that the breaks are activated. Said
+otherwise, it only mentions the modification of the ``Accel`` variable,
+but not the one of ``Breaks``. Again, a warning could be issued to the
+programmer, stating that a written variable is not mentioned in the contract,
+so no other part of the program can be aware of its new value, and this is
+probably a bug either in the code or in the contract. In this particular
+example, the previously mentioned warning about code that does not contribute
+to the postcondition would be issued as well, but other situations, that would
+only be detected by the analysis concerning effects, are possible.
+
 Redundant Specifications *(TO DO)*
 ------------------------
+
+A common case of meaningless specifications is the case of trivial or
+redundant assertions. An assertion that is always false or always true is not
+very useful. Worse, a *precondition* that is always false (or
+*inconsistent*) makes the corresponding subprogram trivially *correct*,
+because under this false hypothesis, everything can be proved.  Similarly, a
+postcondition that is always true can be proved correct, but it certainly does
+not express anything interesting about the subprogram. Moy and
+Wallenburg [#moy:2010:erts2]_ detected cases of such irrelevant annotations
+in the code of Tokeneer project [#barnes:06:issse]_ which had been formally
+proved in SPARK.
+
+.. [#moy:2010:erts2] Yannick Moy and Angela Wallenburg, *Tokeneer: beyond formal program verification*, presented at Embedded Real Time Software and Systems, May 2010, Toulouse, France, http://www.open-do.org/wp-content/uploads/2010/04/ERTS2010_final.pdf
+
+.. [#barnes:06:issse] Janet Barnes, Rod Chapman, Randy Johnson, James Widmaier, David Cooper and Bill Everett, *Engineering the Tokeneer enclave protection software*, in Proceedings of the 1st IEEE International Symposium on Secure Software Engineering, March 2006, http://www.altran-praxis.com/downloads/SPARK/technicalReferences/issse2006tokeneer.pdf
+
+GNATprove could detect such undesirable annotations and issue a
+warning to the programmer. In practice, detecting an inconsistent precondition
+amounts to trying to proving ``False`` just after assuming the
+precondition. If the proof succeeds, anything can be proved at that place in
+the code, so the precondition must be inconsistent. A trivial postcondition
+that is always true can be detected by trying to prove it in the *empty
+context*, that is, without assuming the precondition to be true nor the
+subprogram body to execute correctly.
 
