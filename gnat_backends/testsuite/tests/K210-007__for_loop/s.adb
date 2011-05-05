@@ -17,8 +17,10 @@ package body S is
   procedure Move (Dest, Src : out IntArray) is
   begin
      for Index in Dest'Range loop
-        pragma Assert (for all J in Dest'First .. Index - 1 =>
-                         Dest (J) = Src'Old (J));
+        pragma Assert ((for all J in Dest'First .. Index - 1 =>
+                         Dest (J) = Src'Old (J)) and 
+		       (for all J in Index .. Dest'Last =>
+                         Src (J) = Src'Old (J)));
 
         Dest (Index) := Src (Index);
         Src (Index) := 0;
