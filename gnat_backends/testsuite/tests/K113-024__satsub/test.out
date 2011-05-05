@@ -1,4 +1,4 @@
-sat.adb:6:12: (info) proved: range check
+sat.adb:6:12: (info) proved: overflow check
 sat.adb:7:19: (info) proved: range check
 sat.adb:9:17: (info) proved: range check
 sat.ads:7:56: (info) proved: proof of postcondition

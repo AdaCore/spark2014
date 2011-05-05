@@ -2,5 +2,5 @@ count.adb:4:24: (info) proved: range check
 count.adb:7:10: (info) proved: proof of loop invariant initalization
 count.adb:7:10: (info) proved: proof of loop invariant preservation
 count.adb:8:21: (info) proved: range check
-count.ads:4:63: (info) proved: range check
+count.ads:4:63: (info) proved: overflow check
 count.ads:5:62: (info) proved: proof of postcondition

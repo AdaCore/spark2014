@@ -1,8 +1,8 @@
 p.ads:10:31: (info) proved: division by zero
-p.ads:10:31: range check failed
+p.ads:10:31: overflow check failed
 p.ads:13:15: (info) proved: division by zero
-p.ads:13:15: (info) proved: range check
+p.ads:13:15: (info) proved: overflow check
 p.ads:4:15: division by zero failed
-p.ads:4:15: range check failed
+p.ads:4:15: overflow check failed
 p.ads:7:31: (info) proved: division by zero
-p.ads:7:31: range check failed
+p.ads:7:31: overflow check failed

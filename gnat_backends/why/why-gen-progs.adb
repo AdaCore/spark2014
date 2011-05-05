@@ -38,6 +38,21 @@ with Why.Gen.Preds;       use Why.Gen.Preds;
 
 package body Why.Gen.Progs is
 
+   function Convert_From_Int
+      (Ada_Node : Node_Id := Empty;
+       To       : Why_Type;
+       Why_Expr : W_Prog_Id;
+       Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id;
+   --  Convert the Why expression in argument to "int". It is expected to be
+   --  of type "From".
+
+   function Convert_To_Int
+      (Ada_Node : Node_Id := Empty;
+       From     : Why_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id;
+   --  Convert the Why expression in argument to "int". It is expected to be
+   --  of type "From".
+
    function Is_False_Boolean (P : W_Prog_Id) return Boolean;
    --  Check if the given program is the program "false"
 
@@ -82,6 +97,44 @@ package body Why.Gen.Progs is
       end case;
    end Conversion_Name;
 
+   --------------------
+   -- Convert_To_Int --
+   --------------------
+
+   function Convert_To_Int
+      (Ada_Node : Node_Id := Empty;
+       From     : Why_Type;
+       Why_Expr : W_Prog_Id) return W_Prog_Id
+   is
+   begin
+      return
+        New_Prog_Call
+          (Ada_Node => Ada_Node,
+           Name     => Conversion_Name (From => From, To => (Kind => Why_Int)),
+           Progs    => (1 => Why_Expr));
+   end Convert_To_Int;
+
+   ----------------------
+   -- Convert_From_Int --
+   ----------------------
+
+   function Convert_From_Int
+      (Ada_Node : Node_Id := Empty;
+       To       : Why_Type;
+       Why_Expr : W_Prog_Id;
+       Reason   : VC_Kind := VC_Range_Check) return W_Prog_Id
+   is
+   begin
+      return
+        New_Located_Call
+          (Ada_Node => Ada_Node,
+           Name     =>
+            To_Program_Space
+              (Conversion_Name (From => (Kind => Why_Int), To => To)),
+           Progs    => (1 => Why_Expr),
+           Reason   => Reason);
+   end Convert_From_Int;
+
    -----------------------
    -- Insert_Conversion --
    -----------------------
@@ -104,32 +157,21 @@ package body Why.Gen.Progs is
             --  If both types are "int", and we have a Base_Type, insert a
             --  conversion
             return
-              Insert_Conversion
-                (Ada_Node => Ada_Node,
-                 From     => Base_Type,
-                 To       => (Kind => Why_Int),
-                 Why_Expr =>
-                  Insert_Conversion
-                    (Ada_Node => Ada_Node,
-                     From     => (Kind => Why_Int),
-                     To       => Base_Type,
-                     Why_Expr => Why_Expr));
+               Convert_To_Int
+                 (Ada_Node => Ada_Node,
+                  From     => Base_Type,
+                  Why_Expr =>
+                     Convert_From_Int
+                        (Ada_Node => Ada_Node,
+                         To       => Base_Type,
+                         Why_Expr => Why_Expr,
+                         Reason   => VC_Overflow_Check));
          else
-            return
-              New_Prog_Call
-                (Ada_Node => Ada_Node,
-                 Name     => Conversion_Name (From => From, To => To),
-                 Progs    => (1 => Why_Expr));
+            return Convert_To_Int (Ada_Node, From, Why_Expr);
          end if;
 
       elsif From.Kind = Why_Int then
-         return
-           New_Located_Call
-             (Ada_Node => Ada_Node,
-              Name     =>
-               To_Program_Space (Conversion_Name (From => From, To => To)),
-              Progs    => (1 => Why_Expr),
-              Reason   => VC_Range_Check);
+         return Convert_From_Int (Ada_Node, To, Why_Expr);
       else
          return
             Insert_Conversion

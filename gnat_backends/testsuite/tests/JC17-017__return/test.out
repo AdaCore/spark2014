@@ -1,4 +1,4 @@
-p.adb:15:9: (info) proved: range check
+p.adb:15:9: (info) proved: overflow check
 p.adb:17:14: (info) proved: range check
 p.adb:21:7: (info) proved: proof of loop invariant initalization
 p.adb:21:7: (info) proved: proof of loop invariant preservation
@@ -9,5 +9,5 @@ p.adb:37:30: (info) proved: proof of loop invariant preservation
 p.adb:39:10: (info) proved: proof of loop invariant initalization
 p.adb:39:10: (info) proved: proof of loop invariant preservation
 p.adb:48:13: range check failed
-p.adb:48:18: (info) proved: range check
+p.adb:48:18: (info) proved: overflow check
 p.adb:4:33: (info) proved: proof of postcondition

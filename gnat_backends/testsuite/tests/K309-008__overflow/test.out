@@ -1,2 +1,2 @@
-over.adb:7:20: range check failed
+over.adb:7:20: overflow check failed
 over.adb:7:25: (info) proved: range check
