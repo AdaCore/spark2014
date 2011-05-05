@@ -36,9 +36,9 @@ GNATprove is able to show that only the precondition of the first of these
 specifications could raise a run-time error::
 
    p.ads:4:15: division by zero failed
-   p.ads:7:31: Proved - division by zero
-   p.ads:10:31: Proved - division by zero
-   p.ads:13:15: Proved - division by zero
+   p.ads:7:31: (info) proved: division by zero
+   p.ads:10:31: (info) proved: division by zero
+   p.ads:13:15: (info) proved: division by zero
 
 Notice also that division might also overflow here, if ``X`` is the minimal
 integer value and ``Y`` is ``-1`` (standard 32-bits integers are assumed
@@ -46,12 +46,10 @@ here). GNATprove generates VCs to check this overflow, and it detects that only
 the precondition of the last of these specifications cannot raise a run-time
 error::
 
-   p.ads:4:15: range check failed
-   p.ads:7:31: range check failed
-   p.ads:10:31: range check failed
-   p.ads:13:15: Proved - range check
-
-Note that the current version of GNATprove misclassifies those as range checks.
+   p.ads:4:15: overflow check failed
+   p.ads:7:31: overflow check failed
+   p.ads:10:31: overflow check failed
+   p.ads:13:15: (info) proved: range check
 
 Absence of Run-Time Errors *(In Progress)*
 --------------------------
