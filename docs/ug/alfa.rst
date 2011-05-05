@@ -379,7 +379,8 @@ in order to prove the postcondition of function ``Contains`` below, one has to
 write a precise loop invariant such as the one given below::
 
   function Contains (Table : IntArray; Value : Integer) return Boolean with
-    Post => (for some J in Table'Range => Table(J) = Value);
+    Post => (if Contains'Result then (for some J in Table'Range => Table (J) = Value)
+	else (for all J in Table'Range => Table (J) /= Value));
 
   function Contains (Table : IntArray; Value : Integer) return Boolean is
   begin
@@ -407,8 +408,10 @@ function ``Move`` below, one has to write a loop invariant referring to
   procedure Move (Dest, Src : out IntArray) is
   begin
      for Index in Dest'Range loop
-        pragma Assert (for all J in Dest'First .. Index - 1 =>
-                         Dest (J) = Src'Loop_Entry (J));
+        pragma Assert ((for all J in Dest'First .. Index - 1 =>
+                         Dest (J) = Src'Loop_Entry (J)) and 
+		       (for all J in Index .. Dest'Last =>
+                         Src (J) = Src'Loop_Entry (J)));
 
         Dest (Index) := Src (Index);
         Src (Index) := 0;
