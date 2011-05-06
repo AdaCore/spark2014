@@ -1,2 +1,2 @@
-prepost.adb:5:7: proof of assertion failed
+prepost.adb:5:7: (info) proved: proof of assertion
 prepost.ads:4:12: (info) proved: range check

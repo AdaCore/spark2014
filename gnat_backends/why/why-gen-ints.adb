@@ -166,21 +166,33 @@ package body Why.Gen.Ints is
                                            +Duplicate_Any_Node (Id =>
                                                                   +True_Pred));
             Axiom_Body : constant W_Predicate_Id :=
-               New_Universal_Quantif
-                 (Variables =>
+              New_Universal_Quantif
+                (Variables =>
                      (1 => New_Identifier (X_S),
                       2 => New_Identifier (Y_S)),
-                  Var_Type => New_Type_Int,
-                  Pred =>
-                     New_Conditional_Pred
-                        (Condition =>
-                           New_Operation
-                             (Name => New_Bool_Int_Cmp (Rel_Symbol),
-                              Parameters =>
-                                 (1 => New_Term (Name => X_S),
-                                  2 => New_Term (Name => Y_S))),
-                         Then_Part => True_Pred,
-                         Else_Part => False_Pred));
+                 Var_Type => New_Type_Int,
+                 Pred =>
+                   New_Conjunction
+                     (Left => New_Implication
+                          (Left =>
+                               New_Equal
+                             (Left  => New_Operation
+                                (Name => New_Bool_Int_Cmp (Rel_Symbol),
+                                 Parameters =>
+                                   (1 => New_Term (Name => X_S),
+                                    2 => New_Term (Name => Y_S))),
+                              Right => New_Term ("true")),
+                           Right => True_Pred),
+                      Right => New_Implication
+                        (Left =>
+                           New_Equal
+                             (Left  => New_Operation
+                                  (Name => New_Bool_Int_Cmp (Rel_Symbol),
+                                   Parameters =>
+                                     (1 => New_Term (Name => X_S),
+                                      2 => New_Term (Name => Y_S))),
+                              Right => New_Term ("false")),
+                         Right => False_Pred)));
          begin
             New_Axiom
                (File => File,
