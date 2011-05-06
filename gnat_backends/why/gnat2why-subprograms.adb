@@ -1067,6 +1067,13 @@ package body Gnat2Why.Subprograms is
             if Nkind (Tmp_Node) = N_Expression_Function then
                return Tmp_Node;
             end if;
+         else
+            --  ??? I don't know in which situation we need this case ...
+            Tmp_Node :=
+               Original_Node (Parent (Parent (Corresponding_Spec (Node))));
+            if Nkind (Tmp_Node) = N_Expression_Function then
+               return Tmp_Node;
+            end if;
          end if;
          return Node;
       end Is_Syntactic_Expr_Function;
