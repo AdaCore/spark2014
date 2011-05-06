@@ -32,6 +32,8 @@ with Ada.Text_IO;
 
 with GNAT.Directory_Operations.Iteration;
 with GNAT.Expect;       use GNAT.Expect;
+
+with String_Utils;      use String_Utils;
 with VC_Kinds;          use VC_Kinds;
 
 package body Altergo is
@@ -74,9 +76,6 @@ package body Altergo is
 
    procedure Print_VC_Msg (V : VC_Kind);
    --  Print an explanation for the VC kind
-
-   function Starts_With (S, Prefix : String) return Boolean;
-   --  Check if S starts with Prefix
 
    ------------------
    -- Call_Altergo --
@@ -423,22 +422,5 @@ package body Altergo is
             Put ("proof of assertion");
       end case;
    end Print_VC_Msg;
-
-   -----------------
-   -- Starts_With --
-   -----------------
-
-   function Starts_With (S, Prefix : String) return Boolean is
-   begin
-      if S'Length < Prefix'Length then
-         return False;
-      end if;
-      for Index in Prefix'Range loop
-         if S (S'First + Index - Prefix'First) /= Prefix (Index) then
-            return False;
-         end if;
-      end loop;
-      return True;
-   end Starts_With;
 
 end Altergo;

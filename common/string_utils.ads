@@ -28,4 +28,11 @@ with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 package String_Utils is
    package String_Lists is new
       Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
+
+   function Ends_With (Str, Suffix : String) return Boolean;
+   --  return True when Str ends with Suffix
+
+   function Starts_With (Str, Prefix : String) return Boolean;
+   --  Check if Str starts with Prefix
+
 end String_Utils;
