@@ -1,0 +1,9 @@
+stacks.ads:8:69: (info) proved: range check
+stacks.ads:12:91: (info) proved: range check
+stacks.ads:22:43: (info) proved: proof of postcondition
+stacks.adb:11:18: range check failed
+stacks.ads:18:31: (info) proved: proof of postcondition
+stacks.adb:5:18: range check failed
+stacks.adb:6:13: (info) proved: range check
+stacks.ads:10:92: (info) proved: range check
+stacks.ads:14:75: (info) proved: range check
