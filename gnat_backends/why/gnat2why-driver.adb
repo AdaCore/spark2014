@@ -43,6 +43,7 @@ with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
 with Switch;                use Switch;
+with String_Utils;          use String_Utils;
 
 with ALFA.Definition;       use ALFA.Definition;
 with ALFA.Filter;           use ALFA.Filter;
@@ -91,8 +92,6 @@ package body Gnat2Why.Driver is
       N          : constant Node_Id := Unit (GNAT_Root);
       FName      : constant String :=
          Get_Name_String (File_Name (Get_Source_File_Index (Sloc (N))));
-      Full_FName : constant String :=
-         Get_Name_String (Full_File_Name (Get_Source_File_Index (Sloc (N))));
       Base_Name : constant String :=
          File_Name_Without_Suffix (FName);
 
@@ -161,12 +160,34 @@ package body Gnat2Why.Driver is
       --  Write Dependency file
       Open_Current_File (Base_Name & ".d");
       P (Current_File, Base_Name & "__package.mlw: ");
-      P (Current_File, Full_FName);
       for Index in ALIs.First .. ALIs.Last loop
          P (Current_File, " ");
          P (Current_File, Name_String (Name_Id (ALIs.Table (Index).Afile)));
       end loop;
-         NL (Current_File);
+      --  Write dependencies to all other units
+      declare
+         AR : constant ALIs_Record := ALIs.Table (Main_Lib_Id);
+      begin
+         for Id in AR.First_Sdep .. AR.Last_Sdep loop
+            declare
+               S : constant Sdep_Record := Sdep.Table (Id);
+            begin
+               if not S.Dummy_Entry then
+                  declare
+                     Name : constant String :=
+                        Get_Name_String (Full_Source_Name ((S.Sfile)));
+                  begin
+                     if not Ends_With (Name, "system.ads") then
+                        P (Current_File, " ");
+                        P (Current_File, Name);
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+      end;
+
+      NL (Current_File);
       Close_Current_File;
 
       --  Compute the frame condition from raw ALFA information
