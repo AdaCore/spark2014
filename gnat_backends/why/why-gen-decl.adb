@@ -38,7 +38,7 @@ package body Why.Gen.Decl is
    procedure Iter_Binder_Array (Binders : W_Binder_Array)
    is
    begin
-      for Index in reverse Binders'Range loop
+      for Index in Binders'Range loop
          declare
             use Node_Lists;
 

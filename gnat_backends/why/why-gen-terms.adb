@@ -25,12 +25,10 @@
 
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Atree.Mutators; use Why.Atree.Mutators;
 with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Unchecked_Ids;  use Why.Unchecked_Ids;
 
 package body Why.Gen.Terms is
 
@@ -120,8 +118,8 @@ package body Why.Gen.Terms is
       Binders : W_Binder_Array)
      return W_Term_Id
    is
-      Operation : constant W_Operation_Unchecked_Id :=
-                    New_Unchecked_Operation;
+      Ar  : W_Term_Array := (1 .. Binders'Length => <>);
+      Cnt : Integer := 1;
 
       procedure Append_Arg
          (Name : W_Identifier_Id;
@@ -136,9 +134,8 @@ package body Why.Gen.Terms is
           Ty : W_Simple_Value_Type_Id) is
       begin
          pragma Unreferenced (Ty);
-         Operation_Append_To_Parameters
-           (Operation,
-            New_Term_Identifier (Name => Name));
+         Ar (Cnt) := New_Term_Identifier (Name => Name);
+         Cnt := Cnt + 1;
       end Append_Arg;
 
       procedure Build_Call is new Iter_Binder_Array (Append_Arg);
@@ -149,9 +146,8 @@ package body Why.Gen.Terms is
       if Binders'Length = 0 then
          return New_Term_Identifier (Name => Name);
       else
-         Operation_Set_Name (Operation, Name);
          Build_Call (Binders);
-         return +Operation;
+         return New_Operation (Name => Name, Parameters => Ar);
       end if;
    end New_Call_To_Logic;
 
