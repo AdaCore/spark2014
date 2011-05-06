@@ -185,7 +185,8 @@ package body Why.Gen.Axioms is
                                       (1 => New_Trigger (
                                          Terms => (1 => In_Range_t)),
                                        2 => New_Trigger (
-                                         Terms => (1 => X_To_Type_Op)))),
+                                         Terms => (1 =>
+                                                     Back_To_Base_Type_Op)))),
                                   Pred      => Formula);
    begin
       New_Axiom
