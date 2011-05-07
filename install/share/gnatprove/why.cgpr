@@ -3,7 +3,7 @@ configuration project Why is
    package Compiler is
       for Driver ("Why") use "why";
       for Required_Switches ("Why") use
-         ("--multi-why", "--explain", "--fast-wp", "--default-locs");
+         ("--multi-why", "--explain", "--fast-wp", "--default-locs", "--delete-old-vcs");
       for Object_File_Suffix ("Why") use "_ctx.why";
       for Language_Kind ("Why") use "file_based";
    end Compiler;

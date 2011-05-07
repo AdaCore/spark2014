@@ -1,0 +1,86 @@
+diff --git src/main.ml src/main.ml
+index 8da99f1..7153240 100644
+--- src/main.ml
++++ src/main.ml
+@@ -695,7 +695,20 @@ let rec iter_with_last f = function
+   | [] -> ()
+   | [x] -> f true x
+   | x::l -> f false x; iter_with_last f l
+-  
++
++let delete_old_vcs files =
++   let base_name = Filename.chop_extension (last files) in
++   let cnt = ref 1 in
++   try
++      while true do
++         let po_name = base_name ^ "_po" ^ string_of_int !cnt ^ ".why" in
++         if Sys.file_exists po_name then Sys.remove po_name
++         else raise Exit;
++         incr cnt;
++      done;
++   with Exit -> ()
++
++
+ let main () =
+   let t0 = Unix.times () in
+   load_prelude ();
+@@ -706,6 +719,7 @@ let main () =
+     end 
+   else 
+     begin
++      if Options.delete_old_vcs then delete_old_vcs files;
+       iter_with_last deal_file files;
+       if type_only then exit 0;
+       if (pruning) or (Options.pruning_hyp_v != -1) then
+diff --git src/options.ml src/options.ml
+index 7b4913b..bd10ca4 100644
+--- src/options.ml
++++ src/options.ml
+@@ -95,6 +95,7 @@ let files_to_load_ = ref []
+ let show_time_ = ref false
+ let locs_files = ref []
+ let default_locs = ref false
++let delete_old_vcs = ref false
+ let explain_vc = ref false
+ let locs_table = Hashtbl.create 97
+ 
+@@ -238,6 +239,8 @@ Typing/Annotations/VCG options:
+   --explain          outputs explanations for VCs in file.xpl
+   --locs f           reads source locations from file f
+   --default-locs     reads source locations from file basename.loc
++  --delete-old-vcs   delete files that originate from a previous call to Why on
++                     the same file; active only when option --multi-why is given
+   --phantom <name>   declare <name> as a phantom type
+ 
+ VC transformation options:
+@@ -609,6 +612,9 @@ let files =
+     | ("-default-locs" | "--default-locs" ) :: args ->
+           default_locs := true;
+           parse args
++    | ("-delete-old-vcs" | "--delete-old-vcs" ) :: args ->
++          delete_old_vcs := true;
++          parse args
+     | ("-phantom" | "--phantom") :: s :: args ->
+ 	Hashtbl.add phantom_types s ();
+ 	parse args
+@@ -626,6 +632,8 @@ let type_only = !type_only_
+ let wp_only = !wp_only_
+ let prover (* ?(ignore_gui=false) *) () =
+   if (* not ignore_gui &&*) !gui then Dispatcher else !prover_
++let delete_old_vcs =
++   !delete_old_vcs && prover () = MultiWhy
+ let valid = !valid_
+ let coq_tactic = !coq_tactic_
+ let coq_preamble = match !coq_preamble_ with
+diff --git src/options.mli src/options.mli
+index 598d63a..4e675b0 100644
+--- src/options.mli
++++ src/options.mli
+@@ -150,6 +150,7 @@ val simplify_triggers : bool
+ val no_harvey_prelude : bool
+ val no_zenon_prelude : bool
+ val no_cvcl_prelude : bool
++val delete_old_vcs : bool
+ 
+ val floats : bool
+ val show_time : bool
