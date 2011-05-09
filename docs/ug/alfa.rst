@@ -379,8 +379,10 @@ in order to prove the postcondition of function ``Contains`` below, one has to
 write a precise loop invariant such as the one given below::
 
   function Contains (Table : IntArray; Value : Integer) return Boolean with
-    Post => (if Contains'Result then (for some J in Table'Range => Table (J) = Value)
-	else (for all J in Table'Range => Table (J) /= Value));
+    Post => (if Contains'Result then 
+               (for some J in Table'Range => Table (J) = Value)
+	     else 
+               (for all J in Table'Range => Table (J) /= Value));
 
   function Contains (Table : IntArray; Value : Integer) return Boolean is
   begin
