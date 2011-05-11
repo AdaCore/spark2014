@@ -37,6 +37,8 @@ with Sinput; use Sinput;
 
 package ALFA.Common is
 
+   Name_GNATprove : constant String := "gnatprove";
+
    function Id_Hash (X : Entity_Id) return Hash_Type is (Hash_Type (X));
 
    package Id_Set is new Hashed_Sets

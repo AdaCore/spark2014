@@ -93,9 +93,9 @@ package body ALFA.Definition is
       V_Slice           => To_Unbounded_String ("slice"),
       V_Tagged          => To_Unbounded_String ("tagged type"));
 
-   -------------------------
-   -- Pragma Formal_Proof --
-   -------------------------
+   ------------------------------------------------
+   -- Pragma Annotate (GNATprove, Force/Disable) --
+   ------------------------------------------------
 
    Formal_Proof_On  : Id_Set.Set;
    Formal_Proof_Off : Id_Set.Set;
@@ -225,7 +225,7 @@ package body ALFA.Definition is
    --  from being in ALFA.
    --
    --  If the subprogram being marked as not in ALFA is annotated with
-   --  Formal_Proof On, then an error is issued with message Msg on node N,
+   --  formal proof forced, then an error is issued with message Msg on node N,
    --  unless Silent is True.
 
    procedure Mark_Non_ALFA
@@ -242,7 +242,7 @@ package body ALFA.Definition is
       Silent : Boolean        := False);
    --  Mark the declaration N as not being in ALFA, as well as the enclosing
    --  subprogram if any. If Silent is True, then never issue an error message,
-   --  even if Formal_Proof is On.
+   --  even if formal proof is forced.
 
    procedure Mark_Non_ALFA_Declaration
      (Msg  : String;
@@ -314,11 +314,11 @@ package body ALFA.Definition is
    begin
       case V is
          when V_Implem =>
-            return Msg & " is not yet implemented in ALFA";
+            return Msg & " is not yet implemented in Alfa";
          when V_Other =>
-            return Msg & " is not in ALFA";
+            return Msg & " is not in Alfa";
          when V_Extensions =>
-            return Msg & " is not yet implemented in ALFA ("
+            return Msg & " is not yet implemented in Alfa ("
               & To_String (Violation_Msg (V)) & ")";
       end case;
    end Complete_Error_Msg;
@@ -1281,7 +1281,7 @@ package body ALFA.Definition is
    begin
       --  The scope entity for a package body is not the same as the scope
       --  entity for a package declaration, which allow separately forcing
-      --  Formal_Proof on either the declaration or the body.
+      --  formal proof on either the declaration or the body.
 
       Push_Scope (Id, Is_Generic => Is_Generic);
       Mark_List (Declarations (N));
@@ -1366,17 +1366,24 @@ package body ALFA.Definition is
          --  The following is a special form used in conjunction with the
          --  ALFA subset of Ada:
 
-         --    pragma Annotate (Formal_Proof, MODE);
-         --    MODE ::= On | Off
+         --    pragma Annotate (GNATprove, MODE);
+         --    MODE ::= Force | Ignore
 
-         --    This pragma either forces (mode On) or disables (mode Off)
+         --    This pragma either forces (mode Force) or disables (mode Ignore)
          --    formal verification of the subprogram in which it is added. When
          --    formal verification is forced, all violations of the the ALFA
          --    subset of Ada present in the subprogram are reported as errors
          --    to the user.
 
          when Pragma_Annotate =>
-            if Chars (Get_Pragma_Arg (Arg1)) = Name_Formal_Proof then
+
+            --  Fill in Name_Buffer with Name_GNATprove so that Name_Find
+            --  returns the corresponding name.
+
+            Name_Len := 0;
+            Add_Str_To_Name_Buffer (Name_GNATprove);
+
+            if Chars (Get_Pragma_Arg (Arg1)) = Name_Find then
                if List_Length (Pragma_Argument_Associations (N)) /= 2 then
                   Error_Msg_N ("wrong number of arguments for annotation", N);
                   return;
@@ -1410,20 +1417,19 @@ package body ALFA.Definition is
                      return;
                   end if;
 
-                  if Chars (Arg) = Name_On then
+                  if Chars (Arg) = Name_Force then
                      if Formal_Proof_Currently_Forced then
                         Error_Msg_N ("?formal proof already forced", N);
                      end if;
                      Formal_Proof_On.Insert (Cur_Ent);
-                  elsif Chars (Arg) = Name_Off then
+                  elsif Chars (Arg) = Name_Ignore then
                      if Formal_Proof_Currently_Disabled then
                         Error_Msg_N ("?formal proof already disabled", N);
                      end if;
                      Formal_Proof_Off.Insert (Cur_Ent);
                   else
-                     Error_Msg_N
-                       ("second argument for annotation must be On or Off",
-                        Arg2);
+                     Error_Msg_N ("second argument for annotation must be "
+                                  & "Force or Ignore", Arg2);
                         return;
                   end if;
 
@@ -1432,12 +1438,12 @@ package body ALFA.Definition is
                   --  located, but this is better than ignoring these
                   --  violations.
 
-                  if Chars (Arg) = Name_On
+                  if Chars (Arg) = Name_Force
                     and then (not Is_In_ALFA (Cur_Ent)
                                or else not Body_Is_In_ALFA (Cur_Ent))
                   then
                      Error_Msg_N
-                       ("annotation is placed after violation of ALFA", N);
+                       ("annotation is placed after violation of Alfa", N);
                      return;
                   end if;
                end;
@@ -1465,7 +1471,7 @@ package body ALFA.Definition is
             end if;
 
          when others =>
-            Mark_Non_ALFA ("pragma is not in ALFA", N);
+            Mark_Non_ALFA ("pragma", N);
       end case;
    end Mark_Pragma;
 
