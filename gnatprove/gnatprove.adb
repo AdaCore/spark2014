@@ -25,11 +25,15 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Altergo;           use Altergo;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+with Call;              use Call;
+with Explanations;      use Explanations;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
 with GNAT.Strings;
+with GNAT.Directory_Operations.Iteration;
 
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
@@ -67,6 +71,8 @@ procedure Gnatprove is
       Ada.Directories.Compose (Gpr_Cnf_Dir, "gnat2why.cgpr");
    Gpr_Why_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "why.cgpr");
+   Gpr_Altergo_Cnf_File : constant String :=
+      Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
 
    procedure Call_Gprbuild (Arguments : Argument_List);
    --  Call gprbuild with the given arguments
@@ -77,18 +83,30 @@ procedure Gnatprove is
    procedure Compute_VCs (Proj : Project_Tree);
    --  Compute Verification conditions using Why, driven by gprbuild.
 
+   procedure Generate_Project_File
+      (Filename : String;
+       Project_Name : String;
+       Source_Dir : String);
+   --  Generate project file at given place, with given name and source dir.
+
    function Generate_Why_Project_File (Source_Dir : String)
        return String;
-   --  Extract the necessary information from the user project to generate a
-   --  Why project file; Write the file to disk and return the file name.
+   --  Generate project file with the given source dir. Write the file to disk
+   --  and return the file name.
 
-   generic
-      with procedure Action (Proj : Project_Tree; File : Virtual_File);
-   procedure Iter_Project_Source_Files (Proj : Project_Tree);
-   --  Iterate over all source files of a project.
+   function Generate_Altergo_Project_File (Source_Dir : String)
+       return String;
+   --  Generate project file with the given source dir. Write the file to disk
+   --  and return the file name.
 
    procedure Make_Standard_Package (Proj : Project_Tree);
    --  Produce the file "_standard.mlw".
+
+   procedure Prove_VCs (Proj : Project_Tree);
+   --  Prove the VCs.
+
+   procedure Report_VCs;
+   --  Print error/info messages on VCs.
 
    procedure Translate_To_Why (Project_File : String);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
@@ -151,6 +169,30 @@ procedure Gnatprove is
           3 => new String'("--config=" & Gpr_Why_Cnf_File)));
    end Compute_VCs;
 
+   ---------------------------
+   -- Generate_Project_File --
+   ---------------------------
+
+   procedure Generate_Project_File
+      (Filename : String;
+       Project_Name : String;
+       Source_Dir : String)
+   is
+      File : Ada.Text_IO.File_Type;
+   begin
+      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Filename);
+      Ada.Text_IO.Put (File, "project ");
+      Ada.Text_IO.Put (File, Project_Name);
+      Ada.Text_IO.Put_Line (File, " is");
+      Ada.Text_IO.Put (File, "for Source_Dirs use (""");
+      Ada.Text_IO.Put (File, Source_Dir);
+      Ada.Text_IO.Put_Line (File, """);");
+      Ada.Text_IO.Put (File, "end ");
+      Ada.Text_IO.Put (File, Project_Name);
+      Ada.Text_IO.Put_Line (File, ";");
+      Ada.Text_IO.Close (File);
+   end Generate_Project_File;
+
    -------------------------------
    -- Generate_Why_Project_File --
    -------------------------------
@@ -158,53 +200,24 @@ procedure Gnatprove is
    function Generate_Why_Project_File (Source_Dir : String)
       return String
    is
-      File : Ada.Text_IO.File_Type;
       Why_File_Name : constant String := "why.gpr";
    begin
-      Ada.Text_IO.Create (File, Ada.Text_IO.Out_File, Why_File_Name);
-      Ada.Text_IO.Put_Line (File, "project Why is");
-      Ada.Text_IO.Put (File, "for Source_Dirs use (""");
-      Ada.Text_IO.Put (File, Source_Dir);
-      Ada.Text_IO.Put_Line (File, """);");
-      Ada.Text_IO.Put_Line (File, "end Why;");
-      Ada.Text_IO.Close (File);
+      Generate_Project_File (Why_File_Name, "Why", Source_Dir);
       return Why_File_Name;
    end Generate_Why_Project_File;
 
-   -------------------------------
-   -- Iter_Project_Source_Files --
-   -------------------------------
+   -----------------------------------
+   -- Generate_Altergo_Project_File --
+   -----------------------------------
 
-   procedure Iter_Project_Source_Files (Proj : Project_Tree) is
-      Proj_Type : constant Project_Type := Proj.Root_Project;
-      File_List : constant File_Array_Access := Proj_Type.Source_Files;
+   function Generate_Altergo_Project_File (Source_Dir : String)
+      return String
+   is
+      Altergo_Filename : constant String := "altergo.gpr";
    begin
-      for Index in File_List'Range loop
-         declare
-            Inf : constant File_Info := Info (Proj, File_List (Index));
-         begin
-            case Unit_Part (Inf) is
-               when Unit_Body =>
-                  Action (Proj, File_List (Index));
-
-               when Unit_Spec =>
-                  if File_From_Unit
-                       (Proj_Type,
-                        Unit_Name (Inf),
-                        Unit_Body,
-                        "ada") = ""
-                  then
-                     Action (Proj, File_List (Index));
-                  end if;
-
-               when others =>
-                  null;
-
-            end case;
-
-         end;
-      end loop;
-   end Iter_Project_Source_Files;
+      Generate_Project_File (Altergo_Filename, "Altergo", Source_Dir);
+      return Altergo_Filename;
+   end Generate_Altergo_Project_File;
 
    ---------------------------
    -- Make_Standard_Package --
@@ -222,9 +235,30 @@ procedure Gnatprove is
          Verbose   => Verbose);
    end Make_Standard_Package;
 
+   ---------------
+   -- Prove_VCs --
+   ---------------
+
+   procedure Prove_VCs (Proj : Project_Tree)
+   is
+      Proj_Type     : constant Project_Type := Proj.Root_Project;
+      Altergo_Proj_File : constant String :=
+         Generate_Altergo_Project_File
+           (Proj_Type.Object_Dir.Display_Full_Name);
+   begin
+      Call_Gprbuild (
+         (1 => new String'("-P"),
+          2 => new String'(Altergo_Proj_File),
+          3 => new String'("--config=" & Gpr_Altergo_Cnf_File)));
+   end Prove_VCs;
+
    Tree      : Project_Tree;
    Proj_Type : Project_Type;
    Proj_Env  : Project_Environment_Access;
+
+   -----------------------
+   -- Read_Command_Line --
+   -----------------------
 
    procedure Read_Command_Line is
    begin
@@ -248,15 +282,65 @@ procedure Gnatprove is
 
       Getopt (Config);
       if Project_File.all = "" then
-         Ada.Text_IO.Put_Line
-           (Ada.Text_IO.Standard_Error,
-            "No project file given, aborting.");
-         GNAT.OS_Lib.OS_Exit (1);
+         Abort_With_Message ("No project file given, aborting.");
       end if;
    exception
       when Invalid_Switch | Exit_From_Command_Line =>
          GNAT.OS_Lib.OS_Exit (1);
    end Read_Command_Line;
+
+   ----------------
+   -- Report_VCs --
+   ----------------
+
+   procedure Report_VCs
+   is
+
+      procedure Report_VC
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean);
+      --  Report a single VC
+
+      ---------------
+      -- Report_VC --
+      ---------------
+      procedure Report_VC
+        (Item    : String;
+         Index   : Positive;
+         Quit    : in out Boolean)
+      is
+         Base_Name : constant String :=
+            Ada.Directories.Base_Name (Item);
+         Rgo_Name : constant String := Base_Name & ".rgo";
+         Xpl_Name : constant String := Base_Name & ".xpl";
+         Rgo_File : Ada.Text_IO.File_Type;
+         Proved : Boolean;
+      begin
+         pragma Unreferenced (Index);
+         pragma Unreferenced (Quit);
+
+         Ada.Text_IO.Open (Rgo_File, Ada.Text_IO.In_File, Rgo_Name);
+         if Ada.Strings.Fixed.Index
+              (Ada.Text_IO.Get_Line (Rgo_File), "Valid") > 0 then
+            Proved := True;
+         else
+            Proved := False;
+         end if;
+         Ada.Text_IO.Close (Rgo_File);
+
+         if not Proved or else Report then
+            Print_Error_Msg (Get_VC_Explanation (Xpl_Name), Proved);
+         end if;
+      end Report_VC;
+
+      procedure Iterate is new
+         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+           (Action => Report_VC);
+
+   begin
+      Iterate (Path => "*package_po*.why");
+   end Report_VCs;
 
    ----------------------
    -- Translate_To_Why --
@@ -280,16 +364,6 @@ procedure Gnatprove is
       end if;
    end Translate_To_Why;
 
-   procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File);
-
-   procedure Call_Altergo_Wrap (Proj : Project_Tree; File : Virtual_File) is
-   begin
-      Call_Altergo (Proj, File, Verbose, Report);
-   end Call_Altergo_Wrap;
-
-   procedure Iterate_Altergo is
-     new Iter_Project_Source_Files (Call_Altergo_Wrap);
-
    --  begin processing for Gnatprove
 
 begin
@@ -305,10 +379,8 @@ begin
    --  single object directory.
    --  Here we check that this is the case, and fail gracefully if not.
    if Object_Path (Proj_Type, Recursive => True)'Length > 1 then
-      Ada.Text_IO.Put_Line
-        (Ada.Text_IO.Standard_Error,
-         "There is more than one object directory, aborting.");
-      GNAT.OS_Lib.OS_Exit (1);
+      Abort_With_Message
+         ("There is more than one object directory, aborting.");
    end if;
 
    Compute_ALI_Information (Project_File.all);
@@ -320,11 +392,12 @@ begin
    Make_Standard_Package (Tree);
 
    Compute_VCs (Tree);
-   Iterate_Altergo (Tree);
+
+   Prove_VCs (Tree);
+
+   Report_VCs;
 exception
    when Invalid_Project =>
-      Ada.Text_IO.Put
-        (Ada.Text_IO.Standard_Error,
-         "Error: could not find project file: ");
-      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Project_File.all);
+      Abort_With_Message
+         ("Error: could not find project file: " & Project_File.all);
 end Gnatprove;

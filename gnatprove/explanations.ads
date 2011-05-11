@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                              A L T E R G O                               --
+--                          E X P L A N A T I O N S                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -19,31 +19,31 @@
 -- write to the Free Software Foundation,  51 Franklin Street, Fifth Floor, --
 -- Boston,                                                                  --
 --                                                                          --
--- gnatprove is maintained by AdaCore (http://www.adacore.com)               --
+-- gnatprove is maintained by AdaCore (http://www.adacore.com)              --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with GNATCOLL.Projects; use GNATCOLL.Projects;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
+with System.OS_Lib;     use System.OS_Lib;
+with VC_Kinds;          use VC_Kinds;
 
-package Altergo is
+package Explanations is
 
-   procedure Call_Altergo
-      (Proj : Project_Tree;
-       File : Virtual_File;
-       Verbose : Boolean := False;
-       Report  : Boolean := False);
-   --  Call Alt-Ergo on all VC files that correspond to a given source file of
-   --  a project. Print messages for unproved VCs. If Report is "True", print
-   --  messages for all VCs.
+   type Explanation is private;
 
-   procedure Call_Exit_On_Failure
-     (Command   : String;
-      Arguments : Argument_List;
-      Verbose   : Boolean := False);
-   --  Call the given command using the given argument list.
-   --  Free all argument access values
-   --  If the command exit status is not 0, print its output and exit.
+   function Get_VC_Explanation (Expl_File : String) return Explanation;
+   --  Parse an explanation file to return an explanation.
 
-end Altergo;
+   procedure Print_Error_Msg (X : Explanation; Proved : Boolean := False);
+   --  Print an error message corresponding to the explanation in argument.
+
+private
+
+   type Explanation is
+   record
+      EX_Filename : String_Access;
+      EX_Line     : String_Access;
+      EX_Col      : String_Access;
+      EX_Kind     : VC_Kind := VC_Unused;
+   end record;
+
+end Explanations;

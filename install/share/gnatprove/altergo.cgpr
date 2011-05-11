@@ -1,0 +1,14 @@
+configuration project Why is
+   for Default_Language use "AltErgo";
+   package Compiler is
+      for Driver ("AltErgo") use "altergo_wrap";
+      for Object_File_Suffix ("AltErgo") use ".rgo";
+      for Language_Kind ("AltErgo") use "file_based";
+   end Compiler;
+
+   package Naming is
+      for Implementation_Suffix ("AltErgo") use ".why";
+   end Naming;
+
+end Why;
+
