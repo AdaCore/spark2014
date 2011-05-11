@@ -1,5 +1,5 @@
 package Pack is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
 
    G : access Boolean := new Boolean;
 

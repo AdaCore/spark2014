@@ -1,8 +1,8 @@
 package body Pack is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
 
    function F return Boolean is
-      pragma Annotate (Formal_Proof, On);
+      pragma Annotate (gnatprove, Force);
       B : Boolean;
    begin
       B := True;
@@ -10,7 +10,7 @@ package body Pack is
    end F;
 
    procedure P is
-      pragma Annotate (Formal_Proof, On);
+      pragma Annotate (gnatprove, Force);
       B : Boolean;
    begin
       B := False;

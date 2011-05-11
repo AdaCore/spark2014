@@ -1,5 +1,5 @@
 package body Count is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
    function Count (Max : Integer; Step : Natural) return Natural is
       Res : Natural := 0;
    begin

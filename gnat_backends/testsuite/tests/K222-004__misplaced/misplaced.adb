@@ -1,23 +1,23 @@
 package body Misplaced is
 
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
 
    procedure P is
 
       --  Various incorrect annotations
-      pragma Annotate (Formal_Proof);
-      pragma Annotate (Formal_Proof, Bad);
-      pragma Annotate (Formal_Proof, On, 2);
-      pragma Annotate (Formal_Proof, Bad, "something");
+      pragma Annotate (gnatprove);
+      pragma Annotate (gnatprove, Bad);
+      pragma Annotate (gnatprove, Force, 2);
+      pragma Annotate (gnatprove, Bad, "something");
 
       --  Redundant annotation
-      pragma Annotate (Formal_Proof, On);
+      pragma Annotate (gnatprove, Force);
 
       type T is access Integer;
       X : T := new Integer;
 
       --  Contradictory annotation
-      pragma Annotate (Formal_Proof, Off);
+      pragma Annotate (gnatprove, Ignore);
    begin
       X.all := 0;
    end P;

@@ -1,5 +1,5 @@
 procedure P (X, Y : Integer) is
-   -- pragma Annotate (Formal_Proof, On);
+   -- pragma Annotate (gnatprove, Force);
 
    subtype S1 is Integer range 1 .. 10;
    Tmp1 : S1;

@@ -8,7 +8,7 @@ package body Pack is
    end F;
 
    procedure P is
-      pragma Annotate (Formal_Proof, On);
+      pragma Annotate (gnatprove, Force);
    begin
       declare
          B : access Boolean;

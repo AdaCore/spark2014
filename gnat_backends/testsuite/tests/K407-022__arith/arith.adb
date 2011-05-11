@@ -1,5 +1,5 @@
 function Arith (X, Y, Z : Integer) return Integer is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
 
    --  not ok
    Tmp1 : Integer := X + Y + Z;

@@ -1,5 +1,5 @@
 package body P is
-   -- pragma Annotate (Formal_Proof, On);
+   -- pragma Annotate (gnatprove, Force);
 
    procedure Proc (X, Y : Integer)
      with Pre => X <= Y;

@@ -1,7 +1,7 @@
 package body Tab_Init is
     Procedure Init (T : out Tab; A : in Integer)
     is
-       pragma Annotate (Formal_Proof, On);
+       pragma Annotate (gnatprove, Force);
     begin
        for I in Tab'First .. Tab'Last loop
           pragma Assert (for all J in Tab'First .. I-1

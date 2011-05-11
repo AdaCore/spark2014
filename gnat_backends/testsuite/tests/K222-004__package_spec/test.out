@@ -1,10 +1,10 @@
-pack.adb:13:07: block statement is not yet implemented in ALFA (block statement)
-pack.adb:14:14: access type is not in ALFA
-pack.adb:16:10: entity is not in ALFA
-pack.adb:16:15: allocator is not in ALFA
-pack.adb:17:10: explicit dereference is not in ALFA
-pack.adb:18:13: explicit dereference is not in ALFA
-pack.ads:4:08: access type is not in ALFA
-pack.ads:4:26: allocator is not in ALFA
-pack.ads:7:18: explicit dereference is not in ALFA
+pack.adb:13:07: block statement is not yet implemented in Alfa (block statement)
+pack.adb:14:14: access type is not in Alfa
+pack.adb:16:10: entity is not in Alfa
+pack.adb:16:15: allocator is not in Alfa
+pack.adb:17:10: explicit dereference is not in Alfa
+pack.adb:18:13: explicit dereference is not in Alfa
+pack.ads:4:08: access type is not in Alfa
+pack.ads:4:26: allocator is not in Alfa
+pack.ads:7:18: explicit dereference is not in Alfa
 

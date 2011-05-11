@@ -1,5 +1,5 @@
 package body Pack is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
       
    function F return Boolean is
       B : access Boolean;
@@ -11,7 +11,7 @@ package body Pack is
 
    procedure P is
    begin
-      pragma Annotate (Formal_Proof, Off);
+      pragma Annotate (gnatprove, Ignore);
       declare
          B : access Boolean;
       begin

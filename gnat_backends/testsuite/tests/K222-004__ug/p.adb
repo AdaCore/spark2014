@@ -1,5 +1,5 @@
 package body P is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
 
    procedure Set is
    begin
@@ -10,7 +10,7 @@ package body P is
       Y : Boolean;
 
       function Get return Boolean is
-         pragma Annotate (Formal_Proof, Off);
+         pragma Annotate (gnatprove, Ignore);
       begin
          return X.all;
       end Get;

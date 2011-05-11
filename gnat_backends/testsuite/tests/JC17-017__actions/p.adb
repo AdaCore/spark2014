@@ -1,5 +1,5 @@
 package body P is
-   -- pragma Annotate (Formal_Proof, On);
+   -- pragma Annotate (gnatprove, Force);
 
    X : String := "some";
    B : Boolean;

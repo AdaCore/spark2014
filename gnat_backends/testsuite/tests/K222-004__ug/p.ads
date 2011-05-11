@@ -1,5 +1,5 @@
 package P is
-   pragma Annotate (Formal_Proof, On);
+   pragma Annotate (gnatprove, Force);
    X : access Boolean;
    procedure P0;
 end P;
