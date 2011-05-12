@@ -29,6 +29,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed;
 with Call;              use Call;
 with Explanations;      use Explanations;
+with String_Utils;      use String_Utils;
 
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
@@ -52,6 +53,9 @@ procedure Gnatprove is
    All_VCs      : aliased Boolean;
    --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
    --  gnat2why
+   Timeout      : aliased Integer;
+   Steps        : aliased Integer;
+   --  The Timeout and Step for Alt-ergo
 
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
@@ -74,7 +78,10 @@ procedure Gnatprove is
    Gpr_Altergo_Cnf_File : constant String :=
       Ada.Directories.Compose (Gpr_Cnf_Dir, "altergo.cgpr");
 
-   procedure Call_Gprbuild (Arguments : Argument_List);
+   procedure Call_Gprbuild
+      (Project_File  : String;
+       Config_File   : String;
+       Compiler_Args : in out String_Lists.List);
    --  Call gprbuild with the given arguments
 
    procedure Compute_ALI_Information (Project_File : String);
@@ -118,17 +125,24 @@ procedure Gnatprove is
    -- Call_Gprbuild --
    -------------------
 
-   procedure Call_Gprbuild (Arguments : Argument_List)
+   procedure Call_Gprbuild
+      (Project_File  : String;
+       Config_File   : String;
+       Compiler_Args : in out String_Lists.List)
    is
-      Extra_Args : constant Argument_List :=
-         (if Verbose then
-            (1 => new String'("-v"))
-         else
-            (1 => new String'("-q")));
    begin
+      if Verbose then
+         Compiler_Args.Prepend ("-v");
+      else
+         Compiler_Args.Prepend ("-q");
+      end if;
+      Compiler_Args.Prepend (Project_File);
+      Compiler_Args.Prepend ("-P");
+      Compiler_Args.Prepend ("--config=" & Config_File);
+
       Call_Exit_On_Failure
         (Command   => "gprbuild",
-         Arguments => Extra_Args & Arguments,
+         Arguments => Compiler_Args,
          Verbose   => Verbose);
    end Call_Gprbuild;
 
@@ -157,16 +171,14 @@ procedure Gnatprove is
       Proj_Type     : constant Project_Type := Proj.Root_Project;
       Why_Proj_File : constant String :=
          Generate_Why_Project_File (Proj_Type.Object_Dir.Display_Full_Name);
+      Args          : String_Lists.List := String_Lists.Empty_List;
    begin
       --  Set the environment variable WHYLIB, if necessary, to indicate the
       --  placement for Why
       if not Ada.Environment_Variables.Exists (WHYLIB) then
          Ada.Environment_Variables.Set (WHYLIB, Why_Lib_Dir);
       end if;
-      Call_Gprbuild (
-         (1 => new String'("-P"),
-          2 => new String'(Why_Proj_File),
-          3 => new String'("--config=" & Gpr_Why_Cnf_File)));
+      Call_Gprbuild (Why_Proj_File, Gpr_Why_Cnf_File, Args);
    end Compute_VCs;
 
    ---------------------------
@@ -241,15 +253,24 @@ procedure Gnatprove is
 
    procedure Prove_VCs (Proj : Project_Tree)
    is
-      Proj_Type     : constant Project_Type := Proj.Root_Project;
+      use String_Lists;
+      Proj_Type         : constant Project_Type := Proj.Root_Project;
       Altergo_Proj_File : constant String :=
          Generate_Altergo_Project_File
            (Proj_Type.Object_Dir.Display_Full_Name);
+      Args              : List := Empty_List;
    begin
-      Call_Gprbuild (
-         (1 => new String'("-P"),
-          2 => new String'(Altergo_Proj_File),
-          3 => new String'("--config=" & Gpr_Altergo_Cnf_File)));
+      if Timeout /= 0 then
+         Args.Append ("--timeout=" & Int_Image (Timeout));
+      end if;
+      if Steps /= 0 then
+         Args.Append ("--steps=" & Int_Image (Steps));
+      end if;
+      if Integer (Args.Length) > 0 then
+         Args.Prepend ("-cargs:AltErgo");
+      end if;
+
+      Call_Gprbuild (Altergo_Proj_File, Gpr_Altergo_Cnf_File, Args);
    end Prove_VCs;
 
    Tree      : Project_Tree;
@@ -275,6 +296,16 @@ procedure Gnatprove is
       Define_Switch (Config, Report'Access,
                      Long_Switch => "--report",
                      Help => "Print messages for all generated VCs");
+
+      Define_Switch
+         (Config, Timeout'Access,
+          Long_Switch => "--timeout=",
+          Help => "Set the timeout for Alt-ergo in seconds (default is 10)");
+
+      Define_Switch
+         (Config, Steps'Access,
+          Long_Switch => "--steps=",
+          Help => "Set the maximum number of proof steps for Alt-ergo");
 
       Define_Switch (Config, Project_File'Access,
                      "-P:",
@@ -348,20 +379,15 @@ procedure Gnatprove is
 
    procedure Translate_To_Why (Project_File : String)
    is
-      Arguments : constant Argument_List :=
-         (1 => new String'("-P"),
-          2 => new String'(Project_File),
-          3 => new String'("--subdirs=" & String (Subdir_Name)),
-          4 => new String'("--config=" & Gpr_Ada_Cnf_File));
+      use String_Lists;
+      Args : String_Lists.List := Empty_List;
    begin
-      if All_VCs then
-         Call_Gprbuild (Arguments);
-      else
-         Call_Gprbuild
-            (Arguments &
-               (1 => new String'("-cargs:Ada"),
-                2 => new String'("-gnatd.G")));
+      Args.Append ("--subdirs=" & String (Subdir_Name));
+      if not All_VCs then
+         Args.Append ("-cargs:Ada");
+         Args.Append ("-gnatd.G");
       end if;
+      Call_Gprbuild (Project_File, Gpr_Ada_Cnf_File, Args);
    end Translate_To_Why;
 
    --  begin processing for Gnatprove

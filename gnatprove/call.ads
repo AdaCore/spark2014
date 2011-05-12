@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with GNAT.OS_Lib;       use GNAT.OS_Lib;
+with String_Utils;      use String_Utils;
 
 package Call is
 
@@ -37,5 +38,10 @@ package Call is
    --  Call the given command using the given argument list.
    --  Free all argument access values
    --  If the command exit status is not 0, print its output and exit.
+
+   procedure Call_Exit_On_Failure
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Verbose   : Boolean := False);
 
 end Call;

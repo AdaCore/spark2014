@@ -28,6 +28,10 @@ with GNAT.Expect;       use GNAT.Expect;
 
 package body Call is
 
+   function Argument_List_Of_String_List (S : String_Lists.List)
+      return Argument_List;
+   --  Convert a String List into an Argument List
+
    ------------------------
    -- Abort_With_Message --
    ------------------------
@@ -37,6 +41,26 @@ package body Call is
       Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
       GNAT.OS_Lib.OS_Exit (1);
    end Abort_With_Message;
+
+   ----------------------------------
+   -- Argument_List_Of_String_List --
+   ----------------------------------
+
+   function Argument_List_Of_String_List (S : String_Lists.List)
+      return Argument_List
+   is
+      use String_Lists;
+      Arguments : Argument_List := (1 .. Integer (S.Length) => <>);
+      Cur       : Cursor        := First (S);
+      Cnt       : Integer       := 1;
+   begin
+      while Has_Element (Cur) loop
+         Arguments (Cnt) := new String'(Element (Cur));
+         Next (Cur);
+         Cnt := Cnt + 1;
+      end loop;
+      return Arguments;
+   end Argument_List_Of_String_List;
 
    --------------------------
    -- Call_Exit_On_Failure --
@@ -106,4 +130,15 @@ package body Call is
       end;
    end Call_Exit_On_Failure;
 
+   procedure Call_Exit_On_Failure
+     (Command   : String;
+      Arguments : String_Lists.List;
+      Verbose   : Boolean := False)
+   is
+   begin
+      Call_Exit_On_Failure
+        (Command,
+         Argument_List_Of_String_List (Arguments),
+         Verbose);
+   end Call_Exit_On_Failure;
 end Call;
