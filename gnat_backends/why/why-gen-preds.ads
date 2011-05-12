@@ -77,6 +77,11 @@ package Why.Gen.Preds is
       Right : W_Term_Id) return W_Predicate_Id;
    --  Create the predicate "Left <> Right"
 
+   function New_Equal_Bool
+     (Left : W_Term_Id;
+      Right : W_Predicate_Id) return W_Predicate_Id;
+   --  Create the formula "Left = true <-> Right".
+
    function New_Located_Predicate
       (Ada_Node : Node_Id;
        Pred     : W_Predicate_Id;

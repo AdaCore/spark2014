@@ -217,10 +217,25 @@ package body Why.Gen.Preds is
    is
    begin
       return New_Related_Terms
-         (Left => Left,
+         (Left  => Left,
           Right => Right,
           Op => New_Rel_Eq);
    end New_Equal;
+
+   --------------------
+   -- New_Equal_Bool --
+   --------------------
+
+   function New_Equal_Bool
+     (Left : W_Term_Id;
+      Right : W_Predicate_Id) return W_Predicate_Id
+   is
+   begin
+      return
+        New_Equivalence
+          (Left  => New_Equal (Left, New_True_Literal),
+           Right => Right);
+   end New_Equal_Bool;
 
    ---------------------------
    -- New_Located_Predicate --

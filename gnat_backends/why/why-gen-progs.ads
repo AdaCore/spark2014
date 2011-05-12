@@ -23,11 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;         use Types;
-with VC_Kinds;      use VC_Kinds;
-with Why.Gen.Types; use Why.Gen.Types;
-with Why.Ids;       use Why.Ids;
-with Why.Sinfo;     use Why.Sinfo;
+with Types;              use Types;
+with VC_Kinds;           use VC_Kinds;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Gen.Types;      use Why.Gen.Types;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
 
 package Why.Gen.Progs is
 
@@ -53,12 +54,13 @@ package Why.Gen.Progs is
    --  to the range of the Base_Type.
 
    function New_Assume_Statement
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id)
+      (Ada_Node    : Node_Id;
+       Pred        : W_Predicate_Id;
+       Return_Type : W_Primitive_Type_Id := New_Type_Unit)
        return W_Prog_Id;
    --  Generate an assumption statement. There is no such thing in Why2, so it
    --  is encoded as follows:
-   --    [ unit -> { true } unit { P} ] void
+   --    [ { true } <return_type> { P} ]
 
    function New_For_Loop
      (Ada_Node   : Node_Id;

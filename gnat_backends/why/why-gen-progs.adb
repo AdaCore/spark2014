@@ -30,7 +30,6 @@ with Gnat2Why.Locs;       use Gnat2Why.Locs;
 
 with Why.Conversions;     use Why.Conversions;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Atree.Tables;    use Why.Atree.Tables;
 with Why.Gen.Names;       use Why.Gen.Names;
@@ -216,8 +215,9 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Assume_Statement
-      (Ada_Node : Node_Id;
-       Pred     : W_Predicate_Id)
+      (Ada_Node    : Node_Id;
+       Pred        : W_Predicate_Id;
+       Return_Type : W_Primitive_Type_Id := New_Type_Unit)
        return W_Prog_Id
    is
    begin
@@ -227,7 +227,7 @@ package body Why.Gen.Progs is
              Any_Type =>
                New_Computation_Type
                  (Ada_Node => Ada_Node,
-                  Return_Type => New_Type_Unit,
+                  Return_Type => Return_Type,
                   Effects => New_Effects,
                   Postcondition =>
                      New_Postcondition (Ada_Node => Ada_Node, Pred => Pred)));

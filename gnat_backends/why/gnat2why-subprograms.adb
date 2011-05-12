@@ -158,13 +158,9 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type;
    --  Get the name of the type of an Ada node, as a Why Type
 
-   function VC_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
-   --  Call Why_Expr_Of_Ada_Expr in VC_Mode.
-
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type;
-      VC_Mode       : Boolean := False) return W_Prog_Id;
+      Expected_Type : Why_Type) return W_Prog_Id;
    --  Translate a single Ada expression into a Why expression of the
    --  Expected_Type.
    --  When VC_Mode is true, allow a translation to Why code that will only
@@ -1041,7 +1037,7 @@ package body Gnat2Why.Subprograms is
          Compute_Spec
             (W_Prog_Id,
              New_True_Literal_Prog,
-             VC_Expr_Of_Ada_Expr,
+             Why_Expr_Of_Ada_Expr,
              New_Prog_Andb_Then);
 
       --------------------------------
@@ -1118,18 +1114,27 @@ package body Gnat2Why.Subprograms is
                --    forall x1 ... xn.
                --       (pre -> logic__f (x1 .. xn)) = expr
                declare
-                  Ax_Body : W_Predicate_Id :=
+                  Is_Boolean : constant Boolean :=
+                    Etype (Defining_Entity (Spec)) = Standard_Boolean;
+                  Left       : constant W_Term_Id :=
+                    New_Call_To_Logic
+                      (Name => Logic_Func_Name (Name_Str),
+                       Binders => Func_Binders);
+                  Equality   : constant W_Predicate_Id :=
+                    (if Is_Boolean then
+                     New_Equal_Bool
+                       (Left,
+                        Why_Predicate_Of_Ada_Expr (Expression (Orig_Node)))
+                     else
+                     New_Equal
+                       (Left => Left,
+                        Right =>
+                            Why_Term_Of_Ada_Expr (Expression (Orig_Node))));
+                  Ax_Body    : W_Predicate_Id :=
                        New_Implication
                          (Left  => +Duplicate_Any_Node (Id => +Pre),
-                          Right =>
-                            New_Equal
-                              (Left =>
-                                 New_Call_To_Logic
-                                    (Name => Logic_Func_Name (Name_Str),
-                                     Binders => Func_Binders),
-                               Right =>
-                                 Why_Term_Of_Ada_Expr
-                                    (Expression (Orig_Node))));
+                          Right => Equality);
+
                   Arg : Node_Id := First (Ada_Binders);
                begin
                   while Present (Arg) loop
@@ -1177,11 +1182,18 @@ package body Gnat2Why.Subprograms is
                   else
                      New_Type_Unit);
                Param_Post : constant W_Predicate_Id :=
-                  (if Is_Expr_Func then
+                 (if Is_Expr_Func then
+                    (if Entity (Result_Definition (Spec)) = Standard_Boolean
+                     then
+                     New_Equal_Bool
+                        (Left  => New_Result_Term,
+                         Right =>
+                           Why_Predicate_Of_Ada_Expr (Expression (Orig_Node)))
+                     else
                      New_Equal
                         (Left  => New_Result_Term,
                          Right =>
-                           Why_Term_Of_Ada_Expr (Expression (Orig_Node)))
+                           Why_Term_Of_Ada_Expr (Expression (Orig_Node))))
                   else
                      +Duplicate_Any_Node (Id => +Post));
             begin
@@ -1217,8 +1229,7 @@ package body Gnat2Why.Subprograms is
 
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
-      Expected_Type : Why_Type;
-      VC_Mode       : Boolean := False) return W_Prog_Id
+      Expected_Type : Why_Type) return W_Prog_Id
    is
       T            : W_Prog_Id;
       Current_Type : Why_Type := Type_Of_Node (Expr);
@@ -1409,53 +1420,62 @@ package body Gnat2Why.Subprograms is
                   Reason   => VC_Precondition);
 
          when N_Expression_With_Actions =>
-            return
-               Why_Expr_Of_Ada_Stmts
-                  (Actions (Expr),
-                   Inner_Expr =>
-                     Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
+            if Nkind (Original_Node (Expr)) = N_Quantified_Expression then
+               return Why_Expr_Of_Ada_Expr (Original_Node (Expr));
+            else
+               return
+                  Why_Expr_Of_Ada_Stmts
+                     (Actions (Expr),
+                      Inner_Expr =>
+                        Why_Expr_Of_Ada_Expr
+                          (Expression (Expr),
+                           Expected_Type));
+            end if;
 
          when N_Quantified_Expression =>
-            if VC_Mode then
-               --  We are not interested in the return value, and Why is not
-               --  strong enough to reason about it. So it is enough to
-               --  evaluate the expression in the context of *some* variable.
-               --  Here is what we do:
-               --    (let i = [ int ] in
-               --       if <condition> then ignore (expression);
-               --       [ bool ]
-               --    );
-               --  The condition is a formula that expresses that i is in the
-               --  range given by the quantification.
-               declare
-                  Quant_Spec : constant Node_Id :=
-                     Loop_Parameter_Specification (Expr);
-                  Index      : constant W_Identifier_Id :=
-                     New_Identifier
-                       (Full_Name (Defining_Identifier (Quant_Spec)));
-                  Why_Expr   : constant W_Prog_Id :=
-                     New_Ignore
-                       (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
-                  Range_Cond : constant W_Prog_Id :=
-                     Range_Prog
-                       (Discrete_Subtype_Definition (Quant_Spec),
-                        New_Deref
-                          (Ref => +Duplicate_Any_Node (Id => +Index)));
-               begin
-                  return
-                     New_Binding_Ref
+            --  We are interested in the checks for the entire range, and
+            --  in the return value of the entire expression, but we are
+            --  not interested in the exact order in which things are
+            --  evaluated. We also do not want to translate the expression
+            --  function by a loop. So our scheme is the following:
+            --    for all I in Cond => Expr
+            --
+            --  becomes:
+            --    (let i = ref [ int ] in
+            --       if cond then ignore (expr));
+            --    [ { } bool { result = true -> expr } ]
+            --  The condition is a formula that expresses that i is in the
+            --  range given by the quantification.
+            declare
+               Quant_Spec : constant Node_Id :=
+                  Loop_Parameter_Specification (Expr);
+               Index      : constant W_Identifier_Id :=
+                  New_Identifier
+                    (Full_Name (Defining_Identifier (Quant_Spec)));
+               Why_Expr   : constant W_Prog_Id :=
+                  New_Ignore
+                    (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
+               Range_Cond : constant W_Prog_Id :=
+                  Range_Prog
+                    (Discrete_Subtype_Definition (Quant_Spec),
+                     New_Deref
+                       (Ref => +Duplicate_Any_Node (Id => +Index)));
+            begin
+               return
+                  Sequence
+                     (New_Binding_Ref
                        (Name => Index,
                         Def  => New_Simpl_Any_Expr (New_Type_Int),
                         Context =>
-                           Sequence
-                              (New_Conditional_Prog
-                                 (Condition => Range_Cond,
-                                  Then_Part => Why_Expr),
-                               New_Simpl_Any_Expr (New_Type_Bool)));
-               end;
-            else
-               raise Not_Implemented;
-            end if;
+                           New_Conditional_Prog
+                              (Condition => Range_Cond,
+                               Then_Part => Why_Expr)),
+                     New_Assume_Statement
+                        (Ada_Node    => Expr,
+                         Return_Type => New_Type_Bool,
+                         Pred        =>
+                           Why_Predicate_Of_Ada_Expr (Expr)));
+            end;
 
          when N_Attribute_Reference =>
             declare
@@ -1590,17 +1610,6 @@ package body Gnat2Why.Subprograms is
    begin
       return Why_Expr_Of_Ada_Expr (Expr, (Kind => Why_Int));
    end Int_Expr_Of_Ada_Expr;
-
-   --------------------------
-   -- VC_Expr_Of_Ada_Expr --
-   --------------------------
-
-   function VC_Expr_Of_Ada_Expr (Expr : Node_Id)
-      return W_Prog_Id
-   is
-   begin
-      return Why_Expr_Of_Ada_Expr (Expr, Type_Of_Node (Expr), True);
-   end VC_Expr_Of_Ada_Expr;
 
    ---------------------------
    -- Bool_Term_Of_Ada_Expr --
@@ -2181,7 +2190,7 @@ package body Gnat2Why.Subprograms is
                   Why_Predicate_Of_Ada_Expr (Condition (Expr));
                Hypothesis : constant W_Predicate_Id :=
                   Range_Predicate
-                     (Discrete_Subtype_Definition (Quant_Spec),
+                     (Get_Range (Discrete_Subtype_Definition (Quant_Spec)),
                       New_Term_Identifier (Name => I));
                Quant_Body : constant W_Predicate_Id :=
                   New_Implication
@@ -2472,6 +2481,7 @@ package body Gnat2Why.Subprograms is
               New_Operation
                  (Name => Logic_Func_Name (Full_Name (Entity (Name (Expr)))),
                   Parameters => Compute_Term_Args (Expr));
+
          when others =>
             raise Not_Implemented;
       end case;
