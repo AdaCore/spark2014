@@ -77,34 +77,29 @@ procedure Altergo_Wrap is
       Result_File : String;
       Verbose     : Boolean := False)
    is
-      Command  : String_Access;
-      Arguments : Argument_List := (1 .. 3 => <>);
+      Command   : String_Access;
+      Arguments : constant Argument_List :=
+         (1 => new String'(Int_Image (Timeout)),
+          2 => new String'("alt-ergo"),
+          3 => new String'(File));
       Status : aliased Integer;
    begin
       if Verbose then
          Ada.Text_IO.Put_Line ("calling Alt-ergo on " & File);
       end if;
 
-      if Steps /= 0 then
-         --  We are in stepping mode, we call Alt-ergo directly
-         Command := new String'("alt-ergo");
-         Arguments :=
-            (1 => new String'("-steps"),
-             2 => new String'(Int_Image (Steps)),
-             3 => new String'(File));
-      else
-         Command := new String'("why-cpulimit");
-         Arguments :=
-            (1 => new String'(Natural'Image (Timeout)),
-             2 => new String'("alt-ergo"),
-             3 => new String'(File));
-      end if;
-
       declare
-         S       : constant String :=
+         Real_Args : constant Argument_List :=
+            (if Steps /= 0 then
+               Arguments &
+                  (1 => new String'("-steps"),
+                   2 => new String'(Int_Image (Steps)))
+             else
+                Arguments);
+         S : constant String :=
             GNAT.Expect.Get_Command_Output
-              (Command   => Command.all,
-               Arguments => Arguments,
+              (Command   => "why-cpulimit",
+               Arguments => Real_Args,
                Input     => "",
                Status    => Status'Access,
                Err_To_Out => True);
