@@ -32,6 +32,8 @@ with Why.Atree.Builders;   use Why.Atree.Builders;
 with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Conversions;      use Why.Conversions;
 
+with String_Utils;         use String_Utils;
+
 package body Gnat2Why.Locs is
 
    Prefix : constant String := "Gnat2why__";
@@ -51,27 +53,10 @@ package body Gnat2Why.Locs is
 
    Located_Labels : Label_Lists.List := Label_Lists.Empty_List;
 
-   function Int_Image (N : Integer) return String;
-   --  Generate a string from an Integer, without the leading space.
-
    procedure Print_Located_Label
       (O : Output_Id;
        L : Label);
    --  Print a single entry of a located label
-
-   ---------------
-   -- Int_Image --
-   ---------------
-
-   function Int_Image (N : Integer) return String is
-      Result : constant String := Integer'Image (N);
-   begin
-      if N >= 0 then
-         return Result (2 .. Result'Last);
-      else
-         return Result;
-      end if;
-   end Int_Image;
 
    -----------------------
    -- New_Located_Label --

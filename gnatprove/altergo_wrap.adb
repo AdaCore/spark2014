@@ -37,11 +37,11 @@ procedure Altergo_Wrap is
    Config       : Command_Line_Configuration;
    Verbose      : aliased Boolean := False;
    Timeout      : aliased Integer := 10;
+   Steps        : aliased Integer := 0;
 
    procedure Call_AltErgo_On_File
      (File        : String;
       Result_File : String;
-      Timeout     : Natural;
       Verbose     : Boolean := False);
    --  Call Altergo on a single File. Produce a file containing the result of
    --  the run with name Result_File. Don't take more time than the given
@@ -75,22 +75,36 @@ procedure Altergo_Wrap is
    procedure Call_AltErgo_On_File
      (File        : String;
       Result_File : String;
-      Timeout     : Natural;
-      Verbose     : Boolean := False) is
+      Verbose     : Boolean := False)
+   is
+      Command  : String_Access;
+      Arguments : Argument_List := (1 .. 3 => <>);
+      Status : aliased Integer;
    begin
       if Verbose then
          Ada.Text_IO.Put_Line ("calling Alt-ergo on " & File);
       end if;
 
+      if Steps /= 0 then
+         --  We are in stepping mode, we call Alt-ergo directly
+         Command := new String'("alt-ergo");
+         Arguments :=
+            (1 => new String'("-steps"),
+             2 => new String'(Int_Image (Steps)),
+             3 => new String'(File));
+      else
+         Command := new String'("why-cpulimit");
+         Arguments :=
+            (1 => new String'(Natural'Image (Timeout)),
+             2 => new String'("alt-ergo"),
+             3 => new String'(File));
+      end if;
+
       declare
-         Status  : aliased Integer;
          S       : constant String :=
             GNAT.Expect.Get_Command_Output
-              (Command   => "why-cpulimit",
-               Arguments =>
-                 ((1 => new String'(Natural'Image (Timeout)),
-                   2 => new String'("alt-ergo"),
-                   3 => new String'(File))),
+              (Command   => Command.all,
+               Arguments => Arguments,
                Input     => "",
                Status    => Status'Access,
                Err_To_Out => True);
@@ -99,12 +113,6 @@ procedure Altergo_Wrap is
          Ada.Text_IO.Create (FT, Ada.Text_IO.Out_File, Result_File);
 
          if Status /= 0 or else S'Length = 0 then
-            if Status /= 0 then
-               Ada.Text_IO.Put_Line ("status");
-            end if;
-            if S'Length = 0 then
-               Ada.Text_IO.Put_Line ("length");
-            end if;
             Ada.Text_IO.Put (FT, "File """);
             Ada.Text_IO.Put (FT, File);
             Ada.Text_IO.Put_Line (FT, """:Failure or Timeout");
@@ -113,6 +121,7 @@ procedure Altergo_Wrap is
          end if;
          Ada.Text_IO.Close (FT);
       end;
+      Free (Command);
    end Call_AltErgo_On_File;
 
    ------------------------
@@ -135,7 +144,7 @@ procedure Altergo_Wrap is
            Target => Target,
            Success => Success,
            Verbose => Verbose);
-      Call_AltErgo_On_File (Target, Base_Of_VC & ".rgo", Timeout, Verbose);
+      Call_AltErgo_On_File (Target, Base_Of_VC & ".rgo", Verbose);
       Delete_File (Target, Success);
    end Call_AltErgo_On_Vc;
 
@@ -206,6 +215,11 @@ procedure Altergo_Wrap is
                      Initial => 10,
                      Help =>
                         "Set the timeout in seconds (default is 10 seconds)");
+
+      Define_Switch (Config, Steps'Access,
+                     "-s=", Long_Switch => "--steps=",
+                     Initial => 0,
+                     Help => "Set the maximal number of prove steps");
       Getopt (Config);
       declare
          Filename : constant String := Get_Argument;

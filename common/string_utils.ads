@@ -35,4 +35,7 @@ package String_Utils is
    function Starts_With (Str, Prefix : String) return Boolean;
    --  Check if Str starts with Prefix
 
+   function Int_Image (N : Integer) return String;
+   --  Generate a string from an Integer, without the leading space.
+
 end String_Utils;
