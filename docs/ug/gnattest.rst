@@ -19,12 +19,12 @@ A formal test-case is a GNAT extension to Ada, which is part of Alfa, meant to
 facilitate the formalization of test cases. It can be expressed either as an
 aspect in Ada 2012 or as a pragma in all Ada modes (83, 95, 2005, 2012). A
 formal test-case is attached to a subprogram declaration for a subprogram
-declared in a library-level package specification.  The syntax of test-case
-pragmas is the following::
+declared in a package specification inside a package spec unit.  The syntax of
+test-case pragmas is the following::
 
    pragma Test_Case (
       [Name     =>] static_string_Expression
-     ,[Mode     =>] (Normal | Robustness)
+     ,[Mode     =>] (Nominal | Robustness)
     [, Requires =>  Boolean_Expression]
     [, Ensures  =>  Boolean_Expression]);
 
@@ -41,7 +41,7 @@ expression. The following is an example of use within a package spec::
       ...
       function Sqrt (Arg : Float) return Float;
       pragma Test_Case (Name     => "Test 1",
-                        Mode     => Normal,
+                        Mode     => Nominal,
                         Requires => Arg < 100,
                         Ensures  => Sqrt'Result < 10);
       ...
@@ -49,7 +49,7 @@ expression. The following is an example of use within a package spec::
 
 The meaning of a test case is that, if the associated subprogram is
 executed in a context where ``Requires`` holds, then ``Ensures``
-should hold when the subprogram returns. Mode ``Normal`` indicates
+should hold when the subprogram returns. Mode ``Nominal`` indicates
 that the input context should satisfy the normal precondition of the
 subprogram, and the output context should then satisfy its
 postcondition. Mode ``Robustness`` indicates that the normal pre- and
@@ -58,7 +58,7 @@ postcondition of the subprogram should be ignored for this test case.
 Functional Behavior
 -------------------
 
-With ``Normal`` test-cases, the user can partition the input state space using
+With ``Nominal`` test-cases, the user can partition the input state space using
 the ``Requires`` components. No ``Ensures`` component is necessary in that
 case. Of course, the user can also strengthen the expected postcondition after
 the subprogram executes on a certain test-case by adding a ``Requires``
@@ -79,7 +79,7 @@ Absence of Run-Time Errors
 --------------------------
 
 With ``Robustness`` test-cases, the user can specify exceptional behavior in
-case the precondition is not fulfilled. During all runs of both ``Normal`` and
+case the precondition is not fulfilled. During all runs of both ``Nominal`` and
 ``Robustness`` test-cases, run-time checks are performed to detect potential
 run-time errors. Such errors are reported as failed tests in the final report.
 
