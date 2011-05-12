@@ -1,9 +1,10 @@
 include "ordered_set.why"
 
-(* Everything works with alt-ergo (-redondance or not it depends) in 60s,
+(* Everything works with alt-ergo in 10s,
    except:
-	- two goals, right_equal_next and insert_has_element, which take less than 20min
-   	- one VC of test_new_position which takes less than 90s (no option) *)
+	- three goals, right_equal_next, left_contains and right_delete, which take less than 1min
+	- one goals, right_equal, which take less than 10min
+   	- one VC of test_new_position which takes less than 1min *)
 
 (*** GOALS ***)
 
@@ -463,7 +464,8 @@ let test11 (s:set ref) (ss:set) (n:int) (c:cursor ref) =
     init:
     while !i <= n do
     	  { invariant
-	    ((forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))<i) and
+	    ((forall e:element_t. contains_(s,witness(e)) -> position_(ss,find_(ss,witness(e)))<i) and
+            (forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))) and
 	    length_(s)=i-1 and position_(ss,c)=i and i<=n+1)
 	  }
     iloop:
@@ -501,7 +503,9 @@ let test2 (s:set ref) (ss:set) =
     while has_element ss !c do
     	  { invariant
 	    ((has_element_(ss,c) or c=no_element) and
-	    (forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))<=length_(s)) and
+	    (forall e:element_t. contains_(s,witness(e)) ->
+                     position_(ss,find_(ss,witness(e)))<=length_(s)) and
+	    (forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))) and
 	    (has_element_(ss,c) -> length_(s)=position_(ss,c)-1) and
 	    (c=no_element -> length_(s)=length_(ss)))
 	  }
@@ -701,8 +705,6 @@ let test_new_position (s:set ref) (e:element_t) (b:bool) =
 	  }
     	  c:= next !s !c
     done;
-    eloop:
-    assert{c=ceiling(s,witness(e))};
     include_ s e;
     if has_element !s !c then
     if lt e (element !s !c) then

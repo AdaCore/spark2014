@@ -1,8 +1,8 @@
 include "hashed_set.why"
 
-(* Everything works with alt-ergo (-redondance or not it depends) in 60s
+(* Everything works with alt-ergo in 10s
    except :
-   	  - one goal, right_egal_next which takes less than 15min *)
+   	  - one goal, right_egal which takes less than 10min *)
 
 (*** GOALS ***)
 
@@ -379,7 +379,10 @@ let test11 (s:set ref) (ss:set) (n:int) (c:cursor ref) =
     init:
     while !i <= n do
     	  { invariant
-	    ((forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))<i) and
+	    ((forall e:element_t. contains_(s,witness(e)) ->
+               0<position_(ss,find_(ss,witness(e)))) and
+            (forall e:element_t. contains_(s,witness(e)) ->
+               position_(ss,find_(ss,witness(e)))<i) and
 	    length_(s)=i-1 and position_(ss,c)=i and i<=n+1)
 	  }
     insert s (element ss !c);
@@ -415,7 +418,10 @@ let test2 (s:set ref) (ss:set) =
     while has_element ss !c do
     	  { invariant
 	    ((has_element_(ss,c) or c=no_element) and
-	    (forall e:element_t. contains_(s,witness(e)) -> 0<position_(ss,find_(ss,witness(e)))<=length_(s)) and
+	    (forall e:element_t. contains_(s,witness(e)) ->
+	       position_(ss,find_(ss,witness(e)))<=length_(s)) and
+	    (forall e:element_t. contains_(s,witness(e)) ->
+	       0<position_(ss,find_(ss,witness(e)))) and
 	    (has_element_(ss,c) ->length_(s)=position_(ss,c)-1) and
 	    (c=no_element -> length_(s)=length_(ss)))
 	  }

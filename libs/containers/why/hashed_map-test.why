@@ -1,9 +1,9 @@
 include "hashed_map.why"
 
-(* Everything works with alt-ergo (-redondance or not it depends) in 60s
+(* Everything works with alt-ergo in 10s
    except :
-   	  - 1 goal, contains_left which is proved in 90s
-   	  - 2 goals, right_equal and right_equal_next which are not proved in 30min *)
+   	  - 1 goal, right_equal_next which is proved in 1min
+   	  - 1 goal, right_equal which is proved in 10min *)
 
 (* GOALS *)
 
@@ -45,10 +45,6 @@ goal contains_left :
 goal contains_element :
      forall s:map. forall cu:cursor [contains_(s,witness(key_(s,cu)))].
      	    has_element_(s,cu) -> contains_(s,witness(key_(s,cu)))
-
-goal position_next :
-      forall s:map. forall cu:cursor [position_(s,next_(s,cu))].
-      	     has_element_(s,next_(s,cu)) -> position_(s,next_(s,cu))=position_(s,cu)+1
 
 goal delete_next :
       forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,next_(s,c))].
@@ -164,10 +160,6 @@ axiom contains_left :
 axiom contains_element :
      forall s:map. forall cu:cursor [contains_(s,witness(key_(s,cu)))].
      	    has_element_(s,cu) -> contains_(s,witness(key_(s,cu)))
-
-axiom position_next :
-      forall s:map. forall cu:cursor [position_(s,next_(s,cu))].
-      	     has_element_(s,next_(s,cu)) -> position_(s,next_(s,cu))=position_(s,cu)+1
 
 axiom delete_next :
       forall s:map. forall c:cursor. forall si:map. forall cu:cursor [delete_(s,c,si),has_element_(si,next_(s,c))].
@@ -367,7 +359,8 @@ let test11 (s:map ref) (ss:map) (n:int) (c:cursor ref) =
     while !i <= n do
     	  { invariant
 	    ((forall k:key_t. contains_(s,witness(k)) ->
-	    	     0<position_(ss,find_(ss,witness(k)))<i and
+	    	     0<position_(ss,find_(ss,witness(k)))<i) and
+            (forall k:key_t. contains_(s,witness(k)) ->
 		     element__(s,witness(k))=element__(ss,witness(k))) and
 	    length_(s)=i-1 and position_(ss,c)=i and i<=n+1)
 	  }
@@ -406,7 +399,8 @@ let test2 (s:map ref) (ss:map) =
     	  { invariant
 	    ((has_element_(ss,c) or c=no_element) and
 	    (forall k:key_t. contains_(s,witness(k)) ->
-	    	    0<position_(ss,find_(ss,witness(k)))<=length_(s) and
+	    	    0<position_(ss,find_(ss,witness(k)))<=length_(s)) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
 		    element__(s,witness(k))=element__(ss,witness(k))) and
 	    (has_element_(ss,c) ->length_(s)=position_(ss,c)-1) and
 	    (c=no_element -> length_(s)=length_(ss)))

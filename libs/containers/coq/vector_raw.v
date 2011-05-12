@@ -315,7 +315,7 @@ intros Hea n _; rewrite minus_diag; apply X.beq_elt_true; exact Hea.
 intros Hea n; case_eq (find2 v e (S n) - n).
 intros Hko Hp.
 apply find2_sup in Hp.
-apply (minus_le_compat_r _ _ n) in Hp; rewrite Hko in Hp;
+apply (minus_le_compat_r _ _ n) in Hp. rewrite Hko in Hp;
 rewrite <- minus_Sn_m in Hp; [|apply le_refl]; rewrite minus_diag in Hp;
 contradict Hp; apply le_Sn_n.
 intros m Hm Hfind.
@@ -335,7 +335,7 @@ unfold find1; fold find1; intros n; case (beq_nat i n).
 intros Hf; apply (find2_element _ e _ Hf).
 intros Hp; simpl; case_eq (find1 v e i (S n) - n).
 intros Hko; apply find1_sup in Hp.
-apply (minus_le_compat_r _ _ n) in Hp; rewrite Hko in Hp;
+apply (minus_le_compat_r _ _ n) in Hp. rewrite Hko in Hp;
 rewrite <- minus_Sn_m in Hp; [|apply le_refl]; rewrite minus_diag in Hp;
 contradict Hp; apply le_Sn_n.
 intros m Hm; rewrite (minus_plus_simpl_l_reverse _ _ 1) in Hm;
@@ -1022,7 +1022,7 @@ contradict Hko; apply Zgt_not_le.
 destruct Hi as [_ Hip]; apply Zlt_gt; rewrite <- (Zplus_0_r 1);
 rewrite (Zplus_comm j); apply Zgt_le_succ in Hip; simpl in Hip.
 apply Zplus_le_lt_compat; [exact Hip|exact Hjp].
-apply (Zplus_le_compat_l _ _ i) in Hl; rewrite (right1_length v i Hi) in Hl.
+apply (Zplus_le_compat_l _ _ i) in Hl. rewrite (right1_length v i Hi) in Hl.
 contradict Hko; apply Zle_not_gt; apply (Zplus_le_reg_r _ _ (Z_of_nat 1));
 rewrite <- inj_plus; rewrite Zplus_comm; rewrite Zplus_minus.
 rewrite Zplus_comm; exact Hl.
@@ -2337,7 +2337,7 @@ rewrite Zabs_nat_Z_of_nat; case_eq (beq_nat (S (S m)) 0);
 apply O_S|intros _]; case_eq (beq_nat (S m) 0);
 [intro Hko; apply beq_nat_true in Hko; symmetry in Hko; contradict Hko;
 apply O_S|intros _].
-repeat(rewrite pred_Sn); auto.
+rewrite pred_Sn with m; auto.
 generalize (gt_Sn_O m); intro Hmp; apply gt_n_S in Hm;
 rewrite <- (S_pred _ _ Hpi) in Hm; apply inj_gt in Hm; apply inj_gt in Hmp;
 rewrite inj_0 in Hmp; generalize (Hcomp (conj (Zgt_lt _ _ Hmp)

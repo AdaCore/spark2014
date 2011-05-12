@@ -36,7 +36,7 @@ axiom position_no_element :
 
 axiom position_eq :
       forall co:map. forall cu1:cursor. forall cu2:cursor.
-      	     position_(co,cu1)>0 -> position_(co,cu1)=position_(co,cu2) -> cu1=cu2
+      	     position_(co,cu1)=position_(co,cu2) -> position_(co,cu1)>0 -> cu1=cu2
 
 (*** IS_EMPTY ***)
 
@@ -65,15 +65,12 @@ axiom next_next :
 
 (*** FIRST ***)
 
-predicate first__ (co:map,cu:cursor) =
-	  ((not is_empty_(co)) -> position_(co,cu)=1)
-	  and (is_empty_(co) -> cu=no_element)
-
 logic first_ : map -> cursor
 
 axiom first_first :
       forall co:map [first_(co)].
-      	     first__(co,first_(co))
+	  ((not is_empty_(co)) -> position_(co,first_(co))=1)
+	  and (is_empty_(co) -> first_(co)=no_element)
 
 (*** KEY ***)
 
@@ -106,12 +103,14 @@ function element__ (m:map,i:real) : element_t =
 (*** LEFT ***)
 
 predicate left_pos (co:map,i:int,col:map) =
-	  forall cu:cursor.
+	  (forall cu:cursor [position_(co,cu), position_(col,cu)].
 	    (i<=position_(co,cu) -> position_(col,cu)=0)
-	    and (i>position_(co,cu) -> position_(col,cu)=position_(co,cu)
-	    	 and key_(col,cu)=key_(co,cu)
-	    	 and element_(col,cu)=element_(co,cu))
-	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
+	    and (i>position_(co,cu) -> position_(col,cu)=position_(co,cu))
+	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))) and
+	  (forall cu:cursor.
+	    i>position_(co,cu) -> key_(col,cu)=key_(co,cu)) and
+	  (forall cu:cursor.
+	    i>position_(co,cu) -> element_(col,cu)=element_(co,cu))
 
 predicate left_find (co:map,i:int,col:map) =
 	  forall w:real.
@@ -134,12 +133,14 @@ axiom left_left :
 (*** RIGHT ***)
 
 predicate right_pos (co:map,i:int,cor:map) =
-	  forall cu:cursor.
+	  (forall cu:cursor [position_(co,cu), position_(cor,cu)].
 	    (i>position_(co,cu) -> position_(cor,cu)=0)
-	    and (i<=position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1
-	    	 and key_(cor,cu)=key_(co,cu)
-	    	 and element_(cor,cu)=element_(co,cu))
-	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
+	    and (i<=position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1)
+	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)) and
+	  (forall cu:cursor.
+	    i<=position_(co,cu) -> key_(cor,cu)=key_(co,cu)) and
+	  (forall cu:cursor.
+	    i<=position_(co,cu) -> element_(cor,cu)=element_(co,cu))
 
 predicate right_find (co:map,i:int,cor:map) =
 	  forall w:real.
@@ -168,9 +169,13 @@ predicate replace_ (co1:map,k:key_t,e:element_t,co2:map) =
 	  key_(co2,find_(co1,witness(k)))=k and
 	  element_(co2,find_(co1,witness(k)))=e and
 	  (forall cun:cursor.
-	  	 position_(co2,cun)=position_(co1,cun) and
-		 (not cun=find_(co1,witness(k)) -> key_(co2,cun)=key_(co1,cun) and
-		      element_(co2,cun)=element_(co1,cun))) and
+	  	 position_(co2,cun)=position_(co1,cun)) and
+	  (forall cun:cursor [key_(co2,cun)|key_(co1,cun)].
+		 position_(co1,cun) > 0 and 
+                  not cun=find_(co1,witness(k)) -> key_(co2,cun)=key_(co1,cun)) and
+	  (forall cun:cursor [element_(co2,cun)|element_(co1,cun)].
+		 position_(co1,cun) > 0 and 
+                  not cun=find_(co1,witness(k)) -> element_(co2,cun)=element_(co1,cun)) and
 (* RD *)  (forall w:real.
 	  	  find_(co1,w)=find_(co2,w))
 
@@ -181,65 +186,69 @@ predicate replace_element_ (co1:map,cu:cursor,e:element_t,co2:map) =
 	  element_(co2,cu)=e and
 	  length_(co1)=length_(co2) and
 	  (forall cun:cursor.
-	  	  position_(co1,cun)=position_(co2,cun) and
-		 (position_(co1,cun)>0 -> 
-		 	key_(co2,cun)=key_(co1,cun) and
-		        (cu<>cun -> element_(co2,cun)=element_(co1,cun)))) and
+	  	  position_(co1,cun)=position_(co2,cun)) and
+	  (forall cun:cursor.
+		 position_(co1,cun)>0 -> 
+		 	key_(co2,cun)=key_(co1,cun)) and
+	  (forall cun:cursor.
+		 position_(co1,cun)>0 -> 
+		        (cu<>cun -> element_(co2,cun)=element_(co1,cun))) and
 	  (forall w:real.
 	  	  find_(co1,w)=find_(co2,w))
 
 (*** INSERT ***)
 
 predicate insert_find (co1:map,k:key_t,e:element_t,co2:map) =
-	  forall w:real.
+	  forall w:real [find_(co1,w)|find_(co2,w)].
 	    (witness(k)<>w -> find_(co1,w)=find_(co2,w)) and
 	    (witness(k)=w -> find_(co1,w)=no_element and position_(co2,find_(co2,w))>0)
 
 predicate insert_pos (co1:map,k:key_t,e:element_t,co2:map) =
-	  forall cun:cursor.
-	    (position_(co1,cun)>0 -> position_(co2,cun)>0 and key_(co1,cun)=key_(co2,cun)
-	    			  and element_(co1,cun)=element_(co2,cun))
-	    and (position_(co1,cun)=0 -> position_(co2,cun)=0 or position_(co2,cun)>0 and key_(co2,cun)=k
-	    			  and element_(co2,cun)=e)
-
-predicate insert_inv (co1:map,k:key_t,e:element_t,co2:map) =
-	  forall cun:cursor.
-	    (position_(co2,cun)>0 ->
-	     position_(co1,cun)=0 and key_(co2,cun)=k and element_(co2,cun)=e or
-	     position_(co1,cun)>0 and
-	     element_(co1,cun)=element_(co2,cun) and
-	     key_(co1,cun)=key_(co2,cun)) and
-	    (position_(co2,cun)=0 -> position_(co1,cun)=0)
+	  (forall cun:cursor [position_(co1,cun),position_(co2,cun)].
+	    position_(co1,cun)>0 -> position_(co2,cun)>0) and
+	  (forall cun:cursor [element_(co2,cun)].
+	    position_(co1,cun)=0 and position_(co2,cun)>0 -> element_(co2,cun)=e) and
+	  (forall cun:cursor.
+	    position_(co1,cun)=0 and position_(co2,cun)>0 -> key_(co2,cun)=k) and
+	  (forall cun:cursor [key_(co2,cun)|key_(co1,cun)].
+	    position_(co1,cun)>0 -> key_(co1,cun)=key_(co2,cun)) and
+	  (forall cun:cursor [element_(co2,cun)|element_(co1,cun)].
+	    position_(co1,cun)>0 -> element_(co1,cun)=element_(co2,cun))
 
 predicate insert_ (co1:map,k:key_t,e:element_t,co2:map) =
+	  find_(co1,witness(k))=no_element and
 	  position_(co2,find_(co2,witness(k)))>0 and
 	  length_(co2)=length_(co1)+1 and
 	  insert_pos(co1,k,e,co2) and
-	  insert_inv(co1,k,e,co2) and
 (* RD *)  insert_find(co1,k,e,co2)
 
 (*** DELETE ***)
 
 predicate delete_find (co1:map,k:key_t,co2:map) =
-	  forall w:real.
-	    (witness(k)<>w -> find_(co1,w)=find_(co2,w)) and
-	    (witness(k)=w -> find_(co2,w)=no_element)
+	  (forall w:real.
+	    witness(k)<>w -> find_(co1,w)=find_(co2,w)) and
+	  (forall w:real.
+	    witness(k)=w -> find_(co2,w)=no_element)
 
 predicate delete_pos (co1:map, i:int, co2:map) =
-	  forall cun:cursor.
+          i > 0 and
+	  (forall cun:cursor [position_(co1,cun),position_(co2,cun)].
 	    (position_(co1,cun)=i ->
 	     position_(co2,cun)=0)
-	    and (position_(co1,cun)>0 and position_(co1,cun)<> i ->
-	     position_(co2,cun)>0 and
-	     key_(co2,cun)=key_(co1,cun) and
-	     element_(co2,cun)=element_(co1,cun))
+	    and (position_(co1,cun)>0 and position_(co1,cun) <> i ->
+	     position_(co2,cun)>0)) and
+	  (forall cun:cursor.
+	    position_(co1,cun)>0 and position_(co1,cun)<> i ->
+	     element_(co2,cun)=element_(co1,cun)) and
+	  (forall cun:cursor.
+	    position_(co1,cun)>0 and position_(co1,cun)<> i ->
+	     key_(co2,cun)=key_(co1,cun))
 
 predicate delete_inv (co1:map, i:int, co2:map) =
-	  forall cun:cursor.
+          i > 0 and
+	  forall cun:cursor [position_(co1,cun),position_(co2,cun)].
 	    (position_(co2,cun)>0 ->
-	     position_(co1,cun)>0 and
-	     key_(co1,cun)=key_(co2,cun) and
-	     element_(co2,cun)=element_(co1,cun))
+	     position_(co1,cun)>0 and position_(co1,cun)<> i)
 
 predicate delete_ (co1:map,cu:cursor,co2:map) =
 	  find_(co2,witness(key_(co1,cu)))=no_element and
@@ -276,21 +285,24 @@ axiom empty_contains :
 (*** EQUAL ***)
 
 predicate equal_ (co1:map,co2:map) =
-	  forall cu:cursor.
-	  	 position_(co1,cu)=position_(co2,cu) and
-		 (position_(co1,cu)>0 -> key_(co1,cu)=key_(co2,cu) and
-	     	 element_(co2,cu)=element_(co1,cu))
+	  (forall cu:cursor.
+	  	 position_(co1,cu)=position_(co2,cu)) and
+	  (forall cu:cursor.
+		 position_(co1,cu)>0 -> key_(co1,cu)=key_(co2,cu)) and
+	  (forall cu:cursor.
+		 position_(co1,cu)>0 -> element_(co2,cu)=element_(co1,cu))
 
 (*** EQUIVALENT ***)
 
 predicate equivalent_ (co1:map,co2:map) =
 	  (forall i:real.
-	  	 contains_(co1,i) -> contains_(co2,i) and
-		 element__(co1,i)=element__(co2,i)) and
+	  	 contains_(co1,i) -> contains_(co2,i)) and
+	  (forall i:real.
+	  	 contains_(co1,i) -> element__(co1,i)=element__(co2,i)) and
 		 length_(co1)=length_(co2)
 
 axiom equivalent_sym :
-      forall co1:map. forall co2:map [equivalent_(co2,co1) | equivalent_(co1,co2)].
+      forall co1:map. forall co2:map.
       equivalent_(co1,co2) ->
 	  equivalent_(co2,co1)
 

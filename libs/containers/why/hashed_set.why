@@ -96,11 +96,12 @@ axiom find_find_val :
 (*** LEFT ***)
 
 predicate left_pos (co:set,i:int,col:set) =
-	  forall cu:cursor.
+	  (forall cu:cursor.
 	    (i<=position_(co,cu) -> position_(col,cu)=0)
-	    and (i>position_(co,cu) -> position_(col,cu)=position_(co,cu)
-	    	 and element_(col,cu)=element_(co,cu))
-	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
+	    and (i>position_(co,cu) -> position_(col,cu)=position_(co,cu))
+	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu)))
+	  and (forall cu:cursor.
+             i>position_(co,cu) -> element_(col,cu)=element_(co,cu))
 
 predicate left_find (co:set,i:int,col:set) =
 	  forall w:real.
@@ -123,11 +124,12 @@ axiom left_left :
 (*** RIGHT ***)
 
 predicate right_pos (co:set,i:int,cor:set) =
-	  forall cu:cursor.
+	  (forall cu:cursor.
 	    (i>position_(co,cu) -> position_(cor,cu)=0)
-	    and (i<=position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1
-	    	 and element_(cor,cu)=element_(co,cu))
-	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
+	    and (i<=position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1)
+	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)) and
+	  (forall cu:cursor.
+	    i<=position_(co,cu) -> element_(cor,cu)=element_(co,cu))
 
 predicate right_find (co:set,i:int,cor:set) =
 	  forall w:real.
@@ -155,8 +157,10 @@ predicate replace_ (co1:set,e:element_t,co2:set) =
 	  position_(co1,find_(co1,witness(e)))>0 and length_(co1)=length_(co2) and
 	  element_(co2,find_(co1,witness(e)))=e and
 	  (forall cun:cursor.
-	  	 position_(co2,cun)=position_(co1,cun) and
-		 (cun<>find_(co1,witness(e)) -> element_(co2,cun)=element_(co1,cun))) and
+	  	 position_(co2,cun)=position_(co1,cun)) and
+	  (forall cun:cursor.
+	  	 position_(co1,cun) > 0 and
+		 cun<>find_(co1,witness(e)) -> element_(co2,cun)=element_(co1,cun)) and
 	  (forall w:real.
 	  	  find_(co1,w)=find_(co2,w))
 
@@ -175,8 +179,9 @@ predicate replace_element_ (co1:set,cu:cursor,e:element_t,co2:set) =
 		 (position_(co1,cun)>0 and cu<>cun -> 
 		 	element_(co2,cun)=element_(co1,cun))) and
           (forall w:real.
-	  	  (witness(e)<>w and not find_(co1,w)=cu -> find_(co1,w)=find_(co2,w))
-		  and (witness(e)=w -> find_(co2,w)=cu))
+	  	  witness(e)<>w and not find_(co1,w)=cu -> find_(co1,w)=find_(co2,w)) and
+          (forall w:real.
+	  	  witness(e)=w -> find_(co2,w)=cu)
 
 (*** INSERT ***)
 
@@ -186,23 +191,17 @@ predicate insert_find (co1:set,e:element_t,co2:set) =
 	    (witness(e)=w -> find_(co1,w)=no_element and position_(co2,find_(co2,w))>0)
 
 predicate insert_pos (co1:set,e:element_t,co2:set) =
-	  forall cun:cursor.
-	    (position_(co1,cun)>0 -> position_(co2,cun)>0 and element_(co1,cun)=element_(co2,cun))
-	    and (0=position_(co1,cun) -> position_(co2,cun)=0 or position_(co2,cun)>0 and element_(co2,cun)=e)
-
-predicate insert_inv (co1:set,e:element_t,co2:set) =
-	  forall cun:cursor.
-	    (position_(co2,cun)>0 ->
-	     position_(co1,cun)=0 and element_(co2,cun)=e or
-	     position_(co1,cun)>0 and
-	     element_(co1,cun)=element_(co2,cun)) and
-	    (position_(co2,cun)=0 -> position_(co1,cun)=0)
+	  (forall cun:cursor [position_(co1,cun), position_(co2,cun)].
+	    position_(co1,cun)>0 -> position_(co2,cun)>0) and
+	  (forall cun:cursor.
+	    position_(co1,cun)>0 -> element_(co1,cun)=element_(co2,cun)) and
+	  (forall cun:cursor.
+	    0=position_(co1,cun) and position_(co2,cun)>0 -> element_(co2,cun)=e)
 
 predicate insert_ (co1:set,e:element_t,co2:set) =
 	  position_(co2,find_(co2,witness(e)))>0 and
 	  length_(co2)=length_(co1)+1 and
 	  insert_pos(co1,e,co2) and
-	  insert_inv(co1,e,co2) and
           insert_find(co1,e,co2)
 
 (*** DELETE ***)
@@ -213,18 +212,19 @@ predicate delete_find (co1:set,e:element_t,co2:set) =
 	    (witness(e)=w -> find_(co2,w)=no_element)
 
 predicate delete_pos (co1:set, i:int, co2:set) =
-	  forall cun:cursor.
+	  (forall cun:cursor.
 	    (position_(co1,cun)=i ->
 	     position_(co2,cun)=0)
 	    and (position_(co1,cun)>0 and position_(co1,cun)<> i ->
-	     position_(co2,cun)>0 and
+	     position_(co2,cun)>0)) and
+	  (forall cun:cursor.
+	    position_(co1,cun)>0 and position_(co1,cun)<> i ->
 	     element_(co2,cun)=element_(co1,cun))
 
 predicate delete_inv (co1:set, i:int, co2:set) =
 	  forall cun:cursor.
 	    (position_(co2,cun)>0 ->
-	     position_(co1,cun)>0 and
-	     element_(co1,cun)=element_(co2,cun))
+	     position_(co1,cun)>0)
 
 predicate delete_ (co1:set,cu:cursor,co2:set) =
 	  find_(co2,witness(element_(co1,cu)))=no_element and
@@ -261,9 +261,10 @@ axiom empty_contains :
 (*** EQUAL ***)
 
 predicate equal_ (co1:set,co2:set) =
-	  forall cu:cursor.
-	  	 position_(co1,cu)=position_(co2,cu) and
-		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
+	  (forall cu:cursor.
+	  	 position_(co1,cu)=position_(co2,cu)) and
+	  (forall cu:cursor.
+		 position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
 
 (*** EQUIVALENT ***)
 
@@ -282,7 +283,7 @@ axiom equivalent_sym :
 logic inter_ : set, set -> set
 
 predicate is_inter (s1:set,s2:set,i:set) =
-	  forall j:real.
+	  forall j:real [contains_(s1,j), contains_(s2,j)|contains_(i,j)].
       	     (contains_(s1,j) and contains_(s2,j) -> contains_(i,j)) and
       	     ((not contains_(s1,j) or not contains_(s2,j)) -> not contains_(i,j))
 
@@ -295,9 +296,9 @@ axiom inter_is_inter :
 logic union_ : set, set -> set
 
 predicate is_union (s1:set,s2:set,u:set) =
-	  forall i:real.
+	  (forall i:real [contains_(s1,i), contains_(s2,i)|contains_(u,i)].
       	     ((contains_(s1,i) or contains_(s2,i)) -> contains_(u,i)) and
-      	     (not contains_(s1,i) and not contains_(s2,i) -> not contains_(u,i)) and
+      	     (not contains_(s1,i) and not contains_(s2,i) -> not contains_(u,i))) and
 	     (length_(u)=length_(s1)+length_(s2)-length_(inter_(s1,s2)))
 
 axiom union_is_union :
@@ -309,10 +310,10 @@ axiom union_is_union :
 logic diff_ : set, set -> set
 
 predicate is_diff (s1:set,s2:set,d:set) =
-	  forall i:real.
+	  (forall i:real [contains_(s1,i), contains_(s2,i)|contains_(d,i)].
       	     (contains_(s1,i) and not contains_(s2,i) -> contains_(d,i)) and
-      	     ((not contains_(s1,i) or contains_(s2,i)) -> not contains_(d,i)) and
-	     (length_(d)=length_(s1)-length_(inter_(s1,s2)))
+      	     ((not contains_(s1,i) or contains_(s2,i)) -> not contains_(d,i))) and
+	     length_(d)=length_(s1)-length_(inter_(s1,s2))
 
 axiom diff_is_diff :
       forall s1:set. forall s2:set  [diff_(s1,s2)].

@@ -2398,7 +2398,7 @@ Rgt w (witness(element l (previous l (ceiling l w)))).
 intros [[l Hwf] Ho] w; unfold position; unfold element;
 unfold previous; simpl.
 case_eq(has_element l 0); [|apply (ceiling_previous1 l Hwf Ho)].
-intros Hko; apply (position1_has_element l _ 1) in Hko;
+intros Hko; apply (position1_has_element l _ 1) in Hko.
 rewrite (position1_no_element l Hwf _ (gt_Sn_O O)) in Hko.
 contradict Hko; apply le_Sn_O.
 Qed.

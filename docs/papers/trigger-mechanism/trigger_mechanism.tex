@@ -14,6 +14,7 @@
 \newcommand{\A}{\mathit{assume}}
 \newcommand{\B}{\mathit{bcp}}
 \newcommand{\Si}{\mathit{size}}
+\newcommand{\impbox}{\vDash\bot}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
@@ -22,25 +23,21 @@
 
 %opening
 \title{A model of the trigger mechanism in SMT Solvers}
-\author{}
+\author{Claire Dross}
 
 \begin{document}
 \selectlanguage{english}
 \maketitle
 
-\begin{abstract}
-
-\end{abstract}
-
 \section{Introduction}
-The Sat plus theory kernel used by SMT-Solvers only work on ground clauses. To handle first-order formulas,
+The SAT plus theory kernel used by SMT-Solvers only works on ground clauses. To handle first-order formulas,
 some SMT-solvers are using an instantiation mechanism
 which takes universally quantified formulas and returns ground instances. The main concern is to
 decide which instances are relevant. Indeed, if too many instances are generated, the solver will be
 overwhelmed and if too few are generated, it will miss some proofs. A common mechanism to decide
 which instances of quantified formulas are relevant is the trigger mechanism, first described
 by David Detlefs, Greg Nelson, and James B. Saxe~\cite{simplify}.
-Sets of terms called them triggers are added to quantified formulas.
+Sets of terms called triggers are added to quantified formulas.
 Each time a ground literal is assumed by the solver, all its sub-terms are
 added to the set of encountered terms. A relevant instance is an instance for which every term
 in the trigger is mapped to a term contained in the set of encountered terms.
@@ -48,11 +45,11 @@ in the trigger is mapped to a term contained in the set of encountered terms.
 With this trigger mechanism, the burden of choosing relevant instances is transformed into the
 burden of choosing appropriate triggers. And indeed, it is difficult to generate them
 automatically. Yelting Ge has developed some heuristics for instantiation in CVC3~\cite{Ge-2010}
-but algorithm based on instantiation are only complete on some fragments of first-order logic.
+but algorithms based on instantiation are only complete on some fragments of first-order logic.
 What is more, putting them by hand requires a rather important understanding of the
-trigger mechanism. Michal Moskal~\cite{moskal-2009} presents some triggering patterns and some
+trigger mechanism. Micha\l{} Moskal~\cite{moskal-2009} presents some triggering patterns and some
 developmental practices to use the control given by the trigger mechanism.
-We focus on giving a simple model of the trigger mechanism.
+In this paper, we focus on giving a simple model of the trigger mechanism.
 We believe it will help people writing efficient triggers and also lead to an efficient way
 of automatically generating them.
 
@@ -77,7 +74,7 @@ The last section quickly reproduces the same steps for a first-order model.
 \section{Description of the Propositional Model}
 Classically, propositional logic deals with formulas over atoms.
 Here, we add what we call labeled formulas.
-Concretely, we have the possibility to prefix a formula by a set of atoms, called label, to express
+Concretely, we have the possibility to prefix a formula by a set of atoms, called a label, to express
 that the formula is only available when these atoms have been encountered. This is written $[a]F$
 were $a$ is label and $F$ a formula.
 We consider a propositional version of the running example in Figure \ref{p-ex}. As before, the set
@@ -129,9 +126,9 @@ The usual way of dealing with the set of encountered atoms is to add to this set
 contained in an assumed literal. This makes the solver unpredictable as we see on an example in
 the next subsection.
 To avoid the unpredictability of the solver, we make updates of the set of encountered atoms explicit.
-For this, we use we apply a preprocessing step that we call \emph{positive labelization}.
+We use we apply a preprocessing step that we call \emph{positive labelization}.
 We replace each literal $L$ in the clausal form of a formula
-by a positively labeled formula $\langle\atom(L)\rangle F$. By definition of positive labelization,
+by a positively labeled formula $\langle\atom(L)\rangle L$. By definition of positive labelization,
 assuming such an element will add $\atom(L)$ to the set of encountered atoms and then assume $L$.
 We define two labeling functions on literals:
 \begin{itemize}
@@ -238,13 +235,13 @@ specify when a solver is allowed to return \emph{Sat} or \emph{Unsat} thanks to 
 Here we assume no previous treatment of formulas. It would have been possible to suppose them to be in
 CNF or lazy-CNF to show that the treatment is independent of the form of the formulas. To substantiate
 this claim, we use lazy-CNF for first-order formulas. Neither do we
-consider the optimization of boolean constraint propagation.
+consider the optimization of Boolean constraint propagation.
 \subsection{Rule System}
 The set of rules in Figure \ref{p-sr} models the way a solver tries to derive a proof of unsatisfiability
-an environment $\{K,\Delta,G,M\}$ written $\{K,\Delta,G,M\}\vdash\Box$. The rule \textsc{Base} states that
-an environment is unsatisfiable if it has assumed contradictory literals ($\vDash$ is the usual
+an environment $\{K,\Delta,G,M\}$ written $\{K,\Delta,G,M\}\impbox$. The rule \textsc{Base} states that
+an environment is unsatisfiable if it has assumed contradictory literals ($\vdash$ is the usual
 implication). The rules \textsc{Unsat} and
-\textsc{Sat} represent a simple Sat-solver. The rule \textsc{Instantiation} models the way labels
+\textsc{Sat} represent a simple SAT-solver. The rule \textsc{Instantiation} models the way labels
 are handled, allowing the use of a labeled formula $[a]F$ only if every atom in $a$ is present.
 
 \begin{figure}
@@ -253,24 +250,24 @@ are handled, allowing the use of a labeled formula $[a]F$ only if every atom in 
 \inferrule [Unsat]{
 \Box\in \Delta
 }{
-\{K,\Delta,G,M\}\vdash\Box
+\{K,\Delta,G,M\}\impbox
 }\qquad
 \inferrule [Base]{
-G\vDash\Box
+G\vdash\Box
 }{
-\{K,\Delta,G,M\}\vdash\Box
+\{K,\Delta,G,M\}\impbox
 }\\
 &
 \inferrule [Instantiation]{
-[a]F \in K  \\ a \subseteq M \\ \{K,\Delta\cup\downarrow F,G,M\}\vdash\Box
+[a]F \in K  \\ a \subseteq M \\ \{K,\Delta\cup\downarrow F,G,M\}\impbox
 }{
-\{K,\Delta,G,M\}\vdash\Box
+\{K,\Delta,G,M\}\impbox
 }\\
 &
 \inferrule [Sat]{
-\A(\{K,\Delta,G,M\},D)\vdash\Box\\ \A(\{K,\Delta\cup C,G,M\},\neg D)\vdash\Box
+\A(\{K,\Delta,G,M\},D)\impbox\\ \A(\{K,\Delta\cup C,G,M\},\neg D)\impbox
 }{
-\{K,\Delta\cup(D\vee C),G,M\}\vdash\Box
+\{K,\Delta\cup(D\vee C),G,M\}\impbox
 }
 \end{eqnarray*}
 \caption{\label{p-sr} Rule system for propositional formulas.}
@@ -278,10 +275,10 @@ G\vDash\Box
 
 \subsection{Saturation}
 A solver can return \emph{Unsat} on a set of formulas $R$ if it has derived a proof of
-$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\vdash\Box$. We now want to define when
+$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\impbox$. We now want to define when
 it is allowed to return \emph{Sat}. We say an environment $\{K,\Delta,G,M\}$ is saturated if
 \begin{enumerate}
- \item $G\nvDash\Box$
+ \item $G\nvdash\Box$
  \item $\{K,\varnothing,G,M\}\Vdash\Delta$
  \item $\forall [a]F\in K.\ a\subseteq M\Rightarrow \{K,\varnothing,G,M\}\Vdash\downarrow F$.
 \end{enumerate}
@@ -289,7 +286,7 @@ Intuitively, nothing more can be deduced on a saturated environment, neither by 
 by 1, nor by \textsc{Unsat} or \textsc{Sat} by 2, nor by \textsc{Instantiation} by 3.
 As a consequence, a solver can return \emph{Sat} on a set of formulas $R$ if it has reached
 a saturated state while deriving a proof of
-$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\vdash\Box$.
+$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\impbox$.
 \section{Properties of the model}
 We previously stated that the explicit labelization of formulas made the solver predictable.
 In this section, we show that this is indeed the case by stating an encoding from
@@ -299,7 +296,7 @@ its explicit labelization and give the proof of this relation.
 \subsection{Predictability}
 We define a function $\F$ that constructs a classical formula from a labeled formula. We use
 a function, named $p$, which maps atoms to fresh atoms that encode their presence. $\F$ is
-defined on labeled formulas as:
+structurally defined on labeled formulas as:
 \begin{itemize}
  \item $\F([A_1,\ \dots,\ A_n]F)=p(A_1)\wedge\dots\wedge p(A_n)\rightarrow \F(F)$,
  \item $\F(\langle A_1,\ \dots,\ A_n\rangle F)= p(A_1)\wedge\dots\wedge p(A_n)\wedge \F(F)$.
@@ -319,59 +316,59 @@ Putting a formula into clausal form does not change its meaning.
 {\lemma $\F(\A(e,D))\Leftrightarrow\F(e)\cup\F(D)$.}\\
 The call $\A(e,D)$ exactly adds the information that the element $D$ is true to the information
 already in the environment $e$.
-{\lemma If $e\Vdash C$ then $\F(e)\vDash\F(C)$.}\\
+{\lemma If $e\Vdash C$ then $\F(e)\vdash\F(C)$.}\\
 The shallow implication is correct, even if it is obviously not complete.
 
 The following theorems are linking the possible results of a run of the solver to the satisfiability
 of the classical formula handed out by $\F$.
 {\theorem\label{pred1} If a solver can return \emph{Unsat} on a set of formulas $R$ then we have
-$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vDash\Box$.}
+$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vdash\Box$.}
 \begin{proof}
 By definition, if the solver can return \emph{Unsat} on $R$ there is a proof of
-$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\vdash\Box$. Let us show that,
-for any environment $e$, if there is a proof of $e\vdash\Box$ then $\F(e)\vDash\Box$ by structural
-induction over the proof of $\{K,\Delta,G,M\}\vdash\Box$.
+$\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}\impbox$. Let us show that,
+for any environment $e$, if there is a proof of $e\impbox$ then $\F(e)\vdash\Box$ by structural
+induction over the proof of $\{K,\Delta,G,M\}\impbox$.
 \begin{itemize}
  \item if the last applied rule is \textsc{Base} or \textsc{Unsat}, the conclusion is trivial.
  \item if the last applied rule is \textsc{Instantiation}, there is $[a]F\in K$ such that
-$a\subseteq M$ and $\{K,\Delta\cup\downarrow F,G,M\}\vdash\Box$. By induction hypothesis,
-$\F(\{K,\Delta\cup\downarrow F,G,M\})\vDash\Box$. Since $[a]F\in K$ and $a\subseteq M$,
-$\F(\{K,\Delta,G,M\})\vDash\F(F)$. As a conclusion, since $\F(F)\Leftrightarrow\F(\downarrow F)$,
-$\F(\{K,\Delta,G,M\})\vDash\F(\{K,\Delta\cup\downarrow F,G,M\})\vDash\Box$.
+$a\subseteq M$ and $\{K,\Delta\cup\downarrow F,G,M\}\impbox$. By induction hypothesis,
+$\F(\{K,\Delta\cup\downarrow F,G,M\})\vdash\Box$. Since $[a]F\in K$ and $a\subseteq M$,
+$\F(\{K,\Delta,G,M\})\vdash\F(F)$. As a conclusion, since $\F(F)\Leftrightarrow\F(\downarrow F)$,
+$\F(\{K,\Delta,G,M\})\vdash\F(\{K,\Delta\cup\downarrow F,G,M\})\vdash\Box$.
  \item if the last applied rule is \textsc{Sat}, there is a clause $D\vee C$ such that
-$\A(\{K,\Delta,G,M\},D)\vdash\Box$ and $\A(\{K,\Delta\cup C,G,M\},\neg D)\vdash\Box$.
-By induction hypothesis, $\F(\A(\{K,\Delta,G,M\},D))\vDash\Box$ and
-$\F(\A(\{K,\Delta\cup C,G,M\},\neg D))\vDash\Box$. Since, for all environment $e$,
+$\A(\{K,\Delta,G,M\},D)\impbox$ and $\A(\{K,\Delta\cup C,G,M\},\neg D)\impbox$.
+By induction hypothesis, $\F(\A(\{K,\Delta,G,M\},D))\vdash\Box$ and
+$\F(\A(\{K,\Delta\cup C,G,M\},\neg D))\vdash\Box$. Since, for all environment $e$,
 $\F(\A(e,D))\Leftrightarrow\F(e)\cup\F(D)$,
-$\F(\{K,\Delta\cup(D\vee C),G,M\})\vDash\Box$.
+$\F(\{K,\Delta\cup(D\vee C),G,M\})\vdash\Box$.
 \end{itemize}
 \end{proof}
 {\theorem\label{pred2} If a solver can return \emph{Sat} on a set of formulas $R$ then we have
-$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\nvDash\Box$.}
+$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\nvdash\Box$.}
 \begin{proof}
 By definition, if the solver can return \emph{Sat} on $R$ there is a derivation from
 $\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\}$ to a saturated state $\{K,\Delta,G,M\}$. Since
-if $\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vDash\Box$ then
-$\F(\{K,\Delta,G,M\})\vDash\Box$ (immediate induction on the derivation), it is enough to show that
-$\F(\{K,\Delta,G,M\})\nvDash\Box$.
+if $\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vdash\Box$ then
+$\F(\{K,\Delta,G,M\})\vdash\Box$ (immediate induction on the derivation), it is enough to show that
+$\F(\{K,\Delta,G,M\})\nvdash\Box$.
 Let's consider $I$ the model that maps $\{A|A\in G\}\cup\{p(A)|A\in M\}$ to true and the rest to false.
-We show that $I\vDash\F(e)$. Since $\{K,\Delta,G,M\}$ is saturated, $G\nvDash\Box$ and
-$I\vDash G\cup\{p(A)|A\in M\}$. For all $[a]F\in K$ either $a\nsubseteq M$, $I\nvDash\{p(A)|A\in a\}$
-and $I\vDash\F([a]F)$ or $a\subseteq M$. Since $\{K,\Delta,G,M\}$ is saturated,
+We show that $I\vdash\F(e)$. Since $\{K,\Delta,G,M\}$ is saturated, $G\nvdash\Box$ and
+$I\vdash G\cup\{p(A)|A\in M\}$. For all $[a]F\in K$ either $a\nsubseteq M$, $I\nvdash\{p(A)|A\in a\}$
+and $I\vdash\F([a]F)$ or $a\subseteq M$. Since $\{K,\Delta,G,M\}$ is saturated,
 $\{K,\varnothing,G,M\}\Vdash\downarrow F$. By construction of $\Vdash$, $\{K|_{<F},\varnothing,G,M\}
 \Vdash\downarrow F$ where
 $K|_{<F}$ is the restriction of $K$ to formulas of smaller size\footnote{
 We define the size:
 \begin{itemize}
  \item of a literal: $\Si(L)=1$
- \item of a labeled formula : $\Si([a]F)=\Si(\langle a\rangle F)=1+\Si(F)$
- \item of a clause : $\Si(C)=\sum_{D\in C}\Si(D)$
- \item of a formula : $\Si(F)=\sum_{C\in\downarrow F}\Si(C)$.
+ \item of a labeled formula: $\Si([a]F)=\Si(\langle a\rangle F)=1+\Si(F)$
+ \item of a clause: $\Si(C)=\sum_{D\in C}\Si(D)$
+ \item of a formula: $\Si(F)=\sum_{C\in\downarrow F}\Si(C)$.
 \end{itemize}}
-than $F$. Since $e\Vdash C\Rightarrow\F(e)\vDash\F(C)$,
-$\F(\{K|_{<F},\varnothing,G,M\})\vDash\F(F)$. Induction over
-the size of normal forms of $[a]F\in K$ gives that $I\vDash\F([a]F)$.
-And since $\{K,\varnothing,G,M\}\Vdash\Delta$, $I\vDash\Delta$.
+than $F$. Since $e\Vdash C\Rightarrow\F(e)\vdash\F(C)$,
+$\F(\{K|_{<F},\varnothing,G,M\})\vdash\F(F)$. Induction over
+the size of normal forms of $[a]F\in K$ gives that $I\vdash\F([a]F)$.
+And since $\{K,\varnothing,G,M\}\Vdash\Delta$, $I\vdash\Delta$.
 \end{proof}
 
 As a consequence, a solver can never return both \emph{Sat} and \emph{Unsat}.
@@ -381,40 +378,41 @@ or \emph{Unsat}.
 
 {\theorem\label{comp} A solver can either return \emph{Sat} or \emph{Unsat} on every set of formulas $R$.}
 \begin{proof}
-We say that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$ if, for all $[a]F\in K_1$,
+We say that $K_1$ is saturated with respect to $K_2$, $G$, $M$ and $\Delta$ if, for all $[a]F\subseteq K_1$,
 $a\in M$ and $\{K_1\cup K_2,\Delta,G,M\}\Vdash\downarrow F$.
 We assume that a solver cannot reach a saturated state from
-$\{K_1\cup K_2,\Delta,G,M\}$ and that $K_1$ is saturated in respect to $K_2$, $G$, $M$ and $\Delta$.
+$\{K_1\cup K_2,\Delta,G,M\}$ and that $K_1$ is saturated with respect to $K_2$, $G$, $M$ and $\Delta$.
 To show that a solver can deduce $\{K_1\cup K_2,\Delta,G,M\}\Vdash\Box$,
 we proceed by well-founded induction based on the lexicographic order (size of $K_2\cup \Delta$,
 size of $\Delta$).
 \begin{itemize}
- \item If $G\nvDash\Box$, for all $[a]F\in K_2$, $a\nsubseteq M$ and $\Delta=\varnothing$,
-$\{K_1\cup K_2,\Delta,G,M\}$ is saturated which contradicts the hypothesis.
- \item If $G\vDash\Box$, $\{K_1\cup K_2,\Delta,G,M\}\vdash\Box$ can be deduced by \textsc{Base}.
+ \item If $G\nvdash\Box$, for all $[a]F\in K_2$, $a\nsubseteq M$ and $\Delta=\varnothing$,
+then, by definition,  $\{K_1\cup K_2,\Delta,G,M\}$ is saturated which contradicts the hypothesis.
+ \item If $G\vdash\Box$, $\{K_1\cup K_2,\Delta,G,M\}\impbox$ can be deduced by \textsc{Base}.
  \item If there is $[a]F\in K_2$ such that $a\subseteq M$, then a solver
 cannot reach a saturated state from $\{K_1\cup K_2,\Delta\cup\downarrow F,G,M\}$ or it could
 reach it from $\{K_1\cup K_2,\Delta,G,M\}$ by \textsc{Instantiation}.
-$K_1\cup [a]F$ is saturated in respect to $K_2\setminus[a]F$, $G$, $M$ and $\Delta\cup\downarrow F$
+$K_1\cup [a]F$ is saturated with respect to $K_2\setminus[a]F$, $G$, $M$ and $\Delta\cup\downarrow F$
 and $\{(K_1\cup [a]F)\cup(K_2\setminus[a]F),\Delta\cup\downarrow F,G,M\}$ is strictly smaller than
 $\{K_1\cup K_2,\Delta,G,M\}$. By induction hypothesis,
-a solver can deduce $\{K_1\cup K_2,\Delta\cup\downarrow F,G,M\}\vdash\Box$.
-It can also deduce $\{K_1\cup K_2,\Delta,G,M\}\vdash\Box$ by \textsc{Instantiation}.
+a solver can deduce $\{K_1\cup K_2,\Delta\cup\downarrow F,G,M\}\impbox$.
+As a consequence, it can also deduce $\{K_1\cup K_2,\Delta,G,M\}\impbox$ by \textsc{Instantiation}.
  \item If $\Delta$ can be written $\Delta\cup D\vee C$, then a solver
 cannot reach a saturated state from $\A(\{K_1\cup K_2,\Delta,G,M\},D)$ or
 $\A(\{K_1\cup K_2,\Delta\cup C,G,M\},\neg D)$ or it could
 reach it from $\{K_1\cup K_2,\Delta\cup C,G,M\}$ by \textsc{Sat}.
 It is easy to check that $\A(\{K_1\cup K_2,\Delta\cup C,G,M\},\neg D)$ and
 $\A(\{K_1\cup K_2,\Delta,G,M\},D)$ are strictly smaller than $\{K_1\cup K_2,\Delta\cup C,G,M\}$
-and that we can deduce $\A(\{K_1\cup K_2,\Delta\cup C,G,M\},\neg D)\vdash\Box$ and
-$\A(\{K_1\cup K_2,\Delta,G,M\},D)\vdash\Box$ by induction hypothesis.
-As a consequence, the solver can deduce $\{K_1\cup K_2,\Delta\cup D\vee C,G,M\}\vdash\Box$ by \textsc{Sat}.
+and that we can deduce $\A(\{K_1\cup K_2,\Delta\cup C,G,M\},\neg D)\impbox$ and
+$\A(\{K_1\cup K_2,\Delta,G,M\},D)\impbox$ by induction hypothesis.
+As a consequence, the solver can deduce $\{K_1\cup K_2,\Delta\cup D\vee C,G,M\}\impbox$ by \textsc{Sat}.
 \end{itemize}
 \end{proof}
 
 \subsection{Justification of Explicit Labelization}
 We want to find a link between the classical trigger mechanism and our new predictable mechanism.
-For our rule system to work without the explicit labelization $\T$, we only need to modify $\A$ so that
+In order to describe a solver without explicit labelization $\T$ with our rule system,
+we only need to modify $\A$ so that
 assuming a literal adds its atom to the set of encountered atoms:
 \begin{itemize}
  \item $\A'(\{K,\Delta,G,M\},L)=\{K,\Delta,G\cup L,M\cup\atom(L)\}$
@@ -438,11 +436,11 @@ reach it from $\{K_1\cup K_2,\Delta\cup C,G,M\}$ by \textsc{Sat}.
 It is easy to check that 
 $\A'(\{K_1\cup K_2,\Delta,G,M\},D)$ is strictly smaller than $\{K_1\cup K_2,\Delta\cup C,G,M\}$
 and that, by induction hypothesis, a solver with explicit labelization can prove
-$\T(\A'(\{K_1\cup K_2,\Delta,G,M\},D))$. Since
+$\T(\A'(\{K_1\cup K_2,\Delta,G,M\},D))\impbox$. Since
 $\T(\A'(e,D))=\A(\T(e),\T(D))$,
 a solver with explicit labelization can deduce, with as many applications of \textsc{Sat} as the number
 of elements in $C$ and one application of \textsc{Unsat} that
-$\T(\{K_1\cup K_2,\Delta\cup C,G,M\})\vdash\Box$.
+$\T(\{K_1\cup K_2,\Delta\cup C,G,M\})\impbox$.
 \end{proof}
 
 As a consequence, we have handed out a predictable system that models the unpredictable one. It only
@@ -450,7 +448,7 @@ returns \emph{Unsat} when a classical solver could not have returned \emph{Sat}.
 
 \section{Adaptation to First-Order Logic}
 In this section, we reproduce the same reasoning we did in propositional logic in first-order logic.
-We assume that formulas are in lazy normal form. That means that a formula can either be:
+We assume that formulas are in negation normal form. That means that a formula can either be:
 \begin{itemize}
  \item a literal: $L$.
  \item a unit: $F_1\wedge F_2$. Units are seen as auxiliary atoms, whose assumption implies
@@ -517,43 +515,43 @@ The $\A$ function has to handle every kind of formulas. It is defined as:
  \item $\A(\{K,\Delta,G,M\},[\overline x,a,\_]F)=\{K\cup([\overline x,a,\_]F),\Delta,G,M\}$,
  \item $\A(\{K,\Delta,G,M\},F_1\vee F_2)=\{K,\Delta\cup(F_1\vee F_2),G,M\}$.
 \end{itemize}
-We want to add boolean constraint propagation. As a consequence, we introduce a function named $\B$.
+We want to add boolean constraint propagation for efficiency. As a consequence, we introduce a function named $\B$.
 It abstracts away the cases where a boolean constraint propagation can be applied:
 \begin{itemize}
- \item if $\{K,\Delta,G,M\}\Vdash F_i$, $\{K,\Delta,G,M\}\in\B(\{K,\Delta\cup(F_1\vee F_2),G,M\})$,
- \item if $\{K,\Delta,G,M\}\Vdash\neg F_i$, $\A(\{K,\Delta,G,M\},F_i)\in
+ \item if $\{K,\Delta,G,M\}\Vdash F_i$, then we have $\{K,\Delta,G,M\}\in\B(\{K,\Delta\cup(F_1\vee F_2),G,M\})$,
+ \item if $\{K,\Delta,G,M\}\Vdash\neg F_i$, then we have $\A(\{K,\Delta,G,M\},F_{3-i})\in
 \B(\{K,\Delta\cup(F_1\vee F_2),G,M\})$.
 \end{itemize}
 \subsection{Derivation}
-As before, we introduce a set of rules, in Figure \ref{fo-rs} to derive satisfiability of environments.
-The handling of the sat mechanism has been simplified by the fact that formula are in lazy normal form, 
+As before, we introduce a set of rules in Figure \ref{fo-rs} to derive satisfiability of environments.
+The handling of the sat mechanism has been simplified by the fact that formulas are in lazy normal form, 
 merging the previous \textsc{Sat} and \textsc{Unsat} rules into one single \textsc{Sat} rule. The
 \textsc{Bcp} rule applies a boolean constraint propagation when possible.
 \begin{figure}
 \begin{eqnarray*}
 &
 \inferrule [Base]{
-G\vDash\Box
+G\vdash\Box
 }{
-\{K,\Delta,G,M\}\vdash\Box
+\{K,\Delta,G,M\}\impbox
 }\qquad
 \inferrule [Bcp]{
-e'\vdash\Box\\ e'\in\B(e)
+e'\impbox\\ e'\in\B(e)
 }{
-e\vdash\Box
+e\impbox
 }\\
 &
 \inferrule [Instantiation]{
 [\overline x,a,\sigma]F\in K\\ dom(\sigma)=\overline x\\ a\sigma\subseteq M\\
-\A(\{K,\Delta,G,M\},F\sigma)\vdash\Box
+\A(\{K,\Delta,G,M\},F\sigma)\impbox
 }{
-\{K,\Delta,G,M\}\vdash\Box
+\{K,\Delta,G,M\}\impbox
 }\\
 &
 \inferrule [Sat]{
-\A(\{K,\Delta,G,M\},F_i)\vdash\Box\\ \A(\A(\{K,\Delta,G,M\},F_j),\neg F_i)\vdash\Box
+\A(\{K,\Delta,G,M\},F_i)\impbox\\ \A(\A(\{K,\Delta,G,M\},F_{3-i}),\neg F_i)\impbox
 }{
-\{K,\Delta\cup(F_1\vee F_2),G,M\}\vdash\Box
+\{K,\Delta\cup(F_1\vee F_2),G,M\}\impbox
 }
 \end{eqnarray*}
 \caption{\label{fo-rs} Rule system for first-order formulas.}
@@ -561,9 +559,9 @@ e\vdash\Box
 
 We keep the same notion of saturation:
 \begin{itemize}
- \item $G\nvDash\Box$,
+ \item $G\nvdash\Box$,
  \item $\{K,\Delta,\varnothing,M\}\Vdash\Delta$,
- \item for all $(\overline x,a,F)\in K$ and all $\sigma$ such that
+ \item for all $[\overline x,a,\_]F\in K$ and all $\sigma$ such that
 $dom(\sigma)=\overline x$ and $a\sigma\subseteq M$,
 $\{K,\varnothing,G,M\}\Vdash F\sigma$.
 \end{itemize}
@@ -586,16 +584,17 @@ by $\F$, we need 3 lemmas.
 {\lemma $\F(\A(e,F))$ and $\F(e)\cup\F(F)$ are equisatisfiable.}\\
 As in the propositional case, $\A$ has the expected meaning of adding the fact that a formula $F$
 is true to the set of already gathered information.
-{\lemma If $e\Vdash F$ then $\F(e)\vDash\F(F)$.}\\
+{\lemma If $e\Vdash F$ then $\F(e)\vdash\F(F)$.}\\
 The shallow implication is correct.
 {\lemma If $e'\in\B(e)$ then $\F(e)$ and $\F(e')$ are equisatisfiable.}\\
 Boolean constraint propagation does not change the validity of a set of formulas.
 
-We fist show that the solver is predictable.
+We fist show that the solver is predictable. For the sake of simplicity,
+the proofs are omitted (they closely resemble those for the propositional case).
 {\theorem If a solver can return \emph{Unsat} on a set of formulas $R$ then we have
-$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vDash\Box$.}
+$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\vdash\Box$.}
 {\theorem If a solver can return \emph{Sat} on a set of formulas $R$ then we have
-$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\nvDash\Box$.}
+$\F(\{\varnothing,\downarrow\T(R),\varnothing,\varnothing\})\nvdash\Box$.}
 {\corollary The solver is predictable.}
 
 The preceding theorems only constrain cases where the solver can return a result.
@@ -629,7 +628,7 @@ While trying to model the trigger mechanism used in some SMT-Solvers, we encount
 unpredictability. To solve it, we introduced a predictable set of rules that models the trigger
 mechanism in first-order logic. We have then related it to the usual, non predictable, mechanism.
 We have shown that it is a down leveling, since it can only return \emph{Unsat} when the
-classical solvers can return \emph{Unsat} and cannot return \emph{Sat}. But also that it is not over
+classical solvers can return \emph{Unsat} and cannot return \emph{Sat}. But also that it is not overly
 restrictive. Indeed, we have produced a first-order translation of triggers in which formulas are
 unsatisfiable if and only if the predictable solver can return \emph{Unsat}.
 

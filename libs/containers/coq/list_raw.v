@@ -603,7 +603,7 @@ rewrite <- (position1_last1 l2 Hwf2); rewrite <- Hp.
 apply le_S_n; rewrite (plus_n_O (length l1));
 rewrite plus_n_Sm; apply position1_length; apply gt_Sn_O.
 destruct (Hcu cu) as [Hp He].
-apply (position1_has_element _ _ 1) in Hhe;
+apply (position1_has_element _ _ 1) in Hhe.
 generalize (He Hhe); rewrite Hp in Hhe; clear He; intro He;
 apply has_element_position1 in Hhe.
 split; [exact Hhe|exact He].
@@ -2783,7 +2783,7 @@ rewrite <- Hpos in Hhelicun;
 apply (has_element_position1 _ _ _) in Hhelicun.
 split; [exact Hhelicun|exact Hel].
 destruct (Hinf cun Hhelcun Hpinf) as [Hpos Hel].
-apply (position1_has_element _ _ 1) in Hhelcun;
+apply (position1_has_element _ _ 1) in Hhelcun.
 rewrite Hpos in Hhelcun; apply has_element_position1 in Hhelcun.
 split; [exact Hhelcun|exact Hel].
 Qed.

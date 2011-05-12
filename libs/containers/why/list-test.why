@@ -1,8 +1,8 @@
 include "list.why"
 
-(* Everything works with alt-ergo (-redondance or not it depends) in 60s
-   except two VC's of test3 which take less then 10s with Z3, Simplify and Yices and between 2 and 3min with Alt-Ergo and one VC of map_f which takes less
-than 1s with Simplify *)
+(* Everything works with alt-ergo in 15s
+   except one VC of test3 which takes less than 1min
+   and one VC of map_f which takes less than 1s with Simplify *)
 
 (*** GOALS ***)
 
@@ -163,7 +163,7 @@ axiom has_element_left :
      forall l:list. forall cu:cursor. forall cun:cursor
      [has_element_(left_(l,next_(l,cu)),cun)].
       	    has_element_(l,cu) -> has_element_(left_(l,next_(l,cu)),cun) -> has_element_(left_(l,cu),cun) or cu = cun
-     
+
 
 (*** UNIT-TESTS ***)
 

@@ -69,12 +69,12 @@ Module Raw_List := list_raw.Raw_List(E).
 exact Raw_List.cursor.  
 Defined.
 
-(*Why type*) Definition element_t: Set.
-exact E.element_t.  
-Defined.
-
 (*Why type*) Definition list: Set.
 exact Raw_List.list.
+Defined.
+
+(*Why type*) Definition element_t: Set.
+exact E.element_t.  
 Defined.
 
 (*Why logic*) Definition no_element : cursor.
@@ -89,8 +89,8 @@ Defined.
 exact (fun l => Z_of_nat(Raw_List.length l)).
 Defined.
 
-(*Why axiom*) Lemma length_gte_zero : (forall (co:list), 0 <= (length_ co)).
-intro l; unfold length_; apply Zle_0_nat.
+(*Why axiom*) Lemma length_gte_zero : (forall (co:list), (length_ co) >= 0).
+intro l; unfold length_; apply Zle_ge; apply Zle_0_nat.
 Qed.
 
 (*Why logic*) Definition position_ : list -> cursor -> Z.
@@ -99,14 +99,14 @@ Defined.
 
 (*Why axiom*) Lemma position_gte_zero :
   (forall (co:list),
-   (forall (cu:cursor), 0 <= (position_ co cu) /\ (position_ co cu) <=
-    (length_ co))).
+   (forall (cu:cursor), (length_ co) >= (position_ co cu) /\
+    (position_ co cu) >= 0)).
 unfold position_.
 unfold length_.
-split.
-apply Zle_0_nat.
+split; apply Zle_ge.
 apply inj_le; simpl.
 apply Raw_List.position_length.
+apply Zle_0_nat.
 Qed.
 
 (*Why axiom*) Lemma position_no_element :
@@ -137,10 +137,6 @@ unfold is_empty_; unfold empty_; unfold position_; unfold length_;
 unfold Raw_List.length; unfold Raw_List.empty; simpl; auto.
 Qed.
 
-(*Why predicate*) Definition previous__  (co:list) (cu1:cursor) (cu2:cursor)
-  := (((position_ co cu1) > 1 -> (position_ co cu2) =
-       ((position_ co cu1) - 1))) /\
-     (((position_ co cu1) = 1 \/ cu1 = no_element -> cu2 = no_element)).
 
 (*Why logic*) Definition previous_ : list -> cursor -> cursor.
 exact Raw_List.previous.
@@ -148,14 +144,19 @@ Defined.
 
 (*Why axiom*) Lemma previous_previous :
   (forall (co:list),
-   (forall (cu:cursor), (previous__ co cu (previous_ co cu)))).
-unfold previous_; unfold previous__;
+   (forall (cu:cursor),
+    ((position_ co cu) > 1 -> (position_ co (previous_ co cu)) =
+     ((position_ co cu) - 1)))) /\
+  (forall (co:list),
+   (forall (cu:cursor),
+    ((position_ co cu) = 1 \/ cu = no_element ->
+     (previous_ co cu) = no_element))).
+unfold previous_;
 unfold position_; unfold no_element.
-intros l cu.
-assert (Z_of_nat (1) = 1).
-auto.
-split.
-intro HH.
+split;
+intros l cu;
+assert (Z_of_nat (1) = 1); [auto| |auto|].
+intro HH;
 rewrite <- H in HH;
 apply inj_gt_rev in HH;
 rewrite <- H;
@@ -175,9 +176,8 @@ Qed.
 (*Why predicate*) Definition next__  (co:list) (cu1:cursor) (cu2:cursor)
   := (((length_ co) > (position_ co cu1) /\ (position_ co cu1) > 0 ->
        (position_ co cu2) = ((position_ co cu1) + 1))) /\
-     (((length_ co) > 0 /\
-       (position_ co cu1) = (length_ co) \/ cu1 = no_element ->
-       cu2 = no_element)).
+     (((length_ co) > 0 /\ (position_ co cu1) = (length_ co) \/
+       cu1 = no_element -> cu2 = no_element)).
 
 (*Why logic*) Definition next_ : list -> cursor -> cursor.
 exact Raw_List.next.
@@ -189,13 +189,14 @@ intros l cu; unfold next__; unfold next_; unfold position_;
 unfold no_element; unfold length_.
 assert (Z_of_nat (1) = 1).
 auto.
-split;
-[intros [Hlength Hpos];
+split.
+intros [Hlength Hpos];
 rewrite <- H; rewrite <- inj_plus;
-apply inj_eq; apply inj_gt_rev in Hlength;
-rewrite <- inj_0 in Hpos; apply inj_gt_rev in Hpos|
-intros [[_ HH] | HH]; [apply inj_eq_rev in HH |]].
+apply inj_eq;
+rewrite <- inj_0 in Hpos; apply inj_gt_rev in Hpos.
+apply inj_gt_rev in Hlength;
 apply Raw_List.next_position_gen; [exact Hlength | exact Hpos].
+intros [[_ HH] | HH]; [apply inj_eq_rev in HH |].
 apply Raw_List.next_position_last; exact HH.
 rewrite HH; apply Raw_List.next_position_O.
 Qed.
@@ -257,11 +258,13 @@ exact Raw_List.element.
 Defined.
 
 (*Why predicate*) Definition left_pos  (co:list) (i:Z) (col:list)
-  := (forall (cu:cursor),
-      ((i <= (position_ co cu) -> (position_ col cu) = 0)) /\
-      ((i > (position_ co cu) -> (position_ col cu) = (position_ co cu) /\
-        (element_ col cu) = (element_ co cu))) /\
-      (((position_ col cu) > 0 -> (position_ co cu) = (position_ col cu)))).
+  := (forall (cu:cursor), (i <= (position_ co cu) -> (position_ col cu) = 0)) /\
+     (forall (cu:cursor),
+      (i > (position_ co cu) -> (position_ col cu) = (position_ co cu))) /\
+     (forall (cu:cursor),
+      (i > (position_ co cu) -> (element_ col cu) = (element_ co cu))) /\
+     (forall (cu:cursor),
+      ((position_ col cu) > 0 -> (position_ co cu) = (position_ col cu))).
 
 (*Why predicate*) Definition left__  (co:list) (cu:cursor) (col:list)
   := ((cu = no_element -> col = co)) /\
@@ -285,27 +288,28 @@ split.
 rewrite <- (inj_minus1 (Raw_List.position l cu) 1
 (gt_le_S 0 (Raw_List.position l cu) H)); apply inj_eq.
 apply (Raw_List.left_length l cu H).
-intro cun; split.
-intro HH; apply inj_le_rev in HH;
+split.
+intro cun; intro HH; apply inj_le_rev in HH;
 rewrite <- inj_0; apply inj_eq.
 apply (Raw_List.left_position_out l cu H cun HH).
 split.
-intro HH; apply inj_gt_rev in HH; split.
+intros cun HH; apply inj_gt_rev in HH.
 apply inj_eq.
 apply (Raw_List.left_position_in l cu H cun HH).
+split; intros cun HH; [|rewrite <- inj_0 in HH]; apply inj_gt_rev in HH.
 apply (Raw_List.left_element_in l cu H cun HH).
-intro HH; rewrite <- inj_0 in HH; apply inj_gt_rev in HH;
-apply inj_eq.
-apply (Raw_List.left_position_inv l cu H cun HH).
+apply inj_eq; apply (Raw_List.left_position_inv l cu H cun HH).
 Qed.
 
 (*Why predicate*) Definition right_pos  (co:list) (i:Z) (cor:list)
-  := (forall (cu:cursor),
-      ((i > (position_ co cu) -> (position_ cor cu) = 0)) /\
+  := (forall (cu:cursor), (i > (position_ co cu) -> (position_ cor cu) = 0)) /\
+     (forall (cu:cursor),
       ((i <= (position_ co cu) -> (position_ cor cu) =
-        ((position_ co cu) - i + 1) /\ (element_ cor cu) = (element_ co cu))) /\
+        ((position_ co cu) - i + 1))) /\
       (((position_ cor cu) > 0 -> (position_ co cu) =
-        ((position_ cor cu) + i - 1)))).
+        ((position_ cor cu) + i - 1)))) /\
+     (forall (cu:cursor),
+      (i <= (position_ co cu) -> (element_ cor cu) = (element_ co cu))).
 
 (*Why predicate*) Definition right__  (co:list) (cu:cursor) (cor:list)
   := ((cu = no_element -> cor = empty_)) /\
@@ -332,26 +336,25 @@ rewrite <- (inj_minus1 (Raw_List.length l) (Raw_List.position l cu)
 (Raw_List.position_length l cu));
 rewrite <- H; rewrite <- inj_plus; apply inj_eq.
 apply (Raw_List.right_length l cu Hpos).
-intro cun; split.
+split; [|split]; intro cun.
 intro Hs; apply inj_gt_rev in Hs; rewrite <- inj_0;
 apply inj_eq.
 apply (Raw_List.right_position_out l cu Hpos cun Hs).
 split.
-intro Hs; apply inj_le_rev in Hs; split.
-SearchAbout minus.
+intro Hs; apply inj_le_rev in Hs.
 rewrite <- H;
 rewrite <- (inj_minus1 (Raw_List.position l cun) (Raw_List.position l cu) Hs);
 rewrite <- inj_plus; apply inj_eq.
 apply (Raw_List.right_position_in l cu Hpos cun Hs).
-apply (Raw_List.right_element_in l cu Hpos cun Hs).
 intro HH; rewrite <- inj_0 in HH; apply inj_gt_rev in HH.
 rewrite <- H;
 rewrite <- inj_plus.
-SearchAbout plus.
 rewrite <- (inj_minus1 _ 1 (gt_le_S _ _
 (le_gt_trans _ _ _ (le_plus_l _ _) HH))).
 apply inj_eq.
 apply (Raw_List.right_position_inv l cu Hpos cun HH).
+intro Hs; apply inj_le_rev in Hs.
+apply (Raw_List.right_element_in l cu Hpos cun Hs).
 intros cun Hpos; rewrite <- inj_0 in Hpos;
 apply inj_gt_rev in Hpos; rewrite <- inj_0;
 apply inj_gt.
@@ -359,7 +362,7 @@ apply (Raw_List.has_element_right l cu cun Hpos).
 Qed.
 
 (*Why logic*) Definition find_first : list -> element_t -> cursor.
-exact Raw_List.find.
+exact (fun l => Raw_List.find (Raw_List.this l)).
 Defined.
 
 (*Why predicate*) Definition find__  (co:list) (e:element_t) (cu:cursor)
@@ -376,7 +379,7 @@ Defined.
 intros l e; unfold find__; unfold is_empty_; unfold
 position_; unfold length_; unfold find_first; unfold no_element;
 unfold element_; rewrite <- inj_0.
-destruct (Raw_List.find_has_element l e) as [Hf|Hf]; [right|left].
+destruct (Raw_List.find_has_element (Raw_List.this l) e) as [Hf|Hf]; [right|left].
 apply Raw_List.position_has_element in Hf;
 split; [apply inj_gt; exact Hf|].
 split; [apply (Raw_List.find_element l e Hf)|].
@@ -395,33 +398,40 @@ Qed.
   := (find_first (right_ l cu) e).
 
 (*Why predicate*) Definition equal_  (co1:list) (co2:list)
-  := (forall (cu:cursor), (position_ co1 cu) = (position_ co2 cu) /\
-      (((position_ co1 cu) > 0 -> (element_ co1 cu) = (element_ co2 cu)))).
+  := (forall (cu:cursor), (position_ co1 cu) = (position_ co2 cu)) /\
+     (forall (cu:cursor),
+      ((position_ co1 cu) > 0 -> (element_ co1 cu) = (element_ co2 cu))).
 
 (*Why predicate*) Definition replace_element_  (co1:list) (cu:cursor) (e:element_t) (co2:list)
   := (position_ co1 cu) > 0 /\ (length_ co1) = (length_ co2) /\
      (element_ co2 cu) = e /\
-     (forall (cun:cursor), (position_ co2 cun) = (position_ co1 cun) /\
-      ((~(cu = cun) /\ (position_ co1 cun) > 0 ->
-        (element_ co2 cun) = (element_ co1 cun)))).
+     (forall (cun:cursor), (position_ co2 cun) = (position_ co1 cun)) /\
+     (forall (cun:cursor),
+      (~(cu = cun) /\ (position_ co1 cun) > 0 ->
+       (element_ co2 cun) = (element_ co1 cun))).
 
 (*Why predicate*) Definition insert_pos  (co1:list) (i:Z) (co2:list)
   := (forall (cun:cursor),
       ((i > (position_ co1 cun) /\ (position_ co1 cun) > 0 ->
         (position_ co2 cun) = (position_ co1 cun))) /\
       ((i <= (position_ co1 cun) -> (position_ co2 cun) =
-        ((position_ co1 cun) + 1))) /\
-      (((position_ co1 cun) > 0 -> (element_ co1 cun) = (element_ co2 cun)))).
+        ((position_ co1 cun) + 1)))) /\
+     (forall (cun:cursor),
+      ((position_ co1 cun) > 0 -> (element_ co1 cun) = (element_ co2 cun))).
 
 (*Why predicate*) Definition insert_inv  (co1:list) (i:Z) (e:element_t) (co2:list)
   := (forall (cun:cursor),
-      (((position_ co2 cun) = i -> (position_ co1 cun) = 0 /\
-        (element_ co2 cun) = e)) /\
+      ((position_ co2 cun) = i -> (element_ co2 cun) = e)) /\
+     (forall (cun:cursor),
       ((i > (position_ co2 cun) /\ (position_ co2 cun) > 0 ->
-        (position_ co1 cun) = (position_ co2 cun) /\
         (element_ co1 cun) = (element_ co2 cun))) /\
+      (((position_ co2 cun) > i -> (element_ co1 cun) = (element_ co2 cun)))) /\
+     (forall (cun:cursor),
+      (((position_ co2 cun) = i -> (position_ co1 cun) = 0)) /\
+      ((i > (position_ co2 cun) /\ (position_ co2 cun) > 0 ->
+        (position_ co1 cun) = (position_ co2 cun))) /\
       (((position_ co2 cun) > i -> (position_ co1 cun) =
-        ((position_ co2 cun) - 1) /\ (element_ co1 cun) = (element_ co2 cun)))).
+        ((position_ co2 cun) - 1)))).
 
 (*Why predicate*) Definition insert_  (co1:list) (cu:cursor) (e:element_t) (co2:list)
   := (cu = no_element \/ (position_ co1 cu) > 0) /\ (length_ co2) =
@@ -435,17 +445,22 @@ Qed.
   := (forall (cun:cursor),
       (((position_ co1 cun) = i -> (position_ co2 cun) = 0)) /\
       (((position_ co1 cun) > i -> (position_ co2 cun) =
-        ((position_ co1 cun) - 1) /\ (element_ co2 cun) = (element_ co1 cun))) /\
-      ((i > (position_ co1 cun) -> (position_ co2 cun) =
-        (position_ co1 cun) /\ (element_ co2 cun) = (element_ co1 cun)))).
+        ((position_ co1 cun) - 1))) /\
+      ((i > (position_ co1 cun) -> (position_ co2 cun) = (position_ co1 cun)))) /\
+     (forall (cun:cursor),
+      (((position_ co1 cun) > i -> (element_ co2 cun) = (element_ co1 cun))) /\
+      ((i > (position_ co1 cun) -> (element_ co2 cun) = (element_ co1 cun)))).
 
 (*Why predicate*) Definition delete_inv  (co1:list) (i:Z) (co2:list)
   := (forall (cun:cursor),
-      ((i <= (position_ co2 cun) -> (position_ co1 cun) =
-        ((position_ co2 cun) + 1) /\ (element_ co1 cun) = (element_ co2 cun))) /\
+      ((i <= (position_ co2 cun) -> (element_ co1 cun) = (element_ co2 cun))) /\
       ((i > (position_ co2 cun) /\ (position_ co2 cun) > 0 ->
-        (position_ co1 cun) = (position_ co2 cun) /\
-        (element_ co2 cun) = (element_ co1 cun)))).
+        (element_ co2 cun) = (element_ co1 cun)))) /\
+     (forall (cun:cursor),
+      ((i > (position_ co2 cun) /\ (position_ co2 cun) > 0 ->
+        (position_ co1 cun) = (position_ co2 cun))) /\
+      ((i <= (position_ co2 cun) -> (position_ co1 cun) =
+        ((position_ co2 cun) + 1)))).
 
 (*Why predicate*) Definition delete_  (co1:list) (cu:cursor) (co2:list)
   := (position_ co1 cu) > 0 /\ (length_ co2) = ((length_ co1) - 1) /\
@@ -457,73 +472,6 @@ Qed.
 
 (*Why predicate*) Definition contains_  (co:list) (e:element_t)
   := (position_ co (find_first co e)) > 0.
-
-
-(*Why axiom*) Lemma contains_inserted :
-  (forall (l1:list),
-   (forall (l2:list),
-    (forall (cu:cursor),
-     (forall (e:element_t), ((insert_ l1 cu e l2) -> (contains_ l2 e)))))).
-unfold insert_; unfold contains_.
-assert (Z_of_nat (1) = 1). auto.
-intros l1 l2 cu e;
-case_eq(beq_nat (Raw_List.length l2) O).
-intros Hko [_[Hlgth]]; apply beq_nat_true in Hko.
-unfold length_ in Hlgth; rewrite <- H in Hlgth;
-rewrite <- inj_plus in Hlgth; apply inj_eq_rev in Hlgth.
-contradict Hlgth; rewrite Hko; rewrite <- plus_n_Sm;
-rewrite <- plus_n_O; apply O_S.
-intros Hl; apply beq_nat_false in Hl;
-apply Raw_List.position_first_gen in Hl.
-generalize (gt_Sn_O O); intro Hpfst; rewrite <- Hl in Hpfst.
-intros [[Hno | Hp][Hlgth]].
-rewrite Hno; intros [Hpos|Hko];
-[|destruct Hko as [Hko _]; contradict Hko;
-rewrite position_no_element; apply Zgt_irrefl].
-destruct Hpos as [_ [Hpos Hinv]].
-unfold insert_inv in Hinv.
-generalize (Raw_List.position_last_gen l2).
-unfold position_ in Hinv; unfold length_ in Hinv.
-intros Hlst; apply inj_eq in Hlst;
-destruct (Hinv (Raw_List.last l2)) as [Hinvl _]; clear Hinv.
-unfold length_ in Hlgth; rewrite Hlgth in Hlst;
-generalize (Hinvl Hlst); clear Hinvl; intros [_ He].
-rewrite <- He; unfold position_; unfold find_first; unfold element_;
-unfold element_ in He; rewrite <- inj_0; apply inj_gt.
-apply (Raw_List.find_element_rev l2).
-rewrite <- H in Hlgth; rewrite <- inj_plus in Hlgth;
-apply inj_eq_rev in Hlgth;
-rewrite (Raw_List.position_last_gen); rewrite Hlgth.
-apply le_plus_r.
-intros [[Hko _]|[_[Hpos Hinv]]].
-contradict Hp; rewrite Hko; rewrite position_no_element;
-apply Zgt_irrefl.
-unfold insert_pos in Hpos.
-destruct (Hpos cu) as [_[Hpcu _]];
-generalize (Hpcu (Zle_refl (position_ l1 cu))); clear Hpcu;
-intro Hpcu; generalize Hp; intro Hp2.
-unfold position_ in Hp; rewrite <- inj_0 in Hp;
-apply inj_gt_rev in Hp; unfold position_ in Hpcu;
-rewrite <- H in Hpcu; rewrite <- inj_plus in Hpcu;
-apply inj_eq_rev in Hpcu; apply gt_n_S in Hp.
-rewrite <- plus_n_Sm in Hpcu; rewrite <- plus_n_O in Hpcu;
-rewrite <- Hpcu in Hp.
-generalize (reflexivity (pred(Raw_List.position l2 cu)));
-intro Hprev; rewrite Hpcu in Hprev at 2; rewrite <- pred_Sn in Hprev.
-rewrite pred_of_minus in Hprev.
-rewrite <- (Raw_List.position_previous_gen _ _ Hp) in Hprev.
-unfold insert_inv in Hinv.
-destruct (Hinv (Raw_List.previous l2 cu)) as [Hint _].
-unfold position_ in Hint; apply inj_eq in Hprev;
-destruct (Hint Hprev) as [_ Hel]; clear Hint.
-rewrite <- Hel; unfold position_; unfold find_first;
-unfold element_; rewrite <- inj_0; apply inj_gt;
-apply (Raw_List.find_element_rev l2).
-unfold position_ in Hp2; rewrite <- inj_0 in Hp2;
-apply inj_gt_rev in Hp2.
-apply inj_eq_rev in Hprev;
-rewrite Hprev; apply gt_le_S; apply Hp2.
-Qed.
 
 (*** TESTS ***)
 
@@ -548,57 +496,69 @@ destruct Hp as [Heq|Hpos];
 [left; rewrite Heq|right]; split;
 [reflexivity| |exact Hpos
 |rewrite <- inj_0 in Hpos; apply inj_gt_rev in Hpos];
-split; intro cun; split.
+split; split.
+intro cun; split.
 intros [H1 H2].
 rewrite <- inj_0 in H2; apply inj_gt_rev in H2;
 rewrite <- H in H1; rewrite <- inj_plus in H1; apply inj_gt_rev in H1;
 apply inj_eq.
 apply (Raw_List.insert_position_O l e cun H2).
-split.
 intro HH; rewrite <- H in HH; rewrite <- inj_plus in HH;
 apply inj_le_rev in HH; contradict HH.
-SearchAbout le.
 apply gt_not_le; rewrite <- plus_n_Sm;
 rewrite <- plus_n_O; apply le_S_gt; apply le_n_S.
 apply (Raw_List.position_length l cun).
-intro HH; rewrite <- inj_0 in HH; apply inj_gt_rev in HH.
+intros cun HH; rewrite <- inj_0 in HH; apply inj_gt_rev in HH.
 apply (Raw_List.insert_element_old l O e cun HH).
-intro HH; rewrite <- H in HH; rewrite <- inj_plus in HH;
+intros cun HH; rewrite <- H in HH; rewrite <- inj_plus in HH;
 apply inj_eq_rev in HH;
-rewrite <- (Raw_List.insert_position_new_O l e) in HH; split.
-rewrite <- inj_0; apply inj_eq.
-apply (Raw_List.insert_position_rev_new l O e cun HH).
+rewrite <- (Raw_List.insert_position_new_O l e) in HH.
 apply (Raw_List.insert_element_new l O e cun HH).
 split.
+intro cun; split.
 intros [Hl Hpos]; rewrite <- inj_0 in Hpos;
 apply inj_gt_rev in Hpos; rewrite <- H in Hl;
 rewrite <- inj_plus in Hl; apply inj_gt_rev in Hl;
 apply (Raw_List.insert_has_element) in Hpos;
-destruct Hpos as [Hko|Hpos];
-[rewrite Hko in Hl; rewrite (Raw_List.insert_position_new_O l e) in Hl;
-contradict Hl; apply gt_irrefl|split].
-apply inj_eq; symmetry.
-apply (Raw_List.insert_position_O l e cun Hpos).
+destruct Hpos as [Hko|Hpos].
+rewrite Hko in Hl; rewrite (Raw_List.insert_position_new_O l e) in Hl;
+contradict Hl; apply gt_irrefl.
 apply (Raw_List.insert_element_old l O e cun Hpos).
 intro Hko; rewrite <- H in Hko; rewrite <- inj_plus in Hko;
 apply inj_gt_rev in Hko; contradict Hko.
 apply le_not_gt; rewrite <- (Raw_List.insert_length l O e).
 apply Raw_List.position_length.
-intros [Hinf Hp]; apply inj_eq; apply inj_gt_rev in Hinf;
+rewrite <- H; intros cun; split; [|split].
+intro Hp; rewrite <- inj_plus in Hp; apply inj_eq_rev in Hp;
+rewrite <- inj_0; apply inj_eq.
+rewrite <- (Raw_List.insert_position_new_O l e) in Hp.
+apply (Raw_List.insert_position_rev_new _ _ _ _ Hp).
+intros [Hinf Hp]; apply inj_eq; rewrite <- inj_plus in Hinf;
+apply inj_gt_rev in Hinf;
+rewrite <- inj_0 in Hp; apply inj_gt_rev in Hp.
+apply Raw_List.insert_has_element in Hp.
+destruct Hp as [Hko | Hpos];
+[|symmetry; apply (Raw_List.insert_position_O l e cun Hpos)].
+rewrite Hko in Hinf; rewrite (Raw_List.insert_position_new_O l e) in Hinf.
+contradict Hinf; apply le_not_gt; apply le_refl.
+intro Hko; rewrite <- inj_plus in Hko;
+apply inj_gt_rev in Hko; contradict Hko; apply le_not_gt.
+rewrite <- (Raw_List.insert_length l O e).
+apply Raw_List.position_length.
+intro cun; split.
+intros [Hinf Hp]; apply inj_eq;
+apply inj_gt_rev in Hinf;
 rewrite <- inj_0 in Hp; apply inj_gt_rev in Hp.
 apply (Raw_List.insert_position_inf l cu cun e Hpos Hp Hinf).
-split.
 intro Hsup; apply inj_le_rev in Hsup; rewrite <- H;
 rewrite <- inj_plus; apply inj_eq.
 apply (Raw_List.insert_position_sup l cu cun e Hpos Hsup).
-intro Hp; rewrite <- inj_0 in Hp; apply inj_gt_rev in Hp.
+intros cun Hp; rewrite <- inj_0 in Hp; apply inj_gt_rev in Hp.
 apply (Raw_List.insert_element_old l cu e cun Hp).
-intro HH; apply inj_eq_rev in HH;
-rewrite <- (Raw_List.insert_position_new l cu e Hpos) in HH; split.
-rewrite <- inj_0; apply inj_eq.
-apply (Raw_List.insert_position_rev_new l cu e cun HH).
+intros cun HH; apply inj_eq_rev in HH;
+rewrite <- (Raw_List.insert_position_new l cu e Hpos) in HH.
 apply (Raw_List.insert_element_new l cu e cun HH).
-split.
+split; intro cun; split.
 intros [H1 H2];
 rewrite <- inj_0 in H2; apply inj_gt_rev in H2.
 apply (Raw_List.insert_has_element) in H2.
@@ -606,29 +566,42 @@ destruct H2 as [Hko|Hp].
 rewrite Hko in H1;
 rewrite (Raw_List.insert_position_new _ _ _ Hpos) in H1.
 apply inj_gt_rev in H1; contradict H1; apply gt_irrefl.
+apply (Raw_List.insert_element_old l cu e cun Hp).
+intro Hq; apply inj_gt_rev in Hq; generalize (gt_trans _ _ _ Hq Hpos).
+intro HH; apply (Raw_List.insert_has_element) in HH.
+destruct HH as [Hko | Hppos];
+[|apply (Raw_List.insert_element_old l cu e cun Hppos)].
+contradict Hq; rewrite Hko; apply le_not_gt;
+rewrite (Raw_List.insert_position_new _ _ _ Hpos); apply le_refl.
+intro HH; apply inj_eq_rev in HH;
+rewrite <- (Raw_List.insert_position_new _ _ e Hpos) in HH.
+rewrite <- inj_0; apply inj_eq;
+apply (Raw_List.insert_position_rev_new _ _ _ _ HH).
 split.
+intros [Hinf Hp]; apply inj_eq;
+apply inj_gt_rev in Hinf;
+rewrite <- inj_0 in Hp; apply inj_gt_rev in Hp.
+apply (Raw_List.insert_has_element) in Hp.
+destruct Hp as [Hko | Hppos].
+contradict Hinf; rewrite Hko; apply le_not_gt;
+rewrite (Raw_List.insert_position_new _ _ _ Hpos); apply le_refl.
 case_eq (leb (Raw_List.position l cu) (Raw_List.position l cun));
 intro Hq; [apply leb_complete in Hq|apply leb_complete_conv in Hq].
 generalize Hq; intro Hko.
 apply (Raw_List.insert_position_sup l cu cun e Hpos) in Hq.
-rewrite Hq in H1.
-apply inj_gt_rev in H1; rewrite <- plus_n_Sm in H1;
-rewrite <- plus_n_O in H1.
-elim (gt_irrefl _ (gt_le_trans _ _ _ H1
+rewrite Hq in Hinf.
+rewrite <- plus_n_Sm in Hinf; rewrite <- plus_n_O in Hinf.
+elim (gt_irrefl _ (gt_le_trans _ _ _ Hinf
 (le_trans _ _ _ Hko (le_n_Sn _)))).
-symmetry; apply inj_eq;
-apply (Raw_List.insert_position_inf l cu cun e Hpos Hp Hq).
-apply (Raw_List.insert_element_old l cu e cun Hp).
+symmetry;
+apply (Raw_List.insert_position_inf l cu cun e Hpos Hppos Hq).
 intros H1; apply inj_gt_rev in H1;
 case_eq (leb (Raw_List.position l cu) (Raw_List.position l cun));
 intro Hq; [apply leb_complete in Hq|apply leb_complete_conv in Hq].
 rewrite (Raw_List.insert_position_sup l cu cun e Hpos Hq).
-split.
 rewrite inj_plus; rewrite H;
 rewrite Zplus_comm; symmetry;
 apply Zminus_plus.
-apply (Raw_List.insert_element_old l cu e cun
-(le_gt_trans _ _ _ Hq Hpos)).
 generalize Hq; intro H2;
 destruct (Raw_List.insert_has_element l cu e cun
 (gt_trans _ _ _ H1 Hpos)) as [Hko|Hp].
@@ -657,25 +630,30 @@ split.
 apply Zplus_minus_eq; rewrite <- H; rewrite <- inj_plus;
 apply inj_eq.
 apply (Raw_List.delete_length l cu Hpos).
-split; intro cun; split.
+split; split; intro cun; split.
 intro HH; apply inj_eq_rev in HH;
 rewrite <- inj_0; apply inj_eq.
 symmetry in HH; apply (Raw_List.position_eq l cu cun Hpos) in HH.
 rewrite <- HH; apply (Raw_List.delete_position_deleted l cu Hpos).
-split; intro HH; apply inj_gt_rev in HH; split.
+split; intro HH; apply inj_gt_rev in HH.
 apply Zplus_minus_eq; rewrite <- H; rewrite <- inj_plus; apply inj_eq.
 apply(Raw_List.delete_position_sup l cu cun Hpos HH).
 case_eq (beq_nat cun cu); intro Hneq;
 [apply beq_nat_true in Hneq; rewrite Hneq in HH; contradict HH;
 apply gt_irrefl | apply beq_nat_false in Hneq].
-apply (Raw_List.delete_element l cu cun Hpos Hneq).
 apply inj_eq;
 apply(Raw_List.delete_position_inf l cu cun Hpos HH).
+intro HH; apply inj_gt_rev in HH.
 case_eq (beq_nat cun cu); intro Hneq;
 [apply beq_nat_true in Hneq; rewrite Hneq in HH; contradict HH;
 apply gt_irrefl | apply beq_nat_false in Hneq].
 apply (Raw_List.delete_element l cu cun Hpos Hneq).
-intro HH; apply inj_le_rev in HH; split.
+intro HH; apply inj_gt_rev in HH.
+case_eq (beq_nat cun cu); intro Hneq;
+[apply beq_nat_true in Hneq; rewrite Hneq in HH; contradict HH;
+apply gt_irrefl | apply beq_nat_false in Hneq].
+apply (Raw_List.delete_element l cu cun Hpos Hneq).
+intro HH; apply inj_le_rev in HH.
 case_eq (leb (Raw_List.position l cun) (Raw_List.position l cu));
 intro Hs; [apply leb_complete in Hs| apply leb_complete_conv in Hs].
 destruct (le_lt_or_eq _ _ Hs) as [Ht|Ht].
@@ -690,15 +668,20 @@ rewrite <- Ht in HH; rewrite (Raw_List.delete_position_deleted _ _ Hpos) in HH.
 apply le_n_O_eq in HH; contradict Hpos; rewrite HH;
 apply gt_irrefl.
 apply lt_not_le in Hs; apply not_le in Hs.
-rewrite <- H; rewrite <- inj_plus; rewrite plus_comm;
-apply inj_eq;
-apply (Raw_List.delete_position_sup _ _ _ Hpos Hs).
 case_eq(beq_nat cun cu); intro Heq;
 [apply beq_nat_true in Heq; rewrite Heq in HH;
 rewrite (Raw_List.delete_position_deleted _ _ Hpos) in HH;
 apply le_n_O_eq in HH; contradict Hpos; rewrite HH;
 apply gt_irrefl|].
 apply beq_nat_false in Heq; symmetry;
+apply (Raw_List.delete_element l cu cun Hpos Heq).
+intros [HH Hpcun]; rewrite <- inj_0 in Hpcun;
+apply inj_gt_rev in Hpcun; apply inj_gt_rev in HH.
+case_eq(beq_nat cun cu); intro Heq.
+apply beq_nat_true in Heq; rewrite Heq in Hpcun;
+rewrite (Raw_List.delete_position_deleted _ _ Hpos) in Hpcun;
+apply le_n_O_eq in Hpcun; contradict Hpcun; apply O_S.
+apply beq_nat_false in Heq;
 apply (Raw_List.delete_element l cu cun Hpos Heq).
 intros [HH Hpcun]; rewrite <- inj_0 in Hpcun;
 apply inj_gt_rev in Hpcun; apply inj_gt_rev in HH.
@@ -715,16 +698,32 @@ apply (Raw_List.position_eq l cu cun Hpos) in Ht;
 rewrite <- Ht in Hpcun.
 contradict Hpcun;
 rewrite (Raw_List.delete_position_deleted _ _ Hpos); apply gt_irrefl.
-split.
 apply inj_eq.
 apply lt_not_le in Hs; apply not_le in Hs.
 symmetry; apply (Raw_List.delete_position_inf _ _ _ Hpos Hs).
-case_eq(beq_nat cun cu); intro Heq.
-apply beq_nat_true in Heq; rewrite Heq in Hpcun;
-rewrite (Raw_List.delete_position_deleted _ _ Hpos) in Hpcun;
-apply le_n_O_eq in Hpcun; contradict Hpcun; apply O_S.
-apply beq_nat_false in Heq;
-apply (Raw_List.delete_element l cu cun Hpos Heq).
+intro HH; apply inj_le_rev in HH.
+case_eq (leb (Raw_List.position l cun) (Raw_List.position l cu));
+intro Hs; [apply leb_complete in Hs| apply leb_complete_conv in Hs].
+destruct (le_lt_or_eq _ _ Hs) as [Ht|Ht].
+apply lt_not_le in Ht; apply not_le in Ht.
+rewrite (Raw_List.delete_position_inf _ _ _ Hpos Ht) in HH.
+apply (le_antisym _ _ Hs) in HH; rewrite HH in Ht;
+contradict Ht; apply gt_irrefl.
+symmetry in Ht;
+apply (Raw_List.position_eq l cu cun Hpos) in Ht;
+rewrite <- Ht.
+rewrite <- Ht in HH; rewrite (Raw_List.delete_position_deleted _ _ Hpos) in HH.
+apply le_n_O_eq in HH; contradict Hpos; rewrite HH;
+apply gt_irrefl.
+apply lt_not_le in Hs; apply not_le in Hs.
+case_eq(beq_nat cun cu); intro Heq;
+[apply beq_nat_true in Heq; rewrite Heq in HH;
+rewrite (Raw_List.delete_position_deleted _ _ Hpos) in HH;
+apply le_n_O_eq in HH; contradict Hpos; rewrite HH;
+apply gt_irrefl|].
+rewrite <- H; rewrite <- inj_plus; rewrite plus_comm;
+apply inj_eq;
+apply (Raw_List.delete_position_sup _ _ _ Hpos Hs).
 Qed.
 
 Definition replace_element : list -> cursor -> element_t -> list.
@@ -744,7 +743,7 @@ apply inj_eq.
 apply Raw_List.replace_length.
 split.
 apply(Raw_List.replace_element_replaced l cu e Hpos).
-intro cun; split.
+split; intro cun.
 apply inj_eq.
 apply Raw_List.replace_position.
 intros [Hdiff Hpcun]; apply inj_gt_rev in Hpcun.
@@ -784,9 +783,8 @@ Definition is_max  (v:list) (cu:cursor)
      (forall (e:element_t),
       ((contains_ v e) -> (compare_ (element_ v cu) e) >= 0)).
 
-Definition max_ : list -> cursor.
-exact (Max_List.max).
-Defined.
+Definition max_ (l : list) :=
+Max_List.max (Raw_List.this l).
 
 Lemma is_max_max :
   (forall (v:list), (~(is_empty_ v) -> (is_max v (max_ v)))).
@@ -796,13 +794,13 @@ unfold element_; unfold find_; unfold first_;
 unfold position_.
 split.
 rewrite <- inj_0; apply inj_gt; apply Raw_List.position_has_element.
-apply (Max_List.max_has_element l He).
+simpl; apply (Max_List.max_has_element _ He).
 intros e Hhfind;
 rewrite <- inj_0 in Hhfind; apply inj_gt_rev in Hhfind.
 rewrite <- (Raw_List.find_element l e Hhfind).
 apply (Raw_List.has_element_position) in Hhfind.
-destruct (Compare.compare_asym (Raw_List.element l (Max_List.max l))
-(Raw_List.element l (Raw_List.find l e))) as [_ H];
+destruct (Compare.compare_asym (Raw_List.element l (Max_List.max (Raw_List.this l)))
+(Raw_List.element l (Raw_List.find (Raw_List.this l) e))) as [_ H];
 apply Zle_ge; apply H; clear H.
 apply (Max_List.max_element _ l Hhfind).
 Qed.
@@ -831,7 +829,7 @@ Qed.
 Module Sum_List := Raw_List.Sum_Of(W).
 
 Definition sum_of_weight : list -> Z.
-exact (fun l => Z_of_nat (Sum_List.sum_of_weight l)).
+exact (fun l => Z_of_nat (Sum_List.sum_of_weight (Raw_List.this l))).
 Defined.
 
 Lemma sum_of_weight_delete :
@@ -844,13 +842,13 @@ assert (Z_of_nat (1) = 1). auto.
 intros l1 l2 cu; unfold delete_; unfold sum_of_weight;
 unfold weight_; unfold delete_pos; unfold delete_inv;
 unfold element_; unfold length_; unfold position_;
-intros [Hposcu[Hlgth[Hdpos Hdinv]]]; apply Zplus_minus_eq.
+intros [Hposcu[Hlgth[[Hdpos Hdelm Hdinv]]]]; apply Zplus_minus_eq.
 rewrite <- inj_plus; apply inj_eq.
 apply Sum_List.sum_of_delete.
 apply Raw_List.has_element_position.
 rewrite <- inj_0 in Hposcu; apply (inj_gt_rev _ _ Hposcu).
 destruct (Hdpos cu) as [Hpcu _].
-case_eq (Raw_List.has_element l2 cu); [|reflexivity].
+case_eq (Raw_List.has_element (Raw_List.this l2) cu); [|reflexivity].
 intro Hhe; apply Raw_List.position_has_element in Hhe;
 apply inj_gt in Hhe; contradict Hhe; 
 rewrite (Hpcu (reflexivity (Z_of_nat (Raw_List.position l1 cu)))).
@@ -860,9 +858,11 @@ destruct (Z_dec (Z_of_nat (Raw_List.position l1 cun))
 (Z_of_nat (Raw_List.position l1 cu))) as [[Hs|Hi]|Hko];
 [intros _; apply Zlt_gt in Hs|intros _|intro Hdiff; contradict Hdiff;
 apply (Raw_List.position_eq l1 _ _ Hp); apply inj_eq_rev; exact Hko].
-destruct (Hpcus Hs) as [Heqpos He]; split;
-[apply inj_eq_rev in Heqpos; rewrite Heqpos; exact Hp|exact He].
-destruct (Hpcui Hi) as [Heqpos He];
+generalize (Hpcus Hs); intro Heqpos; destruct (Hdelm cun) as [_ He];
+generalize (He Hs); intro Heqe; split;
+[apply inj_eq_rev in Heqpos; rewrite Heqpos; exact Hp|exact Heqe].
+generalize (Hpcui Hi); intro Heqpos; destruct (Hdelm cun) as [He _];
+generalize (He Hi); intro Heqe; split;
 apply inj_gt_rev in Hi; rewrite (S_pred _ _ Hi) in Heqpos;
 rewrite (S_pred _ _ Hi) in Hi.
 rewrite <- inj_0 in Hposcu; apply inj_gt_rev in Hposcu;
@@ -870,7 +870,8 @@ apply gt_S_le in Hi; apply (le_gt_trans _ _ _ Hi) in Hposcu.
 rewrite (plus_n_O (pred (Raw_List.position l1 cun))) in Heqpos;
 rewrite plus_n_Sm in Heqpos; rewrite inj_plus in Heqpos;
 rewrite Zplus_comm in Heqpos; rewrite Zminus_plus in Heqpos.
-split; [apply inj_eq_rev in Heqpos; rewrite Heqpos; exact Hposcu|exact He].
+apply inj_eq_rev in Heqpos; rewrite Heqpos; exact Hposcu.
+exact Heqe.
 destruct (Zeq_plus_swap (Z_of_nat (Raw_List.length l2))
 (Z_of_nat (Raw_List.length l1)) 1) as [_ Hint]; apply Hint in Hlgth.
 rewrite <- H in Hlgth; rewrite <- inj_plus in Hlgth;
@@ -891,14 +892,16 @@ unfold weight_; unfold insert_pos; unfold insert_inv;
 unfold element_; unfold length_; unfold position_.
 intros [[Hnel | Hposcu]];
 [rewrite Hnel; rewrite (Raw_List.position_no_element);
-intros [Hlgth [[_ [Hpos Hinv]] | [Hko _]]];
+intros [Hlgth [[_ [[Hposp Hpose] [Hinve [_ Hinvp]]]] | [Hko _]]];
 [| contradict Hko; rewrite inj_0; apply Zgt_irrefl]|
-intros [Hlgth [[Hko _] | [_ [Hpos Hinv]]]];
+intros [Hlgth [[Hko _] | [_ [[Hposp Hpose] [Hinve [_ Hinvp]]]]]];
 [contradict Hposcu; rewrite Hko; rewrite (Raw_List.position_no_element);
  rewrite inj_0; apply Zgt_irrefl|]].
-destruct (Hinv (Raw_List.last l2)) as [HH _].
+generalize (Hinve (Raw_List.last l2)); intro HHe.
+destruct (Hinvp (Raw_List.last l2)) as [HHp _].
 rewrite <- Raw_List.position_last_gen in Hlgth.
-destruct (HH Hlgth) as [Hposlast Hellast]; clear HH.
+generalize (HHe Hlgth); intro Hellast; clear HHe.
+generalize (HHp Hlgth); intro Hposlast; clear HHp.
 rewrite <- inj_plus;
 rewrite (Sum_List.sum_of_insert l1 l2 (S(Raw_List.length l1))
 (Raw_List.last l2) e ).
@@ -908,7 +911,7 @@ rewrite <- H in Hlgth; rewrite <- inj_plus in Hlgth;
 rewrite <- plus_n_Sm in Hlgth; rewrite <- plus_n_O in Hlgth;
 apply inj_eq_rev in Hlgth.
 rewrite Hlgth; apply gt_Sn_O.
-case_eq(Raw_List.has_element l1 (Raw_List.last l2));
+case_eq(Raw_List.has_element (Raw_List.this l1) (Raw_List.last l2));
 [intro Hko|reflexivity].
 apply Raw_List.position_has_element in Hko.
 rewrite <- inj_0 in Hposlast; apply inj_eq_rev in Hposlast;
@@ -917,7 +920,7 @@ exact Hellast.
 rewrite (plus_n_O (Raw_List.length l1));
 rewrite plus_n_Sm; intros cun Hppos.
 apply inj_le in Hppos; rewrite inj_plus in Hppos; rewrite H in Hppos.
-destruct(Hpos cun) as [_ [Hposi Heli]];
+destruct(Hposp cun) as [_ Hposi]; generalize (Hpose cun); intro Heli;
 generalize (Hposi Hppos); clear Hposi; intro Hp.
 rewrite <- H in Hppos; rewrite <- inj_plus in Hppos;
 apply inj_le_rev in Hppos; rewrite <- plus_n_Sm in Hppos;
@@ -931,7 +934,7 @@ apply (le_gt_trans _ _ _ Hppos (gt_Sn_O _)).
 rewrite (plus_n_O (Raw_List.length l1));
 rewrite plus_n_Sm; intros cun Hhe Hppos.
 apply inj_gt in Hppos; rewrite inj_plus in Hppos; rewrite H in Hppos.
-destruct(Hpos cun) as [Hposi [_ Heli]];
+destruct(Hposp cun) as [Hposi _]; generalize (Hpose cun); intro Heli;
 assert (Z_of_nat (Raw_List.length l1) + 1 > 
 Z_of_nat (Raw_List.position l1 cun) /\
 Z_of_nat (Raw_List.position l1 cun) > 0);
@@ -946,7 +949,7 @@ rewrite <- H in Hlgth; rewrite <- inj_plus in Hlgth;
 rewrite <- plus_n_Sm in Hlgth; rewrite <- plus_n_O in Hlgth;
 apply inj_eq_rev in Hlgth; rewrite <- Raw_List.position_last_gen;
 exact Hlgth.
-destruct (Hpos cu) as [_ [Hppos _]];
+destruct (Hposp cu) as [_ Hppos];
 generalize (Hppos (Zle_refl _)); clear Hppos; intro Hp.
 rewrite <- H in Hp; rewrite <- inj_plus in Hp;
 apply inj_eq_rev in Hp; rewrite <- plus_n_Sm in Hp;
@@ -957,22 +960,26 @@ apply gt_n_S in Hposscu; rewrite <- Hp in Hposscu;
 generalize (Raw_List.position_previous_gen l2 cu Hposscu);
 rewrite Hp; rewrite <- pred_of_minus;
 rewrite <- pred_Sn; intro Hpos_prev.
-destruct (Hinv (Raw_List.previous l2 cu)) as [Hint _];
-destruct (Hint (inj_eq _ _ Hpos_prev)) as [Hpprevl1 Hel]; clear Hint.
+destruct (Hinvp (Raw_List.previous l2 cu)) as [Hint _].
+generalize (Hint (inj_eq _ _ Hpos_prev)); intro Hpprevl1.
+generalize (Hinve (Raw_List.previous l2 cu) (inj_eq _ _ Hpos_prev));
+intro Hel; clear Hint.
 rewrite <- inj_plus;
 rewrite (Sum_List.sum_of_insert l1 l2 (Raw_List.position l1 cu)
 (Raw_List.previous l2 cu) e ).
 rewrite plus_comm; reflexivity.
 apply (Raw_List.has_element_position).
 rewrite Hpos_prev; exact Hposcu.
-case_eq(Raw_List.has_element l1 (Raw_List.previous l2 cu));
+case_eq(Raw_List.has_element (Raw_List.this l1)
+(Raw_List.previous l2 cu));
 [intro Hko|reflexivity].
 apply Raw_List.position_has_element in Hko.
 rewrite <- inj_0 in Hpprevl1; apply inj_eq_rev in Hpprevl1;
 contradict Hko; rewrite Hpprevl1; apply gt_irrefl.
 exact Hel.
 intros cun Hppos; apply inj_le in Hppos.
-destruct(Hpos cun) as [_ [Hposi Heli]];
+destruct (Hposp cun) as [_ Hposi];
+generalize (Hpose cun); intro Heli.
 generalize (Hposi Hppos); clear Hposi; intro Hpcun.
 rewrite <- H in Hpcun; rewrite <- inj_plus in Hpcun;
 apply inj_eq_rev in Hpcun; rewrite <- plus_n_Sm in Hpcun;
@@ -981,7 +988,8 @@ split; [exact Hpcun | symmetry; apply Heli].
 apply inj_le_rev in Hppos;rewrite <- inj_0; apply inj_gt;
 apply (le_gt_trans _ _ _ Hppos Hposcu).
 intros cun Hhe Hppos; apply inj_gt in Hppos.
-destruct(Hpos cun) as [Hposi [_ Heli]];
+destruct (Hposp cun) as [Hposi _];
+generalize (Hpose cun); intro Heli.
 assert (Z_of_nat (Raw_List.position l1 cu) > 
 Z_of_nat (Raw_List.position l1 cun) /\
 Z_of_nat (Raw_List.position l1 cun) > 0);
@@ -1007,15 +1015,16 @@ Lemma sum_of_weight_replace_element :
 assert (Z_of_nat (1) = 1). auto.
 intros l1 l2 cu e; unfold replace_element_; unfold sum_of_weight;
 unfold weight_; unfold element_; unfold length_; unfold position_.
-intros [Hposcu[Hlgth [Hel Hpos]]].
+intros [Hposcu[Hlgth [Hel [Hposp Hpose]]]].
 apply Zplus_minus_eq; repeat(rewrite <- inj_plus); apply inj_eq.
 apply inj_eq_rev in Hlgth; rewrite <- inj_0 in Hposcu;
-apply inj_gt_rev in Hposcu; rewrite <- inj_0 in Hpos;
+apply inj_gt_rev in Hposcu; rewrite <- inj_0 in Hpose;
 rewrite (Sum_List.sum_of_replace l1 l2 cu e).
 rewrite plus_comm; reflexivity.
 apply (Raw_List.has_element_position _ _ Hposcu).
 exact Hel.
-intros cun Hposl1; destruct (Hpos cun) as [Hposeq Heleq].
+intros cun Hposl1;
+generalize (Hposp cun)(Hpose cun); intros Hposeq Heleq.
 apply inj_eq_rev in Hposeq; rewrite Hposeq.
 split; [exact Hposl1|intro Hdiff; apply Heleq].
 split; [exact Hdiff|apply inj_gt; exact Hposl1].
@@ -1035,10 +1044,10 @@ Lemma sum_of_weight_equal :
    (forall (v2:list),
     ((equal_ v1 v2) -> (sum_of_weight v1) = (sum_of_weight v2)))).
 unfold equal_; unfold sum_of_weight; unfold position_;
-unfold element_; intros l1 l2 Heq.
+unfold element_; intros l1 l2 [Heqp Heqe].
 apply inj_eq;
 apply (Sum_List.sum_of_equal l1 l2).
-intros cu; destruct (Heq cu) as [Hp He];
+intros cu; generalize (Heqp cu)(Heqe cu); intros Hp He;
 split; [apply inj_eq_rev in Hp; exact Hp|intro Hpl1].
 apply He; rewrite <- inj_0; apply inj_gt;
 exact Hpl1.

@@ -1,12 +1,10 @@
 include "ordered_map.why"
 
-(* Everything works with alt-ergo (-redondance or not it depends) in 60s,
+(* Everything works with alt-ergo in 10s,
    except :
-   	  - two goals, right_equal and right_equal_next, which are not proved in 30min
-	  - three goals contains_left, delete_last and insert_has_element, which are proved in 15min
-   	  - two VC's of test_new_position which take less than 10min
-   	  - one VC of test12 and test22 which take less than 4min
-   	  - one VC of test_max which takes less than 90s. *)
+   	  - three goals, right_delete, element__left_next and right_equal_next, which take 1min
+	  - one goal, right_equal which takes 10min
+   	  - one VC of test_new_position which takes 1min *)
 
 (* GOALS *)
 
@@ -482,7 +480,10 @@ let test11 (s:map ref) (ss:map) (n:int) (c:cursor ref) =
     while !i <= n do
     	  { invariant
 	    ((forall k:key_t. contains_(s,witness(k)) ->
-	    	     0<position_(ss,find_(ss,witness(k)))<i and
+	    	     0<position_(ss,find_(ss,witness(k)))) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
+	    	     position_(ss,find_(ss,witness(k)))<i) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
 		     element__(s,witness(k))=element__(ss,witness(k))) and
 	    length_(s)=i-1 and position_(ss,c)=i and i<=n+1)
 	  }
@@ -509,8 +510,6 @@ let test12 (s:map ref) (ss:map) (n:int) (c:cursor ref) =
     iloop:
     insert s (key ss !c) (element ss !c);
     c := next ss !c;
-    (* 10s with the assertion, 4min without...
-    assert{ forall i:int. contains_(s,i) -> element__(s,i)=element__(left_(ss,c),i)};*)
     i := !i+1
     done
     { equivalent_(s,left_(ss,c)) and length_(s)=n and false }
@@ -524,7 +523,10 @@ let test2 (s:map ref) (ss:map) =
     	  { invariant
 	    ((has_element_(ss,c) or c=no_element) and
 	    (forall k:key_t. contains_(s,witness(k)) ->
-	    	    0<position_(ss,find_(ss,witness(k)))<=length_(s) and
+	    	    0<position_(ss,find_(ss,witness(k)))) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
+	    	    position_(ss,find_(ss,witness(k)))<=length_(s)) and
+	    (forall k:key_t. contains_(s,witness(k)) ->
 		    element__(s,witness(k))=element__(ss,witness(k))) and
 	    (has_element_(ss,c) ->length_(s)=position_(ss,c)-1) and
 	    (c=no_element -> length_(s)=length_(ss)))
@@ -545,10 +547,7 @@ let test22 (s:map ref) (ss:map) =
 	    equivalent_(s,left_(ss,c)))
 	  }
     insert s (key ss !c) (element ss !c);
-    c := next ss !c;
-    (* 10s with the assertion, 4min without...
-    assert{ forall i:int. contains_(s,i) -> element__(s,i)=element__(left_(ss,c),i)};*)
-    void
+    c := next ss !c
     done
     { equivalent_(s,ss) and false }
 
@@ -661,8 +660,6 @@ let test_new_position (s:map ref) (e:key_t) (el:element_t) (b:bool) =
 	  }
     	  c:= next !s !c
     done;
-    eloop:
-    assert{c=ceiling(s,witness(e))};
     include_ s e el;
     if has_element !s !c then
     if lt e (key !s !c) then

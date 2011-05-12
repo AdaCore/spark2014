@@ -44,15 +44,14 @@ axiom empty_is_empty :
 
 (*** PREVIOUS ***)
 
-predicate previous__ (co:list, cu1:cursor, cu2:cursor) =
-	  (position_(co,cu1)>1 -> position_(co,cu2)=position_(co,cu1)-1)
-	  and (position_(co,cu1)=1 or cu1=no_element -> cu2=no_element)
-
 logic previous_ : list, cursor -> cursor
 
 axiom previous_previous :
+      (forall co:list. forall cu:cursor [position_(co,previous_(co,cu))|previous_(co,cu),position_(co,cu)].
+      	     (position_(co,cu)>1 -> position_(co,previous_(co,cu))=position_(co,cu)-1))
+	  and 
       forall co:list. forall cu:cursor [previous_(co,cu)].
-      	     previous__(co,cu,previous_(co,cu))
+          (position_(co,cu)=1 or cu=no_element -> previous_(co,cu)=no_element)
 
 (*** NEXT ***)
 
@@ -97,11 +96,14 @@ logic element_ : list, cursor -> element_t
 (*** LEFT ***)
 
 predicate left_pos (co:list,i:int,col:list) =
-	  forall cu:cursor.
-	    (i <= position_(co,cu) -> position_(col,cu)=0)
-	    and (i > position_(co,cu) -> position_(col,cu)=position_(co,cu)
-	    	 and element_(col,cu)=element_(co,cu))
-	    and (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu))
+	  (forall cu:cursor.
+	    (i <= position_(co,cu) -> position_(col,cu)=0))
+	    and (forall cu:cursor.
+	    (i > position_(co,cu) -> position_(col,cu)=position_(co,cu)))
+	    and (forall cu:cursor.
+	    (i > position_(co,cu) -> element_(col,cu)=element_(co,cu)))
+	    and (forall cu:cursor.
+	    (position_(col,cu)>0 -> position_(co,cu)=position_(col,cu)))
 
 predicate left__ (co:list, cu:cursor, col:list) =
 	  (cu=no_element -> col=co)
@@ -118,11 +120,14 @@ axiom left_left :
 (*** RIGHT ***)
 
 predicate right_pos (co:list,i:int,cor:list) =
-	  forall cu:cursor.
-	    (i > position_(co,cu) -> position_(cor,cu)=0)
-	    and (i <= position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1
-	    	 and element_(cor,cu)=element_(co,cu))
-	    and (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1)
+	  (forall cu:cursor.
+	    (i > position_(co,cu) -> position_(cor,cu)=0))
+	    and (forall cu:cursor.
+	    (i <= position_(co,cu) -> position_(cor,cu)=position_(co,cu)-i+1)
+	    and
+	    (position_(cor,cu)>0 -> position_(co,cu)=position_(cor,cu)+i-1))
+	    and (forall cu:cursor.
+	    (i <= position_(co,cu) -> element_(cor,cu)=element_(co,cu)))
 
 predicate right__ (co:list, cu:cursor, cor:list) =
 	  (cu=no_element -> cor=empty_)
@@ -159,37 +164,46 @@ function find_ (l:list, e:element_t, cu:cursor) : cursor =
 (*** EQUAL ***)
 
 predicate equal_ (co1:list,co2:list) =
-	  forall cu:cursor.
-	  	 position_(co1,cu)=position_(co2,cu) and
-		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu))
+	  (forall cu:cursor.
+	  	 position_(co1,cu)=position_(co2,cu)) and
+	  (forall cu:cursor.
+		 (position_(co1,cu)>0 -> element_(co1,cu)=element_(co2,cu)))
 
 (*** REPLACE_ELEMENT ***)
 
 predicate replace_element_ (co1:list,cu:cursor,e:element_t,co2:list) =
 	  position_(co1,cu)>0 and length_(co1)=length_(co2) and
 	  element_(co2,cu)=e and
-	  forall cun:cursor.
-	  	 position_(co2,cun)=position_(co1,cun) and
-		 (cu<>cun and position_(co1,cun)>0 -> element_(co2,cun)=element_(co1,cun))
+	  (forall cun:cursor.
+	  	 position_(co2,cun)=position_(co1,cun)) and
+	  (forall cun:cursor.
+		 (cu<>cun and position_(co1,cun)>0 -> element_(co2,cun)=element_(co1,cun)))
 
 (*** INSERT ***)	  
 
 predicate insert_pos (co1:list,i:int,co2:list) =
-	  forall cun:cursor.
+	  (forall cun:cursor [position_(co2,cun),position_(co1,cun)].
 	    (i>position_(co1,cun)>0 -> position_(co2,cun)=position_(co1,cun))
-	    and (i<=position_(co1,cun) -> position_(co2,cun)=position_(co1,cun)+1)
-	    and (position_(co1,cun)>0 -> element_(co1,cun)=element_(co2,cun))
+	    and (i<=position_(co1,cun) -> position_(co2,cun)=position_(co1,cun)+1))
+	    and (forall cun:cursor.
+	    (position_(co1,cun)>0 -> element_(co1,cun)=element_(co2,cun)))
 
 predicate insert_inv (co1:list,i:int,e:element_t,co2:list) =
-	  forall cun:cursor.
+	  (forall cun:cursor.
 	    (position_(co2,cun)=i ->
-	     position_(co1,cun)=0 and element_(co2,cun)=e)
-	    and (i>position_(co2,cun)>0 ->
-	     position_(co1,cun)=position_(co2,cun) and
-	     element_(co1,cun)=element_(co2,cun))
-	    and (position_(co2,cun)>i ->
-	     position_(co1,cun)=position_(co2,cun)-1 and
-	     element_(co1,cun)=element_(co2,cun))
+	     element_(co2,cun)=e)) and
+	  (forall cun:cursor.
+	     (i>position_(co2,cun)>0 ->
+	    element_(co1,cun)=element_(co2,cun)) and
+	    (position_(co2,cun)>i ->
+	     element_(co1,cun)=element_(co2,cun)))
+	    and (forall cun:cursor [position_(co2,cun),position_(co1,cun)].
+	    (position_(co2,cun)=i ->
+	     position_(co1,cun)=0) and 
+	    (i>position_(co2,cun)>0 ->
+	     position_(co1,cun)=position_(co2,cun)) and
+	    (position_(co2,cun)>i ->
+	     position_(co1,cun)=position_(co2,cun)-1))
 
 predicate insert_ (co1:list,cu:cursor,e:element_t,co2:list) =
 	  (cu=no_element or position_(co1,cu)>0) and length_(co2)=length_(co1)+1 and
@@ -199,24 +213,31 @@ predicate insert_ (co1:list,cu:cursor,e:element_t,co2:list) =
 (*** DELETE ***)
 
 predicate delete_pos (co1:list, i:int, co2:list) =
-	  forall cun:cursor.
+	  (forall cun:cursor [position_(co2,cun),position_(co1,cun)].
 	    (position_(co1,cun)=i ->
 	     position_(co2,cun)=0)
 	    and (position_(co1,cun)>i ->
-	     position_(co2,cun)=position_(co1,cun)-1 and
+	     position_(co2,cun)=position_(co1,cun)-1)
+	    and (i > position_(co1,cun) ->
+	     position_(co2,cun)=position_(co1,cun))) and
+	  (forall cun:cursor [element_(co2,cun)|element_(co1,cun)].
+	    (position_(co1,cun)>i ->
 	     element_(co2,cun)=element_(co1,cun))
 	    and (i > position_(co1,cun) ->
-	     position_(co2,cun)=position_(co1,cun) and
-	     element_(co2,cun)=element_(co1,cun))
+	     element_(co2,cun)=element_(co1,cun)))
 
 predicate delete_inv (co1:list, i:int, co2:list) =
-	  forall cun:cursor.
+	  (forall cun:cursor [element_(co2,cun)|element_(co1,cun)].
 	    (i <= position_(co2,cun) ->
-	     position_(co1,cun)=position_(co2,cun)+1 and
-	     element_(co1,cun)=element_(co2,cun))
-	    and (i>position_(co2,cun)>0 ->
-	     position_(co1,cun)=position_(co2,cun) and
-	     element_(co2,cun)=element_(co1,cun))
+	     element_(co1,cun)=element_(co2,cun)) and
+	    (i>position_(co2,cun)>0 ->
+	     element_(co2,cun)=element_(co1,cun)))
+	    and 
+	  (forall cun:cursor [position_(co2,cun),position_(co1,cun)].
+	    (i>position_(co2,cun)>0 ->
+	     position_(co1,cun)=position_(co2,cun)) and
+	    (i <= position_(co2,cun) ->
+	     position_(co1,cun)=position_(co2,cun)+1))
 
 predicate delete_ (co1:list,cu:cursor,co2:list) =
 	  position_(co1,cu)>0 and length_(co2)=length_(co1)-1 and
@@ -231,11 +252,6 @@ predicate has_element_(co:list, cu:cursor) =
 
 predicate contains_ (co:list,e:element_t) =
 	  position_(co,find_first(co,e))>0
-
-axiom contains_inserted :
-     forall l1:list. forall l2:list. forall cu:cursor. forall e:element_t
-     [insert_(l1,cu,e,l2), contains_(l2,e)].
-     	    insert_(l1,cu,e,l2) -> contains_(l2,e)
 
 (*** PARAMETERS ***)
 
