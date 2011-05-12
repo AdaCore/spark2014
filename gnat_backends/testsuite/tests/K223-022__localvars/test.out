@@ -1,7 +1,7 @@
 loc.adb:4:24: (info) proved: division by zero
 loc.adb:4:24: (info) proved: range check
-loc.adb:5:24: (info) proved: range check
 loc.adb:5:24: division by zero failed
+loc.adb:5:24: range check failed
 loc.adb:8:12: (info) proved: range check
 loc.adb:9:14: (info) proved: range check
 loc.ads:3:24: (info) proved: range check

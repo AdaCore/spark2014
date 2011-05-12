@@ -6,10 +6,10 @@ inrange.adb:21:7: (info) proved: proof of precondition
 inrange.adb:21:7: (info) proved: range check
 inrange.adb:21:7: range check failed
 inrange.adb:4:16: (info) proved: range check
-inrange.adb:8:16: (info) proved: range check
-inrange.adb:8:18: (info) proved: proof of precondition
+inrange.adb:8:16: range check failed
+inrange.adb:8:18: proof of precondition failed
 inrange.adb:8:23: (info) proved: range check
-inrange.ads:10:28: (info) proved: proof of postcondition
-inrange.ads:14:23: (info) proved: proof of postcondition
+inrange.ads:10:28: proof of postcondition failed
+inrange.ads:14:23: proof of postcondition failed
 inrange.ads:17:34: (info) proved: proof of postcondition
 inrange.ads:7:24: (info) proved: proof of postcondition
