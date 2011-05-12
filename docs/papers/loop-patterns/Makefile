@@ -1,13 +1,20 @@
-.SUFFIXES: .tex .pdf
+.SUFFIXES: .tex .pdf .long.pdf
 LATEX=loop_patterns
 
-GOALS=${LATEX}.pdf
+GOALS=${LATEX}.long.pdf \
+      ${LATEX}.pdf # should remain the last one to be generated
 ALL: $(GOALS)
 
 .tex.pdf:
 	pdflatex $^
 	bibtex $*
 	pdflatex $^
+	$(MAKE) clean_tmp
+
+.tex.long.pdf:
+	pdflatex "\def\longversion{}\input{$*}"
+	pdflatex "\def\longversion{}\input{$*}"
+	mv $*.pdf $*.long.pdf
 	$(MAKE) clean_tmp
 
 .PHONY: force clean clean_tmp
