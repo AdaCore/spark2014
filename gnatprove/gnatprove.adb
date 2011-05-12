@@ -136,6 +136,7 @@ procedure Gnatprove is
       else
          Compiler_Args.Prepend ("-q");
       end if;
+      Compiler_Args.Prepend ("-c");
       Compiler_Args.Prepend (Project_File);
       Compiler_Args.Prepend ("-P");
       Compiler_Args.Prepend ("--config=" & Config_File);
