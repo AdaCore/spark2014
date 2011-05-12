@@ -52,7 +52,7 @@ error::
    p.ads:13:15: (info) proved: overflow check
 
 Absence of Run-Time Errors *(In Progress)*
---------------------------
+-------------------------------------------
 
 GNATprove generates VCs to prove that the code of a subprogram analyzed does
 not contain violations of the following checks:
@@ -68,7 +68,7 @@ valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
 Functional Behavior *(In Progress)*
--------------------
+-------------------------------------
 
 GNATprove generates VCs to prove that all subprograms called in the code of a
 subprogram analyzed have their precondition satisfied at the point of call, and
@@ -80,7 +80,7 @@ valid (*loop invariant initiation*) and that it is preserved through the loop
 (*loop invariant preservation*).
 
 Absence of Unintended Functionality *(Not Yet Implemented)*
------------------------------------
+-------------------------------------------------------------
 
 A general concern in safety and security standards is the absence of unintended
 functionality. When verification relies on testing, this is sometimes verified
@@ -140,7 +140,7 @@ so no other part of the program can be aware of its new value, and this is
 probably a bug either in the code or in the contract.
 
 Redundant Specifications *(Not Yet Implemented)*
-------------------------
+------------------------------------------------
 
 A common case of meaningless specifications is the case of trivial or
 redundant assertions. An assertion that is always false or always true is not

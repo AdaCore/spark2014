@@ -420,6 +420,23 @@ function ``Move`` below, one has to write a loop invariant referring to
      end loop;
   end Move;
 
+Quantified Expressions
+----------------------
+
+Ada 2012 quantified expressions are a special case with respect to run-time
+errors: the enclosed expression must be run-time error free over the *entire
+range* of the quantification, not only at points that would actually be
+reached at execution. As an example, consider the following expression::
+
+    (for all I in 1 .. 10 => 1 / (I - 3) > 0)
+
+This quantified expression will never raise a run-time error, because the
+test is already false for the first value of the range, ``I = 1``, and the
+execution will stop, with the result value ``False``. However, GNATprove
+requires the expression to be run-timer error free over the entire range,
+including ``I = 3``, so there will be an unproved VC for this case.
+
+
 Features Not Yet Implemented
 ----------------------------
 
