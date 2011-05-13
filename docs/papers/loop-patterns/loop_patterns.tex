@@ -150,7 +150,7 @@
 
 % Title Page
 \title{Simple Loop Patterns and Rich Loop Invariants}
-\author{Marc Sango and Maria-Virginia Aponte and \\ Pierre Courtieu and Yannick Moy}
+\author{Marc Sango, Maria-Virginia Aponte, \\ Pierre Courtieu and Yannick Moy}
 \date{}
 
 \maketitle
@@ -180,7 +180,7 @@ best loop invariants in some predefined template family; a \textit{directed}
 approach which also takes as input a goal or some hint formulas, and generates
 either a sufficient loop invariant to prove the goal or a loop invariant based
 on the hints provided. Typically, template approaches are based on abstract
-interpretation or algebraic techniques while lazy approaches are based on
+interpretation or algebraic techniques while directed approaches are based on
 theorem proving or model checking techniques.
 
 %==================================================================================
@@ -195,7 +195,7 @@ or 3 variables, templates of polynomials) and non-linear polynomials.
 
 Abstract interpretation~\cite{cousot:1978:popl, mine:2006:hosc} works on an
 abstraction of the program using predefined domains which restrict the kind of
-(dis)equalities we are aiming at. Non-relational domains such as intervals
+(dis)equalities we are looking for. Non-relational domains such as intervals
 define (dis)equalities between a single program variable and
 constants. Relational domains such as octagons or polyhedra define
 (dis)equalities between program variables. An abstract state represents all
@@ -214,9 +214,9 @@ base formulas. In a goal-directed approach where the invariant computed by
 predicate abstraction is not sufficient to prove the goal, Craig's
 interpolation~\cite{mcmillan:2003:cav, mcmillan:2006:cav} allows to generate
 intermediate formulas from two inconsistent formulas. In the CEGAR
-(Counter-Example Guided Abstraction Refinement) approach, these intermediate
-formulas can then be fed to predicate abstraction until a sufficient invariant
-is found.
+(Counter-Example Guided Abstraction Refinement) approach, predicate abstraction
+can then be reapplied on these intermediate formulas until a sufficient
+invariant is found.
 
 Algebraic techniques~\cite{colon:2003:cav, sankaranarayanan:2004:popl,
   kovacs:2008:csr} first extract polynomial (dis)equalities over program
@@ -232,9 +232,11 @@ used to solve these (dis)equations and give values to unknowns.
 
 Various works have defined disjunctive abstract domains on top of base abstract
 domains. The implication domain only deals with one disjunction at a time,
-while disjunctive completion allows to treat larger disjuncts. The need to
-define converging operators for these domains means that they are not very
-precise.
+while disjunctive completion~\cite{Mauborgne:trace-partitioning} allows to
+treat larger disjuncts. The need to define converging operators for these
+domains means that they are not very precise. New techniques are invented each
+year to treat disjunctions in static analyzers~\cite{Harris:2010:PAV,
+  Sharma:2011:cav}.
 
 \subsubsection*{Quantifiers}
 
@@ -3119,7 +3121,7 @@ end T0_Image;
 \end{lstlisting}
 
 we extract the loop and translate \footnote{The translation from sequential loop to our 
-loop form will be futur Works} it to our loop form which must respects the different 
+loop form will be futur works} it to our loop form which must respects the different 
 restrictions imposed.
 $$\begin{array}{l}
   \KWloop \KWover \idx \KWin 1 .. 6 ~ \KWexit ~ \neg (C (19-(\idx-1) = '\#') ~ \KWdo \\
