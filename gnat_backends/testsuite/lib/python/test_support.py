@@ -173,18 +173,15 @@ def gnatprove(opt=["-P", "test.gpr"]):
         for line in strlist:
             print line
 
-def prove(src,opt=["-P", "test.gpr"]):
-    """Prove all obligations from an Ada file
-
-    PARAMETERS
-      src: source file .adb or .adb to process
-
-    Call gnatprove on source file, then why on the resulting file. Alt-Ergo is
-    run on each generated VC independently.
-    Collect results on a per-label basis and generate report
-    """
-    opt += ["--report"]
+def prove(opt=[]):
+    """Call gnatprove with standard options"""
+    opt += ["--report", "-P", "test.gpr"]
     gnatprove(opt)
+
+def prove_all(opt=[]):
+    """Call gnatprove with standard options to prove all VCs"""
+    opt += ["--all-vcs"]
+    prove(opt)
 
 def to_list(arg):
     """Convert to list
