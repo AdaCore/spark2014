@@ -1,8 +1,8 @@
-arith.adb:5:22: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:6:22: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:13:12: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:14:12: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:21:12: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:21:17: possible re-ordering due to missing parentheses is not in Alfa
-arith.adb:24:11: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:7:12: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:8:12: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:15:12: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:16:12: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:23:12: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:23:17: possible re-ordering due to missing parentheses is not in Alfa
+arith.adb:26:11: possible re-ordering due to missing parentheses is not in Alfa
 

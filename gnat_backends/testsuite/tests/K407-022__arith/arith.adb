@@ -1,10 +1,12 @@
 function Arith (X, Y, Z : Integer) return Integer is
    pragma Annotate (gnatprove, Force);
+   Tmp1, Tmp2 : Integer;
 
-   --  not ok
-   Tmp1 : Integer := X + Y + Z;
-   Tmp2 : Integer := X + Y - Z;
 begin
+   --  not ok
+   Tmp1 := X + Y + Z;
+   Tmp2 := X + Y - Z;
+
    --  ok
    Tmp1 := (X + Y) + Z;
    Tmp2 := X + (Y - Z);

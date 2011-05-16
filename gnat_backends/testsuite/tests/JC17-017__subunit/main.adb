@@ -15,6 +15,13 @@ procedure Main is
    procedure Sub (X : out Boolean) is separate;
 
    procedure Sub2 (X : out Boolean) is separate;
+
+   package P is
+      procedure Sub3 (X : out Boolean)
+        with Post => X;
+   end P;
+
+   package body P is separate;
 begin
    Sub0 (B);
    pragma Assert (B);
@@ -22,4 +29,6 @@ begin
    pragma Assert (B);
    Sub2 (B);
    pragma Assert (not B);
+   P.Sub3 (B);
+   pragma Assert (B);
 end;
