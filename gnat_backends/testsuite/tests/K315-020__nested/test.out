@@ -1,39 +1,8 @@
-{
-"Gnat2why__1": {
-"invalid": [],
-"valid": [
-"def___nested__search_po_4"
-]
-},
-"Gnat2why__2": {
-"invalid": [],
-"valid": [
-"def___nested__search_po_3",
-"def___nested__search_po_6"
-]
-},
-"Gnat2why__3": {
-"invalid": [],
-"valid": []
-},
-"Gnat2why__4": {
-"invalid": [],
-"valid": [
-"def___nested__search_po_2",
-"def___nested__search_po_7"
-]
-},
-"Gnat2why__5": {
-"invalid": [],
-"valid": [
-"def___nested__search_po_1"
-]
-},
-"Gnat2why__6": {
-"invalid": [],
-"valid": [
-"def___nested__search_po_5",
-"def___nested__search_po_8"
-]
-}
-}
+nested.adb:10:15: (info) proved: range check
+nested.adb:12:13: (info) proved: proof of loop invariant initalization
+nested.adb:12:13: proof of loop invariant preservation failed
+nested.adb:13:20: (info) proved: range check
+nested.adb:4:22: (info) proved: range check
+nested.adb:9:10: (info) proved: proof of loop invariant initalization
+nested.adb:9:10: (info) proved: proof of loop invariant preservation
+nested.ads:4:35: (info) proved: proof of postcondition
