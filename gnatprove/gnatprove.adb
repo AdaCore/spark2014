@@ -384,6 +384,7 @@ procedure Gnatprove is
       Args : String_Lists.List := Empty_List;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
+      Args.Append ("-U");
       if not All_VCs then
          Args.Append ("-cargs:Ada");
          Args.Append ("-gnatd.G");
