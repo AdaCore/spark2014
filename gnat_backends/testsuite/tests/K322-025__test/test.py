@@ -1,4 +1,4 @@
 from test_support import *
 import glob
 
-prove("test.adb", "--all-vcs, --report")
+prove("test.adb",opt=["-P", "test.gpr", "--all-vcs"])
