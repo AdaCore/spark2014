@@ -2,7 +2,7 @@
 
 DOC=install/share/doc/gnatprove
 
-all: gnat2why gnatprove doc
+all: gnat2why gnatprove
 
 all-nightly: gnat1why gnatprove
 
