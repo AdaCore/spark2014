@@ -44,7 +44,10 @@ package ALFA.Definition is
    --  Return whether a given entity is in ALFA
 
    function Body_Is_In_ALFA (Id : Entity_Id) return Boolean;
-   --  Return whether the body of a given subprogram entity is in ALFA
+   --  Return whether the body of subprogram Id is in Alfa
+
+   function Spec_Is_In_ALFA (Id : Entity_Id) return Boolean;
+   --  Return whether the spec of subprogram Id is in Alfa
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all

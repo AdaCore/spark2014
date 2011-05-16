@@ -104,8 +104,6 @@ package body Gnat2Why.Driver is
         (Action => Mark_Compilation_Unit);
 
    begin
-      --  Prevent use of formal proof on code with tasking altogether
-
       Mark_Standard_Package;
 
       --  Authorize warnings now, since regular compiler warnings should
@@ -119,8 +117,10 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
 
+      --  Warn that formal proof is about sequential code
+
       if Tasking_Used then
-         raise Program_Error;
+         Error_Msg_N ("?tasking is ignored in formal verification", GNAT_Root);
       end if;
 
       --  Compute the frame condition. This starts with identifying ALI

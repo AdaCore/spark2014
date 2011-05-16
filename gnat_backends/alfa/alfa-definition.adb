@@ -118,6 +118,12 @@ package body ALFA.Definition is
    Standard_In_ALFA : Id_Set.Set;
    --  Entities from package Standard which are in ALFA
 
+   Specs_In_Alfa    : Id_Set.Set;
+   --  Subprogram entities whose spec is in Alfa
+
+   Bodies_In_Alfa   : Id_Set.Set;
+   --  Subprogram entities whose body is in Alfa
+
    type Violations is array (Violation_Kind) of Id_Set.Set;
 
    Spec_Violations : Violations;
@@ -132,6 +138,10 @@ package body ALFA.Definition is
       V   : Violation_Kind) return String;
 
    procedure Inherit_Violations (A : in out Violations; To, From : Entity_Id);
+
+   function Body_Is_Computed_In_ALFA (Id : Entity_Id) return Boolean;
+
+   function Spec_Is_Computed_In_ALFA (Id : Entity_Id) return Boolean;
 
    -----------------
    -- Scope Stack --
@@ -286,14 +296,19 @@ package body ALFA.Definition is
    procedure Mark_Type_Definition             (Id : Entity_Id; N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
 
+   ------------------------------
+   -- Body_Is_Computed_In_ALFA --
+   ------------------------------
+
+   function Body_Is_Computed_In_ALFA (Id : Entity_Id) return Boolean is
+     (for all S of Body_Violations => not S.Contains (Id));
+
    ---------------------
    -- Body_Is_In_ALFA --
    ---------------------
 
    function Body_Is_In_ALFA (Id : Entity_Id) return Boolean is
-   begin
-      return (for all S of Body_Violations => not S.Contains (Id));
-   end Body_Is_In_ALFA;
+     (Id_Set.Contains (Bodies_In_Alfa, Id));
 
    ----------------------------
    -- Close_ALFA_Output_File --
@@ -593,6 +608,9 @@ package body ALFA.Definition is
          when N_Package_Body =>
             Mark_Package_Body (N);
 
+         when N_Package_Body_Stub =>
+            Mark_Package_Body (Get_Body_From_Stub (N));
+
          when N_Package_Declaration =>
             Mark_Package_Declaration (N);
 
@@ -651,7 +669,16 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("slice", N, V_Slice);
 
          when N_Subprogram_Body =>
+            if Acts_As_Spec (N) then
+               Mark_Subprogram_Declaration (N);
+            end if;
             Mark_Subprogram_Body (N);
+
+         when N_Subprogram_Body_Stub =>
+            if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
+               Mark_Subprogram_Declaration (Get_Body_From_Stub (N));
+            end if;
+            Mark_Subprogram_Body (Get_Body_From_Stub (N));
 
          when N_Subprogram_Declaration =>
             Mark_Subprogram_Declaration (N);
@@ -661,6 +688,9 @@ package body ALFA.Definition is
 
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
+
+         when N_Task_Type_Declaration =>
+            Mark_Non_ALFA ("task type", N);
 
          when N_Type_Conversion =>
             Mark_Type_Conversion (N);
@@ -693,13 +723,11 @@ package body ALFA.Definition is
               N_Number_Declaration              |
               N_Operator_Symbol                 |
               N_Others_Choice                   |
-              N_Package_Body_Stub               |
               N_Package_Renaming_Declaration    |
               N_Private_Extension_Declaration   |
               N_Private_Type_Declaration        |
               N_Real_Literal                    |
               N_String_Literal                  |
-              N_Subprogram_Body_Stub            |
               N_Subprogram_Info                 |
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
@@ -850,7 +878,7 @@ package body ALFA.Definition is
       if not Is_Entity_Name (Nam) then
          Mark_Non_ALFA ("call", N);
 
-      elsif not Is_In_ALFA (Entity (Nam)) then
+      elsif not Spec_Is_In_ALFA (Entity (Nam)) then
          Mark_Non_ALFA ("subprogram called", N, From => Entity (Nam));
 
       elsif In_Logic_Scope then
@@ -1236,24 +1264,11 @@ package body ALFA.Definition is
          Mark_Non_ALFA_Declaration ("ALIASED", N);
       end if;
 
-      Pop_Scope (Id);
-
       if Present (Expr) then
-
-         --  If the object is declared in a package, declare a scope for
-         --  marking its initialization expression, so that we detect cases
-         --  where the object itself is in ALFA but not its initialization.
-
-         if Is_Package_Level_Entity (Id) then
-            Push_Scope (Id, Is_Body => True);
-         end if;
-
          Mark (Expr);
-
-         if Is_Package_Level_Entity (Id) then
-            Pop_Scope (Id);
-         end if;
       end if;
+
+      Pop_Scope (Id);
    end Mark_Object_Declaration;
 
    --------------------------------------
@@ -1439,8 +1454,8 @@ package body ALFA.Definition is
                   --  violations.
 
                   if Chars (Arg) = Name_Force
-                    and then (not Is_In_ALFA (Cur_Ent)
-                               or else not Body_Is_In_ALFA (Cur_Ent))
+                    and then (not Spec_Is_Computed_In_ALFA (Cur_Ent)
+                               or else not Body_Is_Computed_In_ALFA (Cur_Ent))
                   then
                      Error_Msg_N
                        ("annotation is placed after violation of Alfa", N);
@@ -1519,21 +1534,24 @@ package body ALFA.Definition is
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
 
    begin
-      Push_Scope (Id);
-      Mark_Subprogram_Specification (Specification (N));
-      Pop_Scope (Id);
-
       --  Inherit violations from spec to body
-      if not Is_In_ALFA (Id) then
+
+      if not Spec_Is_In_ALFA (Id) then
          Inherit_Violations (Body_Violations, From => Id, To => Id);
       end if;
 
-      Push_Scope (Id, Is_Body => True);
+      --  Detect violations in the body itself
 
+      Push_Scope (Id, Is_Body => True);
       Mark_List (Declarations (N));
       Mark (HSS);
-
       Pop_Scope (Id);
+
+      --  If body is in Alfa, store this information explicitly
+
+      if Body_Is_Computed_In_ALFA (Id) then
+         Id_Set.Include (Bodies_In_Alfa, Id);
+      end if;
 
       --  Postprocessing: indicate in output file if subprogram is in ALFA or
       --  not, for debug and verifications.
@@ -1590,12 +1608,17 @@ package body ALFA.Definition is
    -- Mark_Subprogram_Declaration --
    ---------------------------------
 
+   --  N is either a subprogram declaration node, or a subprogram body node
+   --  for those subprograms which do not have a prior declaration (not
+   --  counting a stub as a declaration).
+
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
       PPC  : Node_Id;
       Expr : Node_Id;
-      Id   : constant Entity_Id := Defining_Entity (N);
+      Id   : constant Entity_Id := Unique_Defining_Entity (N);
       Is_Generic : constant Boolean :=
                      Nkind (Original_Node (N)) in N_Subprogram_Instantiation;
+
    begin
       Push_Scope (Id, Is_Generic => Is_Generic);
       Mark_Subprogram_Specification (Specification (N));
@@ -1610,6 +1633,12 @@ package body ALFA.Definition is
       Pop_Logic_Scope;
 
       Pop_Scope (Id);
+
+      --  If spec is in Alfa, store this information explicitly
+
+      if Spec_Is_Computed_In_ALFA (Id) then
+         Id_Set.Include (Specs_In_Alfa, Id);
+      end if;
    end Mark_Subprogram_Declaration;
 
    -----------------------------------
@@ -2018,6 +2047,20 @@ package body ALFA.Definition is
                       Is_Generic => Is_Generic,
                       Is_Logic   => False);
    end Push_Scope;
+
+   ------------------------------
+   -- Spec_Is_Computed_In_ALFA --
+   ------------------------------
+
+   function Spec_Is_Computed_In_ALFA (Id : Entity_Id) return Boolean is
+     (for all S of Spec_Violations => not S.Contains (Id));
+
+   ---------------------
+   -- Spec_Is_In_ALFA --
+   ---------------------
+
+   function Spec_Is_In_ALFA (Id : Entity_Id) return Boolean is
+     (Id_Set.Contains (Specs_In_Alfa, Id));
 
    -----------------------------
    -- Create_ALFA_Output_File --

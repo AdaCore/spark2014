@@ -25,7 +25,6 @@
 
 with AA_Util; use AA_Util;
 with Atree;   use Atree;
-with Einfo; use Einfo;
 with Lib;
 with Lib.Xref;
 with Namet;   use Namet;
@@ -113,7 +112,7 @@ package body ALFA.Filter is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
-               if Is_In_ALFA (Defining_Unit_Name (Specification (N))) then
+               if Spec_Is_In_ALFA (Defining_Unit_Name (Specification (N))) then
                   Subp_Spec.Append (N);
                end if;
 
@@ -144,12 +143,11 @@ package body ALFA.Filter is
 
             when N_Subprogram_Body_Stub =>
                declare
-                  Body_N : constant Node_Id :=
-                             Proper_Body (Unit (Library_Unit (N)));
+                  Body_N : constant Node_Id := Get_Body_From_Stub (N);
                   Id : constant Entity_Id := Unique_Defining_Entity (Body_N);
 
                begin
-                  if Ekind (Defining_Entity (N)) /= E_Subprogram_Body then
+                  if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
                      Subp_Spec.Append
                        (Make_Subprogram_Declaration
                           (Sloc (Body_N), Specification (N)));
@@ -178,12 +176,6 @@ package body ALFA.Filter is
                     or else Is_Package_Level_Entity (Defining_Entity (N)))
                  and then Is_In_ALFA (Defining_Entity (N))
                then
-                  --  If the initializing expression is not in ALFA, remove it
-
-                  if not Body_Is_In_ALFA (Defining_Entity (N)) then
-                     Set_Expression (N, Empty);
-                  end if;
-
                   case Nkind (Object_Definition (N)) is
                      when N_Identifier | N_Expanded_Name =>
                         null;
@@ -265,12 +257,14 @@ package body ALFA.Filter is
 
       if Present (Spec_Unit) then
          Lib.Xref.ALFA.Traverse_Compilation_Unit
-           (Spec_Unit, Dispatch_Spec'Unrestricted_Access);
+           (Spec_Unit, Dispatch_Spec'Unrestricted_Access,
+            Inside_Stubs => True);
       end if;
 
       if Present (Body_Unit) then
          Lib.Xref.ALFA.Traverse_Compilation_Unit
-           (Body_Unit, Dispatch_Body'Unrestricted_Access);
+           (Body_Unit, Dispatch_Body'Unrestricted_Access,
+            Inside_Stubs => True);
 
          --  Sort the declarations just listed so that subprogram declarations
          --  precede subprogram bodies.
