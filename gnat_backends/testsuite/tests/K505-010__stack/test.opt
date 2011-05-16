@@ -1,1 +1,1 @@
-XFAIL
+ALL XFAIL Raise_From_Controlled_Operation
