@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Switches ("b.adb") use ("-gnat2012");
+   end Compiler;
+end Test;
