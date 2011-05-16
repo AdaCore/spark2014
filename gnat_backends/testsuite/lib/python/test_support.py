@@ -10,6 +10,7 @@ import glob
 import shutil
 import json
 
+max_steps = 500
 #  Change directory
 
 TEST = sys.modules['__main__']
@@ -173,15 +174,16 @@ def gnatprove(opt=["-P", "test.gpr"]):
         for line in strlist:
             print line
 
-def prove(opt=[]):
+def prove(opt=[],steps=max_steps):
     """Call gnatprove with standard options"""
     opt += ["--report", "-P", "test.gpr"]
+    opt += ["--steps=%d"%(steps)]
     gnatprove(opt)
 
-def prove_all(opt=[]):
+def prove_all(opt=[],steps=max_steps):
     """Call gnatprove with standard options to prove all VCs"""
     opt += ["--all-vcs"]
-    prove(opt)
+    prove(opt,steps)
 
 def to_list(arg):
     """Convert to list
