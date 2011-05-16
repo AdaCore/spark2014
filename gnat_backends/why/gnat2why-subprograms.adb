@@ -2482,6 +2482,17 @@ package body Gnat2Why.Subprograms is
                  (Name => Logic_Func_Name (Full_Name (Entity (Name (Expr)))),
                   Parameters => Compute_Term_Args (Expr));
 
+         when N_Expression_With_Actions =>
+            --  for some expressions with actions, we can translate the
+            --  original node
+            if Nkind (Original_Node (Expr)) = N_Case_Expression then
+               return Why_Term_Of_Ada_Expr
+                        (Original_Node (Expr),
+                         Expected_Type);
+            end if;
+
+            raise Not_Implemented;
+
          when others =>
             raise Not_Implemented;
       end case;
