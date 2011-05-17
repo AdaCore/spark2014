@@ -11,6 +11,7 @@ import shutil
 import json
 
 max_steps = 500
+parallel_procs = 2
 #  Change directory
 
 TEST = sys.modules['__main__']
@@ -178,6 +179,7 @@ def prove(opt=[],steps=max_steps):
     """Call gnatprove with standard options"""
     opt += ["--report", "-P", "test.gpr"]
     opt += ["--steps=%d"%(steps)]
+    opt += ["-j%d"%(parallel_procs)]
     gnatprove(opt)
 
 def prove_all(opt=[],steps=max_steps):

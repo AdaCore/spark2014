@@ -127,10 +127,11 @@ procedure Altergo_Wrap is
      (Item    : String;
       Verbose : Boolean := False)
    is
-      Target     : constant String := "new.why";
       Success    : aliased Boolean;
       Base_Of_VC : constant String :=
          Ada.Directories.Base_Name (Item);
+      Target : constant String :=
+         Base_Of_VC & "__vc.why";
    begin
       Delete_File (Target, Success);
       Cat (Files =>

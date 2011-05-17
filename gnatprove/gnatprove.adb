@@ -53,6 +53,8 @@ procedure Gnatprove is
    All_VCs      : aliased Boolean;
    --  True if --all-vcs switch is present. Do not pass option "-gnatd.G" to
    --  gnat2why
+   Parallel     : aliased Integer;
+   --  The number of parallel processes.
    Timeout      : aliased Integer;
    Steps        : aliased Integer;
    --  The Timeout and Step for Alt-ergo
@@ -135,6 +137,9 @@ procedure Gnatprove is
          Compiler_Args.Prepend ("-v");
       else
          Compiler_Args.Prepend ("-q");
+      end if;
+      if Parallel > 1 then
+         Compiler_Args.Prepend ("-j" & Int_Image (Parallel));
       end if;
       Compiler_Args.Prepend ("-c");
       Compiler_Args.Prepend (Project_File);
@@ -307,6 +312,11 @@ procedure Gnatprove is
          (Config, Steps'Access,
           Long_Switch => "--steps=",
           Help => "Set the maximum number of proof steps for Alt-ergo");
+
+      Define_Switch
+         (Config, Parallel'Access,
+          Long_Switch => "-j:",
+          Help => "Set the number of parallel processes (default is 1)");
 
       Define_Switch (Config, Project_File'Access,
                      "-P:",
