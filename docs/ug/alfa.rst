@@ -192,7 +192,7 @@ User-specified Compliance
 The user may require that some subprograms are in Alfa by inserting a specific
 pragma ``Annotate`` in the body of the subprogram. He may also insert this
 pragma in a package declaration (spec or body) to require that all subprogram
-declarations in this package (spec or body) are in Alfa.
+declarations in this package are in Alfa.
 
 On the following example::
 
@@ -203,8 +203,6 @@ On the following example::
     end P;
 
     package body P is
-       pragma Annotate (gnatprove, Force);
-
        procedure Set is
        begin
 	  X.all := True;
@@ -234,7 +232,7 @@ On the following example::
 
 GNATprove outputs the following errors::
 
-    p.adb:6:07: explicit dereference is not in Alfa
+    p.adb:4:07: explicit dereference is not in Alfa
     p.ads:3:08: access type is not in Alfa
 
 The error messages distinguish constructs not in Alfa (like a pointer
