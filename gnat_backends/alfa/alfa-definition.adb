@@ -163,7 +163,6 @@ package body ALFA.Definition is
    type Scope_Record is record
       Entity     : Unique_Entity_Id;
       Is_Body    : Boolean;  --  True when treating a package/subprogram body
-      Is_Generic : Boolean;  --  True for generic declaration or instantiation
       Is_Logic   : Boolean;  --  True for assertions, pre- and postconditions
    end record;
 
@@ -184,11 +183,6 @@ package body ALFA.Definition is
    --  Return the top-most scope that is not null after skipping the current
    --  scope.
 
-   function In_Generic_Scope return Boolean is
-     (for some S in First_Scope_Index .. Scope_Stack.Last =>
-        Scope_Stack.Table (S).Is_Generic);
-   --  Return True if there is a generic scope in the current scope stack
-
    function In_Logic_Scope return Boolean is
      (for some S in First_Scope_Index .. Scope_Stack.Last =>
         Scope_Stack.Table (S).Is_Logic);
@@ -198,9 +192,9 @@ package body ALFA.Definition is
    --  Remove the top scope in the stack, which should match with entity E
 
    procedure Push_Scope
-     (E          : Unique_Entity_Id;
-      Is_Body    : Boolean := False;
-      Is_Generic : Boolean := False);
+     (E       : Unique_Entity_Id;
+      Is_Body : Boolean := False);
+
    --  Set entity S as the top scope in the stack
 
    procedure Push_Logic_Scope;
@@ -447,15 +441,6 @@ package body ALFA.Definition is
 
    procedure Mark (N : Node_Id) is
    begin
-      --  Mark all declarations inside generics as not in ALFA
-
-      if (Nkind (N) in N_Declaration
-           or else Nkind (N) in N_Later_Decl_Item)
-        and then In_Generic_Scope
-      then
-         Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
-      end if;
-
       --  Dispatch on node kind
 
       case Nkind (N) is
@@ -696,9 +681,6 @@ package body ALFA.Definition is
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
 
-         when N_Task_Type_Declaration =>
-            Mark_Non_ALFA ("task type", N);
-
          when N_Type_Conversion =>
             Mark_Type_Conversion (N);
 
@@ -750,6 +732,25 @@ package body ALFA.Definition is
          when N_Expression_Function |
               N_Subunit             =>
             raise Program_Error;
+
+         when N_Abort_Statement            |
+              N_Accept_Statement           |
+              N_Asynchronous_Select        |
+              N_Conditional_Entry_Call     |
+              N_Delay_Relative_Statement   |
+              N_Delay_Until_Statement      |
+              N_Entry_Body                 |
+              N_Entry_Call_Statement       |
+              N_Entry_Declaration          |
+              N_Protected_Body             |
+              N_Protected_Type_Declaration |
+              N_Requeue_Statement          |
+              N_Selective_Accept           |
+              N_Single_Task_Declaration    |
+              N_Task_Body                  |
+              N_Task_Type_Declaration      |
+              N_Timed_Entry_Call           =>
+            Mark_Non_ALFA ("tasking", N);
 
          --  Mark should not be called on other kinds
 
@@ -1300,17 +1301,24 @@ package body ALFA.Definition is
    procedure Mark_Package_Body (N : Node_Id) is
       HSS : constant Node_Id   := Handled_Statement_Sequence (N);
       Id  : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-      Is_Generic : constant Boolean :=
-                     Ekind (Unique_Defining_Entity (N)) = E_Generic_Package;
 
    begin
-      Push_Scope (Id, Is_Generic => Is_Generic);
-      Mark_List (Declarations (N));
+      --  Currently do not analyze generic bodies
 
+      if Ekind (Unique_Defining_Entity (N)) = E_Generic_Package then
+         Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
+         return;
+      end if;
+
+      --  The scope entity for a package body is not the same as the scope
+      --  entity for a package declaration, which allow separately forcing
+      --  formal proof on either the declaration or the body.
+
+      Push_Scope (Id);
+      Mark_List (Declarations (N));
       if Present (HSS) then
          Mark (HSS);
       end if;
-
       Pop_Scope (Id);
    end Mark_Package_Body;
 
@@ -1321,13 +1329,17 @@ package body ALFA.Definition is
    procedure Mark_Package_Declaration (N : Node_Id) is
       Id : constant Unique_Entity_Id := Unique (Defining_Entity (N));
 
-      --  Rewriting of a package should only occur for a package instantiation,
-      --  in which case Is_Rewrite_Insertion return True.
-
-      Is_Generic : constant Boolean := Is_Rewrite_Insertion (N);
-
    begin
-      Push_Scope (Id, Is_Generic => Is_Generic);
+      --  Rewriting of a package should only occur for a package instantiation,
+      --  in which case Is_Rewrite_Insertion return True. Currently do not
+      --  analyze generic package instantiations.
+
+      if Is_Rewrite_Insertion (N) then
+         Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
+         return;
+      end if;
+
+      Push_Scope (Id);
       Mark (Specification (N));
       Pop_Scope (Id);
    end Mark_Package_Declaration;
@@ -1540,6 +1552,13 @@ package body ALFA.Definition is
       HSS : constant Node_Id          := Handled_Statement_Sequence (N);
 
    begin
+      --  Currently do not analyze generic bodies
+
+      if Ekind (+Id) in Generic_Subprogram_Kind then
+         Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
+         return;
+      end if;
+
       --  Inherit violations from spec to body
 
       if not Spec_Is_In_ALFA (Id) then
@@ -1622,11 +1641,18 @@ package body ALFA.Definition is
       PPC  : Node_Id;
       Expr : Node_Id;
       Id   : constant Unique_Entity_Id := Unique (Defining_Entity (N));
-      Is_Generic : constant Boolean :=
-                     Nkind (Original_Node (N)) in N_Subprogram_Instantiation;
 
    begin
-      Push_Scope (Id, Is_Generic => Is_Generic);
+      --  Currently do not analyze generic instantiations
+
+      if Nkind (Original_Node (N)) in N_Subprogram_Instantiation
+        or else Ekind (+Id) in Generic_Subprogram_Kind
+      then
+         Mark_Non_ALFA_Declaration ("generic", N, V_Generic);
+         return;
+      end if;
+
+      Push_Scope (Id);
       Mark_Subprogram_Specification (Specification (N));
 
       Push_Logic_Scope;
@@ -2044,7 +2070,6 @@ package body ALFA.Definition is
       Scope_Stack.Table (Scope_Stack.Last) :=
         Scope_Record'(Entity     => Unique_Entity_Id (Empty),
                       Is_Body    => False,
-                      Is_Generic => False,
                       Is_Logic   => True);
    end Push_Logic_Scope;
 
@@ -2054,14 +2079,12 @@ package body ALFA.Definition is
 
    procedure Push_Scope
      (E          : Unique_Entity_Id;
-      Is_Body    : Boolean := False;
-      Is_Generic : Boolean := False) is
+      Is_Body    : Boolean := False) is
    begin
       Scope_Stack.Increment_Last;
       Scope_Stack.Table (Scope_Stack.Last) :=
         Scope_Record'(Entity     => E,
                       Is_Body    => Is_Body,
-                      Is_Generic => Is_Generic,
                       Is_Logic   => False);
    end Push_Scope;
 
