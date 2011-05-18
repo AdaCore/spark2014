@@ -112,7 +112,7 @@ package body ALFA.Filter is
       begin
          case Nkind (N) is
             when N_Subprogram_Declaration =>
-               if Spec_Is_In_ALFA (Defining_Unit_Name (Specification (N))) then
+               if Spec_Is_In_ALFA (Unique (Defining_Entity (N))) then
                   Subp_Spec.Append (N);
                end if;
 
@@ -120,7 +120,8 @@ package body ALFA.Filter is
 
             when N_Subprogram_Body =>
                declare
-                  Id : constant Entity_Id := Unique_Defining_Entity (N);
+                  Id : constant Unique_Entity_Id :=
+                         Unique (Defining_Entity (N));
 
                begin
                   --  Create a subprogram declaration if not already present,
@@ -144,7 +145,8 @@ package body ALFA.Filter is
             when N_Subprogram_Body_Stub =>
                declare
                   Body_N : constant Node_Id := Get_Body_From_Stub (N);
-                  Id : constant Entity_Id := Unique_Defining_Entity (Body_N);
+                  Id     : constant Unique_Entity_Id :=
+                             Unique (Defining_Entity (Body_N));
 
                begin
                   if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
@@ -159,12 +161,12 @@ package body ALFA.Filter is
                end;
 
             when N_Full_Type_Declaration =>
-               if Is_In_ALFA (Defining_Identifier (N)) then
+               if Is_In_ALFA (Unique (Defining_Entity (N))) then
                   Types_Vars.Append (N);
                end if;
 
             when N_Subtype_Declaration =>
-               if Is_In_ALFA (Defining_Identifier (N)) then
+               if Is_In_ALFA (Unique (Defining_Entity (N))) then
                   Types_Vars.Append (N);
                end if;
 
@@ -174,7 +176,7 @@ package body ALFA.Filter is
 
                if (Comes_From_Source (Original_Node (N))
                     or else Is_Package_Level_Entity (Defining_Entity (N)))
-                 and then Is_In_ALFA (Defining_Entity (N))
+                 and then Is_In_ALFA (Unique (Defining_Entity (N)))
                then
                   case Nkind (Object_Definition (N)) is
                      when N_Identifier | N_Expanded_Name =>
@@ -456,7 +458,7 @@ package body ALFA.Filter is
                   when N_Full_Type_Declaration
                     | N_Subtype_Declaration
                     | N_Object_Declaration =>
-                     if Is_In_ALFA (Defining_Identifier (Decl)) then
+                     if Is_In_ALFA (Unique (Defining_Entity (Decl))) then
                         Append (New_Copy (Decl), Decls_In_ALFA);
                      end if;
 

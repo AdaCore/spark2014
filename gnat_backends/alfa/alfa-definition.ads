@@ -25,6 +25,17 @@
 
 package ALFA.Definition is
 
+   type Unique_Entity_Id is new Entity_Id;
+   --  Type of unique entities shared between different views, in contrast to
+   --  GNAT entities which may be different between views in GNAT AST:
+   --  * package spec and body have different entities;
+   --  * subprogram declaration, subprogram stub and subprogram body all have
+   --    a different entity;
+   --  * private view and full view have a different entity.
+
+   function Unique (E : Entity_Id) return Unique_Entity_Id;
+   --  Return unique entity for entity E
+
    type Violation_Kind is (V_Implem,           --  not yet implemented
                            V_Slice,            --  array slice
                            V_Container,        --  formal containers
@@ -40,13 +51,13 @@ package ALFA.Definition is
 
    subtype V_Extensions is Violation_Kind range V_Slice .. V_Tagged;
 
-   function Is_In_ALFA (Id : Entity_Id) return Boolean;
+   function Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether a given entity is in ALFA
 
-   function Body_Is_In_ALFA (Id : Entity_Id) return Boolean;
+   function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the body of subprogram Id is in Alfa
 
-   function Spec_Is_In_ALFA (Id : Entity_Id) return Boolean;
+   function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the spec of subprogram Id is in Alfa
 
    procedure Mark_Compilation_Unit (N : Node_Id);
