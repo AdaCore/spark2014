@@ -1,5 +1,6 @@
 package body Pack is
    function F return Boolean is
+      pragma Annotate (gnatprove, Ignore);
       B : access Boolean;
    begin
       B := new Boolean;
@@ -8,7 +9,6 @@ package body Pack is
    end F;
 
    procedure P is
-      pragma Annotate (gnatprove, Force);
    begin
       declare
          B : access Boolean;

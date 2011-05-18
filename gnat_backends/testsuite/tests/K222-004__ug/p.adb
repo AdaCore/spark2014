@@ -1,6 +1,4 @@
 package body P is
-   pragma Annotate (gnatprove, Force);
-
    procedure Set is
    begin
       X.all := True;
