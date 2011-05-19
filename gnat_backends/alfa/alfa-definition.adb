@@ -771,10 +771,17 @@ package body ALFA.Definition is
 
    begin
       case Attr_Id is
-         when Attribute_Result | Attribute_Old =>
+         when Attribute_Result =>
             null;
+
+         when Attribute_Old =>
+            if not Nkind_In (P, N_Identifier, N_Expanded_Name) then
+               Mark_Non_ALFA ("'Old not applied to object name", N, V_Implem);
+            end if;
+
          when Attribute_First | Attribute_Last | Attribute_Length =>
             Mark (Prefix (N));
+
          when others =>
             Mark_Non_ALFA ("attribute", N, V_Implem);
       end case;
