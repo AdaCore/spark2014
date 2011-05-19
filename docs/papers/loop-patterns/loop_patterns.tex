@@ -23,16 +23,16 @@
 \newcommand{\p}[1]{\ensuremath{#1^{'}}\xspace}
 %%
 %%Commands used for defining syntax
-\newcommand{\prog}{\ensuremath{\mathcal{P}}\xspace}
+\newcommand{\prog}{\ensuremath{\mathcal{L}}\xspace}
 \newcommand{\idx}{\ensuremath{i}\xspace}
 %\newcommand{\idxinitial}{\ensuremath{\mathit{initial}}\xspace}
 \newcommand{\idxinitial}{\ensuremath{\alpha}\xspace}
 %\newcommand{\idxfinal}{\ensuremath{\mathit{final}}\xspace}
 \newcommand{\idxfinal}{\ensuremath{\omega}\xspace}
-\newcommand{\Init}{\ensuremath{\mathrm{Init_{0}}}}
+%\newcommand{\Init}{\ensuremath{\mathrm{Init_{0}}}}
 \newcommand{\KWloop}{\ensuremath{\mathrm{\textbf{loop}}~}}
 \newcommand{\KWdo}{\ensuremath{\mathrm{\textbf{do}}~}}
-\newcommand{\KWend}{\ensuremath{\mathrm{\textbf{end}}~}}
+\newcommand{\KWend}{\ensuremath{\mathrm{\textbf{end}}}}
 \newcommand{\KWover}{\ensuremath{\mathrm{\textbf{over}}~}}
 \newcommand{\KWin}{\ensuremath{~\mathrm{\textbf{in}}~}}
 \newcommand{\KWfor}{\ensuremath{\mathrm{\textbf{for}}~}}
@@ -59,6 +59,8 @@
 \newcommand{\SemFA}[2]{\SemF{\mathpzc{A}}{#1}{#2}}
 \newcommand{\SemFB}[2]{\SemF{\mathpzc{B}}{#1}{#2}}
 \newcommand{\cadre}[1]{\fbox{\begin{minipage}{\textwidth} #1 \end{minipage}}}
+\newcommand{\env}{\ensuremath{\sigma}\xspace}
+\newcommand{\eval}[2]{<#1, #2>}
 %\def\et{\mathrel{\wedge}}
 %\def\ou{\mathrel{\vee}}
 %%
@@ -83,6 +85,11 @@
 \newcommand{\at}[1]{{(#1)}}
 \newcommand{\capture}[2]{\ensuremath{\mathit{Capture}(#1,#2)}\xspace}
 \newcommand{\sli}[1]{\ensuremath{\mathit{SLI}_{#1}}\xspace}
+
+\newcommand{\initcond}[1]{\ensuremath{\mathit{Init(#1)}}}
+\newcommand{\framecond}[1]{\ensuremath{\mathit{Frame(#1)}}}
+\newcommand{\preservecond}[1]{\ensuremath{\mathit{Preserve(#1)}}}
+
 %%
 %%keywords
 \newcommand{\loopform}{\textsc{loop-form}\xspace}
@@ -98,8 +105,11 @@
 \newcommand{\impl}{\ensuremath{\Longrightarrow}}
 %%
 %%Proof preliminaires
-\newcommand{\spstrong}{\textsc{sp-stronguest}\xspace}
-\newcommand{\spimply}{\textsc{sp-imply}\xspace}
+\newcommand{\hoareconj}{\textsc{hoare-conj}\xspace}
+\newcommand{\maxinv}{\textsc{max-inv}\xspace}
+\newcommand{\sppost}{\textsc{sp-postcond}\xspace}
+\newcommand{\spstrong}{\textsc{sp-strong}\xspace}
+\newcommand{\spmonoton}{\textsc{sp-monotone}\xspace}
 \newcommand{\vpp}{\textsc{vpp}\xspace}
 \newcommand{\spexit}{\textsc{sp-exit}\xspace}
 \newcommand{\spscalar}{\textsc{sp-scalar}\xspace}
@@ -133,7 +143,7 @@
 \newenvironment{remark}[1][Remark]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
-\newcommand{\spostsym}{\ensuremath{\mathcal{SP}}\xspace}
+\newcommand{\spostsym}{\ensuremath{sp}\xspace}
 \newcommand{\spost}[2]{\ensuremath{\spostsym(#1,#2)}}
 \newcommand{\subst}[3]{\ensuremath{#1[#2 \leftarrow #3]}}
 
@@ -268,16 +278,18 @@ alternation.
 
 %==================================================================================
 %==================================================================================
-\section{Preliminaries}
-
-\subsection{Simple Loops on guarded assignments}
+%\section{Preliminaries}
+%\subsection{Simple Loops on guarded assignments}
+\section{Simple loops on guarded assignments}
 \label{sec:simple-loops}
 We base our developpement on the intermediate language shown in figure~\ref{syntax}.
 The language includes arithmetic and boolean  expressions, guarded assignments on 
-locations $l$, and for-like loops with exit conditions. Locations can correspond 
+locations $l$, and for-like loops with exit conditions. Locations  correspond 
 either to scalar (noted $x$) or to array locations (with syntax $X[a]$).
-\begin{center}
-\begin{lstlisting}[mathescape]{} 
+\begin{figure}
+%\begin{center}
+\centering
+\begin{lstlisting}[mathescape, frame=single, flexiblecolumns=false]{} 
  $\KWloop \idx \KWin \idxinitial .. \idxfinal ~ \KWexit \gexit ~ \KWdo$
     $\KWassign l_1$ {
        $g_{l_{11}} \rightarrow l_1 := e_{l_{11}} \; ~\KWor$
@@ -292,11 +304,14 @@ either to scalar (noted $x$) or to array locations (with syntax $X[a]$).
     }
  $\KWend$
 \end{lstlisting}
-\loopform
-\end{center}
-
-A program \prog in this language consists in a single \loopform over an index \idx 
-ranging from \idxinitial to \idxfinal values, and possibly stating an exit condition \gexit. 
+%\loopform
+%\end{center}
+\caption{A simple loop program scheme}\label{program-scheme}
+\end{figure}
+%
+Figure \ref{program-scheme} shows a typical loop program scheme in our language \prog. 
+A program in this language over an index \idx ranging from \idxinitial to \idxfinal values, 
+and possibly stating an exit condition \gexit. 
 A loop body $B$ consists in a (possibly empty) unordered collection of \emph{simultaneous} 
 \textit{group-assignments} on different locations $l_1, \ldots, l_m$.
 A group-assignment declares a location $l_j$ to assign, that we note $G_{l_j}$.  
@@ -331,13 +346,10 @@ $$
 \noindent where $\bullet \in \{<, \leq, >, \geq \}, n \in \SZ,
 t \in \{\mathrm{true}, \mathrm{false} \}$
 }
-\caption{Simple loops syntax}\label{syntax}
+\caption{Syntax of the \prog  language }\label{syntax}
 \end{figure}
-%==================================================================================
-%==================================================================================
-\subsection{Definitons and foundations}
 
-\subsubsection*{Semantic constraints on loops}
+\subsection{Semantic constraints on loops}
 
 Let ${ B}$ be a loop body. We assume that any group-assignment $G_l$ in ${ B}$ 
 contains only assignments on its specified location $l$, and that any other 
@@ -359,7 +371,7 @@ Group assignments are executed simultaneously: expressions and guards are evalua
 The conditions on guarded assignments are essentially the same as the ones described by Kov\'acs 
 and Voronkov with a slightly different formalism~\cite{kovacs:2009:fli}.
 
-\begin{definition} \emph{(Disjoints writings)}\\
+\begin{definition} \emph{(Disjoints writings and well-fordmeness)}\\
 A group assign $G_l$ is \textit{write-disjoint}, if 
 \begin{itemize}
 \item[i.] $G_l$  contains only guarded assigns on $l$, and
@@ -376,156 +388,69 @@ A loop $L$ with body $B$ is \textit{well-formed} if $B$ is write disjoint.
 \end{definition}
 
 %==================================================================================
-%==================================================================================
-\subsubsection*{Body loop patterns}
+\subsection{Naming Conventions}
+\label{sec:naming-conventions}
 
-We are interested in identifying  loop patterns that comeout  fequently. 
-Actually, we define our loop patterns as particular body patterns, 
-for which we exhibit the most precise invariant in a sens precised later.
-
-\begin{definition} \emph{(Body pattern)}\\
-A \textit{loop body pattern} or \textit{pattern} $B_P \in \SB$ is a collection of group-assigns.
-Let $L$ be a loop with loop body $B_L = G_{l_1}, \ldots G_{l_m}$. 
-A statement $B_P \in \SB$ is a \textit{body pattern} for loop $L$, or shortly, 
-a pattern for loop $L$, if all group assigns in $B_P$ occur in $B_L$.
-\end{definition}
-
-\begin{definition} \emph{(Loop reduced to a pattern $B_p$)}\\
-Let $B_P$ be a loop body pattern. We define the \textit{loop reduced to the pattern} $B_P$, 
-as the loop  iterating \idx from $\idxinitial$ throug $\idxfinal$ and executing a body equals to $B_P$.
-We note it by $L_R(B_P, i, \idxinitial,\idxfinal)$ or shortly by $L_R(B_P)$. (What about exit condition?)
-\end{definition}
-%==================================================================================
-%==================================================================================
-\subsubsection*{Invariant definitions}
-
-We rely on Hoare's partial correctness semantics to reason on invariants and recall
-some fondamental defintions we use. In particular, we use the partial correctness 
-satisfaction relation $\vDash_{par}$ to define our invariants.
-As we are interested in showing that our invariants for a given body loop pattern are 
-the strongest among all possible invariants, we exhibit in section \ref{sec:proof-pre} 
-a strongest postcondition semantics for all commands in loop bodies {B}.
-
-\begin{definition} 1 \emph{(Hoare triple)}\\
-We say that a Hoare triple $\{\Phi\} P \{ \Psi \}$ is satisfied under partial correcteness, 
-noted $\vDash_{par} \{\Phi\} P \{ \Psi \}$, if for all states which satisfies $\Phi$, 
-the state resulting from executing P satisfies $\Psi$, provided that P actually terminates.
-\end{definition}
-
-We assume that any location $l$ (excepting the loop index \idx) occurring in  a loop body $B$ 
-has $l_0$ as initial value at loop entry (i.e, before the first execution of loop body). 
-We define a corrresponding predicate $\Init(B)$ stating this fact, 
-that we will assume as precondition while reasoning on invariants.\\
-(THE SEMANTIC OF $\Init(B)$ ???)
-
-\begin{definition} 2 \emph {(Inductive loop invariant)}\\
-A formula $\Phi$ is an \textit{inductive invariant under
-initialisation conditions} $\Init(B)$ for the loop 
-\hspace{1cm} $L = \KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit \KWdo B ~\KWend$ \\
-% by starting in the fact that all the variables in the loop is egal to the value of the variable
-% at loop entry (we denode this fact by the special predicat $\mathrm{Init}_0(P)$)
-if: 
-\begin{itemize}
-\item $(\mathrm{Init}_0(B)  \wedge i=\idxinitial) \Rightarrow \Phi$. 
-      That is, $\Phi$ holds at loop initialisation;
-\item $\vDash_{par} \{\idxinitial \leq i \leq \idxfinal \wedge \neg \gexit \wedge\Phi \} B;
-      \texttt{i= i+1} \{ \Phi \}$ holds. That is, $\Phi$ remains true after each 
-      execution of $B$ followed by and index increment,  provided that \gexit does not hold.
-\end{itemize}
-\end{definition}
-
-The intuition behind this invariant definition lays on the following translation.
-The loop $\KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit \KWdo B ~\KWend$ 
-can be translated into a sequence of commands: the initialisation of the loop index, 
-followed by a classical while loop iterating as long as the index remains within bounds
-and that the exit condition does not hold:
-{\small
-\begin{lstlisting}[mathescape]
-   $i=\idxinitial$; while ($i \leq \idxfinal \wedge \neg \gexit$) $\KWdo$ B; i=i+1 $~\KWend$
+We use the following conventions: lower-case letters $a$, $b$, $c$,
+... correspond to  integer
+variables; \idx is the loop index, which is not a variable and cannot be
+assigned; upper-case letters $A$, $B$, $C$, ... are array variables; $e$ is an
+expression; $K$ is a constant expression; $f$ is a pure function (it does not
+write to variables). The guards expressions of assignment to variable $x$ (scalar variable or
+array variable) denoted by letters $g_x$. Subscripted variables $a_0$ and $A_0$ denote
+respectively the initial values before the loop of variables $a$ and $A$.
+For simplicity, if we have an array A that is never updated in the loop, we
+treat such an array A as a constant and simply use $A$ instead of $A_0$. 
+Expression $e_0$ denotes the expression $e$ where all variables have been replaced by their 
+initial values (this does not apply to the loop index \idx).  
+The special expression $e^?$ denotes an unknown value, and expression. 
+For simplicity, we denote the group assignment to variable $x$  
+$\group{x}{g_{x1} .. g_{xn}}$ instead of  
+{
+\begin{lstlisting}[mathescape]{} 
+    $\KWassign x$ {
+       $g_{x_{11}} \rightarrow x_1 := e_{x_{11}} \; ~\KWor$
+        $\vdots$
+       $g_{x_{1k}} \rightarrow x_1 := e_{x_{1k}}$
+    }
 \end{lstlisting}
 }
-Thus, to show that $\Phi$ is an invariant, it suffices to show that it holds after 
-the initialisation, and then, that $\Phi$ is indeed an invariant of the while loop above, 
-which corresponds to the second condition of definition 2. We are interested in establishing 
-the most precise loop invariant \inv for a given loop pattern in \prog.
 
-Given the loop index \idx, recursively, a formula $\Phi(\idx)$ given by \inv 
-is true at loop iteration \idx.
+Given an array $A$ with index bounds $\mathit{low}$ and $\mathit{up}$, we
+define a predicate \Pinbounds{A} as follows:
 
-\begin{definition} 3 \emph {(Strongest Postcondition)}\\
-Given the statement $\texttt{S}$ and the precondition $P$, the formula, denoted by \spost{S}{P},
-is the strongest postcondition iff
-$$(\forall \sigma')(\sigma' \vDash \spost{\texttt{S}}{P} \Leftrightarrow 
-   \exists \sigma, \{\texttt{S},\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash P)$$
-\end{definition}
+$$\inbounds{A}{j} \equiv \mathit{low} \leq j \leq \mathit{up}$$
 
-\begin{corollary} \emph {Strongest Postcondition consequences}\\
-\label{corollary:sp}
-Given the statement $S$, the precondition $P$ and the postcondition $Q$ we have the following consequences
-of stronguest postcondition in the partial correctness satisfaction relation of Hoare ($\vDash_{par}$).
-\begin{itemize}
-\item $\vDash_{par} \{ P \} \texttt{S} \{ \spost{S}{P} \} \quad \quad \mathsf{(1)} $
-\item if $\vDash_{par} (\{ P \} \texttt{S} \{ Q \})$ then $(\spost{S}{P} \Rightarrow Q) \quad \quad (\spstrong)$ 
-\item if $(P \Rightarrow Q)$ then $(\spost{\texttt{S}}{P} \Rightarrow \spost{\texttt{S}}{Q}) \quad \quad (\spimply)$ 
-\end{itemize}
-\end{corollary}
+Given the loop index \idx ranging between $\idxinitial$ and $\idxfinal$, 
+we define a predicate \inrange{\idx} as follows:
 
-\begin{proof}
-\subproof{
-To verify that (1) holds let $\sigma'$ states, there exists $\sigma$ such that 
-$\{\texttt{S},\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$. 
-From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash \spost{\texttt{S}}{P}$ as required.
-}
-\subproof{
-To verify that (2) holds let assume that $\vDash_{par} \{ P \} \texttt{S} \{ Q \}$ and let 
-$\sigma \vDash P$. If $\{\texttt{S},\sigma\} \rightsquigarrow \sigma'$ then $\sigma \vDash P$ 
-(because $\vDash_{par} \{ P \} \texttt{S} \{ Q \}$). So 
-$\exists \sigma, \{\texttt{S},\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$
-so clearly $\sigma' \vDash \spost{\texttt{S}}{P}$ by the definition of $\spost{S}{P}$.
-}
-\subproof{
-To verify that (3) holds let $\sigma'$ states, such that 
-$\sigma' \vDash \spost{\texttt{S}}{P}$, from the definition 3 of $\spost{S}{P}$ we get that
-$\exists \sigma, \{\texttt{S},\sigma\} \rightsquigarrow \sigma' \quad \mathsf{(a)}$ and 
-$\sigma \vDash Q \quad \mathsf{(b)}$.\\
-In particular $\sigma \vDash (P \Rightarrow Q) \quad \mathsf{(c)}$, 
-therefore from $(b)$ and $(c)$ we get that $\sigma \vDash Q \quad \mathsf{(d)}$.
-Now with $(a)$ and $(d)$ we get that 
-$ \exists \sigma, \{\texttt{S},\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash Q$, 
-so clearly $\sigma' \vDash \spost{\texttt{S}}{Q}$ by the definition of $\spost{S}{Q}$.
-}
-\end{proof}
+$$\inrange{\idx} \equiv \idxinitial \leq \idx \leq \idxfinal$$
 
-\begin{definition} 3 \emph {(Most precise invariant)}\\
-A formula $\Phi$ is the \textit{most precise invariant under  conditions}
-$\Init(B)$ for a loop $L$, noted $\Phi = M_I(L, \Init)$, if $\Phi$ is an invariant 
-under $\Init(B)$ for $L$, and if, for any other invariant $\Psi$ of $L$ under the 
-same conditions, then $\Phi \Rightarrow \Psi$.
-\end{definition}
+We define a predicate \Pseen which characterizes indexes which have already
+been treated in the loop:
 
-\begin{definition} 4 \emph {(Pattern capture)}\\
-A formula $\Phi$ captures a body pattern noted $B_P$, under conditions $H$,  iff
-\begin{itemize}
-\item[i.]  $\Phi = M_I(L_R(B_P),H)$: meaning that $\Phi$ is the most precise invariant 
-           under conditions $H$ of the loop reduced to $B_P$, $L_R(B_P)$, 
-\item[ii.] $\Phi$ is an inductive invariant under conditions $H$ of any well-formed loop $L^*$ 
-           including $B_P$ in its body.
-\end{itemize}
-\end{definition}
+$$\seen{j}{\idx} \equiv \idxinitial \leq j <\idx$$
+
+To treat the iteration monotonicity properties we define a predicate \Pbetween
+and a logical function \Ftocount which count the number of loop round from increasing
+loop, knowing that we can deduce the case of strictly decreasing by affine transformation.
+
+\begin{eqnarray*}
+&\betweens{j}{k}{\idx} \equiv j < k < \idx\\
+\and
+&\tocount{i} = i - \idxinitial + 1
+\end{eqnarray*}
 
 %==================================================================================
 %==================================================================================
-\subsection*{Formal Semantics}
+\section{Semantics}
 
-We give two alternative semantics in this section. Strongest postcondition semantics 
-will be useful to show that each one of our invariants is the strongest possible one. 
-Operational semantics will be useful on some proofs (precisely for the proof of correcteness
-of $SP$ in our parallel semantic of groups of guarded assignments, lemma \ref{lem:sp-correctness}) 
-and will allow us to show  the soundness of the strongest postcondition semantics.
+In this section, we give two alternative semantics to the \prog  loop language. 
+Strongest postcondition semantics will be useful to show that each one of our 
+invariants is the strongest possible one. Operational semantics  will allow us to show 
+the soundness of the strongest postcondition semantics.
 
-\subsubsection*{Operational semantics}
-\newcommand{\env}{\ensuremath{\sigma}\xspace}
-\newcommand{\eval}[2]{<#1, #2>}
+\subsection{Operational semantics}
 
 We define a \textit{state} $\sigma$ as a partial function from locations to relative 
 integer values and $\Sstate$ as the set of all possible states:
@@ -691,184 +616,91 @@ $$
 \right.
 $$
 
-%==================================================================================
-%==================================================================================
-\subsection{Naming Conventions}
-\label{sec:naming-conventions}
+\subsection{General definitions and properties on $sp$}
+We rely on Hoare's partial correctness semantics to reason on invariants and recall
+some fondamental defintions we use. In particular, we use the partial correctness 
+satisfaction relation $\vDash_{par}$ to define our invariants.
+As we are interested in showing that our invariants for a given body loop pattern are 
+the strongest among all possible invariants, we exhibit in section \ref{sec:sp-semantics} 
+a strongest postcondition semantics for  loop bodies {B}.
 
-We use the following conventions: lower-case letters $a$, $b$, $c$, ... are integer
-variables; \idx is the loop index, which is not a variable and cannot be
-assigned; upper-case letters $A$, $B$, $C$, ... are array variables; $e$ is an
-expression; $K$ is a constant expression; $f$ is a pure function (it does not
-write to variables). The guards expressions of assignment to variable $x$ (scalar variable or
-array variable) denoted by letters $g_x$. Subscripted variables $a_0$ and $A_0$ denote
-respectively the initial values before the loop of variables $a$ and $A$.
-For simplicity, if we have an array A that is never updated in the loop, we
-treat such an array A as a constant and simply use $A$ instead of $A_0$. 
-Expression $e_0$ denotes the expression $e$ where all variables have been replaced by their 
-initial values (this does not apply to the loop index \idx).  
-The special expression $e^?$ denotes an unknown value, and expression. 
-For simplicity, we denote the group assignment to variable $x$  
-$\group{x}{g_{x1} .. g_{xn}}$ instead of  
-{
-\begin{lstlisting}[mathescape]{} 
-    $\KWassign x$ {
-       $g_{x_{11}} \rightarrow x_1 := e_{x_{11}} \; ~\KWor$
-        $\vdots$
-       $g_{x_{1k}} \rightarrow x_1 := e_{x_{1k}}$
-    }
-\end{lstlisting}
-}
+\begin{definition} \emph{(Satisfaction under partial correctness $\vDash_p$ )}\\
+We say that a Hoare triple $\{\phi\} P \{ \psi \}$ is \textit{satisfied under partial correcteness}, 
+noted $\vDash_{p} \{\phi\} P \{ \psi \}$, \textbf{iff} for all states which satisfies $\phi$, 
+the state resulting from executing P satisfies $\psi$, provided that P actually terminates.
+\end{definition}
 
-Given an array $A$ with index bounds $\mathit{low}$ and $\mathit{up}$, we
-define a predicate \Pinbounds{A} as follows:
+We rely as well on the \textit{strongest postcondition semantics}
+\cite{Gannod:1995:SPS:832303.836920} of  loop programs in \prog in order to show that 
+the invartiants we exhibit in  section \ref{sec:list-loop-patterns} are indeed the most 
+precise ones under the same initialisation conditions for their corresponding loop patterns. 
+To this end, we use the \textit{strongest postcondition \spost{C}{P}  predicate transformer} 
+\cite{dijkstra(scholten:1990}, for a command $C$ and predicate $P$. 
+\spost{C}{P}  corresponds to the set of all states in which \textit{there exists} 
+a computation of $C$ that begins whith $P$ true. That is, given that $P$ holds, execution of $C$ 
+results in \spost{C}{P} true, if $C$ terminates (that is, $sp$ assumes partial correctness).  
+In this section we introduce a general definition of $sp$ 
+(i.e. independent on the structure of commands $C$) and some of its general properties.\\
 
-$$\inbounds{A}{j} \equiv \mathit{low} \leq j \leq \mathit{up}$$
+\begin{definition} \emph{Predicate \spost{C}{P}}\\
+For any command $C$ and predicate $P$ we define the predicate
+\spost{C}{P} as being such that:
+$$
+\sigma' \vDash_{p}  \spost{C}{P}  \Leftrightarrow \exists
+\sigma. (\eval{C}{\sigma} \rightsquigarrow \sigma' \land \sigma \vDash_{p}  P)
+$$
+\end{definition} 
 
-Given the loop index \idx ranging between $\idxinitial$ and $\idxfinal$, 
-we define a predicate \inrange{\idx} as follows:
-
-$$\inrange{\idx} \equiv \idxinitial \leq \idx \leq \idxfinal$$
-
-We define a predicate \Pseen which characterizes indexes which have already
-been treated in the loop:
-
-$$\seen{j}{\idx} \equiv \idxinitial \leq j <\idx$$
-
-To treat the iteration monotonicity properties we define a predicate \Pbetween
-and a logical function \Ftocount which count the number of loop round from increasing
-loop, knowing that we can deduce the case of strictly decreasing by affine transformation.
-
-\begin{eqnarray*}
-&\betweens{j}{k}{\idx} \equiv j < k < \idx\\
-\and
-&\tocount{i} = i - \idxinitial + 1
-\end{eqnarray*}
-
-%==================================================================================
-%==================================================================================
-\subsection{Value-preserving Expressions}
-
-We define \textit{value-preserving expressions} as those expressions whose
-value at the program point before group assignments is such that ($e=e_0$) 
-is a loop invariant. Let us call the corresponding property
-\textit{value-preserving property}:
-\begin{equation}
- e=e_0 \tag{\vpp}
-\end{equation}
-Given a loop index \idx, we denote a \textit{value-preserving expression} $e$
-as $e^\at{\idx}$, so that we can express the same expression for differents
-values of the loop index (\eg $e^\at{j}$, $e^\at{k}$, \etc). Such an expression
-only depends on the number of iterations and initial values of variables
-before the loop. Notice that ($e^\at{j} = e_0^\at{j}$) is not necessarily a
-loop invariant for $j \neq i$.  For instance in the following example:
-$$\begin{array}{l}
-  \KWloop \KWover i \KWin 1 .. N \\
-  ~~~~ \mathit{true} \rightarrow A[i] := 0\\
-  \KWend
-\end{array}$$
-$e^\at{\idx} \symdef A[\idx]$ (with current index \idx) is a 
-value-preserving expression, because ($A[\idx]=A_0[\idx]$) is a loop 
-invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
-
-Sufficient conditions for an expression $e$ to be a value-preserving expression
-are the following:
-\begin{enumerate}
-\item $e$ does not refer to scalar variables that are assigned in the loop;
-\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
-\item $e$ may refer to an array variable $A$ that is modified in the loop,
-  provided it does so at index \idx or indexes that are known to be greater
-  than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
-  indexes that are known to be less than \idx (\eg $\idx - 1$). This ordering
-  can be more complex, and necessitate a special analysis, like in the case of
-  array filtering where the array is assigned at index $v$ where $v$ is
-  incremented less often than the loop index.
-\end{enumerate}
-
-%==================================================================================
-%==================================================================================
-\subsection{Proof Preliminaries}
-\label{sec:proof-pre}
-
-\begin{lemma} \emph {(Most Precise Invariant)}\\
-\label{lem:precise-inv}
-Let $L = \KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit g_{exit}~ \KWdo B ~\KWend$.\\
-Let $\Psi$ and  $\Phi$ be two inductive invariants for $L$ under
-$\Init(B)$. And, $SP$ the stronguest postcondition at each time a loop body 
-is executed by going on the fact that $\Phi(\idx)$ is true at loop iteration index \idx, 
-such that : 
-\begin{itemize}
-\item[(a)] $(\Init(B) \land \idx = \idxinitial) \Leftrightarrow (\Phi(\idx) \land \idx=\idxinitial)$ 
-\item[(b)] $\Phi(\idx+1) \wedge \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \Leftrightarrow 
-          \spost{\texttt{B}}{\Phi(\idx) \land \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx}}$.
-\end{itemize}
-Then $(\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \Rightarrow (\Phi(\idx) \Rightarrow \Psi(\idx)))$
-\end{lemma}
+\begin{corollary}[Properties on $sp(c,P)$] The following are useful properties of predicate \spost{C}{P}:
+\begin{align*}
+[\sppost]  &   \quad \vDash_{p} \{P\} ~C ~ \{ \spost{C}{P} \} & \textnormal{ ~is actually a postconditon} \\
+[\spstrong] &  \quad \vDash_{p} \{P\} ~C~ \{ Q\} \Rightarrow (\spost{C}{P} \Rightarrow Q )  & \textnormal{ is the strongest one} \\
+[\spmonoton] &   \quad  (P \Rightarrow Q) \Rightarrow (\spost{C}{P} \Rightarrow \spost{C}{Q} ) & \textnormal{ ~monotonicity}\\
+[\hoareconj] &  \quad \vDash_{p} \{P_1\} ~C~ \{ Q_1\} \land \vDash_{p} \{P_2\} ~C~ \{ Q_2\} \Rightarrow 
+\vDash_{p} \{P_1 \land P_2\} ~C~ \{P_2 \land Q_2\}  & \textnormal{Hoare conjonction} \\
+\end{align*}
+\end{corollary}
 
 \begin{proof}
-  Given the loop index \idx, the proof proceeds by induction on \idx.
-
-  \subproof{\textbf{Base Case} : $\idx=\idxinitial$}
-  By definition, as $\Psi$ is an inductive invariant under $\Init(B) $, the following holds:
-  $$(\Init(B) \land \idx= \idxinitial) \Rightarrow \Psi(\idxinitial)$$
-  Also by (a), we have :
-  $$(\Phi(\idx) \land \idx=\idxinitial) \Leftrightarrow (\Init(B) \land \idx= \idxinitial) 
-  \Rightarrow  \Psi(\idxinitial)$$
-
-  \subproof{\textbf{Inductive Step} } 
-  Now assume 
-  $$(\forall j) (\idxinitial \leq j \leq \idx \Rightarrow (\Phi(j) \Rightarrow \Psi(j)))$$ 
-  and let us prove that 
-  $$(\forall j) (\idxinitial \leq j \leq \idx + 1 \Rightarrow (\Phi(j) \Rightarrow \Psi(j)))$$
-  %
-  $\Psi$ is an inductive invariant,  and thus, the Hoare triple below holds.
-  \begin{align*}
-    \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \Psi(i) \} 
-    \texttt{B; i=i+1} 
-    \{\Psi(i) \} & \Leftrightarrow  \\
-    \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \Psi(i) \} 
-    \texttt{B} 
-    \{\Psi(i+1) \} 
-  \end{align*}
-  %
-  By property (\spstrong) on $SP$, any postcondition $Q$ such that
-  $\{P\} C \{Q\}$ holds,  is implied by $\spost{C}{P}$. We instantiate
-  this property on the Hoare triple above. We obtain (not that $g_{exit}^\at{\idx}$ is value preserving):
-  \begin{align*}
-    \spost{\texttt{B}}{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \Psi(i)} 
-    &\Rightarrow &\\
-    \Psi(i+1)
-    &\Rightarrow &\\
-   \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \Psi(i+1)
-  \end{align*}
-  %
-  By inductive hypothesis we have 
-  $(\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \Rightarrow (\Phi(\idx) \Rightarrow \Psi(\idx)))$\\
-  %
-  Especially we apply \spimply property in $\Phi(\idx) \Rightarrow \Psi(\idx)$ and we get
-  \begin{align*}
-    \spost{\texttt{B}}{\Phi(\idx) \land \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx}} &\Rightarrow&\\
-    &\spost{\texttt{B}}{\Psi(\idx) \land \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx}}& \\
-    &\Rightarrow&\\
-    &\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \Psi(i+1) \quad \quad \quad \mathsf{(1)}&
-  \end{align*}
-  %
-  And since $$\Phi(\idx+1) \wedge \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \Leftrightarrow
-  \spost{\texttt{B}}{\Phi(\idx) \land \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx}} \quad \mathsf{(2)}$$
-  %
-  By $\mathsf{(1)}$ and $\mathsf{(2)}$  we get that
-  $$\Phi(\idx+1) \wedge \idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \Rightarrow 
-  \Psi(i+1) \land \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx}$$
-  %
-  Finally $\Phi(\idx+1) \Rightarrow \Psi(i+1)$ as required. (CQFD)
+\subproof{
+To verify that (1) holds let $\sigma'$ states, there exists $\sigma$ such that 
+$\{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$. 
+From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash \spost{C}{P}$ as required.
+}
+\subproof{
+To verify that (2) holds let assume that $\vDash_{par} \{ P \} C \{ Q \}$ and let 
+$\sigma \vDash P$. If $\{C,\sigma\} \rightsquigarrow \sigma'$ then $\sigma \vDash P$ 
+(because $\vDash_{par} \{ P \} C \{ Q \}$). So 
+$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$
+so clearly $\sigma' \vDash \spost{C}{P}$ by the definition of $\spost{S}{P}$.
+}
+\subproof{
+To verify that (3) holds let $\sigma'$ states, such that 
+$\sigma' \vDash \spost{C}{P}$, from the definition 3 of $\spost{C}{P}$ we get that
+$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \quad \mathsf{(a)}$ and 
+$\sigma \vDash Q \quad \mathsf{(b)}$.\\
+In particular $\sigma \vDash (P \Rightarrow Q) \quad \mathsf{(c)}$, 
+therefore from $(b)$ and $(c)$ we get that $\sigma \vDash Q \quad \mathsf{(d)}$.
+Now with $(a)$ and $(d)$ we get that 
+$ \exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash Q$, 
+so clearly $\sigma' \vDash \spost{C}{Q}$ by the definition of $\spost{C}{Q}$.
+}
 \end{proof}
 
+\ifdefined\longversion 
+\begin{corollary}[$sp$ on non changing variables] \label{cor:sp-indep}
+  Let $C$ be a command that
+  does not change on a variable $x$, that is, for any $\sigma, \sigma'$
+  such that $\eval{C}{\sigma} \rightsquigarrow \sigma' $, then
+  $\sigma(x) = \sigma'(x)$. Let  $k$ be some integer value. Then:
+\begin{align*}
+sp(C, x=k \land P) \Leftrightarrow x=k \land \spost{C}{P} & \quad \quad \textnormal{[Sp-indep]}
+\end{align*}
+\end{corollary}
+\fi
 
-According to the previous lemme \ref{lem:precise-inv} prove that an invariant $\Phi$ 
-is a most precise invariant of the loop $L$ consists first to prove that $\Phi$ preserves 
-a loop initialisation and second to compute the stronguest postcondition over the loop body 
-$B_L = G_{l_1}, \ldots G_{l_m}$ at each iteration under the guard \gexit to exit the loop.
-
+\subsection{Strongest postcondition semantics}
+\label{sec:sp-semantics}
 \vspace{0.5 cm}
 Following is the definition of stronguest loop invariant in our parallel loop semantic model.
 We have two definitions (\sppar): 
@@ -954,10 +786,318 @@ that rule \sppar indeed computes the desired strongest postcondition.
  TODO
 \end{proof}
 
+
+%==================================================================================
+%==================================================================================
+\section{Invariants and body loop patterns}
+
+%==================================================================================
+\subsection{Loop Predicates Conventions}
+Given the loop program \prog we define the following predicates 
+\begin{enumerate}
+\item \initcond{\prog} : describes the vacuously fact that any location $l$ 
+(excepting the loop index \idx) occurring in  a loop has $l_0$ as initial value at loop entry.
+\item \framecond{\prog} : describes the variables which are never assigned in the loop.
+\item \preservecond{\prog} : describes an inductive invariant using an expression $e$.
+\end{enumerate}
+
+%==================================================================================
+\subsection{Value-preserving Expressions}
+
+We define \textit{value-preserving expressions} as those expressions
+such that there is an inductive invariant \preservecond{\prog} such that:
+$$\preservecond{\prog} \Rightarrow (e = e_0)$$
+% 
+Consequently the \textit{value-preserving expressions} as those expression
+whose value at the program point before group assignments is such that ($e=e_0$) 
+is a loop invariant. Let us call the corresponding property \textit{value-preserving property}:
+\begin{equation}
+ e=e_0 \tag{\vpp}
+\end{equation}
+%
+Given a loop index \idx, we denote a \textit{value-preserving expression} $e$
+as $e^\at{\idx}$, so that we can express the same expression for differents
+values of the loop index (\eg $e^\at{j}$, $e^\at{k}$, \etc). Such an expression
+only depends on the number of iterations and initial values of variables
+before the loop. Notice that ($e^\at{j} = e_0^\at{j}$) is not necessarily a
+loop invariant for $j \neq i$.  For instance in the following example:
+$$\begin{array}{l}
+  \KWloop \KWover i \KWin 1 .. N \\
+  ~~~~ \mathit{true} \rightarrow A[i] := 0\\
+  \KWend
+\end{array}$$
+$e^\at{\idx} \symdef A[\idx]$ (with current index \idx) is a 
+value-preserving expression, because ($A[\idx]=A_0[\idx]$) is a loop 
+invariant. But ($A[0]=A_0[0]$) is not a loop invariant.
+%
+Sufficient conditions for an expression $e$ to be a value-preserving expression
+are the following:
+\begin{enumerate}
+\item $e$ does not refer to scalar variables that are assigned in the loop;
+in this case $$\preservecond{\prog} = (e = e_0)$$
+\item $e$ may refer to (array or scalar) variables that are not modified in the loop;
+in this case $$\preservecond{\prog} = \framecond{\prog}$$
+\item $e$ may refer to an array variable $A$ that is modified in the loop,
+  provided it does so at index \idx or indexes that are known to be greater
+  than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
+  indexes that are known to be less than \idx (\eg $\idx - 1$). This ordering
+  can be more complex, and necessitate a special analysis, like in the case of
+  array filtering where the array is assigned at index $v$ where $v$ is
+  incremented less often than the loop index; in this case 
+$$\preservecond{\prog} = \framecond{\prog} \land (\forall j)(\idx \leq j \leq \idxfinal \Rightarrow A[j]=A_0[j])$$
+\end{enumerate}
+
+%==================================================================================
+\subsection{Invariant definitions}
+
+% We assume that any location $l$ (excepting the loop index \idx) occurring in  a loop body $B$ 
+% has $l_0$ as initial value at loop entry (i.e, before the first execution of loop body). 
+% We define a corrresponding predicate $\Init(B)$ stating this fact, 
+% that we will assume as precondition while reasoning on invariants.
+
+\begin{definition} \emph {(Inductive loop invariant under initialisation conditions)}\\
+A formula $\Phi$ is an \textit{inductive invariant under initialisation conditions} \initcond{\prog} for the loop 
+\hspace{1cm} $L = \KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit \KWdo B ~\KWend$ \\
+\textbf{iff}: 
+\begin{itemize}
+\item $(\initcond{\prog}  \wedge i=\idxinitial) \Rightarrow \phi$. 
+      That is, $\phi$ holds after executing the initialisation;
+\item $\vDash_{par} \{i \leq \idxfinal \wedge \neg \gexit \wedge\phi \} \texttt{B; i= i+1} \{ \phi \}$ holds. 
+      That is, $\phi$ remains true after each execution of $B$ followed by and index increment, 
+      provided that $b^{ex}$ does not hold.
+\end{itemize}
+\end{definition}
+
+The intuition behind this invariant definition lays on the following translation.
+The loop $\KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit ~ \KWdo B ~\KWend$ 
+can be translated into a sequence of commands: the initialisation of the loop index, 
+followed by a classical while loop iterating as long as the index remains within bounds
+and that the exit condition does not hold:
+{\small
+\begin{lstlisting}[mathescape]
+   $i=\idxinitial$; while ($i \leq \idxfinal \wedge \neg \gexit$) $\KWdo$ B; i=i+1 $~\KWend$
+\end{lstlisting}
+}
+Thus, to show that $\Phi$ is an invariant, it suffices to show that it holds after 
+the initialisation, and then, that $\Phi$ is indeed an invariant of the while loop above, 
+which corresponds to the second condition of definition.
+We are interested in establishing  the most precise loop invariant \inv for a given loop pattern in \prog.
+
+
+\begin{definition} \emph {(Most precise invariant under initialisation conditions)}\\
+A formula $\phi$ is the \textit{most precise invariant under initialisation conditions}, 
+or shortly, \textit{under conditions} \initcond{\prog} for a loop $L$, noted $\phi = M_I(\prog, \initcond{\prog})$, 
+if $\phi$ is an invariant under \initcond{\prog} for $L$, and if, for any other invariant $\psi$ of $L$ 
+under the same conditions, then $\phi \Rightarrow \psi$.
+\end{definition}
+
+%==================================================================================
+\subsection{Body loop patterns}
+
+We are interested in identifying  loop patterns that comeout  fequently. 
+Actually, we define our loop patterns as particular body patterns, 
+for which we exhibit the most precise invariant in a sens precised later.
+
+\begin{definition} \emph{(Body pattern)}\\
+A \textit{loop body pattern} or \textit{pattern} $B_P \in \SB$ is a collection of group-assigns.
+Let $L$ be a loop with loop body $B_L = G_{l_1}, \ldots G_{l_m}$. 
+A statement $B_P \in \SB$ is a \textit{body pattern} for loop $L$, or shortly, 
+a pattern for loop $L$, if all group assigns in $B_P$ occur in $B_L$.
+\end{definition}
+
+\begin{definition} \emph{(Loop reduced to a pattern $B_p$)}\\
+Let $B_P$ be a loop body pattern. We define the \textit{loop reduced to the pattern} $B_P$, 
+as the loop  iterating \idx from $\idxinitial$ throug $\idxfinal$ and executing a body equals to $B_P$.
+We note it by $L_R(B_P, i, \idxinitial,\idxfinal)$ or shortly by $L_R(B_P)$. (What about exit condition?)
+\end{definition}
+
+
+\begin{definition} 4 \emph {(Pattern capture)}\\
+A formula $\phi$ captures a body pattern $B_P$, under conditions $H$,
+noted $\mathrm{Capture}^H(\phi, B_p)$ \textbf{iff}
+\begin{itemize}
+\item[i.]  $\phi = M_I(L_R(B_P),H)$: meaning that $\phi$ is the most precise invariant 
+           under conditions $H$ of the loop reduced to $B_P$, $L_R(B_P)$, 
+\item[ii.] $\phi$ is an inductive invariant under conditions $H$ of any well-formed loop $L^*$ 
+           including $B_P$ in its body.
+\end{itemize}
+\end{definition}
+
+
+%==================================================================================
+\subsection{Stating invariant maximality and pattern capture}
+
+The following theorem states sufficient conditions on an invariant for
+a loop in \prog to be the most precise invariant under a particular
+initialisation hypothesis. 
+
+\begin{theorem}[Sufficient conditions for invariant maximality]
+\label{lem:precise-inv} 
+Let \prog be the loop \textnormal{$\KWloop  \idx \KWin \idxinitial ..\idxfinal ~
+\KWexit g_{exit}~ \KWdo B ~\KWend$} with $B$ a body loop not writing
+the index \idx. Let 
+ $\psi$ and  $\phi$  be two inductive invariants for $L$ under \initcond{\prog}
+Let  $\Phi$ be
+such that : 
+\begin{itemize}
+\item[(a)] $(\initcond{\prog} \land \idx = \idxinitial) \Rightarrow \phi(\idxinitial)$ 
+\item[(b)] $sp(B, \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
+             \Leftrightarrow  
+            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)$
+\item[(c)] $sp(B, \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
+             \Leftrightarrow  
+            \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land g_{0_{exit}} \land  \phi(\idx+1)$.
+\end{itemize}
+\noindent Then, $\phi$ is the most precise invariant for \prog under \initcond{\prog},
+that is:
+\begin{align*}
+\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)\\
+\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(i) \Rightarrow \psi(i)  & \quad \quad [\maxinv]
+\end{align*}
+ %Then $\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \Rightarrow (\phi(\idx) \Rightarrow \psi(\idx))$
+\end{theorem}
+
+\begin{proof}
+  \subproof{\textbf{Init case} : $\idx=\idxinitial$}
+  By definition, as $\psi$ is an inductive invariant under \initcond{\prog}, the following holds:
+  $$\initcond{\prog} \land \idx= \idxinitial \Rightarrow \psi(\idxinitial)$$
+  Obviously wa have thus :
+  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idxinitial) \Rightarrow  \psi(\idxinitial)$$
+
+  \subproof{\textbf{Presevation case : $\idx \geq \idxinitial$}} 
+  Here the proof proceeds by induction on \idx.
+
+  \subsubproof{\textbf{Base case : $\idx = \idxinitial+1$}}  
+  We have by Init case
+  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \idx= \idxinitial \land \psi(\idx)$$
+  %
+  $g_{exit}^\at{\idx}$ is a value preserving hence $\preservecond{\prog} \Rightarrow (g_{exit}^\at{\idx} = g_{0_{exit}})$ so can write
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow \\
+    \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)
+  \end{align*}
+  %
+  Apply \spmonoton we get 
+  \begin{align*}
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx)} 
+    \Rightarrow\\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)}\\
+  \end{align*}
+  %
+  By hypothesis $b$
+  \begin{align*}
+    sp(B, \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
+             \Leftrightarrow\\
+            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+  \end{align*}
+  %
+  so
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+    \Rightarrow\\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)} \quad \mathsf{(1)}
+  \end{align*}
+  %
+  $\psi$ is an inductive invariant,  and thus, the Hoare triple below holds.
+  $$
+    \{\idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(\idx) \} 
+    \texttt{B;\idx:=i+1} 
+    \{\psi(\idx) \} 
+  $$
+  %
+  By the hypothesis that the body loop $B$ doest not writing the index \idx, we get the following Hoare triple
+  $$
+    \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(i) \} 
+    \texttt{B} 
+    \{\psi(i+1) \} \quad \mathsf{(2)}
+  $$
+  %
+  \preservecond{\prog} and \framecond{ \prog} are inductive invariants,  and thus, the Hoare triples below hold.
+  \begin{align*}
+    &\{ \preservecond{\prog} \} \texttt{B} \{ \preservecond{\prog} \}& \\
+    &\{ \framecond{ \prog} \} \texttt{B} \{ \framecond{ \prog} \}& \quad \mathsf{(3)}
+  \end{align*}
+  %
+  We instantiate the property \hoareconj on $\mathsf{(2)}$ and $\mathsf{(3)}$. 
+  \begin{align*}
+    \{\framecond{ \prog} \land \preservecond{\prog} \land \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land  \psi(i) \}
+    \texttt{B} 
+    \{ \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1)\}  \quad \mathsf{(4)}
+  \end{align*}  
+  %
+  We instantiate the property \spstrong on $\mathsf{(4)}$
+  \begin{align*}
+    \spost{\texttt{B}}{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \framecond{ \prog} \land  \preservecond{\prog} \land \psi(i) } 
+    &\Rightarrow &\\
+    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) \mathsf{(5)}
+  \end{align*}  
+  With $\mathsf{(1)}$ and $\mathsf{(5)}$ for ($\idx = \idxinitial+1$) we get
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+    \Rightarrow\\
+    \framecond{ \prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land \psi(i+1) 
+  \end{align*}
+
+
+  \subsubproof{\textbf{Inductive step}}  
+  Following is the inductive hypothesis
+  $$\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \phi(i) \Rightarrow \psi(i)$$
+  \begin{align*}
+  \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i) \Rightarrow\\
+  \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)
+  \end{align*}
+  %
+  Apply \spmonoton we get 
+  \begin{align*}
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i)} 
+    \Rightarrow\\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)}\\
+  \end{align*}
+  %
+  By the theorem hypothesis $c$ we get the following 
+  \begin{align*}
+   \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i)}
+   \Leftrightarrow \\
+   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1) 
+  \end{align*}
+  so 
+  \begin{align*}
+   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1) 
+   \Rightarrow \\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)} \quad \mathsf{(6)}
+  \end{align*}
+  %
+  By $\mathsf{(6)}$ and $\mathsf{(5)}$ we get 
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial \leq \idx \leq \idxfinal \land  \phi(\idx+1)
+    &\Rightarrow &\\
+    \framecond{ \prog} \land \preservecond{\prog} \land \idxinitial \leq \idx \leq \idxfinal \land \psi(i+1)
+  \end{align*}  
+  Finally $\phi(\idx+1) \Rightarrow \psi(i+1)$ as required.
+\end{proof}
+
+
+According to the previous lemme \ref{lem:precise-inv} prove that an invariant $\phi$ 
+is a most precise invariant of the loop $L$ consists first to prove that $\phi$ preserves 
+a loop initialisation and second to compute the stronguest postcondition over the loop body 
+$B_L = G_{l_1}, \ldots G_{l_m}$ at each iteration under the guard \gexit to exit the loop.
+
+\vspace{0.5 cm}
+Following is the definition of stronguest loop invariant in our parallel loop semantic model.
+We have two definitions (\sppar): 
+\begin{enumerate}
+ \item the first definition concerns to the loop intermediate form 
+where the loop body (groups of guarded assignments) is empty;
+ \item the second concerns to the general definition when we know 
+all the value of expression used in the groups of guarded assignments. 
+\end{enumerate}
+
+\patternnote
+
 \begin{lemma}
 \label{lem:pattern-captures}
-  \emph{(Pattern Captures)} Prove that a formula $\Phi(i)$, given by an invariant \inv
-  in  our \loopform, captures the pattern \pat becomes to prouve that $\Phi(i)$ is the 
+  \emph{(Pattern Captures)} Prove that a formula $\phi(i)$, given by an invariant \inv
+  in  our \loopform, captures the pattern \pat becomes to prouve that $\phi(i)$ is the 
   most precise invariant to loop reduced to pattern \pat.
 \end{lemma}
 
@@ -968,10 +1108,8 @@ that rule \sppar indeed computes the desired strongest postcondition.
 
 %==================================================================================
 %==================================================================================
-\section{Loop Patterns} 
-
-A loop \emph{Pattern} \pat is defined as a subset of group assignments 
-from a loop body statements.
+\section{Identified loop patterns} 
+\label{sec:list-loop-patterns}
 
 \newcommand{\pattern}[3]{%
 \refstepcounter{pc}
@@ -1094,10 +1232,10 @@ from a loop body statements.
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\Init(\curpattern) \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
   $$(i = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   and since $\idx$ is exactly equal to $\idxinitial$ then
-  $$(\Init(\curpattern) \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$\initcond{\prog} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
@@ -1165,13 +1303,13 @@ from a loop body statements.
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\Init(\curpattern) \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
   $$(\idx = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   When $\idx = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j < \idx$ i.e $(\seen{j}{\idx})=\mathit{false}$\\
   So
   $$(\Inv{\idx} \land \idx = \idxinitial)\equiv (a = a_0)$$
   Therefore
-  $$(\Init(\curpattern) \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$(\initcond{\prog} \land \idx = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
@@ -1404,7 +1542,7 @@ concern the implicit range $1 \leq r \leq n$.\\
 
   \subproof{Proof of loop invariant initalization:}
   In a loop reduced only to this pattern, no variable is modified, excepted
-  $a$ and current value of the loop index, $\Init(\curpattern) \equiv (a = a_0)$.
+  $a$ and current value of the loop index, $\initcond{\prog} \equiv (a = a_0)$.
   $$(i = \idxinitial \land a = a_0) \impl \Inv{\idx}$$
   and 
   $$(\Inv{\idx} \land \idx = \idxinitial) \Leftrightarrow (i = \idxinitial \land a = a_0)$$
@@ -2606,13 +2744,13 @@ concern the implicit range $1 \leq r \leq n$.\\
   In a loop reduced only to this pattern, no variable is modified, excepted
   $A$ and current value of the loop index.\\ 
   At the beginning of the loop
-  $$\Init(\curpattern) \equiv (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
+  $$\initcond{\prog} \equiv (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
   When $i = \idxinitial$, $\nexists j$ such that $\idxinitial \leq j <i$, i.e $\seen{j}{\idx}=\mathit{false}$\\
   and $\neg \seen{j}{\idx} \land \inbounds{A}{j} \equiv \idxinitial \leq j \leq \idxfinal$.\\
   so 
   $$(\Inv{\idx} \land \idx = \idxinitial) = (\forall j)(\idxinitial \leq j \leq \idxfinal \impl A[j] = A_0[j])$$\\
   then 
-  $$(\Init(\curpattern) \land i = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
+  $$(\initcond{\prog} \land i = \idxinitial) \Leftrightarrow (\Inv{\idx} \land \idx = \idxinitial)$$
 
   \subproof{Proof of loop invariant preservation in a loop reduced to \curpattern:}
   Now assume \Inv{\idx} at loop iteration \idx. Let us prove that \Inv{\idx+1} 
@@ -2644,37 +2782,25 @@ concern the implicit range $1 \leq r \leq n$.\\
     \end{array}\right)\\
   \end{eqnarray*}
   %
-  Let us note :
-  %
+  regroup them :
   \begin{eqnarray*}
-    &&A=(\exists A') \left(\begin{array}{ll}
+    &&\Leftrightarrow (\exists A') \left(\begin{array}{ll}
+        &\left(\begin{array}{ll}
              &(\forall j)(\seen{j}{\idx} \land g_0^\at{j} \impl A'[j] = e_0^\at{j}) \\
              \land & g_0^\at{\idx} \Rightarrow (A[\idx] = e_0^\at{\idx}) \\
         \end{array}\right)\\
-    &&B=(\exists A') \left(\begin{array}{ll}
+        \land&
+        \left(\begin{array}{ll}
              & (\forall j)(\seen{j}{\idx} \land \neg g_0^\at{j} \impl A'[j] = A_0[j]) \\
             \land & (\forall j) (\inbounds{A}{j} \land \neg g_0^\at{\idx}) \Rightarrow (A[j] = A'[j])) \\
         \end{array}\right)\\
-    &&C=(\exists A') \left(\begin{array}{ll}
+        \land&
+        \left(\begin{array}{ll}
              & (\forall j)(\neg \seen{j}{\idx} \land \inbounds{A'}{j} \impl A'[j] = A_0[j])\\
              \land & (\forall j) ((\inbounds{A}{j} \land j \neq \idx) \Rightarrow (A[j] = A'[j])
         \end{array}\right)\\
+    \end{array}\right)\\
   \end{eqnarray*}
-  %
-  - simplify $B$ : $(\forall j)(\neg g_0^\at{j} \impl A'[j] = A_0[j])$ so
-  \begin{eqnarray*}
-    &&B=(\exists A') \left(\begin{array}{ll}
-             & (\forall j)(\seen{j}{\idx} \land \neg g_0^\at{j} \impl A_0[j] = A_0[j]) \\
-            \land & (\forall j) (\inbounds{A}{j} \land \neg g_0^\at{\idx}) \Rightarrow A[j] = A_0[j]) \\
-        \end{array}\right)\\
-    &&B=\begin{array}{ll}
-             & (\forall j)(\seen{j}{\idx} \land \neg g_0^\at{j} \impl A_0[j] = A_0[j]) \\
-            \land & (\forall j) (\inbounds{A}{j} \land \neg g_0^\at{\idx}) \Rightarrow A[j] = A_0[j]) \\
-        \end{array}\\
-    &&B=(\forall j)(\seen{j}{\idx+1} \land \neg g_0^\at{j} \impl A[j] = A_0[j]) \quad \quad \quad \mathsf{(1)}
-  \end{eqnarray*}
-
-  - simplify $C$ : $(\forall j)(\neg g_0^\at{j} \impl A'[j] = A_0[j])$ so
 %\fi
 \end{proof}
 
@@ -2814,7 +2940,7 @@ concern the implicit range $1 \leq r \leq n$.\\
   \land&
   (\forall k)(v_0 \leq k < v \impl (\exists j)(\seen{j}{\idx} \land g_0^\at{j} \land A[k] = e_0^\at{j}))  \\
   \land &
-  (\forall k_1, k_2)((\exists j_1,j_2) (k_1 < k_2 \impl 
+  (\forall k_1, k_2)((\exists j_1,j_2) (k_1 \leq k_2 \impl 
   \left(\begin{array}{cc}
        &\betweens{\idxinitial}{j_1}{j_2}\\
        \land &\betweens{j_1}{j_2}{i}\\
@@ -3072,7 +3198,7 @@ end T0_Image;
 \end{lstlisting}
 
 we extract the loop and translate \footnote{The translation from sequential loop to our 
-loop form will be futur Works} it to our loop form which must respects the different 
+loop form will be futur works} it to our loop form which must respects the different 
 restrictions imposed.
 $$\begin{array}{l}
   \KWloop \KWover \idx \KWin 1 .. 6 ~ \KWexit ~ \neg (C (19-(\idx-1) = '\#') ~ \KWdo \\
