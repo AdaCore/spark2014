@@ -115,6 +115,13 @@ package body Gnat2Why.Subprograms is
    function Effect_Is_Empty (E : W_Effects_Id) return Boolean;
    --  Test if the effect in argument is empty.
 
+   procedure Extract_From_Quantified_Expression
+      (N          : Node_Id;
+       Index      : out W_Identifier_Id;
+       Range_Expr : out Node_Id);
+   --  Extract the loop index and the range expression node from a
+   --  QUANTIFIED_EXPRESSION
+
    function Int_Term_Of_Ada_Expr (Expr : Node_Id) return W_Term_Id;
    --  Translate the given Ada expression to a Why term of type "int".
    --  More precisely, call Why_Term_Of_Ada_Expr with argument "Expected_Type"
@@ -487,6 +494,27 @@ package body Gnat2Why.Subprograms is
          Is_Empty (+Effects_Get_Writes (E)));
    end Effect_Is_Empty;
 
+   procedure Extract_From_Quantified_Expression
+      (N          : Node_Id;
+       Index      : out W_Identifier_Id;
+       Range_Expr : out Node_Id)
+   is
+      Spec : Node_Id;
+   begin
+      if Present (Loop_Parameter_Specification (N)) then
+         Spec := Loop_Parameter_Specification (N);
+         Range_Expr := Discrete_Subtype_Definition (Spec);
+      elsif Present (Iterator_Specification (N)) then
+         Spec := Iterator_Specification (N);
+         Range_Expr := Name (Spec);
+      else
+         --  None of Loop_Parameter_Specification and
+         --  Iterator_Specification is present in the node; abort
+         raise Program_Error;
+      end if;
+      Index := New_Identifier (Full_Name (Defining_Identifier (Spec)));
+   end Extract_From_Quantified_Expression;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -499,6 +527,23 @@ package body Gnat2Why.Subprograms is
             return N;
          when N_Subtype_Indication =>
             return Range_Expression (Constraint (N));
+         when N_Identifier =>
+            declare
+               Ent : constant Entity_Id := Entity (N);
+            begin
+               case Ekind (Ent) is
+                  when Discrete_Kind =>
+                     return Scalar_Range (Ent);
+
+                  when Object_Kind =>
+                     return Scalar_Range (Etype (Ent));
+
+                  when others =>
+                     raise Program_Error;
+
+               end case;
+            end;
+
          when others =>
             raise Program_Error;
       end case;
@@ -1420,17 +1465,11 @@ package body Gnat2Why.Subprograms is
                   Reason   => VC_Precondition);
 
          when N_Expression_With_Actions =>
-            if Nkind (Original_Node (Expr)) = N_Quantified_Expression then
-               return Why_Expr_Of_Ada_Expr (Original_Node (Expr));
-            else
-               return
-                  Why_Expr_Of_Ada_Stmts
-                     (Actions (Expr),
-                      Inner_Expr =>
-                        Why_Expr_Of_Ada_Expr
-                          (Expression (Expr),
-                           Expected_Type));
-            end if;
+            return
+               Why_Expr_Of_Ada_Stmts
+                  (Actions (Expr),
+                   Inner_Expr =>
+                     Why_Expr_Of_Ada_Expr (Expression (Expr), Expected_Type));
 
          when N_Quantified_Expression =>
             --  We are interested in the checks for the entire range, and
@@ -1447,20 +1486,18 @@ package body Gnat2Why.Subprograms is
             --  The condition is a formula that expresses that i is in the
             --  range given by the quantification.
             declare
-               Quant_Spec : constant Node_Id :=
-                  Loop_Parameter_Specification (Expr);
-               Index      : constant W_Identifier_Id :=
-                  New_Identifier
-                    (Full_Name (Defining_Identifier (Quant_Spec)));
                Why_Expr   : constant W_Prog_Id :=
                   New_Ignore
                     (Prog => Why_Expr_Of_Ada_Expr (Condition (Expr)));
-               Range_Cond : constant W_Prog_Id :=
-                  Range_Prog
-                    (Discrete_Subtype_Definition (Quant_Spec),
-                     New_Deref
-                       (Ref => +Duplicate_Any_Node (Id => +Index)));
+               Index      : W_Identifier_Id;
+               Range_Expr : Node_Id;
+               Range_Cond : W_Prog_Id;
             begin
+               Extract_From_Quantified_Expression (Expr, Index, Range_Expr);
+               Range_Cond :=
+                  Range_Prog
+                    (Get_Range (Range_Expr),
+                     New_Deref (Ref => +Duplicate_Any_Node (Id => +Index)));
                return
                   Sequence
                      (New_Binding_Ref
@@ -2182,21 +2219,20 @@ package body Gnat2Why.Subprograms is
 
          when N_Quantified_Expression =>
             declare
-               Quant_Spec : constant Node_Id :=
-                  Loop_Parameter_Specification (Expr);
-               I          : constant W_Identifier_Id :=
-                 New_Identifier (Full_Name (Defining_Identifier (Quant_Spec)));
                Conclusion : constant W_Predicate_Id :=
                   Why_Predicate_Of_Ada_Expr (Condition (Expr));
-               Hypothesis : constant W_Predicate_Id :=
-                  Range_Predicate
-                     (Get_Range (Discrete_Subtype_Definition (Quant_Spec)),
-                      New_Term_Identifier (Name => I));
-               Quant_Body : constant W_Predicate_Id :=
-                  New_Implication
-                     (Left => Hypothesis,
-                      Right => Conclusion);
+               I          : W_Identifier_Id;
+               Range_Expr : Node_Id;
+               Hypothesis : W_Predicate_Id;
+               Quant_Body : W_Predicate_Id;
             begin
+               Extract_From_Quantified_Expression (Expr, I, Range_Expr);
+               Hypothesis :=
+                  Range_Predicate
+                    (Get_Range (Range_Expr),
+                     New_Term_Identifier (Name => I));
+               Quant_Body :=
+                  New_Implication (Left => Hypothesis, Right => Conclusion);
                if All_Present (Expr) then
                   return
                      New_Universal_Quantif
@@ -2215,9 +2251,8 @@ package body Gnat2Why.Subprograms is
             end;
 
          when N_Expression_With_Actions =>
-            --  This is probably a quantifier
-            return
-               Why_Predicate_Of_Ada_Expr (Original_Node (Expr));
+
+            raise Program_Error;
 
          when others =>
             return
@@ -2483,13 +2518,6 @@ package body Gnat2Why.Subprograms is
                   Parameters => Compute_Term_Args (Expr));
 
          when N_Expression_With_Actions =>
-            --  for some expressions with actions, we can translate the
-            --  original node
-            if Nkind (Original_Node (Expr)) = N_Case_Expression then
-               return Why_Term_Of_Ada_Expr
-                        (Original_Node (Expr),
-                         Expected_Type);
-            end if;
 
             raise Not_Implemented;
 
