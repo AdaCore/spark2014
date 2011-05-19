@@ -5,7 +5,7 @@ package Tab is
    -- Each non negative value in B[1] .. B[10] is equal to one of A[1] .. A[10]
    with Post => (for all J in Index =>
                    (if (B(J) > Threshold) then
-                      (for some K in Index => A(K) = B(J))));
+                      (for some K in J => A(K) = B(J))));
 
 end Tab;
 
