@@ -161,6 +161,11 @@ package body Gnat2Why.Subprograms is
    function Type_Of_Node (N : Node_Id) return Why_Type;
    --  Get the name of the type of an Ada node, as a Why Type
 
+   function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
+      return W_Prog_Id;
+   --  Translate an Ada enumeration literal to Why. There are a number of
+   --  special cases, so its own function is appropriate.
+
    function Why_Expr_Of_Ada_Expr
      (Expr          : Node_Id;
       Expected_Type : Why_Type) return W_Prog_Id;
@@ -1263,6 +1268,38 @@ package body Gnat2Why.Subprograms is
    end Why_Decl_Of_Ada_Subprogram;
 
    --------------------------
+   -- Why_Expr_Of_Ada_Enum --
+   --------------------------
+
+   function Why_Expr_Of_Ada_Enum (Enum : Node_Id; Current_Type : out Why_Type)
+      return W_Prog_Id
+   is
+   begin
+      --  Deal with special cases: True/False for boolean values
+      if Entity (Enum) = Standard_True then
+         return New_True_Literal_Prog;
+      end if;
+      if Entity (Enum) = Standard_False then
+         return New_Prog_Constant (Def => New_False_Literal);
+      end if;
+      --  In the case of a subtype of an enumeration, we need to insert a
+      --  conversion. We do so here by modifying the Current_Type; the
+      --  conversion itself will be inserted by Why_Expr_Of_Ada_Expr.
+      case Ekind (Etype (Enum)) is
+         when E_Enumeration_Subtype =>
+            Current_Type := (Why_Abstract, Etype (Entity (Enum)));
+
+         when others =>
+            null;
+
+      end case;
+
+      return New_Prog_Identifier
+         (Ada_Node => Enum,
+          Def => Why_Ident_Of_Ada_Ident (Enum));
+   end Why_Expr_Of_Ada_Enum;
+
+   --------------------------
    -- Why_Expr_Of_Ada_Expr --
    --------------------------
 
@@ -1309,13 +1346,7 @@ package body Gnat2Why.Subprograms is
                case Ekind (Entity (Expr)) is
                   --  First treat special cases
                   when E_Enumeration_Literal =>
-                     if Entity (Expr) = Standard_True then
-                        T := New_True_Literal_Prog;
-                     elsif Entity (Expr) = Standard_False then
-                        T := New_Prog_Constant (Def => New_False_Literal);
-                     else
-                        T := New_Prog_Identifier (Ada_Node => Expr, Def => Id);
-                     end if;
+                     T := Why_Expr_Of_Ada_Enum (Expr, Current_Type);
 
                   when others =>
                      --  There is a special case for constants introduced by
