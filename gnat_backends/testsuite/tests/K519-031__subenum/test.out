@@ -1,0 +1,9 @@
+sub.adb:16:20: range check failed
+sub.adb:18:20: range check failed
+sub.adb:23:18: range check failed
+sub.adb:25:18: range check failed
+sub.adb:6:20: range check failed
+sub.adb:8:20: range check failed
+sub.ads:12:11: proof of postcondition failed
+sub.ads:8:11: proof of postcondition failed
+
