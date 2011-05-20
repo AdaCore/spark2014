@@ -37,6 +37,7 @@ package ALFA.Definition is
    --  Return unique entity for entity E
 
    type Violation_Kind is (V_Implem,           --  not yet implemented
+
                            V_Slice,            --  array slice
                            V_Container,        --  formal containers
                            V_Discr,            --  discriminant record
@@ -45,6 +46,8 @@ package ALFA.Definition is
                            V_Generic,          --  generics
                            V_Impure_Function,  --  impure functions
                            V_Tagged,           --  tagged type
+
+                           V_Tasking,          --  tasks and protected objects
                            V_Other);           --  other violations of ALFA
 
    subtype V_Design is Violation_Kind range V_Slice .. V_Other;

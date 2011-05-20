@@ -329,6 +329,8 @@ package body ALFA.Definition is
       case V is
          when V_Implem =>
             return Msg & " is not yet implemented in Alfa";
+         when V_Tasking =>
+            return Msg & " is not in Alfa (tasking)";
          when V_Other =>
             return Msg & " is not in Alfa";
          when V_Extensions =>
@@ -733,6 +735,9 @@ package body ALFA.Definition is
               N_Subunit             =>
             raise Program_Error;
 
+         when N_Protected_Type_Declaration =>
+            Mark_Non_ALFA_Declaration ("protected type", N, V_Tasking);
+
          when N_Abort_Statement            |
               N_Accept_Statement           |
               N_Asynchronous_Select        |
@@ -743,7 +748,6 @@ package body ALFA.Definition is
               N_Entry_Call_Statement       |
               N_Entry_Declaration          |
               N_Protected_Body             |
-              N_Protected_Type_Declaration |
               N_Requeue_Statement          |
               N_Selective_Accept           |
               N_Single_Task_Declaration    |
@@ -1294,11 +1298,8 @@ package body ALFA.Definition is
    --------------------------------------
 
    procedure Mark_Object_Renaming_Declaration (N : Node_Id) is
-      E : constant Unique_Entity_Id := Unique (Entity (Name (N)));
    begin
-      if not Is_In_ALFA (E) then
-         Mark_Non_ALFA_Declaration ("object being renamed", N, From => E);
-      end if;
+      Mark_Non_ALFA_Declaration ("object being renamed", N, V_Implem);
    end Mark_Object_Renaming_Declaration;
 
    -----------------------
