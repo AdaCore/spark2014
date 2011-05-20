@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
-with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
@@ -32,7 +31,6 @@ with Sem_Eval;           use Sem_Eval;
 with Sinfo;              use Sinfo;
 with Stand;              use Stand;
 with String_Utils;       use String_Utils;
-with Uintp;              use Uintp;
 with Why;                use Why;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
@@ -42,10 +40,37 @@ with Why.Gen.Ints;       use Why.Gen.Ints;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Records;    use Why.Gen.Records;
 
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+
 package body Gnat2Why.Types is
+
+   procedure Declare_Ada_Abstract_Signed_Int_From_Range
+      (File : W_File_Id;
+       Name : String;
+       Rng  : Node_Id);
+   --  Same as Declare_Ada_Abstract_Signed_Int but extract range information
+   --  from node.
 
    function Type_Of_Array_Index (N : Node_Id) return String;
    --  Given a type definition for arrays, return the type of the array index.
+
+   ------------------------------------------------
+   -- Declare_Ada_Abstract_Signed_Int_From_Range --
+   ------------------------------------------------
+
+   procedure Declare_Ada_Abstract_Signed_Int_From_Range
+      (File : W_File_Id;
+       Name : String;
+       Rng  : Node_Id)
+   is
+      Range_Node : constant Node_Id := Get_Range (Rng);
+   begin
+      Declare_Ada_Abstract_Signed_Int
+        (File,
+         Name,
+         Expr_Value (Low_Bound (Range_Node)),
+         Expr_Value (High_Bound (Range_Node)));
+   end Declare_Ada_Abstract_Signed_Int_From_Range;
 
    -------------------------
    -- Type_Of_Array_Index --
@@ -111,11 +136,10 @@ package body Gnat2Why.Types is
             elsif Ident_Node = Standard_Character or else
                     Ident_Node = Standard_Wide_Character or else
                     Ident_Node = Standard_Wide_Wide_Character then
-               Declare_Ada_Abstract_Signed_Int
+               Declare_Ada_Abstract_Signed_Int_From_Range
                  (File,
                   Name_Str,
-                  Char_Literal_Value (Low_Bound (Scalar_Range (Ident_Node))),
-                  Char_Literal_Value (High_Bound (Scalar_Range (Ident_Node))));
+                  Ident_Node);
             else
                --  A normal enumeration type
                declare
@@ -134,11 +158,10 @@ package body Gnat2Why.Types is
             end if;
 
          when N_Signed_Integer_Type_Definition =>
-            Declare_Ada_Abstract_Signed_Int
+            Declare_Ada_Abstract_Signed_Int_From_Range
               (File,
                Name_Str,
-               Expr_Value (Low_Bound (Def_Node)),
-               Expr_Value (High_Bound (Def_Node)));
+               Def_Node);
 
          when N_Unconstrained_Array_Definition =>
             declare
@@ -244,60 +267,11 @@ package body Gnat2Why.Types is
    is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
-      case Nkind (Sub_Ind) is
-         when N_Identifier =>
-            declare
-               Sc_Range   : constant Node_Id :=
-                  Scalar_Range (Ident_Node);
-               Low       : constant Uint :=
-                  Expr_Value (Low_Bound (Sc_Range));
-               High       : constant Uint :=
-                  Expr_Value (High_Bound (Sc_Range));
-
-            begin
-               Declare_Ada_Abstract_Signed_Int
-                 (File,
-                  Name_Str,
-                  Low,
-                  High);
-            end;
-         when N_Subtype_Indication =>
-            case Nkind (Constraint (Sub_Ind)) is
-            when N_Range_Constraint =>
-               declare
-                  Sc_Range  : constant Node_Id :=
-                     Range_Expression (Constraint (Sub_Ind));
-                  Low       : constant Uint :=
-                     Expr_Value (Low_Bound (Sc_Range));
-                  High      : constant Uint :=
-                     Expr_Value (High_Bound (Sc_Range));
-               begin
-                  Declare_Ada_Abstract_Signed_Int
-                    (File,
-                     Name_Str,
-                     Low,
-                     High);
-               end;
-            when N_Index_Or_Discriminant_Constraint =>
-               --  ??? In at least one case (generated code for
-               --  'Image of enums) we should not treat this case
-               null;
-            when others =>
-               raise Not_Implemented;
-            end case;
-         when N_Range =>
-            declare
-               Low  : constant Uint :=
-                  Expr_Value (Low_Bound (Sub_Ind));
-               High : constant Uint :=
-                  Expr_Value (High_Bound (Sub_Ind));
-            begin
-               Declare_Ada_Abstract_Signed_Int (File, Name_Str, Low, High);
-            end;
-
-         when others  =>
-            raise Unexpected_Node;
-      end case;
+      pragma Unreferenced (Sub_Ind);
+      Declare_Ada_Abstract_Signed_Int_From_Range
+        (File,
+         Name_Str,
+         Ident_Node);
    end Why_Type_Decl_of_Subtype_Decl;
 
    -------------------------------

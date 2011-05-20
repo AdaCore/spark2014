@@ -75,6 +75,10 @@ package Gnat2Why.Subprograms is
    --  More specific documentation is given at the beginning of each function
    --  in this package.
 
+   function Get_Range (N : Node_Id) return Node_Id;
+   --  Get the range of a range constraint or subtype definition.
+   --  The return node is of kind N_Range
+
    procedure Why_Decl_Of_Ada_Subprogram
      (File : W_File_Id;
       Node : Node_Id);

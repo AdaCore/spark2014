@@ -94,10 +94,6 @@ package body Gnat2Why.Subprograms is
    --  If there are no assertions, we set Split_Node to N_Empty and we return
    --  True.
 
-   function Get_Range (N : Node_Id) return Node_Id;
-   --  Get the range of a range constraint or subtype definition.
-   --  The return node is of kind N_Range
-
    function Int_Expr_Of_Ada_Expr (Expr : Node_Id) return W_Prog_Id;
    --  Translate the given Ada expression to a Why expression of type "int".
    --  More precisely, call Why_Expr_Of_Ada_Expr with argument "Expected_Type"
@@ -523,26 +519,24 @@ package body Gnat2Why.Subprograms is
    is
    begin
       case Nkind (N) is
-         when N_Range =>
+         when N_Range | N_Signed_Integer_Type_Definition =>
             return N;
          when N_Subtype_Indication =>
             return Range_Expression (Constraint (N));
          when N_Identifier =>
-            declare
-               Ent : constant Entity_Id := Entity (N);
-            begin
-               case Ekind (Ent) is
-                  when Discrete_Kind =>
-                     return Scalar_Range (Ent);
+            return Get_Range (Entity (N));
+         when N_Defining_Identifier =>
+            case Ekind (N) is
+               when Discrete_Kind =>
+                  return Scalar_Range (N);
 
-                  when Object_Kind =>
-                     return Scalar_Range (Etype (Ent));
+               when Object_Kind =>
+                  return Scalar_Range (Etype (N));
 
-                  when others =>
-                     raise Program_Error;
+               when others =>
+                  raise Program_Error;
 
-               end case;
-            end;
+            end case;
 
          when others =>
             raise Program_Error;
