@@ -776,13 +776,14 @@ package body Gnat2Why.Subprograms is
      (File : W_File_Id;
       Node : Node_Id)
    is
-      --  ??? This function has to be expanded to deal with:
-      --  * both functions and procedures;
-      --  * procedure arguments;
-      --  * return types.
-      Spec        : constant Node_Id := Specification (Node);
-      Name        : constant Name_Id := Chars (Defining_Unit_Name (Spec));
-      Name_Str    : constant String  := Get_Name_String (Name);
+      Spec        : constant Node_Id :=
+         (if Nkind (Node) = N_Subprogram_Body and then
+            Present (Corresponding_Spec (Node)) then
+            Parent (Corresponding_Spec (Node))
+         else
+            Specification (Node));
+      Name_Str    : constant String  :=
+         Get_Name_String (Chars (Defining_Unit_Name (Spec)));
       Ada_Binders : constant List_Id := Parameter_Specifications (Spec);
       Arg_Length  : constant Nat := List_Length (Ada_Binders);
 
@@ -838,13 +839,15 @@ package body Gnat2Why.Subprograms is
       begin
          while Present (Cur_Binder) loop
             declare
-               Id : constant Node_Id :=
+               Id   : constant Node_Id :=
                   Defining_Identifier (Cur_Binder);
+               Name : constant W_Identifier_Id :=
+                  Why_Ident_Of_Ada_Ident (Id);
             begin
                Result (Cnt) :=
                  New_Binder
                    (Ada_Node => Cur_Binder,
-                    Names    => (1 => New_Identifier (Full_Name (Id))),
+                    Names    => (1 => Name),
                     Arg_Type => +Why_Prog_Type_Of_Ada_Type (Id));
                Next (Cur_Binder);
                Cnt := Cnt + 1;
@@ -2103,9 +2106,14 @@ package body Gnat2Why.Subprograms is
 
    function Why_Ident_Of_Ada_Ident (Id : Node_Id) return W_Identifier_Id
    is
+      Ent : Entity_Id;
    begin
-      return
-         New_Identifier (Full_Name (Entity (Id)));
+      if Nkind (Id) = N_Defining_Identifier then
+         Ent := Id;
+      else
+         Ent := Entity (Id);
+      end if;
+      return New_Identifier (Full_Name (Ent));
    end Why_Ident_Of_Ada_Ident;
 
    ------------------------------
