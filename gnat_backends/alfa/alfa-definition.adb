@@ -1809,6 +1809,12 @@ package body ALFA.Definition is
                   Mark_Non_ALFA ("discriminant", N, V_Discr);
                end if;
 
+            when N_Digits_Constraint =>
+               Mark_Non_ALFA ("digits constraint", N, V_Implem);
+
+            when N_Delta_Constraint =>
+               Mark_Non_ALFA ("delta constraint", N, V_Implem);
+
             when others =>  --  TO DO ???
                raise Program_Error;
          end case;
