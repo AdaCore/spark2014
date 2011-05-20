@@ -55,14 +55,17 @@ package ALFA.Definition is
 
    subtype V_Extensions is Violation_Kind range V_Slice .. V_Tagged;
 
-   function Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
-   --  Return whether a given entity is in ALFA
-
    function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the body of subprogram Id is in Alfa
 
+   function Object_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether an object Id is in Alfa
+
    function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
    --  Return whether the spec of subprogram Id is in Alfa
+
+   function Type_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+   --  Return whether a type Id is in Alfa
 
    procedure Mark_Compilation_Unit (N : Node_Id);
    --  Put marks on a compilation unit. This should be called after all

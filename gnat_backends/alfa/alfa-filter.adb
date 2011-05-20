@@ -161,12 +161,12 @@ package body ALFA.Filter is
                end;
 
             when N_Full_Type_Declaration =>
-               if Is_In_ALFA (Unique (Defining_Entity (N))) then
+               if Type_Is_In_ALFA (Unique (Defining_Entity (N))) then
                   Types_Vars.Append (N);
                end if;
 
             when N_Subtype_Declaration =>
-               if Is_In_ALFA (Unique (Defining_Entity (N))) then
+               if Type_Is_In_ALFA (Unique (Defining_Entity (N))) then
                   Types_Vars.Append (N);
                end if;
 
@@ -176,7 +176,7 @@ package body ALFA.Filter is
 
                if (Comes_From_Source (Original_Node (N))
                     or else Is_Package_Level_Entity (Defining_Entity (N)))
-                 and then Is_In_ALFA (Unique (Defining_Entity (N)))
+                 and then Object_Is_In_ALFA (Unique (Defining_Entity (N)))
                then
                   case Nkind (Object_Definition (N)) is
                      when N_Identifier | N_Expanded_Name =>
@@ -464,9 +464,15 @@ package body ALFA.Filter is
             while Present (Decl) loop
                case Nkind (Decl) is
                   when N_Full_Type_Declaration
-                    | N_Subtype_Declaration
-                    | N_Object_Declaration =>
-                     if Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+                    | N_Subtype_Declaration =>
+                     if Type_Is_In_ALFA (Unique (Defining_Entity (Decl))) then
+                        Append (New_Copy (Decl), Decls_In_ALFA);
+                     end if;
+
+                  when N_Object_Declaration =>
+                     if Object_Is_In_ALFA
+                       (Unique (Defining_Entity (Decl)))
+                     then
                         Append (New_Copy (Decl), Decls_In_ALFA);
                      end if;
 

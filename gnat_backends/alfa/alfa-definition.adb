@@ -125,6 +125,12 @@ package body ALFA.Definition is
    Bodies_In_Alfa   : Id_Set.Set;
    --  Subprogram entities whose body is in Alfa
 
+   Types_In_Alfa    : Id_Set.Set;
+   --  Type entities in Alfa
+
+   Objects_In_Alfa  : Id_Set.Set;
+   --  Object entities in Alfa
+
    type Violations is array (Violation_Kind) of Id_Set.Set;
 
    Spec_Violations : Violations;
@@ -144,7 +150,11 @@ package body ALFA.Definition is
 
    function Body_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
 
+   function Object_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+
    function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
+
+   function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean;
 
    function "+" (E : Unique_Entity_Id) return Entity_Id is (Entity_Id (E));
 
@@ -304,12 +314,75 @@ package body ALFA.Definition is
    function Body_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (for all S of Body_Violations => not S.Contains (+Id));
 
+   --------------------------------
+   -- Object_Is_Computed_In_ALFA --
+   --------------------------------
+
+   function Object_Is_Computed_In_ALFA
+     (Id : Unique_Entity_Id) return Boolean
+   is
+     (for all S of Spec_Violations => not S.Contains (+Id));
+
+   ------------------------------
+   -- Spec_Is_Computed_In_ALFA --
+   ------------------------------
+
+   function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
+     (for all S of Spec_Violations => not S.Contains (+Id));
+
+   ------------------------------
+   -- Type_Is_Computed_In_ALFA --
+   ------------------------------
+
+   function Type_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
+     (for all S of Spec_Violations => not S.Contains (+Id));
+
    ---------------------
    -- Body_Is_In_ALFA --
    ---------------------
 
    function Body_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
      (Id_Set.Contains (Bodies_In_Alfa, +Id));
+
+   -----------------------
+   -- Object_Is_In_ALFA --
+   -----------------------
+
+   function Object_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
+   begin
+      if Scope (+Id) = Standard_Standard then
+         return Standard_In_ALFA.Contains (+Id);
+      else
+         return (Id_Set.Contains (Objects_In_Alfa, +Id));
+      end if;
+   end Object_Is_In_ALFA;
+
+   ---------------------
+   -- Spec_Is_In_ALFA --
+   ---------------------
+
+   function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
+     (Id_Set.Contains (Specs_In_Alfa, +Id));
+
+   ---------------------
+   -- Type_Is_In_ALFA --
+   ---------------------
+
+   function Type_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
+   begin
+      if Scope (+Id) = Standard_Standard then
+         return Standard_In_ALFA.Contains (+Id);
+
+      elsif Is_Itype (+Id)
+        and then Type_Is_Computed_In_ALFA (Id)
+        and then Ekind (+Id) in Numeric_Kind
+      then
+         return True;  --  HACK until itypes are properly treated
+
+      else
+         return (Id_Set.Contains (Types_In_Alfa, +Id));
+      end if;
+   end Type_Is_In_ALFA;
 
    ----------------------------
    -- Close_ALFA_Output_File --
@@ -412,32 +485,21 @@ package body ALFA.Definition is
       if Scope (+From) = Standard_Standard then
          A (V_Other).Include (+To);
       else
-         pragma Assert (for some S of Spec_Violations => S.Contains (+From));
+         --  Either entity From was explicitly marked as not in Alfa, or it
+         --  was not even visited because inside a generic, or task, etc.
+         --  In the first case, inherit the reason for not being in Alfa.
 
-         for V in Violation_Kind loop
-            if Spec_Violations (V).Contains (+From) then
-               A (V).Include (+To);
-            end if;
-         end loop;
+         if (for some S of Spec_Violations => S.Contains (+From)) then
+            for V in Violation_Kind loop
+               if Spec_Violations (V).Contains (+From) then
+                  A (V).Include (+To);
+               end if;
+            end loop;
+         else
+            A (V_Other).Include (+To);
+         end if;
       end if;
    end Inherit_Violations;
-
-   ----------------
-   -- Is_In_ALFA --
-   ----------------
-
-   function Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
-   begin
-      if Scope (+Id) = Standard_Standard
-        and then not (Is_Subprogram (+Id)
-                       or else Ekind (+Id) = E_Package
-                       or else Ekind (+Id) = E_Package_Body)
-      then
-         return Standard_In_ALFA.Contains (+Id);
-      else
-         return (for all S of Spec_Violations => not S.Contains (+Id));
-      end if;
-   end Is_In_ALFA;
 
    ----------
    -- Mark --
@@ -990,6 +1052,12 @@ package body ALFA.Definition is
       Push_Scope (Id);
       Mark_Type_Definition (Id, Def);
       Pop_Scope (Id);
+
+      --  If type is in Alfa, store this information explicitly
+
+      if Type_Is_Computed_In_ALFA (Id) then
+         Id_Set.Include (Types_In_Alfa, +Id);
+      end if;
    end Mark_Full_Type_Declaration;
 
    ---------------------------------
@@ -1051,11 +1119,33 @@ package body ALFA.Definition is
    ---------------------
 
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id) is
+      E : Unique_Entity_Id;
    begin
-      if Is_Entity_Name (N)
-        and then not Is_In_ALFA (Unique (Entity (N)))
-      then
-         Mark_Non_ALFA ("entity", N, From => Unique (Entity (N)));
+      if Is_Entity_Name (N) then
+         E := Unique (Entity (N));
+
+         case Ekind (+E) is
+            when Object_Kind =>
+               if Ekind_In (+E, E_Variable, E_Constant)
+                 and then not (Object_Is_In_ALFA (E))
+               then
+                  Mark_Non_ALFA ("object", N, From => Unique (Entity (N)));
+               end if;
+
+            when Type_Kind =>
+               if not Type_Is_In_ALFA (E) then
+                  Mark_Non_ALFA ("type", N, From => Unique (Entity (N)));
+               end if;
+
+            --  Subprogram name appears for example in Sub'Result
+
+            when E_Enumeration_Literal |
+                 Subprogram_Kind       =>
+               null;
+
+            when others =>
+               Mark_Non_ALFA ("entity", N, From => Unique (Entity (N)));
+         end case;
       end if;
    end Mark_Identifier_Or_Expanded_Name;
 
@@ -1102,8 +1192,8 @@ package body ALFA.Definition is
 
       elsif Present (Loop_Parameter_Specification (N)) then
          declare
-            LP : constant Node_Id   := Loop_Parameter_Specification (N);
-            Id : constant Entity_Id := Defining_Identifier (LP);
+--              LP : constant Node_Id   := Loop_Parameter_Specification (N);
+--              Id : constant Entity_Id := Defining_Identifier (LP);
 
          begin
             --  The entity for iterating over a loop is always in ALFA if its
@@ -1113,10 +1203,13 @@ package body ALFA.Definition is
             --  should be inserted automatically by the front-end if not in
             --  user code, see K421-020.
 
-            if not Is_In_ALFA (Unique (Etype (Id))) then
-               Mark_Non_ALFA_Declaration
-                 ("type of loop index", LP, From => Unique (Etype (Id)));
-            end if;
+            --  Currently no previous declaration. Assume type in Alfa.
+
+--              if not Type_Is_In_ALFA (Unique (Etype (Id))) then
+--                 Mark_Non_ALFA_Declaration
+--                   ("type of loop index", LP, From => Unique (Etype (Id)));
+--              end if;
+            null;
          end;
 
       else
@@ -1222,9 +1315,14 @@ package body ALFA.Definition is
                end if;
             end loop;
 
-         else
-            pragma Assert (Spec_Violations (V_Implem).Contains (+From));
+         elsif Spec_Violations (V_Tasking).Contains (+From) then
+            Error_Msg_F (Complete_Error_Msg (Msg, V_Tasking), N);
+
+         elsif Spec_Violations (V_Implem).Contains (+From) then
             Error_Msg_F (Complete_Error_Msg (Msg, V_Implem), N);
+
+         else
+            Error_Msg_F (Complete_Error_Msg (Msg, V_Other), N);
          end if;
       end if;
 
@@ -1295,6 +1393,12 @@ package body ALFA.Definition is
       end if;
 
       Pop_Scope (Id);
+
+      --  If object is in Alfa, store this information explicitly
+
+      if Object_Is_Computed_In_ALFA (Id) then
+         Id_Set.Include (Objects_In_Alfa, +Id);
+      end if;
    end Mark_Object_Declaration;
 
    --------------------------------------
@@ -1713,7 +1817,7 @@ package body ALFA.Definition is
 
             --  The parameter is in ALFA if-and-only-if its type is in ALFA
 
-            if not Is_In_ALFA (Unique (Etype (Formal))) then
+            if not Type_Is_In_ALFA (Unique (Etype (Formal))) then
                Mark_Non_ALFA_Declaration
                  ("type of formal", Param_Spec,
                   From => Unique (Etype (Formal)));
@@ -1727,7 +1831,7 @@ package body ALFA.Definition is
       --  subprogram is not in ALFA.
 
       if Nkind (N) = N_Function_Specification
-        and then not Is_In_ALFA (Unique (Etype (Id)))
+        and then not Type_Is_In_ALFA (Unique (Etype (Id)))
       then
          Mark_Non_ALFA
            ("return type", Result_Definition (N),
@@ -1745,6 +1849,12 @@ package body ALFA.Definition is
       Push_Scope (Id);
       Mark (Subtype_Indication (N));
       Pop_Scope (Id);
+
+      --  If type is in Alfa, store this information explicitly
+
+      if Type_Is_Computed_In_ALFA (Id) then
+         Id_Set.Include (Types_In_Alfa, +Id);
+      end if;
    end Mark_Subtype_Declaration;
 
    -----------------------------
@@ -1764,7 +1874,7 @@ package body ALFA.Definition is
 
       --  Check that the base type is in ALFA
 
-      if not Is_In_ALFA (T) then
+      if not Type_Is_In_ALFA (T) then
          Mark_Non_ALFA ("base type", N, From => T);
       elsif Is_Array_Type (+T) then
          Mark_Non_ALFA ("array subtype", N, V_Implem);
@@ -1787,7 +1897,7 @@ package body ALFA.Definition is
 
                      case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
-                        if not Is_In_ALFA (Unique (Entity (Cstr))) then
+                        if not Type_Is_In_ALFA (Unique (Entity (Cstr))) then
                            Mark_Non_ALFA
                              ("index type", N, From => Unique (Entity (Cstr)));
                         end if;
@@ -1876,7 +1986,7 @@ package body ALFA.Definition is
                --  Check that all index types are in ALFA
 
                while Present (Index) loop
-                  if not Is_In_ALFA (Unique (Etype (Index))) then
+                  if not Type_Is_In_ALFA (Unique (Etype (Index))) then
                      Mark_Non_ALFA
                        ("index type", N, From => Unique (Etype (Index)));
                   end if;
@@ -1891,7 +2001,7 @@ package body ALFA.Definition is
 
                --  Check that component type is in ALFA
 
-               if not Is_In_ALFA (Unique (Etype (Component_Typ))) then
+               if not Type_Is_In_ALFA (Unique (Etype (Component_Typ))) then
                   Mark_Non_ALFA
                     ("component type", N,
                      From => Unique (Etype (Component_Typ)));
@@ -2120,20 +2230,6 @@ package body ALFA.Definition is
                       Is_Body    => Is_Body,
                       Is_Logic   => False);
    end Push_Scope;
-
-   ------------------------------
-   -- Spec_Is_Computed_In_ALFA --
-   ------------------------------
-
-   function Spec_Is_Computed_In_ALFA (Id : Unique_Entity_Id) return Boolean is
-     (for all S of Spec_Violations => not S.Contains (+Id));
-
-   ---------------------
-   -- Spec_Is_In_ALFA --
-   ---------------------
-
-   function Spec_Is_In_ALFA (Id : Unique_Entity_Id) return Boolean is
-     (Id_Set.Contains (Specs_In_Alfa, +Id));
 
    ------------
    -- Unique --
