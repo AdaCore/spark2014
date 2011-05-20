@@ -1,1 +1,1 @@
-ALL XFAIL should be all proved with Alt-Ergo 0.93
+ALL XFAIL loop inv should be proved with Alt-Ergo 0.93

@@ -1,1 +1,1 @@
-ALL XFAIL until dealing with string literals
+ALL XFAIL string literals
