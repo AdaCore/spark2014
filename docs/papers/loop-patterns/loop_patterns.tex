@@ -937,68 +937,70 @@ Let \prog be the loop \textnormal{$\KWloop  \idx \KWin \idxinitial ..\idxfinal ~
 \KWexit g_{exit}~ \KWdo B ~\KWend$} with $B$ a body loop not writing
 the index \idx. Let 
  $\psi$ and  $\phi$  be two inductive invariants for $L$ under \initcond{\prog}
-Let  $\Phi$ be
+Let  $\phi$ be
 such that : 
 \begin{itemize}
 \item[(a)] $(\initcond{\prog} \land \idx = \idxinitial) \Rightarrow \phi(\idxinitial)$ 
-\item[(b)] $sp(B, \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
+\item[(b)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
              \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)$
-\item[(c)] $sp(B, \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
+            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)$
+\item[(c)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
              \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land g_{0_{exit}} \land  \phi(\idx+1)$.
+            \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)$
 \end{itemize}
 \noindent Then, $\phi$ is the most precise invariant for \prog under \initcond{\prog},
 that is:
 \begin{align*}
 \initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)\\
-\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(i) \Rightarrow \psi(i)  & \quad \quad [\maxinv]
+%\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(i) 
+\phi(i)
+\Rightarrow \psi(i)  & \quad \quad [\maxinv]
 \end{align*}
  %Then $\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \Rightarrow (\phi(\idx) \Rightarrow \psi(\idx))$
 \end{theorem}
 
 \begin{proof}
-  \subproof{\textbf{Init case} : $\idx=\idxinitial$}
+  \subproof{\textbf{Init case}}
   By definition, as $\psi$ is an inductive invariant under \initcond{\prog}, the following holds:
-  $$\initcond{\prog} \land \idx= \idxinitial \Rightarrow \psi(\idxinitial)$$
-  Obviously wa have thus :
-  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idxinitial) \Rightarrow  \psi(\idxinitial)$$
+  $$(\initcond{\prog} \land \idx= \idxinitial) \Rightarrow \psi(\idxinitial)$$
+  Obviously we have thus :
+  $$(\initcond{\prog} \land \idx= \idxinitial \land \phi(\idxinitial)) \Rightarrow  \psi(\idxinitial)$$
 
-  \subproof{\textbf{Presevation case : $\idx \geq \idxinitial$}} 
-  Here the proof proceeds by induction on \idx.
+  \subproof{\textbf{Presevation case}} 
+  Here the proof proceeds by induction on the number of loop round $k=i$.
 
-  \subsubproof{\textbf{Base case : $\idx = \idxinitial+1$}}  
+  \subsubproof{\textbf{Base case : $\idx = \idxinitial$}}  
   We have by Init case
-  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \idx= \idxinitial \land \psi(\idx)$$
+  $$(\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx)) \Rightarrow  (\idx= \idxinitial \land \psi(\idx))$$
   %
-  $g_{exit}^\at{\idx}$ is a value preserving hence $\preservecond{\prog} \Rightarrow (g_{exit}^\at{\idx} = g_{0_{exit}})$ so can write
+  $g_{exit}^\at{\idx}$ is a value preserving hence $\preservecond{\prog} \Rightarrow (g_{exit}^\at{\idx} = g_{0_{exit}})$ so we can write
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow \\
-    \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)
+    \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow \\
+    \framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)
   \end{align*}
   %
   Apply \spmonoton we get 
   \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx)} 
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx)} 
     \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)}\\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)}
   \end{align*}
   %
-  By hypothesis $b$
+  By theorem hypothesis $(b)$ we have
   \begin{align*}
     sp(B, \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
              \Leftrightarrow\\
-            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)
   \end{align*}
   %
   so
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)
     \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)} \quad \mathsf{(1)}
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)} \quad \quad \mathsf{(1)}
   \end{align*}
   %
-  $\psi$ is an inductive invariant,  and thus, the Hoare triple below holds.
+  Moreover, $\psi$ is an inductive invariant, and thus, the Hoare triple below holds.
   $$
     \{\idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(\idx) \} 
     \texttt{B;\idx:=i+1} 
@@ -1015,7 +1017,7 @@ that is:
   \preservecond{\prog} and \framecond{ \prog} are inductive invariants,  and thus, the Hoare triples below hold.
   \begin{align*}
     &\{ \preservecond{\prog} \} \texttt{B} \{ \preservecond{\prog} \}& \\
-    &\{ \framecond{ \prog} \} \texttt{B} \{ \framecond{ \prog} \}& \quad \mathsf{(3)}
+    &\{ \framecond{ \prog} \} \texttt{B} \{ \framecond{ \prog} \}& \quad \quad \mathsf{(3)}
   \end{align*}
   %
   We instantiate the property \hoareconj on $\mathsf{(2)}$ and $\mathsf{(3)}$. 
@@ -1027,57 +1029,62 @@ that is:
   %
   We instantiate the property \spstrong on $\mathsf{(4)}$
   \begin{align*}
-    \spost{\texttt{B}}{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \framecond{ \prog} \land  \preservecond{\prog} \land \psi(i) } 
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(i) } 
     &\Rightarrow &\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) \mathsf{(5)}
+    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) \quad \quad \mathsf{(5)}
   \end{align*}  
-  With $\mathsf{(1)}$ and $\mathsf{(5)}$ for ($\idx = \idxinitial+1$) we get
+  With $\mathsf{(1)}$ and $\mathsf{(5)}$ we get
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land g_{0_{exit}} \land  \phi(\idx+1)
+    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land \neg g_{0_{exit}} \land  \phi(\idx+1)
     \Rightarrow\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land \psi(i+1) 
+    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) 
   \end{align*}
-
+  \begin{align*}
+    \neg g_{0_{exit}} \land  \phi(\idx+1)
+    \Rightarrow
+    \psi(i+1) 
+  \end{align*}
 
   \subsubproof{\textbf{Inductive step}}  
   Following is the inductive hypothesis
-  $$\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \phi(i) \Rightarrow \psi(i)$$
+  $$(\forall k)(\idxinitial \leq k \leq \idx \land \phi(k) \Rightarrow \psi(k))$$
+  At index $i$ we have
   \begin{align*}
-  \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i) \Rightarrow\\
-  \framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)
+  \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \phi(\idx)  \Rightarrow\\
+  \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \psi(\idx)
   \end{align*}
   %
   Apply \spmonoton we get 
   \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i)} 
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \phi(\idx)} 
     \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)}\\
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \psi(\idx)}
   \end{align*}
   %
   By the theorem hypothesis $c$ we get the following 
   \begin{align*}
-   \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land \idxinitial < i \leq \idxfinal \land \phi(i)}
-   \Leftrightarrow \\
-   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1) 
+    \spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
+             \Leftrightarrow  \\
+    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
   \end{align*}
   so 
   \begin{align*}
-   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1) 
+   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
    \Rightarrow \\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land g_{0_{exit}} \land  \psi(i)} \quad \mathsf{(6)}
+   \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \psi(\idx)} \quad \mathsf{(6)}
   \end{align*}
   %
   By $\mathsf{(6)}$ and $\mathsf{(5)}$ we get 
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial \leq \idx \leq \idxfinal \land  \phi(\idx+1)
+    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
     &\Rightarrow &\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \idxinitial \leq \idx \leq \idxfinal \land \psi(i+1)
+    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1)
   \end{align*}  
   Finally $\phi(\idx+1) \Rightarrow \psi(i+1)$ as required.
 \end{proof}
 
 
-According to the previous lemme \ref{lem:precise-inv} prove that an invariant $\phi$ 
+According to the previous theorem \ref{lem:precise-inv} prove that an invariant $\phi$ 
 is a most precise invariant of the loop $L$ consists first to prove that $\phi$ preserves 
 a loop initialisation and second to compute the stronguest postcondition over the loop body 
 $B_L = G_{l_1}, \ldots G_{l_m}$ at each iteration under the guard \gexit to exit the loop.
