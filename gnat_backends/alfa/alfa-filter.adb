@@ -368,7 +368,11 @@ package body ALFA.Filter is
                while Present (Cursor) loop
                   case Nkind (Cursor) is
                      when N_With_Clause =>
-                        if not Implicit_With (Cursor) then
+                        if not Implicit_With (Cursor)
+                          and then
+                            not Is_From_Standard_Library
+                              (Sloc (Library_Unit (Cursor)))
+                        then
                            declare
                               Pkg_Name : constant String :=
                                            File_Name_Without_Suffix
@@ -405,7 +409,11 @@ package body ALFA.Filter is
                                         File_Name_Without_Suffix
                                           (Sloc (Library_Unit (Cursor)));
                         begin
-                           if not Implicit_With (Cursor) then
+                           if not Implicit_With (Cursor)
+                             and then
+                               not Is_From_Standard_Library
+                                 (Sloc (Library_Unit (Cursor)))
+                           then
                               Add_Package_Decl
                                 (Context_Types_Vars_Body,
                                  Pkg_Name & Types_Vars_Spec_Suffix);

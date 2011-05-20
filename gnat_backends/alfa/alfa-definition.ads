@@ -45,6 +45,7 @@ package ALFA.Definition is
                            V_Block_Statement,  --  block declare statement
                            V_Generic,          --  generics
                            V_Impure_Function,  --  impure functions
+                           V_Standard_Lib,     --  standard library
                            V_Tagged,           --  tagged type
 
                            V_Tasking,          --  tasks and protected objects

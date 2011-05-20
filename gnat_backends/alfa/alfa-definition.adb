@@ -91,6 +91,7 @@ package body ALFA.Definition is
       V_Generic         => To_Unbounded_String ("generic"),
       V_Impure_Function => To_Unbounded_String ("impure function"),
       V_Slice           => To_Unbounded_String ("slice"),
+      V_Standard_Lib    => To_Unbounded_String ("standard library"),
       V_Tagged          => To_Unbounded_String ("tagged type"));
 
    ------------------------------------------------
@@ -294,6 +295,7 @@ package body ALFA.Definition is
    procedure Mark_Type_Definition             (Id : Unique_Entity_Id;
                                                N  : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
+   procedure Mark_With_Clause                 (N : Node_Id);
 
    ------------------------------
    -- Body_Is_Computed_In_ALFA --
@@ -707,6 +709,9 @@ package body ALFA.Definition is
             Mark_Full_Type_Declaration
               (Parent (Full_View (Defining_Identifier (N))));
 
+         when N_With_Clause =>
+            Mark_With_Clause (N);
+
          --  The following kinds can be safely ignored by marking
 
          when N_Character_Literal               |
@@ -725,8 +730,7 @@ package body ALFA.Definition is
               N_Subprogram_Info                 |
               N_Subprogram_Renaming_Declaration |
               N_Use_Package_Clause              |
-              N_Use_Type_Clause                 |
-              N_With_Clause                     =>
+              N_Use_Type_Clause                 =>
             null;
 
          --  The following kinds are rewritten by expansion
@@ -1693,7 +1697,8 @@ package body ALFA.Definition is
 
    begin
       if Is_From_Standard_Library (Sloc (N)) then
-         Mark_Non_ALFA_Declaration ("standard library", Parent (N), V_Implem);
+         Mark_Non_ALFA_Declaration
+           ("standard library", Parent (N), V_Standard_Lib);
          return;
       end if;
 
@@ -2024,6 +2029,20 @@ package body ALFA.Definition is
             raise Program_Error;
       end case;
    end Mark_Violations;
+
+   ----------------------
+   -- Mark_With_Clause --
+   ----------------------
+
+   procedure Mark_With_Clause (N : Node_Id) is
+   begin
+      if Implicit_With (N) then
+         Mark_Non_ALFA
+           ("implicit WITH of standard library", N, V_Standard_Lib);
+      elsif Is_From_Standard_Library (Sloc (Library_Unit (N))) then
+         Mark_Non_ALFA ("WITH of standard library", N, V_Standard_Lib);
+      end if;
+   end Mark_With_Clause;
 
    ---------------------
    -- Pop_Logic_Scope --
