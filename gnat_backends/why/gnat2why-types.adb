@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;              use Atree;
+with Einfo;              use Einfo;
 with Gnat2Why.Decls;     use Gnat2Why.Decls;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
@@ -234,14 +235,16 @@ package body Gnat2Why.Types is
                      (Etype
                         (Subtype_Indication (Component_Definition
                            (Def_Node))));
-               Index          : constant String :=
-                  Type_Of_Array_Index (Def_Node);
+               Rng            : constant Node_Id :=
+                  Get_Range (First_Index (Ident_Node));
             begin
                Declare_Ada_Constrained_Array
                   (File,
                    Name_Str,
-                   Index,
-                   Component_Type);
+                   "toto",
+                   Component_Type,
+                   Expr_Value (Low_Bound (Rng)),
+                   Expr_Value (High_Bound (Rng)));
             end;
 
          when N_Derived_Type_Definition =>
@@ -280,15 +283,25 @@ package body Gnat2Why.Types is
                Ident_Node);
 
          when Array_Kind =>
-            --  ??? We will need to distinguish:
-            --    * simple subtypes
-            --    * subtypes of unconstrained types
-            --    * subtypes of unconstrained by giving index type
-            Declare_Ada_Constrained_Array
-               (File,
-                Name_Str,
-                Index,
-                Component_Type);
+            declare
+               Base : Node_Id := Ident_Node;
+               Rng  : constant Node_Id :=
+                  Get_Range (First_Index (Ident_Node));
+            begin
+               while Etype (Base) /= Base loop
+                  Base := Etype (Base);
+               end loop;
+               --  We need to
+               --    * find the Index type
+               --    * find the component type
+               Declare_Ada_Constrained_Array
+                  (File,
+                   Name_Str,
+                   Get_Name_String (Chars (Etype (First_Index (Ident_Node)))),
+                   Get_Name_String (Chars (Component_Type (Base))),
+                   Expr_Value (Low_Bound (Rng)),
+                   Expr_Value (High_Bound (Rng)));
+            end;
 
          when others =>
             raise Program_Error;

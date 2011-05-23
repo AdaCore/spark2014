@@ -1518,8 +1518,7 @@ package body Gnat2Why.Subprograms is
                    Ar            => Why_Expr_Of_Ada_Expr (Pre),
                    Index         =>
                       Why_Expr_Of_Ada_Expr
-                        (First (Expressions (Expr)),
-                         Type_Of_Node (First_Index (Etype (Pre)))),
+                        (First (Expressions (Expr)), Why_Int_Type),
                    Unconstrained => Is_Unconstrained_Array (Pre));
             end;
 
@@ -1603,47 +1602,23 @@ package body Gnat2Why.Subprograms is
                   when Attribute_Old =>
                      raise Not_Implemented;
 
-                  when Attribute_First | Attribute_Last | Attribute_Length =>
-                     if Is_Unconstrained_Array (Var) then
-                        declare
-                           Name : constant String := Full_Name (Etype (Var));
-                           Op_Name : constant W_Identifier_Id :=
-                              (if Attr_Id = Attribute_First then
-                                 Array_First_Name (Name)
-                               elsif Attr_Id = Attribute_Last then
-                                 Array_Last_Name (Name)
-                               else
-                                 Array_Length_Name (Name));
-                        begin
-                           T :=
-                             New_Prog_Call
-                               (Ada_Node   => Expr,
-                                Name       => Op_Name,
-                                Progs => (1 => Why_Expr_Of_Ada_Expr (Var)));
-                           Current_Type :=
-                             Why_Abstract
-                               (Etype (First (Subtype_Marks (Type_Definition
-                                (Parent (Etype (Var)))))));
-                        end;
-                     else
-                        declare
-                           Index : constant Node_Id :=
-                              First_Index (Etype (Var));
-                           Val : constant Node_Id :=
-                              (if Attr_Id = Attribute_First then
-                                 Low_Bound (Index)
-                               else
-                                  High_Bound (Index));
-                        begin
-                           T :=
-                              New_Prog_Constant
-                                 (Def =>
-                                    New_Integer_Constant
-                                       (Ada_Node => Expr,
-                                        Value => Expr_Value (Val)));
-                           Current_Type := Why_Int_Type;
-                        end;
-                     end if;
+                  when Attribute_First =>
+                     T := New_Array_First_Prog
+                          (Full_Name (Etype (Var)),
+                           Why_Expr_Of_Ada_Expr (Var));
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Last =>
+                     T := New_Array_Last_Prog
+                          (Full_Name (Etype (Var)),
+                           Why_Expr_Of_Ada_Expr (Var));
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Length =>
+                     T := New_Array_Length_Prog
+                          (Full_Name (Etype (Var)),
+                           Why_Expr_Of_Ada_Expr (Var));
+                     Current_Type := Why_Int_Type;
 
                when others =>
                   raise Not_Implemented;
@@ -1782,8 +1757,7 @@ package body Gnat2Why.Subprograms is
                           Ar        => Why_Ident_Of_Ada_Ident (Pre),
                           Index     =>
                             Why_Expr_Of_Ada_Expr
-                              (First (Expressions (Lvalue)),
-                               Type_Of_Node (First_Index (Etype (Pre)))),
+                              (First (Expressions (Lvalue)), Why_Int_Type),
                           Value     =>
                             Why_Expr_Of_Ada_Expr
                               (Expression (Stmt),
@@ -2364,6 +2338,18 @@ package body Gnat2Why.Subprograms is
       --  conversion to or from Int
       Current_Type : Why_Type := Type_Of_Node (Expr);
    begin
+      if Is_Static_Expression (Expr) and then
+         Ekind (Etype (Expr)) in Integer_Kind then
+         T := New_Integer_Constant (Value => Expr_Value (Expr));
+         Current_Type := Why_Int_Type;
+
+         return
+           Insert_Conversion_Term
+             (Ada_Node => Expr,
+              Why_Term => T,
+              From     => Current_Type,
+              To       => Expected_Type);
+      end if;
       case Nkind (Expr) is
          when N_Integer_Literal =>
             T :=
@@ -2450,9 +2436,7 @@ package body Gnat2Why.Subprograms is
                 Ar        => Why_Term_Of_Ada_Expr (Prefix (Expr)),
                 Index     =>
                   Why_Term_Of_Ada_Expr
-                    (First (Expressions (Expr)),
-                     Type_Of_Node (First_Index (Etype (Prefix (Expr)))))
-                  );
+                    (First (Expressions (Expr)), Why_Int_Type));
 
          when N_Raise_Constraint_Error =>
             --  This means the program contains some obvious constraint error
@@ -2474,52 +2458,26 @@ package body Gnat2Why.Subprograms is
                   when Attribute_Old =>
                      T := New_Old_Ident (Why_Ident_Of_Ada_Ident (Var));
 
-                  when Attribute_First | Attribute_Last | Attribute_Length =>
-                     if Is_Unconstrained_Array (Var) then
-                        declare
-                           Name : constant String := Full_Name (Etype (Var));
-                           Op_Name : constant W_Identifier_Id :=
-                              (if Attr_Id = Attribute_First then
-                                  Array_First_Name (Name)
-                               elsif Attr_Id = Attribute_Last then
-                                  Array_Last_Name (Name)
-                               else
-                                  Array_Length_Name (Name));
-                        begin
-                           T :=
-                              New_Operation
-                                (Ada_Node   => Expr,
-                                 Name       => Op_Name,
-                                 Parameters =>
-                                   (1 =>
-                                      New_Term_Identifier
-                                         (Name =>
-                                            Why_Ident_Of_Ada_Ident (Var))));
-                           --  ??? We assume the attribute to of the type
-                           --  of the array index, but this is incorrect for
-                           --  superflat arrays
-                           Current_Type :=
-                              Why_Abstract (
-                                 Etype (First (Subtype_Marks (Type_Definition
-                                 (Parent (Etype (Var)))))));
-                        end;
-                     else
-                        declare
-                           Index : constant Node_Id :=
-                              First_Index (Etype (Var));
-                           Val : constant Node_Id :=
-                              (if Attr_Id = Attribute_First then
-                                 Low_Bound (Index)
-                               else
-                                  High_Bound (Index));
-                        begin
-                           T :=
-                              New_Integer_Constant
-                                 (Ada_Node => Expr,
-                                  Value => Expr_Value (Val));
-                           Current_Type := Why_Int_Type;
-                        end;
-                     end if;
+                  when Attribute_First =>
+                     T := New_Array_First_Term
+                            (Full_Name (Etype (Var)),
+                             New_Term_Identifier (Name =>
+                              Why_Ident_Of_Ada_Ident (Var)));
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Last =>
+                     T := New_Array_Last_Term
+                            (Full_Name (Etype (Var)),
+                             New_Term_Identifier (Name =>
+                              Why_Ident_Of_Ada_Ident (Var)));
+                     Current_Type := Why_Int_Type;
+
+                  when Attribute_Length =>
+                     T := New_Array_Length_Term
+                            (Full_Name (Etype (Var)),
+                             New_Term_Identifier (Name =>
+                              Why_Ident_Of_Ada_Ident (Var)));
+                     Current_Type := Why_Int_Type;
 
                   when others =>
                      raise Not_Implemented;

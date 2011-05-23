@@ -25,6 +25,7 @@
 
 with Types;        use Types;
 with Why.Ids;      use Why.Ids;
+with Uintp;        use Uintp;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -39,7 +40,9 @@ package Why.Gen.Arrays is
      (File      : W_File_Id;
       Name      : String;
       Index     : String;
-      Component : String);
+      Component : String;
+      First     : Uint;
+      Last      : Uint);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (index) of Component
@@ -52,6 +55,9 @@ package Why.Gen.Arrays is
    --  Introduce all the necessary declarations for an Ada array declaration
    --  of the form
    --  type A is Array (basetype range <>) of Component
+
+   procedure Declare_Generic_Array_Type (File : W_File_Id);
+   --  Introduce the generic Array Type that represents Ada arrays
 
    function New_Array_Access_Prog
      (Ada_Node      : Node_Id;
@@ -66,6 +72,21 @@ package Why.Gen.Arrays is
        Ar        : W_Term_Id;
        Index     : W_Term_Id) return W_Term_Id;
    --  Generate a Term that corresponds to an array access.
+
+   function New_Array_First_Term
+      (Type_Name : String;
+       Ar        : W_Term_Id) return W_Term_Id;
+   --  Generate a Term that corresponds to Ar'First.
+
+   function New_Array_Last_Term
+      (Type_Name : String;
+       Ar        : W_Term_Id) return W_Term_Id;
+   --  Generate a Term that corresponds to Ar'Last.
+
+   function New_Array_Length_Term
+      (Type_Name : String;
+       Ar        : W_Term_Id) return W_Term_Id;
+   --  Generate a Term that corresponds to Ar'Length.
 
    function New_Array_Update_Prog
       (Ada_Node      : Node_Id;
@@ -83,4 +104,20 @@ package Why.Gen.Arrays is
        Index     : W_Term_Id;
        Value     : W_Term_Id) return W_Term_Id;
    --  Generate a Program that corresponds to an array update.
+
+   function New_Array_First_Prog
+      (Type_Name : String;
+       Ar        : W_Prog_Id) return W_Prog_Id;
+   --  Generate a Prog that corresponds to Ar'First.
+
+   function New_Array_Last_Prog
+      (Type_Name : String;
+       Ar        : W_Prog_Id) return W_Prog_Id;
+   --  Generate a Prog that corresponds to Ar'Last.
+
+   function New_Array_Length_Prog
+      (Type_Name : String;
+       Ar        : W_Prog_Id) return W_Prog_Id;
+   --  Generate a Prog that corresponds to Ar'Length.
+
 end Why.Gen.Arrays;

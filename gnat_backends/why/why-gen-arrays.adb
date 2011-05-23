@@ -23,11 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 with Why.Conversions;    use Why.Conversions;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Axioms;     use Why.Gen.Axioms;
 with Why.Gen.Decl;       use Why.Gen.Decl;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Preds;      use Why.Gen.Preds;
@@ -44,41 +42,53 @@ package body Why.Gen.Arrays is
      (File      : W_File_Id;
       Name      : String;
       Index     : String;
-      Component : String)
+      Component : String;
+      First     : Uint;
+      Last      : Uint)
    is
+      Ar         : constant W_Term_Id :=
+         New_Term ("a");
+      Ar_Binder  : constant W_Binder_Id :=
+         New_Binder
+            (Names => (1 => New_Identifier ("a")),
+             Arg_Type =>
+               New_Abstract_Type (Name => (New_Identifier (Name))));
    begin
-      New_Abstract_Type (File, Name);
+      Declare_Ada_Unconstrained_Array (File, Name, Index, Component);
 
-      New_Logic
+      --  State axioms about fixed 'First, 'Last and 'Length
+
+      New_Axiom
         (File => File,
-         Name => Array_Access_Name (Name),
-         Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Index)),
-             2 => New_Abstract_Type (Name => New_Identifier (Name))),
-         Return_Type =>
-            New_Abstract_Type (Name => New_Identifier (Component)));
-
-      New_Logic
+         Name => Array_First_Static (Name),
+         Axiom_Body =>
+            New_Forall
+               (Binders => (1 => Ar_Binder),
+                Pred =>
+                  New_Equal
+                     (New_Array_First_Term (Name, Ar),
+                      New_Integer_Constant (Value => First))));
+      New_Axiom
         (File => File,
-         Name => Array_Update_Name (Name),
-         Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Index)),
-             2 => New_Abstract_Type (Name => New_Identifier (Name)),
-             3 => New_Abstract_Type (Name => New_Identifier (Component))),
-         Return_Type => New_Abstract_Type (Name => New_Identifier (Name)));
-
-      Define_Array_Eq_Axiom
-         (File => File,
-          Type_Name => Name,
-          Index_Type => New_Abstract_Type (Name => New_Identifier (Index)),
-          Component_Type =>
-            New_Abstract_Type (Name => New_Identifier (Component)));
-      Define_Array_Neq_Axiom
-         (File => File,
-          Type_Name => Name,
-          Index_Type => New_Abstract_Type (Name => New_Identifier (Index)),
-          Component_Type =>
-            New_Abstract_Type (Name => New_Identifier (Component)));
+         Name => Array_Last_Static (Name),
+         Axiom_Body =>
+            New_Forall
+               (Binders => (1 => Ar_Binder),
+                Pred =>
+                  New_Equal
+                     (New_Array_Last_Term (Name, Ar),
+                      New_Integer_Constant (Value => Last))));
+      New_Axiom
+        (File => File,
+         Name => Array_Length_Static (Name),
+         Axiom_Body =>
+            New_Forall
+               (Binders => (1 => Ar_Binder),
+                Pred =>
+                  New_Equal
+                     (New_Array_Length_Term (Name, Ar),
+                      New_Integer_Constant
+                         (Value => UI_Add (UI_Sub (Last, First), 1)))));
    end Declare_Ada_Constrained_Array;
 
    -------------------------------------
@@ -91,287 +101,319 @@ package body Why.Gen.Arrays is
       Index     : String;
       Component : String)
    is
-      function New_Binder (Arg, Arg_Type : String) return W_Binder_Id;
-      --  Return a binder with the given argument name and argument type.
-
-      function New_Binder (Arg : String; Arg_Type : W_Simple_Value_Type_Id)
-         return W_Binder_Id;
-      --  Return a binder with the given argument name and argument type.
-
-      function New_Forall (Arg, Arg_Type : String; Pred : W_Predicate_Id)
-         return W_Predicate_Id;
-      --  Quantify the input predicate over the given argument of the given
-      --  type.
-
-      function To_Int (T : W_Term_Id) return W_Term_Id;
-      --  Convert a term of "index" type to an "int"
-
-      ----------------
-      -- New_Binder --
-      ----------------
-
-      function New_Binder (Arg, Arg_Type : String) return W_Binder_Id
-      is
-      begin
-         return
-            New_Binder
-               (Names => (1 => New_Identifier (Arg)),
-                Arg_Type =>
-                  New_Abstract_Type (Name => New_Identifier (Arg_Type)));
-      end New_Binder;
-
-      function New_Binder (Arg : String; Arg_Type : W_Simple_Value_Type_Id)
-         return W_Binder_Id is
-      begin
-         return
-            New_Binder
-               (Names => (1 => +New_Identifier (Arg)),
-                Arg_Type => Arg_Type);
-      end New_Binder;
-
-      ----------------
-      -- New_Forall --
-      ----------------
-
-      function New_Forall (Arg, Arg_Type : String; Pred : W_Predicate_Id)
-         return W_Predicate_Id
-      is
-      begin
-         return
-            New_Universal_Quantif
-               (Variables => (1 => New_Identifier (Arg)),
-                Var_Type  =>
-                  New_Abstract_Type (Name => New_Identifier (Arg_Type)),
-                Pred      => Pred);
-      end New_Forall;
-
-      ------------
-      -- To_Int --
-      ------------
-
-      function To_Int (T : W_Term_Id) return W_Term_Id
-      is
-      begin
-         return
-            New_Operation
-               (Name       => New_Conversion_To_Int (Index),
-                Parameters => (1 => T));
-      end To_Int;
-
-      --  Beginning of processing for Declare_Ada_Unconstrained_Array
-
+      pragma Unreferenced (Index);
+      Comp_Type  : constant W_Primitive_Type_Id :=
+         New_Abstract_Type (Name => (New_Identifier (Component)));
+      Ar_Type    : constant W_Logic_Return_Type_Id :=
+         New_Generic_Actual_Type_Chain
+            (Type_Chain => (1 => Comp_Type),
+             Name => New_Identifier (Ada_Array));
+      Name_Type  : constant W_Logic_Arg_Type_Id :=
+         New_Abstract_Type (Name => (New_Identifier (Name)));
    begin
-      Declare_Ada_Constrained_Array (File, Name, Index, Component);
-
-      --  Define accessors for 'First and 'Last
+      New_Abstract_Type (File, Name);
       New_Logic
-        (File => File,
-         Name => Array_First_Name (Name),
-         Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-         Return_Type => New_Abstract_Type (Name => New_Identifier (Index)));
+         (File,
+          Array_Conv_From (Name),
+          Args => (1 => Name_Type),
+          Return_Type => Ar_Type);
       New_Logic
-        (File => File,
-         Name => Array_Last_Name (Name),
-         Args =>
-            (1 => New_Abstract_Type (Name => New_Identifier (Name))),
-         Return_Type => New_Abstract_Type (Name => New_Identifier (Index)));
+         (File,
+          Array_Conv_To (Name),
+          Args => (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+          Return_Type => +Duplicate_Any_Node (Id => +Name_Type));
+   end Declare_Ada_Unconstrained_Array;
 
-      --  Declare parameters with preconditions for access and update
+   --------------------------------
+   -- Declare_Generic_Array_Type --
+   --------------------------------
+
+   procedure Declare_Generic_Array_Type (File : W_File_Id)
+   is
+      A       : constant W_Primitive_Type_Id :=
+         New_Generic_Formal_Type (Name => New_Identifier ("a"));
+      Ar_Type : constant W_Primitive_Type_Id :=
+         New_Generic_Actual_Type_Chain
+            (Type_Chain => (1 => A),
+             Name => New_Identifier (Ada_Array));
+   begin
+
+      --  declare all the symbols:
+      --    type 'a t
+      --    logic access : int , 'a t -> 'a
+      --    logic update : int, 'a t, 'a  -> 'a t
+      --    logic length : 'a t -> int
+      --    logic first : 'a t -> int
+      --    logic last : 'a t -> int
+      --    parameter access_ : (i : int) -> (a : 'a t) ->
+      --       { first (a) <= i <= last (a)  } 'a { result = access (i,a) }
+      --    parameter update_ : (i : int) -> (a : 'a t) -> (v : 'a)
+      --       { first (a) <= i <= last (a)  } 'a t { result = update (i,a,v) }
+
+      New_Abstract_Type (File, New_Identifier (Ada_Array), 1);
+      New_Logic
+        (File,
+         Array_Access_Name (Ada_Array),
+         Args =>
+            (1 => New_Type_Int,
+             2 => +Duplicate_Any_Node (Id => +Ar_Type)),
+         Return_Type => +Duplicate_Any_Node (Id => +A));
+      New_Logic
+        (File,
+         Array_Update_Name (Ada_Array),
+         Args =>
+            (1 => New_Type_Int,
+             2 => +Duplicate_Any_Node (Id => +Ar_Type),
+             3 => +Duplicate_Any_Node (Id => +A)),
+         Return_Type => +Duplicate_Any_Node (Id => +Ar_Type));
+      New_Logic
+        (File,
+         Array_Length_Name (Ada_Array),
+         Args =>
+            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+         Return_Type => New_Type_Int);
+      New_Logic
+        (File,
+         Array_First_Name (Ada_Array),
+         Args =>
+            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+         Return_Type => New_Type_Int);
+      New_Logic
+        (File,
+         Array_Last_Name (Ada_Array),
+         Args =>
+            (1 => +Duplicate_Any_Node (Id => +Ar_Type)),
+         Return_Type => New_Type_Int);
+
+      --  Declare the axioms:
+      --  access/update (2 axioms)
+      --  length/first/last+update (3 axioms)
+      --  length/first/last/zero   (2 axioms)
+
       declare
-         --  Common declarations for access & update
-         Arg_A  : constant String := "a";
-         Arg_I  : constant String := "i";
-         Arg_V  : constant String := "v";
-         First         : constant W_Term_Id :=
+         Ar         : constant W_Term_Id := New_Term ("a");
+         Index      : constant W_Term_Id := New_Term ("i");
+         Index_Diff : constant W_Term_Id := New_Term ("j");
+         Component  : constant W_Term_Id := New_Term ("v");
+         Ar_Binder  : constant W_Binder_Id :=
+            New_Binder
+               (Names => (1 => New_Identifier ("a")),
+                Arg_Type => +Duplicate_Any_Node (Id => +Ar_Type));
+         Index_Binder : constant W_Binder_Id :=
+            New_Binder
+               (Names => (1 => New_Identifier ("i")),
+                Arg_Type => New_Type_Int);
+         Component_Binder  : constant W_Binder_Id :=
+            New_Binder
+               (Names => (1 => New_Identifier ("v")),
+                Arg_Type => +Duplicate_Any_Node (Id => +A));
+         Index_Diff_Binder  : constant W_Binder_Id :=
+            New_Binder
+               (Names => (1 => New_Identifier ("j")),
+                Arg_Type => New_Type_Int);
+         Upd_Term   : constant W_Term_Id :=
+           New_Operation
+             (Name => Array_Update_Name (Ada_Array),
+              Parameters => (1 => Index, 2 => Ar, 3 => Component));
+         First_Term : constant W_Term_Id :=
+           New_Operation
+             (Name => Array_First_Name (Ada_Array),
+              Parameters => (1 => Ar));
+         Last_Term : constant W_Term_Id :=
+           New_Operation
+             (Name => Array_Last_Name (Ada_Array),
+              Parameters => (1 => Ar));
+         Length_Term : constant W_Term_Id :=
+           New_Operation
+             (Name => Array_Length_Name (Ada_Array),
+              Parameters => (1 => Ar));
+         Acc_Upd_Term_Eq : constant W_Term_Id :=
             New_Operation
-              (Name => Array_First_Name (Name),
-               Parameters => (1 => New_Term (Arg_A)));
-         First_Int     : constant W_Term_Id := To_Int (First);
-         Last          : constant W_Term_Id :=
+             (Name => Array_Access_Name (Ada_Array),
+              Parameters => (1 => Index, 2 => Upd_Term));
+         Acc_Upd_Term_Neq : constant W_Term_Id :=
             New_Operation
-              (Name => Array_Last_Name (Name),
-               Parameters => (1 => New_Term (Arg_A)));
-         Last_Int      : constant W_Term_Id := To_Int (Last);
-         Length         : constant W_Term_Id :=
-            New_Operation
-              (Name => Array_Length_Name (Name),
-               Parameters => (1 => New_Term (Arg_A)));
-         Length_Int     : constant W_Term_Id := To_Int (Length);
-         Pre : constant W_Predicate_Id :=
-            New_Related_Terms
-               (Left   => First_Int,
-                Op     => New_Rel_Le,
-                Right  =>
-                  To_Int (New_Term (Arg_I)),
-                Op2    => New_Rel_Le,
-                Right2 => Last_Int);
-         Binders_Update : constant W_Binder_Array :=
-            (1 => New_Binder (Arg_I, Index),
-             2 =>
-               New_Binder
-                (Arg_A,
-                 New_Ref_Type
-                     (Aliased_Type =>
-                        New_Abstract_Type (Name => New_Identifier (Name)))),
-             3 => New_Binder (Arg_V, Component));
-         Binders_Access : constant W_Binder_Array :=
-            (1 => New_Binder (Arg_I, Index),
-             2 => New_Binder (Arg_A, Name));
-         Logic_Update_Term : constant W_Term_Id :=
-            New_Array_Update_Term
-               (Type_Name => Name,
-                Ar        => New_Old_Ident (New_Identifier (Arg_A)),
-                Index     => New_Term (Arg_I),
-                Value     => New_Term (Arg_V));
-         Post_Update : constant W_Predicate_Id :=
-            New_Equal (New_Term (Arg_A), Logic_Update_Term);
-         Post_Access : constant W_Predicate_Id :=
-            New_Equal
-               (Left => New_Result_Term,
-                Right =>
-                  New_Array_Access_Term
-                     (Type_Name => Name,
-                      Ar        => New_Old_Ident (New_Identifier (Arg_A)),
-                      Index     => New_Term (Arg_I)));
+             (Name => Array_Access_Name (Ada_Array),
+              Parameters =>
+               (1 => Index_Diff,
+                2 => +Duplicate_Any_Node (Id => +Upd_Term)));
          Normal_Length : constant W_Term_Id :=
             --  'last - 'first + 1
             New_Arith_Operation
                (Left =>
                   New_Arith_Operation
-                     (Left => +Duplicate_Any_Node (Id => +Last_Int),
+                     (Left => +Duplicate_Any_Node (Id => +Last_Term),
                       Op => New_Op_Substract,
-                      Right => +Duplicate_Any_Node (Id => +First_Int)),
+                      Right => +Duplicate_Any_Node (Id => +First_Term)),
                 Op => New_Op_Add,
                 Right => New_Integer_Constant (Value => Uint_1));
-         Non_Zero_Pred : constant W_Predicate_Id :=
-            --  'last  >= 'first => 'length = 'last - 'first + 1
-            New_Implication
-              (Left =>
-                 New_Related_Terms
-                   (Left => +Duplicate_Any_Node (Id => +Last_Int),
-                    Op => New_Rel_Ge,
-                    Right => +Duplicate_Any_Node (Id => +First_Int)),
-               Right => New_Equal (Length_Int, Normal_Length));
-         Zero_Pred     : constant W_Predicate_Id :=
-            New_Implication
-              (Left =>
-                 New_Related_Terms
-                   (Left => +Duplicate_Any_Node (Id => +Last_Int),
-                    Op => New_Rel_Lt,
-                    Right => +Duplicate_Any_Node (Id => +First_Int)),
-               Right =>
-                  New_Equal
-                     (+Duplicate_Any_Node (Id => +Length_Int),
-                      New_Integer_Constant (Value => Uint_0)));
-
-         procedure Update_Equal_Axiom
-            (File       : W_File_Id;
-             Axiom_Name : W_Identifier_Id;
-             Attr_Name  : W_Identifier_Id;
-             Left       : W_Term_Id);
-         --  Generate an axiom that states that the attribute "attr_name"
-         --  remains unchanged on array update.
-
-         ------------------------
-         -- Update_Equal_Axiom --
-         ------------------------
-
-         procedure Update_Equal_Axiom
-            (File       : W_File_Id;
-             Axiom_Name : W_Identifier_Id;
-             Attr_Name  : W_Identifier_Id;
-             Left       : W_Term_Id)
-         is
-            Right : constant W_Term_Id :=
-               New_Operation
-                  (Name       => Attr_Name,
-                   Parameters =>
-                     (1 =>
-                        New_Array_Update_Term
-                           (Type_Name => Name,
-                            Ar        => New_Term (Arg_A),
-                            Index     => New_Term (Arg_I),
-                            Value     => New_Term (Arg_V))));
-         begin
-            New_Axiom
-               (File => File,
-                Name => Axiom_Name,
-                Axiom_Body =>
-                  New_Forall
-                    (Arg_A, Name,
-                     New_Forall
-                       (Arg_I, Index,
-                        New_Forall
-                           (Arg_V, Component,
-                            New_Equal (Left, Right)))));
-         end Update_Equal_Axiom;
-
+         Enclosing : constant W_Predicate_Id :=
+            New_Related_Terms
+               (Left   => +Duplicate_Any_Node (Id => +First_Term),
+                Op     => New_Rel_Le,
+                Right  => +Duplicate_Any_Node (Id => +Index),
+                Op2    => New_Rel_Le,
+                Right2 => +Duplicate_Any_Node (Id => +Last_Term));
       begin
-         --  Declaration for update parameter
          New_Parameter
-            (File        => File,
-             Name        => To_Program_Space (Array_Update_Name (Name)),
-             Binders     => Binders_Update,
-             Return_Type => New_Type_Unit,
-             Effects     =>
-               New_Effects (Writes => (1 => New_Identifier (Arg_A))),
-             Pre         => Pre,
-             Post        => Post_Update);
-         --  Declaration for access parameter
-         New_Parameter
-            (File        => File,
-             Name        => To_Program_Space (Array_Access_Name (Name)),
-             Binders     => Binders_Access,
-             Return_Type =>
-               New_Abstract_Type (Name => New_Identifier (Component)),
-             Pre         => +Duplicate_Any_Node (Id => +Pre),
-             Post        => Post_Access);
-         --  Define accessor for 'Length, with axioms
-         New_Logic
-           (File => File,
-            Name => Array_Length_Name (Name),
-            Args =>
-               (1 => New_Abstract_Type (Name => New_Identifier (Name))),
+           (File,
+            To_Program_Space (Array_Access_Name (Ada_Array)),
+            Binders     =>
+               (1 => Index_Binder,
+                2 => Ar_Binder),
             Return_Type =>
-               New_Abstract_Type (Name => New_Identifier (Index)));
+               +Duplicate_Any_Node (Id => +A),
+            Pre => Enclosing,
+            Post =>
+               New_Equal
+                  (New_Result_Term,
+                   New_Operation
+                      (Name => Array_Access_Name (Ada_Array),
+                       Parameters =>
+                        (1 => +Duplicate_Any_Node (Id => +Index),
+                         2 => +Duplicate_Any_Node (Id => +Ar)))));
+         New_Parameter
+           (File,
+            To_Program_Space (Array_Update_Name (Ada_Array)),
+            Binders     =>
+               (1 => Index_Binder,
+                2 => Ar_Binder,
+                3 => Component_Binder),
+            Return_Type => +Duplicate_Any_Node (Id => +Ar_Type),
+            Pre => +Duplicate_Any_Node (Id => +Enclosing),
+            Post =>
+               New_Equal
+                  (New_Result_Term,
+                   New_Operation
+                      (Name => Array_Update_Name (Ada_Array),
+                       Parameters =>
+                         (1 => +Duplicate_Any_Node (Id => +Index),
+                          2 => +Duplicate_Any_Node (Id => +Ar),
+                          3 => +Duplicate_Any_Node (Id => +Component)))));
+
          New_Axiom
             (File => File,
-             Name => Array_Length_Non_Zero (Name),
+             Name => Array_Accupd_Eq_Axiom (Ada_Array),
              Axiom_Body =>
-               New_Universal_Quantif
-                 (Variables => (1 => New_Identifier (Arg_A)),
-                  Var_Type =>
-                     New_Abstract_Type (Name => New_Identifier (Name)),
-                  Pred => Non_Zero_Pred));
+               New_Forall
+                  (Binders =>
+                     (1 => Ar_Binder,
+                      2 => Index_Binder,
+                      3 => Component_Binder),
+                   Pred =>
+                     New_Equal
+                        (Acc_Upd_Term_Eq,
+                         +Duplicate_Any_Node (Id => +Component))));
          New_Axiom
             (File => File,
-             Name => Array_Length_Zero (Name),
+             Name => Array_Accupd_Neq_Axiom (Ada_Array),
              Axiom_Body =>
-               New_Universal_Quantif
-                 (Variables => (1 => New_Identifier (Arg_A)),
-                  Var_Type =>
-                     New_Abstract_Type (Name => New_Identifier (Name)),
-                  Pred => Zero_Pred));
-         --  Define axioms that state that 'First, 'Last, 'Length are not
-         --  modified by update
-         Update_Equal_Axiom
-            (File,
-             Array_First_Update (Name),
-             Array_First_Name (Name),
-             +Duplicate_Any_Node (Id => +First));
-         Update_Equal_Axiom
-            (File,
-             Array_Last_Update (Name),
-             Array_Last_Name (Name),
-             +Duplicate_Any_Node (Id => +Last));
-         Update_Equal_Axiom
-            (File,
-             Array_Length_Update (Name),
-             Array_Length_Name (Name),
-             +Duplicate_Any_Node (Id => +Length));
+               New_Forall
+                  (Binders =>
+                     (1 => Ar_Binder,
+                      2 => Index_Binder,
+                      3 => Index_Diff_Binder,
+                      4 => Component_Binder),
+                   Pred =>
+                     New_Implication
+                        (Left  =>
+                           New_NEqual
+                             (+Duplicate_Any_Node (Id => +Index),
+                              +Duplicate_Any_Node (Id => +Index_Diff)),
+                         Right =>
+                           New_Equal
+                              (Acc_Upd_Term_Neq,
+                               New_Operation
+                                  (Name => Array_Access_Name (Ada_Array),
+                                   Parameters =>
+                                    (1 =>
+                                       +Duplicate_Any_Node (Id => +Index_Diff),
+                                     2 =>
+                                       +Duplicate_Any_Node (Id => +Ar)))))));
+         New_Axiom
+           (File => File,
+            Name => Array_First_Update (Ada_Array),
+            Axiom_Body =>
+              New_Forall
+                 (Binders =>
+                    (1 => Ar_Binder,
+                     2 => Index_Binder,
+                     3 => Component_Binder),
+                  Pred =>
+                    New_Equal
+                      (First_Term,
+                       New_Operation
+                         (Name => Array_First_Name (Ada_Array),
+                          Parameters =>
+                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+         New_Axiom
+           (File => File,
+            Name => Array_Last_Update (Ada_Array),
+            Axiom_Body =>
+              New_Forall
+                 (Binders =>
+                    (1 => Ar_Binder,
+                     2 => Index_Binder,
+                     3 => Component_Binder),
+                  Pred =>
+                    New_Equal
+                      (Last_Term,
+                       New_Operation
+                         (Name => Array_Last_Name (Ada_Array),
+                          Parameters =>
+                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+         New_Axiom
+           (File => File,
+            Name => Array_Length_Update (Ada_Array),
+            Axiom_Body =>
+              New_Forall
+                 (Binders =>
+                    (1 => Ar_Binder,
+                     2 => Index_Binder,
+                     3 => Component_Binder),
+                  Pred =>
+                    New_Equal
+                      (Length_Term,
+                       New_Operation
+                         (Name => Array_Length_Name (Ada_Array),
+                          Parameters =>
+                            (1 => +Duplicate_Any_Node (Id => +Upd_Term))))));
+         New_Axiom
+           (File => File,
+            Name => Array_Length_Non_Zero (Ada_Array),
+            Axiom_Body =>
+              New_Forall
+                (Binders => (1 => Ar_Binder),
+                 Pred    =>
+                    New_Implication
+                      (Left  =>
+                         New_Related_Terms
+                           (Left  => +Duplicate_Any_Node (Id => +Last_Term),
+                            Right => +Duplicate_Any_Node (Id => +First_Term),
+                            Op    => New_Rel_Ge),
+                       Right =>
+                         New_Equal
+                           (Left  => +Duplicate_Any_Node (Id => +Length_Term),
+                            Right => Normal_Length))));
+         New_Axiom
+           (File => File,
+            Name => Array_Length_Zero (Ada_Array),
+            Axiom_Body =>
+              New_Forall
+                (Binders => (1 => Ar_Binder),
+                 Pred    =>
+                   New_Implication
+                     (Left  =>
+                        New_Related_Terms
+                          (Left  => +Duplicate_Any_Node (Id => +Last_Term),
+                           Right => +Duplicate_Any_Node (Id => +First_Term),
+                           Op    => New_Rel_Lt),
+                      Right =>
+                        New_Equal
+                          (Left  => +Duplicate_Any_Node (Id => +Length_Term),
+                           Right => New_Integer_Constant (Value => Uint_0)))));
       end;
-   end Declare_Ada_Unconstrained_Array;
+   end Declare_Generic_Array_Type;
 
    ---------------------------
    -- New_Array_Access_Prog --
@@ -384,21 +426,19 @@ package body Why.Gen.Arrays is
       Index         : W_Prog_Id;
       Unconstrained : Boolean) return W_Prog_Id
    is
-      Name : constant W_Identifier_Id := Array_Access_Name (Type_Name);
    begin
-      if Unconstrained then
-         return
-           New_Located_Call
-             (Ada_Node => Ada_Node,
-              Name     => To_Program_Space (Name),
-              Progs    => (1 => Index, 2 => Ar),
-              Reason   => VC_Array_Bounds_Check);
-      else
-         return
-           New_Prog_Call
-             (Name => Name,
-              Progs => (1 => Index, 2 => Ar));
-      end if;
+      pragma Unreferenced (Unconstrained);
+      return
+         New_Located_Call
+            (Ada_Node => Ada_Node,
+             Reason   => VC_Array_Bounds_Check,
+             Name     => To_Program_Space (Array_Access_Name (Ada_Array)),
+             Progs    =>
+               (1 => Index,
+                2 =>
+                  New_Prog_Call
+                     (Name  => Array_Conv_From (Type_Name),
+                      Progs => (1 => Ar))));
    end New_Array_Access_Prog;
 
    ---------------------------
@@ -412,9 +452,122 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Access_Name (Type_Name),
-           Parameters => (1 => Index, 2 => Ar));
+          (Name => Array_Access_Name (Ada_Array),
+           Parameters =>
+            (1 => Index,
+             2 =>
+               New_Operation
+                  (Name => Array_Conv_From (Type_Name),
+                   Parameters => (1 => Ar))));
    end New_Array_Access_Term;
+
+   --------------------------
+   -- New_Array_First_Prog --
+   --------------------------
+
+   function New_Array_First_Prog
+     (Type_Name : String;
+      Ar : W_Prog_Id) return W_Prog_Id is
+   begin
+      return
+        New_Prog_Call
+          (Name => Array_First_Name (Ada_Array),
+           Progs =>
+            (1 =>
+               New_Prog_Call
+                  (Name => Array_Conv_From (Type_Name),
+                   Progs => (1 => Ar))));
+   end New_Array_First_Prog;
+
+   ---------------------------
+   -- New_Array_First_Term --
+   ---------------------------
+
+   function New_Array_First_Term
+     (Type_Name : String;
+      Ar : W_Term_Id) return W_Term_Id is
+   begin
+      return
+        New_Operation
+          (Name => Array_First_Name (Ada_Array),
+           Parameters =>
+            (1 =>
+               New_Operation
+                  (Name => Array_Conv_From (Type_Name),
+                   Parameters => (1 => Ar))));
+   end New_Array_First_Term;
+
+   --------------------------
+   -- New_Array_Last_Prog --
+   --------------------------
+
+   function New_Array_Last_Prog
+     (Type_Name : String;
+      Ar : W_Prog_Id) return W_Prog_Id is
+   begin
+      return
+        New_Prog_Call
+          (Name => Array_Last_Name (Ada_Array),
+           Progs =>
+            (1 =>
+               New_Prog_Call
+                  (Name => Array_Conv_From (Type_Name),
+                   Progs => (1 => Ar))));
+   end New_Array_Last_Prog;
+
+   -------------------------
+   -- New_Array_Last_Term --
+   -------------------------
+
+   function New_Array_Last_Term
+     (Type_Name : String;
+      Ar : W_Term_Id) return W_Term_Id is
+   begin
+      return
+        New_Operation
+          (Name => Array_Last_Name (Ada_Array),
+           Parameters =>
+            (1 =>
+               New_Operation
+                  (Name => Array_Conv_From (Type_Name),
+                   Parameters => (1 => Ar))));
+   end New_Array_Last_Term;
+
+   --------------------------
+   -- New_Array_Length_Prog --
+   --------------------------
+
+   function New_Array_Length_Prog
+     (Type_Name : String;
+      Ar : W_Prog_Id) return W_Prog_Id is
+   begin
+      return
+        New_Prog_Call
+          (Name => Array_Length_Name (Ada_Array),
+           Progs =>
+            (1 =>
+               New_Prog_Call
+                  (Name => Array_Conv_From (Type_Name),
+                   Progs => (1 => Ar))));
+   end New_Array_Length_Prog;
+
+   ---------------------------
+   -- New_Array_Length_Term --
+   ---------------------------
+
+   function New_Array_Length_Term
+     (Type_Name : String;
+      Ar : W_Term_Id) return W_Term_Id is
+   begin
+      return
+        New_Operation
+          (Name => Array_Length_Name (Ada_Array),
+           Parameters =>
+            (1 =>
+               New_Operation
+                  (Name => Array_Conv_From (Type_Name),
+                   Parameters => (1 => Ar))));
+   end New_Array_Length_Term;
 
    ---------------------------
    -- New_Array_Update_Prog --
@@ -428,30 +581,27 @@ package body Why.Gen.Arrays is
        Value         : W_Prog_Id;
        Unconstrained : Boolean) return W_Prog_Id
    is
-      Name : constant W_Identifier_Id := Array_Update_Name (Type_Name);
    begin
-      if Unconstrained then
-         return
-            New_Located_Call
-               (Ada_Node => Ada_Node,
-                Name     => To_Program_Space (Name),
-                Progs    =>
-                  (1 => Index,
-                   2 => New_Prog_Identifier (Def => Ar),
-                   3 => Value),
-                Reason   => VC_Array_Bounds_Check);
-      else
-         return
-            New_Assignment
-              (Name => +Duplicate_Identifier (Id => +Ar),
-               Value =>
-                  New_Prog_Call
-                    (Name => Name,
-                     Progs =>
-                      (1 => Index,
-                       2 => New_Deref (Ref => Ar),
-                       3 => Value)));
-      end if;
+      pragma Unreferenced (Unconstrained);
+      return
+         New_Assignment
+            (Name => +Duplicate_Any_Node (Id => +Ar),
+             Value =>
+               New_Prog_Call
+                 (Name => Array_Conv_To (Type_Name),
+                  Progs =>
+                     (1 =>
+                        New_Located_Call
+                          (Ada_Node => Ada_Node,
+                           Reason   => VC_Array_Bounds_Check,
+                           Name     =>
+                              To_Program_Space (Array_Update_Name (Ada_Array)),
+                           Progs    =>
+                              (1 => Index,
+                               2 => New_Prog_Call
+                                      (Name => Array_Conv_From (Type_Name),
+                                       Progs => (1 => New_Deref (Ref => Ar))),
+                               3 => Value)))));
    end New_Array_Update_Prog;
 
    ---------------------------
@@ -467,8 +617,18 @@ package body Why.Gen.Arrays is
    begin
       return
         New_Operation
-          (Name => Array_Update_Name (Type_Name),
-           Parameters => (1 => Index, 2 => Ar, 3 => Value));
+          (Name => Array_Conv_To (Type_Name),
+           Parameters =>
+            (1 =>
+               New_Operation
+                 (Name => Array_Update_Name (Ada_Array),
+                  Parameters =>
+                    (1 => Index,
+                     2 =>
+                        New_Operation
+                           (Name => Array_Conv_From (Type_Name),
+                            Parameters => (1 => Ar)),
+                     3 => Value))));
    end New_Array_Update_Term;
 
 end Why.Gen.Arrays;

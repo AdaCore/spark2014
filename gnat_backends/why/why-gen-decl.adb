@@ -35,28 +35,54 @@ package body Why.Gen.Decl is
    -- Iter_Binder_Array --
    -----------------------
 
-   procedure Iter_Binder_Array (Binders : W_Binder_Array)
+   procedure Iter_Binder_Array
+      (Binders : W_Binder_Array;
+       Rev : Boolean := False)
    is
-   begin
-      for Index in Binders'Range loop
-         declare
-            use Node_Lists;
+      procedure Inner_Loop (Index : Integer);
+      --  Extracting the inner loop to avoid duplication
 
-            Cur_Binder : constant W_Binder_Id := Binders (Index);
-            Arg_Ty     : constant W_Simple_Value_Type_Id :=
-               Binder_Get_Arg_Type (Cur_Binder);
-            Names      : constant Node_Lists.List :=
-               Get_List (+Binder_Get_Names (Cur_Binder));
-            Cur        : Node_Lists.Cursor := First (Names);
+      ----------------
+      -- Inner_Loop --
+      ----------------
+
+      procedure Inner_Loop (Index : Integer) is
+         use Node_Lists;
+
+         Cur_Binder : constant W_Binder_Id := Binders (Index);
+         Arg_Ty     : constant W_Simple_Value_Type_Id :=
+            Binder_Get_Arg_Type (Cur_Binder);
+         Names      : constant Node_Lists.List :=
+            Get_List (+Binder_Get_Names (Cur_Binder));
+         Cur        : Node_Lists.Cursor :=
+            (if Rev then Last (Names) else First (Names));
+      begin
          begin
             while Has_Element (Cur) loop
                Handle_Binder
                   (Name  => +Duplicate_Any_Node (Id => Element (Cur)),
                    Ty    => +Duplicate_Any_Node (Id => +Arg_Ty));
-               Node_Lists.Next (Cur);
+               if Rev then
+                  Node_Lists.Previous (Cur);
+               else
+                  Node_Lists.Next (Cur);
+               end if;
             end loop;
          end;
-      end loop;
+      end Inner_Loop;
+
+      --  beginning of processing for Iter_Binder_Array
+
+   begin
+      if Rev then
+         for Index in reverse Binders'Range loop
+            Inner_Loop (Index);
+         end loop;
+      else
+         for Index in Binders'Range loop
+            Inner_Loop (Index);
+         end loop;
+      end if;
    end Iter_Binder_Array;
 
    -----------------------
@@ -79,6 +105,31 @@ package body Why.Gen.Decl is
         (File,
          New_Logic_Declaration
            (Decl => New_Type (Name => Name)));
+   end New_Abstract_Type;
+
+   procedure New_Abstract_Type
+      (File : W_File_Id;
+       Name : W_Identifier_Id;
+       Args : Natural)
+   is
+      C : Character := 'a';
+      Type_Ar : W_Identifier_Array := (1 .. Args => <>);
+   begin
+      if Args = 0 then
+         New_Abstract_Type (File, Name);
+         return;
+      end if;
+      for I in 1 .. Args loop
+         Type_Ar (I) := New_Identifier ((1 => C));
+         C := Character'Succ (C);
+      end loop;
+      File_Append_To_Declarations
+         (File,
+            New_Logic_Declaration
+              (Decl =>
+                  New_Type
+                     (Name            => Name,
+                      Type_Parameters => Type_Ar)));
    end New_Abstract_Type;
 
    ------------------------

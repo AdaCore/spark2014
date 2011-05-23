@@ -206,10 +206,21 @@ package body Why.Atree.Sprint is
      (State : in out Printer_State;
       Node  : W_Generic_Actual_Type_Chain_Valid_Id)
    is
+      use Node_Lists;
+      Params     : constant List :=
+               Get_List (Generic_Actual_Type_Chain_Get_Type_Chain (Node));
+      Nb_Params  : constant Count_Type := Length (Params);
    begin
+      if Nb_Params > 1 then
+         P (O, "(");
+      end if;
       Print_List (State,
-                  Generic_Actual_Type_Chain_Get_Type_Chain (Node), " ");
-      P (O, " ");
+                  Generic_Actual_Type_Chain_Get_Type_Chain (Node));
+      if Nb_Params > 1 then
+         P (O, ") ");
+      elsif Nb_Params = 1 then
+         P (O, " ");
+      end if;
 
       Traverse
         (State,
@@ -1354,6 +1365,9 @@ package body Why.Atree.Sprint is
 
       if Nb_Params > 1 then
          P (O, ")");
+      end if;
+      if Nb_Params > 0 then
+         P (O, " ");
       end if;
 
       Traverse (State, +Name);

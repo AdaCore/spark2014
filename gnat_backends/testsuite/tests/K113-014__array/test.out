@@ -1,5 +1,5 @@
-ar.adb:12:10: (info) proved: range check
+ar.adb:12:13: (info) proved: array bounds check
 ar.adb:12:16: (info) proved: range check
-ar.adb:6:17: (info) proved: range check
+ar.adb:6:14: (info) proved: array bounds check
 ar.ads:10:27: proof of postcondition failed
 ar.ads:6:22: (info) proved: proof of postcondition

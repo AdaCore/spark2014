@@ -1,5 +1,5 @@
 arraydef.adb:5:24: (info) proved: proof of loop invariant initalization
 arraydef.adb:5:24: (info) proved: proof of loop invariant preservation
-arraydef.adb:6:13: (info) proved: range check
-arraydef.adb:6:21: (info) proved: range check
+arraydef.adb:6:16: (info) proved: array bounds check
+arraydef.adb:6:19: (info) proved: array bounds check
 arraydef.adb:6:24: range check failed

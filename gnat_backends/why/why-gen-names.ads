@@ -28,6 +28,9 @@ with Why.Ids;      use Why.Ids;
 with Why.Sinfo;    use Why.Sinfo;
 
 package Why.Gen.Names is
+
+   Ada_Array          : constant String := "__ada_array";
+
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
@@ -75,6 +78,26 @@ package Why.Gen.Names is
    function Array_Accupd_Neq_Axiom (Name : String) return W_Identifier_Id;
    --  From the name of an array type, return the name of the axiom of
    --  access/update with disequality
+
+   function Array_Conv_To (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the conversion from
+   --  Ada__Array.
+
+   function Array_Conv_From (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the conversion to
+   --  Ada__Array.
+
+   function Array_First_Static (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'First is static.
+
+   function Array_Last_Static (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'Last is static.
+
+   function Array_Length_Static (Name : String) return W_Identifier_Id;
+   --  From the name of an array type, return the name of the axiom that
+   --  states that 'Length is static.
 
    function Coerce_Axiom (Name : String) return  W_Identifier_Id;
    function Coerce_Axiom (Name : W_Identifier_Id) return  W_Identifier_Id;

@@ -1,8 +1,8 @@
-forall.adb:12:17: (info) proved: range check
-forall.adb:6:17: (info) proved: range check
+forall.adb:12:14: (info) proved: array bounds check
+forall.adb:6:14: (info) proved: array bounds check
 forall.ads:10:37: proof of postcondition failed
-forall.ads:5:46: (info) proved: range check
+forall.ads:5:44: (info) proved: array bounds check
 forall.ads:5:51: (info) proved: range check
 forall.ads:6:37: (info) proved: proof of postcondition
-forall.ads:9:47: (info) proved: range check
+forall.ads:9:45: (info) proved: array bounds check
 forall.ads:9:52: (info) proved: range check

@@ -56,6 +56,11 @@ package body Why.Gen.Names is
    Array_Len_Upd      : constant String := "length_update";
    Array_Len_Nzero    : constant String := "length_non_zero";
    Array_Len_Zero     : constant String := "length_zero";
+   Array_Convert_From : constant String := "to_ada_array";
+   Array_Convert_To   : constant String := "of_ada_array";
+   Array_First_Static_Name  : constant String := "static_first";
+   Array_Last_Static_Name   : constant String := "static_last";
+   Array_Length_Static_Name : constant String := "static_length";
    Coerce             : constant String := "coerce";
    Boolean_Eq         : constant String := "eq_bool";
    Eq_Pred            : constant String := "eq";
@@ -142,6 +147,29 @@ package body Why.Gen.Names is
    function Array_Update_Gen is new Generate_Suffix (Array_Update);
    function Array_Update_Name (Name : String) return W_Identifier_Id
       renames Array_Update_Gen;
+
+   function Array_Convert_From_Gen is new Generate_Suffix (Array_Convert_From);
+   function Array_Conv_From (Name : String) return W_Identifier_Id
+      renames Array_Convert_From_Gen;
+
+   function Array_Convert_To_Gen is new Generate_Suffix (Array_Convert_To);
+   function Array_Conv_To (Name : String) return W_Identifier_Id
+      renames Array_Convert_To_Gen;
+
+   function Array_First_Static_Gen is new Generate_Suffix
+      (Array_First_Static_Name);
+   function Array_First_Static (Name : String) return W_Identifier_Id
+      renames Array_First_Static_Gen;
+
+   function Array_Last_Static_Gen is new Generate_Suffix
+      (Array_Last_Static_Name);
+   function Array_Last_Static (Name : String) return W_Identifier_Id
+      renames Array_Last_Static_Gen;
+
+   function Array_Length_Static_Gen is new Generate_Suffix
+      (Array_Length_Static_Name);
+   function Array_Length_Static (Name : String) return W_Identifier_Id
+      renames Array_Length_Static_Gen;
 
    -------------------------
    -- Bool_Int_Cmp_String --

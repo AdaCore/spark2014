@@ -35,14 +35,21 @@ package Why.Gen.Decl is
       with procedure Handle_Binder
          (Name : W_Identifier_Id;
           Ty   : W_Simple_Value_Type_Id);
-   procedure
-      Iter_Binder_Array (Binders : W_Binder_Array);
+   procedure Iter_Binder_Array
+      (Binders : W_Binder_Array;
+       Rev : Boolean := False);
 
    --  Overloaded procedures with a W_File_Id Argument add the built
    --  declaration to that context instead of returning it
 
    procedure New_Abstract_Type (File : W_File_Id; Name : String);
    procedure New_Abstract_Type (File : W_File_Id; Name : W_Identifier_Id);
+   procedure New_Abstract_Type
+      (File : W_File_Id;
+       Name : W_Identifier_Id;
+       Args : Natural);
+   --  Declare a new abstract type. If Args is given, declare a polymorphic
+   --  abstract type with the given number of arguments.
 
    procedure New_Adt_Definition
      (File : W_File_Id;
