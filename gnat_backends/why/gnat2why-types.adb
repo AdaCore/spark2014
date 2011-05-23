@@ -268,10 +268,31 @@ package body Gnat2Why.Types is
       Name_Str : constant String := Full_Name (Ident_Node);
    begin
       pragma Unreferenced (Sub_Ind);
-      Declare_Ada_Abstract_Signed_Int_From_Range
-        (File,
-         Name_Str,
-         Ident_Node);
+      case Ekind (Ident_Node) is
+         when Discrete_Kind =>
+            --  For any subtype of a discrete type, we generate an "integer"
+            --  type in Why. This is also true for enumeration types; we
+            --  actually do not express that the subtype is an enumeration
+            --  type, we simply state that it is in a given range.
+            Declare_Ada_Abstract_Signed_Int_From_Range
+              (File,
+               Name_Str,
+               Ident_Node);
+
+         when Array_Kind =>
+            --  ??? We will need to distinguish:
+            --    * simple subtypes
+            --    * subtypes of unconstrained types
+            --    * subtypes of unconstrained by giving index type
+            Declare_Ada_Constrained_Array
+               (File,
+                Name_Str,
+                Index,
+                Component_Type);
+
+         when others =>
+            raise Program_Error;
+      end case;
    end Why_Type_Decl_of_Subtype_Decl;
 
    -------------------------------
