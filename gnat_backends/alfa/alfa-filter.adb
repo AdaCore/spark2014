@@ -435,6 +435,32 @@ package body ALFA.Filter is
             end;
          end if;
 
+         --  If the current package is a child package, add the implicit with
+         --  clause from the child spec to the parent spec
+         declare
+            Def_Unit_Name : Node_Id := Empty;
+         begin
+            case Nkind (Unit (N)) is
+               when N_Package_Declaration =>
+                  Def_Unit_Name :=
+                     Defining_Unit_Name (Specification (Unit (N)));
+
+               when N_Package_Body =>
+                  Def_Unit_Name := Defining_Unit_Name ((Unit (N)));
+
+               when others =>
+                  null;
+            end case;
+
+            if Present (Def_Unit_Name) and then
+               Nkind (Def_Unit_Name) = N_Defining_Program_Unit_Name then
+                  Add_Package_Decl
+                     (Context_Types_Vars_Spec,
+                      Get_Name_String (Chars (Name (Def_Unit_Name))) &
+                        Types_Vars_Spec_Suffix);
+            end if;
+         end;
+
          Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Spec_P,
                                           Context => Context_Types_Vars_Spec);
          Make_Compilation_Unit_From_Decl (Decl    => Types_Vars_Body_P,
