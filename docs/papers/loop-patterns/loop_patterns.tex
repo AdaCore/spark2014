@@ -61,8 +61,6 @@
 \newcommand{\cadre}[1]{\fbox{\begin{minipage}{\textwidth} #1 \end{minipage}}}
 \newcommand{\env}{\ensuremath{\sigma}\xspace}
 \newcommand{\eval}[2]{<#1, #2>}
-%\def\et{\mathrel{\wedge}}
-%\def\ou{\mathrel{\vee}}
 %%
 %%Predicates
 \newcommand{\Pbetween}{\ensuremath{\mathit{between}}\xspace}
@@ -75,7 +73,6 @@
 \newcommand{\tocount}[1]{\ensuremath{\mathit{tocount}(#1)}\xspace}
 \newcommand{\Ftocount}{\ensuremath{\mathit{tocount}}\xspace}
 \newcommand{\update}[3]{\ensuremath{\mathit{update}{(#1,#2,#3)}}\xspace}
-%\newcommand{\Pgroup}[1]{\ensuremath{\mathit{G}_{#1}}\xspace}
 \newcommand{\group}[2]{\ensuremath{\mathit{G}_{#1}(#2)}\xspace}
 \newcommand{\Inv}[1]{\ensuremath{\mathit{Inv}(#1)\xspace}}
 \newcommand{\inv}{\ensuremath{\textsc{inv}}\xspace}
@@ -86,9 +83,9 @@
 \newcommand{\capture}[2]{\ensuremath{\mathit{Capture}(#1,#2)}\xspace}
 \newcommand{\sli}[1]{\ensuremath{\mathit{SLI}_{#1}}\xspace}
 
-\newcommand{\initcond}[1]{\ensuremath{\mathit{Init(#1)}}}
-\newcommand{\framecond}[1]{\ensuremath{\mathit{Frame(#1)}}}
-\newcommand{\preservecond}[1]{\ensuremath{\mathit{Preserve(#1)}}}
+\newcommand{\initcond}[1]{\ensuremath{\mathit{Init_{#1}}}}
+\newcommand{\framecond}[1]{\ensuremath{\mathit{Frame_{#1}}}}
+\newcommand{\preservecond}[2]{\ensuremath{\mathit{Preserve_{#1}(#2)}}}
 
 %%
 %%keywords
@@ -105,11 +102,10 @@
 \newcommand{\impl}{\ensuremath{\Longrightarrow}}
 %%
 %%Proof preliminaires
-\newcommand{\hoareconj}{\textsc{hoare-conj}\xspace}
 \newcommand{\maxinv}{\textsc{max-inv}\xspace}
-\newcommand{\sppost}{\textsc{sp-postcond}\xspace}
-\newcommand{\spstrong}{\textsc{sp-strong}\xspace}
-\newcommand{\spmonoton}{\textsc{sp-monotone}\xspace}
+\newcommand{\sppost}{\textsc{sp-post}\xspace}
+\newcommand{\spstrong}{\textsc{sp-strg}\xspace}
+\newcommand{\spmonoton}{\textsc{sp-mono}\xspace}
 \newcommand{\vpp}{\textsc{vpp}\xspace}
 \newcommand{\spexit}{\textsc{sp-exit}\xspace}
 \newcommand{\spscalar}{\textsc{sp-scalar}\xspace}
@@ -278,8 +274,6 @@ alternation.
 
 %==================================================================================
 %==================================================================================
-%\section{Preliminaries}
-%\subsection{Simple Loops on guarded assignments}
 \section{Simple loops on guarded assignments}
 \label{sec:simple-loops}
 We base our developpement on the intermediate language shown in figure~\ref{syntax}.
@@ -287,7 +281,6 @@ The language includes arithmetic and boolean  expressions, guarded assignments o
 locations $l$, and for-like loops with exit conditions. Locations  correspond 
 either to scalar (noted $x$) or to array locations (with syntax $X[a]$).
 \begin{figure}
-%\begin{center}
 \centering
 \begin{lstlisting}[mathescape, frame=single, flexiblecolumns=false]{} 
  $\KWloop \idx \KWin \idxinitial .. \idxfinal ~ \KWexit \gexit ~ \KWdo$
@@ -304,8 +297,6 @@ either to scalar (noted $x$) or to array locations (with syntax $X[a]$).
     }
  $\KWend$
 \end{lstlisting}
-%\loopform
-%\end{center}
 \caption{A simple loop program scheme}\label{program-scheme}
 \end{figure}
 %
@@ -624,9 +615,9 @@ As we are interested in showing that our invariants for a given body loop patter
 the strongest among all possible invariants, we exhibit in section \ref{sec:sp-semantics} 
 a strongest postcondition semantics for  loop bodies {B}.
 
-\begin{definition} \emph{(Satisfaction under partial correctness $\vDash_p$ )}\\
+\begin{definition} \emph{(Satisfaction under partial correctness $\vDash_{par}$ )}\\
 We say that a Hoare triple $\{\phi\} P \{ \psi \}$ is \textit{satisfied under partial correcteness}, 
-noted $\vDash_{p} \{\phi\} P \{ \psi \}$, \textbf{iff} for all states which satisfies $\phi$, 
+noted $\vDash_{par} \{\phi\} P \{ \psi \}$, \textbf{iff} for all states which satisfies $\phi$, 
 the state resulting from executing P satisfies $\psi$, provided that P actually terminates.
 \end{definition}
 
@@ -646,44 +637,41 @@ In this section we introduce a general definition of $sp$
 For any command $C$ and predicate $P$ we define the predicate
 \spost{C}{P} as being such that:
 $$
-\sigma' \vDash_{p}  \spost{C}{P}  \Leftrightarrow \exists
-\sigma. (\eval{C}{\sigma} \rightsquigarrow \sigma' \land \sigma \vDash_{p}  P)
+\sigma' \vDash_{par}  \spost{C}{P}  \Leftrightarrow \exists
+\sigma. (\eval{C}{\sigma} \rightsquigarrow \sigma' \land \sigma \vDash_{par}  P)
 $$
 \end{definition} 
 
 \begin{corollary}[Properties on $sp(c,P)$] The following are useful properties of predicate \spost{C}{P}:
 \begin{align*}
-[\sppost]  &   \quad \vDash_{p} \{P\} ~C ~ \{ \spost{C}{P} \} & \textnormal{ ~is actually a postconditon} \\
-[\spstrong] &  \quad \vDash_{p} \{P\} ~C~ \{ Q\} \Rightarrow (\spost{C}{P} \Rightarrow Q )  & \textnormal{ is the strongest one} \\
+[\sppost]  &   \quad \vDash_{par} \{P\} ~C ~ \{ \spost{C}{P} \} & \textnormal{ ~is actually a postconditon} \\
+[\spstrong] &  \quad \vDash_{par} \{P\} ~C~ \{ Q\} \Rightarrow (\spost{C}{P} \Rightarrow Q )  & \textnormal{ is the strongest one} \\
 [\spmonoton] &   \quad  (P \Rightarrow Q) \Rightarrow (\spost{C}{P} \Rightarrow \spost{C}{Q} ) & \textnormal{ ~monotonicity}\\
-[\hoareconj] &  \quad \vDash_{p} \{P_1\} ~C~ \{ Q_1\} \land \vDash_{p} \{P_2\} ~C~ \{ Q_2\} \Rightarrow 
-\vDash_{p} \{P_1 \land P_2\} ~C~ \{P_2 \land Q_2\}  & \textnormal{Hoare conjonction} \\
 \end{align*}
 \end{corollary}
 
 \begin{proof}
 \subproof{
-To verify that (1) holds let $\sigma'$ states, there exists $\sigma$ such that 
-$\{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$. 
-From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash \spost{C}{P}$ as required.
+To verify that $[\sppost]$ holds let $\sigma'$ states, there exists $\sigma$ such that 
+$\{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash_{par} P$. 
+From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash_{par} \spost{C}{P}$ as required.
 }
 \subproof{
-To verify that (2) holds let assume that $\vDash_{par} \{ P \} C \{ Q \}$ and let 
-$\sigma \vDash P$. If $\{C,\sigma\} \rightsquigarrow \sigma'$ then $\sigma \vDash P$ 
-(because $\vDash_{par} \{ P \} C \{ Q \}$). So 
-$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$
-so clearly $\sigma' \vDash \spost{C}{P}$ by the definition of $\spost{S}{P}$.
+To verify that $[\spstrong]$ holds let assume that $\vDash_{par} \{ P \} C \{ Q \}$ and let 
+$\sigma \vDash_{par} P$. If $\{C,\sigma\} \rightsquigarrow \sigma'$ then $\sigma \vDash_{par} Q$ 
+(because $\vDash_{par} \{ P \} C \{ Q \}$). So if 
+$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash_{par}P$
+(i.e, clearly $\sigma' \vDash_{par}\spost{C}{P}$ by the definition of $\spost{S}{P}$) then $\sigma \vDash_{par} Q$.
 }
 \subproof{
-To verify that (3) holds let $\sigma'$ states, such that 
-$\sigma' \vDash \spost{C}{P}$, from the definition 3 of $\spost{C}{P}$ we get that
+To verify that $[\spmonoton]$ holds let $\sigma'$ states, such that 
+$\sigma' \vDash_{par} \spost{C}{P}$, from the definition of $\spost{C}{P}$ we get that
 $\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \quad \mathsf{(a)}$ and 
-$\sigma \vDash Q \quad \mathsf{(b)}$.\\
-In particular $\sigma \vDash (P \Rightarrow Q) \quad \mathsf{(c)}$, 
-therefore from $(b)$ and $(c)$ we get that $\sigma \vDash Q \quad \mathsf{(d)}$.
-Now with $(a)$ and $(d)$ we get that 
-$ \exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash Q$, 
-so clearly $\sigma' \vDash \spost{C}{Q}$ by the definition of $\spost{C}{Q}$.
+$\sigma \vDash_{par} P \quad \mathsf{(b)}$.\\
+As $(P \Rightarrow Q)$ therefore we get that $\sigma \vDash_{par} Q \quad \mathsf{(c)}$.
+Now with $(a)$ and $(c)$ we get that 
+$ \exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash_{par} Q$, 
+so clearly $\sigma' \vDash_{par} \spost{C}{Q}$ by the definition of $\spost{C}{Q}$.
 }
 \end{proof}
 
@@ -798,7 +786,7 @@ Given the loop program \prog we define the following predicates
 \item \initcond{\prog} : describes the vacuously fact that any location $l$ 
 (excepting the loop index \idx) occurring in  a loop has $l_0$ as initial value at loop entry.
 \item \framecond{\prog} : describes the variables which are never assigned in the loop.
-\item \preservecond{\prog} : describes an inductive invariant using an expression $e$.
+\item \preservecond{\prog}{\idx} : describes an inductive invariant at a given index \idx.
 \end{enumerate}
 
 %==================================================================================
@@ -806,7 +794,7 @@ Given the loop program \prog we define the following predicates
 
 We define \textit{value-preserving expressions} as those expressions
 such that there is an inductive invariant \preservecond{\prog} such that:
-$$\preservecond{\prog} \Rightarrow (e = e_0)$$
+$$\preservecond{\prog}{\idx} \Rightarrow (e = e_0)$$
 % 
 Consequently the \textit{value-preserving expressions} as those expression
 whose value at the program point before group assignments is such that ($e=e_0$) 
@@ -834,9 +822,9 @@ Sufficient conditions for an expression $e$ to be a value-preserving expression
 are the following:
 \begin{enumerate}
 \item $e$ does not refer to scalar variables that are assigned in the loop;
-in this case $$\preservecond{\prog} = (e = e_0)$$
+in this case $$\preservecond{\prog}{\idx} = (e = e_0)$$
 \item $e$ may refer to (array or scalar) variables that are not modified in the loop;
-in this case $$\preservecond{\prog} = \framecond{\prog}$$
+in this case $$\preservecond{\prog}{\idx} = \framecond{\prog}$$
 \item $e$ may refer to an array variable $A$ that is modified in the loop,
   provided it does so at index \idx or indexes that are known to be greater
   than \idx (\eg $\idx + 1$), and all assignments to $A$ are at index \idx or
@@ -844,16 +832,11 @@ in this case $$\preservecond{\prog} = \framecond{\prog}$$
   can be more complex, and necessitate a special analysis, like in the case of
   array filtering where the array is assigned at index $v$ where $v$ is
   incremented less often than the loop index; in this case 
-$$\preservecond{\prog} = \framecond{\prog} \land (\forall j)(\idx \leq j \leq \idxfinal \Rightarrow A[j]=A_0[j])$$
+$$\preservecond{\prog}{\idx} = \framecond{\prog} \land (\forall j)(\idx \leq j \leq \idxfinal \Rightarrow A[j]=A_0[j])$$
 \end{enumerate}
 
 %==================================================================================
 \subsection{Invariant definitions}
-
-% We assume that any location $l$ (excepting the loop index \idx) occurring in  a loop body $B$ 
-% has $l_0$ as initial value at loop entry (i.e, before the first execution of loop body). 
-% We define a corrresponding predicate $\Init(B)$ stating this fact, 
-% that we will assume as precondition while reasoning on invariants.
 
 \begin{definition} \emph {(Inductive loop invariant under initialisation conditions)}\\
 A formula $\Phi$ is an \textit{inductive invariant under initialisation conditions} \initcond{\prog} for the loop 
@@ -862,7 +845,7 @@ A formula $\Phi$ is an \textit{inductive invariant under initialisation conditio
 \begin{itemize}
 \item $(\initcond{\prog}  \wedge i=\idxinitial) \Rightarrow \phi$. 
       That is, $\phi$ holds after executing the initialisation;
-\item $\vDash_{par} \{i \leq \idxfinal \wedge \neg \gexit \wedge\phi \} \texttt{B; i= i+1} \{ \phi \}$ holds. 
+\item $\vDash_{par} \{\idxinitial \leq \idx \leq \idxfinal \wedge \neg \gexit \wedge\phi \} \texttt{ B; i=i+1 } \{ \phi \}$ holds. 
       That is, $\phi$ remains true after each execution of $B$ followed by and index increment, 
       provided that $b^{ex}$ does not hold.
 \end{itemize}
@@ -882,7 +865,6 @@ Thus, to show that $\Phi$ is an invariant, it suffices to show that it holds aft
 the initialisation, and then, that $\Phi$ is indeed an invariant of the while loop above, 
 which corresponds to the second condition of definition.
 We are interested in establishing  the most precise loop invariant \inv for a given loop pattern in \prog.
-
 
 \begin{definition} \emph {(Most precise invariant under initialisation conditions)}\\
 A formula $\phi$ is the \textit{most precise invariant under initialisation conditions}, 
@@ -923,7 +905,6 @@ noted $\mathrm{Capture}^H(\phi, B_p)$ \textbf{iff}
 \end{itemize}
 \end{definition}
 
-
 %==================================================================================
 \subsection{Stating invariant maximality and pattern capture}
 
@@ -940,23 +921,21 @@ the index \idx. Let
 Let  $\phi$ be
 such that : 
 \begin{itemize}
-\item[(a)] $(\initcond{\prog} \land \idx = \idxinitial) \Rightarrow \phi(\idxinitial)$ 
-\item[(b)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
+\item[(a)] $\initcond{\prog} \Rightarrow \phi(\idxinitial)$ 
+\item[(b)] $\spost{B}{\initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)} 
              \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)$
-\item[(c)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
+            \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)$
+\item[(c)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(\idx)} 
              \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)$
+            \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)$
 \end{itemize}
 \noindent Then, $\phi$ is the most precise invariant for \prog under \initcond{\prog},
 that is:
 \begin{align*}
-\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)\\
-%\framecond{\prog} \land \preservecond{\prog}  \land \idxinitial < i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(i) 
-\phi(i)
-\Rightarrow \psi(i)  & \quad \quad [\maxinv]
+(\idx = \idxinitial) \land (\initcond{\prog} \land \phi(\idx) \Rightarrow  \psi(\idx))\\
+(\forall \idx. \idxinitial < \idx \leq \idxfinal) \land (\framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i) 
+\Rightarrow \psi(i))  & \quad \quad [\maxinv]
 \end{align*}
- %Then $\forall \idx) (\idxinitial \leq \idx \leq \idxfinal \Rightarrow (\phi(\idx) \Rightarrow \psi(\idx))$
 \end{theorem}
 
 \begin{proof}
@@ -967,120 +946,108 @@ that is:
   $$(\initcond{\prog} \land \idx= \idxinitial \land \phi(\idxinitial)) \Rightarrow  \psi(\idxinitial)$$
 
   \subproof{\textbf{Presevation case}} 
-  Here the proof proceeds by induction on the number of loop round $k=i$.
-
-  \subsubproof{\textbf{Base case : $\idx = \idxinitial$}}  
-  We have by Init case
-  $$(\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx)) \Rightarrow  (\idx= \idxinitial \land \psi(\idx))$$
-  %
-  $g_{exit}^\at{\idx}$ is a value preserving hence $\preservecond{\prog} \Rightarrow (g_{exit}^\at{\idx} = g_{0_{exit}})$ so we can write
-  \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow \\
-    \framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)
-  \end{align*}
-  %
-  Apply \spmonoton we get 
-  \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \phi(\idx)} 
-    \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)}
-  \end{align*}
-  %
-  By theorem hypothesis $(b)$ we have
-  \begin{align*}
-    sp(B, \framecond{\prog} \land \preservecond{\prog} \land \initcond{\prog} \land \idx = \idxinitial \land \neg g_{exit}^\at{\idx} \land \phi(\idx)) 
-             \Leftrightarrow\\
-            \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-  \end{align*}
-  %
-  so
-  \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-    \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \neg g_{0_{exit}} \land \idx= \idxinitial \land \psi(\idx)} \quad \quad \mathsf{(1)}
-  \end{align*}
-  %
-  Moreover, $\psi$ is an inductive invariant, and thus, the Hoare triple below holds.
+  Here the proof proceeds by induction on the loop index \idx.\\
+\\
+  First, as $\psi$ is an inductive invariant, the Hoare triple below holds.
   $$
-    \{\idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(\idx) \} 
+    \{\idxinitial \leq \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx) \} 
     \texttt{B;\idx:=i+1} 
     \{\psi(\idx) \} 
   $$
   %
   By the hypothesis that the body loop $B$ doest not writing the index \idx, we get the following Hoare triple
   $$
-    \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(i) \} 
+    \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit} \land \psi(i) \} 
     \texttt{B} 
-    \{\psi(i+1) \} \quad \mathsf{(2)}
+    \{\psi(i+1) \}
   $$
   %
-  \preservecond{\prog} and \framecond{ \prog} are inductive invariants,  and thus, the Hoare triples below hold.
+  By \spstrong we get that
   \begin{align*}
-    &\{ \preservecond{\prog} \} \texttt{B} \{ \preservecond{\prog} \}& \\
-    &\{ \framecond{ \prog} \} \texttt{B} \{ \framecond{ \prog} \}& \quad \quad \mathsf{(3)}
-  \end{align*}
-  %
-  We instantiate the property \hoareconj on $\mathsf{(2)}$ and $\mathsf{(3)}$. 
-  \begin{align*}
-    \{\framecond{ \prog} \land \preservecond{\prog} \land \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land  \psi(i) \}
-    \texttt{B} 
-    \{ \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1)\}  \quad \mathsf{(4)}
+    \spost{\texttt{B}}{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit} \land \psi(i) } 
+    \Rightarrow \psi(i+1) \quad \quad \mathsf{(1)}
   \end{align*}  
+
+  \subsubproof{\textbf{Base case}}  
+  $$\initcond{\prog} \land \idx= \idxinitial \land \phi(\idx) \Rightarrow  \psi(\idx)$$
   %
-  We instantiate the property \spstrong on $\mathsf{(4)}$
+  By adding $g_{exit}$ to both side of the formula we get that
   \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial \leq i \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \psi(i) } 
-    &\Rightarrow &\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) \quad \quad \mathsf{(5)}
-  \end{align*}  
-  With $\mathsf{(1)}$ and $\mathsf{(5)}$ we get
-  \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idx = \idxinitial+1 \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-    \Rightarrow\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1) 
-  \end{align*}
-  \begin{align*}
-    \neg g_{0_{exit}} \land  \phi(\idx+1)
+    \initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial) 
     \Rightarrow
-    \psi(i+1) 
+    \neg g_{exit} \land \psi(\idxinitial)
+  \end{align*}
+  %
+  By applying \spmonoton we get that 
+  \begin{align*}
+    \spost{\texttt{B}}{ \initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)} 
+    \Rightarrow
+    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idxinitial)}
+  \end{align*}
+  %
+  By theorem hypothesis $(b)$ we have
+  \begin{align*}
+    \spost{\texttt{B}}{\initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)}
+    \Leftrightarrow
+    \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land \phi(\idxinitial+1)
+  \end{align*}
+  %
+  So
+  \begin{align*}
+     \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)
+    \Rightarrow
+    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idxinitial)} \quad \quad \mathsf{(2)}
+  \end{align*}
+  %
+  With $\mathsf{(2)}$ and $\mathsf{(1)}$ for ($\idx = \idxinitial$) we get that
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)
+    \Rightarrow \psi(\idxinitial+1) 
   \end{align*}
 
   \subsubproof{\textbf{Inductive step}}  
   Following is the inductive hypothesis
-  $$(\forall k)(\idxinitial \leq k \leq \idx \land \phi(k) \Rightarrow \psi(k))$$
-  At index $i$ we have
-  \begin{align*}
-  \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \phi(\idx)  \Rightarrow\\
-  \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \psi(\idx)
-  \end{align*}
+  $$
+  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \phi(i) 
+  \Rightarrow 
+  \psi(i)
+  $$
+  By adding $g_{exit}$ to both side of the formula we get that
+  $$
+  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(i) 
+  \Rightarrow 
+  \neg g_{exit} \land \psi(i)
+  $$
   %
-  Apply \spmonoton we get 
+  By applying \spmonoton, we get that
   \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \phi(\idx)} 
-    \Rightarrow\\
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \psi(\idx)}
+    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(i)} 
+    \Rightarrow
+    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idx)}
   \end{align*}
   %
   By the theorem hypothesis $c$ we get the following 
   \begin{align*}
-    \spost{B}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit}^\at{\idx} \land \phi(\idx)} 
+    \spost{B}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(\idx)} 
              \Leftrightarrow  \\
-    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-  \end{align*}
-  so 
-  \begin{align*}
-   \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-   \Rightarrow \\
-   \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land \psi(\idx)} \quad \mathsf{(6)}
+    \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
   \end{align*}
   %
-  By $\mathsf{(6)}$ and $\mathsf{(5)}$ we get 
+  So 
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{0_{exit}} \land  \phi(\idx+1)
-    &\Rightarrow &\\
-    \framecond{ \prog} \land \preservecond{\prog} \land \psi(i+1)
+   \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
+   \Rightarrow
+   \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idx)} \quad \mathsf{(3)}
+  \end{align*}
+  %
+  By $\mathsf{(3)}$ and $\mathsf{(1)}$ we get that
+  \begin{align*}
+    \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
+    \Rightarrow \psi(\idx+1)
   \end{align*}  
-  Finally $\phi(\idx+1) \Rightarrow \psi(i+1)$ as required.
+  Finally
+  $$(\forall \idx. \idxinitial < \idx \leq \idxfinal) \land (\framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
+  \Rightarrow \psi(\idx)) $$
 \end{proof}
 
 
