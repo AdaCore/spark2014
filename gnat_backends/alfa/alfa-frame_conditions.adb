@@ -26,8 +26,11 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                use Ada.Text_IO;
 
+with Atree;                      use Atree;
 with Get_ALFA;
+with Lib.Xref;
 with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
 
 package body ALFA.Frame_Conditions is
 
@@ -471,7 +474,7 @@ package body ALFA.Frame_Conditions is
    -- Propagate_Through_Call_Graph --
    ----------------------------------
 
-   procedure Propagate_Through_Call_Graph is
+   procedure Propagate_Through_Call_Graph (N : Node_Id) is
 
       procedure Propagate_On_Call (Caller, Callee : Entity_Name);
       --  Update reads and writes of subprogram Caller from Callee
@@ -572,6 +575,73 @@ package body ALFA.Frame_Conditions is
    --  Start of processing for Propagate_Through_Call_Graph
 
    begin
+      --  Declare missing scopes for subprogram declarations, which occurs for
+      --  generic instanciations (see K523-007) until a proper treatment of
+      --  generics.
+
+      All_Missing_Decl : declare
+         procedure Declare_Missing_Scope (N : Node_Id);
+         --  If N is a subprogram declaration with no corresponding scope,
+         --  then declare a new scope for it.
+
+         procedure Declare_Missing_Scope (N : Node_Id) is
+         begin
+            case Nkind (N) is
+               when N_Subprogram_Declaration =>
+                  declare
+                     Name : String_Ptr :=
+                              new String'(Unique_Name (Defining_Entity (N)));
+                     E_Name : constant Entity_Name    :=
+                                Make_Entity_Name (Name);
+                  begin
+                     if Scopes.Contains (E_Name) then
+                        Free (Name);
+                     else
+                        Scopes.Insert (E_Name);
+                     end if;
+                  end;
+               when others =>
+                  null;
+            end case;
+         end Declare_Missing_Scope;
+
+         Spec_Unit : Node_Id := Empty;
+         Body_Unit : Node_Id := Empty;
+
+      begin
+         case Nkind (Unit (N)) is
+            when N_Package_Body =>
+               Spec_Unit :=
+                 Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
+               Body_Unit := N;
+
+            when N_Package_Declaration =>
+               Spec_Unit := N;
+
+            when N_Subprogram_Body =>
+               if not Acts_As_Spec (Unit (N)) then
+                  Spec_Unit :=
+                    Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
+               end if;
+               Body_Unit := N;
+
+            when others =>
+               raise Program_Error;
+         end case;
+
+         if Present (Spec_Unit) then
+            Lib.Xref.ALFA.Traverse_Compilation_Unit
+              (Spec_Unit, Declare_Missing_Scope'Unrestricted_Access,
+               Inside_Stubs => True);
+         end if;
+
+         if Present (Body_Unit) then
+            Lib.Xref.ALFA.Traverse_Compilation_Unit
+              (Body_Unit, Declare_Missing_Scope'Unrestricted_Access,
+               Inside_Stubs => True);
+         end if;
+      end All_Missing_Decl;
+
       --  Initialize the work-set
 
       Cu := Calls.First;

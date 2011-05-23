@@ -599,9 +599,15 @@ package body ALFA.Definition is
             Mark_Non_ALFA ("free statement", N);
 
          when N_Freeze_Entity =>
-            if Present (Actions (N)) then
-               Mark_List (Actions (N));
-            end if;
+            null;
+
+            --  Freeze may contain subprogram declarations that are not
+            --  currently translated into Why, and are not known by code
+            --  computing effects. Currently ignore them. See K523-005.
+
+--              if Present (Actions (N)) then
+--                 Mark_List (Actions (N));
+--              end if;
 
          when N_Full_Type_Declaration =>
             Mark_Full_Type_Declaration (N);

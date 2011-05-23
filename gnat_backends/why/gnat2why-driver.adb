@@ -197,7 +197,7 @@ package body Gnat2Why.Driver is
 --        Put_Line ("");
 --        Display_Maps;
 
-      Propagate_Through_Call_Graph;
+      Propagate_Through_Call_Graph (GNAT_Root);
 
 --        Put_Line ("");
 --        Put_Line ("## After propagation ##");
