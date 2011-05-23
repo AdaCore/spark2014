@@ -1,6 +1,6 @@
 pack.adb:13:07: block statement is not yet implemented in Alfa (block statement)
 pack.adb:14:14: access type is not in Alfa
-pack.adb:16:10: entity is not in Alfa
+pack.adb:16:10: object is not in Alfa
 pack.adb:16:15: allocator is not in Alfa
 pack.adb:17:10: explicit dereference is not in Alfa
 pack.adb:18:13: explicit dereference is not in Alfa
