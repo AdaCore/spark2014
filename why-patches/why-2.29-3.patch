@@ -1,0 +1,13 @@
+diff --git src/pretty.ml src/pretty.ml
+index fa7f846..d345c38 100644
+--- src/pretty.ml
++++ src/pretty.ml
+@@ -47,7 +47,7 @@ let push_decl ?(ergo=false) d =
+   if ergo
+   then Encoding.push ~encode_preds:false ~encode_funs:false d
+   else Encoding.push ~encode_preds:false ~encode_funs:false
+-    ~encode_inductive:false ~encode_algtype:false d
++    ~encode_inductive:false ~encode_algtype:true d
+ 
+ let iter = Encoding.iter
+ 
