@@ -243,7 +243,7 @@ package body ALFA.Filter is
               Enclosing_Lib_Unit_Node (Corresponding_Spec (Unit (N)));
             Body_Unit := N;
 
-         when N_Package_Declaration =>
+         when N_Package_Declaration | N_Generic_Package_Declaration =>
             Spec_Unit := N;
 
          when N_Subprogram_Body =>
