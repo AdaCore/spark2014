@@ -322,11 +322,11 @@ b & \mathrm{for-loops}\\
   body}\\
 \SG & ::= & \KWassign ~ \Sloc ~ \{\Sga [ \KWor ~ \Sga ]^* \} &
 \mathrm{group~assigns}\\
-\Sga    & ::= & b  \rightarrow \Sloc :=  e &
+\Sga    & ::= & b  \rightarrow \Sloc :=  a &
 \mathrm{guarded~assigns}\\
 \Sloc   & ::= & x ~|~ X[a]  &
 \mathrm{locations}\\
-a       &  ::= &  n  ~|~ \Sloc  ~|~ e_1 + e_2 ~|~ e_1 - e_2 ~|~ e_1 *
+a       &  ::= &  n  ~|~ \Sloc  ~|~ a_1 + a_2 ~|~ a_1 - a_2 ~|~ a_1 *
 e_2  &
 \mathrm{arithmetic~expressions}\\
 b       & ::= &  t ~|~ b_1 \wedge  b_2 ~|~ b_1 \vee  b_2  ~|~  \neg  b
@@ -362,7 +362,7 @@ Group assignments are executed simultaneously: expressions and guards are evalua
 The conditions on guarded assignments are essentially the same as the ones described by Kov\'acs 
 and Voronkov with a slightly different formalism~\cite{kovacs:2009:fli}.
 
-\begin{definition} \emph{(Disjoints writings and well-fordmeness)}\\
+\begin{definition} \emph{(Disjoints writings and well-formeness)}\\
 A group assign $G_l$ is \textit{write-disjoint}, if 
 \begin{itemize}
 \item[i.] $G_l$  contains only guarded assigns on $l$, and
@@ -372,7 +372,7 @@ A group assign $G_l$ is \textit{write-disjoint}, if
 A loop body $B$ is \textit{write-disjoint} if 
 \begin{itemize}
 \item[i.] all group assignments $G_{l_1}, \ldots, G_{l_n} \in B$ are declared 
-          on different locations, i.e., $l_k \neq l_p$ for any two different $i,p$, and
+          on different locations, i.e., $l_k \neq l_p$ for any two different $k,p$, and
 \item[ii.] all group assignments $G_{l_1}, \ldots, G_{l_n} \in B$ are write-dsjoint.
 \end{itemize}
 A loop $L$ with body $B$ is \textit{well-formed} if $B$ is write disjoint.
@@ -490,7 +490,7 @@ W_i & ::= &   \KWwhile  ~b~  \KWdo ~ {B}; i =i+1 ~    \KWend \\
 \end{array}
 $$
 
-The For-loop rule performs an initialisation step on index \idx and then loops as a while loop.
+The For-loop rule performs an initialization step on index \idx and then loops as a while loop.
 As index are local to the loop body, they not appear in the final state.
 \begin{eqnarray*}
 &
@@ -504,8 +504,8 @@ As index are local to the loop body, they not appear in the final state.
 }\\
 \end{eqnarray*}
 
-Rules While-T and While-F are classical rules dealing whith while loops except 
-that their body executes first a for-loop ${\cal B}$ and the proceeds by incrementing the loop index \idx.
+Rules While-T and While-F are classical rules dealing with while loops except 
+that their body executes first a for-loop ${\cal B}$ and then proceeds by incrementing the loop index \idx.
 \begin{eqnarray*}
 &
 \inferrule[While-T]{
@@ -521,10 +521,10 @@ that their body executes first a for-loop ${\cal B}$ and the proceeds by increme
 \begin{eqnarray*}
 &
 \inferrule[While-F]{
-\SemFB{b}{\sigma} = \mathrm{false}  \\
-\eval{\KWwhile~ b~\KWdo  ~ {B}; ~i =i+1 ~\KWend}{\sigma_2}\rightsquigarrow \sigma\\
+\SemFB{b}{\sigma} = \mathrm{false}
+%\eval{\KWwhile~ b~\KWdo  ~ {B}; ~i =i+1 ~\KWend}{\sigma_2}\rightsquigarrow \sigma\\
 }{
-\eval{\KWwhile~ b~\KWdo  ~ { B}; ~i =i+1 ~\KWend}{\sigma} \rightsquigarrow \sigma_3
+\eval{\KWwhile~ b~\KWdo  ~ { B}; ~i =i+1 ~\KWend}{\sigma} \rightsquigarrow \sigma
 }\\
 \end{eqnarray*}
 
@@ -537,20 +537,15 @@ Those binding are simultaneously updated in the final state.
 {\small
 $$
 \begin{array}{cc}
-
-%\begin{eqnarray*}
-%&
+%
 \inferrule[B-empty]{ }
 {\eval{\KWskip}{\sigma} \rightsquigarrow \sigma
 }
-%\end{eqnarray*}
 
 & 
-%\begin{eqnarray*}
-%&
 \inferrule[B-body]{
 k, j \in [1..n]  \; k \neq j \Rightarrow l_k \neq l_j \\
-\eval{G_{l_k}}{\sigma} \rightsquigarrow [l_k \mapsto v_k] \\
+\eval{G_{l_k}}{\sigma} \rightsquigarrow \sigma[l_k \mapsto v_k] \\
 \sigma_1 = \sigma[l_1, .., l_n \mapsto v_1,.., v_n]
 }{
 \eval{G_{l_1} ..\; G_{l_n}}{\sigma} \rightsquigarrow \sigma_1
@@ -578,7 +573,7 @@ corresponds to the one in the initial state.
 \SemFA{e_r}{\sigma} = v \\ 
 }{
 \eval{\KWassign ~l ~\{ \overrightarrow{g_k \rightarrow l_k = e_k} \}
-}{\env} \rightsquigarrow [l \mapsto v]
+}{\env} \rightsquigarrow \sigma[l \mapsto v]
 }\\
 \end{eqnarray*}
 %
@@ -589,15 +584,15 @@ corresponds to the one in the initial state.
 \mathrm{gSat}_{\sigma}(\vec{g_k}) = \emptyset \\
 }{
 \eval{\KWassign ~l ~\{ \overrightarrow{g_k \rightarrow l_k = e_k} \}
-}{\env} \rightsquigarrow [l \mapsto \sigma(l)]
+}{\env} \rightsquigarrow \sigma[l \mapsto \sigma(l)]
 }\\
 \end{eqnarray*}
 
 The semantics of loops in \prog is given by the (partial) semantic function
 ${\cal S_P}:  {\cal P} \rightarrow (\Sstate \hookrightarrow \Sstate)$,
 defined for each loop $p$ in \prog. Notice that in this semantics we do not 
-distinguish between diverging lopps and loops where the semantics restrictions 
-on group asiggns are violated.
+distinguish between diverging loops and loops where the semantics restrictions 
+on group assigns are violated.
 $$
 \SemF{{\cal S}_P}{p}{\sigma} = \left \{
 \begin{array}{ll}
@@ -609,7 +604,7 @@ $$
 
 \subsection{General definitions and properties on $sp$}
 We rely on Hoare's partial correctness semantics to reason on invariants and recall
-some fondamental defintions we use. In particular, we use the partial correctness 
+some fondamental definitions we use. In particular, we use the partial correctness 
 satisfaction relation $\vDash_{par}$ to define our invariants.
 As we are interested in showing that our invariants for a given body loop pattern are 
 the strongest among all possible invariants, we exhibit in section \ref{sec:sp-semantics} 
@@ -624,7 +619,7 @@ the state resulting from executing P satisfies $\psi$, provided that P actually 
 We rely as well on the \textit{strongest postcondition semantics}
 \cite{Gannod:1995:SPS:832303.836920} of  loop programs in \prog in order to show that 
 the invartiants we exhibit in  section \ref{sec:list-loop-patterns} are indeed the most 
-precise ones under the same initialisation conditions for their corresponding loop patterns. 
+precise ones under the same initialization conditions for their corresponding loop patterns. 
 To this end, we use the \textit{strongest postcondition \spost{C}{P}  predicate transformer} 
 \cite{dijkstra(scholten:1990}, for a command $C$ and predicate $P$. 
 \spost{C}{P}  corresponds to the set of all states in which \textit{there exists} 
@@ -637,14 +632,14 @@ In this section we introduce a general definition of $sp$
 For any command $C$ and predicate $P$ we define the predicate
 \spost{C}{P} as being such that:
 $$
-\sigma' \vDash_{par}  \spost{C}{P}  \Leftrightarrow \exists
-\sigma. (\eval{C}{\sigma} \rightsquigarrow \sigma' \land \sigma \vDash_{par}  P)
+\sigma' \vDash  \spost{C}{P}  \Leftrightarrow \exists
+\sigma. (\eval{C}{\sigma} \rightsquigarrow \sigma' \land \sigma \vDash P)
 $$
 \end{definition} 
 
 \begin{corollary}[Properties on $sp(c,P)$] The following are useful properties of predicate \spost{C}{P}:
 \begin{align*}
-[\sppost]  &   \quad \vDash_{par} \{P\} ~C ~ \{ \spost{C}{P} \} & \textnormal{ ~is actually a postconditon} \\
+[\sppost]  &   \quad \vDash_{par} \{P\} ~C ~ \{ \spost{C}{P} \} & \textnormal{ ~is actually a postcondition} \\
 [\spstrong] &  \quad \vDash_{par} \{P\} ~C~ \{ Q\} \Rightarrow (\spost{C}{P} \Rightarrow Q )  & \textnormal{ is the strongest one} \\
 [\spmonoton] &   \quad  (P \Rightarrow Q) \Rightarrow (\spost{C}{P} \Rightarrow \spost{C}{Q} ) & \textnormal{ ~monotonicity}\\
 \end{align*}
@@ -653,25 +648,28 @@ $$
 \begin{proof}
 \subproof{
 To verify that $[\sppost]$ holds let $\sigma'$ states, there exists $\sigma$ such that 
-$\{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash_{par} P$. 
-From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash_{par} \spost{C}{P}$ as required.
+$\{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash P$. 
+From the definition of $\spost{S}{P}$ we get that $\sigma' \vDash \spost{C}{P}$ as required.
 }
 \subproof{
-To verify that $[\spstrong]$ holds let assume that $\vDash_{par} \{ P \} C \{ Q \}$ and let 
-$\sigma \vDash_{par} P$. If $\{C,\sigma\} \rightsquigarrow \sigma'$ then $\sigma \vDash_{par} Q$ 
-(because $\vDash_{par} \{ P \} C \{ Q \}$). So if 
-$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma'$ and $\sigma \vDash_{par}P$
-(i.e, clearly $\sigma' \vDash_{par}\spost{C}{P}$ by the definition of $\spost{S}{P}$) then $\sigma \vDash_{par} Q$.
+To verify that $[\spstrong]$ holds let assume that $\sigma' \vDash \spost{C}{P}$ for any state $\sigma'$. 
+From the definition $\spost{C}{P}$ we get that 
+$\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash P$.
+If $\{C,\sigma\} \rightsquigarrow \sigma'$ then $\sigma' \vDash Q$ (because $\vDash_{par} \{ P \} C \{ Q \}$). 
+Therefore, for any state $\sigma'$ we get $(\sigma' \vDash \spost{C}{P}) \Rightarrow (\sigma' \vDash  Q)$ 
+which holds $\spost{C}{P} \Rightarrow Q$
 }
 \subproof{
 To verify that $[\spmonoton]$ holds let $\sigma'$ states, such that 
-$\sigma' \vDash_{par} \spost{C}{P}$, from the definition of $\spost{C}{P}$ we get that
+$\sigma' \vDash \spost{C}{P}$. From the definition of $\spost{C}{P}$ we get that
 $\exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \quad \mathsf{(a)}$ and 
-$\sigma \vDash_{par} P \quad \mathsf{(b)}$.\\
-As $(P \Rightarrow Q)$ therefore we get that $\sigma \vDash_{par} Q \quad \mathsf{(c)}$.
+$\sigma \vDash P \quad \mathsf{(b)}$.\\
+As $(P \Rightarrow Q)$ we get that $\sigma \vDash Q \quad \mathsf{(c)}$.
 Now with $(a)$ and $(c)$ we get that 
-$ \exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash_{par} Q$, 
-so clearly $\sigma' \vDash_{par} \spost{C}{Q}$ by the definition of $\spost{C}{Q}$.
+$ \exists \sigma, \{C,\sigma\} \rightsquigarrow \sigma' \land \sigma \vDash Q$, 
+so clearly $\sigma' \vDash \spost{C}{Q}$ by the definition of $\spost{C}{Q}$. 
+Therefore, for any state $\sigma'$ we get $(\sigma' \vDash \spost{C}{P}) \Rightarrow (\sigma' \vDash \spost{C}{Q})$ 
+which holds $\spost{C}{P} \Rightarrow \spost{C}{Q}$
 }
 \end{proof}
 
@@ -759,9 +757,9 @@ and we recall that $e_0$ denotes the expression $e$ where all variables have bee
 replaced by their initial values then $\p{e_0} = e_0$. 
 
 \vspace{0.5cm}
-Notice that the rule $SP$ for seqential composition of statements is the
+Notice that the rule $SP$ for sequential composition of statements is the
 usual rule associated with a sequential execution semantics for statements.
-As our semantics guarded assignments is parallel, we should start with proving
+As our semantics guarded assignments are parallel, we should start with proving
 that rule \sppar indeed computes the desired strongest postcondition.  
 
 \begin{lemma}
@@ -838,13 +836,13 @@ $$\preservecond{\prog}{\idx} = \framecond{\prog} \land (\forall j)(\idx \leq j \
 %==================================================================================
 \subsection{Invariant definitions}
 
-\begin{definition} \emph {(Inductive loop invariant under initialisation conditions)}\\
-A formula $\Phi$ is an \textit{inductive invariant under initialisation conditions} \initcond{\prog} for the loop 
+\begin{definition} \emph {(Inductive loop invariant under initialization conditions)}\\
+A formula $\Phi$ is an \textit{inductive invariant under initialization conditions} \initcond{\prog} for the loop 
 \hspace{1cm} $L = \KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit \KWdo B ~\KWend$ \\
 \textbf{iff}: 
 \begin{itemize}
-\item $(\initcond{\prog}  \wedge i=\idxinitial) \Rightarrow \phi$. 
-      That is, $\phi$ holds after executing the initialisation;
+\item $(\idx=\idxinitial \land \initcond{\prog}) \Rightarrow \phi$. 
+      That is, $\phi$ holds after executing the initialization;
 \item $\vDash_{par} \{\idxinitial \leq \idx \leq \idxfinal \wedge \neg \gexit \wedge\phi \} \texttt{ B; i=i+1 } \{ \phi \}$ holds. 
       That is, $\phi$ remains true after each execution of $B$ followed by and index increment, 
       provided that $b^{ex}$ does not hold.
@@ -853,7 +851,7 @@ A formula $\Phi$ is an \textit{inductive invariant under initialisation conditio
 
 The intuition behind this invariant definition lays on the following translation.
 The loop $\KWloop  \idx \KWin \idxinitial ..\idxfinal ~ \KWexit \gexit ~ \KWdo B ~\KWend$ 
-can be translated into a sequence of commands: the initialisation of the loop index, 
+can be translated into a sequence of commands: the initialization of the loop index, 
 followed by a classical while loop iterating as long as the index remains within bounds
 and that the exit condition does not hold:
 {\small
@@ -862,12 +860,12 @@ and that the exit condition does not hold:
 \end{lstlisting}
 }
 Thus, to show that $\Phi$ is an invariant, it suffices to show that it holds after 
-the initialisation, and then, that $\Phi$ is indeed an invariant of the while loop above, 
+the initialization, and then, that $\Phi$ is indeed an invariant of the while loop above, 
 which corresponds to the second condition of definition.
 We are interested in establishing  the most precise loop invariant \inv for a given loop pattern in \prog.
 
-\begin{definition} \emph {(Most precise invariant under initialisation conditions)}\\
-A formula $\phi$ is the \textit{most precise invariant under initialisation conditions}, 
+\begin{definition} \emph {(Most precise invariant under initialization conditions)}\\
+A formula $\phi$ is the \textit{most precise invariant under initialization conditions}, 
 or shortly, \textit{under conditions} \initcond{\prog} for a loop $L$, noted $\phi = M_I(\prog, \initcond{\prog})$, 
 if $\phi$ is an invariant under \initcond{\prog} for $L$, and if, for any other invariant $\psi$ of $L$ 
 under the same conditions, then $\phi \Rightarrow \psi$.
@@ -910,30 +908,28 @@ noted $\mathrm{Capture}^H(\phi, B_p)$ \textbf{iff}
 
 The following theorem states sufficient conditions on an invariant for
 a loop in \prog to be the most precise invariant under a particular
-initialisation hypothesis. 
+initialization hypothesis. 
 
 \begin{theorem}[Sufficient conditions for invariant maximality]
 \label{lem:precise-inv} 
 Let \prog be the loop \textnormal{$\KWloop  \idx \KWin \idxinitial ..\idxfinal ~
-\KWexit g_{exit}~ \KWdo B ~\KWend$} with $B$ a body loop not writing
-the index \idx. Let 
- $\psi$ and  $\phi$  be two inductive invariants for $L$ under \initcond{\prog}
-Let  $\phi$ be
-such that : 
+\KWexit g_{exit}~ \KWdo B ~\KWend$} with $B$ a body loop not writing the index \idx.
+Let $\psi$ be an inductive invariant for $L$ under \initcond{\prog}.
+And let $\phi$ be such that : 
 \begin{itemize}
 \item[(a)] $\initcond{\prog} \Rightarrow \phi(\idxinitial)$ 
 \item[(b)] $\spost{B}{\initcond{\prog} \land \neg g_{exit} \land \phi(\idxinitial)} 
              \Leftrightarrow  
             \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)$
-\item[(c)] $\spost{B}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(\idx)} 
-             \Leftrightarrow  
-            \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)$
+\item[(c)] $\spost{B}{\idxinitial < \idx \leq \idxfinal \land  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
+             \Leftrightarrow \\
+            \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)$
 \end{itemize}
-\noindent Then, $\phi$ is the most precise invariant for \prog under \initcond{\prog},
+\noindent Then, $\phi$ is the most precise inductive invariant for \prog under \initcond{\prog},
 that is:
 \begin{align*}
-(\idx = \idxinitial) \land (\initcond{\prog} \land \phi(\idx) \Rightarrow  \psi(\idx))\\
-(\forall \idx. \idxinitial < \idx \leq \idxfinal) \land (\framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i) 
+(\idx = \idxinitial \land \initcond{\prog} \land \phi(\idx)) \Rightarrow  \psi(\idx)\\
+(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i))
 \Rightarrow \psi(i))  & \quad \quad [\maxinv]
 \end{align*}
 \end{theorem}
@@ -941,11 +937,11 @@ that is:
 \begin{proof}
   \subproof{\textbf{Init case}}
   By definition, as $\psi$ is an inductive invariant under \initcond{\prog}, the following holds:
-  $$(\initcond{\prog} \land \idx= \idxinitial) \Rightarrow \psi(\idxinitial)$$
+  $$(\idx= \idxinitial \land \initcond{\prog}) \Rightarrow \psi(\idx)$$
   Obviously we have thus :
-  $$(\initcond{\prog} \land \idx= \idxinitial \land \phi(\idxinitial)) \Rightarrow  \psi(\idxinitial)$$
+  $$(\idx= \idxinitial \land \initcond{\prog} \land \phi(\idx)) \Rightarrow  \psi(\idx)$$
 
-  \subproof{\textbf{Presevation case}} 
+  \subproof{\textbf{Preservation case}} 
   Here the proof proceeds by induction on the loop index \idx.\\
 \\
   First, as $\psi$ is an inductive invariant, the Hoare triple below holds.
@@ -955,7 +951,7 @@ that is:
     \{\psi(\idx) \} 
   $$
   %
-  By the hypothesis that the body loop $B$ doest not writing the index \idx, we get the following Hoare triple
+  By the hypothesis that the body loop $B$ does not writing the index \idx, we get the following Hoare triple
   $$
     \{\idxinitial \leq i \leq \idxfinal \land \neg g_{exit} \land \psi(i) \} 
     \texttt{B} 
@@ -999,7 +995,8 @@ that is:
     \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idxinitial)} \quad \quad \mathsf{(2)}
   \end{align*}
   %
-  With $\mathsf{(2)}$ and $\mathsf{(1)}$ for ($\idx = \idxinitial$) we get that
+  With $\mathsf{(2)}$ and $\mathsf{(1)}$ for $\idx = \idxinitial \land \idxfinal \geq \idxinitial$ 
+  (notice that the case $\idxfinal < \idxinitial$ is vacuosly true) we get that
   \begin{align*}
     \framecond{\prog} \land \preservecond{\prog}{\idxinitial+1} \land  \phi(\idxinitial+1)
     \Rightarrow \psi(\idxinitial+1) 
@@ -1008,52 +1005,60 @@ that is:
   \subsubproof{\textbf{Inductive step}}  
   Following is the inductive hypothesis
   $$
-  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \phi(i) 
+  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
   \Rightarrow 
   \psi(i)
   $$
-  By adding $g_{exit}$ to both side of the formula we get that
+  %
+  which can be rewritten
   $$
-  \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(i) 
+  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
   \Rightarrow 
-  \neg g_{exit} \land \psi(i)
+  \idxinitial < \idx \leq \idxfinal \land \psi(i)
   $$
+  %  
+  By adding $g_{exit}$ to both side of the formula we get that
+  \begin{align*}
+  \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(i) 
+  \Rightarrow \\
+  \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(i)
+  \end{align*}
   %
   By applying \spmonoton, we get that
   \begin{align*}
-    \spost{\texttt{B}}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(i)} 
-    \Rightarrow
-    \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idx)}
+    \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(i)} 
+    \Rightarrow\\
+    \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx)}
   \end{align*}
   %
   By the theorem hypothesis $c$ we get the following 
   \begin{align*}
-    \spost{B}{\framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \phi(\idx)} 
+    \spost{B}{\idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \neg g_{exit} \land \phi(\idx)} 
              \Leftrightarrow  \\
-    \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
+    \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
   \end{align*}
   %
   So 
   \begin{align*}
-   \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
-   \Rightarrow
-   \spost{\texttt{B}}{\neg g_{exit} \land \psi(\idx)} \quad \mathsf{(3)}
+   \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
+   \Rightarrow\\
+   \spost{\texttt{B}}{\idxinitial < \idx \leq \idxfinal \land \neg g_{exit} \land \psi(\idx)} \quad \mathsf{(3)}
   \end{align*}
   %
   By $\mathsf{(3)}$ and $\mathsf{(1)}$ we get that
   \begin{align*}
-    \framecond{\prog} \land \preservecond{\prog}{\idx} \land \idxinitial < \idx \leq \idxfinal \land  \phi(\idx+1)
+    \idxinitial < \idx \leq \idxfinal \land \framecond{\prog} \land \preservecond{\prog}{\idx+1} \land \phi(\idx+1)
     \Rightarrow \psi(\idx+1)
   \end{align*}  
   Finally
-  $$(\forall \idx. \idxinitial < \idx \leq \idxfinal) \land (\framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(\idx) 
-  \Rightarrow \psi(\idx)) $$
+  $$(\forall \idx) ((\idxinitial < \idx \leq \idxfinal+1 \land \framecond{\prog} \land \preservecond{\prog}{\idx} \land \phi(i))
+  \Rightarrow \psi(i))$$
 \end{proof}
 
 
 According to the previous theorem \ref{lem:precise-inv} prove that an invariant $\phi$ 
 is a most precise invariant of the loop $L$ consists first to prove that $\phi$ preserves 
-a loop initialisation and second to compute the stronguest postcondition over the loop body 
+a loop initialization and second to compute the stronguest postcondition over the loop body 
 $B_L = G_{l_1}, \ldots G_{l_m}$ at each iteration under the guard \gexit to exit the loop.
 
 \vspace{0.5 cm}
