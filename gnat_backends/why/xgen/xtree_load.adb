@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -34,7 +34,7 @@ with Asis.Elements;              use Asis.Elements;
 with Asis.Extensions.Flat_Kinds; use Asis.Extensions.Flat_Kinds;
 with Utils;                      use Utils;
 with Xtree_Tables;               use Xtree_Tables;
-with Why.Sinfo;                  use Why.Sinfo;
+with Xtree_Sinfo;                  use Xtree_Sinfo;
 
 package body Xtree_Load is
 

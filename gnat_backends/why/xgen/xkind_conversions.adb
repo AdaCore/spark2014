@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Xkind_Tables; use Xkind_Tables;
-with Why.Sinfo;    use Why.Sinfo;
+with Xtree_Sinfo;    use Xtree_Sinfo;
 
 package body Xkind_Conversions is
 

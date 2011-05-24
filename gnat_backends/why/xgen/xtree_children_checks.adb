@@ -26,7 +26,7 @@
 with Xkind_Tables;  use Xkind_Tables;
 with Xtree_Tables;  use Xtree_Tables;
 with Xtree_Classes; use Xtree_Classes;
-with Why.Sinfo;     use Why.Sinfo;
+with Xtree_Sinfo;     use Xtree_Sinfo;
 
 package body Xtree_Children_Checks is
    --  This package provides routines to print kind-validity checks

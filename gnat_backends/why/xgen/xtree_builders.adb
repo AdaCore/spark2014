@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Sinfo;     use Why.Sinfo;
+with Xtree_Sinfo;     use Xtree_Sinfo;
 with Xtree_Tables;  use Xtree_Tables;
 with Xkind_Tables;  use Xkind_Tables;
 with Xtree_Classes; use Xtree_Classes;

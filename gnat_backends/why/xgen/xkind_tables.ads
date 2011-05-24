@@ -25,7 +25,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Why.Sinfo; use Why.Sinfo;
+with Xtree_Sinfo; use Xtree_Sinfo;
 
 package Xkind_Tables is
    --  This package provides an interface to record information about
@@ -37,7 +37,7 @@ package Xkind_Tables is
      new Ada.Containers.Doubly_Linked_Lists (Wide_String_Access, "=");
 
    Kinds   : String_Lists.List;
-   --  List of node kinds; extracted from the syntax tree of Why.Sinfo
+   --  List of node kinds; extracted from the syntax tree of Xtree_Sinfo
    --  by the ASIS traversal.
 
    type Class_Info is record
@@ -50,7 +50,7 @@ package Xkind_Tables is
      new Ada.Containers.Doubly_Linked_Lists (Class_Info, "=");
 
    Classes : Class_Lists.List;
-   --  List of node classes; extracted from the syntax tree of Why.Sinfo
+   --  List of node classes; extracted from the syntax tree of Xtree_Sinfo
    --  by the ASIS traversal.
 
    type Id_Kind is (Opaque, Unchecked, Regular, Derived);
@@ -70,7 +70,15 @@ package Xkind_Tables is
    --  * Id_Some is "List",  representing at least one node;
    --  * Id_Set  is "OList", representing any number of nodes.
 
+   procedure Register_Kinds;
+
+   procedure New_Class
+     (Name  : Wide_String;
+      First : Why_Node_Kind;
+      Last  : Why_Node_Kind);
+
    function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
+   function Mixed_Case_Name (M : Id_Multiplicity) return Wide_String;
    --  Return the mixed case name of the given node kind
 
    function Default_Kind return Why_Node_Kind;

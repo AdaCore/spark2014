@@ -209,6 +209,13 @@ package body Xkind_Tables is
       return To_Wide_String (Name);
    end Mixed_Case_Name;
 
+   function Mixed_Case_Name (M : Id_Multiplicity) return Wide_String is
+      Name : String := Id_Multiplicity'Image (M);
+   begin
+      To_Mixed (Name);
+      return To_Wide_String (Name);
+   end Mixed_Case_Name;
+
    -------------------------
    -- Multiplicity_Suffix --
    -------------------------
@@ -228,6 +235,34 @@ package body Xkind_Tables is
             return "_OList";
       end case;
    end Multiplicity_Suffix;
+
+   ---------------
+   -- New_Class --
+   ---------------
+
+   procedure New_Class
+     (Name  : Wide_String;
+      First : Why_Node_Kind;
+      Last  : Why_Node_Kind)
+   is
+      CI : constant Class_Info :=
+             (Name  => new Wide_String'(Name),
+              First => new Wide_String'(Mixed_Case_Name (First)),
+              Last  => new Wide_String'(Mixed_Case_Name (Last)));
+   begin
+      Classes.Append (CI);
+   end New_Class;
+
+   --------------------
+   -- Register_Kinds --
+   --------------------
+
+   procedure Register_Kinds is
+   begin
+      for Kind in Why_Node_Kind'Range loop
+         Kinds.Append (new Wide_String'(Mixed_Case_Name (Kind)));
+      end loop;
+   end Register_Kinds;
 
    ----------------
    -- Tree_Check --

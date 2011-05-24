@@ -465,6 +465,43 @@ package body Xtree_Tables is
       end if;
    end Max_Param_Length;
 
+   ----------------------
+   -- New_Common_Field --
+   ----------------------
+
+   procedure New_Common_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String) is
+   begin
+      New_Field (Common_Fields, False, Field_Name, Field_Type);
+   end New_Common_Field;
+
+   ---------------
+   -- New_Field --
+   ---------------
+
+   procedure New_Field
+     (Kind       : Why_Node_Kind;
+      Field_Name : Wide_String;
+      Field_Type : Wide_String)
+   is
+      Prefix : Wide_String :=
+                 Integer'Wide_Image (Why_Node_Kind'Pos (Kind)) & "_";
+   begin
+      Prefix (1) := 'K';
+      New_Field (Why_Tree_Info (Kind), True, Prefix & Field_Name, Field_Type);
+   end New_Field;
+
+   procedure New_Field
+     (Kind         : Why_Node_Kind;
+      Field_Name   : Wide_String;
+      Field_Kind   : Wide_String;
+      Multiplicity : Id_Multiplicity) is
+   begin
+      New_Field (Why_Tree_Info (Kind), True, Field_Name,
+                 Id_Subtype (Field_Kind, Opaque, Multiplicity));
+   end New_Field;
+
    ---------------------------
    -- To_Special_Field_Kind --
    ---------------------------

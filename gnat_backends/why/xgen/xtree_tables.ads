@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Why.Sinfo;    use Why.Sinfo;
+with Xtree_Sinfo;    use Xtree_Sinfo;
 with Xkind_Tables; use Xkind_Tables;
 
 package Xtree_Tables is
@@ -147,6 +147,21 @@ package Xtree_Tables is
    ----------------
    -- Operations --
    ----------------
+
+   procedure New_Common_Field
+     (Field_Name : Wide_String;
+      Field_Type : Wide_String);
+
+   procedure New_Field
+     (Kind       : Why_Node_Kind;
+      Field_Name : Wide_String;
+      Field_Type : Wide_String);
+
+   procedure New_Field
+     (Kind         : Why_Node_Kind;
+      Field_Name   : Wide_String;
+      Field_Kind   : Wide_String;
+      Multiplicity : Id_Multiplicity);
 
    procedure New_Field
      (NI         : in out Why_Node_Info;

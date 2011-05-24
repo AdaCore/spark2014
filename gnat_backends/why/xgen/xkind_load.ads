@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 package Xkind_Load is
-   --  ASIS helper that takes Why.Sinfo's syntax tree and populate the
+   --  ASIS helper that takes Xtree_Sinfo's syntax tree and populate the
    --  node kind/class list in Xkind_Tables.
 
    procedure Load_Sinfo;

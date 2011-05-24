@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                          X K I N D _ D E C L S                           --
+--                          X T R E E _ S I N F O                           --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -23,68 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Xtree_Tables; use Xtree_Tables;
 with Xkind_Tables; use Xkind_Tables;
 
-package body Xkind_Decls is
+package body Xtree_Sinfo is
 
-   Kind_Type_Name : constant Wide_String := "Why_Node_Kind";
-
-   ------------------------
-   -- Print_Load_Classes --
-   ------------------------
-
-   procedure Print_Load_Classes (O : in out Output_Record) is
+   procedure Build_AST is
    begin
-      for Class of Classes loop
-         PL (O, "New_Class (""" & Class.Name.all  &  """,");
-         PL (O, "           " & Class.First.all   & ",");
-         PL (O, "           " & Class.Last.all & ");");
-      end loop;
-   end Print_Load_Classes;
+      Register_Kinds;
 
-   ------------------------
-   -- Print_Node_Classes --
-   ------------------------
+      --  Classes
 
-   procedure Print_Node_Classes (O : in out Output_Record) is
-      First : Boolean := True;
-   begin
-      for Class of Classes loop
-         if First then
-            First := False;
-         else
-            NL (O);
-         end if;
+      _@Load_Classes@_
 
-         PL (O,
-             "subtype " & Class.Name.all & " is " & Kind_Type_Name & " range");
-         PL (O, "  " & Class.First.all &" ..");
-         PL (O, "  " & Class.Last.all & ";");
-      end loop;
-   end Print_Node_Classes;
+      --  AST
 
-   ----------------------
-   -- Print_Node_Kinds --
-   ----------------------
+      _@Load_Fields@_
+   end Build_AST;
 
-   procedure Print_Node_Kinds (O : in out Output_Record) is
-      First : Boolean := True;
-   begin
-      PL (O, "type " & Kind_Type_Name &" is");
-      PL (O, "  (");
-      Relative_Indent (O, 3);
-
-      for Kind of Kinds loop
-         if First then
-            First := False;
-         else
-            PL (O, ",");
-         end if;
-
-         P (O, Kind.all);
-      end loop;
-      Relative_Indent (O, -3);
-      PL (O, ");");
-   end Print_Node_Kinds;
-
-end Xkind_Decls;
+end Xtree_Sinfo;

@@ -39,12 +39,20 @@ with Xtree_Children_Checks; use Xtree_Children_Checks;
 with Templates;             use Templates;
 
 procedure Xtree is
-   --  ASIS helper that takes Why.Sinfo/Why.Atree's syntax tree and generates
+   --  ASIS helper that takes Xtree_Sinfo/Why.Atree's syntax tree and generates
    --  builders, accessors/mutators, recursive traversal...
 
 begin
    Load_Sinfo;
    Load_Atree;
+
+   --  Production of xtree_sinfo.adb
+   --  ??? To be cleaned up eventually
+
+   Add ("Load_Classes", Print_Load_Classes'Access);
+   Add ("Load_Fields", Print_Load_Fields'Access);
+
+   Process ("xtree_sinfo_new.adb");
 
    --  Production of packages for node kinds/classes/types
 
