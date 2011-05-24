@@ -1,4 +1,5 @@
 from test_support import *
+from os.path import join
 
-gnat2why("pack.adb", "-gnat2012")
-cat("pack.alfa")
+prove_all()
+cat (os.path.join("gnatprove", "pack.alfa"))
