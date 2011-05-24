@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Util; use Sem_Util;
+
 package ALFA.Definition is
 
    type Unique_Entity_Id is new Entity_Id;
@@ -33,8 +35,8 @@ package ALFA.Definition is
    --    a different entity;
    --  * private view and full view have a different entity.
 
-   function Unique (E : Entity_Id) return Unique_Entity_Id;
-   --  Return unique entity for entity E
+   function Unique (E : Entity_Id) return Unique_Entity_Id is
+      (Unique_Entity_Id (Unique_Entity (E)));
 
    type Violation_Kind is (V_Implem,           --  not yet implemented
 

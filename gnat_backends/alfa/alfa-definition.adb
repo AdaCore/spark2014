@@ -35,7 +35,6 @@ with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Snames;                use Snames;
 with Sem_Eval;              use Sem_Eval;
-with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Stand;                 use Stand;
@@ -2236,41 +2235,6 @@ package body ALFA.Definition is
                       Is_Body    => Is_Body,
                       Is_Logic   => False);
    end Push_Scope;
-
-   ------------
-   -- Unique --
-   ------------
-
-   function Unique (E : Entity_Id) return Unique_Entity_Id is
-      U : Entity_Id;
-      P : Node_Id;
-
-   begin
-      case Ekind (E) is
-         when Type_Kind =>
-            U := (if Present (Full_View (E)) then Full_View (E) else E);
-
-         when E_Package_Body =>
-            P := Parent (E);
-            if Nkind (P) = N_Defining_Program_Unit_Name then
-               P := Parent (P);
-            end if;
-            U := Corresponding_Spec (P);
-
-         when E_Subprogram_Body =>
-            P := Parent (E);
-            if Nkind (P) = N_Defining_Program_Unit_Name then
-               P := Parent (P);
-            end if;
-            P := Parent (P);
-            U := Corresponding_Spec (P);
-
-         when others =>
-            U := E;
-      end case;
-
-      return Unique_Entity_Id (U);
-   end Unique;
 
    -----------------------------
    -- Create_ALFA_Output_File --
