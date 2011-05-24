@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,20 @@ package body Outputs is
    procedure I  (O : in out Output_Record);
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
+
+   --------------------
+   -- Adjust_Columns --
+   --------------------
+
+   procedure Adjust_Columns
+     (O        : in out Output_Record;
+      Name_Len : Positive;
+      Max_Len  : Positive) is
+   begin
+      for J in Name_Len .. Max_Len loop
+         P (O, " ");
+      end loop;
+   end Adjust_Columns;
 
    ------------------
    -- Close_Output --

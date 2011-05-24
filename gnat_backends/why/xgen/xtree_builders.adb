@@ -105,25 +105,6 @@ package body Xtree_Builders is
      (O      : in out Output_Record;
       Prefix : Wide_String);
 
-   procedure Adjust_Columns
-     (O        : in out Output_Record;
-      Name_Len : Positive;
-      Max_Len  : Positive);
-
-   --------------------
-   -- Adjust_Columns --
-   --------------------
-
-   procedure Adjust_Columns
-     (O        : in out Output_Record;
-      Name_Len : Positive;
-      Max_Len  : Positive) is
-   begin
-      for J in Name_Len .. Max_Len loop
-         P (O, " ");
-      end loop;
-   end Adjust_Columns;
-
    --------------------------
    -- Print_Builder_Bodies --
    --------------------------

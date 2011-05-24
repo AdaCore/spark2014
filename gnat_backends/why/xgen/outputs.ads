@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010, AdaCore                        --
+--                       Copyright (C) 2010-2011, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute it and/or modify it   --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -68,6 +68,17 @@ package Outputs is
    --  ---------------------
    --  -- Subprogram_Name --
    --  ---------------------
+
+   procedure Adjust_Columns
+     (O        : in out Output_Record;
+      Name_Len : Positive;
+      Max_Len  : Positive);
+   --  Print the correct number of space to align a declaration in
+   --  a set of declarations. e.g
+   --
+   --  A    : T;    --  Max_Len = 4, Name_Len = 1, print 4 spaces
+   --  AAAA : TTTT; --  Max_Len = 4, Name_Len = 4, print 1 space
+   --  AA   : TT;   --  Max_Len = 4, Name_Len = 2, print 3 spaces
 
 private
 
