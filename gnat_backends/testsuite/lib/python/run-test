@@ -8,6 +8,7 @@ from gnatpython.main import Main
 from gnatpython.testdriver import TestRunner, add_run_test_options
 
 import sys
+import os
 
 def main():
     """Run a single test"""
@@ -26,6 +27,7 @@ def main():
                    m.options.enable_cleanup,
                    m.options.restricted_discs,
                    len(m.args) > 1 and m.args[1:] or None)
+    os.environ['TMPDIR'] = t.work_dir
 
     t.execute()
 if __name__ == '__main__':
